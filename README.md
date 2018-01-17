@@ -1,1 +1,1 @@
-# gotttsch-minecraft-Treasure
+# Treasure
