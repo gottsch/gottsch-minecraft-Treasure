@@ -44,7 +44,11 @@ public class LockState {
 				NBTTagCompound lockNBT = new NBTTagCompound();
 				new ItemStack(this.getLock()).writeToNBT(lockNBT);
 				nbt.setTag("lockItem", lockNBT);
-			}			
+			}
+			else {
+				// TODO must write the empty lock state, else syncing between client and server doesn't take place because
+				// it thinks there is no property to update
+			}
 		}
 		catch(Exception e) {
 			Treasure.logger.error("Unable to write state to NBT:", e);

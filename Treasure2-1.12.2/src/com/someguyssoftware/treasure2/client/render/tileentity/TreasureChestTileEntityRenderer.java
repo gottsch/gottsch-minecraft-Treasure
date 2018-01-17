@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2.client.render.tileentity;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.model.ITreasureChestModel;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.TestChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
@@ -53,7 +54,7 @@ public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<T
     public void render(TreasureChestTileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
     	
     	if (!(te instanceof TreasureChestTileEntity)) return; // should never happen
-    	
+
     	// add the destory textures
         if (destroyStage >= 0) {
             this.bindTexture(DESTROY_STAGES[destroyStage]);
@@ -102,6 +103,7 @@ public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<T
         GlStateManager.popMatrix();
         // end of rendering chest entity ////
         
+        
         // pop the destroy stage matrix
         if (destroyStage >= 0) {
             GlStateManager.matrixMode(5890);
@@ -113,7 +115,6 @@ public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<T
         if (!te.getLockStates().isEmpty()) {
         	renderLocks(te, x, y, z);
         }
-        
         ////////////// end of render the locks //////////////////////////////////////
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
@@ -141,9 +142,11 @@ public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<T
      * @param z
      */
     public void renderLocks(TreasureChestTileEntity te, double x, double y, double z) {
+//    	Treasure.logger.debug("=====================================================================");
         // render locks
         for (LockState lockState : te.getLockStates()) {
-        	if (lockState.getLock() != null) {
+//        	Treasure.logger.debug("Render LS:" + lockState);
+        	if (lockState.getLock() != null) {        		
         		// convert lock to an item stack
         		ItemStack lockStack = new ItemStack(lockState.getLock());
         		

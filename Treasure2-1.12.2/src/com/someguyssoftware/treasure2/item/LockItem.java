@@ -34,7 +34,9 @@ public class LockItem extends ModItem {
 	 */
 	private boolean craftable;
 
-	// TODO key list - a list of keys that unlock the lock
+	/*
+	 * a list of keys that unlock the lock
+	 */
 	private List<KeyItem> keys = new ArrayList<>(3);
 	
 	/**
@@ -71,7 +73,9 @@ public class LockItem extends ModItem {
 	 * @return
 	 */
 	public boolean acceptsKey(KeyItem keyItem) {
+		Treasure.logger.debug("Testing keys against keyItem {}", keyItem);
 		for (KeyItem k : getKeys()) {
+			Treasure.logger.debug("Current key: {}", k);
 			if (k == keyItem) return true;
 		}
 		return false;

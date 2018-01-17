@@ -41,25 +41,6 @@ public class TreasureItems {
 	static {
 		// TAB
 		TREASURE_TAB = new ModItem().setItemName(Treasure.MODID, TreasureConfig.TREASURE_TAB_ID);
-		// LOCKS
-		WOOD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.WOOD_LOCK_ID, new KeyItem[] {WOOD_KEY})
-				.setCategory(Category.BASIC)
-				.setRarity(Rarity.COMMON);
-		STONE_LOCK = new LockItem(Treasure.MODID, TreasureConfig.STONE_LOCK_ID, new KeyItem[] {STONE_KEY})
-				.setCategory(Category.BASIC)
-				.setRarity(Rarity.COMMON);
-		IRON_LOCK = new LockItem(Treasure.MODID, TreasureConfig.IRON_LOCK_ID, new KeyItem[] {IRON_KEY})
-				.setCategory(Category.METALS)
-				.setRarity(Rarity.UNCOMMON);
-		GOLD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.GOLD_LOCK_ID, new KeyItem[] {GOLD_KEY})
-				.setCategory(Category.METALS)
-				.setRarity(Rarity.SCARCE);
-		DIAMOND_LOCK = new LockItem(Treasure.MODID, TreasureConfig.DIAMOND_LOCK_ID, new KeyItem[] {DIAMOND_KEY})
-				.setCategory(Category.GEMS)
-				.setRarity(Rarity.RARE);
-		EMERALD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.EMERALD_LOCK_ID, new KeyItem[] {EMERALD_KEY})
-				.setCategory(Category.GEMS)
-				.setRarity(Rarity.EPIC);
 		
 		// KEYS
 		WOOD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.WOOD_KEY_ID)
@@ -99,6 +80,26 @@ public class TreasureItems {
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false);
+		
+		// LOCKS
+		WOOD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.WOOD_LOCK_ID, new KeyItem[] {WOOD_KEY})
+				.setCategory(Category.BASIC)
+				.setRarity(Rarity.COMMON);
+		STONE_LOCK = new LockItem(Treasure.MODID, TreasureConfig.STONE_LOCK_ID, new KeyItem[] {STONE_KEY})
+				.setCategory(Category.BASIC)
+				.setRarity(Rarity.COMMON);
+		IRON_LOCK = new LockItem(Treasure.MODID, TreasureConfig.IRON_LOCK_ID, new KeyItem[] {IRON_KEY})
+				.setCategory(Category.METALS)
+				.setRarity(Rarity.UNCOMMON);
+		GOLD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.GOLD_LOCK_ID, new KeyItem[] {GOLD_KEY})
+				.setCategory(Category.METALS)
+				.setRarity(Rarity.SCARCE);
+		DIAMOND_LOCK = new LockItem(Treasure.MODID, TreasureConfig.DIAMOND_LOCK_ID, new KeyItem[] {DIAMOND_KEY})
+				.setCategory(Category.GEMS)
+				.setRarity(Rarity.RARE);
+		EMERALD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.EMERALD_LOCK_ID, new KeyItem[] {EMERALD_KEY})
+				.setCategory(Category.GEMS)
+				.setRarity(Rarity.EPIC);
 	}
 	
 	/**

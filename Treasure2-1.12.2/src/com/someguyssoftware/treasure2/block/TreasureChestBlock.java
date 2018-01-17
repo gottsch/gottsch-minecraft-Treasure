@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.block.AbstractModContainerBlock;
-import com.someguyssoftware.gottschcore.block.ModContainerBlock;
 import com.someguyssoftware.gottschcore.enums.Direction;
 import com.someguyssoftware.gottschcore.enums.Rotate;
 import com.someguyssoftware.treasure2.Treasure;
@@ -32,6 +31,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -44,9 +44,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -71,16 +69,11 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	private TreasureChestType chestType;
 
 	/*
-	 * An array of locks the chest has. The array should be the size of the max allowed for the chestType.
-	 */
-//	private LockState[] locks;
-
-	/*
 	 * An array of AxisAlignedBB bounds for the bounding box
 	 */
 	AxisAlignedBB[] bounds = new AxisAlignedBB[4];
-	
-	
+
+
 	/**
 	 * TODO need the bounds
 	 * @param modID
@@ -104,10 +97,6 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		this(modID, name, material);
 		setTileEntityClass(te);
 		setChestType(type);
-		 // TODO change to arrayList
-//		setLocks(new LockState[type.getMaxLocks()]);
-		// default bounds
-		bounds[EnumFacing.NORTH.getHorizontalIndex()] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.875D, 0.9375D);
 		setCreativeTab(Treasure.TREASURE_TAB);
 	}
 
@@ -121,7 +110,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		super(modID, name, material);
 
 	}
-	
+
 	/**
 	 * TODO TEMP display... come up with better info
 	 * Format:
@@ -132,7 +121,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	 * @return
 	 */
 	public String getInfo(TreasureChestTileEntity te) {
-		
+
 		final String STATE_LABEL = "State: ";
 		final String REQUIRES_LABEL = "Requires: ";
 		final String LOCKED_STATE = "Locked";
@@ -158,7 +147,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		}			
 		return builder.toString();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.minecraft.block.ITileEntityProvider#createNewTileEntity(net.minecraft.world.World, int)
 	 */
@@ -167,7 +156,10 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		TreasureChestTileEntity chestTileEntity = null;
 		try {
 			chestTileEntity = (TreasureChestTileEntity) getTileEntityClass().newInstance();
-
+			if (chestTileEntity.getLockStates() != null)
+				Treasure.logger.debug("Created Chest TE.size():" + chestTileEntity.getLockStates().size());
+			else
+				Treasure.logger.debug("Created Chest TE.size(): 0");
 			// setup lock states
 			List<LockState> lockStates = new ArrayList<>(this.getChestType().getMaxLocks());
 
@@ -177,6 +169,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 				lockStates.add(lockState);
 			}
 			chestTileEntity.setLockStates(lockStates);
+			Treasure.logger.debug("Post setup Chest TE.size():" + chestTileEntity.getLockStates().size());
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -245,9 +238,9 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 			return bounds[EnumFacing.NORTH.getHorizontalIndex()];
 		}
 	}
-    
+
 	/**
-	 * Called just after the player places a block.  Attempt to link teleport pads.
+	 * Called just after the player places a block.
 	 */
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
@@ -256,7 +249,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		boolean shouldRotate = false;
 		boolean shouldUpdate = false;
 		TreasureChestTileEntity tcte = null;
-		
+
 		// face the teleport ladder towards the palyer (there isn't really a front)
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 3);
 
@@ -265,8 +258,6 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 			if (te != null && te instanceof TreasureChestTileEntity) {
 				// get the backing tile entity
 				tcte = (TreasureChestTileEntity) te;
-//				Treasure.logger.debug("LockStates.size:" + tcte.getLockStates().size());
-//				Treasure.logger.debug("Chest is facing:" + placer.getHorizontalFacing().getOpposite());
 				// get the direction the block is facing.
 				Direction direction = Direction.fromFacing(placer.getHorizontalFacing().getOpposite());
 				// get the rotation needed (from default: NORTH)
@@ -275,9 +266,10 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 				Treasure.logger.debug("Rotate to:" + rotate);
 				try {
 					for (LockState lockState : tcte.getLockStates()) {
+						
 						// TEMP change the icon to test it the client side is being updated
 						lockState.setLock(TreasureItems.EMERALD_LOCK);
-						
+
 						if (lockState != null && lockState.getLock() != null) {
 							Treasure.logger.debug("Original lock state:" + lockState);
 							// if a rotation is needed
@@ -296,12 +288,18 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 				}
 			}
 		}
-		
+
 		if (shouldUpdate && tcte != null) {
 			// update the client
 			tcte.sendUpdates();
 		}
 	}
+
+//	@SuppressWarnings("deprecation")
+//	@Override
+//	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+//		return state.withProperty(FACING, getFacing(worldIn, pos));
+//	}
 	
 	/**
 	 * 
@@ -318,13 +316,11 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		if (worldIn.isRemote) {			
 			return true;
 		}
-		
+
 		try {
 			boolean isLocked = false;
-			
 			// get the item held in player's hand
 			ItemStack heldItem = playerIn.getHeldItem(hand);	
-
 			if (te.hasLocks()) {
 				isLocked = true;
 				// if the player is holding a key
@@ -333,52 +329,63 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 					boolean breakKey = true;
 					// check if held item is a key that opens a lock (only first lock that key fits is unlocked).
 					for (LockState lockState : te.getLockStates()) {
-						if (key.unlock(lockState.getLock())) {
-							// TODO spawn the lock
-							spawnItem(lockState.getLock());
-							// remove the lock
-							lockState.setLock(null);
-							// don't break the key
-							breakKey = false;
-							break;
-						}
-						else {
-							// TODO this is wrong... should check if the key against all locks before breaking.
-							// check key's breakability
-							if (key.isBreakable()  && TreasureConfig.enableKeyBreaks) {
-								// break key;
-								heldItem.shrink(1);
-//								worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.break", 1.0F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
-						        worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-
-								if (heldItem.getCount() <=0) {
-									IInventory inventory = playerIn.inventory;
-									inventory.setInventorySlotContents(playerIn.inventory.currentItem, null);
-								}		
-								playerIn.sendMessage(new TextComponentString("Key broke."));
+						if (lockState.getLock() != null) {
+							if (key.unlock(lockState.getLock())) {
+								Treasure.logger.debug("Key unlocked lock");
+								LockItem lock = lockState.getLock();
+								// remove the lock
+								lockState.setLock(null);
+								// update the client
+								//---------------
+								// THESE DONT WORK!
+//								worldIn.setBlockState(pos, state, 3);
+								te.sendUpdates();		
+								//----------------
+								// spawn the lock
+								InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(lock));
+								// don't break the key
+								breakKey = false;
+								// exit the loop
+								break;
 							}
-							else {
-								playerIn.sendMessage(new TextComponentString("Failed to unlock."));
-							}
-							return false;
 						}
 					}
-					
+
+					// check key's breakability
+					if (breakKey) {
+						if (key.isBreakable()  && TreasureConfig.enableKeyBreaks) {	
+							// break key;
+							heldItem.shrink(1);
+							//	worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.break", 1.0F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
+							worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+	
+							if (heldItem.getCount() <=0) {
+								IInventory inventory = playerIn.inventory;
+								inventory.setInventorySlotContents(playerIn.inventory.currentItem, null);
+							}		
+							playerIn.sendMessage(new TextComponentString("Key broke."));
+						}
+						else {
+							playerIn.sendMessage(new TextComponentString("Failed to unlock."));
+						}
+					}
 					// test if still locked
-					if (!te.hasLocks()) isLocked = false;
-					
+					if (!te.hasLocks()) {
+						isLocked = false;		
+						// TODO for future: set the owner of the chest to the player. when unlocking locks, keys no longer break.
+					}
 				}
 				else {
 					// Display message and do nothing
 					StringBuilder builder = new StringBuilder();
 					builder
-						.append(TextFormatting.WHITE).append("The chest is ").append(TextFormatting.BOLD).append(TextFormatting.GOLD)
-						.append("Locked").append(TextFormatting.WHITE).append(".");
+					.append(TextFormatting.WHITE).append("The chest is ").append(TextFormatting.BOLD).append(TextFormatting.GOLD)
+					.append("Locked").append(TextFormatting.WHITE).append(".");
 					playerIn.sendMessage(new TextComponentString(builder.toString()));
 					//			       return false;
 				}
 			}
-			
+
 			if (!isLocked) {
 				playerIn.openGui(Treasure.instance, GuiHandler.TREASURE_CHEST_GUIID, worldIn, pos.getX(), pos.getY(),	pos.getZ());
 			}
@@ -387,15 +394,6 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 			Treasure.logger.error("gui error: ", e);
 		}
 		return true;
-	}
-	
-	/**
-	 * 
-	 * @param lock
-	 */
-	private void spawnItem(LockItem lock) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	/**
@@ -409,14 +407,14 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		}
 		return this.getDefaultState().withProperty(FACING, enumfacing);
 	}
-	
+
 	/**
 	 * Convert the BlockState into the correct metadata value
 	 */
 	public int getMetaFromState(IBlockState state) {
 		return ((EnumFacing)state.getValue(FACING)).getIndex();
 	}
-	
+
 	/**
 	 * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
 	 * blockstate.
@@ -438,7 +436,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] {FACING});
 	}
-	
+
 	/**
 	 * Handled by breakBlock()
 	 */
@@ -480,17 +478,17 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	/**
 	 * @return the locks
 	 */
-//	public LockState[] getLocks() {
-//		return locks;
-//	}
-//
-//	/**
-//	 * @param locks the locks to set
-//	 */
-//	public TreasureChestBlock setLocks(LockState[] locks) {
-//		this.locks = locks;
-//		return this;
-//	}
+	//	public LockState[] getLocks() {
+	//		return locks;
+	//	}
+	//
+	//	/**
+	//	 * @param locks the locks to set
+	//	 */
+	//	public TreasureChestBlock setLocks(LockState[] locks) {
+	//		this.locks = locks;
+	//		return this;
+	//	}
 
 	/**
 	 * @return the bounds

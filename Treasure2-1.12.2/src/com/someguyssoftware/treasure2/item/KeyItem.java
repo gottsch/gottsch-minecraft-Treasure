@@ -62,7 +62,10 @@ public class KeyItem extends ModItem {
 	 * @return
 	 */
 	public boolean unlock(LockItem lockItem) {	
-		if (lockItem.acceptsKey(this)) return true;
+		if (lockItem.acceptsKey(this)) {
+			Treasure.logger.debug("Lock accepts key");
+			return true;
+		}
 		// TODO add the check against probably of failure
 		return false;
 	}

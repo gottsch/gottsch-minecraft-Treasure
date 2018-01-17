@@ -6,6 +6,8 @@ package com.someguyssoftware.treasure2.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
@@ -21,13 +23,17 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 /**
@@ -71,7 +77,7 @@ public class TreasureChestTileEntity extends AbstractModTileEntity implements /*
 	 */
 	public TreasureChestTileEntity() {		
 		// default to standard chest number of locks
-		lockStates = new ArrayList<>(TreasureChestTypes.STANDARD.getMaxLocks());
+//		lockStates = new ArrayList<>(TreasureChestTypes.STANDARD.getMaxLocks());
 		// create the proxy with this tile entity as a reference back
 		setInventoryProxy(new InventoryProxy(this));
 	}
@@ -176,28 +182,46 @@ public class TreasureChestTileEntity extends AbstractModTileEntity implements /*
 		super.readFromNBT(parentNBT);
 		
 		try {
-			// read the colliding player list
+			// read the lockstates
 			if (parentNBT.hasKey("lockStates")) {
-				if (this.getLockStates() == null) {
-					TreasureChestBlock block = (TreasureChestBlock) this.getWorld().getBlockState(this.getPos()).getBlock();
-					setLockStates(new ArrayList<LockState>(block.getChestType().getMaxLocks()));
-				}
+				TreasureChestBlock block = (TreasureChestBlock) this.getWorld().getBlockState(this.getPos()).getBlock();
+				List<LockState> states = new ArrayList<LockState>(block.getChestType().getMaxLocks());
+				
 				NBTTagList list = parentNBT.getTagList("lockStates", Constants.NBT.TAG_COMPOUND);
 				for (int i = 0; i < list.tagCount(); i++) {				
 					NBTTagCompound c = list.getCompoundTagAt(i);
-					getLockStates().add(LockState.readFromNBT(c));
+					states.add(LockState.readFromNBT(c));
 //					Treasure.logger.debug("Read NBT lockstate:" + getLockStates().get(i));
 				}
+				// update the tile entity
+				setLockStates(states);				
 			}
 		}
 		catch(Exception e) {
 			Treasure.logger.error("Error reading to NBT:",  e);
 		}
 	}
+
+	@Override
+	@Nullable
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		return new SPacketUpdateTileEntity(this.pos, 3, this.getUpdateTag());
+	}
+
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		return this.writeToNBT(new NBTTagCompound());
+	}
 	
-	/**
-	 * 
-	 */
+	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		super.onDataPacket(net, pkt);
+		handleUpdateTag(pkt.getNbtCompound());
+	}
+	
+//	/**
+//	 * 
+//	 */
 //	@Override
 //	@Nullable
 //	public SPacketUpdateTileEntity getUpdatePacket() {
@@ -206,37 +230,60 @@ public class TreasureChestTileEntity extends AbstractModTileEntity implements /*
 //		int metadata = getBlockMetadata();
 //		return new SPacketUpdateTileEntity(this.pos, metadata, nbtTagCompound);
 //	}
-	
-	/**
-	 * 
-	 */
+//	
+//	/**
+//	 * 
+//	 */
 //	@Override
 //	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-//		readFromNBT(pkt.getNbtCompound());
+////		readFromNBT(pkt.getNbtCompound());
+//		super.onDataPacket(net, pkt);
+//		handleUpdateTag(pkt.getNbtCompound());
 //	}
-
-	/* 
-	 * Creates a tag containing the TileEntity information, used by vanilla to transmit from server to client
-	 */
+//
+//	/* 
+//	 * Creates a tag containing the TileEntity information, used by vanilla to transmit from server to client
+//	 */
 //	@Override
 //	public NBTTagCompound getUpdateTag() {
 //		NBTTagCompound nbtTagCompound = new NBTTagCompound();
 //		writeToNBT(nbtTagCompound);
 //		return nbtTagCompound;
 //	}
-
-	/*
-	 *  Populates this TileEntity with information from the tag, used by vanilla to transmit from server to client
-	 */
+//
+//	/*
+//	 *  Populates this TileEntity with information from the tag, used by vanilla to transmit from server to client
+//	 */
 //	@Override
 //	public void handleUpdateTag(NBTTagCompound tag) {
 //		this.readFromNBT(tag);
 //	}
 	
+	
+	/**
+	* This controls whether the tile entity gets replaced whenever the block state 
+	* is changed. Normally only want this when block actually is replaced.
+	* NOTE this method is very important!
+	*/
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+		Treasure.logger.debug("ShouldRefresh:" + (oldState.getBlock() != newState.getBlock()));
+		return oldState.getBlock() != newState.getBlock();
+
+	}
+	
 	/**
 	 * Sync client and server states
 	 */
 	public void sendUpdates() {
+		Treasure.logger.debug("sending updates to TE...");
+		Treasure.logger.debug("Is  TE.lockStates empty? " + getLockStates().isEmpty());
+		if (!getLockStates().isEmpty()) {
+			for (LockState state : getLockStates()) {
+				Treasure.logger.debug("lock state: " + state);
+			}
+		}
+//		Treasure.logger.debug("Updating pos: " + pos);
 		world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyBlockUpdate(pos, getState(), getState(), 3);
 		world.scheduleBlockUpdate(pos,this.getBlockType(),0,0);
