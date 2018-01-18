@@ -18,9 +18,9 @@ public class TreasureChestTypes {
 		
 	static {
 		STANDARD = new TreasureChestType(3).addSlots(
-			new LockSlot(0, Direction.NORTH, 0.5F, 0.4F, 0.05F, 0F),
-			new LockSlot(1, Direction.EAST, 0.95F, 0.4F, 0.5F, 90F),
-			new LockSlot(2, Direction.WEST, 0.05F, 0.4F, 0.5F, -90F)
+			new LockSlot(0, Direction.NORTH, 0.5F, 0.3F, 0.05F, 0F),
+			new LockSlot(1, Direction.EAST, 0.95F, 0.3F, 0.5F, 90F),
+			new LockSlot(2, Direction.WEST, 0.05F, 0.3F, 0.5F, -90F)
 		);
 		
 		// TODO update the model

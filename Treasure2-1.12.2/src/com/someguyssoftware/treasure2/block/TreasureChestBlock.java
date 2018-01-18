@@ -17,7 +17,6 @@ import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.item.KeyItem;
 import com.someguyssoftware.treasure2.item.LockItem;
-import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
 
@@ -252,11 +251,20 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		// face the teleport ladder towards the palyer (there isn't really a front)
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 3);
 
+        
 		if (!worldIn.isRemote) {
 			TileEntity te = worldIn.getTileEntity(pos);
 			if (te != null && te instanceof TreasureChestTileEntity) {
 				// get the backing tile entity
 				tcte = (TreasureChestTileEntity) te;
+				// set the name of the chest
+		        if (stack.hasDisplayName()) {
+		            tcte.setCustomName(stack.getDisplayName());
+		        }
+		        // read in nbt
+		        if (stack.hasTagCompound()) {
+		        	tcte.readFromNBT(stack.getTagCompound());
+		        }
 				// get the direction the block is facing.
 				Direction direction = Direction.fromFacing(placer.getHorizontalFacing().getOpposite());
 				// get the rotation needed (from default: NORTH)
@@ -265,10 +273,6 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 				Treasure.logger.debug("Rotate to:" + rotate);
 				try {
 					for (LockState lockState : tcte.getLockStates()) {
-						
-						// TEMP change the icon to test it the client side is being updated
-						lockState.setLock(TreasureItems.EMERALD_LOCK);
-
 						if (lockState != null && lockState.getLock() != null) {
 							Treasure.logger.debug("Original lock state:" + lockState);
 							// if a rotation is needed
@@ -294,12 +298,12 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		}
 	}
 
-//	@SuppressWarnings("deprecation")
-//	@Override
-//	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-//		return state.withProperty(FACING, getFacing(worldIn, pos));
-//	}
-	
+	//	@SuppressWarnings("deprecation")
+	//	@Override
+	//	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	//		return state.withProperty(FACING, getFacing(worldIn, pos));
+	//	}
+
 	/**
 	 * 
 	 */
@@ -334,12 +338,12 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 								// remove the lock
 								lockState.setLock(null);
 								// play noise
-//								worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.click", 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
+								//								worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.click", 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
 								worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 								// update the client
 								//---------------
 								// THESE DONT WORK!
-//								worldIn.setBlockState(pos, state, 3);
+								//								worldIn.setBlockState(pos, state, 3);
 								te.sendUpdates();		
 								//----------------
 								// spawn the lock
@@ -360,7 +364,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 							//	worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.break", 1.0F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
 							playerIn.sendMessage(new TextComponentString("Key broke."));
 							worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-	
+
 							if (heldItem.getCount() <=0) {
 								IInventory inventory = playerIn.inventory;
 								inventory.setInventorySlotContents(playerIn.inventory.currentItem, null);
@@ -404,53 +408,52 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		TreasureChestTileEntity te = (TreasureChestTileEntity) worldIn.getTileEntity(pos);
-		
+
 		if (te != null && te.getInventoryProxy() != null) {
 			// unlocked!
 			if (!te.hasLocks()) {
 				/*
 				 * spawn inventory items
 				 */
-	            InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory)te.getInventoryProxy());
+				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory)te.getInventoryProxy());
 
-                /*
-                 * spawn chest item
-                 */
-                ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
+				/*
+				 * spawn chest item
+				 */
+				ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
 				InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), chestItem);
-				
-		        /*
-		         *  write the locked state to the nbt
-		         */
-		        if (!chestItem.hasTagCompound()) {
-		        	chestItem.setTagCompound(new NBTTagCompound());
-		        }		        
-		        te.writePropertiesToNBT(chestItem.getTagCompound());
+
+				/*
+				 *  write the locked state to the nbt
+				 */
+				if (!chestItem.hasTagCompound()) {
+					chestItem.setTagCompound(new NBTTagCompound());
+				}		        
+				te.writePropertiesToNBT(chestItem.getTagCompound());
 			}
 			else {
-        		// for each item in chest add to the new entity item's NBT
-	             
-                /*
-                 * spawn chest item
-                 */
-                ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
-                if (!worldIn.isRemote) {
-                	InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), chestItem);
-                }
-		        // give the chest a tag compound
-	        	Treasure.logger.trace("Saving chest items:");
-                chestItem.setTagCompound(new NBTTagCompound());
-                te.writeToNBT(chestItem.getTagCompound());
-                
+				// for each item in chest add to the new entity item's NBT
+
+				/*
+				 * spawn chest item
+				 */
+				ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
+				if (!worldIn.isRemote) {
+					InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), chestItem);
+				}
+				// give the chest a tag compound
+				Treasure.logger.trace("Saving chest items:");
+				chestItem.setTagCompound(new NBTTagCompound());
+				te.writeToNBT(chestItem.getTagCompound());
 			}
-			
+
 			worldIn.updateComparatorOutputLevel(pos, this);
-			
-		       // remove the tile entity 
-	        worldIn.removeTileEntity(pos);
+
+			// remove the tile entity 
+			worldIn.removeTileEntity(pos);
 		}
 	}
-	
+
 	/**
 	 * Convert the given metadata into a BlockState for this Block
 	 */
