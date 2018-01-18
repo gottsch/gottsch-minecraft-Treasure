@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "sgs_treasure:items/gold_coin"
+        "layer0": "treasure:items/gold_coin"
     },
     "display": {
         "thirdperson": {

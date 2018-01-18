@@ -40,6 +40,9 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String STONE_KEY_ID = "stone_key";
 	public static final String EMERALD_KEY_ID = "emerald_key";
 	public static final String METALLURGISTS_KEY_ID = "metallurgists_key";
+	
+	public static final String GOLD_COIN_ID = "gold_coin";
+	public static final String SILVER_COIN_ID = "silver_coin";
 	public static boolean enableKeyBreaks = true;
 
 

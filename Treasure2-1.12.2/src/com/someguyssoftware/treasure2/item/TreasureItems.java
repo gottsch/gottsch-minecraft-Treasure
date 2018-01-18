@@ -22,6 +22,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class TreasureItems {
 	// tab
 	public static Item TREASURE_TAB;
+	// coins
+	public static Item GOLD_COIN;
+	public static Item SILVER_COIN;
 	// locks
 	public static LockItem WOOD_LOCK;
 	public static LockItem STONE_LOCK;
@@ -41,6 +44,10 @@ public class TreasureItems {
 	static {
 		// TAB
 		TREASURE_TAB = new ModItem().setItemName(Treasure.MODID, TreasureConfig.TREASURE_TAB_ID);
+		
+		// COINS
+		GOLD_COIN = new ModItem().setItemName(Treasure.MODID, TreasureConfig.GOLD_COIN_ID);
+		SILVER_COIN = new ModItem().setItemName(Treasure.MODID, TreasureConfig.SILVER_COIN_ID);
 		
 		// KEYS
 		WOOD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.WOOD_KEY_ID)
