@@ -3,7 +3,7 @@
  */
 package com.someguyssoftware.treasure2.block;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -34,6 +34,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -156,20 +157,18 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		TreasureChestTileEntity chestTileEntity = null;
 		try {
 			chestTileEntity = (TreasureChestTileEntity) getTileEntityClass().newInstance();
-			if (chestTileEntity.getLockStates() != null)
-				Treasure.logger.debug("Created Chest TE.size():" + chestTileEntity.getLockStates().size());
-			else
-				Treasure.logger.debug("Created Chest TE.size(): 0");
-			// setup lock states
-			List<LockState> lockStates = new ArrayList<>(this.getChestType().getMaxLocks());
 
+			// setup lock states
+			List<LockState> lockStates = new LinkedList<>();
+
+			// TODO sort slots by index - need comparator
 			for (int i = 0; i < chestType.getSlots().length; i++) {
 				LockState lockState = new LockState();
 				lockState.setSlot(chestType.getSlots()[i]);
-				lockStates.add(lockState);
+				// add in order of slot indexes
+				lockStates.add(lockState.getSlot().getIndex(), lockState);
 			}
 			chestTileEntity.setLockStates(lockStates);
-			Treasure.logger.debug("Post setup Chest TE.size():" + chestTileEntity.getLockStates().size());
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -331,10 +330,12 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 					for (LockState lockState : te.getLockStates()) {
 						if (lockState.getLock() != null) {
 							if (key.unlock(lockState.getLock())) {
-								Treasure.logger.debug("Key unlocked lock");
 								LockItem lock = lockState.getLock();
 								// remove the lock
 								lockState.setLock(null);
+								// play noise
+//								worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.click", 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
+								worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 								// update the client
 								//---------------
 								// THESE DONT WORK!
@@ -357,13 +358,13 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 							// break key;
 							heldItem.shrink(1);
 							//	worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.break", 1.0F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
+							playerIn.sendMessage(new TextComponentString("Key broke."));
 							worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 	
 							if (heldItem.getCount() <=0) {
 								IInventory inventory = playerIn.inventory;
 								inventory.setInventorySlotContents(playerIn.inventory.currentItem, null);
-							}		
-							playerIn.sendMessage(new TextComponentString("Key broke."));
+							}							
 						}
 						else {
 							playerIn.sendMessage(new TextComponentString("Failed to unlock."));
@@ -386,6 +387,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 				}
 			}
 
+			// open the chest
 			if (!isLocked) {
 				playerIn.openGui(Treasure.instance, GuiHandler.TREASURE_CHEST_GUIID, worldIn, pos.getX(), pos.getY(),	pos.getZ());
 			}
@@ -396,6 +398,59 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		return true;
 	}
 
+	/**
+	 * 
+	 */
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		TreasureChestTileEntity te = (TreasureChestTileEntity) worldIn.getTileEntity(pos);
+		
+		if (te != null && te.getInventoryProxy() != null) {
+			// unlocked!
+			if (!te.hasLocks()) {
+				/*
+				 * spawn inventory items
+				 */
+	            InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory)te.getInventoryProxy());
+
+                /*
+                 * spawn chest item
+                 */
+                ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
+				InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), chestItem);
+				
+		        /*
+		         *  write the locked state to the nbt
+		         */
+		        if (!chestItem.hasTagCompound()) {
+		        	chestItem.setTagCompound(new NBTTagCompound());
+		        }		        
+		        te.writePropertiesToNBT(chestItem.getTagCompound());
+			}
+			else {
+        		// for each item in chest add to the new entity item's NBT
+	             
+                /*
+                 * spawn chest item
+                 */
+                ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
+                if (!worldIn.isRemote) {
+                	InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), chestItem);
+                }
+		        // give the chest a tag compound
+	        	Treasure.logger.trace("Saving chest items:");
+                chestItem.setTagCompound(new NBTTagCompound());
+                te.writeToNBT(chestItem.getTagCompound());
+                
+			}
+			
+			worldIn.updateComparatorOutputLevel(pos, this);
+			
+		       // remove the tile entity 
+	        worldIn.removeTileEntity(pos);
+		}
+	}
+	
 	/**
 	 * Convert the given metadata into a BlockState for this Block
 	 */

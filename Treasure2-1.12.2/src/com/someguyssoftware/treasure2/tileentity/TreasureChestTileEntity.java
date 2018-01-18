@@ -4,14 +4,13 @@
 package com.someguyssoftware.treasure2.tileentity;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.block.TreasureChestBlock;
-import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.inventory.InventoryProxy;
 import com.someguyssoftware.treasure2.lock.LockState;
 
@@ -20,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -155,7 +155,46 @@ public class TreasureChestTileEntity extends AbstractModTileEntity implements /*
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound parentNBT) {
 		try {
-			parentNBT = super.writeToNBT(parentNBT);			
+			parentNBT = super.writeToNBT(parentNBT);
+			
+//			// write lock states
+//			if (getLockStates() != null && !getLockStates().isEmpty()) {				
+//				NBTTagList list = new NBTTagList();
+//				// write custom tile entity properties
+//				for (LockState state : getLockStates()) {
+////					Treasure.logger.debug("Writing lock state:" + state);
+//					NBTTagCompound stateNBT = new NBTTagCompound();
+//					state.writeToNBT(stateNBT); // TODO ensure this works
+//					list.appendTag(stateNBT);
+//				}
+//				parentNBT.setTag("lockStates", list);
+//			}
+			writeLockStatesToNBT(parentNBT);
+			
+//			// write inventory
+//			ItemStackHelper.saveAllItems(parentNBT, this.getItems());
+			writeInventoryToNBT(parentNBT);
+			
+//			// write custom name
+//			if (this.hasCustomName()) {
+//				parentNBT.setString("CustomName", this.customName);
+//			}
+			writePropertiesToNBT(parentNBT);			
+		}
+		catch(Exception e) {
+			Treasure.logger.error("Error writing to NBT:",  e);
+		}
+		return parentNBT;
+	}
+	
+	/**
+	 * 
+	 * @param parentNBT
+	 * @return
+	 */
+	public NBTTagCompound writeLockStatesToNBT(NBTTagCompound parentNBT) {
+		try {
+			// write lock states
 			if (getLockStates() != null && !getLockStates().isEmpty()) {				
 				NBTTagList list = new NBTTagList();
 				// write custom tile entity properties
@@ -169,9 +208,107 @@ public class TreasureChestTileEntity extends AbstractModTileEntity implements /*
 			}
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Error writing to NBT:",  e);
+			Treasure.logger.error("Error writing LockStates to NBT:",  e);
 		}
 		return parentNBT;
+	}
+	
+	/**
+	 * Write custom properties to NBT
+	 * @param parentNBT
+	 * @return
+	 */
+	public NBTTagCompound writePropertiesToNBT(NBTTagCompound parentNBT) {
+		try {
+			// write custom name
+			if (this.hasCustomName()) {
+				parentNBT.setString("CustomName", this.customName);
+			}
+		}
+		catch(Exception e) {
+			Treasure.logger.error("Error writing Properties to NBT:",  e);
+		}
+		return parentNBT;
+	}
+	
+	/**
+	 * Writes the inventory to NBT
+	 * @param parentNBT
+	 * @return
+	 */
+	public NBTTagCompound writeInventoryToNBT(NBTTagCompound parentNBT) {
+		try {
+			// write inventory
+			ItemStackHelper.saveAllItems(parentNBT, this.getItems());
+		}
+		catch(Exception e) {
+			Treasure.logger.error("Error writing Inventory to NBT:",  e);
+		}
+		return parentNBT;
+	}
+	
+	/**
+	 * 
+	 * @param parentNBT
+	 */
+	public void readInventoryFromNBT(NBTTagCompound parentNBT) {
+		try {
+			// read the inventory
+			ItemStackHelper.loadAllItems(parentNBT, this.getItems());
+		}
+		catch(Exception e) {
+			Treasure.logger.error("Error reading Properties from NBT:",  e);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param parentNBT
+	 */
+	public void readLockStatesFromNBT(NBTTagCompound parentNBT) {
+		try {
+			// read the lockstates
+			if (parentNBT.hasKey("lockStates")) {
+				Treasure.logger.debug("Has lockStates");
+				if (this.getLockStates() != null) {
+					Treasure.logger.debug("size of internal lockstates:" + this.getLockStates().size());
+				}
+				else {
+					this.setLockStates(new LinkedList<LockState>());
+					Treasure.logger.debug("created lockstates:" + this.getLockStates().size());
+				}
+
+				List<LockState> states = new LinkedList<LockState>();
+				NBTTagList list = parentNBT.getTagList("lockStates", Constants.NBT.TAG_COMPOUND);
+				for (int i = 0; i < list.tagCount(); i++) {				
+					NBTTagCompound c = list.getCompoundTagAt(i);
+					LockState lockState = LockState.readFromNBT(c);
+					states.add(lockState.getSlot().getIndex(), lockState);
+//					Treasure.logger.debug("Read NBT lockstate:" + lockState);
+				}
+				// update the tile entity
+				setLockStates(states);		
+			}
+		}
+		catch(Exception e) {
+			Treasure.logger.error("Error reading Properties from NBT:",  e);
+		}	
+	}
+	
+	/**
+	 * 
+	 * @param parentNBT
+	 */
+	public void readPropertiesFromNBT(NBTTagCompound parentNBT) {
+		try {
+			// read the custom name
+			if (parentNBT.hasKey("CustomName", 8)) {
+				this.customName = parentNBT.getString("CustomName");
+			}
+		}
+		catch(Exception e) {
+			Treasure.logger.error("Error reading Properties from NBT:",  e);
+		}
 	}
 	
 	/**
@@ -182,20 +319,40 @@ public class TreasureChestTileEntity extends AbstractModTileEntity implements /*
 		super.readFromNBT(parentNBT);
 		
 		try {
-			// read the lockstates
-			if (parentNBT.hasKey("lockStates")) {
-				TreasureChestBlock block = (TreasureChestBlock) this.getWorld().getBlockState(this.getPos()).getBlock();
-				List<LockState> states = new ArrayList<LockState>(block.getChestType().getMaxLocks());
-				
-				NBTTagList list = parentNBT.getTagList("lockStates", Constants.NBT.TAG_COMPOUND);
-				for (int i = 0; i < list.tagCount(); i++) {				
-					NBTTagCompound c = list.getCompoundTagAt(i);
-					states.add(LockState.readFromNBT(c));
-//					Treasure.logger.debug("Read NBT lockstate:" + getLockStates().get(i));
-				}
-				// update the tile entity
-				setLockStates(states);				
-			}
+			readLockStatesFromNBT(parentNBT);
+			readInventoryFromNBT(parentNBT);
+			readPropertiesFromNBT(parentNBT);
+			
+//			// read the lockstates
+//			if (parentNBT.hasKey("lockStates")) {
+//				Treasure.logger.debug("Has lockStates");
+//				if (this.getLockStates() != null) {
+//					Treasure.logger.debug("size of internal lockstates:" + this.getLockStates().size());
+//				}
+//				else {
+//					this.setLockStates(new LinkedList<LockState>());
+//					Treasure.logger.debug("created lockstates:" + this.getLockStates().size());
+//				}
+//
+//				List<LockState> states = new LinkedList<LockState>();
+//				NBTTagList list = parentNBT.getTagList("lockStates", Constants.NBT.TAG_COMPOUND);
+//				for (int i = 0; i < list.tagCount(); i++) {				
+//					NBTTagCompound c = list.getCompoundTagAt(i);
+//					LockState lockState = LockState.readFromNBT(c);
+//					states.add(lockState.getSlot().getIndex(), lockState);
+////					Treasure.logger.debug("Read NBT lockstate:" + lockState);
+//				}
+//				// update the tile entity
+//				setLockStates(states);			
+//				
+//				// read the inventory
+//				ItemStackHelper.loadAllItems(parentNBT, this.getItems());
+//
+//				// read the custom name
+//				if (parentNBT.hasKey("CustomName", 8)) {
+//					this.customName = parentNBT.getString("CustomName");
+//				}
+//			}
 		}
 		catch(Exception e) {
 			Treasure.logger.error("Error reading to NBT:",  e);
