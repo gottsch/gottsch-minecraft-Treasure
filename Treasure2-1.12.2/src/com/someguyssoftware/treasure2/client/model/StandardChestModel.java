@@ -39,7 +39,7 @@ public class StandardChestModel extends ModelBase implements ITreasureChestModel
 	      lid.mirror = true;
 	      setRotation(lid, 0F, 0F, 0F);
 	      Pad1 = new ModelRenderer(this, 7, 47);
-	      Pad1.addBox(-2F, 0F, -1F, 4, 4, 1);
+	      Pad1.addBox(-2F, 0F, -1.1F, 4, 4, 1); // changed -1F to -1.1F
 	      Pad1.setRotationPoint(0F, 15F, -6F);
 	      Pad1.setTextureSize(128, 64);
 	      Pad1.mirror = true;
