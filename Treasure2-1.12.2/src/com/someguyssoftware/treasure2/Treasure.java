@@ -3,15 +3,13 @@
  */
 package com.someguyssoftware.treasure2;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.someguyssoftware.gottschcore.annotation.Credits;
 import com.someguyssoftware.gottschcore.command.ShowVersionCommand;
 import com.someguyssoftware.gottschcore.config.IConfig;
+import com.someguyssoftware.gottschcore.config.ILoggerConfig;
 import com.someguyssoftware.gottschcore.mod.AbstractMod;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
@@ -23,10 +21,8 @@ import com.someguyssoftware.treasure2.client.model.StandardChestModel;
 import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.TreasureChestCommand;
-import com.someguyssoftware.treasure2.config.ChestConfig;
-import com.someguyssoftware.treasure2.config.IChestConfig;
+import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
@@ -49,7 +45,6 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import scala.actors.threadpool.Arrays;
 
 /**
  * @author Mark Gottschling onDec 22, 2017
@@ -74,11 +69,6 @@ public class Treasure extends AbstractMod {
 
 	private static final String VERSION_URL = "https://www.dropbox.com/s/6j3h91c69nd7g4f/treasure-versions2.json?dl=1";
 	private static final BuildVersion MINECRAFT_VERSION = new BuildVersion(1, 12, 2);
-	
-	private static final String TREASURE_CONFIG_DIR = "treasure2";
-	private static TreasureConfig config;
-	public static Map<Rarity, IChestConfig> defaultChestConfigs = new HashMap<>();
-	public static Map<Rarity, IChestConfig> chestConfigs = new HashMap<>();
 	
 	// latest version
 	private static BuildVersion latestVersion;
@@ -120,30 +110,21 @@ public class Treasure extends AbstractMod {
 		// register additional events
 		MinecraftForge.EVENT_BUS.register(new LogoutEventHandler(getInstance()));
 		
-		// initialize the default configs
-		initDefaultChestConfigs();
-		
 		// create and load the config files
-		config = new TreasureConfig(this, event.getModConfigurationDirectory(), TREASURE_CONFIG_DIR, "general.cfg");
-		chestConfigs.put(Rarity.COMMON, new ChestConfig(this, event.getModConfigurationDirectory(), TREASURE_CONFIG_DIR, "common-chest.cfg", defaultChestConfigs.get(Rarity.COMMON)));
-		chestConfigs.put(Rarity.UNCOMMON, new ChestConfig(this, event.getModConfigurationDirectory(), TREASURE_CONFIG_DIR, "uncommon-chest.cfg", defaultChestConfigs.get(Rarity.UNCOMMON)));
-		chestConfigs.put(Rarity.SCARCE, new ChestConfig(this, event.getModConfigurationDirectory(), TREASURE_CONFIG_DIR, "scarce-chest.cfg", defaultChestConfigs.get(Rarity.SCARCE)));
-		chestConfigs.put(Rarity.RARE, new ChestConfig(this, event.getModConfigurationDirectory(), TREASURE_CONFIG_DIR, "rare-chest.cfg", defaultChestConfigs.get(Rarity.RARE)));
-		chestConfigs.put(Rarity.EPIC, new ChestConfig(this, event.getModConfigurationDirectory(), TREASURE_CONFIG_DIR, "epic-chest.cfg", defaultChestConfigs.get(Rarity.EPIC)));
-
+		Configs.init(this, event.getModConfigurationDirectory());
 		
 		// configure logging
-		addRollingFileAppenderToLogger(Treasure.NAME, Treasure.NAME + "Appender", config);
+		addRollingFileAppenderToLogger(Treasure.NAME, Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
 		
 		// register the GUI handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		
 		// start the database
 		try {
-			DbManager.start(config);
+			DbManager.start((TreasureConfig)getConfig());
 		} catch (DatabaseInitializationException e) {
 			logger.error("Unable to start database manager:", e);
-			config.setModEnabled(false);
+			getConfig().setModEnabled(false);
 			// TODO set fail flag
 			// TODO create another PlayerLoggedIn Event that checks if the database failed initialization and inform player.
 		}
@@ -212,76 +193,14 @@ public class Treasure extends AbstractMod {
 		super.postInit(event);
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public void  initDefaultChestConfigs() {
-		
-		defaultChestConfigs.put(Rarity.COMMON, new ChestConfig()
-				.setChestAllowed(true)
-				.setAboveGroundAllowed(true)
-				.setBelowGroundAllowed(true)
-				.setChunksPerChest(75)
-				.setGenProbability(45)
-				.setMinYSpawn(50)
-				.setRawBiomeWhiteList(new String[] {""})
-				.setRawBiomeBlackList(new String[] {"plains", "ocean"})
-				);
-		
-		defaultChestConfigs.put(Rarity.UNCOMMON, new ChestConfig()
-				.setChestAllowed(true)
-				.setAboveGroundAllowed(true)
-				.setBelowGroundAllowed(true)
-				.setChunksPerChest(150)
-				.setGenProbability(45)
-				.setMinYSpawn(40)
-				.setRawBiomeWhiteList(new String[] {""})
-				.setRawBiomeBlackList(new String[] {"plains", "ocean"})
-				);
-		
-		defaultChestConfigs.put(Rarity.SCARCE, new ChestConfig()
-				.setChestAllowed(true)
-				.setAboveGroundAllowed(false)
-				.setBelowGroundAllowed(true)
-				.setChunksPerChest(300)
-				.setGenProbability(40)
-				.setMinYSpawn(30)
-				.setRawBiomeWhiteList(new String[] {""})
-				.setRawBiomeBlackList(new String[] {"ocean"})
-				);
-		
-		defaultChestConfigs.put(Rarity.RARE, new ChestConfig()
-				.setChestAllowed(true)
-				.setAboveGroundAllowed(false)
-				.setBelowGroundAllowed(true)
-				.setChunksPerChest(500)
-				.setGenProbability(25)
-				.setMinYSpawn(20)
-				.setRawBiomeWhiteList(new String[] {""})
-				.setRawBiomeBlackList(new String[] {"ocean"})
-				);
-		
-		defaultChestConfigs.put(Rarity.EPIC, new ChestConfig()
-				.setChestAllowed(true)
-				.setAboveGroundAllowed(false)
-				.setBelowGroundAllowed(true)
-				.setChunksPerChest(800)
-				.setGenProbability(15)
-				.setMinYSpawn(10)
-				.setRawBiomeWhiteList(new String[] {""})
-				.setRawBiomeBlackList(new String[] {"ocean"})
-				);
-	}
+
 	
 	/* (non-Javadoc)
 	 * @see com.someguyssoftware.gottschcore.mod.IMod#getConfig()
 	 */
 	@Override
 	public IConfig getConfig() {
-		// TODO Auto-generated method stub
-		return Treasure.config;
+		return Configs.modConfig;
 	}
 
 	/* (non-Javadoc)

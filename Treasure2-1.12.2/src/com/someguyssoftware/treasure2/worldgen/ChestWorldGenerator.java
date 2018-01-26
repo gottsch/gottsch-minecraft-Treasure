@@ -14,6 +14,7 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
+import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -131,7 +132,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
             // TODO filling the chest can come from an abstract method. for the most part it will always be the same
 	    	// determine what type to generate
         	Rarity rarity = Rarity.values()[random.nextInt(Rarity.values().length)];
-			IChestConfig chestConfig = Treasure.chestConfigs.get(rarity);
+			IChestConfig chestConfig = Configs.chestConfigs.get(rarity);
     		if (chunksSinceLastRarityChest.get(rarity) >= chestConfig.getChunksPerChest()) {
     			
 				// 1. test if chest meets the probability criteria
@@ -159,7 +160,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
     			i = 0;
     			
     			// generate the chest/pit/chambers
-    			isGenerated = generators.get(rarity).generate(world, random, coords, rarity, Treasure.chestConfigs.get(rarity)); 
+    			isGenerated = generators.get(rarity).generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
 
     			if (isGenerated) {
         			chunksSinceLastChest = 0;

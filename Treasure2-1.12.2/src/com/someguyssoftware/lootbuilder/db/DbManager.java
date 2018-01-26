@@ -57,7 +57,7 @@ public class DbManager {
 	private Dao<LootGroupHasItem, String> groupItemDao;
 	
 	/**
-	 * TODO this creates a physical db file on the file system. only need to construct if the db doesn't exist.
+	 *
 	 * Private constructor
 	 */
 	private DbManager(TreasureConfig config) throws ClassNotFoundException, SQLException {
