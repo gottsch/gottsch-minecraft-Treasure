@@ -7,6 +7,7 @@ import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
+import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.item.Item;
@@ -46,8 +47,8 @@ public class TreasureItems {
 		TREASURE_TAB = new ModItem().setItemName(Treasure.MODID, TreasureConfig.TREASURE_TAB_ID);
 		
 		// COINS
-		GOLD_COIN = new ModItem().setItemName(Treasure.MODID, TreasureConfig.GOLD_COIN_ID);
-		SILVER_COIN = new ModItem().setItemName(Treasure.MODID, TreasureConfig.SILVER_COIN_ID);
+		GOLD_COIN = new CoinItem(Treasure.MODID, TreasureConfig.GOLD_COIN_ID);
+		SILVER_COIN = new CoinItem(Treasure.MODID, TreasureConfig.SILVER_COIN_ID, Coins.SILVER);
 		
 		// KEYS
 		WOOD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.WOOD_KEY_ID)
@@ -124,6 +125,8 @@ public class TreasureItems {
 	
 			final Item[] items = {
 					TREASURE_TAB,
+					SILVER_COIN,
+					GOLD_COIN,
 					WOOD_LOCK,
 					STONE_LOCK,
 					IRON_LOCK,

@@ -21,14 +21,17 @@ public class MetallurgistsKey extends KeyItem {
 		super(modID, name);
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public boolean unlock(LockItem lockItem) {
-		boolean isLocked = super.unlock(lockItem);
+		boolean isUnlocked = super.unlock(lockItem);
 		
-		if (isLocked) {
-			if (lockItem.getCategory() == Category.METALS) isLocked = false;
+		if (!isUnlocked) {
+			if (lockItem.getCategory() == Category.METALS) isUnlocked = true;
 		}
 		
-		return isLocked;
+		return isUnlocked;
 	}
 }
