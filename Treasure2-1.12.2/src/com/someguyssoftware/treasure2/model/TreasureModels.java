@@ -20,8 +20,10 @@ public class TreasureModels {
 		// TAB
 		registerItemModel(TreasureItems.TREASURE_TAB);
 		// There isn't a block model json for chests so you won't be able to get the item from block.
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WOODEN_CHEST));
-		
+		// CHESTS
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WOOD_CHEST));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.IRONBOUND_CHEST));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.PIRATE_CHEST));
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);
 		registerItemModel(TreasureItems.SILVER_COIN);
@@ -40,7 +42,6 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.DIAMOND_KEY);	
 		registerItemModel(TreasureItems.EMERALD_KEY);
 		registerItemModel(TreasureItems.METALLURGISTS_KEY);
-
 	}
 	
 	/**

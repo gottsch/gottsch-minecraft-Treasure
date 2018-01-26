@@ -57,10 +57,25 @@ sourceSets.main{
 
 def gottschcore_path="../../gottsch-minecraft-GottschCore/GottschCore${mc_version}/build/libs/GottschCore-mc${mc_version}-f${forge_version}-v${gottschcore_version}.jar"
 dependencies {
-	compile files(gottschcore_path)
+    compile files('../../ModCommonLibs/libs/h2-1.4.187.jar')
+    compile files('../../ModCommonLibs/libs/ormlite-core-5.0.jar')
+    compile files('../../ModCommonLibs/libs/ormlite-jdbc-5.0.jar')
+	compile files(gottschcore_path)	
 }
 
-
+jar {
+	// for PROD only
+	from (zipTree('../../ModCommonLibs/libs/h2-1.4.187.jar')) {
+		exclude 'META-INF/**'
+	}
+	from (zipTree('../../ModCommonLibs/libs/ormlite-core-5.0.jar')) {
+		exclude 'META-INF/**'
+	}
+	from (zipTree('../../ModCommonLibs/libs/ormlite-jdbc-5.0.jar')) {
+		exclude 'META-INF/**'
+	}
+}
+	
 processResources
 {
     // this will ensure that this task is redone when the versions change.
@@ -78,6 +93,11 @@ processResources
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+        include '**/*.sql'
+    }
+    
+    from(sourceSets.main.java.srcDirs) {
+        include '**/*.sql'
     }
 }
 

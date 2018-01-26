@@ -3,15 +3,22 @@
  */
 package com.someguyssoftware.treasure2.block;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.tileentity.TestChestTileEntity;
+import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -29,13 +36,13 @@ import net.minecraftforge.registries.IForgeRegistry;
  *
  */
 public class TreasureBlocks {
-	// TODO register chest blocks
-	public static final Block TEST_CHEST = new TestChest().setRegistryName(
-			Treasure.MODID, "testChest").
-			setUnlocalizedName("testChest");
 	
 	// CHESTS
-	public static final Block WOODEN_CHEST;
+	public static final Block WOOD_CHEST;
+	public static final Block IRONBOUND_CHEST;
+	public static final Block PIRATE_CHEST;
+	// chest holder
+	public static Multimap<Rarity, Block> chests;
 	
 	// initialize chests
 	static {
@@ -45,14 +52,37 @@ public class TreasureBlocks {
 		bounds[1] = vanilla;
 		bounds[2] = vanilla;
 		bounds[3] = vanilla;
+
+		WOOD_CHEST = new TreasureChestBlock(
+				Treasure.MODID, 
+				TreasureConfig.WOOD_CHEST_ID, 
+				WoodChestTileEntity.class,
+				TreasureChestTypes.STANDARD)
+				.setBounds(bounds)
+				.setHardness(2.5F);
+
+		IRONBOUND_CHEST = new TreasureChestBlock(
+				Treasure.MODID, 
+				TreasureConfig.IRONBOUND_CHEST_ID, 
+				IronboundChestTileEntity.class,
+				TreasureChestTypes.STANDARD)
+				.setBounds(bounds)
+				.setHardness(3.0F);
+
+		PIRATE_CHEST = new TreasureChestBlock(
+				Treasure.MODID,
+				TreasureConfig.PIRATE_CHEST_ID,
+				PirateChestTileEntity.class,
+				TreasureChestTypes.STANDARD)
+				.setBounds(bounds)
+				.setHardness(3.0F);
+
+		// map the chests by rarity
+		chests = ArrayListMultimap.create();
+		chests.put(Rarity.COMMON, WOOD_CHEST);
+		chests.put(Rarity.UNCOMMON, IRONBOUND_CHEST);
+		chests.put(Rarity.SCARCE, PIRATE_CHEST);
 		
-	WOODEN_CHEST = new TreasureChestBlock(
-			Treasure.MODID, 
-			TreasureConfig.WOODEN_CHEST_ID, 
-			TreasureChestTileEntity.class,
-			TreasureChestTypes.STANDARD)
-			.setBounds(bounds)
-			.setHardness(2.5F);
 	}
 			
 	
@@ -75,8 +105,9 @@ public class TreasureBlocks {
 			final IForgeRegistry<Block> registry = event.getRegistry();
 
 			final Block[] blocks = {
-					WOODEN_CHEST,
-//					TEST_CHEST
+					WOOD_CHEST,
+					IRONBOUND_CHEST,
+					PIRATE_CHEST
 			};
 			registry.registerAll(blocks);			
 		}
@@ -91,8 +122,9 @@ public class TreasureBlocks {
 			final IForgeRegistry<Item> registry = event.getRegistry();
 			
 			final ItemBlock[] items = {
-					new ItemBlock(WOODEN_CHEST),
-					new ItemBlock(TEST_CHEST)
+					new ItemBlock(WOOD_CHEST),
+					new ItemBlock(IRONBOUND_CHEST),
+					new ItemBlock(PIRATE_CHEST)
 			};
 			
 			for (final ItemBlock item : items) {
@@ -103,8 +135,10 @@ public class TreasureBlocks {
 			}
 			
 			// register the tile entities
-			GameRegistry.registerTileEntity(TestChestTileEntity.class, "testChest");
 			GameRegistry.registerTileEntity(TreasureChestTileEntity.class, "treasureChestTileEntity");
+			GameRegistry.registerTileEntity(WoodChestTileEntity.class, TreasureConfig.WOOD_CHEST_TE_ID);
+			GameRegistry.registerTileEntity(IronboundChestTileEntity.class, TreasureConfig.IRONBOUND_CHEST_TE_ID);
+			GameRegistry.registerTileEntity(PirateChestTileEntity.class, TreasureConfig.PIRATE_CHEST_TE_ID);
 		}	
 	}
 }

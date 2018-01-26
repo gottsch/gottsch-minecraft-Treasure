@@ -1,4 +1,10 @@
-
+#items
+item.treasure2:wood_key.name=Wood Key
+item.treasure2:stone_key.name=Stone Key
+item.treasure2:iron_key.name=Iron Key
+item.treasure2:gold_key.name=Gold Key
+item.treasure2:diamond_key.name=Diamond Key
+item.treasure2:emerald_key.name=Emerald Key
 
 
 #groups

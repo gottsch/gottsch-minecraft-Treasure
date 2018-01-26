@@ -3,10 +3,6 @@
  */
 package com.someguyssoftware.treasure2.item;
 
-import java.util.Locale;
-
-import com.someguyssoftware.treasure2.block.OldTreasureChestType;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -38,6 +34,7 @@ public class TreasureChestItem extends ItemBlock {
     @Override
     public String getUnlocalizedName(ItemStack itemstack) {
     	// TODO using metadata here means that there can only be 16 max unique chest types.
-        return "tile.treasure.chest." + OldTreasureChestType.VALUES[itemstack.getMetadata()].name().toLowerCase(Locale.US);
+//        return "tile.treasure.chest." + OldTreasureChestType.VALUES[itemstack.getMetadata()].name().toLowerCase(Locale.US);
+    	return null;
     }
 }

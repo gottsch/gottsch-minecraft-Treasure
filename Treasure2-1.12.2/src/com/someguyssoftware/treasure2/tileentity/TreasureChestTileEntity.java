@@ -53,7 +53,7 @@ public class TreasureChestTileEntity extends AbstractModTileEntity implements /*
 	 * The IInventory proxy
 	 */
 	private InventoryProxy inventoryProxy;
-
+	
 	/*
 	 * Vanilla properties for controlling the lid
 	 */
@@ -76,8 +76,6 @@ public class TreasureChestTileEntity extends AbstractModTileEntity implements /*
 	 * 
 	 */
 	public TreasureChestTileEntity() {		
-		// default to standard chest number of locks
-//		lockStates = new ArrayList<>(TreasureChestTypes.STANDARD.getMaxLocks());
 		// create the proxy with this tile entity as a reference back
 		setInventoryProxy(new InventoryProxy(this));
 	}
@@ -269,13 +267,13 @@ public class TreasureChestTileEntity extends AbstractModTileEntity implements /*
 		try {
 			// read the lockstates
 			if (parentNBT.hasKey("lockStates")) {
-				Treasure.logger.debug("Has lockStates");
+//				Treasure.logger.debug("Has lockStates");
 				if (this.getLockStates() != null) {
-					Treasure.logger.debug("size of internal lockstates:" + this.getLockStates().size());
+//					Treasure.logger.debug("size of internal lockstates:" + this.getLockStates().size());
 				}
 				else {
 					this.setLockStates(new LinkedList<LockState>());
-					Treasure.logger.debug("created lockstates:" + this.getLockStates().size());
+//					Treasure.logger.debug("created lockstates:" + this.getLockStates().size());
 				}
 
 				List<LockState> states = new LinkedList<LockState>();
@@ -424,7 +422,7 @@ public class TreasureChestTileEntity extends AbstractModTileEntity implements /*
 	*/
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-		Treasure.logger.debug("ShouldRefresh:" + (oldState.getBlock() != newState.getBlock()));
+//		Treasure.logger.debug("ShouldRefresh:" + (oldState.getBlock() != newState.getBlock()));
 		return oldState.getBlock() != newState.getBlock();
 
 	}
@@ -437,7 +435,7 @@ public class TreasureChestTileEntity extends AbstractModTileEntity implements /*
 		Treasure.logger.debug("Is  TE.lockStates empty? " + getLockStates().isEmpty());
 		if (!getLockStates().isEmpty()) {
 			for (LockState state : getLockStates()) {
-				Treasure.logger.debug("lock state: " + state);
+//				Treasure.logger.debug("lock state: " + state);
 			}
 		}
 //		Treasure.logger.debug("Updating pos: " + pos);
@@ -702,6 +700,5 @@ public class TreasureChestTileEntity extends AbstractModTileEntity implements /*
 	public void setInventoryProxy(InventoryProxy inventoryProxy) {
 		this.inventoryProxy = inventoryProxy;
 	}
-
 	
 }

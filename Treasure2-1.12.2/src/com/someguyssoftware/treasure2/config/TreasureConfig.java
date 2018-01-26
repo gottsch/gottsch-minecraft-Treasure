@@ -7,6 +7,7 @@ import java.io.File;
 
 import com.someguyssoftware.gottschcore.config.AbstractConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraftforge.common.config.Configuration;
 
@@ -23,7 +24,9 @@ public class TreasureConfig extends AbstractConfig {
 	// tab
 	public static final String TREASURE_TAB_ID = "treasure_tab";
 	// chests
-	public static final String WOODEN_CHEST_ID = "wooden_chest";
+	public static final String WOOD_CHEST_ID = "wood_chest";
+	public static final String IRONBOUND_CHEST_ID = "ironbound_chest";
+	
 	// locks
 	public static final String WOOD_LOCK_ID = "wood_lock";
 	public static final String STONE_LOCK_ID = "stone_lock";
@@ -43,8 +46,36 @@ public class TreasureConfig extends AbstractConfig {
 	
 	public static final String GOLD_COIN_ID = "gold_coin";
 	public static final String SILVER_COIN_ID = "silver_coin";
-	public static boolean enableKeyBreaks = true;
+	public static final String PIRATE_CHEST_ID = "pirate_chest";
+	
+	// TEs
+	public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity";
+	public static final String IRONBOUND_CHEST_TE_ID = "ironbound_chest_tile_entity";
+	public static final String PIRATE_CHEST_TE_ID = "pirate_chest_tile_entity";
 
+	public static boolean enableKeyBreaks = true;	
+	public static String treasureFolder;
+
+	/*
+	 *  world gen
+	 */
+	public static int minDistancePerChest;
+	public static int minChunksPerChest;
+	
+	// graves/markers properties
+	public static boolean isGravestonesAllowed;
+	public static int minGravestonesPerChest;
+	public static int maxGravestonesPerChest;
+	
+	// TODO add wells properties
+	
+	// TODO add wandering antiquities peddler properties
+	
+	// TODO add treasure/unique items properties
+	
+	// biome type white/black lists
+	public static String[] generalChestBiomeWhiteList;
+	public static String[] generalChestBiomeBlackList;
 
 	
 	/**
@@ -66,8 +97,18 @@ public class TreasureConfig extends AbstractConfig {
 		Configuration config = super.load(file);
 		
 		// add mod specific settings here
-        config.setCategoryComment("03-treasure", "General Treasure! mod properties.");   
-        enableKeyBreaks = config.getBoolean("enableKeyBreaks", "03-treasure", true, "Enables/Disable whether a Key can break when attempting to unlock a Lock.");
+        treasureFolder = config.getString("treasureFolder", "03-mod", "mods/" + Treasure.MODID + "/", "Where default Treasure folder is located.");
+        enableKeyBreaks = config.getBoolean("enableKeyBreaks", "03-mod", true, "Enables/Disable whether a Key can break when attempting to unlock a Lock.");
+
+        // white/black lists
+        config.setCategoryComment("04-gen", "World generation properties.");    
+        generalChestBiomeWhiteList = config.getStringList("generalChestBiomeWhiteList", "04-gen", new String[]{}, "Allowable Biome Types for general Chest generation. Must match the Type identifer(s).");
+        generalChestBiomeBlackList = config.getStringList("generalChestBiomeBlackList", "04-gen", new String[]{"ocean"}, "Disallowable Biome Types for general Chest generation. Must match the Type identifer(s).");
+        
+        isGravestonesAllowed = config.getBoolean("isGravestonesAllowed", "04-gen", true, "");
+        minGravestonesPerChest = config.getInt("minGravestonesPerChest", "04-gen", 2, 1, 3, "The minimun of Treasure chest markers (gravestones,bones).");
+        maxGravestonesPerChest = config.getInt("maxGravesstonesPerChest", "04-gen", 4, 1, 6, "The maximum of Treasure chest markers (gravestones,bones).");
+ 
         
         // the the default values
        if(config.hasChanged()) {

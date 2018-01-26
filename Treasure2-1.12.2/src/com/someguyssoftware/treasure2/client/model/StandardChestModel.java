@@ -111,13 +111,13 @@ public class StandardChestModel extends ModelBase implements ITreasureChestModel
 		// always render the main latch
 		Latch1.render(0.0625F);
 		for (LockState state : te.getLockStates()) {
-			if (state.getSlot() != null) {
+			if (state.getLock() != null) {
 				switch(state.getSlot().getIndex()) {
 					case 1:
-						Latch2.render(0.0625F);
+						Latch3.render(0.0625F);
 						break;
 					case 2:				
-						Latch3.render(0.0625F);
+						Latch2.render(0.0625F);
 						break;
 				}
 			}

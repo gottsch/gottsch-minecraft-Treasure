@@ -5,13 +5,13 @@ package com.someguyssoftware.treasure2.tileentity;
  * @author Mark Gottschling on Jan 19, 2018
  *
  */
-public class WoodChestTileEntity extends TreasureChestTileEntity {
+public class IronboundChestTileEntity extends TreasureChestTileEntity {
 	
 	/**
 	 * 
 	 * @param texture
 	 */
-	public WoodChestTileEntity() {
+	public IronboundChestTileEntity() {
 		super();
 	}
 }

@@ -248,7 +248,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		boolean shouldUpdate = false;
 		TreasureChestTileEntity tcte = null;
 
-		// face the teleport ladder towards the palyer (there isn't really a front)
+		// face the block towards the palyer (there isn't really a front)
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 3);
 
         
@@ -319,13 +319,17 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		if (worldIn.isRemote) {			
 			return true;
 		}
-
+		
+		boolean isLocked = false;
+		// determine if chest is locked
+		if (te.hasLocks()) {
+			isLocked = true;
+		}
+		
 		try {
-			boolean isLocked = false;
 			// get the item held in player's hand
 			ItemStack heldItem = playerIn.getHeldItem(hand);	
-			if (te.hasLocks()) {
-				isLocked = true;
+			if (isLocked) {
 				// if the player is holding a key
 				if (heldItem != null && heldItem.getItem() instanceof KeyItem) {
 					KeyItem key = (KeyItem) heldItem.getItem();
@@ -341,11 +345,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 								//								worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.click", 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
 								worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 								// update the client
-								//---------------
-								// THESE DONT WORK!
-								//								worldIn.setBlockState(pos, state, 3);
-								te.sendUpdates();		
-								//----------------
+								te.sendUpdates();
 								// spawn the lock
 								InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(lock));
 								// don't break the key
@@ -380,6 +380,12 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 						// TODO for future: set the owner of the chest to the player. when unlocking locks, keys no longer break.
 					}
 				}
+				else if (heldItem != null && heldItem.getItem() instanceof LockItem) {
+					// handle the lock
+					// NOTE don't use the return boolean as the locked flag here, as the chest is already locked and if the method was
+					// unsuccessful it could state the chest is unlocked.
+					handleHeldLock(te, playerIn, heldItem);
+				}
 				else {
 					// Display message and do nothing
 					StringBuilder builder = new StringBuilder();
@@ -390,7 +396,15 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 					//			       return false;
 				}
 			}
-
+			// not locked
+			else {
+				// if the player is holding a lock
+				if (heldItem != null && heldItem.getItem() instanceof LockItem) {
+					// handle the lock
+					isLocked = handleHeldLock(te, playerIn, heldItem);
+				}
+			}
+			
 			// open the chest
 			if (!isLocked) {
 				playerIn.openGui(Treasure.instance, GuiHandler.TREASURE_CHEST_GUIID, worldIn, pos.getX(), pos.getY(),	pos.getZ());
@@ -400,6 +414,33 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 			Treasure.logger.error("gui error: ", e);
 		}
 		return true;
+	}
+
+	/**
+	 * 
+	 * @param te
+	 * @param player
+	 * @param heldItem
+	 */
+	private boolean handleHeldLock(TreasureChestTileEntity te, EntityPlayer player, ItemStack heldItem) {
+		boolean isLocked = false;
+		LockItem lock = (LockItem) heldItem.getItem();		
+		// add the lock to the first lockstate that has an available slot
+		for(LockState lockState : te.getLockStates()) {
+			if (lockState != null && lockState.getLock() == null) {
+				lockState.setLock(lock);
+				te.sendUpdates();
+				// decrement item in hand
+				heldItem.shrink(1);
+				if (heldItem.getCount() <=0) {
+					IInventory inventory = player.inventory;
+					inventory.setInventorySlotContents(player.inventory.currentItem, null);
+				}
+				isLocked = true;
+				break;
+			}
+		}
+		return isLocked;
 	}
 
 	/**
