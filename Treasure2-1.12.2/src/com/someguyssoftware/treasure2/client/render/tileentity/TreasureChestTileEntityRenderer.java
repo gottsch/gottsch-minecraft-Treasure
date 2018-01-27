@@ -5,16 +5,13 @@ package com.someguyssoftware.treasure2.client.render.tileentity;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.model.ITreasureChestModel;
-import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.TestChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
