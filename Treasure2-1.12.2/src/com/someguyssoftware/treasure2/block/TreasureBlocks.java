@@ -3,9 +3,7 @@
  */
 package com.someguyssoftware.treasure2.block;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
@@ -21,6 +19,7 @@ import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
@@ -41,8 +40,12 @@ public class TreasureBlocks {
 	public static final Block WOOD_CHEST;
 	public static final Block IRONBOUND_CHEST;
 	public static final Block PIRATE_CHEST;
+	
 	// chest holder
 	public static Multimap<Rarity, Block> chests;
+	
+	// GRAVESTONES
+	public static final Block GRAVESTONE1;
 	
 	// initialize chests
 	static {
@@ -83,6 +86,11 @@ public class TreasureBlocks {
 		chests.put(Rarity.UNCOMMON, IRONBOUND_CHEST);
 		chests.put(Rarity.SCARCE, PIRATE_CHEST);
 		
+		// Gravestones
+		GRAVESTONE1 = (Gravestone) new Gravestone(
+				Treasure.MODID,
+				TreasureConfig.GRAVESTONE1_ID, 
+				Material.ROCK);
 	}
 			
 	
@@ -107,7 +115,8 @@ public class TreasureBlocks {
 			final Block[] blocks = {
 					WOOD_CHEST,
 					IRONBOUND_CHEST,
-					PIRATE_CHEST
+					PIRATE_CHEST,
+					GRAVESTONE1,
 			};
 			registry.registerAll(blocks);			
 		}
@@ -122,9 +131,11 @@ public class TreasureBlocks {
 			final IForgeRegistry<Item> registry = event.getRegistry();
 			
 			final ItemBlock[] items = {
+					// TODO update with ChestItemBlock so we can use addInformation() for display and mouse over  purposes.
 					new ItemBlock(WOOD_CHEST),
 					new ItemBlock(IRONBOUND_CHEST),
-					new ItemBlock(PIRATE_CHEST)
+					new ItemBlock(PIRATE_CHEST),
+					new ItemBlock(GRAVESTONE1)
 			};
 			
 			for (final ItemBlock item : items) {
@@ -134,6 +145,10 @@ public class TreasureBlocks {
 				ITEM_BLOCKS.add(item);
 			}
 			
+			// TODO for gravestone and anything with variants, probably need to use this method instead of the the register model method
+//	        ModelLoader.setCustomModelResourceLocation(chestItem, type.ordinal(),
+//	        		new ModelResourceLocation(chestItem.getRegistryName(), "variant=" + type.getName()));
+	        
 			// register the tile entities
 			GameRegistry.registerTileEntity(TreasureChestTileEntity.class, "treasureChestTileEntity");
 			GameRegistry.registerTileEntity(WoodChestTileEntity.class, TreasureConfig.WOOD_CHEST_TE_ID);

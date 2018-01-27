@@ -31,6 +31,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.someguyssoftware.gottschcore.block.ModBlock;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.Gravestone.EnumEngraving;
+import com.someguyssoftware.treasure2.block.Gravestone.EnumTexture;
 
 
 /**
@@ -42,8 +44,8 @@ public class Gravestone extends ModBlock {
 
 	// meta/state properties
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	public static final PropertyEnum TEXTURE = PropertyEnum.create("texture", EnumTexture.class);
-	public static final PropertyEnum ENGRAVING = PropertyEnum.create("engraving", EnumEngraving.class);
+	public static final PropertyEnum<EnumTexture> TEXTURE = PropertyEnum.create("texture", EnumTexture.class);
+	public static final PropertyEnum<EnumEngraving> ENGRAVING = PropertyEnum.create("engraving", EnumEngraving.class);
 	
 	// block class level properties	
 	public String texture1;
@@ -70,10 +72,10 @@ public class Gravestone extends ModBlock {
 		super(modID, name, Material.ROCK);
 		setHardness(5.0F);
 		setHarvestLevel("pickaxe", 1);
-//		this.setDefaultState(this.blockState.getBaseState()
-//				.withProperty(FACING, EnumFacing.NORTH)
-//				.withProperty(TEXTURE, EnumTexture.TEXTURE1)
-//				.withProperty(ENGRAVING, EnumEngraving.ENGRAVING1));
+		this.setDefaultState(this.blockState.getBaseState()
+				.withProperty(FACING, EnumFacing.NORTH)
+				.withProperty(TEXTURE, EnumTexture.TEXTURE1)
+				.withProperty(ENGRAVING, EnumEngraving.ENGRAVING1));
 		
 		setCreativeTab(Treasure.TREASURE_TAB);
 	}

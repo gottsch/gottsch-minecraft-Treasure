@@ -9,6 +9,7 @@ import com.someguyssoftware.gottschcore.config.AbstractConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 
+import net.minecraft.block.material.MapColor;
 import net.minecraftforge.common.config.Configuration;
 
 /**
@@ -48,10 +49,14 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String SILVER_COIN_ID = "silver_coin";
 	public static final String PIRATE_CHEST_ID = "pirate_chest";
 	
+	// GRAVESTONES
+	public static final String GRAVESTONE1_ID = "gravestone1";
+	
 	// TEs
 	public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity";
 	public static final String IRONBOUND_CHEST_TE_ID = "ironbound_chest_tile_entity";
 	public static final String PIRATE_CHEST_TE_ID = "pirate_chest_tile_entity";
+
 
 	public static boolean enableKeyBreaks = true;	
 	public static String treasureFolder;

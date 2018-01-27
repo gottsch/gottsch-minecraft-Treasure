@@ -1,0 +1,24 @@
+{
+    "variants": {
+        "normal": { "model": "sgs_treasure:gravestone1_t1_e1" },
+        "engraving=engraving1,facing=north,texture=texture1": { "model": "sgs_treasure:gravestone1_t1_e1" },
+        "engraving=engraving1,facing=south,texture=texture1": { "model": "sgs_treasure:gravestone1_t1_e1", "y": 180 },
+        "engraving=engraving1,facing=west,texture=texture1":  { "model": "sgs_treasure:gravestone1_t1_e1", "y": 270 },
+        "engraving=engraving1,facing=east,texture=texture1":  { "model": "sgs_treasure:gravestone1_t1_e1", "y": 90 },
+        
+        "engraving=engraving1,facing=north,texture=texture2": { "model": "sgs_treasure:gravestone1_t2_e1" },
+        "engraving=engraving1,facing=south,texture=texture2": { "model": "sgs_treasure:gravestone1_t2_e1", "y": 180 },
+        "engraving=engraving1,facing=west,texture=texture2":  { "model": "sgs_treasure:gravestone1_t2_e1", "y": 270 },
+        "engraving=engraving1,facing=east,texture=texture2":  { "model": "sgs_treasure:gravestone1_t2_e1", "y": 90 },
+        
+        "engraving=engraving2,facing=north,texture=texture1": { "model": "sgs_treasure:gravestone1_t1_e2" },
+        "engraving=engraving2,facing=south,texture=texture1": { "model": "sgs_treasure:gravestone1_t1_e2", "y": 180 },
+        "engraving=engraving2,facing=west,texture=texture1":  { "model": "sgs_treasure:gravestone1_t1_e2", "y": 270 },
+        "engraving=engraving2,facing=east,texture=texture1":  { "model": "sgs_treasure:gravestone1_t1_e2", "y": 90 },
+        
+        "engraving=engraving2,facing=north,texture=texture2": { "model": "sgs_treasure:gravestone1_t2_e2" },
+        "engraving=engraving2,facing=south,texture=texture2": { "model": "sgs_treasure:gravestone1_t2_e2", "y": 180 },
+        "engraving=engraving2,facing=west,texture=texture2":  { "model": "sgs_treasure:gravestone1_t2_e2", "y": 270 },
+        "engraving=engraving2,facing=east,texture=texture2":  { "model": "sgs_treasure:gravestone1_t2_e2", "y": 90 }
+    }
+}
