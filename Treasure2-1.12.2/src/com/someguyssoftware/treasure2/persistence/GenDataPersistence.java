@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
@@ -45,16 +46,19 @@ public class GenDataPersistence extends WorldSavedData {
 	public void readFromNBT(NBTTagCompound tag) {
 		Treasure.logger.debug("Loading Treasure! saved gen data...");
 
+		// get the chest generator
+		ChestWorldGenerator chestGen = (ChestWorldGenerator) Treasure.worldGenerators.get("chest");
+		
 		// treasure
 		NBTTagCompound treasureGen = tag.getCompoundTag("treasureGenerator");
-		Treasure.treasureWorldGen.setChunksSinceLastChest(treasureGen.getInteger("chunksSinceLastChest"));
+		chestGen.setChunksSinceLastChest(treasureGen.getInteger("chunksSinceLastChest"));
 		// load all the chunks since last rarity chest properites
 		NBTTagList chunksSinceTagList = tag.getTagList("chunksSinceLastRarityChest", 10);
 		for (int i = 0; i < chunksSinceTagList.tagCount(); i++) {
 			NBTTagCompound chunkTag = chunksSinceTagList.getCompoundTagAt(i);
 			int count = chunkTag.getInteger("count");
 			String key = chunkTag.getString("key");
-			Treasure.treasureWorldGen.getChunksSinceLastRarityChest().put(Rarity.valueOf(key), count);
+			chestGen.getChunksSinceLastRarityChest().put(Rarity.valueOf(key), count);
 		}
 		
 //		NBTTagList registryTagList = tag.getTagList("registry", 10);
@@ -119,13 +123,14 @@ public class GenDataPersistence extends WorldSavedData {
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 
 		try {
-			// dungeon generator
+			// get the chest world generator
+			ChestWorldGenerator chestGen = (ChestWorldGenerator) Treasure.worldGenerators.get("chest");
 			NBTTagCompound treasureGen = new NBTTagCompound();
-			treasureGen.setInteger("chunksSinceLastChest", Treasure.treasureWorldGen.getChunksSinceLastChest());
+			treasureGen.setInteger("chunksSinceLastChest", chestGen.getChunksSinceLastChest());
 			tag.setTag("treasureGenerator", treasureGen);
 			
 			NBTTagList chunksSinceTagList = new NBTTagList();
-			for (Entry<Rarity, Integer> since : Treasure.treasureWorldGen.getChunksSinceLastRarityChest().entrySet()) {
+			for (Entry<Rarity, Integer> since : chestGen.getChunksSinceLastRarityChest().entrySet()) {
 				NBTTagCompound entry = new NBTTagCompound();
 				NBTTagString key = new NBTTagString(since.getKey().name());
 				NBTTagInt count = new NBTTagInt(since.getValue());
