@@ -3,6 +3,9 @@
  */
 package com.someguyssoftware.treasure2;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,6 +38,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -43,10 +47,15 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
+ * IDEA - Wither Chest - 2x high chest with tree texture, stump branches and roots. double door opening, with 90 degree
+ * doors, like a cabinet.
+ * IDEA - Wither Dirt - around wither tree, tinted black (see dirt, swamp on how color tinting works).
+ * IDEA - either have smoke streams rising from wither dirt or have fog blocks.
  * @author Mark Gottschling onDec 22, 2017
  *
  */
@@ -91,7 +100,7 @@ public class Treasure extends AbstractMod {
 	};
     
 	// forge world generators
-    public static ChestWorldGenerator treasureWorldGen;
+    public static Map<String, IWorldGenerator> worldGenerators = new HashMap<>();
     
 	/**
 	 * 
@@ -180,6 +189,10 @@ public class Treasure extends AbstractMod {
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				PirateChestTileEntity.class,
 				new TreasureChestTileEntityRenderer("pirate-chest", new StandardChestModel()));
+		
+		// register world generators
+		worldGenerators.put("chest", new ChestWorldGenerator());
+		GameRegistry.registerWorldGenerator(worldGenerators.get("chest"), 0);
 	}
 	
 	/**

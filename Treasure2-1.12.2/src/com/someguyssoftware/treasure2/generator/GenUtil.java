@@ -11,6 +11,7 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
@@ -188,36 +189,10 @@ public class GenUtil {
 				Treasure.logger.debug("Marker not placed because block underneath is a chest or a block container.");
 				continue;
 			}
-			
-			// place a random grave/bones block
-			int markerIndex = random.nextInt(8);
+
 			Block marker = null;
-			switch (markerIndex) {
-//			case 0:
-//				marker = TreasureBlocks.skullBones;
-//				break;
-//			case 1:
-//				marker = TreasureBlocks.gravestone1;
-//				break;
-//			case 2:
-//				marker = TreasureBlocks.gravestone1b;
-//				break;
-//			case 3:
-//				marker = TreasureBlocks.gravestone2;
-//				break;
-//			case 4:
-//				marker = TreasureBlocks.gravestone3;
-//				break;
-//			case 5:
-//				marker = TreasureBlocks.gravestone4;
-//				break;
-//			case 6:
-//				marker = TreasureBlocks.gravestone5;
-//				break;
-			default:
-//				marker = TreasureBlocks.skeleton;
-				isSkeleton = true;
-			}
+			// grab a random marker
+			marker = TreasureBlocks.gravestones.get(random.nextInt(TreasureBlocks.gravestones.size()));
 			
 			// select a random facing direction
 			EnumFacing[] horizontals = EnumFacing.HORIZONTALS;

@@ -6,6 +6,7 @@ import com.someguyssoftware.treasure2.item.TreasureItems;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Mod;
@@ -24,6 +25,23 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WOOD_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.IRONBOUND_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.PIRATE_CHEST));
+		
+		// GRAVESONES
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_STONE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_COBBLESTONE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_MOSSY_COBBLESTONE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_POLISHED_GRANITE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_POLISHED_ANDESITE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_POLISHED_DIORITE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_OBSIDIAN));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE2_STONE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE2_COBBLESTONE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE2_MOSSY_COBBLESTONE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE2_POLISHED_GRANITE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE2_POLISHED_ANDESITE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE2_POLISHED_DIORITE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE2_OBSIDIAN));
+		
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);
 		registerItemModel(TreasureItems.SILVER_COIN);
@@ -42,6 +60,14 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.DIAMOND_KEY);	
 		registerItemModel(TreasureItems.EMERALD_KEY);
 		registerItemModel(TreasureItems.METALLURGISTS_KEY);
+		
+//		// variants
+//		Item gravestoneItem = Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1);
+//		ModelResourceLocation itemModelResourceLocation = 
+//				   new ModelResourceLocation("treasure2:gravestone1_t1_e1", "inventory");
+//		ModelLoader.setCustomModelResourceLocation(gravestoneItem,  0, itemModelResourceLocation);
+
+	
 	}
 	
 	/**

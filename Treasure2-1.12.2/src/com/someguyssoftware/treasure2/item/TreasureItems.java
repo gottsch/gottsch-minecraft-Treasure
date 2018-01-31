@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2.item;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Coins;
@@ -42,6 +43,18 @@ public class TreasureItems {
 	public static KeyItem EMERALD_KEY;
 	public static KeyItem METALLURGISTS_KEY;
 	
+	public static KeyItem WITHER_KEY;
+	public static KeyItem RUBY_KEY;
+	public static KeyItem BONE_KEY;
+	public static KeyItem SKELETON_KEY;
+	public static KeyItem DRAGON_KEY;
+	public static KeyItem MASTER_KEY;
+	
+	// other
+	public static KeyItem PILFERERS_LOCK_PICK;
+	public static KeyItem THIEFS_LOCK_PICK;
+	
+	
 	static {
 		// TAB
 		TREASURE_TAB = new ModItem().setItemName(Treasure.MODID, TreasureConfig.TREASURE_TAB_ID);
@@ -54,40 +67,54 @@ public class TreasureItems {
 		WOOD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.WOOD_KEY_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON)
-				.setCraftable(true);
+				.setCraftable(true)
+				.setUses(10);
 
 		STONE_KEY = new KeyItem(Treasure.MODID, TreasureConfig.STONE_KEY_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON)
-				.setCraftable(true);
+				.setCraftable(true)
+				.setUses(10);
 
 		IRON_KEY = new KeyItem(Treasure.MODID, TreasureConfig.IRON_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.UNCOMMON)
-				.setCraftable(true);
+				.setCraftable(true)
+				.setUses(10);
 		
 		GOLD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.GOLD_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.SCARCE)
-				.setCraftable(true);
+				.setCraftable(true)
+				.setUses(15);
 
 		DIAMOND_KEY = new KeyItem(Treasure.MODID, TreasureConfig.DIAMOND_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
-				.setCraftable(false);
+				.setCraftable(false)
+				.setUses(20);
 
 		EMERALD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.EMERALD_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
-				.setCraftable(false);
+				.setCraftable(false)
+				.setUses(20);
 		
 		METALLURGISTS_KEY = new KeyItem(Treasure.MODID, TreasureConfig.METALLURGISTS_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
-				.setCraftable(false);
+				.setCraftable(false)
+				.setUses(25);
+		
+		WITHER_KEY = new KeyItem(Treasure.MODID, TreasureConfig.WITHER_KEY_ID)
+				.setCategory(Category.WITHER)
+				.setRarity(Rarity.RARE)
+				.setBreakable(false)
+				.setCraftable(true)
+				.setUses(5);
 		
 		// LOCKS
 		WOOD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.WOOD_LOCK_ID, new KeyItem[] {WOOD_KEY})

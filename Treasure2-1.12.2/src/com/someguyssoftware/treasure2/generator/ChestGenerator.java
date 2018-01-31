@@ -3,14 +3,12 @@
  */
 package com.someguyssoftware.treasure2.generator;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
-import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.lootbuilder.db.DbManager;
 import com.someguyssoftware.lootbuilder.inventory.InventoryPopulator;
@@ -133,7 +131,7 @@ public class ChestGenerator {
 			pop.populate(((TreasureChestTileEntity)te).getInventoryProxy(), container);
 
 			// place markers (above chest or shaft)
-//			GenUtil.placeMarkers(world, random, markerCoords.toBlockPos());
+			GenUtil.placeMarkers(world, random, markerCoords.toPos());
 						
 			Treasure.logger.info("CHEATER! {} chest at coords: {}", rarity, chestCoords.toShortString());
 			return true;

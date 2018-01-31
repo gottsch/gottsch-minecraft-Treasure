@@ -11,5 +11,8 @@ public enum Category {
 	BASIC,
 	METALS,
 	GEMS,
+	MAGIC,
+	POTION,
+	WITHER,
 	UNIQUE;
 }

@@ -1,3 +1,17 @@
+#gravestones
+tile.treasure2:gravestone1.texture1.engraving1.name=1771 Stone Tombstone
+tile.treasure2:gravestone1.texture2.engraving1.name=1771 Granite Tombstone
+tile.treasure2:gravestone1.texture1.engraving2.name=1698 Stone Tombstone
+tile.treasure2:gravestone1.texture2.engraving2.name=1698 Granite Tombstone
+
+tile.treasure2:gravestone1_stone.name=Stone Tombstone
+tile.treasure2:gravestone1_cobblestone.name=Cobblestone Tombstone
+tile.treasure2:gravestone1_mossy_cobblestone.name=Mossy Cobblestone Tombstone
+tile.treasure2:gravestone1_polished_granite.name=Granite Tombstone
+tile.treasure2:gravestone1_polished_andesite.name=Andesite Tombstone
+tile.treasure2:gravestone1_polished_diorite.name=Diorite Tombstone
+tile.treasure2:gravestone1_obsidian.name=Obsidian Tombstone
+
 #items
 item.treasure2:wood_key.name=Wood Key
 item.treasure2:stone_key.name=Stone Key

@@ -46,17 +46,14 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	// TODO make a map instead of array
 	private Map<Rarity, Integer> chunksSinceLastRarityChest;
 	
-	// the dungeon geneator
-//	private DungeonGenerator generator;
+	// the chest geneators
 	private Map<Rarity, ChestGenerator> generators = new HashMap<>();
 	
 	/**
 	 * 
 	 */
 	public ChestWorldGenerator() {
-		// setup the dungeon generator
 		try {
-//			generator = new DungeonGenerator();
 			init();
 		} catch (Exception e) {
 			Treasure.logger.error("Unable to instantiate ChestGenerator:", e);
@@ -70,14 +67,13 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		for (Rarity rarity : Rarity.values()) {
 			chunksSinceLastRarityChest.put(rarity, 0);
 		}
-		
-		// initialize white/black lists
-//		biomeWhiteList = new ArrayList<>(5);
-//		biomeBlackList = new ArrayList<>(5);
-
-		// populate white/black lists with values from config
-//		BiomeHelper.loadBiomeList(TreasureConfig.generalChestBiomeWhiteList, biomeWhiteList);
-//		BiomeHelper.loadBiomeList(TreasureConfig.generalChestBiomeBlackList, biomeBlackList);
+		// setup the chest  generators
+		// TODO create all the same right now
+		generators.put(Rarity.COMMON, new ChestGenerator());
+		generators.put(Rarity.UNCOMMON, new ChestGenerator());
+		generators.put(Rarity.SCARCE, new ChestGenerator());
+		generators.put(Rarity.RARE, new ChestGenerator());
+		generators.put(Rarity.EPIC, new ChestGenerator());		
 	}
 
 	/**
@@ -108,7 +104,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		chunksSinceLastChest++;
 		for (Rarity rarity : Rarity.values()) {
 			Integer i = chunksSinceLastRarityChest.get(rarity);
-			i++;
+			chunksSinceLastRarityChest.put(rarity, ++i);
 		}
         boolean isGenerated = false;	
         
@@ -126,13 +122,16 @@ public class ChestWorldGenerator implements IWorldGenerator {
             // the get first surface y (could be leaves, trunk, water, etc)
             int ySpawn = world.getChunkFromChunkCoords(chunkX, chunkZ).getHeightValue(8, 8);
             ICoords coords = new Coords(xSpawn, ySpawn, zSpawn);
-            
-            // TODO then call a factory to get the correct ChestGenerator.
-            // TODO chest generator calls the a pit factory for the type of pit to generate.
-            // TODO filling the chest can come from an abstract method. for the most part it will always be the same
+
 	    	// determine what type to generate
         	Rarity rarity = Rarity.values()[random.nextInt(Rarity.values().length)];
 			IChestConfig chestConfig = Configs.chestConfigs.get(rarity);
+			if (chestConfig == null) {
+				Treasure.logger.warn("Unable to locate a chest for rarity {}.", rarity);
+				return;
+			}
+			Treasure.logger.debug("Chunks since last rarity chest: {}", chunksSinceLastRarityChest.get(rarity) );
+			Treasure.logger.debug("Config chunks per chest: {}", chestConfig.getChunksPerChest());
     		if (chunksSinceLastRarityChest.get(rarity) >= chestConfig.getChunksPerChest()) {
     			
 				// 1. test if chest meets the probability criteria
@@ -149,7 +148,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 			    	return;
 			    }
 			    
-     			// 3. check against all registered dungeons
+     			// 3. check against all registered chests
      			if (isRegisteredChestWithinDistance(world, coords, TreasureConfig.minDistancePerChest)) {
    					Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
      				return;
@@ -160,6 +159,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
     			i = 0;
     			
     			// generate the chest/pit/chambers
+    			// TODO there doesn't really need to be a separate gen for each rarity?? ie, what's the difference between them.
     			isGenerated = generators.get(rarity).generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
 
     			if (isGenerated) {
