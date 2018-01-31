@@ -75,7 +75,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 
 
 	/**
-	 * TODO need the bounds
+	 * 
 	 * @param modID
 	 * @param name
 	 * @param te
@@ -326,93 +326,93 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 			isLocked = true;
 		}
 		
-		try {
-			// get the item held in player's hand
-			ItemStack heldItem = playerIn.getHeldItem(hand);	
-			if (isLocked) {
-				// if the player is holding a key
-				if (heldItem != null && heldItem.getItem() instanceof KeyItem) {
-					KeyItem key = (KeyItem) heldItem.getItem();
-					boolean breakKey = true;
-					// check if held item is a key that opens a lock (only first lock that key fits is unlocked).
-					for (LockState lockState : te.getLockStates()) {
-						if (lockState.getLock() != null) {
-							if (key.unlock(lockState.getLock())) {
-								LockItem lock = lockState.getLock();
-								// remove the lock
-								lockState.setLock(null);
-								// play noise
-								//								worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.click", 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
-								worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-								// update the client
-								te.sendUpdates();
-								// spawn the lock
-								InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(lock));
-								// don't break the key
-								breakKey = false;
-								// exit the loop
-								break;
-							}
-						}
-					}
-
-					// check key's breakability
-					if (breakKey) {
-						if (key.isBreakable()  && TreasureConfig.enableKeyBreaks) {	
-							// break key;
-							heldItem.shrink(1);
-							//	worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.break", 1.0F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
-							playerIn.sendMessage(new TextComponentString("Key broke."));
-							worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-
-							if (heldItem.getCount() <=0) {
-								IInventory inventory = playerIn.inventory;
-								inventory.setInventorySlotContents(playerIn.inventory.currentItem, null);
-							}							
-						}
-						else {
-							playerIn.sendMessage(new TextComponentString("Failed to unlock."));
-						}
-					}
-					// test if still locked
-					if (!te.hasLocks()) {
-						isLocked = false;		
-						// TODO for future: set the owner of the chest to the player. when unlocking locks, keys no longer break.
-					}
-				}
-				else if (heldItem != null && heldItem.getItem() instanceof LockItem) {
-					// handle the lock
-					// NOTE don't use the return boolean as the locked flag here, as the chest is already locked and if the method was
-					// unsuccessful it could state the chest is unlocked.
-					handleHeldLock(te, playerIn, heldItem);
-				}
-				else {
-					// Display message and do nothing
-					StringBuilder builder = new StringBuilder();
-					builder
-					.append(TextFormatting.WHITE).append("The chest is ").append(TextFormatting.BOLD).append(TextFormatting.GOLD)
-					.append("Locked").append(TextFormatting.WHITE).append(".");
-					playerIn.sendMessage(new TextComponentString(builder.toString()));
-					//			       return false;
-				}
-			}
-			// not locked
-			else {
-				// if the player is holding a lock
-				if (heldItem != null && heldItem.getItem() instanceof LockItem) {
-					// handle the lock
-					isLocked = handleHeldLock(te, playerIn, heldItem);
-				}
-			}
+//		try {
+//			// get the item held in player's hand
+//			ItemStack heldItem = playerIn.getHeldItem(hand);	
+//			if (isLocked) {
+//				// if the player is holding a key
+//				if (heldItem != null && heldItem.getItem() instanceof KeyItem) {
+//					KeyItem key = (KeyItem) heldItem.getItem();
+//					boolean breakKey = true;
+//					// check if held item is a key that opens a lock (only first lock that key fits is unlocked).
+//					for (LockState lockState : te.getLockStates()) {
+//						if (lockState.getLock() != null) {
+//							if (key.unlock(lockState.getLock())) {
+//								LockItem lock = lockState.getLock();
+//								// remove the lock
+//								lockState.setLock(null);
+//								// play noise
+//								//								worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.click", 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
+//								worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+//								// update the client
+//								te.sendUpdates();
+//								// spawn the lock
+//								InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(lock));
+//								// don't break the key
+//								breakKey = false;
+//								// exit the loop
+//								break;
+//							}
+//						}
+//					}
+//
+//					// check key's breakability
+//					if (breakKey) {
+//						if (key.isBreakable()  && TreasureConfig.enableKeyBreaks) {
+//							// break key;
+//							heldItem.shrink(1);
+//							//	worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.break", 1.0F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
+//							playerIn.sendMessage(new TextComponentString("Key broke."));
+//							worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+//
+//							if (heldItem.getCount() <=0) {
+//								IInventory inventory = playerIn.inventory;
+//								inventory.setInventorySlotContents(playerIn.inventory.currentItem, null);
+//							}							
+//						}
+//						else {
+//							playerIn.sendMessage(new TextComponentString("Failed to unlock."));
+//						}
+//					}
+//					// test if still locked
+//					if (!te.hasLocks()) {
+//						isLocked = false;		
+//						// TODO for future: set the owner of the chest to the player. when unlocking locks, keys no longer break.
+//					}
+//				}
+//				else if (heldItem != null && heldItem.getItem() instanceof LockItem) {
+//					// handle the lock
+//					// NOTE don't use the return boolean as the locked flag here, as the chest is already locked and if the method was
+//					// unsuccessful it could state the chest is unlocked.
+//					handleHeldLock(te, playerIn, heldItem);
+//				}
+//				else {
+//					// Display message and do nothing
+//					StringBuilder builder = new StringBuilder();
+//					builder
+//					.append(TextFormatting.WHITE).append("The chest is ").append(TextFormatting.BOLD).append(TextFormatting.GOLD)
+//					.append("Locked").append(TextFormatting.WHITE).append(".");
+//					playerIn.sendMessage(new TextComponentString(builder.toString()));
+//					//			       return false;
+//				}
+//			}
+//			// not locked
+//			else {
+//				// if the player is holding a lock
+//				if (heldItem != null && heldItem.getItem() instanceof LockItem) {
+//					// handle the lock
+//					isLocked = handleHeldLock(te, playerIn, heldItem);
+//				}
+//			}
 			
 			// open the chest
 			if (!isLocked) {
 				playerIn.openGui(Treasure.instance, GuiHandler.TREASURE_CHEST_GUIID, worldIn, pos.getX(), pos.getY(),	pos.getZ());
 			}
-		}
-		catch (Exception e) {
-			Treasure.logger.error("gui error: ", e);
-		}
+//		}
+//		catch (Exception e) {
+//			Treasure.logger.error("gui error: ", e);
+//		}
 		return true;
 	}
 
@@ -529,6 +529,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
 		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
 	}
+	
 	/**
 	 * 
 	 */

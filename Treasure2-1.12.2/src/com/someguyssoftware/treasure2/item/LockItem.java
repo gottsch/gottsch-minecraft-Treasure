@@ -10,8 +10,21 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.lock.LockState;
+import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 /**
  * @author Mark Gottschling onJan 10, 2018
@@ -65,7 +78,65 @@ public class LockItem extends ModItem {
 		// TODO add checkProbability(random, float) to RandomHelper()
 	}
 	
+	/**
+	 * 
+	 */
+	@Override
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
+			EnumFacing facing, float hitX, float hitY, float hitZ) {
 
+		// determine if block at pos is a treasure chest
+		Block block = worldIn.getBlockState(pos).getBlock();
+		if (block instanceof TreasureChestBlock) {
+			// get the tile entity
+			TreasureChestTileEntity te = (TreasureChestTileEntity) worldIn.getTileEntity(pos);
+						
+			// exit if on the client
+			if (worldIn.isRemote) {			
+				return EnumActionResult.FAIL;
+			}
+			
+			try {
+				ItemStack heldItem = player.getHeldItem(hand);
+				// handle the lock
+				// NOTE don't use the return boolean as the locked flag here, as the chest is already locked and if the method was
+				// unsuccessful it could state the chest is unlocked.
+				handleHeldLock(te, player, heldItem);
+			}
+			catch (Exception e) {
+				Treasure.logger.error("error: ", e);
+			}
+		}		
+		return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+	}
+		
+	/**
+	 * 
+	 * @param te
+	 * @param player
+	 * @param heldItem
+	 * @return flag indicating if a lock was added
+	 */
+	private boolean handleHeldLock(TreasureChestTileEntity te, EntityPlayer player, ItemStack heldItem) {
+		boolean lockedAdded = false;
+		LockItem lock = (LockItem) heldItem.getItem();		
+		// add the lock to the first lockstate that has an available slot
+		for(LockState lockState : te.getLockStates()) {
+			if (lockState != null && lockState.getLock() == null) {
+				lockState.setLock(lock);
+				te.sendUpdates();
+				// decrement item in hand
+				heldItem.shrink(1);
+				if (heldItem.getCount() <=0) {
+					IInventory inventory = player.inventory;
+					inventory.setInventorySlotContents(player.inventory.currentItem, null);
+				}
+				lockedAdded = true;
+				break;
+			}
+		}
+		return lockedAdded;
+	}
 	
 	/**
 	 * 

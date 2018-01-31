@@ -22,16 +22,25 @@ public class MetallurgistsKey extends KeyItem {
 	}
 	
 	/**
-	 * 
+	 * This key can fits any lock from the METALS category.
 	 */
 	@Override
-	public boolean unlock(LockItem lockItem) {
-		boolean isUnlocked = super.unlock(lockItem);
-		
-		if (!isUnlocked) {
-			if (lockItem.getCategory() == Category.METALS) isUnlocked = true;
-		}
-		
-		return isUnlocked;
+	public boolean fitsLock(LockItem lockItem) {
+		if (lockItem.getCategory() == Category.METALS) return true;
+		return false;
 	}
+	
+	/**
+	 * 
+	 */
+//	@Override
+//	public boolean unlock(LockItem lockItem) {
+//		boolean isUnlocked = super.unlock(lockItem);
+//		
+//		if (!isUnlocked) {
+//			if (lockItem.getCategory() == Category.METALS) isUnlocked = true;
+//		}
+//		
+//		return isUnlocked;
+//	}
 }
