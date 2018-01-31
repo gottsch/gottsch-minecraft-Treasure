@@ -3,7 +3,9 @@
  */
 package com.someguyssoftware.treasure2.block;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
@@ -44,17 +46,34 @@ public class TreasureBlocks {
 	// chest holder
 	public static Multimap<Rarity, Block> chests;
 	
-	// GRAVESTONES
-	public static final Block GRAVESTONE1;
+	// gravestone holder
+	public static List<Block> gravestones;
 	
-	// initialize chests
+	// GRAVESTONES
+	public static final Block GRAVESTONE1_STONE;
+	public static final Block GRAVESTONE1_COBBLESTONE;
+	public static final Block GRAVESTONE1_MOSSY_COBBLESTONE;
+	public static final Block GRAVESTONE1_POLISHED_GRANITE;
+	public static final Block GRAVESTONE1_POLISHED_ANDESITE;
+	public static final Block GRAVESTONE1_POLISHED_DIORITE;
+	public static final Block GRAVESTONE1_OBSIDIAN;
+	public static final Block GRAVESTONE2_STONE;
+	public static final Block GRAVESTONE2_COBBLESTONE;
+	public static final Block GRAVESTONE2_MOSSY_COBBLESTONE;
+	public static final Block GRAVESTONE2_POLISHED_GRANITE;
+	public static final Block GRAVESTONE2_POLISHED_ANDESITE;
+	public static final Block GRAVESTONE2_POLISHED_DIORITE;
+	public static final Block GRAVESTONE2_OBSIDIAN;
+	
+	// initialize blocks
 	static {
+		// chest bounds
 		AxisAlignedBB vanilla = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.875D, 0.9375D);
 		AxisAlignedBB[] bounds = new 	AxisAlignedBB[4];
-		bounds[0] = vanilla;
-		bounds[1] = vanilla;
-		bounds[2] = vanilla;
-		bounds[3] = vanilla;
+		bounds[0] = vanilla; // S
+		bounds[1] = vanilla; // W
+		bounds[2] = vanilla; // N
+		bounds[3] = vanilla; // E
 
 		WOOD_CHEST = new TreasureChestBlock(
 				Treasure.MODID, 
@@ -86,11 +105,54 @@ public class TreasureBlocks {
 		chests.put(Rarity.UNCOMMON, IRONBOUND_CHEST);
 		chests.put(Rarity.SCARCE, PIRATE_CHEST);
 		
+		// gravestone bounds
+		AxisAlignedBB[] gbs = new 	AxisAlignedBB[4];
+		gbs[0] = new AxisAlignedBB(0.125D, 0.0D, 0.375D, 0.875D, 0.75D, 0.675D); // S
+		gbs[1] = new AxisAlignedBB(0.375D, 0.0D, 0.125D, 0.675D, 0.75D, 0.875D); // W
+		gbs[2] = new AxisAlignedBB(0.125D, 0.0D, 0.375D, 0.875D, 0.75D, 0.675D); // N
+		gbs[3] = new AxisAlignedBB(0.375D, 0.0D, 0.125D, 0.675D, 0.75D, 0.875D); // E
+		
 		// Gravestones
-		GRAVESTONE1 = (Gravestone) new Gravestone(
-				Treasure.MODID,
-				TreasureConfig.GRAVESTONE1_ID, 
-				Material.ROCK);
+		GRAVESTONE1_STONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_STONE_ID, Material.ROCK).setBounds(gbs);
+		GRAVESTONE1_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_COBBLESTONE_ID, Material.ROCK).setBounds(gbs);
+		GRAVESTONE1_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_MOSSY_COBBLESTONE_ID, Material.ROCK).setBounds(gbs);
+		GRAVESTONE1_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_POLISHED_GRANITE_ID, Material.ROCK).setBounds(gbs);
+		GRAVESTONE1_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_POLISHED_ANDESITE_ID, Material.ROCK).setBounds(gbs);
+		GRAVESTONE1_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_POLISHED_DIORITE_ID, Material.ROCK).setBounds(gbs);
+		GRAVESTONE1_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_OBSIDIAN_ID, Material.ROCK).setBounds(gbs);
+		
+		AxisAlignedBB[] gbs2 = new 	AxisAlignedBB[4];
+		gbs2[0] = new AxisAlignedBB(0.125D, 0.0D, 0.375D, 0.875D, 1.125D, 0.675D); // S
+		gbs2[1] = new AxisAlignedBB(0.375D, 0.0D, 0.125D, 0.675D, 1.125D, 0.875D); // W
+		gbs2[2] = new AxisAlignedBB(0.125D, 0.0D, 0.375D, 0.875D, 1.125D, 0.675D); // N
+		gbs2[3] = new AxisAlignedBB(0.375D, 0.0D, 0.125D, 0.675D, 1.125D, 0.875D); // E
+		
+		// Gravestones
+		GRAVESTONE2_STONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_STONE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE2_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_COBBLESTONE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE2_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_MOSSY_COBBLESTONE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE2_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_POLISHED_GRANITE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE2_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_POLISHED_ANDESITE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE2_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_POLISHED_DIORITE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE2_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_OBSIDIAN_ID, Material.ROCK).setBounds(gbs2);
+		
+		// add all the gravestones to the list
+		gravestones = new ArrayList<>();
+		gravestones.add(GRAVESTONE1_STONE);
+		gravestones.add(GRAVESTONE1_COBBLESTONE);
+		gravestones.add(GRAVESTONE1_MOSSY_COBBLESTONE);
+		gravestones.add(GRAVESTONE1_POLISHED_ANDESITE);
+		gravestones.add(GRAVESTONE1_POLISHED_DIORITE);
+		gravestones.add(GRAVESTONE1_POLISHED_GRANITE);
+		gravestones.add(GRAVESTONE1_OBSIDIAN);
+		gravestones.add(GRAVESTONE2_STONE);
+		gravestones.add(GRAVESTONE2_COBBLESTONE);
+		gravestones.add(GRAVESTONE2_MOSSY_COBBLESTONE);
+		gravestones.add(GRAVESTONE2_POLISHED_ANDESITE);
+		gravestones.add(GRAVESTONE2_POLISHED_DIORITE);
+		gravestones.add(GRAVESTONE2_POLISHED_GRANITE);
+		gravestones.add(GRAVESTONE2_OBSIDIAN);
+		
 	}
 			
 	
@@ -116,7 +178,20 @@ public class TreasureBlocks {
 					WOOD_CHEST,
 					IRONBOUND_CHEST,
 					PIRATE_CHEST,
-					GRAVESTONE1,
+					GRAVESTONE1_STONE,
+					GRAVESTONE1_COBBLESTONE,
+					GRAVESTONE1_MOSSY_COBBLESTONE,
+					GRAVESTONE1_POLISHED_GRANITE,
+					GRAVESTONE1_POLISHED_ANDESITE,
+					GRAVESTONE1_POLISHED_DIORITE,
+					GRAVESTONE1_OBSIDIAN,
+					GRAVESTONE2_STONE,
+					GRAVESTONE2_COBBLESTONE,
+					GRAVESTONE2_MOSSY_COBBLESTONE,
+					GRAVESTONE2_POLISHED_GRANITE,
+					GRAVESTONE2_POLISHED_ANDESITE,
+					GRAVESTONE2_POLISHED_DIORITE,
+					GRAVESTONE2_OBSIDIAN
 			};
 			registry.registerAll(blocks);			
 		}
@@ -135,7 +210,21 @@ public class TreasureBlocks {
 					new ItemBlock(WOOD_CHEST),
 					new ItemBlock(IRONBOUND_CHEST),
 					new ItemBlock(PIRATE_CHEST),
-					new ItemBlock(GRAVESTONE1)
+					// TODO update with GravestonIetmBlock
+					new ItemBlock(GRAVESTONE1_STONE),
+					new ItemBlock(GRAVESTONE1_COBBLESTONE),
+					new ItemBlock(GRAVESTONE1_MOSSY_COBBLESTONE),
+					new ItemBlock(GRAVESTONE1_POLISHED_GRANITE),
+					new ItemBlock(GRAVESTONE1_POLISHED_ANDESITE),
+					new ItemBlock(GRAVESTONE1_POLISHED_DIORITE),
+					new ItemBlock(GRAVESTONE1_OBSIDIAN),
+					new ItemBlock(GRAVESTONE2_STONE),
+					new ItemBlock(GRAVESTONE2_COBBLESTONE),
+					new ItemBlock(GRAVESTONE2_MOSSY_COBBLESTONE),
+					new ItemBlock(GRAVESTONE2_POLISHED_GRANITE),
+					new ItemBlock(GRAVESTONE2_POLISHED_ANDESITE),
+					new ItemBlock(GRAVESTONE2_POLISHED_DIORITE),
+					new ItemBlock(GRAVESTONE2_OBSIDIAN)
 			};
 			
 			for (final ItemBlock item : items) {
