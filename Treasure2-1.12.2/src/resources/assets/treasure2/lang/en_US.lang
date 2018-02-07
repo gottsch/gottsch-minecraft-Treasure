@@ -1,9 +1,11 @@
-#gravestones
-tile.treasure2:gravestone1.texture1.engraving1.name=1771 Stone Tombstone
-tile.treasure2:gravestone1.texture2.engraving1.name=1771 Granite Tombstone
-tile.treasure2:gravestone1.texture1.engraving2.name=1698 Stone Tombstone
-tile.treasure2:gravestone1.texture2.engraving2.name=1698 Granite Tombstone
+#chests
+tile.treasure2:wood_chest=Wood Chest
+tile.treasure2:crate_chest=Crate
+tile.treasure2:ironbound_chest=Ironbound Chest
+tile.treasure2:pirate_chest=Pirate Chest
+Wood Chest.name=Wood Chest
 
+#gravestones
 tile.treasure2:gravestone1_stone.name=Stone Tombstone
 tile.treasure2:gravestone1_cobblestone.name=Cobblestone Tombstone
 tile.treasure2:gravestone1_mossy_cobblestone.name=Mossy Cobblestone Tombstone
@@ -13,13 +15,40 @@ tile.treasure2:gravestone1_polished_diorite.name=Diorite Tombstone
 tile.treasure2:gravestone1_obsidian.name=Obsidian Tombstone
 
 #items
+item.treasure2:gold_coin.name=Gold Coin
+item.treasure2:silver_coin.name=Silver Coin
+
 item.treasure2:wood_key.name=Wood Key
 item.treasure2:stone_key.name=Stone Key
 item.treasure2:iron_key.name=Iron Key
 item.treasure2:gold_key.name=Gold Key
 item.treasure2:diamond_key.name=Diamond Key
 item.treasure2:emerald_key.name=Emerald Key
+item.treasure2:metallurgists_key.name=Metallurgist's Key
+item.treasure2:skeleton_key.name=Skeleton Key
 
+item.treasure2:wood_lock.name=Wood Lock
+item.treasure2:stone_lock.name=Stone Lock
+item.treasure2:iron_lock.name=Iron Lock
+item.treasure2:gold_lock.name=Gold Lock
+item.treasure2:diamond_lock.name=Diamond Lock
+item.treasure2:emerald_lock.name=Emerald Lock
 
 #groups
-itemGroup.treasure2:treasure_tab=Treasure!
+itemGroup.treasure2:treasure_tab=Treasure2!
+
+# string resources
+tooltip.yes=Yes
+tooltip.no=No
+tooltip.label.rarity=Rarity: %s
+tooltip.label.category=Category: %s
+tooltip.label.max_uses=Max Uses: %s
+tooltip.label.breakable=Breakable: %s
+tooltip.label.craftable=Craftable: %s
+tooltip.label.specials=Specials: %s
+tooltip.label.accepts_keys=Accepts Keys: %s
+tooltip.label.coin=Throw into Wishing Wells
+
+tooltip.metallurgists_key.specials=Opens any lock in METALS category
+tooltip.skeleton_key.specials=Opens COMMON, UNCOMMON, SCARCE and RARE locks
+

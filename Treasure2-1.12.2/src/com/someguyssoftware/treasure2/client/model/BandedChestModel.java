@@ -26,6 +26,9 @@ public class BandedChestModel extends ModelBase implements ITreasureChestModel {
 	ModelRenderer Ledge;
 	ModelRenderer Ledge2;
 	ModelRenderer Ledge3;
+    ModelRenderer hinge1;
+    ModelRenderer hinge2;
+    ModelRenderer pad;
 
 	/**
 	 * 
@@ -112,6 +115,24 @@ public class BandedChestModel extends ModelBase implements ITreasureChestModel {
 		Ledge3.setTextureSize(128, 128);
 		Ledge3.mirror = true;
 		setRotation(Ledge3, 0F, 0F, 0F);
+	      hinge1 = new ModelRenderer(this, 11, 86);
+	      hinge1.addBox(-1F, 0F, -0.8F, 2, 2, 1);
+	      hinge1.setRotationPoint(2F, 14.5F, 7F);
+	      hinge1.setTextureSize(128, 128);
+	      hinge1.mirror = true;
+	      setRotation(hinge1, 0F, 0F, 0F);
+	      hinge2 = new ModelRenderer(this, 11, 86);
+	      hinge2.addBox(-1F, 0F, -0.8F, 2, 2, 1);
+	      hinge2.setRotationPoint(-2F, 14.5F, 7F);
+	      hinge2.setTextureSize(128, 128);
+	      hinge2.mirror = true;
+	      setRotation(hinge2, 0F, 0F, 0F);
+	      pad = new ModelRenderer(this, 0, 86);
+	      pad.addBox(-2F, -1F, -14.2F, 4, 4, 1);
+	      pad.setRotationPoint(0F, 15.5F, 7F);
+	      pad.setTextureSize(128, 128);
+	      pad.mirror = true;
+	      setRotation(pad, 0F, 0F, 0F);
 	}
 
 	/**
@@ -133,6 +154,9 @@ public class BandedChestModel extends ModelBase implements ITreasureChestModel {
 		Ledge.render(f5);
 		Ledge2.render(f5);
 		Ledge3.render(f5);
+	    hinge1.render(f5);
+	    hinge2.render(f5);
+	    pad.render(f5);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -174,6 +198,9 @@ public class BandedChestModel extends ModelBase implements ITreasureChestModel {
 		Ledge.render(0.0625F);
 		Ledge2.render(0.0625F);
 		Ledge3.render(0.0625F);
+	    hinge1.render(0.0625F);
+	    hinge2.render(0.0625F);
+	    pad.render(0.0625F);
 	}
 
 	@Override

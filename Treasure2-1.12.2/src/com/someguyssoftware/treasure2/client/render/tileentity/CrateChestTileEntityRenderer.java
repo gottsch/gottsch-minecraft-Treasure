@@ -3,15 +3,15 @@
  */
 package com.someguyssoftware.treasure2.client.render.tileentity;
 
-import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.client.model.CrateChestModel;
 import com.someguyssoftware.treasure2.client.model.ITreasureChestModel;
 import com.someguyssoftware.treasure2.lock.LockState;
+import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -19,12 +19,7 @@ import net.minecraft.util.ResourceLocation;
  * @author Mark Gottschling onJan 9, 2018
  *
  */
-public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<TreasureChestTileEntity> {
-	public static final int NORTH = 2;
-	public static final int SOUTH = 3;
-	public static final int WEST = 4;
-	public static final int EAST = 5;
-	
+public class CrateChestTileEntityRenderer extends TreasureChestTileEntityRenderer {
 	private ResourceLocation texture;
 	private ITreasureChestModel model;
  
@@ -32,10 +27,8 @@ public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<T
 	  * 
 	  * @param texture
 	  */
-	 public TreasureChestTileEntityRenderer(String texture, ITreasureChestModel model) {
-		 super();
-		 setTexture(new ResourceLocation(Treasure.MODID + ":textures/entity/chest/" + texture + ".png"));
-		 setModel(model);
+	 public CrateChestTileEntityRenderer(String texture, ITreasureChestModel model) {
+		 super(texture, model);
 	 }
 	 
 	/**
@@ -48,9 +41,10 @@ public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<T
 	 * @param destroyStage
 	 * @param alpha
 	 */
+	 @Override
     public void render(TreasureChestTileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
     	
-    	if (!(te instanceof TreasureChestTileEntity)) return; // should never happen
+    	if (!(te instanceof CrateChestTileEntity)) return; // should never happen
 
     	// add the destory textures
         if (destroyStage >= 0) {
@@ -63,7 +57,8 @@ public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<T
         }
     	
     	// get the model    	
-    	ITreasureChestModel model = getModel();   
+    	CrateChestModel model = (CrateChestModel) getModel();   
+    	
     	// bind the texture
         this.bindTexture(getTexture());
         // get the chest rotation
@@ -89,10 +84,16 @@ public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<T
         // TODO if you add locks via chest dialog, then it won't close because it has chests
         // need another check if angle is at closed position
 //        if (!te.hasLocks()) {
-            float lidRotation = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
+        	CrateChestTileEntity cte = (CrateChestTileEntity) te;
+            float latchRotation = cte.prevLatchAngle + (cte.latchAngle - cte.prevLatchAngle) * partialTicks;
+            latchRotation = 1.0F - latchRotation;
+            latchRotation = 1.0F - latchRotation * latchRotation * latchRotation;
+            model.getLatch1().rotateAngleX = -(latchRotation * (float)Math.PI / 2.0F);        	
+            
+            float lidRotation = cte.prevLidAngle + (cte.lidAngle - cte.prevLidAngle) * partialTicks;
             lidRotation = 1.0F - lidRotation;
             lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-            model.getLid().rotateAngleX = -(lidRotation * (float)Math.PI / 2.0F);        	
+            model.getLid().rotateAngleY = -(lidRotation * (float)Math.PI / 2.0F);
 //        } 
         
         model.renderAll(te);

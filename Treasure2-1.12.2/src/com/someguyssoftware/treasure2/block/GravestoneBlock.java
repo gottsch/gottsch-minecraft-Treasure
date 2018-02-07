@@ -39,6 +39,7 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock {
 		super(modID, name, material);
 		setSoundType(SoundType.STONE);
 		setCreativeTab(Treasure.TREASURE_TAB);
+		setHardness(3.0F);
 		setBoundingBox(
 				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), 	// N
 				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// E

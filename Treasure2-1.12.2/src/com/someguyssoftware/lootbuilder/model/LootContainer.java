@@ -15,6 +15,8 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "containers")
 public class LootContainer {
+	public final static LootContainer EMPTY_CONTAINER = new LootContainer();
+	
 	public final static String ID_FIELD_NAME = "id";
 	
 	@DatabaseField(generatedId = true, columnName = ID_FIELD_NAME)
@@ -22,7 +24,7 @@ public class LootContainer {
 	@DatabaseField(columnName = "name", canBeNull = false, unique = true, width = 45)
 	private String name;
 	@DatabaseField(canBeNull = false, unique = false, defaultValue = "0", width = 3)
-	private Byte rarity;
+	private String rarity;
 	@DatabaseField(canBeNull = true, unique = false)
 	private String category;
 	
@@ -56,11 +58,11 @@ public class LootContainer {
 		this.name = name;
 	}
 
-	public Byte getRarity() {
+	public String getRarity() {
 		return rarity;
 	}
 
-	public void setRarity(Byte rarity) {
+	public void setRarity(String rarity) {
 		this.rarity = rarity;
 	}
 

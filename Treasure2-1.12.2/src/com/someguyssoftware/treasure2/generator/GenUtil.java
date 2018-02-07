@@ -19,6 +19,7 @@ import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -32,7 +33,7 @@ import net.minecraft.world.World;
  *
  */
 public class GenUtil {
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyEnum<EnumFacing> FACING = PropertyDirection.create("facing", EnumFacing.class);
 	protected static int UNDERGROUND_OFFSET = 5;
 		
 	/**

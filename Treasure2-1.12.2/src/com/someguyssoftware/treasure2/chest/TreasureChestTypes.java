@@ -4,13 +4,13 @@
 package com.someguyssoftware.treasure2.chest;
 
 import com.someguyssoftware.gottschcore.enums.Direction;
-import com.someguyssoftware.treasure2.client.model.StandardChestModel;
 
 /**
  * @author Mark Gottschling on Jan 9, 2018
  *
  */
 public class TreasureChestTypes {
+	public static final TreasureChestType CRATE;
 	public static TreasureChestType STANDARD;
 	public static TreasureChestType SAFE;
 	public static TreasureChestType SINGLE;
@@ -22,6 +22,10 @@ public class TreasureChestTypes {
 			new LockSlot(1, Direction.EAST, 0.95F, 0.3F, 0.5F, 90F),
 			new LockSlot(2, Direction.WEST, 0.05F, 0.3F, 0.5F, -90F)
 		);
+		
+		CRATE = new TreasureChestType(1).addSlots(
+				new LockSlot(0, Direction.NORTH, 0.5F, 0.7F, 0.05F, 0F)
+			);
 		
 		// TODO update the model
 		SAFE = new TreasureChestType(2).addSlots(

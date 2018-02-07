@@ -19,6 +19,7 @@ import com.someguyssoftware.lootbuilder.model.LootContainerHasGroup;
 import com.someguyssoftware.lootbuilder.model.LootGroupHasItem;
 import com.someguyssoftware.treasure2.Treasure;
 
+import javafx.scene.Group;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,9 +33,14 @@ public class InventoryPopulator {
 	public void populate(IInventory inventory, LootContainer container) {
 		Random random = new Random();
 		List<LootContainerHasGroup> containerGroups = DbManager.getInstance().getGroupsByContainer(container.getId());
+		if (containerGroups == null || containerGroups.size() == 0) {
+			Treasure.logger.warn("Container {} does not contain any groups.", container.getName());
+			return;
+		}
+		
 		// map of container groups
 		Map<String, LootContainerHasGroup> groups = new HashMap<>();
-			
+
 		// determine # of groups to choose from using the container's group  min and max properties
 		int numGroups = RandomHelper.randomInt(random, container.getMinGroups(), container.getMaxGroups());
 		Treasure.logger.debug("Selecting {} groups.", numGroups);
@@ -42,7 +48,8 @@ public class InventoryPopulator {
 		// randomly select groups and add to map
 		for (int i = 0; i < numGroups; i++) {
 			// TODO change this - nned to load all the groups into the RandomProbabilityCollection
-			int select = RandomHelper.randomInt(random, 1, groups.size());
+			int select = RandomHelper.randomInt(random, 1, containerGroups.size());
+			Treasure.logger.debug("Size of group: {}", containerGroups.size());
 			Treasure.logger.debug("Index of group: {}", select-1);
 			// get the container group
 			LootContainerHasGroup g = containerGroups.get(select-1);
@@ -70,8 +77,10 @@ public class InventoryPopulator {
 				col.add(g.getWeight(), g);
 			}
 			
+			// TODO change to min/max of container
 			// determine # of items from group to add
-			int numOfItems = RandomHelper.randomInt(random, 0, groupItems.size()-1);
+			int numOfItems = RandomHelper.randomInt(random, 0, groupItems.size());
+			Treasure.logger.debug("num of items: {}, from group: {}", numOfItems, cg.getKey());
 			
 			ItemStack stack = null;
 			// add a selection of items to the chest

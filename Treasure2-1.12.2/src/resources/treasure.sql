@@ -1,4 +1,12 @@
 -- -----------------------------------------------------
+-- Notes
+-- -----------------------------------------------------
+-- InventoryPopulates works by adding all the items from the n selected groups to the WeightedRandomCollection
+-- and then selects x number of weighted items.  Need to setup the groups (groups_has_items) with a weight and select them
+-- via WeightedRandomCollection as well (instead of just random).  Also need to weight the items correctly for the container
+-- so that the more associated items have a better chance of being selected (ex. the rare items are more likely to be selected in
+-- a rare container/group)
+-- -----------------------------------------------------
 -- Table mods
 -- -----------------------------------------------------
 create table if not exists mods(
@@ -85,7 +93,7 @@ create table if not exists containers_has_groups(
 insert into mods (name, prefix)
 values
 ('Vanilla Minecraft', 'minecraft'),
-('Treasure!', 'treasure2');
+('Treasure2!', 'treasure2');
 
 -- -----------------------------------------------------
 -- Add item data
@@ -118,6 +126,7 @@ values
 ('cookie', 'cookie', 'item', 0, 1),
 ('diamond', 'diamond', 'item', 0, 1),
 ('diamond_arms', 'diamond_arms', 'item', 0, 1),
+('diamond_axe', 'diamond_axe', 'item', 0, 1),
 ('diamond_block', 'diamond_block', 'item', 0, 1),
 ('diamond_boots', 'diamond_boots', 'item', 0, 1),
 ('diamond_chestplate', 'diamond_chestplate', 'item', 0, 1),
@@ -125,6 +134,7 @@ values
 ('diamond_horse_armor', 'diamond_horse_armor', 'item', 0, 1),
 ('diamond_leggings', 'diamond_leggings', 'item', 0, 1),
 ('diamond_pickaxe', 'diamond_pickaxe', 'item', 0, 1),
+('diamond_shovel', 'diamond_shovel', 'item', 0, 1),
 ('diamond_sword', 'diamond_sword', 'item', 0, 1),
 ('dragon_breath', 'dragon_breath', 'item', 0, 1),
 ('dye0', 'dye', 'item', 0, 1),
@@ -142,8 +152,18 @@ values
 ('fish1', 'fish', 'item', 1, 1),
 ('ghast_tear', 'ghast_tear', 'item', 0, 1),
 ('glowstone', 'glowstone', 'item', 0, 1),
+('gold_arms', 'gold_arms', 'item', 0, 1),
+('gold_axe', 'gold_axe', 'item', 0, 1),
+('gold_block', 'gold_block', 'item', 0, 1),
+('gold_boots', 'gold_boots', 'item', 0, 1),
+('gold_chestplate', 'gold_chestplate', 'item', 0, 1),
+('gold_helmet', 'gold_helmet', 'item', 0, 1),
 ('gold_horse_armor', 'gold_horse_armor', 'item', 0, 1),
+('gold_ingot', 'gold_ingot', 'item', 0, 1),
 ('gold_nugget', 'gold_nugget', 'item', 0, 1),
+('gold_leggings', 'gold_leggings', 'item', 0, 1),
+('gold_pickaxe', 'gold_pickaxe', 'item', 0, 1),
+('gold_shovel', 'gold_shovel', 'item', 0, 1),
 ('gold_sword', 'gold_sword', 'item', 0, 1),
 ('golden_apple', 'golden_apple', 'item', 0, 1),
 ('golden_carrot', 'golden_carrot', 'item', 0, 1),
@@ -157,6 +177,7 @@ values
 ('iron_ingot', 'iron_ingot', 'item', 0, 1),
 ('iron_leggings', 'iron_leggings', 'item', 0, 1),
 ('iron_pickaxe', 'iron_pickaxe', 'item', 0, 1),
+('iron_shovel', 'iron_shovel', 'item', 0, 1),
 ('iron_sword', 'iron_sword', 'item', 0, 1),
 ('lapis_ore', 'lapis_ore', 'item', 0, 1),
 ('lead', 'lead', 'item', 0, 1),
@@ -250,7 +271,15 @@ values
 ('totem_of_undying', 'totem_of_undying', 'item', 0, 1),
 ('wheat', 'wheat', 'item', 0, 1),
 ('wheat_seeds', 'wheat_seeds', 'item', 0, 1),
-('wool', 'wool', 'item', 0, 1)
+('wool', 'wool', 'item', 0, 1),
+('shears', 'shears', 'item', 0, 1),
+
+('wood_key', 'wood_key', 'key', 0, 2),
+('stone_key', 'stone_key', 'key', 0, 2),
+('iron_key', 'iron_key', 'key', 0, 2),
+('gold_key', 'gold_key', 'key', 0, 2),
+('diamond_key', 'diamond_key', 'key', 0, 2),
+('emerald_key', 'emerald_key', 'key', 0, 2),
 
 -- -----------------------------------------------------
 -- Add groups data
@@ -265,7 +294,13 @@ values
 ('uncommon_items'),
 ('uncommon_armor'),
 ('uncommon_tools'),
+('uncommon_food'),
 ('uncommon_potions'),
+('scarce_items'),
+('scarce_armor'),
+('scarce_tools'),
+('scarce_food'),
+('scarce_potions'),
 ('rare_items'),
 ('rare_armor'),
 ('rare_tools'),
@@ -283,183 +318,230 @@ values
 insert into groups_has_items
 (group_id, item_id, item_weight, min, max, min_enchants, max_enchants, ordering)
 values
---'common_items'
+-- common_items
 (1, 12, 80.0, 2, 5, 0, 0, 0), -- bread
-(1, 159, 25.0, 1, 3, 0, 0, 1), -- wool
-(1, 155, 50.0, 1, 5, 0, 0, 2), -- torch
-(1, 69, 20.0, 1, 3, 0, 0, 3), -- leather
-(1, 122, 20.0, 1, 3, 0, 0, 4), -- rabbit_hide
-(1, 52, 20.0, 1, 3, 0, 0, 5), -- gold_nugget
-(1, 63, 30.0, 1, 5, 0, 0, 6), -- iron_ingot
+(1, 172, 25.0, 1, 3, 0, 0, 1), -- wool
+(1, 168, 50.0, 1, 5, 0, 0, 2), -- torch
+(1, 82, 20.0, 1, 3, 0, 0, 3), -- leather
+(1, 135, 20.0, 1, 3, 0, 0, 4), -- rabbit_hide
+(1, 61, 20.0, 1, 3, 0, 0, 5), -- gold_nugget
+(1, 75, 30.0, 1, 5, 0, 0, 6), -- iron_ingot
 (1, 2, 50.0, 5, 10, 0, 0, 7), -- arrow
-(1, 36, 20.0, 1, 3, 0, 0, 8), -- dye0
+(1, 38, 20.0, 1, 3, 0, 0, 8), -- dye0
 (1, 8, 50.0, 1, 3, 0, 0, 9), -- bone
-(1, 148, 35.0, 1, 3, 0, 0, 10), -- spider_eye
-(1, 139, 50.0, 1, 1, 0, 0, 11), -- rotten_flesh
-(1, 152, 50.0, 1, 3, 0, 0, 12), -- string
---'common_armor'
-(2, 72, 20.0, 1, 1, 0, 0, 0), -- leather_chestplate
-(2, 74, 20.0, 1, 1, 0, 0, 1), -- leather_leggings
-(2, 70, 20.0, 1, 1, 0, 0, 2), -- leather_arms
-(2, 73, 20.0, 1, 1, 0, 0, 3), -- leather_helmet
-(2, 71, 20.0, 1, 1, 0, 0, 4), -- leather_boots
---'common_tools'
-(3, 151, 25.0, 1, 1, 0, 0, 0), -- stone_sword
-(3, 150, 25.0, 1, 1, 0, 0, 1), -- stone_pickaxe
-(3, 149, 25.0, 1, 1, 0, 0, 2), -- stone_axe
---'common_food'
+(1, 161, 35.0, 1, 3, 0, 0, 10), -- spider_eye
+(1, 152, 50.0, 1, 1, 0, 0, 11), -- rotten_flesh
+(1, 165, 50.0, 1, 3, 0, 0, 12), -- string
+-- common_armor
+(2, 85, 20.0, 1, 1, 0, 0, 0), -- leather_chestplate
+(2, 87, 20.0, 1, 1, 0, 0, 1), -- leather_leggings
+(2, 83, 20.0, 1, 1, 0, 0, 2), -- leather_arms
+(2, 86, 20.0, 1, 1, 0, 0, 3), -- leather_helmet
+(2, 84, 20.0, 1, 1, 0, 0, 4), -- leather_boots
+(2, 57, 10.0, 1, 1, 0, 0, 5), -- gold_chestplate
+(2, 62, 10.0, 1, 1, 0, 0, 6), -- gold_leggings
+(2, 53, 10.0, 1, 1, 0, 0, 7), -- gold_arms
+(2, 58, 10.0, 1, 1, 0, 0, 8), -- gold_helmet
+(2, 56, 10.0, 1, 1, 0, 0, 9), -- gold_boots
+-- common_tools
+(3, 164, 25.0, 1, 1, 0, 0, 0), -- stone_sword
+(3, 163, 25.0, 1, 1, 0, 0, 1), -- stone_pickaxe
+(3, 162, 25.0, 1, 1, 0, 0, 2), -- stone_axe
+(3, 65, 15.0, 1, 1, 0, 0, 3), -- gold_sword
+(3, 63, 15.0, 1, 1, 0, 0, 4), -- gold_pickaxe
+(3, 54, 15.0, 1, 1, 0, 0, 5), -- gold_axe
+-- common_food
 (4, 1, 80.0, 1, 5, 0, 0, 0), -- apple
-(4, 157, 80.0, 2, 5, 0, 0, 1), -- wheat
-(4, 158, 80.0, 3, 5, 0, 0, 2), -- wheat_seeds
-(4, 153, 20.0, 1, 3, 0, 0, 3), -- sugar
+(4, 170, 80.0, 2, 5, 0, 0, 1), -- wheat
+(4, 171, 80.0, 3, 5, 0, 0, 2), -- wheat_seeds
 (4, 13, 80.0, 1, 5, 0, 0, 4), -- brown_mushroom
-(4, 135, 80.0, 1, 5, 0, 0, 5), -- red_mushroom
-(4, 16, 35.0, 1, 5, 0, 0, 6), -- carrot
-(4, 81, 25.0, 1, 2, 0, 0, 7), -- porkchop
-(4, 120, 25.0, 1, 2, 0, 0, 8), -- rabbit
-(4, 38, 80.0, 1, 3, 0, 0, 9), -- egg
+(4, 148, 80.0, 1, 5, 0, 0, 5), -- red_mushroom
+(4, 94, 25.0, 1, 2, 0, 0, 7), -- porkchop
+(4, 133, 25.0, 1, 2, 0, 0, 8), -- rabbit
+(4, 40, 80.0, 1, 3, 0, 0, 9), -- egg
 (4, 17, 25.0, 1, 2, 0, 0, 10), -- chicken
-(4, 47, 35.0, 1, 5, 0, 0, 11), -- fish0
-(4, 48, 30.0, 1, 3, 0, 0, 12), -- fish1
+(4, 49, 35.0, 1, 5, 0, 0, 11), -- fish0
+(4, 50, 30.0, 1, 3, 0, 0, 12), -- fish1
 (4, 3, 25.0, 1, 3, 0, 0, 13), -- beef
-(4, 24, 15.0, 1, 2, 0, 0, 14), -- cookie
-(4, 117, 15.0, 1, 1, 0, 0, 15), -- pumpkin
-(4, 119, 50.0, 1, 2, 0, 0, 16), -- pumpkin_seeds
-(4, 76, 10.0, 1, 1, 0, 0, 17), -- melon
-(4, 77, 10.0, 1, 5, 0, 0, 18), -- melon_seeds
-(4, 78, 25.0, 1, 5, 0, 0, 19), -- mutton
-(4, 22, 10.0, 1, 2, 0, 0, 20), -- cocoa
---'common_potions'
-(5, 104, 20.0, 1, 2, 0, 0, 0), -- night_vision
-(5, 87, 20.0, 1, 1, 0, 0, 1), -- invisibility
-(5, 99, 20.0, 1, 1, 0, 0, 2), -- strength
-(5, 109, 20.0, 1, 1, 0, 0, 3), -- weakness
-(5, 95, 20.0, 1, 1, 0, 0, 4), -- leaping
---'uncommon_items',
-(6, 147, 15.0, 2, 6, 0, 0, 0), -- spectral_arrow
-(6, 63, 20.0, 2, 7, 0, 0, 1), -- iron_ingot
-(6, 80, 25.0, 1, 2, 0, 0, 2), -- paper
-(6, 138, 50.0, 1, 2, 0, 0, 3), -- reeds
+(4, 130, 15.0, 1, 1, 0, 0, 15), -- pumpkin
+(4, 132, 50.0, 1, 2, 0, 0, 16), -- pumpkin_seeds
+(4, 89, 10.0, 1, 1, 0, 0, 17), -- melon
+(4, 90, 10.0, 1, 5, 0, 0, 18), -- melon_seeds
+(4, 91, 25.0, 1, 5, 0, 0, 19), -- mutton
+-- common_potions
+(5, 117, 20.0, 1, 2, 0, 0, 0), -- night_vision
+(5, 108, 20.0, 1, 1, 0, 0, 4), -- leaping
+-- uncommon_items
+(6, 160, 15.0, 2, 6, 0, 0, 0), -- spectral_arrow
+(6, 75, 20.0, 2, 7, 0, 0, 1), -- iron_ingot
+(6, 93, 25.0, 1, 2, 0, 0, 2), -- paper
+(6, 151, 50.0, 1, 2, 0, 0, 3), -- reeds
 (6, 9, 25.0, 1, 2, 0, 0, 4), -- book
 (6, 11, 30.0, 1, 1, 0, 0, 5), -- bowl
-(6, 136, 30.0, 1, 2, 0, 0, 6), -- redstone
-(6, 137, 40.0, 1, 2, 0, 0, 7), -- redstone_torch
+(6, 149, 30.0, 1, 2, 0, 0, 6), -- redstone
+(6, 150, 40.0, 1, 2, 0, 0, 7), -- redstone_torch
 (6, 21, 50.0, 1, 5, 0, 0, 8), -- coal
 (6, 10, 25.0, 1, 1, 0, 0, 9), -- bow
 (6, 19, 15.0, 1, 3, 0, 0, 10), -- clay
 (6, 14, 50.0, 1, 1, 0, 0, 11), -- bucket
-(6, 145, 35.0, 1, 3, 0, 0, 12), -- slime_ball
-(6, 68, 35.0, 1, 3, 0, 0, 13), -- lead
-(6, 45, 25.0, 1, 3, 0, 0, 14) -- fermented_spider_eye
---'uncommon_armor',
-(7, 60, 12.5, 1, 1, 0, 0, 0), -- iron_chestplate
-(7, 64, 20.0, 1, 1, 0, 0, 1), -- iron_leggings
-(7, 59, 20.0, 1, 1, 0, 0, 2), -- iron_boots
-(7, 61, 20.0, 1, 1, 0, 0, 3), -- iron_helmet
-(7, 142, 20.0, 1, 1, 0, 0, 4), -- shield
---'uncommon_tools',
-(8, 66, 35.0, 1, 1, 0, 0, 0), -- iron_sword
-(8, 65, 25.0, 1, 1, 0, 0, 1), -- iron_pickaxe
-(8, 57, 25.0, 1, 1, 0, 0, 2), -- iron_axe
-(8, 53, 25.0, 1, 1, 0, 0, 3), -- gold_sword
---'uncommon_potions',
-(9, 90, 20.0, 1, 2, 0, 0, 0), -- night_vision2
-(9, 88, 20.0, 1, 1, 0, 0, 1), -- invisibility2
-(9, 113, 20.0, 1, 1, 0, 0, 2), -- strength2
-(9, 112, 20.0, 1, 1, 0, 0, 3), -- weakness2
-(9, 92, 20.0, 1, 1, 0, 0, 4), -- leaping2
-(9, 101, 60.0, 1, 1, 0, 0, 5), -- swiftness
-(9, 105, 60.0, 1, 1, 0, 0, 6), -- water_breathing
---'rare_items',
-(10, 154, 35.0, 1, 2, 0, 0, 0), -- tnt
-(10, 6, 25.0, 2, 5, 0, 0, 1), -- blaze_powder
-(10, 75, 25.0, 2, 5, 0, 0, 2), -- magma_cream
-(10, 20, 25.0, 1, 1, 0, 0, 3), -- clock
-(10, 23, 25.0, 1, 1, 0, 0, 4), -- compass
-(10, 27, 10.0, 1, 1, 0, 0, 5), -- diamond_block
-(10, 50, 25.0, 1, 5, 0, 0, 6), -- glowstone
-(10, 43, 35.0, 1, 3, 0, 0, 7), -- ender_pearl
-(10, 42, 35.0, 1, 3, 0, 0, 8), -- ender_eye
-(10, 7, 25.0, 1, 3, 0, 0, 9), -- blaze_rod
-(10, 49, 25.0, 1, 2, 0, 0, 10), -- ghast_tear
-(10, 44, 50.0, 1, 3, 0, 0, 11), -- experience_bottle
-(10, 25, 25.0, 1, 3, 0, 0, 12), -- diamond
-(10, 115, 20.0, 1, 3, 0, 0, 13), -- prismarine_crystals
-(10, 116, 20.0, 1, 3, 0, 0, 14), -- prismarine_shard
-(10, 141, 20.0, 1, 1, 0, 0, 15), -- sea_lantern
-(10, 79, 15.0, 1, 1, 0, 0, 16), -- nether_star
-(10, 46, 35.0, 1, 5, 0, 0, 17), -- firework_charge
---'rare_armor',
-(11, 29, 10.0, 1, 1, 0, 0, 0), -- diamond_chestplate
-(11, 32, 10.0, 1, 1, 0, 0, 1), -- diamond_leggings
-(11, 30, 10.0, 1, 1, 0, 0, 2), -- diamond_helmet
-(11, 28, 10.0, 1, 1, 0, 0, 3), -- diamond_boots
-(11, 60, 15.0, 1, 1, 1, 2, 4), -- iron_chestplate
-(11, 64, 15.0, 1, 1, 1, 2, 5), -- iron_leggings
-(11, 61, 20.0, 1, 1, 1, 2, 6), -- iron_helmet
-(11, 59, 20.0, 1, 1, 1, 2, 7), -- iron_boots
-(11, 62, 10.0, 1, 1, 0, 0, 8), -- iron_horse_armor
-(11, 51, 10.0, 1, 1, 0, 0, 9), -- gold_horse_armor
---'rare_tools',
-(12, 33, 50.0, 1, 1, 0, 0, 0), -- diamond_pickaxe
-(12, 34, 50.0, 1, 1, 0, 0, 1), -- diamond_sword
-(12, 66, 35.0, 1, 1, 1, 2, 2), -- iron_sword
---'rare_food',
-(13, 121, 25.0, 1, 1, 0, 0, 0), -- rabbit_foot
-(13, 82, 35.0, 1, 3, 0, 0, 1), -- potato
-(13, 15, 50.0, 1, 1, 0, 0, 2), -- cake
-(13, 118, 50.0, 1, 1, 0, 0, 3), -- pumpkin_pie
-(13, 146, 15.0, 1, 1, 0, 0, 4), -- speckled_melon
-(13, 4, 50.0, 1, 5, 0, 0, 5), -- beetroot
-(13, 5, 50.0, 1, 3, 0, 0, 6), -- beetroot_seeds
---'rare_potions',
-(14, 93, 20.0, 1, 2, 0, 0, 0), -- leaping3
-(14, 103, 20.0, 1, 2, 0, 0, 1), -- swiftness3
-(14, 108, 20.0, 1, 2, 0, 0, 2), -- fire_resistance2
-(14, 96, 20.0, 1, 2, 0, 0, 3), -- healing2
-(14, 111, 20.0, 1, 2, 0, 0, 4), -- harming2
-(14, 89, 10.0, 1, 2, 0, 0, 5), -- regeneration3
-(14, 114, 20.0, 1, 2, 0, 0, 6), -- strength3
-(14, 97, 20.0, 1, 2, 0, 0, 7), -- luck
---'epic_items',
-(15, 143, 15.0, 1, 1, 0, 0, 0), -- shulker_box
-(15, 144, 20.0, 1, 1, 0, 0, 1), -- shulker_shell
-(15, 35, 15.0, 1, 1, 0, 0, 2), -- dragon_breath
-(15, 39, 10.0, 1, 1, 0, 0, 3), -- elytra
-(15, 156, 10.0, 1, 1, 0, 0, 4), -- totem_of_undying
-(15, 44, 50.0, 1, 3, 0, 0, 5), -- experience_bottle
-(15, 40, 50.0, 1, 3, 0, 0, 6), -- emerald
-(15, 41, 25.0, 1, 2, 0, 0, 7), -- end_crystal
-(15, 18, 25.0, 1, 3, 0, 0, 8), -- chorus_fruit_popped
---'epic_records),
-(16, 124, 10.0, 1, 1, 0, 0, 0), -- record_13
-(16, 126, 10.0, 1, 1, 0, 0, 1), -- record_cat
-(16, 125, 10.0, 1, 1, 0, 0, 2), -- record_blocks
-(16, 127, 10.0, 1, 1, 0, 0, 3), -- record_chirp
-(16, 128, 10.0, 1, 1, 0, 0, 4), -- record_far
-(16, 129, 10.0, 1, 1, 0, 0, 5), -- record_mall
-(16, 130, 10.0, 1, 1, 0, 0, 6), -- record_mellohi
-(16, 131, 10.0, 1, 1, 0, 0, 7), -- record_stal
-(16, 132, 10.0, 1, 1, 0, 0, 8), -- record_strad
-(16, 134, 10.0, 1, 1, 0, 0, 9), -- record_ward
-(16, 123, 10.0, 1, 1, 0, 0, 10), -- record_11
-(16, 133, 10.0, 1, 1, 0, 0, 11), -- record_wait
---'epic_food',
-(17, 54, 35.0, 1, 2, 0, 0, 0), -- golden_apple
-(17, 55, 35.0, 1, 2, 0, 0, 1), -- golden_carrot
---'epic_armor',
-(18, 29, 18.0, 1, 1, 1, 3, 0), -- diamond_chestplate
-(18, 32, 22.0, 1, 1, 1, 3, 1), -- diamond_leggings
-(18, 30, 22.0, 1, 1, 1, 3, 2), -- diamond_helmet
-(18, 28, 22.0, 1, 1, 1, 3, 3), -- diamond_boots
-(18, 60, 35.0, 1, 1, 2, 3, 4), -- iron_chestplate
-(18, 64, 35.0, 1, 1, 2, 3, 5), -- iron_leggings
-(18, 61, 35.0, 1, 1, 2, 3, 6), -- iron_helmet
-(18, 59, 35.0, 1, 1, 2, 3, 7), -- iron_boots
-(18, 31, 25.0, 1, 1, 0, 0, 8), -- diamond_horse_armor
---'epic_tools',
-(19, 34, 50.0, 1, 1, 1, 2, 0), -- diamond_sword
-(19, 66, 50.0, 1, 1, 2, 3, 1) -- iron_sword
+(6, 158, 35.0, 1, 3, 0, 0, 12), -- slime_ball
+(6, 81, 35.0, 1, 3, 0, 0, 13), -- lead
+(6, 47, 25.0, 1, 3, 0, 0, 14), -- fermented_spider_eye
+-- uncommon_armor
+(7, 72, 12.5, 1, 1, 0, 0, 0), -- iron_chestplate
+(7, 76, 20.0, 1, 1, 0, 0, 1), -- iron_leggings
+(7, 71, 20.0, 1, 1, 0, 0, 2), -- iron_boots
+(7, 73, 20.0, 1, 1, 0, 0, 3), -- iron_helmet
+(7, 155, 20.0, 1, 1, 0, 0, 4), -- shield
+(7, 57, 10.0, 1, 1, 1, 2, 5), -- gold_chestplate
+(7, 62, 10.0, 1, 1, 1, 2, 6), -- gold_leggings
+(7, 53, 10.0, 1, 1, 1, 2, 7), -- gold_arms
+(7, 58, 10.0, 1, 1, 1, 2, 8), -- gold_helmet
+(7, 56, 10.0, 1, 1, 1, 2, 9), -- gold_boots
+-- uncommon_tools
+(8, 79, 35.0, 1, 1, 0, 0, 0), -- iron_sword
+(8, 77, 25.0, 1, 1, 0, 0, 1), -- iron_pickaxe
+(8, 69, 25.0, 1, 1, 0, 0, 2), -- iron_axe
+(8, 78, 25.0, 1, 1, 0, 0, 3), -- iron_shovel
+(8, 53, 25.0, 1, 1, 1, 2, 4), -- gold_sword
+(8, 63, 15.0, 1, 1, 1, 2, 5), -- gold_pickaxe
+(8, 54, 15.0, 1, 1, 1, 2, 6), -- gold_axe
+-- uncommon food
+(9, 166, 20.0, 1, 3, 0, 0, 3), -- sugar
+(9, 16, 35.0, 1, 5, 0, 0, 6), -- carrot
+(9, 22, 10.0, 1, 2, 0, 0, 20), -- cocoa
+(9, 24, 15.0, 1, 2, 0, 0, 14), -- cookie
+-- uncommon_potions
+(10, 100, 20.0, 1, 1, 0, 0, 1), -- invisibility
+(10, 112, 20.0, 1, 1, 0, 0, 2), -- strength
+(10, 122, 20.0, 1, 1, 0, 0, 3), -- weakness
+(10, 114, 60.0, 1, 1, 0, 0, 5), -- swiftness
+(10, 118, 60.0, 1, 1, 0, 0, 6), -- water_breathing
+
+-- scarce_items
+(11, 2, 50.0, 10, 20, 0, 0, 0), -- arrow
+(11, 167, 35.0, 1, 2, 0, 0, 1), -- tnt
+(11, 6, 25.0, 1, 4, 0, 0, 2), -- blaze_powder
+(11, 25, 15.0, 1, 2, 0, 0, 3), -- diamond
+(11, 75, 20.0, 8, 12, 0, 0, 4), -- iron_ingot
+(11, 70, 15.0, 1, 2, 0, 0, 5), -- iron_block
+(11, 45, 15.0, 1, 1, 0, 0, 6), -- ender_pearl
+
+--scarce_armor
+(12, 85, 15.0, 1, 1, 1, 2, 0), -- leather_chestplate
+(12, 87, 15.0, 1, 1, 1, 2, 1), -- leather_leggings
+(12, 83, 15.0, 1, 1, 1, 2, 2), -- leather_arms
+(12, 86, 15.0, 1, 1, 1, 2, 3), -- leather_helmet
+(12, 84, 15.0, 1, 1, 1, 2, 4), -- leather_boots
+(12, 72, 20.0, 1, 1, 1, 1, 5), -- iron_chestplate
+(12, 76, 20.0, 1, 1, 1, 1, 6), -- iron_leggings
+(12, 71, 20.0, 1, 1, 1, 1, 7), -- iron_boots
+(12, 73, 20.0, 1, 1, 1, 1, 8), -- iron_helmet
+--scarce_tools
+(13, 79, 35.0, 1, 1, 1, 1, 0), -- iron_sword
+(13, 10, 25.0, 1, 1, 1, 3, 0), -- bow
+(13, 77, 25.0, 1, 1, 1, 1, 1), -- iron_pickaxe
+(13, 69, 25.0, 1, 1, 1, 1, 2), -- iron_axe
+(13, 78, 25.0, 1, 1, 1, 1, 3), -- iron_shovel
+(13, 34, 15.0, 1, 1, 0, 0, 4), -- diamond_pickaxe
+(13, 36, 10.0, 1, 1, 0, 0, 5), -- diamond_sword
+-- scarce_food
+(14, 15, 50.0, 1, 1, 0, 0, 1), -- cake
+(14, 131, 50.0, 1, 1, 0, 0, 2), -- pumpkin_pie
+-- scarce_potions
+(15, 103, 20.0, 1, 2, 0, 0, 0), -- night_vision2
+(15, 101, 20.0, 1, 2, 0, 0, 1), -- invisibility2
+(15, 126, 20.0, 1, 2, 0, 0, 2), -- strength2
+(15, 125, 20.0, 1, 2, 0, 0, 3), -- weakness2
+(15, 105, 20.0, 1, 2, 0, 0, 4), -- leaping2
+-- rare_items
+(16, 167, 35.0, 2, 4, 0, 0, 0), -- tnt
+(16, 6, 25.0, 2, 5, 0, 0, 1), -- blaze_powder
+(16, 88, 25.0, 2, 5, 0, 0, 2), -- magma_cream
+(16, 20, 25.0, 1, 1, 0, 0, 3), -- clock
+(16, 23, 25.0, 1, 1, 0, 0, 4), -- compass
+(16, 28, 10.0, 1, 1, 0, 0, 5), -- diamond_block
+(16, 52, 25.0, 1, 5, 0, 0, 6), -- glowstone
+(16, 45, 35.0, 1, 3, 0, 0, 7), -- ender_pearl
+(16, 44, 35.0, 1, 3, 0, 0, 8), -- ender_eye
+(16, 7, 25.0, 1, 3, 0, 0, 9), -- blaze_rod
+(16, 51, 25.0, 1, 2, 0, 0, 10), -- ghast_tear
+(16, 46, 50.0, 1, 3, 0, 0, 11), -- experience_bottle
+(16, 25, 25.0, 1, 3, 0, 0, 12), -- diamond
+(16, 128, 20.0, 1, 3, 0, 0, 13), -- prismarine_crystals
+(16, 129, 20.0, 1, 3, 0, 0, 14), -- prismarine_shard
+(16, 154, 20.0, 1, 1, 0, 0, 15), -- sea_lantern
+(16, 92, 15.0, 1, 1, 0, 0, 16), -- nether_star
+(16, 48, 35.0, 1, 5, 0, 0, 17), -- firework_charge
+-- rare_armor
+(17, 30, 10.0, 1, 1, 0, 0, 0), -- diamond_chestplate
+(17, 33, 10.0, 1, 1, 0, 0, 1), -- diamond_leggings
+(17, 31, 10.0, 1, 1, 0, 0, 2), -- diamond_helmet
+(17, 29, 10.0, 1, 1, 0, 0, 3), -- diamond_boots
+(17, 72, 15.0, 1, 1, 1, 2, 4), -- iron_chestplate
+(17, 76, 15.0, 1, 1, 1, 2, 5), -- iron_leggings
+(17, 73, 20.0, 1, 1, 1, 2, 6), -- iron_helmet
+(17, 71, 20.0, 1, 1, 1, 2, 7), -- iron_boots
+(17, 74, 10.0, 1, 1, 0, 0, 8), -- iron_horse_armor
+(17, 59, 10.0, 1, 1, 0, 0, 9), -- gold_horse_armor
+-- rare_tools
+(18, 34, 50.0, 1, 1, 0, 0, 0), -- diamond_pickaxe
+(18, 36, 50.0, 1, 1, 0, 0, 1), -- diamond_sword
+(18, 79, 35.0, 1, 1, 1, 2, 2), -- iron_sword
+-- rare_food
+(19, 134, 25.0, 1, 1, 0, 0, 0), -- rabbit_foot
+(19, 95, 35.0, 1, 3, 0, 0, 1), -- potato
+(19, 159, 15.0, 1, 1, 0, 0, 4), -- speckled_melon
+(19, 4, 50.0, 1, 5, 0, 0, 5), -- beetroot
+(19, 5, 50.0, 1, 3, 0, 0, 6), -- beetroot_seeds
+-- rare_potions
+(20, 106, 20.0, 1, 2, 0, 0, 0), -- leaping3
+(20, 116, 20.0, 1, 2, 0, 0, 1), -- swiftness3
+(20, 121, 20.0, 1, 2, 0, 0, 2), -- fire_resistance2
+(20, 109, 20.0, 1, 2, 0, 0, 3), -- healing2
+(20, 124, 20.0, 1, 2, 0, 0, 4), -- harming2
+(20, 102, 10.0, 1, 2, 0, 0, 5), -- regeneration3
+(20, 127, 20.0, 1, 2, 0, 0, 6), -- strength3
+(20, 110, 20.0, 1, 2, 0, 0, 7), -- luck
+-- epic_items
+(21, 156, 15.0, 1, 1, 0, 0, 0), -- shulker_box
+(21, 157, 20.0, 1, 1, 0, 0, 1), -- shulker_shell
+(21, 37, 15.0, 1, 1, 0, 0, 2), -- dragon_breath
+(21, 41, 10.0, 1, 1, 0, 0, 3), -- elytra
+(21, 169, 10.0, 1, 1, 0, 0, 4), -- totem_of_undying
+(21, 46, 50.0, 1, 3, 0, 0, 5), -- experience_bottle
+(21, 42, 50.0, 1, 3, 0, 0, 6), -- emerald
+(21, 43, 25.0, 1, 2, 0, 0, 7), -- end_crystal
+(21, 18, 25.0, 1, 3, 0, 0, 8), -- chorus_fruit_popped
+-- epic_records
+(22, 137, 10.0, 1, 1, 0, 0, 0), -- record_13
+(22, 139, 10.0, 1, 1, 0, 0, 1), -- record_cat
+(22, 138, 10.0, 1, 1, 0, 0, 2), -- record_blocks
+(22, 140, 10.0, 1, 1, 0, 0, 3), -- record_chirp
+(22, 141, 10.0, 1, 1, 0, 0, 4), -- record_far
+(22, 142, 10.0, 1, 1, 0, 0, 5), -- record_mall
+(22, 143, 10.0, 1, 1, 0, 0, 6), -- record_mellohi
+(22, 144, 10.0, 1, 1, 0, 0, 7), -- record_stal
+(22, 145, 10.0, 1, 1, 0, 0, 8), -- record_strad
+(22, 147, 10.0, 1, 1, 0, 0, 9), -- record_ward
+(22, 136, 10.0, 1, 1, 0, 0, 10), -- record_11
+(22, 146, 10.0, 1, 1, 0, 0, 11), -- record_wait
+-- epic_food
+(23, 66, 35.0, 1, 2, 0, 0, 0), -- golden_apple
+(23, 67, 35.0, 1, 2, 0, 0, 1), -- golden_carrot
+-- epic_armor
+(24, 30, 18.0, 1, 1, 1, 3, 0), -- diamond_chestplate
+(24, 33, 22.0, 1, 1, 1, 3, 1), -- diamond_leggings
+(24, 31, 22.0, 1, 1, 1, 3, 2), -- diamond_helmet
+(24, 29, 22.0, 1, 1, 1, 3, 3), -- diamond_boots
+(24, 72, 35.0, 1, 1, 2, 3, 4), -- iron_chestplate
+(24, 76, 35.0, 1, 1, 2, 3, 5), -- iron_leggings
+(24, 73, 35.0, 1, 1, 2, 3, 6), -- iron_helmet
+(24, 71, 35.0, 1, 1, 2, 3, 7), -- iron_boots
+(24, 32, 25.0, 1, 1, 0, 0, 8), -- diamond_horse_armor
+-- epic_tools
+(25, 36, 50.0, 1, 1, 1, 2, 0), -- diamond_sword
+(25, 79, 50.0, 1, 1, 2, 3, 1), -- iron_sword
 ;
 
 -- -----------------------------------------------------
@@ -471,11 +553,11 @@ values
 ('common_potion_food', 'COMMON', 'BASIC', 1, 2, 5, 8),
 ('common_armor_tools', 'COMMON', 'BASIC', 1, 2, 5, 8),
 ('uncommon_chest', 'UNCOMMON', 'BASIC', 2, 5, 5, 10),
-('uncommon_chest2', 'UNCOMMO', 'BASIC', 2, 5, 5, 10),
+('uncommon_chest2', 'UNCOMMON', 'BASIC', 2, 5, 5, 10),
 ('uncommon_chest3', 'UNCOMMON', 'BASIC', 2, 5, 5, 10),
-('scarce_chest', 'UNCOMMON', 'BASIC', 3, 5, 7, 15),
-('scarce_chest2', 'UNCOMMON', 'BASIC', 3, 5, 7, 15),
-('scarce_chest3', 'UNCOMMON', 'BASIC', 3, 5, 7, 15),
+('scarce_chest', 'SCARCE', 'BASIC', 3, 5, 7, 15),
+('scarce_chest2', 'SCARCE', 'BASIC', 3, 5, 7, 15),
+('scarce_chest3', 'SCARCE', 'BASIC', 3, 5, 7, 15),
 ('rare_chest', 'RARE', 'BASIC', 5, 8, 15, 25),
 ('epic_chest', 'EPIC', 'BASIC', 7, 10, 27, 27),
 
@@ -487,11 +569,11 @@ values
 insert into containers_has_groups (container_id, group_id, group_weight, min_items, max_items, ordering)
 values
 -- general chest
-(1, 1, 0, 3, 5, 0),--common_chest: common_items
-(1, 2, 0, 1, 2, 1),--common_chest: common_armor
-(1, 4, 0, 1, 3, 2),--common_chest: common_food
-(1, 3, 0, 1, 2, 3),--common_chest: common_tools
-(1, 5, 0, 1, 2, 4),--common_chest: common_potions
+(1, 1, 25, 1, 5, 0),--common_chest: common_items
+(1, 2, 20, 1, 2, 1),--common_chest: common_armor
+(1, 4, 20, 1, 3, 2),--common_chest: common_food
+(1, 3, 20, 1, 2, 3),--common_chest: common_tools
+(1, 5, 15, 1, 1, 4),--common_chest: common_potions
 -- TODO need to add keys group or keys items with heaviest weight
 -- TODO need to add treasure! group or items with heaviest weight ex. paintings, swords, locks, picks, books, etc.
 
@@ -532,27 +614,53 @@ values
 (6, 1, 0, 3, 5, 6),--uncommon_chest3: common_items
 (6, 4, 0, 1, 3, 7),--uncommon_chest3: common_food
 (6, 5, 0, 1, 2, 8),--uncommon_chest3: common_potions
-(7, 10, 0, 2, 6, 0),--rare_chest: rare_items
-(7, 11, 0, 1, 2, 1),--rare_chest: rare_armor
-(7, 13, 0, 2, 4, 2),--rare_chest: rare_food
-(7, 12, 0, 1, 1, 3),--rare_chest: rare_tools
-(7, 14, 0, 1, 1, 4),--rare_chest: rare_potions
-(7, 6, 0, 2, 5, 5),--rare_chest: uncommon_items
-(7, 7, 0, 1, 1, 6),--rare_chest: uncommon_armor
-(7, 8, 0, 1, 2, 7),--rare_chest: uncommon_tools
-(7, 9, 0, 1, 2, 8),--rare_chest: uncommon_potions
-(7, 1, 0, 3, 5, 9),--rare_chest: common_items
-(7, 5, 0, 1, 2, 10),--rare_chest: common_potions
-(8, 15, 0, 3, 5, 0),--epic_chest: epic_items
-(8, 17, 0, 2, 2, 1),--epic_chest: epic_food
-(8, 18, 0, 2, 3, 2),--epic_chest: epic_armor
-(8, 19, 0, 1, 1, 3),--epic_chest: epic_tools
-(8, 16, 0, 1, 1, 4),--epic_chest: epic_records
-(8, 10, 0, 1, 3, 5),--epic_chest: rare_items
-(8, 10, 0, 2, 4, 6),--epic_chest: rare_items
-(8, 10, 0, 2, 4, 7),--epic_chest: rare_items
-(8, 11, 0, 1, 1, 8),--epic_chest: rare_armor
-(8, 13, 0, 2, 4, 9),--epic_chest: rare_food
-(8, 12, 0, 1, 1, 10),--epic_chest: rare_tools
-(8, 14, 0, 1, 3, 11),--epic_chest: rare_potions
-(8, 9, 0, 1, 3, 12) --epic_chest: uncommon_potions
+
+-- scarce_chest: items/armor/tools
+(7, 11, 20, 2, 6, 0),--scarce_chest: scarce_items
+(7, 12, 10, 1, 2, 1),--scarce_chest: scarce_armor
+(7, 13, 10, 1, 1, 3),--scarce_chest: scarce_tools
+(7, 6, 20, 2, 5, 5),--scarce_chest: uncommon_items
+(7, 7, 10, 1, 1, 6),--scarce_chest: uncommon_armor
+(7, 8, 10, 1, 2, 7),--scarce_chest: uncommon_tools
+(7, 1, 20, 3, 5, 9),--scarce_chest: common_items
+
+-- scarce_chest2: food/potions/items
+(8, 11, 20, 2, 6, 0),--scarce_chest: scarce_items
+(8, 14, 20, 2, 4, 2),--scarce_chest: scarce_food
+(8, 15, 20, 1, 1, 4),--scarce_chest: scarce_potions
+(8, 6, 20, 2, 5, 5),--scarce_chest: uncommon_items
+(8, 9, 20, 1, 2, 8),--scarce_chest: uncommon_potions
+(8, 1, 20, 3, 5, 9),--scarce_chest: common_items
+(8, 5, 20, 1, 2, 10),--scarce_chest: common_potions
+
+-- scarce_chest3: armor/tools
+(9, 16, 10, 2, 6, 0),--rare_items
+(9, 11, 20, 2, 6, 0),--scarce_chest: scarce_items
+(9, 11, 20, 2, 6, 0),--scarce_chest: scarce_items
+(9, 12, 20, 1, 2, 1),--scarce_chest: scarce_armor
+(9, 12, 20, 1, 2, 1),--scarce_chest: scarce_armor
+
+-- rare_chest
+(10, 16, 0, 2, 6, 0),--rare_chest: rare_items
+(10, 17, 0, 1, 2, 1),--rare_chest: rare_armor
+(10, 19, 0, 2, 4, 2),--rare_chest: rare_food
+(10, 18, 0, 1, 1, 3),--rare_chest: rare_tools
+(10, 20, 0, 1, 1, 4),--rare_chest: rare_potions
+(10, 6, 0, 2, 5, 5),--rare_chest: uncommon_items
+(10, 7, 0, 1, 1, 6),--rare_chest: uncommon_armor
+(10, 8, 0, 1, 2, 7),--rare_chest: uncommon_tools
+(10, 9, 0, 1, 2, 8),--rare_chest: uncommon_potions
+(10, 1, 0, 3, 5, 9),--rare_chest: common_items
+(10, 5, 0, 1, 2, 10),--rare_chest: common_potions
+
+(11, 21, 0, 3, 5, 0),--epic_chest: epic_items
+(11, 23, 0, 2, 2, 1),--epic_chest: epic_food
+(11, 24, 0, 2, 3, 2),--epic_chest: epic_armor
+(11, 25, 0, 1, 1, 3),--epic_chest: epic_tools
+(11, 22, 0, 1, 1, 4),--epic_chest: epic_records
+(11, 16, 0, 1, 3, 5),--epic_chest: rare_items
+(11, 17, 0, 1, 1, 8),--epic_chest: rare_armor
+(11, 19, 0, 2, 4, 9),--epic_chest: rare_food
+(11, 18, 0, 1, 1, 10),--epic_chest: rare_tools
+(11, 20, 0, 1, 3, 11),--epic_chest: rare_potions
+(11, 9, 0, 1, 3, 12) --epic_chest: uncommon_potions

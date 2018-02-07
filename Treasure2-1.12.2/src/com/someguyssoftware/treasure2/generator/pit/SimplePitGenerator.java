@@ -21,6 +21,14 @@ import net.minecraft.world.gen.feature.WorldGenerator;
  */
 public class SimplePitGenerator {
 
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param surfaceCoords
+	 * @param spawnCoords
+	 * @return
+	 */
 	public static boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		// is the chest placed in a cavern
 		boolean inCavern = false;
@@ -30,6 +38,7 @@ public class SimplePitGenerator {
 		
 		// if there is air above the origin, then in cavern. (pos in isAir() doesn't matter)
 		if (blockState == null || blockState.getMaterial() == Material.AIR) {
+			Treasure.logger.debug("Spawn coords is in cavener.");
 			inCavern = true;
 		}
 		

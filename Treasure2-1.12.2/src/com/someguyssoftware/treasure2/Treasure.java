@@ -20,7 +20,9 @@ import com.someguyssoftware.lootbuilder.db.DbManager;
 import com.someguyssoftware.lootbuilder.exception.DatabaseInitializationException;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.client.model.BandedChestModel;
+import com.someguyssoftware.treasure2.client.model.CrateChestModel;
 import com.someguyssoftware.treasure2.client.model.StandardChestModel;
+import com.someguyssoftware.treasure2.client.render.tileentity.CrateChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.TreasureChestCommand;
@@ -28,7 +30,9 @@ import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
@@ -73,10 +77,10 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "5.0.0";
+	protected static final String VERSION = "1.0.0";
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
-	private static final String VERSION_URL = "https://www.dropbox.com/s/6j3h91c69nd7g4f/treasure-versions2.json?dl=1";
+	private static final String VERSION_URL = "";
 	private static final BuildVersion MINECRAFT_VERSION = new BuildVersion(1, 12, 2);
 	
 	// latest version
@@ -179,6 +183,16 @@ public class Treasure extends AbstractMod {
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				WoodChestTileEntity.class,
 				new TreasureChestTileEntityRenderer("wood-chest", new StandardChestModel()));
+		
+		// crate chest
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				CrateChestTileEntity.class,
+				new CrateChestTileEntityRenderer("crate-chest", new CrateChestModel()));
+
+		// crate chest
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				MoldyCrateChestTileEntity.class,
+				new CrateChestTileEntityRenderer("moldy-crate-chest", new CrateChestModel()));
 		
 		// ironbound chest
 		ClientRegistry.bindTileEntitySpecialRenderer(

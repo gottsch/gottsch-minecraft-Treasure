@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.item;
 
+import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
@@ -16,18 +17,23 @@ import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 /**
@@ -58,11 +64,6 @@ public class KeyItem extends ModItem {
 	
 	// TODO need a LockMessage - an enum to indicate the action that resulted from unlock, ex. SUCCESS, FAIL, DESTROY, NO_FIT, etc.
 	// instead of just a true/false result.
-	
-	/*
-	 * The maximum number of uses of the key (aka durability)
-	 */
-	private int uses;
 
 	/*
 	 * The probability of a successful unlocking
@@ -81,10 +82,49 @@ public class KeyItem extends ModItem {
 		setRarity(Rarity.COMMON);
 		setBreakable(true);
 		setCraftable(false);
-		setUses(25);
+		setMaxDamage(25);
 		setSuccessProbability(100D);		
 	}
 
+	/**
+	 * Format:
+	 * 		Item Name (vanilla minecraft)
+	 * 		Rarity: [COMMON | UNCOMMON | SCARCE | RARE| EPIC]  [color = Gold] 
+	 * 		Category:  [...] [color = Gold]
+	 * 		Max Uses: [n] [color = Gold]
+	 * 		Breakable: [Yes | No] [color = Dark Red | Green]
+	 * 		Craftable: [Yes | No] [color = Green | Dark Red]
+	 */
+	@SuppressWarnings("deprecation")
+	@Override
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		super.addInformation(stack, worldIn, tooltip, flagIn);
+		
+		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.rarity", TextFormatting.DARK_BLUE + getRarity().toString()));
+		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.category", getCategory()));
+		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.max_uses", getMaxDamage()));
+
+		// is breakable tooltip
+		String breakable = "";
+		if (isBreakable()) {
+			breakable = TextFormatting.DARK_RED + I18n.translateToLocal("tooltip.yes");
+		}
+		else {
+			breakable =TextFormatting.GREEN + I18n.translateToLocal("tooltip.no");
+		}
+		tooltip.add(
+				I18n.translateToLocalFormatted("tooltip.label.breakable", breakable));
+		
+		String craftable = "";
+		if (isCraftable()) {
+			craftable = TextFormatting.GREEN + I18n.translateToLocal("tooltip.yes");
+		}
+		else {
+			craftable =TextFormatting.DARK_RED + I18n.translateToLocal("tooltip.no");
+		}
+		tooltip.add(	I18n.translateToLocalFormatted("tooltip.label.craftable", craftable));
+	}
+		
 	/**
 	 * 
 	 */
@@ -96,76 +136,76 @@ public class KeyItem extends ModItem {
 		Block block = worldIn.getBlockState(pos).getBlock();
 		if (block instanceof TreasureChestBlock) {
 			// get the tile entity
-			TreasureChestTileEntity te = (TreasureChestTileEntity) worldIn.getTileEntity(pos);
+			TileEntity te = worldIn.getTileEntity(pos);
+			if (te == null || !(te instanceof TreasureChestTileEntity)) {
+				Treasure.logger.warn("Null or incorrect TileEntity");
+				return EnumActionResult.FAIL;
+			}
+			TreasureChestTileEntity tcte = (TreasureChestTileEntity)te;
 						
 			// exit if on the client
 			if (worldIn.isRemote) {			
 				return EnumActionResult.FAIL;
 			}
-			
-//			boolean isLocked = false;
+
 			// determine if chest is locked
-			if (!te.hasLocks()) {
-//				isLocked = true;
+			if (!tcte.hasLocks()) {
 				return EnumActionResult.SUCCESS;
 			}
 			
 			try {
 				ItemStack heldItem = player.getHeldItem(hand);	
-//				if (isLocked) {
-					boolean breakKey = true;
-					boolean fitsLock = false;
-					LockState lockState = null;
-					
-					// check if this key is one that opens a lock (only first lock that key fits is unlocked).
-					for (LockState ls : te.getLockStates()) {
-						if (lockState.getLock() != null) {
-							lockState = ls;
-							if (lockState.getLock().acceptsKey(this) || fitsLock(lockState.getLock())) {
-								fitsLock = true;
-								break;
-							}
+				boolean breakKey = true;
+				boolean fitsLock = false;
+				LockState lockState = null;
+				
+				// check if this key is one that opens a lock (only first lock that key fits is unlocked).
+				for (LockState ls : tcte.getLockStates()) {
+					if (ls.getLock() != null) {
+						lockState = ls;
+						if (lockState.getLock().acceptsKey(this) || fitsLock(lockState.getLock())) {
+							fitsLock = true;
+							break;
 						}
 					}
-					
-					if (fitsLock) {
-						if (unlock(lockState.getLock())) {
-							LockItem lock = lockState.getLock();
-							// remove the lock
-							lockState.setLock(null);
-							// play noise
-							worldIn.playSound(player, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-							// update the client
-							te.sendUpdates();
-							// spawn the lock
-							InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(lock));
-							// don't break the key
-							breakKey = false;
-						}
-					}
-							
-					// check key's breakability
-					if (breakKey) {
-						if (isBreakable()  && TreasureConfig.enableKeyBreaks) {
-							// break key;
-							heldItem.shrink(1);
-							player.sendMessage(new TextComponentString("Key broke."));
-							worldIn.playSound(player, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-
-							if (heldItem.getCount() <=0) {
-								IInventory inventory = player.inventory;
-								inventory.setInventorySlotContents(player.inventory.currentItem, null);
-							}		
-						}
-						else {
-							player.sendMessage(new TextComponentString("Failed to unlock."));
-						}								
-					}
-
-//						}
-//					}
 				}
-//			}
+				
+				if (fitsLock) {
+					if (unlock(lockState.getLock())) {
+						LockItem lock = lockState.getLock();
+						// remove the lock
+						lockState.setLock(null);
+						// play noise
+						worldIn.playSound(player, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+						// update the client
+						tcte.sendUpdates();
+						// spawn the lock
+						InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(lock));
+						// don't break the key
+						breakKey = false;
+					}
+				}
+						
+				// check key's breakability
+				if (breakKey) {
+					if (isBreakable()  && TreasureConfig.enableKeyBreaks) {
+						// break key;
+						heldItem.shrink(1);
+						player.sendMessage(new TextComponentString("Key broke."));
+						worldIn.playSound(player, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+
+//						if (heldItem.getCount() <=0) {
+//							IInventory inventory = player.inventory;
+//							inventory.setInventorySlotContents(player.inventory.currentItem, null);
+//						}		
+					}
+					else {
+						player.sendMessage(new TextComponentString("Failed to unlock."));
+						// TODO test if it is damagable
+						heldItem.damageItem(1, player);
+					}						
+				}
+			}
 			catch (Exception e) {
 				Treasure.logger.error("error: ", e);
 			}			
@@ -271,17 +311,10 @@ public class KeyItem extends ModItem {
 	}
 
 	/**
-	 * @return the uses
+	 * @param damage the uses to set
 	 */
-	public int getUses() {
-		return uses;
-	}
-
-	/**
-	 * @param uses the uses to set
-	 */
-	public KeyItem setUses(int uses) {
-		this.uses = uses;
+	public KeyItem setMaxDamage(int damage) {
+		super.setMaxDamage(damage);
 		return this;
 	}
 

@@ -24,6 +24,7 @@ import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -56,8 +57,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 public class TreasureChestBlock extends AbstractModContainerBlock {
-	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-
+	public static final PropertyEnum<EnumFacing> FACING = PropertyDirection.create("facing", EnumFacing.class);
 	/*
 	 *  the class of the tileEntityClass this BlockChest should use.
 	 */
@@ -250,7 +250,6 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 
 		// face the block towards the palyer (there isn't really a front)
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 3);
-
         
 		if (!worldIn.isRemote) {
 			TileEntity te = worldIn.getTileEntity(pos);
@@ -273,7 +272,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 				Treasure.logger.debug("Rotate to:" + rotate);
 				try {
 					for (LockState lockState : tcte.getLockStates()) {
-						if (lockState != null && lockState.getLock() != null) {
+						if (lockState != null && lockState.getSlot() != null) {
 							Treasure.logger.debug("Original lock state:" + lockState);
 							// if a rotation is needed
 							if (shouldRotate) {

@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -164,25 +165,44 @@ public class DbManager {
 	 * @param rarity
 	 * @return
 	 */
-	public List<LootContainer> getContainersByRarity(Rarity rarity) {
-		
-		// query for all accounts that have that password
+	public List<LootContainer> getContainersByRarity(Rarity rarity) {		
 		List<LootContainer> list = null;
 		try {
-//			list = containerDao.queryForAll();
 			list = containerDao.queryBuilder().where()
-			         .eq("rarity", rarity.ordinal())
-			         .query();
-			
+			         .eq("rarity", rarity.name())
+			         .query();			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+			Treasure.logger.error("An error occurred attempting to retrieve containers by rarity:", e);
+		}		
 		return list;
 	}
 	
+	/**
+	 * 
+	 * @param rarity
+	 * @return
+	 */
+	public List<LootContainer> getContainersByRarity(List<Rarity> rarity) {
+		// convert rarity list to string
+		List<String> rarityNameList = rarity.stream().map(r -> r.name()).collect(Collectors.toList());				
+				
+		// query for all accounts that have that password
+		List<LootContainer> list = null;
+		try {
+			list = containerDao.queryBuilder().where()
+					.in("rarity", rarityNameList)
+			         .query();			
+		} catch (SQLException e) {
+			Treasure.logger.error("An error occurred attempting to retrieve containers by rarity:", e);
+		}		
+		return list;
+	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public List<LootContainerHasGroup> getGroupsByContainer(Integer id) {
 		// inner join to get groups
 		List<LootContainerHasGroup> containerGroups = null;

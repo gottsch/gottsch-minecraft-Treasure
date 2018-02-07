@@ -15,7 +15,9 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
@@ -40,6 +42,8 @@ public class TreasureBlocks {
 	
 	// CHESTS
 	public static final Block WOOD_CHEST;
+	public static final Block CRATE_CHEST;
+	public static final Block MOLDY_CRATE_CHEST;
 	public static final Block IRONBOUND_CHEST;
 	public static final Block PIRATE_CHEST;
 	
@@ -99,11 +103,33 @@ public class TreasureBlocks {
 				.setBounds(bounds)
 				.setHardness(3.0F);
 
+		CRATE_CHEST = new TreasureChestBlock(
+				Treasure.MODID, 
+				TreasureConfig.CRATE_CHEST_ID, 
+				CrateChestTileEntity.class,
+				TreasureChestTypes.CRATE)
+				.setBounds(bounds)
+				.setHardness(2.5F);
+		
+		MOLDY_CRATE_CHEST = new TreasureChestBlock(
+				Treasure.MODID, 
+				TreasureConfig.MOLDY_CRATE_CHEST_ID, 
+				MoldyCrateChestTileEntity.class,
+				TreasureChestTypes.CRATE)
+				.setBounds(bounds)
+				.setHardness(2.5F);
+		
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
 		chests.put(Rarity.COMMON, WOOD_CHEST);
+		chests.put(Rarity.COMMON, MOLDY_CRATE_CHEST);
+		chests.put(Rarity.UNCOMMON, CRATE_CHEST);
 		chests.put(Rarity.UNCOMMON, IRONBOUND_CHEST);
 		chests.put(Rarity.SCARCE, PIRATE_CHEST);
+		
+		// TEMP
+		chests.put(Rarity.RARE, PIRATE_CHEST);
+		chests.put(Rarity.EPIC, PIRATE_CHEST);
 		
 		// gravestone bounds
 		AxisAlignedBB[] gbs = new 	AxisAlignedBB[4];
@@ -176,6 +202,8 @@ public class TreasureBlocks {
 
 			final Block[] blocks = {
 					WOOD_CHEST,
+					CRATE_CHEST,
+					MOLDY_CRATE_CHEST,
 					IRONBOUND_CHEST,
 					PIRATE_CHEST,
 					GRAVESTONE1_STONE,
@@ -208,6 +236,8 @@ public class TreasureBlocks {
 			final ItemBlock[] items = {
 					// TODO update with ChestItemBlock so we can use addInformation() for display and mouse over  purposes.
 					new ItemBlock(WOOD_CHEST),
+					new ItemBlock(CRATE_CHEST),
+					new ItemBlock(MOLDY_CRATE_CHEST),
 					new ItemBlock(IRONBOUND_CHEST),
 					new ItemBlock(PIRATE_CHEST),
 					// TODO update with GravestonIetmBlock
@@ -241,6 +271,8 @@ public class TreasureBlocks {
 			// register the tile entities
 			GameRegistry.registerTileEntity(TreasureChestTileEntity.class, "treasureChestTileEntity");
 			GameRegistry.registerTileEntity(WoodChestTileEntity.class, TreasureConfig.WOOD_CHEST_TE_ID);
+			GameRegistry.registerTileEntity(CrateChestTileEntity.class, TreasureConfig.CRATE_CHEST_TE_ID);
+			GameRegistry.registerTileEntity(MoldyCrateChestTileEntity.class, TreasureConfig.MOLDY_CRATE_CHEST_TE_ID);
 			GameRegistry.registerTileEntity(IronboundChestTileEntity.class, TreasureConfig.IRONBOUND_CHEST_TE_ID);
 			GameRegistry.registerTileEntity(PirateChestTileEntity.class, TreasureConfig.PIRATE_CHEST_TE_ID);
 		}	

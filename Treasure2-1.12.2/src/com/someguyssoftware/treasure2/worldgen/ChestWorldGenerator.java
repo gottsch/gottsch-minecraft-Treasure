@@ -18,7 +18,9 @@ import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.generator.ChestGenerator;
+import com.someguyssoftware.treasure2.generator.AbstractTreasureGenerator;
+import com.someguyssoftware.treasure2.generator.CommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.UncommonChestGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
@@ -47,7 +49,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	private Map<Rarity, Integer> chunksSinceLastRarityChest;
 	
 	// the chest geneators
-	private Map<Rarity, ChestGenerator> generators = new HashMap<>();
+	private Map<Rarity, AbstractTreasureGenerator> generators = new HashMap<>();
 	
 	/**
 	 * 
@@ -69,11 +71,11 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		}
 		// setup the chest  generators
 		// TODO create all the same right now
-		generators.put(Rarity.COMMON, new ChestGenerator());
-		generators.put(Rarity.UNCOMMON, new ChestGenerator());
-		generators.put(Rarity.SCARCE, new ChestGenerator());
-		generators.put(Rarity.RARE, new ChestGenerator());
-		generators.put(Rarity.EPIC, new ChestGenerator());		
+		generators.put(Rarity.COMMON, new CommonChestGenerator());
+		generators.put(Rarity.UNCOMMON, new UncommonChestGenerator());
+		generators.put(Rarity.SCARCE, new CommonChestGenerator());
+		generators.put(Rarity.RARE, new CommonChestGenerator());
+		generators.put(Rarity.EPIC, new CommonChestGenerator());		
 	}
 
 	/**
@@ -125,20 +127,25 @@ public class ChestWorldGenerator implements IWorldGenerator {
 
 	    	// determine what type to generate
         	Rarity rarity = Rarity.values()[random.nextInt(Rarity.values().length)];
+			Treasure.logger.debug("Using Rarity: {}", rarity );
 			IChestConfig chestConfig = Configs.chestConfigs.get(rarity);
 			if (chestConfig == null) {
 				Treasure.logger.warn("Unable to locate a chest for rarity {}.", rarity);
 				return;
 			}
-			Treasure.logger.debug("Chunks since last rarity chest: {}", chunksSinceLastRarityChest.get(rarity) );
-			Treasure.logger.debug("Config chunks per chest: {}", chestConfig.getChunksPerChest());
+			Treasure.logger.debug("Chunks since last {} chest: {}", rarity,  chunksSinceLastRarityChest.get(rarity) );
+			Treasure.logger.debug("Chunks per {} chest: {}", rarity, chestConfig.getChunksPerChest());
     		if (chunksSinceLastRarityChest.get(rarity) >= chestConfig.getChunksPerChest()) {
     			
 				// 1. test if chest meets the probability criteria
+    			Treasure.logger.debug("{} chest probability: {}", rarity, chestConfig.getGenProbability());
 				if (!RandomHelper.checkProbability(random, chestConfig.getGenProbability())) {
 					Treasure.logger.debug("Chest does not meet generate probability.");
 					return;
-				}	
+				}
+				else {
+					Treasure.logger.debug("Chest MEETS generate probability!");
+				}
 				
 				// 2. test if correct biome
 				Biome biome = world.getBiome(coords.toPos());
@@ -160,6 +167,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
     			
     			// generate the chest/pit/chambers
     			// TODO there doesn't really need to be a separate gen for each rarity?? ie, what's the difference between them.
+				Treasure.logger.debug("Attempting to generate pit/chest.");
     			isGenerated = generators.get(rarity).generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
 
     			if (isGenerated) {

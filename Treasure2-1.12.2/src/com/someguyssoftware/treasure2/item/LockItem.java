@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
@@ -17,6 +18,7 @@ import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -24,6 +26,8 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 /**
@@ -72,10 +76,38 @@ public class LockItem extends ModItem {
 		setRarity(Rarity.COMMON);
 		setCraftable(false);
 		setCreativeTab(Treasure.TREASURE_TAB);
-		// TODO successChance (0.0F - 1.0F)
-		Random random = new Random();
-		random.nextFloat();
-		// TODO add checkProbability(random, float) to RandomHelper()
+	}
+	
+	/**
+	 * Format:
+	 * 		Item Name (vanilla minecraft)
+	 * 		Rarity: [COMMON | UNCOMMON | SCARCE | RARE| EPIC]  [color = Gold] 
+	 * 		Category:  [...] [color = Gold]
+	 * 		Craftable: [Yes | No] [color = Green | Dark Red]
+	 * 		Accepts Keys: [list] [color = Gold]
+	 */
+	@SuppressWarnings("deprecation")
+	@Override
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		super.addInformation(stack, worldIn, tooltip, flagIn);
+		
+		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.rarity", TextFormatting.DARK_BLUE + getRarity().toString()));
+		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.category", getCategory()));
+		
+		String craftable = "";
+		if (isCraftable()) {
+			craftable = TextFormatting.GREEN + I18n.translateToLocal("tooltip.yes");
+		}
+		else {
+			craftable =TextFormatting.DARK_RED + I18n.translateToLocal("tooltip.no");
+		}
+		tooltip.add(	I18n.translateToLocalFormatted("tooltip.label.craftable", craftable));
+
+		String keyList = getKeys().stream()
+                .map(e -> I18n.translateToLocal("item.treasure2:" + getUnlocalizedName()))
+                .collect(Collectors.joining(","));
+		
+		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.accepts_keys", keyList));
 	}
 	
 	/**
@@ -127,10 +159,10 @@ public class LockItem extends ModItem {
 				te.sendUpdates();
 				// decrement item in hand
 				heldItem.shrink(1);
-				if (heldItem.getCount() <=0) {
-					IInventory inventory = player.inventory;
-					inventory.setInventorySlotContents(player.inventory.currentItem, null);
-				}
+//				if (heldItem.getCount() <=0 && !player.capabilities.isCreativeMode) {
+//					IInventory inventory = player.inventory;
+//					inventory.setInventorySlotContents(player.inventory.currentItem, null);
+//				}
 				lockedAdded = true;
 				break;
 			}

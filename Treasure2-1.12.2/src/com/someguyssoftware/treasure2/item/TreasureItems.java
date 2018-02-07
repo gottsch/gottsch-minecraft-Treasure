@@ -3,8 +3,11 @@
  */
 package com.someguyssoftware.treasure2.item;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
@@ -54,7 +57,9 @@ public class TreasureItems {
 	public static KeyItem PILFERERS_LOCK_PICK;
 	public static KeyItem THIEFS_LOCK_PICK;
 	
-	
+	// chest holder
+	public static Multimap<Rarity, LockItem> locks;
+
 	static {
 		// TAB
 		TREASURE_TAB = new ModItem().setItemName(Treasure.MODID, TreasureConfig.TREASURE_TAB_ID);
@@ -68,53 +73,60 @@ public class TreasureItems {
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON)
 				.setCraftable(true)
-				.setUses(10);
+				.setMaxDamage(10);
 
 		STONE_KEY = new KeyItem(Treasure.MODID, TreasureConfig.STONE_KEY_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON)
 				.setCraftable(true)
-				.setUses(10);
+				.setMaxDamage(10);
 
 		IRON_KEY = new KeyItem(Treasure.MODID, TreasureConfig.IRON_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.UNCOMMON)
 				.setCraftable(true)
-				.setUses(10);
+				.setMaxDamage(10);
 		
 		GOLD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.GOLD_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.SCARCE)
 				.setCraftable(true)
-				.setUses(15);
+				.setMaxDamage(15);
 
 		DIAMOND_KEY = new KeyItem(Treasure.MODID, TreasureConfig.DIAMOND_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setUses(20);
+				.setMaxDamage(20);
 
 		EMERALD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.EMERALD_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setUses(20);
+				.setMaxDamage(20);
 		
-		METALLURGISTS_KEY = new KeyItem(Treasure.MODID, TreasureConfig.METALLURGISTS_KEY_ID)
+		METALLURGISTS_KEY = new MetallurgistsKey(Treasure.MODID, TreasureConfig.METALLURGISTS_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setUses(25);
+				.setMaxDamage(25);
+		
+		SKELETON_KEY = new SkeletonKey(Treasure.MODID, TreasureConfig.SKELETON_KEY_ID)
+				.setCategory(Category.BASIC)
+				.setRarity(Rarity.RARE)
+				.setBreakable(false)
+				.setCraftable(false)
+				.setMaxDamage(5);
 		
 		WITHER_KEY = new KeyItem(Treasure.MODID, TreasureConfig.WITHER_KEY_ID)
 				.setCategory(Category.WITHER)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(true)
-				.setUses(5);
+				.setMaxDamage(5);
 		
 		// LOCKS
 		WOOD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.WOOD_LOCK_ID, new KeyItem[] {WOOD_KEY})
@@ -135,6 +147,14 @@ public class TreasureItems {
 		EMERALD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.EMERALD_LOCK_ID, new KeyItem[] {EMERALD_KEY})
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC);
+		
+		locks =	ArrayListMultimap.create();
+		locks.put(Rarity.COMMON, WOOD_LOCK);
+		locks.put(Rarity.COMMON, STONE_LOCK);
+		locks.put(Rarity.UNCOMMON, IRON_LOCK);
+		locks.put(Rarity.SCARCE, GOLD_LOCK);
+		locks.put(Rarity.RARE, DIAMOND_LOCK);
+		locks.put(Rarity.EPIC, EMERALD_LOCK);
 	}
 	
 	/**
@@ -166,7 +186,8 @@ public class TreasureItems {
 					GOLD_KEY,
 					DIAMOND_KEY,
 					EMERALD_KEY,
-					METALLURGISTS_KEY
+					METALLURGISTS_KEY,
+					SKELETON_KEY
 			};
 			registry.registerAll(items);		
 		}

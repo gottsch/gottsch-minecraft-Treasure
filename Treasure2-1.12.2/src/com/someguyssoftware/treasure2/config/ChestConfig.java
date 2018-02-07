@@ -81,6 +81,8 @@ public class ChestConfig implements IChestConfig {
 		
 		config.setCategoryComment("01-enable", "Enablements.");
         chestAllowed = config.getBoolean("chestAllowed", "01-enable", defaults.isChestAllowed(), "");
+        aboveGroundAllowed = config.getBoolean("isAboveGroundAllowed", "01-enable", defaults.isAboveGroundAllowed(), "");
+        belowGroundAllowed = config.getBoolean("isBelowGroundAllowed", "01-enable", defaults.isBelowGroundAllowed(), "");
         
         // gen props
     	chunksPerChest = config.getInt("chunksPerChest", "02-gen", defaults.getChunksPerChest(), 50, 32000, "");
@@ -88,7 +90,7 @@ public class ChestConfig implements IChestConfig {
     	minYSpawn = config.getInt("minYSpawn", "02-gen", defaults.getMinYSpawn(), 5, 250, "");
     	
         // white/black lists
-        rawBiomeWhiteList = config.getStringList("biomeWhiteList", "02-gen", (String[]) defaults.getRawBiomeBlackList(), "Allowable Biome Types for general Chest generation. Must match the Type identifer(s).");
+        rawBiomeWhiteList = config.getStringList("biomeWhiteList", "02-gen", (String[]) defaults.getRawBiomeWhiteList(), "Allowable Biome Types for general Chest generation. Must match the Type identifer(s).");
         rawBiomeBlackList = config.getStringList("biomeBlackList", "02-gen", (String[]) defaults.getRawBiomeBlackList(), "Disallowable Biome Types for general Chest generation. Must match the Type identifer(s).");
               
         // update the config if it has changed.

@@ -64,7 +64,7 @@ public class TreasureChestTileEntity extends AbstractModTileEntity implements /*
     /** The number of players currently using this chest */
     public int numPlayersUsing;
     /** Server sync counter (once per 20 ticks) */
-    private int ticksSinceSync;
+    public int ticksSinceSync;
     
     /** IInventory properties */
     // TODO replace the 27 here somehow. Different types of chests will have different SLOT sizes.

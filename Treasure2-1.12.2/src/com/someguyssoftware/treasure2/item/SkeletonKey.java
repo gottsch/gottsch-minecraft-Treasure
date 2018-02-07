@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.someguyssoftware.treasure2.enums.Category;
+import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -16,17 +17,17 @@ import net.minecraft.world.World;
 
 /**
  * 
- * @author Mark Gottschling on Jan 17, 2018
+ * @author Mark Gottschling on Feb 2, 2018
  *
  */
-public class MetallurgistsKey extends KeyItem {
+public class SkeletonKey extends KeyItem {
 
 	/**
 	 * 
 	 * @param modID
 	 * @param name
 	 */
-	public MetallurgistsKey(String modID, String name) {
+	public SkeletonKey(String modID, String name) {
 		super(modID, name);
 	}
 	
@@ -42,17 +43,21 @@ public class MetallurgistsKey extends KeyItem {
 		
 		tooltip.add(
 				I18n.translateToLocalFormatted("tooltip.label.specials", 
-				TextFormatting.GOLD) + I18n.translateToLocal("tooltip.metallurgists_key.specials")
+				TextFormatting.GOLD) + I18n.translateToLocal("tooltip.skeleton_key.specials")
 			);
 	
 	}
 	
 	/**
-	 * This key can fits any lock from the METALS category.
+	 * This key can fits any lock from the with a Rarity of [COMMON, UNCOMMON, SCARCE, and RARE].
 	 */
 	@Override
 	public boolean fitsLock(LockItem lockItem) {
-		if (lockItem.getCategory() == Category.METALS) return true;
+		Rarity rarity = lockItem.getRarity();
+		if (rarity == Rarity.COMMON ||
+				rarity == Rarity.UNCOMMON ||
+				rarity == Rarity.SCARCE ||
+				rarity == Rarity.RARE) return true;
 		return false;
 	}	
 

@@ -3,7 +3,14 @@
  */
 package com.someguyssoftware.treasure2.item;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
+
+import java.util.List;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
@@ -29,6 +36,16 @@ public class CoinItem extends ModItem {
 		this.setCreativeTab(Treasure.TREASURE_TAB);
 		// set the coin to gold by default
 		this.coin = Coins.GOLD;
+	}
+	
+	/**
+	 * 
+	 */
+	@SuppressWarnings("deprecation")
+	@Override
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		super.addInformation(stack, worldIn, tooltip, flagIn);		
+		tooltip.add(TextFormatting.GOLD + I18n.translateToLocal("tooltip.label.coin"));
 	}
 	
 	/**

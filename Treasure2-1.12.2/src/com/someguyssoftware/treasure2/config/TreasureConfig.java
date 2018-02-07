@@ -26,6 +26,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String TREASURE_TAB_ID = "treasure_tab";
 	// chests
 	public static final String WOOD_CHEST_ID = "wood_chest";
+	public static final String CRATE_CHEST_ID = "crate_chest";
+	public static final String MOLDY_CRATE_CHEST_ID = "moldy_crate_chest";
 	public static final String IRONBOUND_CHEST_ID = "ironbound_chest";
 	
 	// locks
@@ -44,6 +46,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String STONE_KEY_ID = "stone_key";
 	public static final String EMERALD_KEY_ID = "emerald_key";
 	public static final String METALLURGISTS_KEY_ID = "metallurgists_key";
+	public static final String SKELETON_KEY_ID = "skeleton_key";
 	public static final String WITHER_KEY_ID = "wither_key";
 	
 	public static final String GOLD_COIN_ID = "gold_coin";
@@ -69,9 +72,11 @@ public class TreasureConfig extends AbstractConfig {
 	
 	// TEs
 	public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity";
+	public static final String CRATE_CHEST_TE_ID = "crate_chest_tile_entity";
+	public static final String MOLDY_CRATE_CHEST_TE_ID = "moldy_crate_chest_tile_entity";
 	public static final String IRONBOUND_CHEST_TE_ID = "ironbound_chest_tile_entity";
 	public static final String PIRATE_CHEST_TE_ID = "pirate_chest_tile_entity";
-
+		
 
 	public static boolean enableKeyBreaks = true;	
 	public static String treasureFolder;
@@ -125,6 +130,9 @@ public class TreasureConfig extends AbstractConfig {
         generalChestBiomeWhiteList = config.getStringList("generalChestBiomeWhiteList", "04-gen", new String[]{}, "Allowable Biome Types for general Chest generation. Must match the Type identifer(s).");
         generalChestBiomeBlackList = config.getStringList("generalChestBiomeBlackList", "04-gen", new String[]{"ocean"}, "Disallowable Biome Types for general Chest generation. Must match the Type identifer(s).");
         
+      	minDistancePerChest = config.getInt("minDistancePerChest", "04-gen", 75, 0, 32000, "");
+      	minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 35, 0, 32000, "");
+      	
         isGravestonesAllowed = config.getBoolean("isGravestonesAllowed", "04-gen", true, "");
         minGravestonesPerChest = config.getInt("minGravestonesPerChest", "04-gen", 2, 1, 3, "The minimun of Treasure chest markers (gravestones,bones).");
         maxGravestonesPerChest = config.getInt("maxGravesstonesPerChest", "04-gen", 4, 1, 6, "The maximum of Treasure chest markers (gravestones,bones).");
