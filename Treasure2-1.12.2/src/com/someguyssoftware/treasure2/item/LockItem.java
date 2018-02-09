@@ -15,7 +15,7 @@ import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -121,7 +121,7 @@ public class LockItem extends ModItem {
 		Block block = worldIn.getBlockState(pos).getBlock();
 		if (block instanceof TreasureChestBlock) {
 			// get the tile entity
-			TreasureChestTileEntity te = (TreasureChestTileEntity) worldIn.getTileEntity(pos);
+			AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
 						
 			// exit if on the client
 			if (worldIn.isRemote) {			
@@ -149,7 +149,7 @@ public class LockItem extends ModItem {
 	 * @param heldItem
 	 * @return flag indicating if a lock was added
 	 */
-	private boolean handleHeldLock(TreasureChestTileEntity te, EntityPlayer player, ItemStack heldItem) {
+	private boolean handleHeldLock(AbstractTreasureChestTileEntity te, EntityPlayer player, ItemStack heldItem) {
 		boolean lockedAdded = false;
 		LockItem lock = (LockItem) heldItem.getItem();		
 		// add the lock to the first lockstate that has an available slot

@@ -12,7 +12,7 @@ import net.minecraft.util.math.AxisAlignedBB;
  * @author Mark Gottschling on Jan 19, 2018
  *
  */
-public class CrateChestTileEntity extends TreasureChestTileEntity {
+public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
     /** The current angle of the latch (between 0 and 1) */
     public float latchAngle;
     /** The angle of the latch last tick */

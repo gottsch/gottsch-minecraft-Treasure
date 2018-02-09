@@ -7,7 +7,7 @@ import java.awt.Color;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.inventory.TreasureChestContainer;
-import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -24,7 +24,7 @@ public class TreasureChestGui extends GuiContainer {
 
 	// This is the resource location for the background image for the GUI
 	private static final ResourceLocation texture = new ResourceLocation(Treasure.MODID, "textures/gui/container/treasure_chest.png");
-	private TreasureChestTileEntity tileEntity;
+	private AbstractTreasureChestTileEntity tileEntity;
 
 	/**
 	 * NOTE can pass anything into the ChestGui (GuiContainer) as long as the player's inventory and the container's inventory is present.
@@ -32,7 +32,7 @@ public class TreasureChestGui extends GuiContainer {
 	 * @param invPlayer
 	 * @param tileEntity
 	 */
-	public TreasureChestGui(InventoryPlayer invPlayer, TreasureChestTileEntity tileEntity) {
+	public TreasureChestGui(InventoryPlayer invPlayer, AbstractTreasureChestTileEntity tileEntity) {
 		super(new TreasureChestContainer(invPlayer, (IInventory) tileEntity.getInventoryProxy())); // <---- this is where we can pass in a Proxy instead of TE.
 		this.tileEntity = tileEntity;
 		

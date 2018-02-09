@@ -14,7 +14,7 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -137,11 +137,11 @@ public class KeyItem extends ModItem {
 		if (block instanceof TreasureChestBlock) {
 			// get the tile entity
 			TileEntity te = worldIn.getTileEntity(pos);
-			if (te == null || !(te instanceof TreasureChestTileEntity)) {
+			if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
 				Treasure.logger.warn("Null or incorrect TileEntity");
 				return EnumActionResult.FAIL;
 			}
-			TreasureChestTileEntity tcte = (TreasureChestTileEntity)te;
+			AbstractTreasureChestTileEntity tcte = (AbstractTreasureChestTileEntity)te;
 						
 			// exit if on the client
 			if (worldIn.isRemote) {			

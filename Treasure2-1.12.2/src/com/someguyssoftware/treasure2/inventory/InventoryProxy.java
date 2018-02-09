@@ -4,7 +4,7 @@
 package com.someguyssoftware.treasure2.inventory;
 
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
-import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -23,27 +23,27 @@ public class InventoryProxy implements IInventory {
 	/*
 	 * Reference to the owning Tile Entity
 	 */
-	private TreasureChestTileEntity tileEntity;
+	private AbstractTreasureChestTileEntity tileEntity;
 
 	/**
 	 * 
 	 * @param entity
 	 */
 	public InventoryProxy(TileEntity entity) {
-		setTileEntity((TreasureChestTileEntity) entity);
+		setTileEntity((AbstractTreasureChestTileEntity) entity);
 	}
 	
 	/**
 	 * @return the tileEntity
 	 */
-	public TreasureChestTileEntity getTileEntity() {
+	public AbstractTreasureChestTileEntity getTileEntity() {
 		return tileEntity;
 	}
 
 	/**
 	 * @param tileEntity the tileEntity to set
 	 */
-	public void setTileEntity(TreasureChestTileEntity tileEntity) {
+	public void setTileEntity(AbstractTreasureChestTileEntity tileEntity) {
 		this.tileEntity = tileEntity;
 	}
 	
@@ -135,7 +135,7 @@ public class InventoryProxy implements IInventory {
 	 */
 	@Override
 	public boolean isUsableByPlayer(EntityPlayer player) {
-		TreasureChestTileEntity te = getTileEntity();
+		AbstractTreasureChestTileEntity te = getTileEntity();
         if (te.getWorld().getTileEntity(te.getPos()) != te) {
             return false;
         }
@@ -150,7 +150,7 @@ public class InventoryProxy implements IInventory {
 	@Override
 	public void openInventory(EntityPlayer player) {
 		if (!player.isSpectator()) {
-			TreasureChestTileEntity te = getTileEntity();
+			AbstractTreasureChestTileEntity te = getTileEntity();
 			if (te.numPlayersUsing < 0) {
 				te.numPlayersUsing = 0;
 			}
@@ -166,7 +166,7 @@ public class InventoryProxy implements IInventory {
 	@Override
 	public void closeInventory(EntityPlayer player) {
 		if (!player.isSpectator() && this.getTileEntity().getBlockType() instanceof TreasureChestBlock) {
-			TreasureChestTileEntity te = getTileEntity();
+			AbstractTreasureChestTileEntity te = getTileEntity();
 			--te.numPlayersUsing;
 			te.getWorld().addBlockEvent(te.getPos(), te.getBlockType(), 1, te.numPlayersUsing);
 			te.getWorld().notifyNeighborsOfStateChange(te.getPos(), te.getBlockType(), false);

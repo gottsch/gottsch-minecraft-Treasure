@@ -18,7 +18,7 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.item.KeyItem;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -120,7 +120,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	 * @param te
 	 * @return
 	 */
-	public String getInfo(TreasureChestTileEntity te) {
+	public String getInfo(AbstractTreasureChestTileEntity te) {
 
 		final String STATE_LABEL = "State: ";
 		final String REQUIRES_LABEL = "Requires: ";
@@ -153,9 +153,9 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	 */
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		TreasureChestTileEntity chestTileEntity = null;
+		AbstractTreasureChestTileEntity chestTileEntity = null;
 		try {
-			chestTileEntity = (TreasureChestTileEntity) getTileEntityClass().newInstance();
+			chestTileEntity = (AbstractTreasureChestTileEntity) getTileEntityClass().newInstance();
 
 			// setup lock states
 			List<LockState> lockStates = new LinkedList<>();
@@ -246,16 +246,16 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 
 		boolean shouldRotate = false;
 		boolean shouldUpdate = false;
-		TreasureChestTileEntity tcte = null;
+		AbstractTreasureChestTileEntity tcte = null;
 
 		// face the block towards the palyer (there isn't really a front)
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 3);
         
 		if (!worldIn.isRemote) {
 			TileEntity te = worldIn.getTileEntity(pos);
-			if (te != null && te instanceof TreasureChestTileEntity) {
+			if (te != null && te instanceof AbstractTreasureChestTileEntity) {
 				// get the backing tile entity
-				tcte = (TreasureChestTileEntity) te;
+				tcte = (AbstractTreasureChestTileEntity) te;
 				// set the name of the chest
 		        if (stack.hasDisplayName()) {
 		            tcte.setCustomName(stack.getDisplayName());
@@ -312,7 +312,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		// TODO Auto-generated method stub
 		//		super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
 
-		TreasureChestTileEntity te = (TreasureChestTileEntity) worldIn.getTileEntity(pos);
+		AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
 
 		// exit if on the client
 		if (worldIn.isRemote) {			
@@ -421,7 +421,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	 * @param player
 	 * @param heldItem
 	 */
-	private boolean handleHeldLock(TreasureChestTileEntity te, EntityPlayer player, ItemStack heldItem) {
+	private boolean handleHeldLock(AbstractTreasureChestTileEntity te, EntityPlayer player, ItemStack heldItem) {
 		boolean isLocked = false;
 		LockItem lock = (LockItem) heldItem.getItem();		
 		// add the lock to the first lockstate that has an available slot
@@ -447,7 +447,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	 */
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		TreasureChestTileEntity te = (TreasureChestTileEntity) worldIn.getTileEntity(pos);
+		AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
 
 		if (te != null && te.getInventoryProxy() != null) {
 			// unlocked!

@@ -18,7 +18,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
-import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -75,10 +75,10 @@ public class SpawnPitCommand extends CommandBase {
     			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(x, 254, z));
     			ICoords spawnCoords = new Coords(x, y, z);
     			boolean isGenerated = SimplePitGenerator.generate(world, random, surfaceCoords, spawnCoords);
-    			TreasureChestTileEntity chest = null;
+    			AbstractTreasureChestTileEntity chest = null;
     			if (isGenerated) {
     				world.setBlockState(spawnCoords.toPos() , TreasureBlocks.WOOD_CHEST.getDefaultState(), 3);
-    				chest = (TreasureChestTileEntity) world.getTileEntity(spawnCoords.toPos());
+    				chest = (AbstractTreasureChestTileEntity) world.getTileEntity(spawnCoords.toPos());
     			}
     			Treasure.logger.debug("Chest TE @ {} {}", spawnCoords.toPos(), chest);
     			if (chest != null) {

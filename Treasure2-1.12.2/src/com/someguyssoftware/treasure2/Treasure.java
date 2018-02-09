@@ -34,7 +34,7 @@ import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
@@ -176,7 +176,7 @@ public class Treasure extends AbstractMod {
 		
 		// default
 		ClientRegistry.bindTileEntitySpecialRenderer(
-				TreasureChestTileEntity.class,
+				AbstractTreasureChestTileEntity.class,
 				new TreasureChestTileEntityRenderer("standard-chest", new StandardChestModel()));
 		
 		// wood chest

@@ -24,7 +24,7 @@ import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
@@ -138,10 +138,10 @@ public abstract class AbstractTreasureGenerator {
 			
 			// populate the chest with items
 			InventoryPopulator pop = new InventoryPopulator();
-			pop.populate(((TreasureChestTileEntity)te).getInventoryProxy(), container);
+			pop.populate(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), container);
 
 			// add locks
-			addLocks(random, chest, (TreasureChestTileEntity)te, chestRarity);
+			addLocks(random, chest, (AbstractTreasureChestTileEntity)te, chestRarity);
 			
 			// place markers (above chest or shaft)
 			GenUtil.placeMarkers(world, random, markerCoords);
@@ -215,7 +215,7 @@ public abstract class AbstractTreasureGenerator {
 		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());
 
 		// if tile entity failed to create, remove the chest
-		if (te == null || !(te instanceof TreasureChestTileEntity)) {
+		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
 			// remove chest
 			world.setBlockToAir(chestCoords.toPos());
 			Treasure.logger.debug("Unable to create TileEntityChest, removing BlockChest");
@@ -252,7 +252,7 @@ public abstract class AbstractTreasureGenerator {
 	 * Default implementation. Select locks only from with the same Rarity.
 	 * @param chest
 	 */
-	public void addLocks(Random random, TreasureChestBlock chest, TreasureChestTileEntity te, Rarity rarity) {
+	public void addLocks(Random random, TreasureChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
 		// get the chest type
 		TreasureChestType type = chest.getChestType();
 		// get the lock states

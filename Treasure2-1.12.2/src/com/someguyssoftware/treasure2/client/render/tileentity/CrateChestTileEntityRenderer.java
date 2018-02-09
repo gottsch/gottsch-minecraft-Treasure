@@ -7,7 +7,7 @@ import com.someguyssoftware.treasure2.client.model.CrateChestModel;
 import com.someguyssoftware.treasure2.client.model.ITreasureChestModel;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -42,7 +42,7 @@ public class CrateChestTileEntityRenderer extends TreasureChestTileEntityRendere
 	 * @param alpha
 	 */
 	 @Override
-    public void render(TreasureChestTileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(AbstractTreasureChestTileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
     	
     	if (!(te instanceof CrateChestTileEntity)) return; // should never happen
 
@@ -139,7 +139,7 @@ public class CrateChestTileEntityRenderer extends TreasureChestTileEntityRendere
      * @param y
      * @param z
      */
-    public void renderLocks(TreasureChestTileEntity te, double x, double y, double z) {
+    public void renderLocks(AbstractTreasureChestTileEntity te, double x, double y, double z) {
 //    	Treasure.logger.debug("=====================================================================");
         // render locks
         for (LockState lockState : te.getLockStates()) {

@@ -43,7 +43,7 @@ import net.minecraftforge.common.util.Constants;
  * @author Mark Gottschling onDec 22, 2017
  *
  */
-public class TreasureChestTileEntity extends AbstractModTileEntity implements /*IInventory, */ITickable {
+public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements /*IInventory, */ITickable {
 	/*
 	 * A list of lockStates the chest has. The list should be the size of the max allowed for the chestType.
 	 */	
@@ -75,7 +75,7 @@ public class TreasureChestTileEntity extends AbstractModTileEntity implements /*
 	/**
 	 * 
 	 */
-	public TreasureChestTileEntity() {		
+	public AbstractTreasureChestTileEntity() {		
 		// create the proxy with this tile entity as a reference back
 		setInventoryProxy(new InventoryProxy(this));
 	}

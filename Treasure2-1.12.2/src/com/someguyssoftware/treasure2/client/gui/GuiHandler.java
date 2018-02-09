@@ -6,7 +6,7 @@ package com.someguyssoftware.treasure2.client.gui;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.gui.inventory.TreasureChestGui;
 import com.someguyssoftware.treasure2.inventory.TreasureChestContainer;
-import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -38,9 +38,9 @@ public class GuiHandler implements IGuiHandler {
 		
 		switch(ID) {
 			case TREASURE_CHEST_GUIID:
-				if (tileEntity instanceof TreasureChestTileEntity) {
+				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
 					Treasure.logger.debug("Tile entity is of type TreasureChestTileEntity");
-					return new TreasureChestContainer(player.inventory, ((TreasureChestTileEntity)tileEntity).getInventoryProxy());
+					return new TreasureChestContainer(player.inventory, ((AbstractTreasureChestTileEntity)tileEntity).getInventoryProxy());
 				}
 				break;
 			default: return null;
@@ -57,9 +57,9 @@ public class GuiHandler implements IGuiHandler {
 		TileEntity tileEntity = world.getTileEntity(xyz);
 		switch(ID) {
 			case TREASURE_CHEST_GUIID:
-				if (tileEntity instanceof TreasureChestTileEntity) {
+				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
 					// TODO could pass in the different bg textures here
-					return new TreasureChestGui(player.inventory, (TreasureChestTileEntity) tileEntity);
+					return new TreasureChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
 				}
 				else {
 					Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");

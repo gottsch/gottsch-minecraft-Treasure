@@ -14,7 +14,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -42,7 +42,7 @@ public class GenUtil {
 	 * @param pos
 	 * @return
 	 */
-	public static TreasureChestTileEntity getChestTileEntity(World world, ICoords coords) {
+	public static AbstractTreasureChestTileEntity getChestTileEntity(World world, ICoords coords) {
 		BlockPos pos = coords.toPos();
 		
 		// get the tile entity
@@ -52,13 +52,13 @@ public class GenUtil {
 			return null;
 		}
 		// test if te implements ITreasureChestTileEntityOLD
-		if (!(te instanceof TreasureChestTileEntity)) {
+		if (!(te instanceof AbstractTreasureChestTileEntity)) {
 			Treasure.logger.warn("Chest TileEntity does not implement TreasureChestTileEntity @: " + pos);
 			return null;
 		}
 		
 		// cast		
-		return (TreasureChestTileEntity) te;
+		return (AbstractTreasureChestTileEntity) te;
 	}
 	
 	/**

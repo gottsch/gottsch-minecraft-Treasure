@@ -6,7 +6,7 @@ package com.someguyssoftware.treasure2.client.render.tileentity;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.model.ITreasureChestModel;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -19,7 +19,7 @@ import net.minecraft.util.ResourceLocation;
  * @author Mark Gottschling onJan 9, 2018
  *
  */
-public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<TreasureChestTileEntity> {
+public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<AbstractTreasureChestTileEntity> {
 	public static final int NORTH = 2;
 	public static final int SOUTH = 3;
 	public static final int WEST = 4;
@@ -48,9 +48,9 @@ public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<T
 	 * @param destroyStage
 	 * @param alpha
 	 */
-    public void render(TreasureChestTileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(AbstractTreasureChestTileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
     	
-    	if (!(te instanceof TreasureChestTileEntity)) return; // should never happen
+    	if (!(te instanceof AbstractTreasureChestTileEntity)) return; // should never happen
 
     	// add the destory textures
         if (destroyStage >= 0) {
@@ -138,7 +138,7 @@ public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<T
      * @param y
      * @param z
      */
-    public void renderLocks(TreasureChestTileEntity te, double x, double y, double z) {
+    public void renderLocks(AbstractTreasureChestTileEntity te, double x, double y, double z) {
 //    	Treasure.logger.debug("=====================================================================");
         // render locks
         for (LockState lockState : te.getLockStates()) {

@@ -14,7 +14,7 @@ import com.someguyssoftware.lootbuilder.model.LootContainer;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.tileentity.TreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -67,7 +67,7 @@ public class TreasureChestCommand extends CommandBase {
 
     			BlockPos pos = new BlockPos(x, y, z);
     			world.setBlockState(pos , TreasureBlocks.WOOD_CHEST.getDefaultState());
-    			TreasureChestTileEntity chest = (TreasureChestTileEntity) world.getTileEntity(pos);
+    			AbstractTreasureChestTileEntity chest = (AbstractTreasureChestTileEntity) world.getTileEntity(pos);
 				
     			if (chest != null) {
     				// query to load the selected rarity chests
