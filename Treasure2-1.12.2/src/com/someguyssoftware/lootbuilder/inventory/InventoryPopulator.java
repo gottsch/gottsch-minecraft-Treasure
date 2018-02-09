@@ -19,7 +19,6 @@ import com.someguyssoftware.lootbuilder.model.LootContainerHasGroup;
 import com.someguyssoftware.lootbuilder.model.LootGroupHasItem;
 import com.someguyssoftware.treasure2.Treasure;
 
-import javafx.scene.Group;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
