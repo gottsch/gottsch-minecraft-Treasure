@@ -134,17 +134,19 @@ public class GenUtil {
 	 * @param y
 	 * @param z
 	 */
-	public static boolean placeMarkers(World world, Random random, BlockPos pos) {		
+	public static boolean placeMarkers(World world, Random random, ICoords coords) {		
 		boolean isSuccess = false;
+		
+		Treasure.logger.debug("Using coords {} to seed markers.", coords.toShortString());
 		
 		// check if gravestones are enabled
 		if (!TreasureConfig.isGravestonesAllowed) {
 			return false;
 		}
 
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
+		int x = coords.getX();
+		int y = coords.getY();
+		int z = coords.getZ();
 		
 		// for the number of markers configured
 		int numberOfMarkers = RandomHelper.randomInt(TreasureConfig.minGravestonesPerChest, TreasureConfig.maxGravestonesPerChest);
@@ -178,11 +180,13 @@ public class GenUtil {
 			}			
 			
 			//  get a valid surface location
+			Treasure.logger.debug("Getting dry land coords for @ {}", spawnCoords.toShortString());
 			spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, spawnCoords);
 			if (spawnCoords == null) {
-				Treasure.logger.debug(String.format("Not a valid surface @ %s", pos));
+				Treasure.logger.debug(String.format("Not a valid surface @ %s", coords));
 				continue;
 			}
+			Treasure.logger.debug("Marker @ {}", spawnCoords.toShortString());
 			
 			// don't place if the block underneath is of GenericBlock Chest or Container
 			Block block = world.getBlockState(spawnCoords.add(0, -1, 0).toPos()).getBlock();

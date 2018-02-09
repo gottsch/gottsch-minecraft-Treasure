@@ -144,7 +144,7 @@ public abstract class AbstractTreasureGenerator {
 			addLocks(random, chest, (TreasureChestTileEntity)te, chestRarity);
 			
 			// place markers (above chest or shaft)
-			GenUtil.placeMarkers(world, random, markerCoords.toPos());
+			GenUtil.placeMarkers(world, random, markerCoords);
 						
 			Treasure.logger.info("CHEATER! {} chest at coords: {}", chestRarity, chestCoords.toShortString());
 			return true;
