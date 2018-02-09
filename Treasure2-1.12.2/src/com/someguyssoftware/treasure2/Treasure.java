@@ -189,7 +189,7 @@ public class Treasure extends AbstractMod {
 				CrateChestTileEntity.class,
 				new CrateChestTileEntityRenderer("crate-chest", new CrateChestModel()));
 
-		// crate chest
+		// moldy crate chest
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				MoldyCrateChestTileEntity.class,
 				new CrateChestTileEntityRenderer("moldy-crate-chest", new CrateChestModel()));

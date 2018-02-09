@@ -1,0 +1,9 @@
+{
+    "variants": {
+		"normal": { "model": "treasure2:crate_chest" },
+        "facing=north": { "model": "treasure2:crate_chest" },
+        "facing=south": { "model": "treasure2:crate_chest", "y": 180, "uvlock": true },
+        "facing=west":  { "model": "treasure2:crate_chest", "y": 270, "uvlock": true },
+        "facing=east":  { "model": "treasure2:crate_chest", "y": 90, "uvlock": true }
+    }
+}

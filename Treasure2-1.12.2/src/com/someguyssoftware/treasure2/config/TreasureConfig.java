@@ -27,7 +27,7 @@ public class TreasureConfig extends AbstractConfig {
 	// chests
 	public static final String WOOD_CHEST_ID = "wood_chest";
 	public static final String CRATE_CHEST_ID = "crate_chest";
-	public static final String MOLDY_CRATE_CHEST_ID = "moldy_crate_chest";
+	public static final String MOLDY_CRATE_CHEST_ID = "crate_chest_moldy";
 	public static final String IRONBOUND_CHEST_ID = "ironbound_chest";
 	
 	// locks
@@ -48,6 +48,9 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String METALLURGISTS_KEY_ID = "metallurgists_key";
 	public static final String SKELETON_KEY_ID = "skeleton_key";
 	public static final String WITHER_KEY_ID = "wither_key";
+	
+	public static final String PILFERERS_LOCK_PICK_ID = "pilferers_lock_pick";
+	public static final String THIEFS_LOCK_PICK_ID = "thiefs_lock_pick";
 	
 	public static final String GOLD_COIN_ID = "gold_coin";
 	public static final String SILVER_COIN_ID = "silver_coin";
@@ -73,9 +76,11 @@ public class TreasureConfig extends AbstractConfig {
 	// TEs
 	public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity";
 	public static final String CRATE_CHEST_TE_ID = "crate_chest_tile_entity";
-	public static final String MOLDY_CRATE_CHEST_TE_ID = "moldy_crate_chest_tile_entity";
+	public static final String MOLDY_CRATE_CHEST_TE_ID = "crate_chest_moldy_tile_entity";
 	public static final String IRONBOUND_CHEST_TE_ID = "ironbound_chest_tile_entity";
 	public static final String PIRATE_CHEST_TE_ID = "pirate_chest_tile_entity";
+
+
 		
 
 	public static boolean enableKeyBreaks = true;	

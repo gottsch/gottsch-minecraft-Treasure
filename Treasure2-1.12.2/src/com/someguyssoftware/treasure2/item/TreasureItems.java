@@ -128,6 +128,20 @@ public class TreasureItems {
 				.setCraftable(true)
 				.setMaxDamage(5);
 		
+		PILFERERS_LOCK_PICK = new PilferersLockPick(Treasure.MODID, TreasureConfig.PILFERERS_LOCK_PICK_ID)
+				.setCategory(Category.BASIC)
+				.setRarity(Rarity.COMMON)
+				.setBreakable(true)
+				.setCraftable(true)
+				.setMaxDamage(10);
+		
+		THIEFS_LOCK_PICK = new PilferersLockPick(Treasure.MODID, TreasureConfig.THIEFS_LOCK_PICK_ID)
+				.setCategory(Category.BASIC)
+				.setRarity(Rarity.UNCOMMON)
+				.setBreakable(true)
+				.setCraftable(true)
+				.setMaxDamage(10);
+		
 		// LOCKS
 		WOOD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.WOOD_LOCK_ID, new KeyItem[] {WOOD_KEY})
 				.setCategory(Category.BASIC)
@@ -187,7 +201,9 @@ public class TreasureItems {
 					DIAMOND_KEY,
 					EMERALD_KEY,
 					METALLURGISTS_KEY,
-					SKELETON_KEY
+					SKELETON_KEY,
+					PILFERERS_LOCK_PICK,
+					THIEFS_LOCK_PICK
 			};
 			registry.registerAll(items);		
 		}

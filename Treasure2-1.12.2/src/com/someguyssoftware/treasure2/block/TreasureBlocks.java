@@ -43,7 +43,7 @@ public class TreasureBlocks {
 	// CHESTS
 	public static final Block WOOD_CHEST;
 	public static final Block CRATE_CHEST;
-	public static final Block MOLDY_CRATE_CHEST;
+	public static final Block CRATE_CHEST_MOLDY;
 	public static final Block IRONBOUND_CHEST;
 	public static final Block PIRATE_CHEST;
 	
@@ -111,7 +111,7 @@ public class TreasureBlocks {
 				.setBounds(bounds)
 				.setHardness(2.5F);
 		
-		MOLDY_CRATE_CHEST = new TreasureChestBlock(
+		CRATE_CHEST_MOLDY = new TreasureChestBlock(
 				Treasure.MODID, 
 				TreasureConfig.MOLDY_CRATE_CHEST_ID, 
 				MoldyCrateChestTileEntity.class,
@@ -122,7 +122,7 @@ public class TreasureBlocks {
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
 		chests.put(Rarity.COMMON, WOOD_CHEST);
-		chests.put(Rarity.COMMON, MOLDY_CRATE_CHEST);
+		chests.put(Rarity.COMMON, CRATE_CHEST_MOLDY);
 		chests.put(Rarity.UNCOMMON, CRATE_CHEST);
 		chests.put(Rarity.UNCOMMON, IRONBOUND_CHEST);
 		chests.put(Rarity.SCARCE, PIRATE_CHEST);
@@ -203,7 +203,7 @@ public class TreasureBlocks {
 			final Block[] blocks = {
 					WOOD_CHEST,
 					CRATE_CHEST,
-					MOLDY_CRATE_CHEST,
+					CRATE_CHEST_MOLDY,
 					IRONBOUND_CHEST,
 					PIRATE_CHEST,
 					GRAVESTONE1_STONE,
@@ -237,7 +237,7 @@ public class TreasureBlocks {
 					// TODO update with ChestItemBlock so we can use addInformation() for display and mouse over  purposes.
 					new ItemBlock(WOOD_CHEST),
 					new ItemBlock(CRATE_CHEST),
-					new ItemBlock(MOLDY_CRATE_CHEST),
+					new ItemBlock(CRATE_CHEST_MOLDY),
 					new ItemBlock(IRONBOUND_CHEST),
 					new ItemBlock(PIRATE_CHEST),
 					// TODO update with GravestonIetmBlock
