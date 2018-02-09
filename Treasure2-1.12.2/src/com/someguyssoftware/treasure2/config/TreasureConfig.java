@@ -139,10 +139,9 @@ public class TreasureConfig extends AbstractConfig {
       	minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 35, 0, 32000, "");
       	
         isGravestonesAllowed = config.getBoolean("isGravestonesAllowed", "04-gen", true, "");
-        minGravestonesPerChest = config.getInt("minGravestonesPerChest", "04-gen", 2, 1, 3, "The minimun of Treasure chest markers (gravestones,bones).");
-        maxGravestonesPerChest = config.getInt("maxGravesstonesPerChest", "04-gen", 4, 1, 6, "The maximum of Treasure chest markers (gravestones,bones).");
- 
-        
+        minGravestonesPerChest = config.getInt("minGravestonesPerChest", "04-gen", 4, 1, 5, "The minimun of Treasure chest markers (gravestones, bones).");
+        maxGravestonesPerChest = config.getInt("maxGravesstonesPerChest", "04-gen", 8, 1, 10, "The maximum of Treasure chest markers (gravestones, bones).");
+         
         // the the default values
        if(config.hasChanged()) {
     	   config.save();
