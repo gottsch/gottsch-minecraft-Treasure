@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
  * @author Mark Gottschling on Jan 16, 2018
  *
  */
-public class TreasureChestContainer extends Container {
+public class StandardChestContainer extends Container {
 	// Stores a reference to the tile entity instance for later use
 	private IInventory inventory;
 	
@@ -28,12 +28,18 @@ public class TreasureChestContainer extends Container {
 	private final int CONTAINER_INVENTORY_COLUMN_COUNT = 9;
 	private final int CONTAINER_INVENTORY_SLOT_COUNT = CONTAINER_INVENTORY_ROW_COUNT * CONTAINER_INVENTORY_COLUMN_COUNT;
 	
+	/*
+	 * TODO  this class should extend an AbstractChestContainer where all the container consts are properties that can be
+	 * set. As well as the pixel offsets etc. The init code can be put in the abstract, so only the contrete classes would set
+	 * the property values.
+	 */
+	
 	/**
 	 * 
 	 * @param invPlayer
 	 * @param inventory
 	 */
-	public TreasureChestContainer(InventoryPlayer invPlayer, IInventory inventory) {
+	public StandardChestContainer(InventoryPlayer invPlayer, IInventory inventory) {
 		this.inventory = inventory;
 
 		// open the chest (rendering)

@@ -22,7 +22,9 @@ import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.client.model.BandedChestModel;
 import com.someguyssoftware.treasure2.client.model.CrateChestModel;
 import com.someguyssoftware.treasure2.client.model.StandardChestModel;
+import com.someguyssoftware.treasure2.client.model.StrongboxModel;
 import com.someguyssoftware.treasure2.client.render.tileentity.CrateChestTileEntityRenderer;
+import com.someguyssoftware.treasure2.client.render.tileentity.StrongboxTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.TreasureChestCommand;
@@ -31,6 +33,8 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
+import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
@@ -192,7 +196,7 @@ public class Treasure extends AbstractMod {
 		// moldy crate chest
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				MoldyCrateChestTileEntity.class,
-				new CrateChestTileEntityRenderer("moldy-crate-chest", new CrateChestModel()));
+				new CrateChestTileEntityRenderer("crate-chest-moldy", new CrateChestModel()));
 		
 		// ironbound chest
 		ClientRegistry.bindTileEntitySpecialRenderer(
@@ -203,6 +207,16 @@ public class Treasure extends AbstractMod {
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				PirateChestTileEntity.class,
 				new TreasureChestTileEntityRenderer("pirate-chest", new StandardChestModel()));
+	
+		// iron strongbox
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				IronStrongboxTileEntity.class,
+				new StrongboxTileEntityRenderer("iron-strongbox", new StrongboxModel()));
+		
+		// gold strongbox
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				GoldStrongboxTileEntity.class,
+				new StrongboxTileEntityRenderer("gold-strongbox", new StrongboxModel()));
 		
 		// register world generators
 		worldGenerators.put("chest", new ChestWorldGenerator());

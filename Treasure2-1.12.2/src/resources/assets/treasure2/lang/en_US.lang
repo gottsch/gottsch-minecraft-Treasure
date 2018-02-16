@@ -1,9 +1,9 @@
 #chests
-tile.treasure2:wood_chest=Wood Chest
-tile.treasure2:crate_chest=Crate
-tile.treasure2:ironbound_chest=Ironbound Chest
-tile.treasure2:pirate_chest=Pirate Chest
-Wood Chest.name=Wood Chest
+tile.treasure2:wood_chest.name=Wood Chest
+tile.treasure2:crate_chest.name=Crate
+tile.treasure2:crate_chest_moldy.name=Moldy Crate
+tile.treasure2:ironbound_chest.name=Ironbound Chest
+tile.treasure2:pirate_chest.name=Pirate Chest
 
 #gravestones
 tile.treasure2:gravestone1_stone.name=Stone Tombstone
@@ -13,6 +13,22 @@ tile.treasure2:gravestone1_polished_granite.name=Granite Tombstone
 tile.treasure2:gravestone1_polished_andesite.name=Andesite Tombstone
 tile.treasure2:gravestone1_polished_diorite.name=Diorite Tombstone
 tile.treasure2:gravestone1_obsidian.name=Obsidian Tombstone
+
+tile.treasure2:gravestone2_stone.name=Stone Tombstone
+tile.treasure2:gravestone2_cobblestone.name=Cobblestone Tombstone
+tile.treasure2:gravestone2_mossy_cobblestone.name=Mossy Cobblestone Tombstone
+tile.treasure2:gravestone2_polished_granite.name=Granite Tombstone
+tile.treasure2:gravestone2_polished_andesite.name=Andesite Tombstone
+tile.treasure2:gravestone2_polished_diorite.name=Diorite Tombstone
+tile.treasure2:gravestone2_obsidian.name=Obsidian Tombstone
+
+tile.treasure2:gravestone3_stone.name=Stone Tombstone
+tile.treasure2:gravestone3_cobblestone.name=Cobblestone Tombstone
+tile.treasure2:gravestone3_mossy_cobblestone.name=Mossy Cobblestone Tombstone
+tile.treasure2:gravestone3_polished_granite.name=Granite Tombstone
+tile.treasure2:gravestone3_polished_andesite.name=Andesite Tombstone
+tile.treasure2:gravestone3_polished_diorite.name=Diorite Tombstone
+tile.treasure2:gravestone3_obsidian.name=Obsidian Tombstone
 
 #items
 item.treasure2:gold_coin.name=Gold Coin
@@ -51,4 +67,12 @@ tooltip.label.coin=Throw into Wishing Wells
 
 tooltip.metallurgists_key.specials=Opens any lock in METALS category
 tooltip.skeleton_key.specials=Opens COMMON, UNCOMMON, SCARCE and RARE locks
+tooltip.pilferers_lock_pick.specials=Opens COMMON locks
+tooltip.thiefs_lock_pick.specials=Opens COMMON and UNCOMMON locks
 
+#gui
+display.wood_chest.name=Wood Chest
+display.crate_chest.name=Crate
+display.crate_chest_mody.name=Moldy Crate
+display.ironbound_chest.name=Ironbound Chest
+display.pirate_chest.name=Pirate Chest

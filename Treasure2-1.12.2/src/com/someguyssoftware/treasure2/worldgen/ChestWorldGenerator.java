@@ -73,9 +73,9 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		// TODO create all the same right now
 		generators.put(Rarity.COMMON, new CommonChestGenerator());
 		generators.put(Rarity.UNCOMMON, new UncommonChestGenerator());
-		generators.put(Rarity.SCARCE, new CommonChestGenerator());
-		generators.put(Rarity.RARE, new CommonChestGenerator());
-		generators.put(Rarity.EPIC, new CommonChestGenerator());		
+		generators.put(Rarity.SCARCE, new UncommonChestGenerator());
+		generators.put(Rarity.RARE, new UncommonChestGenerator());
+		generators.put(Rarity.EPIC, new UncommonChestGenerator());		
 	}
 
 	/**
@@ -171,6 +171,8 @@ public class ChestWorldGenerator implements IWorldGenerator {
     			isGenerated = generators.get(rarity).generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
 
     			if (isGenerated) {
+    				// add to registry
+    				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
         			chunksSinceLastChest = 0;
     			}
     		}
@@ -259,5 +261,19 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	 */
 	public void setChunksSinceLastRarityChest(Map<Rarity, Integer> chunksSinceLastRarityChest) {
 		this.chunksSinceLastRarityChest = chunksSinceLastRarityChest;
+	}
+
+	/**
+	 * @return the generators
+	 */
+	public Map<Rarity, AbstractTreasureGenerator> getGenerators() {
+		return generators;
+	}
+
+	/**
+	 * @param generators the generators to set
+	 */
+	public void setGenerators(Map<Rarity, AbstractTreasureGenerator> generators) {
+		this.generators = generators;
 	}
 }

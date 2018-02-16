@@ -493,7 +493,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	
 //	@Override
 	public String getName() {
-		return this.hasCustomName() ? this.customName : "container.chest";
+		return this.hasCustomName() ? this.getCustomName() : "container.chest";
 	}
 
 	/**

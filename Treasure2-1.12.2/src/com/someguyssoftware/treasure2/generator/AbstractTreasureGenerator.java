@@ -53,6 +53,9 @@ public abstract class AbstractTreasureGenerator {
 		ICoords spawnCoords = null;
 		boolean isGenerated = false;
 		
+		// TEMP
+		SimplePitGenerator pitGen = new SimplePitGenerator();
+		
 		RandomHelper.checkProbability(random, config.getGenProbability());
 	
 		// 1. determine y-coord of land for markers
@@ -74,13 +77,13 @@ public abstract class AbstractTreasureGenerator {
 			// determine spawn coords below ground
 			spawnCoords = getUndergroundSpawnPos(world, random, markerCoords, config.getMinYSpawn());
 			Treasure.logger.debug("Below ground @ {}", spawnCoords.toShortString());
-			if (spawnCoords == null) {
+			if (spawnCoords == null || spawnCoords == WorldInfo.EMPTY_COORDS) {
 				return false;
 			}
 			
 			// TODO select a pit generator
 			// 3. build the pit
-			isGenerated = SimplePitGenerator.generate(world, random, markerCoords, spawnCoords);
+			isGenerated = pitGen.generate(world, random, markerCoords, spawnCoords);
 			Treasure.logger.debug("Is pit generated: {}", isGenerated);
 			// 4. build the room
 			
@@ -110,31 +113,6 @@ public abstract class AbstractTreasureGenerator {
 			// place the chest in the world
 			TileEntity te = placeInWorld(world, random, chest, chestCoords);
 			if (te == null) return false;
-
-//			// select the loot container by rarity
-//			// TODO add dao methods to get by rarity list, category list, or name
-//			List<LootContainer> containers = DbManager.getInstance().getContainersByRarity(chestRarity);
-//			LootContainer container = null;
-//			if (containers != null && !containers.isEmpty()) {
-//				/*
-//				 * get a random container
-//				 */
-//				if (containers.size() == 1) {
-//					container = containers.get(0);
-//				}
-//				else {
-//					container = containers.get(random.nextInt(containers.size()));
-//				}
-//				
-////					// load weighted collection with all containers
-////					RandomWeightedCollection<LootContainer> weighted = new RandomWeightedCollection<>();
-////					for (LootContainer c : containers) { weighted.add(c.getw, item);
-//
-//				Treasure.logger.info("Chosen chest container:" + container);
-//			}
-//			else {
-//				// remove chest
-//			}
 			
 			// populate the chest with items
 			InventoryPopulator pop = new InventoryPopulator();

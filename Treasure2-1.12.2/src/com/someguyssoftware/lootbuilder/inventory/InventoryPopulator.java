@@ -75,10 +75,9 @@ public class InventoryPopulator {
 				Treasure.logger.debug("Adding weight {} for item {}", g.getWeight(), g);
 				col.add(g.getWeight(), g);
 			}
-			
-			// TODO change to min/max of container
+
 			// determine # of items from group to add
-			int numOfItems = RandomHelper.randomInt(random, 0, groupItems.size());
+			int numOfItems = RandomHelper.randomInt(random, cg.getValue().getMin(), cg.getValue().getMax());
 			Treasure.logger.debug("num of items: {}, from group: {}", numOfItems, cg.getKey());
 			
 			ItemStack stack = null;

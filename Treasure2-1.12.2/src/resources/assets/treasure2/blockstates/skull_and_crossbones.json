@@ -1,0 +1,11 @@
+{
+    "variants": {
+        "normal": { "model": "treasure2:skull_and_crossbones" },
+        "facing=north": { "model": "treasure2:skull_and_crossbones" },
+        "facing=south": { "model": "treasure2:skull_and_crossbones", "y": 180 },
+        "facing=west":  { "model": "treasure2:skull_and_crossbones", "y": 270 },
+        "facing=east":  { "model": "treasure2:skull_and_crossbones", "y": 90 },
+        "facing=up": { "model": "treasure2:skull_and_crossbones" },
+        "facing=down": { "model": "treasure2:skull_and_crossbones" }
+    }
+}

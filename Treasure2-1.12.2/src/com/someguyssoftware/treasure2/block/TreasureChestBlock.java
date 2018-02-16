@@ -14,13 +14,10 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ILockSlot;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.item.KeyItem;
-import com.someguyssoftware.treasure2.item.LockItem;
+import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -29,7 +26,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
@@ -42,10 +38,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -69,11 +63,20 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	private TreasureChestType chestType;
 
 	/*
+	 * the rarity of the chest
+	 */
+	private Rarity rarity;
+	
+	/*
 	 * An array of AxisAlignedBB bounds for the bounding box
 	 */
 	AxisAlignedBB[] bounds = new AxisAlignedBB[4];
 
-
+	/*
+	 * The GUIID;
+	 */
+	private int chestGuiID = GuiHandler.STANDARD_CHEST_GUIID;
+	
 	/**
 	 * 
 	 * @param modID
@@ -81,8 +84,8 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	 * @param te
 	 * @param type
 	 */
-	public TreasureChestBlock(String modID, String name, Class<? extends TileEntity> te, TreasureChestType type) {
-		this(modID, name, Material.WOOD, te, type);
+	public TreasureChestBlock(String modID, String name, Class<? extends TileEntity> te, TreasureChestType type, Rarity rarity) {
+		this(modID, name, Material.WOOD, te, type, rarity);
 	}
 
 	/**
@@ -93,10 +96,11 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	 * @param te
 	 * @param type
 	 */
-	public TreasureChestBlock(String modID, String name, Material material, Class<? extends TileEntity> te, TreasureChestType type) {
+	public TreasureChestBlock(String modID, String name, Material material, Class<? extends TileEntity> te, TreasureChestType type, Rarity rarity) {
 		this(modID, name, material);
 		setTileEntityClass(te);
 		setChestType(type);
+		setRarity(rarity);
 		setCreativeTab(Treasure.TREASURE_TAB);
 	}
 
@@ -112,6 +116,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	}
 
 	/**
+	 * Information that is displayed in the Chat when the user performs some action on the chest.
 	 * TODO TEMP display... come up with better info
 	 * Format:
 	 * 		Item Name, (vanilla minecraft)
@@ -257,37 +262,43 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 				// get the backing tile entity
 				tcte = (AbstractTreasureChestTileEntity) te;
 				// set the name of the chest
-		        if (stack.hasDisplayName()) {
-		            tcte.setCustomName(stack.getDisplayName());
-		        }
+//		        if (stack.hasDisplayName()) {
+//		        	tcte.setCustomName(stack.getItem().getUnlocalizedName());
+////		            tcte.setCustomName(stack.getDisplayName());
+//		        }
 		        // read in nbt
 		        if (stack.hasTagCompound()) {
 		        	tcte.readFromNBT(stack.getTagCompound());
 		        }
+
 				// get the direction the block is facing.
 				Direction direction = Direction.fromFacing(placer.getHorizontalFacing().getOpposite());
-				// get the rotation needed (from default: NORTH)
-				Rotate rotate = Direction.NORTH.getRotation(direction);
-				if (rotate != Rotate.NO_ROTATE) shouldRotate = true;
-				Treasure.logger.debug("Rotate to:" + rotate);
-				try {
-					for (LockState lockState : tcte.getLockStates()) {
-						if (lockState != null && lockState.getSlot() != null) {
-							Treasure.logger.debug("Original lock state:" + lockState);
-							// if a rotation is needed
-							if (shouldRotate) {
-								ILockSlot newSlot = lockState.getSlot().rotate(rotate);
-								Treasure.logger.debug("New slot position:" + newSlot);
-								lockState.setSlot(newSlot);
-								// set the update flag
-								shouldUpdate = true;
-							}
-						}
-					}
-				}
-				catch(Exception e) {
-					Treasure.logger.error("Error updating lock states: ", e);
-				}
+				
+		        // TODO move to method rotateLockStates(Rotate rotate);
+		       shouldUpdate =  rotateLockStates(worldIn, pos, Direction.NORTH.getRotation(direction));
+		        
+//				// get the rotation needed (from default: NORTH)
+//				Rotate rotate = Direction.NORTH.getRotation(direction);
+//				if (rotate != Rotate.NO_ROTATE) shouldRotate = true;
+//				Treasure.logger.debug("Rotate to:" + rotate);
+//				try {
+//					for (LockState lockState : tcte.getLockStates()) {
+//						if (lockState != null && lockState.getSlot() != null) {
+//							Treasure.logger.debug("Original lock state:" + lockState);
+//							// if a rotation is needed
+//							if (shouldRotate) {
+//								ILockSlot newSlot = lockState.getSlot().rotate(rotate);
+//								Treasure.logger.debug("New slot position:" + newSlot);
+//								lockState.setSlot(newSlot);
+//								// set the update flag
+//								shouldUpdate = true;
+//							}
+//						}
+//					}
+//				}
+//				catch(Exception e) {
+//					Treasure.logger.error("Error updating lock states: ", e);
+//				}
 			}
 		}
 
@@ -303,14 +314,49 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	//		return state.withProperty(FACING, getFacing(worldIn, pos));
 	//	}
 
+	public boolean  rotateLockStates(World world, BlockPos pos, Rotate rotate) {
+		boolean hasRotated = false;
+		boolean shouldRotate = false;
+		if (rotate != Rotate.NO_ROTATE) shouldRotate = true;
+		Treasure.logger.debug("Rotate to:" + rotate);
+		
+		AbstractTreasureChestTileEntity tcte = null;
+		TileEntity te = world.getTileEntity(pos);
+		if (te != null && te instanceof AbstractTreasureChestTileEntity) {
+			// get the backing tile entity
+			tcte = (AbstractTreasureChestTileEntity) te;
+		}
+		else {
+			return false;
+		}
+		
+		try {
+			for (LockState lockState : tcte.getLockStates()) {
+				if (lockState != null && lockState.getSlot() != null) {
+					Treasure.logger.debug("Original lock state:" + lockState);
+					// if a rotation is needed
+					if (shouldRotate) {
+						ILockSlot newSlot = lockState.getSlot().rotate(rotate);
+						Treasure.logger.debug("New slot position:" + newSlot);
+						lockState.setSlot(newSlot);
+						// set the flag to indicate the lockStates have rotated
+						hasRotated = true;
+					}
+				}
+			}
+		}
+		catch(Exception e) {
+			Treasure.logger.error("Error updating lock states: ", e);
+		}
+		return hasRotated;
+	}
+
 	/**
 	 * 
 	 */
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		// TODO Auto-generated method stub
-		//		super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
 
 		AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
 
@@ -325,122 +371,40 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 			isLocked = true;
 		}
 		
-//		try {
-//			// get the item held in player's hand
-//			ItemStack heldItem = playerIn.getHeldItem(hand);	
-//			if (isLocked) {
-//				// if the player is holding a key
-//				if (heldItem != null && heldItem.getItem() instanceof KeyItem) {
-//					KeyItem key = (KeyItem) heldItem.getItem();
-//					boolean breakKey = true;
-//					// check if held item is a key that opens a lock (only first lock that key fits is unlocked).
-//					for (LockState lockState : te.getLockStates()) {
-//						if (lockState.getLock() != null) {
-//							if (key.unlock(lockState.getLock())) {
-//								LockItem lock = lockState.getLock();
-//								// remove the lock
-//								lockState.setLock(null);
-//								// play noise
-//								//								worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.click", 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
-//								worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-//								// update the client
-//								te.sendUpdates();
-//								// spawn the lock
-//								InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(lock));
-//								// don't break the key
-//								breakKey = false;
-//								// exit the loop
-//								break;
-//							}
-//						}
-//					}
-//
-//					// check key's breakability
-//					if (breakKey) {
-//						if (key.isBreakable()  && TreasureConfig.enableKeyBreaks) {
-//							// break key;
-//							heldItem.shrink(1);
-//							//	worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.break", 1.0F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
-//							playerIn.sendMessage(new TextComponentString("Key broke."));
-//							worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-//
-//							if (heldItem.getCount() <=0) {
-//								IInventory inventory = playerIn.inventory;
-//								inventory.setInventorySlotContents(playerIn.inventory.currentItem, null);
-//							}							
-//						}
-//						else {
-//							playerIn.sendMessage(new TextComponentString("Failed to unlock."));
-//						}
-//					}
-//					// test if still locked
-//					if (!te.hasLocks()) {
-//						isLocked = false;		
-//						// TODO for future: set the owner of the chest to the player. when unlocking locks, keys no longer break.
-//					}
-//				}
-//				else if (heldItem != null && heldItem.getItem() instanceof LockItem) {
-//					// handle the lock
-//					// NOTE don't use the return boolean as the locked flag here, as the chest is already locked and if the method was
-//					// unsuccessful it could state the chest is unlocked.
-//					handleHeldLock(te, playerIn, heldItem);
-//				}
-//				else {
-//					// Display message and do nothing
-//					StringBuilder builder = new StringBuilder();
-//					builder
-//					.append(TextFormatting.WHITE).append("The chest is ").append(TextFormatting.BOLD).append(TextFormatting.GOLD)
-//					.append("Locked").append(TextFormatting.WHITE).append(".");
-//					playerIn.sendMessage(new TextComponentString(builder.toString()));
-//					//			       return false;
-//				}
-//			}
-//			// not locked
-//			else {
-//				// if the player is holding a lock
-//				if (heldItem != null && heldItem.getItem() instanceof LockItem) {
-//					// handle the lock
-//					isLocked = handleHeldLock(te, playerIn, heldItem);
-//				}
-//			}
-			
-			// open the chest
-			if (!isLocked) {
-				playerIn.openGui(Treasure.instance, GuiHandler.TREASURE_CHEST_GUIID, worldIn, pos.getX(), pos.getY(),	pos.getZ());
-			}
-//		}
-//		catch (Exception e) {
-//			Treasure.logger.error("gui error: ", e);
-//		}
+		// open the chest
+		if (!isLocked) {
+			playerIn.openGui(Treasure.instance, getChestGuiID(), worldIn, pos.getX(), pos.getY(),	pos.getZ());
+		}
+
 		return true;
 	}
 
-	/**
-	 * 
-	 * @param te
-	 * @param player
-	 * @param heldItem
-	 */
-	private boolean handleHeldLock(AbstractTreasureChestTileEntity te, EntityPlayer player, ItemStack heldItem) {
-		boolean isLocked = false;
-		LockItem lock = (LockItem) heldItem.getItem();		
-		// add the lock to the first lockstate that has an available slot
-		for(LockState lockState : te.getLockStates()) {
-			if (lockState != null && lockState.getLock() == null) {
-				lockState.setLock(lock);
-				te.sendUpdates();
-				// decrement item in hand
-				heldItem.shrink(1);
-				if (heldItem.getCount() <=0) {
-					IInventory inventory = player.inventory;
-					inventory.setInventorySlotContents(player.inventory.currentItem, null);
-				}
-				isLocked = true;
-				break;
-			}
-		}
-		return isLocked;
-	}
+//	/**
+//	 * 
+//	 * @param te
+//	 * @param player
+//	 * @param heldItem
+//	 */
+//	private boolean handleHeldLock(AbstractTreasureChestTileEntity te, EntityPlayer player, ItemStack heldItem) {
+//		boolean isLocked = false;
+//		LockItem lock = (LockItem) heldItem.getItem();		
+//		// add the lock to the first lockstate that has an available slot
+//		for(LockState lockState : te.getLockStates()) {
+//			if (lockState != null && lockState.getLock() == null) {
+//				lockState.setLock(lock);
+//				te.sendUpdates();
+//				// decrement item in hand
+//				heldItem.shrink(1);
+//				if (heldItem.getCount() <=0) {
+//					IInventory inventory = player.inventory;
+//					inventory.setInventorySlotContents(player.inventory.currentItem, null);
+//				}
+//				isLocked = true;
+//				break;
+//			}
+//		}
+//		return isLocked;
+//	}
 
 	/**
 	 * 
@@ -575,21 +539,6 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	}
 
 	/**
-	 * @return the locks
-	 */
-	//	public LockState[] getLocks() {
-	//		return locks;
-	//	}
-	//
-	//	/**
-	//	 * @param locks the locks to set
-	//	 */
-	//	public TreasureChestBlock setLocks(LockState[] locks) {
-	//		this.locks = locks;
-	//		return this;
-	//	}
-
-	/**
 	 * @return the bounds
 	 */
 	public AxisAlignedBB[] getBounds() {
@@ -601,6 +550,36 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 	 */
 	public TreasureChestBlock setBounds(AxisAlignedBB[] bounds) {
 		this.bounds = bounds;
+		return this;
+	}
+
+	/**
+	 * @return the rarity
+	 */
+	public Rarity getRarity() {
+		return rarity;
+	}
+
+	/**
+	 * @param rarity the rarity to set
+	 */
+	public TreasureChestBlock setRarity(Rarity rarity) {
+		this.rarity = rarity;
+		return this;
+	}
+
+	/**
+	 * @return the chestGuiID
+	 */
+	public int getChestGuiID() {
+		return chestGuiID;
+	}
+
+	/**
+	 * @param chestGuiID the chestGuiID to set
+	 */
+	public TreasureChestBlock setChestGuiID(int chestGuiID) {
+		this.chestGuiID = chestGuiID;
 		return this;
 	}
 

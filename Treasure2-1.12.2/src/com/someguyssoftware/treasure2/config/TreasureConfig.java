@@ -29,6 +29,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String CRATE_CHEST_ID = "crate_chest";
 	public static final String MOLDY_CRATE_CHEST_ID = "crate_chest_moldy";
 	public static final String IRONBOUND_CHEST_ID = "ironbound_chest";
+	public static final String IRON_STRONGBOX_ID = "iron_strongbox";
+	public static final String GOLD_STRONGBOX_ID = "gold_strongbox";
 	
 	// locks
 	public static final String WOOD_LOCK_ID = "wood_lock";
@@ -73,15 +75,25 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String GRAVESTONE2_POLISHED_DIORITE_ID = "gravestone2_polished_diorite";
 	public static final String GRAVESTONE2_OBSIDIAN_ID = "gravestone2_obsidian";
 	
+	public static final String GRAVESTONE3_STONE_ID = "gravestone3_stone";
+	public static final String GRAVESTONE3_COBBLESTONE_ID = "gravestone3_cobblestone";
+	public static final String GRAVESTONE3_MOSSY_COBBLESTONE_ID = "gravestone3_mossy_cobblestone";
+	public static final String GRAVESTONE3_POLISHED_GRANITE_ID = "gravestone3_polished_granite";
+	public static final String GRAVESTONE3_POLISHED_ANDESITE_ID = "gravestone3_polished_andesite";
+	public static final String GRAVESTONE3_POLISHED_DIORITE_ID = "gravestone3_polished_diorite";
+	public static final String GRAVESTONE3_OBSIDIAN_ID = "gravestone3_obsidian";
+	
+	public static final String SKULL_CROSSBONES_ID = "skull_and_crossbones";		
+	
 	// TEs
 	public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity";
 	public static final String CRATE_CHEST_TE_ID = "crate_chest_tile_entity";
 	public static final String MOLDY_CRATE_CHEST_TE_ID = "crate_chest_moldy_tile_entity";
 	public static final String IRONBOUND_CHEST_TE_ID = "ironbound_chest_tile_entity";
 	public static final String PIRATE_CHEST_TE_ID = "pirate_chest_tile_entity";
-
-
-		
+	public static final String IRON_STRONGBOX_TE_ID = "iron_strongbox_tile_entity";
+	public static final String GOLD_STRONGBOX_TE_ID = "gold_strongbox_tile_entity";
+	
 
 	public static boolean enableKeyBreaks = true;	
 	public static String treasureFolder;

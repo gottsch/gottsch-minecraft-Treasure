@@ -1,0 +1,53 @@
+{
+	"parent": "block/block",
+    "textures": {
+        "0": "treasure2:blocks/skull_north",
+        "1": "treasure2:blocks/skull_east",
+        "2": "treasure2:blocks/skull_south",
+        "3": "treasure2:blocks/crossbone",
+        "particle": "treasure2:blocks/skull_south"
+    },
+    "elements": [
+        {
+            "name": "Skull",
+            "from": [ 5.0, 0.0, 10.0 ], 
+            "to": [ 11.0, 5.0, 15.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 0.0, 6.0, 5.0 ] },
+                "east": { "texture": "#1", "uv": [ 0.0, 0.0, 5.0, 5.0 ] },
+                "south": { "texture": "#2", "uv": [ 0.0, 0.0, 6.0, 5.0 ] },
+                "west": { "texture": "#2", "uv": [ 0.0, 0.0, 5.0, 5.0 ] },
+                "up": { "texture": "#2", "uv": [ 0.0, 0.0, 6.0, 5.0 ] },
+                "down": { "texture": "#2", "uv": [ 0.0, 0.0, 6.0, 5.0 ] }
+            }
+        },
+        {
+            "name": "Bone1",
+            "from": [ 1.0, 0.0, 5.0 ], 
+            "to": [ 14.0, 1.0, 6.0 ], 
+            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": -22.5 },
+            "faces": {
+                "north": { "texture": "#3", "uv": [ 0.0, 0.0, 13.0, 1.0 ] },
+                "east": { "texture": "#3", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "south": { "texture": "#3", "uv": [ 0.0, 0.0, 13.0, 1.0 ] },
+                "west": { "texture": "#3", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "up": { "texture": "#3", "uv": [ 0.0, 0.0, 13.0, 1.0 ] },
+                "down": { "texture": "#3", "uv": [ 0.0, 0.0, 13.0, 1.0 ] }
+            }
+        },
+        {
+            "name": "Bone2",
+            "from": [ 2.0, 0.0, 5.0 ], 
+            "to": [ 15.0, 1.0, 6.0 ], 
+            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 22.5 },
+            "faces": {
+                "north": { "texture": "#3", "uv": [ 0.0, 0.0, 13.0, 1.0 ] },
+                "east": { "texture": "#3", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "south": { "texture": "#3", "uv": [ 0.0, 0.0, 13.0, 1.0 ] },
+                "west": { "texture": "#3", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "up": { "texture": "#3", "uv": [ 0.0, 0.0, 13.0, 1.0 ] },
+                "down": { "texture": "#3", "uv": [ 0.0, 0.0, 13.0, 1.0 ] }
+            }
+        }
+    ]
+}

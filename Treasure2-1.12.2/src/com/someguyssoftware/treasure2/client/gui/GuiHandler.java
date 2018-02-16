@@ -4,8 +4,10 @@
 package com.someguyssoftware.treasure2.client.gui;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.client.gui.inventory.TreasureChestGui;
-import com.someguyssoftware.treasure2.inventory.TreasureChestContainer;
+import com.someguyssoftware.treasure2.client.gui.inventory.StandardChestGui;
+import com.someguyssoftware.treasure2.client.gui.inventory.StrongboxChestGui;
+import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
+import com.someguyssoftware.treasure2.inventory.StrongboxChestContainer;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +27,8 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
  * IGuiHandler instance handler per mod.
  */
 public class GuiHandler implements IGuiHandler {
-	public static final int TREASURE_CHEST_GUIID = 1;
+	public static final int STANDARD_CHEST_GUIID = 1;
+	public static final int STRONGBOX_CHEST_GUIID = 2;
 
 	
 	/* (non-Javadoc)
@@ -37,12 +40,17 @@ public class GuiHandler implements IGuiHandler {
 		TileEntity tileEntity = world.getTileEntity(pos);
 		
 		switch(ID) {
-			case TREASURE_CHEST_GUIID:
+			case STANDARD_CHEST_GUIID:
 				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-					Treasure.logger.debug("Tile entity is of type TreasureChestTileEntity");
-					return new TreasureChestContainer(player.inventory, ((AbstractTreasureChestTileEntity)tileEntity).getInventoryProxy());
+					return new StandardChestContainer(player.inventory, ((AbstractTreasureChestTileEntity)tileEntity).getInventoryProxy());
 				}
 				break;
+			case STRONGBOX_CHEST_GUIID:
+				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
+					Treasure.logger.debug("Tile entity is of type TreasureChestTileEntity");
+					return new StrongboxChestContainer(player.inventory, ((AbstractTreasureChestTileEntity)tileEntity).getInventoryProxy());
+				}
+				break;				
 			default: return null;
 		}
 		return null;
@@ -56,10 +64,17 @@ public class GuiHandler implements IGuiHandler {
 		BlockPos xyz = new BlockPos(x, y, z);
 		TileEntity tileEntity = world.getTileEntity(xyz);
 		switch(ID) {
-			case TREASURE_CHEST_GUIID:
+			case STANDARD_CHEST_GUIID:
 				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
 					// TODO could pass in the different bg textures here
-					return new TreasureChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
+					return new StandardChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
+				}
+				else {
+					Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");
+				}
+			case STRONGBOX_CHEST_GUIID:
+				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
+					return new StrongboxChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
 				}
 				else {
 					Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");

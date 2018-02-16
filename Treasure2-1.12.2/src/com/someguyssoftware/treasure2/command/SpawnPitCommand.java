@@ -16,9 +16,11 @@ import com.someguyssoftware.lootbuilder.inventory.InventoryPopulator;
 import com.someguyssoftware.lootbuilder.model.LootContainer;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -71,40 +73,43 @@ public class SpawnPitCommand extends CommandBase {
 
     			Random random = new Random();
     			//BlockPos pos = new BlockPos(x, y, z);
-    			// get surface pos
-    			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(x, 254, z));
-    			ICoords spawnCoords = new Coords(x, y, z);
-    			boolean isGenerated = SimplePitGenerator.generate(world, random, surfaceCoords, spawnCoords);
-    			AbstractTreasureChestTileEntity chest = null;
-    			if (isGenerated) {
-    				world.setBlockState(spawnCoords.toPos() , TreasureBlocks.WOOD_CHEST.getDefaultState(), 3);
-    				chest = (AbstractTreasureChestTileEntity) world.getTileEntity(spawnCoords.toPos());
-    			}
-    			Treasure.logger.debug("Chest TE @ {} {}", spawnCoords.toPos(), chest);
-    			if (chest != null) {
-    				// query to load the selected rarity chests
-    				List<LootContainer> containers = DbManager.getInstance().getContainersByRarity(rarity);
-
-    				// TODO create a new chestpopulator - simple populates a chest
-//    				ChestPopulator pop = new ChestPopulator(chestSheet);
-
-    				if (containers != null)
-    					Treasure.logger.debug("Containers found:" + containers.size());
-					if (containers != null && !containers.isEmpty()) {
-						// add each container to the random prob collection
-						for (LootContainer c : containers) {
-							Treasure.logger.info("Selected chest container:" + c);
-						}
-						// get the first container
-						LootContainer c = containers.get(0);
-//						RandomProbabilityCollection<ChestContainer> chestProbCol = new RandomProbabilityCollection<>(containers);
-//						// select a container
-//						ChestContainer container = (ChestContainer) chestProbCol.next();		
-						Treasure.logger.info("Chosen chest container:" + c);
-						InventoryPopulator pop = new InventoryPopulator();
-						pop.populate(chest.getInventoryProxy(), c);
-					}
-    			}
+    			ChestWorldGenerator chestGen = new ChestWorldGenerator();
+    			chestGen.getGenerators().get(rarity).generate(world, random, new Coords(x, y, z), rarity, Configs.chestConfigs.get(rarity)); 
+//    			// get surface pos
+//    			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(x, 254, z));
+//    			ICoords spawnCoords = new Coords(x, y, z);
+//    			SimplePitGenerator pitGen = new SimplePitGenerator();
+//    			boolean isGenerated = pitGen.generate(world, random, surfaceCoords, spawnCoords);
+//    			AbstractTreasureChestTileEntity chest = null;
+//    			if (isGenerated) {
+//    				world.setBlockState(spawnCoords.toPos() , TreasureBlocks.WOOD_CHEST.getDefaultState(), 3);
+//    				chest = (AbstractTreasureChestTileEntity) world.getTileEntity(spawnCoords.toPos());
+//    			}
+//    			Treasure.logger.debug("Chest TE @ {} {}", spawnCoords.toPos(), chest);
+//    			if (chest != null) {
+//    				// query to load the selected rarity chests
+//    				List<LootContainer> containers = DbManager.getInstance().getContainersByRarity(rarity);
+//
+//    				// TODO create a new chestpopulator - simple populates a chest
+////    				ChestPopulator pop = new ChestPopulator(chestSheet);
+//
+//    				if (containers != null)
+//    					Treasure.logger.debug("Containers found:" + containers.size());
+//					if (containers != null && !containers.isEmpty()) {
+//						// add each container to the random prob collection
+//						for (LootContainer c : containers) {
+//							Treasure.logger.info("Selected chest container:" + c);
+//						}
+//						// get the first container
+//						LootContainer c = containers.get(0);
+////						RandomProbabilityCollection<ChestContainer> chestProbCol = new RandomProbabilityCollection<>(containers);
+////						// select a container
+////						ChestContainer container = (ChestContainer) chestProbCol.next();		
+//						Treasure.logger.info("Chosen chest container:" + c);
+//						InventoryPopulator pop = new InventoryPopulator();
+//						pop.populate(chest.getInventoryProxy(), c);
+//					}
+//    			}
     		}
 		}
 		catch(Exception e) {

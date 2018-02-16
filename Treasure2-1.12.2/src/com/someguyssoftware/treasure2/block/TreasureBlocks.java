@@ -13,13 +13,16 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
+import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.item.TreasureChestItemBlock;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
+import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
 import net.minecraft.block.Block;
@@ -46,6 +49,8 @@ public class TreasureBlocks {
 	public static final Block CRATE_CHEST_MOLDY;
 	public static final Block IRONBOUND_CHEST;
 	public static final Block PIRATE_CHEST;
+	public static final Block IRON_STRONGBOX;
+	public static final Block GOLD_STRONGBOX;
 	
 	// chest holder
 	public static Multimap<Rarity, Block> chests;
@@ -68,64 +73,102 @@ public class TreasureBlocks {
 	public static final Block GRAVESTONE2_POLISHED_ANDESITE;
 	public static final Block GRAVESTONE2_POLISHED_DIORITE;
 	public static final Block GRAVESTONE2_OBSIDIAN;
+	public static final Block GRAVESTONE3_STONE;
+	public static final Block GRAVESTONE3_COBBLESTONE;
+	public static final Block GRAVESTONE3_MOSSY_COBBLESTONE;
+	public static final Block GRAVESTONE3_POLISHED_GRANITE;
+	public static final Block GRAVESTONE3_POLISHED_ANDESITE;
+	public static final Block GRAVESTONE3_POLISHED_DIORITE;
+	public static final Block GRAVESTONE3_OBSIDIAN;
+	public static final Block SKULL_CROSSBONES;
 	
 	// initialize blocks
 	static {
-		// chest bounds
-		AxisAlignedBB vanilla = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.875D, 0.9375D);
-		AxisAlignedBB[] bounds = new 	AxisAlignedBB[4];
-		bounds[0] = vanilla; // S
-		bounds[1] = vanilla; // W
-		bounds[2] = vanilla; // N
-		bounds[3] = vanilla; // E
+		// standard chest bounds
+		AxisAlignedBB vanilla = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D);
+		AxisAlignedBB[] stdChestBounds = new AxisAlignedBB[4];
+		stdChestBounds[0] = vanilla; // S
+		stdChestBounds[1] = vanilla; // W
+		stdChestBounds[2] = vanilla; // N
+		stdChestBounds[3] = vanilla; // E
 
 		WOOD_CHEST = new TreasureChestBlock(
 				Treasure.MODID, 
 				TreasureConfig.WOOD_CHEST_ID, 
 				WoodChestTileEntity.class,
-				TreasureChestTypes.STANDARD)
-				.setBounds(bounds)
+				TreasureChestTypes.STANDARD,
+				Rarity.COMMON)
+				.setBounds(stdChestBounds)
 				.setHardness(2.5F);
 
 		IRONBOUND_CHEST = new TreasureChestBlock(
 				Treasure.MODID, 
 				TreasureConfig.IRONBOUND_CHEST_ID, 
 				IronboundChestTileEntity.class,
-				TreasureChestTypes.STANDARD)
-				.setBounds(bounds)
+				TreasureChestTypes.STANDARD, 
+				Rarity.UNCOMMON)
+				.setBounds(stdChestBounds)
 				.setHardness(3.0F);
 
 		PIRATE_CHEST = new TreasureChestBlock(
 				Treasure.MODID,
 				TreasureConfig.PIRATE_CHEST_ID,
 				PirateChestTileEntity.class,
-				TreasureChestTypes.STANDARD)
-				.setBounds(bounds)
+				TreasureChestTypes.STANDARD, 
+				Rarity.SCARCE)
+				.setBounds(stdChestBounds)
 				.setHardness(3.0F);
 
 		CRATE_CHEST = new TreasureChestBlock(
 				Treasure.MODID, 
 				TreasureConfig.CRATE_CHEST_ID, 
 				CrateChestTileEntity.class,
-				TreasureChestTypes.CRATE)
-				.setBounds(bounds)
+				TreasureChestTypes.CRATE,
+				Rarity.UNCOMMON)
+				.setBounds(stdChestBounds)
 				.setHardness(2.5F);
 		
 		CRATE_CHEST_MOLDY = new TreasureChestBlock(
 				Treasure.MODID, 
 				TreasureConfig.MOLDY_CRATE_CHEST_ID, 
 				MoldyCrateChestTileEntity.class,
-				TreasureChestTypes.CRATE)
-				.setBounds(bounds)
-				.setHardness(2.5F);
+				TreasureChestTypes.CRATE,
+				Rarity.COMMON)
+				.setBounds(stdChestBounds)
+				.setHardness(2.0F);
+		
+		// TODO create new strongbox bounds
+		AxisAlignedBB[] strongboxBounds = new 	AxisAlignedBB[4];
+		strongboxBounds[0] = new AxisAlignedBB(0.1875D, 0.0D, 0.25D, 0.825D, 0.46875D, 0.75D); //S
+		strongboxBounds[1] = new AxisAlignedBB(0.25D, 0.0D, 0.1875D, 0.75D, 0.46875D, 0.825D); //W
+		strongboxBounds[2] = new AxisAlignedBB(0.1875D, 0.0D, 0.25D, 0.825D, 0.46875D, 0.75D); //N
+		strongboxBounds[3] = new AxisAlignedBB(0.25D, 0.0D, 0.1875D, 0.75D, 0.46875D, 0.825D); //E
+		
+		IRON_STRONGBOX = new TreasureChestBlock(
+				Treasure.MODID,
+				TreasureConfig.IRON_STRONGBOX_ID,
+				IronStrongboxTileEntity.class,
+				TreasureChestTypes.STRONGBOX, Rarity.SCARCE)
+				.setChestGuiID(GuiHandler.STRONGBOX_CHEST_GUIID)
+				.setBounds(strongboxBounds)
+				.setHardness(4.0F);
+		
+		GOLD_STRONGBOX = new TreasureChestBlock(
+				Treasure.MODID,
+				TreasureConfig.GOLD_STRONGBOX_ID,
+				GoldStrongboxTileEntity.class,
+				TreasureChestTypes.STRONGBOX, Rarity.RARE)
+				.setChestGuiID(GuiHandler.STRONGBOX_CHEST_GUIID)
+				.setBounds(strongboxBounds)
+				.setHardness(4.0F);
 		
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
-		chests.put(Rarity.COMMON, WOOD_CHEST);
-		chests.put(Rarity.COMMON, CRATE_CHEST_MOLDY);
-		chests.put(Rarity.UNCOMMON, CRATE_CHEST);
-		chests.put(Rarity.UNCOMMON, IRONBOUND_CHEST);
-		chests.put(Rarity.SCARCE, PIRATE_CHEST);
+//		chests.put(((TreasureChestBlock)WOOD_CHEST).getRarity(), WOOD_CHEST);
+//		chests.put(Rarity.COMMON, CRATE_CHEST_MOLDY);
+//		chests.put(Rarity.UNCOMMON, CRATE_CHEST);
+//		chests.put(Rarity.UNCOMMON, IRONBOUND_CHEST);
+//		chests.put(Rarity.SCARCE, PIRATE_CHEST);
 		
 		// TEMP
 		chests.put(Rarity.RARE, PIRATE_CHEST);
@@ -148,10 +191,10 @@ public class TreasureBlocks {
 		GRAVESTONE1_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_OBSIDIAN_ID, Material.ROCK).setBounds(gbs);
 		
 		AxisAlignedBB[] gbs2 = new 	AxisAlignedBB[4];
-		gbs2[0] = new AxisAlignedBB(0.125D, 0.0D, 0.375D, 0.875D, 1.125D, 0.675D); // S
-		gbs2[1] = new AxisAlignedBB(0.375D, 0.0D, 0.125D, 0.675D, 1.125D, 0.875D); // W
-		gbs2[2] = new AxisAlignedBB(0.125D, 0.0D, 0.375D, 0.875D, 1.125D, 0.675D); // N
-		gbs2[3] = new AxisAlignedBB(0.375D, 0.0D, 0.125D, 0.675D, 1.125D, 0.875D); // E
+		gbs2[0] = new AxisAlignedBB(0.125D, 0.0D, 0.375D, 0.875D, 1.375D, 0.675D); // S
+		gbs2[1] = new AxisAlignedBB(0.375D, 0.0D, 0.125D, 0.675D, 1.375D, 0.875D); // W
+		gbs2[2] = new AxisAlignedBB(0.125D, 0.0D, 0.375D, 0.875D, 1.375D, 0.675D); // N
+		gbs2[3] = new AxisAlignedBB(0.375D, 0.0D, 0.125D, 0.675D, 1.375D, 0.875D); // E
 		
 		// Gravestones
 		GRAVESTONE2_STONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_STONE_ID, Material.ROCK).setBounds(gbs2);
@@ -161,6 +204,21 @@ public class TreasureBlocks {
 		GRAVESTONE2_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_POLISHED_ANDESITE_ID, Material.ROCK).setBounds(gbs2);
 		GRAVESTONE2_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_POLISHED_DIORITE_ID, Material.ROCK).setBounds(gbs2);
 		GRAVESTONE2_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_OBSIDIAN_ID, Material.ROCK).setBounds(gbs2);
+		
+		GRAVESTONE3_STONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_STONE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE3_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_COBBLESTONE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE3_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_MOSSY_COBBLESTONE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE3_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_POLISHED_GRANITE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE3_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_POLISHED_ANDESITE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE3_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_POLISHED_DIORITE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE3_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_OBSIDIAN_ID, Material.ROCK).setBounds(gbs2);
+
+		// other
+		SKULL_CROSSBONES = new SkullAndBonesBlock(
+				Treasure.MODID, 
+				TreasureConfig.SKULL_CROSSBONES_ID, 
+				Material.ROCK)
+				.setBounds(stdChestBounds);
 		
 		// add all the gravestones to the list
 		gravestones = new ArrayList<>();
@@ -178,6 +236,14 @@ public class TreasureBlocks {
 		gravestones.add(GRAVESTONE2_POLISHED_DIORITE);
 		gravestones.add(GRAVESTONE2_POLISHED_GRANITE);
 		gravestones.add(GRAVESTONE2_OBSIDIAN);
+		gravestones.add(GRAVESTONE3_STONE);
+		gravestones.add(GRAVESTONE3_COBBLESTONE);
+		gravestones.add(GRAVESTONE3_MOSSY_COBBLESTONE);
+		gravestones.add(GRAVESTONE3_POLISHED_ANDESITE);
+		gravestones.add(GRAVESTONE3_POLISHED_DIORITE);
+		gravestones.add(GRAVESTONE3_POLISHED_GRANITE);
+		gravestones.add(GRAVESTONE3_OBSIDIAN);
+		gravestones.add(SKULL_CROSSBONES);
 		
 	}
 			
@@ -206,6 +272,8 @@ public class TreasureBlocks {
 					CRATE_CHEST_MOLDY,
 					IRONBOUND_CHEST,
 					PIRATE_CHEST,
+					IRON_STRONGBOX,
+					GOLD_STRONGBOX,
 					GRAVESTONE1_STONE,
 					GRAVESTONE1_COBBLESTONE,
 					GRAVESTONE1_MOSSY_COBBLESTONE,
@@ -219,9 +287,24 @@ public class TreasureBlocks {
 					GRAVESTONE2_POLISHED_GRANITE,
 					GRAVESTONE2_POLISHED_ANDESITE,
 					GRAVESTONE2_POLISHED_DIORITE,
-					GRAVESTONE2_OBSIDIAN
+					GRAVESTONE2_OBSIDIAN,
+					GRAVESTONE3_STONE,
+					GRAVESTONE3_COBBLESTONE,
+					GRAVESTONE3_MOSSY_COBBLESTONE,
+					GRAVESTONE3_POLISHED_GRANITE,
+					GRAVESTONE3_POLISHED_ANDESITE,
+					GRAVESTONE3_POLISHED_DIORITE,
+					GRAVESTONE3_OBSIDIAN,
+					SKULL_CROSSBONES
 			};
-			registry.registerAll(blocks);			
+			registry.registerAll(blocks);	
+			
+			// map the block by rarity
+			for (Block block : blocks) {
+				if (block instanceof TreasureChestBlock) {
+					chests.put(((TreasureChestBlock)block).getRarity(), block);
+				}
+			}
 		}
 		
 		/**
@@ -235,11 +318,13 @@ public class TreasureBlocks {
 			
 			final ItemBlock[] items = {
 					// TODO update with ChestItemBlock so we can use addInformation() for display and mouse over  purposes.
-					new ItemBlock(WOOD_CHEST),
+					new TreasureChestItemBlock(WOOD_CHEST),
 					new ItemBlock(CRATE_CHEST),
 					new ItemBlock(CRATE_CHEST_MOLDY),
 					new ItemBlock(IRONBOUND_CHEST),
 					new ItemBlock(PIRATE_CHEST),
+					new ItemBlock(IRON_STRONGBOX),
+					new ItemBlock(GOLD_STRONGBOX),
 					// TODO update with GravestonIetmBlock
 					new ItemBlock(GRAVESTONE1_STONE),
 					new ItemBlock(GRAVESTONE1_COBBLESTONE),
@@ -254,7 +339,15 @@ public class TreasureBlocks {
 					new ItemBlock(GRAVESTONE2_POLISHED_GRANITE),
 					new ItemBlock(GRAVESTONE2_POLISHED_ANDESITE),
 					new ItemBlock(GRAVESTONE2_POLISHED_DIORITE),
-					new ItemBlock(GRAVESTONE2_OBSIDIAN)
+					new ItemBlock(GRAVESTONE2_OBSIDIAN),
+					new ItemBlock(GRAVESTONE3_STONE),
+					new ItemBlock(GRAVESTONE3_COBBLESTONE),
+					new ItemBlock(GRAVESTONE3_MOSSY_COBBLESTONE),
+					new ItemBlock(GRAVESTONE3_POLISHED_GRANITE),
+					new ItemBlock(GRAVESTONE3_POLISHED_ANDESITE),
+					new ItemBlock(GRAVESTONE3_POLISHED_DIORITE),
+					new ItemBlock(GRAVESTONE3_OBSIDIAN),
+					new ItemBlock(SKULL_CROSSBONES)
 			};
 			
 			for (final ItemBlock item : items) {
@@ -269,12 +362,14 @@ public class TreasureBlocks {
 //	        		new ModelResourceLocation(chestItem.getRegistryName(), "variant=" + type.getName()));
 	        
 			// register the tile entities
-			GameRegistry.registerTileEntity(AbstractTreasureChestTileEntity.class, "treasureChestTileEntity");
+//			GameRegistry.registerTileEntity(AbstractTreasureChestTileEntity.class, "treasureChestTileEntity");
 			GameRegistry.registerTileEntity(WoodChestTileEntity.class, TreasureConfig.WOOD_CHEST_TE_ID);
 			GameRegistry.registerTileEntity(CrateChestTileEntity.class, TreasureConfig.CRATE_CHEST_TE_ID);
 			GameRegistry.registerTileEntity(MoldyCrateChestTileEntity.class, TreasureConfig.MOLDY_CRATE_CHEST_TE_ID);
 			GameRegistry.registerTileEntity(IronboundChestTileEntity.class, TreasureConfig.IRONBOUND_CHEST_TE_ID);
 			GameRegistry.registerTileEntity(PirateChestTileEntity.class, TreasureConfig.PIRATE_CHEST_TE_ID);
+			GameRegistry.registerTileEntity(IronStrongboxTileEntity.class, TreasureConfig.IRON_STRONGBOX_TE_ID);
+			GameRegistry.registerTileEntity(GoldStrongboxTileEntity.class, TreasureConfig.GOLD_STRONGBOX_TE_ID);
 		}	
 	}
 }

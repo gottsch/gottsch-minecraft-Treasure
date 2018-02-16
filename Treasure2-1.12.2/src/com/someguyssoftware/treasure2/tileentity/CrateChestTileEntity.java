@@ -6,6 +6,7 @@ import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.translation.I18n;
 
 /**
  * 
@@ -24,6 +25,7 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 	 */
 	public CrateChestTileEntity() {
 		super();
+		setCustomName(I18n.translateToLocal("display.crate_chest.name"));
 	}
 	
 	  /**

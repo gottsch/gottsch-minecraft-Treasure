@@ -4,6 +4,7 @@
 package com.someguyssoftware.treasure2.chest;
 
 /**
+ * NOTE should this contain all sort of data of a chest or is this class simply about locks? If about just locks it should change it's name.
  * @author Mark Gottschling on Jan 9, 2018
  *
  */

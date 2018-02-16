@@ -16,7 +16,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Jan 25, 2018
  *
  */
-public class SimpleShortPitGenerator {
+public class SimpleShortPitGenerator extends AbstractPitGenerator {
 
 	/**
 	 * 
@@ -26,30 +26,29 @@ public class SimpleShortPitGenerator {
 	 * @param coords
 	 * @return
 	 */
-	public static boolean generate(World world, Random random, ICoords surfaceCoords, ICoords coords) {
+	public boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		Treasure.logger.debug("Generating SimpleShortShaft.");
-		BlockPos checkPos = null;
+		ICoords checkCoords = null;
 		// check each position if already not air and generate
 
-		checkPos = coords.add(0, 1, 0).toPos();
-		IBlockState blockState = world.getBlockState(checkPos);
+		checkCoords = spawnCoords.add(0, 1, 0);
+		IBlockState blockState = world.getBlockState(checkCoords.toPos());
 		if (blockState.getMaterial() != Material.AIR)
-			// TODO build log in the right orientation
-			world.setBlockState(checkPos, Blocks.LOG.getDefaultState(), 1);
+			buildLogLayer(world, random, checkCoords, Blocks.LOG);
 		
-		checkPos = coords.add(0, 2, 0).toPos();
+		checkCoords = spawnCoords.add(0, 2, 0);
+		if (blockState.getMaterial() != Material.AIR)			
+			buildLayer(world, checkCoords, Blocks.SAND);
+		
+		checkCoords = surfaceCoords.add(0, -2, 0);
 		if (blockState.getMaterial() != Material.AIR)
-			world.setBlockState(checkPos, Blocks.SAND.getDefaultState(), 1);
+			buildLayer(world, checkCoords, Blocks.SAND);
 		
-		checkPos = surfaceCoords.add(0, -2, 0).toPos();
+		checkCoords = surfaceCoords.add(0, -3, 0);
 		if (blockState.getMaterial() != Material.AIR)
-			world.setBlockState(checkPos, Blocks.SAND.getDefaultState(), 1);
+			buildLogLayer(world, random, checkCoords, Blocks.LOG);
 		
-		checkPos = surfaceCoords.add(0, -3, 0).toPos();
-		if (blockState.getMaterial() != Material.AIR)
-			world.setBlockState(checkPos, Blocks.LOG.getDefaultState(), 1);
-		
-		Treasure.logger.debug("Generated Simple Short Shaft Chamber at " + coords);
+		Treasure.logger.debug("Generated Simple Short Shaft Chamber at " + spawnCoords.toShortString());
 		return true;
 	}
 }

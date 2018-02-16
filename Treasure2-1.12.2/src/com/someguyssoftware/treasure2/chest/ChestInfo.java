@@ -20,6 +20,16 @@ public class ChestInfo {
 	public ChestInfo() {	}
 
 	/**
+	 * 
+	 * @param rarity
+	 * @param coords
+	 */
+	public ChestInfo(Rarity rarity, ICoords coords) {
+		setRarity(rarity);
+		setCoords(coords);
+	}
+	
+	/**
 	 * @return the coords
 	 */
 	public ICoords getCoords() {

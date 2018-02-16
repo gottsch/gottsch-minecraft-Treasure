@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.generator;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.block.AbstractModContainerBlock;
+import com.someguyssoftware.gottschcore.enums.Direction;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
@@ -76,6 +77,9 @@ public class GenUtil {
 //		Treasure.logger.info("World Chest Block:" + oldState.getClass().getCanonicalName());
 //		Treasure.logger.info("Treasure Chest Block:" + chest.getClass().getCanonicalName());
 		
+		/**
+		 * NOTE this is legecy code when Plans was used to mark with another block where a chest should go and face.
+		 */
 		if (oldState.getProperties().containsKey(FACING)) {
 			Treasure.logger.info("World Chest marker has FACING property:" + oldState.getValue(FACING));
 			// set the new state
@@ -109,6 +113,11 @@ public class GenUtil {
 			world.setBlockState(pos,chest.getDefaultState().withProperty(FACING, facing), 3);
 			//world.setBlockMetadataWithNotify(coords.getX(), coords.getY(), coords.getZ(), meta, 3);
 		
+			// TODO rotate the lockStates
+			// get the direction the block is facing.
+			Direction direction = Direction.fromFacing(facing);
+			((TreasureChestBlock)chest).rotateLockStates(world, pos, Direction.NORTH.getRotation(direction));
+			
 			// get the tile entity
 			TileEntity te = (TileEntity) world.getTileEntity(pos);
 			
@@ -555,6 +564,7 @@ public class GenUtil {
 	 * @param coords
 	 * @param surfaceCoords
 	 */
+	@Deprecated
 	public static void fillSimpleShaftRandomly(World world, Random random, ICoords coords, ICoords surfaceCoords) {
 		ICoords replaceCoords;
 

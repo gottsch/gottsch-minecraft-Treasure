@@ -6,7 +6,7 @@ package com.someguyssoftware.treasure2.client.gui.inventory;
 import java.awt.Color;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.inventory.TreasureChestContainer;
+import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.client.Minecraft;
@@ -20,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
  * @author Mark Gottschling on Jan 16, 2018
  *
  */
-public class TreasureChestGui extends GuiContainer {
+public class StandardChestGui extends GuiContainer {
 
 	// This is the resource location for the background image for the GUI
 	private static final ResourceLocation texture = new ResourceLocation(Treasure.MODID, "textures/gui/container/treasure_chest.png");
@@ -32,8 +32,8 @@ public class TreasureChestGui extends GuiContainer {
 	 * @param invPlayer
 	 * @param tileEntity
 	 */
-	public TreasureChestGui(InventoryPlayer invPlayer, AbstractTreasureChestTileEntity tileEntity) {
-		super(new TreasureChestContainer(invPlayer, (IInventory) tileEntity.getInventoryProxy())); // <---- this is where we can pass in a Proxy instead of TE.
+	public StandardChestGui(InventoryPlayer invPlayer, AbstractTreasureChestTileEntity tileEntity) {
+		super(new StandardChestContainer(invPlayer, (IInventory) tileEntity.getInventoryProxy())); // <---- this is where we can pass in a Proxy instead of TE.
 		this.tileEntity = tileEntity;
 		
 		// Set the width and height of the gui.  Should match the size of the texture!

@@ -27,6 +27,8 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CRATE_CHEST_MOLDY));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.IRONBOUND_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.PIRATE_CHEST));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.IRON_STRONGBOX));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GOLD_STRONGBOX));
 		
 		// GRAVESONES
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_STONE));
@@ -43,6 +45,15 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE2_POLISHED_ANDESITE));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE2_POLISHED_DIORITE));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE2_OBSIDIAN));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE3_STONE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE3_COBBLESTONE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE3_MOSSY_COBBLESTONE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE3_POLISHED_GRANITE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE3_POLISHED_ANDESITE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE3_POLISHED_DIORITE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE3_OBSIDIAN));
+		
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SKULL_CROSSBONES));
 		
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);
