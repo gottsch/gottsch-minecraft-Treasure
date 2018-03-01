@@ -14,6 +14,9 @@ import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialTransparent;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -72,6 +75,8 @@ public class TreasureItems {
 	 */
 	// SKULL //
 	public static final ToolMaterial SKULL_TOOL_MATERIAL = EnumHelper.addToolMaterial("SKULL", 2, 1800, 9.0F, 4.0F, 25);
+	// FOG
+	public static final Material FOG = new MaterialTransparent(MapColor.AIR);
 	
 	// chest holder
 	public static Multimap<Rarity, LockItem> locks;

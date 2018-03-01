@@ -22,7 +22,7 @@ import net.minecraft.world.IBlockAccess;
  * @author Mark Gottschling on Jan 29, 2018
  *
  */
-public class GravestoneBlock extends CardinalDirectionFacadeBlock {
+public class GravestoneBlock extends CardinalDirectionFacadeBlock implements IFogSupport {
 
 	/*
 	 * An array of AxisAlignedBB bounds for the bounding box
@@ -69,6 +69,18 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock {
 		}
 	}
 	
+	  /**
+     * Determines if this block can prevent leaves connected to it from decaying.
+     * @param state The current state
+     * @param world The current world
+     * @param pos Block position in world
+     * @return true if the presence this block can prevent leaves from decaying.
+     */
+	@Override
+    public boolean canSustainFog(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return true;
+    }
+    
 	/**
 	 * @return the bounds
 	 */

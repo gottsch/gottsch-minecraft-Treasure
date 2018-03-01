@@ -136,6 +136,7 @@ public class SafeTileEntityRenderer extends TreasureChestTileEntityRenderer {
 	     * @param y
 	     * @param z
 	     */
+	 @Override
 	    public void renderLocks(AbstractTreasureChestTileEntity te, double x, double y, double z) {
 	        // render locks
 	        for (LockState lockState : te.getLockStates()) {
@@ -153,7 +154,7 @@ public class SafeTileEntityRenderer extends TreasureChestTileEntityRenderer {
 	    	        GlStateManager.rotate(lockState.getSlot().getRotation(), 0F, 1.0F, 0.0F);
 	    	        // TODO would be better if there was a property for scale
 	    	        // reduce the size of the locks
-	    	        GlStateManager.scale(0.5F, 0.5F, 0.5F);
+	    	        GlStateManager.scale(0.3F, 0.3F, 0.3F);
 		        	Minecraft.getMinecraft().getRenderItem().renderItem(lockStack, ItemCameraTransforms.TransformType.NONE);
 		        	GlStateManager.popMatrix();
 	        	}

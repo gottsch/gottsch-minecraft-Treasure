@@ -274,7 +274,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 				// get the direction the block is facing.
 				Direction direction = Direction.fromFacing(placer.getHorizontalFacing().getOpposite());
 				
-		        // TODO move to method rotateLockStates(Rotate rotate);
+		        // rotate the lock states
 		       shouldUpdate =  rotateLockStates(worldIn, pos, Direction.NORTH.getRotation(direction));
 		        
 //				// get the rotation needed (from default: NORTH)

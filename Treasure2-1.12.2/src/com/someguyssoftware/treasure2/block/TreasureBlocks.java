@@ -17,6 +17,7 @@ import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.TreasureChestItemBlock;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
@@ -87,6 +88,8 @@ public class TreasureBlocks {
 	// other
 	public static final Block WISHING_WELL_BLOCK;
 	public static final Block FOG_BLOCK;
+	public static final Block MED_FOG_BLOCK;
+	public static final Block LOW_FOG_BLOCK;
 
 	// initialize blocks
 	static {
@@ -145,10 +148,10 @@ public class TreasureBlocks {
 
 		// safe chest bounds
 		AxisAlignedBB[] safeBounds = new AxisAlignedBB[4];
-		safeBounds[0] = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.9375D, 0.75D, 0.9375D);
-		safeBounds[1] = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.9375D, 0.75D, 0.9375D);
-		safeBounds[2] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.875D, 0.75D, 0.875D);
-		safeBounds[3] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.875D, 0.75D, 0.875D);
+		safeBounds[0] = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.8125D, 0.875D);
+		safeBounds[1] = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.8125D, 0.875D);
+		safeBounds[2] = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.8125D, 0.875D);
+		safeBounds[3] = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.8125D, 0.875D);
 
 		SAFE = new TreasureChestBlock(
 				Treasure.MODID, 
@@ -269,7 +272,9 @@ public class TreasureBlocks {
 
 		// other
 		WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.WISHING_WELL_BLOCK_ID, Material.ROCK);
-		FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.FOG_BLOCK_ID, Material.AIR);
+		FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.FOG_BLOCK_ID, TreasureItems.FOG);
+		MED_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.MED_FOG_BLOCK_ID, TreasureItems.FOG);
+		LOW_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.LOW_FOG_BLOCK_ID, TreasureItems.FOG);
 	}
 
 
@@ -323,7 +328,9 @@ public class TreasureBlocks {
 					GRAVESTONE3_OBSIDIAN,
 					SKULL_CROSSBONES,
 					WISHING_WELL_BLOCK,
-					FOG_BLOCK
+					FOG_BLOCK,
+					MED_FOG_BLOCK,
+					LOW_FOG_BLOCK
 			};
 			registry.registerAll(blocks);	
 
@@ -378,7 +385,9 @@ public class TreasureBlocks {
 					new ItemBlock(GRAVESTONE3_OBSIDIAN),
 					new ItemBlock(SKULL_CROSSBONES),
 					new ItemBlock(WISHING_WELL_BLOCK),
-					new ItemBlock(FOG_BLOCK)
+					new ItemBlock(FOG_BLOCK),
+					new ItemBlock(MED_FOG_BLOCK),
+					new ItemBlock(LOW_FOG_BLOCK)
 			};
 
 			for (final ItemBlock item : items) {

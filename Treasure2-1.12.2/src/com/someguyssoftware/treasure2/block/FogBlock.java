@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.block;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.block.ModBlock;
@@ -10,8 +12,12 @@ import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -26,13 +32,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Mark Gottschling on Feb 27, 2018
  *
  */
+// TODO needs to perform the same functionality as BlockFalling.
 public class FogBlock extends ModBlock {
-	// public static final PropertyBool DECAYABLE =
-	// PropertyBool.create("decayable");
-	// public static final PropertyBool CHECK_DECAY =
-	// PropertyBool.create("check_decay");
-	// public static final PropertyInteger DECAY = PropertyInteger.create("decay",
-	// 0, 3);
+	 public static final PropertyBool DECAYABLE = PropertyBool.create("decayable");
+	 public static final PropertyBool CHECK_DECAY =	PropertyBool.create("check_decay");
 
 	/**
 	 * 
@@ -42,34 +45,114 @@ public class FogBlock extends ModBlock {
 	 */
 	public FogBlock(String modID, String name, Material material) {
 		super(modID, name, material);
-		// this.setDefaultState(blockState.getBaseState()
-		// .withProperty(DECAYABLE, true)
-		// .withProperty(CHECK_DECAY, false)
-		// .withProperty(DECAY, 0)
-		// );
+		this.setTickRandomly(true);
+		 this.setDefaultState(blockState.getBaseState()
+			 .withProperty(DECAYABLE, Boolean.valueOf(true))
+			 .withProperty(CHECK_DECAY, Boolean.valueOf(false)));
 		setNormalCube(false);
 		setCreativeTab(Treasure.TREASURE_TAB);
 	}
 
+    /**
+     * Called when a neighboring block was changed and marks that this state should perform any checks during a neighbor
+     * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
+     * block, etc.
+     */
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+    }
+    
+    /**
+     * How many world ticks before ticking
+     */
+    public int tickRate(World worldIn) {
+        return 2;
+    }
+    
+    /**
+     * 
+     * @param state
+     * @return
+     */
+    public static boolean canFallThrough(IBlockState state) {
+        Block block = state.getBlock();
+        Material material = state.getMaterial();
+        return material == Material.AIR && block != TreasureBlocks.FOG_BLOCK;
+    }
+    
+	/**
+	 * 
+	 * @param worldIn
+	 * @param pos
+	 * @param state
+	 * @param rand
+	 */
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+		if (!worldIn.isRemote) {
+			// TODO test if check_decay = true
+			
+			// TODO check if any block is instance of IFogSupport 
+			// 	TODO check if isFogSustainable is set
+			//		TODO if so, set check_decay = false
+			
+			// TODO check how many neighbors are fog
+			// TODO if < 4 change to next level of fog: fog -> med_fog; med_fog -> low_fog; low_fog -> air
+			
+			// check if block should fall
+            this.checkFallable(worldIn, pos);
+		}
+	}
+
+	/**
+	 * 
+	 * @param worldIn
+	 * @param pos
+	 */
+	private void checkFallable(World worldIn, BlockPos pos) {
+		Treasure.logger.debug("is air block below: {}", worldIn.isAirBlock(pos.down()));
+		Treasure.logger.debug("can fall through: {}", canFallThrough(worldIn.getBlockState(pos.down())));
+		if ((worldIn.isAirBlock(pos.down()) || canFallThrough(worldIn.getBlockState(pos.down()))) && pos.getY() >= 0) {
+			int i = 32;
+
+			Treasure.logger.debug("is area loaded: [}", worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)));
+			if (worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
+				if (!worldIn.isRemote) {
+					EntityFallingBlock entityfallingblock = new EntityFallingBlock(worldIn, (double) pos.getX() + 0.5D,
+							(double) pos.getY(), (double) pos.getZ() + 0.5D, worldIn.getBlockState(pos));
+					worldIn.spawnEntity(entityfallingblock);
+				}
+			}
+			else {
+				IBlockState state = worldIn.getBlockState(pos);
+				worldIn.setBlockToAir(pos);
+				BlockPos blockpos;
+
+				for (blockpos = pos
+						.down(); (worldIn.isAirBlock(blockpos) || canFallThrough(worldIn.getBlockState(blockpos)))
+								&& blockpos.getY() > 0; blockpos = blockpos.down()) {
+					;
+				}
+
+				if (blockpos.getY() > 0) {
+					worldIn.setBlockState(blockpos.up(), state); // Forge: Fix loss of state information during world gen.
+				}
+			}
+		}
+	}
+    
 	/**
 	 * 
 	 * @return
 	 */
-	// @Override
-	// protected BlockStateContainer createBlockState() {
-	// return new BlockStateContainer(this, new IProperty[] {DECAYABLE, CHECK_DECAY,
-	// DECAY});
-	// }
+	 @Override
+	 protected BlockStateContainer createBlockState() {
+		 return new BlockStateContainer(this, new IProperty[] {DECAYABLE, CHECK_DECAY});
+	 }
 
 	@Nullable
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
 		return NULL_AABB;
 	}
-
-//	@Override
-//	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-//		return NULL_AABB;
-//	}
 
 	/**
 	 * 
@@ -152,26 +235,27 @@ public class FogBlock extends ModBlock {
 		return true;
 	}
 
-	// /**
-	// * Convert the given metadata into a BlockState for this Block
-	// */
-	// @Override
-	// public IBlockState getStateFromMeta(int meta) {
-	//// EnumFacing enumFacing = EnumFacing.getFront(meta);
-	//// if (enumFacing.getAxis() == EnumFacing.Axis.Y)
-	//// {
-	//// enumFacing = EnumFacing.NORTH;
-	//// }
-	//// return this.getDefaultState().withProperty(FACING, enumFacing);
-	// return this.getDefaultState();
-	// }
-	//
-	// /**
-	// * Convert the BlockState into the correct metadata value
-	// */
-	// @Override
-	// public int getMetaFromState(IBlockState state) {
-	//// return state.getValue(FACING).getIndex();
-	// return 0;
-	// }
+	 /**
+	 * Convert the given metadata into a BlockState for this Block
+	 */
+	 @Override
+	 public IBlockState getStateFromMeta(int meta) {
+		 boolean decay = false;
+		 boolean check = false;
+		 if (meta == 1) decay = true;
+		 if (meta == 2) check = true;
+		 if (meta ==3) { decay = check = true;}
+		 return this.getDefaultState().withProperty(DECAYABLE, Boolean.valueOf(decay)).withProperty(CHECK_DECAY, Boolean.valueOf(check));
+	 }
+	
+	 /**
+	 * Convert the BlockState into the correct metadata value
+	 */
+	 @Override
+	 public int getMetaFromState(IBlockState state) {
+		 int meta = 0;
+		 if (state.getValue(DECAYABLE)) meta = 1;
+		 if (state.getValue(CHECK_DECAY)) meta +=2;
+		 return meta;
+	 }
 }

@@ -82,13 +82,13 @@ public class LockSlot implements ILockSlot {
 		case ROTATE_180:
 			switch (this.getFace()) {
 			case NORTH:
-				x = getXOffset();
+				x = 1 - getXOffset();
 				z = 1 - getZOffset();
 				rotation = 180F;				
 			case SOUTH:
-				x = getXOffset();
+				x = 1 - getXOffset();
 				z = 1 - getZOffset();
-				rotation = 0F;
+				rotation = 180F;
 				break;
 			case EAST:
 				x = 1 - getXOffset();

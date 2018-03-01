@@ -91,6 +91,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String SKULL_CROSSBONES_ID = "skull_and_crossbones";		
 	public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
 	public static final String FOG_BLOCK_ID = "fog";
+	public static final String MED_FOG_BLOCK_ID = "med_fog";
+	public static final String LOW_FOG_BLOCK_ID = "low_fog";
 	
 	// TEs
 	public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity";
@@ -101,6 +103,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String IRON_STRONGBOX_TE_ID = "iron_strongbox_tile_entity";
 	public static final String GOLD_STRONGBOX_TE_ID = "gold_strongbox_tile_entity";
 	public static final String SAFE_TE_ID = "safe_tile_entity";
+
 	
 	
 

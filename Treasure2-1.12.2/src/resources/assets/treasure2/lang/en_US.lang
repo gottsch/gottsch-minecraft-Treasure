@@ -4,6 +4,7 @@ tile.treasure2:crate_chest.name=Crate
 tile.treasure2:crate_chest_moldy.name=Moldy Crate
 tile.treasure2:ironbound_chest.name=Ironbound Chest
 tile.treasure2:pirate_chest.name=Pirate Chest
+tile.treasure2:safe.name=Safe
 
 #gravestones
 tile.treasure2:gravestone1_stone.name=Stone Tombstone
@@ -29,6 +30,9 @@ tile.treasure2:gravestone3_polished_granite.name=Granite Tombstone
 tile.treasure2:gravestone3_polished_andesite.name=Andesite Tombstone
 tile.treasure2:gravestone3_polished_diorite.name=Diorite Tombstone
 tile.treasure2:gravestone3_obsidian.name=Obsidian Tombstone
+tile.treasure2:fog.name=Fog
+tile.treasure2:med_fog.name=Medium Fog
+tile.treasure2:low_fog.name=Low Fog
 
 #items
 item.treasure2:gold_coin.name=Gold Coin
