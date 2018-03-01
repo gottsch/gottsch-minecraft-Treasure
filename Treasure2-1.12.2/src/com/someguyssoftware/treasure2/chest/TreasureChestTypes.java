@@ -35,8 +35,8 @@ public class TreasureChestTypes {
 		);
 		
 		SAFE = new TreasureChestType(2).addSlots(
-			new LockSlot(0, Direction.NORTH, 0.8F, 0.7F, 0.05F, 0F),
-			new LockSlot(1, Direction.NORTH, 0.8F, 0.3F, 0.05F, 0F)
+			new LockSlot(0, Direction.NORTH, 0.25F, 0.6F, 0.1125F, 0F),
+			new LockSlot(1, Direction.NORTH, 0.25F, 0.3F, 0.1125F, 0F)
 		);		
 	}
 }
