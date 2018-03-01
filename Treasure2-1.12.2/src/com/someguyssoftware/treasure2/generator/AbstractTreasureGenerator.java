@@ -19,12 +19,16 @@ import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.enums.Category;
+import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.enums.Wells;
+import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
@@ -34,18 +38,14 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Feb 1, 2018
  *
  */
-public abstract class AbstractTreasureGenerator {
+// TODO rename
+public abstract class AbstractTreasureGenerator implements IChestGenerator {
 	protected static int UNDERGROUND_OFFSET = 5;
 	
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param coords
-	 * @param chestRarity
-	 * @param config
-	 * @return
+	/* (non-Javadoc)
+	 * @see com.someguyssoftware.treasure2.generator.IChestGenerator#generate(net.minecraft.world.World, java.util.Random, com.someguyssoftware.gottschcore.positional.ICoords, com.someguyssoftware.treasure2.enums.Rarity, com.someguyssoftware.treasure2.config.IChestConfig)
 	 */
+	@Override
 	public boolean generate(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config) {
 		
 		ICoords chestCoords = null;
@@ -72,18 +72,31 @@ public abstract class AbstractTreasureGenerator {
 			// set the chest coords to the surface pos
 			chestCoords = new Coords(markerCoords);
 			Treasure.logger.debug("Above ground @ {}", chestCoords.toShortString());
+			isGenerated = true;
 		}
 		else if (config.isBelowGroundAllowed()) {
-			// determine spawn coords below ground
-			spawnCoords = getUndergroundSpawnPos(world, random, markerCoords, config.getMinYSpawn());
-			Treasure.logger.debug("Below ground @ {}", spawnCoords.toShortString());
-			if (spawnCoords == null || spawnCoords == WorldInfo.EMPTY_COORDS) {
+			// 2.5. check if it has 50% land
+			if (!WorldInfo.isSolidBase(world, markerCoords, 2, 2, 50)) {
+				Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", markerCoords.toShortString(), 3, 3);
 				return false;
 			}
 			
+			// determine spawn coords below ground
+			spawnCoords = getUndergroundSpawnPos(world, random, markerCoords, config.getMinYSpawn());
+
+			if (spawnCoords == null || spawnCoords == WorldInfo.EMPTY_COORDS) {
+				Treasure.logger.debug("Unable to spawn underground @ {}", markerCoords);
+				return false;
+			}
+			Treasure.logger.debug("Below ground @ {}", spawnCoords.toShortString());
+			
 			// TODO select a pit generator
+			Pits pit = Pits.values()[random.nextInt(Pits.values().length)];
+			IPitGenerator pitGenerator = ChestWorldGenerator.pitGenerators.get(pit);
+			Treasure.logger.debug("Using Pit: {}, Gen:", pit, pitGenerator);
+			
 			// 3. build the pit
-			isGenerated = pitGen.generate(world, random, markerCoords, spawnCoords);
+			isGenerated = pitGenerator.generate(world, random, markerCoords, spawnCoords);
 			Treasure.logger.debug("Is pit generated: {}", isGenerated);
 			// 4. build the room
 			
