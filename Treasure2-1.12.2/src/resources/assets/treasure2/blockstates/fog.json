@@ -1,0 +1,18 @@
+{
+    "variants": {
+        "normal": { "model": "treasure2:fog" },
+        "decayable=true, check_decay=false": { "model": "treasure2:fog" },
+        "decayable=true, check_decay=false, decay=0": { "model": "treasure2:fog" },
+        "decayable=true, check_decay=false, decay=1": { "model": "treasure2:fog" },
+        "decayable=true, check_decay=false, decay=2": { "model": "treasure2:fog" },
+        "decayable=true, check_decay=false, decay=3": { "model": "treasure2:fog" },
+        "decayable=false, check_decay=false, decay=0": { "model": "treasure2:fog" },
+        "decayable=false, check_decay=false, decay=1": { "model": "treasure2:fog" },
+        "decayable=false, check_decay=false, decay=2": { "model": "treasure2:fog" },
+        "decayable=false, check_decay=false, decay=3": { "model": "treasure2:fog" },
+        "decayable=true, check_decay=true, decay=0": { "model": "treasure2:fog" },
+        "decayable=true, check_decay=true, decay=1": { "model": "treasure2:fog" },
+        "decayable=true, check_decay=true, decay=2": { "model": "treasure2:fog" },
+        "decayable=true, check_decay=true, decay=3": { "model": "treasure2:fog" }
+    }
+}

@@ -50,6 +50,11 @@ item.treasure2:gold_lock.name=Gold Lock
 item.treasure2:diamond_lock.name=Diamond Lock
 item.treasure2:emerald_lock.name=Emerald Lock
 
+item.treasure2:pilferers_lock_pick.name=Pilferer's Lock Pick
+item.treasure2:thiefs_lock_pick.name=Thief's Lock Pick
+
+item.treasure2:skull_sword.name=Skull Sword
+
 #groups
 itemGroup.treasure2:treasure_tab=Treasure2!
 
@@ -76,3 +81,6 @@ display.crate_chest.name=Crate
 display.crate_chest_mody.name=Moldy Crate
 display.ironbound_chest.name=Ironbound Chest
 display.pirate_chest.name=Pirate Chest
+display.iron_strongbox.name=Iron Strongbox
+display.gold_strongbox.name=Gold Strongbox
+display.safe.name=Safe

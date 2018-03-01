@@ -105,7 +105,7 @@ public class InventoryPopulator {
 	 * @param groupItem
 	 * @return
 	 */
-	public ItemStack toItemStack(Random random, LootGroupHasItem groupItem) {
+	public static ItemStack toItemStack(Random random, LootGroupHasItem groupItem) {
 		ItemStack stack = null;
 		
 		// check if poition, then build potion and return

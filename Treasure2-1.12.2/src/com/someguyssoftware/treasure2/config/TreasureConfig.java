@@ -29,8 +29,10 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String CRATE_CHEST_ID = "crate_chest";
 	public static final String MOLDY_CRATE_CHEST_ID = "crate_chest_moldy";
 	public static final String IRONBOUND_CHEST_ID = "ironbound_chest";
+	public static final String PIRATE_CHEST_ID = "pirate_chest";
 	public static final String IRON_STRONGBOX_ID = "iron_strongbox";
 	public static final String GOLD_STRONGBOX_ID = "gold_strongbox";
+	public static final String SAFE_ID = "safe";
 	
 	// locks
 	public static final String WOOD_LOCK_ID = "wood_lock";
@@ -56,7 +58,10 @@ public class TreasureConfig extends AbstractConfig {
 	
 	public static final String GOLD_COIN_ID = "gold_coin";
 	public static final String SILVER_COIN_ID = "silver_coin";
-	public static final String PIRATE_CHEST_ID = "pirate_chest";
+	
+	// weapons / armor
+	public static final String SKULL_SWORD_ID = "skull_sword";
+	public static final String EYE_PATCH_ID = "eye_patch";
 	
 	// GRAVESTONES
 	public static final String GRAVESTONE1_STONE_ID = "gravestone1_stone";
@@ -84,6 +89,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String GRAVESTONE3_OBSIDIAN_ID = "gravestone3_obsidian";
 	
 	public static final String SKULL_CROSSBONES_ID = "skull_and_crossbones";		
+	public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
+	public static final String FOG_BLOCK_ID = "fog";
 	
 	// TEs
 	public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity";
@@ -93,7 +100,10 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String PIRATE_CHEST_TE_ID = "pirate_chest_tile_entity";
 	public static final String IRON_STRONGBOX_TE_ID = "iron_strongbox_tile_entity";
 	public static final String GOLD_STRONGBOX_TE_ID = "gold_strongbox_tile_entity";
+	public static final String SAFE_TE_ID = "safe_tile_entity";
 	
+	
+
 
 	public static boolean enableKeyBreaks = true;	
 	public static String treasureFolder;
@@ -103,6 +113,7 @@ public class TreasureConfig extends AbstractConfig {
 	 */
 	public static int minDistancePerChest;
 	public static int minChunksPerChest;
+	public static int minChunksPerWell;
 	
 	// graves/markers properties
 	public static boolean isGravestonesAllowed;
@@ -118,8 +129,7 @@ public class TreasureConfig extends AbstractConfig {
 	// biome type white/black lists
 	public static String[] generalChestBiomeWhiteList;
 	public static String[] generalChestBiomeBlackList;
-
-	
+		
 	/**
 	 * @param mod
 	 * @param configDir
@@ -149,11 +159,15 @@ public class TreasureConfig extends AbstractConfig {
         
       	minDistancePerChest = config.getInt("minDistancePerChest", "04-gen", 75, 0, 32000, "");
       	minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 35, 0, 32000, "");
+      	minChunksPerWell = config.getInt("minChunksPerWell", "04-gen", 400, 100, 32000, "");
       	
         isGravestonesAllowed = config.getBoolean("isGravestonesAllowed", "04-gen", true, "");
         minGravestonesPerChest = config.getInt("minGravestonesPerChest", "04-gen", 4, 1, 5, "The minimun of Treasure chest markers (gravestones, bones).");
         maxGravestonesPerChest = config.getInt("maxGravesstonesPerChest", "04-gen", 8, 1, 10, "The maximum of Treasure chest markers (gravestones, bones).");
          
+        // wells
+        minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 500, 100, 32000, "");
+        
         // the the default values
        if(config.hasChanged()) {
     	   config.save();

@@ -49,12 +49,13 @@ public class PilferersLockPick extends KeyItem {
 	}
 	
 	/**
-	 * This key can fits any lock from the COMMON, UNCOMMON rarities.
+	 * This key can fits any lock from the COMMON
 	 */
 	@Override
 	public boolean fitsLock(LockItem lockItem) {
-		if (lockItem.getRarity() == Rarity.COMMON || lockItem.getRarity() == Rarity.UNCOMMON) return true;
+		if (lockItem.getRarity() == Rarity.COMMON) return true;
 		return false;
 	}	
 
+	// TODO implement unlock using different success probabilities for COMMON and UNCOMMON
 }

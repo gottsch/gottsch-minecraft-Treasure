@@ -17,10 +17,16 @@ import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.AbstractTreasureGenerator;
-import com.someguyssoftware.treasure2.generator.CommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.DefaultChestGenerator;
+import com.someguyssoftware.treasure2.generator.ScarceChestGenerator;
 import com.someguyssoftware.treasure2.generator.UncommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
@@ -48,9 +54,10 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	// TODO make a map instead of array
 	private Map<Rarity, Integer> chunksSinceLastRarityChest;
 	
-	// the chest geneators
+	// the chest generators
 	private Map<Rarity, AbstractTreasureGenerator> generators = new HashMap<>();
-	
+	// the pit generators
+	public static Map<Pits, IPitGenerator> pitGenerators = new HashMap<>();
 	/**
 	 * 
 	 */
@@ -73,9 +80,13 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		// TODO create all the same right now
 		generators.put(Rarity.COMMON, new CommonChestGenerator());
 		generators.put(Rarity.UNCOMMON, new UncommonChestGenerator());
-		generators.put(Rarity.SCARCE, new UncommonChestGenerator());
-		generators.put(Rarity.RARE, new UncommonChestGenerator());
-		generators.put(Rarity.EPIC, new UncommonChestGenerator());		
+		generators.put(Rarity.SCARCE, new ScarceChestGenerator());
+		generators.put(Rarity.RARE, new DefaultChestGenerator());
+		generators.put(Rarity.EPIC, new DefaultChestGenerator());
+		
+		// setup the pit generators
+		pitGenerators.put(Pits.SIMPLE_PIT, new SimplePitGenerator());
+		pitGenerators.put(Pits.TNT_TRAP_PIT, new TntTrapPitGenerator());
 	}
 
 	/**

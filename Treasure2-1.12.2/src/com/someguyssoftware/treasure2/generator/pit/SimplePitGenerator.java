@@ -57,10 +57,13 @@ public class SimplePitGenerator extends AbstractPitGenerator {
 	
 		if (yDist > 6) {			
 			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
+			// at chest level
+			buildLayer(world, spawnCoords, Blocks.AIR);
+			
 			// above the chest	
-			buildLogLayer(world, random, spawnCoords.add(0, 1, 0), Blocks.LOG);
-			buildLayer(world, spawnCoords.add(0, 2, 0), Blocks.SAND);
-			buildLogLayer(world, random, spawnCoords.add(0, 3, 0), Blocks.LOG);
+			buildLayer(world, spawnCoords.add(0, 1, 0), Blocks.AIR);
+			buildLogLayer(world, random, spawnCoords.add(0, 2, 0), Blocks.LOG);
+			buildLayer(world, spawnCoords.add(0, 3, 0), Blocks.SAND);
 			
 //			world.setBlockState(spawnCoords.add(0, 1, 0).toPos(), Blocks.LOG.getDefaultState(), 3);
 //			world.setBlockState(spawnCoords.add(0, 2, 0).toPos(), Blocks.SAND.getDefaultState(), 3);

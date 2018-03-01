@@ -13,7 +13,9 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -25,6 +27,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.lootbuilder.exception.DatabaseInitializationException;
 import com.someguyssoftware.lootbuilder.model.LootContainer;
 import com.someguyssoftware.lootbuilder.model.LootContainerHasGroup;
@@ -160,6 +163,42 @@ public class DbManager {
 		getInstance().getServer().shutdown();
 	}
 
+	/**
+	 * 
+	 * @param rarity
+	 * @return
+	 */
+	public LootContainer selectContainer(Random random, final Rarity rarity) {
+		List<Rarity> rarities = new ArrayList<>();
+		rarities.add(rarity);
+		return selectContainer(random, rarities);
+	}
+	
+	/**
+	 * 
+	 * @param random
+	 * @param rarity
+	 * @return
+	 */
+	public LootContainer selectContainer(Random random, List<Rarity> rarity) {
+		LootContainer container = LootContainer.EMPTY_CONTAINER;
+		// select the loot container by rarity
+		List<LootContainer> containers = DbManager.getInstance().getContainersByRarity(rarity);
+		if (containers != null && !containers.isEmpty()) {
+			/*
+			 * get a random container
+			 */
+			if (containers.size() == 1) {
+				container = containers.get(0);
+			}
+			else {
+				container = containers.get(RandomHelper.randomInt(random, 0, containers.size()-1));
+			}
+			Treasure.logger.info("Chosen container:" + container);
+		}
+		return container;
+	}
+	
 	/**
 	 * 
 	 * @param rarity

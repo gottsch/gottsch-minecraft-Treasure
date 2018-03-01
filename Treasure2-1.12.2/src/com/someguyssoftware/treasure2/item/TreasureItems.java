@@ -5,16 +5,21 @@ package com.someguyssoftware.treasure2.item;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.someguyssoftware.gottschcore.armor.ModArmorBuilder;
 import com.someguyssoftware.gottschcore.item.ModItem;
+import com.someguyssoftware.gottschcore.item.ModSwordBuilder;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.block.TreasureChestBlock;
-import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
+import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemArmor;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -52,10 +57,21 @@ public class TreasureItems {
 	public static KeyItem SKELETON_KEY;
 	public static KeyItem DRAGON_KEY;
 	public static KeyItem MASTER_KEY;
-	
-	// other
+
 	public static KeyItem PILFERERS_LOCK_PICK;
 	public static KeyItem THIEFS_LOCK_PICK;
+	
+	// swords
+	public static Item SKULL_SWORD;
+	
+	// armor
+	public static Item EYE_PATCH;
+	
+	/*
+	 * Materials
+	 */
+	// SKULL //
+	public static final ToolMaterial SKULL_TOOL_MATERIAL = EnumHelper.addToolMaterial("SKULL", 2, 1800, 9.0F, 4.0F, 25);
 	
 	// chest holder
 	public static Multimap<Rarity, LockItem> locks;
@@ -133,14 +149,16 @@ public class TreasureItems {
 				.setRarity(Rarity.COMMON)
 				.setBreakable(true)
 				.setCraftable(true)
-				.setMaxDamage(10);
+				.setMaxDamage(10)
+				.setSuccessProbability(20);
 		
-		THIEFS_LOCK_PICK = new PilferersLockPick(Treasure.MODID, TreasureConfig.THIEFS_LOCK_PICK_ID)
+		THIEFS_LOCK_PICK = new ThiefsLockPick(Treasure.MODID, TreasureConfig.THIEFS_LOCK_PICK_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.UNCOMMON)
 				.setBreakable(true)
 				.setCraftable(true)
-				.setMaxDamage(10);
+				.setMaxDamage(10)
+				.setSuccessProbability(25);
 		
 		// LOCKS
 		WOOD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.WOOD_LOCK_ID, new KeyItem[] {WOOD_KEY})
@@ -169,6 +187,29 @@ public class TreasureItems {
 		locks.put(Rarity.SCARCE, GOLD_LOCK);
 		locks.put(Rarity.RARE, DIAMOND_LOCK);
 		locks.put(Rarity.EPIC, EMERALD_LOCK);
+		
+		// other
+		ModSwordBuilder builder = new ModSwordBuilder();
+		SKULL_SWORD = builder
+				.withModID(Treasure.MODID)
+				.withName(TreasureConfig.SKULL_SWORD_ID)
+				.withMaterial(SKULL_TOOL_MATERIAL)
+				.withRepairItem(Items.BONE)
+				.withCreativeTab(Treasure.TREASURE_TAB)
+				.build();
+
+		// NOTE if going to add lots of different armor, tools and swords then use a List<Pair<>> or "props" object. See MetalsItems.java
+		ModArmorBuilder armorBuilder = new ModArmorBuilder();
+		EYE_PATCH = armorBuilder
+				.withModID(Treasure.MODID)
+				.withName(TreasureConfig.EYE_PATCH_ID)
+				.withMaterial(ItemArmor.ArmorMaterial.LEATHER)
+				.withRenderIndex(2)
+				.withSlot(EntityEquipmentSlot.HEAD)
+				.withTexture("textures/models/armor/eye_patch.png")
+				.withRepairItem(Items.LEATHER)
+				.withCreativeTab(Treasure.TREASURE_TAB)
+				.build();
 	}
 	
 	/**
@@ -203,7 +244,9 @@ public class TreasureItems {
 					METALLURGISTS_KEY,
 					SKELETON_KEY,
 					PILFERERS_LOCK_PICK,
-					THIEFS_LOCK_PICK
+					THIEFS_LOCK_PICK,
+					SKULL_SWORD,
+					EYE_PATCH
 			};
 			registry.registerAll(items);		
 		}

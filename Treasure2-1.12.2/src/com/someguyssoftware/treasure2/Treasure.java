@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,12 +22,15 @@ import com.someguyssoftware.lootbuilder.exception.DatabaseInitializationExceptio
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.client.model.BandedChestModel;
 import com.someguyssoftware.treasure2.client.model.CrateChestModel;
+import com.someguyssoftware.treasure2.client.model.SafeModel;
 import com.someguyssoftware.treasure2.client.model.StandardChestModel;
 import com.someguyssoftware.treasure2.client.model.StrongboxModel;
 import com.someguyssoftware.treasure2.client.render.tileentity.CrateChestTileEntityRenderer;
+import com.someguyssoftware.treasure2.client.render.tileentity.SafeTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.StrongboxTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
+import com.someguyssoftware.treasure2.command.SpawnWellCommand;
 import com.someguyssoftware.treasure2.command.TreasureChestCommand;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -38,9 +42,11 @@ import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -161,6 +167,7 @@ public class Treasure extends AbstractMod {
 		// register additional commands
     	event.registerServerCommand(new TreasureChestCommand());
     	event.registerServerCommand(new SpawnPitCommand());
+    	event.registerServerCommand(new SpawnWellCommand());
     }
 	
 	/**
@@ -218,9 +225,19 @@ public class Treasure extends AbstractMod {
 				GoldStrongboxTileEntity.class,
 				new StrongboxTileEntityRenderer("gold-strongbox", new StrongboxModel()));
 		
+		// safe
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				SafeTileEntity.class,
+				new SafeTileEntityRenderer("safe", new SafeModel()));
+		
 		// register world generators
 		worldGenerators.put("chest", new ChestWorldGenerator());
-		GameRegistry.registerWorldGenerator(worldGenerators.get("chest"), 0);
+		worldGenerators.put("well", new WellWorldGenerator());
+		int genWeight = 0;
+		for (Entry<String, IWorldGenerator> gen : worldGenerators.entrySet()) {
+			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);
+		}
+		
 	}
 	
 	/**

@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.generator;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.block.AbstractModContainerBlock;
+import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.enums.Direction;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -60,6 +61,37 @@ public class GenUtil {
 		
 		// cast		
 		return (AbstractTreasureChestTileEntity) te;
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param coords
+	 * @param block
+	 * @return
+	 */
+	public static boolean replaceWithBlock(World world, ICoords coords, Block block) {
+		// don't change if old block is air
+		Cube cube = new Cube (world, coords);
+		if (cube.isAir()) return false;
+		world.setBlockState(coords.toPos(), block.getDefaultState());
+		return true;
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param coords
+	 * @param blockState
+	 * @return
+	 */
+	public static boolean replaceWithBlockState(World world, ICoords coords, IBlockState blockState) {
+		// don't change if old block is air
+		Cube cube = new Cube (world, coords);
+		if (cube.isAir()) return false;
+		world.setBlockState(coords.toPos(), blockState);
+		return true;
 	}
 	
 	/**

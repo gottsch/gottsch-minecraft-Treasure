@@ -6,7 +6,6 @@ import com.someguyssoftware.treasure2.item.TreasureItems;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Mod;
@@ -24,11 +23,12 @@ public class TreasureModels {
 		// CHESTS
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WOOD_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CRATE_CHEST));
-		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CRATE_CHEST_MOLDY));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.MOLDY_CRATE_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.IRONBOUND_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.PIRATE_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.IRON_STRONGBOX));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GOLD_STRONGBOX));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SAFE));
 		
 		// GRAVESONES
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_STONE));
@@ -54,6 +54,8 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE3_OBSIDIAN));
 		
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SKULL_CROSSBONES));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WISHING_WELL_BLOCK));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FOG_BLOCK));
 		
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);
@@ -76,6 +78,10 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.SKELETON_KEY);
 		registerItemModel(TreasureItems.PILFERERS_LOCK_PICK);
 		registerItemModel(TreasureItems.THIEFS_LOCK_PICK);
+		
+		// WEAPONS
+		registerItemModel(TreasureItems.SKULL_SWORD);
+		registerItemModel(TreasureItems.EYE_PATCH);
 		
 //		// variants
 //		Item gravestoneItem = Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1);

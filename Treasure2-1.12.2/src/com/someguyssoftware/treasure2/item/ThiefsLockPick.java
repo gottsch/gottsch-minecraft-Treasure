@@ -20,14 +20,14 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Feb 7, 2018
  *
  */
-public class TheifsLockPick extends KeyItem {
+public class ThiefsLockPick extends KeyItem {
 
 	/**
 	 * 
 	 * @param modID
 	 * @param name
 	 */
-	public TheifsLockPick(String modID, String name) {
+	public ThiefsLockPick(String modID, String name) {
 		super(modID, name);
 	}
 	

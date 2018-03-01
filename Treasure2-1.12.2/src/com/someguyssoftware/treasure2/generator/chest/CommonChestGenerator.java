@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.generator;
+package com.someguyssoftware.treasure2.generator.chest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +12,7 @@ import com.someguyssoftware.lootbuilder.db.DbManager;
 import com.someguyssoftware.lootbuilder.model.LootContainer;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.generator.AbstractTreasureGenerator;
 
 /**
  * 
@@ -34,7 +35,7 @@ public class CommonChestGenerator extends AbstractTreasureGenerator {
 		LootContainer container = LootContainer.EMPTY_CONTAINER;
 		
 		// select the loot container by rarities
-		Rarity[] rarities = new Rarity[] {Rarity.COMMON, Rarity.UNCOMMON, Rarity.SCARCE};
+		Rarity[] rarities = new Rarity[] {Rarity.COMMON, Rarity.UNCOMMON};
 		List<LootContainer> containers = DbManager.getInstance().getContainersByRarity(Arrays.asList(rarities));
 		if (containers != null && !containers.isEmpty()) {
 			if (containers.size() == 1) {

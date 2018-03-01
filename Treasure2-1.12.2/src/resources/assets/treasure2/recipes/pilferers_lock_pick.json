@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+	" X ",
+	" X ",
+	" X "
+  ],
+  "key": {
+	"X": {
+		"item": "minecraft:iron_nugget"
+	}
+  },
+  "result": {
+    "item": "treasure2:pilferers_lock_pick",
+    "count": 1
+  }
+}

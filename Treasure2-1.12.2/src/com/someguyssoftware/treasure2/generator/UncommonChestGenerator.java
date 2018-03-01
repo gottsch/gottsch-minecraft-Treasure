@@ -34,7 +34,7 @@ public class UncommonChestGenerator extends AbstractTreasureGenerator {
 		LootContainer container = LootContainer.EMPTY_CONTAINER;
 		
 		// select the loot container by rarities
-		Rarity[] rarities = new Rarity[] {Rarity.COMMON, Rarity.UNCOMMON};
+		Rarity[] rarities = new Rarity[] {Rarity.COMMON, Rarity.UNCOMMON, Rarity.SCARCE};
 		List<LootContainer> containers = DbManager.getInstance().getContainersByRarity(Arrays.asList(rarities));
 		if (containers != null && !containers.isEmpty()) {
 			if (containers.size() == 1) {

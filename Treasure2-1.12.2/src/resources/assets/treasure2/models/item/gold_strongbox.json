@@ -1,5 +1,5 @@
 {
-    "parent": "treasure2:block/iron_strongbox",
+    "parent": "treasure2:block/gold_strongbox",
     "display": {
         "thirdperson": {
            "rotation": [ 180, -90, 170 ],
