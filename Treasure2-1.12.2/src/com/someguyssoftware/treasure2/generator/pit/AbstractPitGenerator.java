@@ -7,16 +7,17 @@ import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.generator.GenUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
-public abstract class AbstractPitGenerator {
+public abstract class AbstractPitGenerator implements IPitGenerator {
 
-	private static final int Y_OFFSET = 4;
-	private static final int Y_SURFACE_OFFSET = 5;
+	protected static final int Y_OFFSET = 4;
+	protected static final int Y_SURFACE_OFFSET = 5;
 
 	/**
 	 * 
@@ -25,14 +26,10 @@ public abstract class AbstractPitGenerator {
 		super();
 	}
 
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param surfaceCoords
-	 * @param spawnCoords
-	 * @return
+	/* (non-Javadoc)
+	 * @see com.someguyssoftware.treasure2.generator.pit.IPitGenerator#generate(net.minecraft.world.World, java.util.Random, com.someguyssoftware.gottschcore.positional.ICoords, com.someguyssoftware.gottschcore.positional.ICoords)
 	 */
+	@Override
 	public abstract boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
 	
 	/**
@@ -69,20 +66,25 @@ public abstract class AbstractPitGenerator {
 			expectedCoords = cube.getCoords().add(0, 1, 0);
 			
 			// check if the return coords is different than the anticipated coords and resolve
-			if (!nextCoords.equals(expectedCoords)) {
-				// find the difference in y int and add to yIndex;
-				Treasure.logger.debug("Next coords does not equal expected coords. next: {}; expected: {}", nextCoords.toShortString(), expectedCoords.toShortString());
-				// NOTE the difference should = 1, there remove 1 from the diff to find unexpected difference
-				int diff = nextCoords.getY() - expectedCoords.getY() - 1;
-				if (diff > 0) {
-					yIndex += diff;
-					Treasure.logger.debug("Difference of: {}. Updating yIndex to {}", diff, yIndex);
-				}
-			}
+			yIndex = autocorrectIndex(yIndex, nextCoords, expectedCoords);
 		}		
 		return nextCoords;
 	}
 	
+	protected int autocorrectIndex(final int index, final ICoords coords, final ICoords expectedCoords) {
+		int newIndex = index;
+		if (!coords.equals(expectedCoords)) {
+			// find the difference in y int and add to yIndex;
+			Treasure.logger.debug("Next coords does not equal expected coords. next: {}; expected: {}", coords.toShortString(), expectedCoords.toShortString());
+			// NOTE the difference should = 1, there remove 1 from the diff to find unexpected difference
+			int diff = coords.getY() - expectedCoords.getY() - 1;
+			if (diff > 0) {
+				newIndex += diff;
+				Treasure.logger.debug("Difference of: {}. Updating yIndex to {}", diff, newIndex);
+			}
+		}
+		return newIndex;
+	}
 	/**
 	 * 
 	 * @param world
@@ -91,12 +93,16 @@ public abstract class AbstractPitGenerator {
 	 * @return
 	 */
 	public ICoords buildLayer(World world, ICoords coords, Block block) {
-		Treasure.logger.debug("Building layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
-		
-		world.setBlockState(coords.toPos(), block.getDefaultState(), 3);
-		world.setBlockState(coords.add(1, 0, 0).toPos(), block.getDefaultState(), 3);
-		world.setBlockState(coords.add(0, 0, 1).toPos(), block.getDefaultState(), 3);
-		world.setBlockState(coords.add(1, 0, 1).toPos(), block.getDefaultState(), 3);
+//		Treasure.logger.debug("Building layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
+		// TODO all setBlockState need to be wrapped in replaceBlock() that checks if it is already air, and if so, don't replace
+		GenUtil.replaceWithBlock(world, coords, block);
+		GenUtil.replaceWithBlock(world, coords.add(1, 0, 0), block);
+		GenUtil.replaceWithBlock(world, coords.add(0, 0, 1), block);
+		GenUtil.replaceWithBlock(world, coords.add(1, 0, 1), block);
+//		world.setBlockState(coords.toPos(), block.getDefaultState(), 3);
+//		world.setBlockState(coords.add(1, 0, 0).toPos(), block.getDefaultState(), 3);
+//		world.setBlockState(coords.add(0, 0, 1).toPos(), block.getDefaultState(), 3);
+//		world.setBlockState(coords.add(1, 0, 1).toPos(), block.getDefaultState(), 3);
 		
 		return coords.add(0, 1, 0);
 	}
@@ -117,27 +123,39 @@ public abstract class AbstractPitGenerator {
 		IBlockState blockState = block.getStateFromMeta(meta);
 				
 		// core 4-square
-		world.setBlockState(coords.toPos(), blockState, 3);
-		world.setBlockState(coords.add(1, 0, 0).toPos(), blockState, 3);		
-		world.setBlockState(coords.add(0, 0, 1).toPos(), blockState, 3);
-		world.setBlockState(coords.add(1, 0, 1).toPos(), blockState, 3);
+//		world.setBlockState(coords.toPos(), blockState, 3);
+//		world.setBlockState(coords.add(1, 0, 0).toPos(), blockState, 3);		
+//		world.setBlockState(coords.add(0, 0, 1).toPos(), blockState, 3);
+//		world.setBlockState(coords.add(1, 0, 1).toPos(), blockState, 3);
+		GenUtil.replaceWithBlockState(world, coords, blockState);
+		GenUtil.replaceWithBlockState(world, coords.add(1, 0, 0), blockState);
+		GenUtil.replaceWithBlockState(world, coords.add(0, 0, 1), blockState);
+		GenUtil.replaceWithBlockState(world, coords.add(1, 0, 1), blockState);
 		
 		if (meta == 8) {			
 			// north of
-			world.setBlockState(coords.add(0, 0, -1).toPos(), blockState, 3);
-			world.setBlockState(coords.add(1, 0, -1).toPos(), blockState, 3);
+//			world.setBlockState(coords.add(0, 0, -1).toPos(), blockState, 3);
+//			world.setBlockState(coords.add(1, 0, -1).toPos(), blockState, 3);
+			GenUtil.replaceWithBlockState(world, coords.add(0, 0, -1), blockState);
+			GenUtil.replaceWithBlockState(world, coords.add(1, 0, -1), blockState);
 			
 			// south of
-			world.setBlockState(coords.add(0, 0, 2).toPos(), blockState, 3);
-			world.setBlockState(coords.add(1, 0, 2).toPos(), blockState, 3);
+//			world.setBlockState(coords.add(0, 0, 2).toPos(), blockState, 3);
+//			world.setBlockState(coords.add(1, 0, 2).toPos(), blockState, 3);
+			GenUtil.replaceWithBlockState(world, coords.add(0, 0, 2), blockState);
+			GenUtil.replaceWithBlockState(world, coords.add(1, 0, 2), blockState);
 		}
 		else {
 			// west of
-			world.setBlockState(coords.add(-1, 0, 0).toPos(), blockState, 3);
-			world.setBlockState(coords.add(-1, 0, 1).toPos(), blockState, 3);
+//			world.setBlockState(coords.add(-1, 0, 0).toPos(), blockState, 3);
+//			world.setBlockState(coords.add(-1, 0, 1).toPos(), blockState, 3);
+			GenUtil.replaceWithBlockState(world, coords.add(-1, 0, 0), blockState);
+			GenUtil.replaceWithBlockState(world, coords.add(-1, 0, 1), blockState);
 			// east of 
-			world.setBlockState(coords.add(2, 0, 0).toPos(), blockState, 3);
-			world.setBlockState(coords.add(2, 0, 1).toPos(), blockState, 3);
+//			world.setBlockState(coords.add(2, 0, 0).toPos(), blockState, 3);
+//			world.setBlockState(coords.add(2, 0, 1).toPos(), blockState, 3);
+			GenUtil.replaceWithBlockState(world, coords.add(2, 0, 0), blockState);
+			GenUtil.replaceWithBlockState(world, coords.add(2, 0, 1), blockState);
 		}
 		return coords.add(0, 1, 0);
 	}
