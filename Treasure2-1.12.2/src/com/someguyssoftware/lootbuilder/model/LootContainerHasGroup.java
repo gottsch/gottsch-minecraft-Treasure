@@ -15,6 +15,7 @@ public class LootContainerHasGroup {
 	public final static String ID_FIELD_NAME = "id";
 	public final static String CONTAINER_ID_FIELD_NAME = "container_id";
 	public final static String GROUP_ID_FIELD_NAME = "group_id";
+	public final static String SPECIAL_FIELD_NAME = "special";
 	
 	@DatabaseField(generatedId = true, columnName = ID_FIELD_NAME)
 	private Integer id;	
@@ -32,14 +33,20 @@ public class LootContainerHasGroup {
 	private Byte min;
 	@DatabaseField(columnName = "max_items", canBeNull = false, defaultValue = "0")
 	private Byte max;
-	
-	// TODO add XREF table to specific items to include
-	
+
 	/*
 	 * order
 	 */
 	@DatabaseField(columnName = "ordering", canBeNull = false, defaultValue = "0")
 	private Short order;
+	
+	/*
+	 * special - indicates that this group requires special processing. ex. treat group as non-weighted required group
+	 * for treasure items like keys.
+	 * default value: false
+	 */
+	@DatabaseField(columnName = "special", canBeNull = false, defaultValue = "0")
+	private Boolean special;
 	
 	/**
 	 * Empty constructor as required by ORMLite.
@@ -127,5 +134,19 @@ public class LootContainerHasGroup {
 	public String toString() {
 		return "LootContainerHasGroup [id=" + id + ", container=" + container + ", group=" + group + ", weight="
 				+ weight + ", min=" + min + ", max=" + max + ", order=" + order + "]";
+	}
+
+	/**
+	 * @return the special
+	 */
+	public Boolean getSpecial() {
+		return special;
+	}
+
+	/**
+	 * @param special the special to set
+	 */
+	public void setSpecial(Boolean special) {
+		this.special = special;
 	}
 }

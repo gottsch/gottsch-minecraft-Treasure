@@ -96,7 +96,6 @@ public class DbManager {
 		// set the connection
 		setConnection(conn);
 
-		// TODO only need to run the scripts if the db is not found.
 		// look for file --> treasure.mv.db
 		Path dbFilePath = Paths.get(treasureDbPath.toString() + ".mv.db");
 		boolean pathExists =
@@ -243,6 +242,28 @@ public class DbManager {
 	 * @return
 	 */
 	public List<LootContainerHasGroup> getGroupsByContainer(Integer id) {
+		// inner join to get groups
+		List<LootContainerHasGroup> containerGroups = null;
+		try {
+			containerGroups = containerGroupDao.queryBuilder()
+					.selectColumns(LootContainerHasGroup.GROUP_ID_FIELD_NAME, "group_weight", "min_items", "max_items", "ordering")
+					.where()
+					.eq(LootContainerHasGroup.CONTAINER_ID_FIELD_NAME, id)
+					.query();
+			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}		
+		return containerGroups;
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public List<LootContainerHasGroup> getGroupsByContainer(Integer id, boolean isSpecial) {
 		// inner join to get groups
 		List<LootContainerHasGroup> containerGroups = null;
 		try {
