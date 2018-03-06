@@ -271,6 +271,8 @@ public class DbManager {
 					.selectColumns(LootContainerHasGroup.GROUP_ID_FIELD_NAME, "group_weight", "min_items", "max_items", "ordering")
 					.where()
 					.eq(LootContainerHasGroup.CONTAINER_ID_FIELD_NAME, id)
+					.and()
+					.eq(LootContainerHasGroup.SPECIAL_FIELD_NAME, isSpecial)
 					.query();
 			
 		}
