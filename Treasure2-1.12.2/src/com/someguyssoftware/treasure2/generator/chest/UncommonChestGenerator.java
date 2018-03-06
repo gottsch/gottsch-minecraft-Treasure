@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.generator;
+package com.someguyssoftware.treasure2.generator.chest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +18,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
  * @author Mark Gottschling on Jan 24, 2018
  *
  */
-public class UncommonChestGenerator extends AbstractTreasureGenerator {
+public class UncommonChestGenerator extends AbstractChestGenerator {
 	
 	/**
 	 * 

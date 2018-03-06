@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.generator;
+package com.someguyssoftware.treasure2.generator.chest;
 
 import java.util.List;
 import java.util.Random;
@@ -21,9 +21,8 @@ import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.enums.Wells;
+import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
-import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
@@ -38,8 +37,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Feb 1, 2018
  *
  */
-// TODO rename
-public abstract class AbstractTreasureGenerator implements IChestGenerator {
+public abstract class AbstractChestGenerator implements IChestGenerator {
 	protected static int UNDERGROUND_OFFSET = 5;
 	
 	/* (non-Javadoc)
@@ -52,9 +50,6 @@ public abstract class AbstractTreasureGenerator implements IChestGenerator {
 		ICoords markerCoords = null;
 		ICoords spawnCoords = null;
 		boolean isGenerated = false;
-		
-		// TEMP
-		SimplePitGenerator pitGen = new SimplePitGenerator();
 		
 		RandomHelper.checkProbability(random, config.getGenProbability());
 	
@@ -90,7 +85,7 @@ public abstract class AbstractTreasureGenerator implements IChestGenerator {
 			}
 			Treasure.logger.debug("Below ground @ {}", spawnCoords.toShortString());
 			
-			// TODO select a pit generator
+			// select a pit generator
 			Pits pit = Pits.values()[random.nextInt(Pits.values().length)];
 			IPitGenerator pitGenerator = ChestWorldGenerator.pitGenerators.get(pit);
 			Treasure.logger.debug("Using Pit: {}, Gen:", pit, pitGenerator);
@@ -136,7 +131,7 @@ public abstract class AbstractTreasureGenerator implements IChestGenerator {
 			
 			// place markers (above chest or shaft)
 			GenUtil.placeMarkers(world, random, markerCoords);
-						
+
 			Treasure.logger.info("CHEATER! {} chest at coords: {}", chestRarity, chestCoords.toShortString());
 			return true;
 		}		

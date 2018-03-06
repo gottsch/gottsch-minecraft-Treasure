@@ -50,7 +50,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Mark Gottschling on Jan 9, 2018
  *
  */
-public class TreasureChestBlock extends AbstractModContainerBlock {
+public class TreasureChestBlock extends AbstractModContainerBlock implements ITreasureBlock {
 	public static final PropertyEnum<EnumFacing> FACING = PropertyDirection.create("facing", EnumFacing.class);
 	/*
 	 *  the class of the tileEntityClass this BlockChest should use.
@@ -276,29 +276,6 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 				
 		        // rotate the lock states
 		       shouldUpdate =  rotateLockStates(worldIn, pos, Direction.NORTH.getRotation(direction));
-		        
-//				// get the rotation needed (from default: NORTH)
-//				Rotate rotate = Direction.NORTH.getRotation(direction);
-//				if (rotate != Rotate.NO_ROTATE) shouldRotate = true;
-//				Treasure.logger.debug("Rotate to:" + rotate);
-//				try {
-//					for (LockState lockState : tcte.getLockStates()) {
-//						if (lockState != null && lockState.getSlot() != null) {
-//							Treasure.logger.debug("Original lock state:" + lockState);
-//							// if a rotation is needed
-//							if (shouldRotate) {
-//								ILockSlot newSlot = lockState.getSlot().rotate(rotate);
-//								Treasure.logger.debug("New slot position:" + newSlot);
-//								lockState.setSlot(newSlot);
-//								// set the update flag
-//								shouldUpdate = true;
-//							}
-//						}
-//					}
-//				}
-//				catch(Exception e) {
-//					Treasure.logger.error("Error updating lock states: ", e);
-//				}
 			}
 		}
 
@@ -308,12 +285,13 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		}
 	}
 
-	//	@SuppressWarnings("deprecation")
-	//	@Override
-	//	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-	//		return state.withProperty(FACING, getFacing(worldIn, pos));
-	//	}
-
+	/**
+	 * 
+	 * @param world
+	 * @param pos
+	 * @param rotate
+	 * @return
+	 */
 	public boolean  rotateLockStates(World world, BlockPos pos, Rotate rotate) {
 		boolean hasRotated = false;
 		boolean shouldRotate = false;
@@ -333,11 +311,11 @@ public class TreasureChestBlock extends AbstractModContainerBlock {
 		try {
 			for (LockState lockState : tcte.getLockStates()) {
 				if (lockState != null && lockState.getSlot() != null) {
-					Treasure.logger.debug("Original lock state:" + lockState);
+//					Treasure.logger.debug("Original lock state:" + lockState);
 					// if a rotation is needed
 					if (shouldRotate) {
 						ILockSlot newSlot = lockState.getSlot().rotate(rotate);
-						Treasure.logger.debug("New slot position:" + newSlot);
+//						Treasure.logger.debug("New slot position:" + newSlot);
 						lockState.setSlot(newSlot);
 						// set the flag to indicate the lockStates have rotated
 						hasRotated = true;

@@ -6,7 +6,6 @@ package com.someguyssoftware.lootbuilder.inventory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.inventory.InventoryUtil;
@@ -17,18 +16,29 @@ import com.someguyssoftware.lootbuilder.db.DbManager;
 import com.someguyssoftware.lootbuilder.model.LootContainer;
 import com.someguyssoftware.lootbuilder.model.LootContainerHasGroup;
 import com.someguyssoftware.lootbuilder.model.LootGroupHasItem;
+import com.someguyssoftware.lootbuilder.model.LootItem;
 import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionType;
+import net.minecraft.potion.PotionUtils;
 
 /**
  * @author Mark Gottschling on Jan 20, 2018
  *
  */
 public class InventoryPopulator {
-
+	private static final String POTION_ITEM_NAME = "minecraft:potion";
+	private static final String SPLASH_POTION_ITEM_NAME = "minecraft:splash_potion";
+	private static final String LINGERING_POTION_ITEM_NAME = "minecraft:lingering_potion";
+	
+	/**
+	 * 
+	 * @param inventory
+	 * @param container
+	 */
 	public void populate(IInventory inventory, LootContainer container) {
 		Random random = new Random();
 		List<LootContainerHasGroup> containerGroups = DbManager.getInstance().getGroupsByContainer(container.getId());
@@ -44,41 +54,68 @@ public class InventoryPopulator {
 		int numGroups = RandomHelper.randomInt(random, container.getMinGroups(), container.getMaxGroups());
 		Treasure.logger.debug("Selecting {} groups.", numGroups);
 		
-		// randomly select groups and add to map
-		for (int i = 0; i < numGroups; i++) {
-			// TODO change this - nned to load all the groups into the RandomProbabilityCollection
-			int select = RandomHelper.randomInt(random, 1, containerGroups.size());
-			Treasure.logger.debug("Size of group: {}", containerGroups.size());
-			Treasure.logger.debug("Index of group: {}", select-1);
-			// get the container group
-			LootContainerHasGroup g = containerGroups.get(select-1);
-			Treasure.logger.debug("Selected group: {}", g);
-			// add to the map
-			groups.put(g.getGroup().getName(), g);
-			// remove from the list
-			containerGroups.remove(select-1);
+		// load groups in a RandomWeightedCollection
+		RandomWeightedCollection<LootContainerHasGroup> groupCol = new RandomWeightedCollection<>();
+		for (LootContainerHasGroup g : containerGroups) {
+			groupCol.add(g.getWeight(), g);
 		}
 		
-		// for all selected groups, fetch the items
-		for (Entry<String, LootContainerHasGroup> cg : groups.entrySet()) {
+		// randomly select groups and add to map
+		// NOTE this method allows multiples of the same group to be added.
+		// TODO is this map necessary?
+//		for (int i = 0; i < numGroups; i++) {
+//			LootContainerHasGroup g = groupCol.next();
+//			Treasure.logger.debug("Selected group: {}", g);
+//			// add to the map
+//			groups.put(g.getGroup().getName(), g);
+//		}
+//		for (int i = 0; i < numGroups; i++) {
+//			// TODO change this - nned to load all the groups into the RandomProbabilityCollection
+//			int select = RandomHelper.randomInt(random, 1, containerGroups.size());
+//			Treasure.logger.debug("Size of group: {}", containerGroups.size());
+//			Treasure.logger.debug("Index of group: {}", select-1);
+//			// get the container group
+//			LootContainerHasGroup g = containerGroups.get(select-1);
+//			Treasure.logger.debug("Selected group: {}", g);
+//			// add to the map
+//			groups.put(g.getGroup().getName(), g);
+//			// remove from the list
+//			containerGroups.remove(select-1);
+//		}
+		
+		// determine the total number of items to add to the container
+		int totalNumItemsToAdd = RandomHelper.randomInt(random, container.getMinItems(), container.getMaxItems());
+		Treasure.logger.debug("Total # of items to select: {}", totalNumItemsToAdd);
+		int itemsAdded = 0;
+		boolean addMoreItems = true;
+		
+		// TODO first select items from the container items list
+		
+		while (addMoreItems) {
 			// check if the inventory has slots available
 			List<Integer> slots = InventoryUtil.getAvailableSlots(inventory);
 			if (slots == null || slots.isEmpty()) {
 				Treasure.logger.warn("Slots is null or empty.");
 				return;
 			}
-			List<LootGroupHasItem> groupItems = DbManager.getInstance().getItemsByGroup(cg.getValue());
-			Treasure.logger.debug("Selecting {} items for group {}", groupItems.size(), cg.getValue());
-			// add group items to weighted collection
+			
+			// fetch a group
+			LootContainerHasGroup cg = groupCol.next();
+			Treasure.logger.debug("Selecting group: {}", cg);
+			
+			// fetch the group items
+			List<LootGroupHasItem> groupItems = DbManager.getInstance().getItemsByGroup(cg);
+			// TODO could cache the groupItems to a map for quicker retrieval
+			// add items to weighted collection
 			RandomWeightedCollection<LootGroupHasItem> col = new RandomWeightedCollection<>();
 			for (LootGroupHasItem g : groupItems) {
 				Treasure.logger.debug("Adding weight {} for item {}", g.getWeight(), g);
 				col.add(g.getWeight(), g);
 			}
-
+			
 			// determine # of items from group to add
-			int numOfItems = RandomHelper.randomInt(random, cg.getValue().getMin(), cg.getValue().getMax());
-			Treasure.logger.debug("num of items: {}, from group: {}", numOfItems, cg.getKey());
+			int numOfItems = RandomHelper.randomInt(random, cg.getMin(), cg.getMax());
+			Treasure.logger.debug("num of items: {}, from group: {}", numOfItems, cg.getGroup().getName());
 			
 			ItemStack stack = null;
 			// add a selection of items to the chest
@@ -95,8 +132,53 @@ public class InventoryPopulator {
 						break;
 					}
 				}
-			}			
+				itemsAdded++;
+				
+				if(itemsAdded >= slots.size() || itemsAdded >= totalNumItemsToAdd) {
+					addMoreItems = false;
+					break;
+				}
+			}
 		}
+		
+		// for all selected groups, fetch the items
+//		for (Entry<String, LootContainerHasGroup> cg : groups.entrySet()) {
+//			// check if the inventory has slots available
+//			List<Integer> slots = InventoryUtil.getAvailableSlots(inventory);
+//			if (slots == null || slots.isEmpty()) {
+//				Treasure.logger.warn("Slots is null or empty.");
+//				return;
+//			}
+//			List<LootGroupHasItem> groupItems = DbManager.getInstance().getItemsByGroup(cg.getValue());
+//			Treasure.logger.debug("Selecting {} items for group {}", groupItems.size(), cg.getValue());
+//			// add group items to weighted collection
+//			RandomWeightedCollection<LootGroupHasItem> col = new RandomWeightedCollection<>();
+//			for (LootGroupHasItem g : groupItems) {
+//				Treasure.logger.debug("Adding weight {} for item {}", g.getWeight(), g);
+//				col.add(g.getWeight(), g);
+//			}
+//
+//			// determine # of items from group to add
+//			int numOfItems = RandomHelper.randomInt(random, cg.getValue().getMin(), cg.getValue().getMax());
+//			Treasure.logger.debug("num of items: {}, from group: {}", numOfItems, cg.getKey());
+//			
+//			ItemStack stack = null;
+//			// add a selection of items to the chest
+//			for (int i = 0; i < numOfItems; i++) {
+//				LootGroupHasItem gi = col.next();
+//				stack = toItemStack(random,  gi);
+//				if (stack == null) {
+//					continue;
+//				}
+//				// add stack to inventory
+//				if (stack != null) {
+//					InventoryUtil.addItemToInventory(inventory, stack, random, slots);
+//					if (slots == null || slots.size() == 0) {
+//						break;
+//					}
+//				}
+//			}			
+//		}
 	}
 	
 	/**
@@ -109,12 +191,13 @@ public class InventoryPopulator {
 		ItemStack stack = null;
 		
 		// check if poition, then build potion and return
-//		if (chestItem.getName().equalsIgnoreCase(POTION_ITEM_NAME)
-//				|| chestItem.getName().equalsIgnoreCase(SPLASH_POTION_ITEM_NAME)
-//				|| chestItem.getName().equalsIgnoreCase(LINGERING_POTION_ITEM_NAME)) {
-//			stack = toPotion(chestItem);
-//			return stack;
-//		}
+		String itemName = groupItem.getItem().getMod().getPrefix() + ":" + groupItem.getItem().getMcName();
+		if (itemName.equalsIgnoreCase(POTION_ITEM_NAME)
+				|| itemName.equalsIgnoreCase(SPLASH_POTION_ITEM_NAME)
+				|| itemName.equalsIgnoreCase(LINGERING_POTION_ITEM_NAME)) {
+			stack = toPotion(groupItem.getItem());
+			return stack;
+		}
 		
 		// get the item from the item registry
 		Treasure.logger.debug("Get item using id {}", groupItem.getItem().getMod().getPrefix() + ":" + groupItem.getItem().getMcName());
@@ -171,6 +254,24 @@ public class InventoryPopulator {
 		}
 		catch(Exception e) {
 			Treasure.logger.error("toItem error:", e);
+			return null;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param lootItem
+	 * @return
+	 */
+	public static ItemStack toPotion(LootItem lootItem) {
+		try {
+			Item item = ItemUtil.getItemFromName(lootItem.getMod().getPrefix() + ":" + lootItem.getMcName());
+			PotionType type = PotionType.getPotionTypeForName(lootItem.getName());
+			ItemStack stack = PotionUtils.addPotionToItemStack(new ItemStack(item), type);
+			return stack;
+		}
+		catch(Exception e) {
+			Treasure.logger.error("toPotion error:", e);
 			return null;
 		}
 	}

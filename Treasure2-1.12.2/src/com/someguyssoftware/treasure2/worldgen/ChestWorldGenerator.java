@@ -19,11 +19,11 @@ import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.generator.AbstractTreasureGenerator;
-import com.someguyssoftware.treasure2.generator.DefaultChestGenerator;
-import com.someguyssoftware.treasure2.generator.ScarceChestGenerator;
-import com.someguyssoftware.treasure2.generator.UncommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.AbstractChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.DefaultChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.UncommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
@@ -45,17 +45,11 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	// the number of blocks of half a chunk (radius) (a chunk is 16x16)
 	public static final int CHUNK_RADIUS = 8;
 
-	// TODO biomes might be chest/rarity specific - ie need any array/map
-	// biome white/black lists
-//	private List<BiomeTypeHolder> biomeWhiteList;
-//	private List<BiomeTypeHolder> biomeBlackList;
-
 	private int chunksSinceLastChest;
-	// TODO make a map instead of array
 	private Map<Rarity, Integer> chunksSinceLastRarityChest;
 	
 	// the chest generators
-	private Map<Rarity, AbstractTreasureGenerator> generators = new HashMap<>();
+	private Map<Rarity, AbstractChestGenerator> generators = new HashMap<>();
 	// the pit generators
 	public static Map<Pits, IPitGenerator> pitGenerators = new HashMap<>();
 	/**
@@ -77,7 +71,6 @@ public class ChestWorldGenerator implements IWorldGenerator {
 			chunksSinceLastRarityChest.put(rarity, 0);
 		}
 		// setup the chest  generators
-		// TODO create all the same right now
 		generators.put(Rarity.COMMON, new CommonChestGenerator());
 		generators.put(Rarity.UNCOMMON, new UncommonChestGenerator());
 		generators.put(Rarity.SCARCE, new ScarceChestGenerator());
@@ -277,14 +270,14 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	/**
 	 * @return the generators
 	 */
-	public Map<Rarity, AbstractTreasureGenerator> getGenerators() {
+	public Map<Rarity, AbstractChestGenerator> getGenerators() {
 		return generators;
 	}
 
 	/**
 	 * @param generators the generators to set
 	 */
-	public void setGenerators(Map<Rarity, AbstractTreasureGenerator> generators) {
+	public void setGenerators(Map<Rarity, AbstractChestGenerator> generators) {
 		this.generators = generators;
 	}
 }

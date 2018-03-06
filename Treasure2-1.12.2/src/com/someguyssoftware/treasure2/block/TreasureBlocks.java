@@ -15,6 +15,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.enums.Fogs;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.TreasureChestItemBlock;
 import com.someguyssoftware.treasure2.item.TreasureItems;
@@ -87,9 +88,10 @@ public class TreasureBlocks {
 
 	// other
 	public static final Block WISHING_WELL_BLOCK;
-	public static final Block FOG_BLOCK;
-	public static final Block MED_FOG_BLOCK;
-	public static final Block LOW_FOG_BLOCK;
+	public static final FogBlock FOG_BLOCK;
+	public static final FogBlock HIGH_FOG_BLOCK;
+	public static final FogBlock MED_FOG_BLOCK;
+	public static final FogBlock LOW_FOG_BLOCK;
 
 	// initialize blocks
 	static {
@@ -272,9 +274,10 @@ public class TreasureBlocks {
 
 		// other
 		WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.WISHING_WELL_BLOCK_ID, Material.ROCK);
-		FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.FOG_BLOCK_ID, TreasureItems.FOG);
-		MED_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.MED_FOG_BLOCK_ID, TreasureItems.FOG);
-		LOW_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.LOW_FOG_BLOCK_ID, TreasureItems.FOG);
+		FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.FOG_BLOCK_ID, TreasureItems.FOG).setFog(Fogs.FULL_FOG);
+		HIGH_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.HIGH_FOG_BLOCK_ID, TreasureItems.FOG).setFog(Fogs.HIGH_FOG);
+		MED_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.MED_FOG_BLOCK_ID, TreasureItems.FOG).setFog(Fogs.MEDIUM_FOG);
+		LOW_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.LOW_FOG_BLOCK_ID, TreasureItems.FOG).setFog(Fogs.LOW_FOG);
 	}
 
 

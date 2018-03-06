@@ -1,4 +1,4 @@
-package com.someguyssoftware.treasure2.generator;
+package com.someguyssoftware.treasure2.generator.chest;
 
 import java.util.Random;
 

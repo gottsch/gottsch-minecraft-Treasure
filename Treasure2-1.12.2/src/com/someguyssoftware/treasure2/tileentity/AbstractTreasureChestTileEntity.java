@@ -67,7 +67,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
     public int ticksSinceSync;
     
     /** IInventory properties */
-    // TODO replace the 27 here somehow. Different types of chests will have different SLOT sizes.
     private int numberOfSlots = 27; // default size
     private NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(numberOfSlots, ItemStack.EMPTY);
     private String customName;
@@ -101,7 +100,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 					IInventory iinventory = ((ContainerChest) entityplayer.openContainer).getLowerChestInventory();
 
 					// TODO proxy goes here:  if (iinventory == this.getProxy() 
-                    if (iinventory == this) {
+                    if (iinventory == this.getInventoryProxy()) {
                         ++this.numPlayersUsing;
                     }
 				}
@@ -155,28 +154,13 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		try {
 			parentNBT = super.writeToNBT(parentNBT);
 			
-//			// write lock states
-//			if (getLockStates() != null && !getLockStates().isEmpty()) {				
-//				NBTTagList list = new NBTTagList();
-//				// write custom tile entity properties
-//				for (LockState state : getLockStates()) {
-////					Treasure.logger.debug("Writing lock state:" + state);
-//					NBTTagCompound stateNBT = new NBTTagCompound();
-//					state.writeToNBT(stateNBT); // TODO ensure this works
-//					list.appendTag(stateNBT);
-//				}
-//				parentNBT.setTag("lockStates", list);
-//			}
+			// write lock states
 			writeLockStatesToNBT(parentNBT);
 			
-//			// write inventory
-//			ItemStackHelper.saveAllItems(parentNBT, this.getItems());
+			// write inventory
 			writeInventoryToNBT(parentNBT);
 			
-//			// write custom name
-//			if (this.hasCustomName()) {
-//				parentNBT.setString("CustomName", this.customName);
-//			}
+			// write custom name
 			writePropertiesToNBT(parentNBT);			
 		}
 		catch(Exception e) {
@@ -199,7 +183,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				for (LockState state : getLockStates()) {
 //					Treasure.logger.debug("Writing lock state:" + state);
 					NBTTagCompound stateNBT = new NBTTagCompound();
-					state.writeToNBT(stateNBT); // TODO ensure this works
+					state.writeToNBT(stateNBT);
 					list.appendTag(stateNBT);
 				}
 				parentNBT.setTag("lockStates", list);

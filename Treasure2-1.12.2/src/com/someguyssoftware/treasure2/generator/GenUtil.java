@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.generator;
 
+import java.util.LinkedList;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.block.AbstractModContainerBlock;
@@ -13,9 +14,12 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.FogBlock;
+import com.someguyssoftware.treasure2.block.ITreasureBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
@@ -36,7 +40,9 @@ import net.minecraft.world.World;
  */
 public class GenUtil {
 	public static final PropertyEnum<EnumFacing> FACING = PropertyDirection.create("facing", EnumFacing.class);
-	protected static int UNDERGROUND_OFFSET = 5;
+	protected static final int UNDERGROUND_OFFSET = 5;
+	protected static final int VERTICAL_MAX_DIFF = 2;
+	private static final int FOG_RADIUS = 5;
 		
 	/**
 	 * 
@@ -185,6 +191,14 @@ public class GenUtil {
 			return false;
 		}
 
+		FogBlock[] fogDensity = new FogBlock[] { 
+				TreasureBlocks.MED_FOG_BLOCK, 
+				TreasureBlocks.MED_FOG_BLOCK, 
+				TreasureBlocks.MED_FOG_BLOCK,
+				TreasureBlocks.MED_FOG_BLOCK,
+				TreasureBlocks.LOW_FOG_BLOCK,
+				};
+		
 		int x = coords.getX();
 		int y = coords.getY();
 		int z = coords.getZ();
@@ -221,7 +235,7 @@ public class GenUtil {
 			}			
 			
 			//  get a valid surface location
-			Treasure.logger.debug("Getting dry land coords for @ {}", spawnCoords.toShortString());
+//			Treasure.logger.debug("Getting dry land coords for @ {}", spawnCoords.toShortString());
 			spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, spawnCoords);
 			if (spawnCoords == null) {
 				Treasure.logger.debug(String.format("Not a valid surface @ %s", coords));
@@ -282,6 +296,11 @@ public class GenUtil {
 			// place the block
 			world.setBlockState(spawnCoords.toPos(), marker.getDefaultState().withProperty(TreasureChestBlock.FACING, facing));
 			
+			// add fog around the block
+			if (TreasureConfig.enableFog) {
+				addFog(world, random, spawnCoords, fogDensity);
+			}
+			
 //			Treasure.logger.info("Placed marker @ " + spawnPos);
 			isSuccess = true;
 		} // end of for
@@ -289,6 +308,83 @@ public class GenUtil {
 		return isSuccess;
 	}
 
+	/**
+	 * TODO this might move to GenUtil
+	 * @param world
+	 * @param coords
+	 */
+	public static void addFog(World world, Random random, ICoords coords, FogBlock[] fogDensity) {
+		ICoords fogCoords = null;
+		
+		// add fog around the given coords with a 5 block radius
+		for (int xOffset = -5; xOffset <= 5; xOffset++) {
+			for (int zOffset = -5; zOffset <= 5; zOffset++) {
+				int radius = Math.abs(xOffset) + Math.abs(zOffset);
+				if (radius <= FOG_RADIUS) {
+					
+					// skip if at the origin pos
+					if (xOffset == 0 && zOffset == 0) {
+						continue;
+					}
+
+					int yHeight = WorldInfo.getHeightValue(world, coords.add(xOffset, 255, zOffset));
+//					Treasure.logger.debug("Wither Tree Clearing yOffset: " + yHeight);
+					// NOTE have to use GenUtil here because it takes into account GenericBlockContainer
+//					fogCoords = GenUtil.getAnySurfacePos(world, new BlockPos(coords.getX() + xOffset, yHeight, coords.getZ() + zOffset));
+
+					fogCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(coords.getX()+xOffset, yHeight, coords.getZ() + zOffset));
+//					Treasure.logger.debug("1. fog coords @ {}", fogCoords);
+					
+					// TODO add .blockInstanceOf() method to Cube
+					// ensure that the fog isn't resting on a Treasure2!-related block
+					if  (world.getBlockState(fogCoords.down(1).toPos()).getBlock() instanceof ITreasureBlock) {
+//						Treasure.logger.debug("eXit - ITreasureBlock at coords");
+						continue;
+					}				
+
+					// TODO this is not working totally. Fog is being overwritten by other fog
+					// OR smaller fog from farther away gravestones is beside other gravestones and isn't replaced.
+					
+					// additional check that it's not a tree and within 2 y-blocks of original
+					ICoords deltaCoords = fogCoords.delta(coords);
+					Block block = null;
+					if (Math.abs(deltaCoords.getY()) > VERTICAL_MAX_DIFF) {
+//						Treasure.logger.debug("eXit - delta too great at coords");
+						continue;
+					}
+					
+					Cube cube = new Cube(world, fogCoords);	
+					// ensure location of fog coords is air.
+					if (!cube.isAir() && !cube.equalsMaterial(TreasureItems.FOG)) {
+//						Treasure.logger.debug("eXit - block at coords is {}", cube.getState().getBlock().toString());
+						continue;
+					}
+					
+					// select the fog block from the density array
+					if (radius > fogDensity.length) radius = fogDensity.length;
+					if (radius < 1) radius = 1;					
+					block = fogDensity[radius-1];
+
+//					Treasure.logger.debug("2. selecting {} fog", ((FogBlock)block).getFog().getSize());
+							
+					if (cube.equalsMaterial(TreasureItems.FOG)) {
+						// test if the block at fog coords is already fog, then whichever is bigger remains
+						FogBlock origBlock = (FogBlock) cube.getState().getBlock();
+//						Treasure.logger.debug("3. orig block IS {} at coords", origBlock.getFog().getSize());
+						if (origBlock.getFog().getSize() > ((FogBlock)block).getFog().getSize()) {
+//							Treasure.logger.debug("eXit - orig block is bigger than block");
+							continue;
+						}
+					}
+
+					// place the fog block
+					world.setBlockState(fogCoords.toPos(), block.getDefaultState());		
+//					Treasure.logger.debug("Placed fog block @ {}", fogCoords.toShortString());
+				}
+			}
+		}	
+	}
+	
 //	/**
 //	 * Gets the surface position. Any aboveground land surface or surface of body of water/lava.
 //	 * Also takes into account Treasure blocks - gravestones, chests etc.

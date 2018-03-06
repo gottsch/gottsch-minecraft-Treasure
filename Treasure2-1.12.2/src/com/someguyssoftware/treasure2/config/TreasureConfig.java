@@ -91,6 +91,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String SKULL_CROSSBONES_ID = "skull_and_crossbones";		
 	public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
 	public static final String FOG_BLOCK_ID = "fog";
+	public static final String HIGH_FOG_BLOCK_ID = "high_fog";
 	public static final String MED_FOG_BLOCK_ID = "med_fog";
 	public static final String LOW_FOG_BLOCK_ID = "low_fog";
 	
@@ -103,12 +104,10 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String IRON_STRONGBOX_TE_ID = "iron_strongbox_tile_entity";
 	public static final String GOLD_STRONGBOX_TE_ID = "gold_strongbox_tile_entity";
 	public static final String SAFE_TE_ID = "safe_tile_entity";
-
-	
 	
 
-
-	public static boolean enableKeyBreaks = true;	
+	public static boolean enableKeyBreaks = true;
+	public static boolean enableFog = true;
 	public static String treasureFolder;
 
 	/*
@@ -132,7 +131,7 @@ public class TreasureConfig extends AbstractConfig {
 	// biome type white/black lists
 	public static String[] generalChestBiomeWhiteList;
 	public static String[] generalChestBiomeBlackList;
-		
+			
 	/**
 	 * @param mod
 	 * @param configDir
@@ -154,6 +153,7 @@ public class TreasureConfig extends AbstractConfig {
 		// add mod specific settings here
         treasureFolder = config.getString("treasureFolder", "03-mod", "mods/" + Treasure.MODID + "/", "Where default Treasure folder is located.");
         enableKeyBreaks = config.getBoolean("enableKeyBreaks", "03-mod", true, "Enables/Disable whether a Key can break when attempting to unlock a Lock.");
+        enableFog = config.getBoolean("enableFog", "03-mod", true, "Enables/Disable whether a fog is generated (ex. around graves/tombstones and wither trees)");
 
         // white/black lists
         config.setCategoryComment("04-gen", "World generation properties.");    

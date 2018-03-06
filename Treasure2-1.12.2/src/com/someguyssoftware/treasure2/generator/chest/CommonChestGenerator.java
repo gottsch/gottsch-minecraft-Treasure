@@ -12,14 +12,13 @@ import com.someguyssoftware.lootbuilder.db.DbManager;
 import com.someguyssoftware.lootbuilder.model.LootContainer;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.generator.AbstractTreasureGenerator;
 
 /**
  * 
  * @author Mark Gottschling on Jan 24, 2018
  *
  */
-public class CommonChestGenerator extends AbstractTreasureGenerator {
+public class CommonChestGenerator extends AbstractChestGenerator {
 	
 	/**
 	 * 
