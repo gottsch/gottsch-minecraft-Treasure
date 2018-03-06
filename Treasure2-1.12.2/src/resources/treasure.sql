@@ -83,6 +83,7 @@ create table if not exists containers_has_groups(
 	min_items tinyint not null default '0',
 	max_items tinyint not null default '0',
 	ordering smallint not null default '0',
+	special boolean not null default false,
 	foreign key (container_id) references containers(id),
 	foreign key (group_id) references groups(id)
 );
@@ -273,13 +274,25 @@ values
 ('wheat_seeds', 'wheat_seeds', 'item', 0, 1),
 ('wool', 'wool', 'item', 0, 1),
 ('shears', 'shears', 'item', 0, 1),
+-- additions go here
 
+-- treasure items
+('silver_coin', 'silver_coin', 'item', 0, 2),
+('gold_coin', 'gold_coin', 'item', 0, 2),
+('skull_sword', 'skull_sword', 'item', 0, 2),
+('eye_patch', 'eye_patch', 'item', 0, 2),
+
+-- treasure keys
 ('wood_key', 'wood_key', 'key', 0, 2),
 ('stone_key', 'stone_key', 'key', 0, 2),
 ('iron_key', 'iron_key', 'key', 0, 2),
 ('gold_key', 'gold_key', 'key', 0, 2),
 ('diamond_key', 'diamond_key', 'key', 0, 2),
 ('emerald_key', 'emerald_key', 'key', 0, 2),
+('metallurgists_key', 'metallurgists_key', 'key', 0, 2),
+('skeleton_key', 'skeleton_key', 'key', 0, 2),
+('pilferers_lock_pick', 'pilferers_lock_pick', 'key', 0, 2),
+('thiefs_lock_pick', 'thiefs_lock_pick', 'key', 0, 2),
 
 -- -----------------------------------------------------
 -- Add groups data
@@ -310,7 +323,20 @@ values
 ('epic_records'),
 ('epic_food'),
 ('epic_armor'),
-('epic_tools');
+('epic_tools'),
+
+-- treasure groups
+('common_keys'),
+('uncommon_keys'),
+('scarce_keys'),
+('rare_keys'),
+('epic_keys'),
+
+('common_treasure'),
+('uncommon_treasure'),
+('scarce_treasure'),
+('rare_treasure'),
+('epic_treasure');
 
 -- -----------------------------------------------------
 -- Add  groups_has_items data
@@ -541,7 +567,23 @@ values
 (24, 32, 25.0, 1, 1, 0, 0, 8), -- diamond_horse_armor
 -- epic_tools
 (25, 36, 50.0, 1, 1, 1, 2, 0), -- diamond_sword
-(25, 79, 50.0, 1, 1, 2, 3, 1), -- iron_sword
+(25, 79, 50.0, 1, 1, 2, 3, 1) -- iron_sword
+
+-- common_keys
+(26, , 1, 2, 0, 0, 1), -- wood_key
+(26, , 1, 2, 0, 0, 1), -- stone_key
+
+-- uncommon_keys
+(27, , 1, 2, 0, 0, 1), -- iron_key
+
+-- scarce_keys
+(28, , 1, 2, 0, 0, 1), -- gold_key
+
+-- rare_keys
+(29, , 1, 2, 0, 0, 1), -- diamond_key
+
+-- epic_keys
+(30, , 1, 2, 0, 0, 1), -- emerald_key
 ;
 
 -- -----------------------------------------------------
@@ -663,4 +705,12 @@ values
 (11, 19, 0, 2, 4, 9),--epic_chest: rare_food
 (11, 18, 0, 1, 1, 10),--epic_chest: rare_tools
 (11, 20, 0, 1, 3, 11),--epic_chest: rare_potions
-(11, 9, 0, 1, 3, 12) --epic_chest: uncommon_potions
+(11, 9, 0, 1, 3, 12); --epic_chest: uncommon_potions
+
+-- -----------------------------------------------------
+-- Add special containers_has_groups data
+-- -----------------------------------------------------
+insert into containers_has_groups (container_id, group_id, group_weight, min_items, max_items, ordering, special)
+values
+-- general chest
+(1, 26, 25, 1, 2, 0, true),--common_chest: common_keys
