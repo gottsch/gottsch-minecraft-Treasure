@@ -569,21 +569,21 @@ values
 (25, 36, 50.0, 1, 1, 1, 2, 0), -- diamond_sword
 (25, 79, 50.0, 1, 1, 2, 3, 1) -- iron_sword
 
--- common_keys
-(26, , 1, 2, 0, 0, 1), -- wood_key
-(26, , 1, 2, 0, 0, 1), -- stone_key
+-- common_keys (temp - needs update)
+(26, 174, 25.0, 1, 2, 0, 0, 1), -- wood_key
+(26, 175, 25.0, 1, 2, 0, 0, 1), -- stone_key
 
 -- uncommon_keys
-(27, , 1, 2, 0, 0, 1), -- iron_key
+(27, 176, 25.0, 1, 2, 0, 0, 1), -- iron_key
 
 -- scarce_keys
-(28, , 1, 2, 0, 0, 1), -- gold_key
+(28, 177, 25.0, 1, 2, 0, 0, 1), -- gold_key
 
 -- rare_keys
-(29, , 1, 2, 0, 0, 1), -- diamond_key
+(29, 178, 25.0, 1, 2, 0, 0, 1), -- diamond_key
 
 -- epic_keys
-(30, , 1, 2, 0, 0, 1), -- emerald_key
+(30, 179, 25.0, 1, 2, 0, 0, 1), -- emerald_key
 ;
 
 -- -----------------------------------------------------
@@ -713,4 +713,4 @@ values
 insert into containers_has_groups (container_id, group_id, group_weight, min_items, max_items, ordering, special)
 values
 -- general chest
-(1, 26, 25, 1, 2, 0, true),--common_chest: common_keys
+(1, 26, 25.0, 1, 2, 0, true),--common_chest: common_keys

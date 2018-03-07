@@ -11,3 +11,4 @@ gradle.log
 !.gitattributes
 !*.json
 !*.gradlew
+!/models/

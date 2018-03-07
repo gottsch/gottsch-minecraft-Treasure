@@ -148,7 +148,6 @@ public class Treasure extends AbstractMod {
 		} catch (DatabaseInitializationException e) {
 			logger.error("Unable to start database manager:", e);
 			getConfig().setModEnabled(false);
-			// TODO set fail flag
 			// TODO create another PlayerLoggedIn Event that checks if the database failed initialization and inform player.
 		}
 	}

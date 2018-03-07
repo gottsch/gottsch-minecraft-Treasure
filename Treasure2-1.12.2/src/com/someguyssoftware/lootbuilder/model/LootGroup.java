@@ -20,8 +20,6 @@ public class LootGroup {
 	@DatabaseField(columnName = "name", canBeNull = false, unique = true, width = 45)
 	private String name;
 	
-	// TODO number of items etc
-	
 	/**
 	 * 
 	 */

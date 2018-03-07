@@ -119,7 +119,7 @@ public class Configs {
 				.setChunksPerWell(500)
 				.setGenProbability(80)
 				.setRawBiomeWhiteList(new String[] {""})
-				.setRawBiomeBlackList(new String[] {"ocean"}) // TODO add desert
+				.setRawBiomeBlackList(new String[] {"ocean"})
 				);
 	}
 }

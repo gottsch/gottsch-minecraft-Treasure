@@ -46,7 +46,6 @@ public interface ILockSlot {
 		if (nbt.hasKey("rotation")) {
 			rotate = nbt.getFloat("rotation");
 		}
-		// TODO add rotation
 		slot = new LockSlot(index, Direction.getByCode(face), x, y, z, rotate);
 		return slot;
 	}

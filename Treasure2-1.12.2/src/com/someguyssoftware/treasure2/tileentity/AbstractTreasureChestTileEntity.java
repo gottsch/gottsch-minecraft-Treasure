@@ -43,7 +43,7 @@ import net.minecraftforge.common.util.Constants;
  * @author Mark Gottschling onDec 22, 2017
  *
  */
-public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements /*IInventory, */ITickable {
+public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITreasureChestTileEntity, ITickable {
 	/*
 	 * A list of lockStates the chest has. The list should be the size of the max allowed for the chestType.
 	 */	
@@ -100,6 +100,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 					IInventory iinventory = ((ContainerChest) entityplayer.openContainer).getLowerChestInventory();
 
 					// TODO proxy goes here:  if (iinventory == this.getProxy() 
+					// NOTE this doesn't seem to work with the inventory proxy
                     if (iinventory == this.getInventoryProxy()) {
                         ++this.numPlayersUsing;
                     }
@@ -441,6 +442,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @return the lockStates
 	 */
+	@Override
 	public List<LockState> getLockStates() {
 		return lockStates;
 	}
@@ -448,6 +450,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @param lockStates the lockStates to set
 	 */
+	@Override
 	public void setLockStates(List<LockState> lockStates) {
 		this.lockStates = lockStates;
 	}
@@ -456,6 +459,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 * @return
 	 */
+	@Override
 	public boolean hasLocks() {
 		// TODO TEMP do this for now. should have another property numActiveLocks so that the renderer doesn't keep calling this
 		if (getLockStates() == null || getLockStates().isEmpty()) return false;
@@ -646,6 +650,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @return the numberOfSlots
 	 */
+	@Override
 	public int getNumberOfSlots() {
 		return numberOfSlots;
 	}
@@ -653,6 +658,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @param numberOfSlots the numberOfSlots to set
 	 */
+	@Override
 	public void setNumberOfSlots(int numberOfSlots) {
 		this.numberOfSlots = numberOfSlots;
 	}
@@ -674,6 +680,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @return the inventoryProxy
 	 */
+	@Override
 	public InventoryProxy getInventoryProxy() {
 		return inventoryProxy;
 	}
@@ -681,6 +688,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @param inventoryProxy the inventoryProxy to set
 	 */
+	@Override
 	public void setInventoryProxy(InventoryProxy inventoryProxy) {
 		this.inventoryProxy = inventoryProxy;
 	}

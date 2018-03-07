@@ -17,6 +17,7 @@ import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -41,6 +42,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -57,6 +59,11 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 	 */
 	private Class<?> tileEntityClass;
 
+	/*
+	 * the concrete object of the tile entity
+	 */
+	private ITreasureChestTileEntity tileEntity;
+	
 	/*
 	 * the type of chest
 	 */
@@ -84,7 +91,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 	 * @param te
 	 * @param type
 	 */
-	public TreasureChestBlock(String modID, String name, Class<? extends TileEntity> te, TreasureChestType type, Rarity rarity) {
+	public TreasureChestBlock(String modID, String name, Class<? extends ITreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
 		this(modID, name, Material.WOOD, te, type, rarity);
 	}
 
@@ -96,12 +103,20 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 	 * @param te
 	 * @param type
 	 */
-	public TreasureChestBlock(String modID, String name, Material material, Class<? extends TileEntity> te, TreasureChestType type, Rarity rarity) {
+	public TreasureChestBlock(String modID, String name, Material material, Class<? extends ITreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
 		this(modID, name, material);
 		setTileEntityClass(te);
 		setChestType(type);
 		setRarity(rarity);
 		setCreativeTab(Treasure.TREASURE_TAB);
+		
+		// set the tile entity reference
+		try {
+			setTileEntity((ITreasureChestTileEntity)getTileEntityClass().newInstance());
+		}
+		catch(Exception e) {
+			Treasure.logger.warn("Unable to create reference ITreasureChestTileEntity object.");
+		}
 	}
 
 	/**
@@ -112,46 +127,50 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 	 */
 	private TreasureChestBlock(String modID, String name, Material material) {
 		super(modID, name, material);
-
 	}
 
-	/**
-	 * Information that is displayed in the Chat when the user performs some action on the chest.
-	 * TODO TEMP display... come up with better info
-	 * Format:
-	 * 		Item Name, (vanilla minecraft)
-	 * 		State [Locked | Unlocked] [color = Dark Red | Green],
-	 * 		Requires: X Key [color = Yellow | Gold]
-	 * @param te
-	 * @return
-	 */
-	public String getInfo(AbstractTreasureChestTileEntity te) {
-
-		final String STATE_LABEL = "State: ";
-		final String REQUIRES_LABEL = "Requires: ";
-		final String LOCKED_STATE = "Locked";
-		final String UNLOCKED_STATE = "Unlocked";
-
-		StringBuilder builder = new StringBuilder();
-		if (te.hasCustomName()) {
-			builder.append(TextFormatting.WHITE).append(te.getCustomName()).append(", ");
-		}
-		if (te.hasLocks()) {
-			builder.append(STATE_LABEL).append(TextFormatting.DARK_RED).append(LOCKED_STATE);
-			builder.append(TextFormatting.WHITE).append(", ");
-			builder.append(REQUIRES_LABEL);
-			for (LockState lockState : te.getLockStates()) {
-				if (lockState.getLock() != null) {
-					builder.append(TextFormatting.GOLD).append(lockState.getLock().getUnlocalizedName())
-					.append(" ");
-				}
-			}
-		}
-		else {
-			builder.append(STATE_LABEL).append(TextFormatting.GREEN).append(UNLOCKED_STATE);
-		}			
-		return builder.toString();
-	}
+//	/**
+//	 * Information that is displayed in the Chat when the user performs some action on the chest.
+//	 * Format:
+//	 * 		Item Name, (vanilla minecraft)
+//	 * 		State [Locked | Unlocked] [color = Dark Red | Green],
+//	 * 		Requires: X Key [color = Yellow | Gold]
+//	 * @param te
+//	 * @return
+//	 */
+//	public String getInfo(AbstractTreasureChestTileEntity te) {
+//
+//		final String STATE_LABEL = "State: ";
+//		final String REQUIRES_LABEL = "Requires: ";
+//		final String LOCKED_STATE = "Locked";
+//		final String UNLOCKED_STATE = "Unlocked";
+//
+//		super.addInformation(stack, worldIn, tooltip, flagIn);
+//		
+//		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.rarity", TextFormatting.DARK_BLUE + getRarity().toString()));
+//		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.category", getCategory()));
+//		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.max_uses", getMaxDamage()));
+//		
+//		StringBuilder builder = new StringBuilder();
+//		if (te.hasCustomName()) {
+//			builder.append(TextFormatting.WHITE).append(te.getCustomName()).append(", ");
+//		}
+//		if (te.hasLocks()) {
+//			builder.append(STATE_LABEL).append(TextFormatting.DARK_RED).append(LOCKED_STATE);
+//			builder.append(TextFormatting.WHITE).append(", ");
+//			builder.append(REQUIRES_LABEL);
+//			for (LockState lockState : te.getLockStates()) {
+//				if (lockState.getLock() != null) {
+//					builder.append(TextFormatting.GOLD).append(lockState.getLock().getUnlocalizedName())
+//					.append(" ");
+//				}
+//			}
+//		}
+//		else {
+//			builder.append(STATE_LABEL).append(TextFormatting.GREEN).append(UNLOCKED_STATE);
+//		}			
+//		return builder.toString();
+//	}
 
 	/* (non-Javadoc)
 	 * @see net.minecraft.block.ITileEntityProvider#createNewTileEntity(net.minecraft.world.World, int)
@@ -559,6 +578,20 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 	public TreasureChestBlock setChestGuiID(int chestGuiID) {
 		this.chestGuiID = chestGuiID;
 		return this;
+	}
+
+	/**
+	 * @return the tileEntity
+	 */
+	public ITreasureChestTileEntity getTileEntity() {
+		return tileEntity;
+	}
+
+	/**
+	 * @param tileEntity the tileEntity to set
+	 */
+	public void setTileEntity(ITreasureChestTileEntity tileEntity) {
+		this.tileEntity = tileEntity;
 	}
 
 }

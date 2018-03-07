@@ -150,8 +150,7 @@ public class GenUtil {
 			//world.setBlockState(pos, chest.getStateFromMeta(meta), 3);
 			world.setBlockState(pos,chest.getDefaultState().withProperty(FACING, facing), 3);
 			//world.setBlockMetadataWithNotify(coords.getX(), coords.getY(), coords.getZ(), meta, 3);
-		
-			// TODO rotate the lockStates
+
 			// get the direction the block is facing.
 			Direction direction = Direction.fromFacing(facing);
 			((TreasureChestBlock)chest).rotateLockStates(world, pos, Direction.NORTH.getRotation(direction));
@@ -243,10 +242,17 @@ public class GenUtil {
 			}
 			Treasure.logger.debug("Marker @ {}", spawnCoords.toShortString());
 			
+			// don't place if the spawnCoords isn't AIR or FOG
+			Cube cube = new Cube(world, spawnCoords);
+			if (!cube.isAir() && !cube.equalsMaterial(TreasureItems.FOG)) {
+				Treasure.logger.debug("Marker not placed because block  @ [{}] is not Air nor Fog.");
+				continue;
+			}
+			
 			// don't place if the block underneath is of GenericBlock Chest or Container
 			Block block = world.getBlockState(spawnCoords.add(0, -1, 0).toPos()).getBlock();
-			if(block instanceof BlockContainer || block instanceof AbstractModContainerBlock) {
-				Treasure.logger.debug("Marker not placed because block underneath is a chest or a block container.");
+			if(block instanceof BlockContainer || block instanceof AbstractModContainerBlock || block instanceof ITreasureBlock) {
+				Treasure.logger.debug("Marker not placed because block underneath is a chest, container or Treasure block.");
 				continue;
 			}
 
@@ -309,7 +315,7 @@ public class GenUtil {
 	}
 
 	/**
-	 * TODO this might move to GenUtil
+	 * 
 	 * @param world
 	 * @param coords
 	 */
@@ -329,22 +335,17 @@ public class GenUtil {
 
 					int yHeight = WorldInfo.getHeightValue(world, coords.add(xOffset, 255, zOffset));
 //					Treasure.logger.debug("Wither Tree Clearing yOffset: " + yHeight);
-					// NOTE have to use GenUtil here because it takes into account GenericBlockContainer
 //					fogCoords = GenUtil.getAnySurfacePos(world, new BlockPos(coords.getX() + xOffset, yHeight, coords.getZ() + zOffset));
 
 					fogCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(coords.getX()+xOffset, yHeight, coords.getZ() + zOffset));
 //					Treasure.logger.debug("1. fog coords @ {}", fogCoords);
-					
-					// TODO add .blockInstanceOf() method to Cube
+
 					// ensure that the fog isn't resting on a Treasure2!-related block
 					if  (world.getBlockState(fogCoords.down(1).toPos()).getBlock() instanceof ITreasureBlock) {
 //						Treasure.logger.debug("eXit - ITreasureBlock at coords");
 						continue;
 					}				
 
-					// TODO this is not working totally. Fog is being overwritten by other fog
-					// OR smaller fog from farther away gravestones is beside other gravestones and isn't replaced.
-					
 					// additional check that it's not a tree and within 2 y-blocks of original
 					ICoords deltaCoords = fogCoords.delta(coords);
 					Block block = null;
@@ -529,139 +530,7 @@ public class GenUtil {
 		}
 		return spawnCoords;
 	}
-	
-//	/**
-//	 * Only return a chest iff it is of type TREASURE
-//	 * @param realizedPlan
-//	 * @param targetNam
-//	 * @return
-//	 */
-//	public static ICoords findTreasureChestCoords(IRealizedPlan realizedPlan, String targetName) {
-//		ICoords chestCoords = null;
-//		if (realizedPlan.getContainers() != null && realizedPlan.getContainers().size() > 0) {
-//			Treasure.logger.debug("Containers in plan:" + realizedPlan.getContainers().size());
-//				List<IContainer> chests = GenUtil.findTargetTreasureChests(realizedPlan, targetName);
-//				if (chests != null && chests.size() > 0) {
-//					chestCoords = chests.get(0).getCoords();
-//				}
-//		}
-//		return chestCoords;
-//	}
-	
-//	/**
-//	 * NOTE searching for null or empty string means the name is unimportant. ie return all chests of treasure type.
-//	 * @param plan
-//	 * @param targetName
-//	 * @return
-//	 */
-//	public static List<IContainer> findTargetTreasureChests(IRealizedPlan plan, String targetName) {
-//
-//		if (plan == null || plan.getContainers() == null || plan.getSpawners().size() == 0)
-//			return null;
-//		
-//		// convert targetName to lower case
-//		if (targetName != null) {
-//			targetName = targetName.toLowerCase();
-//		}
-//		
-//		for (IContainer c : plan.getContainers()) {
-//			Treasure.logger.debug("Container ChestType:" + c.getType());
-//		}
-//		// retrieve only "TREASURE" chests
-////		List<IContainer> containers = select(
-////				plan.getContainers(),
-////				having(on(IContainer.class).getType(),
-////						Matchers.equalToIgnoringCase(ChestType.TREASURE.toString())));
-//		
-//		List<IContainer> containers = plan.getContainers().stream().filter(
-//				c -> c.getType().equalsIgnoreCase(ChestType.TREASURE.toString())).collect(Collectors.toList());
-//
-//		Treasure.logger.debug("Found # TREASURE chests in plan:" + containers.size());
-//		List<IContainer> result = new ArrayList<>();
-//		for (IContainer s : containers) {
-//			String name = "";
-//			if (s != null && s.getName() != null) {
-//				name = s.getName().trim().toLowerCase();
-//			}
-//			if (targetName == null || targetName.equals("") || name.equalsIgnoreCase(targetName)) {
-//				result.add(s.copy());
-//				Treasure.logger.debug("Found a TREASURE Chest @" + s.getCoords());
-//			}
-//		}
-//		return result;
-//	}
-	
-	// TODO not sure that this belongs here, but somewhere in Plans API
-//	/**
-//	 * 
-//	 * @param plan
-//	 * @return
-//	 */
-//	public static List<IConnector> findTargetConnectors(IRealizedPlan plan, String targetName) {
-//		if (plan == null || plan.getConnectors() == null
-//				|| plan.getConnectors().size() == 0)
-//			return null;
-//		
-//		return findTargetConnectors(plan.getConnectors(), targetName);
-//	}
-	
-//	/**
-//	 * 
-//	 * @param connectorsIn
-//	 * @param targetName
-//	 * @return
-//	 */
-//	public static List<IConnector> findTargetConnectors(List<IConnector> connectorsIn, String targetName) {
-//		if (connectorsIn == null || connectorsIn.size() == 0)
-//			return null;
-//
-//		List<IConnector> result = new ArrayList<>();
-//
-//		// retrieve only unrestricted connectors
-//		ConnectorType[] unrestricted = { ConnectorType.PLUG, ConnectorType.SOCKET, ConnectorType.PLUG_SOCKET };
-//		List<ConnectorType> unrestrictedList = Arrays.<ConnectorType>asList(unrestricted);
-////		List<IConnector> connectors = select(
-////				connectorsIn,
-////				having(on(IConnector.class).getType(),
-////						Matchers.isIn(unrestricted)));
-//
-//		List<IConnector> connectors = connectorsIn.stream().filter(c -> unrestrictedList.contains(c.getType())).collect(Collectors.toList());
-//		
-//		for (IConnector c : connectors) {
-//			String name = c.getName().trim().toLowerCase();
-//			if (name.equals(targetName)) {
-//				result.add(c.copy());
-//			}
-//		}
-//		return result;
-//	}
-	
-//	/**
-//	 * 
-//	 * @param plan
-//	 * @param targetName
-//	 * @return
-//	 */
-//	public static List<ISpawner> findTargetSpawners(IRealizedPlan plan, String targetName) {
-//		
-//		// convert targetName to lower case
-//		targetName = targetName.toLowerCase();
-//		
-//		if (plan == null || plan.getSpawners() == null
-//				|| plan.getSpawners().size() == 0)
-//			return null;
-//
-//		List<ISpawner> result = new ArrayList<>();
-//
-//		for (ISpawner s : plan.getSpawners()) {
-//			String name = s.getName().trim().toLowerCase();
-//			if (name.equals(targetName)) {
-//				result.add(s.copy());
-//			}
-//		}
-//		return result;
-//	}
-	
+
 	/**
 	 * 
 	 * @param world
@@ -716,7 +585,6 @@ public class GenUtil {
 //				world.setBlockState(replaceCoords.toPos(), Blocks.GRAVEL.getDefaultState(), 1);	
 				blockState = Blocks.GRAVEL.getDefaultState();
 			else if (m < 100)
-				// TODO change to logs and align them correctly
 //				world.setBlockState(replaceCoords.toPos(), Blocks.PLANKS.getDefaultState(), 1);
 				blockState = Blocks.LOG.getDefaultState();
 			
@@ -737,155 +605,7 @@ public class GenUtil {
 			world.setBlockState(new BlockPos(coords.getX(), i, coords.getZ()), Blocks.AIR.getDefaultState(), 3);
 		}
 	}
-	
-//	/**
-//	 * TODO move to GenUtil
-//	 * @param world
-//	 * @param pos
-//	 * @param proximity
-//	 * @return
-//	 */
-//	public static boolean isPoiWithinDistance(World world, BlockPos pos, int proximity) {
-//		double proximitySq = proximity * proximity;
-//		
-//		// get a list of pois based on chest name
-//		Map<ICoords, PlaceOfInterest> pois = Treasure.getPoiRegistry().getPlaces();
-//
-//		if (pois == null || pois.size() == 0) {
-//			Treasure.logger.info("Unable to locate POIs registry or the registry doesn't contain any values");
-//			return false;
-//		}
-//
-//		for (PlaceOfInterest poi : pois.values()) {
-//			// calculate the distance to the poi
-//			double distance = pos.distanceSq(poi.getCoords().getX(), poi.getCoords().getY(), poi.getCoords().getZ());
-//			if (distance < proximitySq) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-	
-//	/**
-//	 * 
-//	 * @param world
-//	 * @param pos
-//	 * @param radius
-//	 * @return
-//	 */
-//	public static boolean isLabyrinthWithinDistance(World world, BlockPos pos, int radius) {
-//		// check if Labyrinth API mod is loaded
-//		if (!Loader.isModLoaded("LabyrinthsAPI") ) {
-//			// check if the LabyrinthRegistry class is loaded
-//			try {
-//				Class.forName("com.someguyssoftware.labyrinths.registry.LabyrinthsRegistry");
-//			}
-//			catch(ClassNotFoundException e) {
-//				// it does not exist on the classpath
-//				Treasure.logger.info("Labyrinths Registry not present.");
-//				return false;
-//			}
-//		}
-//		
-//		double radiusSq = radius * radius;
-//		
-//		// get a list of pois based on chest name
-//		List<ILabyrinthMeta> metas = LabyrinthsRegistry.getInstance().getEntries();
-//
-//		if (metas == null || metas.size() == 0) {
-//			Treasure.logger.debug("Unable to locate Labyrinth registry or the registry doesn't contain any values");
-//			return false;
-//		}
-//
-//		for (ILabyrinthMeta meta : metas) {
-//			// calculate the distance to the poi
-//			double distance = pos.distanceSq(meta.getCoords().getX(), meta.getCoords().getY(), meta.getCoords().getZ());
-//			if (distance < radiusSq) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-	
-//	/**
-//	 * 
-//	 * @param world
-//	 * @param x
-//	 * @param y
-//	 * @param z
-//	 * @return
-//	 */
-//	public static ICoords getNearestPoiChestCoords(World world, BlockPos pos) {
-//		Treasure.logger.info("Getting the nearest coords.");
-//		// get a list of pois based on chest name
-//		List<PlaceOfInterest> chestsByCategory = Treasure.getPoiRegistry().getByCategory(PoiType.CHEST.getName());
-//
-//		if (chestsByCategory == null) {
-//			Treasure.logger.info("Unable to locate a chests by category");
-//			return null;
-//		}
-//		
-//		Treasure.logger.info("Got the the registered chests; count=" + chestsByCategory.size());
-//		
-//		PlaceOfInterest nearestPoi = null;
-//		double nearestDistance = -1;
-//		for (PlaceOfInterest poi : chestsByCategory) {
-//			TreasureChestBlock chest = null;
-//    		Block block = world.getBlockState(poi.getCoords().toBlockPos()).getBlock();
-//    		if (block instanceof TreasureChestBlock) {
-//    			// NOTE not sure why this block doesn't register right away as TreasureChestBlock.  However, it works in game, so i'm happy.
-//			//TreasureChestBlock chest = (TreasureChestBlock) world.getBlock(poi.getCoords().getX(), poi.getCoords().getY(), poi.getCoords().getZ());
-//    			chest = (TreasureChestBlock)block;
-//    		}
-//    		else {
-//    			Treasure.logger.info("Chest location " + poi.getCoords() + " does not resolve to a Chest Block, but block=" + block);
-//    			continue;
-//    		}
-//    		
-//			// test if the chest is the right type
-//    		List<String> chestTypes = new ArrayList<String>();
-//    		// capitalize all the elements
-//    		for (String s: GeneralConfig.obsidianKeyGenChests) {
-//    			chestTypes.add(s.toUpperCase());    			
-//    		}
-//    		if (chestTypes.contains(chest.getChestType().getName())) {
-////			if (chest.getChestType() == Chests.PIRATE_CHEST || chest.getChestType() == Chests.DREAD_PIRATE_CHEST || chest.getChestType() == Chests.WITHER_CHEST) {
-//				Treasure.logger.info("Found a chest of type " + chest.getChestType());
-//				
-//				// ensure that this chest hasn't already been filled by checking the slot 0
-//				AbstractTreasureChestTileEntity te   = (AbstractTreasureChestTileEntity) 
-//						world.getTileEntity(poi.getCoords().toBlockPos());
-//				if (te.getProxy() !=null && te.getProxy().getStackInSlot(UNIQUE_KEY_SLOT) != null && te.getProxy().getStackInSlot(0).getItem() instanceof UniqueKeyItem) {
-//					Treasure.logger.info("Nearest chest already contains a unique key.");
-//					continue;
-//				}
-//
-//				// calculate the distance to the poi
-//				double distance = pos.distanceSq(poi.getCoords().getX(), poi.getCoords().getY(), poi.getCoords().getZ());
-//				// save if closer than the last
-//				if (nearestDistance == -1 || distance < nearestDistance) {
-//					nearestDistance = distance;
-//					nearestPoi = poi;
-//				}
-//			}
-//		}
-//		
-//		if (nearestPoi == null) {
-//			Treasure.logger.info("Unable to located a chest of type PIRATE_CHEST|DREAD|WITHER_CHEST. Placing in the first chest in POI.");
-//			// ensure that this chest is a chest
-//			PlaceOfInterest poi = chestsByCategory.get(0);
-//			Block block = world.getBlockState(poi.getCoords().toBlockPos()).getBlock();
-//			if (block instanceof TreasureChestBlock) {
-//				return poi.getCoords();
-//			}
-//			else {
-//				return null;
-//			}
-////			return chestsByCategory.get(0).getCoords();
-//		}
-//		Treasure.logger.info("The closest chest is at " + nearestPoi.getCoords() + " at a distance of  " + Math.sqrt(nearestDistance) + " blocks.");
-//		return nearestPoi.getCoords();
-//	}
+
 	
 //	/**
 //	 * 

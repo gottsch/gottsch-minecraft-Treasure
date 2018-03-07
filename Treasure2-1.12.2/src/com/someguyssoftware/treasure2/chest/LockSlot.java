@@ -44,12 +44,14 @@ public class LockSlot implements ILockSlot {
 	@Override
 	public ILockSlot rotate(Rotate r) {
 		Direction newFace = getFace().rotate(r);
-		// TODO this currently only works for a 1x1 standard cube size. See Treasure1710 for making generic
-		// method to calculate rotation position/bounds on multicube/irregular shaped blocks.
 		float x = 0F;
 		float z = 0F;
 		float rotation = 0F;
 	
+		/*
+		 *  NOTE this currently only works for a 1x1 standard cube size. See Treasure1710 for making generic
+		 *  method to calculate rotation position/bounds on multicube/irregular shaped blocks.
+		 */
 		// switch on the rotation
 		switch(r) {
 		case ROTATE_90:

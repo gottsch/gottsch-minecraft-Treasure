@@ -237,7 +237,7 @@ public class DbManager {
 	}
 	
 	/**
-	 * 
+	 * Fetches ALL groups by container regardless of special column.
 	 * @param id
 	 * @return
 	 */
@@ -246,7 +246,7 @@ public class DbManager {
 		List<LootContainerHasGroup> containerGroups = null;
 		try {
 			containerGroups = containerGroupDao.queryBuilder()
-					.selectColumns(LootContainerHasGroup.GROUP_ID_FIELD_NAME, "group_weight", "min_items", "max_items", "ordering")
+					.selectColumns(LootContainerHasGroup.GROUP_ID_FIELD_NAME, "group_weight", "min_items", "max_items", "ordering", "special")
 					.where()
 					.eq(LootContainerHasGroup.CONTAINER_ID_FIELD_NAME, id)
 					.query();

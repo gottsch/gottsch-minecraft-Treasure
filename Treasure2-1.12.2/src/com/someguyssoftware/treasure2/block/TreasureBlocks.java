@@ -357,7 +357,7 @@ public class TreasureBlocks {
 			final ItemBlock[] items = {
 					// TODO update with ChestItemBlock so we can use addInformation() for display and mouse over  purposes.
 					new TreasureChestItemBlock(WOOD_CHEST),
-					new ItemBlock(CRATE_CHEST),
+					new TreasureChestItemBlock(CRATE_CHEST),
 					new ItemBlock(MOLDY_CRATE_CHEST),
 					new ItemBlock(IRONBOUND_CHEST),
 					new ItemBlock(PIRATE_CHEST),

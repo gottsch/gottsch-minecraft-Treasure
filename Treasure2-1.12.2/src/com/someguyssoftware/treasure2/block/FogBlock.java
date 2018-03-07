@@ -36,7 +36,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Mark Gottschling on Feb 27, 2018
  *
  */
-// TODO needs to perform the same functionality as BlockFalling.
 public class FogBlock extends ModBlock {
 	 public static final PropertyBool DECAYABLE = PropertyBool.create("decayable");
 	 public static final PropertyBool CHECK_DECAY =	PropertyBool.create("check_decay");
@@ -206,8 +205,6 @@ public class FogBlock extends ModBlock {
 			}
 		}
 	}
-    
-	// TODO have to extend BlockFalling if want onEndFalling to be executed
 
 	/**
 	 * 
