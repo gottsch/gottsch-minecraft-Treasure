@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -39,7 +38,7 @@ public class TreasureChestItemBlock extends ItemBlock {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		// get the block
 		TreasureChestBlock tb = (TreasureChestBlock)getBlock();
-		ITreasureChestTileEntity te = tb.getTileEntity();
+		AbstractTreasureChestTileEntity te = tb.getTileEntity();
 	
 		// chest info		
 		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.rarity", TextFormatting.DARK_BLUE + tb.getRarity().toString()));

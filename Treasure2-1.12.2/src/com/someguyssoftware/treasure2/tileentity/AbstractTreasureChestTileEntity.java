@@ -3,7 +3,6 @@
  */
 package com.someguyssoftware.treasure2.tileentity;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,7 +42,7 @@ import net.minecraftforge.common.util.Constants;
  * @author Mark Gottschling onDec 22, 2017
  *
  */
-public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITreasureChestTileEntity, ITickable {
+public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITickable {
 	/*
 	 * A list of lockStates the chest has. The list should be the size of the max allowed for the chestType.
 	 */	
@@ -442,7 +441,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @return the lockStates
 	 */
-	@Override
 	public List<LockState> getLockStates() {
 		return lockStates;
 	}
@@ -450,7 +448,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @param lockStates the lockStates to set
 	 */
-	@Override
 	public void setLockStates(List<LockState> lockStates) {
 		this.lockStates = lockStates;
 	}
@@ -459,7 +456,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 * @return
 	 */
-	@Override
 	public boolean hasLocks() {
 		// TODO TEMP do this for now. should have another property numActiveLocks so that the renderer doesn't keep calling this
 		if (getLockStates() == null || getLockStates().isEmpty()) return false;
@@ -650,7 +646,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @return the numberOfSlots
 	 */
-	@Override
 	public int getNumberOfSlots() {
 		return numberOfSlots;
 	}
@@ -658,7 +653,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @param numberOfSlots the numberOfSlots to set
 	 */
-	@Override
 	public void setNumberOfSlots(int numberOfSlots) {
 		this.numberOfSlots = numberOfSlots;
 	}
@@ -680,7 +674,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @return the inventoryProxy
 	 */
-	@Override
 	public InventoryProxy getInventoryProxy() {
 		return inventoryProxy;
 	}
@@ -688,7 +681,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @param inventoryProxy the inventoryProxy to set
 	 */
-	@Override
 	public void setInventoryProxy(InventoryProxy inventoryProxy) {
 		this.inventoryProxy = inventoryProxy;
 	}

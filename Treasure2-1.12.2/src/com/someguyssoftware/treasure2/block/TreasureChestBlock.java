@@ -17,7 +17,7 @@ import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -41,8 +41,6 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -62,7 +60,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 	/*
 	 * the concrete object of the tile entity
 	 */
-	private ITreasureChestTileEntity tileEntity;
+	private AbstractTreasureChestTileEntity tileEntity;
 	
 	/*
 	 * the type of chest
@@ -91,7 +89,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 	 * @param te
 	 * @param type
 	 */
-	public TreasureChestBlock(String modID, String name, Class<? extends ITreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
+	public TreasureChestBlock(String modID, String name, Class<? extends AbstractTreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
 		this(modID, name, Material.WOOD, te, type, rarity);
 	}
 
@@ -103,7 +101,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 	 * @param te
 	 * @param type
 	 */
-	public TreasureChestBlock(String modID, String name, Material material, Class<? extends ITreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
+	public TreasureChestBlock(String modID, String name, Material material, Class<? extends AbstractTreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
 		this(modID, name, material);
 		setTileEntityClass(te);
 		setChestType(type);
@@ -120,10 +118,10 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 		
 		// set the tile entity reference
 		try {
-			setTileEntity((ITreasureChestTileEntity)getTileEntityClass().newInstance());
+			setTileEntity((AbstractTreasureChestTileEntity)getTileEntityClass().newInstance());
 		}
 		catch(Exception e) {
-			Treasure.logger.warn("Unable to create reference ITreasureChestTileEntity object.");
+			Treasure.logger.warn("Unable to create reference AbstractTreasureChestTileEntity object.");
 		}
 	}
 
@@ -590,14 +588,14 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 	/**
 	 * @return the tileEntity
 	 */
-	public ITreasureChestTileEntity getTileEntity() {
+	public AbstractTreasureChestTileEntity getTileEntity() {
 		return tileEntity;
 	}
 
 	/**
 	 * @param tileEntity the tileEntity to set
 	 */
-	public void setTileEntity(ITreasureChestTileEntity tileEntity) {
+	public void setTileEntity(AbstractTreasureChestTileEntity tileEntity) {
 		this.tileEntity = tileEntity;
 	}
 
