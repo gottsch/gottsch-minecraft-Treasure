@@ -75,13 +75,11 @@ public class DbManager {
 		// start h2 tcp server to allow connections from 3rd party clients while game is running.
 		Server server = Server.createTcpServer().start();
 		setServer(server);
-		// TODO need to shut the server when mod exists
 
 		// connect to the db via TCP
 		//		Connection conn = DriverManager.getConnection("jdbc:h2:tcp://localhost:9092/mem:plans;USER=sa;PASSWORD=sa;DB_CLOSE_DELAY=-1;");
 		//		conn = DriverManager.getConnection("jdbc:h2:mem:plans;DB_CLOSE_DELAY=-1");
 
-		// TODO - need absolute path to Treasure.MODID
 		// get the path to the default style sheet
 		Path treasureDbPath = Paths.get(TreasureConfig.treasureFolder, "treasure").toAbsolutePath();
 		// create the connection
@@ -268,7 +266,7 @@ public class DbManager {
 		List<LootContainerHasGroup> containerGroups = null;
 		try {
 			containerGroups = containerGroupDao.queryBuilder()
-					.selectColumns(LootContainerHasGroup.GROUP_ID_FIELD_NAME, "group_weight", "min_items", "max_items", "ordering")
+					.selectColumns(LootContainerHasGroup.GROUP_ID_FIELD_NAME, "group_weight", "min_items", "max_items", "ordering", "special")
 					.where()
 					.eq(LootContainerHasGroup.CONTAINER_ID_FIELD_NAME, id)
 					.and()
