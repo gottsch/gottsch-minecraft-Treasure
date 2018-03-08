@@ -155,7 +155,7 @@ public class TreasureItems {
 				.setBreakable(true)
 				.setCraftable(true)
 				.setMaxDamage(10)
-				.setSuccessProbability(20);
+				.setSuccessProbability(24);
 		
 		THIEFS_LOCK_PICK = new ThiefsLockPick(Treasure.MODID, TreasureConfig.THIEFS_LOCK_PICK_ID)
 				.setCategory(Category.BASIC)
@@ -163,7 +163,7 @@ public class TreasureItems {
 				.setBreakable(true)
 				.setCraftable(true)
 				.setMaxDamage(10)
-				.setSuccessProbability(25);
+				.setSuccessProbability(32);
 		
 		// LOCKS
 		WOOD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.WOOD_LOCK_ID, new KeyItem[] {WOOD_KEY})
