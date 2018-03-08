@@ -61,10 +61,12 @@ public class KeyItem extends ModItem {
 	 * Can the key break attempting to unlock a lock
 	 */
 	private boolean breakable;
-	
-	// TODO need a LockMessage - an enum to indicate the action that resulted from unlock, ex. SUCCESS, FAIL, DESTROY, NO_FIT, etc.
-	// instead of just a true/false result.
 
+	/*
+	 * Can the key take damage and lose durability
+	 */
+	private boolean damageable;
+	
 	/*
 	 * The probability of a successful unlocking
 	 */
@@ -81,6 +83,7 @@ public class KeyItem extends ModItem {
 		setCategory(Category.BASIC);
 		setRarity(Rarity.COMMON);
 		setBreakable(true);
+		setDamageable(true);
 		setCraftable(false);
 		setMaxDamage(25);
 		setSuccessProbability(100D);		
@@ -94,6 +97,7 @@ public class KeyItem extends ModItem {
 	 * 		Max Uses: [n] [color = Gold]
 	 * 		Breakable: [Yes | No] [color = Dark Red | Green]
 	 * 		Craftable: [Yes | No] [color = Green | Dark Red]
+	 * 	 	Damageable: [Yes | No] [color = Dark Red | Green]
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
@@ -123,6 +127,16 @@ public class KeyItem extends ModItem {
 			craftable =TextFormatting.DARK_RED + I18n.translateToLocal("tooltip.no");
 		}
 		tooltip.add(	I18n.translateToLocalFormatted("tooltip.label.craftable", craftable));
+		
+		String damageable = "";
+		if (isDamageable()) {
+			damageable = TextFormatting.DARK_RED + I18n.translateToLocal("tooltip.yes");
+		}
+		else {
+			damageable =TextFormatting.GREEN + I18n.translateToLocal("tooltip.no");
+		}
+		tooltip.add(
+				I18n.translateToLocalFormatted("tooltip.label.damageable", damageable));
 	}
 		
 	/**
@@ -201,8 +215,9 @@ public class KeyItem extends ModItem {
 					}
 					else {
 						player.sendMessage(new TextComponentString("Failed to unlock."));
-						// TODO test if it is damagable
-						heldItem.damageItem(1, player);
+						if (isDamageable()) {
+							heldItem.damageItem(1, player);
+						}
 					}						
 				}
 			}
@@ -331,5 +346,19 @@ public class KeyItem extends ModItem {
 	public KeyItem setSuccessProbability(double successProbability) {
 		this.successProbability = successProbability;
 		return this;
+	}
+
+	/**
+	 * @return the damageable
+	 */
+	public boolean isDamageable() {
+		return damageable;
+	}
+
+	/**
+	 * @param damageable the damageable to set
+	 */
+	public void setDamageable(boolean damageable) {
+		this.damageable = damageable;
 	}
 }
