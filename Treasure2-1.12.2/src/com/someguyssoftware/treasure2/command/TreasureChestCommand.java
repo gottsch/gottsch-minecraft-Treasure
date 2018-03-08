@@ -72,9 +72,6 @@ public class TreasureChestCommand extends CommandBase {
     			if (chest != null) {
     				// query to load the selected rarity chests
     				List<LootContainer> containers = DbManager.getInstance().getContainersByRarity(rarity);
-    				
-    				// TODO create a new chestpopulator - simple populates a chest
-//    				ChestPopulator pop = new ChestPopulator(chestSheet);
 
     				if (containers != null)
     					Treasure.logger.debug("Containers found:" + containers.size());
