@@ -177,13 +177,8 @@ public class CrateChestModel extends ModelBase implements ITreasureChestModel {
 
 		// set the angles
 		padTop.rotateAngleY = lid.rotateAngleY;
-		// TODO change the rotation point to that of lib first, rotate, then change back
-		//		latch1.setRotationPoint(-6F, 8F, 6F);
 		latch1.rotateAngleY = lid.rotateAngleY;
-		//		latch1.setRotationPoint(0F, 8F,-7F);
-
-		// NOTE latch should be rotating by the renderer
-
+		
 		box.render(f5);
 		lid.render(f5);
 		base.render(f5);
