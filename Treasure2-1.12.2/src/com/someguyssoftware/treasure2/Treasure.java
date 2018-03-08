@@ -30,6 +30,7 @@ import com.someguyssoftware.treasure2.client.render.tileentity.SafeTileEntityRen
 import com.someguyssoftware.treasure2.client.render.tileentity.StrongboxTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
+import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellCommand;
 import com.someguyssoftware.treasure2.command.TreasureChestCommand;
 import com.someguyssoftware.treasure2.config.Configs;
@@ -166,6 +167,7 @@ public class Treasure extends AbstractMod {
 		// register additional commands
     	event.registerServerCommand(new TreasureChestCommand());
     	event.registerServerCommand(new SpawnPitCommand());
+    	event.registerServerCommand(new SpawnPitOnlyCommand());
     	event.registerServerCommand(new SpawnWellCommand());
     }
 	
