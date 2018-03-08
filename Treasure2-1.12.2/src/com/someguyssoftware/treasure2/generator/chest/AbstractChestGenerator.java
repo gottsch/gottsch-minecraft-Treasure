@@ -63,7 +63,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		
 		Treasure.logger.debug("Test for above/below");
 		// 2. switch on above or below ground
-		if (config.isAboveGroundAllowed() && random.nextInt(2) == 1) {
+		if (config.isAboveGroundAllowed() && random.nextInt(8) == 0) { // TODO should the random be a configurable property
 			// set the chest coords to the surface pos
 			chestCoords = new Coords(markerCoords);
 			Treasure.logger.debug("Above ground @ {}", chestCoords.toShortString());
