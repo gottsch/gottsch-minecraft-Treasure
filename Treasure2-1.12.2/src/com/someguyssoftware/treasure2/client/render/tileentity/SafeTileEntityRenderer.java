@@ -79,34 +79,30 @@ public class SafeTileEntityRenderer extends TreasureChestTileEntityRenderer {
         // rotate block to the correct direction that it is facing.
         GlStateManager.rotate((float)rotation, 0.0F, 1.0F, 0.0F);
         
-        // if chest has locks, don't set lidAngle.
-        // TODO if you add locks via chest dialog, then it won't close because it has chests
-        // need another check if angle is at closed position
-//        if (!te.hasLocks()) {
-        	SafeTileEntity ste = (SafeTileEntity) te;
+    	SafeTileEntity ste = (SafeTileEntity) te;
 //            float latchRotation = ste.prevLatchAngle + (ste.latchAngle - ste.prevLatchAngle) * partialTicks;
 //            latchRotation = 1.0F - latchRotation;
 //            latchRotation = 1.0F - latchRotation * latchRotation * latchRotation;
 //            model.getLatch1().rotateAngleX = -(latchRotation * (float)Math.PI / 2.0F);
-        	
+    	
 //        	float latchSlide = ste.prevLatchPos + (ste.latchPos - ste.prevLatchPos) * partialTicks;
 //            latchSlide = 1.0F - latchSlide;
 //            model.latch1.rotationPointX += latchSlide;
-            
-            if (ste.isLidClosed) {
-	            float handleRotation = ste.prevHandleAngle + (ste.handleAngle - ste.prevHandleAngle) * partialTicks;
-	            handleRotation = 1.0F - handleRotation;
-	            handleRotation = 1.0F - handleRotation * handleRotation * handleRotation;
-	            model.handleA1.rotateAngleZ = (handleRotation * (float)Math.PI / 2.0F);
-            }
-            else {
-            	// render handleB rotating around y-axis
-            }
-            float lidRotation = ste.prevLidAngle + (ste.lidAngle - ste.prevLidAngle) * partialTicks;
-            lidRotation = 1.0F - lidRotation;
-            lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-            model.getLid().rotateAngleY = (lidRotation * (float)Math.PI / 2.0F);
-//        } 
+        
+        if (ste.isLidClosed) {
+            float handleRotation = ste.prevHandleAngle + (ste.handleAngle - ste.prevHandleAngle) * partialTicks;
+            handleRotation = 1.0F - handleRotation;
+            handleRotation = 1.0F - handleRotation * handleRotation * handleRotation;
+            model.handleA1.rotateAngleZ = (handleRotation * (float)Math.PI / 2.0F);
+        }
+        else {
+        	// render handleB rotating around y-axis
+        }
+        float lidRotation = ste.prevLidAngle + (ste.lidAngle - ste.prevLidAngle) * partialTicks;
+        lidRotation = 1.0F - lidRotation;
+        lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
+        model.getLid().rotateAngleY = (lidRotation * (float)Math.PI / 2.0F);
+
         
         model.renderAll(te);
 

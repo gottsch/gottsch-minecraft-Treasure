@@ -84,16 +84,11 @@ public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<A
         GlStateManager.rotate(180F, 0F, 0F, 1.0F);
         // rotate block to the correct direction that it is facing.
         GlStateManager.rotate((float)rotation, 0.0F, 1.0F, 0.0F);
-        
-        // if chest has locks, don't set lidAngle.
-        // TODO if you add locks via chest dialog, then it won't close because it has chests
-        // need another check if angle is at closed position
-//        if (!te.hasLocks()) {
-            float lidRotation = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
-            lidRotation = 1.0F - lidRotation;
-            lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-            model.getLid().rotateAngleX = -(lidRotation * (float)Math.PI / 2.0F);        	
-//        } 
+
+        float lidRotation = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
+        lidRotation = 1.0F - lidRotation;
+        lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
+        model.getLid().rotateAngleX = -(lidRotation * (float)Math.PI / 2.0F);        	
         
         model.renderAll(te);
 

@@ -96,7 +96,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 	}
 
 	/**
-	 * TODO need the bounds
+	 * 
 	 * @param modID
 	 * @param name
 	 * @param material
@@ -109,6 +109,14 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 		setChestType(type);
 		setRarity(rarity);
 		setCreativeTab(Treasure.TREASURE_TAB);
+		
+		// set the default bounds
+		setBounds(
+			new AxisAlignedBB[] {new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), 	// N
+			new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// E
+			new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// S
+			new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F)	// W
+			});
 		
 		// set the tile entity reference
 		try {
@@ -184,7 +192,6 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 			// setup lock states
 			List<LockState> lockStates = new LinkedList<>();
 
-			// TODO sort slots by index - need comparator
 			for (int i = 0; i < chestType.getSlots().length; i++) {
 				LockState lockState = new LockState();
 				lockState.setSlot(chestType.getSlots()[i]);

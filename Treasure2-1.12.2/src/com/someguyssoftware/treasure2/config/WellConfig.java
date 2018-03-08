@@ -68,7 +68,10 @@ public class WellConfig implements IWellConfig {
 	}
 
 	/**
-	 * TODO change load to take in a default config that sets all the default values.
+	 * 
+	 * @param file
+	 * @param defaults
+	 * @return
 	 */
 	public Configuration load(File file, IWellConfig defaults) {
 		// load the config file
