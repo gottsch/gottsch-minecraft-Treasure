@@ -47,7 +47,7 @@ public class InventoryPopulator {
 			Treasure.logger.warn("Container {} does not contain any groups.", container.getName());
 			return;
 		}
-		
+		Treasure.logger.debug("# groups for container: {}", containerGroups.size());
 		// map of container groups
 //		Map<String, LootContainerHasGroup> groups = new HashMap<>();
 
@@ -62,7 +62,9 @@ public class InventoryPopulator {
 		 */
 		List<LootContainerHasGroup> specialGroups = new ArrayList<>();
 		RandomWeightedCollection<LootContainerHasGroup> groups = new RandomWeightedCollection<>();
+		Treasure.logger.debug("Selecting groups from container {}", container.getName());
 		for (LootContainerHasGroup g : containerGroups) {
+			Treasure.logger.debug("Mapping group {}:{}:{}", g.getId(), g.getGroup().getName(), g.getWeight());
 			if (g.getSpecial()) {
 				specialGroups.add(g);
 			}
