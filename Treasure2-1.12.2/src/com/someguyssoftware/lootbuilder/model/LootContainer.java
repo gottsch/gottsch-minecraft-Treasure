@@ -37,10 +37,6 @@ public class LootContainer {
 	@DatabaseField(columnName = "max_items", canBeNull = false, unique = false, defaultValue = "0", width = 3)
 	private Byte maxItems;
 	
-	// TODO should add another class/table LootContainerHasItem, which are items that belong to the container directly,
-	// and items should be selected from (ie, with groups, the group may or not be selected, whereas this is like a required group
-	// where it must be included in the selection process
-	
 	/**
 	 * 
 	 */
