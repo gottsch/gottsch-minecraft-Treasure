@@ -75,6 +75,9 @@ tooltip.label.specials=Specials: %s
 tooltip.label.accepts_keys=Accepts Keys: %s
 tooltip.label.coin=Throw into Wishing Wells
 
+tooltip.label.max_locks=Max Locks: %s
+tooltip.label.container_size=Inventory Size: %s
+
 tooltip.metallurgists_key.specials=Opens any lock in METALS category
 tooltip.skeleton_key.specials=Opens COMMON, UNCOMMON, SCARCE and RARE locks
 tooltip.pilferers_lock_pick.specials=Opens COMMON locks
