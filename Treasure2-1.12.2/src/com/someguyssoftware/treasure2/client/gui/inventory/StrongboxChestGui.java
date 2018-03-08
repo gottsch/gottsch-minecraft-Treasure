@@ -6,9 +6,9 @@ package com.someguyssoftware.treasure2.client.gui.inventory;
 import java.awt.Color;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 import com.someguyssoftware.treasure2.inventory.StrongboxChestContainer;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -25,7 +25,7 @@ public class StrongboxChestGui extends GuiContainer {
 
 	// This is the resource location for the background image for the GUI
 	private static final ResourceLocation texture = new ResourceLocation(Treasure.MODID, "textures/gui/container/strongbox.png");
-	private AbstractTreasureChestTileEntity tileEntity;
+	private ITreasureChestTileEntity tileEntity;
 
 	/**
 	 * NOTE can pass anything into the ChestGui (GuiContainer) as long as the player's inventory and the container's inventory is present.
@@ -33,7 +33,7 @@ public class StrongboxChestGui extends GuiContainer {
 	 * @param invPlayer
 	 * @param tileEntity
 	 */
-	public StrongboxChestGui(InventoryPlayer invPlayer, AbstractTreasureChestTileEntity tileEntity) {
+	public StrongboxChestGui(InventoryPlayer invPlayer, ITreasureChestTileEntity tileEntity) {
 		super(new StrongboxChestContainer(invPlayer, (IInventory) tileEntity.getInventoryProxy()));
 		this.tileEntity = tileEntity;
 		

@@ -9,6 +9,7 @@ import com.someguyssoftware.treasure2.client.gui.inventory.StrongboxChestGui;
 import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 import com.someguyssoftware.treasure2.inventory.StrongboxChestContainer;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -65,16 +66,16 @@ public class GuiHandler implements IGuiHandler {
 		TileEntity tileEntity = world.getTileEntity(xyz);
 		switch(ID) {
 			case STANDARD_CHEST_GUIID:
-				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-					// TODO could pass in the different bg textures here
-					return new StandardChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
+				if (tileEntity instanceof ITreasureChestTileEntity) {
+					// NOTE could pass in the different bg textures here
+					return new StandardChestGui(player.inventory, (ITreasureChestTileEntity) tileEntity);
 				}
 				else {
 					Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");
 				}
 			case STRONGBOX_CHEST_GUIID:
-				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-					return new StrongboxChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
+				if (tileEntity instanceof ITreasureChestTileEntity) {
+					return new StrongboxChestGui(player.inventory, (ITreasureChestTileEntity) tileEntity);
 				}
 				else {
 					Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");

@@ -5,6 +5,8 @@ import java.util.List;
 import com.someguyssoftware.treasure2.inventory.InventoryProxy;
 import com.someguyssoftware.treasure2.lock.LockState;
 
+import net.minecraft.util.text.ITextComponent;
+
 /**
  * 
  * @author Mark Gottschling on Mar 6, 2018
@@ -22,5 +24,6 @@ public interface ITreasureChestTileEntity {
 
 	public InventoryProxy getInventoryProxy();
 	public void setInventoryProxy(InventoryProxy inventoryProxy);
+	public ITextComponent getDisplayName();
 
 }
