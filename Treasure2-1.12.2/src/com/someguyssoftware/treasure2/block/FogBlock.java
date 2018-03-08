@@ -140,9 +140,9 @@ public class FogBlock extends ModBlock {
 								// if the block implements IFogSupport AND can support fog
                                 if (inspectBlock instanceof IFogSupport && ((IFogSupport)inspectBlock).canSustainFog(inspectBlockState, worldIn, mbp.setPos(x + x1, y + y1, z + z1))) {
                                 	// update the block @ pos with CHECK_DECAY = fasle and break
-                                	Treasure.logger.debug("Found a fog supporting block @ {}", mbp.toString());
+//                                	Treasure.logger.debug("Found a fog supporting block @ {}", mbp.toString());
                                 	worldIn.setBlockState(pos, state.withProperty(CHECK_DECAY, (Boolean)false), 3);
-                                	Treasure.logger.debug("Changed to CHECK_DECAY=false for fog block @ {}", pos.toString());
+//                                	Treasure.logger.debug("Changed to CHECK_DECAY=false for fog block @ {}", pos.toString());
                                 	isSupported = true;
                                 	break inspectBlockLoop;
                                 }                                
