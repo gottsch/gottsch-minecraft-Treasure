@@ -24,6 +24,7 @@ import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.DefaultChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.UncommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.pit.AirPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
@@ -80,6 +81,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		// setup the pit generators
 		pitGenerators.put(Pits.SIMPLE_PIT, new SimplePitGenerator());
 		pitGenerators.put(Pits.TNT_TRAP_PIT, new TntTrapPitGenerator());
+		pitGenerators.put(Pits.AIR_PIT,  new AirPitGenerator());
 	}
 
 	/**
@@ -170,7 +172,6 @@ public class ChestWorldGenerator implements IWorldGenerator {
     			i = 0;
     			
     			// generate the chest/pit/chambers
-    			// TODO there doesn't really need to be a separate gen for each rarity?? ie, what's the difference between them.
 				Treasure.logger.debug("Attempting to generate pit/chest.");
     			isGenerated = generators.get(rarity).generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
 

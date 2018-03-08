@@ -111,76 +111,9 @@ public class SimpleWellGenerator implements IWellGenerator {
 		world.setBlockState(coords.add(-1, 0, 1).toPos(), block.getDefaultState(), 3);
 		world.setBlockState(coords.add(0, 0, 1).toPos(), block.getDefaultState(), 3);
 		world.setBlockState(coords.add(1, 0, 1).toPos(), block.getDefaultState(), 3);
-		
-		// TODO move to a default method or abstract method
+
 		// add plants / decorations
-		addDecoration(world, random, coords);
-		
-//		ICoords[] circle = new Coords[16];
-//		circle[0] = coords.add(-2, -0, -2);
-//		circle[1] = coords.add(-1, -0, -2);
-//		circle[2] = coords.add(0, -0, -2);
-//		circle[3] = coords.add(1, -0, -2);
-//		circle[4] = coords.add(2, -0, -2);
-//		
-//		circle[5] = coords.add(-2, -0, -1);
-//		circle[6] = coords.add(2, -0, -1);
-//		circle[7] = coords.add(-2, -0, 0);
-//		circle[8] = coords.add(2, -0, 0);
-//		circle[9] = coords.add(-2, -0, 1);
-//		circle[10] = coords.add(2, -0, 1);
-//		
-//		circle[11] = coords.add(-2, -0, 2);
-//		circle[12] = coords.add(-1, -0, 2);
-//		circle[13] = coords.add(0, -0, 2);
-//		circle[14] = coords.add(1, -0, 2);
-//		circle[15] = coords.add(2, -0, 2);
-//		
-//		BlockFlower flowerBlock = Blocks.RED_FLOWER;
-//		IBlockState blockState = null;
-//		for (int i = 0; i < 16; i++) {
-//			if (random.nextInt(2) == 0) {
-//				// TODO add grasses in here.
-//				//Blocks.TALLGRASS
-//				// check if the block is dry land
-//				ICoords markerCoords = WorldInfo.getDryLandSurfaceCoords(world, circle[i]);
-//				Treasure.logger.debug("Marker Coords @ {}", markerCoords.toShortString());
-//				if (markerCoords == null || markerCoords == WorldInfo.EMPTY_COORDS) {
-//					Treasure.logger.debug("Returning due to marker coords == null or EMPTY_COORDS");
-//					continue; 
-//				}
-//				Cube markerCube = new Cube(world, markerCoords.add(0, -1, 0));
-//				
-//				// TODO test if dirt, coarse dirt, or podzol.. if dirt = flower, coarse = dead shrub, grass, podzol = mushrooms
-//				if (markerCube.equalsBlock(Blocks.DIRT)) {
-//					DirtType dirtType = markerCube.getState().getValue(BlockDirt.VARIANT);
-//					if (dirtType == DirtType.DIRT) {
-//						int meta = random.nextInt(8)+1;
-//						blockState = flowerBlock.getDefaultState().withProperty(flowerBlock.getTypeProperty(), BlockFlower.EnumFlowerType.values()[meta]);
-////						world.setBlockState(circle[i].toPos(), flowerState, 3);
-//					}
-//					else if (dirtType == DirtType.PODZOL) {
-//						Block mushBlock = random.nextInt(2) == 0 ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM;
-////						world.setBlockState(circle[i].toPos(), mushBlock.getDefaultState(), 3);
-//						blockState = mushBlock.getDefaultState();
-//					}
-//				}
-//				else if (markerCube.equalsBlock(Blocks.MYCELIUM)) {
-//					Block mushBlock = random.nextInt(2) == 0 ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM;
-//					blockState = mushBlock.getDefaultState();
-//				}
-//				else {
-//					int meta = random.nextInt(3);
-//					Block grassBlock = Blocks.TALLGRASS;
-//					blockState = grassBlock.getDefaultState().withProperty(BlockTallGrass.TYPE, BlockTallGrass.EnumType.values()[meta]);
-////					world.setBlockState(circle[i].toPos(), grassBlock.getDefaultState(), 3);
-//				}
-//				
-//				// set the block state
-//				world.setBlockState(circle[i].toPos(), blockState, 3);
-//			}
-//		}
-		
+		addDecoration(world, random, coords);		
 		return newCoords;
 	}
 	

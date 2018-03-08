@@ -14,7 +14,8 @@ import java.util.Map;
  */
 public enum Pits implements IEnum {
 	SIMPLE_PIT(0, "Simple Pit"),
-	TNT_TRAP_PIT(1, "TNT Trapped Pit");
+	AIR_PIT(1, "Air Pit"),
+	TNT_TRAP_PIT(2, "TNT Trapped Pit");
 	
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();

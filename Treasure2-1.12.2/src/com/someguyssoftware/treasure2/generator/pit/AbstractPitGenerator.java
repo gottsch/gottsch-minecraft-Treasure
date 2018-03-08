@@ -10,15 +10,23 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
+/**
+ * 
+ * @author Mark Gottschling on Mar 7, 2018
+ *
+ */
 public abstract class AbstractPitGenerator implements IPitGenerator {
 
 	protected static final int Y_OFFSET = 4;
 	protected static final int Y_SURFACE_OFFSET = 5;
 
+	private RandomWeightedCollection<Block> blockLayers = new RandomWeightedCollection<>();
+	
 	/**
 	 * 
 	 */
@@ -26,11 +34,67 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		super();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.generator.pit.IPitGenerator#generate(net.minecraft.world.World, java.util.Random, com.someguyssoftware.gottschcore.positional.ICoords, com.someguyssoftware.gottschcore.positional.ICoords)
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param surfaceCoords
+	 * @param spawnCoords
+	 * @return
 	 */
 	@Override
-	public abstract boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
+	public boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		// is the chest placed in a cavern
+		boolean inCavern = false;
+		
+		// check above if there is a free space - chest may have spawned in underground cavern, ravine, dungeon etc
+		IBlockState blockState = world.getBlockState(spawnCoords.add(0, 1, 0).toPos());
+		
+		// if there is air above the origin, then in cavern. (pos in isAir() doesn't matter)
+		if (blockState == null || blockState.getMaterial() == Material.AIR) {
+			Treasure.logger.debug("Spawn coords is in cavener.");
+			inCavern = true;
+		}
+		
+		if (inCavern) {
+			Treasure.logger.debug("Shaft is in cavern... finding ceiling.");
+			spawnCoords = GenUtil.findUndergroundCeiling(world, spawnCoords.add(0, 1, 0));
+			if (spawnCoords == null) {
+				Treasure.logger.warn("Exiting: Unable to locate cavern ceiling.");
+				return false;
+			}
+		}
+	
+		// generate shaft
+		int yDist = (surfaceCoords.getY() - spawnCoords.getY()) - 2;
+		Treasure.logger.trace("Distance to ySurface =" + yDist);
+	
+		if (yDist > 6) {			
+			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
+			// at chest level
+			buildLayer(world, spawnCoords, Blocks.AIR);
+			
+			// above the chest	
+			buildLayer(world, spawnCoords.add(0, 1, 0), Blocks.AIR);
+			buildLogLayer(world, random, spawnCoords.add(0, 2, 0), Blocks.LOG);
+			buildLayer(world, spawnCoords.add(0, 3, 0), Blocks.SAND);
+
+			// shaft enterance
+			buildLogLayer(world, random, surfaceCoords.add(0, -2, 0), Blocks.LOG);
+			buildLayer(world, surfaceCoords.add(0, -3, 0), Blocks.SAND);
+			buildLogLayer(world, random, surfaceCoords.add(0, -4, 0), Blocks.LOG);
+
+			// build the pit
+			buildPit(world, random, spawnCoords, surfaceCoords, getBlockLayers());
+		}			
+		// shaft is only 2-6 blocks long - can only support small covering
+		else if (yDist >= 2) {
+			// simple short pit
+			new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
+		}		
+//		Treasure.logger.debug("Generated Pit at " + spawnCoords.toShortString());
+		return true;
+	}	
 	
 	/**
 	 * 
@@ -71,6 +135,13 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		return nextCoords;
 	}
 	
+	/**
+	 * 
+	 * @param index
+	 * @param coords
+	 * @param expectedCoords
+	 * @return
+	 */
 	protected int autocorrectIndex(final int index, final ICoords coords, final ICoords expectedCoords) {
 		int newIndex = index;
 		if (!coords.equals(expectedCoords)) {
@@ -94,15 +165,10 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 */
 	public ICoords buildLayer(World world, ICoords coords, Block block) {
 //		Treasure.logger.debug("Building layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
-		// TODO all setBlockState need to be wrapped in replaceBlock() that checks if it is already air, and if so, don't replace
 		GenUtil.replaceWithBlock(world, coords, block);
 		GenUtil.replaceWithBlock(world, coords.add(1, 0, 0), block);
 		GenUtil.replaceWithBlock(world, coords.add(0, 0, 1), block);
 		GenUtil.replaceWithBlock(world, coords.add(1, 0, 1), block);
-//		world.setBlockState(coords.toPos(), block.getDefaultState(), 3);
-//		world.setBlockState(coords.add(1, 0, 0).toPos(), block.getDefaultState(), 3);
-//		world.setBlockState(coords.add(0, 0, 1).toPos(), block.getDefaultState(), 3);
-//		world.setBlockState(coords.add(1, 0, 1).toPos(), block.getDefaultState(), 3);
 		
 		return coords.add(0, 1, 0);
 	}
@@ -158,5 +224,19 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 			GenUtil.replaceWithBlockState(world, coords.add(2, 0, 1), blockState);
 		}
 		return coords.add(0, 1, 0);
+	}
+	
+	/**
+	 * @return the blockLayers
+	 */
+	public RandomWeightedCollection<Block> getBlockLayers() {
+		return blockLayers;
+	}
+
+	/**
+	 * @param blockLayers the blockLayers to set
+	 */
+	public void setBlockLayers(RandomWeightedCollection<Block> blockLayers) {
+		this.blockLayers = blockLayers;
 	}
 }
