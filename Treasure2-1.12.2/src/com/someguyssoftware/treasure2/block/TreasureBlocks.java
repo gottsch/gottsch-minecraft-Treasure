@@ -355,15 +355,14 @@ public class TreasureBlocks {
 			final IForgeRegistry<Item> registry = event.getRegistry();
 
 			final ItemBlock[] items = {
-					// TODO update with ChestItemBlock so we can use addInformation() for display and mouse over  purposes.
 					new TreasureChestItemBlock(WOOD_CHEST),
 					new TreasureChestItemBlock(CRATE_CHEST),
-					new ItemBlock(MOLDY_CRATE_CHEST),
-					new ItemBlock(IRONBOUND_CHEST),
-					new ItemBlock(PIRATE_CHEST),
-					new ItemBlock(IRON_STRONGBOX),
-					new ItemBlock(GOLD_STRONGBOX),
-					new ItemBlock(SAFE),
+					new TreasureChestItemBlock(MOLDY_CRATE_CHEST),
+					new TreasureChestItemBlock(IRONBOUND_CHEST),
+					new TreasureChestItemBlock(PIRATE_CHEST),
+					new TreasureChestItemBlock(IRON_STRONGBOX),
+					new TreasureChestItemBlock(GOLD_STRONGBOX),
+					new TreasureChestItemBlock(SAFE),
 					// TODO update with GravestonIetmBlock
 					new ItemBlock(GRAVESTONE1_STONE),
 					new ItemBlock(GRAVESTONE1_COBBLESTONE),
