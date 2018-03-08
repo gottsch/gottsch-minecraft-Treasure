@@ -106,8 +106,14 @@ public class DbManager {
 			try {
 				// open a stream to the sql file
 				InputStream is = getClass().getResourceAsStream("/resources/treasure.sql");
-				// TODO expand of this error and throw error
-				if (is == null) System.out.println("Inputstream is null.");
+
+				if (is == null) {
+					logger.error("Unable to locate treasure.sql resource");
+					// TODO create custom exception
+					// TODO method should throws exception
+					// TODO mod handles the thrown exception. ex. disable the mod if thrown.
+					// TODO display message to the user in the chat
+				}
 				Reader reader = new InputStreamReader(is);
 				// run the script (creates and populates tables)
 				RunScript.execute(conn, reader);
