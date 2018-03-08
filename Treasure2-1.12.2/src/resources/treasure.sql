@@ -638,6 +638,7 @@ values
 (4, 1, 0, 3, 5, 6),--uncommon_chest: common_items
 (4, 4, 0, 1, 3, 7),--uncommon_chest: common_food
 (4, 5, 0, 1, 2, 8),--uncommon_chest: common_potions
+
 (5, 6, 0, 2, 5, 0),--uncommon_chest2: uncommon_items
 (5, 8, 0, 1, 1, 1),--uncommon_chest2: uncommon_tools
 (5, 7, 0, 1, 2, 2),--uncommon_chest2: uncommon_armor
@@ -647,6 +648,7 @@ values
 (5, 1, 0, 3, 5, 6),--uncommon_chest2: common_items
 (5, 4, 0, 1, 3, 7),--uncommon_chest2: common_food
 (5, 5, 0, 1, 2, 8),--uncommon_chest2: common_potions
+
 (6, 6, 0, 3, 5, 0),--uncommon_chest3: uncommon_items
 (6, 8, 0, 1, 1, 1),--uncommon_chest3: uncommon_tools
 (6, 7, 0, 1, 2, 2),--uncommon_chest3: uncommon_armor
