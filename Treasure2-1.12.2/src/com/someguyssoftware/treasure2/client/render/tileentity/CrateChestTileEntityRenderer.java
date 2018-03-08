@@ -79,22 +79,17 @@ public class CrateChestTileEntityRenderer extends TreasureChestTileEntityRendere
         GlStateManager.rotate(180F, 0F, 0F, 1.0F);
         // rotate block to the correct direction that it is facing.
         GlStateManager.rotate((float)rotation, 0.0F, 1.0F, 0.0F);
+
+    	CrateChestTileEntity cte = (CrateChestTileEntity) te;
+        float latchRotation = cte.prevLatchAngle + (cte.latchAngle - cte.prevLatchAngle) * partialTicks;
+        latchRotation = 1.0F - latchRotation;
+        latchRotation = 1.0F - latchRotation * latchRotation * latchRotation;
+        model.getLatch1().rotateAngleX = -(latchRotation * (float)Math.PI / 2.0F);        	
         
-        // if chest has locks, don't set lidAngle.
-        // TODO if you add locks via chest dialog, then it won't close because it has chests
-        // need another check if angle is at closed position
-//        if (!te.hasLocks()) {
-        	CrateChestTileEntity cte = (CrateChestTileEntity) te;
-            float latchRotation = cte.prevLatchAngle + (cte.latchAngle - cte.prevLatchAngle) * partialTicks;
-            latchRotation = 1.0F - latchRotation;
-            latchRotation = 1.0F - latchRotation * latchRotation * latchRotation;
-            model.getLatch1().rotateAngleX = -(latchRotation * (float)Math.PI / 2.0F);        	
-            
-            float lidRotation = cte.prevLidAngle + (cte.lidAngle - cte.prevLidAngle) * partialTicks;
-            lidRotation = 1.0F - lidRotation;
-            lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-            model.getLid().rotateAngleY = -(lidRotation * (float)Math.PI / 2.0F);
-//        } 
+        float lidRotation = cte.prevLidAngle + (cte.lidAngle - cte.prevLidAngle) * partialTicks;
+        lidRotation = 1.0F - lidRotation;
+        lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
+        model.getLid().rotateAngleY = -(lidRotation * (float)Math.PI / 2.0F);
         
         model.renderAll(te);
 
