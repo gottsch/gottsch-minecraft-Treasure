@@ -71,7 +71,10 @@ public class ChestConfig implements IChestConfig {
 	}
 
 	/**
-	 * TODO change load to take in a default config that sets all the default values.
+	 * 
+	 * @param file
+	 * @param defaults
+	 * @return
 	 */
 	public Configuration load(File file, IChestConfig defaults) {
 		// load the config file
