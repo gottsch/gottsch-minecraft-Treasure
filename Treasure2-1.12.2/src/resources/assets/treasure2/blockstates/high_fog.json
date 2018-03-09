@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "normal": { "model": "treasure2:high_fog" },
+        "check_decay=false,decayable=false": { "model": "treasure2:high_fog" },
+        "check_decay=false,decayable=true": { "model": "treasure2:high_fog" },
+        "check_decay=true,decayable=false": { "model": "treasure2:high_fog" },
+        "check_decay=true,decayable=true": { "model": "treasure2:high_fog" }
+	}
+}

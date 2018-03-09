@@ -56,6 +56,7 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SKULL_CROSSBONES));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WISHING_WELL_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FOG_BLOCK));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.HIGH_FOG_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.MED_FOG_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.LOW_FOG_BLOCK));
 		

@@ -332,6 +332,7 @@ public class TreasureBlocks {
 					SKULL_CROSSBONES,
 					WISHING_WELL_BLOCK,
 					FOG_BLOCK,
+					HIGH_FOG_BLOCK,
 					MED_FOG_BLOCK,
 					LOW_FOG_BLOCK
 			};
@@ -388,6 +389,7 @@ public class TreasureBlocks {
 					new ItemBlock(SKULL_CROSSBONES),
 					new ItemBlock(WISHING_WELL_BLOCK),
 					new ItemBlock(FOG_BLOCK),
+					new ItemBlock(HIGH_FOG_BLOCK),
 					new ItemBlock(MED_FOG_BLOCK),
 					new ItemBlock(LOW_FOG_BLOCK)
 			};
