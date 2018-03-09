@@ -10,4 +10,4 @@ Currently in **alpha** stage.
 ### I am inviting modelers to contribute new and interesting chest designs. They don't need to be the vanilla chest shape or size. However, there are a few rules to keep in mind as I do need to be able to add locks in a standardized way.  More on that later...
 
 # Key and Locks
-Hold the <Shift> key while using a key or a lock on a chest in order to use it.
+Hold the **Shift** key while using a key or a lock on a chest in order to use it.
