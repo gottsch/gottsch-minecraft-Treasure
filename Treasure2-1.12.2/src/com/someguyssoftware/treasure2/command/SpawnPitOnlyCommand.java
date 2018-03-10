@@ -42,12 +42,12 @@ public class SpawnPitOnlyCommand extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "trpit";
+		return "trpitonly";
 	}
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/trpit <x> <y> <z> [pit]: spawns a Treasure! pit at location (x,y,z)";
+		return "/trpitonly <x> <y> <z> [pit]: spawns a Treasure! pit at location (x,y,z)";
 	}
 
 	@Override
@@ -71,14 +71,16 @@ public class SpawnPitOnlyCommand extends CommandBase {
 			
 			if (player != null) {
     			World world = commandSender.getEntityWorld();
-    			Treasure.logger.debug("Starting to build Treasure! pit ...");
+    			Treasure.logger.debug("Starting to build Treasure! pit only ...");
 
     			Random random = new Random();
     			ICoords spawnCoords = new Coords(x, y, z);
-    			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, spawnCoords);
+    			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(x, WorldInfo.getHeightValue(world, spawnCoords), z));
+    			Treasure.logger.debug("spawn coords @ {}", spawnCoords.toShortString());
+    			Treasure.logger.debug("surfaceCoords @ {}", surfaceCoords.toShortString());
     			ChestWorldGenerator chestGen = new ChestWorldGenerator();
     			IPitGenerator pitGen = chestGen.pitGenerators.get(pit);
-    			pitGen.generate(world, random, surfaceCoords , spawnCoords);
+    			boolean isGen = pitGen.generate(world, random, surfaceCoords , spawnCoords);
     		}
 		}
 		catch(Exception e) {

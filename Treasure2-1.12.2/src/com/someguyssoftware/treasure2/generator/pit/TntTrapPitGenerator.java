@@ -49,71 +49,6 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 		return false;
 	}
 	
-//		// is the chest placed in a cavern
-//		boolean inCavern = false;
-//		
-//		// check above if there is a free space - chest may have spawned in underground cavern, ravine, dungeon etc
-//		IBlockState blockState = world.getBlockState(spawnCoords.add(0, 1, 0).toPos());
-//		
-//		// if there is air above the origin, then in cavern. (pos in isAir() doesn't matter)
-//		if (blockState == null || blockState.getMaterial() == Material.AIR) {
-//			Treasure.logger.debug("Spawn coords is in cavener.");
-//			inCavern = true;
-//		}
-//		
-//		if (inCavern) {
-//			Treasure.logger.debug("Shaft is in cavern... finding ceiling.");
-//			spawnCoords = GenUtil.findUndergroundCeiling(world, spawnCoords.add(0, 1, 0));
-//			if (spawnCoords == null) {
-//				Treasure.logger.warn("Exiting: Unable to locate cavern ceiling.");
-//				return false;
-//			}
-//		}
-//	
-//		// generate shaft
-//		int yDist = (surfaceCoords.getY() - spawnCoords.getY()) - 2;
-//		Treasure.logger.trace("Distance to ySurface =" + yDist);
-//	
-//		if (yDist > 6) {			
-//			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
-//			// at chest level
-//			buildLayer(world, spawnCoords, Blocks.AIR);
-//			
-//			// above the chest	
-//			buildLayer(world, spawnCoords.add(0, 1, 0), Blocks.AIR);
-//			buildLogLayer(world, random, spawnCoords.add(0, 2, 0), Blocks.LOG);
-//			buildLayer(world, spawnCoords.add(0, 3, 0), Blocks.SAND);
-//			
-//			// shaft enterance
-//			buildLogLayer(world, random, surfaceCoords.add(0, -2, 0), Blocks.LOG);
-//			buildLayer(world, surfaceCoords.add(0, -3, 0), Blocks.SAND);
-//			buildLogLayer(world, random, surfaceCoords.add(0, -4, 0), Blocks.LOG);
-
-//			// it's a 1 in 4 chance of being air, else anything else
-//			RandomWeightedCollection<Block> col = new RandomWeightedCollection<>();
-//			if (random.nextInt(4) == 0) {
-//				// empty shaft
-//				Treasure.logger.debug("Filling with air");
-//				col.add(50, Blocks.AIR);
-//				buildPit(world, random, spawnCoords, surfaceCoords, col);			
-//			}
-//			else {
-//				col.add(50, Blocks.AIR);
-//				col.add(25,  Blocks.SAND);
-//				col.add(15, Blocks.GRAVEL);
-//				col.add(10, Blocks.LOG);
-//				buildPit(world, random, spawnCoords, surfaceCoords, col);
-//			}
-//		}			
-//		// shaft is only 2-6 blocks long - can only support small covering
-//		else if (yDist >= 2) {
-//			// simple short pit
-//			new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
-//		}		
-//		Treasure.logger.debug("Generated TNT Trap Pit at " + spawnCoords.toShortString());
-//		return true;
-//	}
-	
 	/**
 	 * 
 	 * @param world
@@ -180,19 +115,15 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 			nextCoords = buildLogLayer(world, random, coords, block);
 		}
 		else {
-			nextCoords = buildLayer(world, nextCoords, block);
+			nextCoords = buildLayer(world, coords, block);
 		}
+		Treasure.logger.debug("Coords for trap base layer: {}", coords.toShortString());
+		Treasure.logger.debug("Next Coords after base log: {}", nextCoords.toShortString());
 		
 		// ensure that the difference is only 1 between nextCoords and coords
-		if (nextCoords.delta(coords).getY() > 1) return nextCoords;
+//		if (nextCoords.delta(coords).getY() > 1) return nextCoords;
 
-		// add TNT and redstone(above log)
-//		IBlockState redstone = Blocks.REDSTONE_WIRE.getDefaultState();
 		Block redstone = Blocks.REDSTONE_WIRE;
-//		world.setBlockState(nextCoords.toPos(), Blocks.TNT.getDefaultState(), 3);
-//		world.setBlockState(nextCoords.add(1, 0, 0).toPos(), redstone, 3);		
-//		world.setBlockState(nextCoords.add(0, 0, 1).toPos(), redstone, 3);
-//		world.setBlockState(nextCoords.add(1, 0, 1).toPos(), redstone, 3);
 		GenUtil.replaceWithBlock(world, nextCoords.add(0, 0, 0), Blocks.TNT);
 		GenUtil.replaceWithBlock(world, nextCoords.add(1, 0, 0), redstone);
 		GenUtil.replaceWithBlock(world, nextCoords.add(0, 0, 1), redstone);
@@ -202,22 +133,15 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 		
 		// add aother  log layer
 		nextCoords = buildLogLayer(world, random, nextCoords, block);
-		
 		// core 4-square pressure plate (above log)
-//		IBlockState plate = Blocks.WOODEN_PRESSURE_PLATE.getDefaultState();
 		Block plate = Blocks.WOODEN_PRESSURE_PLATE;
-//		world.setBlockState(nextCoords.toPos(), plate, 3);
-//		world.setBlockState(nextCoords.add(1, 0, 0).toPos(), plate, 3);		
-//		world.setBlockState(nextCoords.add(0, 0, 1).toPos(), plate, 3);
-//		world.setBlockState(nextCoords.add(1, 0, 1).toPos(), plate, 3);
 		GenUtil.replaceWithBlock(world, nextCoords, plate);
 		GenUtil.replaceWithBlock(world, nextCoords.add(1, 0, 0), plate);
 		GenUtil.replaceWithBlock(world, nextCoords.add(0, 0, 1), plate);
 		GenUtil.replaceWithBlock(world, nextCoords.add(1, 0, 1), plate);
 						
 		// get the next coords
-		nextCoords = nextCoords.add(0, 1, 0);
-
+		nextCoords = nextCoords.up(1);
 		// return the next coords
 		return nextCoords;
 	}

@@ -52,7 +52,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		
 		// if there is air above the origin, then in cavern. (pos in isAir() doesn't matter)
 		if (blockState == null || blockState.getMaterial() == Material.AIR) {
-			Treasure.logger.debug("Spawn coords is in cavener.");
+			Treasure.logger.debug("Spawn coords is in cavern.");
 			inCavern = true;
 		}
 		
@@ -70,7 +70,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		Treasure.logger.trace("Distance to ySurface =" + yDist);
 	
 		if (yDist > 6) {			
-			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
+			Treasure.logger.trace("Generating shaft @ " + spawnCoords.toShortString());
 			// at chest level
 			buildLayer(world, spawnCoords, Blocks.AIR);
 			
@@ -150,7 +150,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 			// NOTE the difference should = 1, there remove 1 from the diff to find unexpected difference
 			int diff = coords.getY() - expectedCoords.getY() - 1;
 			if (diff > 0) {
-				newIndex += diff;
+				newIndex = coords.getY();
 				Treasure.logger.debug("Difference of: {}. Updating yIndex to {}", diff, newIndex);
 			}
 		}
