@@ -81,6 +81,7 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.SKELETON_KEY);
 		registerItemModel(TreasureItems.PILFERERS_LOCK_PICK);
 		registerItemModel(TreasureItems.THIEFS_LOCK_PICK);
+		registerItemModel(TreasureItems.KEY_RING);
 		
 		// WEAPONS
 		registerItemModel(TreasureItems.SKULL_SWORD);

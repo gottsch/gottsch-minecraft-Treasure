@@ -64,6 +64,8 @@ public class TreasureItems {
 	public static KeyItem PILFERERS_LOCK_PICK;
 	public static KeyItem THIEFS_LOCK_PICK;
 	
+	public static KeyRingItem KEY_RING;
+	
 	// swords
 	public static Item SKULL_SWORD;
 	
@@ -165,6 +167,9 @@ public class TreasureItems {
 				.setMaxDamage(10)
 				.setSuccessProbability(32);
 		
+		// KEY RING
+		KEY_RING = new KeyRingItem(Treasure.MODID, TreasureConfig.KEY_RING_ID);
+		
 		// LOCKS
 		WOOD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.WOOD_LOCK_ID, new KeyItem[] {WOOD_KEY})
 				.setCategory(Category.BASIC)
@@ -250,6 +255,7 @@ public class TreasureItems {
 					SKELETON_KEY,
 					PILFERERS_LOCK_PICK,
 					THIEFS_LOCK_PICK,
+					KEY_RING,
 					SKULL_SWORD,
 					EYE_PATCH
 			};

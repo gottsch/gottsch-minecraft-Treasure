@@ -56,6 +56,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String PILFERERS_LOCK_PICK_ID = "pilferers_lock_pick";
 	public static final String THIEFS_LOCK_PICK_ID = "thiefs_lock_pick";
 	
+	public static final String KEY_RING_ID = "key_ring";
+	
 	public static final String GOLD_COIN_ID = "gold_coin";
 	public static final String SILVER_COIN_ID = "silver_coin";
 	
