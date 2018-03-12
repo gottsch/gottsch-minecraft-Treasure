@@ -182,55 +182,6 @@ public class Treasure extends AbstractMod {
 		
 		super.init(event);
 		
-		/*
-		 *  register tile entity special renderers
-		 */
-		
-		// default
-		ClientRegistry.bindTileEntitySpecialRenderer(
-				AbstractTreasureChestTileEntity.class,
-				new TreasureChestTileEntityRenderer("standard-chest", new StandardChestModel()));
-		
-		// wood chest
-		ClientRegistry.bindTileEntitySpecialRenderer(
-				WoodChestTileEntity.class,
-				new TreasureChestTileEntityRenderer("wood-chest", new StandardChestModel()));
-		
-		// crate chest
-		ClientRegistry.bindTileEntitySpecialRenderer(
-				CrateChestTileEntity.class,
-				new CrateChestTileEntityRenderer("crate-chest", new CrateChestModel()));
-
-		// moldy crate chest
-		ClientRegistry.bindTileEntitySpecialRenderer(
-				MoldyCrateChestTileEntity.class,
-				new CrateChestTileEntityRenderer("crate-chest-moldy", new CrateChestModel()));
-		
-		// ironbound chest
-		ClientRegistry.bindTileEntitySpecialRenderer(
-				IronboundChestTileEntity.class,
-				new TreasureChestTileEntityRenderer("ironbound-chest", new BandedChestModel()));		
-		
-		// pirate chest
-		ClientRegistry.bindTileEntitySpecialRenderer(
-				PirateChestTileEntity.class,
-				new TreasureChestTileEntityRenderer("pirate-chest", new StandardChestModel()));
-	
-		// iron strongbox
-		ClientRegistry.bindTileEntitySpecialRenderer(
-				IronStrongboxTileEntity.class,
-				new StrongboxTileEntityRenderer("iron-strongbox", new StrongboxModel()));
-		
-		// gold strongbox
-		ClientRegistry.bindTileEntitySpecialRenderer(
-				GoldStrongboxTileEntity.class,
-				new StrongboxTileEntityRenderer("gold-strongbox", new StrongboxModel()));
-		
-		// safe
-		ClientRegistry.bindTileEntitySpecialRenderer(
-				SafeTileEntity.class,
-				new SafeTileEntityRenderer("safe", new SafeModel()));
-		
 		// register world generators
 		worldGenerators.put("chest", new ChestWorldGenerator());
 		worldGenerators.put("well", new WellWorldGenerator());
