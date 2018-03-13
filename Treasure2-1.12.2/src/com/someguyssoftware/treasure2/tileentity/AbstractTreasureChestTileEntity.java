@@ -304,37 +304,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			readLockStatesFromNBT(parentNBT);
 			readInventoryFromNBT(parentNBT);
 			readPropertiesFromNBT(parentNBT);
-			
-//			// read the lockstates
-//			if (parentNBT.hasKey("lockStates")) {
-//				Treasure.logger.debug("Has lockStates");
-//				if (this.getLockStates() != null) {
-//					Treasure.logger.debug("size of internal lockstates:" + this.getLockStates().size());
-//				}
-//				else {
-//					this.setLockStates(new LinkedList<LockState>());
-//					Treasure.logger.debug("created lockstates:" + this.getLockStates().size());
-//				}
-//
-//				List<LockState> states = new LinkedList<LockState>();
-//				NBTTagList list = parentNBT.getTagList("lockStates", Constants.NBT.TAG_COMPOUND);
-//				for (int i = 0; i < list.tagCount(); i++) {				
-//					NBTTagCompound c = list.getCompoundTagAt(i);
-//					LockState lockState = LockState.readFromNBT(c);
-//					states.add(lockState.getSlot().getIndex(), lockState);
-////					Treasure.logger.debug("Read NBT lockstate:" + lockState);
-//				}
-//				// update the tile entity
-//				setLockStates(states);			
-//				
-//				// read the inventory
-//				ItemStackHelper.loadAllItems(parentNBT, this.getItems());
-//
-//				// read the custom name
-//				if (parentNBT.hasKey("CustomName", 8)) {
-//					this.customName = parentNBT.getString("CustomName");
-//				}
-//			}
 		}
 		catch(Exception e) {
 			Treasure.logger.error("Error reading to NBT:",  e);
