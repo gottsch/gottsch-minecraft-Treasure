@@ -5,11 +5,17 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 
 /**
- * This is the base/standard container for chests that is similar configuration to that of a vanilla container.
+ * This is a special container for the Key Ring
  * @author Mark Gottschling on Mar 9, 2018
  *
  */
 public class KeyRingContainer extends AbstractChestContainer {
+	class Point {
+		public int x;
+		public int  y;
+		public Point(int x, int y) { this.x = x; this.y = y;}
+	}
+	
 	/**
 	 * 
 	 * @param invPlayer
@@ -17,32 +23,65 @@ public class KeyRingContainer extends AbstractChestContainer {
 	 */
 	public KeyRingContainer(InventoryPlayer invPlayer, IInventory inventory) {
 		super(invPlayer, inventory);
-        
-		// TODO column count and xpos doen't work for key ring where each slot is determined from a pre-made array
 		// set the dimensions
-		setContainerInventoryColumnCount(5);
-		//key ring only has 15 slots, arranged in a circle
-		setContainerInventoryXPos(8 + getSlotXSpacing() + getSlotXSpacing());
+		setContainerInventoryXPos(64);
 		
 		// build the container
 		buildContainer(invPlayer, inventory);
 	}
 	
 	/**
-	 * TODO set this up from an array
+	 * 
 	 */
 	@Override
-	public void buildContainerInventory() {		
-		/*
-		 *  Add the tile inventory container to the gui
-		 */
-		for (int y = 0; y < getContainerInventoryRowCount(); y++) {
-			for (int x = 0; x < getContainerInventoryColumnCount(); x++) {
-				int slotNumber = y * getContainerInventoryColumnCount() + x;
-				int xpos = getContainerInventoryXPos() + x * getSlotXSpacing();
-				int ypos = getContainerInventoryYPos() + y * getSlotYSpacing();
-				addSlotToContainer(new Slot(inventory, slotNumber, xpos, ypos));
-			}
+	public void buildContainerInventory() {
+		Point[][] points = {
+				{
+					new Point(28, 38),
+					new Point(28 + getSlotXSpacing(),  38),
+					new Point(118,  38),
+					new Point(118 + getSlotXSpacing(),  38)
+				}, 
+				{
+					new Point(28, 56),
+					new Point(28 + getSlotXSpacing(),  56),
+					new Point(118,  56),
+					new Point(118 + getSlotXSpacing(),  56)					
+				}
+		};
+		
+		// add top row         
+		for (int x = 0; x < 3; x++) {
+			int slotNumber = x;
+			int xpos = getContainerInventoryXPos() + x * getSlotXSpacing();
+			int ypos = 18;
+			addSlotToContainer(new KeyRingSlot(inventory, slotNumber, xpos, ypos));
 		}
+		
+		// middle rows
+		for (int y = 0; y < 2; y++) {
+			for (int x = 0; x < 4; x++) {
+				int slotNumber = (y * 4 + x) + 3;
+				addSlotToContainer(new KeyRingSlot(inventory, slotNumber, points[y][x].x, points[y][x].y));
+			}
+		}		
+		
+		// add bottom row
+		for (int x = 0; x < 3; x++) {
+			int slotNumber = x + 11;
+			int xpos = getContainerInventoryXPos() + x * getSlotXSpacing();
+			int ypos = 76;
+			addSlotToContainer(new KeyRingSlot(inventory, slotNumber, xpos, ypos));
+		}
+	}
+	
+	@Override
+	public int getHotbarYPos() {
+		return 158;
+	}
+	
+	@Override
+	public int getPlayerInventoryYPos() {
+		return 100;
 	}
 }

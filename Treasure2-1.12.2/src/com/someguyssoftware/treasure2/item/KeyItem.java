@@ -174,14 +174,18 @@ public class KeyItem extends ModItem {
 				LockState lockState = null;
 				
 				// check if this key is one that opens a lock (only first lock that key fits is unlocked).
-				for (LockState ls : tcte.getLockStates()) {
-					if (ls.getLock() != null) {
-						lockState = ls;
-						if (lockState.getLock().acceptsKey(this) || fitsLock(lockState.getLock())) {
-							fitsLock = true;
-							break;
-						}
-					}
+//				for (LockState ls : tcte.getLockStates()) {
+//					if (ls.getLock() != null) {
+//						lockState = ls;
+//						if (lockState.getLock().acceptsKey(this) || fitsLock(lockState.getLock())) {
+//							fitsLock = true;
+//							break;
+//						}
+//					}
+//				}
+				lockState = fitsFirstLock(tcte.getLockStates());
+				if (lockState != null) {
+					fitsLock = true;
 				}
 				
 				if (fitsLock) {
@@ -207,11 +211,6 @@ public class KeyItem extends ModItem {
 						heldItem.shrink(1);
 						player.sendMessage(new TextComponentString("Key broke."));
 						worldIn.playSound(player, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-
-//						if (heldItem.getCount() <=0) {
-//							IInventory inventory = player.inventory;
-//							inventory.setInventorySlotContents(player.inventory.currentItem, null);
-//						}		
 					}
 					else {
 						player.sendMessage(new TextComponentString("Failed to unlock."));
@@ -237,6 +236,25 @@ public class KeyItem extends ModItem {
 	 */
 	public boolean fitsLock(LockItem lockItem) {
 		return false;
+	}
+	
+	/**
+	 * 
+	 * @param lockStates
+	 * @return
+	 */
+	public LockState  fitsFirstLock(List<LockState> lockStates) {
+		LockState lockState = null;
+		// check if this key is one that opens a lock (only first lock that key fits is unlocked).
+		for (LockState ls : lockStates) {
+			if (ls.getLock() != null) {
+				lockState = ls;
+				if (lockState.getLock().acceptsKey(this) || fitsLock(lockState.getLock())) {
+					return ls;
+				}
+			}
+		}
+		return null; // <-- TODO should return EMPTY_LOCKSTATE
 	}
 	
 	/**

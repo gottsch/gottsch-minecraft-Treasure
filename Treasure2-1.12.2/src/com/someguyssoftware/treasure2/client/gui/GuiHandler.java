@@ -4,14 +4,22 @@
 package com.someguyssoftware.treasure2.client.gui;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.client.gui.inventory.KeyRingGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.StandardChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.StrongboxChestGui;
+import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
+import com.someguyssoftware.treasure2.inventory.KeyRingContainer;
 import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 import com.someguyssoftware.treasure2.inventory.StrongboxChestContainer;
+import com.someguyssoftware.treasure2.item.KeyRingItem;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -29,6 +37,7 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 public class GuiHandler implements IGuiHandler {
 	public static final int STANDARD_CHEST_GUIID = 1;
 	public static final int STRONGBOX_CHEST_GUIID = 2;
+	public static final int KEY_RING_GUIID = 3;
 
 	
 	/* (non-Javadoc)
@@ -51,6 +60,19 @@ public class GuiHandler implements IGuiHandler {
 					return new StrongboxChestContainer(player.inventory, ((AbstractTreasureChestTileEntity)tileEntity).getInventoryProxy());
 				}
 				break;				
+			case KEY_RING_GUIID:
+				// get the held item
+				ItemStack keyRingItem = player.getHeldItemMainhand();
+				if (keyRingItem == null || !(keyRingItem.getItem() instanceof KeyRingItem)) {
+					keyRingItem = player.getHeldItemOffhand();
+					if (keyRingItem == null || !(keyRingItem.getItem() instanceof KeyRingItem)) return null;
+				}			
+				
+				// create inventory from item
+				IInventory inventory = new KeyRingInventory(keyRingItem);
+				// open the container
+				return new KeyRingContainer(player.inventory, inventory);
+
 			default: return null;
 		}
 		return null;
@@ -72,6 +94,7 @@ public class GuiHandler implements IGuiHandler {
 				else {
 					Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");
 				}
+				break;
 			case STRONGBOX_CHEST_GUIID:
 				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
 					return new StrongboxChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
@@ -80,6 +103,18 @@ public class GuiHandler implements IGuiHandler {
 					Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");
 				}
 				break;
+			case KEY_RING_GUIID:
+				// get the held item
+				ItemStack keyRingItem = player.getHeldItemMainhand();
+				if (keyRingItem == null || !(keyRingItem.getItem() instanceof KeyRingItem)) {
+					keyRingItem = player.getHeldItemOffhand();
+					if (keyRingItem == null || !(keyRingItem.getItem() instanceof KeyRingItem)) return null;
+				}			
+				
+				// create inventory from item
+				IInventory inventory = new KeyRingInventory(keyRingItem);
+				// open the container
+				return new KeyRingGui(player.inventory, inventory);
 			default: return null;
 		}
 		return null;
