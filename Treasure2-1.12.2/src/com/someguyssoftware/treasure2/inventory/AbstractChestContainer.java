@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.inventory;
 
+import com.someguyssoftware.treasure2.Treasure;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -132,7 +134,6 @@ public abstract class AbstractChestContainer extends Container {
 			/*
 			 *  This is a vanilla container slot so merge the stack into the tile inventory
 			 */
-			
 			// first ensure that the sourcStack is a valid item for the container
 			if (!inventory.isItemValidForSlot(sourceSlotIndex, sourceStack)) {
 				return ItemStack.EMPTY;
@@ -147,7 +148,7 @@ public abstract class AbstractChestContainer extends Container {
 				return ItemStack.EMPTY;
 			}
 		} else {
-			System.err.print("Invalid slotIndex:" + sourceSlotIndex);
+			Treasure.logger.warn("Invalid slotIndex:" + sourceSlotIndex);
 			return ItemStack.EMPTY;
 		}
 
