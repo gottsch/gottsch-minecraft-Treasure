@@ -438,8 +438,6 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 				te.writePropertiesToNBT(chestItem.getTagCompound());
 			}
 			else {
-				// for each item in chest add to the new entity item's NBT
-
 				/*
 				 * spawn chest item
 				 */
