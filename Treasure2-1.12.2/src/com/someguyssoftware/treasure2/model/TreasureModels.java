@@ -29,6 +29,7 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.IRON_STRONGBOX));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GOLD_STRONGBOX));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SAFE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.DREAD_PIRATE_CHEST));
 		
 		// GRAVESONES
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_STONE));
@@ -70,6 +71,8 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.GOLD_LOCK);
 		registerItemModel(TreasureItems.DIAMOND_LOCK);
 		registerItemModel(TreasureItems.EMERALD_LOCK);
+		registerItemModel(TreasureItems.SPIDER_LOCK);
+		
 		// KEYS
 		registerItemModel(TreasureItems.WOOD_KEY);
 		registerItemModel(TreasureItems.STONE_KEY);
@@ -79,6 +82,7 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.EMERALD_KEY);
 		registerItemModel(TreasureItems.METALLURGISTS_KEY);
 		registerItemModel(TreasureItems.SKELETON_KEY);
+		registerItemModel(TreasureItems.SPIDER_KEY);
 		registerItemModel(TreasureItems.PILFERERS_LOCK_PICK);
 		registerItemModel(TreasureItems.THIEFS_LOCK_PICK);
 		registerItemModel(TreasureItems.KEY_RING);

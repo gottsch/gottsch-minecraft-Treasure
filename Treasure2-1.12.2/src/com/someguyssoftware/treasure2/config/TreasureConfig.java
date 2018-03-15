@@ -33,6 +33,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String IRON_STRONGBOX_ID = "iron_strongbox";
 	public static final String GOLD_STRONGBOX_ID = "gold_strongbox";
 	public static final String SAFE_ID = "safe";
+	public static final String DREAD_PIRATE_CHEST_ID = "dread_pirate_chest";
 	
 	// locks
 	public static final String WOOD_LOCK_ID = "wood_lock";
@@ -41,6 +42,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String GOLD_LOCK_ID = "gold_lock";
 	public static final String DIAMOND_LOCK_ID = "diamond_lock";
 	public static final String EMERALD_LOCK_ID = "emerald_lock";
+	public static final String SPIDER_LOCK_ID = "spider_lock";
 	
 	// keys
 	public static final String WOOD_KEY_ID = "wood_key";
@@ -52,6 +54,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String METALLURGISTS_KEY_ID = "metallurgists_key";
 	public static final String SKELETON_KEY_ID = "skeleton_key";
 	public static final String WITHER_KEY_ID = "wither_key";
+	public static final String SPIDER_KEY_ID = "spider_key";
+
 	
 	public static final String PILFERERS_LOCK_PICK_ID = "pilferers_lock_pick";
 	public static final String THIEFS_LOCK_PICK_ID = "thiefs_lock_pick";
@@ -106,7 +110,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String IRON_STRONGBOX_TE_ID = "iron_strongbox_tile_entity";
 	public static final String GOLD_STRONGBOX_TE_ID = "gold_strongbox_tile_entity";
 	public static final String SAFE_TE_ID = "safe_tile_entity";
-	
+	public static final String DREAD_PIRATE_CHEST_TE_ID = "dread_pirate_chest_tile_entity";
 
 	public static boolean enableKeyBreaks = true;
 	public static boolean enableFog = true;

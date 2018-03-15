@@ -45,6 +45,9 @@ public class TreasureItems {
 	public static LockItem GOLD_LOCK;
 	public static LockItem DIAMOND_LOCK;
 	public static LockItem EMERALD_LOCK;
+	
+	public static LockItem SPIDER_LOCK;
+	
 	// keys
 	public static KeyItem WOOD_KEY;
 	public static KeyItem STONE_KEY;
@@ -58,6 +61,7 @@ public class TreasureItems {
 	public static KeyItem RUBY_KEY;
 	public static KeyItem BONE_KEY;
 	public static KeyItem SKELETON_KEY;
+	public static KeyItem SPIDER_KEY;
 	public static KeyItem DRAGON_KEY;
 	public static KeyItem MASTER_KEY;
 
@@ -144,6 +148,13 @@ public class TreasureItems {
 				.setCraftable(false)
 				.setMaxDamage(5);
 		
+		SPIDER_KEY = new KeyItem(Treasure.MODID, TreasureConfig.SPIDER_KEY_ID)
+				.setCategory(Category.POTION)
+				.setRarity(Rarity.SCARCE)
+				.setBreakable(true)
+				.setCraftable(true)
+				.setMaxDamage(5);
+		
 		WITHER_KEY = new KeyItem(Treasure.MODID, TreasureConfig.WITHER_KEY_ID)
 				.setCategory(Category.WITHER)
 				.setRarity(Rarity.RARE)
@@ -189,6 +200,9 @@ public class TreasureItems {
 		EMERALD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.EMERALD_LOCK_ID, new KeyItem[] {EMERALD_KEY})
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC);
+		SPIDER_LOCK = new LockItem(Treasure.MODID, TreasureConfig.SPIDER_LOCK_ID, new KeyItem[] {SPIDER_KEY})
+				.setCategory(Category.POTION)
+				.setRarity(Rarity.SCARCE);
 		
 		locks =	ArrayListMultimap.create();
 		locks.put(Rarity.COMMON, WOOD_LOCK);
@@ -197,6 +211,7 @@ public class TreasureItems {
 		locks.put(Rarity.SCARCE, GOLD_LOCK);
 		locks.put(Rarity.RARE, DIAMOND_LOCK);
 		locks.put(Rarity.EPIC, EMERALD_LOCK);
+		locks.put(Rarity.SCARCE, SPIDER_LOCK);
 		
 		// other
 		ModSwordBuilder builder = new ModSwordBuilder();
@@ -245,6 +260,7 @@ public class TreasureItems {
 					GOLD_LOCK,
 					DIAMOND_LOCK,
 					EMERALD_LOCK,
+					SPIDER_LOCK,
 					WOOD_KEY,
 					STONE_KEY,
 					IRON_KEY,
@@ -253,6 +269,7 @@ public class TreasureItems {
 					EMERALD_KEY,
 					METALLURGISTS_KEY,
 					SKELETON_KEY,
+					SPIDER_KEY,
 					PILFERERS_LOCK_PICK,
 					THIEFS_LOCK_PICK,
 					KEY_RING,

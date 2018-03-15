@@ -12,10 +12,12 @@ import com.someguyssoftware.gottschcore.enums.Direction;
 public class TreasureChestTypes {
 	public static final TreasureChestType CRATE;
 	public static TreasureChestType STANDARD;
+	public static TreasureChestType STANDARD2;
 	public static TreasureChestType STRONGBOX;
 	public static TreasureChestType SAFE;
 	public static TreasureChestType SINGLE;
 	public static TreasureChestType POT;
+
 		
 	static {
 		STANDARD = new TreasureChestType(3).addSlots(
@@ -23,6 +25,12 @@ public class TreasureChestTypes {
 			new LockSlot(1, Direction.EAST, 0.95F, 0.3F, 0.5F, 90F),
 			new LockSlot(2, Direction.WEST, 0.05F, 0.3F, 0.5F, -90F)
 		);
+		
+		STANDARD2 = new TreasureChestType(3).addSlots(
+				new LockSlot(0, Direction.NORTH, 0.5F, 0.2F, 0.05F, 0F),
+				new LockSlot(1, Direction.EAST, 0.95F, 0.3F, 0.5F, 90F),
+				new LockSlot(2, Direction.WEST, 0.05F, 0.3F, 0.5F, -90F)
+			);
 		
 		CRATE = new TreasureChestType(1).addSlots(
 				new LockSlot(0, Direction.NORTH, 0.5F, 0.6F, 0.05F, 0F)

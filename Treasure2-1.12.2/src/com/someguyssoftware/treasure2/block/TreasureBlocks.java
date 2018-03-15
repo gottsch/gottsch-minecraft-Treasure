@@ -20,6 +20,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.TreasureChestItemBlock;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.DreadPirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
@@ -55,6 +56,7 @@ public class TreasureBlocks {
 	public static final Block IRON_STRONGBOX;
 	public static final Block GOLD_STRONGBOX;
 	public static final Block SAFE;
+	public static final Block DREAD_PIRATE_CHEST;
 
 	// chest holder
 	public static Multimap<Rarity, Block> chests;
@@ -189,6 +191,15 @@ public class TreasureBlocks {
 				.setBounds(strongboxBounds)
 				.setHardness(4.0F);
 
+		DREAD_PIRATE_CHEST = new TreasureChestBlock(
+				Treasure.MODID,
+				TreasureConfig.DREAD_PIRATE_CHEST_ID,
+				DreadPirateChestTileEntity.class,
+				TreasureChestTypes.STANDARD, 
+				Rarity.EPIC)
+				.setBounds(stdChestBounds)
+				.setHardness(4.0F);
+		
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
 		//		chests.put(((TreasureChestBlock)WOOD_CHEST).getRarity(), WOOD_CHEST);
@@ -308,6 +319,7 @@ public class TreasureBlocks {
 					IRON_STRONGBOX,
 					GOLD_STRONGBOX,
 					SAFE,
+					DREAD_PIRATE_CHEST,
 					GRAVESTONE1_STONE,
 					GRAVESTONE1_COBBLESTONE,
 					GRAVESTONE1_MOSSY_COBBLESTONE,
@@ -364,6 +376,7 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(IRON_STRONGBOX),
 					new TreasureChestItemBlock(GOLD_STRONGBOX),
 					new TreasureChestItemBlock(SAFE),
+					new TreasureChestItemBlock(DREAD_PIRATE_CHEST),
 					// TODO update with GravestonIetmBlock
 					new ItemBlock(GRAVESTONE1_STONE),
 					new ItemBlock(GRAVESTONE1_COBBLESTONE),
@@ -415,6 +428,7 @@ public class TreasureBlocks {
 			GameRegistry.registerTileEntity(IronStrongboxTileEntity.class, TreasureConfig.IRON_STRONGBOX_TE_ID);
 			GameRegistry.registerTileEntity(GoldStrongboxTileEntity.class, TreasureConfig.GOLD_STRONGBOX_TE_ID);
 			GameRegistry.registerTileEntity(SafeTileEntity.class, TreasureConfig.SAFE_TE_ID);
+			GameRegistry.registerTileEntity(DreadPirateChestTileEntity.class, TreasureConfig.DREAD_PIRATE_CHEST_TE_ID);
 		}	
 	}
 }
