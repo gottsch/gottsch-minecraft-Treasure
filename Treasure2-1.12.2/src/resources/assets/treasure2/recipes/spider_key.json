@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "Treasure2",
+  "pattern": [
+	" K ",
+	" D ",
+	" E "
+  ],
+  "key": {
+	"K": {
+		"item": "treasure2:iron_key"
+	},
+	"D": {
+		"item": "minecraft:glowstone_dust"
+	}
+  },
+  "result": {
+    "item": "minecraft:spider_eye",
+    "count": 1
+  }
+}
