@@ -45,7 +45,8 @@ public class TreasureItems {
 	public static LockItem GOLD_LOCK;
 	public static LockItem DIAMOND_LOCK;
 	public static LockItem EMERALD_LOCK;
-	
+	public static LockItem RUBY_LOCK;
+	public static LockItem SAPPHIRE_LOCK;
 	public static LockItem SPIDER_LOCK;
 	
 	// keys
@@ -59,6 +60,7 @@ public class TreasureItems {
 	
 	public static KeyItem WITHER_KEY;
 	public static KeyItem RUBY_KEY;
+	public static KeyItem SAPPHIRE_KEY;
 	public static KeyItem BONE_KEY;
 	public static KeyItem SKELETON_KEY;
 	public static KeyItem SPIDER_KEY;
@@ -129,10 +131,24 @@ public class TreasureItems {
 
 		EMERALD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.EMERALD_KEY_ID)
 				.setCategory(Category.GEMS)
+				.setRarity(Rarity.RARE)
+				.setBreakable(false)
+				.setCraftable(false)
+				.setMaxDamage(10);
+		
+		RUBY_KEY = new KeyItem(Treasure.MODID, TreasureConfig.RUBY_KEY_ID)
+				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(20);
+				.setMaxDamage(5);
+		
+		SAPPHIRE_KEY = new KeyItem(Treasure.MODID, TreasureConfig.SAPPHIRE_KEY_ID)
+				.setCategory(Category.GEMS)
+				.setRarity(Rarity.EPIC)
+				.setBreakable(false)
+				.setCraftable(false)
+				.setMaxDamage(5);
 		
 		METALLURGISTS_KEY = new MetallurgistsKey(Treasure.MODID, TreasureConfig.METALLURGISTS_KEY_ID)
 				.setCategory(Category.METALS)
@@ -149,7 +165,7 @@ public class TreasureItems {
 				.setMaxDamage(5);
 		
 		SPIDER_KEY = new KeyItem(Treasure.MODID, TreasureConfig.SPIDER_KEY_ID)
-				.setCategory(Category.POTION)
+				.setCategory(Category.MOB)
 				.setRarity(Rarity.SCARCE)
 				.setBreakable(true)
 				.setCraftable(true)
@@ -199,6 +215,12 @@ public class TreasureItems {
 				.setRarity(Rarity.RARE);
 		EMERALD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.EMERALD_LOCK_ID, new KeyItem[] {EMERALD_KEY})
 				.setCategory(Category.GEMS)
+				.setRarity(Rarity.RARE);
+		RUBY_LOCK = new LockItem(Treasure.MODID, TreasureConfig.RUBY_LOCK_ID, new KeyItem[] {RUBY_KEY})
+				.setCategory(Category.GEMS)
+				.setRarity(Rarity.EPIC);
+		SAPPHIRE_LOCK = new LockItem(Treasure.MODID, TreasureConfig.SAPPHIRE_LOCK_ID, new KeyItem[] {SAPPHIRE_KEY})
+				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC);
 		SPIDER_LOCK = new LockItem(Treasure.MODID, TreasureConfig.SPIDER_LOCK_ID, new KeyItem[] {SPIDER_KEY})
 				.setCategory(Category.POTION)
@@ -209,8 +231,10 @@ public class TreasureItems {
 		locks.put(Rarity.COMMON, STONE_LOCK);
 		locks.put(Rarity.UNCOMMON, IRON_LOCK);
 		locks.put(Rarity.SCARCE, GOLD_LOCK);
-		locks.put(Rarity.RARE, DIAMOND_LOCK);
-		locks.put(Rarity.EPIC, EMERALD_LOCK);
+		locks.put(DIAMOND_LOCK.getRarity(), DIAMOND_LOCK);
+		locks.put(EMERALD_LOCK.getRarity(), EMERALD_LOCK);
+		locks.put(RUBY_LOCK.getRarity(), RUBY_LOCK);
+		locks.put(SAPPHIRE_LOCK.getRarity(), SAPPHIRE_LOCK);
 		locks.put(Rarity.SCARCE, SPIDER_LOCK);
 		
 		// other
@@ -260,6 +284,8 @@ public class TreasureItems {
 					GOLD_LOCK,
 					DIAMOND_LOCK,
 					EMERALD_LOCK,
+					RUBY_LOCK,
+					SAPPHIRE_LOCK,
 					SPIDER_LOCK,
 					WOOD_KEY,
 					STONE_KEY,
@@ -267,6 +293,8 @@ public class TreasureItems {
 					GOLD_KEY,
 					DIAMOND_KEY,
 					EMERALD_KEY,
+					RUBY_KEY,
+					SAPPHIRE_KEY,
 					METALLURGISTS_KEY,
 					SKELETON_KEY,
 					SPIDER_KEY,

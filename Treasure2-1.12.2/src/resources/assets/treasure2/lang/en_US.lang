@@ -5,6 +5,7 @@ tile.treasure2:crate_chest_moldy.name=Moldy Crate
 tile.treasure2:ironbound_chest.name=Ironbound Chest
 tile.treasure2:pirate_chest.name=Pirate Chest
 tile.treasure2:safe.name=Safe
+tile.treasure2:dread_pirate_chest.name=Dread Pirate Chest
 
 #gravestones
 tile.treasure2:gravestone1_stone.name=Stone Tombstone
@@ -44,8 +45,11 @@ item.treasure2:iron_key.name=Iron Key
 item.treasure2:gold_key.name=Gold Key
 item.treasure2:diamond_key.name=Diamond Key
 item.treasure2:emerald_key.name=Emerald Key
+item.treasure2:ruby_key.name=Ruby Key
+item.treasure2:sapphire_key.name=Sapphire Key
 item.treasure2:metallurgists_key.name=Metallurgist's Key
 item.treasure2:skeleton_key.name=Skeleton Key
+item.treasure2:spider_key.name=Spider Key
 
 item.treasure2:wood_lock.name=Wood Lock
 item.treasure2:stone_lock.name=Stone Lock
@@ -53,6 +57,9 @@ item.treasure2:iron_lock.name=Iron Lock
 item.treasure2:gold_lock.name=Gold Lock
 item.treasure2:diamond_lock.name=Diamond Lock
 item.treasure2:emerald_lock.name=Emerald Lock
+item.treasure2:ruby_lock.name=Ruby Lock
+item.treasure2:sapphire_lock.name=Sapphire Lock
+item.treasure2:spider_lock.name=Spider Lock
 
 item.treasure2:pilferers_lock_pick.name=Pilferer's Lock Pick
 item.treasure2:thiefs_lock_pick.name=Thief's Lock Pick
@@ -92,3 +99,4 @@ display.pirate_chest.name=Pirate Chest
 display.iron_strongbox.name=Iron Strongbox
 display.gold_strongbox.name=Gold Strongbox
 display.safe.name=Safe
+display.dread_pirate_chest.name=Dread Pirate Chest

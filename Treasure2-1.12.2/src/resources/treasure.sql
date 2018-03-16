@@ -571,19 +571,55 @@ values
 
 -- common_keys (temp - needs update)
 (26, 174, 25.0, 1, 2, 0, 0, 1), -- wood_key
-(26, 175, 25.0, 1, 2, 0, 0, 1), -- stone_key
+(26, 175, 25.0, 1, 2, 0, 0, 2), -- stone_key
+(26, xxx, 20.0, 1, 2, 0, 0, 3) -- pilferers lock pick;
+(26, 176, 10.0, 1, 1, 0, 0, 4), -- iron_key
+(26, xxx, 10.0, 1, 1, 0, 0, 5) -- thiefs lock pick;
 
--- uncommon_keys
+-- uncommon_keys (locks: iron, )
+(26, 174, 15.0, 1, 2, 0, 0, 1), -- wood_key
+(26, 175, 15.0, 1, 2, 0, 0, 2), -- stone_key
+(26, xxx, 10.0, 1, 2, 0, 0, 3) -- pilferers lock pick;
+-- ...
 (27, 176, 25.0, 1, 2, 0, 0, 1), -- iron_key
+(27, xxx, 20.0, 1, 2, 0, 0, 2) -- thiefs lock pick;
+-- ..
+(27, 177, 10.0, 1, 1, 0, 0, 1), -- gold_key
+(27, xxx, 10.0, 1, 1, 0, 0, 1) -- spider_key
 
--- scarce_keys
+-- scarce_keys (locks: gold, spider, )
+(28, 176, 15.0, 1, 2, 0, 0, 1), -- iron_key
+(28, xxx, 10.0, 1, 2, 0, 0, 2) -- thiefs lock pick;
+-- ..
 (28, 177, 25.0, 1, 2, 0, 0, 1), -- gold_key
+(28, xxx, 20.0, 1, 1, 0, 0, 1) -- spider_key
+-- ..
+(28, 178, 10.0, 1, 1, 0, 0, 1), -- diamond_key
 
 -- rare_keys
 (29, 178, 25.0, 1, 2, 0, 0, 1), -- diamond_key
 
 -- epic_keys
 (30, 179, 25.0, 1, 2, 0, 0, 1), -- emerald_key
+
+-- common_treasure
+(31, xxx, 25.0, 1, 1, 0, 0, 1), -- silver coin
+
+-- uncommon_treasure
+(32, xxx, 25.0, 1, 2, 0, 0, 1), -- silver coin
+(32, xxx, 15.0, 1, 1, 0, 0, 2), -- gold coin
+
+-- scarce_treasure
+(33, xxx, 25.0, 1, 4, 0, 0, 1), -- silver coin,
+(33, xxx, 20.0, 1, 2, 0, 0, 2), -- gold coin
+
+-- rare_treasure
+(34, xxx, 25.0, 2, 6, 0, 0, 1), -- silver coin,
+(34, xxx, 25.0, 1, 3, 0, 0, 2), -- gold coin
+
+-- epic_treasure
+(35, xxx, 20.0, 3, 10, 0, 0, 1), -- silver coin
+(35, xxx, 25.0, 2, 5, 0, 0, 2), -- gold coin
 ;
 
 -- -----------------------------------------------------

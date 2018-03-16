@@ -71,6 +71,8 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.GOLD_LOCK);
 		registerItemModel(TreasureItems.DIAMOND_LOCK);
 		registerItemModel(TreasureItems.EMERALD_LOCK);
+		registerItemModel(TreasureItems.RUBY_LOCK);
+		registerItemModel(TreasureItems.SAPPHIRE_LOCK);
 		registerItemModel(TreasureItems.SPIDER_LOCK);
 		
 		// KEYS
@@ -80,6 +82,8 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.GOLD_KEY);
 		registerItemModel(TreasureItems.DIAMOND_KEY);	
 		registerItemModel(TreasureItems.EMERALD_KEY);
+		registerItemModel(TreasureItems.RUBY_KEY);
+		registerItemModel(TreasureItems.SAPPHIRE_KEY);
 		registerItemModel(TreasureItems.METALLURGISTS_KEY);
 		registerItemModel(TreasureItems.SKELETON_KEY);
 		registerItemModel(TreasureItems.SPIDER_KEY);

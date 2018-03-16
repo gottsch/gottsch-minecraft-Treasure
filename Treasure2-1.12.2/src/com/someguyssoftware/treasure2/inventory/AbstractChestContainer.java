@@ -107,7 +107,7 @@ public abstract class AbstractChestContainer extends Container {
 		 */
 		for (int y = 0; y < getContainerInventoryRowCount(); y++) {
 			for (int x = 0; x < getContainerInventoryColumnCount(); x++) {
-				int slotNumber = y * getContainerInventoryColumnCount() + x;
+				int slotNumber = CONTAINER_INVENTORY_FIRST_SLOT_INDEX + (y * getContainerInventoryColumnCount()) + x;
 				int xpos = getContainerInventoryXPos() + x * getSlotXSpacing();
 				int ypos = getContainerInventoryYPos() + y * getSlotYSpacing();
 				addSlotToContainer(new Slot(inventory, slotNumber, xpos, ypos));

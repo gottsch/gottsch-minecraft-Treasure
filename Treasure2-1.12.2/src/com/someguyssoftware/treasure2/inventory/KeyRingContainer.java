@@ -84,4 +84,9 @@ public class KeyRingContainer extends AbstractChestContainer {
 	public int getPlayerInventoryYPos() {
 		return 100;
 	}
+	
+	@Override
+	public int getContainerInventorySlotCount() {
+		return 14;
+	}
 }

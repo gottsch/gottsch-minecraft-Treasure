@@ -6,6 +6,7 @@
   },
     "1.12.2": {
         "0.5.0": "alpha release",
-        "0.5.1": "alpha: add Key Ring\nFixed dedicated server crash."
+        "0.5.1": "alpha: add Key Ring\nFixed dedicated server crash.",
+        "0.5.2": "alpha: add Dread Pirate Chest\nAdd Spider, Ruby and Sapphire Lock and Key.\nFixed Key Ring inventory shift-click on item."
     }
 }

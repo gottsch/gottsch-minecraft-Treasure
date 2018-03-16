@@ -98,7 +98,7 @@ public class TreasureBlocks {
 	// initialize blocks
 	static {
 		// standard chest bounds
-		AxisAlignedBB vanilla = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D);
+		AxisAlignedBB vanilla = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.875D, 0.9375D);
 		AxisAlignedBB[] stdChestBounds = new AxisAlignedBB[4];
 		stdChestBounds[0] = vanilla; // S
 		stdChestBounds[1] = vanilla; // W
@@ -202,15 +202,10 @@ public class TreasureBlocks {
 		
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
-		//		chests.put(((TreasureChestBlock)WOOD_CHEST).getRarity(), WOOD_CHEST);
-		//		chests.put(Rarity.COMMON, CRATE_CHEST_MOLDY);
-		//		chests.put(Rarity.UNCOMMON, CRATE_CHEST);
-		//		chests.put(Rarity.UNCOMMON, IRONBOUND_CHEST);
-		//		chests.put(Rarity.SCARCE, PIRATE_CHEST);
 
-		// TEMP
-		chests.put(Rarity.RARE, PIRATE_CHEST);
-		chests.put(Rarity.EPIC, PIRATE_CHEST);
+//		// TEMP
+//		chests.put(Rarity.RARE, PIRATE_CHEST);
+//		chests.put(Rarity.EPIC, PIRATE_CHEST);
 
 		// gravestone bounds
 		AxisAlignedBB[] gbs = new 	AxisAlignedBB[4];

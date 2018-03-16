@@ -88,7 +88,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			// select a pit generator
 			Pits pit = Pits.values()[random.nextInt(Pits.values().length)];
 			IPitGenerator pitGenerator = ChestWorldGenerator.pitGenerators.get(pit);
-			Treasure.logger.debug("Using Pit: {}, Gen:", pit, pitGenerator);
+			Treasure.logger.debug("Using Pit: {}, Gen: {}", pit, pitGenerator.getClass());
 			
 			// 3. build the pit
 			isGenerated = pitGenerator.generate(world, random, markerCoords, spawnCoords);

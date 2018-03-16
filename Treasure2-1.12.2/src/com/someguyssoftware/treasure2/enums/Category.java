@@ -13,6 +13,9 @@ public enum Category {
 	GEMS,
 	MAGIC,
 	POTION,
+	MOB,
+	CRYPTID,
+	MYTHICAL,
 	WITHER,
 	UNIQUE;
 }

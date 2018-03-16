@@ -67,10 +67,10 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	
 		// generate shaft
 		int yDist = (surfaceCoords.getY() - spawnCoords.getY()) - 2;
-		Treasure.logger.trace("Distance to ySurface =" + yDist);
+		Treasure.logger.debug("Distance to ySurface =" + yDist);
 	
 		if (yDist > 6) {			
-			Treasure.logger.trace("Generating shaft @ " + spawnCoords.toShortString());
+			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
 			// at chest level
 			buildLayer(world, spawnCoords, Blocks.AIR);
 			
@@ -164,7 +164,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 * @return
 	 */
 	public ICoords buildLayer(World world, ICoords coords, Block block) {
-//		Treasure.logger.debug("Building layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
+		Treasure.logger.debug("Building layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
 		GenUtil.replaceWithBlock(world, coords, block);
 		GenUtil.replaceWithBlock(world, coords.add(1, 0, 0), block);
 		GenUtil.replaceWithBlock(world, coords.add(0, 0, 1), block);
@@ -181,6 +181,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 * @return
 	 */
 	public ICoords buildLogLayer(final World world, final Random random, final ICoords coords, final Block block) {
+		Treasure.logger.debug("Building log layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
 		// ensure that block is of type LOG/LOG2
 		if (block != Blocks.LOG && block != Blocks.LOG2) return coords;
 		

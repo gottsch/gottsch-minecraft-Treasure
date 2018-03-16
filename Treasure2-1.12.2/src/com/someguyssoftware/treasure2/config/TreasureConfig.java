@@ -42,6 +42,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String GOLD_LOCK_ID = "gold_lock";
 	public static final String DIAMOND_LOCK_ID = "diamond_lock";
 	public static final String EMERALD_LOCK_ID = "emerald_lock";
+	public static final String RUBY_LOCK_ID = "ruby_lock";
+	public static final String SAPPHIRE_LOCK_ID = "sapphire_lock";
 	public static final String SPIDER_LOCK_ID = "spider_lock";
 	
 	// keys
@@ -51,6 +53,9 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String DIAMOND_KEY_ID = "diamond_key";
 	public static final String STONE_KEY_ID = "stone_key";
 	public static final String EMERALD_KEY_ID = "emerald_key";
+	public static final String RUBY_KEY_ID = "ruby_key";
+	public static final String SAPPHIRE_KEY_ID = "sapphire_key";
+	public static final String PRISMATIC_KEY_ID = "prismatic_key";
 	public static final String METALLURGISTS_KEY_ID = "metallurgists_key";
 	public static final String SKELETON_KEY_ID = "skeleton_key";
 	public static final String WITHER_KEY_ID = "wither_key";

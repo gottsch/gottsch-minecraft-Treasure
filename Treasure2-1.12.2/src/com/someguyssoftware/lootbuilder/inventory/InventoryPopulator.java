@@ -110,7 +110,7 @@ public class InventoryPopulator {
 		
 		// first select items from the special groups list
 		for (LootContainerHasGroup cg : specialGroups) {
-			Treasure.logger.debug("Selecting group: {}", cg);			
+			Treasure.logger.debug("Selecting SPECIAL group: {}", cg);			
 			itemsAdded += addGroupItems(random, inventory, slots, cg, totalNumItemsToAdd-itemsAdded);
 			if (itemsAdded >= totalNumItemsToAdd || slots == null || slots.size() == 0) break;
 		}
