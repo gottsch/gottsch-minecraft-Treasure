@@ -27,6 +27,7 @@ import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.UncommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.AirPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.LavaTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
@@ -83,6 +84,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		pitGenerators.put(Pits.SIMPLE_PIT, new SimplePitGenerator());
 		pitGenerators.put(Pits.TNT_TRAP_PIT, new TntTrapPitGenerator());
 		pitGenerators.put(Pits.AIR_PIT,  new AirPitGenerator());
+		pitGenerators.put(Pits.LAVA_TRAP_PIT, new LavaTrapPitGenerator());
 	}
 
 	/**

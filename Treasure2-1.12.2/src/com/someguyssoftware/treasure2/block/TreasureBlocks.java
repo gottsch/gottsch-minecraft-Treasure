@@ -57,6 +57,12 @@ public class TreasureBlocks {
 	public static final Block GOLD_STRONGBOX;
 	public static final Block SAFE;
 	public static final Block DREAD_PIRATE_CHEST;
+	
+	// TODO chests
+	public static final Block COMPRESSOR_CHEST = null;
+	public static final Block WITHER_CHEST = null;
+	public static final Block SKULL_CHEST = null;
+	public static final Block VASE = null;
 
 	// chest holder
 	public static Multimap<Rarity, Block> chests;
@@ -94,6 +100,8 @@ public class TreasureBlocks {
 	public static final FogBlock HIGH_FOG_BLOCK;
 	public static final FogBlock MED_FOG_BLOCK;
 	public static final FogBlock LOW_FOG_BLOCK;
+	
+	// TODO black/green fog ?
 
 	// initialize blocks
 	static {

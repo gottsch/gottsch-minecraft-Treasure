@@ -74,10 +74,8 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 			// at chest level
 			buildLayer(world, spawnCoords, Blocks.AIR);
 			
-			// above the chest	
-			buildLayer(world, spawnCoords.add(0, 1, 0), Blocks.AIR);
-			buildLogLayer(world, random, spawnCoords.add(0, 2, 0), Blocks.LOG);
-			buildLayer(world, spawnCoords.add(0, 3, 0), Blocks.SAND);
+			// above the chest
+			buildAboveChestLayers(world, random, spawnCoords);
 
 			// shaft enterance
 			buildLogLayer(world, random, surfaceCoords.add(0, -2, 0), Blocks.LOG);
@@ -96,6 +94,17 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		return true;
 	}	
 	
+	/**
+	 * 
+	 * @param world
+	 * @param spawnCoords
+	 */
+	public void buildAboveChestLayers(World world, Random random, ICoords spawnCoords) {
+		buildLayer(world, spawnCoords.add(0, 1, 0), Blocks.AIR);
+		buildLogLayer(world, random, spawnCoords.add(0, 2, 0), Blocks.LOG);
+		buildLayer(world, spawnCoords.add(0, 3, 0), Blocks.SAND);
+	}
+
 	/**
 	 * 
 	 * @param world
@@ -130,7 +139,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 			expectedCoords = cube.getCoords().add(0, 1, 0);
 			
 			// check if the return coords is different than the anticipated coords and resolve
-			yIndex = autocorrectIndex(yIndex, nextCoords, expectedCoords);
+			yIndex = autoCorrectIndex(yIndex, nextCoords, expectedCoords);
 		}		
 		return nextCoords;
 	}
@@ -142,7 +151,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 * @param expectedCoords
 	 * @return
 	 */
-	protected int autocorrectIndex(final int index, final ICoords coords, final ICoords expectedCoords) {
+	protected int autoCorrectIndex(final int index, final ICoords coords, final ICoords expectedCoords) {
 		int newIndex = index;
 		if (!coords.equals(expectedCoords)) {
 			// find the difference in y int and add to yIndex;
@@ -156,6 +165,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		}
 		return newIndex;
 	}
+	
 	/**
 	 * 
 	 * @param world

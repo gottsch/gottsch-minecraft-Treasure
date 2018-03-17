@@ -67,6 +67,7 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 		ICoords midCoords = new Coords(coords.getX(), midY, coords.getZ());
 		int deltaY = surfaceCoords.delta(midCoords).getY();
 		
+		Treasure.logger.debug("TNT Trap pit from {} to {}", coords.getY() + Y_OFFSET, surfaceCoords.getY() - Y_SURFACE_OFFSET);
 		// randomly fill shaft
 		for (int yIndex = coords.getY() + Y_OFFSET; yIndex <= surfaceCoords.getY() - Y_SURFACE_OFFSET; yIndex++) {
 			
@@ -96,7 +97,8 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 			expectedCoords = cube.getCoords().add(0, 1, 0);
 			
 			// check if the return coords is different than the anticipated coords and resolve
-			yIndex = autocorrectIndex(yIndex, nextCoords, expectedCoords);
+			yIndex = autoCorrectIndex(yIndex, nextCoords, expectedCoords);
+			Treasure.logger.debug("yIndex: {}", yIndex);
 		}		
 		return nextCoords;
 	}

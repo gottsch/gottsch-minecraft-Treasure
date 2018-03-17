@@ -42,7 +42,7 @@ import net.minecraft.world.World;
  */
 public class KeyRingItem extends ModItem {
 	private static final String USED_ON_CHEST = "usedOnChest";
-	
+
 	/*
 	 * The GUIID;
 	 */
@@ -80,7 +80,7 @@ public class KeyRingItem extends ModItem {
 		if (worldIn.isRemote) {			
 			return EnumActionResult.FAIL;
 		}
-		
+
 		// use the key ring to unlock locks
 		// determine if block at pos is a treasure chest
 		Block block = worldIn.getBlockState(pos).getBlock();
@@ -97,42 +97,48 @@ public class KeyRingItem extends ModItem {
 			if (!heldItem.hasTagCompound()) {
 				heldItem.setTagCompound(new NBTTagCompound());
 			}
-			// set a flag that the item was used on a treasure chest
+			/*
+			 *  set a flag that the item was used on a treasure chest. this is used to determine
+			 *  if the keyring inventory should open or not.
+			 */
 			heldItem.getTagCompound().setBoolean(USED_ON_CHEST, true);
-			
+
 			// determine if chest is locked
 			if (!tcte.hasLocks()) {
 				return EnumActionResult.SUCCESS;
 			}
 
 			try {
-					KeyRingInventory inv = new KeyRingInventory(heldItem);
-					// cycle through all keys in key ring until one is able to fit lock and use it to unlock the lock.
-					for (int i = 0; i < inv.getSizeInventory(); i++) {
-						ItemStack stack = inv.getStackInSlot(i);
-						if (stack != null && stack.getItem() != Items.AIR)  {								
-							KeyItem key = (KeyItem) stack.getItem();
-							boolean breakKey = true;
-							//								boolean fitsLock = false;
-							LockState lockState = null;
+				KeyRingInventory inv = new KeyRingInventory(heldItem);
+				// cycle through all keys in key ring until one is able to fit lock and use it to unlock the lock.
+				for (int i = 0; i < inv.getSizeInventory(); i++) {
+					ItemStack keyStack = inv.getStackInSlot(i);
+					if (keyStack != null && keyStack.getItem() != Items.AIR)  {								
+						KeyItem key = (KeyItem) keyStack.getItem();
+						Treasure.logger.debug("Using key from keyring: {}", key.getUnlocalizedName());
+						boolean breakKey = true;
+						//	boolean fitsLock = false;
+						LockState lockState = null;
 
-							// check if this key is one that opens a lock (only first lock that key fits is unlocked).
-							lockState = key.fitsFirstLock(tcte.getLockStates());
+						// check if this key is one that opens a lock (only first lock that key fits is unlocked).
+						lockState = key.fitsFirstLock(tcte.getLockStates());
 
-							// TODO move to a method in KeyItem
-							if (lockState != null) {
-								if (key.unlock(lockState.getLock())) {
-									LockItem lock = lockState.getLock();
-									// remove the lock
-									lockState.setLock(null);
-									// play noise
-									worldIn.playSound(player, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-									// update the client
-									tcte.sendUpdates();
-									// spawn the lock
-									InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(lock));
-									// don't break the key
-									breakKey = false;									}
+						Treasure.logger.debug("key fits lock: {}", lockState);
+
+						// TODO move to a method in KeyItem
+						if (lockState != null) {
+							if (key.unlock(lockState.getLock())) {
+								LockItem lock = lockState.getLock();
+								// remove the lock
+								lockState.setLock(null);
+								// play noise
+								worldIn.playSound(player, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+								// update the client
+								tcte.sendUpdates();
+								// spawn the lock
+								InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(lock));
+								// don't break the key
+								breakKey = false;
 							}
 
 							// TODO move to a method in KeyItem
@@ -151,6 +157,9 @@ public class KeyRingItem extends ModItem {
 									}
 								}						
 							}
+							// key unlocked a lock, end loop (ie only unlock 1 lock at a time
+							break;
+						}
 					}
 				}				
 			}
@@ -172,7 +181,7 @@ public class KeyRingItem extends ModItem {
 		if (worldIn.isRemote) {			
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
 		}
-		
+
 		boolean useOnChest = false;
 		ItemStack stack = playerIn.getHeldItem(handIn);
 		if (stack.hasTagCompound()) {
