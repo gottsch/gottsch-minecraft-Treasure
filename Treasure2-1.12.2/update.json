@@ -1,13 +1,13 @@
 {
     "homepage": "",
     "promos": {
-    "1.12.2-latest": "0.53",
-    "1.12.2-recommended": "0.53"
+    "1.12.2-latest": "0.5.3",
+    "1.12.2-recommended": "0.5.3"
   },
     "1.12.2": {
         "0.5.0": "alpha release",
         "0.5.1": "alpha: add Key Ring\nFixed dedicated server crash.",
         "0.5.2": "alpha: add Dread Pirate Chest\nAdded Lava Trap Pit\nAdd Spider, Ruby and Sapphire Lock and Key.\nFixed Key Ring inventory shift-click on item.\nFixed Key Ring unlocking multiple locks.",
-        "0.53": "alpha: Fixed DB script.\nAdded DB as a resource that is copied to the file system.\nAdded Compressor Chest\nAdded Wither Log\nFixed all blockstates."
+        "0.5.3": "alpha: Fixed DB script.\nAdded DB as a resource that is copied to the file system.\nAdded Compressor Chest\nAdded Wither Log\nFixed all blockstates."
     }
 }
