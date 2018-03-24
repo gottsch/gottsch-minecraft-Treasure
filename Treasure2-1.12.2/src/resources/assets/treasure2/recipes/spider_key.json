@@ -12,10 +12,13 @@
 	},
 	"D": {
 		"item": "minecraft:glowstone_dust"
+	},
+	"E": {
+		"item": "minecraft:spider_eye"
 	}
   },
   "result": {
-    "item": "minecraft:spider_eye",
+    "item": "treasure2:spider_key",
     "count": 1
   }
 }

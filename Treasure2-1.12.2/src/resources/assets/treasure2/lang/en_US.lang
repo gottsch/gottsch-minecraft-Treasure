@@ -6,6 +6,7 @@ tile.treasure2:ironbound_chest.name=Ironbound Chest
 tile.treasure2:pirate_chest.name=Pirate Chest
 tile.treasure2:safe.name=Safe
 tile.treasure2:dread_pirate_chest.name=Dread Pirate Chest
+tile.treasure2:compressor_chest.name=Compressor Chest
 
 #gravestones
 tile.treasure2:gravestone1_stone.name=Stone Tombstone
@@ -100,3 +101,4 @@ display.iron_strongbox.name=Iron Strongbox
 display.gold_strongbox.name=Gold Strongbox
 display.safe.name=Safe
 display.dread_pirate_chest.name=Dread Pirate Chest
+display.compressor_chest.name=Compressor Chest

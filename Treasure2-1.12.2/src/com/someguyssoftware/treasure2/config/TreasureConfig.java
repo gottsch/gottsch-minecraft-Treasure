@@ -34,6 +34,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String GOLD_STRONGBOX_ID = "gold_strongbox";
 	public static final String SAFE_ID = "safe";
 	public static final String DREAD_PIRATE_CHEST_ID = "dread_pirate_chest";
+	public static final String COMPRESSOR_CHEST_ID = "compressor_chest";
 	
 	// locks
 	public static final String WOOD_LOCK_ID = "wood_lock";
@@ -106,6 +107,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String MED_FOG_BLOCK_ID = "med_fog";
 	public static final String LOW_FOG_BLOCK_ID = "low_fog";
 	
+	public static final String WITHER_LOG_ID = "wither_log";
+	
 	// TEs
 	public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity";
 	public static final String CRATE_CHEST_TE_ID = "crate_chest_tile_entity";
@@ -116,6 +119,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String GOLD_STRONGBOX_TE_ID = "gold_strongbox_tile_entity";
 	public static final String SAFE_TE_ID = "safe_tile_entity";
 	public static final String DREAD_PIRATE_CHEST_TE_ID = "dread_pirate_chest_tile_entity";
+	public static final String COMPRESSOR_CHEST_TE_ID = "compressor_chest_tile_entity";
 
 	public static boolean enableKeyBreaks = true;
 	public static boolean enableFog = true;

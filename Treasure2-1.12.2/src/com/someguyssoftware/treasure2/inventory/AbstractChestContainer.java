@@ -61,7 +61,7 @@ public abstract class AbstractChestContainer extends Container {
 	public void buildContainer(InventoryPlayer player, IInventory inventory) {
 		// ensure the  container's slot count is the same size of the backing IInventory
 		if (getContainerInventorySlotCount()  != inventory.getSizeInventory()) {
-			System.err.println("Mismatched slot count in Container(" + getContainerInventorySlotCount()
+			Treasure.logger.error("Mismatched slot count in Container(" + getContainerInventorySlotCount()
 				  + ") and TileInventory (" + inventory.getSizeInventory()+")");
 		}
 		        
@@ -107,7 +107,7 @@ public abstract class AbstractChestContainer extends Container {
 		 */
 		for (int y = 0; y < getContainerInventoryRowCount(); y++) {
 			for (int x = 0; x < getContainerInventoryColumnCount(); x++) {
-				int slotNumber = CONTAINER_INVENTORY_FIRST_SLOT_INDEX + (y * getContainerInventoryColumnCount()) + x;
+				int slotNumber = /*CONTAINER_INVENTORY_FIRST_SLOT_INDEX +*/ (y * getContainerInventoryColumnCount()) + x;
 				int xpos = getContainerInventoryXPos() + x * getSlotXSpacing();
 				int ypos = getContainerInventoryYPos() + y * getSlotYSpacing();
 				addSlotToContainer(new Slot(inventory, slotNumber, xpos, ypos));

@@ -178,7 +178,7 @@ public class InventoryProxy implements IInventory {
      */
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		Treasure.logger.debug("Proxy.isItemValid() being called @ {} : {}", index, stack);
+//		Treasure.logger.debug("Proxy.isItemValid() being called @ {} : {}", index, stack);
 		return true;
 	}
 

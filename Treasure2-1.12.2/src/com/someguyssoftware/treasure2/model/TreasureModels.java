@@ -30,6 +30,7 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GOLD_STRONGBOX));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SAFE));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.DREAD_PIRATE_CHEST));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.COMPRESSOR_CHEST));
 		
 		// GRAVESONES
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_STONE));
@@ -60,6 +61,7 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.HIGH_FOG_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.MED_FOG_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.LOW_FOG_BLOCK));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_LOG));
 		
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);

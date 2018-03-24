@@ -29,7 +29,7 @@ public class KeyRingInventory implements IInventory {
 	private ItemStack itemStack;
 	
     /** IInventory properties */
-    private int numberOfSlots = 15; // default size
+    private int numberOfSlots = 14; // default size
     private NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(numberOfSlots, ItemStack.EMPTY);
     
 	/**

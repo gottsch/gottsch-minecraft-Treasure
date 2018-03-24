@@ -91,14 +91,13 @@ processResources
     }
         
     // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-        include '**/*.sql'
-    }
+ //   from(sourceSets.main.resources.srcDirs) {
+//        include '**/*.sql'
+//    }
     
-    from(sourceSets.main.java.srcDirs) {
-        include '**/*.sql'
-    }
+//  from(sourceSets.main.java.srcDirs) {
+ //      include '**/*.sql'
+ //  }   
 }
 
 //task packageJavadoc(type: Jar, dependsOn: 'javadoc') {

@@ -19,6 +19,7 @@ import com.someguyssoftware.treasure2.enums.Fogs;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.TreasureChestItemBlock;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.DreadPirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
@@ -59,7 +60,7 @@ public class TreasureBlocks {
 	public static final Block DREAD_PIRATE_CHEST;
 	
 	// TODO chests
-	public static final Block COMPRESSOR_CHEST = null;
+	public static final Block COMPRESSOR_CHEST;
 	public static final Block WITHER_CHEST = null;
 	public static final Block SKULL_CHEST = null;
 	public static final Block VASE = null;
@@ -100,6 +101,8 @@ public class TreasureBlocks {
 	public static final FogBlock HIGH_FOG_BLOCK;
 	public static final FogBlock MED_FOG_BLOCK;
 	public static final FogBlock LOW_FOG_BLOCK;
+	
+	public static final Block WITHER_LOG;
 	
 	// TODO black/green fog ?
 
@@ -207,6 +210,23 @@ public class TreasureBlocks {
 				Rarity.EPIC)
 				.setBounds(stdChestBounds)
 				.setHardness(4.0F);
+
+		AxisAlignedBB compressorBB = new AxisAlignedBB(0.28125D, 0.0D, 0.28125D, 0.71875D, 0.4375D, 0.71875D);
+		AxisAlignedBB[] compressorChestBounds = new AxisAlignedBB[4];
+		compressorChestBounds[0] = compressorBB; // S
+		compressorChestBounds[1] = compressorBB; // W
+		compressorChestBounds[2] = compressorBB; // N
+		compressorChestBounds[3] = compressorBB; // E
+		
+		COMPRESSOR_CHEST = new TreasureChestBlock(
+				Treasure.MODID,
+				TreasureConfig.COMPRESSOR_CHEST_ID,
+				CompressorChestTileEntity.class,
+				TreasureChestTypes.COMPRESSOR, 
+				Rarity.EPIC)
+				.setChestGuiID(GuiHandler.COMPRESSOR_CHEST_GUIID)
+				.setBounds(compressorChestBounds)
+				.setHardness(3.0F);
 		
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
@@ -292,6 +312,7 @@ public class TreasureBlocks {
 		HIGH_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.HIGH_FOG_BLOCK_ID, TreasureItems.FOG).setFog(Fogs.HIGH_FOG);
 		MED_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.MED_FOG_BLOCK_ID, TreasureItems.FOG).setFog(Fogs.MEDIUM_FOG);
 		LOW_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.LOW_FOG_BLOCK_ID, TreasureItems.FOG).setFog(Fogs.LOW_FOG);
+		WITHER_LOG = new WitherLogBlock(Treasure.MODID, TreasureConfig.WITHER_LOG_ID);
 	}
 
 
@@ -323,6 +344,7 @@ public class TreasureBlocks {
 					GOLD_STRONGBOX,
 					SAFE,
 					DREAD_PIRATE_CHEST,
+					COMPRESSOR_CHEST,
 					GRAVESTONE1_STONE,
 					GRAVESTONE1_COBBLESTONE,
 					GRAVESTONE1_MOSSY_COBBLESTONE,
@@ -349,7 +371,8 @@ public class TreasureBlocks {
 					FOG_BLOCK,
 					HIGH_FOG_BLOCK,
 					MED_FOG_BLOCK,
-					LOW_FOG_BLOCK
+					LOW_FOG_BLOCK,
+					WITHER_LOG
 			};
 			registry.registerAll(blocks);	
 
@@ -380,6 +403,7 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(GOLD_STRONGBOX),
 					new TreasureChestItemBlock(SAFE),
 					new TreasureChestItemBlock(DREAD_PIRATE_CHEST),
+					new TreasureChestItemBlock(COMPRESSOR_CHEST),
 					// TODO update with GravestonIetmBlock
 					new ItemBlock(GRAVESTONE1_STONE),
 					new ItemBlock(GRAVESTONE1_COBBLESTONE),
@@ -407,7 +431,8 @@ public class TreasureBlocks {
 					new ItemBlock(FOG_BLOCK),
 					new ItemBlock(HIGH_FOG_BLOCK),
 					new ItemBlock(MED_FOG_BLOCK),
-					new ItemBlock(LOW_FOG_BLOCK)
+					new ItemBlock(LOW_FOG_BLOCK),
+					new ItemBlock(WITHER_LOG)
 			};
 
 			for (final ItemBlock item : items) {
@@ -432,6 +457,7 @@ public class TreasureBlocks {
 			GameRegistry.registerTileEntity(GoldStrongboxTileEntity.class, TreasureConfig.GOLD_STRONGBOX_TE_ID);
 			GameRegistry.registerTileEntity(SafeTileEntity.class, TreasureConfig.SAFE_TE_ID);
 			GameRegistry.registerTileEntity(DreadPirateChestTileEntity.class, TreasureConfig.DREAD_PIRATE_CHEST_TE_ID);
+			GameRegistry.registerTileEntity(CompressorChestTileEntity.class, TreasureConfig.COMPRESSOR_CHEST_TE_ID);
 		}	
 	}
 }

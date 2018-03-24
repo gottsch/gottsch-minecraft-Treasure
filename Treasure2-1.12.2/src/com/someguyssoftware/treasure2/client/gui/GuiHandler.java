@@ -4,10 +4,12 @@
 package com.someguyssoftware.treasure2.client.gui;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.client.gui.inventory.CompressorChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.KeyRingGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.StandardChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.StrongboxChestGui;
 import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
+import com.someguyssoftware.treasure2.inventory.CompressorChestContainer;
 import com.someguyssoftware.treasure2.inventory.KeyRingContainer;
 import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 import com.someguyssoftware.treasure2.inventory.StrongboxChestContainer;
@@ -38,6 +40,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int STANDARD_CHEST_GUIID = 1;
 	public static final int STRONGBOX_CHEST_GUIID = 2;
 	public static final int KEY_RING_GUIID = 3;
+	public static final int COMPRESSOR_CHEST_GUIID = 4;
 
 	
 	/* (non-Javadoc)
@@ -59,7 +62,13 @@ public class GuiHandler implements IGuiHandler {
 					Treasure.logger.debug("Tile entity is of type TreasureChestTileEntity");
 					return new StrongboxChestContainer(player.inventory, ((AbstractTreasureChestTileEntity)tileEntity).getInventoryProxy());
 				}
-				break;				
+				break;	
+			case COMPRESSOR_CHEST_GUIID:
+				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
+					Treasure.logger.debug("Tile entity is of type TreasureChestTileEntity");
+					return new CompressorChestContainer(player.inventory, ((AbstractTreasureChestTileEntity)tileEntity).getInventoryProxy());
+				}
+				break;			
 			case KEY_RING_GUIID:
 				// get the held item
 				ItemStack keyRingItem = player.getHeldItemMainhand();
@@ -98,6 +107,14 @@ public class GuiHandler implements IGuiHandler {
 			case STRONGBOX_CHEST_GUIID:
 				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
 					return new StrongboxChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
+				}
+				else {
+					Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");
+				}
+				break;
+			case COMPRESSOR_CHEST_GUIID:
+				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
+					return new CompressorChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
 				}
 				else {
 					Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");

@@ -67,7 +67,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
     
     /** IInventory properties */
     private int numberOfSlots = 27; // default size
-    private NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(numberOfSlots, ItemStack.EMPTY);
+    private NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(getNumberOfSlots(), ItemStack.EMPTY);
     private String customName;
     
 	/**

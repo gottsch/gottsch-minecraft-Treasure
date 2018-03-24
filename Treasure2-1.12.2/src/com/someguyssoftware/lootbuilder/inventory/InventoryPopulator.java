@@ -66,12 +66,17 @@ public class InventoryPopulator {
 		for (LootContainerHasGroup g : containerGroups) {
 			Treasure.logger.debug("Mapping group {}:{}:{}", g.getId(), g.getGroup().getName(), g.getWeight());
 			if (g.getSpecial()) {
+				Treasure.logger.debug("Adding group {} to SPECIAL list.", g.getGroup().getName());
 				specialGroups.add(g);
 			}
 			else {
-				groups.add(g.getWeight(), g);
+				Treasure.logger.debug("Adding group {} to regular rw collection.", g.getGroup().getName());
+				groups.add(g.getWeight() < 1 ? 1 : g.getWeight(), g);
 			}
 		}
+		
+		Treasure.logger.debug("specialGroups.size: {}", specialGroups.size());
+		Treasure.logger.debug("groups.size: {}", groups.size());
 		
 		// randomly select groups and add to map
 		// NOTE this method allows multiples of the same group to be added.

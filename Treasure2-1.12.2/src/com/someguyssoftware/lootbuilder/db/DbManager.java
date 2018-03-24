@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.lootbuilder.db;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -10,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -82,30 +84,56 @@ public class DbManager {
 
 		// get the path to the default style sheet
 		Path treasureDbPath = Paths.get(TreasureConfig.treasureFolder, "treasure").toAbsolutePath();
-		// create the connection
-		String databaseUrl = "jdbc:h2:tcp://localhost:9092/" +treasureDbPath.toString() + ";USER=sa;PASSWORD=sa;";
-		conn = DriverManager.getConnection(databaseUrl);
-
-		if (conn == null) {
-			logger.warn("Unable to connect JPA to h2 treasure database.");
-			return;
-		}
-
-		// set the connection
-		setConnection(conn);
-
-		// look for file --> treasure.mv.db
+		
+		// 1. look for file --> treasure.mv.db
 		Path dbFilePath = Paths.get(treasureDbPath.toString() + ".mv.db");
 		boolean pathExists =
 		        Files.exists(dbFilePath,
 		            new LinkOption[]{ LinkOption.NOFOLLOW_LINKS});
+		boolean copiedDb = false;
 		
+		// 2. if file doesn't exist then add db from jar
 		if (!pathExists) {
+			// execute the script
+			logger.info("Copying db from jar...");
+
+			InputStream is = getClass().getResourceAsStream("/treasure.mv.db");
+
+			if (is == null) {
+				logger.warn("Failed to locate treasure.mv.db resource.");
+			}
+			else {
+		        try {
+		            Files.copy(is, dbFilePath, StandardCopyOption.REPLACE_EXISTING);
+		            logger.debug("Db copied to file system.");
+		        	copiedDb = true;
+		        } catch (IOException ex) {
+		        	logger.warn("Failed to copy db from jar to file system.");
+		        }
+			}
+		}
+			
+		// setup the url to the treasure db
+		String databaseUrl = "jdbc:h2:tcp://localhost:9092/" +treasureDbPath.toString() + ";USER=sa;PASSWORD=sa;";
+		logger.debug("pathExits: {}, copiedDb: {}", pathExists, copiedDb);
+		if (!pathExists && !copiedDb) {
+			// create the connection
+			
+			conn = DriverManager.getConnection(databaseUrl);
+
+			if (conn == null) {
+				logger.warn("Unable to connect JPA to h2 treasure database.");
+				return;
+			}
+			
+			// set the connection
+//			setConnection(conn);
+			
 			// execute the script
 			logger.info("Creating tables...");
 			try {
 				// open a stream to the sql file
-				InputStream is = getClass().getResourceAsStream("/resources/treasure.sql");
+				InputStream is = getClass().getResourceAsStream("/treasure.sql");
 
 				if (is == null) {
 					logger.error("Unable to locate treasure.sql resource");
@@ -124,11 +152,17 @@ public class DbManager {
 			}
 			catch(SQLException e) {
 				logger.error("Error running sql script:", e);
+				// TODO turn off mod
+				config.setModEnabled(false);
+				logger.warn("Failed to setup DB. Disabling mod.");
+				return;
+			}
+			finally {
+				logger.debug("Closing JPA connection.");
+				// close the JPA connection
+				getConnection().close();
 			}
 		}
-		
-		// close the JPA connection
-		getConnection().close();
 		
 		/*
 		 * open the ORM Lite connection and setup the daos

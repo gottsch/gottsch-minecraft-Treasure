@@ -5,16 +5,19 @@ package com.someguyssoftware.treasure2.proxy;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.model.BandedChestModel;
+import com.someguyssoftware.treasure2.client.model.CompressorChestModel;
 import com.someguyssoftware.treasure2.client.model.CrateChestModel;
 import com.someguyssoftware.treasure2.client.model.DreadPirateChestModel;
 import com.someguyssoftware.treasure2.client.model.SafeModel;
 import com.someguyssoftware.treasure2.client.model.StandardChestModel;
 import com.someguyssoftware.treasure2.client.model.StrongboxModel;
+import com.someguyssoftware.treasure2.client.render.tileentity.CompressorChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CrateChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.SafeTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.StrongboxTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.DreadPirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
@@ -92,5 +95,10 @@ public class ClientProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				DreadPirateChestTileEntity.class,
 				new TreasureChestTileEntityRenderer("dread-pirate-chest", new DreadPirateChestModel()));
+		
+		// compressor chest
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				CompressorChestTileEntity.class,
+				new CompressorChestTileEntityRenderer("compressor-chest", new CompressorChestModel()));
 	}
 }
