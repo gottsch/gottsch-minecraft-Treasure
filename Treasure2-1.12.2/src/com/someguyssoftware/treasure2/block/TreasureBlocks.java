@@ -58,9 +58,9 @@ public class TreasureBlocks {
 	public static final Block GOLD_STRONGBOX;
 	public static final Block SAFE;
 	public static final Block DREAD_PIRATE_CHEST;
-	
-	// TODO chests
 	public static final Block COMPRESSOR_CHEST;
+		
+		// TODO chests
 	public static final Block WITHER_CHEST = null;
 	public static final Block SKULL_CHEST = null;
 	public static final Block VASE = null;
@@ -103,6 +103,8 @@ public class TreasureBlocks {
 	public static final FogBlock LOW_FOG_BLOCK;
 	
 	public static final Block WITHER_LOG;
+	public static final Block WITHER_BRANCH;
+	public static final Block WITHER_ROOT;
 	
 	// TODO black/green fog ?
 
@@ -313,6 +315,9 @@ public class TreasureBlocks {
 		MED_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.MED_FOG_BLOCK_ID, TreasureItems.FOG).setFog(Fogs.MEDIUM_FOG);
 		LOW_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.LOW_FOG_BLOCK_ID, TreasureItems.FOG).setFog(Fogs.LOW_FOG);
 		WITHER_LOG = new WitherLogBlock(Treasure.MODID, TreasureConfig.WITHER_LOG_ID);
+		WITHER_BRANCH = new WitherBranchBlock(Treasure.MODID, TreasureConfig.WITHER_BRANCH_ID);
+		WITHER_ROOT = new WitherRootBlock(Treasure.MODID, TreasureConfig.WITHER_ROOT_ID);
+		
 	}
 
 
@@ -372,7 +377,9 @@ public class TreasureBlocks {
 					HIGH_FOG_BLOCK,
 					MED_FOG_BLOCK,
 					LOW_FOG_BLOCK,
-					WITHER_LOG
+					WITHER_LOG,
+					WITHER_BRANCH,
+					WITHER_ROOT
 			};
 			registry.registerAll(blocks);	
 
@@ -432,7 +439,9 @@ public class TreasureBlocks {
 					new ItemBlock(HIGH_FOG_BLOCK),
 					new ItemBlock(MED_FOG_BLOCK),
 					new ItemBlock(LOW_FOG_BLOCK),
-					new ItemBlock(WITHER_LOG)
+					new ItemBlock(WITHER_LOG),
+					new ItemBlock(WITHER_BRANCH),
+					new ItemBlock(WITHER_ROOT)
 			};
 
 			for (final ItemBlock item : items) {

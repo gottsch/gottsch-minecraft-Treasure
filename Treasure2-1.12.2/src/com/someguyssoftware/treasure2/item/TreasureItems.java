@@ -54,13 +54,15 @@ public class TreasureItems {
 	public static KeyItem STONE_KEY;
 	public static KeyItem IRON_KEY;
 	public static KeyItem GOLD_KEY;
+	public static KeyItem METALLURGISTS_KEY;
 	public static KeyItem DIAMOND_KEY;
 	public static KeyItem EMERALD_KEY;
-	public static KeyItem METALLURGISTS_KEY;
-	
-	public static KeyItem WITHER_KEY;
 	public static KeyItem RUBY_KEY;
 	public static KeyItem SAPPHIRE_KEY;
+	public static KeyItem JEWELLED_KEY;
+	
+	public static KeyItem WITHER_KEY;
+
 	public static KeyItem BONE_KEY;
 	public static KeyItem SKELETON_KEY;
 	public static KeyItem SPIDER_KEY;
@@ -72,6 +74,9 @@ public class TreasureItems {
 	
 	public static KeyRingItem KEY_RING;
 	
+	// wither items
+	public static Item WITHER_ROOT_ITEM;
+		
 	// swords
 	public static Item SKULL_SWORD;
 	
@@ -141,9 +146,16 @@ public class TreasureItems {
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(5);
+				.setMaxDamage(8);
 		
 		SAPPHIRE_KEY = new KeyItem(Treasure.MODID, TreasureConfig.SAPPHIRE_KEY_ID)
+				.setCategory(Category.GEMS)
+				.setRarity(Rarity.EPIC)
+				.setBreakable(false)
+				.setCraftable(false)
+				.setMaxDamage(5);
+		
+		JEWELLED_KEY = new JewelledKey(Treasure.MODID, TreasureConfig.JEWELLED_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
@@ -259,6 +271,9 @@ public class TreasureItems {
 				.withRepairItem(Items.LEATHER)
 				.withCreativeTab(Treasure.TREASURE_TAB)
 				.build();
+		
+		// wither items
+		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.WITHER_ROOT_ITEM_ID);
 	}
 	
 	/**
@@ -295,6 +310,7 @@ public class TreasureItems {
 					EMERALD_KEY,
 					RUBY_KEY,
 					SAPPHIRE_KEY,
+					JEWELLED_KEY,
 					METALLURGISTS_KEY,
 					SKELETON_KEY,
 					SPIDER_KEY,
@@ -302,7 +318,8 @@ public class TreasureItems {
 					THIEFS_LOCK_PICK,
 					KEY_RING,
 					SKULL_SWORD,
-					EYE_PATCH
+					EYE_PATCH,
+					WITHER_ROOT_ITEM
 			};
 			registry.registerAll(items);		
 		}

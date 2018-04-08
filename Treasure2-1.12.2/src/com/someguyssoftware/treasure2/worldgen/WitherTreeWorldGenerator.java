@@ -16,12 +16,14 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IWellConfig;
+import com.someguyssoftware.treasure2.config.IWitherTreeConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Wells;
 import com.someguyssoftware.treasure2.generator.well.CanopyWellGenerator;
 import com.someguyssoftware.treasure2.generator.well.IWellGenerator;
 import com.someguyssoftware.treasure2.generator.well.SimpleWellGenerator;
 import com.someguyssoftware.treasure2.generator.well.WoodDrawWellGenerator;
+import com.someguyssoftware.treasure2.generator.wither.WitherTreeGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
@@ -33,22 +35,20 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 /**
  * 
- * @author Mark Gottschling on Feb 16, 2018
+ * @author Mark Gottschling on Mar 25, 2018
  *
  */
-public class WellWorldGenerator implements IWorldGenerator {
+public class WitherTreeWorldGenerator implements IWorldGenerator {
+	// TODO move to WorldInfo in GottschCore
 	// the number of blocks of half a chunk (radius) (a chunk is 16x16)
 	public static final int CHUNK_RADIUS = 8;
 
-	private int chunksSinceLastWell;
-
-	// the well geneators
-	private Map<Wells, IWellGenerator> generators = new HashMap<>();
-
+	private int chunksSinceLastTree;
+	private WitherTreeGenerator generator;
 	/**
 	 * 
 	 */
-	public WellWorldGenerator() {
+	public WitherTreeWorldGenerator() {
 		try {
 			init();
 		} catch (Exception e) {
@@ -56,14 +56,15 @@ public class WellWorldGenerator implements IWorldGenerator {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void init() {
 		// intialize chunks since last array
-		chunksSinceLastWell = 0;
+		chunksSinceLastTree = 0;
 
-		// setup the well generators
-		generators.put(Wells.WISHING_WELL, new SimpleWellGenerator());
-		generators.put(Wells.CANOPY_WISHING_WELL, new CanopyWellGenerator());
-		generators.put(Wells.WOOD_DRAW_WISHING_WELL,  new WoodDrawWellGenerator());
+		// setup the generator
+		generator = new WitherTreeGenerator();
 	}
 
 	/**
@@ -91,13 +92,13 @@ public class WellWorldGenerator implements IWorldGenerator {
 	private void generateSurface(World world, Random random, int chunkX, int chunkZ) {
 
 		// increment the chunk counts
-		chunksSinceLastWell++;
+		chunksSinceLastTree++;
 
 		boolean isGenerated = false;	
 
 		// test if min chunks was met
-		if (chunksSinceLastWell > TreasureConfig.minChunksPerWell) {
-//			Treasure.logger.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastWell, TreasureConfig.minChunksPerWell));
+		if (chunksSinceLastTree > TreasureConfig.minChunksPerWell) {
+			Treasure.logger.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastTree, TreasureConfig.minChunksPerWell));
 
 			/*
 			 * get current chunk position
@@ -111,55 +112,50 @@ public class WellWorldGenerator implements IWorldGenerator {
 			ICoords coords = new Coords(xSpawn, ySpawn, zSpawn);
 
 			// determine what type to generate
-			Wells well = Wells.values()[random.nextInt(Wells.values().length)];
-//			Treasure.logger.debug("Using Well: {}", well);
-			IWellConfig wellConfig = Configs.wellConfigs.get(well);
-			if (wellConfig == null) {
-				Treasure.logger.warn("Unable to locate a config for well {}.", well);
+			IWitherTreeConfig treeConfig = Configs.witherTreeConfig;
+			if (treeConfig == null) {
+				Treasure.logger.warn("Unable to locate a config for well {}.", treeConfig);
 				return;
 			}
 
-
-			if (chunksSinceLastWell >= wellConfig.getChunksPerWell()) {
-
+			if (chunksSinceLastTree >= treeConfig.getChunksPerTree()) {
 				// 1. test if correct biome
 				// if not the correct biome, reset the count
 				Biome biome = world.getBiome(coords.toPos());
 
-				if (!BiomeHelper.isBiomeAllowed(biome, wellConfig.getBiomeWhiteList(), wellConfig.getBiomeBlackList())) {
+				if (!BiomeHelper.isBiomeAllowed(biome, treeConfig.getBiomeWhiteList(), treeConfig.getBiomeBlackList())) {
 					Treasure.logger.debug(String.format("[%s] is not a valid biome.", biome.getBiomeName()));
-					chunksSinceLastWell = 0;
+					chunksSinceLastTree = 0;
 					return;
 				}
 				
 				// 2. test if well meets the probability criteria
-				Treasure.logger.debug("{} well probability: {}", well, wellConfig.getGenProbability());
-				if (!RandomHelper.checkProbability(random, wellConfig.getGenProbability())) {
-					Treasure.logger.debug("Well does not meet generate probability.");
+				Treasure.logger.debug("wither tree probability: {}", treeConfig.getGenProbability());
+				if (!RandomHelper.checkProbability(random, treeConfig.getGenProbability())) {
+					Treasure.logger.debug("Wither does not meet generate probability.");
 					return;
 				}
 				else {
-					Treasure.logger.debug("Well MEETS generate probability!");
+					Treasure.logger.debug("Wither Tree MEETS generate probability!");
 				}
 
-
-				// 			// 3. check against all registered chests
-				// 			if (isRegisteredChestWithinDistance(world, coords, TreasureConfig.minDistancePerChest)) {
-				//				Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
-				// 				return;
-				// 			}
+	 			// 3. check against all registered chests
+	 			if (isRegisteredChestWithinDistance(world, coords, TreasureConfig.minDistancePerChest)) {
+					Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
+	 				return;
+	 			}
 
 				// reset chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
-				chunksSinceLastWell++;    	    	
+				chunksSinceLastTree++;    	    	
 
 				// generate the well
-				Treasure.logger.debug("Attempting to generate a well");
-				isGenerated = generators.get(well).generate(world, random, coords, wellConfig); 
+				Treasure.logger.debug("Attempting to generate a wither tree");
+				isGenerated = generator.generate(world, random, coords, treeConfig); 
 
 				if (isGenerated) {
 					// add to registry
 					//				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
-					chunksSinceLastWell = 0;
+					chunksSinceLastTree = 0;
 				}
 			}
 			// save world data
@@ -221,30 +217,17 @@ public class WellWorldGenerator implements IWorldGenerator {
 	}
 
 	/**
-	 * @return the chunksSinceLastWell
+	 * @return the chunksSinceLastTree
 	 */
-	public int getChunksSinceLastWell() {
-		return chunksSinceLastWell;
+	public int getChunksSinceLastTree() {
+		return chunksSinceLastTree;
 	}
 
 	/**
-	 * @param chunksSinceLastWell the chunksSinceLastWell to set
+	 * 
+	 * @param chunksSinceLastTree
 	 */
-	public void setChunksSinceLastWell(int chunksSinceLastWell) {
-		this.chunksSinceLastWell = chunksSinceLastWell;
-	}
-
-	/**
-	 * @return the generators
-	 */
-	public Map<Wells, IWellGenerator> getGenerators() {
-		return generators;
-	}
-
-	/**
-	 * @param generators the generators to set
-	 */
-	public void setGenerators(Map<Wells, IWellGenerator> generators) {
-		this.generators = generators;
+	public void setChunksSinceLastTree(int chunksSinceLastTree) {
+		this.chunksSinceLastTree = chunksSinceLastTree;
 	}
 }

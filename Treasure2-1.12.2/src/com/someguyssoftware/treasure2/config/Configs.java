@@ -24,9 +24,13 @@ public class Configs {
 	public static Map<Rarity, IChestConfig> chestConfigs = new HashMap<>();
 	public static Map<Wells, IWellConfig> defaultWellConfigs = new HashMap<>();
 	public static Map<Wells, IWellConfig> wellConfigs = new HashMap<>();
+	public static IWitherTreeConfig defaultWitherTreeConfig;
+	public static IWitherTreeConfig witherTreeConfig;
+	
 	static {
 		initDefaultChestConfigs();
 		initDefaultWellConfigs();
+		initDefaultWitherTreeConfig();
 	}
 	
 	/**
@@ -47,6 +51,7 @@ public class Configs {
 		wellConfigs.put(Wells.CANOPY_WISHING_WELL, new WellConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "canopy-wishing-well.cfg", defaultWellConfigs.get(Wells.WISHING_WELL)));
 		wellConfigs.put(Wells.WOOD_DRAW_WISHING_WELL, new WellConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "wood-draw-wishing-well.cfg", defaultWellConfigs.get(Wells.WISHING_WELL)));
 
+		witherTreeConfig = new WitherTreeConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "wither-tree.cfg", defaultWitherTreeConfig);
 	}
 	
 	/**
@@ -112,6 +117,9 @@ public class Configs {
 				);
 	}
 	
+	/**
+	 * 
+	 */
 	@SuppressWarnings("unchecked")
 	private static void  initDefaultWellConfigs() {
 		defaultWellConfigs.put(Wells.WISHING_WELL,  new WellConfig()
@@ -121,5 +129,18 @@ public class Configs {
 				.setRawBiomeWhiteList(new String[] {""})
 				.setRawBiomeBlackList(new String[] {"ocean"})
 				);
+	}
+	
+	/**
+	 * 
+	 */
+	private static void initDefaultWitherTreeConfig() {
+		defaultWitherTreeConfig = new WitherTreeConfig()		
+				.setChunksPerTree(200)
+				.setGenProbability(90)
+				.setMaxTrunkSize(13)
+				.setMaxSupportingTrees(5)
+				.setRawBiomeWhiteList(new String[] {"forest", "magical", "lush", "spooky", "dead", "jungle", "coniferous"})
+				.setRawBiomeBlackList(new String[] {""});
 	}
 }

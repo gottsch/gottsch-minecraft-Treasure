@@ -283,7 +283,11 @@ values
 ('metallurgists_key', 'metallurgists_key', 'key', 0, 2),
 ('skeleton_key', 'skeleton_key', 'key', 0, 2),
 ('pilferers_lock_pick', 'pilferers_lock_pick', 'key', 0, 2),
-('thiefs_lock_pick', 'thiefs_lock_pick', 'key', 0, 2);
+('thiefs_lock_pick', 'thiefs_lock_pick', 'key', 0, 2),
+('spider_key', 'spider_key', 'key', 0, 2),
+('ruby_key', 'ruby_key', 'key', 0, 2),
+('sapphire_key', 'sapphire_key', 'key', 0, 2);
+
 -- ADDITIONS GO HERE
 
 -- -----------------------------------------------------
@@ -562,29 +566,29 @@ values
 (25, 79, 50.0, 1, 1, 2, 3, 1), -- iron_sword
 
 -- common_keys
-(26, 174, 25.0, 1, 2, 0, 0, 1), -- wood_key
-(26, 175, 25.0, 1, 2, 0, 0, 2), -- stone_key
+(26, 178, 25.0, 1, 2, 0, 0, 1), -- wood_key
+(26, 179, 25.0, 1, 2, 0, 0, 2), -- stone_key
 (26, 186, 20.0, 1, 2, 0, 0, 3), -- pilferers lock pick;
-(26, 176, 10.0, 1, 1, 0, 0, 4), -- iron_key
+(26, 180, 10.0, 1, 1, 0, 0, 4), -- iron_key
 (26, 187, 10.0, 1, 1, 0, 0, 5), -- thiefs lock pick;
 
 -- uncommon_keys (locks: iron, )
-(26, 178, 15.0, 1, 2, 0, 0, 1), -- wood_key
-(26, 179, 15.0, 1, 2, 0, 0, 2), -- stone_key
-(26, 186, 10.0, 1, 2, 0, 0, 3), -- pilferers lock pick;
+(27, 178, 15.0, 1, 2, 0, 0, 1), -- wood_key
+(27, 179, 15.0, 1, 2, 0, 0, 2), -- stone_key
+(27, 186, 10.0, 1, 2, 0, 0, 3), -- pilferers lock pick;
 -- ...
 (27, 180, 25.0, 1, 2, 0, 0, 1), -- iron_key
 (27, 187, 20.0, 1, 2, 0, 0, 2), -- thiefs lock pick;
 -- ..
-(27, 177, 10.0, 1, 1, 0, 0, 1), -- gold_key
---(27, xxx, 10.0, 1, 1, 0, 0, 1) -- spider_key
+(27, 181, 10.0, 1, 1, 0, 0, 1), -- gold_key
+(27, 188, 10.0, 1, 1, 0, 0, 1) -- spider_key
 
 -- scarce_keys (locks: gold, spider, )
 (28, 180, 15.0, 1, 2, 0, 0, 1), -- iron_key
 (28, 187, 10.0, 1, 2, 0, 0, 2), -- thiefs lock pick;
 -- ..
 (28, 181, 25.0, 1, 2, 0, 0, 1), -- gold_key
---(28, xxx, 20.0, 1, 1, 0, 0, 1) -- spider_key
+(28, 188, 20.0, 1, 1, 0, 0, 1) -- spider_key
 -- ..
 (28, 182, 10.0, 1, 1, 0, 0, 1), -- diamond_key
 
@@ -602,12 +606,14 @@ values
 (32, 175, 15.0, 1, 1, 0, 0, 2), -- gold coin
 
 -- scarce_treasure
-(33, 174, 25.0, 1, 4, 0, 0, 1), -- silver coin,
-(33, 175, 20.0, 1, 2, 0, 0, 2), -- gold coin
+(33, 174, 50.0, 1, 4, 0, 0, 1), -- silver coin,
+(33, 175, 40.0, 1, 2, 0, 0, 2), -- gold coin
+(33, 176, 10.0, 1, 1, 0, 0, 2), -- silver sword
 
 -- rare_treasure
-(34, 174, 25.0, 2, 6, 0, 0, 1), -- silver coin,
-(34, 175, 25.0, 1, 3, 0, 0, 2), -- gold coin
+(34, 174, 50.0, 2, 6, 0, 0, 1), -- silver coin,
+(34, 175, 50.0, 1, 3, 0, 0, 2), -- gold coin
+(33, 176, 10.0, 1, 1, 0, 0, 2), -- silver sword
 
 -- epic_treasure
 (35, 174, 20.0, 3, 10, 0, 0, 1), -- silver coin
@@ -657,7 +663,7 @@ values
 (3, 2, 50, 2, 4, 0),--common_chest3: common_armor
 (3, 3, 30, 1, 2, 1),--common_chest3: common_tools
 
--- general
+-- general uncommon
 (4, 6, 25, 2, 4, 0),--uncommon_chest: uncommon_items
 (4, 8, 25, 1, 1, 1),--uncommon_chest: uncommon_tools
 (4, 7, 20, 1, 2, 2),--uncommon_chest: uncommon_armor
@@ -669,7 +675,7 @@ values
 (4, 4, 5, 1, 3, 7),--uncommon_chest: common_food
 (4, 5, 5, 1, 2, 8),--uncommon_chest: common_potions
 
--- potion/fod
+-- potion/food
 (5, 6, 20, 2, 5, 0),--uncommon_chest2: uncommon_items
 (5, 8, 20, 1, 1, 1),--uncommon_chest2: uncommon_tools
 (5, 7, 20, 1, 2, 2),--uncommon_chest2: uncommon_armor
@@ -731,16 +737,23 @@ values
 (10, 1, 5, 1, 2, 9),--rare_chest: common_items
 (10, 5, 2, 1, 2, 10),--rare_chest: common_potions
 
-(11, 21, 50, 3, 5, 0),--epic_chest: epic_items
-(11, 23, 40, 2, 2, 1),--epic_chest: epic_food
+-- epic chest
+(11, 21, 50, 2, 3, 0),--epic_chest: epic_items
+(11, 23, 40, 1, 1, 1),--epic_chest: epic_food
 (11, 24, 50, 2, 3, 2),--epic_chest: epic_armor
-(11, 25, 20, 1, 1, 3),--epic_chest: epic_tools
+(11, 25, 30, 1, 1, 3),--epic_chest: epic_tools
 (11, 22, 10, 1, 1, 4),--epic_chest: epic_records
-(11, 16, 10, 1, 3, 5),--epic_chest: rare_items
-(11, 17, 10, 1, 2, 8),--epic_chest: rare_armor
-(11, 19, 10, 1, 2, 9),--epic_chest: rare_food
-(11, 18, 10, 1, 1, 10),--epic_chest: rare_tools
-(11, 20, 10, 1, 3, 11),--epic_chest: rare_potions
+(11, 16, 30, 1, 3, 5),--epic_chest: rare_items
+(11, 17, 30, 1, 2, 8),--epic_chest: rare_armor
+(11, 19, 30, 1, 2, 9),--epic_chest: rare_food
+(11, 18, 30, 1, 1, 10),--epic_chest: rare_tools
+(11, 20, 30, 1, 3, 11),--epic_chest: rare_potions
+(11, 11, 20, 2, 6, 0),--scarce_chest: scarce_items
+(11, 12, 20, 1, 2, 1),--scarce_chest: scarce_armor
+(11, 13, 20, 1, 1, 3),--scarce_chest: scarce_tools
+(11, 6, 10, 1, 3, 5),--epic_chest: uncommon_items
+(11, 7, 10, 1, 1, 6),--epic_chest: uncommon_armor
+(11, 8, 10, 1, 2, 7),--epic_chest: uncommon_tools
 (11, 9, 5, 1, 2, 12); --epic_chest: uncommon_potions
 
 -- -----------------------------------------------------
@@ -749,4 +762,28 @@ values
 insert into containers_has_groups (container_id, group_id, group_weight, min_items, max_items, ordering, special)
 values
 -- general chest
-(1, 26, 25.0, 1, 2, 0, true),--common_chest: common_keys
+(1, 26, 25, 1, 2, 0, true),--common_chest: common_keys
+(1, 31, 25, 1, 2, 0, true),--common_chest: common_treasure
+-- common chest 2
+(2, 26, 25, 1, 2, 0, true),--common_chest: common_keys
+(2, 31, 25, 1, 2, 0, true),--common_chest: common_treasure
+-- common chest 3
+(3, 26, 25, 1, 2, 0, true),--common_chest: common_keys
+(3, 31, 25, 1, 2, 0, true),--common_chest: common_treasure
+
+-- uncommon chest
+(4, 27, 25, 1, 2, 0, true),--uncommon_chest: uncommon_keys
+(4, 32, 25, 1, 2, 0, true),--uncommon_chest: uncommon_treasure
+-- uncommon chest 2
+(5, 27, 25, 1, 2, 0, true),--uncommon_chest: uncommon_keys
+(5, 32, 25, 1, 2, 0, true),--uncommon_chest: uncommon_treasure
+-- uncommon chest 3
+(6, 27, 25, 1, 2, 0, true),--uncommon_chest: uncommon_keys
+(6, 32, 25, 1, 2, 0, true),--uncommon_chest: uncommon_treasure
+
+
+
+
+
+
+

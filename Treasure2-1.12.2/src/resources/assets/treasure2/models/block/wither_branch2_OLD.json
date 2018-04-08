@@ -1,0 +1,134 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"textures": {
+		"0": "treasure2:blocks/wither_branch",
+		"1": "treasure2:blocks/wither_log_top",
+		"particle": "treasure2:blocks/wither_branch"
+	},
+	"elements": [
+		{
+			"name": "log",
+			"from": [4, 5, 0],
+			"to": [12, 13, 8],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#1",
+					"rotation": 90
+				},
+				"east": {
+					"uv": [0, 8, 8, 16],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"south": {
+					"uv": [0, 0, 8, 8],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"west": {
+					"uv": [0, 8, 8, 16],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"up": {
+					"uv": [0, 8, 8, 16],
+					"texture": "#0",
+					"rotation": 180
+				},
+				"down": {
+					"uv": [0, 8, 8, 16],
+					"texture": "#0",
+					"rotation": 180
+				}
+			},
+			"rotation": {
+				"origin": [12, 13, 8],
+				"axis": "x",
+				"angle": 45
+			},
+			"type": "cube"
+		},
+		{
+			"name": "log2",
+			"from": [4, 0, 5],
+			"to": [12, 8, 21],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"east": {
+					"uv": [0, 0, 8, 16],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"west": {
+					"uv": [0, 0, 8, 16],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"up": {"uv": [0, 0, 8, 16], "texture": "#0"},
+				"down": {"uv": [8, 0, 16, 16], "texture": "#0"}
+			},
+			"rotation": {
+				"origin": [12, 8, 13],
+				"axis": "x",
+				"angle": 45
+			},
+			"type": "cube"
+		},
+		{
+			"name": "stick",
+			"from": [1, 7, -6],
+			"to": [5, 11, 4],
+			"faces": {
+				"north": {
+					"uv": [4, 4, 12, 12],
+					"texture": "#1",
+					"rotation": 90
+				},
+				"east": {
+					"uv": [0, 0, 4, 10],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"south": {
+					"uv": [0, 0, 4, 10],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"west": {
+					"uv": [0, 0, 4, 10],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"up": {"uv": [0, 0, 4, 10], "texture": "#0"},
+				"down": {"uv": [0, 0, 4, 10], "texture": "#0"}
+			},
+			"rotation": {
+				"origin": [9, 8, 2],
+				"axis": "y",
+				"angle": 45
+			},
+			"type": "cube"
+		},
+		{
+			"name": "nub",
+			"from": [10, 4, 7],
+			"to": [14, 8, 11],
+			"faces": {
+				"north": {"uv": [0, 0, 4, 4], "texture": "#0"},
+				"east": {"uv": [4, 4, 12, 12], "texture": "#1"},
+				"south": {"uv": [0, 0, 4, 4], "texture": "#0"},
+				"west": {"uv": [0, 0, 4, 4], "texture": "#missing"},
+				"up": {"uv": [0, 0, 4, 4], "texture": "#0"},
+				"down": {"uv": [0, 0, 4, 4], "texture": "#0"}
+			},
+			"rotation": {
+				"origin": [10, 4, 9],
+				"axis": "x",
+				"angle": 45
+			},
+			"type": "cube"
+		}
+	]
+}

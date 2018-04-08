@@ -1,0 +1,87 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"parent": "block/block",
+	"textures": {
+		"particle": "#0"
+	},
+	"elements": [
+		{
+			"name": "log",
+			"from": [4, 0, 0],
+			"to": [12, 8, 16],
+			"rotation": {
+				"angle": 0,
+				"axis": "x",
+				"origin": [12, 8, 8]
+			},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"east": {
+					"uv": [0, 0, 8, 16],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"west": {
+					"uv": [0, 0, 8, 16],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"up": {"uv": [0, 0, 8, 16], "texture": "#0"},
+				"down": {"uv": [8, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "stick",
+			"from": [1, 2, -6],
+			"to": [5, 6, 4],
+			"rotation": {
+				"angle": 45,
+				"axis": "y",
+				"origin": [9, 3, 2]
+			},
+			"faces": {
+				"north": {
+					"uv": [4, 4, 12, 12],
+					"texture": "#1",
+					"rotation": 90
+				},
+				"east": {
+					"uv": [0, 0, 4, 10],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"south": {
+					"uv": [0, 0, 4, 10],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"west": {
+					"uv": [0, 0, 4, 10],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"up": {"uv": [0, 0, 4, 10], "texture": "#0"},
+				"down": {"uv": [0, 0, 4, 10], "texture": "#0"}
+			}
+		},
+		{
+			"name": "nub",
+			"from": [10, 3, 6],
+			"to": [14, 7, 10],
+			"rotation": {
+				"angle": 45,
+				"axis": "x",
+				"origin": [10, 3, 8]
+			},
+			"faces": {
+				"north": {"uv": [0, 0, 4, 4], "texture": "#0"},
+				"east": {"uv": [4, 4, 12, 12], "texture": "#1"},
+				"south": {"uv": [0, 0, 4, 4], "texture": "#0"},
+				"west": {"uv": [0, 0, 4, 4], "texture": "#missing"},
+				"up": {"uv": [0, 0, 4, 4], "texture": "#0"},
+				"down": {"uv": [0, 0, 4, 4], "texture": "#0"}
+			}
+		}
+	]
+}

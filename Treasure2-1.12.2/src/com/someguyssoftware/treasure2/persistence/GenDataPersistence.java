@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
@@ -46,8 +47,9 @@ public class GenDataPersistence extends WorldSavedData {
 	public void readFromNBT(NBTTagCompound tag) {
 		Treasure.logger.debug("Loading Treasure! saved gen data...");
 
-		// get the chest generator
+		// get the world generators
 		ChestWorldGenerator chestGen = (ChestWorldGenerator) Treasure.worldGenerators.get("chest");
+		WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.worldGenerators.get("well");
 		
 		// treasure
 		NBTTagCompound treasureGen = tag.getCompoundTag("treasureGenerator");
@@ -60,6 +62,9 @@ public class GenDataPersistence extends WorldSavedData {
 			String key = chunkTag.getString("key");
 			chestGen.getChunksSinceLastRarityChest().put(Rarity.valueOf(key), count);
 		}
+		
+		///// Wells /////
+		wellGen.setChunksSinceLastWell(treasureGen.getInteger("chunksSinceLastWell"));
 		
 //		NBTTagList registryTagList = tag.getTagList("registry", 10);
 //		
@@ -123,9 +128,14 @@ public class GenDataPersistence extends WorldSavedData {
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 
 		try {
+			// create a treasure compound			
+			NBTTagCompound treasureGen = new NBTTagCompound();
+			
+			///// Chests //////
 			// get the chest world generator
 			ChestWorldGenerator chestGen = (ChestWorldGenerator) Treasure.worldGenerators.get("chest");
-			NBTTagCompound treasureGen = new NBTTagCompound();
+			
+			// add the chest gen last count to the treasure compound
 			treasureGen.setInteger("chunksSinceLastChest", chestGen.getChunksSinceLastChest());
 			tag.setTag("treasureGenerator", treasureGen);
 			
@@ -141,6 +151,14 @@ public class GenDataPersistence extends WorldSavedData {
 				chunksSinceTagList.appendTag(entry);
 			}
 			treasureGen.setTag("chunksSinceLastRarityChest", chunksSinceTagList);
+			
+			///// Wells ////
+			// get the well world generator
+			WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.worldGenerators.get("well");
+			
+			// add the chest gen last count to the treasure compound
+			treasureGen.setInteger("chunksSinceLastWell", wellGen.getChunksSinceLastWell());
+			
 			
 			// write the Dungeon Registry to NBT
 //			NBTTagList registryTagList = new NBTTagList();

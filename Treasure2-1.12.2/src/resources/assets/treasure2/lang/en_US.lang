@@ -48,6 +48,7 @@ item.treasure2:diamond_key.name=Diamond Key
 item.treasure2:emerald_key.name=Emerald Key
 item.treasure2:ruby_key.name=Ruby Key
 item.treasure2:sapphire_key.name=Sapphire Key
+item.treasure2:jewelled_key.name=Jewelled Key
 item.treasure2:metallurgists_key.name=Metallurgist's Key
 item.treasure2:skeleton_key.name=Skeleton Key
 item.treasure2:spider_key.name=Spider Key
@@ -90,6 +91,7 @@ tooltip.metallurgists_key.specials=Opens any lock in METALS category
 tooltip.skeleton_key.specials=Opens COMMON, UNCOMMON, SCARCE and RARE locks
 tooltip.pilferers_lock_pick.specials=Opens COMMON locks
 tooltip.thiefs_lock_pick.specials=Opens COMMON and UNCOMMON locks
+tooltip.jewelled_key.specials=Opens any lock in GEMS category
 
 #gui
 display.wood_chest.name=Wood Chest

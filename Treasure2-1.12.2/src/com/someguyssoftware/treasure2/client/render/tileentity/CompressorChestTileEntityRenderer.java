@@ -144,7 +144,7 @@ public class CompressorChestTileEntityRenderer extends TreasureChestTileEntityRe
     	        		(float)y + lockState.getSlot().getYOffset(),
     	        		(float)z + lockState.getSlot().getZOffset());
     	        GlStateManager.rotate(lockState.getSlot().getRotation(), 0F, 1.0F, 0.0F);
-    	        GlStateManager.scale(0.25F, 0.25F, 0.25F);
+    	        GlStateManager.scale(0.20F, 0.20F, 0.20F);
 	        	Minecraft.getMinecraft().getRenderItem().renderItem(lockStack, ItemCameraTransforms.TransformType.NONE);
 	        	GlStateManager.popMatrix();
         	}

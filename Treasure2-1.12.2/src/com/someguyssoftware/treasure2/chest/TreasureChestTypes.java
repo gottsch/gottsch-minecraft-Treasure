@@ -49,10 +49,10 @@ public class TreasureChestTypes {
 		);
 		
 		COMPRESSOR = new TreasureChestType(4).addSlots(
-				new LockSlot(0, Direction.NORTH, 0.66F, 0.3F, 0.25F, 0F),
-				new LockSlot(1, Direction.EAST, 0.05F, 0.3F, 0.33F, 90F),
-				new LockSlot(2, Direction.WEST, 0.95F, 0.3F, 0.66F, -90F),
-				new LockSlot(3, Direction.SOUTH, 0.33F, 0.2F, 0.9F, 0F)
+				new LockSlot(0, Direction.NORTH, 0.63F, 0.31F, 0.22F, 0F),
+				new LockSlot(1, Direction.EAST, 0.95F, 0.3F, 0.33F, 90F),
+				new LockSlot(2, Direction.WEST, 0.05F, 0.3F, 0.66F, -90F),
+				new LockSlot(3, Direction.SOUTH, 0.37F, 0.4F, 0.75F, 0F)
 			);
 	}
 }

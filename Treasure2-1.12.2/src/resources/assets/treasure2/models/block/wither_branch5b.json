@@ -1,0 +1,7 @@
+{
+	"parent": "treasure2:block/wither_branch5",
+	"textures": {
+		"0": "treasure2:blocks/wither_log_mossy",
+		"1": "treasure2:blocks/wither_log_top"
+	}
+}

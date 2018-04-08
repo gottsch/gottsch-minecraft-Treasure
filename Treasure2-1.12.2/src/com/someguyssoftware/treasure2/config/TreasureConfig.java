@@ -52,16 +52,16 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String IRON_KEY_ID = "iron_key";
 	public static final String GOLD_KEY_ID = "gold_key";
 	public static final String DIAMOND_KEY_ID = "diamond_key";
+	
 	public static final String STONE_KEY_ID = "stone_key";
 	public static final String EMERALD_KEY_ID = "emerald_key";
 	public static final String RUBY_KEY_ID = "ruby_key";
 	public static final String SAPPHIRE_KEY_ID = "sapphire_key";
-	public static final String PRISMATIC_KEY_ID = "prismatic_key";
+	public static final String JEWELLED_KEY_ID = "jewelled_key";
 	public static final String METALLURGISTS_KEY_ID = "metallurgists_key";
 	public static final String SKELETON_KEY_ID = "skeleton_key";
 	public static final String WITHER_KEY_ID = "wither_key";
 	public static final String SPIDER_KEY_ID = "spider_key";
-
 	
 	public static final String PILFERERS_LOCK_PICK_ID = "pilferers_lock_pick";
 	public static final String THIEFS_LOCK_PICK_ID = "thiefs_lock_pick";
@@ -74,6 +74,10 @@ public class TreasureConfig extends AbstractConfig {
 	// weapons / armor
 	public static final String SKULL_SWORD_ID = "skull_sword";
 	public static final String EYE_PATCH_ID = "eye_patch";
+	
+	// wither items
+	public static final String WITHER_ROOT_ITEM_ID = "wither_root_item";
+	public static final String WITHER_STICK_ITEM_ID = "wither_stick_item";
 	
 	// GRAVESTONES
 	public static final String GRAVESTONE1_STONE_ID = "gravestone1_stone";
@@ -108,6 +112,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String LOW_FOG_BLOCK_ID = "low_fog";
 	
 	public static final String WITHER_LOG_ID = "wither_log";
+	public static final String WITHER_BRANCH_ID = "wither_branch";
+	public static final String WITHER_ROOT_ID = "wither_root";
 	
 	// TEs
 	public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity";
@@ -136,6 +142,10 @@ public class TreasureConfig extends AbstractConfig {
 	public static boolean isGravestonesAllowed;
 	public static int minGravestonesPerChest;
 	public static int maxGravestonesPerChest;
+	
+	// wither properties
+	public static double witherBranchGenProbability;
+	public static double witherRootGenProbability;
 	
 	// TODO add wells properties
 	
@@ -186,6 +196,9 @@ public class TreasureConfig extends AbstractConfig {
         // wells
         minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 500, 100, 32000, "");
         
+        // wither items
+        witherRootGenProbability = config.getFloat("witherRootGenProbability", "04-gen", 50.0F, 0.0F, 100.0F, "");
+
         // the the default values
        if(config.hasChanged()) {
     	   config.save();

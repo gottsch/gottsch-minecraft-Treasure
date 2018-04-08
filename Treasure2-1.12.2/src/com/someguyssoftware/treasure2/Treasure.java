@@ -20,39 +20,22 @@ import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.lootbuilder.db.DbManager;
 import com.someguyssoftware.lootbuilder.exception.DatabaseInitializationException;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
-import com.someguyssoftware.treasure2.client.model.BandedChestModel;
-import com.someguyssoftware.treasure2.client.model.CrateChestModel;
-import com.someguyssoftware.treasure2.client.model.SafeModel;
-import com.someguyssoftware.treasure2.client.model.StandardChestModel;
-import com.someguyssoftware.treasure2.client.model.StrongboxModel;
-import com.someguyssoftware.treasure2.client.render.tileentity.CrateChestTileEntityRenderer;
-import com.someguyssoftware.treasure2.client.render.tileentity.SafeTileEntityRenderer;
-import com.someguyssoftware.treasure2.client.render.tileentity.StrongboxTileEntityRenderer;
-import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellCommand;
+import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.command.TreasureChestCommand;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
 import com.someguyssoftware.treasure2.item.TreasureItems;
-import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
-import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
-import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -78,7 +61,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 		modid=Treasure.MODID,
 		name=Treasure.NAME,
 		version=Treasure.VERSION,
-		dependencies="required-after:gottschcore@[1.3.0,)",
+		dependencies="required-after:gottschcore@[1.3.5,)",
 		acceptedMinecraftVersions = "[1.12.2]",
 		updateJSON = Treasure.UPDATE_JSON_URL
 		)
@@ -88,7 +71,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "0.5.3";
+	protected static final String VERSION = "0.5.4";
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
 	private static final String VERSION_URL = "";
@@ -169,6 +152,7 @@ public class Treasure extends AbstractMod {
     	event.registerServerCommand(new SpawnPitCommand());
     	event.registerServerCommand(new SpawnPitOnlyCommand());
     	event.registerServerCommand(new SpawnWellCommand());
+    	event.registerServerCommand(new SpawnWitherTreeCommand());
     }
 	
 	/**
@@ -185,6 +169,7 @@ public class Treasure extends AbstractMod {
 		// register world generators
 		worldGenerators.put("chest", new ChestWorldGenerator());
 		worldGenerators.put("well", new WellWorldGenerator());
+		worldGenerators.put("witherTree", new WitherTreeWorldGenerator());
 		int genWeight = 0;
 		for (Entry<String, IWorldGenerator> gen : worldGenerators.entrySet()) {
 			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);
@@ -202,9 +187,7 @@ public class Treasure extends AbstractMod {
 		// perform any post init
 		super.postInit(event);
 	}
-	
-
-	
+		
 	/* (non-Javadoc)
 	 * @see com.someguyssoftware.gottschcore.mod.IMod#getConfig()
 	 */

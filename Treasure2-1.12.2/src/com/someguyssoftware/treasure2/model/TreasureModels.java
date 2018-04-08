@@ -62,6 +62,8 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.MED_FOG_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.LOW_FOG_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_LOG));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_BRANCH));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_ROOT));
 		
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);
@@ -86,12 +88,16 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.EMERALD_KEY);
 		registerItemModel(TreasureItems.RUBY_KEY);
 		registerItemModel(TreasureItems.SAPPHIRE_KEY);
+		registerItemModel(TreasureItems.JEWELLED_KEY);
 		registerItemModel(TreasureItems.METALLURGISTS_KEY);
 		registerItemModel(TreasureItems.SKELETON_KEY);
 		registerItemModel(TreasureItems.SPIDER_KEY);
 		registerItemModel(TreasureItems.PILFERERS_LOCK_PICK);
 		registerItemModel(TreasureItems.THIEFS_LOCK_PICK);
 		registerItemModel(TreasureItems.KEY_RING);
+		
+		// WITHER ITEMS
+		registerItemModel(TreasureItems.WITHER_ROOT_ITEM);
 		
 		// WEAPONS
 		registerItemModel(TreasureItems.SKULL_SWORD);
