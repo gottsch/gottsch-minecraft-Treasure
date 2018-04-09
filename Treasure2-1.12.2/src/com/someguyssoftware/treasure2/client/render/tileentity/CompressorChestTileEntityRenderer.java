@@ -98,7 +98,7 @@ public class CompressorChestTileEntityRenderer extends TreasureChestTileEntityRe
         }
         
         ////////////// render the locks //////////////////////////////////////
-        if (!te.getLockStates().isEmpty()) {
+        if (te.getLockStates() != null && !te.getLockStates().isEmpty()) {
         	renderLocks(te, x, y, z);
         }
         ////////////// end of render the locks //////////////////////////////////////

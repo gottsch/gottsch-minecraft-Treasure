@@ -160,7 +160,12 @@ public class ChestWorldGenerator implements IWorldGenerator {
 				Biome biome = world.getBiome(coords.toPos());
 
 			    if (!BiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList())) {
-			    	Treasure.logger.debug(String.format("[%s] is not a valid biome.", biome.getBiomeName()));
+		    		if (world.isRemote) {
+		    			Treasure.logger.debug(String.format("[%s] is not a valid biome @ {}", biome.getBiomeName(), coords.toShortString()));
+		    		}
+		    		else {
+		    			Treasure.logger.debug(String.format("Biome is not valid @ {}", coords.toShortString()));
+		    		}
 			    	return;
 			    }
 			    

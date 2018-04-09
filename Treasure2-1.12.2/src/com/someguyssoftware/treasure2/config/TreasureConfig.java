@@ -144,8 +144,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static int maxGravestonesPerChest;
 	
 	// wither properties
-	public static double witherBranchGenProbability;
-	public static double witherRootGenProbability;
+	public static double witherBranchItemGenProbability;
+	public static double witherRootItemGenProbability;
 	
 	// TODO add wells properties
 	
@@ -197,7 +197,7 @@ public class TreasureConfig extends AbstractConfig {
         minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 500, 100, 32000, "");
         
         // wither items
-        witherRootGenProbability = config.getFloat("witherRootGenProbability", "04-gen", 50.0F, 0.0F, 100.0F, "");
+        witherRootItemGenProbability = config.getFloat("witherRootGenProbability", "04-gen", 50.0F, 0.0F, 100.0F, "");
 
         // the the default values
        if(config.hasChanged()) {

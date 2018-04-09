@@ -48,11 +48,13 @@ public class TreasureChestTypes {
 			new LockSlot(1, Direction.NORTH, 0.25F, 0.3F, 0.1125F, 0F)
 		);
 		
-		COMPRESSOR = new TreasureChestType(4).addSlots(
-				new LockSlot(0, Direction.NORTH, 0.63F, 0.31F, 0.22F, 0F),
-				new LockSlot(1, Direction.EAST, 0.95F, 0.3F, 0.33F, 90F),
-				new LockSlot(2, Direction.WEST, 0.05F, 0.3F, 0.66F, -90F),
-				new LockSlot(3, Direction.SOUTH, 0.37F, 0.4F, 0.75F, 0F)
+		// starts in the NW bottom corner and moves E and S and up, so (0,0,0) is NW corner and (1,1,1) is the SE corner top
+		COMPRESSOR = new TreasureChestType(2).addSlots(
+//				new LockSlot(0, Direction.NORTH, 0.63F, 0.31F, 0.22F, 0F),
+				new LockSlot(0, Direction.NORTH, 0.61F, 0.18F, 0.27F, 0F),
+				new LockSlot(1, Direction.EAST, 0.73F, 0.18F, 0.61F, 90F)
+//				new LockSlot(2, Direction.WEST, 0.05F, 0.3F, 0.66F, -90F)
+//				new LockSlot(3, Direction.SOUTH, 0.37F, 0.4F, 0.75F, 0F)
 			);
 	}
 }

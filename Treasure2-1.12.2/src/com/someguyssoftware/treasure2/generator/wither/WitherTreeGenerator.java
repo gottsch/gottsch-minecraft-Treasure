@@ -167,59 +167,7 @@ public class WitherTreeGenerator {
 		// build the trunk
 		buildTrunk(world, random, coords, config);
 
-		// add branches
-		// buildBranches(world, coords, config);
 
-		// int side = random.nextInt(4);
-		// switch (side) {
-		// case 0: // south
-		// world.setBlockState(coords.add(0, i, 1),
-		// TreasureBlocks.witherBranch.getDefaultState()
-		// .withProperty(GenericBlockContainer.FACING, EnumFacing.SOUTH), 2); // place
-		// south
-		// break;
-		// case 1: // west
-		// world.setBlockState(coords.add(-1, i, 0),
-		// TreasureBlocks.witherBranch.getDefaultState()
-		// .withProperty(GenericBlockContainer.FACING, EnumFacing.WEST), 2); // place
-		// west
-		// break;
-		// case 2: // north
-		// world.setBlockState(coords.add(0, i, -1),
-		// TreasureBlocks.witherBranch.getDefaultState()
-		// .withProperty(GenericBlockContainer.FACING, EnumFacing.NORTH), 2); // place
-		// north
-		// break;
-		// case 3: // east
-		// world.setBlockState(coords.add(1, i, 0),
-		// TreasureBlocks.witherBranch.getDefaultState()
-		// .withProperty(GenericBlockContainer.FACING, EnumFacing.EAST), 2); // place
-		// east
-		// break;
-		// }
-		// }
-		//
-		// // add roots
-		// if (isValidRootBlock(world, coords.add(0, -1, 1)))
-		// world.setBlockState(coords.add(0, 0, 1),
-		// TreasureBlocks.witherRoot.getDefaultState()
-		// .withProperty(GenericBlockContainer.FACING, EnumFacing.SOUTH), 2); // place
-		// south
-		// if (isValidRootBlock(world, coords.add(-1, -1, 0)))
-		// world.setBlockState(coords.add(-1, 0, 0),
-		// TreasureBlocks.witherRoot.getDefaultState()
-		// .withProperty(GenericBlockContainer.FACING, EnumFacing.WEST), 2); // place
-		// south
-		// if (isValidRootBlock(world, coords.add(0, -1, -1)))
-		// world.setBlockState(coords.add(0, 0, -1),
-		// TreasureBlocks.witherRoot.getDefaultState()
-		// .withProperty(GenericBlockContainer.FACING, EnumFacing.NORTH), 2); // place
-		// south
-		// if (isValidRootBlock(world, coords.add(1, -1, 0)))
-		// world.setBlockState(coords.add(1, 0, 0),
-		// TreasureBlocks.witherRoot.getDefaultState()
-		// .withProperty(GenericBlockContainer.FACING, EnumFacing.EAST), 2); // place
-		// south
 	}
 
 	/**
@@ -250,32 +198,18 @@ public class WitherTreeGenerator {
 				 Treasure.logger.debug("Wither Tree building trunk @ " +  trunkCoords[trunkIndex].add(0, y, 0).toShortString());
 				 
 				 // add the branch(es)
-				 if (y > 0) {
-					 addBranch(world, random, trunkCoords[trunkIndex], y, maxSize, trunkMatrix[trunkIndex]);
-				 }
-				 else {
+				 if (y ==0) {
 					 addRoot(world, random, trunkCoords[trunkIndex], trunkMatrix[trunkIndex]);
+				 }
+				 else if (y > 3) {
+					 addBranch(world, random, trunkCoords[trunkIndex], y, maxSize, trunkMatrix[trunkIndex]);
 				 }
 			}
 
-			/*
-			 *  add the tops, branches, and roots (depends on trunk position)
-			 */
-//			switch (trunkIndex) {
-//			case 0:				
-//				break;
-//			case 1:
-//				break;
-//			case 2:
-//				break;
-//			case 3:
-//				break;
-//			default:
-//				break;
-//			}
-
-
-			// add the heart block
+			// TODO add the heart block
+			
+			
+			
 
 			// set the new max size
 			if (maxSize > 3) {
@@ -294,24 +228,24 @@ public class WitherTreeGenerator {
 	 * @param list
 	 */
 	private void addRoot(World world, Random random, ICoords coords, List<Direction> directions) {
-		// TODO Auto-generated method stub
-		// TODO ensure there is ground beneath the root
 		// for each direction
 		for (Direction d : directions) {
 			Cube groundCube = new Cube(world, coords.down(1));
 			if (groundCube.isSolid() && groundCube.isTopSolid()) {
 				if (RandomHelper.checkProbability(random, 50)) {
+					// update the coords to the correct position
+					ICoords c = coords.add(d, 1);
 					// rotate the branch in the right direction
 					IBlockState state = TreasureBlocks.WITHER_ROOT.getDefaultState().withProperty(WitherRootBlock.FACING, d.toFacing());
 					
 					// add the branch to the world
-					world.setBlockState(coords.toPos(), state);
+					world.setBlockState(c.toPos(), state);
 					 Treasure.logger.debug("Wither Tree building root @ " +  coords.toShortString());					
 				}
 			}
-		}
-		
+		}		
 	}
+	
 
 	/**
 	 * 
@@ -320,14 +254,13 @@ public class WitherTreeGenerator {
 	 * @param maxSize
 	 * @param is
 	 */
-	// TODO directions really should be a List<Direction>
 	private void addBranch(World world, Random random, ICoords  trunkCoords, int y, int maxSize, List<Direction> directions) {
 		int branchSize = (y <= (maxSize/2)) ? 2 : 1;
 		
 		// for each direction
 		for (Direction d : directions) {
 			// randomize if a branch is generated
-			if (RandomHelper.checkProbability(random, 30)) {
+			if (RandomHelper.checkProbability(random, 20)) {
 				// for the num of branch segments
 				ICoords c = trunkCoords;
 				for (int segment = 0; segment < branchSize; segment++) {

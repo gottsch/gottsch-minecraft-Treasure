@@ -3,13 +3,20 @@
  */
 package com.someguyssoftware.treasure2.block;
 
+import java.util.Random;
+
 import com.someguyssoftware.gottschcore.block.CardinalDirectionFacadeBlock;
+import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -37,7 +44,7 @@ public class WitherBranchBlock extends CardinalDirectionFacadeBlock implements I
 	public WitherBranchBlock(String modID, String name) {
 		super(modID, name, Material.WOOD);
 		setSoundType(SoundType.WOOD);
-		setCreativeTab(Treasure.TREASURE_TAB);
+//		setCreativeTab(Treasure.TREASURE_TAB);
 		setHardness(3.0F);
 		setBounds(
 				new AxisAlignedBB[] {
@@ -70,6 +77,18 @@ public class WitherBranchBlock extends CardinalDirectionFacadeBlock implements I
 		}
 	}
     
+	/**
+	 * Drops WitherBranchItem or a stick.
+	 */
+	@Override
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
+
+		if (RandomHelper.checkProbability(random, TreasureConfig.witherBranchItemGenProbability)) {
+			return TreasureItems.WITHER_STICK_ITEM;
+		}
+		return Items.STICK;
+    }
+	
 	/**
 	 * @return the bounds
 	 */

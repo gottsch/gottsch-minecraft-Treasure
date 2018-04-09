@@ -8,22 +8,22 @@
 	        	{ "model": "treasure2:wither_root2b" }
         	],
         "facing=south": [
-	        	{ "model": "treasure2:wither_root1a", "y": 180, "uvlock": true },
-	        	{ "model": "treasure2:wither_root2a", "y": 180, "uvlock": true },
-	        	{ "model": "treasure2:wither_root1b", "y": 180, "uvlock": true },
-	        	{ "model": "treasure2:wither_root2b", "y": 180, "uvlock": true }      	
+	        	{ "model": "treasure2:wither_root1a", "y": 180 },
+	        	{ "model": "treasure2:wither_root2a", "y": 180 },
+	        	{ "model": "treasure2:wither_root1b", "y": 180 },
+	        	{ "model": "treasure2:wither_root2b", "y": 180 }
         	],
         "facing=west":  [
-	        	{ "model": "treasure2:wither_root1a" , "y": 270, "uvlock": true},
-	        	{ "model": "treasure2:wither_root2a" , "y": 270, "uvlock": true},
-	        	{ "model": "treasure2:wither_root1b" , "y": 270, "uvlock": true},
-	        	{ "model": "treasure2:wither_root2b" , "y": 270, "uvlock": true}       	
+	        	{ "model": "treasure2:wither_root1a" , "y": 270},
+	        	{ "model": "treasure2:wither_root2a" , "y": 270},
+	        	{ "model": "treasure2:wither_root1b" , "y": 270},
+	        	{ "model": "treasure2:wither_root2b" , "y": 270}       	
         	],
         "facing=east": [
-	        	{ "model": "treasure2:wither_root1a" , "y": 90, "uvlock": true},
-	        	{ "model": "treasure2:wither_root2a", "y": 90, "uvlock": true },
-	        	{ "model": "treasure2:wither_root1b" , "y": 90, "uvlock": true},
-	        	{ "model": "treasure2:wither_root2b", "y": 90, "uvlock": true }
+	        	{ "model": "treasure2:wither_root1a" , "y": 90},
+	        	{ "model": "treasure2:wither_root2a", "y": 90 },
+	        	{ "model": "treasure2:wither_root1b" , "y": 90},
+	        	{ "model": "treasure2:wither_root2b", "y": 90 }
         	],
         "facing=up": { "model": "treasure2:wither_root1a" },
         "facing=down": { "model": "treasure2:wither_root1a" }

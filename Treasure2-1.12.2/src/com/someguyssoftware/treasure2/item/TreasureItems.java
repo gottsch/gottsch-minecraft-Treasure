@@ -75,6 +75,7 @@ public class TreasureItems {
 	public static KeyRingItem KEY_RING;
 	
 	// wither items
+	public static Item WITHER_STICK_ITEM;
 	public static Item WITHER_ROOT_ITEM;
 		
 	// swords
@@ -273,6 +274,7 @@ public class TreasureItems {
 				.build();
 		
 		// wither items
+		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, TreasureConfig.WITHER_STICK_ITEM_ID);
 		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.WITHER_ROOT_ITEM_ID);
 	}
 	
@@ -319,6 +321,7 @@ public class TreasureItems {
 					KEY_RING,
 					SKULL_SWORD,
 					EYE_PATCH,
+					WITHER_STICK_ITEM,
 					WITHER_ROOT_ITEM
 			};
 			registry.registerAll(items);		

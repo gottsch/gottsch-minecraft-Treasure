@@ -45,7 +45,7 @@ public class WitherRootBlock extends CardinalDirectionFacadeBlock implements ITr
 	public WitherRootBlock(String modID, String name) {
 		super(modID, name, Material.WOOD);
 		setSoundType(SoundType.WOOD);
-		setCreativeTab(Treasure.TREASURE_TAB);
+//		setCreativeTab(Treasure.TREASURE_TAB);
 		setHardness(3.0F);
 		setBounds(
 				new AxisAlignedBB[] {
@@ -85,8 +85,8 @@ public class WitherRootBlock extends CardinalDirectionFacadeBlock implements ITr
 	@Override
 	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 
-		if (RandomHelper.checkProbability(random, TreasureConfig.witherRootGenProbability)) {
-//			return TreasureItems.WITHER_ROOT_ITEM;
+		if (RandomHelper.checkProbability(random, TreasureConfig.witherRootItemGenProbability)) {
+			return TreasureItems.WITHER_ROOT_ITEM;
 		}
 		return Items.STICK;
     }

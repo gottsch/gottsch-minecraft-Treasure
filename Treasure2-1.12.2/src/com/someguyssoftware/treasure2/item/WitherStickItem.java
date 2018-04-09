@@ -3,79 +3,85 @@
  */
 package com.someguyssoftware.treasure2.item;
 
-import net.minecraft.item.Item;
+import com.someguyssoftware.gottschcore.item.ModItem;
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.TreasureBlocks;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 /**
  * @author Mark Gottschling on Nov 14, 2014
  *
  */
-public class WitherStickItem extends Item {
+public class WitherStickItem extends ModItem {
 	
 	/**
 	 * 
 	 */
-	public WitherStickItem() {
-//		setCreativeTab(Treasure.treasureTab);
-//		setUnlocalizedName(IdsConfig.witherStickItemId);
-		//setTextureName(TexturesConfig.witherStickItemTexture);
+	public WitherStickItem(String modID, String name) {
+		setItemName(modID, name);
+		setCreativeTab(Treasure.TREASURE_TAB);
 	}
-//	
-//	/**
-//	 * 
-//	 */
-//	@Override
-//    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumFacing side,
-//    		float hitX, float hitY, float hitZ) {
-//        if (world.isRemote) {
-//            return true;
+	
+	@Override
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
+		if (worldIn.isRemote) {
+            return EnumActionResult.PASS;
+        }
+//        else if (facing == EnumFacing.UP || facing == EnumFacing.DOWN) {
+//        	return EnumActionResult.PASS;
 //        }
-//        else if (side == EnumFacing.UP || side == EnumFacing.DOWN) {
-//        	return false;
-//        }
-//        else {
-//        	Block block = TreasureBlocks.witherBranch;
-//        	int playerDirection = MathHelper.floor_double((double)(player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-//        	int xOffset = 0;
-//        	int zOffset = 0;
-//        	 
-//     		switch (playerDirection) {
-//	    		case 0: // south
-//	    		zOffset = -1;
-//	    		break;
-//	    		case 1: // west
-//	    		xOffset = 1;
-//	    		break;
-//	    		case 2: // north
-//	    		zOffset = 1;
-//	    		break;
-//	    		case 3: // east
-//	    		xOffset = -1;
-//	    		break;
-//    		}
-//
-//     		this.placeBlock(world, pos.add(xOffset, 0, zOffset), block, player, itemStack);	        	
-//        	// decrement the stack
-//            --itemStack.stackSize;
-//            return true;
-//
-//        }
-//    }
-//	
-//	/**
-//	 * 
-//	 * @param world
-//	 * @param x
-//	 * @param y
-//	 * @param z
-//	 * @param player
-//	 * @param itemStack
-//	 */
-//	public void placeBlock(World world, BlockPos pos, Block block, EntityPlayer player, ItemStack itemStack) {
-//    	// set the block
-// 		Treasure.logger.debug("Placing wither branch into world.");
-//    	world.setBlockState(pos, block.getDefaultState());    		      	
-//    	
-//    	Treasure.logger.debug("Calling onBlockPlacedby.");
-//    	block.onBlockPlacedBy(world, pos, block.getDefaultState(), player, itemStack);
-//	}
+
+        	Block block = TreasureBlocks.WITHER_BRANCH;
+        	 
+        	BlockPos  p = null;
+     		switch (facing) {
+	    		case SOUTH:
+	    			p = pos.north();
+	    			break;
+	    		case WEST:
+	    			p = pos.east();
+	    			break;
+	    		case NORTH:
+		    		p = pos.south();
+		    		break;
+	    		case EAST:
+	    			p = pos.west();
+	    			break;
+			default:
+				p = pos.north();
+				break;
+    		}
+     		
+     		ItemStack heldItem = player.getHeldItem(hand);	     		
+     		this.placeBlock(worldIn, p, block, player, heldItem);     		
+     		heldItem.shrink(1);            
+            return EnumActionResult.SUCCESS;
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param player
+	 * @param itemStack
+	 */
+	public void placeBlock(World world, BlockPos pos, Block block, EntityPlayer player, ItemStack itemStack) {
+    	// set the block
+ 		Treasure.logger.debug("Placing wither branch into world.");
+    	world.setBlockState(pos, block.getDefaultState());    		      	
+    	
+    	Treasure.logger.debug("Calling onBlockPlacedby.");
+    	block.onBlockPlacedBy(world, pos, block.getDefaultState(), player, itemStack);
+	}
 }
