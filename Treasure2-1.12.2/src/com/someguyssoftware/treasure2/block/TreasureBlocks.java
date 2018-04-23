@@ -102,6 +102,11 @@ public class TreasureBlocks {
 	public static final FogBlock MED_FOG_BLOCK;
 	public static final FogBlock LOW_FOG_BLOCK;
 	
+	public static final FogBlock WITHER_FOG;
+	public static final FogBlock HIGH_WITHER_FOG;
+	public static final FogBlock MED_WITHER_FOG;
+	public static final FogBlock LOW_WITHER_FOG;
+	
 	public static final Block WITHER_LOG;
 	public static final Block WITHER_BRANCH;
 	public static final Block WITHER_ROOT;
@@ -314,6 +319,12 @@ public class TreasureBlocks {
 		HIGH_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.HIGH_FOG_BLOCK_ID, TreasureItems.FOG).setFog(Fogs.HIGH_FOG);
 		MED_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.MED_FOG_BLOCK_ID, TreasureItems.FOG).setFog(Fogs.MEDIUM_FOG);
 		LOW_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.LOW_FOG_BLOCK_ID, TreasureItems.FOG).setFog(Fogs.LOW_FOG);
+		WITHER_FOG = new FogBlock(Treasure.MODID, TreasureConfig.WITHER_FOG_ID, TreasureItems.FOG).setFog(Fogs.FULL_FOG);
+		HIGH_WITHER_FOG = new FogBlock(Treasure.MODID, TreasureConfig.HIGH_WITHER_FOG_ID, TreasureItems.FOG).setFog(Fogs.HIGH_FOG);
+		MED_WITHER_FOG = new FogBlock(Treasure.MODID, TreasureConfig.MED_WITHER_FOG_ID, TreasureItems.FOG).setFog(Fogs.MEDIUM_FOG);
+		LOW_WITHER_FOG = new FogBlock(Treasure.MODID, TreasureConfig.LOW_WITHER_FOG_ID, TreasureItems.FOG).setFog(Fogs.LOW_FOG);
+
+		
 		WITHER_LOG = new WitherLogBlock(Treasure.MODID, TreasureConfig.WITHER_LOG_ID);
 		WITHER_BRANCH = new WitherBranchBlock(Treasure.MODID, TreasureConfig.WITHER_BRANCH_ID);
 		WITHER_ROOT = new WitherRootBlock(Treasure.MODID, TreasureConfig.WITHER_ROOT_ID);

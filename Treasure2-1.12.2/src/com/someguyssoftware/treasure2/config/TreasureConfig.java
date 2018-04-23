@@ -110,6 +110,11 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String HIGH_FOG_BLOCK_ID = "high_fog";
 	public static final String MED_FOG_BLOCK_ID = "med_fog";
 	public static final String LOW_FOG_BLOCK_ID = "low_fog";
+	public static final String WITHER_FOG_ID = "wither_fog";
+	public static final String HIGH_WITHER_FOG_ID = "high_wither_fog";
+	public static final String MED_WITHER_FOG_ID = "med_wither_fog";
+	public static final String LOW_WITHER_FOG_ID = "low_wither_fog";
+
 	
 	public static final String WITHER_LOG_ID = "wither_log";
 	public static final String WITHER_BRANCH_ID = "wither_branch";

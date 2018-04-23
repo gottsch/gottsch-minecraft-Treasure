@@ -33,6 +33,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
+ * TODO after block falls, it no longer checks if it is sustainable.  Look at SAND/GRAVEL again on how it works
  * @author Mark Gottschling on Feb 27, 2018
  *
  */
@@ -216,6 +217,7 @@ public class FogBlock extends ModBlock {
     	Treasure.logger.debug("blockstate #1: {}, CD: {}, D:{}", blockState1.getBlock().toString(), blockState1.getValue(CHECK_DECAY), blockState1.getValue(DECAYABLE));
     	Treasure.logger.debug("blockstate #2: {}", blockState2.getBlock().toString());
     	
+    	// TODO figure out why or how to stop updateTick from being called, then can reenable inheritance from FallingBlock
     	Treasure.logger.debug("Why does this immediately call updateTick() on block which then changes the block");
     	IBlockState newState = blockState1.getBlock().getDefaultState().withProperty(CHECK_DECAY, true);
     	worldIn.setBlockState(pos, newState);
