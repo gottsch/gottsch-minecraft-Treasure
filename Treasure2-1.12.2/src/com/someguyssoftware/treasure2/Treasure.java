@@ -28,6 +28,7 @@ import com.someguyssoftware.treasure2.command.TreasureChestCommand;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
+import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
@@ -116,6 +117,7 @@ public class Treasure extends AbstractMod {
 		
 		// register additional events
 		MinecraftForge.EVENT_BUS.register(new LogoutEventHandler(getInstance()));
+		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler(getInstance()));
 		
 		// create and load the config files
 		Configs.init(this, event.getModConfigurationDirectory());

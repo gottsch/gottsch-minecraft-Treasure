@@ -3,56 +3,67 @@
  */
 package com.someguyssoftware.treasure2.block;
 
+import java.util.Map;
+
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.enums.Fogs;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
+ * TODO this block is not necessary unless we can get the colliding working here
  * @author Mark Gottschling on Apr 18, 2018
  *
  */
 public class WitherFogBlock extends FogBlock {
-
-	// TODO move to FogBlock
-    /** These bounding boxe are used to check for entities in a certain area. */
-    protected static final AxisAlignedBB FULL_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB HIGH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.D, 1.0D, 0.75D, 1.0D);
-    protected static final AxisAlignedBB MED_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.D, 1.0D, 0.5D, 1.0D);
-    protected static final AxisAlignedBB LOW_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.D, 1.0D, 0.25D, 1.0D);
     
 	/**
+	 * 
 	 * @param modID
 	 * @param name
 	 * @param material
+	 * @param map
 	 */
-	public WitherFogBlock(String modID, String name, Material material) {
-		super(modID, name, material);
+	public WitherFogBlock(String modID, String name, Material material, Map<Fogs, FogBlock> map) {
+		super(modID, name, material, map);
 	}
-
+	
 	/**
-	 * TODO move to FogBlock
+	 * TODO this never happens because there isn't a collision box
 	 */
-	@Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		switch (getFog()) {
-		    case FULL_FOG:
-		        return FULL_AABB;
-		    case HIGH_FOG:
-		        return HIGH_AABB;
-		    case MEDIUM_FOG:
-		        return MED_AABB;
-		    case LOW_FOG:
-		    	return LOW_AABB;
-		    default:
-		        return FULL_AABB;
-		}
-	}
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
     	// TODO inflict player with wither
+        if (worldIn.isRemote) {
+        	return;
+        }
+        
+//        EntityPlayer player = null;
+        
+        // set the proximity to wither tree for activation
+//        double activatingProximity = 10.0D;
+        
+//        for (int i = 0; i < worldIn.playerEntities.size(); ++i) {
+//            player = (EntityPlayer)worldIn.playerEntities.get(i);
+            // get the distance
+//            double distance = player.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D));
+            
+            // if player is within range of activating the wither tree
+//            if ((distance < 0.0D || distance < activatingProximity * activatingProximity)) {
+            	
+            	// TODO if mob has not spawned, then spawn it -- that is for the wither spawner log/heart block
+            	
+//            }
+
+//        }
+        
     }
 }

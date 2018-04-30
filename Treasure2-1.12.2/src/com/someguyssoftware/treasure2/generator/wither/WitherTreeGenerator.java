@@ -15,8 +15,10 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.FogBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.WitherBranchBlock;
+import com.someguyssoftware.treasure2.block.WitherFogBlock;
 import com.someguyssoftware.treasure2.block.WitherRootBlock;
 import com.someguyssoftware.treasure2.config.IWitherTreeConfig;
 import com.someguyssoftware.treasure2.generator.GenUtil;
@@ -46,6 +48,16 @@ public class WitherTreeGenerator {
 //				{3, Direction.SOUTH.getCode()},
 //				{3, Direction.WEST.getCode()}
 //			};
+	
+	FogBlock[] fogDensity = new FogBlock[] { 
+			TreasureBlocks.WITHER_FOG, 
+			TreasureBlocks.WITHER_FOG,
+			TreasureBlocks.HIGH_WITHER_FOG, 
+			TreasureBlocks.HIGH_WITHER_FOG, 
+			TreasureBlocks.MED_FOG_BLOCK,
+			TreasureBlocks.MED_FOG_BLOCK,
+			TreasureBlocks.LOW_FOG_BLOCK,
+			};
 	
 	static List<Direction>[] trunkMatrix = new ArrayList[4];
 	

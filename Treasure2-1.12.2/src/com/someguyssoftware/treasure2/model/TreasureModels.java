@@ -61,7 +61,14 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.HIGH_FOG_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.MED_FOG_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.LOW_FOG_BLOCK));
+		
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_FOG));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.HIGH_WITHER_FOG));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.MED_WITHER_FOG));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.LOW_WITHER_FOG));
+		
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_LOG));
+		
 //		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_BRANCH));
 //		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_ROOT));
 		
