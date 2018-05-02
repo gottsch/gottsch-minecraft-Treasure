@@ -39,9 +39,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Mark Gottschling on Feb 27, 2018
  *
  */
-public class FogBlock extends ModBlock {
+public class FogBlock extends ModFallingBlock { //ModBlock {
 	public static final PropertyBool DECAYABLE = PropertyBool.create("decayable");
 	public static final PropertyBool CHECK_DECAY =	PropertyBool.create("check_decay");
+	public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
 
 	/** These bounding boxe are used to check for entities in a certain area. */
 	protected static final AxisAlignedBB FULL_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.D, 1.0D, 1.0D, 1.0D);
@@ -64,7 +65,8 @@ public class FogBlock extends ModBlock {
 		this.setTickRandomly(true);
 		this.setDefaultState(blockState.getBaseState()
 				.withProperty(DECAYABLE, Boolean.valueOf(true))
-				.withProperty(CHECK_DECAY, Boolean.valueOf(false)));
+				.withProperty(CHECK_DECAY, Boolean.valueOf(true)) // was false
+				.withProperty(ACTIVATED, Boolean.valueOf(false)));
 		setNormalCube(false);
 		setCreativeTab(Treasure.TREASURE_TAB);
 		setFog(Fogs.FULL_FOG);
@@ -154,7 +156,8 @@ public class FogBlock extends ModBlock {
 
 		//		Treasure.logger.debug("updateTick on FogBlock @ {}. CD: {}, D: {}", pos.toString(), state.getValue(CHECK_DECAY), state.getValue(DECAYABLE));
 		if (!worldIn.isRemote) {
-			if ((Boolean)state.getValue(CHECK_DECAY) && (Boolean)state.getValue(DECAYABLE)) {
+			if ((Boolean)state.getValue(CHECK_DECAY) && (Boolean)state.getValue(DECAYABLE)
+					&& ((Boolean)state.getValue(ACTIVATED))) {
 				//				Treasure.logger.debug("Fog @ {} has CHECK_DECAY = true", pos.toString());
 
 				boolean isSupported = false;
@@ -227,13 +230,22 @@ public class FogBlock extends ModBlock {
 								return;
 							}
 						}
-					}
-					
-					// TODO check if activated
-					
+					}				
 				}
 			}
 
+			// TODO check if activated
+			/*
+			 * All fog block's states are CHECK_DECAY = true by default. ACTIVATED = false by default. They only change size if ACTIVATED = true. At the end 
+			 * of the update() ACTIVATED is set to true.
+			 * Change the getStateFromMeta to do bitwise checks. ie. get first bit to check DECAYABLE, 2nd bit CHECK_DECAY,
+			 * 3rd bit ACTIVATED.
+			 */
+			if ((Boolean)state.getValue(DECAYABLE) && !(Boolean)state.getValue(ACTIVATED)) {
+				Treasure.logger.debug("Activating block @ {}", pos);
+				worldIn.setBlockState(pos, state.withProperty(ACTIVATED, (Boolean)true), 3);
+			}
+			
 			//			// check if block should fall
 			//            this.checkFallable(worldIn, pos);
 		}
@@ -251,7 +263,7 @@ public class FogBlock extends ModBlock {
 			if (worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
 				if (!worldIn.isRemote) {
 					EntityFallingBlock entityfallingblock = new EntityFallingBlock(worldIn, (double) pos.getX() + 0.5D,
-							(double) pos.getY(), (double) pos.getZ() + 0.5D, worldIn.getBlockState(pos).withProperty(CHECK_DECAY,(Boolean)true));
+							(double) pos.getY(), (double) pos.getZ() + 0.5D, worldIn.getBlockState(pos).withProperty(CHECK_DECAY,(Boolean)true).withProperty(ACTIVATED, (Boolean)false));
 					worldIn.spawnEntity(entityfallingblock);
 				}
 			}
@@ -261,17 +273,20 @@ public class FogBlock extends ModBlock {
 	/**
 	 * 
 	 */
-	@Deprecated
+//	@Deprecated
 	public void onEndFalling(World worldIn, BlockPos pos, IBlockState blockState1, IBlockState blockState2) {
-		Treasure.logger.debug("Block has stopped falling");
-		Treasure.logger.debug("pos: {}", pos.toString());
-		Treasure.logger.debug("blockstate #1: {}, CD: {}, D:{}", blockState1.getBlock().toString(), blockState1.getValue(CHECK_DECAY), blockState1.getValue(DECAYABLE));
-		Treasure.logger.debug("blockstate #2: {}", blockState2.getBlock().toString());
-
-		// TODO figure out why or how to stop updateTick from being called, then can reenable inheritance from FallingBlock
-		Treasure.logger.debug("Why does this immediately call updateTick() on block which then changes the block");
-		IBlockState newState = blockState1.getBlock().getDefaultState().withProperty(CHECK_DECAY, true);
-		worldIn.setBlockState(pos, newState);
+//		Treasure.logger.debug("Block has stopped falling");
+//		Treasure.logger.debug("pos: {}", pos.toString());
+//		Treasure.logger.debug("blockstate #1: {}, CD: {}, D:{}", blockState1.getBlock().toString(), blockState1.getValue(CHECK_DECAY), blockState1.getValue(DECAYABLE));
+//		Treasure.logger.debug("blockstate #2: {}", blockState2.getBlock().toString());
+//
+//		// TODO figure out why or how to stop updateTick from being called, then can reenable inheritance from FallingBlock
+//		Treasure.logger.debug("Why does this immediately call updateTick() on block which then changes the block");
+//		IBlockState newState = blockState1.getBlock().getDefaultState().withProperty(CHECK_DECAY, true);
+//		worldIn.setBlockState(pos, newState);
+		
+		// NOTE I think the new block keeps the previous state, so it is already activated and when it is created again
+		// it calls update right away and thus changes size... so, need on BeforeFalling to set the set ACTIVATED = false
 	}
 
 	/**
@@ -280,7 +295,7 @@ public class FogBlock extends ModBlock {
 	 */
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] {DECAYABLE, CHECK_DECAY});
+		return new BlockStateContainer(this, new IProperty[] {DECAYABLE, CHECK_DECAY, ACTIVATED});
 	}
 
 	@Nullable
