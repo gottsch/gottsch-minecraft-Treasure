@@ -41,5 +41,8 @@ public interface IWitherTreeConfig extends IBiomeListConfig {
 	public IWitherTreeConfig setMaxSupportingTrees(int maxSupportingTrees);
 
 	int getMaxTrunkSize();
-	IWitherTreeConfig setMaxTrunkSize(int maxTrunkSize); 
+	IWitherTreeConfig setMaxTrunkSize(int maxTrunkSize);
+
+	int getMinSupportingTrees();
+	IWitherTreeConfig setMinSupportingTrees(int minSupportingTrees); 
 }

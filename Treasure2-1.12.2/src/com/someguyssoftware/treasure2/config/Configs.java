@@ -139,7 +139,8 @@ public class Configs {
 				.setChunksPerTree(200)
 				.setGenProbability(90)
 				.setMaxTrunkSize(13)
-				.setMaxSupportingTrees(5)
+				.setMinSupportingTrees(5)
+				.setMaxSupportingTrees(15)
 				.setRawBiomeWhiteList(new String[] {"forest", "magical", "lush", "spooky", "dead", "jungle", "coniferous"})
 				.setRawBiomeBlackList(new String[] {""});
 	}

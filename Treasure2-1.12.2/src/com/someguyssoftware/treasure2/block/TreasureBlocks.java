@@ -111,8 +111,14 @@ public class TreasureBlocks {
 	public static final FogBlock MED_WITHER_FOG;
 	public static final FogBlock LOW_WITHER_FOG;
 	
+	public static final FogBlock POISON_FOG;
+	public static final FogBlock HIGH_POISON_FOG;
+	public static final FogBlock MED_POISON_FOG;
+	public static final FogBlock LOW_POISON_FOG;
+	
 	public static Map<Fogs, FogBlock> fogMap = new HashMap<>();;
 	public static Map<Fogs,FogBlock> witherFogMap = new HashMap<>();
+	public static Map<Fogs,FogBlock> poisonFogMap = new HashMap<>();
 	
 	public static final Block WITHER_LOG;
 	public static final Block WITHER_BRANCH;
@@ -325,11 +331,17 @@ public class TreasureBlocks {
 		HIGH_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.HIGH_FOG_BLOCK_ID, TreasureItems.FOG, fogMap).setFog(Fogs.HIGH_FOG);
 		MED_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.MED_FOG_BLOCK_ID, TreasureItems.FOG, fogMap).setFog(Fogs.MEDIUM_FOG);
 		LOW_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.LOW_FOG_BLOCK_ID, TreasureItems.FOG, fogMap).setFog(Fogs.LOW_FOG);
+
 		WITHER_FOG = new WitherFogBlock(Treasure.MODID, TreasureConfig.WITHER_FOG_ID, TreasureItems.FOG, witherFogMap).setFog(Fogs.FULL_FOG);
 		HIGH_WITHER_FOG = new WitherFogBlock(Treasure.MODID, TreasureConfig.HIGH_WITHER_FOG_ID, TreasureItems.FOG, witherFogMap).setFog(Fogs.HIGH_FOG);
 		MED_WITHER_FOG = new WitherFogBlock(Treasure.MODID, TreasureConfig.MED_WITHER_FOG_ID, TreasureItems.FOG, witherFogMap).setFog(Fogs.MEDIUM_FOG);
 		LOW_WITHER_FOG = new WitherFogBlock(Treasure.MODID, TreasureConfig.LOW_WITHER_FOG_ID, TreasureItems.FOG, witherFogMap).setFog(Fogs.LOW_FOG);
 
+		POISON_FOG = new PoisonFogBlock(Treasure.MODID, TreasureConfig.POISON_FOG_ID, TreasureItems.FOG, poisonFogMap).setFog(Fogs.FULL_FOG);
+		HIGH_POISON_FOG = new PoisonFogBlock(Treasure.MODID, TreasureConfig.HIGH_POISON_FOG_ID, TreasureItems.FOG, poisonFogMap).setFog(Fogs.HIGH_FOG);
+		MED_POISON_FOG = new PoisonFogBlock(Treasure.MODID, TreasureConfig.MED_POISON_FOG_ID, TreasureItems.FOG, poisonFogMap).setFog(Fogs.MEDIUM_FOG);
+		LOW_POISON_FOG = new PoisonFogBlock(Treasure.MODID, TreasureConfig.LOW_POISON_FOG_ID, TreasureItems.FOG, poisonFogMap).setFog(Fogs.LOW_FOG);
+		
 		fogMap.put(Fogs.FULL_FOG, TreasureBlocks.FOG_BLOCK);
 		fogMap.put(Fogs.HIGH_FOG, TreasureBlocks.HIGH_FOG_BLOCK);
 		fogMap.put(Fogs.MEDIUM_FOG, TreasureBlocks.MED_FOG_BLOCK);
@@ -339,6 +351,11 @@ public class TreasureBlocks {
 		witherFogMap.put(Fogs.HIGH_FOG, TreasureBlocks.HIGH_WITHER_FOG);
 		witherFogMap.put(Fogs.MEDIUM_FOG, TreasureBlocks.MED_WITHER_FOG);
 		witherFogMap.put(Fogs.LOW_FOG, TreasureBlocks.LOW_WITHER_FOG);
+		
+		poisonFogMap.put(Fogs.FULL_FOG, TreasureBlocks.POISON_FOG);
+		poisonFogMap.put(Fogs.HIGH_FOG, TreasureBlocks.HIGH_POISON_FOG);
+		poisonFogMap.put(Fogs.MEDIUM_FOG, TreasureBlocks.MED_POISON_FOG);
+		poisonFogMap.put(Fogs.LOW_FOG, TreasureBlocks.LOW_POISON_FOG);
 		
 		// other
 		WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.WISHING_WELL_BLOCK_ID, Material.ROCK);
@@ -408,6 +425,10 @@ public class TreasureBlocks {
 					HIGH_WITHER_FOG,
 					MED_WITHER_FOG,
 					LOW_WITHER_FOG,
+					POISON_FOG,
+					HIGH_POISON_FOG,
+					MED_POISON_FOG,
+					LOW_POISON_FOG,
 					WITHER_LOG,
 					WITHER_BRANCH,
 					WITHER_ROOT
@@ -474,6 +495,10 @@ public class TreasureBlocks {
 					new ItemBlock(HIGH_WITHER_FOG),
 					new ItemBlock(MED_WITHER_FOG),
 					new ItemBlock(LOW_WITHER_FOG),
+					new ItemBlock(POISON_FOG),
+					new ItemBlock(HIGH_POISON_FOG),
+					new ItemBlock(MED_POISON_FOG),
+					new ItemBlock(LOW_POISON_FOG),
 					new ItemBlock(WITHER_LOG),
 					new ItemBlock(WITHER_BRANCH),
 					new ItemBlock(WITHER_ROOT)

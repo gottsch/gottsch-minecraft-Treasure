@@ -32,9 +32,17 @@ tile.treasure2:gravestone3_polished_granite.name=Granite Tombstone
 tile.treasure2:gravestone3_polished_andesite.name=Andesite Tombstone
 tile.treasure2:gravestone3_polished_diorite.name=Diorite Tombstone
 tile.treasure2:gravestone3_obsidian.name=Obsidian Tombstone
+
+#fogs
 tile.treasure2:fog.name=Fog
+tile.treasure2:high_fog.name=High Fog
 tile.treasure2:med_fog.name=Medium Fog
 tile.treasure2:low_fog.name=Low Fog
+
+tile.treasure2:wither_fog.name=Wither Fog
+tile.treasure2:high_wither_fog.name=High Wither Fog
+tile.treasure2:med_wither_fog.name=Medium Wither Fog
+tile.treasure2:low_wither_fog.name=Low Wither Fog
 
 #items
 item.treasure2:gold_coin.name=Gold Coin

@@ -26,6 +26,7 @@ public class WitherTreeConfig implements IWitherTreeConfig {
 	private int chunksPerTree;
 	private double genProbability;
 	private int maxTrunkSize;
+	private int minSupportingTrees;
 	private int maxSupportingTrees;
 	
 	// biome type white/black lists
@@ -81,6 +82,7 @@ public class WitherTreeConfig implements IWitherTreeConfig {
 //        // gen props
     	chunksPerTree = config.getInt("chunksPerWell", "02-gen", defaults.getChunksPerTree(), 50, 32000, "");
     	maxTrunkSize = config.getInt("maxTrunkSize", "02-gen", defaults.getMaxTrunkSize(), 7, 20, "");
+    	minSupportingTrees = config.getInt("minSupportingTrees", "02-gen", defaults.getMinSupportingTrees(), 0, 30, "");
     	maxSupportingTrees = config.getInt("maxSupportingTrees", "02-gen", defaults.getMaxSupportingTrees(), 0, 30, "");
     	genProbability = config.getFloat("genProbability", "02-gen", (float)defaults.getGenProbability(), 0.0F, 100.0F, "");
     	    	
@@ -232,6 +234,23 @@ public class WitherTreeConfig implements IWitherTreeConfig {
 	@Override
 	public IWitherTreeConfig setMaxTrunkSize(int maxTrunkSize) {
 		this.maxTrunkSize = maxTrunkSize;
+		return this;
+	}
+
+	/**
+	 * @return the minSupportingTrees
+	 */
+	@Override
+	public int getMinSupportingTrees() {
+		return minSupportingTrees;
+	}
+
+	/**
+	 * @param minSupportingTrees the minSupportingTrees to set
+	 */
+	@Override
+	public IWitherTreeConfig setMinSupportingTrees(int minSupportingTrees) {
+		this.minSupportingTrees = minSupportingTrees;
 		return this;
 	}
 

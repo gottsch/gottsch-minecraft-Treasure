@@ -57,7 +57,7 @@ public class PlayerEventHandler {
 	        		Treasure.logger.debug("potion effect is null, should be adding....");
 	        	}
 	        	else {
-	        		Treasure.logger.debug("already has potion effect.");
+//	        		Treasure.logger.debug("already has potion effect.");
 	        	}
 			}        	
 		}

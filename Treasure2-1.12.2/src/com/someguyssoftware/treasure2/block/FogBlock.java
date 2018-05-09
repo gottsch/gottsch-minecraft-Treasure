@@ -8,7 +8,6 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.someguyssoftware.gottschcore.block.ModBlock;
 import com.someguyssoftware.gottschcore.block.ModFallingBlock;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Fogs;
@@ -242,7 +241,7 @@ public class FogBlock extends ModFallingBlock { //ModBlock {
 			 * 3rd bit ACTIVATED.
 			 */
 			if ((Boolean)state.getValue(DECAYABLE) && !(Boolean)state.getValue(ACTIVATED)) {
-				Treasure.logger.debug("Activating block @ {}", pos);
+//				Treasure.logger.debug("Activating block @ {}", pos);
 				worldIn.setBlockState(pos, state.withProperty(ACTIVATED, (Boolean)true), 3);
 			}
 			
@@ -389,14 +388,24 @@ public class FogBlock extends ModFallingBlock { //ModBlock {
 	 */
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		boolean decay = false;
-		boolean check = false;
-		// TODO change to check the individual bits
-		if (meta == 1) decay = true;
-		if (meta == 2) check = true;
-		if (meta ==3) { decay = check = true;}
-		// TODO add a check for the last bit to see if it is activated.  the last bit isn't translated to a state--> need another method
-		return this.getDefaultState().withProperty(DECAYABLE, Boolean.valueOf(decay)).withProperty(CHECK_DECAY, Boolean.valueOf(check));
+//		boolean decay = false;
+//		boolean check = false;
+//		boolean activated = false;
+//		
+//		// TODO change to check the individual bits
+//		if (meta == 1) decay = true;
+//		else if (meta == 2) check = true;
+//		else if (meta ==3) { decay = check = true;}
+//		else if (meta ==4) { activated = true;}
+//		// TODO add a check for the last bit to see if it is activated.  the last bit isn't translated to a state--> need another method
+//		return this.getDefaultState()
+//				.withProperty(DECAYABLE, Boolean.valueOf(decay))
+//				.withProperty(CHECK_DECAY, Boolean.valueOf(check));
+
+		return this.getDefaultState()
+				.withProperty(DECAYABLE, Boolean.valueOf((meta&1)>0))
+				.withProperty(CHECK_DECAY, Boolean.valueOf((meta&2)>0))
+				.withProperty(ACTIVATED, Boolean.valueOf((meta&4)>0));
 	}
 
 	/**
@@ -407,6 +416,7 @@ public class FogBlock extends ModFallingBlock { //ModBlock {
 		int meta = 0;
 		if (state.getValue(DECAYABLE)) meta = 1;
 		if (state.getValue(CHECK_DECAY)) meta +=2;
+		if (state.getValue(ACTIVATED)) meta +=4;
 		return meta;
 	}
 

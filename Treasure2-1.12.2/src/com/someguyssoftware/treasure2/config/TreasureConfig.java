@@ -114,7 +114,10 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String HIGH_WITHER_FOG_ID = "high_wither_fog";
 	public static final String MED_WITHER_FOG_ID = "med_wither_fog";
 	public static final String LOW_WITHER_FOG_ID = "low_wither_fog";
-
+	public static final String POISON_FOG_ID = "poison_fog";
+	public static final String HIGH_POISON_FOG_ID = "high_poison_fog";
+	public static final String MED_POISON_FOG_ID = "med_poison_fog";
+	public static final String LOW_POISON_FOG_ID = "low_poison_fog";
 	
 	public static final String WITHER_LOG_ID = "wither_log";
 	public static final String WITHER_BRANCH_ID = "wither_branch";
@@ -134,6 +137,7 @@ public class TreasureConfig extends AbstractConfig {
 
 	public static boolean enableKeyBreaks = true;
 	public static boolean enableFog = true;
+	public static boolean enableWitherFog = true;
 	public static String treasureFolder;
 
 	/*
@@ -184,6 +188,7 @@ public class TreasureConfig extends AbstractConfig {
         treasureFolder = config.getString("treasureFolder", "03-mod", "mods/" + Treasure.MODID + "/", "Where default Treasure folder is located.");
         enableKeyBreaks = config.getBoolean("enableKeyBreaks", "03-mod", true, "Enables/Disable whether a Key can break when attempting to unlock a Lock.");
         enableFog = config.getBoolean("enableFog", "03-mod", true, "Enables/Disable whether a fog is generated (ex. around graves/tombstones and wither trees)");
+        enableWitherFog = config.getBoolean("enableWitherFog", "03-mod", true, "Enables/Disable whether a wither fog is generated (ex. around wither trees)");
 
         // white/black lists
         config.setCategoryComment("04-gen", "World generation properties.");    

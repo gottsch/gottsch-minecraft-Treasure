@@ -1,6 +1,6 @@
 {
     "variants": {
-        "normal": { "model": "treasure2:high_fog" },
+        "normal": { "model": "treasure2:high_wither_fog" },
         "activated=false,check_decay=false,decayable=false": { "model": "treasure2:high_wither_fog" },
         "activated=false,check_decay=false,decayable=true": { "model": "treasure2:high_wither_fog" },
         "activated=false,check_decay=true,decayable=false": { "model": "treasure2:high_wither_fog" },
