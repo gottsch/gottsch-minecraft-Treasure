@@ -356,7 +356,7 @@ public class GenUtil {
 					
 					Cube cube = new Cube(world, fogCoords);	
 					// ensure location of fog coords is air.
-					if (!cube.isAir() && !cube.equalsMaterial(TreasureItems.FOG)) {
+					if (!cube.isAir() && !cube.isReplaceable() && !cube.equalsMaterial(TreasureItems.FOG)) {
 //						Treasure.logger.debug("eXit - block at coords is {}", cube.getState().getBlock().toString());
 						continue;
 					}
@@ -372,7 +372,7 @@ public class GenUtil {
 						// test if the block at fog coords is already fog, then whichever is bigger remains
 						FogBlock origBlock = (FogBlock) cube.getState().getBlock();
 //						Treasure.logger.debug("3. orig block IS {} at coords", origBlock.getFog().getSize());
-						if (origBlock.getFog().getSize() > ((FogBlock)block).getFog().getSize()) {
+						if (origBlock.getFogHeight().getSize() > ((FogBlock)block).getFogHeight().getSize()) {
 //							Treasure.logger.debug("eXit - orig block is bigger than block");
 							continue;
 						}

@@ -5,7 +5,9 @@ package com.someguyssoftware.treasure2.eventhandler;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.FogBlock;
 import com.someguyssoftware.treasure2.block.WitherFogBlock;
+import com.someguyssoftware.treasure2.enums.FogType;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -49,17 +51,37 @@ public class PlayerEventHandler {
 			BlockPos pos = player.getPosition();
 			// get the block at pos
 			Block block = event.getEntity().getEntityWorld().getBlockState(pos).getBlock();
-			if (block instanceof WitherFogBlock) {
-	        	PotionEffect potionEffect = ((EntityLivingBase)event.getEntity()).getActivePotionEffect(MobEffects.WITHER);
-	        	// if player does not have wither effect, add it
-	        	if (potionEffect == null) {
-	        		((EntityLivingBase)event.getEntity()).addPotionEffect(new PotionEffect(MobEffects.WITHER, 300, 0));
-	        		Treasure.logger.debug("potion effect is null, should be adding....");
-	        	}
-	        	else {
-//	        		Treasure.logger.debug("already has potion effect.");
-	        	}
-			}        	
+			if (block instanceof FogBlock) {
+				// check the fog type
+				if (((FogBlock)block).getFogType() == FogType.WITHER	) {
+		        	PotionEffect potionEffect = ((EntityLivingBase)event.getEntity()).getActivePotionEffect(MobEffects.WITHER);
+		        	// if player does not have wither effect, add it
+		        	if (potionEffect == null) {
+		        		((EntityLivingBase)event.getEntity()).addPotionEffect(new PotionEffect(MobEffects.WITHER, 300, 0));
+		        		Treasure.logger.debug("wither potion effect is null, should be adding....");
+		        	}					
+				}
+				else if (((FogBlock)block).getFogType() == FogType.POISON) {
+		        	PotionEffect potionEffect = ((EntityLivingBase)event.getEntity()).getActivePotionEffect(MobEffects.POISON);
+		        	// if player does not have wither effect, add it
+		        	if (potionEffect == null) {
+		        		((EntityLivingBase)event.getEntity()).addPotionEffect(new PotionEffect(MobEffects.POISON, 300, 0));
+		        		Treasure.logger.debug("poison potion effect is null, should be adding....");
+		        	}				
+				}
+			}
+			
+//			if (block instanceof WitherFogBlock) {
+//	        	PotionEffect potionEffect = ((EntityLivingBase)event.getEntity()).getActivePotionEffect(MobEffects.WITHER);
+//	        	// if player does not have wither effect, add it
+//	        	if (potionEffect == null) {
+//	        		((EntityLivingBase)event.getEntity()).addPotionEffect(new PotionEffect(MobEffects.WITHER, 300, 0));
+//	        		Treasure.logger.debug("potion effect is null, should be adding....");
+//	        	}
+//	        	else {
+////	        		Treasure.logger.debug("already has potion effect.");
+//	        	}
+//			}        	
 		}
 	}
 	

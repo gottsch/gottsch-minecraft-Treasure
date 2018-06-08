@@ -10,7 +10,8 @@ import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.block.ModFallingBlock;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.enums.Fogs;
+import com.someguyssoftware.treasure2.enums.FogHeight;
+import com.someguyssoftware.treasure2.enums.FogType;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 
 import net.minecraft.block.Block;
@@ -49,9 +50,10 @@ public class FogBlock extends ModFallingBlock { //ModBlock {
 	protected static final AxisAlignedBB MED_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.D, 1.0D, 0.5D, 1.0D);
 	protected static final AxisAlignedBB LOW_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.D, 1.0D, 0.25D, 1.0D);
 
-	public Fogs fog;
+	public FogType fogType;
+	public FogHeight fogHeight;
 	
-	public Map<Fogs, FogBlock> fogMap;
+	public Map<FogHeight, FogBlock> fogMap;
 
 	/**
 	 * 
@@ -59,7 +61,7 @@ public class FogBlock extends ModFallingBlock { //ModBlock {
 	 * @param name
 	 * @param material
 	 */
-	public FogBlock(String modID, String name, Material material, Map<Fogs, FogBlock> map) {
+	public FogBlock(String modID, String name, Material material, Map<FogHeight, FogBlock> map) {
 		super(modID, name, material);
 		this.setTickRandomly(true);
 		this.setDefaultState(blockState.getBaseState()
@@ -68,7 +70,8 @@ public class FogBlock extends ModFallingBlock { //ModBlock {
 				.withProperty(ACTIVATED, Boolean.valueOf(false)));
 		setNormalCube(false);
 		setCreativeTab(Treasure.TREASURE_TAB);
-		setFog(Fogs.FULL_FOG);
+		setFogType(FogType.NORMAL);
+		setFogHeight(FogHeight.FULL_FOG);
 		setFogMap(map);
 	}
 
@@ -77,7 +80,7 @@ public class FogBlock extends ModFallingBlock { //ModBlock {
 	 */
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		switch (getFog()) {
+		switch (getFogHeight()) {
 		case FULL_FOG:
 			return FULL_AABB;
 		case HIGH_FOG:
@@ -215,16 +218,16 @@ public class FogBlock extends ModFallingBlock { //ModBlock {
 						if (fogCount < 4) {
 //							                			Treasure.logger.debug("Block with {} neighbors= {}", fogCount, state.getBlock().getRegistryName());
 //							if (state.getBlock() == TreasureBlocks.FOG_BLOCK) {
-							if (((FogBlock)state.getBlock()).getFog() == Fogs.FULL_FOG) {
-								worldIn.setBlockState(pos, getFogMap().get(Fogs.HIGH_FOG).getDefaultState().withProperty(CHECK_DECAY, (Boolean)true));
+							if (((FogBlock)state.getBlock()).getFogHeight() == FogHeight.FULL_FOG) {
+								worldIn.setBlockState(pos, getFogMap().get(FogHeight.HIGH_FOG).getDefaultState().withProperty(CHECK_DECAY, (Boolean)true));
 							}
-							else if (((FogBlock)state.getBlock()).getFog() == Fogs.HIGH_FOG) {
-								worldIn.setBlockState(pos, getFogMap().get(Fogs.MEDIUM_FOG).getDefaultState().withProperty(CHECK_DECAY, (Boolean)true));
+							else if (((FogBlock)state.getBlock()).getFogHeight() == FogHeight.HIGH_FOG) {
+								worldIn.setBlockState(pos, getFogMap().get(FogHeight.MEDIUM_FOG).getDefaultState().withProperty(CHECK_DECAY, (Boolean)true));
 							}
-							else if (((FogBlock)state.getBlock()).getFog() == Fogs.MEDIUM_FOG) {
-								worldIn.setBlockState(pos, getFogMap().get(Fogs.LOW_FOG).getDefaultState().withProperty(CHECK_DECAY, (Boolean)true));
+							else if (((FogBlock)state.getBlock()).getFogHeight() == FogHeight.MEDIUM_FOG) {
+								worldIn.setBlockState(pos, getFogMap().get(FogHeight.LOW_FOG).getDefaultState().withProperty(CHECK_DECAY, (Boolean)true));
 							}
-							else if (((FogBlock)state.getBlock()).getFog() == Fogs.LOW_FOG) {
+							else if (((FogBlock)state.getBlock()).getFogHeight() == FogHeight.LOW_FOG) {
 								worldIn.setBlockToAir(pos);
 								return;
 							}
@@ -423,29 +426,44 @@ public class FogBlock extends ModFallingBlock { //ModBlock {
 	/**
 	 * @return the fog
 	 */
-	public Fogs getFog() {
-		return fog;
+	public FogHeight getFogHeight() {
+		return fogHeight;
 	}
 
 	/**
 	 * @param fog the fog to set
 	 */
-	public FogBlock setFog(Fogs fog) {
-		this.fog = fog;
+	public FogBlock setFogHeight(FogHeight fog) {
+		this.fogHeight = fog;
 		return this;
 	}
 
 	/**
 	 * @return the fogMap
 	 */
-	public Map<Fogs, FogBlock> getFogMap() {
+	public Map<FogHeight, FogBlock> getFogMap() {
 		return fogMap;
 	}
 
 	/**
 	 * @param fogMap the fogMap to set
 	 */
-	public void setFogMap(Map<Fogs, FogBlock> fogMap) {
+	public void setFogMap(Map<FogHeight, FogBlock> fogMap) {
 		this.fogMap = fogMap;
+	}
+
+	/**
+	 * @return the fogType
+	 */
+	public FogType getFogType() {
+		return fogType;
+	}
+
+	/**
+	 * @param fogType the fogType to set
+	 */
+	public FogBlock setFogType(FogType fogType) {
+		this.fogType = fogType;
+		return this;
 	}
 }

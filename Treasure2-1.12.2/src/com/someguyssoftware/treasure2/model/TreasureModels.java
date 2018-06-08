@@ -73,7 +73,8 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.LOW_POISON_FOG));
 		
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_LOG));
-		
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_BROKEN_LOG));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_LOG_SOUL));
 //		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_BRANCH));
 //		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_ROOT));
 		

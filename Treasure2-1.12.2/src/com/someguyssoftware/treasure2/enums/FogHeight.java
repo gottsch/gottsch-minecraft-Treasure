@@ -7,7 +7,7 @@ package com.someguyssoftware.treasure2.enums;
  * @author Mark Gottschling on Mar 3, 2018
  *
  */
-public enum Fogs {
+public enum FogHeight {
 	FULL_FOG(4),
 	HIGH_FOG(3),
 	MEDIUM_FOG(2),
@@ -15,7 +15,7 @@ public enum Fogs {
 	
 	private int size;
 	
-	Fogs(int size) {
+	FogHeight(int size) {
 		this.size = size;
 	}
 

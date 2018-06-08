@@ -5,7 +5,7 @@ package com.someguyssoftware.treasure2.block;
 
 import java.util.Map;
 
-import com.someguyssoftware.treasure2.enums.Fogs;
+import com.someguyssoftware.treasure2.enums.FogHeight;
 
 import net.minecraft.block.material.Material;
 
@@ -23,7 +23,7 @@ public class PoisonFogBlock extends FogBlock {
 	 * @param material
 	 * @param map
 	 */
-	public PoisonFogBlock(String modID, String name, Material material, Map<Fogs, FogBlock> map) {
+	public PoisonFogBlock(String modID, String name, Material material, Map<FogHeight, FogBlock> map) {
 		super(modID, name, material, map);
 	}	
 }
