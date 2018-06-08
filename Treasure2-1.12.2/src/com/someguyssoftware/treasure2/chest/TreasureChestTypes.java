@@ -18,6 +18,7 @@ public class TreasureChestTypes {
 	public static TreasureChestType SINGLE;
 	public static TreasureChestType POT;
 	public static TreasureChestType COMPRESSOR;
+	public static TreasureChestType ARMOIRE;
 
 		
 	static {
@@ -55,6 +56,11 @@ public class TreasureChestTypes {
 				new LockSlot(1, Direction.EAST, 0.73F, 0.18F, 0.61F, 90F)
 //				new LockSlot(2, Direction.WEST, 0.05F, 0.3F, 0.66F, -90F)
 //				new LockSlot(3, Direction.SOUTH, 0.37F, 0.4F, 0.75F, 0F)
+			);
+		
+		ARMOIRE = new TreasureChestType(2).addSlots(
+				new LockSlot(0, Direction.NORTH, 0.5F, 1.5F, 0.05F, 0F),
+				new LockSlot(0, Direction.NORTH, 0.5F, 0.9F, 0.05F, 0F)
 			);
 	}
 }

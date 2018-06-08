@@ -5,7 +5,6 @@ package com.someguyssoftware.treasure2.generator.wither;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.cube.Cube;
@@ -18,13 +17,15 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.FogBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.WitherBranchBlock;
-import com.someguyssoftware.treasure2.block.WitherFogBlock;
+import com.someguyssoftware.treasure2.block.WitherLogSoulBlock;
 import com.someguyssoftware.treasure2.block.WitherRootBlock;
+import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IWitherTreeConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.chest.WitherChestGenerator;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -37,19 +38,8 @@ import net.minecraft.world.World;
  */
 public class WitherTreeGenerator {
 	public static final int VERTICAL_MAX_DIFF = 3;
+	private static final int CLEARING_RADIUS = 3;
 
-	//  branch matrix [0-3][0-3] = [branch index][direction index]
-//	static int branchMatrix[][] = {
-//				{0, Direction.NORTH.getCode()},
-//				{0, Direction.WEST.getCode()},
-//				{1, Direction.NORTH.getCode()},
-//				{1, Direction.EAST.getCode()},
-//				{2, Direction.SOUTH.getCode()},
-//				{2, Direction.EAST.getCode()},
-//				{3, Direction.SOUTH.getCode()},
-//				{3, Direction.WEST.getCode()}
-//			};
-	
 	FogBlock[] fogDensity = new FogBlock[] { 
 			TreasureBlocks.WITHER_FOG, 
 			TreasureBlocks.WITHER_FOG,
@@ -60,7 +50,19 @@ public class WitherTreeGenerator {
 			TreasureBlocks.LOW_WITHER_FOG
 			};
 	
+	FogBlock[] poisonFogDensity = new FogBlock[] {
+		TreasureBlocks.POISON_FOG,
+		TreasureBlocks.POISON_FOG,
+		TreasureBlocks.HIGH_POISON_FOG,
+		TreasureBlocks.HIGH_POISON_FOG, 
+		TreasureBlocks.MED_POISON_FOG,
+		TreasureBlocks.MED_POISON_FOG,
+		TreasureBlocks.LOW_POISON_FOG
+	};
+	
 	static List<Direction>[] trunkMatrix = new ArrayList[4];
+	static List<Direction> supportTrunkMatrix = new ArrayList<>();
+	static List<Direction> topMatrix = new ArrayList<>();
 	
 	static {
 		trunkMatrix[0] = new ArrayList<>();
@@ -76,7 +78,16 @@ public class WitherTreeGenerator {
 		trunkMatrix[2].add(Direction.WEST);
 		trunkMatrix[3].add(Direction.SOUTH);
 		trunkMatrix[3].add(Direction.EAST);		
-
+		
+		supportTrunkMatrix.add(Direction.NORTH);
+		supportTrunkMatrix.add(Direction.EAST);
+		supportTrunkMatrix.add(Direction.SOUTH);
+		supportTrunkMatrix.add(Direction.WEST);
+		
+		topMatrix.add(Direction.EAST);
+		topMatrix.add(Direction.SOUTH);
+		topMatrix.add(null);
+		topMatrix.add(null);
 	}
 	
 	
@@ -97,11 +108,11 @@ public class WitherTreeGenerator {
 	 */
 	public boolean generate(World world, Random random, ICoords coords, IWitherTreeConfig config) {
 
-		ICoords chestCoords = null;
+//		ICoords chestCoords = null;
 		ICoords surfaceCoords = null;
 		ICoords witherTreeCoords = null;
-		ICoords spawnCoords = null;
-		boolean isGenerated = false;
+//		ICoords spawnCoords = null;
+//		boolean isGenerated = false;
 
 		// 1. determine y-coord of land for markers
 		surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, coords);
@@ -125,7 +136,7 @@ public class WitherTreeGenerator {
 		
 		// determine how many extra "withered" trees to include in the area
 		int numTrees = RandomHelper.randomInt(config.getMinSupportingTrees(), config.getMaxSupportingTrees());
-		Treasure.logger.debug("number of witherED trees to gen: {}", numTrees);
+//		Treasure.logger.debug("number of witherED trees to gen: {}", numTrees);
 		
 		// TODO turn into method buildSubTrees(world, random, coords, existingTreeList) return list<coords> - NOPE
 		for (int treeIndex = 0; treeIndex < numTrees; treeIndex++) {
@@ -136,22 +147,31 @@ public class WitherTreeGenerator {
 			int degrees = RandomHelper.randomInt(0, 360);
 			
 			ICoords c = witherTreeCoords.rotate(xlen, zlen, degrees);
-			Treasure.logger.debug("Rotating by x{}, z{}, deg{} to {}", xlen, zlen, degrees, c);
+//			Treasure.logger.debug("Rotating by x{}, z{}, deg{} to {}", xlen, zlen, degrees, c);
 			
 			// get the yspawn
 			c = WorldInfo.getDryLandSurfaceCoords(world, c);
 			
-			Treasure.logger.debug("Attempting to gen witherED tree @ {}", c.toShortString());
+//			Treasure.logger.debug("Attempting to gen witherED tree @ {}", c.toShortString());
 			
-			// TODO need to check that there isn't another tree within 2 blocks
+			// add tree if criteria is met
 			if (c != null && c != WorldInfo.EMPTY_COORDS) {
 				if (c.getDistanceSq(witherTreeCoords) > 4) {
-					Treasure.logger.debug("adding witherED tree @ {}", c.toShortString());
-					buildClearing(world, c);
-					buildTree(world, random, c, config);
+					if (world.getBlockState(c.toPos()).getBlock() != TreasureBlocks.WITHER_LOG) {						
+//						Treasure.logger.debug("adding witherED tree @ {}", c.toShortString());
+						buildClearing(world, c);
+						buildTree(world, random, c, config);						
+						if (TreasureConfig.enablePoisonFog) {
+							GenUtil.addFog(world, random, c, poisonFogDensity);
+						}
+					}
 				}
 			}
 		}
+		
+		// add pit/chest
+		WitherChestGenerator chestGen = new WitherChestGenerator();
+		chestGen.generate(world, random, coords, Rarity.SCARCE, Configs.chestConfigs.get(Rarity.SCARCE)); 
 		
 		return true;
 	}
@@ -165,13 +185,9 @@ public class WitherTreeGenerator {
 		ICoords buildCoords = null;
 
 		// build clearing
-		for (int xOffset = -5; xOffset <= 5; xOffset++) {
-			for (int zOffset = -5; zOffset <= 5; zOffset++) {
-				if (Math.abs(xOffset) + Math.abs(zOffset) <= 7) {
-
-					/*
-					 * replace the ground with wither grass - different shades depending on distance
-					 */
+		for (int xOffset = -(CLEARING_RADIUS); xOffset <= CLEARING_RADIUS; xOffset++) {
+			for (int zOffset = -(CLEARING_RADIUS); zOffset <= CLEARING_RADIUS; zOffset++) {
+				if (Math.abs(xOffset) + Math.abs(zOffset) <= 2) {
 
 					// find the first surface
 					int yHeight = WorldInfo.getHeightValue(world, coords.add(xOffset, 255, zOffset));
@@ -182,9 +198,8 @@ public class WitherTreeGenerator {
 					// Treasure.logger.debug("Wither Tree Clearing buildPos: " + buildPos);
 
 					// additional check that it's not a tree and within 2 y-blocks of original
-					// TODO replace podzol with wither grass
 					if (Math.abs(buildCoords.getY() - coords.getY()) < VERTICAL_MAX_DIFF) {
-						world.setBlockState(buildCoords.add(0, -1, 0).toPos(), Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL));
+						world.setBlockState(buildCoords.add(0, -1, 0).toPos(), Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT));
 					}
 
 					Cube cube = new Cube(world, buildCoords);
@@ -208,27 +223,38 @@ public class WitherTreeGenerator {
 	 * @param random
 	 * @param coords
 	 */
-	private void buildTree(World world, Random random, ICoords coords, IWitherTreeConfig config) {
+	public void buildTree(World world, Random random, ICoords coords, IWitherTreeConfig config) {
 		// build a small wither  tree ie one trunk
 
 		// determine the size of the main trunk
 		int maxSize = RandomHelper.randomInt(random, 7, config.getMaxTrunkSize());
-		Treasure.logger.debug("maxSize: {}", maxSize);
+//		Treasure.logger.debug("maxSize: {}", maxSize);
 		
+		boolean hasLifeBeenAdded = false;
 		for (int y = 0; y < maxSize; y++) {
+			if (y == 2) { // TODO <-- select the right index and the face facing in the right direction
+				if (!hasLifeBeenAdded) {
+					world.setBlockState(coords.add(0, y, 0).toPos(), TreasureBlocks.WITHER_LOG_SOUL.getDefaultState());
+//					 Treasure.logger.debug("Wither Tree building life trunk @ " +  coords.add(0, y, 0).toShortString());
+					 hasLifeBeenAdded = true;
+					 continue;
+				}
+			}
+			
 			// add the trunk
 			world.setBlockState(coords.add(0, y, 0).toPos(), TreasureBlocks.WITHER_LOG.getDefaultState());
-			 Treasure.logger.debug("Wither Tree Supporter building trunk @ " + coords.add(0, y, 0).toShortString());
+//			 Treasure.logger.debug("Wither Tree Supporter building trunk @ " + coords.add(0, y, 0).toShortString());
 			 
-			 // add the branch(es)
+			 // add the branches/roots
 			 if (y ==0) {
-				 addRoot(world, random, coords, null); // TODO replace null with list of directions
+				 addRoot(world, random, coords, supportTrunkMatrix);
 			 }
-			 else if (y > 3) {
-				 addBranch(world, random, coords, y, maxSize, null);
+			 else if (y == maxSize-1) {
+				 addTop(world, random, coords, y+1, supportTrunkMatrix.get(random.nextInt(supportTrunkMatrix.size())));
 			 }
-			 
-			 // TODO add the fog supporting block
+			 else if (y > 2) {
+				 addBranch(world, random, coords, y, maxSize, supportTrunkMatrix);
+			 }
 		}		 
 	}
 
@@ -247,36 +273,42 @@ public class WitherTreeGenerator {
 
 		// determine the size of the main trunk
 		int maxSize = RandomHelper.randomInt(random, 7, config.getMaxTrunkSize());
-		Treasure.logger.debug("maxSize: {}", maxSize);
+//		Treasure.logger.debug("maxSize: {}", maxSize);
 		
 		// build a 2x2 trunk
+		boolean hasLifeBeenAdded = false;
 		for (int trunkIndex = 0; trunkIndex < trunkCoords.length; trunkIndex++) {
-			Treasure.logger.debug("Trunk index: {}", trunkIndex);
-			Treasure.logger.debug("maxSize: {}", maxSize);
+//			Treasure.logger.debug("Trunk index: {}", trunkIndex);
+//			Treasure.logger.debug("maxSize: {}", maxSize);
 			
 			for (int y = 0; y < maxSize; y++) {
-				// TODO if between certain height
-				// TODO if haven't added the heart block yet
-				// TODO add the heart/face block
-				// TODO ensure not to build branches over the heart/face block
+				if (trunkIndex == 2 && y == 2) { // TODO <-- select the right index and the face facing in the right direction
+					if (!hasLifeBeenAdded) {
+						world.setBlockState(trunkCoords[trunkIndex].add(0, y, 0).toPos(), 
+								TreasureBlocks.WITHER_LOG_SOUL.getDefaultState()
+									.withProperty(WitherLogSoulBlock.APPEARANCE, WitherLogSoulBlock.Appearance.FACE)
+									.withProperty(WitherLogSoulBlock.FACING, EnumFacing.SOUTH));
+//						 Treasure.logger.debug("Wither Tree building life trunk @ " +  trunkCoords[trunkIndex].add(0, y, 0).toShortString());
+						 hasLifeBeenAdded = true;
+						 continue;
+					}
+				}
 				
 				// add the trunk
 				world.setBlockState(trunkCoords[trunkIndex].add(0, y, 0).toPos(), TreasureBlocks.WITHER_LOG.getDefaultState());
-				 Treasure.logger.debug("Wither Tree building trunk @ " +  trunkCoords[trunkIndex].add(0, y, 0).toShortString());
+//				 Treasure.logger.debug("Wither Tree building trunk @ " +  trunkCoords[trunkIndex].add(0, y, 0).toShortString());
 				 
-				 // add the branch(es)
+				 // add the decorations (branches, roots, top)
 				 if (y ==0) {
 					 addRoot(world, random, trunkCoords[trunkIndex], trunkMatrix[trunkIndex]);
 				 }
-				 else if (y > 3) {
+				 else if (y == maxSize-1) {
+					 addTop(world, random, trunkCoords[trunkIndex], y+1, topMatrix.get(trunkIndex));
+				 }
+				 else if (y >= 2) {
 					 addBranch(world, random, trunkCoords[trunkIndex], y, maxSize, trunkMatrix[trunkIndex]);
 				 }
 			}
-
-			// TODO add the heart block
-			
-			
-			
 
 			// set the new max size
 			if (maxSize > 3) {
@@ -291,23 +323,41 @@ public class WitherTreeGenerator {
 	 * 
 	 * @param world
 	 * @param random
+	 * @param coords
+	 * @param topMatrix2
+	 */
+	private void addTop(World world, Random random, ICoords coords, int y, Direction direction) {
+		if (direction != null) {
+			IBlockState state = TreasureBlocks.WITHER_BROKEN_LOG.getDefaultState().withProperty(WitherRootBlock.FACING, direction.toFacing());
+			// add the top log to the world
+			world.setBlockState(coords.add(0, y, 0).toPos(), state);
+//			 Treasure.logger.debug("Wither Tree building top log @ " +  coords.toShortString());			
+		}
+	}
+	
+
+	/**
+	 * 
+	 * @param world
+	 * @param random
 	 * @param iCoords
 	 * @param list
 	 */
 	private void addRoot(World world, Random random, ICoords coords, List<Direction> directions) {
 		// for each direction
 		for (Direction d : directions) {
-			Cube groundCube = new Cube(world, coords.down(1));
-			if (groundCube.isSolid() && groundCube.isTopSolid()) {
-				if (RandomHelper.checkProbability(random, 50)) {
-					// update the coords to the correct position
-					ICoords c = coords.add(d, 1);
+			if (RandomHelper.checkProbability(random, 50)) {			
+				// update the coords to the correct position
+				ICoords c = coords.add(d, 1);
+				Cube groundCube = new Cube(world, c.down(1));
+				Cube replaceCube = new Cube(world, c);
+				if (groundCube.isSolid() && groundCube.isTopSolid() && (replaceCube.isAir() || replaceCube.isReplaceable())) {
 					// rotate the branch in the right direction
 					IBlockState state = TreasureBlocks.WITHER_ROOT.getDefaultState().withProperty(WitherRootBlock.FACING, d.toFacing());
 					
 					// add the branch to the world
 					world.setBlockState(c.toPos(), state);
-					 Treasure.logger.debug("Wither Tree building root @ " +  coords.toShortString());					
+//					 Treasure.logger.debug("Wither Tree building root @ " +  coords.toShortString());					
 				}
 			}
 		}		
@@ -332,13 +382,18 @@ public class WitherTreeGenerator {
 				ICoords c = trunkCoords;
 				for (int segment = 0; segment < branchSize; segment++) {
 					c = c.add(d, 1);
-					
-					// rotate the branch in the right direction
-					IBlockState state = TreasureBlocks.WITHER_BRANCH.getDefaultState().withProperty(WitherBranchBlock.FACING, d.toFacing());
-					
-					// add the branch to the world
-					world.setBlockState(c.add(0, y, 0).toPos(), state);
-					 Treasure.logger.debug("Wither Tree building branch @ " +  c.add(0, y, 0).toShortString());
+					Cube replaceCube = new Cube(world, c);
+					if (replaceCube.isAir() || replaceCube.isReplaceable()) {
+						// rotate the branch in the right direction
+						IBlockState state = TreasureBlocks.WITHER_BRANCH.getDefaultState().withProperty(WitherBranchBlock.FACING, d.toFacing());
+						
+						// add the branch to the world
+						world.setBlockState(c.add(0, y, 0).toPos(), state);
+//						 Treasure.logger.debug("Wither Tree building branch @ " +  c.add(0, y, 0).toShortString());
+					}
+					else {
+						break;
+					}
 				}
 			}
 		}

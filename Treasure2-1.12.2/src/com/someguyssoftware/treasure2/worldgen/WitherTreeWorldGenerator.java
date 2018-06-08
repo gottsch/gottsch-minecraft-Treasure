@@ -3,9 +3,7 @@
  */
 package com.someguyssoftware.treasure2.worldgen;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.biome.BiomeHelper;
@@ -15,14 +13,8 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.Configs;
-import com.someguyssoftware.treasure2.config.IWellConfig;
 import com.someguyssoftware.treasure2.config.IWitherTreeConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.enums.Wells;
-import com.someguyssoftware.treasure2.generator.well.CanopyWellGenerator;
-import com.someguyssoftware.treasure2.generator.well.IWellGenerator;
-import com.someguyssoftware.treasure2.generator.well.SimpleWellGenerator;
-import com.someguyssoftware.treasure2.generator.well.WoodDrawWellGenerator;
 import com.someguyssoftware.treasure2.generator.wither.WitherTreeGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;

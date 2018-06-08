@@ -48,6 +48,7 @@ public class TreasureItems {
 	public static LockItem RUBY_LOCK;
 	public static LockItem SAPPHIRE_LOCK;
 	public static LockItem SPIDER_LOCK;
+	public static LockItem WITHER_LOCK;
 	
 	// keys
 	public static KeyItem WOOD_KEY;
@@ -238,6 +239,10 @@ public class TreasureItems {
 		SPIDER_LOCK = new LockItem(Treasure.MODID, TreasureConfig.SPIDER_LOCK_ID, new KeyItem[] {SPIDER_KEY})
 				.setCategory(Category.POTION)
 				.setRarity(Rarity.SCARCE);
+		WITHER_LOCK = new LockItem(Treasure.MODID, TreasureConfig.WITHER_LOCK_ID, new KeyItem[] {WITHER_KEY})
+				.setCategory(Category.WITHER)
+				.setRarity(Rarity.SCARCE);
+
 		
 		locks =	ArrayListMultimap.create();
 		locks.put(Rarity.COMMON, WOOD_LOCK);
@@ -248,7 +253,8 @@ public class TreasureItems {
 		locks.put(EMERALD_LOCK.getRarity(), EMERALD_LOCK);
 		locks.put(RUBY_LOCK.getRarity(), RUBY_LOCK);
 		locks.put(SAPPHIRE_LOCK.getRarity(), SAPPHIRE_LOCK);
-		locks.put(Rarity.SCARCE, SPIDER_LOCK);
+		locks.put(SPIDER_LOCK.getRarity(), SPIDER_LOCK);
+		// NOTE wither lock is a special and isn't used in the general locks list
 		
 		// other
 		ModSwordBuilder builder = new ModSwordBuilder();
@@ -304,6 +310,7 @@ public class TreasureItems {
 					RUBY_LOCK,
 					SAPPHIRE_LOCK,
 					SPIDER_LOCK,
+					WITHER_LOCK,
 					WOOD_KEY,
 					STONE_KEY,
 					IRON_KEY,
@@ -316,6 +323,7 @@ public class TreasureItems {
 					METALLURGISTS_KEY,
 					SKELETON_KEY,
 					SPIDER_KEY,
+					WITHER_KEY,
 					PILFERERS_LOCK_PICK,
 					THIEFS_LOCK_PICK,
 					KEY_RING,

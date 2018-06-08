@@ -80,7 +80,7 @@ public class WitherTreeConfig implements IWitherTreeConfig {
 //        wellAllowed = config.getBoolean("wellAllowed", "01-enable", defaults.isWellAllowed(), "");
 // 
 //        // gen props
-    	chunksPerTree = config.getInt("chunksPerWell", "02-gen", defaults.getChunksPerTree(), 50, 32000, "");
+    	chunksPerTree = config.getInt("chunksPerTree", "02-gen", defaults.getChunksPerTree(), 50, 32000, "");
     	maxTrunkSize = config.getInt("maxTrunkSize", "02-gen", defaults.getMaxTrunkSize(), 7, 20, "");
     	minSupportingTrees = config.getInt("minSupportingTrees", "02-gen", defaults.getMinSupportingTrees(), 0, 30, "");
     	maxSupportingTrees = config.getInt("maxSupportingTrees", "02-gen", defaults.getMaxSupportingTrees(), 0, 30, "");
@@ -253,5 +253,4 @@ public class WitherTreeConfig implements IWitherTreeConfig {
 		this.minSupportingTrees = minSupportingTrees;
 		return this;
 	}
-
 }

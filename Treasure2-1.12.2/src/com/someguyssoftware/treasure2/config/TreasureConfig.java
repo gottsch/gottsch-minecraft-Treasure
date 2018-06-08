@@ -46,6 +46,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String RUBY_LOCK_ID = "ruby_lock";
 	public static final String SAPPHIRE_LOCK_ID = "sapphire_lock";
 	public static final String SPIDER_LOCK_ID = "spider_lock";
+	public static final String WITHER_LOCK_ID = "wither_lock";
 	
 	// keys
 	public static final String WOOD_KEY_ID = "wood_key";
@@ -122,6 +123,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String WITHER_LOG_ID = "wither_log";
 	public static final String WITHER_BRANCH_ID = "wither_branch";
 	public static final String WITHER_ROOT_ID = "wither_root";
+	public static final String WITHER_BROKEN_LOG_ID = "wither_broken_log";
+	public static final String WITHER_LOG_SOUL_ID = "wither_log_soul";
 	
 	// TEs
 	public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity";
@@ -134,10 +137,11 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String SAFE_TE_ID = "safe_tile_entity";
 	public static final String DREAD_PIRATE_CHEST_TE_ID = "dread_pirate_chest_tile_entity";
 	public static final String COMPRESSOR_CHEST_TE_ID = "compressor_chest_tile_entity";
-
+	
 	public static boolean enableKeyBreaks = true;
 	public static boolean enableFog = true;
 	public static boolean enableWitherFog = true;
+	public static boolean enablePoisonFog = true;
 	public static String treasureFolder;
 
 	/*
@@ -165,6 +169,7 @@ public class TreasureConfig extends AbstractConfig {
 	// biome type white/black lists
 	public static String[] generalChestBiomeWhiteList;
 	public static String[] generalChestBiomeBlackList;
+
 			
 	/**
 	 * @param mod
@@ -189,6 +194,7 @@ public class TreasureConfig extends AbstractConfig {
         enableKeyBreaks = config.getBoolean("enableKeyBreaks", "03-mod", true, "Enables/Disable whether a Key can break when attempting to unlock a Lock.");
         enableFog = config.getBoolean("enableFog", "03-mod", true, "Enables/Disable whether a fog is generated (ex. around graves/tombstones and wither trees)");
         enableWitherFog = config.getBoolean("enableWitherFog", "03-mod", true, "Enables/Disable whether a wither fog is generated (ex. around wither trees)");
+        enablePoisonFog = config.getBoolean("enablePoisonFog", "03-mod", true, "Enables/Disable whether a poison fog is generated (ex. around wither trees)");
 
         // white/black lists
         config.setCategoryComment("04-gen", "World generation properties.");    

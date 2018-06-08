@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "Treasure2",
+  "pattern": [
+	" B ",
+	" B ",
+	" BR"
+  ],
+  "key": {
+	"B": {
+		"item": "treasure2:wither_stick_item"
+	},
+	"R": {
+		"item": "treasure2:wither_root_item"
+	}
+  },
+  "result": {
+    "item": "treasure2:wither_key",
+    "count": 1
+  }
+}

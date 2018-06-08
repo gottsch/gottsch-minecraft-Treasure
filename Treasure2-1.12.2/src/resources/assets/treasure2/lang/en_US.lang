@@ -7,6 +7,7 @@ tile.treasure2:pirate_chest.name=Pirate Chest
 tile.treasure2:safe.name=Safe
 tile.treasure2:dread_pirate_chest.name=Dread Pirate Chest
 tile.treasure2:compressor_chest.name=Compressor Chest
+tile.treasure2:wither_chest.name=Wither Chest
 
 #gravestones
 tile.treasure2:gravestone1_stone.name=Stone Tombstone
@@ -32,6 +33,12 @@ tile.treasure2:gravestone3_polished_granite.name=Granite Tombstone
 tile.treasure2:gravestone3_polished_andesite.name=Andesite Tombstone
 tile.treasure2:gravestone3_polished_diorite.name=Diorite Tombstone
 tile.treasure2:gravestone3_obsidian.name=Obsidian Tombstone
+
+#wither tree
+tile.treasure2:wither_log.name=Wither Log
+tile.treasure2.wither_life_log.name=Wither Log
+tile.treasure2:wither_branch.name=Wither Branch
+tile.treasure2:wither_root.name=Wither Root
 
 #fogs
 tile.treasure2:fog.name=Fog
@@ -60,6 +67,7 @@ item.treasure2:jewelled_key.name=Jewelled Key
 item.treasure2:metallurgists_key.name=Metallurgist's Key
 item.treasure2:skeleton_key.name=Skeleton Key
 item.treasure2:spider_key.name=Spider Key
+item.treasure2:wither_key.name=Wither Key
 
 item.treasure2:wood_lock.name=Wood Lock
 item.treasure2:stone_lock.name=Stone Lock
@@ -70,6 +78,7 @@ item.treasure2:emerald_lock.name=Emerald Lock
 item.treasure2:ruby_lock.name=Ruby Lock
 item.treasure2:sapphire_lock.name=Sapphire Lock
 item.treasure2:spider_lock.name=Spider Lock
+item.treasure2:wither_lock.name=Wither Lock
 
 item.treasure2:pilferers_lock_pick.name=Pilferer's Lock Pick
 item.treasure2:thiefs_lock_pick.name=Thief's Lock Pick
@@ -112,3 +121,4 @@ display.gold_strongbox.name=Gold Strongbox
 display.safe.name=Safe
 display.dread_pirate_chest.name=Dread Pirate Chest
 display.compressor_chest.name=Compressor Chest
+display.wither_chest.name=Wither Chest

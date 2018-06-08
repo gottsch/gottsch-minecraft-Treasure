@@ -9,10 +9,7 @@
 				{"model": "treasure2:wither_log_full",	"y": 90},
 				{"model": "treasure2:wither_log_full_mossy",	"y": 90}
 			],			
-		"axis=x,bark=stripped": [
-				{"model": "treasure2:wither_log_stripped",	"y": 90},
-				{"model": "treasure2:wither_log_stripped_mossy",	"y": 90}
-			],
+		"axis=x,bark=stripped": {"model": "treasure2:wither_log_stripped",	"y": 90},
 		"axis=y,bark=normal": [
 				{"model": "treasure2:wither_log_normal"},
 				{"model": "treasure2:wither_log_normal_mossy"}
@@ -21,10 +18,7 @@
 				{"model": "treasure2:wither_log_full"},
 				{"model": "treasure2:wither_log_full_mossy"}
 			],			
-		"axis=y,bark=stripped": [		
-				 {"model": "treasure2:wither_log_stripped"},
-				 {"model": "treasure2:wither_log_stripped_mossy"}
-			 ],		
+		"axis=y,bark=stripped": {"model": "treasure2:wither_log_stripped"},		
 		"axis=z,bark=normal": [
 				{"model": "treasure2:wither_log_side"},
 				{"model": "treasure2:wither_log_side_mossy"}
@@ -33,11 +27,16 @@
 				{"model": "treasure2:wither_log_full"},
 				{"model": "treasure2:wither_log_full_mossy"}
 			],			
-		"axis=z,bark=stripped": [
-				{"model": "treasure2:wither_log_stripped"},
-				{"model": "treasure2:wither_log_stripped_mossy"}
-			],		
+		"axis=z,bark=stripped": {"model": "treasure2:wither_log_stripped"},	
 		"axis=none,bark=normal": [
+				{"model": "treasure2:wither_log_normal"},
+				{"model": "treasure2:wither_log_normal_mossy"}
+			],
+			"axis=none,bark=full": [
+				{"model": "treasure2:wither_log_normal"},
+				{"model": "treasure2:wither_log_normal_mossy"}
+			],
+			"axis=none,bark=stripped": [
 				{"model": "treasure2:wither_log_normal"},
 				{"model": "treasure2:wither_log_normal_mossy"}
 			]

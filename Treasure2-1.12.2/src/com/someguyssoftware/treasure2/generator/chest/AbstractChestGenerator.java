@@ -129,14 +129,15 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			// add locks
 			addLocks(random, chest, (AbstractTreasureChestTileEntity)te, chestRarity);
 			
-			// place markers (above chest or shaft)
-			GenUtil.placeMarkers(world, random, markerCoords);
+			// add markers (above chest or shaft)
+			addMarkers(world, random, markerCoords);
 
 			Treasure.logger.info("CHEATER! {} chest at coords: {}", chestRarity, chestCoords.toShortString());
 			return true;
 		}		
 		return false;
 	}
+	
 	/**
 	 * 
 	 * @param world
@@ -232,6 +233,16 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			Treasure.logger.info("Chosen chest container:" + container);
 		}
 		return container;
+	}
+	
+	/**
+	 * Wrapper method so that is can be overridden (as used in the Template Pattern)
+	 * @param world
+	 * @param random
+	 * @param coods
+	 */
+	public void addMarkers(World world, Random random, ICoords coords) {
+		GenUtil.placeMarkers(world, random, coords);
 	}
 	
 	/**

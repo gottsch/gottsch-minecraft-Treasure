@@ -201,6 +201,36 @@ public class DbManager {
 	}
 
 	/**
+	 */
+	public LootContainer selectContainer(final String name) {
+		LootContainer container = null;
+		// select the loot container by rarity
+		container = DbManager.getInstance().getContainerByName(name);
+		if (container == null) {
+			container = LootContainer.EMPTY_CONTAINER;
+		}
+		return container;
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	private LootContainer getContainerByName(String name) {
+		LootContainer container = null;
+		try {
+			container = containerDao.queryBuilder().where()
+			         .eq("name", name)
+			         .queryForFirst();
+		} catch (SQLException e) {
+			Treasure.logger.error("An error occurred attempting to retrieve containers by name:", e);
+		}		
+		return container;
+	}
+	
+
+	/**
 	 * 
 	 * @param rarity
 	 * @return
