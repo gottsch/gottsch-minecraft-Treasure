@@ -31,6 +31,7 @@ import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
+import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
 import net.minecraft.block.Block;
@@ -64,7 +65,7 @@ public class TreasureBlocks {
 	public static final Block COMPRESSOR_CHEST;
 		
 		// TODO chests
-	public static final Block WITHER_CHEST = null;
+	public static final Block WITHER_CHEST;
 	public static final Block SKULL_CHEST = null;
 	public static final Block VASE = null;
 
@@ -251,12 +252,24 @@ public class TreasureBlocks {
 				.setBounds(compressorChestBounds)
 				.setHardness(3.0F);
 		
+		AxisAlignedBB witherBounds = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.875D, 0.9375D);
+		AxisAlignedBB[]witherChestBounds = new AxisAlignedBB[4];
+		witherChestBounds[0] = witherBounds; // S
+		witherChestBounds[1] = witherBounds; // W
+		witherChestBounds[2] = witherBounds; // N
+		witherChestBounds[3] = witherBounds; // E
+		
+		WITHER_CHEST = new TreasureChestBlock(
+				Treasure.MODID,
+				TreasureConfig.WITHER_CHEST_ID,
+				WitherChestTileEntity.class,
+				TreasureChestTypes.ARMOIRE, 
+				Rarity.SCARCE)
+				.setBounds(witherChestBounds)
+				.setHardness(2.5F);
+		
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
-
-//		// TEMP
-//		chests.put(Rarity.RARE, PIRATE_CHEST);
-//		chests.put(Rarity.EPIC, PIRATE_CHEST);
 
 		// gravestone bounds
 		AxisAlignedBB[] gbs = new 	AxisAlignedBB[4];
@@ -441,6 +454,8 @@ public class TreasureBlocks {
 					WITHER_LOG_SOUL
 			};
 			registry.registerAll(blocks);	
+			// register speciality chests separately (so they aren't in the rarity map)
+			registry.register(WITHER_CHEST);
 
 			// map the block by rarity
 			for (Block block : blocks) {
@@ -470,6 +485,7 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(SAFE),
 					new TreasureChestItemBlock(DREAD_PIRATE_CHEST),
 					new TreasureChestItemBlock(COMPRESSOR_CHEST),
+					new TreasureChestItemBlock(WITHER_CHEST),
 					// TODO update with GravestonIetmBlock
 					new ItemBlock(GRAVESTONE1_STONE),
 					new ItemBlock(GRAVESTONE1_COBBLESTONE),
@@ -536,6 +552,7 @@ public class TreasureBlocks {
 			GameRegistry.registerTileEntity(SafeTileEntity.class, TreasureConfig.SAFE_TE_ID);
 			GameRegistry.registerTileEntity(DreadPirateChestTileEntity.class, TreasureConfig.DREAD_PIRATE_CHEST_TE_ID);
 			GameRegistry.registerTileEntity(CompressorChestTileEntity.class, TreasureConfig.COMPRESSOR_CHEST_TE_ID);
+			GameRegistry.registerTileEntity(WitherChestTileEntity.class, TreasureConfig.WITHER_CHEST_TE_ID);
 		}	
 	}
 }

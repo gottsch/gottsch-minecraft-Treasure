@@ -41,7 +41,6 @@ public class GuiHandler implements IGuiHandler {
 	public static final int STRONGBOX_CHEST_GUIID = 2;
 	public static final int KEY_RING_GUIID = 3;
 	public static final int COMPRESSOR_CHEST_GUIID = 4;
-
 	
 	/* (non-Javadoc)
 	 * @see net.minecraftforge.fml.common.network.IGuiHandler#getServerGuiElement(int, net.minecraft.entity.player.EntityPlayer, net.minecraft.world.World, int, int, int)
@@ -68,7 +67,7 @@ public class GuiHandler implements IGuiHandler {
 					Treasure.logger.debug("Tile entity is of type TreasureChestTileEntity");
 					return new CompressorChestContainer(player.inventory, ((AbstractTreasureChestTileEntity)tileEntity).getInventoryProxy());
 				}
-				break;			
+				break;		
 			case KEY_RING_GUIID:
 				// get the held item
 				ItemStack keyRingItem = player.getHeldItemMainhand();

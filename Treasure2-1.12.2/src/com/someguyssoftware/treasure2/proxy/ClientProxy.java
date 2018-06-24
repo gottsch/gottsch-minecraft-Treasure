@@ -11,11 +11,13 @@ import com.someguyssoftware.treasure2.client.model.DreadPirateChestModel;
 import com.someguyssoftware.treasure2.client.model.SafeModel;
 import com.someguyssoftware.treasure2.client.model.StandardChestModel;
 import com.someguyssoftware.treasure2.client.model.StrongboxModel;
+import com.someguyssoftware.treasure2.client.model.WitherChestModel;
 import com.someguyssoftware.treasure2.client.render.tileentity.CompressorChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CrateChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.SafeTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.StrongboxTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTileEntityRenderer;
+import com.someguyssoftware.treasure2.client.render.tileentity.WitherChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
@@ -26,6 +28,7 @@ import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
+import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
 import net.minecraftforge.event.RegistryEvent;
@@ -100,5 +103,10 @@ public class ClientProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				CompressorChestTileEntity.class,
 				new CompressorChestTileEntityRenderer("compressor-chest", new CompressorChestModel()));
+		
+		// wither chest
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				WitherChestTileEntity.class,
+				new WitherChestTileEntityRenderer("wither-chest", new WitherChestModel()));
 	}
 }

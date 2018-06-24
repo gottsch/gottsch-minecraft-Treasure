@@ -35,6 +35,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String SAFE_ID = "safe";
 	public static final String DREAD_PIRATE_CHEST_ID = "dread_pirate_chest";
 	public static final String COMPRESSOR_CHEST_ID = "compressor_chest";
+	public static final String WITHER_CHEST_ID = "wither_chest";
 	
 	// locks
 	public static final String WOOD_LOCK_ID = "wood_lock";
@@ -137,6 +138,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String SAFE_TE_ID = "safe_tile_entity";
 	public static final String DREAD_PIRATE_CHEST_TE_ID = "dread_pirate_chest_tile_entity";
 	public static final String COMPRESSOR_CHEST_TE_ID = "compressor_chest_tile_entity";
+	public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
 	
 	public static boolean enableKeyBreaks = true;
 	public static boolean enableFog = true;
