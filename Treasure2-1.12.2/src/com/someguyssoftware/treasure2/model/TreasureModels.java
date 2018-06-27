@@ -32,6 +32,7 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.DREAD_PIRATE_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.COMPRESSOR_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_CHEST));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_CHEST_TOP)); // do we really want this?
 		
 		// GRAVESONES
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_STONE));

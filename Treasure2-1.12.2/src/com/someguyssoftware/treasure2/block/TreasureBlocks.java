@@ -66,6 +66,7 @@ public class TreasureBlocks {
 		
 		// TODO chests
 	public static final Block WITHER_CHEST;
+	public static final Block WITHER_CHEST_TOP;
 	public static final Block SKULL_CHEST = null;
 	public static final Block VASE = null;
 
@@ -252,14 +253,15 @@ public class TreasureBlocks {
 				.setBounds(compressorChestBounds)
 				.setHardness(3.0F);
 		
-		AxisAlignedBB witherBounds = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.875D, 0.9375D);
+		AxisAlignedBB witherBounds = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
+		// .875
 		AxisAlignedBB[]witherChestBounds = new AxisAlignedBB[4];
 		witherChestBounds[0] = witherBounds; // S
 		witherChestBounds[1] = witherBounds; // W
 		witherChestBounds[2] = witherBounds; // N
 		witherChestBounds[3] = witherBounds; // E
 		
-		WITHER_CHEST = new TreasureChestBlock(
+		WITHER_CHEST = new WitherChestBlock(
 				Treasure.MODID,
 				TreasureConfig.WITHER_CHEST_ID,
 				WitherChestTileEntity.class,
@@ -267,6 +269,8 @@ public class TreasureBlocks {
 				Rarity.SCARCE)
 				.setBounds(witherChestBounds)
 				.setHardness(2.5F);
+		
+		WITHER_CHEST_TOP = new WitherChestTopBlock(Treasure.MODID, TreasureConfig.WITHER_CHEST_TOP_ID);
 		
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
@@ -451,7 +455,8 @@ public class TreasureBlocks {
 					WITHER_BRANCH,
 					WITHER_ROOT,
 					WITHER_BROKEN_LOG,
-					WITHER_LOG_SOUL
+					WITHER_LOG_SOUL,
+					WITHER_CHEST_TOP
 			};
 			registry.registerAll(blocks);	
 			// register speciality chests separately (so they aren't in the rarity map)
@@ -486,6 +491,7 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(DREAD_PIRATE_CHEST),
 					new TreasureChestItemBlock(COMPRESSOR_CHEST),
 					new TreasureChestItemBlock(WITHER_CHEST),
+					new TreasureChestItemBlock(WITHER_CHEST_TOP),
 					// TODO update with GravestonIetmBlock
 					new ItemBlock(GRAVESTONE1_STONE),
 					new ItemBlock(GRAVESTONE1_COBBLESTONE),

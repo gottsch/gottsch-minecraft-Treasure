@@ -36,6 +36,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String DREAD_PIRATE_CHEST_ID = "dread_pirate_chest";
 	public static final String COMPRESSOR_CHEST_ID = "compressor_chest";
 	public static final String WITHER_CHEST_ID = "wither_chest";
+	public static final String WITHER_CHEST_TOP_ID = "wither_chest_top";
 	
 	// locks
 	public static final String WOOD_LOCK_ID = "wood_lock";
