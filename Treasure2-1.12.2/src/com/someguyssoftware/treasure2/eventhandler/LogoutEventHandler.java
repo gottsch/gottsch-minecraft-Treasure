@@ -30,7 +30,7 @@ public class LogoutEventHandler {
 	 * @param event
 	 */
 	@SubscribeEvent
-	public void checkVersionOnLogIn(PlayerEvent.PlayerLoggedOutEvent event) {
+	public void closeDbManager(PlayerEvent.PlayerLoggedOutEvent event) {
 		// close ormlite connection and shut down the h2 server
 		DbManager.shutdown();
 	}
