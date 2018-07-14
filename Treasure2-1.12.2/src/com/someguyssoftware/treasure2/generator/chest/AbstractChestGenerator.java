@@ -16,6 +16,7 @@ import com.someguyssoftware.lootbuilder.model.LootContainer;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
+import com.someguyssoftware.treasure2.block.WitherChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.enums.Category;
@@ -26,12 +27,17 @@ import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
+import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * @author Mark Gottschling on Feb 1, 2018
@@ -123,9 +129,26 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			if (te == null) return false;
 			
 			// populate the chest with items
-			InventoryPopulator pop = new InventoryPopulator();
-			pop.populate(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), container);
-
+			// TEMP solution
+			if (chest instanceof WitherChestBlock) {
+				Treasure.logger.debug("Generating loot from loot table for wither chest");
+				// TODO not generating any loot.... might be the context? need a luck value
+				List<ItemStack> stacks = TreasureLootTables.WITHER_CHEST_LOOT_TABLE.generateLootForPools(random, TreasureLootTables.CONTEXT);
+				Treasure.logger.debug("Generated loot:");
+				for (ItemStack stack : stacks) {
+					Treasure.logger.debug(stack.getDisplayName());
+				}
+				
+				TreasureLootTables.WITHER_CHEST_LOOT_TABLE
+					.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
+							random,
+							TreasureLootTables.CONTEXT);
+			}
+			else {
+				InventoryPopulator pop = new InventoryPopulator();
+				pop.populate(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), container);
+			}
+			
 			// add locks
 			addLocks(random, chest, (AbstractTreasureChestTileEntity)te, chestRarity);
 			
