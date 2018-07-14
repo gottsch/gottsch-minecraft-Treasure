@@ -38,7 +38,7 @@ public class PlayerEventHandler {
 	 * @param event
 	 */
 	@SubscribeEvent
-	public void checkVersionOnLogIn(LivingUpdateEvent event) {
+	public void checkFogInteraction(LivingUpdateEvent event) {
         if (event.getEntity().getEntityWorld() .isRemote) {
         	return;
         }
