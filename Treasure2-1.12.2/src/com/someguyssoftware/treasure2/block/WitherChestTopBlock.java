@@ -27,7 +27,7 @@ import net.minecraft.world.World;
  *
  */
 public class WitherChestTopBlock extends ModBlock implements ITreasureBlock {
-	protected static final AxisAlignedBB AABB =  new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D);
+	protected static final AxisAlignedBB AABB =  new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
 	
 	/**
 	 * 
@@ -76,16 +76,34 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureBlock {
 		return witherChest.onBlockActivated(worldIn, pos.down(), state, playerIn, hand, facing, hitX, hitY, hitZ);
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
-		// TODO Auto-generated method stub
 		super.onBlockDestroyedByPlayer(worldIn, pos, state);
+		BlockPos downPos = pos.down();
+		// destory placeholder above
+		Block downBlock = worldIn.getBlockState(downPos).getBlock();
+		if (downBlock == TreasureBlocks.WITHER_CHEST) {
+			downBlock.onBlockDestroyedByPlayer(worldIn, downPos, state);
+			worldIn.setBlockToAir(downPos);
+		}
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
-		// TODO Auto-generated method stub
 		super.onBlockDestroyedByExplosion(worldIn, pos, explosionIn);
+		BlockPos downPos = pos.down();
+		// destory placeholder above
+		Block downBlock = worldIn.getBlockState(downPos).getBlock();
+		if (downBlock == TreasureBlocks.WITHER_CHEST) {
+			downBlock.onBlockDestroyedByExplosion(worldIn, downPos, explosionIn);
+			worldIn.setBlockToAir(downPos);
+		}
 	}
 	
 	

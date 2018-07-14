@@ -3,33 +3,24 @@
  */
 package com.someguyssoftware.treasure2.generator.chest;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
-import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.lootbuilder.db.DbManager;
-import com.someguyssoftware.lootbuilder.inventory.InventoryPopulator;
 import com.someguyssoftware.lootbuilder.model.LootContainer;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
-import com.someguyssoftware.treasure2.config.IChestConfig;
-import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
-import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -61,8 +52,7 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	 */
 	@Override
 	public TreasureChestBlock  selectChest(final Random random, final Rarity rarity) {
-		// TODO change to wither chest
-		TreasureChestBlock chest = (TreasureChestBlock) TreasureBlocks.COMPRESSOR_CHEST;
+		TreasureChestBlock chest = (TreasureChestBlock) TreasureBlocks.WITHER_CHEST;
 		return chest;
 	}
 	
@@ -88,11 +78,40 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());
 		Treasure.logger.debug("# of locks to use: {})", numLocks);
 		for (int i = 0; i < numLocks; i++) {
-			// TEMP select a SPIDER LOCK for now... change to WITHER LOCK
-			LockItem lock = TreasureItems.SPIDER_LOCK;
+			LockItem lock = TreasureItems.WITHER_LOCK;
 			Treasure.logger.debug("adding lock: {}", lock);
 			// add the lock to the chest
 			lockStates.get(i).setLock(lock);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param chest
+	 * @param chestCoords
+	 * @return
+	 */
+	@Override
+	public TileEntity placeInWorld(World world, Random random, TreasureChestBlock chest, ICoords chestCoords) {
+		// replace block @ coords
+		GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
+		// ensure that chest is of type WITHER_CHEST
+		if (world.getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST) {
+			// add top placeholder
+			GenUtil.replaceBlockWithChest(world, random, TreasureBlocks.WITHER_CHEST_TOP, chestCoords.up(1));
+		}
+		// get the backing tile entity of the chest 
+		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());
+
+		// if tile entity failed to create, remove the chest
+		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
+			// remove chest
+			world.setBlockToAir(chestCoords.toPos());
+			Treasure.logger.debug("Unable to create TileEntityChest, removing BlockChest");
+			return null;
+		}
+		return te;
 	}
 }

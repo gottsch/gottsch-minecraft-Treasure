@@ -10,11 +10,13 @@ import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 /**
@@ -48,11 +50,7 @@ public class WitherChestBlock extends TreasureChestBlock {
 
 	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-		// TODO placeholder on activated will have to call this block activated
-		// TODO change the bounding boxes of the blocks to be 0-1
-		// 
 		super.onBlockAdded(worldIn, pos, state);
-		Treasure.logger.debug("onBlockAdded");
 		// add the placeholder block above
 		worldIn.setBlockState(pos.up(), TreasureBlocks.WITHER_CHEST_TOP.getDefaultState(), 3);
 	}
@@ -62,9 +60,7 @@ public class WitherChestBlock extends TreasureChestBlock {
 	 */
 	 @Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		// TODO Auto-generated method stub
 		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-		Treasure.logger.debug("onBlockPlacedBy");
 		// add the placeholder block above
 		worldIn.setBlockState(pos.up(), TreasureBlocks.WITHER_CHEST_TOP.getDefaultState(), 3);
 	}
@@ -85,5 +81,35 @@ public class WitherChestBlock extends TreasureChestBlock {
 			}
 		}		
 		return canPlaceAt;
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+		super.onBlockDestroyedByPlayer(worldIn, pos, state);
+		// destory placeholder above
+		BlockPos upPos = pos.up();
+		Block topBlock = worldIn.getBlockState(upPos).getBlock();
+		if (topBlock == TreasureBlocks.WITHER_CHEST_TOP) {
+			topBlock.onBlockDestroyedByPlayer(worldIn, upPos, state);
+			worldIn.setBlockToAir(upPos);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
+		super.onBlockDestroyedByExplosion(worldIn, pos, explosionIn);
+		// destory placeholder above
+		BlockPos upPos = pos.up();
+		Block topBlock = worldIn.getBlockState(upPos).getBlock();
+		if (topBlock == TreasureBlocks.WITHER_CHEST_TOP) {
+			topBlock.onBlockDestroyedByExplosion(worldIn, upPos, explosionIn);
+			worldIn.setBlockToAir(upPos);
+		}
 	}
 }
