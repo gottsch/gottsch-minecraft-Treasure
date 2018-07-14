@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "treasure2:items/gold_coin"
+        "layer0": "treasure2:items/coins/gold_coin"
     },
    "display": {
        "thirdperson_righthand": {

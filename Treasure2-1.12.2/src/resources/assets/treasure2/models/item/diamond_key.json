@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "treasure2:items/diamond_key"
+        "layer0": "treasure2:items/keys/diamond_key"
     }
 }
