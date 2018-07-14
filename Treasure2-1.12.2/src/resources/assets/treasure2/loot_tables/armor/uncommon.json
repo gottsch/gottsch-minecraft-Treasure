@@ -1,0 +1,101 @@
+{
+	"pools": [
+		{
+			"name": "uncommon_armor",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "iron_chestplate",
+					"type": "item",
+					"name": "minecraft:iron_chestplate",
+					"weight": 12.5		
+				},
+				{
+					"entryName": "iron_leggings",
+					"type": "item",
+					"name": "minecraft:iron_leggings",
+					"weight": 20		
+				},
+				{
+					"entryName": "iron_arms",
+					"type": "item",
+					"name": "minecraft:iron_arms",
+					"weight": 20		
+				},
+				{
+					"entryName": "iron_helmet",
+					"type": "item",
+					"name": "minecraft:iron_helmet",
+					"weight": 20		
+				},
+				{
+					"entryName": "iron_boots",
+					"type": "item",
+					"name": "minecraft:iron_boots",
+					"weight": 20		
+				},
+				{
+					"entryName": "shield",
+					"type": "item",
+					"name": "minecraft:shield",
+					"weight": 20		
+				},				
+				{
+					"entryName": "gold_chestplate",
+					"type": "item",
+					"name": "minecraft:gold_chestplate",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]
+				},
+				{
+					"entryName": "gold_leggings",
+					"type": "item",
+					"name": "minecraft:gold_leggings",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]						
+				},
+				{
+					"entryName": "gold_arms",
+					"type": "item",
+					"name": "minecraft:gold_arms",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]		
+				},
+				{
+					"entryName": "gold_helmet",
+					"type": "item",
+					"name": "minecraft:gold_helmet",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]		
+				},
+				{
+					"entryName": "gold_boots",
+					"type": "item",
+					"name": "minecraft:gold_boots",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]	
+				}	
+			]
+		}
+	]
+}

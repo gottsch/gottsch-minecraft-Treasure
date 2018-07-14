@@ -1,0 +1,25 @@
+{
+	"pools": [
+		{
+			"name": "epic_treasure",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "emerald_key",
+					"type": "item",
+					"name": "treasure2:emerald_key",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]					
+				}						
+			]
+		}
+	]
+}

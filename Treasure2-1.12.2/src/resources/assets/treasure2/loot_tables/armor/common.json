@@ -1,0 +1,70 @@
+{
+	"pools": [
+		{
+			"name": "common_armor",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "leather_chestplate",
+					"type": "item",
+					"name": "minecraft:leather_chestplate",
+					"weight": 20		
+				},
+				{
+					"entryName": "leather_leggings",
+					"type": "item",
+					"name": "minecraft:leather_leggings",
+					"weight": 20		
+				},
+				{
+					"entryName": "leather_arms",
+					"type": "item",
+					"name": "minecraft:leather_arms",
+					"weight": 20		
+				},
+				{
+					"entryName": "leather_helmet",
+					"type": "item",
+					"name": "minecraft:leather_helmet",
+					"weight": 20		
+				},
+				{
+					"entryName": "leather_boots",
+					"type": "item",
+					"name": "minecraft:leather_boots",
+					"weight": 20		
+				},
+				{
+					"entryName": "gold_chestplate",
+					"type": "item",
+					"name": "minecraft:gold_chestplate",
+					"weight": 10		
+				},
+				{
+					"entryName": "gold_leggings",
+					"type": "item",
+					"name": "minecraft:gold_leggings",
+					"weight": 10		
+				},
+				{
+					"entryName": "gold_arms",
+					"type": "item",
+					"name": "minecraft:gold_arms",
+					"weight": 10		
+				},
+				{
+					"entryName": "gold_helmet",
+					"type": "item",
+					"name": "minecraft:gold_helmet",
+					"weight": 10		
+				},
+				{
+					"entryName": "gold_boots",
+					"type": "item",
+					"name": "minecraft:gold_boots",
+					"weight": 10		
+				}	
+			]
+		}
+	]
+}
