@@ -2,7 +2,7 @@
 	"pools": [
 		{
 			"name": "scarce_keys",
-			"rolls": 1,
+			"rolls": 2,
 			"entries": [
 				{
 					"entryName": "iron_key",

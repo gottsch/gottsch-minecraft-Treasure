@@ -58,8 +58,8 @@ public class TreasureChestTypes {
 			);
 		
 		ARMOIRE = new TreasureChestType(2).addSlots(
-				new LockSlot(0, Direction.NORTH, 0.5F, 1.0F, 0.05F, 0F),
-				new LockSlot(0, Direction.NORTH, 0.5F, 0.6F, 0.05F, 0F)
+				new LockSlot(0, Direction.NORTH, 0.5F, 0.95F, 0.05F, 0F),
+				new LockSlot(0, Direction.NORTH, 0.5F, 0.3F, 0.05F, 0F)
 			);
 	}
 }

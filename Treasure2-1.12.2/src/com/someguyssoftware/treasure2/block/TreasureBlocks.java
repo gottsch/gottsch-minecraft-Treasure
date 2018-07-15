@@ -253,7 +253,7 @@ public class TreasureBlocks {
 				.setBounds(compressorChestBounds)
 				.setHardness(3.0F);
 		
-		AxisAlignedBB witherBounds = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
+		AxisAlignedBB witherBounds = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.75D, 0.9375D);
 		// .875
 		AxisAlignedBB[]witherChestBounds = new AxisAlignedBB[4];
 		witherChestBounds[0] = witherBounds; // S

@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.loot;
 
+import java.io.File;
 import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -88,37 +89,37 @@ public class TreasureLootTables {
 		 *  need a list of folders to load from
 		 */
 		WITHER_CHEST_LOOT_TABLE = world.getLootTableManager().getLootTableFromLocation(new ResourceLocation(Treasure.MODID + ":chests/wither_chest"));
-//		LootPool pool = WITHER_CHEST_LOOT_TABLE.getPool("common_items");
-//
-//		if (pool != null) 
-//			Treasure.logger.debug("pool: {}", pool.getName());
-//		else
-//			Treasure.logger.debug("pool was null");
 		
-		List<ItemStack> stacks = TreasureLootTables.WITHER_CHEST_LOOT_TABLE.generateLootForPools(world.rand, TreasureLootTables.CONTEXT);
-		Treasure.logger.debug("Generated loot:");
-		for (ItemStack stack : stacks) {
-			Treasure.logger.debug(stack.getDisplayName());
-		}
+//		List<ItemStack> stacks = TreasureLootTables.WITHER_CHEST_LOOT_TABLE.generateLootForPools(world.rand, TreasureLootTables.CONTEXT);
+//		Treasure.logger.debug("Generated loot:");
+//		for (ItemStack stack : stacks) {
+//			Treasure.logger.debug(stack.getDisplayName());
+//		}
 		
 //		Treasure.logger.debug("wither chest loot table: {}", WITHER_CHEST_LOOT_TABLE);
 		
 		// TODO map
 		/////////////////
 		try {
-	        URI uri = Treasure.class.getResource("/assets.treasure2.loot_tables.chests.common").toURI();
-	        Path myPath;
-	//        if (uri.getScheme().equals("json")) {
-	//            FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
-	//            myPath = fileSystem.getPath("/assets.treasure2.loot_tables.chests.common");
-	//        } else {
-	            myPath = Paths.get(uri);
-	//        }
-	        Stream<Path> walk = Files.walk(myPath, 1);
+	        URI uri = Treasure.class.getResource("/assets/treasure2/loot_tables/chests/common").toURI();
+	        Treasure.logger.debug("URI-> {}", uri);
+	        
+	        final Map<String, String> env = new HashMap<>();
+	        final String[] array = uri.toString().split("!");
+	        final FileSystem fs = FileSystems.newFileSystem(URI.create(array[0]), env);
+	        final Path path = fs.getPath(array[1]);
+
+	        // get all the files in the folder
+	        Stream<Path> walk = Files.walk(path, 1);
 	        for (Iterator<Path> it = walk.iterator(); it.hasNext();){
-	            System.out.println(it.next());
+	            Treasure.logger.debug(it.next());
 	        }
+	        // close the stream
 	        walk.close();
+	        
+	        // close the file system
+	        fs.close();
+
 		}
 		catch(Exception e) {
 			Treasure.logger.error("error:", e);

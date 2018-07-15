@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.block;
 
+import javax.annotation.Nullable;
+
 import com.someguyssoftware.gottschcore.block.ModBlock;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
@@ -10,6 +12,7 @@ import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -27,7 +30,7 @@ import net.minecraft.world.World;
  *
  */
 public class WitherChestTopBlock extends ModBlock implements ITreasureBlock {
-	protected static final AxisAlignedBB AABB =  new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
+	protected static final AxisAlignedBB AABB =  new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.75D, 0.9375D);
 	
 	/**
 	 * 
@@ -62,7 +65,14 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureBlock {
 	 */
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return AABB;
+//		return NULL_AABB;
 	}
+	
+	// TODO make WhiteChestBlock bounding box 2 high
+    @Nullable
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+        return NULL_AABB;
+    }
 	
 	/**
 	 * 
@@ -132,4 +142,12 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureBlock {
 	public EnumBlockRenderType getRenderType(IBlockState iBlockState) {
 		return EnumBlockRenderType.INVISIBLE;
 	}
+	
+//    public boolean canCollideCheck(IBlockState state, boolean hitIfLiquid) {
+//        return false;
+//    }
+    
+//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+//        return BlockFaceShape.UNDEFINED;
+//    }
 }

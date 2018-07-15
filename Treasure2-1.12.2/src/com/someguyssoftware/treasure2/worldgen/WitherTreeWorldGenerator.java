@@ -116,7 +116,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 				Biome biome = world.getBiome(coords.toPos());
 
 				if (!BiomeHelper.isBiomeAllowed(biome, treeConfig.getBiomeWhiteList(), treeConfig.getBiomeBlackList())) {
-					Treasure.logger.debug(String.format("[%s] is not a valid biome.", biome.getBiomeName()));
+					Treasure.logger.debug(String.format("[%s] is not a valid biome for Wither Tree.", biome.getBiomeName()));
 					chunksSinceLastTree = 0;
 					return;
 				}

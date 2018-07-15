@@ -1,0 +1,61 @@
+{
+	"pools": [
+		{
+			"name": "uncommon_tools",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "iron_sword",
+					"type": "item",
+					"name": "minecraft:iron_sword",
+					"weight": 35	
+				},
+				{
+					"entryName": "iron_pickaxe",
+					"type": "item",
+					"name": "minecraft:iron_pickaxe",
+					"weight": 25
+				},
+				{
+					"entryName": "iron_axe",
+					"type": "item",
+					"name": "minecraft:iron_axe",
+					"weight": 25
+				},
+				{
+					"entryName": "gold_sword",
+					"type": "item",
+					"name": "minecraft:gold_sword",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]
+				},
+				{
+					"entryName": "gold_pickaxe",
+					"type": "item",
+					"name": "minecraft:gold_pickaxe",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]
+				},
+				{
+					"entryName": "gold_axe",
+					"type": "item",
+					"name": "minecraft:gold_axe",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]
+				}
+			]
+		}
+	]
+}
