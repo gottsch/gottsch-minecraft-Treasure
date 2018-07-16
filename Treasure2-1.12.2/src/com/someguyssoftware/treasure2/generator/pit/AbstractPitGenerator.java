@@ -174,7 +174,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 * @return
 	 */
 	public ICoords buildLayer(World world, ICoords coords, Block block) {
-		Treasure.logger.debug("Building layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
+//		Treasure.logger.debug("Building layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
 		GenUtil.replaceWithBlock(world, coords, block);
 		GenUtil.replaceWithBlock(world, coords.add(1, 0, 0), block);
 		GenUtil.replaceWithBlock(world, coords.add(0, 0, 1), block);

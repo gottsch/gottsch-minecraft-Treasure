@@ -4,6 +4,8 @@
 	"textures": {
 		"0": "treasure2:blocks/wither_log",
 		"1": "treasure2:blocks/wither_log_top",
+		"2": "treasure2:blocks/chests/wither_chest_front",
+		"3": "treasure2:blocks/chests/wither_chest_east",
 		"particle": "treasure2:blocks/wither_log"
 	},
 	"elements": [
@@ -12,8 +14,8 @@
 			"from": [1, 0, 1],
 			"to": [15, 12, 15],
 			"faces": {
-				"north": {"uv": [0, 0, 16, 12], "texture": "#0"},
-				"east": {"uv": [0, 0, 16, 12], "texture": "#0"},
+				"north": {"uv": [0, 0, 16, 12], "texture": "#2"},
+				"east": {"uv": [0, 0, 16, 12], "texture": "#3"},
 				"south": {"uv": [0, 0, 16, 12], "texture": "#0"},
 				"west": {"uv": [0, 0, 16, 12], "texture": "#0"},
 				"up": {"uv": [0, 0, 16, 16], "texture": "#1"},

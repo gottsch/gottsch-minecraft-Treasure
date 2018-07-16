@@ -242,10 +242,10 @@ public class GenUtil {
 			}
 			Treasure.logger.debug("Marker @ {}", spawnCoords.toShortString());
 			
-			// don't place if the spawnCoords isn't AIR or FOG
+			// don't place if the spawnCoords isn't AIR or FOG or REPLACEABLE
 			Cube cube = new Cube(world, spawnCoords);
-			if (!cube.isAir() && !cube.equalsMaterial(TreasureItems.FOG)) {
-				Treasure.logger.debug("Marker not placed because block  @ [{}] is not Air nor Fog.");
+			if (!cube.isAir() && !cube.isReplaceable() && !cube.equalsMaterial(TreasureItems.FOG)) {
+				Treasure.logger.debug("Marker not placed because block  @ [{}] is not Air, Replaceable nor Fog.");
 				continue;
 			}
 			

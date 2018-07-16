@@ -234,7 +234,7 @@ public class InventoryPopulator {
 		// add items to weighted collection
 		RandomWeightedCollection<LootGroupHasItem> col = new RandomWeightedCollection<>();
 		for (LootGroupHasItem g : groupItems) {
-			Treasure.logger.debug("Adding weight {} for item {}", g.getWeight(), g);
+//			Treasure.logger.debug("Adding weight {} for item {}", g.getWeight(), g);
 			col.add(g.getWeight(), g);
 		}
 		

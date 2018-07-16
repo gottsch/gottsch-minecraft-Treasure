@@ -60,6 +60,14 @@ public class TreasureLootTables {
 			"chests/wither_chest"
 			);
 	
+	static {
+		Treasure.logger.debug("Registering loot tables");
+		// register tables
+		for (String s : TABLES) {
+			Treasure.logger.debug("Registering loot table -> {}", s);
+			LootTableList.register(new ResourceLocation(Treasure.MODID, s));
+		}
+	}
 	// TODO add mapping: by chest name, by rarity etc - use a guava multimap
 	
 	/**
@@ -74,12 +82,8 @@ public class TreasureLootTables {
 	 * @param world
 	 */
 	public static void init(WorldServer world) {
-		Treasure.logger.debug("Registering loot tables");
-		// register tables
-		for (String s : TABLES) {
-			LootTableList.register(new ResourceLocation(Treasure.MODID, s));
-		}
 		
+		// TODO can be made at anytime - ie remains here, but the registering of loot tables occurs statically.
 		// create a context
 		CONTEXT = new LootContext.Builder(world).build();
 		

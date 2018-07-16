@@ -9,6 +9,6 @@
         "0.5.1": "alpha: add Key Ring\nFixed dedicated server crash.",
         "0.5.2": "alpha: add Dread Pirate Chest\nAdded Lava Trap Pit\nAdd Spider, Ruby and Sapphire Lock and Key.\nFixed Key Ring inventory shift-click on item.\nFixed Key Ring unlocking multiple locks.",
         "0.5.3": "alpha: fixed DB script.\nAdded DB as a resource that is copied to the file system.\nAdded Compressor Chest\nAdded Wither Log\nFixed all blockstates.",
-        "0.5.4": "alpha: add Jewelled Key"
+        "0.5.4": "alpha: add Jewelled Key, Wither Tree, Wither Chest, Wither Lock, Wither Key, Fog, Poison Fog, Wither Fog"
     }
 }

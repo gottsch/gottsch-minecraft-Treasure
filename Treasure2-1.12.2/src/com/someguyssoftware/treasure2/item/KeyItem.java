@@ -9,6 +9,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
@@ -146,11 +147,17 @@ public class KeyItem extends ModItem {
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
 			EnumFacing facing, float hitX, float hitY, float hitZ) {
 		
+		BlockPos chestPos = pos;
 		// determine if block at pos is a treasure chest
-		Block block = worldIn.getBlockState(pos).getBlock();
+		Block block = worldIn.getBlockState(chestPos).getBlock();
+		if (block instanceof ITreasureChestProxy) {
+			chestPos = ((ITreasureChestProxy)block).getChestPos(chestPos);
+			block = worldIn.getBlockState(chestPos).getBlock();
+		}
+		
 		if (block instanceof TreasureChestBlock) {
 			// get the tile entity
-			TileEntity te = worldIn.getTileEntity(pos);
+			TileEntity te = worldIn.getTileEntity(chestPos);
 			if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
 				Treasure.logger.warn("Null or incorrect TileEntity");
 				return EnumActionResult.FAIL;
@@ -194,11 +201,11 @@ public class KeyItem extends ModItem {
 						// remove the lock
 						lockState.setLock(null);
 						// play noise
-						worldIn.playSound(player, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+						worldIn.playSound(player, chestPos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 						// update the client
 						tcte.sendUpdates();
 						// spawn the lock
-						InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(lock));
+						InventoryHelper.spawnItemStack(worldIn, (double)chestPos.getX(), (double)chestPos.getY(), (double)chestPos.getZ(), new ItemStack(lock));
 						// don't break the key
 						breakKey = false;
 					}
@@ -210,7 +217,7 @@ public class KeyItem extends ModItem {
 						// break key;
 						heldItem.shrink(1);
 						player.sendMessage(new TextComponentString("Key broke."));
-						worldIn.playSound(player, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+						worldIn.playSound(player, chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 					}
 					else {
 						player.sendMessage(new TextComponentString("Failed to unlock."));
@@ -225,7 +232,7 @@ public class KeyItem extends ModItem {
 			}			
 		}		
 		
-		return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+		return super.onItemUse(player, worldIn, chestPos, hand, facing, hitX, hitY, hitZ);
 	}
 	
 	/**

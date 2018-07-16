@@ -29,8 +29,8 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Jun 26, 2018
  *
  */
-public class WitherChestTopBlock extends ModBlock implements ITreasureBlock {
-	protected static final AxisAlignedBB AABB =  new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.75D, 0.9375D);
+public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy, ITreasureBlock {
+	protected static final AxisAlignedBB AABB =  new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.6563D, 0.9375D);
 	
 	/**
 	 * 
@@ -61,14 +61,21 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureBlock {
 	}
 
 	/**
+	 * Return the position of the chest.
+	 */
+	@Override
+	public BlockPos getChestPos(BlockPos pos) {
+		return pos.down();
+	}
+	
+	/**
 	 * 
 	 */
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return AABB;
 //		return NULL_AABB;
 	}
-	
-	// TODO make WhiteChestBlock bounding box 2 high
+
     @Nullable
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
         return NULL_AABB;
@@ -146,7 +153,7 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureBlock {
 //    public boolean canCollideCheck(IBlockState state, boolean hitIfLiquid) {
 //        return false;
 //    }
-    
+//    
 //    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
 //        return BlockFaceShape.UNDEFINED;
 //    }

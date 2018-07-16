@@ -100,7 +100,7 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 		// ensure that chest is of type WITHER_CHEST
 		if (world.getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST) {
 			// add top placeholder
-			GenUtil.replaceBlockWithChest(world, random, TreasureBlocks.WITHER_CHEST_TOP, chestCoords.up(1));
+			world.setBlockState(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.getDefaultState());
 		}
 		// get the backing tile entity of the chest 
 		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());

@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -117,11 +118,17 @@ public class LockItem extends ModItem {
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
 			EnumFacing facing, float hitX, float hitY, float hitZ) {
 
+		BlockPos chestPos = pos;
 		// determine if block at pos is a treasure chest
-		Block block = worldIn.getBlockState(pos).getBlock();
+		Block block = worldIn.getBlockState(chestPos).getBlock();
+		if (block instanceof ITreasureChestProxy) {
+			chestPos = ((ITreasureChestProxy)block).getChestPos(chestPos);
+			block = worldIn.getBlockState(chestPos).getBlock();
+		}
+		
 		if (block instanceof TreasureChestBlock) {
 			// get the tile entity
-			AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
+			AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(chestPos);
 						
 			// exit if on the client
 			if (worldIn.isRemote) {			
@@ -139,7 +146,7 @@ public class LockItem extends ModItem {
 				Treasure.logger.error("error: ", e);
 			}
 		}		
-		return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+		return super.onItemUse(player, worldIn, chestPos, hand, facing, hitX, hitY, hitZ);
 	}
 		
 	/**
