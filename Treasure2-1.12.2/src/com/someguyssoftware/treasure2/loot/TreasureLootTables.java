@@ -3,134 +3,194 @@
  */
 package com.someguyssoftware.treasure2.loot;
 
-import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableList;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.world.storage.loot.LootTableManager;
 
 /**
  * @author Mark Gottschling on Jun 29, 2018
  *
  */
 public class TreasureLootTables {
-
+	private static final String LOOT_TABLES_PATH = "/assets/treasure2/loot_tables/";
+	
 	public static LootContext CONTEXT;
 	public static LootTable WITHER_CHEST_LOOT_TABLE;
-	
-	private static String CHEST_LOOT_TABLE_PATH = "chests";
-	
-	private static final List<String> CHESTS = ImmutableList.of(
-			"armor_tool_chest",
-			"food_potion_chest",
-			"general_chest");
-	
+
+	// NOTE dont need this
+	//	private static final List<String> CHESTS = ImmutableList.of(
+	//			"armor_tool_chest",
+	//			"food_potion_chest",
+	//			"general_chest");
+
+	/*
+	 * Map of Loot Table ResourceLocations based on Rarity
+	 */
+	public static final Map<Rarity, List<ResourceLocation>> CHEST_LOOT_TABLE_RESOURCE_LOCATION_MAP = new HashMap<>();
 	/*
 	 * Map of Loot Tables based on Rarity
 	 */
-	public static final Map<Rarity, List<LootTable>> lootTableMap = new HashMap<>();
-	
-	// list of loot table locations
-	// TODO this is not dynamic and wouldn't be able to add more chests later
-	// need to scan all the file names in the folder first
+	public static final Map<Rarity, List<LootTable>> CHEST_LOOT_TABLE_MAP = new HashMap<>();
+
+	// list of special loot table locations
 	private static final List<String> TABLES = ImmutableList.of(
-			"chests/common/general_chest",			
 			"chests/wither_chest"
 			);
-	
+
+	private static final List<String> CHEST_LOOT_TABLE_FOLDER_LOCATIONS = ImmutableList.of(
+//			"/assets/treasure2/loot_tables/chests/common",
+//			"/assets/treasure2/loot_tables/chests/uncommon",
+//			"/assets/treasure2/loot_tables/chests/scarce",
+//			"/assets/treasure2/loot_tables/chests/rare",
+//			"/assets/treasure2/loot_tables/chests/epic"
+			"chests/common",
+			"chests/uncommon",
+			"chests/scarce",
+			"chests/rare",
+			"chests/epic"
+			);
+
 	static {
+		// initialize the maps
+		for (Rarity r : Rarity.values()) {
+			CHEST_LOOT_TABLE_RESOURCE_LOCATION_MAP.put(r, new ArrayList<ResourceLocation>());
+			CHEST_LOOT_TABLE_MAP.put(r, new ArrayList<LootTable>());
+		}
+		
 		Treasure.logger.debug("Registering loot tables");
-		// register tables
+		// register special tables
 		for (String s : TABLES) {
 			Treasure.logger.debug("Registering loot table -> {}", s);
 			LootTableList.register(new ResourceLocation(Treasure.MODID, s));
 		}
+		// register rarity based tables
+		registerLootTables();
 	}
-	// TODO add mapping: by chest name, by rarity etc - use a guava multimap
-	
+
 	/**
 	 * 
 	 */
-	private TreasureLootTables(WorldServer world) {
+	private TreasureLootTables(WorldServer world) {	}
 
-	}
-	
 	/**
 	 * 
 	 * @param world
 	 */
 	public static void init(WorldServer world) {
-		
-		// TODO can be made at anytime - ie remains here, but the registering of loot tables occurs statically.
 		// create a context
 		CONTEXT = new LootContext.Builder(world).build();
-		
-		/*
-		 *  TODO get the tables
-		 *  need a map of tables based on Rarity
-		 *  need a list of folders to load from
-		 */
+
 		WITHER_CHEST_LOOT_TABLE = world.getLootTableManager().getLootTableFromLocation(new ResourceLocation(Treasure.MODID + ":chests/wither_chest"));
+
+		for (Entry<Rarity, List<ResourceLocation>> entry : CHEST_LOOT_TABLE_RESOURCE_LOCATION_MAP.entrySet()) {
+			for (ResourceLocation loc : entry.getValue()) {
+				LootTable lootTable = world.getLootTableManager().getLootTableFromLocation(loc);
+				CHEST_LOOT_TABLE_MAP.get(entry.getKey()).add(lootTable);
+			}
+		}
+	}
+
+	/**
+	 * Register the mod custom loot tables
+	 */
+	public static void registerLootTables() {
+		FileSystem fs = null;
+		Stream<Path> walk = null;
+		Map<String, String> env = new HashMap<>();
+		URI uri = null;
 		
-//		List<ItemStack> stacks = TreasureLootTables.WITHER_CHEST_LOOT_TABLE.generateLootForPools(world.rand, TreasureLootTables.CONTEXT);
-//		Treasure.logger.debug("Generated loot:");
-//		for (ItemStack stack : stacks) {
-//			Treasure.logger.debug(stack.getDisplayName());
-//		}
+		// get the asset resource folder that is unique to this mod
+		URL url = Treasure.class.getResource("/assets/" + Treasure.MODID);
+		if (url == null) {
+			Treasure.logger.error("Unable to locate resource {}", "/assets/" + Treasure.MODID);
+			return;
+		}
 		
-//		Treasure.logger.debug("wither chest loot table: {}", WITHER_CHEST_LOOT_TABLE);
-		
-		// TODO map
-		/////////////////
+		// convert to a uri
 		try {
-	        URI uri = Treasure.class.getResource("/assets/treasure2/loot_tables/chests/common").toURI();
-	        Treasure.logger.debug("URI-> {}", uri);
-	        
-	        final Map<String, String> env = new HashMap<>();
-	        final String[] array = uri.toString().split("!");
-	        final FileSystem fs = FileSystems.newFileSystem(URI.create(array[0]), env);
-	        final Path path = fs.getPath(array[1]);
-
-	        // get all the files in the folder
-	        Stream<Path> walk = Files.walk(path, 1);
-	        for (Iterator<Path> it = walk.iterator(); it.hasNext();){
-	            Treasure.logger.debug(it.next());
-	        }
-	        // close the stream
-	        walk.close();
-	        
-	        // close the file system
-	        fs.close();
-
+			 uri = url.toURI();
 		}
-		catch(Exception e) {
-			Treasure.logger.error("error:", e);
+		catch(URISyntaxException e) {
+			Treasure.logger.error("An error occurred during loot table processing:", e);
+			return;
 		}
 		
+		// split the uri into 2 parts - jar path and folder path within jar
+		String[] array = uri.toString().split("!");
+		try {
+			fs = FileSystems.newFileSystem(URI.create(array[0]), env);
+		}
+		catch(IOException e) {
+			Treasure.logger.error("An error occurred during loot table processing:", e);
+			return;
+		}
 		
-		//////////////
-
+		for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
+			try {
+				Path path = fs.getPath(LOOT_TABLES_PATH, s);
+				// get all the files in the folder
+				boolean isFirst = true;
+				Rarity key = null;
+				walk = Files.walk(path, 1);
+				for (Iterator<Path> it = walk.iterator(); it.hasNext();) {
+					String tableName = it.next().getFileName().toString();
+					Treasure.logger.debug("loot_table -> {}", s + "/" + tableName);
+					// skip the first file, which is actually the given directory itself
+					if (isFirst) {
+						// set the key for mapping
+						key = Rarity.valueOf(tableName.toUpperCase());
+					}
+					else {
+						ResourceLocation loc = new ResourceLocation(Treasure.MODID, s + "/" + tableName);
+						// register the loot table
+						LootTableList.register(loc);
+						// map the loot table resource location
+						CHEST_LOOT_TABLE_RESOURCE_LOCATION_MAP.get(key).add(loc);
+					}
+					isFirst = false;
+				}
+			}
+			catch(Exception e) {
+				Treasure.logger.error("error:", e);
+			}
+			finally {
+				// close the stream
+				if (walk != null) {
+					walk.close();
+				}
+			}			
+		}
+		
+		// close the file system
+		if (fs != null && fs.isOpen()) {
+			try {
+				fs.close();
+			} catch (IOException e) {
+				Treasure.logger.debug("An error occurred attempting to close the FileSystem:", e);
+			}
+		}
 	}
 }

@@ -52,10 +52,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * IDEA - Wither Chest - 2x high chest with tree texture, stump branches and roots. double door opening, with 90 degree
- * doors, like a cabinet.
- * IDEA - Wither Dirt - around wither tree, tinted black (see dirt, swamp on how color tinting works).
- * IDEA - either have smoke streams rising from wither dirt or have fog blocks.
+ * 
  * @author Mark Gottschling onDec 22, 2017
  *
  */
@@ -73,7 +70,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "0.5.4";
+	protected static final String VERSION = "0.6.0";
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
 	private static final String VERSION_URL = "";

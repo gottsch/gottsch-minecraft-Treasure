@@ -15,6 +15,7 @@ import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IWitherTreeConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.wither.WitherTreeGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
@@ -106,7 +107,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 			// determine what type to generate
 			IWitherTreeConfig treeConfig = Configs.witherTreeConfig;
 			if (treeConfig == null) {
-				Treasure.logger.warn("Unable to locate a config for well {}.", treeConfig);
+				Treasure.logger.warn("Unable to locate a config for wither tree {}.", treeConfig);
 				return;
 			}
 
@@ -146,7 +147,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 
 				if (isGenerated) {
 					// add to registry
-					//				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
+					ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(Rarity.SCARCE, coords));
 					chunksSinceLastTree = 0;
 				}
 			}

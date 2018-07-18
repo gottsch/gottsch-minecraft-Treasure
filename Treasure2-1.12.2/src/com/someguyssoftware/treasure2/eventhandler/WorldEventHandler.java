@@ -29,12 +29,15 @@ public class WorldEventHandler {
 
 	@SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load event) {
-		Treasure.logger.debug("In world load event for dimension {}", event.getWorld().provider.getDimension());
+//		Treasure.logger.debug("In world load event for dimension {}", event.getWorld().provider.getDimension());
 		
+		/*
+		 * On load of dimension 0 (overworld), initialize the loot table's context and other static loot tables
+		 */
 		if (!event.getWorld().isRemote && event.getWorld().provider.getDimension() == 0) {
-			Treasure.logger.debug("server event");
+//			Treasure.logger.debug("server event");
 			WorldServer world = (WorldServer) event.getWorld();
-			TreasureLootTables.init(world); // <-- this needs to load statically so as to load only on class load (ie when minecraft starts up)
+			TreasureLootTables.init(world);
 		}
 	}
 

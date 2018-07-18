@@ -136,7 +136,7 @@ public class Configs {
 	 */
 	private static void initDefaultWitherTreeConfig() {
 		defaultWitherTreeConfig = new WitherTreeConfig()		
-				.setChunksPerTree(200)
+				.setChunksPerTree(800)
 				.setGenProbability(90)
 				.setMaxTrunkSize(13)
 				.setMinSupportingTrees(5)
