@@ -18,10 +18,14 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialTransparent;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionType;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -85,6 +89,9 @@ public class TreasureItems {
 	// armor
 	public static Item EYE_PATCH;
 	
+	// potions
+	public static PotionType EXTRA_STRONG_HEALING;
+    	
 	/*
 	 * Materials
 	 */
@@ -282,6 +289,20 @@ public class TreasureItems {
 		// wither items
 		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, TreasureConfig.WITHER_STICK_ITEM_ID);
 		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.WITHER_ROOT_ITEM_ID);
+		
+		// potions
+		EXTRA_STRONG_HEALING = new PotionType("healing", 
+				new PotionEffect[] {new PotionEffect(MobEffects.INSTANT_HEALTH, 1, 1)}).setRegistryName(Treasure.MODID, "extra_strong_healing");
+
+	}
+	
+	@Mod.EventBusSubscriber(modid = Treasure.MODID)
+	public static class PotionRegistrationHandler {
+		@SubscribeEvent
+		public static void registerPotions(final RegistryEvent.Register<PotionType> event) {
+			final IForgeRegistry<PotionType> registry = event.getRegistry();
+			registry.register(EXTRA_STRONG_HEALING);
+		}
 	}
 	
 	/**

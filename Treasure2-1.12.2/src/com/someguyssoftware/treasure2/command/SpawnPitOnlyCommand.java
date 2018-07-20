@@ -3,33 +3,20 @@
  */
 package com.someguyssoftware.treasure2.command;
 
-import java.util.List;
 import java.util.Random;
-
-import org.apache.commons.compress.changes.ChangeSetPerformer;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.lootbuilder.db.DbManager;
-import com.someguyssoftware.lootbuilder.inventory.InventoryPopulator;
-import com.someguyssoftware.lootbuilder.model.LootContainer;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.enums.Pits;
-import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
-import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 

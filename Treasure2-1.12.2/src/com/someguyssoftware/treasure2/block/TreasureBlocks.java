@@ -69,6 +69,7 @@ public class TreasureBlocks {
 	public static final Block WITHER_CHEST_TOP;
 	public static final Block SKULL_CHEST = null;
 	public static final Block VASE = null;
+	public static final Block INVISIBLE_CHEST = null;
 
 	// chest holder
 	public static Multimap<Rarity, Block> chests;
@@ -128,8 +129,6 @@ public class TreasureBlocks {
 	public static final Block WITHER_ROOT;
 	public static final Block WITHER_BROKEN_LOG;
 	public static final Block WITHER_LOG_SOUL;
-	
-	// TODO black/green fog ?
 
 	// initialize blocks
 	static {

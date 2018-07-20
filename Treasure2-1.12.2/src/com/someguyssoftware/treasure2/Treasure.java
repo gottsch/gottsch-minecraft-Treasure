@@ -17,8 +17,6 @@ import com.someguyssoftware.gottschcore.config.ILoggerConfig;
 import com.someguyssoftware.gottschcore.mod.AbstractMod;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
-import com.someguyssoftware.lootbuilder.db.DbManager;
-import com.someguyssoftware.lootbuilder.exception.DatabaseInitializationException;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
@@ -60,7 +58,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 		modid=Treasure.MODID,
 		name=Treasure.NAME,
 		version=Treasure.VERSION,
-		dependencies="required-after:gottschcore@[1.3.5,)",
+		dependencies="required-after:gottschcore@[1.4.0,)",
 		acceptedMinecraftVersions = "[1.12.2]",
 		updateJSON = Treasure.UPDATE_JSON_URL
 		)
@@ -128,13 +126,13 @@ public class Treasure extends AbstractMod {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		
 		// start the database
-		try {
-			DbManager.start((TreasureConfig)getConfig());
-		} catch (DatabaseInitializationException e) {
-			logger.error("Unable to start database manager:", e);
-			getConfig().setModEnabled(false);
-			// TODO create another PlayerLoggedIn Event that checks if the database failed initialization and inform player.
-		}
+//		try {
+//			DbManager.start((TreasureConfig)getConfig());
+//		} catch (DatabaseInitializationException e) {
+//			logger.error("Unable to start database manager:", e);
+//			getConfig().setModEnabled(false);
+//			// TODO create another PlayerLoggedIn Event that checks if the database failed initialization and inform player.
+//		}
 	}
 	
 	/**

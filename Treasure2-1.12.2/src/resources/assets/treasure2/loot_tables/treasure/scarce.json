@@ -2,7 +2,7 @@
 	"pools": [
 		{
 			"name": "scarce_keys",
-			"rolls": 2,
+			"rolls": 1,
 			"entries": [
 				{
 					"entryName": "iron_key",
@@ -65,7 +65,7 @@
 		},
 		{
 			"name": "scarce_treasure",
-			"rolls": 2,
+			"rolls": 1,
 			"entries": [
 				{
 					"entryName": "silver_coin",
@@ -77,7 +77,7 @@
 							"function": "set_count",
 							"count": {
 								"min": 1,
-								"max": 4
+								"max": 3
 							}
 						}
 					]

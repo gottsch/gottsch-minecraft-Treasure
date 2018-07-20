@@ -8,8 +8,6 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
-import com.someguyssoftware.lootbuilder.db.DbManager;
-import com.someguyssoftware.lootbuilder.model.LootContainer;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
@@ -19,10 +17,12 @@ import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
+import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * 
@@ -36,17 +36,27 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	 */
 	public WitherChestGenerator() {}
 
-	/**
-	 * Override to retrieve the WITHER CHEST container regardless of rarity.
-	 * @param rarity
+//	/**
+//	 * Override to retrieve the WITHER CHEST container regardless of rarity.
+//	 * @param rarity
+//	 * @return
+//	 */
+//	@Override
+//	public LootContainer selectContainer(Random random, final Rarity rarity) {
+//		LootContainer container = DbManager.getInstance().selectContainer("wither_chest");
+//		return container;
+//	}
+	
+	/*
+	 * @param random
+	 * @param chestRarity
 	 * @return
 	 */
 	@Override
-	public LootContainer selectContainer(Random random, final Rarity rarity) {
-		LootContainer container = DbManager.getInstance().selectContainer("wither_chest");
-		return container;
+	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
+		return TreasureLootTables.WITHER_CHEST_LOOT_TABLE;
 	}
-	
+	 
 	/**
 	 * Always select a wither chest.
 	 */

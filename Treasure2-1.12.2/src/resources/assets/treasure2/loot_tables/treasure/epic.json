@@ -1,7 +1,7 @@
 {
 	"pools": [
 		{
-			"name": "epic_treasure",
+			"name": "epic_keys",
 			"rolls": 1,
 			"entries": [
 				{
@@ -19,6 +19,54 @@
 						}
 					]					
 				}						
+			]
+		},
+		{
+			"name": "scarce_treasure",
+			"rolls": 2,
+			"entries": [
+				{
+					"entryName": "silver_coin",
+					"type": "item",
+					"name": "treasure2:silver_coin",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 3,
+								"max": 10
+							}
+						}
+					]
+				},
+				{
+					"entryName": "gold_coin",
+					"type": "item",
+					"name": "treasure2:gold_coin",
+					"weight":20,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 2,
+								"max": 5
+							}
+						}
+					]
+				},
+				{
+					"entryName": "skull_sword",
+					"type": "item",
+					"name": "treasure2:gold_coin",
+					"weight":10,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.5
+						}
+					]
+				}								
 			]
 		}
 	]

@@ -164,11 +164,12 @@ public class TreasureLootTables {
 						key = Rarity.valueOf(tableName.toUpperCase());
 					}
 					else {
-						ResourceLocation loc = new ResourceLocation(Treasure.MODID, s + "/" + tableName);
+						ResourceLocation loc = new ResourceLocation(Treasure.MODID + ":" + s + "/" + tableName.replace(".json", ""));
 						// register the loot table
 						LootTableList.register(loc);
 						// map the loot table resource location
 						CHEST_LOOT_TABLE_RESOURCE_LOCATION_MAP.get(key).add(loc);
+						Treasure.logger.debug("mapping loot table resource location: {} -> {}", key, loc);
 					}
 					isFirst = false;
 				}

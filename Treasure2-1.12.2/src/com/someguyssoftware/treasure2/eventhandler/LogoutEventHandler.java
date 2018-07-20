@@ -4,7 +4,6 @@
 package com.someguyssoftware.treasure2.eventhandler;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
-import com.someguyssoftware.lootbuilder.db.DbManager;
 
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -32,7 +31,7 @@ public class LogoutEventHandler {
 	@SubscribeEvent
 	public void closeDbManager(PlayerEvent.PlayerLoggedOutEvent event) {
 		// close ormlite connection and shut down the h2 server
-		DbManager.shutdown();
+//		DbManager.shutdown();
 	}
 
 	/**

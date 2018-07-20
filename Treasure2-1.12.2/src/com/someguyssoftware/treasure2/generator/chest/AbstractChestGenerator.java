@@ -10,9 +10,6 @@ import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.lootbuilder.db.DbManager;
-import com.someguyssoftware.lootbuilder.inventory.InventoryPopulator;
-import com.someguyssoftware.lootbuilder.model.LootContainer;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
@@ -32,11 +29,8 @@ import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 
 /**
@@ -110,16 +104,23 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		if (isGenerated) {
 			Treasure.logger.debug("isGenerated = TRUE");
 			
-			LootContainer container = selectContainer(random, chestRarity);
-			if (container == null || container == LootContainer.EMPTY_CONTAINER) {
-				Treasure.logger.warn("Unable to select a container.");
+//			LootContainer container = selectContainer(random, chestRarity);
+//			if (container == null || container == LootContainer.EMPTY_CONTAINER) {
+//				Treasure.logger.warn("Unable to select a container.");
+//				return false;
+//			}
+			
+			LootTable lootTable = selectLootTable(random, chestRarity);
+			if (lootTable == null) {
+				Treasure.logger.warn("Unable to select a lootTable.");
 				return false;
 			}
 			
 			// select a chest from the rarity
 			TreasureChestBlock chest = selectChest(random, chestRarity);	
 			if (chest == null) {
-				Treasure.logger.warn("Unable to select a chest for rarite {} and container {}.", chestRarity, container.getName());
+//				Treasure.logger.warn("Unable to select a chest for rarite {} and container {}.", chestRarity, container.getName());
+				Treasure.logger.warn("Unable to select a chest for rarity {}.", chestRarity);
 				return false;
 			}
 			Treasure.logger.debug("Choosen chest: {}", chest.getUnlocalizedName());
@@ -129,24 +130,30 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			if (te == null) return false;
 			
 			// populate the chest with items
-			// TEMP solution
 			if (chest instanceof WitherChestBlock) {
 				Treasure.logger.debug("Generating loot from loot table for wither chest");
-				// TODO not generating any loot.... might be the context? need a luck value
-				List<ItemStack> stacks = TreasureLootTables.WITHER_CHEST_LOOT_TABLE.generateLootForPools(random, TreasureLootTables.CONTEXT);
-				Treasure.logger.debug("Generated loot:");
-				for (ItemStack stack : stacks) {
-					Treasure.logger.debug(stack.getDisplayName());
-				}
+//				List<ItemStack> stacks = TreasureLootTables.WITHER_CHEST_LOOT_TABLE.generateLootForPools(random, TreasureLootTables.CONTEXT);
+//				Treasure.logger.debug("Generated loot:");
+//				for (ItemStack stack : stacks) {
+//					Treasure.logger.debug(stack.getDisplayName());
+//				}
 				
-				TreasureLootTables.WITHER_CHEST_LOOT_TABLE
-					.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
+				lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
 							random,
 							TreasureLootTables.CONTEXT);
 			}
 			else {
-				InventoryPopulator pop = new InventoryPopulator();
-				pop.populate(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), container);
+//				InventoryPopulator pop = new InventoryPopulator();
+//				pop.populate(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), container);
+				Treasure.logger.debug("Generating loot from loot table for rarity {}", chestRarity);
+//				List<ItemStack> stacks = lootTable.generateLootForPools(random, TreasureLootTables.CONTEXT);
+//				Treasure.logger.debug("Generated loot:");
+//				for (ItemStack stack : stacks) {
+//					Treasure.logger.debug(stack.getDisplayName());
+//				}				
+				lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
+							random,
+							TreasureLootTables.CONTEXT);			
 			}
 			
 			// add locks
@@ -239,23 +246,47 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param chestRarity
 	 * @return
 	 */
-	public LootContainer selectContainer(Random random, final Rarity chestRarity) {
-		LootContainer container = LootContainer.EMPTY_CONTAINER;
-		// select the loot container by rarity
-		List<LootContainer> containers = DbManager.getInstance().getContainersByRarity(chestRarity);
-		if (containers != null && !containers.isEmpty()) {
+//	public LootContainer selectContainer(Random random, final Rarity chestRarity) {
+//		LootContainer container = LootContainer.EMPTY_CONTAINER;
+//		// select the loot container by rarity
+//		List<LootContainer> containers = DbManager.getInstance().getContainersByRarity(chestRarity);
+//		if (containers != null && !containers.isEmpty()) {
+//			/*
+//			 * get a random container
+//			 */
+//			if (containers.size() == 1) {
+//				container = containers.get(0);
+//			}
+//			else {
+//				container = containers.get(RandomHelper.randomInt(random, 0, containers.size()-1));
+//			}
+//			Treasure.logger.info("Chosen chest container:" + container);
+//		}
+//		return container;
+//	}
+	
+	/**
+	 * 
+	 * @param random
+	 * @param chestRarity
+	 * @return
+	 */
+	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
+		LootTable table = null;
+		// select the loot table by rarity
+		List<LootTable> tables = TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(chestRarity);
+		if (tables != null && !tables.isEmpty()) {
 			/*
 			 * get a random container
 			 */
-			if (containers.size() == 1) {
-				container = containers.get(0);
+			if (tables.size() == 1) {
+				table = tables.get(0);
 			}
 			else {
-				container = containers.get(RandomHelper.randomInt(random, 0, containers.size()-1));
+				table = tables.get(RandomHelper.randomInt(random, 0, tables.size()-1));
 			}
-			Treasure.logger.info("Chosen chest container:" + container);
 		}
-		return container;
+		return table;
 	}
 	
 	/**
