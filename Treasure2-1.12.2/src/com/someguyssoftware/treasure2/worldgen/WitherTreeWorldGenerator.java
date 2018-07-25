@@ -91,7 +91,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 
 		// test if min chunks was met
 		if (chunksSinceLastTree > TreasureConfig.minChunksPerWell) {
-			Treasure.logger.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastTree, TreasureConfig.minChunksPerWell));
+//			Treasure.logger.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastTree, TreasureConfig.minChunksPerWell));
 
 			/*
 			 * get current chunk position
@@ -138,7 +138,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 	 				return;
 	 			}
 
-				// reset chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
+				// increment chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
 				chunksSinceLastTree++;    	    	
 
 				// generate the well
@@ -198,10 +198,11 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 			return false;
 		}
 
+		Treasure.logger.debug("Min distance Sq -> {}", minDistanceSq);
 		for (ChestInfo info : infos) {
 			// calculate the distance to the poi
 			double distance = coords.getDistanceSq(info.getCoords());
-			//		    Dungeons2.log.debug("Dungeon dist^2: " + distance);
+			Treasure.logger.debug("Chest dist^2: " + distance);
 			if (distance < minDistanceSq) {
 				return true;
 			}

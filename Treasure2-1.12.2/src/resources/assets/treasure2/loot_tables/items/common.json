@@ -82,7 +82,7 @@
 				{
 					"entryName": "gold_nugget",
 					"type": "item",
-					"name": "minecraft:gold_nugger",
+					"name": "minecraft:gold_nugget",
 					"weight": 20,
 					"functions": [
 						{

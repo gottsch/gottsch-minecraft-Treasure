@@ -23,9 +23,9 @@
 					"weight": 25
 				},
 				{
-					"entryName": "gold_sword",
+					"entryName": "golden_sword",
 					"type": "item",
-					"name": "minecraft:gold_sword",
+					"name": "minecraft:golden_sword",
 					"weight": 25,
 					"functions": [
 						{
@@ -34,9 +34,9 @@
 					]
 				},
 				{
-					"entryName": "gold_pickaxe",
+					"entryName": "golden_pickaxe",
 					"type": "item",
-					"name": "minecraft:gold_pickaxe",
+					"name": "minecraft:golden_pickaxe",
 					"weight": 15,
 					"functions": [
 						{
@@ -45,9 +45,9 @@
 					]
 				},
 				{
-					"entryName": "gold_axe",
+					"entryName": "golden_axe",
 					"type": "item",
-					"name": "minecraft:gold_axe",
+					"name": "minecraft:golden_axe",
 					"weight": 15,
 					"functions": [
 						{

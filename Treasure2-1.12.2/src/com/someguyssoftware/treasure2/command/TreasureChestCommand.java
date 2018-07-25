@@ -3,18 +3,25 @@
  */
 package com.someguyssoftware.treasure2.command;
 
+import java.util.List;
+import java.util.Random;
+
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
+import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * 
@@ -80,6 +87,24 @@ public class TreasureChestCommand extends CommandBase {
 //						InventoryPopulator pop = new InventoryPopulator();
 //						pop.populate(chest.getInventoryProxy(), c);
 //					}
+    				CommonChestGenerator gen = new CommonChestGenerator();
+    				LootTable lootTable = gen.selectLootTable(new Random(), rarity);
+    				
+    				if (lootTable == null) {
+    					Treasure.logger.warn("Unable to select a lootTable.");
+    					player.sendMessage(new TextComponentString("Unable to select a lootTable."));
+    				}
+    				
+    				Treasure.logger.debug("Generating loot from loot table for rarity {}", rarity);
+    				List<ItemStack> stacks = lootTable.generateLootForPools(new Random(), TreasureLootTables.CONTEXT);
+    				Treasure.logger.debug("Generated loot:");
+    				for (ItemStack stack : stacks) {
+    					Treasure.logger.debug(stack.getDisplayName());
+    				}	
+    				
+    				
+    				lootTable.fillInventory(chest.getInventoryProxy(), 
+							new Random(), 	TreasureLootTables.CONTEXT);
     			}
     		}
 		}

@@ -35,9 +35,9 @@
 					]	
 				},
 				{
-					"entryName": "cocoa",
+					"entryName": "cocoa_beans",
 					"type": "item",
-					"name": "minecraft:cocoa",
+					"name": "minecraft:cocoa_beans",
 					"weight": 20,
 					"functions": [
 						{

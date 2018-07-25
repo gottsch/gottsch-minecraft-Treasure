@@ -95,7 +95,7 @@
 		},
 		{
 			"name": "uncommon_treasure",
-			"rolls": 2,
+			"rolls": 1,
 			"entries": [
 				{
 					"entryName": "silver_coin",

@@ -17,12 +17,6 @@
 					"weight": 10		
 				},
 				{
-					"entryName": "diamond_arms",
-					"type": "item",
-					"name": "minecraft:diamond_arms",
-					"weight": 10	
-				},
-				{
 					"entryName": "diamond_helmet",
 					"type": "item",
 					"name": "minecraft:diamond_helmet",
@@ -61,19 +55,6 @@
 					]						
 				},
 				{
-					"entryName": "iron_arms",
-					"type": "item",
-					"name": "minecraft:iron_arms",
-					"weight": 20,
-					"functions": [
-						{
-							"function": "enchant_with_levels",
-							"levels": 30,
-							"treasure": true
-						}
-					]		
-				},
-				{
 					"entryName": "iron_helmet",
 					"type": "item",
 					"name": "minecraft:iron_helmet",
@@ -106,9 +87,9 @@
 					"weight": 10		
 				},
 				{
-					"entryName": "gold_horse_armor",
+					"entryName": "golden_horse_armor",
 					"type": "item",
-					"name": "minecraft:gold_horse_armor",
+					"name": "minecraft:golden_horse_armor",
 					"weight": 10		
 				}
 			]

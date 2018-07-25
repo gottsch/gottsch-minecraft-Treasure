@@ -203,9 +203,9 @@
 					]							
 				},									
 				{
-					"entryName": "sea_latern",
+					"entryName": "sea_lantern",
 					"type": "item",
-					"name": "minecraft:sea_latern",
+					"name": "minecraft:sea_lantern",
 					"weight": 20
 				},
 				{

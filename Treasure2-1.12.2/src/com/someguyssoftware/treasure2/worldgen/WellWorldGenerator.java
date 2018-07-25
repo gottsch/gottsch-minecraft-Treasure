@@ -149,7 +149,7 @@ public class WellWorldGenerator implements IWorldGenerator {
 				// 				return;
 				// 			}
 
-				// reset chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
+				// increment chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
 				chunksSinceLastWell++;    	    	
 
 				// generate the well

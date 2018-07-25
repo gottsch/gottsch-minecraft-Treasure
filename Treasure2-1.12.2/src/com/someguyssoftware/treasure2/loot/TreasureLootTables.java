@@ -109,6 +109,7 @@ public class TreasureLootTables {
 			for (ResourceLocation loc : entry.getValue()) {
 				LootTable lootTable = world.getLootTableManager().getLootTableFromLocation(loc);
 				CHEST_LOOT_TABLE_MAP.get(entry.getKey()).add(lootTable);
+				Treasure.logger.debug("mapping loot table: {} -> {}", entry.getKey(), loc);
 			}
 		}
 	}

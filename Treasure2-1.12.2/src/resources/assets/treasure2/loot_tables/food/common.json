@@ -82,7 +82,7 @@
 				{
 					"entryName": "porkchop",
 					"type": "item",
-					"name": "minecraft:prkchop",
+					"name": "minecraft:porkchop",
 					"weight": 25,
 					"functions": [
 						{
@@ -140,9 +140,9 @@
 					]	
 				},
 				{
-					"entryName": "fish0",
+					"entryName": "fish",
 					"type": "item",
-					"name": "minecraft:fish0",
+					"name": "minecraft:fish",
 					"weight": 35,
 					"functions": [
 						{
@@ -155,9 +155,9 @@
 					]	
 				},
 				{
-					"entryName": "fish1",
+					"entryName": "cooked_fish",
 					"type": "item",
-					"name": "minecraft:fish1",
+					"name": "minecraft:cooked_fish",
 					"weight": 30,
 					"functions": [
 						{

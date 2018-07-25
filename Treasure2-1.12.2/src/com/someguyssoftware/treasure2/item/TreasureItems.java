@@ -91,6 +91,11 @@ public class TreasureItems {
 	
 	// potions
 	public static PotionType EXTRA_STRONG_HEALING;
+	public static PotionType EXTRA_STRONG_STRENGTH;
+	public static PotionType EXTRA_STRONG_LEAPING;
+	public static PotionType EXTRA_STRONG_SWIFTNESS;
+	public static PotionType EXTRA_STRONG_REGENERATION;
+	public static PotionType EXTRA_STRONG_POISON;
     	
 	/*
 	 * Materials
@@ -252,10 +257,10 @@ public class TreasureItems {
 
 		
 		locks =	ArrayListMultimap.create();
-		locks.put(Rarity.COMMON, WOOD_LOCK);
-		locks.put(Rarity.COMMON, STONE_LOCK);
-		locks.put(Rarity.UNCOMMON, IRON_LOCK);
-		locks.put(Rarity.SCARCE, GOLD_LOCK);
+		locks.put(WOOD_LOCK.getRarity(), WOOD_LOCK);
+		locks.put(STONE_LOCK.getRarity(), STONE_LOCK);
+		locks.put(IRON_LOCK.getRarity(), IRON_LOCK);
+		locks.put(GOLD_LOCK.getRarity(), GOLD_LOCK);
 		locks.put(DIAMOND_LOCK.getRarity(), DIAMOND_LOCK);
 		locks.put(EMERALD_LOCK.getRarity(), EMERALD_LOCK);
 		locks.put(RUBY_LOCK.getRarity(), RUBY_LOCK);
@@ -292,7 +297,17 @@ public class TreasureItems {
 		
 		// potions
 		EXTRA_STRONG_HEALING = new PotionType("healing", 
-				new PotionEffect[] {new PotionEffect(MobEffects.INSTANT_HEALTH, 1, 1)}).setRegistryName(Treasure.MODID, "extra_strong_healing");
+				new PotionEffect[] {new PotionEffect(MobEffects.INSTANT_HEALTH, 1, 2)}).setRegistryName(Treasure.MODID, "extra_strong_healing");
+		EXTRA_STRONG_STRENGTH = new PotionType("strength", 
+				new PotionEffect[] {new PotionEffect(MobEffects.STRENGTH, 1800, 2)}).setRegistryName(Treasure.MODID, "extra_strong_strength");
+		EXTRA_STRONG_LEAPING = new PotionType("leaping", 
+				new PotionEffect[] {new PotionEffect(MobEffects.JUMP_BOOST, 1800, 2)}).setRegistryName(Treasure.MODID, "extra_strong_leaping");
+		EXTRA_STRONG_SWIFTNESS = new PotionType("swiftness", 
+				new PotionEffect[] {new PotionEffect(MobEffects.SPEED, 1800, 2)}).setRegistryName(Treasure.MODID, "extra_strong_swiftness");
+		EXTRA_STRONG_REGENERATION = new PotionType("regeneration", 
+				new PotionEffect[] {new PotionEffect(MobEffects.REGENERATION, 450, 2)}).setRegistryName(Treasure.MODID, "extra_strong_regeneration");
+		EXTRA_STRONG_POISON = new PotionType("poison", 
+				new PotionEffect[] {new PotionEffect(MobEffects.POISON, 432, 2)}).setRegistryName(Treasure.MODID, "extra_strong_poison");
 
 	}
 	
@@ -302,6 +317,11 @@ public class TreasureItems {
 		public static void registerPotions(final RegistryEvent.Register<PotionType> event) {
 			final IForgeRegistry<PotionType> registry = event.getRegistry();
 			registry.register(EXTRA_STRONG_HEALING);
+			registry.register(EXTRA_STRONG_LEAPING);
+			registry.register(EXTRA_STRONG_POISON);
+			registry.register(EXTRA_STRONG_REGENERATION);
+			registry.register(EXTRA_STRONG_STRENGTH);
+			registry.register(EXTRA_STRONG_SWIFTNESS);
 		}
 	}
 	

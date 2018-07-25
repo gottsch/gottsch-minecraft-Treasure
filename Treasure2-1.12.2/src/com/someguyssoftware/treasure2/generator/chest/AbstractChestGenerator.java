@@ -29,6 +29,7 @@ import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTable;
@@ -111,10 +112,12 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 //			}
 			
 			LootTable lootTable = selectLootTable(random, chestRarity);
+
 			if (lootTable == null) {
 				Treasure.logger.warn("Unable to select a lootTable.");
 				return false;
 			}
+			Treasure.logger.debug("Selected loot table -> {}", lootTable.toString());
 			
 			// select a chest from the rarity
 			TreasureChestBlock chest = selectChest(random, chestRarity);	

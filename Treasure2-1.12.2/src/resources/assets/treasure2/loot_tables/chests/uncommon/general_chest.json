@@ -55,7 +55,10 @@
 		},
 		{
 			"name": "tools",
-			"rolls": 1,
+			"rolls": {
+				"min": 0,
+				"max": 1
+			},
 			"entries": [
 	            {
                     "type": "loot_table",
@@ -83,7 +86,7 @@
 			"name": "common_items",
 			"rolls": {
 				"min": 0,
-				"max": 5
+				"max": 2
 			},
 			"entries": [
                 {
@@ -97,7 +100,7 @@
 			"name": "common_armor",
 			"rolls": {
 				"min": 0,
-				"max": 2
+				"max": 1
 			},
 			"entries": [
 	                {
@@ -111,7 +114,7 @@
 			"name": "common_food",
 			"rolls": {
 				"min": 0,
-				"max": 3
+				"max": 1
 			},
 			"entries": [
 	                {
@@ -125,7 +128,7 @@
 			"name": "common_tools",
 			"rolls": {
 				"min": 0,
-				"max": 2
+				"max": 1
 			},
 			"entries": [
 	            {
@@ -139,7 +142,7 @@
 			"name": "common_potions",
 			"rolls": {
 				"min": 0,
-				"max": 2
+				"max": 1
 			},
 			"entries": [
 		            {

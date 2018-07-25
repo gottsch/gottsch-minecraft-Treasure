@@ -140,7 +140,7 @@ public class WitherTreeGenerator {
 		
 		// TODO turn into method buildSubTrees(world, random, coords, existingTreeList) return list<coords> - NOPE
 		for (int treeIndex = 0; treeIndex < numTrees; treeIndex++) {
-			// TODO find a random location around a radius from the tree
+			// find a random location around a radius from the tree
 			// ie. rand x-radius, rand z-radius = new point (+x,+z), rand degrees of rotation from origin
 			double xlen = RandomHelper.randomDouble(5, 10);
 			double zlen = RandomHelper.randomDouble(5, 10);

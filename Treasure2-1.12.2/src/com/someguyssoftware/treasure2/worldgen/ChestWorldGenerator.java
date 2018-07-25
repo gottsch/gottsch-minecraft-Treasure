@@ -121,7 +121,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
         
 		// test if min chunks was met
      	if (chunksSinceLastChest > TreasureConfig.minChunksPerChest) {
-     		Treasure.logger.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastChest, TreasureConfig.minChunksPerChest));
+//     		Treasure.logger.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastChest, TreasureConfig.minChunksPerChest));
 
      		/*
      		 * get current chunk position
@@ -142,18 +142,18 @@ public class ChestWorldGenerator implements IWorldGenerator {
 				Treasure.logger.warn("Unable to locate a chest for rarity {}.", rarity);
 				return;
 			}
-			Treasure.logger.debug("Chunks since last {} chest: {}", rarity,  chunksSinceLastRarityChest.get(rarity) );
-			Treasure.logger.debug("Chunks per {} chest: {}", rarity, chestConfig.getChunksPerChest());
+//			Treasure.logger.debug("Chunks since last {} chest: {}", rarity,  chunksSinceLastRarityChest.get(rarity) );
+//			Treasure.logger.debug("Chunks per {} chest: {}", rarity, chestConfig.getChunksPerChest());
     		if (chunksSinceLastRarityChest.get(rarity) >= chestConfig.getChunksPerChest()) {
     			
 				// 1. test if chest meets the probability criteria
-    			Treasure.logger.debug("{} chest probability: {}", rarity, chestConfig.getGenProbability());
+//    			Treasure.logger.debug("{} chest probability: {}", rarity, chestConfig.getGenProbability());
 				if (!RandomHelper.checkProbability(random, chestConfig.getGenProbability())) {
 					Treasure.logger.debug("Chest does not meet generate probability.");
 					return;
 				}
 				else {
-					Treasure.logger.debug("Chest MEETS generate probability!");
+//					Treasure.logger.debug("Chest MEETS generate probability!");
 				}
 				
 				// 2. test if correct biome
@@ -186,7 +186,9 @@ public class ChestWorldGenerator implements IWorldGenerator {
     			if (isGenerated) {
     				// add to registry
     				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
+    				// reset the chunk counts
         			chunksSinceLastChest = 0;
+        			chunksSinceLastRarityChest.put(rarity, 0);
     			}
     		}
 
@@ -236,11 +238,12 @@ public class ChestWorldGenerator implements IWorldGenerator {
 			Treasure.logger.debug("Unable to locate the Chest Registry or the Registry doesn't contain any values");
 			return false;
 		}
-
+		
+		Treasure.logger.debug("Min distance Sq -> {}", minDistanceSq);
 		for (ChestInfo info : infos) {
 			// calculate the distance to the poi
 			double distance = coords.getDistanceSq(info.getCoords());
-//		    Dungeons2.log.debug("Dungeon dist^2: " + distance);
+			Treasure.logger.debug("Chest dist^2: " + distance);
 			if (distance < minDistanceSq) {
 				return true;
 			}

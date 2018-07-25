@@ -56,8 +56,9 @@ public class SkeletonKey extends KeyItem {
 		Rarity rarity = lockItem.getRarity();
 		if (rarity == Rarity.COMMON ||
 				rarity == Rarity.UNCOMMON ||
-				rarity == Rarity.SCARCE ||
+				(rarity == Rarity.SCARCE  && lockItem.getCategory() != Category.WITHER) ||
 				rarity == Rarity.RARE) return true;
+
 		return false;
 	}	
 

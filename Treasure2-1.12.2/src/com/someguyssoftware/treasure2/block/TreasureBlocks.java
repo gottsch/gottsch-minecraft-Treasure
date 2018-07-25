@@ -529,8 +529,8 @@ public class TreasureBlocks {
 					new ItemBlock(LOW_POISON_FOG),
 					new ItemBlock(WITHER_LOG),
 					new ItemBlock(WITHER_BROKEN_LOG),
-					new ItemBlock(WITHER_BRANCH),
-					new ItemBlock(WITHER_ROOT),
+//					new ItemBlock(WITHER_BRANCH),
+//					new ItemBlock(WITHER_ROOT),
 					new ItemBlock(WITHER_LOG_SOUL)
 			};
 

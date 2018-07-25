@@ -17,12 +17,6 @@
 					"weight": 20		
 				},
 				{
-					"entryName": "leather_arms",
-					"type": "item",
-					"name": "minecraft:leather_arms",
-					"weight": 20		
-				},
-				{
 					"entryName": "leather_helmet",
 					"type": "item",
 					"name": "minecraft:leather_helmet",
@@ -35,33 +29,27 @@
 					"weight": 20		
 				},
 				{
-					"entryName": "gold_chestplate",
+					"entryName": "golden_chestplate",
 					"type": "item",
-					"name": "minecraft:gold_chestplate",
+					"name": "minecraft:golden_chestplate",
 					"weight": 10		
 				},
 				{
-					"entryName": "gold_leggings",
+					"entryName": "golden_leggings",
 					"type": "item",
-					"name": "minecraft:gold_leggings",
+					"name": "minecraft:golden_leggings",
 					"weight": 10		
 				},
 				{
-					"entryName": "gold_arms",
+					"entryName": "golden_helmet",
 					"type": "item",
-					"name": "minecraft:gold_arms",
+					"name": "minecraft:golden_helmet",
 					"weight": 10		
 				},
 				{
-					"entryName": "gold_helmet",
+					"entryName": "golden_boots",
 					"type": "item",
-					"name": "minecraft:gold_helmet",
-					"weight": 10		
-				},
-				{
-					"entryName": "gold_boots",
-					"type": "item",
-					"name": "minecraft:gold_boots",
+					"name": "minecraft:golden_boots",
 					"weight": 10		
 				}	
 			]

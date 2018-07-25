@@ -13,7 +13,7 @@
 				{
 					"entryName": "potato",
 					"type": "item",
-					"name": "minecraft:potatoe",
+					"name": "minecraft:potato",
 					"weight": 35,
 					"functions": [
 						{

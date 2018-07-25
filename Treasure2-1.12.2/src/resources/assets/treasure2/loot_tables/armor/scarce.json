@@ -27,17 +27,6 @@
 					]		
 				},
 				{
-					"entryName": "iron_arms",
-					"type": "item",
-					"name": "minecraft:iron_arms",
-					"weight": 20,
-					"functions": [
-						{
-							"function": "enchant_randomly"
-						}
-					]		
-				},
-				{
 					"entryName": "iron_helmet",
 					"type": "item",
 					"name": "minecraft:iron_helmet",
@@ -92,20 +81,6 @@
 							"function": "enchant_randomly"							
 						}		
 					]						
-				},
-				{
-					"entryName": "leather_arms",
-					"type": "item",
-					"name": "minecraft:leather_arms",
-					"weight": 15,
-					"functions": [
-						{
-							"function": "enchant_randomly"
-						},
-						{
-							"function": "enchant_randomly"							
-						}		
-					]		
 				},
 				{
 					"entryName": "leather_helmet",

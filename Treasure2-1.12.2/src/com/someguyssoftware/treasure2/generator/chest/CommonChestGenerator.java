@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 
@@ -62,15 +63,18 @@ public class CommonChestGenerator extends AbstractChestGenerator {
 		tables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.UNCOMMON));
 		
 		if (tables != null && !tables.isEmpty()) {
+			int index = 0;
 			/*
 			 * get a random container
 			 */
 			if (tables.size() == 1) {
-				table = tables.get(0);
+				table = tables.get(index);
 			}
 			else {
-				table = tables.get(RandomHelper.randomInt(random, 0, tables.size()-1));
+				index = RandomHelper.randomInt(random, 0, tables.size()-1);
+				table = tables.get(index);
 			}
+			Treasure.logger.debug("Selected loot table index --> {}", index);
 		}
 		return table;
 	}

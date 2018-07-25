@@ -41,15 +41,16 @@
 		{
 			"name": "potions",
 			"rolls": {
-				"min": 0,
+				"min":0,
 				"max": 3
 			},
 			"entries": [
                 {
+                	"entryName": "common_potion",
                     "type": "loot_table",
                     "name": "treasure2:potions/common",
                     "weight": 1
-                }			
+                }               
 			]
 		}
 	]

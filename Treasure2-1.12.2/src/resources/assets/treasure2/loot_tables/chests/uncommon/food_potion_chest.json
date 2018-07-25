@@ -15,7 +15,7 @@
 			"name": "items",
 			"rolls": {
 				"min": 2,
-				"max": 5
+				"max": 4
 			},
 			"entries": [
 	            {
@@ -44,7 +44,7 @@
 		{
 			"name": "potions",
 			"rolls": {
-				"min": 1,
+				"min": 0,
 				"max": 2
 			},
 			"entries": [
@@ -59,7 +59,7 @@
 			"name": "common_items",
 			"rolls": {
 				"min": 0,
-				"max": 5
+				"max": 2
 			},
 			"entries": [
 	            {
