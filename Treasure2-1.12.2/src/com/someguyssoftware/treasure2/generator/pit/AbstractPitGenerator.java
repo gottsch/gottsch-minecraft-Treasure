@@ -22,8 +22,8 @@ import net.minecraft.world.World;
  */
 public abstract class AbstractPitGenerator implements IPitGenerator {
 
-	protected static final int Y_OFFSET = 4;
-	protected static final int Y_SURFACE_OFFSET = 5;
+	protected static final int Y_OFFSET = 5;
+	protected static final int Y_SURFACE_OFFSET = 6;
 
 	private RandomWeightedCollection<Block> blockLayers = new RandomWeightedCollection<>();
 	
@@ -78,9 +78,9 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 			buildAboveChestLayers(world, random, spawnCoords);
 
 			// shaft enterance
-			buildLogLayer(world, random, surfaceCoords.add(0, -2, 0), Blocks.LOG);
-			buildLayer(world, surfaceCoords.add(0, -3, 0), Blocks.SAND);
-			buildLogLayer(world, random, surfaceCoords.add(0, -4, 0), Blocks.LOG);
+			buildLogLayer(world, random, surfaceCoords.add(0, -3, 0), Blocks.LOG);
+			buildLayer(world, surfaceCoords.add(0, -4, 0), Blocks.SAND);
+			buildLogLayer(world, random, surfaceCoords.add(0, -5, 0), Blocks.LOG);
 
 			// build the pit
 			buildPit(world, random, spawnCoords, surfaceCoords, getBlockLayers());
@@ -101,8 +101,9 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 */
 	public void buildAboveChestLayers(World world, Random random, ICoords spawnCoords) {
 		buildLayer(world, spawnCoords.add(0, 1, 0), Blocks.AIR);
-		buildLogLayer(world, random, spawnCoords.add(0, 2, 0), Blocks.LOG);
-		buildLayer(world, spawnCoords.add(0, 3, 0), Blocks.SAND);
+		buildLayer(world, spawnCoords.add(0, 2, 0), Blocks.AIR);
+		buildLogLayer(world, random, spawnCoords.add(0, 3, 0), Blocks.LOG);
+		buildLayer(world, spawnCoords.add(0, 4, 0), Blocks.SAND);
 	}
 
 	/**

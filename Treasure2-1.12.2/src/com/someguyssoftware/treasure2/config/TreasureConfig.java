@@ -128,6 +128,9 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String WITHER_BROKEN_LOG_ID = "wither_broken_log";
 	public static final String WITHER_LOG_SOUL_ID = "wither_log_soul";
 	
+	public static final String SPANISH_MOSS_BLOCK_ID = "spanish_moss";
+	public static final String SPANISH_MOSS_ITEM_ID = "spanish_moss";
+	
 	// TEs
 	public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity";
 	public static final String CRATE_CHEST_TE_ID = "crate_chest_tile_entity";
@@ -140,6 +143,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String DREAD_PIRATE_CHEST_TE_ID = "dread_pirate_chest_tile_entity";
 	public static final String COMPRESSOR_CHEST_TE_ID = "compressor_chest_tile_entity";
 	public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
+
 	
 	public static boolean enableKeyBreaks = true;
 	public static boolean enableFog = true;
@@ -158,6 +162,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static boolean isGravestonesAllowed;
 	public static int minGravestonesPerChest;
 	public static int maxGravestonesPerChest;
+	public static int gravestoneFogProbability;
 	
 	// wither properties
 	public static double witherBranchItemGenProbability;
@@ -172,6 +177,8 @@ public class TreasureConfig extends AbstractConfig {
 	// biome type white/black lists
 	public static String[] generalChestBiomeWhiteList;
 	public static String[] generalChestBiomeBlackList;
+	
+
 
 			
 	/**
@@ -211,7 +218,8 @@ public class TreasureConfig extends AbstractConfig {
         isGravestonesAllowed = config.getBoolean("isGravestonesAllowed", "04-gen", true, "");
         minGravestonesPerChest = config.getInt("minGravestonesPerChest", "04-gen", 4, 1, 5, "The minimun of Treasure chest markers (gravestones, bones).");
         maxGravestonesPerChest = config.getInt("maxGravesstonesPerChest", "04-gen", 8, 1, 10, "The maximum of Treasure chest markers (gravestones, bones).");
-         
+        gravestoneFogProbability = config.getInt("gravestoneFogProbability", "04-gen", 50, 0, 100, "The probability that a gravestone will have fog."); 
+        
         // wells
         minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 500, 100, 32000, "");
         

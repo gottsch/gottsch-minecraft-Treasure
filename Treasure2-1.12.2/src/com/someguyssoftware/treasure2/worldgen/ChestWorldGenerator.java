@@ -28,6 +28,7 @@ import com.someguyssoftware.treasure2.generator.chest.UncommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.AirPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.LavaTrapPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.MobTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
@@ -85,6 +86,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		pitGenerators.put(Pits.TNT_TRAP_PIT, new TntTrapPitGenerator());
 		pitGenerators.put(Pits.AIR_PIT,  new AirPitGenerator());
 		pitGenerators.put(Pits.LAVA_TRAP_PIT, new LavaTrapPitGenerator());
+		pitGenerators.put(Pits.MOB_TRAP_PIT, new MobTrapPitGenerator());
 	}
 
 	/**
@@ -136,7 +138,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 
 	    	// determine what type to generate
         	Rarity rarity = Rarity.values()[random.nextInt(Rarity.values().length)];
-			Treasure.logger.debug("Using Rarity: {}", rarity );
+//			Treasure.logger.debug("Using Rarity: {}", rarity );
 			IChestConfig chestConfig = Configs.chestConfigs.get(rarity);
 			if (chestConfig == null) {
 				Treasure.logger.warn("Unable to locate a chest for rarity {}.", rarity);
@@ -152,9 +154,9 @@ public class ChestWorldGenerator implements IWorldGenerator {
 					Treasure.logger.debug("Chest does not meet generate probability.");
 					return;
 				}
-				else {
+//				else {
 //					Treasure.logger.debug("Chest MEETS generate probability!");
-				}
+//				}
 				
 				// 2. test if correct biome
 				Biome biome = world.getBiome(coords.toPos());

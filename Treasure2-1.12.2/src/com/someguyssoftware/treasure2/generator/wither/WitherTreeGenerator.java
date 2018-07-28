@@ -252,7 +252,7 @@ public class WitherTreeGenerator {
 			 else if (y == maxSize-1) {
 				 addTop(world, random, coords, y+1, supportTrunkMatrix.get(random.nextInt(supportTrunkMatrix.size())));
 			 }
-			 else if (y > 2) {
+			 else if (y > 3) {
 				 addBranch(world, random, coords, y, maxSize, supportTrunkMatrix);
 			 }
 		}		 
@@ -272,8 +272,8 @@ public class WitherTreeGenerator {
 		trunkCoords[3] = coords.add(1, 0, 1);
 
 		// determine the size of the main trunk
-		int maxSize = RandomHelper.randomInt(random, 7, config.getMaxTrunkSize());
-//		Treasure.logger.debug("maxSize: {}", maxSize);
+		int maxSize = RandomHelper.randomInt(random, 9, config.getMaxTrunkSize());
+		Treasure.logger.debug("master tree maxSize: {}", maxSize);
 		
 		// build a 2x2 trunk
 		boolean hasLifeBeenAdded = false;
@@ -305,7 +305,7 @@ public class WitherTreeGenerator {
 				 else if (y == maxSize-1) {
 					 addTop(world, random, trunkCoords[trunkIndex], y+1, topMatrix.get(trunkIndex));
 				 }
-				 else if (y >= 2) {
+				 else if (y >= 3) {
 					 addBranch(world, random, trunkCoords[trunkIndex], y, maxSize, trunkMatrix[trunkIndex]);
 				 }
 			}
@@ -314,6 +314,7 @@ public class WitherTreeGenerator {
 			if (maxSize > 3) {
 				maxSize -= RandomHelper.randomInt(random, 1, 3);
 				maxSize = Math.max(3, maxSize);
+				Treasure.logger.debug("master tree new maxSize: {}", maxSize);
 			}
 		}
 
@@ -372,17 +373,24 @@ public class WitherTreeGenerator {
 	 * @param is
 	 */
 	private void addBranch(World world, Random random, ICoords  trunkCoords, int y, int maxSize, List<Direction> directions) {
-		int branchSize = (y <= (maxSize/2)) ? 2 : 1;
+		int branchSize =0;// (y <= (maxSize/3)) ? 3 : (y <= (maxSize * 2/3)) ? 2 : 1;
+		if (y < maxSize/3 || y > maxSize/4) branchSize =2;
+		else branchSize=1;
 		
 		// for each direction
 		for (Direction d : directions) {
 			// randomize if a branch is generated
-			if (RandomHelper.checkProbability(random, 20)) {
+			if (RandomHelper.checkProbability(random, 30)) {
 				// for the num of branch segments
 				ICoords c = trunkCoords;
 				for (int segment = 0; segment < branchSize; segment++) {
 					c = c.add(d, 1);
 					Cube replaceCube = new Cube(world, c);
+					
+					// if there is a branch directly below, don't build
+					if (world.getBlockState(c.down(1).toPos()).getBlock() instanceof WitherBranchBlock) break;
+					
+					// if able to place branch here
 					if (replaceCube.isAir() || replaceCube.isReplaceable()) {
 						// rotate the branch in the right direction
 						IBlockState state = TreasureBlocks.WITHER_BRANCH.getDefaultState().withProperty(WitherBranchBlock.FACING, d.toFacing());
@@ -390,6 +398,15 @@ public class WitherTreeGenerator {
 						// add the branch to the world
 						world.setBlockState(c.add(0, y, 0).toPos(), state);
 //						 Treasure.logger.debug("Wither Tree building branch @ " +  c.add(0, y, 0).toShortString());
+						
+						// add spanish moss
+						if (RandomHelper.checkProbability(random, 20)) continue;
+						
+						replaceCube = new Cube(world, c.add(0, y-1, 0));
+						if (replaceCube.isAir() || replaceCube.isReplaceable()) {
+							world.setBlockState(c.add(0, y-1, 0).toPos(), TreasureBlocks.SPANISH_MOSS.getDefaultState());
+						}
+
 					}
 					else {
 						break;

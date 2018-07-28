@@ -121,6 +121,8 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.SKULL_SWORD);
 		registerItemModel(TreasureItems.EYE_PATCH);
 		
+		// OTHER
+		registerItemModel(TreasureItems.SPANISH_MOSS);
 //		// variants
 //		Item gravestoneItem = Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1);
 //		ModelResourceLocation itemModelResourceLocation = 

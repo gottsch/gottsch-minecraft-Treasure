@@ -7,8 +7,12 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.item.LockItem;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.world.storage.loot.LootTable;
 
@@ -75,5 +79,18 @@ public class UncommonChestGenerator extends AbstractChestGenerator {
 			}
 		}
 		return table;
+	}
+	
+	/**
+	 * @param chest
+	 */
+	@Override
+	public void addLocks(Random random, TreasureChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
+		// select a rarity locks
+		List<LockItem> locks = (List<LockItem>) TreasureItems.locks.get(Rarity.COMMON);
+		locks.addAll(TreasureItems.locks.get(Rarity.UNCOMMON));
+		locks.addAll(TreasureItems.locks.get(Rarity.SCARCE));
+		
+		addLocks(random, chest, te, locks);
 	}
 }

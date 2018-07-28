@@ -13,6 +13,7 @@ import java.util.Set;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.someguyssoftware.gottschcore.block.ModBlock;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
@@ -130,6 +131,8 @@ public class TreasureBlocks {
 	public static final Block WITHER_BROKEN_LOG;
 	public static final Block WITHER_LOG_SOUL;
 
+	public static final Block SPANISH_MOSS;
+	
 	// initialize blocks
 	static {
 		// standard chest bounds
@@ -383,6 +386,8 @@ public class TreasureBlocks {
 		WITHER_ROOT = new WitherRootBlock(Treasure.MODID, TreasureConfig.WITHER_ROOT_ID);		
 		WITHER_BROKEN_LOG = new WitherBrokenLogBlock(Treasure.MODID, TreasureConfig.WITHER_BROKEN_LOG_ID);
 		WITHER_LOG_SOUL = new WitherLogSoulBlock(Treasure.MODID, TreasureConfig.WITHER_LOG_SOUL_ID);
+		SPANISH_MOSS = new SpanishMossBlock(Treasure.MODID, TreasureConfig.SPANISH_MOSS_BLOCK_ID);
+//				new ModBlock(Treasure.MODID, TreasureConfig.SPANISH_MOSS_BLOCK_ID, Material.PLANTS);	
 	}
 
 
@@ -455,7 +460,8 @@ public class TreasureBlocks {
 					WITHER_ROOT,
 					WITHER_BROKEN_LOG,
 					WITHER_LOG_SOUL,
-					WITHER_CHEST_TOP
+					WITHER_CHEST_TOP,
+					SPANISH_MOSS
 			};
 			registry.registerAll(blocks);	
 			// register speciality chests separately (so they aren't in the rarity map)

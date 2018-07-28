@@ -10,23 +10,23 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
-
 /**
  * 
- * @author Mark Gottschling
+ * @author Mark Gottschling on Jul 27, 2018
  *
  */
-public class TntTrapPitGenerator extends AbstractPitGenerator {
+public class MobTrapPitGenerator extends AbstractPitGenerator {
 	
 	/**
 	 * 
 	 */
-	public TntTrapPitGenerator() {
+	public MobTrapPitGenerator() {
 		getBlockLayers().add(50, Blocks.AIR);
 		getBlockLayers().add(25,  Blocks.SAND);
 		getBlockLayers().add(15, Blocks.COBBLESTONE);
@@ -43,7 +43,7 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 	 */
 	public boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		if (super.generate(world, random, surfaceCoords, spawnCoords)) {
-			Treasure.logger.debug("Generated TNT Trap Pit at " + spawnCoords.toShortString());
+			Treasure.logger.debug("Generated Mob Trap Pit at " + spawnCoords.toShortString());
 			return true;
 		}
 		return false;
@@ -67,7 +67,7 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 		ICoords midCoords = new Coords(coords.getX(), midY, coords.getZ());
 		int deltaY = surfaceCoords.delta(midCoords).getY();
 		
-		Treasure.logger.debug("TNT Trap pit from {} to {}", coords.getY() + Y_OFFSET, surfaceCoords.getY() - Y_SURFACE_OFFSET);
+		Treasure.logger.debug("Mob Trap pit from {} to {}", coords.getY() + Y_OFFSET, surfaceCoords.getY() - Y_SURFACE_OFFSET);
 		// randomly fill shaft
 		for (int yIndex = coords.getY() + Y_OFFSET; yIndex <= surfaceCoords.getY() - Y_SURFACE_OFFSET; yIndex++) {
 			
@@ -98,7 +98,7 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 			
 			// check if the return coords is different than the anticipated coords and resolve
 			yIndex = autoCorrectIndex(yIndex, nextCoords, expectedCoords);
-			Treasure.logger.debug("yIndex: {}", yIndex);
+//			Treasure.logger.debug("yIndex: {}", yIndex);
 		}		
 		return nextCoords;
 	}
@@ -119,32 +119,57 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 		else {
 			nextCoords = buildLayer(world, coords, block);
 		}
-		Treasure.logger.debug("Coords for trap base layer: {}", coords.toShortString());
-		Treasure.logger.debug("Next Coords after base log: {}", nextCoords.toShortString());
+//		Treasure.logger.debug("Coords for trap base layer: {}", coords.toShortString());
+//		Treasure.logger.debug("Next Coords after base log: {}", nextCoords.toShortString());
 		
 		// ensure that the difference is only 1 between nextCoords and coords
 //		if (nextCoords.delta(coords).getY() > 1) return nextCoords;
-
-//		Block redstone = Blocks.REDSTONE_WIRE;
-		GenUtil.replaceWithBlock(world, nextCoords.add(0, 0, 0), Blocks.TNT);
-		GenUtil.replaceWithBlock(world, nextCoords.add(1, 0, 0), Blocks.TNT);
-		GenUtil.replaceWithBlock(world, nextCoords.add(0, 0, 1), Blocks.TNT);
-		GenUtil.replaceWithBlock(world, nextCoords.add(1, 0, 1), Blocks.TNT);
+		ICoords spawnCoords = nextCoords;
+		GenUtil.replaceWithBlock(world, nextCoords.add(0, 0, 0), Blocks.AIR);
+		GenUtil.replaceWithBlock(world, nextCoords.add(1, 0, 0), Blocks.AIR);
+		GenUtil.replaceWithBlock(world, nextCoords.add(0, 0, 1), Blocks.AIR);
+		GenUtil.replaceWithBlock(world, nextCoords.add(1, 0, 1), Blocks.AIR);
 		
 		nextCoords = nextCoords.up(1);
+
+		// add another air layer
+		GenUtil.replaceWithBlock(world, nextCoords.add(0, 0, 0), Blocks.AIR);
+		GenUtil.replaceWithBlock(world, nextCoords.add(1, 0, 0), Blocks.AIR);
+		GenUtil.replaceWithBlock(world, nextCoords.add(0, 0, 1), Blocks.AIR);
+		GenUtil.replaceWithBlock(world, nextCoords.add(1, 0, 1), Blocks.AIR);
 		
 		// add aother  log layer
 		nextCoords = buildLogLayer(world, random, nextCoords, block);
-		// core 4-square pressure plate (above log)
-		Block plate = Blocks.WOODEN_PRESSURE_PLATE;
-		GenUtil.replaceWithBlock(world, nextCoords, plate);
-		GenUtil.replaceWithBlock(world, nextCoords.add(1, 0, 0), plate);
-		GenUtil.replaceWithBlock(world, nextCoords.add(0, 0, 1), plate);
-		GenUtil.replaceWithBlock(world, nextCoords.add(1, 0, 1), plate);
-						
+
+		// spawn the mobs
+    	spawnMob(world, spawnCoords, "skeleton");
+    	spawnMob(world, spawnCoords.add(1, 0, 0), "zombie");
+    	spawnMob(world, spawnCoords.add(0, 0, 1), "zombie");
+    	spawnMob(world, spawnCoords.add(1, 0, 1), "skeleton");
+		
 		// get the next coords
 		nextCoords = nextCoords.up(1);
 		// return the next coords
 		return nextCoords;
+	}
+
+	/**
+	 * 
+	 * @param world
+	 * @param spawnCoords
+	 * @param mob
+	 */
+	private void spawnMob(World world, ICoords spawnCoords, String mobName) {
+		EntityMob mob = null;
+		switch (mobName) {
+		case "zombie":
+			mob = new EntityZombie(world);
+			break;
+		case "skeleton":
+			mob = new EntitySkeleton(world);
+			break;
+		}
+    	mob.setLocationAndAngles((double)spawnCoords.getX() + 0.5D,  (double)spawnCoords.getY(), (double)spawnCoords.getZ() + 0.5D, 0.0F, 0.0F);
+    	world.spawnEntity(mob);
 	}
 }

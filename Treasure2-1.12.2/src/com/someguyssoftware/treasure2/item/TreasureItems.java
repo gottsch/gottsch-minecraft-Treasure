@@ -96,6 +96,9 @@ public class TreasureItems {
 	public static PotionType EXTRA_STRONG_SWIFTNESS;
 	public static PotionType EXTRA_STRONG_REGENERATION;
 	public static PotionType EXTRA_STRONG_POISON;
+	
+	// other
+	public static Item SPANISH_MOSS;
     	
 	/*
 	 * Materials
@@ -309,6 +312,9 @@ public class TreasureItems {
 		EXTRA_STRONG_POISON = new PotionType("poison", 
 				new PotionEffect[] {new PotionEffect(MobEffects.POISON, 432, 2)}).setRegistryName(Treasure.MODID, "extra_strong_poison");
 
+		SPANISH_MOSS = new SpanishMossItem(Treasure.MODID, TreasureConfig.SPANISH_MOSS_ITEM_ID);
+//				.setItemName(Treasure.MODID, TreasureConfig.SPANISH_MOSS_ITEM_ID)
+//				.setCreativeTab(Treasure.TREASURE_TAB);
 	}
 	
 	@Mod.EventBusSubscriber(modid = Treasure.MODID)
@@ -371,7 +377,8 @@ public class TreasureItems {
 					SKULL_SWORD,
 					EYE_PATCH,
 					WITHER_STICK_ITEM,
-					WITHER_ROOT_ITEM
+					WITHER_ROOT_ITEM,
+					SPANISH_MOSS
 			};
 			registry.registerAll(items);		
 		}

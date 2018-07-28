@@ -3,7 +3,9 @@
  */
 package com.someguyssoftware.treasure2.generator;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.block.AbstractModContainerBlock;
@@ -190,13 +192,13 @@ public class GenUtil {
 			return false;
 		}
 
-		FogBlock[] fogDensity = new FogBlock[] { 
-				TreasureBlocks.MED_FOG_BLOCK, 
-				TreasureBlocks.MED_FOG_BLOCK, 
-				TreasureBlocks.MED_FOG_BLOCK,
-				TreasureBlocks.MED_FOG_BLOCK,
-				TreasureBlocks.LOW_FOG_BLOCK,
-				};
+//		FogBlock[] fogDensity1 = new FogBlock[] { 
+//				TreasureBlocks.MED_FOG_BLOCK, 
+//				TreasureBlocks.MED_FOG_BLOCK, 
+//				TreasureBlocks.MED_FOG_BLOCK,
+//				TreasureBlocks.MED_FOG_BLOCK,
+//				TreasureBlocks.LOW_FOG_BLOCK,
+//				};
 		
 		int x = coords.getX();
 		int y = coords.getY();
@@ -303,8 +305,15 @@ public class GenUtil {
 			world.setBlockState(spawnCoords.toPos(), marker.getDefaultState().withProperty(TreasureChestBlock.FACING, facing));
 			
 			// add fog around the block
-			if (TreasureConfig.enableFog) {
-				addFog(world, random, spawnCoords, fogDensity);
+			if (TreasureConfig.enableFog && RandomHelper.checkProbability(random, TreasureConfig.gravestoneFogProbability)) {
+				List<FogBlock> fogDensity = new ArrayList<>(5);
+				// randomize the size of the fog
+				int fogSize = RandomHelper.randomInt(2, 4);
+				// populate the fog density list
+				for (int f = 0; f < fogSize; f++) fogDensity.add(TreasureBlocks.MED_FOG_BLOCK);
+				fogDensity.add(TreasureBlocks.LOW_FOG_BLOCK);
+				// add fog around marker
+				addFog(world, random, spawnCoords, fogDensity.toArray(new FogBlock[] {}));
 			}
 			
 //			Treasure.logger.info("Placed marker @ " + spawnPos);

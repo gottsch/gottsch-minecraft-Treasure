@@ -307,20 +307,62 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param chest
 	 */
 	public void addLocks(Random random, TreasureChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
-		// get the chest type
-		TreasureChestType type = chest.getChestType();
+//		// get the chest type
+//		TreasureChestType type = chest.getChestType();
+//		// determine the number of locks to add
+//		int numLocks = RandomHelper.randomInt(random, 0, type.getMaxLocks());		
+//		Treasure.logger.debug("# of locks to use: {})", numLocks);
+		
+//		int numLocks = randomizedNumberOfLocksByChestType(random, chest.getChestType());
+//		
+//		// get the lock states
+//		List<LockState> lockStates = te.getLockStates();	
+//		
+//		// select a rarity lock
+//		List<LockItem> locks = (List<LockItem>) TreasureItems.locks.get(rarity);
+//		for (int i = 0; i < numLocks; i++) {			
+//			LockItem lock = locks.get(RandomHelper.randomInt(random, 0, locks.size()-1));
+//			Treasure.logger.debug("adding lock: {}", lock);
+//			// add the lock to the chest
+//			lockStates.get(i).setLock(lock);				
+//		}
+		
+		List<LockItem> locks = (List<LockItem>) TreasureItems.locks.get(rarity);
+		addLocks(random, chest, te, locks);
+	}
+	
+	/**
+	 * 
+	 * @param random
+	 * @param chest
+	 * @param te
+	 * @param locks
+	 */
+	public void addLocks(Random random, TreasureChestBlock chest, AbstractTreasureChestTileEntity te,List<LockItem> locks) {
+		int numLocks = randomizedNumberOfLocksByChestType(random, chest.getChestType());
+		
 		// get the lock states
 		List<LockState> lockStates = te.getLockStates();	
-		// determine the number of locks to add
-		int numLocks = RandomHelper.randomInt(random, 0, type.getMaxLocks());
-		Treasure.logger.debug("# of locks to use: {})", numLocks);
-		for (int i = 0; i < numLocks; i++) {
-			// select a rarity lock
-			List<LockItem> locks = (List<LockItem>) TreasureItems.locks.get(rarity);
+
+		for (int i = 0; i < numLocks; i++) {			
 			LockItem lock = locks.get(RandomHelper.randomInt(random, 0, locks.size()-1));
 			Treasure.logger.debug("adding lock: {}", lock);
 			// add the lock to the chest
 			lockStates.get(i).setLock(lock);				
 		}
+	}
+	
+	/**
+	 * 
+	 * @param random
+	 * @param type
+	 * @return
+	 */
+	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
+		// determine the number of locks to add
+		int numLocks = RandomHelper.randomInt(random, 0, type.getMaxLocks());		
+		Treasure.logger.debug("# of locks to use: {})", numLocks);
+		
+		return numLocks;
 	}
 }

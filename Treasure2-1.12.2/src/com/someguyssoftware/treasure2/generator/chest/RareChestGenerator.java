@@ -7,8 +7,12 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.item.LockItem;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.world.storage.loot.LootTable;
 
@@ -24,29 +28,6 @@ public class RareChestGenerator extends AbstractChestGenerator {
 	 */
 	public RareChestGenerator() {}
 
-	/**
-	 * 
-//	 * @param rarity
-//	 * @return
-//	 */
-//	public LootContainer selectContainer(Random random, final Rarity rarity) {
-//		LootContainer container = LootContainer.EMPTY_CONTAINER;
-//		
-//		// select the loot container by rarities
-//		Rarity[] rarities = new Rarity[] {Rarity.SCARCE, Rarity.RARE};
-//		List<LootContainer> containers = DbManager.getInstance().getContainersByRarity(Arrays.asList(rarities));
-//		if (containers != null && !containers.isEmpty()) {
-//			if (containers.size() == 1) {
-//				container = containers.get(0);
-//			}
-//			else {
-//				container = containers.get(RandomHelper.randomInt(random, 0, containers.size()-1));
-//			}
-//			Treasure.logger.info("Chosen chest container:" + container);
-//		}
-//		return container;
-//	}
-	
 	/*
 	 * @param random
 	 * @param chestRarity
@@ -72,5 +53,17 @@ public class RareChestGenerator extends AbstractChestGenerator {
 			}
 		}
 		return table;
+	}
+	
+	/**
+	 * @param chest
+	 */
+	@Override
+	public void addLocks(Random random, TreasureChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
+		// select a rarity locks
+		List<LockItem> locks = (List<LockItem>) TreasureItems.locks.get(Rarity.SCARCE);
+		locks.addAll(TreasureItems.locks.get(Rarity.RARE));
+		
+		addLocks(random, chest, te, locks);
 	}
 }

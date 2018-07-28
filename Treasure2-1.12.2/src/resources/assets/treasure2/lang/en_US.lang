@@ -9,6 +9,9 @@ tile.treasure2:dread_pirate_chest.name=Dread Pirate Chest
 tile.treasure2:compressor_chest.name=Compressor Chest
 tile.treasure2:wither_chest.name=Wither Chest
 
+#wells
+tile.treasure2:wishing_well_block.name=Wishing Well Stone
+
 #gravestones
 tile.treasure2:gravestone1_stone.name=Stone Tombstone
 tile.treasure2:gravestone1_cobblestone.name=Cobblestone Tombstone
@@ -34,9 +37,12 @@ tile.treasure2:gravestone3_polished_andesite.name=Andesite Tombstone
 tile.treasure2:gravestone3_polished_diorite.name=Diorite Tombstone
 tile.treasure2:gravestone3_obsidian.name=Obsidian Tombstone
 
+tile.treasure2.skull_and_crossbones.name=Skull and Bones
+
 #wither tree
 tile.treasure2:wither_log.name=Wither Log
-tile.treasure2.wither_life_log.name=Wither Log
+tile.treasure2:wither_broken_log.name=Wither Broken Log
+tile.treasure2.wither_log_soul.name=Wither Log
 tile.treasure2:wither_branch.name=Wither Branch
 tile.treasure2:wither_root.name=Wither Root
 
@@ -51,10 +57,19 @@ tile.treasure2:high_wither_fog.name=High Wither Fog
 tile.treasure2:med_wither_fog.name=Medium Wither Fog
 tile.treasure2:low_wither_fog.name=Low Wither Fog
 
+tile.treasure2:poison_fog.name=Poison Fog
+tile.treasure2:high_poison_fog.name=High Poison Fog
+tile.treasure2:med_poison_fog.name=Medium Poison Fog
+tile.treasure2:low_poison_fog.name=Low Poison Fog
+
+#other
+tile.treasure2:spanish_moss.name=Spanish Moss
+
 #items
 item.treasure2:gold_coin.name=Gold Coin
 item.treasure2:silver_coin.name=Silver Coin
 
+item.treasure2:key_ring.name=Key Ring
 item.treasure2:wood_key.name=Wood Key
 item.treasure2:stone_key.name=Stone Key
 item.treasure2:iron_key.name=Iron Key
@@ -84,6 +99,7 @@ item.treasure2:pilferers_lock_pick.name=Pilferer's Lock Pick
 item.treasure2:thiefs_lock_pick.name=Thief's Lock Pick
 
 item.treasure2:skull_sword.name=Skull Sword
+item.treasure2:spanish_moss.name=Spanish Moss
 
 #groups
 itemGroup.treasure2:treasure_tab=Treasure2!
@@ -100,9 +116,11 @@ tooltip.label.damageable=Damageable: %s
 tooltip.label.specials=Specials: %s
 tooltip.label.accepts_keys=Accepts Keys: %s
 tooltip.label.coin=Throw into Wishing Wells
+tooltip.label.key_ring=Container for keys
 
 tooltip.label.max_locks=Max Locks: %s
 tooltip.label.container_size=Inventory Size: %s
+
 
 tooltip.metallurgists_key.specials=Opens any lock in METALS category
 tooltip.skeleton_key.specials=Opens COMMON, UNCOMMON, SCARCE and RARE locks (excluding Wither)
