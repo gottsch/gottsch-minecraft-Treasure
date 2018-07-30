@@ -85,7 +85,7 @@ public class Treasure extends AbstractMod {
 	
 	/*
 	 *  Treasure Creative Tab
-	 *  Must be instantized <b>before</b> any registry events so that it is available to assign to blocks and items.
+	 *  Must be initialized <b>before</b> any registry events so that it is available to assign to blocks and items.
 	 */
 	public static CreativeTabs TREASURE_TAB = new CreativeTabs(CreativeTabs.getNextID(), Treasure.MODID + ":" + TreasureConfig.TREASURE_TAB_ID) {
 		@SideOnly(Side.CLIENT)
@@ -125,14 +125,17 @@ public class Treasure extends AbstractMod {
 		// register the GUI handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		
+		/*
+		 * KEEP FOR REFERNCE PURPOSES
+		 */
 		// start the database
 //		try {
 //			DbManager.start((TreasureConfig)getConfig());
 //		} catch (DatabaseInitializationException e) {
 //			logger.error("Unable to start database manager:", e);
 //			getConfig().setModEnabled(false);
-//			// TODO create another PlayerLoggedIn Event that checks if the database failed initialization and inform player.
 //		}
+
 	}
 	
 	/**
@@ -146,12 +149,15 @@ public class Treasure extends AbstractMod {
     	// add a show version command
     	event.registerServerCommand(new ShowVersionCommand(this));
     	
-		// register additional commands
-    	event.registerServerCommand(new TreasureChestCommand());
-    	event.registerServerCommand(new SpawnPitCommand());
-    	event.registerServerCommand(new SpawnPitOnlyCommand());
-    	event.registerServerCommand(new SpawnWellCommand());
-    	event.registerServerCommand(new SpawnWitherTreeCommand());
+		/*
+		 * FOR DEBUGGING ONLY
+		 *  register additional commands
+		 */
+//    	event.registerServerCommand(new TreasureChestCommand());
+//    	event.registerServerCommand(new SpawnPitCommand());
+//    	event.registerServerCommand(new SpawnPitOnlyCommand());
+//    	event.registerServerCommand(new SpawnWellCommand());
+//    	event.registerServerCommand(new SpawnWitherTreeCommand());
     }
 	
 	/**

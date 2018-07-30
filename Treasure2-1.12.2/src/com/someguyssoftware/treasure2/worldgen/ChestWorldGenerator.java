@@ -54,8 +54,10 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	
 	// the chest generators
 	private Map<Rarity, AbstractChestGenerator> generators = new HashMap<>();
+	// TODO probably should be moved to AbstractChestGenerator
 	// the pit generators
 	public static Map<Pits, IPitGenerator> pitGenerators = new HashMap<>();
+	
 	/**
 	 * 
 	 */
@@ -68,7 +70,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	}
 	
 	private void init() {
-		// intialize chunks since last array
+		// initialize chunks since last array
 		chunksSinceLastChest = 0;
 		chunksSinceLastRarityChest = new HashMap<>(Rarity.values().length);
 		for (Rarity rarity : Rarity.values()) {
@@ -178,8 +180,9 @@ public class ChestWorldGenerator implements IWorldGenerator {
      			}
      			
     			// reset chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
-    			Integer i = chunksSinceLastRarityChest.get(rarity);
-    			i = 0;
+//    			Integer i = chunksSinceLastRarityChest.get(rarity);
+//    			i = 0;
+    			chunksSinceLastRarityChest.put(rarity, 0);
     			
     			// generate the chest/pit/chambers
 				Treasure.logger.debug("Attempting to generate pit/chest.");
@@ -190,7 +193,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
     				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
     				// reset the chunk counts
         			chunksSinceLastChest = 0;
-        			chunksSinceLastRarityChest.put(rarity, 0);
+//        			chunksSinceLastRarityChest.put(rarity, 0);
     			}
     		}
 
