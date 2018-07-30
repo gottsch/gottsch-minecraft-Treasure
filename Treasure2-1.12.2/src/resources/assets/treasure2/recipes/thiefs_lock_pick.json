@@ -10,11 +10,11 @@
 		"item": "treasure2:treasure_tool"
 	},
 	"X": {
-		"item": "minecraft:iron_nugget"
+		"item": "minecraft:iron_ingot"
 	}
   },
   "result": {
-    "item": "treasure2:pilferers_lock_pick",
+    "item": "treasure2:thiefs_lock_pick",
     "count": 1
   }
 }

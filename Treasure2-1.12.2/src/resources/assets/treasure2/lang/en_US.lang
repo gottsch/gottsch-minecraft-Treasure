@@ -37,12 +37,12 @@ tile.treasure2:gravestone3_polished_andesite.name=Andesite Tombstone
 tile.treasure2:gravestone3_polished_diorite.name=Diorite Tombstone
 tile.treasure2:gravestone3_obsidian.name=Obsidian Tombstone
 
-tile.treasure2.skull_and_crossbones.name=Skull and Bones
+tile.treasure2:skull_and_crossbones.name=Skull and Bones
 
 #wither tree
 tile.treasure2:wither_log.name=Wither Log
 tile.treasure2:wither_broken_log.name=Wither Broken Log
-tile.treasure2.wither_log_soul.name=Wither Log
+tile.treasure2:wither_log_soul.name=Wither Soul Log
 tile.treasure2:wither_branch.name=Wither Branch
 tile.treasure2:wither_root.name=Wither Root
 
@@ -95,11 +95,14 @@ item.treasure2:sapphire_lock.name=Sapphire Lock
 item.treasure2:spider_lock.name=Spider Lock
 item.treasure2:wither_lock.name=Wither Lock
 
+item.treasure2:wither_stick_item.name=Wither Branch
+item.treasure2:wither_root_item.name=Wither Root
 item.treasure2:pilferers_lock_pick.name=Pilferer's Lock Pick
 item.treasure2:thiefs_lock_pick.name=Thief's Lock Pick
 
 item.treasure2:skull_sword.name=Skull Sword
 item.treasure2:spanish_moss.name=Spanish Moss
+item.treasure2:treasure_tool.name=Treasure Tool
 
 #groups
 itemGroup.treasure2:treasure_tab=Treasure2!
@@ -117,6 +120,7 @@ tooltip.label.specials=Specials: %s
 tooltip.label.accepts_keys=Accepts Keys: %s
 tooltip.label.coin=Throw into Wishing Wells
 tooltip.label.key_ring=Container for keys
+tooltip.label.treasure_tool=Required for Key/Pick recipes
 
 tooltip.label.max_locks=Max Locks: %s
 tooltip.label.container_size=Inventory Size: %s

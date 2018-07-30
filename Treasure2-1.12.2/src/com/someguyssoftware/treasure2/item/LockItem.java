@@ -105,7 +105,7 @@ public class LockItem extends ModItem {
 		tooltip.add(	I18n.translateToLocalFormatted("tooltip.label.craftable", craftable));
 
 		String keyList = getKeys().stream()
-                .map(e -> I18n.translateToLocal("item.treasure2:" + getUnlocalizedName()))
+                .map(e -> I18n.translateToLocal(getUnlocalizedName() + ".name"))
                 .collect(Collectors.joining(","));
 		
 		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.accepts_keys", keyList));

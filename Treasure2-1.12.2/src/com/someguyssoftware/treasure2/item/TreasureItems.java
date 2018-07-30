@@ -99,6 +99,7 @@ public class TreasureItems {
 	
 	// other
 	public static Item SPANISH_MOSS;
+	public static Item TREASURE_TOOL;
     	
 	/*
 	 * Materials
@@ -123,25 +124,25 @@ public class TreasureItems {
 		WOOD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.WOOD_KEY_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON)
-				.setCraftable(true)
+				.setCraftable(false)
 				.setMaxDamage(10);
 
 		STONE_KEY = new KeyItem(Treasure.MODID, TreasureConfig.STONE_KEY_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON)
-				.setCraftable(true)
+				.setCraftable(false)
 				.setMaxDamage(10);
 
 		IRON_KEY = new KeyItem(Treasure.MODID, TreasureConfig.IRON_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.UNCOMMON)
-				.setCraftable(true)
+				.setCraftable(false)
 				.setMaxDamage(10);
 		
 		GOLD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.GOLD_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.SCARCE)
-				.setCraftable(true)
+				.setCraftable(false)
 				.setMaxDamage(15);
 
 		DIAMOND_KEY = new KeyItem(Treasure.MODID, TreasureConfig.DIAMOND_KEY_ID)
@@ -315,6 +316,8 @@ public class TreasureItems {
 		SPANISH_MOSS = new SpanishMossItem(Treasure.MODID, TreasureConfig.SPANISH_MOSS_ITEM_ID);
 //				.setItemName(Treasure.MODID, TreasureConfig.SPANISH_MOSS_ITEM_ID)
 //				.setCreativeTab(Treasure.TREASURE_TAB);
+		
+		TREASURE_TOOL = new TreasureToolItem(Treasure.MODID, TreasureConfig.TREASURE_TOOL_ITEM_ID);
 	}
 	
 	@Mod.EventBusSubscriber(modid = Treasure.MODID)
@@ -378,7 +381,8 @@ public class TreasureItems {
 					EYE_PATCH,
 					WITHER_STICK_ITEM,
 					WITHER_ROOT_ITEM,
-					SPANISH_MOSS
+					SPANISH_MOSS,
+					TREASURE_TOOL
 			};
 			registry.registerAll(items);		
 		}

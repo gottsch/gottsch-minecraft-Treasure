@@ -131,6 +131,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String SPANISH_MOSS_BLOCK_ID = "spanish_moss";
 	public static final String SPANISH_MOSS_ITEM_ID = "spanish_moss";
 	
+	public static final String TREASURE_TOOL_ITEM_ID = "treasure_tool";
+	
 	// TEs
 	public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity";
 	public static final String CRATE_CHEST_TE_ID = "crate_chest_tile_entity";
@@ -143,7 +145,6 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String DREAD_PIRATE_CHEST_TE_ID = "dread_pirate_chest_tile_entity";
 	public static final String COMPRESSOR_CHEST_TE_ID = "compressor_chest_tile_entity";
 	public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
-
 	
 	public static boolean enableKeyBreaks = true;
 	public static boolean enableFog = true;
@@ -225,7 +226,8 @@ public class TreasureConfig extends AbstractConfig {
         
         // wither items
         witherRootItemGenProbability = config.getFloat("witherRootGenProbability", "04-gen", 50.0F, 0.0F, 100.0F, "");
-
+        witherBranchItemGenProbability = config.getFloat("witherBranchGenProbability", "04-gen", 50.0F, 0.0F, 100.0F, "");
+        
         // the the default values
        if(config.hasChanged()) {
     	   config.save();

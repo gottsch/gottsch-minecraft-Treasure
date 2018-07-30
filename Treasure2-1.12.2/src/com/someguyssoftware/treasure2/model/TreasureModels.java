@@ -123,6 +123,8 @@ public class TreasureModels {
 		
 		// OTHER
 		registerItemModel(TreasureItems.SPANISH_MOSS);
+		registerItemModel(TreasureItems.TREASURE_TOOL);
+		
 //		// variants
 //		Item gravestoneItem = Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1);
 //		ModelResourceLocation itemModelResourceLocation = 
