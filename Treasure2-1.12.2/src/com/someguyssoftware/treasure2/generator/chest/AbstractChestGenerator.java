@@ -93,7 +93,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			
 			// 3. build the pit
 			isGenerated = pitGenerator.generate(world, random, markerCoords, spawnCoords);
-			Treasure.logger.debug("Is pit generated: {}", isGenerated);
+//			Treasure.logger.debug("Is pit generated: {}", isGenerated);
 			// 4. build the room
 			
 			// 5. update the chest coords
@@ -103,7 +103,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 
 		// if successfully gen the pit
 		if (isGenerated) {
-			Treasure.logger.debug("isGenerated = TRUE");
+//			Treasure.logger.debug("isGenerated = TRUE");
 			
 //			LootContainer container = selectContainer(random, chestRarity);
 //			if (container == null || container == LootContainer.EMPTY_CONTAINER) {
@@ -117,7 +117,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				Treasure.logger.warn("Unable to select a lootTable.");
 				return false;
 			}
-			Treasure.logger.debug("Selected loot table -> {}", lootTable.toString());
+//			Treasure.logger.debug("Selected loot table -> {}", lootTable.toString());
 			
 			// select a chest from the rarity
 			TreasureChestBlock chest = selectChest(random, chestRarity);	

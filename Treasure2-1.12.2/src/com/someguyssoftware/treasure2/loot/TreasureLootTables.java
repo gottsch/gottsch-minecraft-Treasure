@@ -80,10 +80,10 @@ public class TreasureLootTables {
 			CHEST_LOOT_TABLE_MAP.put(r, new ArrayList<LootTable>());
 		}
 		
-		Treasure.logger.debug("Registering loot tables");
+//		Treasure.logger.debug("Registering loot tables");
 		// register special tables
 		for (String s : TABLES) {
-			Treasure.logger.debug("Registering loot table -> {}", s);
+//			Treasure.logger.debug("Registering loot table -> {}", s);
 			LootTableList.register(new ResourceLocation(Treasure.MODID, s));
 		}
 		// register rarity based tables
@@ -109,7 +109,7 @@ public class TreasureLootTables {
 			for (ResourceLocation loc : entry.getValue()) {
 				LootTable lootTable = world.getLootTableManager().getLootTableFromLocation(loc);
 				CHEST_LOOT_TABLE_MAP.get(entry.getKey()).add(lootTable);
-				Treasure.logger.debug("mapping loot table: {} -> {}", entry.getKey(), loc);
+//				Treasure.logger.debug("mapping loot table: {} -> {}", entry.getKey(), loc);
 			}
 		}
 	}
@@ -158,7 +158,7 @@ public class TreasureLootTables {
 				walk = Files.walk(path, 1);
 				for (Iterator<Path> it = walk.iterator(); it.hasNext();) {
 					String tableName = it.next().getFileName().toString();
-					Treasure.logger.debug("loot_table -> {}", s + "/" + tableName);
+//					Treasure.logger.debug("loot_table -> {}", s + "/" + tableName);
 					// skip the first file, which is actually the given directory itself
 					if (isFirst) {
 						// set the key for mapping

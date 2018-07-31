@@ -272,7 +272,7 @@ public class WitherTreeGenerator {
 
 		// determine the size of the main trunk
 		int maxSize = RandomHelper.randomInt(random, 9, config.getMaxTrunkSize());
-		Treasure.logger.debug("master tree maxSize: {}", maxSize);
+//		Treasure.logger.debug("master tree maxSize: {}", maxSize);
 		
 		// build a 2x2 trunk
 		boolean hasLifeBeenAdded = false;
@@ -313,7 +313,7 @@ public class WitherTreeGenerator {
 			if (maxSize > 3) {
 				maxSize -= RandomHelper.randomInt(random, 1, 3);
 				maxSize = Math.max(3, maxSize);
-				Treasure.logger.debug("master tree new maxSize: {}", maxSize);
+//				Treasure.logger.debug("master tree new maxSize: {}", maxSize);
 			}
 		}
 

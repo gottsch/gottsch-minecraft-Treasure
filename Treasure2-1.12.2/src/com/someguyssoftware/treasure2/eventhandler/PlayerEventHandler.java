@@ -58,7 +58,7 @@ public class PlayerEventHandler {
 		        	// if player does not have wither effect, add it
 		        	if (potionEffect == null) {
 		        		((EntityLivingBase)event.getEntity()).addPotionEffect(new PotionEffect(MobEffects.WITHER, 300, 0));
-		        		Treasure.logger.debug("wither potion effect is null, should be adding....");
+//		        		Treasure.logger.debug("wither potion effect is null, should be adding....");
 		        	}					
 				}
 				else if (((FogBlock)block).getFogType() == FogType.POISON) {
@@ -66,22 +66,11 @@ public class PlayerEventHandler {
 		        	// if player does not have wither effect, add it
 		        	if (potionEffect == null) {
 		        		((EntityLivingBase)event.getEntity()).addPotionEffect(new PotionEffect(MobEffects.POISON, 300, 0));
-		        		Treasure.logger.debug("poison potion effect is null, should be adding....");
+//		        		Treasure.logger.debug("poison potion effect is null, should be adding....");
 		        	}				
 				}
 			}
-			
-//			if (block instanceof WitherFogBlock) {
-//	        	PotionEffect potionEffect = ((EntityLivingBase)event.getEntity()).getActivePotionEffect(MobEffects.WITHER);
-//	        	// if player does not have wither effect, add it
-//	        	if (potionEffect == null) {
-//	        		((EntityLivingBase)event.getEntity()).addPotionEffect(new PotionEffect(MobEffects.WITHER, 300, 0));
-//	        		Treasure.logger.debug("potion effect is null, should be adding....");
-//	        	}
-//	        	else {
-////	        		Treasure.logger.debug("already has potion effect.");
-//	        	}
-//			}        	
+      	
 		}
 	}
 	

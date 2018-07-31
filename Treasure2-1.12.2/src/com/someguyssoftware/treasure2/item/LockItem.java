@@ -183,10 +183,9 @@ public class LockItem extends ModItem {
 	 * @return
 	 */
 	public boolean acceptsKey(KeyItem keyItem) {
-		Treasure.logger.debug("I am a lock: {}", getUnlocalizedName());
-		Treasure.logger.debug("Testing accepted keys against keyItem {}: {}", keyItem.getUnlocalizedName(), keyItem);
+//		Treasure.logger.debug("Testing accepted keys against keyItem {}: {}", keyItem.getUnlocalizedName(), keyItem);
 		for (KeyItem k : getKeys()) {
-			Treasure.logger.debug("Current accepted key: {}: {}", k.getUnlocalizedName(), k);
+//			Treasure.logger.debug("Current accepted key: {}: {}", k.getUnlocalizedName(), k);
 			if (k == keyItem) return true;
 		}
 		return false;
