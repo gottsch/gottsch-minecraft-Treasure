@@ -40,7 +40,7 @@ public class WoodDrawWellGenerator implements IWellGenerator {
 		
 		// 1. determine y-coord of land surface
 		spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, spawnCoords);
-		Treasure.logger.debug("Land Coords @ {}", spawnCoords.toShortString());
+//		Treasure.logger.debug("Land Coords @ {}", spawnCoords.toShortString());
 		if (spawnCoords == null || spawnCoords == WorldInfo.EMPTY_COORDS) {
 			Treasure.logger.debug("Returning due to marker coords == null or EMPTY_COORDS");
 			return false; 

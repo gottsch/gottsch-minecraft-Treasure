@@ -108,11 +108,8 @@ public class WitherTreeGenerator {
 	 */
 	public boolean generate(World world, Random random, ICoords coords, IWitherTreeConfig config) {
 
-//		ICoords chestCoords = null;
 		ICoords surfaceCoords = null;
 		ICoords witherTreeCoords = null;
-//		ICoords spawnCoords = null;
-//		boolean isGenerated = false;
 
 		// 1. determine y-coord of land for markers
 		surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, coords);
@@ -123,7 +120,7 @@ public class WitherTreeGenerator {
 		}
 
 		// 2. clear the area
-		buildClearing(world, surfaceCoords);
+		buildClearing(world, random, surfaceCoords);
 
 		// 3. build the main wither tree
 		buildTrunk(world, random, surfaceCoords, config);
@@ -159,7 +156,7 @@ public class WitherTreeGenerator {
 				if (c.getDistanceSq(witherTreeCoords) > 4) {
 					if (world.getBlockState(c.toPos()).getBlock() != TreasureBlocks.WITHER_LOG) {						
 //						Treasure.logger.debug("adding witherED tree @ {}", c.toShortString());
-						buildClearing(world, c);
+						buildClearing(world, random, c);
 						buildTree(world, random, c, config);						
 						if (TreasureConfig.enablePoisonFog) {
 							GenUtil.addFog(world, random, c, poisonFogDensity);
@@ -181,7 +178,7 @@ public class WitherTreeGenerator {
 	 * @param world
 	 * @param coords
 	 */
-	private void buildClearing(World world, ICoords coords) {
+	private void buildClearing(World world, Random random, ICoords coords) {
 		ICoords buildCoords = null;
 
 		// build clearing
@@ -199,7 +196,9 @@ public class WitherTreeGenerator {
 
 					// additional check that it's not a tree and within 2 y-blocks of original
 					if (Math.abs(buildCoords.getY() - coords.getY()) < VERTICAL_MAX_DIFF) {
-						world.setBlockState(buildCoords.add(0, -1, 0).toPos(), Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT));
+						if (RandomHelper.checkProbability(random, 75)) {
+							world.setBlockState(buildCoords.add(0, -1, 0).toPos(), Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT));
+						}
 					}
 
 					Cube cube = new Cube(world, buildCoords);

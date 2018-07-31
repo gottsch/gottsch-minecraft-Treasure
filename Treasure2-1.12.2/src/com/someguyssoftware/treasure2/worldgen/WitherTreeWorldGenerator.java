@@ -97,8 +97,8 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 			 * get current chunk position
 			 */            
 			// spawn @ middle of chunk
-			int xSpawn = chunkX * 16 + 8;
-			int zSpawn = chunkZ * 16 + 8;
+			int xSpawn = chunkX * 16 + CHUNK_RADIUS;
+			int zSpawn = chunkZ * 16 + CHUNK_RADIUS;
 
 			// get first surface y (could be leaves, trunk, water, etc)
 			int ySpawn = world.getChunkFromChunkCoords(chunkX, chunkZ).getHeightValue(8, 8);
@@ -123,14 +123,14 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 				}
 				
 				// 2. test if well meets the probability criteria
-				Treasure.logger.debug("wither tree probability: {}", treeConfig.getGenProbability());
+//				Treasure.logger.debug("wither tree probability: {}", treeConfig.getGenProbability());
 				if (!RandomHelper.checkProbability(random, treeConfig.getGenProbability())) {
 					Treasure.logger.debug("Wither does not meet generate probability.");
 					return;
 				}
-				else {
-					Treasure.logger.debug("Wither Tree MEETS generate probability!");
-				}
+//				else {
+//					Treasure.logger.debug("Wither Tree MEETS generate probability!");
+//				}
 
 	 			// 3. check against all registered chests
 	 			if (isRegisteredChestWithinDistance(world, coords, TreasureConfig.minDistancePerChest)) {

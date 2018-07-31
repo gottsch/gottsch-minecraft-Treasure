@@ -133,14 +133,14 @@ public class WellWorldGenerator implements IWorldGenerator {
 				}
 				
 				// 2. test if well meets the probability criteria
-				Treasure.logger.debug("{} well probability: {}", well, wellConfig.getGenProbability());
+//				Treasure.logger.debug("{} well probability: {}", well, wellConfig.getGenProbability());
 				if (!RandomHelper.checkProbability(random, wellConfig.getGenProbability())) {
 					Treasure.logger.debug("Well does not meet generate probability.");
 					return;
 				}
-				else {
-					Treasure.logger.debug("Well MEETS generate probability!");
-				}
+//				else {
+//					Treasure.logger.debug("Well MEETS generate probability!");
+//				}
 
 
 				// 			// 3. check against all registered chests

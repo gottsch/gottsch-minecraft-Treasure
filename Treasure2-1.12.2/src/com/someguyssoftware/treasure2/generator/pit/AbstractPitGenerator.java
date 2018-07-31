@@ -192,7 +192,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 * @return
 	 */
 	public ICoords buildLogLayer(final World world, final Random random, final ICoords coords, final Block block) {
-		Treasure.logger.debug("Building log layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
+//		Treasure.logger.debug("Building log layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
 		// ensure that block is of type LOG/LOG2
 		if (block != Blocks.LOG && block != Blocks.LOG2) return coords;
 		
@@ -201,10 +201,6 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		IBlockState blockState = block.getStateFromMeta(meta);
 				
 		// core 4-square
-//		world.setBlockState(coords.toPos(), blockState, 3);
-//		world.setBlockState(coords.add(1, 0, 0).toPos(), blockState, 3);		
-//		world.setBlockState(coords.add(0, 0, 1).toPos(), blockState, 3);
-//		world.setBlockState(coords.add(1, 0, 1).toPos(), blockState, 3);
 		GenUtil.replaceWithBlockState(world, coords, blockState);
 		GenUtil.replaceWithBlockState(world, coords.add(1, 0, 0), blockState);
 		GenUtil.replaceWithBlockState(world, coords.add(0, 0, 1), blockState);
@@ -212,26 +208,18 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		
 		if (meta == 8) {			
 			// north of
-//			world.setBlockState(coords.add(0, 0, -1).toPos(), blockState, 3);
-//			world.setBlockState(coords.add(1, 0, -1).toPos(), blockState, 3);
 			GenUtil.replaceWithBlockState(world, coords.add(0, 0, -1), blockState);
 			GenUtil.replaceWithBlockState(world, coords.add(1, 0, -1), blockState);
 			
 			// south of
-//			world.setBlockState(coords.add(0, 0, 2).toPos(), blockState, 3);
-//			world.setBlockState(coords.add(1, 0, 2).toPos(), blockState, 3);
 			GenUtil.replaceWithBlockState(world, coords.add(0, 0, 2), blockState);
 			GenUtil.replaceWithBlockState(world, coords.add(1, 0, 2), blockState);
 		}
 		else {
 			// west of
-//			world.setBlockState(coords.add(-1, 0, 0).toPos(), blockState, 3);
-//			world.setBlockState(coords.add(-1, 0, 1).toPos(), blockState, 3);
 			GenUtil.replaceWithBlockState(world, coords.add(-1, 0, 0), blockState);
 			GenUtil.replaceWithBlockState(world, coords.add(-1, 0, 1), blockState);
 			// east of 
-//			world.setBlockState(coords.add(2, 0, 0).toPos(), blockState, 3);
-//			world.setBlockState(coords.add(2, 0, 1).toPos(), blockState, 3);
 			GenUtil.replaceWithBlockState(world, coords.add(2, 0, 0), blockState);
 			GenUtil.replaceWithBlockState(world, coords.add(2, 0, 1), blockState);
 		}

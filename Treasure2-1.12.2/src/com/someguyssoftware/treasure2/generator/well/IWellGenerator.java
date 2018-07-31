@@ -73,7 +73,7 @@ public interface IWellGenerator {
 					continue; 
 				}
 				Cube markerCube = new Cube(world, markerCoords.add(0, -1, 0));
-				Treasure.logger.debug("Marker on block: {}", markerCube.getState());
+//				Treasure.logger.debug("Marker on block: {}", markerCube.getState());
 				if (markerCube.equalsBlock(Blocks.GRASS)) {
 					blockState = getDecorationBlockState(world, Blocks.RED_FLOWER);
 				}
@@ -83,29 +83,29 @@ public interface IWellGenerator {
 						blockState = getDecorationBlockState(world, Blocks.RED_FLOWER);
 					}
 					else if (dirtType == DirtType.PODZOL) {
-						Treasure.logger.debug("On podzol block");
+//						Treasure.logger.debug("On podzol block");
 						Block mushBlock = random.nextInt(2) == 0 ? Blocks.BROWN_MUSHROOM : Blocks.RED_MUSHROOM;
 						blockState = getDecorationBlockState(world, mushBlock);
 					}
 					else {
-						Treasure.logger.debug("On coarse dirt block");
+//						Treasure.logger.debug("On coarse dirt block");
 //						Block grassBlock = Blocks.TALLGRASS;
 //						blockState = grassBlock.getDefaultState().withProperty(BlockTallGrass.TYPE, BlockTallGrass.EnumType.values()[meta]);			
 						blockState = getDecorationBlockState(world, Blocks.TALLGRASS);
 					}
 				}
 				else if (markerCube.equalsBlock(Blocks.MYCELIUM)) {
-					Treasure.logger.debug("On mycelium block");
+//					Treasure.logger.debug("On mycelium block");
 					Block mushBlock = random.nextInt(2) == 0 ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM;
 					blockState = getDecorationBlockState(world, mushBlock);					
 				}
 				else {
-					Treasure.logger.debug("On other block");
+//					Treasure.logger.debug("On other block");
 					blockState = getDecorationBlockState(world, Blocks.TALLGRASS);
 			}				
 				// set the block state
 				world.setBlockState(circle[i].toPos(), blockState, 3);
-				Treasure.logger.debug("Generating blockstate: {}", blockState);
+//				Treasure.logger.debug("Generating blockstate: {}", blockState);
 			}
 		}
 	}

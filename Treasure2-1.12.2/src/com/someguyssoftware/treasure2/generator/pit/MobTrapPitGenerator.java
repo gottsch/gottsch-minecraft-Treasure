@@ -67,7 +67,7 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 		ICoords midCoords = new Coords(coords.getX(), midY, coords.getZ());
 		int deltaY = surfaceCoords.delta(midCoords).getY();
 		
-		Treasure.logger.debug("Mob Trap pit from {} to {}", coords.getY() + Y_OFFSET, surfaceCoords.getY() - Y_SURFACE_OFFSET);
+//		Treasure.logger.debug("Mob Trap pit from {} to {}", coords.getY() + Y_OFFSET, surfaceCoords.getY() - Y_SURFACE_OFFSET);
 		// randomly fill shaft
 		for (int yIndex = coords.getY() + Y_OFFSET; yIndex <= surfaceCoords.getY() - Y_SURFACE_OFFSET; yIndex++) {
 			

@@ -100,6 +100,7 @@ item.treasure2:wither_root_item.name=Wither Root
 item.treasure2:pilferers_lock_pick.name=Pilferer's Lock Pick
 item.treasure2:thiefs_lock_pick.name=Thief's Lock Pick
 
+item.treasure2:eye_patch.name=Eye Patch
 item.treasure2:skull_sword.name=Skull Sword
 item.treasure2:spanish_moss.name=Spanish Moss
 item.treasure2:treasure_tool.name=Treasure Tool
