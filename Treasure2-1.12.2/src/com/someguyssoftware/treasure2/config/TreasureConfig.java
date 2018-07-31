@@ -146,12 +146,16 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String COMPRESSOR_CHEST_TE_ID = "compressor_chest_tile_entity";
 	public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
 	
+	/*
+	 * mod settings
+	 */
+	public static String treasureFolder;
 	public static boolean enableKeyBreaks = true;
 	public static boolean enableFog = true;
 	public static boolean enableWitherFog = true;
 	public static boolean enablePoisonFog = true;
-	public static String treasureFolder;
-
+	public static boolean enableLockDrops = true;
+	
 	/*
 	 *  world gen
 	 */
@@ -206,6 +210,7 @@ public class TreasureConfig extends AbstractConfig {
         enableFog = config.getBoolean("enableFog", "03-mod", true, "Enables/Disable whether a fog is generated (ex. around graves/tombstones and wither trees)");
         enableWitherFog = config.getBoolean("enableWitherFog", "03-mod", true, "Enables/Disable whether a wither fog is generated (ex. around wither trees)");
         enablePoisonFog = config.getBoolean("enablePoisonFog", "03-mod", true, "Enables/Disable whether a poison fog is generated (ex. around wither trees)");
+        enableLockDrops = config.getBoolean("enableLockDrops", "03-mod", true, "Enables/Disable whether a Lock item is dropped when unlocked by Key item.");
 
         // white/black lists
         config.setCategoryComment("04-gen", "World generation properties.");    

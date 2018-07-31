@@ -136,7 +136,9 @@ public class KeyRingItem extends ModItem {
 								// update the client
 								tcte.sendUpdates();
 								// spawn the lock
-								InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(lock));
+								if (TreasureConfig.enableLockDrops) {
+									InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(lock));
+								}
 								// don't break the key
 								breakKey = false;
 							}
