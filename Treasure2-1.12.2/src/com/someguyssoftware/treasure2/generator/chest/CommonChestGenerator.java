@@ -3,9 +3,15 @@
  */
 package com.someguyssoftware.treasure2.generator.chest;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.google.common.collect.Table;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
@@ -17,6 +23,7 @@ import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTable;
 
 /**
@@ -62,27 +69,27 @@ public class CommonChestGenerator extends AbstractChestGenerator {
 	 * @return
 	 */
 	@Override
-	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
+	public List<LootTable> buildLootTableList(final Rarity chestRarity) {
 		LootTable table = null;
 		// select the loot table by rarity
-		List<LootTable> tables = TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.COMMON);
-		tables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.UNCOMMON));
+//		List<LootTable> tables = TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.COMMON);
+//		tables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.UNCOMMON));
 		
-		if (tables != null && !tables.isEmpty()) {
-			int index = 0;
-			/*
-			 * get a random container
-			 */
-			if (tables.size() == 1) {
-				table = tables.get(index);
-			}
-			else {
-				index = RandomHelper.randomInt(random, 0, tables.size()-1);
-				table = tables.get(index);
-			}
-			Treasure.logger.debug("Selected loot table index --> {}", index);
-		}
-		return table;
+		// get all loot tables by column key
+		List<LootTable> tables = new ArrayList<>();
+		tables.addAll(TreasureLootTables.getLootTableByRarity(Rarity.COMMON));
+		tables.addAll(TreasureLootTables.getLootTableByRarity(Rarity.UNCOMMON));
+//		Map<String, List<LootTable>> mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(Rarity.COMMON);
+//		// convert to a single list
+//		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
+//			tables.addAll(n.getValue());
+//		}
+//		mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(Rarity.UNCOMMON);
+//		// convert to a single list
+//		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
+//			tables.addAll(n.getValue());
+//		}		
+		return tables;
 	}
 	
 	

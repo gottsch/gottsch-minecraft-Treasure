@@ -136,7 +136,7 @@ tooltip.jewelled_key.specials=Opens any lock in GEMS category
 #gui
 display.wood_chest.name=Wood Chest
 display.crate_chest.name=Crate
-display.crate_chest_mody.name=Moldy Crate
+display.crate_chest_moldy.name=Moldy Crate
 display.ironbound_chest.name=Ironbound Chest
 display.pirate_chest.name=Pirate Chest
 display.iron_strongbox.name=Iron Strongbox

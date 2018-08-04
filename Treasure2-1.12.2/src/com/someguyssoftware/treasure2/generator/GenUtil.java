@@ -242,7 +242,7 @@ public class GenUtil {
 				Treasure.logger.debug(String.format("Not a valid surface @ %s", coords));
 				continue;
 			}
-			Treasure.logger.debug("Marker @ {}", spawnCoords.toShortString());
+//			Treasure.logger.debug("Marker @ {}", spawnCoords.toShortString());
 			
 			// don't place if the spawnCoords isn't AIR or FOG or REPLACEABLE
 			Cube cube = new Cube(world, spawnCoords);

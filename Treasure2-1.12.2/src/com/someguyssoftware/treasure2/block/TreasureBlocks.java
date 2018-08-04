@@ -48,7 +48,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 /**
- * @author Mark Gottschling onDec 22, 2017
+ * @author Mark Gottschling on Dec 22, 2017
  *
  */
 public class TreasureBlocks {
@@ -64,10 +64,10 @@ public class TreasureBlocks {
 	public static final Block SAFE;
 	public static final Block DREAD_PIRATE_CHEST;
 	public static final Block COMPRESSOR_CHEST;
-		
-		// TODO chests
 	public static final Block WITHER_CHEST;
 	public static final Block WITHER_CHEST_TOP;
+	
+		// TODO chests
 	public static final Block SKULL_CHEST = null;
 	public static final Block VASE = null;
 	public static final Block INVISIBLE_CHEST = null;
@@ -387,7 +387,6 @@ public class TreasureBlocks {
 		WITHER_BROKEN_LOG = new WitherBrokenLogBlock(Treasure.MODID, TreasureConfig.WITHER_BROKEN_LOG_ID);
 		WITHER_LOG_SOUL = new WitherLogSoulBlock(Treasure.MODID, TreasureConfig.WITHER_LOG_SOUL_ID);
 		SPANISH_MOSS = new SpanishMossBlock(Treasure.MODID, TreasureConfig.SPANISH_MOSS_BLOCK_ID);
-//				new ModBlock(Treasure.MODID, TreasureConfig.SPANISH_MOSS_BLOCK_ID, Material.PLANTS);	
 	}
 
 
@@ -553,17 +552,17 @@ public class TreasureBlocks {
 
 			// register the tile entities
 			//			GameRegistry.registerTileEntity(AbstractTreasureChestTileEntity.class, "treasureChestTileEntity");
-			GameRegistry.registerTileEntity(WoodChestTileEntity.class, Treasure.MODID+":"+TreasureConfig.WOOD_CHEST_TE_ID);
-			GameRegistry.registerTileEntity(CrateChestTileEntity.class, Treasure.MODID+":"+TreasureConfig.CRATE_CHEST_TE_ID);
-			GameRegistry.registerTileEntity(MoldyCrateChestTileEntity.class, Treasure.MODID+":"+TreasureConfig.MOLDY_CRATE_CHEST_TE_ID);
-			GameRegistry.registerTileEntity(IronboundChestTileEntity.class, Treasure.MODID+":"+TreasureConfig.IRONBOUND_CHEST_TE_ID);
-			GameRegistry.registerTileEntity(PirateChestTileEntity.class, Treasure.MODID+":"+TreasureConfig.PIRATE_CHEST_TE_ID);
-			GameRegistry.registerTileEntity(IronStrongboxTileEntity.class, Treasure.MODID+":"+TreasureConfig.IRON_STRONGBOX_TE_ID);
-			GameRegistry.registerTileEntity(GoldStrongboxTileEntity.class, Treasure.MODID+":"+TreasureConfig.GOLD_STRONGBOX_TE_ID);
-			GameRegistry.registerTileEntity(SafeTileEntity.class, Treasure.MODID+":"+TreasureConfig.SAFE_TE_ID);
-			GameRegistry.registerTileEntity(DreadPirateChestTileEntity.class, Treasure.MODID+":"+TreasureConfig.DREAD_PIRATE_CHEST_TE_ID);
-			GameRegistry.registerTileEntity(CompressorChestTileEntity.class, Treasure.MODID+":"+TreasureConfig.COMPRESSOR_CHEST_TE_ID);
-			GameRegistry.registerTileEntity(WitherChestTileEntity.class, Treasure.MODID+":"+TreasureConfig.WITHER_CHEST_TE_ID);
+			GameRegistry.registerTileEntity(WoodChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WOOD_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(CrateChestTileEntity.class,new ResourceLocation( Treasure.MODID+":"+TreasureConfig.CRATE_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(MoldyCrateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.MOLDY_CRATE_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(IronboundChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.IRONBOUND_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(PirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.PIRATE_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(IronStrongboxTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.IRON_STRONGBOX_TE_ID));
+			GameRegistry.registerTileEntity(GoldStrongboxTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.GOLD_STRONGBOX_TE_ID));
+			GameRegistry.registerTileEntity(SafeTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.SAFE_TE_ID));
+			GameRegistry.registerTileEntity(DreadPirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.DREAD_PIRATE_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(CompressorChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.COMPRESSOR_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(WitherChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WITHER_CHEST_TE_ID));
 		}	
 	}
 }

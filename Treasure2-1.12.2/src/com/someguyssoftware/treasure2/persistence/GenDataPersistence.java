@@ -9,6 +9,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
@@ -50,6 +51,7 @@ public class GenDataPersistence extends WorldSavedData {
 		// get the world generators
 		ChestWorldGenerator chestGen = (ChestWorldGenerator) Treasure.worldGenerators.get("chest");
 		WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.worldGenerators.get("well");
+		WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.worldGenerators.get("witherTree");
 		
 		// treasure
 		NBTTagCompound treasureGen = tag.getCompoundTag("treasureGenerator");
@@ -65,6 +67,9 @@ public class GenDataPersistence extends WorldSavedData {
 		
 		///// Wells /////
 		wellGen.setChunksSinceLastWell(treasureGen.getInteger("chunksSinceLastWell"));
+		
+		///// Wither Tree /////
+		witherGen.setChunksSinceLastTree(treasureGen.getInteger("chunksSinceLastTree"));
 		
 //		NBTTagList registryTagList = tag.getTagList("registry", 10);
 //		
@@ -159,6 +164,11 @@ public class GenDataPersistence extends WorldSavedData {
 			// add the chest gen last count to the treasure compound
 			treasureGen.setInteger("chunksSinceLastWell", wellGen.getChunksSinceLastWell());
 			
+			//// Wither Tree /////
+			WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.worldGenerators.get("witherTree");
+			
+			// add the chest gen last count to the treasure compound
+			treasureGen.setInteger("chunksSinceLastTree", witherGen.getChunksSinceLastTree());
 			
 			// write the Dungeon Registry to NBT
 //			NBTTagList registryTagList = new NBTTagList();

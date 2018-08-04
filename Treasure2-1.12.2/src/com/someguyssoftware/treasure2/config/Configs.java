@@ -17,7 +17,7 @@ import com.someguyssoftware.treasure2.enums.Wells;
  *
  */
 public class Configs {
-	private static final String TREASURE_CONFIG_DIR = "treasure2";
+	private static final String TREASURE_CONFIG_DIR = Treasure.MODID;
 	
 	public static TreasureConfig modConfig;
 	private static Map<Rarity, IChestConfig> defaultChestConfigs = new HashMap<>();
@@ -141,7 +141,7 @@ public class Configs {
 				.setMaxTrunkSize(13)
 				.setMinSupportingTrees(5)
 				.setMaxSupportingTrees(15)
-				.setRawBiomeWhiteList(new String[] {"forest", "magical", "lush", "spooky", "dead", "jungle", "coniferous"})
+				.setRawBiomeWhiteList(new String[] {"forest", "magical", "lush", "spooky", "dead", "jungle", "coniferous", "savanna"})
 				.setRawBiomeBlackList(new String[] {""});
 	}
 }

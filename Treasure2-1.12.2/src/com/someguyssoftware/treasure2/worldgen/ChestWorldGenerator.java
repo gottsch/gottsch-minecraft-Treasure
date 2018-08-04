@@ -248,7 +248,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		for (ChestInfo info : infos) {
 			// calculate the distance to the poi
 			double distance = coords.getDistanceSq(info.getCoords());
-			Treasure.logger.debug("Chest dist^2: " + distance);
+//			Treasure.logger.debug("Chest dist^2: " + distance);
 			if (distance < minDistanceSq) {
 				return true;
 			}

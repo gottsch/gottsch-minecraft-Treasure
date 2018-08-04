@@ -205,6 +205,7 @@ public class TreasureConfig extends AbstractConfig {
 		Configuration config = super.load(file);
 		
 		// add mod specific settings here
+		// TODO change this to be just the base folder. make private. use getter(). append MODID
         treasureFolder = config.getString("treasureFolder", "03-mod", "mods/" + Treasure.MODID + "/", "Where default Treasure folder is located.");
         enableKeyBreaks = config.getBoolean("enableKeyBreaks", "03-mod", true, "Enables/Disable whether a Key can break when attempting to unlock a Lock.");
         enableFog = config.getBoolean("enableFog", "03-mod", true, "Enables/Disable whether a fog is generated (ex. around graves/tombstones and wither trees)");

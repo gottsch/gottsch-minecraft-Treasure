@@ -181,7 +181,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				NBTTagList list = new NBTTagList();
 				// write custom tile entity properties
 				for (LockState state : getLockStates()) {
-//					Treasure.logger.debug("Writing lock state:" + state);
+					Treasure.logger.debug("Writing lock state:" + state);
 					NBTTagCompound stateNBT = new NBTTagCompound();
 					state.writeToNBT(stateNBT);
 					list.appendTag(stateNBT);
@@ -251,13 +251,13 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		try {
 			// read the lockstates
 			if (parentNBT.hasKey("lockStates")) {
-//				Treasure.logger.debug("Has lockStates");
+				Treasure.logger.debug("Has lockStates");
 				if (this.getLockStates() != null) {
-//					Treasure.logger.debug("size of internal lockstates:" + this.getLockStates().size());
+					Treasure.logger.debug("size of internal lockstates:" + this.getLockStates().size());
 				}
 				else {
 					this.setLockStates(new LinkedList<LockState>());
-//					Treasure.logger.debug("created lockstates:" + this.getLockStates().size());
+					Treasure.logger.debug("created lockstates:" + this.getLockStates().size());
 				}
 
 				List<LockState> states = new LinkedList<LockState>();
@@ -266,7 +266,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 					NBTTagCompound c = list.getCompoundTagAt(i);
 					LockState lockState = LockState.readFromNBT(c);
 					states.add(lockState.getSlot().getIndex(), lockState);
-//					Treasure.logger.debug("Read NBT lockstate:" + lockState);
+					Treasure.logger.debug("Read NBT lockstate:" + lockState);
 				}
 				// update the tile entity
 				setLockStates(states);		
@@ -388,10 +388,10 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		Treasure.logger.debug("Is  TE.lockStates empty? " + getLockStates().isEmpty());
 		if (!getLockStates().isEmpty()) {
 			for (LockState state : getLockStates()) {
-//				Treasure.logger.debug("lock state: " + state);
+				Treasure.logger.debug("lock state: " + state);
 			}
 		}
-//		Treasure.logger.debug("Updating pos: " + pos);
+		Treasure.logger.debug("Updating pos: " + pos);
 		world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyBlockUpdate(pos, getState(), getState(), 3);
 		world.scheduleBlockUpdate(pos,this.getBlockType(),0,0);

@@ -3,8 +3,11 @@
  */
 package com.someguyssoftware.treasure2.generator.chest;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Map.Entry;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -117,7 +120,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				Treasure.logger.warn("Unable to select a lootTable.");
 				return false;
 			}
-//			Treasure.logger.debug("Selected loot table -> {}", lootTable.toString());
+			Treasure.logger.debug("Selected loot table -> {}", lootTable.toString());
 			
 			// select a chest from the rarity
 			TreasureChestBlock chest = selectChest(random, chestRarity);	
@@ -276,9 +279,13 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 */
 	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
 		LootTable table = null;
+
 		// select the loot table by rarity
-		List<LootTable> tables = TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(chestRarity);
+		List<LootTable> tables = buildLootTableList(chestRarity);
+		
+		// select a random table from the list
 		if (tables != null && !tables.isEmpty()) {
+			int index = 0;		
 			/*
 			 * get a random container
 			 */
@@ -286,10 +293,34 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				table = tables.get(0);
 			}
 			else {
-				table = tables.get(RandomHelper.randomInt(random, 0, tables.size()-1));
+				index = RandomHelper.randomInt(random, 0, tables.size()-1);
+				table = tables.get(index);
 			}
+			Treasure.logger.debug("Selected loot table index --> {}", index);
 		}
 		return table;
+	}
+	
+	/**
+	 * 
+	 * @param rarity
+	 * @return
+	 */
+	@Override
+	public List<LootTable> buildLootTableList(Rarity rarity) {
+//		List<LootTable> tables = TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(rarity);
+		
+		// get all loot tables by column key
+//		List<LootTable> tables = new ArrayList<>();
+//		Map<String, List<LootTable>> mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(rarity);
+//		// convert to a single list
+//		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
+//			tables.addAll(n.getValue());
+//		}
+		
+//		return tables;
+		
+		return TreasureLootTables.getLootTableByRarity(rarity);
 	}
 	
 	/**
@@ -346,7 +377,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 
 		for (int i = 0; i < numLocks; i++) {			
 			LockItem lock = locks.get(RandomHelper.randomInt(random, 0, locks.size()-1));
-			Treasure.logger.debug("adding lock: {}", lock);
+//			Treasure.logger.debug("adding lock: {}", lock);
 			// add the lock to the chest
 			lockStates.get(i).setLock(lock);				
 		}
@@ -361,7 +392,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 0, type.getMaxLocks());		
-		Treasure.logger.debug("# of locks to use: {})", numLocks);
+//		Treasure.logger.debug("# of locks to use: {})", numLocks);
 		
 		return numLocks;
 	}

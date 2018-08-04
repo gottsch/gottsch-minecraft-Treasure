@@ -5,7 +5,9 @@ package com.someguyssoftware.treasure2.item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Map.Entry;
 
 import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.item.ModItem;
@@ -109,13 +111,17 @@ public class CoinItem extends ModItem {
 				// determine coin type
 				if (getCoin() == Coins.SILVER) {
 //					rarityList = Arrays.asList(new Rarity[] {Rarity.UNCOMMON, Rarity.SCARCE});
-					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.UNCOMMON));
-					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.SCARCE));
+//					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.UNCOMMON));
+//					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.SCARCE));
+					lootTables.addAll(TreasureLootTables.getLootTableByRarity(Rarity.UNCOMMON));
+					lootTables.addAll(TreasureLootTables.getLootTableByRarity(Rarity.SCARCE));
 				}
 				else if (getCoin() == Coins.GOLD) {					
 //					rarityList = Arrays.asList(new Rarity[] {Rarity.SCARCE, Rarity.RARE});
-					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.SCARCE));
-					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.RARE));
+//					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.SCARCE));
+//					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.RARE));
+					lootTables.addAll(TreasureLootTables.getLootTableByRarity(Rarity.SCARCE));
+					lootTables.addAll(TreasureLootTables.getLootTableByRarity(Rarity.RARE));
 				}
 				
 //				// select a container

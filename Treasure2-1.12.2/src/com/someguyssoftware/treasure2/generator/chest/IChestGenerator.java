@@ -1,5 +1,6 @@
 package com.someguyssoftware.treasure2.generator.chest;
 
+import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -29,4 +30,11 @@ public interface IChestGenerator {
 	 * @return
 	 */
 	public LootTable selectLootTable(Random random, final Rarity chestRarity);
+
+	/**
+	 * 
+	 * @param rarity
+	 * @return
+	 */
+	List<LootTable> buildLootTableList(Rarity rarity);
 }

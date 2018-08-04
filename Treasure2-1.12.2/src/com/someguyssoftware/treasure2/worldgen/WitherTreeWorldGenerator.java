@@ -112,6 +112,8 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 			}
 
 			if (chunksSinceLastTree >= treeConfig.getChunksPerTree()) {
+//				Treasure.logger.debug(String.format("Gen: pass second test: chunksSinceLast: %d, chunksPerTree: %d", chunksSinceLastTree, treeConfig.getChunksPerTree()));
+
 				// 1. test if correct biome
 				// if not the correct biome, reset the count
 				Biome biome = world.getBiome(coords.toPos());
@@ -139,7 +141,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 	 			}
 
 				// increment chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
-				chunksSinceLastTree++;    	    	
+				chunksSinceLastTree = 0;   	    	
 
 				// generate the well
 				Treasure.logger.debug("Attempting to generate a wither tree");
@@ -148,7 +150,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 				if (isGenerated) {
 					// add to registry
 					ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(Rarity.SCARCE, coords));
-					chunksSinceLastTree = 0;
+//					chunksSinceLastTree = 0;
 				}
 			}
 			// save world data

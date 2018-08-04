@@ -35,11 +35,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * TODO after block falls, it no longer checks if it is sustainable.  Look at SAND/GRAVEL again on how it works
+ * 
  * @author Mark Gottschling on Feb 27, 2018
  *
  */
-public class FogBlock extends ModFallingBlock { //ModBlock {
+public class FogBlock extends ModFallingBlock {
 	public static final PropertyBool DECAYABLE = PropertyBool.create("decayable");
 	public static final PropertyBool CHECK_DECAY =	PropertyBool.create("check_decay");
 	public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
@@ -236,10 +236,9 @@ public class FogBlock extends ModFallingBlock { //ModBlock {
 				}
 			}
 
-			// TODO check if activated
 			/*
 			 * All fog block's states are CHECK_DECAY = true by default. ACTIVATED = false by default. They only change size if ACTIVATED = true. At the end 
-			 * of the update() ACTIVATED is set to true.
+			 * of the update() ACTIVATED is set to true. This is to prevent a fog block from immediately reducing in size after a fall or placement.
 			 * Change the getStateFromMeta to do bitwise checks. ie. get first bit to check DECAYABLE, 2nd bit CHECK_DECAY,
 			 * 3rd bit ACTIVATED.
 			 */

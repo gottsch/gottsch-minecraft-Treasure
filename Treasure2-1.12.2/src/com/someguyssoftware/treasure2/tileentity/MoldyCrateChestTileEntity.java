@@ -9,6 +9,7 @@ import net.minecraft.util.text.translation.I18n;
  */
 public class MoldyCrateChestTileEntity extends CrateChestTileEntity {
 
+	@SuppressWarnings("deprecation")
 	public MoldyCrateChestTileEntity() {
 		super();
 		setCustomName(I18n.translateToLocal("display.crate_chest_moldy.name"));

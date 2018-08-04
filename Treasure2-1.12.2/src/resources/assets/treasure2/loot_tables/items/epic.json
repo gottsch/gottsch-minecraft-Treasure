@@ -52,7 +52,7 @@
 				{
 					"entryName": "emerald",
 					"type": "item",
-					"name": "minecraft:ender_emerald",
+					"name": "minecraft:emerald",
 					"weight": 50,
 					"functions": [
 						{
