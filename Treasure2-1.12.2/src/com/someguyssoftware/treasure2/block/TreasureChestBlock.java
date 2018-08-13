@@ -274,7 +274,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 	
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+//		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 
 		Treasure.logger.debug("Placing chest from item");
 		
@@ -310,15 +310,18 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 //		       shouldUpdate =  
 		    		   rotateLockStates(worldIn, pos, Direction.NORTH.getRotation(direction));
 			}
+			if (shouldUpdate && tcte != null) {
+				// update the client
+				tcte.sendUpdates();
+			}
+			
+			if (tcte != null && tcte.getLockStates() != null) {
+			Treasure.logger.debug("Is  TE.lockStates empty? " + tcte.getLockStates().isEmpty());
+			
 		}
 
-		if (shouldUpdate && tcte != null) {
-			// update the client
-			tcte.sendUpdates();
-		}
-		
-		if (tcte != null && tcte.getLockStates() != null) {
-		Treasure.logger.debug("Is  TE.lockStates empty? " + tcte.getLockStates().isEmpty());
+
+
 		}
 	}
 
@@ -394,33 +397,6 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 		return true;
 	}
 
-//	/**
-//	 * 
-//	 * @param te
-//	 * @param player
-//	 * @param heldItem
-//	 */
-//	private boolean handleHeldLock(AbstractTreasureChestTileEntity te, EntityPlayer player, ItemStack heldItem) {
-//		boolean isLocked = false;
-//		LockItem lock = (LockItem) heldItem.getItem();		
-//		// add the lock to the first lockstate that has an available slot
-//		for(LockState lockState : te.getLockStates()) {
-//			if (lockState != null && lockState.getLock() == null) {
-//				lockState.setLock(lock);
-//				te.sendUpdates();
-//				// decrement item in hand
-//				heldItem.shrink(1);
-//				if (heldItem.getCount() <=0) {
-//					IInventory inventory = player.inventory;
-//					inventory.setInventorySlotContents(player.inventory.currentItem, null);
-//				}
-//				isLocked = true;
-//				break;
-//			}
-//		}
-//		return isLocked;
-//	}
-
 	/**
 	 * 
 	 */
@@ -428,6 +404,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
 
+		// TODO do this on the server only
 		Treasure.logger.debug("Breaking block....!");
 		if (te != null && te.getInventoryProxy() != null) {
 			// unlocked!
@@ -458,26 +435,43 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 				/*
 				 * spawn chest item
 				 */
-				ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
+
 				if (!worldIn.isRemote) {
+					ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
+					
+					// TEST mvoing it within the !isRemote
+					// give the chest a tag compound
+					Treasure.logger.debug("[BreakingBlock]Saving chest items:");
+//		        	chestItem.setTagCompound(new NBTTagCompound());
+					NBTTagCompound nbt = new NBTTagCompound();
+					nbt = te.writeToNBT(nbt);
+					chestItem.setTagCompound(nbt);
+					
 					InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), chestItem);
+					
+					//TEST  log all items in item
+					NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+					ItemStackHelper.loadAllItems(chestItem.getTagCompound(), items);
+					for (ItemStack stack : items) {
+						Treasure.logger.debug("[BreakingBlock] item in chest item -> {}", stack.getDisplayName());
+					}
 				}
-				// give the chest a tag compound
-				Treasure.logger.debug("[BreakingBlock]Saving chest items:");
-//	        	chestItem.setTagCompound(new NBTTagCompound());
-				NBTTagCompound nbt = new NBTTagCompound();
-				te.writeToNBT(nbt);
-				chestItem.setTagCompound(nbt);
-				
-				// log all items in item
-				NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
-				ItemStackHelper.loadAllItems(nbt, items);
-				for (ItemStack stack : items) {
-					Treasure.logger.debug("[BreakingBlock] item in chest item -> {}", stack.getDisplayName());
-				}
+//				// give the chest a tag compound
+//				Treasure.logger.debug("[BreakingBlock]Saving chest items:");
+////	        	chestItem.setTagCompound(new NBTTagCompound());
+//				NBTTagCompound nbt = new NBTTagCompound();
+//				te.writeToNBT(nbt);
+//				chestItem.setTagCompound(nbt);
+//				
+//				//TEST  log all items in item
+//				NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+//				ItemStackHelper.loadAllItems(nbt, items);
+//				for (ItemStack stack : items) {
+//					Treasure.logger.debug("[BreakingBlock] item in chest item -> {}", stack.getDisplayName());
+//				}
 			}
 
-			worldIn.updateComparatorOutputLevel(pos, this);
+//			worldIn.updateComparatorOutputLevel(pos, this);
 
 			// remove the tile entity 
 			worldIn.removeTileEntity(pos);
