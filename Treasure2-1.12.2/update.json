@@ -1,7 +1,7 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.12.2-latest": "0.7.0",
+    "1.12.2-latest": "0.8.0",
     "1.12.2-recommended": "0.7.0"
   },
     "1.12.2": {
@@ -11,6 +11,7 @@
         "0.5.3": "alpha: fixed DB script.\nAdded DB as a resource that is copied to the file system.\nAdded Compressor Chest\nAdded Wither Log\nFixed all blockstates.",
         "0.5.4": "alpha: add Jewelled Key, Wither Tree, Wither Chest, Wither Lock, Wither Key, Fog, Poison Fog, Wither Fog",
         "0.6.0": "alpha: updated to use Forge 14.23.4.2705\nUsing Loot Tables instead of custom loot generation.\nFixed chest registry check for Wither Chest.\nFixed chunk count reset in world generators.\nAdded 6 epic (extra powerful) potions.\nFixed Skeleton Key so that it doesnt open Wither Chests.\nAdded Spanish Moss.\nTweaking the Pit gen settings.\nAdded probability config for fog.\nRandomize fog generation and size.\nAdded Mob Trapped Pit.",
-        "0.7.0": "beta: add Treasure Tool.\nUpdated recipes.\nUpdated tooltips to reflect what is craftable.\nGeneral Clean up."
+        "0.7.0": "beta: add Treasure Tool.\nUpdated recipes.\nUpdated tooltips to reflect what is craftable.\nGeneral Clean up.",
+        "0.8.0": "beta: add config option to enable/disable Lock drops when unlocked.\nFix Wither Tree Gen data not being saved to NBT.\nAdded Savanna to the Wither Tree biome white list.\n-Fixed HUGE bug where the chest wasn't saving its inventory and state if it was locked when broken.\nAdded dump() method to TreasureChestBlock."
     }
 }
