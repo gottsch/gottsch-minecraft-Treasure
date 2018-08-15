@@ -3,6 +3,12 @@
  */
 package com.someguyssoftware.treasure2.block;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -10,12 +16,16 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.block.AbstractModContainerBlock;
 import com.someguyssoftware.gottschcore.enums.Direction;
 import com.someguyssoftware.gottschcore.enums.Rotate;
+import com.someguyssoftware.gottschcore.positional.Coords;
+import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ILockSlot;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
+import com.someguyssoftware.treasure2.printer.ChestNBTPrettyPrinter;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
@@ -273,55 +283,66 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 	 */
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-	
-//		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+
+		//		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 
 		Treasure.logger.debug("Placing chest from item");
-		
+
 		boolean shouldRotate = false;
 		boolean shouldUpdate = false;
 		AbstractTreasureChestTileEntity tcte = null;
+		Direction chestDirection = Direction.NORTH;
 
-		// face the block towards the palyer (there isn't really a front)
+		// face the block towards the player (there isn't really a front)
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 3);
-        
-		if (!worldIn.isRemote) {
-			TileEntity te = worldIn.getTileEntity(pos);
-			if (te != null && te instanceof AbstractTreasureChestTileEntity) {
-				// get the backing tile entity
-				tcte = (AbstractTreasureChestTileEntity) te;
-				// set the name of the chest
-//		        if (stack.hasDisplayName()) {
-//		        	tcte.setCustomName(stack.getItem().getUnlocalizedName());
-////		            tcte.setCustomName(stack.getDisplayName());
-//		        }
-		        // read in nbt
-				Treasure.logger.debug("Checking if item has stack compound.");
-		        if (stack.hasTagCompound()) {
-		        	Treasure.logger.debug("Stack has compound!");
-		        	tcte.readFromNBT(stack.getTagCompound());
-		        	shouldUpdate = true;
-		        }
+		Treasure.logger.debug("Block State -> {}", state.getBlock().getUnlocalizedName());
 
-				// get the direction the block is facing.
-				Direction direction = Direction.fromFacing(placer.getHorizontalFacing().getOpposite());
-				
-		        // rotate the lock states
-//		       shouldUpdate =  
-		    		   rotateLockStates(worldIn, pos, Direction.NORTH.getRotation(direction));
+
+		TileEntity te = worldIn.getTileEntity(pos);
+		Treasure.logger.debug("Expected TE -> {}", ((TreasureChestBlock)state.getBlock()).getTileEntityClass().getSimpleName());
+		Treasure.logger.debug("Actual TE -> {}, {}", te.getClass().getSimpleName(), te.getDisplayName());
+		if (te != null && te instanceof AbstractTreasureChestTileEntity) {				
+			// get the backing tile entity
+			tcte = (AbstractTreasureChestTileEntity) te;
+
+			// set the name of the chest
+			if (stack.hasDisplayName()) {
+				//		        	tcte.setCustomName(stack.getItem().getUnlocalizedName());
+				tcte.setCustomName(stack.getDisplayName());
 			}
-			if (shouldUpdate && tcte != null) {
-				// update the client
-				tcte.sendUpdates();
+			// read in nbt
+			Treasure.logger.debug("Checking if item has stack compound.");
+			if (stack.hasTagCompound()) {
+				Treasure.logger.debug("Stack has compound!");
+				// TODO add readFromNBT to readFromItemNBT() which doesn't call super().read..() because that overwrites it's 
+				// blockPos, is isn't good.
+				tcte.readFromItemStackNBT(stack.getTagCompound());
+				shouldUpdate = true;
+
+				// update the chest direction
+				chestDirection = Direction.fromFacing(EnumFacing.getFront(tcte.getFacing()));
+
+				// dump stack NBT
+				if (Treasure.logger.isDebugEnabled()) {
+					dump(stack.getTagCompound(), new Coords(pos), "STACK ITEM -> CHEST NBT");
+				}
 			}
-			
-			if (tcte != null && tcte.getLockStates() != null) {
-			Treasure.logger.debug("Is  TE.lockStates empty? " + tcte.getLockStates().isEmpty());
-			
+
+			// get the direction the block is facing.
+			Direction direction = Direction.fromFacing(placer.getHorizontalFacing().getOpposite());
+
+			// rotate the lock states
+			shouldUpdate = shouldUpdate || 
+					rotateLockStates(worldIn, pos, chestDirection.getRotation(direction)); // old -> Direction.NORTH //
+
+		}
+		if (shouldUpdate && tcte != null) {
+			// update the client
+			tcte.sendUpdates();
 		}
 
-
-
+		if (tcte != null && tcte.getLockStates() != null) {
+			Treasure.logger.debug("Is  TE.lockStates empty? " + tcte.getLockStates().isEmpty());			
 		}
 	}
 
@@ -377,10 +398,15 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
+		
+		// TODO dump TE
 
 		// exit if on the client
 		if (worldIn.isRemote) {			
 			return true;
+		}
+		else {
+			// TODO message
 		}
 		
 		boolean isLocked = false;
@@ -426,7 +452,8 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 				 */
 				if (!chestItem.hasTagCompound()) {
 					chestItem.setTagCompound(new NBTTagCompound());
-				}		        
+				}		
+				// TODO part of properties should be the direction the chest was facing.
 				te.writePropertiesToNBT(chestItem.getTagCompound());
 			}
 			else {
@@ -528,6 +555,29 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param tagCompound
+	 */
+	private void dump(NBTTagCompound tag, ICoords coords, String title) {
+		ChestNBTPrettyPrinter printer  =new ChestNBTPrettyPrinter();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyymmdd");
+		
+		String filename = String.format("chest-nbt-%s-%s.txt", 
+				formatter.format(new Date()), 
+				coords.toShortString().replaceAll(" ", "-"));
+
+		Path path = Paths.get(TreasureConfig.treasureFolder, "dumps").toAbsolutePath();
+		try {
+			Files.createDirectories(path);			
+		} catch (IOException e) {
+			Treasure.logger.error("Couldn't create directories for dump files:", e);
+			return;
+		}
+		String s = printer.print(tag, Paths.get(path.toString(), filename), title);
+//		Treasure.logger.debug(s);
+	}
+	
 	/**
 	 * @return the tileEntityClass
 	 */
