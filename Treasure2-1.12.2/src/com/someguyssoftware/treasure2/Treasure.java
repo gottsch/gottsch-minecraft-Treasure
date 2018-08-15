@@ -58,7 +58,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 		modid=Treasure.MODID,
 		name=Treasure.NAME,
 		version=Treasure.VERSION,
-		dependencies="required-after:gottschcore@[1.4.0,)",
+		dependencies="required-after:gottschcore@[1.5.0,)",
 		acceptedMinecraftVersions = "[1.12.2]",
 		updateJSON = Treasure.UPDATE_JSON_URL
 		)

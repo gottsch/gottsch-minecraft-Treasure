@@ -290,6 +290,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 
 		boolean shouldRotate = false;
 		boolean shouldUpdate = false;
+		boolean forceUpdate = false;
 		AbstractTreasureChestTileEntity tcte = null;
 		Direction oldPersistedChestDirection = Direction.NORTH;
 
@@ -317,29 +318,41 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 				Treasure.logger.debug("Stack has compound!");
 
 				tcte.readFromItemStackNBT(stack.getTagCompound());
-				shouldUpdate = true;
+				forceUpdate = true;
 
 				// get the old tcte facing direction
 				oldPersistedChestDirection = Direction.fromFacing(EnumFacing.getFront(tcte.getFacing()));
-
+				Treasure.logger.debug("old chest facing (int) -> {}", tcte.getFacing());
+				Treasure.logger.debug("old chest facing enum -> {}", EnumFacing.getFront(tcte.getFacing()));
+				Treasure.logger.debug("old chest direction -> {}", oldPersistedChestDirection);
+				
 				// dump stack NBT
 				if (Treasure.logger.isDebugEnabled()) {
 					dump(stack.getTagCompound(), new Coords(pos), "STACK ITEM -> CHEST NBT");
 				}
 			}
-			else {
-				tcte.setFacing(placer.getHorizontalFacing().getOpposite().getIndex());
-			}
 
 			// get the direction the block is facing.
 			Direction direction = Direction.fromFacing(placer.getHorizontalFacing().getOpposite());
+			Treasure.logger.debug("new chest direction -> {}", direction);
 
+			Treasure.logger.debug("required rotation -> {}", oldPersistedChestDirection.getRotation(direction));
+			Treasure.logger.debug("should update prior to rotate -> {}", shouldUpdate);
 			// rotate the lock states
-			shouldUpdate = shouldUpdate || 
-					rotateLockStates(worldIn, pos, oldPersistedChestDirection.getRotation(direction)); // old -> Direction.NORTH //
-
+			shouldUpdate = rotateLockStates(worldIn, pos, oldPersistedChestDirection.getRotation(direction)); // old -> Direction.NORTH //
+			
+			Treasure.logger.debug("should update after rotate -> {}", shouldUpdate);
+			
+			Treasure.logger.debug("New lock states ->");
+			for (LockState ls : tcte.getLockStates()) {
+				Treasure.logger.debug(ls);
+			}
+			
+			// update the TCTE facing
+			tcte.setFacing(placer.getHorizontalFacing().getOpposite().getIndex());
+			Treasure.logger.debug("updated tcte facing -> {}", tcte.getFacing());
 		}
-		if (shouldUpdate && tcte != null) {
+		if ((forceUpdate || shouldUpdate) && tcte != null) {
 			// update the client
 			tcte.sendUpdates();
 		}
@@ -375,11 +388,11 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 		try {
 			for (LockState lockState : tcte.getLockStates()) {
 				if (lockState != null && lockState.getSlot() != null) {
-//					Treasure.logger.debug("Original lock state:" + lockState);
+					Treasure.logger.debug("Original lock state:" + lockState);
 					// if a rotation is needed
 					if (shouldRotate) {
 						ILockSlot newSlot = lockState.getSlot().rotate(rotate);
-//						Treasure.logger.debug("New slot position:" + newSlot);
+						Treasure.logger.debug("New slot position:" + newSlot);
 						lockState.setSlot(newSlot);
 						// set the flag to indicate the lockStates have rotated
 						hasRotated = true;
@@ -457,7 +470,6 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 				if (!chestItem.hasTagCompound()) {
 					chestItem.setTagCompound(new NBTTagCompound());
 				}		
-				// TODO part of properties should be the direction the chest was facing.
 				te.writePropertiesToNBT(chestItem.getTagCompound());
 			}
 			else {
