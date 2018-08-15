@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.block;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.block.ModBlock;
@@ -15,6 +17,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -97,32 +100,51 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy
 	 * 
 	 */
 	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
-		super.onBlockDestroyedByPlayer(worldIn, pos, state);
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		BlockPos downPos = pos.down();
 		// destory placeholder above
 		Block downBlock = worldIn.getBlockState(downPos).getBlock();
 		if (downBlock == TreasureBlocks.WITHER_CHEST) {
-			downBlock.onBlockDestroyedByPlayer(worldIn, downPos, state);
+			downBlock.breakBlock(worldIn, downPos, worldIn.getBlockState(downPos));
 			worldIn.setBlockToAir(downPos);
 		}
+		
 	}
 	
 	/**
 	 * 
 	 */
-	@Override
-	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
-		super.onBlockDestroyedByExplosion(worldIn, pos, explosionIn);
-		BlockPos downPos = pos.down();
-		// destory placeholder above
-		Block downBlock = worldIn.getBlockState(downPos).getBlock();
-		if (downBlock == TreasureBlocks.WITHER_CHEST) {
-			downBlock.onBlockDestroyedByExplosion(worldIn, downPos, explosionIn);
-			worldIn.setBlockToAir(downPos);
-		}
-	}
+//	@Override
+//	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+//		super.onBlockDestroyedByPlayer(worldIn, pos, state);
+//		BlockPos downPos = pos.down();
+//		// destory placeholder above
+//		Block downBlock = worldIn.getBlockState(downPos).getBlock();
+//		if (downBlock == TreasureBlocks.WITHER_CHEST) {
+//			downBlock.onBlockDestroyedByPlayer(worldIn, downPos, state);
+//			worldIn.setBlockToAir(downPos);
+//		}
+//	}
 	
+	/**
+	 * 
+	 */
+//	@Override
+//	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
+//		super.onBlockDestroyedByExplosion(worldIn, pos, explosionIn);
+//		BlockPos downPos = pos.down();
+//		// destory placeholder above
+//		Block downBlock = worldIn.getBlockState(downPos).getBlock();
+//		if (downBlock == TreasureBlocks.WITHER_CHEST) {
+//			downBlock.onBlockDestroyedByExplosion(worldIn, downPos, explosionIn);
+//			worldIn.setBlockToAir(downPos);
+//		}
+//	}
+	
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return null;
+	}
 	
 	/**
 	 * 

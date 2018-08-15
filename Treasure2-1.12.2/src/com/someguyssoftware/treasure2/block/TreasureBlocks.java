@@ -272,7 +272,8 @@ public class TreasureBlocks {
 				.setBounds(witherChestBounds)
 				.setHardness(2.5F);
 		
-		WITHER_CHEST_TOP = new WitherChestTopBlock(Treasure.MODID, TreasureConfig.WITHER_CHEST_TOP_ID);
+		WITHER_CHEST_TOP = new WitherChestTopBlock(Treasure.MODID, TreasureConfig.WITHER_CHEST_TOP_ID)
+				.setHardness(2.5F);
 		
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
@@ -495,7 +496,7 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(DREAD_PIRATE_CHEST),
 					new TreasureChestItemBlock(COMPRESSOR_CHEST),
 					new TreasureChestItemBlock(WITHER_CHEST),
-					new TreasureChestItemBlock(WITHER_CHEST_TOP),
+					
 					// TODO update with GravestonIetmBlock
 					new ItemBlock(GRAVESTONE1_STONE),
 					new ItemBlock(GRAVESTONE1_COBBLESTONE),
