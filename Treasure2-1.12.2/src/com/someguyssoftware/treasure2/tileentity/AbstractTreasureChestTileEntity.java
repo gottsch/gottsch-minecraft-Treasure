@@ -215,6 +215,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				parentNBT.setString("CustomName", this.customName);
 			}
 			// write facing
+			Treasure.logger.debug("Writing FACING to NBT ->{}", getFacing());
 			parentNBT.setInteger("facing", getFacing());
 		}
 		catch(Exception e) {
@@ -298,7 +299,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				this.customName = parentNBT.getString("CustomName");
 			}
 			// read the facing
-			if (parentNBT.hasKey("facing", 8)) {
+			if (parentNBT.hasKey("facing")) {
 				Treasure.logger.debug("Has 'facing' key -> {}", parentNBT.getInteger("facing"));
 				this.setFacing(parentNBT.getInteger("facing"));
 			}

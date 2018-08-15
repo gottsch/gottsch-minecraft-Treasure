@@ -78,6 +78,7 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_LOG_SOUL));
 //		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_BRANCH));
 //		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_ROOT));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_PLANKS));
 		
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);

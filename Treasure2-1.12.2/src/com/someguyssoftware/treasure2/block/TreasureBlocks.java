@@ -130,6 +130,7 @@ public class TreasureBlocks {
 	public static final Block WITHER_ROOT;
 	public static final Block WITHER_BROKEN_LOG;
 	public static final Block WITHER_LOG_SOUL;
+	public static final Block WITHER_PLANKS;
 
 	public static final Block SPANISH_MOSS;
 	
@@ -387,6 +388,7 @@ public class TreasureBlocks {
 		WITHER_ROOT = new WitherRootBlock(Treasure.MODID, TreasureConfig.WITHER_ROOT_ID);		
 		WITHER_BROKEN_LOG = new WitherBrokenLogBlock(Treasure.MODID, TreasureConfig.WITHER_BROKEN_LOG_ID);
 		WITHER_LOG_SOUL = new WitherLogSoulBlock(Treasure.MODID, TreasureConfig.WITHER_LOG_SOUL_ID);
+		WITHER_PLANKS = new WitherPlanksBlock(Treasure.MODID, TreasureConfig.WITHER_PLANKS_ID);
 		SPANISH_MOSS = new SpanishMossBlock(Treasure.MODID, TreasureConfig.SPANISH_MOSS_BLOCK_ID);
 	}
 
@@ -461,6 +463,7 @@ public class TreasureBlocks {
 					WITHER_BROKEN_LOG,
 					WITHER_LOG_SOUL,
 					WITHER_CHEST_TOP,
+					WITHER_PLANKS,
 					SPANISH_MOSS
 			};
 			registry.registerAll(blocks);	
@@ -537,7 +540,8 @@ public class TreasureBlocks {
 					new ItemBlock(WITHER_BROKEN_LOG),
 //					new ItemBlock(WITHER_BRANCH),
 //					new ItemBlock(WITHER_ROOT),
-					new ItemBlock(WITHER_LOG_SOUL)
+					new ItemBlock(WITHER_LOG_SOUL),
+					new ItemBlock(WITHER_PLANKS)
 			};
 
 			for (final ItemBlock item : items) {

@@ -45,6 +45,7 @@ tile.treasure2:wither_broken_log.name=Wither Broken Log
 tile.treasure2:wither_log_soul.name=Wither Soul Log
 tile.treasure2:wither_branch.name=Wither Branch
 tile.treasure2:wither_root.name=Wither Root
+tile.treasure2:wither_planks.name=Wither Planks
 
 #fogs
 tile.treasure2:fog.name=Fog

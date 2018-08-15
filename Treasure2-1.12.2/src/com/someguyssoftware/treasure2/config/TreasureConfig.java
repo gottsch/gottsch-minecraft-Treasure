@@ -131,6 +131,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String SPANISH_MOSS_BLOCK_ID = "spanish_moss";
 	public static final String SPANISH_MOSS_ITEM_ID = "spanish_moss";
 	
+	public static final String WITHER_PLANKS_ID = "wither_planks";
+	
 	public static final String TREASURE_TOOL_ITEM_ID = "treasure_tool";
 	
 	// TEs

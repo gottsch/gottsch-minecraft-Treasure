@@ -99,12 +99,12 @@ public class ChestNBTPrettyPrinter {
 			sb.append(String.format(format, "# of Items", (items!=null) ?items.tagCount() : 0));
 			
 			// get the custom name
-			if (tag.hasKey("CustomName", 8)) {
+			if (tag.hasKey("CustomName")) {
 				sb.append(String.format(format,  "Custom Name", tag.getString("CustomName")));
 			}
 			
 			// get the facing direction
-			if (tag.hasKey("facing", 8)) {
+			if (tag.hasKey("facing")) {
 				sb.append(String.format(format,  "Facing", EnumFacing.getFront(tag.getInteger("facing"))));
 			}
 

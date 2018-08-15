@@ -291,7 +291,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 		boolean shouldRotate = false;
 		boolean shouldUpdate = false;
 		AbstractTreasureChestTileEntity tcte = null;
-		Direction chestDirection = Direction.NORTH;
+		Direction oldPersistedChestDirection = Direction.NORTH;
 
 		// face the block towards the player (there isn't really a front)
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 3);
@@ -310,22 +310,25 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 				//		        	tcte.setCustomName(stack.getItem().getUnlocalizedName());
 				tcte.setCustomName(stack.getDisplayName());
 			}
+
 			// read in nbt
-//			Treasure.logger.debug("Checking if item has stack compound.");
+			Treasure.logger.debug("Checking if item has stack compound.");
 			if (stack.hasTagCompound()) {
-//				Treasure.logger.debug("Stack has compound!");
-				// TODO add readFromNBT to readFromItemNBT() which doesn't call super().read..() because that overwrites it's 
-				// blockPos, is isn't good.
+				Treasure.logger.debug("Stack has compound!");
+
 				tcte.readFromItemStackNBT(stack.getTagCompound());
 				shouldUpdate = true;
 
-				// update the chest direction
-				chestDirection = Direction.fromFacing(EnumFacing.getFront(tcte.getFacing()));
+				// get the old tcte facing direction
+				oldPersistedChestDirection = Direction.fromFacing(EnumFacing.getFront(tcte.getFacing()));
 
 				// dump stack NBT
 				if (Treasure.logger.isDebugEnabled()) {
 					dump(stack.getTagCompound(), new Coords(pos), "STACK ITEM -> CHEST NBT");
 				}
+			}
+			else {
+				tcte.setFacing(placer.getHorizontalFacing().getOpposite().getIndex());
 			}
 
 			// get the direction the block is facing.
@@ -333,7 +336,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 
 			// rotate the lock states
 			shouldUpdate = shouldUpdate || 
-					rotateLockStates(worldIn, pos, chestDirection.getRotation(direction)); // old -> Direction.NORTH //
+					rotateLockStates(worldIn, pos, oldPersistedChestDirection.getRotation(direction)); // old -> Direction.NORTH //
 
 		}
 		if (shouldUpdate && tcte != null) {
@@ -430,7 +433,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
 
-//		Treasure.logger.debug("Breaking block....!");
+		Treasure.logger.debug("Breaking block....!");
 		if (te != null && te.getInventoryProxy() != null) {
 			// unlocked!
 			if (!te.hasLocks()) {
@@ -560,7 +563,7 @@ public class TreasureChestBlock extends AbstractModContainerBlock implements ITr
 			return;
 		}
 		String s = printer.print(tag, Paths.get(path.toString(), filename), title);
-//		Treasure.logger.debug(s);
+		Treasure.logger.debug(s);
 	}
 	
 	/**

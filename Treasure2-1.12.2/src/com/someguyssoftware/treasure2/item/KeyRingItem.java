@@ -97,6 +97,7 @@ public class KeyRingItem extends ModItem {
 			if (!heldItem.hasTagCompound()) {
 				heldItem.setTagCompound(new NBTTagCompound());
 			}
+			
 			/*
 			 *  set a flag that the item was used on a treasure chest. this is used to determine
 			 *  if the keyring inventory should open or not.
