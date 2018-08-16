@@ -15,6 +15,8 @@ import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -42,6 +44,7 @@ import net.minecraft.world.World;
  */
 public class KeyRingItem extends ModItem {
 	private static final String USED_ON_CHEST = "usedOnChest";
+	public static final String IS_OPEN = "isOpen";
 
 	/*
 	 * The GUIID;
@@ -201,7 +204,22 @@ public class KeyRingItem extends ModItem {
 			return super.onItemRightClick(worldIn, playerIn, handIn);
 		}
 	}
-
+	
+	/**
+	 * 
+	 */
+	@Override
+	public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player) {
+		// TODO check if the inventory is open. if so, prevent from dropping OR close inventory performing any updates to inventory
+		if (item.getTagCompound().getBoolean(IS_OPEN)) {
+			Treasure.logger.debug("The KeyRing inventory was open");
+			return false;
+		}
+		else {
+			return super.onDroppedByPlayer(item, player);
+		}
+	}
+	
 	/**
 	 * @return the keyRingGuiID
 	 */

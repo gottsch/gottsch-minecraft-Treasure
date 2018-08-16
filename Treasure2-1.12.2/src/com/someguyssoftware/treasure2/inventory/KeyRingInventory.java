@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2.inventory;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.item.KeyItem;
+import com.someguyssoftware.treasure2.item.KeyRingItem;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -190,6 +191,7 @@ public class KeyRingInventory implements IInventory {
 	 */
 	@Override
 	public void openInventory(EntityPlayer player) {
+		getItemStack().getTagCompound().setBoolean(KeyRingItem.IS_OPEN, true);
 	}
 
 	/* (non-Javadoc)
@@ -204,6 +206,9 @@ public class KeyRingInventory implements IInventory {
 			getItemStack().setTagCompound(new NBTTagCompound());
 		}		        
 		writeInventoryToNBT(getItemStack().getTagCompound());
+		
+		// update the IS_OPEN flag
+		getItemStack().getTagCompound().setBoolean(KeyRingItem.IS_OPEN, false);
 	}
 
 	/* (non-Javadoc)
