@@ -13,6 +13,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -191,6 +192,18 @@ public class KeyRingInventory implements IInventory {
 	 */
 	@Override
 	public void openInventory(EntityPlayer player) {
+		/*
+		 *  clear the items. prevents duplicating keys.
+		 *  this is to prevent the player from taking the keys from the key ring inventory gui, then dropping the key ring
+		 *  while the inventory is open, then picking up the key ring again with all its items intact.
+		 *  so now, if the player does dropping the key ring, it will not have any items in it's inventory and the player will lose any
+		 *  keys that are left in the gui when closed.
+		 */
+		if (getItemStack().getTagCompound() == null) return;
+		
+		getItemStack().getTagCompound().setTag("Items", new NBTTagList());
+
+		// set the IS_OPEN tag
 		getItemStack().getTagCompound().setBoolean(KeyRingItem.IS_OPEN, true);
 	}
 

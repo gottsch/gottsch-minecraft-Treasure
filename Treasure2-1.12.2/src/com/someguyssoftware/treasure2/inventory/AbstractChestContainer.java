@@ -327,4 +327,18 @@ public abstract class AbstractChestContainer extends Container {
 	public void setContainerInventoryYPos(int containerInventoryYPos) {
 		this.containerInventoryYPos = containerInventoryYPos;
 	}
+
+	/**
+	 * @return the inventory
+	 */
+	public IInventory getChestInventory() {
+		return inventory;
+	}
+
+	/**
+	 * @param inventory the inventory to set
+	 */
+	public void setChestInventory(IInventory inventory) {
+		this.inventory = inventory;
+	}
 }

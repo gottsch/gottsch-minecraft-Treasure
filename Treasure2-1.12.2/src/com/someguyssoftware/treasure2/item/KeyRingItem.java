@@ -62,6 +62,48 @@ public class KeyRingItem extends ModItem {
 	}
 
 	/**
+	 * Called when the item is crafted (not added via Creative).
+	 * Initializes the item with a tag compound inital values.
+	 */
+	@Override
+	public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
+		if (!worldIn.isRemote) {			
+			if (!stack.hasTagCompound()) {
+				stack.setTagCompound(new NBTTagCompound());
+			}
+			stack.getTagCompound().setBoolean(USED_ON_CHEST, false);
+			stack.getTagCompound().setBoolean(IS_OPEN, false);
+		}
+		super.onCreated(stack, worldIn, playerIn);
+	}
+	
+	/**
+	 * Call before the block is activated. (Isn't called for right click on non-item ie AIR)
+	 * Initializes the item with a tag compound inital values.
+	 * This *helps* initialize the itemStack's tag compound when it is added to the players inventory via the creative gui.
+	 * You still have to use on a block before you can open the inventory.
+	 * 
+	 *   This is called when the item is used, before the block is activated.
+     * @param stack The Item Stack
+     * @param player The Player that used the item
+     * @param world The Current World
+     * @param pos Target position
+     * @param side The side of the target hit
+     * @param hand Which hand the item is being held in.
+     * @return Return PASS to allow vanilla handling, any other to skip normal code.
+	 */
+    public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+		if (!world.isRemote) {			
+			ItemStack heldItem = player.getHeldItem(hand);
+			if (!heldItem.hasTagCompound()) {
+				heldItem.setTagCompound(new NBTTagCompound());
+			}
+			heldItem.getTagCompound().setBoolean(USED_ON_CHEST, false);
+		}
+        return EnumActionResult.PASS;
+    }
+    
+	/**
 	 * 
 	 */
 	@SuppressWarnings("deprecation")
@@ -210,9 +252,8 @@ public class KeyRingItem extends ModItem {
 	 */
 	@Override
 	public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player) {
-		// TODO check if the inventory is open. if so, prevent from dropping OR close inventory performing any updates to inventory
+		// NOTE only works on 'Q' press, not mouse drag and drop
 		if (item.getTagCompound().getBoolean(IS_OPEN)) {
-			Treasure.logger.debug("The KeyRing inventory was open");
 			return false;
 		}
 		else {

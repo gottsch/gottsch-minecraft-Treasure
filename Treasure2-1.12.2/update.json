@@ -2,7 +2,7 @@
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
     "1.12.2-latest": "0.9.0",
-    "1.12.2-recommended": "0.8.0"
+    "1.12.2-recommended": "0.9.0"
   },
     "1.12.2": {
         "0.5.0": "alpha release",
@@ -13,6 +13,6 @@
         "0.6.0": "alpha: updated to use Forge 14.23.4.2705\nUsing Loot Tables instead of custom loot generation.\nFixed chest registry check for Wither Chest.\nFixed chunk count reset in world generators.\nAdded 6 epic (extra powerful) potions.\nFixed Skeleton Key so that it doesnt open Wither Chests.\nAdded Spanish Moss.\nTweaking the Pit gen settings.\nAdded probability config for fog.\nRandomize fog generation and size.\nAdded Mob Trapped Pit.",
         "0.7.0": "beta: add Treasure Tool.\nUpdated recipes.\nUpdated tooltips to reflect what is craftable.\nGeneral Clean up.",
         "0.8.0": "beta: add config option to enable/disable Lock drops when unlocked.\nFix Wither Tree Gen data not being saved to NBT.\nAdded Savanna to the Wither Tree biome white list.\n-Fixed HUGE bug where the chest wasn't saving its inventory and state if it was locked when broken.\nAdded dump() method to TreasureChestBlock.",
-        "0.9.0": ""        
+        "0.9.0": "beta: fixed when breaking Wither Chest top, that it does not spawn a Wither Chest Top item.\nFixed when scrolling over Wither Chest Top item crashes game.\nFix Wither Log rotations when placed.\nAdded Wither Planks.\nFixed lock rotations when re-placing locked chest.\nFixed bug where you could drop Key Ring will inventory is open and make duplicate keys.\nFixed Tooltips not rendering in custom GUIs."        
     }
 }

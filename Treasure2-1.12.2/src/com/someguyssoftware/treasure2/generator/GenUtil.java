@@ -166,6 +166,8 @@ public class GenUtil {
 				Treasure.logger.warn("Unable to create Chest's TileEntity, removing Chest.");
 				return false;
 			}
+			// update the TCTE facing
+			((AbstractTreasureChestTileEntity)te).setFacing(facing.getIndex());
 		}
 		catch(Exception e) {
 			Treasure.logger.error("An error occurred placing chest: ", e);

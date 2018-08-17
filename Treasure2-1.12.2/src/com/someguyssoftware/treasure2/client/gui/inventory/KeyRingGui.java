@@ -60,4 +60,14 @@ public class KeyRingGui extends GuiContainer {
 		final int LABEL_YPOS = 5;
 		fontRenderer.drawString(KEY_RING_LABEL, LABEL_XPOS, LABEL_YPOS, Color.darkGray.getRGB());
 	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
+	}
 }
