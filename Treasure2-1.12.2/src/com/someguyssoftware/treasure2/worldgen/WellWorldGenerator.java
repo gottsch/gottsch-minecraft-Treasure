@@ -127,7 +127,12 @@ public class WellWorldGenerator implements IWorldGenerator {
 				Biome biome = world.getBiome(coords.toPos());
 
 				if (!BiomeHelper.isBiomeAllowed(biome, wellConfig.getBiomeWhiteList(), wellConfig.getBiomeBlackList())) {
-					Treasure.logger.debug(String.format("[%s] is not a valid biome.", biome.getBiomeName()));
+					if (world.isRemote){
+						Treasure.logger.debug(String.format("[%s] is not a valid biome.", biome.getBiomeName()));
+					}
+					else {
+						Treasure.logger.debug(String.format("Biome is not valid @ {}", coords.toShortString()));
+					}
 					chunksSinceLastWell = 0;
 					return;
 				}
