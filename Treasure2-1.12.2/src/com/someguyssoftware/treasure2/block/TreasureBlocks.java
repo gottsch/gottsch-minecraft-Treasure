@@ -13,7 +13,6 @@ import java.util.Set;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.someguyssoftware.gottschcore.block.ModBlock;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
@@ -477,7 +476,7 @@ public class TreasureBlocks {
 				}
 			}
 		}
-
+		
 		/**
 		 * Register this mod's {@link ItemBlock}s.
 		 *
