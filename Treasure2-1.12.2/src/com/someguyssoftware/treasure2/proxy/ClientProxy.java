@@ -8,18 +8,19 @@ import com.someguyssoftware.treasure2.client.model.BandedChestModel;
 import com.someguyssoftware.treasure2.client.model.CompressorChestModel;
 import com.someguyssoftware.treasure2.client.model.CrateChestModel;
 import com.someguyssoftware.treasure2.client.model.DreadPirateChestModel;
+import com.someguyssoftware.treasure2.client.model.MimicModel;
 import com.someguyssoftware.treasure2.client.model.SafeModel;
 import com.someguyssoftware.treasure2.client.model.StandardChestModel;
 import com.someguyssoftware.treasure2.client.model.StrongboxModel;
 import com.someguyssoftware.treasure2.client.model.WitherChestModel;
-import com.someguyssoftware.treasure2.client.render.entity.StandardMimicEntityRenderer;
+import com.someguyssoftware.treasure2.client.render.entity.MimicEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CompressorChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CrateChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.SafeTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.StrongboxTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.WitherChestTileEntityRenderer;
-import com.someguyssoftware.treasure2.entity.monster.StandardMimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.WoodenMimicEntity;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
@@ -33,6 +34,7 @@ import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -50,6 +52,7 @@ import net.minecraftforge.fml.relauncher.Side;
 @Mod.EventBusSubscriber(modid=Treasure.MODID, value = Side.CLIENT)
 public class ClientProxy {
 	
+	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public static void registerRenderers(@SuppressWarnings("rawtypes") final RegistryEvent.Register event) {
 		/*
@@ -117,7 +120,12 @@ public class ClientProxy {
 		
 		/*
 		 *  register the entity render handlers
-		 */
-		RenderingRegistry.registerEntityRenderingHandler(StandardMimicEntity.class, StandardMimicEntityRenderer::new);
+		 */		
+		RenderingRegistry.registerEntityRenderingHandler(WoodenMimicEntity.class, 	
+				new MimicEntityRenderer(
+						Minecraft.getMinecraft().getRenderManager(), 
+						new MimicModel(),
+						new ResourceLocation(Treasure.MODID + ":textures/entity/mob/wood-mimic.png")));
+		
 	}
 }

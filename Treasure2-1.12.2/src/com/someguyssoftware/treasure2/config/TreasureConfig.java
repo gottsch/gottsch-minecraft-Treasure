@@ -38,6 +38,9 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String WITHER_CHEST_ID = "wither_chest";
 	public static final String WITHER_CHEST_TOP_ID = "wither_chest_top";
 	
+	// mimics
+	public static final String WOOD_MIMIC_ID = "wood_mimic";
+	
 	// locks
 	public static final String WOOD_LOCK_ID = "wood_lock";
 	public static final String STONE_LOCK_ID = "stone_lock";
@@ -147,6 +150,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String DREAD_PIRATE_CHEST_TE_ID = "dread_pirate_chest_tile_entity";
 	public static final String COMPRESSOR_CHEST_TE_ID = "compressor_chest_tile_entity";
 	public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
+	
 	
 	/*
 	 * mod settings

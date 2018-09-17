@@ -17,9 +17,11 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.entity.monster.WoodenMimicEntity;
 import com.someguyssoftware.treasure2.enums.FogHeight;
 import com.someguyssoftware.treasure2.enums.FogType;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.item.MimicChestItemBlock;
 import com.someguyssoftware.treasure2.item.TreasureChestItemBlock;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
@@ -65,6 +67,9 @@ public class TreasureBlocks {
 	public static final Block COMPRESSOR_CHEST;
 	public static final Block WITHER_CHEST;
 	public static final Block WITHER_CHEST_TOP;
+	
+	// MIMIC CHESTS
+	public static final Block WOOD_MIMIC;
 	
 		// TODO chests
 	public static final Block SKULL_CHEST = null;
@@ -278,6 +283,17 @@ public class TreasureBlocks {
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
 
+		// mimics
+		WOOD_MIMIC =  new MimicChestBlock(
+				Treasure.MODID, 
+				TreasureConfig.WOOD_MIMIC_ID, 
+				WoodChestTileEntity.class,
+				TreasureChestTypes.STANDARD,
+				Rarity.COMMON)
+				.setMimicClass(WoodenMimicEntity.class)
+				.setBounds(stdChestBounds)
+				.setHardness(2.5F);
+		
 		// gravestone bounds
 		AxisAlignedBB[] gbs = new 	AxisAlignedBB[4];
 		gbs[0] = new AxisAlignedBB(0.125D, 0.0D, 0.375D, 0.875D, 0.75D, 0.675D); // S
@@ -421,6 +437,7 @@ public class TreasureBlocks {
 					SAFE,
 					DREAD_PIRATE_CHEST,
 					COMPRESSOR_CHEST,
+					WOOD_MIMIC,
 					GRAVESTONE1_STONE,
 					GRAVESTONE1_COBBLESTONE,
 					GRAVESTONE1_MOSSY_COBBLESTONE,
@@ -498,6 +515,7 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(DREAD_PIRATE_CHEST),
 					new TreasureChestItemBlock(COMPRESSOR_CHEST),
 					new TreasureChestItemBlock(WITHER_CHEST),
+					new MimicChestItemBlock(WOOD_MIMIC),
 					
 					// TODO update with GravestonIetmBlock
 					new ItemBlock(GRAVESTONE1_STONE),

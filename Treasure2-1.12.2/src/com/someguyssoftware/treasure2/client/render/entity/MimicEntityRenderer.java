@@ -3,11 +3,15 @@ package com.someguyssoftware.treasure2.client.render.entity;
 import org.lwjgl.opengl.GL11;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.client.model.MimicModel;
 import com.someguyssoftware.treasure2.client.model.StandardChestModel;
-import com.someguyssoftware.treasure2.entity.monster.StandardMimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.MimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.WoodenMimicEntity;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,23 +23,39 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 @SideOnly(Side.CLIENT)
-public class StandardMimicEntityRenderer extends RenderLiving<StandardMimicEntity> {
+// TODO swap WoodenMimicEntity with an Interface or Abstract
+public class MimicEntityRenderer extends RenderLiving<MimicEntity> {
 
-	private static final ResourceLocation MIMC_TEXTURES = new ResourceLocation(Treasure.MODID + ":textures/entity/mob/standard-mimic.png");
+//	private static final ResourceLocation MIMC_TEXTURES = new ResourceLocation(Treasure.MODID + ":textures/entity/mob/standard-mimic.png");
+
+	private ModelBase model;
+	private ResourceLocation texture;
 	
 	/**
 	 * 
 	 * @param renderManager
 	 */
-    public StandardMimicEntityRenderer(RenderManager renderManager) {
-    	super(renderManager, new StandardChestModel(), 0F); // no shadow
-    }    
+//    public MimicEntityRenderer(RenderManager renderManager) {
+//    	super(renderManager, new MimicModel(), 0.4F);
+//    }   
+    
+    /**
+     * 
+     * @param renderManager
+     * @param model
+     * @param texture
+     */
+    public MimicEntityRenderer(RenderManager renderManager, ModelBase model, ResourceLocation texture) {
+    	super(renderManager, model, 0.4F);
+    	setModel(model);
+    	setTexture(texture);    	
+    }
     
     /**
      * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
      * entityLiving, partialTickTime
      */
-    protected void preRenderCallback(StandardMimicEntity entity, float partialTick) {
+    protected void preRenderCallback(MimicEntity entity, float partialTick) {
     	// make the warrior slightly bigger than standard skeleton 
     	GL11.glScalef(1F, 1F, 1F);
     }
@@ -43,15 +63,43 @@ public class StandardMimicEntityRenderer extends RenderLiving<StandardMimicEntit
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
-    protected ResourceLocation getEntityTexture(StandardMimicEntity entity) {
-        return MIMC_TEXTURES;
+    protected ResourceLocation getEntityTexture(MimicEntity entity) {
+//        return MIMC_TEXTURES;
+    	return getTexture();
     }
 
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
-    protected ResourceLocation getEntityTexture(EntityLiving entity)
-    {
-        return this.getEntityTexture((StandardMimicEntity)entity);
+    protected ResourceLocation getEntityTexture(EntityLiving entity) {
+        return this.getEntityTexture((MimicEntity)entity);
     }
+
+	/**
+	 * @return the model
+	 */
+	public ModelBase getModel() {
+		return model;
+	}
+
+	/**
+	 * @param model the model to set
+	 */
+	public void setModel(ModelBase model) {
+		this.model = model;
+	}
+
+	/**
+	 * @return the texture
+	 */
+	public ResourceLocation getTexture() {
+		return texture;
+	}
+
+	/**
+	 * @param texture the texture to set
+	 */
+	public void setTexture(ResourceLocation texture) {
+		this.texture = texture;
+	}
 }

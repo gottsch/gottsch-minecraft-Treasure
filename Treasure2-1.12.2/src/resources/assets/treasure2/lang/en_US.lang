@@ -9,6 +9,8 @@ tile.treasure2:dread_pirate_chest.name=Dread Pirate Chest
 tile.treasure2:compressor_chest.name=Compressor Chest
 tile.treasure2:wither_chest.name=Wither Chest
 
+tile.treasure2:wood_mimic.name=Wood Mimic
+
 #wells
 tile.treasure2:wishing_well_block.name=Wishing Well Stone
 
@@ -105,6 +107,10 @@ item.treasure2:eye_patch.name=Eye Patch
 item.treasure2:skull_sword.name=Skull Sword
 item.treasure2:spanish_moss.name=Spanish Moss
 item.treasure2:treasure_tool.name=Treasure Tool
+
+#entities
+#TODO rename standard to wood
+entity.wood_mimic.name=Wood Mimic
 
 #groups
 itemGroup.treasure2:treasure_tab=Treasure2!

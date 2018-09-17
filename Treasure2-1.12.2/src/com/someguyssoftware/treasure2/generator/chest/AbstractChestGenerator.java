@@ -29,11 +29,13 @@ import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTable;
 
@@ -107,13 +109,6 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		// if successfully gen the pit
 		if (isGenerated) {
 //			Treasure.logger.debug("isGenerated = TRUE");
-			
-//			LootContainer container = selectContainer(random, chestRarity);
-//			if (container == null || container == LootContainer.EMPTY_CONTAINER) {
-//				Treasure.logger.warn("Unable to select a container.");
-//				return false;
-//			}
-			
 			LootTable lootTable = selectLootTable(random, chestRarity);
 
 			if (lootTable == null) {
@@ -130,6 +125,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				return false;
 			}
 			Treasure.logger.debug("Choosen chest: {}", chest.getUnlocalizedName());
+			
+			if (chest == TreasureBlocks.WOOD_CHEST) {
+//				chest = TreasureBlocks.WOOD_MIMIC;
+			}
 			
 			// place the chest in the world
 			TileEntity te = placeInWorld(world, random, chest, chestCoords);
@@ -299,7 +298,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			Treasure.logger.debug("Selected loot table index --> {}", index);
 		}
 		return table;
-	}
+	}	
 	
 	/**
 	 * 
@@ -338,26 +337,6 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param chest
 	 */
 	public void addLocks(Random random, TreasureChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
-//		// get the chest type
-//		TreasureChestType type = chest.getChestType();
-//		// determine the number of locks to add
-//		int numLocks = RandomHelper.randomInt(random, 0, type.getMaxLocks());		
-//		Treasure.logger.debug("# of locks to use: {})", numLocks);
-		
-//		int numLocks = randomizedNumberOfLocksByChestType(random, chest.getChestType());
-//		
-//		// get the lock states
-//		List<LockState> lockStates = te.getLockStates();	
-//		
-//		// select a rarity lock
-//		List<LockItem> locks = (List<LockItem>) TreasureItems.locks.get(rarity);
-//		for (int i = 0; i < numLocks; i++) {			
-//			LockItem lock = locks.get(RandomHelper.randomInt(random, 0, locks.size()-1));
-//			Treasure.logger.debug("adding lock: {}", lock);
-//			// add the lock to the chest
-//			lockStates.get(i).setLock(lock);				
-//		}
-		
 		List<LockItem> locks = (List<LockItem>) TreasureItems.locks.get(rarity);
 		addLocks(random, chest, te, locks);
 	}

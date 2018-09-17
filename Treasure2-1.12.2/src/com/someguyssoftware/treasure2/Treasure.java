@@ -26,6 +26,7 @@ import com.someguyssoftware.treasure2.command.TreasureChestCommand;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
+import com.someguyssoftware.treasure2.eventhandler.MimicEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.item.TreasureItems;
@@ -68,7 +69,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "0.9.0";
+	protected static final String VERSION = "1.0.0";
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
 	private static final String VERSION_URL = "";
@@ -115,6 +116,7 @@ public class Treasure extends AbstractMod {
 		MinecraftForge.EVENT_BUS.register(new LogoutEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
+		MinecraftForge.EVENT_BUS.register(new MimicEventHandler(getInstance()));
 		
 		// create and load the config files
 		Configs.init(this, event.getModConfigurationDirectory());

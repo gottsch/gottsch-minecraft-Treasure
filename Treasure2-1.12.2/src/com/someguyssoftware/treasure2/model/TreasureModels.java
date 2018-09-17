@@ -33,6 +33,9 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.COMPRESSOR_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_CHEST));
 
+		// MIMICS
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WOOD_MIMIC));
+		
 		// GRAVESONES
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_STONE));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_COBBLESTONE));
