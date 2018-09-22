@@ -273,7 +273,7 @@ public class KeyItem extends ModItem {
 	 */
 	public boolean unlock(LockItem lockItem) {	
 		if (lockItem.acceptsKey(this) || fitsLock(lockItem)) {
-			Treasure.logger.debug("Lock accepts key");
+			Treasure.logger.debug("Lock -> {} accepts key -> {}", lockItem.getRegistryName(), this.getRegistryName());
 			if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability())) {
 				Treasure.logger.debug("Unlock attempt met probability");
 				return true;

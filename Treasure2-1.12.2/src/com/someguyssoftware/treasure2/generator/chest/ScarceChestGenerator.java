@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.Map.Entry;
 
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
@@ -83,7 +84,7 @@ public class ScarceChestGenerator extends AbstractChestGenerator {
 	 * @param chest
 	 */
 	@Override
-	public void addLocks(Random random, TreasureChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
+	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
 		// select a rarity locks
 		List<LockItem> locks = (List<LockItem>) TreasureItems.locks.get(Rarity.UNCOMMON);
 		locks.addAll(TreasureItems.locks.get(Rarity.SCARCE));

@@ -173,7 +173,7 @@ public abstract class AbstractChestBlock extends AbstractModContainerBlock imple
 		boolean hasRotated = false;
 		boolean shouldRotate = false;
 		if (rotate != Rotate.NO_ROTATE) shouldRotate = true;
-		Treasure.logger.debug("Rotate to:" + rotate);
+//		Treasure.logger.debug("Rotate to:" + rotate);
 		
 		AbstractTreasureChestTileEntity tcte = null;
 		TileEntity te = world.getTileEntity(pos);

@@ -98,7 +98,7 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 			
 			// check if the return coords is different than the anticipated coords and resolve
 			yIndex = autoCorrectIndex(yIndex, nextCoords, expectedCoords);
-			Treasure.logger.debug("yIndex: {}", yIndex);
+//			Treasure.logger.debug("yIndex: {}", yIndex);
 		}		
 		return nextCoords;
 	}

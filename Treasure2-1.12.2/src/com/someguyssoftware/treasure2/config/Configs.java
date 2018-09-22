@@ -68,6 +68,7 @@ public class Configs {
 				.setChunksPerChest(75)
 				.setGenProbability(85)
 				.setMinYSpawn(50)
+				.setMimicProbability(20)
 				.setRawBiomeWhiteList(new String[] {""})
 				.setRawBiomeBlackList(new String[] {"plains", "ocean"})
 				);

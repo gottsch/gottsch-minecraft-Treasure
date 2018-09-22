@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Table;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -59,7 +60,7 @@ public class CommonChestGenerator extends AbstractChestGenerator {
 	 * @param chest
 	 */
 	@Override
-	public void addLocks(Random random, TreasureChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
+	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
 		// select a rarity locks
 		List<LockItem> locks = (List<LockItem>) TreasureItems.locks.get(Rarity.COMMON);
 		locks.addAll(TreasureItems.locks.get(Rarity.UNCOMMON));

@@ -37,6 +37,9 @@ public class ChestConfig implements IChestConfig {
 	private boolean aboveGroundAllowed;
 	private boolean belowGroundAllowed;
 	
+	// mimic
+	private double mimicProbability;
+	
 	// biome type white/black lists
 	private  String[] rawBiomeWhiteList;
 	private  String[] rawBiomeBlackList;
@@ -91,6 +94,9 @@ public class ChestConfig implements IChestConfig {
     	chunksPerChest = config.getInt("chunksPerChest", "02-gen", defaults.getChunksPerChest(), 50, 32000, "");
     	genProbability = config.getFloat("genProbability", "02-gen", (float)defaults.getGenProbability(), 0.0F, 100.0F, "");
     	minYSpawn = config.getInt("minYSpawn", "02-gen", defaults.getMinYSpawn(), 5, 250, "");
+    	
+    	// mimic props
+    	mimicProbability = config.getFloat("mimicProbability", "02-gen", (float)defaults.getMimicProbability(), 0.0F, 100.0F, "");
     	
         // white/black lists
         rawBiomeWhiteList = config.getStringList("biomeWhiteList", "02-gen", (String[]) defaults.getRawBiomeWhiteList(), "Allowable Biome Types for general Chest generation. Must match the Type identifer(s).");
@@ -272,6 +278,21 @@ public class ChestConfig implements IChestConfig {
 	@Override
 	public IChestConfig setRawBiomeBlackList(String[] rawBiomeBlackList) {
 		this.rawBiomeBlackList = rawBiomeBlackList;
+		return this;
+	}
+
+	/**
+	 * @return the mimicProbability
+	 */
+	public double getMimicProbability() {
+		return mimicProbability;
+	}
+
+	/**
+	 * @param mimicProbability the mimicProbability to set
+	 */
+	public IChestConfig setMimicProbability(double mimicProbability) {
+		this.mimicProbability = mimicProbability;
 		return this;
 	}
 

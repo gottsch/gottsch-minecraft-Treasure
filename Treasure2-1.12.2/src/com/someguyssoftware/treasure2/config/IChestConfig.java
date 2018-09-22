@@ -48,5 +48,9 @@ public interface IChestConfig extends IBiomeListConfig {
 
 	String[] getRawBiomeWhiteList();
 
-	IChestConfig setRawBiomeWhiteList(String[] rawBiomeWhiteList); 
+	IChestConfig setRawBiomeWhiteList(String[] rawBiomeWhiteList);
+
+	public double getMimicProbability(); 
+	
+	IChestConfig setMimicProbability(double genProbability);
 }

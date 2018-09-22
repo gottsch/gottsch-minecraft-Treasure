@@ -164,12 +164,14 @@ public class ChestWorldGenerator implements IWorldGenerator {
 				Biome biome = world.getBiome(coords.toPos());
 
 			    if (!BiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList())) {
-		    		if (world.isRemote) {
-		    			Treasure.logger.debug(String.format("[%s] is not a valid biome @ {}", biome.getBiomeName(), coords.toShortString()));
-		    		}
-		    		else {
-		    			Treasure.logger.debug(String.format("Biome is not valid @ {}", coords.toShortString()));
-		    		}
+			    	if (Treasure.logger.isDebugEnabled()) {
+			    		if (world.isRemote) {
+			    			Treasure.logger.debug("{} is not a valid biome @ {}", biome.getBiomeName(), coords.toShortString());
+			    		}
+			    		else {
+			    			Treasure.logger.debug("Biome is not valid @ {}", coords.toShortString());
+			    		}
+			    	}
 			    	return;
 			    }
 			    
@@ -244,7 +246,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 			return false;
 		}
 		
-		Treasure.logger.debug("Min distance Sq -> {}", minDistanceSq);
+//		Treasure.logger.debug("Min distance Sq -> {}", minDistanceSq);
 		for (ChestInfo info : infos) {
 			// calculate the distance to the poi
 			double distance = coords.getDistanceSq(info.getCoords());

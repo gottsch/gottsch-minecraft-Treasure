@@ -9,6 +9,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
@@ -79,7 +80,7 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	 * @see com.someguyssoftware.treasure2.generator.chest.AbstractChestGenerator#addLocks(java.util.Random, com.someguyssoftware.treasure2.block.TreasureChestBlock, com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity, com.someguyssoftware.treasure2.enums.Rarity)
 	 */
 	@Override
-	public void addLocks(Random random, TreasureChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
+	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
 		// get the chest type
 		TreasureChestType type = chest.getChestType();
 		// get the lock states
@@ -104,7 +105,7 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	 * @return
 	 */
 	@Override
-	public TileEntity placeInWorld(World world, Random random, TreasureChestBlock chest, ICoords chestCoords) {
+	public TileEntity placeInWorld(World world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
 		GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
 		// ensure that chest is of type WITHER_CHEST

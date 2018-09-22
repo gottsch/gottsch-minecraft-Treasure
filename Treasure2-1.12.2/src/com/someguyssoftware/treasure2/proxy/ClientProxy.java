@@ -20,7 +20,7 @@ import com.someguyssoftware.treasure2.client.render.tileentity.SafeTileEntityRen
 import com.someguyssoftware.treasure2.client.render.tileentity.StrongboxTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.WitherChestTileEntityRenderer;
-import com.someguyssoftware.treasure2.entity.monster.WoodenMimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
@@ -121,7 +121,7 @@ public class ClientProxy {
 		/*
 		 *  register the entity render handlers
 		 */		
-		RenderingRegistry.registerEntityRenderingHandler(WoodenMimicEntity.class, 	
+		RenderingRegistry.registerEntityRenderingHandler(WoodMimicEntity.class, 	
 				new MimicEntityRenderer(
 						Minecraft.getMinecraft().getRenderManager(), 
 						new MimicModel(),

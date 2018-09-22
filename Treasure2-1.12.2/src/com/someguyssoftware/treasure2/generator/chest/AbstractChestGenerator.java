@@ -14,11 +14,15 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.AbstractChestBlock;
+import com.someguyssoftware.treasure2.block.IMimicBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.block.WitherChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
+import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -115,21 +119,17 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				Treasure.logger.warn("Unable to select a lootTable.");
 				return false;
 			}
-			Treasure.logger.debug("Selected loot table -> {}", lootTable.toString());
+//			Treasure.logger.debug("Selected loot table -> {}", lootTable.toString());
 			
 			// select a chest from the rarity
-			TreasureChestBlock chest = selectChest(random, chestRarity);	
+			AbstractChestBlock chest = selectChest(random, chestRarity);	
 			if (chest == null) {
 //				Treasure.logger.warn("Unable to select a chest for rarite {} and container {}.", chestRarity, container.getName());
 				Treasure.logger.warn("Unable to select a chest for rarity {}.", chestRarity);
 				return false;
 			}
-			Treasure.logger.debug("Choosen chest: {}", chest.getUnlocalizedName());
-			
-			if (chest == TreasureBlocks.WOOD_CHEST) {
-//				chest = TreasureBlocks.WOOD_MIMIC;
-			}
-			
+//			Treasure.logger.debug("Choosen chest: {}", chest.getUnlocalizedName());
+						
 			// place the chest in the world
 			TileEntity te = placeInWorld(world, random, chest, chestCoords);
 			if (te == null) return false;
@@ -146,6 +146,9 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
 							random,
 							TreasureLootTables.CONTEXT);
+			}
+			else if (chest instanceof IMimicBlock) {
+				// don't fill
 			}
 			else {
 //				InventoryPopulator pop = new InventoryPopulator();
@@ -202,9 +205,20 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param rarity
 	 * @return
 	 */
-	public TreasureChestBlock  selectChest(final Random random, final Rarity rarity) {
+	public AbstractChestBlock  selectChest(final Random random, final Rarity rarity) {
 		List<Block> chestList = (List<Block>) TreasureBlocks.chests.get(rarity);
-		TreasureChestBlock chest = (TreasureChestBlock) chestList.get(RandomHelper.randomInt(random, 0, chestList.size()-1));	
+		AbstractChestBlock chest = (AbstractChestBlock) chestList.get(RandomHelper.randomInt(random, 0, chestList.size()-1));	
+
+		// TODO should have a map of available mimics mapped by chest. for now, since only one mimic, just test for it
+		// determine if should be mimic
+		if (chest == TreasureBlocks.WOOD_CHEST) {
+			// get the config
+			IChestConfig config = Configs.chestConfigs.get(rarity);
+			if (RandomHelper.checkProbability(random, config.getMimicProbability())) {
+				chest = (AbstractChestBlock) TreasureBlocks.WOOD_MIMIC;
+				Treasure.logger.debug("Selecting a MIMIC chest!");
+			}
+		}
 		return chest;
 	}
 	
@@ -229,7 +243,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param chestCoords
 	 * @return
 	 */
-	public TileEntity placeInWorld(World world, Random random, TreasureChestBlock chest, ICoords chestCoords) {
+	public TileEntity placeInWorld(World world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
 		GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
 
@@ -295,7 +309,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				index = RandomHelper.randomInt(random, 0, tables.size()-1);
 				table = tables.get(index);
 			}
-			Treasure.logger.debug("Selected loot table index --> {}", index);
+//			Treasure.logger.debug("Selected loot table index --> {}", index);
 		}
 		return table;
 	}	
@@ -336,7 +350,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * Default implementation. Select locks only from with the same Rarity.
 	 * @param chest
 	 */
-	public void addLocks(Random random, TreasureChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
+	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
 		List<LockItem> locks = (List<LockItem>) TreasureItems.locks.get(rarity);
 		addLocks(random, chest, te, locks);
 	}
@@ -348,7 +362,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param te
 	 * @param locks
 	 */
-	public void addLocks(Random random, TreasureChestBlock chest, AbstractTreasureChestTileEntity te,List<LockItem> locks) {
+	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te,List<LockItem> locks) {
 		int numLocks = randomizedNumberOfLocksByChestType(random, chest.getChestType());
 		
 		// get the lock states

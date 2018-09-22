@@ -17,7 +17,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.entity.monster.WoodenMimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
 import com.someguyssoftware.treasure2.enums.FogHeight;
 import com.someguyssoftware.treasure2.enums.FogType;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -288,9 +288,9 @@ public class TreasureBlocks {
 				Treasure.MODID, 
 				TreasureConfig.WOOD_MIMIC_ID, 
 				WoodChestTileEntity.class,
+				WoodMimicEntity.class,
 				TreasureChestTypes.STANDARD,
 				Rarity.COMMON)
-				.setMimicClass(WoodenMimicEntity.class)
 				.setBounds(stdChestBounds)
 				.setHardness(2.5F);
 		

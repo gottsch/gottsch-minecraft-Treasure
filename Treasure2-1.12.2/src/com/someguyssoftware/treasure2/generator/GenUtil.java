@@ -4,7 +4,6 @@
 package com.someguyssoftware.treasure2.generator;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -16,10 +15,10 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.FogBlock;
 import com.someguyssoftware.treasure2.block.ITreasureBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
@@ -155,7 +154,7 @@ public class GenUtil {
 
 			// get the direction the block is facing.
 			Direction direction = Direction.fromFacing(facing);
-			((TreasureChestBlock)chest).rotateLockStates(world, pos, Direction.NORTH.getRotation(direction));
+			((AbstractChestBlock)chest).rotateLockStates(world, pos, Direction.NORTH.getRotation(direction));
 			
 			// get the tile entity
 			TileEntity te = (TileEntity) world.getTileEntity(pos);
@@ -249,7 +248,7 @@ public class GenUtil {
 			// don't place if the spawnCoords isn't AIR or FOG or REPLACEABLE
 			Cube cube = new Cube(world, spawnCoords);
 			if (!cube.isAir() && !cube.isReplaceable() && !cube.equalsMaterial(TreasureItems.FOG)) {
-				Treasure.logger.debug("Marker not placed because block  @ [{}] is not Air, Replaceable nor Fog.");
+				Treasure.logger.debug("Marker not placed because block  @ [{}] is not Air, Replaceable nor Fog.", spawnCoords.toShortString());
 				continue;
 			}
 			
@@ -304,7 +303,7 @@ public class GenUtil {
 //			}
 
 			// place the block
-			world.setBlockState(spawnCoords.toPos(), marker.getDefaultState().withProperty(TreasureChestBlock.FACING, facing));
+			world.setBlockState(spawnCoords.toPos(), marker.getDefaultState().withProperty(AbstractChestBlock.FACING, facing));
 			
 			// add fog around the block
 			if (TreasureConfig.enableFog && RandomHelper.checkProbability(random, TreasureConfig.gravestoneFogProbability)) {

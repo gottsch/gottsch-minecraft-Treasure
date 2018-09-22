@@ -6,7 +6,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.model.MimicModel;
 import com.someguyssoftware.treasure2.client.model.StandardChestModel;
 import com.someguyssoftware.treasure2.entity.monster.MimicEntity;
-import com.someguyssoftware.treasure2.entity.monster.WoodenMimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
