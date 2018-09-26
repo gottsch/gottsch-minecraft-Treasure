@@ -87,7 +87,7 @@ public class KeyItem extends ModItem {
 		setDamageable(true);
 		setCraftable(false);
 		setMaxDamage(25);
-		setSuccessProbability(100D);		
+		setSuccessProbability(90D);		
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class KeyItem extends ModItem {
 				boolean breakKey = true;
 				boolean fitsLock = false;
 				LockState lockState = null;
-				
+				boolean isKeyBroken = false;
 				// check if this key is one that opens a lock (only first lock that key fits is unlocked).
 //				for (LockState ls : tcte.getLockStates()) {
 //					if (ls.getLock() != null) {
@@ -220,13 +220,21 @@ public class KeyItem extends ModItem {
 						heldItem.shrink(1);
 						player.sendMessage(new TextComponentString("Key broke."));
 						worldIn.playSound(player, chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+						// flag the key as broken
+						isKeyBroken = true;
+						// if the keyStack > 0, then reset the damage - don't break a brand new key and leave the used one
+						if (heldItem.getCount() > 0) {
+							heldItem.setItemDamage(0);
+						}
 					}
 					else {
 						player.sendMessage(new TextComponentString("Failed to unlock."));
-						if (isDamageable()) {
-							heldItem.damageItem(1, player);
-						}
 					}						
+				}
+				
+				// user attempted to use key - increment the damage
+				if (isDamageable() && !isKeyBroken) {
+					heldItem.damageItem(1, player);
 				}
 			}
 			catch (Exception e) {

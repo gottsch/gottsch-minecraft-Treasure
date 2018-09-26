@@ -23,6 +23,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -121,6 +122,8 @@ public class KeyRingItem extends ModItem {
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
 			EnumFacing facing, float hitX, float hitY, float hitZ) {
 
+		boolean isKeyBroken = false;
+		
 		// exit if on the client
 		if (worldIn.isRemote) {			
 			return EnumActionResult.FAIL;
@@ -159,7 +162,7 @@ public class KeyRingItem extends ModItem {
 				// cycle through all keys in key ring until one is able to fit lock and use it to unlock the lock.
 				for (int i = 0; i < inv.getSizeInventory(); i++) {
 					ItemStack keyStack = inv.getStackInSlot(i);
-					if (keyStack != null && keyStack.getItem() != Items.AIR)  {								
+					if (keyStack != null && keyStack.getItem() != Items.AIR)  {		
 						KeyItem key = (KeyItem) keyStack.getItem();
 						Treasure.logger.debug("Using key from keyring: {}", key.getUnlocalizedName());
 						boolean breakKey = true;
@@ -189,25 +192,42 @@ public class KeyRingItem extends ModItem {
 								breakKey = false;
 							}
 
+
 							// TODO move to a method in KeyItem
 							if (breakKey) {
 								if (key.isBreakable()  && TreasureConfig.enableKeyBreaks) {
 									// break key;
-									heldItem.shrink(1);
+									keyStack.shrink(1);
 									player.sendMessage(new TextComponentString("Key broke."));
 									worldIn.playSound(player, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-
+									// the key is broken, do not attempt to damage it.
+									isKeyBroken = true;
+									// if the keyStack > 0, then reset the damage - don't break a brand new key and leave the used one
+									if (keyStack.getCount() > 0) {
+										keyStack.setItemDamage(0);
+									}
 								}
 								else {
 									player.sendMessage(new TextComponentString("Failed to unlock."));
-									if (isDamageable()) {
-										heldItem.damageItem(1, player);
-									}
 								}						
 							}
+							if (key.isDamageable() && !isKeyBroken) {
+								keyStack.damageItem(1, player);
+							}
+							else {
+								Treasure.logger.debug("Key in keyring is NOT damageable.");
+							}			
+
+							/*
+							 * write inventory to the key ring and
+							 *  reset a flag that the item was used on a treasure chest, because it is overwritten by the ItemStackHelper
+							 */
+							ItemStackHelper.saveAllItems(heldItem.getTagCompound(), inv.getItems());
+							heldItem.getTagCompound().setBoolean(USED_ON_CHEST, true);
+							
 							// key unlocked a lock, end loop (ie only unlock 1 lock at a time
 							break;
-						}
+						}						
 					}
 				}				
 			}
