@@ -163,6 +163,11 @@ public class TreasureConfig extends AbstractConfig {
 	public static boolean enableLockDrops = true;
 	
 	/*
+	 * other mod enablements for loot tables
+	 */
+	public static boolean enableMoCreatures = true;
+	
+	/*
 	 *  world gen
 	 */
 	public static int minDistancePerChest;
@@ -218,7 +223,9 @@ public class TreasureConfig extends AbstractConfig {
         enableWitherFog = config.getBoolean("enableWitherFog", "03-mod", true, "Enables/Disable whether a wither fog is generated (ex. around wither trees)");
         enablePoisonFog = config.getBoolean("enablePoisonFog", "03-mod", true, "Enables/Disable whether a poison fog is generated (ex. around wither trees)");
         enableLockDrops = config.getBoolean("enableLockDrops", "03-mod", true, "Enables/Disable whether a Lock item is dropped when unlocked by Key item.");
+        enableMoCreatures = config.getBoolean("enableMoCreatures", "03-mod", false, "Enables/Disable whether MoCreatures mod is installed and it's items can be used in loot tables.");
 
+        
         // white/black lists
         config.setCategoryComment("04-gen", "World generation properties.");    
         generalChestBiomeWhiteList = config.getStringList("generalChestBiomeWhiteList", "04-gen", new String[]{}, "Allowable Biome Types for general Chest generation. Must match the Type identifer(s).");

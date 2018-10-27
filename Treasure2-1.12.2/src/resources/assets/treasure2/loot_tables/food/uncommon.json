@@ -37,7 +37,7 @@
 				{
 					"entryName": "cocoa_beans",
 					"type": "item",
-					"name": "minecraft:cocoa_beans",
+					"name": "minecraft:dye",
 					"weight": 20,
 					"functions": [
 						{
@@ -46,6 +46,10 @@
 								"min": 1,
 								"max": 2
 							}
+						},
+						{
+							"function": "set_damage",
+							"damage": 3
 						}
 					]	
 				},

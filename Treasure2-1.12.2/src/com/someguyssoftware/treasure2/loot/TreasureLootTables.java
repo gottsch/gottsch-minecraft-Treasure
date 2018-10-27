@@ -35,6 +35,8 @@ import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.LootTableManager;
 
+import net.minecraftforge.fml.common.Loader;
+
 /**
  * @author Mark Gottschling on Jun 29, 2018
  *
@@ -88,7 +90,7 @@ public class TreasureLootTables {
 		Path path = Paths.get("mods"); // TODO should be TreasureConfig.treasureFolder
 		Treasure.logger.debug("Path to mods folder -> {}", path.toAbsolutePath().toString());
 		
-		// create paths to custom loot tables if the don't exist
+		// create paths to custom loot tables if they don't exist
 		for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
 		    final Path folder = Paths.get(path.toString(), Treasure.MODID, "loot_tables", s).toAbsolutePath();
 
@@ -100,6 +102,12 @@ public class TreasureLootTables {
 					Treasure.logger.warn("Unable to create loot tables folder \"{}\"", folder.toString());
 				}
 		    }
+		}
+		
+		// TODO check for other mod enablements and create paths if they don't exist
+		if (TreasureConfig.enableMoCreatures
+				&& Loader.isModLoaded("")) {
+			
 		}
 		
 		// create a new loot table manager for custom file-system loot tables
