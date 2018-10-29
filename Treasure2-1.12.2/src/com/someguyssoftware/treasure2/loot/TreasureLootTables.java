@@ -154,7 +154,7 @@ public class TreasureLootTables {
 		Treasure.logger.debug("Registering loot tables");
 		// register special tables
 		for (String s : TABLES) {
-			//			Treasure.logger.debug("Registering loot table -> {}", s);
+//			Treasure.logger.debug("Registering loot table -> {}", s);
 			LootTableList.register(new ResourceLocation(Treasure.MODID, s));
 		}
 
@@ -455,7 +455,7 @@ public class TreasureLootTables {
 				.filter(Files::isRegularFile)
 				.forEach(f -> {
 					Treasure.logger.debug("Custom loot table -> {}", f.toAbsolutePath().toString());							 
-					ResourceLocation loc = new ResourceLocation(Treasure.MODID + ":" + CUSTOM_LOOT_TABLES_PATH + "/" + subFolder + "/" + s + "/" + f.getFileName().toString().replace(".json", ""));
+					ResourceLocation loc = new ResourceLocation(Treasure.MODID + ":" + CUSTOM_LOOT_TABLES_PATH + "/" + ((!subFolder.equals("")) ? (subFolder + "/") : "") + s + "/" + f.getFileName().toString().replace(".json", ""));
 					// register the loot table
 					LootTableList.register(loc);
 					// map the loot table resource location
