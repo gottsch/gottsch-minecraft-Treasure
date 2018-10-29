@@ -4,7 +4,9 @@
 package com.someguyssoftware.treasure2.loot;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -26,6 +28,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Table;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.enums.ForeignMods;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.util.ResourceLocation;
@@ -34,7 +37,6 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.LootTableManager;
-
 import net.minecraftforge.fml.common.Loader;
 
 /**
@@ -42,7 +44,7 @@ import net.minecraftforge.fml.common.Loader;
  *
  */
 public class TreasureLootTables {
-	private static final String LOOT_TABLES_PATH = "/assets/treasure2/loot_tables/";
+	private static final String LOOT_TABLES_RESOURCE_PATH = "/assets/treasure2/loot_tables/";
 	private static final String CUSTOM_LOOT_TABLES_PATH = "loot_tables";
 	
 	public static final String BUILTIN_LOOT_TABLE_KEY = "BUILTIN";
@@ -51,7 +53,10 @@ public class TreasureLootTables {
 	public static LootContext CONTEXT;
 	public static LootTable WITHER_CHEST_LOOT_TABLE;
 
-	// TODO test loading a folder location for resources
+	/*
+	 * TODO create custom extension of LootTableManager, [LootEntry | LootEntry.Serializer], and LootEntryTable
+	 * this will allow the reference of a entry type = "loot_table" to be loaded from the file system instead of the resource path
+	 */
 	public static LootTableManager lootTableManager;
 
 	/*
@@ -78,6 +83,9 @@ public class TreasureLootTables {
 			"chests/wither_chest"
 			);
 
+	/*
+	 * relative location of chest loot tables - in resource path or file system
+	 */
 	private static final List<String> CHEST_LOOT_TABLE_FOLDER_LOCATIONS = ImmutableList.of(
 			"chests/common",
 			"chests/uncommon",
@@ -86,30 +94,47 @@ public class TreasureLootTables {
 			"chests/epic"
 			);
 
+	/*
+	 * relative location of other loot tables - in resource path or file system
+	 */
+	private static final List<String> NON_CHEST_LOOT_TABLE_FOLDER_LOCATIONS = ImmutableList.of(
+			"armor",
+			"food",
+			"items",
+			"potions",
+			"tools"
+			);
+	
 	static {
 		Path path = Paths.get("mods"); // TODO should be TreasureConfig.treasureFolder
 		Treasure.logger.debug("Path to mods folder -> {}", path.toAbsolutePath().toString());
 		
 		// create paths to custom loot tables if they don't exist
 		for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
-		    final Path folder = Paths.get(path.toString(), Treasure.MODID, "loot_tables", s).toAbsolutePath();
-
-		    if(Files.notExists(folder)){
-		        Treasure.logger.debug("loot tables folder \"{}\" will be created.", folder.toString());
-		        try {
-					Files.createDirectories(folder);
-				} catch (IOException e) {
-					Treasure.logger.warn("Unable to create loot tables folder \"{}\"", folder.toString());
-				}
-		    }
+//		    final Path folder = Paths.get(path.toString(), Treasure.MODID, "loot_tables", s).toAbsolutePath();
+//
+//		    if(Files.notExists(folder)){
+//		        Treasure.logger.debug("loot tables folder \"{}\" will be created.", folder.toString());
+//		        try {
+//					Files.createDirectories(folder);
+//				} catch (IOException e) {
+//					Treasure.logger.warn("Unable to create loot tables folder \"{}\"", folder.toString());
+//				}
+//		    }
+			
+			createLootTableFolder(Paths.get(path.toString(), Treasure.MODID, CUSTOM_LOOT_TABLES_PATH, s).toAbsolutePath());
 		}
 		
-		// TODO check for other mod enablements and create paths if they don't exist
-		if (TreasureConfig.enableMoCreatures
-				&& Loader.isModLoaded("")) {
+		// check for other mod enablements and create paths if they don't exist
+		if (TreasureConfig.enableMoCreatures && Loader.isModLoaded(ForeignMods.MO_CREATURES.getModID())) {
+//			for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
+//				createLootTableFolder(Paths.get(path.toString(), Treasure.MODID, CUSTOM_LOOT_TABLES_PATH, ForeignMods.MO_CREATURES.getModID(), s).toAbsolutePath());
+//			}
+			createLootTableFolder(path, ForeignMods.MO_CREATURES.getModID());
 			
 		}
 		
+		// TODO research loot table manager to determine if can alter whening reading references to use custom loot manager
 		// create a new loot table manager for custom file-system loot tables
 		lootTableManager = new LootTableManager(new File(path.toAbsolutePath().toString()));
 
@@ -138,12 +163,151 @@ public class TreasureLootTables {
 
 		// register custom rarity based tables
 		registerCustomLootTables();
+		registerCustomLootTables(ForeignMods.MO_CREATURES.getModID());
 	}
 
 	/**
 	 * 
 	 */
 	private TreasureLootTables(WorldServer world) {	}
+
+	/**
+	 * 
+	 * @param modPath
+	 * @param subFolder
+	 */
+	private static void createLootTableFolder(Path modPath, String subFolder) {
+		for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
+			Path folder = Paths.get(modPath.toString(), Treasure.MODID, CUSTOM_LOOT_TABLES_PATH, subFolder, s).toAbsolutePath();
+		    if(Files.notExists(folder)) {
+		        Treasure.logger.debug("loot tables folder \"{}\" will be created.", folder.toString());
+		        try {
+					Files.createDirectories(folder);
+					
+					/////////////////////
+					FileSystem fs = null;
+					Stream<Path> walk = null;
+					Map<String, String> env = new HashMap<>();
+					URI uri = null;
+
+					// get the asset resource folder that is unique to this mod
+					URL url = Treasure.class.getResource("/loot_tables/" + subFolder + "/" + s);
+					if (url == null) {
+						Treasure.logger.error("Unable to locate resource {}", "/loot_tables/" + subFolder + "/" + s);
+						continue;
+					}
+
+					// convert to a uri
+					try {
+						uri = url.toURI();
+					}
+					catch(URISyntaxException e) {
+						Treasure.logger.error("An error occurred during loot table processing:", e);
+						return;
+					}
+
+					// split the uri into 2 parts - jar path and folder path within jar
+					String[] array = uri.toString().split("!");
+					try {
+						fs = FileSystems.newFileSystem(URI.create(array[0]), env);
+					}
+					catch(IOException e) {
+						Treasure.logger.error("An error occurred during loot table processing:", e);
+						return;
+					}
+
+
+					try {
+						Path resourceBasePath = fs.getPath("/loot_tables/" + subFolder, s);
+						Treasure.logger.debug("Foreign mod resource path -> {}", resourceBasePath.toString());
+						// get all the files in the folder
+						boolean isFirst = true;
+						Rarity key = null;
+						walk = Files.walk(resourceBasePath, 1);
+						for (Iterator<Path> it = walk.iterator(); it.hasNext();) {
+							Path resourceFilePath = it.next();
+							String tableName = resourceFilePath.getFileName().toString();
+							Treasure.logger.debug("foreign mod loot_table -> {}", resourceFilePath.toString());
+							// skip the first file, which is actually the given directory itself
+							if (isFirst) {
+								// set the key for mapping
+								key = Rarity.valueOf(tableName.toUpperCase());
+							}
+							else {
+								// TODO test if file exists on the file system
+								Path pathToFileSystemLootTable = Paths.get(folder.toString(), resourceFilePath.getFileName().toString()).toAbsolutePath();
+								Treasure.logger.debug("pathToFileSystemLooTable -> {}", pathToFileSystemLootTable.toString());
+								if(Files.notExists(pathToFileSystemLootTable)) {
+									///\/\/\/\/\/\/\/
+									
+									// copy from resource/classpath to file path
+									InputStream is = TreasureLootTables.class.getResourceAsStream(resourceFilePath.toString());
+									try (FileOutputStream fos = new FileOutputStream(pathToFileSystemLootTable.toFile())) {
+										byte[] buf = new byte[2048];
+										int r;
+										while ((r = is.read(buf)) != -1) {
+											fos.write(buf,  0,  r);
+										}
+									}
+									catch(IOException e) {
+										Treasure.logger.error("Error exposing chestsheet resource to file system.");
+									}
+									//\/\/\/\/\/\/\/\
+								}
+							}
+							isFirst = false;
+						}
+					}
+					catch(Exception e) {
+						Treasure.logger.error("error:", e);
+					}
+					finally {
+						// close the stream
+						if (walk != null) {
+							walk.close();
+						}
+					}
+					////////////////////////
+					
+					// close the file system
+					if (fs != null && fs.isOpen()) {
+						try {
+							fs.close();
+						} catch (IOException e) {
+							Treasure.logger.debug("An error occurred attempting to close the FileSystem:", e);
+						}
+					}
+				} catch (IOException e) {
+					Treasure.logger.warn("Unable to create loot tables folder \"{}\"", folder.toString());
+				}
+		        
+		        
+		    }
+		    
+			// TODO copy any built-in resources to folder if doesn't exist already
+			
+
+		}
+		
+	}
+
+	/**
+	 * 
+	 * @param folder
+	 */
+	private static void createLootTableFolder(Path folder) {
+	    if(Files.notExists(folder)){
+	        Treasure.logger.debug("loot tables folder \"{}\" will be created.", folder.toString());
+	        try {
+				Files.createDirectories(folder);
+				
+				// TODO copy pre-built loot tables to folders
+				
+			} catch (IOException e) {
+				Treasure.logger.warn("Unable to create loot tables folder \"{}\"", folder.toString());
+			}
+	    }
+	}
 
 	/**
 	 * 
@@ -222,7 +386,7 @@ public class TreasureLootTables {
 
 		for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
 			try {
-				Path path = fs.getPath(LOOT_TABLES_PATH, s);
+				Path path = fs.getPath(LOOT_TABLES_RESOURCE_PATH, s);
 				// get all the files in the folder
 				boolean isFirst = true;
 				Rarity key = null;
@@ -270,13 +434,20 @@ public class TreasureLootTables {
 	}
 
 	/**
-	 * Register the mod external custom loot tables
+	 * 
 	 */
 	public static void registerCustomLootTables() {
+		registerCustomLootTables("");
+	}
+	
+	/**
+	 * Register the mod external custom loot tables
+	 */
+	public static void registerCustomLootTables(String subFolder) {
 		for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
 
 			// TODO "mods" needs to point to the config.treasureFolder
-			Path path = Paths.get("mods", Treasure.MODID, CUSTOM_LOOT_TABLES_PATH, s).toAbsolutePath();
+			Path path = Paths.get("mods", Treasure.MODID, CUSTOM_LOOT_TABLES_PATH, subFolder, s).toAbsolutePath();
 			Treasure.logger.debug("Path to custom loot table -> {}", path.toString());
 
 			try {
@@ -284,7 +455,7 @@ public class TreasureLootTables {
 				.filter(Files::isRegularFile)
 				.forEach(f -> {
 					Treasure.logger.debug("Custom loot table -> {}", f.toAbsolutePath().toString());							 
-					ResourceLocation loc = new ResourceLocation(Treasure.MODID + ":" + CUSTOM_LOOT_TABLES_PATH + "/" + s + "/" + f.getFileName().toString().replace(".json", ""));
+					ResourceLocation loc = new ResourceLocation(Treasure.MODID + ":" + CUSTOM_LOOT_TABLES_PATH + "/" + subFolder + "/" + s + "/" + f.getFileName().toString().replace(".json", ""));
 					// register the loot table
 					LootTableList.register(loc);
 					// map the loot table resource location

@@ -1,0 +1,34 @@
+{
+	"pools": [
+		{
+			"name": "common_armor",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "hidechest",
+					"type": "item",
+					"name": "mocreatures:hidechest",
+					"weight": 1
+				},
+				{
+					"entryName": "hidelegs",
+					"type": "item",
+					"name": "mocreatures:hidelegs",
+					"weight": 1
+				},
+				{
+					"entryName": "hidehelmet",
+					"type": "item",
+					"name": "mocreatures:hidehelmet",
+					"weight": 1
+				},
+				{
+					"entryName": "hideboots",
+					"type": "item",
+					"name": "mocreatures:hideboots",
+					"weight": 1
+				}
+			]
+		}
+	]
+}
