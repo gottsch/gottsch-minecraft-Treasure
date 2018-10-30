@@ -106,38 +106,35 @@ public class TreasureLootTables {
 			);
 	
 	static {
-		Path path = Paths.get("mods"); // TODO should be TreasureConfig.treasureFolder
-		Treasure.logger.debug("Path to mods folder -> {}", path.toAbsolutePath().toString());
+//		Path path = Paths.get("mods"); // TODO should be TreasureConfig.treasureFolder
+//		Treasure.logger.debug("Path to mods folder -> {}", path.toAbsolutePath().toString());
 		
 		// create paths to custom loot tables if they don't exist
 		for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
-//		    final Path folder = Paths.get(path.toString(), Treasure.MODID, "loot_tables", s).toAbsolutePath();
-//
-//		    if(Files.notExists(folder)){
-//		        Treasure.logger.debug("loot tables folder \"{}\" will be created.", folder.toString());
-//		        try {
-//					Files.createDirectories(folder);
-//				} catch (IOException e) {
-//					Treasure.logger.warn("Unable to create loot tables folder \"{}\"", folder.toString());
-//				}
-//		    }
-			
-			createLootTableFolder(Paths.get(path.toString(), Treasure.MODID, CUSTOM_LOOT_TABLES_PATH, s).toAbsolutePath());
+			createLootTableFolder(s);
 		}
+		for (String s : NON_CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
+			createLootTableFolder(s);
+		}		
 		
-		// check for other mod enablements and create paths if they don't exist
+		// check for other mod enablements and expose folders and loot tables if they don't exist
 		if (TreasureConfig.enableMoCreatures && Loader.isModLoaded(ForeignMods.MO_CREATURES.getModID())) {
-//			for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
-//				createLootTableFolder(Paths.get(path.toString(), Treasure.MODID, CUSTOM_LOOT_TABLES_PATH, ForeignMods.MO_CREATURES.getModID(), s).toAbsolutePath());
-//			}
-			createLootTableFolder(path, ForeignMods.MO_CREATURES.getModID());
+			for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
+//				Path folderPath = Paths.get(path.toString(), Treasure.MODID, CUSTOM_LOOT_TABLES_PATH, ForeignMods.MO_CREATURES.getModID(), s).toAbsolutePath();
+				exposeLootTable(ForeignMods.MO_CREATURES.getModID(), s);
+			}
+			for (String s : NON_CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
+//				exposeLootTable(Paths.get(path.toString(), Treasure.MODID, CUSTOM_LOOT_TABLES_PATH, ForeignMods.MO_CREATURES.getModID(), s).toAbsolutePath());
+				exposeLootTable(ForeignMods.MO_CREATURES.getModID(), s);
+			}			
+//			exposeLootTable(path, ForeignMods.MO_CREATURES.getModID());
 			
 		}
 		
 		// TODO research loot table manager to determine if can alter whening reading references to use custom loot manager
 		// create a new loot table manager for custom file-system loot tables
-		lootTableManager = new LootTableManager(new File(path.toAbsolutePath().toString()));
-
+		lootTableManager = new LootTableManager(Paths.get(TreasureConfig.MODS_FOLDER).toAbsolutePath().toFile());
+//		new File(path.toAbsolutePath().toString())
 		// initialize the maps
 		for (Rarity r : Rarity.values()) {
 			// TODO remove the MAPs
@@ -173,135 +170,139 @@ public class TreasureLootTables {
 
 	/**
 	 * 
-	 * @param modPath
 	 * @param subFolder
+	 * @param location
 	 */
-	private static void createLootTableFolder(Path modPath, String subFolder) {
-		for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
-			Path folder = Paths.get(modPath.toString(), Treasure.MODID, CUSTOM_LOOT_TABLES_PATH, subFolder, s).toAbsolutePath();
-		    if(Files.notExists(folder)) {
-		        Treasure.logger.debug("loot tables folder \"{}\" will be created.", folder.toString());
-		        try {
-					Files.createDirectories(folder);
-					
-					/////////////////////
-					FileSystem fs = null;
-					Stream<Path> walk = null;
-					Map<String, String> env = new HashMap<>();
-					URI uri = null;
-
-					// get the asset resource folder that is unique to this mod
-					URL url = Treasure.class.getResource("/loot_tables/" + subFolder + "/" + s);
-					if (url == null) {
-						Treasure.logger.error("Unable to locate resource {}", "/loot_tables/" + subFolder + "/" + s);
-						continue;
-					}
-
-					// convert to a uri
-					try {
-						uri = url.toURI();
-					}
-					catch(URISyntaxException e) {
-						Treasure.logger.error("An error occurred during loot table processing:", e);
-						return;
-					}
-
-					// split the uri into 2 parts - jar path and folder path within jar
-					String[] array = uri.toString().split("!");
-					try {
-						fs = FileSystems.newFileSystem(URI.create(array[0]), env);
-					}
-					catch(IOException e) {
-						Treasure.logger.error("An error occurred during loot table processing:", e);
-						return;
-					}
-
-
-					try {
-						Path resourceBasePath = fs.getPath("/loot_tables/" + subFolder, s);
-						Treasure.logger.debug("Foreign mod resource path -> {}", resourceBasePath.toString());
-						// get all the files in the folder
-						boolean isFirst = true;
-						Rarity key = null;
-						walk = Files.walk(resourceBasePath, 1);
-						for (Iterator<Path> it = walk.iterator(); it.hasNext();) {
-							Path resourceFilePath = it.next();
-							String tableName = resourceFilePath.getFileName().toString();
-							Treasure.logger.debug("foreign mod loot_table -> {}", resourceFilePath.toString());
-							// skip the first file, which is actually the given directory itself
-							if (isFirst) {
-								// set the key for mapping
-								key = Rarity.valueOf(tableName.toUpperCase());
-							}
-							else {
-								// TODO test if file exists on the file system
-								Path pathToFileSystemLootTable = Paths.get(folder.toString(), resourceFilePath.getFileName().toString()).toAbsolutePath();
-								Treasure.logger.debug("pathToFileSystemLooTable -> {}", pathToFileSystemLootTable.toString());
-								if(Files.notExists(pathToFileSystemLootTable)) {
-									///\/\/\/\/\/\/\/
-									
-									// copy from resource/classpath to file path
-									InputStream is = TreasureLootTables.class.getResourceAsStream(resourceFilePath.toString());
-									try (FileOutputStream fos = new FileOutputStream(pathToFileSystemLootTable.toFile())) {
-										byte[] buf = new byte[2048];
-										int r;
-										while ((r = is.read(buf)) != -1) {
-											fos.write(buf,  0,  r);
-										}
-									}
-									catch(IOException e) {
-										Treasure.logger.error("Error exposing chestsheet resource to file system.");
-									}
-									//\/\/\/\/\/\/\/\
-								}
-							}
-							isFirst = false;
-						}
-					}
-					catch(Exception e) {
-						Treasure.logger.error("error:", e);
-					}
-					finally {
-						// close the stream
-						if (walk != null) {
-							walk.close();
-						}
-					}
-					////////////////////////
-					
-					// close the file system
-					if (fs != null && fs.isOpen()) {
-						try {
-							fs.close();
-						} catch (IOException e) {
-							Treasure.logger.debug("An error occurred attempting to close the FileSystem:", e);
-						}
-					}
-				} catch (IOException e) {
-					Treasure.logger.warn("Unable to create loot tables folder \"{}\"", folder.toString());
-				}
-		        
-		        
-		    }
-		    
-			// TODO copy any built-in resources to folder if doesn't exist already
+	private static void exposeLootTable(String subFolder, String location) {
+		Path folder = null;
+		Stream<Path> walk = null;
+		
+		FileSystem fs = getResourceFileSystem(subFolder, location);
+		if (fs == null) return;
+		
+		try {
+			// get the base path of the resource (for foreign mod loot tables)
+			Path resourceBasePath = fs.getPath("/loot_tables", subFolder, location);
+			Treasure.logger.debug("foreign mod resource base path -> {}", resourceBasePath.toString());
 			
-
+			boolean isFirst = true;
+			// proces all the files in the folder			
+			walk = Files.walk(resourceBasePath, 1);
+			for (Iterator<Path> it = walk.iterator(); it.hasNext();) {
+				Path resourceFilePath = it.next();
+//				String tableName = resourceFilePath.getFileName().toString();
+//				Treasure.logger.debug("foreign mod loot_table -> {}", resourceFilePath.toString());
+				// check the first file, which is actually the given directory itself
+				if (isFirst) {
+					// create the file system folder if it doesn't exist
+					folder = Paths.get(
+							TreasureConfig.MODS_FOLDER, 
+							Treasure.MODID, 
+							CUSTOM_LOOT_TABLES_PATH, 
+							subFolder, 
+							location).toAbsolutePath();
+					
+				    if(Files.notExists(folder)) {
+				        Treasure.logger.debug("foreign mod loot tables folder \"{}\" will be created.", folder.toString());
+				        Files.createDirectories(folder);
+				    }
+				}
+				else {
+					// test if file exists on the file system
+					Path folderLootTablePath = Paths.get(folder.toString(),
+							resourceFilePath.getFileName().toString()).toAbsolutePath();
+					Treasure.logger.debug("folderLootTablePath -> {}", folderLootTablePath.toString());
+					
+					if(Files.notExists(folderLootTablePath)) {
+						// copy from resource/classpath to file path
+						InputStream is = TreasureLootTables.class.getResourceAsStream(resourceFilePath.toString());
+						try (FileOutputStream fos = new FileOutputStream(folderLootTablePath.toFile())) {
+							byte[] buf = new byte[2048];
+							int r;
+							while ((r = is.read(buf)) != -1) {
+								fos.write(buf,  0,  r);
+							}
+						}
+						catch(IOException e) {
+							Treasure.logger.error("Error exposing chestsheet resource to file system.");
+						}
+					}
+				}
+				isFirst = false;
+			}
+		}
+		catch(Exception e) {
+			Treasure.logger.error("error:", e);
+		}
+		finally {
+			// close the stream
+			if (walk != null) {
+				walk.close();
+			}
 		}
 		
+		// close the file system
+		if (fs != null && fs.isOpen()) {
+			try {
+				fs.close();
+			} catch (IOException e) {
+				Treasure.logger.debug("An error occurred attempting to close the FileSystem:", e);
+			}
+		}		
 	}
+	
+	/**
+	 * 
+	 * @param subFolder
+	 * @param location
+	 * @return
+	 */
+	private static FileSystem getResourceFileSystem(String subFolder, String location) {
+		FileSystem fs = null;
+		Map<String, String> env = new HashMap<>();
+		URI uri = null;
 
+		// get the asset resource folder that is unique to this mod
+		URL url = Treasure.class.getResource("/loot_tables/" + subFolder + "/" + location);
+		if (url == null) {
+			Treasure.logger.error("Unable to locate resource {}", "/loot_tables/" + subFolder + "/" + location);
+			return null;
+		}
+
+		// convert to a uri
+		try {
+			uri = url.toURI();
+		}
+		catch(URISyntaxException e) {
+			Treasure.logger.error("An error occurred during loot table processing:", e);
+			return null;
+		}
+
+		// split the uri into 2 parts - jar path and folder path within jar
+		String[] array = uri.toString().split("!");
+		try {
+			fs = FileSystems.newFileSystem(URI.create(array[0]), env);
+		}
+		catch(IOException e) {
+			Treasure.logger.error("An error occurred during loot table processing:", e);
+			return null;
+		}
+		
+		return fs;
+	}
+	
 	/**
 	 * 
 	 * @param folder
 	 */
-	private static void createLootTableFolder(Path folder) {
+	private static void createLootTableFolder(String location) {
+		Path modsPath = Paths.get("mods"); // <-- get from config
+		Path folder = Paths.get(modsPath.toString(), Treasure.MODID, CUSTOM_LOOT_TABLES_PATH, location).toAbsolutePath();
+		
 	    if(Files.notExists(folder)){
 	        Treasure.logger.debug("loot tables folder \"{}\" will be created.", folder.toString());
 	        try {
 				Files.createDirectories(folder);
-				
-				// TODO copy pre-built loot tables to folders
 				
 			} catch (IOException e) {
 				Treasure.logger.warn("Unable to create loot tables folder \"{}\"", folder.toString());
@@ -449,7 +450,12 @@ public class TreasureLootTables {
 			// TODO "mods" needs to point to the config.treasureFolder
 			Path path = Paths.get("mods", Treasure.MODID, CUSTOM_LOOT_TABLES_PATH, subFolder, s).toAbsolutePath();
 			Treasure.logger.debug("Path to custom loot table -> {}", path.toString());
-
+			// check if path/folder exists
+			if (Files.notExists(path)) {
+				Treasure.logger.debug("Unable to locate -> {}", path.toString());
+				continue;
+			}
+			
 			try {
 				Files.walk(path)
 				.filter(Files::isRegularFile)

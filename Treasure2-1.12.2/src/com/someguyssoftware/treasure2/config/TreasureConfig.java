@@ -155,6 +155,7 @@ public class TreasureConfig extends AbstractConfig {
 	/*
 	 * mod settings
 	 */
+	public static final String MODS_FOLDER = "mods";
 	public static String treasureFolder;
 	public static boolean enableKeyBreaks = true;
 	public static boolean enableFog = true;
