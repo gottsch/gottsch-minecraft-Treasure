@@ -7,7 +7,7 @@
                 {
                     "type": "loot_table",
                     "name": "treasure2:treasure/common",
-                    "weight": 1
+                    "weight": 30
                 }
 			]
 		},	
@@ -15,56 +15,38 @@
 			"name": "items",
 			"rolls": {
 				"min": 0,
-				"max": 2
+				"max": 5
 			},
 			"entries": [
                 {
                     "type": "loot_table",
                     "name": "treasure2:items/common",
                     "weight": 1
-                }
-			]
-		},
-		{		
-			"name": "mocreatures_items",
-			"rolls": {
-				"min": 0,
-				"max": 3
-			},		
-			"entries": [
+                },
                 {
                     "type": "loot_table",
-                    "name": "treasure2:mocreatures/items/common",
+                    "name": "treasure2:loot_tables/mocreatures/items/common",
                     "weight": 1
-                }			
+                }	                
 			]
-		},		
+		},	
 		{
 			"name": "armor",
 			"rolls": {
-				"min": 0,
-				"max": 2
+				"min": 2,
+				"max": 4
 			},
 			"entries": [
                 {
                     "type": "loot_table",
                     "name": "treasure2:armor/common",
                     "weight": 1
-                }			
-			]
-		},
-		{		
-			"name": "mocreatures_armor",
-			"rolls": {
-				"min": 0,
-				"max": 2
-			},		
-			"entries": [
+                },
                 {
                     "type": "loot_table",
-                    "name": "treasure2:mocreatures/armor/common",
+                    "name": "treasure2:loot_tables/mocreatures/armor/common",
                     "weight": 1
-                }	
+                }
 			]
 		},
 		{
@@ -78,8 +60,13 @@
                     "type": "loot_table",
                     "name": "treasure2:tools/common",
                     "weight": 1
-                }			
+                },
+                {
+                    "type": "loot_table",
+                    "name": "treasure2:loot_tables/mocreatures/tools/common",
+                    "weight": 1
+                }	
 			]
-		}
+		}	
 	]
 }

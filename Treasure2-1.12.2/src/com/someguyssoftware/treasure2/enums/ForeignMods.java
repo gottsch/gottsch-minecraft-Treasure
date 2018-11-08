@@ -7,6 +7,7 @@ package com.someguyssoftware.treasure2.enums;
  * @author Mark Gottschling on Oct 27, 2018
  *
  */
+@Deprecated
 public enum ForeignMods {
 	MO_CREATURES("mocreatures");
 	

@@ -48,8 +48,8 @@
 							}
 						},
 						{
-							"function": "set_damage",
-							"damage": 3
+							"function": "set_data",
+							"data": 3
 						}
 					]	
 				},
