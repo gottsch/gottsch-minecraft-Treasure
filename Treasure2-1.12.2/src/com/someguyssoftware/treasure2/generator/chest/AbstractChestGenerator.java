@@ -5,9 +5,7 @@ package com.someguyssoftware.treasure2.generator.chest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.Map.Entry;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -22,7 +20,6 @@ import com.someguyssoftware.treasure2.block.WitherChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -34,15 +31,12 @@ import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.loot.TreasureLootTable;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * @author Mark Gottschling on Feb 1, 2018
@@ -56,7 +50,6 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 */
 	@Override
 	public boolean generate(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config) {
-		Treasure.logger.debug("currently in chest generator -> {}", this.getClass().getSimpleName());
 		ICoords chestCoords = null;
 		ICoords markerCoords = null;
 		ICoords spawnCoords = null;
@@ -156,10 +149,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 //				pop.populate(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), container);
 				Treasure.logger.debug("Generating loot from loot table for rarity {}", chestRarity);
 				List<ItemStack> stacks = lootTable.generateLootFromPools(random, TreasureLootTables.CONTEXT);
-				Treasure.logger.debug("Generated loot:");
-				for (ItemStack stack : stacks) {
-					Treasure.logger.debug("item -> {}, size -> {}", stack.getDisplayName(), stack.getCount());
-				}				
+//				Treasure.logger.debug("Generated loot:");
+//				for (ItemStack stack : stacks) {
+//					Treasure.logger.debug("item -> {}, size -> {}", stack.getDisplayName(), stack.getCount());
+//				}				
 				lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
 							random,
 							TreasureLootTables.CONTEXT);			

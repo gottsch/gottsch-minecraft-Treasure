@@ -79,7 +79,6 @@ public class TreasureLootTableManager {
 	 * @param folder
 	 */
 	public TreasureLootTableManager(File folder) {
-		Treasure.logger.debug("Constructing TreasureLootTableManager");
 		// set this class' versino of baseFolder and reload this class' tables
 		this.baseFolder = folder;
 		// this.reloadLootTables();
@@ -94,7 +93,7 @@ public class TreasureLootTableManager {
 
 	// @Override
 	public void reloadLootTables() {
-		Treasure.logger.debug("Reloading Loot Tables.");
+//		Treasure.logger.debug("Reloading Loot Tables.");
 		this.myRegisteredLootTables.invalidateAll();
 
 		for (ResourceLocation resourcelocation : LootTableList.getAll()) {
@@ -111,11 +110,11 @@ public class TreasureLootTableManager {
 				Treasure.logger.debug("Invalid loot table name '{}' (can't contain periods)", (Object) location);
 				return TreasureLootTable.EMPTY_LOOT_TABLE;
 			} else {
-				Treasure.logger.debug("loading loot table from location -> {}", location);
+//				Treasure.logger.debug("loading loot table from location -> {}", location);
 				TreasureLootTable loottable = this.loadLootTable(location);
 
 				if (loottable == null) {
-					Treasure.logger.debug("custom location null, loading loot table from builtin -> {}", location);
+//					Treasure.logger.debug("custom location null, loading loot table from builtin -> {}", location);
 					loottable = this.loadBuiltinLootTable(location);
 				}
 

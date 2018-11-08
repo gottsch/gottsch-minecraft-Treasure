@@ -31,8 +31,6 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.common.Loader;
 
@@ -102,9 +100,6 @@ public class TreasureLootTables {
 			);
 	
 	static {
-//		Path path = Paths.get("mods"); // TODO should be TreasureConfig.treasureFolder
-//		Treasure.logger.debug("Path to mods folder -> {}", path.toAbsolutePath().toString());
-		
 		// create paths to custom loot tables if they don't exist
 		for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
 			createLootTableFolder(s);
@@ -125,30 +120,12 @@ public class TreasureLootTables {
 			}
 		}
 		
-		// check for other mod enablements and expose folders and loot tables if they don't exist
-//		if (TreasureConfig.enableMoCreatures && Loader.isModLoaded(ForeignMods.MO_CREATURES.getModID())) {
-//			for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
-////				Path folderPath = Paths.get(path.toString(), Treasure.MODID, CUSTOM_LOOT_TABLES_PATH, ForeignMods.MO_CREATURES.getModID(), s).toAbsolutePath();
-//				exposeLootTable(ForeignMods.MO_CREATURES.getModID(), s);
-//			}
-//			for (String s : NON_CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
-////				exposeLootTable(Paths.get(path.toString(), Treasure.MODID, CUSTOM_LOOT_TABLES_PATH, ForeignMods.MO_CREATURES.getModID(), s).toAbsolutePath());
-//				exposeLootTable(ForeignMods.MO_CREATURES.getModID(), s);
-//			}			
-////			exposeLootTable(path, ForeignMods.MO_CREATURES.getModID());
-//			
-//		}
-		
 		// create a new loot table manager for custom file-system loot tables
 		lootTableManager = new TreasureLootTableManager(Paths.get(TreasureConfig.MODS_FOLDER).toAbsolutePath().toFile());
 //		new File(path.toAbsolutePath().toString())
 
 		// initialize the maps
 		for (Rarity r : Rarity.values()) {
-			// TODO remove the MAPs
-//			CHEST_LOOT_TABLE_RESOURCE_LOCATION_MAP.put(r, new ArrayList<ResourceLocation>());
-//			CHEST_LOOT_TABLE_MAP.put(r, new ArrayList<LootTable>());
-//			
 			CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.put(BUILTIN_LOOT_TABLE_KEY, r, new ArrayList<ResourceLocation>());
 			CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<ResourceLocation>());
 
@@ -215,7 +192,7 @@ public class TreasureLootTables {
 				 */				
 				
 				CHEST_LOOT_TABLES_TABLE.get(cell.getRowKey(), cell.getColumnKey()).add(lootTable);
-				Treasure.logger.debug("tabling loot table: {} {} -> {}", cell.getRowKey(), cell.getColumnKey(), loc);
+//				Treasure.logger.debug("tabling loot table: {} {} -> {}", cell.getRowKey(), cell.getColumnKey(), loc);
 			}
 		}
 	}
@@ -280,7 +257,7 @@ public class TreasureLootTables {
 //						CHEST_LOOT_TABLE_RESOURCE_LOCATION_MAP.get(key).add(loc);
 //						Treasure.logger.debug("mapping loot table resource location: {} -> {}", key, loc);
 						CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.get(BUILTIN_LOOT_TABLE_KEY, key).add(loc);
-						Treasure.logger.debug("tabling loot table resource location: {} {} -> {}", BUILTIN_LOOT_TABLE_KEY, key, loc);
+//						Treasure.logger.debug("tabling loot table resource location: {} {} -> {}", BUILTIN_LOOT_TABLE_KEY, key, loc);
 					}
 					isFirst = false;
 				}

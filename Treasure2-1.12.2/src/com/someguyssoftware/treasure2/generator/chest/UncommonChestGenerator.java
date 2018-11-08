@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
@@ -76,12 +75,6 @@ public class UncommonChestGenerator extends AbstractChestGenerator {
 		for(Entry<String, List<TreasureLootTable>> n : mapOfLootTables.entrySet()) {
 			tables.addAll(n.getValue());
 		}
-		
-//		mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(Rarity.SCARCE);
-//		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
-//			tables.addAll(n.getValue());
-//		}		
-		
 		return tables;
 	}
 	
