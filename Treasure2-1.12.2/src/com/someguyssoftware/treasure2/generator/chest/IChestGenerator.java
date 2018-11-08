@@ -6,6 +6,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.loot.TreasureLootTable;
 
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTable;
@@ -29,12 +30,12 @@ public interface IChestGenerator {
 	 * @param chestRarity
 	 * @return
 	 */
-	public LootTable selectLootTable(Random random, final Rarity chestRarity);
+	public TreasureLootTable selectLootTable(Random random, final Rarity chestRarity);
 
 	/**
 	 * 
 	 * @param rarity
 	 * @return
 	 */
-	List<LootTable> buildLootTableList(Rarity rarity);
+	List<TreasureLootTable> buildLootTableList(Rarity rarity);
 }

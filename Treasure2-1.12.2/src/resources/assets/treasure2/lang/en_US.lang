@@ -136,8 +136,8 @@ tooltip.label.container_size=Inventory Size: %s
 
 tooltip.metallurgists_key.specials=Opens any lock in METALS category
 tooltip.skeleton_key.specials=Opens COMMON, UNCOMMON, SCARCE and RARE locks (excluding Wither)
-tooltip.pilferers_lock_pick.specials=Opens COMMON locks
-tooltip.thiefs_lock_pick.specials=Opens COMMON and UNCOMMON locks
+tooltip.pilferers_lock_pick.specials=Opens COMMON (%s%%) and UNCOMMON (%s%%) locks
+tooltip.thiefs_lock_pick.specials=Opens COMMON (%s%%), UNCOMMON (%s%%) and SCARCE (%s%%) locks
 tooltip.jewelled_key.specials=Opens any lock in GEMS category
 
 #gui
