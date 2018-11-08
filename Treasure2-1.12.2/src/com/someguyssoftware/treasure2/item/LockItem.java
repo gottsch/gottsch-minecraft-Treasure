@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.enums.Category;
@@ -126,7 +127,7 @@ public class LockItem extends ModItem {
 			block = worldIn.getBlockState(chestPos).getBlock();
 		}
 		
-		if (block instanceof TreasureChestBlock) {
+		if (block instanceof AbstractChestBlock) {
 			// get the tile entity
 			AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(chestPos);
 						
