@@ -10,11 +10,14 @@ import java.util.Random;
 import java.util.Map.Entry;
 
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
+import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.loot.TreasureLootTable;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
@@ -63,20 +66,30 @@ public class ScarceChestGenerator extends AbstractChestGenerator {
 	 * 
 	 */
 	@Override
-	public List<LootTable> buildLootTableList(final Rarity chestRarity) {
+	public List<TreasureLootTable> buildLootTableList(final Rarity chestRarity) {
 		// get all loot tables by column key
-		List<LootTable> tables = new ArrayList<>();
-		Map<String, List<LootTable>> mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(Rarity.UNCOMMON);
+		List<TreasureLootTable> tables = new ArrayList<>();
+		Map<String, List<TreasureLootTable>> mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(Rarity.UNCOMMON);
 		// convert to a single list
-		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
+		for(Entry<String, List<TreasureLootTable>> n : mapOfLootTables.entrySet()) {
 			tables.addAll(n.getValue());
 		}
 		mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(Rarity.SCARCE);
 		// convert to a single list
-		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
+		for(Entry<String, List<TreasureLootTable>> n : mapOfLootTables.entrySet()) {
 			tables.addAll(n.getValue());
 		}		
 		return tables;
+	}
+	
+	/**
+	 * Scarce will have at least one lock.
+	 */
+	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
+		// determine the number of locks to add
+		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
+		Treasure.logger.debug("# of locks to use: {})", numLocks);		
+		return numLocks;
 	}
 	
 	/**
@@ -86,10 +99,12 @@ public class ScarceChestGenerator extends AbstractChestGenerator {
 	@Override
 	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
 		// select a rarity locks
-		List<LockItem> locks = (List<LockItem>) TreasureItems.locks.get(Rarity.UNCOMMON);
+		List<LockItem> locks = new ArrayList<>();
+		locks.addAll(TreasureItems.locks.get(Rarity.UNCOMMON));
 		locks.addAll(TreasureItems.locks.get(Rarity.SCARCE));
-		locks.addAll(TreasureItems.locks.get(Rarity.RARE));
+//		locks.addAll(TreasureItems.locks.get(Rarity.RARE));
 		
 		addLocks(random, chest, te, locks);
+		locks.clear();
 	}
 }

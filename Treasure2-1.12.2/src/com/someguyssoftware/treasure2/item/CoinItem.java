@@ -18,6 +18,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.loot.TreasureLootTable;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 
 import net.minecraft.block.Block;
@@ -104,7 +105,7 @@ public class CoinItem extends ModItem {
 				}
 			}
 			
-			List<LootTable> lootTables = new ArrayList<>();
+			List<TreasureLootTable> lootTables = new ArrayList<>();
 			if (numWishingWellBlocks >=2) {
 				Random random = new Random();
 				List<Rarity> rarityList = null;
@@ -148,9 +149,9 @@ public class CoinItem extends ModItem {
 				// TODO create a context
 				
 				// select a table
-				LootTable table = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
+				TreasureLootTable table = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
 				// generate a list of itemStacks from the table pools
-				List<ItemStack> list =table.generateLootForPools(random, TreasureLootTables.CONTEXT);
+				List<ItemStack> list =table.generateLootFromPools(random, TreasureLootTables.CONTEXT);
 				// select one item randomly
 				ItemStack stack = list.get(list.size()-1);
 				

@@ -414,14 +414,14 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * Sync client and server states
 	 */
 	public void sendUpdates() {
-		Treasure.logger.debug("sending updates to TE...");
-		Treasure.logger.debug("Is  TE.lockStates empty? " + getLockStates().isEmpty());
-		if (!getLockStates().isEmpty()) {
-			for (LockState state : getLockStates()) {
-				Treasure.logger.debug("lock state: " + state);
-			}
-		}
-		Treasure.logger.debug("Updating pos: " + pos);
+//		Treasure.logger.debug("sending updates to TE...");
+//		Treasure.logger.debug("Is  TE.lockStates empty? " + getLockStates().isEmpty());
+//		if (!getLockStates().isEmpty()) {
+//			for (LockState state : getLockStates()) {
+//				Treasure.logger.debug("lock state: " + state);
+//			}
+//		}
+//		Treasure.logger.debug("Updating pos: " + pos);
 		world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyBlockUpdate(pos, getState(), getState(), 3);
 		world.scheduleBlockUpdate(pos,this.getBlockType(),0,0);

@@ -18,6 +18,7 @@ import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
+import com.someguyssoftware.treasure2.loot.TreasureLootTable;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
@@ -54,7 +55,7 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	 * @return
 	 */
 	@Override
-	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
+	public TreasureLootTable selectLootTable(Random random, final Rarity chestRarity) {
 		return TreasureLootTables.WITHER_CHEST_LOOT_TABLE;
 	}
 	 
@@ -73,6 +74,17 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	@Override
 	public void addMarkers(World world, Random random, ICoords coords) {
 		return;
+	}
+	
+	/**
+	 * Wither will have at least one lock.
+	 */
+	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
+		// determine the number of locks to add
+		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
+		Treasure.logger.debug("# of locks to use: {})", numLocks);
+		
+		return numLocks;
 	}
 	
 	/*

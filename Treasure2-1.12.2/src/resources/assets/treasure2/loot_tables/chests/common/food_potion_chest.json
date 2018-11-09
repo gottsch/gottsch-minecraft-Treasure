@@ -28,7 +28,7 @@
 
 		{
 			"name": "food",
-			"rolls": 1,
+			"rolls": 3,
 			"entries": [
                 {
                     "type": "loot_table",

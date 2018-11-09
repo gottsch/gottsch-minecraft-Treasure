@@ -5,10 +5,34 @@
 			"rolls": 1,
 			"entries": [
 				{
+					"entryName": "metallurgists_key",
+					"type": "item",
+					"name": "treasure2:metallurgists_key",
+					"weight": 10
+				},
+				{
+					"entryName": "skeleton_key",
+					"type": "item",
+					"name": "treasure2:skeleton_key",
+					"weight": 7
+				},	
+				{
+					"entryName": "ruby_key",
+					"type": "item",
+					"name": "treasure2:ruby_key",
+					"weight": 25
+				},	
+				{
+					"entryName": "sapphire_key",
+					"type": "item",
+					"name": "treasure2:sapphire_key",
+					"weight": 25
+				},				
+				{
 					"entryName": "diamond_key",
 					"type": "item",
 					"name": "treasure2:diamond_key",
-					"weight": 25,
+					"weight": 15,
 					"functions": [
 						{
 							"function": "set_count",
@@ -18,7 +42,22 @@
 							}
 						}
 					]					
-				}						
+				},
+				{
+					"entryName": "emerald_key",
+					"type": "item",
+					"name": "treasure2:emerald_key",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]					
+				}	
 			]
 		},
 		{

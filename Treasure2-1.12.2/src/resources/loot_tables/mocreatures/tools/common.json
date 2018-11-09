@@ -1,0 +1,16 @@
+{
+	"pools": [
+		{
+			"name": "mo_common_tools",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "fishnet",
+					"type": "item",
+					"name": "mocreatures:fishnet",
+					"weight": 1
+				}
+			]
+		}
+	]
+}

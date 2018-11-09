@@ -14,6 +14,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -43,12 +44,15 @@ public class ThiefsLockPick extends KeyItem {
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		
-		tooltip.add(
-				I18n.translateToLocalFormatted("tooltip.label.specials", 
-				TextFormatting.GOLD) + I18n.translateToLocal("tooltip.thiefs_lock_pick.specials")
-			);
-	
+
+		String s1 = I18n.translateToLocalFormatted("tooltip.thiefs_lock_pick.specials", 
+				getSuccessProbability(), 
+				(this.getSuccessProbability() - (this.getSuccessProbability()/4)),
+				(getSuccessProbability()/2));
+			
+		String s2 = I18n.translateToLocalFormatted("tooltip.label.specials", 
+				TextFormatting.GOLD + s1);
+		tooltip.add(s2);
 	}
 	
 	/**
@@ -70,7 +74,13 @@ public class ThiefsLockPick extends KeyItem {
 	public boolean unlock(LockItem lockItem) {
 		if (lockItem.acceptsKey(this) || fitsLock(lockItem)) {
 			Treasure.logger.debug("Lock accepts key");
-			if (lockItem.getRarity() == Rarity.UNCOMMON) {
+			if (lockItem.getRarity() == Rarity.COMMON) {
+				if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability())) {
+					Treasure.logger.debug("Unlock attempt met probability");
+					return true;
+				}
+			}
+			else if (lockItem.getRarity() == Rarity.UNCOMMON) {
 				if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability() - (this.getSuccessProbability()/4))) {
 					Treasure.logger.debug("Unlock attempt met probability");
 					return true;
@@ -81,13 +91,7 @@ public class ThiefsLockPick extends KeyItem {
 					Treasure.logger.debug("Unlock attempt met probability");
 					return true;
 				}				
-			}
-			else {
-				if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability())) {
-					Treasure.logger.debug("Unlock attempt met probability");
-					return true;
-				}
-			}			
+			}		
 		}
 		return false;
 	}

@@ -169,7 +169,7 @@ public class KeyRingInventory implements IInventory {
 	 */
 	@Override
 	public int getInventoryStackLimit() {
-		return 8;
+		return 1; //8
 	}
 
 	/* (non-Javadoc)

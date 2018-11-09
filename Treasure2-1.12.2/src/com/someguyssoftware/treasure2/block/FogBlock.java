@@ -16,6 +16,7 @@ import com.someguyssoftware.treasure2.item.TreasureItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -69,6 +70,7 @@ public class FogBlock extends ModFallingBlock {
 				.withProperty(CHECK_DECAY, Boolean.valueOf(true)) // was false
 				.withProperty(ACTIVATED, Boolean.valueOf(false)));
 		setNormalCube(false);
+		setSoundType(SoundType.SNOW);
 		setCreativeTab(Treasure.TREASURE_TAB);
 		setFogType(FogType.NORMAL);
 		setFogHeight(FogHeight.FULL_FOG);

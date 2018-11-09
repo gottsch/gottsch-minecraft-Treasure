@@ -7,7 +7,7 @@
                 {
                     "type": "loot_table",
                     "name": "treasure2:treasure/common",
-                    "weight": 1
+                    "weight": 30
                 }
 			]
 		},	
