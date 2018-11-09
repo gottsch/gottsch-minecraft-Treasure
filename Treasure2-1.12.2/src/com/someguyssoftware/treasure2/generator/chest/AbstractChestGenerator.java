@@ -5,9 +5,7 @@ package com.someguyssoftware.treasure2.generator.chest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.Map.Entry;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -22,7 +20,6 @@ import com.someguyssoftware.treasure2.block.WitherChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -31,17 +28,15 @@ import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
+import com.someguyssoftware.treasure2.loot.TreasureLootTable;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * @author Mark Gottschling on Feb 1, 2018
@@ -55,7 +50,6 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 */
 	@Override
 	public boolean generate(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config) {
-		
 		ICoords chestCoords = null;
 		ICoords markerCoords = null;
 		ICoords spawnCoords = null;
@@ -113,7 +107,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		// if successfully gen the pit
 		if (isGenerated) {
 //			Treasure.logger.debug("isGenerated = TRUE");
-			LootTable lootTable = selectLootTable(random, chestRarity);
+			TreasureLootTable lootTable = selectLootTable(random, chestRarity);
 
 			if (lootTable == null) {
 				Treasure.logger.warn("Unable to select a lootTable.");
@@ -154,10 +148,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 //				InventoryPopulator pop = new InventoryPopulator();
 //				pop.populate(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), container);
 				Treasure.logger.debug("Generating loot from loot table for rarity {}", chestRarity);
-//				List<ItemStack> stacks = lootTable.generateLootForPools(random, TreasureLootTables.CONTEXT);
+				List<ItemStack> stacks = lootTable.generateLootFromPools(random, TreasureLootTables.CONTEXT);
 //				Treasure.logger.debug("Generated loot:");
 //				for (ItemStack stack : stacks) {
-//					Treasure.logger.debug(stack.getDisplayName());
+//					Treasure.logger.debug("item -> {}, size -> {}", stack.getDisplayName(), stack.getCount());
 //				}				
 				lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
 							random,
@@ -245,10 +239,21 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 */
 	public TileEntity placeInWorld(World world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
-		GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
-
+		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
+		
 		// get the backing tile entity of the chest 
 		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());
+				
+		// check to ensure the chest has been generated
+		if (!isPlaced || !(world.getBlockState(chestCoords.toPos()).getBlock() instanceof AbstractChestBlock)) {
+			Treasure.logger.debug("Unable to place chest @ {}", chestCoords.toShortString());
+			// remove the title entity (if exists)
+
+			if (te != null && (te instanceof AbstractTreasureChestTileEntity)) {
+				world.removeTileEntity(chestCoords.toPos());
+			}
+			return null;
+		}
 
 		// if tile entity failed to create, remove the chest
 		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
@@ -290,11 +295,11 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param chestRarity
 	 * @return
 	 */
-	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
-		LootTable table = null;
+	public TreasureLootTable selectLootTable(Random random, final Rarity chestRarity) {
+		TreasureLootTable table = null;
 
 		// select the loot table by rarity
-		List<LootTable> tables = buildLootTableList(chestRarity);
+		List<TreasureLootTable> tables = buildLootTableList(chestRarity);
 		
 		// select a random table from the list
 		if (tables != null && !tables.isEmpty()) {
@@ -309,7 +314,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				index = RandomHelper.randomInt(random, 0, tables.size()-1);
 				table = tables.get(index);
 			}
-//			Treasure.logger.debug("Selected loot table index --> {}", index);
+			Treasure.logger.debug("Selected loot table index --> {}", index);
 		}
 		return table;
 	}	
@@ -320,14 +325,14 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @return
 	 */
 	@Override
-	public List<LootTable> buildLootTableList(Rarity rarity) {
-//		List<LootTable> tables = TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(rarity);
+	public List<TreasureLootTable> buildLootTableList(Rarity rarity) {
+//		List<TreasureLootTable> tables = TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(rarity);
 		
 		// get all loot tables by column key
-//		List<LootTable> tables = new ArrayList<>();
-//		Map<String, List<LootTable>> mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(rarity);
+//		List<TreasureLootTable> tables = new ArrayList<>();
+//		Map<String, List<TreasureLootTable>> mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(rarity);
 //		// convert to a single list
-//		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
+//		for(Entry<String, List<TreasureLootTable>> n : mapOfLootTables.entrySet()) {
 //			tables.addAll(n.getValue());
 //		}
 		
@@ -351,8 +356,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param chest
 	 */
 	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
-		List<LockItem> locks = (List<LockItem>) TreasureItems.locks.get(rarity);
+		List<LockItem> locks = new ArrayList<>();
+		locks.addAll(TreasureItems.locks.get(rarity));
 		addLocks(random, chest, te, locks);
+		locks.clear();
 	}
 	
 	/**
@@ -362,7 +369,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param te
 	 * @param locks
 	 */
-	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te,List<LockItem> locks) {
+	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te, List<LockItem> locks) {
 		int numLocks = randomizedNumberOfLocksByChestType(random, chest.getChestType());
 		
 		// get the lock states
@@ -370,7 +377,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 
 		for (int i = 0; i < numLocks; i++) {			
 			LockItem lock = locks.get(RandomHelper.randomInt(random, 0, locks.size()-1));
-//			Treasure.logger.debug("adding lock: {}", lock);
+			Treasure.logger.debug("adding lock: {}", lock);
 			// add the lock to the chest
 			lockStates.get(i).setLock(lock);				
 		}
@@ -385,7 +392,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 0, type.getMaxLocks());		
-//		Treasure.logger.debug("# of locks to use: {})", numLocks);
+		Treasure.logger.debug("# of locks to use: {})", numLocks);
 		
 		return numLocks;
 	}

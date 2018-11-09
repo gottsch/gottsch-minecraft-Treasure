@@ -260,7 +260,7 @@ public class TreasureItems {
 				.setRarity(Rarity.SCARCE);
 
 		
-		locks =	ArrayListMultimap.create();
+		locks = ArrayListMultimap.create();
 		locks.put(WOOD_LOCK.getRarity(), WOOD_LOCK);
 		locks.put(STONE_LOCK.getRarity(), STONE_LOCK);
 		locks.put(IRON_LOCK.getRarity(), IRON_LOCK);

@@ -10,6 +10,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
+import com.someguyssoftware.treasure2.loot.TreasureLootTable;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
@@ -88,7 +89,7 @@ public class TreasureChestCommand extends CommandBase {
 //						pop.populate(chest.getInventoryProxy(), c);
 //					}
     				CommonChestGenerator gen = new CommonChestGenerator();
-    				LootTable lootTable = gen.selectLootTable(new Random(), rarity);
+    				TreasureLootTable lootTable = gen.selectLootTable(new Random(), rarity);
     				
     				if (lootTable == null) {
     					Treasure.logger.warn("Unable to select a lootTable.");
@@ -96,7 +97,7 @@ public class TreasureChestCommand extends CommandBase {
     				}
     				
     				Treasure.logger.debug("Generating loot from loot table for rarity {}", rarity);
-    				List<ItemStack> stacks = lootTable.generateLootForPools(new Random(), TreasureLootTables.CONTEXT);
+    				List<ItemStack> stacks = lootTable.generateLootFromPools(new Random(), TreasureLootTables.CONTEXT);
     				Treasure.logger.debug("Generated loot:");
     				for (ItemStack stack : stacks) {
     					Treasure.logger.debug(stack.getDisplayName());

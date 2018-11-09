@@ -60,7 +60,13 @@
 					"type": "item",
 					"name": "treasure2:diamond_key",
 					"weight": 10
-				}												
+				},
+				{
+					"entryName": "emerald_key",
+					"type": "item",
+					"name": "treasure2:emerald_key",
+					"weight": 10
+				}										
 			]
 		},
 		{

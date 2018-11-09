@@ -9,6 +9,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -155,7 +156,7 @@ public class KeyItem extends ModItem {
 			block = worldIn.getBlockState(chestPos).getBlock();
 		}
 		
-		if (block instanceof TreasureChestBlock) {
+		if (block instanceof AbstractChestBlock) {
 			// get the tile entity
 			TileEntity te = worldIn.getTileEntity(chestPos);
 			if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {

@@ -58,13 +58,11 @@ public class GuiHandler implements IGuiHandler {
 				break;
 			case STRONGBOX_CHEST_GUIID:
 				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-					Treasure.logger.debug("Tile entity is of type TreasureChestTileEntity");
 					return new StrongboxChestContainer(player.inventory, ((AbstractTreasureChestTileEntity)tileEntity).getInventoryProxy());
 				}
 				break;	
 			case COMPRESSOR_CHEST_GUIID:
 				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-					Treasure.logger.debug("Tile entity is of type TreasureChestTileEntity");
 					return new CompressorChestContainer(player.inventory, ((AbstractTreasureChestTileEntity)tileEntity).getInventoryProxy());
 				}
 				break;		

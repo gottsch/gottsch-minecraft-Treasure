@@ -1,8 +1,8 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.12.2-latest": "1.0.1",
-    "1.12.2-recommended": "1.0.1"
+    "1.12.2-latest": "1.1.0",
+    "1.12.2-recommended": "1.1.0"
   },
     "1.12.2": {
         "0.5.0": "alpha release",
@@ -15,6 +15,8 @@
         "0.8.0": "beta: add config option to enable/disable Lock drops when unlocked.\nFix Wither Tree Gen data not being saved to NBT.\nAdded Savanna to the Wither Tree biome white list.\n-Fixed HUGE bug where the chest wasn't saving its inventory and state if it was locked when broken.\nAdded dump() method to TreasureChestBlock.",
         "0.9.0": "beta: fixed when breaking Wither Chest top, that it does not spawn a Wither Chest Top item.\nFixed when scrolling over Wither Chest Top item crashes game.\nFix Wither Log rotations when placed.\nAdded Wither Planks.\nFixed lock rotations when re-placing locked chest.\nFixed bug where you could drop Key Ring when inventory is open and make duplicate keys.\nFixed Tooltips not rendering in custom GUIs.",       
         "1.0.0": "Version Release: fixed Worldgen error on servers.\nAdding Wood Mimic.\nCode cleanup.",  
-		"1.0.1": "fixed keys and keys in keyrings not being damaged on use.\nChanged default probability of key success from 100% to 90%.\n" 
+		"1.0.1": "Fixed keys and keys in keyrings not being damaged on use.\nChanged default probability of key success from 100% to 90%.\n" ,
+		"1.1.0": "Update to Forge 14.23.5.2768\nFixed Cocoa beans in loot tables (changed to a dye).\nFixed Ruby, Sapphire, Metallurgists and Skeleton keys not being included in loot tables.\nMoved emerald key to the correct loot_tables.\nFixed Skull Sword entry in loot table (was referencing a gold coin).\nAdded foreign mod support for loot tables.\nAdding lockpicks success probabilities to item info.\nFixed Pilferers abiliy to open uncommon locks.\nChanged the sound of falling Fog from stone to snow.\nRe-balanced lock selection such that rarity-level chests cannot have higher rarity-level locks. ie, a rare lock cannot appear on a scarce chest.\nUpdated Key Rings to only allow stack size of one (1).\nFixed not being able to use locks/keys on a mimic.\nUpdate so that all scarce+ chests have at least one lock.\nFixed Irong and Gold Strongbox name." 
+
     }
 }

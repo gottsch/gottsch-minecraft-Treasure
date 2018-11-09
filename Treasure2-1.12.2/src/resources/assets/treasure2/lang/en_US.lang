@@ -3,6 +3,8 @@ tile.treasure2:wood_chest.name=Wood Chest
 tile.treasure2:crate_chest.name=Crate
 tile.treasure2:crate_chest_moldy.name=Moldy Crate
 tile.treasure2:ironbound_chest.name=Ironbound Chest
+tile.treasure2:iron_strongbox.name=Iron Strongbox
+tile.treasure2:gold_strongbox.name=Gold Strongbox
 tile.treasure2:pirate_chest.name=Pirate Chest
 tile.treasure2:safe.name=Safe
 tile.treasure2:dread_pirate_chest.name=Dread Pirate Chest
@@ -136,8 +138,8 @@ tooltip.label.container_size=Inventory Size: %s
 
 tooltip.metallurgists_key.specials=Opens any lock in METALS category
 tooltip.skeleton_key.specials=Opens COMMON, UNCOMMON, SCARCE and RARE locks (excluding Wither)
-tooltip.pilferers_lock_pick.specials=Opens COMMON locks
-tooltip.thiefs_lock_pick.specials=Opens COMMON and UNCOMMON locks
+tooltip.pilferers_lock_pick.specials=Opens COMMON (%s%%) and UNCOMMON (%s%%) locks
+tooltip.thiefs_lock_pick.specials=Opens COMMON (%s%%), UNCOMMON (%s%%) and SCARCE (%s%%) locks
 tooltip.jewelled_key.specials=Opens any lock in GEMS category
 
 #gui

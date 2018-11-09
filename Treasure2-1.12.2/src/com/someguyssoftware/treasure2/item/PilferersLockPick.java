@@ -43,11 +43,14 @@ public class PilferersLockPick extends KeyItem {
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		
-		tooltip.add(
-				I18n.translateToLocalFormatted("tooltip.label.specials", 
-				TextFormatting.GOLD) + I18n.translateToLocal("tooltip.pilferers_lock_pick.specials")
-			);
+	
+		String s1 = I18n.translateToLocalFormatted("tooltip.pilferers_lock_pick.specials", 
+				getSuccessProbability(),
+				(getSuccessProbability()/2));
+			
+		String s2 = I18n.translateToLocalFormatted("tooltip.label.specials", 
+				TextFormatting.GOLD + s1);
+		tooltip.add(s2);		
 	
 	}
 	
@@ -56,7 +59,7 @@ public class PilferersLockPick extends KeyItem {
 	 */
 	@Override
 	public boolean fitsLock(LockItem lockItem) {
-		if (lockItem.getRarity() == Rarity.COMMON) return true;
+		if (lockItem.getRarity() == Rarity.COMMON || lockItem.getRarity() == Rarity.UNCOMMON) return true;
 		return false;
 	}	
 
@@ -68,18 +71,19 @@ public class PilferersLockPick extends KeyItem {
 	public boolean unlock(LockItem lockItem) {
 		if (lockItem.acceptsKey(this) || fitsLock(lockItem)) {
 			Treasure.logger.debug("Lock accepts key");
-			if (lockItem.getRarity() == Rarity.UNCOMMON) {
+			if (lockItem.getRarity() == Rarity.COMMON) {
+				if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability())) {
+					Treasure.logger.debug("Unlock attempt met probability");
+					return true;
+				}
+			}
+			else if (lockItem.getRarity() == Rarity.UNCOMMON) {
 				if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability()/2)) {
 					Treasure.logger.debug("Unlock attempt met probability");
 					return true;
 				}				
 			}
-			else {
-				if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability())) {
-					Treasure.logger.debug("Unlock attempt met probability");
-					return true;
-				}
-			}			
+			
 		}
 		return false;
 	}

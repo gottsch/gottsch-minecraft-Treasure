@@ -63,13 +63,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 		acceptedMinecraftVersions = "[1.12.2]",
 		updateJSON = Treasure.UPDATE_JSON_URL
 		)
-@Credits(values={"Treasure was first developed by Mark Gottschling on Aug 27, 2014.","Credits to Mason for ideas and debugging."})
+@Credits(values={
+		"Treasure was first developed by Mark Gottschling on Aug 27, 2014.",
+		"Treasure2 was first developed by Mark Gottschling on Jan 2018.",
+		"Credits to Mason Gottschling for ideas and debugging.",
+		"Credits to CuddleBeak for some Keys and Locks textures."
+		})
 public class Treasure extends AbstractMod {
 
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.0.1";
+	protected static final String VERSION = "1.1.0";
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
 	private static final String VERSION_URL = "";
