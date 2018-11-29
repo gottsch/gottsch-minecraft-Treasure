@@ -37,6 +37,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String COMPRESSOR_CHEST_ID = "compressor_chest";
 	public static final String WITHER_CHEST_ID = "wither_chest";
 	public static final String WITHER_CHEST_TOP_ID = "wither_chest_top";
+	public static final String SKULL_CHEST_ID = "skull_chest";
 	
 	// mimics
 	public static final String WOOD_MIMIC_ID = "wood_mimic";
@@ -131,6 +132,15 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String WITHER_BROKEN_LOG_ID = "wither_broken_log";
 	public static final String WITHER_LOG_SOUL_ID = "wither_log_soul";
 	
+	// paintings
+	public static final String PAINTING_BLOCKS_BRICKS_ID = "painting_blocks_bricks";
+	public static final String PAINTING_BLOCKS_COBBLESTONE_ID = "painting_blocks_cobblestone";
+	public static final String PAINTING_BLOCKS_DIRT_ID = "painting_blocks_dirt";
+	public static final String PAINTING_BLOCKS_LAVA_ID = "painting_blocks_lava";
+	public static final String PAINTING_BLOCKS_SAND_ID = "painting_blocks_sand";
+	public static final String PAINTING_BLOCKS_WATER_ID = "painting_blocks_water";
+	public static final String PAINTING_BLOCKS_WOOD_ID = "painting_blocks_wood";
+	
 	public static final String SPANISH_MOSS_BLOCK_ID = "spanish_moss";
 	public static final String SPANISH_MOSS_ITEM_ID = "spanish_moss";
 	
@@ -150,12 +160,13 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String DREAD_PIRATE_CHEST_TE_ID = "dread_pirate_chest_tile_entity";
 	public static final String COMPRESSOR_CHEST_TE_ID = "compressor_chest_tile_entity";
 	public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
-	
+	public static final String SKULL_CHEST_TE_ID = "skull_chest_tile_entity";
 	
 	/*
 	 * mod settings
 	 */
 	public static final String MODS_FOLDER = "mods";
+	
 	public static String treasureFolder;
 	public static boolean enableKeyBreaks = true;
 	public static boolean enableFog = true;

@@ -6,14 +6,21 @@ package com.someguyssoftware.treasure2.command;
 import java.util.List;
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
 import com.someguyssoftware.treasure2.loot.TreasureLootTable;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
+import net.minecraft.block.Block;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,21 +61,36 @@ public class TreasureChestCommand extends CommandBase {
 			String rarityName = "";
 			if (args.length > 3) {
 				rarityName = args[3];
-			}
-			
+			}			
 			if (rarityName.equals("")) rarityName = Rarity.COMMON.name();
+			
+			// get the rarity enum
 			Rarity rarity = Rarity.valueOf(rarityName.toUpperCase());
 			Treasure.logger.debug("Rarity:" + rarity + "; " + rarity.ordinal());
 			
 			if (player != null) {
     			World world = commandSender.getEntityWorld();
     			Treasure.logger.debug("Starting to build Treasure! chest ...");
-
+    			Random random = new Random();
+    			
+				// get the chest world generator
+				ChestWorldGenerator chestGens = (ChestWorldGenerator) Treasure.worldGenerators.get("chest");
+				// get the rarity chest generator
+//				IChestGenerator gen = chestGens.getGenerators().get(rarity);
+				IChestGenerator gen = chestGens.getGens().get(rarity).next();
+//				CommonChestGenerator gen = new CommonChestGenerator();
     			BlockPos pos = new BlockPos(x, y, z);
-    			world.setBlockState(pos , TreasureBlocks.WOOD_CHEST.getDefaultState());
-    			AbstractTreasureChestTileEntity chest = (AbstractTreasureChestTileEntity) world.getTileEntity(pos);
+    			
+    			AbstractChestBlock chest = gen.selectChest(random, rarity);
+//    			if (gen instanceof SkullChestGenerator) chest = (AbstractChestBlock) TreasureBlocks.SKULL_CHEST;
+//    			else {
+//    				List<Block> chestList = (List<Block>) TreasureBlocks.chests.get(rarity);
+//    				chest = (AbstractChestBlock) chestList.get(RandomHelper.randomInt(random, 0, chestList.size()-1));	
+//    			}
+    			world.setBlockState(pos , chest.getDefaultState());
+    			AbstractTreasureChestTileEntity tileEntity = (AbstractTreasureChestTileEntity) world.getTileEntity(pos);
 				
-    			if (chest != null) {
+    			if (tileEntity != null) {
 //    				// query to load the selected rarity chests
 //    				List<LootContainer> containers = DbManager.getInstance().getContainersByRarity(rarity);
 //
@@ -87,8 +109,9 @@ public class TreasureChestCommand extends CommandBase {
 //						Treasure.logger.info("Chosen chest container:" + c);
 //						InventoryPopulator pop = new InventoryPopulator();
 //						pop.populate(chest.getInventoryProxy(), c);
-//					}
-    				CommonChestGenerator gen = new CommonChestGenerator();
+//					}   				
+    				   				
+    				// get the loot table
     				TreasureLootTable lootTable = gen.selectLootTable(new Random(), rarity);
     				
     				if (lootTable == null) {
@@ -98,13 +121,12 @@ public class TreasureChestCommand extends CommandBase {
     				
     				Treasure.logger.debug("Generating loot from loot table for rarity {}", rarity);
     				List<ItemStack> stacks = lootTable.generateLootFromPools(new Random(), TreasureLootTables.CONTEXT);
-    				Treasure.logger.debug("Generated loot:");
-    				for (ItemStack stack : stacks) {
-    					Treasure.logger.debug(stack.getDisplayName());
-    				}	
+//    				Treasure.logger.debug("Generated loot:");
+//    				for (ItemStack stack : stacks) {
+//    					Treasure.logger.debug(stack.getDisplayName());
+//    				}	    				
     				
-    				
-    				lootTable.fillInventory(chest.getInventoryProxy(), 
+    				lootTable.fillInventory(tileEntity.getInventoryProxy(), 
 							new Random(), 	TreasureLootTables.CONTEXT);
     			}
     		}

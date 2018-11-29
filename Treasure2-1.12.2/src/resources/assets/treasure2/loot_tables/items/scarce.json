@@ -99,6 +99,48 @@
 					"type": "item",
 					"name": "minecraft:ender_pearl",
 					"weight": 15				
+				},
+				{
+					"entryName": "steel_ingot",
+					"type": "item",
+					"name": "sgs_metals:steel_ingot",
+					"weight": 20,
+					"conditions": [
+						{
+							"condition": "treasure2:mod_present",
+							"modid": "sgs_metals"
+						}
+					],
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 2,
+								"max": 5
+							}
+						}
+					]						
+				},
+				{
+					"entryName": "bone_steel_ingot",
+					"type": "item",
+					"name": "sgs_metals:bone_steel_ingot",
+					"weight": 20,
+					"conditions": [
+						{
+							"condition": "treasure2:mod_present",
+							"modid": "sgs_metals"
+						}
+					],
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 2,
+								"max": 5
+							}
+						}
+					]						
 				}
 			]
 		}

@@ -32,6 +32,30 @@
 					]					
 				},
 				{
+					"entryName": "titanium_sword",
+					"type": "item",
+					"name": "sgs_metals:titanium_sword",
+					"weight": 25,
+					"conditions": [
+						{
+							"condition": "treasure2:mod_present",
+							"modid": "sgs_metals"
+						}
+					]		
+				},
+				{
+					"entryName": "autium_sword",
+					"type": "item",
+					"name": "sgs_metals:autium_sword",
+					"weight": 25,
+					"conditions": [
+						{
+							"condition": "treasure2:mod_present",
+							"modid": "sgs_metals"
+						}
+					]		
+				},					
+				{
 					"entryName": "diamond_pickaxe",
 					"type": "item",
 					"name": "minecraft:diamond_pickaxe",
@@ -41,6 +65,54 @@
 							"function": "enchant_randomly"
 						}					
 					]		
+				},
+				{
+					"entryName": "titanium_pickaxe",
+					"type": "item",
+					"name": "sgs_metals:titanium_pickaxe",
+					"weight": 25,
+					"conditions": [
+						{
+							"condition": "treasure2:mod_present",
+							"modid": "sgs_metals"
+						}
+					]
+				},
+				{
+					"entryName": "titanium_axe",
+					"type": "item",
+					"name": "sgs_metals:titanium_axe",
+					"weight": 25,
+						"conditions": [
+						{
+							"condition": "treasure2:mod_present",
+							"modid": "sgs_metals"
+						}
+					]
+				},
+				{
+					"entryName": "autium_pickaxe",
+					"type": "item",
+					"name": "sgs_metals:autium_pickaxe",
+					"weight": 25,
+					"conditions": [
+						{
+							"condition": "treasure2:mod_present",
+							"modid": "sgs_metals"
+						}
+					]
+				},
+				{
+					"entryName": "autium_axe",
+					"type": "item",
+					"name": "sgs_metals:autium_axe",
+					"weight": 25,
+						"conditions": [
+						{
+							"condition": "treasure2:mod_present",
+							"modid": "sgs_metals"
+						}
+					]
 				}
 			]
 		}

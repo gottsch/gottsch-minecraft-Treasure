@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "treasure2:treasure_tool"
+		},
+		{
+			"item": "minecraft:skull",
+			"data": 0
+		}
+	],
+	"result": {
+		"item": "treasure2:skull_chest",
+		"count": 1
+	}
+}

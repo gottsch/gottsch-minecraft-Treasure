@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootTable;
@@ -38,4 +39,12 @@ public interface IChestGenerator {
 	 * @return
 	 */
 	List<TreasureLootTable> buildLootTableList(Rarity rarity);
+
+	/**
+	 * 
+	 * @param random
+	 * @param rarity
+	 * @return
+	 */
+	AbstractChestBlock selectChest(Random random, Rarity rarity);
 }

@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "treasure2:items/painting_item1x1"
+    }
+}

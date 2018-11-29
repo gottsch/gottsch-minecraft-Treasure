@@ -9,6 +9,7 @@ import com.someguyssoftware.gottschcore.armor.ModArmorBuilder;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.item.ModSwordBuilder;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Coins;
@@ -96,6 +97,15 @@ public class TreasureItems {
 	public static PotionType EXTRA_STRONG_SWIFTNESS;
 	public static PotionType EXTRA_STRONG_REGENERATION;
 	public static PotionType EXTRA_STRONG_POISON;
+	
+	// paintings
+	public static Item PAINTING_BLOCKS_BRICKS;
+	public static Item PAINTING_BLOCKS_COBBLESTONE;
+	public static Item PAINTING_BLOCKS_DIRT;
+	public static Item PAINTING_BLOCKS_LAVA;
+	public static Item PAINTING_BLOCKS_SAND;
+	public static Item PAINTING_BLOCKS_WATER;
+	public static Item PAINTING_BLOCKS_WOOD;
 	
 	// other
 	public static Item SPANISH_MOSS;
@@ -318,8 +328,29 @@ public class TreasureItems {
 //				.setCreativeTab(Treasure.TREASURE_TAB);
 		
 		TREASURE_TOOL = new TreasureToolItem(Treasure.MODID, TreasureConfig.TREASURE_TOOL_ITEM_ID);
+
+		PAINTING_BLOCKS_BRICKS = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_BRICKS_ID)
+				.setPaintingName("Bricks").setCollectionName("Blocks").setCollectionIssue("1").setCollectionSize("7").setArtist("o2xygeno");
+		PAINTING_BLOCKS_COBBLESTONE = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_COBBLESTONE_ID)
+				.setPaintingName("Cobblestone").setCollectionName("Blocks").setCollectionIssue("2").setCollectionSize("7").setArtist("o2xygeno");		
+		PAINTING_BLOCKS_DIRT = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_DIRT_ID)
+				.setPaintingName("Dirt").setCollectionName("Blocks").setCollectionIssue("3")	.setCollectionSize("7").setArtist("o2xygeno");
+		PAINTING_BLOCKS_LAVA = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_LAVA_ID)
+				.setPaintingName("Lava").setCollectionName("Blocks").setCollectionIssue("4")	.setCollectionSize("7").setArtist("o2xygeno");
+		PAINTING_BLOCKS_SAND = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_SAND_ID)
+				.setPaintingName("Sand").setCollectionName("Blocks").setCollectionIssue("5")	.setCollectionSize("7").setArtist("o2xygeno");
+		PAINTING_BLOCKS_WATER = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_WATER_ID)
+				.setPaintingName("Water").setCollectionName("Blocks").setCollectionIssue("6")	.setCollectionSize("7").setArtist("o2xygeno");
+		PAINTING_BLOCKS_WOOD = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_WOOD_ID)
+				.setPaintingName("Wood").setCollectionName("Blocks").setCollectionIssue("7")	.setCollectionSize("7").setArtist("o2xygeno");
+		
 	}
 	
+	/**
+	 * 
+	 * @author Mark Gottschling on Nov 9, 2018
+	 *
+	 */
 	@Mod.EventBusSubscriber(modid = Treasure.MODID)
 	public static class PotionRegistrationHandler {
 		@SubscribeEvent
@@ -382,7 +413,14 @@ public class TreasureItems {
 					WITHER_STICK_ITEM,
 					WITHER_ROOT_ITEM,
 					SPANISH_MOSS,
-					TREASURE_TOOL
+					TREASURE_TOOL,
+					PAINTING_BLOCKS_BRICKS,
+					PAINTING_BLOCKS_COBBLESTONE,
+					PAINTING_BLOCKS_DIRT,
+					PAINTING_BLOCKS_LAVA,
+					PAINTING_BLOCKS_SAND,
+					PAINTING_BLOCKS_WATER,
+					PAINTING_BLOCKS_WOOD
 			};
 			registry.registerAll(items);		
 		}

@@ -52,7 +52,7 @@
 				{
 					"entryName": "iron_key",
 					"type": "item",
-					"name": "treasure2:stone_key",
+					"name": "treasure2:iron_key",
 					"weight": 25,
 					"functions": [
 						{

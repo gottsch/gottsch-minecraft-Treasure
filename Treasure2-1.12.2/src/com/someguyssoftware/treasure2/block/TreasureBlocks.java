@@ -33,6 +33,7 @@ import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
+import com.someguyssoftware.treasure2.tileentity.SkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
@@ -67,12 +68,13 @@ public class TreasureBlocks {
 	public static final Block COMPRESSOR_CHEST;
 	public static final Block WITHER_CHEST;
 	public static final Block WITHER_CHEST_TOP;
+	public static final Block SKULL_CHEST;
 	
 	// MIMIC CHESTS
 	public static final Block WOOD_MIMIC;
 	
 		// TODO chests
-	public static final Block SKULL_CHEST = null;
+	
 	public static final Block VASE = null;
 	public static final Block INVISIBLE_CHEST = null;
 
@@ -137,6 +139,15 @@ public class TreasureBlocks {
 	public static final Block WITHER_PLANKS;
 
 	public static final Block SPANISH_MOSS;
+	
+	// treasures: paintings
+	public static final AbstractPaintingBlock PAINTING_BLOCKS_BRICKS;
+	public static final AbstractPaintingBlock PAINTING_BLOCKS_COBBLESTONE;
+	public static final AbstractPaintingBlock PAINTING_BLOCKS_DIRT;
+	public static final AbstractPaintingBlock PAINTING_BLOCKS_LAVA;
+	public static final AbstractPaintingBlock PAINTING_BLOCKS_SAND;
+	public static final AbstractPaintingBlock PAINTING_BLOCKS_WATER;
+	public static final AbstractPaintingBlock PAINTING_BLOCKS_WOOD;
 	
 	// initialize blocks
 	static {
@@ -280,6 +291,23 @@ public class TreasureBlocks {
 		WITHER_CHEST_TOP = new WitherChestTopBlock(Treasure.MODID, TreasureConfig.WITHER_CHEST_TOP_ID)
 				.setHardness(2.5F);
 		
+		AxisAlignedBB skullBB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.56825D, 0.75D);
+		AxisAlignedBB[] skullChestBounds = new AxisAlignedBB[4];
+		skullChestBounds[0] = skullBB; // S
+		skullChestBounds[1] = skullBB; // W
+		skullChestBounds[2] = skullBB; // N
+		skullChestBounds[3] = skullBB; // E
+		
+		SKULL_CHEST = new TreasureChestBlock(
+				Treasure.MODID,
+				TreasureConfig.SKULL_CHEST_ID,
+				SkullChestTileEntity.class,
+				TreasureChestTypes.SKULL,
+				Rarity.SCARCE)
+				.setChestGuiID(GuiHandler.SKULL_CHEST_GUIID)
+				.setBounds(skullChestBounds)
+				.setHardness(3.0F);
+		
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
 
@@ -405,6 +433,28 @@ public class TreasureBlocks {
 		WITHER_LOG_SOUL = new WitherLogSoulBlock(Treasure.MODID, TreasureConfig.WITHER_LOG_SOUL_ID);
 		WITHER_PLANKS = new WitherPlanksBlock(Treasure.MODID, TreasureConfig.WITHER_PLANKS_ID);
 		SPANISH_MOSS = new SpanishMossBlock(Treasure.MODID, TreasureConfig.SPANISH_MOSS_BLOCK_ID);
+		
+		// treasures: paintings
+		AxisAlignedBB[] pbs = new AxisAlignedBB[4];
+		pbs[0] = new AxisAlignedBB(0D, 0D, 0D, 1D, 1D, 0.0625D); // S
+		pbs[1] = new AxisAlignedBB(0.9375D, 0D, 0D, 1D, 1D, 1D); // W
+		pbs[2] = new AxisAlignedBB(0D, 0D, 0.9375D, 1D, 1D, 1D); // N
+		pbs[3] = new AxisAlignedBB(0D, 0.D, 0D, 0.0625D, 1D, 1D); // E
+		
+		PAINTING_BLOCKS_BRICKS = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_BRICKS_ID, Material.CLOTH)
+				.setBounds(pbs);
+		PAINTING_BLOCKS_COBBLESTONE = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_COBBLESTONE_ID, Material.CLOTH)
+				.setBounds(pbs);
+		PAINTING_BLOCKS_DIRT = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_DIRT_ID, Material.CLOTH)
+				.setBounds(pbs);
+		PAINTING_BLOCKS_LAVA = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_LAVA_ID, Material.CLOTH)
+				.setBounds(pbs);
+		PAINTING_BLOCKS_SAND = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_SAND_ID, Material.CLOTH)
+				.setBounds(pbs);
+		PAINTING_BLOCKS_WATER = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_WATER_ID, Material.CLOTH)
+				.setBounds(pbs);
+		PAINTING_BLOCKS_WOOD = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_WOOD_ID, Material.CLOTH)
+				.setBounds(pbs);
 	}
 
 
@@ -480,11 +530,19 @@ public class TreasureBlocks {
 					WITHER_LOG_SOUL,
 					WITHER_CHEST_TOP,
 					WITHER_PLANKS,
-					SPANISH_MOSS
+					SPANISH_MOSS,
+					PAINTING_BLOCKS_BRICKS,
+					PAINTING_BLOCKS_COBBLESTONE,
+					PAINTING_BLOCKS_DIRT,
+					PAINTING_BLOCKS_LAVA,
+					PAINTING_BLOCKS_SAND,
+					PAINTING_BLOCKS_WATER,
+					PAINTING_BLOCKS_WOOD
 			};
 			registry.registerAll(blocks);	
 			// register speciality chests separately (so they aren't in the rarity map)
 			registry.register(WITHER_CHEST);
+			registry.register(SKULL_CHEST);
 
 			// map the block by rarity
 			for (Block block : blocks) {
@@ -515,6 +573,7 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(DREAD_PIRATE_CHEST),
 					new TreasureChestItemBlock(COMPRESSOR_CHEST),
 					new TreasureChestItemBlock(WITHER_CHEST),
+					new TreasureChestItemBlock(SKULL_CHEST),
 					new MimicChestItemBlock(WOOD_MIMIC),
 					
 					// TODO update with GravestonIetmBlock
@@ -555,8 +614,6 @@ public class TreasureBlocks {
 					new ItemBlock(LOW_POISON_FOG),
 					new ItemBlock(WITHER_LOG),
 					new ItemBlock(WITHER_BROKEN_LOG),
-//					new ItemBlock(WITHER_BRANCH),
-//					new ItemBlock(WITHER_ROOT),
 					new ItemBlock(WITHER_LOG_SOUL),
 					new ItemBlock(WITHER_PLANKS)
 			};
@@ -585,6 +642,8 @@ public class TreasureBlocks {
 			GameRegistry.registerTileEntity(DreadPirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.DREAD_PIRATE_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(CompressorChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.COMPRESSOR_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(WitherChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WITHER_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(SkullChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.SKULL_CHEST_TE_ID));
+
 		}	
 	}
 }
