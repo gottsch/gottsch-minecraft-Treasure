@@ -28,7 +28,7 @@
 				},
 				{
 					"type": "loot_table",
-					"name": "treasure2:mocreatures/items/scarce",
+					"name": "treasure2:loot_tables/mocreatures/items/scarce",
 					"weight": 1
 				}
 			]
@@ -47,7 +47,7 @@
 				},
 				{
 					"type": "loot_table",
-					"name": "treasure2:mocreatures/armor/scarce",
+					"name": "treasure2:loot_tables/mocreatures/armor/scarce",
 					"weight": 1
 				}
 			]
@@ -66,7 +66,7 @@
 				},
 				{
 					"type": "loot_table",
-					"name": "treasure2:mocreatures/food/scarce",
+					"name": "treasure2:loot_tables/mocreatures/food/scarce",
 					"weight": 1
 				}
 			]
@@ -85,7 +85,7 @@
 				},
 				{
 					"type": "loot_table",
-					"name": "treasure2:mocreatures/tools/scarce",
+					"name": "treasure2:loot_tables/mocreatures/tools/scarce",
 					"weight": 1
 				}
 			]
@@ -118,7 +118,7 @@
 				},
 				{
 					"type": "loot_table",
-					"name": "treasure2:mocreatures/items/uncommon",
+					"name": "treasure2:loot_tables/mocreatures/items/uncommon",
 					"weight": 1
 				}
 			]
@@ -137,7 +137,7 @@
 				},
 				{
 					"type": "loot_table",
-					"name": "treasure2:mocreatures/armor/uncommon",
+					"name": "treasure2:loot_tables/mocreatures/armor/uncommon",
 					"weight": 1
 				}
 			]
@@ -156,7 +156,7 @@
 				},
 				{
 					"type": "loot_table",
-					"name": "treasure2:mocreatures/food/uncommon",
+					"name": "treasure2:loot_tables/mocreatures/food/uncommon",
 					"weight": 1
 				}
 			]
@@ -175,7 +175,7 @@
 				},
 				{
 					"type": "loot_table",
-					"name": "treasure2:mocreatures/tools/uncommon",
+					"name": "treasure2:loot_tables/mocreatures/tools/uncommon",
 					"weight": 1
 				}
 			]

@@ -441,19 +441,19 @@ public class TreasureBlocks {
 		pbs[2] = new AxisAlignedBB(0D, 0D, 0.9375D, 1D, 1D, 1D); // N
 		pbs[3] = new AxisAlignedBB(0D, 0.D, 0D, 0.0625D, 1D, 1D); // E
 		
-		PAINTING_BLOCKS_BRICKS = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_BRICKS_ID, Material.CLOTH)
+		PAINTING_BLOCKS_BRICKS = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_BRICKS_ID, Material.CLOTH, Rarity.EPIC)
 				.setBounds(pbs);
-		PAINTING_BLOCKS_COBBLESTONE = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_COBBLESTONE_ID, Material.CLOTH)
+		PAINTING_BLOCKS_COBBLESTONE = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_COBBLESTONE_ID, Material.CLOTH, Rarity.SCARCE)
 				.setBounds(pbs);
-		PAINTING_BLOCKS_DIRT = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_DIRT_ID, Material.CLOTH)
+		PAINTING_BLOCKS_DIRT = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_DIRT_ID, Material.CLOTH, Rarity.SCARCE)
 				.setBounds(pbs);
-		PAINTING_BLOCKS_LAVA = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_LAVA_ID, Material.CLOTH)
+		PAINTING_BLOCKS_LAVA = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_LAVA_ID, Material.CLOTH, Rarity.EPIC)
 				.setBounds(pbs);
-		PAINTING_BLOCKS_SAND = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_SAND_ID, Material.CLOTH)
+		PAINTING_BLOCKS_SAND = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_SAND_ID, Material.CLOTH, Rarity.RARE)
 				.setBounds(pbs);
-		PAINTING_BLOCKS_WATER = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_WATER_ID, Material.CLOTH)
+		PAINTING_BLOCKS_WATER = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_WATER_ID, Material.CLOTH, Rarity.SCARCE)
 				.setBounds(pbs);
-		PAINTING_BLOCKS_WOOD = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_WOOD_ID, Material.CLOTH)
+		PAINTING_BLOCKS_WOOD = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_WOOD_ID, Material.CLOTH, Rarity.RARE)
 				.setBounds(pbs);
 	}
 

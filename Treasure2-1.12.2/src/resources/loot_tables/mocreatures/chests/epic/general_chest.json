@@ -28,7 +28,7 @@
 				},
 				{
 					"type": "loot_table",
-					"name": "treasure2:mocreatures/items/epic",
+					"name": "treasure2:loot_tables/mocreatures/items/epic",
 					"weight": 1
 				}
 			]
@@ -100,7 +100,7 @@
 				},
 				{
 					"type": "loot_table",
-					"name": "treasure2:mocreatures/items/rare",
+					"name": "treasure2:loot_tables/mocreatures/items/rare",
 					"weight": 1
 				}
 			]
@@ -119,7 +119,7 @@
 				},
 				{
 					"type": "loot_table",
-					"name": "treasure2:mocreatures/armor/rare",
+					"name": "treasure2:loot_tables/mocreatures/armor/rare",
 					"weight": 1
 				}
 			]

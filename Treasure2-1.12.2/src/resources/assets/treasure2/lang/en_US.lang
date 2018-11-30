@@ -106,13 +106,13 @@ item.treasure2:wither_root_item.name=Wither Root
 item.treasure2:pilferers_lock_pick.name=Pilferer's Lock Pick
 item.treasure2:thiefs_lock_pick.name=Thief's Lock Pick
 
-item.treasure2:painting_blocks_bricks.name=1x1 Painting
-item.treasure2:painting_blocks_cobblestone.name=1x1 Painting
-item.treasure2:painting_blocks_dirt.name=1x1 Painting
-item.treasure2:painting_blocks_lava.name=1x1 Painting
-item.treasure2:painting_blocks_sand.name=1x1 Painting
-item.treasure2:painting_blocks_water.name=1x1 Painting
-item.treasure2:painting_blocks_wood.name=1x1 Painting
+item.treasure2:painting_blocks_bricks.name=Bricks by o2xygeno
+item.treasure2:painting_blocks_cobblestone.name=Cobblestone by o2xygeno
+item.treasure2:painting_blocks_dirt.name=Dirt by o2xygeno
+item.treasure2:painting_blocks_lava.name=Lava by o2xygeno
+item.treasure2:painting_blocks_sand.name=Sand by o2xygeno
+item.treasure2:painting_blocks_water.name=Water by o2xygeno
+item.treasure2:painting_blocks_wood.name=Wood by o2xygeno
 
 item.treasure2:eye_patch.name=Eye Patch
 item.treasure2:skull_sword.name=Skull Sword
@@ -152,8 +152,8 @@ tooltip.thiefs_lock_pick.specials=Opens COMMON (%s%%), UNCOMMON (%s%%) and SCARC
 tooltip.jewelled_key.specials=Opens any lock in GEMS category
 
 tooltip.painting.name=%s
-tooltip.painting.collection=%s
-tooltip.painting.issue=%s/%s
+tooltip.painting.collection=Collection: %s
+tooltip.painting.issue=Issue: %s/%s
 tooltip.painting.artist=by %s
 
 

@@ -28,7 +28,7 @@
 				},
 				{
 					"type": "loot_table",
-					"name": "treasure2:mocreatures/items/rare",
+					"name": "treasure2:loot_tables/mocreatures/items/rare",
 					"weight": 1
 				}
 			]
@@ -75,7 +75,7 @@
 				},
 				{
 					"type": "loot_table",
-					"name": "treasure2:mocreatures/items/scarce",
+					"name": "treasure2:loot_tables/mocreatures/items/scarce",
 					"weight": 1
 				}
 			]
@@ -94,7 +94,7 @@
 				},
 				{
 					"type": "loot_table",
-					"name": "treasure2:mocreatures/food/scarce",
+					"name": "treasure2:loot_tables/mocreatures/food/scarce",
 					"weight": 1
 				}
 			]

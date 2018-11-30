@@ -9,6 +9,7 @@ import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractPaintingBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -34,6 +35,7 @@ public class PaintingItem extends ModItem {
 	private String collectionIssue;
 	private String collectionSize;
 	private String artist;
+	private Rarity rarity;
 	
 	private Block paintingBlock;
 	
@@ -45,6 +47,18 @@ public class PaintingItem extends ModItem {
 	public PaintingItem(String modID, String name) {
 		setItemName(modID, name);
 		setCreativeTab(Treasure.TREASURE_TAB);
+		setRarity(Rarity.SCARCE);
+	}
+	
+	/**
+	 * 
+	 * @param modID
+	 * @param name
+	 * @param rarity
+	 */
+	public PaintingItem(String modID, String name, Rarity rarity) {
+		this(modID, name);
+		setRarity(rarity);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -53,9 +67,10 @@ public class PaintingItem extends ModItem {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		
 		// add all the painting info here
-		tooltip.add(I18n.translateToLocalFormatted("tooltip.painting.name", TextFormatting.WHITE + getPaintingName()));
+		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.rarity", TextFormatting.DARK_BLUE + getRarity().toString()));
+//		tooltip.add(I18n.translateToLocalFormatted("tooltip.painting.name", TextFormatting.WHITE + getPaintingName()));
 		tooltip.add(I18n.translateToLocalFormatted("tooltip.painting.collection", TextFormatting.GOLD +getCollectionName()));
-		tooltip.add(I18n.translateToLocalFormatted("tooltip.painting.artist", TextFormatting.DARK_AQUA + getArtist()));
+//		tooltip.add(I18n.translateToLocalFormatted("tooltip.painting.artist", TextFormatting.DARK_AQUA + getArtist()));
 		tooltip.add(I18n.translateToLocalFormatted("tooltip.painting.issue", getCollectionIssue(), getCollectionSize()));
 		
 	}
@@ -111,11 +126,10 @@ public class PaintingItem extends ModItem {
 	 */
 	public void placeBlock(World world, BlockPos pos, Block block, EntityPlayer player, ItemStack itemStack) {
 		// set the block
-//		Treasure.logger.debug("Placing painting into world @ {}", pos);
-		world.setBlockState(pos, block.getDefaultState());
-
-//		Treasure.logger.debug("Calling onBlockPlacedby.");
-		block.onBlockPlacedBy(world, pos, block.getDefaultState(), player, itemStack);
+		if (block.canPlaceBlockAt(world, pos)) {
+			world.setBlockState(pos, block.getDefaultState());
+			block.onBlockPlacedBy(world, pos, block.getDefaultState(), player, itemStack);
+		}
 	}
 
 	/**
@@ -206,5 +220,19 @@ public class PaintingItem extends ModItem {
 	public PaintingItem setArtist(String artist) {
 		this.artist = artist;
 		return this;
+	}
+
+	/**
+	 * @return the rarity
+	 */
+	public Rarity getRarity() {
+		return rarity;
+	}
+
+	/**
+	 * @param rarity the rarity to set
+	 */
+	public void setRarity(Rarity rarity) {
+		this.rarity = rarity;
 	}
 }

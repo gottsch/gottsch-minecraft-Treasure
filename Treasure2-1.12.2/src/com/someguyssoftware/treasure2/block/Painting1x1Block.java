@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.block;
 
+import com.someguyssoftware.treasure2.enums.Rarity;
+
 import net.minecraft.block.material.Material;
 
 /**
@@ -24,5 +26,16 @@ public class Painting1x1Block extends AbstractPaintingBlock {
 //			,
 //			String paintingName, String collectionName) {
 //		super(modID, name, material, paintingName, collectionName);
+	}
+	
+	/**
+	 * 
+	 * @param modID
+	 * @param name
+	 * @param material
+	 * @param rarity
+	 */
+	public Painting1x1Block(String modID, String name, Material material, Rarity rarity) {
+		super(modID, name, material, rarity);
 	}
 }

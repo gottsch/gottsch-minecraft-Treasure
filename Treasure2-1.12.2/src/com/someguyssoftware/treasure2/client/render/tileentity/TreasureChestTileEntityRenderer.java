@@ -81,17 +81,8 @@ public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<A
 		if (!(te instanceof AbstractTreasureChestTileEntity))
 			return; // should never happen
 
-		// TODO applyDestroyGlState(destroyStage)
-		// add the destory textures
+		// apply the destory gl state (if any)
 		applyDestroyGlState(destroyStage);
-		// if (destroyStage >= 0) {
-		// this.bindTexture(DESTROY_STAGES[destroyStage]);
-		// GlStateManager.matrixMode(5890);
-		// GlStateManager.pushMatrix();
-		// GlStateManager.scale(4.0F, 4.0F, 1.0F);
-		// GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
-		// GlStateManager.matrixMode(5888);
-		// }
 
 		// get the model
 		ITreasureChestModel model = getModel();
@@ -118,26 +109,17 @@ public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<A
 		// rotate block to the correct direction that it is facing.
 		GlStateManager.rotate((float) rotation, 0.0F, 1.0F, 0.0F);
 
-		// TODO updateModelLidRotation(te, partialTicks)
+		// update the lid rotation
 		updateModelLidRotation(te, partialTicks);
-//		float lidRotation = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
-//		lidRotation = 1.0F - lidRotation;
-//		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-//		model.getLid().rotateAngleX = -(lidRotation * (float) Math.PI / 2.0F);
 
+		// render the model
 		model.renderAll(te);
 
 		GlStateManager.popMatrix();
 		// end of rendering chest entity ////
 
-		// TODO popDestroy(destroyStage)
 		// pop the destroy stage matrix
 		popDestroyGlState(destroyStage);
-		// if (destroyStage >= 0) {
-		// GlStateManager.matrixMode(5890);
-		// GlStateManager.popMatrix();
-		// GlStateManager.matrixMode(5888);
-		// }
 
 		////////////// render the locks //////////////////////////////////////
 		if (!te.getLockStates().isEmpty()) {
