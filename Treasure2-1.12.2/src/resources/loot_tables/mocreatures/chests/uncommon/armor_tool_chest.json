@@ -82,7 +82,7 @@
                 },
                 {
                     "type": "loot_table",
-                    "name": "treasure2:loot_tables/mocreaturse/tools/uncommon",
+                    "name": "treasure2:loot_tables/mocreatures/tools/uncommon",
                     "weight": 1
                 }	
 			]

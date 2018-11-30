@@ -10,6 +10,7 @@ tile.treasure2:safe.name=Safe
 tile.treasure2:dread_pirate_chest.name=Dread Pirate Chest
 tile.treasure2:compressor_chest.name=Compressor Chest
 tile.treasure2:wither_chest.name=Wither Chest
+tile.treasure2:skull_chest.name=Skull Chest
 
 tile.treasure2:wood_mimic.name=Wood Mimic
 
@@ -105,6 +106,14 @@ item.treasure2:wither_root_item.name=Wither Root
 item.treasure2:pilferers_lock_pick.name=Pilferer's Lock Pick
 item.treasure2:thiefs_lock_pick.name=Thief's Lock Pick
 
+item.treasure2:painting_blocks_bricks.name=Bricks by o2xygeno
+item.treasure2:painting_blocks_cobblestone.name=Cobblestone by o2xygeno
+item.treasure2:painting_blocks_dirt.name=Dirt by o2xygeno
+item.treasure2:painting_blocks_lava.name=Lava by o2xygeno
+item.treasure2:painting_blocks_sand.name=Sand by o2xygeno
+item.treasure2:painting_blocks_water.name=Water by o2xygeno
+item.treasure2:painting_blocks_wood.name=Wood by o2xygeno
+
 item.treasure2:eye_patch.name=Eye Patch
 item.treasure2:skull_sword.name=Skull Sword
 item.treasure2:spanish_moss.name=Spanish Moss
@@ -142,6 +151,12 @@ tooltip.pilferers_lock_pick.specials=Opens COMMON (%s%%) and UNCOMMON (%s%%) loc
 tooltip.thiefs_lock_pick.specials=Opens COMMON (%s%%), UNCOMMON (%s%%) and SCARCE (%s%%) locks
 tooltip.jewelled_key.specials=Opens any lock in GEMS category
 
+tooltip.painting.name=%s
+tooltip.painting.collection=Collection: %s
+tooltip.painting.issue=Issue: %s/%s
+tooltip.painting.artist=by %s
+
+
 #gui
 display.wood_chest.name=Wood Chest
 display.crate_chest.name=Crate
@@ -154,3 +169,4 @@ display.safe.name=Safe
 display.dread_pirate_chest.name=Dread Pirate Chest
 display.compressor_chest.name=Compressor Chest
 display.wither_chest.name=Wither Chest
+display.skull_chest.name=Skull Chest

@@ -148,7 +148,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 //				InventoryPopulator pop = new InventoryPopulator();
 //				pop.populate(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), container);
 				Treasure.logger.debug("Generating loot from loot table for rarity {}", chestRarity);
-				List<ItemStack> stacks = lootTable.generateLootFromPools(random, TreasureLootTables.CONTEXT);
+//				List<ItemStack> stacks = lootTable.generateLootFromPools(random, TreasureLootTables.CONTEXT);
 //				Treasure.logger.debug("Generated loot:");
 //				for (ItemStack stack : stacks) {
 //					Treasure.logger.debug("item -> {}, size -> {}", stack.getDisplayName(), stack.getCount());
@@ -199,6 +199,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param rarity
 	 * @return
 	 */
+	@Override
 	public AbstractChestBlock  selectChest(final Random random, final Rarity rarity) {
 		List<Block> chestList = (List<Block>) TreasureBlocks.chests.get(rarity);
 		AbstractChestBlock chest = (AbstractChestBlock) chestList.get(RandomHelper.randomInt(random, 0, chestList.size()-1));	

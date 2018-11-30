@@ -12,6 +12,7 @@ import com.someguyssoftware.gottschcore.biome.BiomeHelper;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.Configs;
@@ -23,8 +24,10 @@ import com.someguyssoftware.treasure2.generator.chest.AbstractChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.DefaultChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.RareChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.UncommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.AirPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
@@ -55,6 +58,8 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	
 	// the chest generators
 	private Map<Rarity, AbstractChestGenerator> generators = new HashMap<>();
+	private Map<Rarity, RandomWeightedCollection<IChestGenerator>> gens = new HashMap<>();
+	
 	// TODO probably should be moved to AbstractChestGenerator
 	// the pit generators
 	public static Map<Pits, IPitGenerator> pitGenerators = new HashMap<>();
@@ -77,12 +82,26 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		for (Rarity rarity : Rarity.values()) {
 			chunksSinceLastRarityChest.put(rarity, 0);
 		}
+
 		// setup the chest  generators
 		generators.put(Rarity.COMMON, new CommonChestGenerator());
 		generators.put(Rarity.UNCOMMON, new UncommonChestGenerator());
 		generators.put(Rarity.SCARCE, new ScarceChestGenerator());
 		generators.put(Rarity.RARE, new RareChestGenerator());
 		generators.put(Rarity.EPIC, new EpicChestGenerator());
+				
+		gens.put(Rarity.COMMON, new RandomWeightedCollection<>());
+		gens.put(Rarity.UNCOMMON, new RandomWeightedCollection<>());
+		gens.put(Rarity.SCARCE, new RandomWeightedCollection<>());
+		gens.put(Rarity.RARE, new RandomWeightedCollection<>());
+		gens.put(Rarity.EPIC, new RandomWeightedCollection<>());
+		
+		gens.get(Rarity.COMMON).add(1, new CommonChestGenerator());
+		gens.get(Rarity.UNCOMMON).add(1, new UncommonChestGenerator());
+		gens.get(Rarity.SCARCE).add(75, new ScarceChestGenerator());
+		gens.get(Rarity.SCARCE).add(25, new SkullChestGenerator());
+		gens.get(Rarity.RARE).add(1, new RareChestGenerator());
+		gens.get(Rarity.EPIC).add(1, new EpicChestGenerator());
 		
 		// setup the pit generators
 		pitGenerators.put(Pits.SIMPLE_PIT, new SimplePitGenerator());
@@ -186,10 +205,11 @@ public class ChestWorldGenerator implements IWorldGenerator {
 //    			Integer i = chunksSinceLastRarityChest.get(rarity);
 //    			i = 0;
     			chunksSinceLastRarityChest.put(rarity, 0);
-    			
+ 			
     			// generate the chest/pit/chambers
 				Treasure.logger.debug("Attempting to generate pit/chest.");
-    			isGenerated = generators.get(rarity).generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
+				isGenerated = gens.get(rarity).next().generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
+//    			isGenerated = generators.get(rarity).generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
 
     			if (isGenerated) {
     				// add to registry
@@ -299,5 +319,19 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	 */
 	public void setGenerators(Map<Rarity, AbstractChestGenerator> generators) {
 		this.generators = generators;
+	}
+
+	/**
+	 * @return the gens
+	 */
+	public Map<Rarity, RandomWeightedCollection<IChestGenerator>> getGens() {
+		return gens;
+	}
+
+	/**
+	 * @param gens the gens to set
+	 */
+	public void setGens(Map<Rarity, RandomWeightedCollection<IChestGenerator>> gens) {
+		this.gens = gens;
 	}
 }

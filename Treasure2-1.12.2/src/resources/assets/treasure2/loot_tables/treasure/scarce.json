@@ -7,7 +7,7 @@
 				{
 					"entryName": "iron_key",
 					"type": "item",
-					"name": "treasure2:stone_key",
+					"name": "treasure2:iron_key",
 					"weight": 15,
 					"functions": [
 						{
@@ -17,7 +17,7 @@
 								"max": 2
 							}
 						}
-					]					
+					]
 				},
 				{
 					"entryName": "thiefs_lock_pick",
@@ -32,7 +32,7 @@
 								"max": 2
 							}
 						}
-					]					
+					]
 				},
 				{
 					"entryName": "gold_key",
@@ -47,7 +47,7 @@
 								"max": 2
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "spider_key",
@@ -66,7 +66,7 @@
 					"type": "item",
 					"name": "treasure2:emerald_key",
 					"weight": 10
-				}										
+				}
 			]
 		},
 		{
@@ -92,7 +92,7 @@
 					"entryName": "gold_coin",
 					"type": "item",
 					"name": "treasure2:gold_coin",
-					"weight":40,
+					"weight": 40,
 					"functions": [
 						{
 							"function": "set_count",
@@ -106,16 +106,52 @@
 				{
 					"entryName": "skull_sword",
 					"type": "item",
-					"name": "treasure2:gold_coin",
-					"weight":10,
+					"name": "treasure2:skull_sword",
+					"weight": 10,
 					"conditions": [
 						{
 							"condition": "random_chance",
 							"chance": 0.2
 						}
 					]
-				}								
+				},
+				{
+					"entryName": "painting_blocks_dirt",
+					"type": "item",
+					"name": "treasure2:painting_blocks_dirt",
+					"weight": 10,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.5
+						}
+					]
+				},
+				{
+					"entryName": "painting_blocks_cobblestone",
+					"type": "item",
+					"name": "treasure2:painting_blocks_cobblestone",
+					"weight": 10,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.5
+						}
+					]
+				},
+				{
+					"entryName": "painting_blocks_water",
+					"type": "item",
+					"name": "treasure2:painting_blocks_water",
+					"weight": 10,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.5
+						}
+					]
+				}
 			]
-		}		
+		}
 	]
 }

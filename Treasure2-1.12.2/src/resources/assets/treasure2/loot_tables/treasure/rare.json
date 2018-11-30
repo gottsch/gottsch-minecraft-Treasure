@@ -97,7 +97,7 @@
 				{
 					"entryName": "skull_sword",
 					"type": "item",
-					"name": "treasure2:gold_coin",
+					"name": "treasure2:skull_sword",
 					"weight":10,
 					"conditions": [
 						{
@@ -105,7 +105,31 @@
 							"chance": 0.30
 						}
 					]
-				}								
+				},
+				{
+					"entryName": "painting_blocks_sand",
+					"type": "item",
+					"name": "treasure2:painting_blocks_sand",
+					"weight": 10,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.4
+						}
+					]
+				},
+				{
+					"entryName": "painting_blocks_wood",
+					"type": "item",
+					"name": "treasure2:painting_blocks_wood",
+					"weight": 10,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.4
+						}
+					]
+				}												
 			]
 		}				
 	]

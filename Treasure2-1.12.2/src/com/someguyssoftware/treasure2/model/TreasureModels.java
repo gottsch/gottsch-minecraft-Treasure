@@ -32,6 +32,7 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.DREAD_PIRATE_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.COMPRESSOR_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_CHEST));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SKULL_CHEST));
 
 		// MIMICS
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WOOD_MIMIC));
@@ -123,6 +124,15 @@ public class TreasureModels {
 		// WEAPONS
 		registerItemModel(TreasureItems.SKULL_SWORD);
 		registerItemModel(TreasureItems.EYE_PATCH);
+		
+		// PAINTINGS
+		registerItemModel(TreasureItems.PAINTING_BLOCKS_BRICKS);
+		registerItemModel(TreasureItems.PAINTING_BLOCKS_COBBLESTONE);
+		registerItemModel(TreasureItems.PAINTING_BLOCKS_DIRT);
+		registerItemModel(TreasureItems.PAINTING_BLOCKS_LAVA);
+		registerItemModel(TreasureItems.PAINTING_BLOCKS_SAND);
+		registerItemModel(TreasureItems.PAINTING_BLOCKS_WATER);
+		registerItemModel(TreasureItems.PAINTING_BLOCKS_WOOD);
 		
 		// OTHER
 		registerItemModel(TreasureItems.SPANISH_MOSS);

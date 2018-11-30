@@ -31,6 +31,15 @@ public class TreasureLootConditionManager {
 	private static final Map<ResourceLocation, TreasureLootCondition.Serializer<?>> NAME_TO_SERIALIZER_MAP = Maps.<ResourceLocation, TreasureLootCondition.Serializer<?>>newHashMap();
 	private static final Map<Class<? extends TreasureLootCondition>, TreasureLootCondition.Serializer<?>> CLASS_TO_SERIALIZER_MAP = Maps.<Class<? extends TreasureLootCondition>, TreasureLootCondition.Serializer<?>>newHashMap();
 
+	static {
+		registerCondition(new RandomChance.Serializer());
+		registerCondition(new RandomChanceWithLooting.Serializer());
+		registerCondition(new EntityHasProperty.Serializer());
+		registerCondition(new KilledByPlayer.Serializer());
+		registerCondition(new EntityHasScore.Serializer());
+		registerCondition(new ModPresent.Serializer());
+	}
+	
 	public static <T extends TreasureLootCondition> void registerCondition(TreasureLootCondition.Serializer<? extends T> condition) {
 		ResourceLocation resourcelocation = condition.getLootTableLocation();
 		Class<T> oclass = (Class<T>) condition.getConditionClass();
@@ -86,14 +95,6 @@ public class TreasureLootConditionManager {
 		} else {
 			return serializer;
 		}
-	}
-
-	static {
-		registerCondition(new RandomChance.Serializer());
-		registerCondition(new RandomChanceWithLooting.Serializer());
-		registerCondition(new EntityHasProperty.Serializer());
-		registerCondition(new KilledByPlayer.Serializer());
-		registerCondition(new EntityHasScore.Serializer());
 	}
 
 	public static class Serializer implements JsonDeserializer<TreasureLootCondition>, JsonSerializer<TreasureLootCondition> {

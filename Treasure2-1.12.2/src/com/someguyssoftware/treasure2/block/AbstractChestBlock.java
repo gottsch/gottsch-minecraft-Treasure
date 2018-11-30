@@ -154,6 +154,11 @@ public abstract class AbstractChestBlock extends AbstractModContainerBlock imple
 		return false;
 	}
 
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return false;
+	}
+	
 	/**
 	 * Render using a TESR.
 	 */

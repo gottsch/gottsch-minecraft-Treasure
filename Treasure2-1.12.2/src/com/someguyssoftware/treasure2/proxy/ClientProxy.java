@@ -10,6 +10,7 @@ import com.someguyssoftware.treasure2.client.model.CrateChestModel;
 import com.someguyssoftware.treasure2.client.model.DreadPirateChestModel;
 import com.someguyssoftware.treasure2.client.model.MimicModel;
 import com.someguyssoftware.treasure2.client.model.SafeModel;
+import com.someguyssoftware.treasure2.client.model.SkullChestModel;
 import com.someguyssoftware.treasure2.client.model.StandardChestModel;
 import com.someguyssoftware.treasure2.client.model.StrongboxModel;
 import com.someguyssoftware.treasure2.client.model.WitherChestModel;
@@ -17,6 +18,7 @@ import com.someguyssoftware.treasure2.client.render.entity.MimicEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CompressorChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CrateChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.SafeTileEntityRenderer;
+import com.someguyssoftware.treasure2.client.render.tileentity.SkullChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.StrongboxTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.WitherChestTileEntityRenderer;
@@ -31,6 +33,7 @@ import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
+import com.someguyssoftware.treasure2.tileentity.SkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
@@ -41,8 +44,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 
 /**
@@ -117,6 +118,11 @@ public class ClientProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				WitherChestTileEntity.class,
 				new WitherChestTileEntityRenderer("wither-chest", new WitherChestModel()));
+
+		// skull chest
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				SkullChestTileEntity.class,
+				new SkullChestTileEntityRenderer("skull-chest", new SkullChestModel()));
 		
 		/*
 		 *  register the entity render handlers

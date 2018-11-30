@@ -42,31 +42,6 @@ import net.minecraft.world.World;
  *
  */
 public class TreasureChestBlock extends AbstractChestBlock {
-//	public static final PropertyEnum<EnumFacing> FACING = PropertyDirection.create("facing", EnumFacing.class);
-//	/*
-//	 *  the class of the tileEntityClass this BlockChest should use.
-//	 */
-//	private Class<?> tileEntityClass;
-//
-//	/*
-//	 * the concrete object of the tile entity
-//	 */
-//	private AbstractTreasureChestTileEntity tileEntity;
-//	
-//	/*
-//	 * the type of chest
-//	 */
-//	private TreasureChestType chestType;
-//
-//	/*
-//	 * the rarity of the chest
-//	 */
-//	private Rarity rarity;
-//	
-//	/*
-//	 * An array of AxisAlignedBB bounds for the bounding box
-//	 */
-//	AxisAlignedBB[] bounds = new AxisAlignedBB[4];
 
 	/*
 	 * The GUIID;
@@ -476,48 +451,6 @@ public class TreasureChestBlock extends AbstractChestBlock {
 			worldIn.removeTileEntity(pos);
 		}
 	}
-
-//	/**
-//	 * Convert the given metadata into a BlockState for this Block
-//	 */
-//	public IBlockState getStateFromMeta(int meta) {
-//		EnumFacing enumfacing = EnumFacing.getFront(meta);
-//
-//		if (enumfacing.getAxis() == EnumFacing.Axis.Y) {
-//			enumfacing = EnumFacing.NORTH;
-//		}
-//		return this.getDefaultState().withProperty(FACING, enumfacing);
-//	}
-//
-//	/**
-//	 * Convert the BlockState into the correct metadata value
-//	 */
-//	public int getMetaFromState(IBlockState state) {
-//		return ((EnumFacing)state.getValue(FACING)).getIndex();
-//	}
-//
-//	/**
-//	 * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
-//	 * blockstate.
-//	 */
-//	public IBlockState withRotation(IBlockState state, Rotation rot) {
-//		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
-//	}
-//
-//	/**
-//	 * Returns the blockstate with the given mirror of the passed blockstate. If inapplicable, returns the passed
-//	 * blockstate.
-//	 */
-//	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
-//		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
-//	}
-//	
-//	/**
-//	 * 
-//	 */
-//	protected BlockStateContainer createBlockState() {
-//		return new BlockStateContainer(this, new IProperty[] {FACING});
-//	}
 
 	/**
 	 * Handled by breakBlock()

@@ -93,6 +93,48 @@
 							}
 						}
 					]							
+				},
+				{
+					"entryName": "titanium_block",
+					"type": "item",
+					"name": "sgs_metals:titanium_block",
+					"weight": 20,
+					"conditions": [
+						{
+							"condition": "treasure2:mod_present",
+							"modid": "sgs_metals"
+						}
+					],
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]						
+				},
+				{
+					"entryName": "autium_block",
+					"type": "item",
+					"name": "sgs_metals:autium_block",
+					"weight": 20,
+					"conditions": [
+						{
+							"condition": "treasure2:mod_present",
+							"modid": "sgs_metals"
+						}
+					],
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]						
 				}
 			]
 		}

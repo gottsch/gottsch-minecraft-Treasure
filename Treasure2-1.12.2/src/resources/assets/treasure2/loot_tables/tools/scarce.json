@@ -16,6 +16,18 @@
 					]					
 				},
 				{
+					"entryName": "steel_sword",
+					"type": "item",
+					"name": "sgs_metals:steel_sword",
+					"weight": 25,
+					"conditions": [
+						{
+							"condition": "treasure2:mod_present",
+							"modid": "sgs_metals"
+						}
+					]		
+				},				
+				{
 					"entryName": "bow",
 					"type": "item",
 					"name": "minecraft:bow",
@@ -48,6 +60,30 @@
 						}
 					]	
 				},
+				{
+					"entryName": "steel_pickaxe",
+					"type": "item",
+					"name": "sgs_metals:steel_pickaxe",
+					"weight": 25,
+					"conditions": [
+						{
+							"condition": "treasure2:mod_present",
+							"modid": "sgs_metals"
+						}
+					]
+				},
+				{
+					"entryName": "steel_axe",
+					"type": "item",
+					"name": "sgs_metals:steel_axe",
+					"weight": 25,
+						"conditions": [
+						{
+							"condition": "treasure2:mod_present",
+							"modid": "sgs_metals"
+						}
+					]
+				},				
 				{
 					"entryName": "diamond_sword",
 					"type": "item",
