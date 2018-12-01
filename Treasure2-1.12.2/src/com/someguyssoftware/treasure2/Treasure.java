@@ -23,7 +23,7 @@ import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
-import com.someguyssoftware.treasure2.command.TreasureChestCommand;
+import com.someguyssoftware.treasure2.command.SpawnChestCommand;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
@@ -78,7 +78,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.2.0";
+	protected static final String VERSION = "1.3.0";
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
 	private static final String VERSION_URL = "";
@@ -164,7 +164,7 @@ public class Treasure extends AbstractMod {
 		 * FOR DEBUGGING ONLY
 		 *  register additional commands
 		 */
-    	event.registerServerCommand(new TreasureChestCommand());
+    	event.registerServerCommand(new SpawnChestCommand());
     	event.registerServerCommand(new SpawnPitCommand());
     	event.registerServerCommand(new SpawnPitOnlyCommand());
     	event.registerServerCommand(new SpawnWellCommand());
