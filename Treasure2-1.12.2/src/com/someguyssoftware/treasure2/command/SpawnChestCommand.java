@@ -36,7 +36,7 @@ import net.minecraft.world.storage.loot.LootTable;
  * @author Mark Gottschling on Feb 10, 2017
  *
  */
-public class TreasureChestCommand extends CommandBase {
+public class SpawnChestCommand extends CommandBase {
 
 	@Override
 	public String getName() {
