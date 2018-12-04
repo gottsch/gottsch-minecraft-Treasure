@@ -19,4 +19,12 @@ public class WitherChestTileEntity extends AbstractTreasureChestTileEntity {
 		super();
 		setCustomName(I18n.translateToLocal("display.wither_chest.name"));
 	}
+	
+	/**
+	 * @return the numberOfSlots
+	 */
+	@Override
+	public int getNumberOfSlots() {
+		return 42;
+	}
 }
