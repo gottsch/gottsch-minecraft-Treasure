@@ -11,6 +11,7 @@ tile.treasure2:dread_pirate_chest.name=Dread Pirate Chest
 tile.treasure2:compressor_chest.name=Compressor Chest
 tile.treasure2:wither_chest.name=Wither Chest
 tile.treasure2:skull_chest.name=Skull Chest
+tile.treasure2:skull_chest.name=Golden Skull Chest
 
 tile.treasure2:wood_mimic.name=Wood Mimic
 
@@ -170,3 +171,4 @@ display.dread_pirate_chest.name=Dread Pirate Chest
 display.compressor_chest.name=Compressor Chest
 display.wither_chest.name=Wither Chest
 display.skull_chest.name=Skull Chest
+display.skull_chest.name=Golden Skull Chest

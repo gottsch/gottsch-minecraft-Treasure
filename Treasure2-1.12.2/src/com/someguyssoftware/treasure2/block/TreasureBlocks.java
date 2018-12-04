@@ -27,6 +27,7 @@ import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.DreadPirateChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.GoldSkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
@@ -69,6 +70,7 @@ public class TreasureBlocks {
 	public static final Block WITHER_CHEST;
 	public static final Block WITHER_CHEST_TOP;
 	public static final Block SKULL_CHEST;
+	public static final Block GOLD_SKULL_CHEST;
 	
 	// MIMIC CHESTS
 	public static final Block WOOD_MIMIC;
@@ -285,6 +287,7 @@ public class TreasureBlocks {
 				WitherChestTileEntity.class,
 				TreasureChestTypes.ARMOIRE, 
 				Rarity.SCARCE)
+				.setChestGuiID(GuiHandler.WITHER_CHEST_GUIID)
 				.setBounds(witherChestBounds)
 				.setHardness(2.5F);
 		
@@ -302,6 +305,16 @@ public class TreasureBlocks {
 				Treasure.MODID,
 				TreasureConfig.SKULL_CHEST_ID,
 				SkullChestTileEntity.class,
+				TreasureChestTypes.SKULL,
+				Rarity.SCARCE)
+				.setChestGuiID(GuiHandler.SKULL_CHEST_GUIID)
+				.setBounds(skullChestBounds)
+				.setHardness(3.0F);
+
+		GOLD_SKULL_CHEST = new TreasureChestBlock(
+				Treasure.MODID,
+				TreasureConfig.GOLD_SKULL_CHEST_ID,
+				GoldSkullChestTileEntity.class,
 				TreasureChestTypes.SKULL,
 				Rarity.SCARCE)
 				.setChestGuiID(GuiHandler.SKULL_CHEST_GUIID)
@@ -543,6 +556,7 @@ public class TreasureBlocks {
 			// register speciality chests separately (so they aren't in the rarity map)
 			registry.register(WITHER_CHEST);
 			registry.register(SKULL_CHEST);
+			registry.register(GOLD_SKULL_CHEST);
 
 			// map the block by rarity
 			for (Block block : blocks) {
@@ -574,6 +588,7 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(COMPRESSOR_CHEST),
 					new TreasureChestItemBlock(WITHER_CHEST),
 					new TreasureChestItemBlock(SKULL_CHEST),
+					new TreasureChestItemBlock(GOLD_SKULL_CHEST),
 					new MimicChestItemBlock(WOOD_MIMIC),
 					
 					// TODO update with GravestonIetmBlock
@@ -643,6 +658,7 @@ public class TreasureBlocks {
 			GameRegistry.registerTileEntity(CompressorChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.COMPRESSOR_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(WitherChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WITHER_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(SkullChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.SKULL_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(GoldSkullChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.GOLD_SKULL_CHEST_TE_ID));
 
 		}	
 	}

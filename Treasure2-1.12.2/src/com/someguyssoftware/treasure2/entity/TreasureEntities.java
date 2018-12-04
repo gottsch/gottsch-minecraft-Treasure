@@ -37,7 +37,7 @@ public class TreasureEntities {
 			// register the entities
 			EntityEntry entry = EntityEntryBuilder.create()
 				    .entity(WoodMimicEntity.class)
-				    .id(new ResourceLocation("wood_mimic"), WoodMimicEntity.MOB_ID)
+				    .id(new ResourceLocation("treasure2:wood_mimic"), WoodMimicEntity.MOB_ID)
 				    .name("wood_mimic")
 				    .egg(0xFFFFFF, 0xAAAAAA)
 				    .tracker(64, 20, false)

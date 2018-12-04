@@ -107,6 +107,18 @@
 					]
 				},
 				{
+					"entryName": "eye_patch",
+					"type": "item",
+					"name": "treasure2:eye_patch",
+					"weight": 10,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.30
+						}
+					]
+				},				
+				{
 					"entryName": "painting_blocks_sand",
 					"type": "item",
 					"name": "treasure2:painting_blocks_sand",
