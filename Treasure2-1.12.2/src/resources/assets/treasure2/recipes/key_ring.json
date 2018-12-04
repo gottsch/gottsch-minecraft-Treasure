@@ -9,9 +9,17 @@
 	"X": {
 		"item": "minecraft:iron_ingot"
 	},
-	"K": {
-		"item": "treasure2:wood_key"
-	}
+	"K": [
+		{
+			"item": "treasure2:wood_key"
+		},
+		{
+		"item": "treasure2:stone_key"
+		},
+		{
+			"item": "treasure2:iron_key"
+		}
+	]
   },
   "result": {
     "item": "treasure2:key_ring",
