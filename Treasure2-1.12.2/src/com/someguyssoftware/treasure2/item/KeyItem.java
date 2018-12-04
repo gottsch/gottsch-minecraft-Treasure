@@ -88,7 +88,8 @@ public class KeyItem extends ModItem {
 		setDamageable(true);
 		setCraftable(false);
 		setMaxDamage(25);
-		setSuccessProbability(90D);		
+		setSuccessProbability(90D);	
+		setMaxStackSize(1); // 12/3/2018: set to max 1 because keys are damaged and don't stack well.
 	}
 
 	/**
