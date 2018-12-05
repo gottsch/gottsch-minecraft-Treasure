@@ -11,7 +11,7 @@ tile.treasure2:dread_pirate_chest.name=Dread Pirate Chest
 tile.treasure2:compressor_chest.name=Compressor Chest
 tile.treasure2:wither_chest.name=Wither Chest
 tile.treasure2:skull_chest.name=Skull Chest
-tile.treasure2:skull_chest.name=Golden Skull Chest
+tile.treasure2:gold_skull_chest.name=Golden Skull Chest
 
 tile.treasure2:wood_mimic.name=Wood Mimic
 
@@ -69,6 +69,10 @@ tile.treasure2:high_poison_fog.name=High Poison Fog
 tile.treasure2:med_poison_fog.name=Medium Poison Fog
 tile.treasure2:low_poison_fog.name=Low Poison Fog
 
+#ores
+tile.treasure2:sapphire_ore.name=Sapphire Ore
+tile.treasure2:ruby_ore.name=Ruby Ore
+
 #other
 tile.treasure2:spanish_moss.name=Spanish Moss
 
@@ -118,6 +122,8 @@ item.treasure2:painting_blocks_wood.name=Wood by o2xygeno
 item.treasure2:eye_patch.name=Eye Patch
 item.treasure2:skull_sword.name=Skull Sword
 item.treasure2:spanish_moss.name=Spanish Moss
+item.treasure2:sapphire.name=Sapphire
+item.treasure2:ruby.name=Ruby
 item.treasure2:treasure_tool.name=Treasure Tool
 
 #entities
@@ -171,4 +177,6 @@ display.dread_pirate_chest.name=Dread Pirate Chest
 display.compressor_chest.name=Compressor Chest
 display.wither_chest.name=Wither Chest
 display.skull_chest.name=Skull Chest
-display.skull_chest.name=Golden Skull Chest
+display.gold_skull_chest.name=Golden Skull Chest
+display.gold_skull_chest.name=Whats up?
+
