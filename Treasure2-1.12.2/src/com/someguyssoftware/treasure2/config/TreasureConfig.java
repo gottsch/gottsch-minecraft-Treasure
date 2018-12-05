@@ -147,6 +147,12 @@ public class TreasureConfig extends AbstractConfig {
 	
 	public static final String WITHER_PLANKS_ID = "wither_planks";
 	
+	public static final String SAPPHIRE_ORE_ID = "sapphire";
+	public static final String SAPPHIRE_ID = "sapphire";
+
+	public static final String RUBY_ORE_ID = "ruby_ore";
+	public static final String RUBY_ID = "ruby";
+	
 	public static final String TREASURE_TOOL_ITEM_ID = "treasure_tool";
 	
 	// TEs
@@ -167,8 +173,7 @@ public class TreasureConfig extends AbstractConfig {
 	/*
 	 * mod settings
 	 */
-	public static final String MODS_FOLDER = "mods";
-	
+	public static final String MODS_FOLDER = "mods";	
 	
 	public static String treasureFolder;
 	public static boolean enableKeyBreaks = true;

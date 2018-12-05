@@ -84,6 +84,10 @@ public class TreasureModels {
 //		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_ROOT));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_PLANKS));
 		
+		// ORES/GEMS
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SAPPHIRE_ORE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.RUBY_ORE));
+		
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);
 		registerItemModel(TreasureItems.SILVER_COIN);
@@ -136,6 +140,8 @@ public class TreasureModels {
 		
 		// OTHER
 		registerItemModel(TreasureItems.SPANISH_MOSS);
+		registerItemModel(TreasureItems.SAPPHIRE);
+		registerItemModel(TreasureItems.RUBY);
 		registerItemModel(TreasureItems.TREASURE_TOOL);
 		
 //		// variants

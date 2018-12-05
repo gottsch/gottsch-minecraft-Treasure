@@ -108,6 +108,8 @@ public class TreasureItems {
 	// other
 	public static Item SPANISH_MOSS;
 	public static Item TREASURE_TOOL;
+	public static Item SAPPHIRE;
+	public static Item RUBY;
     	
 	/*
 	 * Materials
@@ -344,6 +346,12 @@ public class TreasureItems {
 		PAINTING_BLOCKS_LAVA = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_LAVA_ID, Rarity.EPIC)
 				.setPaintingName("Lava").setCollectionName("Blocks").setCollectionIssue("7").setCollectionSize("7").setArtist("o2xygeno");
 
+		SAPPHIRE = new ModItem()
+				.setItemName(Treasure.MODID, TreasureConfig.SAPPHIRE_ID)
+				.setCreativeTab(Treasure.TREASURE_TAB);
+		RUBY = new ModItem()
+				.setItemName(Treasure.MODID, TreasureConfig.RUBY_ID)
+				.setCreativeTab(Treasure.TREASURE_TAB);
 	}
 	
 	/**
@@ -420,7 +428,9 @@ public class TreasureItems {
 					PAINTING_BLOCKS_LAVA,
 					PAINTING_BLOCKS_SAND,
 					PAINTING_BLOCKS_WATER,
-					PAINTING_BLOCKS_WOOD
+					PAINTING_BLOCKS_WOOD,
+					SAPPHIRE,
+					RUBY
 			};
 			registry.registerAll(items);		
 		}
