@@ -133,6 +133,9 @@ public class TreasureBlocks {
 	public static Map<FogHeight,FogBlock> witherFogMap = new HashMap<>();
 	public static Map<FogHeight,FogBlock> poisonFogMap = new HashMap<>();
 	
+	public static final OreBlock RUBY_ORE;
+	public static final OreBlock SAPPHIRE_ORE;
+	
 	public static final Block WITHER_LOG;
 	public static final Block WITHER_BRANCH;
 	public static final Block WITHER_ROOT;
@@ -316,7 +319,7 @@ public class TreasureBlocks {
 				TreasureConfig.GOLD_SKULL_CHEST_ID,
 				GoldSkullChestTileEntity.class,
 				TreasureChestTypes.SKULL,
-				Rarity.SCARCE)
+				Rarity.RARE)
 				.setChestGuiID(GuiHandler.SKULL_CHEST_GUIID)
 				.setBounds(skullChestBounds)
 				.setHardness(3.0F);
@@ -437,6 +440,10 @@ public class TreasureBlocks {
 		poisonFogMap.put(FogHeight.MEDIUM_FOG, TreasureBlocks.MED_POISON_FOG);
 		poisonFogMap.put(FogHeight.LOW_FOG, TreasureBlocks.LOW_POISON_FOG);
 		
+		// ORES/GEMS
+		SAPPHIRE_ORE = new OreBlock(Treasure.MODID, TreasureConfig.SAPPHIRE_ORE_ID, Material.ROCK);
+		RUBY_ORE = new OreBlock(Treasure.MODID, TreasureConfig.RUBY_ORE_ID, Material.ROCK);
+		
 		// other
 		WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.WISHING_WELL_BLOCK_ID, Material.ROCK);
 		WITHER_LOG = new WitherLogBlock(Treasure.MODID, TreasureConfig.WITHER_LOG_ID);
@@ -550,7 +557,9 @@ public class TreasureBlocks {
 					PAINTING_BLOCKS_LAVA,
 					PAINTING_BLOCKS_SAND,
 					PAINTING_BLOCKS_WATER,
-					PAINTING_BLOCKS_WOOD
+					PAINTING_BLOCKS_WOOD,
+					SAPPHIRE_ORE,
+					RUBY_ORE
 			};
 			registry.registerAll(blocks);	
 			// register speciality chests separately (so they aren't in the rarity map)
@@ -630,7 +639,9 @@ public class TreasureBlocks {
 					new ItemBlock(WITHER_LOG),
 					new ItemBlock(WITHER_BROKEN_LOG),
 					new ItemBlock(WITHER_LOG_SOUL),
-					new ItemBlock(WITHER_PLANKS)
+					new ItemBlock(WITHER_PLANKS),
+					new ItemBlock(SAPPHIRE_ORE),
+					new ItemBlock(RUBY_ORE)
 			};
 
 			for (final ItemBlock item : items) {

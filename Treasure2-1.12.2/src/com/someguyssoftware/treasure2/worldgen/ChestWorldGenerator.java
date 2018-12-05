@@ -22,8 +22,8 @@ import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.chest.AbstractChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
-import com.someguyssoftware.treasure2.generator.chest.DefaultChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.RareChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
@@ -100,7 +100,8 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		gens.get(Rarity.UNCOMMON).add(1, new UncommonChestGenerator());
 		gens.get(Rarity.SCARCE).add(75, new ScarceChestGenerator());
 		gens.get(Rarity.SCARCE).add(25, new SkullChestGenerator());
-		gens.get(Rarity.RARE).add(1, new RareChestGenerator());
+		gens.get(Rarity.RARE).add(85, new RareChestGenerator());
+		gens.get(Rarity.RARE).add(15, new GoldSkullChestGenerator());
 		gens.get(Rarity.EPIC).add(1, new EpicChestGenerator());
 		
 		// setup the pit generators
