@@ -33,6 +33,7 @@ import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
@@ -184,18 +185,17 @@ public class Treasure extends AbstractMod {
 		if (!getConfig().isModEnabled()) return;
 		
 		super.init(event);
-		
-		// register custom loot conditions
-//		TreasureLootConditionManager.registerCondition(new ModPresent.Serializer());
-		
+
 		// register world generators
 		worldGenerators.put("chest", new ChestWorldGenerator());
 		worldGenerators.put("well", new WellWorldGenerator());
 		worldGenerators.put("witherTree", new WitherTreeWorldGenerator());
+		worldGenerators.put("gem", new GemOreWorldGenerator());
 		int genWeight = 0;
 		for (Entry<String, IWorldGenerator> gen : worldGenerators.entrySet()) {
 			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);
 		}
+
 	}
 	
 	/**

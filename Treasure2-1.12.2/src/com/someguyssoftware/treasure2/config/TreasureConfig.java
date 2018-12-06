@@ -147,7 +147,7 @@ public class TreasureConfig extends AbstractConfig {
 	
 	public static final String WITHER_PLANKS_ID = "wither_planks";
 	
-	public static final String SAPPHIRE_ORE_ID = "sapphire";
+	public static final String SAPPHIRE_ORE_ID = "sapphire_ore";
 	public static final String SAPPHIRE_ID = "sapphire";
 
 	public static final String RUBY_ORE_ID = "ruby_ore";
@@ -204,6 +204,19 @@ public class TreasureConfig extends AbstractConfig {
 	public static double witherBranchItemGenProbability;
 	public static double witherRootItemGenProbability;
 	
+	// ore properties
+	public static int minChunksPerGemOre;
+	public static double sapphireGenProbability;
+	public static int sapphireOreVeinsPerChunk;
+	public static int sapphireOreMaxY;
+	public static int sapphireOreMinY;
+	public static int sapphireOreVeinSize;
+	public static double rubyGenProbability;
+	public static int rubyOreVeinsPerChunk;
+	public static int rubyOreMaxY;
+	public static int rubyOreMinY;
+	public static int rubyOreVeinSize;	
+	
 	// TODO add wells properties
 	
 	// TODO add wandering antiquities peddler properties
@@ -217,6 +230,8 @@ public class TreasureConfig extends AbstractConfig {
 	// foreign mod enablements
 	public static String[] enableForeignModIDs;
 	public static String[] availableForeignModLootTables;
+
+
 			
 	/**
 	 * @param mod
@@ -245,7 +260,10 @@ public class TreasureConfig extends AbstractConfig {
         enablePoisonFog = config.getBoolean("enablePoisonFog", "03-mod", true, "Enables/Disable whether a poison fog is generated (ex. around wither trees)");
         enableLockDrops = config.getBoolean("enableLockDrops", "03-mod", true, "Enables/Disable whether a Lock item is dropped when unlocked by Key item.");
 //        enableMoCreatures = config.getBoolean("enableMoCreatures", "03-mod", false, "Enables/Disable whether MoCreatures mod is installed and it's items can be used in loot tables.");
-
+        // foreign mod enablements
+        enableForeignModIDs = config.getStringList("enableForeignModIDs", "03-mod", new String[]{"mocreatures"}, "Add mod's MODID to this list to enable custom loot tables for a mod.");
+        availableForeignModLootTables = config.getStringList("availableForeignModLootTables", "03-mod", new String[]{"mocreatures"}, "A list of mods that have prebuilt loot tables available. Note: used for informational purposes only.");
+        
         
         // white/black lists
         config.setCategoryComment("04-gen", "World generation properties.");    
@@ -268,9 +286,18 @@ public class TreasureConfig extends AbstractConfig {
         witherRootItemGenProbability = config.getFloat("witherRootGenProbability", "04-gen", 50.0F, 0.0F, 100.0F, "");
         witherBranchItemGenProbability = config.getFloat("witherBranchGenProbability", "04-gen", 50.0F, 0.0F, 100.0F, "");
         
-        // foreign mod enablements
-        enableForeignModIDs = config.getStringList("enableForeignModIDs", "04-gen", new String[]{"mocreatures"}, "Add mod's MODID to this list to enable custom loot tables for a mod.");
-        availableForeignModLootTables = config.getStringList("availableForeignModLootTables", "04-gen", new String[]{"mocreatures"}, "A list of mods that have prebuilt loot tables available. Note: used for informational purposes only.");
+        // gems ores
+        minChunksPerGemOre = config.getInt("minChunksPerGemOre", "04-gen", 1, 1, 32000, "");
+        sapphireGenProbability = config.getFloat("sapphireGenProbability", "04-gen", 65.0F, 0.0F, 100.0F, "");
+        sapphireOreMinY = config.getInt("sapphireOreMinY", "04-gen", 5, 1, 255, "");
+        sapphireOreMaxY = config.getInt("sapphireOreMaxY", "04-gen", 17, 1, 255, "");
+        sapphireOreVeinsPerChunk = config.getInt("sapphireOreVeinsPerChunk", "04-gen", 1, 1, 20, "");
+        sapphireOreVeinSize = config.getInt("sapphireOreVeinsSize", "04-gen", 3, 1, 20, "");
+        rubyGenProbability = config.getFloat("rubyGenProbability", "04-gen", 65.0F, 0.0F, 100.0F, "");
+        rubyOreVeinsPerChunk = config.getInt("rubyOreVeinsPerChunk", "04-gen", 1, 1, 20, "");
+        rubyOreMinY = config.getInt("rubyOreMinY", "04-gen", 5, 1, 255, "");
+        rubyOreMaxY = config.getInt("rubyOreMaxY", "04-gen", 17, 1, 255, "");
+        sapphireOreVeinSize = config.getInt("rubyOreVeinsSize", "04-gen", 3, 1, 20, "");
         
         // the the default values
        if(config.hasChanged()) {
