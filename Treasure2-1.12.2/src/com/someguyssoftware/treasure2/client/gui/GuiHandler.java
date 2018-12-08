@@ -161,7 +161,7 @@ public class GuiHandler implements IGuiHandler {
 				// create inventory from item
 				IInventory inventory = new KeyRingInventory(keyRingItem);
 				// open the container
-				return new KeyRingGui(player.inventory, inventory);
+				return new KeyRingGui(player.inventory, inventory, keyRingItem);
 			default: return null;
 		}
 		return null;
