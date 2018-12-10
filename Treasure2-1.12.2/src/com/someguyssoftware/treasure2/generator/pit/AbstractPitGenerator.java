@@ -12,6 +12,9 @@ import com.someguyssoftware.treasure2.generator.GenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
@@ -224,6 +227,26 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 			GenUtil.replaceWithBlockState(world, coords.add(2, 0, 1), blockState);
 		}
 		return coords.add(0, 1, 0);
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param spawnCoords
+	 * @param mob
+	 */
+	public void spawnMob(World world, ICoords spawnCoords, String mobName) {
+		EntityMob mob = null;
+		switch (mobName) {
+		case "zombie":
+			mob = new EntityZombie(world);
+			break;
+		case "skeleton":
+			mob = new EntitySkeleton(world);
+			break;
+		}
+    	mob.setLocationAndAngles((double)spawnCoords.getX() + 0.5D,  (double)spawnCoords.getY(), (double)spawnCoords.getZ() + 0.5D, 0.0F, 0.0F);
+    	world.spawnEntity(mob);
 	}
 	
 	/**
