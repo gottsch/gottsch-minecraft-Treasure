@@ -117,6 +117,18 @@
 							"chance": 0.30
 						}
 					]
+				},		
+				{
+					"entryName": "sapphire",
+					"type": "item",
+					"name": "treasure2:sapphire",
+					"weight": 10
+				},	
+				{
+					"entryName": "ruby",
+					"type": "item",
+					"name": "treasure2:ruby",
+					"weight": 10
 				},				
 				{
 					"entryName": "painting_blocks_sand",

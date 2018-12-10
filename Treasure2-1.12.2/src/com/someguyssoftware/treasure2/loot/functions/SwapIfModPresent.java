@@ -9,6 +9,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.someguyssoftware.gottschcore.item.util.ItemUtil;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.loot.TreasureLootContext;
 import com.someguyssoftware.treasure2.loot.conditions.ModPresent;
 import com.someguyssoftware.treasure2.loot.conditions.TreasureLootCondition;
@@ -26,18 +27,18 @@ import net.minecraft.world.storage.loot.RandomValueRange;
  */
 public class SwapIfModPresent extends TreasureLootFunction {
 	private final String modID;
-	private final String itemID;
+	private final String name;
 
 	/**
 	 * 
 	 * @param conditionsIn
 	 * @param modID
-	 * @param itemID
+	 * @param swapName
 	 */
-	public SwapIfModPresent(TreasureLootCondition[] conditionsIn, String itemID, String modID) {
+	public SwapIfModPresent(TreasureLootCondition[] conditionsIn, String name, String modID) {
 		super(conditionsIn);
 		this.modID = modID;
-		this.itemID = itemID;
+		this.name = name;
 	}
 
 	/**
@@ -48,8 +49,10 @@ public class SwapIfModPresent extends TreasureLootFunction {
 		
 		// if ModPresent then return the alternate item
 		ItemStack newStack = stack;
+		Treasure.logger.debug("Is mod present -> {}, {}", this.modID, mp.testCondition(rand, context));
 		if (mp.testCondition(rand, context)) {
-			newStack = new ItemStack(ItemUtil.getItemFromName(itemID));
+			newStack = new ItemStack(ItemUtil.getItemFromName(name));
+			Treasure.logger.debug("swap item -> {}", newStack.getItem().getRegistryName());
 		}
 		return newStack;
 	}
@@ -61,11 +64,14 @@ public class SwapIfModPresent extends TreasureLootFunction {
 	 */
 	public static class Serializer extends TreasureLootFunction.Serializer<SwapIfModPresent> {
 		protected Serializer() {
-			super(new ResourceLocation("treasure2:swao_if_mod_present"), SwapIfModPresent.class);
+			super(new ResourceLocation("treasure2:swap_if_mod_present"), SwapIfModPresent.class);
 		}
 
+		/**
+		 * 
+		 */
 		public void serialize(JsonObject object, SwapIfModPresent functionClazz, JsonSerializationContext serializationContext) {
-			object.add("itemid", serializationContext.serialize(String.valueOf(functionClazz.itemID)));
+			object.add("name", serializationContext.serialize(String.valueOf(functionClazz.name)));
 			object.add("modid", serializationContext.serialize(String.valueOf(functionClazz.modID)));
 		}
 
@@ -73,7 +79,8 @@ public class SwapIfModPresent extends TreasureLootFunction {
 		 * 
 		 */
 		public SwapIfModPresent deserialize(JsonObject object, JsonDeserializationContext deserializationContext, TreasureLootCondition[] conditionsIn) {
-			return new SwapIfModPresent(conditionsIn, (String) JsonUtils.deserializeClass(object, "itemid", deserializationContext, String.class),
+			return new SwapIfModPresent(conditionsIn, 
+					(String) JsonUtils.deserializeClass(object, "name", deserializationContext, String.class),
 					(String) JsonUtils.deserializeClass(object, "modid", deserializationContext, String.class));
 		}
 	}

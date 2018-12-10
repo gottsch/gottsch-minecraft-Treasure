@@ -4,7 +4,7 @@
   "pattern": [
 	" KT",
 	" D ",
-	" S "
+	" R "
   ],
   "key": {
     "T": {
@@ -16,12 +16,12 @@
 	"D": {
 		"item": "minecraft:glowstone_dust"
 	},
-	"S": {
-		"item": "treasure2:sapphire"
+	"R": {
+		"item": "treasure2:ruby"
 	}
   },
   "result": {
-    "item": "treasure2:sapphire_key",
+    "item": "treasure2:ruby_key",
     "count": 1
   }
 }
