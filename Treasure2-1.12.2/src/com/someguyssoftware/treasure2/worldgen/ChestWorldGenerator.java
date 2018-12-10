@@ -30,7 +30,9 @@ import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.UncommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.AirPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.BigBottomMobTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.LavaSideTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.LavaTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.MobTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
@@ -110,6 +112,8 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		pitGenerators.put(Pits.AIR_PIT,  new AirPitGenerator());
 		pitGenerators.put(Pits.LAVA_TRAP_PIT, new LavaTrapPitGenerator());
 		pitGenerators.put(Pits.MOB_TRAP_PIT, new MobTrapPitGenerator());
+		pitGenerators.put(Pits.LAVA_SIDE_TRAP_PIT, new LavaSideTrapPitGenerator());
+		pitGenerators.put(Pits.BIG_BOTTOM_MOB_TRAP_PIT, new BigBottomMobTrapPitGenerator());
 	}
 
 	/**
