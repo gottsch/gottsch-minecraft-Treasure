@@ -101,7 +101,7 @@ public class GemOreWorldGenerator implements IWorldGenerator {
 			}
 
 			if (!RandomHelper.checkProbability(random, prob)) {
-				Treasure.logger.debug("Gem Ore vein does not meet generate probability.");
+//				Treasure.logger.debug("Gem Ore vein does not meet generate probability.");
 				return;
 			}
 

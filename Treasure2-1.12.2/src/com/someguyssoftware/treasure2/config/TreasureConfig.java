@@ -261,10 +261,9 @@ public class TreasureConfig extends AbstractConfig {
         enableLockDrops = config.getBoolean("enableLockDrops", "03-mod", true, "Enables/Disable whether a Lock item is dropped when unlocked by Key item.");
 //        enableMoCreatures = config.getBoolean("enableMoCreatures", "03-mod", false, "Enables/Disable whether MoCreatures mod is installed and it's items can be used in loot tables.");
         // foreign mod enablements
-        enableForeignModIDs = config.getStringList("enableForeignModIDs", "03-mod", new String[]{"mocreatures"}, "Add mod's MODID to this list to enable custom loot tables for a mod.");
-        availableForeignModLootTables = config.getStringList("availableForeignModLootTables", "03-mod", new String[]{"mocreatures"}, "A list of mods that have prebuilt loot tables available. Note: used for informational purposes only.");
-        
-        
+        enableForeignModIDs = config.getStringList("enableForeignModIDs", "03-mod", new String[]{"mocreatures", "sgs_metals"}, "Add mod's MODID to this list to enable custom loot tables for a mod.");
+        availableForeignModLootTables = config.getStringList("availableForeignModLootTables", "03-mod", new String[]{"mocreatures", "sgs_metals"}, "A list of mods that have prebuilt loot tables available. Note: used for informational purposes only.");
+             
         // white/black lists
         config.setCategoryComment("04-gen", "World generation properties.");    
         generalChestBiomeWhiteList = config.getStringList("generalChestBiomeWhiteList", "04-gen", new String[]{}, "Allowable Biome Types for general Chest generation. Must match the Type identifer(s).");
@@ -292,12 +291,12 @@ public class TreasureConfig extends AbstractConfig {
         sapphireOreMinY = config.getInt("sapphireOreMinY", "04-gen", 5, 1, 255, "");
         sapphireOreMaxY = config.getInt("sapphireOreMaxY", "04-gen", 17, 1, 255, "");
         sapphireOreVeinsPerChunk = config.getInt("sapphireOreVeinsPerChunk", "04-gen", 1, 1, 20, "");
-        sapphireOreVeinSize = config.getInt("sapphireOreVeinsSize", "04-gen", 3, 1, 20, "");
+        sapphireOreVeinSize = config.getInt("sapphireOreVeinsSize", "04-gen", 2, 1, 20, "");
         rubyGenProbability = config.getFloat("rubyGenProbability", "04-gen", 65.0F, 0.0F, 100.0F, "");
         rubyOreVeinsPerChunk = config.getInt("rubyOreVeinsPerChunk", "04-gen", 1, 1, 20, "");
         rubyOreMinY = config.getInt("rubyOreMinY", "04-gen", 5, 1, 255, "");
         rubyOreMaxY = config.getInt("rubyOreMaxY", "04-gen", 17, 1, 255, "");
-        sapphireOreVeinSize = config.getInt("rubyOreVeinsSize", "04-gen", 3, 1, 20, "");
+        sapphireOreVeinSize = config.getInt("rubyOreVeinsSize", "04-gen", 2, 1, 20, "");
         
         // the the default values
        if(config.hasChanged()) {
