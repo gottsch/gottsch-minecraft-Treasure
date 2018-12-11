@@ -288,14 +288,14 @@ public class TreasureConfig extends AbstractConfig {
         // gems ores
         minChunksPerGemOre = config.getInt("minChunksPerGemOre", "04-gen", 1, 1, 32000, "");
         sapphireGenProbability = config.getFloat("sapphireGenProbability", "04-gen", 65.0F, 0.0F, 100.0F, "");
-        sapphireOreMinY = config.getInt("sapphireOreMinY", "04-gen", 5, 1, 255, "");
-        sapphireOreMaxY = config.getInt("sapphireOreMaxY", "04-gen", 17, 1, 255, "");
+        sapphireOreMinY = config.getInt("sapphireOreMinY", "04-gen", 6, 1, 255, "");
+        sapphireOreMaxY = config.getInt("sapphireOreMaxY", "04-gen", 14, 1, 255, "");
         sapphireOreVeinsPerChunk = config.getInt("sapphireOreVeinsPerChunk", "04-gen", 1, 1, 20, "");
         sapphireOreVeinSize = config.getInt("sapphireOreVeinSize", "04-gen", 3, 1, 20, "");
         rubyGenProbability = config.getFloat("rubyGenProbability", "04-gen", 65.0F, 0.0F, 100.0F, "");
         rubyOreVeinsPerChunk = config.getInt("rubyOreVeinsPerChunk", "04-gen", 1, 1, 20, "");
-        rubyOreMinY = config.getInt("rubyOreMinY", "04-gen", 5, 1, 255, "");
-        rubyOreMaxY = config.getInt("rubyOreMaxY", "04-gen", 17, 1, 255, "");
+        rubyOreMinY = config.getInt("rubyOreMinY", "04-gen", 6, 1, 255, "");
+        rubyOreMaxY = config.getInt("rubyOreMaxY", "04-gen", 14, 1, 255, "");
         rubyOreVeinSize = config.getInt("rubyOreVeinSize", "04-gen", 3, 1, 20, "");
         
         // the the default values

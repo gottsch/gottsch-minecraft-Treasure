@@ -164,7 +164,7 @@ public class GemOreWorldGenerator implements IWorldGenerator {
 	}
 
 	/**
-	 * 
+	 * Re-created this class for debugging purposes.
 	 * @author Mark Gottschling on Dec 10, 2018
 	 *
 	 */
@@ -225,7 +225,7 @@ public class GemOreWorldGenerator implements IWorldGenerator {
 										IBlockState state = worldIn.getBlockState(blockpos);
 										if (state.getBlock().isReplaceableOreGen(state, worldIn, blockpos, this.predicate)) {
 											worldIn.setBlockState(blockpos, this.oreBlock, 2);
-											Treasure.logger.debug("CHEATER! {} @ {}", state.getBlock().getRegistryName(), new Coords(blockpos).toShortString());
+//											Treasure.logger.debug("CHEATER! {} @ {}", state.getBlock().getRegistryName(), new Coords(blockpos).toShortString());
 										}
 									}
 								}
