@@ -152,24 +152,4 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 		// return the next coords
 		return nextCoords;
 	}
-
-	/**
-	 * 
-	 * @param world
-	 * @param spawnCoords
-	 * @param mob
-	 */
-	private void spawnMob(World world, ICoords spawnCoords, String mobName) {
-		EntityMob mob = null;
-		switch (mobName) {
-		case "zombie":
-			mob = new EntityZombie(world);
-			break;
-		case "skeleton":
-			mob = new EntitySkeleton(world);
-			break;
-		}
-    	mob.setLocationAndAngles((double)spawnCoords.getX() + 0.5D,  (double)spawnCoords.getY(), (double)spawnCoords.getZ() + 0.5D, 0.0F, 0.0F);
-    	world.spawnEntity(mob);
-	}
 }

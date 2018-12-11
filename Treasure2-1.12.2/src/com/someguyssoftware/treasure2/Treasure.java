@@ -19,11 +19,11 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
+import com.someguyssoftware.treasure2.command.SpawnChestCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
-import com.someguyssoftware.treasure2.command.SpawnChestCommand;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
@@ -32,9 +32,8 @@ import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
-import com.someguyssoftware.treasure2.loot.conditions.ModPresent;
-import com.someguyssoftware.treasure2.loot.conditions.TreasureLootConditionManager;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
@@ -53,6 +52,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * 
@@ -181,18 +181,17 @@ public class Treasure extends AbstractMod {
 		if (!getConfig().isModEnabled()) return;
 		
 		super.init(event);
-		
-		// register custom loot conditions
-//		TreasureLootConditionManager.registerCondition(new ModPresent.Serializer());
-		
+
 		// register world generators
 		worldGenerators.put("chest", new ChestWorldGenerator());
 		worldGenerators.put("well", new WellWorldGenerator());
 		worldGenerators.put("witherTree", new WitherTreeWorldGenerator());
+		worldGenerators.put("gem", new GemOreWorldGenerator());
 		int genWeight = 0;
 		for (Entry<String, IWorldGenerator> gen : worldGenerators.entrySet()) {
 			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);
 		}
+
 	}
 	
 	/**
@@ -204,6 +203,10 @@ public class Treasure extends AbstractMod {
 
 		// perform any post init
 		super.postInit(event);
+		
+		// register to the ore dictionary
+		OreDictionary.registerOre("sapphire", TreasureItems.SAPPHIRE);
+		OreDictionary.registerOre("ruby", TreasureItems.RUBY);
 		
 		// associate painting items to painting blocks and vice versa
 		((PaintingItem)TreasureItems.PAINTING_BLOCKS_BRICKS).setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_BRICKS);
@@ -221,6 +224,10 @@ public class Treasure extends AbstractMod {
 		TreasureBlocks.PAINTING_BLOCKS_SAND.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_SAND);
 		TreasureBlocks.PAINTING_BLOCKS_WATER.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_WATER);
 		TreasureBlocks.PAINTING_BLOCKS_WOOD.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_WOOD);
+		
+		// associate ore blocks with items
+		TreasureBlocks.SAPPHIRE_ORE.setItem(TreasureItems.SAPPHIRE);
+		TreasureBlocks.RUBY_ORE.setItem(TreasureItems.RUBY);
 	}
 		
 	/* (non-Javadoc)

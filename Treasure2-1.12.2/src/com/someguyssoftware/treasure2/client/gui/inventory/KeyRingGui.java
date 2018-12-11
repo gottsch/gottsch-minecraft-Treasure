@@ -15,6 +15,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -32,7 +33,7 @@ public class KeyRingGui extends GuiContainer {
 	 * @param invPlayer
 	 * @param inventory
 	 */
-	public KeyRingGui(InventoryPlayer invPlayer, IInventory inventory) {
+	public KeyRingGui(InventoryPlayer invPlayer, IInventory inventory, ItemStack heldItem) {
 		super(new KeyRingContainer(invPlayer, inventory));
 		
 		// Set the width and height of the gui.  Should match the size of the texture!

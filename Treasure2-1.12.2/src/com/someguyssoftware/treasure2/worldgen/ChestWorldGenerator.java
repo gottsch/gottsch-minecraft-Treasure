@@ -22,15 +22,17 @@ import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.chest.AbstractChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
-import com.someguyssoftware.treasure2.generator.chest.DefaultChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.RareChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.UncommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.AirPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.BigBottomMobTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.LavaSideTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.LavaTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.MobTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
@@ -100,7 +102,8 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		gens.get(Rarity.UNCOMMON).add(1, new UncommonChestGenerator());
 		gens.get(Rarity.SCARCE).add(75, new ScarceChestGenerator());
 		gens.get(Rarity.SCARCE).add(25, new SkullChestGenerator());
-		gens.get(Rarity.RARE).add(1, new RareChestGenerator());
+		gens.get(Rarity.RARE).add(85, new RareChestGenerator());
+		gens.get(Rarity.RARE).add(15, new GoldSkullChestGenerator());
 		gens.get(Rarity.EPIC).add(1, new EpicChestGenerator());
 		
 		// setup the pit generators
@@ -109,6 +112,8 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		pitGenerators.put(Pits.AIR_PIT,  new AirPitGenerator());
 		pitGenerators.put(Pits.LAVA_TRAP_PIT, new LavaTrapPitGenerator());
 		pitGenerators.put(Pits.MOB_TRAP_PIT, new MobTrapPitGenerator());
+		pitGenerators.put(Pits.LAVA_SIDE_TRAP_PIT, new LavaSideTrapPitGenerator());
+		pitGenerators.put(Pits.BIG_BOTTOM_MOB_TRAP_PIT, new BigBottomMobTrapPitGenerator());
 	}
 
 	/**
@@ -173,7 +178,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 				// 1. test if chest meets the probability criteria
 //    			Treasure.logger.debug("{} chest probability: {}", rarity, chestConfig.getGenProbability());
 				if (!RandomHelper.checkProbability(random, chestConfig.getGenProbability())) {
-					Treasure.logger.debug("Chest does not meet generate probability.");
+//					Treasure.logger.debug("Chest does not meet generate probability.");
 					return;
 				}
 //				else {

@@ -76,7 +76,12 @@ public abstract class AbstractChestContainer extends Container {
 	public void buildHotbar(InventoryPlayer player) {
 		for (int x = 0; x < HOTBAR_SLOT_COUNT; x++) {
 			int slotNumber = x;
-			addSlotToContainer(new Slot(player, slotNumber, getHotbarXPos() + getSlotXSpacing() * x, getHotbarYPos()));
+			if (slotNumber == player.currentItem) {
+				addSlotToContainer(new NoSlot(player, slotNumber, getHotbarXPos() + getSlotXSpacing() * x, getHotbarYPos()));
+			}
+			else {
+				addSlotToContainer(new Slot(player, slotNumber, getHotbarXPos() + getSlotXSpacing() * x, getHotbarYPos()));
+			}
 		}
 	}
 	

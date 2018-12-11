@@ -1,5 +1,6 @@
 package com.someguyssoftware.treasure2.inventory;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 
@@ -22,7 +23,6 @@ public class SkullChestContainer extends AbstractChestContainer {
         setContainerInventoryRowCount(3);
 		// skull has 13 less columns - to center move the xpos over by xspacing*2
 		setContainerInventoryXPos(8 + getSlotXSpacing() * 3);
-		// TODO might lower the slots
 		
 		// build the container
 		buildContainer(invPlayer, inventory);

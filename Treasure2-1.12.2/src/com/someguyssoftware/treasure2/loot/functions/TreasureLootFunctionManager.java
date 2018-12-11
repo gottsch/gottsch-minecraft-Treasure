@@ -72,6 +72,7 @@ public class TreasureLootFunctionManager {
 		registerFunction(new LootingEnchantBonus.Serializer());
 		registerFunction(new SetDamage.Serializer());
 		registerFunction(new SetAttributes.Serializer());
+		registerFunction(new SwapIfModPresent.Serializer());
 	}
 
 	public static class Serializer implements JsonDeserializer<TreasureLootFunction>, JsonSerializer<TreasureLootFunction> {

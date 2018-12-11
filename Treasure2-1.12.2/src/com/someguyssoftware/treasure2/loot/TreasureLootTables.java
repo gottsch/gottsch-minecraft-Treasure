@@ -48,6 +48,7 @@ public class TreasureLootTables {
 	public static TreasureLootContext CONTEXT;
 	public static TreasureLootTable WITHER_CHEST_LOOT_TABLE;
 	public static TreasureLootTable SKULL_CHEST_LOOT_TABLE;
+	public static TreasureLootTable GOLD_SKULL_CHEST_LOOT_TABLE;
 
 	/*
 	 * customized loot table manager
@@ -76,7 +77,8 @@ public class TreasureLootTables {
 	// list of special loot table locations
 	private static final List<String> TABLES = ImmutableList.of(
 			"chests/wither_chest",
-			"chests/skull_chest"
+			"chests/skull_chest",
+			"chests/gold_skull_chest"
 			);
 
 	/*
@@ -169,6 +171,7 @@ public class TreasureLootTables {
 		// add the special loot tables
 		WITHER_CHEST_LOOT_TABLE = lootTableManager.getLootTableFromLocation(new ResourceLocation(Treasure.MODID + ":chests/wither_chest"));
 		SKULL_CHEST_LOOT_TABLE = lootTableManager.getLootTableFromLocation(new ResourceLocation(Treasure.MODID + ":chests/skull_chest"));
+		GOLD_SKULL_CHEST_LOOT_TABLE = lootTableManager.getLootTableFromLocation(new ResourceLocation(Treasure.MODID + ":chests/gold_skull_chest"));
 
 		// for every entry in the RESOURCE_LOCATION_TABLE add to the LOOT_TABLES_TABLE
 		for(Table.Cell<String, Rarity, List<ResourceLocation>> cell : CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.cellSet()) {

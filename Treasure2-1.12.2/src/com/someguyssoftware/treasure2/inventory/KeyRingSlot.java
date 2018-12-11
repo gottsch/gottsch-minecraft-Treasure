@@ -34,7 +34,10 @@ public class KeyRingSlot extends Slot {
         return (stack.getItem() instanceof KeyItem);
     }
     
+    /**
+     * 
+     */
     public int getItemStackLimit(ItemStack stack) {
-        return 8;
+        return 1; //8;
     }
 }

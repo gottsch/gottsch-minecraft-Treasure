@@ -1,0 +1,54 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "treasure2:wither_key"
+    ]
+  },
+  "criteria": {
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "treasure2:wither_key"
+      }
+    },
+    "has_wither_stick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "treasure2:wither_stick_item"
+          }
+        ]
+      }
+    },
+    "has_wither_root": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "treasure2:wither_root_item"
+          }
+        ]
+      }
+    },    
+    "has_tool": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "treasure2:treasure_tool"
+          }
+        ]
+      }
+    }    
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_wither_stick",
+      "has_wither_root",
+      "has_tool"
+    ]
+  ]
+}

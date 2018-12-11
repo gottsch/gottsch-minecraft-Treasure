@@ -228,49 +228,7 @@
 							}
 						}
 					]							
-				},
-				{
-					"entryName": "titanium_ingot",
-					"type": "item",
-					"name": "sgs_metals:titanium_ingot",
-					"weight": 20,
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					],
-					"functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 2,
-								"max": 5
-							}
-						}
-					]						
-				},
-				{
-					"entryName": "autium_ingot",
-					"type": "item",
-					"name": "sgs_metals:autium_ingot",
-					"weight": 20,
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					],
-					"functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 2,
-								"max": 5
-							}
-						}
-					]						
-				}				
+				}			
 			]
 		}
 	]

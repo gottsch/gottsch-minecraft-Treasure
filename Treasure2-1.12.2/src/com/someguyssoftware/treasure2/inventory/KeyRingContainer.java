@@ -3,6 +3,7 @@ package com.someguyssoftware.treasure2.inventory;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 /**
  * This is a special container for the Key Ring

@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
@@ -52,6 +53,7 @@ public class GenDataPersistence extends WorldSavedData {
 		ChestWorldGenerator chestGen = (ChestWorldGenerator) Treasure.worldGenerators.get("chest");
 		WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.worldGenerators.get("well");
 		WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.worldGenerators.get("witherTree");
+		GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.worldGenerators.get("gem");
 		
 		// treasure
 		NBTTagCompound treasureGen = tag.getCompoundTag("treasureGenerator");
@@ -70,6 +72,10 @@ public class GenDataPersistence extends WorldSavedData {
 		
 		///// Wither Tree /////
 		witherGen.setChunksSinceLastTree(treasureGen.getInteger("chunksSinceLastTree"));
+		
+		///// Gem Ore /////
+		gemGen.setChunksSinceLastOre(treasureGen.getInteger("chunksSinceLastOre"));
+		
 		
 //		NBTTagList registryTagList = tag.getTagList("registry", 10);
 //		
@@ -169,6 +175,11 @@ public class GenDataPersistence extends WorldSavedData {
 			
 			// add the chest gen last count to the treasure compound
 			treasureGen.setInteger("chunksSinceLastTree", witherGen.getChunksSinceLastTree());
+			
+			//// Gem Ore ////
+
+			GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.worldGenerators.get("gem");
+			treasureGen.setInteger("chunksSinceLastOre", gemGen.getChunksSinceLastOre());
 			
 			// write the Dungeon Registry to NBT
 //			NBTTagList registryTagList = new NBTTagList();

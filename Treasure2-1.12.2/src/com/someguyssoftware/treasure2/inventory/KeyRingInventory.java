@@ -166,10 +166,12 @@ public class KeyRingInventory implements IInventory {
 
 	/* (non-Javadoc)
 	 * @see net.minecraft.inventory.IInventory#getInventoryStackLimit()
+	 * 
+	 * If using custom Slots, this value must equal Slot.getItemStackLimit()
 	 */
 	@Override
 	public int getInventoryStackLimit() {
-		return 1; //8
+		return 1; // 8
 	}
 
 	/* (non-Javadoc)

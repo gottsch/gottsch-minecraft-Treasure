@@ -1,0 +1,9 @@
+{
+    "parent": "treasure2:block/skull_chest",
+	"textures": {
+		"1": "treasure2:blocks/chests/gold_skull_eyes",
+		"2": "treasure2:blocks/chests/gold_skull_mouth_front",
+		"3": "treasure2:blocks/chests/gold_skull_texture",
+		"particle": "treasure2:blocks/chests/gold_skull_texture"
+	}
+}

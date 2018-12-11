@@ -8,7 +8,7 @@
 					"entryName": "iron_sword",
 					"type": "item",
 					"name": "minecraft:iron_sword",
-					"weight": 35	,
+					"weight": 25,
 					"functions": [
 						{
 							"function": "enchant_randomly"
@@ -16,22 +16,10 @@
 					]					
 				},
 				{
-					"entryName": "steel_sword",
-					"type": "item",
-					"name": "sgs_metals:steel_sword",
-					"weight": 25,
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					]		
-				},				
-				{
 					"entryName": "bow",
 					"type": "item",
 					"name": "minecraft:bow",
-					"weight": 25,
+					"weight": 20,
 					"functions": [
 						{
 							"function": "enchant_randomly"
@@ -42,7 +30,7 @@
 					"entryName": "iron_pickaxe",
 					"type": "item",
 					"name": "minecraft:iron_pickaxe",
-					"weight": 25,
+					"weight": 13,
 					"functions": [
 						{
 							"function": "enchant_randomly"
@@ -60,30 +48,6 @@
 						}
 					]	
 				},
-				{
-					"entryName": "steel_pickaxe",
-					"type": "item",
-					"name": "sgs_metals:steel_pickaxe",
-					"weight": 25,
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					]
-				},
-				{
-					"entryName": "steel_axe",
-					"type": "item",
-					"name": "sgs_metals:steel_axe",
-					"weight": 25,
-						"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					]
-				},				
 				{
 					"entryName": "diamond_sword",
 					"type": "item",

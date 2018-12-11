@@ -32,8 +32,8 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.DREAD_PIRATE_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.COMPRESSOR_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_CHEST));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GOLD_SKULL_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SKULL_CHEST));
-
 		// MIMICS
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WOOD_MIMIC));
 		
@@ -83,6 +83,10 @@ public class TreasureModels {
 //		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_BRANCH));
 //		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_ROOT));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_PLANKS));
+		
+		// ORES/GEMS
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SAPPHIRE_ORE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.RUBY_ORE));
 		
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);
@@ -136,6 +140,8 @@ public class TreasureModels {
 		
 		// OTHER
 		registerItemModel(TreasureItems.SPANISH_MOSS);
+		registerItemModel(TreasureItems.SAPPHIRE);
+		registerItemModel(TreasureItems.RUBY);
 		registerItemModel(TreasureItems.TREASURE_TOOL);
 		
 //		// variants

@@ -1,7 +1,7 @@
 {
 	"pools": [
 		{
-			"name": "rare_tools",
+			"name": "epic_tools",
 			"rolls": 1,
 			"entries": [
 				{
@@ -40,45 +40,7 @@
 							"function": "enchant_randomly"
 						}					
 					]					
-				},
-				{
-					"entryName": "titanium_sword",
-					"type": "item",
-					"name": "sgs_metals:titanium_sword",
-					"weight": 25,
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					],
-					"functions": [
-						{
-							"function": "enchant_with_levels",
-							"levels": 30,
-							"treasure": true
-						}					
-					]	
-				},
-				{
-					"entryName": "autium_sword",
-					"type": "item",
-					"name": "sgs_metals:autium_sword",
-					"weight": 25,
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					],
-					"functions": [
-						{
-							"function": "enchant_with_levels",
-							"levels": 30,
-							"treasure": true
-						}				
-					]						
-				}				
+				}			
 			]
 		}
 	]
