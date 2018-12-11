@@ -136,10 +136,6 @@ public class Treasure extends AbstractMod {
 		// register the GUI handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		
-		// register to the ore dictionary
-		OreDictionary.registerOre("sapphire", TreasureItems.SAPPHIRE);
-		OreDictionary.registerOre("ruby", TreasureItems.RUBY);
-		
 		/*
 		 * KEEP FOR REFERNCE PURPOSES
 		 */
@@ -208,6 +204,10 @@ public class Treasure extends AbstractMod {
 		// perform any post init
 		super.postInit(event);
 		
+		// register to the ore dictionary
+		OreDictionary.registerOre("sapphire", TreasureItems.SAPPHIRE);
+		OreDictionary.registerOre("ruby", TreasureItems.RUBY);
+		
 		// associate painting items to painting blocks and vice versa
 		((PaintingItem)TreasureItems.PAINTING_BLOCKS_BRICKS).setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_BRICKS);
 		((PaintingItem)TreasureItems.PAINTING_BLOCKS_COBBLESTONE).setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_COBBLESTONE);
@@ -226,7 +226,7 @@ public class Treasure extends AbstractMod {
 		TreasureBlocks.PAINTING_BLOCKS_WOOD.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_WOOD);
 		
 		// associate ore blocks with items
-		TreasureBlocks.SAPPHIRE_ORE.setItem(TreasureItems.RUBY);
+		TreasureBlocks.SAPPHIRE_ORE.setItem(TreasureItems.SAPPHIRE);
 		TreasureBlocks.RUBY_ORE.setItem(TreasureItems.RUBY);
 	}
 		

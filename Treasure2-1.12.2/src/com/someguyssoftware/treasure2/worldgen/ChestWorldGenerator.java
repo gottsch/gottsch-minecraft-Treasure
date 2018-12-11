@@ -178,7 +178,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 				// 1. test if chest meets the probability criteria
 //    			Treasure.logger.debug("{} chest probability: {}", rarity, chestConfig.getGenProbability());
 				if (!RandomHelper.checkProbability(random, chestConfig.getGenProbability())) {
-					Treasure.logger.debug("Chest does not meet generate probability.");
+//					Treasure.logger.debug("Chest does not meet generate probability.");
 					return;
 				}
 //				else {
