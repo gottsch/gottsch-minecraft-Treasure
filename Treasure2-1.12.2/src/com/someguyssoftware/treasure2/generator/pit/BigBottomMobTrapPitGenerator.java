@@ -90,7 +90,8 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 			buildTrapLayer(world, random, spawnCoords, null);
 			
 			// build the pit
-			buildPit(world, random, nextCoords, surfaceCoords, getBlockLayers());
+			// NOTE must add nextCoords by Y_OFFSET, because the AbstractPitGen.buildPit() starts with the Y_OFFSET, which is above the standard chest area.
+			buildPit(world, random, nextCoords.down(Y_OFFSET), surfaceCoords, getBlockLayers());
 		}			
 		// shaft is only 2-6 blocks long - can only support small covering
 		else if (yDist >= 2) {
