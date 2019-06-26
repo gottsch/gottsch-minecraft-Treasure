@@ -153,6 +153,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String RUBY_ORE_ID = "ruby_ore";
 	public static final String RUBY_ID = "ruby";
 	
+	public static final String PROXIMITY_SPAWNER_ID = "proximity_spawner";
+	
 	public static final String TREASURE_TOOL_ITEM_ID = "treasure_tool";
 	
 	// TEs
@@ -169,7 +171,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
 	public static final String SKULL_CHEST_TE_ID = "skull_chest_tile_entity";
 	public static final String GOLD_SKULL_CHEST_TE_ID = "gold_skull_chest_tile_entity";
-	
+	public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
+
 	/*
 	 * mod settings
 	 */

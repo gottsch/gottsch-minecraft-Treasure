@@ -33,6 +33,7 @@ import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
@@ -153,6 +154,8 @@ public class TreasureBlocks {
 	public static final AbstractPaintingBlock PAINTING_BLOCKS_SAND;
 	public static final AbstractPaintingBlock PAINTING_BLOCKS_WATER;
 	public static final AbstractPaintingBlock PAINTING_BLOCKS_WOOD;
+	
+	public static final ProximityBlock PROXIMITY_SPAWNER;
 	
 	// initialize blocks
 	static {
@@ -475,6 +478,10 @@ public class TreasureBlocks {
 				.setBounds(pbs);
 		PAINTING_BLOCKS_WOOD = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_WOOD_ID, Material.CLOTH, Rarity.RARE)
 				.setBounds(pbs);
+		
+		// proximity blocks
+		PROXIMITY_SPAWNER = new ProximityBlock(Treasure.MODID, TreasureConfig.PROXIMITY_SPAWNER_ID, ProximitySpawnerTileEntity.class);
+
 	}
 
 
@@ -566,6 +573,7 @@ public class TreasureBlocks {
 			registry.register(WITHER_CHEST);
 			registry.register(SKULL_CHEST);
 			registry.register(GOLD_SKULL_CHEST);
+			registry.register(PROXIMITY_SPAWNER);
 
 			// map the block by rarity
 			for (Block block : blocks) {
@@ -641,7 +649,8 @@ public class TreasureBlocks {
 					new ItemBlock(WITHER_LOG_SOUL),
 					new ItemBlock(WITHER_PLANKS),
 					new ItemBlock(SAPPHIRE_ORE),
-					new ItemBlock(RUBY_ORE)
+					new ItemBlock(RUBY_ORE),
+					new ItemBlock(PROXIMITY_SPAWNER)
 			};
 
 			for (final ItemBlock item : items) {
@@ -670,6 +679,7 @@ public class TreasureBlocks {
 			GameRegistry.registerTileEntity(WitherChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WITHER_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(SkullChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.SKULL_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(GoldSkullChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.GOLD_SKULL_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(ProximitySpawnerTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.PROXIMITY_SPAWNER_TE_ID));
 
 		}	
 	}
