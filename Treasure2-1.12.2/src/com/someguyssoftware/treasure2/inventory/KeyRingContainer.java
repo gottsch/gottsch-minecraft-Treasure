@@ -32,6 +32,22 @@ public class KeyRingContainer extends AbstractChestContainer {
 	}
 	
 	/**
+	 * KeyRing prevents the held slot (which contains the key ring itself) from being moved.
+	 */
+	@Override
+	public void buildHotbar(InventoryPlayer player) {
+		for (int x = 0; x < HOTBAR_SLOT_COUNT; x++) {
+			int slotNumber = x;
+			if (slotNumber == player.currentItem) {
+				addSlotToContainer(new NoSlot(player, slotNumber, getHotbarXPos() + getSlotXSpacing() * x, getHotbarYPos()));
+			}
+			else {
+				addSlotToContainer(new Slot(player, slotNumber, getHotbarXPos() + getSlotXSpacing() * x, getHotbarYPos()));
+			}
+		}
+	}
+	
+	/**
 	 * 
 	 */
 	@Override

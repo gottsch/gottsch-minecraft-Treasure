@@ -63,7 +63,7 @@ import net.minecraftforge.oredict.OreDictionary;
 		modid=Treasure.MODID,
 		name=Treasure.NAME,
 		version=Treasure.VERSION,
-		dependencies="required-after:gottschcore@[1.5.0,)",
+		dependencies="required-after:gottschcore@[1.6.0,)",
 		acceptedMinecraftVersions = "[1.12.2]",
 		updateJSON = Treasure.UPDATE_JSON_URL
 		)
@@ -78,7 +78,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.3.0";
+	protected static final String VERSION = "1.3.1";
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
 	private static final String VERSION_URL = "";

@@ -41,16 +41,34 @@ public class SkullAndBonesBlock extends CardinalDirectionFacadeBlock implements 
 		setSoundType(SoundType.STONE);
 		setCreativeTab(Treasure.TREASURE_TAB);
 		setHardness(3.0F);
-		setBoundingBox(
-				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), 	// N
-				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// E
-				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// S
-				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F)	// W
-				);
+		this.bounds[EnumFacing.SOUTH.getHorizontalIndex()] =new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// S
+		this.bounds[EnumFacing.WEST.getHorizontalIndex()] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// W
+		this.bounds[EnumFacing.NORTH.getHorizontalIndex()] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D); // N
+		this.bounds[EnumFacing.EAST.getHorizontalIndex()] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// E
+	}
+	
+	// used by the renderer to control lighting and visibility of other blocks.
+	// set to false because this block doesn't fill the entire 1x1x1 space
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+	
+	// used by the renderer to control lighting and visibility of other blocks, also by
+	// (eg) wall or fence to control whether the fence joins itself to this block
+	// set to false because this block doesn't fill the entire 1x1x1 space
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
 	}
 
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return false;
+	}
+	
 	  /**
-     * Determines if this block can prevent leaves connected to it from decaying.
+     * Determines if this block can prevent fog connected to it from decaying.
      * @param state The current state
      * @param world The current world
      * @param pos Block position in world

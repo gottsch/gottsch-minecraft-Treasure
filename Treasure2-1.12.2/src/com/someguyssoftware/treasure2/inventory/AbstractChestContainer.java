@@ -31,7 +31,7 @@ public abstract class AbstractChestContainer extends Container {
 	private int containerInventoryRowCount = 3; // default value
 	private int containerInventoryColumnCount = 9; // default value
 	
-	// default values for vanilla containers  ??? or consts
+	// default values for vanilla containers
 	private int slotXSpacing = 18;
 	private int slotYSpacing = 18;
 	private int hotbarXPos = 8;
@@ -76,12 +76,7 @@ public abstract class AbstractChestContainer extends Container {
 	public void buildHotbar(InventoryPlayer player) {
 		for (int x = 0; x < HOTBAR_SLOT_COUNT; x++) {
 			int slotNumber = x;
-			if (slotNumber == player.currentItem) {
-				addSlotToContainer(new NoSlot(player, slotNumber, getHotbarXPos() + getSlotXSpacing() * x, getHotbarYPos()));
-			}
-			else {
-				addSlotToContainer(new Slot(player, slotNumber, getHotbarXPos() + getSlotXSpacing() * x, getHotbarYPos()));
-			}
+			addSlotToContainer(new Slot(player, slotNumber, getHotbarXPos() + getSlotXSpacing() * x, getHotbarYPos()));
 		}
 	}
 	

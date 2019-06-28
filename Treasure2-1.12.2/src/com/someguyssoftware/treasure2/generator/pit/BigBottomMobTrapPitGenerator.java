@@ -2,19 +2,25 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.Quantity;
 import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
+import com.sun.media.jfxmedia.logging.Logger;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DungeonHooks;
 
 
 /**
@@ -90,7 +96,8 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 			buildTrapLayer(world, random, spawnCoords, null);
 			
 			// build the pit
-			buildPit(world, random, nextCoords, surfaceCoords, getBlockLayers());
+			// NOTE must add nextCoords by Y_OFFSET, because the AbstractPitGen.buildPit() starts with the Y_OFFSET, which is above the standard chest area.
+			buildPit(world, random, nextCoords.down(Y_OFFSET), surfaceCoords, getBlockLayers());
 		}			
 		// shaft is only 2-6 blocks long - can only support small covering
 		else if (yDist >= 2) {
@@ -128,11 +135,26 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	public ICoords buildTrapLayer(final World world, final Random random, final ICoords coords, final Block block) {
-		// spawn the mobs
-    	spawnMob(world, coords.add(-2, 0, 0), "skeleton");
-    	spawnMob(world, coords.add(0, 0, -2), "zombie");
-    	spawnMob(world, coords.add(2, 0, 0), "zombie");
-    	spawnMob(world, coords.add(0, 0, 2), "skeleton");    	
+  	
+		// spawn random registered mobs on either side of the chest
+    	world.setBlockState(coords.add(-1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
+    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(coords.add(-1, 0, 0).toPos());
+    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
+    	te.setMobName(r);
+    	te.setMobNum(new Quantity(2, 4));
+    	te.setProximity(5D);
+    	te.setSpawnRange(1.5D);
+    	Treasure.logger.debug("placed proximity spawner @ {}", coords.add(-1,0,0).toShortString());
+    	
+    	world.setBlockState(coords.add(1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
+    	te = (ProximitySpawnerTileEntity) world.getTileEntity(coords.add(1, 0, 0).toPos());
+    	r = DungeonHooks.getRandomDungeonMob(random);
+    	te.setMobName(r);
+    	te.setMobNum(new Quantity(2, 4));
+    	te.setProximity(5.5D);		// slightly larger proximity to fire first without entity collision
+    	te.setSpawnRange(2D);
+    	Treasure.logger.debug("placed proximity spawner @ {}", coords.add(1,0,0).toShortString());
+    	
 		return coords;
 	}
 	
