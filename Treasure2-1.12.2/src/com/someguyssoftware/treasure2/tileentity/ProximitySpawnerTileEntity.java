@@ -28,6 +28,7 @@ import net.minecraftforge.common.DungeonHooks;
 public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 	private ResourceLocation mobName;
 	private Quantity mobNum;
+	private Double spawnRange = 1D;
 	
 	/**
 	 * 
@@ -67,6 +68,12 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 				min = parentNBT.getInteger("mobNumMax");
 			}
 			this.mobNum = new Quantity(min, max);
+			
+			if (parentNBT.hasKey("spawnRange")) {
+				Double spawnRange = parentNBT.getDouble("spawnRange");
+				setSpawnRange(spawnRange);
+			}
+			
 		}
 		catch(Exception e) {
 			Treasure.logger.error("Error reading ProximitySpanwer properties from NBT:",  e);
@@ -82,6 +89,7 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 	    tag.setString("mobName", getMobName().toString());
 	    tag.setInteger("mobNumMin", getMobNum().getMinInt());
 	    tag.setInteger("mobNumMax", getMobNum().getMaxInt());
+	    tag.setDouble("spawnRange", getSpawnRange());
 	    return tag;
 	}
 	
@@ -90,9 +98,10 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 	 */
 	@Override
 	public void execute(World world, Random random, Coords blockCoords, Coords playerCoords) {
+		
     	int mobCount = RandomHelper.randomInt(random, getMobNum().getMinInt(), getMobNum().getMaxInt());
-    	for (int i = 0; i < mobCount; i++) {
 
+    	for (int i = 0; i < mobCount; i++) {
             Entity entity = EntityList.createEntityByIDFromName(getMobName(), world);
             if (entity == null) {
             	Treasure.logger.debug("unable to create entity -> {}", getMobName());
@@ -100,11 +109,9 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
             	return;
             }
             
-            // NOTE 4D = spawn range
-            double x = (double)blockCoords.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * 4D + 0.5D;
-            double y = (double)(blockCoords.getY() + world.rand.nextInt(3) - 1);
-            double z = (double)blockCoords.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * 4D + 0.5D;
-
+            double x = (double)blockCoords.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * getSpawnRange() + 0.5D;
+            double y = (double)(blockCoords.getY());// + world.rand.nextInt(3) - 1);
+            double z = (double)blockCoords.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * getSpawnRange() + 0.5D;
             entity.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
 
             if (entity instanceof EntityLiving) {
@@ -157,6 +164,14 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 	 */
 	public void setMobNum(Quantity mobNum) {
 		this.mobNum = mobNum;
+	}
+
+	public Double getSpawnRange() {
+		return spawnRange;
+	}
+
+	public void setSpawnRange(Double spawnRange) {
+		this.spawnRange = spawnRange;
 	}
 
 }
