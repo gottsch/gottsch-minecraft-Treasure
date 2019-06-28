@@ -384,8 +384,7 @@ public class TreasureBlocks {
 		SKULL_CROSSBONES = new SkullAndBonesBlock(
 				Treasure.MODID, 
 				TreasureConfig.SKULL_CROSSBONES_ID, 
-				Material.ROCK)
-				.setBounds(stdChestBounds);
+				Material.ROCK);
 
 		// add all the gravestones to the list
 		gravestones = new ArrayList<>();

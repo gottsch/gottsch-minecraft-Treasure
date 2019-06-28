@@ -41,16 +41,10 @@ public class SkullAndBonesBlock extends CardinalDirectionFacadeBlock implements 
 		setSoundType(SoundType.STONE);
 		setCreativeTab(Treasure.TREASURE_TAB);
 		setHardness(3.0F);
-//		setBoundingBox(
-//				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), 	// N
-//				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// E
-//				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// S
-//				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F)	// W
-//				);
-		this.bounds[0] =new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// S
-		this.bounds[1] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// W
-		this.bounds[2] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D); // N
-		this.bounds[3] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// E
+		this.bounds[EnumFacing.SOUTH.getHorizontalIndex()] =new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// S
+		this.bounds[EnumFacing.WEST.getHorizontalIndex()] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// W
+		this.bounds[EnumFacing.NORTH.getHorizontalIndex()] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D); // N
+		this.bounds[EnumFacing.EAST.getHorizontalIndex()] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// E
 	}
 	
 	// used by the renderer to control lighting and visibility of other blocks.
