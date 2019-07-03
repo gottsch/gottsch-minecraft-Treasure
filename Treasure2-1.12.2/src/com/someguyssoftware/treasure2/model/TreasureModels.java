@@ -61,6 +61,8 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE3_OBSIDIAN));
 		
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SKULL_CROSSBONES));
+		registerItemModel(TreasureItems.SKELETON);
+		
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WISHING_WELL_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FOG_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.HIGH_FOG_BLOCK));

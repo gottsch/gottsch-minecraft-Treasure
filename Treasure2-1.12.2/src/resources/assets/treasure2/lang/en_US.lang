@@ -44,6 +44,7 @@ tile.treasure2:gravestone3_polished_diorite.name=Diorite Tombstone
 tile.treasure2:gravestone3_obsidian.name=Obsidian Tombstone
 
 tile.treasure2:skull_and_crossbones.name=Skull and Bones
+tile.treasure2:skeleton.name=Skeleton
 
 #wither tree
 tile.treasure2:wither_log.name=Wither Log
@@ -124,6 +125,7 @@ item.treasure2:skull_sword.name=Skull Sword
 item.treasure2:spanish_moss.name=Spanish Moss
 item.treasure2:sapphire.name=Sapphire
 item.treasure2:ruby.name=Ruby
+item.treasure2:skeleton_item.name=Skeleton
 item.treasure2:treasure_tool.name=Treasure Tool
 
 #entities

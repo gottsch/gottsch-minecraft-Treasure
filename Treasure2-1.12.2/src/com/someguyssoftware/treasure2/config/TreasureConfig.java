@@ -112,7 +112,9 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String GRAVESTONE3_POLISHED_DIORITE_ID = "gravestone3_polished_diorite";
 	public static final String GRAVESTONE3_OBSIDIAN_ID = "gravestone3_obsidian";
 	
-	public static final String SKULL_CROSSBONES_ID = "skull_and_crossbones";		
+	public static final String SKULL_CROSSBONES_ID = "skull_and_crossbones";
+	public static final String SKELETON_ID = "skeleton";
+	
 	public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
 	public static final String FOG_BLOCK_ID = "fog";
 	public static final String HIGH_FOG_BLOCK_ID = "high_fog";

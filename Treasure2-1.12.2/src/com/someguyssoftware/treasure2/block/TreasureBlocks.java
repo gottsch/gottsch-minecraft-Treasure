@@ -110,6 +110,7 @@ public class TreasureBlocks {
 	public static final Block GRAVESTONE3_POLISHED_DIORITE;
 	public static final Block GRAVESTONE3_OBSIDIAN;
 	public static final Block SKULL_CROSSBONES;
+	public static final Block SKELETON;
 
 	// other
 	public static final Block WISHING_WELL_BLOCK;
@@ -385,6 +386,8 @@ public class TreasureBlocks {
 				Treasure.MODID, 
 				TreasureConfig.SKULL_CROSSBONES_ID, 
 				Material.ROCK);
+		
+		SKELETON = new SkeletonBlock(Treasure.MODID, TreasureConfig.SKELETON_ID, Material.ROCK);
 
 		// add all the gravestones to the list
 		gravestones = new ArrayList<>();
@@ -410,6 +413,7 @@ public class TreasureBlocks {
 		gravestones.add(GRAVESTONE3_POLISHED_GRANITE);
 		gravestones.add(GRAVESTONE3_OBSIDIAN);
 		gravestones.add(SKULL_CROSSBONES);
+		gravestones.add(SKELETON);
 
 		// FOG
 		FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.FOG_BLOCK_ID, TreasureItems.FOG, fogMap).setFogHeight(FogHeight.FULL_FOG);
@@ -536,6 +540,7 @@ public class TreasureBlocks {
 					GRAVESTONE3_POLISHED_DIORITE,
 					GRAVESTONE3_OBSIDIAN,
 					SKULL_CROSSBONES,
+					SKELETON,
 					WISHING_WELL_BLOCK,
 					FOG_BLOCK,
 					HIGH_FOG_BLOCK,
