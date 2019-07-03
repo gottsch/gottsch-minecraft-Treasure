@@ -20,10 +20,12 @@ import com.someguyssoftware.treasure2.block.WitherChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
@@ -349,7 +351,14 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param coods
 	 */
 	public void addMarkers(World world, Random random, ICoords coords) {
-		GenUtil.placeMarkers(world, random, coords);
+//		GenUtil.placeMarkers(world, random, coords);
+//		if (TreasureConfig.isStructureMarkersAllowed && RandomHelper.checkProbability(random, TreasureConfig.structureMarkerProbability)) {
+//			Treasure.logger.debug("generating a random structure marker -> {}", coords.toShortString());
+//			new RandomStructureMarkerGenerator().generate(world, random, coords);
+//		}
+//		else {
+			new GravestoneMarkerGenerator().generate(world, random, coords);			
+//		}
 	}
 	
 	/**
