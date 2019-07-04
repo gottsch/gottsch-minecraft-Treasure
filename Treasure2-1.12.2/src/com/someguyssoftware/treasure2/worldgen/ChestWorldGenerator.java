@@ -13,6 +13,7 @@ import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.Configs;
@@ -21,6 +22,7 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.chest.AbstractChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
@@ -58,12 +60,12 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	private int chunksSinceLastChest;
 	private Map<Rarity, Integer> chunksSinceLastRarityChest;
 	
-	// the chest generators
-	private Map<Rarity, AbstractChestGenerator> generators = new HashMap<>();
-	private Map<Rarity, RandomWeightedCollection<IChestGenerator>> gens = new HashMap<>();
+	// the chest chestGeneratorsMap
+	private Map<Rarity, AbstractChestGenerator> chestGeneratorsMap = new HashMap<>();
+	private Map<Rarity, RandomWeightedCollection<IChestGenerator>> chestCollectionGeneratorsMap = new HashMap<>();
 	
 	// TODO probably should be moved to AbstractChestGenerator
-	// the pit generators
+	// the pit chestGeneratorsMap
 	public static Map<Pits, IPitGenerator> pitGenerators = new HashMap<>();
 	
 	/**
@@ -85,28 +87,29 @@ public class ChestWorldGenerator implements IWorldGenerator {
 			chunksSinceLastRarityChest.put(rarity, 0);
 		}
 
-		// setup the chest  generators
-		generators.put(Rarity.COMMON, new CommonChestGenerator());
-		generators.put(Rarity.UNCOMMON, new UncommonChestGenerator());
-		generators.put(Rarity.SCARCE, new ScarceChestGenerator());
-		generators.put(Rarity.RARE, new RareChestGenerator());
-		generators.put(Rarity.EPIC, new EpicChestGenerator());
+		// setup the chest  chestGeneratorsMap
+		chestGeneratorsMap.put(Rarity.COMMON, new CommonChestGenerator());
+		chestGeneratorsMap.put(Rarity.UNCOMMON, new UncommonChestGenerator());
+		chestGeneratorsMap.put(Rarity.SCARCE, new ScarceChestGenerator());
+		chestGeneratorsMap.put(Rarity.RARE, new RareChestGenerator());
+		chestGeneratorsMap.put(Rarity.EPIC, new EpicChestGenerator());
 				
-		gens.put(Rarity.COMMON, new RandomWeightedCollection<>());
-		gens.put(Rarity.UNCOMMON, new RandomWeightedCollection<>());
-		gens.put(Rarity.SCARCE, new RandomWeightedCollection<>());
-		gens.put(Rarity.RARE, new RandomWeightedCollection<>());
-		gens.put(Rarity.EPIC, new RandomWeightedCollection<>());
+		chestCollectionGeneratorsMap.put(Rarity.COMMON, new RandomWeightedCollection<>());
+		chestCollectionGeneratorsMap.put(Rarity.UNCOMMON, new RandomWeightedCollection<>());
+		chestCollectionGeneratorsMap.put(Rarity.SCARCE, new RandomWeightedCollection<>());
+		chestCollectionGeneratorsMap.put(Rarity.RARE, new RandomWeightedCollection<>());
+		chestCollectionGeneratorsMap.put(Rarity.EPIC, new RandomWeightedCollection<>());
 		
-		gens.get(Rarity.COMMON).add(1, new CommonChestGenerator());
-		gens.get(Rarity.UNCOMMON).add(1, new UncommonChestGenerator());
-		gens.get(Rarity.SCARCE).add(75, new ScarceChestGenerator());
-		gens.get(Rarity.SCARCE).add(25, new SkullChestGenerator());
-		gens.get(Rarity.RARE).add(85, new RareChestGenerator());
-		gens.get(Rarity.RARE).add(15, new GoldSkullChestGenerator());
-		gens.get(Rarity.EPIC).add(1, new EpicChestGenerator());
+		chestCollectionGeneratorsMap.get(Rarity.COMMON).add(1, new CommonChestGenerator());
+		chestCollectionGeneratorsMap.get(Rarity.UNCOMMON).add(1, new UncommonChestGenerator());
+		chestCollectionGeneratorsMap.get(Rarity.SCARCE).add(75, new ScarceChestGenerator());
+		chestCollectionGeneratorsMap.get(Rarity.SCARCE).add(25, new SkullChestGenerator());
+		chestCollectionGeneratorsMap.get(Rarity.RARE).add(85, new RareChestGenerator());
+		chestCollectionGeneratorsMap.get(Rarity.RARE).add(15, new GoldSkullChestGenerator());
+		chestCollectionGeneratorsMap.get(Rarity.EPIC).add(85, new EpicChestGenerator());
+		chestCollectionGeneratorsMap.get(Rarity.EPIC).add(15, new CauldronChestGenerator());
 		
-		// setup the pit generators
+		// setup the pit chestGeneratorsMap
 		pitGenerators.put(Pits.SIMPLE_PIT, new SimplePitGenerator());
 		pitGenerators.put(Pits.TNT_TRAP_PIT, new TntTrapPitGenerator());
 		pitGenerators.put(Pits.AIR_PIT,  new AirPitGenerator());
@@ -190,7 +193,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 
 			    if (!BiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList())) {
 			    	if (Treasure.logger.isDebugEnabled()) {
-			    		if (world.isRemote) {
+			    		if (WorldInfo.isClientSide(world)) {
 			    			Treasure.logger.debug("{} is not a valid biome @ {}", biome.getBiomeName(), coords.toShortString());
 			    		}
 			    		else {
@@ -213,8 +216,8 @@ public class ChestWorldGenerator implements IWorldGenerator {
  			
     			// generate the chest/pit/chambers
 				Treasure.logger.debug("Attempting to generate pit/chest.");
-				isGenerated = gens.get(rarity).next().generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
-//    			isGenerated = generators.get(rarity).generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
+				isGenerated = chestCollectionGeneratorsMap.get(rarity).next().generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
+//    			isGenerated = chestGeneratorsMap.get(rarity).generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
 
     			if (isGenerated) {
     				// add to registry
@@ -313,30 +316,30 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	}
 
 	/**
-	 * @return the generators
+	 * @return the chestGeneratorsMap
 	 */
 	public Map<Rarity, AbstractChestGenerator> getGenerators() {
-		return generators;
+		return chestGeneratorsMap;
 	}
 
 	/**
-	 * @param generators the generators to set
+	 * @param chestGeneratorsMap the chestGeneratorsMap to set
 	 */
 	public void setGenerators(Map<Rarity, AbstractChestGenerator> generators) {
-		this.generators = generators;
+		this.chestGeneratorsMap = generators;
 	}
 
 	/**
-	 * @return the gens
+	 * @return the chestCollectionGeneratorsMap
 	 */
-	public Map<Rarity, RandomWeightedCollection<IChestGenerator>> getGens() {
-		return gens;
+	public Map<Rarity, RandomWeightedCollection<IChestGenerator>> getChestCollectionGeneratorsMap() {
+		return chestCollectionGeneratorsMap;
 	}
 
 	/**
-	 * @param gens the gens to set
+	 * @param chestCollectionGeneratorsMap the chestCollectionGeneratorsMap to set
 	 */
-	public void setGens(Map<Rarity, RandomWeightedCollection<IChestGenerator>> gens) {
-		this.gens = gens;
+	public void setChestCollectionGeneratorsMap(Map<Rarity, RandomWeightedCollection<IChestGenerator>> gens) {
+		this.chestCollectionGeneratorsMap = gens;
 	}
 }

@@ -1,5 +1,7 @@
 package com.someguyssoftware.treasure2.tileentity;
 
+import com.someguyssoftware.gottschcore.world.WorldInfo;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ContainerChest;
@@ -38,7 +40,7 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 		int k = this.pos.getZ();
 		++this.ticksSinceSync;
 
-		if (!this.world.isRemote && this.numPlayersUsing != 0 && (this.ticksSinceSync + i + j + k) % 200 == 0) {
+		if (WorldInfo.isServerSide(getWorld()) && this.numPlayersUsing != 0 && (this.ticksSinceSync + i + j + k) % 200 == 0) {
 			this.numPlayersUsing = 0;
 
 			for (EntityPlayer entityplayer : this.world.getEntitiesWithinAABB(EntityPlayer.class,

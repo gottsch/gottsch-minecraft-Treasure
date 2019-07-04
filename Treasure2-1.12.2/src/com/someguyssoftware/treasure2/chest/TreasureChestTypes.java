@@ -10,16 +10,18 @@ import com.someguyssoftware.gottschcore.enums.Direction;
  *
  */
 public class TreasureChestTypes {
+	// TODO think about changing to enum
 	public static final TreasureChestType CRATE;
-	public static TreasureChestType STANDARD;
-	public static TreasureChestType STANDARD2;
-	public static TreasureChestType STRONGBOX;
-	public static TreasureChestType SAFE;
+	public static final TreasureChestType STANDARD;
+	public static final TreasureChestType STANDARD2;
+	public static final TreasureChestType STRONGBOX;
+	public static final TreasureChestType SAFE;
 	public static TreasureChestType SINGLE;
 	public static TreasureChestType POT;
-	public static TreasureChestType COMPRESSOR;
-	public static TreasureChestType ARMOIRE;
-	public static TreasureChestType SKULL;
+	public static final TreasureChestType COMPRESSOR;
+	public static final TreasureChestType ARMOIRE;
+	public static final TreasureChestType SKULL;
+	public static final TreasureChestType TOP_SPLIT;
 
 		
 	static {
@@ -65,6 +67,13 @@ public class TreasureChestTypes {
 		
 		SKULL = new TreasureChestType(1).addSlots(
 				new LockSlot(0, Direction.EAST, 0.72F, 0.18F, 0.5F, 90F)
+			);
+		
+		// NOTE the locks are meant to be on top of the chest, but they will not get rotated properly if Direction.UP.
+		// Use the direction that the locks should initially face and have the renderer implementation render the locks on the correct axis.
+		TOP_SPLIT = new TreasureChestType(2).addSlots(
+				new LockSlot(0, Direction.NORTH, 0.5F, 0.95F, 0.3F, 0F),
+				new LockSlot(1, Direction.NORTH, 0.5F, 0.95F, 0.7F, 0F)
 			);
 	}
 }

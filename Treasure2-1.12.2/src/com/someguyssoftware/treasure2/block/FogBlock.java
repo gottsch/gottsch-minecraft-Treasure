@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.block.ModFallingBlock;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.FogHeight;
 import com.someguyssoftware.treasure2.enums.FogType;
@@ -159,7 +160,7 @@ public class FogBlock extends ModFallingBlock {
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 
 		//		Treasure.logger.debug("updateTick on FogBlock @ {}. CD: {}, D: {}", pos.toString(), state.getValue(CHECK_DECAY), state.getValue(DECAYABLE));
-		if (!worldIn.isRemote) {
+		if (WorldInfo.isServerSide(worldIn)) {
 			if ((Boolean)state.getValue(CHECK_DECAY) && (Boolean)state.getValue(DECAYABLE)
 					&& ((Boolean)state.getValue(ACTIVATED))) {
 				//				Treasure.logger.debug("Fog @ {} has CHECK_DECAY = true", pos.toString());
@@ -264,7 +265,7 @@ public class FogBlock extends ModFallingBlock {
 			int i = 32;
 
 			if (worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
-				if (!worldIn.isRemote) {
+				if (WorldInfo.isServerSide(worldIn)) {
 					EntityFallingBlock entityfallingblock = new EntityFallingBlock(worldIn, (double) pos.getX() + 0.5D,
 							(double) pos.getY(), (double) pos.getZ() + 0.5D, worldIn.getBlockState(pos).withProperty(CHECK_DECAY,(Boolean)true).withProperty(ACTIVATED, (Boolean)false));
 					worldIn.spawnEntity(entityfallingblock);

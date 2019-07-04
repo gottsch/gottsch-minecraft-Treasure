@@ -1,5 +1,7 @@
 package com.someguyssoftware.treasure2.tileentity;
 
+import com.someguyssoftware.gottschcore.world.WorldInfo;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ContainerChest;
@@ -47,7 +49,7 @@ public class SafeTileEntity extends AbstractTreasureChestTileEntity {
 		/*
 		 * recalculating if the chest is in use by any players
 		 */
-		if (!this.world.isRemote && this.numPlayersUsing != 0 && (this.ticksSinceSync + x + y + z) % 200 == 0) {
+		if (WorldInfo.isServerSide(getWorld()) && this.numPlayersUsing != 0 && (this.ticksSinceSync + x + y + z) % 200 == 0) {
 			this.numPlayersUsing = 0;
 
 			for (EntityPlayer entityplayer : this.world.getEntitiesWithinAABB(EntityPlayer.class,

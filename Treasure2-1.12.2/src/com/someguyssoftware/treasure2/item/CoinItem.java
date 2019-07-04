@@ -14,6 +14,7 @@ import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.enums.Coins;
@@ -79,7 +80,7 @@ public class CoinItem extends ModItem {
 	@Override
 	public boolean onEntityItemUpdate(EntityItem entityItem) {
 		World world = entityItem.getEntityWorld();
-		if (world.isRemote) {
+		if (WorldInfo.isClientSide(world)) {
 			return super.onEntityItemUpdate(entityItem);
 		}
 		

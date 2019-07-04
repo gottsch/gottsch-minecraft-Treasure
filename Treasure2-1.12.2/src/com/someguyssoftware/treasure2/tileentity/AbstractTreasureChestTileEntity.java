@@ -9,6 +9,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.inventory.InventoryProxy;
@@ -95,7 +96,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		int k = this.pos.getZ();
 		++this.ticksSinceSync;
 
-		if (!this.world.isRemote && this.numPlayersUsing != 0 && (this.ticksSinceSync + i + j + k) % 200 == 0) {
+		if (WorldInfo.isServerSide(getWorld()) && this.numPlayersUsing != 0 && (this.ticksSinceSync + i + j + k) % 200 == 0) {
 			this.numPlayersUsing = 0;
 			float f = 5.0F;
 

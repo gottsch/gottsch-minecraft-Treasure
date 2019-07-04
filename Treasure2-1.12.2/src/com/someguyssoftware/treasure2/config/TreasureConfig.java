@@ -39,6 +39,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String WITHER_CHEST_TOP_ID = "wither_chest_top";
 	public static final String SKULL_CHEST_ID = "skull_chest";
 	public static final String GOLD_SKULL_CHEST_ID = "gold_skull_chest";
+	public static final String CAULDRON_CHEST_ID = "cauldron_chest";
 	
 	// mimics
 	public static final String WOOD_MIMIC_ID = "wood_mimic";
@@ -173,6 +174,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
 	public static final String SKULL_CHEST_TE_ID = "skull_chest_tile_entity";
 	public static final String GOLD_SKULL_CHEST_TE_ID = "gold_skull_chest_tile_entity";
+	public static final String CAULDRON_CHEST_TE_ID = "cauldron_chest_tile_entity";
 	public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
 
 	/*

@@ -4,6 +4,7 @@
 package com.someguyssoftware.treasure2.eventhandler;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.entity.monster.MimicEntity;
 
 import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
@@ -30,7 +31,7 @@ public class MimicEventHandler {
 	 */
 	@SubscribeEvent
 	public void onKnockback(LivingKnockBackEvent event) {
-        if (event.getEntity().getEntityWorld() .isRemote) {
+        if (WorldInfo.isClientSide(event.getEntity().getEntityWorld())) {
         	return;
         }
         

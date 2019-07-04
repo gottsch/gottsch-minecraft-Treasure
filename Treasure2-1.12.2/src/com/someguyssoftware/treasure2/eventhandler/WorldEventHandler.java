@@ -4,6 +4,7 @@
 package com.someguyssoftware.treasure2.eventhandler;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 
@@ -34,7 +35,7 @@ public class WorldEventHandler {
 		/*
 		 * On load of dimension 0 (overworld), initialize the loot table's context and other static loot tables
 		 */
-		if (!event.getWorld().isRemote && event.getWorld().provider.getDimension() == 0) {
+		if (WorldInfo.isServerSide(event.getWorld()) && event.getWorld().provider.getDimension() == 0) {
 //			Treasure.logger.debug("server event");
 			WorldServer world = (WorldServer) event.getWorld();
 			TreasureLootTables.init(world);

@@ -12,6 +12,7 @@ tile.treasure2:compressor_chest.name=Compressor Chest
 tile.treasure2:wither_chest.name=Wither Chest
 tile.treasure2:skull_chest.name=Skull Chest
 tile.treasure2:gold_skull_chest.name=Golden Skull Chest
+tile.treasure2:cauldron_chest.name=Cauldron Chest
 
 tile.treasure2:wood_mimic.name=Wood Mimic
 
@@ -180,4 +181,5 @@ display.compressor_chest.name=Compressor Chest
 display.wither_chest.name=Wither Chest
 display.skull_chest.name=Skull Chest
 display.gold_skull_chest.name=Golden Skull Chest
+display.cauldron_chest.name=Cauldron Chest
 

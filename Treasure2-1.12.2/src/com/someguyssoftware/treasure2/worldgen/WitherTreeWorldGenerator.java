@@ -10,6 +10,7 @@ import com.someguyssoftware.gottschcore.biome.BiomeHelper;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.Configs;
@@ -120,7 +121,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 
 				if (!BiomeHelper.isBiomeAllowed(biome, treeConfig.getBiomeWhiteList(), treeConfig.getBiomeBlackList())) {
 					if (Treasure.logger.isDebugEnabled()) {
-			    		if (world.isRemote) {
+			    		if (WorldInfo.isClientSide(world)) {
 			    			Treasure.logger.debug("{} is not a valid biome @ {} for Wither Tree", biome.getBiomeName(), coords.toShortString());
 			    		}
 			    		else {

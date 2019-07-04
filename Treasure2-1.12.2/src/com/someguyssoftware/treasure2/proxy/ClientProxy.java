@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2.proxy;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.model.BandedChestModel;
+import com.someguyssoftware.treasure2.client.model.CauldronChestModel;
 import com.someguyssoftware.treasure2.client.model.CompressorChestModel;
 import com.someguyssoftware.treasure2.client.model.CrateChestModel;
 import com.someguyssoftware.treasure2.client.model.DreadPirateChestModel;
@@ -15,6 +16,7 @@ import com.someguyssoftware.treasure2.client.model.StandardChestModel;
 import com.someguyssoftware.treasure2.client.model.StrongboxModel;
 import com.someguyssoftware.treasure2.client.model.WitherChestModel;
 import com.someguyssoftware.treasure2.client.render.entity.MimicEntityRenderer;
+import com.someguyssoftware.treasure2.client.render.tileentity.CauldronChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CompressorChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CrateChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.SafeTileEntityRenderer;
@@ -24,6 +26,7 @@ import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTile
 import com.someguyssoftware.treasure2.client.render.tileentity.WitherChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.CauldronChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.DreadPirateChestTileEntity;
@@ -129,6 +132,11 @@ public class ClientProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				GoldSkullChestTileEntity.class,
 				new SkullChestTileEntityRenderer("gold-skull-chest", new SkullChestModel()));
+		
+		// cauldron chest
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				CauldronChestTileEntity.class,
+				new CauldronChestTileEntityRenderer("cauldron-chest", new CauldronChestModel()));
 		
 		/*
 		 *  register the entity render handlers
