@@ -6,7 +6,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:treasure/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/treasure/uncommon",
                     "weight": 30
                 }
 			]
@@ -20,7 +20,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:items/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/items/uncommon",
                     "weight": 1
                 }
 			]
@@ -34,7 +34,7 @@
 			"entries": [
 	                {
                     "type": "loot_table",
-                    "name": "treasure2:armor/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/armor/uncommon",
                     "weight": 1
                 }		
 			]
@@ -48,7 +48,7 @@
 			"entries": [
 	                {
                     "type": "loot_table",
-                    "name": "treasure2:food/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/food/uncommon",
                     "weight": 1
                 }				
 			]
@@ -62,7 +62,7 @@
 			"entries": [
 	            {
                     "type": "loot_table",
-                    "name": "treasure2:tools/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/tools/uncommon",
                     "weight": 1
                 }				
 			]
@@ -76,7 +76,7 @@
 			"entries": [
 		            {
                     "type": "loot_table",
-                    "name": "treasure2:potions/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/potions/uncommon",
                     "weight": 1
                 }			
 			]
@@ -91,7 +91,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:items/common",
+                    "name": "treasure2:loot_tables/treasure2/items/common",
                     "weight": 1
                 }
 			]
@@ -105,7 +105,7 @@
 			"entries": [
 	                {
                     "type": "loot_table",
-                    "name": "treasure2:armor/common",
+                    "name": "treasure2:loot_tables/treasure2/armor/common",
                     "weight": 1
                 }		
 			]
@@ -119,7 +119,7 @@
 			"entries": [
 	                {
                     "type": "loot_table",
-                    "name": "treasure2:food/common",
+                    "name": "treasure2:loot_tables/treasure2/food/common",
                     "weight": 1
                 }				
 			]
@@ -133,7 +133,7 @@
 			"entries": [
 	            {
                     "type": "loot_table",
-                    "name": "treasure2:tools/common",
+                    "name": "treasure2:loot_tables/treasure2/tools/common",
                     "weight": 1
                 }				
 			]
@@ -147,7 +147,7 @@
 			"entries": [
 		            {
                     "type": "loot_table",
-                    "name": "treasure2:potions/common",
+                    "name": "treasure2:loot_tables/treasure2/potions/common",
                     "weight": 1
                 }			
 			]

@@ -78,8 +78,7 @@ public class TreasureBlocks {
 	// MIMIC CHESTS
 	public static final Block WOOD_MIMIC;
 	
-		// TODO chests
-	
+	// TODO chests	
 	public static final Block VASE = null;
 	public static final Block INVISIBLE_CHEST = null;
 

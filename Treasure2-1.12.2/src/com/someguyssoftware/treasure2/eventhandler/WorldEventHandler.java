@@ -6,7 +6,6 @@ package com.someguyssoftware.treasure2.eventhandler;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.world.WorldEvent;
@@ -38,7 +37,9 @@ public class WorldEventHandler {
 		if (WorldInfo.isServerSide(event.getWorld()) && event.getWorld().provider.getDimension() == 0) {
 //			Treasure.logger.debug("server event");
 			WorldServer world = (WorldServer) event.getWorld();
-			TreasureLootTables.init(world);
+//			TreasureLootTables.init(world);
+			Treasure.LOOT_TABLES.init(world);
+			Treasure.LOOT_TABLES.register(getMod().getId());
 		}
 	}
 

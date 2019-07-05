@@ -9,7 +9,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:treasure/scarce",
+                    "name": "treasure2:loot_tables/treasure2/treasure/scarce",
                     "weight": 30
                 }
 			]
@@ -23,7 +23,7 @@
 			"entries": [
 	            {
 	                "type": "loot_table",
-	                "name": "treasure2:items/scarce",
+	                "name": "treasure2:loot_tables/treasure2/items/scarce",
 	                "weight": 1
 	            }
 			]
@@ -38,7 +38,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:food/scarce",
+                    "name": "treasure2:loot_tables/treasure2/food/scarce",
                     "weight": 1
                 }			
 			]
@@ -53,7 +53,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:potions/scarce",
+                    "name": "treasure2:loot_tables/treasure2/potions/scarce",
                     "weight": 1
                 }			
 			]
@@ -67,7 +67,7 @@
 			"entries": [
 	            {
 	                "type": "loot_table",
-	                "name": "treasure2:items/uncommon",
+	                "name": "treasure2:loot_tables/treasure2/items/uncommon",
 	                "weight": 1
 	            }
 			]
@@ -82,7 +82,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:food/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/food/uncommon",
                     "weight": 1
                 }			
 			]
@@ -97,7 +97,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:potions/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/potions/uncommon",
                     "weight": 1
                 }			
 			]

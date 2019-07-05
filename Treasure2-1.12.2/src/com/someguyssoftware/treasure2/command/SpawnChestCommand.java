@@ -6,21 +6,14 @@ package com.someguyssoftware.treasure2.command;
 import java.util.List;
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.gottschcore.loot.LootTable;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
-import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
-import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
-import com.someguyssoftware.treasure2.loot.TreasureLootTable;
-import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
-import net.minecraft.block.Block;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,7 +22,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * 
@@ -112,7 +104,7 @@ public class SpawnChestCommand extends CommandBase {
 //					}   				
     				   				
     				// get the loot table
-    				TreasureLootTable lootTable = gen.selectLootTable(new Random(), rarity);
+    				LootTable lootTable = gen.selectLootTable(new Random(), rarity);
     				
     				if (lootTable == null) {
     					Treasure.logger.warn("Unable to select a lootTable.");
@@ -120,14 +112,14 @@ public class SpawnChestCommand extends CommandBase {
     				}
     				
     				Treasure.logger.debug("Generating loot from loot table for rarity {}", rarity);
-    				List<ItemStack> stacks = lootTable.generateLootFromPools(new Random(), TreasureLootTables.CONTEXT);
-//    				Treasure.logger.debug("Generated loot:");
-//    				for (ItemStack stack : stacks) {
-//    					Treasure.logger.debug(stack.getDisplayName());
-//    				}	    				
+    				List<ItemStack> stacks = lootTable.generateLootFromPools(new Random(), Treasure.LOOT_TABLES.getContext());
+    				Treasure.logger.debug("Generated loot:");
+    				for (ItemStack stack : stacks) {
+    					Treasure.logger.debug(stack.getDisplayName());
+    				}	    				
     				
     				lootTable.fillInventory(tileEntity.getInventoryProxy(), 
-							new Random(), 	TreasureLootTables.CONTEXT);
+							new Random(), 	Treasure.LOOT_TABLES.getContext());
     			}
     		}
 		}

@@ -9,7 +9,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:treasure/epic",
+                    "name": "treasure2:loot_tables/treasure2/treasure/epic",
                     "weight": 1
                 }
 			]
@@ -23,7 +23,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:items/epic",
+                    "name": "treasure2:loot_tables/treasure2/items/epic",
                     "weight": 1
                 }
 			]
@@ -80,12 +80,18 @@
 					"name": "minecraft:gunpowder",
 					"weight": 20
 				},
-				{
-					"entryName": "pufferfish",
-					"type": "item",
-					"name": "minecraft:pufferfish",
-					"weight": 20
-				},	
+                {
+					"entryName": "pufferfish",                
+                    "type": "item",
+                    "name": "minecraft:fish",
+                    "functions": [
+                        {
+                            "function": "set_data",
+                            "data": 2
+                        }
+                    ],
+                    "weight": 20
+                },				
 				{
 					"entryName": "ghast_tear",
 					"type": "item",
@@ -155,7 +161,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:potions/common",
+                    "name": "treasure2:loot_tables/treasure2/potions/common",
                     "weight": 30
                 }
 			]
@@ -169,7 +175,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:potions/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/potions/uncommon",
                     "weight": 40
                 }
 			]
@@ -183,7 +189,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:potions/scarce",
+                    "name": "treasure2:loot_tables/treasure2/potions/scarce",
                     "weight": 50
                 }
 			]
@@ -197,7 +203,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:potions/rare",
+                    "name": "treasure2:loot_tables/treasure2/potions/rare",
                     "weight": 30
                 }
 			]
@@ -211,7 +217,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:items/rare",
+                    "name": "treasure2:loot_tables/treasure2/items/rare",
                     "weight": 1
                 }
 			]
