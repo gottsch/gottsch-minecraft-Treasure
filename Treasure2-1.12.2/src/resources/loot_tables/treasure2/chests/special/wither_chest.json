@@ -76,7 +76,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:potions/common",
+                    "name": "treasure2:loot_tables/treasure2/potions/common",
                     "weight": 30
                 }
 			]
@@ -90,7 +90,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:potions/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/potions/uncommon",
                     "weight": 40
                 }
 			]
@@ -104,7 +104,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:potions/scarce",
+                    "name": "treasure2:loot_tables/treasure2/potions/scarce",
                     "weight": 50
                 }
 			]
@@ -118,7 +118,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:potions/rare",
+                    "name": "treasure2:loot_tables/treasure2/potions/rare",
                     "weight": 30
                 }
 			]
@@ -129,7 +129,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:treasure/scarce",
+                    "name": "treasure2:loot_tables/treasure2/treasure/scarce",
                     "weight": 30
                 }
 			]

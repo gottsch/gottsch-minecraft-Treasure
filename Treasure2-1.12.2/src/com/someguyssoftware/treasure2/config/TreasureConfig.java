@@ -39,6 +39,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String WITHER_CHEST_TOP_ID = "wither_chest_top";
 	public static final String SKULL_CHEST_ID = "skull_chest";
 	public static final String GOLD_SKULL_CHEST_ID = "gold_skull_chest";
+	public static final String CAULDRON_CHEST_ID = "cauldron_chest";
 	
 	// mimics
 	public static final String WOOD_MIMIC_ID = "wood_mimic";
@@ -112,7 +113,9 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String GRAVESTONE3_POLISHED_DIORITE_ID = "gravestone3_polished_diorite";
 	public static final String GRAVESTONE3_OBSIDIAN_ID = "gravestone3_obsidian";
 	
-	public static final String SKULL_CROSSBONES_ID = "skull_and_crossbones";		
+	public static final String SKULL_CROSSBONES_ID = "skull_and_crossbones";
+	public static final String SKELETON_ID = "skeleton";
+	
 	public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
 	public static final String FOG_BLOCK_ID = "fog";
 	public static final String HIGH_FOG_BLOCK_ID = "high_fog";
@@ -171,6 +174,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
 	public static final String SKULL_CHEST_TE_ID = "skull_chest_tile_entity";
 	public static final String GOLD_SKULL_CHEST_TE_ID = "gold_skull_chest_tile_entity";
+	public static final String CAULDRON_CHEST_TE_ID = "cauldron_chest_tile_entity";
 	public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
 
 	/*
@@ -255,6 +259,7 @@ public class TreasureConfig extends AbstractConfig {
 		Configuration config = super.load(file);
 		
 		// add mod specific settings here
+        setModsFolder("mods");
 		// TODO change this to be just the base folder. make private. use getter(). append MODID
         treasureFolder = config.getString("treasureFolder", "03-mod", "mods/" + Treasure.MODID + "/", "Where default Treasure folder is located.");
         enableKeyBreaks = config.getBoolean("enableKeyBreaks", "03-mod", true, "Enables/Disable whether a Key can break when attempting to unlock a Lock.");

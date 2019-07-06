@@ -4,6 +4,7 @@
 package com.someguyssoftware.treasure2.item;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 
@@ -36,7 +37,7 @@ public class SpanishMossItem extends ModItem {
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
-		if (worldIn.isRemote) {
+		if (WorldInfo.isClientSide(worldIn)) {
             return EnumActionResult.SUCCESS;
         }
 

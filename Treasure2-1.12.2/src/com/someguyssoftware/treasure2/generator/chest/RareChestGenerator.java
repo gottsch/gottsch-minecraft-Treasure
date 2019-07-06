@@ -6,22 +6,19 @@ package com.someguyssoftware.treasure2.generator.chest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Map.Entry;
+import java.util.Random;
 
+import com.someguyssoftware.gottschcore.loot.LootTable;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
-import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
-import com.someguyssoftware.treasure2.loot.TreasureLootTable;
-import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
-import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * 
@@ -63,17 +60,19 @@ public class RareChestGenerator extends AbstractChestGenerator {
 //	}
 	
 	@Override
-	public List<TreasureLootTable> buildLootTableList(final Rarity chestRarity) {
+	public List<LootTable> buildLootTableList(final Rarity chestRarity) {
 		// get all loot tables by column key
-		List<TreasureLootTable> tables = new ArrayList<>();
-		Map<String, List<TreasureLootTable>> mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(Rarity.SCARCE);
+		List<LootTable> tables = new ArrayList<>();
+//		Map<String, List<TreasureLootTable>> mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(Rarity.SCARCE);
+		Map<String, List<LootTable>> mapOfLootTables = Treasure.LOOT_TABLES.getChestLootTablesTable().column(Rarity.SCARCE);
 		// convert to a single list
-		for(Entry<String, List<TreasureLootTable>> n : mapOfLootTables.entrySet()) {
+		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
 			tables.addAll(n.getValue());
 		}
-		mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(Rarity.RARE);
+//		mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(Rarity.RARE);
+		mapOfLootTables = Treasure.LOOT_TABLES.getChestLootTablesTable().column(Rarity.RARE);
 		// convert to a single list
-		for(Entry<String, List<TreasureLootTable>> n : mapOfLootTables.entrySet()) {
+		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
 			tables.addAll(n.getValue());
 		}		
 		return tables;

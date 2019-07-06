@@ -4,6 +4,7 @@
 package com.someguyssoftware.treasure2.eventhandler;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.FogBlock;
 import com.someguyssoftware.treasure2.block.WitherFogBlock;
@@ -50,7 +51,7 @@ public class PlayerEventHandler {
 	 */
 	@SubscribeEvent
 	public void checkFogInteraction(LivingUpdateEvent event) {
-        if (event.getEntity().getEntityWorld() .isRemote) {
+        if (WorldInfo.isClientSide(event.getEntity().getEntityWorld())) {
         	return;
         }
         

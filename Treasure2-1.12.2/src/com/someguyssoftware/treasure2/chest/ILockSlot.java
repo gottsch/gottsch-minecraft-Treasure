@@ -5,8 +5,6 @@ package com.someguyssoftware.treasure2.chest;
 
 import com.someguyssoftware.gottschcore.enums.Direction;
 import com.someguyssoftware.gottschcore.enums.Rotate;
-import com.someguyssoftware.gottschcore.positional.Coords;
-import com.someguyssoftware.gottschcore.positional.ICoords;
 
 import net.minecraft.nbt.NBTTagCompound;
 

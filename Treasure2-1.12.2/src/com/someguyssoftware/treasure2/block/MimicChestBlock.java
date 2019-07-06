@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.block;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.enums.Direction;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.entity.monster.MimicEntity;
@@ -115,7 +116,7 @@ public class MimicChestBlock extends AbstractChestBlock {
 		AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
 
 		// exit if on the client
-		if (worldIn.isRemote) {			
+		if (WorldInfo.isClientSide(worldIn)) {			
 			return true;
 		}
 		

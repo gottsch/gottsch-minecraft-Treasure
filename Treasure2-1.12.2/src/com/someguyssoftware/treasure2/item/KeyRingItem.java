@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.item;
 import java.util.List;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
@@ -68,7 +69,7 @@ public class KeyRingItem extends ModItem {
 	 */
 	@Override
 	public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
-		if (!worldIn.isRemote) {			
+		if (WorldInfo.isServerSide(worldIn)) {			
 			if (!stack.hasTagCompound()) {
 				stack.setTagCompound(new NBTTagCompound());
 			}
@@ -94,7 +95,7 @@ public class KeyRingItem extends ModItem {
      * @return Return PASS to allow vanilla handling, any other to skip normal code.
 	 */
     public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
-		if (!world.isRemote) {			
+		if (WorldInfo.isServerSide(world)) {			
 			ItemStack heldItem = player.getHeldItem(hand);
 			if (!heldItem.hasTagCompound()) {
 				heldItem.setTagCompound(new NBTTagCompound());
@@ -125,7 +126,7 @@ public class KeyRingItem extends ModItem {
 		boolean isKeyBroken = false;
 		
 		// exit if on the client
-		if (worldIn.isRemote) {			
+		if (WorldInfo.isClientSide(worldIn)) {			
 			return EnumActionResult.FAIL;
 		}
 
@@ -246,7 +247,7 @@ public class KeyRingItem extends ModItem {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		// exit if on the client
-		if (worldIn.isRemote) {			
+		if (WorldInfo.isClientSide(worldIn)) {			
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
 		}
 

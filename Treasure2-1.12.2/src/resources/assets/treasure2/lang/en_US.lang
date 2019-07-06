@@ -12,6 +12,7 @@ tile.treasure2:compressor_chest.name=Compressor Chest
 tile.treasure2:wither_chest.name=Wither Chest
 tile.treasure2:skull_chest.name=Skull Chest
 tile.treasure2:gold_skull_chest.name=Golden Skull Chest
+tile.treasure2:cauldron_chest.name=Cauldron Chest
 
 tile.treasure2:wood_mimic.name=Wood Mimic
 
@@ -44,6 +45,7 @@ tile.treasure2:gravestone3_polished_diorite.name=Diorite Tombstone
 tile.treasure2:gravestone3_obsidian.name=Obsidian Tombstone
 
 tile.treasure2:skull_and_crossbones.name=Skull and Bones
+tile.treasure2:skeleton.name=Skeleton
 
 #wither tree
 tile.treasure2:wither_log.name=Wither Log
@@ -124,6 +126,7 @@ item.treasure2:skull_sword.name=Skull Sword
 item.treasure2:spanish_moss.name=Spanish Moss
 item.treasure2:sapphire.name=Sapphire
 item.treasure2:ruby.name=Ruby
+item.treasure2:skeleton_item.name=Skeleton
 item.treasure2:treasure_tool.name=Treasure Tool
 
 #entities
@@ -178,4 +181,5 @@ display.compressor_chest.name=Compressor Chest
 display.wither_chest.name=Wither Chest
 display.skull_chest.name=Skull Chest
 display.gold_skull_chest.name=Golden Skull Chest
+display.cauldron_chest.name=Cauldron Chest
 

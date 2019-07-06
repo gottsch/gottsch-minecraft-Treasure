@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
@@ -132,7 +133,7 @@ public class LockItem extends ModItem {
 			AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(chestPos);
 						
 			// exit if on the client
-			if (worldIn.isRemote) {			
+			if (WorldInfo.isClientSide(worldIn)) {			
 				return EnumActionResult.FAIL;
 			}
 			

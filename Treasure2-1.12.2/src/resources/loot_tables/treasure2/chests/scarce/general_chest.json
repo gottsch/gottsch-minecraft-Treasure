@@ -2,11 +2,14 @@
 	"pools": [
 		{
 			"name": "treasure",
-			"rolls": 2,
+			"rolls": {
+				"min": 2,
+				"max": 3
+			},
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:treasure/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/treasure/scarce",
                     "weight": 30
                 }
 			]
@@ -15,12 +18,12 @@
 			"name": "items",
 			"rolls": {
 				"min": 2,
-				"max": 4
+				"max": 3
 			},
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:items/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/items/scarce",
                     "weight": 1
                 }
 			]
@@ -34,7 +37,7 @@
 			"entries": [
 	                {
                     "type": "loot_table",
-                    "name": "treasure2:armor/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/armor/scarce",
                     "weight": 1
                 }		
 			]
@@ -43,12 +46,12 @@
 			"name": "food",
 			"rolls": {
 				"min": 0,
-				"max": 2
+				"max": 1
 			},
 			"entries": [
 	                {
                     "type": "loot_table",
-                    "name": "treasure2:food/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/food/scarce",
                     "weight": 1
                 }				
 			]
@@ -62,7 +65,7 @@
 			"entries": [
 	            {
                     "type": "loot_table",
-                    "name": "treasure2:tools/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/tools/scarce",
                     "weight": 1
                 }				
 			]
@@ -70,62 +73,62 @@
 		{
 			"name": "potions",
 			"rolls": {
-				"min": 0,
+				"min": 1,
 				"max": 2
 			},
 			"entries": [
 		            {
                     "type": "loot_table",
-                    "name": "treasure2:potions/uncommon",
+                    "name": "treasure2:loot_tables/treasure2/potions/scarce",
                     "weight": 1
                 }			
 			]
 		},
 
 		{
-			"name": "common_items",
+			"name": "uncommon_items",
 			"rolls": {
 				"min": 0,
-				"max": 2
+				"max": 4
 			},
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:items/common",
+                    "name": "treasure2:loot_tables/treasure2/items/uncommon",
                     "weight": 1
                 }
 			]
 		},
 		{
-			"name": "common_armor",
+			"name": "uncommon_armor",
 			"rolls": {
 				"min": 0,
-				"max": 1
+				"max": 2
 			},
 			"entries": [
 	                {
                     "type": "loot_table",
-                    "name": "treasure2:armor/common",
+                    "name": "treasure2:loot_tables/treasure2/armor/uncommon",
                     "weight": 1
                 }		
 			]
 		},
 		{
-			"name": "common_food",
+			"name": "uncommon_food",
 			"rolls": {
 				"min": 0,
-				"max": 1
+				"max": 2
 			},
 			"entries": [
 	                {
                     "type": "loot_table",
-                    "name": "treasure2:food/common",
+                    "name": "treasure2:loot_tables/treasure2/food/uncommon",
                     "weight": 1
                 }				
 			]
 		},
 		{
-			"name": "common_tools",
+			"name": "uncommon_tools",
 			"rolls": {
 				"min": 0,
 				"max": 1
@@ -133,21 +136,21 @@
 			"entries": [
 	            {
                     "type": "loot_table",
-                    "name": "treasure2:tools/common",
+                    "name": "treasure2:loot_tables/treasure2/tools/uncommon",
                     "weight": 1
                 }				
 			]
 		},
 		{
-			"name": "common_potions",
+			"name": "uncommon_potions",
 			"rolls": {
 				"min": 0,
-				"max": 1
+				"max": 2
 			},
 			"entries": [
 		            {
                     "type": "loot_table",
-                    "name": "treasure2:potions/common",
+                    "name": "treasure2:loot_tables/treasure2/potions/uncommon",
                     "weight": 1
                 }			
 			]

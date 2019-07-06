@@ -14,6 +14,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.enums.Direction;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
@@ -365,7 +366,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 		// TODO dump TE
 
 		// exit if on the client
-		if (worldIn.isRemote) {			
+		if (WorldInfo.isClientSide(worldIn)) {			
 			return true;
 		}
 		else {
@@ -426,7 +427,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 				 * spawn chest item
 				 */
 
-				if (!worldIn.isRemote) {
+				if (WorldInfo.isServerSide(worldIn)) {
 					ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
 
 					// give the chest a tag compound

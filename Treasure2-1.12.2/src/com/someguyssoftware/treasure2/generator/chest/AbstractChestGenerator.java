@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.loot.LootTable;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
@@ -20,10 +21,12 @@ import com.someguyssoftware.treasure2.block.WitherChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
@@ -107,7 +110,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		// if successfully gen the pit
 		if (isGenerated) {
 //			Treasure.logger.debug("isGenerated = TRUE");
-			TreasureLootTable lootTable = selectLootTable(random, chestRarity);
+			LootTable lootTable = selectLootTable(random, chestRarity);
 
 			if (lootTable == null) {
 				Treasure.logger.warn("Unable to select a lootTable.");
@@ -139,7 +142,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				
 				lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
 							random,
-							TreasureLootTables.CONTEXT);
+							Treasure.LOOT_TABLES.getContext());
 			}
 			else if (chest instanceof IMimicBlock) {
 				// don't fill
@@ -155,7 +158,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 //				}				
 				lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
 							random,
-							TreasureLootTables.CONTEXT);			
+							Treasure.LOOT_TABLES.getContext());			
 			}
 			
 			// add locks
@@ -296,11 +299,11 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param chestRarity
 	 * @return
 	 */
-	public TreasureLootTable selectLootTable(Random random, final Rarity chestRarity) {
-		TreasureLootTable table = null;
+	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
+		LootTable table = null;
 
 		// select the loot table by rarity
-		List<TreasureLootTable> tables = buildLootTableList(chestRarity);
+		List<LootTable> tables = buildLootTableList(chestRarity);
 		
 		// select a random table from the list
 		if (tables != null && !tables.isEmpty()) {
@@ -326,7 +329,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @return
 	 */
 	@Override
-	public List<TreasureLootTable> buildLootTableList(Rarity rarity) {
+	public List<LootTable> buildLootTableList(Rarity rarity) {
 //		List<TreasureLootTable> tables = TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(rarity);
 		
 		// get all loot tables by column key
@@ -339,7 +342,8 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		
 //		return tables;
 		
-		return TreasureLootTables.getLootTableByRarity(rarity);
+//		return TreasureLootTables.getLootTableByRarity(rarity);
+		return Treasure.LOOT_TABLES.getLootTableByRarity(rarity);
 	}
 	
 	/**
@@ -349,7 +353,14 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param coods
 	 */
 	public void addMarkers(World world, Random random, ICoords coords) {
-		GenUtil.placeMarkers(world, random, coords);
+//		GenUtil.placeMarkers(world, random, coords);
+//		if (TreasureConfig.isStructureMarkersAllowed && RandomHelper.checkProbability(random, TreasureConfig.structureMarkerProbability)) {
+//			Treasure.logger.debug("generating a random structure marker -> {}", coords.toShortString());
+//			new RandomStructureMarkerGenerator().generate(world, random, coords);
+//		}
+//		else {
+			new GravestoneMarkerGenerator().generate(world, random, coords);			
+//		}
 	}
 	
 	/**

@@ -9,7 +9,9 @@ import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.Appender;
 
+import com.someguyssoftware.gottschcore.GottschCore;
 import com.someguyssoftware.gottschcore.annotation.Credits;
 import com.someguyssoftware.gottschcore.command.ShowVersionCommand;
 import com.someguyssoftware.gottschcore.config.IConfig;
@@ -32,6 +34,7 @@ import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
@@ -63,7 +66,7 @@ import net.minecraftforge.oredict.OreDictionary;
 		modid=Treasure.MODID,
 		name=Treasure.NAME,
 		version=Treasure.VERSION,
-		dependencies="required-after:gottschcore@[1.6.0,)",
+		dependencies="required-after:gottschcore@[1.7.0,)",
 		acceptedMinecraftVersions = "[1.12.2]",
 		updateJSON = Treasure.UPDATE_JSON_URL
 		)
@@ -78,7 +81,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.3.1";
+	protected static final String VERSION = "1.3.5";
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
 	private static final String VERSION_URL = "";
@@ -92,6 +95,9 @@ public class Treasure extends AbstractMod {
 	
 	@Instance(value=Treasure.MODID)
 	public static Treasure instance;
+	
+	// loot tables management
+	public static TreasureLootTableMaster LOOT_TABLES;
 	
 	/*
 	 *  Treasure Creative Tab
@@ -132,6 +138,12 @@ public class Treasure extends AbstractMod {
 		
 		// configure logging
 		addRollingFileAppenderToLogger(Treasure.NAME, Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
+		// create a rolling file appender
+//		Appender appender = createRollingFileAppender(Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
+		// add appender to mod logger
+//		addAppenderToLogger(appender, Treasure.NAME, (ILoggerConfig) getConfig());
+		// add appender to the GottschCore logger
+//		addAppenderToLogger(appender, GottschCore.instance.getName(), (ILoggerConfig) getConfig());
 		
 		// register the GUI handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
@@ -192,6 +204,8 @@ public class Treasure extends AbstractMod {
 			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);
 		}
 
+		// add the loot table managers
+		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");
 	}
 	
 	/**

@@ -110,6 +110,7 @@ public class TreasureItems {
 	public static Item TREASURE_TOOL;
 	public static Item SAPPHIRE;
 	public static Item RUBY;
+	public static Item SKELETON;
     	
 	/*
 	 * Materials
@@ -352,6 +353,9 @@ public class TreasureItems {
 		RUBY = new ModItem()
 				.setItemName(Treasure.MODID, TreasureConfig.RUBY_ID)
 				.setCreativeTab(Treasure.TREASURE_TAB);
+		
+		SKELETON = new SkeletonItem(Treasure.MODID, TreasureConfig.SKELETON_ID);
+		
 	}
 	
 	/**
@@ -430,7 +434,8 @@ public class TreasureItems {
 					PAINTING_BLOCKS_WATER,
 					PAINTING_BLOCKS_WOOD,
 					SAPPHIRE,
-					RUBY
+					RUBY,
+					SKELETON
 			};
 			registry.registerAll(items);		
 		}

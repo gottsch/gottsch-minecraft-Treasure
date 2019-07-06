@@ -49,7 +49,8 @@ public class TreasureLootTables {
 	public static TreasureLootTable WITHER_CHEST_LOOT_TABLE;
 	public static TreasureLootTable SKULL_CHEST_LOOT_TABLE;
 	public static TreasureLootTable GOLD_SKULL_CHEST_LOOT_TABLE;
-
+	public static TreasureLootTable CAULDRON_CHEST_LOOT_TABLE;
+	
 	/*
 	 * customized loot table manager
 	 */
@@ -78,7 +79,8 @@ public class TreasureLootTables {
 	private static final List<String> TABLES = ImmutableList.of(
 			"chests/wither_chest",
 			"chests/skull_chest",
-			"chests/gold_skull_chest"
+			"chests/gold_skull_chest",
+			"chests/cauldron_chest"
 			);
 
 	/*
@@ -103,56 +105,56 @@ public class TreasureLootTables {
 			"tools"
 			);
 	
-	static {
-		// create paths to custom loot tables if they don't exist
-		for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
-			createLootTableFolder(s);
-		}
-		for (String s : NON_CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
-			createLootTableFolder(s);
-		}		
-		
-		// load/expose foreign mod loot tables
-		for (String foreignModID : TreasureConfig.enableForeignModIDs) {
-			if (Loader.isModLoaded(foreignModID)) {
-				for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
-					exposeLootTable(foreignModID, s);
-				}
-				for (String s : NON_CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
-					exposeLootTable(foreignModID, s);
-				}
-			}
-		}
-		
-		// create a new loot table manager for custom file-system loot tables
-		lootTableManager = new TreasureLootTableManager(Paths.get(TreasureConfig.MODS_FOLDER).toAbsolutePath().toFile());
-//		new File(path.toAbsolutePath().toString())
-
-		// initialize the maps
-		for (Rarity r : Rarity.values()) {
-			CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.put(BUILTIN_LOOT_TABLE_KEY, r, new ArrayList<ResourceLocation>());
-			CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<ResourceLocation>());
-
-			CHEST_LOOT_TABLES_TABLE.put(BUILTIN_LOOT_TABLE_KEY, r, new ArrayList<TreasureLootTable>());
-			CHEST_LOOT_TABLES_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<TreasureLootTable>());
-		}
-
-		Treasure.logger.debug("Registering loot tables");
-		// register special tables
-		for (String s : TABLES) {
-//			Treasure.logger.debug("Registering loot table -> {}", s);
-			LootTableList.register(new ResourceLocation(Treasure.MODID, s));
-		}
-
-		// register built-in rarity based tables
-		registerLootTables();
-
-		// register custom rarity based tables
-		registerCustomLootTables();
-		for (String foreignModID : TreasureConfig.enableForeignModIDs) {
-			registerCustomLootTables(foreignModID);
-		}
-	}
+//	static {
+//		// create paths to custom loot tables if they don't exist
+//		for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
+//			createLootTableFolder(s);
+//		}
+//		for (String s : NON_CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
+//			createLootTableFolder(s);
+//		}		
+//		
+//		// load/expose foreign mod loot tables
+//		for (String foreignModID : TreasureConfig.enableForeignModIDs) {
+//			if (Loader.isModLoaded(foreignModID)) {
+//				for (String s : CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
+//					exposeLootTable(foreignModID, s);
+//				}
+//				for (String s : NON_CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
+//					exposeLootTable(foreignModID, s);
+//				}
+//			}
+//		}
+//		
+//		// create a new loot table manager for custom file-system loot tables
+//		lootTableManager = new TreasureLootTableManager(Paths.get(TreasureConfig.MODS_FOLDER).toAbsolutePath().toFile());
+////		new File(path.toAbsolutePath().toString())
+//
+//		// initialize the maps
+//		for (Rarity r : Rarity.values()) {
+//			CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.put(BUILTIN_LOOT_TABLE_KEY, r, new ArrayList<ResourceLocation>());
+//			CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<ResourceLocation>());
+//
+//			CHEST_LOOT_TABLES_TABLE.put(BUILTIN_LOOT_TABLE_KEY, r, new ArrayList<TreasureLootTable>());
+//			CHEST_LOOT_TABLES_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<TreasureLootTable>());
+//		}
+//
+//		Treasure.logger.debug("Registering loot tables");
+//		// register special tables
+//		for (String s : TABLES) {
+////			Treasure.logger.debug("Registering loot table -> {}", s);
+//			LootTableList.register(new ResourceLocation(Treasure.MODID, s));
+//		}
+//
+//		// register built-in rarity based tables
+//		registerLootTables();
+//
+//		// register custom rarity based tables
+//		registerCustomLootTables();
+//		for (String foreignModID : TreasureConfig.enableForeignModIDs) {
+//			registerCustomLootTables(foreignModID);
+//		}
+//	}
 
 	/**
 	 * 
@@ -172,6 +174,7 @@ public class TreasureLootTables {
 		WITHER_CHEST_LOOT_TABLE = lootTableManager.getLootTableFromLocation(new ResourceLocation(Treasure.MODID + ":chests/wither_chest"));
 		SKULL_CHEST_LOOT_TABLE = lootTableManager.getLootTableFromLocation(new ResourceLocation(Treasure.MODID + ":chests/skull_chest"));
 		GOLD_SKULL_CHEST_LOOT_TABLE = lootTableManager.getLootTableFromLocation(new ResourceLocation(Treasure.MODID + ":chests/gold_skull_chest"));
+		CAULDRON_CHEST_LOOT_TABLE = lootTableManager.getLootTableFromLocation(new ResourceLocation(Treasure.MODID + ":chests/cauldron_chest"));
 
 		// for every entry in the RESOURCE_LOCATION_TABLE add to the LOOT_TABLES_TABLE
 		for(Table.Cell<String, Rarity, List<ResourceLocation>> cell : CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.cellSet()) {
