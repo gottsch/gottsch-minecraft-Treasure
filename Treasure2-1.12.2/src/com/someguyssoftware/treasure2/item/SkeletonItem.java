@@ -45,6 +45,7 @@ public class SkeletonItem extends ModItem {
 	 * Called when a Block is right-clicked with this Item
 	 */
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos posIn, EnumHand hand, EnumFacing facingIn, float hitX, float hitY, float hitZ) {
+		// TODO change to use Cube instead of IBlockState		
 		if (WorldInfo.isClientSide(worldIn)) {
 			return EnumActionResult.SUCCESS;
 		} 
@@ -68,8 +69,9 @@ public class SkeletonItem extends ModItem {
 			if (player.canPlayerEdit(posIn, facingIn, itemStack) && player.canPlayerEdit(pos, facingIn, itemStack)) {
 				IBlockState state2 = worldIn.getBlockState(pos);
 				boolean flag1 = state2.getBlock().isReplaceable(worldIn, pos);
-				boolean flag2 = flag || worldIn.isAirBlock(posIn);
+				boolean flag2 = flag || worldIn.isAirBlock(posIn) || worldIn.getBlockState(posIn).getBlock().isReplaceable(worldIn, posIn);
 				boolean flag3 = flag1 || worldIn.isAirBlock(pos);
+				Treasure.logger.debug("flag ->{}, flag1 ->{}, flag2 -> {}, flag3 ->{}",flag, flag1, flag2, flag3);
 				if (flag2 && flag3 && worldIn.getBlockState(posIn.down()).isSideSolid(worldIn, posIn.down(), EnumFacing.UP) && 
 						worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP)) { 
 					IBlockState skeletonState = TreasureBlocks.SKELETON.getDefaultState().withProperty(SkeletonBlock.FACING, facing.getOpposite())
