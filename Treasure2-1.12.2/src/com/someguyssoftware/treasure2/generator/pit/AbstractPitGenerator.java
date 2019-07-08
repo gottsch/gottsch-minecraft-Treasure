@@ -2,12 +2,15 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.Quantity;
 import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,7 +19,9 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DungeonHooks;
 
 /**
  * 
@@ -247,6 +252,21 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		}
     	mob.setLocationAndAngles((double)spawnCoords.getX() + 0.5D,  (double)spawnCoords.getY(), (double)spawnCoords.getZ() + 0.5D, 0.0F, 0.0F);
     	world.spawnEntity(mob);
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param spawnCoords
+	 */
+	public void spawnRandomMob(World world, Random random, ICoords spawnCoords) {
+		world.setBlockState(spawnCoords.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
+		ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(spawnCoords.toPos());
+		ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
+		te.setMobName(r);
+		te.setMobNum(new Quantity(1, 1));
+		te.setProximity(3D);
 	}
 	
 	/**
