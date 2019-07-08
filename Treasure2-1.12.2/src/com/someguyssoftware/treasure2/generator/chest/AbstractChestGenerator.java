@@ -21,23 +21,22 @@ import com.someguyssoftware.treasure2.block.WitherChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.StructurePitGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.loot.TreasureLootTable;
-import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -94,7 +93,17 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			
 			// select a pit generator
 			Pits pit = Pits.values()[random.nextInt(Pits.values().length)];
-			IPitGenerator pitGenerator = ChestWorldGenerator.pitGenerators.get(pit);
+//			IPitGenerator pitGenerator = ChestWorldGenerator.pitGenerators.get(pit);
+			IPitGenerator pitGenerator = null;
+			if (pit == Pits.STRUCTURE_PIT) {
+				// select a pit from the subset
+				IPitGenerator parentPit = ((List<IPitGenerator>)ChestWorldGenerator.structurePitGenerators.values()).get(random.nextInt(ChestWorldGenerator.structurePitGenerators.size()));
+				// create a new pit instance (new instance as it contains state)
+				pitGenerator = new StructurePitGenerator(ChestWorldGenerator.structurePitGenerators.get(parentPit));
+			}
+			else {
+				pitGenerator = ChestWorldGenerator.pitGenerators.get(pit);
+			}
 			Treasure.logger.debug("Using Pit: {}, Gen: {}", pit, pitGenerator.getClass());
 			
 			// 3. build the pit
@@ -103,7 +112,15 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			// 4. build the room
 			
 			// 5. update the chest coords
-			chestCoords = new Coords(spawnCoords);
+//			chestCoords = new Coords(spawnCoords);
+			if (pitGenerator instanceof IStructureInfoProvider) {
+				// TODO could extend IStructureInfoProvider for Treasure context that only records a single or main chest
+				List<ICoords> coordsList = (List<ICoords>)((IStructureInfoProvider)pitGenerator).getInfo().getMap().get(Blocks.CHEST);
+				chestCoords = coordsList.get(0);
+			}
+			else {
+				chestCoords = new Coords(spawnCoords);
+			}
 		}
 		else { return false; }
 

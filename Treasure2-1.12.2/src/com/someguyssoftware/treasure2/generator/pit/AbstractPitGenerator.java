@@ -30,11 +30,15 @@ import net.minecraftforge.common.DungeonHooks;
  */
 public abstract class AbstractPitGenerator implements IPitGenerator {
 
-	protected static final int Y_OFFSET = 5;
-	protected static final int Y_SURFACE_OFFSET = 6;
+	protected static final int OFFSET_Y = 5;
+	protected static final int SURFACE_OFFSET_Y = 6;
 
 	private RandomWeightedCollection<Block> blockLayers = new RandomWeightedCollection<>();
+	private int offsetY = OFFSET_Y;
 	
+	// TODO need to separate out the gen of the chest area with the rest of the pit so that a random pit can be generated without
+	// generating the chest area.  maybe a wrapper call that gens the pit, gens the entrance and gens the base which could be over-
+	// written so the base isn't gen for things like structure pits
 	/**
 	 * 
 	 */
@@ -42,6 +46,35 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		super();
 	}
 
+	/**
+	 * 
+	 */
+	@Override
+	public boolean generateBase(World world, Random random, ICoords surfaceCorods, ICoords spawnCoords) {
+		// at chest level
+		buildLayer(world, spawnCoords, Blocks.AIR);
+		
+		// above the chest
+		buildAboveChestLayers(world, random, spawnCoords);
+		
+		return true;
+	}
+	
+	@Override
+	public boolean generatePit(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		buildPit(world, random, spawnCoords, surfaceCoords, getBlockLayers());
+		return true;
+	}
+	
+	@Override
+	public boolean generateEntrance(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		// pit enterance
+		buildLogLayer(world, random, surfaceCoords.add(0, -3, 0), Blocks.LOG);
+		buildLayer(world, surfaceCoords.add(0, -4, 0), Blocks.SAND);
+		buildLogLayer(world, random, surfaceCoords.add(0, -5, 0), Blocks.LOG);
+		return true;
+	}
+	
 	/**
 	 * 
 	 * @param world
@@ -79,19 +112,14 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	
 		if (yDist > 6) {			
 			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
-			// at chest level
-			buildLayer(world, spawnCoords, Blocks.AIR);
-			
-			// above the chest
-			buildAboveChestLayers(world, random, spawnCoords);
 
-			// shaft enterance
-			buildLogLayer(world, random, surfaceCoords.add(0, -3, 0), Blocks.LOG);
-			buildLayer(world, surfaceCoords.add(0, -4, 0), Blocks.SAND);
-			buildLogLayer(world, random, surfaceCoords.add(0, -5, 0), Blocks.LOG);
+			generateBase(world, random, surfaceCoords, spawnCoords);
+			
+			// pit enterance
+			generateEntrance(world, random, surfaceCoords, spawnCoords);
 
 			// build the pit
-			buildPit(world, random, spawnCoords, surfaceCoords, getBlockLayers());
+			generatePit(world, random, surfaceCoords, spawnCoords);
 		}			
 		// shaft is only 2-6 blocks long - can only support small covering
 		else if (yDist >= 2) {
@@ -127,7 +155,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		ICoords expectedCoords = null;
 		
 		// randomly fill shaft
-		for (int yIndex = coords.getY() + Y_OFFSET; yIndex <= surfaceCoords.getY() - Y_SURFACE_OFFSET; yIndex++) {
+		for (int yIndex = coords.getY() + getOffsetY(); yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
 			
 			// if the block to be replaced is air block then skip to the next pos
 			Cube cube = new Cube(world, new Coords(coords.getX(), yIndex, coords.getZ()));
@@ -206,6 +234,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		
 		 // determine the direction the logs are facing - north/south (8) or east/west (4)
 		int meta = random.nextInt() % 2 == 0 ? 8 : 4;
+		@SuppressWarnings("deprecation")
 		IBlockState blockState = block.getStateFromMeta(meta);
 				
 		// core 4-square
@@ -261,12 +290,12 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 * @param spawnCoords
 	 */
 	public void spawnRandomMob(World world, Random random, ICoords spawnCoords) {
-		world.setBlockState(spawnCoords.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
-		ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(spawnCoords.toPos());
-		ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
-		te.setMobName(r);
-		te.setMobNum(new Quantity(1, 1));
-		te.setProximity(3D);
+    	world.setBlockState(spawnCoords.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
+    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(spawnCoords.toPos());
+    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
+    	te.setMobName(r);
+    	te.setMobNum(new Quantity(1, 1));
+    	te.setProximity(3D);
 	}
 	
 	/**
@@ -281,5 +310,15 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 */
 	public void setBlockLayers(RandomWeightedCollection<Block> blockLayers) {
 		this.blockLayers = blockLayers;
+	}
+
+	@Override
+	public int getOffsetY() {
+		return offsetY;
+	}
+
+	@Override
+	public void setOffsetY(int offsetY) {
+		this.offsetY = offsetY;
 	}
 }

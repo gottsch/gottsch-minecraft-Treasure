@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.command;
 
+import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
@@ -11,6 +12,7 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.StructurePitGenerator;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;
@@ -66,7 +68,18 @@ public class SpawnPitOnlyCommand extends CommandBase {
     			Treasure.logger.debug("spawn coords @ {}", spawnCoords.toShortString());
     			Treasure.logger.debug("surfaceCoords @ {}", surfaceCoords.toShortString());
     			ChestWorldGenerator chestGen = new ChestWorldGenerator();
-    			IPitGenerator pitGen = chestGen.pitGenerators.get(pit);
+//    			IPitGenerator pitGen = chestGen.pitGenerators.get(pit);
+    			IPitGenerator pitGen = null;
+    			if (pit == Pits.STRUCTURE_PIT) {
+    				// select a pit from the subset
+    				IPitGenerator parentPit = ((List<IPitGenerator>)ChestWorldGenerator.structurePitGenerators.values())
+    						.get(random.nextInt(ChestWorldGenerator.structurePitGenerators.size()));
+    				// create a new pit instance (new instance as it contains state)
+    				pitGen = new StructurePitGenerator(ChestWorldGenerator.structurePitGenerators.get(parentPit));
+    			}
+    			else {
+    				pitGen = ChestWorldGenerator.pitGenerators.get(pit);
+    			}   
     			boolean isGen = pitGen.generate(world, random, surfaceCoords , spawnCoords);
     		}
 		}

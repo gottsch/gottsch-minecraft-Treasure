@@ -66,7 +66,7 @@ public class SpawnChestCommand extends CommandBase {
     			Random random = new Random();
     			
 				// get the chest world generator
-				ChestWorldGenerator chestGens = (ChestWorldGenerator) Treasure.worldGenerators.get("chest");
+				ChestWorldGenerator chestGens = (ChestWorldGenerator) Treasure.WORLD_GENERATORS.get("chest");
 				// get the rarity chest generator
 //				IChestGenerator gen = chestGens.getGenerators().get(rarity);
 				IChestGenerator gen = chestGens.getChestCollectionGeneratorsMap().get(rarity).next();
