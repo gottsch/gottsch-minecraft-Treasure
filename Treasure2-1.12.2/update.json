@@ -1,8 +1,8 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.12.2-latest": "1.3.5",
-    "1.12.2-recommended": "1.3.5"
+    "1.12.2-latest": "1.3.6",
+    "1.12.2-recommended": "1.3.6"
   },
     "1.12.2": {
         "0.5.0": "alpha release",
@@ -20,7 +20,8 @@
         "1.2.0": "Added Blocks painting collection.\nAdded custom LootCondition -> mod_present.\nAdded some SGS Metals items to built-in loot tables.\nFixed more Skull Sword entries in loot tables.\nFixed Iron Key entries in loot tables.\nUpdated TreasureChestCommand to correctly generate a chest based on given rarity.\nAdded Skull Chest.\nFixed uncommon armor_tool_chest loot table entry for mocreatures.\nAdded recipe to craft skull chest.\nFixed some mocreatures loot table entries.\n",
         "1.3.0": "Renamed TreasureChestCommand to SpawnChestCommand.\nFixed 2x2 recipes to show up in players crafting box.\nAdded advancements for recipes.\nIncreased Wither Chests inventory size and added new inventory GUI.\nAdded Eye Patch to the loot tables.\nAdded Gold Skull Chest.\nAdded Sapphire and Ruby items and ore.\nMake Keys unstackable.\nFixed Key Ring decrement by 8 bug.\nAdd SwapIfModPresent loot table function.\nFix pickup/throw KeyRing when its inventory gui is open.\nAdded two new pit trap.",
         "1.3.1": "Fixed BigBottomMobTrapPitGenerator to generate the entire pit correctly -> no missing layers.\nAdded Proximity Block/Spawner.\nUpdated BigBottomMobTrapPitGenerator to use ProximityBlocks to generate mobs.\nFixed skull and bones block bounding box and rendering.\nFixed Held Item into Treasure container bug.\n",
-        "1.3.5": "Updated to use GottschCore v1.7\nAdded Cauldron Chest (epic).\nAdded Skeleton Block.\nAdded Marker Generator.\nFixed world.isRemote() checks with GottschCore call WorldInfo.isServer/Client().\nExpose custom loot tables.\nUse of GottschCore Loot Tables system instead of Treasure2s.\nFixed so that Skeletons can be placed in Fog.\n"        
+        "1.3.5": "Updated to use GottschCore v1.7\nAdded Cauldron Chest (epic).\nAdded Skeleton Block.\nAdded Marker Generator.\nFixed world.isRemote() checks with GottschCore call WorldInfo.isServer/Client().\nExpose custom loot tables.\nUse of GottschCore Loot Tables system instead of Treasure2s.\nFixed so that Skeletons can be placed in Fog.\n",
+        "1.3.6": "Fixed Coin toss in well crash bug.\nRemoved all references to old Loot Tables setup (in ref to coin/well bug).\nFix foreign mod loot table registering.\nUpdated mo'creates, sgs metals loot tables to point to right loot tables.\n'"        
     }
 }
  

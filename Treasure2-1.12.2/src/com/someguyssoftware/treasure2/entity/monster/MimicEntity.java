@@ -9,10 +9,8 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -26,10 +24,8 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * 
@@ -163,7 +159,7 @@ public abstract class MimicEntity extends EntityMob {
 		ResourceLocation location = null;
 
 		// select the loot table by rarity
-		List<ResourceLocation> locations = TreasureLootTables.getLootTableResourceByRarity(chestRarity);
+		List<ResourceLocation> locations = Treasure.LOOT_TABLES.getLootTableResourceByRarity(chestRarity);
 		
 		// select a random location from the list
 		if (locations != null && !locations.isEmpty()) {

@@ -183,6 +183,23 @@ public class TreasureLootTableMaster extends LootTableMaster {
 
 	/**
 	 * 
+	 * @param rarity
+	 * @return
+	 */
+	public List<ResourceLocation> getLootTableResourceByRarity(Rarity rarity) {
+		// get all loot tables by column key
+		List<ResourceLocation> tables = new ArrayList<>();
+		Map<String, List<ResourceLocation>> mapOfLootTableResourceLocations = CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.column(rarity);
+		// convert to a single list
+		for(Entry<String, List<ResourceLocation>> n : mapOfLootTableResourceLocations.entrySet()) {
+//			Treasure.logger.debug("Adding table resource location entry to loot table resource location list -> {} {}: size {}", rarity, n.getKey(), n.getValue().size());
+			tables.addAll(n.getValue());
+		}
+		return tables;		
+	}
+	
+	/**
+	 * 
 	 * @param tableEnum
 	 * @return
 	 */
@@ -208,5 +225,4 @@ public class TreasureLootTableMaster extends LootTableMaster {
 		GOLD_SKULL_CHEST,
 		CAULDRON_CHEST
 	}
-
 }
