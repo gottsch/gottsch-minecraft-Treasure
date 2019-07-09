@@ -74,12 +74,12 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 		build3WideLayer(world, random, coords, Blocks.AIR);
 		
 		// fill shaft will air to mid-point
-		for (int yIndex = coords.getY() + Y_OFFSET; yIndex <= midY; yIndex++) {
+		for (int yIndex = coords.getY() + OFFSET_Y; yIndex <= midY; yIndex++) {
 			nextCoords = build3WideLayer(world, random, new Coords(coords.getX(), yIndex, coords.getZ()), Blocks.AIR);
 		}		
 		nextCoords = build3WideLayer(world, random, new Coords(coords.getX(), midY+1, coords.getZ()), Blocks.LOG);
 		
-		for (int yIndex = nextCoords.getY(); yIndex <= surfaceCoords.getY() - Y_SURFACE_OFFSET; yIndex++) {
+		for (int yIndex = nextCoords.getY(); yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
 			
 			// if the block to be replaced is air block then skip to the next pos
 			Cube cube = new Cube(world, new Coords(coords.getX(), yIndex, coords.getZ()));

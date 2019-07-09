@@ -26,7 +26,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 
 /**
- * 
+ * TODO make everything static final.
  * @author Mark Gottschling on Jul 4, 2019
  *
  */

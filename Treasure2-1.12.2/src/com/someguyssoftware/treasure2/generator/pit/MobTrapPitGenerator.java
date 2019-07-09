@@ -10,9 +10,6 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
@@ -67,9 +64,9 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 		ICoords midCoords = new Coords(coords.getX(), midY, coords.getZ());
 		int deltaY = surfaceCoords.delta(midCoords).getY();
 		
-//		Treasure.logger.debug("Mob Trap pit from {} to {}", coords.getY() + Y_OFFSET, surfaceCoords.getY() - Y_SURFACE_OFFSET);
+//		Treasure.logger.debug("Mob Trap pit from {} to {}", coords.getY() + OFFSET_Y, surfaceCoords.getY() - SURFACE_OFFSET_Y);
 		// randomly fill shaft
-		for (int yIndex = coords.getY() + Y_OFFSET; yIndex <= surfaceCoords.getY() - Y_SURFACE_OFFSET; yIndex++) {
+		for (int yIndex = coords.getY() + getOffsetY(); yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
 			
 			// if the block to be replaced is air block then skip to the next pos
 			Cube cube = new Cube(world, new Coords(coords.getX(), yIndex, coords.getZ()));
@@ -142,11 +139,16 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 		nextCoords = buildLogLayer(world, random, nextCoords, block);
 
 		// spawn the mobs
-    	spawnMob(world, spawnCoords, "skeleton");
-    	spawnMob(world, spawnCoords.add(1, 0, 0), "zombie");
-    	spawnMob(world, spawnCoords.add(0, 0, 1), "zombie");
-    	spawnMob(world, spawnCoords.add(1, 0, 1), "skeleton");
+//    	spawnMob(world, spawnCoords, "skeleton");
+//    	spawnMob(world, spawnCoords.add(1, 0, 0), "zombie");
+//    	spawnMob(world, spawnCoords.add(0, 0, 1), "zombie");
+//    	spawnMob(world, spawnCoords.add(1, 0, 1), "skeleton");
 		
+    	spawnRandomMob(world, random, spawnCoords);
+    	spawnRandomMob(world, random, spawnCoords.add(1, 0, 0));
+    	spawnRandomMob(world, random, spawnCoords.add(0, 0, 1));
+    	spawnRandomMob(world, random, spawnCoords.add(1, 0, 1));
+    	
 		// get the next coords
 		nextCoords = nextCoords.up(1);
 		// return the next coords
