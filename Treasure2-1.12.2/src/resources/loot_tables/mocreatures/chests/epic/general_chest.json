@@ -23,7 +23,7 @@
 			"entries": [
 				{
 					"type": "loot_table",
-					"name": "treasure2:items/epic",
+					"name": "treasure2:loot_tables/treasure2/items/epic",
 					"weight": 5
 				},
 				{
@@ -42,7 +42,7 @@
 			"entries": [
 				{
 					"type": "loot_table",
-					"name": "treasure2:armor/epic",
+					"name": "treasure2:loot_tables/treasure2/armor/epic",
 					"weight": 1
 				}
 			]
@@ -56,7 +56,7 @@
 			"entries": [
 				{
 					"type": "loot_table",
-					"name": "treasure2:food/epic",
+					"name": "treasure2:loot_tables/treasure2/food/epic",
 					"weight": 1
 				}
 			]
@@ -67,7 +67,7 @@
 			"entries": [
 				{
 					"type": "loot_table",
-					"name": "treasure2:tools/epic",
+					"name": "treasure2:loot_tables/treasure2/tools/epic",
 					"weight": 1
 				}
 			]
@@ -81,7 +81,7 @@
 			"entries": [
 				{
 					"type": "loot_table",
-					"name": "treasure2:potions/epic",
+					"name": "treasure2:loot_tables/treasure2/potions/epic",
 					"weight": 1
 				}
 			]
@@ -95,7 +95,7 @@
 			"entries": [
 				{
 					"type": "loot_table",
-					"name": "treasure2:items/rare",
+					"name": "treasure2:loot_tables/treasure2/items/rare",
 					"weight": 5
 				},
 				{
@@ -114,7 +114,7 @@
 			"entries": [
 				{
 					"type": "loot_table",
-					"name": "treasure2:armor/rare",
+					"name": "treasure2:loot_tables/treasure2/armor/rare",
 					"weight": 5
 				},
 				{
@@ -133,7 +133,7 @@
 			"entries": [
 				{
 					"type": "loot_table",
-					"name": "treasure2:food/rare",
+					"name": "treasure2:loot_tables/treasure2/food/rare",
 					"weight": 1
 				}
 			]
@@ -147,7 +147,7 @@
 			"entries": [
 				{
 					"type": "loot_table",
-					"name": "treasure2:tools/rare",
+					"name": "treasure2:loot_tables/treasure2/tools/rare",
 					"weight": 1
 				}
 			]
@@ -161,7 +161,7 @@
 			"entries": [
 				{
 					"type": "loot_table",
-					"name": "treasure2:potions/rare",
+					"name": "treasure2:loot_tables/treasure2/potions/rare",
 					"weight": 1
 				}
 			]

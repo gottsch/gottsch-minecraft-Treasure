@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 
 import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.item.ModItem;
+import com.someguyssoftware.gottschcore.loot.LootTable;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
@@ -19,8 +20,6 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.loot.TreasureLootTable;
-import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -31,7 +30,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * 
@@ -106,7 +104,7 @@ public class CoinItem extends ModItem {
 				}
 			}
 			
-			List<TreasureLootTable> lootTables = new ArrayList<>();
+			List<LootTable> lootTables = new ArrayList<>();
 			if (numWishingWellBlocks >=2) {
 				Random random = new Random();
 				List<Rarity> rarityList = null;
@@ -115,44 +113,25 @@ public class CoinItem extends ModItem {
 //					rarityList = Arrays.asList(new Rarity[] {Rarity.UNCOMMON, Rarity.SCARCE});
 //					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.UNCOMMON));
 //					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.SCARCE));
-					lootTables.addAll(TreasureLootTables.getLootTableByRarity(Rarity.UNCOMMON));
-					lootTables.addAll(TreasureLootTables.getLootTableByRarity(Rarity.SCARCE));
+					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.UNCOMMON));
+					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.SCARCE));
 				}
 				else if (getCoin() == Coins.GOLD) {					
 //					rarityList = Arrays.asList(new Rarity[] {Rarity.SCARCE, Rarity.RARE});
 //					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.SCARCE));
 //					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.RARE));
-					lootTables.addAll(TreasureLootTables.getLootTableByRarity(Rarity.SCARCE));
-					lootTables.addAll(TreasureLootTables.getLootTableByRarity(Rarity.RARE));
+					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.SCARCE));
+					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.RARE));
 				}
 				
-//				// select a container
-//				LootContainer container = DbManager.getInstance().selectContainer(random, rarityList);
-//				if (container == null || container == LootContainer.EMPTY_CONTAINER) {
-//					Treasure.logger.warn("Unable to select a container.");
-//					return false;
-//				}
-//				
-//				// select a group from the container
-//				List<LootContainerHasGroup> containerGroups = DbManager.getInstance().getGroupsByContainer(container.getId());
-//				if (containerGroups == null || containerGroups.size() == 0) {
-//					Treasure.logger.warn("Container {} does not contain any groups.", container.getName());
-//					return false;
-//				}
-//				LootContainerHasGroup containerGroup = containerGroups.get(random.nextInt(containerGroups.size()));
-//				
-//				// select the item group
-//				List<LootGroupHasItem> groupItems = DbManager.getInstance().getItemsByGroup(containerGroup);
-//				
-//				// selecct a single item
-//				LootGroupHasItem item = groupItems.get(random.nextInt(groupItems.size()));
-				
-				// TODO create a context
+				// TODO handle if loot tables is null or size = 0
 				
 				// select a table
-				TreasureLootTable table = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
+				LootTable table = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
+				
 				// generate a list of itemStacks from the table pools
-				List<ItemStack> list =table.generateLootFromPools(random, TreasureLootTables.CONTEXT);
+				List<ItemStack> list =table.generateLootFromPools(random, Treasure.LOOT_TABLES.getContext());
+
 				// select one item randomly
 				ItemStack stack = list.get(list.size()-1);
 				
