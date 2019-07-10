@@ -68,7 +68,9 @@ public class TreasureTemplateManager {
 			"treasure2:underground/basic2",
 			"treasure2:underground/basic3",
 			"treasure2:underground/basic4",
+			"treasure2:underground/basic5",
 			"treasure2:underground/cave1",
+			"treasure2:underground/cave2",
 			"treasure2:underground/cobb1",
 			"treasure2:underground/crypt1"
 	});
@@ -102,8 +104,8 @@ public class TreasureTemplateManager {
         this.fixer = fixer;        
         
         // init maps
-        for (StructureType t : StructureType.values()) {
-        	getTemplatesByType().put(t, new ArrayList<Template>(5));
+        for (StructureType structureType : StructureType.values()) {
+        	getTemplatesByType().put(structureType, new ArrayList<Template>(5));
         }
         
         // setup standard list of markers
@@ -129,6 +131,8 @@ public class TreasureTemplateManager {
         // load all the underground structure templates
         loadAll(undergroundLocations, StructureType.UNDERGROUND);
         loadAll(abovegroundLocations, StructureType.ABOVEGROUND);
+        
+        // TODO add ability to load external structures
     }
 
 	/**
@@ -185,10 +189,10 @@ public class TreasureTemplateManager {
 	 */
 	public void loadAll(List<String> locations, StructureType type) {
 		Treasure.logger.debug("loading all typed structures -> {}", type.name());
-		for (String s : locations) {
-			Treasure.logger.debug("loading from -> {}", s);
-			Template template = load(new ResourceLocation(s), scanList);
-			Treasure.logger.debug("loaded template  with key -> {} : {}", s, template);
+		for (String location : locations) {
+			Treasure.logger.debug("loading from -> {}", location);
+			Template template = load(new ResourceLocation(location), scanList);
+			Treasure.logger.debug("loaded template  with key -> {} : {}", location, template);
 			// add the id to the map
 			if (template != null) {
 				Treasure.logger.debug("adding tempate to typed map -> {} : {}", type.name(), template);
