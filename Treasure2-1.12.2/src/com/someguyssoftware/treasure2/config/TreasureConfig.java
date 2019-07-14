@@ -207,6 +207,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static int minGravestonesPerChest;
 	public static int maxGravestonesPerChest;
 	public static int gravestoneFogProbability;
+	public static boolean isStructureMarkersAllowed;
+	public static int structureMarkerProbability;
 	
 	// wither properties
 	public static double witherBranchItemGenProbability;
@@ -287,6 +289,9 @@ public class TreasureConfig extends AbstractConfig {
         maxGravestonesPerChest = config.getInt("maxGravesstonesPerChest", "04-gen", 8, 1, 10, "The maximum of Treasure chest markers (gravestones, bones).");
         gravestoneFogProbability = config.getInt("gravestoneFogProbability", "04-gen", 50, 0, 100, "The probability that a gravestone will have fog."); 
         
+        isStructureMarkersAllowed = config.getBoolean("isStructureMarkersAllowed", "04-gen", true, "");
+        structureMarkerProbability = config.getInt("structureMarerProbability", "04-gen", 15, 0, 100, "The probability that a Treasure chest marker will be a structure."); 
+
         // wells
         minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 500, 100, 32000, "");
         
