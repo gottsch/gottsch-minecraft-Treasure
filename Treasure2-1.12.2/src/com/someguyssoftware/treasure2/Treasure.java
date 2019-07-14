@@ -24,6 +24,7 @@ import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.command.SpawnChestCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
+import com.someguyssoftware.treasure2.command.SpawnPitStructureOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.Configs;
@@ -187,6 +188,7 @@ public class Treasure extends AbstractMod {
     	event.registerServerCommand(new SpawnChestCommand());
     	event.registerServerCommand(new SpawnPitCommand());
     	event.registerServerCommand(new SpawnPitOnlyCommand());
+    	event.registerServerCommand(new SpawnPitStructureOnlyCommand());
     	event.registerServerCommand(new SpawnWellCommand());
     	event.registerServerCommand(new SpawnWitherTreeCommand());
     }
@@ -203,10 +205,6 @@ public class Treasure extends AbstractMod {
 		super.init(event);
 
 		// register world generators
-//		WORLD_GENERATORS.put("chest", new ChestWorldGenerator());
-//		WORLD_GENERATORS.put("well", new WellWorldGenerator());
-//		WORLD_GENERATORS.put("witherTree", new WitherTreeWorldGenerator());
-//		WORLD_GENERATORS.put("gem", new GemOreWorldGenerator());
 		WORLD_GENERATORS.put(WorldGenerators.CHEST, new ChestWorldGenerator());
 		WORLD_GENERATORS.put(WorldGenerators.WELL, new WellWorldGenerator());
 		WORLD_GENERATORS.put(WorldGenerators.WITHER_TREE, new WitherTreeWorldGenerator());

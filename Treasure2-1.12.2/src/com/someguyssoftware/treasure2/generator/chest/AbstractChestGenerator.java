@@ -93,7 +93,6 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			
 			// select a pit generator
 			Pits pit = Pits.values()[random.nextInt(Pits.values().length)];
-//			IPitGenerator pitGenerator = ChestWorldGenerator.pitGenerators.get(pit);
 			IPitGenerator pitGenerator = null;
 			if (pit == Pits.STRUCTURE_PIT) {
 				// select a pit from the subset
