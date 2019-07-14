@@ -35,15 +35,17 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 
 	private RandomWeightedCollection<Block> blockLayers = new RandomWeightedCollection<>();
 	private int offsetY = OFFSET_Y;
-	
-	// TODO need to separate out the gen of the chest area with the rest of the pit so that a random pit can be generated without
-	// generating the chest area.  maybe a wrapper call that gens the pit, gens the entrance and gens the base which could be over-
-	// written so the base isn't gen for things like structure pits
+
 	/**
 	 * 
 	 */
 	public AbstractPitGenerator() {
 		super();
+		// standard set of block layers
+		getBlockLayers().add(50, Blocks.AIR);
+		getBlockLayers().add(25,  Blocks.SAND);
+		getBlockLayers().add(15, Blocks.GRAVEL);
+		getBlockLayers().add(10, Blocks.LOG);
 	}
 
 	/**

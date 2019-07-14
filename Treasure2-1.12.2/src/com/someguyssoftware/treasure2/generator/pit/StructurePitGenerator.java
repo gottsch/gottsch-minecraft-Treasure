@@ -31,7 +31,7 @@ import net.minecraftforge.common.DungeonHooks;
 
 
 /**
- * Generates lava blocks outside the main pit to prevent players from digging down on the edges
+ * 
  * @author Mark Gottschling on Dec 9, 2018
  *
  */
@@ -44,10 +44,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	 * 
 	 */
 	public StructurePitGenerator() {
-		getBlockLayers().add(50, Blocks.AIR);
-		getBlockLayers().add(25,  Blocks.SAND);
-		getBlockLayers().add(15, Blocks.GRAVEL);
-		getBlockLayers().add(10, Blocks.LOG);
+
 	}
 	
 	/**
