@@ -32,33 +32,6 @@ public class ScarceChestGenerator extends AbstractChestGenerator {
 	 */
 	public ScarceChestGenerator() {}
 	
-//	/*
-//	 * @param random
-//	 * @param chestRarity
-//	 * @return
-//	 */
-//	@Override
-//	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
-//		LootTable table = null;
-//		
-//		// select the loot table by rarity
-//		List<LootTable> tables = TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.UNCOMMON);
-//		tables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.SCARCE));
-//		
-//		if (tables != null && !tables.isEmpty()) {
-//			/*
-//			 * get a random container
-//			 */
-//			if (tables.size() == 1) {
-//				table = tables.get(0);
-//			}
-//			else {
-//				table = tables.get(RandomHelper.randomInt(random, 0, tables.size()-1));
-//			}
-//		}
-//		return table;
-//	}
-	
 	/**
 	 * 
 	 */
@@ -66,13 +39,11 @@ public class ScarceChestGenerator extends AbstractChestGenerator {
 	public List<LootTable> buildLootTableList(final Rarity chestRarity) {
 		// get all loot tables by column key
 		List<LootTable> tables = new ArrayList<>();
-//		Map<String, List<TreasureLootTable>> mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(Rarity.UNCOMMON);
 		Map<String, List<LootTable>> mapOfLootTables = Treasure.LOOT_TABLES.getChestLootTablesTable().column(Rarity.UNCOMMON);
 		// convert to a single list
 		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
 			tables.addAll(n.getValue());
 		}
-//		mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(Rarity.SCARCE);
 		mapOfLootTables = Treasure.LOOT_TABLES.getChestLootTablesTable().column(Rarity.SCARCE);
 		// convert to a single list
 		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
@@ -101,7 +72,6 @@ public class ScarceChestGenerator extends AbstractChestGenerator {
 		List<LockItem> locks = new ArrayList<>();
 		locks.addAll(TreasureItems.locks.get(Rarity.UNCOMMON));
 		locks.addAll(TreasureItems.locks.get(Rarity.SCARCE));
-//		locks.addAll(TreasureItems.locks.get(Rarity.RARE));
 		
 		addLocks(random, chest, te, locks);
 		locks.clear();

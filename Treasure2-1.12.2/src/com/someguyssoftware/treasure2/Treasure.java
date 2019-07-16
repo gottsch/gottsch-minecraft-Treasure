@@ -24,10 +24,12 @@ import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.command.SpawnChestCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
+import com.someguyssoftware.treasure2.command.SpawnPitStructureOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.MimicEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
@@ -35,11 +37,13 @@ import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
+import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -81,7 +85,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.3.7";
+	protected static final String VERSION = "1.4.1";
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
 	private static final String VERSION_URL = "";
@@ -96,6 +100,7 @@ public class Treasure extends AbstractMod {
 	@Instance(value=Treasure.MODID)
 	public static Treasure instance;
 	
+	// TODO remove this. should have static final properties.
 	// loot tables management
 	public static TreasureLootTableMaster LOOT_TABLES;
 	
@@ -111,7 +116,10 @@ public class Treasure extends AbstractMod {
 	};
     
 	// forge world generators
-    public static Map<String, IWorldGenerator> worldGenerators = new HashMap<>();
+    public final static Map<WorldGenerators, IWorldGenerator> WORLD_GENERATORS = new HashMap<>();
+    
+    // template manager
+    public static TreasureTemplateManager TEMPLATE_MANAGER;
     
 	/**
 	 * 
@@ -179,6 +187,7 @@ public class Treasure extends AbstractMod {
     	event.registerServerCommand(new SpawnChestCommand());
     	event.registerServerCommand(new SpawnPitCommand());
     	event.registerServerCommand(new SpawnPitOnlyCommand());
+    	event.registerServerCommand(new SpawnPitStructureOnlyCommand());
     	event.registerServerCommand(new SpawnWellCommand());
     	event.registerServerCommand(new SpawnWitherTreeCommand());
     }
@@ -195,17 +204,21 @@ public class Treasure extends AbstractMod {
 		super.init(event);
 
 		// register world generators
-		worldGenerators.put("chest", new ChestWorldGenerator());
-		worldGenerators.put("well", new WellWorldGenerator());
-		worldGenerators.put("witherTree", new WitherTreeWorldGenerator());
-		worldGenerators.put("gem", new GemOreWorldGenerator());
+		WORLD_GENERATORS.put(WorldGenerators.CHEST, new ChestWorldGenerator());
+		WORLD_GENERATORS.put(WorldGenerators.WELL, new WellWorldGenerator());
+		WORLD_GENERATORS.put(WorldGenerators.WITHER_TREE, new WitherTreeWorldGenerator());
+		WORLD_GENERATORS.put(WorldGenerators.GEM, new GemOreWorldGenerator());
+		
 		int genWeight = 0;
-		for (Entry<String, IWorldGenerator> gen : worldGenerators.entrySet()) {
+		for (Entry<WorldGenerators, IWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
 			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);
 		}
 
 		// add the loot table managers
 		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");
+		
+		TEMPLATE_MANAGER = new TreasureTemplateManager(TreasureConfig.CUSTOM_STRUCTURE_FOLDER, Minecraft.getMinecraft().getDataFixer());
+
 	}
 	
 	/**

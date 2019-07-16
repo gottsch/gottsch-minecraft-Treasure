@@ -3,7 +3,6 @@
  */
 package com.someguyssoftware.treasure2.command;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -11,10 +10,11 @@ import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.enums.Pits;
+import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.StructurePitGenerator;
-import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;
@@ -26,19 +26,19 @@ import net.minecraft.world.World;
 
 /**
  * 
- * @author Mark Gottschling on Mar 8, 2018
+ * @author Mark Gottschling on Jan 25, 2018
  *
  */
-public class SpawnPitOnlyCommand extends CommandBase {
+public class SpawnPitStructureOnlyCommand extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "trpitonly";
+		return "t2!pitstructureonly";
 	}
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/trpitonly <x> <y> <z> [pit]: spawns a Treasure! pit at location (x,y,z)";
+		return "/t2!pitstructureonly <x> <y> <z> [rarity]: spawns a Treasure! pit structure at location (x,y,z)";
 	}
 
 	@Override
@@ -51,46 +51,36 @@ public class SpawnPitOnlyCommand extends CommandBase {
 			y = Integer.parseInt(args[1]);
 			z = Integer.parseInt(args[2]);
 			
-			String pitName = "";
+			String rarityName = "";
 			if (args.length > 3) {
-				pitName = args[3];
+				rarityName = args[3];
 			}
 			
-			if (pitName.equals("")) pitName = Pits.SIMPLE_PIT.name();
-			Pits pit = Pits.valueOf(pitName.toUpperCase());
-			Treasure.logger.debug("Pit:" + pit + "; " + pit.ordinal());
+			if (rarityName.equals("")) rarityName = Rarity.COMMON.name();
+			Rarity rarity = Rarity.valueOf(rarityName.toUpperCase());
+			Treasure.logger.debug("Rarity:" + rarity + "; " + rarity.ordinal());
 			
 			if (player != null) {
     			World world = commandSender.getEntityWorld();
-    			Treasure.logger.debug("Starting to build Treasure! pit only ...");
+    			Treasure.logger.debug("Starting to build Treasure! pit ...");
 
     			Random random = new Random();
+//    			ChestWorldGenerator chestGen = new ChestWorldGenerator();
+//    			chestGen.getGenerators().get(rarity).generate(world, random, new Coords(x, y, z), rarity, Configs.chestConfigs.get(rarity));
     			ICoords spawnCoords = new Coords(x, y, z);
     			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(x, WorldInfo.getHeightValue(world, spawnCoords), z));
-    			Treasure.logger.debug("spawn coords @ {}", spawnCoords.toShortString());
-    			Treasure.logger.debug("surfaceCoords @ {}", surfaceCoords.toShortString());
-    			ChestWorldGenerator chestGen = new ChestWorldGenerator();
-//    			IPitGenerator pitGen = chestGen.pitGenerators.get(pit);
-    			IPitGenerator pitGen = null;
-    			if (pit == Pits.STRUCTURE_PIT) {
-    				// select a pit from the subset
-    				List<IPitGenerator> pits = new ArrayList<IPitGenerator>(ChestWorldGenerator.structurePitGenerators.values());
-    				IPitGenerator parentPit = pits.get(random.nextInt(pits.size()));
-    				// create a new pit instance (new instance as it contains state)
-    				pitGen = new StructurePitGenerator(parentPit);
-    			}
-    			else {
-    				pitGen = ChestWorldGenerator.pitGenerators.get(pit);
-    			}   
-    			boolean isGen = pitGen.generate(world, random, surfaceCoords , spawnCoords);
-    			if (isGen && pit == Pits.STRUCTURE_PIT) {
-    				Treasure.logger.debug(((IStructureInfoProvider)pitGen).getInfo());
-    			}
-    		}
+
+    			// select a pit generator
+    			IPitGenerator pitGenerator = null;
+				IPitGenerator parentPit = ((List<IPitGenerator>)ChestWorldGenerator.structurePitGenerators.values()).get(random.nextInt(ChestWorldGenerator.structurePitGenerators.size()));
+				// create a new pit instance (new instance as it contains state)
+				pitGenerator = new StructurePitGenerator(ChestWorldGenerator.structurePitGenerators.get(parentPit));
+				boolean isGenerated = pitGenerator.generate(world, random, surfaceCoords , spawnCoords);
+			}
 		}
 		catch(Exception e) {
 			player.sendMessage(new TextComponentString("Error:  " + e.getMessage()));
-			Treasure.logger.error("Error generating Treasure! pit:", e);
+			Treasure.logger.error("Error generating Treasure! chest:", e);
 			e.printStackTrace();
 		}
 	}

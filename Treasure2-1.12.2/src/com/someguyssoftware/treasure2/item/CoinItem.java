@@ -25,6 +25,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
@@ -107,7 +108,7 @@ public class CoinItem extends ModItem {
 			List<LootTable> lootTables = new ArrayList<>();
 			if (numWishingWellBlocks >=2) {
 				Random random = new Random();
-				List<Rarity> rarityList = null;
+//				List<Rarity> rarityList = null;
 				// determine coin type
 				if (getCoin() == Coins.SILVER) {
 //					rarityList = Arrays.asList(new Rarity[] {Rarity.UNCOMMON, Rarity.SCARCE});
@@ -124,19 +125,23 @@ public class CoinItem extends ModItem {
 					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.RARE));
 				}
 				
-				// TODO handle if loot tables is null or size = 0
-				
-				// select a table
-				LootTable table = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
-				
-				// generate a list of itemStacks from the table pools
-				List<ItemStack> list =table.generateLootFromPools(random, Treasure.LOOT_TABLES.getContext());
+				ItemStack stack = null;
+				// handle if loot tables is null or size = 0. return an item (apple) to ensure continuing functionality
+				if (lootTables == null || lootTables.size() == 0) {
+					stack = new ItemStack(Items.APPLE);
+				}
+				else {
+					// select a table
+					LootTable table = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
+					
+					// generate a list of itemStacks from the table pools
+					List<ItemStack> list =table.generateLootFromPools(random, Treasure.LOOT_TABLES.getContext());
 
-				// select one item randomly
-				ItemStack stack = list.get(list.size()-1);
+					// select one item randomly
+					stack = list.get(list.size()-1);
+				}				
 				
 				// spawn the item 
-//				ItemStack stack = InventoryPopulator.toItemStack(random,  item);
 				if (stack != null) {
 					InventoryHelper.spawnItemStack(world, (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), stack);
 				}

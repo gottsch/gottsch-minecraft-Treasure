@@ -22,6 +22,7 @@ import com.someguyssoftware.treasure2.block.SkeletonBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.enums.StructureMarkers;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
@@ -53,9 +54,9 @@ public class GenUtil {
 	 * @param offset
 	 * @return
 	 */
-//	public static Block getMarkerBlock(StructureMarkers marker) {
-//		return Treasure.TEMPLATE_MANAGER.getMarkerMap().get(marker);
-//	}
+	public static Block getMarkerBlock(StructureMarkers marker) {
+		return Treasure.TEMPLATE_MANAGER.getMarkerMap().get(marker);
+	}
 	
 	/**
 	 * 

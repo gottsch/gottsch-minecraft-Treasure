@@ -67,6 +67,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	// TODO probably should be moved to AbstractChestGenerator
 	// the pit chestGeneratorsMap
 	public static Map<Pits, IPitGenerator> pitGenerators = new HashMap<>();
+	public static Map<Pits, IPitGenerator> structurePitGenerators = new HashMap<>();
 	
 	/**
 	 * 
@@ -117,6 +118,13 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		pitGenerators.put(Pits.MOB_TRAP_PIT, new MobTrapPitGenerator());
 		pitGenerators.put(Pits.LAVA_SIDE_TRAP_PIT, new LavaSideTrapPitGenerator());
 		pitGenerators.put(Pits.BIG_BOTTOM_MOB_TRAP_PIT, new BigBottomMobTrapPitGenerator());
+		
+		// setup the structures pit generators - a subset of the pit generators map
+		structurePitGenerators.put(Pits.SIMPLE_PIT, pitGenerators.get(Pits.SIMPLE_PIT));
+		structurePitGenerators.put(Pits.TNT_TRAP_PIT, pitGenerators.get(Pits.TNT_TRAP_PIT));
+		structurePitGenerators.put(Pits.AIR_PIT, pitGenerators.get(Pits.AIR_PIT));
+		structurePitGenerators.put(Pits.MOB_TRAP_PIT, pitGenerators.get(Pits.MOB_TRAP_PIT));
+		structurePitGenerators.put(Pits.LAVA_SIDE_TRAP_PIT, pitGenerators.get(Pits.LAVA_SIDE_TRAP_PIT));
 	}
 
 	/**
@@ -153,8 +161,6 @@ public class ChestWorldGenerator implements IWorldGenerator {
         
 		// test if min chunks was met
      	if (chunksSinceLastChest > TreasureConfig.minChunksPerChest) {
-//     		Treasure.logger.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastChest, TreasureConfig.minChunksPerChest));
-
      		/*
      		 * get current chunk position
      		 */            
@@ -168,7 +174,6 @@ public class ChestWorldGenerator implements IWorldGenerator {
 
 	    	// determine what type to generate
         	Rarity rarity = Rarity.values()[random.nextInt(Rarity.values().length)];
-//			Treasure.logger.debug("Using Rarity: {}", rarity );
 			IChestConfig chestConfig = Configs.chestConfigs.get(rarity);
 			if (chestConfig == null) {
 				Treasure.logger.warn("Unable to locate a chest for rarity {}.", rarity);
@@ -184,9 +189,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 //					Treasure.logger.debug("Chest does not meet generate probability.");
 					return;
 				}
-//				else {
-//					Treasure.logger.debug("Chest MEETS generate probability!");
-//				}
+
 				
 				// 2. test if correct biome
 				Biome biome = world.getBiome(coords.toPos());
@@ -210,14 +213,11 @@ public class ChestWorldGenerator implements IWorldGenerator {
      			}
      			
     			// reset chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
-//    			Integer i = chunksSinceLastRarityChest.get(rarity);
-//    			i = 0;
     			chunksSinceLastRarityChest.put(rarity, 0);
  			
     			// generate the chest/pit/chambers
 				Treasure.logger.debug("Attempting to generate pit/chest.");
 				isGenerated = chestCollectionGeneratorsMap.get(rarity).next().generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
-//    			isGenerated = chestGeneratorsMap.get(rarity).generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
 
     			if (isGenerated) {
     				// add to registry
