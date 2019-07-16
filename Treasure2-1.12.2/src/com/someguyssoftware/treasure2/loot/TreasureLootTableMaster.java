@@ -77,6 +77,7 @@ public class TreasureLootTableMaster extends LootTableMaster {
 	 * relative location of other loot tables - in resource path or file system
 	 */
 	private static final List<String> NON_CHEST_LOOT_TABLE_FOLDER_LOCATIONS = ImmutableList.of(
+			"treasure",
 			"armor",
 			"food",
 			"items",
