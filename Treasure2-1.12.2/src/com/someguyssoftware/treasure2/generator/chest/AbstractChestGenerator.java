@@ -5,7 +5,9 @@ package com.someguyssoftware.treasure2.generator.chest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.loot.LootTable;
 import com.someguyssoftware.gottschcore.positional.Coords;
@@ -23,6 +25,7 @@ import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
+import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.GenUtil;
@@ -94,18 +97,24 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			Treasure.logger.debug("Below ground @ {}", spawnCoords.toShortString());
 			
 			// select a pit generator
-			Pits pit = Pits.values()[random.nextInt(Pits.values().length)];
-			IPitGenerator pitGenerator = null;
-			if (pit == Pits.STRUCTURE_PIT) {
-				// select a pit from the subset
-				IPitGenerator parentPit = ((List<IPitGenerator>)ChestWorldGenerator.structurePitGenerators.values()).get(random.nextInt(ChestWorldGenerator.structurePitGenerators.size()));
-				// create a new pit instance (new instance as it contains state)
-				pitGenerator = new StructurePitGenerator(ChestWorldGenerator.structurePitGenerators.get(parentPit));
-			}
-			else {
-				pitGenerator = ChestWorldGenerator.pitGenerators.get(pit);
-			}
-			Treasure.logger.debug("Using Pit: {}, Gen: {}", pit, pitGenerator.getClass());
+			PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.structurePitProbability) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
+			List<IPitGenerator> pitGenerators = ChestWorldGenerator.pitGens.row(pitType).values().stream()
+					.collect(Collectors.toList());
+			IPitGenerator pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));
+			
+//			Pits pit = Pits.values()[random.nextInt(Pits.values().length)];
+//			IPitGenerator pitGenerator = null;
+//			if (pit == Pits.STRUCTURE_PIT) {
+//				// select a pit from the subset
+//				IPitGenerator parentPit = ((List<IPitGenerator>)ChestWorldGenerator.structurePitGenerators.values()).get(random.nextInt(ChestWorldGenerator.structurePitGenerators.size()));
+//				// create a new pit instance (new instance as it contains state)
+//				pitGenerator = new StructurePitGenerator(ChestWorldGenerator.structurePitGenerators.get(parentPit));
+//			}
+//			else {
+//				pitGenerator = ChestWorldGenerator.pitGenerators.get(pit);
+//			}
+			
+			Treasure.logger.debug("Using PitType: {}, Gen: {}", pitType, pitGenerator.getClass());
 			
 			// 3. build the pit
 			isGenerated = pitGenerator.generate(world, random, markerCoords, spawnCoords);

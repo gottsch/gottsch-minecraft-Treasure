@@ -6,11 +6,13 @@ package com.someguyssoftware.treasure2.command;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.StructurePitGenerator;
@@ -72,16 +74,20 @@ public class SpawnPitOnlyCommand extends CommandBase {
     			ChestWorldGenerator chestGen = new ChestWorldGenerator();
 //    			IPitGenerator pitGen = chestGen.pitGenerators.get(pit);
     			IPitGenerator pitGen = null;
-    			if (pit == Pits.STRUCTURE_PIT) {
-    				// select a pit from the subset
-    				List<IPitGenerator> pits = new ArrayList<IPitGenerator>(ChestWorldGenerator.structurePitGenerators.values());
-    				IPitGenerator parentPit = pits.get(random.nextInt(pits.size()));
-    				// create a new pit instance (new instance as it contains state)
-    				pitGen = new StructurePitGenerator(parentPit);
-    			}
-    			else {
-    				pitGen = ChestWorldGenerator.pitGenerators.get(pit);
-    			}   
+    			List<IPitGenerator> pitGenerators = ChestWorldGenerator.pitGens.row(PitTypes.STANDARD).values().stream()
+    					.collect(Collectors.toList());
+    			pitGen = pitGenerators.get(random.nextInt(pitGenerators.size()));
+    					
+//    			if (pit == Pits.STRUCTURE_PIT) {
+//    				// select a pit from the subset
+//    				List<IPitGenerator> pits = new ArrayList<IPitGenerator>(ChestWorldGenerator.structurePitGenerators.values());
+//    				IPitGenerator parentPit = pits.get(random.nextInt(pits.size()));
+//    				// create a new pit instance (new instance as it contains state)
+//    				pitGen = new StructurePitGenerator(parentPit);
+//    			}
+//    			else {
+//    				pitGen = ChestWorldGenerator.pitGenerators.get(pit);
+//    			}   
     			boolean isGen = pitGen.generate(world, random, surfaceCoords , spawnCoords);
     			if (isGen && pit == Pits.STRUCTURE_PIT) {
     				Treasure.logger.debug(((IStructureInfoProvider)pitGen).getInfo());

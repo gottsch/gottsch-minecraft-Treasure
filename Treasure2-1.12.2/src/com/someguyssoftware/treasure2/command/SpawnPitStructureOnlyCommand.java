@@ -5,12 +5,14 @@ package com.someguyssoftware.treasure2.command;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.Configs;
+import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
@@ -71,10 +73,15 @@ public class SpawnPitStructureOnlyCommand extends CommandBase {
     			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(x, WorldInfo.getHeightValue(world, spawnCoords), z));
 
     			// select a pit generator
+//    			Pits pit = Pits.values()[random.nextInt(Pits.values().length)];
     			IPitGenerator pitGenerator = null;
-				IPitGenerator parentPit = ((List<IPitGenerator>)ChestWorldGenerator.structurePitGenerators.values()).get(random.nextInt(ChestWorldGenerator.structurePitGenerators.size()));
-				// create a new pit instance (new instance as it contains state)
-				pitGenerator = new StructurePitGenerator(ChestWorldGenerator.structurePitGenerators.get(parentPit));
+    			List<IPitGenerator> pitGenerators = ChestWorldGenerator.pitGens.row(PitTypes.STRUCTURE).values().stream()
+    					.collect(Collectors.toList());
+    			pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));
+    					
+//				IPitGenerator parentPit = ((List<IPitGenerator>)ChestWorldGenerator.structurePitGenerators.values()).get(random.nextInt(ChestWorldGenerator.structurePitGenerators.size()));
+//				// create a new pit instance (new instance as it contains state)
+//				pitGenerator = new StructurePitGenerator(ChestWorldGenerator.structurePitGenerators.get(parentPit));
 				boolean isGenerated = pitGenerator.generate(world, random, surfaceCoords , spawnCoords);
 			}
 		}

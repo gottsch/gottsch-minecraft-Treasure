@@ -202,6 +202,9 @@ public class TreasureConfig extends AbstractConfig {
 	public static int minChunksPerChest;
 	public static int minChunksPerWell;
 	
+	// pits
+	public static int structurePitProbability;
+	
 	// graves/markers properties
 	public static boolean isGravestonesAllowed;
 	public static int minGravestonesPerChest;
@@ -283,7 +286,9 @@ public class TreasureConfig extends AbstractConfig {
       	minDistancePerChest = config.getInt("minDistancePerChest", "04-gen", 75, 0, 32000, "");
       	minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 35, 0, 32000, "");
       	minChunksPerWell = config.getInt("minChunksPerWell", "04-gen", 400, 100, 32000, "");
-      	
+    
+      	structurePitProbability = config.getInt("structurePitProbability", "04-gen", 20, 0, 100, "The probability that a pit will contain a structure."); 
+
         isGravestonesAllowed = config.getBoolean("isGravestonesAllowed", "04-gen", true, "");
         minGravestonesPerChest = config.getInt("minGravestonesPerChest", "04-gen", 4, 1, 5, "The minimun of Treasure chest markers (gravestones, bones).");
         maxGravestonesPerChest = config.getInt("maxGravesstonesPerChest", "04-gen", 8, 1, 10, "The maximum of Treasure chest markers (gravestones, bones).");
