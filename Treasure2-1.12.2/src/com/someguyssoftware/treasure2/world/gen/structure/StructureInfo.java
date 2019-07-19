@@ -25,9 +25,11 @@ public class StructureInfo implements IStructureInfo {
 	 */
 //	private List<ICoords> coords;
 	
+	@Deprecated
 	// TODO can we make these more generic
 	private List<ICoords> chests;
 	
+	@Deprecated
 	private List<ICoords> spawners;
 	
 	/*

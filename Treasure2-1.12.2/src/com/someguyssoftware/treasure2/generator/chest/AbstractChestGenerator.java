@@ -28,6 +28,7 @@ import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.enums.StructureMarkers;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.marker.RandomStructureMarkerGenerator;
@@ -125,8 +126,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 //			chestCoords = new Coords(spawnCoords);
 			if (pitGenerator instanceof IStructureInfoProvider) {
 				// TODO could extend IStructureInfoProvider for Treasure context that only records a single or main chest
-				List<ICoords> coordsList = (List<ICoords>)((IStructureInfoProvider)pitGenerator).getInfo().getMap().get(Blocks.CHEST);
+				List<ICoords> coordsList = (List<ICoords>)((IStructureInfoProvider)pitGenerator).getInfo().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 				chestCoords = coordsList.get(0);
+				Treasure.logger.debug("Using StructureInfo relative chest coords -> {}", chestCoords.toShortString());
+				chestCoords = chestCoords.add((((IStructureInfoProvider)pitGenerator).getInfo().getCoords()));				
 			}
 			else {
 				chestCoords = new Coords(spawnCoords);
