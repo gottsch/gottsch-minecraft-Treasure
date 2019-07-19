@@ -70,27 +70,6 @@ public class TreasureChestBlock extends AbstractChestBlock {
 	 */
 	public TreasureChestBlock(String modID, String name, Material material, Class<? extends AbstractTreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
 		super(modID, name, material, te, type, rarity);
-//		this(modID, name, material);
-//		setTileEntityClass(te);
-//		setChestType(type);
-//		setRarity(rarity);
-//		setCreativeTab(Treasure.TREASURE_TAB);
-//		
-//		// set the default bounds
-//		setBounds(
-//			new AxisAlignedBB[] {new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), 	// N
-//			new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// E
-//			new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// S
-//			new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F)	// W
-//			});
-//		
-//		// set the tile entity reference
-//		try {
-//			setTileEntity((AbstractTreasureChestTileEntity)getTileEntityClass().newInstance());
-//		}
-//		catch(Exception e) {
-//			Treasure.logger.warn("Unable to create reference AbstractTreasureChestTileEntity object.");
-//		}
 	}
 
 	/**

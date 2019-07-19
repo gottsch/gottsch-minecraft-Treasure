@@ -9,18 +9,12 @@ import java.util.Map;
 
 /**
  * 
- * @author Mark Gottschling on Feb 19, 2018
+ * @author Mark Gottschling on Jul 15, 2019
  *
  */
-public enum Pits implements IEnum {
-	SIMPLE_PIT(0, "Simple Pit"),
-	AIR_PIT(1, "Air Pit"),
-	TNT_TRAP_PIT(2, "TNT Trapped Pit"),
-	LAVA_TRAP_PIT(3, "Lava Trapped Pit"),
-	MOB_TRAP_PIT(4, "Mob Trapped Pit"),
-	LAVA_SIDE_TRAP_PIT(5, "Lava Side Trapped Pit"),
-	BIG_BOTTOM_MOB_TRAP_PIT(6, "Big Bottom Mob Trapped Pit"),
-	STRUCTURE_PIT(7, "Structure Pit");
+public enum PitTypes implements IEnum {
+	STANDARD(0, "Simple"),
+	STRUCTURE(1, "Structure");
 	
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();
@@ -29,7 +23,7 @@ public enum Pits implements IEnum {
 	
 	// setup reverse lookup
 	static {
-		for (Pits x : EnumSet.allOf(Pits.class)) {
+		for (PitTypes x : EnumSet.allOf(PitTypes.class)) {
 			codes.put(x.getCode(), x);
 			values.put(x.getValue(), x);
 		}
@@ -40,7 +34,7 @@ public enum Pits implements IEnum {
 	 * @param code
 	 * @param value
 	 */
-	Pits(Integer code, String value) {
+	PitTypes(Integer code, String value) {
 		this.code = code;
 		this.value = value;
 	}
@@ -75,16 +69,16 @@ public enum Pits implements IEnum {
 	 * @param code
 	 * @return
 	 */
-	public static Pits getByCode(Integer code) {
-		return (Pits) codes.get(code);
+	public static PitTypes getByCode(Integer code) {
+		return (PitTypes) codes.get(code);
 	}
 	/**
 	 * 
 	 * @param value
 	 * @return
 	 */
-	public static Pits getByValue(String value) {
-		return (Pits) values.get(value);
+	public static PitTypes getByValue(String value) {
+		return (PitTypes) values.get(value);
 	}
 
 	@Override
