@@ -136,7 +136,7 @@ public class TreasureItems {
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON)
 				.setCraftable(false)
-				.setMaxDamage(10);
+				.setMaxDamage(TreasureConfig.woodKeyMaxUses);
 
 		STONE_KEY = new KeyItem(Treasure.MODID, TreasureConfig.STONE_KEY_ID)
 				.setCategory(Category.BASIC)

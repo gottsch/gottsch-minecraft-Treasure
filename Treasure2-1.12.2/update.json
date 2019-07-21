@@ -24,7 +24,7 @@
         "1.3.6": "Fixed Coin toss in well crash bug.\nRemoved all references to old Loot Tables setup (in ref to coin/well bug).\nFix foreign mod loot table registering.\nUpdated mocreates, sgs metals loot tables to point to right loot tables.\n",
         "1.3.7": "Fixed bug where Treasure items weren't being added to chests.\n",   
         "1.4.1": "Add Structures add Structure files.\nUpdate MobTrapPitGenerator to use Proximity Spawners.\nFixed World Generators map - use Enum instead of String.\nRefactor Pit selection code.\n",
-        "1.5.0": "TODO Expose/Add custom structure locations. TODO Add proximity Dispensers." 
+        "1.5.0": "Expose/Add custom structure locations. TODO Set Key max uses as configurable.\nTODO Add proximity Dispensers.\nAdded Chinese language file. Thanks to qyhao.\n" 
 
     }
 }

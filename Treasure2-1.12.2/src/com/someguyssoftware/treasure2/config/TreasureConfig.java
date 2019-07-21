@@ -230,11 +230,10 @@ public class TreasureConfig extends AbstractConfig {
 	public static int rubyOreMinY;
 	public static int rubyOreVeinSize;	
 	
-	// TODO add wells properties
-	
 	// TODO add wandering antiquities peddler properties
 	
 	// TODO add treasure/unique items properties
+	public static int woodKeyMaxUses;
 	
 	// biome type white/black lists
 	public static String[] generalChestBiomeWhiteList;
@@ -316,6 +315,9 @@ public class TreasureConfig extends AbstractConfig {
         rubyOreMinY = config.getInt("rubyOreMinY", "04-gen", 6, 1, 255, "");
         rubyOreMaxY = config.getInt("rubyOreMaxY", "04-gen", 14, 1, 255, "");
         rubyOreVeinSize = config.getInt("rubyOreVeinSize", "04-gen", 3, 1, 20, "");
+        
+        // treasure items/keys/locks
+        woodKeyMaxUses = config.getInt("woodKeyMaxUses", "04-gen", 20, 1, 32000, "The maximum uses for a given wooden key.");
         
         // the the default values
        if(config.hasChanged()) {
