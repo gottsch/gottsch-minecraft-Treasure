@@ -129,9 +129,12 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 					IStructureInfoProvider structureInfoProvider = (IStructureInfoProvider)pitGenerator;
 					IStructureInfo structureInfo = structureInfoProvider.getInfo();
 					if (structureInfo != null) {
-						chestCoords = (ICoords) structureInfo
+						List<ICoords> chestCoordsList = (List<ICoords>) structureInfo
 								.getMap()
 								.get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
+						if (!chestCoordsList.isEmpty()) {
+							chestCoords = chestCoordsList.get(0);
+						}
 					}
 					//					List<ICoords> coordsList = (List<ICoords>)((IStructureInfoProvider)pitGenerator).getInfo().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 //					chestCoords = coordsList.get(0);
