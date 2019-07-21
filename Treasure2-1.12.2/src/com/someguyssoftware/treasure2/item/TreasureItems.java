@@ -142,89 +142,89 @@ public class TreasureItems {
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON)
 				.setCraftable(false)
-				.setMaxDamage(10);
+				.setMaxDamage(TreasureConfig.stoneKeyMaxUses);
 
 		IRON_KEY = new KeyItem(Treasure.MODID, TreasureConfig.IRON_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.UNCOMMON)
 				.setCraftable(false)
-				.setMaxDamage(10);
+				.setMaxDamage(TreasureConfig.ironKeyMaxUses);
 		
 		GOLD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.GOLD_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.SCARCE)
 				.setCraftable(false)
-				.setMaxDamage(15);
+				.setMaxDamage(TreasureConfig.goldKeyMaxUses);
 
 		DIAMOND_KEY = new KeyItem(Treasure.MODID, TreasureConfig.DIAMOND_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(20);
+				.setMaxDamage(TreasureConfig.diamondKeyMaxUses);
 
 		EMERALD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.EMERALD_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(10);
+				.setMaxDamage(TreasureConfig.emeraldKeyMaxUses);
 		
 		RUBY_KEY = new KeyItem(Treasure.MODID, TreasureConfig.RUBY_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(8);
+				.setMaxDamage(TreasureConfig.rubyKeyMaxUses);
 		
 		SAPPHIRE_KEY = new KeyItem(Treasure.MODID, TreasureConfig.SAPPHIRE_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(5);
+				.setMaxDamage(TreasureConfig.sapphireKeyMaxUses);
 		
 		JEWELLED_KEY = new JewelledKey(Treasure.MODID, TreasureConfig.JEWELLED_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(5);
+				.setMaxDamage(TreasureConfig.jewelledKeyMaxUses);
 		
 		METALLURGISTS_KEY = new MetallurgistsKey(Treasure.MODID, TreasureConfig.METALLURGISTS_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(25);
+				.setMaxDamage(TreasureConfig.metallurgistsKeyMaxUses);
 		
 		SKELETON_KEY = new SkeletonKey(Treasure.MODID, TreasureConfig.SKELETON_KEY_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(5);
+				.setMaxDamage(TreasureConfig.skeletonKeyMaxUses);
 		
 		SPIDER_KEY = new KeyItem(Treasure.MODID, TreasureConfig.SPIDER_KEY_ID)
 				.setCategory(Category.MOB)
 				.setRarity(Rarity.SCARCE)
 				.setBreakable(true)
 				.setCraftable(true)
-				.setMaxDamage(5);
+				.setMaxDamage(TreasureConfig.spiderKeyMaxUses);
 		
 		WITHER_KEY = new KeyItem(Treasure.MODID, TreasureConfig.WITHER_KEY_ID)
 				.setCategory(Category.WITHER)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(true)
-				.setMaxDamage(5);
+				.setMaxDamage(TreasureConfig.witherKeyMaxUses);
 		
 		PILFERERS_LOCK_PICK = new PilferersLockPick(Treasure.MODID, TreasureConfig.PILFERERS_LOCK_PICK_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON)
 				.setBreakable(true)
 				.setCraftable(true)
-				.setMaxDamage(10)
+				.setMaxDamage(TreasureConfig.pilferersLockPickMaxUses)
 				.setSuccessProbability(24);
 		
 		THIEFS_LOCK_PICK = new ThiefsLockPick(Treasure.MODID, TreasureConfig.THIEFS_LOCK_PICK_ID)
@@ -232,7 +232,7 @@ public class TreasureItems {
 				.setRarity(Rarity.UNCOMMON)
 				.setBreakable(true)
 				.setCraftable(true)
-				.setMaxDamage(10)
+				.setMaxDamage(TreasureConfig.thiefsLockPickMaxUses)
 				.setSuccessProbability(32);
 		
 		// KEY RING
