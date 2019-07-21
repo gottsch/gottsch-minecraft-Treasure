@@ -1,8 +1,8 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.12.2-latest": "1.4.1",
-    "1.12.2-recommended": "1.4.1"
+    "1.12.2-latest": "1.4.2",
+    "1.12.2-recommended": "1.4.2"
   },
     "1.12.2": {
         "0.5.0": "alpha release",
@@ -23,7 +23,8 @@
         "1.3.5": "Updated to use GottschCore v1.7\nAdded Cauldron Chest (epic).\nAdded Skeleton Block.\nAdded Marker Generator.\nFixed world.isRemote() checks with GottschCore call WorldInfo.isServer/Client().\nExpose custom loot tables.\nUse of GottschCore Loot Tables system instead of Treasure2s.\nFixed so that Skeletons can be placed in Fog.\n",
         "1.3.6": "Fixed Coin toss in well crash bug.\nRemoved all references to old Loot Tables setup (in ref to coin/well bug).\nFix foreign mod loot table registering.\nUpdated mocreates, sgs metals loot tables to point to right loot tables.\n",
         "1.3.7": "Fixed bug where Treasure items weren't being added to chests.\n",   
-        "1.4.1": "Add Structures add Structure files.\nUpdate MobTrapPitGenerator to use Proximity Spawners.\nFixed World Generators map - use Enum instead of String.\nRefactor Pit selection code.\n" 
+        "1.4.1": "Add Structures add Structure files.\nUpdate MobTrapPitGenerator to use Proximity Spawners.\nFixed World Generators map - use Enum instead of String.\nRefactor Pit selection code.\n",
+        "1.4.2": "Fix DataFixer server-side crash.\nRemoved Structure Pit Generators that didnt make sense, ie. Big Bottom, Lava Trap.\nExpanded code when retrieving chest coords from pit structure.\n" 
 
     }
 }

@@ -47,6 +47,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -85,12 +86,12 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.4.1";
+	protected static final String VERSION = "1.4.2";
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
 	private static final String VERSION_URL = "";
 	private static final BuildVersion MINECRAFT_VERSION = new BuildVersion(1, 12, 2);
-	
+
 	// latest version
 	private static BuildVersion latestVersion;
 	
@@ -217,7 +218,10 @@ public class Treasure extends AbstractMod {
 		// add the loot table managers
 		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");
 		
-		TEMPLATE_MANAGER = new TreasureTemplateManager(TreasureConfig.CUSTOM_STRUCTURE_FOLDER, Minecraft.getMinecraft().getDataFixer());
+		TEMPLATE_MANAGER = new TreasureTemplateManager(
+				TreasureConfig.CUSTOM_STRUCTURE_FOLDER, 
+				FMLCommonHandler.instance().getDataFixer());
+//				Minecraft.getMinecraft().getDataFixer());
 
 	}
 	
