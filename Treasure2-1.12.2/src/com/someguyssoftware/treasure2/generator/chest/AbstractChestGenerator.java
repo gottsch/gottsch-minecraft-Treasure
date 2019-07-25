@@ -139,7 +139,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 					//					List<ICoords> coordsList = (List<ICoords>)((IStructureInfoProvider)pitGenerator).getInfo().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 //					chestCoords = coordsList.get(0);
 					Treasure.logger.debug("Using StructureInfo relative chest coords -> {}", chestCoords.toShortString());
-//					chestCoords = chestCoords.add((((IStructureInfoProvider)pitGenerator).getInfo().getCoords()));				
+					chestCoords = chestCoords.add((((IStructureInfoProvider)pitGenerator).getInfo().getCoords()));				
 				}
 				else {
 					chestCoords = new Coords(spawnCoords);
