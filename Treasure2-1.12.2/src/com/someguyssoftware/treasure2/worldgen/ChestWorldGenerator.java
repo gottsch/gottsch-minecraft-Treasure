@@ -135,7 +135,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		pitGens.put(PitTypes.STRUCTURE, Pits.AIR_PIT, new StructurePitGenerator(new AirPitGenerator()));
 		
 		pitGens.put(PitTypes.STANDARD, Pits.LAVA_TRAP_PIT, new LavaTrapPitGenerator());
-		pitGens.put(PitTypes.STRUCTURE, Pits.LAVA_TRAP_PIT, new StructurePitGenerator(new LavaTrapPitGenerator()));
+		// NONE for STRUCTURE
 		
 		pitGens.put(PitTypes.STANDARD, Pits.MOB_TRAP_PIT, new MobTrapPitGenerator());
 		pitGens.put(PitTypes.STRUCTURE, Pits.MOB_TRAP_PIT, new StructurePitGenerator(new MobTrapPitGenerator()));
@@ -144,7 +144,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		pitGens.put(PitTypes.STRUCTURE, Pits.LAVA_SIDE_TRAP_PIT, new StructurePitGenerator(new LavaSideTrapPitGenerator()));
 		
 		pitGens.put(PitTypes.STANDARD, Pits.BIG_BOTTOM_MOB_TRAP_PIT, new BigBottomMobTrapPitGenerator());
-		pitGens.put(PitTypes.STRUCTURE, Pits.BIG_BOTTOM_MOB_TRAP_PIT, new StructurePitGenerator(new BigBottomMobTrapPitGenerator()));
+		// NONE for STRUCTURE
 		
 		// setup the structures pit generators - a subset of the pit generators map
 //		structurePitGenerators.put(Pits.SIMPLE_PIT, pitGenerators.get(Pits.SIMPLE_PIT));
