@@ -134,12 +134,13 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 								.get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 						if (!chestCoordsList.isEmpty()) {
 							chestCoords = chestCoordsList.get(0);
+							chestCoords = chestCoords.add((((IStructureInfoProvider)pitGenerator).getInfo().getCoords()));	
+							Treasure.logger.debug("Using StructureInfo relative chest coords -> {}", chestCoords.toShortString());
 						}
 					}
-					//					List<ICoords> coordsList = (List<ICoords>)((IStructureInfoProvider)pitGenerator).getInfo().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
-//					chestCoords = coordsList.get(0);
-					Treasure.logger.debug("Using StructureInfo relative chest coords -> {}", chestCoords.toShortString());
-					chestCoords = chestCoords.add((((IStructureInfoProvider)pitGenerator).getInfo().getCoords()));				
+					else {
+						Treasure.logger.debug("Unable to retrieve StructureInfo");
+					}
 				}
 				else {
 					chestCoords = new Coords(spawnCoords);
