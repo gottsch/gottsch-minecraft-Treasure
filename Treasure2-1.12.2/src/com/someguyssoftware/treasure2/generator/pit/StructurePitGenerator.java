@@ -14,6 +14,7 @@ import com.someguyssoftware.treasure2.generator.structure.StructureGenerator;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
+import com.someguyssoftware.treasure2.world.gen.structure.StructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplate;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager.StructureType;
 
@@ -78,6 +79,9 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	 */
 	@Override
 	public boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		// clear info member property
+		setInfo(null);
+		
 		// is the chest placed in a cavern
 		boolean inCavern = false;
 		
@@ -101,9 +105,10 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	
 		// get distance to surface
 		int yDist = (surfaceCoords.getY() - spawnCoords.getY()) - 2;
-//		Treasure.logger.debug("Distance to ySurface =" + yDist);
+		Treasure.logger.debug("Distance to ySurface =" + yDist);
 	
-		IStructureInfo info = null;
+		// REMOVED - no longer need as using member property
+	//	IStructureInfo info = null;
 		
 		if (yDist > 6) {
 			Treasure.logger.debug("generating structure room at -> {}", spawnCoords.toShortString());
@@ -135,8 +140,20 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			
 			// if size of room is greater the distance to the surface minus 3, then fail 
 			if (size.getY() + offset + 3 >= yDist) {
-				Treasure.logger.debug("Structure is too large for available space.");
-				return getGenerator().generate(world, random, surfaceCoords, spawnCoords);
+				Treasure.logger.debug("Structure's height is too large for available space.");
+				// generate the base pit
+				boolean isGenerated = getGenerator().generate(world, random, surfaceCoords, spawnCoords);
+				if (isGenerated) {
+					IStructureInfo info = new StructureInfo();
+					info.setCoords(spawnCoords);
+					info.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.CHEST), new Coords(0, 0, 0));
+					setInfo(info);
+					return true;
+				}
+				else {
+					Treasure.logger.debug("Unable to generate base pit.");
+					return false;
+				}
 			}
 
 			// update the spawn coords with the offset
@@ -184,6 +201,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			 *  		map.put(ResourceLocation("treasure2:underground/basic1", PROXIMITY, new SpawnerInfo("minecraft:Spider", new Quantity(1,2), 5D));
 			 */
 			
+			// TODO move to own method
 			// populate vanilla spawners
 			for (ICoords c : spawnerCoords) {
 				ICoords c2 = roomCoords.add(c);
@@ -193,6 +211,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 				te.getSpawnerBaseLogic().setEntityId(r);
 			}
 			
+			// TODO move to own method
 			// populate proximity spawners
 			for (ICoords c : proximityCoords) {
 				ICoords c2 = roomCoords.add(c);
@@ -216,6 +235,11 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 		else if (yDist >= 2) {
 			// simple short pit
 			new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
+			// TODO build no-entry info
+			IStructureInfo noInfo = new StructureInfo();
+			noInfo.setCoords(spawnCoords);
+			noInfo.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.CHEST), new Coords(0, 0, 0));
+			setInfo(noInfo);
 		}		
 		Treasure.logger.debug("Generated Structure Pit at " + spawnCoords.toShortString());
 		return true;
