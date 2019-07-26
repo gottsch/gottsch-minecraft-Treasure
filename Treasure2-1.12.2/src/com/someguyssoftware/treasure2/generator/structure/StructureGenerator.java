@@ -42,11 +42,14 @@ public class StructureGenerator implements IStructureGenerator {
 		
 		// get the transformed size
 		BlockPos transformedSize = template.transformedSize(placement.getRotation());
+		
+		// TODO remove
 		// get the transformed entrance
 		ICoords entranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
 		if (entranceCoords != null) {
 			entranceCoords = new Coords(TreasureTemplate.transformedCoords(placement, entranceCoords));
 		}
+		// TODO remove
 		// get the transformed chest
 		ICoords chestCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 		if (chestCoords != null) {

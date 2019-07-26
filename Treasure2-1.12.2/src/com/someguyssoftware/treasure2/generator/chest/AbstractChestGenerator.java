@@ -100,23 +100,11 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 					.collect(Collectors.toList());
 			IPitGenerator pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));
 			
-//			Pits pit = Pits.values()[random.nextInt(Pits.values().length)];
-//			IPitGenerator pitGenerator = null;
-//			if (pit == Pits.STRUCTURE_PIT) {
-//				// select a pit from the subset
-//				IPitGenerator parentPit = ((List<IPitGenerator>)ChestWorldGenerator.structurePitGenerators.values()).get(random.nextInt(ChestWorldGenerator.structurePitGenerators.size()));
-//				// create a new pit instance (new instance as it contains state)
-//				pitGenerator = new StructurePitGenerator(ChestWorldGenerator.structurePitGenerators.get(parentPit));
-//			}
-//			else {
-//				pitGenerator = ChestWorldGenerator.pitGenerators.get(pit);
-//			}
-			
-			Treasure.logger.debug("Using PitType: {}, Gen: {}", pitType, pitGenerator.getClass());
+			Treasure.logger.debug("Using PitType: {}, Gen: {}", pitType, pitGenerator.getClass().getSimpleName());
 			
 			// 3. build the pit
 			isGenerated = pitGenerator.generate(world, random, markerCoords, spawnCoords);
-//			Treasure.logger.debug("Is pit generated: {}", isGenerated);
+			Treasure.logger.debug("Is pit generated: {}", isGenerated);
 			// 4. build the room
 			
 			// 5. update the chest coords
@@ -134,12 +122,16 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 								.get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 						if (!chestCoordsList.isEmpty()) {
 							chestCoords = chestCoordsList.get(0);
+							Treasure.logger.debug("Using StructureInfo relative chest coords -> {}", chestCoords.toShortString());
+							chestCoords = chestCoords.add((((IStructureInfoProvider)pitGenerator).getInfo().getCoords()));	
+						}
+						else {
+							Treasure.logger.debug("Unable to retrieve Chest from structure");
 						}
 					}
-					//					List<ICoords> coordsList = (List<ICoords>)((IStructureInfoProvider)pitGenerator).getInfo().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
-//					chestCoords = coordsList.get(0);
-					Treasure.logger.debug("Using StructureInfo relative chest coords -> {}", chestCoords.toShortString());
-					chestCoords = chestCoords.add((((IStructureInfoProvider)pitGenerator).getInfo().getCoords()));				
+					else {
+						Treasure.logger.debug("Unable to retrieve StructureInfo");
+					}
 				}
 				else {
 					chestCoords = new Coords(spawnCoords);
