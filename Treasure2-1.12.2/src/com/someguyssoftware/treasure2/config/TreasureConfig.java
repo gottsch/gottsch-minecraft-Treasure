@@ -230,12 +230,25 @@ public class TreasureConfig extends AbstractConfig {
 	public static int rubyOreMinY;
 	public static int rubyOreVeinSize;	
 	
-	// TODO add wells properties
-	
 	// TODO add wandering antiquities peddler properties
 	
 	// TODO add treasure/unique items properties
-	
+	public static int woodKeyMaxUses;
+	public static int stoneKeyMaxUses;
+	public static int ironKeyMaxUses;
+	public static int goldKeyMaxUses;
+	public static int diamondKeyMaxUses;
+	public static int emeraldKeyMaxUses;
+	public static int rubyKeyMaxUses;
+	public static int sapphireKeyMaxUses;
+	public static int jewelledKeyMaxUses;
+	public static int metallurgistsKeyMaxUses;
+	public static int skeletonKeyMaxUses;
+	public static int spiderKeyMaxUses;
+	public static int witherKeyMaxUses;
+	public static int pilferersLockPickMaxUses;
+	public static int thiefsLockPickMaxUses;
+		
 	// biome type white/black lists
 	public static String[] generalChestBiomeWhiteList;
 	public static String[] generalChestBiomeBlackList;
@@ -317,6 +330,22 @@ public class TreasureConfig extends AbstractConfig {
         rubyOreMaxY = config.getInt("rubyOreMaxY", "04-gen", 14, 1, 255, "");
         rubyOreVeinSize = config.getInt("rubyOreVeinSize", "04-gen", 3, 1, 20, "");
         
+        // treasure items/keys/locks
+        woodKeyMaxUses = config.getInt("woodKeyMaxUses", "04-gen", 20, 1, 32000, "The maximum uses for a given wooden key.");
+        stoneKeyMaxUses = config.getInt("stoneKeyMaxUses", "04-gen", 10, 1, 32000, "The maximum uses for a given stone key.");
+        ironKeyMaxUses = config.getInt("ironKeyMaxUses", "04-gen", 10, 1, 32000, "The maximum uses for a given iron key.");
+        goldKeyMaxUses = config.getInt("goldKeyMaxUses", "04-gen", 15, 1, 32000, "The maximum uses for a given gold key.");
+        diamondKeyMaxUses = config.getInt("diamondKeyMaxUses", "04-gen", 20, 1, 32000, "The maximum uses for a given diamond key.");
+        emeraldKeyMaxUses = config.getInt("emeraldKeyMaxUses", "04-gen", 10, 1, 32000, "The maximum uses for a given emerald key.");
+        rubyKeyMaxUses = config.getInt("rubyKeyMaxUses", "04-gen", 8, 1, 32000, "The maximum uses for a given ruby key.");
+        sapphireKeyMaxUses = config.getInt("sapphireKeyMaxUses", "04-gen", 5, 1, 32000, "The maximum uses for a given sapphire key.");
+        jewelledKeyMaxUses = config.getInt("jewelledKeyMaxUses", "04-gen", 5, 1, 32000, "The maximum uses for a given jewelled key.");
+        metallurgistsKeyMaxUses = config.getInt("metallurgistsKeyMaxUses", "04-gen", 25, 1, 32000, "The maximum uses for a given metallurgists key.");
+        skeletonKeyMaxUses = config.getInt("skeletonKeyMaxUses", "04-gen", 5, 1, 32000, "The maximum uses for a given skeleton key.");
+        spiderKeyMaxUses = config.getInt("spiderKeyMaxUses", "04-gen", 5, 1, 32000, "The maximum uses for a given spider key.");
+        witherKeyMaxUses = config.getInt("witherKeyMaxUses", "04-gen", 5, 1, 32000, "The maximum uses for a given wither key.");
+        pilferersLockPickMaxUses = config.getInt("pilferersLockPickMaxUses", "04-gen", 10, 1, 32000, "The maximum uses for a given pilferers lock pick.");
+        thiefsLockPickMaxUses = config.getInt("thiefsLockPickMaxUses", "04-gen", 10, 1, 32000, "The maximum uses for a given thiefs lock pick.");
         // the the default values
        if(config.hasChanged()) {
     	   config.save();

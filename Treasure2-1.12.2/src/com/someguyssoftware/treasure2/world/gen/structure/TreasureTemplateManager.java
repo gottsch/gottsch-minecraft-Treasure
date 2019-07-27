@@ -6,6 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +21,8 @@ import org.apache.commons.io.IOUtils;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
+import com.someguyssoftware.gottschcore.GottschCore;
+import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.StructureMarkers;
@@ -42,11 +47,18 @@ import static com.someguyssoftware.treasure2.enums.StructureMarkers.*;
  */
 // TODO redo this. doesn't work well for specials like witch's den, plus doesn't work well with generic template manager unless they key wasn't StructureType but a String or Integer etc
 public class TreasureTemplateManager {
+	private static final String CUSTOM_TEMPLATE_RESOURCE_PATH = "/structures/";
+	
+	/*
+	 * NOTE this enum is key for external templates. all templates are
+	 * categorized and placed into folders according to the type.
+	 */
 	public enum StructureType {
 		ABOVEGROUND,
-		UNDERGROUND,
-		WITCH
+		UNDERGROUND
 	};
+	
+	private IMod mod;
 	
 	/*
 	 * templates is the master map where the key is the String representation resource location.
@@ -56,8 +68,8 @@ public class TreasureTemplateManager {
 	private final String baseFolder;
 	private final DataFixer fixer;
 		
-	// TODO this could've been a multiMap
 	private final Map<StructureType, List<Template>> templatesByType = Maps.<StructureType, List<Template>>newHashMap();
+	/** NOTE not in use yet. can organize tempaltes by type and rarity */
 	private final Table<StructureType, Rarity, List<Template>> templateTable = HashBasedTable.create();
 	
 	/*
@@ -75,7 +87,7 @@ public class TreasureTemplateManager {
 			"treasure2:underground/crypt1"
 	});
 
-	/**
+	/*
 	 * builtin aboveground locations for structures
 	 */
 	List<String> abovegroundLocations = Arrays.asList(new String[] {
@@ -128,13 +140,36 @@ public class TreasureTemplateManager {
     			markerMap.get(PROXIMITY_SPAWNER)
     			});
         
-        // load all the underground structure templates
+        // load all the builtin (jar) structure templates
         loadAll(undergroundLocations, StructureType.UNDERGROUND);
         loadAll(abovegroundLocations, StructureType.ABOVEGROUND);
         
-        // TODO add ability to load external structures
+        // load external structures
+        for (StructureType customLocation : StructureType.values()) {
+        	createStructureFolder(customLocation.name().toLowerCase());
+        	loadAll(Arrays.asList(customLocation.name().toLowerCase()), customLocation);
+        }
     }
 
+	/**
+	 * 
+	 * @param location
+	 */
+	protected void createStructureFolder(String location) {
+		// build a path to the specified location
+		Path folder = Paths.get(getBaseFolder(), ((location != null && !location.equals("")) ? (location + "/") : "")).toAbsolutePath();
+
+		if (Files.notExists(folder)) {
+			Treasure.logger.debug("structures folder \"{}\" will be created.", folder.toString());
+			try {
+				Files.createDirectories(folder);
+
+			} catch (IOException e) {
+				Treasure.logger.warn("Unable to create structure folder \"{}\"", folder.toString());
+			}
+		}
+	}
+	
 	/**
 	 * Convenience method.
 	 * @param type
@@ -171,17 +206,6 @@ public class TreasureTemplateManager {
 		return template;
 	}
 
-	/**
-	 * 
-	 */
-	public void loadAll() {
-		Treasure.logger.debug("loading all structures...");
-		for (String s : undergroundLocations) {
-			Treasure.logger.debug("loading from -> {}", s);
-			load(new ResourceLocation(s), scanList);
-		}
-	}
-	
 	/**
 	 * 
 	 * @param locations
@@ -374,5 +398,24 @@ public class TreasureTemplateManager {
 	 */
 	public Map<StructureType, List<Template>> getTemplatesByType() {
 		return templatesByType;
+	}
+	
+	/**
+	 * @return the mod
+	 */
+	protected IMod getMod() {
+		return mod;
+	}
+
+	/**
+	 * @param mod
+	 *            the mod to set
+	 */
+	protected void setMod(IMod mod) {
+		this.mod = mod;
+	}
+
+	public String getBaseFolder() {
+		return baseFolder;
 	}
 }
