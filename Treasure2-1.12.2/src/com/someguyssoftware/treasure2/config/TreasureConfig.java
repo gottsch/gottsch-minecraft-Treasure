@@ -308,7 +308,7 @@ public class TreasureConfig extends AbstractConfig {
         gravestoneFogProbability = config.getInt("gravestoneFogProbability", "04-gen", 50, 0, 100, "The probability that a gravestone will have fog."); 
         
         isStructureMarkersAllowed = config.getBoolean("isStructureMarkersAllowed", "04-gen", true, "");
-        structureMarkerProbability = config.getInt("structureMarerProbability", "04-gen", 15, 0, 100, "The probability that a Treasure chest marker will be a structure."); 
+        structureMarkerProbability = config.getInt("structureMarkerProbability", "04-gen", 15, 0, 100, "The probability that a Treasure chest marker will be a structure."); 
 
         // wells
         minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 500, 100, 32000, "");

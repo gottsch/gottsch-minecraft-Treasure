@@ -477,17 +477,19 @@ public class GenUtil {
 	public static ICoords findUndergroundCeiling(World world, ICoords coords) {
 		final int CEILING_FAIL_SAFE = 50;
 		int ceilingHeight = 1;		
-		
+
 		// find the ceiling of the cavern	
 		while (world.isAirBlock(coords.toPos())) {				
 			ceilingHeight++;
 			if (ceilingHeight > world.getHeight() || ceilingHeight == CEILING_FAIL_SAFE) {
 				return null;
 			}
-			coords = coords.add(0, ceilingHeight, 0);
+//			coords = coords.add(0, ceilingHeight, 0); 
+			coords = coords.add(0, 1, 0); 
 		}
 		// add 1 height to the final pos
-		coords = coords.add(0, ceilingHeight++, 0);		
+//		coords = coords.add(0, ceilingHeight++, 0);		
+		coords = coords.add(0, 1, 0); 
 		return coords;
 	}
 	

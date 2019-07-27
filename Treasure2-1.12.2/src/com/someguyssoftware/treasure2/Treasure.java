@@ -47,6 +47,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -90,7 +91,7 @@ public class Treasure extends AbstractMod {
 
 	private static final String VERSION_URL = "";
 	private static final BuildVersion MINECRAFT_VERSION = new BuildVersion(1, 12, 2);
-	
+
 	// latest version
 	private static BuildVersion latestVersion;
 	
@@ -217,7 +218,10 @@ public class Treasure extends AbstractMod {
 		// add the loot table managers
 		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");
 		
-		TEMPLATE_MANAGER = new TreasureTemplateManager(TreasureConfig.CUSTOM_STRUCTURE_FOLDER, Minecraft.getMinecraft().getDataFixer());
+		TEMPLATE_MANAGER = new TreasureTemplateManager(
+				TreasureConfig.CUSTOM_STRUCTURE_FOLDER, 
+				FMLCommonHandler.instance().getDataFixer());
+//				Minecraft.getMinecraft().getDataFixer());
 
 	}
 	

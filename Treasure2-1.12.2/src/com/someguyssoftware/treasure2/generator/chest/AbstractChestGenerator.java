@@ -5,7 +5,6 @@ package com.someguyssoftware.treasure2.generator.chest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -26,23 +25,21 @@ import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.PitTypes;
-import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.StructureMarkers;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.marker.RandomStructureMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
-import com.someguyssoftware.treasure2.generator.pit.StructurePitGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -103,42 +100,52 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 					.collect(Collectors.toList());
 			IPitGenerator pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));
 			
-//			Pits pit = Pits.values()[random.nextInt(Pits.values().length)];
-//			IPitGenerator pitGenerator = null;
-//			if (pit == Pits.STRUCTURE_PIT) {
-//				// select a pit from the subset
-//				IPitGenerator parentPit = ((List<IPitGenerator>)ChestWorldGenerator.structurePitGenerators.values()).get(random.nextInt(ChestWorldGenerator.structurePitGenerators.size()));
-//				// create a new pit instance (new instance as it contains state)
-//				pitGenerator = new StructurePitGenerator(ChestWorldGenerator.structurePitGenerators.get(parentPit));
-//			}
-//			else {
-//				pitGenerator = ChestWorldGenerator.pitGenerators.get(pit);
-//			}
-			
-			Treasure.logger.debug("Using PitType: {}, Gen: {}", pitType, pitGenerator.getClass());
+			Treasure.logger.debug("Using PitType: {}, Gen: {}", pitType, pitGenerator.getClass().getSimpleName());
 			
 			// 3. build the pit
 			isGenerated = pitGenerator.generate(world, random, markerCoords, spawnCoords);
-//			Treasure.logger.debug("Is pit generated: {}", isGenerated);
+			Treasure.logger.debug("Is pit generated: {}", isGenerated);
 			// 4. build the room
 			
 			// 5. update the chest coords
 //			chestCoords = new Coords(spawnCoords);
-			if (pitGenerator instanceof IStructureInfoProvider) {
-				// TODO could extend IStructureInfoProvider for Treasure context that only records a single or main chest
-				List<ICoords> coordsList = (List<ICoords>)((IStructureInfoProvider)pitGenerator).getInfo().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
-				chestCoords = coordsList.get(0);
-				Treasure.logger.debug("Using StructureInfo relative chest coords -> {}", chestCoords.toShortString());
-				chestCoords = chestCoords.add((((IStructureInfoProvider)pitGenerator).getInfo().getCoords()));				
+
+			// TODO refactor this whole block/method
+			if (isGenerated) {
+				if (pitGenerator instanceof IStructureInfoProvider) {
+					// TODO could extend IStructureInfoProvider for Treasure context that only records a single or main chest
+					IStructureInfoProvider structureInfoProvider = (IStructureInfoProvider)pitGenerator;
+					IStructureInfo structureInfo = structureInfoProvider.getInfo();
+					if (structureInfo != null) {
+						List<ICoords> chestCoordsList = (List<ICoords>) structureInfo
+								.getMap()
+								.get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
+						if (!chestCoordsList.isEmpty()) {
+							chestCoords = chestCoordsList.get(0);
+							Treasure.logger.debug("Using StructureInfo relative chest coords -> {}", chestCoords.toShortString());
+							chestCoords = chestCoords.add((((IStructureInfoProvider)pitGenerator).getInfo().getCoords()));	
+						}
+						else {
+							Treasure.logger.debug("Unable to retrieve Chest from structure");
+						}
+					}
+					else {
+						Treasure.logger.debug("Unable to retrieve StructureInfo");
+					}
+				}
+				else {
+					chestCoords = new Coords(spawnCoords);
+				}
+				
 			}
-			else {
-				chestCoords = new Coords(spawnCoords);
-			}
+			
 		}
 		else { return false; }
 
+		// TODO change to has chest coords ie if (chestCoords != null && chestCoords != WorldInfo.EMPTY_COORDS
+		
 		// if successfully gen the pit
-		if (isGenerated) {
+		if (/*isGenerated*/chestCoords != null) {
 //			Treasure.logger.debug("isGenerated = TRUE");
 			LootTable lootTable = selectLootTable(random, chestRarity);
 

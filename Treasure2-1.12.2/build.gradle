@@ -108,3 +108,8 @@ processResources
 //artifacts {
 //    archives packageJavadoc
 //}
+
+//task copyTask(type: Copy) {
+//        from 'node_modules/.'
+//        into 'build/resources/main/static'
+//}
