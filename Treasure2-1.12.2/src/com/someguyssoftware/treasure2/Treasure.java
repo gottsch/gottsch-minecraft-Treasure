@@ -71,7 +71,7 @@ import net.minecraftforge.oredict.OreDictionary;
 		modid=Treasure.MODID,
 		name=Treasure.NAME,
 		version=Treasure.VERSION,
-		dependencies="required-after:gottschcore@[1.7.0,)",
+		dependencies="required-after:gottschcore@[1.8.0,)",
 		acceptedMinecraftVersions = "[1.12.2]",
 		updateJSON = Treasure.UPDATE_JSON_URL
 		)
@@ -146,13 +146,13 @@ public class Treasure extends AbstractMod {
 		Configs.init(this, event.getModConfigurationDirectory());
 		
 		// configure logging
-		addRollingFileAppenderToLogger(Treasure.NAME, Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
+//		addRollingFileAppenderToLogger(Treasure.NAME, Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
 		// create a rolling file appender
-//		Appender appender = createRollingFileAppender(Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
+		Appender appender = createRollingFileAppender(Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
 		// add appender to mod logger
-//		addAppenderToLogger(appender, Treasure.NAME, (ILoggerConfig) getConfig());
+		addAppenderToLogger(appender, Treasure.NAME, (ILoggerConfig) getConfig());
 		// add appender to the GottschCore logger
-//		addAppenderToLogger(appender, GottschCore.instance.getName(), (ILoggerConfig) getConfig());
+		addAppenderToLogger(appender, GottschCore.instance.getName(), (ILoggerConfig) getConfig());
 		
 		// register the GUI handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
@@ -219,6 +219,7 @@ public class Treasure extends AbstractMod {
 		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");
 		
 		TEMPLATE_MANAGER = new TreasureTemplateManager(
+				Treasure.instance,
 				TreasureConfig.CUSTOM_STRUCTURE_FOLDER, 
 				FMLCommonHandler.instance().getDataFixer());
 //				Minecraft.getMinecraft().getDataFixer());

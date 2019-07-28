@@ -3,7 +3,7 @@ package com.someguyssoftware.treasure2.generator.pit;
 import java.util.List;
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.Quantity;
+import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;

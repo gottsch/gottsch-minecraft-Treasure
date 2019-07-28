@@ -15,13 +15,7 @@
 							"levels": 30,
 							"treasure": true
 						}
-					],					
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					]					
+					]		
 				},
 				{
 					"entryName": "titanium_boots",
@@ -34,13 +28,7 @@
 							"levels": 30,
 							"treasure": true
 						}
-					],					
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					]					
+					]				
 				},
 				{
 					"entryName": "autium_chestplate",
@@ -52,12 +40,6 @@
 							"function": "enchant_with_levels",
 							"levels": 30,
 							"treasure": true
-						}
-					],
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
 						}
 					]
 				},
@@ -72,13 +54,7 @@
 							"levels": 30,
 							"treasure": true
 						}
-					],	
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					]					
+					]				
 				},
 				{
 					"entryName": "autium_helmet",
@@ -91,13 +67,7 @@
 							"levels": 30,
 							"treasure": true
 						}
-					],						
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					]					
+					]			
 				},
 				{
 					"entryName": "autium_boots",
@@ -110,13 +80,7 @@
 							"levels": 30,
 							"treasure": true
 						}
-					],	
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					]					
+					]				
 				}						
 			]
 		}

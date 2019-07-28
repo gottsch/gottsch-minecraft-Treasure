@@ -5,7 +5,7 @@ package com.someguyssoftware.treasure2.tileentity;
 
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.Quantity;
+import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;

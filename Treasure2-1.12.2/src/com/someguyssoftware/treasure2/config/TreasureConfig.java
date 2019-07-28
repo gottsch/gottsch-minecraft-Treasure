@@ -189,6 +189,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static boolean enableWitherFog = true;
 	public static boolean enablePoisonFog = true;
 	public static boolean enableLockDrops = true;
+	public static boolean enableDefaultLootTablesCheck = true;
+	public static boolean enableDefaultTemplatesCheck = true;
 	
 	/*
 	 * other mod enablements for loot tables
@@ -281,16 +283,18 @@ public class TreasureConfig extends AbstractConfig {
         setModsFolder("mods");
 		// TODO change this to be just the base folder. make private. use getter(). append MODID
         treasureFolder = config.getString("treasureFolder", "03-mod", "mods/" + Treasure.MODID + "/", "Where default Treasure folder is located.");
-        enableKeyBreaks = config.getBoolean("enableKeyBreaks", "03-mod", true, "Enables/Disable whether a Key can break when attempting to unlock a Lock.");
-        enableFog = config.getBoolean("enableFog", "03-mod", true, "Enables/Disable whether a fog is generated (ex. around graves/tombstones and wither trees)");
-        enableWitherFog = config.getBoolean("enableWitherFog", "03-mod", true, "Enables/Disable whether a wither fog is generated (ex. around wither trees)");
-        enablePoisonFog = config.getBoolean("enablePoisonFog", "03-mod", true, "Enables/Disable whether a poison fog is generated (ex. around wither trees)");
-        enableLockDrops = config.getBoolean("enableLockDrops", "03-mod", true, "Enables/Disable whether a Lock item is dropped when unlocked by Key item.");
-//        enableMoCreatures = config.getBoolean("enableMoCreatures", "03-mod", false, "Enables/Disable whether MoCreatures mod is installed and it's items can be used in loot tables.");
+        enableKeyBreaks = config.getBoolean("enableKeyBreaks", "03-mod", true, "Enable/Disable whether a Key can break when attempting to unlock a Lock.");
+        enableFog = config.getBoolean("enableFog", "03-mod", true, "Enable/Disable whether a fog is generated (ex. around graves/tombstones and wither trees)");
+        enableWitherFog = config.getBoolean("enableWitherFog", "03-mod", true, "Enable/Disable whether a wither fog is generated (ex. around wither trees)");
+        enablePoisonFog = config.getBoolean("enablePoisonFog", "03-mod", true, "Enable/Disable whether a poison fog is generated (ex. around wither trees)");
+        enableLockDrops = config.getBoolean("enableLockDrops", "03-mod", true, "Enable/Disable whether a Lock item is dropped when unlocked by Key item.");
+//        enableMoCreatures = config.getBoolean("enableMoCreatures", "03-mod", false, "Enable/Disable whether MoCreatures mod is installed and it's items can be used in loot tables.");
         // foreign mod enablements
         enableForeignModIDs = config.getStringList("enableForeignModIDs", "03-mod", new String[]{"mocreatures", "sgs_metals"}, "Add mod's MODID to this list to enable custom loot tables for a mod.");
         availableForeignModLootTables = config.getStringList("availableForeignModLootTables", "03-mod", new String[]{"mocreatures", "sgs_metals"}, "A list of mods that have prebuilt loot tables available. Note: used for informational purposes only.");
-             
+        enableDefaultLootTablesCheck = config.getBoolean("enableDefaultLootTablesCheck", "03-mod", true, "Enable/Disable a check to ensure the default loot tables exist on the file system. If enabled, then you will not be able to remove any default loot tables (but they can be edited). Only disable if you know what you're doing.");
+        enableDefaultTemplatesCheck = config.getBoolean("enableDefaultTemplatesCheck", "03-mod", true, "Enable/Disable a check to ensure the default templates exist on the file system. If enabled, then you will not be able to remove any default templates. Only disable if you know what you're doing.");
+        
         // white/black lists
         config.setCategoryComment("04-gen", "World generation properties.");    
         generalChestBiomeWhiteList = config.getStringList("generalChestBiomeWhiteList", "04-gen", new String[]{}, "Allowable Biome Types for general Chest generation. Must match the Type identifer(s).");
