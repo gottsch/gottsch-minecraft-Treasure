@@ -72,10 +72,13 @@ public class TreasureTemplateManager extends AbstractResourceManager {
 	
 //	private IMod mod;
 	
+	// TODO this can go away
 	/*
 	 * templates is the master map where the key is the String representation resource location.
 	 */
 	private final Map<String, Template> templates = Maps.<String, Template>newHashMap();
+	
+	
 	/** the folder in the assets folder where the structure templates are found. */
 //	private final String baseFolder;
 	private final DataFixer fixer;
@@ -482,7 +485,9 @@ public class TreasureTemplateManager extends AbstractResourceManager {
 		if (!s.endsWith(".nbt")) {
 			suffix = ".nbt";
 		}
-		File file1 = new File(this.getBaseResourceFolder(), s + suffix);
+		Path path = Paths.get(getMod().getConfig().getModsFolder(), getMod().getId(), s + suffix);
+//		File file1 = new File(this.getBaseResourceFolder(), s + suffix);
+		File file1 = path.toFile();
 		Treasure.logger.debug("template file path -> {}", file1.getAbsoluteFile());
 		if (!file1.exists()) {
 			Treasure.logger.debug("file does not exist, read from jar -> {}", file1.getAbsolutePath());
@@ -515,7 +520,7 @@ public class TreasureTemplateManager extends AbstractResourceManager {
 		boolean flag;
 
 		try {
-			Treasure.logger.debug("attempting to open resource stream -> {}", "/assets/" + s + "/strucutres/" + s1 + ".nbt");
+			Treasure.logger.debug("attempting to open resource stream -> {}", "/assets/" + s + "/structures/" + s1 + ".nbt");
 			inputstream = MinecraftServer.class.getResourceAsStream("/assets/" + s + "/structures/" + s1 + ".nbt");
 			this.readTemplateFromStream(id.toString(), inputstream, scanForBlocks);
 			return true;
