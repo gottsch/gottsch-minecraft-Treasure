@@ -8,11 +8,11 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.treasure2.enums.StructureMarkers;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.StructureInfo;
-import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplate;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
@@ -26,7 +26,7 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 public class StructureGenerator implements IStructureGenerator {
 
 	@Override
-	public IStructureInfo generate(World world, Random random, TreasureTemplate template, PlacementSettings placement,
+	public IStructureInfo generate(World world, Random random, GottschTemplate template, PlacementSettings placement,
 			ICoords spawnCoords) {
 		
 		// generate the structure
@@ -35,7 +35,7 @@ public class StructureGenerator implements IStructureGenerator {
 		// remove any extra special blocks
 		for (ICoords coords : template.getMapCoords()) {
 			// TODO skip Offset blocks. (like a null block)
-			ICoords c = TreasureTemplate.transformedCoords(placement, coords);
+			ICoords c = GottschTemplate.transformedCoords(placement, coords);
 			world.setBlockToAir(spawnCoords.toPos().add(c.toPos()));
 //			Treasure.logger.debug("removing mapped block -> {} : {}", c, spawnCoords.toPos().add(c.toPos()));
 		}
@@ -47,13 +47,13 @@ public class StructureGenerator implements IStructureGenerator {
 		// get the transformed entrance
 		ICoords entranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
 		if (entranceCoords != null) {
-			entranceCoords = new Coords(TreasureTemplate.transformedCoords(placement, entranceCoords));
+			entranceCoords = new Coords(GottschTemplate.transformedCoords(placement, entranceCoords));
 		}
 		// TODO remove
 		// get the transformed chest
 		ICoords chestCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 		if (chestCoords != null) {
-			chestCoords = new Coords(TreasureTemplate.transformedCoords(placement, chestCoords));
+			chestCoords = new Coords(GottschTemplate.transformedCoords(placement, chestCoords));
 		}
 
 		// TODO need to capture the facing or meta of the chest, perform the rotation on the facing  and save it in the Map with the pos... need a new object to hold more data
@@ -65,7 +65,7 @@ public class StructureGenerator implements IStructureGenerator {
 		// process all specials and adding them to the StructureInfo
 		// TODO change to stream
 		for (Entry<Block, ICoords> entry : template.getMap().entries()) {
-			ICoords c = new Coords(TreasureTemplate.transformedCoords(placement, entry.getValue()));
+			ICoords c = new Coords(GottschTemplate.transformedCoords(placement, entry.getValue()));
 			info.getMap().put(entry.getKey(), c);
 		}
 		

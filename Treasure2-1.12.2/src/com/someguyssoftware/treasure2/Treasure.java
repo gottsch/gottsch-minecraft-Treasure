@@ -220,7 +220,8 @@ public class Treasure extends AbstractMod {
 		
 		TEMPLATE_MANAGER = new TreasureTemplateManager(
 				Treasure.instance,
-				TreasureConfig.CUSTOM_STRUCTURE_FOLDER, 
+//				TreasureConfig.CUSTOM_STRUCTURE_FOLDER,
+				"/structures",
 				FMLCommonHandler.instance().getDataFixer());
 //				Minecraft.getMinecraft().getDataFixer());
 

@@ -6,6 +6,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.enums.StructureMarkers;
@@ -15,7 +16,6 @@ import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
 import com.someguyssoftware.treasure2.world.gen.structure.StructureInfo;
-import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplate;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager.StructureType;
 
 import net.minecraft.block.material.Material;
@@ -118,14 +118,14 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 //			List<Template> templates = Treasure.TEMPLATE_MANAGER.getTemplates().values().stream().collect(Collectors.toList());
 			List<Template> templates = Treasure.TEMPLATE_MANAGER.getTemplatesByType(StructureType.UNDERGROUND);
 			
-			TreasureTemplate template = (TreasureTemplate) templates.get(random.nextInt(templates.size()));
+			GottschTemplate template = (GottschTemplate) templates.get(random.nextInt(templates.size()));
 			if (template == null) {
 				Treasure.logger.debug("could not find random template");
 				return false;
 			}
 			
 //			List<Template> templates2 = Treasure.TEMPLATE_MANAGER.getTemplateTable()
-//					.get(TreasureTemplateManager.StructureType.UNDERGROUND, Rarity.COMMON);
+//					.get(GottschTemplateManager.StructureType.UNDERGROUND, Rarity.COMMON);
 			
 			// find the offset block
 			int offset = 0;
@@ -175,7 +175,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			placement.setRotation(rotation).setRandom(random);
 			
 			// NOTE these values are still relative to origin (spawnCoords);
-			ICoords newEntrance = new Coords(TreasureTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
+			ICoords newEntrance = new Coords(GottschTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
 		
 			/*
 			 *  adjust spawn coords to line up room entrance with pit

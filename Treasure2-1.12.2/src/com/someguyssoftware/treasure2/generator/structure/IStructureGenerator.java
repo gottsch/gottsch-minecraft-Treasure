@@ -3,8 +3,8 @@ package com.someguyssoftware.treasure2.generator.structure;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
-import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplate;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -25,7 +25,7 @@ public interface IStructureGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public IStructureInfo generate(World world, Random random, TreasureTemplate template, PlacementSettings settings, ICoords spawnCoords);
+	public IStructureInfo generate(World world, Random random, GottschTemplate template, PlacementSettings settings, ICoords spawnCoords);
 
 	/**
 	 * NOTE not 100% sure that this  belongs here

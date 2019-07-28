@@ -10,6 +10,7 @@ import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.enums.StructureMarkers;
@@ -19,7 +20,6 @@ import com.someguyssoftware.treasure2.generator.structure.StructureGenerator;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
-import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplate;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager.StructureType;
 
 import net.minecraft.init.Blocks;
@@ -53,7 +53,7 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStruct
 	public boolean generate(World world, Random random, ICoords coords) {
 
 		List<Template> templates = Treasure.TEMPLATE_MANAGER.getTemplatesByType(StructureType.ABOVEGROUND);
-		TreasureTemplate template = (TreasureTemplate) templates.get(random.nextInt(templates.size()));
+		GottschTemplate template = (GottschTemplate) templates.get(random.nextInt(templates.size()));
 		if (template == null) {
 			Treasure.logger.debug("could not find random template");
 			return false;
@@ -85,7 +85,7 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStruct
 		placement.setRotation(rotation).setRandom(random);
 		
 		// NOTE these values are still relative to origin (spawnCoords);
-		ICoords newEntrance = new Coords(TreasureTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
+		ICoords newEntrance = new Coords(GottschTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
 		
 		/*
 		 *  adjust spawn coords to line up room entrance with pit
