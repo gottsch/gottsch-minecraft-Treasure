@@ -37,6 +37,7 @@ import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
+import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
@@ -121,6 +122,9 @@ public class Treasure extends AbstractMod {
     
     // template manager
     public static TreasureTemplateManager TEMPLATE_MANAGER;
+    
+    // meta manager // NOTE can't be final as Treasure.instance is required.
+    public static TreasureMetaManager META_MANAGER;
     
 	/**
 	 * 
@@ -225,6 +229,7 @@ public class Treasure extends AbstractMod {
 				FMLCommonHandler.instance().getDataFixer());
 //				Minecraft.getMinecraft().getDataFixer());
 
+		META_MANAGER = new TreasureMetaManager(Treasure.instance, "structures");
 	}
 	
 	/**

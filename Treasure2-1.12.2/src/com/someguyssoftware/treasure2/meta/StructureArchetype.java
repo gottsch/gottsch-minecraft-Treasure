@@ -1,29 +1,25 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.enums;
+package com.someguyssoftware.treasure2.meta;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.someguyssoftware.gottschcore.enums.IEnum;
-import com.someguyssoftware.gottschcore.enums.IRarity;
-import com.someguyssoftware.gottschcore.meta.IMetaTheme;
-import com.someguyssoftware.treasure2.meta.StructureTheme;
+import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 
 /**
- * @author Mark Gottschling onJan 11, 2018
+ * @author Mark Gottschling on Jul 29, 2019
  *
  */
-public enum Rarity implements IRarity {
-	COMMON(0, "common"),
-	UNCOMMON(1, "uncommon"),
-	SCARCE(2, "scarce"),
-	RARE(3, "rare"),
-	EPIC(4, "epic");//,
-//	UNIQUE;
-	
+public enum StructureArchetype implements IMetaArchetype {
+	SURFACE(0, "surface"),
+	SUBTERRANEAN(1, "subterranean"),
+	SUBMERGED(2, "submerged"),
+	FLOAT(3, "float");
+
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();
 	private Integer code;
@@ -31,18 +27,19 @@ public enum Rarity implements IRarity {
 	
 	// setup reverse lookup
 	static {
-		for (IMetaTheme type : EnumSet.allOf(StructureTheme.class)) {
-			codes.put(type.getCode(), type);
-			values.put(type.getValue(), type);
+		for (IMetaArchetype ps : EnumSet.allOf(StructureArchetype.class)) {
+			codes.put(ps.getCode(), ps);
+			values.put(ps.getValue(), ps);
 		}
 	}
-
 	
 	/**
-	 * 
+	 * Full constructor
+	 * @param code
 	 * @param value
 	 */
-	Rarity(int code, String value) {
+	StructureArchetype(Integer code, String value) {
+		this.code = code;
 		this.value = value;
 	}
 	
@@ -76,16 +73,16 @@ public enum Rarity implements IRarity {
 	 * @param code
 	 * @return
 	 */
-	public static StructureTheme getByCode(Integer code) {
-		return (StructureTheme) codes.get(code);
+	public static StructureArchetype getByCode(Integer code) {
+		return (StructureArchetype) codes.get(code);
 	}
 	/**
 	 * 
 	 * @param value
 	 * @return
 	 */
-	public static StructureTheme getByValue(String value) {
-		return (StructureTheme) values.get(value);
+	public static StructureArchetype getByValue(String value) {
+		return (StructureArchetype) values.get(value);
 	}
 
 	@Override

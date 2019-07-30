@@ -48,6 +48,7 @@ public class WorldEventHandler {
 					Treasure.LOOT_TABLES.register(foreignModID);
 				}
 			}
+			Treasure.META_MANAGER.register(getMod().getId());
 			Treasure.TEMPLATE_MANAGER.register(getMod().getId());
 		}
 	}

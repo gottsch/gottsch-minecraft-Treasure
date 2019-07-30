@@ -1,29 +1,28 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.enums;
+package com.someguyssoftware.treasure2.meta;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.someguyssoftware.gottschcore.enums.IEnum;
-import com.someguyssoftware.gottschcore.enums.IRarity;
+import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 import com.someguyssoftware.gottschcore.meta.IMetaTheme;
-import com.someguyssoftware.treasure2.meta.StructureTheme;
+import com.someguyssoftware.gottschcore.meta.IMetaType;
 
 /**
- * @author Mark Gottschling onJan 11, 2018
+ * @author Mark Gottschling on Jul 29, 2019
  *
  */
-public enum Rarity implements IRarity {
-	COMMON(0, "common"),
-	UNCOMMON(1, "uncommon"),
-	SCARCE(2, "scarce"),
-	RARE(3, "rare"),
-	EPIC(4, "epic");//,
-//	UNIQUE;
-	
+public enum StructureTheme implements IMetaTheme {
+	NONE(0, "none"),
+	DUNGEON(1, "dungeon"),
+	DESERT(2, "desert"),
+	ARTIC(3, "arctic"),
+	FOREST(4, "forest");
+
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();
 	private Integer code;
@@ -36,13 +35,14 @@ public enum Rarity implements IRarity {
 			values.put(type.getValue(), type);
 		}
 	}
-
 	
 	/**
-	 * 
+	 * Full constructor
+	 * @param code
 	 * @param value
 	 */
-	Rarity(int code, String value) {
+	StructureTheme(Integer code, String value) {
+		this.code = code;
 		this.value = value;
 	}
 	
