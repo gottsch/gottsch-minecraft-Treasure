@@ -130,7 +130,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	 */
 	public void register(String modID) {
 		for (String location : FOLDER_LOCATIONS) {
-			Treasure.logger.debug("registering template -> {}", location);
+			Treasure.logger.debug("registering templates under location -> {}", location);
 			// get loot table files as ResourceLocations from the file system location
 			List<ResourceLocation> locs = getResourceLocations(modID, location);
 			
@@ -142,14 +142,14 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				}
 				
 				// load template
-				Treasure.logger.debug("attempted to load custom template  with key -> {} : {}", location, location);
+				Treasure.logger.debug("attempted to load custom template  with key -> {}", loc.toString());
 				Template template = load(loc, getScanList());
 				// add the id to the map
 				if (template == null) {
 					// TODO  message
 					continue;
 				}
-				Treasure.logger.debug("loaded custom template  with key -> {} : {}", location, location);
+				Treasure.logger.debug("loaded custom template  with key -> {}", loc.toString());
 				
 				// build the key for the meta manager to look at
 				String key =new ResourceLocation(getMod().getId() + ":" + getBaseResourceFolder() + "/" + modID + "/" + location).toString();

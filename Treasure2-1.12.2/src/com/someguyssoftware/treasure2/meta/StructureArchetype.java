@@ -7,6 +7,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.annotations.SerializedName;
 import com.someguyssoftware.gottschcore.enums.IEnum;
 import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 

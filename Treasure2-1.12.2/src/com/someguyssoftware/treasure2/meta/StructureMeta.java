@@ -49,5 +49,16 @@ public class StructureMeta extends Meta {
 	public void setIncludeFog(boolean includeFog) {
 		this.includeFog = includeFog;
 	}
+
+	@Override
+	public String toString() {
+		return "StructureMeta [offset=" + offset + ", includeGraves=" + includeGraves + ", includeFog=" + includeFog
+				+ ", getName()=" + getName() + ", getDescription()=" + getDescription() + ", getAuthor()=" + getAuthor()
+				+ ", getParent()=" + getParent() + ", getArchetypes()=" + getArchetypes() + ", getType()=" + getType()
+				+ ", getThemes()=" + getThemes() + ", getBiomeWhiteList()=" + getBiomeWhiteList()
+				+ ", getBiomeBlackList()=" + getBiomeBlackList() + ", getRarities()=" + getRarities() + ", getOrder()="
+				+ getOrder() + ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()="
+				+ hashCode() + "]";
+	}
 		
 }

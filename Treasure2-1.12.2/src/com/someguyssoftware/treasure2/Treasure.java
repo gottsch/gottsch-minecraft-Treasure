@@ -229,7 +229,7 @@ public class Treasure extends AbstractMod {
 				FMLCommonHandler.instance().getDataFixer());
 //				Minecraft.getMinecraft().getDataFixer());
 
-		META_MANAGER = new TreasureMetaManager(Treasure.instance, "structures");
+		META_MANAGER = new TreasureMetaManager(Treasure.instance, "meta");
 	}
 	
 	/**
