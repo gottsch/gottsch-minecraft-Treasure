@@ -18,10 +18,14 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
+import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
+import com.someguyssoftware.gottschcore.meta.IMetaType;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplateManager;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.meta.StructureArchetype;
+import com.someguyssoftware.treasure2.meta.StructureMeta;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,6 +55,8 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	private final Map<StructureType, List<Template>> templatesByType = Maps.<StructureType, List<Template>>newHashMap();
 	/** NOTE not in use yet. can organize tempaltes by type and rarity */
 	private final Table<StructureType, Rarity, List<Template>> templateTable = HashBasedTable.create();
+	
+	private final Table<IMetaArchetype, IMetaType, List<Template>> templatesByArchtypeType = HashBasedTable.create();
 	
 	/*
 	 * builtin underground locations for structures
@@ -96,6 +102,13 @@ public class TreasureTemplateManager extends GottschTemplateManager {
         	getTemplatesByType().put(structureType, new ArrayList<Template>(5));
         }
         
+        // initialize table
+        for (IMetaArchetype archetype : StructureArchetype.values()) {
+        	for (IMetaType type : com.someguyssoftware.treasure2.meta.StructureType.values()) {
+        		templatesByArchtypeType.put(archetype, type, new ArrayList<>(5));
+        	}
+        }
+        
        // TODO replace with loading from external
         // load all the builtin (jar) structure templates
         loadAll(UNDERGROUND_LOCATIONS, StructureType.UNDERGROUND);
@@ -138,9 +151,20 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				}
 				Treasure.logger.debug("loaded custom template  with key -> {} : {}", location, location);
 				
-				// TODO look for IMeta in MetaManager by file name ie x.nbt or treasure2:structures/treasure2/surface/x.nbt
-				// TODO map according to meta archetype, type
+				// build the key for the meta manager to look at
+				String key =new ResourceLocation(getMod().getId() + ":" + getBaseResourceFolder() + "/" + modID + "/" + location).toString();
 				
+				// look for IMeta in MetaManager by file name ie x.nbt or treasure2:structures/treasure2/surface/x.nbt
+				StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(key);
+				if (meta == null) {
+					// there isn't a meta found for resource, skip to next template
+					Treasure.logger.info("Unable to locate meta file for resource -> {}", key);
+					continue;
+				}
+				// TODO map according to meta archetype, type
+				for (IMetaArchetype archetype : meta.getArchetypes()) {
+					this.templatesByArchtypeType.get(archetype, meta.getType()).add(template);
+				}
 			}	
 		}
 	}
