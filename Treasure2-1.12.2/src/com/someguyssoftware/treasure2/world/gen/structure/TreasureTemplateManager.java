@@ -156,6 +156,8 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				}
 				Treasure.logger.debug("loaded custom template  with key -> {}", loc.toString());
 				
+				// TODO not thought out enough. Need a holder object for Template that contains the key to the meta
+				
 				// build the key for the meta manager to look at
 				String key =new ResourceLocation(getMod().getId() + ":" + getBaseResourceFolder() + "/" + modID + "/" + location).toString();
 				

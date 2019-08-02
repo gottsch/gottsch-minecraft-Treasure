@@ -108,3 +108,9 @@ processResources
 //artifacts {
 //    archives packageJavadoc
 //}
+
+task copyJar(type: Copy) {
+	from jar
+	into 'E:/Minecraft/mods/1.12.2/'
+}
+build.dependsOn copyJar
