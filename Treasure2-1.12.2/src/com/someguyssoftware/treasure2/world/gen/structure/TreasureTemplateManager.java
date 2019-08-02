@@ -2,11 +2,15 @@ package com.someguyssoftware.treasure2.world.gen.structure;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +44,6 @@ import net.minecraft.world.gen.structure.template.Template;
  * @author Mark Gottschling on Jan 19, 2019
  *
  */
-// TODO redo this. doesn't work well for specials like witch's den
 public class TreasureTemplateManager extends GottschTemplateManager {
 	
 	/*
@@ -113,7 +116,9 @@ public class TreasureTemplateManager extends GottschTemplateManager {
         // load all the builtin (jar) structure templates
         loadAll(UNDERGROUND_LOCATIONS, StructureType.UNDERGROUND);
         loadAll(ABOVEGROUND_LOCATIONS, StructureType.ABOVEGROUND);
-        
+        if (Treasure.logger.isDebugEnabled()) {
+        	dump();
+        }
         // load external structures
 //        for (StructureType customLocation : StructureType.values()) {
 //        	createTemplateFolder(customLocation.name().toLowerCase());
@@ -161,10 +166,13 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 					Treasure.logger.info("Unable to locate meta file for resource -> {}", key);
 					continue;
 				}
-				// TODO map according to meta archetype, type
+				// map according to meta archetype, type
 				for (IMetaArchetype archetype : meta.getArchetypes()) {
 					this.templatesByArchtypeType.get(archetype, meta.getType()).add(template);
 				}
+				
+				// TODO map according biomes
+				// @see DungeonConfigManager @ line 55.
 			}	
 		}
 	}
@@ -243,6 +251,48 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		}
 	}
 
+	/**
+	 * 
+	 */
+	public void dump() {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyymmdd");
+		
+		String filename = String.format("treasure-template-mgr-%s.txt", 
+				formatter.format(new Date()));
+		
+		Path path = Paths.get("mods", getMod().getConfig().getModsFolder(), "dumps").toAbsolutePath();
+		try {
+			Files.createDirectories(path);			
+		} catch (IOException e) {
+			Treasure.logger.error("Couldn't create directories for dump files:", e);
+			return;
+		}
+
+		// setup a divider line
+		char[] chars = new char[75];
+		Arrays.fill(chars, '*');
+		String div = new String(chars) + "\n";	
+		
+		StringBuilder sb = new StringBuilder();
+
+		String format = "**    %1$-33s: %2$-30s  **\n";
+		String heading = "**  %1$-67s  **\n";
+		sb
+		.append(div)
+		.append(String.format("**  %-67s  **\n", "TEMPLATE MANAGER"))
+		.append(div)
+		.append(String.format(heading, "[Template By Type Map]"));
+		for (Map.Entry<String, Template> entry : getTemplates().entrySet()) {
+			sb.append(String.format(format, entry.getKey(), entry.getValue().getAuthor()));
+		}
+
+		try {
+			Files.write(Paths.get(path.toString(), filename), sb.toString().getBytes());
+		} catch (IOException e) {
+			Treasure.logger.error("Error writing TreasureTemplateManager to dump file", e);
+		}
+	}
+	
 	/**
 	 * @return the templateTable
 	 */
