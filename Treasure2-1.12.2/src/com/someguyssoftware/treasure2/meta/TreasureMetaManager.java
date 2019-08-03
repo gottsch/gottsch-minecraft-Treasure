@@ -34,6 +34,8 @@ import com.someguyssoftware.gottschcore.meta.IMetaTheme;
 import com.someguyssoftware.gottschcore.meta.IMetaType;
 import com.someguyssoftware.gottschcore.meta.MetaManager;
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.gottschcore.positional.Coords;
+import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
@@ -118,10 +120,9 @@ public class TreasureMetaManager extends MetaManager {
 		 * create types for all the properties of a StyleSheet
 		 */
 		Type metaArchetype = new TypeToken<List<IMetaArchetype>>() {}.getType();
-//		Type metaType = new TypeToken<IMetaType>() {}.getType();
 		Type metaTheme = new TypeToken<List<IMetaTheme>>() {}.getType();
 		Type rarity = new TypeToken<List<IRarity>>() {}.getType();
-		
+				
 		/*
 		 * register the types with the custom deserializer
 		 */
@@ -129,6 +130,7 @@ public class TreasureMetaManager extends MetaManager {
 		gsonBuilder.registerTypeAdapter(IMetaType.class, new MetaTypeDeserializer());
 		gsonBuilder.registerTypeAdapter(metaTheme, new MetaThemeDeserializer());
 		gsonBuilder.registerTypeAdapter(rarity, new RarityDeserializer());
+		gsonBuilder.registerTypeAdapter(ICoords.class, new CoordsDeserializer());
 		Gson gson = gsonBuilder.create();	
 
 		// read minified json into gson and generate objects
@@ -153,6 +155,7 @@ public class TreasureMetaManager extends MetaManager {
 		this.getMetaMap().put(id, meta);
 	}
 	
+	// TODO could move all these to a GsonDeserializerHelper
 	public static class MetaArchetypeDeserializer implements JsonDeserializer<List<StructureArchetype>> {
 		@Override
 		public List<StructureArchetype> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -179,6 +182,13 @@ public class TreasureMetaManager extends MetaManager {
 		public List<Rarity> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
 			return context.deserialize(json, Rarity.class);
+		}
+	}
+	public static class CoordsDeserializer implements JsonDeserializer<Coords> {
+		@Override
+		public Coords deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+				throws JsonParseException {
+			return context.deserialize(json, Coords.class);
 		}
 	}
 }

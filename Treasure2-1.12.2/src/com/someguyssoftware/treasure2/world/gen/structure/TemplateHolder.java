@@ -20,7 +20,7 @@ public class TemplateHolder {
 	public TemplateHolder(Template template, ResourceLocation location, ResourceLocation metaLocation) {
 		setTemplate(template);
 		setLocation(metaLocation);
-		setMetaKey(metaLocation);
+		setMetaLocation(metaLocation);
 	}
 	
 	public Template getTemplate() {
@@ -32,27 +32,26 @@ public class TemplateHolder {
 		return false;
 	}
 	
-	public void setTemplate(Template template) {
+	public TemplateHolder setTemplate(Template template) {
 		this.template = template;
+		return this;
 	}
 
 	public ResourceLocation getMetaLocation() {
 		return metaLocation;
 	}
 
-	public void setMetaKey(ResourceLocation metaKey) {
-		this.metaLocation = metaKey;
-	}
-
 	public ResourceLocation getLocation() {
 		return location;
 	}
 
-	public void setLocation(ResourceLocation location) {
+	public TemplateHolder setLocation(ResourceLocation location) {
 		this.location = location;
+		return this;
 	}
 
-	public void setMetaLocation(ResourceLocation metaLocation) {
+	public TemplateHolder setMetaLocation(ResourceLocation metaLocation) {
 		this.metaLocation = metaLocation;
+		return this;
 	}
 }

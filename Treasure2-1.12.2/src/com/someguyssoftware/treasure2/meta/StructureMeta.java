@@ -20,19 +20,10 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
  */
 public class StructureMeta extends Meta {
 	
-	private ICoords offset;
 	private boolean includeGraves;
 	private boolean includeFog;
 	
 	public StructureMeta() {}
-
-	public ICoords getOffset() {
-		return offset;
-	}
-
-	public void setOffset(ICoords offset) {
-		this.offset = offset;
-	}
 
 	public boolean isIncludeGraves() {
 		return includeGraves;
@@ -52,7 +43,7 @@ public class StructureMeta extends Meta {
 
 	@Override
 	public String toString() {
-		return "StructureMeta [offset=" + offset + ", includeGraves=" + includeGraves + ", includeFog=" + includeFog
+		return "StructureMeta [, includeGraves=" + includeGraves + ", includeFog=" + includeFog
 				+ ", getName()=" + getName() + ", getDescription()=" + getDescription() + ", getAuthor()=" + getAuthor()
 				+ ", getParent()=" + getParent() + ", getArchetypes()=" + getArchetypes() + ", getType()=" + getType()
 				+ ", getThemes()=" + getThemes() + ", getBiomeWhiteList()=" + getBiomeWhiteList()

@@ -5,5 +5,8 @@
 	"archetypes": ["surface"],
 	"type": "ruin",
 	"themes": ["dungeon"],
-	"rarities": ["common"]
+	"rarities": ["common"],
+	"biomeWhiteList": [],
+	"biomeBlackList": ["ocean"],
+	"includeFog": true
 }
