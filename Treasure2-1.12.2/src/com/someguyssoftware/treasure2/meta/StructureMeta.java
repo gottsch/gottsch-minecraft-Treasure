@@ -48,7 +48,7 @@ public class StructureMeta extends Meta {
 				+ ", getParent()=" + getParent() + ", getArchetypes()=" + getArchetypes() + ", getType()=" + getType()
 				+ ", getThemes()=" + getThemes() + ", getBiomeWhiteList()=" + getBiomeWhiteList()
 				+ ", getBiomeBlackList()=" + getBiomeBlackList() + ", getRarities()=" + getRarities() + ", getOrder()="
-				+ getOrder() + ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()="
+				+ getOrder() + ", getClass()=" + getClass() + ", hashCode()="
 				+ hashCode() + "]";
 	}
 		

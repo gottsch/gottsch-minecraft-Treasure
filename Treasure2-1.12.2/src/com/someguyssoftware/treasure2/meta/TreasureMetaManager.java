@@ -156,11 +156,16 @@ public class TreasureMetaManager extends MetaManager {
 	}
 	
 	// TODO could move all these to a GsonDeserializerHelper
-	public static class MetaArchetypeDeserializer implements JsonDeserializer<List<StructureArchetype>> {
+	public static class MetaArchetypeDeserializer implements JsonDeserializer<List<IMetaArchetype>> {
 		@Override
-		public List<StructureArchetype> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+		public List<IMetaArchetype> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
-			return context.deserialize(json, StructureArchetype.class);
+			List<IMetaArchetype> list = new ArrayList<>();
+			JsonArray array = json.getAsJsonArray();
+			for (JsonElement e : array) {
+				list.add(StructureArchetype.valueOf(e.getAsString().toUpperCase()));
+			}
+			return list;
 		}
 	}
 	public static class MetaTypeDeserializer implements JsonDeserializer<StructureType> {
@@ -170,18 +175,28 @@ public class TreasureMetaManager extends MetaManager {
 			return context.deserialize(json, StructureType.class);
 		}
 	}
-	public static class MetaThemeDeserializer implements JsonDeserializer<List<StructureTheme>> {
+	public static class MetaThemeDeserializer implements JsonDeserializer<List<IMetaTheme>> {
 		@Override
-		public List<StructureTheme> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+		public List<IMetaTheme> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
-			return context.deserialize(json, StructureTheme.class);
+			List<IMetaTheme> list = new ArrayList<>();
+			JsonArray array = json.getAsJsonArray();
+			for (JsonElement e : array) {
+				list.add(StructureTheme.valueOf(e.getAsString().toUpperCase()));
+			}
+			return list;
 		}
 	}
-	public static class RarityDeserializer implements JsonDeserializer<List<Rarity>> {
+	public static class RarityDeserializer implements JsonDeserializer<List<IRarity>> {
 		@Override
-		public List<Rarity> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+		public List<IRarity> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
-			return context.deserialize(json, Rarity.class);
+			List<IRarity> list = new ArrayList<>();
+			JsonArray array = json.getAsJsonArray();
+			for (JsonElement e : array) {
+				list.add(Rarity.valueOf(e.getAsString().toUpperCase()));
+			}
+			return list;
 		}
 	}
 	public static class CoordsDeserializer implements JsonDeserializer<Coords> {

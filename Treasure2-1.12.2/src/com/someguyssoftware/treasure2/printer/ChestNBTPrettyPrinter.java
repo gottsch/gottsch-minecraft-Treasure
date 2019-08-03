@@ -40,7 +40,7 @@ public class ChestNBTPrettyPrinter {
 	
 	/**
 	 * Print all the properties of a chest NBT in a prettified format out to a file.
-	 * @param dungeon
+	 * @param tag
 	 * @param path
 	 */
 	public String print(NBTTagCompound tag, Path path) {

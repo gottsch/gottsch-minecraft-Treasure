@@ -49,7 +49,7 @@ public class ChestRegistry {
 	}
 	
 	/**
-	 * Registers a DungeonInfo with a key.
+	 * Registers a ChestInfo with a key.
 	 * @param key
 	 * @param info
 	 */
