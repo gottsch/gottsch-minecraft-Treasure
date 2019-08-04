@@ -112,6 +112,17 @@ public class TreasureLootTableMaster extends LootTableMaster {
 
 	/**
 	 * 
+	 */
+	public void clear() {
+		super.getLootTablesMap().clear();
+		super.getLootTablesResourceLocationMap().clear();
+		CHEST_LOOT_TABLES_TABLE.clear();
+		CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.clear();
+		SPECIAL_LOOT_TABLES_MAP.clear();
+	}
+	
+	/**
+	 * 
 	 * @param modID
 	 */
 	private void buildAndExpose(String modID) {

@@ -23,16 +23,6 @@ public class LogoutEventHandler {
 	public LogoutEventHandler(IMod mod) {
 		setMod(mod);
 	}
-	
-	/**
-	 * 
-	 * @param event
-	 */
-	@SubscribeEvent
-	public void closeDbManager(PlayerEvent.PlayerLoggedOutEvent event) {
-		// close ormlite connection and shut down the h2 server
-//		DbManager.shutdown();
-	}
 
 	/**
 	 * @return the mod

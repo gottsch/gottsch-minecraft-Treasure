@@ -123,6 +123,16 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	}
 
 	/**
+	 * 
+	 */
+	public void clear() {
+		templateTable.clear();
+		templatesByArchetypeBiome.clear();
+		templatesByArchetypeType.clear();
+		templatesByType.clear();
+	}
+	
+	/**
 	 * Loads and registers the template from the file system.
 	 * 
 	 * @param modID

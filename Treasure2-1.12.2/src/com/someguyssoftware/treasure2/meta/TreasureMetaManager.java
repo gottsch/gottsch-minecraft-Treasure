@@ -12,11 +12,13 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -57,6 +59,13 @@ public class TreasureMetaManager extends MetaManager {
         buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
 	}
 
+	/**
+	 * 
+	 */
+	public void clear() {
+		super.clear();
+	}
+	
 	// TODO is this really necesary? only need meta files loaded into master map and get by key.
 	/**
 	 * Call in WorldEvent.Load() event handler.

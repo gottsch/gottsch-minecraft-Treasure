@@ -51,7 +51,6 @@ sourceSets.main{
 	}
 }
 
-
 def gottschcore_path="../../gottsch-minecraft-GottschCore/GottschCore${mc_version}/build/libs/GottschCore-mc${mc_version}-f${forge_version}-v${gottschcore_version}.jar"
 dependencies {
 	compile files(gottschcore_path)	
@@ -70,6 +69,8 @@ processResources
         // replace version and mcversion
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
+ 
+}
 
 task copyJar(type: Copy) {
 	from jar
