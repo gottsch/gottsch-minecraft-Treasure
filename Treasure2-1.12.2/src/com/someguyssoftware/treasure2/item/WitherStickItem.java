@@ -7,8 +7,11 @@ import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.block.WitherBranchBlock;
+import com.someguyssoftware.treasure2.block.WitherRootBlock;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -37,35 +40,15 @@ public class WitherStickItem extends ModItem {
 		if (WorldInfo.isClientSide(worldIn)) {
             return EnumActionResult.PASS;
         }
-//        else if (facing == EnumFacing.UP || facing == EnumFacing.DOWN) {
-//        	return EnumActionResult.PASS;
-//        }
 
-        	Block block = TreasureBlocks.WITHER_BRANCH;
-        	 
-        	BlockPos  p = null;
-     		switch (facing) {
-	    		case SOUTH:
-	    			p = pos.north();
-	    			break;
-	    		case WEST:
-	    			p = pos.east();
-	    			break;
-	    		case NORTH:
-		    		p = pos.south();
-		    		break;
-	    		case EAST:
-	    			p = pos.west();
-	    			break;
-			default:
-				p = pos.north();
-				break;
-    		}
-     		
-     		ItemStack heldItem = player.getHeldItem(hand);	     		
-     		this.placeBlock(worldIn, p, block, player, heldItem);     		
-     		heldItem.shrink(1);            
-            return EnumActionResult.SUCCESS;
+		BlockPos p = pos.offset(facing);
+		IBlockState state = TreasureBlocks.WITHER_BRANCH.getDefaultState().withProperty(WitherBranchBlock.FACING,
+				player.getHorizontalFacing().getOpposite());
+		
+ 		ItemStack heldItem = player.getHeldItem(hand);	     		
+ 		this.placeBlock(worldIn, p, state, player, heldItem);     		
+ 		heldItem.shrink(1);            
+        return EnumActionResult.SUCCESS;
 	}
 	
 	/**
@@ -77,12 +60,9 @@ public class WitherStickItem extends ModItem {
 	 * @param player
 	 * @param itemStack
 	 */
-	public void placeBlock(World world, BlockPos pos, Block block, EntityPlayer player, ItemStack itemStack) {
-    	// set the block
- 		Treasure.logger.debug("Placing wither branch into world.");
-    	world.setBlockState(pos, block.getDefaultState());    		      	
-    	
-    	Treasure.logger.debug("Calling onBlockPlacedby.");
-    	block.onBlockPlacedBy(world, pos, block.getDefaultState(), player, itemStack);
+	public void placeBlock(World world, BlockPos pos, IBlockState state, EntityPlayer player, ItemStack itemStack) {
+		// set the block
+		world.setBlockState(pos, state);
+		state.getBlock().onBlockPlacedBy(world, pos, state, player, itemStack);
 	}
 }
