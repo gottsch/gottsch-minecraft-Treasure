@@ -94,7 +94,7 @@ public class TreasureMetaManager extends MetaManager {
 				Treasure.logger.debug("Unable to locate meta file -> {}", loc.toString());
 				continue;
 			}
-			Treasure.logger.debug("loaded custom meta file  with key -> {} : {}", loc.toString());
+			Treasure.logger.debug("loaded custom meta file  with key -> {}", loc.toString());
 			
 			// TODO look for IMeta in MetaManager by file name ie x.nbt or treasure2:structures/treasure2/surface/x.nbt
 			// TODO map according to meta archetype, type
@@ -145,7 +145,7 @@ public class TreasureMetaManager extends MetaManager {
 		// read minified json into gson and generate objects
 		try {
 			meta = gson.fromJson(jsonReader, StructureMeta.class);
-			Treasure.logger.debug("meta -> {}", meta);
+			Treasure.logger.debug("meta[{}] -> {}", id, meta);
 		}
 		catch(JsonIOException | JsonSyntaxException e) {
 			// TODO change to custom exception
@@ -181,7 +181,8 @@ public class TreasureMetaManager extends MetaManager {
 		@Override
 		public StructureType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
-			return context.deserialize(json, StructureType.class);
+			return StructureType.valueOf(json.getAsString().toUpperCase());
+//			return context.deserialize(json, StructureType.class);
 		}
 	}
 	public static class MetaThemeDeserializer implements JsonDeserializer<List<IMetaTheme>> {
@@ -211,7 +212,7 @@ public class TreasureMetaManager extends MetaManager {
 	public static class CoordsDeserializer implements JsonDeserializer<Coords> {
 		@Override
 		public Coords deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-				throws JsonParseException {
+				throws JsonParseException {			
 			return context.deserialize(json, Coords.class);
 		}
 	}

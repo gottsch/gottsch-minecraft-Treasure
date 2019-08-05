@@ -23,7 +23,6 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
-import com.someguyssoftware.gottschcore.meta.IMeta;
 import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 import com.someguyssoftware.gottschcore.meta.IMetaType;
 import com.someguyssoftware.gottschcore.mod.IMod;
@@ -64,9 +63,9 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	/** NOTE not in use yet. can organize tempaltes by type and rarity */
 	private final Table<StructureType, Rarity, List<Template>> templateTable = HashBasedTable.create();
 
-	private final Table<IMetaArchetype, IMetaType, List<Template>> templatesByArchetypeType = HashBasedTable.create();
+	private final Table<IMetaArchetype, IMetaType, List<TemplateHolder>> templatesByArchetypeType = HashBasedTable.create();
 
-	private final Table<IMetaArchetype, Integer, List<TemplateHolder>> templatesByArchetypeBiome = HashBasedTable.create();
+	private final Table<String, Integer, List<TemplateHolder>> templatesByArchetypeTypeBiome = HashBasedTable.create();
 
 	/*
 	 * builtin underground locations for structures
@@ -127,7 +126,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	 */
 	public void clear() {
 		templateTable.clear();
-		templatesByArchetypeBiome.clear();
+		templatesByArchetypeTypeBiome.clear();
 		templatesByArchetypeType.clear();
 		templatesByType.clear();
 	}
@@ -163,10 +162,12 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				// TODO not thought out enough. Need a holder object for Template that contains
 				// the key to the meta
 
+				// TODO this is wrong; need to point to treasure2:meta/treasure2/structures/<file>.json
 				// build the key for the meta manager to look at
 				ResourceLocation metaResourceLocation = new ResourceLocation(
-						getMod().getId() + ":" + getBaseResourceFolder() + "/" + modID + "/" + location);
+						getMod().getId() + ":" + Treasure.META_MANAGER.getBaseResourceFolder()+ "/" + modID + "/structures/" + path.getFileName().toString().replace(".nbt", ".json"));
 				String key = metaResourceLocation.toString();
+				Treasure.logger.debug("Using key to find meta -> {}", key);
 				
 				// look for IMeta in MetaManager by file name ie x.nbt or
 				// treasure2:structures/treasure2/surface/x.nbt
@@ -177,16 +178,31 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 					continue;
 				}
 				
+				if (meta.getArchetypes() == null || meta.getArchetypes().isEmpty() || meta.getType() == null) {
+					Treasure.logger.info("Meta file not properly configured. -> {}", key);
+					continue;
+				}
+				
 				// TODO future state: first determine if parent/child - if child, need to find the parent template holder in map - how?
 				// probably needs to be mapped by meta, then it can be mapped otherwise
 				
 				
 				// map according to meta archetype, type
 				for (IMetaArchetype archetype : meta.getArchetypes()) {
-					this.templatesByArchetypeType.get(archetype, meta.getType()).add(template);
+					TemplateHolder holder = new TemplateHolder()
+							.setMetaLocation(metaResourceLocation)
+							.setLocation(loc)
+							.setTemplate(template);
+					Treasure.logger.debug("Using meta to map archetype type -> {}", meta.toString());
+					
+					
+					if (!templatesByArchetypeType.contains(archetype, meta.getType())) {
+						templatesByArchetypeType.put(archetype, meta.getType(), new ArrayList<>(3));
+					}
+					this.templatesByArchetypeType.get(archetype, meta.getType()).add(holder);
 
-					// TODO could move the wrapping for into this method instead, then could lose the archetype that is passed in.
-					mapToTemplatesByArchetypeBiome(metaResourceLocation, loc, archetype, template);
+					// TODO could move the wrapping for into this method instead, then could lose the archetype that is passed in. ***!!!
+					mapToTemplatesByArchetypeBiome(metaResourceLocation, loc, archetype, meta.getType(), template);
 				}
 			}
 		}
@@ -200,8 +216,11 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	 * @param template
 	 */
 	private void mapToTemplatesByArchetypeBiome(ResourceLocation metaResourceLocation, 
-			ResourceLocation location, IMetaArchetype archetype, Template template) {
+			ResourceLocation location, IMetaArchetype archetype, IMetaType type, Template template) {
 
+		// build mapping key
+		String key = archetype.getName() + ":" + type.getName();
+		
 		// find the meta for the template
 		StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(metaResourceLocation.toString());
 		// create a holder for the template
@@ -219,10 +238,10 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				if (!BiomeDictionary.hasType(biome, Type.END)
 						&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
 					Integer biomeID = Biome.getIdForBiome(biome);
-					if (!templatesByArchetypeBiome.contains(archetype, biomeID)) {
-						templatesByArchetypeBiome.put(archetype, biomeID, new ArrayList<>(3));
+					if (!templatesByArchetypeTypeBiome.contains(key, biomeID)) {
+						templatesByArchetypeTypeBiome.put(key, biomeID, new ArrayList<>(3));
 					}					
-					templatesByArchetypeBiome.get(archetype, biomeID).add(holder);
+					templatesByArchetypeTypeBiome.get(key, biomeID).add(holder);
 				}
 			}
 		} else {
@@ -233,23 +252,23 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 					if (!BiomeDictionary.hasType(biome, Type.END)
 							&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
 						Integer biomeID = Biome.getIdForBiome(biome);
-						if (!templatesByArchetypeBiome.contains(archetype, biomeID)) {
-							templatesByArchetypeBiome.put(archetype, biomeID, new ArrayList<>(3));
+						if (!templatesByArchetypeTypeBiome.contains(key, biomeID)) {
+							templatesByArchetypeTypeBiome.put(key, biomeID, new ArrayList<>(3));
 						}
-						templatesByArchetypeBiome.get(archetype, biomeID).add(holder);
+						templatesByArchetypeTypeBiome.get(key, biomeID).add(holder);
 					}
 				}
 			} else if (!meta.getBiomeBlackList().isEmpty()) {
-				List<Biome> biomes = (List<Biome>) ForgeRegistries.BIOMES.getValuesCollection();
+				Set<Biome> biomes = (Set<Biome>) ForgeRegistries.BIOMES.getValuesCollection();
 				for (Biome biome : biomes) {
 					if (!meta.getBiomeBlackList().contains(biome.getBiomeName().toLowerCase())
 							&& !BiomeDictionary.hasType(biome, Type.END)
 							&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
 						Integer biomeID = Biome.getIdForBiome(biome);
-						if (!templatesByArchetypeBiome.contains(archetype, biomeID)) {
-							templatesByArchetypeBiome.put(archetype, biomeID, new ArrayList<>(3));
+						if (!templatesByArchetypeTypeBiome.contains(key, biomeID)) {
+							templatesByArchetypeTypeBiome.put(key, biomeID, new ArrayList<>(3));
 						}
-						templatesByArchetypeBiome.get(archetype, biomeID).add(holder);
+						templatesByArchetypeTypeBiome.get(key, biomeID).add(holder);
 					}
 				}
 			}
@@ -341,7 +360,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 
 		String filename = String.format("treasure-template-mgr-%s.txt", formatter.format(new Date()));
 
-		Path path = Paths.get("mods", getMod().getConfig().getModsFolder(), "dumps").toAbsolutePath();
+		Path path = Paths.get(getMod().getConfig().getModsFolder(), getMod().getId(), "dumps").toAbsolutePath();
 		try {
 			Files.createDirectories(path);
 		} catch (IOException e) {
@@ -363,7 +382,9 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		for (Map.Entry<String, Template> entry : getTemplates().entrySet()) {
 			sb.append(String.format(format, entry.getKey(), entry.getValue().getAuthor()));
 		}
-
+		sb.append(div);
+		sb.append(String.format(heading, "[Template by Archetype:Type | Biome]"));
+		
 		try {
 			Files.write(Paths.get(path.toString(), filename), sb.toString().getBytes());
 		} catch (IOException e) {

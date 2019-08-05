@@ -1,12 +1,12 @@
 {
-	"name": "crypt1",
+	"name": "crypt2",
 	"description": "",
 	"author": "gottsch",
-	"archetypes": ["subteranean"],
-	"type": "room",
+	"archetypes": ["surface"],
+	"type": "marker",
 	"themes": ["dungeon"],
 	"rarities": ["common"],
 	"biomeWhiteList": [],
 	"biomeBlackList": ["ocean"],
-	"includeFog": false
+	"includeFog": true
 }

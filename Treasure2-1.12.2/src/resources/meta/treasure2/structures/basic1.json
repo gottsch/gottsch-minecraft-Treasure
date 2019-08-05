@@ -1,5 +1,5 @@
 {
-	"name": "crypt1",
+	"name": "basic1",
 	"description": "",
 	"author": "gottsch",
 	"archetypes": ["subteranean"],
@@ -7,6 +7,5 @@
 	"themes": ["dungeon"],
 	"rarities": ["common"],
 	"biomeWhiteList": [],
-	"biomeBlackList": ["ocean"],
-	"includeFog": false
+	"biomeBlackList": ["ocean"]
 }
