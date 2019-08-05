@@ -27,6 +27,7 @@ public class ServerEventHandler {
 	
 	@SubscribeEvent
 	public void checkFogInteraction(FMLServerStoppingEvent event) {
+		Treasure.logger.debug("Closing out of world.");
 		// clear all resource managers
 		Treasure.LOOT_TABLES.clear();
 		Treasure.TEMPLATE_MANAGER.clear();
