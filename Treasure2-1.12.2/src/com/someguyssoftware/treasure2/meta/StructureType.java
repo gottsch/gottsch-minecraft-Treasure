@@ -18,6 +18,7 @@ import com.someguyssoftware.gottschcore.meta.IMetaType;
 public enum StructureType implements IMetaType {
 	RUIN(0, "ruin"),
 	MARKER(1, "marker"),
+	WELL(2, "well"),
 	ROOM(3, "room");
 
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();

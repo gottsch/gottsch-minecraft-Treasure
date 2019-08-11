@@ -1,8 +1,8 @@
 {
-	"name": "basic1",
-	"description": "",
+	"name": "cobb1",
+	"description": "Cobblestone pit room.",
 	"author": "gottsch",
-	"archetypes": ["subterranean"],
+	"archetypes": ["subteranean"],
 	"type": "room",
 	"themes": ["dungeon"],
 	"rarities": ["common"],

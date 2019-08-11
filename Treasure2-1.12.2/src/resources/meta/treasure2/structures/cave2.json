@@ -1,8 +1,8 @@
 {
-	"name": "basic1",
+	"name": "cave2",
 	"description": "",
 	"author": "gottsch",
-	"archetypes": ["subterranean"],
+	"archetypes": ["subteranean"],
 	"type": "room",
 	"themes": ["dungeon"],
 	"rarities": ["common"],
