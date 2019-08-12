@@ -218,16 +218,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
    					Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
      				return;
      			}
-     			
-     			// TODO get the surface coords
-     			ICoords surfaceCoords = WorldInfo.getSurfaceCoords(world, coords);
-     			boolean isSurfaceOnLand = WorldInfo.isCoordsOnLand(world, surfaceCoords);
-				// TODO determine if over land or sea.
-				// TODO determine what type of archetype that is to be used ie. pit (subterranean, surface, etc).
-				// TODO determine if surface/submered
-				// TODO determine if structure
-				// TODO get all those that meet the biome and randomly select.
-     			
+     			     			
     			// reset chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
     			chunksSinceLastRarityChest.put(rarity, 0);
  			
@@ -240,7 +231,6 @@ public class ChestWorldGenerator implements IWorldGenerator {
     				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
     				// reset the chunk counts
         			chunksSinceLastChest = 0;
-//        			chunksSinceLastRarityChest.put(rarity, 0);
     			}
     		}
 
