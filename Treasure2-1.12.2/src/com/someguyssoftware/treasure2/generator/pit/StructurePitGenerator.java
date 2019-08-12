@@ -3,6 +3,8 @@ package com.someguyssoftware.treasure2.generator.pit;
 import java.util.List;
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.generator.GeneratorResult;
+import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -78,7 +80,9 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	 * @return
 	 */
 	@Override
-	public boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public IGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		IGeneratorResult result = new PitGeneratorResult(true, spawnCoords); // TODO might roll StructureInfo into result.
+		
 		// clear info member property
 		setInfo(null);
 		
@@ -99,8 +103,10 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			spawnCoords = GenUtil.findUndergroundCeiling(world, spawnCoords.add(0, 1, 0));
 			if (spawnCoords == null) {
 				Treasure.logger.warn("Exiting: Unable to locate cavern ceiling.");
-				return false;
+				return result.fail();
 			}
+			// update the chest coords in the result
+			((PitGeneratorResult)result).setChestCoords(spawnCoords);
 		}
 	
 		// get distance to surface
@@ -121,7 +127,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			GottschTemplate template = (GottschTemplate) templates.get(random.nextInt(templates.size()));
 			if (template == null) {
 				Treasure.logger.debug("could not find random template");
-				return false;
+				return result.fail();
 			}
 			
 //			List<Template> templates2 = Treasure.TEMPLATE_MANAGER.getTemplateTable()
@@ -142,17 +148,18 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			if (size.getY() + offset + 3 >= yDist) {
 				Treasure.logger.debug("Structure's height is too large for available space.");
 				// generate the base pit
-				boolean isGenerated = getGenerator().generate(world, random, surfaceCoords, spawnCoords);
-				if (isGenerated) {
+//				boolean isGenerated 
+				result = getGenerator().generate(world, random, surfaceCoords, spawnCoords);
+				if (result.isSuccess()/*isGenerated*/) {
 					IStructureInfo info = new StructureInfo();
 					info.setCoords(spawnCoords);
 					info.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.CHEST), new Coords(0, 0, 0));
 					setInfo(info);
-					return true;
+					return result;
 				}
 				else {
 					Treasure.logger.debug("Unable to generate base pit.");
-					return false;
+					return result.fail();
 				}
 			}
 
@@ -163,7 +170,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			ICoords entranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
 			if (entranceCoords == null) {
 				Treasure.logger.debug("Unable to locate entrance position.");
-				return false;
+				return result.fail();
 			}
 			
 			// select a random rotation
@@ -186,7 +193,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			
 			// generate the structure
 			info = new StructureGenerator().generate(world, random, template, placement, roomCoords);
-			if (info == null) return false;			
+			if (info == null) return result.fail();			
 			Treasure.logger.debug("returned info -> {}", info);
 			setInfo(info);
 			
@@ -242,7 +249,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			setInfo(noInfo);
 		}		
 		Treasure.logger.debug("Generated Structure Pit at " + spawnCoords.toShortString());
-		return true;
+		return result;
 	}
 
 	/**

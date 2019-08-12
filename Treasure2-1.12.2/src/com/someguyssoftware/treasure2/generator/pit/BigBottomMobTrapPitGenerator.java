@@ -3,6 +3,8 @@ package com.someguyssoftware.treasure2.generator.pit;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.cube.Cube;
+import com.someguyssoftware.gottschcore.generator.GeneratorResult;
+import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -49,7 +51,9 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public IGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		IGeneratorResult result = new GeneratorResult(true);
+		
 		// is the chest placed in a cavern
 		boolean inCavern = false;
 		
@@ -67,7 +71,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 			spawnCoords = GenUtil.findUndergroundCeiling(world, spawnCoords.add(0, 1, 0));
 			if (spawnCoords == null) {
 				Treasure.logger.warn("Exiting: Unable to locate cavern ceiling.");
-				return false;
+				return result.fail();
 			}
 		}
 	
@@ -105,7 +109,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 			new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
 		}		
 		Treasure.logger.debug("Generated Big Bottom Mob Trap Pit at " + spawnCoords.toShortString());
-		return true;
+		return result;
 	}	
 
 	/**

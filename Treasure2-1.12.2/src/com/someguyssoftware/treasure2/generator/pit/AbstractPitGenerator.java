@@ -4,6 +4,7 @@ import java.util.Random;
 
 
 import com.someguyssoftware.gottschcore.cube.Cube;
+import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -87,7 +88,8 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 * @return
 	 */
 	@Override
-	public boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public IGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		IGeneratorResult result = new PitGeneratorResult(true, spawnCoords);
 		// is the chest placed in a cavern
 		boolean inCavern = false;
 		
@@ -107,8 +109,10 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 			spawnCoords = GenUtil.findUndergroundCeiling(world, spawnCoords.add(0, 1, 0));
 			if (spawnCoords == null) {
 				Treasure.logger.warn("Exiting: Unable to locate cavern ceiling.");
-				return false;
+				return result.fail();
 			}
+			// update the chest coords in the result
+			((PitGeneratorResult)result).setChestCoords(spawnCoords);
 		}
 	
 		// generate shaft
@@ -129,10 +133,9 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		// shaft is only 2-6 blocks long - can only support small covering
 		else if (yDist >= 2) {
 			// simple short pit
-			new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
-		}		
-//		Treasure.logger.debug("Generated Pit at " + spawnCoords.toShortString());
-		return true;
+			result = new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
+		}
+		return result;
 	}	
 	
 	/**

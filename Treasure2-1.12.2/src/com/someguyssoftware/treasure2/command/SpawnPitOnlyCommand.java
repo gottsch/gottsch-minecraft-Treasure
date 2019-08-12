@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
@@ -88,8 +89,8 @@ public class SpawnPitOnlyCommand extends CommandBase {
 //    			else {
 //    				pitGen = ChestWorldGenerator.pitGenerators.get(pit);
 //    			}   
-    			boolean isGen = pitGen.generate(world, random, surfaceCoords , spawnCoords);
-    			if (isGen && pit == Pits.STRUCTURE_PIT) {
+    			IGeneratorResult result = pitGen.generate(world, random, surfaceCoords , spawnCoords);
+    			if (result.isSuccess() && pit == Pits.STRUCTURE_PIT) {
     				Treasure.logger.debug(((IStructureInfoProvider)pitGen).getInfo());
     			}
     		}
