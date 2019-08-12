@@ -13,11 +13,14 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.enums.StructureMarkers;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.structure.StructureGenerator;
+import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
 import com.someguyssoftware.treasure2.world.gen.structure.StructureInfo;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager.StructureType;
 
 import net.minecraft.block.material.Material;
@@ -28,6 +31,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.common.DungeonHooks;
@@ -81,7 +85,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	 */
 	@Override
 	public IGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		IGeneratorResult result = new PitGeneratorResult(true, spawnCoords); // TODO might roll StructureInfo into result.
+		IGeneratorResult result = new TreasureGeneratorResult(true, spawnCoords); // TODO might roll StructureInfo into result.
 		
 		// clear info member property
 		setInfo(null);
@@ -106,7 +110,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 				return result.fail();
 			}
 			// update the chest coords in the result
-			((PitGeneratorResult)result).setChestCoords(spawnCoords);
+			((TreasureGeneratorResult)result).setChestCoords(spawnCoords);
 		}
 	
 		// get distance to surface
@@ -118,6 +122,28 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 		
 		if (yDist > 6) {
 			Treasure.logger.debug("generating structure room at -> {}", spawnCoords.toShortString());
+			
+			// get structure by archetype (subterranean) and type (room)
+			String key = StructureArchetype.SUBTERRANEAN.getName()
+					+ ":" + com.someguyssoftware.treasure2.meta.StructureType.ROOM.getName();
+			
+			// get the biome
+			Biome biome = world.getBiome(spawnCoords.toPos());
+			
+			List<TemplateHolder> templateHolders = Treasure.TEMPLATE_MANAGER.getTemplatesByArchetypeTypeBiomeTable().get(key, biome);
+			if (templateHolders == null || templateHolders.isEmpty()) {
+				Treasure.logger.debug("could not find template holders for archetype:type, biome -> {} {}", key, biome.getBiomeName());
+				return result.fail();
+			}
+			
+			TemplateHolder holder = templateHolders.get(random.nextInt(templateHolders.size()));
+			if (holder == null) {
+				Treasure.logger.debug("could not find random template holder.");
+				return result.fail();
+			}
+			
+			GottschTemplate gottschTemplate = (GottschTemplate) holder.getTemplate();
+			Treasure.logger.debug("selected template meta -> {} : {}", holder.getLocation(), holder.getMetaLocation());
 			
 			// TODO will want the structures organized better to say grab RARE UNDERGROUND ROOMs
 			// select a random underground structure

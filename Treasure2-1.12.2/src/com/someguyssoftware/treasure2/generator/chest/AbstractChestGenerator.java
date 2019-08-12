@@ -31,10 +31,10 @@ import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.StructureMarkers;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.marker.RandomStructureMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
-import com.someguyssoftware.treasure2.generator.pit.PitGeneratorResult;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
@@ -119,7 +119,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				result = generatePit(world, random, chestRarity, markerCoords, config);
 				isGenerated = result.isSuccess();
 				if (isGenerated) {
-					chestCoords = ((PitGeneratorResult)result).getChestCoords(); // TODO all TreasureGeneratorResult should have chest coords
+					chestCoords = ((TreasureGeneratorResult)result).getChestCoords(); // TODO all TreasureGeneratorResult should have chest coords
 				}
 				else {
 					return false;
@@ -281,7 +281,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @return
 	 */
 	public IGeneratorResult generatePit(World world, Random random, Rarity chestRarity, ICoords markerCoords, IChestConfig config) {
-		IGeneratorResult result = new PitGeneratorResult(true, markerCoords);
+		IGeneratorResult result = new TreasureGeneratorResult(true, markerCoords);
 		
 		// 2.5. check if it has 50% land
 		if (!WorldInfo.isSolidBase(world, markerCoords, 2, 2, 50)) {
@@ -318,7 +318,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 						chestCoords = chestCoordsList.get(0);
 						Treasure.logger.debug("Using StructureInfo relative chest coords -> {}", chestCoords.toShortString());
 						chestCoords = chestCoords.add((((IStructureInfoProvider)pitGenerator).getInfo().getCoords()));
-						((PitGeneratorResult)result).setChestCoords(chestCoords);
+						((TreasureGeneratorResult)result).setChestCoords(chestCoords);
 					}
 					else {
 						Treasure.logger.debug("Unable to retrieve Chest from structure");
@@ -329,7 +329,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				}
 			}
 			else {
-				chestCoords = ((PitGeneratorResult)result).getChestCoords(); 
+				chestCoords = ((TreasureGeneratorResult)result).getChestCoords(); 
 			}
 			
 		}

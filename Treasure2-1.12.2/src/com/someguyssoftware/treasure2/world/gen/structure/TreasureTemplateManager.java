@@ -83,6 +83,9 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 
 	private static List<String> FOLDER_LOCATIONS = ImmutableList.of("surface", "subterranean", "submerged", "float");
 
+	// TODO need someway to specify what the null block is for each structure. ie submerged will use air for null blocks
+	// property of meta? then update the marker map before processing?
+	
 	/**
 	 * 
 	 * @param baseFolder
@@ -94,7 +97,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 
 		// init maps
 		for (StructureType structureType : StructureType.values()) {
-			getTemplatesByType().put(structureType, new ArrayList<Template>(5));
+			getTemplatesByTypeMap().put(structureType, new ArrayList<Template>(5));
 		}
 
 		// initialize table
@@ -282,7 +285,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	 * @return
 	 */
 	public List<Template> getTemplatesByType(StructureType type) {
-		List<Template> templates = getTemplatesByType().get(type);
+		List<Template> templates = getTemplatesByTypeMap().get(type);
 		return templates;
 	}
 
@@ -308,7 +311,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 			// add the id to the map
 			if (template != null) {
 				Treasure.logger.debug("adding tempate to typed map -> {} : {}", type.name(), location);
-				getTemplatesByType().get(type).add(template);
+				getTemplatesByTypeMap().get(type).add(template);
 			}
 		}
 	}
@@ -402,7 +405,11 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	/**
 	 * @return the templatesByType
 	 */
-	public Map<StructureType, List<Template>> getTemplatesByType() {
+	public Map<StructureType, List<Template>> getTemplatesByTypeMap() {
 		return templatesByType;
+	}
+
+	public Table<String, Integer, List<TemplateHolder>> getTemplatesByArchetypeTypeBiomeTable() {
+		return templatesByArchetypeTypeBiome;
 	}
 }
