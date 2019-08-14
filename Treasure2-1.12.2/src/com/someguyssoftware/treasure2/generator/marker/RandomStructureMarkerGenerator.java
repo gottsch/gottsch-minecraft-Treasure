@@ -52,6 +52,7 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStruct
 	@Override
 	public boolean generate(World world, Random random, ICoords coords) {
 
+		// TODO needs to be updated to pull from archetype:type, biome
 		List<Template> templates = Treasure.TEMPLATE_MANAGER.getTemplatesByType(StructureType.ABOVEGROUND);
 		GottschTemplate template = (GottschTemplate) templates.get(random.nextInt(templates.size()));
 		if (template == null) {
