@@ -93,9 +93,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		else {
 			markerCoords = WorldInfo.getDryLandSurfaceCoords(world, surfaceCoords);
 			// determine if above ground or below ground
-			if (config.isAboveGroundAllowed() &&RandomHelper.checkProbability(random, 8)) { // TODO 8 = config
+			if (config.isAboveGroundAllowed() &&
+					RandomHelper.checkProbability(random, TreasureConfig.surfaceChestProbability)) { 
 				isAboveGround = true;
-				if (RandomHelper.checkProbability(random, 20)) { // TODO 20 = config
+				if (RandomHelper.checkProbability(random, TreasureConfig.surfaceStructureProbability)) {
 					// TODO build structure with ruin/complex, etc builder
 					// no markers
 					hasMarkers = false;
@@ -160,7 +161,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 //			Treasure.logger.debug("Below ground @ {}", spawnCoords.toShortString());
 //			
 //			// select a pit generator
-//			PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.structurePitProbability) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
+//			PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.pitStructureProbability) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
 //			List<IPitGenerator> pitGenerators = ChestWorldGenerator.pitGens.row(pitType).values().stream()
 //					.collect(Collectors.toList());
 //			IPitGenerator pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));
@@ -365,7 +366,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @return
 	 */
 	public IPitGenerator selectPitGenerator(Random random) {
-		PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.structurePitProbability) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
+		PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.pitStructureProbability) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
 		List<IPitGenerator> pitGenerators = ChestWorldGenerator.pitGens.row(pitType).values().stream()
 				.collect(Collectors.toList());
 		IPitGenerator pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));

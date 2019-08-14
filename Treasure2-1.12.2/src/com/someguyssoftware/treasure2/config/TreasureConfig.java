@@ -203,9 +203,13 @@ public class TreasureConfig extends AbstractConfig {
 	public static int minDistancePerChest;
 	public static int minChunksPerChest;
 	public static int minChunksPerWell;
+
+	// chests generation
+	public static int surfaceChestProbability;
+	public static int surfaceStructureProbability;
 	
 	// pits
-	public static int structurePitProbability;
+	public static int pitStructureProbability;
 	
 	// graves/markers properties
 	public static boolean isGravestonesAllowed;
@@ -259,7 +263,6 @@ public class TreasureConfig extends AbstractConfig {
 	public static String[] enableForeignModIDs;
 	public static String[] availableForeignModLootTables;
 
-
 			
 	/**
 	 * @param mod
@@ -303,8 +306,10 @@ public class TreasureConfig extends AbstractConfig {
       	minDistancePerChest = config.getInt("minDistancePerChest", "04-gen", 75, 0, 32000, "");
       	minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 35, 0, 32000, "");
       	minChunksPerWell = config.getInt("minChunksPerWell", "04-gen", 400, 100, 32000, "");
-    
-      	structurePitProbability = config.getInt("structurePitProbability", "04-gen", 20, 0, 100, "The probability that a pit will contain a structure."); 
+
+      	surfaceChestProbability = config.getInt("surfaceChestProbability", "04-gen", 15, 0, 100, "The probability chest will appear on the surface."); 
+      	surfaceChestProbability = config.getInt("surfaceStructureProbability", "04-gen", 25, 0, 100, "The probability that a surface structure will generate."); 
+      	pitStructureProbability = config.getInt("pitStructureProbability", "04-gen", 20, 0, 100, "The probability that a pit will contain a structure."); 
 
         isGravestonesAllowed = config.getBoolean("isGravestonesAllowed", "04-gen", true, "");
         minGravestonesPerChest = config.getInt("minGravestonesPerChest", "04-gen", 4, 1, 5, "The minimun of Treasure chest markers (gravestones, bones).");
