@@ -70,33 +70,32 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		boolean isGenerated = false;
 		boolean isAboveGround = false;
 		boolean hasMarkers = true;
-		IGeneratorResult result = null;
-		
-		RandomHelper.checkProbability(random, config.getGenProbability());
-	
-		// 1. get the surface coords
+		ITreasureGeneratorResult result = null;
+			
+		// 1. collect location data points
 		ICoords surfaceCoords = WorldInfo.getSurfaceCoords(world, coords);
-		// get the surface
 		SURFACE surface = WorldInfo.getSurface(world, surfaceCoords);
-		if (surface != SURFACE.LAND && surface != SURFACE.WATER) return false;
+		if (!isSurfaceValid(surface)) {
+			return false;
+		}
 		
 		// 2. determine if on the ocean
 		if (surface == SURFACE.WATER) {
-			Biome biome = world.getBiome(coords.toPos());
-			boolean isOcean = (biome == Biomes.DEEP_OCEAN || biome == Biomes.OCEAN) ? true : false;
-			if (isOcean) {
+			if (isOceanBiome(world, coords)) {			
 				markerCoords = surfaceCoords;
 				spawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, surfaceCoords);
 				// TODO build with submerged/ruin generator
+				result = generateSubmergedRuins(world, random, spawnCoords, config);
+				// TODO need to save isOcean so the correct marker coords (by archetype, type) can be selected.
 			}
 			else return false;
 		}
 		else {
 			markerCoords = WorldInfo.getDryLandSurfaceCoords(world, surfaceCoords);
 			// determine if above ground or below ground
-			if (config.isAboveGroundAllowed() &&RandomHelper.checkProbability(random, 8)) {
+			if (config.isAboveGroundAllowed() &&RandomHelper.checkProbability(random, 8)) { // TODO 8 = config
 				isAboveGround = true;
-				if (RandomHelper.checkProbability(random, 20)) {
+				if (RandomHelper.checkProbability(random, 20)) { // TODO 20 = config
 					// TODO build structure with ruin/complex, etc builder
 					// no markers
 					hasMarkers = false;
@@ -118,16 +117,9 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			else if (config.isBelowGroundAllowed()) {
 				// TODO don't like this. ChestGen shouldn't know anything about PitGenResult, should return IStructureInfo ?
 				result = generatePit(world, random, chestRarity, markerCoords, config);
-				isGenerated = result.isSuccess();
-				if (isGenerated) {
-					chestCoords = ((ITreasureGeneratorResult)result).getChestCoords(); // TODO all TreasureGeneratorResult should have chest coords
+				if (result.isSuccess()) {
+					chestCoords = result.getChestCoords(); // TODO all TreasureGeneratorResult should have chest coords
 				}
-				else {
-					return false;
-				}
-			}
-			else {
-				return false;
 			}
 		}
 		
@@ -271,7 +263,36 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		}		
 		return false;
 	}
-	
+
+	// TODO complete implementation
+	public ITreasureGeneratorResult generateSubmergedRuins(World world, Random random, ICoords spawnCoords,
+			IChestConfig config) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param surface
+	 * @return
+	 */
+	private boolean isSurfaceValid(SURFACE surface) {
+		if (surface != SURFACE.LAND && surface != SURFACE.WATER) return false;
+		return true;
+	}
+
+	/**
+	 * 
+	 * @param world
+	 * @param coords
+	 * @return
+	 */
+	private boolean isOceanBiome(World world, ICoords coords) {
+		Biome biome = world.getBiome(coords.toPos());
+		boolean isOcean = (biome == Biomes.DEEP_OCEAN || biome == Biomes.OCEAN) ? true : false;
+		return isOcean;
+	}
+
 	/**
 	 * 
 	 * @param world
@@ -281,7 +302,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param config
 	 * @return
 	 */
-	public IGeneratorResult generatePit(World world, Random random, Rarity chestRarity, ICoords markerCoords, IChestConfig config) {
+	public ITreasureGeneratorResult generatePit(World world, Random random, Rarity chestRarity, ICoords markerCoords, IChestConfig config) {
 		ITreasureGeneratorResult result = new TreasureGeneratorResult(true, markerCoords);
 		
 		// 2.5. check if it has 50% land
@@ -307,8 +328,8 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		
 		ICoords chestCoords = null;
 		if (result.isSuccess()) {
+			// TODO handle all this within pitGenerator, updating the IGeneratorResult with the chest coods
 			if (pitGenerator instanceof IStructureInfoProvider) {
-				// TODO could extend IStructureInfoProvider for Treasure context that only records a single or main chest
 				IStructureInfoProvider structureInfoProvider = (IStructureInfoProvider)pitGenerator;
 				IStructureInfo structureInfo = structureInfoProvider.getInfo();
 				if (structureInfo != null) {
@@ -330,7 +351,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				}
 			}
 			else {
-				chestCoords = ((ITreasureGeneratorResult)result).getChestCoords(); 
+				chestCoords = result.getChestCoords(); 
 			}
 			
 		}
