@@ -2,7 +2,7 @@
 	"name": "cave2",
 	"description": "",
 	"author": "gottsch",
-	"archetypes": ["subteranean"],
+	"archetypes": ["subterranean"],
 	"type": "room",
 	"themes": ["dungeon"],
 	"rarities": ["common"],

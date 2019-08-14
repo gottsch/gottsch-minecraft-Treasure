@@ -98,6 +98,7 @@ public class StructureInfo implements IStructureInfo {
 
 	@Override
 	public String toString() {
+		// TODO convert map into a string for display
 		return "StructureInfo [coords=" + coords + ", size=" + size + ", chests=" + chests + ", spawners=" + spawners + "]";
 	}
 

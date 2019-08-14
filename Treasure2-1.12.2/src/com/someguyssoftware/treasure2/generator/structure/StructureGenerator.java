@@ -9,7 +9,8 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
-import com.someguyssoftware.treasure2.enums.StructureMarkers;
+import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.StructureInfo;
@@ -52,12 +53,21 @@ public class StructureGenerator implements IStructureGenerator {
 		ICoords entranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
 		if (entranceCoords != null) {
 			entranceCoords = new Coords(GottschTemplate.transformedCoords(placement, entranceCoords));
+			Treasure.logger.debug("entrance coords -> " + entranceCoords.toShortString());
 		}
+		else {
+			Treasure.logger.debug("unable to locate entrance coords");
+		}
+		
 		// TODO remove
 		// get the transformed chest
 		ICoords chestCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 		if (chestCoords != null) {
 			chestCoords = new Coords(GottschTemplate.transformedCoords(placement, chestCoords));
+			Treasure.logger.debug("chest coords -> " + chestCoords.toShortString());
+		}
+		else {
+			Treasure.logger.debug("unable to locate chest coords");
 		}
 
 		// TODO need to capture the facing or meta of the chest, perform the rotation on the facing  and save it in the Map with the pos... need a new object to hold more data
@@ -71,6 +81,7 @@ public class StructureGenerator implements IStructureGenerator {
 		for (Entry<Block, ICoords> entry : template.getMap().entries()) {
 			ICoords c = new Coords(GottschTemplate.transformedCoords(placement, entry.getValue()));
 			info.getMap().put(entry.getKey(), c);
+			Treasure.logger.debug("adding to structure info transformed coords -> {} : {}", entry.getKey().getLocalizedName(), c.toShortString());
 		}
 		
 		return info;

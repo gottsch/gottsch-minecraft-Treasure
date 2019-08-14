@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -111,9 +113,6 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		// load all the builtin (jar) structure templates
 		loadAll(UNDERGROUND_LOCATIONS, StructureType.UNDERGROUND);
 		loadAll(ABOVEGROUND_LOCATIONS, StructureType.ABOVEGROUND);
-		if (Treasure.logger.isDebugEnabled()) {
-			dump();
-		}
 		// load external structures
 		// for (StructureType customLocation : StructureType.values()) {
 		// createTemplateFolder(customLocation.name().toLowerCase());
@@ -208,6 +207,9 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 					mapToTemplatesByArchetypeBiome(metaResourceLocation, loc, archetype, meta.getType(), template);
 				}
 			}
+		}
+		if (Treasure.logger.isDebugEnabled()) {
+			dump();
 		}
 	}
 
@@ -379,6 +381,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		StringBuilder sb = new StringBuilder();
 
 		String format = "**    %1$-33s: %2$-30s  **\n";
+		String format2 = "**    %1$-15s: %2$-15s: %3$-33s  **\n";
 		String heading = "**  %1$-67s  **\n";
 		sb.append(div).append(String.format("**  %-67s  **\n", "TEMPLATE MANAGER")).append(div)
 				.append(String.format(heading, "[Template By Type Map]"));
@@ -387,6 +390,19 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		}
 		sb.append(div);
 		sb.append(String.format(heading, "[Template by Archetype:Type | Biome]"));
+		Map<String, Map<Integer, List<TemplateHolder>>> map = getTemplatesByArchetypeTypeBiomeTable().rowMap();
+		if (map == null || map.isEmpty()) { Treasure.logger.debug("template biome map is null/empty");}
+		Treasure.logger.debug("biome map.size -> {}", map.size());
+		
+		for (String row : map.keySet()) {
+			Treasure.logger.debug("template biome row key -> {}", row);
+			Map<Integer, List<TemplateHolder>> tmp = map.get(row);
+			for (Entry<Integer, List<TemplateHolder>> entry : tmp.entrySet()) {
+				String templateNames = entry.getValue().stream().map(a -> a.getLocation().toString()).collect(Collectors.joining(", "));
+				Biome biome = Biome.getBiome(entry.getKey());				
+				sb.append(String.format(format2, row, biome.getBiomeName(), templateNames));
+			}
+		}
 		
 		try {
 			Files.write(Paths.get(path.toString(), filename), sb.toString().getBytes());

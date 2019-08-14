@@ -92,7 +92,7 @@ public class Configs {
 				.setGenProbability(50)
 				.setMinYSpawn(30)
 				.setRawBiomeWhiteList(new String[] {""})
-				.setRawBiomeBlackList(new String[] {"ocean"})
+				.setRawBiomeBlackList(new String[] {""})
 				);
 		
 		defaultChestConfigs.put(Rarity.RARE, new ChestConfig()
@@ -103,7 +103,7 @@ public class Configs {
 				.setGenProbability(25)
 				.setMinYSpawn(20)
 				.setRawBiomeWhiteList(new String[] {""})
-				.setRawBiomeBlackList(new String[] {"ocean"})
+				.setRawBiomeBlackList(new String[] {""})
 				);
 		
 		defaultChestConfigs.put(Rarity.EPIC, new ChestConfig()
@@ -114,7 +114,7 @@ public class Configs {
 				.setGenProbability(15)
 				.setMinYSpawn(10)
 				.setRawBiomeWhiteList(new String[] {""})
-				.setRawBiomeBlackList(new String[] {"ocean"})
+				.setRawBiomeBlackList(new String[] {""})
 				);
 	}
 	

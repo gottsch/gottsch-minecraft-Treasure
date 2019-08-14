@@ -7,9 +7,9 @@ import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
+import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.enums.StructureMarkers;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
@@ -128,8 +128,8 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			
 			// get the biome
 			Biome biome = world.getBiome(spawnCoords.toPos());
-			
-			List<TemplateHolder> templateHolders = Treasure.TEMPLATE_MANAGER.getTemplatesByArchetypeTypeBiomeTable().get(key, biome);
+			Integer biomeID = Biome.getIdForBiome(biome);
+			List<TemplateHolder> templateHolders = Treasure.TEMPLATE_MANAGER.getTemplatesByArchetypeTypeBiomeTable().get(key, biomeID);
 			if (templateHolders == null || templateHolders.isEmpty()) {
 				Treasure.logger.debug("could not find template holders for archetype:type, biome -> {} {}", key, biome.getBiomeName());
 				return result.fail();
@@ -141,15 +141,15 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 				return result.fail();
 			}
 			
-			GottschTemplate gottschTemplate = (GottschTemplate) holder.getTemplate();
-			Treasure.logger.debug("selected template meta -> {} : {}", holder.getLocation(), holder.getMetaLocation());
+			GottschTemplate template = (GottschTemplate) holder.getTemplate();
+			Treasure.logger.debug("selected template holder -> {} : {}", holder.getLocation(), holder.getMetaLocation());
 			
 			// TODO will want the structures organized better to say grab RARE UNDERGROUND ROOMs
 			// select a random underground structure
 //			List<Template> templates = Treasure.TEMPLATE_MANAGER.getTemplates().values().stream().collect(Collectors.toList());
-			List<Template> templates = Treasure.TEMPLATE_MANAGER.getTemplatesByType(StructureType.UNDERGROUND);
+//>>>			List<Template> templates = Treasure.TEMPLATE_MANAGER.getTemplatesByType(StructureType.UNDERGROUND);
 			
-			GottschTemplate template = (GottschTemplate) templates.get(random.nextInt(templates.size()));
+//>>>			GottschTemplate template = (GottschTemplate) templates.get(random.nextInt(templates.size()));
 			if (template == null) {
 				Treasure.logger.debug("could not find random template");
 				return result.fail();
@@ -167,7 +167,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			
 			// check if the yDist is big enough to accodate a room
 			BlockPos size = template.getSize();
-//			Treasure.logger.debug("template size -> {}, offset -> {}", size, offset);
+			Treasure.logger.debug("template size -> {}, offset -> {}", size, offset);
 			
 			// if size of room is greater the distance to the surface minus 3, then fail 
 			if (size.getY() + offset + 3 >= yDist) {
@@ -180,6 +180,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 					info.setCoords(spawnCoords);
 					info.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.CHEST), new Coords(0, 0, 0));
 					setInfo(info);
+					// TODO result should have updated chest coords
 					return result;
 				}
 				else {
@@ -214,13 +215,14 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			 */
 			BlockPos transformedSize = template.transformedSize(rotation);
 			ICoords roomCoords = alignToPit(spawnCoords, newEntrance, transformedSize, placement);
-//			Treasure.logger.debug("aligned room coords -> {}", roomCoords.toShortString());
+			Treasure.logger.debug("aligned room coords -> {}", roomCoords.toShortString());
 			
 			// generate the structure
 			info = new StructureGenerator().generate(world, random, template, placement, roomCoords);
 			if (info == null) return result.fail();			
 			Treasure.logger.debug("returned info -> {}", info);
 			setInfo(info);
+			// TODO update result chest coords with that of info OR of the calculation of where chest should be.
 			
 			// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 			List<ICoords> spawnerCoords = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
