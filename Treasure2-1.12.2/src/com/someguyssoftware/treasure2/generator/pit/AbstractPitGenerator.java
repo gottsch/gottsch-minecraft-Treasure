@@ -12,6 +12,7 @@ import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 
@@ -89,8 +90,8 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 * @return
 	 */
 	@Override
-	public IGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		IGeneratorResult result = new TreasureGeneratorResult(true, spawnCoords);
+	public ITreasureGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		ITreasureGeneratorResult result = new TreasureGeneratorResult(true, spawnCoords);
 		// is the chest placed in a cavern
 		boolean inCavern = false;
 		
@@ -113,7 +114,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 				return result.fail();
 			}
 			// update the chest coords in the result
-			((TreasureGeneratorResult)result).setChestCoords(spawnCoords);
+			((ITreasureGeneratorResult)result).setChestCoords(spawnCoords);
 		}
 	
 		// generate shaft

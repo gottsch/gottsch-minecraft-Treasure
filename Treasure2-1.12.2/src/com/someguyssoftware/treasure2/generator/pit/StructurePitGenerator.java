@@ -3,8 +3,6 @@ package com.someguyssoftware.treasure2.generator.pit;
 import java.util.List;
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.generator.GeneratorResult;
-import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -13,6 +11,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.enums.StructureMarkers;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.structure.StructureGenerator;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
@@ -84,8 +83,8 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	 * @return
 	 */
 	@Override
-	public IGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		IGeneratorResult result = new TreasureGeneratorResult(true, spawnCoords); // TODO might roll StructureInfo into result.
+	public ITreasureGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		ITreasureGeneratorResult result = new TreasureGeneratorResult(true, spawnCoords); // TODO might roll StructureInfo into result.
 		
 		// clear info member property
 		setInfo(null);
@@ -110,7 +109,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 				return result.fail();
 			}
 			// update the chest coords in the result
-			((TreasureGeneratorResult)result).setChestCoords(spawnCoords);
+			result.setChestCoords(spawnCoords);
 		}
 	
 		// get distance to surface

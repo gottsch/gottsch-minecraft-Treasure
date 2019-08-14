@@ -6,6 +6,8 @@ import com.someguyssoftware.gottschcore.generator.GeneratorResult;
 import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -27,9 +29,9 @@ public class SimpleShortPitGenerator extends AbstractPitGenerator {
 	 * @param coords
 	 * @return
 	 */
-	public IGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public ITreasureGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		Treasure.logger.debug("Generating SimpleShortShaft.");
-		IGeneratorResult result = new GeneratorResult(true);
+		ITreasureGeneratorResult result = new TreasureGeneratorResult(true, spawnCoords);
 		
 		ICoords checkCoords = null;
 		// check each position if already not air and generate

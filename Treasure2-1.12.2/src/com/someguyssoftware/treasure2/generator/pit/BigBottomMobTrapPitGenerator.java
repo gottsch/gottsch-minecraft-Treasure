@@ -13,6 +13,8 @@ import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.sun.media.jfxmedia.logging.Logger;
 
@@ -51,8 +53,8 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public IGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		IGeneratorResult result = new GeneratorResult(true);
+	public ITreasureGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		ITreasureGeneratorResult result = new TreasureGeneratorResult(true, spawnCoords);
 		
 		// is the chest placed in a cavern
 		boolean inCavern = false;
@@ -73,6 +75,8 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 				Treasure.logger.warn("Exiting: Unable to locate cavern ceiling.");
 				return result.fail();
 			}
+			// update chest coords
+			result.setChestCoords(spawnCoords);
 		}
 	
 		// generate shaft
