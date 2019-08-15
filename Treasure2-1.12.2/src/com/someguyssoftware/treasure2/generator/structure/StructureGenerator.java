@@ -21,22 +21,30 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 
 /**
+ * TODO should implement IStructureInfoProvider and return IGeneratorResult from generate() method?
  * @author Mark Gottschling on Jan 24, 2019
  *
  */
 public class StructureGenerator implements IStructureGenerator {
 
+	private Block nullBlock;
+	
+	public StructureGenerator() {}
+	
+	/**
+	 * 
+	 */
 	@Override
 	public IStructureInfo generate(World world, Random random, GottschTemplate template, PlacementSettings placement,
 			ICoords spawnCoords) {
-		
-		// TODO should be setting a member property of the null block(s)
+
 		// generate the structure
-		template.addBlocksToWorld(world, spawnCoords.toPos(), placement, GenUtil.getMarkerBlock(StructureMarkers.NULL), 3);
+		template.addBlocksToWorld(world, spawnCoords.toPos(), placement, getNullBlock(), 3);
 		
 		// TODO should replace map blocks prior to addBlocksToWorld(), replacing them with null blocks
 		// OR this should be handled within the addBlocksToWorld() call itself, checking if a block is a map block.
 		
+		// TODO if this is handled on template read, this block can go away
 		// remove any extra special blocks
 		for (ICoords coords : template.getMapCoords()) {
 			ICoords c = GottschTemplate.transformedCoords(placement, coords);
@@ -47,29 +55,7 @@ public class StructureGenerator implements IStructureGenerator {
 		
 		// get the transformed size
 		BlockPos transformedSize = template.transformedSize(placement.getRotation());
-		
-		// TODO remove
-		// get the transformed entrance
-		ICoords entranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
-		if (entranceCoords != null) {
-			entranceCoords = new Coords(GottschTemplate.transformedCoords(placement, entranceCoords));
-			Treasure.logger.debug("entrance coords -> " + entranceCoords.toShortString());
-		}
-		else {
-			Treasure.logger.debug("unable to locate entrance coords");
-		}
-		
-		// TODO remove
-		// get the transformed chest
-		ICoords chestCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.CHEST));
-		if (chestCoords != null) {
-			chestCoords = new Coords(GottschTemplate.transformedCoords(placement, chestCoords));
-			Treasure.logger.debug("chest coords -> " + chestCoords.toShortString());
-		}
-		else {
-			Treasure.logger.debug("unable to locate chest coords");
-		}
-
+				
 		// TODO need to capture the facing or meta of the chest, perform the rotation on the facing  and save it in the Map with the pos... need a new object to hold more data
 				
 		// update StrucutreInfo
@@ -85,6 +71,19 @@ public class StructureGenerator implements IStructureGenerator {
 		}
 		
 		return info;
+	}
+
+	@Override
+	public Block getNullBlock() {
+		if (nullBlock == null) {
+			nullBlock = GenUtil.getMarkerBlock(StructureMarkers.NULL);
+		}
+		return nullBlock;
+	}
+
+	@Override
+	public void setNullBlock(Block nullBlock) {
+		this.nullBlock = nullBlock;
 	}
 
 }

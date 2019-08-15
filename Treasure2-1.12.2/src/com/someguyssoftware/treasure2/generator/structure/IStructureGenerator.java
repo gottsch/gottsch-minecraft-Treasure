@@ -6,6 +6,7 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 
+import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -58,5 +59,9 @@ public interface IStructureGenerator {
 		}
 		return startCoords;
 	}
+
+	public Block getNullBlock();
+
+	public void setNullBlock(Block nullBlock);
 
 }

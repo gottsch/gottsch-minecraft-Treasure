@@ -13,6 +13,7 @@ import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.structure.IStructureGenerator;
 import com.someguyssoftware.treasure2.generator.structure.StructureGenerator;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
@@ -82,7 +83,10 @@ public class SubmergedStructureGenerator implements IStructureInfoProvider {
 		placement.setRotation(rotation).setRandom(random);
 		
 		// generate the structure
-		IStructureInfo info = new StructureGenerator().generate(world, random, template, placement, spawnCoords);
+		IStructureGenerator generator = new StructureGenerator();
+		generator.setNullBlock(Blocks.AIR);
+		
+		 IStructureInfo info = generator.generate(world, random, template, placement, spawnCoords);
 		if (info == null) return false;
 		
 		Treasure.logger.debug("returned info -> {}", info);

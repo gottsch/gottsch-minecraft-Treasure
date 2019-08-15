@@ -75,34 +75,12 @@ public class SpawnChestCommand extends CommandBase {
     			BlockPos pos = new BlockPos(x, y, z);
     			
     			AbstractChestBlock chest = gen.selectChest(random, rarity);
-//    			if (gen instanceof SkullChestGenerator) chest = (AbstractChestBlock) TreasureBlocks.SKULL_CHEST;
-//    			else {
-//    				List<Block> chestList = (List<Block>) TreasureBlocks.chests.get(rarity);
-//    				chest = (AbstractChestBlock) chestList.get(RandomHelper.randomInt(random, 0, chestList.size()-1));	
-//    			}
+
     			world.setBlockState(pos , chest.getDefaultState());
     			AbstractTreasureChestTileEntity tileEntity = (AbstractTreasureChestTileEntity) world.getTileEntity(pos);
 				
     			if (tileEntity != null) {
-//    				// query to load the selected rarity chests
-//    				List<LootContainer> containers = DbManager.getInstance().getContainersByRarity(rarity);
-//
-//    				if (containers != null)
-//    					Treasure.logger.debug("Containers found:" + containers.size());
-//					if (containers != null && !containers.isEmpty()) {
-//						// add each container to the random prob collection
-//						for (LootContainer c : containers) {
-//							Treasure.logger.info("Selected chest container:" + c);
-//						}
-//						// get the first container
-//						LootContainer c = containers.get(0);
-////						RandomProbabilityCollection<ChestContainer> chestProbCol = new RandomProbabilityCollection<>(containers);
-////						// select a container
-////						ChestContainer container = (ChestContainer) chestProbCol.next();		
-//						Treasure.logger.info("Chosen chest container:" + c);
-//						InventoryPopulator pop = new InventoryPopulator();
-//						pop.populate(chest.getInventoryProxy(), c);
-//					}   				
+				
     				   				
     				// get the loot table
     				LootTable lootTable = gen.selectLootTable(new Random(), rarity);
