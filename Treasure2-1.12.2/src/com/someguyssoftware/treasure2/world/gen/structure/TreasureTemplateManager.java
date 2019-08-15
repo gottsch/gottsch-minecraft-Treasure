@@ -399,8 +399,9 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 			Map<Integer, List<TemplateHolder>> tmp = map.get(row);
 			for (Entry<Integer, List<TemplateHolder>> entry : tmp.entrySet()) {
 				String templateNames = entry.getValue().stream().map(a -> a.getLocation().toString()).collect(Collectors.joining(", "));
-				Biome biome = Biome.getBiome(entry.getKey());				
-				sb.append(String.format(format2, row, biome.getBiomeName(), templateNames));
+				Biome biome = Biome.getBiome(entry.getKey());
+				String biomeName = (biome != null) ? biome.getBiomeName() : String.format("No biome for {}", entry.getKey());
+				sb.append(String.format(format2, row, biomeName, templateNames));
 			}
 		}
 		
