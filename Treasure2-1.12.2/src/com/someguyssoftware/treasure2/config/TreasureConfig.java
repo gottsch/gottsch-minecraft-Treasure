@@ -262,6 +262,9 @@ public class TreasureConfig extends AbstractConfig {
 	// foreign mod enablements
 	public static String[] enableForeignModIDs;
 	public static String[] availableForeignModLootTables;
+	
+	// TEMP
+	public static double waterStructureProbability;
 
 			
 	/**
@@ -338,6 +341,9 @@ public class TreasureConfig extends AbstractConfig {
         rubyOreMinY = config.getInt("rubyOreMinY", "04-gen", 6, 1, 255, "");
         rubyOreMaxY = config.getInt("rubyOreMaxY", "04-gen", 14, 1, 255, "");
         rubyOreVeinSize = config.getInt("rubyOreVeinSize", "04-gen", 3, 1, 20, "");
+        
+        // TEMP
+        waterStructureProbability = config.getFloat("waterStructureProbability", "04-gen", 35.0F, 0.0F, 100.0F, "This is a temporary property start with v1.5.0.");
         
         // treasure items/keys/locks
         config.setCategoryComment("04-gen-key", "World generation Key properties."); 

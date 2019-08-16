@@ -8,11 +8,13 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.structure.IStructureGenerator;
 import com.someguyssoftware.treasure2.generator.structure.StructureGenerator;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
@@ -27,6 +29,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -52,9 +55,9 @@ public class SubmergedStructureGenerator implements IStructureInfoProvider {
 	 * @param coords
 	 * @return
 	 */
-	public boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public boolean generate(World world, Random random, ICoords spawnCoords) {
 		// get the biome ID
-		Biome biome = world.getBiome(surfaceCoords.toPos());
+		Biome biome = world.getBiome(spawnCoords.toPos());
 		
 		// get the template from the given archetype, type and biome
 		GottschTemplate template = getTemplate(world, random, StructureArchetype.SUBMERGED, StructureType.RUIN, biome);
@@ -64,6 +67,7 @@ public class SubmergedStructureGenerator implements IStructureInfoProvider {
 			return false;
 		}
 		
+		// TODO offset should be moved into StructureBuilder
 		// find the offset block
 		int offset = 0;
 		ICoords offsetCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.OFFSET));
@@ -81,6 +85,23 @@ public class SubmergedStructureGenerator implements IStructureInfoProvider {
 		// setup placement
 		PlacementSettings placement = new PlacementSettings();
 		placement.setRotation(rotation).setRandom(random);
+		
+		BlockPos transformedSize = template.transformedSize(rotation);
+		
+		for (int i = 0; i < 3; i++) {
+			if (!WorldInfo.isSolidBase(world, spawnCoords, transformedSize.getX(), transformedSize.getZ(), 50)) {
+				if (i == 3) {
+					Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", 50, spawnCoords.toShortString(), transformedSize.getX(), transformedSize.getY());
+					return false;
+				}
+				else {
+					spawnCoords = spawnCoords.add(0, -1, 0);
+				}
+			}
+			else {
+				continue;
+			}
+		}
 		
 		// generate the structure
 		IStructureGenerator generator = new StructureGenerator();
