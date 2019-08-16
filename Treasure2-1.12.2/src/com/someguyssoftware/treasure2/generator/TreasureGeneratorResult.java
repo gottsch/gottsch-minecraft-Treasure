@@ -9,6 +9,7 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
  * @author Mark Gottschling on Jul 27, 2019
  *
  */
+@Deprecated
 public class TreasureGeneratorResult extends GeneratorResult implements ITreasureGeneratorResult {
 	private ICoords chestCoords;
 
