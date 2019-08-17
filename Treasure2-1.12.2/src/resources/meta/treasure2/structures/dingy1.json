@@ -1,0 +1,11 @@
+{
+	"name": "dingy1",
+	"description": "",
+	"author": "gottsch",
+	"archetypes": ["submerged"],
+	"type": "ruin",
+	"themes": ["dungeon"],
+	"rarities": ["common"],
+	"biomeWhiteList": ["ocean"],
+	"biomeBlackList": []
+}
