@@ -16,6 +16,7 @@ import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.StructureInfo;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -29,7 +30,10 @@ public class StructureGenerator implements IStructureGenerator {
 
 	private Block nullBlock;
 	
-	public StructureGenerator() {}
+	public StructureGenerator() {
+		// use the default null block
+		setNullBlock(GenUtil.getMarkerBlock(StructureMarkers.NULL));
+	}
 	
 	/**
 	 * 
@@ -38,11 +42,9 @@ public class StructureGenerator implements IStructureGenerator {
 	public IStructureInfo generate(World world, Random random, GottschTemplate template, PlacementSettings placement,
 			ICoords spawnCoords) {
 
+		// TODO structure gen should probably pass in the replacement map
 		// generate the structure
-		template.addBlocksToWorld(world, spawnCoords.toPos(), placement, getNullBlock(), 3);
-		
-		// TODO should replace map blocks prior to addBlocksToWorld(), replacing them with null blocks
-		// OR this should be handled within the addBlocksToWorld() call itself, checking if a block is a map block.
+		template.addBlocksToWorld(world, spawnCoords.toPos(), placement, getNullBlock(), Treasure.TEMPLATE_MANAGER.getReplacementMap(), 3);
 		
 		// TODO if this is handled on template read, this block can go away
 		// remove any extra special blocks

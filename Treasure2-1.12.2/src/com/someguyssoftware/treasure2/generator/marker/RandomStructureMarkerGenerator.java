@@ -17,10 +17,12 @@ import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.structure.IStructureGenerator;
 import com.someguyssoftware.treasure2.generator.structure.StructureGenerator;
+import com.someguyssoftware.treasure2.meta.StructureArchetype;
+import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
-import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager.StructureType;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
@@ -28,6 +30,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.common.DungeonHooks;
@@ -51,10 +54,15 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStruct
 	 */
 	@Override
 	public boolean generate(World world, Random random, ICoords coords) {
-
+		// get the biome ID
+		Biome biome = world.getBiome(coords.toPos());
+		
+		// get the template from the given archetype, type and biome
+		GottschTemplate template = getTemplate(world, random, StructureArchetype.SURFACE, StructureType.MARKER, biome);
+		
 		// TODO needs to be updated to pull from archetype:type, biome
-		List<Template> templates = Treasure.TEMPLATE_MANAGER.getTemplatesByType(StructureType.ABOVEGROUND);
-		GottschTemplate template = (GottschTemplate) templates.get(random.nextInt(templates.size()));
+//		List<Template> templates = Treasure.TEMPLATE_MANAGER.getTemplatesByType(StructureType.ABOVEGROUND);
+//		GottschTemplate template = (GottschTemplate) templates.get(random.nextInt(templates.size()));
 		if (template == null) {
 			Treasure.logger.debug("could not find random template");
 			return false;
@@ -134,6 +142,30 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStruct
 	    	te.setProximity(10D);
 		}		
 		return true;
+	}
+	
+	// TODO this method is duplicated in all structure generators - need to create an abstract structure gneerator
+	public GottschTemplate getTemplate(World world, Random random, StructureArchetype archetype, StructureType type, Biome biome) {
+		Template template = null;
+		// get structure by archetype (subterranean) and type (room)
+		String key =archetype.getName()	+ ":" + type.getName();
+		
+		Integer biomeID = Biome.getIdForBiome(biome);
+		
+		List<TemplateHolder> templateHolders = Treasure.TEMPLATE_MANAGER.getTemplatesByArchetypeTypeBiomeTable().get(key, biomeID);
+		if (templateHolders == null || templateHolders.isEmpty()) {
+			Treasure.logger.debug("could not find template holders for archetype:type, biome -> {} {}", key, biome.getBiomeName());
+		}
+		
+		TemplateHolder holder = templateHolders.get(random.nextInt(templateHolders.size()));
+		if (holder == null) {
+			Treasure.logger.debug("could not find random template holder.");
+		}
+		
+		template = holder.getTemplate();
+		Treasure.logger.debug("selected template holder -> {} : {}", holder.getLocation(), holder.getMetaLocation());
+		
+		return (GottschTemplate) template;
 	}
 
 	@Override

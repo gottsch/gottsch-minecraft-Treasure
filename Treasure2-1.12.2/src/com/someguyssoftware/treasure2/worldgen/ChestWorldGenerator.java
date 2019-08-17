@@ -207,7 +207,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 			    			Treasure.logger.debug("{} is not a valid biome @ {}", biome.getBiomeName(), coords.toShortString());
 			    		}
 			    		else {
-			    			Treasure.logger.debug("Biome is not valid @ {}", coords.toShortString());
+			    			Treasure.logger.debug("Biome for {} is not valid @ {}",rarity.getValue(), coords.toShortString());
 			    		}
 			    	}
 			    	return;

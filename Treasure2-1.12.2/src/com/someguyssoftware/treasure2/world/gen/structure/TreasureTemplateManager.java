@@ -29,11 +29,14 @@ import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 import com.someguyssoftware.gottschcore.meta.IMetaType;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplateManager;
+import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -57,6 +60,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	 * NOTE this enum is key for external templates. all templates are categorized
 	 * and placed into folders according to the type.
 	 */
+	@Deprecated
 	public enum StructureType {
 		ABOVEGROUND, UNDERGROUND
 	};
@@ -69,24 +73,29 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 
 	private final Table<String, Integer, List<TemplateHolder>> templatesByArchetypeTypeBiome = HashBasedTable.create();
 
-	/*
-	 * builtin underground locations for structures
-	 */
-	private static List<String> UNDERGROUND_LOCATIONS = Arrays.asList(new String[] { "treasure2:underground/basic1",
-			"treasure2:underground/basic2", "treasure2:underground/basic3", "treasure2:underground/basic4",
-			"treasure2:underground/basic5", "treasure2:underground/cave1", "treasure2:underground/cave2",
-			"treasure2:underground/cobb1", "treasure2:underground/crypt1" });
-
-	/*
-	 * builtin aboveground locations for structures
-	 */
-	private static List<String> ABOVEGROUND_LOCATIONS = Arrays
-			.asList(new String[] { "treasure2:aboveground/crypt2", "treasure2:aboveground/crypt3" });
+//	/*
+//	 * builtin underground locations for structures
+//	 */
+//	private static List<String> UNDERGROUND_LOCATIONS = Arrays.asList(new String[] { "treasure2:underground/basic1",
+//			"treasure2:underground/basic2", "treasure2:underground/basic3", "treasure2:underground/basic4",
+//			"treasure2:underground/basic5", "treasure2:underground/cave1", "treasure2:underground/cave2",
+//			"treasure2:underground/cobb1", "treasure2:underground/crypt1" });
+//
+//	/*
+//	 * builtin aboveground locations for structures
+//	 */
+//	private static List<String> ABOVEGROUND_LOCATIONS = Arrays
+//			.asList(new String[] { "treasure2:aboveground/crypt2", "treasure2:aboveground/crypt3" });
 
 	private static List<String> FOLDER_LOCATIONS = ImmutableList.of("surface", "subterranean", "submerged", "float");
 
 	// TODO need someway to specify what the null block is for each structure. ie submerged will use air for null blocks
 	// property of meta? then update the marker map before processing?
+	
+	/*
+	 * use this map when structures are submerged instead of the default marker map
+	 */
+	private Map<StructureMarkers, Block> waterMarkerMap;
 	
 	/**
 	 * 
@@ -97,6 +106,11 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		super(mod, resourceFolder, fixer);
 		Treasure.logger.debug("creating a TreasureTemplateManager");
 
+		// init water marker map
+        // setup standard list of markers
+        waterMarkerMap = Maps.newHashMap(getMarkerMap());
+        waterMarkerMap.put(StructureMarkers.NULL, Blocks.AIR);// <-- this is the difference between default
+        
 		// init maps
 		for (StructureType structureType : StructureType.values()) {
 			getTemplatesByTypeMap().put(structureType, new ArrayList<Template>(5));
@@ -111,8 +125,8 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 
 		// TODO replace with loading from external
 		// load all the builtin (jar) structure templates
-		loadAll(UNDERGROUND_LOCATIONS, StructureType.UNDERGROUND);
-		loadAll(ABOVEGROUND_LOCATIONS, StructureType.ABOVEGROUND);
+//		loadAll(UNDERGROUND_LOCATIONS, StructureType.UNDERGROUND);
+//		loadAll(ABOVEGROUND_LOCATIONS, StructureType.ABOVEGROUND);
 		// load external structures
 		// for (StructureType customLocation : StructureType.values()) {
 		// createTemplateFolder(customLocation.name().toLowerCase());
@@ -144,50 +158,46 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 			// get loot table files as ResourceLocations from the file system location
 			List<ResourceLocation> locs = getResourceLocations(modID, location);
 
-			// load each ResourceLocation as LootTable and map it.
+			// load each ResourceLocation and map it.
 			for (ResourceLocation loc : locs) {
+				// get the path to the resource
 				Path path = Paths.get(loc.getResourcePath());
 				if (Treasure.logger.isDebugEnabled()) {
 					Treasure.logger.debug("path to template resource loc -> {}", path.toString());
 				}
 
-				// load template
-				Treasure.logger.debug("attempted to load custom template  with key -> {}", loc.toString());
-				Template template = load(loc, getScanList());
-				// add the id to the map
-				if (template == null) {
-					// TODO message
-					continue;
-				}
-				Treasure.logger.debug("loaded custom template  with key -> {}", loc.toString());
-
-				// TODO not thought out enough. Need a holder object for Template that contains
-				// the key to the meta
-
-				// TODO this is wrong; need to point to treasure2:meta/treasure2/structures/<file>.json
 				// build the key for the meta manager to look at
 				ResourceLocation metaResourceLocation = new ResourceLocation(
 						getMod().getId() + ":" + Treasure.META_MANAGER.getBaseResourceFolder()+ "/" + modID + "/structures/" + path.getFileName().toString().replace(".nbt", ".json"));
 				String key = metaResourceLocation.toString();
 				Treasure.logger.debug("Using key to find meta -> {}", key);
 				
-				// look for IMeta in MetaManager by file name ie x.nbt or
-				// treasure2:structures/treasure2/surface/x.nbt
+				// look for IMeta in MetaManager by treasure2:structures/treasure2/surface/x.nbt
 				StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(key);
 				if (meta == null) {
 					// there isn't a meta found for resource, skip to next template
 					Treasure.logger.info("Unable to locate meta file for resource -> {}", key);
 					continue;
-				}
-				
+				}				
 				if (meta.getArchetypes() == null || meta.getArchetypes().isEmpty() || meta.getType() == null) {
 					Treasure.logger.info("Meta file not properly configured. -> {}", key);
 					continue;
 				}
 				
-				// TODO future state: first determine if parent/child - if child, need to find the parent template holder in map - how?
-				// probably needs to be mapped by meta, then it can be mapped otherwise
+				// TODO interrogate the archetype to determine the marker scan list and/or replacement map to use
 				
+				// load template
+				Treasure.logger.debug("attempted to load custom template  with key -> {}", loc.toString());
+				Template template = load(loc, getMarkerScanList(), getReplacementMap()); // TODO the marker scan list and replace list should be determined before this call
+				// add the id to the map
+				if (template == null) {
+					// TODO message
+					continue;
+				}
+				Treasure.logger.debug("loaded custom template  with key -> {}", loc.toString());
+					
+				// TODO future state: first determine if parent/child - if child, need to find the parent template holder in map - how?
+				// probably needs to be mapped by meta, then it can be mapped otherwise				
 				
 				// map according to meta archetype, type
 				for (IMetaArchetype archetype : meta.getArchetypes()) {
@@ -196,8 +206,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 							.setLocation(loc)
 							.setTemplate(template);
 					Treasure.logger.debug("Using meta to map archetype type -> {}", meta.toString());
-					
-					
+										
 					if (!templatesByArchetypeType.contains(archetype, meta.getType())) {
 						templatesByArchetypeType.put(archetype, meta.getType(), new ArrayList<>(3));
 					}
@@ -308,7 +317,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		Treasure.logger.debug("loading all typed structures -> {}", type.name());
 		for (String location : locations) {
 			Treasure.logger.debug("loading from -> {}", location);
-			Template template = load(new ResourceLocation(location), getScanList());
+			Template template = load(new ResourceLocation(location), getMarkerScanList(), getReplacementMap());
 			Treasure.logger.debug("loaded template  with key -> {} : {}", location, location);
 			// add the id to the map
 			if (template != null) {

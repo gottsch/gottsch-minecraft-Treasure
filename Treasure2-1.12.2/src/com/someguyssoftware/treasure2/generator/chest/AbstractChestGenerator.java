@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import com.someguyssoftware.gottschcore.block.AbstractModContainerBlock;
 import com.someguyssoftware.gottschcore.generator.GeneratorResult;
 import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
 import com.someguyssoftware.gottschcore.loot.LootTable;
@@ -20,6 +21,7 @@ import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.IMimicBlock;
+import com.someguyssoftware.treasure2.block.ITreasureBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.block.WitherChestBlock;
@@ -48,6 +50,7 @@ import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.init.Biomes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -76,18 +79,31 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			
 		// 1. collect location data points
 		ICoords surfaceCoords = WorldInfo.getSurfaceCoords(world, coords);
-		SURFACE surface = WorldInfo.getSurface(world, surfaceCoords);
-		if (!isSurfaceValid(surface)) {
+		Treasure.logger.debug("surface coords -> {}", surfaceCoords.toShortString());
+		if (!WorldInfo.isValidY(surfaceCoords)) {
+			Treasure.logger.debug("surface coords are invalid @ {}", surfaceCoords.toShortString());
 			return false;
 		}
 		
+		SURFACE surface = WorldInfo.getSurface(world, surfaceCoords);
+		if (!isSurfaceValid(surface)) return false;
+		Treasure.logger.debug("surface -> {}", surface.name());
+		
 		// 2. determine if on the ocean
 		if (surface == SURFACE.WATER) {
+			Treasure.logger.debug("surface is water!");
 			if (isOcean = isOceanBiome(world, coords)) {			
+				Treasure.logger.debug("it is ocean biome!");
+				
+				// TEMP: test against water probability. this is used to reduce the occurences of submerged structures without re-writting the entire generation system.
+				if (!RandomHelper.checkProbability(random, TreasureConfig.waterStructureProbability)) return false;
+				
 				markerCoords = surfaceCoords;
 				spawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, surfaceCoords);
+				Treasure.logger.debug("ocean floor coords -> {}", spawnCoords.toShortString());
 				// TODO build with submerged/ruin generator
 				result = generateSubmergedRuins(world, random, spawnCoords, config);
+				chestCoords = result.getChestCoords();
 				// TODO need to save isOcean so the correct marker coords (by archetype, type) can be selected.
 				// TEMP for now turn off markers for ocean stuff.
 				hasMarkers = false;
@@ -306,7 +322,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		ICoords chestCoords = null;
 		
 		// check if it has 50% land
-		if (!WorldInfo.isSolidBase(world, spawnCoords, 2, 2, 50)) {
+		if (!WorldInfo.isSolidBase(world, spawnCoords, 2, 2, 30)) {
 			Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", spawnCoords.toShortString(), 3, 3);
 			return result.fail();
 		}
@@ -314,8 +330,8 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		SubmergedStructureGenerator generator = new SubmergedStructureGenerator();
 		
 		// build the structure
-		boolean isGenerated = generator.generate(world, random, null, spawnCoords);
-		
+		boolean isGenerated = generator.generate(world, random, spawnCoords);
+		Treasure.logger.debug("is submerged struct generated -> {}", isGenerated);
 		if (isGenerated) {
 			IStructureInfoProvider structureInfoProvider = (IStructureInfoProvider)generator;
 			IStructureInfo structureInfo = structureInfoProvider.getInfo();
@@ -340,6 +356,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		Treasure.logger.debug("Is submerged generated: {}", result.isSuccess());
 		return result;
 	}
+	
 	/**
 	 * 
 	 * @param world
@@ -585,8 +602,14 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param coods
 	 */
 	public void addMarkers(World world, Random random, ICoords coords) {
+		boolean isChestOnSurface = false;
+		// don't place if the block underneath is of GenericBlock Chest or Container
+		Block block = world.getBlockState(coords.add(0, -1, 0).toPos()).getBlock();
+		if(block instanceof BlockContainer || block instanceof AbstractModContainerBlock || block instanceof ITreasureBlock) {
+			isChestOnSurface = true;
+		}
 //		GenUtil.placeMarkers(world, random, coords);
-		if (TreasureConfig.isStructureMarkersAllowed && RandomHelper.checkProbability(random, TreasureConfig.structureMarkerProbability)) {
+		if (!isChestOnSurface && TreasureConfig.isStructureMarkersAllowed && RandomHelper.checkProbability(random, TreasureConfig.structureMarkerProbability)) {
 			Treasure.logger.debug("generating a random structure marker -> {}", coords.toShortString());
 			new RandomStructureMarkerGenerator().generate(world, random, coords);
 		}
