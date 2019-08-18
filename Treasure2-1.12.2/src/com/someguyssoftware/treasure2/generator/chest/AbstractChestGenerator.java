@@ -71,7 +71,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		ICoords chestCoords = null;
 		ICoords markerCoords = null;
 		ICoords spawnCoords = null;
-		boolean isGenerated = false;
+//		boolean isGenerated = false;
 		boolean isAboveGround = false;
 		boolean isOcean = false;
 		boolean hasMarkers = true;
@@ -101,11 +101,9 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				markerCoords = surfaceCoords;
 				spawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, surfaceCoords);
 				Treasure.logger.debug("ocean floor coords -> {}", spawnCoords.toShortString());
-				// TODO build with submerged/ruin generator
 				result = generateSubmergedRuins(world, random, spawnCoords, config);
 				chestCoords = result.getChestCoords();
-				// TODO need to save isOcean so the correct marker coords (by archetype, type) can be selected.
-				// TEMP for now turn off markers for ocean stuff.
+				// turn off markers for ocean chests.
 				hasMarkers = false;
 			}
 			else return false;
@@ -117,10 +115,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 					RandomHelper.checkProbability(random, TreasureConfig.surfaceChestProbability)) { 
 				isAboveGround = true;
 				if (RandomHelper.checkProbability(random, TreasureConfig.surfaceStructureProbability)) {
-					// TODO build structure with ruin/complex, etc builder
+					// TEMP - until surface buildings are added
+					
 					// no markers
 					hasMarkers = false;
-					// TEMP
 					// set the chest coords to the surface pos
 					chestCoords = new Coords(markerCoords);
 					Treasure.logger.debug("Above ground structure @ {}", chestCoords.toShortString());
@@ -136,105 +134,15 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				}
 			}
 			else if (config.isBelowGroundAllowed()) {
-				// TODO don't like this. ChestGen shouldn't know anything about PitGenResult, should return IStructureInfo ?
 				result = generatePit(world, random, chestRarity, markerCoords, config);
 				if (result.isSuccess()) {
-					chestCoords = result.getChestCoords(); // TODO all TreasureGeneratorResult should have chest coords
+					chestCoords = result.getChestCoords();
 				}
 			}
 		}
-		
-		// TODO get all those that meet the biome and randomly select.
-		////////////////////////////////////
-		////////////////////////////////////
-			
-//		// 1. determine y-coord of land for markers
-//		markerCoords = WorldInfo.getDryLandSurfaceCoords(world, coords);
-//		Treasure.logger.debug("Marker Coords @ {}", markerCoords.toShortString());
-//		if (markerCoords == null || markerCoords == WorldInfo.EMPTY_COORDS) {
-//			Treasure.logger.debug("Returning due to marker coords == null or EMPTY_COORDS");
-//			return false; 
-//		}
-//		
-//		Treasure.logger.debug("Test for above/below");
-//		// 2. switch on above or below ground
-//		if (config.isAboveGroundAllowed() && random.nextInt(8) == 0) { // TODO should the random be a configurable property
-//			// set the chest coords to the surface pos
-//			chestCoords = new Coords(markerCoords);
-//			Treasure.logger.debug("Above ground @ {}", chestCoords.toShortString());
-//			isGenerated = true;
-//		}
-//		else if (config.isBelowGroundAllowed()) {
-//			// 2.5. check if it has 50% land
-//			if (!WorldInfo.isSolidBase(world, markerCoords, 2, 2, 50)) {
-//				Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", markerCoords.toShortString(), 3, 3);
-//				return false;
-//			}
-//			
-//			// determine spawn coords below ground
-//			spawnCoords = getUndergroundSpawnPos(world, random, markerCoords, config.getMinYSpawn());
-//
-//			if (spawnCoords == null || spawnCoords == WorldInfo.EMPTY_COORDS) {
-//				Treasure.logger.debug("Unable to spawn underground @ {}", markerCoords);
-//				return false;
-//			}
-//			Treasure.logger.debug("Below ground @ {}", spawnCoords.toShortString());
-//			
-//			// select a pit generator
-//			PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.pitStructureProbability) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
-//			List<IPitGenerator> pitGenerators = ChestWorldGenerator.pitGens.row(pitType).values().stream()
-//					.collect(Collectors.toList());
-//			IPitGenerator pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));
-//			
-//			Treasure.logger.debug("Using PitType: {}, Gen: {}", pitType, pitGenerator.getClass().getSimpleName());
-//			
-//			// 3. build the pit
-//			result = pitGenerator.generate(world, random, markerCoords, spawnCoords);
-//			// TEMP
-//			isGenerated = result.isSuccess();
-//			
-//			Treasure.logger.debug("Is pit generated: {}", isGenerated);
-//			// 4. build the room
-//			
-//			// 5. update the chest coords
-////			chestCoords = new Coords(spawnCoords);
-//
-//			// TODO refactor this whole block/method
-//			if (isGenerated) {
-//				if (pitGenerator instanceof IStructureInfoProvider) {
-//					// TODO could extend IStructureInfoProvider for Treasure context that only records a single or main chest
-//					IStructureInfoProvider structureInfoProvider = (IStructureInfoProvider)pitGenerator;
-//					IStructureInfo structureInfo = structureInfoProvider.getInfo();
-//					if (structureInfo != null) {
-//						List<ICoords> chestCoordsList = (List<ICoords>) structureInfo
-//								.getMap()
-//								.get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
-//						if (!chestCoordsList.isEmpty()) {
-//							chestCoords = chestCoordsList.get(0);
-//							Treasure.logger.debug("Using StructureInfo relative chest coords -> {}", chestCoords.toShortString());
-//							chestCoords = chestCoords.add((((IStructureInfoProvider)pitGenerator).getInfo().getCoords()));	
-//						}
-//						else {
-//							Treasure.logger.debug("Unable to retrieve Chest from structure");
-//						}
-//					}
-//					else {
-//						Treasure.logger.debug("Unable to retrieve StructureInfo");
-//					}
-//				}
-//				else {
-//					chestCoords = new Coords(spawnCoords);
-//				}
-//				
-//			}
-//			
-//		}
-//		else { return false; }
 
-		// TODO change to has chest coords ie if (chestCoords != null && chestCoords != WorldInfo.EMPTY_COORDS
-		
 		// if successfully gen the pit
-		if (/*isGenerated*/chestCoords != null) {
+		if (/*isGenerated*/chestCoords != null && chestCoords != WorldInfo.EMPTY_COORDS) {
 			LootTable lootTable = selectLootTable(random, chestRarity);
 
 			if (lootTable == null) {
@@ -609,7 +517,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			isChestOnSurface = true;
 		}
 //		GenUtil.placeMarkers(world, random, coords);
-		if (!isChestOnSurface && TreasureConfig.isStructureMarkersAllowed && RandomHelper.checkProbability(random, TreasureConfig.structureMarkerProbability)) {
+		if (!isChestOnSurface && TreasureConfig.isMarkerStructuresAllowed && RandomHelper.checkProbability(random, TreasureConfig.markerStructureProbability)) {
 			Treasure.logger.debug("generating a random structure marker -> {}", coords.toShortString());
 			new RandomStructureMarkerGenerator().generate(world, random, coords);
 		}

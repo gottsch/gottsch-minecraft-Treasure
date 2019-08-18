@@ -67,8 +67,6 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	
 	// TODO probably should be moved to AbstractChestGenerator
 	// the pit chestGeneratorsMap
-//	public static Map<Pits, IPitGenerator> pitGenerators = new HashMap<>();
-//	public static Map<Pits, IPitGenerator> structurePitGenerators = new HashMap<>();
 	public static Table<PitTypes, Pits, IPitGenerator> pitGens =  HashBasedTable.create();
 	
 	/**

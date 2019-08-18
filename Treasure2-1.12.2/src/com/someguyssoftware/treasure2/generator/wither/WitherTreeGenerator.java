@@ -242,7 +242,6 @@ public class WitherTreeGenerator {
 			
 			// add the trunk
 			world.setBlockState(coords.add(0, y, 0).toPos(), TreasureBlocks.WITHER_LOG.getDefaultState());
-//			 Treasure.logger.debug("Wither Tree Supporter building trunk @ " + coords.add(0, y, 0).toShortString());
 			 
 			 // add the branches/roots
 			 if (y ==0) {

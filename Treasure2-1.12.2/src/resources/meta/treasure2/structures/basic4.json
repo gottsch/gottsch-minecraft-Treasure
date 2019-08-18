@@ -7,5 +7,5 @@
 	"themes": ["dungeon"],
 	"rarities": ["common"],
 	"biomeWhiteList": [],
-	"biomeBlackList": ["ocean"]
+	"biomeBlackList": ["ocean", "deep_ocean"]
 }

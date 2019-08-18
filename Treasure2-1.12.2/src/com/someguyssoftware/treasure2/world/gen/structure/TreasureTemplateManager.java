@@ -123,16 +123,6 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 			}
 		}
 
-		// TODO replace with loading from external
-		// load all the builtin (jar) structure templates
-//		loadAll(UNDERGROUND_LOCATIONS, StructureType.UNDERGROUND);
-//		loadAll(ABOVEGROUND_LOCATIONS, StructureType.ABOVEGROUND);
-		// load external structures
-		// for (StructureType customLocation : StructureType.values()) {
-		// createTemplateFolder(customLocation.name().toLowerCase());
-		// loadAll(Arrays.asList(customLocation.name().toLowerCase()), customLocation);
-		// }
-
 		// build and expose template/structure folders
 		buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
 	}

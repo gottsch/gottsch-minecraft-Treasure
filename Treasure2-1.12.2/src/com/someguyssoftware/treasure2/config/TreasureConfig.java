@@ -9,7 +9,6 @@ import com.someguyssoftware.gottschcore.config.AbstractConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 
-import net.minecraft.block.material.MapColor;
 import net.minecraftforge.common.config.Configuration;
 
 /**
@@ -193,11 +192,6 @@ public class TreasureConfig extends AbstractConfig {
 	public static boolean enableDefaultTemplatesCheck = true;
 	
 	/*
-	 * other mod enablements for loot tables
-	 */
-//	public static boolean enableMoCreatures = true;
-	
-	/*
 	 *  world gen
 	 */
 	public static int minDistancePerChest;
@@ -216,8 +210,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static int minGravestonesPerChest;
 	public static int maxGravestonesPerChest;
 	public static int gravestoneFogProbability;
-	public static boolean isStructureMarkersAllowed;
-	public static int structureMarkerProbability;
+	public static boolean isMarkerStructuresAllowed;
+	public static int markerStructureProbability;
 	
 	// wither properties
 	public static double witherBranchItemGenProbability;
@@ -311,7 +305,7 @@ public class TreasureConfig extends AbstractConfig {
       	minChunksPerWell = config.getInt("minChunksPerWell", "04-gen", 400, 100, 32000, "");
 
       	surfaceChestProbability = config.getInt("surfaceChestProbability", "04-gen", 15, 0, 100, "The probability chest will appear on the surface."); 
-      	surfaceChestProbability = config.getInt("surfaceStructureProbability", "04-gen", 25, 0, 100, "The probability that a surface structure will generate."); 
+      	surfaceStructureProbability = config.getInt("surfaceStructureProbability", "04-gen", 25, 0, 100, "The probability that a surface structure will generate."); 
       	pitStructureProbability = config.getInt("pitStructureProbability", "04-gen", 20, 0, 100, "The probability that a pit will contain a structure."); 
 
         isGravestonesAllowed = config.getBoolean("isGravestonesAllowed", "04-gen", true, "");
@@ -319,8 +313,8 @@ public class TreasureConfig extends AbstractConfig {
         maxGravestonesPerChest = config.getInt("maxGravesstonesPerChest", "04-gen", 8, 1, 10, "The maximum of Treasure chest markers (gravestones, bones).");
         gravestoneFogProbability = config.getInt("gravestoneFogProbability", "04-gen", 50, 0, 100, "The probability that a gravestone will have fog."); 
         
-        isStructureMarkersAllowed = config.getBoolean("isStructureMarkersAllowed", "04-gen", true, "");
-        structureMarkerProbability = config.getInt("structureMarkerProbability", "04-gen", 15, 0, 100, "The probability that a Treasure chest marker will be a structure."); 
+        isMarkerStructuresAllowed = config.getBoolean("isMarkerStructuresAllowed", "04-gen", true, "");
+        markerStructureProbability = config.getInt("markerStructureProbability", "04-gen", 15, 0, 100, "The probability that a Treasure chest marker will be a structure."); 
 
         // wells
         minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 500, 100, 32000, "");
@@ -343,7 +337,7 @@ public class TreasureConfig extends AbstractConfig {
         rubyOreVeinSize = config.getInt("rubyOreVeinSize", "04-gen", 3, 1, 20, "");
         
         // TEMP
-        waterStructureProbability = config.getFloat("waterStructureProbability", "04-gen", 35.0F, 0.0F, 100.0F, "This is a temporary property start with v1.5.0.");
+        waterStructureProbability = config.getFloat("waterStructureProbability", "04-gen", 35.0F, 0.0F, 100.0F, "This is a temporary property. @since v1.5.0.");
         
         // treasure items/keys/locks
         config.setCategoryComment("04-gen-key", "World generation Key properties."); 
@@ -362,6 +356,7 @@ public class TreasureConfig extends AbstractConfig {
         witherKeyMaxUses = config.getInt("witherKeyMaxUses", "04-gen-key", 5, 1, 32000, "The maximum uses for a given wither key.");
         pilferersLockPickMaxUses = config.getInt("pilferersLockPickMaxUses", "04-gen-key", 10, 1, 32000, "The maximum uses for a given pilferers lock pick.");
         thiefsLockPickMaxUses = config.getInt("thiefsLockPickMaxUses", "04-gen-key", 10, 1, 32000, "The maximum uses for a given thiefs lock pick.");
+
         // the the default values
        if(config.hasChanged()) {
     	   config.save();

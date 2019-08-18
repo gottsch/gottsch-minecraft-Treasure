@@ -48,15 +48,13 @@ import net.minecraft.util.ResourceLocation;
  *
  */
 public class TreasureMetaManager extends MetaManager {
-	private static List<String> FOLDER_LOCATIONS = ImmutableList.of(
-			"structures"
-			);
-	
+	private static List<String> FOLDER_LOCATIONS = ImmutableList.of("structures");
+
 	public TreasureMetaManager(IMod mod, String resourceFolder) {
 		super(mod, resourceFolder);
-		
-        // build and expose template/structure folders
-        buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
+
+		// build and expose template/structure folders
+		buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
 	}
 
 	/**
@@ -65,73 +63,73 @@ public class TreasureMetaManager extends MetaManager {
 	public void clear() {
 		super.clear();
 	}
-	
-	// TODO is this really necesary? only need meta files loaded into master map and get by key.
+
+	// TODO is this really necesary? only need meta files loaded into master map and
+	// get by key.
 	/**
-	 * Call in WorldEvent.Load() event handler.
-	 * Loads and registers meta files from the file system.
+	 * Call in WorldEvent.Load() event handler. Loads and registers meta files from
+	 * the file system.
+	 * 
 	 * @param modID
 	 */
 	public void register(String modID) {
 		for (String location : FOLDER_LOCATIONS) {
-		Treasure.logger.debug("registering meta files from location -> {}", location);
-		// get loot table files as ResourceLocations from the file system location
-		List<ResourceLocation> locs = getResourceLocations(modID, location);
-		
-		// load each ResourceLocation as LootTable and map it.
-		for (ResourceLocation loc : locs) {
-			Path path = Paths.get(loc.getResourcePath());
-			if (Treasure.logger.isDebugEnabled()) {
-				Treasure.logger.debug("path to meta resource loc -> {}", path.toString());
+			Treasure.logger.debug("registering meta files from location -> {}", location);
+			// get loot table files as ResourceLocations from the file system location
+			List<ResourceLocation> locs = getResourceLocations(modID, location);
+
+			// load each ResourceLocation as LootTable and map it.
+			for (ResourceLocation loc : locs) {
+				Path path = Paths.get(loc.getResourcePath());
+				if (Treasure.logger.isDebugEnabled()) {
+					Treasure.logger.debug("path to meta resource loc -> {}", path.toString());
+				}
+
+				// load template
+				Treasure.logger.debug("attempted to load custom meta file  with key -> {}", loc.toString());
+				IMeta meta = load(loc);
+				// add the id to the map
+				if (meta == null) {
+					Treasure.logger.debug("Unable to locate meta file -> {}", loc.toString());
+					continue;
+				}
+				Treasure.logger.debug("loaded custom meta file  with key -> {}", loc.toString());
 			}
-			
-			// load template
-			Treasure.logger.debug("attempted to load custom meta file  with key -> {}", loc.toString());
-			IMeta meta = load(loc);
-			// add the id to the map
-			if (meta == null) {
-				// TODO  message
-				Treasure.logger.debug("Unable to locate meta file -> {}", loc.toString());
-				continue;
-			}
-			Treasure.logger.debug("loaded custom meta file  with key -> {}", loc.toString());
-			
-			// TODO look for IMeta in MetaManager by file name ie x.nbt or treasure2:structures/treasure2/surface/x.nbt
-			// TODO map according to meta archetype, type
-			
-		}	
+		}
 	}
-	}
-	
+
 	/**
-	 * TODO how to change so that any meta file can be loaded without a new manager
+	 * TODO move to GottschCore
 	 * reads a template from an inputstream
 	 */
 	@Override
 	protected void readFromStream(String id, InputStream stream) throws IOException, Exception {
 		Treasure.logger.debug("reading meta file from stream.");
 		IMeta meta = null;
-		
+
 		// read json sheet in and minify it
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		JSMin minifier = new JSMin(stream, out);
 		minifier.jsmin();
 
 		// out minified json into a json reader
-		ByteArrayInputStream in  = new ByteArrayInputStream(out.toByteArray());
+		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
 		Reader reader = new InputStreamReader(in);
 		JsonReader jsonReader = new JsonReader(reader);
-		
+
 		// create a gson builder
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		
+
 		/*
 		 * create types for all the properties of a StyleSheet
 		 */
-		Type metaArchetype = new TypeToken<List<IMetaArchetype>>() {}.getType();
-		Type metaTheme = new TypeToken<List<IMetaTheme>>() {}.getType();
-		Type rarity = new TypeToken<List<IRarity>>() {}.getType();
-				
+		Type metaArchetype = new TypeToken<List<IMetaArchetype>>() {
+		}.getType();
+		Type metaTheme = new TypeToken<List<IMetaTheme>>() {
+		}.getType();
+		Type rarity = new TypeToken<List<IRarity>>() {
+		}.getType();
+
 		/*
 		 * register the types with the custom deserializer
 		 */
@@ -140,18 +138,16 @@ public class TreasureMetaManager extends MetaManager {
 		gsonBuilder.registerTypeAdapter(metaTheme, new MetaThemeDeserializer());
 		gsonBuilder.registerTypeAdapter(rarity, new RarityDeserializer());
 		gsonBuilder.registerTypeAdapter(ICoords.class, new CoordsDeserializer());
-		Gson gson = gsonBuilder.create();	
+		Gson gson = gsonBuilder.create();
 
 		// read minified json into gson and generate objects
 		try {
 			meta = gson.fromJson(jsonReader, StructureMeta.class);
 			Treasure.logger.debug("meta[{}] -> {}", id, meta);
-		}
-		catch(JsonIOException | JsonSyntaxException e) {
+		} catch (JsonIOException | JsonSyntaxException e) {
 			// TODO change to custom exception
 			throw new Exception("Unable to load meta file:", e);
-		}
-		finally {
+		} finally {
 			// close objects
 			try {
 				jsonReader.close();
@@ -159,11 +155,11 @@ public class TreasureMetaManager extends MetaManager {
 				GottschCore.logger.warn("Unable to close JSON Reader when reading meta file.");
 			}
 		}
-		
+
 		// add meta to map
 		this.getMetaMap().put(id, meta);
 	}
-	
+
 	// TODO could move all these to a GsonDeserializerHelper
 	public static class MetaArchetypeDeserializer implements JsonDeserializer<List<IMetaArchetype>> {
 		@Override
@@ -177,14 +173,16 @@ public class TreasureMetaManager extends MetaManager {
 			return list;
 		}
 	}
+
 	public static class MetaTypeDeserializer implements JsonDeserializer<StructureType> {
 		@Override
 		public StructureType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
 			return StructureType.valueOf(json.getAsString().toUpperCase());
-//			return context.deserialize(json, StructureType.class);
+			// return context.deserialize(json, StructureType.class);
 		}
 	}
+
 	public static class MetaThemeDeserializer implements JsonDeserializer<List<IMetaTheme>> {
 		@Override
 		public List<IMetaTheme> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -197,6 +195,7 @@ public class TreasureMetaManager extends MetaManager {
 			return list;
 		}
 	}
+
 	public static class RarityDeserializer implements JsonDeserializer<List<IRarity>> {
 		@Override
 		public List<IRarity> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -209,10 +208,11 @@ public class TreasureMetaManager extends MetaManager {
 			return list;
 		}
 	}
+
 	public static class CoordsDeserializer implements JsonDeserializer<Coords> {
 		@Override
 		public Coords deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-				throws JsonParseException {			
+				throws JsonParseException {
 			return context.deserialize(json, Coords.class);
 		}
 	}

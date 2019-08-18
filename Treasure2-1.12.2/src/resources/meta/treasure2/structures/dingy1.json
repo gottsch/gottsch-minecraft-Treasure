@@ -1,10 +1,9 @@
 {
-	"name": "dingy1",
+	"name": "Sunken Dingy",
 	"description": "",
 	"author": "gottsch",
 	"archetypes": ["submerged"],
 	"type": "ruin",
-	"themes": ["dungeon"],
 	"rarities": ["common"],
 	"biomeWhiteList": ["ocean"],
 	"biomeBlackList": []
