@@ -88,9 +88,6 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 //			.asList(new String[] { "treasure2:aboveground/crypt2", "treasure2:aboveground/crypt3" });
 
 	private static List<String> FOLDER_LOCATIONS = ImmutableList.of("surface", "subterranean", "submerged", "float");
-
-	// TODO need someway to specify what the null block is for each structure. ie submerged will use air for null blocks
-	// property of meta? then update the marker map before processing?
 	
 	/*
 	 * use this map when structures are submerged instead of the default marker map
@@ -295,26 +292,6 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		// prevent this function from executing as the implementation version should be
 		// used.
 		return this;
-	}
-
-	/**
-	 * TODO goes away with IMeta files
-	 * 
-	 * @param locations
-	 * @param type
-	 */
-	public void loadAll(List<String> locations, StructureType type) {
-		Treasure.logger.debug("loading all typed structures -> {}", type.name());
-		for (String location : locations) {
-			Treasure.logger.debug("loading from -> {}", location);
-			Template template = load(new ResourceLocation(location), getMarkerScanList(), getReplacementMap());
-			Treasure.logger.debug("loaded template  with key -> {} : {}", location, location);
-			// add the id to the map
-			if (template != null) {
-				Treasure.logger.debug("adding tempate to typed map -> {} : {}", type.name(), location);
-				getTemplatesByTypeMap().get(type).add(template);
-			}
-		}
 	}
 
 	/**

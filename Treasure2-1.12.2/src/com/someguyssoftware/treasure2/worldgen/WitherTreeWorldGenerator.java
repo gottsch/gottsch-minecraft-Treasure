@@ -33,10 +33,6 @@ import net.minecraftforge.fml.common.IWorldGenerator;
  *
  */
 public class WitherTreeWorldGenerator implements IWorldGenerator {
-	// TODO move to WorldInfo in GottschCore
-	// the number of blocks of half a chunk (radius) (a chunk is 16x16)
-	public static final int CHUNK_RADIUS = 8;
-
 	private int chunksSinceLastTree;
 	private WitherTreeGenerator generator;
 	/**
@@ -92,14 +88,13 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 
 		// test if min chunks was met
 		if (chunksSinceLastTree > TreasureConfig.minChunksPerWell) {
-//			Treasure.logger.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastTree, TreasureConfig.minChunksPerWell));
 
 			/*
 			 * get current chunk position
 			 */            
 			// spawn @ middle of chunk
-			int xSpawn = chunkX * 16 + CHUNK_RADIUS;
-			int zSpawn = chunkZ * 16 + CHUNK_RADIUS;
+			int xSpawn = chunkX * 16 + WorldInfo.CHUNK_RADIUS;
+			int zSpawn = chunkZ * 16 + WorldInfo.CHUNK_RADIUS;
 
 			// get first surface y (could be leaves, trunk, water, etc)
 			int ySpawn = world.getChunkFromChunkCoords(chunkX, chunkZ).getHeightValue(8, 8);

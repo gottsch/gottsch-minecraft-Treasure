@@ -274,24 +274,6 @@ public class FogBlock extends ModFallingBlock {
 		}
 	}
 
-	/**
-	 * 
-	 */
-//	@Deprecated
-	public void onEndFalling(World worldIn, BlockPos pos, IBlockState blockState1, IBlockState blockState2) {
-//		Treasure.logger.debug("Block has stopped falling");
-//		Treasure.logger.debug("pos: {}", pos.toString());
-//		Treasure.logger.debug("blockstate #1: {}, CD: {}, D:{}", blockState1.getBlock().toString(), blockState1.getValue(CHECK_DECAY), blockState1.getValue(DECAYABLE));
-//		Treasure.logger.debug("blockstate #2: {}", blockState2.getBlock().toString());
-//
-//		// TODO figure out why or how to stop updateTick from being called, then can reenable inheritance from FallingBlock
-//		Treasure.logger.debug("Why does this immediately call updateTick() on block which then changes the block");
-//		IBlockState newState = blockState1.getBlock().getDefaultState().withProperty(CHECK_DECAY, true);
-//		worldIn.setBlockState(pos, newState);
-		
-		// NOTE I think the new block keeps the previous state, so it is already activated and when it is created again
-		// it calls update right away and thus changes size... so, need on BeforeFalling to set the set ACTIVATED = false
-	}
 
 	/**
 	 * 
@@ -393,20 +375,6 @@ public class FogBlock extends ModFallingBlock {
 	 */
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-//		boolean decay = false;
-//		boolean check = false;
-//		boolean activated = false;
-//		
-//		// TODO change to check the individual bits
-//		if (meta == 1) decay = true;
-//		else if (meta == 2) check = true;
-//		else if (meta ==3) { decay = check = true;}
-//		else if (meta ==4) { activated = true;}
-//		// TODO add a check for the last bit to see if it is activated.  the last bit isn't translated to a state--> need another method
-//		return this.getDefaultState()
-//				.withProperty(DECAYABLE, Boolean.valueOf(decay))
-//				.withProperty(CHECK_DECAY, Boolean.valueOf(check));
-
 		return this.getDefaultState()
 				.withProperty(DECAYABLE, Boolean.valueOf((meta&1)>0))
 				.withProperty(CHECK_DECAY, Boolean.valueOf((meta&2)>0))

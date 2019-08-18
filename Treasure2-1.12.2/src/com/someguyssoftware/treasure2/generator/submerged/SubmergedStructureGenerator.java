@@ -117,23 +117,23 @@ public class SubmergedStructureGenerator implements IStructureInfoProvider {
 		List<ICoords> spawnerCoords = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
 		List<ICoords> proximityCoords = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
 		
-		// TODO move to own method
+		// TODO 1.6.0: move to own method
 		// populate vanilla spawners
 		for (ICoords c : spawnerCoords) {
 			ICoords c2 = spawnCoords.add(c);
 			world.setBlockState(c2.toPos(), Blocks.MOB_SPAWNER.getDefaultState());
 			TileEntityMobSpawner te = (TileEntityMobSpawner) world.getTileEntity(c2.toPos());
-			ResourceLocation r = DungeonHooks.getRandomDungeonMob(random); // TODO underwater mobs
+			ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
 			te.getSpawnerBaseLogic().setEntityId(r);
 		}
 		
-		// TODO move to own method
+		// TODO 1.6.0: move to own method
 		// populate proximity spawners
 		for (ICoords c : proximityCoords) {
 			ICoords c2 = spawnCoords.add(c);
 	    	world.setBlockState(c2.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
 	    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c2.toPos());
-	    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random); // TODO underwater mobs
+	    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
 	    	te.setMobName(r);
 	    	te.setMobNum(new Quantity(1, 2));
 	    	te.setProximity(5D);

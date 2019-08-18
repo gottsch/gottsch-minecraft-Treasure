@@ -344,7 +344,7 @@ public class GenUtil {
 		EnumFacing[] horizontals = EnumFacing.HORIZONTALS;
 		EnumFacing facing = horizontals[random.nextInt(horizontals.length)];
 
-		// TODO add offset() to coords in gottschcore
+		// ICoords coords2 = new Coords(coords.offset(facing));
 		ICoords coords2 = new Coords(coords.toPos().offset(facing));
 		
 		Cube cube = new Cube(world, coords);

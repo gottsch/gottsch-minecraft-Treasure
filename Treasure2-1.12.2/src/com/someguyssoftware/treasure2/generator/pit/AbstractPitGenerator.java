@@ -103,9 +103,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 			Treasure.logger.debug("Spawn coords is in cavern.");
 			inCavern = true;
 		}
-		
-		// TODO review - shouldn't be altering spawnCoords.... does this even work?
-		// NOTE more evidence of the need for generators to return IGeneratorResult which contains the final spawnCoords of the chest.
+
 		if (inCavern) {
 			Treasure.logger.debug("Shaft is in cavern... finding ceiling.");
 			spawnCoords = GenUtil.findUndergroundCeiling(world, spawnCoords.add(0, 1, 0));

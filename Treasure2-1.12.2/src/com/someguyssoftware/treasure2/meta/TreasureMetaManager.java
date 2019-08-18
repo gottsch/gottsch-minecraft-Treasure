@@ -64,8 +64,6 @@ public class TreasureMetaManager extends MetaManager {
 		super.clear();
 	}
 
-	// TODO is this really necesary? only need meta files loaded into master map and
-	// get by key.
 	/**
 	 * Call in WorldEvent.Load() event handler. Loads and registers meta files from
 	 * the file system.
@@ -179,7 +177,6 @@ public class TreasureMetaManager extends MetaManager {
 		public StructureType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
 			return StructureType.valueOf(json.getAsString().toUpperCase());
-			// return context.deserialize(json, StructureType.class);
 		}
 	}
 

@@ -24,44 +24,6 @@ public class CauldronChestGenerator extends EpicChestGenerator {
 	 */
 	public CauldronChestGenerator() {}
 	
-	/**
-	 * TODO this override version of generate was used for witches den, where the cauldron should generate exactly at the coords given - not underground in a pit.
-	 */
-//	@Override
-//	public boolean generate(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config) {
-//		TreasureLootTable lootTable = selectLootTable(random, chestRarity);
-//
-//		if (lootTable == null) {
-//			Treasure.logger.warn("Unable to select a lootTable.");
-//			return false;
-//		}
-//		
-//		// select a chest from the rarity
-//		AbstractChestBlock chest = selectChest(random, chestRarity);	
-//		if (chest == null) {
-//			Treasure.logger.warn("Unable to select a chest for rarity {}.", chestRarity);
-//			return false;
-//		}
-//		
-//		// place the chest in the world
-//		TileEntity te = placeInWorld(world, random, chest, coords);
-//		if (te == null) return false;
-//		
-//		Treasure.logger.debug("Generating loot from loot table for rarity {}", chestRarity);
-//		lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
-//				random,
-//				TreasureLootTables.CONTEXT);		
-//		
-//		// add locks
-//		addLocks(random, chest, (AbstractTreasureChestTileEntity)te, chestRarity);
-//
-//		// NOTE no markers
-//		
-//		Treasure.logger.info("CHEATER! {} chest at coords: {}", chestRarity, coords.toShortString());
-//
-//		return true;
-//	}
-	
 	/*
 	 * @param random
 	 * @param chestRarity
@@ -69,7 +31,6 @@ public class CauldronChestGenerator extends EpicChestGenerator {
 	 */
 	@Override
 	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
-//		return TreasureLootTables.CAULDRON_CHEST_LOOT_TABLE;
 		return Treasure.LOOT_TABLES.getSpecialLootTable(SpecialLootTables.CAULDRON_CHEST);
 	}
 	 

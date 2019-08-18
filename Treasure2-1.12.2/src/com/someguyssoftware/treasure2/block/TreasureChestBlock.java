@@ -282,15 +282,10 @@ public class TreasureChestBlock extends AbstractChestBlock {
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
-		
-		// TODO dump TE
-
+	
 		// exit if on the client
 		if (WorldInfo.isClientSide(worldIn)) {			
 			return true;
-		}
-		else {
-			// TODO message
 		}
 		
 		boolean isLocked = false;

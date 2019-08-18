@@ -180,7 +180,6 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 					info.setCoords(spawnCoords);
 					info.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.CHEST), new Coords(0, 0, 0));
 					setInfo(info);
-					// TODO result should have updated chest coords
 					return result;
 				}
 				else {
@@ -269,7 +268,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 		else if (yDist >= 2) {
 			// simple short pit
 			new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
-			// TODO build no-entry info
+			// build no-entry info
 			IStructureInfo noInfo = new StructureInfo();
 			noInfo.setCoords(spawnCoords);
 			noInfo.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.CHEST), new Coords(0, 0, 0));

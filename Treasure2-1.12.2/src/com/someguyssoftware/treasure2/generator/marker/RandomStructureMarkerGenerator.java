@@ -59,10 +59,7 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStruct
 		
 		// get the template from the given archetype, type and biome
 		GottschTemplate template = getTemplate(world, random, StructureArchetype.SURFACE, StructureType.MARKER, biome);
-		
-		// TODO needs to be updated to pull from archetype:type, biome
-//		List<Template> templates = Treasure.TEMPLATE_MANAGER.getTemplatesByType(StructureType.ABOVEGROUND);
-//		GottschTemplate template = (GottschTemplate) templates.get(random.nextInt(templates.size()));
+
 		if (template == null) {
 			Treasure.logger.debug("could not find random template");
 			return false;
