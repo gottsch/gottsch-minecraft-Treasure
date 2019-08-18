@@ -1,4 +1,6 @@
-[![](https://img.shields.io/github/issues/gottsch/gottsch-minecraft-Treasure.svg?style=for-the-badge&logo=github])](https://github.com/gottsch/gottsch-minecraft-Treasure/issues)</br>
+[![](https://img.shields.io/discord/596352475204943873.svg?style=for-the-badge&logo=discord)](https://discord.gg/CpWXamx)
+[![](https://img.shields.io/github/issues/gottsch/gottsch-minecraft-Treasure.svg?style=for-the-badge&logo=github)](https://github.com/gottsch/gottsch-minecraft-Treasure/issues)</br>
+
 # Treasure2! 
 
 ![](./Treasure2-1.12.2/src/resources/treasure2-github-logo.png)
