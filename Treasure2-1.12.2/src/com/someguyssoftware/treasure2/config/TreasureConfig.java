@@ -306,7 +306,7 @@ public class TreasureConfig extends AbstractConfig {
 
       	surfaceChestProbability = config.getInt("surfaceChestProbability", "04-gen", 15, 0, 100, "The probability chest will appear on the surface."); 
       	surfaceStructureProbability = config.getInt("surfaceStructureProbability", "04-gen", 25, 0, 100, "The probability that a surface structure will generate."); 
-      	pitStructureProbability = config.getInt("pitStructureProbability", "04-gen", 20, 0, 100, "The probability that a pit will contain a structure."); 
+      	pitStructureProbability = config.getInt("pitStructureProbability", "04-gen", 25, 0, 100, "The probability that a pit will contain a structure."); 
 
         isGravestonesAllowed = config.getBoolean("isGravestonesAllowed", "04-gen", true, "");
         minGravestonesPerChest = config.getInt("minGravestonesPerChest", "04-gen", 4, 1, 5, "The minimun of Treasure chest markers (gravestones, bones).");
@@ -337,7 +337,7 @@ public class TreasureConfig extends AbstractConfig {
         rubyOreVeinSize = config.getInt("rubyOreVeinSize", "04-gen", 3, 1, 20, "");
         
         // TEMP
-        waterStructureProbability = config.getFloat("waterStructureProbability", "04-gen", 35.0F, 0.0F, 100.0F, "This is a temporary property. @since v1.5.0.");
+        waterStructureProbability = config.getFloat("waterStructureProbability", "04-gen", 50.0F, 0.0F, 100.0F, "This is a temporary property. @since v1.5.0.");
         
         // treasure items/keys/locks
         config.setCategoryComment("04-gen-key", "World generation Key properties."); 

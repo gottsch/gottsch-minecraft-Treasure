@@ -70,7 +70,7 @@ public class Configs {
 				.setMinYSpawn(50)
 				.setMimicProbability(20)
 				.setRawBiomeWhiteList(new String[] {""})
-				.setRawBiomeBlackList(new String[] {"plains", "ocean"})
+				.setRawBiomeBlackList(new String[] {"plains", "ocean", "deep_ocean"})
 				);
 		
 		defaultChestConfigs.put(Rarity.UNCOMMON, new ChestConfig()
@@ -81,7 +81,7 @@ public class Configs {
 				.setGenProbability(75)
 				.setMinYSpawn(40)
 				.setRawBiomeWhiteList(new String[] {""})
-				.setRawBiomeBlackList(new String[] {"plains", "ocean"})
+				.setRawBiomeBlackList(new String[] {"plains", "ocean", "deep_ocean"})
 				);
 		
 		defaultChestConfigs.put(Rarity.SCARCE, new ChestConfig()
@@ -128,7 +128,7 @@ public class Configs {
 				.setChunksPerWell(500)
 				.setGenProbability(80)
 				.setRawBiomeWhiteList(new String[] {""})
-				.setRawBiomeBlackList(new String[] {"ocean"})
+				.setRawBiomeBlackList(new String[] {"ocean", "deep_ocean"})
 				);
 	}
 	
