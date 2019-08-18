@@ -1,5 +1,6 @@
 # Treasure2! 
 
+[![](https://img.shields.io/github/issues/gottsch/gottsch-minecraft-Treasure.svg?style=for-the-badge&logo=github])](https://github.com/gottsch/gottsch-minecraft-Treasure/issues)]
 ![](./Treasure2-1.12.2/src/resources/treasure2-github-logo.png)
 
 
