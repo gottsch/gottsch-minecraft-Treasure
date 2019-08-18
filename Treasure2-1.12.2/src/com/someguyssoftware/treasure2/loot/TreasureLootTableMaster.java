@@ -88,10 +88,12 @@ public class TreasureLootTableMaster extends LootTableMaster {
 	public TreasureLootTableMaster(IMod mod, String resourcePath, String folderName) {
 		super(mod, resourcePath, folderName);
 		
-		buildAndExpose(Treasure.MODID);
-		for (String foreignModID : TreasureConfig.enableForeignModIDs) {
-			if (Loader.isModLoaded(foreignModID)) {				
-				buildAndExpose(foreignModID);
+		if (TreasureConfig.enableDefaultLootTablesCheck) {
+			buildAndExpose(Treasure.MODID);
+			for (String foreignModID : TreasureConfig.enableForeignModIDs) {
+				if (Loader.isModLoaded(foreignModID)) {				
+					buildAndExpose(foreignModID);
+				}
 			}
 		}
 		
