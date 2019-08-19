@@ -9,7 +9,6 @@ import com.someguyssoftware.gottschcore.config.AbstractConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 
-import net.minecraft.block.material.MapColor;
 import net.minecraftforge.common.config.Configuration;
 
 /**
@@ -189,11 +188,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static boolean enableWitherFog = true;
 	public static boolean enablePoisonFog = true;
 	public static boolean enableLockDrops = true;
-	
-	/*
-	 * other mod enablements for loot tables
-	 */
-//	public static boolean enableMoCreatures = true;
+	public static boolean enableDefaultLootTablesCheck = true;
+	public static boolean enableDefaultTemplatesCheck = true;
 	
 	/*
 	 *  world gen
@@ -201,17 +197,21 @@ public class TreasureConfig extends AbstractConfig {
 	public static int minDistancePerChest;
 	public static int minChunksPerChest;
 	public static int minChunksPerWell;
+
+	// chests generation
+	public static int surfaceChestProbability;
+	public static int surfaceStructureProbability;
 	
 	// pits
-	public static int structurePitProbability;
+	public static int pitStructureProbability;
 	
 	// graves/markers properties
 	public static boolean isGravestonesAllowed;
 	public static int minGravestonesPerChest;
 	public static int maxGravestonesPerChest;
 	public static int gravestoneFogProbability;
-	public static boolean isStructureMarkersAllowed;
-	public static int structureMarkerProbability;
+	public static boolean isMarkerStructuresAllowed;
+	public static int markerStructureProbability;
 	
 	// wither properties
 	public static double witherBranchItemGenProbability;
@@ -230,12 +230,25 @@ public class TreasureConfig extends AbstractConfig {
 	public static int rubyOreMinY;
 	public static int rubyOreVeinSize;	
 	
-	// TODO add wells properties
-	
 	// TODO add wandering antiquities peddler properties
 	
 	// TODO add treasure/unique items properties
-	
+	public static int woodKeyMaxUses;
+	public static int stoneKeyMaxUses;
+	public static int ironKeyMaxUses;
+	public static int goldKeyMaxUses;
+	public static int diamondKeyMaxUses;
+	public static int emeraldKeyMaxUses;
+	public static int rubyKeyMaxUses;
+	public static int sapphireKeyMaxUses;
+	public static int jewelledKeyMaxUses;
+	public static int metallurgistsKeyMaxUses;
+	public static int skeletonKeyMaxUses;
+	public static int spiderKeyMaxUses;
+	public static int witherKeyMaxUses;
+	public static int pilferersLockPickMaxUses;
+	public static int thiefsLockPickMaxUses;
+		
 	// biome type white/black lists
 	public static String[] generalChestBiomeWhiteList;
 	public static String[] generalChestBiomeBlackList;
@@ -243,7 +256,9 @@ public class TreasureConfig extends AbstractConfig {
 	// foreign mod enablements
 	public static String[] enableForeignModIDs;
 	public static String[] availableForeignModLootTables;
-
+	
+	// TEMP
+	public static double waterStructureProbability;
 
 			
 	/**
@@ -268,34 +283,38 @@ public class TreasureConfig extends AbstractConfig {
         setModsFolder("mods");
 		// TODO change this to be just the base folder. make private. use getter(). append MODID
         treasureFolder = config.getString("treasureFolder", "03-mod", "mods/" + Treasure.MODID + "/", "Where default Treasure folder is located.");
-        enableKeyBreaks = config.getBoolean("enableKeyBreaks", "03-mod", true, "Enables/Disable whether a Key can break when attempting to unlock a Lock.");
-        enableFog = config.getBoolean("enableFog", "03-mod", true, "Enables/Disable whether a fog is generated (ex. around graves/tombstones and wither trees)");
-        enableWitherFog = config.getBoolean("enableWitherFog", "03-mod", true, "Enables/Disable whether a wither fog is generated (ex. around wither trees)");
-        enablePoisonFog = config.getBoolean("enablePoisonFog", "03-mod", true, "Enables/Disable whether a poison fog is generated (ex. around wither trees)");
-        enableLockDrops = config.getBoolean("enableLockDrops", "03-mod", true, "Enables/Disable whether a Lock item is dropped when unlocked by Key item.");
-//        enableMoCreatures = config.getBoolean("enableMoCreatures", "03-mod", false, "Enables/Disable whether MoCreatures mod is installed and it's items can be used in loot tables.");
+        enableKeyBreaks = config.getBoolean("enableKeyBreaks", "03-mod", true, "Enable/Disable whether a Key can break when attempting to unlock a Lock.");
+        enableFog = config.getBoolean("enableFog", "03-mod", true, "Enable/Disable whether a fog is generated (ex. around graves/tombstones and wither trees)");
+        enableWitherFog = config.getBoolean("enableWitherFog", "03-mod", true, "Enable/Disable whether a wither fog is generated (ex. around wither trees)");
+        enablePoisonFog = config.getBoolean("enablePoisonFog", "03-mod", true, "Enable/Disable whether a poison fog is generated (ex. around wither trees)");
+        enableLockDrops = config.getBoolean("enableLockDrops", "03-mod", true, "Enable/Disable whether a Lock item is dropped when unlocked by Key item.");
+//        enableMoCreatures = config.getBoolean("enableMoCreatures", "03-mod", false, "Enable/Disable whether MoCreatures mod is installed and it's items can be used in loot tables.");
         // foreign mod enablements
         enableForeignModIDs = config.getStringList("enableForeignModIDs", "03-mod", new String[]{"mocreatures", "sgs_metals"}, "Add mod's MODID to this list to enable custom loot tables for a mod.");
         availableForeignModLootTables = config.getStringList("availableForeignModLootTables", "03-mod", new String[]{"mocreatures", "sgs_metals"}, "A list of mods that have prebuilt loot tables available. Note: used for informational purposes only.");
-             
+        enableDefaultLootTablesCheck = config.getBoolean("enableDefaultLootTablesCheck", "03-mod", true, "Enable/Disable a check to ensure the default loot tables exist on the file system. If enabled, then you will not be able to remove any default loot tables (but they can be edited). Only disable if you know what you're doing.");
+        enableDefaultTemplatesCheck = config.getBoolean("enableDefaultTemplatesCheck", "03-mod", true, "Enable/Disable a check to ensure the default templates exist on the file system. If enabled, then you will not be able to remove any default templates. Only disable if you know what you're doing.");
+        
         // white/black lists
         config.setCategoryComment("04-gen", "World generation properties.");    
         generalChestBiomeWhiteList = config.getStringList("generalChestBiomeWhiteList", "04-gen", new String[]{}, "Allowable Biome Types for general Chest generation. Must match the Type identifer(s).");
-        generalChestBiomeBlackList = config.getStringList("generalChestBiomeBlackList", "04-gen", new String[]{"ocean"}, "Disallowable Biome Types for general Chest generation. Must match the Type identifer(s).");
+        generalChestBiomeBlackList = config.getStringList("generalChestBiomeBlackList", "04-gen", new String[]{}, "Disallowable Biome Types for general Chest generation. Must match the Type identifer(s).");
         
       	minDistancePerChest = config.getInt("minDistancePerChest", "04-gen", 75, 0, 32000, "");
       	minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 35, 0, 32000, "");
       	minChunksPerWell = config.getInt("minChunksPerWell", "04-gen", 400, 100, 32000, "");
-    
-      	structurePitProbability = config.getInt("structurePitProbability", "04-gen", 20, 0, 100, "The probability that a pit will contain a structure."); 
+
+      	surfaceChestProbability = config.getInt("surfaceChestProbability", "04-gen", 15, 0, 100, "The probability chest will appear on the surface."); 
+      	surfaceStructureProbability = config.getInt("surfaceStructureProbability", "04-gen", 25, 0, 100, "The probability that a surface structure will generate."); 
+      	pitStructureProbability = config.getInt("pitStructureProbability", "04-gen", 25, 0, 100, "The probability that a pit will contain a structure."); 
 
         isGravestonesAllowed = config.getBoolean("isGravestonesAllowed", "04-gen", true, "");
         minGravestonesPerChest = config.getInt("minGravestonesPerChest", "04-gen", 4, 1, 5, "The minimun of Treasure chest markers (gravestones, bones).");
         maxGravestonesPerChest = config.getInt("maxGravesstonesPerChest", "04-gen", 8, 1, 10, "The maximum of Treasure chest markers (gravestones, bones).");
         gravestoneFogProbability = config.getInt("gravestoneFogProbability", "04-gen", 50, 0, 100, "The probability that a gravestone will have fog."); 
         
-        isStructureMarkersAllowed = config.getBoolean("isStructureMarkersAllowed", "04-gen", true, "");
-        structureMarkerProbability = config.getInt("structureMarkerProbability", "04-gen", 15, 0, 100, "The probability that a Treasure chest marker will be a structure."); 
+        isMarkerStructuresAllowed = config.getBoolean("isMarkerStructuresAllowed", "04-gen", true, "");
+        markerStructureProbability = config.getInt("markerStructureProbability", "04-gen", 15, 0, 100, "The probability that a Treasure chest marker will be a structure."); 
 
         // wells
         minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 500, 100, 32000, "");
@@ -317,6 +336,27 @@ public class TreasureConfig extends AbstractConfig {
         rubyOreMaxY = config.getInt("rubyOreMaxY", "04-gen", 14, 1, 255, "");
         rubyOreVeinSize = config.getInt("rubyOreVeinSize", "04-gen", 3, 1, 20, "");
         
+        // TEMP
+        waterStructureProbability = config.getFloat("waterStructureProbability", "04-gen", 50.0F, 0.0F, 100.0F, "This is a temporary property. @since v1.5.0.");
+        
+        // treasure items/keys/locks
+        config.setCategoryComment("04-gen-key", "World generation Key properties."); 
+        woodKeyMaxUses = config.getInt("woodKeyMaxUses", "04-gen-key", 20, 1, 32000, "The maximum uses for a given wooden key.");
+        stoneKeyMaxUses = config.getInt("stoneKeyMaxUses", "04-gen-key", 10, 1, 32000, "The maximum uses for a given stone key.");
+        ironKeyMaxUses = config.getInt("ironKeyMaxUses", "04-gen-key", 10, 1, 32000, "The maximum uses for a given iron key.");
+        goldKeyMaxUses = config.getInt("goldKeyMaxUses", "04-gen-key", 15, 1, 32000, "The maximum uses for a given gold key.");
+        diamondKeyMaxUses = config.getInt("diamondKeyMaxUses", "04-gen-key", 20, 1, 32000, "The maximum uses for a given diamond key.");
+        emeraldKeyMaxUses = config.getInt("emeraldKeyMaxUses", "04-gen-key", 10, 1, 32000, "The maximum uses for a given emerald key.");
+        rubyKeyMaxUses = config.getInt("rubyKeyMaxUses", "04-gen-key", 8, 1, 32000, "The maximum uses for a given ruby key.");
+        sapphireKeyMaxUses = config.getInt("sapphireKeyMaxUses", "04-gen-key", 5, 1, 32000, "The maximum uses for a given sapphire key.");
+        jewelledKeyMaxUses = config.getInt("jewelledKeyMaxUses", "04-gen-key", 5, 1, 32000, "The maximum uses for a given jewelled key.");
+        metallurgistsKeyMaxUses = config.getInt("metallurgistsKeyMaxUses", "04-gen-key", 25, 1, 32000, "The maximum uses for a given metallurgists key.");
+        skeletonKeyMaxUses = config.getInt("skeletonKeyMaxUses", "04-gen-key", 5, 1, 32000, "The maximum uses for a given skeleton key.");
+        spiderKeyMaxUses = config.getInt("spiderKeyMaxUses", "04-gen-key", 5, 1, 32000, "The maximum uses for a given spider key.");
+        witherKeyMaxUses = config.getInt("witherKeyMaxUses", "04-gen-key", 5, 1, 32000, "The maximum uses for a given wither key.");
+        pilferersLockPickMaxUses = config.getInt("pilferersLockPickMaxUses", "04-gen-key", 10, 1, 32000, "The maximum uses for a given pilferers lock pick.");
+        thiefsLockPickMaxUses = config.getInt("thiefsLockPickMaxUses", "04-gen-key", 10, 1, 32000, "The maximum uses for a given thiefs lock pick.");
+
         // the the default values
        if(config.hasChanged()) {
     	   config.save();

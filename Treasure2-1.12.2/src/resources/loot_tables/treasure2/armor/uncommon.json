@@ -29,54 +29,6 @@
 					"weight": 20		
 				},
 				{
-					"entryName": "bone_chestplate",
-					"type": "item",
-					"name": "sgs_metals:bone_chestplate",
-					"weight": 8,
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					]
-				},
-				{
-					"entryName": "bone_leggings",
-					"type": "item",
-					"name": "sgs_metals:bone_leggings",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					]					
-				},
-				{
-					"entryName": "bone_helmet",
-					"type": "item",
-					"name": "sgs_metals:bone_helmet",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					]					
-				},
-				{
-					"entryName": "bone_boots",
-					"type": "item",
-					"name": "sgs_metals:bone_boots",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "treasure2:mod_present",
-							"modid": "sgs_metals"
-						}
-					]					
-				},				
-				{
 					"entryName": "shield",
 					"type": "item",
 					"name": "minecraft:shield",

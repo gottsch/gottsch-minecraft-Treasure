@@ -1,0 +1,184 @@
+#chests
+tile.treasure2:wood_chest.name=木箱子
+tile.treasure2:crate_chest.name=板条箱
+tile.treasure2:crate_chest_moldy.name=发霉板条箱
+tile.treasure2:ironbound_chest.name=铁钉箱子
+tile.treasure2:iron_strongbox.name=铁匣子
+tile.treasure2:gold_strongbox.name=金匣子
+tile.treasure2:pirate_chest.name=海盗箱子
+tile.treasure2:safe.name=保险箱
+tile.treasure2:dread_pirate_chest.name=恐怖海盗箱子
+tile.treasure2:compressor_chest.name=压缩箱子
+tile.treasure2:wither_chest.name=凋零箱子
+tile.treasure2:skull_chest.name=骷髅箱子
+tile.treasure2:gold_skull_chest.name=黄金骷髅箱子
+tile.treasure2:cauldron_chest.name=坩埚箱子
+
+tile.treasure2:wood_mimic.name=木制模仿者
+
+#wells
+tile.treasure2:wishing_well_block.name=许愿井石
+
+#gravestones
+tile.treasure2:gravestone1_stone.name=石头墓碑
+tile.treasure2:gravestone1_cobblestone.name=圆石墓碑
+tile.treasure2:gravestone1_mossy_cobblestone.name=苔石墓碑
+tile.treasure2:gravestone1_polished_granite.name=花岗岩墓碑
+tile.treasure2:gravestone1_polished_andesite.name=安山岩墓碑
+tile.treasure2:gravestone1_polished_diorite.name=闪长岩墓碑
+tile.treasure2:gravestone1_obsidian.name=黑曜石墓碑
+
+tile.treasure2:gravestone2_stone.name=石头墓碑
+tile.treasure2:gravestone2_cobblestone.name=圆石墓碑
+tile.treasure2:gravestone2_mossy_cobblestone.name=苔石墓碑
+tile.treasure2:gravestone2_polished_granite.name=花岗岩墓碑
+tile.treasure2:gravestone2_polished_andesite.name=安山岩墓碑
+tile.treasure2:gravestone2_polished_diorite.name=闪长岩墓碑
+tile.treasure2:gravestone2_obsidian.name=黑曜石墓碑
+
+tile.treasure2:gravestone3_stone.name=石头墓碑
+tile.treasure2:gravestone3_cobblestone.name=圆石墓碑
+tile.treasure2:gravestone3_mossy_cobblestone.name=苔石墓碑
+tile.treasure2:gravestone3_polished_granite.name=花岗岩墓碑
+tile.treasure2:gravestone3_polished_andesite.name=安山岩墓碑
+tile.treasure2:gravestone3_polished_diorite.name=闪长岩墓碑
+tile.treasure2:gravestone3_obsidian.name=黑曜石墓碑
+
+tile.treasure2:skull_and_crossbones.name=头骨
+tile.treasure2:skeleton.name骨架
+
+#wither tree
+tile.treasure2:wither_log.name=凋零原木
+tile.treasure2:wither_broken_log.name=凋零断木
+tile.treasure2:wither_log_soul.name=凋零灵魂原木
+tile.treasure2:wither_branch.name=凋零木枝
+tile.treasure2:wither_root.name=凋零木根
+tile.treasure2:wither_planks.name=凋零木板
+
+#fogs
+tile.treasure2:fog.name=雾
+tile.treasure2:high_fog.name=高雾
+tile.treasure2:med_fog.name=中雾
+tile.treasure2:low_fog.name=低雾
+
+tile.treasure2:wither_fog.name=凋零雾
+tile.treasure2:high_wither_fog.name=高凋零雾
+tile.treasure2:med_wither_fog.name=中凋零雾
+tile.treasure2:low_wither_fog.name=低凋零雾
+
+tile.treasure2:poison_fog.name=毒雾
+tile.treasure2:high_poison_fog.name=高毒雾
+tile.treasure2:med_poison_fog.name=中毒雾
+tile.treasure2:low_poison_fog.name=低毒雾
+
+#ores
+tile.treasure2:sapphire_ore.name=蓝宝石矿
+tile.treasure2:ruby_ore.name=红宝石矿
+
+#other
+tile.treasure2:spanish_moss.name=寄生藤
+
+#items
+item.treasure2:gold_coin.name=金币
+item.treasure2:silver_coin.name=银币
+
+item.treasure2:key_ring.name=钥匙串
+item.treasure2:wood_key.name=木钥匙
+item.treasure2:stone_key.name=石钥匙
+item.treasure2:iron_key.name=铁钥匙
+item.treasure2:gold_key.name=金钥匙
+item.treasure2:diamond_key.name=钻石钥匙
+item.treasure2:emerald_key.name=绿宝石钥匙
+item.treasure2:ruby_key.name=红宝石钥匙
+item.treasure2:sapphire_key.name=蓝宝石钥匙
+item.treasure2:jewelled_key.name=宝石钥匙
+item.treasure2:metallurgists_key.name=冶金师的钥匙
+item.treasure2:skeleton_key.name=骷髅钥匙
+item.treasure2:spider_key.name=蜘蛛钥匙
+item.treasure2:wither_key.name=凋零钥匙
+
+item.treasure2:wood_lock.name=木锁
+item.treasure2:stone_lock.name=石锁
+item.treasure2:iron_lock.name=铁锁
+item.treasure2:gold_lock.name=金锁
+item.treasure2:diamond_lock.name=钻石锁
+item.treasure2:emerald_lock.name=绿宝石锁
+item.treasure2:ruby_lock.name=红宝石锁
+item.treasure2:sapphire_lock.name=蓝宝石锁
+item.treasure2:spider_lock.name=蜘蛛锁
+item.treasure2:wither_lock.name=凋零锁
+
+item.treasure2:wither_stick_item.name=凋零木枝
+item.treasure2:wither_root_item.name=凋零木根
+item.treasure2:pilferers_lock_pick.name=偷盗者的开锁工具
+item.treasure2:thiefs_lock_pick.name=小偷的开锁工具
+
+item.treasure2:painting_blocks_bricks.name=o2xygeno画的砖块
+item.treasure2:painting_blocks_cobblestone.name=o2xygeno画的圆石
+item.treasure2:painting_blocks_dirt.name=o2xygeno画的泥土
+item.treasure2:painting_blocks_lava.name=o2xygeno画的岩浆
+item.treasure2:painting_blocks_sand.name=o2xygeno画的沙子
+item.treasure2:painting_blocks_water.name=o2xygeno画的水
+item.treasure2:painting_blocks_wood.name=o2xygeno画的木板
+
+item.treasure2:eye_patch.name=眼罩
+item.treasure2:skull_sword.name=颅骨剑
+item.treasure2:spanish_moss.name=寄生藤
+item.treasure2:sapphire.name=蓝宝石
+item.treasure2:ruby.name=红宝石
+item.treasure2:skeleton_item.name=骨架
+item.treasure2:treasure_tool.name=宝藏工具
+
+#entities
+#TODO rename standard to wood
+entity.wood_mimic.name=木模仿者
+
+#groups
+itemGroup.treasure2:treasure_tab=宝藏II!
+
+# string resources
+tooltip.yes=是
+tooltip.no=否
+tooltip.label.rarity=稀有度: %s
+tooltip.label.category=类别: %s
+tooltip.label.max_uses=最大使用次数: %s
+tooltip.label.breakable=是否可断开: %s
+tooltip.label.craftable=是否可制作: %s
+tooltip.label.damageable=是否可破损: %s
+tooltip.label.specials=特殊说明: %s
+tooltip.label.accepts_keys=认可钥匙: %s
+tooltip.label.coin=投入许愿井里
+tooltip.label.key_ring=钥匙容器
+tooltip.label.treasure_tool=钥匙/开锁工具 合成所需.
+
+tooltip.label.max_locks=最大上锁量: %s
+tooltip.label.container_size=储存大小: %s
+
+
+tooltip.metallurgists_key.specials=打开金属类别的任何锁
+tooltip.skeleton_key.specials=打开普通，罕见，稀有，珍贵的锁(不包含凋零)
+tooltip.pilferers_lock_pick.specials=打开普通 (%s%%)和罕见 (%s%%)的锁
+tooltip.thiefs_lock_pick.specials=打开普通 (%s%%),罕见 (%s%%)和稀有 (%s%%)的锁
+tooltip.jewelled_key.specials=打开宝石类型的任何锁
+
+tooltip.painting.name=%s
+tooltip.painting.collection=收藏品: %s
+tooltip.painting.issue=期号: %s/%s
+tooltip.painting.artist=作者 %s
+
+
+#gui
+display.wood_chest.name=木箱子
+display.crate_chest.name=板条箱
+display.crate_chest_moldy.name=发霉的板条箱子
+display.ironbound_chest.name=铁钉箱子
+display.pirate_chest.name=海盗箱子
+display.iron_strongbox.name=铁匣子
+display.gold_strongbox.name=金匣子
+display.safe.name=保险箱
+display.dread_pirate_chest.name=恐怖海盗箱子
+display.compressor_chest.name=压缩箱子
+display.wither_chest.name=凋零箱子
+display.skull_chest.name=骷髅箱子
+display.gold_skull_chest.name=黄金骷髅箱子
+display.cauldron_chest.name=坩埚箱子

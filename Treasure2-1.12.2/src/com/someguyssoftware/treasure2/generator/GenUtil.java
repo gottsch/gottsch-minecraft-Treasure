@@ -14,6 +14,7 @@ import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.FogBlock;
@@ -22,7 +23,6 @@ import com.someguyssoftware.treasure2.block.SkeletonBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.enums.StructureMarkers;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
@@ -344,7 +344,7 @@ public class GenUtil {
 		EnumFacing[] horizontals = EnumFacing.HORIZONTALS;
 		EnumFacing facing = horizontals[random.nextInt(horizontals.length)];
 
-		// TODO add offset() to coords in gottschcore
+		// ICoords coords2 = new Coords(coords.offset(facing));
 		ICoords coords2 = new Coords(coords.toPos().offset(facing));
 		
 		Cube cube = new Cube(world, coords);

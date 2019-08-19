@@ -2,7 +2,9 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
 
 import net.minecraft.world.World;
 
@@ -16,7 +18,7 @@ public interface IPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
+	public ITreasureGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
 	
 	public boolean generateBase(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
 

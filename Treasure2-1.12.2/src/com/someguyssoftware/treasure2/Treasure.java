@@ -37,6 +37,7 @@ import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
+import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
@@ -71,7 +72,7 @@ import net.minecraftforge.oredict.OreDictionary;
 		modid=Treasure.MODID,
 		name=Treasure.NAME,
 		version=Treasure.VERSION,
-		dependencies="required-after:gottschcore@[1.7.0,)",
+		dependencies="required-after:gottschcore@[1.8.0,)",
 		acceptedMinecraftVersions = "[1.12.2]",
 		updateJSON = Treasure.UPDATE_JSON_URL
 		)
@@ -86,7 +87,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.4.3";
+	protected static final String VERSION = "1.5.0";
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
 	private static final String VERSION_URL = "";
@@ -122,6 +123,9 @@ public class Treasure extends AbstractMod {
     // template manager
     public static TreasureTemplateManager TEMPLATE_MANAGER;
     
+    // meta manager // NOTE can't be final as Treasure.instance is required.
+    public static TreasureMetaManager META_MANAGER;
+    
 	/**
 	 * 
 	 */
@@ -146,13 +150,13 @@ public class Treasure extends AbstractMod {
 		Configs.init(this, event.getModConfigurationDirectory());
 		
 		// configure logging
-		addRollingFileAppenderToLogger(Treasure.NAME, Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
+//		addRollingFileAppenderToLogger(Treasure.NAME, Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
 		// create a rolling file appender
-//		Appender appender = createRollingFileAppender(Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
+		Appender appender = createRollingFileAppender(Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
 		// add appender to mod logger
-//		addAppenderToLogger(appender, Treasure.NAME, (ILoggerConfig) getConfig());
+		addAppenderToLogger(appender, Treasure.NAME, (ILoggerConfig) getConfig());
 		// add appender to the GottschCore logger
-//		addAppenderToLogger(appender, GottschCore.instance.getName(), (ILoggerConfig) getConfig());
+		addAppenderToLogger(appender, GottschCore.instance.getName(), (ILoggerConfig) getConfig());
 		
 		// register the GUI handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
@@ -219,10 +223,13 @@ public class Treasure extends AbstractMod {
 		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");
 		
 		TEMPLATE_MANAGER = new TreasureTemplateManager(
-				TreasureConfig.CUSTOM_STRUCTURE_FOLDER, 
+				Treasure.instance,
+//				TreasureConfig.CUSTOM_STRUCTURE_FOLDER,
+				"/structures",
 				FMLCommonHandler.instance().getDataFixer());
 //				Minecraft.getMinecraft().getDataFixer());
 
+		META_MANAGER = new TreasureMetaManager(Treasure.instance, "meta");
 	}
 	
 	/**

@@ -82,7 +82,7 @@ public class SpawnPitStructureOnlyCommand extends CommandBase {
 //				IPitGenerator parentPit = ((List<IPitGenerator>)ChestWorldGenerator.structurePitGenerators.values()).get(random.nextInt(ChestWorldGenerator.structurePitGenerators.size()));
 //				// create a new pit instance (new instance as it contains state)
 //				pitGenerator = new StructurePitGenerator(ChestWorldGenerator.structurePitGenerators.get(parentPit));
-				boolean isGenerated = pitGenerator.generate(world, random, surfaceCoords , spawnCoords);
+				pitGenerator.generate(world, random, surfaceCoords , spawnCoords);
 			}
 		}
 		catch(Exception e) {

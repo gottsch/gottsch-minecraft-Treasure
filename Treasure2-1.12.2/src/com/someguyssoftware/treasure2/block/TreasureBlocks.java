@@ -78,10 +78,11 @@ public class TreasureBlocks {
 	// MIMIC CHESTS
 	public static final Block WOOD_MIMIC;
 	
-	// TODO chests	
+	// unimplemented chests	
 	public static final Block VASE = null;
 	public static final Block INVISIBLE_CHEST = null;
-
+	public static final Block WHALE_BONE_PIRATE_CHEST = null;
+	
 	// chest holder
 	public static Multimap<Rarity, Block> chests;
 

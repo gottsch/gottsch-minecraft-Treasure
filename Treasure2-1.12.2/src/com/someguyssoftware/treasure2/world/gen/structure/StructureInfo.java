@@ -98,7 +98,7 @@ public class StructureInfo implements IStructureInfo {
 
 	@Override
 	public String toString() {
-		return "StructureInfo [coords=" + coords + ", size=" + size + ", chests=" + chests + ", spawners=" + spawners + "]";
+		return "StructureInfo [coords=" + coords + ", size=" + size + ", map=" + map + "]";
 	}
 
 }

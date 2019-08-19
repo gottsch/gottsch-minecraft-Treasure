@@ -1,26 +1,40 @@
 package com.someguyssoftware.treasure2.world.gen.structure;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import org.apache.commons.io.IOUtils;
 
 import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
+import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
+import com.someguyssoftware.gottschcore.meta.IMetaType;
+import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplateManager;
+import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.enums.StructureMarkers;
+import com.someguyssoftware.treasure2.meta.StructureArchetype;
+import com.someguyssoftware.treasure2.meta.StructureMeta;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -29,270 +43,258 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.DataFixer;
-import net.minecraft.util.datafix.FixTypes;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.template.Template;
-
-import static com.someguyssoftware.treasure2.enums.StructureMarkers.*;
-
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 /**
  * Custom template manager that create TreasureTemplates instead of Template.
+ * 
  * @author Mark Gottschling on Jan 19, 2019
  *
  */
-// TODO redo this. doesn't work well for specials like witch's den, plus doesn't work well with generic template manager unless they key wasn't StructureType but a String or Integer etc
-public class TreasureTemplateManager {
+public class TreasureTemplateManager extends GottschTemplateManager {
+
+	/*
+	 * NOTE this enum is key for external templates. all templates are categorized
+	 * and placed into folders according to the type.
+	 */
+	@Deprecated
 	public enum StructureType {
-		ABOVEGROUND,
-		UNDERGROUND,
-		WITCH
+		ABOVEGROUND, UNDERGROUND
 	};
-	
-	/*
-	 * templates is the master map where the key is the String representation resource location.
-	 */
-	private final Map<String, Template> templates = Maps.<String, Template>newHashMap();
-	/** the folder in the assets folder where the structure templates are found. */
-	private final String baseFolder;
-	private final DataFixer fixer;
-		
-	// TODO this could've been a multiMap
+
 	private final Map<StructureType, List<Template>> templatesByType = Maps.<StructureType, List<Template>>newHashMap();
+	/** NOTE not in use yet. can organize tempaltes by type and rarity */
 	private final Table<StructureType, Rarity, List<Template>> templateTable = HashBasedTable.create();
-	
-	/*
-	 * builtin underground locations for structures
-	 */
-	List<String> undergroundLocations = Arrays.asList(new String [] {
-			"treasure2:underground/basic1",
-			"treasure2:underground/basic2",
-			"treasure2:underground/basic3",
-			"treasure2:underground/basic4",
-			"treasure2:underground/basic5",
-			"treasure2:underground/cave1",
-			"treasure2:underground/cave2",
-			"treasure2:underground/cobb1",
-			"treasure2:underground/crypt1"
-	});
 
-	/**
-	 * builtin aboveground locations for structures
-	 */
-	List<String> abovegroundLocations = Arrays.asList(new String[] {
-			"treasure2:aboveground/crypt2",
-			"treasure2:aboveground/crypt3"
-	});
-	
-	/*
-	 * standard list of blocks to scan for 
-	 */
-	private List<Block> scanList;
-	
-	/*
-	 * 
-	 */
-	private Map<StructureMarkers, Block> markerMap;
+	private final Table<IMetaArchetype, IMetaType, List<TemplateHolder>> templatesByArchetypeType = HashBasedTable.create();
 
+	private final Table<String, Integer, List<TemplateHolder>> templatesByArchetypeTypeBiome = HashBasedTable.create();
+
+//	/*
+//	 * builtin underground locations for structures
+//	 */
+//	private static List<String> UNDERGROUND_LOCATIONS = Arrays.asList(new String[] { "treasure2:underground/basic1",
+//			"treasure2:underground/basic2", "treasure2:underground/basic3", "treasure2:underground/basic4",
+//			"treasure2:underground/basic5", "treasure2:underground/cave1", "treasure2:underground/cave2",
+//			"treasure2:underground/cobb1", "treasure2:underground/crypt1" });
+//
+//	/*
+//	 * builtin aboveground locations for structures
+//	 */
+//	private static List<String> ABOVEGROUND_LOCATIONS = Arrays
+//			.asList(new String[] { "treasure2:aboveground/crypt2", "treasure2:aboveground/crypt3" });
+
+	private static List<String> FOLDER_LOCATIONS = ImmutableList.of("surface", "subterranean", "submerged", "float");
+	
+	/*
+	 * use this map when structures are submerged instead of the default marker map
+	 */
+	private Map<StructureMarkers, Block> waterMarkerMap;
+	
 	/**
 	 * 
 	 * @param baseFolder
 	 * @param fixer
 	 */
-	public TreasureTemplateManager(String baseFolder, DataFixer fixer) {
+	public TreasureTemplateManager(IMod mod, String resourceFolder, DataFixer fixer) {
+		super(mod, resourceFolder, fixer);
 		Treasure.logger.debug("creating a TreasureTemplateManager");
-        this.baseFolder = baseFolder;
-        this.fixer = fixer;        
-        
-        // init maps
-        for (StructureType structureType : StructureType.values()) {
-        	getTemplatesByType().put(structureType, new ArrayList<Template>(5));
-        }
-        
+
+		// init water marker map
         // setup standard list of markers
-        markerMap = Maps.newHashMapWithExpectedSize(10);
-        markerMap.put(CHEST, Blocks.CHEST);
-        markerMap.put(StructureMarkers.BOSS_CHEST, Blocks.ENDER_CHEST);
-        markerMap.put(StructureMarkers.SPAWNER, Blocks.MOB_SPAWNER);
-        markerMap.put(StructureMarkers.ENTRANCE, Blocks.GOLD_BLOCK);
-        markerMap.put(StructureMarkers.OFFSET, Blocks.REDSTONE_BLOCK);
-        markerMap.put(StructureMarkers.PROXIMITY_SPAWNER, Blocks.IRON_BLOCK);
-        markerMap.put(StructureMarkers.NULL, Blocks.BEDROCK);
-        		
-        // default scan list
-        scanList = Arrays.asList(new Block[] {
-    			markerMap.get(CHEST),
-    			markerMap.get(BOSS_CHEST),
-    			markerMap.get(SPAWNER),
-    			markerMap.get(ENTRANCE),
-    			markerMap.get(OFFSET),
-    			markerMap.get(PROXIMITY_SPAWNER)
-    			});
+        waterMarkerMap = Maps.newHashMap(getMarkerMap());
+        waterMarkerMap.put(StructureMarkers.NULL, Blocks.AIR);// <-- this is the difference between default
         
-        // load all the underground structure templates
-        loadAll(undergroundLocations, StructureType.UNDERGROUND);
-        loadAll(abovegroundLocations, StructureType.ABOVEGROUND);
-        
-        // TODO add ability to load external structures
-    }
+		// init maps
+		for (StructureType structureType : StructureType.values()) {
+			getTemplatesByTypeMap().put(structureType, new ArrayList<Template>(5));
+		}
+
+		// initialize table
+		for (IMetaArchetype archetype : StructureArchetype.values()) {
+			for (IMetaType type : com.someguyssoftware.treasure2.meta.StructureType.values()) {
+				templatesByArchetypeType.put(archetype, type, new ArrayList<>(5));
+			}
+		}
+
+		// build and expose template/structure folders
+		if (TreasureConfig.enableDefaultTemplatesCheck) {
+			buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public void clear() {
+		templateTable.clear();
+		templatesByArchetypeTypeBiome.clear();
+		templatesByArchetypeType.clear();
+		templatesByType.clear();
+	}
+	
+	/**
+	 * Loads and registers the template from the file system.
+	 * 
+	 * @param modID
+	 */
+	public void register(String modID) {
+		for (String location : FOLDER_LOCATIONS) {
+			Treasure.logger.debug("registering templates under location -> {}", location);
+			// get loot table files as ResourceLocations from the file system location
+			List<ResourceLocation> locs = getResourceLocations(modID, location);
+
+			// load each ResourceLocation and map it.
+			for (ResourceLocation loc : locs) {
+				// get the path to the resource
+				Path path = Paths.get(loc.getResourcePath());
+				if (Treasure.logger.isDebugEnabled()) {
+					Treasure.logger.debug("path to template resource loc -> {}", path.toString());
+				}
+
+				// build the key for the meta manager to look at
+				ResourceLocation metaResourceLocation = new ResourceLocation(
+						getMod().getId() + ":" + Treasure.META_MANAGER.getBaseResourceFolder()+ "/" + modID + "/structures/" + path.getFileName().toString().replace(".nbt", ".json"));
+				String key = metaResourceLocation.toString();
+				Treasure.logger.debug("Using key to find meta -> {}", key);
+				
+				// look for IMeta in MetaManager by treasure2:structures/treasure2/surface/x.nbt
+				StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(key);
+				if (meta == null) {
+					// there isn't a meta found for resource, skip to next template
+					Treasure.logger.info("Unable to locate meta file for resource -> {}", key);
+					continue;
+				}				
+				if (meta.getArchetypes() == null || meta.getArchetypes().isEmpty() || meta.getType() == null) {
+					Treasure.logger.info("Meta file not properly configured. -> {}", key);
+					continue;
+				}
+				
+				// TODO interrogate the archetype to determine the marker scan list and/or replacement map to use
+				
+				// load template
+				Treasure.logger.debug("attempted to load custom template  with key -> {}", loc.toString());
+				Template template = load(loc, getMarkerScanList(), getReplacementMap()); // TODO the marker scan list and replace list should be determined before this call
+				// add the id to the map
+				if (template == null) {
+					// TODO message
+					continue;
+				}
+				Treasure.logger.debug("loaded custom template  with key -> {}", loc.toString());
+					
+				// TODO future state: first determine if parent/child - if child, need to find the parent template holder in map - how?
+				// probably needs to be mapped by meta, then it can be mapped otherwise				
+				
+				// map according to meta archetype, type
+				for (IMetaArchetype archetype : meta.getArchetypes()) {
+					TemplateHolder holder = new TemplateHolder()
+							.setMetaLocation(metaResourceLocation)
+							.setLocation(loc)
+							.setTemplate(template);
+					Treasure.logger.debug("Using meta to map archetype type -> {}", meta.toString());
+										
+					if (!templatesByArchetypeType.contains(archetype, meta.getType())) {
+						templatesByArchetypeType.put(archetype, meta.getType(), new ArrayList<>(3));
+					}
+					this.templatesByArchetypeType.get(archetype, meta.getType()).add(holder);
+
+					// TODO could move the wrapping for into this method instead, then could lose the archetype that is passed in. ***!!!
+					mapToTemplatesByArchetypeBiome(metaResourceLocation, loc, archetype, meta.getType(), template);
+				}
+			}
+		}
+		if (Treasure.logger.isDebugEnabled()) {
+			dump();
+		}
+	}
+
+	/**
+	 * 
+	 * @param metaResourceLocation
+	 * @param location
+	 * @param archetype
+	 * @param template
+	 */
+	private void mapToTemplatesByArchetypeBiome(ResourceLocation metaResourceLocation, 
+			ResourceLocation location, IMetaArchetype archetype, IMetaType type, Template template) {
+
+		// build mapping key
+		String key = archetype.getName() + ":" + type.getName();
+		
+		// find the meta for the template
+		StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(metaResourceLocation.toString());
+		// create a holder for the template
+		TemplateHolder holder = new TemplateHolder()
+				.setMetaLocation(metaResourceLocation)
+				.setLocation(location)
+				.setTemplate(template);
+		
+		// map according biomes - @see DungeonConfigManager @ line 55.
+		// TODO somehow extract the indexing of biomes to a helper class
+		if (meta.getBiomeWhiteList().contains("*")
+				|| (meta.getBiomeWhiteList().isEmpty() && meta.getBiomeBlackList().isEmpty())) {
+			Set<Biome> biomes = (Set<Biome>) ForgeRegistries.BIOMES.getValuesCollection();
+			for (Biome biome : biomes) {
+				if (!BiomeDictionary.hasType(biome, Type.END)
+						&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
+					Integer biomeID = Biome.getIdForBiome(biome);
+					if (!templatesByArchetypeTypeBiome.contains(key, biomeID)) {
+						templatesByArchetypeTypeBiome.put(key, biomeID, new ArrayList<>(3));
+					}					
+					templatesByArchetypeTypeBiome.get(key, biomeID).add(holder);
+				}
+			}
+		} else {
+			if (!meta.getBiomeWhiteList().isEmpty()) {
+				for (String b : meta.getBiomeWhiteList()) {
+					String biomeName = b.trim().toLowerCase();
+					Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeName));
+					if (!BiomeDictionary.hasType(biome, Type.END)
+							&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
+						Integer biomeID = Biome.getIdForBiome(biome);
+						if (!templatesByArchetypeTypeBiome.contains(key, biomeID)) {
+							templatesByArchetypeTypeBiome.put(key, biomeID, new ArrayList<>(3));
+						}
+						templatesByArchetypeTypeBiome.get(key, biomeID).add(holder);
+					}
+				}
+			} else if (!meta.getBiomeBlackList().isEmpty()) {
+				Set<Biome> biomes = (Set<Biome>) ForgeRegistries.BIOMES.getValuesCollection();
+				for (Biome biome : biomes) {
+					if (!meta.getBiomeBlackList().contains(biome.getBiomeName().toLowerCase())
+							&& !BiomeDictionary.hasType(biome, Type.END)
+							&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
+						Integer biomeID = Biome.getIdForBiome(biome);
+						if (!templatesByArchetypeTypeBiome.contains(key, biomeID)) {
+							templatesByArchetypeTypeBiome.put(key, biomeID, new ArrayList<>(3));
+						}
+						templatesByArchetypeTypeBiome.get(key, biomeID).add(holder);
+					}
+				}
+			}
+		}		
+	}
 
 	/**
 	 * Convenience method.
+	 * 
 	 * @param type
 	 * @return
 	 */
 	public List<Template> getTemplatesByType(StructureType type) {
-		List<Template> templates = getTemplatesByType().get(type);
+		List<Template> templates = getTemplatesByTypeMap().get(type);
 		return templates;
 	}
-	
-	/**
-	 * @deprecated use getTemplatesByType(type)
-	 * @param server
-	 * @param id
-	 * @return
-	 */
-	@Deprecated
-	public Template getTemplate(/*@Nullable MinecraftServer server, */ResourceLocation r) {
-//		String s = r.getResourcePath();
-		String s = r.toString();
 
-		Template template = null;
-		if (this.templates.containsKey(s)) {
-			return this.templates.get(s);
-		}
-		
-//		Template template = this.get(/*server,*/id);
-//
-//		if (template == null) {
-//			template = new Template();
-//			this.templates.put(id.getResourcePath(), template);
-//		}
-
-		return template;
-	}
-
-	/**
-	 * 
-	 */
-	public void loadAll() {
-		Treasure.logger.debug("loading all structures...");
-		for (String s : undergroundLocations) {
-			Treasure.logger.debug("loading from -> {}", s);
-			load(new ResourceLocation(s), scanList);
-		}
-	}
-	
-	/**
-	 * 
-	 * @param locations
-	 * @param type
-	 */
-	public void loadAll(List<String> locations, StructureType type) {
-		Treasure.logger.debug("loading all typed structures -> {}", type.name());
-		for (String location : locations) {
-			Treasure.logger.debug("loading from -> {}", location);
-			Template template = load(new ResourceLocation(location), scanList);
-			Treasure.logger.debug("loaded template  with key -> {} : {}", location, template);
-			// add the id to the map
-			if (template != null) {
-				Treasure.logger.debug("adding tempate to typed map -> {} : {}", type.name(), template);
-				getTemplatesByType().get(type).add(template);
-			}
-		}	
-	}
-	
-	/**
-	 * 
-	 * @param server
-	 * @param templatePath
-	 * @return
-	 */
-	public Template load(/*@Nullable MinecraftServer server, */ResourceLocation templatePath, List<Block> scanForBlocks) {
-		String key = templatePath.toString();	//templatePath.getResourcePath();
-		
-		if (this.getTemplates().containsKey(key)) {
-			return this.templates.get(key);
-		}
-
-		this.readTemplate(templatePath, scanForBlocks);
-		if (this.templates.get(key) != null) {
-			Treasure.logger.debug("Loaded structure from -> {}", templatePath.toString());
-		}
-		else {
-			Treasure.logger.debug("Unable to read structure from -> {}", templatePath.toString());
-		}
-		return this.templates.containsKey(key) ? (Template) this.templates.get(key) : null;
-//		return this.templates.get(s);
-	}
-
-	/**
-	 * This reads a structure template from the given location and stores it. This
-	 * first attempts get the template from an external folder. If it isn't there
-	 * then it attempts to take it from the minecraft jar.
-	 */
-	public boolean readTemplate(ResourceLocation location, List<Block> scanForBlocks) {
-		String s = location.getResourcePath();
-		File file1 = new File(this.baseFolder, s + ".nbt");
-
-		if (!file1.exists()) {
-			Treasure.logger.debug("file does not exist, read from jar -> {}", file1.getAbsolutePath());
-			return this.readTemplateFromJar(location, scanForBlocks);
-		} else {
-			InputStream inputstream = null;
-			boolean flag;
-
-			try {
-				inputstream = new FileInputStream(file1);
-				this.readTemplateFromStream(location.toString(), inputstream, scanForBlocks);
-				return true;
-			} catch (Throwable var10) {
-				flag = false;
-			} finally {
-				IOUtils.closeQuietly(inputstream);
-			}
-
-			return flag;
-		}
-	}
-
-	/**
-	 * reads a template from the minecraft jar
-	 */
-	private boolean readTemplateFromJar(ResourceLocation id, List<Block> scanForBlocks) {
-		String s = id.getResourceDomain();
-		String s1 = id.getResourcePath();
-		InputStream inputstream = null;
-		boolean flag;
-
-		try {
-			Treasure.logger.debug("attempting to open resource stream -> {}", "/assets/" + s + "/strucutres/" + s1 + ".nbt");
-			inputstream = MinecraftServer.class.getResourceAsStream("/assets/" + s + "/structures/" + s1 + ".nbt");
-			this.readTemplateFromStream(id.toString(), inputstream, scanForBlocks);
-			return true;
-		} catch (Throwable var10) {
-			Treasure.logger.error("error reading resource: ", var10);
-			flag = false;
-		} finally {
-			IOUtils.closeQuietly(inputstream);
-		}
-
-		return flag;
-	}
-
-	/**
-	 * reads a template from an inputstream
-	 */
-	private void readTemplateFromStream(String id, InputStream stream, List<Block> scanForBlocks) throws IOException {
-		NBTTagCompound nbttagcompound = CompressedStreamTools.readCompressed(stream);
-
-		if (!nbttagcompound.hasKey("DataVersion", 99)) {
-			nbttagcompound.setInteger("DataVersion", 500);
-		}
-
-		TreasureTemplate template = new TreasureTemplate();
-		template.read(this.fixer.process(FixTypes.STRUCTURE, nbttagcompound), scanForBlocks);
-		Treasure.logger.debug("adding template to map with key -> {}", id);
-		this.templates.put(id, template);
+	@Override
+	public GottschTemplateManager loadAll(List<String> locations) {
+		// prevent this function from executing as the implementation version should be
+		// used.
+		return this;
 	}
 
 	/**
@@ -301,8 +303,8 @@ public class TreasureTemplateManager {
 	public boolean writeTemplate(@Nullable MinecraftServer server, ResourceLocation id) {
 		String s = id.getResourcePath();
 
-		if (server != null && this.templates.containsKey(s)) {
-			File file1 = new File(this.baseFolder);
+		if (server != null && this.getTemplates().containsKey(s)) {
+			File file1 = new File(this.getBaseResourceFolder());
 
 			if (!file1.exists()) {
 				if (!file1.mkdirs()) {
@@ -313,7 +315,7 @@ public class TreasureTemplateManager {
 			}
 
 			File file2 = new File(file1, s + ".nbt");
-			Template template = this.templates.get(s);
+			Template template = this.getTemplates().get(s);
 			OutputStream outputstream = null;
 			boolean flag;
 
@@ -336,30 +338,57 @@ public class TreasureTemplateManager {
 
 	/**
 	 * 
-	 * @param templatePath
 	 */
-	public void remove(ResourceLocation templatePath) {
-		this.templates.remove(templatePath.getResourcePath());
-	}
+	public void dump() {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyymmdd");
 
-	public Map<StructureMarkers, Block> getMarkerMap() {
-		return markerMap;
-	}
+		String filename = String.format("treasure-template-mgr-%s.txt", formatter.format(new Date()));
 
-	public void setMarkerMap(Map<StructureMarkers, Block> markerMap) {
-		this.markerMap = markerMap;
-	}
+		Path path = Paths.get(getMod().getConfig().getModsFolder(), getMod().getId(), "dumps").toAbsolutePath();
+		try {
+			Files.createDirectories(path);
+		} catch (IOException e) {
+			Treasure.logger.error("Couldn't create directories for dump files:", e);
+			return;
+		}
 
-	public List<Block> getScanList() {
-		return scanList;
-	}
+		// setup a divider line
+		char[] chars = new char[75];
+		Arrays.fill(chars, '*');
+		String div = new String(chars) + "\n";
 
-	public void setScanList(List<Block> scanList) {
-		this.scanList = scanList;
-	}
+		StringBuilder sb = new StringBuilder();
 
-	public Map<String, Template> getTemplates() {
-		return templates;
+		String format = "**    %1$-33s: %2$-30s  **\n";
+		String format2 = "**    %1$-15s: %2$-15s: %3$-33s  **\n";
+		String heading = "**  %1$-67s  **\n";
+		sb.append(div).append(String.format("**  %-67s  **\n", "TEMPLATE MANAGER")).append(div)
+				.append(String.format(heading, "[Template By Type Map]"));
+		for (Map.Entry<String, Template> entry : getTemplates().entrySet()) {
+			sb.append(String.format(format, entry.getKey(), entry.getValue().getAuthor()));
+		}
+		sb.append(div);
+		sb.append(String.format(heading, "[Template by Archetype:Type | Biome]"));
+		Map<String, Map<Integer, List<TemplateHolder>>> map = getTemplatesByArchetypeTypeBiomeTable().rowMap();
+		if (map == null || map.isEmpty()) { Treasure.logger.debug("template biome map is null/empty");}
+		Treasure.logger.debug("biome map.size -> {}", map.size());
+		
+		for (String row : map.keySet()) {
+			Treasure.logger.debug("template biome row key -> {}", row);
+			Map<Integer, List<TemplateHolder>> tmp = map.get(row);
+			for (Entry<Integer, List<TemplateHolder>> entry : tmp.entrySet()) {
+				String templateNames = entry.getValue().stream().map(a -> a.getLocation().toString()).collect(Collectors.joining(", "));
+				Biome biome = Biome.getBiome(entry.getKey());
+				String biomeName = (biome != null) ? biome.getBiomeName() : String.format("No biome for {}", entry.getKey());
+				sb.append(String.format(format2, row, biomeName, templateNames));
+			}
+		}
+		
+		try {
+			Files.write(Paths.get(path.toString(), filename), sb.toString().getBytes());
+		} catch (IOException e) {
+			Treasure.logger.error("Error writing TreasureTemplateManager to dump file", e);
+		}
 	}
 
 	/**
@@ -372,7 +401,11 @@ public class TreasureTemplateManager {
 	/**
 	 * @return the templatesByType
 	 */
-	public Map<StructureType, List<Template>> getTemplatesByType() {
+	public Map<StructureType, List<Template>> getTemplatesByTypeMap() {
 		return templatesByType;
+	}
+
+	public Table<String, Integer, List<TemplateHolder>> getTemplatesByArchetypeTypeBiomeTable() {
+		return templatesByArchetypeTypeBiome;
 	}
 }

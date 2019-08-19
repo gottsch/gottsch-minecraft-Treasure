@@ -2,8 +2,10 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.Quantity;
 import com.someguyssoftware.gottschcore.cube.Cube;
+import com.someguyssoftware.gottschcore.generator.GeneratorResult;
+import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
+import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
@@ -11,6 +13,8 @@ import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.sun.media.jfxmedia.logging.Logger;
 
@@ -49,7 +53,9 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public ITreasureGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		ITreasureGeneratorResult result = new TreasureGeneratorResult(true, spawnCoords);
+		
 		// is the chest placed in a cavern
 		boolean inCavern = false;
 		
@@ -67,8 +73,10 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 			spawnCoords = GenUtil.findUndergroundCeiling(world, spawnCoords.add(0, 1, 0));
 			if (spawnCoords == null) {
 				Treasure.logger.warn("Exiting: Unable to locate cavern ceiling.");
-				return false;
+				return result.fail();
 			}
+			// update chest coords
+			result.setChestCoords(spawnCoords);
 		}
 	
 		// generate shaft
@@ -105,7 +113,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 			new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
 		}		
 		Treasure.logger.debug("Generated Big Bottom Mob Trap Pit at " + spawnCoords.toShortString());
-		return true;
+		return result;
 	}	
 
 	/**

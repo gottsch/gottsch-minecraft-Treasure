@@ -24,6 +24,8 @@ public interface IChestGenerator {
 	 */
 	boolean generate(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config);
 
+	// TODO IGeneratorResult generated(World world, Random random, ICoords coords, Rarity rarity, IChestConfig config);
+	
 	/**
 	 * 
 	 * @param random

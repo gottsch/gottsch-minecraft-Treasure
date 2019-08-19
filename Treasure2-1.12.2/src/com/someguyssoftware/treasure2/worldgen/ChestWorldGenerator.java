@@ -58,9 +58,6 @@ import net.minecraftforge.fml.common.IWorldGenerator;
  *
  */
 public class ChestWorldGenerator implements IWorldGenerator {
-	// the number of blocks of half a chunk (radius) (a chunk is 16x16)
-	public static final int CHUNK_RADIUS = 8;
-
 	private int chunksSinceLastChest;
 	private Map<Rarity, Integer> chunksSinceLastRarityChest;
 	
@@ -70,8 +67,6 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	
 	// TODO probably should be moved to AbstractChestGenerator
 	// the pit chestGeneratorsMap
-//	public static Map<Pits, IPitGenerator> pitGenerators = new HashMap<>();
-//	public static Map<Pits, IPitGenerator> structurePitGenerators = new HashMap<>();
 	public static Table<PitTypes, Pits, IPitGenerator> pitGens =  HashBasedTable.create();
 	
 	/**
@@ -115,15 +110,6 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		chestCollectionGeneratorsMap.get(Rarity.EPIC).add(85, new EpicChestGenerator());
 		chestCollectionGeneratorsMap.get(Rarity.EPIC).add(15, new CauldronChestGenerator());
 		
-		// setup the pit chestGeneratorsMap
-//		pitGenerators.put(Pits.SIMPLE_PIT, new SimplePitGenerator());
-//		pitGenerators.put(Pits.TNT_TRAP_PIT, new TntTrapPitGenerator());
-//		pitGenerators.put(Pits.AIR_PIT,  new AirPitGenerator());
-//		pitGenerators.put(Pits.LAVA_TRAP_PIT, new LavaTrapPitGenerator());
-//		pitGenerators.put(Pits.MOB_TRAP_PIT, new MobTrapPitGenerator());
-//		pitGenerators.put(Pits.LAVA_SIDE_TRAP_PIT, new LavaSideTrapPitGenerator());
-//		pitGenerators.put(Pits.BIG_BOTTOM_MOB_TRAP_PIT, new BigBottomMobTrapPitGenerator());
-		
 		// setup pit generators map
 		pitGens.put(PitTypes.STANDARD, Pits.SIMPLE_PIT, new SimplePitGenerator());
 		pitGens.put(PitTypes.STRUCTURE, Pits.SIMPLE_PIT, new StructurePitGenerator(new SimplePitGenerator()));
@@ -146,12 +132,6 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		pitGens.put(PitTypes.STANDARD, Pits.BIG_BOTTOM_MOB_TRAP_PIT, new BigBottomMobTrapPitGenerator());
 		// NONE for STRUCTURE
 		
-		// setup the structures pit generators - a subset of the pit generators map
-//		structurePitGenerators.put(Pits.SIMPLE_PIT, pitGenerators.get(Pits.SIMPLE_PIT));
-//		structurePitGenerators.put(Pits.TNT_TRAP_PIT, pitGenerators.get(Pits.TNT_TRAP_PIT));
-//		structurePitGenerators.put(Pits.AIR_PIT, pitGenerators.get(Pits.AIR_PIT));
-//		structurePitGenerators.put(Pits.MOB_TRAP_PIT, pitGenerators.get(Pits.MOB_TRAP_PIT));
-//		structurePitGenerators.put(Pits.LAVA_SIDE_TRAP_PIT, pitGenerators.get(Pits.LAVA_SIDE_TRAP_PIT));
 	}
 
 	/**
@@ -161,7 +141,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 		switch(world.provider.getDimension()){
 		case 0:
-		    generateSurface(world, random, chunkX, chunkZ);
+		    generateInOverworld(world, random, chunkX, chunkZ);
 		    break;
 	    default:
 	    	break;
@@ -176,7 +156,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	 * @param i
 	 * @param j
 	 */
-	private void generateSurface(World world, Random random, int chunkX, int chunkZ) {
+	private void generateInOverworld(World world, Random random, int chunkX, int chunkZ) {
 		
 		// increment the chunk counts
 		chunksSinceLastChest++;
@@ -192,11 +172,11 @@ public class ChestWorldGenerator implements IWorldGenerator {
      		 * get current chunk position
      		 */            
             // spawn @ middle of chunk
-            int xSpawn = chunkX * 16 + 8;
-            int zSpawn = chunkZ * 16 + 8;
+            int xSpawn = (chunkX * WorldInfo.CHUNK_SIZE) + WorldInfo.CHUNK_RADIUS;
+            int zSpawn = (chunkZ * WorldInfo.CHUNK_SIZE) + WorldInfo.CHUNK_RADIUS;
             
             // the get first surface y (could be leaves, trunk, water, etc)
-            int ySpawn = world.getChunkFromChunkCoords(chunkX, chunkZ).getHeightValue(8, 8);
+            int ySpawn = world.getChunkFromChunkCoords(chunkX, chunkZ).getHeightValue(WorldInfo.CHUNK_RADIUS, WorldInfo.CHUNK_RADIUS);
             ICoords coords = new Coords(xSpawn, ySpawn, zSpawn);
 
 	    	// determine what type to generate
@@ -211,14 +191,12 @@ public class ChestWorldGenerator implements IWorldGenerator {
     		if (chunksSinceLastRarityChest.get(rarity) >= chestConfig.getChunksPerChest()) {
     			
 				// 1. test if chest meets the probability criteria
-//    			Treasure.logger.debug("{} chest probability: {}", rarity, chestConfig.getGenProbability());
 				if (!RandomHelper.checkProbability(random, chestConfig.getGenProbability())) {
 //					Treasure.logger.debug("Chest does not meet generate probability.");
 					return;
 				}
-
 				
-				// 2. test if correct biome
+				// 2. test if the override (global) biome is allowed
 				Biome biome = world.getBiome(coords.toPos());
 
 			    if (!BiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList())) {
@@ -227,7 +205,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 			    			Treasure.logger.debug("{} is not a valid biome @ {}", biome.getBiomeName(), coords.toShortString());
 			    		}
 			    		else {
-			    			Treasure.logger.debug("Biome is not valid @ {}", coords.toShortString());
+			    			Treasure.logger.debug("Biome for {} is not valid @ {}",rarity.getValue(), coords.toShortString());
 			    		}
 			    	}
 			    	return;
@@ -238,7 +216,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
    					Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
      				return;
      			}
-     			
+     			     			
     			// reset chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
     			chunksSinceLastRarityChest.put(rarity, 0);
  			
@@ -251,7 +229,6 @@ public class ChestWorldGenerator implements IWorldGenerator {
     				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
     				// reset the chunk counts
         			chunksSinceLastChest = 0;
-//        			chunksSinceLastRarityChest.put(rarity, 0);
     			}
     		}
 

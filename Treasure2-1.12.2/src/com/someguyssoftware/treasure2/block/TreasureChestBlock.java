@@ -240,18 +240,13 @@ public class TreasureChestBlock extends AbstractChestBlock {
 			}
 
 			// read in nbt
-//			Treasure.logger.debug("Checking if item has stack compound.");
 			if (stack.hasTagCompound()) {
-//				Treasure.logger.debug("Stack has compound!");
-
 				tcte.readFromItemStackNBT(stack.getTagCompound());
 				forceUpdate = true;
 
 				// get the old tcte facing direction
 				oldPersistedChestDirection = Direction.fromFacing(EnumFacing.getFront(tcte.getFacing()));
-//				Treasure.logger.debug("old chest facing (int) -> {}", tcte.getFacing());
-//				Treasure.logger.debug("old chest facing enum -> {}", EnumFacing.getFront(tcte.getFacing()));
-//				Treasure.logger.debug("old chest direction -> {}", oldPersistedChestDirection);
+
 				
 				// dump stack NBT
 				if (Treasure.logger.isDebugEnabled()) {
@@ -261,15 +256,10 @@ public class TreasureChestBlock extends AbstractChestBlock {
 
 			// get the direction the block is facing.
 			Direction direction = Direction.fromFacing(placer.getHorizontalFacing().getOpposite());
-//			Treasure.logger.debug("new chest direction -> {}", direction);
 
-//			Treasure.logger.debug("required rotation -> {}", oldPersistedChestDirection.getRotation(direction));
-//			Treasure.logger.debug("should update prior to rotate -> {}", shouldUpdate);
 			// rotate the lock states
 			shouldUpdate = rotateLockStates(worldIn, pos, oldPersistedChestDirection.getRotation(direction)); // old -> Direction.NORTH //
-			
-//			Treasure.logger.debug("should update after rotate -> {}", shouldUpdate);
-			
+
 //			Treasure.logger.debug("New lock states ->");
 //			for (LockState ls : tcte.getLockStates()) {
 //				Treasure.logger.debug(ls);
@@ -277,61 +267,12 @@ public class TreasureChestBlock extends AbstractChestBlock {
 			
 			// update the TCTE facing
 			tcte.setFacing(placer.getHorizontalFacing().getOpposite().getIndex());
-//			Treasure.logger.debug("updated tcte facing -> {}", tcte.getFacing());
 		}
 		if ((forceUpdate || shouldUpdate) && tcte != null) {
 			// update the client
 			tcte.sendUpdates();
 		}
-
-//		if (tcte != null && tcte.getLockStates() != null) {
-//			Treasure.logger.debug("Is  TE.lockStates empty? " + tcte.getLockStates().isEmpty());			
-//		}
 	}
-
-//	/**
-//	 * 
-//	 * @param world
-//	 * @param pos
-//	 * @param rotate
-//	 * @return
-//	 */
-//	public boolean  rotateLockStates(World world, BlockPos pos, Rotate rotate) {
-//		boolean hasRotated = false;
-//		boolean shouldRotate = false;
-//		if (rotate != Rotate.NO_ROTATE) shouldRotate = true;
-//		Treasure.logger.debug("Rotate to:" + rotate);
-//		
-//		AbstractTreasureChestTileEntity tcte = null;
-//		TileEntity te = world.getTileEntity(pos);
-//		if (te != null && te instanceof AbstractTreasureChestTileEntity) {
-//			// get the backing tile entity
-//			tcte = (AbstractTreasureChestTileEntity) te;
-//		}
-//		else {
-//			return false;
-//		}
-//		
-//		try {
-//			for (LockState lockState : tcte.getLockStates()) {
-//				if (lockState != null && lockState.getSlot() != null) {
-////					Treasure.logger.debug("Original lock state:" + lockState);
-//					// if a rotation is needed
-//					if (shouldRotate) {
-//						ILockSlot newSlot = lockState.getSlot().rotate(rotate);
-////						Treasure.logger.debug("New slot position:" + newSlot);
-//						lockState.setSlot(newSlot);
-//						// set the flag to indicate the lockStates have rotated
-//						hasRotated = true;
-//					}
-//				}
-//			}
-//		}
-//		catch(Exception e) {
-//			Treasure.logger.error("Error updating lock states: ", e);
-//		}
-//		return hasRotated;
-//	}
 
 	/**
 	 * 
@@ -341,15 +282,10 @@ public class TreasureChestBlock extends AbstractChestBlock {
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
-		
-		// TODO dump TE
-
+	
 		// exit if on the client
 		if (WorldInfo.isClientSide(worldIn)) {			
 			return true;
-		}
-		else {
-			// TODO message
 		}
 		
 		boolean isLocked = false;

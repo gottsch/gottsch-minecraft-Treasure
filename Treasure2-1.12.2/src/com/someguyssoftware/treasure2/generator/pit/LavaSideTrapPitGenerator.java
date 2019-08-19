@@ -9,6 +9,7 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -40,12 +41,12 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		if (super.generate(world, random, surfaceCoords, spawnCoords)) {
+	public ITreasureGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		ITreasureGeneratorResult result =super.generate(world, random, surfaceCoords, spawnCoords); 
+		if (result.isSuccess()) {
 			Treasure.logger.debug("Generated Lave Side Trap Pit at " + spawnCoords.toShortString());
-			return true;
 		}
-		return false;
+		return result;
 	}
 	
 	/**

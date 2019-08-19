@@ -26,7 +26,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 
 /**
- * TODO make everything static final.
  * @author Mark Gottschling on Jul 4, 2019
  *
  */
@@ -56,10 +55,6 @@ public class TreasureLootTableMaster extends LootTableMaster {
 	 */
 	private static final List<String> SPECIAL_CHEST_LOOT_TABLE_FOLDER_LOCATIONS = ImmutableList.of(
 			"chests/special"
-//			"chests/wither_chest",
-//			"chests/skull_chest",
-//			"chests/gold_skull_chest",
-//			"chests/cauldron_chest"
 			);
 	
 	/*
@@ -92,14 +87,13 @@ public class TreasureLootTableMaster extends LootTableMaster {
 	 */
 	public TreasureLootTableMaster(IMod mod, String resourcePath, String folderName) {
 		super(mod, resourcePath, folderName);
-//		buildAndExpose(CUSTOM_LOOT_TABLES_RESOURCE_PATH, Treasure.MODID, CHEST_LOOT_TABLE_FOLDER_LOCATIONS);
-//		buildAndExpose(CUSTOM_LOOT_TABLES_RESOURCE_PATH, Treasure.MODID, NON_CHEST_LOOT_TABLE_FOLDER_LOCATIONS);
-//		buildAndExpose(CUSTOM_LOOT_TABLES_RESOURCE_PATH, Treasure.MODID, SPECIAL_CHEST_LOOT_TABLE_FOLDER_LOCATIONS);
 		
-		buildAndExpose(Treasure.MODID);
-		for (String foreignModID : TreasureConfig.enableForeignModIDs) {
-			if (Loader.isModLoaded(foreignModID)) {				
-				buildAndExpose(foreignModID);
+		if (TreasureConfig.enableDefaultLootTablesCheck) {
+			buildAndExpose(Treasure.MODID);
+			for (String foreignModID : TreasureConfig.enableForeignModIDs) {
+				if (Loader.isModLoaded(foreignModID)) {				
+					buildAndExpose(foreignModID);
+				}
 			}
 		}
 		
@@ -110,6 +104,17 @@ public class TreasureLootTableMaster extends LootTableMaster {
 		}
 	}
 
+	/**
+	 * 
+	 */
+	public void clear() {
+		super.getLootTablesMap().clear();
+		super.getLootTablesResourceLocationMap().clear();
+		CHEST_LOOT_TABLES_TABLE.clear();
+		CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.clear();
+		SPECIAL_LOOT_TABLES_MAP.clear();
+	}
+	
 	/**
 	 * 
 	 * @param modID

@@ -55,7 +55,7 @@ public abstract class AbstractPaintingBlock extends CardinalDirectionFacadeBlock
 	 */
 	public AbstractPaintingBlock(String modID, String name, Material material) {
 		super(modID, name, material);
-		setSoundType(SoundType.WOOD); // TODO find vanilla painting code
+		setSoundType(SoundType.WOOD);
 		setCreativeTab(Treasure.TREASURE_TAB);
 		setHardness(0.1F);
 		setBoundingBox(new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), // N

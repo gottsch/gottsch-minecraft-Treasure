@@ -95,7 +95,6 @@ public class WitherTreeGenerator {
 	 * 
 	 */
 	public WitherTreeGenerator() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -135,7 +134,6 @@ public class WitherTreeGenerator {
 		int numTrees = RandomHelper.randomInt(config.getMinSupportingTrees(), config.getMaxSupportingTrees());
 //		Treasure.logger.debug("number of witherED trees to gen: {}", numTrees);
 		
-		// TODO turn into method buildSubTrees(world, random, coords, existingTreeList) return list<coords> - NOPE
 		for (int treeIndex = 0; treeIndex < numTrees; treeIndex++) {
 			// find a random location around a radius from the tree
 			// ie. rand x-radius, rand z-radius = new point (+x,+z), rand degrees of rotation from origin
@@ -227,14 +225,12 @@ public class WitherTreeGenerator {
 
 		// determine the size of the main trunk
 		int maxSize = RandomHelper.randomInt(random, 7, config.getMaxTrunkSize());
-//		Treasure.logger.debug("maxSize: {}", maxSize);
-		
+
 		boolean hasLifeBeenAdded = false;
 		for (int y = 0; y < maxSize; y++) {
-			if (y == 2) { // TODO <-- select the right index and the face facing in the right direction
+			if (y == 2) {
 				if (!hasLifeBeenAdded) {
 					world.setBlockState(coords.add(0, y, 0).toPos(), TreasureBlocks.WITHER_LOG_SOUL.getDefaultState());
-//					 Treasure.logger.debug("Wither Tree building life trunk @ " +  coords.add(0, y, 0).toShortString());
 					 hasLifeBeenAdded = true;
 					 continue;
 				}
@@ -242,7 +238,6 @@ public class WitherTreeGenerator {
 			
 			// add the trunk
 			world.setBlockState(coords.add(0, y, 0).toPos(), TreasureBlocks.WITHER_LOG.getDefaultState());
-//			 Treasure.logger.debug("Wither Tree Supporter building trunk @ " + coords.add(0, y, 0).toShortString());
 			 
 			 // add the branches/roots
 			 if (y ==0) {
@@ -272,13 +267,10 @@ public class WitherTreeGenerator {
 
 		// determine the size of the main trunk
 		int maxSize = RandomHelper.randomInt(random, 9, config.getMaxTrunkSize());
-//		Treasure.logger.debug("master tree maxSize: {}", maxSize);
-		
+	
 		// build a 2x2 trunk
 		boolean hasLifeBeenAdded = false;
 		for (int trunkIndex = 0; trunkIndex < trunkCoords.length; trunkIndex++) {
-//			Treasure.logger.debug("Trunk index: {}", trunkIndex);
-//			Treasure.logger.debug("maxSize: {}", maxSize);
 			
 			for (int y = 0; y < maxSize; y++) {
 				if (trunkIndex == 2 && y == 2) { // TODO <-- select the right index and the face facing in the right direction

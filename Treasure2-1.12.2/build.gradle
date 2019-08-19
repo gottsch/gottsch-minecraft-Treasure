@@ -51,29 +51,9 @@ sourceSets.main{
 	}
 }
 
-//dependencies {
-//	compile files("../../gottsch-minecraft-GottschCore/GottschCore1.12.2/build/libs/GottschCore-mc1.12.2-f${forge_version}-v1.2.0.jar")
-//}
-
 def gottschcore_path="../../gottsch-minecraft-GottschCore/GottschCore${mc_version}/build/libs/GottschCore-mc${mc_version}-f${forge_version}-v${gottschcore_version}.jar"
 dependencies {
- //   compile files('../../ModCommonLibs/libs/h2-1.4.187.jar')
-  //  compile files('../../ModCommonLibs/libs/ormlite-core-5.0.jar')
-  //  compile files('../../ModCommonLibs/libs/ormlite-jdbc-5.0.jar')
 	compile files(gottschcore_path)	
-}
-
-jar {
-	// for PROD only
-	//from (zipTree('../../ModCommonLibs/libs/h2-1.4.187.jar')) {
-	//	exclude 'META-INF/**'
-	//}
-	//from (zipTree('../../ModCommonLibs/libs/ormlite-core-5.0.jar')) {
-	//	exclude 'META-INF/**'
-	//}
-	//from (zipTree('../../ModCommonLibs/libs/ormlite-jdbc-5.0.jar')) {
-	//	exclude 'META-INF/**'
-	//}
 }
 	
 processResources
@@ -89,27 +69,11 @@ processResources
         // replace version and mcversion
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-        
-    // copy everything else, thats not the mcmod.info
- //   from(sourceSets.main.resources.srcDirs) {
-//        include '**/*.sql'
-//    }
-    
-//  from(sourceSets.main.java.srcDirs) {
- //      include '**/*.sql'
- //  }   
+ 
 }
 
-//task packageJavadoc(type: Jar, dependsOn: 'javadoc') {
- //   from javadoc.destinationDir
-//    classifier = 'javadoc'
-//}
-
-//artifacts {
-//    archives packageJavadoc
-//}
-
-//task copyTask(type: Copy) {
-//        from 'node_modules/.'
-//        into 'build/resources/main/static'
-//}
+task copyJar(type: Copy) {
+	from jar
+	into "${dest_folder}"
+}
+build.dependsOn copyJar

@@ -2,14 +2,18 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.Quantity;
+
 import com.someguyssoftware.gottschcore.cube.Cube;
+import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
+import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 
 import net.minecraft.block.Block;
@@ -86,7 +90,8 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 * @return
 	 */
 	@Override
-	public boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public ITreasureGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		ITreasureGeneratorResult result = new TreasureGeneratorResult(true, spawnCoords);
 		// is the chest placed in a cavern
 		boolean inCavern = false;
 		
@@ -98,16 +103,16 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 			Treasure.logger.debug("Spawn coords is in cavern.");
 			inCavern = true;
 		}
-		
-		// TODO review - shouldn't be altering spawnCoords.... does this even work?
-		// NOTE more evidence of the need for generators to return IGeneratorResult which contains the final spawnCoords of the chest.
+
 		if (inCavern) {
 			Treasure.logger.debug("Shaft is in cavern... finding ceiling.");
 			spawnCoords = GenUtil.findUndergroundCeiling(world, spawnCoords.add(0, 1, 0));
 			if (spawnCoords == null) {
 				Treasure.logger.warn("Exiting: Unable to locate cavern ceiling.");
-				return false;
+				return result.fail();
 			}
+			// update the chest coords in the result
+			((ITreasureGeneratorResult)result).setChestCoords(spawnCoords);
 		}
 	
 		// generate shaft
@@ -128,10 +133,9 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		// shaft is only 2-6 blocks long - can only support small covering
 		else if (yDist >= 2) {
 			// simple short pit
-			new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
-		}		
-//		Treasure.logger.debug("Generated Pit at " + spawnCoords.toShortString());
-		return true;
+			result = new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
+		}
+		return result;
 	}	
 	
 	/**
