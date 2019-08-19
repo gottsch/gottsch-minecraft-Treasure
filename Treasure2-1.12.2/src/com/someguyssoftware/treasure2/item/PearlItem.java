@@ -19,6 +19,7 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.enums.Coins;
+import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.block.Block;
@@ -33,34 +34,33 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 /**
- * 
- * @author Mark Gottschling on Sep 13, 2014
+ * TODO implement Lombok and remove getter/setters
+ * @author Mark Gottschling on Aug 18, 2019
  *
  */
-public class CoinItem extends ModItem {
+public class PearlItem extends ModItem {
 
 	public static final int MAX_STACK_SIZE = 8;
-	private Coins coin;
+	private Pearls pearl;
 	
 	/**
 	 * 
 	 */
-	public CoinItem (String modID, String name)	 {
+	public PearlItem (String modID, String name)	 {
 		super();
 		this.setItemName(modID, name);	
 		this.setMaxStackSize(MAX_STACK_SIZE);
 		this.setCreativeTab(Treasure.TREASURE_TAB);
-		// set the coin to gold by default
-		this.coin = Coins.GOLD;
+		this.pearl = Pearls.WHITE;
 	}
 	
 	/**
 	 * 
-	 * @param coin
+	 * @param pearl
 	 */
-	public CoinItem(String modID, String name, Coins coin) {
+	public PearlItem(String modID, String name, Pearls pearl) {
 		this(modID, name);
-		this.setCoin(coin);
+		this.setPearl(pearl);
 	}
 	
 	/**
@@ -107,21 +107,19 @@ public class CoinItem extends ModItem {
 			List<LootTable> lootTables = new ArrayList<>();
 			if (numWishingWellBlocks >=2) {
 				Random random = new Random();
-//				List<Rarity> rarityList = null;
-				// determine coin type
-				if (getCoin() == Coins.SILVER) {
-					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.UNCOMMON));
-					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.SCARCE));
-				}
-				else if (getCoin() == Coins.GOLD) {					
-					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.SCARCE));
+
+				// determine pearl type
+				if (getPearl() == Pearls.WHITE) {
 					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.RARE));
+				}
+				else if (getPearl() == Pearls.BLACK) {					
+					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.EPIC));
 				}
 				
 				ItemStack stack = null;
 				// handle if loot tables is null or size = 0. return an item (apple) to ensure continuing functionality
 				if (lootTables == null || lootTables.size() == 0) {
-					stack = new ItemStack(Items.APPLE);
+					stack = new ItemStack(Items.DIAMOND);
 				}
 				else {
 					// select a table
@@ -149,16 +147,16 @@ public class CoinItem extends ModItem {
 	}
 	
 	/**
-	 * @return the coin
+	 * @return the pearl
 	 */
-	public Coins getCoin() {
-		return coin;
+	public Pearls getPearl() {
+		return pearl;
 	}
 	/**
-	 * @param coin the coin to set
+	 * @param pearl the pearl to set
 	 */
-	public CoinItem setCoin(Coins coin) {
-		this.coin = coin;
+	public PearlItem setPearl(Pearls pearl) {
+		this.pearl = pearl;
 		return this;
 	}
 }

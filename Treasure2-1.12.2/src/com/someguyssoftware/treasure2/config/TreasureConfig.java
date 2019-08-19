@@ -78,6 +78,9 @@ public class TreasureConfig extends AbstractConfig {
 	
 	public static final String GOLD_COIN_ID = "gold_coin";
 	public static final String SILVER_COIN_ID = "silver_coin";
+
+	public static final String WHITE_PEARL_ID = "white_pearl";
+	public static final String BLACK_PEARL_ID = "black_pearl";
 	
 	// weapons / armor
 	public static final String SKULL_SWORD_ID = "skull_sword";
