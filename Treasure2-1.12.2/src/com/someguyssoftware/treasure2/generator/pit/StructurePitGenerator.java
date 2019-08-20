@@ -131,7 +131,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			Integer biomeID = Biome.getIdForBiome(biome);
 			List<TemplateHolder> templateHolders = Treasure.TEMPLATE_MANAGER.getTemplatesByArchetypeTypeBiomeTable().get(key, biomeID);
 			if (templateHolders == null || templateHolders.isEmpty()) {
-				Treasure.logger.debug("could not find template holders for archetype:type, biome -> {} {}", key, biome.getBiomeName());
+				Treasure.logger.debug("could not find template holders for archetype:type, biome -> {} [{}]:[]", key, biomeID, biome.toString());
 				return result.fail();
 			}
 			
