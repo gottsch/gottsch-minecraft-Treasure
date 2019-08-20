@@ -12,6 +12,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Coins;
+import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.block.material.MapColor;
@@ -41,6 +42,12 @@ public class TreasureItems {
 	// coins
 	public static Item GOLD_COIN;
 	public static Item SILVER_COIN;
+	// pearls
+	public static Item WHITE_PEARL;
+	public static Item BLACK_PEARL;
+	// gems
+	public static Item SAPPHIRE;
+	public static Item RUBY;
 	// locks
 	public static LockItem WOOD_LOCK;
 	public static LockItem STONE_LOCK;
@@ -108,8 +115,6 @@ public class TreasureItems {
 	// other
 	public static Item SPANISH_MOSS;
 	public static Item TREASURE_TOOL;
-	public static Item SAPPHIRE;
-	public static Item RUBY;
 	public static Item SKELETON;
     	
 	/*
@@ -130,6 +135,10 @@ public class TreasureItems {
 		// COINS
 		GOLD_COIN = new CoinItem(Treasure.MODID, TreasureConfig.GOLD_COIN_ID);
 		SILVER_COIN = new CoinItem(Treasure.MODID, TreasureConfig.SILVER_COIN_ID, Coins.SILVER);
+		
+		// PEARLS
+		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.WHITE_PEARL_ID, Pearls.WHITE);
+		BLACK_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.BLACK_PEARL_ID, Pearls.BLACK);
 		
 		// KEYS
 		WOOD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.WOOD_KEY_ID)
@@ -394,6 +403,8 @@ public class TreasureItems {
 					TREASURE_TAB,
 					SILVER_COIN,
 					GOLD_COIN,
+					WHITE_PEARL,
+					BLACK_PEARL,
 					WOOD_LOCK,
 					STONE_LOCK,
 					IRON_LOCK,
