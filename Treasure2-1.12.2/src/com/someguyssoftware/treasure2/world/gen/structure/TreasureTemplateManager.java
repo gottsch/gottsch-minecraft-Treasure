@@ -28,6 +28,7 @@ import com.google.common.collect.Table;
 import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 import com.someguyssoftware.gottschcore.meta.IMetaType;
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplateManager;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
@@ -263,9 +264,24 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 					}
 				}
 			} else if (!meta.getBiomeBlackList().isEmpty()) {
+				/*
+				 * add all the black listed biome IDs to a list
+				 */
+				List<Integer> blackListBiomeIDs = new ArrayList<>();
+				for (String b : meta.getBiomeBlackList()) {
+					Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(b.trim().toLowerCase()));
+					if (biome != null) {
+						Integer biomeID = Biome.getIdForBiome(biome);
+						if (biomeID != null) blackListBiomeIDs.add(biomeID);
+					}
+				}
+				// get the set of all biomes
 				Set<Biome> biomes = (Set<Biome>) ForgeRegistries.BIOMES.getValuesCollection();
+				// TODO add black list biome ID to list, then check against the biome ID that is being being process
+				// for each biome is the list
 				for (Biome biome : biomes) {
-					if (!meta.getBiomeBlackList().contains(biome.getBiomeName().toLowerCase())
+//					if (!meta.getBiomeBlackList().contains(biome.getBiomeName().toLowerCase())
+					if (!blackListBiomeIDs.contains(Biome.getIdForBiome(biome))
 							&& !BiomeDictionary.hasType(biome, Type.END)
 							&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
 						Integer biomeID = Biome.getIdForBiome(biome);
@@ -379,7 +395,13 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 			for (Entry<Integer, List<TemplateHolder>> entry : tmp.entrySet()) {
 				String templateNames = entry.getValue().stream().map(a -> a.getLocation().toString()).collect(Collectors.joining(", "));
 				Biome biome = Biome.getBiome(entry.getKey());
-				String biomeName = (biome != null) ? biome.getBiomeName() : String.format("No biome for {}", entry.getKey());
+				String biomeName = "";
+				if (biome != null) {
+					biomeName = WorldInfo.isClientSide()  ? biome.getBiomeName() : String.valueOf(Biome.getIdForBiome(biome)) ;
+				}
+				else {
+					biomeName = String.format("No biome for {}", entry.getKey());
+				}
 				sb.append(String.format(format2, row, biomeName, templateNames));
 			}
 		}

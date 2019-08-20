@@ -151,7 +151,7 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStruct
 		
 		List<TemplateHolder> templateHolders = Treasure.TEMPLATE_MANAGER.getTemplatesByArchetypeTypeBiomeTable().get(key, biomeID);
 		if (templateHolders == null || templateHolders.isEmpty()) {
-			Treasure.logger.debug("could not find template holders for archetype:type, biome -> {} {}", key, biome.getBiomeName());
+			Treasure.logger.debug("could not find template holders for archetype:type, biome -> {} [{}]:{}", key, biomeID, biome.toString());
 		}
 		
 		TemplateHolder holder = templateHolders.get(random.nextInt(templateHolders.size()));
