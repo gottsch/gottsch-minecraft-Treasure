@@ -1,3 +1,8 @@
+[![](https://img.shields.io/discord/596352475204943873.svg?style=for-the-badge&logo=discord)](https://discord.gg/CpWXamx)
+[![](https://img.shields.io/github/issues/gottsch/gottsch-minecraft-Treasure.svg?style=for-the-badge&logo=github)](https://github.com/gottsch/gottsch-minecraft-Treasure/issues)
+[![](https://img.shields.io/github/issues/gottsch/gottsch-minecraft-Treasure/enhancement.svg?style=for-the-badge&logo=github)](https://github.com/gottsch/gottsch-minecraft-Treasure/issues)
+[![](https://img.shields.io/github/issues/gottsch/gottsch-minecraft-Treasure/content%20add.svg?style=for-the-badge&logo=github)](https://github.com/gottsch/gottsch-minecraft-Treasure/issues)[![](https://img.shields.io/github/issues/gottsch/gottsch-minecraft-Treasure/bug.svg?style=for-the-badge&logo=github)](https://github.com/gottsch/gottsch-minecraft-Treasure/issues)</br>
+
 # Treasure2! 
 
 ![](./Treasure2-1.12.2/src/resources/treasure2-github-logo.png)
@@ -8,11 +13,6 @@
 </p>
 
 <b>Treasure2!</b> adds to the thrill of discovery in Minecraft. This mod adds various new and rare <b>chests of treasure</b> to be discovered. The chests are secured by a various assortment of <b>locks</b> and can only be unlocked by finding the corresponding <b>keys</b>.
-
-## Development
-Currently in **alpha** stage.
-
-### I am inviting modelers to contribute new and interesting chest designs. They don't need to be the vanilla chest shape or size. However, there are a few rules to keep in mind as I do need to be able to add locks in a standardized way.  More on that later...
 
 ## Key and Locks
 Hold the **Shift** key while using a key or a lock on a chest in order to use it.
