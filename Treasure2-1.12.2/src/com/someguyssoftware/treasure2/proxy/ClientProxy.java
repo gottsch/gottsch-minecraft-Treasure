@@ -38,6 +38,7 @@ import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SkullChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.WhaleBonePirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
@@ -112,6 +113,11 @@ public class ClientProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				DreadPirateChestTileEntity.class,
 				new TreasureChestTileEntityRenderer("dread-pirate-chest", new DreadPirateChestModel()));
+		
+		// whale bone pirate chest - uses same model as dread pirate
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				WhaleBonePirateChestTileEntity.class,
+				new TreasureChestTileEntityRenderer("whale-bone-pirate-chest", new DreadPirateChestModel()));
 		
 		// compressor chest
 		ClientRegistry.bindTileEntitySpecialRenderer(

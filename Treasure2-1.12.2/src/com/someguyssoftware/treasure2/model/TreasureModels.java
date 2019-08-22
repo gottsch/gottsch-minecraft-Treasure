@@ -30,6 +30,7 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GOLD_STRONGBOX));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SAFE));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.DREAD_PIRATE_CHEST));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WHALE_BONE_PIRATE_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.COMPRESSOR_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GOLD_SKULL_CHEST));

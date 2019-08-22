@@ -33,6 +33,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String GOLD_STRONGBOX_ID = "gold_strongbox";
 	public static final String SAFE_ID = "safe";
 	public static final String DREAD_PIRATE_CHEST_ID = "dread_pirate_chest";
+	public static final String WHALE_BONE_PIRATE_CHEST_ID = "whale_bone_pirate_chest";
 	public static final String COMPRESSOR_CHEST_ID = "compressor_chest";
 	public static final String WITHER_CHEST_ID = "wither_chest";
 	public static final String WITHER_CHEST_TOP_ID = "wither_chest_top";
@@ -172,6 +173,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String GOLD_STRONGBOX_TE_ID = "gold_strongbox_tile_entity";
 	public static final String SAFE_TE_ID = "safe_tile_entity";
 	public static final String DREAD_PIRATE_CHEST_TE_ID = "dread_pirate_chest_tile_entity";
+	public static final String WHALE_BONE_PIRATE_CHEST_TE_ID = "whale_bone_pirate_chest_tile_entity";
 	public static final String COMPRESSOR_CHEST_TE_ID = "compressor_chest_tile_entity";
 	public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
 	public static final String SKULL_CHEST_TE_ID = "skull_chest_tile_entity";
@@ -184,7 +186,7 @@ public class TreasureConfig extends AbstractConfig {
 	 */
 	public static final String MODS_FOLDER = "mods";	
 	public static final String CUSTOM_STRUCTURE_FOLDER = MODS_FOLDER + "/treasure2/structures";
-	
+		
 	public static String treasureFolder;
 	public static boolean enableKeyBreaks = true;
 	public static boolean enableFog = true;

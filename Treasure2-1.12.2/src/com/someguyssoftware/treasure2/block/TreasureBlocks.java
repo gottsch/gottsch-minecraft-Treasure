@@ -37,6 +37,7 @@ import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SkullChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.WhaleBonePirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
@@ -74,6 +75,7 @@ public class TreasureBlocks {
 	public static final Block SKULL_CHEST;
 	public static final Block GOLD_SKULL_CHEST;
 	public static final Block CAULDRON_CHEST;
+	public static final Block WHALE_BONE_PIRATE_CHEST;
 	
 	// MIMIC CHESTS
 	public static final Block WOOD_MIMIC;
@@ -81,7 +83,6 @@ public class TreasureBlocks {
 	// unimplemented chests	
 	public static final Block VASE = null;
 	public static final Block INVISIBLE_CHEST = null;
-	public static final Block WHALE_BONE_PIRATE_CHEST = null;
 	
 	// chest holder
 	public static Multimap<Rarity, Block> chests;
@@ -340,6 +341,15 @@ public class TreasureBlocks {
 				.setChestGuiID(GuiHandler.STANDARD_CHEST_GUIID)
 				.setHardness(3.0F);
 		
+		WHALE_BONE_PIRATE_CHEST = new TreasureChestBlock(
+				Treasure.MODID,
+				TreasureConfig.WHALE_BONE_PIRATE_CHEST_ID,
+				WhaleBonePirateChestTileEntity.class,
+				TreasureChestTypes.STANDARD, 
+				Rarity.EPIC)
+				.setBounds(stdChestBounds)
+				.setHardness(4.0F);
+		
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
 
@@ -528,6 +538,7 @@ public class TreasureBlocks {
 					GOLD_STRONGBOX,
 					SAFE,
 					DREAD_PIRATE_CHEST,
+					WHALE_BONE_PIRATE_CHEST,
 					COMPRESSOR_CHEST,
 					WOOD_MIMIC,
 					GRAVESTONE1_STONE,
@@ -619,6 +630,7 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(GOLD_STRONGBOX),
 					new TreasureChestItemBlock(SAFE),
 					new TreasureChestItemBlock(DREAD_PIRATE_CHEST),
+					new TreasureChestItemBlock(WHALE_BONE_PIRATE_CHEST),
 					new TreasureChestItemBlock(COMPRESSOR_CHEST),
 					new TreasureChestItemBlock(WITHER_CHEST),
 					new TreasureChestItemBlock(SKULL_CHEST),
@@ -693,6 +705,7 @@ public class TreasureBlocks {
 			GameRegistry.registerTileEntity(GoldStrongboxTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.GOLD_STRONGBOX_TE_ID));
 			GameRegistry.registerTileEntity(SafeTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.SAFE_TE_ID));
 			GameRegistry.registerTileEntity(DreadPirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.DREAD_PIRATE_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(WhaleBonePirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WHALE_BONE_PIRATE_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(CompressorChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.COMPRESSOR_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(WitherChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WITHER_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(SkullChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.SKULL_CHEST_TE_ID));
