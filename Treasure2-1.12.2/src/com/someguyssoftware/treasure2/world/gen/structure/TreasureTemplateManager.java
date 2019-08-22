@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.Set;
 
@@ -249,10 +250,8 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				}
 				// get the set of all biomes
 				Set<Biome> biomes = (Set<Biome>) ForgeRegistries.BIOMES.getValuesCollection();
-				// TODO add black list biome ID to list, then check against the biome ID that is being being process
 				// for each biome is the list
 				for (Biome biome : biomes) {
-//					if (!meta.getBiomeBlackList().contains(biome.getBiomeName().toLowerCase())
 					if (!blackListBiomeIDs.contains(Biome.getIdForBiome(biome))
 							&& !BiomeDictionary.hasType(biome, Type.END)
 							&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
@@ -284,7 +283,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		
 		List<TemplateHolder> templateHolders = getTemplatesByArchetypeTypeBiomeTable().get(key, biomeID);
 		if (templateHolders == null || templateHolders.isEmpty()) {
-			Treasure.logger.debug("could not find template holders for archetype:type, biome -> {} {}", key, biome.getBiomeName());
+			Treasure.logger.debug("could not find template holders for archetype:type, biome -> {} {}", key, biomeID);
 			return null;
 		}
 		
