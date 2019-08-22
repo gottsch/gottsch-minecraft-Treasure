@@ -11,6 +11,8 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.IWellConfig;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorData;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -21,7 +23,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Feb 18, 2018
  *
  */
-public class CanopyWellGenerator implements IWellGenerator {
+public class CanopyWellGenerator implements IWellGenerator<TreasureGeneratorResult<TreasureGeneratorData>> {
 
 	/**
 	 * 
@@ -175,6 +177,13 @@ public class CanopyWellGenerator implements IWellGenerator {
 				world.setBlockState(indexCoords.add(x, 0, z).toPos(), block.getDefaultState(), 3);
 			}
 		}
+		return null;
+	}
+
+	@Override
+	public TreasureGeneratorResult generate2(World world, Random random,
+			ICoords spawnCoords, IWellConfig config) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }
