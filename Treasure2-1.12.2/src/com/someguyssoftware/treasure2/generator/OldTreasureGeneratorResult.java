@@ -10,22 +10,22 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
  *
  */
 @Deprecated
-public class TreasureGeneratorResult extends GeneratorResult implements ITreasureGeneratorResult {
+public class OldTreasureGeneratorResult extends GeneratorResult implements IOldTreasureGeneratorResult {
 	private ICoords chestCoords;
 
-	public TreasureGeneratorResult() {}
+	public OldTreasureGeneratorResult() {}
 	
-	public TreasureGeneratorResult(boolean success) {
+	public OldTreasureGeneratorResult(boolean success) {
 		setSuccess(success);
 	}
 
-	public TreasureGeneratorResult(boolean success, ICoords coords) {
+	public OldTreasureGeneratorResult(boolean success, ICoords coords) {
 		setSuccess(success);
 		setChestCoords(coords);
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult#getChestCoords()
+	 * @see com.someguyssoftware.treasure2.generator.IOldTreasureGeneratorResult#getChestCoords()
 	 */
 	@Override
 	public ICoords getChestCoords() {
@@ -33,7 +33,7 @@ public class TreasureGeneratorResult extends GeneratorResult implements ITreasur
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult#setChestCoords(com.someguyssoftware.gottschcore.positional.ICoords)
+	 * @see com.someguyssoftware.treasure2.generator.IOldTreasureGeneratorResult#setChestCoords(com.someguyssoftware.gottschcore.positional.ICoords)
 	 */
 	@Override
 	public void setChestCoords(ICoords chestCoords) {
@@ -41,13 +41,13 @@ public class TreasureGeneratorResult extends GeneratorResult implements ITreasur
 	}
 	
 	@Override
-	public ITreasureGeneratorResult fail() {
+	public IOldTreasureGeneratorResult fail() {
 		super.fail();
 		return this;
 	}
 	
 	@Override
-	public ITreasureGeneratorResult success() {
+	public IOldTreasureGeneratorResult success() {
 		super.success();
 		return this;
 	}
