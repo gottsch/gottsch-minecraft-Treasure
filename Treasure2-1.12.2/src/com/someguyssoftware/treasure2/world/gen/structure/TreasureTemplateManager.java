@@ -29,6 +29,7 @@ import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 import com.someguyssoftware.gottschcore.meta.IMetaType;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplateManager;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
@@ -36,6 +37,7 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
+import com.someguyssoftware.treasure2.meta.StructureType;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -44,6 +46,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.DataFixer;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.common.BiomeDictionary;
@@ -58,38 +61,11 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
  */
 public class TreasureTemplateManager extends GottschTemplateManager {
 
-	/*
-	 * NOTE this enum is key for external templates. all templates are categorized
-	 * and placed into folders according to the type.
-	 */
-	@Deprecated
-	public enum StructureType {
-		ABOVEGROUND, UNDERGROUND
-	};
-
-	private final Map<StructureType, List<Template>> templatesByType = Maps.<StructureType, List<Template>>newHashMap();
-	/** NOTE not in use yet. can organize tempaltes by type and rarity */
-	private final Table<StructureType, Rarity, List<Template>> templateTable = HashBasedTable.create();
-
 	private final Table<IMetaArchetype, IMetaType, List<TemplateHolder>> templatesByArchetypeType = HashBasedTable.create();
 
 	private final Table<String, Integer, List<TemplateHolder>> templatesByArchetypeTypeBiome = HashBasedTable.create();
 
-//	/*
-//	 * builtin underground locations for structures
-//	 */
-//	private static List<String> UNDERGROUND_LOCATIONS = Arrays.asList(new String[] { "treasure2:underground/basic1",
-//			"treasure2:underground/basic2", "treasure2:underground/basic3", "treasure2:underground/basic4",
-//			"treasure2:underground/basic5", "treasure2:underground/cave1", "treasure2:underground/cave2",
-//			"treasure2:underground/cobb1", "treasure2:underground/crypt1" });
-//
-//	/*
-//	 * builtin aboveground locations for structures
-//	 */
-//	private static List<String> ABOVEGROUND_LOCATIONS = Arrays
-//			.asList(new String[] { "treasure2:aboveground/crypt2", "treasure2:aboveground/crypt3" });
-
-	private static List<String> FOLDER_LOCATIONS = ImmutableList.of("surface", "subterranean", "submerged", "float");
+	private static List<String> FOLDER_LOCATIONS = ImmutableList.of("surface", "subterranean", "submerged", "float", "wells");
 	
 	/*
 	 * use this map when structures are submerged instead of the default marker map
@@ -109,11 +85,6 @@ public class TreasureTemplateManager extends GottschTemplateManager {
         // setup standard list of markers
         waterMarkerMap = Maps.newHashMap(getMarkerMap());
         waterMarkerMap.put(StructureMarkers.NULL, Blocks.AIR);// <-- this is the difference between default
-        
-		// init maps
-		for (StructureType structureType : StructureType.values()) {
-			getTemplatesByTypeMap().put(structureType, new ArrayList<Template>(5));
-		}
 
 		// initialize table
 		for (IMetaArchetype archetype : StructureArchetype.values()) {
@@ -132,10 +103,8 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	 * 
 	 */
 	public void clear() {
-		templateTable.clear();
 		templatesByArchetypeTypeBiome.clear();
 		templatesByArchetypeType.clear();
-		templatesByType.clear();
 	}
 	
 	/**
@@ -187,6 +156,9 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				}
 				Treasure.logger.debug("loaded custom template  with key -> {}", loc.toString());
 					
+				// TODO have the template. for now in Treasure, wrap in TreasureTemplate that has an offset or verticalOffset property in the template
+				// set that value to either the meta value if any. then the the template .... maybe getTemplate should be getTemplateHolder
+				
 				// TODO future state: first determine if parent/child - if child, need to find the parent template holder in map - how?
 				// probably needs to be mapped by meta, then it can be mapped otherwise				
 				
@@ -296,16 +268,42 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	}
 
 	/**
-	 * Convenience method.
-	 * 
-	 * @param type
+	 * TODO change to getTemplateHolder and return the holder.
+	 * @param world
+	 * @param random
+	 * @param key
+	 * @param biome
 	 * @return
 	 */
-	public List<Template> getTemplatesByType(StructureType type) {
-		List<Template> templates = getTemplatesByTypeMap().get(type);
-		return templates;
+	public /*GottschTemplate*/TemplateHolder getTemplate(World world, Random random, StructureArchetype archetype, StructureType type, Biome biome) {
+		Template template = null;
+		// get structure by archetype (subterranean) and type (room)
+		String key =archetype.getName()	+ ":" + type.getName();
+		
+		Integer biomeID = Biome.getIdForBiome(biome);
+		
+		List<TemplateHolder> templateHolders = getTemplatesByArchetypeTypeBiomeTable().get(key, biomeID);
+		if (templateHolders == null || templateHolders.isEmpty()) {
+			Treasure.logger.debug("could not find template holders for archetype:type, biome -> {} {}", key, biome.getBiomeName());
+			return null;
+		}
+		
+		TemplateHolder holder = templateHolders.get(random.nextInt(templateHolders.size()));
+		if (holder == null) {
+			Treasure.logger.debug("could not find random template holder.");
+			return null;
+		}
+		
+//		template = holder.getTemplate();
+		Treasure.logger.debug("selected template holder -> {} : {}", holder.getLocation(), holder.getMetaLocation());
+		
+//		return (GottschTemplate) template;
+		return holder;
 	}
-
+	
+	/**
+	 * 
+	 */
 	@Override
 	public GottschTemplateManager loadAll(List<String> locations) {
 		// prevent this function from executing as the implementation version should be
@@ -414,19 +412,9 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	}
 
 	/**
-	 * @return the templateTable
+	 * 
+	 * @return
 	 */
-	public Table<StructureType, Rarity, List<Template>> getTemplateTable() {
-		return templateTable;
-	}
-
-	/**
-	 * @return the templatesByType
-	 */
-	public Map<StructureType, List<Template>> getTemplatesByTypeMap() {
-		return templatesByType;
-	}
-
 	public Table<String, Integer, List<TemplateHolder>> getTemplatesByArchetypeTypeBiomeTable() {
 		return templatesByArchetypeTypeBiome;
 	}
