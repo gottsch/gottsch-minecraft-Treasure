@@ -3,20 +3,20 @@
  */
 package com.someguyssoftware.treasure2.generator.structure;
 
-import com.someguyssoftware.treasure2.generator.GenericGeneratorData;
-import com.someguyssoftware.treasure2.generator.GenericGeneratorResult;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorData;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 
 /**
  * @author Mark Gottschling on Aug 15, 2019
  *
  */
-public class GenericStructureGenerator implements INewTreasureStructureGenerator<GenericGeneratorResult<GenericGeneratorData>>{
-
-	@Override
-	public GenericGeneratorResult<GenericGeneratorData> generate() {
-		GenericGeneratorResult<GenericGeneratorData> result = new GenericGeneratorResult<>(true);
-		return result;
-	}
+public class GenericStructureGenerator { //implements INewTreasureStructureGenerator<TreasureGeneratorResult<TreasureGeneratorData>>{
+//
+//	@Override
+//	public TreasureGeneratorResult<TreasureGeneratorData> generate() {
+//		TreasureGeneratorResult<TreasureGeneratorData> result = new TreasureGeneratorResult<>(true);
+//		return result;
+//	}
 
 	
 }

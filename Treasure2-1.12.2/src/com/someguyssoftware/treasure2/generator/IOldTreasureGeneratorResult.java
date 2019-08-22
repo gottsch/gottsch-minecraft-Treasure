@@ -4,16 +4,16 @@ import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 
 @Deprecated
-public interface ITreasureGeneratorResult extends IGeneratorResult {
+public interface IOldTreasureGeneratorResult extends IGeneratorResult {
 
 	ICoords getChestCoords();
 
 	void setChestCoords(ICoords chestCoords);
 	
 	@Override
-	public ITreasureGeneratorResult fail();
+	public IOldTreasureGeneratorResult fail();
 	
 	@Override
-	public ITreasureGeneratorResult success();
+	public IOldTreasureGeneratorResult success();
 
 }
