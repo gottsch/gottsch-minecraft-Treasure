@@ -6,10 +6,13 @@ package com.someguyssoftware.treasure2.command;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
+import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.enums.Wells;
-import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorData;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.well.WellGenerator;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -20,20 +23,19 @@ import net.minecraft.world.World;
 
 /**
  * 
- * @author Mark Gottschling on Jan 25, 2018
+ * @author Mark Gottschling on Aug 20, 2019
  *
  */
-@Deprecated
-public class SpawnWellCommand extends CommandBase {
+public class SpawnWellStructureCommand extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "treasurewell";
+		return "t2!wellstructure";
 	}
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/treasurewell <x> <y> <z> [well | -n <name>]: spawns a Treasure! wishing well at location (x,y,z)";
+		return "/t2!wellstructure <x> <y> <z> [well | -n <name>]: spawns a Treasure! wishing well at location (x,y,z)";
 	}
 
 	@Override
@@ -51,18 +53,15 @@ public class SpawnWellCommand extends CommandBase {
 				wellName = args[3];
 			}
 			
-			if (wellName.equals("")) wellName = Wells.WISHING_WELL.name();
-			Wells well = Wells.valueOf(wellName.toUpperCase());
-			Treasure.logger.debug("Well:" + well + "; " + well.ordinal());
-			
 			if (player != null) {
     			World world = commandSender.getEntityWorld();
-    			Treasure.logger.debug("Starting to build Treasure! well ...");
+    			ICoords coords = new Coords(x, y, z);
+    			Treasure.logger.debug("Starting to build Treasure! well at -> {}", coords.toShortString());
 
     			Random random = new Random();
-    			//BlockPos pos = new BlockPos(x, y, z);
-    			WellWorldGenerator wellGen = new WellWorldGenerator();
-//    			wellGen.getGenerators().get(well).generate(world, random, new Coords(x, y, z), Configs.wellConfigs.get(well)); 
+    			WellGenerator gen = new WellGenerator();
+    			TreasureGeneratorResult<TreasureGeneratorData> result = gen.generate2(world, random, coords, Configs.wellConfig);
+    			Treasure.logger.debug("Well start coords at -> {}", result.getData().getSpawnCoords().toShortString());
     		}
 		}
 		catch(Exception e) {

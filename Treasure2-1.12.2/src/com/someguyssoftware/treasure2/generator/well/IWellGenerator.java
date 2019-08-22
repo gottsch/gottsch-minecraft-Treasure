@@ -11,12 +11,13 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.IWellConfig;
+import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
+import net.minecraft.block.BlockDirt.DirtType;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockTallGrass;
-import net.minecraft.block.BlockDirt.DirtType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -25,7 +26,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Feb 18, 2018
  *
  */
-public interface IWellGenerator {
+public interface IWellGenerator<RESULT extends ITreasureGeneratorResult<?>> {
 	/**
 	 * 
 	 * @param world
@@ -34,6 +35,16 @@ public interface IWellGenerator {
 	 * @return
 	 */
 	public abstract boolean generate(World world, Random random, ICoords spawnCoords, IWellConfig config);
+	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param spawnCoords
+	 * @param config
+	 * @return
+	 */
+	public abstract RESULT generate2(World world, Random random, ICoords spawnCoords, IWellConfig config);
 	
 	/**
 	 * Default implementation based on a 3x3 well structure.

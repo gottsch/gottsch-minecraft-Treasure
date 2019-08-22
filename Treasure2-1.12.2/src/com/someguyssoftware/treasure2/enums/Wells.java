@@ -14,8 +14,8 @@ import java.util.Map;
  */
 public enum Wells implements IEnum {
 	WISHING_WELL(0, "Wishing Well"),
-	CANOPY_WISHING_WELL(1, "Canopy Wishing Well"),
-	WOOD_DRAW_WISHING_WELL(2, "Wishing Well");
+	@Deprecated CANOPY_WISHING_WELL(1, "Canopy Wishing Well"),
+	@Deprecated WOOD_DRAW_WISHING_WELL(2, "Wishing Well");
 	
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();
