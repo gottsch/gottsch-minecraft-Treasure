@@ -3,52 +3,55 @@
  */
 package com.someguyssoftware.treasure2.generator;
 
-import com.someguyssoftware.gottschcore.generator.GeneratorResult;
-import com.someguyssoftware.gottschcore.positional.ICoords;
 /**
- * @author Mark Gottschling on Jul 27, 2019
+ * @author Mark Gottschling on Aug 15, 2019
  *
  */
-@Deprecated
-public class TreasureGeneratorResult extends GeneratorResult implements ITreasureGeneratorResult {
-	private ICoords chestCoords;
-
-	public TreasureGeneratorResult() {}
+public class GenericGeneratorResult<DATA extends INewTreasureGeneratorData> implements INewTreasureGeneratorResult<DATA> {
+	private DATA data;
+	private boolean success;
 	
-	public TreasureGeneratorResult(boolean success) {
+	public GenericGeneratorResult() {
+		
+	}
+	
+	public GenericGeneratorResult(boolean success) {
 		setSuccess(success);
 	}
-
-	public TreasureGeneratorResult(boolean success, ICoords coords) {
+	
+	public GenericGeneratorResult(boolean success, DATA data) {
 		setSuccess(success);
-		setChestCoords(coords);
+		setData(data);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult#getChestCoords()
-	 */
+	private void setSuccess(boolean success) {
+		this.success = success;
+	}
+	
 	@Override
-	public ICoords getChestCoords() {
-		return chestCoords;
+	public DATA getData() {
+		return data;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult#setChestCoords(com.someguyssoftware.gottschcore.positional.ICoords)
-	 */
 	@Override
-	public void setChestCoords(ICoords chestCoords) {
-		this.chestCoords = chestCoords;
+	public void setData(DATA data) {
+		this.data = data;
 	}
-	
+
 	@Override
-	public ITreasureGeneratorResult fail() {
-		super.fail();
+	public boolean isSuccess() {
+		return success;
+	}
+
+	@Override
+	public INewTreasureGeneratorResult<DATA> success() {
+		setSuccess(true);
 		return this;
 	}
-	
+
 	@Override
-	public ITreasureGeneratorResult success() {
-		super.success();
+	public INewTreasureGeneratorResult<DATA> fail() {
+		setSuccess(false);
 		return this;
 	}
 }

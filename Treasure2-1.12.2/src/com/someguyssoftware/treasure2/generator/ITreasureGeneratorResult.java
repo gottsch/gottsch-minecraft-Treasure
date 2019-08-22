@@ -1,19 +1,20 @@
+/**
+ * 
+ */
 package com.someguyssoftware.treasure2.generator;
 
-import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
-import com.someguyssoftware.gottschcore.positional.ICoords;
+/**
+ * @author Mark Gottschling on Aug 15, 2019
+ *
+ */
+public interface INewTreasureGeneratorResult<DATA extends INewTreasureGeneratorData> {
 
-@Deprecated
-public interface ITreasureGeneratorResult extends IGeneratorResult {
-
-	ICoords getChestCoords();
-
-	void setChestCoords(ICoords chestCoords);
+	public DATA getData();
+	public void setData(DATA data);
 	
-	@Override
-	public ITreasureGeneratorResult fail();
+	public boolean isSuccess();
+	public INewTreasureGeneratorResult<DATA> success();
+	public INewTreasureGeneratorResult<DATA> fail();
 	
-	@Override
-	public ITreasureGeneratorResult success();
 
 }
