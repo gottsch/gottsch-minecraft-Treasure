@@ -60,23 +60,28 @@ public class SubmergedStructureGenerator implements IStructureInfoProvider {
 		Biome biome = world.getBiome(spawnCoords.toPos());
 		
 		// get the template from the given archetype, type and biome
-		GottschTemplate template = getTemplate(world, random, StructureArchetype.SUBMERGED, StructureType.RUIN, biome);
+//		GottschTemplate template = getTemplate(world, random, StructureArchetype.SUBMERGED, StructureType.RUIN, biome);
+//		
+//		if (template == null) {
+//			Treasure.logger.debug("could not find random template");
+//			return false;
+//		}
+		TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, StructureArchetype.SUBMERGED, StructureType.RUIN, biome);
+		if (holder == null) return false;
+
 		
-		if (template == null) {
-			Treasure.logger.debug("could not find random template");
-			return false;
-		}
-		
-		// TODO offset should be moved into StructureBuilder
+		// TODO offset should be moved into StructureGenerator
+		// TODO getMarkerBlock should be in StructureGenerator as well
+		// TODO move StructureGenerator to world.gen.structure (in gottschcore)
 		// find the offset block
-		int offset = 0;
-		ICoords offsetCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.OFFSET));
-		if (offsetCoords != null) {
-			offset = -offsetCoords.getY();
-		}
-		
-		// update the spawn coords with the offset
-		spawnCoords = spawnCoords.add(0, offset, 0);
+//		int offset = 0;
+//		ICoords offsetCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.OFFSET));
+//		if (offsetCoords != null) {
+//			offset = -offsetCoords.getY();
+//		}
+//		
+//		// update the spawn coords with the offset
+//		spawnCoords = spawnCoords.add(0, offset, 0);
 		
 		// select a random rotation
 		Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
@@ -86,7 +91,7 @@ public class SubmergedStructureGenerator implements IStructureInfoProvider {
 		PlacementSettings placement = new PlacementSettings();
 		placement.setRotation(rotation).setRandom(random);
 		
-		BlockPos transformedSize = template.transformedSize(rotation);
+		BlockPos transformedSize = holder.getTemplate().transformedSize(rotation);
 		
 		for (int i = 0; i < 3; i++) {
 			if (!WorldInfo.isSolidBase(world, spawnCoords, transformedSize.getX(), transformedSize.getZ(), 50)) {
@@ -107,7 +112,7 @@ public class SubmergedStructureGenerator implements IStructureInfoProvider {
 		IStructureGenerator generator = new StructureGenerator();
 		generator.setNullBlock(Blocks.AIR);
 		
-		 IStructureInfo info = generator.generate(world, random, template, placement, spawnCoords);
+		 IStructureInfo info = generator.generate(world, random, holder, placement, spawnCoords);
 		if (info == null) return false;
 		
 		Treasure.logger.debug("returned info -> {}", info);

@@ -9,8 +9,6 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.block.AbstractModContainerBlock;
-import com.someguyssoftware.gottschcore.generator.GeneratorResult;
-import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
 import com.someguyssoftware.gottschcore.loot.LootTable;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -24,7 +22,6 @@ import com.someguyssoftware.treasure2.block.IMimicBlock;
 import com.someguyssoftware.treasure2.block.ITreasureBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
-import com.someguyssoftware.treasure2.block.WitherChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
@@ -33,7 +30,9 @@ import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.GeneratorChestData;
+import com.someguyssoftware.treasure2.generator.IOldTreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.OldTreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.marker.RandomStructureMarkerGenerator;
@@ -42,8 +41,6 @@ import com.someguyssoftware.treasure2.generator.submerged.SubmergedStructureGene
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.meta.StructureArchetype;
-import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
@@ -75,7 +72,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		boolean isAboveGround = false;
 		boolean isOcean = false;
 		boolean hasMarkers = true;
-		ITreasureGeneratorResult result = null;
+		IOldTreasureGeneratorResult result = null;
 			
 		// 1. collect location data points
 		ICoords surfaceCoords = WorldInfo.getSurfaceCoords(world, coords);
@@ -223,10 +220,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param config
 	 * @return
 	 */
-	public ITreasureGeneratorResult generateSubmergedRuins(World world, Random random, ICoords spawnCoords,
+	public IOldTreasureGeneratorResult generateSubmergedRuins(World world, Random random, ICoords spawnCoords,
 			IChestConfig config) {
 		
-		ITreasureGeneratorResult result = new TreasureGeneratorResult(true, spawnCoords);
+		IOldTreasureGeneratorResult result = new OldTreasureGeneratorResult(true, spawnCoords);
 		ICoords chestCoords = null;
 		
 		// check if it has 50% land
@@ -274,8 +271,9 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param config
 	 * @return
 	 */
-	public ITreasureGeneratorResult generatePit(World world, Random random, Rarity chestRarity, ICoords markerCoords, IChestConfig config) {
-		ITreasureGeneratorResult result = new TreasureGeneratorResult(true, markerCoords);
+	public IOldTreasureGeneratorResult generatePit(World world, Random random, Rarity chestRarity, ICoords markerCoords, IChestConfig config) {
+		IOldTreasureGeneratorResult result = new OldTreasureGeneratorResult(true, markerCoords);
+		TreasureGeneratorResult<GeneratorChestData> pitResult = new TreasureGeneratorResult<>(true);
 		
 		// 2.5. check if it has 50% land
 		if (!WorldInfo.isSolidBase(world, markerCoords, 2, 2, 50)) {
@@ -296,10 +294,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		IPitGenerator pitGenerator = selectPitGenerator(random);
 		
 		// 3. build the pit
-		result = pitGenerator.generate(world, random, markerCoords, spawnCoords);
+		pitResult = pitGenerator.generate(world, random, markerCoords, spawnCoords);
 		
 		ICoords chestCoords = null;
-		if (result.isSuccess()) {
+		if (pitResult.isSuccess()) {
 			// TODO handle all this within pitGenerator, updating the IGeneratorResult with the chest coods
 			if (pitGenerator instanceof IStructureInfoProvider) {
 				IStructureInfoProvider structureInfoProvider = (IStructureInfoProvider)pitGenerator;

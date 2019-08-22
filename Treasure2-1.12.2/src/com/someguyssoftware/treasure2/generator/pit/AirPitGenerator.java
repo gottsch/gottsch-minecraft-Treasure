@@ -2,16 +2,11 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.GeneratorChestData;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
@@ -38,8 +33,8 @@ public class AirPitGenerator extends AbstractPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public ITreasureGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		ITreasureGeneratorResult result =super.generate(world, random, surfaceCoords, spawnCoords); 
+	public TreasureGeneratorResult<GeneratorChestData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		TreasureGeneratorResult<GeneratorChestData> result =super.generate(world, random, surfaceCoords, spawnCoords); 
 		if (result.isSuccess()) {
 			Treasure.logger.debug("Generated Air Pit at " + spawnCoords.toShortString());
 		}

@@ -11,7 +11,9 @@ import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.GeneratorChestData;
+import com.someguyssoftware.treasure2.generator.IOldTreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.OldTreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.structure.StructureGenerator;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
@@ -20,7 +22,6 @@ import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
 import com.someguyssoftware.treasure2.world.gen.structure.StructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
-import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager.StructureType;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -32,7 +33,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
-import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.common.DungeonHooks;
 
 
@@ -83,8 +83,9 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	 * @return
 	 */
 	@Override
-	public ITreasureGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		ITreasureGeneratorResult result = new TreasureGeneratorResult(true, spawnCoords); // TODO might roll StructureInfo into result.
+	public TreasureGeneratorResult<GeneratorChestData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(true, new GeneratorChestData());
+//		result.getData().setSpawnCoords(spawnCoords);
 		
 		// clear info member property
 		setInfo(null);
@@ -109,15 +110,13 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 				return result.fail();
 			}
 			// update the chest coords in the result
-			result.setChestCoords(spawnCoords);
+//			result.getData().setSpawnCoords(spawnCoords);
+//			result.getData().setChestCoords(spawnCoords);
 		}
 	
 		// get distance to surface
 		int yDist = (surfaceCoords.getY() - spawnCoords.getY()) - 2;
 		Treasure.logger.debug("Distance to ySurface =" + yDist);
-	
-		// REMOVED - no longer need as using member property
-	//	IStructureInfo info = null;
 		
 		if (yDist > 6) {
 			Treasure.logger.debug("generating structure room at -> {}", spawnCoords.toShortString());
@@ -176,10 +175,12 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 //				boolean isGenerated 
 				result = getGenerator().generate(world, random, surfaceCoords, spawnCoords);
 				if (result.isSuccess()/*isGenerated*/) {
+					// TODO old way
 					IStructureInfo info = new StructureInfo();
 					info.setCoords(spawnCoords);
 					info.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.CHEST), new Coords(0, 0, 0));
 					setInfo(info);
+					
 					return result;
 				}
 				else {
@@ -189,7 +190,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			}
 
 			// update the spawn coords with the offset
-			spawnCoords = spawnCoords.add(0, offset, 0);
+//	>>>		spawnCoords = spawnCoords.add(0, offset, 0);
 	
 			// find the entrance block
 			ICoords entranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
@@ -217,7 +218,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			Treasure.logger.debug("aligned room coords -> {}", roomCoords.toShortString());
 			
 			// generate the structure
-			info = new StructureGenerator().generate(world, random, template, placement, roomCoords);
+			info = new StructureGenerator().generate(world, random, holder, placement, roomCoords);
 			if (info == null) return result.fail();			
 			Treasure.logger.debug("returned info -> {}", info);
 			setInfo(info);
@@ -267,10 +268,11 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 		// shaft is only 2-6 blocks long - can only support small covering
 		else if (yDist >= 2) {
 			// simple short pit
-			new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
+			result = new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
 			// build no-entry info
 			IStructureInfo noInfo = new StructureInfo();
-			noInfo.setCoords(spawnCoords);
+//			noInfo.setCoords(spawnCoords);
+			noInfo.setCoords(result.getData().getSpawnCoords());
 			noInfo.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.CHEST), new Coords(0, 0, 0));
 			setInfo(noInfo);
 		}		

@@ -12,7 +12,10 @@ import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.GeneratorChestData;
+import com.someguyssoftware.treasure2.generator.IOldTreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.OldTreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorData;
 import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 
@@ -90,8 +93,10 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ITreasureGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		ITreasureGeneratorResult result = new TreasureGeneratorResult(true, spawnCoords);
+	public TreasureGeneratorResult<GeneratorChestData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(true, new GeneratorChestData());		
+		result.getData().setSpawnCoords(spawnCoords);
+		
 		// is the chest placed in a cavern
 		boolean inCavern = false;
 		
@@ -111,8 +116,9 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 				Treasure.logger.warn("Exiting: Unable to locate cavern ceiling.");
 				return result.fail();
 			}
+			result.getData().setSpawnCoords(spawnCoords);
 			// update the chest coords in the result
-			((ITreasureGeneratorResult)result).setChestCoords(spawnCoords);
+			result.getData().setChestCoords(spawnCoords);
 		}
 	
 		// generate shaft

@@ -2,21 +2,15 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.cube.Cube;
-import com.someguyssoftware.gottschcore.generator.GeneratorResult;
-import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.gottschcore.random.RandomHelper;
-import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.GeneratorChestData;
 import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
-import com.sun.media.jfxmedia.logging.Logger;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -53,8 +47,10 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ITreasureGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		ITreasureGeneratorResult result = new TreasureGeneratorResult(true, spawnCoords);
+	public TreasureGeneratorResult<GeneratorChestData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(true, new GeneratorChestData());
+		result.getData().setSpawnCoords(spawnCoords);
+		result.getData().setChestCoords(spawnCoords);
 		
 		// is the chest placed in a cavern
 		boolean inCavern = false;
@@ -76,7 +72,8 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 				return result.fail();
 			}
 			// update chest coords
-			result.setChestCoords(spawnCoords);
+			result.getData().setSpawnCoords(spawnCoords);
+			result.getData().setChestCoords(spawnCoords);
 		}
 	
 		// generate shaft
@@ -110,7 +107,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 		// shaft is only 2-6 blocks long - can only support small covering
 		else if (yDist >= 2) {
 			// simple short pit
-			new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
+			result = new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
 		}		
 		Treasure.logger.debug("Generated Big Bottom Mob Trap Pit at " + spawnCoords.toShortString());
 		return result;

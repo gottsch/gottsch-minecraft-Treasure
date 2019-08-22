@@ -2,11 +2,9 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.generator.GeneratorResult;
-import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.GeneratorChestData;
 import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 
 import net.minecraft.block.material.Material;
@@ -29,9 +27,11 @@ public class SimpleShortPitGenerator extends AbstractPitGenerator {
 	 * @param coords
 	 * @return
 	 */
-	public ITreasureGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public TreasureGeneratorResult<GeneratorChestData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		Treasure.logger.debug("Generating SimpleShortShaft.");
-		ITreasureGeneratorResult result = new TreasureGeneratorResult(true, spawnCoords);
+		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(true, new GeneratorChestData());
+		result.getData().setSpawnCoords(spawnCoords);
+		result.getData().setChestCoords(spawnCoords);
 		
 		ICoords checkCoords = null;
 		// check each position if already not air and generate

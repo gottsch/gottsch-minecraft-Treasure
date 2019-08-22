@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
  * @author Mark Gottschling on Jan 18, 2019
  *
  */
+@Deprecated
 public interface IStructureInfo {
 
 	ICoords getCoords();
