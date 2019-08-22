@@ -39,6 +39,7 @@ import net.minecraftforge.common.DungeonHooks;
  * @author Mark Gottschling on Jan 28, 2019
  *
  */
+// TODO get rid of IStructureProvider
 public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStructureInfoProvider {
 
 	private IStructureInfo info;
@@ -58,25 +59,26 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStruct
 		Biome biome = world.getBiome(coords.toPos());
 		
 		// get the template from the given archetype, type and biome
-		GottschTemplate template = getTemplate(world, random, StructureArchetype.SURFACE, StructureType.MARKER, biome);
-
-		if (template == null) {
-			Treasure.logger.debug("could not find random template");
-			return false;
-		}
+//		GottschTemplate template = getTemplate(world, random, StructureArchetype.SURFACE, StructureType.MARKER, biome);
+		TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, StructureArchetype.SURFACE, StructureType.MARKER, biome);
+		if (holder == null) return false;
+//		if (template == null) {
+//			Treasure.logger.debug("could not find random template");
+//			return false;
+//		}
 
 		// get the offset
 		int offset = 0;
-		ICoords offsetCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.OFFSET));
+		ICoords offsetCoords = ((GottschTemplate)holder.getTemplate()).findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.OFFSET));
 		if (offsetCoords != null) {
 			offset = -offsetCoords.getY();
 		}
 
 		// update the spawn coords with the offset
-		ICoords spawnCoords = coords.add(0, offset, 0);
+//		ICoords spawnCoords = coords.add(0, offset, 0);
 
 		// find entrance
-		ICoords entranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
+		ICoords entranceCoords =((GottschTemplate)holder. getTemplate()).findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
 		if (entranceCoords == null) {
 			Treasure.logger.debug("Unable to locate entrance position.");
 			return false;
@@ -90,14 +92,15 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStruct
 		PlacementSettings placement = new PlacementSettings();
 		placement.setRotation(rotation).setRandom(random);
 		
+		// TODO move into StructureGenerator
 		// NOTE these values are still relative to origin (spawnCoords);
 		ICoords newEntrance = new Coords(GottschTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
 		
 		/*
 		 *  adjust spawn coords to line up room entrance with pit
 		 */
-		BlockPos transformedSize = template.transformedSize(rotation);
-		spawnCoords = IStructureGenerator.alignEntranceToCoords(spawnCoords, newEntrance, transformedSize, placement);
+		BlockPos transformedSize = holder.getTemplate().transformedSize(rotation);
+		ICoords spawnCoords = IStructureGenerator.alignEntranceToCoords(/*spawnCoords*/coords, newEntrance, transformedSize, placement);
 				
 		// if offset is 2 or less, then determine if the solid ground percentage is valid
 		if (offset >= -2) {
@@ -108,7 +111,7 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStruct
 		}
 		
 		// generate the structure
-		IStructureInfo info = new StructureGenerator().generate(world, random, template, placement, spawnCoords);
+		IStructureInfo info = new StructureGenerator().generate(world, random, holder, placement, spawnCoords);
 		if (info == null) return false;
 		setInfo(info);
 		Treasure.logger.debug("returned info -> {}", info);

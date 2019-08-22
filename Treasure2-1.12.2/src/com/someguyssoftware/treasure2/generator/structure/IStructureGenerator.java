@@ -1,15 +1,22 @@
 package com.someguyssoftware.treasure2.generator.structure;
 
+import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.meta.StructureArchetype;
+import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
+import net.minecraft.world.gen.structure.template.Template;
 
 /**
  * 
@@ -22,11 +29,12 @@ public interface IStructureGenerator {
 	 * 
 	 * @param world
 	 * @param random
-	 * @param surfaceCoords
+	 * @param templateHolder
+	 * @param settings
 	 * @param spawnCoords
 	 * @return
 	 */
-	public IStructureInfo generate(World world, Random random, GottschTemplate template, PlacementSettings settings, ICoords spawnCoords);
+	public IStructureInfo generate(World world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
 
 	/**
 	 * NOTE not 100% sure that this  belongs here
@@ -59,7 +67,7 @@ public interface IStructureGenerator {
 		}
 		return startCoords;
 	}
-
+	
 	public Block getNullBlock();
 
 	public void setNullBlock(Block nullBlock);
