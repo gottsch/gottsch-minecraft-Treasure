@@ -4,6 +4,7 @@
 package com.someguyssoftware.treasure2.generator;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 
 import com.someguyssoftware.treasure2.Treasure;
 
@@ -46,37 +47,6 @@ public class TreasureGeneratorResult<DATA extends ITreasureGeneratorData> implem
 	public boolean isSuccess() {
 		return success;
 	}
-
-//	@Override
-//	public TreasureGeneratorResult success() {
-//		setSuccess(true);
-//		return this;
-//	}
-
-//	@Override
-//	public TreasureGeneratorResult fail() {
-//		setSuccess(false);
-//		return this;
-//	}
-//
-//	@Override
-//	public TreasureGeneratorData getData() {
-//		if (this.data == null) {
-//			data = new TreasureGeneratorData();
-//		}
-//		return data;
-//	}
-
-//	@Override
-//	public void setData(TreasureGeneratorData data) {
-//		this.data = data;
-//	}
-
-//	@Override
-//	public void setData(DATA data) {
-//		this.data = data;	
-//	}
-//
 	
 	/**
 	 * 
@@ -85,17 +55,35 @@ public class TreasureGeneratorResult<DATA extends ITreasureGeneratorData> implem
 	 */
 	public DATA createData(Class<DATA> dataClass) {
 		try {
-			return dataClass.getDeclaredConstructor().newInstance();
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-				| NoSuchMethodException | SecurityException e) {
-			Treasure.logger.warn("Unable to create GeneratorData.");
-		}
+			Treasure.logger.debug("creating data object");
+
+				 // Get the class name of this instance's type.
+		        ParameterizedType pt = (ParameterizedType) getClass().getGenericSuperclass();
+				String parameterClassName = pt.getActualTypeArguments()[0].toString().split("\\s")[1];
+				Treasure.logger.debug("parameter class name -> {}", parameterClassName);
+				// Instantiate the Parameter and initialize it.
+		        DATA parameter = null;
+				parameter = (DATA) Class.forName(parameterClassName).newInstance();
+		        return parameter;
+
+
+//			Class<DATA> dd = (Class<DATA>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+//			return dd.getDeclaredConstructor().newInstance();			
+//		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+//				| NoSuchMethodException | SecurityException e) {
+//			Treasure.logger.warn("Unable to create GeneratorData.");
+//		}
+		} catch(Exception e) {	
+			Treasure.logger.error("error ->", e);
+			}
 		return null;
 	}
 	
 	@Override
 	public DATA getData() {
-		if (data == null) {
+		Treasure.logger.debug("in getData()");
+		if (this.data == null) {
+			Treasure.logger.debug("data is null");
 			Class<DATA> dataClass = null;
 			DATA data = createData(dataClass);
 			this.data = data;

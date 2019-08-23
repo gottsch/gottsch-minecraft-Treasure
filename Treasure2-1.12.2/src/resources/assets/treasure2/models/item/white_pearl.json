@@ -1,7 +1,7 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "treasure2:items/pearls/white_pearl"
+        "layer0": "treasure2:items/white_pearl"
     },
     "display": {
        "thirdperson_righthand": {

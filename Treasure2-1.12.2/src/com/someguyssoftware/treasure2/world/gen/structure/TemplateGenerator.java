@@ -96,6 +96,8 @@ public class TemplateGenerator implements ITemplateGenerator<TreasureGeneratorRe
 		// TODO need to capture the facing or meta of the chest, perform the rotation on the facing  and save it in the Map with the pos... need a new object to hold more data
 		
 		// update StrucutreInfo
+		Treasure.logger.debug("result -> {}", result);
+		Treasure.logger.debug("result.data -> {}", result.getData());
 		result.getData().setSpawnCoords(spawnCoords);
 		result.getData().setSize(new Coords(transformedSize));
 
