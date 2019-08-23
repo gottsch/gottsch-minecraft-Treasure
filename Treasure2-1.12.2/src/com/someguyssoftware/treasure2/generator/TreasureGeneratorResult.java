@@ -3,6 +3,10 @@
  */
 package com.someguyssoftware.treasure2.generator;
 
+import java.lang.reflect.InvocationTargetException;
+
+import com.someguyssoftware.treasure2.Treasure;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,13 +17,8 @@ import lombok.Setter;
  */
 @NoArgsConstructor 
 public class TreasureGeneratorResult<DATA extends ITreasureGeneratorData> implements ITreasureGeneratorResult<DATA> {
-	@Getter @Setter private /*TreasureGeneratorData*/DATA data;
+	@Setter private DATA data;
 	private boolean success;
-	
-	/**
-	 * 
-	 */
-//	public TreasureGeneratorResult() {	}
 	
 	/**
 	 * 
@@ -78,11 +77,32 @@ public class TreasureGeneratorResult<DATA extends ITreasureGeneratorData> implem
 //		this.data = data;	
 //	}
 //
-//	@Override
-//	public DATA getData() {
-//		// TODO will have to use reflection to create data if it is null
-//		return data;
-//	}
+	
+	/**
+	 * 
+	 * @param dataClass
+	 * @return
+	 */
+	public DATA createData(Class<DATA> dataClass) {
+		try {
+			return dataClass.getDeclaredConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+			Treasure.logger.warn("Unable to create GeneratorData.");
+		}
+		return null;
+	}
+	
+	@Override
+	public DATA getData() {
+		if (data == null) {
+			Class<DATA> dataClass = null;
+			DATA data = createData(dataClass);
+			this.data = data;
+		}
+		// TODO will have to use reflection to create data if it is null
+		return data;
+	}
 	
 	@Override
 	public TreasureGeneratorResult<DATA> success() {

@@ -1,29 +1,23 @@
-package com.someguyssoftware.treasure2.generator.structure;
+package com.someguyssoftware.treasure2.world.gen.structure;
 
-import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
-import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.meta.StructureArchetype;
-import com.someguyssoftware.treasure2.meta.StructureType;
-import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
-import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
+import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
-import net.minecraft.world.gen.structure.template.Template;
 
 /**
  * 
  * @author Mark Gottschling on Jul 6, 2019
  *
  */
-public interface IStructureGenerator {
+public interface ITemplateGenerator<RESULT extends ITreasureGeneratorResult<?>> {
+
+	public RESULT generate2(World world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
 
 	/**
 	 * 

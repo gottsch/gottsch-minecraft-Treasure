@@ -14,15 +14,15 @@ import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
-import com.someguyssoftware.treasure2.generator.structure.IStructureGenerator;
-import com.someguyssoftware.treasure2.generator.structure.StructureGenerator;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorData;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
-import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
-import com.someguyssoftware.treasure2.world.gen.structure.StructureInfo;
+import com.someguyssoftware.treasure2.world.gen.structure.ITemplateGenerator;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.init.Blocks;
@@ -40,14 +40,101 @@ import net.minecraftforge.common.DungeonHooks;
  * @author Mark Gottschling on Aug 13, 2019
  *
  */
-public class SubmergedStructureGenerator implements IStructureInfoProvider {
-	IStructureInfo info;
+public class SubmergedRuinGenerator implements IRuinGenerator<TreasureGeneratorResult<TreasureGeneratorData>> {
 	
 	/**
 	 * 
 	 */
-	public SubmergedStructureGenerator() {}
+	public SubmergedRuinGenerator() {}
 	
+	
+	@Override
+	public TreasureGeneratorResult<TreasureGeneratorData> generate2(World world, Random random,
+			ICoords spawnCoords) {
+		TreasureGeneratorResult<TreasureGeneratorData> result = new TreasureGeneratorResult<>();
+	
+		// TODO can abstract to AbstractRuinGenerator which Submerged and Ruin implement.
+		// TODO create a method selectTemplate() in abstract that will be overridden by concrete classes, provided the archetype and type
+		
+		// get the biome ID
+		Biome biome = world.getBiome(spawnCoords.toPos());
+		
+		// get the template holder from the given archetype, type and biome
+		TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, StructureArchetype.SUBMERGED, StructureType.RUIN, biome);
+		if (holder == null) return result.fail();		
+		
+		// select a random rotation
+		Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
+		Treasure.logger.debug("rotation used -> {}", rotation);
+		
+		// setup placement
+		PlacementSettings placement = new PlacementSettings();
+		placement.setRotation(rotation).setRandom(random);
+		
+		BlockPos transformedSize = holder.getTemplate().transformedSize(rotation);
+
+		for (int i = 0; i < 3; i++) {
+			if (!WorldInfo.isSolidBase(world, spawnCoords, transformedSize.getX(), transformedSize.getZ(), 50)) {
+				if (i == 3) {
+					Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", 50, spawnCoords.toShortString(), transformedSize.getX(), transformedSize.getY());
+					return result.fail();
+				}
+				else {
+					spawnCoords = spawnCoords.add(0, -1, 0);
+				}
+			}
+			else {
+				continue;
+			}
+		}
+
+		// generate the structure
+		TemplateGenerator generator = new TemplateGenerator();
+		generator.setNullBlock(Blocks.AIR);
+		
+		TreasureGeneratorResult<TemplateGeneratorData> genResult = generator.generate2(world, random, holder, placement, spawnCoords);
+		 if (!genResult.isSuccess()) return result.fail();
+
+		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
+		List<ICoords> spawnerCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
+		List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
+		
+		// populate vanilla spawners
+		buildVanillaSpawners(world, random, spawnCoords, spawnerCoords);
+		
+		// populate proximity spawners
+		buildOneTimeSpawners(world, random, spawnCoords, proximityCoords, new Quantity(1,2), 5D);
+					
+		result.setData(genResult.getData());
+
+		return result;
+	}
+	
+	@Override
+	public void buildOneTimeSpawners(World world, Random random, ICoords spawnCoords, List<ICoords> proximityCoords, Quantity quantity, double d) {
+		for (ICoords c : proximityCoords) {
+			ICoords c2 = spawnCoords.add(c);
+	    	world.setBlockState(c2.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
+	    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c2.toPos());
+	    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
+	    	te.setMobName(r);
+	    	te.setMobNum(new Quantity(1, 2));
+	    	te.setProximity(5D);
+		}
+	}
+
+	@Override
+	public void buildVanillaSpawners(World world, Random random, ICoords spawnCoords, List<ICoords> spawnerCoords) {
+		for (ICoords c : spawnerCoords) {
+			ICoords c2 = spawnCoords.add(c);
+			world.setBlockState(c2.toPos(), Blocks.MOB_SPAWNER.getDefaultState());
+			TileEntityMobSpawner te = (TileEntityMobSpawner) world.getTileEntity(c2.toPos());
+			ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
+			te.getSpawnerBaseLogic().setEntityId(r);
+		}
+	}
+
+
 	/**
 	 * 
 	 * @param world
@@ -59,29 +146,9 @@ public class SubmergedStructureGenerator implements IStructureInfoProvider {
 		// get the biome ID
 		Biome biome = world.getBiome(spawnCoords.toPos());
 		
-		// get the template from the given archetype, type and biome
-//		GottschTemplate template = getTemplate(world, random, StructureArchetype.SUBMERGED, StructureType.RUIN, biome);
-//		
-//		if (template == null) {
-//			Treasure.logger.debug("could not find random template");
-//			return false;
-//		}
+		// get the template holder from the given archetype, type and biome
 		TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, StructureArchetype.SUBMERGED, StructureType.RUIN, biome);
-		if (holder == null) return false;
-
-		
-		// TODO offset should be moved into StructureGenerator
-		// TODO getMarkerBlock should be in StructureGenerator as well
-		// TODO move StructureGenerator to world.gen.structure (in gottschcore)
-		// find the offset block
-//		int offset = 0;
-//		ICoords offsetCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.OFFSET));
-//		if (offsetCoords != null) {
-//			offset = -offsetCoords.getY();
-//		}
-//		
-//		// update the spawn coords with the offset
-//		spawnCoords = spawnCoords.add(0, offset, 0);
+		if (holder == null) return false;		
 		
 		// select a random rotation
 		Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
@@ -109,14 +176,14 @@ public class SubmergedStructureGenerator implements IStructureInfoProvider {
 		}
 		
 		// generate the structure
-		IStructureGenerator generator = new StructureGenerator();
+		ITemplateGenerator generator = new TemplateGenerator();
 		generator.setNullBlock(Blocks.AIR);
 		
 		 IStructureInfo info = generator.generate(world, random, holder, placement, spawnCoords);
 		if (info == null) return false;
 		
 		Treasure.logger.debug("returned info -> {}", info);
-		setInfo(info);
+//		setInfo(info);
 		
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 		List<ICoords> spawnerCoords = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
@@ -177,19 +244,5 @@ public class SubmergedStructureGenerator implements IStructureInfoProvider {
 		
 		return (GottschTemplate) template;
 	}
-	
-	/**
-	 * @return the info
-	 */
-	@Override
-	public IStructureInfo getInfo() {
-		return info;
-	}
 
-	/**
-	 * @param info2 the info to set
-	 */
-	protected void setInfo(IStructureInfo info) {
-		this.info = info;
-	}
 }

@@ -11,13 +11,14 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.IWellConfig;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.generator.TreasureGeneratorData;
 import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
-import com.someguyssoftware.treasure2.generator.structure.IStructureGenerator;
-import com.someguyssoftware.treasure2.generator.structure.StructureGenerator;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
+import com.someguyssoftware.treasure2.world.gen.structure.ITemplateGenerator;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.block.Block;
@@ -52,22 +53,14 @@ public class WellGenerator implements IWellGenerator<TreasureGeneratorResult<Tre
 		// get the biome ID
 		Biome biome = world.getBiome(spawnCoords.toPos());
 		
-		// TODO check override white/black list ?? isn't this checked on load
-		
-		
 		// generate the structure
-		IStructureGenerator generator = new StructureGenerator();
+		TemplateGenerator generator = new TemplateGenerator();
 		generator.setNullBlock(Blocks.BEDROCK);
 		
 		// get the template
 		TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, StructureArchetype.SURFACE, StructureType.WELL, biome);
 		if (holder == null) return result.fail();
-		
-//		GottschTemplate template = (GottschTemplate) holder.getTemplate();
-//		if (template == null) {
-//			return result.fail();
-//		}
-		
+				
 		// select a random rotation
 		Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
 		Treasure.logger.debug("rotation used -> {}", rotation);
@@ -77,13 +70,12 @@ public class WellGenerator implements IWellGenerator<TreasureGeneratorResult<Tre
 		placement.setRotation(rotation).setRandom(random);
 		
 		// build well
-		 IStructureInfo info = generator.generate(world, random, holder,  placement, spawnCoords);
-		if (info == null) {
-			return result.fail();
-		}
+		 TreasureGeneratorResult<TemplateGeneratorData> genResult = generator.generate2(world, random, holder,  placement, spawnCoords);
+		if (!genResult.isSuccess()) return result.fail();
 		
 		// get the rotated/transformed size
-		BlockPos transformedSize = holder.getTemplate().transformedSize(rotation);
+		//BlockPos transformedSize = holder.getTemplate().transformedSize(rotation);
+		BlockPos transformedSize = genResult.getData().getSize().toPos();
 		
 		// add flowers around well
 		addDecorations(world, random, spawnCoords, transformedSize.getX(), transformedSize.getZ());
@@ -92,9 +84,10 @@ public class WellGenerator implements IWellGenerator<TreasureGeneratorResult<Tre
 		
 		
 		// add the structure data to the result
-		TreasureGeneratorData data = new TreasureGeneratorData();
-		data.setSpawnCoords(info.getCoords());
-		result.setData(data);
+//		TreasureGeneratorData data = new TreasureGeneratorData();
+		result.setData(genResult.getData());
+//		result.getData().setSpawnCoords(info.getCoords());
+//		result.setData(data);
 		
 		return result.success();
 	}
@@ -113,16 +106,33 @@ public class WellGenerator implements IWellGenerator<TreasureGeneratorResult<Tre
 		// north of well
 		for (int widthIndex = 0; widthIndex < width; widthIndex++) {
 			if (RandomHelper.randomInt(0, 1) == 0) {
-				// TODO call method
-				// check if the block is dry land
-				ICoords decoCoords = startCoords.add(widthIndex, 0, 0);
-				addDecoration(world, random, decoCoords);
+//				ICoords decoCoords = startCoords.add(widthIndex, 0, 0);
+				addDecoration(world, random, startCoords.add(widthIndex, 0, 0));
 			}
 		}
 		
 		// south of well
+		startCoords = coords.add(-1, 0, depth);
 		for (int widthIndex = 0; widthIndex < width; widthIndex++) {
-			
+			if (RandomHelper.randomInt(0,  1) == 0) {
+				addDecoration(world, random, startCoords.add(widthIndex, 0, 0));
+			}
+		}
+		
+		// west of well
+		startCoords = coords.add(-1, 0, 0);
+		for (int depthIndex = 0; depthIndex < depth-1; depthIndex++) {
+			if (RandomHelper.randomInt(0,  1) == 0) {
+				addDecoration(world, random, startCoords.add(0, 0, depthIndex));
+			}
+		}
+		
+		// east of well
+		startCoords = coords.add(width, 0, 0);
+		for (int depthIndex = 0; depthIndex < depth-1; depthIndex++) {
+			if (RandomHelper.randomInt(0,  1) == 0) {
+				addDecoration(world, random, startCoords.add(0, 0, depthIndex));
+			}
 		}
 	}
 

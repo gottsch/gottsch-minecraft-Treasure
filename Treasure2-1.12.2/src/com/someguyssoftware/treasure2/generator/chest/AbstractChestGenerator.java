@@ -37,7 +37,7 @@ import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.marker.RandomStructureMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
-import com.someguyssoftware.treasure2.generator.submerged.SubmergedStructureGenerator;
+import com.someguyssoftware.treasure2.generator.submerged.SubmergedRuinGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
@@ -232,7 +232,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			return result.fail();
 		}
 		
-		SubmergedStructureGenerator generator = new SubmergedStructureGenerator();
+		SubmergedRuinGenerator generator = new SubmergedRuinGenerator();
 		
 		// build the structure
 		boolean isGenerated = generator.generate(world, random, spawnCoords);

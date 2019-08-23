@@ -15,12 +15,12 @@ import com.someguyssoftware.treasure2.generator.GeneratorChestData;
 import com.someguyssoftware.treasure2.generator.IOldTreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.OldTreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
-import com.someguyssoftware.treasure2.generator.structure.StructureGenerator;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
 import com.someguyssoftware.treasure2.world.gen.structure.StructureInfo;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.block.material.Material;
@@ -218,7 +218,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			Treasure.logger.debug("aligned room coords -> {}", roomCoords.toShortString());
 			
 			// generate the structure
-			info = new StructureGenerator().generate(world, random, holder, placement, roomCoords);
+			info = new TemplateGenerator().generate(world, random, holder, placement, roomCoords);
 			if (info == null) return result.fail();			
 			Treasure.logger.debug("returned info -> {}", info);
 			setInfo(info);

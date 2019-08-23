@@ -15,13 +15,13 @@ import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.structure.IStructureGenerator;
-import com.someguyssoftware.treasure2.generator.structure.StructureGenerator;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
+import com.someguyssoftware.treasure2.world.gen.structure.ITemplateGenerator;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.init.Blocks;
@@ -92,7 +92,7 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStruct
 		PlacementSettings placement = new PlacementSettings();
 		placement.setRotation(rotation).setRandom(random);
 		
-		// TODO move into StructureGenerator
+		// TODO move into TemplateGenerator
 		// NOTE these values are still relative to origin (spawnCoords);
 		ICoords newEntrance = new Coords(GottschTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
 		
@@ -100,7 +100,7 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStruct
 		 *  adjust spawn coords to line up room entrance with pit
 		 */
 		BlockPos transformedSize = holder.getTemplate().transformedSize(rotation);
-		ICoords spawnCoords = IStructureGenerator.alignEntranceToCoords(/*spawnCoords*/coords, newEntrance, transformedSize, placement);
+		ICoords spawnCoords = ITemplateGenerator.alignEntranceToCoords(/*spawnCoords*/coords, newEntrance, transformedSize, placement);
 				
 		// if offset is 2 or less, then determine if the solid ground percentage is valid
 		if (offset >= -2) {
@@ -111,7 +111,7 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStruct
 		}
 		
 		// generate the structure
-		IStructureInfo info = new StructureGenerator().generate(world, random, holder, placement, spawnCoords);
+		IStructureInfo info = new TemplateGenerator().generate(world, random, holder, placement, spawnCoords);
 		if (info == null) return false;
 		setInfo(info);
 		Treasure.logger.debug("returned info -> {}", info);
