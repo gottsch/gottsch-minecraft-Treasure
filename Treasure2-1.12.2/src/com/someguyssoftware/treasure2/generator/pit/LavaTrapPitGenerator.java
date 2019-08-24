@@ -8,8 +8,8 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.GeneratorChestData;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -43,8 +43,8 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public TreasureGeneratorResult<GeneratorChestData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		TreasureGeneratorResult<GeneratorChestData> result = super.generate(world, random, surfaceCoords, spawnCoords);
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
 			Treasure.logger.debug("Generated Lava Trap Pit at " + spawnCoords.toShortString());
 		}

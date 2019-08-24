@@ -24,6 +24,8 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.AbstractChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
@@ -67,7 +69,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	
 	// TODO probably should be moved to AbstractChestGenerator
 	// the pit chestGeneratorsMap
-	public static Table<PitTypes, Pits, IPitGenerator> pitGens =  HashBasedTable.create();
+	public static Table<PitTypes, Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGens =  HashBasedTable.create();
 	
 	/**
 	 * 

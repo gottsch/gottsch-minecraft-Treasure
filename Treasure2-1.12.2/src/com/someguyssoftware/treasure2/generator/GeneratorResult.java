@@ -17,13 +17,13 @@ import lombok.Setter;
  * @author Mark Gottschling on Aug 15, 2019
  *
  */
-public class TreasureGeneratorResult<DATA extends ITreasureGeneratorData> implements ITreasureGeneratorResult<DATA> {
+public class GeneratorResult<DATA extends IGeneratorData> implements IGeneratorResult<DATA> {
 	private boolean success;
 	@Setter
 	private DATA data;
 	private Class<DATA> dataClass;
 	
-	public TreasureGeneratorResult(Class<DATA> dataClass) {
+	public GeneratorResult(Class<DATA> dataClass) {
 		this.dataClass = dataClass;
 	}
 	
@@ -51,19 +51,19 @@ public class TreasureGeneratorResult<DATA extends ITreasureGeneratorData> implem
 	}
 	
 	@Override
-	public TreasureGeneratorResult<DATA> success() {
+	public GeneratorResult<DATA> success() {
 		setSuccess(true);
 		return this;
 	}
 	
 	@Override
-	public TreasureGeneratorResult<DATA> fail() {
+	public GeneratorResult<DATA> fail() {
 		setSuccess(false);
 		return this;
 	}
 
 	@Override
 	public String toString() {
-		return "TreasureGeneratorResult [success=" + success + ", data=" + data + ", dataClass=" + dataClass + "]";
+		return "GeneratorResult [success=" + success + ", data=" + data + ", dataClass=" + dataClass + "]";
 	}
 }

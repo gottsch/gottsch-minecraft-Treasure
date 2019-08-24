@@ -19,8 +19,8 @@ import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IWellConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Wells;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorData;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.GeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.well.CanopyWellGenerator;
 import com.someguyssoftware.treasure2.generator.well.IWellGenerator;
 import com.someguyssoftware.treasure2.generator.well.SimpleWellGenerator;
@@ -48,7 +48,7 @@ public class WellWorldGenerator implements IWorldGenerator {
 
 	// the well geneators
 //	private Map<Wells, IWellGenerator> generators = new HashMap<>();
-	private IWellGenerator<TreasureGeneratorResult<TreasureGeneratorData>> generator = new WellGenerator();
+	private IWellGenerator<GeneratorResult<GeneratorData>> generator = new WellGenerator();
 
 	/**
 	 * 
@@ -99,7 +99,7 @@ public class WellWorldGenerator implements IWorldGenerator {
 		chunksSinceLastWell++;
 
 		boolean isGenerated = false;	
-		TreasureGeneratorResult<TreasureGeneratorData> result = new TreasureGeneratorResult<>(TreasureGeneratorData.class);
+		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 
 		// test if min chunks was met
 		if (chunksSinceLastWell > TreasureConfig.minChunksPerWell) {

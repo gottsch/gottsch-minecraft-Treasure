@@ -11,8 +11,8 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.IWellConfig;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorData;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.GeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -23,7 +23,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Feb 18, 2018
  *
  */
-public class WoodDrawWellGenerator implements IWellGenerator<TreasureGeneratorResult<TreasureGeneratorData>> {
+public class WoodDrawWellGenerator implements IWellGenerator<GeneratorResult<GeneratorData>> {
 
 	/**
 	 * 
@@ -165,7 +165,7 @@ public class WoodDrawWellGenerator implements IWellGenerator<TreasureGeneratorRe
 	}
 
 	@Override
-	public TreasureGeneratorResult generate2(World world, Random random,
+	public GeneratorResult generate2(World world, Random random,
 			ICoords spawnCoords, IWellConfig config) {
 		// TODO Auto-generated method stub
 		return null;

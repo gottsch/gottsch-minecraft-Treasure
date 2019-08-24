@@ -3,7 +3,7 @@ package com.someguyssoftware.treasure2.world.gen.structure;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.IGeneratorResult;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
@@ -15,20 +15,9 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  * @author Mark Gottschling on Jul 6, 2019
  *
  */
-public interface ITemplateGenerator<RESULT extends ITreasureGeneratorResult<?>> {
+public interface ITemplateGenerator<RESULT extends IGeneratorResult<?>> {
 
 	public RESULT generate2(World world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
-
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param templateHolder
-	 * @param settings
-	 * @param spawnCoords
-	 * @return
-	 */
-	public IStructureInfo generate(World world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
 
 	/**
 	 * NOTE not 100% sure that this  belongs here

@@ -19,13 +19,7 @@ import net.minecraft.block.state.IBlockState;
 @AllArgsConstructor
 @Getter
 @Setter
-public class GeneratorChestData extends TreasureGeneratorData {
+public class ChestGeneratorData extends GeneratorData {
 	private ICoords chestCoords;
 	private IBlockState chestState;
-	
-	@Override
-	public String toString() {
-		return "GeneratorChestData [chestCoords=" + chestCoords + ", chestState=" + chestState + ", toString()="
-				+ super.toString() + "]";
-	}
 }

@@ -10,8 +10,8 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.enums.Wells;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorData;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.GeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.well.WellGenerator;
 
 import net.minecraft.command.CommandBase;
@@ -60,7 +60,7 @@ public class SpawnWellStructureCommand extends CommandBase {
 
     			Random random = new Random();
     			WellGenerator gen = new WellGenerator();
-    			TreasureGeneratorResult<TreasureGeneratorData> result = gen.generate2(world, random, coords, Configs.wellConfig);
+    			GeneratorResult<GeneratorData> result = gen.generate2(world, random, coords, Configs.wellConfig);
     			Treasure.logger.debug("Well start coords at -> {}", result.getData().getSpawnCoords().toShortString());
     		}
 		}

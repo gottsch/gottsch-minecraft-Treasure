@@ -11,7 +11,7 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.IWellConfig;
-import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.IGeneratorResult;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
@@ -26,7 +26,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Feb 18, 2018
  *
  */
-public interface IWellGenerator<RESULT extends ITreasureGeneratorResult<?>> {
+public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	/**
 	 * 
 	 * @param world

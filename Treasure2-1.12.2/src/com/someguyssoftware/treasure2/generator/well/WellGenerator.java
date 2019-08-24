@@ -12,12 +12,10 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.IWellConfig;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorData;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.GeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
-import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
-import com.someguyssoftware.treasure2.world.gen.structure.ITemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
@@ -36,7 +34,7 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  * @author Mark Gottschling on Aug 20, 2019
  *
  */
-public class WellGenerator implements IWellGenerator<TreasureGeneratorResult<TreasureGeneratorData>> {
+public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorData>> {
 
 	
 	@Override
@@ -46,9 +44,9 @@ public class WellGenerator implements IWellGenerator<TreasureGeneratorResult<Tre
 	}
 
 	@Override
-	public TreasureGeneratorResult<TreasureGeneratorData> generate2(World world, Random random,
+	public GeneratorResult<GeneratorData> generate2(World world, Random random,
 			ICoords spawnCoords, IWellConfig config) {
-		TreasureGeneratorResult<TreasureGeneratorData> result = new TreasureGeneratorResult<>(TreasureGeneratorData.class);
+		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 		
 		// 1. determine y-coord of land surface
 		spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, spawnCoords);
@@ -83,7 +81,7 @@ public class WellGenerator implements IWellGenerator<TreasureGeneratorResult<Tre
 		placement.setRotation(rotation).setRandom(random);
 		
 		// build well
-		 TreasureGeneratorResult<TemplateGeneratorData> genResult = generator.generate2(world, random, holder,  placement, spawnCoords);
+		 GeneratorResult<TemplateGeneratorData> genResult = generator.generate2(world, random, holder,  placement, spawnCoords);
 		Treasure.logger.debug("Well gen  structure result -> {}", genResult.isSuccess());
 		 if (!genResult.isSuccess()) {
 			 Treasure.logger.debug("failing well gen.");

@@ -2,9 +2,7 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
-
 import com.someguyssoftware.gottschcore.cube.Cube;
-import com.someguyssoftware.gottschcore.generator.IGeneratorResult;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -12,11 +10,8 @@ import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.GeneratorChestData;
-import com.someguyssoftware.treasure2.generator.IOldTreasureGeneratorResult;
-import com.someguyssoftware.treasure2.generator.OldTreasureGeneratorResult;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorData;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 
 import net.minecraft.block.Block;
@@ -35,7 +30,7 @@ import net.minecraftforge.common.DungeonHooks;
  * @author Mark Gottschling on Mar 7, 2018
  *
  */
-public abstract class AbstractPitGenerator implements IPitGenerator {
+public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorResult<ChestGeneratorData>> {
 
 	protected static final int OFFSET_Y = 5;
 	protected static final int SURFACE_OFFSET_Y = 6;
@@ -93,8 +88,8 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 * @return
 	 */
 	@Override
-	public TreasureGeneratorResult<GeneratorChestData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(GeneratorChestData.class);		
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
 		result.getData().setSpawnCoords(spawnCoords);
 		
 		// is the chest placed in a cavern

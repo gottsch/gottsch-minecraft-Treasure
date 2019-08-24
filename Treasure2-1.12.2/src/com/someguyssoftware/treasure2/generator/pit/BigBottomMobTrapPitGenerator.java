@@ -8,8 +8,8 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.GeneratorChestData;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 
 import net.minecraft.block.Block;
@@ -47,8 +47,8 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public TreasureGeneratorResult<GeneratorChestData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(GeneratorChestData.class);
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(spawnCoords);
 		result.getData().setChestCoords(spawnCoords);
 		

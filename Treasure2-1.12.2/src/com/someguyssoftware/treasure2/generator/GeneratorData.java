@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.generator;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import com.someguyssoftware.gottschcore.positional.ICoords;
 
 import lombok.AllArgsConstructor;
@@ -18,23 +20,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter 
-public class TreasureGeneratorData implements ITreasureGeneratorData {
+public class GeneratorData implements IGeneratorData {
 	private ICoords spawnCoords;
 
 	@Override
 	public String toString() {
-		return "TreasureGeneratorData [spawnCoords=" + spawnCoords + "]";
+		return ToStringBuilder.reflectionToString(this);
 	}
-	
-	// lombok'ed
-//	@Override
-//	public ICoords getSpawnCoords() {
-//		return spawnCoords;
-//	}
-//
-//	@Override
-//	public void setSpawnCoords(ICoords coords) {
-//		this.spawnCoords = coords;
-//	}
-	
+		
 }

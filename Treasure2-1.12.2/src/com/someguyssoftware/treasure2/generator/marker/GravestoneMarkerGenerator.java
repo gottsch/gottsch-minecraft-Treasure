@@ -21,8 +21,8 @@ import com.someguyssoftware.treasure2.block.SkeletonBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorData;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.GeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 
 import net.minecraft.block.Block;
@@ -34,7 +34,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Jan 27, 2019
  *
  */
-public class GravestoneMarkerGenerator implements IMarkerGenerator<TreasureGeneratorResult<TreasureGeneratorData>> {
+public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResult<GeneratorData>> {
 
 	/**
 	 * 
@@ -42,9 +42,12 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<TreasureGener
 	public GravestoneMarkerGenerator() {
 	}
 
+	/**
+	 * 
+	 */
 	@Override
-	public TreasureGeneratorResult<TreasureGeneratorData> generate2(World world, Random random, ICoords coords) {
-		TreasureGeneratorResult<TreasureGeneratorData> result = new TreasureGeneratorResult<>(TreasureGeneratorData.class);
+	public GeneratorResult<GeneratorData> generate2(World world, Random random, ICoords coords) {
+		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 		// check if gravestones are enabled
 		if (!TreasureConfig.isGravestonesAllowed) {
 			return result.fail();
@@ -147,107 +150,107 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<TreasureGener
 	/* (non-Javadoc)
 	 * @see com.someguyssoftware.treasure2.generator.marker.IMarkerGenerator#generate(net.minecraft.world.World, java.util.Random, com.someguyssoftware.gottschcore.positional.ICoords)
 	 */
-	@Override
-	public boolean generate(World world, Random random, ICoords coords) {
-	boolean isSuccess = false;
-		
-		Treasure.logger.debug("Using coords {} to seed markers.", coords.toShortString());
-		
-		// check if gravestones are enabled
-		if (!TreasureConfig.isGravestonesAllowed) {
-			return false;
-		}
-		
-		int x = coords.getX();
-		int z = coords.getZ();
-		
-		// for the number of markers configured
-		int numberOfMarkers = RandomHelper.randomInt(TreasureConfig.minGravestonesPerChest, TreasureConfig.maxGravestonesPerChest);
-		// calculate the grid size
-		int gridSize = 4;
-		if (numberOfMarkers < 6) { /* default */ }
-		else if (numberOfMarkers >= 6 && numberOfMarkers <= 8) {
-			gridSize = 5;
-		}
-		else {
-			gridSize = 6;
-		}
-		
-		// loop through each marker
-		for (int i = 0; i < numberOfMarkers; i++) {
-
-			// generator random x, z
-			int xSpawn = x + (random.nextInt(gridSize) * (random.nextInt(3) -1)); // -1|0|1
-			int zSpawn = z + (random.nextInt(gridSize) * (random.nextInt(3) -1)); // -1|0|1
-			
-			// get the "surface" y
-			int ySpawn = WorldInfo.getHeightValue(world, new Coords(xSpawn, 0, zSpawn));
-			ICoords spawnCoords = new Coords(xSpawn, ySpawn, zSpawn);
-			
-			// determine if valid y
-			//ySpawn = getValidSurfaceY(world, xSpawn, ySpawn, zSpawn);
-			if (!WorldInfo.isValidY(spawnCoords)) {
-				Treasure.logger.debug(String.format("[%d] is not a valid y value.", spawnCoords.getY()));
-				continue;
-			}			
-			
-			//  get a valid surface location
-//			Treasure.logger.debug("Getting dry land coords for @ {}", spawnCoords.toShortString());
-			spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, spawnCoords);
-			if (spawnCoords == null) {
-				Treasure.logger.debug(String.format("Not a valid surface @ %s", coords));
-				continue;
-			}
-//			Treasure.logger.debug("Marker @ {}", spawnCoords.toShortString());
-			
-			// don't place if the spawnCoords isn't AIR or FOG or REPLACEABLE
-			Cube cube = new Cube(world, spawnCoords);
-			if (!cube.isAir() && !cube.isReplaceable() && !cube.equalsMaterial(TreasureItems.FOG)) {
-				Treasure.logger.debug("Marker not placed because block  @ [{}] is not Air, Replaceable nor Fog.", spawnCoords.toShortString());
-				continue;
-			}
-			
-			// don't place if the block underneath is of GenericBlock Chest or Container
-			Block block = world.getBlockState(spawnCoords.add(0, -1, 0).toPos()).getBlock();
-			if(block instanceof BlockContainer || block instanceof AbstractModContainerBlock || block instanceof ITreasureBlock) {
-				Treasure.logger.debug("Marker not placed because block underneath is a chest, container or Treasure block.");
-				continue;
-			}
-
-			Block marker = null;
-			// grab a random marker
-			marker = TreasureBlocks.gravestones.get(random.nextInt(TreasureBlocks.gravestones.size()));
-			Treasure.logger.debug("marker class -> {}", marker.getClass().getSimpleName());
-			// select a random facing direction
-			EnumFacing[] horizontals = EnumFacing.HORIZONTALS;
-			EnumFacing facing = horizontals[random.nextInt(horizontals.length)];
-
-			// place the block
-			if (marker instanceof SkeletonBlock) {
-				Treasure.logger.debug("should be placing skeleton block -> {}", spawnCoords.toShortString());
-				GenUtil.placeSkeleton(world, random, spawnCoords);
-			}
-			else {
-				world.setBlockState(spawnCoords.toPos(), marker.getDefaultState().withProperty(AbstractChestBlock.FACING, facing));
-			}
-			
-			// add fog around the block
-			if (TreasureConfig.enableFog && RandomHelper.checkProbability(random, TreasureConfig.gravestoneFogProbability)) {
-				List<FogBlock> fogDensity = new ArrayList<>(5);
-				// randomize the size of the fog
-				int fogSize = RandomHelper.randomInt(2, 4);
-				// populate the fog density list
-				for (int f = 0; f < fogSize; f++) fogDensity.add(TreasureBlocks.MED_FOG_BLOCK);
-				fogDensity.add(TreasureBlocks.LOW_FOG_BLOCK);
-				// add fog around marker
-				GenUtil.addFog(world, random, spawnCoords, fogDensity.toArray(new FogBlock[] {}));
-			}
-			
-//			Treasure.logger.info("Placed marker @ " + spawnPos);
-			isSuccess = true;
-		} // end of for
-		
-		return isSuccess;
-	}
+//	@Override
+//	public boolean generate(World world, Random random, ICoords coords) {
+//	boolean isSuccess = false;
+//		
+//		Treasure.logger.debug("Using coords {} to seed markers.", coords.toShortString());
+//		
+//		// check if gravestones are enabled
+//		if (!TreasureConfig.isGravestonesAllowed) {
+//			return false;
+//		}
+//		
+//		int x = coords.getX();
+//		int z = coords.getZ();
+//		
+//		// for the number of markers configured
+//		int numberOfMarkers = RandomHelper.randomInt(TreasureConfig.minGravestonesPerChest, TreasureConfig.maxGravestonesPerChest);
+//		// calculate the grid size
+//		int gridSize = 4;
+//		if (numberOfMarkers < 6) { /* default */ }
+//		else if (numberOfMarkers >= 6 && numberOfMarkers <= 8) {
+//			gridSize = 5;
+//		}
+//		else {
+//			gridSize = 6;
+//		}
+//		
+//		// loop through each marker
+//		for (int i = 0; i < numberOfMarkers; i++) {
+//
+//			// generator random x, z
+//			int xSpawn = x + (random.nextInt(gridSize) * (random.nextInt(3) -1)); // -1|0|1
+//			int zSpawn = z + (random.nextInt(gridSize) * (random.nextInt(3) -1)); // -1|0|1
+//			
+//			// get the "surface" y
+//			int ySpawn = WorldInfo.getHeightValue(world, new Coords(xSpawn, 0, zSpawn));
+//			ICoords spawnCoords = new Coords(xSpawn, ySpawn, zSpawn);
+//			
+//			// determine if valid y
+//			//ySpawn = getValidSurfaceY(world, xSpawn, ySpawn, zSpawn);
+//			if (!WorldInfo.isValidY(spawnCoords)) {
+//				Treasure.logger.debug(String.format("[%d] is not a valid y value.", spawnCoords.getY()));
+//				continue;
+//			}			
+//			
+//			//  get a valid surface location
+////			Treasure.logger.debug("Getting dry land coords for @ {}", spawnCoords.toShortString());
+//			spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, spawnCoords);
+//			if (spawnCoords == null) {
+//				Treasure.logger.debug(String.format("Not a valid surface @ %s", coords));
+//				continue;
+//			}
+////			Treasure.logger.debug("Marker @ {}", spawnCoords.toShortString());
+//			
+//			// don't place if the spawnCoords isn't AIR or FOG or REPLACEABLE
+//			Cube cube = new Cube(world, spawnCoords);
+//			if (!cube.isAir() && !cube.isReplaceable() && !cube.equalsMaterial(TreasureItems.FOG)) {
+//				Treasure.logger.debug("Marker not placed because block  @ [{}] is not Air, Replaceable nor Fog.", spawnCoords.toShortString());
+//				continue;
+//			}
+//			
+//			// don't place if the block underneath is of GenericBlock Chest or Container
+//			Block block = world.getBlockState(spawnCoords.add(0, -1, 0).toPos()).getBlock();
+//			if(block instanceof BlockContainer || block instanceof AbstractModContainerBlock || block instanceof ITreasureBlock) {
+//				Treasure.logger.debug("Marker not placed because block underneath is a chest, container or Treasure block.");
+//				continue;
+//			}
+//
+//			Block marker = null;
+//			// grab a random marker
+//			marker = TreasureBlocks.gravestones.get(random.nextInt(TreasureBlocks.gravestones.size()));
+//			Treasure.logger.debug("marker class -> {}", marker.getClass().getSimpleName());
+//			// select a random facing direction
+//			EnumFacing[] horizontals = EnumFacing.HORIZONTALS;
+//			EnumFacing facing = horizontals[random.nextInt(horizontals.length)];
+//
+//			// place the block
+//			if (marker instanceof SkeletonBlock) {
+//				Treasure.logger.debug("should be placing skeleton block -> {}", spawnCoords.toShortString());
+//				GenUtil.placeSkeleton(world, random, spawnCoords);
+//			}
+//			else {
+//				world.setBlockState(spawnCoords.toPos(), marker.getDefaultState().withProperty(AbstractChestBlock.FACING, facing));
+//			}
+//			
+//			// add fog around the block
+//			if (TreasureConfig.enableFog && RandomHelper.checkProbability(random, TreasureConfig.gravestoneFogProbability)) {
+//				List<FogBlock> fogDensity = new ArrayList<>(5);
+//				// randomize the size of the fog
+//				int fogSize = RandomHelper.randomInt(2, 4);
+//				// populate the fog density list
+//				for (int f = 0; f < fogSize; f++) fogDensity.add(TreasureBlocks.MED_FOG_BLOCK);
+//				fogDensity.add(TreasureBlocks.LOW_FOG_BLOCK);
+//				// add fog around marker
+//				GenUtil.addFog(world, random, spawnCoords, fogDensity.toArray(new FogBlock[] {}));
+//			}
+//			
+////			Treasure.logger.info("Placed marker @ " + spawnPos);
+//			isSuccess = true;
+//		} // end of for
+//		
+//		return isSuccess;
+//	}
 
 }

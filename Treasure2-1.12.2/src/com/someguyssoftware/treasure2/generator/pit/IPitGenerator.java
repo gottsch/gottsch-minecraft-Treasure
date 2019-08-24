@@ -3,12 +3,13 @@ package com.someguyssoftware.treasure2.generator.pit;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.treasure2.generator.GeneratorChestData;
-import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.IGeneratorResult;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.world.World;
 
-public interface IPitGenerator {
+public interface IPitGenerator<RESULT extends IGeneratorResult<?>> {
 
 	/**
 	 * 
@@ -18,7 +19,7 @@ public interface IPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public TreasureGeneratorResult<GeneratorChestData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
 	
 	public boolean generateBase(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
 
