@@ -12,33 +12,19 @@ import com.someguyssoftware.treasure2.Treasure;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import scala.xml.PrettyPrinter.Para;
 
 /**
  * @author Mark Gottschling on Aug 15, 2019
  *
  */
-@NoArgsConstructor 
 public class TreasureGeneratorResult<DATA extends ITreasureGeneratorData> implements ITreasureGeneratorResult<DATA> {
-	@Setter private DATA data;
 	private boolean success;
+	@Setter
+	private DATA data;
+	private Class<DATA> dataClass;
 	
-	/**
-	 * 
-	 * @param success
-	 */
-	public TreasureGeneratorResult(boolean success) {
-		setSuccess(success);
-	}
-	
-	/**
-	 * 
-	 * @param success
-	 * @param data
-	 */
-	public TreasureGeneratorResult(boolean success, DATA data) {
-		setSuccess(success);
-		setData(data);
+	public TreasureGeneratorResult(Class<DATA> dataClass) {
+		this.dataClass = dataClass;
 	}
 	
 	private void setSuccess(boolean success) {
@@ -50,52 +36,17 @@ public class TreasureGeneratorResult<DATA extends ITreasureGeneratorData> implem
 		return success;
 	}
 	
-	/**
-	 * 
-	 * @param dataClass
-	 * @return
-	 */
-	public DATA createData(Class<DATA> dataClass) {
-		try {
-			Treasure.logger.debug("creating data object");
-
-				 // Get the class name of this instance's type.
-		        ParameterizedType pt = (ParameterizedType) getClass().getGenericSuperclass();
-				String parameterClassName = pt.getActualTypeArguments()[0].toString().split("\\s")[1];
-				Treasure.logger.debug("parameter class name -> {}", parameterClassName);
-				Treasure.logger.debug("type  name -> {}", getClass().getTypeName());
-				Type type = getClass().getGenericInterfaces()[0];
-				Treasure.logger.debug("interface type name -> {}", type.getTypeName());
-				ParameterizedType pt2 = (ParameterizedType) type;
-				Treasure.logger.debug("parameter interface type aruments -> {}", pt2.getActualTypeArguments()[0].toString()); 
-				// Instantiate the Parameter and initialize it.
-		        DATA parameter = null;
-				parameter = (DATA) Class.forName(parameterClassName).newInstance();
-		        return parameter;
-
-
-//			Class<DATA> dd = (Class<DATA>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-//			return dd.getDeclaredConstructor().newInstance();			
-//		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-//				| NoSuchMethodException | SecurityException e) {
-//			Treasure.logger.warn("Unable to create GeneratorData.");
-//		}
-		} catch(Exception e) {	
-			Treasure.logger.error("error ->", e);
-			}
-		return null;
-	}
-	
 	@Override
 	public DATA getData() {
-		Treasure.logger.debug("in getData()");
 		if (this.data == null) {
-			Treasure.logger.debug("data is null");
-			Class<DATA> dataClass = null;
-			DATA data = createData(dataClass);
-			this.data = data;
+			DATA data;
+			try {
+				data = dataClass.newInstance();
+				this.data = data;
+			} catch (InstantiationException | IllegalAccessException e) {
+				Treasure.logger.error(e);
+			}
 		}
-		// TODO will have to use reflection to create data if it is null
 		return data;
 	}
 	
@@ -109,5 +60,10 @@ public class TreasureGeneratorResult<DATA extends ITreasureGeneratorData> implem
 	public TreasureGeneratorResult<DATA> fail() {
 		setSuccess(false);
 		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "TreasureGeneratorResult [success=" + success + ", data=" + data + ", dataClass=" + dataClass + "]";
 	}
 }

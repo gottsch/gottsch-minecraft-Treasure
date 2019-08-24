@@ -56,7 +56,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<TreasureGenera
 
 	@Override
 	public TreasureGeneratorResult<TreasureGeneratorData> generate2(World world, Random random, ICoords coords) {
-		TreasureGeneratorResult<TreasureGeneratorData> result = new TreasureGeneratorResult<>();
+		TreasureGeneratorResult<TreasureGeneratorData> result = new TreasureGeneratorResult<>(TreasureGeneratorData.class);
 	
 		// get the biome ID
 		Biome biome = world.getBiome(coords.toPos());

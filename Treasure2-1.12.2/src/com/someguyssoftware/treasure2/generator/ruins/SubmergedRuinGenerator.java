@@ -40,7 +40,7 @@ import net.minecraftforge.common.DungeonHooks;
  * @author Mark Gottschling on Aug 13, 2019
  *
  */
-public class SubmergedRuinGenerator implements IRuinGenerator<TreasureGeneratorResult<TreasureGeneratorData>> {
+public class SubmergedRuinGenerator implements IRuinGenerator<TreasureGeneratorResult<TemplateGeneratorData>> {
 	
 	/**
 	 * 
@@ -49,9 +49,9 @@ public class SubmergedRuinGenerator implements IRuinGenerator<TreasureGeneratorR
 	
 	
 	@Override
-	public TreasureGeneratorResult<TreasureGeneratorData> generate2(World world, Random random,
+	public TreasureGeneratorResult<TemplateGeneratorData> generate2(World world, Random random,
 			ICoords spawnCoords) {
-		TreasureGeneratorResult<TreasureGeneratorData> result = new TreasureGeneratorResult<>();
+		TreasureGeneratorResult<TemplateGeneratorData> result = new TreasureGeneratorResult<>(TemplateGeneratorData.class);
 	
 		// TODO can abstract to AbstractRuinGenerator which Submerged and Ruin implement.
 		// TODO create a method selectTemplate() in abstract that will be overridden by concrete classes, provided the archetype and type
@@ -213,36 +213,4 @@ public class SubmergedRuinGenerator implements IRuinGenerator<TreasureGeneratorR
 		
 		return true;
 	}
-
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param key
-	 * @param biome
-	 * @return
-	 */
-	public GottschTemplate getTemplate(World world, Random random, StructureArchetype archetype, StructureType type, Biome biome) {
-		Template template = null;
-		// get structure by archetype (subterranean) and type (room)
-		String key =archetype.getName()	+ ":" + type.getName();
-		
-		Integer biomeID = Biome.getIdForBiome(biome);
-		
-		List<TemplateHolder> templateHolders = Treasure.TEMPLATE_MANAGER.getTemplatesByArchetypeTypeBiomeTable().get(key, biomeID);
-		if (templateHolders == null || templateHolders.isEmpty()) {
-			Treasure.logger.debug("could not find template holders for archetype:type, biome -> {} [{}]:{}", key, biomeID, biome.toString());
-		}
-		
-		TemplateHolder holder = templateHolders.get(random.nextInt(templateHolders.size()));
-		if (holder == null) {
-			Treasure.logger.debug("could not find random template holder.");
-		}
-		
-		template = holder.getTemplate();
-		Treasure.logger.debug("selected template holder -> {} : {}", holder.getLocation(), holder.getMetaLocation());
-		
-		return (GottschTemplate) template;
-	}
-
 }

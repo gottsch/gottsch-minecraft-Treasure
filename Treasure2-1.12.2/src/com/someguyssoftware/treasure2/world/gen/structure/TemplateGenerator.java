@@ -48,7 +48,7 @@ public class TemplateGenerator implements ITemplateGenerator<TreasureGeneratorRe
 	@Override
 	public TreasureGeneratorResult<TemplateGeneratorData> generate2(World world, Random random, TemplateHolder templateHolder, PlacementSettings placement,
 			ICoords coords) {
-		TreasureGeneratorResult<TemplateGeneratorData> result = new TreasureGeneratorResult<>();
+		TreasureGeneratorResult<TemplateGeneratorData> result = new TreasureGeneratorResult<>(TemplateGeneratorData.class);
 		
 		GottschTemplate template = (GottschTemplate) templateHolder.getTemplate();
 		
@@ -96,8 +96,6 @@ public class TemplateGenerator implements ITemplateGenerator<TreasureGeneratorRe
 		// TODO need to capture the facing or meta of the chest, perform the rotation on the facing  and save it in the Map with the pos... need a new object to hold more data
 		
 		// update StrucutreInfo
-		Treasure.logger.debug("result -> {}", result);
-		Treasure.logger.debug("result.data -> {}", result.getData());
 		result.getData().setSpawnCoords(spawnCoords);
 		result.getData().setSize(new Coords(transformedSize));
 
@@ -114,7 +112,7 @@ public class TemplateGenerator implements ITemplateGenerator<TreasureGeneratorRe
 		}
 		result.getData().setChestCoords(chestCoords);
 		
-		return result;
+		return result.success();
 	}
 	
 	/**

@@ -14,6 +14,7 @@ import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorChestData;
 import com.someguyssoftware.treasure2.generator.IOldTreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.OldTreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
@@ -41,10 +42,10 @@ import net.minecraftforge.common.DungeonHooks;
  * @author Mark Gottschling on Dec 9, 2018
  *
  */
-public class StructurePitGenerator extends AbstractPitGenerator implements IStructureInfoProvider {
+public class StructurePitGenerator extends AbstractPitGenerator {
 	
 	IPitGenerator generator;
-	IStructureInfo info;
+//	IStructureInfo info;
 	
 	/**
 	 * 
@@ -84,11 +85,11 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	 */
 	@Override
 	public TreasureGeneratorResult<GeneratorChestData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(true, new GeneratorChestData());
+		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(GeneratorChestData.class);
 //		result.getData().setSpawnCoords(spawnCoords);
 		
 		// clear info member property
-		setInfo(null);
+//		setInfo(null);
 		
 		// is the chest placed in a cavern
 		boolean inCavern = false;
@@ -142,13 +143,6 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			
 			GottschTemplate template = (GottschTemplate) holder.getTemplate();
 			Treasure.logger.debug("selected template holder -> {} : {}", holder.getLocation(), holder.getMetaLocation());
-			
-			// TODO will want the structures organized better to say grab RARE UNDERGROUND ROOMs
-			// select a random underground structure
-//			List<Template> templates = Treasure.TEMPLATE_MANAGER.getTemplates().values().stream().collect(Collectors.toList());
-//>>>			List<Template> templates = Treasure.TEMPLATE_MANAGER.getTemplatesByType(StructureType.UNDERGROUND);
-			
-//>>>			GottschTemplate template = (GottschTemplate) templates.get(random.nextInt(templates.size()));
 			if (template == null) {
 				Treasure.logger.debug("could not find random template");
 				return result.fail();
@@ -176,11 +170,11 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 				result = getGenerator().generate(world, random, surfaceCoords, spawnCoords);
 				if (result.isSuccess()/*isGenerated*/) {
 					// TODO old way
-					IStructureInfo info = new StructureInfo();
-					info.setCoords(spawnCoords);
-					info.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.CHEST), new Coords(0, 0, 0));
-					setInfo(info);
-					
+//					IStructureInfo info = new StructureInfo();
+//					info.setCoords(spawnCoords);
+//					info.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.CHEST), new Coords(0, 0, 0));
+//					setInfo(info);
+					result.getData().setChestCoords(result.getData().getSpawnCoords());
 					return result;
 				}
 				else {
@@ -218,15 +212,19 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			Treasure.logger.debug("aligned room coords -> {}", roomCoords.toShortString());
 			
 			// generate the structure
-			info = new TemplateGenerator().generate(world, random, holder, placement, roomCoords);
-			if (info == null) return result.fail();			
-			Treasure.logger.debug("returned info -> {}", info);
-			setInfo(info);
+			TreasureGeneratorResult<TemplateGeneratorData> genResult = new TemplateGenerator().generate2(world, random, holder, placement, roomCoords);
+			if (!genResult.isSuccess()) return result.fail();
+			
+			result.setData(genResult.getData());
+			
+//			if (info == null) return result.fail();			
+//			Treasure.logger.debug("returned info -> {}", info);
+//			setInfo(info);
 			// TODO update result chest coords with that of info OR of the calculation of where chest should be.
 			
 			// interrogate info for spawners and any other special block processing (except chests that are handler by caller
-			List<ICoords> spawnerCoords = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
-			List<ICoords> proximityCoords = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
+			List<ICoords> spawnerCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
+			List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
 
 			/*
 			 *  TODO could lookup to some sort of map of structure -> spawner info
@@ -270,14 +268,14 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			// simple short pit
 			result = new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
 			// build no-entry info
-			IStructureInfo noInfo = new StructureInfo();
-//			noInfo.setCoords(spawnCoords);
-			noInfo.setCoords(result.getData().getSpawnCoords());
-			noInfo.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.CHEST), new Coords(0, 0, 0));
-			setInfo(noInfo);
+//			IStructureInfo noInfo = new StructureInfo();
+////			noInfo.setCoords(spawnCoords);
+//			noInfo.setCoords(result.getData().getSpawnCoords());
+//			noInfo.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.CHEST), new Coords(0, 0, 0));
+//			setInfo(noInfo);
 		}		
 		Treasure.logger.debug("Generated Structure Pit at " + spawnCoords.toShortString());
-		return result;
+		return result.success();
 	}
 
 	/**
@@ -326,24 +324,24 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 		this.generator = generator;
 	}
 
-	/**
-	 * @return the info
-	 */
-	@Override
-	public IStructureInfo getInfo() {
-		return info;
-	}
+//	/**
+//	 * @return the info
+//	 */
+//	@Override
+//	public IStructureInfo getInfo() {
+//		return info;
+//	}
+//
+//	/**
+//	 * @param info2 the info to set
+//	 */
+//	protected void setInfo(IStructureInfo info) {
+//		this.info = info;
+//	}
 
-	/**
-	 * @param info2 the info to set
-	 */
-	protected void setInfo(IStructureInfo info) {
-		this.info = info;
-	}
-
-	@Override
-	public String toString() {
-		return "StructurePitGenerator [generator=" + generator + ", info=" + info + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "StructurePitGenerator [generator=" + generator + ", info=" + info + "]";
+//	}
 	
 }

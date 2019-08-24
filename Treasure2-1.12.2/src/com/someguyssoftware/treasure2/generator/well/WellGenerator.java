@@ -48,7 +48,20 @@ public class WellGenerator implements IWellGenerator<TreasureGeneratorResult<Tre
 	@Override
 	public TreasureGeneratorResult<TreasureGeneratorData> generate2(World world, Random random,
 			ICoords spawnCoords, IWellConfig config) {
-		TreasureGeneratorResult<TreasureGeneratorData> result = new TreasureGeneratorResult<>();
+		TreasureGeneratorResult<TreasureGeneratorData> result = new TreasureGeneratorResult<>(TreasureGeneratorData.class);
+		
+		// 1. determine y-coord of land surface
+		spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, spawnCoords);
+		if (spawnCoords == null || spawnCoords == WorldInfo.EMPTY_COORDS) {
+			Treasure.logger.debug("Returning due to marker coords == null or EMPTY_COORDS");
+			return result.fail(); 
+		}
+		
+		// 2. check if it has 50% land
+		if (!WorldInfo.isSolidBase(world, spawnCoords, 3, 3, 50)) {
+			Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", spawnCoords.toShortString(), 3, 3);
+			return result.fail();
+		}		
 		
 		// get the biome ID
 		Biome biome = world.getBiome(spawnCoords.toPos());
@@ -71,23 +84,25 @@ public class WellGenerator implements IWellGenerator<TreasureGeneratorResult<Tre
 		
 		// build well
 		 TreasureGeneratorResult<TemplateGeneratorData> genResult = generator.generate2(world, random, holder,  placement, spawnCoords);
-		if (!genResult.isSuccess()) return result.fail();
+		Treasure.logger.debug("Well gen  structure result -> {}", genResult.isSuccess());
+		 if (!genResult.isSuccess()) {
+			 Treasure.logger.debug("failing well gen.");
+			return result.fail();
+		}
 		
 		// get the rotated/transformed size
 		//BlockPos transformedSize = holder.getTemplate().transformedSize(rotation);
 		BlockPos transformedSize = genResult.getData().getSize().toPos();
 		
 		// add flowers around well
-		addDecorations(world, random, spawnCoords, transformedSize.getX(), transformedSize.getZ());
+		//addDecorations(world, random, spawnCoords, transformedSize.getX(), transformedSize.getZ());
 		
 		// TODO add chest if any
-		
-		
+				
 		// add the structure data to the result
-//		TreasureGeneratorData data = new TreasureGeneratorData();
 		result.setData(genResult.getData());
-//		result.getData().setSpawnCoords(info.getCoords());
-//		result.setData(data);
+
+		Treasure.logger.info("CHEATER! Wishing Well at coords: {}", spawnCoords.toShortString());
 		
 		return result.success();
 	}
@@ -103,6 +118,8 @@ public class WellGenerator implements IWellGenerator<TreasureGeneratorResult<Tre
 	public void addDecorations(World world, Random random, ICoords coords, int width, int depth) {
 		ICoords startCoords = coords.add(-1, 0, -1);
 	
+		// TODO change to scan the entire size (x,z) of well footprint and detect the edges ... place flowers adjacent to edge blocks. 
+		
 		// north of well
 		for (int widthIndex = 0; widthIndex < width; widthIndex++) {
 			if (RandomHelper.randomInt(0, 1) == 0) {

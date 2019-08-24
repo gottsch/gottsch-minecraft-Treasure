@@ -99,7 +99,7 @@ public class WellWorldGenerator implements IWorldGenerator {
 		chunksSinceLastWell++;
 
 		boolean isGenerated = false;	
-		TreasureGeneratorResult<TreasureGeneratorData> result = new TreasureGeneratorResult<>();
+		TreasureGeneratorResult<TreasureGeneratorData> result = new TreasureGeneratorResult<>(TreasureGeneratorData.class);
 
 		// test if min chunks was met
 		if (chunksSinceLastWell > TreasureConfig.minChunksPerWell) {
@@ -158,7 +158,7 @@ public class WellWorldGenerator implements IWorldGenerator {
 				Treasure.logger.debug("Attempting to generate a well");
 //				isGenerated = generators.get(well)
 				result = generator.generate2(world, random, coords, wellConfig); 
-
+				Treasure.logger.debug("well world gen result -> {}", result.isSuccess());
 				if (/*isGenerated*/result.isSuccess()) {
 					// add to registry
 					//				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));

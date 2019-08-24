@@ -27,4 +27,9 @@ public class TemplateGeneratorData extends GeneratorChestData {
 	 */
 	private Multimap<Block, ICoords> map = ArrayListMultimap.create();
 
+	@Override
+	public String toString() {
+		return "TemplateGeneratorData [size=" + size + ", map=" + map + ", toString()=" + super.toString() + "]";
+	}
+
 }

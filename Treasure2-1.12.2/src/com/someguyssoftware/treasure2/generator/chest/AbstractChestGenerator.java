@@ -33,6 +33,8 @@ import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorChestData;
 import com.someguyssoftware.treasure2.generator.IOldTreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.OldTreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
+import com.someguyssoftware.treasure2.generator.TreasureGeneratorData;
 import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.marker.StructureMarkerGenerator;
@@ -72,7 +74,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		boolean isAboveGround = false;
 		boolean isOcean = false;
 		boolean hasMarkers = true;
-		IOldTreasureGeneratorResult result = null;
+		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(GeneratorChestData.class);		
 			
 		// 1. collect location data points
 		ICoords surfaceCoords = WorldInfo.getSurfaceCoords(world, coords);
@@ -99,7 +101,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 				spawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, surfaceCoords);
 				Treasure.logger.debug("ocean floor coords -> {}", spawnCoords.toShortString());
 				result = generateSubmergedRuins(world, random, spawnCoords, config);
-				chestCoords = result.getChestCoords();
+				chestCoords = result.getData().getChestCoords();
 				// turn off markers for ocean chests.
 				hasMarkers = false;
 			}
@@ -119,6 +121,8 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 					// set the chest coords to the surface pos
 					chestCoords = new Coords(markerCoords);
 					Treasure.logger.debug("Above ground structure @ {}", chestCoords.toShortString());
+					result.success();
+					result.getData().setChestCoords(chestCoords);
 //					isGenerated = true;
 //					result = new GeneratorResult(true);
 				}
@@ -129,17 +133,27 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 //					isGenerated = true;
 //					result = new GeneratorResult(true);
 				}
+				result.success();
+				result.getData().setChestCoords(chestCoords);
 			}
 			else if (config.isBelowGroundAllowed()) {
+				Treasure.logger.debug("else generate pit");
 				result = generatePit(world, random, chestRarity, markerCoords, config);
+				Treasure.logger.debug("result -=> {}", result.toString());
+				if (!result.isSuccess()) return false;
+				// TODO unnecessary
 				if (result.isSuccess()) {
-					chestCoords = result.getChestCoords();
+					chestCoords = result.getData().getChestCoords();
 				}
 			}
 		}
 
+		Treasure.logger.debug("chest coords after all generation -> {}", result.getData().getChestCoords());
+		
+		// TODO this test is actually unnecessary, as we will return if result.fail()
 		// if successfully gen the pit
-		if (/*isGenerated*/chestCoords != null && chestCoords != WorldInfo.EMPTY_COORDS) {
+		if (/*isGenerated*//*chestCoords != null && chestCoords != WorldInfo.EMPTY_COORDS*/result.isSuccess() && result.getData().getChestCoords() != null) {
+			chestCoords = result.getData().getChestCoords();
 			LootTable lootTable = selectLootTable(random, chestRarity);
 
 			if (lootTable == null) {
@@ -220,10 +234,11 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param config
 	 * @return
 	 */
-	public IOldTreasureGeneratorResult generateSubmergedRuins(World world, Random random, ICoords spawnCoords,
+	public TreasureGeneratorResult<GeneratorChestData> generateSubmergedRuins(World world, Random random, ICoords spawnCoords,
 			IChestConfig config) {
+		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(GeneratorChestData.class);		
+		result.getData().setSpawnCoords(spawnCoords);
 		
-		IOldTreasureGeneratorResult result = new OldTreasureGeneratorResult(true, spawnCoords);
 		ICoords chestCoords = null;
 		
 		// check if it has 50% land
@@ -235,31 +250,34 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		SubmergedRuinGenerator generator = new SubmergedRuinGenerator();
 		
 		// build the structure
-		boolean isGenerated = generator.generate(world, random, spawnCoords);
-		Treasure.logger.debug("is submerged struct generated -> {}", isGenerated);
-		if (isGenerated) {
-			IStructureInfoProvider structureInfoProvider = (IStructureInfoProvider)generator;
-			IStructureInfo structureInfo = structureInfoProvider.getInfo();
-			if (structureInfo != null) {
-				List<ICoords> chestCoordsList = (List<ICoords>) structureInfo
-						.getMap()
-						.get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
-				if (!chestCoordsList.isEmpty()) {
-					chestCoords = chestCoordsList.get(0);
-					Treasure.logger.debug("Using StructureInfo relative chest coords -> {}", chestCoords.toShortString());
-					chestCoords = chestCoords.add((((IStructureInfoProvider)generator).getInfo().getCoords()));
-					result.setChestCoords(chestCoords);
-				}
-				else {
-					Treasure.logger.debug("Unable to retrieve Chest from structure");
-				}
-			}
-			else {
-				Treasure.logger.debug("Unable to retrieve StructureInfo");
-			}
-		}
+		TreasureGeneratorResult<TemplateGeneratorData> genResult = generator.generate2(world, random, spawnCoords);
+		Treasure.logger.debug("is submerged struct generated -> {}", genResult);
+		if (!genResult.isSuccess()) return result.fail();
+		
+		result.setData(genResult.getData());
+
+//			IStructureInfoProvider structureInfoProvider = (IStructureInfoProvider)generator;
+//			IStructureInfo structureInfo = structureInfoProvider.getInfo();
+//			if (structureInfo != null) {
+//				List<ICoords> chestCoordsList = (List<ICoords>) structureInfo
+//						.getMap()
+//						.get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
+//				if (!chestCoordsList.isEmpty()) {
+//					chestCoords = chestCoordsList.get(0);
+//					Treasure.logger.debug("Using StructureInfo relative chest coords -> {}", chestCoords.toShortString());
+//					chestCoords = chestCoords.add((((IStructureInfoProvider)generator).getInfo().getCoords()));
+//					result.setChestCoords(chestCoords);
+//				}
+//				else {
+//					Treasure.logger.debug("Unable to retrieve Chest from structure");
+//				}
+//			}
+//			else {
+//				Treasure.logger.debug("Unable to retrieve StructureInfo");
+//			}
+//		}
 		Treasure.logger.debug("Is submerged generated: {}", result.isSuccess());
-		return result;
+		return result.success();
 	}
 	
 	/**
@@ -271,9 +289,9 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 * @param config
 	 * @return
 	 */
-	public IOldTreasureGeneratorResult generatePit(World world, Random random, Rarity chestRarity, ICoords markerCoords, IChestConfig config) {
-		IOldTreasureGeneratorResult result = new OldTreasureGeneratorResult(true, markerCoords);
-		TreasureGeneratorResult<GeneratorChestData> pitResult = new TreasureGeneratorResult<>(true);
+	public TreasureGeneratorResult<GeneratorChestData> generatePit(World world, Random random, Rarity chestRarity, ICoords markerCoords, IChestConfig config) {
+		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<GeneratorChestData>(GeneratorChestData.class);
+		TreasureGeneratorResult<GeneratorChestData> pitResult = new TreasureGeneratorResult<>(GeneratorChestData.class);
 		
 		// 2.5. check if it has 50% land
 		if (!WorldInfo.isSolidBase(world, markerCoords, 2, 2, 50)) {
@@ -289,6 +307,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			return result.fail();
 		}
 		Treasure.logger.debug("Below ground @ {}", spawnCoords.toShortString());
+		result.getData().setSpawnCoords(markerCoords);
 		
 		// select a pit generator
 		IPitGenerator pitGenerator = selectPitGenerator(random);
@@ -297,36 +316,42 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		pitResult = pitGenerator.generate(world, random, markerCoords, spawnCoords);
 		
 		ICoords chestCoords = null;
-		if (pitResult.isSuccess()) {
-			// TODO handle all this within pitGenerator, updating the IGeneratorResult with the chest coods
-			if (pitGenerator instanceof IStructureInfoProvider) {
-				IStructureInfoProvider structureInfoProvider = (IStructureInfoProvider)pitGenerator;
-				IStructureInfo structureInfo = structureInfoProvider.getInfo();
-				if (structureInfo != null) {
-					List<ICoords> chestCoordsList = (List<ICoords>) structureInfo
-							.getMap()
-							.get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
-					if (!chestCoordsList.isEmpty()) {
-						chestCoords = chestCoordsList.get(0);
-						Treasure.logger.debug("Using StructureInfo relative chest coords -> {}", chestCoords.toShortString());
-						chestCoords = chestCoords.add((((IStructureInfoProvider)pitGenerator).getInfo().getCoords()));
-						result.setChestCoords(chestCoords);
-					}
-					else {
-						Treasure.logger.debug("Unable to retrieve Chest from structure");
-					}
-				}
-				else {
-					Treasure.logger.debug("Unable to retrieve StructureInfo");
-				}
-			}
-			else {
-				chestCoords = result.getChestCoords(); 
-			}
-			
-		}
-		Treasure.logger.debug("Is pit generated: {}", result.isSuccess());
-		return result;
+		if (!pitResult.isSuccess()) return result.fail();
+		
+		result.setData(pitResult.getData());
+//		result.getData().setSpawnCoords(spawnCoords);
+//		result.getData().setChestCoords(chestCoords);
+		
+//		if (pitResult.isSuccess()) {
+//			// TODO handle all this within pitGenerator, updating the IGeneratorResult with the chest coods
+//			if (pitGenerator instanceof IStructureInfoProvider) {
+//				IStructureInfoProvider structureInfoProvider = (IStructureInfoProvider)pitGenerator;
+//				IStructureInfo structureInfo = structureInfoProvider.getInfo();
+//				if (structureInfo != null) {
+//					List<ICoords> chestCoordsList = (List<ICoords>) structureInfo
+//							.getMap()
+//							.get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
+//					if (!chestCoordsList.isEmpty()) {
+//						chestCoords = chestCoordsList.get(0);
+//						Treasure.logger.debug("Using StructureInfo relative chest coords -> {}", chestCoords.toShortString());
+//						chestCoords = chestCoords.add((((IStructureInfoProvider)pitGenerator).getInfo().getCoords()));
+//						result.setChestCoords(chestCoords);
+//					}
+//					else {
+//						Treasure.logger.debug("Unable to retrieve Chest from structure");
+//					}
+//				}
+//				else {
+//					Treasure.logger.debug("Unable to retrieve StructureInfo");
+//				}
+//			}
+//			else {
+//				chestCoords = result.getChestCoords(); 
+//			}
+//			
+//		}
+		Treasure.logger.debug("Is pit generated: {}", pitResult.isSuccess());
+		return result.success();
 	}
 	
 	/**

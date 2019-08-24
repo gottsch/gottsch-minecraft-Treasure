@@ -20,6 +20,11 @@ import lombok.Setter;
 @Setter 
 public class TreasureGeneratorData implements ITreasureGeneratorData {
 	private ICoords spawnCoords;
+
+	@Override
+	public String toString() {
+		return "TreasureGeneratorData [spawnCoords=" + spawnCoords + "]";
+	}
 	
 	// lombok'ed
 //	@Override

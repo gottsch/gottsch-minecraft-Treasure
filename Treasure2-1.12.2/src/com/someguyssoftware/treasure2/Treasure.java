@@ -26,6 +26,7 @@ import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitStructureOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellCommand;
+import com.someguyssoftware.treasure2.command.SpawnWellStructureCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -193,7 +194,7 @@ public class Treasure extends AbstractMod {
     	event.registerServerCommand(new SpawnPitCommand());
     	event.registerServerCommand(new SpawnPitOnlyCommand());
     	event.registerServerCommand(new SpawnPitStructureOnlyCommand());
-    	event.registerServerCommand(new SpawnWellCommand());
+    	event.registerServerCommand(new SpawnWellStructureCommand());
     	event.registerServerCommand(new SpawnWitherTreeCommand());
     }
 	

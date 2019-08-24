@@ -22,4 +22,10 @@ import net.minecraft.block.state.IBlockState;
 public class GeneratorChestData extends TreasureGeneratorData {
 	private ICoords chestCoords;
 	private IBlockState chestState;
+	
+	@Override
+	public String toString() {
+		return "GeneratorChestData [chestCoords=" + chestCoords + ", chestState=" + chestState + ", toString()="
+				+ super.toString() + "]";
+	}
 }

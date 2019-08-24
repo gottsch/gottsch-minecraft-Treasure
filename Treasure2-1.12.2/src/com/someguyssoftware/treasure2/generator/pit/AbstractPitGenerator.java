@@ -94,7 +94,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 */
 	@Override
 	public TreasureGeneratorResult<GeneratorChestData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(true, new GeneratorChestData());		
+		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(GeneratorChestData.class);		
 		result.getData().setSpawnCoords(spawnCoords);
 		
 		// is the chest placed in a cavern
@@ -141,7 +141,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 			// simple short pit
 			result = new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
 		}
-		return result;
+		return result.success();
 	}	
 	
 	/**

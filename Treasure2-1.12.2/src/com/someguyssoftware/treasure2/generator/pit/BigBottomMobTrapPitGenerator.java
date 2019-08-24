@@ -48,7 +48,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	 */
 	@Override
 	public TreasureGeneratorResult<GeneratorChestData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(true, new GeneratorChestData());
+		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(GeneratorChestData.class);
 		result.getData().setSpawnCoords(spawnCoords);
 		result.getData().setChestCoords(spawnCoords);
 		
@@ -110,7 +110,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 			result = new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
 		}		
 		Treasure.logger.debug("Generated Big Bottom Mob Trap Pit at " + spawnCoords.toShortString());
-		return result;
+		return result.success();
 	}	
 
 	/**

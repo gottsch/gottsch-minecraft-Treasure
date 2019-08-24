@@ -44,7 +44,7 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<TreasureGener
 
 	@Override
 	public TreasureGeneratorResult<TreasureGeneratorData> generate2(World world, Random random, ICoords coords) {
-		TreasureGeneratorResult<TreasureGeneratorData> result = new TreasureGeneratorResult<>();
+		TreasureGeneratorResult<TreasureGeneratorData> result = new TreasureGeneratorResult<>(TreasureGeneratorData.class);
 		// check if gravestones are enabled
 		if (!TreasureConfig.isGravestonesAllowed) {
 			return result.fail();

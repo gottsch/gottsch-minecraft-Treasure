@@ -29,7 +29,7 @@ public class SimpleShortPitGenerator extends AbstractPitGenerator {
 	 */
 	public TreasureGeneratorResult<GeneratorChestData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		Treasure.logger.debug("Generating SimpleShortShaft.");
-		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(true, new GeneratorChestData());
+		TreasureGeneratorResult<GeneratorChestData> result = new TreasureGeneratorResult<>(GeneratorChestData.class);
 		result.getData().setSpawnCoords(spawnCoords);
 		result.getData().setChestCoords(spawnCoords);
 		
@@ -58,6 +58,6 @@ public class SimpleShortPitGenerator extends AbstractPitGenerator {
 		}
 		
 		Treasure.logger.debug("Generated Simple Short Shaft Chamber at " + spawnCoords.toShortString());
-		return result;
+		return result.success();
 	}
 }
