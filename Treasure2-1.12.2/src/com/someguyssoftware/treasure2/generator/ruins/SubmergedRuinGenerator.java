@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.generator.submerged;
+package com.someguyssoftware.treasure2.generator.ruins;
 
 import java.util.List;
 import java.util.Random;

@@ -5,12 +5,14 @@ package com.someguyssoftware.treasure2.generator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import com.someguyssoftware.treasure2.Treasure;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import scala.xml.PrettyPrinter.Para;
 
 /**
  * @author Mark Gottschling on Aug 15, 2019
@@ -61,6 +63,11 @@ public class TreasureGeneratorResult<DATA extends ITreasureGeneratorData> implem
 		        ParameterizedType pt = (ParameterizedType) getClass().getGenericSuperclass();
 				String parameterClassName = pt.getActualTypeArguments()[0].toString().split("\\s")[1];
 				Treasure.logger.debug("parameter class name -> {}", parameterClassName);
+				Treasure.logger.debug("type  name -> {}", getClass().getTypeName());
+				Type type = getClass().getGenericInterfaces()[0];
+				Treasure.logger.debug("interface type name -> {}", type.getTypeName());
+				ParameterizedType pt2 = (ParameterizedType) type;
+				Treasure.logger.debug("parameter interface type aruments -> {}", pt2.getActualTypeArguments()[0].toString()); 
 				// Instantiate the Parameter and initialize it.
 		        DATA parameter = null;
 				parameter = (DATA) Class.forName(parameterClassName).newInstance();

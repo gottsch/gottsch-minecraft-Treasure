@@ -35,9 +35,9 @@ import com.someguyssoftware.treasure2.generator.IOldTreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.OldTreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.TreasureGeneratorResult;
 import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
-import com.someguyssoftware.treasure2.generator.marker.RandomStructureMarkerGenerator;
+import com.someguyssoftware.treasure2.generator.marker.StructureMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
-import com.someguyssoftware.treasure2.generator.submerged.SubmergedRuinGenerator;
+import com.someguyssoftware.treasure2.generator.ruins.SubmergedRuinGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
@@ -436,31 +436,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		}
 		return te;
 	}
-	
-	/**
-	 * 
-	 * @param chestRarity
-	 * @return
-	 */
-//	public LootContainer selectContainer(Random random, final Rarity chestRarity) {
-//		LootContainer container = LootContainer.EMPTY_CONTAINER;
-//		// select the loot container by rarity
-//		List<LootContainer> containers = DbManager.getInstance().getContainersByRarity(chestRarity);
-//		if (containers != null && !containers.isEmpty()) {
-//			/*
-//			 * get a random container
-//			 */
-//			if (containers.size() == 1) {
-//				container = containers.get(0);
-//			}
-//			else {
-//				container = containers.get(RandomHelper.randomInt(random, 0, containers.size()-1));
-//			}
-//			Treasure.logger.info("Chosen chest container:" + container);
-//		}
-//		return container;
-//	}
-	
+		
 	/**
 	 * 
 	 * @param random
@@ -517,10 +493,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 //		GenUtil.placeMarkers(world, random, coords);
 		if (!isChestOnSurface && TreasureConfig.isMarkerStructuresAllowed && RandomHelper.checkProbability(random, TreasureConfig.markerStructureProbability)) {
 			Treasure.logger.debug("generating a random structure marker -> {}", coords.toShortString());
-			new RandomStructureMarkerGenerator().generate(world, random, coords);
+			new StructureMarkerGenerator().generate2(world, random, coords);
 		}
 		else {
-			new GravestoneMarkerGenerator().generate(world, random, coords);			
+			new GravestoneMarkerGenerator().generate2(world, random, coords);			
 		}
 	}
 	
