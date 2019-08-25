@@ -95,14 +95,14 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 		List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
 		
 		// populate vanilla spawners
-		buildVanillaSpawners(world, random, spawnCoords, spawnerCoords);
+		buildVanillaSpawners(world, random, genResult.getData().getSpawnCoords(), spawnerCoords);
 		
 		// populate proximity spawners
-		buildOneTimeSpawners(world, random, spawnCoords, proximityCoords, new Quantity(1,2), 5D);
+		buildOneTimeSpawners(world, random, genResult.getData().getSpawnCoords(), proximityCoords, new Quantity(1,2), 5D);
 					
 		result.setData(genResult.getData());
 
-		return result;
+		return result.success();
 	}
 	
 	@Override

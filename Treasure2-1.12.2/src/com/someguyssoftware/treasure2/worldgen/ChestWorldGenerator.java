@@ -25,6 +25,7 @@ import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.AbstractChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
@@ -65,7 +66,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	
 	// the chest chestGeneratorsMap
 	private Map<Rarity, AbstractChestGenerator> chestGeneratorsMap = new HashMap<>();
-	private Map<Rarity, RandomWeightedCollection<IChestGenerator>> chestCollectionGeneratorsMap = new HashMap<>();
+	private Map<Rarity, RandomWeightedCollection<IChestGenerator<GeneratorResult<GeneratorData>>>> chestCollectionGeneratorsMap = new HashMap<>();
 	
 	// TODO probably should be moved to AbstractChestGenerator
 	// the pit chestGeneratorsMap
@@ -166,7 +167,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 			Integer i = chunksSinceLastRarityChest.get(rarity);
 			chunksSinceLastRarityChest.put(rarity, ++i);
 		}
-        boolean isGenerated = false;	
+//        boolean isGenerated = false;	
         
 		// test if min chunks was met
      	if (chunksSinceLastChest > TreasureConfig.minChunksPerChest) {
@@ -224,9 +225,9 @@ public class ChestWorldGenerator implements IWorldGenerator {
  			
     			// generate the chest/pit/chambers
 				Treasure.logger.debug("Attempting to generate pit/chest.");
-				isGenerated = chestCollectionGeneratorsMap.get(rarity).next().generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
+		        GeneratorResult<GeneratorData> result = chestCollectionGeneratorsMap.get(rarity).next().generate2(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
 
-    			if (isGenerated) {
+    			if (result.isSuccess()) {
     				// add to registry
     				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
     				// reset the chunk counts
@@ -338,14 +339,14 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	/**
 	 * @return the chestCollectionGeneratorsMap
 	 */
-	public Map<Rarity, RandomWeightedCollection<IChestGenerator>> getChestCollectionGeneratorsMap() {
+	public Map<Rarity, RandomWeightedCollection<IChestGenerator<GeneratorResult<GeneratorData>>>> getChestCollectionGeneratorsMap() {
 		return chestCollectionGeneratorsMap;
 	}
 
 	/**
 	 * @param chestCollectionGeneratorsMap the chestCollectionGeneratorsMap to set
 	 */
-	public void setChestCollectionGeneratorsMap(Map<Rarity, RandomWeightedCollection<IChestGenerator>> gens) {
+	public void setChestCollectionGeneratorsMap(Map<Rarity, RandomWeightedCollection<IChestGenerator<GeneratorResult<GeneratorData>>>> gens) {
 		this.chestCollectionGeneratorsMap = gens;
 	}
 }

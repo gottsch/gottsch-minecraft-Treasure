@@ -166,7 +166,7 @@ public class WitherTreeGenerator {
 		
 		// add pit/chest
 		WitherChestGenerator chestGen = new WitherChestGenerator();
-		chestGen.generate(world, random, coords, Rarity.SCARCE, Configs.chestConfigs.get(Rarity.SCARCE)); 
+		chestGen.generate2(world, random, coords, Rarity.SCARCE, Configs.chestConfigs.get(Rarity.SCARCE)); 
 		
 		return true;
 	}

@@ -30,6 +30,7 @@ import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
@@ -53,148 +54,147 @@ import net.minecraft.world.biome.Biome;
  * @author Mark Gottschling on Feb 1, 2018
  *
  */
-public abstract class AbstractChestGenerator implements IChestGenerator {
+public abstract class AbstractChestGenerator implements IChestGenerator<GeneratorResult<GeneratorData>> {
 	protected static int UNDERGROUND_OFFSET = 5;
-	
+
 	/* (non-Javadoc)
 	 * @see com.someguyssoftware.treasure2.generator.IChestGenerator#generate(net.minecraft.world.World, java.util.Random, com.someguyssoftware.gottschcore.positional.ICoords, com.someguyssoftware.treasure2.enums.Rarity, com.someguyssoftware.treasure2.config.IChestConfig)
 	 */
 	@Override
-	public boolean generate(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config) {
+	//	public boolean generate(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config) {
+	public GeneratorResult<GeneratorData> generate2(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config) {
 		ICoords chestCoords = null;
 		ICoords markerCoords = null;
 		ICoords spawnCoords = null;
-		boolean isAboveGround = false;
-		boolean isOcean = false;
 		boolean hasMarkers = true;
-		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
-			
+		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);		
+		GeneratorResult<ChestGeneratorData> genResult = new GeneratorResult<>(ChestGeneratorData.class);		
+
 		// 1. collect location data points
 		ICoords surfaceCoords = WorldInfo.getSurfaceCoords(world, coords);
 		Treasure.logger.debug("surface coords -> {}", surfaceCoords.toShortString());
 		if (!WorldInfo.isValidY(surfaceCoords)) {
 			Treasure.logger.debug("surface coords are invalid @ {}", surfaceCoords.toShortString());
-			return false;
+			return result.fail();
 		}
-		
+
 		SURFACE surface = WorldInfo.getSurface(world, surfaceCoords);
-		if (!isSurfaceValid(surface)) return false;
+		if (!isSurfaceValid(surface)) {
+			Treasure.logger.debug("not a valid surface -> {} @ {}", surface.name(), surfaceCoords.toShortString());
+			return result.fail();
+		}
 		Treasure.logger.debug("surface -> {}", surface.name());
-		
+
 		// 2. determine if on the ocean
-		if (surface == SURFACE.WATER) {
-			Treasure.logger.debug("surface is water!");
-			if (isOcean = isOceanBiome(world, coords)) {			
-				Treasure.logger.debug("it is ocean biome!");
-				
-				// TEMP: test against water probability. this is used to reduce the occurences of submerged structures without re-writting the entire generation system.
-				if (!RandomHelper.checkProbability(random, TreasureConfig.waterStructureProbability)) return false;
-				
-				markerCoords = surfaceCoords;
-				spawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, surfaceCoords);
-				Treasure.logger.debug("ocean floor coords -> {}", spawnCoords.toShortString());
-				result = generateSubmergedRuins(world, random, spawnCoords, config);
-				chestCoords = result.getData().getChestCoords();
-				// turn off markers for ocean chests.
-				hasMarkers = false;
+		if (surface == SURFACE.WATER) {			
+			if (!isOceanBiome(world, coords)) {
+				Treasure.logger.debug("surface is water, but not in ocean biome");
+				return result.fail();
 			}
-			else return false;
+			
+			// TEMP: test against water probability. this is used to reduce the occurences of submerged structures without re-writting the entire generation system.
+			if (!RandomHelper.checkProbability(random, TreasureConfig.waterStructureProbability)) {
+				Treasure.logger.debug("did not meet water structure probability");
+				return result.fail();
+			}
+
+			markerCoords = surfaceCoords;
+			spawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, markerCoords);
+			Treasure.logger.debug("ocean floor coords -> {}", spawnCoords.toShortString());
+			genResult = generateSubmergedRuins(world, random, spawnCoords, config);
+			chestCoords = genResult.getData().getChestCoords();
+			// turn off markers for ocean chests.
+			hasMarkers = false;
+//			}
+//			else {
+//				Treasure.logger.debug("surface is water, but not in ocean biome");
+//				return result.fail();
+//			}
 		}
 		else {
+			// TODO this seems unnessecary as is not WATER surface then it is land
 			markerCoords = WorldInfo.getDryLandSurfaceCoords(world, surfaceCoords);
+			Treasure.logger.debug("dry land: surface coords -> {}, marker coords -> {}", surfaceCoords.toShortString(), markerCoords.toShortString());
 			// determine if above ground or below ground
-			if (config.isAboveGroundAllowed() &&
-					RandomHelper.checkProbability(random, TreasureConfig.surfaceChestProbability)) { 
-				isAboveGround = true;
+			if (config.isAboveGroundAllowed() && RandomHelper.checkProbability(random, TreasureConfig.surfaceChestProbability)) {
+
 				if (RandomHelper.checkProbability(random, TreasureConfig.surfaceStructureProbability)) {
 					// TEMP - until surface buildings are added
-					
+
 					// no markers
 					hasMarkers = false;
 					// set the chest coords to the surface pos
 					chestCoords = new Coords(markerCoords);
 					Treasure.logger.debug("Above ground structure @ {}", chestCoords.toShortString());
-					result.success();
-					result.getData().setChestCoords(chestCoords);
-//					isGenerated = true;
-//					result = new GeneratorResult(true);
 				}
 				else {
 					// set the chest coords to the surface pos
 					chestCoords = new Coords(markerCoords);
 					Treasure.logger.debug("Above ground, chest only @ {}", chestCoords.toShortString());
-//					isGenerated = true;
-//					result = new GeneratorResult(true);
 				}
-				result.success();
-				result.getData().setChestCoords(chestCoords);
 			}
 			else if (config.isBelowGroundAllowed()) {
 				Treasure.logger.debug("else generate pit");
-				result = generatePit(world, random, chestRarity, markerCoords, config);
-				Treasure.logger.debug("result -=> {}", result.toString());
-				if (!result.isSuccess()) return false;
-				// TODO unnecessary
-				if (result.isSuccess()) {
-					chestCoords = result.getData().getChestCoords();
+				genResult = generatePit(world, random, chestRarity, markerCoords, config);
+				Treasure.logger.debug("result -=> {}", genResult.toString());
+				if (!genResult.isSuccess()) {
+					return result.fail();
 				}
-			}
+				chestCoords = genResult.getData().getChestCoords();
+			}			
+		}
+		Treasure.logger.debug("chest coords after all generation -> {}", chestCoords.toShortString());
+		if (chestCoords == null) return result.fail();
+
+		genResult.success().getData().setChestCoords(chestCoords);
+
+//		chestCoords = genResult.getData().getChestCoords();
+		LootTable lootTable = selectLootTable(random, chestRarity);
+
+		if (lootTable == null) {
+			Treasure.logger.warn("Unable to select a lootTable.");
+			return result.fail();
 		}
 
-		Treasure.logger.debug("chest coords after all generation -> {}", result.getData().getChestCoords());
-		
-		// TODO this test is actually unnecessary, as we will return if result.fail()
-		// if successfully gen the pit
-		if (/*isGenerated*//*chestCoords != null && chestCoords != WorldInfo.EMPTY_COORDS*/result.isSuccess() && result.getData().getChestCoords() != null) {
-			chestCoords = result.getData().getChestCoords();
-			LootTable lootTable = selectLootTable(random, chestRarity);
+		// select a chest from the rarity
+		AbstractChestBlock chest = selectChest(random, chestRarity);	
+		if (chest == null) {
+			Treasure.logger.warn("Unable to select a chest for rarity {}.", chestRarity);
+			return result.fail();
+		}
 
-			if (lootTable == null) {
-				Treasure.logger.warn("Unable to select a lootTable.");
-				return false;
-			}
-		
-			// select a chest from the rarity
-			AbstractChestBlock chest = selectChest(random, chestRarity);	
-			if (chest == null) {
-				Treasure.logger.warn("Unable to select a chest for rarity {}.", chestRarity);
-				return false;
-			}
-						
-			// place the chest in the world
-			TileEntity te = placeInWorld(world, random, chest, chestCoords);
-			if (te == null) return false;
-			
-			// populate the chest with items
-//			if (chest instanceof WitherChestBlock) {
-//				Treasure.logger.debug("Generating loot from loot table for wither chest");
-//				lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
-//							random,
-//							Treasure.LOOT_TABLES.getContext());
-//			}
-//			else
-			if (chest instanceof IMimicBlock) {
-				// don't fill
-			}
-			else {
-				Treasure.logger.debug("Generating loot from loot table for rarity {}", chestRarity);
-				lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
-							random,
-							Treasure.LOOT_TABLES.getContext());			
-			}
-			
-			// add locks
-			addLocks(random, chest, (AbstractTreasureChestTileEntity)te, chestRarity);
-			
-			// add markers (above chest or shaft)
-			if (hasMarkers) {
-				addMarkers(world, random, markerCoords);
-			}
-			
-			Treasure.logger.info("CHEATER! {} chest at coords: {}", chestRarity, markerCoords.toShortString());
-			return true;
-		}		
-		return false;
+		// place the chest in the world
+		TileEntity te = placeInWorld(world, random, chest, chestCoords);
+		if (te == null) return result.fail();
+
+		// populate the chest with items
+		//			if (chest instanceof WitherChestBlock) {
+		//				Treasure.logger.debug("Generating loot from loot table for wither chest");
+		//				lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
+		//							random,
+		//							Treasure.LOOT_TABLES.getContext());
+		//			}
+		//			else
+		if (chest instanceof IMimicBlock) {
+			// don't fill
+		}
+		else {
+			Treasure.logger.debug("Generating loot from loot table for rarity {}", chestRarity);
+			lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
+					random,
+					Treasure.LOOT_TABLES.getContext());			
+		}
+
+		// add locks
+		addLocks(random, chest, (AbstractTreasureChestTileEntity)te, chestRarity);
+
+		// add markers (above chest or shaft)
+		if (hasMarkers) {
+			addMarkers(world, random, markerCoords);
+		}
+		Treasure.logger.info("CHEATER! {} chest at coords: {}", chestRarity, markerCoords.toShortString());
+		result.setData(genResult.getData());
+		return result.success();
 	}
 
 	/**
@@ -231,27 +231,27 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			IChestConfig config) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
 		result.getData().setSpawnCoords(spawnCoords);
-		
+
 		ICoords chestCoords = null;
-		
+
 		// check if it has 50% land
 		if (!WorldInfo.isSolidBase(world, spawnCoords, 2, 2, 30)) {
 			Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", spawnCoords.toShortString(), 3, 3);
 			return result.fail();
 		}
-		
+
 		SubmergedRuinGenerator generator = new SubmergedRuinGenerator();
-		
+
 		// build the structure
 		GeneratorResult<TemplateGeneratorData> genResult = generator.generate2(world, random, spawnCoords);
 		Treasure.logger.debug("is submerged struct generated -> {}", genResult);
 		if (!genResult.isSuccess()) return result.fail();
-		
+
 		result.setData(genResult.getData());
 		Treasure.logger.debug("Is submerged generated: {}", result.isSuccess());
 		return result.success();
 	}
-	
+
 	/**
 	 * 
 	 * @param world
@@ -264,13 +264,13 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	public GeneratorResult<ChestGeneratorData> generatePit(World world, Random random, Rarity chestRarity, ICoords markerCoords, IChestConfig config) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<ChestGeneratorData>(ChestGeneratorData.class);
 		GeneratorResult<ChestGeneratorData> pitResult = new GeneratorResult<>(ChestGeneratorData.class);
-		
+
 		// 2.5. check if it has 50% land
 		if (!WorldInfo.isSolidBase(world, markerCoords, 2, 2, 50)) {
 			Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", markerCoords.toShortString(), 3, 3);
 			return result.fail();
 		}
-		
+
 		// determine spawn coords below ground
 		ICoords spawnCoords = getUndergroundSpawnPos(world, random, markerCoords, config.getMinYSpawn());
 
@@ -280,21 +280,21 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		}
 		Treasure.logger.debug("Below ground @ {}", spawnCoords.toShortString());
 		result.getData().setSpawnCoords(markerCoords);
-		
+
 		// select a pit generator
 		IPitGenerator pitGenerator = selectPitGenerator(random);
-		
+
 		// 3. build the pit
 		pitResult = pitGenerator.generate(world, random, markerCoords, spawnCoords);
-		
+
 		ICoords chestCoords = null;
 		if (!pitResult.isSuccess()) return result.fail();
-		
+
 		result.setData(pitResult.getData());
 		Treasure.logger.debug("Is pit generated: {}", pitResult.isSuccess());
 		return result.success();
 	}
-	
+
 	/**
 	 * 	
 	 * @param random
@@ -309,7 +309,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 
 		return pitGenerator;
 	}
-	
+
 	/**
 	 * 
 	 * @param world
@@ -320,20 +320,20 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 */
 	public ICoords getUndergroundSpawnPos(World world, Random random, ICoords pos, int spawnYMin) {
 		ICoords spawnPos = null;
-		
+
 		// spawn location under ground
 		if (pos.getY() > (spawnYMin + UNDERGROUND_OFFSET)) {
 			int ySpawn = random.nextInt(pos.getY()
 					- (spawnYMin + UNDERGROUND_OFFSET))
 					+ spawnYMin;
-			
+
 			spawnPos = new Coords(pos.getX(), ySpawn, pos.getZ());
 			// get floor pos (if in a cavern or tunnel etc)
 			spawnPos = WorldInfo.getDryLandSurfaceCoords(world, spawnPos);
 		}
 		return spawnPos;
 	}
-	
+
 	/**
 	 * 
 	 * @param rarity
@@ -356,7 +356,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		}
 		return chest;
 	}
-	
+
 	/**
 	 * v1.0 - Currently chests aren't mapped by Category
 	 * @param random
@@ -366,7 +366,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	public TreasureChestBlock  selectChest(final Random random, final Category category) {
 		return null;
 	}
-	
+
 	/**
 	 * 
 	 * @param world
@@ -378,10 +378,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	public TileEntity placeInWorld(World world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
 		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
-		
+
 		// get the backing tile entity of the chest 
 		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());
-				
+
 		// check to ensure the chest has been generated
 		if (!isPlaced || !(world.getBlockState(chestCoords.toPos()).getBlock() instanceof AbstractChestBlock)) {
 			Treasure.logger.debug("Unable to place chest @ {}", chestCoords.toShortString());
@@ -402,7 +402,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		}
 		return te;
 	}
-		
+
 	/**
 	 * 
 	 * @param random
@@ -414,7 +414,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 
 		// select the loot table by rarity
 		List<LootTable> tables = buildLootTableList(chestRarity);
-		
+
 		// select a random table from the list
 		if (tables != null && !tables.isEmpty()) {
 			int index = 0;		
@@ -432,7 +432,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		}
 		return table;
 	}	
-	
+
 	/**
 	 * 
 	 * @param rarity
@@ -442,7 +442,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	public List<LootTable> buildLootTableList(Rarity rarity) {
 		return Treasure.LOOT_TABLES.getLootTableByRarity(rarity);
 	}
-	
+
 	/**
 	 * Wrapper method so that is can be overridden (as used in the Template Pattern)
 	 * @param world
@@ -456,7 +456,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		if(block instanceof BlockContainer || block instanceof AbstractModContainerBlock || block instanceof ITreasureBlock) {
 			isChestOnSurface = true;
 		}
-//		GenUtil.placeMarkers(world, random, coords);
+		//		GenUtil.placeMarkers(world, random, coords);
 		if (!isChestOnSurface && TreasureConfig.isMarkerStructuresAllowed && RandomHelper.checkProbability(random, TreasureConfig.markerStructureProbability)) {
 			Treasure.logger.debug("generating a random structure marker -> {}", coords.toShortString());
 			new StructureMarkerGenerator().generate2(world, random, coords);
@@ -465,7 +465,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			new GravestoneMarkerGenerator().generate2(world, random, coords);			
 		}
 	}
-	
+
 	/**
 	 * Default implementation. Select locks only from with the same Rarity.
 	 * @param chest
@@ -476,7 +476,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		addLocks(random, chest, te, locks);
 		locks.clear();
 	}
-	
+
 	/**
 	 * 
 	 * @param random
@@ -486,7 +486,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 */
 	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te, List<LockItem> locks) {
 		int numLocks = randomizedNumberOfLocksByChestType(random, chest.getChestType());
-		
+
 		// get the lock states
 		List<LockState> lockStates = te.getLockStates();	
 
@@ -497,7 +497,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			lockStates.get(i).setLock(lock);				
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param random
@@ -508,7 +508,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 0, type.getMaxLocks());		
 		Treasure.logger.debug("# of locks to use: {})", numLocks);
-		
+
 		return numLocks;
 	}
 }

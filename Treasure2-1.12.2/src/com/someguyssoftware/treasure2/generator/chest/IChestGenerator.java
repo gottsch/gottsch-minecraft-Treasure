@@ -8,11 +8,17 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
+import com.someguyssoftware.treasure2.generator.IGeneratorResult;
 
 import net.minecraft.world.World;
 
-public interface IChestGenerator {
+public interface IChestGenerator<RESULT extends IGeneratorResult<?>> {
 
+	public GeneratorResult<GeneratorData> generate2(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config);
+	
 	/**
 	 * 
 	 * @param world
@@ -22,7 +28,7 @@ public interface IChestGenerator {
 	 * @param config
 	 * @return
 	 */
-	boolean generate(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config);
+//	boolean generate(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config);
 
 	// TODO IGeneratorResult generated(World world, Random random, ICoords coords, Rarity rarity, IChestConfig config);
 	
