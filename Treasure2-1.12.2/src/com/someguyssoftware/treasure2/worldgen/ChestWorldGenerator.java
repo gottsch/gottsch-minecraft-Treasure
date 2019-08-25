@@ -67,8 +67,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	// the chest chestGeneratorsMap
 	private Map<Rarity, AbstractChestGenerator> chestGeneratorsMap = new HashMap<>();
 	private Map<Rarity, RandomWeightedCollection<IChestGenerator<GeneratorResult<GeneratorData>>>> chestCollectionGeneratorsMap = new HashMap<>();
-	
-	// TODO probably should be moved to AbstractChestGenerator
+
 	// the pit chestGeneratorsMap
 	public static Table<PitTypes, Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGens =  HashBasedTable.create();
 	
@@ -167,8 +166,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 			Integer i = chunksSinceLastRarityChest.get(rarity);
 			chunksSinceLastRarityChest.put(rarity, ++i);
 		}
-//        boolean isGenerated = false;	
-        
+
 		// test if min chunks was met
      	if (chunksSinceLastChest > TreasureConfig.minChunksPerChest) {
      		/*
@@ -225,7 +223,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
  			
     			// generate the chest/pit/chambers
 				Treasure.logger.debug("Attempting to generate pit/chest.");
-		        GeneratorResult<GeneratorData> result = chestCollectionGeneratorsMap.get(rarity).next().generate2(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
+		        GeneratorResult<GeneratorData> result = chestCollectionGeneratorsMap.get(rarity).next().generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
 
     			if (result.isSuccess()) {
     				// add to registry

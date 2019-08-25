@@ -24,6 +24,6 @@ public interface IMarkerGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param config
 	 * @return
 	 */
-	public abstract RESULT generate2(World world, Random random, ICoords spawnCoords);
+	public abstract RESULT generate(World world, Random random, ICoords spawnCoords);
 	
 }

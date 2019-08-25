@@ -60,7 +60,7 @@ public class SpawnWellStructureCommand extends CommandBase {
 
     			Random random = new Random();
     			WellGenerator gen = new WellGenerator();
-    			GeneratorResult<GeneratorData> result = gen.generate2(world, random, coords, Configs.wellConfig);
+    			GeneratorResult<GeneratorData> result = gen.generate(world, random, coords, Configs.wellConfig);
     			Treasure.logger.debug("Well start coords at -> {}", result.getData().getSpawnCoords().toShortString());
     		}
 		}

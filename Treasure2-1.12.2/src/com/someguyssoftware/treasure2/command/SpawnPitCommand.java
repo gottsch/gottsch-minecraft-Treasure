@@ -61,7 +61,7 @@ public class SpawnPitCommand extends CommandBase {
     			Random random = new Random();
     			//BlockPos pos = new BlockPos(x, y, z);
     			ChestWorldGenerator chestGen = new ChestWorldGenerator();
-    			chestGen.getGenerators().get(rarity).generate2(world, random, new Coords(x, y, z), rarity, Configs.chestConfigs.get(rarity)); 
+    			chestGen.getGenerators().get(rarity).generate(world, random, new Coords(x, y, z), rarity, Configs.chestConfigs.get(rarity)); 
     		}
 		}
 		catch(Exception e) {

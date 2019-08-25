@@ -48,7 +48,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 	}
 
 	@Override
-	public GeneratorResult<GeneratorData> generate2(World world, Random random, ICoords coords) {
+	public GeneratorResult<GeneratorData> generate(World world, Random random, ICoords coords) {
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 	
 		// get the biome ID
@@ -95,7 +95,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		if (offset >= -2) {
 			if (!WorldInfo.isSolidBase(world, spawnCoords, transformedSize.getX(), transformedSize.getZ(), 70)) {
 				Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", 70, spawnCoords.toShortString(), transformedSize.getX(), transformedSize.getY());
-				 GeneratorResult<GeneratorData> genResult = new GravestoneMarkerGenerator().generate2(world, random, coords);
+				 GeneratorResult<GeneratorData> genResult = new GravestoneMarkerGenerator().generate(world, random, coords);
 				 return genResult;
 			}
 		}

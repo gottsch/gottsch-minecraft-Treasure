@@ -3,9 +3,7 @@
  */
 package com.someguyssoftware.treasure2.worldgen;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.biome.BiomeHelper;
@@ -21,11 +19,8 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Wells;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.well.CanopyWellGenerator;
 import com.someguyssoftware.treasure2.generator.well.IWellGenerator;
-import com.someguyssoftware.treasure2.generator.well.SimpleWellGenerator;
 import com.someguyssoftware.treasure2.generator.well.WellGenerator;
-import com.someguyssoftware.treasure2.generator.well.WoodDrawWellGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
@@ -157,7 +152,7 @@ public class WellWorldGenerator implements IWorldGenerator {
 				// generate the well
 				Treasure.logger.debug("Attempting to generate a well");
 //				isGenerated = generators.get(well)
-				result = generator.generate2(world, random, coords, wellConfig); 
+				result = generator.generate(world, random, coords, wellConfig); 
 				Treasure.logger.debug("well world gen result -> {}", result.isSuccess());
 				if (/*isGenerated*/result.isSuccess()) {
 					// add to registry

@@ -27,15 +27,7 @@ import net.minecraft.world.World;
  *
  */
 public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param spawnCoords
-	 * @return
-	 */
-	public abstract boolean generate(World world, Random random, ICoords spawnCoords, IWellConfig config);
-	
+
 	/**
 	 * 
 	 * @param world
@@ -44,7 +36,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param config
 	 * @return
 	 */
-	public abstract RESULT generate2(World world, Random random, ICoords spawnCoords, IWellConfig config);
+	public abstract RESULT generate(World world, Random random, ICoords spawnCoords, IWellConfig config);
 	
 	/**
 	 * Default implementation based on a 3x3 well structure.

@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 public interface IChestGenerator<RESULT extends IGeneratorResult<?>> {
 
-	public GeneratorResult<GeneratorData> generate2(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config);
+	public GeneratorResult<GeneratorData> generate(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config);
 	
 	/**
 	 * 

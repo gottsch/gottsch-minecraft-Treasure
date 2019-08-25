@@ -44,7 +44,7 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 	
 	
 	@Override
-	public GeneratorResult<TemplateGeneratorData> generate2(World world, Random random,
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random,
 			ICoords spawnCoords) {
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
 	

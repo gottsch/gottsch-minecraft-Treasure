@@ -62,7 +62,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 	 */
 	@Override
 	//	public boolean generate(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config) {
-	public GeneratorResult<GeneratorData> generate2(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config) {
+	public GeneratorResult<GeneratorData> generate(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config) {
 		ICoords chestCoords = null;
 		ICoords markerCoords = null;
 		ICoords spawnCoords = null;
@@ -243,7 +243,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 		SubmergedRuinGenerator generator = new SubmergedRuinGenerator();
 
 		// build the structure
-		GeneratorResult<TemplateGeneratorData> genResult = generator.generate2(world, random, spawnCoords);
+		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, spawnCoords);
 		Treasure.logger.debug("is submerged struct generated -> {}", genResult);
 		if (!genResult.isSuccess()) return result.fail();
 
@@ -459,10 +459,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 		//		GenUtil.placeMarkers(world, random, coords);
 		if (!isChestOnSurface && TreasureConfig.isMarkerStructuresAllowed && RandomHelper.checkProbability(random, TreasureConfig.markerStructureProbability)) {
 			Treasure.logger.debug("generating a random structure marker -> {}", coords.toShortString());
-			new StructureMarkerGenerator().generate2(world, random, coords);
+			new StructureMarkerGenerator().generate(world, random, coords);
 		}
 		else {
-			new GravestoneMarkerGenerator().generate2(world, random, coords);			
+			new GravestoneMarkerGenerator().generate(world, random, coords);			
 		}
 	}
 

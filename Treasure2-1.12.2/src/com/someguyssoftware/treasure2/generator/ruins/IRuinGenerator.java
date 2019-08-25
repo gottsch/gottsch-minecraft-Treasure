@@ -20,7 +20,7 @@ import net.minecraft.world.World;
  */
 public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 
-	GeneratorResult<TemplateGeneratorData> generate2(World world, Random random, ICoords spawnCoords);
+	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords spawnCoords);
 
 	void buildOneTimeSpawners(World world, Random random, ICoords spawnCoords, List<ICoords> proximityCoords,
 			Quantity quantity, double d);

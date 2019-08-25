@@ -36,15 +36,8 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  */
 public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorData>> {
 
-	
 	@Override
-	public boolean generate(World world, Random random, ICoords spawnCoords, IWellConfig config) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public GeneratorResult<GeneratorData> generate2(World world, Random random,
+	public GeneratorResult<GeneratorData> generate(World world, Random random,
 			ICoords spawnCoords, IWellConfig config) {
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 		
