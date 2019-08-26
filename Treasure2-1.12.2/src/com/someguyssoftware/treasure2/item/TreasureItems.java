@@ -24,6 +24,8 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemSoup;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.common.util.EnumHelper;
@@ -116,6 +118,10 @@ public class TreasureItems {
 	public static Item SPANISH_MOSS;
 	public static Item TREASURE_TOOL;
 	public static Item SKELETON;
+	public static Item OYSTER_MEAT;
+	public static Item CLAM_MEAT;
+	public static Item OYSTER_STEW;
+	public static Item CLAM_STEW;
     	
 	/*
 	 * Materials
@@ -365,6 +371,14 @@ public class TreasureItems {
 		
 		SKELETON = new SkeletonItem(Treasure.MODID, TreasureConfig.SKELETON_ID);
 		
+		// FOOD
+		// TODO need to create new items for stews and override the onItemUseFinish if there are effects
+		// TODO need to move ModFoodItem to GottschCore
+		OYSTER_MEAT = new ModFoodItem(Treasure.MODID, "oyster_meat", 5, 0.8F, false);		
+		CLAM_MEAT = new ModFoodItem(Treasure.MODID, "clam_meat", 4, 0.7F, false);
+
+		OYSTER_STEW = new ModSoupItem(Treasure.MODID, "oyster_stew", 20, 1.0F); // TODO check the total health amount a player has
+		CLAM_STEW = new ModSoupItem(Treasure.MODID, "clam_stew", 15, 1.0F);
 	}
 	
 	/**
@@ -446,7 +460,11 @@ public class TreasureItems {
 					PAINTING_BLOCKS_WOOD,
 					SAPPHIRE,
 					RUBY,
-					SKELETON
+					SKELETON,
+					OYSTER_MEAT,
+					OYSTER_STEW,
+					CLAM_MEAT,
+					CLAM_STEW
 			};
 			registry.registerAll(items);		
 		}

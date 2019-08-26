@@ -149,6 +149,12 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.RUBY);
 		registerItemModel(TreasureItems.TREASURE_TOOL);
 		
+		// FOOD
+		registerItemModel(TreasureItems.OYSTER_MEAT);
+		registerItemModel(TreasureItems.OYSTER_STEW);
+		registerItemModel(TreasureItems.CLAM_MEAT);
+		registerItemModel(TreasureItems.CLAM_STEW);
+		
 //		// variants
 //		Item gravestoneItem = Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1);
 //		ModelResourceLocation itemModelResourceLocation = 
