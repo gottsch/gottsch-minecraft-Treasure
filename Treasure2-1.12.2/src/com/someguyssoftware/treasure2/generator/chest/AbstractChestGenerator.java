@@ -143,8 +143,8 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 				chestCoords = genResult.getData().getChestCoords();
 			}			
 		}
-		Treasure.logger.debug("chest coords after all generation -> {}", chestCoords.toShortString());
-		if (chestCoords == null) return result.fail();
+//		Treasure.logger.debug("chest coords after all generation -> {}", chestCoords.toShortString());
+//		if (chestCoords == null) return result.fail();
 
 		genResult.success().getData().setChestCoords(chestCoords);
 
@@ -232,8 +232,6 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
 		result.getData().setSpawnCoords(spawnCoords);
 
-		ICoords chestCoords = null;
-
 		// check if it has 50% land
 		if (!WorldInfo.isSolidBase(world, spawnCoords, 2, 2, 30)) {
 			Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", spawnCoords.toShortString(), 3, 3);
@@ -263,7 +261,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 	 */
 	public GeneratorResult<ChestGeneratorData> generatePit(World world, Random random, Rarity chestRarity, ICoords markerCoords, IChestConfig config) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<ChestGeneratorData>(ChestGeneratorData.class);
-		GeneratorResult<ChestGeneratorData> pitResult = new GeneratorResult<>(ChestGeneratorData.class);
+		GeneratorResult<ChestGeneratorData> pitResult = new GeneratorResult<ChestGeneratorData>(ChestGeneratorData.class);
 
 		// 2.5. check if it has 50% land
 		if (!WorldInfo.isSolidBase(world, markerCoords, 2, 2, 50)) {
@@ -282,12 +280,11 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 		result.getData().setSpawnCoords(markerCoords);
 
 		// select a pit generator
-		IPitGenerator pitGenerator = selectPitGenerator(random);
+		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = selectPitGenerator(random);
 
 		// 3. build the pit
 		pitResult = pitGenerator.generate(world, random, markerCoords, spawnCoords);
 
-		ICoords chestCoords = null;
 		if (!pitResult.isSuccess()) return result.fail();
 
 		result.setData(pitResult.getData());
