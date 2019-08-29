@@ -61,7 +61,6 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 	 * @see com.someguyssoftware.treasure2.generator.IChestGenerator#generate(net.minecraft.world.World, java.util.Random, com.someguyssoftware.gottschcore.positional.ICoords, com.someguyssoftware.treasure2.enums.Rarity, com.someguyssoftware.treasure2.config.IChestConfig)
 	 */
 	@Override
-	//	public boolean generate(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config) {
 	public GeneratorResult<GeneratorData> generate(World world, Random random, ICoords coords, Rarity chestRarity, IChestConfig config) {
 		ICoords chestCoords = null;
 		ICoords markerCoords = null;
@@ -105,11 +104,6 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 			chestCoords = genResult.getData().getChestCoords();
 			// turn off markers for ocean chests.
 			hasMarkers = false;
-//			}
-//			else {
-//				Treasure.logger.debug("surface is water, but not in ocean biome");
-//				return result.fail();
-//			}
 		}
 		else {
 			// TODO this seems unnessecary as is not WATER surface then it is land
@@ -143,12 +137,11 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 				chestCoords = genResult.getData().getChestCoords();
 			}			
 		}
-//		Treasure.logger.debug("chest coords after all generation -> {}", chestCoords.toShortString());
-//		if (chestCoords == null) return result.fail();
+		
+		genResult.getData().setChestCoords(chestCoords);
 
-		genResult.success().getData().setChestCoords(chestCoords);
-
-//		chestCoords = genResult.getData().getChestCoords();
+		// TODO how to select oyster/clam... don't want oyster/clam all the time BUT if a loot table is selected,
+		// the corresponding chest needs to be selected. hmmm....
 		LootTable lootTable = selectLootTable(random, chestRarity);
 
 		if (lootTable == null) {

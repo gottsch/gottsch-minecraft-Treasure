@@ -37,17 +37,6 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	 */
 	public WitherChestGenerator() {}
 
-//	/**
-//	 * Override to retrieve the WITHER CHEST container regardless of rarity.
-//	 * @param rarity
-//	 * @return
-//	 */
-//	@Override
-//	public LootContainer selectContainer(Random random, final Rarity rarity) {
-//		LootContainer container = DbManager.getInstance().selectContainer("wither_chest");
-//		return container;
-//	}
-	
 	/*
 	 * @param random
 	 * @param chestRarity
@@ -55,7 +44,6 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	 */
 	@Override
 	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
-//		return TreasureLootTables.WITHER_CHEST_LOOT_TABLE;
 		return Treasure.LOOT_TABLES.getSpecialLootTable(SpecialLootTables.WITHER_CHEST);
 	}
 	 
@@ -99,10 +87,8 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 		List<LockState> lockStates = te.getLockStates();	
 		// determine the number of locks to add (must have at least 1 lock)
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());
-//		Treasure.logger.debug("# of locks to use: {})", numLocks);
 		for (int i = 0; i < numLocks; i++) {
 			LockItem lock = TreasureItems.WITHER_LOCK;
-//			Treasure.logger.debug("adding lock: {}", lock);
 			// add the lock to the chest
 			lockStates.get(i).setLock(lock);
 		}
