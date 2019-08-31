@@ -29,10 +29,12 @@ import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.AbstractChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.ClamChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.OysterChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.RareChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
@@ -49,6 +51,9 @@ import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
+import lombok.Getter;
+import lombok.Setter;
+import net.minecraft.init.Biomes;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -60,6 +65,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
  * @author Mark Gottschling on Jan 22, 2018
  *
  */
+@Getter @Setter
 public class ChestWorldGenerator implements IWorldGenerator {
 	private int chunksSinceLastChest;
 	private Map<Rarity, Integer> chunksSinceLastRarityChest;
@@ -67,6 +73,8 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	// the chest chestGeneratorsMap
 	private Map<Rarity, AbstractChestGenerator> chestGeneratorsMap = new HashMap<>();
 	private Map<Rarity, RandomWeightedCollection<IChestGenerator<GeneratorResult<GeneratorData>>>> chestCollectionGeneratorsMap = new HashMap<>();
+	// TEMP
+	private Map<Rarity, RandomWeightedCollection<IChestGenerator<GeneratorResult<GeneratorData>>>> oceanChestCollectionGeneratorsMap = new HashMap<>();
 
 	// the pit chestGeneratorsMap
 	public static Table<PitTypes, Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGens =  HashBasedTable.create();
@@ -103,6 +111,12 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		chestCollectionGeneratorsMap.put(Rarity.RARE, new RandomWeightedCollection<>());
 		chestCollectionGeneratorsMap.put(Rarity.EPIC, new RandomWeightedCollection<>());
 		
+		oceanChestCollectionGeneratorsMap.put(Rarity.COMMON, new RandomWeightedCollection<>());
+		oceanChestCollectionGeneratorsMap.put(Rarity.UNCOMMON, new RandomWeightedCollection<>());
+		oceanChestCollectionGeneratorsMap.put(Rarity.SCARCE, new RandomWeightedCollection<>());
+		oceanChestCollectionGeneratorsMap.put(Rarity.RARE, new RandomWeightedCollection<>());
+		oceanChestCollectionGeneratorsMap.put(Rarity.EPIC, new RandomWeightedCollection<>());
+		
 		chestCollectionGeneratorsMap.get(Rarity.COMMON).add(1, new CommonChestGenerator());
 		chestCollectionGeneratorsMap.get(Rarity.UNCOMMON).add(1, new UncommonChestGenerator());
 		chestCollectionGeneratorsMap.get(Rarity.SCARCE).add(75, new ScarceChestGenerator());
@@ -111,6 +125,18 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		chestCollectionGeneratorsMap.get(Rarity.RARE).add(15, new GoldSkullChestGenerator());
 		chestCollectionGeneratorsMap.get(Rarity.EPIC).add(85, new EpicChestGenerator());
 		chestCollectionGeneratorsMap.get(Rarity.EPIC).add(15, new CauldronChestGenerator());
+		
+		oceanChestCollectionGeneratorsMap.get(Rarity.COMMON).add(1, new CommonChestGenerator()); // really unnecessary
+		oceanChestCollectionGeneratorsMap.get(Rarity.UNCOMMON).add(1, new UncommonChestGenerator()); // really unnecessary
+		oceanChestCollectionGeneratorsMap.get(Rarity.SCARCE).add(75, new ScarceChestGenerator());
+		oceanChestCollectionGeneratorsMap.get(Rarity.SCARCE).add(25, new SkullChestGenerator());
+		oceanChestCollectionGeneratorsMap.get(Rarity.SCARCE).add(2500, new OysterChestGenerator());
+		oceanChestCollectionGeneratorsMap.get(Rarity.RARE).add(70, new RareChestGenerator());
+		oceanChestCollectionGeneratorsMap.get(Rarity.RARE).add(15, new GoldSkullChestGenerator());
+		oceanChestCollectionGeneratorsMap.get(Rarity.RARE).add(1500, new ClamChestGenerator());
+		oceanChestCollectionGeneratorsMap.get(Rarity.EPIC).add(70, new EpicChestGenerator());
+		oceanChestCollectionGeneratorsMap.get(Rarity.EPIC).add(15, new CauldronChestGenerator());
+		oceanChestCollectionGeneratorsMap.get(Rarity.EPIC).add(1500, new OysterChestGenerator());
 		
 		// setup pit generators map
 		pitGens.put(PitTypes.STANDARD, Pits.SIMPLE_PIT, new SimplePitGenerator());
@@ -223,8 +249,15 @@ public class ChestWorldGenerator implements IWorldGenerator {
  			
     			// generate the chest/pit/chambers
 				Treasure.logger.debug("Attempting to generate pit/chest.");
-		        GeneratorResult<GeneratorData> result = chestCollectionGeneratorsMap.get(rarity).next().generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
-
+				// TODO swap generator maps here depending on biome ie if ocean/deep ocean use the oceanChestCollectionGeneratorsMap else normal map
+				GeneratorResult<GeneratorData> result = null;
+				if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN) {
+					result = oceanChestCollectionGeneratorsMap.get(rarity).next().generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity));
+				}
+				else {
+					result = chestCollectionGeneratorsMap.get(rarity).next().generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
+				}
+				
     			if (result.isSuccess()) {
     				// add to registry
     				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
@@ -280,11 +313,9 @@ public class ChestWorldGenerator implements IWorldGenerator {
 			return false;
 		}
 		
-//		Treasure.logger.debug("Min distance Sq -> {}", minDistanceSq);
 		for (ChestInfo info : infos) {
 			// calculate the distance to the poi
 			double distance = coords.getDistanceSq(info.getCoords());
-//			Treasure.logger.debug("Chest dist^2: " + distance);
 			if (distance < minDistanceSq) {
 				return true;
 			}
@@ -292,59 +323,59 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		return false;
 	}
 	
-	/**
-	 * @return the chunksSinceLastChest
-	 */
-	public int getChunksSinceLastChest() {
-		return chunksSinceLastChest;
-	}
-
-	/**
-	 * @param chunksSinceLastChest the chunksSinceLastChest to set
-	 */
-	public void setChunksSinceLastChest(int chunksSinceLastChest) {
-		this.chunksSinceLastChest = chunksSinceLastChest;
-	}
-
-	/**
-	 * @return the chunksSinceLastRarityChest
-	 */
-	public Map<Rarity, Integer> getChunksSinceLastRarityChest() {
-		return chunksSinceLastRarityChest;
-	}
-
-	/**
-	 * @param chunksSinceLastRarityChest the chunksSinceLastRarityChest to set
-	 */
-	public void setChunksSinceLastRarityChest(Map<Rarity, Integer> chunksSinceLastRarityChest) {
-		this.chunksSinceLastRarityChest = chunksSinceLastRarityChest;
-	}
-
-	/**
-	 * @return the chestGeneratorsMap
-	 */
-	public Map<Rarity, AbstractChestGenerator> getGenerators() {
-		return chestGeneratorsMap;
-	}
-
-	/**
-	 * @param chestGeneratorsMap the chestGeneratorsMap to set
-	 */
-	public void setGenerators(Map<Rarity, AbstractChestGenerator> generators) {
-		this.chestGeneratorsMap = generators;
-	}
-
-	/**
-	 * @return the chestCollectionGeneratorsMap
-	 */
-	public Map<Rarity, RandomWeightedCollection<IChestGenerator<GeneratorResult<GeneratorData>>>> getChestCollectionGeneratorsMap() {
-		return chestCollectionGeneratorsMap;
-	}
-
-	/**
-	 * @param chestCollectionGeneratorsMap the chestCollectionGeneratorsMap to set
-	 */
-	public void setChestCollectionGeneratorsMap(Map<Rarity, RandomWeightedCollection<IChestGenerator<GeneratorResult<GeneratorData>>>> gens) {
-		this.chestCollectionGeneratorsMap = gens;
-	}
+//	/**
+//	 * @return the chunksSinceLastChest
+//	 */
+//	public int getChunksSinceLastChest() {
+//		return chunksSinceLastChest;
+//	}
+//
+//	/**
+//	 * @param chunksSinceLastChest the chunksSinceLastChest to set
+//	 */
+//	public void setChunksSinceLastChest(int chunksSinceLastChest) {
+//		this.chunksSinceLastChest = chunksSinceLastChest;
+//	}
+//
+//	/**
+//	 * @return the chunksSinceLastRarityChest
+//	 */
+//	public Map<Rarity, Integer> getChunksSinceLastRarityChest() {
+//		return chunksSinceLastRarityChest;
+//	}
+//
+//	/**
+//	 * @param chunksSinceLastRarityChest the chunksSinceLastRarityChest to set
+//	 */
+//	public void setChunksSinceLastRarityChest(Map<Rarity, Integer> chunksSinceLastRarityChest) {
+//		this.chunksSinceLastRarityChest = chunksSinceLastRarityChest;
+//	}
+//
+//	/**
+//	 * @return the chestGeneratorsMap
+//	 */
+//	public Map<Rarity, AbstractChestGenerator> getGenerators() {
+//		return chestGeneratorsMap;
+//	}
+//
+//	/**
+//	 * @param chestGeneratorsMap the chestGeneratorsMap to set
+//	 */
+//	public void setGenerators(Map<Rarity, AbstractChestGenerator> generators) {
+//		this.chestGeneratorsMap = generators;
+//	}
+//
+//	/**
+//	 * @return the chestCollectionGeneratorsMap
+//	 */
+//	public Map<Rarity, RandomWeightedCollection<IChestGenerator<GeneratorResult<GeneratorData>>>> getChestCollectionGeneratorsMap() {
+//		return chestCollectionGeneratorsMap;
+//	}
+//
+//	/**
+//	 * @param chestCollectionGeneratorsMap the chestCollectionGeneratorsMap to set
+//	 */
+//	public void setChestCollectionGeneratorsMap(Map<Rarity, RandomWeightedCollection<IChestGenerator<GeneratorResult<GeneratorData>>>> gens) {
+//		this.chestCollectionGeneratorsMap = gens;
+//	}
 }

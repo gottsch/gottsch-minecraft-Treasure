@@ -130,6 +130,8 @@ item.treasure2:spanish_moss.name=Spanish Moss
 item.treasure2:sapphire.name=Sapphire
 item.treasure2:ruby.name=Ruby
 item.treasure2:skeleton_item.name=Skeleton
+item.treasure2:white_pearl.name=White Pearl
+item.treasure2:black_pearl.name=Black Pearl
 item.treasure2:oyster_meat.name=Oyster Meat
 item.treasure2:oyster_stew.name=Oyster Stew
 item.treasure2:clam_meat.name=Clam Meat
@@ -189,4 +191,7 @@ display.wither_chest.name=Wither Chest
 display.skull_chest.name=Skull Chest
 display.gold_skull_chest.name=Golden Skull Chest
 display.cauldron_chest.name=Cauldron Chest
+display.whale_bone_pirate_chest.name=Whale Bone Pirate Chest
+display.clam_chest.name=Clam
+display.oyster_chest.name=Oyster
 

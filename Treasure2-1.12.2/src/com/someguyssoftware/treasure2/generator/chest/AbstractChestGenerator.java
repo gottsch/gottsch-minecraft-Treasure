@@ -66,6 +66,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 		ICoords markerCoords = null;
 		ICoords spawnCoords = null;
 		boolean hasMarkers = true;
+		boolean isOcean = false;
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);		
 		GeneratorResult<ChestGeneratorData> genResult = new GeneratorResult<>(ChestGeneratorData.class);		
 
@@ -86,13 +87,13 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 
 		// 2. determine if on the ocean
 		if (surface == SURFACE.WATER) {			
-			if (!isOceanBiome(world, coords)) {
+			if (isOcean = !isOceanBiome(world, coords)) {
 				Treasure.logger.debug("surface is water, but not in ocean biome");
 				return result.fail();
 			}
 			
 			// TEMP: test against water probability. this is used to reduce the occurences of submerged structures without re-writting the entire generation system.
-			if (!RandomHelper.checkProbability(random, TreasureConfig.waterStructureProbability)) {
+			if (!RandomHelper.checkProbability(random, 100/*TreasureConfig.waterStructureProbability*/)) {
 				Treasure.logger.debug("did not meet water structure probability");
 				return result.fail();
 			}
@@ -142,6 +143,9 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 
 		// TODO how to select oyster/clam... don't want oyster/clam all the time BUT if a loot table is selected,
 		// the corresponding chest needs to be selected. hmmm....
+		// TEMP solution, conditional wrap around selectLootTable and chest and check track if a mollusc chest is selected.
+		// FUTURE STATE select chest by archetype, type, biome and if mollusc get the right loot table
+		// arg, by this point the concrete chest generator is already selected.
 		LootTable lootTable = selectLootTable(random, chestRarity);
 
 		if (lootTable == null) {

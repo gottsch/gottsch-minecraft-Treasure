@@ -7,7 +7,7 @@
 				{
 					"entryName": "oyster_meat",
 					"type": "item",
-					"name": "treasure2:clam_meat",
+					"name": "treasure2:oyster_meat",
 					"weight": 75,
 					"functions": [
 						{
@@ -22,7 +22,7 @@
 				{
 					"entryName": "white_pearl",
 					"type": "item",
-					"name": "treasure2:white_pear",
+					"name": "treasure2:white_pearl",
 					"weight": 15,
 					"functions": [
 						{
