@@ -19,6 +19,9 @@ import com.someguyssoftware.treasure2.meta.StructureMeta;
 
 import lombok.Setter;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -33,7 +36,9 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  */
 @Setter
 public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<TemplateGeneratorData>> {
-
+	// facing property
+	private static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	
 	private Block nullBlock;
 	
 	// TODO constructor should probably take in null block or list of null blocks, markersblocks, and replacement blocks
@@ -83,23 +88,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		// generate the structure
 		template.addBlocksToWorld(world, spawnCoords.toPos(), placement, getNullBlock(), Treasure.TEMPLATE_MANAGER.getReplacementMap(), 3);
 		
-		// TODO if this is handled on template read, this block can go away - remove this when using GottschCore v1.8.0
-		// remove any extra special blocks
-		for (ICoords mapCoords : template.getMapCoords()) {
-			ICoords c = GottschTemplate.transformedCoords(placement, mapCoords);
-			// TODO shouldn't be setting to air, but to null block
-			world.setBlockToAir(spawnCoords.toPos().add(c.toPos()));
-		}
-		
-		// get the transformed size
-		BlockPos transformedSize = template.transformedSize(placement.getRotation());
-
-		// TODO need to capture the facing or meta of the chest, perform the rotation on the facing  and save it in the Map with the pos... need a new object to hold more data
-		
-		// update result data
-		result.getData().setSpawnCoords(spawnCoords);
-		result.getData().setSize(new Coords(transformedSize));
-
+		// TODO do this BEFORE removing specials
 		// process all markers and adding them to the result data (relative positioned)
 		for (Entry<Block, ICoords> entry : template.getMap().entries()) {
 			ICoords c = new Coords(GottschTemplate.transformedCoords(placement, entry.getValue()));
@@ -111,8 +100,30 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		List<ICoords> chestCoordsList = (List<ICoords>) result.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 		if (!chestCoordsList.isEmpty()) {
 			ICoords chestCoords = spawnCoords.add(chestCoordsList.get(0));
-			result.getData().setChestCoords(chestCoords);			
+			result.getData().setChestCoords(chestCoords);		
 		}
+		
+		// get the block state of the chest
+		IBlockState chestState = world.getBlockState(result.getData().getChestCoords().toPos());
+		 if (chestState.getProperties().containsKey(FACING)) {
+			 result.getData().setChestState(chestState);
+			 Treasure.logger.debug("saving chest state -> {}" + chestState.toString());
+		 }
+		 
+		// TODO if this is handled on template read, this block can go away - remove this when using GottschCore v1.8.0
+		// remove any extra special blocks
+		for (ICoords mapCoords : template.getMapCoords()) {
+			ICoords c = GottschTemplate.transformedCoords(placement, mapCoords);
+			// TODO shouldn't be setting to air, but to null block
+			world.setBlockToAir(spawnCoords.toPos().add(c.toPos()));
+		}
+		
+		// get the transformed size
+		BlockPos transformedSize = template.transformedSize(placement.getRotation());
+
+		// update result data
+		result.getData().setSpawnCoords(spawnCoords);
+		result.getData().setSize(new Coords(transformedSize));
 		
 		return result.success();
 	}

@@ -137,6 +137,7 @@ public class GenUtil {
 //			world.setBlockState(pos, this.getChest().getDefaultState().withProperty(FACING, oldState.getValue(FACING)), 3);
 		}
 		else {
+			Treasure.logger.info("World Chest marker does NOT have a FACING property.");
 //			world.setBlockState(chestCoords.toBlockPos(), this.getChest().getDefaultState(), 3);
 			return placeChest(world, chest, coords, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
 		}
