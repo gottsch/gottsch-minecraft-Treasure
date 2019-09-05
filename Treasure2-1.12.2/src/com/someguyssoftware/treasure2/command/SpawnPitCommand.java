@@ -27,12 +27,12 @@ public class SpawnPitCommand extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "treasurepit";
+		return "t2pit";
 	}
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/treasurepit <x> <y> <z> [rarity]: spawns a Treasure! pit at location (x,y,z)";
+		return "/t2pit <x> <y> <z> [rarity]: spawns a Treasure! pit at location (x,y,z)";
 	}
 
 	@Override

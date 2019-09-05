@@ -35,12 +35,12 @@ public class SpawnPitStructureOnlyCommand extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "t2!pitstructureonly";
+		return "t2pitstructureonly";
 	}
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/t2!pitstructureonly <x> <y> <z> [rarity]: spawns a Treasure! pit structure at location (x,y,z)";
+		return "/t2pitstructureonly <x> <y> <z> [rarity]: spawns a Treasure! pit structure at location (x,y,z)";
 	}
 
 	@Override
