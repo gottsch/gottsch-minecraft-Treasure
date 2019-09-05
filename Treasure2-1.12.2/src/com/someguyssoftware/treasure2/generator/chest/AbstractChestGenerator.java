@@ -45,6 +45,7 @@ import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -161,7 +162,13 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 		}
 
 		// place the chest in the world
-		TileEntity te = placeInWorld(world, random, chest, chestCoords);
+		TileEntity te = null;
+		if (genResult.getData().getChestState() != null) {
+			placeInWorld(world, random, chestCoords, chest, genResult.getData().getChestState());
+		}
+		else {
+			placeInWorld(world, random, chest, chestCoords);
+		}
 		if (te == null) return result.fail();
 
 		// populate the chest with items
@@ -372,6 +379,43 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 	public TileEntity placeInWorld(World world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
 		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
+
+		// get the backing tile entity of the chest 
+		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());
+
+		// check to ensure the chest has been generated
+		if (!isPlaced || !(world.getBlockState(chestCoords.toPos()).getBlock() instanceof AbstractChestBlock)) {
+			Treasure.logger.debug("Unable to place chest @ {}", chestCoords.toShortString());
+			// remove the title entity (if exists)
+
+			if (te != null && (te instanceof AbstractTreasureChestTileEntity)) {
+				world.removeTileEntity(chestCoords.toPos());
+			}
+			return null;
+		}
+
+		// if tile entity failed to create, remove the chest
+		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
+			// remove chest
+			world.setBlockToAir(chestCoords.toPos());
+			Treasure.logger.debug("Unable to create TileEntityChest, removing BlockChest");
+			return null;
+		}
+		return te;
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param chestCoords
+	 * @param chest
+	 * @param state
+	 * @return
+	 */
+	public TileEntity placeInWorld(World world, Random random, ICoords chestCoords, AbstractChestBlock chest, IBlockState state) {
+		// replace block @ coords
+		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chestCoords, chest, state);
 
 		// get the backing tile entity of the chest 
 		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());

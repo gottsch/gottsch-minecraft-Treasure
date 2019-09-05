@@ -22,6 +22,7 @@ import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster.SpecialLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -110,6 +111,29 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 		if (world.getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST) {
 			// add top placeholder
 			world.setBlockState(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.getDefaultState());
+		}
+		// get the backing tile entity of the chest 
+		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());
+
+		// if tile entity failed to create, remove the chest
+		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
+			// remove chest
+			world.setBlockToAir(chestCoords.toPos());
+			Treasure.logger.debug("Unable to create TileEntityChest, removing BlockChest");
+			return null;
+		}
+		return te;
+	}
+	
+	@Override
+	public TileEntity placeInWorld(World world, Random random, ICoords chestCoords, AbstractChestBlock chest, IBlockState state) {
+		// replace block @ coords
+		GenUtil.replaceBlockWithChest(world, random, chestCoords, chest, state);
+		
+		// ensure that chest is of type WITHER_CHEST
+		if (world.getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST) {
+			// add top placeholder
+			world.setBlockState(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.getDefaultState()); // TODO this needs to rotate to state as well.
 		}
 		// get the backing tile entity of the chest 
 		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());

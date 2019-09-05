@@ -146,6 +146,20 @@ public class GenUtil {
 	/**
 	 * 
 	 * @param world
+	 * @param random
+	 * @param coords
+	 * @param chest
+	 * @param state
+	 * @return
+	 */
+	public static boolean replaceBlockWithChest(World world, Random random, ICoords coords, Block chest, IBlockState state) {
+		// set the new state
+		return placeChest(world, chest, coords, (EnumFacing)state.getValue(FACING));
+	}
+	
+	/**
+	 * 
+	 * @param world
 	 * @param chest
 	 * @param pos
 	 * @return

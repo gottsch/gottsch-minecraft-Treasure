@@ -107,7 +107,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		IBlockState chestState = world.getBlockState(result.getData().getChestCoords().toPos());
 		 if (chestState.getProperties().containsKey(FACING)) {
 			 result.getData().setChestState(chestState);
-			 Treasure.logger.debug("saving chest state -> {}" + chestState.toString());
+			 Treasure.logger.debug("saving chest state -> {}", chestState.toString());
 		 }
 		 
 		// TODO if this is handled on template read, this block can go away - remove this when using GottschCore v1.8.0
