@@ -316,7 +316,7 @@ public class TreasureConfig extends AbstractConfig {
         isMarkerStructuresAllowed = config.getBoolean("isMarkerStructuresAllowed", "04-gen", true, "");
         markerStructureProbability = config.getInt("markerStructureProbability", "04-gen", 15, 0, 100, "The probability that a Treasure chest marker will be a structure."); 
 
-        // wells
+        // well
         minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 500, 100, 32000, "");
         
         // wither items
