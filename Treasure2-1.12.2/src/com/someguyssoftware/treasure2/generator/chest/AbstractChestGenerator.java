@@ -164,6 +164,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 		// place the chest in the world
 		TileEntity te = null;
 		if (genResult.getData().getChestState() != null) {
+			// TODO get the facing - translate if possible)
 			placeInWorld(world, random, chestCoords, chest, genResult.getData().getChestState());
 		}
 		else {
