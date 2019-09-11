@@ -311,8 +311,7 @@ public class TreasureConfig extends AbstractConfig {
         
       	minDistancePerChest = config.getInt("minDistancePerChest", "04-gen", 75, 0, 32000, "");
       	minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 35, 0, 32000, "");
-      	minChunksPerWell = config.getInt("minChunksPerWell", "04-gen", 400, 100, 32000, "");
-
+      	
       	surfaceChestProbability = config.getInt("surfaceChestProbability", "04-gen", 15, 0, 100, "The probability chest will appear on the surface."); 
       	surfaceStructureProbability = config.getInt("surfaceStructureProbability", "04-gen", 25, 0, 100, "The probability that a surface structure will generate."); 
       	pitStructureProbability = config.getInt("pitStructureProbability", "04-gen", 25, 0, 100, "The probability that a pit will contain a structure."); 
@@ -326,7 +325,7 @@ public class TreasureConfig extends AbstractConfig {
         markerStructureProbability = config.getInt("markerStructureProbability", "04-gen", 15, 0, 100, "The probability that a Treasure chest marker will be a structure."); 
 
         // wells
-        minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 500, 100, 32000, "");
+        minChunksPerWell = config.getInt("minChunksPerWell", "04-gen", 400, 100, 32000, "");
         
         // wither items
         witherRootItemGenProbability = config.getFloat("witherRootGenProbability", "04-gen", 50.0F, 0.0F, 100.0F, "");
