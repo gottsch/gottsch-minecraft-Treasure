@@ -17,7 +17,7 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  */
 public interface ITemplateGenerator<RESULT extends IGeneratorResult<?>> {
 
-	public RESULT generate2(World world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
+	public RESULT generate(World world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
 
 	/**
 	 * NOTE not 100% sure that this  belongs here

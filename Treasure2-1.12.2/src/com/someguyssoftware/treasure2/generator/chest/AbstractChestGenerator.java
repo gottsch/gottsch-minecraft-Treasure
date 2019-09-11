@@ -103,6 +103,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 			spawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, markerCoords);
 			Treasure.logger.debug("ocean floor coords -> {}", spawnCoords.toShortString());
 			genResult = generateSubmergedRuins(world, random, spawnCoords, config);
+			Treasure.logger.debug("submerged result -> {}", genResult.toString());
+			if (!genResult.isSuccess()) {
+				return result.fail();
+			}
 			chestCoords = genResult.getData().getChestCoords();
 			// turn off markers for ocean chests.
 			hasMarkers = false;
@@ -132,13 +136,15 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 			else if (config.isBelowGroundAllowed()) {
 				Treasure.logger.debug("else generate pit");
 				genResult = generatePit(world, random, chestRarity, markerCoords, config);
-				Treasure.logger.debug("result -=> {}", genResult.toString());
+				Treasure.logger.debug("result -> {}", genResult.toString());
 				if (!genResult.isSuccess()) {
 					return result.fail();
 				}
 				chestCoords = genResult.getData().getChestCoords();
 			}			
 		}
+		// if chest isn't generated, then fail
+		if (chestCoords == null) return result.fail();
 		
 		genResult.getData().setChestCoords(chestCoords);
 
@@ -165,12 +171,16 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 		TileEntity te = null;
 		if (genResult.getData().getChestState() != null) {
 			// TODO get the facing - translate if possible)
-			placeInWorld(world, random, chestCoords, chest, genResult.getData().getChestState());
+			te = placeInWorld(world, random, chestCoords, chest, genResult.getData().getChestState());
 		}
 		else {
-			placeInWorld(world, random, chest, chestCoords);
+			te = placeInWorld(world, random, chest, chestCoords);
 		}
-		if (te == null) return result.fail();
+		
+		if (te == null) {
+			Treasure.logger.debug("Unable to locate tile entity for chest -> {}", chestCoords);
+			return result.fail();
+		}
 
 		// populate the chest with items
 		//			if (chest instanceof WitherChestBlock) {
@@ -247,11 +257,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 
 		// build the structure
 		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, spawnCoords);
-		Treasure.logger.debug("is submerged struct generated -> {}", genResult);
+		Treasure.logger.debug("submerged struct result -> {}", genResult);
 		if (!genResult.isSuccess()) return result.fail();
 
 		result.setData(genResult.getData());
-		Treasure.logger.debug("Is submerged generated: {}", result.isSuccess());
 		return result.success();
 	}
 

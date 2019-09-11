@@ -101,7 +101,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		}
 
 		// generate the structure
-		GeneratorResult<TemplateGeneratorData> genResult = new TemplateGenerator().generate2(world, random, holder, placement, spawnCoords);
+		GeneratorResult<TemplateGeneratorData> genResult = new TemplateGenerator().generate(world, random, holder, placement, spawnCoords);
 		if (!genResult.isSuccess()) return result.fail();
 
 		// TODO add fog around the perimeter of the structure

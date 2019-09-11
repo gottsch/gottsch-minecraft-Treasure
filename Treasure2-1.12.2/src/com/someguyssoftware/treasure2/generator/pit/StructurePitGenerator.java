@@ -194,7 +194,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			Treasure.logger.debug("aligned room coords -> {}", roomCoords.toShortString());
 			
 			// generate the structure
-			GeneratorResult<TemplateGeneratorData> genResult = new TemplateGenerator().generate2(world, random, holder, placement, roomCoords);
+			GeneratorResult<TemplateGeneratorData> genResult = new TemplateGenerator().generate(world, random, holder, placement, roomCoords);
 			if (!genResult.isSuccess()) return result.fail();
 			
 			result.setData(genResult.getData());

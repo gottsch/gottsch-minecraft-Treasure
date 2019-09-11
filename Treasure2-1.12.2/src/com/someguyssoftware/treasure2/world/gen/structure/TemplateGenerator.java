@@ -36,8 +36,8 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  */
 @Setter
 public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<TemplateGeneratorData>> {
-	// facing property
-	private static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	// facing property of a vanilla chest
+	private static final PropertyDirection VANILLA_CHEST_FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	
 	private Block nullBlock;
 	
@@ -51,7 +51,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	 * 
 	 */
 	@Override
-	public GeneratorResult<TemplateGeneratorData> generate2(World world, Random random, 
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, 
 			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords) {
 		
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
@@ -88,6 +88,8 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		// generate the structure
 		template.addBlocksToWorld(world, spawnCoords.toPos(), placement, getNullBlock(), Treasure.TEMPLATE_MANAGER.getReplacementMap(), 3);
 		
+		Treasure.logger.debug("added blocks to the world.");
+		
 		// TODO do this BEFORE removing specials
 		// process all markers and adding them to the result data (relative positioned)
 		for (Entry<Block, ICoords> entry : template.getMap().entries()) {
@@ -101,16 +103,15 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		if (!chestCoordsList.isEmpty()) {
 			ICoords chestCoords = spawnCoords.add(chestCoordsList.get(0));
 			result.getData().setChestCoords(chestCoords);		
+			// get the block state of the chest
+			IBlockState chestState = world.getBlockState(chestCoords.toPos());
+			 if (chestState.getProperties().containsKey(VANILLA_CHEST_FACING)) {
+				 result.getData().setChestState(chestState);
+				 Treasure.logger.debug("saving chest state -> {}", chestState.toString());
+			 }
 		}
-		
-		// get the block state of the chest
-		IBlockState chestState = world.getBlockState(result.getData().getChestCoords().toPos());
-		 if (chestState.getProperties().containsKey(FACING)) {
-			 result.getData().setChestState(chestState);
-			 Treasure.logger.debug("saving chest state -> {}", chestState.toString());
-		 }
-		 
-		// TODO if this is handled on template read, this block can go away - remove this when using GottschCore v1.8.0
+				 
+		// TODO if this is handled on template read, this block can go away - remove this when using GottschCore v1.9.0
 		// remove any extra special blocks
 		for (ICoords mapCoords : template.getMapCoords()) {
 			ICoords c = GottschTemplate.transformedCoords(placement, mapCoords);

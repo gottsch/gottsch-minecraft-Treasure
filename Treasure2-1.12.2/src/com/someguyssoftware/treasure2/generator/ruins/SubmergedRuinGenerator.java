@@ -87,9 +87,11 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 		TemplateGenerator generator = new TemplateGenerator();
 		generator.setNullBlock(Blocks.AIR);
 		
-		GeneratorResult<TemplateGeneratorData> genResult = generator.generate2(world, random, holder, placement, spawnCoords);
+		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, holder, placement, spawnCoords);
 		 if (!genResult.isSuccess()) return result.fail();
 
+		Treasure.logger.debug("submerged gen result -> {}", genResult);
+			
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 		List<ICoords> spawnerCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
 		List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
@@ -99,7 +101,7 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 		
 		// populate proximity spawners
 		buildOneTimeSpawners(world, random, genResult.getData().getSpawnCoords(), proximityCoords, new Quantity(1,2), 5D);
-					
+		
 		result.setData(genResult.getData());
 
 		return result.success();

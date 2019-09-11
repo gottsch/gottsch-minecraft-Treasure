@@ -74,7 +74,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		placement.setRotation(rotation).setRandom(random);
 		
 		// build well
-		 GeneratorResult<TemplateGeneratorData> genResult = generator.generate2(world, random, holder,  placement, spawnCoords);
+		 GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, holder,  placement, spawnCoords);
 		Treasure.logger.debug("Well gen  structure result -> {}", genResult.isSuccess());
 		 if (!genResult.isSuccess()) {
 			 Treasure.logger.debug("failing well gen.");

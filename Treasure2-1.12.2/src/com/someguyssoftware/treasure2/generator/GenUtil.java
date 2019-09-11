@@ -162,7 +162,7 @@ public class GenUtil {
 		
 		if (state.getBlock() == Blocks.CHEST) {
 			EnumFacing facing = (EnumFacing)state.getValue(BlockChest.FACING);
-			return placeChest(world, chest, coords, (EnumFacing)state.getValue(FACING));
+			return placeChest(world, chest, coords, facing);
 		}
 		
 		// else do generic
