@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "treasure2:items/black_pearl"
+        "layer0": "treasure2:items/black_pearl_12"
     },
    "display": {
        "thirdperson_righthand": {

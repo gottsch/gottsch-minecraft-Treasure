@@ -83,11 +83,12 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		
 		// get the rotated/transformed size
 		//BlockPos transformedSize = holder.getTemplate().transformedSize(rotation);
-		BlockPos transformedSize = genResult.getData().getSize().toPos();
+		ICoords transformedSize = genResult.getData().getSize();
+
 		
 		// add flowers around well
-		//addDecorations(world, random, spawnCoords, transformedSize.getX(), transformedSize.getZ());
-		
+		addDecorations(world, random, spawnCoords, transformedSize.getX(), transformedSize.getZ());
+		 
 		// TODO add chest if any
 				
 		// add the structure data to the result
@@ -112,7 +113,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		// TODO change to scan the entire size (x,z) of well footprint and detect the edges ... place flowers adjacent to edge blocks. 
 		
 		// north of well
-		for (int widthIndex = 0; widthIndex < width; widthIndex++) {
+		for (int widthIndex = 0; widthIndex <= width + 1; widthIndex++) {
 			if (RandomHelper.randomInt(0, 1) == 0) {
 //				ICoords decoCoords = startCoords.add(widthIndex, 0, 0);
 				addDecoration(world, random, startCoords.add(widthIndex, 0, 0));
@@ -121,7 +122,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		
 		// south of well
 		startCoords = coords.add(-1, 0, depth);
-		for (int widthIndex = 0; widthIndex < width; widthIndex++) {
+		for (int widthIndex = 0; widthIndex <= width + 1; widthIndex++) {
 			if (RandomHelper.randomInt(0,  1) == 0) {
 				addDecoration(world, random, startCoords.add(widthIndex, 0, 0));
 			}

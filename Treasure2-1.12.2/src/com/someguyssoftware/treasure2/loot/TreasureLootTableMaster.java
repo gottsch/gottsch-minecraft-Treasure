@@ -231,6 +231,10 @@ public class TreasureLootTableMaster extends LootTableMaster {
 		GOLD_SKULL_CHEST,
 		CAULDRON_CHEST,
 		CLAM_CHEST,
-		OYSTER_CHEST
+		OYSTER_CHEST,
+		SILVER_WELL,
+		GOLD_WELL,
+		WHITE_PEARL_WELL,
+		BLACK_PEARL_WELL
 	}
 }

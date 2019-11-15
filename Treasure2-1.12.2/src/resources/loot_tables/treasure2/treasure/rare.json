@@ -129,7 +129,13 @@
 					"type": "item",
 					"name": "treasure2:ruby",
 					"weight": 10
-				},				
+				},	
+				{
+					"entryName": "white_pearl",
+					"type": "item",
+					"name": "treasure2:white_pearl",
+					"weight": 8
+				},
 				{
 					"entryName": "painting_blocks_sand",
 					"type": "item",

@@ -75,9 +75,14 @@ processResources
     }
  
 }
-
+task deleteOldJar(type: Delete) {
+        delete fileTree("${dest_folder}") {
+            include "**/${mod_name}-mc${mc_version}-f${forge_version}.*"
+        }
+    }
 task copyJar(type: Copy) {
 	from jar
 	into "${dest_folder}"
 }
 build.dependsOn copyJar
+copyJar.dependsOn deleteOldJar

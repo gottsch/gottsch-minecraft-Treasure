@@ -3,29 +3,16 @@
  */
 package com.someguyssoftware.treasure2.generator.chest;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.Map.Entry;
 
 import com.someguyssoftware.gottschcore.loot.LootTable;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.block.AbstractChestBlock;
-import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.item.LockItem;
-import com.someguyssoftware.treasure2.item.TreasureItems;
-import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster.SpecialLootTables;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class OysterChestGenerator extends AbstractChestGenerator {
@@ -48,11 +35,11 @@ public class OysterChestGenerator extends AbstractChestGenerator {
 	/**
 	 * Always select a wither chest.
 	 */
-	@Override
-	public TreasureChestBlock  selectChest(final Random random, final Rarity rarity) {
-		TreasureChestBlock chest = (TreasureChestBlock) TreasureBlocks.OYSTER_CHEST;
-		return chest;
-	}
+//	@Override
+//	public TreasureChestBlock  selectChest(final Random random, final Rarity rarity) {
+//		TreasureChestBlock chest = (TreasureChestBlock) TreasureBlocks.OYSTER_CHEST;
+//		return chest;
+//	}
 	
 	/**
 	 * Don't place any markers

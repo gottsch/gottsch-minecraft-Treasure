@@ -28,7 +28,7 @@
         "1.4.3": "Fixed AbstractChestGenerator crash again -> Found edges cases that didn't return StructureInfo on Structure gens.\nFixed findUndergroundCeiling() call.\n", 
         "1.5.0": "Expose/Add custom structure locations.\nSet Key max uses as configurable.\nAdded Chinese language file. Thanks to qyhao.\nAdded new config options - toggle default loot table and templates enforcement.\nRemoved references to mod_present condition on loot tables.\nFix WitherRoot and WitherBranch blocks placement.\nAdded meta file system.\nAdded underwater structures.\nAdded more treasure room structures.",
         "1.5.1": "Fixed Server crash on load - due to biome.getName().\n",
-        "1.6.0": ""
+        "1.6.0": "Added White and Black Pearls.\nUpdated Rare and Epic loot tables with pearls.\nAll Generators implement IGenerator.\nRefactored WellGenerators to use Structures.\nRefactored AbstractChestGenerator.\nFixed stacked coins only return 1 loot item bug.\nFixed Wishing Well loot selection."
 
     }
 }

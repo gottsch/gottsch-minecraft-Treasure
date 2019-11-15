@@ -25,7 +25,6 @@ import com.someguyssoftware.treasure2.item.MimicChestItemBlock;
 import com.someguyssoftware.treasure2.item.TreasureChestItemBlock;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.CauldronChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.ClamChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.DreadPirateChestTileEntity;
@@ -34,12 +33,10 @@ import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.OysterChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SkullChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.WhaleBonePirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
@@ -77,9 +74,9 @@ public class TreasureBlocks {
 	public static final Block SKULL_CHEST;
 	public static final Block GOLD_SKULL_CHEST;
 	public static final Block CAULDRON_CHEST;
-	public static final Block WHALE_BONE_PIRATE_CHEST;
-	public static final Block OYSTER_CHEST;
-	public static final Block CLAM_CHEST;
+//	public static final Block WHALE_BONE_PIRATE_CHEST;
+//	public static final Block OYSTER_CHEST;
+//	public static final Block CLAM_CHEST;
 	
 	// MIMIC CHESTS
 	public static final Block WOOD_MIMIC;
@@ -345,14 +342,14 @@ public class TreasureBlocks {
 				.setChestGuiID(GuiHandler.STANDARD_CHEST_GUIID)
 				.setHardness(3.0F);
 		
-		WHALE_BONE_PIRATE_CHEST = new TreasureChestBlock(
-				Treasure.MODID,
-				TreasureConfig.WHALE_BONE_PIRATE_CHEST_ID,
-				WhaleBonePirateChestTileEntity.class,
-				TreasureChestTypes.STANDARD, 
-				Rarity.EPIC)
-				.setBounds(stdChestBounds)
-				.setHardness(4.0F);
+//		WHALE_BONE_PIRATE_CHEST = new TreasureChestBlock(
+//				Treasure.MODID,
+//				TreasureConfig.WHALE_BONE_PIRATE_CHEST_ID,
+//				WhaleBonePirateChestTileEntity.class,
+//				TreasureChestTypes.STANDARD, 
+//				Rarity.EPIC)
+//				.setBounds(stdChestBounds)
+//				.setHardness(4.0F);
 		
 		AxisAlignedBB molluscBB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);
 		AxisAlignedBB[] molluscChestBounds = new AxisAlignedBB[4];
@@ -361,25 +358,25 @@ public class TreasureBlocks {
 		molluscChestBounds[2] = molluscBB; // N
 		molluscChestBounds[3] = molluscBB; // E
 		
-		OYSTER_CHEST = new TreasureChestBlock(
-				Treasure.MODID,
-				TreasureConfig.OYSTER_CHEST_ID,
-				OysterChestTileEntity.class,
-				TreasureChestTypes.LOW_RISE, // TODO may have to create own
-				Rarity.EPIC)
-				.setChestGuiID(GuiHandler.MOLLUSCS_CHEST_GUIID)
-				.setBounds(molluscChestBounds)
-				.setHardness(3.0F);
+//		OYSTER_CHEST = new TreasureChestBlock(
+//				Treasure.MODID,
+//				TreasureConfig.OYSTER_CHEST_ID,
+//				OysterChestTileEntity.class,
+//				TreasureChestTypes.LOW_RISE, // TODO may have to create own
+//				Rarity.EPIC)
+//				.setChestGuiID(GuiHandler.MOLLUSCS_CHEST_GUIID)
+//				.setBounds(molluscChestBounds)
+//				.setHardness(3.0F);
 		
-		CLAM_CHEST = new TreasureChestBlock(
-				Treasure.MODID,
-				TreasureConfig.CLAM_CHEST_ID,
-				ClamChestTileEntity.class,
-				TreasureChestTypes.LOW_RISE, // TODO may have to create own
-				Rarity.RARE)
-				.setChestGuiID(GuiHandler.MOLLUSCS_CHEST_GUIID)
-				.setBounds(molluscChestBounds)
-				.setHardness(3.0F);
+//		CLAM_CHEST = new TreasureChestBlock(
+//				Treasure.MODID,
+//				TreasureConfig.CLAM_CHEST_ID,
+//				ClamChestTileEntity.class,
+//				TreasureChestTypes.LOW_RISE, // TODO may have to create own
+//				Rarity.RARE)
+//				.setChestGuiID(GuiHandler.MOLLUSCS_CHEST_GUIID)
+//				.setBounds(molluscChestBounds)
+//				.setHardness(3.0F);
 				
 		
 		// map the chests by rarity
@@ -570,7 +567,7 @@ public class TreasureBlocks {
 					GOLD_STRONGBOX,
 					SAFE,
 					DREAD_PIRATE_CHEST,
-					WHALE_BONE_PIRATE_CHEST,
+//					WHALE_BONE_PIRATE_CHEST,
 					COMPRESSOR_CHEST,
 					WOOD_MIMIC,
 					GRAVESTONE1_STONE,
@@ -636,8 +633,8 @@ public class TreasureBlocks {
 			registry.register(PROXIMITY_SPAWNER);
 			
 			// TODO oyster and clam go here with speciality until chests have a meta file mapping
-			registry.register(OYSTER_CHEST);
-			registry.register(CLAM_CHEST);
+//			registry.register(OYSTER_CHEST);
+//			registry.register(CLAM_CHEST);
 
 			// map the block by rarity
 			for (Block block : blocks) {
@@ -666,14 +663,14 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(GOLD_STRONGBOX),
 					new TreasureChestItemBlock(SAFE),
 					new TreasureChestItemBlock(DREAD_PIRATE_CHEST),
-					new TreasureChestItemBlock(WHALE_BONE_PIRATE_CHEST),
+//					new TreasureChestItemBlock(WHALE_BONE_PIRATE_CHEST),
 					new TreasureChestItemBlock(COMPRESSOR_CHEST),
 					new TreasureChestItemBlock(WITHER_CHEST),
 					new TreasureChestItemBlock(SKULL_CHEST),
 					new TreasureChestItemBlock(GOLD_SKULL_CHEST),
 					new TreasureChestItemBlock(CAULDRON_CHEST),
-					new TreasureChestItemBlock(OYSTER_CHEST),
-					new TreasureChestItemBlock(CLAM_CHEST),
+//					new TreasureChestItemBlock(OYSTER_CHEST),
+//					new TreasureChestItemBlock(CLAM_CHEST),
 					new MimicChestItemBlock(WOOD_MIMIC),
 					
 					// TODO update with GravestonIetmBlock
@@ -743,14 +740,14 @@ public class TreasureBlocks {
 			GameRegistry.registerTileEntity(GoldStrongboxTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.GOLD_STRONGBOX_TE_ID));
 			GameRegistry.registerTileEntity(SafeTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.SAFE_TE_ID));
 			GameRegistry.registerTileEntity(DreadPirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.DREAD_PIRATE_CHEST_TE_ID));
-			GameRegistry.registerTileEntity(WhaleBonePirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WHALE_BONE_PIRATE_CHEST_TE_ID));
+//			GameRegistry.registerTileEntity(WhaleBonePirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WHALE_BONE_PIRATE_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(CompressorChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.COMPRESSOR_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(WitherChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WITHER_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(SkullChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.SKULL_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(GoldSkullChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.GOLD_SKULL_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(CauldronChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.CAULDRON_CHEST_TE_ID));
-			GameRegistry.registerTileEntity(OysterChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.OYSTER_CHEST_TE_ID));	
-			GameRegistry.registerTileEntity(ClamChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.CLAM_CHEST_TE_ID));	
+//			GameRegistry.registerTileEntity(OysterChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.OYSTER_CHEST_TE_ID));	
+//			GameRegistry.registerTileEntity(ClamChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.CLAM_CHEST_TE_ID));	
 			GameRegistry.registerTileEntity(ProximitySpawnerTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.PROXIMITY_SPAWNER_TE_ID));
 
 		}	

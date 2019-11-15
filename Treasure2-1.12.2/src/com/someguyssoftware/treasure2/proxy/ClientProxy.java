@@ -120,9 +120,9 @@ public class ClientProxy {
 				new TreasureChestTileEntityRenderer("dread-pirate-chest", new DreadPirateChestModel()));
 		
 		// whale bone pirate chest - uses same model as dread pirate
-		ClientRegistry.bindTileEntitySpecialRenderer(
-				WhaleBonePirateChestTileEntity.class,
-				new TreasureChestTileEntityRenderer("whale-bone-pirate-chest", new DreadPirateChestModel()));
+//		ClientRegistry.bindTileEntitySpecialRenderer(
+//				WhaleBonePirateChestTileEntity.class,
+//				new TreasureChestTileEntityRenderer("whale-bone-pirate-chest", new DreadPirateChestModel()));
 		
 		// compressor chest
 		ClientRegistry.bindTileEntitySpecialRenderer(
@@ -150,14 +150,14 @@ public class ClientProxy {
 				new CauldronChestTileEntityRenderer("cauldron-chest", new CauldronChestModel()));
 
 		// oyster chest
-		ClientRegistry.bindTileEntitySpecialRenderer(
-				OysterChestTileEntity.class,
-				new MolluscChestTileEntityRenderer("oyster-chest", new OysterChestModel()));
+//		ClientRegistry.bindTileEntitySpecialRenderer(
+//				OysterChestTileEntity.class,
+//				new MolluscChestTileEntityRenderer("oyster-chest", new OysterChestModel()));
 
 		// clam chest
-		ClientRegistry.bindTileEntitySpecialRenderer(
-				ClamChestTileEntity.class,
-				new MolluscChestTileEntityRenderer("clam-chest", new ClamChestModel()));
+//		ClientRegistry.bindTileEntitySpecialRenderer(
+//				ClamChestTileEntity.class,
+//				new MolluscChestTileEntityRenderer("clam-chest", new ClamChestModel()));
 		
 		/*
 		 *  register the entity render handlers

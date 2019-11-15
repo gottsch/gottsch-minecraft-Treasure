@@ -48,11 +48,11 @@ public class ClamChestGenerator extends AbstractChestGenerator {
 	/**
 	 * Always select a wither chest.
 	 */
-	@Override
-	public TreasureChestBlock  selectChest(final Random random, final Rarity rarity) {
-		TreasureChestBlock chest = (TreasureChestBlock) TreasureBlocks.CLAM_CHEST;
-		return chest;
-	}
+//	@Override
+//	public TreasureChestBlock  selectChest(final Random random, final Rarity rarity) {
+//		TreasureChestBlock chest = (TreasureChestBlock) TreasureBlocks.CLAM_CHEST;
+//		return chest;
+//	}
 	
 	/**
 	 * Don't place any markers

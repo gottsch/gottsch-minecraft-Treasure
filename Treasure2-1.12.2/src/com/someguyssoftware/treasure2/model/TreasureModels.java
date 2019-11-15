@@ -30,14 +30,14 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GOLD_STRONGBOX));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SAFE));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.DREAD_PIRATE_CHEST));
-		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WHALE_BONE_PIRATE_CHEST));
+//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WHALE_BONE_PIRATE_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.COMPRESSOR_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GOLD_SKULL_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SKULL_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CAULDRON_CHEST));
-		registerItemModel(Item.getItemFromBlock(TreasureBlocks.OYSTER_CHEST));
-		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CLAM_CHEST));
+//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.OYSTER_CHEST));
+//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CLAM_CHEST));
 		
 		// MIMICS
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WOOD_MIMIC));
@@ -155,10 +155,10 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.TREASURE_TOOL);
 		
 		// FOOD
-		registerItemModel(TreasureItems.OYSTER_MEAT);
-		registerItemModel(TreasureItems.OYSTER_STEW);
-		registerItemModel(TreasureItems.CLAM_MEAT);
-		registerItemModel(TreasureItems.CLAM_STEW);
+//		registerItemModel(TreasureItems.OYSTER_MEAT);
+//		registerItemModel(TreasureItems.OYSTER_STEW);
+//		registerItemModel(TreasureItems.CLAM_MEAT);
+//		registerItemModel(TreasureItems.CLAM_STEW);
 		
 //		// variants
 //		Item gravestoneItem = Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1);

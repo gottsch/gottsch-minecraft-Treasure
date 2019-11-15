@@ -130,13 +130,13 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		oceanChestCollectionGeneratorsMap.get(Rarity.UNCOMMON).add(1, new UncommonChestGenerator()); // really unnecessary
 		oceanChestCollectionGeneratorsMap.get(Rarity.SCARCE).add(75, new ScarceChestGenerator());
 		oceanChestCollectionGeneratorsMap.get(Rarity.SCARCE).add(25, new SkullChestGenerator());
-		oceanChestCollectionGeneratorsMap.get(Rarity.SCARCE).add(2500, new OysterChestGenerator());
-		oceanChestCollectionGeneratorsMap.get(Rarity.RARE).add(70, new RareChestGenerator());
+//		oceanChestCollectionGeneratorsMap.get(Rarity.SCARCE).add(2500, new OysterChestGenerator());
+		oceanChestCollectionGeneratorsMap.get(Rarity.RARE).add(85, new RareChestGenerator());
 		oceanChestCollectionGeneratorsMap.get(Rarity.RARE).add(15, new GoldSkullChestGenerator());
-		oceanChestCollectionGeneratorsMap.get(Rarity.RARE).add(1500, new ClamChestGenerator());
-		oceanChestCollectionGeneratorsMap.get(Rarity.EPIC).add(70, new EpicChestGenerator());
+//		oceanChestCollectionGeneratorsMap.get(Rarity.RARE).add(1500, new ClamChestGenerator());
+		oceanChestCollectionGeneratorsMap.get(Rarity.EPIC).add(85, new EpicChestGenerator());
 		oceanChestCollectionGeneratorsMap.get(Rarity.EPIC).add(15, new CauldronChestGenerator());
-		oceanChestCollectionGeneratorsMap.get(Rarity.EPIC).add(1500, new OysterChestGenerator());
+//		oceanChestCollectionGeneratorsMap.get(Rarity.EPIC).add(1500, new OysterChestGenerator());
 		
 		// setup pit generators map
 		pitGens.put(PitTypes.STANDARD, Pits.SIMPLE_PIT, new SimplePitGenerator());

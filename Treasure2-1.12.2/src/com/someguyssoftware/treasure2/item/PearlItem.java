@@ -21,6 +21,7 @@ import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster.SpecialLootTables;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -110,10 +111,10 @@ public class PearlItem extends ModItem {
 
 				// determine pearl type
 				if (getPearl() == Pearls.WHITE) {
-					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.RARE));
+					lootTables.add(Treasure.LOOT_TABLES.getSpecialLootTable(SpecialLootTables.WHITE_PEARL_WELL));
 				}
-				else if (getPearl() == Pearls.BLACK) {					
-					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.EPIC));
+				else if (getPearl() == Pearls.BLACK) {
+					lootTables.add(Treasure.LOOT_TABLES.getSpecialLootTable(SpecialLootTables.BLACK_PEARL_WELL));
 				}
 				
 				ItemStack stack = null;
@@ -129,7 +130,7 @@ public class PearlItem extends ModItem {
 					List<ItemStack> list =table.generateLootFromPools(random, Treasure.LOOT_TABLES.getContext());
 
 					// select one item randomly
-					stack = list.get(list.size()-1);
+					stack = list.get(random.nextInt(list.size()));
 				}				
 				
 				// spawn the item 

@@ -153,7 +153,7 @@ public class CoinItem extends ModItem {
 			List<ItemStack> list =table.generateLootFromPools(random, Treasure.LOOT_TABLES.getContext());
 
 			// select one item randomly
-			stack = list.get(RandomHelper.randomInt(1, list.size()-1));
+			stack = list.get(RandomHelper.randomInt(0, list.size()-1));
 		}				
 		
 		// spawn the item 
