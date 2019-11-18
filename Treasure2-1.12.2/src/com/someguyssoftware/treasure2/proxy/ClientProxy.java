@@ -6,10 +6,12 @@ package com.someguyssoftware.treasure2.proxy;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.model.BandedChestModel;
 import com.someguyssoftware.treasure2.client.model.CauldronChestModel;
+import com.someguyssoftware.treasure2.client.model.ClamChestModel;
 import com.someguyssoftware.treasure2.client.model.CompressorChestModel;
 import com.someguyssoftware.treasure2.client.model.CrateChestModel;
 import com.someguyssoftware.treasure2.client.model.DreadPirateChestModel;
 import com.someguyssoftware.treasure2.client.model.MimicModel;
+import com.someguyssoftware.treasure2.client.model.OysterChestModel;
 import com.someguyssoftware.treasure2.client.model.SafeModel;
 import com.someguyssoftware.treasure2.client.model.SkullChestModel;
 import com.someguyssoftware.treasure2.client.model.StandardChestModel;
@@ -19,6 +21,7 @@ import com.someguyssoftware.treasure2.client.render.entity.MimicEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CauldronChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CompressorChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CrateChestTileEntityRenderer;
+import com.someguyssoftware.treasure2.client.render.tileentity.MolluscChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.SafeTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.SkullChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.StrongboxTileEntityRenderer;
@@ -27,6 +30,7 @@ import com.someguyssoftware.treasure2.client.render.tileentity.WitherChestTileEn
 import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CauldronChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.ClamChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.DreadPirateChestTileEntity;
@@ -35,9 +39,11 @@ import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.OysterChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SkullChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.WhaleBonePirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
@@ -113,6 +119,11 @@ public class ClientProxy {
 				DreadPirateChestTileEntity.class,
 				new TreasureChestTileEntityRenderer("dread-pirate-chest", new DreadPirateChestModel()));
 		
+		// whale bone pirate chest - uses same model as dread pirate
+//		ClientRegistry.bindTileEntitySpecialRenderer(
+//				WhaleBonePirateChestTileEntity.class,
+//				new TreasureChestTileEntityRenderer("whale-bone-pirate-chest", new DreadPirateChestModel()));
+		
 		// compressor chest
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				CompressorChestTileEntity.class,
@@ -137,6 +148,16 @@ public class ClientProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				CauldronChestTileEntity.class,
 				new CauldronChestTileEntityRenderer("cauldron-chest", new CauldronChestModel()));
+
+		// oyster chest
+//		ClientRegistry.bindTileEntitySpecialRenderer(
+//				OysterChestTileEntity.class,
+//				new MolluscChestTileEntityRenderer("oyster-chest", new OysterChestModel()));
+
+		// clam chest
+//		ClientRegistry.bindTileEntitySpecialRenderer(
+//				ClamChestTileEntity.class,
+//				new MolluscChestTileEntityRenderer("clam-chest", new ClamChestModel()));
 		
 		/*
 		 *  register the entity render handlers

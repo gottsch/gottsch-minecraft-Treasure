@@ -26,6 +26,7 @@ import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitStructureOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellCommand;
+import com.someguyssoftware.treasure2.command.SpawnWellStructureCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -87,7 +88,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.5.1";
+	protected static final String VERSION = "1.6.0";
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
 	private static final String VERSION_URL = "";
@@ -160,18 +161,6 @@ public class Treasure extends AbstractMod {
 		
 		// register the GUI handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-		
-		/*
-		 * KEEP FOR REFERNCE PURPOSES
-		 */
-		// start the database
-//		try {
-//			DbManager.start((TreasureConfig)getConfig());
-//		} catch (DatabaseInitializationException e) {
-//			logger.error("Unable to start database manager:", e);
-//			getConfig().setModEnabled(false);
-//		}
-
 	}
 	
 	/**
@@ -193,7 +182,7 @@ public class Treasure extends AbstractMod {
     	event.registerServerCommand(new SpawnPitCommand());
     	event.registerServerCommand(new SpawnPitOnlyCommand());
     	event.registerServerCommand(new SpawnPitStructureOnlyCommand());
-    	event.registerServerCommand(new SpawnWellCommand());
+    	event.registerServerCommand(new SpawnWellStructureCommand());
     	event.registerServerCommand(new SpawnWitherTreeCommand());
     }
 	
@@ -227,7 +216,6 @@ public class Treasure extends AbstractMod {
 //				TreasureConfig.CUSTOM_STRUCTURE_FOLDER,
 				"/structures",
 				FMLCommonHandler.instance().getDataFixer());
-//				Minecraft.getMinecraft().getDataFixer());
 
 		META_MANAGER = new TreasureMetaManager(Treasure.instance, "meta");
 	}

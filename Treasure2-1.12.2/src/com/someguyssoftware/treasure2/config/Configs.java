@@ -22,8 +22,10 @@ public class Configs {
 	public static TreasureConfig modConfig;
 	private static Map<Rarity, IChestConfig> defaultChestConfigs = new HashMap<>();
 	public static Map<Rarity, IChestConfig> chestConfigs = new HashMap<>();
-	public static Map<Wells, IWellConfig> defaultWellConfigs = new HashMap<>();
-	public static Map<Wells, IWellConfig> wellConfigs = new HashMap<>();
+//	public static Map<Wells, IWellConfig> defaultWellConfigs = new HashMap<>();
+//	public static Map<Wells, IWellConfig> wellConfigs = new HashMap<>();
+	public static IWellConfig defaultWellConfig;
+	public static IWellConfig wellConfig;
 	public static IWitherTreeConfig defaultWitherTreeConfig;
 	public static IWitherTreeConfig witherTreeConfig;
 	
@@ -47,9 +49,10 @@ public class Configs {
 		chestConfigs.put(Rarity.RARE, new ChestConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "rare-chest.cfg", defaultChestConfigs.get(Rarity.RARE)));
 		chestConfigs.put(Rarity.EPIC, new ChestConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "epic-chest.cfg", defaultChestConfigs.get(Rarity.EPIC)));
 
-		wellConfigs.put(Wells.WISHING_WELL, new WellConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "wishing-well.cfg", defaultWellConfigs.get(Wells.WISHING_WELL)));
-		wellConfigs.put(Wells.CANOPY_WISHING_WELL, new WellConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "canopy-wishing-well.cfg", defaultWellConfigs.get(Wells.WISHING_WELL)));
-		wellConfigs.put(Wells.WOOD_DRAW_WISHING_WELL, new WellConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "wood-draw-wishing-well.cfg", defaultWellConfigs.get(Wells.WISHING_WELL)));
+		wellConfig = new WellConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "wishing-well.cfg", defaultWellConfig);
+//		wellConfigs.put(Wells.WISHING_WELL, new WellConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "wishing-well.cfg", defaultWellConfigs.get(Wells.WISHING_WELL)));
+//		wellConfigs.put(Wells.CANOPY_WISHING_WELL, new WellConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "canopy-wishing-well.cfg", defaultWellConfigs.get(Wells.WISHING_WELL)));
+//		wellConfigs.put(Wells.WOOD_DRAW_WISHING_WELL, new WellConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "wood-draw-wishing-well.cfg", defaultWellConfigs.get(Wells.WISHING_WELL)));
 
 		witherTreeConfig = new WitherTreeConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "wither-tree.cfg", defaultWitherTreeConfig);
 	}
@@ -123,13 +126,15 @@ public class Configs {
 	 */
 	@SuppressWarnings("unchecked")
 	private static void  initDefaultWellConfigs() {
-		defaultWellConfigs.put(Wells.WISHING_WELL,  new WellConfig()
+//		defaultWellConfigs.put(Wells.WISHING_WELL,  
+		defaultWellConfig = 
+				new WellConfig()
 				.setWellAllowed(true)
 				.setChunksPerWell(500)
 				.setGenProbability(80)
 				.setRawBiomeWhiteList(new String[] {""})
-				.setRawBiomeBlackList(new String[] {"ocean", "deep_ocean"})
-				);
+				.setRawBiomeBlackList(new String[] {"ocean", "deep_ocean"});
+//				);
 	}
 	
 	/**

@@ -23,11 +23,12 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Jan 25, 2018
  *
  */
+@Deprecated
 public class SpawnWellCommand extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "treasurewell";
+		return "t2well-deprecated";
 	}
 
 	@Override
@@ -61,7 +62,7 @@ public class SpawnWellCommand extends CommandBase {
     			Random random = new Random();
     			//BlockPos pos = new BlockPos(x, y, z);
     			WellWorldGenerator wellGen = new WellWorldGenerator();
-    			wellGen.getGenerators().get(well).generate(world, random, new Coords(x, y, z), Configs.wellConfigs.get(well)); 
+//    			wellGen.getGenerators().get(well).generate(world, random, new Coords(x, y, z), Configs.wellConfigs.get(well)); 
     		}
 		}
 		catch(Exception e) {
