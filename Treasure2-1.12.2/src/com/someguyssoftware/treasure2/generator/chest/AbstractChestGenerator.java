@@ -99,7 +99,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 				return result.fail();
 			}
 
-//			markerCoords = surfaceCoords;
+			markerCoords = surfaceCoords;
 //			spawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, markerCoords);
 //			Treasure.logger.debug("ocean floor coords -> {}", spawnCoords.toShortString());
 			genResult = generateSubmergedRuins(world, random, /*spawnCoords*/ surfaceCoords, config);
