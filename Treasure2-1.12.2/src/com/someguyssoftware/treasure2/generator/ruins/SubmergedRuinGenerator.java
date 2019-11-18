@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.measurement.Quantity;
+import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
@@ -45,14 +46,21 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 	
 	@Override
 	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random,
-			ICoords spawnCoords) {
+			ICoords originalSpawnCoords) {
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
 	
 		// TODO can abstract to AbstractRuinGenerator which Submerged and Ruin implement.
 		// TODO create a method selectTemplate() in abstract that will be overridden by concrete classes, provided the archetype and type
 		
+		/*
+		 * Setup
+		 */
 		// get the biome ID
-		Biome biome = world.getBiome(spawnCoords.toPos());
+		Biome biome = world.getBiome(originalSpawnCoords.toPos());
+		
+		// create the generator
+		TemplateGenerator generator = new TemplateGenerator();
+		generator.setNullBlock(Blocks.AIR);
 		
 		// get the template holder from the given archetype, type and biome
 		TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, StructureArchetype.SUBMERGED, StructureType.RUIN, biome);
@@ -65,17 +73,33 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 		// setup placement
 		PlacementSettings placement = new PlacementSettings();
 		placement.setRotation(rotation).setRandom(random);
-		
-		BlockPos transformedSize = holder.getTemplate().transformedSize(rotation);
+	
+		// determine the actual spawn coords
+		ICoords templateSize = new Coords(holder.getTemplate().transformedSize(placement.getRotation()));
+		ICoords actualSpawnCoords = generator.getTransformedSpawnCoords(originalSpawnCoords, templateSize, placement);
 
+		// NOTE these checks don't really belong in a generator as their task is to just generate.
+		// however, the template is unknown outside this call and thus the rotate, placement, size and actual coords would be unknown.
+		/**
+		 * Environment Checks
+		 */
+		actualSpawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, actualSpawnCoords);
+		Treasure.logger.debug("ocean floor coords -> {}", actualSpawnCoords.toShortString());
+
+		// check if it has 50% land
+		if (!WorldInfo.isSolidBase(world, actualSpawnCoords, 2, 2, 30)) {
+			Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", actualSpawnCoords.toShortString(), 3, 3);
+			return result.fail();
+		}
+		
 		for (int i = 0; i < 3; i++) {
-			if (!WorldInfo.isSolidBase(world, spawnCoords, transformedSize.getX(), transformedSize.getZ(), 50)) {
+			if (!WorldInfo.isSolidBase(world, actualSpawnCoords, templateSize.getX(), templateSize.getZ(), 50)) {
 				if (i == 3) {
-					Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", 50, spawnCoords.toShortString(), transformedSize.getX(), transformedSize.getY());
+					Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", 50, originalSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
 					return result.fail();
 				}
 				else {
-					spawnCoords = spawnCoords.add(0, -1, 0);
+					originalSpawnCoords = originalSpawnCoords.add(0, -1, 0);
 				}
 			}
 			else {
@@ -83,11 +107,15 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 			}
 		}
 
-		// generate the structure
-		TemplateGenerator generator = new TemplateGenerator();
-		generator.setNullBlock(Blocks.AIR);
-		
-		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, holder, placement, spawnCoords);
+		/**
+		 * Build
+		 */
+		// update original spawn coords' y-value to be that of actual spawn coords.
+		// this is the coords that need to be supplied to the template generator to allow
+		// the structure to generator in the correct place
+		originalSpawnCoords = new Coords(originalSpawnCoords.getX(), actualSpawnCoords.getY(), originalSpawnCoords.getZ());
+				
+		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, holder, placement, originalSpawnCoords);
 		 if (!genResult.isSuccess()) return result.fail();
 
 		Treasure.logger.debug("submerged gen result -> {}", genResult);

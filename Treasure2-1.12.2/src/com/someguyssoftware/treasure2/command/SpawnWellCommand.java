@@ -28,7 +28,7 @@ public class SpawnWellCommand extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "treasurewell";
+		return "t2well-deprecated";
 	}
 
 	@Override

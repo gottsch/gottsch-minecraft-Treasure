@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.generator.well;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.cube.Cube;
+import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
@@ -38,26 +39,16 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 
 	@Override
 	public GeneratorResult<GeneratorData> generate(World world, Random random,
-			ICoords spawnCoords, IWellConfig config) {
+			ICoords originalSpawnCoords, IWellConfig config) {
+		/*
+		 * Setup
+		 */
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 		
-		// 1. determine y-coord of land surface
-		spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, spawnCoords);
-		if (spawnCoords == null || spawnCoords == WorldInfo.EMPTY_COORDS) {
-			Treasure.logger.debug("Returning due to marker coords == null or EMPTY_COORDS");
-			return result.fail(); 
-		}
-		
-		// 2. check if it has 50% land
-		if (!WorldInfo.isSolidBase(world, spawnCoords, 3, 3, 50)) {
-			Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", spawnCoords.toShortString(), 3, 3);
-			return result.fail();
-		}		
-		
 		// get the biome ID
-		Biome biome = world.getBiome(spawnCoords.toPos());
+		Biome biome = world.getBiome(originalSpawnCoords.toPos());
 		
-		// generate the structure
+		// create the generator
 		TemplateGenerator generator = new TemplateGenerator();
 		generator.setNullBlock(Blocks.BEDROCK);
 		
@@ -67,14 +58,42 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 				
 		// select a random rotation
 		Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
-		Treasure.logger.debug("rotation used -> {}", rotation);
 		
 		// setup placement
 		PlacementSettings placement = new PlacementSettings();
 		placement.setRotation(rotation).setRandom(random);
 		
+		ICoords templateSize = new Coords(holder.getTemplate().transformedSize(rotation));
+		ICoords actualSpawnCoords = generator.getTransformedSpawnCoords(originalSpawnCoords, templateSize, placement);
+			
+		/*
+		 * Environment Checks
+		 */
+		// TODO use new GottschCore coords.withY()
+		// 1. determine y-coord of land surface for the actual spawn coords
+		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(actualSpawnCoords.getX(), 255, actualSpawnCoords.getZ()));
+		if (actualSpawnCoords == null || actualSpawnCoords == WorldInfo.EMPTY_COORDS) {
+			Treasure.logger.debug("Returning due to marker coords == null or EMPTY_COORDS");
+			return result.fail(); 
+		}
+		Treasure.logger.debug("actual spawn coords after dry land surface check -> {}", actualSpawnCoords);
+		
+		// 2. check if it has 50% land
+		if (!WorldInfo.isSolidBase(world, actualSpawnCoords, 3, 3, 50)) {
+			Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", actualSpawnCoords.toShortString(), 3, 3);
+			return result.fail();
+		}	
+		
+		/*
+		 * Build
+		 */
+		// update original spawn coords' y-value to be that of actual spawn coords.
+		// this is the coords that need to be supplied to the template generator to allow
+		// the structure to generator in the correct place
+		originalSpawnCoords = new Coords(originalSpawnCoords.getX(), actualSpawnCoords.getY(), originalSpawnCoords.getZ());
+		
 		// build well
-		 GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, holder,  placement, spawnCoords);
+		 GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, holder,  placement, originalSpawnCoords);
 		Treasure.logger.debug("Well gen  structure result -> {}", genResult.isSuccess());
 		 if (!genResult.isSuccess()) {
 			 Treasure.logger.debug("failing well gen.");
@@ -84,17 +103,16 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		// get the rotated/transformed size
 		//BlockPos transformedSize = holder.getTemplate().transformedSize(rotation);
 		ICoords transformedSize = genResult.getData().getSize();
-
 		
 		// add flowers around well
-		addDecorations(world, random, spawnCoords, transformedSize.getX(), transformedSize.getZ());
+		addDecorations(world, random, genResult.getData().getSpawnCoords(), transformedSize.getX(), transformedSize.getZ());
 		 
 		// TODO add chest if any
 				
 		// add the structure data to the result
 		result.setData(genResult.getData());
 
-		Treasure.logger.info("CHEATER! Wishing Well at coords: {}", spawnCoords.toShortString());
+		Treasure.logger.info("CHEATER! Wishing Well at coords: {}", result.getData().getSpawnCoords().toShortString());
 		
 		return result.success();
 	}
@@ -154,8 +172,13 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 			Treasure.logger.debug("Returning due to marker coords == null or EMPTY_COORDS");
 			return;
 		}
+		Cube markerCube = new Cube(world, markerCoords);
+		if (!markerCube.isAir() && !markerCube.isReplaceable()) {
+			Treasure.logger.debug("Returning due to marker coords is not air nor replaceable.");
+			return;
+		}
 		
-		Cube markerCube = new Cube(world, markerCoords.add(0, -1, 0));
+		markerCube = new Cube(world, markerCoords.add(0, -1, 0));
 //		Treasure.logger.debug("Marker on block: {}", markerCube.getState());
 		if (markerCube.equalsBlock(Blocks.GRASS)) {
 			blockState = getDecorationBlockState(world, Blocks.RED_FLOWER);

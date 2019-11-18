@@ -34,12 +34,12 @@ public class SpawnPitOnlyCommand extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "trpitonly";
+		return "t2-pitonly";
 	}
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/trpitonly <x> <y> <z> [pit]: spawns a Treasure! pit at location (x,y,z)";
+		return "/t2-pitonly <x> <y> <z> [pit]: spawns a Treasure! pit at location (x,y,z)";
 	}
 
 	@Override

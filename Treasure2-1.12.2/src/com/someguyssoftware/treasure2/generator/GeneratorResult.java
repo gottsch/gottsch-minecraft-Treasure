@@ -3,14 +3,8 @@
  */
 package com.someguyssoftware.treasure2.generator;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-
 import com.someguyssoftware.treasure2.Treasure;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**

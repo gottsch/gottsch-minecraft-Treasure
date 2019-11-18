@@ -99,10 +99,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 				return result.fail();
 			}
 
-			markerCoords = surfaceCoords;
-			spawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, markerCoords);
-			Treasure.logger.debug("ocean floor coords -> {}", spawnCoords.toShortString());
-			genResult = generateSubmergedRuins(world, random, spawnCoords, config);
+//			markerCoords = surfaceCoords;
+//			spawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, markerCoords);
+//			Treasure.logger.debug("ocean floor coords -> {}", spawnCoords.toShortString());
+			genResult = generateSubmergedRuins(world, random, /*spawnCoords*/ surfaceCoords, config);
 			Treasure.logger.debug("submerged result -> {}", genResult.toString());
 			if (!genResult.isSuccess()) {
 				return result.fail();
@@ -246,12 +246,6 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 			IChestConfig config) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
 		result.getData().setSpawnCoords(spawnCoords);
-
-		// check if it has 50% land
-		if (!WorldInfo.isSolidBase(world, spawnCoords, 2, 2, 30)) {
-			Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", spawnCoords.toShortString(), 3, 3);
-			return result.fail();
-		}
 
 		SubmergedRuinGenerator generator = new SubmergedRuinGenerator();
 

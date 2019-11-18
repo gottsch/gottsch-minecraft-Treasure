@@ -16,6 +16,7 @@ import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
+import com.sun.media.jfxmedia.logging.Logger;
 
 import lombok.Setter;
 import net.minecraft.block.Block;
@@ -121,7 +122,12 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		
 		// get the transformed size
 		BlockPos transformedSize = template.transformedSize(placement.getRotation());
-
+		Treasure.logger.debug("transformed size -> {}", transformedSize.toString());
+		
+		// calculate the new spawn coords - that includes the rotation, and negates the Y offset
+		spawnCoords = getTransformedSpawnCoords(spawnCoords, new Coords(transformedSize), placement).add(0, -offset, 0);
+		
+		Treasure.logger.debug("spawn coords after rotation -> " + spawnCoords);
 		// update result data
 		result.getData().setSpawnCoords(spawnCoords);
 		result.getData().setSize(new Coords(transformedSize));
@@ -129,6 +135,43 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		return result.success();
 	}
 
+	/**
+	 * 
+	 * @param coords
+	 * @param size
+	 * @param placement
+	 * @return
+	 */
+	public ICoords getTransformedSpawnCoords(final ICoords coords, final ICoords size, final PlacementSettings placement) {
+			
+		ICoords spawnCoords = null;
+		int x = 0;
+		int z = 0;
+		switch(placement.getRotation()) {
+		case NONE:
+			x = coords.getX();
+			z = coords.getZ();
+			break;
+		case CLOCKWISE_90:
+			x = coords.getX() - (size.getZ()-1);
+			z = coords.getZ();
+			break;
+		case CLOCKWISE_180:
+			x = coords.getX() - (size.getX()-1);
+			z = coords.getZ() - (size.getZ()-1);
+			break;
+		case COUNTERCLOCKWISE_90:
+			x = coords.getX();
+			z = coords.getZ() - (size.getX()-1);
+			break;
+		default:
+			break;
+		}
+		spawnCoords = new Coords(x, coords.getY(), z);
+		return spawnCoords;
+	}
+	
+	
 	@Override
 	public Block getNullBlock() {
 		if (nullBlock == null) {

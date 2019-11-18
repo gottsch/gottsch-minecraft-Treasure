@@ -30,12 +30,12 @@ public class SpawnWellStructureCommand extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "t2!wellstructure";
+		return "t2-well";
 	}
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/t2!wellstructure <x> <y> <z> [well | -n <name>]: spawns a Treasure! wishing well at location (x,y,z)";
+		return "/t2-well <x> <y> <z> [well | -n <name>]: spawns a Treasure! wishing well at location (x,y,z)";
 	}
 
 	@Override
