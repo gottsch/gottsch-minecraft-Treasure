@@ -78,6 +78,9 @@ public class CoinItem extends ModItem {
 	 */
 	@Override
 	public boolean onEntityItemUpdate(EntityItem entityItem) {
+		// get the item stack or number of items.
+		ItemStack entityItemStack = entityItem.getItem();
+		
 		World world = entityItem.getEntityWorld();
 		if (WorldInfo.isClientSide(world)) {
 			return super.onEntityItemUpdate(entityItem);
@@ -86,8 +89,7 @@ public class CoinItem extends ModItem {
 		// get the position
 		ICoords coords = new Coords(entityItem.getPosition());
 		Cube cube = new Cube(world, coords);
-//		Block block = world.getBlockState(coords).getBlock();
-		Block block = cube.toBlock();
+//		Block block = cube.toBlock();
 		int numWishingWellBlocks = 0;
 		// check if in water
 		if (cube.equalsBlock(Blocks.WATER)) {
@@ -105,49 +107,12 @@ public class CoinItem extends ModItem {
 				}
 			}
 			
-			List<LootTable> lootTables = new ArrayList<>();
 			if (numWishingWellBlocks >=2) {
 				Random random = new Random();
-//				List<Rarity> rarityList = null;
-				// determine coin type
-				if (getCoin() == Coins.SILVER) {
-//					rarityList = Arrays.asList(new Rarity[] {Rarity.UNCOMMON, Rarity.SCARCE});
-//					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.UNCOMMON));
-//					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.SCARCE));
-					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.UNCOMMON));
-					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.SCARCE));
+				for (int itemIndex = 0; itemIndex < entityItemStack.getCount(); itemIndex++) {
+					// generate an item for each item in the stack
+					generateLootItem(world, random, entityItem, coords);
 				}
-				else if (getCoin() == Coins.GOLD) {					
-//					rarityList = Arrays.asList(new Rarity[] {Rarity.SCARCE, Rarity.RARE});
-//					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.SCARCE));
-//					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.RARE));
-					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.SCARCE));
-					lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.RARE));
-				}
-				
-				ItemStack stack = null;
-				// handle if loot tables is null or size = 0. return an item (apple) to ensure continuing functionality
-				if (lootTables == null || lootTables.size() == 0) {
-					stack = new ItemStack(Items.APPLE);
-				}
-				else {
-					// select a table
-					LootTable table = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
-					
-					// generate a list of itemStacks from the table pools
-					List<ItemStack> list =table.generateLootFromPools(random, Treasure.LOOT_TABLES.getContext());
-
-					// select one item randomly
-					stack = list.get(list.size()-1);
-				}				
-				
-				// spawn the item 
-				if (stack != null) {
-					InventoryHelper.spawnItemStack(world, (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), stack);
-				}
-
-				// remove the item entity
-				entityItem.setDead();
 				return true;
 			}
 		}
@@ -155,6 +120,50 @@ public class CoinItem extends ModItem {
 		return super.onEntityItemUpdate(entityItem);
 	}
 	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param entityItem
+	 * @param coords
+	 */
+	private void generateLootItem(World world, Random random, EntityItem entityItem, ICoords coords) {
+		List<LootTable> lootTables = new ArrayList<>();
+
+		// determine coin type
+		if (getCoin() == Coins.SILVER) {
+			lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.UNCOMMON));
+			lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.SCARCE));
+		}
+		else if (getCoin() == Coins.GOLD) {					
+			lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.SCARCE));
+			lootTables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.RARE));
+		}
+		
+		ItemStack stack = null;
+		// handle if loot tables is null or size = 0. return an item (apple) to ensure continuing functionality
+		if (lootTables == null || lootTables.size() == 0) {
+			stack = new ItemStack(Items.APPLE);
+		}
+		else {
+			// select a table
+			LootTable table = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
+			
+			// generate a list of itemStacks from the table pools
+			List<ItemStack> list =table.generateLootFromPools(random, Treasure.LOOT_TABLES.getContext());
+
+			// select one item randomly
+			stack = list.get(RandomHelper.randomInt(0, list.size()-1));
+		}				
+		
+		// spawn the item 
+		if (stack != null) {
+			InventoryHelper.spawnItemStack(world, (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), stack);
+		}
+		// remove the item entity
+		entityItem.setDead();
+	}
+
 	/**
 	 * @return the coin
 	 */

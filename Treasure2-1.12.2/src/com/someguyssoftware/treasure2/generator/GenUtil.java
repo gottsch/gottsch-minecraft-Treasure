@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2.generator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.block.AbstractModContainerBlock;
@@ -28,7 +29,9 @@ import com.someguyssoftware.treasure2.registry.ChestRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
@@ -137,9 +140,33 @@ public class GenUtil {
 //			world.setBlockState(pos, this.getChest().getDefaultState().withProperty(FACING, oldState.getValue(FACING)), 3);
 		}
 		else {
+			Treasure.logger.info("World Chest marker does NOT have a FACING property.");
 //			world.setBlockState(chestCoords.toBlockPos(), this.getChest().getDefaultState(), 3);
 			return placeChest(world, chest, coords, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param coords
+	 * @param chest
+	 * @param state
+	 * @return
+	 */
+	public static boolean replaceBlockWithChest(World world, Random random, ICoords coords, Block chest, IBlockState state) {
+		if (state.getProperties().containsKey(FACING)) {
+			return placeChest(world, chest, coords, (EnumFacing)state.getValue(FACING));
+		}
+		
+		if (state.getBlock() == Blocks.CHEST) {
+			EnumFacing facing = (EnumFacing)state.getValue(BlockChest.FACING);
+			return placeChest(world, chest, coords, facing);
+		}
+		
+		// else do generic
+		return replaceBlockWithChest(world, random, chest, coords);		
 	}
 	
 	/**

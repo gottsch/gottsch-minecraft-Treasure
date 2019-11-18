@@ -6,11 +6,13 @@ package com.someguyssoftware.treasure2.client.gui;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.gui.inventory.CompressorChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.KeyRingGui;
+import com.someguyssoftware.treasure2.client.gui.inventory.MolluscChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.SkullChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.StandardChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.StrongboxChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.WitherChestGui;
 import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
+import com.someguyssoftware.treasure2.inventory.MolluscChestContainer;
 import com.someguyssoftware.treasure2.inventory.SkullChestContainer;
 import com.someguyssoftware.treasure2.inventory.CompressorChestContainer;
 import com.someguyssoftware.treasure2.inventory.KeyRingContainer;
@@ -48,6 +50,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int SKULL_CHEST_GUIID = 5;
 	public static final int ARMOIRE_GUID = 6;
 	public static final int WITHER_CHEST_GUIID = 7;
+	public static final int MOLLUSCS_CHEST_GUIID = 8;
 	
 	/* (non-Javadoc)
 	 * @see net.minecraftforge.fml.common.network.IGuiHandler#getServerGuiElement(int, net.minecraft.entity.player.EntityPlayer, net.minecraft.world.World, int, int, int)
@@ -82,7 +85,12 @@ public class GuiHandler implements IGuiHandler {
 				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
 					return new WitherChestContainer(player.inventory, ((AbstractTreasureChestTileEntity)tileEntity).getInventoryProxy());
 				}
-				break;					
+				break;
+			case MOLLUSCS_CHEST_GUIID:
+				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
+					return new MolluscChestContainer(player.inventory, ((AbstractTreasureChestTileEntity)tileEntity).getInventoryProxy());
+				}
+				break;				
 			case KEY_RING_GUIID:
 				// get the held item
 				ItemStack keyRingItem = player.getHeldItemMainhand();
@@ -149,7 +157,15 @@ public class GuiHandler implements IGuiHandler {
 				else {
 					Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");
 				}
-				break;						
+				break;		
+			case MOLLUSCS_CHEST_GUIID:
+				if (tileEntity instanceof AbstractTreasureChestTileEntity) {
+					return new MolluscChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
+				}
+				else {
+					Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");
+				}
+				break;				
 			case KEY_RING_GUIID:
 				// get the held item
 				ItemStack keyRingItem = player.getHeldItemMainhand();

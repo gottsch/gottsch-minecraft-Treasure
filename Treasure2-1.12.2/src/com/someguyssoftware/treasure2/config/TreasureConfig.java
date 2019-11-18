@@ -33,12 +33,15 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String GOLD_STRONGBOX_ID = "gold_strongbox";
 	public static final String SAFE_ID = "safe";
 	public static final String DREAD_PIRATE_CHEST_ID = "dread_pirate_chest";
+	public static final String WHALE_BONE_PIRATE_CHEST_ID = "whale_bone_pirate_chest";
 	public static final String COMPRESSOR_CHEST_ID = "compressor_chest";
 	public static final String WITHER_CHEST_ID = "wither_chest";
 	public static final String WITHER_CHEST_TOP_ID = "wither_chest_top";
 	public static final String SKULL_CHEST_ID = "skull_chest";
 	public static final String GOLD_SKULL_CHEST_ID = "gold_skull_chest";
 	public static final String CAULDRON_CHEST_ID = "cauldron_chest";
+	public static final String OYSTER_CHEST_ID = "oyster_chest";
+	public static final String CLAM_CHEST_ID = "clam_chest";
 	
 	// mimics
 	public static final String WOOD_MIMIC_ID = "wood_mimic";
@@ -78,6 +81,9 @@ public class TreasureConfig extends AbstractConfig {
 	
 	public static final String GOLD_COIN_ID = "gold_coin";
 	public static final String SILVER_COIN_ID = "silver_coin";
+
+	public static final String WHITE_PEARL_ID = "white_pearl";
+	public static final String BLACK_PEARL_ID = "black_pearl";
 	
 	// weapons / armor
 	public static final String SKULL_SWORD_ID = "skull_sword";
@@ -169,11 +175,14 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String GOLD_STRONGBOX_TE_ID = "gold_strongbox_tile_entity";
 	public static final String SAFE_TE_ID = "safe_tile_entity";
 	public static final String DREAD_PIRATE_CHEST_TE_ID = "dread_pirate_chest_tile_entity";
+	public static final String WHALE_BONE_PIRATE_CHEST_TE_ID = "whale_bone_pirate_chest_tile_entity";
 	public static final String COMPRESSOR_CHEST_TE_ID = "compressor_chest_tile_entity";
 	public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
 	public static final String SKULL_CHEST_TE_ID = "skull_chest_tile_entity";
 	public static final String GOLD_SKULL_CHEST_TE_ID = "gold_skull_chest_tile_entity";
 	public static final String CAULDRON_CHEST_TE_ID = "cauldron_chest_tile_entity";
+	public static final String OYSTER_CHEST_TE_ID = "oyster_chest_tile_entity";
+	public static final String CLAM_CHEST_TE_ID = "clam_chest_tile_entity";
 	public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
 
 	/*
@@ -181,7 +190,7 @@ public class TreasureConfig extends AbstractConfig {
 	 */
 	public static final String MODS_FOLDER = "mods";	
 	public static final String CUSTOM_STRUCTURE_FOLDER = MODS_FOLDER + "/treasure2/structures";
-	
+		
 	public static String treasureFolder;
 	public static boolean enableKeyBreaks = true;
 	public static boolean enableFog = true;
@@ -302,8 +311,7 @@ public class TreasureConfig extends AbstractConfig {
         
       	minDistancePerChest = config.getInt("minDistancePerChest", "04-gen", 75, 0, 32000, "");
       	minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 35, 0, 32000, "");
-      	minChunksPerWell = config.getInt("minChunksPerWell", "04-gen", 400, 100, 32000, "");
-
+      	
       	surfaceChestProbability = config.getInt("surfaceChestProbability", "04-gen", 15, 0, 100, "The probability chest will appear on the surface."); 
       	surfaceStructureProbability = config.getInt("surfaceStructureProbability", "04-gen", 25, 0, 100, "The probability that a surface structure will generate."); 
       	pitStructureProbability = config.getInt("pitStructureProbability", "04-gen", 25, 0, 100, "The probability that a pit will contain a structure."); 
@@ -316,8 +324,8 @@ public class TreasureConfig extends AbstractConfig {
         isMarkerStructuresAllowed = config.getBoolean("isMarkerStructuresAllowed", "04-gen", true, "");
         markerStructureProbability = config.getInt("markerStructureProbability", "04-gen", 15, 0, 100, "The probability that a Treasure chest marker will be a structure."); 
 
-        // well
-        minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 500, 100, 32000, "");
+        // wells
+        minChunksPerWell = config.getInt("minChunksPerWell", "04-gen", 400, 100, 32000, "");
         
         // wither items
         witherRootItemGenProbability = config.getFloat("witherRootGenProbability", "04-gen", 50.0F, 0.0F, 100.0F, "");

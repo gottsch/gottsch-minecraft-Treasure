@@ -42,42 +42,4 @@ public class CauldronChestGenerator extends EpicChestGenerator {
 		TreasureChestBlock chest = (TreasureChestBlock) TreasureBlocks.CAULDRON_CHEST;
 		return chest;
 	}
-	
-	/**
-	 * Don't place any markers
-	 */
-//	@Override
-//	public void addMarkers(World world, Random random, ICoords coords) {
-//		return;
-//	}
-	
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param chest
-	 * @param chestCoords
-	 * @return
-	 */
-//	@Override
-//	public TileEntity placeInWorld(World world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
-//		// replace block @ coords
-//		GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
-//		// ensure that chest is of type WITHER_CHEST
-//		if (world.getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST) {
-//			// add top placeholder
-//			world.setBlockState(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.getDefaultState());
-//		}
-//		// get the backing tile entity of the chest 
-//		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());
-//
-//		// if tile entity failed to create, remove the chest
-//		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
-//			// remove chest
-//			world.setBlockToAir(chestCoords.toPos());
-//			Treasure.logger.debug("Unable to create TileEntityChest, removing BlockChest");
-//			return null;
-//		}
-//		return te;
-//	}
 }

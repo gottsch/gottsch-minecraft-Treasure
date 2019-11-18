@@ -39,7 +39,6 @@ public class GoldSkullChestGenerator extends AbstractChestGenerator {
 	 */
 	@Override
 	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
-//		return TreasureLootTables.GOLD_SKULL_CHEST_LOOT_TABLE;
 		return Treasure.LOOT_TABLES.getSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST);
 	}
 	 

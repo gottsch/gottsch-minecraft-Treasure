@@ -3,12 +3,20 @@
  */
 package com.someguyssoftware.treasure2.command;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.Configs;
+import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.enums.WorldGenerators;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
+import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
+import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;
@@ -27,12 +35,12 @@ public class SpawnPitCommand extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "t2pit";
+		return "t2-pit";
 	}
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/t2pit <x> <y> <z> [rarity]: spawns a Treasure! pit at location (x,y,z)";
+		return "/t2-pit <x> <y> <z> [rarity]: spawns a Treasure! pit at location (x,y,z)";
 	}
 
 	@Override
@@ -61,7 +69,10 @@ public class SpawnPitCommand extends CommandBase {
     			Random random = new Random();
     			//BlockPos pos = new BlockPos(x, y, z);
     			ChestWorldGenerator chestGen = new ChestWorldGenerator();
-    			chestGen.getGenerators().get(rarity).generate(world, random, new Coords(x, y, z), rarity, Configs.chestConfigs.get(rarity)); 
+//    			chestGen.getGenerators().get(rarity).generate(world, random, new Coords(x, y, z), rarity, Configs.chestConfigs.get(rarity)); 
+    			ChestWorldGenerator chestGens = (ChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.CHEST);
+    			IChestGenerator gen = chestGens.getChestCollectionGeneratorsMap().get(rarity).next();
+    			gen.generate(world, random, new Coords(x, y, z), rarity, Configs.chestConfigs.get(rarity));
     		}
 		}
 		catch(Exception e) {

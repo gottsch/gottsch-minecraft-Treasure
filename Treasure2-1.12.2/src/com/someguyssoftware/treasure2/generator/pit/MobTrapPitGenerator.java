@@ -8,7 +8,8 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.ITreasureGeneratorResult;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -39,8 +40,8 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public ITreasureGeneratorResult generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		ITreasureGeneratorResult result = super.generate(world, random, surfaceCoords, spawnCoords);
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
 			Treasure.logger.debug("Generated Mob Trap Pit at " + spawnCoords.toShortString());
 		}
@@ -140,11 +141,6 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 		nextCoords = buildLogLayer(world, random, nextCoords, block);
 
 		// spawn the mobs
-//    	spawnMob(world, spawnCoords, "skeleton");
-//    	spawnMob(world, spawnCoords.add(1, 0, 0), "zombie");
-//    	spawnMob(world, spawnCoords.add(0, 0, 1), "zombie");
-//    	spawnMob(world, spawnCoords.add(1, 0, 1), "skeleton");
-		
     	spawnRandomMob(world, random, spawnCoords);
     	spawnRandomMob(world, random, spawnCoords.add(1, 0, 0));
     	spawnRandomMob(world, random, spawnCoords.add(0, 0, 1));

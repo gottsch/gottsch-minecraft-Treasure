@@ -3,9 +3,7 @@
  */
 package com.someguyssoftware.treasure2.worldgen;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.biome.BiomeHelper;
@@ -19,10 +17,10 @@ import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IWellConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Wells;
-import com.someguyssoftware.treasure2.generator.well.CanopyWellGenerator;
+import com.someguyssoftware.treasure2.generator.GeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.well.IWellGenerator;
-import com.someguyssoftware.treasure2.generator.well.SimpleWellGenerator;
-import com.someguyssoftware.treasure2.generator.well.WoodDrawWellGenerator;
+import com.someguyssoftware.treasure2.generator.well.WellGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
@@ -44,7 +42,8 @@ public class WellWorldGenerator implements IWorldGenerator {
 	private int chunksSinceLastWell;
 
 	// the well geneators
-	private Map<Wells, IWellGenerator> generators = new HashMap<>();
+//	private Map<Wells, IWellGenerator> generators = new HashMap<>();
+	private IWellGenerator<GeneratorResult<GeneratorData>> generator = new WellGenerator();
 
 	/**
 	 * 
@@ -62,9 +61,9 @@ public class WellWorldGenerator implements IWorldGenerator {
 		chunksSinceLastWell = 0;
 
 		// setup the well generators
-		generators.put(Wells.WISHING_WELL, new SimpleWellGenerator());
-		generators.put(Wells.CANOPY_WISHING_WELL, new CanopyWellGenerator());
-		generators.put(Wells.WOOD_DRAW_WISHING_WELL,  new WoodDrawWellGenerator());
+//		generators.put(Wells.WISHING_WELL, new SimpleWellGenerator());
+//		generators.put(Wells.CANOPY_WISHING_WELL, new CanopyWellGenerator());
+//		generators.put(Wells.WOOD_DRAW_WISHING_WELL,  new WoodDrawWellGenerator());
 	}
 
 	/**
@@ -95,6 +94,7 @@ public class WellWorldGenerator implements IWorldGenerator {
 		chunksSinceLastWell++;
 
 		boolean isGenerated = false;	
+		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 
 		// test if min chunks was met
 		if (chunksSinceLastWell > TreasureConfig.minChunksPerWell) {
@@ -114,12 +114,11 @@ public class WellWorldGenerator implements IWorldGenerator {
 			// determine what type to generate
 			Wells well = Wells.values()[random.nextInt(Wells.values().length)];
 //			Treasure.logger.debug("Using Well: {}", well);
-			IWellConfig wellConfig = Configs.wellConfigs.get(well);
+			IWellConfig wellConfig = Configs.wellConfig; //Configs.wellConfigs.get(well);
 			if (wellConfig == null) {
 				Treasure.logger.warn("Unable to locate a config for well {}.", well);
 				return;
 			}
-
 
 			if (chunksSinceLastWell >= wellConfig.getChunksPerWell()) {
 
@@ -146,25 +145,16 @@ public class WellWorldGenerator implements IWorldGenerator {
 					Treasure.logger.debug("Well does not meet generate probability.");
 					return;
 				}
-//				else {
-//					Treasure.logger.debug("Well MEETS generate probability!");
-//				}
-
-
-				// 			// 3. check against all registered chests
-				// 			if (isRegisteredChestWithinDistance(world, coords, TreasureConfig.minDistancePerChest)) {
-				//				Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
-				// 				return;
-				// 			}
 
 				// increment chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
 				chunksSinceLastWell++;    	    	
 
 				// generate the well
 				Treasure.logger.debug("Attempting to generate a well");
-				isGenerated = generators.get(well).generate(world, random, coords, wellConfig); 
-
-				if (isGenerated) {
+//				isGenerated = generators.get(well)
+				result = generator.generate(world, random, coords, wellConfig); 
+				Treasure.logger.debug("well world gen result -> {}", result.isSuccess());
+				if (/*isGenerated*/result.isSuccess()) {
 					// add to registry
 					//				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
 					chunksSinceLastWell = 0;
@@ -242,17 +232,17 @@ public class WellWorldGenerator implements IWorldGenerator {
 		this.chunksSinceLastWell = chunksSinceLastWell;
 	}
 
-	/**
-	 * @return the generators
-	 */
-	public Map<Wells, IWellGenerator> getGenerators() {
-		return generators;
-	}
-
-	/**
-	 * @param generators the generators to set
-	 */
-	public void setGenerators(Map<Wells, IWellGenerator> generators) {
-		this.generators = generators;
-	}
+//	/**
+//	 * @return the generators
+//	 */
+//	public Map<Wells, IWellGenerator> getGenerators() {
+//		return generators;
+//	}
+//
+//	/**
+//	 * @param generators the generators to set
+//	 */
+//	public void setGenerators(Map<Wells, IWellGenerator> generators) {
+//		this.generators = generators;
+//	}
 }

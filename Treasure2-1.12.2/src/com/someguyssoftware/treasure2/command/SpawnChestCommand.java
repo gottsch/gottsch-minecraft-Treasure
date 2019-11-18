@@ -33,12 +33,12 @@ public class SpawnChestCommand extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "t2chest";
+		return "t2-chest";
 	}
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/t2chest <x> <y> <z> [rarity | -n <name>]: generates a Treasure! chest at location (x,y,z)";
+		return "/t2-chest <x> <y> <z> [rarity | -n <name>]: generates a Treasure! chest at location (x,y,z)";
 	}
 
 	@Override

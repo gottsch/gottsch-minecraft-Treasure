@@ -1,0 +1,24 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "treasure2:treasure_tool"
+		},
+		{
+			"item": "minecraft:bowl",
+			"data": 0
+		},
+		{
+			"item": "treasure2:oyster_meat",
+			"data": 0
+		},
+		{
+			"item": "minecraft:milk_bucket",
+			"data": 0
+		}		
+	],
+	"result": {
+		"item": "treasure2:oyster_stew",
+		"count": 1
+	}
+}

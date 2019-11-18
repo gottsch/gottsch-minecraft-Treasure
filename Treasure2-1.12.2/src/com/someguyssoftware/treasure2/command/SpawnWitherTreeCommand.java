@@ -26,12 +26,12 @@ public class SpawnWitherTreeCommand extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "t2withertree";
+		return "t2-withertree";
 	}
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/t2withertree <x> <y> <z>: spawns a Treasure! wither tree at location (x,y,z)";
+		return "/t2-withertree <x> <y> <z>: spawns a Treasure! wither tree at location (x,y,z)";
 	}
 
 	@Override

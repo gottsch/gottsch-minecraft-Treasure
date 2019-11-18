@@ -12,6 +12,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Coins;
+import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.block.material.MapColor;
@@ -41,6 +42,12 @@ public class TreasureItems {
 	// coins
 	public static Item GOLD_COIN;
 	public static Item SILVER_COIN;
+	// pearls
+	public static Item WHITE_PEARL;
+	public static Item BLACK_PEARL;
+	// gems
+	public static Item SAPPHIRE;
+	public static Item RUBY;
 	// locks
 	public static LockItem WOOD_LOCK;
 	public static LockItem STONE_LOCK;
@@ -108,9 +115,11 @@ public class TreasureItems {
 	// other
 	public static Item SPANISH_MOSS;
 	public static Item TREASURE_TOOL;
-	public static Item SAPPHIRE;
-	public static Item RUBY;
 	public static Item SKELETON;
+//	public static Item OYSTER_MEAT;
+//	public static Item CLAM_MEAT;
+//	public static Item OYSTER_STEW;
+//	public static Item CLAM_STEW;
     	
 	/*
 	 * Materials
@@ -130,6 +139,10 @@ public class TreasureItems {
 		// COINS
 		GOLD_COIN = new CoinItem(Treasure.MODID, TreasureConfig.GOLD_COIN_ID);
 		SILVER_COIN = new CoinItem(Treasure.MODID, TreasureConfig.SILVER_COIN_ID, Coins.SILVER);
+		
+		// PEARLS
+		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.WHITE_PEARL_ID, Pearls.WHITE);
+		BLACK_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.BLACK_PEARL_ID, Pearls.BLACK);
 		
 		// KEYS
 		WOOD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.WOOD_KEY_ID)
@@ -356,6 +369,14 @@ public class TreasureItems {
 		
 		SKELETON = new SkeletonItem(Treasure.MODID, TreasureConfig.SKELETON_ID);
 		
+		// FOOD
+		// TODO need to create new items for stews and override the onItemUseFinish if there are effects
+		// TODO need to move ModFoodItem to GottschCore
+//		OYSTER_MEAT = new ModFoodItem(Treasure.MODID, "oyster_meat", 5, 0.8F, false);		
+//		CLAM_MEAT = new ModFoodItem(Treasure.MODID, "clam_meat", 4, 0.7F, false);
+
+//		OYSTER_STEW = new ModSoupItem(Treasure.MODID, "oyster_stew", 20, 1.0F); // TODO check the total health amount a player has
+//		CLAM_STEW = new ModSoupItem(Treasure.MODID, "clam_stew", 15, 1.0F);
 	}
 	
 	/**
@@ -394,6 +415,8 @@ public class TreasureItems {
 					TREASURE_TAB,
 					SILVER_COIN,
 					GOLD_COIN,
+					WHITE_PEARL,
+					BLACK_PEARL,
 					WOOD_LOCK,
 					STONE_LOCK,
 					IRON_LOCK,
@@ -435,7 +458,11 @@ public class TreasureItems {
 					PAINTING_BLOCKS_WOOD,
 					SAPPHIRE,
 					RUBY,
-					SKELETON
+					SKELETON,
+//					OYSTER_MEAT,
+//					OYSTER_STEW,
+//					CLAM_MEAT,
+//					CLAM_STEW
 			};
 			registry.registerAll(items);		
 		}
