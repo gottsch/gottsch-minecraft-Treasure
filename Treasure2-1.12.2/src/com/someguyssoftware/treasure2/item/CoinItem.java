@@ -17,6 +17,7 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.IWishingWellBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -89,7 +90,6 @@ public class CoinItem extends ModItem {
 		// get the position
 		ICoords coords = new Coords(entityItem.getPosition());
 		Cube cube = new Cube(world, coords);
-//		Block block = cube.toBlock();
 		int numWishingWellBlocks = 0;
 		// check if in water
 		if (cube.equalsBlock(Blocks.WATER)) {
@@ -98,7 +98,8 @@ public class CoinItem extends ModItem {
 			for (int z = 0; z < 3; z++) {
 				for (int x = 0; x < 3; x++) {
 					Cube checkCube = new Cube(world, checkCoords);
-					if (checkCube.equalsBlock(TreasureBlocks.WISHING_WELL_BLOCK)) {
+//					if (checkCube.equalsBlock(TreasureBlocks.WISHING_WELL_BLOCK)) {
+					if (checkCube.toBlock() instanceof IWishingWellBlock) {
 						numWishingWellBlocks++;
 					}					
 					if (numWishingWellBlocks >= 2) {

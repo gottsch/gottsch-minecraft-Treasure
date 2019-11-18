@@ -30,15 +30,15 @@ import com.someguyssoftware.treasure2.Treasure;
  * @author Mark Gottschling on Sep 19, 2014
  *
  */
-public class WishingWellBlock extends ModBlock implements IWishingWellBlock {
+public class DesertWishingWellBlock extends ModBlock implements IWishingWellBlock {
 	// logger
-	public static Logger logger = LogManager.getLogger(WishingWellBlock.class);
+	public static Logger logger = LogManager.getLogger(DesertWishingWellBlock.class);
 	
 	/**
 	 * 
 	 * @param material
 	 */
-	public WishingWellBlock(String modID, String name, Material material) {
+	public DesertWishingWellBlock(String modID, String name, Material material) {
 		super(modID, name, material	);
 		setSoundType(SoundType.STONE);
 		setCreativeTab(Treasure.TREASURE_TAB);
@@ -46,10 +46,10 @@ public class WishingWellBlock extends ModBlock implements IWishingWellBlock {
 	}
 
 	/**
-	 * Drops vanilla mossy cobblestone instead of wishing well block i.e. the well loses it's magic on break.
+	 * Drops vanilla sandstone instead of wishing well block i.e. the well loses it's magic on break.
 	 */
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Item.getItemFromBlock(Blocks.MOSSY_COBBLESTONE);
+        return Item.getItemFromBlock(Blocks.SANDSTONE);
     }
 }

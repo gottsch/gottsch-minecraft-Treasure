@@ -20,6 +20,7 @@ tile.treasure2:wood_mimic.name=Wood Mimic
 
 #wells
 tile.treasure2:wishing_well_block.name=Wishing Well Stone
+tile.treasure2:desert_wishing_well_block.name=Desert Wishing Well Stone
 
 #gravestones
 tile.treasure2:gravestone1_stone.name=Stone Tombstone

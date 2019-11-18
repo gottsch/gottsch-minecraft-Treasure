@@ -122,6 +122,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String SKELETON_ID = "skeleton";
 	
 	public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
+	public static final String DESERT_WISHING_WELL_BLOCK_ID = "desert_wishing_well_block";
 	public static final String FOG_BLOCK_ID = "fog";
 	public static final String HIGH_FOG_BLOCK_ID = "high_fog";
 	public static final String MED_FOG_BLOCK_ID = "med_fog";
@@ -190,7 +191,7 @@ public class TreasureConfig extends AbstractConfig {
 	 */
 	public static final String MODS_FOLDER = "mods";	
 	public static final String CUSTOM_STRUCTURE_FOLDER = MODS_FOLDER + "/treasure2/structures";
-		
+			
 	public static String treasureFolder;
 	public static boolean enableKeyBreaks = true;
 	public static boolean enableFog = true;

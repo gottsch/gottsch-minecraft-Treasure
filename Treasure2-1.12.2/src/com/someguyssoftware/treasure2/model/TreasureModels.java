@@ -69,6 +69,7 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.SKELETON);
 		
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WISHING_WELL_BLOCK));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.DESERT_WISHING_WELL_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FOG_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.HIGH_FOG_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.MED_FOG_BLOCK));

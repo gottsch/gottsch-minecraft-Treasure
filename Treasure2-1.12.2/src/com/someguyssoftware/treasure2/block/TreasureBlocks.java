@@ -118,6 +118,7 @@ public class TreasureBlocks {
 
 	// other
 	public static final Block WISHING_WELL_BLOCK;
+	public static final Block DESERT_WISHING_WELL_BLOCK;
 	
 	// fogs
 	public static final FogBlock FOG_BLOCK;
@@ -503,6 +504,7 @@ public class TreasureBlocks {
 		
 		// other
 		WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.WISHING_WELL_BLOCK_ID, Material.ROCK);
+		DESERT_WISHING_WELL_BLOCK = new DesertWishingWellBlock(Treasure.MODID, TreasureConfig.DESERT_WISHING_WELL_BLOCK_ID, Material.ROCK);
 		WITHER_LOG = new WitherLogBlock(Treasure.MODID, TreasureConfig.WITHER_LOG_ID);
 		WITHER_BRANCH = new WitherBranchBlock(Treasure.MODID, TreasureConfig.WITHER_BRANCH_ID);
 		WITHER_ROOT = new WitherRootBlock(Treasure.MODID, TreasureConfig.WITHER_ROOT_ID);		
@@ -594,6 +596,7 @@ public class TreasureBlocks {
 					SKULL_CROSSBONES,
 					SKELETON,
 					WISHING_WELL_BLOCK,
+					DESERT_WISHING_WELL_BLOCK,
 					FOG_BLOCK,
 					HIGH_FOG_BLOCK,
 					MED_FOG_BLOCK,
@@ -697,6 +700,7 @@ public class TreasureBlocks {
 					new ItemBlock(GRAVESTONE3_OBSIDIAN),
 					new ItemBlock(SKULL_CROSSBONES),
 					new ItemBlock(WISHING_WELL_BLOCK),
+					new ItemBlock(DESERT_WISHING_WELL_BLOCK),
 					new ItemBlock(FOG_BLOCK),
 					new ItemBlock(HIGH_FOG_BLOCK),
 					new ItemBlock(MED_FOG_BLOCK),
