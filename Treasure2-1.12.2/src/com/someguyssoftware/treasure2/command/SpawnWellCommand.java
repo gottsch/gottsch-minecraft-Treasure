@@ -33,7 +33,7 @@ public class SpawnWellCommand extends CommandBase {
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/treasurewell <x> <y> <z> [well | -n <name>]: spawns a Treasure! wishing well at location (x,y,z)";
+		return "/t2well <x> <y> <z> [well | -n <name>]: spawns a Treasure! wishing well at location (x,y,z)";
 	}
 
 	@Override

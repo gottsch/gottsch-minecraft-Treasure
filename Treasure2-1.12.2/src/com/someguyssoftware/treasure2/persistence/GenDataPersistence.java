@@ -68,7 +68,7 @@ public class GenDataPersistence extends WorldSavedData {
 			chestGen.getChunksSinceLastRarityChest().put(Rarity.valueOf(key), count);
 		}
 		
-		///// Wells /////
+		///// Well /////
 		wellGen.setChunksSinceLastWell(treasureGen.getInteger("chunksSinceLastWell"));
 		
 		///// Wither Tree /////
@@ -111,7 +111,7 @@ public class GenDataPersistence extends WorldSavedData {
 			}
 			treasureGen.setTag("chunksSinceLastRarityChest", chunksSinceTagList);
 			
-			///// Wells ////
+			///// Well ////
 			// get the well world generator
 			WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WELL);
 			
