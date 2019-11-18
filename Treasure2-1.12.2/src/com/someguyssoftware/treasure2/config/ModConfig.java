@@ -160,24 +160,19 @@ public class ModConfig {
 		@RequiresWorldRestart
 		public int chestRegistrySize = 25;
 		
-		@Name("03-chests-01")
-		@Comment({"Common chest properties"})
+		@Name("01] Common chest properties")
 		public Chest common = new Chest(true, 75, 85, 50);
 
-		@Name("03-chests-02")
-		@Comment({"Uncommon chest properties"})
+		@Name("02] Uncommon chest properties")
 		public Chest uncommon = new Chest(true, 150, 75, 40);
 		
-		@Name("03-chests-03")
-		@Comment({"Scarce chest properties"})
+		@Name("03] Scarce chest properties")
 		public Chest scarce = new Chest(true, 300, 50, 30);
 		
-		@Name("03-chests-04")
-		@Comment({"Rare chest properties"})
+		@Name("04] Rare chest properties")
 		public Chest rare = new Chest(true, 500, 25, 20);
-		
-		@Name("03-chests-05")
-		@Comment({"Epic chest properties"})
+
+		@Name("05] Epic chest properties")
 		public Chest epic = new Chest(true, 800, 15, 10);
 				
 		/*
