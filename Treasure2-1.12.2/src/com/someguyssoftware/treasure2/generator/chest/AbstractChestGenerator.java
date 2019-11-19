@@ -94,12 +94,12 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 			}
 			
 			// TEMP: test against water probability. this is used to reduce the occurences of submerged structures without re-writting the entire generation system.
-			if (!RandomHelper.checkProbability(random, 100/*TreasureConfig.waterStructureProbability*/)) {
+			if (!RandomHelper.checkProbability(random, ModConfig.waterStructureProbability)) {
 				Treasure.logger.debug("did not meet water structure probability");
 				return result.fail();
 			}
 
-//			markerCoords = surfaceCoords;
+			markerCoords = surfaceCoords;
 //			spawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, markerCoords);
 //			Treasure.logger.debug("ocean floor coords -> {}", spawnCoords.toShortString());
 			genResult = generateSubmergedRuins(world, random, /*spawnCoords*/ surfaceCoords, config);

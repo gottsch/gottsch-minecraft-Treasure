@@ -19,6 +19,8 @@ import com.someguyssoftware.treasure2.chest.ChestInfo;
  *
  */
 public class ChestRegistry {
+	// TODO save the registry to the GenDataPersistence
+	// TODO make a config value for the size
 	private static final int MAX_SIZE = 25;
 	
 	private static ChestRegistry instance = new ChestRegistry();

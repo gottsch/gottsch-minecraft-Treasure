@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import com.someguyssoftware.gottschcore.block.CardinalDirectionFacadeBlock;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 
@@ -85,7 +86,7 @@ public class WitherRootBlock extends CardinalDirectionFacadeBlock implements ITr
 	@Override
 	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 
-		if (RandomHelper.checkProbability(random, TreasureConfig.witherRootItemGenProbability)) {
+		if (RandomHelper.checkProbability(random, ModConfig.WITHER_TREE.witherRootItemGenProbability)) {
 			return TreasureItems.WITHER_ROOT_ITEM;
 		}
 		return Items.STICK;
