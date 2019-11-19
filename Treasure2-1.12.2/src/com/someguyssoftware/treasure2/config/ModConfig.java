@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * @author Mark Gottschling on Sep 4, 2019
  *
  */
-@Config(modid = Treasure.MODID, name = Treasure.MODID, type = Type.INSTANCE, category = "general")
+//@Config(modid = Treasure.MODID, name = Treasure.MODID, type = Type.INSTANCE, category = "general")
 public class ModConfig {
 	/*
 	 *  IDs
