@@ -4,14 +4,17 @@
 package com.someguyssoftware.treasure2.registry;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Sets;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
+import com.someguyssoftware.treasure2.config.ModConfig;
 
 /**
  * 
@@ -20,10 +23,10 @@ import com.someguyssoftware.treasure2.chest.ChestInfo;
  */
 public class ChestRegistry {
 	// TODO save the registry to the GenDataPersistence
-	// TODO make a config value for the size
-	private static final int MAX_SIZE = 25;
+	private static final int MAX_SIZE = ModConfig.CHESTS.chestRegistrySize;
 	
 	private static ChestRegistry instance = new ChestRegistry();
+	// TODO this does not need to be a ListMultimap, can be just a LinkedList to preserve order
 	private ListMultimap<String, ChestInfo> registry;
 	
 	/**
@@ -94,8 +97,12 @@ public class ChestRegistry {
 	 * This will not update parent collection.
 	 * @return
 	 */
-	public List<ChestInfo> getEntries() {
+	public List<ChestInfo> getValues() {
 		HashSet<ChestInfo> set = Sets.newHashSet(registry.values());
 		return new ArrayList<>(set);
+	}
+	
+	public void clear() {
+		registry.clear();
 	}
 }

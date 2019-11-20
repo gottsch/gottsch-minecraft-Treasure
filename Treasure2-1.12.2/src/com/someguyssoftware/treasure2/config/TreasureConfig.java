@@ -16,6 +16,7 @@ import net.minecraftforge.common.config.Configuration;
  * @author Mark Gottschling onDec 22, 2017
  *
  */
+@Deprecated
 public class TreasureConfig extends AbstractConfig {
 
 	/*

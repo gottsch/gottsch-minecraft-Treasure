@@ -9,7 +9,7 @@ import com.someguyssoftware.gottschcore.armor.ModArmorBuilder;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.item.ModSwordBuilder;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Pearls;
@@ -134,152 +134,152 @@ public class TreasureItems {
 
 	static {
 		// TAB
-		TREASURE_TAB = new ModItem().setItemName(Treasure.MODID, TreasureConfig.TREASURE_TAB_ID);
+		TREASURE_TAB = new ModItem().setItemName(Treasure.MODID, ModConfig.TREASURE_TAB_ID);
 		
 		// COINS
-		GOLD_COIN = new CoinItem(Treasure.MODID, TreasureConfig.GOLD_COIN_ID);
-		SILVER_COIN = new CoinItem(Treasure.MODID, TreasureConfig.SILVER_COIN_ID, Coins.SILVER);
+		GOLD_COIN = new CoinItem(Treasure.MODID, ModConfig.GOLD_COIN_ID);
+		SILVER_COIN = new CoinItem(Treasure.MODID, ModConfig.SILVER_COIN_ID, Coins.SILVER);
 		
 		// PEARLS
-		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.WHITE_PEARL_ID, Pearls.WHITE);
-		BLACK_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.BLACK_PEARL_ID, Pearls.BLACK);
+		WHITE_PEARL = new PearlItem(Treasure.MODID, ModConfig.WHITE_PEARL_ID, Pearls.WHITE);
+		BLACK_PEARL = new PearlItem(Treasure.MODID, ModConfig.BLACK_PEARL_ID, Pearls.BLACK);
 		
 		// KEYS
-		WOOD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.WOOD_KEY_ID)
+		WOOD_KEY = new KeyItem(Treasure.MODID, ModConfig.WOOD_KEY_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON)
 				.setCraftable(false)
-				.setMaxDamage(TreasureConfig.woodKeyMaxUses);
+				.setMaxDamage(ModConfig.KEYS_LOCKS.woodKeyMaxUses);
 
-		STONE_KEY = new KeyItem(Treasure.MODID, TreasureConfig.STONE_KEY_ID)
+		STONE_KEY = new KeyItem(Treasure.MODID, ModConfig.STONE_KEY_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON)
 				.setCraftable(false)
-				.setMaxDamage(TreasureConfig.stoneKeyMaxUses);
+				.setMaxDamage(ModConfig.stoneKeyMaxUses);
 
-		IRON_KEY = new KeyItem(Treasure.MODID, TreasureConfig.IRON_KEY_ID)
+		IRON_KEY = new KeyItem(Treasure.MODID, ModConfig.IRON_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.UNCOMMON)
 				.setCraftable(false)
-				.setMaxDamage(TreasureConfig.ironKeyMaxUses);
+				.setMaxDamage(ModConfig.ironKeyMaxUses);
 		
-		GOLD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.GOLD_KEY_ID)
+		GOLD_KEY = new KeyItem(Treasure.MODID, ModConfig.GOLD_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.SCARCE)
 				.setCraftable(false)
-				.setMaxDamage(TreasureConfig.goldKeyMaxUses);
+				.setMaxDamage(ModConfig.goldKeyMaxUses);
 
-		DIAMOND_KEY = new KeyItem(Treasure.MODID, TreasureConfig.DIAMOND_KEY_ID)
+		DIAMOND_KEY = new KeyItem(Treasure.MODID, ModConfig.DIAMOND_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(TreasureConfig.diamondKeyMaxUses);
+				.setMaxDamage(ModConfig.diamondKeyMaxUses);
 
-		EMERALD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.EMERALD_KEY_ID)
+		EMERALD_KEY = new KeyItem(Treasure.MODID, ModConfig.EMERALD_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(TreasureConfig.emeraldKeyMaxUses);
+				.setMaxDamage(ModConfig.emeraldKeyMaxUses);
 		
-		RUBY_KEY = new KeyItem(Treasure.MODID, TreasureConfig.RUBY_KEY_ID)
+		RUBY_KEY = new KeyItem(Treasure.MODID, ModConfig.RUBY_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(TreasureConfig.rubyKeyMaxUses);
+				.setMaxDamage(ModConfig.rubyKeyMaxUses);
 		
-		SAPPHIRE_KEY = new KeyItem(Treasure.MODID, TreasureConfig.SAPPHIRE_KEY_ID)
+		SAPPHIRE_KEY = new KeyItem(Treasure.MODID, ModConfig.SAPPHIRE_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(TreasureConfig.sapphireKeyMaxUses);
+				.setMaxDamage(ModConfig.sapphireKeyMaxUses);
 		
-		JEWELLED_KEY = new JewelledKey(Treasure.MODID, TreasureConfig.JEWELLED_KEY_ID)
+		JEWELLED_KEY = new JewelledKey(Treasure.MODID, ModConfig.JEWELLED_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(TreasureConfig.jewelledKeyMaxUses);
+				.setMaxDamage(ModConfig.jewelledKeyMaxUses);
 		
-		METALLURGISTS_KEY = new MetallurgistsKey(Treasure.MODID, TreasureConfig.METALLURGISTS_KEY_ID)
+		METALLURGISTS_KEY = new MetallurgistsKey(Treasure.MODID, ModConfig.METALLURGISTS_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(TreasureConfig.metallurgistsKeyMaxUses);
+				.setMaxDamage(ModConfig.metallurgistsKeyMaxUses);
 		
-		SKELETON_KEY = new SkeletonKey(Treasure.MODID, TreasureConfig.SKELETON_KEY_ID)
+		SKELETON_KEY = new SkeletonKey(Treasure.MODID, ModConfig.SKELETON_KEY_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(TreasureConfig.skeletonKeyMaxUses);
+				.setMaxDamage(ModConfig.skeletonKeyMaxUses);
 		
-		SPIDER_KEY = new KeyItem(Treasure.MODID, TreasureConfig.SPIDER_KEY_ID)
+		SPIDER_KEY = new KeyItem(Treasure.MODID, ModConfig.SPIDER_KEY_ID)
 				.setCategory(Category.MOB)
 				.setRarity(Rarity.SCARCE)
 				.setBreakable(true)
 				.setCraftable(true)
-				.setMaxDamage(TreasureConfig.spiderKeyMaxUses);
+				.setMaxDamage(ModConfig.spiderKeyMaxUses);
 		
-		WITHER_KEY = new KeyItem(Treasure.MODID, TreasureConfig.WITHER_KEY_ID)
+		WITHER_KEY = new KeyItem(Treasure.MODID, ModConfig.WITHER_KEY_ID)
 				.setCategory(Category.WITHER)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(true)
-				.setMaxDamage(TreasureConfig.witherKeyMaxUses);
+				.setMaxDamage(ModConfig.witherKeyMaxUses);
 		
-		PILFERERS_LOCK_PICK = new PilferersLockPick(Treasure.MODID, TreasureConfig.PILFERERS_LOCK_PICK_ID)
+		PILFERERS_LOCK_PICK = new PilferersLockPick(Treasure.MODID, ModConfig.PILFERERS_LOCK_PICK_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON)
 				.setBreakable(true)
 				.setCraftable(true)
-				.setMaxDamage(TreasureConfig.pilferersLockPickMaxUses)
+				.setMaxDamage(ModConfig.pilferersLockPickMaxUses)
 				.setSuccessProbability(24);
 		
-		THIEFS_LOCK_PICK = new ThiefsLockPick(Treasure.MODID, TreasureConfig.THIEFS_LOCK_PICK_ID)
+		THIEFS_LOCK_PICK = new ThiefsLockPick(Treasure.MODID, ModConfig.THIEFS_LOCK_PICK_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.UNCOMMON)
 				.setBreakable(true)
 				.setCraftable(true)
-				.setMaxDamage(TreasureConfig.thiefsLockPickMaxUses)
+				.setMaxDamage(ModConfig.thiefsLockPickMaxUses)
 				.setSuccessProbability(32);
 		
 		// KEY RING
-		KEY_RING = new KeyRingItem(Treasure.MODID, TreasureConfig.KEY_RING_ID);
+		KEY_RING = new KeyRingItem(Treasure.MODID, ModConfig.KEY_RING_ID);
 		
 		// LOCKS
-		WOOD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.WOOD_LOCK_ID, new KeyItem[] {WOOD_KEY})
+		WOOD_LOCK = new LockItem(Treasure.MODID, ModConfig.WOOD_LOCK_ID, new KeyItem[] {WOOD_KEY})
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON);
-		STONE_LOCK = new LockItem(Treasure.MODID, TreasureConfig.STONE_LOCK_ID, new KeyItem[] {STONE_KEY})
+		STONE_LOCK = new LockItem(Treasure.MODID, ModConfig.STONE_LOCK_ID, new KeyItem[] {STONE_KEY})
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON);
-		IRON_LOCK = new LockItem(Treasure.MODID, TreasureConfig.IRON_LOCK_ID, new KeyItem[] {IRON_KEY})
+		IRON_LOCK = new LockItem(Treasure.MODID, ModConfig.IRON_LOCK_ID, new KeyItem[] {IRON_KEY})
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.UNCOMMON);
-		GOLD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.GOLD_LOCK_ID, new KeyItem[] {GOLD_KEY})
+		GOLD_LOCK = new LockItem(Treasure.MODID, ModConfig.GOLD_LOCK_ID, new KeyItem[] {GOLD_KEY})
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.SCARCE);
-		DIAMOND_LOCK = new LockItem(Treasure.MODID, TreasureConfig.DIAMOND_LOCK_ID, new KeyItem[] {DIAMOND_KEY})
+		DIAMOND_LOCK = new LockItem(Treasure.MODID, ModConfig.DIAMOND_LOCK_ID, new KeyItem[] {DIAMOND_KEY})
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.RARE);
-		EMERALD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.EMERALD_LOCK_ID, new KeyItem[] {EMERALD_KEY})
+		EMERALD_LOCK = new LockItem(Treasure.MODID, ModConfig.EMERALD_LOCK_ID, new KeyItem[] {EMERALD_KEY})
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.RARE);
-		RUBY_LOCK = new LockItem(Treasure.MODID, TreasureConfig.RUBY_LOCK_ID, new KeyItem[] {RUBY_KEY})
+		RUBY_LOCK = new LockItem(Treasure.MODID, ModConfig.RUBY_LOCK_ID, new KeyItem[] {RUBY_KEY})
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC);
-		SAPPHIRE_LOCK = new LockItem(Treasure.MODID, TreasureConfig.SAPPHIRE_LOCK_ID, new KeyItem[] {SAPPHIRE_KEY})
+		SAPPHIRE_LOCK = new LockItem(Treasure.MODID, ModConfig.SAPPHIRE_LOCK_ID, new KeyItem[] {SAPPHIRE_KEY})
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC);
-		SPIDER_LOCK = new LockItem(Treasure.MODID, TreasureConfig.SPIDER_LOCK_ID, new KeyItem[] {SPIDER_KEY})
+		SPIDER_LOCK = new LockItem(Treasure.MODID, ModConfig.SPIDER_LOCK_ID, new KeyItem[] {SPIDER_KEY})
 				.setCategory(Category.POTION)
 				.setRarity(Rarity.SCARCE);
-		WITHER_LOCK = new LockItem(Treasure.MODID, TreasureConfig.WITHER_LOCK_ID, new KeyItem[] {WITHER_KEY})
+		WITHER_LOCK = new LockItem(Treasure.MODID, ModConfig.WITHER_LOCK_ID, new KeyItem[] {WITHER_KEY})
 				.setCategory(Category.WITHER)
 				.setRarity(Rarity.SCARCE);
 
@@ -300,7 +300,7 @@ public class TreasureItems {
 		ModSwordBuilder builder = new ModSwordBuilder();
 		SKULL_SWORD = builder
 				.withModID(Treasure.MODID)
-				.withName(TreasureConfig.SKULL_SWORD_ID)
+				.withName(ModConfig.SKULL_SWORD_ID)
 				.withMaterial(SKULL_TOOL_MATERIAL)
 				.withRepairItem(Items.BONE)
 				.withCreativeTab(Treasure.TREASURE_TAB)
@@ -310,7 +310,7 @@ public class TreasureItems {
 		ModArmorBuilder armorBuilder = new ModArmorBuilder();
 		EYE_PATCH = armorBuilder
 				.withModID(Treasure.MODID)
-				.withName(TreasureConfig.EYE_PATCH_ID)
+				.withName(ModConfig.EYE_PATCH_ID)
 				.withMaterial(ItemArmor.ArmorMaterial.LEATHER)
 				.withRenderIndex(2)
 				.withSlot(EntityEquipmentSlot.HEAD)
@@ -320,8 +320,8 @@ public class TreasureItems {
 				.build();
 		
 		// wither items
-		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, TreasureConfig.WITHER_STICK_ITEM_ID);
-		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.WITHER_ROOT_ITEM_ID);
+		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, ModConfig.WITHER_STICK_ITEM_ID);
+		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, ModConfig.WITHER_ROOT_ITEM_ID);
 		
 		// potions
 		EXTRA_STRONG_HEALING = new PotionType("healing", 
@@ -337,37 +337,37 @@ public class TreasureItems {
 		EXTRA_STRONG_POISON = new PotionType("poison", 
 				new PotionEffect[] {new PotionEffect(MobEffects.POISON, 432, 2)}).setRegistryName(Treasure.MODID, "extra_strong_poison");
 
-		SPANISH_MOSS = new SpanishMossItem(Treasure.MODID, TreasureConfig.SPANISH_MOSS_ITEM_ID);
-//				.setItemName(Treasure.MODID, TreasureConfig.SPANISH_MOSS_ITEM_ID)
+		SPANISH_MOSS = new SpanishMossItem(Treasure.MODID, ModConfig.SPANISH_MOSS_ITEM_ID);
+//				.setItemName(Treasure.MODID, ModConfig.SPANISH_MOSS_ITEM_ID)
 //				.setCreativeTab(Treasure.TREASURE_TAB);
 		
-		TREASURE_TOOL = new TreasureToolItem(Treasure.MODID, TreasureConfig.TREASURE_TOOL_ITEM_ID);
+		TREASURE_TOOL = new TreasureToolItem(Treasure.MODID, ModConfig.TREASURE_TOOL_ITEM_ID);
 
-		PAINTING_BLOCKS_DIRT = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_DIRT_ID, Rarity.SCARCE)
+		PAINTING_BLOCKS_DIRT = new PaintingItem(Treasure.MODID, ModConfig.PAINTING_BLOCKS_DIRT_ID, Rarity.SCARCE)
 				.setPaintingName("Dirt").setCollectionName("Blocks").setCollectionIssue("1")	.setCollectionSize("7").setArtist("o2xygeno");
-		PAINTING_BLOCKS_COBBLESTONE = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_COBBLESTONE_ID, Rarity.SCARCE)
+		PAINTING_BLOCKS_COBBLESTONE = new PaintingItem(Treasure.MODID, ModConfig.PAINTING_BLOCKS_COBBLESTONE_ID, Rarity.SCARCE)
 				.setPaintingName("Cobblestone").setCollectionName("Blocks").setCollectionIssue("2").setCollectionSize("7").setArtist("o2xygeno");		
-		PAINTING_BLOCKS_WATER = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_WATER_ID, Rarity.SCARCE)
+		PAINTING_BLOCKS_WATER = new PaintingItem(Treasure.MODID, ModConfig.PAINTING_BLOCKS_WATER_ID, Rarity.SCARCE)
 				.setPaintingName("Water").setCollectionName("Blocks").setCollectionIssue("3")	.setCollectionSize("7").setArtist("o2xygeno");
 
-		PAINTING_BLOCKS_SAND = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_SAND_ID, Rarity.RARE)
+		PAINTING_BLOCKS_SAND = new PaintingItem(Treasure.MODID, ModConfig.PAINTING_BLOCKS_SAND_ID, Rarity.RARE)
 				.setPaintingName("Sand").setCollectionName("Blocks").setCollectionIssue("4").setCollectionSize("7").setArtist("o2xygeno");
-		PAINTING_BLOCKS_WOOD = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_WOOD_ID, Rarity.RARE)
+		PAINTING_BLOCKS_WOOD = new PaintingItem(Treasure.MODID, ModConfig.PAINTING_BLOCKS_WOOD_ID, Rarity.RARE)
 				.setPaintingName("Wood").setCollectionName("Blocks").setCollectionIssue("5")	.setCollectionSize("7").setArtist("o2xygeno");
 		
-		PAINTING_BLOCKS_BRICKS = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_BRICKS_ID, Rarity.EPIC)
+		PAINTING_BLOCKS_BRICKS = new PaintingItem(Treasure.MODID, ModConfig.PAINTING_BLOCKS_BRICKS_ID, Rarity.EPIC)
 				.setPaintingName("Bricks").setCollectionName("Blocks").setCollectionIssue("6").setCollectionSize("7").setArtist("o2xygeno");
-		PAINTING_BLOCKS_LAVA = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_LAVA_ID, Rarity.EPIC)
+		PAINTING_BLOCKS_LAVA = new PaintingItem(Treasure.MODID, ModConfig.PAINTING_BLOCKS_LAVA_ID, Rarity.EPIC)
 				.setPaintingName("Lava").setCollectionName("Blocks").setCollectionIssue("7").setCollectionSize("7").setArtist("o2xygeno");
 
 		SAPPHIRE = new ModItem()
-				.setItemName(Treasure.MODID, TreasureConfig.SAPPHIRE_ID)
+				.setItemName(Treasure.MODID, ModConfig.SAPPHIRE_ID)
 				.setCreativeTab(Treasure.TREASURE_TAB);
 		RUBY = new ModItem()
-				.setItemName(Treasure.MODID, TreasureConfig.RUBY_ID)
+				.setItemName(Treasure.MODID, ModConfig.RUBY_ID)
 				.setCreativeTab(Treasure.TREASURE_TAB);
 		
-		SKELETON = new SkeletonItem(Treasure.MODID, TreasureConfig.SKELETON_ID);
+		SKELETON = new SkeletonItem(Treasure.MODID, ModConfig.SKELETON_ID);
 		
 		// FOOD
 		// TODO need to create new items for stews and override the onItemUseFinish if there are effects
