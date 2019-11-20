@@ -193,13 +193,13 @@ public class ModConfig {
 	@Ignore public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	@Name("01-logging")
-	@Comment({"Logging properties"})
-	public static final Logging logging = new Logging();
-
-	@Name("02-mod")
+	@Name("01-mod")
 	@Comment({"General mod properties."})
 	public static final Mod MOD = new Mod();
+	
+	@Name("02-logging")
+	@Comment({"Logging properties"})
+	public static final Logging logging = new Logging();
 
 	@Name("03-chests")
 	@Comment({"Chest properties"})
