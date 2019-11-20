@@ -5,7 +5,6 @@ package com.someguyssoftware.treasure2.generator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.block.AbstractModContainerBlock;
@@ -23,7 +22,7 @@ import com.someguyssoftware.treasure2.block.ITreasureBlock;
 import com.someguyssoftware.treasure2.block.SkeletonBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
@@ -31,7 +30,6 @@ import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
@@ -226,7 +224,7 @@ public class GenUtil {
 		Treasure.logger.debug("Using coords {} to seed markers.", coords.toShortString());
 		
 		// check if gravestones are enabled
-		if (!TreasureConfig.isGravestonesAllowed) {
+		if (!ModConfig.WORLD_GEN.getMarkerProperties().isGravestonesAllowed) {
 			return false;
 		}
 
@@ -243,7 +241,8 @@ public class GenUtil {
 		int z = coords.getZ();
 		
 		// for the number of markers configured
-		int numberOfMarkers = RandomHelper.randomInt(TreasureConfig.minGravestonesPerChest, TreasureConfig.maxGravestonesPerChest);
+		int numberOfMarkers = RandomHelper.randomInt(ModConfig.WORLD_GEN.getMarkerProperties().minGravestonesPerChest, 
+				ModConfig.WORLD_GEN.getMarkerProperties().maxGravestonesPerChest);
 		// calculate the grid size
 		int gridSize = 4;
 		if (numberOfMarkers < 6) { /* default */ }
@@ -343,7 +342,8 @@ public class GenUtil {
 			world.setBlockState(spawnCoords.toPos(), marker.getDefaultState().withProperty(AbstractChestBlock.FACING, facing));
 			
 			// add fog around the block
-			if (TreasureConfig.enableFog && RandomHelper.checkProbability(random, TreasureConfig.gravestoneFogProbability)) {
+			if (ModConfig.WORLD_GEN.getGeneralProperties().enableFog &&
+					RandomHelper.checkProbability(random, ModConfig.WORLD_GEN.getMarkerProperties().gravestoneFogProbability)) {
 				List<FogBlock> fogDensity = new ArrayList<>(5);
 				// randomize the size of the fog
 				int fogSize = RandomHelper.randomInt(1, 4);
@@ -584,7 +584,7 @@ public class GenUtil {
 		double minDistanceSq = minDistance * minDistance;
 
 		// get a list of chests
-		List<ChestInfo> infos = ChestRegistry.getInstance().getEntries();
+		List<ChestInfo> infos = ChestRegistry.getInstance().getValues();
 
 		if (infos == null || infos.size() == 0) {
 			Treasure.logger.debug("Unable to locate the Chest Registry or the Registry doesn't contain any values");

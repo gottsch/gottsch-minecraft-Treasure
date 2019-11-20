@@ -5,9 +5,12 @@ package com.someguyssoftware.treasure2.persistence;
 
 import java.util.Map.Entry;
 
+import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
+import com.someguyssoftware.treasure2.registry.ChestRegistry;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
@@ -76,6 +79,24 @@ public class GenDataPersistence extends WorldSavedData {
 		
 		///// Gem Ore /////
 		gemGen.setChunksSinceLastOre(treasureGen.getInteger("chunksSinceLastOre"));
+		
+		///// Chest Registry /////
+		ChestRegistry chestRegistry = ChestRegistry.getInstance();
+		Treasure.logger.debug("Chest Registry size before loading -> {}", chestRegistry.getValues().size());
+		chestRegistry.clear();
+		// load the chest registry
+		NBTTagList chestRegistryTagList = tag.getTagList("chestRegistry", 10);
+		for (int i = 0; i < chestRegistryTagList.tagCount(); i++) {
+			NBTTagCompound chunkTag = chunksSinceTagList.getCompoundTagAt(i);
+			String key = chunkTag.getString("key");
+			String rarity = chunkTag.getString("rarity");
+			NBTTagCompound coords = chunkTag.getCompoundTag("coords");
+			int x = coords.getInteger("x");
+			int y = coords.getInteger("y");
+			int z = coords.getInteger("z");
+			chestRegistry.register(key, new ChestInfo(Rarity.getByValue(rarity), new Coords(x, y, z)));
+		}
+		Treasure.logger.debug("Chest Registry size after loading -> {}", chestRegistry.getValues().size());
 	}
 
 	/*
@@ -125,9 +146,33 @@ public class GenDataPersistence extends WorldSavedData {
 			treasureGen.setInteger("chunksSinceLastTree", witherGen.getChunksSinceLastTree());
 			
 			//// Gem Ore ////
-
 			GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.GEM);
 			treasureGen.setInteger("chunksSinceLastOre", gemGen.getChunksSinceLastOre());
+			
+			///// Chest Registry /////
+			NBTTagList chestRegistryTagList = new NBTTagList();
+			ChestRegistry chestRegistry = ChestRegistry.getInstance();
+			for (ChestInfo element : chestRegistry.getValues()) {
+				NBTTagCompound entry = new NBTTagCompound();
+				NBTTagString key = new NBTTagString(element.getCoords().toShortString());
+				NBTTagString rarity = new NBTTagString(element.getRarity().getValue());
+				NBTTagCompound coords = new NBTTagCompound();
+				NBTTagInt x = new NBTTagInt(element.getCoords().getX());
+				NBTTagInt y = new NBTTagInt(element.getCoords().getY());
+				NBTTagInt z = new NBTTagInt(element.getCoords().getZ());
+				
+				coords.setTag("x", x);
+				coords.setTag("y", y);
+				coords.setTag("z", z);
+				
+				entry.setTag("key", key);
+				entry.setTag("rarity", rarity);
+				entry.setTag("coords", coords);
+				
+				// add entry to list
+				chestRegistryTagList.appendTag(entry);
+			}
+			treasureGen.setTag("chestRegistry", chestRegistryTagList);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

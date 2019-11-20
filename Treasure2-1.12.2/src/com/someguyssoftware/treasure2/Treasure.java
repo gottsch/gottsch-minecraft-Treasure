@@ -29,6 +29,7 @@ import com.someguyssoftware.treasure2.command.SpawnWellCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellStructureCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.Configs;
+import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
@@ -112,7 +113,7 @@ public class Treasure extends AbstractMod {
 	 *  Treasure Creative Tab
 	 *  Must be initialized <b>before</b> any registry events so that it is available to assign to blocks and items.
 	 */
-	public static CreativeTabs TREASURE_TAB = new CreativeTabs(CreativeTabs.getNextID(), Treasure.MODID + ":" + TreasureConfig.TREASURE_TAB_ID) {
+	public static CreativeTabs TREASURE_TAB = new CreativeTabs(CreativeTabs.getNextID(), Treasure.MODID + ":" + ModConfig.TREASURE_TAB_ID) {
 		@SideOnly(Side.CLIENT)
 		public ItemStack getTabIconItem() {
 			return new ItemStack(TreasureItems.TREASURE_TAB, 1);

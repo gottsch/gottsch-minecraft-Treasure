@@ -52,7 +52,7 @@ public class ModConfig {
 
 	// mimics
 	@Ignore public static final String WOOD_MIMIC_ID = "wood_mimic";
-	
+
 	// locks
 	@Ignore public static final String WOOD_LOCK_ID = "wood_lock";
 	@Ignore public static final String STONE_LOCK_ID = "stone_lock";
@@ -64,13 +64,13 @@ public class ModConfig {
 	@Ignore public static final String SAPPHIRE_LOCK_ID = "sapphire_lock";
 	@Ignore public static final String SPIDER_LOCK_ID = "spider_lock";
 	@Ignore public static final String WITHER_LOCK_ID = "wither_lock";
-	
+
 	// keys
 	@Ignore public static final String WOOD_KEY_ID = "wood_key";
 	@Ignore public static final String IRON_KEY_ID = "iron_key";
 	@Ignore public static final String GOLD_KEY_ID = "gold_key";
 	@Ignore public static final String DIAMOND_KEY_ID = "diamond_key";
-	
+
 	@Ignore public static final String STONE_KEY_ID = "stone_key";
 	@Ignore public static final String EMERALD_KEY_ID = "emerald_key";
 	@Ignore public static final String RUBY_KEY_ID = "ruby_key";
@@ -80,26 +80,26 @@ public class ModConfig {
 	@Ignore public static final String SKELETON_KEY_ID = "skeleton_key";
 	@Ignore public static final String WITHER_KEY_ID = "wither_key";
 	@Ignore public static final String SPIDER_KEY_ID = "spider_key";
-	
+
 	@Ignore public static final String PILFERERS_LOCK_PICK_ID = "pilferers_lock_pick";
 	@Ignore public static final String THIEFS_LOCK_PICK_ID = "thiefs_lock_pick";
-	
+
 	@Ignore public static final String KEY_RING_ID = "key_ring";
-	
+
 	@Ignore public static final String GOLD_COIN_ID = "gold_coin";
 	@Ignore public static final String SILVER_COIN_ID = "silver_coin";
 
 	@Ignore public static final String WHITE_PEARL_ID = "white_pearl";
 	@Ignore public static final String BLACK_PEARL_ID = "black_pearl";
-	
+
 	// weapons / armor
 	@Ignore public static final String SKULL_SWORD_ID = "skull_sword";
 	@Ignore public static final String EYE_PATCH_ID = "eye_patch";
-	
+
 	// wither items
 	@Ignore public static final String WITHER_ROOT_ITEM_ID = "wither_root_item";
 	@Ignore public static final String WITHER_STICK_ITEM_ID = "wither_stick_item";
-	
+
 	// GRAVESTONES
 	@Ignore public static final String GRAVESTONE1_STONE_ID = "gravestone1_stone";
 	@Ignore public static final String GRAVESTONE1_COBBLESTONE_ID = "gravestone1_cobblestone";
@@ -108,7 +108,7 @@ public class ModConfig {
 	@Ignore public static final String GRAVESTONE1_POLISHED_ANDESITE_ID = "gravestone1_polished_andesite";
 	@Ignore public static final String GRAVESTONE1_POLISHED_DIORITE_ID = "gravestone1_polished_diorite";
 	@Ignore public static final String GRAVESTONE1_OBSIDIAN_ID = "gravestone1_obsidian";
-	
+
 	@Ignore public static final String GRAVESTONE2_STONE_ID = "gravestone2_stone";
 	@Ignore public static final String GRAVESTONE2_COBBLESTONE_ID = "gravestone2_cobblestone";
 	@Ignore public static final String GRAVESTONE2_MOSSY_COBBLESTONE_ID = "gravestone2_mossy_cobblestone";
@@ -116,7 +116,7 @@ public class ModConfig {
 	@Ignore public static final String GRAVESTONE2_POLISHED_ANDESITE_ID = "gravestone2_polished_andesite";
 	@Ignore public static final String GRAVESTONE2_POLISHED_DIORITE_ID = "gravestone2_polished_diorite";
 	@Ignore public static final String GRAVESTONE2_OBSIDIAN_ID = "gravestone2_obsidian";
-	
+
 	@Ignore public static final String GRAVESTONE3_STONE_ID = "gravestone3_stone";
 	@Ignore public static final String GRAVESTONE3_COBBLESTONE_ID = "gravestone3_cobblestone";
 	@Ignore public static final String GRAVESTONE3_MOSSY_COBBLESTONE_ID = "gravestone3_mossy_cobblestone";
@@ -124,10 +124,10 @@ public class ModConfig {
 	@Ignore public static final String GRAVESTONE3_POLISHED_ANDESITE_ID = "gravestone3_polished_andesite";
 	@Ignore public static final String GRAVESTONE3_POLISHED_DIORITE_ID = "gravestone3_polished_diorite";
 	@Ignore public static final String GRAVESTONE3_OBSIDIAN_ID = "gravestone3_obsidian";
-	
+
 	@Ignore public static final String SKULL_CROSSBONES_ID = "skull_and_crossbones";
 	@Ignore public static final String SKELETON_ID = "skeleton";
-	
+
 	@Ignore public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
 	@Ignore public static final String DESERT_WISHING_WELL_BLOCK_ID = "desert_wishing_well_block";
 	@Ignore public static final String FOG_BLOCK_ID = "fog";
@@ -142,13 +142,13 @@ public class ModConfig {
 	@Ignore public static final String HIGH_POISON_FOG_ID = "high_poison_fog";
 	@Ignore public static final String MED_POISON_FOG_ID = "med_poison_fog";
 	@Ignore public static final String LOW_POISON_FOG_ID = "low_poison_fog";
-	
+
 	@Ignore public static final String WITHER_LOG_ID = "wither_log";
 	@Ignore public static final String WITHER_BRANCH_ID = "wither_branch";
 	@Ignore public static final String WITHER_ROOT_ID = "wither_root";
 	@Ignore public static final String WITHER_BROKEN_LOG_ID = "wither_broken_log";
 	@Ignore public static final String WITHER_LOG_SOUL_ID = "wither_log_soul";
-	
+
 	// paintings
 	@Ignore public static final String PAINTING_BLOCKS_BRICKS_ID = "painting_blocks_bricks";
 	@Ignore public static final String PAINTING_BLOCKS_COBBLESTONE_ID = "painting_blocks_cobblestone";
@@ -157,21 +157,21 @@ public class ModConfig {
 	@Ignore public static final String PAINTING_BLOCKS_SAND_ID = "painting_blocks_sand";
 	@Ignore public static final String PAINTING_BLOCKS_WATER_ID = "painting_blocks_water";
 	@Ignore public static final String PAINTING_BLOCKS_WOOD_ID = "painting_blocks_wood";
-	
+
 	@Ignore public static final String SPANISH_MOSS_BLOCK_ID = "spanish_moss";
 	@Ignore public static final String SPANISH_MOSS_ITEM_ID = "spanish_moss";
-	
+
 	@Ignore public static final String WITHER_PLANKS_ID = "wither_planks";
-	
+
 	@Ignore public static final String SAPPHIRE_ORE_ID = "sapphire_ore";
 	@Ignore public static final String SAPPHIRE_ID = "sapphire";
 	@Ignore public static final String RUBY_ORE_ID = "ruby_ore";
 	@Ignore public static final String RUBY_ID = "ruby";
-	
+
 	@Ignore public static final String PROXIMITY_SPAWNER_ID = "proximity_spawner";
-	
+
 	@Ignore public static final String TREASURE_TOOL_ITEM_ID = "treasure_tool";
-	
+
 	// TEs
 	@Ignore public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity";
 	@Ignore public static final String CRATE_CHEST_TE_ID = "crate_chest_tile_entity";
@@ -191,7 +191,7 @@ public class ModConfig {
 	@Ignore public static final String OYSTER_CHEST_TE_ID = "oyster_chest_tile_entity";
 	@Ignore public static final String CLAM_CHEST_TE_ID = "clam_chest_tile_entity";
 	@Ignore public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
-	
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	@Name("01-logging")
 	@Comment({"Logging properties"})
@@ -203,11 +203,11 @@ public class ModConfig {
 
 	@Name("03-chests")
 	@Comment({"Chest properties"})
-	public static final Chests chests = new Chests();
+	public static final Chests CHESTS = new Chests();
 
 	@Name("04-wells")
 	@Comment({"Well properties"})
-	public static final Well well = new Well();
+	public static final Well WELL = new Well();
 
 	@Name("05-wither tree")
 	@Comment({"Wither tree properties"})
@@ -215,19 +215,19 @@ public class ModConfig {
 
 	@Name("06-pits")
 	@Comment({"Pit properties"})
-	public static final Pits pit = new Pits();
+	public static final Pits PIT = new Pits();
 
 	@Name("07-keys and locks")
 	@Comment({"Keys and Locks properties"})
-	public static final KeysAndLocks keysLocks = new KeysAndLocks();
+	public static final KeysAndLocks KEYS_LOCKS = new KeysAndLocks();
 
 	@Name("08-gems and ores")
 	@Comment({"Gems and Ores properties"})
-	public static final GemsAndOres gemsOres = new GemsAndOres();
+	public static final GemsAndOres GEMS_ORES = new GemsAndOres();
 
 	@Name("09-world generation")
 	@Comment("World generation properties")
-	public static final WorldGen worldGen = new WorldGen();
+	public static final WorldGen WORLD_GEN = new WorldGen();
 
 	/*
 	 * Map of chest configs by rarity.
@@ -236,11 +236,11 @@ public class ModConfig {
 	public static Map<Rarity, ModConfig.Chests.Chest> chestConfigs = new HashMap<>();
 
 	static {
-		chestConfigs.put(Rarity.COMMON, ModConfig.chests.common);
-		chestConfigs.put(Rarity.UNCOMMON, ModConfig.chests.uncommon);
-		chestConfigs.put(Rarity.SCARCE, ModConfig.chests.scarce);
-		chestConfigs.put(Rarity.RARE, ModConfig.chests.rare);
-		chestConfigs.put(Rarity.EPIC, ModConfig.chests.epic);
+		chestConfigs.put(Rarity.COMMON, ModConfig.CHESTS.commonProperties);
+		chestConfigs.put(Rarity.UNCOMMON, ModConfig.CHESTS.uncommonProperties);
+		chestConfigs.put(Rarity.SCARCE, ModConfig.CHESTS.scarceProperties);
+		chestConfigs.put(Rarity.RARE, ModConfig.CHESTS.rareProperties);
+		chestConfigs.put(Rarity.EPIC, ModConfig.CHESTS.epicProperties);
 	}
 
 	/*
@@ -282,7 +282,7 @@ public class ModConfig {
 		public boolean enableDefaultTemplatesCheck = true;
 
 		@Name("01-foreign mods")
-		public ForeignModEnablements foreignModEnablements = new ForeignModEnablements();
+		private ForeignModEnablements foreignModProperties = new ForeignModEnablements();
 
 		/*
 		 * 
@@ -293,6 +293,10 @@ public class ModConfig {
 			@Comment({"A list of mods that have prebuilt loot tables available.", "Note: used for informational purposes only."})
 			public String[] availableForeignModLootTables = new String[]{"mocreatures", "sgs_metals"};
 		}
+
+		public ForeignModEnablements getForeignModProperties() {
+			return foreignModProperties;
+		}
 	}
 
 	/*
@@ -302,7 +306,7 @@ public class ModConfig {
 		@Comment("The minimum number of chunks generated before another attempt to generate a chest is made.")
 		@RangeInt(min = 0, max = 32000)
 		public int minChunksPerChest = 35;
-		
+
 		@Comment({"The minimum distance, measured in chunks (16x16), that two chests can be in proximity.",
 			"Note: Only chests in the chest registry are checked against this property.",
 			"Used in conjunction with the chunks per chest and generation probability.",
@@ -310,34 +314,38 @@ public class ModConfig {
 		@RangeInt(min = 0, max = 32000)
 		public int minDistancePerChest = 75;
 
+		@Comment({"The probability chest will appear on the surface."})
+		@RangeInt(min = 0, max = 100)
+		public int surfaceChestProbability = 15;
+
 		@Comment({"The number of chests that are monitored. Most recent additions replace least recent when the registry is full.", "This is the set of chests used to measure distance between newly generated chests."})
 		@RangeInt(min = 5, max = 100)
 		@RequiresWorldRestart
 		public int chestRegistrySize = 25;
 
 		@Name("01-Common chest")
-		public Chest common = new Chest(true, 75, 85, 50);
+		private Chest commonProperties = new Chest(true, 75, 85, 50);
 
 		@Name("02-Uncommon chest")
-		public Chest uncommon = new Chest(true, 150, 75, 40);
+		private Chest uncommonProperties = new Chest(true, 150, 75, 40);
 
 		@Name("03-Scarce chest")
-		public Chest scarce = new Chest(true, 300, 50, 30);
+		private Chest scarceProperties = new Chest(true, 300, 50, 30);
 
 		@Name("04-Rare chest")
-		public Chest rare = new Chest(true, 500, 25, 20);
+		private Chest rareProperties = new Chest(true, 500, 25, 20);
 
 		@Name("05-Epic chest")
-		public Chest epic = new Chest(true, 800, 15, 10);
+		private Chest epicProperties = new Chest(true, 800, 15, 10);
 
 		/*
 		 * 
 		 */
 		public Chests() {
 			// setup extra properties
-			common.mimicProbability = 20.0;
-			common.biomeWhiteList = new String[] {};
-			common.biomeBlackList = new String[] {"plains", "ocean", "deep_ocean"};
+			commonProperties.mimicProbability = 20.0;
+			commonProperties.biomeWhiteList = new String[] {};
+			commonProperties.biomeBlackList = new String[] {"plains", "ocean", "deep_ocean"};
 		}
 
 		/*
@@ -390,6 +398,26 @@ public class ModConfig {
 				this.minYSpawn = minYSpawn;
 			}
 		}
+
+		public Chest getCommonProperties() {
+			return commonProperties;
+		}
+
+		public Chest getScarceProperties() {
+			return scarceProperties;
+		}
+
+		public Chest getRareProperties() {
+			return rareProperties;
+		}
+
+		public Chest getEpicProperties() {
+			return epicProperties;
+		}
+
+		public Chest getUncommonProperties() {
+			return uncommonProperties;
+		}
 	}
 
 	/*
@@ -398,7 +426,7 @@ public class ModConfig {
 	public static class Pits {
 		@Comment({"The probability that a pit will contain a structure (treasure room(s), cavern etc.)"})
 		@RangeInt(min = 0, max = 100)
-		public static int pitStructureProbability = 25;
+		public int pitStructureProbability = 25;
 	}
 
 	/*
@@ -439,14 +467,14 @@ public class ModConfig {
 		@Comment({})
 		@RangeInt(min = 0, max = 30)
 		public int maxSupportingTrees = 15;
-		
+
 		@Comment("")
 		@RangeDouble(min = 0.0, max = 100.0)	    		
 		public double witherBranchItemGenProbability = 50.0;
-@Comment("")
-@RangeDouble(min = 0.0, max = 100.0)
-public double witherRootItemGenProbability=50.0;
-	    	    
+		@Comment("")
+		@RangeDouble(min = 0.0, max = 100.0)
+		public double witherRootItemGenProbability=50.0;
+
 		@Comment({"Allowable Biome Types for Wither Tree generation. Must match the Type identifer(s)."})
 		public String[] biomeWhiteList = new String[] {"forest", "magical", "lush", "spooky", "dead", "jungle", "coniferous", "savanna"};
 		@Comment({"Disallowable Biome Types for Wither Tree generation. Must match the Type identifer(s)."})
@@ -460,48 +488,93 @@ public double witherRootItemGenProbability=50.0;
 		@Comment("The minimum number of chunks generated before another attempt to generate a gem ore spawn is made.")
 		@RangeInt(min = 1, max = 32000)
 		public int minChunksPerGemOre = 1;
-		
-//
-//	    #  [range: 0.0 ~ 100.0, default: 65.0]
-//	    S:rubyGenProbability=65.0
-//
-//	    #  [range: 1 ~ 255, default: 14]
-//	    I:rubyOreMaxY=14
-//
-//	    #  [range: 1 ~ 255, default: 6]
-//	    I:rubyOreMinY=6
-//
-//	    #  [range: 1 ~ 20, default: 3]
-//	    I:rubyOreVeinSize=3
-//
-//	    #  [range: 1 ~ 20, default: 1]
-//	    I:rubyOreVeinsPerChunk=1
-//
-//	    #  [range: 0.0 ~ 100.0, default: 65.0]
-//	    S:sapphireGenProbability=65.0
-//
-//	    #  [range: 1 ~ 255, default: 14]
-//	    I:sapphireOreMaxY=14
-//
-//	    #  [range: 1 ~ 255, default: 6]
-//	    I:sapphireOreMinY=6
-//
-//	    #  [range: 1 ~ 20, default: 3]
-//	    I:sapphireOreVeinSize=3
-//
-//	    #  [range: 1 ~ 20, default: 1]
-//	    I:sapphireOreVeinsPerChunk=1
+
+		@RangeDouble(min = 0.0, max = 100.0)
+		public double rubyGenProbability = 65.0;
+
+		@RangeInt(min = 1, max = 255)
+		public int rubyOreMaxY = 14;
+
+		@RangeInt(min = 1, max =  255)
+		public int rubyOreMinY = 6;
+
+		@RangeInt(min = 1, max = 20)
+		public int rubyOreVeinSize = 3;
+
+		@RangeInt(min = 1, max = 20)
+		public int rubyOreVeinsPerChunk = 1;
+
+		@RangeDouble(min=  0.0, max =  100.0)
+		public double sapphireGenProbability = 65.0;
+
+		@RangeInt(min = 1, max = 255)
+		public int sapphireOreMaxY = 14;
+
+		@RangeInt(min = 1, max = 255)
+		public int sapphireOreMinY = 6;
+
+		@RangeInt(min = 1, max = 20)
+		public int sapphireOreVeinSize = 3;
+
+		@RangeInt(min = 1, max = 20)
+		public int sapphireOreVeinsPerChunk=1;
 	}
-	
+
 	/*
 	 * 
 	 */
 	public static class KeysAndLocks {
 		@Comment({"Enable/Disable whether a Key can break when attempting to unlock a Lock."})
 		public boolean enableKeyBreaks = true;
-		
+
 		@Comment({"Enable/Disable whether a Lock item is dropped when unlocked by Key item."})
 		public boolean enableLockDrops = true;
+
+		//	    # The maximum uses for a given diamond key. [range: 1 ~ 32000, default: 20]
+		//	    	    I:diamondKeyMaxUses=20
+		//
+		//	    	    # The maximum uses for a given emerald key. [range: 1 ~ 32000, default: 10]
+		//	    	    I:emeraldKeyMaxUses=10
+		//
+		//	    	    # The maximum uses for a given gold key. [range: 1 ~ 32000, default: 15]
+		//	    	    I:goldKeyMaxUses=15
+		//
+		//	    	    # The maximum uses for a given iron key. [range: 1 ~ 32000, default: 10]
+		//	    	    I:ironKeyMaxUses=10
+		//
+		//	    	    # The maximum uses for a given jewelled key. [range: 1 ~ 32000, default: 5]
+		//	    	    I:jewelledKeyMaxUses=5
+		//
+		//	    	    # The maximum uses for a given metallurgists key. [range: 1 ~ 32000, default: 25]
+		//	    	    I:metallurgistsKeyMaxUses=25
+		//
+		//	    	    # The maximum uses for a given pilferers lock pick. [range: 1 ~ 32000, default: 10]
+		//	    	    I:pilferersLockPickMaxUses=10
+		//
+		//	    	    # The maximum uses for a given ruby key. [range: 1 ~ 32000, default: 8]
+		//	    	    I:rubyKeyMaxUses=8
+		//
+		//	    	    # The maximum uses for a given sapphire key. [range: 1 ~ 32000, default: 5]
+		//	    	    I:sapphireKeyMaxUses=5
+		//
+		//	    	    # The maximum uses for a given skeleton key. [range: 1 ~ 32000, default: 5]
+		//	    	    I:skeletonKeyMaxUses=5
+		//
+		//	    	    # The maximum uses for a given spider key. [range: 1 ~ 32000, default: 5]
+		//	    	    I:spiderKeyMaxUses=5
+		//
+		//	    	    # The maximum uses for a given stone key. [range: 1 ~ 32000, default: 10]
+		//	    	    I:stoneKeyMaxUses=10
+		//
+		//	    	    # The maximum uses for a given thiefs lock pick. [range: 1 ~ 32000, default: 10]
+		//	    	    I:thiefsLockPickMaxUses=10
+		//
+		//	    	    # The maximum uses for a given wither key. [range: 1 ~ 32000, default: 5]
+		//	    	    I:witherKeyMaxUses=5
+
+		@Comment({"The maximum uses for a given wooden key."})
+		@RangeInt(min = 1, max = 32000)
+		public int woodKeyMaxUses = 20;
 	}
 
 	/*
@@ -510,12 +583,12 @@ public double witherRootItemGenProbability=50.0;
 	public static class WorldGen {
 
 		@Name("01-general")
-		public General general = new General();
+		private GeneralProperties generalProperties = new GeneralProperties();
 
 		@Name("02-markers")
-		public Markers markers = new Markers();
+		private MarkerProperties markerProperties = new MarkerProperties();
 
-		public class General {
+		public class GeneralProperties {
 			@Comment({"Disallowable Biome Types for general Chest generation.", "Must match the Type identifer(s)."})
 			public String[] generalChestBiomeBlackList = new String[] {};
 			@Comment({"Allowable Biome Types for general Chest generation.", "Must match the Type identifer(s)."})
@@ -526,9 +599,15 @@ public double witherRootItemGenProbability=50.0;
 			public boolean enableWitherFog = true;
 			@Comment({"Enable/Disable whether a poison fog is generated (ex. around wither trees)"})
 			public boolean enablePoisonFog = true;
+			@Comment({"This is a temporary property.", "@since v1.5.0."})
+			@RangeDouble(min = 0.0, max = 100.0)
+			public double waterStructureProbability = 50.0;
+			@Comment({"The probability that a surface structure will generate."})
+			@RangeInt(min = 0, max = 100)
+			public int surfaceStructureProbability = 25;
 		}
 
-		public class Markers {
+		public class MarkerProperties {
 			@Comment("Enable/Disable whether gravestone are generated when generating Treasure pits.")
 			public boolean isGravestonesAllowed = true;
 
@@ -545,13 +624,20 @@ public double witherRootItemGenProbability=50.0;
 
 			@Comment({"The maximum of Treasure chest markers (gravestones, bones)."})
 			@RangeInt(min = 1, max = 10)
-			public int maxGravesstonesPerChest = 8;
+			public int maxGravestonesPerChest = 8;
 
 			@Comment({"The probability that a Treasure chest marker will be a structure."})
 			@RangeInt(min = 0, max = 100)
 			public int markerStructureProbability = 15;
 		}
 
+		public MarkerProperties getMarkerProperties() {
+			return markerProperties;
+		}
+
+		public GeneralProperties getGeneralProperties() {
+			return generalProperties;
+		}
 	}
 
 	/**

@@ -31,7 +31,7 @@ public enum Rarity implements IRarity {
 	
 	// setup reverse lookup
 	static {
-		for (IMetaTheme type : EnumSet.allOf(StructureTheme.class)) {
+		for (Rarity type : EnumSet.allOf(Rarity.class)) {
 			codes.put(type.getCode(), type);
 			values.put(type.getValue(), type);
 		}
@@ -76,16 +76,16 @@ public enum Rarity implements IRarity {
 	 * @param code
 	 * @return
 	 */
-	public static StructureTheme getByCode(Integer code) {
-		return (StructureTheme) codes.get(code);
+	public static Rarity getByCode(Integer code) {
+		return (Rarity) codes.get(code);
 	}
 	/**
 	 * 
 	 * @param value
 	 * @return
 	 */
-	public static StructureTheme getByValue(String value) {
-		return (StructureTheme) values.get(value);
+	public static Rarity getByValue(String value) {
+		return (Rarity) values.get(value);
 	}
 
 	@Override

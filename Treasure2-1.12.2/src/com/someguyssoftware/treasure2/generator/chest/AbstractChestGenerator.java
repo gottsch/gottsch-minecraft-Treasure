@@ -24,7 +24,7 @@ import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -93,8 +93,11 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 				return result.fail();
 			}
 			
-			// TEMP: test against water probability. this is used to reduce the occurences of submerged structures without re-writting the entire generation system.
-			if (!RandomHelper.checkProbability(random, ModConfig.waterStructureProbability)) {
+			/*
+			 *  TEMP: test against water probability. this is used to reduce the occurences of submerged structures without re-writting the entire generation system.
+			 *  this is needed until a proper stand-alone SubmergedChestGenerator and OverlandChestGenerator can be create or proper calls from a WorldGenerator.
+			 */
+			if (!RandomHelper.checkProbability(random, ModConfig.WORLD_GEN.getGeneralProperties().waterStructureProbability)) {
 				Treasure.logger.debug("did not meet water structure probability");
 				return result.fail();
 			}
@@ -116,9 +119,9 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 			markerCoords = WorldInfo.getDryLandSurfaceCoords(world, surfaceCoords);
 			Treasure.logger.debug("dry land: surface coords -> {}, marker coords -> {}", surfaceCoords.toShortString(), markerCoords.toShortString());
 			// determine if above ground or below ground
-			if (config.isAboveGroundAllowed() && RandomHelper.checkProbability(random, TreasureConfig.surfaceChestProbability)) {
+			if (config.isAboveGroundAllowed() && RandomHelper.checkProbability(random, ModConfig.CHESTS.surfaceChestProbability)) {
 
-				if (RandomHelper.checkProbability(random, TreasureConfig.surfaceStructureProbability)) {
+				if (RandomHelper.checkProbability(random, ModConfig.WORLD_GEN.getGeneralProperties().surfaceStructureProbability)) {
 					// TEMP - until surface buildings are added
 
 					// no markers
@@ -306,7 +309,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 	 * @return
 	 */
 	public IPitGenerator<GeneratorResult<ChestGeneratorData>> selectPitGenerator(Random random) {
-		PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.pitStructureProbability) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
+		PitTypes pitType = RandomHelper.checkProbability(random, ModConfig.PIT.pitStructureProbability) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
 		List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerators = ChestWorldGenerator.pitGens.row(pitType).values().stream()
 				.collect(Collectors.toList());
 		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));
@@ -499,7 +502,8 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 			isChestOnSurface = true;
 		}
 		//		GenUtil.placeMarkers(world, random, coords);
-		if (!isChestOnSurface && TreasureConfig.isMarkerStructuresAllowed && RandomHelper.checkProbability(random, TreasureConfig.markerStructureProbability)) {
+		if (!isChestOnSurface && ModConfig.WORLD_GEN.getMarkerProperties().isMarkerStructuresAllowed &&
+				RandomHelper.checkProbability(random, ModConfig.WORLD_GEN.getMarkerProperties().markerStructureProbability)) {
 			Treasure.logger.debug("generating a random structure marker -> {}", coords.toShortString());
 			new StructureMarkerGenerator().generate(world, random, coords);
 		}

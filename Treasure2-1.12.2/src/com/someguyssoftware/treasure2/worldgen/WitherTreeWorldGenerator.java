@@ -196,7 +196,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 		double minDistanceSq = minDistance * minDistance;
 
 		// get a list of dungeons
-		List<ChestInfo> infos = ChestRegistry.getInstance().getEntries();
+		List<ChestInfo> infos = ChestRegistry.getInstance().getValues();
 
 		if (infos == null || infos.size() == 0) {
 			Treasure.logger.debug("Unable to locate the Chest Registry or the Registry doesn't contain any values");
