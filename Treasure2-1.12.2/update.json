@@ -1,8 +1,8 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.12.2-latest": "1.6.2",
-    "1.12.2-recommended": "1.6.2"
+    "1.12.2-latest": "1.6.3",
+    "1.12.2-recommended": "1.6.3"
   },
     "1.12.2": {
         "0.5.0": "alpha release",
@@ -30,7 +30,8 @@
         "1.5.1": "Fixed Server crash on load - due to biome.getName().\n",
         "1.6.0": "Added White and Black Pearls.\nUpdated Rare and Epic loot tables with pearls.\nAll Generators implement IGenerator.\nRefactored WellGenerators to use Structures.\nRefactored AbstractChestGenerator.\nFixed stacked coins only return 1 loot item bug.\nFixed Wishing Well loot selection.\nFixed all Structure rotation spawn points and checks.\nUpdate all commands be prefixed with t2-.\n",
         "1.6.1": "Fixed NPE on AbstractTreasureChest",
-        "1.6.2": "Removed GUI config that was inadvertently added last update."
+        "1.6.2": "Removed GUI config that was inadvertently added last update.",
+        "1.6.3": "Removed debugging code that was causing underwater structures to generate too frequently."
 
     }
 }
