@@ -94,7 +94,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 			}
 			
 			// TEMP: test against water probability. this is used to reduce the occurences of submerged structures without re-writting the entire generation system.
-			if (!RandomHelper.checkProbability(random, 100/*TreasureConfig.waterStructureProbability*/)) {
+			if (!RandomHelper.checkProbability(random, TreasureConfig.waterStructureProbability)) {
 				Treasure.logger.debug("did not meet water structure probability");
 				return result.fail();
 			}
