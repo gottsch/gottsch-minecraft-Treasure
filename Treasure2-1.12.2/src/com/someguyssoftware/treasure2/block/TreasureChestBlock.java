@@ -19,7 +19,6 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.config.ModConfig;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.printer.ChestNBTPrettyPrinter;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;

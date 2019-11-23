@@ -8,6 +8,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.Configs;
+import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.generator.wither.WitherTreeGenerator;
 
 import net.minecraft.command.CommandBase;
@@ -51,7 +52,7 @@ public class SpawnWitherTreeCommand extends CommandBase {
     			Random random = new Random();
     			//BlockPos pos = new BlockPos(x, y, z);
     			WitherTreeGenerator gen = new WitherTreeGenerator();
-    			gen.generate(world, random, new Coords(x, y, z), Configs.witherTreeConfig);
+    			gen.generate(world, random, new Coords(x, y, z), ModConfig.WITHER_TREE); //Configs.witherTreeConfig);
     		}
 		}
 		catch(Exception e) {

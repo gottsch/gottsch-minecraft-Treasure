@@ -19,10 +19,7 @@ import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.WitherBranchBlock;
 import com.someguyssoftware.treasure2.block.WitherLogSoulBlock;
 import com.someguyssoftware.treasure2.block.WitherRootBlock;
-import com.someguyssoftware.treasure2.config.Configs;
-import com.someguyssoftware.treasure2.config.IWitherTreeConfig;
 import com.someguyssoftware.treasure2.config.ModConfig;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.chest.WitherChestGenerator;
@@ -106,7 +103,7 @@ public class WitherTreeGenerator {
 	 * @param config
 	 * @return
 	 */
-	public boolean generate(World world, Random random, ICoords coords, IWitherTreeConfig config) {
+	public boolean generate(World world, Random random, ICoords coords, ModConfig.WitherTree config) {
 
 		ICoords surfaceCoords = null;
 		ICoords witherTreeCoords = null;
@@ -167,9 +164,7 @@ public class WitherTreeGenerator {
 		
 		// add pit/chest
 		WitherChestGenerator chestGen = new WitherChestGenerator();
-		// TODO update with ModConfig.CHESTS.getScarceProperties();
-		// TODO update ChestGenerator to take in ModConfig.Chest as a param
-		chestGen.generate(world, random, coords, Rarity.SCARCE, Configs.chestConfigs.get(Rarity.SCARCE)); 
+		chestGen.generate(world, random, coords, Rarity.SCARCE, ModConfig.chestConfigs.get(Rarity.SCARCE));//Configs.chestConfigs.get(Rarity.SCARCE)); 
 		
 		return true;
 	}
@@ -223,7 +218,7 @@ public class WitherTreeGenerator {
 	 * @param random
 	 * @param coords
 	 */
-	public void buildTree(World world, Random random, ICoords coords, IWitherTreeConfig config) {
+	public void buildTree(World world, Random random, ICoords coords, ModConfig.WitherTree config) {
 		// build a small wither  tree ie one trunk
 
 		// determine the size of the main trunk
@@ -260,7 +255,7 @@ public class WitherTreeGenerator {
 	 * @param world
 	 * @param coords
 	 */
-	public void buildTrunk(World world, Random random, ICoords coords, IWitherTreeConfig config) {
+	public void buildTrunk(World world, Random random, ICoords coords, ModConfig.WitherTree config) {
 		// setup an array of coords
 		ICoords[] trunkCoords = new Coords[4];
 		trunkCoords[0] = coords;

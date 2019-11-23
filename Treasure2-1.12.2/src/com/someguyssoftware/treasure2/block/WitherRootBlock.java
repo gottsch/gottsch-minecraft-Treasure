@@ -5,26 +5,20 @@ package com.someguyssoftware.treasure2.block;
 
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.block.CardinalDirectionFacadeBlock;
+import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.treasure2.config.ModConfig;
+import com.someguyssoftware.treasure2.item.TreasureItems;
+
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-
-import com.someguyssoftware.gottschcore.block.CardinalDirectionFacadeBlock;
-import com.someguyssoftware.gottschcore.random.RandomHelper;
-import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.ModConfig;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.item.TreasureItems;
 
 /**
  * 

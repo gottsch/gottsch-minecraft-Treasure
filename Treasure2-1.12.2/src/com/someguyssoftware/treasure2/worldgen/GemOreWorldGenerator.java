@@ -6,11 +6,9 @@ package com.someguyssoftware.treasure2.worldgen;
 import java.util.Random;
 
 import com.google.common.base.Predicate;
-import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 
 import net.minecraft.block.BlockStone;
@@ -39,8 +37,8 @@ public class GemOreWorldGenerator implements IWorldGenerator {
 	 * 
 	 */
 	public GemOreWorldGenerator() {
-		sapphireGenerator = new WorldGenMinable(TreasureBlocks.SAPPHIRE_ORE.getDefaultState(), TreasureConfig.sapphireOreVeinSize);
-		rubyGenerator = new WorldGenMinable(TreasureBlocks.RUBY_ORE.getDefaultState(), TreasureConfig.rubyOreVeinSize);
+		sapphireGenerator = new WorldGenMinable(TreasureBlocks.SAPPHIRE_ORE.getDefaultState(), ModConfig.GEMS_ORES.sapphireOreVeinSize);
+		rubyGenerator = new WorldGenMinable(TreasureBlocks.RUBY_ORE.getDefaultState(), ModConfig.GEMS_ORES.rubyOreVeinSize);
 	}
 
 	/**
@@ -87,18 +85,18 @@ public class GemOreWorldGenerator implements IWorldGenerator {
 			// temp
 			if (flip == 0) {
 				// sapphire
-				prob = TreasureConfig.sapphireGenProbability;
-				veinsPerChunk = TreasureConfig.sapphireOreVeinsPerChunk;
-				maxY = TreasureConfig.sapphireOreMaxY;
-				minY = TreasureConfig.sapphireOreMinY;
+				prob = ModConfig.GEMS_ORES.sapphireGenProbability;
+				veinsPerChunk = ModConfig.GEMS_ORES.sapphireOreVeinsPerChunk;
+				maxY = ModConfig.GEMS_ORES.sapphireOreMaxY;
+				minY = ModConfig.GEMS_ORES.sapphireOreMinY;
 				gen = sapphireGenerator;
 //				gem = "Sapphire";
 			} else {
 				// ruby
-				prob = TreasureConfig.rubyGenProbability;
-				veinsPerChunk = TreasureConfig.rubyOreVeinsPerChunk;
-				maxY = TreasureConfig.rubyOreMaxY;
-				minY = TreasureConfig.rubyOreMinY;
+				prob = ModConfig.GEMS_ORES.rubyGenProbability;
+				veinsPerChunk = ModConfig.GEMS_ORES.rubyOreVeinsPerChunk;
+				maxY = ModConfig.GEMS_ORES.rubyOreMaxY;
+				minY = ModConfig.GEMS_ORES.rubyOreMinY;
 				gen = rubyGenerator;
 //				gem = "Ruby";
 			}

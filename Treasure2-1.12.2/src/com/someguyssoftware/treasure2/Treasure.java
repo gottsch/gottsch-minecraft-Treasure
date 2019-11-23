@@ -25,12 +25,10 @@ import com.someguyssoftware.treasure2.command.SpawnChestCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitStructureOnlyCommand;
-import com.someguyssoftware.treasure2.command.SpawnWellCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellStructureCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.ModConfig;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.MimicEventHandler;
@@ -46,7 +44,6 @@ import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -82,7 +79,8 @@ import net.minecraftforge.oredict.OreDictionary;
 		"Treasure was first developed by Mark Gottschling on Aug 27, 2014.",
 		"Treasure2 was first developed by Mark Gottschling on Jan 2018.",
 		"Credits to Mason Gottschling for ideas and debugging.",
-		"Credits to CuddleBeak for some Keys and Locks textures."
+		"Credits to CuddleBeak for some Keys and Locks textures.",
+		"Credits to mn_ti for Chinese and to DarkKnightComes for Polish translation."
 		})
 public class Treasure extends AbstractMod {
 
@@ -150,7 +148,7 @@ public class Treasure extends AbstractMod {
 		MinecraftForge.EVENT_BUS.register(new MimicEventHandler(getInstance()));
 		
 		// create and load the config files
-		Configs.init(this, event.getModConfigurationDirectory());
+//		Configs.init(this, event.getModConfigurationDirectory());
 		
 		// configure logging
 //		addRollingFileAppenderToLogger(Treasure.NAME, Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
@@ -263,7 +261,8 @@ public class Treasure extends AbstractMod {
 	 */
 	@Override
 	public IConfig getConfig() {
-		return Configs.modConfig;
+//		return Configs.modConfig;
+		return ModConfig.instance;
 	}
 
 	/* (non-Javadoc)

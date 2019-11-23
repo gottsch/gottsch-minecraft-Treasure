@@ -20,21 +20,19 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.enums.Pits;
+import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.enums.PitTypes;
+import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.AbstractChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
-import com.someguyssoftware.treasure2.generator.chest.ClamChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
-import com.someguyssoftware.treasure2.generator.chest.OysterChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.RareChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
@@ -194,7 +192,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		}
 
 		// test if min chunks was met
-     	if (chunksSinceLastChest > TreasureConfig.minChunksPerChest) {
+     	if (chunksSinceLastChest > ModConfig.CHESTS.minChunksPerChest) {
      		/*
      		 * get current chunk position
      		 */            
@@ -208,7 +206,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 
 	    	// determine what type to generate
         	Rarity rarity = Rarity.values()[random.nextInt(Rarity.values().length)];
-			IChestConfig chestConfig = Configs.chestConfigs.get(rarity);
+			IChestConfig chestConfig = ModConfig.chestConfigs.get(rarity); //Configs.chestConfigs.get(rarity);
 			if (chestConfig == null) {
 				Treasure.logger.warn("Unable to locate a chest for rarity {}.", rarity);
 				return;
@@ -239,7 +237,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 			    }
 			    
      			// 3. check against all registered chests
-     			if (isRegisteredChestWithinDistance(world, coords, TreasureConfig.minDistancePerChest)) {
+     			if (isRegisteredChestWithinDistance(world, coords, ModConfig.CHESTS.minDistancePerChest)) {
    					Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
      				return;
      			}
@@ -252,10 +250,10 @@ public class ChestWorldGenerator implements IWorldGenerator {
 				// TODO swap generator maps here depending on biome ie if ocean/deep ocean use the oceanChestCollectionGeneratorsMap else normal map
 				GeneratorResult<GeneratorData> result = null;
 				if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN) {
-					result = oceanChestCollectionGeneratorsMap.get(rarity).next().generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity));
+					result = oceanChestCollectionGeneratorsMap.get(rarity).next().generate(world, random, coords, rarity, ModConfig.chestConfigs.get(rarity)); //Configs.chestConfigs.get(rarity));
 				}
 				else {
-					result = chestCollectionGeneratorsMap.get(rarity).next().generate(world, random, coords, rarity, Configs.chestConfigs.get(rarity)); 
+					result = chestCollectionGeneratorsMap.get(rarity).next().generate(world, random, coords, rarity, ModConfig.chestConfigs.get(rarity)); //Configs.chestConfigs.get(rarity)); 
 				}
 				
     			if (result.isSuccess()) {

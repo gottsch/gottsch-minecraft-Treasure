@@ -15,7 +15,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IWellConfig;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.enums.Wells;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
@@ -59,11 +59,6 @@ public class WellWorldGenerator implements IWorldGenerator {
 	private void init() {
 		// intialize chunks since last array
 		chunksSinceLastWell = 0;
-
-		// setup the well generators
-//		generators.put(Wells.WISHING_WELL, new SimpleWellGenerator());
-//		generators.put(Wells.CANOPY_WISHING_WELL, new CanopyWellGenerator());
-//		generators.put(Wells.WOOD_DRAW_WISHING_WELL,  new WoodDrawWellGenerator());
 	}
 
 	/**
@@ -97,7 +92,7 @@ public class WellWorldGenerator implements IWorldGenerator {
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 
 		// test if min chunks was met
-		if (chunksSinceLastWell > TreasureConfig.minChunksPerWell) {
+		if (chunksSinceLastWell > ModConfig.WELL.chunksPerWell) {
 //			Treasure.logger.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastWell, TreasureConfig.minChunksPerWell));
 
 			/*
@@ -114,7 +109,7 @@ public class WellWorldGenerator implements IWorldGenerator {
 			// determine what type to generate
 			Wells well = Wells.values()[random.nextInt(Wells.values().length)];
 //			Treasure.logger.debug("Using Well: {}", well);
-			IWellConfig wellConfig = Configs.wellConfig; //Configs.wellConfigs.get(well);
+			IWellConfig wellConfig = ModConfig.WELL; //Configs.wellConfig; //Configs.wellConfigs.get(well);
 			if (wellConfig == null) {
 				Treasure.logger.warn("Unable to locate a config for well {}.", well);
 				return;
