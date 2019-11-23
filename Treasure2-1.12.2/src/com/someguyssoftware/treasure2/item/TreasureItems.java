@@ -155,89 +155,89 @@ public class TreasureItems {
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON)
 				.setCraftable(false)
-				.setMaxDamage(ModConfig.stoneKeyMaxUses);
+				.setMaxDamage(ModConfig.KEYS_LOCKS.stoneKeyMaxUses);
 
 		IRON_KEY = new KeyItem(Treasure.MODID, ModConfig.IRON_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.UNCOMMON)
 				.setCraftable(false)
-				.setMaxDamage(ModConfig.ironKeyMaxUses);
+				.setMaxDamage(ModConfig.KEYS_LOCKS.ironKeyMaxUses);
 		
 		GOLD_KEY = new KeyItem(Treasure.MODID, ModConfig.GOLD_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.SCARCE)
 				.setCraftable(false)
-				.setMaxDamage(ModConfig.goldKeyMaxUses);
+				.setMaxDamage(ModConfig.KEYS_LOCKS.goldKeyMaxUses);
 
 		DIAMOND_KEY = new KeyItem(Treasure.MODID, ModConfig.DIAMOND_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(ModConfig.diamondKeyMaxUses);
+				.setMaxDamage(ModConfig.KEYS_LOCKS.diamondKeyMaxUses);
 
 		EMERALD_KEY = new KeyItem(Treasure.MODID, ModConfig.EMERALD_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(ModConfig.emeraldKeyMaxUses);
+				.setMaxDamage(ModConfig.KEYS_LOCKS.emeraldKeyMaxUses);
 		
 		RUBY_KEY = new KeyItem(Treasure.MODID, ModConfig.RUBY_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(ModConfig.rubyKeyMaxUses);
+				.setMaxDamage(ModConfig.KEYS_LOCKS.rubyKeyMaxUses);
 		
 		SAPPHIRE_KEY = new KeyItem(Treasure.MODID, ModConfig.SAPPHIRE_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(ModConfig.sapphireKeyMaxUses);
+				.setMaxDamage(ModConfig.KEYS_LOCKS.sapphireKeyMaxUses);
 		
 		JEWELLED_KEY = new JewelledKey(Treasure.MODID, ModConfig.JEWELLED_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(ModConfig.jewelledKeyMaxUses);
+				.setMaxDamage(ModConfig.KEYS_LOCKS.jewelledKeyMaxUses);
 		
 		METALLURGISTS_KEY = new MetallurgistsKey(Treasure.MODID, ModConfig.METALLURGISTS_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(ModConfig.metallurgistsKeyMaxUses);
+				.setMaxDamage(ModConfig.KEYS_LOCKS.metallurgistsKeyMaxUses);
 		
 		SKELETON_KEY = new SkeletonKey(Treasure.MODID, ModConfig.SKELETON_KEY_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
-				.setMaxDamage(ModConfig.skeletonKeyMaxUses);
+				.setMaxDamage(ModConfig.KEYS_LOCKS.skeletonKeyMaxUses);
 		
 		SPIDER_KEY = new KeyItem(Treasure.MODID, ModConfig.SPIDER_KEY_ID)
 				.setCategory(Category.MOB)
 				.setRarity(Rarity.SCARCE)
 				.setBreakable(true)
 				.setCraftable(true)
-				.setMaxDamage(ModConfig.spiderKeyMaxUses);
+				.setMaxDamage(ModConfig.KEYS_LOCKS.spiderKeyMaxUses);
 		
 		WITHER_KEY = new KeyItem(Treasure.MODID, ModConfig.WITHER_KEY_ID)
 				.setCategory(Category.WITHER)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(true)
-				.setMaxDamage(ModConfig.witherKeyMaxUses);
+				.setMaxDamage(ModConfig.KEYS_LOCKS.witherKeyMaxUses);
 		
 		PILFERERS_LOCK_PICK = new PilferersLockPick(Treasure.MODID, ModConfig.PILFERERS_LOCK_PICK_ID)
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.COMMON)
 				.setBreakable(true)
 				.setCraftable(true)
-				.setMaxDamage(ModConfig.pilferersLockPickMaxUses)
+				.setMaxDamage(ModConfig.KEYS_LOCKS.pilferersLockPickMaxUses)
 				.setSuccessProbability(24);
 		
 		THIEFS_LOCK_PICK = new ThiefsLockPick(Treasure.MODID, ModConfig.THIEFS_LOCK_PICK_ID)
@@ -245,7 +245,7 @@ public class TreasureItems {
 				.setRarity(Rarity.UNCOMMON)
 				.setBreakable(true)
 				.setCraftable(true)
-				.setMaxDamage(ModConfig.thiefsLockPickMaxUses)
+				.setMaxDamage(ModConfig.KEYS_LOCKS.thiefsLockPickMaxUses)
 				.setSuccessProbability(32);
 		
 		// KEY RING

@@ -13,9 +13,7 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
-import com.someguyssoftware.treasure2.config.Configs;
-import com.someguyssoftware.treasure2.config.IWitherTreeConfig;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.wither.WitherTreeGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
@@ -87,7 +85,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 		boolean isGenerated = false;	
 
 		// test if min chunks was met
-		if (chunksSinceLastTree > TreasureConfig.minChunksPerWell) {
+		if (chunksSinceLastTree > ModConfig.WITHER_TREE.chunksPerTree) {
 
 			/*
 			 * get current chunk position
@@ -101,7 +99,8 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 			ICoords coords = new Coords(xSpawn, ySpawn, zSpawn);
 
 			// determine what type to generate
-			IWitherTreeConfig treeConfig = Configs.witherTreeConfig;
+//			IWitherTreeConfig treeConfig = Configs.witherTreeConfig;
+			ModConfig.WitherTree treeConfig = ModConfig.WITHER_TREE;
 			if (treeConfig == null) {
 				Treasure.logger.warn("Unable to locate a config for wither tree {}.", treeConfig);
 				return;
@@ -138,7 +137,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 //				}
 
 	 			// 3. check against all registered chests
-	 			if (isRegisteredChestWithinDistance(world, coords, TreasureConfig.minDistancePerChest)) {
+	 			if (isRegisteredChestWithinDistance(world, coords, ModConfig.CHESTS.minDistancePerChest)) {
 					Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
 	 				return;
 	 			}

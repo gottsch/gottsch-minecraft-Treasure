@@ -22,7 +22,6 @@ import com.someguyssoftware.treasure2.block.ITreasureBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
-import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.enums.Category;
@@ -119,7 +118,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 			markerCoords = WorldInfo.getDryLandSurfaceCoords(world, surfaceCoords);
 			Treasure.logger.debug("dry land: surface coords -> {}, marker coords -> {}", surfaceCoords.toShortString(), markerCoords.toShortString());
 			// determine if above ground or below ground
-			if (config.isAboveGroundAllowed() && RandomHelper.checkProbability(random, ModConfig.CHESTS.surfaceChestProbability)) {
+			if (config.isSurfaceAllowed() && RandomHelper.checkProbability(random, ModConfig.CHESTS.surfaceChestProbability)) {
 
 				if (RandomHelper.checkProbability(random, ModConfig.WORLD_GEN.getGeneralProperties().surfaceStructureProbability)) {
 					// TEMP - until surface buildings are added
@@ -136,7 +135,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 					Treasure.logger.debug("Above ground, chest only @ {}", chestCoords.toShortString());
 				}
 			}
-			else if (config.isBelowGroundAllowed()) {
+			else if (config.isSubterraneanAllowed()) {
 				Treasure.logger.debug("else generate pit");
 				genResult = generatePit(world, random, chestRarity, markerCoords, config);
 				Treasure.logger.debug("result -> {}", genResult.toString());
@@ -356,7 +355,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 		// determine if should be mimic
 		if (chest == TreasureBlocks.WOOD_CHEST) {
 			// get the config
-			IChestConfig config = Configs.chestConfigs.get(rarity);
+			IChestConfig config = ModConfig.chestConfigs.get(rarity); //Configs.chestConfigs.get(rarity);
 			if (RandomHelper.checkProbability(random, config.getMimicProbability())) {
 				chest = (AbstractChestBlock) TreasureBlocks.WOOD_MIMIC;
 				Treasure.logger.debug("Selecting a MIMIC chest!");
