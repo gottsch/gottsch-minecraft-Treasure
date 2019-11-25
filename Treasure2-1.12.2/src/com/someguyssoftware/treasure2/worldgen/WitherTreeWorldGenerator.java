@@ -12,7 +12,10 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
+import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
+import com.someguyssoftware.treasure2.config.IWitherTreeConfig;
 import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.wither.WitherTreeGenerator;
@@ -100,7 +103,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 
 			// determine what type to generate
 //			IWitherTreeConfig treeConfig = Configs.witherTreeConfig;
-			ModConfig.WitherTree treeConfig = ModConfig.WITHER_TREE;
+			IWitherTreeConfig treeConfig = ModConfig.WITHER_TREE;
 			if (treeConfig == null) {
 				Treasure.logger.warn("Unable to locate a config for wither tree {}.", treeConfig);
 				return;
@@ -112,18 +115,24 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 				// 1. test if correct biome
 				// if not the correct biome, reset the count
 				Biome biome = world.getBiome(coords.toPos());
-
-				if (!BiomeHelper.isBiomeAllowed(biome, treeConfig.getBiomeWhiteList(), treeConfig.getBiomeBlackList())) {
-					if (Treasure.logger.isDebugEnabled()) {
-			    		if (WorldInfo.isClientSide(world)) {
-			    			Treasure.logger.debug("{} is not a valid biome @ {} for Wither Tree", biome.getBiomeName(), coords.toShortString());
-			    		}
-			    		else {
-			    			Treasure.logger.debug("Biome is not valid @ {} for Wither Tree", coords.toShortString());
-			    		}
-					}
+				TreasureBiomeHelper.Result result =TreasureBiomeHelper.isBiomeAllowed(biome, treeConfig.getBiomeWhiteList(), treeConfig.getBiomeBlackList());
+				if(result == Result.BLACK_LISTED ) {
 					chunksSinceLastTree = 0;
 					return;
+				}
+				else if (result == Result.OK) {
+					if (!BiomeHelper.isBiomeAllowed(biome, treeConfig.getBiomeTypeWhiteList(), treeConfig.getBiomeTypeBlackList())) {
+						if (Treasure.logger.isDebugEnabled()) {
+				    		if (WorldInfo.isClientSide(world)) {
+				    			Treasure.logger.debug("{} is not a valid biome @ {} for Wither Tree", biome.getBiomeName(), coords.toShortString());
+				    		}
+				    		else {
+				    			Treasure.logger.debug("Biome is not valid @ {} for Wither Tree", coords.toShortString());
+				    		}
+						}
+						chunksSinceLastTree = 0;
+						return;
+					}
 				}
 				
 				// 2. test if well meets the probability criteria

@@ -12,6 +12,8 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
+import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IWellConfig;
@@ -120,18 +122,25 @@ public class WellWorldGenerator implements IWorldGenerator {
 				// 1. test if correct biome
 				// if not the correct biome, reset the count
 				Biome biome = world.getBiome(coords.toPos());
-
-				if (!BiomeHelper.isBiomeAllowed(biome, wellConfig.getBiomeWhiteList(), wellConfig.getBiomeBlackList())) {
-					if (Treasure.logger.isDebugEnabled()) {
-			    		if (WorldInfo.isClientSide(world)) {
-			    			Treasure.logger.debug("{} is not a valid biome @ {} for Well", biome.getBiomeName(), coords.toShortString());
-			    		}
-			    		else {
-			    			Treasure.logger.debug("Biome is not valid @ {} for Well", coords.toShortString());
-			    		}
-					}
+				// TODO this whole biome check should be wrapped in a method that returns true/false
+				TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, wellConfig.getBiomeWhiteList(), wellConfig.getBiomeBlackList());
+				if(biomeCheck == Result.BLACK_LISTED ) {
 					chunksSinceLastWell = 0;
 					return;
+				}
+				else if (biomeCheck == Result.OK) {
+					if (!BiomeHelper.isBiomeAllowed(biome, wellConfig.getBiomeTypeWhiteList(), wellConfig.getBiomeTypeBlackList())) {
+						if (Treasure.logger.isDebugEnabled()) {
+				    		if (WorldInfo.isClientSide(world)) {
+				    			Treasure.logger.debug("{} is not a valid biome @ {} for Well", biome.getBiomeName(), coords.toShortString());
+				    		}
+				    		else {
+				    			Treasure.logger.debug("Biome is not valid @ {} for Well", coords.toShortString());
+				    		}
+						}
+						chunksSinceLastWell = 0;
+						return;
+					}
 				}
 				
 				// 2. test if well meets the probability criteria
@@ -149,7 +158,7 @@ public class WellWorldGenerator implements IWorldGenerator {
 //				isGenerated = generators.get(well)
 				result = generator.generate(world, random, coords, wellConfig); 
 				Treasure.logger.debug("well world gen result -> {}", result.isSuccess());
-				if (/*isGenerated*/result.isSuccess()) {
+				if (result.isSuccess()) {
 					// add to registry
 					//				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
 					chunksSinceLastWell = 0;

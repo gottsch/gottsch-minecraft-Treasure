@@ -149,6 +149,7 @@ public class Treasure extends AbstractMod {
 		
 		// create and load the config files
 //		Configs.init(this, event.getModConfigurationDirectory());
+		logger.debug("wither biome black list[0] -> {}", ModConfig.WITHER_TREE.biomes.rawBiomeBlackList[0]);
 		
 		// configure logging
 //		addRollingFileAppenderToLogger(Treasure.NAME, Treasure.NAME + "Appender", (ILoggerConfig) getConfig());

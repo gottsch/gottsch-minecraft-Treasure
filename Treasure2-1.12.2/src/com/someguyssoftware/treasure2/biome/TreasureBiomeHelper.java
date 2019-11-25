@@ -4,21 +4,18 @@
 package com.someguyssoftware.treasure2.biome;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import com.someguyssoftware.gottschcore.biome.BiomeTypeHolder;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import scala.actors.threadpool.Arrays;
 
 /**
  * Temporary class. TODO move to GottschCore.
  * @author Mark Gottschling on Nov 22, 2019
  *
  */
-@SuppressWarnings("unchecked")
 public class TreasureBiomeHelper {
 	public static List<String> biomeNames;
 	
@@ -41,6 +38,12 @@ public class TreasureBiomeHelper {
 		});
 	}
 	
+	public enum Result {
+		OK,
+		WHITE_LISTED,
+		BLACK_LISTED
+	};
+	
 	/**
 	 * 
 	 * @param biomes
@@ -48,10 +51,12 @@ public class TreasureBiomeHelper {
 	 */
 	public static List<Biome> loadBiomesList(String[] biomes) {
 		List<Biome> list = new ArrayList<>();
-		for (String biomeName : biomes) {
-			Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeName));
-			if (!list.contains(biome)) {
-				list.add(biome);
+		if (biomes != null) {
+			for (String biomeName : biomes) {
+				Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeName));
+				if (!list.contains(biome)) {
+					list.add(biome);
+				}
 			}
 		}
 		return list;
@@ -64,20 +69,98 @@ public class TreasureBiomeHelper {
 	 * @param blackList
 	 * @return
 	 */
-	public static boolean isBiomeAllowed(Biome biome, List<Biome> whiteList, List<Biome> blackList) {
+	public static Result isBiomeAllowed(Biome biome, List<Biome> whiteList, List<Biome> blackList) {
         if (whiteList != null && whiteList.size() > 0) {
         	if (whiteList.contains(biome)) {
-        		return true;
+        		return Result.WHITE_LISTED;
         	}
         }
         
         if (blackList != null && blackList.size() > 0) {
         	if (blackList.contains(biome)) {
-        		return false;
+        		return Result.BLACK_LISTED;
         	}
         }
         
     	// neither white list nor black list have values = all biomes are valid
-    	return true;
+    	return Result.OK;
 	}
+	
+/*
+ Ocean	ocean	0
+ Deep Ocean	deep_ocean	24
+ Frozen Ocean	frozen_ocean	10
+ Deep Frozen Ocean	deep_frozen_ocean	50
+ Cold Ocean	cold_ocean	46
+ Deep Cold Ocean	deep_cold_ocean	49
+ Lukewarm Ocean	lukewarm_ocean	45
+ Deep Lukewarm Ocean	deep_lukewarm_ocean	48
+ Warm Ocean	warm_ocean	44
+ Deep Warm Ocean	deep_warm_ocean	47
+ River	river	7
+ Frozen River	frozen_river	11
+ Beach	beach	16
+ Stone Shore	stone_shore	25
+ Snowy Beach	snowy_beach	26
+ Forest	forest	4
+ Wooded Hills	wooded_hills	18
+ Flower Forest	flower_forest	132
+ Birch Forest	birch_forest	27
+ Birch Forest Hills	birch_forest_hills	28
+ Tall Birch Forest	tall_birch_forest	155
+ Tall Birch Hills	tall_birch_hills	156
+ Dark Forest	dark_forest	29
+ Dark Forest Hills	dark_forest_hills	157
+ Jungle	jungle	21
+ Jungle Hills	jungle_hills	22
+ Modified Jungle	modified_jungle	149
+ Jungle Edge	jungle_edge	23
+ Modified Jungle Edge	modified_jungle_edge	151
+ Bamboo Jungle	bamboo_jungle	168
+ Bamboo Jungle Hills	bamboo_jungle_hills	169
+ Taiga	taiga	5
+ Taiga Hills	taiga_hills	19
+ Taiga Mountains	taiga_mountains	133
+ Snowy Taiga	snowy_taiga	30
+ Snowy Taiga Hills	snowy_taiga_hills	31
+ Snowy Taiga Mountains	snowy_taiga_mountains	158
+ Giant Tree Taiga	giant_tree_taiga	32
+ Giant Tree Taiga Hills	giant_tree_taiga_hills	33
+ Giant Spruce Taiga	giant_spruce_taiga	160
+ Giant Spruce Taiga Hills	giant_spruce_taiga_hills	161
+ Mushroom Fields	mushroom_fields	14
+ Mushroom Field Shore	mushroom_field_shore	15
+ Swamp	swamp	6
+ Swamp Hills	swamp_hills	134
+ Savanna	savanna	35
+ Savanna Plateau	savanna_plateau	36
+ Shattered Savanna	shattered_savanna	163
+ Shattered Savanna Plateau	shattered_savanna_plateau	164
+ Plains	plains	1
+ Sunflower Plains	sunflower_plains	129
+ Desert	desert	2
+ Desert Hills	desert_hills	17
+ Desert Lakes	desert_lakes	130
+ Snowy Tundra	snowy_tundra	12
+ Snowy Mountains	snowy_mountains	13
+ Ice Spikes	ice_spikes	140
+ Mountains	mountains	3
+ Wooded Mountains	wooded_mountains	34
+ Gravelly Mountains	gravelly_mountains	131
+ Gravelly Mountains+	modified_gravelly_mountains	162
+ Mountain Edge	mountain_edge	20
+ Badlands	badlands	37
+ Badlands Plateau	badlands_plateau	39
+ Modified Badlands Plateau	modified_badlands_plateau	167
+ Wooded Badlands Plateau	wooded_badlands_plateau	38
+ Modified Wooded Badlands Plateau	modified_wooded_badlands_plateau	166
+ Eroded Badlands	eroded_badlands	165
+ Nether	nether	8
+ The End	the_end	9
+ Small End Islands	small_end_islands	40
+ End Midlands	end_midlands	41
+ End Highlands	end_highlands	42
+ End Barrens	end_barrens	43
+ The Void	the_void	127
+*/
 }

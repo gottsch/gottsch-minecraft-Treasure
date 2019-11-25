@@ -31,7 +31,8 @@
         "1.6.0": "Added White and Black Pearls.\nUpdated Rare and Epic loot tables with pearls.\nAll Generators implement IGenerator.\nRefactored WellGenerators to use Structures.\nRefactored AbstractChestGenerator.\nFixed stacked coins only return 1 loot item bug.\nFixed Wishing Well loot selection.\nFixed all Structure rotation spawn points and checks.\nUpdate all commands be prefixed with t2-.\n",
         "1.6.1": "Add",
         "1.6.2": "Add",
-        "1.7.0": "Refactored config files into one GUI config.\nAdded Desert Wishing Well block.\nFixed Rarity enum value mappings.\nPersisted ChestRegistry.\n"
+        "1.6.3": "Add",
+        "1.7.0": "Refactored config files into one GUI config.\nAdded Desert Wishing Well block.\nFixed Rarity enum value mappings.\nPersisted ChestRegistry.\nFixed Well generation on podzol/mycelium generating mushroom block instead of mushrooms.\n"
 
     }
 }
