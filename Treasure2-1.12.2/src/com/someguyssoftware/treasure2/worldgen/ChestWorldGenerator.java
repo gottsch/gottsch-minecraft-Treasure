@@ -17,6 +17,8 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
+import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
@@ -223,18 +225,23 @@ public class ChestWorldGenerator implements IWorldGenerator {
 				
 				// 2. test if the override (global) biome is allowed
 				Biome biome = world.getBiome(coords.toPos());
-
-			    if (!BiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList())) {
-			    	if (Treasure.logger.isDebugEnabled()) {
-			    		if (WorldInfo.isClientSide(world)) {
-			    			Treasure.logger.debug("{} is not a valid biome @ {}", biome.getBiomeName(), coords.toShortString());
-			    		}
-			    		else {
-			    			Treasure.logger.debug("Biome for {} is not valid @ {}",rarity.getValue(), coords.toShortString());
-			    		}
-			    	}
-			    	return;
-			    }
+				TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList());
+				if(biomeCheck == Result.BLACK_LISTED ) {
+					return;
+				}
+				else if (biomeCheck == Result.OK) {
+				    if (!BiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeTypeWhiteList(), chestConfig.getBiomeTypeBlackList())) {
+				    	if (Treasure.logger.isDebugEnabled()) {
+				    		if (WorldInfo.isClientSide(world)) {
+				    			Treasure.logger.debug("{} is not a valid biome @ {}", biome.getBiomeName(), coords.toShortString());
+				    		}
+				    		else {
+				    			Treasure.logger.debug("Biome for {} is not valid @ {}",rarity.getValue(), coords.toShortString());
+				    		}
+				    	}
+				    	return;
+				    }
+				}
 			    
      			// 3. check against all registered chests
      			if (isRegisteredChestWithinDistance(world, coords, ModConfig.CHESTS.minDistancePerChest)) {

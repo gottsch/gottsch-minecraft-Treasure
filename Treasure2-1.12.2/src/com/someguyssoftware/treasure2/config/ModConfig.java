@@ -41,8 +41,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  *
  */
 // TODO get version in the config name
-@Config(modid = Treasure.MODID, name = Treasure.MODID + "/" + Treasure.MODID, type = Type.INSTANCE)
+@Config(modid = Treasure.MODID, name = Treasure.MODID + "/" + Treasure.MODID + "-" + ModConfig.CONFIG_VERSION, type = Type.INSTANCE)
 public class ModConfig implements IConfig, ILoggerConfig {
+	@Ignore public static final String CONFIG_VERSION = "c1.0";
+
 	/*
 	 *  IDs
 	 */
@@ -208,40 +210,43 @@ public class ModConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	@Name("01-mod")
+
+	@Name("01 mod")
 	@Comment({"General mod properties."})
 	public static final Mod MOD = new Mod();
 
-	@Name("02-logging")
+	@Name("02 logging")
 	@Comment({"Logging properties"})
 	public static final Logging LOGGING = new Logging();
 
-	@Name("03-chests")
+	@Name("03 chests")
 	@Comment({"Chest properties"})
 	public static final Chests CHESTS = new Chests();
 
-	@Name("04-wells")
+//	@Name("04 actual chests")
+//	public static final ActualChests ACTUAL_CHESTS = new ActualChests();
+
+	@Name("04 wells")
 	@Comment({"Well properties"})
 	public static final Well WELL = new Well();
 
-	@Name("05-wither tree")
+	@Name("05 wither tree")
 	@Comment({"Wither tree properties"})
 	public static final WitherTree WITHER_TREE = new WitherTree();
 
-	@Name("06-pits")
+	@Name("06 pits")
 	@Comment({"Pit properties"})
 	public static final Pits PIT = new Pits();
 
-	@Name("07-keys and locks")
+	@Name("07 keys and locks")
 	@Comment({"Keys and Locks properties"})
 	public static final KeysAndLocks KEYS_LOCKS = new KeysAndLocks();
 
-	@Name("08-gems and ores")
+	@Name("08 gems and ores")
 	@Comment({"Gems and Ores properties"})
 	public static final GemsAndOres GEMS_ORES = new GemsAndOres();
 
-	@Name("09-world generation")
+	@Name("09 world generation")
 	@Comment("World generation properties")
 	public static final WorldGen WORLD_GEN = new WorldGen();
 
@@ -252,7 +257,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 	public static Map<Rarity, IChestConfig> chestConfigs = new HashMap<>();
 
 	@Ignore public static ModConfig instance = new ModConfig();
-	
+
 	static {
 		chestConfigs.put(Rarity.COMMON, CHESTS.commonChestProperties);
 		chestConfigs.put(Rarity.UNCOMMON, CHESTS.uncommonChestProperties);
@@ -263,32 +268,44 @@ public class ModConfig implements IConfig, ILoggerConfig {
 
 	public ModConfig() {
 	}
-	
+
 	/*
 	 * 
 	 */
 	public static class Mod {
-		@Comment({"The relative path to the mods folder."})
-		public String folder = "mods";
 		@Comment({"Enables/Disables mod."})
+		@Name("01. Enable the Treasure mod:")
 		public boolean enabled = true;
-		@Comment({"Enables/Disables version checking."})
-		public boolean enableVersionChecker = true;
-		@Comment({"The latest published version number.", "This is auto-updated by the version checker.", "This may be @deprecated."})
-		public String latestVersion = "";
-		@Comment({"Remind the user of the latest version (as indicated in latestVersion proeprty) update."})
-		public boolean latestVersionReminder = true;
+		
+		@Comment({"The relative path to the mods folder."})
+		@Name("02. The 'mods' folder:")
+		public String folder = "mods";
 
 		@Comment({"The relative path to the default Treasure folder.", "This is where resource files will be located."})
+		@Name("03. Treasure mod's folder:")
 		public String treasureFolder = folder + "/" + Treasure.MODID + "/";
+		
+		@Comment({"Enables/Disables version checking."})
+		@Name("04. Enable the version checker:")
+		public boolean enableVersionChecker = true;
+		
+		@Comment({"The latest published version number.", "This is auto-updated by the version checker.", "This may be @deprecated."})
+		@Name("05. Latest mod version available:")
+		public String latestVersion = "";
+		
+		@Comment({"Remind the user of the latest version (as indicated in latestVersion proeprty) update."})
+		@Name("06. Enable latest mod version reminder:")
+		public boolean latestVersionReminder = true;
 
 		// this remains as general
 		@Comment({"Enable/Disable a check to ensure the default loot tables exist on the file system.", "If enabled, then you will not be able to remove any default loot tables (but they can be edited).", "Only disable if you know what you're doing."})
+		@Name("07. Enable default loot tables check:")
 		public boolean enableDefaultLootTablesCheck = true;
 		@Comment({"Enable/Disable a check to ensure the default templates exist on the file system.", "If enabled, then you will not be able to remove any default templates.", "Only disable if you know what you're doing."})
+		@Name("08. Enable default templates check:")
 		public boolean enableDefaultTemplatesCheck = true;
 
-		@Name("01-foreign mods")
+		@Name("foreign mods")
 		public ForeignModEnablements foreignModProperties = new ForeignModEnablements();
 
 		/*
@@ -296,8 +313,10 @@ public class ModConfig implements IConfig, ILoggerConfig {
 		 */
 		public class ForeignModEnablements {
 			@Comment({"Add mod's MODID to this list to enable custom loot tables for a mod."})
+			@Name("01. Foreign mod IDs for custom loot tables:")
 			public String[] enableForeignModIDs = new String[]{"mocreatures", "sgs_metals"};
 			@Comment({"A list of mods that have prebuilt loot tables available.", "Note: used for informational purposes only."})
+			@Name("02. Pre-build loot tables for foreign mod IDs:")
 			public String[] availableForeignModLootTables = new String[]{"mocreatures", "sgs_metals"};
 		}
 
@@ -305,18 +324,25 @@ public class ModConfig implements IConfig, ILoggerConfig {
 			return foreignModProperties;
 		}
 	}
-	
+
 	/*
 	 * 
 	 */
 	public static class Logging {
 		@Comment({"The logging level. Set to 'off' to disable logging.", "Values = [trace|debug|info|warn|error|off]"})
+		@Name("01. Logging level:")
 		public String level = "debug";
-		@Comment({"The directory where the logs should be stored.", "This is relative to the Minecraft install path."})
-		public String folder = "mods/" + Treasure.MODID + "/logs/";
+		
 		@Comment({"The size a log file can be before rolling over to a new file."})
+		@Name("02. Logs file max. size:")
 		public String size = "1000K";
+		
+		@Comment({"The directory where the logs should be stored.", "This is relative to the Minecraft install path."})
+		@Name("03. Logs folder:")
+		public String folder = "mods/" + Treasure.MODID + "/logs/";
+
 		@Comment({"The base filename of the  log file."})
+		@Name("04. Base name of log file:")
 		public String filename = Treasure.MODID;
 	}
 
@@ -324,40 +350,72 @@ public class ModConfig implements IConfig, ILoggerConfig {
 	 * 
 	 */
 	public static class Chests {
-		@Comment("The minimum number of chunks generated before another attempt to generate a chest is made.")
+		@Comment("The minimum number of chunks generated before another attempt to spawn a chest is made.")
+		@Name("01. Min. chunks per chest spawn:")
 		@RangeInt(min = 0, max = 32000)
 		public int minChunksPerChest = 35;
 
 		@Comment({"The minimum distance, measured in chunks (16x16), that two chests can be in proximity.",
 			"Note: Only chests in the chest registry are checked against this property.",
-			"Used in conjunction with the chunks per chest and generation probability.",
+			"Used in conjunction with the chunks per chest and spawn probability.",
 		"Ex. "})
+		@Name("02. Min. distance per chest spawn:")
 		@RangeInt(min = 0, max = 32000)
 		public int minDistancePerChest = 75;
 
 		@Comment({"The probability chest will appear on the surface."})
+		@Name("03. Probability of chest spawn on the surface:")
 		@RangeInt(min = 0, max = 100)
 		public int surfaceChestProbability = 15;
 
 		@Comment({"The number of chests that are monitored. Most recent additions replace least recent when the registry is full.", "This is the set of chests used to measure distance between newly generated chests."})
+		@Name("04. Max. size of chest registry:")
 		@RangeInt(min = 5, max = 100)
 		@RequiresWorldRestart
 		public int chestRegistrySize = 25;
 
 		@Name("01-Common chest")
-		public Chest commonChestProperties = new Chest(true, 75, 85, 50);
+		public Chest commonChestProperties = new Chest(true, 75, 85, 50,
+				new String[] {},
+				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
+						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
+				new String[] {},
+				new String[] {"ocean", "deep_ocean"});
 
 		@Name("02-Uncommon chest")
-		public Chest uncommonChestProperties = new Chest(true, 150, 75, 40);
+		public Chest uncommonChestProperties = new Chest(true, 150, 75, 40,
+				new String[] {},
+				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
+						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
+				new String[] {},
+				new String[] {"ocean", "deep_ocean"});
 
 		@Name("03-Scarce chest")
-		public Chest scarceChestProperties = new Chest(true, 300, 50, 30);
+		public Chest scarceChestProperties = new Chest(true, 300, 50, 30,
+				new String[] {},
+				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
+						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean",
+						"plains", "sunflower_plains"},
+				new String[] {},
+				new String[] {"ocean", "deep_ocean", "plains"});
 
 		@Name("04-Rare chest")
-		public Chest rareChestProperties = new Chest(true, 500, 25, 20);
+		public Chest rareChestProperties = new Chest(true, 500, 25, 20,
+				new String[] {},
+				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
+						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean",
+						"plains", "sunflower_plains"},
+				new String[] {},
+				new String[] {"ocean", "deep_ocean", "plains"});
 
 		@Name("05-Epic chest")
-		public Chest epicChestProperties = new Chest(true, 800, 15, 10);
+		public Chest epicChestProperties = new Chest(true, 800, 15, 10,
+				new String[] {},
+				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
+						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean",
+						"plains", "sunflower_plains"},
+				new String[] {},
+				new String[] {"ocean", "deep_ocean", "plains"});
 
 		/*
 		 * 
@@ -365,8 +423,6 @@ public class ModConfig implements IConfig, ILoggerConfig {
 		public Chests() {
 			// setup extra properties
 			commonChestProperties.mimicProbability = 20.0;
-			commonChestProperties.rawBiomeWhiteList = new String[] {};
-			commonChestProperties.rawBiomeBlackList = new String[] {"plains", "ocean", "deep_ocean"};
 		}
 
 		/*
@@ -376,55 +432,54 @@ public class ModConfig implements IConfig, ILoggerConfig {
 			@Ignore
 			public boolean chestAllowed = true;
 
-			@Comment({"The number of chunks generated before the chest generation is attempted."})
+			@Comment({"The number of chunks generated before the chest spawn is attempted."})
+			@Name("01. Chunks per chest spawn:")
 			@RangeInt(min = 50, max = 32000)
 			public int chunksPerChest = 75;
 
-			@Comment({"The probability that a chest will generate."})
+			@Comment({"The probability that a chest will spawn."})
+			@Name("02. Probability of chest spawn:")
 			@RangeDouble(min = 0.0, max = 100.0)
 			public double genProbability = 50.0;
 
 			@Comment({"The minimum depth (y-axis) that a chest can generate at."})
+			@Name("03. Min. y-value for spawn location:")
 			@RangeInt(min = 5, max = 250)
 			public int minYSpawn = 25;
 
-			// TODO most likely going to be removed with the use of meta files / archetype : type : biome categorizations
-			public boolean surfaceAllowed = true;
-			public boolean subterraneanAllowed = true;
-
-			// TODO most likely going to be removed with the use of meta files
-			@Comment({"Allowable Biome Types for general Chest generation. Must match the Type identifer(s)."})
-			@Name("biomeWhiteList")
-			public String[] rawBiomeWhiteList = new String[] {};
-			@Comment({"Disallowable Biome Types for general Chest generation. Must match the Type identifer(s)."})
-			@Name("biomeBlackList")
-			public String[] rawBiomeBlackList = new String[] {"ocean"};
-
 			@Comment({"The probability that a chest will be a mimic.", "NOTE: only common Wooden Chest have mimics avaiable."})
+			@Name("04. Mimic probability:")
 			@RangeDouble(min = 0.0, max = 100.0)
 			public double mimicProbability = 0.0;
+			
+			// TODO most likely going to be removed with the use of meta files / archetype : type : biome categorizations
+			@Name("05. Enable surface spawn:")
+			public boolean surfaceAllowed = true;
+			
+			@Name("06. Enable subterranean spawn:")
+			public boolean subterraneanAllowed = true;
 
-			@Ignore public List<BiomeTypeHolder> biomeWhiteList = new ArrayList<>();
-			@Ignore public List<BiomeTypeHolder> biomeBlackList = new ArrayList<>();
+
+
+			@Name("biomes")
+			@Comment({"Biome white and black list properties."})
+			public BiomesConfig biomes = new BiomesConfig(
+					new String[] {},
+					new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
+							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
+					new String[] {},
+					new String[] {"ocean", "deep_ocean"});
 
 			/*
 			 * 
 			 */
-			public Chest()  {
-				BiomeHelper.loadBiomeList(rawBiomeWhiteList, biomeWhiteList);
-				BiomeHelper.loadBiomeList(rawBiomeBlackList, biomeBlackList);
-			}
-
-			/*
-			 * 
-			 */
-			public Chest(boolean isAllowed, int chunksPer, double probability, int minYSpawn) {
+			public Chest(boolean isAllowed, int chunksPer, double probability, int minYSpawn,
+					String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
 				this.chestAllowed = isAllowed;
 				this.chunksPerChest = chunksPer;
 				this.genProbability = probability;
 				this.minYSpawn = minYSpawn;
-				BiomeHelper.loadBiomeList(rawBiomeWhiteList, biomeWhiteList);
-				BiomeHelper.loadBiomeList(rawBiomeBlackList, biomeBlackList);
+				this.biomes = new BiomesConfig(whiteList, blackList, typeWhiteList, typeBlackList);
 			}
 
 			@Override
@@ -458,18 +513,29 @@ public class ModConfig implements IConfig, ILoggerConfig {
 			}
 
 			@Override
-			public List<BiomeTypeHolder> getBiomeWhiteList() {
-				return biomeWhiteList;
+			public List<BiomeTypeHolder> getBiomeTypeWhiteList() {
+				return biomes.getTypeWhiteList();
 			}
 
 			@Override
-			public List<BiomeTypeHolder> getBiomeBlackList() {
-				return biomeBlackList;
+			public List<BiomeTypeHolder> getBiomeTypeBlackList() {
+				return biomes.getTypeBlackList();
 			}
 
 			@Override
 			public double getMimicProbability() {
 				return mimicProbability;
+			}
+
+			@Override
+			public List<Biome> getBiomeWhiteList() {
+				return biomes.getWhiteList();
+			}
+
+
+			@Override
+			public List<Biome> getBiomeBlackList() {
+				return biomes.getBlackList();
 			}
 		}
 
@@ -499,6 +565,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 	 */
 	public static class Pits {
 		@Comment({"The probability that a pit will contain a structure (treasure room(s), cavern etc.)"})
+		@Name("01. Probability of pit structure spawn:")
 		@RangeInt(min = 0, max = 100)
 		public int pitStructureProbability = 25;
 	}
@@ -507,37 +574,28 @@ public class ModConfig implements IConfig, ILoggerConfig {
 	 * 
 	 */
 	public static class Well implements IWellConfig {
-		@Comment({"Toggle to allow/disallow the generation of well."})
+		@Comment({"Toggle to allow/disallow the spawn of well."})
+		@Name("01. Enabled wells:")
 		public boolean wellAllowed = true;
-		@Comment("The minimum number of chunks generated before another attempt to generate a well is made.")
+		
+		@Comment("The minimum number of chunks generated before another attempt to spawn a well is made.")
+		@Name("02. Chunks per well spawn:")
 		@RangeInt(min = 100, max = 32000)
 		public int chunksPerWell = 400;
+		
 		@Comment({"The probability that a well will generate."})
+		@Name("03. Generation probability:")
 		@RangeDouble(min = 0.0, max = 100.0)
 		public double genProbability = 80.0;
 
-		@Comment({"Allowable Biome Types for general Well generation. Must match the Type identifer(s)."})
-		@Name("biomeWhiteList")
-		public String[] rawBiomeWhiteList = new String[] {};
-		
-		@Comment({"Disallowable Biome Types for general Well generation. Must match the Type identifer(s)."})
-		@Name("biomeBlackList")
-		public String[] rawBiomeBlackList = new String[] {"ocean", "deep_ocean"} ;
-		
-		@Ignore public List<BiomeTypeHolder> biomeWhiteList = new ArrayList<>();
-		@Ignore public List<BiomeTypeHolder> biomeBlackList = new ArrayList<>();
-		
-		@Ignore public List<Biome> biomesWhiteList = new ArrayList<>();
-		@Ignore public List<Biome> biomesBlackList = new ArrayList<>();
-		
-		/*
-		 * 
-		 */
-		public Well() {
-			BiomeHelper.loadBiomeList(rawBiomeWhiteList, biomeWhiteList);
-			BiomeHelper.loadBiomeList(rawBiomeBlackList, biomeBlackList);
-			biomesWhiteList = TreasureBiomeHelper.loadBiomesList(rawBiomeWhiteList);
-		}
+		@Name("biomes")
+		@Comment({"Biome white and black list properties."})
+		public BiomesConfig biomes = new BiomesConfig(
+				new String[] {},
+				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
+						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
+				new String[] {},
+				new String[] {"ocean", "deep_ocean"});
 
 		@Override
 		public boolean isWellAllowed() {
@@ -555,84 +613,112 @@ public class ModConfig implements IConfig, ILoggerConfig {
 		}
 
 		@Override
-		public List<BiomeTypeHolder> getBiomeWhiteList() {
-			return biomeWhiteList;
+		public List<Biome> getBiomeWhiteList() {
+			return biomes.getWhiteList();
 		}
-
 		@Override
-		public List<BiomeTypeHolder> getBiomeBlackList() {
-			return biomeBlackList;
+		public List<Biome> getBiomeBlackList() {
+			return biomes.getBlackList();
 		}
+		@Override
+		public List<BiomeTypeHolder> getBiomeTypeWhiteList() {
+			return biomes.getTypeWhiteList();
+		}
+		@Override
+		public List<BiomeTypeHolder> getBiomeTypeBlackList() {
+			return biomes.getTypeBlackList();
+		}
+		
 	}
 
 	/*
 	 * 
 	 */
-	public static class WitherTree {
-		@Comment({"The number of chunks generated before a wither tree generation is attempted."})
+	public static class WitherTree implements IWitherTreeConfig {
+		@Comment({"The number of chunks generated before a wither tree spawn is attempted."})
+		@Name("01. Chunks per wither tree spawn:")
 		@RangeInt(min = 200, max = 32000)
 		public int chunksPerTree = 800;		
-		@Comment({"The probability that a wither tree will generate."})
+		@Comment({"The probability that a wither tree will spawn."})
+		@Name("02. Probability of wither tree spawn:")
 		@RangeDouble(min = 0.0, max = 100.0)
 		public double genProbability = 90.0;
-		@Comment({})
+		@Comment({"The max. height a wither tree can reach.", "This is the high end of a calculated range. ex size is randomized between minTrunkSize and maxTrunkSize.", "(The min. is prefined.)"})
+		@Name("03. Max. trunk height (in blocks):")
 		@RangeInt(min = 7, max = 20)
-		public int maxTrunkSize;
-		@Comment({})
+		public int maxTrunkSize = 13;
+		@Comment({"The minimum number of supporting wither trees that surround the main tree in the grove."})
+		@Name("04. Min. supporting trees:")
 		@RangeInt(min = 0, max = 30)
 		public int minSupportingTrees = 5;
-		@Comment({})
+		@Comment({"The maximum number of supporting wither trees that surround the main tree in the grove."})
+		@Name("05. Max. supporting trees:")
 		@RangeInt(min = 0, max = 30)
 		public int maxSupportingTrees = 15;
 
-		@Comment("")
+		@Comment("The probability that a wither branch item will drop when a wither branch is harvested.")
+		@Name("06. Probability of branch item on harvest:")
 		@RangeDouble(min = 0.0, max = 100.0)	    		
 		public double witherBranchItemGenProbability = 50.0;
-		@Comment("")
+		@Comment("The probability that a wither root item will drop when a wither root is harvested.")
+		@Name("07. Probability of root item on harvest:")
 		@RangeDouble(min = 0.0, max = 100.0)
 		public double witherRootItemGenProbability=50.0;
 
-		@Name("biomeWhiteList")
-		@Comment({"Allowable Biome Types for Wither Tree generation. Must match the Type identifer(s)."})
-		public String[] rawBiomeWhiteList = new String[] {"forest", "magical", "lush", "spooky", "dead", "jungle", "coniferous", "savanna"};
-		@Name("biomeBlackList")
-		@Comment({"Disallowable Biome Types for Wither Tree generation. Must match the Type identifer(s)."})
-		public String[] rawBiomeBlackList = new String[] {};
+		@Name("biomes")
+		@Comment({"Biome white and black list properties."})
+		public BiomesConfig biomes = new BiomesConfig(
+				new String[] {},
+				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
+						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean", "ice_spikes", "plains", 
+						"sunflower_plains", "the_void", "nether", "gravelly_mountanis", "modified_gravelly_mountains"},
+				new String[] {},
+				new String[] {});
 
-		@Ignore public List<BiomeTypeHolder> biomeWhiteList = new ArrayList<>();
-		@Ignore public List<BiomeTypeHolder> biomeBlackList = new ArrayList<>();
-
-		public WitherTree() {
-			BiomeHelper.loadBiomeList(rawBiomeWhiteList, biomeWhiteList);
-			BiomeHelper.loadBiomeList(rawBiomeBlackList, biomeBlackList);
-		}
-
+		@Override
 		public int getChunksPerTree() {
 			return chunksPerTree;
 		}
+		@Override
 		public double getGenProbability() {
 			return genProbability;
 		}
+		@Override
 		public int getMaxTrunkSize() {
 			return maxTrunkSize;
 		}
+		@Override
 		public int getMinSupportingTrees() {
 			return minSupportingTrees;
 		}
+		@Override
 		public int getMaxSupportingTrees() {
 			return maxSupportingTrees;
 		}
+		@Override
 		public double getWitherBranchItemGenProbability() {
 			return witherBranchItemGenProbability;
 		}
+		@Override
 		public double getWitherRootItemGenProbability() {
 			return witherRootItemGenProbability;
 		}
-		public List<BiomeTypeHolder> getBiomeWhiteList() {
-			return biomeWhiteList;
+		@Override
+		public List<Biome> getBiomeWhiteList() {
+			return biomes.getWhiteList();
 		}
-		public List<BiomeTypeHolder> getBiomeBlackList() {
-			return biomeBlackList;
+		@Override
+		public List<Biome> getBiomeBlackList() {
+			return biomes.getBlackList();
+		}
+
+		@Override
+		public List<BiomeTypeHolder> getBiomeTypeWhiteList() {
+			return biomes.getTypeWhiteList();
+		}
+		@Override
+		public List<BiomeTypeHolder> getBiomeTypeBlackList() {
+			return biomes.getTypeBlackList();
 		}
 	}
 
@@ -641,36 +727,57 @@ public class ModConfig implements IConfig, ILoggerConfig {
 	 */
 	public static class GemsAndOres {
 		@Comment("The number of chunks generated before another attempt to generate a gem ore spawn is made.")
+		@Name("01. Chunks per gem ore spawn:")
 		@RangeInt(min = 1, max = 32000)
 		public int chunksPerGemOre = 1;
 
+		@Comment({"The probability that a ruby ore will spawn."})
+		@Name("02. Probability of ruby ore spawn.")
 		@RangeDouble(min = 0.0, max = 100.0)
 		public double rubyGenProbability = 65.0;
 
+		@Comment({"The max. y-value where a ruby ore can spawn."})
+		@Name("03. Max. y-value for ruby ore spawn location:")
 		@RangeInt(min = 1, max = 255)
 		public int rubyOreMaxY = 14;
 
+		@Comment({"The min. y-value where a ruby ore can spawn."})
+		@Name("04. Min. y-value for ruby ore spawn location:")
 		@RangeInt(min = 1, max =  255)
 		public int rubyOreMinY = 6;
 
+		@Comment({"The number of ruby ore blocks in a vein."})
+		@Name("05. Ruby ore vein size:")
 		@RangeInt(min = 1, max = 20)
 		public int rubyOreVeinSize = 3;
 
+		@Comment({"The number of ruby ore veins in a chunk."})
+		@Name("06. Ruby ore veins per chunk.")
 		@RangeInt(min = 1, max = 20)
 		public int rubyOreVeinsPerChunk = 1;
 
+		@Comment({"The probability that a sapphire ore will spawn."})
+		@Name("07. Probability of sapphire ore spawn.")
 		@RangeDouble(min=  0.0, max =  100.0)
 		public double sapphireGenProbability = 65.0;
 
+		@Comment({"The max. y-value where a sapphire ore can spawn."})
+		@Name("08. Max. y-value for sapphire ore spawn location:")
 		@RangeInt(min = 1, max = 255)
 		public int sapphireOreMaxY = 14;
 
+		@Comment({"The min. y-value where a sapphire ore can spawn."})
+		@Name("09. Min. y-value for sapphire ore spawn location:")
 		@RangeInt(min = 1, max = 255)
 		public int sapphireOreMinY = 6;
 
+		@Comment({"The number of sapphire ore blocks in a vein."})
+		@Name("10. Sapphire ore vein size:")
 		@RangeInt(min = 1, max = 20)
 		public int sapphireOreVeinSize = 3;
 
+		@Comment({"The number of sapphire ore veins in a chunk."})
+		@Name("11. Sapphire ore veins per chunk.")
 		@RangeInt(min = 1, max = 20)
 		public int sapphireOreVeinsPerChunk=1;
 	}
@@ -680,70 +787,87 @@ public class ModConfig implements IConfig, ILoggerConfig {
 	 */
 	public static class KeysAndLocks {
 		@Comment({"Enable/Disable whether a Key can break when attempting to unlock a Lock."})
+		@Name("01. Enable key breaks:")
 		public boolean enableKeyBreaks = true;
 
 		@Comment({"Enable/Disable whether a Lock item is dropped when unlocked by Key item."})
+		@Name("02. Enable lock drops:")
 		public boolean enableLockDrops = true;
 
+		@Comment({"The maximum uses for a given pilferers lock pick."})
+		@Name("03. Pilferer's lockpick max. uses:")
+		@RangeInt(min = 1, max = 32000)
+		public int pilferersLockPickMaxUses = 10;
+
+		@Comment({"The maximum uses for a given thiefs lock pick."})
+		@Name("04. Thief's lockpick max. uses:")
+		@RangeInt(min = 1, max = 32000)
+		public int thiefsLockPickMaxUses = 10;
+		
+		@Comment({"The maximum uses for a given wooden key."})
+		@Name("05. Wood key max. uses:")
+		@RangeInt(min = 1, max = 32000)
+		public int woodKeyMaxUses = 20;
+		
+		@Comment({"The maximum uses for a given stone key."})
+		@Name("06. Stone key max uses:")
+		@RangeInt(min = 1, max = 32000)
+		public int stoneKeyMaxUses = 10;
+
+		@Comment({"The maximum uses for a given iron key."})
+		@Name("07. Iron key max. uses:")
+		@RangeInt(min = 1, max = 32000)
+		public int ironKeyMaxUses = 10;
+
+		@Comment({"The maximum uses for a given gold key."})
+		@Name("08. Gold key max. uses:")
+		@RangeInt(min = 1, max = 32000)
+		public int goldKeyMaxUses = 15;
+		
 		@Comment({"The maximum uses for a given diamond key."})
+		@Name("09. Diamond key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		public int diamondKeyMaxUses = 20;
 
 		@Comment({"The maximum uses for a given emerald key."})
+		@Name("10. Emerald key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		public int emeraldKeyMaxUses = 10;
-
-		@Comment({"The maximum uses for a given gold key."})
-		@RangeInt(min = 1, max = 32000)
-		public int goldKeyMaxUses = 15;
-
-		@Comment({"The maximum uses for a given iron key."})
-		@RangeInt(min = 1, max = 32000)
-		public int ironKeyMaxUses = 10;
-
-		@Comment({"The maximum uses for a given jewelled key."})
-		@RangeInt(min = 1, max = 32000)
-		public int jewelledKeyMaxUses = 5;
-
-		@Comment({"The maximum uses for a given metallurgists key."})
-		@RangeInt(min = 1, max = 32000)
-		public int metallurgistsKeyMaxUses = 25;
-
-		@Comment({"The maximum uses for a given pilferers lock pick."})
-		@RangeInt(min = 1, max = 32000)
-		public int pilferersLockPickMaxUses = 10;
-
+		
 		@Comment({"The maximum uses for a given ruby key."})
+		@Name("11. Ruby key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		public int rubyKeyMaxUses = 8;
 
 		@Comment({"The maximum uses for a given sapphire key."})
+		@Name("12. Sapphire key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		public int sapphireKeyMaxUses = 5;
+		
+		@Comment({"The maximum uses for a given metallurgists key."})
+		@Name("13. Metallurgists key max. uses:")
+		@RangeInt(min = 1, max = 32000)
+		public int metallurgistsKeyMaxUses = 25;
 
 		@Comment({"The maximum uses for a given skeleton key."})
+		@Name("14. Skeleton key max. uses:")
 		@RangeInt(min = 1, max =32000)
 		public int skeletonKeyMaxUses = 5;
+		
+		@Comment({"The maximum uses for a given jewelled key."})
+		@Name("15. Jewelled Key max. uses:")
+		@RangeInt(min = 1, max = 32000)
+		public int jewelledKeyMaxUses = 5;
 
 		@Comment({"The maximum uses for a given spider key."})
+		@Name("16. Spider key max uses:")
 		@RangeInt(min = 1, max = 32000)
 		public int spiderKeyMaxUses = 5;
 
-		@Comment({"The maximum uses for a given stone key."})
-		@RangeInt(min = 1, max = 32000)
-		public int stoneKeyMaxUses = 10;
-
-		@Comment({"The maximum uses for a given thiefs lock pick."})
-		@RangeInt(min = 1, max = 32000)
-		public int thiefsLockPickMaxUses = 10;
-
 		@Comment({"The maximum uses for a given wither key."})
+		@Name("17. Wither key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		public int witherKeyMaxUses = 5;
-
-		@Comment({"The maximum uses for a given wooden key."})
-		@RangeInt(min = 1, max = 32000)
-		public int woodKeyMaxUses = 20;
 	}
 
 	/*
@@ -751,51 +875,59 @@ public class ModConfig implements IConfig, ILoggerConfig {
 	 */
 	public static class WorldGen {
 
-		@Name("01-general")
+		@Name("01 general")
 		public GeneralProperties generalProperties = new GeneralProperties();
 
-		@Name("02-markers")
+		@Name("02 markers")
 		public MarkerProperties markerProperties = new MarkerProperties();
 
 		public class GeneralProperties {
-			@Comment({"Disallowable Biome Types for general Chest generation.", "Must match the Type identifer(s)."})
-			public String[] generalChestBiomeBlackList = new String[] {};
-			@Comment({"Allowable Biome Types for general Chest generation.", "Must match the Type identifer(s)."})
-			public String [] generalChestBiomeWhiteList = new String[] {};
 			@Comment({"Enable/Disable whether a fog is generated (ex. around graves/tombstones and wither trees)"})
+			@Name("01. Enable fog:")
 			public boolean enableFog = true;
 			@Comment({"Enable/Disable whether a wither fog is generated (ex. around wither trees)"})
+			@Name("02. Enable wither fog:")
 			public boolean enableWitherFog = true;
 			@Comment({"Enable/Disable whether a poison fog is generated (ex. around wither trees)"})
+			@Name("03. Enable poison fog:")
 			public boolean enablePoisonFog = true;
+			
 			@Comment({"This is a temporary property.", "@since v1.5.0."})
+			@Name("04. Probability of (under)water structure spawn:")
 			@RangeDouble(min = 0.0, max = 100.0)
 			public double waterStructureProbability = 50.0;
 			@Comment({"The probability that a surface structure will generate."})
+			@Name("05. Probability of surface structure spawn:")
 			@RangeInt(min = 0, max = 100)
 			public int surfaceStructureProbability = 25;
 		}
 
 		public class MarkerProperties {
-			@Comment("Enable/Disable whether gravestone are generated when generating Treasure pits.")
+			@Comment("Enable/Disable whether grave markers (gravestones, bones)  are generated when generating pits.")
+			@Name("01. Enable grave markers:")
 			public boolean isGravestonesAllowed = true;
 
-			@Comment("Enable/Disable whether structures (building and other non-gravestones) are generated when generating Treasure pits.")
+			@Comment("Enable/Disable whether structures (buildings and other non-grave) are generated when generating  pits.")
+			@Name("02. Enable structure markers:")
 			public boolean isMarkerStructuresAllowed = true;
 
-			@Comment({"The probability that a gravestone will have fog."})
-			@RangeInt(min = 0,  max = 100)
-			public int gravestoneFogProbability = 50;
-
-			@Comment({"The minimun of Treasure chest markers (gravestones, bones)."})
+			@Comment({"The min. number of grave markers (gravestones, bones) per chest."})
+			@Name("03. Min. grave markers per chest:")
 			@RangeInt(min = 1, max = 5)
 			public int minGravestonesPerChest = 4;
 
-			@Comment({"The maximum of Treasure chest markers (gravestones, bones)."})
+			@Comment({"The max. number of grave markers (gravestones, bones) per chest."})
+			@Name("04. Max. grave markers per chest: ")
 			@RangeInt(min = 1, max = 10)
 			public int maxGravestonesPerChest = 8;
+			
+			@Comment({"The probability that a gravestone will have fog."})
+			@Name("05. Probability that grave marker has fog:")
+			@RangeInt(min = 0,  max = 100)
+			public int gravestoneFogProbability = 50;
 
-			@Comment({"The probability that a Treasure chest marker will be a structure."})
+			@Comment({"The probability that a marker will be a structure."})
+			@Name("06. Probability that marker will be a structure:")
 			@RangeInt(min = 0, max = 100)
 			public int markerStructureProbability = 15;
 		}
@@ -847,7 +979,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 	@Override
 	public void setLatestVersion(String latestVersion) {
 		MOD.latestVersion = latestVersion;
-		
+
 	}
 
 	@Override
@@ -873,19 +1005,19 @@ public class ModConfig implements IConfig, ILoggerConfig {
 	@Deprecated
 	@Override
 	public void setProperty(String category, String key, boolean value) {
-				
+
 	}
 
 	@Deprecated
 	@Override
 	public void setProperty(String category, String key, String value) {
-		
+
 	}
 
 	@Deprecated
 	@Override
 	public void setProperty(Property property, String value) {
-		
+
 	}
 
 	@Override
@@ -911,7 +1043,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 	/*
 	 * ILoggerConfig inherited methods
 	 */	
-	
+
 	@Override
 	public String getLoggerLevel() {
 		return LOGGING.level;

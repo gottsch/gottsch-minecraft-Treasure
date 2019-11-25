@@ -19,6 +19,7 @@ import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.WitherBranchBlock;
 import com.someguyssoftware.treasure2.block.WitherLogSoulBlock;
 import com.someguyssoftware.treasure2.block.WitherRootBlock;
+import com.someguyssoftware.treasure2.config.IWitherTreeConfig;
 import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.GenUtil;
@@ -103,7 +104,7 @@ public class WitherTreeGenerator {
 	 * @param config
 	 * @return
 	 */
-	public boolean generate(World world, Random random, ICoords coords, ModConfig.WitherTree config) {
+	public boolean generate(World world, Random random, ICoords coords, IWitherTreeConfig config) {
 
 		ICoords surfaceCoords = null;
 		ICoords witherTreeCoords = null;
@@ -130,8 +131,7 @@ public class WitherTreeGenerator {
 		
 		// determine how many extra "withered" trees to include in the area
 		int numTrees = RandomHelper.randomInt(config.getMinSupportingTrees(), config.getMaxSupportingTrees());
-//		Treasure.logger.debug("number of witherED trees to gen: {}", numTrees);
-		
+
 		for (int treeIndex = 0; treeIndex < numTrees; treeIndex++) {
 			// find a random location around a radius from the tree
 			// ie. rand x-radius, rand z-radius = new point (+x,+z), rand degrees of rotation from origin
@@ -218,7 +218,7 @@ public class WitherTreeGenerator {
 	 * @param random
 	 * @param coords
 	 */
-	public void buildTree(World world, Random random, ICoords coords, ModConfig.WitherTree config) {
+	public void buildTree(World world, Random random, ICoords coords, IWitherTreeConfig config) {
 		// build a small wither  tree ie one trunk
 
 		// determine the size of the main trunk
@@ -255,7 +255,7 @@ public class WitherTreeGenerator {
 	 * @param world
 	 * @param coords
 	 */
-	public void buildTrunk(World world, Random random, ICoords coords, ModConfig.WitherTree config) {
+	public void buildTrunk(World world, Random random, ICoords coords, IWitherTreeConfig config) {
 		// setup an array of coords
 		ICoords[] trunkCoords = new Coords[4];
 		trunkCoords[0] = coords;
