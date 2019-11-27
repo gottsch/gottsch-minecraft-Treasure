@@ -102,7 +102,7 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 				continue;
 			}
 			
-			// don't place if the block underneath is of GenericBlock Chest or Container
+			// don't place if the block underneath is of GenericBlock ChestConfig or Container
 			Block block = world.getBlockState(spawnCoords.add(0, -1, 0).toPos()).getBlock();
 			if(block instanceof BlockContainer || block instanceof AbstractModContainerBlock || block instanceof ITreasureBlock) {
 				Treasure.logger.debug("Marker not placed because block underneath is a chest, container or Treasure block.");

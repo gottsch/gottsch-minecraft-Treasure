@@ -355,6 +355,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 
 		String filename = String.format("treasure-template-mgr-%s.txt", formatter.format(new Date()));
 
+		// TODO change to go to treasure2 folder - how, don't take actual config in.
 		Path path = Paths.get(getMod().getConfig().getModsFolder(), getMod().getId(), "dumps").toAbsolutePath();
 		try {
 			Files.createDirectories(path);

@@ -40,7 +40,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * @author Mark Gottschling on Sep 4, 2019
  *
  */
-// TODO get version in the config name
 @Config(modid = Treasure.MODID, name = Treasure.MODID + "/" + Treasure.MODID + "-" + ModConfig.CONFIG_VERSION, type = Type.INSTANCE)
 public class ModConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String CONFIG_VERSION = "c1.0";
@@ -220,7 +219,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 	public static final Logging LOGGING = new Logging();
 
 	@Name("03 chests")
-	@Comment({"Chest properties"})
+	@Comment({"ChestConfig properties"})
 	public static final Chests CHESTS = new Chests();
 
 //	@Name("04 actual chests")
@@ -277,13 +276,18 @@ public class ModConfig implements IConfig, ILoggerConfig {
 		@Name("01. Enable the Treasure mod:")
 		public boolean enabled = true;
 		
-		@Comment({"The relative path to the mods folder."})
-		@Name("02. The 'mods' folder:")
+		@Comment({"The directory where mods are located.", "This is relative to the Minecraft install path."})
+		@Name("02. Mods folder:")
 		public String folder = "mods";
 
+		@Deprecated
 		@Comment({"The relative path to the default Treasure folder.", "This is where resource files will be located."})
 		@Name("03. Treasure mod's folder:")
 		public String treasureFolder = folder + "/" + Treasure.MODID + "/";
+		
+		@Comment({"The directory where configs are located.", "Resource files will be located here as well.", "This is relative to the Minecraft install path."})
+		@Name("03. Config folder:")
+		public String configFolder = "config";
 		
 		@Comment({"Enables/Disables version checking."})
 		@Name("04. Enable the version checker:")
@@ -339,7 +343,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 		
 		@Comment({"The directory where the logs should be stored.", "This is relative to the Minecraft install path."})
 		@Name("03. Logs folder:")
-		public String folder = "mods/" + Treasure.MODID + "/logs/";
+		public String folder = "/logs/treasure2";
 
 		@Comment({"The base filename of the  log file."})
 		@Name("04. Base name of log file:")
@@ -375,7 +379,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 		public int chestRegistrySize = 25;
 
 		@Name("01-Common chest")
-		public Chest commonChestProperties = new Chest(true, 75, 85, 50,
+		public ChestConfig commonChestProperties = new ChestConfig(true, 75, 85, 50,
 				new String[] {},
 				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
 						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
@@ -383,7 +387,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 				new String[] {"ocean", "deep_ocean"});
 
 		@Name("02-Uncommon chest")
-		public Chest uncommonChestProperties = new Chest(true, 150, 75, 40,
+		public ChestConfig uncommonChestProperties = new ChestConfig(true, 150, 75, 40,
 				new String[] {},
 				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
 						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
@@ -391,7 +395,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 				new String[] {"ocean", "deep_ocean"});
 
 		@Name("03-Scarce chest")
-		public Chest scarceChestProperties = new Chest(true, 300, 50, 30,
+		public ChestConfig scarceChestProperties = new ChestConfig(true, 300, 50, 30,
 				new String[] {},
 				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
 						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean",
@@ -400,7 +404,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 				new String[] {"ocean", "deep_ocean", "plains"});
 
 		@Name("04-Rare chest")
-		public Chest rareChestProperties = new Chest(true, 500, 25, 20,
+		public ChestConfig rareChestProperties = new ChestConfig(true, 500, 25, 20,
 				new String[] {},
 				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
 						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean",
@@ -409,7 +413,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 				new String[] {"ocean", "deep_ocean", "plains"});
 
 		@Name("05-Epic chest")
-		public Chest epicChestProperties = new Chest(true, 800, 15, 10,
+		public ChestConfig epicChestProperties = new ChestConfig(true, 800, 15, 10,
 				new String[] {},
 				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
 						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean",
@@ -428,7 +432,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 		/*
 		 * 
 		 */
-		public class Chest implements IChestConfig {
+		public class ChestConfig implements IChestConfig {
 			@Ignore
 			public boolean chestAllowed = true;
 
@@ -447,7 +451,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 			@RangeInt(min = 5, max = 250)
 			public int minYSpawn = 25;
 
-			@Comment({"The probability that a chest will be a mimic.", "NOTE: only common Wooden Chest have mimics avaiable."})
+			@Comment({"The probability that a chest will be a mimic.", "NOTE: only common Wooden ChestConfig have mimics avaiable."})
 			@Name("04. Mimic probability:")
 			@RangeDouble(min = 0.0, max = 100.0)
 			public double mimicProbability = 0.0;
@@ -473,7 +477,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 			/*
 			 * 
 			 */
-			public Chest(boolean isAllowed, int chunksPer, double probability, int minYSpawn,
+			public ChestConfig(boolean isAllowed, int chunksPer, double probability, int minYSpawn,
 					String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
 				this.chestAllowed = isAllowed;
 				this.chunksPerChest = chunksPer;
@@ -539,23 +543,23 @@ public class ModConfig implements IConfig, ILoggerConfig {
 			}
 		}
 
-		public Chest getCommonChestProperties() {
+		public ChestConfig getCommonChestProperties() {
 			return commonChestProperties;
 		}
 
-		public Chest getScarceChestProperties() {
+		public ChestConfig getScarceChestProperties() {
 			return scarceChestProperties;
 		}
 
-		public Chest getRareChestProperties() {
+		public ChestConfig getRareChestProperties() {
 			return rareChestProperties;
 		}
 
-		public Chest getEpicChestProperties() {
+		public ChestConfig getEpicChestProperties() {
 			return epicChestProperties;
 		}
 
-		public Chest getUncommonChestProperties() {
+		public ChestConfig getUncommonChestProperties() {
 			return uncommonChestProperties;
 		}
 	}
@@ -1063,4 +1067,10 @@ public class ModConfig implements IConfig, ILoggerConfig {
 	public String getLoggerFilename() {
 		return LOGGING.filename;
 	}
+
+	@Override
+	public String getConfigFolder() {
+		return MOD.configFolder;
+	}
+
 }

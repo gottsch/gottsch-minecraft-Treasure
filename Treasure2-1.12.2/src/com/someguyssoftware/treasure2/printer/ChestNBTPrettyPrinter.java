@@ -59,7 +59,7 @@ public class ChestNBTPrettyPrinter {
 		try {
 			Files.write(path.toAbsolutePath(), s.getBytes());
 		} catch (IOException e) {
-			Treasure.logger.error("Error writing Chest NBT to dump file", e);
+			Treasure.logger.error("Error writing ChestConfig NBT to dump file", e);
 		}
 		return s;
 	}
@@ -140,7 +140,7 @@ public class ChestNBTPrettyPrinter {
 			sb.append("\n");			
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Error dumping Chest NBT", e);
+			Treasure.logger.error("Error dumping ChestConfig NBT", e);
 			return e.getMessage();
 		}
 		return sb.toString();

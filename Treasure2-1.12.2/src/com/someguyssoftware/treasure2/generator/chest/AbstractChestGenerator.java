@@ -495,7 +495,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator<Generato
 	 */
 	public void addMarkers(World world, Random random, ICoords coords) {
 		boolean isChestOnSurface = false;
-		// don't place if the block underneath is of GenericBlock Chest or Container
+		// don't place if the block underneath is of GenericBlock ChestConfig or Container
 		Block block = world.getBlockState(coords.add(0, -1, 0).toPos()).getBlock();
 		if(block instanceof BlockContainer || block instanceof AbstractModContainerBlock || block instanceof ITreasureBlock) {
 			isChestOnSurface = true;

@@ -80,9 +80,9 @@ public class GenDataPersistence extends WorldSavedData {
 		///// Gem Ore /////
 		gemGen.setChunksSinceLastOre(treasureGen.getInteger("chunksSinceLastOre"));
 		
-		///// Chest Registry /////
+		///// ChestConfig Registry /////
 		ChestRegistry chestRegistry = ChestRegistry.getInstance();
-		Treasure.logger.debug("Chest Registry size before loading -> {}", chestRegistry.getValues().size());
+		Treasure.logger.debug("ChestConfig Registry size before loading -> {}", chestRegistry.getValues().size());
 		chestRegistry.clear();
 		// load the chest registry
 		NBTTagList chestRegistryTagList = tag.getTagList("chestRegistry", 10);
@@ -96,7 +96,7 @@ public class GenDataPersistence extends WorldSavedData {
 			int z = coords.getInteger("z");
 			chestRegistry.register(key, new ChestInfo(Rarity.getByValue(rarity), new Coords(x, y, z)));
 		}
-		Treasure.logger.debug("Chest Registry size after loading -> {}", chestRegistry.getValues().size());
+		Treasure.logger.debug("ChestConfig Registry size after loading -> {}", chestRegistry.getValues().size());
 	}
 
 	/*
@@ -149,7 +149,7 @@ public class GenDataPersistence extends WorldSavedData {
 			GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.GEM);
 			treasureGen.setInteger("chunksSinceLastOre", gemGen.getChunksSinceLastOre());
 			
-			///// Chest Registry /////
+			///// ChestConfig Registry /////
 			NBTTagList chestRegistryTagList = new NBTTagList();
 			ChestRegistry chestRegistry = ChestRegistry.getInstance();
 			for (ChestInfo element : chestRegistry.getValues()) {
