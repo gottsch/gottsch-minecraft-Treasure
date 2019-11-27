@@ -205,7 +205,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 				te.writePropertiesToNBT(chestItem.getTagCompound());
 			}
 			else {
-				Treasure.logger.debug("[BreakingBlock] Chest is locked, save locks and items to NBT");
+				Treasure.logger.debug("[BreakingBlock] ChestConfig is locked, save locks and items to NBT");
 
 				/*
 				 * spawn chest item

@@ -207,7 +207,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 		List<ChestInfo> infos = ChestRegistry.getInstance().getValues();
 
 		if (infos == null || infos.size() == 0) {
-			Treasure.logger.debug("Unable to locate the Chest Registry or the Registry doesn't contain any values");
+			Treasure.logger.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");
 			return false;
 		}
 
@@ -215,7 +215,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 		for (ChestInfo info : infos) {
 			// calculate the distance to the poi
 			double distance = coords.getDistanceSq(info.getCoords());
-			Treasure.logger.debug("Chest dist^2: " + distance);
+			Treasure.logger.debug("ChestConfig dist^2: " + distance);
 			if (distance < minDistanceSq) {
 				return true;
 			}

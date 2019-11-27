@@ -40,7 +40,7 @@ import net.minecraftforge.common.util.Constants;
 
 /**
  * The backing TileEntity for TreasureChestBlocks, but does not extend TileEntityChest, nor implement IInventory, so other mods that access IInventory object
- * cannot access a Treasure Chest.  This class uses a proxy, InventoryProxy, when an IInventory is requried.
+ * cannot access a Treasure ChestConfig.  This class uses a proxy, InventoryProxy, when an IInventory is requried.
  * 
  * @author Mark Gottschling onDec 22, 2017
  *

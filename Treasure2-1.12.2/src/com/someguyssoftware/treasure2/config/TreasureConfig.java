@@ -308,8 +308,8 @@ public class TreasureConfig extends AbstractConfig {
         
         // white/black lists
         config.setCategoryComment("04-gen", "World generation properties.");    
-        generalChestBiomeWhiteList = config.getStringList("generalChestBiomeWhiteList", "04-gen", new String[]{}, "Allowable Biome Types for general Chest generation. Must match the Type identifer(s).");
-        generalChestBiomeBlackList = config.getStringList("generalChestBiomeBlackList", "04-gen", new String[]{}, "Disallowable Biome Types for general Chest generation. Must match the Type identifer(s).");
+        generalChestBiomeWhiteList = config.getStringList("generalChestBiomeWhiteList", "04-gen", new String[]{}, "Allowable Biome Types for general ChestConfig generation. Must match the Type identifer(s).");
+        generalChestBiomeBlackList = config.getStringList("generalChestBiomeBlackList", "04-gen", new String[]{}, "Disallowable Biome Types for general ChestConfig generation. Must match the Type identifer(s).");
         
       	minDistancePerChest = config.getInt("minDistancePerChest", "04-gen", 75, 0, 32000, "");
       	minChunksPerChest = config.getInt("minChunksPerChest", "04-gen", 35, 0, 32000, "");

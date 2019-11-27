@@ -71,12 +71,12 @@ public class GenUtil {
 		// get the tile entity
 		TileEntity te = (TileEntity) world.getTileEntity(pos);
 		if (te == null) {
-			Treasure.logger.warn("Unable to locate Chest TileEntity @: " + pos);
+			Treasure.logger.warn("Unable to locate ChestConfig TileEntity @: " + pos);
 			return null;
 		}
 		// test if te implements ITreasureChestTileEntityOLD
 		if (!(te instanceof AbstractTreasureChestTileEntity)) {
-			Treasure.logger.warn("Chest TileEntity does not implement TreasureChestTileEntity @: " + pos);
+			Treasure.logger.warn("ChestConfig TileEntity does not implement TreasureChestTileEntity @: " + pos);
 			return null;
 		}
 		
@@ -126,19 +126,19 @@ public class GenUtil {
 	public static boolean replaceBlockWithChest(World world, Random random, Block chest, ICoords coords) {
 		// get the old state
 		IBlockState oldState = world.getBlockState(coords.toPos());
-//		Treasure.logger.info("World Chest Marker coords:" + pos);
-//		Treasure.logger.info("World Chest Block:" + oldState.getClass().getCanonicalName());
-//		Treasure.logger.info("Treasure Chest Block:" + chest.getClass().getCanonicalName());
+//		Treasure.logger.info("World ChestConfig Marker coords:" + pos);
+//		Treasure.logger.info("World ChestConfig Block:" + oldState.getClass().getCanonicalName());
+//		Treasure.logger.info("Treasure ChestConfig Block:" + chest.getClass().getCanonicalName());
 		
 		if (oldState.getProperties().containsKey(FACING)) {
-			Treasure.logger.info("World Chest marker has FACING property:" + oldState.getValue(FACING));
+			Treasure.logger.info("World ChestConfig marker has FACING property:" + oldState.getValue(FACING));
 			// set the new state
 			return placeChest(world, chest, coords, (EnumFacing)oldState.getValue(FACING));
 			
 //			world.setBlockState(pos, this.getChest().getDefaultState().withProperty(FACING, oldState.getValue(FACING)), 3);
 		}
 		else {
-			Treasure.logger.info("World Chest marker does NOT have a FACING property.");
+			Treasure.logger.info("World ChestConfig marker does NOT have a FACING property.");
 //			world.setBlockState(chestCoords.toBlockPos(), this.getChest().getDefaultState(), 3);
 			return placeChest(world, chest, coords, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
 		}
@@ -197,7 +197,7 @@ public class GenUtil {
 			if (te == null) {
 				// remove the chest block
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());				
-				Treasure.logger.warn("Unable to create Chest's TileEntity, removing Chest.");
+				Treasure.logger.warn("Unable to create ChestConfig's TileEntity, removing ChestConfig.");
 				return false;
 			}
 			// update the TCTE facing
@@ -288,7 +288,7 @@ public class GenUtil {
 				continue;
 			}
 			
-			// don't place if the block underneath is of GenericBlock Chest or Container
+			// don't place if the block underneath is of GenericBlock ChestConfig or Container
 			Block block = world.getBlockState(spawnCoords.add(0, -1, 0).toPos()).getBlock();
 			if(block instanceof BlockContainer || block instanceof AbstractModContainerBlock || block instanceof ITreasureBlock) {
 				Treasure.logger.debug("Marker not placed because block underneath is a chest, container or Treasure block.");
@@ -587,7 +587,7 @@ public class GenUtil {
 		List<ChestInfo> infos = ChestRegistry.getInstance().getValues();
 
 		if (infos == null || infos.size() == 0) {
-			Treasure.logger.debug("Unable to locate the Chest Registry or the Registry doesn't contain any values");
+			Treasure.logger.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");
 			return false;
 		}
 
@@ -595,7 +595,7 @@ public class GenUtil {
 		for (ChestInfo info : infos) {
 			// calculate the distance to the poi
 			double distance = coords.getDistanceSq(info.getCoords());
-			Treasure.logger.debug("Chest dist^2: " + distance);
+			Treasure.logger.debug("ChestConfig dist^2: " + distance);
 			if (distance < minDistanceSq) {
 				return true;
 			}

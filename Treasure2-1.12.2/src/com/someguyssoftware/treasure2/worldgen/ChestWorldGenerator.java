@@ -219,7 +219,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
     			
 				// 1. test if chest meets the probability criteria
 				if (!RandomHelper.checkProbability(random, chestConfig.getGenProbability())) {
-//					Treasure.logger.debug("Chest does not meet generate probability.");
+//					Treasure.logger.debug("ChestConfig does not meet generate probability.");
 					return;
 				}
 				
@@ -314,7 +314,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		List<ChestInfo> infos = ChestRegistry.getInstance().getValues();
 
 		if (infos == null || infos.size() == 0) {
-			Treasure.logger.debug("Unable to locate the Chest Registry or the Registry doesn't contain any values");
+			Treasure.logger.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");
 			return false;
 		}
 		

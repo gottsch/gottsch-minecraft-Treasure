@@ -207,7 +207,7 @@ public class WellWorldGenerator implements IWorldGenerator {
 		List<ChestInfo> infos = ChestRegistry.getInstance().getValues();
 
 		if (infos == null || infos.size() == 0) {
-			Treasure.logger.debug("Unable to locate the Chest Registry or the Registry doesn't contain any values");
+			Treasure.logger.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");
 			return false;
 		}
 
