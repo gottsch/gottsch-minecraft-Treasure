@@ -5,9 +5,7 @@ package com.someguyssoftware.treasure2.command;
 
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.enums.Wells;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
 

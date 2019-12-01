@@ -43,7 +43,7 @@ public class WorldEventHandler {
 			Treasure.LOOT_TABLES.init(world);
 			Treasure.LOOT_TABLES.register(getMod().getId());
 			// register any foreign mod loot tables
-			for (String foreignModID : ModConfig.MOD.getForeignModProperties().enableForeignModIDs) {
+			for (String foreignModID : ModConfig.FOREIGN_MODS.enableForeignModIDs) {
 				if (Loader.isModLoaded(foreignModID)) {		
 					Treasure.LOOT_TABLES.register(foreignModID);
 				}

@@ -11,12 +11,9 @@ import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.enums.PitTypes;
-import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
-import com.someguyssoftware.treasure2.generator.pit.StructurePitGenerator;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;

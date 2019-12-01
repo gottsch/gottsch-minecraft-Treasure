@@ -90,7 +90,7 @@ public class TreasureLootTableMaster extends LootTableMaster {
 		
 		if (ModConfig.MOD.enableDefaultLootTablesCheck) {
 			buildAndExpose(Treasure.MODID);
-			for (String foreignModID : ModConfig.MOD.getForeignModProperties().enableForeignModIDs) {
+			for (String foreignModID : ModConfig.FOREIGN_MODS.enableForeignModIDs) {
 				if (Loader.isModLoaded(foreignModID)) {				
 					buildAndExpose(foreignModID);
 				}

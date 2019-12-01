@@ -3,17 +3,14 @@
  */
 package com.someguyssoftware.treasure2.config;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.someguyssoftware.gottschcore.biome.BiomeHelper;
 import com.someguyssoftware.gottschcore.biome.BiomeTypeHolder;
 import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.config.ILoggerConfig;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.world.biome.Biome;
@@ -212,14 +209,14 @@ public class ModConfig implements IConfig, ILoggerConfig {
 
 	@Name("01 mod")
 	@Comment({"General mod properties."})
-	public static final Mod MOD = new Mod();
+	public static final GeneralConfig MOD = new GeneralConfig();
 
 	@Name("02 logging")
 	@Comment({"Logging properties"})
 	public static final Logging LOGGING = new Logging();
 
 	@Name("03 chests")
-	@Comment({"ChestConfig properties"})
+	@Comment({"Chest properties"})
 	public static final Chests CHESTS = new Chests();
 
 //	@Name("04 actual chests")
@@ -249,6 +246,10 @@ public class ModConfig implements IConfig, ILoggerConfig {
 	@Comment("World generation properties")
 	public static final WorldGen WORLD_GEN = new WorldGen();
 
+	@Name("10 foreign mods")
+	@Comment("Foreign mod properties")
+	public static final ForeignModEnablements FOREIGN_MODS = new ForeignModEnablements();
+	
 	/*
 	 * Map of chest configs by rarity.
 	 */
@@ -267,67 +268,19 @@ public class ModConfig implements IConfig, ILoggerConfig {
 
 	public ModConfig() {
 	}
+	
 
 	/*
 	 * 
 	 */
-	public static class Mod {
-		@Comment({"Enables/Disables mod."})
-		@Name("01. Enable the Treasure mod:")
-		public boolean enabled = true;
-		
-		@Comment({"The directory where mods are located.", "This is relative to the Minecraft install path."})
-		@Name("02. Mods folder:")
-		public String folder = "mods";
-
-		@Deprecated
-		@Comment({"The relative path to the default Treasure folder.", "This is where resource files will be located."})
-		@Name("03. Treasure mod's folder:")
-		public String treasureFolder = folder + "/" + Treasure.MODID + "/";
-		
-		@Comment({"The directory where configs are located.", "Resource files will be located here as well.", "This is relative to the Minecraft install path."})
-		@Name("03. Config folder:")
-		public String configFolder = "config";
-		
-		@Comment({"Enables/Disables version checking."})
-		@Name("04. Enable the version checker:")
-		public boolean enableVersionChecker = true;
-		
-		@Comment({"The latest published version number.", "This is auto-updated by the version checker.", "This may be @deprecated."})
-		@Name("05. Latest mod version available:")
-		public String latestVersion = "";
-		
-		@Comment({"Remind the user of the latest version (as indicated in latestVersion proeprty) update."})
-		@Name("06. Enable latest mod version reminder:")
-		public boolean latestVersionReminder = true;
-
-		// this remains as general
-		@Comment({"Enable/Disable a check to ensure the default loot tables exist on the file system.", "If enabled, then you will not be able to remove any default loot tables (but they can be edited).", "Only disable if you know what you're doing."})
-		@Name("07. Enable default loot tables check:")
-		public boolean enableDefaultLootTablesCheck = true;
-		@Comment({"Enable/Disable a check to ensure the default templates exist on the file system.", "If enabled, then you will not be able to remove any default templates.", "Only disable if you know what you're doing."})
-		@Name("08. Enable default templates check:")
-		public boolean enableDefaultTemplatesCheck = true;
-
-		@Name("foreign mods")
-		public ForeignModEnablements foreignModProperties = new ForeignModEnablements();
-
-		/*
-		 * 
-		 */
-		public class ForeignModEnablements {
-			@Comment({"Add mod's MODID to this list to enable custom loot tables for a mod."})
-			@Name("01. Foreign mod IDs for custom loot tables:")
-			public String[] enableForeignModIDs = new String[]{"mocreatures", "sgs_metals"};
-			@Comment({"A list of mods that have prebuilt loot tables available.", "Note: used for informational purposes only."})
-			@Name("02. Pre-build loot tables for foreign mod IDs:")
-			public String[] availableForeignModLootTables = new String[]{"mocreatures", "sgs_metals"};
-		}
-
-		public ForeignModEnablements getForeignModProperties() {
-			return foreignModProperties;
-		}
-	}
+	public static class ForeignModEnablements {
+		@Comment({"Add mod's MODID to this list to enable custom loot tables for a mod."})
+		@Name("01. Foreign mod IDs for custom loot tables:")
+		public String[] enableForeignModIDs = new String[]{"mocreatures", "sgs_metals"};
+		@Comment({"A list of mods that have prebuilt loot tables available.", "Note: used for informational purposes only."})
+		@Name("02. Pre-build loot tables for foreign mod IDs:")
+		public String[] availableForeignModLootTables = new String[]{"mocreatures", "sgs_metals"};
+	}	
 
 	/*
 	 * 
@@ -343,7 +296,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 		
 		@Comment({"The directory where the logs should be stored.", "This is relative to the Minecraft install path."})
 		@Name("03. Logs folder:")
-		public String folder = "/logs/treasure2";
+		public String folder = "logs/treasure2";
 
 		@Comment({"The base filename of the  log file."})
 		@Name("04. Base name of log file:")
@@ -428,121 +381,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 			// setup extra properties
 			commonChestProperties.mimicProbability = 20.0;
 		}
-
-		/*
-		 * 
-		 */
-		public class ChestConfig implements IChestConfig {
-			@Ignore
-			public boolean chestAllowed = true;
-
-			@Comment({"The number of chunks generated before the chest spawn is attempted."})
-			@Name("01. Chunks per chest spawn:")
-			@RangeInt(min = 50, max = 32000)
-			public int chunksPerChest = 75;
-
-			@Comment({"The probability that a chest will spawn."})
-			@Name("02. Probability of chest spawn:")
-			@RangeDouble(min = 0.0, max = 100.0)
-			public double genProbability = 50.0;
-
-			@Comment({"The minimum depth (y-axis) that a chest can generate at."})
-			@Name("03. Min. y-value for spawn location:")
-			@RangeInt(min = 5, max = 250)
-			public int minYSpawn = 25;
-
-			@Comment({"The probability that a chest will be a mimic.", "NOTE: only common Wooden ChestConfig have mimics avaiable."})
-			@Name("04. Mimic probability:")
-			@RangeDouble(min = 0.0, max = 100.0)
-			public double mimicProbability = 0.0;
-			
-			// TODO most likely going to be removed with the use of meta files / archetype : type : biome categorizations
-			@Name("05. Enable surface spawn:")
-			public boolean surfaceAllowed = true;
-			
-			@Name("06. Enable subterranean spawn:")
-			public boolean subterraneanAllowed = true;
-
-
-
-			@Name("biomes")
-			@Comment({"Biome white and black list properties."})
-			public BiomesConfig biomes = new BiomesConfig(
-					new String[] {},
-					new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
-					new String[] {},
-					new String[] {"ocean", "deep_ocean"});
-
-			/*
-			 * 
-			 */
-			public ChestConfig(boolean isAllowed, int chunksPer, double probability, int minYSpawn,
-					String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
-				this.chestAllowed = isAllowed;
-				this.chunksPerChest = chunksPer;
-				this.genProbability = probability;
-				this.minYSpawn = minYSpawn;
-				this.biomes = new BiomesConfig(whiteList, blackList, typeWhiteList, typeBlackList);
-			}
-
-			@Override
-			public boolean isChestAllowed() {
-				return chestAllowed;
-			}
-
-			@Override
-			public int getChunksPerChest() {
-				return chunksPerChest;
-			}
-
-			@Override
-			public double getGenProbability() {
-				return genProbability;
-			}
-
-			@Override
-			public int getMinYSpawn() {
-				return minYSpawn;
-			}
-
-			@Override
-			public boolean isSurfaceAllowed() {
-				return surfaceAllowed;
-			}
-
-			@Override
-			public boolean isSubterraneanAllowed() {
-				return subterraneanAllowed;
-			}
-
-			@Override
-			public List<BiomeTypeHolder> getBiomeTypeWhiteList() {
-				return biomes.getTypeWhiteList();
-			}
-
-			@Override
-			public List<BiomeTypeHolder> getBiomeTypeBlackList() {
-				return biomes.getTypeBlackList();
-			}
-
-			@Override
-			public double getMimicProbability() {
-				return mimicProbability;
-			}
-
-			@Override
-			public List<Biome> getBiomeWhiteList() {
-				return biomes.getWhiteList();
-			}
-
-
-			@Override
-			public List<Biome> getBiomeBlackList() {
-				return biomes.getBlackList();
-			}
-		}
-
+		
 		public ChestConfig getCommonChestProperties() {
 			return commonChestProperties;
 		}
@@ -1068,7 +907,7 @@ public class ModConfig implements IConfig, ILoggerConfig {
 		return LOGGING.filename;
 	}
 
-	@Override
+//	@Override
 	public String getConfigFolder() {
 		return MOD.configFolder;
 	}

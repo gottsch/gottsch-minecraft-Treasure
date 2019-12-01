@@ -20,7 +20,6 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
-import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.enums.PitTypes;
