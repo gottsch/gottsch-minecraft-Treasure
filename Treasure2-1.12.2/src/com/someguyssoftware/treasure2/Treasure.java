@@ -27,7 +27,6 @@ import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitStructureOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellStructureCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
-import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;

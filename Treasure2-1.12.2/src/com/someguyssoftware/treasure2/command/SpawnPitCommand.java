@@ -3,21 +3,14 @@
  */
 package com.someguyssoftware.treasure2.command;
 
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.ModConfig;
-import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
-import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
-import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;

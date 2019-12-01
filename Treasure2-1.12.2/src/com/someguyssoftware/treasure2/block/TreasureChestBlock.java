@@ -257,7 +257,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 				formatter.format(new Date()), 
 				coords.toShortString().replaceAll(" ", "-"));
 
-		Path path = Paths.get(ModConfig.MOD.treasureFolder, "dumps").toAbsolutePath();
+		Path path = Paths.get(ModConfig.LOGGING.folder, "dumps").toAbsolutePath();
 		try {
 			Files.createDirectories(path);			
 		} catch (IOException e) {
