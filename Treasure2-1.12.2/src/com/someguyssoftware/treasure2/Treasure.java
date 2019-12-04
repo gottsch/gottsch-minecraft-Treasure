@@ -27,7 +27,7 @@ import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitStructureOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellStructureCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
-import com.someguyssoftware.treasure2.config.ModConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.MimicEventHandler;
@@ -70,7 +70,7 @@ import net.minecraftforge.oredict.OreDictionary;
 		modid=Treasure.MODID,
 		name=Treasure.NAME,
 		version=Treasure.VERSION,
-		dependencies="required-after:gottschcore@[1.8.0,)",
+		dependencies="required-after:gottschcore@[1.9.0,)",
 		acceptedMinecraftVersions = "[1.12.2]",
 		updateJSON = Treasure.UPDATE_JSON_URL
 		)
@@ -110,7 +110,7 @@ public class Treasure extends AbstractMod {
 	 *  Treasure Creative Tab
 	 *  Must be initialized <b>before</b> any registry events so that it is available to assign to blocks and items.
 	 */
-	public static CreativeTabs TREASURE_TAB = new CreativeTabs(CreativeTabs.getNextID(), Treasure.MODID + ":" + ModConfig.TREASURE_TAB_ID) {
+	public static CreativeTabs TREASURE_TAB = new CreativeTabs(CreativeTabs.getNextID(), Treasure.MODID + ":" + TreasureConfig.TREASURE_TAB_ID) {
 		@SideOnly(Side.CLIENT)
 		public ItemStack getTabIconItem() {
 			return new ItemStack(TreasureItems.TREASURE_TAB, 1);
@@ -148,12 +148,12 @@ public class Treasure extends AbstractMod {
 		
 		// create and load the config files
 //		Configs.init(this, event.getModConfigurationDirectory());
-		logger.debug("wither biome black list[0] -> {}", ModConfig.WITHER_TREE.biomes.rawBiomeBlackList[0]);
+		logger.debug("wither biome black list[0] -> {}", TreasureConfig.WITHER_TREE.biomes.rawBiomeBlackList[0]);
 		
 		// configure logging
 //		addRollingFileAppenderToLogger(Treasure.NAME, Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
 		// create a rolling file appender
-		Appender appender = createRollingFileAppender(Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
+		Appender appender = createRollingFileAppender(Treasure.instance, Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
 		// add appender to mod logger
 		addAppenderToLogger(appender, Treasure.NAME, (ILoggerConfig) getConfig());
 		// add appender to the GottschCore logger
@@ -262,7 +262,7 @@ public class Treasure extends AbstractMod {
 	@Override
 	public IConfig getConfig() {
 //		return Configs.modConfig;
-		return ModConfig.instance;
+		return TreasureConfig.instance;
 	}
 
 	/* (non-Javadoc)
