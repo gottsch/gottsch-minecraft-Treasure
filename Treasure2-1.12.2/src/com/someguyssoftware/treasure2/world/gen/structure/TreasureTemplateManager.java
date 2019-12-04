@@ -33,7 +33,7 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplateManager;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.ModConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 import com.someguyssoftware.treasure2.meta.StructureType;
@@ -93,7 +93,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		}
 
 		// build and expose template/structure folders
-		if (ModConfig.MOD.enableDefaultTemplatesCheck) {
+		if (TreasureConfig.MOD.enableDefaultTemplatesCheck) {
 			buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
 		}
 	}
@@ -114,7 +114,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	public void register(String modID) {
 		for (String location : FOLDER_LOCATIONS) {
 			Treasure.logger.debug("registering templates under location -> {}", location);
-			// get loot table files as ResourceLocations from the file system location
+			// get template files as ResourceLocations from the file system location
 			List<ResourceLocation> locs = getResourceLocations(modID, location);
 
 			// load each ResourceLocation and map it.
@@ -355,8 +355,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 
 		String filename = String.format("treasure-template-mgr-%s.txt", formatter.format(new Date()));
 
-		// TODO change to go to treasure2 folder - how, don't take actual config in.
-		Path path = Paths.get(getMod().getConfig().getModsFolder(), getMod().getId(), "dumps").toAbsolutePath();
+		Path path = Paths.get(getMod().getConfig().getConfigFolder(), getMod().getId(), "dumps").toAbsolutePath();
 		try {
 			Files.createDirectories(path);
 		} catch (IOException e) {

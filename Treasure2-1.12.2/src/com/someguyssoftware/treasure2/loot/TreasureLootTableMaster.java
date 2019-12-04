@@ -19,7 +19,7 @@ import com.someguyssoftware.gottschcore.loot.LootTable;
 import com.someguyssoftware.gottschcore.loot.LootTableMaster;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.ModConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.util.ResourceLocation;
@@ -88,9 +88,9 @@ public class TreasureLootTableMaster extends LootTableMaster {
 	public TreasureLootTableMaster(IMod mod, String resourcePath, String folderName) {
 		super(mod, resourcePath, folderName);
 		
-		if (ModConfig.MOD.enableDefaultLootTablesCheck) {
+		if (TreasureConfig.MOD.enableDefaultLootTablesCheck) {
 			buildAndExpose(Treasure.MODID);
-			for (String foreignModID : ModConfig.FOREIGN_MODS.enableForeignModIDs) {
+			for (String foreignModID : TreasureConfig.FOREIGN_MODS.enableForeignModIDs) {
 				if (Loader.isModLoaded(foreignModID)) {				
 					buildAndExpose(foreignModID);
 				}

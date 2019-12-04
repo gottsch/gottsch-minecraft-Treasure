@@ -20,7 +20,7 @@ import com.someguyssoftware.treasure2.block.WitherBranchBlock;
 import com.someguyssoftware.treasure2.block.WitherLogSoulBlock;
 import com.someguyssoftware.treasure2.block.WitherRootBlock;
 import com.someguyssoftware.treasure2.config.IWitherTreeConfig;
-import com.someguyssoftware.treasure2.config.ModConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.chest.WitherChestGenerator;
@@ -124,7 +124,7 @@ public class WitherTreeGenerator {
 		buildTrunk(world, random, surfaceCoords, config);
 
 		// 4. add the fog
-		if (ModConfig.WORLD_GEN.getGeneralProperties().enableWitherFog) {
+		if (TreasureConfig.WORLD_GEN.getGeneralProperties().enableWitherFog) {
 			GenUtil.addFog(world, random, surfaceCoords, fogDensity);
 		}
 		witherTreeCoords = surfaceCoords;
@@ -154,7 +154,7 @@ public class WitherTreeGenerator {
 //						Treasure.logger.debug("adding witherED tree @ {}", c.toShortString());
 						buildClearing(world, random, c);
 						buildTree(world, random, c, config);						
-						if (ModConfig.WORLD_GEN.getGeneralProperties().enablePoisonFog) {
+						if (TreasureConfig.WORLD_GEN.getGeneralProperties().enablePoisonFog) {
 							GenUtil.addFog(world, random, c, poisonFogDensity);
 						}
 					}
@@ -164,7 +164,7 @@ public class WitherTreeGenerator {
 		
 		// add pit/chest
 		WitherChestGenerator chestGen = new WitherChestGenerator();
-		chestGen.generate(world, random, coords, Rarity.SCARCE, ModConfig.chestConfigs.get(Rarity.SCARCE));//Configs.chestConfigs.get(Rarity.SCARCE)); 
+		chestGen.generate(world, random, coords, Rarity.SCARCE, TreasureConfig.CHESTS.surfaceChests.configMap.get(Rarity.SCARCE)); 
 		
 		return true;
 	}

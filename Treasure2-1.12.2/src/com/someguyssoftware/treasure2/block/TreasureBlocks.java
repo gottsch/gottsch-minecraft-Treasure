@@ -16,7 +16,7 @@ import com.google.common.collect.Multimap;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
-import com.someguyssoftware.treasure2.config.ModConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
 import com.someguyssoftware.treasure2.enums.FogHeight;
 import com.someguyssoftware.treasure2.enums.FogType;
@@ -175,7 +175,7 @@ public class TreasureBlocks {
 
 		WOOD_CHEST = new TreasureChestBlock(
 				Treasure.MODID, 
-				ModConfig.WOOD_CHEST_ID, 
+				TreasureConfig.WOOD_CHEST_ID, 
 				WoodChestTileEntity.class,
 				TreasureChestTypes.STANDARD,
 				Rarity.COMMON)
@@ -184,7 +184,7 @@ public class TreasureBlocks {
 
 		IRONBOUND_CHEST = new TreasureChestBlock(
 				Treasure.MODID, 
-				ModConfig.IRONBOUND_CHEST_ID, 
+				TreasureConfig.IRONBOUND_CHEST_ID, 
 				IronboundChestTileEntity.class,
 				TreasureChestTypes.STANDARD, 
 				Rarity.UNCOMMON)
@@ -193,7 +193,7 @@ public class TreasureBlocks {
 
 		PIRATE_CHEST = new TreasureChestBlock(
 				Treasure.MODID,
-				ModConfig.PIRATE_CHEST_ID,
+				TreasureConfig.PIRATE_CHEST_ID,
 				PirateChestTileEntity.class,
 				TreasureChestTypes.STANDARD, 
 				Rarity.SCARCE)
@@ -202,7 +202,7 @@ public class TreasureBlocks {
 
 		CRATE_CHEST = new TreasureChestBlock(
 				Treasure.MODID, 
-				ModConfig.CRATE_CHEST_ID, 
+				TreasureConfig.CRATE_CHEST_ID, 
 				CrateChestTileEntity.class,
 				TreasureChestTypes.CRATE,
 				Rarity.UNCOMMON)
@@ -211,7 +211,7 @@ public class TreasureBlocks {
 
 		MOLDY_CRATE_CHEST = new TreasureChestBlock(
 				Treasure.MODID, 
-				ModConfig.MOLDY_CRATE_CHEST_ID, 
+				TreasureConfig.MOLDY_CRATE_CHEST_ID, 
 				MoldyCrateChestTileEntity.class,
 				TreasureChestTypes.CRATE,
 				Rarity.COMMON)
@@ -227,7 +227,7 @@ public class TreasureBlocks {
 
 		SAFE = new TreasureChestBlock(
 				Treasure.MODID, 
-				ModConfig.SAFE_ID, 
+				TreasureConfig.SAFE_ID, 
 				SafeTileEntity.class,
 				TreasureChestTypes.SAFE,
 				Rarity.RARE)
@@ -243,7 +243,7 @@ public class TreasureBlocks {
 
 		IRON_STRONGBOX = new TreasureChestBlock(
 				Treasure.MODID,
-				ModConfig.IRON_STRONGBOX_ID,
+				TreasureConfig.IRON_STRONGBOX_ID,
 				IronStrongboxTileEntity.class,
 				TreasureChestTypes.STRONGBOX, Rarity.SCARCE)
 				.setChestGuiID(GuiHandler.STRONGBOX_CHEST_GUIID)
@@ -252,7 +252,7 @@ public class TreasureBlocks {
 
 		GOLD_STRONGBOX = new TreasureChestBlock(
 				Treasure.MODID,
-				ModConfig.GOLD_STRONGBOX_ID,
+				TreasureConfig.GOLD_STRONGBOX_ID,
 				GoldStrongboxTileEntity.class,
 				TreasureChestTypes.STRONGBOX, Rarity.RARE)
 				.setChestGuiID(GuiHandler.STRONGBOX_CHEST_GUIID)
@@ -261,7 +261,7 @@ public class TreasureBlocks {
 
 		DREAD_PIRATE_CHEST = new TreasureChestBlock(
 				Treasure.MODID,
-				ModConfig.DREAD_PIRATE_CHEST_ID,
+				TreasureConfig.DREAD_PIRATE_CHEST_ID,
 				DreadPirateChestTileEntity.class,
 				TreasureChestTypes.STANDARD, 
 				Rarity.EPIC)
@@ -277,7 +277,7 @@ public class TreasureBlocks {
 		
 		COMPRESSOR_CHEST = new TreasureChestBlock(
 				Treasure.MODID,
-				ModConfig.COMPRESSOR_CHEST_ID,
+				TreasureConfig.COMPRESSOR_CHEST_ID,
 				CompressorChestTileEntity.class,
 				TreasureChestTypes.COMPRESSOR, 
 				Rarity.EPIC)
@@ -295,7 +295,7 @@ public class TreasureBlocks {
 		
 		WITHER_CHEST = new WitherChestBlock(
 				Treasure.MODID,
-				ModConfig.WITHER_CHEST_ID,
+				TreasureConfig.WITHER_CHEST_ID,
 				WitherChestTileEntity.class,
 				TreasureChestTypes.ARMOIRE, 
 				Rarity.SCARCE)
@@ -303,7 +303,7 @@ public class TreasureBlocks {
 				.setBounds(witherChestBounds)
 				.setHardness(2.5F);
 		
-		WITHER_CHEST_TOP = new WitherChestTopBlock(Treasure.MODID, ModConfig.WITHER_CHEST_TOP_ID)
+		WITHER_CHEST_TOP = new WitherChestTopBlock(Treasure.MODID, TreasureConfig.WITHER_CHEST_TOP_ID)
 				.setHardness(2.5F);
 		
 		AxisAlignedBB skullBB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.56825D, 0.75D);
@@ -315,7 +315,7 @@ public class TreasureBlocks {
 		
 		SKULL_CHEST = new TreasureChestBlock(
 				Treasure.MODID,
-				ModConfig.SKULL_CHEST_ID,
+				TreasureConfig.SKULL_CHEST_ID,
 				SkullChestTileEntity.class,
 				TreasureChestTypes.SKULL,
 				Rarity.SCARCE)
@@ -325,7 +325,7 @@ public class TreasureBlocks {
 
 		GOLD_SKULL_CHEST = new TreasureChestBlock(
 				Treasure.MODID,
-				ModConfig.GOLD_SKULL_CHEST_ID,
+				TreasureConfig.GOLD_SKULL_CHEST_ID,
 				GoldSkullChestTileEntity.class,
 				TreasureChestTypes.SKULL,
 				Rarity.RARE)
@@ -335,7 +335,7 @@ public class TreasureBlocks {
 		
 		CAULDRON_CHEST = new TreasureChestBlock(
 				Treasure.MODID,
-				ModConfig.CAULDRON_CHEST_ID,
+				TreasureConfig.CAULDRON_CHEST_ID,
 				Material.IRON,
 				CauldronChestTileEntity.class,
 				TreasureChestTypes.TOP_SPLIT,
@@ -345,7 +345,7 @@ public class TreasureBlocks {
 		
 //		WHALE_BONE_PIRATE_CHEST = new TreasureChestBlock(
 //				Treasure.MODID,
-//				ModConfig.WHALE_BONE_PIRATE_CHEST_ID,
+//				TreasureConfig.WHALE_BONE_PIRATE_CHEST_ID,
 //				WhaleBonePirateChestTileEntity.class,
 //				TreasureChestTypes.STANDARD, 
 //				Rarity.EPIC)
@@ -361,7 +361,7 @@ public class TreasureBlocks {
 		
 //		OYSTER_CHEST = new TreasureChestBlock(
 //				Treasure.MODID,
-//				ModConfig.OYSTER_CHEST_ID,
+//				TreasureConfig.OYSTER_CHEST_ID,
 //				OysterChestTileEntity.class,
 //				TreasureChestTypes.LOW_RISE, // TODO may have to create own
 //				Rarity.EPIC)
@@ -371,7 +371,7 @@ public class TreasureBlocks {
 		
 //		CLAM_CHEST = new TreasureChestBlock(
 //				Treasure.MODID,
-//				ModConfig.CLAM_CHEST_ID,
+//				TreasureConfig.CLAM_CHEST_ID,
 //				ClamChestTileEntity.class,
 //				TreasureChestTypes.LOW_RISE, // TODO may have to create own
 //				Rarity.RARE)
@@ -386,7 +386,7 @@ public class TreasureBlocks {
 		// mimics
 		WOOD_MIMIC =  new MimicChestBlock(
 				Treasure.MODID, 
-				ModConfig.WOOD_MIMIC_ID, 
+				TreasureConfig.WOOD_MIMIC_ID, 
 				WoodChestTileEntity.class,
 				WoodMimicEntity.class,
 				TreasureChestTypes.STANDARD,
@@ -402,13 +402,13 @@ public class TreasureBlocks {
 		gbs[3] = new AxisAlignedBB(0.375D, 0.0D, 0.125D, 0.675D, 0.75D, 0.875D); // E
 
 		// Gravestones
-		GRAVESTONE1_STONE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE1_STONE_ID, Material.ROCK).setBounds(gbs);
-		GRAVESTONE1_COBBLESTONE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE1_COBBLESTONE_ID, Material.ROCK).setBounds(gbs);
-		GRAVESTONE1_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE1_MOSSY_COBBLESTONE_ID, Material.ROCK).setBounds(gbs);
-		GRAVESTONE1_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE1_POLISHED_GRANITE_ID, Material.ROCK).setBounds(gbs);
-		GRAVESTONE1_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE1_POLISHED_ANDESITE_ID, Material.ROCK).setBounds(gbs);
-		GRAVESTONE1_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE1_POLISHED_DIORITE_ID, Material.ROCK).setBounds(gbs);
-		GRAVESTONE1_OBSIDIAN = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE1_OBSIDIAN_ID, Material.ROCK).setBounds(gbs);
+		GRAVESTONE1_STONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_STONE_ID, Material.ROCK).setBounds(gbs);
+		GRAVESTONE1_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_COBBLESTONE_ID, Material.ROCK).setBounds(gbs);
+		GRAVESTONE1_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_MOSSY_COBBLESTONE_ID, Material.ROCK).setBounds(gbs);
+		GRAVESTONE1_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_POLISHED_GRANITE_ID, Material.ROCK).setBounds(gbs);
+		GRAVESTONE1_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_POLISHED_ANDESITE_ID, Material.ROCK).setBounds(gbs);
+		GRAVESTONE1_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_POLISHED_DIORITE_ID, Material.ROCK).setBounds(gbs);
+		GRAVESTONE1_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_OBSIDIAN_ID, Material.ROCK).setBounds(gbs);
 
 		AxisAlignedBB[] gbs2 = new 	AxisAlignedBB[4];
 		gbs2[0] = new AxisAlignedBB(0.125D, 0.0D, 0.375D, 0.875D, 1.375D, 0.675D); // S
@@ -417,29 +417,29 @@ public class TreasureBlocks {
 		gbs2[3] = new AxisAlignedBB(0.375D, 0.0D, 0.125D, 0.675D, 1.375D, 0.875D); // E
 
 		// Gravestones
-		GRAVESTONE2_STONE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE2_STONE_ID, Material.ROCK).setBounds(gbs2);
-		GRAVESTONE2_COBBLESTONE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE2_COBBLESTONE_ID, Material.ROCK).setBounds(gbs2);
-		GRAVESTONE2_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE2_MOSSY_COBBLESTONE_ID, Material.ROCK).setBounds(gbs2);
-		GRAVESTONE2_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE2_POLISHED_GRANITE_ID, Material.ROCK).setBounds(gbs2);
-		GRAVESTONE2_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE2_POLISHED_ANDESITE_ID, Material.ROCK).setBounds(gbs2);
-		GRAVESTONE2_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE2_POLISHED_DIORITE_ID, Material.ROCK).setBounds(gbs2);
-		GRAVESTONE2_OBSIDIAN = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE2_OBSIDIAN_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE2_STONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_STONE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE2_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_COBBLESTONE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE2_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_MOSSY_COBBLESTONE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE2_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_POLISHED_GRANITE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE2_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_POLISHED_ANDESITE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE2_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_POLISHED_DIORITE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE2_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_OBSIDIAN_ID, Material.ROCK).setBounds(gbs2);
 
-		GRAVESTONE3_STONE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE3_STONE_ID, Material.ROCK).setBounds(gbs2);
-		GRAVESTONE3_COBBLESTONE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE3_COBBLESTONE_ID, Material.ROCK).setBounds(gbs2);
-		GRAVESTONE3_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE3_MOSSY_COBBLESTONE_ID, Material.ROCK).setBounds(gbs2);
-		GRAVESTONE3_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE3_POLISHED_GRANITE_ID, Material.ROCK).setBounds(gbs2);
-		GRAVESTONE3_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE3_POLISHED_ANDESITE_ID, Material.ROCK).setBounds(gbs2);
-		GRAVESTONE3_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE3_POLISHED_DIORITE_ID, Material.ROCK).setBounds(gbs2);
-		GRAVESTONE3_OBSIDIAN = new GravestoneBlock(Treasure.MODID, ModConfig.GRAVESTONE3_OBSIDIAN_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE3_STONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_STONE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE3_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_COBBLESTONE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE3_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_MOSSY_COBBLESTONE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE3_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_POLISHED_GRANITE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE3_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_POLISHED_ANDESITE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE3_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_POLISHED_DIORITE_ID, Material.ROCK).setBounds(gbs2);
+		GRAVESTONE3_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_OBSIDIAN_ID, Material.ROCK).setBounds(gbs2);
 
 		// other
 		SKULL_CROSSBONES = new SkullAndBonesBlock(
 				Treasure.MODID, 
-				ModConfig.SKULL_CROSSBONES_ID, 
+				TreasureConfig.SKULL_CROSSBONES_ID, 
 				Material.ROCK);
 		
-		SKELETON = new SkeletonBlock(Treasure.MODID, ModConfig.SKELETON_ID, Material.ROCK);
+		SKELETON = new SkeletonBlock(Treasure.MODID, TreasureConfig.SKELETON_ID, Material.ROCK);
 
 		// add all the gravestones to the list
 		gravestones = new ArrayList<>();
@@ -468,20 +468,20 @@ public class TreasureBlocks {
 		gravestones.add(SKELETON);
 
 		// FOG
-		FOG_BLOCK = new FogBlock(Treasure.MODID, ModConfig.FOG_BLOCK_ID, TreasureItems.FOG, fogMap).setFogHeight(FogHeight.FULL_FOG);
-		HIGH_FOG_BLOCK = new FogBlock(Treasure.MODID, ModConfig.HIGH_FOG_BLOCK_ID, TreasureItems.FOG, fogMap).setFogHeight(FogHeight.HIGH_FOG);
-		MED_FOG_BLOCK = new FogBlock(Treasure.MODID, ModConfig.MED_FOG_BLOCK_ID, TreasureItems.FOG, fogMap).setFogHeight(FogHeight.MEDIUM_FOG);
-		LOW_FOG_BLOCK = new FogBlock(Treasure.MODID, ModConfig.LOW_FOG_BLOCK_ID, TreasureItems.FOG, fogMap).setFogHeight(FogHeight.LOW_FOG);
+		FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.FOG_BLOCK_ID, TreasureItems.FOG, fogMap).setFogHeight(FogHeight.FULL_FOG);
+		HIGH_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.HIGH_FOG_BLOCK_ID, TreasureItems.FOG, fogMap).setFogHeight(FogHeight.HIGH_FOG);
+		MED_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.MED_FOG_BLOCK_ID, TreasureItems.FOG, fogMap).setFogHeight(FogHeight.MEDIUM_FOG);
+		LOW_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.LOW_FOG_BLOCK_ID, TreasureItems.FOG, fogMap).setFogHeight(FogHeight.LOW_FOG);
 
-		WITHER_FOG = new WitherFogBlock(Treasure.MODID, ModConfig.WITHER_FOG_ID, TreasureItems.FOG, witherFogMap).setFogType(FogType.WITHER).setFogHeight(FogHeight.FULL_FOG);
-		HIGH_WITHER_FOG = new WitherFogBlock(Treasure.MODID, ModConfig.HIGH_WITHER_FOG_ID, TreasureItems.FOG, witherFogMap).setFogType(FogType.WITHER).setFogHeight(FogHeight.HIGH_FOG);
-		MED_WITHER_FOG = new WitherFogBlock(Treasure.MODID, ModConfig.MED_WITHER_FOG_ID, TreasureItems.FOG, witherFogMap).setFogType(FogType.WITHER).setFogHeight(FogHeight.MEDIUM_FOG);
-		LOW_WITHER_FOG = new WitherFogBlock(Treasure.MODID, ModConfig.LOW_WITHER_FOG_ID, TreasureItems.FOG, witherFogMap).setFogType(FogType.WITHER).setFogHeight(FogHeight.LOW_FOG);
+		WITHER_FOG = new WitherFogBlock(Treasure.MODID, TreasureConfig.WITHER_FOG_ID, TreasureItems.FOG, witherFogMap).setFogType(FogType.WITHER).setFogHeight(FogHeight.FULL_FOG);
+		HIGH_WITHER_FOG = new WitherFogBlock(Treasure.MODID, TreasureConfig.HIGH_WITHER_FOG_ID, TreasureItems.FOG, witherFogMap).setFogType(FogType.WITHER).setFogHeight(FogHeight.HIGH_FOG);
+		MED_WITHER_FOG = new WitherFogBlock(Treasure.MODID, TreasureConfig.MED_WITHER_FOG_ID, TreasureItems.FOG, witherFogMap).setFogType(FogType.WITHER).setFogHeight(FogHeight.MEDIUM_FOG);
+		LOW_WITHER_FOG = new WitherFogBlock(Treasure.MODID, TreasureConfig.LOW_WITHER_FOG_ID, TreasureItems.FOG, witherFogMap).setFogType(FogType.WITHER).setFogHeight(FogHeight.LOW_FOG);
 
-		POISON_FOG = new PoisonFogBlock(Treasure.MODID, ModConfig.POISON_FOG_ID, TreasureItems.FOG, poisonFogMap).setFogType(FogType.POISON).setFogHeight(FogHeight.FULL_FOG);
-		HIGH_POISON_FOG = new PoisonFogBlock(Treasure.MODID, ModConfig.HIGH_POISON_FOG_ID, TreasureItems.FOG, poisonFogMap).setFogType(FogType.POISON).setFogHeight(FogHeight.HIGH_FOG);
-		MED_POISON_FOG = new PoisonFogBlock(Treasure.MODID, ModConfig.MED_POISON_FOG_ID, TreasureItems.FOG, poisonFogMap).setFogType(FogType.POISON).setFogHeight(FogHeight.MEDIUM_FOG);
-		LOW_POISON_FOG = new PoisonFogBlock(Treasure.MODID, ModConfig.LOW_POISON_FOG_ID, TreasureItems.FOG, poisonFogMap).setFogType(FogType.POISON).setFogHeight(FogHeight.LOW_FOG);
+		POISON_FOG = new PoisonFogBlock(Treasure.MODID, TreasureConfig.POISON_FOG_ID, TreasureItems.FOG, poisonFogMap).setFogType(FogType.POISON).setFogHeight(FogHeight.FULL_FOG);
+		HIGH_POISON_FOG = new PoisonFogBlock(Treasure.MODID, TreasureConfig.HIGH_POISON_FOG_ID, TreasureItems.FOG, poisonFogMap).setFogType(FogType.POISON).setFogHeight(FogHeight.HIGH_FOG);
+		MED_POISON_FOG = new PoisonFogBlock(Treasure.MODID, TreasureConfig.MED_POISON_FOG_ID, TreasureItems.FOG, poisonFogMap).setFogType(FogType.POISON).setFogHeight(FogHeight.MEDIUM_FOG);
+		LOW_POISON_FOG = new PoisonFogBlock(Treasure.MODID, TreasureConfig.LOW_POISON_FOG_ID, TreasureItems.FOG, poisonFogMap).setFogType(FogType.POISON).setFogHeight(FogHeight.LOW_FOG);
 		
 		fogMap.put(FogHeight.FULL_FOG, TreasureBlocks.FOG_BLOCK);
 		fogMap.put(FogHeight.HIGH_FOG, TreasureBlocks.HIGH_FOG_BLOCK);
@@ -499,19 +499,19 @@ public class TreasureBlocks {
 		poisonFogMap.put(FogHeight.LOW_FOG, TreasureBlocks.LOW_POISON_FOG);
 		
 		// ORES/GEMS
-		SAPPHIRE_ORE = new OreBlock(Treasure.MODID, ModConfig.SAPPHIRE_ORE_ID, Material.ROCK);
-		RUBY_ORE = new OreBlock(Treasure.MODID, ModConfig.RUBY_ORE_ID, Material.ROCK);
+		SAPPHIRE_ORE = new OreBlock(Treasure.MODID, TreasureConfig.SAPPHIRE_ORE_ID, Material.ROCK);
+		RUBY_ORE = new OreBlock(Treasure.MODID, TreasureConfig.RUBY_ORE_ID, Material.ROCK);
 		
 		// other
-		WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, ModConfig.WISHING_WELL_BLOCK_ID, Material.ROCK);
-		DESERT_WISHING_WELL_BLOCK = new DesertWishingWellBlock(Treasure.MODID, ModConfig.DESERT_WISHING_WELL_BLOCK_ID, Material.ROCK);
-		WITHER_LOG = new WitherLogBlock(Treasure.MODID, ModConfig.WITHER_LOG_ID);
-		WITHER_BRANCH = new WitherBranchBlock(Treasure.MODID, ModConfig.WITHER_BRANCH_ID);
-		WITHER_ROOT = new WitherRootBlock(Treasure.MODID, ModConfig.WITHER_ROOT_ID);		
-		WITHER_BROKEN_LOG = new WitherBrokenLogBlock(Treasure.MODID, ModConfig.WITHER_BROKEN_LOG_ID);
-		WITHER_LOG_SOUL = new WitherLogSoulBlock(Treasure.MODID, ModConfig.WITHER_LOG_SOUL_ID);
-		WITHER_PLANKS = new WitherPlanksBlock(Treasure.MODID, ModConfig.WITHER_PLANKS_ID);
-		SPANISH_MOSS = new SpanishMossBlock(Treasure.MODID, ModConfig.SPANISH_MOSS_BLOCK_ID);
+		WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.WISHING_WELL_BLOCK_ID, Material.ROCK);
+		DESERT_WISHING_WELL_BLOCK = new DesertWishingWellBlock(Treasure.MODID, TreasureConfig.DESERT_WISHING_WELL_BLOCK_ID, Material.ROCK);
+		WITHER_LOG = new WitherLogBlock(Treasure.MODID, TreasureConfig.WITHER_LOG_ID);
+		WITHER_BRANCH = new WitherBranchBlock(Treasure.MODID, TreasureConfig.WITHER_BRANCH_ID);
+		WITHER_ROOT = new WitherRootBlock(Treasure.MODID, TreasureConfig.WITHER_ROOT_ID);		
+		WITHER_BROKEN_LOG = new WitherBrokenLogBlock(Treasure.MODID, TreasureConfig.WITHER_BROKEN_LOG_ID);
+		WITHER_LOG_SOUL = new WitherLogSoulBlock(Treasure.MODID, TreasureConfig.WITHER_LOG_SOUL_ID);
+		WITHER_PLANKS = new WitherPlanksBlock(Treasure.MODID, TreasureConfig.WITHER_PLANKS_ID);
+		SPANISH_MOSS = new SpanishMossBlock(Treasure.MODID, TreasureConfig.SPANISH_MOSS_BLOCK_ID);
 		
 		// treasures: paintings
 		AxisAlignedBB[] pbs = new AxisAlignedBB[4];
@@ -520,23 +520,23 @@ public class TreasureBlocks {
 		pbs[2] = new AxisAlignedBB(0D, 0D, 0.9375D, 1D, 1D, 1D); // N
 		pbs[3] = new AxisAlignedBB(0D, 0.D, 0D, 0.0625D, 1D, 1D); // E
 		
-		PAINTING_BLOCKS_BRICKS = new Painting1x1Block(Treasure.MODID, ModConfig.PAINTING_BLOCKS_BRICKS_ID, Material.CLOTH, Rarity.EPIC)
+		PAINTING_BLOCKS_BRICKS = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_BRICKS_ID, Material.CLOTH, Rarity.EPIC)
 				.setBounds(pbs);
-		PAINTING_BLOCKS_COBBLESTONE = new Painting1x1Block(Treasure.MODID, ModConfig.PAINTING_BLOCKS_COBBLESTONE_ID, Material.CLOTH, Rarity.SCARCE)
+		PAINTING_BLOCKS_COBBLESTONE = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_COBBLESTONE_ID, Material.CLOTH, Rarity.SCARCE)
 				.setBounds(pbs);
-		PAINTING_BLOCKS_DIRT = new Painting1x1Block(Treasure.MODID, ModConfig.PAINTING_BLOCKS_DIRT_ID, Material.CLOTH, Rarity.SCARCE)
+		PAINTING_BLOCKS_DIRT = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_DIRT_ID, Material.CLOTH, Rarity.SCARCE)
 				.setBounds(pbs);
-		PAINTING_BLOCKS_LAVA = new Painting1x1Block(Treasure.MODID, ModConfig.PAINTING_BLOCKS_LAVA_ID, Material.CLOTH, Rarity.EPIC)
+		PAINTING_BLOCKS_LAVA = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_LAVA_ID, Material.CLOTH, Rarity.EPIC)
 				.setBounds(pbs);
-		PAINTING_BLOCKS_SAND = new Painting1x1Block(Treasure.MODID, ModConfig.PAINTING_BLOCKS_SAND_ID, Material.CLOTH, Rarity.RARE)
+		PAINTING_BLOCKS_SAND = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_SAND_ID, Material.CLOTH, Rarity.RARE)
 				.setBounds(pbs);
-		PAINTING_BLOCKS_WATER = new Painting1x1Block(Treasure.MODID, ModConfig.PAINTING_BLOCKS_WATER_ID, Material.CLOTH, Rarity.SCARCE)
+		PAINTING_BLOCKS_WATER = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_WATER_ID, Material.CLOTH, Rarity.SCARCE)
 				.setBounds(pbs);
-		PAINTING_BLOCKS_WOOD = new Painting1x1Block(Treasure.MODID, ModConfig.PAINTING_BLOCKS_WOOD_ID, Material.CLOTH, Rarity.RARE)
+		PAINTING_BLOCKS_WOOD = new Painting1x1Block(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_WOOD_ID, Material.CLOTH, Rarity.RARE)
 				.setBounds(pbs);
 		
 		// proximity blocks
-		PROXIMITY_SPAWNER = new ProximityBlock(Treasure.MODID, ModConfig.PROXIMITY_SPAWNER_ID, ProximitySpawnerTileEntity.class);
+		PROXIMITY_SPAWNER = new ProximityBlock(Treasure.MODID, TreasureConfig.PROXIMITY_SPAWNER_ID, ProximitySpawnerTileEntity.class);
 
 	}
 
@@ -735,24 +735,24 @@ public class TreasureBlocks {
 
 			// register the tile entities
 			//			GameRegistry.registerTileEntity(AbstractTreasureChestTileEntity.class, "treasureChestTileEntity");
-			GameRegistry.registerTileEntity(WoodChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.WOOD_CHEST_TE_ID));
-			GameRegistry.registerTileEntity(CrateChestTileEntity.class,new ResourceLocation( Treasure.MODID+":"+ModConfig.CRATE_CHEST_TE_ID));
-			GameRegistry.registerTileEntity(MoldyCrateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.MOLDY_CRATE_CHEST_TE_ID));
-			GameRegistry.registerTileEntity(IronboundChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.IRONBOUND_CHEST_TE_ID));
-			GameRegistry.registerTileEntity(PirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.PIRATE_CHEST_TE_ID));
-			GameRegistry.registerTileEntity(IronStrongboxTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.IRON_STRONGBOX_TE_ID));
-			GameRegistry.registerTileEntity(GoldStrongboxTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.GOLD_STRONGBOX_TE_ID));
-			GameRegistry.registerTileEntity(SafeTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.SAFE_TE_ID));
-			GameRegistry.registerTileEntity(DreadPirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.DREAD_PIRATE_CHEST_TE_ID));
-//			GameRegistry.registerTileEntity(WhaleBonePirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.WHALE_BONE_PIRATE_CHEST_TE_ID));
-			GameRegistry.registerTileEntity(CompressorChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.COMPRESSOR_CHEST_TE_ID));
-			GameRegistry.registerTileEntity(WitherChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.WITHER_CHEST_TE_ID));
-			GameRegistry.registerTileEntity(SkullChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.SKULL_CHEST_TE_ID));
-			GameRegistry.registerTileEntity(GoldSkullChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.GOLD_SKULL_CHEST_TE_ID));
-			GameRegistry.registerTileEntity(CauldronChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.CAULDRON_CHEST_TE_ID));
-//			GameRegistry.registerTileEntity(OysterChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.OYSTER_CHEST_TE_ID));	
-//			GameRegistry.registerTileEntity(ClamChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.CLAM_CHEST_TE_ID));	
-			GameRegistry.registerTileEntity(ProximitySpawnerTileEntity.class, new ResourceLocation(Treasure.MODID+":"+ModConfig.PROXIMITY_SPAWNER_TE_ID));
+			GameRegistry.registerTileEntity(WoodChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WOOD_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(CrateChestTileEntity.class,new ResourceLocation( Treasure.MODID+":"+TreasureConfig.CRATE_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(MoldyCrateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.MOLDY_CRATE_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(IronboundChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.IRONBOUND_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(PirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.PIRATE_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(IronStrongboxTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.IRON_STRONGBOX_TE_ID));
+			GameRegistry.registerTileEntity(GoldStrongboxTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.GOLD_STRONGBOX_TE_ID));
+			GameRegistry.registerTileEntity(SafeTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.SAFE_TE_ID));
+			GameRegistry.registerTileEntity(DreadPirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.DREAD_PIRATE_CHEST_TE_ID));
+//			GameRegistry.registerTileEntity(WhaleBonePirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WHALE_BONE_PIRATE_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(CompressorChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.COMPRESSOR_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(WitherChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WITHER_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(SkullChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.SKULL_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(GoldSkullChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.GOLD_SKULL_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(CauldronChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.CAULDRON_CHEST_TE_ID));
+//			GameRegistry.registerTileEntity(OysterChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.OYSTER_CHEST_TE_ID));	
+//			GameRegistry.registerTileEntity(ClamChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.CLAM_CHEST_TE_ID));	
+			GameRegistry.registerTileEntity(ProximitySpawnerTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.PROXIMITY_SPAWNER_TE_ID));
 
 		}	
 	}

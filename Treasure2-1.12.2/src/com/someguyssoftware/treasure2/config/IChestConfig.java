@@ -17,7 +17,7 @@ import net.minecraftforge.common.config.Configuration;
  */
 public interface IChestConfig {
 	
-	public boolean isChestAllowed();
+	public boolean isEnableChest();
 	public boolean isSurfaceAllowed();
 	public boolean isSubterraneanAllowed();
 	public int getChunksPerChest();

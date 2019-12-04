@@ -19,20 +19,21 @@ import net.minecraftforge.common.config.Config.Name;
  * @author Mark Gottschling on Nov 23, 2019
  *
  */
+// TODO move to GottschCore 1.9/1.8
 public class BiomesConfig implements IBiomesConfig {
 
 	@Name("01. White list by biome name:")
-	@Comment({"Allowed Biomes for Wither Tree generation. Must match the Biome Name(s)."})
-	public String[] rawBiomeWhiteList;// = new String[] {};	
+	@Comment({"Allowed Biomes for generation. Must match the Biome Name(s)."})
+	public String[] rawBiomeWhiteList;
 	@Name("02. Black list by biome name:")
-	@Comment({"Disallowed Biomes for Wither Tree generation. Must match theBiome Name(s)."})
-	public String[] rawBiomeBlackList;// = new String[] {};
+	@Comment({"Disallowed Biomes for generation. Must match theBiome Name(s)."})
+	public String[] rawBiomeBlackList;
 	@Name("03. White list by biome type:")
-	@Comment({"Allowabled Biome Types for Wither Tree generation. Must match the Type identifer(s)."})
-	public String[] rawBiomeTypeWhiteList;// = new String[] {}; //{"forest", "magical", "lush", "spooky", "dead", "jungle", "coniferous", "savanna"};
+	@Comment({"Allowabled Biome Types for generation. Must match the Type identifer(s)."})
+	public String[] rawBiomeTypeWhiteList;
 	@Name("04. Black list by biome type")
-	@Comment({"Disallowed Biome Types for Wither Tree generation. Must match the Type identifer(s)."})
-	public String[] rawBiomeTypeBlackList;// = new String[] {};
+	@Comment({"Disallowed Biome Types for generation. Must match the Type identifer(s)."})
+	public String[] rawBiomeTypeBlackList;
 	
 	@Ignore public List<Biome> whiteList = new ArrayList<>(5);;
 	@Ignore public List<Biome> blackList = new ArrayList<>(5);;
@@ -95,7 +96,4 @@ public class BiomesConfig implements IBiomesConfig {
 		// TODO Auto-generated method stub
 		
 	}
-
-	
-
 }

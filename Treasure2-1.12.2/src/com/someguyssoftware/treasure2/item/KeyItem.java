@@ -12,7 +12,7 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
-import com.someguyssoftware.treasure2.config.ModConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
@@ -204,7 +204,7 @@ public class KeyItem extends ModItem {
 						// update the client
 						tcte.sendUpdates();
 						// spawn the lock
-						if (ModConfig.KEYS_LOCKS.enableLockDrops) {
+						if (TreasureConfig.KEYS_LOCKS.enableLockDrops) {
 							InventoryHelper.spawnItemStack(worldIn, (double)chestPos.getX(), (double)chestPos.getY(), (double)chestPos.getZ(), new ItemStack(lock));
 						}
 						// don't break the key
@@ -214,7 +214,7 @@ public class KeyItem extends ModItem {
 						
 				// check key's breakability
 				if (breakKey) {
-					if (isBreakable()  && ModConfig.KEYS_LOCKS.enableKeyBreaks) {
+					if (isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
 						// break key;
 						heldItem.shrink(1);
 						player.sendMessage(new TextComponentString("Key broke."));

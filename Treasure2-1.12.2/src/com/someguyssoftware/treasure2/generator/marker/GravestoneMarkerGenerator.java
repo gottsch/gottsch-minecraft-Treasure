@@ -19,7 +19,7 @@ import com.someguyssoftware.treasure2.block.FogBlock;
 import com.someguyssoftware.treasure2.block.ITreasureBlock;
 import com.someguyssoftware.treasure2.block.SkeletonBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.config.ModConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
@@ -49,7 +49,7 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 	public GeneratorResult<GeneratorData> generate(World world, Random random, ICoords coords) {
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 		// check if gravestones are enabled
-		if (!ModConfig.WORLD_GEN.getMarkerProperties().isGravestonesAllowed) {
+		if (!TreasureConfig.WORLD_GEN.getMarkerProperties().isGravestonesAllowed) {
 			return result.fail();
 		}
 		
@@ -57,7 +57,7 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 		int z = coords.getZ();
 		
 		// for the number of markers configured
-		int numberOfMarkers = RandomHelper.randomInt(ModConfig.WORLD_GEN.getMarkerProperties().minGravestonesPerChest, ModConfig.WORLD_GEN.getMarkerProperties().maxGravestonesPerChest);
+		int numberOfMarkers = RandomHelper.randomInt(TreasureConfig.WORLD_GEN.getMarkerProperties().minGravestonesPerChest, TreasureConfig.WORLD_GEN.getMarkerProperties().maxGravestonesPerChest);
 		// calculate the grid size
 		int gridSize = 4;
 		if (numberOfMarkers < 6) { /* default */ }
@@ -127,8 +127,8 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 			}
 			
 			// add fog around the block
-			if (ModConfig.WORLD_GEN.getGeneralProperties().enableFog && 
-					RandomHelper.checkProbability(random, ModConfig.WORLD_GEN.getMarkerProperties().gravestoneFogProbability)) {
+			if (TreasureConfig.WORLD_GEN.getGeneralProperties().enableFog && 
+					RandomHelper.checkProbability(random, TreasureConfig.WORLD_GEN.getMarkerProperties().gravestoneFogProbability)) {
 				List<FogBlock> fogDensity = new ArrayList<>(5);
 				// randomize the size of the fog
 				int fogSize = RandomHelper.randomInt(2, 4);
