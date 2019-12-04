@@ -6,7 +6,7 @@ package com.someguyssoftware.treasure2.eventhandler;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.ModConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.world.WorldEvent;
@@ -43,7 +43,7 @@ public class WorldEventHandler {
 			Treasure.LOOT_TABLES.init(world);
 			Treasure.LOOT_TABLES.register(getMod().getId());
 			// register any foreign mod loot tables
-			for (String foreignModID : ModConfig.FOREIGN_MODS.enableForeignModIDs) {
+			for (String foreignModID : TreasureConfig.FOREIGN_MODS.enableForeignModIDs) {
 				if (Loader.isModLoaded(foreignModID)) {		
 					Treasure.LOOT_TABLES.register(foreignModID);
 				}

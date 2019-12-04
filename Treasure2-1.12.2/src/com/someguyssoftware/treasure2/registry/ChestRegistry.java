@@ -14,7 +14,7 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Sets;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
-import com.someguyssoftware.treasure2.config.ModConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 
 /**
  * 
@@ -23,7 +23,7 @@ import com.someguyssoftware.treasure2.config.ModConfig;
  */
 public class ChestRegistry {
 	// TODO save the registry to the GenDataPersistence
-	private static final int MAX_SIZE = ModConfig.CHESTS.chestRegistrySize;
+	private static final int MAX_SIZE = TreasureConfig.CHESTS.chestRegistrySize;
 	
 	private static ChestRegistry instance = new ChestRegistry();
 	// TODO this does not need to be a ListMultimap, can be just a LinkedList to preserve order

@@ -15,8 +15,9 @@ import net.minecraftforge.common.config.Config.RangeInt;
  * 
  */
 public class ChestConfig implements IChestConfig {
-	@Ignore
-	public boolean chestAllowed = true;
+	@Comment({"Enable/Disable generating chests associated with this rarity."})
+	@Name("00. Enable chests for rarity.")
+	public boolean enableChest = true;
 
 	@Comment({"The number of chunks generated before the chest spawn is attempted."})
 	@Name("01. Chunks per chest spawn:")
@@ -59,7 +60,7 @@ public class ChestConfig implements IChestConfig {
 	 */
 	public ChestConfig(boolean isAllowed, int chunksPer, double probability, int minYSpawn,
 			String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
-		this.chestAllowed = isAllowed;
+		this.enableChest = isAllowed;
 		this.chunksPerChest = chunksPer;
 		this.genProbability = probability;
 		this.minYSpawn = minYSpawn;
@@ -67,8 +68,8 @@ public class ChestConfig implements IChestConfig {
 	}
 
 	@Override
-	public boolean isChestAllowed() {
-		return chestAllowed;
+	public boolean isEnableChest() {
+		return enableChest;
 	}
 
 	@Override

@@ -10,7 +10,7 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
-import com.someguyssoftware.treasure2.config.ModConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
@@ -182,7 +182,7 @@ public class KeyRingItem extends ModItem {
 								// update the client
 								tcte.sendUpdates();
 								// spawn the lock
-								if (ModConfig.KEYS_LOCKS.enableLockDrops) {
+								if (TreasureConfig.KEYS_LOCKS.enableLockDrops) {
 									InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(lock));
 								}
 								// don't break the key
@@ -192,7 +192,7 @@ public class KeyRingItem extends ModItem {
 
 							// TODO move to a method in KeyItem
 							if (breakKey) {
-								if (key.isBreakable()  && ModConfig.KEYS_LOCKS.enableKeyBreaks) {
+								if (key.isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
 									// break key;
 									keyStack.shrink(1);
 									player.sendMessage(new TextComponentString("Key broke."));

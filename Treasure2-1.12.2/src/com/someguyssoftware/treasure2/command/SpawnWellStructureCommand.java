@@ -8,7 +8,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.ModConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.well.WellGenerator;
@@ -59,7 +59,7 @@ public class SpawnWellStructureCommand extends CommandBase {
 
     			Random random = new Random();
     			WellGenerator gen = new WellGenerator();
-    			GeneratorResult<GeneratorData> result = gen.generate(world, random, coords, ModConfig.WELL); //Configs.wellConfig);
+    			GeneratorResult<GeneratorData> result = gen.generate(world, random, coords, TreasureConfig.WELL); //Configs.wellConfig);
     			Treasure.logger.debug("Well start coords at -> {}", result.getData().getSpawnCoords().toShortString());
     		}
 		}
