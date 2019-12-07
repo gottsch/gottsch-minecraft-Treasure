@@ -20,6 +20,7 @@ import net.minecraftforge.common.config.Config.Ignore;
 import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RangeDouble;
 import net.minecraftforge.common.config.Config.RangeInt;
+import net.minecraftforge.common.config.Config.RequiresMcRestart;
 import net.minecraftforge.common.config.Config.RequiresWorldRestart;
 import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
@@ -293,67 +294,12 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		public ChestCollection surfaceChests;// = new ChestCollection();
 		@Name("02 Submerged Chests")
 		public ChestCollection submergedChests = new ChestCollection();
-		
-//		@Comment("The minimum number of chunks generated before another attempt to spawn a chest is made.")
-//		@Name("01. Min. chunks per chest spawn:")
-//		@RangeInt(min = 0, max = 32000)
-//		public int minChunksPerChest = 35;
-//
-//		@Comment({"The minimum distance, measured in chunks (16x16), that two chests can be in proximity.",
-//			"Note: Only chests in the chest registry are checked against this property.",
-//			"Used in conjunction with the chunks per chest and spawn probability.",
-//		"Ex. "})
-//		@Name("02. Min. distance per chest spawn:")
-//		@RangeInt(min = 0, max = 32000)
-//		public int minDistancePerChest = 75;
-//
-//		@Comment({"The probability chest will appear on the surface, instead of in a pit."})
-//		@Name("03. Probability of chest spawn on the surface:")
-//		@RangeInt(min = 0, max = 100)
-//		public int surfaceChestProbability = 15;
 
 		@Comment({"The number of chests that are monitored. Most recent additions replace least recent when the registry is full.", "This is the set of chests used to measure distance between newly generated chests."})
 		@Name("01. Max. size of chest registry:")
 		@RangeInt(min = 5, max = 100)
-		@RequiresWorldRestart
+		@RequiresMcRestart
 		public int chestRegistrySize = 25;
-
-//		@Name("01-Common chest")
-//		public ChestConfig commonChestProperties = new ChestConfig(true, 75, 85, 50,
-//				new String[] {},
-//				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-//						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
-//				new String[] {},
-//				new String[] {"ocean", "deep_ocean"});
-//
-//		@Name("02-Uncommon chest")
-//		public ChestConfig uncommonChestProperties = new ChestConfig(true, 150, 75, 40,
-//				new String[] {},
-//				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-//						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
-//				new String[] {},
-//				new String[] {"ocean", "deep_ocean"});
-//
-//		@Name("03-Scarce chest")
-//		public ChestConfig scarceChestProperties = new ChestConfig(true, 300, 50, 30,
-//				new String[] {},
-//				new String[] {},
-//				new String[] {},
-//				new String[] {});
-//
-//		@Name("04-Rare chest")
-//		public ChestConfig rareChestProperties = new ChestConfig(true, 500, 25, 20,
-//				new String[] {},
-//				new String[] {"plains", "sunflower_plains"},
-//				new String[] {},
-//				new String[] {"plains"});
-//
-//		@Name("05-Epic chest")
-//		public ChestConfig epicChestProperties = new ChestConfig(true, 800, 15, 10,
-//				new String[] {},
-//				new String[] {"plains", "sunflower_plains"},
-//				new String[] {},
-//				new String[] {"plains"});
 
 		/*
 		 * 
@@ -428,32 +374,11 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			submergedChests = new ChestCollection(configs);
 			
 			// setup extra properties
-//			commonChestProperties.mimicProbability = 20.0;
 			surfaceChests.commonChestProperties.mimicProbability = 20.0;
 			submergedChests.commonChestProperties.mimicProbability = 0.0;
 			
 			
 		}
-		
-//		public ChestConfig getCommonChestProperties() {
-//			return commonChestProperties;
-//		}
-//
-//		public ChestConfig getScarceChestProperties() {
-//			return scarceChestProperties;
-//		}
-//
-//		public ChestConfig getRareChestProperties() {
-//			return rareChestProperties;
-//		}
-//
-//		public ChestConfig getEpicChestProperties() {
-//			return epicChestProperties;
-//		}
-//
-//		public ChestConfig getUncommonChestProperties() {
-//			return uncommonChestProperties;
-//		}
 		
 		public class ChestCollection implements IChestCollection {
 			/*
@@ -881,12 +806,13 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			@Name("03. Enable poison fog:")
 			public boolean enablePoisonFog = true;
 			
-			@Comment({"This is a temporary property.", "@since v1.5.0."})
-			@Name("04. Probability of (under)water structure spawn:")
-			@RangeDouble(min = 0.0, max = 100.0)
-			public double waterStructureProbability = 50.0;
+//			@Comment({"This is a temporary property.", "@since v1.5.0."})
+//			@Name("04. Probability of (under)water structure spawn:")
+//			@RangeDouble(min = 0.0, max = 100.0)
+//			public double waterStructureProbability = 50.0;
+			
 			@Comment({"The probability that a surface structure will generate."})
-			@Name("05. Probability of surface structure spawn:")
+			@Name("04. Probability of surface structure spawn:")
 			@RangeInt(min = 0, max = 100)
 			public int surfaceStructureProbability = 25;
 		}

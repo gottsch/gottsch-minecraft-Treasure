@@ -13,7 +13,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -38,7 +38,7 @@ public class SpawnChestCommand extends CommandBase {
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/t2-chest <x> <y> <z> [rarity | -n <name>]: generates a Treasure! chest at location (x,y,z)";
+		return "/t2-chest <x> <y> <z> [<rarity>]: generates a Treasure! chest at location (x,y,z)";
 	}
 
 	@Override
@@ -67,10 +67,10 @@ public class SpawnChestCommand extends CommandBase {
     			Random random = new Random();
     			
 				// get the chest world generator
-				ChestWorldGenerator chestGens = (ChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.CHEST);
+				SurfaceChestWorldGenerator chestGens = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SURFACE_CHEST);
 				// get the rarity chest generator
 //				IChestGenerator gen = chestGens.getGenerators().get(rarity);
-				IChestGenerator gen = chestGens.getChestCollectionGeneratorsMap().get(rarity).next();
+				IChestGenerator gen = chestGens.getChestGenMap().get(rarity).next();
 //				CommonChestGenerator gen = new CommonChestGenerator();
     			BlockPos pos = new BlockPos(x, y, z);
     			

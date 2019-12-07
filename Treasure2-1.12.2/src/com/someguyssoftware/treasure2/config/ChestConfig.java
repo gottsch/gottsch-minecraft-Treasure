@@ -10,6 +10,7 @@ import net.minecraftforge.common.config.Config.Ignore;
 import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RangeDouble;
 import net.minecraftforge.common.config.Config.RangeInt;
+import net.minecraftforge.common.config.Config.RequiresWorldRestart;
 
 /*
  * 
@@ -17,6 +18,7 @@ import net.minecraftforge.common.config.Config.RangeInt;
 public class ChestConfig implements IChestConfig {
 	@Comment({"Enable/Disable generating chests associated with this rarity."})
 	@Name("00. Enable chests for rarity.")
+	@RequiresWorldRestart
 	public boolean enableChest = true;
 
 	@Comment({"The number of chunks generated before the chest spawn is attempted."})

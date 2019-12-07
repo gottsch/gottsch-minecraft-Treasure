@@ -91,6 +91,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
 		result.getData().setSpawnCoords(spawnCoords);
+		result.getData().setChestCoords(spawnCoords);
 		
 		// is the chest placed in a cavern
 		boolean inCavern = false;
