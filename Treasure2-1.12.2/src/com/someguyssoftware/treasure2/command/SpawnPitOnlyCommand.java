@@ -16,7 +16,7 @@ import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
-import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -70,10 +70,10 @@ public class SpawnPitOnlyCommand extends CommandBase {
     			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(x, WorldInfo.getHeightValue(world, spawnCoords), z));
     			Treasure.logger.debug("spawn coords @ {}", spawnCoords.toShortString());
     			Treasure.logger.debug("surfaceCoords @ {}", surfaceCoords.toShortString());
-    			ChestWorldGenerator chestGen = new ChestWorldGenerator();
+    			SurfaceChestWorldGenerator chestGen = new SurfaceChestWorldGenerator();
 
     			IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGen = null;
-    			List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerators = ChestWorldGenerator.pitGens.row(PitTypes.STANDARD).values().stream()
+    			List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerators = SurfaceChestWorldGenerator.pitGens.row(PitTypes.STANDARD).values().stream()
     					.collect(Collectors.toList());
     			pitGen = pitGenerators.get(random.nextInt(pitGenerators.size()));
     					

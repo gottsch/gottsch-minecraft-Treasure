@@ -29,9 +29,9 @@
         "1.5.0": "Expose/Add custom structure locations.\nSet Key max uses as configurable.\nAdded Chinese language file. Thanks to qyhao.\nAdded new config options - toggle default loot table and templates enforcement.\nRemoved references to mod_present condition on loot tables.\nFix WitherRoot and WitherBranch blocks placement.\nAdded meta file system.\nAdded underwater structures.\nAdded more treasure room structures.",
         "1.5.1": "Fixed Server crash on load - due to biome.getName().\n",
         "1.6.0": "Added White and Black Pearls.\nUpdated Rare and Epic loot tables with pearls.\nAll Generators implement IGenerator.\nRefactored WellGenerators to use Structures.\nRefactored AbstractChestGenerator.\nFixed stacked coins only return 1 loot item bug.\nFixed Wishing Well loot selection.\nFixed all Structure rotation spawn points and checks.\nUpdate all commands be prefixed with t2-.\n",
-        "1.6.1": "Add",
-        "1.6.2": "Add",
-        "1.6.3": "Add",
+        "1.6.1": "Fixed NPE on AbstractTreasureChest",
+        "1.6.2": "Removed GUI config that was inadvertently added last update.",
+        "1.6.3": "Removed debugging code that was causing underwater structures to generate too frequently.",
         "1.7.0": "Refactored config files into one GUI config.\nAdded Desert Wishing Well block.\nFixed Rarity enum value mappings.\nPersisted ChestRegistry.\nFixed Well generation on podzol/mycelium generating mushroom block instead of mushrooms.\nReconfigured folder locations where logging and resource files go (moved out of /mods folder.)\nUsing GottschCore v1.9.0.\n"
 
     }

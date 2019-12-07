@@ -11,8 +11,9 @@ import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
-import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.SubmergedChestWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
@@ -28,8 +29,17 @@ import net.minecraft.world.storage.WorldSavedData;
  * @author Mark Gottschling on Jan 22, 2018
  *
  */
-public class GenDataPersistence extends WorldSavedData {
+public class GenDataPersistence extends WorldSavedData {	
+	private static final String TREASURE_GEN_TAG_NAME = "treasureGenerator";
+	
 	public static final String GEN_DATA_KEY = "treasureGenData";
+
+	private static final String SURFACE_CHEST_GEN_TAG_NAME = "surfaceChestGen";
+	private static final String SUBMERGED_CHEST_GEN_TAG_NAME = "submergedChestGen";
+	private static final String KEY_TAG_NAME = "key";
+	private static final String COUNT_TAG_NAME = "count";
+	private static final String CHUNKS_SINCE_LAST_CHEST_TAG_NAME = "chunksSinceLastChest";
+	private static final String CHUNKS_SINCE_LAST_RARITY_CHEST_TAG_NAME = "chunksSinceLastRarityChest";
 	
 	/**
 	 * Empty constructor
@@ -54,21 +64,42 @@ public class GenDataPersistence extends WorldSavedData {
 		Treasure.logger.debug("Loading Treasure! saved gen data...");
 
 		// get the world generators
-		ChestWorldGenerator chestGen = (ChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.CHEST);
+		SurfaceChestWorldGenerator surfaceChestGen = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SURFACE_CHEST);
+		SubmergedChestWorldGenerator submergedChestGen = (SubmergedChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SUBMERGED_CHEST);
 		WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WELL);
 		WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WITHER_TREE);
 		GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.GEM);
 		
 		// treasure
-		NBTTagCompound treasureGen = tag.getCompoundTag("treasureGenerator");
-		chestGen.setChunksSinceLastChest(treasureGen.getInteger("chunksSinceLastChest"));
-		// load all the chunks since last rarity chest properites
-		NBTTagList chunksSinceTagList = tag.getTagList("chunksSinceLastRarityChest", 10);
-		for (int i = 0; i < chunksSinceTagList.tagCount(); i++) {
-			NBTTagCompound chunkTag = chunksSinceTagList.getCompoundTagAt(i);
-			int count = chunkTag.getInteger("count");
-			String key = chunkTag.getString("key");
-			chestGen.getChunksSinceLastRarityChest().put(Rarity.valueOf(key), count);
+		NBTTagCompound treasureGen = tag.getCompoundTag(TREASURE_GEN_TAG_NAME);
+		NBTTagCompound surfaceTag = treasureGen.getCompoundTag(SURFACE_CHEST_GEN_TAG_NAME);
+		NBTTagCompound submergedTag = treasureGen.getCompoundTag(SUBMERGED_CHEST_GEN_TAG_NAME);
+	
+		///// Chests /////
+		/// Surface Chests ///
+		if (surfaceTag != null) {
+			surfaceChestGen.setChunksSinceLastChest(surfaceTag.getInteger(CHUNKS_SINCE_LAST_CHEST_TAG_NAME));
+			NBTTagList chunksSinceTagList = surfaceTag.getTagList(CHUNKS_SINCE_LAST_RARITY_CHEST_TAG_NAME, 10);
+			// load all the chunks since last rarity chest properites
+			for (int i = 0; i < chunksSinceTagList.tagCount(); i++) {
+				NBTTagCompound chunkTag = chunksSinceTagList.getCompoundTagAt(i);
+				int count = chunkTag.getInteger(COUNT_TAG_NAME);
+				String key = chunkTag.getString(KEY_TAG_NAME);
+				surfaceChestGen.getChunksSinceLastRarityChest().put(Rarity.valueOf(key), count);
+			}
+		}
+		
+		/// Submerged Chests ///
+		if (submergedTag != null) {
+			submergedChestGen.setChunksSinceLastChest(submergedTag.getInteger(CHUNKS_SINCE_LAST_CHEST_TAG_NAME));
+			NBTTagList chunksSinceTagList = submergedTag.getTagList(CHUNKS_SINCE_LAST_RARITY_CHEST_TAG_NAME, 10);
+			// load all the chunks since last rarity chest properites
+			for (int i = 0; i < chunksSinceTagList.tagCount(); i++) {
+				NBTTagCompound chunkTag = chunksSinceTagList.getCompoundTagAt(i);
+				int count = chunkTag.getInteger(COUNT_TAG_NAME);
+				String key = chunkTag.getString(KEY_TAG_NAME);
+				submergedChestGen.getChunksSinceLastRarityChest().put(Rarity.valueOf(key), count);
+			}
 		}
 		
 		///// Well /////
@@ -87,7 +118,7 @@ public class GenDataPersistence extends WorldSavedData {
 		// load the chest registry
 		NBTTagList chestRegistryTagList = tag.getTagList("chestRegistry", 10);
 		for (int i = 0; i < chestRegistryTagList.tagCount(); i++) {
-			NBTTagCompound chunkTag = chunksSinceTagList.getCompoundTagAt(i);
+			NBTTagCompound chunkTag = chestRegistryTagList.getCompoundTagAt(i);
 			String key = chunkTag.getString("key");
 			String rarity = chunkTag.getString("rarity");
 			NBTTagCompound coords = chunkTag.getCompoundTag("coords");
@@ -111,27 +142,54 @@ public class GenDataPersistence extends WorldSavedData {
 			// create a treasure compound			
 			NBTTagCompound treasureGen = new NBTTagCompound();
 			
+			// add main treasure tag
+			tag.setTag(TREASURE_GEN_TAG_NAME, treasureGen);
+			
 			///// Chests //////
-			// get the chest world generator
-			ChestWorldGenerator chestGen = (ChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.CHEST);
+			// get the chest world generators
+			SurfaceChestWorldGenerator surfaceChestGen = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SURFACE_CHEST);
+			SubmergedChestWorldGenerator submergedChestGen = (SubmergedChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SUBMERGED_CHEST);
 			
-			// add the chest gen last count to the treasure compound
-			treasureGen.setInteger("chunksSinceLastChest", chestGen.getChunksSinceLastChest());
-			tag.setTag("treasureGenerator", treasureGen);
+			// create a new compounds
+			NBTTagCompound surfaceTag = new NBTTagCompound();
+			NBTTagCompound submergedTag = new NBTTagCompound();
 			
+			/// Surface Chests ///
+			// add the surface chest gen last count to the treasure compound
+			surfaceTag.setInteger(CHUNKS_SINCE_LAST_CHEST_TAG_NAME, surfaceChestGen.getChunksSinceLastChest());			
+			
+			// TODO these 2 blocks could become one method
 			NBTTagList chunksSinceTagList = new NBTTagList();
-			for (Entry<Rarity, Integer> since : chestGen.getChunksSinceLastRarityChest().entrySet()) {
+			for (Entry<Rarity, Integer> since : surfaceChestGen.getChunksSinceLastRarityChest().entrySet()) {
 				NBTTagCompound entry = new NBTTagCompound();
 				NBTTagString key = new NBTTagString(since.getKey().name());
 				NBTTagInt count = new NBTTagInt(since.getValue());
-				entry.setTag("key", key);
-				entry.setTag("count", count);
-				
+				entry.setTag(KEY_TAG_NAME, key);
+				entry.setTag(COUNT_TAG_NAME, count);				
 				// add entry to list
 				chunksSinceTagList.appendTag(entry);
 			}
-			treasureGen.setTag("chunksSinceLastRarityChest", chunksSinceTagList);
+			surfaceTag.setTag(CHUNKS_SINCE_LAST_RARITY_CHEST_TAG_NAME, chunksSinceTagList);
 			
+			/// Submerged Chests ///
+			// add the submerged chest gen last count to the treasure compound
+			submergedTag.setInteger(CHUNKS_SINCE_LAST_CHEST_TAG_NAME, submergedChestGen.getChunksSinceLastChest());			
+			chunksSinceTagList = new NBTTagList();
+			for (Entry<Rarity, Integer> since : submergedChestGen.getChunksSinceLastRarityChest().entrySet()) {
+				NBTTagCompound entry = new NBTTagCompound();
+				NBTTagString key = new NBTTagString(since.getKey().name());
+				NBTTagInt count = new NBTTagInt(since.getValue());
+				entry.setTag(KEY_TAG_NAME, key);
+				entry.setTag(COUNT_TAG_NAME, count);				
+				// add entry to list
+				chunksSinceTagList.appendTag(entry);
+			}			
+			submergedTag.setTag(CHUNKS_SINCE_LAST_RARITY_CHEST_TAG_NAME, chunksSinceTagList);
+			
+			// add chest gen tags to main tag
+			treasureGen.setTag(SURFACE_CHEST_GEN_TAG_NAME, surfaceTag);
+			treasureGen.setTag(SUBMERGED_CHEST_GEN_TAG_NAME, submergedTag);
+						
 			///// Well ////
 			// get the well world generator
 			WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WELL);

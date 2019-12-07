@@ -38,8 +38,9 @@ import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
-import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.SubmergedChestWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
@@ -198,7 +199,8 @@ public class Treasure extends AbstractMod {
 		super.init(event);
 
 		// register world generators
-		WORLD_GENERATORS.put(WorldGenerators.CHEST, new ChestWorldGenerator());
+		WORLD_GENERATORS.put(WorldGenerators.SURFACE_CHEST, new SurfaceChestWorldGenerator());
+		WORLD_GENERATORS.put(WorldGenerators.SUBMERGED_CHEST, new SubmergedChestWorldGenerator());
 		WORLD_GENERATORS.put(WorldGenerators.WELL, new WellWorldGenerator());
 		WORLD_GENERATORS.put(WorldGenerators.WITHER_TREE, new WitherTreeWorldGenerator());
 		WORLD_GENERATORS.put(WorldGenerators.GEM, new GemOreWorldGenerator());

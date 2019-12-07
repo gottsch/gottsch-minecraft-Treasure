@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 import com.someguyssoftware.gottschcore.biome.BiomeHelper;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -29,17 +27,13 @@ import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.enums.PitTypes;
-import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.chest.AbstractChestGenerator;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
-import com.someguyssoftware.treasure2.generator.chest.SurfaceChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
-import com.someguyssoftware.treasure2.generator.chest.CommonChestSelector;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
@@ -47,15 +41,7 @@ import com.someguyssoftware.treasure2.generator.chest.RareChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.UncommonChestGenerator;
-import com.someguyssoftware.treasure2.generator.pit.AirPitGenerator;
-import com.someguyssoftware.treasure2.generator.pit.BigBottomMobTrapPitGenerator;
-import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
-import com.someguyssoftware.treasure2.generator.pit.LavaSideTrapPitGenerator;
-import com.someguyssoftware.treasure2.generator.pit.LavaTrapPitGenerator;
-import com.someguyssoftware.treasure2.generator.pit.MobTrapPitGenerator;
-import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
-import com.someguyssoftware.treasure2.generator.pit.StructurePitGenerator;
-import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
+import com.someguyssoftware.treasure2.generator.ruins.SubmergedRuinGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
@@ -71,29 +57,22 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 /**
  * 
- * @author Mark Gottschling on Jan 22, 2018
+ * @author Mark Gottschling on Dec 3, 2019
  *
  */
 @Getter @Setter
-public class ChestWorldGenerator implements IWorldGenerator {
+public class SubmergedChestWorldGenerator implements IWorldGenerator {
 	private int chunksSinceLastChest;
 	private Map<Rarity, Integer> chunksSinceLastRarityChest;
-	
-	// the chest chestGeneratorsMap
-	private Map<Rarity, AbstractChestGenerator> chestGeneratorsMap = new HashMap<>();
-	private Map<Rarity, RandomWeightedCollection<IChestGenerator<GeneratorResult<GeneratorData>>>> chestCollectionGeneratorsMap = new HashMap<>();
-	// TEMP
-	private Map<Rarity, RandomWeightedCollection<IChestGenerator<GeneratorResult<GeneratorData>>>> oceanChestCollectionGeneratorsMap = new HashMap<>();
 
-	// the pit chestGeneratorsMap
-	public static Table<PitTypes, Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGens =  HashBasedTable.create();
-	
-	public static List<Rarity> enabledRarities = new ArrayList<>();
+	private Map<Rarity, RandomWeightedCollection<IChestGenerator>> chestCollectionGeneratorsMap = new HashMap<>();
+
+	private static final List<Rarity> RARITIES = new ArrayList<>();
 	
 	/**
 	 * 
 	 */
-	public ChestWorldGenerator() {
+	public SubmergedChestWorldGenerator() {
 		try {
 			init();
 		} catch (Exception e) {
@@ -102,6 +81,8 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	}
 	
 	private void init() {
+		RARITIES.clear();
+		
 		// initialize chunks since last array
 		chunksSinceLastChest = 0;
 		chunksSinceLastRarityChest = new HashMap<>(Rarity.values().length);
@@ -110,85 +91,36 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		for (Rarity rarity : Rarity.values()) {
 			chunksSinceLastRarityChest.put(rarity, 0);
 		}
-		
-//		chestGeneratorsMap.put(Rarity.COMMON, new CommonChestGenerator());
-//		chestGeneratorsMap.put(Rarity.UNCOMMON, new UncommonChestGenerator());
-//		chestGeneratorsMap.put(Rarity.SCARCE, new ScarceChestGenerator());
-//		chestGeneratorsMap.put(Rarity.RARE, new RareChestGenerator());
-//		chestGeneratorsMap.put(Rarity.EPIC, new EpicChestGenerator());
-		// TEMP
-		SurfaceChestGenerator chestGen = new SurfaceChestGenerator(new CommonChestSelector());
-		
+				
 		// setup chest collection generator maps
-		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(COMMON).isEnableChest()) {
-			enabledRarities.add(COMMON);
+		if (TreasureConfig.CHESTS.submergedChests.configMap.get(COMMON).isEnableChest()) {
+			RARITIES.add(COMMON);
 			chestCollectionGeneratorsMap.put(COMMON, new RandomWeightedCollection<>());
-			chestCollectionGeneratorsMap.get(COMMON).add(1, new CommonChestGenerator());
+			chestCollectionGeneratorsMap.get(COMMON).add(1, new CommonChestGenerator()); 
 		}		
-		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(UNCOMMON).isEnableChest()) {
-			enabledRarities.add(UNCOMMON);
+		if (TreasureConfig.CHESTS.submergedChests.configMap.get(UNCOMMON).isEnableChest()) {
+			RARITIES.add(UNCOMMON);
 			chestCollectionGeneratorsMap.put(UNCOMMON, new RandomWeightedCollection<>());
 			chestCollectionGeneratorsMap.get(UNCOMMON).add(1, new UncommonChestGenerator());
 		}
-		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(SCARCE).isEnableChest()) {
-			enabledRarities.add(SCARCE);
+		if (TreasureConfig.CHESTS.submergedChests.configMap.get(SCARCE).isEnableChest()) {
+			RARITIES.add(SCARCE);
 			chestCollectionGeneratorsMap.put(SCARCE, new RandomWeightedCollection<>());
 			chestCollectionGeneratorsMap.get(SCARCE).add(75, new ScarceChestGenerator());
 			chestCollectionGeneratorsMap.get(SCARCE).add(25, new SkullChestGenerator());
 		}
-		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(RARE).isEnableChest()) {
-			enabledRarities.add(RARE);
+		if (TreasureConfig.CHESTS.submergedChests.configMap.get(RARE).isEnableChest()) {
+			RARITIES.add(RARE);
 			chestCollectionGeneratorsMap.put(RARE, new RandomWeightedCollection<>());
 			chestCollectionGeneratorsMap.get(RARE).add(85, new RareChestGenerator());
 			chestCollectionGeneratorsMap.get(RARE).add(15, new GoldSkullChestGenerator());
 		}
-		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(EPIC).isEnableChest()) {
-			enabledRarities.add(EPIC);
+		if (TreasureConfig.CHESTS.submergedChests.configMap.get(EPIC).isEnableChest()) {
+			RARITIES.add(EPIC);
 			chestCollectionGeneratorsMap.put(EPIC, new RandomWeightedCollection<>());
 			chestCollectionGeneratorsMap.get(EPIC).add(85, new EpicChestGenerator());
 			chestCollectionGeneratorsMap.get(EPIC).add(15, new CauldronChestGenerator());
 		}		
-		
-		oceanChestCollectionGeneratorsMap.put(Rarity.COMMON, new RandomWeightedCollection<>());
-		oceanChestCollectionGeneratorsMap.put(Rarity.UNCOMMON, new RandomWeightedCollection<>());
-		oceanChestCollectionGeneratorsMap.put(Rarity.SCARCE, new RandomWeightedCollection<>());
-		oceanChestCollectionGeneratorsMap.put(Rarity.RARE, new RandomWeightedCollection<>());
-		oceanChestCollectionGeneratorsMap.put(Rarity.EPIC, new RandomWeightedCollection<>());
-		
-		oceanChestCollectionGeneratorsMap.get(Rarity.COMMON).add(1, new CommonChestGenerator()); // really unnecessary
-		oceanChestCollectionGeneratorsMap.get(Rarity.UNCOMMON).add(1, new UncommonChestGenerator()); // really unnecessary
-		oceanChestCollectionGeneratorsMap.get(Rarity.SCARCE).add(75, new ScarceChestGenerator());
-		oceanChestCollectionGeneratorsMap.get(Rarity.SCARCE).add(25, new SkullChestGenerator());
-//		oceanChestCollectionGeneratorsMap.get(Rarity.SCARCE).add(2500, new OysterChestGenerator());
-		oceanChestCollectionGeneratorsMap.get(Rarity.RARE).add(85, new RareChestGenerator());
-		oceanChestCollectionGeneratorsMap.get(Rarity.RARE).add(15, new GoldSkullChestGenerator());
-//		oceanChestCollectionGeneratorsMap.get(Rarity.RARE).add(1500, new ClamChestGenerator());
-		oceanChestCollectionGeneratorsMap.get(Rarity.EPIC).add(85, new EpicChestGenerator());
-		oceanChestCollectionGeneratorsMap.get(Rarity.EPIC).add(15, new CauldronChestGenerator());
-//		oceanChestCollectionGeneratorsMap.get(Rarity.EPIC).add(1500, new OysterChestGenerator());
-		
-		// setup pit generators map
-		pitGens.put(PitTypes.STANDARD, Pits.SIMPLE_PIT, new SimplePitGenerator());
-		pitGens.put(PitTypes.STRUCTURE, Pits.SIMPLE_PIT, new StructurePitGenerator(new SimplePitGenerator()));
-		
-		pitGens.put(PitTypes.STANDARD, Pits.TNT_TRAP_PIT, new TntTrapPitGenerator());
-		pitGens.put(PitTypes.STRUCTURE, Pits.TNT_TRAP_PIT, new StructurePitGenerator(new TntTrapPitGenerator()));
-		
-		pitGens.put(PitTypes.STANDARD, Pits.AIR_PIT,  new AirPitGenerator());
-		pitGens.put(PitTypes.STRUCTURE, Pits.AIR_PIT, new StructurePitGenerator(new AirPitGenerator()));
-		
-		pitGens.put(PitTypes.STANDARD, Pits.LAVA_TRAP_PIT, new LavaTrapPitGenerator());
-		// NONE for STRUCTURE
-		
-		pitGens.put(PitTypes.STANDARD, Pits.MOB_TRAP_PIT, new MobTrapPitGenerator());
-		pitGens.put(PitTypes.STRUCTURE, Pits.MOB_TRAP_PIT, new StructurePitGenerator(new MobTrapPitGenerator()));
-				
-		pitGens.put(PitTypes.STANDARD, Pits.LAVA_SIDE_TRAP_PIT, new LavaSideTrapPitGenerator());
-		pitGens.put(PitTypes.STRUCTURE, Pits.LAVA_SIDE_TRAP_PIT, new StructurePitGenerator(new LavaSideTrapPitGenerator()));
-		
-		pitGens.put(PitTypes.STANDARD, Pits.BIG_BOTTOM_MOB_TRAP_PIT, new BigBottomMobTrapPitGenerator());
-		// NONE for STRUCTURE
-		
 	}
 
 	/**
@@ -214,59 +146,57 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	 * @param j
 	 */
 	private void generateInOverworld(World world, Random random, int chunkX, int chunkZ) {
+ 		/*
+ 		 * get current chunk position
+ 		 */            
+        // spawn @ middle of chunk
+        int xSpawn = (chunkX * WorldInfo.CHUNK_SIZE) + WorldInfo.CHUNK_RADIUS;
+        int zSpawn = (chunkZ * WorldInfo.CHUNK_SIZE) + WorldInfo.CHUNK_RADIUS;
+        
+		// 0. hard check for ocean biomes
+        ICoords coords = new Coords(xSpawn, 0, zSpawn);
+		Biome biome = world.getBiome(coords.toPos());
+		if (biome != Biomes.OCEAN && biome != Biomes.DEEP_OCEAN && biome != Biomes.FROZEN_OCEAN &&
+				!BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
+    		if (WorldInfo.isClientSide(world)) {
+    			Treasure.logger.debug("Hard check for {} biome @ {}", biome.getBiomeName(), coords.toShortString());
+    		}
+    		else {
+    			Treasure.logger.debug("Hard check for ocean biome @ {}", coords.toShortString());
+    		}				
+			return;
+		}
 		
 		// increment the chunk counts
 		chunksSinceLastChest++;
-//		for (Rarity rarity : Rarity.values()) {
-//			Integer i = chunksSinceLastRarityChest.get(rarity);
-//			chunksSinceLastRarityChest.put(rarity, ++i);
-//		}
-		for (Rarity rarity : enabledRarities) {
+		for (Rarity rarity : RARITIES) {
 			Integer i = chunksSinceLastRarityChest.get(rarity);
 			chunksSinceLastRarityChest.put(rarity, ++i);			
 		}
 
 		// test if min chunks was met
-     	if (chunksSinceLastChest > TreasureConfig.CHESTS.surfaceChests.minChunksPerChest) {
-     		/*
-     		 * get current chunk position
-     		 */            
-            // spawn @ middle of chunk
-            int xSpawn = (chunkX * WorldInfo.CHUNK_SIZE) + WorldInfo.CHUNK_RADIUS;
-            int zSpawn = (chunkZ * WorldInfo.CHUNK_SIZE) + WorldInfo.CHUNK_RADIUS;
-            
+     	if (chunksSinceLastChest > TreasureConfig.CHESTS.submergedChests.minChunksPerChest) {
+           
             // the get first surface y (could be leaves, trunk, water, etc)
             int ySpawn = world.getChunkFromChunkCoords(chunkX, chunkZ).getHeightValue(WorldInfo.CHUNK_RADIUS, WorldInfo.CHUNK_RADIUS);
-            ICoords coords = new Coords(xSpawn, ySpawn, zSpawn);
+            coords = new Coords(xSpawn, ySpawn, zSpawn);
 
 	    	// determine what type to generate
-//        	Rarity rarity = Rarity.values()[random.nextInt(Rarity.values().length)];
-            Rarity rarity = (Rarity) enabledRarities.get(random.nextInt(Rarity.values().length));
-			IChestConfig chestConfig = TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity); //Configs.chestConfigs.get(rarity);
+            Rarity rarity = (Rarity) RARITIES.get(random.nextInt(RARITIES.size()));
+			IChestConfig chestConfig = TreasureConfig.CHESTS.submergedChests.configMap.get(rarity); //Configs.chestConfigs.get(rarity);
 			if (chestConfig == null) {
 				Treasure.logger.warn("Unable to locate a chest for rarity {}.", rarity);
 				return;
 			}
-//			Treasure.logger.debug("Chunks since last {} chest: {}", rarity,  chunksSinceLastRarityChest.get(rarity) );
-//			Treasure.logger.debug("Chunks per {} chest: {}", rarity, chestConfig.getChunksPerChest());
+			
     		if (chunksSinceLastRarityChest.get(rarity) >= chestConfig.getChunksPerChest()) {
-    			
-    			// 0. TODO hard check against ocean biomes
-    			// enable when SubmergedChestWorldGenerator is complete
-//    			Biome biome = world.getBiome(coords.toPos());
-//    			if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN ||
-//    					BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
-//    				return;
-//    			}
-    			
 				// 1. test if chest meets the probability criteria
 				if (!RandomHelper.checkProbability(random, chestConfig.getGenProbability())) {
-//					Treasure.logger.debug("ChestConfig does not meet generate probability.");
+					Treasure.logger.debug("Submerged chest does not meet generate probability.");
 					return;
 				}
 				
 				// 2. test if the override (global) biome is allowed
-				Biome biome = world.getBiome(coords.toPos());
 				TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList());
 				if(biomeCheck == Result.BLACK_LISTED ) {
 		    		if (WorldInfo.isClientSide(world)) {
@@ -292,7 +222,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 				}
 			    
      			// 3. check against all registered chests
-     			if (isRegisteredChestWithinDistance(world, coords, TreasureConfig.CHESTS.surfaceChests.minDistancePerChest)) {
+     			if (isRegisteredChestWithinDistance(world, coords, TreasureConfig.CHESTS.submergedChests.minDistancePerChest)) {
    					Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
      				return;
      			}
@@ -302,14 +232,8 @@ public class ChestWorldGenerator implements IWorldGenerator {
  			
     			// generate the chest/pit/chambers
 				Treasure.logger.debug("Attempting to generate pit/chest.");
-				// TODO swap generator maps here depending on biome ie if ocean/deep ocean use the oceanChestCollectionGeneratorsMap else normal map
 				GeneratorResult<GeneratorData> result = null;
-				if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN) {
-					result = oceanChestCollectionGeneratorsMap.get(rarity).next().generate(world, random, coords, rarity, TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity)); 
-				}
-				else {
-					result = chestCollectionGeneratorsMap.get(rarity).next().generate(world, random, coords, rarity, TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity)); 
-				}
+				result = generate(world, random, coords, rarity, chestCollectionGeneratorsMap.get(rarity).next(), TreasureConfig.CHESTS.submergedChests.configMap.get(rarity));
 				
     			if (result.isSuccess()) {
     				// add to registry
@@ -325,6 +249,113 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	    		savedData.markDirty();
 	    	}
      	}
+	}
+	
+	public GeneratorResult<GeneratorData> generate(World world, Random random, ICoords coords, Rarity chestRarity, 
+			IChestGenerator chestSelector, IChestConfig config) {
+		ICoords chestCoords = null;
+		ICoords markerCoords = null;
+
+		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);		
+		GeneratorResult<ChestGeneratorData> genResult = new GeneratorResult<>(ChestGeneratorData.class);		
+
+		// 1. collect location data points
+		ICoords surfaceCoords = WorldInfo.getOceanFloorSurfaceCoords(world, coords);
+		Treasure.logger.debug("ocean floor surface coords -> {}", surfaceCoords.toShortString());
+		if (!WorldInfo.isValidY(surfaceCoords)) {
+			Treasure.logger.debug("ocean floor surface coords are invalid @ {}", surfaceCoords.toShortString());
+			return result.fail();
+		}
+		// TEMP - if building a structure, markerCoords could be different than original surface coords because for rotation etc.
+		markerCoords = surfaceCoords;
+
+		genResult = generateSubmergedRuins(world, random, /*spawnCoords*/ surfaceCoords, config);
+		Treasure.logger.debug("submerged result -> {}", genResult.toString());
+		if (!genResult.isSuccess()) {
+			return result.fail();
+		}
+		chestCoords = genResult.getData().getChestCoords();
+		// if chest isn't generated, then fail
+		if (chestCoords == null) return result.fail();
+		markerCoords = genResult.getData().getSpawnCoords();
+		if (markerCoords == null) {
+			markerCoords = surfaceCoords;
+		}
+		Treasure.logger.debug("submerged spawn coords -> {}", markerCoords.toShortString());
+
+//		// TODO basically all these rest of code till end is repeated and can be moved to another default method
+//		LootTable lootTable = chestSelector.selectLootTable(random, chestRarity);
+//		if (lootTable == null) {
+//			Treasure.logger.warn("Unable to select a lootTable.");
+//			return result.fail();
+//		}
+//
+//		// select a chest from the rarity
+//		AbstractChestBlock chest = chestSelector.selectChest(random, chestRarity);	
+//		if (chest == null) {
+//			Treasure.logger.warn("Unable to select a chest for rarity {}.", chestRarity);
+//			return result.fail();
+//		}
+//
+//		// place the chest in the world
+//		TileEntity te = null;
+//		if (genResult.getData().getChestState() != null) {
+//			te = chestSelector.placeInWorld(world, random, chestCoords, chest, genResult.getData().getChestState());
+//		}
+//		else {
+//			te = chestSelector.placeInWorld(world, random, chest, chestCoords);
+//		}
+//		
+//		if (te == null) {
+//			Treasure.logger.debug("Unable to locate tile entity for chest -> {}", chestCoords);
+//			return result.fail();
+//		}
+//
+//		if (chest instanceof IMimicBlock) {
+//			// don't fill
+//		}
+//		else {
+//			Treasure.logger.debug("Generating loot from loot table for rarity {}", chestRarity);
+//			lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
+//					random,
+//					Treasure.LOOT_TABLES.getContext());			
+//		}
+//
+//		// add locks
+//		chestSelector.addLocks(random, chest, (AbstractTreasureChestTileEntity)te, chestRarity);
+
+		GeneratorResult<ChestGeneratorData> chestResult = chestSelector.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestState());
+		if (!chestResult.isSuccess()) {
+			return result.fail();
+		}
+		
+		Treasure.logger.info("CHEATER! {} chest at coords: {}", chestRarity, markerCoords.toShortString());
+		result.setData(chestResult.getData());
+		return result.success();
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param spawnCoords
+	 * @param config
+	 * @return
+	 */
+	public GeneratorResult<ChestGeneratorData> generateSubmergedRuins(World world, Random random, ICoords spawnCoords,
+			IChestConfig config) {
+		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
+		result.getData().setSpawnCoords(spawnCoords);
+
+		SubmergedRuinGenerator generator = new SubmergedRuinGenerator();
+
+		// build the structure
+		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, spawnCoords);
+		Treasure.logger.debug("submerged struct result -> {}", genResult);
+		if (!genResult.isSuccess()) return result.fail();
+
+		result.setData(genResult.getData());
+		return result.success();
 	}
 	
 	/**

@@ -14,7 +14,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
-import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -72,7 +72,7 @@ public class SpawnPitStructureOnlyCommand extends CommandBase {
     			// select a pit generator
 //    			Pits pit = Pits.values()[random.nextInt(Pits.values().length)];
     			IPitGenerator pitGenerator = null;
-    			List<IPitGenerator> pitGenerators = ChestWorldGenerator.pitGens.row(PitTypes.STRUCTURE).values().stream()
+    			List<IPitGenerator> pitGenerators = SurfaceChestWorldGenerator.pitGens.row(PitTypes.STRUCTURE).values().stream()
     					.collect(Collectors.toList());
     			pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));
     					

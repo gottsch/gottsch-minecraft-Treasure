@@ -7,11 +7,10 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
-import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -62,11 +61,11 @@ public class SpawnPitCommand extends CommandBase {
 
     			Random random = new Random();
     			//BlockPos pos = new BlockPos(x, y, z);
-    			ChestWorldGenerator chestGen = new ChestWorldGenerator();
+//    			SurfaceChestWorldGenerator chestGen = new SurfaceChestWorldGenerator();
 //    			chestGen.getGenerators().get(rarity).generate(world, random, new Coords(x, y, z), rarity, Configs.chestConfigs.get(rarity)); 
-    			ChestWorldGenerator chestGens = (ChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.CHEST);
-    			IChestGenerator gen = chestGens.getChestCollectionGeneratorsMap().get(rarity).next();
-    			gen.generate(world, random, new Coords(x, y, z), rarity, TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
+    			SurfaceChestWorldGenerator chestGens = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SURFACE_CHEST);
+    			IChestGenerator gen = chestGens.getChestGenMap().get(rarity).next();
+    			gen.generate(world, random, new Coords(x, y, z), rarity, null);
     		}
 		}
 		catch(Exception e) {

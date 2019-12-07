@@ -53,7 +53,7 @@ public class WellWorldGenerator implements IWorldGenerator {
 		try {
 			init();
 		} catch (Exception e) {
-			Treasure.logger.error("Unable to instantiate ChestGenerator:", e);
+			Treasure.logger.error("Unable to instantiate SurfaceChestGenerator:", e);
 		}
 	}
 
