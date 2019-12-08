@@ -8,6 +8,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.block.CardinalDirectionFacadeBlock;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 
@@ -83,7 +84,7 @@ public class WitherBranchBlock extends CardinalDirectionFacadeBlock implements I
 	@Override
 	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 
-		if (RandomHelper.checkProbability(random, TreasureConfig.witherBranchItemGenProbability)) {
+		if (RandomHelper.checkProbability(random, ModConfig.WITHER_TREE.witherBranchItemGenProbability)) {
 			return TreasureItems.WITHER_STICK_ITEM;
 		}
 		return Items.STICK;

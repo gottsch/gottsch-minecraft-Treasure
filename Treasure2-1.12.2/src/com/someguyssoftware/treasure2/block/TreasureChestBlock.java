@@ -18,6 +18,7 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
+import com.someguyssoftware.treasure2.config.ModConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.printer.ChestNBTPrettyPrinter;
@@ -257,7 +258,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 				formatter.format(new Date()), 
 				coords.toShortString().replaceAll(" ", "-"));
 
-		Path path = Paths.get(TreasureConfig.treasureFolder, "dumps").toAbsolutePath();
+		Path path = Paths.get(ModConfig.MOD.treasureFolder, "dumps").toAbsolutePath();
 		try {
 			Files.createDirectories(path);			
 		} catch (IOException e) {
