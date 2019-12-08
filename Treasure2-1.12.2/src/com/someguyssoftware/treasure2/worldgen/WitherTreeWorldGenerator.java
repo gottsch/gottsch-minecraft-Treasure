@@ -36,12 +36,14 @@ import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraftforge.common.BiomeDictionary;
 
 /**
  * 
@@ -147,23 +149,30 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 	 * @param j
 	 */
 	private void generateSurface(World world, Random random, int chunkX, int chunkZ) {
-
+		/*
+		 * get current chunk position
+		 */            
+		// spawn @ middle of chunk
+		int xSpawn = chunkX * 16 + WorldInfo.CHUNK_RADIUS;
+		int zSpawn = chunkZ * 16 + WorldInfo.CHUNK_RADIUS;
+		
+		// 0. hard check against ocean biomes
+        ICoords coords = new Coords(xSpawn, 0, zSpawn);
+		Biome biome = world.getBiome(coords.toPos());
+		if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN ||
+				BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
+			return;
+		}
+		
 		// increment the chunk counts
 		chunksSinceLastTree++;
 
 		// test if min chunks was met
 		if (chunksSinceLastTree > TreasureConfig.WITHER_TREE.chunksPerTree) {
 
-			/*
-			 * get current chunk position
-			 */            
-			// spawn @ middle of chunk
-			int xSpawn = chunkX * 16 + WorldInfo.CHUNK_RADIUS;
-			int zSpawn = chunkZ * 16 + WorldInfo.CHUNK_RADIUS;
-
 			// get first surface y (could be leaves, trunk, water, etc)
 			int ySpawn = world.getChunkFromChunkCoords(chunkX, chunkZ).getHeightValue(8, 8);
-			ICoords coords = new Coords(xSpawn, ySpawn, zSpawn);
+			coords = new Coords(xSpawn, ySpawn, zSpawn);
 
 			// determine what type to generate
 			IWitherTreeConfig treeConfig = TreasureConfig.WITHER_TREE;
@@ -173,11 +182,8 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 			}
 
 			if (chunksSinceLastTree >= treeConfig.getChunksPerTree()) {
-//				Treasure.logger.debug(String.format("Gen: pass second test: chunksSinceLast: %d, chunksPerTree: %d", chunksSinceLastTree, treeConfig.getChunksPerTree()));
-
 				// 1. test if correct biome
 				// if not the correct biome, reset the count
-				Biome biome = world.getBiome(coords.toPos());
 				TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, treeConfig.getBiomeWhiteList(), treeConfig.getBiomeBlackList());
 				if(biomeCheck == Result.BLACK_LISTED ) {
 					chunksSinceLastTree = 0;

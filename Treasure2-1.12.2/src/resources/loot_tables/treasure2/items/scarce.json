@@ -99,7 +99,13 @@
 					"type": "item",
 					"name": "minecraft:ender_pearl",
 					"weight": 15				
-				}
+				},
+				{
+					"entryName": "gunpowder",
+					"type": "item",
+					"name": "minecraft:gunpowder",
+					"weight": 20
+				}				
 			]
 		}
 	]

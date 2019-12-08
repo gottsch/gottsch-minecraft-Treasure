@@ -126,19 +126,16 @@ public class GenUtil {
 	public static boolean replaceBlockWithChest(World world, Random random, Block chest, ICoords coords) {
 		// get the old state
 		IBlockState oldState = world.getBlockState(coords.toPos());
-//		Treasure.logger.info("World ChestConfig Marker coords:" + pos);
-//		Treasure.logger.info("World ChestConfig Block:" + oldState.getClass().getCanonicalName());
-//		Treasure.logger.info("Treasure ChestConfig Block:" + chest.getClass().getCanonicalName());
 		
 		if (oldState.getProperties().containsKey(FACING)) {
-			Treasure.logger.info("World ChestConfig marker has FACING property:" + oldState.getValue(FACING));
+			Treasure.logger.debug("World ChestConfig marker has FACING property:" + oldState.getValue(FACING));
 			// set the new state
 			return placeChest(world, chest, coords, (EnumFacing)oldState.getValue(FACING));
 			
 //			world.setBlockState(pos, this.getChest().getDefaultState().withProperty(FACING, oldState.getValue(FACING)), 3);
 		}
 		else {
-			Treasure.logger.info("World ChestConfig marker does NOT have a FACING property.");
+			Treasure.logger.debug("World ChestConfig marker does NOT have a FACING property.");
 //			world.setBlockState(chestCoords.toBlockPos(), this.getChest().getDefaultState(), 3);
 			return placeChest(world, chest, coords, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
 		}
