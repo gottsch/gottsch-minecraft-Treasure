@@ -15,7 +15,7 @@ import net.minecraftforge.common.config.Config.Name;
 public class LoggerConfig {
 	@Comment({"The logging level. Set to 'off' to disable logging.", "Values = [trace|debug|info|warn|error|off]"})
 	@Name("01. Logging level:")
-	public String level = "debug";
+	public String level = "info";
 	
 	@Comment({"The size a log file can be before rolling over to a new file."})
 	@Name("02. Logs file max. size:")

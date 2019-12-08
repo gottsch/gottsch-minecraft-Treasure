@@ -7,6 +7,7 @@ import java.util.Random;
 
 import com.google.common.base.Predicate;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
@@ -27,7 +28,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
  * @author Mark Gottschling on Dec 4, 2018
  *
  */
-public class GemOreWorldGenerator implements IWorldGenerator {
+public class GemOreWorldGenerator implements ITreasureWorldGenerator {
 
 	private WorldGenMinable sapphireGenerator;
 	private WorldGenMinable rubyGenerator;
@@ -37,10 +38,23 @@ public class GemOreWorldGenerator implements IWorldGenerator {
 	 * 
 	 */
 	public GemOreWorldGenerator() {
+		try {
+			init();
+		} catch (Exception e) {
+			Treasure.logger.error("Unable to instantiate GemOreGenerator:", e);
+		}
 		sapphireGenerator = new WorldGenMinable(TreasureBlocks.SAPPHIRE_ORE.getDefaultState(), TreasureConfig.GEMS_ORES.sapphireOreVeinSize);
 		rubyGenerator = new WorldGenMinable(TreasureBlocks.RUBY_ORE.getDefaultState(), TreasureConfig.GEMS_ORES.rubyOreVeinSize);
 	}
 
+	/**
+	 * 
+	 */
+	public void init() {
+		// intialize chunks since last array
+		chunksSinceLastOre = 0;
+	}
+	
 	/**
 	 * 
 	 */

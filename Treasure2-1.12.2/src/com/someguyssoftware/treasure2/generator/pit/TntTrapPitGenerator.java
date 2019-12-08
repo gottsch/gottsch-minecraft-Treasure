@@ -119,9 +119,7 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 		else {
 			nextCoords = buildLayer(world, coords, block);
 		}
-//		Treasure.logger.debug("Coords for trap base layer: {}", coords.toShortString());
-//		Treasure.logger.debug("Next Coords after base log: {}", nextCoords.toShortString());
-		
+
 		// ensure that the difference is only 1 between nextCoords and coords
 //		if (nextCoords.delta(coords).getY() > 1) return nextCoords;
 

@@ -49,7 +49,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
  * @author Mark Gottschling on Mar 25, 2018
  *
  */
-public class WitherTreeWorldGenerator implements IWorldGenerator {
+public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 	public static final int VERTICAL_MAX_DIFF = 3;
 	private static final int CLEARING_RADIUS = 3;
 
@@ -120,7 +120,7 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 	/**
 	 * 
 	 */
-	private void init() {
+	public void init() {
 		// intialize chunks since last array
 		chunksSinceLastTree = 0;
 	}

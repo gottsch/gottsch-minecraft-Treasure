@@ -252,24 +252,12 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Name("10 foreign mods")
 	@Comment("Foreign mod properties")
 	public static final ForeignModEnablements FOREIGN_MODS = new ForeignModEnablements();
-	
-//	/*
-//	 * Map of chest configs by rarity.
-//	 */
-//	@Ignore
-//	public static Map<Rarity, IChestConfig> chestConfigs = new HashMap<>();
 
 	@Ignore public static TreasureConfig instance = new TreasureConfig();
 
-	// TODO move into CHESTS
-//	static {
-//		chestConfigs.put(Rarity.COMMON, CHESTS.commonChestProperties);
-//		chestConfigs.put(Rarity.UNCOMMON, CHESTS.uncommonChestProperties);
-//		chestConfigs.put(Rarity.SCARCE, CHESTS.scarceChestProperties);
-//		chestConfigs.put(Rarity.RARE, CHESTS.rareChestProperties);
-//		chestConfigs.put(Rarity.EPIC, CHESTS.epicChestProperties);
-//	}
-
+	/**
+	 * 
+	 */
 	public TreasureConfig() {
 	}
 	
@@ -289,11 +277,12 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	 * 
 	 */
 	public static class Chests {
-		
+		@Comment({"Chests that generate on land.", "Note: There is a build-in check against ocean biomes for surface chests. Adding ocean biomes to the white lists will not change this functionality."})
 		@Name("01 Surface Chests")
-		public ChestCollection surfaceChests;// = new ChestCollection();
+		public ChestCollection surfaceChests;
+		@Comment({"Chests that generate underwater (in ocean biomes).", "Note: There is a build-in check to only allow ocean biomes for submerged chests. Add other biomes to the white lists will not change this functionality."})
 		@Name("02 Submerged Chests")
-		public ChestCollection submergedChests = new ChestCollection();
+		public ChestCollection submergedChests;
 
 		@Comment({"The number of chests that are monitored. Most recent additions replace least recent when the registry is full.", "This is the set of chests used to measure distance between newly generated chests."})
 		@Name("01. Max. size of chest registry:")
@@ -305,38 +294,37 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		 * 
 		 */
 		public Chests() {
+			// ocean names:
+			// "ocean", "deep_ocean", "deep_frozen_ocean", 
+			//"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"
+			
 			// setup surface properties
 			Map<Rarity, ChestConfig> configs = new HashMap<>();
 			configs.put(Rarity.COMMON, new ChestConfig(true, 75, 85, 50,
 					new String[] {},
-					new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
 					new String[] {},
-					new String[] {"ocean", "deep_ocean"}));
+					new String[] {},
+					new String[] {}));
 			configs.put(Rarity.UNCOMMON, new ChestConfig(true, 150, 75, 40,
 					new String[] {},
-					new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
 					new String[] {},
-					new String[] {"ocean", "deep_ocean"}));
+					new String[] {},
+					new String[] {}));
 			configs.put(Rarity.SCARCE, new ChestConfig(true, 300, 50, 30,
 					new String[] {},
-					new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
 					new String[] {},
-					new String[] {"ocean", "deep_ocean"}));
+					new String[] {},
+					new String[] {}));
 			configs.put(Rarity.RARE, new ChestConfig(true, 500, 25, 20,
 					new String[] {},
-					new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean", "plains", "sunflower_plains"},
+					new String[] {"plains", "sunflower_plains"},
 					new String[] {},
-					new String[] {"ocean", "deep_ocean", "plains"}));
+					new String[] {"plains"}));
 			configs.put(Rarity.EPIC, new ChestConfig(true, 800, 15, 10,
 					new String[] {},
-					new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean", "plains", "sunflower_plains"},
+					new String[] {"plains", "sunflower_plains"},
 					new String[] {},
-					new String[] {"ocean", "deep_ocean", "plains"}));
+					new String[] {"plains"}));
 			
 			surfaceChests = new ChestCollection(configs);
 			
@@ -663,6 +651,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@Comment({"The number of ruby ore blocks in a vein."})
 		@Name("05. Ruby ore vein size:")
 		@RangeInt(min = 1, max = 20)
+		@RequiresMcRestart
 		public int rubyOreVeinSize = 3;
 
 		@Comment({"The number of ruby ore veins in a chunk."})
@@ -688,6 +677,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@Comment({"The number of sapphire ore blocks in a vein."})
 		@Name("10. Sapphire ore vein size:")
 		@RangeInt(min = 1, max = 20)
+		@RequiresMcRestart
 		public int sapphireOreVeinSize = 3;
 
 		@Comment({"The number of sapphire ore veins in a chunk."})

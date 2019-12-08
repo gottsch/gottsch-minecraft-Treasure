@@ -73,7 +73,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
  *
  */
 @Getter @Setter
-public class SurfaceChestWorldGenerator implements IWorldGenerator {
+public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 	protected static int UNDERGROUND_OFFSET = 5;
 	
 	private int chunksSinceLastChest;
@@ -98,7 +98,8 @@ public class SurfaceChestWorldGenerator implements IWorldGenerator {
 		}
 	}
 	
-	private void init() {
+	@Override
+	public void init() {
 		// initialize chunks since last array
 		chunksSinceLastChest = 0;
 		chunksSinceLastRarityChest = new HashMap<>(Rarity.values().length);
@@ -196,12 +197,6 @@ public class SurfaceChestWorldGenerator implements IWorldGenerator {
 		Biome biome = world.getBiome(coords.toPos());
 		if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN ||
 				BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
-    		if (WorldInfo.isClientSide(world)) {
-    			Treasure.logger.debug("Hard check against {} biome @ {}", biome.getBiomeName(), coords.toShortString());
-    		}
-    		else {
-    			Treasure.logger.debug("Hard check against ocean biome @ {}", coords.toShortString());
-    		}	
 			return;
 		}
 		
@@ -357,47 +352,6 @@ public class SurfaceChestWorldGenerator implements IWorldGenerator {
 			Treasure.logger.debug("Chest coords were not provided in result -> {}", genResult.toString());
 			return result.fail();
 		}
-		
-//		// select a loot table
-//		LootTable lootTable = chestSelector.selectLootTable(random, chestRarity);
-//		if (lootTable == null) {
-//			Treasure.logger.warn("Unable to select a lootTable.");
-//			return result.fail();
-//		}
-//
-//		// select a chest from the rarity
-//		AbstractChestBlock chest = chestSelector.selectChest(random, chestRarity);	
-//		if (chest == null) {
-//			Treasure.logger.warn("Unable to select a chest for rarity {}.", chestRarity);
-//			return result.fail();
-//		}
-//
-//		// place the chest in the world
-//		TileEntity te = null;
-//		if (genResult.getData().getChestState() != null) {
-//			te = chestSelector.placeInWorld(world, random, chestCoords, chest, genResult.getData().getChestState());
-//		}
-//		else {
-//			te = chestSelector.placeInWorld(world, random, chest, chestCoords);
-//		}
-//		
-//		if (te == null) {
-//			Treasure.logger.debug("Unable to locate tile entity for chest -> {}", chestCoords);
-//			return result.fail();
-//		}
-//
-//		if (chest instanceof IMimicBlock) {
-//			// don't fill
-//		}
-//		else {
-//			Treasure.logger.debug("Generating loot from loot table for rarity {}", chestRarity);
-//			lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
-//					random,
-//					Treasure.LOOT_TABLES.getContext());			
-//		}
-//
-//		// add locks
-//		chestSelector.addLocks(random, chest, (AbstractTreasureChestTileEntity)te, chestRarity);
 
 		// add markers (above chest or shaft)
 		if (hasMarkers) {
