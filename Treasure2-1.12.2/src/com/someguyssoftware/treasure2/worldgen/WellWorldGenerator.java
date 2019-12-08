@@ -29,7 +29,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraftforge.fml.common.IWorldGenerator;
 
 /**
  * 
@@ -90,7 +89,6 @@ public class WellWorldGenerator implements ITreasureWorldGenerator {
 		// increment the chunk counts
 		chunksSinceLastWell++;
 
-		boolean isGenerated = false;	
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 
 		// test if min chunks was met

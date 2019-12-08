@@ -49,7 +49,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -216,7 +215,6 @@ public class Treasure extends AbstractMod {
 		
 		TEMPLATE_MANAGER = new TreasureTemplateManager(
 				Treasure.instance,
-//				TreasureConfig.CUSTOM_STRUCTURE_FOLDER,
 				"/structures",
 				FMLCommonHandler.instance().getDataFixer());
 
