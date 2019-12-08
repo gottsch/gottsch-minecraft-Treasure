@@ -39,6 +39,7 @@ import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.ITreasureWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.SubmergedChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
@@ -119,7 +120,7 @@ public class Treasure extends AbstractMod {
 	};
     
 	// forge world generators
-    public final static Map<WorldGenerators, IWorldGenerator> WORLD_GENERATORS = new HashMap<>();
+    public final static Map<WorldGenerators, ITreasureWorldGenerator> WORLD_GENERATORS = new HashMap<>();
     
     // template manager
     public static TreasureTemplateManager TEMPLATE_MANAGER;
@@ -206,7 +207,7 @@ public class Treasure extends AbstractMod {
 		WORLD_GENERATORS.put(WorldGenerators.GEM, new GemOreWorldGenerator());
 		
 		int genWeight = 0;
-		for (Entry<WorldGenerators, IWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
+		for (Entry<WorldGenerators, ITreasureWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
 			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);
 		}
 

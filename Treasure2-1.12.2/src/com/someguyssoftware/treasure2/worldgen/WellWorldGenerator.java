@@ -36,7 +36,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
  * @author Mark Gottschling on Feb 16, 2018
  *
  */
-public class WellWorldGenerator implements IWorldGenerator {
+public class WellWorldGenerator implements ITreasureWorldGenerator {
 	// the number of blocks of half a chunk (radius) (a chunk is 16x16)
 	public static final int CHUNK_RADIUS = 8;
 
@@ -57,7 +57,8 @@ public class WellWorldGenerator implements IWorldGenerator {
 		}
 	}
 
-	private void init() {
+	@Override
+	public void init() {
 		// intialize chunks since last array
 		chunksSinceLastWell = 0;
 	}

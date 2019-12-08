@@ -40,6 +40,10 @@ public class GenDataPersistence extends WorldSavedData {
 	private static final String COUNT_TAG_NAME = "count";
 	private static final String CHUNKS_SINCE_LAST_CHEST_TAG_NAME = "chunksSinceLastChest";
 	private static final String CHUNKS_SINCE_LAST_RARITY_CHEST_TAG_NAME = "chunksSinceLastRarityChest";
+	private static final String CHEST_REGISTRY_TAG_NAME = "chestRegistry";
+	private static final String COORDS_TAG_NAME = "coords";
+
+	private static final String RARITY_TAG_NAME = "rarity";
 	
 	/**
 	 * Empty constructor
@@ -116,12 +120,12 @@ public class GenDataPersistence extends WorldSavedData {
 		Treasure.logger.debug("ChestConfig Registry size before loading -> {}", chestRegistry.getValues().size());
 		chestRegistry.clear();
 		// load the chest registry
-		NBTTagList chestRegistryTagList = tag.getTagList("chestRegistry", 10);
+		NBTTagList chestRegistryTagList = treasureGen.getTagList(CHEST_REGISTRY_TAG_NAME, 10);
 		for (int i = 0; i < chestRegistryTagList.tagCount(); i++) {
 			NBTTagCompound chunkTag = chestRegistryTagList.getCompoundTagAt(i);
-			String key = chunkTag.getString("key");
-			String rarity = chunkTag.getString("rarity");
-			NBTTagCompound coords = chunkTag.getCompoundTag("coords");
+			String key = chunkTag.getString(KEY_TAG_NAME);
+			String rarity = chunkTag.getString(RARITY_TAG_NAME);
+			NBTTagCompound coords = chunkTag.getCompoundTag(COORDS_TAG_NAME);
 			int x = coords.getInteger("x");
 			int y = coords.getInteger("y");
 			int z = coords.getInteger("z");
@@ -223,14 +227,14 @@ public class GenDataPersistence extends WorldSavedData {
 				coords.setTag("y", y);
 				coords.setTag("z", z);
 				
-				entry.setTag("key", key);
-				entry.setTag("rarity", rarity);
-				entry.setTag("coords", coords);
+				entry.setTag(KEY_TAG_NAME, key);
+				entry.setTag(RARITY_TAG_NAME, rarity);
+				entry.setTag(COORDS_TAG_NAME, coords);
 				
 				// add entry to list
 				chestRegistryTagList.appendTag(entry);
 			}
-			treasureGen.setTag("chestRegistry", chestRegistryTagList);
+			treasureGen.setTag(CHEST_REGISTRY_TAG_NAME, chestRegistryTagList);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
