@@ -25,10 +25,12 @@ import com.someguyssoftware.treasure2.generator.well.WellGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
+import net.minecraft.init.Biomes;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraftforge.common.BiomeDictionary;
 
 /**
  * 
@@ -42,7 +44,6 @@ public class WellWorldGenerator implements ITreasureWorldGenerator {
 	private int chunksSinceLastWell;
 
 	// the well geneators
-//	private Map<Wells, IWellGenerator> generators = new HashMap<>();
 	private IWellGenerator<GeneratorResult<GeneratorData>> generator = new WellGenerator();
 
 	/**
@@ -85,7 +86,21 @@ public class WellWorldGenerator implements ITreasureWorldGenerator {
 	 * @param j
 	 */
 	private void generateSurface(World world, Random random, int chunkX, int chunkZ) {
-
+		/*
+		 * get current chunk position
+		 */            
+		// spawn @ middle of chunk
+		int xSpawn = chunkX * 16 + 8;
+		int zSpawn = chunkZ * 16 + 8;
+		
+		// 0. hard check against ocean biomes
+        ICoords coords = new Coords(xSpawn, 0, zSpawn);
+		Biome biome = world.getBiome(coords.toPos());
+		if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN ||
+				BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
+			return;
+		}
+		
 		// increment the chunk counts
 		chunksSinceLastWell++;
 
@@ -95,21 +110,13 @@ public class WellWorldGenerator implements ITreasureWorldGenerator {
 		if (chunksSinceLastWell > TreasureConfig.WELL.chunksPerWell) {
 //			Treasure.logger.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastWell, TreasureConfig.minChunksPerWell));
 
-			/*
-			 * get current chunk position
-			 */            
-			// spawn @ middle of chunk
-			int xSpawn = chunkX * 16 + 8;
-			int zSpawn = chunkZ * 16 + 8;
-
 			// get first surface y (could be leaves, trunk, water, etc)
 			int ySpawn = world.getChunkFromChunkCoords(chunkX, chunkZ).getHeightValue(8, 8);
-			ICoords coords = new Coords(xSpawn, ySpawn, zSpawn);
+			coords = new Coords(xSpawn, ySpawn, zSpawn);
 
 			// determine what type to generate
 			Wells well = Wells.values()[random.nextInt(Wells.values().length)];
-//			Treasure.logger.debug("Using Well: {}", well);
-			IWellConfig wellConfig = TreasureConfig.WELL; //Configs.wellConfig; //Configs.wellConfigs.get(well);
+			IWellConfig wellConfig = TreasureConfig.WELL;
 			if (wellConfig == null) {
 				Treasure.logger.warn("Unable to locate a config for well {}.", well);
 				return;
@@ -118,8 +125,6 @@ public class WellWorldGenerator implements ITreasureWorldGenerator {
 			if (chunksSinceLastWell >= wellConfig.getChunksPerWell()) {
 
 				// 1. test if correct biome
-				// if not the correct biome, reset the count
-				Biome biome = world.getBiome(coords.toPos());
 				// TODO this whole biome check should be wrapped in a method that returns true/false
 				TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, wellConfig.getBiomeWhiteList(), wellConfig.getBiomeBlackList());
 				if(biomeCheck == Result.BLACK_LISTED ) {
