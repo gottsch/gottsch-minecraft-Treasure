@@ -234,6 +234,9 @@ public class GenDataPersistence extends WorldSavedData {
 				// add entry to list
 				chestRegistryTagList.appendTag(entry);
 			}
+			// delete current tag
+			treasureGen.removeTag(CHEST_REGISTRY_TAG_NAME);
+			// add new values
 			treasureGen.setTag(CHEST_REGISTRY_TAG_NAME, chestRegistryTagList);
 		}
 		catch(Exception e) {

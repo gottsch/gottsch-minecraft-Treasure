@@ -64,30 +64,24 @@ public class WorldEventHandler {
 			}
 			Treasure.META_MANAGER.register(getMod().getId());
 			Treasure.TEMPLATE_MANAGER.register(getMod().getId());
-						
-			// TODO do the rest of gnerators and chest registry
-			Treasure.logger.debug("world generator data should be cleaned and saved data loaded.");
-			GenDataPersistence.get(world);
+					
+			/*
+			 * clear the current World Gens values and reload
+			 */
+			for (Entry<WorldGenerators, ITreasureWorldGenerator> worldGenEntry : Treasure.WORLD_GENERATORS.entrySet()) {
+				worldGenEntry.getValue().init();
+			}
 			
+			/*
+			 * un-load the chest registry
+			 */
+			Treasure.logger.debug("Chest registry size BEFORE cleaning -> {}", ChestRegistry.getInstance().getValues().size());
+			ChestRegistry.getInstance().clear();	
+			Treasure.logger.debug("Chest registry size AFTER cleaning -> {}", ChestRegistry.getInstance().getValues().size());
+			
+			GenDataPersistence.get(world);			
 			Treasure.logger.debug("Chest registry size after world event load -> {}", ChestRegistry.getInstance().getValues().size());
 		}	
-	}
-
-	@SubscribeEvent
-	public void onWorldLoad(WorldEvent.Unload event) {
-		/*
-		 * clear the current World Gens values and reload
-		 */
-		for (Entry<WorldGenerators, ITreasureWorldGenerator> worldGenEntry : Treasure.WORLD_GENERATORS.entrySet()) {
-			worldGenEntry.getValue().init();
-		}
-		
-		/*
-		 * un-load the chest registry
-		 */
-		Treasure.logger.debug("Chest registry size BEFORE world event unload -> {}", ChestRegistry.getInstance().getValues().size());
-		ChestRegistry.getInstance().clear();	
-		Treasure.logger.debug("Chest registry size AFTER world event unload -> {}", ChestRegistry.getInstance().getValues().size());
 	}
 	
 	/**
