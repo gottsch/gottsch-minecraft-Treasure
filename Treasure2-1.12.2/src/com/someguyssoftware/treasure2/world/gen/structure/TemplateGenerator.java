@@ -86,6 +86,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		// update the spawn coords with the offset
 		ICoords spawnCoords = coords.add(0, offset, 0);
 		
+		// TODO provide decayProcessor
 		// generate the structure
 		template.addBlocksToWorld(world, spawnCoords.toPos(), placement, getNullBlock(), Treasure.TEMPLATE_MANAGER.getReplacementMap(), 3);
 		
