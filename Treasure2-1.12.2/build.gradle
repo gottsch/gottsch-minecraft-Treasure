@@ -77,7 +77,7 @@ processResources
 }
 task deleteOldJar(type: Delete) {
         delete fileTree("${dest_folder}") {
-            include "**/${mod_name}-mc${mc_version}-f${forge_version}.*"
+            include "**/${mod_name}-*.*"
         }
     }
 task copyJar(type: Copy) {

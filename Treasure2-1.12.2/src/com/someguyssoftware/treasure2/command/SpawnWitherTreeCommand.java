@@ -5,7 +5,10 @@ package com.someguyssoftware.treasure2.command;
 
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -48,8 +51,8 @@ public class SpawnWitherTreeCommand extends CommandBase {
     			Random random = new Random();
     			//BlockPos pos = new BlockPos(x, y, z);
     			// TODO get this to work
-//    			WitherTreeGenerator gen = new WitherTreeGenerator();
-//    			gen.generate(world, random, new Coords(x, y, z), TreasureConfig.WITHER_TREE); //Configs.witherTreeConfig);
+    			WitherTreeWorldGenerator gen = new WitherTreeWorldGenerator();
+    			gen.generate(world, random, new Coords(x, y, z), TreasureConfig.WITHER_TREE);
     		}
 		}
 		catch(Exception e) {
