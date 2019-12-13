@@ -311,9 +311,13 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		GeneratorResult<ChestGeneratorData> genResult = SurfaceChestWorldGenerator.generatePit(world, random, Rarity.SCARCE, witherTreeCoords, TreasureConfig.CHESTS.surfaceChests.scarceChestProperties);
 		Treasure.logger.debug("result -> {}", genResult.toString());
 		if (!genResult.isSuccess()) {
+			Treasure.logger.debug("Chest coords were not provided in result -> {}", genResult.toString());
 			return result.fail();
 		}
 		ICoords chestCoords = genResult.getData().getChestCoords();
+		if (chestCoords == null) {
+			return result.fail();
+		}
 		
 		// add chest
 //		WitherChestGenerator chestGen = new WitherChestGenerator();

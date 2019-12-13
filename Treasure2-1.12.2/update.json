@@ -1,8 +1,8 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.12.2-latest": "1.7.0",
-    "1.12.2-recommended": "1.7.0"
+    "1.12.2-latest": "1.7.1",
+    "1.12.2-recommended": "1.7.1"
   },
     "1.12.2": {
         "0.5.0": "alpha release",
@@ -32,7 +32,8 @@
         "1.6.1": "Fixed NPE on AbstractTreasureChest",
         "1.6.2": "Removed GUI config that was inadvertently added last update.",
         "1.6.3": "Removed debugging code that was causing underwater structures to generate too frequently.",
-        "1.7.0": "Refactored config files into one GUI config.\nAdded Desert Wishing Well block.\nFixed Rarity enum value mappings.\nPersisted ChestRegistry.\nFixed Well generation on podzol/mycelium generating mushroom block instead of mushrooms.\nReconfigured folder locations where logging and resource files go (moved out of /mods folder.)\nUsing GottschCore v1.9.0.\n*Fixed chests not generating in some pits.\n*Fixed world properties not clearing between game world loads.\nFixed loading of ChestRegistry.\n"
+        "1.7.0": "Refactored config files into one GUI config.\nAdded Desert Wishing Well block.\nFixed Rarity enum value mappings.\nPersisted ChestRegistry.\nFixed Well generation on podzol/mycelium generating mushroom block instead of mushrooms.\nReconfigured folder locations where logging and resource files go (moved out of /mods folder.)\nUsing GottschCore v1.9.0.\n*Fixed chests not generating in some pits.\n*Fixed world properties not clearing between game world loads.\nFixed loading of ChestRegistry.\n",
+        "1.7.1": "Fixed Server Tick Loop bug in WitherTreeWorldGenerator.\n"
     }
 }
  
