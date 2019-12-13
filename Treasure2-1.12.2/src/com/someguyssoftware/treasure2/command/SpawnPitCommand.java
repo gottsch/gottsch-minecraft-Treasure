@@ -6,7 +6,10 @@ package com.someguyssoftware.treasure2.command;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
+import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.IChestConfig;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
@@ -65,7 +68,7 @@ public class SpawnPitCommand extends CommandBase {
 //    			chestGen.getGenerators().get(rarity).generate(world, random, new Coords(x, y, z), rarity, Configs.chestConfigs.get(rarity)); 
     			SurfaceChestWorldGenerator chestGens = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SURFACE_CHEST);
     			IChestGenerator gen = chestGens.getChestGenMap().get(rarity).next();
-    			gen.generate(world, random, new Coords(x, y, z), rarity, null);
+    			SurfaceChestWorldGenerator.generatePit(world, random, rarity, new Coords(x, y, z), TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
     		}
 		}
 		catch(Exception e) {
