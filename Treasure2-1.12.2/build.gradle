@@ -12,6 +12,8 @@ buildscript {
 
 plugins {
 	id 'io.franzbecker.gradle-lombok' version '3.1.0'
+	 //  must use gradle v3.0+ for this version of shadow (2.0.1).  Update gradle-wrapper.properties
+	id "com.github.johnrengelman.shadow" version "2.0.1"
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -57,7 +59,9 @@ sourceSets.main{
 
 def gottschcore_path="../../gottsch-minecraft-GottschCore/GottschCore${mc_version}/build/libs/GottschCore-mc${mc_version}-f${forge_version}-v${gottschcore_version}.jar"
 dependencies {
-	compile files(gottschcore_path)	
+compile files('../../ModCommonLibs/libs/commons-cli-1.4.jar')
+	//compile files(gottschcore_path)	
+	shadow files(gottschcore_path)	
 }
 	
 processResources
@@ -72,12 +76,24 @@ processResources
                 
         // replace version and mcversion
         expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
- 
+    } 
 }
+
+shadowJar {
+    // move everything under "io.github" (which in the DelaunayTriangulator lib) to "com.someguyssoftware.dungeons2.triangulation"
+    relocate "org.apache.commons.cli", "com.someguyssoftware.treasure2.cli"
+	// Replace the default JAR
+    classifier '' 
+}
+
+reobf {
+	// Reobfuscate the shadowed JAR
+    shadowJar {} 
+}
+
 task deleteOldJar(type: Delete) {
         delete fileTree("${dest_folder}") {
-            include "**/${mod_name}-mc${mc_version}-f${forge_version}.*"
+            include "**/${mod_name}-*.*"
         }
     }
 task copyJar(type: Copy) {

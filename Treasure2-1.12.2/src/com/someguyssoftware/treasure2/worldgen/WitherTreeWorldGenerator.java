@@ -314,6 +314,9 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 			return result.fail();
 		}
 		ICoords chestCoords = genResult.getData().getChestCoords();
+		if (chestCoords == null) {
+			return result.fail();
+		}
 		
 		// add chest
 //		WitherChestGenerator chestGen = new WitherChestGenerator();
@@ -605,11 +608,9 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 			return false;
 		}
 
-		Treasure.logger.debug("Min distance Sq -> {}", minDistanceSq);
 		for (ChestInfo info : infos) {
 			// calculate the distance to the poi
 			double distance = coords.getDistanceSq(info.getCoords());
-			Treasure.logger.debug("ChestConfig dist^2: " + distance);
 			if (distance < minDistanceSq) {
 				return true;
 			}

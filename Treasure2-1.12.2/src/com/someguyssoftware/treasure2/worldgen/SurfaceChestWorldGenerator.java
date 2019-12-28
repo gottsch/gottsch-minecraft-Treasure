@@ -24,6 +24,8 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
+import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
@@ -36,6 +38,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
@@ -54,6 +57,7 @@ import com.someguyssoftware.treasure2.generator.pit.MobTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.StructurePitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
+import com.someguyssoftware.treasure2.generator.ruins.SurfaceRuinGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
@@ -292,12 +296,12 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 	 * @param random
 	 * @param coords
 	 * @param chestRarity
-	 * @param chestSelector
+	 * @param chestGenerator
 	 * @param config
 	 * @return
 	 */
 	private GeneratorResult<GeneratorData> generate(World world, Random random, ICoords coords, Rarity chestRarity,
-			IChestGenerator chestSelector, IChestConfig config) {
+			IChestGenerator chestGenerator, IChestConfig config) {
 		
 		ICoords chestCoords = null;
 		ICoords markerCoords = null;
@@ -322,18 +326,22 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		if (config.isSurfaceAllowed() && RandomHelper.checkProbability(random, TreasureConfig.CHESTS.surfaceChests.surfaceChestProbability)) {
 
 			if (RandomHelper.checkProbability(random, TreasureConfig.WORLD_GEN.getGeneralProperties().surfaceStructureProbability)) {
-				// TEMP - until surface buildings are added
-				// TODO add surface templates
 				// no markers
-//				hasMarkers = false;
+				hasMarkers = false;
+				
+				genResult = generateSurfaceRuins(world, random, surfaceCoords, config);
+				Treasure.logger.debug("surface result -> {}", genResult.toString());
+				if (!genResult.isSuccess()) {
+					return result.fail();
+				}
 				// set the chest coords to the surface pos
-				chestCoords = new Coords(markerCoords);
-				Treasure.logger.debug("Above ground structure @ {}", chestCoords.toShortString());
+				chestCoords = genResult.getData().getChestCoords();
+				Treasure.logger.debug("Above ground structure coords -> {}", chestCoords.toShortString());
 			}
 			else {
 				// set the chest coords to the surface pos
 				chestCoords = new Coords(markerCoords);
-				Treasure.logger.debug("Above ground, chest only @ {}", chestCoords.toShortString());
+				Treasure.logger.debug("Above ground, chest only coords -> {}", chestCoords.toShortString());
 			}
 		}
 		else if (config.isSubterraneanAllowed()) {
@@ -354,15 +362,54 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 
 		// add markers (above chest or shaft)
 		if (hasMarkers) {
-			chestSelector.addMarkers(world, random, markerCoords);
+			chestGenerator.addMarkers(world, random, markerCoords);
 		}		
-		GeneratorResult<ChestGeneratorData> chestResult = chestSelector.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestState());
+		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestState());
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}
 		
 		Treasure.logger.info("CHEATER! {} chest at coords: {}", chestRarity, markerCoords.toShortString());
 		result.setData(chestResult.getData());
+		return result.success();
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param spawnCoords
+	 * @param config
+	 * @return
+	 */
+	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(World world, Random random, ICoords spawnCoords,
+			IChestConfig config) {
+		return generateSurfaceRuins(world, random, spawnCoords, null, config);
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param spawnCoords
+	 * @param decayProcessor
+	 * @param config
+	 * @return
+	 */
+	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(World world, Random random, ICoords spawnCoords,
+			IDecayRuleSet decayRuleSet, IChestConfig config) {
+
+		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
+		result.getData().setSpawnCoords(spawnCoords);
+
+		SurfaceRuinGenerator generator = new SurfaceRuinGenerator();
+
+		// build the structure
+		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, spawnCoords, decayRuleSet);
+		Treasure.logger.debug("surface struct result -> {}", genResult);
+		if (!genResult.isSuccess()) return result.fail();
+
+		result.setData(genResult.getData());
 		return result.success();
 	}
 	
@@ -467,6 +514,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 	@SuppressWarnings("unused")
 	private void generateEnd(World world, Random random, int i, int j) {}
 
+	// TODO move to interface or abstract
 	/**
 	 * 
 	 * @param world

@@ -25,6 +25,7 @@ import com.someguyssoftware.treasure2.command.SpawnChestCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitStructureOnlyCommand;
+import com.someguyssoftware.treasure2.command.SpawnRuinsCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellStructureCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -37,6 +38,7 @@ import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
+import com.someguyssoftware.treasure2.world.gen.structure.TreasureDecayManager;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.ITreasureWorldGenerator;
@@ -127,6 +129,8 @@ public class Treasure extends AbstractMod {
     // meta manager // NOTE can't be final as Treasure.instance is required.
     public static TreasureMetaManager META_MANAGER;
     
+    public static TreasureDecayManager DECAY_MANAGER;
+    
 	/**
 	 * 
 	 */
@@ -185,6 +189,7 @@ public class Treasure extends AbstractMod {
     	event.registerServerCommand(new SpawnPitStructureOnlyCommand());
     	event.registerServerCommand(new SpawnWellStructureCommand());
     	event.registerServerCommand(new SpawnWitherTreeCommand());
+    	event.registerServerCommand(new SpawnRuinsCommand());
     }
 	
 	/**
@@ -219,6 +224,8 @@ public class Treasure extends AbstractMod {
 				FMLCommonHandler.instance().getDataFixer());
 
 		META_MANAGER = new TreasureMetaManager(Treasure.instance, "meta");
+		
+		DECAY_MANAGER = new TreasureDecayManager(Treasure.instance, "decay");
 	}
 	
 	/**

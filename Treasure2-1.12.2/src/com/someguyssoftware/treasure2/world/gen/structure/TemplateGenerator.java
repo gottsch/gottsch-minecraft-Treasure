@@ -9,7 +9,9 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.gottschcore.world.gen.structure.DecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
+import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.GenUtil;
@@ -48,17 +50,23 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		setNullBlock(GenUtil.getMarkerBlock(StructureMarkers.NULL));
 	}
 	
+	@Override
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, 
+			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords) {
+		return generate(world, random, null, templateHolder, placement, coords);
+	}
+	
 	/**
 	 * 
 	 */
 	@Override
 	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, 
-			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords) {
+			IDecayProcessor decayProcessor, TemplateHolder templateHolder, PlacementSettings placement, ICoords coords) {
 		
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
 		
 		GottschTemplate template = (GottschTemplate) templateHolder.getTemplate();
-		
+		Treasure.logger.debug("template size -> {}", template.getSize());
 		// get the meta
 		StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(templateHolder.getMetaLocation().toString());
 		if (meta == null) {
@@ -86,9 +94,14 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		// update the spawn coords with the offset
 		ICoords spawnCoords = coords.add(0, offset, 0);
 		
-		// TODO provide decayProcessor
 		// generate the structure
-		template.addBlocksToWorld(world, spawnCoords.toPos(), placement, getNullBlock(), Treasure.TEMPLATE_MANAGER.getReplacementMap(), 3);
+		if (decayProcessor == null) {
+			Treasure.logger.debug("no decay processor found.");
+			template.addBlocksToWorld(world, spawnCoords.toPos(), placement, getNullBlock(), Treasure.TEMPLATE_MANAGER.getReplacementMap(), 3);
+		}
+		else {
+			template.addBlocksToWorld(world, spawnCoords.toPos(), decayProcessor, placement, getNullBlock(), Treasure.TEMPLATE_MANAGER.getReplacementMap(), 3);
+		}
 		
 		Treasure.logger.debug("added blocks to the world.");
 		

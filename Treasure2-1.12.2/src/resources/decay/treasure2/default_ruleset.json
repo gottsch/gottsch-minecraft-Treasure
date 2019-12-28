@@ -1,0 +1,54 @@
+ {
+  "verticalDecayRate": {
+  	"min": 5.0,
+  	"max": 10.0
+  },
+  "initialBlockStrength": 100.0,
+  "blockStrengthThreshold": 0.0,
+  "blockStrengthDecayRate": {
+  	"min": 12.5,
+  	"max": 20.0
+  	},
+  "blockStrengthDistanceDecayRate": {
+  	"min": 22.0,
+  	"max": 30.0
+  	},
+  "decayRules": {
+    "minecraft:stonebrick": {
+      "block": "minecraft:stonebrick",
+      "decayIterations": 5,
+      "decayProbability": 20.0,
+      "decayBlocks": [
+        "minecraft:stonebrick@1",
+        "minecraft:stonebrick@2",
+        "minecraft:cobblestone@0",
+        "minecraft:gravel@0",
+        "minecraft:air@0"
+      ]
+    },
+    "minecraft:stone_brick_stairs": {
+		"block": "minecraft:stone_brick_stairs",
+		"decayIterations": 2,
+		"decayProbability": 15.0,
+		"decayBlocks": [
+			"minecraft:stone_stairs@0",
+			"minecraft:air@0"
+		]
+	},
+	"minecraft:log": {
+		"block": "minecraft:log",
+		"decayIterations": 1,
+		"decayProbability": 15.0,
+		"decayBlocks": [
+			"minecraft:air@0"
+		]	
+	},
+	"default": {
+		"decayIterations": 1,
+		"decayProbability": 15.0,
+		"decayBlocks": [
+			"minecraft:air@0"
+		]	
+	}
+  }
+}
