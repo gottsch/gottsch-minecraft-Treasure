@@ -6,5 +6,6 @@
 	"type": "ruin",
 	"rarities": ["common"],
 	"biomeWhiteList": ["ocean", "deep_ocean"],
-	"biomeBlackList": []
+	"biomeBlackList": [],
+	"decayRuleSetName": "default_ruleset"
 }

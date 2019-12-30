@@ -336,12 +336,10 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 				}
 				// set the chest coords to the surface pos
 				chestCoords = genResult.getData().getChestCoords();
-				Treasure.logger.debug("Above ground structure coords -> {}", chestCoords.toShortString());
 			}
 			else {
 				// set the chest coords to the surface pos
 				chestCoords = new Coords(markerCoords);
-				Treasure.logger.debug("Above ground, chest only coords -> {}", chestCoords.toShortString());
 			}
 		}
 		else if (config.isSubterraneanAllowed()) {

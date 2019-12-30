@@ -139,7 +139,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 		
 		// setup the decay ruleset and processor
 		IDecayProcessor decayProcessor = null;
-		if (decayRuleSet == null) {
+		if (decayRuleSet == null && holder.getDecayRuleSetLocation() != null) {
 			// create a decay processor
 			decayRuleSet = Treasure.DECAY_MANAGER.getRuleSetMap().get(holder.getDecayRuleSetLocation().toString());
 			Treasure.logger.debug("decayRuleSet -> {}", decayRuleSet);
@@ -166,11 +166,13 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 		List<ICoords> spawnerCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
 		List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
 		
+		// TODO these are wrong because we are adding the *new rotation calculated* spawnCoords and adding to the relative coords of the spawners
+		// TODO they need to be relative to the original plus the offset.... this should be accomplished when records to real-world coords
 		// populate vanilla spawners
-		buildVanillaSpawners(world, random, genResult.getData().getSpawnCoords(), spawnerCoords);
+		buildVanillaSpawners(world, random, spawnerCoords);
 		
 		// populate proximity spawners
-		buildOneTimeSpawners(world, random, genResult.getData().getSpawnCoords(), proximityCoords, new Quantity(1,2), 5D);
+		buildOneTimeSpawners(world, random, proximityCoords, new Quantity(1,2), 5D);
 		
 		result.setData(genResult.getData());
 

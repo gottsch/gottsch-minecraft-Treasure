@@ -41,7 +41,7 @@ public class SpawnRuinsCommand extends CommandBase {
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/t2-ruins <x> <y> <z> [-ruleset <ruleset name>]: spawns a Treasure! ruins at location (x, y, z)";
+		return "/t2-ruins <x> <y> <z> [-ruleset <relative filepath>]: spawns ruins at location (x, y, z)";
 	}
 
 	@Override

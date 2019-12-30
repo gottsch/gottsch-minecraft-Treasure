@@ -106,17 +106,18 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		Treasure.logger.debug("added blocks to the world.");
 		
 		// TODO do this BEFORE removing specials
-		// process all markers and adding them to the result data (relative positioned)
+		// process all markers and adding them to the result data (absolute positioned)
 		for (Entry<Block, ICoords> entry : template.getMap().entries()) {
 			ICoords c = new Coords(GottschTemplate.transformedCoords(placement, entry.getValue()));
+			c = spawnCoords.add(c);
 			result.getData().getMap().put(entry.getKey(), c);
-			Treasure.logger.debug("adding to structure info transformed coords -> {} : {}", entry.getKey().getLocalizedName(), c.toShortString());
+			Treasure.logger.debug("adding to structure info absoluted transformed coords -> {} : {}", entry.getKey().getLocalizedName(), c.toShortString());
 		}
 		
 		// find the chest and update chest coords (absolute positioned)
 		List<ICoords> chestCoordsList = (List<ICoords>) result.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 		if (!chestCoordsList.isEmpty()) {
-			ICoords chestCoords = spawnCoords.add(chestCoordsList.get(0));
+			ICoords chestCoords = chestCoordsList.get(0);
 			result.getData().setChestCoords(chestCoords);		
 			// get the block state of the chest
 			IBlockState chestState = world.getBlockState(chestCoords.toPos());

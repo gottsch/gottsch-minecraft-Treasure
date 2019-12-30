@@ -10,6 +10,8 @@ import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.gottschcore.world.gen.structure.DecayProcessor;
+import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
@@ -18,6 +20,7 @@ import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
+import com.someguyssoftware.treasure2.meta.StructureMeta;
 import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
@@ -121,8 +124,28 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 		// this is the coords that need to be supplied to the template generator to allow
 		// the structure to generator in the correct place
 		originalSpawnCoords = new Coords(originalSpawnCoords.getX(), actualSpawnCoords.getY(), originalSpawnCoords.getZ());
-				
-		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, holder, placement, originalSpawnCoords);
+			
+		// NOTE don't like this here and then AGAIN in TemplateGenerator
+		// get the rule set from the meta which is in the holder
+		StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(holder.getMetaLocation().toString());
+		if (meta == null) {
+			Treasure.logger.debug("Unable to locate meta data for template -> {}", holder.getLocation());
+			return result.fail();
+		}
+		
+		// setup the decay ruleset and processor
+		IDecayProcessor decayProcessor = null;
+		if (decayRuleSet == null && holder.getDecayRuleSetLocation() != null) {
+			// create a decay processor
+			decayRuleSet = Treasure.DECAY_MANAGER.getRuleSetMap().get(holder.getDecayRuleSetLocation().toString());
+			Treasure.logger.debug("decayRuleSet -> {}", decayRuleSet);
+			// if decayRuleSet is null the processor should be null
+		}
+		if (decayRuleSet != null) {
+			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
+		}
+		
+		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
 		 if (!genResult.isSuccess()) return result.fail();
 
 		Treasure.logger.debug("submerged gen result -> {}", genResult);
@@ -132,37 +155,13 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 		List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
 		
 		// populate vanilla spawners
-		buildVanillaSpawners(world, random, genResult.getData().getSpawnCoords(), spawnerCoords);
+		buildVanillaSpawners(world, random, spawnerCoords);
 		
 		// populate proximity spawners
-		buildOneTimeSpawners(world, random, genResult.getData().getSpawnCoords(), proximityCoords, new Quantity(1,2), 5D);
+		buildOneTimeSpawners(world, random, proximityCoords, new Quantity(1,2), 5D);
 		
 		result.setData(genResult.getData());
 
 		return result.success();
-	}
-	
-//	@Override
-//	public void buildOneTimeSpawners(World world, Random random, ICoords spawnCoords, List<ICoords> proximityCoords, Quantity quantity, double d) {
-//		for (ICoords c : proximityCoords) {
-//			ICoords c2 = spawnCoords.add(c);
-//	    	world.setBlockState(c2.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
-//	    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c2.toPos());
-//	    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
-//	    	te.setMobName(r);
-//	    	te.setMobNum(new Quantity(1, 2));
-//	    	te.setProximity(5D);
-//		}
-//	}
-//
-//	@Override
-//	public void buildVanillaSpawners(World world, Random random, ICoords spawnCoords, List<ICoords> spawnerCoords) {
-//		for (ICoords c : spawnerCoords) {
-//			ICoords c2 = spawnCoords.add(c);
-//			world.setBlockState(c2.toPos(), Blocks.MOB_SPAWNER.getDefaultState());
-//			TileEntityMobSpawner te = (TileEntityMobSpawner) world.getTileEntity(c2.toPos());
-//			ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
-//			te.getSpawnerBaseLogic().setEntityId(r);
-//		}
-//	}
+	}	
 }

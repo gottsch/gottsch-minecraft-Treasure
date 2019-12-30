@@ -218,9 +218,9 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			// TODO move to own method
 			// populate vanilla spawners
 			for (ICoords c : spawnerCoords) {
-				ICoords c2 = roomCoords.add(c);
-				world.setBlockState(c2.toPos(), Blocks.MOB_SPAWNER.getDefaultState());
-				TileEntityMobSpawner te = (TileEntityMobSpawner) world.getTileEntity(c2.toPos());
+//				ICoords c2 = roomCoords.add(c);
+				world.setBlockState(c.toPos(), Blocks.MOB_SPAWNER.getDefaultState());
+				TileEntityMobSpawner te = (TileEntityMobSpawner) world.getTileEntity(c.toPos());
 				ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
 				te.getSpawnerBaseLogic().setEntityId(r);
 			}
@@ -228,9 +228,9 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			// TODO move to own method
 			// populate proximity spawners
 			for (ICoords c : proximityCoords) {
-				ICoords c2 = roomCoords.add(c);
-		    	world.setBlockState(c2.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
-		    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c2.toPos());
+//				ICoords c2 = roomCoords.add(c);
+		    	world.setBlockState(c.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
+		    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c.toPos());
 		    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
 		    	te.setMobName(r);
 		    	te.setMobNum(new Quantity(1, 2));
