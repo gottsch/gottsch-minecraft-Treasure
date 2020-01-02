@@ -319,7 +319,6 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		}
 		
 		// add chest
-//		WitherChestGenerator chestGen = new WitherChestGenerator();
 		WitherChestGenerator chestGen = new WitherChestGenerator();
 		// TODO this is only building the chest... that's what the WitherChestGenerator was for
 		GeneratorResult<ChestGeneratorData> chestResult = chestGen.generate(world, random, chestCoords, Rarity.SCARCE, null); 

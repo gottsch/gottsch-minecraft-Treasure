@@ -286,15 +286,13 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	}
 
 	/**
-	 * TODO change to getTemplateHolder and return the holder.
 	 * @param world
 	 * @param random
 	 * @param key
 	 * @param biome
 	 * @return
 	 */
-	public /*GottschTemplate*/TemplateHolder getTemplate(World world, Random random, StructureArchetype archetype, StructureType type, Biome biome) {
-		Template template = null;
+	public TemplateHolder getTemplate(World world, Random random, StructureArchetype archetype, StructureType type, Biome biome) {
 		// get structure by archetype (subterranean) and type (room)
 		String key =archetype.getName()	+ ":" + type.getName();
 		
@@ -311,11 +309,9 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 			Treasure.logger.debug("could not find random template holder.");
 			return null;
 		}
-		
-//		template = holder.getTemplate();
+
 		Treasure.logger.debug("selected template holder -> {} : {}", holder.getLocation(), holder.getMetaLocation());
-		
-//		return (GottschTemplate) template;
+
 		return holder;
 	}
 	

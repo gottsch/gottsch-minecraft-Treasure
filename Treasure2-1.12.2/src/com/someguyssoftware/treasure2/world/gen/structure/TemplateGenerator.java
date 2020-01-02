@@ -103,9 +103,6 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 			template.addBlocksToWorld(world, spawnCoords.toPos(), decayProcessor, placement, getNullBlock(), Treasure.TEMPLATE_MANAGER.getReplacementMap(), 3);
 		}
 		
-		Treasure.logger.debug("added blocks to the world.");
-		
-		// TODO do this BEFORE removing specials
 		// process all markers and adding them to the result data (absolute positioned)
 		for (Entry<Block, ICoords> entry : template.getMap().entries()) {
 			ICoords c = new Coords(GottschTemplate.transformedCoords(placement, entry.getValue()));
@@ -126,15 +123,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 				 Treasure.logger.debug("saving chest state -> {}", chestState.toString());
 			 }
 		}
-				 
-		// TODO if this is handled on template read, this block can go away - remove this when using GottschCore v1.9.0
-		// remove any extra special blocks
-		for (ICoords mapCoords : template.getMapCoords()) {
-			ICoords c = GottschTemplate.transformedCoords(placement, mapCoords);
-			// TODO shouldn't be setting to air, but to null block
-			world.setBlockToAir(spawnCoords.toPos().add(c.toPos()));
-		}
-		
+
 		// get the transformed size
 		BlockPos transformedSize = template.transformedSize(placement.getRotation());
 		Treasure.logger.debug("transformed size -> {}", transformedSize.toString());

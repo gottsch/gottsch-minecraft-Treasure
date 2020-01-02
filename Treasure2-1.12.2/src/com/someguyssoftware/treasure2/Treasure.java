@@ -73,7 +73,7 @@ import net.minecraftforge.oredict.OreDictionary;
 		modid=Treasure.MODID,
 		name=Treasure.NAME,
 		version=Treasure.VERSION,
-		dependencies="required-after:gottschcore@[1.9.0,)",
+		dependencies="required-after:gottschcore@[1.10.0,)",
 		acceptedMinecraftVersions = "[1.12.2]",
 		updateJSON = Treasure.UPDATE_JSON_URL
 		)
@@ -82,7 +82,8 @@ import net.minecraftforge.oredict.OreDictionary;
 		"Treasure2 was first developed by Mark Gottschling on Jan 2018.",
 		"Credits to Mason Gottschling for ideas and debugging.",
 		"Credits to CuddleBeak for some Keys and Locks textures.",
-		"Credits to mn_ti for Chinese and to DarkKnightComes for Polish translation."
+		"Credits to mn_ti for Chinese and to DarkKnightComes for Polish translation.",
+		"Credits to Mythical Sausage for tutorials on house/tower designs."
 		})
 public class Treasure extends AbstractMod {
 
