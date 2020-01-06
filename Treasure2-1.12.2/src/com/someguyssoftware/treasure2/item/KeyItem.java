@@ -41,6 +41,8 @@ import net.minecraft.world.World;
  *
  */
 public class KeyItem extends ModItem {
+	public static final int DEFAULT_MAX_USES = 25;
+	
 	/*
 	 * The category that the key belongs to
 	 */
@@ -84,7 +86,7 @@ public class KeyItem extends ModItem {
 		setBreakable(true);
 		setDamageable(true);
 		setCraftable(false);
-		setMaxDamage(25);
+		setMaxDamage(DEFAULT_MAX_USES);
 		setSuccessProbability(90D);	
 		setMaxStackSize(1); // 12/3/2018: set to max 1 because keys are damaged and don't stack well.
 	}
@@ -363,6 +365,10 @@ public class KeyItem extends ModItem {
 	 * @param damage the uses to set
 	 */
 	public KeyItem setMaxDamage(int damage) {
+		// correct number of uses (damage) for 0-based counting.
+		if (damage > 0) {
+			damage = damage - 1;
+		}
 		super.setMaxDamage(damage);
 		return this;
 	}
