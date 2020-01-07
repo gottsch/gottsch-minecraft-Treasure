@@ -241,6 +241,10 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Comment({"Keys and Locks properties"})
 	public static final KeysAndLocks KEYS_LOCKS = new KeysAndLocks();
 
+	@Name("07b coins and valuables")
+	@Comment({"Coins and Valuables properties"})
+	public static final Coins COINS = new Coins();
+	
 	@Name("08 gems and ores")
 	@Comment({"Gems and Ores properties"})
 	public static final GemsAndOres GEMS_ORES = new GemsAndOres();
@@ -626,6 +630,17 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		}
 	}
 
+	/*
+	 * 
+	 */
+	public static class Coins {
+		@Comment("The maximum size of a coin item stack.")
+		@Name("01. Max Stack Size:")
+		@RangeInt(min = 1, max = 64)
+		@RequiresMcRestart
+		public int maxStackSize = 8;
+	}
+	
 	/*
 	 * 
 	 */

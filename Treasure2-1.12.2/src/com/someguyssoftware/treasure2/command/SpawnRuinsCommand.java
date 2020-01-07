@@ -89,9 +89,7 @@ public class SpawnRuinsCommand extends CommandBase {
 				}
 				// build the key
 				String key = (Treasure.MODID + ":" + "decay/" + ruleSetName).replace("\\", "/");
-				Treasure.logger.debug("ruleset key -> {}", key);
 				ruleSet = Treasure.DECAY_MANAGER.getRuleSetMap().get(key);
-				Treasure.logger.debug("ruleset -> {}", ruleSet);			
 			}
 			Rarity rarity = Rarity.values()[random.nextInt(Rarity.values().length)];
 			IChestConfig config = TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity);

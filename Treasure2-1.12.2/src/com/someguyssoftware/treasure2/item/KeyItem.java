@@ -86,7 +86,7 @@ public class KeyItem extends ModItem {
 		setBreakable(true);
 		setDamageable(true);
 		setCraftable(false);
-		setMaxUses(DEFAULT_MAX_USES);
+		setMaxDamage(DEFAULT_MAX_USES);
 		setSuccessProbability(90D);	
 		setMaxStackSize(1); // 12/3/2018: set to max 1 because keys are damaged and don't stack well.
 	}
@@ -226,7 +226,10 @@ public class KeyItem extends ModItem {
 				
 				// user attempted to use key - increment the damage
 				if (isDamageable() && !isKeyBroken) {
-					heldItem.damageItem(1, player);
+						heldItem.damageItem(1, player);
+						if (heldItem.getItemDamage() == heldItem.getMaxDamage()) {
+							heldItem.shrink(1);
+					}
 				}
 			}
 			catch (Exception e) {
@@ -358,18 +361,6 @@ public class KeyItem extends ModItem {
 	public KeyItem setMaxDamage(int damage) {
 		super.setMaxDamage(damage);
 		return this;
-	}
-	
-	/**
-	 * A wrapper for setMaxDamage that corrects for 0-based index/counting.
-	 * @param uses the uses to set
-	 */
-	public void setMaxUses(int uses) {
-		int damage = uses - 1;
-		if (damage < 0) {
-			damage = 0;
-		}
-		setMaxDamage(damage);
 	}
 
 	/**
