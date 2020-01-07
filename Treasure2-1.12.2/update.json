@@ -23,7 +23,7 @@
         "1.3.5": "Updated to use GottschCore v1.7\nAdded Cauldron Chest (epic).\nAdded Skeleton Block.\nAdded Marker Generator.\nFixed world.isRemote() checks with GottschCore call WorldInfo.isServer/Client().\nExpose custom loot tables.\nUse of GottschCore Loot Tables system instead of Treasure2s.\nFixed so that Skeletons can be placed in Fog.\n",
         "1.3.6": "Fixed Coin toss in well crash bug.\nRemoved all references to old Loot Tables setup (in ref to coin/well bug).\nFix foreign mod loot table registering.\nUpdated mocreates, sgs metals loot tables to point to right loot tables.\n",
         "1.3.7": "Fixed bug where Treasure items weren't being added to chests.\n",   
-        "1.4.1": "Add Structures add Structure files.\nUpdate MobTrapPitGenerator to use Proximity Spawners.\nFixed World Generators map - use Enum instead of String.\nRefactor Pit selection code.\n",
+        "1.4.1": "Added Structures and Structure files.\nUpdate MobTrapPitGenerator to use Proximity Spawners.\nFixed World Generators map - use Enum instead of String.\nRefactor Pit selection code.\n",
         "1.4.2": "Fixed DataFixer server-side crash.\nFixed AbstractChestGenerator crash.\nRemoved Structure Pit Generators that didnt make sense, ie. Big Bottom, Lava Trap.\nExpanded code when retrieving chest coords from pit structure.\n",
         "1.4.3": "Fixed AbstractChestGenerator crash again -> Found edges cases that didn't return StructureInfo on Structure gens.\nFixed findUndergroundCeiling() call.\n", 
         "1.5.0": "Expose/Add custom structure locations.\nSet Key max uses as configurable.\nAdded Chinese language file. Thanks to qyhao.\nAdded new config options - toggle default loot table and templates enforcement.\nRemoved references to mod_present condition on loot tables.\nFix WitherRoot and WitherBranch blocks placement.\nAdded meta file system.\nAdded underwater structures.\nAdded more treasure room structures.",
@@ -33,7 +33,7 @@
         "1.6.2": "Removed GUI config that was inadvertently added last update.",
         "1.6.3": "Removed debugging code that was causing underwater structures to generate too frequently.",
         "1.7.0": "Refactored config files into one GUI config.\nAdded Desert Wishing Well block.\nFixed Rarity enum value mappings.\nPersisted ChestRegistry.\nFixed Well generation on podzol/mycelium generating mushroom block instead of mushrooms.\nReconfigured folder locations where logging and resource files go (moved out of /mods folder.)\nUsing GottschCore v1.9.0.\n*Fixed chests not generating in some pits.\n*Fixed world properties not clearing between game world loads.\nFixed loading of ChestRegistry.\n",
-        "1.8.0": "Add SpawnRuins command.\nFix/enable other spawn commands.\n"
+        "1.8.0": "Added SpawnRuins command.\nFixed/enable other spawn commands.\n"
     }
 }
  

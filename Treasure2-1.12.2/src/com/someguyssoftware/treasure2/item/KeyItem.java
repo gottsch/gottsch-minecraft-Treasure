@@ -182,15 +182,6 @@ public class KeyItem extends ModItem {
 				LockState lockState = null;
 				boolean isKeyBroken = false;
 				// check if this key is one that opens a lock (only first lock that key fits is unlocked).
-//				for (LockState ls : tcte.getLockStates()) {
-//					if (ls.getLock() != null) {
-//						lockState = ls;
-//						if (lockState.getLock().acceptsKey(this) || fitsLock(lockState.getLock())) {
-//							fitsLock = true;
-//							break;
-//						}
-//					}
-//				}
 				lockState = fitsFirstLock(tcte.getLockStates());
 				if (lockState != null) {
 					fitsLock = true;
