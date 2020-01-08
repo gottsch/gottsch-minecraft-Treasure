@@ -13,5 +13,5 @@
 		"y": -1,
 		"z": 0
 	},
-	"decayRuleSetName": "default_ruleset"
+	"decayRuleSetName": ["default_ruleset", "aged_ruleset", "ruinous_ruleset"]
 }

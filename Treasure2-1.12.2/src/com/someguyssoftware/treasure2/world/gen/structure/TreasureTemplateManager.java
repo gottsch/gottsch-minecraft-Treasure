@@ -164,13 +164,15 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				// probably needs to be mapped by meta, then it can be mapped otherwise				
 				
 				// determine if the meta decayRuleSetName is populated
-				ResourceLocation decayRuleSetResourceLocation = null;
-				if (meta.getDecayRuleSetName() != null && !meta.getDecayRuleSetName().equals("")) {
-					// build the key for the meta manager to look at
-					decayRuleSetResourceLocation = new ResourceLocation(
-							getMod().getId() + ":" + Treasure.DECAY_MANAGER.getBaseResourceFolder()+ "/" + modID + "/" + meta.getDecayRuleSetName() + ".json");
-					String decayKey = decayRuleSetResourceLocation.toString();
-					Treasure.logger.debug("Using key to find decay ruleset -> {}", decayKey);
+				List<ResourceLocation> decayRuleSetResourceLocation = new ArrayList<>();
+				if (meta.getDecayRuleSetName() != null && meta.getDecayRuleSetName().size() > 0 /*!meta.getDecayRuleSetName().equals("")*/) {
+					// build the keys for the meta manager to look at
+					for (String ruleSetName : meta.getDecayRuleSetName()) {
+						ResourceLocation resourceLocation = new ResourceLocation(
+								getMod().getId() + ":" + Treasure.DECAY_MANAGER.getBaseResourceFolder()+ "/" + modID + "/" + /*meta.getDecayRuleSetName()*/ruleSetName + ".json");
+						decayRuleSetResourceLocation.add(resourceLocation);
+						Treasure.logger.debug("Using key to find decay ruleset -> {}", decayRuleSetResourceLocation.toString());
+					}
 				}
 				
 				// map according to meta archetype, type
@@ -210,7 +212,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	 * @param template
 	 */
 	private void mapToTemplatesByArchetypeBiome(ResourceLocation metaResourceLocation, 
-			ResourceLocation location, ResourceLocation decayResourceLocation, IMetaArchetype archetype, IMetaType type, 
+			ResourceLocation location, List<ResourceLocation> decayResourceLocation, IMetaArchetype archetype, IMetaType type, 
 			Template template) {
 
 		// build mapping key

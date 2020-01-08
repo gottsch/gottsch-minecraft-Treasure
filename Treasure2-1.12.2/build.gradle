@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-	id 'io.franzbecker.gradle-lombok' version '3.1.0'
+//	id 'io.franzbecker.gradle-lombok' version '3.1.0'
 	 //  must use gradle v3.0+ for this version of shadow (2.0.1).  Update gradle-wrapper.properties
 	id "com.github.johnrengelman.shadow" version "2.0.1"
 }

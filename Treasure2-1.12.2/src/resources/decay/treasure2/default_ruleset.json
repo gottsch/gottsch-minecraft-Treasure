@@ -1,4 +1,5 @@
  {
+ 	"name": "default",
 	"verticalDecayRate": {
 		"min": 5.0,
 		"max": 10.0

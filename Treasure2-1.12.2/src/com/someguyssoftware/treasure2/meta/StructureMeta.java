@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.meta;
 
+import java.util.List;
+
 import com.someguyssoftware.gottschcore.meta.Meta;
 
 /**
@@ -13,7 +15,7 @@ public class StructureMeta extends Meta {
 	private int verticalOffset;
 	private boolean includeGraves;
 	private boolean includeFog;
-	private String decayRuleSetName;
+	private List<String> decayRuleSetName;
 	
 	public StructureMeta() {}
 
@@ -52,11 +54,11 @@ public class StructureMeta extends Meta {
 		this.verticalOffset = verticalOffset;
 	}
 
-	public String getDecayRuleSetName() {
+	public List<String> getDecayRuleSetName() {
 		return decayRuleSetName;
 	}
 
-	public void setDecayRuleSetName(String decayRuleSetName) {
+	public void setDecayRuleSetName(List<String> decayRuleSetName) {
 		this.decayRuleSetName = decayRuleSetName;
 	}
 		

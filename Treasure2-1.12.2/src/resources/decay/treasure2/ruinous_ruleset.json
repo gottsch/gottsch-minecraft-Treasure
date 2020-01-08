@@ -1,4 +1,5 @@
  {
+ "name": "ruinous",
   "verticalDecayRate": {
   	"min": 12.0,
   	"max": 17.0
