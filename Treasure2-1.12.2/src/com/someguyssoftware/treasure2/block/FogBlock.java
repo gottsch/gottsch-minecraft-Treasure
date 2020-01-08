@@ -262,9 +262,9 @@ public class FogBlock extends ModFallingBlock {
 	 */
 	private void checkFallable(World worldIn, BlockPos pos) {
 		if ((worldIn.isAirBlock(pos.down()) || canFallThrough(worldIn.getBlockState(pos.down()))) && pos.getY() >= 0) {
-			int i = 32;
+			final int RADIUS = 32;
 
-			if (worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
+			if (worldIn.isAreaLoaded(pos.add(-RADIUS, -RADIUS, -RADIUS), pos.add(RADIUS, RADIUS, RADIUS))) {
 				if (WorldInfo.isServerSide(worldIn)) {
 					EntityFallingBlock entityfallingblock = new EntityFallingBlock(worldIn, (double) pos.getX() + 0.5D,
 							(double) pos.getY(), (double) pos.getZ() + 0.5D, worldIn.getBlockState(pos).withProperty(CHECK_DECAY,(Boolean)true).withProperty(ACTIVATED, (Boolean)false));

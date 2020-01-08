@@ -5,7 +5,6 @@ package com.someguyssoftware.treasure2.block;
 
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.enums.Direction;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
@@ -24,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;

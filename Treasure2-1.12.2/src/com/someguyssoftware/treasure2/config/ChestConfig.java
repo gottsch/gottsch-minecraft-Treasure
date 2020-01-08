@@ -6,7 +6,6 @@ import com.someguyssoftware.gottschcore.biome.BiomeTypeHolder;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.config.Config.Comment;
-import net.minecraftforge.common.config.Config.Ignore;
 import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RangeDouble;
 import net.minecraftforge.common.config.Config.RangeInt;
