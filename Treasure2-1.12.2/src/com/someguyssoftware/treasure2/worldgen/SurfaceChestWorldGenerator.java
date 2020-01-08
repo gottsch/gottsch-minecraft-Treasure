@@ -24,7 +24,6 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
@@ -61,8 +60,6 @@ import com.someguyssoftware.treasure2.generator.ruins.SurfaceRuinGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
-import lombok.Getter;
-import lombok.Setter;
 import net.minecraft.init.Biomes;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -75,7 +72,6 @@ import net.minecraftforge.common.BiomeDictionary;
  * @author Mark Gottschling on Jan 22, 2018
  *
  */
-@Getter @Setter
 public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 	protected static int UNDERGROUND_OFFSET = 5;
 	
@@ -542,5 +538,37 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 			}
 		}
 		return false;
+	}
+
+	public int getChunksSinceLastChest() {
+		return chunksSinceLastChest;
+	}
+
+	public void setChunksSinceLastChest(int chunksSinceLastChest) {
+		this.chunksSinceLastChest = chunksSinceLastChest;
+	}
+
+	public Map<Rarity, Integer> getChunksSinceLastRarityChest() {
+		return chunksSinceLastRarityChest;
+	}
+
+	public void setChunksSinceLastRarityChest(Map<Rarity, Integer> chunksSinceLastRarityChest) {
+		this.chunksSinceLastRarityChest = chunksSinceLastRarityChest;
+	}
+
+	public Map<Rarity, RandomWeightedCollection<IChestGenerator>> getChestGenMap() {
+		return chestGenMap;
+	}
+
+	public void setChestGenMap(Map<Rarity, RandomWeightedCollection<IChestGenerator>> chestGenMap) {
+		this.chestGenMap = chestGenMap;
+	}
+
+	public static Table<PitTypes, Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> getPitGens() {
+		return pitGens;
+	}
+
+	public static void setPitGens(Table<PitTypes, Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGens) {
+		SurfaceChestWorldGenerator.pitGens = pitGens;
 	}
 }

@@ -9,7 +9,6 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.gottschcore.world.gen.structure.DecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
@@ -18,9 +17,7 @@ import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
-import com.sun.media.jfxmedia.logging.Logger;
 
-import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
@@ -29,15 +26,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 
+// TODO getMarkerBlock should be in TemplateGenerator as well (passed in)
+// TODO move TemplateGenerator to world.gen.structure (in gottschcore)
+// TODO structure gen should probably pass in the replacement map
+
 /**
  * 
-		// TODO getMarkerBlock should be in TemplateGenerator as well (passed in)
-		// TODO move TemplateGenerator to world.gen.structure (in gottschcore)
-		// TODO structure gen should probably pass in the replacement map
  * @author Mark Gottschling on Jan 24, 2019
  *
  */
-@Setter
 public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<TemplateGeneratorData>> {
 	// facing property of a vanilla chest
 	private static final PropertyDirection VANILLA_CHEST_FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
@@ -182,6 +179,11 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 			nullBlock = GenUtil.getMarkerBlock(StructureMarkers.NULL);
 		}
 		return nullBlock;
+	}
+
+	@Override
+	public void setNullBlock(Block nullBlock) {
+		this.nullBlock = nullBlock;
 	}
 
 }
