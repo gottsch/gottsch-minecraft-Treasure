@@ -202,15 +202,15 @@ public interface IChestGenerator {
 	 * @param random
 	 * @param coods
 	 */
-	default public void addMarkers(World world, Random random, ICoords coords) {
-		boolean isChestOnSurface = false;
+	default public void addMarkers(World world, Random random, ICoords coords, final boolean isSurfaceChest) {
+//		boolean isChestOnSurface = false;
 		// don't place if the block underneath is of GenericBlock ChestConfig or Container
-		Block block = world.getBlockState(coords.add(0, -1, 0).toPos()).getBlock();
-		if(block instanceof BlockContainer || block instanceof AbstractModContainerBlock || block instanceof ITreasureBlock) {
-			isChestOnSurface = true;
-		}
+//		Block block = world.getBlockState(coords/*.add(0, -1, 0)*/.toPos()).getBlock();
+//		if(block instanceof BlockContainer || block instanceof AbstractModContainerBlock || block instanceof ITreasureBlock) {
+//			isChestOnSurface = true;
+//		}
 		//		GenUtil.placeMarkers(world, random, coords);
-		if (!isChestOnSurface && TreasureConfig.WORLD_GEN.getMarkerProperties().isMarkerStructuresAllowed &&
+		if (!isSurfaceChest && TreasureConfig.WORLD_GEN.getMarkerProperties().isMarkerStructuresAllowed &&
 				RandomHelper.checkProbability(random, TreasureConfig.WORLD_GEN.getMarkerProperties().markerStructureProbability)) {
 			Treasure.logger.debug("generating a random structure marker -> {}", coords.toShortString());
 			new StructureMarkerGenerator().generate(world, random, coords);

@@ -306,6 +306,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		ICoords chestCoords = null;
 		ICoords markerCoords = null;
 		boolean hasMarkers = true;
+		boolean isSurfaceChest = false;
 
 		// result to return to the caller
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
@@ -324,7 +325,8 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		
 		// 2. determine if above ground or below ground
 		if (config.isSurfaceAllowed() && RandomHelper.checkProbability(random, TreasureConfig.CHESTS.surfaceChests.surfaceChestProbability)) {
-
+			isSurfaceChest = true;
+			
 			if (RandomHelper.checkProbability(random, TreasureConfig.WORLD_GEN.getGeneralProperties().surfaceStructureProbability)) {
 				// no markers
 				hasMarkers = false;
@@ -360,7 +362,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 
 		// add markers (above chest or shaft)
 		if (hasMarkers) {
-			chestGenerator.addMarkers(world, random, markerCoords);
+			chestGenerator.addMarkers(world, random, markerCoords, isSurfaceChest);
 		}		
 		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestState());
 		if (!chestResult.isSuccess()) {

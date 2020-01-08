@@ -90,7 +90,7 @@ public class WitherChestGenerator implements IChestGenerator {
 	 * Don't place any markers
 	 */
 	@Override
-	public void addMarkers(World world, Random random, ICoords coords) {
+	public void addMarkers(World world, Random random, ICoords coords, boolean isSurfaceChest) {
 		return;
 	}
 	

@@ -42,6 +42,8 @@ import net.minecraftforge.common.DungeonHooks;
  */
 public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<TemplateGeneratorData>> {
 	
+	private static final double REQUIRED_BASE_SIZE = 50;
+
 	/**
 	 * 
 	 */
@@ -58,7 +60,6 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 			ICoords originalSpawnCoords, IDecayRuleSet decayRuleSet) {
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
 	
-		// TODO can abstract to AbstractRuinGenerator which Submerged and Ruin implement.
 		// TODO create a method selectTemplate() in abstract that will be overridden by concrete classes, provided the archetype and type
 		
 		/*
@@ -95,21 +96,16 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 		 */
 		actualSpawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, actualSpawnCoords);
 		Treasure.logger.debug("ocean floor coords -> {}", actualSpawnCoords.toShortString());
-
-		// check if it has 50% land
-		if (!WorldInfo.isSolidBase(world, actualSpawnCoords, 2, 2, 30)) {
-			Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", actualSpawnCoords.toShortString(), 3, 3);
-			return result.fail();
-		}
 		
+		// check if it has % land
 		for (int i = 0; i < 3; i++) {
-			if (!WorldInfo.isSolidBase(world, actualSpawnCoords, templateSize.getX(), templateSize.getZ(), 50)) {
-				if (i == 3) {
-					Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", 50, originalSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
+			if (!WorldInfo.isSolidBase(world, actualSpawnCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
+				if (i == 2) {
+					Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", REQUIRED_BASE_SIZE, originalSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
 					return result.fail();
 				}
 				else {
-					originalSpawnCoords = originalSpawnCoords.add(0, -1, 0);
+					actualSpawnCoords = actualSpawnCoords.add(0, -1, 0);
 				}
 			}
 			else {

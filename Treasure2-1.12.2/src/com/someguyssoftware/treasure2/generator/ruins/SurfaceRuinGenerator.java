@@ -43,6 +43,8 @@ import net.minecraftforge.common.DungeonHooks;
  */
 public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<TemplateGeneratorData>> {
 	
+	private static final double REQUIRED_BASE_SIZE = 80;
+
 	/**
 	 * 
 	 */
@@ -96,21 +98,16 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 			return result.fail();
 		}
 		
-		// check if it has 30% land
-		if (!WorldInfo.isSolidBase(world, actualSpawnCoords, templateSize.getX(), templateSize.getZ(), 30)) {
-			Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", actualSpawnCoords.toShortString(), templateSize.getX(), templateSize.getZ());
-			return result.fail();
-		}
-		
-		for (int i = 0; i < 3; i++) {
-			if (!WorldInfo.isSolidBase(world, actualSpawnCoords, templateSize.getX(), templateSize.getZ(), 50)) {
-				if (i == 3) {
-					Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", 50, originalSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
-					return result.fail();
-				}
-				else {
-					originalSpawnCoords = originalSpawnCoords.add(0, -1, 0);
-				}
+		// check if it has % land base
+		for (int i = 0; i < 1; i++) {
+			if (!WorldInfo.isSolidBase(world, actualSpawnCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
+//				if (i == 2) {
+//					Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", REQUIRED_BASE_SIZE, originalSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
+//					return result.fail();
+//				}
+//				else {
+					actualSpawnCoords = actualSpawnCoords.add(0, -1, 0);
+//				}
 			}
 			else {
 				continue;
