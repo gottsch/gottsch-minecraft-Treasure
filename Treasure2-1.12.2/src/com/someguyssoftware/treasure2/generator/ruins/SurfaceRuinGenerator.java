@@ -99,15 +99,15 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 		}
 		
 		// check if it has % land base
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 2; i++) {
 			if (!WorldInfo.isSolidBase(world, actualSpawnCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
-//				if (i == 2) {
-//					Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", REQUIRED_BASE_SIZE, originalSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
-//					return result.fail();
-//				}
-//				else {
+				if (i == 1) {
+					Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", REQUIRED_BASE_SIZE, originalSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
+					return result.fail();
+				}
+				else {
 					actualSpawnCoords = actualSpawnCoords.add(0, -1, 0);
-//				}
+				}
 			}
 			else {
 				continue;
@@ -162,9 +162,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 		List<ICoords> spawnerCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
 		List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
-		
-		// TODO these are wrong because we are adding the *new rotation calculated* spawnCoords and adding to the relative coords of the spawners
-		// TODO they need to be relative to the original plus the offset.... this should be accomplished when records to real-world coords
+
 		// populate vanilla spawners
 		buildVanillaSpawners(world, random, spawnerCoords);
 		
