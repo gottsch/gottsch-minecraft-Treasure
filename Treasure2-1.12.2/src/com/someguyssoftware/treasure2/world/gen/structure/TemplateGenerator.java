@@ -11,15 +11,21 @@ import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
+import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkerContext;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -37,7 +43,8 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  */
 public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<TemplateGeneratorData>> {
 	// facing property of a vanilla chest
-	private static final PropertyDirection VANILLA_CHEST_FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	private static final PropertyDirection FACING = BlockHorizontal.FACING;
+	private static final PropertyEnum<EnumFacing> CHEST_FACING = PropertyDirection.create("facing", EnumFacing.class);
 	
 	private Block nullBlock;
 	
@@ -101,29 +108,36 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		}
 		
 		// process all markers and adding them to the result data (absolute positioned)
-		for (Entry<Block, ICoords> entry : template.getMap().entries()) {
-			ICoords c = new Coords(GottschTemplate.transformedCoords(placement, entry.getValue()));
+		for (Entry<Block, StructureMarkerContext> entry : template.getMarkerMap().entries()) {
+			ICoords c = new Coords(GottschTemplate.transformedCoords(placement, entry.getValue().getCoords()));
 			c = spawnCoords.add(c);
 			result.getData().getMap().put(entry.getKey(), c);
 			Treasure.logger.debug("adding to structure info absoluted transformed coords -> {} : {}", entry.getKey().getLocalizedName(), c.toShortString());
 		}
 		
 		// find the chest and update chest coords (absolute positioned)
-		List<ICoords> chestCoordsList = (List<ICoords>) result.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
-		if (!chestCoordsList.isEmpty()) {
-			ICoords chestCoords = chestCoordsList.get(0);
-			result.getData().setChestCoords(chestCoords);		
+		List<StructureMarkerContext> contextList = (List<StructureMarkerContext>) template.getMarkerMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
+		if (!contextList.isEmpty()) {
+			StructureMarkerContext context = contextList.get(0);
+			ICoords chestCoords = new Coords(GottschTemplate.transformedCoords(placement, context.getCoords()));
+			// get the absolute coords of chest
+			chestCoords = spawnCoords.add(chestCoords);
+			// set the chest coords in the result data
+			result.getData().setChestCoords(chestCoords);
 			// get the block state of the chest
-			IBlockState chestState = world.getBlockState(chestCoords.toPos());
-			 if (chestState.getProperties().containsKey(VANILLA_CHEST_FACING)) {
-				 result.getData().setChestState(chestState);
-				 Treasure.logger.debug("saving chest state -> {}", chestState.toString());
+			IBlockState chestState = context.getState();
+			chestState = chestState.withMirror(placement.getMirror());
+			chestState = chestState.withRotation(placement.getRotation());
+			 if (chestState.getProperties().containsKey(FACING)) {
+				 IBlockState modState= TreasureBlocks.WOOD_CHEST.getDefaultState().withProperty(CHEST_FACING, (EnumFacing)chestState.getProperties().get(FACING));
+				 result.getData().setChestState(modState);
+//				 Treasure.logger.debug("saving chest state -> {}", modState.toString());
 			 }
 		}
 
 		// get the transformed size
 		BlockPos transformedSize = template.transformedSize(placement.getRotation());
-		Treasure.logger.debug("transformed size -> {}", transformedSize.toString());
+//		Treasure.logger.debug("transformed size -> {}", transformedSize.toString());
 		
 		// calculate the new spawn coords - that includes the rotation, and negates the Y offset
 		spawnCoords = getTransformedSpawnCoords(spawnCoords, new Coords(transformedSize), placement).add(0, -offset, 0);

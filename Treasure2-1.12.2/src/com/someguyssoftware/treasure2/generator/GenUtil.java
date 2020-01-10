@@ -128,14 +128,14 @@ public class GenUtil {
 		IBlockState oldState = world.getBlockState(coords.toPos());
 		
 		if (oldState.getProperties().containsKey(FACING)) {
-			Treasure.logger.debug("World ChestConfig marker has FACING property:" + oldState.getValue(FACING));
+			Treasure.logger.debug("World Chest marker has FACING property:" + oldState.getValue(FACING));
 			// set the new state
 			return placeChest(world, chest, coords, (EnumFacing)oldState.getValue(FACING));
 			
 //			world.setBlockState(pos, this.getChest().getDefaultState().withProperty(FACING, oldState.getValue(FACING)), 3);
 		}
 		else {
-			Treasure.logger.debug("World ChestConfig marker does NOT have a FACING property.");
+			Treasure.logger.debug("World Chest marker does NOT have a FACING property.");
 //			world.setBlockState(chestCoords.toBlockPos(), this.getChest().getDefaultState(), 3);
 			return placeChest(world, chest, coords, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
 		}
@@ -152,14 +152,17 @@ public class GenUtil {
 	 */
 	public static boolean replaceBlockWithChest(World world, Random random, ICoords coords, Block chest, IBlockState state) {
 		if (state.getProperties().containsKey(FACING)) {
+			Treasure.logger.debug("Given marker state has FACING property -> {}", state.getValue(FACING));
 			return placeChest(world, chest, coords, (EnumFacing)state.getValue(FACING));
 		}
 		
 		if (state.getBlock() == Blocks.CHEST) {
+			Treasure.logger.debug("Given marker state is a vanilla chest.");
 			EnumFacing facing = (EnumFacing)state.getValue(BlockChest.FACING);
 			return placeChest(world, chest, coords, facing);
 		}
 		
+		Treasure.logger.debug("Given marker state neither has FACING nor is a vanilla chest.");
 		// else do generic
 		return replaceBlockWithChest(world, random, chest, coords);		
 	}
@@ -174,6 +177,7 @@ public class GenUtil {
 	public static boolean placeChest(World world, Block chest, ICoords coords, EnumFacing facing) {
 		// check if spawn pos is valid
 		if (!WorldInfo.isValidY(coords)) {
+			Treasure.logger.debug("Cannot place chest due to invalid y pos -> {}", coords.toShortString());
 			return false;
 		}
 		
@@ -182,6 +186,7 @@ public class GenUtil {
 			// create and place the chest
 			//world.setBlockState(pos, chest.getStateFromMeta(meta), 3);
 			world.setBlockState(pos,chest.getDefaultState().withProperty(FACING, facing), 3);
+			Treasure.logger.debug("placed chest -> {} into world at coords -> {} with prop -> {}", chest.getClass().getSimpleName(), coords.toShortString(), facing);
 			//world.setBlockMetadataWithNotify(coords.getX(), coords.getY(), coords.getZ(), meta, 3);
 
 			// get the direction the block is facing.

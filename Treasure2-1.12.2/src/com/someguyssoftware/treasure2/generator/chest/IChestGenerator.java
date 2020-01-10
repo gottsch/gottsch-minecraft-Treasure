@@ -268,7 +268,7 @@ public interface IChestGenerator {
 	default public TileEntity placeInWorld(World world, Random random, ICoords chestCoords, AbstractChestBlock chest, IBlockState state) {
 		// replace block @ coords
 		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chestCoords, chest, state);
-
+Treasure.logger.debug("isPlaced -> {}", isPlaced);
 		// get the backing tile entity of the chest 
 		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());
 
