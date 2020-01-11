@@ -8,7 +8,10 @@
   "url": "",
   "updateUrl": "",
    "authorList":["gottsch"],
-  "credits": "My son, Mason, for inspiration and ideas. CuddleBeak, for some Keys and Locks textures.",
+  "credits": ["My son, Mason, for inspiration and ideas.",
+  	"CuddleBeak, for some Keys and Locks textures.",
+  	"mn_ti for Chinese and to DarkKnightComes for Polish translation.",
+	"Mythical Sausage for tutorials on house/tower designs."],
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
