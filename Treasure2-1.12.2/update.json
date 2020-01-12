@@ -33,7 +33,7 @@
         "1.6.2": "Removed GUI config that was inadvertently added last update.",
         "1.6.3": "Removed debugging code that was causing underwater structures to generate too frequently.",
         "1.7.0": "Refactored config files into one GUI config.\nAdded Desert Wishing Well block.\nFixed Rarity enum value mappings.\nPersisted ChestRegistry.\nFixed Well generation on podzol/mycelium generating mushroom block instead of mushrooms.\nReconfigured folder locations where logging and resource files go (moved out of /mods folder.)\nUsing GottschCore v1.9.0.\n*Fixed chests not generating in some pits.\n*Fixed world properties not clearing between game world loads.\nFixed loading of ChestRegistry.\n",
-        "1.8.0": "Added SpawnRuins command.\nFixed/enable other spawn commands.\n"
+        "1.8.0": "Added Decay System.\nAdded 8 surface structures.\nAdded SpawnRuins command.\nFixed/enable other spawn commands.\nAdded Spanish translation.\nAdded Russian translation.\nFixed the number of uses a Key has.\nRemoved Lombok library.\nFixed solid base check for Surface/Submerged ruins.\nFixed Wither Tree crash bug.\n"
     }
 }
  
