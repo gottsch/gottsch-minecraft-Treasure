@@ -83,7 +83,8 @@ import net.minecraftforge.oredict.OreDictionary;
 		"Credits to Mason Gottschling for ideas and debugging.",
 		"Credits to CuddleBeak for some Keys and Locks textures.",
 		"Credits to mn_ti for Chinese and to DarkKnightComes for Polish translation.",
-		"Credits to Mythical Sausage for tutorials on house/tower designs."
+		"Credits to Mythical Sausage for tutorials on house/tower designs.",
+		"Credits to DarvinSlav for Russian translation."
 		})
 public class Treasure extends AbstractMod {
 

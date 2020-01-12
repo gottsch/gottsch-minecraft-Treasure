@@ -1,0 +1,197 @@
+#chests
+tile.treasure2:wood_chest.name=Деревянный сундук
+tile.treasure2:crate_chest.name=Ящик
+tile.treasure2:crate_chest_moldy.name=Заплесневелый ящик
+tile.treasure2:ironbound_chest.name=Железный сундук
+tile.treasure2:iron_strongbox.name=Железный сейф
+tile.treasure2:gold_strongbox.name=Золотой сейф
+tile.treasure2:pirate_chest.name=Пиратский сундук
+tile.treasure2:safe.name=Сейф
+tile.treasure2:dread_pirate_chest.name=Сундук ужаса
+tile.treasure2:compressor_chest.name=Уплотненный сундук
+tile.treasure2:wither_chest.name=Усопший сундук
+tile.treasure2:skull_chest.name=Сундук черепа
+tile.treasure2:gold_skull_chest.name=Золотой сундук черепа
+tile.treasure2:cauldron_chest.name=Котлообразный сундук
+tile.treasure2:oyster_chest.name=Устрица
+tile.treasure2:clam_chest.name=Моллюск
+
+tile.treasure2:wood_mimic.name=Древесный Мимик
+
+#wells
+tile.treasure2:wishing_well_block.name=Камень желаний
+tile.treasure2:desert_wishing_well_block.name=Пустынный камень желаний
+
+#gravestones
+tile.treasure2:gravestone1_stone.name=Каменное надгробие
+tile.treasure2:gravestone1_cobblestone.name=Булыжниковое надгробие
+tile.treasure2:gravestone1_mossy_cobblestone.name=Заросшее булыжниковое надгробие
+tile.treasure2:gravestone1_polished_granite.name=Гранитное надгробие
+tile.treasure2:gravestone1_polished_andesite.name=Андезитовое надгробие
+tile.treasure2:gravestone1_polished_diorite.name=Диоритовое надгробие
+tile.treasure2:gravestone1_obsidian.name=Обсидиановое надгробие
+
+tile.treasure2:gravestone2_stone.name=Каменное надгробие
+tile.treasure2:gravestone2_cobblestone.name=Булыжниковое надгробие
+tile.treasure2:gravestone2_mossy_cobblestone.name=Заросшее булыжниковое надгробие
+tile.treasure2:gravestone2_polished_granite.name=Гранитное надгробие
+tile.treasure2:gravestone2_polished_andesite.name=Андезитовое надгробие
+tile.treasure2:gravestone2_polished_diorite.name=Диоритовое надгробие
+tile.treasure2:gravestone2_obsidian.name=Обсидиановое надгробие
+
+tile.treasure2:gravestone3_stone.name=Каменное надгробие
+tile.treasure2:gravestone3_cobblestone.name=Булыжниковое надгробие
+tile.treasure2:gravestone3_mossy_cobblestone.name=Заросшее булыжниковое надгробие
+tile.treasure2:gravestone3_polished_granite.name=Гранитное надгробие
+tile.treasure2:gravestone3_polished_andesite.name=Андезитовое надгробие
+tile.treasure2:gravestone3_polished_diorite.name=Диоритовое надгробие
+tile.treasure2:gravestone3_obsidian.name=Обсидиановое надгробие
+
+tile.treasure2:skull_and_crossbones.name=Череп и кости
+tile.treasure2:skeleton.name=Скелет
+
+#wither tree
+tile.treasure2:wither_log.name=Засохшее бревно
+tile.treasure2:wither_broken_log.name=Засохшее треснувшее бревно
+tile.treasure2:wither_log_soul.name=Засохшее бревно душ
+tile.treasure2:wither_branch.name=Засохшая ветвь
+tile.treasure2:wither_root.name=Засохший корень
+tile.treasure2:wither_planks.name=Засохшие доски
+
+#fogs
+tile.treasure2:fog.name=Туман
+tile.treasure2:high_fog.name=Густой туман
+tile.treasure2:med_fog.name=Средний туман
+tile.treasure2:low_fog.name=Слабый туман
+
+tile.treasure2:wither_fog.name=Увядший туман
+tile.treasure2:high_wither_fog.name=Густой увядший туман
+tile.treasure2:med_wither_fog.name=Средний увядший туман
+tile.treasure2:low_wither_fog.name=Слабый увядший туман
+
+tile.treasure2:poison_fog.name=Ядовитый туман
+tile.treasure2:high_poison_fog.name=Густой ядовитый туман
+tile.treasure2:med_poison_fog.name=Средний ядовитый туман
+tile.treasure2:low_poison_fog.name=Слабый ядовитый туман
+
+#ores
+tile.treasure2:sapphire_ore.name=Сапфировая руда
+tile.treasure2:ruby_ore.name=Рубиновая руда
+
+#other
+tile.treasure2:spanish_moss.name=Испанский мох
+
+#items
+item.treasure2:gold_coin.name=Золотая монета
+item.treasure2:silver_coin.name=Серебряная монета
+
+item.treasure2:key_ring.name=Брелок для Ключей
+item.treasure2:wood_key.name=Деревянный Ключ
+item.treasure2:stone_key.name=Каменный Ключ
+item.treasure2:iron_key.name=Железный Ключ
+item.treasure2:gold_key.name=Золотой Ключ
+item.treasure2:diamond_key.name=Алмазный Ключ
+item.treasure2:emerald_key.name=Изумрудный Ключ
+item.treasure2:ruby_key.name=Рубиновый Ключ
+item.treasure2:sapphire_key.name=Сапфировый Ключ
+item.treasure2:jewelled_key.name=Драгоценный Ключ
+item.treasure2:metallurgists_key.name=Ключ Металлурга
+item.treasure2:skeleton_key.name=Скелетный Ключ
+item.treasure2:spider_key.name=Паучий Ключ
+item.treasure2:wither_key.name=Усопший Ключ
+item.treasure2:shucking_knife.name=Нож
+
+item.treasure2:wood_lock.name=Деревянный замок
+item.treasure2:stone_lock.name=Каменный замок
+item.treasure2:iron_lock.name=Железный замок
+item.treasure2:gold_lock.name=Золотой замок
+item.treasure2:diamond_lock.name=Алмазный замок
+item.treasure2:emerald_lock.name=Изумрудный замок
+item.treasure2:ruby_lock.name=Рубиновый замок
+item.treasure2:sapphire_lock.name=Сапфировый замок
+item.treasure2:spider_lock.name=Паучий замок
+item.treasure2:wither_lock.name=Усопший замок
+
+item.treasure2:wither_stick_item.name=Увядшая ветвь
+item.treasure2:wither_root_item.name=Увядший корень
+item.treasure2:pilferers_lock_pick.name=Отмычка
+item.treasure2:thiefs_lock_pick.name=Отмычка вора
+
+item.treasure2:painting_blocks_bricks.name=Кирпичи от o2xygeno
+item.treasure2:painting_blocks_cobblestone.name=Булыжник от o2xygeno
+item.treasure2:painting_blocks_dirt.name=Грязь от o2xygeno
+item.treasure2:painting_blocks_lava.name=Лава от o2xygeno
+item.treasure2:painting_blocks_sand.name=Песок от o2xygeno
+item.treasure2:painting_blocks_water.name=Вода от o2xygeno
+item.treasure2:painting_blocks_wood.name=Дерево от o2xygeno
+
+item.treasure2:eye_patch.name=Повязка на глаз
+item.treasure2:skull_sword.name=Меч Черепа
+item.treasure2:spanish_moss.name=Испанский мох
+item.treasure2:sapphire.name=Сапфир
+item.treasure2:ruby.name=Рубин
+item.treasure2:skeleton.name=Скелет
+item.treasure2:white_pearl.name=Белая жемчужина
+item.treasure2:black_pearl.name=Черная жемчужина
+item.treasure2:oyster_meat.name=Мясо устриц
+item.treasure2:oyster_stew.name=Рагу из устриц
+item.treasure2:clam_meat.name=Мясо моллюска
+item.treasure2:clam_stew.name=Рагу из моллюсков
+item.treasure2:treasure_tool.name=Сокровищный Инструмент
+
+#entities
+#TODO rename standard to wood
+entity.wood_mimic.name=Древесный Мимик
+
+#groups
+itemGroup.treasure2:treasure_tab=Treasure2!
+
+# string resources
+tooltip.yes=Да
+tooltip.no=Нет
+tooltip.label.rarity=Редкость: %s
+tooltip.label.category=Категория: %s
+tooltip.label.max_uses=Макс. использований: %s
+tooltip.label.breakable=Хрупкость: %s
+tooltip.label.craftable=Крафт: %s
+tooltip.label.damageable=Повреждения: %s
+tooltip.label.specials=Особенность: %s
+tooltip.label.accepts_keys=Принимает ключи: %s
+tooltip.label.coin=Брось в колодец желаний
+tooltip.label.key_ring=Контейнер для ключей
+tooltip.label.treasure_tool=Требуется для рецептов ключей и др.
+
+tooltip.label.max_locks=Макс. замков: %s
+tooltip.label.container_size=Размер инвентаря: %s
+
+
+tooltip.metallurgists_key.specials=Открывает любой замок в категории МЕТАЛЛЫ
+tooltip.skeleton_key.specials=Открывает ОБЫЧНЫЙ, НЕОБЫЧНЫЙ, ДЕФИЦИТНЫЙ и РЕДКИЙ замки (исключение Усопшие)
+tooltip.pilferers_lock_pick.specials=Открывает ОБЫЧНЫЙ (%s%%) и НЕОБЫЧНЫЙ (%s%%) замки
+tooltip.thiefs_lock_pick.specials=Открывает ОБЫЧНЫЙ (%s%%), НЕОБЫЧНЫЙ (%s%%) и ДЕФИЦИТНЫЙ (%s%%) замки
+tooltip.jewelled_key.specials=Открывает любой замок в категории ДРАГОЦЕННОСТИ
+
+tooltip.painting.name=%s
+tooltip.painting.collection=Коллекция: %s
+tooltip.painting.issue=Выпуск: %s/%s
+tooltip.painting.artist=от %s
+
+
+#gui
+display.wood_chest.name=Деревянный сундук
+display.crate_chest.name=Ящик
+display.crate_chest_moldy.name=Заплесневелый ящик
+display.ironbound_chest.name=Железный сундук
+display.pirate_chest.name=Пиратский сундук
+display.iron_strongbox.name=Железный сейф
+display.gold_strongbox.name=Золотой сейф
+display.safe.name=Сейф
+display.dread_pirate_chest.name=Сундук ужаса
+display.compressor_chest.name=Уплотненный сундук
+display.wither_chest.name=Усопший сундук
+display.skull_chest.name=Сундук черепа
+display.gold_skull_chest.name=Золотой сундук черепа
+display.cauldron_chest.name=Котлообразный сундук
+display.whale_bone_pirate_chest.name=Китовый скелетный пиратский сундук
+display.clam_chest.name=Моллюск
+display.oyster_chest.name=Устрица
