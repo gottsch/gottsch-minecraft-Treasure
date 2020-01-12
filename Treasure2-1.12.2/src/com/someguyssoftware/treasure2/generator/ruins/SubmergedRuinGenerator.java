@@ -103,7 +103,7 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 				}
 			}
 			else {
-				continue;
+				break;
 			}
 		}
 

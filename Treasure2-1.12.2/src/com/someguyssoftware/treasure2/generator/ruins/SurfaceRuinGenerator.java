@@ -37,6 +37,7 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<TemplateGeneratorData>> {
 	
 	private static final double REQUIRED_BASE_SIZE = 80;
+	private static final double REQUIRED_AIR_SIZE = 60;
 
 	/**
 	 * 
@@ -92,21 +93,31 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 		}
 		
 		// check if it has % land base
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 3; i++) {
+			Treasure.logger.debug("finding solid base index -> {} at coords -> {}", i, actualSpawnCoords.toShortString());
 			if (!WorldInfo.isSolidBase(world, actualSpawnCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
-				if (i == 1) {
-					Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", REQUIRED_BASE_SIZE, originalSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
+				if (i == 2) {
+					Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", originalSpawnCoords.toShortString(), REQUIRED_BASE_SIZE, templateSize.getX(), templateSize.getZ());
 					return result.fail();
 				}
 				else {
 					actualSpawnCoords = actualSpawnCoords.add(0, -1, 0);
+					Treasure.logger.debug("move actual spawn coords down for solid base check -> {}", actualSpawnCoords.toShortString());
 				}
 			}
 			else {
-				continue;
+				break;
 			}
 		}
-
+		Treasure.logger.debug("using solid base coords -> {}", actualSpawnCoords.toShortString());
+		
+		// check if the plane above the actual spawn coords is % air
+		Treasure.logger.debug("checking for {} % air at coords -> {} for dimensions -> {} x {}", REQUIRED_AIR_SIZE, actualSpawnCoords.add(0, 1, 0), templateSize.getX(), templateSize.getZ());
+		if (!WorldInfo.isAirBase(world, actualSpawnCoords.add(0, 1, 0), templateSize.getX(), templateSize.getZ(), REQUIRED_AIR_SIZE)) {
+			Treasure.logger.debug("Coords -> [{}] does not meet {} % air base requirements for size -> {} x {}", originalSpawnCoords.toShortString(), REQUIRED_AIR_SIZE, templateSize.getX(), templateSize.getZ());
+			return result.fail();
+		}
+		
 		/**
 		 * Build
 		 */
@@ -114,11 +125,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 		// this is the coords that need to be supplied to the template generator to allow
 		// the structure to generator in the correct place
 		originalSpawnCoords = new Coords(originalSpawnCoords.getX(), actualSpawnCoords.getY(), originalSpawnCoords.getZ());
-		
-//		Treasure.logger.debug("holder.location -> {}", holder.getLocation());
-//		Treasure.logger.debug("holder.meta -> {}", holder.getMetaLocation());
-//		Treasure.logger.debug("holder.decay -> {}", holder.getDecayRuleSetLocation());
-		
+
 		// NOTE don't like this here and then AGAIN in TemplateGenerator
 		// get the rule set from the meta which is in the holder
 		StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(holder.getMetaLocation().toString());
