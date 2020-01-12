@@ -21,7 +21,6 @@ import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RangeDouble;
 import net.minecraftforge.common.config.Config.RangeInt;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
-import net.minecraftforge.common.config.Config.RequiresWorldRestart;
 import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.common.config.Configuration;
@@ -241,6 +240,10 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Comment({"Keys and Locks properties"})
 	public static final KeysAndLocks KEYS_LOCKS = new KeysAndLocks();
 
+	@Name("07b coins and valuables")
+	@Comment({"Coins and Valuables properties"})
+	public static final Coins COINS = new Coins();
+	
 	@Name("08 gems and ores")
 	@Comment({"Gems and Ores properties"})
 	public static final GemsAndOres GEMS_ORES = new GemsAndOres();
@@ -567,6 +570,8 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@RangeDouble(min = 0.0, max = 100.0)
 		public double witherRootItemGenProbability=50.0;
 
+		// TODO add all other wither tree probabilities ie coarse dirt gen, etc.
+		
 		@Name("biomes")
 		@Comment({"Biome white and black list properties."})
 		public BiomesConfig biomes = new BiomesConfig(
@@ -624,6 +629,17 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		}
 	}
 
+	/*
+	 * 
+	 */
+	public static class Coins {
+		@Comment("The maximum size of a coin item stack.")
+		@Name("01. Max Stack Size:")
+		@RangeInt(min = 1, max = 64)
+		@RequiresMcRestart
+		public int maxStackSize = 8;
+	}
+	
 	/*
 	 * 
 	 */
@@ -701,76 +717,91 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@Comment({"The maximum uses for a given pilferers lock pick."})
 		@Name("03. Pilferer's lockpick max. uses:")
 		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
 		public int pilferersLockPickMaxUses = 10;
 
 		@Comment({"The maximum uses for a given thiefs lock pick."})
 		@Name("04. Thief's lockpick max. uses:")
 		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
 		public int thiefsLockPickMaxUses = 10;
 		
 		@Comment({"The maximum uses for a given wooden key."})
 		@Name("05. Wood key max. uses:")
 		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
 		public int woodKeyMaxUses = 20;
 		
 		@Comment({"The maximum uses for a given stone key."})
 		@Name("06. Stone key max uses:")
 		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
 		public int stoneKeyMaxUses = 10;
 
 		@Comment({"The maximum uses for a given iron key."})
 		@Name("07. Iron key max. uses:")
 		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
 		public int ironKeyMaxUses = 10;
 
 		@Comment({"The maximum uses for a given gold key."})
 		@Name("08. Gold key max. uses:")
 		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
 		public int goldKeyMaxUses = 15;
 		
 		@Comment({"The maximum uses for a given diamond key."})
 		@Name("09. Diamond key max. uses:")
 		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
 		public int diamondKeyMaxUses = 20;
 
 		@Comment({"The maximum uses for a given emerald key."})
 		@Name("10. Emerald key max. uses:")
 		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
 		public int emeraldKeyMaxUses = 10;
 		
 		@Comment({"The maximum uses for a given ruby key."})
 		@Name("11. Ruby key max. uses:")
 		@RangeInt(min = 1, max = 32000)
-		public int rubyKeyMaxUses = 8;
+		@RequiresMcRestart
+		public int rubyKeyMaxUses = 5;
 
 		@Comment({"The maximum uses for a given sapphire key."})
 		@Name("12. Sapphire key max. uses:")
 		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
 		public int sapphireKeyMaxUses = 5;
 		
 		@Comment({"The maximum uses for a given metallurgists key."})
 		@Name("13. Metallurgists key max. uses:")
 		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
 		public int metallurgistsKeyMaxUses = 25;
 
 		@Comment({"The maximum uses for a given skeleton key."})
 		@Name("14. Skeleton key max. uses:")
 		@RangeInt(min = 1, max =32000)
+		@RequiresMcRestart
 		public int skeletonKeyMaxUses = 5;
 		
 		@Comment({"The maximum uses for a given jewelled key."})
 		@Name("15. Jewelled Key max. uses:")
 		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
 		public int jewelledKeyMaxUses = 5;
 
 		@Comment({"The maximum uses for a given spider key."})
 		@Name("16. Spider key max uses:")
 		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
 		public int spiderKeyMaxUses = 5;
 
 		@Comment({"The maximum uses for a given wither key."})
 		@Name("17. Wither key max. uses:")
 		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
 		public int witherKeyMaxUses = 5;
 	}
 

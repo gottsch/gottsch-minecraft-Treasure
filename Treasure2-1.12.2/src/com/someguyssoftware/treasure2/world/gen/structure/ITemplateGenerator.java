@@ -3,7 +3,10 @@ package com.someguyssoftware.treasure2.world.gen.structure;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.IGeneratorResult;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
@@ -19,6 +22,9 @@ public interface ITemplateGenerator<RESULT extends IGeneratorResult<?>> {
 
 	public RESULT generate(World world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
 
+	public RESULT generate(World world, Random random, IDecayProcessor decayProcessor,
+			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords);
+	
 	/**
 	 * NOTE not 100% sure that this  belongs here
 	 * @param coords
@@ -52,7 +58,8 @@ public interface ITemplateGenerator<RESULT extends IGeneratorResult<?>> {
 	}
 	
 	public Block getNullBlock();
-
 	public void setNullBlock(Block nullBlock);
+
+
 
 }

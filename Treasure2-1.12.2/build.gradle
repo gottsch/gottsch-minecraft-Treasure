@@ -11,7 +11,9 @@ buildscript {
 }
 
 plugins {
-	id 'io.franzbecker.gradle-lombok' version '3.1.0'
+//	id 'io.franzbecker.gradle-lombok' version '3.1.0'
+	 //  must use gradle v3.0+ for this version of shadow (2.0.1).  Update gradle-wrapper.properties
+	id "com.github.johnrengelman.shadow" version "2.0.1"
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -57,7 +59,9 @@ sourceSets.main{
 
 def gottschcore_path="../../gottsch-minecraft-GottschCore/GottschCore${mc_version}/build/libs/GottschCore-mc${mc_version}-f${forge_version}-v${gottschcore_version}.jar"
 dependencies {
-	compile files(gottschcore_path)	
+compile files('../../ModCommonLibs/libs/commons-cli-1.4.jar')
+	//compile files(gottschcore_path)	
+	shadow files(gottschcore_path)	
 }
 	
 processResources
@@ -72,17 +76,45 @@ processResources
                 
         // replace version and mcversion
         expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
- 
+    } 
 }
+
+shadowJar {
+    // move everything under "io.github" (which in the DelaunayTriangulator lib) to "com.someguyssoftware.dungeons2.triangulation"
+    relocate "org.apache.commons.cli", "com.someguyssoftware.treasure2.cli"
+	// Replace the default JAR
+    classifier '' 
+}
+
+reobf {
+	// Reobfuscate the shadowed JAR
+    shadowJar {} 
+}
+
+//an array containing destination paths
+def destinations = ["${dest_folder}", "${dest_server_folder}"]
+println destinations[0]
+
 task deleteOldJar(type: Delete) {
         delete fileTree("${dest_folder}") {
             include "**/${mod_name}-*.*"
+
+        }
+        delete fileTree("${dest_server_folder}") {
+            include "**/${mod_name}-*.*"
         }
     }
-task copyJar(type: Copy) {
-	from jar
-	into "${dest_folder}"
+task copyJar << {
+	// iterate over the array with destination paths
+ 	destinations.each { destination ->
+        // for every destination define new CopySpec
+        println destination
+        copy {
+            from jar
+            into destination
+        }
+    }
 }
+
 build.dependsOn copyJar
 copyJar.dependsOn deleteOldJar

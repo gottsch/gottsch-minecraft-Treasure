@@ -116,10 +116,6 @@ public class TreasureItems {
 	public static Item SPANISH_MOSS;
 	public static Item TREASURE_TOOL;
 	public static Item SKELETON;
-//	public static Item OYSTER_MEAT;
-//	public static Item CLAM_MEAT;
-//	public static Item OYSTER_STEW;
-//	public static Item CLAM_STEW;
     	
 	/*
 	 * Materials

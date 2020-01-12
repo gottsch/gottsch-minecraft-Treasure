@@ -3,13 +3,11 @@
  */
 package com.someguyssoftware.treasure2.config;
 
-import java.io.File;
 import java.util.List;
 
 import com.someguyssoftware.gottschcore.biome.BiomeTypeHolder;
 
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.config.Configuration;
 
 /**
  * @author Mark Gottschling on Jan 23, 2018

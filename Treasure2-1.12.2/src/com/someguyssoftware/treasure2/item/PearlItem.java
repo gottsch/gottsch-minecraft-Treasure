@@ -5,9 +5,7 @@ package com.someguyssoftware.treasure2.item;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.Map.Entry;
 
 import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.item.ModItem;
@@ -18,13 +16,9 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.IWishingWellBlock;
-import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Pearls;
-import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster.SpecialLootTables;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -36,7 +30,7 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 /**
- * TODO implement Lombok and remove getter/setters
+ * 
  * @author Mark Gottschling on Aug 18, 2019
  *
  */

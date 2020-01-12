@@ -19,6 +19,7 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.IWishingWellBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
@@ -39,8 +40,9 @@ import net.minecraft.world.World;
  *
  */
 public class CoinItem extends ModItem {
-
+	private static final int MAX_CUSTOM_STACK_SIZE = 64;
 	public static final int MAX_STACK_SIZE = 8;
+		
 	private Coins coin;
 	
 	/**
@@ -49,7 +51,8 @@ public class CoinItem extends ModItem {
 	public CoinItem (String modID, String name)	 {
 		super();
 		this.setItemName(modID, name);	
-		this.setMaxStackSize(MAX_STACK_SIZE);
+//		this.setMaxStackSize(MAX_STACK_SIZE);
+		this.setMaxStackSize(Math.min(MAX_CUSTOM_STACK_SIZE, TreasureConfig.COINS.maxStackSize));
 		this.setCreativeTab(Treasure.TREASURE_TAB);
 		// set the coin to gold by default
 		this.coin = Coins.GOLD;

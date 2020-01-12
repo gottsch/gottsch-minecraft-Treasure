@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.meta;
 
+import java.util.List;
+
 import com.someguyssoftware.gottschcore.meta.Meta;
 
 /**
@@ -13,6 +15,7 @@ public class StructureMeta extends Meta {
 	private int verticalOffset;
 	private boolean includeGraves;
 	private boolean includeFog;
+	private List<String> decayRuleSetName;
 	
 	public StructureMeta() {}
 
@@ -35,7 +38,12 @@ public class StructureMeta extends Meta {
 	@Override
 	public String toString() {
 		return "StructureMeta [verticalOffset=" + verticalOffset + ", includeGraves=" + includeGraves + ", includeFog="
-				+ includeFog + ", toString()=" + super.toString() + "]";
+				+ includeFog + ", decayRuleSetName=" + decayRuleSetName + ", getName()=" + getName()
+				+ ", getDescription()=" + getDescription() + ", getAuthor()=" + getAuthor() + ", getParent()="
+				+ getParent() + ", getArchetypes()=" + getArchetypes() + ", getType()=" + getType() + ", getThemes()="
+				+ getThemes() + ", getBiomeWhiteList()=" + getBiomeWhiteList() + ", getBiomeBlackList()="
+				+ getBiomeBlackList() + ", getRarities()=" + getRarities() + ", getOrder()=" + getOrder()
+				+ ", getOffset()=" + getOffset() + "]";
 	}
 
 	public int getVerticalOffset() {
@@ -44,6 +52,14 @@ public class StructureMeta extends Meta {
 
 	public void setVerticalOffset(int verticalOffset) {
 		this.verticalOffset = verticalOffset;
+	}
+
+	public List<String> getDecayRuleSetName() {
+		return decayRuleSetName;
+	}
+
+	public void setDecayRuleSetName(List<String> decayRuleSetName) {
+		this.decayRuleSetName = decayRuleSetName;
 	}
 		
 }

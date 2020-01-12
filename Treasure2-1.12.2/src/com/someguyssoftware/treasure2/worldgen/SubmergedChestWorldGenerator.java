@@ -45,8 +45,6 @@ import com.someguyssoftware.treasure2.generator.ruins.SubmergedRuinGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
-import lombok.Getter;
-import lombok.Setter;
 import net.minecraft.init.Biomes;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -59,7 +57,6 @@ import net.minecraftforge.common.BiomeDictionary;
  * @author Mark Gottschling on Dec 3, 2019
  *
  */
-@Getter @Setter
 public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 	private int chunksSinceLastChest;
 	private Map<Rarity, Integer> chunksSinceLastRarityChest;
@@ -357,5 +354,30 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 			}
 		}
 		return false;
+	}
+
+	public int getChunksSinceLastChest() {
+		return chunksSinceLastChest;
+	}
+
+	public void setChunksSinceLastChest(int chunksSinceLastChest) {
+		this.chunksSinceLastChest = chunksSinceLastChest;
+	}
+
+	public Map<Rarity, Integer> getChunksSinceLastRarityChest() {
+		return chunksSinceLastRarityChest;
+	}
+
+	public void setChunksSinceLastRarityChest(Map<Rarity, Integer> chunksSinceLastRarityChest) {
+		this.chunksSinceLastRarityChest = chunksSinceLastRarityChest;
+	}
+
+	public Map<Rarity, RandomWeightedCollection<IChestGenerator>> getChestCollectionGeneratorsMap() {
+		return chestCollectionGeneratorsMap;
+	}
+
+	public void setChestCollectionGeneratorsMap(
+			Map<Rarity, RandomWeightedCollection<IChestGenerator>> chestCollectionGeneratorsMap) {
+		this.chestCollectionGeneratorsMap = chestCollectionGeneratorsMap;
 	}
 }

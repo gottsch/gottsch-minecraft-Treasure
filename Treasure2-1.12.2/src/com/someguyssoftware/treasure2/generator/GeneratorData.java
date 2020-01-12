@@ -7,25 +7,31 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 /**
  * @author Mark Gottschling on Aug 15, 2019
  *
  */
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter 
 public class GeneratorData implements IGeneratorData {
 	private ICoords spawnCoords;
 
+	public GeneratorData() {}
+	
+	public GeneratorData(ICoords spawnCoords) {
+		super();
+		this.spawnCoords = spawnCoords;
+	}
+	
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
+	}
+
+	public ICoords getSpawnCoords() {
+		return spawnCoords;
+	}
+
+	public void setSpawnCoords(ICoords spawnCoords) {
+		this.spawnCoords = spawnCoords;
 	}
 		
 }

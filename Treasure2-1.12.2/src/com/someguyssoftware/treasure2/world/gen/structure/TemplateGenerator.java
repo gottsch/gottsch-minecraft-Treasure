@@ -10,35 +10,41 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
+import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
+import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkerContext;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
-import com.sun.media.jfxmedia.logging.Logger;
 
-import lombok.Setter;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 
+// TODO getMarkerBlock should be in TemplateGenerator as well (passed in)
+// TODO move TemplateGenerator to world.gen.structure (in gottschcore)
+// TODO structure gen should probably pass in the replacement map
+
 /**
  * 
-		// TODO getMarkerBlock should be in TemplateGenerator as well (passed in)
-		// TODO move TemplateGenerator to world.gen.structure (in gottschcore)
-		// TODO structure gen should probably pass in the replacement map
  * @author Mark Gottschling on Jan 24, 2019
  *
  */
-@Setter
 public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<TemplateGeneratorData>> {
 	// facing property of a vanilla chest
-	private static final PropertyDirection VANILLA_CHEST_FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	private static final PropertyDirection FACING = BlockHorizontal.FACING;
+	private static final PropertyEnum<EnumFacing> CHEST_FACING = PropertyDirection.create("facing", EnumFacing.class);
 	
 	private Block nullBlock;
 	
@@ -48,17 +54,23 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		setNullBlock(GenUtil.getMarkerBlock(StructureMarkers.NULL));
 	}
 	
+	@Override
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, 
+			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords) {
+		return generate(world, random, null, templateHolder, placement, coords);
+	}
+	
 	/**
 	 * 
 	 */
 	@Override
 	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, 
-			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords) {
+			IDecayProcessor decayProcessor, TemplateHolder templateHolder, PlacementSettings placement, ICoords coords) {
 		
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
 		
 		GottschTemplate template = (GottschTemplate) templateHolder.getTemplate();
-		
+		Treasure.logger.debug("template size -> {}", template.getSize());
 		// get the meta
 		StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(templateHolder.getMetaLocation().toString());
 		if (meta == null) {
@@ -87,42 +99,45 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		ICoords spawnCoords = coords.add(0, offset, 0);
 		
 		// generate the structure
-		template.addBlocksToWorld(world, spawnCoords.toPos(), placement, getNullBlock(), Treasure.TEMPLATE_MANAGER.getReplacementMap(), 3);
+		if (decayProcessor == null) {
+			Treasure.logger.debug("no decay processor found.");
+			template.addBlocksToWorld(world, spawnCoords.toPos(), placement, getNullBlock(), Treasure.TEMPLATE_MANAGER.getReplacementMap(), 3);
+		}
+		else {
+			template.addBlocksToWorld(world, spawnCoords.toPos(), decayProcessor, placement, getNullBlock(), Treasure.TEMPLATE_MANAGER.getReplacementMap(), 3);
+		}
 		
-		Treasure.logger.debug("added blocks to the world.");
-		
-		// TODO do this BEFORE removing specials
-		// process all markers and adding them to the result data (relative positioned)
-		for (Entry<Block, ICoords> entry : template.getMap().entries()) {
-			ICoords c = new Coords(GottschTemplate.transformedCoords(placement, entry.getValue()));
+		// process all markers and adding them to the result data (absolute positioned)
+		for (Entry<Block, StructureMarkerContext> entry : template.getMarkerMap().entries()) {
+			ICoords c = new Coords(GottschTemplate.transformedCoords(placement, entry.getValue().getCoords()));
+			c = spawnCoords.add(c);
 			result.getData().getMap().put(entry.getKey(), c);
-			Treasure.logger.debug("adding to structure info transformed coords -> {} : {}", entry.getKey().getLocalizedName(), c.toShortString());
+			Treasure.logger.debug("adding to structure info absoluted transformed coords -> {} : {}", entry.getKey().getLocalizedName(), c.toShortString());
 		}
 		
 		// find the chest and update chest coords (absolute positioned)
-		List<ICoords> chestCoordsList = (List<ICoords>) result.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
-		if (!chestCoordsList.isEmpty()) {
-			ICoords chestCoords = spawnCoords.add(chestCoordsList.get(0));
-			result.getData().setChestCoords(chestCoords);		
+		List<StructureMarkerContext> contextList = (List<StructureMarkerContext>) template.getMarkerMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
+		if (!contextList.isEmpty()) {
+			StructureMarkerContext context = contextList.get(0);
+			ICoords chestCoords = new Coords(GottschTemplate.transformedCoords(placement, context.getCoords()));
+			// get the absolute coords of chest
+			chestCoords = spawnCoords.add(chestCoords);
+			// set the chest coords in the result data
+			result.getData().setChestCoords(chestCoords);
 			// get the block state of the chest
-			IBlockState chestState = world.getBlockState(chestCoords.toPos());
-			 if (chestState.getProperties().containsKey(VANILLA_CHEST_FACING)) {
-				 result.getData().setChestState(chestState);
-				 Treasure.logger.debug("saving chest state -> {}", chestState.toString());
+			IBlockState chestState = context.getState();
+			chestState = chestState.withMirror(placement.getMirror());
+			chestState = chestState.withRotation(placement.getRotation());
+			 if (chestState.getProperties().containsKey(FACING)) {
+				 IBlockState modState= TreasureBlocks.WOOD_CHEST.getDefaultState().withProperty(CHEST_FACING, (EnumFacing)chestState.getProperties().get(FACING));
+				 result.getData().setChestState(modState);
+//				 Treasure.logger.debug("saving chest state -> {}", modState.toString());
 			 }
 		}
-				 
-		// TODO if this is handled on template read, this block can go away - remove this when using GottschCore v1.9.0
-		// remove any extra special blocks
-		for (ICoords mapCoords : template.getMapCoords()) {
-			ICoords c = GottschTemplate.transformedCoords(placement, mapCoords);
-			// TODO shouldn't be setting to air, but to null block
-			world.setBlockToAir(spawnCoords.toPos().add(c.toPos()));
-		}
-		
+
 		// get the transformed size
 		BlockPos transformedSize = template.transformedSize(placement.getRotation());
-		Treasure.logger.debug("transformed size -> {}", transformedSize.toString());
+//		Treasure.logger.debug("transformed size -> {}", transformedSize.toString());
 		
 		// calculate the new spawn coords - that includes the rotation, and negates the Y offset
 		spawnCoords = getTransformedSpawnCoords(spawnCoords, new Coords(transformedSize), placement).add(0, -offset, 0);
@@ -178,6 +193,11 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 			nullBlock = GenUtil.getMarkerBlock(StructureMarkers.NULL);
 		}
 		return nullBlock;
+	}
+
+	@Override
+	public void setNullBlock(Block nullBlock) {
+		this.nullBlock = nullBlock;
 	}
 
 }

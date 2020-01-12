@@ -53,6 +53,15 @@ import net.minecraftforge.common.BiomeDictionary;
 public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 	public static final int VERTICAL_MAX_DIFF = 3;
 	private static final int CLEARING_RADIUS = 3;
+	private static final int COARSE_DIRT_PROBABILITY = 75;
+	private static final int DEGREES = 360;
+	private static final double MIN_RADIUS = 5.0;
+	private static final double MAX_RADIUS = 10.0;
+	private static final int MIN_MAIN_TREE_SIZE = 9;
+	private static final int MIN_TREE_SIZE = 7;
+	private static final int WITHER_ROOT_PROBABILITY = 50;
+	private static final int WITHER_BRANCH_PROBABILITY = 30;
+	private static final int SPANISH_MOSS_PROBABILITY = 80;
 
 	FogBlock[] fogDensity = new FogBlock[] { 
 			TreasureBlocks.WITHER_FOG, 
@@ -264,7 +273,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		buildClearing(world, random, surfaceCoords);
 
 		// 3. build the main wither tree
-		buildTrunk(world, random, surfaceCoords, config);
+		buildMainTree(world, random, surfaceCoords, config);
 
 		// 4. add the fog
 		if (TreasureConfig.WORLD_GEN.getGeneralProperties().enableWitherFog) {
@@ -278,23 +287,19 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		for (int treeIndex = 0; treeIndex < numTrees; treeIndex++) {
 			// find a random location around a radius from the tree
 			// ie. rand x-radius, rand z-radius = new point (+x,+z), rand degrees of rotation from origin
-			double xlen = RandomHelper.randomDouble(5, 10);
-			double zlen = RandomHelper.randomDouble(5, 10);
-			int degrees = RandomHelper.randomInt(0, 360);
+			double xlen = RandomHelper.randomDouble(MIN_RADIUS, MAX_RADIUS);
+			double zlen = RandomHelper.randomDouble(MIN_RADIUS, MAX_RADIUS);
+			int degrees = RandomHelper.randomInt(0, DEGREES);
 			
 			ICoords c = witherTreeCoords.rotate(xlen, zlen, degrees);
-//			Treasure.logger.debug("Rotating by x{}, z{}, deg{} to {}", xlen, zlen, degrees, c);
-			
+
 			// get the yspawn
 			c = WorldInfo.getDryLandSurfaceCoords(world, c);
-			
-//			Treasure.logger.debug("Attempting to gen witherED tree @ {}", c.toShortString());
-			
+
 			// add tree if criteria is met
 			if (c != null && c != WorldInfo.EMPTY_COORDS) {
 				if (c.getDistanceSq(witherTreeCoords) > 4) {
 					if (world.getBlockState(c.toPos()).getBlock() != TreasureBlocks.WITHER_LOG) {						
-//						Treasure.logger.debug("adding witherED tree @ {}", c.toShortString());
 						buildClearing(world, random, c);
 						buildTree(world, random, c, config);						
 						if (TreasureConfig.WORLD_GEN.getGeneralProperties().enablePoisonFog) {
@@ -314,9 +319,11 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 			return result.fail();
 		}
 		ICoords chestCoords = genResult.getData().getChestCoords();
+		if (chestCoords == null) {
+			return result.fail();
+		}
 		
 		// add chest
-//		WitherChestGenerator chestGen = new WitherChestGenerator();
 		WitherChestGenerator chestGen = new WitherChestGenerator();
 		// TODO this is only building the chest... that's what the WitherChestGenerator was for
 		GeneratorResult<ChestGeneratorData> chestResult = chestGen.generate(world, random, chestCoords, Rarity.SCARCE, null); 
@@ -345,15 +352,13 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 
 					// find the first surface
 					int yHeight = WorldInfo.getHeightValue(world, coords.add(xOffset, 255, zOffset));
-					// Treasure.logger.debug("Wither Tree Clearing yOffset: " + yHeight);
 					// NOTE have to use GenUtil here because it takes into account
 					// GenericBlockContainer
 					buildCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(coords.getX() + xOffset, yHeight, coords.getZ() + zOffset));
-					// Treasure.logger.debug("Wither Tree Clearing buildPos: " + buildPos);
 
 					// additional check that it's not a tree and within 2 y-blocks of original
 					if (Math.abs(buildCoords.getY() - coords.getY()) < VERTICAL_MAX_DIFF) {
-						if (RandomHelper.checkProbability(random, 75)) {
+						if (RandomHelper.checkProbability(random, COARSE_DIRT_PROBABILITY)) {
 							world.setBlockState(buildCoords.add(0, -1, 0).toPos(), Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT));
 						}
 					}
@@ -383,7 +388,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		// build a small wither  tree ie one trunk
 
 		// determine the size of the main trunk
-		int maxSize = RandomHelper.randomInt(random, 7, config.getMaxTrunkSize());
+		int maxSize = RandomHelper.randomInt(random, MIN_TREE_SIZE, config.getMaxTrunkSize());
 
 		boolean hasLifeBeenAdded = false;
 		for (int y = 0; y < maxSize; y++) {
@@ -416,7 +421,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 	 * @param world
 	 * @param coords
 	 */
-	public void buildTrunk(World world, Random random, ICoords coords, IWitherTreeConfig config) {
+	public void buildMainTree(World world, Random random, ICoords coords, IWitherTreeConfig config) {
 		// setup an array of coords
 		ICoords[] trunkCoords = new Coords[4];
 		trunkCoords[0] = coords;
@@ -425,7 +430,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		trunkCoords[3] = coords.add(1, 0, 1);
 
 		// determine the size of the main trunk
-		int maxSize = RandomHelper.randomInt(random, 9, config.getMaxTrunkSize());
+		int maxSize = RandomHelper.randomInt(random, MIN_MAIN_TREE_SIZE, config.getMaxTrunkSize());
 	
 		// build a 2x2 trunk
 		boolean hasLifeBeenAdded = false;
@@ -464,7 +469,6 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 			if (maxSize > 3) {
 				maxSize -= RandomHelper.randomInt(random, 1, 3);
 				maxSize = Math.max(3, maxSize);
-//				Treasure.logger.debug("master tree new maxSize: {}", maxSize);
 			}
 		}
 
@@ -497,7 +501,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 	private void addRoot(World world, Random random, ICoords coords, List<Direction> directions) {
 		// for each direction
 		for (Direction d : directions) {
-			if (RandomHelper.checkProbability(random, 50)) {			
+			if (RandomHelper.checkProbability(random, WITHER_ROOT_PROBABILITY)) {			
 				// update the coords to the correct position
 				ICoords c = coords.add(d, 1);
 				Cube groundCube = new Cube(world, c.down(1));
@@ -530,7 +534,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		// for each direction
 		for (Direction d : directions) {
 			// randomize if a branch is generated
-			if (RandomHelper.checkProbability(random, 30)) {
+			if (RandomHelper.checkProbability(random, WITHER_BRANCH_PROBABILITY)) {
 				// for the num of branch segments
 				ICoords c = trunkCoords;
 				for (int segment = 0; segment < branchSize; segment++) {
@@ -547,16 +551,14 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 						
 						// add the branch to the world
 						world.setBlockState(c.add(0, y, 0).toPos(), state);
-//						 Treasure.logger.debug("Wither Tree building branch @ " +  c.add(0, y, 0).toShortString());
-						
+		
 						// add spanish moss
-						if (RandomHelper.checkProbability(random, 20)) continue;
-						
-						replaceCube = new Cube(world, c.add(0, y-1, 0));
-						if (replaceCube.isAir() || replaceCube.isReplaceable()) {
-							world.setBlockState(c.add(0, y-1, 0).toPos(), TreasureBlocks.SPANISH_MOSS.getDefaultState());
+						if (RandomHelper.checkProbability(random, SPANISH_MOSS_PROBABILITY)) {						
+							replaceCube = new Cube(world, c.add(0, y-1, 0));
+							if (replaceCube.isAir() || replaceCube.isReplaceable()) {
+								world.setBlockState(c.add(0, y-1, 0).toPos(), TreasureBlocks.SPANISH_MOSS.getDefaultState());
+							}
 						}
-
 					}
 					else {
 						break;
@@ -605,11 +607,9 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 			return false;
 		}
 
-		Treasure.logger.debug("Min distance Sq -> {}", minDistanceSq);
 		for (ChestInfo info : infos) {
 			// calculate the distance to the poi
 			double distance = coords.getDistanceSq(info.getCoords());
-			Treasure.logger.debug("ChestConfig dist^2: " + distance);
 			if (distance < minDistanceSq) {
 				return true;
 			}

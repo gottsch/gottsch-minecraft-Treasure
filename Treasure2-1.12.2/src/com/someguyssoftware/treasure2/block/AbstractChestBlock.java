@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.someguyssoftware.gottschcore.block.AbstractModContainerBlock;
 import com.someguyssoftware.gottschcore.enums.Rotate;
-import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ILockSlot;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
@@ -22,7 +21,6 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;

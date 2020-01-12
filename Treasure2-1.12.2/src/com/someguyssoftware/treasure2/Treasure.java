@@ -25,6 +25,7 @@ import com.someguyssoftware.treasure2.command.SpawnChestCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitStructureOnlyCommand;
+import com.someguyssoftware.treasure2.command.SpawnRuinsCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellStructureCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -37,6 +38,7 @@ import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
+import com.someguyssoftware.treasure2.world.gen.structure.TreasureDecayManager;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.ITreasureWorldGenerator;
@@ -71,7 +73,7 @@ import net.minecraftforge.oredict.OreDictionary;
 		modid=Treasure.MODID,
 		name=Treasure.NAME,
 		version=Treasure.VERSION,
-		dependencies="required-after:gottschcore@[1.9.0,)",
+		dependencies="required-after:gottschcore@[1.10.0,)",
 		acceptedMinecraftVersions = "[1.12.2]",
 		updateJSON = Treasure.UPDATE_JSON_URL
 		)
@@ -80,14 +82,16 @@ import net.minecraftforge.oredict.OreDictionary;
 		"Treasure2 was first developed by Mark Gottschling on Jan 2018.",
 		"Credits to Mason Gottschling for ideas and debugging.",
 		"Credits to CuddleBeak for some Keys and Locks textures.",
-		"Credits to mn_ti for Chinese and to DarkKnightComes for Polish translation."
+		"Credits to mn_ti for Chinese and to DarkKnightComes for Polish translation.",
+		"Credits to Mythical Sausage for tutorials on house/tower designs.",
+		"Credits to OdinsRagnarok for Spanish translation and DarvinSlav for Russian translation."
 		})
 public class Treasure extends AbstractMod {
 
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.7.0";
+	protected static final String VERSION = "1.8.0";
 
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
@@ -126,6 +130,8 @@ public class Treasure extends AbstractMod {
     
     // meta manager // NOTE can't be final as Treasure.instance is required.
     public static TreasureMetaManager META_MANAGER;
+    
+    public static TreasureDecayManager DECAY_MANAGER;
     
 	/**
 	 * 
@@ -185,6 +191,7 @@ public class Treasure extends AbstractMod {
     	event.registerServerCommand(new SpawnPitStructureOnlyCommand());
     	event.registerServerCommand(new SpawnWellStructureCommand());
     	event.registerServerCommand(new SpawnWitherTreeCommand());
+    	event.registerServerCommand(new SpawnRuinsCommand());
     }
 	
 	/**
@@ -219,6 +226,8 @@ public class Treasure extends AbstractMod {
 				FMLCommonHandler.instance().getDataFixer());
 
 		META_MANAGER = new TreasureMetaManager(Treasure.instance, "meta");
+		
+		DECAY_MANAGER = new TreasureDecayManager(Treasure.instance, "decay");
 	}
 	
 	/**

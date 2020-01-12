@@ -3,8 +3,6 @@
  */
 package com.someguyssoftware.treasure2.config;
 
-import com.someguyssoftware.treasure2.Treasure;
-
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.Name;
 

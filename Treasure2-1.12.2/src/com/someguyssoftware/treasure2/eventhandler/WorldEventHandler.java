@@ -64,6 +64,7 @@ public class WorldEventHandler {
 			}
 			Treasure.META_MANAGER.register(getMod().getId());
 			Treasure.TEMPLATE_MANAGER.register(getMod().getId());
+			Treasure.DECAY_MANAGER.register(getMod().getId());
 					
 			/*
 			 * clear the current World Gens values and reload
