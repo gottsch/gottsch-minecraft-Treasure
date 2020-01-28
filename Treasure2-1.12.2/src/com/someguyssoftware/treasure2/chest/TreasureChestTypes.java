@@ -10,10 +10,11 @@ import com.someguyssoftware.gottschcore.enums.Direction;
  *
  */
 public class TreasureChestTypes {
-	// TODO think about changing to enum
+	// TODO change this class to enum
 	public static final TreasureChestType CRATE;
 	public static final TreasureChestType STANDARD;
 	public static final TreasureChestType STANDARD2;
+	public static final TreasureChestType SINGLE_STANDARD;
 	public static final TreasureChestType STRONGBOX;
 	public static final TreasureChestType SAFE;
 	public static TreasureChestType SINGLE;
@@ -36,6 +37,10 @@ public class TreasureChestTypes {
 				new LockSlot(0, Direction.NORTH, 0.5F, 0.2F, 0.05F, 0F),
 				new LockSlot(1, Direction.EAST, 0.95F, 0.3F, 0.5F, 90F),
 				new LockSlot(2, Direction.WEST, 0.05F, 0.3F, 0.5F, -90F)
+			);
+		
+		SINGLE_STANDARD = new TreasureChestType(1).addSlots(
+				new LockSlot(0, Direction.NORTH, 0.5F, 0.3F, 0.05F, 0F)
 			);
 		
 		CRATE = new TreasureChestType(1).addSlots(

@@ -14,6 +14,7 @@ import com.someguyssoftware.treasure2.client.model.MimicModel;
 import com.someguyssoftware.treasure2.client.model.OysterChestModel;
 import com.someguyssoftware.treasure2.client.model.SafeModel;
 import com.someguyssoftware.treasure2.client.model.SkullChestModel;
+import com.someguyssoftware.treasure2.client.model.SpiderChestModel;
 import com.someguyssoftware.treasure2.client.model.StandardChestModel;
 import com.someguyssoftware.treasure2.client.model.StrongboxModel;
 import com.someguyssoftware.treasure2.client.model.WitherChestModel;
@@ -43,6 +44,7 @@ import com.someguyssoftware.treasure2.tileentity.OysterChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SkullChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.SpiderChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WhaleBonePirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
@@ -149,6 +151,10 @@ public class ClientProxy {
 				CauldronChestTileEntity.class,
 				new CauldronChestTileEntityRenderer("cauldron-chest", new CauldronChestModel()));
 
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				SpiderChestTileEntity.class,
+				new TreasureChestTileEntityRenderer("spider-chest", new SpiderChestModel()));
+		
 		// oyster chest
 //		ClientRegistry.bindTileEntitySpecialRenderer(
 //				OysterChestTileEntity.class,

@@ -36,6 +36,7 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GOLD_SKULL_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SKULL_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CAULDRON_CHEST));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SPIDER_CHEST));
 //		registerItemModel(Item.getItemFromBlock(TreasureBlocks.OYSTER_CHEST));
 //		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CLAM_CHEST));
 		
