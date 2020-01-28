@@ -36,8 +36,8 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  */
 public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<TemplateGeneratorData>> {
 	
-	private static final double REQUIRED_BASE_SIZE = 80;
-	private static final double REQUIRED_AIR_SIZE = 60;
+	private static final double REQUIRED_BASE_SIZE = 45;
+	private static final double REQUIRED_AIR_SIZE = 30;
 
 	/**
 	 * 
@@ -48,12 +48,24 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 	@Override
 	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random,
 			ICoords originalSpawnCoords) {
-		return generate(world, random, originalSpawnCoords, null);
+		return generate(world, random, originalSpawnCoords, null, null);
 	}
-		
+	
 	@Override
 	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random,
-			ICoords originalSpawnCoords, IDecayRuleSet decayRuleSet) {		
+			ICoords originalSpawnCoords, IDecayRuleSet decayRuleSet) {
+		return generate(world, random, originalSpawnCoords, null, decayRuleSet);
+	}
+	
+	@Override
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random,
+			ICoords originalSpawnCoords, TemplateHolder holder) {
+		return generate(world, random, originalSpawnCoords, holder, null);
+	}
+
+	@Override
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random,
+			ICoords originalSpawnCoords, TemplateHolder holder, IDecayRuleSet decayRuleSet) {		
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
 
 		/*
@@ -63,7 +75,9 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 		TemplateGenerator generator = new TemplateGenerator();
 		
 		// get the template holder from the given archetype, type and biome
-		TemplateHolder holder = selectTemplate(world, random, originalSpawnCoords, StructureArchetype.SURFACE, StructureType.RUIN);
+		if (holder == null) {
+			holder = selectTemplate(world, random, originalSpawnCoords, StructureArchetype.SURFACE, StructureType.RUIN);
+		}
 		if (holder == null) return result.fail();		
 
 		// select a random rotation

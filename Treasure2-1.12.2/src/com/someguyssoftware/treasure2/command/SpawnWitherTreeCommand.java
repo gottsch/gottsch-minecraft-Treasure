@@ -12,9 +12,7 @@ import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 /**
@@ -36,29 +34,21 @@ public class SpawnWitherTreeCommand extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
-		EntityPlayer player = (EntityPlayer) commandSender.getCommandSenderEntity();
+		Treasure.logger.debug("Starting to build Treasure! wither tree ...");
+		
 		try {
-
 			int x, y, z = 0;
 			x = Integer.parseInt(args[0]);
 			y = Integer.parseInt(args[1]);
 			z = Integer.parseInt(args[2]);
-			
-			if (player != null) {
-    			World world = commandSender.getEntityWorld();
-    			Treasure.logger.debug("Starting to build Treasure! wither tree ...");
 
-    			Random random = new Random();
-    			//BlockPos pos = new BlockPos(x, y, z);
-    			// TODO get this to work
-    			WitherTreeWorldGenerator gen = new WitherTreeWorldGenerator();
-    			gen.generate(world, random, new Coords(x, y, z), TreasureConfig.WITHER_TREE);
-    		}
+			World world = commandSender.getEntityWorld();
+			Random random = new Random();
+			WitherTreeWorldGenerator gen = new WitherTreeWorldGenerator();
+			gen.generate(world, random, new Coords(x, y, z), TreasureConfig.WITHER_TREE);
 		}
 		catch(Exception e) {
-			player.sendMessage(new TextComponentString("Error:  " + e.getMessage()));
 			Treasure.logger.error("Error generating Treasure! well:", e);
-			e.printStackTrace();
 		}
 	}
 }

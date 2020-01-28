@@ -33,9 +33,13 @@ import net.minecraftforge.common.DungeonHooks;
  */
 public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 
-	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords spawnCoords);
+	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords spawnCoords);	
 	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
 			IDecayRuleSet decayRuleSet);
+	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
+			TemplateHolder holder);
+	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
+			TemplateHolder holder, IDecayRuleSet decayRuleSet);
 
 	default public TemplateHolder selectTemplate(World world, Random random, ICoords coords, StructureArchetype archetype, StructureType type) {
 		// get the biome ID

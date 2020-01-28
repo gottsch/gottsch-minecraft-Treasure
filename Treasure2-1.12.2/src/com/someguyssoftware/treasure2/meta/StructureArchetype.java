@@ -5,9 +5,10 @@ package com.someguyssoftware.treasure2.meta;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import com.google.gson.annotations.SerializedName;
 import com.someguyssoftware.gottschcore.enums.IEnum;
 import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 
@@ -93,5 +94,14 @@ public enum StructureArchetype implements IMetaArchetype {
 	@Override
 	public Map<String, IEnum> getValues() {
 		return values;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static List<String> getNames() {
+		List<String> names = EnumSet.allOf(StructureArchetype.class).stream().map(x -> x.name()).collect(Collectors.toList());
+		return names;
 	}
 }

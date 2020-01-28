@@ -46,12 +46,24 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 	@Override
 	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random,
 			ICoords originalSpawnCoords) {
-		return generate(world, random, originalSpawnCoords, null);
+		return generate(world, random, originalSpawnCoords, null, null);
 	}
 	
 	@Override
 	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random,
 			ICoords originalSpawnCoords, IDecayRuleSet decayRuleSet) {
+		return generate(world, random, originalSpawnCoords, null, decayRuleSet);
+	}
+	
+	@Override
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random,
+			ICoords originalSpawnCoords, TemplateHolder holder) {
+		return generate(world, random, originalSpawnCoords, holder, null);
+	}
+	
+	@Override
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random,
+			ICoords originalSpawnCoords, TemplateHolder holder, IDecayRuleSet decayRuleSet) {
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
 	
 		// TODO create a method selectTemplate() in abstract that will be overridden by concrete classes, provided the archetype and type
@@ -68,7 +80,9 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 		
 		// get the template holder from the given archetype, type and biome
 //		TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, StructureArchetype.SUBMERGED, StructureType.RUIN, biome);
-		TemplateHolder holder = selectTemplate(world, random, originalSpawnCoords, StructureArchetype.SUBMERGED, StructureType.RUIN);
+		if (holder == null) {
+			holder = selectTemplate(world, random, originalSpawnCoords, StructureArchetype.SUBMERGED, StructureType.RUIN);
+		}
 		if (holder == null) return result.fail();		
 		
 		// select a random rotation
@@ -133,6 +147,7 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Te
 		}
 		if (decayRuleSet != null) {
 			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
+			decayProcessor.setBackFillBlockLayer1(Blocks.GRAVEL.getDefaultState());
 		}
 		
 		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);

@@ -73,7 +73,7 @@ import net.minecraftforge.oredict.OreDictionary;
 		modid=Treasure.MODID,
 		name=Treasure.NAME,
 		version=Treasure.VERSION,
-		dependencies="required-after:gottschcore@[1.10.0,)",
+		dependencies="required-after:gottschcore@[1.11.0,)",
 		acceptedMinecraftVersions = "[1.12.2]",
 		updateJSON = Treasure.UPDATE_JSON_URL
 		)
@@ -91,7 +91,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.8.0";
+	protected static final String VERSION = "1.9.0";
 
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
@@ -147,18 +147,16 @@ public class Treasure extends AbstractMod {
 	public void preInt(FMLPreInitializationEvent event) {
 		super.preInt(event);
 		
+		// initialize/reload the config 
+		((TreasureConfig)getConfig()).init();
+		
 		// register additional events
 		MinecraftForge.EVENT_BUS.register(new LogoutEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new MimicEventHandler(getInstance()));
-		
-		// create and load the config files
-//		Configs.init(this, event.getModConfigurationDirectory());
-		logger.debug("wither biome black list[0] -> {}", TreasureConfig.WITHER_TREE.biomes.rawBiomeBlackList[0]);
-		
+				
 		// configure logging
-//		addRollingFileAppenderToLogger(Treasure.NAME, Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
 		// create a rolling file appender
 		Appender appender = createRollingFileAppender(Treasure.instance, Treasure.NAME + "Appender", (ILoggerConfig) getConfig());
 		// add appender to mod logger

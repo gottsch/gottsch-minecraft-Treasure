@@ -1,6 +1,6 @@
 /**
-* 
-*/
+ * 
+ */
 package com.someguyssoftware.treasure2.worldgen;
 
 import java.util.Random;
@@ -53,19 +53,22 @@ public class GemOreWorldGenerator implements ITreasureWorldGenerator {
 		// intialize chunks since last array
 		chunksSinceLastOre = 0;
 	}
-	
+
 	/**
 	 * 
 	 */
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-		switch (world.provider.getDimension()) {
-		case 0:
-			generateSurface(world, random, chunkX, chunkZ);
-			break;
-		default:
-			break;
+		if (TreasureConfig.WORLD_GEN.getGeneralProperties().getDimensionsWhiteList().contains(Integer.valueOf(world.provider.getDimension()))) {
+			generate(world, random, chunkX, chunkZ);
 		}
+		//		switch (world.provider.getDimension()) {
+		//		case 0:
+		//			generateSurface(world, random, chunkX, chunkZ);
+		//			break;
+		//		default:
+		//			break;
+		//		}
 	}
 
 	/**
@@ -75,7 +78,7 @@ public class GemOreWorldGenerator implements ITreasureWorldGenerator {
 	 * @param chunkX
 	 * @param chunkZ
 	 */
-	private void generateSurface(World world, Random random, int chunkX, int chunkZ) {
+	private void generate(World world, Random random, int chunkX, int chunkZ) {
 		// increment the chunk count
 		chunksSinceLastOre++;
 
@@ -83,52 +86,47 @@ public class GemOreWorldGenerator implements ITreasureWorldGenerator {
 		int xSpawn = chunkX * 16;
 		int zSpawn = chunkZ * 16;
 
-		// Treasure.logger.debug("chunks since last ore -> {}, minChunks -> {}",
-		// chunksSinceLastOre, TreasureConfig.minChunksPerGemOre);
-//		if (chunksSinceLastOre >= 1) {
-			int flip = RandomHelper.randomInt(0, 1);
-			// Treasure.logger.debug("flip -> {}", flip);
+		int flip = RandomHelper.randomInt(0, 1);
+		double prob = 0d;
+		int veinsPerChunk = 0;
+		int maxY, minY = 0;
+		WorldGenMinable gen = null;
+		//			String gem = "";
 
-			double prob = 0d;
-			int veinsPerChunk = 0;
-			int maxY, minY = 0;
-			WorldGenMinable gen = null;
-//			String gem = "";
+		// temp
+		if (flip == 0) {
+			// sapphire
+			prob = TreasureConfig.GEMS_ORES.sapphireGenProbability;
+			veinsPerChunk = TreasureConfig.GEMS_ORES.sapphireOreVeinsPerChunk;
+			maxY = TreasureConfig.GEMS_ORES.sapphireOreMaxY;
+			minY = TreasureConfig.GEMS_ORES.sapphireOreMinY;
+			gen = sapphireGenerator;
+			//				gem = "Sapphire";
+		} else {
+			// ruby
+			prob = TreasureConfig.GEMS_ORES.rubyGenProbability;
+			veinsPerChunk = TreasureConfig.GEMS_ORES.rubyOreVeinsPerChunk;
+			maxY = TreasureConfig.GEMS_ORES.rubyOreMaxY;
+			minY = TreasureConfig.GEMS_ORES.rubyOreMinY;
+			gen = rubyGenerator;
+			//				gem = "Ruby";
+		}
 
-			// temp
-			if (flip == 0) {
-				// sapphire
-				prob = TreasureConfig.GEMS_ORES.sapphireGenProbability;
-				veinsPerChunk = TreasureConfig.GEMS_ORES.sapphireOreVeinsPerChunk;
-				maxY = TreasureConfig.GEMS_ORES.sapphireOreMaxY;
-				minY = TreasureConfig.GEMS_ORES.sapphireOreMinY;
-				gen = sapphireGenerator;
-//				gem = "Sapphire";
-			} else {
-				// ruby
-				prob = TreasureConfig.GEMS_ORES.rubyGenProbability;
-				veinsPerChunk = TreasureConfig.GEMS_ORES.rubyOreVeinsPerChunk;
-				maxY = TreasureConfig.GEMS_ORES.rubyOreMaxY;
-				minY = TreasureConfig.GEMS_ORES.rubyOreMinY;
-				gen = rubyGenerator;
-//				gem = "Ruby";
-			}
+		if (!RandomHelper.checkProbability(random, prob)) {
+			// Treasure.logger.debug("Gem Ore vein does not meet generate probability.");
+			return;
+		}
 
-			if (!RandomHelper.checkProbability(random, prob)) {
-				// Treasure.logger.debug("Gem Ore vein does not meet generate probability.");
-				return;
-			}
+		for (int veinIndex = 0; veinIndex < veinsPerChunk; veinIndex++) {
+			xSpawn = xSpawn + random.nextInt(16);
+			int ySpawn = random.nextInt(maxY) + minY;
+			zSpawn = zSpawn + random.nextInt(16);
 
-			for (int veinIndex = 0; veinIndex < veinsPerChunk; veinIndex++) {
-				xSpawn = xSpawn + random.nextInt(16);
-				int ySpawn = random.nextInt(maxY) + minY;
-				zSpawn = zSpawn + random.nextInt(16);
-
-				gen.generate(world, random, new BlockPos(xSpawn, ySpawn, zSpawn));
-			}
-			// reset count
-			chunksSinceLastOre = 0;
-//		}
+			gen.generate(world, random, new BlockPos(xSpawn, ySpawn, zSpawn));
+		}
+		// reset count
+		chunksSinceLastOre = 0;
+		//		}
 
 		// save world data
 		GenDataPersistence savedData = GenDataPersistence.get(world);
@@ -236,7 +234,7 @@ public class GemOreWorldGenerator implements ITreasureWorldGenerator {
 										IBlockState state = worldIn.getBlockState(blockpos);
 										if (state.getBlock().isReplaceableOreGen(state, worldIn, blockpos, this.predicate)) {
 											worldIn.setBlockState(blockpos, this.oreBlock, 2);
-//											Treasure.logger.debug("CHEATER! {} @ {}", state.getBlock().getRegistryName(), new Coords(blockpos).toShortString());
+											//											Treasure.logger.debug("CHEATER! {} @ {}", state.getBlock().getRegistryName(), new Coords(blockpos).toShortString());
 										}
 									}
 								}

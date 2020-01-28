@@ -5,12 +5,12 @@ package com.someguyssoftware.treasure2.enums;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.enums.IEnum;
 import com.someguyssoftware.gottschcore.enums.IRarity;
-import com.someguyssoftware.gottschcore.meta.IMetaTheme;
-import com.someguyssoftware.treasure2.meta.StructureTheme;
 
 /**
  * @author Mark Gottschling onJan 11, 2018
@@ -95,5 +95,14 @@ public enum Rarity implements IRarity {
 	@Override
 	public Map<String, IEnum> getValues() {
 		return values;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static List<String> getNames() {
+		List<String> names = EnumSet.allOf(Rarity.class).stream().map(x -> x.name()).collect(Collectors.toList());
+		return names;
 	}
 }
