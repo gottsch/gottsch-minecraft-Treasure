@@ -68,6 +68,13 @@ public class ChestConfig implements IChestConfig {
 		this.biomes = new BiomesConfig(whiteList, blackList, typeWhiteList, typeBlackList);
 	}
 
+	/**
+	 * 
+	 */
+	public void init() {
+		this.biomes.init();
+	}
+	
 	@Override
 	public boolean isEnableChest() {
 		return enableChest;

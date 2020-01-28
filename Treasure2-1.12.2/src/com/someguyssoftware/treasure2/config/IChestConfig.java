@@ -14,6 +14,7 @@ import net.minecraft.world.biome.Biome;
  *
  */
 public interface IChestConfig {
+	public void init();
 	
 	public boolean isEnableChest();
 	public boolean isSurfaceAllowed();

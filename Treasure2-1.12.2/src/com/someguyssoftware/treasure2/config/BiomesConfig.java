@@ -35,10 +35,10 @@ public class BiomesConfig implements IBiomesConfig {
 	@Comment({"Disallowed Biome Types for generation. Must match the Type identifer(s)."})
 	public String[] rawBiomeTypeBlackList;
 	
-	@Ignore public List<Biome> whiteList = new ArrayList<>(5);;
-	@Ignore public List<Biome> blackList = new ArrayList<>(5);;
-	@Ignore public List<BiomeTypeHolder> typeWhiteList = new ArrayList<>(5);;
-	@Ignore public List<BiomeTypeHolder> typeBlackList = new ArrayList<>(5);;
+	@Ignore public List<Biome> whiteList = new ArrayList<>(5);
+	@Ignore public List<Biome> blackList = new ArrayList<>(5);
+	@Ignore public List<BiomeTypeHolder> typeWhiteList = new ArrayList<>(5);
+	@Ignore public List<BiomeTypeHolder> typeBlackList = new ArrayList<>(5);
 	
 	/**
 	 * 
@@ -49,10 +49,21 @@ public class BiomesConfig implements IBiomesConfig {
 		this.rawBiomeTypeWhiteList = typeWhiteList;
 		this.rawBiomeTypeBlackList = typeBlackList;
 		
-		this.whiteList = TreasureBiomeHelper.loadBiomesList(whiteList);
-		this.blackList = TreasureBiomeHelper.loadBiomesList(blackList);
-		BiomeHelper.loadBiomeList(typeWhiteList, this.typeWhiteList);
-		BiomeHelper.loadBiomeList(typeBlackList, this.typeBlackList);
+		// TODO maybe this doesn't go here, but in init() or (re)load()
+//		this.whiteList = TreasureBiomeHelper.loadBiomesList(whiteList);
+//		this.blackList = TreasureBiomeHelper.loadBiomesList(blackList);
+//		BiomeHelper.loadBiomeList(typeWhiteList, this.typeWhiteList);
+//		BiomeHelper.loadBiomeList(typeBlackList, this.typeBlackList);
+	}
+	
+	/**
+	 * 
+	 */
+	public void init() {
+		this.whiteList = TreasureBiomeHelper.loadBiomesList(this.rawBiomeWhiteList);
+		this.blackList = TreasureBiomeHelper.loadBiomesList(this.rawBiomeBlackList);
+		BiomeHelper.loadBiomeList(this.rawBiomeTypeWhiteList, this.typeWhiteList);
+		BiomeHelper.loadBiomeList(this.rawBiomeTypeBlackList, this.typeBlackList);	
 	}
 	
 	@Override
