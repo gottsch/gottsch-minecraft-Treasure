@@ -8,10 +8,10 @@
 	"biomeWhiteList": ["desert"],
 	"biomeBlackList": [],
 	"includeFog": false,
-	"verticalOffset": -9,
+	"verticalOffset": -6,
 	"offset": {
 		"x": 0,
-		"y": -9,
+		"y": -6,
 		"z": 0
 		}
 }
