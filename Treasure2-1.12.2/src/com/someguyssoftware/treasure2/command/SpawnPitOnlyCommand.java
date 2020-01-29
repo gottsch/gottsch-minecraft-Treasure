@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.command;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import org.apache.commons.cli.Options;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.PitTypes;
@@ -53,15 +55,16 @@ public class SpawnPitOnlyCommand extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
 		Treasure.logger.debug("Starting to build Treasure! pit only ...");
+		World world = commandSender.getEntityWorld();
+		Random random = new Random();
+		
 		try {
 			int x, y, z = 0;
 			x = Integer.parseInt(args[0]);
 			y = Integer.parseInt(args[1]);
 			z = Integer.parseInt(args[2]);
 
-			// set the coords args to blank (so the cli parser doesn't puke on any negative
-			// values - thinks they are arguments
-			args[0] = args[1] = args[2] = "";
+			String[] parserArgs = (String[]) Arrays.copyOfRange(args, 3, args.length);
 
 			// create the parser
 			CommandLineParser parser = new DefaultParser();
@@ -71,26 +74,23 @@ public class SpawnPitOnlyCommand extends CommandBase {
 			options.addOption(PIT_TYPE_ARG, true, "");
 
 			// parse the command line arguments
-			CommandLine line = parser.parse(options, args);
-			String pitType = line.getOptionValue(PIT_TYPE_ARG);
+			CommandLine line = parser.parse(options, parserArgs);
 
-			// TODO enable the selected pit once TemplateGenerator can take in a name
-			
-			
-			Pits pit = Pits.SIMPLE_PIT;
+			Pits pit = null;
 			if (line.hasOption(PIT_TYPE_ARG)) {
-				String pitName = line.getOptionValue(PIT_TYPE_ARG);
-				pit = Pits.valueOf(pitName.toUpperCase());
+				String pitType = line.getOptionValue(PIT_TYPE_ARG);
+				pit = Pits.valueOf(pitType.toUpperCase());
+			}
+			else {
+				pit = Pits.values()[random.nextInt(Pits.values().length)];
 			}
 
-			World world = commandSender.getEntityWorld();
-			Random random = new Random();
 			ICoords spawnCoords = new Coords(x, y, z);
 			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world,
 					new Coords(x, WorldInfo.getHeightValue(world, spawnCoords), z));
 			Map<Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenMap = SurfaceChestWorldGenerator.pitGens.row(PitTypes.STANDARD);
 			IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = pitGenMap.get(pit);
-
+			
 			GeneratorResult<ChestGeneratorData> result = pitGenerator.generate(world, random, surfaceCoords, spawnCoords);
 		} catch (Exception e) {
 			Treasure.logger.error("Error generating Treasure! pit:", e);

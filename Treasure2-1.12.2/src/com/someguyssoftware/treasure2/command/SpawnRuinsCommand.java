@@ -79,9 +79,6 @@ public class SpawnRuinsCommand extends CommandBase {
 			y = Integer.parseInt(args[1]);
 			z = Integer.parseInt(args[2]);
 
-			// set the coords args to blank (so the cli parser doesn't puke on any negative values - thinks they are arguments
-//			args[0] = args[1] = args[2] = "";
-
 			String[] parserArgs = (String[]) Arrays.copyOfRange(args, 3, args.length);
 			
 			// create the parser
@@ -109,7 +106,7 @@ public class SpawnRuinsCommand extends CommandBase {
 			}
 			
 			String name = line.getOptionValue(NAME_ARG);
-			if (!name.contains(".nbt")) {
+			if (name != null && !name.contains(".nbt")) {
 				name += ".nbt";
 			}
 			

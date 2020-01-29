@@ -39,6 +39,12 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 	@Override
 	public GeneratorResult<GeneratorData> generate(World world, Random random,
 			ICoords originalSpawnCoords, IWellConfig config) {
+		return generate(world, random, originalSpawnCoords, null, config);
+	}
+	
+	@Override
+	public GeneratorResult<GeneratorData> generate(World world, Random random,
+			ICoords originalSpawnCoords, TemplateHolder templateHolder, IWellConfig config) {
 		/*
 		 * Setup
 		 */
@@ -52,8 +58,10 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		generator.setNullBlock(Blocks.BEDROCK);
 		
 		// get the template
-		TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, StructureArchetype.SURFACE, StructureType.WELL, biome);
-		if (holder == null) return result.fail();
+		if (templateHolder == null) {
+			templateHolder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, StructureArchetype.SURFACE, StructureType.WELL, biome);
+		}
+		if (templateHolder == null) return result.fail();
 				
 		// select a random rotation
 		Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
@@ -62,7 +70,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		PlacementSettings placement = new PlacementSettings();
 		placement.setRotation(rotation).setRandom(random);
 		
-		ICoords templateSize = new Coords(holder.getTemplate().transformedSize(rotation));
+		ICoords templateSize = new Coords(templateHolder.getTemplate().transformedSize(rotation));
 		ICoords actualSpawnCoords = generator.getTransformedSpawnCoords(originalSpawnCoords, templateSize, placement);
 			
 		/*
@@ -92,7 +100,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		originalSpawnCoords = new Coords(originalSpawnCoords.getX(), actualSpawnCoords.getY(), originalSpawnCoords.getZ());
 		
 		// build well
-		 GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, holder,  placement, originalSpawnCoords);
+		 GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, templateHolder,  placement, originalSpawnCoords);
 		Treasure.logger.debug("Well gen  structure result -> {}", genResult.isSuccess());
 		 if (!genResult.isSuccess()) {
 			 Treasure.logger.debug("failing well gen.");

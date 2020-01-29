@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.command;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -15,10 +16,13 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
+import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 
@@ -56,9 +60,7 @@ public class SpawnPitCommand extends CommandBase {
 			y = Integer.parseInt(args[1]);
 			z = Integer.parseInt(args[2]);
 			
-			// set the coords args to blank (so the cli parser doesn't puke on any negative
-			// values - thinks they are arguments
-			args[0] = args[1] = args[2] = "";
+			String[] parserArgs = (String[]) Arrays.copyOfRange(args, 3, args.length);
 			
 			// create the parser
 			CommandLineParser parser = new DefaultParser();
@@ -68,7 +70,7 @@ public class SpawnPitCommand extends CommandBase {
 			options.addOption(RARITY_ARG, true, "");
 
 			// parse the command line arguments
-			CommandLine line = parser.parse(options, args);
+			CommandLine line = parser.parse(options, parserArgs);
 			
 			Rarity rarity = Rarity.COMMON;
 			if (line.hasOption(RARITY_ARG)) {
@@ -80,9 +82,15 @@ public class SpawnPitCommand extends CommandBase {
 			World world = commandSender.getEntityWorld();
 
 			Random random = new Random();
-			SurfaceChestWorldGenerator chestGens = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SURFACE_CHEST);
-			IChestGenerator gen = chestGens.getChestGenMap().get(rarity).next();
-			SurfaceChestWorldGenerator.generatePit(world, random, rarity, new Coords(x, y, z), TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));    		
+			GeneratorResult<ChestGeneratorData> result = SurfaceChestWorldGenerator.generatePit(world, random, rarity, new Coords(x, y, z), TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
+			if (result.isSuccess()) {
+				SurfaceChestWorldGenerator chestGens = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SURFACE_CHEST);
+				IChestGenerator gen = chestGens.getChestGenMap().get(rarity).next();
+				ICoords chestCoords = result.getData().getChestCoords();
+				if (chestCoords != null) {
+					GeneratorResult<ChestGeneratorData> chestResult = gen.generate(world, random, chestCoords, rarity, result.getData().getChestState());
+				}
+			}			
 		}
 		catch(Exception e) {
 			Treasure.logger.error("Error generating Treasure! chest:", e);

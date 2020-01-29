@@ -12,7 +12,10 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.IWellConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.generator.GeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.IGeneratorResult;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
@@ -38,6 +41,18 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @return
 	 */
 	public abstract RESULT generate(World world, Random random, ICoords spawnCoords, IWellConfig config);
+	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param originalSpawnCoords
+	 * @param templateHolder
+	 * @param config
+	 * @return
+	 */
+	public abstract RESULT generate(World world, Random random, ICoords originalSpawnCoords,
+			TemplateHolder templateHolder, IWellConfig config);
 	
 	/**
 	 * Default implementation based on a 3x3 well structure.
