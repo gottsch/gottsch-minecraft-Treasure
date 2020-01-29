@@ -28,6 +28,7 @@ import com.someguyssoftware.treasure2.client.render.tileentity.SkullChestTileEnt
 import com.someguyssoftware.treasure2.client.render.tileentity.StrongboxTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.WitherChestTileEntityRenderer;
+import com.someguyssoftware.treasure2.entity.monster.PirateMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CauldronChestTileEntity;
@@ -173,6 +174,11 @@ public class ClientProxy {
 						Minecraft.getMinecraft().getRenderManager(), 
 						new MimicModel(),
 						new ResourceLocation(Treasure.MODID + ":textures/entity/mob/wood-mimic.png")));
-		
+
+		RenderingRegistry.registerEntityRenderingHandler(PirateMimicEntity.class, 	
+				new MimicEntityRenderer(
+						Minecraft.getMinecraft().getRenderManager(), 
+						new MimicModel(),
+						new ResourceLocation(Treasure.MODID + ":textures/entity/mob/pirate-mimic.png")));
 	}
 }

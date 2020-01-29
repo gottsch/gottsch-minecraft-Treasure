@@ -2,16 +2,11 @@ package com.someguyssoftware.treasure2.client.render.entity;
 
 import org.lwjgl.opengl.GL11;
 
-import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.client.model.MimicModel;
-import com.someguyssoftware.treasure2.client.model.StandardChestModel;
 import com.someguyssoftware.treasure2.entity.monster.MimicEntity;
-import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -23,10 +18,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 @SideOnly(Side.CLIENT)
-// TODO swap WoodenMimicEntity with an Interface or Abstract
-public class MimicEntityRenderer extends RenderLiving<MimicEntity> {
 
-//	private static final ResourceLocation MIMC_TEXTURES = new ResourceLocation(Treasure.MODID + ":textures/entity/mob/standard-mimic.png");
+public class MimicEntityRenderer extends RenderLiving<MimicEntity> {
 
 	private ModelBase model;
 	private ResourceLocation texture;

@@ -70,7 +70,8 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 	// mimics
 	@Ignore public static final String WOOD_MIMIC_ID = "wood_mimic";
-
+	@Ignore public static final String PIRATE_MIMIC_ID = "pirate_mimic";
+	
 	// locks
 	@Ignore public static final String WOOD_LOCK_ID = "wood_lock";
 	@Ignore public static final String STONE_LOCK_ID = "stone_lock";
@@ -382,6 +383,8 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			// setup extra properties
 			surfaceChests.commonChestProperties.mimicProbability = 20.0;
 			submergedChests.commonChestProperties.mimicProbability = 0.0;
+			surfaceChests.scarceChestProperties.mimicProbability = 15.0;
+			submergedChests.scarceChestProperties.mimicProbability = 0.0;
 		}
 		
 		public void init() {

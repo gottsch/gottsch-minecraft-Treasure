@@ -4,6 +4,7 @@
 package com.someguyssoftware.treasure2.entity;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.entity.monster.PirateMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
 
 import net.minecraft.util.ResourceLocation;
@@ -44,10 +45,20 @@ public class TreasureEntities {
 				    .build();
 			event.getRegistry().register(entry);	
 			
+			EntityEntry pirateMimic = EntityEntryBuilder.create()
+				    .entity(PirateMimicEntity.class)
+				    .id(new ResourceLocation("treasure2:pirate_mimic"), PirateMimicEntity.MOB_ID)
+				    .name("pirate_mimic")
+				    .egg(0xFFFFFF, 0x221F6D)
+				    .tracker(64, 20, false)
+				    .build();
+			event.getRegistry().register(pirateMimic);	
+			
 			// add data fixers
 			DataFixer dataFixer = new DataFixer(1343);
 	        dataFixer = new net.minecraftforge.common.util.CompoundDataFixer(dataFixer);
 			WoodMimicEntity.registerFixesWoodenMimic(dataFixer);
+			PirateMimicEntity.registerFixesPirateMimic(dataFixer);
 		}
 	}
 }

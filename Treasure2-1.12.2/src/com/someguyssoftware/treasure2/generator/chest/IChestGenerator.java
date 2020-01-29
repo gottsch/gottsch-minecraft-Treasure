@@ -110,12 +110,18 @@ public interface IChestGenerator {
 
 		// TODO should have a map of available mimics mapped by chest. for now, since only one mimic, just test for it
 		// determine if should be mimic
+		// get the config
+		IChestConfig config = TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity); // TODO how to change this from just being surfaceChests.
 		if (chest == TreasureBlocks.WOOD_CHEST) {
-			// get the config
-			IChestConfig config = TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity); // TODO how to change this from just being surfaceChests.
 			if (RandomHelper.checkProbability(random, config.getMimicProbability())) {
 				chest = (AbstractChestBlock) TreasureBlocks.WOOD_MIMIC;
-				Treasure.logger.debug("Selecting a MIMIC chest!");
+				Treasure.logger.debug("Selecting a WOOD MIMIC chest!");
+			}
+		}
+		else if (chest == TreasureBlocks.PIRATE_CHEST) {
+			if (RandomHelper.checkProbability(random, config.getMimicProbability())) {
+				chest = (AbstractChestBlock) TreasureBlocks.PIRATE_MIMIC;
+				Treasure.logger.debug("Selecting a PIRATE MIMIC chest!");
 			}
 		}
 		return chest;

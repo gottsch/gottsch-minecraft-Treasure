@@ -16,6 +16,7 @@ tile.treasure2:cauldron_chest.name=Cauldron Chest
 tile.treasure2:spider_chest.name=Spider Chest
 
 tile.treasure2:wood_mimic.name=Wood Mimic
+tile.treasure2:pirate_mimic.name=Pirate Mimic
 
 #wells
 tile.treasure2:wishing_well_block.name=Wishing Well Stone
@@ -141,6 +142,7 @@ item.treasure2:treasure_tool.name=Treasure Tool
 #entities
 #TODO rename standard to wood
 entity.wood_mimic.name=Wood Mimic
+entity.pirate_mimic.name=Pirate Mimic
 
 #groups
 itemGroup.treasure2:treasure_tab=Treasure2!

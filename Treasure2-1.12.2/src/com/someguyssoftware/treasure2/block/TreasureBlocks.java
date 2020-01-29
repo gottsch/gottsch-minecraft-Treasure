@@ -17,6 +17,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.entity.monster.PirateMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
 import com.someguyssoftware.treasure2.enums.FogHeight;
 import com.someguyssoftware.treasure2.enums.FogType;
@@ -82,6 +83,7 @@ public class TreasureBlocks {
 	
 	// MIMIC CHESTS
 	public static final Block WOOD_MIMIC;
+	public static final Block PIRATE_MIMIC;
 	
 	// unimplemented chests	
 	public static final Block VASE = null;
@@ -403,6 +405,16 @@ public class TreasureBlocks {
 				.setBounds(stdChestBounds)
 				.setHardness(2.5F);
 		
+		PIRATE_MIMIC = new MimicChestBlock(
+				Treasure.MODID, 
+				TreasureConfig.PIRATE_MIMIC_ID, 
+				PirateChestTileEntity.class,
+				PirateMimicEntity.class, 
+				TreasureChestTypes.STANDARD, 
+				Rarity.SCARCE)
+				.setBounds(stdChestBounds)
+				.setHardness(2.5F);
+		
 		// gravestone bounds
 		AxisAlignedBB[] gbs = new 	AxisAlignedBB[4];
 		gbs[0] = new AxisAlignedBB(0.125D, 0.0D, 0.375D, 0.875D, 0.75D, 0.675D); // S
@@ -582,6 +594,7 @@ public class TreasureBlocks {
 					COMPRESSOR_CHEST,
 					SPIDER_CHEST,
 					WOOD_MIMIC,
+					PIRATE_MIMIC,
 					GRAVESTONE1_STONE,
 					GRAVESTONE1_COBBLESTONE,
 					GRAVESTONE1_MOSSY_COBBLESTONE,
@@ -686,6 +699,7 @@ public class TreasureBlocks {
 //					new TreasureChestItemBlock(CLAM_CHEST),
 					new TreasureChestItemBlock(SPIDER_CHEST),
 					new MimicChestItemBlock(WOOD_MIMIC),
+					new MimicChestItemBlock(PIRATE_MIMIC),
 					
 					// TODO update with GravestonIetmBlock
 					new ItemBlock(GRAVESTONE1_STONE),
