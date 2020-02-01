@@ -105,7 +105,6 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		}
 		else {
 			decayProcessor.setDecayStartY(Math.abs(offset));
-			// TODO add the offset position to the decay processor (decay doesn't start to happen until the y = offset is met)
 			template.addBlocksToWorld(world, spawnCoords.toPos(), decayProcessor, placement, getNullBlock(), Treasure.TEMPLATE_MANAGER.getReplacementMap(), 3);
 		}
 		

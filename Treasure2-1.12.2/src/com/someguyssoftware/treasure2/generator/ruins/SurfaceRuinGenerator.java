@@ -177,6 +177,11 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 		List<ICoords> spawnerCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
 		List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
 
+		if (proximityCoords != null)
+			Treasure.logger.debug("Proximity spawners size -> {}", proximityCoords.size());
+		else
+			Treasure.logger.debug("No proximity spawners found.");
+		
 		// populate vanilla spawners
 		buildVanillaSpawners(world, random, spawnerCoords);
 		
