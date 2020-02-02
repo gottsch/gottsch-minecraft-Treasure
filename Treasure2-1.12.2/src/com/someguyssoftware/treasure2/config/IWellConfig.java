@@ -16,6 +16,7 @@ import net.minecraft.world.biome.Biome;
  */
 public interface IWellConfig {
 	
+	public void init();
 	public boolean isWellAllowed();
 	public int getChunksPerWell();
 	public double getGenProbability();

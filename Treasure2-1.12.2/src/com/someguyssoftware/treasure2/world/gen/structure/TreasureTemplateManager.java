@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -60,7 +61,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
  */
 public class TreasureTemplateManager extends GottschTemplateManager {
 
-	// TODO add templates by name
+	private final Map<ResourceLocation, TemplateHolder> templatesByResourceLocation = new HashMap<>();
 	
 	private final Table<IMetaArchetype, IMetaType, List<TemplateHolder>> templatesByArchetypeType = HashBasedTable.create();
 
@@ -165,24 +166,28 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				
 				// determine if the meta decayRuleSetName is populated
 				List<ResourceLocation> decayRuleSetResourceLocation = new ArrayList<>();
-				if (meta.getDecayRuleSetName() != null && meta.getDecayRuleSetName().size() > 0 /*!meta.getDecayRuleSetName().equals("")*/) {
+				if (meta.getDecayRuleSetName() != null && meta.getDecayRuleSetName().size() > 0) {
 					// build the keys for the meta manager to look at
 					for (String ruleSetName : meta.getDecayRuleSetName()) {
 						ResourceLocation resourceLocation = new ResourceLocation(
-								getMod().getId() + ":" + Treasure.DECAY_MANAGER.getBaseResourceFolder()+ "/" + modID + "/" + /*meta.getDecayRuleSetName()*/ruleSetName + ".json");
+								getMod().getId() + ":" + Treasure.DECAY_MANAGER.getBaseResourceFolder()+ "/" + modID + "/" + ruleSetName + ".json");
 						decayRuleSetResourceLocation.add(resourceLocation);
 						Treasure.logger.debug("Using key to find decay ruleset -> {}", decayRuleSetResourceLocation.toString());
 					}
 				}
 				
+				// 1/27/20 - moved outside the loop
+				TemplateHolder holder = new TemplateHolder()
+						.setMetaLocation(metaResourceLocation)
+						.setLocation(loc)
+						.setDecayRuleSetLocation(decayRuleSetResourceLocation)
+						.setTemplate(template);			
+				
+				// map by resource location
+				getTemplatesByResourceLocationMap().put(loc, holder);
+				
 				// map according to meta archetype, type
-				for (IMetaArchetype archetype : meta.getArchetypes()) {
-					TemplateHolder holder = new TemplateHolder()
-							.setMetaLocation(metaResourceLocation)
-							.setLocation(loc)
-							.setDecayRuleSetLocation(decayRuleSetResourceLocation)
-							.setTemplate(template);					
-										
+				for (IMetaArchetype archetype : meta.getArchetypes()) {								
 					Treasure.logger.debug("Using meta to map archetype type -> {}", meta.toString());										
 					if (!templatesByArchetypeType.contains(archetype, meta.getType())) {
 						templatesByArchetypeType.put(archetype, meta.getType(), new ArrayList<>(3));
@@ -427,6 +432,14 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		}
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public Map<ResourceLocation, TemplateHolder> getTemplatesByResourceLocationMap() {
+		return templatesByResourceLocation;
+	}
+	
 	/**
 	 * 
 	 * @return

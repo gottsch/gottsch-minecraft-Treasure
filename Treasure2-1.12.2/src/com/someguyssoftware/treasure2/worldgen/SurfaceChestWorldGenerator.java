@@ -59,6 +59,7 @@ import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.ruins.SurfaceRuinGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.init.Biomes;
 import net.minecraft.world.World;
@@ -99,6 +100,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 	
 	@Override
 	public void init() {
+		// TODO all these values need to be indexed by dimension
 		// initialize chunks since last array
 		chunksSinceLastChest = 0;
 		chunksSinceLastRarityChest = new HashMap<>(Rarity.values().length);
@@ -167,23 +169,27 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 	 */
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-		switch(world.provider.getDimension()){
-		case 0:
-		    generateInOverworld(world, random, chunkX, chunkZ);
-		    break;
-	    default:
-	    	break;
+		if (TreasureConfig.WORLD_GEN.getGeneralProperties().getDimensionsWhiteList().contains(Integer.valueOf(world.provider.getDimension()))) {
+			generate(world, random, chunkX, chunkZ);
 		}
+		
+//		switch(world.provider.getDimension()){
+//		case 0:
+//		    generateInOverworld(world, random, chunkX, chunkZ);
+//		    break;
+//	    default:
+//	    	break;
+//		}
 	}
 
 	/**
 	 * 
 	 * @param world
 	 * @param random
-	 * @param i
-	 * @param j
+	 * @param chunkX
+	 * @param chunkZ
 	 */
-	private void generateInOverworld(World world, Random random, int chunkX, int chunkZ) {
+	private void generate(World world, Random random, int chunkX, int chunkZ) {
  		/*
  		 * get current chunk position
  		 */            
@@ -380,7 +386,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 	 */
 	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(World world, Random random, ICoords spawnCoords,
 			IChestConfig config) {
-		return generateSurfaceRuins(world, random, spawnCoords, null, config);
+		return generateSurfaceRuins(world, random, spawnCoords, null, null, config);
 	}
 	
 	/**
@@ -393,7 +399,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 	 * @return
 	 */
 	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(World world, Random random, ICoords spawnCoords,
-			IDecayRuleSet decayRuleSet, IChestConfig config) {
+			TemplateHolder holder, IDecayRuleSet decayRuleSet, IChestConfig config) {
 
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
 		result.getData().setSpawnCoords(spawnCoords);
@@ -401,7 +407,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		SurfaceRuinGenerator generator = new SurfaceRuinGenerator();
 
 		// build the structure
-		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, spawnCoords, decayRuleSet);
+		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, spawnCoords, holder, decayRuleSet);
 		Treasure.logger.debug("surface struct result -> {}", genResult);
 		if (!genResult.isSuccess()) return result.fail();
 

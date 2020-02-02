@@ -33,9 +33,13 @@ import net.minecraftforge.common.DungeonHooks;
  */
 public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 
-	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords spawnCoords);
+	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords spawnCoords);	
 	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
 			IDecayRuleSet decayRuleSet);
+	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
+			TemplateHolder holder);
+	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
+			TemplateHolder holder, IDecayRuleSet decayRuleSet);
 
 	default public TemplateHolder selectTemplate(World world, Random random, ICoords coords, StructureArchetype archetype, StructureType type) {
 		// get the biome ID
@@ -46,9 +50,11 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 
 	default public void buildOneTimeSpawners(World world, Random random, List<ICoords> proximityCoords, Quantity quantity, double d) {
 		for (ICoords c : proximityCoords) {
+			Treasure.logger.debug("placing proximity spawner at -> {}", c.toShortString());
 	    	world.setBlockState(c.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
 	    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c.toPos());
 	    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
+	    	Treasure.logger.debug("using mob -> {} for poximity spawner.", r.toString());
 	    	te.setMobName(r);
 	    	te.setMobNum(new Quantity(1, 2));
 	    	te.setProximity(5D);

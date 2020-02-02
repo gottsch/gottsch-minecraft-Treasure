@@ -22,7 +22,6 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
  *
  */
 public class ChestRegistry {
-	// TODO save the registry to the GenDataPersistence
 	private static final int MAX_SIZE = TreasureConfig.CHESTS.chestRegistrySize;
 	
 	private static ChestRegistry instance = new ChestRegistry();

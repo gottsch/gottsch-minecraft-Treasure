@@ -104,6 +104,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 			template.addBlocksToWorld(world, spawnCoords.toPos(), placement, getNullBlock(), Treasure.TEMPLATE_MANAGER.getReplacementMap(), 3);
 		}
 		else {
+			decayProcessor.setDecayStartY(Math.abs(offset));
 			template.addBlocksToWorld(world, spawnCoords.toPos(), decayProcessor, placement, getNullBlock(), Treasure.TEMPLATE_MANAGER.getReplacementMap(), 3);
 		}
 		

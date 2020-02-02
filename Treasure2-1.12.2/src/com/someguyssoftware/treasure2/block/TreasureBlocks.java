@@ -17,6 +17,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.entity.monster.PirateMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
 import com.someguyssoftware.treasure2.enums.FogHeight;
 import com.someguyssoftware.treasure2.enums.FogType;
@@ -37,6 +38,7 @@ import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SkullChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.SpiderChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
@@ -74,12 +76,14 @@ public class TreasureBlocks {
 	public static final Block SKULL_CHEST;
 	public static final Block GOLD_SKULL_CHEST;
 	public static final Block CAULDRON_CHEST;
+	public static final Block SPIDER_CHEST;
 //	public static final Block WHALE_BONE_PIRATE_CHEST;
 //	public static final Block OYSTER_CHEST;
 //	public static final Block CLAM_CHEST;
 	
 	// MIMIC CHESTS
 	public static final Block WOOD_MIMIC;
+	public static final Block PIRATE_MIMIC;
 	
 	// unimplemented chests	
 	public static final Block VASE = null;
@@ -378,7 +382,14 @@ public class TreasureBlocks {
 //				.setChestGuiID(GuiHandler.MOLLUSCS_CHEST_GUIID)
 //				.setBounds(molluscChestBounds)
 //				.setHardness(3.0F);
-				
+		
+		SPIDER_CHEST = new TreasureChestBlock(
+				Treasure.MODID,
+				TreasureConfig.SPIDER_CHEST_ID,
+				SpiderChestTileEntity.class,
+				TreasureChestTypes.SINGLE_STANDARD,
+				Rarity.RARE)
+				.setHardness(3.0F);
 		
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
@@ -391,6 +402,16 @@ public class TreasureBlocks {
 				WoodMimicEntity.class,
 				TreasureChestTypes.STANDARD,
 				Rarity.COMMON)
+				.setBounds(stdChestBounds)
+				.setHardness(2.5F);
+		
+		PIRATE_MIMIC = new MimicChestBlock(
+				Treasure.MODID, 
+				TreasureConfig.PIRATE_MIMIC_ID, 
+				PirateChestTileEntity.class,
+				PirateMimicEntity.class, 
+				TreasureChestTypes.STANDARD, 
+				Rarity.SCARCE)
 				.setBounds(stdChestBounds)
 				.setHardness(2.5F);
 		
@@ -571,7 +592,9 @@ public class TreasureBlocks {
 					DREAD_PIRATE_CHEST,
 //					WHALE_BONE_PIRATE_CHEST,
 					COMPRESSOR_CHEST,
+					SPIDER_CHEST,
 					WOOD_MIMIC,
+					PIRATE_MIMIC,
 					GRAVESTONE1_STONE,
 					GRAVESTONE1_COBBLESTONE,
 					GRAVESTONE1_MOSSY_COBBLESTONE,
@@ -674,7 +697,9 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(CAULDRON_CHEST),
 //					new TreasureChestItemBlock(OYSTER_CHEST),
 //					new TreasureChestItemBlock(CLAM_CHEST),
+					new TreasureChestItemBlock(SPIDER_CHEST),
 					new MimicChestItemBlock(WOOD_MIMIC),
+					new MimicChestItemBlock(PIRATE_MIMIC),
 					
 					// TODO update with GravestonIetmBlock
 					new ItemBlock(GRAVESTONE1_STONE),
@@ -752,6 +777,7 @@ public class TreasureBlocks {
 			GameRegistry.registerTileEntity(CauldronChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.CAULDRON_CHEST_TE_ID));
 //			GameRegistry.registerTileEntity(OysterChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.OYSTER_CHEST_TE_ID));	
 //			GameRegistry.registerTileEntity(ClamChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.CLAM_CHEST_TE_ID));	
+			GameRegistry.registerTileEntity(SpiderChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.SPIDER_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(ProximitySpawnerTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.PROXIMITY_SPAWNER_TE_ID));
 
 		}	

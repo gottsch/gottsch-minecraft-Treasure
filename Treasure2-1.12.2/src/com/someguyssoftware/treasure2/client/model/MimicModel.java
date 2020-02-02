@@ -1,15 +1,11 @@
 package com.someguyssoftware.treasure2.client.model;
 
-import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.MimicEntity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.SoundCategory;
 
 /**
  * 
@@ -215,9 +211,9 @@ public class MimicModel extends ModelBase {
 		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 
 		// set the lid to the right angle (chomping motion)
-		WoodMimicEntity we = (WoodMimicEntity) entity;
+		MimicEntity mimicEntity = (MimicEntity) entity;
 
-		lid.rotateAngleX = -degToRad(we.lidAngle * 90);
+		lid.rotateAngleX = -degToRad(mimicEntity.lidAngle * 90);
 		padTop.rotateAngleX = lid.rotateAngleX;
 		latch1.rotateAngleX = lid.rotateAngleX;
 		toothTop1.rotateAngleX = lid.rotateAngleX;

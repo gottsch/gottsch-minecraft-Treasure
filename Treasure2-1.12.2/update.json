@@ -1,8 +1,8 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.12.2-latest": "1.8.0",
-    "1.12.2-recommended": "1.8.0"
+    "1.12.2-latest": "1.9.0",
+    "1.12.2-recommended": "1.9.0"
   },
     "1.12.2": {
         "0.5.0": "alpha release",
@@ -33,7 +33,8 @@
         "1.6.2": "Removed GUI config that was inadvertently added last update.",
         "1.6.3": "Removed debugging code that was causing underwater structures to generate too frequently.",
         "1.7.0": "Refactored config files into one GUI config.\nAdded Desert Wishing Well block.\nFixed Rarity enum value mappings.\nPersisted ChestRegistry.\nFixed Well generation on podzol/mycelium generating mushroom block instead of mushrooms.\nReconfigured folder locations where logging and resource files go (moved out of /mods folder.)\nUsing GottschCore v1.9.0.\n*Fixed chests not generating in some pits.\n*Fixed world properties not clearing between game world loads.\nFixed loading of ChestRegistry.\n",
-        "1.8.0": "Added Decay System.\nAdded 8 surface structures.\nAdded SpawnRuins command.\nFixed/enable other spawn commands.\nAdded Spanish translation.\nAdded Russian translation.\nFixed the number of uses a Key has.\nRemoved Lombok library.\nFixed solid base check for Surface/Submerged ruins.\nFixed Wither Tree crash bug.\n"
-    }
+        "1.8.0": "Added Decay System.\nAdded 8 surface structures.\nAdded SpawnRuins command.\nFixed/enable other spawn commands.\nAdded Spanish translation.\nAdded Russian translation.\nFixed the number of uses a Key has.\nRemoved Lombok library.\nFixed solid base check for Surface/Submerged ruins.\nFixed Wither Tree crash bug.\nUsing GottschCore v1.10.0.\n",
+        "1.9.0": "Added Spider Chest.\nAdded recipes for all grave/tombstones.\nFixed config white/black lists on change.\nAll logging config options require mc restart.\nAdded config whitelist for dimensions.\nAdded ability to pass template holder into IRuinGenerators.\nUpdated all SpawnCommands to work from Command blocks.\nAdding fill blocks for under structures so there isn't any overhang when on cliffs etc.\n'Using GottschCore v1.11.0.\nAdded 2 surface structures.\nFixed *huge* bug with decay processor not picking the correct rule.\n"
+	}
 }
  

@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.config;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,10 +66,12 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String SKULL_CHEST_ID = "skull_chest";
 	@Ignore public static final String GOLD_SKULL_CHEST_ID = "gold_skull_chest";
 	@Ignore public static final String CAULDRON_CHEST_ID = "cauldron_chest";
+	@Ignore public static final String SPIDER_CHEST_ID = "spider_chest";
 
 	// mimics
 	@Ignore public static final String WOOD_MIMIC_ID = "wood_mimic";
-
+	@Ignore public static final String PIRATE_MIMIC_ID = "pirate_mimic";
+	
 	// locks
 	@Ignore public static final String WOOD_LOCK_ID = "wood_lock";
 	@Ignore public static final String STONE_LOCK_ID = "stone_lock";
@@ -205,6 +209,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String CAULDRON_CHEST_TE_ID = "cauldron_chest_tile_entity";
 	@Ignore public static final String OYSTER_CHEST_TE_ID = "oyster_chest_tile_entity";
 	@Ignore public static final String CLAM_CHEST_TE_ID = "clam_chest_tile_entity";
+	@Ignore public static final String SPIDER_CHEST_TE_ID = "spider_chest_tile_entity";
 	@Ignore public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -262,6 +267,17 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	 * 
 	 */
 	public TreasureConfig() {
+	}
+	
+	/**
+	 * 
+	 */
+	public static void init() {
+		// load raw arrays into lists		
+		TreasureConfig.CHESTS.init();
+		TreasureConfig.WELL.init();
+		TreasureConfig.WITHER_TREE.init();
+		TreasureConfig.WORLD_GEN.init();
 	}
 	
 	/*
@@ -367,10 +383,15 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			// setup extra properties
 			surfaceChests.commonChestProperties.mimicProbability = 20.0;
 			submergedChests.commonChestProperties.mimicProbability = 0.0;
-			
-			
+			surfaceChests.scarceChestProperties.mimicProbability = 15.0;
+			submergedChests.scarceChestProperties.mimicProbability = 0.0;
 		}
 		
+		public void init() {
+			this.surfaceChests.init();
+			this.submergedChests.init();
+		}
+
 		public class ChestCollection implements IChestCollection {
 			/*
 			 * Map of chest configs by rarity.
@@ -458,10 +479,22 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 				configMap.put(Rarity.RARE, rareChestProperties);
 				configMap.put(Rarity.EPIC, epicChestProperties);
 			}
+			
+			/**
+			 * 
+			 */
+			@Override
+			public void init() {
+				this.commonChestProperties.init();
+				this.uncommonChestProperties.init();
+				this.scarceChestProperties.init();
+				this.rareChestProperties.init();
+				this.epicChestProperties.init();
+			}
 		}
 		
 		public interface IChestCollection {
-			
+			public void init();
 		}
 	}
 
@@ -502,6 +535,14 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 				new String[] {},
 				new String[] {"ocean", "deep_ocean"});
 
+		/**
+		 * 
+		 */
+		@Override
+		public void init() {
+			this.biomes.init();
+		}
+		
 		@Override
 		public boolean isWellAllowed() {
 			return wellAllowed;
@@ -582,6 +623,14 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 				new String[] {},
 				new String[] {});
 
+		/**
+		 * 
+		 */
+		@Override
+		public void init() {
+			this.biomes.init();
+		}
+		
 		@Override
 		public int getChunksPerTree() {
 			return chunksPerTree;
@@ -836,6 +885,27 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			@Name("04. Probability of surface structure spawn:")
 			@RangeInt(min = 0, max = 100)
 			public int surfaceStructureProbability = 25;
+			
+			@Name("05. Dimension white list:")
+			@Comment({"Allowed Dimensions for generation.\nTreasure2 was designed for \"normal\" overworld-type dimensions.\nThis setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed."})
+			public Integer[] rawDimensionsWhiteList = new Integer[] {0};
+			@Ignore public List<Integer> dimensionsWhiteList = new ArrayList<>(3);
+			
+			/**
+			 * 
+			 */
+			public void init() {
+				TreasureConfig.WORLD_GEN.getGeneralProperties().dimensionsWhiteList = 
+						Arrays.asList(TreasureConfig.WORLD_GEN.getGeneralProperties().rawDimensionsWhiteList);
+			}
+
+			public List<Integer> getDimensionsWhiteList() {
+				return dimensionsWhiteList;
+			}
+
+			public void setDimensionsWhiteList(List<Integer> dimensionsWhiteList) {
+				this.dimensionsWhiteList = dimensionsWhiteList;
+			}
 		}
 
 		public class MarkerProperties {
@@ -872,8 +942,23 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			return markerProperties;
 		}
 
+		/**
+		 * 
+		 */
+		public void init() {
+			this.generalProperties.init();
+		}
+
 		public GeneralProperties getGeneralProperties() {
 			return generalProperties;
+		}
+
+		public void setGeneralProperties(GeneralProperties generalProperties) {
+			this.generalProperties = generalProperties;
+		}
+
+		public void setMarkerProperties(MarkerProperties markerProperties) {
+			this.markerProperties = markerProperties;
 		}
 	}
 
@@ -893,6 +978,16 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event) {
 			if (event.getModID().equals(Treasure.MODID)) {
 				ConfigManager.sync(Treasure.MODID, Config.Type.INSTANCE);
+				// TODO reload all biome lists and any other list that transforms raw array to List
+				Treasure.logger.debug("executing onConfigChanged event...");
+				// TODO this code needs to be in init as well.
+//				TreasureConfig.WORLD_GEN.getGeneralProperties().dimensionsWhiteList = 
+//						Arrays.asList(TreasureConfig.WORLD_GEN.getGeneralProperties().rawDimensionsWhiteList);
+				TreasureConfig.init();
+				Treasure.logger.debug("New dimension white list:");
+				for (Integer i : TreasureConfig.WORLD_GEN.getGeneralProperties().dimensionsWhiteList) {
+					Treasure.logger.debug("dim -> {}", i);
+				}
 			}
 		}
 	}

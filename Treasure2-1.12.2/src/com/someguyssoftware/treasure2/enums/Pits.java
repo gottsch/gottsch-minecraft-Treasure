@@ -5,7 +5,9 @@ package com.someguyssoftware.treasure2.enums;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 
@@ -94,5 +96,14 @@ public enum Pits implements IEnum {
 	@Override
 	public Map<String, IEnum> getValues() {
 		return values;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static List<String> getNames() {
+		List<String> names = EnumSet.allOf(Pits.class).stream().map(x -> x.name()).collect(Collectors.toList());
+		return names;
 	}
 }

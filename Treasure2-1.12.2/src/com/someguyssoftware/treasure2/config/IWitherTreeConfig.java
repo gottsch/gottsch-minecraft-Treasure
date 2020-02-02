@@ -18,7 +18,7 @@ public interface IWitherTreeConfig {
 	// TODO this is common to all generator config (chest, well, tree, etc). should be intermediate interface (IRawBiomeList) between
 	// this and IBiomesConfig OR should be part of IBiomesConfig
 
-
+	public void init();
 	public int getChunksPerTree();
 	public double getGenProbability();
 	public int getMaxSupportingTrees();
