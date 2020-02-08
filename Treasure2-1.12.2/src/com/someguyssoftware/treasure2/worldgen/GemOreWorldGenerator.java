@@ -50,7 +50,7 @@ public class GemOreWorldGenerator implements ITreasureWorldGenerator {
 	 * 
 	 */
 	public void init() {
-		// intialize chunks since last array
+		// intialize chunks since last ore spawn
 		chunksSinceLastOre = 0;
 	}
 
@@ -59,16 +59,12 @@ public class GemOreWorldGenerator implements ITreasureWorldGenerator {
 	 */
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+		if (!TreasureConfig.GEMS_ORES.enableGemOreSpawn) {
+			return;
+		}
 		if (TreasureConfig.WORLD_GEN.getGeneralProperties().getDimensionsWhiteList().contains(Integer.valueOf(world.provider.getDimension()))) {
 			generate(world, random, chunkX, chunkZ);
 		}
-		//		switch (world.provider.getDimension()) {
-		//		case 0:
-		//			generateSurface(world, random, chunkX, chunkZ);
-		//			break;
-		//		default:
-		//			break;
-		//		}
 	}
 
 	/**

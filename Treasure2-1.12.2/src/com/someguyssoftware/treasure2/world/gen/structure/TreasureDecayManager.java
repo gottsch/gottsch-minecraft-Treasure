@@ -12,6 +12,7 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.gen.structure.DecayManager;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 
 import net.minecraft.util.ResourceLocation;
 
@@ -28,7 +29,9 @@ public class TreasureDecayManager extends DecayManager {
 		super(mod, resourceFolder);
 
 		// build and expose template/structure folders
-		buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
+		if (TreasureConfig.MOD.enableDefaultDecayRuletSetsCheck) {
+			buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
+		}
 	}
 
 	/**

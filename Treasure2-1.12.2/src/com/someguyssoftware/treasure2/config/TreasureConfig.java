@@ -693,6 +693,10 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	 * 
 	 */
 	public static class GemsAndOres {
+		@Comment({"Enable/Disable whether a gem ore will spawn."})
+		@Name("00. Enable gem ore spawn:")
+		public boolean enableGemOreSpawn = true;
+		
 		@Comment("The number of chunks generated before another attempt to generate a gem ore spawn is made.")
 		@Name("01. Chunks per gem ore spawn:")
 		@RangeInt(min = 1, max = 32000)
@@ -978,16 +982,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event) {
 			if (event.getModID().equals(Treasure.MODID)) {
 				ConfigManager.sync(Treasure.MODID, Config.Type.INSTANCE);
-				// TODO reload all biome lists and any other list that transforms raw array to List
-				Treasure.logger.debug("executing onConfigChanged event...");
-				// TODO this code needs to be in init as well.
-//				TreasureConfig.WORLD_GEN.getGeneralProperties().dimensionsWhiteList = 
-//						Arrays.asList(TreasureConfig.WORLD_GEN.getGeneralProperties().rawDimensionsWhiteList);
 				TreasureConfig.init();
-				Treasure.logger.debug("New dimension white list:");
-				for (Integer i : TreasureConfig.WORLD_GEN.getGeneralProperties().dimensionsWhiteList) {
-					Treasure.logger.debug("dim -> {}", i);
-				}
 			}
 		}
 	}
