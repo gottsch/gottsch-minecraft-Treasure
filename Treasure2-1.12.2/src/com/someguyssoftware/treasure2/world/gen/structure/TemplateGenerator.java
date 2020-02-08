@@ -19,6 +19,7 @@ import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData2;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 
 import net.minecraft.block.Block;
@@ -77,6 +78,13 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 			Treasure.logger.debug("Unable to locate meta data for template -> {}", templateHolder.getLocation());
 			return result.fail();
 		}
+		Treasure.logger.debug("meta -> {}", meta);
+		
+		// if the meta provides a null block, use it
+		if (meta.getNullBlockName() != null && !meta.getNullBlockName().equals("")) {
+			Treasure.logger.debug("setting the null block to -> {}", meta.getNullBlockName());
+			setNullBlock(Block.getBlockFromName(meta.getNullBlockName()));
+		}
 		
 		// find the offset block
 		int offset = 0;
@@ -116,6 +124,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 			Treasure.logger.debug("adding to structure info absoluted transformed coords -> {} : {}", entry.getKey().getLocalizedName(), c.toShortString());
 		}
 		
+		// TODO this will be replaced with the below
 		// find the chest and update chest coords (absolute positioned)
 		List<StructureMarkerContext> contextList = (List<StructureMarkerContext>) template.getMarkerMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 		if (!contextList.isEmpty()) {
@@ -135,6 +144,14 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 //				 Treasure.logger.debug("saving chest state -> {}", modState.toString());
 			 }
 		}
+		
+		// process all strcture markers, positioning absolutely
+		// TEMP declaration - use the return result
+		TemplateGeneratorData2 data2 = new TemplateGeneratorData2();
+		for (Entry<Block, StructureMarkerContext> entry : template.getMarkerMap().entries()) {
+			StructureMarkerContext context = getAbsoluteTransformedContext(entry.getValue(), spawnCoords, placement);
+			data2.getMap().put(entry.getKey(), context);
+		}
 
 		// get the transformed size
 		BlockPos transformedSize = template.transformedSize(placement.getRotation());
@@ -149,6 +166,36 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		result.getData().setSize(new Coords(transformedSize));
 		
 		return result.success();
+	}
+
+	/**
+	 * 
+	 * @param contextIn
+	 * @param spawnCoords
+	 * @param placement
+	 * @return
+	 */
+	private StructureMarkerContext getAbsoluteTransformedContext(StructureMarkerContext contextIn,
+			ICoords spawnCoords, PlacementSettings placement) {
+		StructureMarkerContext context = new StructureMarkerContext();
+
+		// get the absolute coords of chest
+		ICoords chestCoords = new Coords(GottschTemplate.transformedCoords(placement, contextIn.getCoords()));
+		chestCoords = spawnCoords.add(chestCoords);
+		context.setCoords(chestCoords);
+		
+		// get the block state of the chest
+		IBlockState chestState = contextIn.getState();
+		chestState = chestState.withMirror(placement.getMirror());
+		chestState = chestState.withRotation(placement.getRotation());
+		 if (chestState.getProperties().containsKey(FACING)) {
+			 IBlockState modState = TreasureBlocks.WOOD_CHEST.getDefaultState().withProperty(CHEST_FACING, (EnumFacing)chestState.getProperties().get(FACING));
+			 context.setState(modState);
+		 }
+		 else {
+			 context.setState(contextIn.getState());
+		 }		 
+		 return contextIn;
 	}
 
 	/**

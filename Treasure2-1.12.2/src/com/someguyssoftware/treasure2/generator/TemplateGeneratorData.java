@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
  * @author Mark Gottschling on Aug 22, 2019
  *
  */
+@Deprecated
 public class TemplateGeneratorData extends ChestGeneratorData {
 	/*
 	 * size of the structure represented by ICoords

@@ -6,5 +6,10 @@
 	"type": "ruin",
 	"rarities": ["common"],
 	"biomeWhiteList": ["ocean", "deep_ocean"],
-	"biomeBlackList": []
+	"biomeBlackList": [],
+	"offset": {
+		"x": 0,
+		"y": -2,
+		"z": 0
+	}
 }

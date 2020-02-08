@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.generator.ruins;
 import java.util.List;
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -25,6 +26,7 @@ import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -165,10 +167,13 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 
 		Treasure.logger.debug("surface gen result -> {}", genResult);
 		// get the chest coords
+		// TODO here we search for the boss chest first, then the list of chests
+		
 		ICoords chestCoords = genResult.getData().getChestCoords();
 		if (chestCoords != null) {
-			// move the chest coords to the first dry land beneath it.
-			chestCoords = WorldInfo.getDryLandSurfaceCoords(world, chestCoords);
+			// move the chest coords to the first solid block beneath it.
+//			chestCoords = WorldInfo.getDryLandSurfaceCoords(world, chestCoords);
+			chestCoords = getSolidSurfaceCoords(world, chestCoords.up(1));
 			if (chestCoords == WorldInfo.EMPTY_COORDS) chestCoords = null;
 		}
 		genResult.getData().setChestCoords(chestCoords);
@@ -191,5 +196,37 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 		result.setData(genResult.getData());
 
 		return result.success();
+	}
+	
+	/**
+	 * NOTE candidate for GottschCore
+	 * @param world
+	 * @param coords
+	 * @return
+	 */
+	public static ICoords getSolidSurfaceCoords(final World world, final ICoords coords) {
+		boolean isSurfaceBlock = false;
+		ICoords newCoords = coords;
+		
+		while (!isSurfaceBlock) {
+			// get the cube that is 1 below current position
+			Cube cube = new Cube(world, newCoords.down(1));
+			Treasure.logger.debug("below block -> {} @ {}", cube.getState().getBlock().getRegistryName(), cube.getCoords().toShortString());
+			// exit if not valid Y coordinate
+			if (!WorldInfo.isValidY(cube.getCoords())) {
+				return WorldInfo.EMPTY_COORDS;
+			}	
+
+			if (cube.equalsMaterial(Material.AIR) || cube.isReplaceable()
+					|| cube.equalsMaterial(Material.LEAVES) || cube.isLiquid()
+					|| cube.isBurning(world)) {
+				Treasure.logger.debug("block is air, leaves, replacable, liquid or burning");
+				newCoords = newCoords.down(1);
+			}
+			else {
+				isSurfaceBlock = true;
+			}		
+		}
+		return newCoords;
 	}
 }

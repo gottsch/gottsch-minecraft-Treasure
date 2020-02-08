@@ -159,7 +159,7 @@ public class SpawnRuinsCommand extends CommandBase {
 				ICoords chestCoords = result.getData().getChestCoords();
 				Treasure.logger.debug("chestCoords -> {}", chestCoords);
 				// move the chest coords to the first dry land beneath it.
-				chestCoords = WorldInfo.getDryLandSurfaceCoords(world, chestCoords);
+//				chestCoords = WorldInfo.getDryLandSurfaceCoords(world, chestCoords);
 				if (chestCoords == WorldInfo.EMPTY_COORDS) chestCoords = null;
 				
 				if (chestCoords != null) {
