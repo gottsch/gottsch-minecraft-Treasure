@@ -1,5 +1,5 @@
 {
-	"name": "Beached Ship",
+	"name": "Beached Ship 1",
 	"description": "",
 	"author": "mason",
 	"archetypes": ["surface"],
@@ -9,7 +9,7 @@
 	"biomeBlackList": [],
 	"offset": {
 		"x": 0,
-		"y": -3,
+		"y": -2,
 		"z": 0
 	},
 	"decayRuleSetName": ["default_ruleset", "aged_ruleset"],
