@@ -8,16 +8,19 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.treasure2.generator.IGeneratorResult;
-import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
+
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.init.Blocks;
@@ -33,12 +36,12 @@ import net.minecraftforge.common.DungeonHooks;
  */
 public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 
-	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords spawnCoords);	
-	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData2> generate(World world, Random random, ICoords spawnCoords);	
+	GeneratorResult<ChestGeneratorData2> generate(World world, Random random, ICoords originalSpawnCoords,
 			IDecayRuleSet decayRuleSet);
-	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData2> generate(World world, Random random, ICoords originalSpawnCoords,
 			TemplateHolder holder);
-	GeneratorResult<TemplateGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData2> generate(World world, Random random, ICoords originalSpawnCoords,
 			TemplateHolder holder, IDecayRuleSet decayRuleSet);
 
 	default public TemplateHolder selectTemplate(World world, Random random, ICoords coords, StructureArchetype archetype, StructureType type) {
@@ -48,11 +51,11 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 		return holder;
 	}
 
-	default public void buildOneTimeSpawners(World world, Random random, List<ICoords> proximityCoords, Quantity quantity, double d) {
-		for (ICoords c : proximityCoords) {
-			Treasure.logger.debug("placing proximity spawner at -> {}", c.toShortString());
-	    	world.setBlockState(c.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
-	    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c.toPos());
+	default public void buildOneTimeSpawners(World world, Random random, List<BlockContext> proximityContexts, Quantity quantity, double d) {
+		for (BlockContext c : proximityContexts) {
+			Treasure.logger.debug("placing proximity spawner at -> {}", c.getCoords().toShortString());
+	    	world.setBlockState(c.getCoords().toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
+	    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c.getCoords().toPos());
 	    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
 	    	Treasure.logger.debug("using mob -> {} for poximity spawner.", r.toString());
 	    	te.setMobName(r);
@@ -61,10 +64,10 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 		}
 	}
 
-	default public void buildVanillaSpawners(World world, Random random, List<ICoords> spawnerCoords) {
-		for (ICoords c : spawnerCoords) {
-			world.setBlockState(c.toPos(), Blocks.MOB_SPAWNER.getDefaultState());
-			TileEntityMobSpawner te = (TileEntityMobSpawner) world.getTileEntity(c.toPos());
+	default public void buildVanillaSpawners(World world, Random random, List<BlockContext> spawnerContexts) {
+		for (BlockContext c : spawnerContexts) {
+			world.setBlockState(c.getCoords().toPos(), Blocks.MOB_SPAWNER.getDefaultState());
+			TileEntityMobSpawner te = (TileEntityMobSpawner) world.getTileEntity(c.getCoords().toPos());
 			ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
 			te.getSpawnerBaseLogic().setEntityId(r);
 		}

@@ -10,7 +10,8 @@ import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 
@@ -30,7 +31,7 @@ import net.minecraftforge.common.DungeonHooks;
  * @author Mark Gottschling on Mar 7, 2018
  *
  */
-public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorResult<ChestGeneratorData>> {
+public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorResult<ChestGeneratorData2>> {
 
 	protected static final int OFFSET_Y = 5;
 	protected static final int SURFACE_OFFSET_Y = 6;
@@ -88,10 +89,10 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @return
 	 */
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
+	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		GeneratorResult<ChestGeneratorData2> result = new GeneratorResult<>(ChestGeneratorData2.class);		
 		result.getData().setSpawnCoords(spawnCoords);
-		result.getData().setChestCoords(spawnCoords);
+		result.getData().getChestContext().setCoords(spawnCoords);
 		
 		// is the chest placed in a cavern
 		boolean inCavern = false;
@@ -114,7 +115,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 			}
 			result.getData().setSpawnCoords(spawnCoords);
 			// update the chest coords in the result
-			result.getData().setChestCoords(spawnCoords);
+			result.getData().getChestContext().setCoords(spawnCoords);
 		}
 	
 		// generate shaft

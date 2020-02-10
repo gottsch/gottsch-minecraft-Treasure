@@ -21,7 +21,8 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
@@ -82,13 +83,13 @@ public class SpawnPitCommand extends CommandBase {
 			World world = commandSender.getEntityWorld();
 
 			Random random = new Random();
-			GeneratorResult<ChestGeneratorData> result = SurfaceChestWorldGenerator.generatePit(world, random, rarity, new Coords(x, y, z), TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
+			GeneratorResult<ChestGeneratorData2> result = SurfaceChestWorldGenerator.generatePit(world, random, rarity, new Coords(x, y, z), TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
 			if (result.isSuccess()) {
 				SurfaceChestWorldGenerator chestGens = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SURFACE_CHEST);
 				IChestGenerator gen = chestGens.getChestGenMap().get(rarity).next();
-				ICoords chestCoords = result.getData().getChestCoords();
+				ICoords chestCoords = result.getData().getChestContext().getCoords();
 				if (chestCoords != null) {
-					GeneratorResult<ChestGeneratorData> chestResult = gen.generate(world, random, chestCoords, rarity, result.getData().getChestState());
+					GeneratorResult<ChestGeneratorData2> chestResult = gen.generate(world, random, chestCoords, rarity, result.getData().getChestContext().getState());
 				}
 			}			
 		}

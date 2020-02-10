@@ -14,7 +14,8 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.IWellConfig;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
+
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData2;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
@@ -100,7 +101,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		originalSpawnCoords = new Coords(originalSpawnCoords.getX(), actualSpawnCoords.getY(), originalSpawnCoords.getZ());
 		
 		// build well
-		 GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, templateHolder,  placement, originalSpawnCoords);
+		 GeneratorResult<TemplateGeneratorData2> genResult = generator.generate(world, random, templateHolder,  placement, originalSpawnCoords);
 		Treasure.logger.debug("Well gen  structure result -> {}", genResult.isSuccess());
 		 if (!genResult.isSuccess()) {
 			 Treasure.logger.debug("failing well gen.");

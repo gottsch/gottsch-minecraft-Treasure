@@ -6,14 +6,17 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
+
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData2;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
@@ -40,7 +43,7 @@ import net.minecraftforge.common.DungeonHooks;
  */
 public class StructurePitGenerator extends AbstractPitGenerator {
 	
-	private IPitGenerator<GeneratorResult<ChestGeneratorData>> generator;
+	private IPitGenerator<GeneratorResult<ChestGeneratorData2>> generator;
 	
 	/**
 	 * 
@@ -53,7 +56,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	 * 
 	 * @param generator
 	 */
-	public StructurePitGenerator(IPitGenerator<GeneratorResult<ChestGeneratorData>> generator) {
+	public StructurePitGenerator(IPitGenerator<GeneratorResult<ChestGeneratorData2>> generator) {
 		this();
 		setGenerator(generator);
 		Treasure.logger.debug("using parent generator -> {}", generator.getClass().getSimpleName());
@@ -79,8 +82,8 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
+	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		GeneratorResult<ChestGeneratorData2> result = new GeneratorResult<>(ChestGeneratorData2.class);
 
 		// is the chest placed in a cavern
 		boolean inCavern = false;
@@ -156,7 +159,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 				// generate the base pit
 				result = getGenerator().generate(world, random, surfaceCoords, spawnCoords);
 				if (result.isSuccess()/*isGenerated*/) {
-					result.getData().setChestCoords(result.getData().getSpawnCoords());
+					result.getData().getChestContext().setCoords(result.getData().getSpawnCoords());
 					return result;
 				}
 				else {
@@ -194,10 +197,11 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			Treasure.logger.debug("aligned room coords -> {}", roomCoords.toShortString());
 			
 			// generate the structure
-			GeneratorResult<TemplateGeneratorData> genResult = new TemplateGenerator().generate(world, random, holder, placement, roomCoords);
+			GeneratorResult<TemplateGeneratorData2> genResult = new TemplateGenerator().generate(world, random, holder, placement, roomCoords);
 			if (!genResult.isSuccess()) return result.fail();
 			
-			result.setData(genResult.getData());
+			result.getData().setSpawnCoords(genResult.getData().getSpawnCoords());
+//			result.setData(genResult.getData());
 			
 //			if (info == null) return result.fail();			
 //			Treasure.logger.debug("returned info -> {}", info);
@@ -205,9 +209,13 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			// TODO update result chest coords with that of info OR of the calculation of where chest should be.
 			
 			// interrogate info for spawners and any other special block processing (except chests that are handler by caller
-			List<ICoords> spawnerCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
-			List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
-
+//			List<ICoords> spawnerCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
+//			List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
+			List<BlockContext> spawnerContexts =
+					(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
+			List<BlockContext> proximityContexts =
+					(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
+			
 			/*
 			 *  TODO could lookup to some sort of map of structure -> spawner info
 			 *  ex.	uses a Guava Table:
@@ -217,20 +225,20 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			
 			// TODO move to own method
 			// populate vanilla spawners
-			for (ICoords c : spawnerCoords) {
+			for (BlockContext c : spawnerContexts) {
 //				ICoords c2 = roomCoords.add(c);
-				world.setBlockState(c.toPos(), Blocks.MOB_SPAWNER.getDefaultState());
-				TileEntityMobSpawner te = (TileEntityMobSpawner) world.getTileEntity(c.toPos());
+				world.setBlockState(c.getCoords().toPos(), Blocks.MOB_SPAWNER.getDefaultState());
+				TileEntityMobSpawner te = (TileEntityMobSpawner) world.getTileEntity(c.getCoords().toPos());
 				ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
 				te.getSpawnerBaseLogic().setEntityId(r);
 			}
 			
 			// TODO move to own method
 			// populate proximity spawners
-			for (ICoords c : proximityCoords) {
+			for (BlockContext c : proximityContexts) {
 //				ICoords c2 = roomCoords.add(c);
-		    	world.setBlockState(c.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
-		    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c.toPos());
+		    	world.setBlockState(c.getCoords().toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
+		    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c.getCoords().toPos());
 		    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
 		    	te.setMobName(r);
 		    	te.setMobNum(new Quantity(1, 2));
@@ -289,14 +297,14 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	/**
 	 * @return the generator
 	 */
-	public IPitGenerator<GeneratorResult<ChestGeneratorData>> getGenerator() {
+	public IPitGenerator<GeneratorResult<ChestGeneratorData2>> getGenerator() {
 		return generator;
 	}
 
 	/**
 	 * @param generator the generator to set
 	 */
-	public void setGenerator(IPitGenerator<GeneratorResult<ChestGeneratorData>> generator) {
+	public void setGenerator(IPitGenerator<GeneratorResult<ChestGeneratorData2>> generator) {
 		this.generator = generator;
 	}
 }

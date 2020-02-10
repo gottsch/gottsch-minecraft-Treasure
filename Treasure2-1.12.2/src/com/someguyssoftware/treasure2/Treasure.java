@@ -73,7 +73,7 @@ import net.minecraftforge.oredict.OreDictionary;
 		modid=Treasure.MODID,
 		name=Treasure.NAME,
 		version=Treasure.VERSION,
-		dependencies="required-after:gottschcore@[1.11.0,)",
+		dependencies="required-after:gottschcore@[1.12.0,)",
 		acceptedMinecraftVersions = "[1.12.2]",
 		updateJSON = Treasure.UPDATE_JSON_URL
 		)

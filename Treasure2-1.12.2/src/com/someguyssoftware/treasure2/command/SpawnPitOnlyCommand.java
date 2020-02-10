@@ -23,7 +23,8 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Pits;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
@@ -88,10 +89,10 @@ public class SpawnPitOnlyCommand extends CommandBase {
 			ICoords spawnCoords = new Coords(x, y, z);
 			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world,
 					new Coords(x, WorldInfo.getHeightValue(world, spawnCoords), z));
-			Map<Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenMap = SurfaceChestWorldGenerator.pitGens.row(PitTypes.STANDARD);
-			IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = pitGenMap.get(pit);
+			Map<Pits, IPitGenerator<GeneratorResult<ChestGeneratorData2>>> pitGenMap = SurfaceChestWorldGenerator.pitGens.row(PitTypes.STANDARD);
+			IPitGenerator<GeneratorResult<ChestGeneratorData2>> pitGenerator = pitGenMap.get(pit);
 			
-			GeneratorResult<ChestGeneratorData> result = pitGenerator.generate(world, random, surfaceCoords, spawnCoords);
+			GeneratorResult<ChestGeneratorData2> result = pitGenerator.generate(world, random, surfaceCoords, spawnCoords);
 		} catch (Exception e) {
 			Treasure.logger.error("Error generating Treasure! pit:", e);
 			e.printStackTrace();

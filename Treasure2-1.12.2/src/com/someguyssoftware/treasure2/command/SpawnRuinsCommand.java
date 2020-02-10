@@ -24,7 +24,8 @@ import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
@@ -152,18 +153,18 @@ public class SpawnRuinsCommand extends CommandBase {
 //			IChestConfig config = TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity);
 			
 			// generate
-			GeneratorResult<ChestGeneratorData> result = worldGen.generateSurfaceRuins(world, random,coords, holder, ruleSet, null);
+			GeneratorResult<ChestGeneratorData2> result = worldGen.generateSurfaceRuins(world, random,coords, holder, ruleSet, null);
 			Treasure.logger.debug("result from t2-ruins -> {}", result);
-			if (result.isSuccess() && result.getData().getChestCoords() != null) {
+			if (result.isSuccess() && result.getData().getChestContext().getCoords() != null) {
 				IChestGenerator chestGen = worldGen.getChestGenMap().get(rarity).next();
-				ICoords chestCoords = result.getData().getChestCoords();
+				ICoords chestCoords = result.getData().getChestContext().getCoords();
 				Treasure.logger.debug("chestCoords -> {}", chestCoords);
 				// move the chest coords to the first dry land beneath it.
 //				chestCoords = WorldInfo.getDryLandSurfaceCoords(world, chestCoords);
 				if (chestCoords == WorldInfo.EMPTY_COORDS) chestCoords = null;
 				
 				if (chestCoords != null) {
-					GeneratorResult<ChestGeneratorData> chestResult = chestGen.generate(world, random, chestCoords, rarity, result.getData().getChestState());
+					GeneratorResult<ChestGeneratorData2> chestResult = chestGen.generate(world, random, chestCoords, rarity, result.getData().getChestContext().getState());
 				}
 			}
 		}

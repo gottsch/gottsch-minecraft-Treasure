@@ -12,14 +12,19 @@ import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 import com.someguyssoftware.gottschcore.world.gen.structure.DecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
+import com.someguyssoftware.treasure2.generator.IGeneratorData;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData2;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 import com.someguyssoftware.treasure2.meta.StructureType;
@@ -36,7 +41,7 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  * @author Mark Gottschling on Dec 13, 2019
  *
  */
-public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<TemplateGeneratorData>> {
+public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<ChestGeneratorData2>> {
 	
 	private static final double REQUIRED_BASE_SIZE = 45;
 	private static final double REQUIRED_AIR_SIZE = 30;
@@ -46,29 +51,28 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 	 */
 	public SurfaceRuinGenerator() {}
 	
-	// TODO create a generate() version that takes the template in as a param and the decay processor ... or they are member properties  and they method checks them first.
 	@Override
-	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random,
 			ICoords originalSpawnCoords) {
 		return generate(world, random, originalSpawnCoords, null, null);
 	}
 	
 	@Override
-	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random,
 			ICoords originalSpawnCoords, IDecayRuleSet decayRuleSet) {
 		return generate(world, random, originalSpawnCoords, null, decayRuleSet);
 	}
 	
 	@Override
-	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder) {
 		return generate(world, random, originalSpawnCoords, holder, null);
 	}
 
 	@Override
-	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder, IDecayRuleSet decayRuleSet) {		
-		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
+		GeneratorResult<ChestGeneratorData2> result = new GeneratorResult<>(ChestGeneratorData2.class);
 
 		/*
 		 * Setup
@@ -162,39 +166,111 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
 		}
 		
-		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
+		GeneratorResult<TemplateGeneratorData2> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
 		 if (!genResult.isSuccess()) return result.fail();
 
 		Treasure.logger.debug("surface gen result -> {}", genResult);
 		// get the chest coords
 		// TODO here we search for the boss chest first, then the list of chests
 		
-		ICoords chestCoords = genResult.getData().getChestCoords();
-		if (chestCoords != null) {
-			// move the chest coords to the first solid block beneath it.
-//			chestCoords = WorldInfo.getDryLandSurfaceCoords(world, chestCoords);
-			chestCoords = getSolidSurfaceCoords(world, chestCoords.up(1));
-			if (chestCoords == WorldInfo.EMPTY_COORDS) chestCoords = null;
-		}
-		genResult.getData().setChestCoords(chestCoords);
+//		ICoords chestCoords = genResult.getData().getChestCoords();
+//		if (chestCoords != null) {
+//			// move the chest coords to the first solid block beneath it.
+////			chestCoords = WorldInfo.getDryLandSurfaceCoords(world, chestCoords);
+//			chestCoords = getSolidSurfaceCoords(world, chestCoords.up(1));
+//			if (chestCoords == WorldInfo.EMPTY_COORDS) chestCoords = null;
+//		}
+//		genResult.getData().setChestCoords(chestCoords);
 		
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
-		List<ICoords> spawnerCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
-		List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
+		List<BlockContext> bossChestContexts =
+					(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.BOSS_CHEST));
+		List<BlockContext> chestContexts =
+				(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
+		List<BlockContext> spawnerContexts =
+				(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
+		List<BlockContext> proximityContexts =
+				(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
+//		List<ICoords> spawnerCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
+//		List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
 
-		if (proximityCoords != null)
-			Treasure.logger.debug("Proximity spawners size -> {}", proximityCoords.size());
+		/*
+		 *  NOTE currently only 1 chest is allowed per structure - the rest are ignored.
+		 */
+		// check if there is a boss chest(s)
+		BlockContext chestContext = null;
+		if (bossChestContexts != null && bossChestContexts.size() > 0) {
+			if (bossChestContexts.size() > 1) {
+				chestContext = bossChestContexts.get(random.nextInt(bossChestContexts.size()));
+			}
+			else {
+				chestContext = bossChestContexts.get(0);
+			}			
+		}
+		
+		// TODO turn these checks into methods
+		// if a boss chest wasn't found, search for regular chests
+		if (chestContext == null) {
+			if (chestContexts != null && chestContexts.size() > 0) {
+				if (chestContexts.size() > 1) {
+					chestContext = chestContexts.get(random.nextInt(chestContexts.size()));
+				}
+				else {
+					chestContext = chestContexts.get(0);
+				}			
+			}			
+		}
+		
+//		if (chestCoords != null) {
+//			// move the chest coords to the first solid block beneath it.
+//			chestCoords = getSolidSurfaceCoords(world, chestCoords.up(1));
+//			if (chestCoords == WorldInfo.EMPTY_COORDS) chestCoords = null;
+//		}
+//		genResult.getData().setChestCoords(chestCoords);
+//		
+//		
+//		if (proximityCoords != null)
+//			Treasure.logger.debug("Proximity spawners size -> {}", proximityCoords.size());
+//		else
+//			Treasure.logger.debug("No proximity spawners found.");
+//		
+//		// populate vanilla spawners
+//		buildVanillaSpawners(world, random, spawnerCoords);
+//		
+//		// populate proximity spawners
+//		buildOneTimeSpawners(world, random, proximityCoords, new Quantity(1,2), 5D);
+//		
+//		result.setData(genResult.getData());
+
+		ICoords chestCoords = null;
+		if (chestContext != null) {
+			// move the chest coords to the first solid block beneath it.
+			chestCoords = getSolidSurfaceCoords(world, chestContext.getCoords());
+			if (chestCoords == WorldInfo.EMPTY_COORDS) chestCoords = null;
+			chestContext.setCoords(chestCoords);
+		}
+		if (chestCoords == null) {
+			return result.fail();
+		}
+		
+		if (proximityContexts != null)
+			Treasure.logger.debug("Proximity spawners size -> {}", proximityContexts.size());
 		else
 			Treasure.logger.debug("No proximity spawners found.");
 		
 		// populate vanilla spawners
-		buildVanillaSpawners(world, random, spawnerCoords);
+		buildVanillaSpawners(world, random, spawnerContexts);
 		
 		// populate proximity spawners
-		buildOneTimeSpawners(world, random, proximityCoords, new Quantity(1,2), 5D);
+		buildOneTimeSpawners(world, random, proximityContexts, new Quantity(1,2), 5D);
 		
-		result.setData(genResult.getData());
-
+		// copy all data from genResult
+//		result.setData((IGeneratorData) genResult.getData()); // <-- this should work
+		result.getData().setSpawnCoords(genResult.getData().getSpawnCoords());
+		
+		// update with chest context
+		result.getData().setChestContext(chestContext);
+		
 		return result.success();
 	}
 	
@@ -211,7 +287,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 		while (!isSurfaceBlock) {
 			// get the cube that is 1 below current position
 			Cube cube = new Cube(world, newCoords.down(1));
-			Treasure.logger.debug("below block -> {} @ {}", cube.getState().getBlock().getRegistryName(), cube.getCoords().toShortString());
+//			Treasure.logger.debug("below block -> {} @ {}", cube.getState().getBlock().getRegistryName(), cube.getCoords().toShortString());
 			// exit if not valid Y coordinate
 			if (!WorldInfo.isValidY(cube.getCoords())) {
 				return WorldInfo.EMPTY_COORDS;
@@ -220,7 +296,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Temp
 			if (cube.equalsMaterial(Material.AIR) || cube.isReplaceable()
 					|| cube.equalsMaterial(Material.LEAVES) || cube.isLiquid()
 					|| cube.isBurning(world)) {
-				Treasure.logger.debug("block is air, leaves, replacable, liquid or burning");
+//				Treasure.logger.debug("block is air, leaves, replacable, liquid or burning");
 				newCoords = newCoords.down(1);
 			}
 			else {

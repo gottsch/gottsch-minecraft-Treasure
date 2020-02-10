@@ -3,28 +3,24 @@
  */
 package com.someguyssoftware.treasure2.world.gen.structure;
 
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
-import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkerContext;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData2;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
@@ -42,7 +38,7 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  * @author Mark Gottschling on Jan 24, 2019
  *
  */
-public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<TemplateGeneratorData>> {
+public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<TemplateGeneratorData2>> {
 	// facing property of a vanilla chest
 	private static final PropertyDirection FACING = BlockHorizontal.FACING;
 	private static final PropertyEnum<EnumFacing> CHEST_FACING = PropertyDirection.create("facing", EnumFacing.class);
@@ -56,7 +52,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	}
 	
 	@Override
-	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, 
+	public GeneratorResult<TemplateGeneratorData2> generate(World world, Random random, 
 			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords) {
 		return generate(world, random, null, templateHolder, placement, coords);
 	}
@@ -65,10 +61,10 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	 * 
 	 */
 	@Override
-	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, 
+	public GeneratorResult<TemplateGeneratorData2> generate(World world, Random random, 
 			IDecayProcessor decayProcessor, TemplateHolder templateHolder, PlacementSettings placement, ICoords coords) {
 		
-		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
+		GeneratorResult<TemplateGeneratorData2> result = new GeneratorResult<>(TemplateGeneratorData2.class);
 		
 		GottschTemplate template = (GottschTemplate) templateHolder.getTemplate();
 		Treasure.logger.debug("template size -> {}", template.getSize());
@@ -117,40 +113,47 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		}
 		
 		// process all markers and adding them to the result data (absolute positioned)
-		for (Entry<Block, StructureMarkerContext> entry : template.getMarkerMap().entries()) {
+//		for (Entry<Block, StructureMarkerContext> entry : template.getMarkerMap().entries()) {
+//			ICoords c = new Coords(GottschTemplate.transformedCoords(placement, entry.getValue().getCoords()));
+//			c = spawnCoords.add(c);
+//			result.getData().getMap().put(entry.getKey(), c);
+//			Treasure.logger.debug("adding to structure info absoluted transformed coords -> {} : {}", entry.getKey().getLocalizedName(), c.toShortString());
+//		}
+		for (Entry<Block, BlockContext> entry : template.getMarkerMap().entries()) {
 			ICoords c = new Coords(GottschTemplate.transformedCoords(placement, entry.getValue().getCoords()));
 			c = spawnCoords.add(c);
-			result.getData().getMap().put(entry.getKey(), c);
-			Treasure.logger.debug("adding to structure info absoluted transformed coords -> {} : {}", entry.getKey().getLocalizedName(), c.toShortString());
+			result.getData().getMap().put(entry.getKey(), new BlockContext(c, entry.getValue().getState()));
+			Treasure.logger.debug("old: adding to structure info absoluted transformed coords -> {} : {}", entry.getKey().getLocalizedName(), c.toShortString());
 		}
 		
 		// TODO this will be replaced with the below
 		// find the chest and update chest coords (absolute positioned)
-		List<StructureMarkerContext> contextList = (List<StructureMarkerContext>) template.getMarkerMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
-		if (!contextList.isEmpty()) {
-			StructureMarkerContext context = contextList.get(0);
-			ICoords chestCoords = new Coords(GottschTemplate.transformedCoords(placement, context.getCoords()));
-			// get the absolute coords of chest
-			chestCoords = spawnCoords.add(chestCoords);
-			// set the chest coords in the result data
-			result.getData().setChestCoords(chestCoords);
-			// get the block state of the chest
-			IBlockState chestState = context.getState();
-			chestState = chestState.withMirror(placement.getMirror());
-			chestState = chestState.withRotation(placement.getRotation());
-			 if (chestState.getProperties().containsKey(FACING)) {
-				 IBlockState modState= TreasureBlocks.WOOD_CHEST.getDefaultState().withProperty(CHEST_FACING, (EnumFacing)chestState.getProperties().get(FACING));
-				 result.getData().setChestState(modState);
-//				 Treasure.logger.debug("saving chest state -> {}", modState.toString());
-			 }
-		}
+//		List<StructureMarkerContext> contextList = (List<StructureMarkerContext>) template.getMarkerMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
+//		if (!contextList.isEmpty()) {
+//			StructureMarkerContext context = contextList.get(0);
+//			ICoords chestCoords = new Coords(GottschTemplate.transformedCoords(placement, context.getCoords()));
+//			// get the absolute coords of chest
+//			chestCoords = spawnCoords.add(chestCoords);
+//			// set the chest coords in the result data
+//			result.getData().setChestCoords(chestCoords);
+//			// get the block state of the chest
+//			IBlockState chestState = context.getState();
+//			chestState = chestState.withMirror(placement.getMirror());
+//			chestState = chestState.withRotation(placement.getRotation());
+//			 if (chestState.getProperties().containsKey(FACING)) {
+//				 IBlockState modState= TreasureBlocks.WOOD_CHEST.getDefaultState().withProperty(CHEST_FACING, (EnumFacing)chestState.getProperties().get(FACING));
+//				 result.getData().setChestState(modState);
+////				 Treasure.logger.debug("saving chest state -> {}", modState.toString());
+//			 }
+//		}
 		
 		// process all strcture markers, positioning absolutely
 		// TEMP declaration - use the return result
-		TemplateGeneratorData2 data2 = new TemplateGeneratorData2();
-		for (Entry<Block, StructureMarkerContext> entry : template.getMarkerMap().entries()) {
-			StructureMarkerContext context = getAbsoluteTransformedContext(entry.getValue(), spawnCoords, placement);
-			data2.getMap().put(entry.getKey(), context);
+//		TemplateGeneratorData2 data2 = new TemplateGeneratorData2();
+		for (Entry<Block, BlockContext> entry : template.getMarkerMap().entries()) {
+			BlockContext context = getAbsoluteTransformedContext(entry.getValue(), spawnCoords, placement);
+			result.getData().getMap().put(entry.getKey(), context);
+			Treasure.logger.debug("new: adding to structure info absoluted transformed coords -> {} : {}", entry.getKey().getLocalizedName(), context.getCoords().toShortString());
 		}
 
 		// get the transformed size
@@ -175,14 +178,14 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	 * @param placement
 	 * @return
 	 */
-	private StructureMarkerContext getAbsoluteTransformedContext(StructureMarkerContext contextIn,
+	private BlockContext getAbsoluteTransformedContext(BlockContext contextIn,
 			ICoords spawnCoords, PlacementSettings placement) {
-		StructureMarkerContext context = new StructureMarkerContext();
+		BlockContext context = new BlockContext();
 
 		// get the absolute coords of chest
-		ICoords chestCoords = new Coords(GottschTemplate.transformedCoords(placement, contextIn.getCoords()));
-		chestCoords = spawnCoords.add(chestCoords);
-		context.setCoords(chestCoords);
+		ICoords coords = new Coords(GottschTemplate.transformedCoords(placement, contextIn.getCoords()));
+		coords = spawnCoords.add(coords);
+		context.setCoords(coords);
 		
 		// get the block state of the chest
 		IBlockState chestState = contextIn.getState();
@@ -195,7 +198,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		 else {
 			 context.setState(contextIn.getState());
 		 }		 
-		 return contextIn;
+		 return context;
 	}
 
 	/**
