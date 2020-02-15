@@ -16,10 +16,9 @@ import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-
-import com.someguyssoftware.treasure2.generator.TemplateGeneratorData2;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
@@ -103,14 +102,12 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		}
 
 		// generate the structure
-		GeneratorResult<TemplateGeneratorData2> genResult = new TemplateGenerator().generate(world, random, holder, placement, spawnCoords);
+		GeneratorResult<TemplateGeneratorData> genResult = new TemplateGenerator().generate(world, random, holder, placement, spawnCoords);
 		if (!genResult.isSuccess()) return result.fail();
 
 		// TODO add fog around the perimeter of the structure
 		
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
-//		List<ICoords> spawnerCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
-//		List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
 		List<BlockContext> spawnerContexts =
 				(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
 		List<BlockContext> proximityContexts =

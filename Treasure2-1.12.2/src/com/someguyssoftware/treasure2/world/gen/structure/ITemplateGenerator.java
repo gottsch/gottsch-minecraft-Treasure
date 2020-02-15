@@ -7,7 +7,7 @@ import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.IGeneratorResult;
 
-import com.someguyssoftware.treasure2.generator.TemplateGeneratorData2;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
@@ -21,9 +21,9 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  */
 public interface ITemplateGenerator<RESULT extends IGeneratorResult<?>> {
 
-	public GeneratorResult<TemplateGeneratorData2> generate(World world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
 
-	public GeneratorResult<TemplateGeneratorData2> generate(World world, Random random, IDecayProcessor decayProcessor,
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, IDecayProcessor decayProcessor,
 			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords);
 	
 	/**

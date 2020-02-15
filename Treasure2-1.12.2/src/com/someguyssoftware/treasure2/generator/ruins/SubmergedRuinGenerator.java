@@ -16,10 +16,10 @@ import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.TemplateGeneratorData2;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 import com.someguyssoftware.treasure2.meta.StructureType;
@@ -35,7 +35,7 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  * @author Mark Gottschling on Aug 13, 2019
  *
  */
-public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<ChestGeneratorData2>> {
+public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<ChestGeneratorData>> {
 
 	private static final double REQUIRED_BASE_SIZE = 50;
 
@@ -45,27 +45,27 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 	public SubmergedRuinGenerator() {}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
 			ICoords originalSpawnCoords) {
 		return generate(world, random, originalSpawnCoords, null, null);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
 			ICoords originalSpawnCoords, IDecayRuleSet decayRuleSet) {
 		return generate(world, random, originalSpawnCoords, null, decayRuleSet);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder) {
 		return generate(world, random, originalSpawnCoords, holder, null);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder, IDecayRuleSet decayRuleSet) {
-		GeneratorResult<ChestGeneratorData2> result = new GeneratorResult<>(ChestGeneratorData2.class);
+		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 
 		// TODO create a method selectTemplate() in abstract that will be overridden by concrete classes, provided the archetype and type
 
@@ -147,7 +147,7 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 			decayProcessor.setBackFillBlockLayer1(Blocks.GRAVEL.getDefaultState());
 		}
 
-		GeneratorResult<TemplateGeneratorData2> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
+		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
 		if (!genResult.isSuccess()) return result.fail();
 
 		Treasure.logger.debug("submerged gen result -> {}", genResult);
@@ -169,7 +169,7 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 		 */
 		// check if there is a boss chest(s)
 		BlockContext chestContext = null;
-		if (bossChestContexts != null && chestContexts.size() > 0) {
+		if (bossChestContexts != null && bossChestContexts.size() > 0) {
 			if (bossChestContexts.size() > 1) {
 				chestContext = bossChestContexts.get(random.nextInt(bossChestContexts.size()));
 			}

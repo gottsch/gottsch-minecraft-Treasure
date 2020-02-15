@@ -13,13 +13,13 @@ import net.minecraft.block.state.IBlockState;
  * @author Mark Gottschling on Feb 8, 2020
  *
  */
-public class ChestGeneratorData2 extends GeneratorData {
+public class ChestGeneratorData extends GeneratorData {
 	private BlockContext chestContext;
 	
 	/**
 	 * 
 	 */
-	public ChestGeneratorData2() {
+	public ChestGeneratorData() {
 		this.chestContext = new BlockContext();
 	}
 	
@@ -28,7 +28,7 @@ public class ChestGeneratorData2 extends GeneratorData {
 	 * @param chestCoords
 	 * @param chestState
 	 */
-	public ChestGeneratorData2(ICoords chestCoords, IBlockState chestState) {
+	public ChestGeneratorData(ICoords chestCoords, IBlockState chestState) {
 		super();
 		this.chestContext = new BlockContext(chestCoords, chestState);
 	}

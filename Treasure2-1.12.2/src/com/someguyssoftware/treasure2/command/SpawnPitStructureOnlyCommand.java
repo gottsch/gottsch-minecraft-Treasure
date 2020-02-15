@@ -22,8 +22,7 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Pits;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
@@ -92,9 +91,9 @@ public class SpawnPitStructureOnlyCommand extends CommandBase {
 			Treasure.logger.debug("spawn coords -> {}", spawnCoords.toShortString());
 			Treasure.logger.debug("surface coords -> {}", surfaceCoords.toShortString());
 			// select a pit generator
-			Map<Pits, IPitGenerator<GeneratorResult<ChestGeneratorData2>>> pitGenMap = SurfaceChestWorldGenerator.pitGens.row(PitTypes.STRUCTURE);
+			Map<Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenMap = SurfaceChestWorldGenerator.pitGens.row(PitTypes.STRUCTURE);
 			Treasure.logger.debug("pitGenMap.size -> {}", pitGenMap.size());
-			IPitGenerator<GeneratorResult<ChestGeneratorData2>> pitGenerator = pitGenMap.get(pit);
+			IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = pitGenMap.get(pit);
 			Treasure.logger.debug("pitGen -> {}", pitGenerator);
 			pitGenerator.generate(world, random, surfaceCoords , spawnCoords);
 		}		

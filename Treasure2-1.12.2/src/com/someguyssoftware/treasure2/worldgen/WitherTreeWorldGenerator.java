@@ -26,8 +26,7 @@ import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.IWitherTreeConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
@@ -317,7 +316,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		// TODO don't like that using static call to SurfaceChestWorldGenerator.  Looks like more refactoring in the future. 
 		// add pit/chest
 		Treasure.logger.debug("generate pit");
-		GeneratorResult<ChestGeneratorData2> genResult = SurfaceChestWorldGenerator.generatePit(world, random, Rarity.SCARCE, witherTreeCoords, TreasureConfig.CHESTS.surfaceChests.scarceChestProperties);
+		GeneratorResult<ChestGeneratorData> genResult = SurfaceChestWorldGenerator.generatePit(world, random, Rarity.SCARCE, witherTreeCoords, TreasureConfig.CHESTS.surfaceChests.scarceChestProperties);
 		Treasure.logger.debug("result -> {}", genResult.toString());
 		if (!genResult.isSuccess()) {
 			return result.fail();
@@ -330,7 +329,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		// add chest
 		WitherChestGenerator chestGen = new WitherChestGenerator();
 		// TODO this is only building the chest... that's what the WitherChestGenerator was for
-		GeneratorResult<ChestGeneratorData2> chestResult = chestGen.generate(world, random, chestCoords, Rarity.SCARCE, null); 
+		GeneratorResult<ChestGeneratorData> chestResult = chestGen.generate(world, random, chestCoords, Rarity.SCARCE, null); 
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}

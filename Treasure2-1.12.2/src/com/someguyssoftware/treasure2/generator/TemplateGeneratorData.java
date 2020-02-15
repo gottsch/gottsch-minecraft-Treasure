@@ -15,7 +15,7 @@ import net.minecraft.block.Block;
  * @author Mark Gottschling on Feb 7, 2020
  *
  */
-public class TemplateGeneratorData2 extends GeneratorData {
+public class TemplateGeneratorData extends GeneratorData {
 	/*
 	 * size of the structure represented by ICoords
 	 */

@@ -11,12 +11,10 @@ import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-
-import com.someguyssoftware.treasure2.generator.TemplateGeneratorData2;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
@@ -43,7 +41,7 @@ import net.minecraftforge.common.DungeonHooks;
  */
 public class StructurePitGenerator extends AbstractPitGenerator {
 	
-	private IPitGenerator<GeneratorResult<ChestGeneratorData2>> generator;
+	private IPitGenerator<GeneratorResult<ChestGeneratorData>> generator;
 	
 	/**
 	 * 
@@ -56,7 +54,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	 * 
 	 * @param generator
 	 */
-	public StructurePitGenerator(IPitGenerator<GeneratorResult<ChestGeneratorData2>> generator) {
+	public StructurePitGenerator(IPitGenerator<GeneratorResult<ChestGeneratorData>> generator) {
 		this();
 		setGenerator(generator);
 		Treasure.logger.debug("using parent generator -> {}", generator.getClass().getSimpleName());
@@ -82,8 +80,8 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		GeneratorResult<ChestGeneratorData2> result = new GeneratorResult<>(ChestGeneratorData2.class);
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 
 		// is the chest placed in a cavern
 		boolean inCavern = false;
@@ -197,7 +195,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			Treasure.logger.debug("aligned room coords -> {}", roomCoords.toShortString());
 			
 			// generate the structure
-			GeneratorResult<TemplateGeneratorData2> genResult = new TemplateGenerator().generate(world, random, holder, placement, roomCoords);
+			GeneratorResult<TemplateGeneratorData> genResult = new TemplateGenerator().generate(world, random, holder, placement, roomCoords);
 			if (!genResult.isSuccess()) return result.fail();
 			
 			result.getData().setSpawnCoords(genResult.getData().getSpawnCoords());
@@ -297,14 +295,14 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	/**
 	 * @return the generator
 	 */
-	public IPitGenerator<GeneratorResult<ChestGeneratorData2>> getGenerator() {
+	public IPitGenerator<GeneratorResult<ChestGeneratorData>> getGenerator() {
 		return generator;
 	}
 
 	/**
 	 * @param generator the generator to set
 	 */
-	public void setGenerator(IPitGenerator<GeneratorResult<ChestGeneratorData2>> generator) {
+	public void setGenerator(IPitGenerator<GeneratorResult<ChestGeneratorData>> generator) {
 		this.generator = generator;
 	}
 }

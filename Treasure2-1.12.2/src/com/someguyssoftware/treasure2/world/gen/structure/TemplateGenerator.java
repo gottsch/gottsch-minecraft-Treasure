@@ -16,7 +16,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.TemplateGeneratorData2;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 
 import net.minecraft.block.Block;
@@ -38,7 +38,7 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  * @author Mark Gottschling on Jan 24, 2019
  *
  */
-public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<TemplateGeneratorData2>> {
+public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<TemplateGeneratorData>> {
 	// facing property of a vanilla chest
 	private static final PropertyDirection FACING = BlockHorizontal.FACING;
 	private static final PropertyEnum<EnumFacing> CHEST_FACING = PropertyDirection.create("facing", EnumFacing.class);
@@ -52,7 +52,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	}
 	
 	@Override
-	public GeneratorResult<TemplateGeneratorData2> generate(World world, Random random, 
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, 
 			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords) {
 		return generate(world, random, null, templateHolder, placement, coords);
 	}
@@ -61,10 +61,10 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	 * 
 	 */
 	@Override
-	public GeneratorResult<TemplateGeneratorData2> generate(World world, Random random, 
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, 
 			IDecayProcessor decayProcessor, TemplateHolder templateHolder, PlacementSettings placement, ICoords coords) {
 		
-		GeneratorResult<TemplateGeneratorData2> result = new GeneratorResult<>(TemplateGeneratorData2.class);
+		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
 		
 		GottschTemplate template = (GottschTemplate) templateHolder.getTemplate();
 		Treasure.logger.debug("template size -> {}", template.getSize());

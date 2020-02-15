@@ -21,8 +21,6 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
-import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
@@ -30,12 +28,9 @@ import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
-import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-
 import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
@@ -255,7 +250,7 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 		ICoords markerCoords = null;
 
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);		
-		GeneratorResult<ChestGeneratorData2> genResult = new GeneratorResult<>(ChestGeneratorData2.class);		
+		GeneratorResult<ChestGeneratorData> genResult = new GeneratorResult<>(ChestGeneratorData.class);		
 
 		// 1. collect location data points
 		ICoords surfaceCoords = WorldInfo.getOceanFloorSurfaceCoords(world, coords);
@@ -284,7 +279,7 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 		}
 		Treasure.logger.debug("submerged spawn coords -> {}", markerCoords.toShortString());
 
-		GeneratorResult<ChestGeneratorData2> chestResult = chestSelector.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestContext().getState());
+		GeneratorResult<ChestGeneratorData> chestResult = chestSelector.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestContext().getState());
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}
@@ -302,15 +297,15 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 	 * @param config
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData2> generateSubmergedRuins(World world, Random random, ICoords spawnCoords,
+	public GeneratorResult<ChestGeneratorData> generateSubmergedRuins(World world, Random random, ICoords spawnCoords,
 			IChestConfig config) {
-		GeneratorResult<ChestGeneratorData2> result = new GeneratorResult<>(ChestGeneratorData2.class);		
+		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
 		result.getData().setSpawnCoords(spawnCoords);
 
 		SubmergedRuinGenerator generator = new SubmergedRuinGenerator();
 
 		// build the structure
-		GeneratorResult<ChestGeneratorData2> genResult = generator.generate(world, random, spawnCoords);
+		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, random, spawnCoords);
 		Treasure.logger.debug("submerged struct result -> {}", genResult);
 		if (!genResult.isSuccess()) return result.fail();
 

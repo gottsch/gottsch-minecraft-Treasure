@@ -20,17 +20,13 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.IChestConfig;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
-import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;
@@ -153,7 +149,7 @@ public class SpawnRuinsCommand extends CommandBase {
 //			IChestConfig config = TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity);
 			
 			// generate
-			GeneratorResult<ChestGeneratorData2> result = worldGen.generateSurfaceRuins(world, random,coords, holder, ruleSet, null);
+			GeneratorResult<ChestGeneratorData> result = worldGen.generateSurfaceRuins(world, random,coords, holder, ruleSet, null);
 			Treasure.logger.debug("result from t2-ruins -> {}", result);
 			if (result.isSuccess() && result.getData().getChestContext().getCoords() != null) {
 				IChestGenerator chestGen = worldGen.getChestGenMap().get(rarity).next();
@@ -164,7 +160,7 @@ public class SpawnRuinsCommand extends CommandBase {
 				if (chestCoords == WorldInfo.EMPTY_COORDS) chestCoords = null;
 				
 				if (chestCoords != null) {
-					GeneratorResult<ChestGeneratorData2> chestResult = chestGen.generate(world, random, chestCoords, rarity, result.getData().getChestContext().getState());
+					GeneratorResult<ChestGeneratorData> chestResult = chestGen.generate(world, random, chestCoords, rarity, result.getData().getChestContext().getState());
 				}
 			}
 		}

@@ -10,7 +10,6 @@ import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 import com.someguyssoftware.gottschcore.world.gen.structure.DecayProcessor;
@@ -18,13 +17,10 @@ import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
-import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.IGeneratorData;
-import com.someguyssoftware.treasure2.generator.TemplateGeneratorData2;
+import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 import com.someguyssoftware.treasure2.meta.StructureType;
@@ -41,7 +37,7 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  * @author Mark Gottschling on Dec 13, 2019
  *
  */
-public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<ChestGeneratorData2>> {
+public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<ChestGeneratorData>> {
 	
 	private static final double REQUIRED_BASE_SIZE = 45;
 	private static final double REQUIRED_AIR_SIZE = 30;
@@ -52,27 +48,27 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 	public SurfaceRuinGenerator() {}
 	
 	@Override
-	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
 			ICoords originalSpawnCoords) {
 		return generate(world, random, originalSpawnCoords, null, null);
 	}
 	
 	@Override
-	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
 			ICoords originalSpawnCoords, IDecayRuleSet decayRuleSet) {
 		return generate(world, random, originalSpawnCoords, null, decayRuleSet);
 	}
 	
 	@Override
-	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder) {
 		return generate(world, random, originalSpawnCoords, holder, null);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData2> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder, IDecayRuleSet decayRuleSet) {		
-		GeneratorResult<ChestGeneratorData2> result = new GeneratorResult<>(ChestGeneratorData2.class);
+		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 
 		/*
 		 * Setup
@@ -166,22 +162,11 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
 		}
 		
-		GeneratorResult<TemplateGeneratorData2> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
+		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
 		 if (!genResult.isSuccess()) return result.fail();
 
 		Treasure.logger.debug("surface gen result -> {}", genResult);
-		// get the chest coords
-		// TODO here we search for the boss chest first, then the list of chests
-		
-//		ICoords chestCoords = genResult.getData().getChestCoords();
-//		if (chestCoords != null) {
-//			// move the chest coords to the first solid block beneath it.
-////			chestCoords = WorldInfo.getDryLandSurfaceCoords(world, chestCoords);
-//			chestCoords = getSolidSurfaceCoords(world, chestCoords.up(1));
-//			if (chestCoords == WorldInfo.EMPTY_COORDS) chestCoords = null;
-//		}
-//		genResult.getData().setChestCoords(chestCoords);
-		
+
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 		List<BlockContext> bossChestContexts =
 					(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.BOSS_CHEST));

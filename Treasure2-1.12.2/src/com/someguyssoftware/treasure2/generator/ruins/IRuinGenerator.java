@@ -9,19 +9,16 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
-import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.IGeneratorResult;
-
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
-import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData2;
-import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
@@ -36,12 +33,12 @@ import net.minecraftforge.common.DungeonHooks;
  */
 public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 
-	GeneratorResult<ChestGeneratorData2> generate(World world, Random random, ICoords spawnCoords);	
-	GeneratorResult<ChestGeneratorData2> generate(World world, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords spawnCoords);	
+	GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
 			IDecayRuleSet decayRuleSet);
-	GeneratorResult<ChestGeneratorData2> generate(World world, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
 			TemplateHolder holder);
-	GeneratorResult<ChestGeneratorData2> generate(World world, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
 			TemplateHolder holder, IDecayRuleSet decayRuleSet);
 
 	default public TemplateHolder selectTemplate(World world, Random random, ICoords coords, StructureArchetype archetype, StructureType type) {
