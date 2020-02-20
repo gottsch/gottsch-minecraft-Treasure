@@ -211,7 +211,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String CLAM_CHEST_TE_ID = "clam_chest_tile_entity";
 	@Ignore public static final String SPIDER_CHEST_TE_ID = "spider_chest_tile_entity";
 	@Ignore public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
-
+	@Ignore public static final String GRAVESTONE_TE_ID = "gravestone_tile_entity";
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Name("01 mod")

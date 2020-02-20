@@ -31,6 +31,7 @@ import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.DreadPirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldSkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
+import com.someguyssoftware.treasure2.tileentity.MistEmitterTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
@@ -754,12 +755,7 @@ public class TreasureBlocks {
 				ITEM_BLOCKS.add(item);
 			}
 
-			// TODO for gravestone and anything with variants, probably need to use this method instead of the the register model method
-			//	        ModelLoader.setCustomModelResourceLocation(chestItem, type.ordinal(),
-			//	        		new ModelResourceLocation(chestItem.getRegistryName(), "variant=" + type.getName()));
-
 			// register the tile entities
-			//			GameRegistry.registerTileEntity(AbstractTreasureChestTileEntity.class, "treasureChestTileEntity");
 			GameRegistry.registerTileEntity(WoodChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WOOD_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(CrateChestTileEntity.class,new ResourceLocation( Treasure.MODID+":"+TreasureConfig.CRATE_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(MoldyCrateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.MOLDY_CRATE_CHEST_TE_ID));
@@ -769,16 +765,17 @@ public class TreasureBlocks {
 			GameRegistry.registerTileEntity(GoldStrongboxTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.GOLD_STRONGBOX_TE_ID));
 			GameRegistry.registerTileEntity(SafeTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.SAFE_TE_ID));
 			GameRegistry.registerTileEntity(DreadPirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.DREAD_PIRATE_CHEST_TE_ID));
-//			GameRegistry.registerTileEntity(WhaleBonePirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WHALE_BONE_PIRATE_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(CompressorChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.COMPRESSOR_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(WitherChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WITHER_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(SkullChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.SKULL_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(GoldSkullChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.GOLD_SKULL_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(CauldronChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.CAULDRON_CHEST_TE_ID));
-//			GameRegistry.registerTileEntity(OysterChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.OYSTER_CHEST_TE_ID));	
-//			GameRegistry.registerTileEntity(ClamChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.CLAM_CHEST_TE_ID));	
 			GameRegistry.registerTileEntity(SpiderChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.SPIDER_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(ProximitySpawnerTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.PROXIMITY_SPAWNER_TE_ID));
+			GameRegistry.registerTileEntity(MistEmitterTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.GRAVESTONE_TE_ID));
+//			GameRegistry.registerTileEntity(WhaleBonePirateChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WHALE_BONE_PIRATE_CHEST_TE_ID));
+//			GameRegistry.registerTileEntity(OysterChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.OYSTER_CHEST_TE_ID));	
+//			GameRegistry.registerTileEntity(ClamChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.CLAM_CHEST_TE_ID));	
 
 		}	
 	}

@@ -183,14 +183,14 @@ public class TreasureItems {
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
-				.setCraftable(false)
+				.setCraftable(true)
 				.setMaxDamage(TreasureConfig.KEYS_LOCKS.rubyKeyMaxUses);
 		
 		SAPPHIRE_KEY = new KeyItem(Treasure.MODID, TreasureConfig.SAPPHIRE_KEY_ID)
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC)
 				.setBreakable(false)
-				.setCraftable(false)
+				.setCraftable(true)
 				.setMaxDamage(TreasureConfig.KEYS_LOCKS.sapphireKeyMaxUses);
 		
 		JEWELLED_KEY = new JewelledKey(Treasure.MODID, TreasureConfig.JEWELLED_KEY_ID)

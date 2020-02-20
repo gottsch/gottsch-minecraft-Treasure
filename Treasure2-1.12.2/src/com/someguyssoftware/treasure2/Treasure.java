@@ -38,6 +38,10 @@ import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
+import com.someguyssoftware.treasure2.network.PoisonMistMessageHandlerOnServer;
+import com.someguyssoftware.treasure2.network.PoisonMistMessageToServer;
+import com.someguyssoftware.treasure2.network.WitherMistMessageHandlerOnServer;
+import com.someguyssoftware.treasure2.network.WitherMistMessageToServer;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureDecayManager;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
@@ -59,6 +63,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -133,6 +138,9 @@ public class Treasure extends AbstractMod {
     
     public static TreasureDecayManager DECAY_MANAGER;
     
+    // TEMP home
+    public static SimpleNetworkWrapper simpleNetworkWrapper;    // used to transmit your network messages
+    
 	/**
 	 * 
 	 */
@@ -166,6 +174,13 @@ public class Treasure extends AbstractMod {
 		
 		// register the GUI handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+		
+		int PARTICLE_MESSAGE_ID = 14;
+	    simpleNetworkWrapper = NetworkRegistry.INSTANCE.newSimpleChannel("treasure2_channel");
+	    simpleNetworkWrapper.registerMessage(PoisonMistMessageHandlerOnServer.class, PoisonMistMessageToServer.class,
+	                                          PARTICLE_MESSAGE_ID, Side.SERVER);
+	    simpleNetworkWrapper.registerMessage(WitherMistMessageHandlerOnServer.class, WitherMistMessageToServer.class,
+                15, Side.SERVER);
 	}
 	
 	/**

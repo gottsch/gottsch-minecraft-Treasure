@@ -3,18 +3,34 @@
  */
 package com.someguyssoftware.treasure2.block;
 
-import com.someguyssoftware.gottschcore.block.CardinalDirectionFacadeBlock;
-import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.item.TreasureItems;
+import java.util.Random;
 
+import com.someguyssoftware.gottschcore.block.CardinalDirectionFacadeBlock;
+import com.someguyssoftware.gottschcore.positional.Coords;
+import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.particle.MistParticle;
+import com.someguyssoftware.treasure2.tileentity.MistEmitterTileEntity;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockTorch;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * 
@@ -27,7 +43,7 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock implements ITr
 	 * An array of AxisAlignedBB bounds for the bounding box
 	 */
 	AxisAlignedBB[] bounds = new AxisAlignedBB[4];
-	
+
 	/**
 	 * 
 	 * @param modID
@@ -39,13 +55,17 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock implements ITr
 		setSoundType(SoundType.STONE);
 		setCreativeTab(Treasure.TREASURE_TAB);
 		setHardness(3.0F);
-		setBoundingBox(
-				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), 	// N
-				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// E
-				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// S
-				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F)	// W
-				);
+		setBoundingBox(new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), // N
+				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), // E
+				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), // S
+				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F) // W
+		);
 	}
+
+//	@Override
+//	public TileEntity createNewTileEntity(World worldIn, int meta) {
+//		return new MistEmitterTileEntity();
+//	}
 	
 	/**
 	 * 
@@ -56,17 +76,18 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock implements ITr
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
-		
+
 		// if all the blocks in the immediate area are loaded
-        if (worldIn.isAreaLoaded(new BlockPos(x - 5, y - 5, z - 5), new BlockPos(x + 5, y + 5, z + 5))) {
-        	// use a MutatableBlockPos instead of Cube\Coords or BlockPos to say the recreation of many objects
-        	BlockPos.MutableBlockPos mbp = new BlockPos.MutableBlockPos();
-        	
+		if (worldIn.isAreaLoaded(new BlockPos(x - 5, y - 5, z - 5), new BlockPos(x + 5, y + 5, z + 5))) {
+			// use a MutatableBlockPos instead of Cube\Coords or BlockPos to say the
+			// recreation of many objects
+			BlockPos.MutableBlockPos mbp = new BlockPos.MutableBlockPos();
+
 			for (int x1 = -4; x1 <= 4; ++x1) {
 				for (int y1 = -4; y1 <= 4; ++y1) {
-					for (int z1 = -4; z1 <= 4; ++z1) {								
+					for (int z1 = -4; z1 <= 4; ++z1) {
 						// that just checks a value.
-						IBlockState inspectBlockState = worldIn	.getBlockState(mbp.setPos(x + x1, y + y1, z + z1));
+						IBlockState inspectBlockState = worldIn.getBlockState(mbp.setPos(x + x1, y + y1, z + z1));
 //						Block inspectBlock = inspectBlockState.getBlock();
 						if (inspectBlockState.getMaterial() == TreasureItems.FOG) {
 							worldIn.setBlockState(mbp, inspectBlockState.withProperty(FogBlock.CHECK_DECAY, true));
@@ -75,44 +96,128 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock implements ITr
 					}
 				}
 			}
-        }
-		
+		}
+
 		super.breakBlock(worldIn, pos, state);
 	}
+
+	/**
+	 * NOTE randomDisplayTick is on the client side only. The server is not keeping track of any particles
+	 * NOTE cannot control the number of ticks per randomDisplayTick() call - it is not controlled by tickRate()
+	 */
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+		if (WorldInfo.isServerSide(world)) {
+			return;
+		}
+		
+		if (!TreasureConfig.WORLD_GEN.getGeneralProperties().enableFog) {
+			return;
+		}
+				
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
+
+		int numberOfTorches = 0;
+		// if all the blocks in the immediate area are loaded
+		if (world.isAreaLoaded(new BlockPos(x - 3, y - 3, z - 3), new BlockPos(x + 3, y + 3, z + 3))) {
+			// use a MutatableBlockPos instead of Cube\Coords or BlockPos to say the recreation of many objects
+			BlockPos.MutableBlockPos mbp = new BlockPos.MutableBlockPos();
+			
+			// change the randomness of particle creation
+			// o torches = 100%
+			// 1 torch = 50%
+			// 2 torches = 25%
+			// 3 torches = 0%
+			for (int x1 = -3; x1 <= 3; ++x1) {
+				for (int y1 = -3; y1 <= 3; ++y1) {
+					for (int z1 = -3; z1 <= 3; ++z1) {								
+						// that just checks a value.
+						IBlockState inspectBlockState = world.getBlockState(mbp.setPos(x + x1, y + y1, z + z1));
+						Block inspectBlock = inspectBlockState.getBlock();
+
+						// if the block is a torch, then destroy the fog and return
+						if (inspectBlock instanceof BlockTorch) {
+							numberOfTorches++;
+						}
+						if (numberOfTorches >=3) {
+							x1 = 99; y1 = 99; z1 = 99;
+							break;
+						}						
+					}
+				}
+			}
+		}
+		
+		boolean isCreateParticle = true;
+		if (numberOfTorches == 1) {
+			isCreateParticle = RandomHelper.checkProbability(random, 50);
+		}
+		else if (numberOfTorches == 2) {
+			isCreateParticle = RandomHelper.checkProbability(random, 25);
+		}
+		else if (numberOfTorches > 2) {
+			isCreateParticle = false;
+		}
+		
+		if (!isCreateParticle) {
+			return;
+		}
+
+		// initial positions - has a spread area of up to 1.5 blocks
+		double xPos = (x + 0.5F) + (random.nextFloat() * 3.0) - 1.5F;
+		double yPos = y;
+		// + state.getBoundingBox(world, pos).maxY; // + 1.0;
+		double zPos = (z + 0.5F) + (random.nextFloat() * 3.0) - 1.5F;
+		// initial velocities
+		double velocityX = 0;
+		double velocityY = 0;
+		double velocityZ = 0;
 	
+		Particle mistParticle = new MistParticle(world, xPos, yPos, zPos, velocityX, velocityY, velocityZ, new Coords(pos));
+		Minecraft.getMinecraft().effectRenderer.addEffect(mistParticle);
+	}
+
+	/*
+	 * This is for updateTick()
+	 */
+	@Override
+	public int tickRate(World worldIn) {
+		return 10;
+	}
+
 	/**
 	 * 
 	 */
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		if (state.getValue(FACING) == EnumFacing.NORTH) {
 			return bounds[EnumFacing.NORTH.getHorizontalIndex()];
-		}
-		else if (state.getValue(FACING) == EnumFacing.SOUTH) {
+		} else if (state.getValue(FACING) == EnumFacing.SOUTH) {
 			return bounds[EnumFacing.SOUTH.getHorizontalIndex()];
-		}
-		else if (state.getValue(FACING) == EnumFacing.EAST) {
+		} else if (state.getValue(FACING) == EnumFacing.EAST) {
 			return bounds[EnumFacing.EAST.getHorizontalIndex()];
-		}
-		else if (state.getValue(FACING) == EnumFacing.WEST) {
+		} else if (state.getValue(FACING) == EnumFacing.WEST) {
 			return bounds[EnumFacing.WEST.getHorizontalIndex()];
-		}
-		else {		
+		} else {
 			return bounds[EnumFacing.NORTH.getHorizontalIndex()];
 		}
 	}
-	
-	  /**
-     * Determines if this block can prevent leaves connected to it from decaying.
-     * @param state The current state
-     * @param world The current world
-     * @param pos Block position in world
-     * @return true if the presence this block can prevent leaves from decaying.
-     */
+
+	/**
+	 * Determines if this block can prevent leaves connected to it from decaying.
+	 * 
+	 * @param state The current state
+	 * @param world The current world
+	 * @param pos   Block position in world
+	 * @return true if the presence this block can prevent leaves from decaying.
+	 */
 	@Override
-    public boolean canSustainFog(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return true;
-    }
-    
+	public boolean canSustainFog(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return true;
+	}
+
 	/**
 	 * @return the bounds
 	 */
@@ -122,7 +227,7 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock implements ITr
 
 	/**
 	 * @param bounds the bounds to set
-	 * @return 
+	 * @return
 	 */
 	public GravestoneBlock setBounds(AxisAlignedBB[] bounds) {
 		this.bounds = bounds;

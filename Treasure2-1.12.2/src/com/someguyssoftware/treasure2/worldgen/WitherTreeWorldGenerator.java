@@ -279,9 +279,9 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		buildMainTree(world, random, surfaceCoords, config);
 
 		// 4. add the fog
-		if (TreasureConfig.WORLD_GEN.getGeneralProperties().enableWitherFog) {
-			GenUtil.addFog(world, random, surfaceCoords, fogDensity);
-		}
+//		if (TreasureConfig.WORLD_GEN.getGeneralProperties().enableWitherFog) {
+//			GenUtil.addFog(world, random, surfaceCoords, fogDensity);
+//		}
 		witherTreeCoords = surfaceCoords;
 		
 		// determine how many extra "withered" trees to include in the area
@@ -297,17 +297,18 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 			ICoords c = witherTreeCoords.rotate(xlen, zlen, degrees);
 
 			// get the yspawn
-			c = WorldInfo.getDryLandSurfaceCoords(world, c);
+			c = WorldInfo.getDryLandSurfaceCoords(world, c.withY(WorldInfo.getHeightValue(world, c)));
 
 			// add tree if criteria is met
 			if (c != null && c != WorldInfo.EMPTY_COORDS) {
 				if (c.getDistanceSq(witherTreeCoords) > 4) {
 					if (world.getBlockState(c.toPos()).getBlock() != TreasureBlocks.WITHER_LOG) {						
 						buildClearing(world, random, c);
-						buildTree(world, random, c, config);						
-						if (TreasureConfig.WORLD_GEN.getGeneralProperties().enablePoisonFog) {
-							GenUtil.addFog(world, random, c, poisonFogDensity);
-						}
+						// TODO non-main trees need to have the soul block on the ground (for particle spawning purposes)
+						buildTree(world, random, c, config);		
+//						if (TreasureConfig.WORLD_GEN.getGeneralProperties().enablePoisonFog) {
+//							GenUtil.addFog(world, random, c, poisonFogDensity);
+//						}
 					}
 				}
 			}
@@ -395,7 +396,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 
 		boolean hasLifeBeenAdded = false;
 		for (int y = 0; y < maxSize; y++) {
-			if (y == 2) {
+			if (y == 0) {
 				if (!hasLifeBeenAdded) {
 					world.setBlockState(coords.add(0, y, 0).toPos(), TreasureBlocks.WITHER_LOG_SOUL.getDefaultState());
 					 hasLifeBeenAdded = true;
