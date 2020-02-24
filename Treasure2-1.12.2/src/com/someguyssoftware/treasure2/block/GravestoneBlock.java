@@ -13,7 +13,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.particle.MistParticle;
-import com.someguyssoftware.treasure2.tileentity.MistEmitterTileEntity;
+import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;
@@ -37,7 +37,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Mark Gottschling on Jan 29, 2018
  *
  */
-public class GravestoneBlock extends CardinalDirectionFacadeBlock implements ITreasureBlock, IFogSupport {
+public class GravestoneBlock extends CardinalDirectionFacadeBlock
+		implements ITreasureBlock, IFogSupport, ITileEntityProvider {
+
+	// TODO add property HAS_ENTITY
+//	public static final PropertyBool HAS_ENTITY = PropertyBool.create("has_entity");
 
 	/*
 	 * An array of AxisAlignedBB bounds for the bounding box
@@ -55,6 +59,9 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock implements ITr
 		setSoundType(SoundType.STONE);
 		setCreativeTab(Treasure.TREASURE_TAB);
 		setHardness(3.0F);
+//		this.setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(HAS_ENTITY,
+//				Boolean.valueOf(false)));
+
 		setBoundingBox(new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), // N
 				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), // E
 				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), // S
@@ -62,11 +69,22 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock implements ITr
 		);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 //	@Override
-//	public TileEntity createNewTileEntity(World worldIn, int meta) {
-//		return new MistEmitterTileEntity();
+//	protected BlockStateContainer createBlockState() {
+//		return new BlockStateContainer(this, new IProperty[] { FACING, HAS_ENTITY });
 //	}
-	
+
+	@Override
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		GravestoneProximitySpawnerTileEntity tileEntity = new GravestoneProximitySpawnerTileEntity();
+		Treasure.logger.debug("created TE.");
+		return (TileEntity) tileEntity;
+	}
+
 	/**
 	 * 
 	 */
@@ -102,8 +120,9 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock implements ITr
 	}
 
 	/**
-	 * NOTE randomDisplayTick is on the client side only. The server is not keeping track of any particles
-	 * NOTE cannot control the number of ticks per randomDisplayTick() call - it is not controlled by tickRate()
+	 * NOTE randomDisplayTick is on the client side only. The server is not keeping track of any
+	 * particles NOTE cannot control the number of ticks per randomDisplayTick() call - it is not
+	 * controlled by tickRate()
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -111,11 +130,11 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock implements ITr
 		if (WorldInfo.isServerSide(world)) {
 			return;
 		}
-		
+
 		if (!TreasureConfig.WORLD_GEN.getGeneralProperties().enableFog) {
 			return;
 		}
-				
+
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
@@ -123,17 +142,17 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock implements ITr
 		int numberOfTorches = 0;
 		// if all the blocks in the immediate area are loaded
 		if (world.isAreaLoaded(new BlockPos(x - 3, y - 3, z - 3), new BlockPos(x + 3, y + 3, z + 3))) {
-			// use a MutatableBlockPos instead of Cube\Coords or BlockPos to say the recreation of many objects
+			// use a MutatableBlockPos instead of Cube\Coords or BlockPos to say the
+			// recreation of many objects
 			BlockPos.MutableBlockPos mbp = new BlockPos.MutableBlockPos();
-			
-			// change the randomness of particle creation
-			// o torches = 100%
-			// 1 torch = 50%
-			// 2 torches = 25%
-			// 3 torches = 0%
+
+			/*
+			 * change the randomness of particle creation by number of torches o torches = 100% 1 torch = 50% 2
+			 * torches = 25% 3 torches = 0%
+			 */
 			for (int x1 = -3; x1 <= 3; ++x1) {
 				for (int y1 = -3; y1 <= 3; ++y1) {
-					for (int z1 = -3; z1 <= 3; ++z1) {								
+					for (int z1 = -3; z1 <= 3; ++z1) {
 						// that just checks a value.
 						IBlockState inspectBlockState = world.getBlockState(mbp.setPos(x + x1, y + y1, z + z1));
 						Block inspectBlock = inspectBlockState.getBlock();
@@ -142,26 +161,26 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock implements ITr
 						if (inspectBlock instanceof BlockTorch) {
 							numberOfTorches++;
 						}
-						if (numberOfTorches >=3) {
-							x1 = 99; y1 = 99; z1 = 99;
+						if (numberOfTorches >= 3) {
+							x1 = 99;
+							y1 = 99;
+							z1 = 99;
 							break;
-						}						
+						}
 					}
 				}
 			}
 		}
-		
+
 		boolean isCreateParticle = true;
 		if (numberOfTorches == 1) {
 			isCreateParticle = RandomHelper.checkProbability(random, 50);
-		}
-		else if (numberOfTorches == 2) {
+		} else if (numberOfTorches == 2) {
 			isCreateParticle = RandomHelper.checkProbability(random, 25);
-		}
-		else if (numberOfTorches > 2) {
+		} else if (numberOfTorches > 2) {
 			isCreateParticle = false;
 		}
-		
+
 		if (!isCreateParticle) {
 			return;
 		}
@@ -175,8 +194,10 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock implements ITr
 		double velocityX = 0;
 		double velocityY = 0;
 		double velocityZ = 0;
-	
-		Particle mistParticle = new MistParticle(world, xPos, yPos, zPos, velocityX, velocityY, velocityZ, new Coords(pos));
+
+		// create particle
+		Particle mistParticle = new MistParticle(world, xPos, yPos, zPos, velocityX, velocityY, velocityZ,
+				new Coords(pos));
 		Minecraft.getMinecraft().effectRenderer.addEffect(mistParticle);
 	}
 
@@ -215,8 +236,30 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock implements ITr
 	 */
 	@Override
 	public boolean canSustainFog(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return true;
+//		return true;
+		return false;
 	}
+
+	/**
+	 * Convert the given metadata into a BlockState for this Block
+	 */
+//	@Override
+//	public IBlockState getStateFromMeta(int meta) {
+//		IBlockState state = super.getStateFromMeta(meta);
+//		return state.withProperty(HAS_ENTITY, Boolean.valueOf((meta & 8) > 0));
+//	}
+
+	/**
+	 * Convert the BlockState into the correct metadata value
+	 */
+//	@Override
+//	public int getMetaFromState(IBlockState state) {
+//		int meta = 0;
+//		meta = state.getValue(FACING).getIndex();
+//		if (state.getValue(HAS_ENTITY))
+//			meta += 8;
+//		return meta;
+//	}
 
 	/**
 	 * @return the bounds

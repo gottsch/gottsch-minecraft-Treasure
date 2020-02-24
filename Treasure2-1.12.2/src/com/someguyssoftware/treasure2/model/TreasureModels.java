@@ -4,8 +4,17 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.world.ColorizerGrass;
+import net.minecraft.world.biome.BiomeColorHelper;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Mod;
@@ -96,6 +105,9 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SAPPHIRE_ORE));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.RUBY_ORE));
 		
+		// OTHER
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FALLING_GRASS));
+		
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);
 		registerItemModel(TreasureItems.SILVER_COIN);
@@ -178,5 +190,46 @@ public class TreasureModels {
 	private static void registerItemModel(Item item) {
 		final ModelResourceLocation location = new ModelResourceLocation(item.getRegistryName(), "inventory");
 		ModelLoader.setCustomMeshDefinition(item, MeshDefinitionFix.create(stack -> location));			
+	}
+	
+	/**
+	 * Register the {@link IBlockColor} handlers.
+	 *
+	 * @param event The event
+	 */
+	@SubscribeEvent
+	public static void registerBlockColourHandlers(final ColorHandlerEvent.Block event) {
+		final BlockColors blockColors = event.getBlockColors();
+
+		// Use the grass colour of the biome or the default grass colour
+		final IBlockColor grassColourHandler = (state, blockAccess, pos, tintIndex) -> {
+			if (blockAccess != null && pos != null) {
+				return BiomeColorHelper.getGrassColorAtPos(blockAccess, pos);
+			}
+
+			return ColorizerGrass.getGrassColor(0.5D, 1.0D);
+		};
+
+		blockColors.registerBlockColorHandler(grassColourHandler, TreasureBlocks.FALLING_GRASS);
+	}
+	
+	/**
+	 * Register the {@link IItemColor} handlers
+	 *
+	 * @param event The event
+	 */
+	@SubscribeEvent
+	public static void registerItemColourHandlers(final ColorHandlerEvent.Item event) {
+		final BlockColors blockColors = event.getBlockColors();
+		final ItemColors itemColors = event.getItemColors();
+
+		// Use the Block's colour handler for an ItemBlock
+		final IItemColor itemBlockColourHandler = (stack, tintIndex) -> {
+			@SuppressWarnings("deprecation")
+			final IBlockState state = ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata());
+			return blockColors.colorMultiplier(state, null, null, tintIndex);
+		};
+
+		itemColors.registerItemColorHandler(itemBlockColourHandler, TreasureBlocks.FALLING_GRASS);
 	}
 }

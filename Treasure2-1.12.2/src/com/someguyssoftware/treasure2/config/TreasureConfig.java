@@ -31,20 +31,24 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
- * About Categories / Sub-categories:
- * See https://mcforge.readthedocs.io/en/latest/config/annotations/#sub-categories
- * Note that only the 1st level sub-category from parent needs to be a static class referenced by a static field. Any
- * child n-level sub-categories need to be non-static field references. The inner classes themselves can be static or non-static.
+ * About Categories / Sub-categories: See
+ * https://mcforge.readthedocs.io/en/latest/config/annotations/#sub-categories Note that only the
+ * 1st level sub-category from parent needs to be a static class referenced by a static field. Any
+ * child n-level sub-categories need to be non-static field references. The inner classes themselves
+ * can be static or non-static.
  * 
  * Implements IConfig and ILoggerConfig to be backwards compatible with ealier GottschCore versions.
  * 
  * @author Mark Gottschling on Sep 4, 2019
  *
  */
-@Config(modid = Treasure.MODID, name = Treasure.MODID + "/" + Treasure.MODID + "-" + TreasureConfig.CONFIG_VERSION, type = Type.INSTANCE)
+@Config(modid = Treasure.MODID, name = Treasure.MODID + "/" + Treasure.MODID + "-"
+		+ TreasureConfig.CONFIG_VERSION, type = Type.INSTANCE)
 public class TreasureConfig implements IConfig, ILoggerConfig {
-	@Ignore public static final String CONFIG_VERSION = "c1.0";
+	@Ignore
+	public static final String CONFIG_VERSION = "c1.0";
 
+	// @formatter:off
 	/*
 	 *  IDs
 	 */
@@ -179,6 +183,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 	@Ignore public static final String SPANISH_MOSS_BLOCK_ID = "spanish_moss";
 	@Ignore public static final String SPANISH_MOSS_ITEM_ID = "spanish_moss";
+	@Ignore public static final String FALLING_GRASS_ID = "falling_grass";
 
 	@Ignore public static final String WITHER_PLANKS_ID = "wither_planks";
 
@@ -212,45 +217,46 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String SPIDER_CHEST_TE_ID = "spider_chest_tile_entity";
 	@Ignore public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
 	@Ignore public static final String GRAVESTONE_TE_ID = "gravestone_tile_entity";
+	@Ignore public static final String GRAVESTONE_PROXIMITY_SPAWNER_TE_ID = "gravestone_proximity_spawner_tile_entity";
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-
+	// @formatter:on
 	@Name("01 mod")
-	@Comment({"General mod properties."})
+	@Comment({ "General mod properties." })
 	public static final ModConfig MOD = new ModConfig();
 
 	@Name("02 logging")
-	@Comment({"Logging properties"})
+	@Comment({ "Logging properties" })
 	public static final LoggerConfig LOGGING = new LoggerConfig();
 
 	@Name("03 chests")
-	@Comment({"Chest properties"})
+	@Comment({ "Chest properties" })
 	public static final Chests CHESTS = new Chests();
 
 //	@Name("04 actual chests")
 //	public static final ActualChests ACTUAL_CHESTS = new ActualChests();
 
 	@Name("04 wells")
-	@Comment({"Well properties"})
+	@Comment({ "Well properties" })
 	public static final Well WELL = new Well();
 
 	@Name("05 wither tree")
-	@Comment({"Wither tree properties"})
+	@Comment({ "Wither tree properties" })
 	public static final WitherTree WITHER_TREE = new WitherTree();
 
 	@Name("06 pits")
-	@Comment({"Pit properties"})
+	@Comment({ "Pit properties" })
 	public static final Pits PIT = new Pits();
 
 	@Name("07 keys and locks")
-	@Comment({"Keys and Locks properties"})
+	@Comment({ "Keys and Locks properties" })
 	public static final KeysAndLocks KEYS_LOCKS = new KeysAndLocks();
 
 	@Name("07b coins and valuables")
-	@Comment({"Coins and Valuables properties"})
+	@Comment({ "Coins and Valuables properties" })
 	public static final Coins COINS = new Coins();
-	
+
 	@Name("08 gems and ores")
-	@Comment({"Gems and Ores properties"})
+	@Comment({ "Gems and Ores properties" })
 	public static final GemsAndOres GEMS_ORES = new GemsAndOres();
 
 	@Name("09 world generation")
@@ -261,49 +267,55 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Comment("Foreign mod properties")
 	public static final ForeignModEnablements FOREIGN_MODS = new ForeignModEnablements();
 
-	@Ignore public static TreasureConfig instance = new TreasureConfig();
+	@Ignore
+	public static TreasureConfig instance = new TreasureConfig();
 
 	/**
 	 * 
 	 */
 	public TreasureConfig() {
 	}
-	
+
 	/**
 	 * 
 	 */
 	public static void init() {
-		// load raw arrays into lists		
+		// load raw arrays into lists
 		TreasureConfig.CHESTS.init();
 		TreasureConfig.WELL.init();
 		TreasureConfig.WITHER_TREE.init();
 		TreasureConfig.WORLD_GEN.init();
 	}
-	
+
 	/*
 	 * 
 	 */
 	public static class ForeignModEnablements {
-		@Comment({"Add mod's MODID to this list to enable custom loot tables for a mod."})
+		@Comment({ "Add mod's MODID to this list to enable custom loot tables for a mod." })
 		@Name("01. Foreign mod IDs for custom loot tables:")
-		public String[] enableForeignModIDs = new String[]{"mocreatures", "sgs_metals"};
-		@Comment({"A list of mods that have prebuilt loot tables available.", "Note: used for informational purposes only."})
+		public String[] enableForeignModIDs = new String[] { "mocreatures", "sgs_metals" };
+		@Comment({ "A list of mods that have prebuilt loot tables available.",
+				"Note: used for informational purposes only." })
 		@Name("02. Pre-build loot tables for foreign mod IDs:")
-		public String[] availableForeignModLootTables = new String[]{"mocreatures", "sgs_metals"};
-	}	
+		public String[] availableForeignModLootTables = new String[] { "mocreatures", "sgs_metals" };
+	}
 
 	/*
 	 * 
 	 */
 	public static class Chests {
-		@Comment({"Chests that generate on land.", "Note: There is a build-in check against ocean biomes for surface chests. Adding ocean biomes to the white lists will not change this functionality."})
+		@Comment({ "Chests that generate on land.",
+				"Note: There is a build-in check against ocean biomes for surface chests. Adding ocean biomes to the white lists will not change this functionality." })
 		@Name("01 Surface Chests")
 		public ChestCollection surfaceChests;
-		@Comment({"Chests that generate underwater (in ocean biomes).", "Note: There is a build-in check to only allow ocean biomes for submerged chests. Add other biomes to the white lists will not change this functionality."})
+		@Comment({ "Chests that generate underwater (in ocean biomes).",
+				"Note: There is a build-in check to only allow ocean biomes for submerged chests. Add other biomes to the white lists will not change this functionality." })
 		@Name("02 Submerged Chests")
 		public ChestCollection submergedChests;
 
-		@Comment({"The number of chests that are monitored. Most recent additions replace least recent when the registry is full.", "This is the set of chests used to measure distance between newly generated chests."})
+		@Comment({
+				"The number of chests that are monitored. Most recent additions replace least recent when the registry is full.",
+				"This is the set of chests used to measure distance between newly generated chests." })
 		@Name("01. Max. size of chest registry:")
 		@RangeInt(min = 5, max = 100)
 		@RequiresMcRestart
@@ -314,79 +326,55 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		 */
 		public Chests() {
 			// ocean names:
-			// "ocean", "deep_ocean", "deep_frozen_ocean", 
-			//"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"
-			
+			// "ocean", "deep_ocean", "deep_frozen_ocean",
+			// "cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"
+
 			// setup surface properties
 			Map<Rarity, ChestConfig> configs = new HashMap<>();
-			configs.put(Rarity.COMMON, new ChestConfig(true, 75, 85, 50,
-					new String[] {},
-					new String[] {},
-					new String[] {},
-					new String[] {}));
-			configs.put(Rarity.UNCOMMON, new ChestConfig(true, 150, 75, 40,
-					new String[] {},
-					new String[] {},
-					new String[] {},
-					new String[] {}));
-			configs.put(Rarity.SCARCE, new ChestConfig(true, 300, 50, 30,
-					new String[] {},
-					new String[] {},
-					new String[] {},
-					new String[] {}));
-			configs.put(Rarity.RARE, new ChestConfig(true, 500, 25, 20,
-					new String[] {},
-					new String[] {"plains", "sunflower_plains"},
-					new String[] {},
-					new String[] {"plains"}));
-			configs.put(Rarity.EPIC, new ChestConfig(true, 800, 15, 10,
-					new String[] {},
-					new String[] {"plains", "sunflower_plains"},
-					new String[] {},
-					new String[] {"plains"}));
-			
+			configs.put(Rarity.COMMON, new ChestConfig(true, 75, 85, 50, new String[] {}, new String[] {},
+					new String[] {}, new String[] {}));
+			configs.put(Rarity.UNCOMMON, new ChestConfig(true, 150, 75, 40, new String[] {}, new String[] {},
+					new String[] {}, new String[] {}));
+			configs.put(Rarity.SCARCE, new ChestConfig(true, 300, 50, 30, new String[] {}, new String[] {},
+					new String[] {}, new String[] {}));
+			configs.put(Rarity.RARE, new ChestConfig(true, 500, 25, 20, new String[] {},
+					new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" }));
+			configs.put(Rarity.EPIC, new ChestConfig(true, 800, 15, 10, new String[] {},
+					new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" }));
+
 			surfaceChests = new ChestCollection(configs);
-			
+
 			// setup submerged properties
 			configs.clear();
-			configs.put(Rarity.COMMON, new ChestConfig(false, 150, 85, 40,
-					new String[] {},
-					new String[] {},
-					new String[] {},
-					new String[] {}));
-			configs.put(Rarity.UNCOMMON, new ChestConfig(false, 3000, 75, 30,
-					new String[] {},
-					new String[] {},
-					new String[] {},
-					new String[] {}));
-			configs.put(Rarity.SCARCE, new ChestConfig(true, 400, 50, 20,
-					new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
-					new String[] {},
-					new String[] {"ocean", "deep_ocean"},
-					new String[] {}));
-			configs.put(Rarity.RARE, new ChestConfig(true, 600, 25, 5,
-					new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
-					new String[] {},
-					new String[] {"ocean", "deep_ocean"},
-					new String[] {}));
-			configs.put(Rarity.EPIC, new ChestConfig(true, 1000, 15, 5,
-					new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
-					new String[] {},
-					new String[] {"ocean", "deep_ocean"},
-					new String[] {}));
-			
+			configs.put(Rarity.COMMON, new ChestConfig(false, 150, 85, 40, new String[] {}, new String[] {},
+					new String[] {}, new String[] {}));
+			configs.put(Rarity.UNCOMMON, new ChestConfig(false, 3000, 75, 30, new String[] {}, new String[] {},
+					new String[] {}, new String[] {}));
+			configs.put(Rarity.SCARCE,
+					new ChestConfig(true, 400, 50, 20,
+							new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean",
+									"lukewarm_ocean", "warm_ocean" },
+							new String[] {}, new String[] { "ocean", "deep_ocean" }, new String[] {}));
+			configs.put(Rarity.RARE,
+					new ChestConfig(true, 600, 25, 5,
+							new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean",
+									"lukewarm_ocean", "warm_ocean" },
+							new String[] {}, new String[] { "ocean", "deep_ocean" }, new String[] {}));
+			configs.put(Rarity.EPIC,
+					new ChestConfig(true, 1000, 15, 5,
+							new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean",
+									"lukewarm_ocean", "warm_ocean" },
+							new String[] {}, new String[] { "ocean", "deep_ocean" }, new String[] {}));
+
 			submergedChests = new ChestCollection(configs);
-			
+
 			// setup extra properties
 			surfaceChests.commonChestProperties.mimicProbability = 20.0;
 			submergedChests.commonChestProperties.mimicProbability = 0.0;
 			surfaceChests.scarceChestProperties.mimicProbability = 15.0;
 			submergedChests.scarceChestProperties.mimicProbability = 0.0;
 		}
-		
+
 		public void init() {
 			this.surfaceChests.init();
 			this.submergedChests.init();
@@ -398,62 +386,48 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			 */
 			@Ignore
 			public Map<Rarity, IChestConfig> configMap = new HashMap<>();
-			
+
 			@Comment("The minimum number of chunks generated before another attempt to spawn a chest is made.")
 			@Name("01. Min. chunks per chest spawn:")
 			@RangeInt(min = 0, max = 32000)
 			public int minChunksPerChest = 35;
 
-			@Comment({"The minimum distance, measured in chunks (16x16), that two chests can be in proximity.",
-				"Note: Only chests in the chest registry are checked against this property.",
-				"Used in conjunction with the chunks per chest and spawn probability.",
-			"Ex. "})
+			@Comment({ "The minimum distance, measured in chunks (16x16), that two chests can be in proximity.",
+					"Note: Only chests in the chest registry are checked against this property.",
+					"Used in conjunction with the chunks per chest and spawn probability.", "Ex. " })
 			@Name("02. Min. distance per chest spawn:")
 			@RangeInt(min = 0, max = 32000)
 			public int minDistancePerChest = 75;
-			
-			@Comment({"The probability chest will appear on the surface, instead of in a pit."})
+
+			@Comment({ "The probability chest will appear on the surface, instead of in a pit." })
 			@Name("03. Probability of chest spawn on the surface:")
 			@RangeInt(min = 0, max = 100)
 			public int surfaceChestProbability = 15;
-			
+
 			@Name("01 Common chest")
-			public ChestConfig commonChestProperties = new ChestConfig(true, 75, 85, 50,
-					new String[] {},
-					new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
-					new String[] {},
-					new String[] {"ocean", "deep_ocean"});
-			
+			public ChestConfig commonChestProperties = new ChestConfig(
+					true, 75, 85, 50, new String[] {}, new String[] { "ocean", "deep_ocean", "deep_frozen_ocean",
+							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean" },
+					new String[] {}, new String[] { "ocean", "deep_ocean" });
+
 			@Name("02 Uncommon chest")
-			public ChestConfig uncommonChestProperties = new ChestConfig(true, 150, 75, 40,
-					new String[] {},
-					new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
-					new String[] {},
-					new String[] {"ocean", "deep_ocean"});
+			public ChestConfig uncommonChestProperties = new ChestConfig(
+					true, 150, 75, 40, new String[] {}, new String[] { "ocean", "deep_ocean", "deep_frozen_ocean",
+							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean" },
+					new String[] {}, new String[] { "ocean", "deep_ocean" });
 
 			@Name("03 Scarce chest")
-			public ChestConfig scarceChestProperties = new ChestConfig(true, 300, 50, 30,
-					new String[] {},
-					new String[] {},
-					new String[] {},
-					new String[] {});
+			public ChestConfig scarceChestProperties = new ChestConfig(true, 300, 50, 30, new String[] {},
+					new String[] {}, new String[] {}, new String[] {});
 
 			@Name("04 Rare chest")
-			public ChestConfig rareChestProperties = new ChestConfig(true, 500, 25, 20,
-					new String[] {},
-					new String[] {"plains", "sunflower_plains"},
-					new String[] {},
-					new String[] {"plains"});
+			public ChestConfig rareChestProperties = new ChestConfig(true, 500, 25, 20, new String[] {},
+					new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" });
 
 			@Name("05 Epic chest")
-			public ChestConfig epicChestProperties = new ChestConfig(true, 800, 15, 10,
-					new String[] {},
-					new String[] {"plains", "sunflower_plains"},
-					new String[] {},
-					new String[] {"plains"});		
-			
+			public ChestConfig epicChestProperties = new ChestConfig(true, 800, 15, 10, new String[] {},
+					new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" });
+
 			/**
 			 * 
 			 */
@@ -464,14 +438,14 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 				configMap.put(Rarity.RARE, rareChestProperties);
 				configMap.put(Rarity.EPIC, epicChestProperties);
 			}
-			
+
 			public ChestCollection(Map<Rarity, ChestConfig> configs) {
 				commonChestProperties = configs.get(Rarity.COMMON);
 				uncommonChestProperties = configs.get(Rarity.UNCOMMON);
 				scarceChestProperties = configs.get(Rarity.SCARCE);
 				rareChestProperties = configs.get(Rarity.RARE);
 				epicChestProperties = configs.get(Rarity.EPIC);
-				
+
 				// update the map
 				configMap.put(Rarity.COMMON, commonChestProperties);
 				configMap.put(Rarity.UNCOMMON, uncommonChestProperties);
@@ -479,7 +453,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 				configMap.put(Rarity.RARE, rareChestProperties);
 				configMap.put(Rarity.EPIC, epicChestProperties);
 			}
-			
+
 			/**
 			 * 
 			 */
@@ -492,7 +466,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 				this.epicChestProperties.init();
 			}
 		}
-		
+
 		public interface IChestCollection {
 			public void init();
 		}
@@ -502,7 +476,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	 * 
 	 */
 	public static class Pits {
-		@Comment({"The probability that a pit will contain a structure (treasure room(s), cavern etc.)"})
+		@Comment({ "The probability that a pit will contain a structure (treasure room(s), cavern etc.)" })
 		@Name("01. Probability of pit structure spawn:")
 		@RangeInt(min = 0, max = 100)
 		public int pitStructureProbability = 25;
@@ -512,28 +486,26 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	 * 
 	 */
 	public static class Well implements IWellConfig {
-		@Comment({"Toggle to allow/disallow the spawn of well."})
+		@Comment({ "Toggle to allow/disallow the spawn of well." })
 		@Name("01. Enabled wells:")
 		public boolean wellAllowed = true;
-		
+
 		@Comment("The minimum number of chunks generated before another attempt to spawn a well is made.")
 		@Name("02. Chunks per well spawn:")
 		@RangeInt(min = 100, max = 32000)
 		public int chunksPerWell = 400;
-		
-		@Comment({"The probability that a well will generate."})
+
+		@Comment({ "The probability that a well will generate." })
 		@Name("03. Generation probability:")
 		@RangeDouble(min = 0.0, max = 100.0)
 		public double genProbability = 80.0;
 
 		@Name("biomes")
-		@Comment({"Biome white and black list properties."})
+		@Comment({ "Biome white and black list properties." })
 		public BiomesConfig biomes = new BiomesConfig(
-				new String[] {},
-				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
-				new String[] {},
-				new String[] {"ocean", "deep_ocean"});
+				new String[] {}, new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean",
+						"deep_cold_ocean", "lukewarm_ocean", "warm_ocean" },
+				new String[] {}, new String[] { "ocean", "deep_ocean" });
 
 		/**
 		 * 
@@ -542,7 +514,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		public void init() {
 			this.biomes.init();
 		}
-		
+
 		@Override
 		public boolean isWellAllowed() {
 			return wellAllowed;
@@ -562,66 +534,69 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		public List<Biome> getBiomeWhiteList() {
 			return biomes.getWhiteList();
 		}
+
 		@Override
 		public List<Biome> getBiomeBlackList() {
 			return biomes.getBlackList();
 		}
+
 		@Override
 		public List<BiomeTypeHolder> getBiomeTypeWhiteList() {
 			return biomes.getTypeWhiteList();
 		}
+
 		@Override
 		public List<BiomeTypeHolder> getBiomeTypeBlackList() {
 			return biomes.getTypeBlackList();
 		}
-		
+
 	}
 
 	/*
 	 * 
 	 */
 	public static class WitherTree implements IWitherTreeConfig {
-		@Comment({"The number of chunks generated before a wither tree spawn is attempted."})
+		@Comment({ "The number of chunks generated before a wither tree spawn is attempted." })
 		@Name("01. Chunks per wither tree spawn:")
 		@RangeInt(min = 200, max = 32000)
-		public int chunksPerTree = 800;		
-		@Comment({"The probability that a wither tree will spawn."})
+		public int chunksPerTree = 800;
+		@Comment({ "The probability that a wither tree will spawn." })
 		@Name("02. Probability of wither tree spawn:")
 		@RangeDouble(min = 0.0, max = 100.0)
 		public double genProbability = 90.0;
-		@Comment({"The max. height a wither tree can reach.", "This is the high end of a calculated range. ex size is randomized between minTrunkSize and maxTrunkSize.", "(The min. is prefined.)"})
+		@Comment({ "The max. height a wither tree can reach.",
+				"This is the high end of a calculated range. ex size is randomized between minTrunkSize and maxTrunkSize.",
+				"(The min. is prefined.)" })
 		@Name("03. Max. trunk height (in blocks):")
 		@RangeInt(min = 7, max = 20)
 		public int maxTrunkSize = 13;
-		@Comment({"The minimum number of supporting wither trees that surround the main tree in the grove."})
+		@Comment({ "The minimum number of supporting wither trees that surround the main tree in the grove." })
 		@Name("04. Min. supporting trees:")
 		@RangeInt(min = 0, max = 30)
 		public int minSupportingTrees = 5;
-		@Comment({"The maximum number of supporting wither trees that surround the main tree in the grove."})
+		@Comment({ "The maximum number of supporting wither trees that surround the main tree in the grove." })
 		@Name("05. Max. supporting trees:")
 		@RangeInt(min = 0, max = 30)
 		public int maxSupportingTrees = 15;
 
 		@Comment("The probability that a wither branch item will drop when a wither branch is harvested.")
 		@Name("06. Probability of branch item on harvest:")
-		@RangeDouble(min = 0.0, max = 100.0)	    		
+		@RangeDouble(min = 0.0, max = 100.0)
 		public double witherBranchItemGenProbability = 50.0;
 		@Comment("The probability that a wither root item will drop when a wither root is harvested.")
 		@Name("07. Probability of root item on harvest:")
 		@RangeDouble(min = 0.0, max = 100.0)
-		public double witherRootItemGenProbability=50.0;
+		public double witherRootItemGenProbability = 50.0;
 
 		// TODO add all other wither tree probabilities ie coarse dirt gen, etc.
-		
+
 		@Name("biomes")
-		@Comment({"Biome white and black list properties."})
-		public BiomesConfig biomes = new BiomesConfig(
-				new String[] {},
-				new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-						"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean", "ice_spikes", "plains", 
-						"sunflower_plains", "the_void", "nether", "gravelly_mountanis", "modified_gravelly_mountains"},
-				new String[] {},
-				new String[] {});
+		@Comment({ "Biome white and black list properties." })
+		public BiomesConfig biomes = new BiomesConfig(new String[] {},
+				new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean",
+						"lukewarm_ocean", "warm_ocean", "ice_spikes", "plains", "sunflower_plains", "the_void",
+						"nether", "gravelly_mountanis", "modified_gravelly_mountains" },
+				new String[] {}, new String[] {});
 
 		/**
 		 * 
@@ -630,39 +605,47 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		public void init() {
 			this.biomes.init();
 		}
-		
+
 		@Override
 		public int getChunksPerTree() {
 			return chunksPerTree;
 		}
+
 		@Override
 		public double getGenProbability() {
 			return genProbability;
 		}
+
 		@Override
 		public int getMaxTrunkSize() {
 			return maxTrunkSize;
 		}
+
 		@Override
 		public int getMinSupportingTrees() {
 			return minSupportingTrees;
 		}
+
 		@Override
 		public int getMaxSupportingTrees() {
 			return maxSupportingTrees;
 		}
+
 		@Override
 		public double getWitherBranchItemGenProbability() {
 			return witherBranchItemGenProbability;
 		}
+
 		@Override
 		public double getWitherRootItemGenProbability() {
 			return witherRootItemGenProbability;
 		}
+
 		@Override
 		public List<Biome> getBiomeWhiteList() {
 			return biomes.getWhiteList();
 		}
+
 		@Override
 		public List<Biome> getBiomeBlackList() {
 			return biomes.getBlackList();
@@ -672,6 +655,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		public List<BiomeTypeHolder> getBiomeTypeWhiteList() {
 			return biomes.getTypeWhiteList();
 		}
+
 		@Override
 		public List<BiomeTypeHolder> getBiomeTypeBlackList() {
 			return biomes.getTypeBlackList();
@@ -688,170 +672,170 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@RequiresMcRestart
 		public int maxStackSize = 8;
 	}
-	
+
 	/*
 	 * 
 	 */
 	public static class GemsAndOres {
-		@Comment({"Enable/Disable whether a gem ore will spawn."})
+		@Comment({ "Enable/Disable whether a gem ore will spawn." })
 		@Name("00. Enable gem ore spawn:")
 		public boolean enableGemOreSpawn = true;
-		
+
 		@Comment("The number of chunks generated before another attempt to generate a gem ore spawn is made.")
 		@Name("01. Chunks per gem ore spawn:")
 		@RangeInt(min = 1, max = 32000)
 		public int chunksPerGemOre = 1;
 
-		@Comment({"The probability that a ruby ore will spawn."})
+		@Comment({ "The probability that a ruby ore will spawn." })
 		@Name("02. Probability of ruby ore spawn.")
 		@RangeDouble(min = 0.0, max = 100.0)
 		public double rubyGenProbability = 65.0;
 
-		@Comment({"The max. y-value where a ruby ore can spawn."})
+		@Comment({ "The max. y-value where a ruby ore can spawn." })
 		@Name("03. Max. y-value for ruby ore spawn location:")
 		@RangeInt(min = 1, max = 255)
 		public int rubyOreMaxY = 14;
 
-		@Comment({"The min. y-value where a ruby ore can spawn."})
+		@Comment({ "The min. y-value where a ruby ore can spawn." })
 		@Name("04. Min. y-value for ruby ore spawn location:")
-		@RangeInt(min = 1, max =  255)
+		@RangeInt(min = 1, max = 255)
 		public int rubyOreMinY = 6;
 
-		@Comment({"The number of ruby ore blocks in a vein."})
+		@Comment({ "The number of ruby ore blocks in a vein." })
 		@Name("05. Ruby ore vein size:")
 		@RangeInt(min = 1, max = 20)
 		@RequiresMcRestart
 		public int rubyOreVeinSize = 3;
 
-		@Comment({"The number of ruby ore veins in a chunk."})
+		@Comment({ "The number of ruby ore veins in a chunk." })
 		@Name("06. Ruby ore veins per chunk.")
 		@RangeInt(min = 1, max = 20)
 		public int rubyOreVeinsPerChunk = 1;
 
-		@Comment({"The probability that a sapphire ore will spawn."})
+		@Comment({ "The probability that a sapphire ore will spawn." })
 		@Name("07. Probability of sapphire ore spawn.")
-		@RangeDouble(min=  0.0, max =  100.0)
+		@RangeDouble(min = 0.0, max = 100.0)
 		public double sapphireGenProbability = 65.0;
 
-		@Comment({"The max. y-value where a sapphire ore can spawn."})
+		@Comment({ "The max. y-value where a sapphire ore can spawn." })
 		@Name("08. Max. y-value for sapphire ore spawn location:")
 		@RangeInt(min = 1, max = 255)
 		public int sapphireOreMaxY = 14;
 
-		@Comment({"The min. y-value where a sapphire ore can spawn."})
+		@Comment({ "The min. y-value where a sapphire ore can spawn." })
 		@Name("09. Min. y-value for sapphire ore spawn location:")
 		@RangeInt(min = 1, max = 255)
 		public int sapphireOreMinY = 6;
 
-		@Comment({"The number of sapphire ore blocks in a vein."})
+		@Comment({ "The number of sapphire ore blocks in a vein." })
 		@Name("10. Sapphire ore vein size:")
 		@RangeInt(min = 1, max = 20)
 		@RequiresMcRestart
 		public int sapphireOreVeinSize = 3;
 
-		@Comment({"The number of sapphire ore veins in a chunk."})
+		@Comment({ "The number of sapphire ore veins in a chunk." })
 		@Name("11. Sapphire ore veins per chunk.")
 		@RangeInt(min = 1, max = 20)
-		public int sapphireOreVeinsPerChunk=1;
+		public int sapphireOreVeinsPerChunk = 1;
 	}
 
 	/*
 	 * 
 	 */
 	public static class KeysAndLocks {
-		@Comment({"Enable/Disable whether a Key can break when attempting to unlock a Lock."})
+		@Comment({ "Enable/Disable whether a Key can break when attempting to unlock a Lock." })
 		@Name("01. Enable key breaks:")
 		public boolean enableKeyBreaks = true;
 
-		@Comment({"Enable/Disable whether a Lock item is dropped when unlocked by Key item."})
+		@Comment({ "Enable/Disable whether a Lock item is dropped when unlocked by Key item." })
 		@Name("02. Enable lock drops:")
 		public boolean enableLockDrops = true;
 
-		@Comment({"The maximum uses for a given pilferers lock pick."})
+		@Comment({ "The maximum uses for a given pilferers lock pick." })
 		@Name("03. Pilferer's lockpick max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int pilferersLockPickMaxUses = 10;
 
-		@Comment({"The maximum uses for a given thiefs lock pick."})
+		@Comment({ "The maximum uses for a given thiefs lock pick." })
 		@Name("04. Thief's lockpick max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int thiefsLockPickMaxUses = 10;
-		
-		@Comment({"The maximum uses for a given wooden key."})
+
+		@Comment({ "The maximum uses for a given wooden key." })
 		@Name("05. Wood key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int woodKeyMaxUses = 20;
-		
-		@Comment({"The maximum uses for a given stone key."})
+
+		@Comment({ "The maximum uses for a given stone key." })
 		@Name("06. Stone key max uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int stoneKeyMaxUses = 10;
 
-		@Comment({"The maximum uses for a given iron key."})
+		@Comment({ "The maximum uses for a given iron key." })
 		@Name("07. Iron key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int ironKeyMaxUses = 10;
 
-		@Comment({"The maximum uses for a given gold key."})
+		@Comment({ "The maximum uses for a given gold key." })
 		@Name("08. Gold key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int goldKeyMaxUses = 15;
-		
-		@Comment({"The maximum uses for a given diamond key."})
+
+		@Comment({ "The maximum uses for a given diamond key." })
 		@Name("09. Diamond key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int diamondKeyMaxUses = 20;
 
-		@Comment({"The maximum uses for a given emerald key."})
+		@Comment({ "The maximum uses for a given emerald key." })
 		@Name("10. Emerald key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int emeraldKeyMaxUses = 10;
-		
-		@Comment({"The maximum uses for a given ruby key."})
+
+		@Comment({ "The maximum uses for a given ruby key." })
 		@Name("11. Ruby key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int rubyKeyMaxUses = 5;
 
-		@Comment({"The maximum uses for a given sapphire key."})
+		@Comment({ "The maximum uses for a given sapphire key." })
 		@Name("12. Sapphire key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int sapphireKeyMaxUses = 5;
-		
-		@Comment({"The maximum uses for a given metallurgists key."})
+
+		@Comment({ "The maximum uses for a given metallurgists key." })
 		@Name("13. Metallurgists key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int metallurgistsKeyMaxUses = 25;
 
-		@Comment({"The maximum uses for a given skeleton key."})
+		@Comment({ "The maximum uses for a given skeleton key." })
 		@Name("14. Skeleton key max. uses:")
-		@RangeInt(min = 1, max =32000)
+		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int skeletonKeyMaxUses = 5;
-		
-		@Comment({"The maximum uses for a given jewelled key."})
+
+		@Comment({ "The maximum uses for a given jewelled key." })
 		@Name("15. Jewelled Key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int jewelledKeyMaxUses = 5;
 
-		@Comment({"The maximum uses for a given spider key."})
+		@Comment({ "The maximum uses for a given spider key." })
 		@Name("16. Spider key max uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int spiderKeyMaxUses = 5;
 
-		@Comment({"The maximum uses for a given wither key."})
+		@Comment({ "The maximum uses for a given wither key." })
 		@Name("17. Wither key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
@@ -870,37 +854,39 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		public MarkerProperties markerProperties = new MarkerProperties();
 
 		public class GeneralProperties {
-			@Comment({"Enable/Disable whether a fog is generated (ex. around graves/tombstones and wither trees)"})
+			@Comment({ "Enable/Disable whether a fog is generated (ex. around graves/tombstones and wither trees)" })
 			@Name("01. Enable fog:")
 			public boolean enableFog = true;
-			@Comment({"Enable/Disable whether a wither fog is generated (ex. around wither trees)"})
+			@Comment({ "Enable/Disable whether a wither fog is generated (ex. around wither trees)" })
 			@Name("02. Enable wither fog:")
 			public boolean enableWitherFog = true;
-			@Comment({"Enable/Disable whether a poison fog is generated (ex. around wither trees)"})
+			@Comment({ "Enable/Disable whether a poison fog is generated (ex. around wither trees)" })
 			@Name("03. Enable poison fog:")
 			public boolean enablePoisonFog = true;
-			
+
 //			@Comment({"This is a temporary property.", "@since v1.5.0."})
 //			@Name("04. Probability of (under)water structure spawn:")
 //			@RangeDouble(min = 0.0, max = 100.0)
 //			public double waterStructureProbability = 50.0;
-			
-			@Comment({"The probability that a surface structure will generate."})
+
+			@Comment({ "The probability that a surface structure will generate." })
 			@Name("04. Probability of surface structure spawn:")
 			@RangeInt(min = 0, max = 100)
 			public int surfaceStructureProbability = 25;
-			
+
 			@Name("05. Dimension white list:")
-			@Comment({"Allowed Dimensions for generation.\nTreasure2 was designed for \"normal\" overworld-type dimensions.\nThis setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed."})
-			public Integer[] rawDimensionsWhiteList = new Integer[] {0};
-			@Ignore public List<Integer> dimensionsWhiteList = new ArrayList<>(3);
-			
+			@Comment({
+					"Allowed Dimensions for generation.\nTreasure2 was designed for \"normal\" overworld-type dimensions.\nThis setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed." })
+			public Integer[] rawDimensionsWhiteList = new Integer[] { 0 };
+			@Ignore
+			public List<Integer> dimensionsWhiteList = new ArrayList<>(3);
+
 			/**
 			 * 
 			 */
 			public void init() {
-				TreasureConfig.WORLD_GEN.getGeneralProperties().dimensionsWhiteList = 
-						Arrays.asList(TreasureConfig.WORLD_GEN.getGeneralProperties().rawDimensionsWhiteList);
+				TreasureConfig.WORLD_GEN.getGeneralProperties().dimensionsWhiteList = Arrays
+						.asList(TreasureConfig.WORLD_GEN.getGeneralProperties().rawDimensionsWhiteList);
 			}
 
 			public List<Integer> getDimensionsWhiteList() {
@@ -921,25 +907,31 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			@Name("02. Enable structure markers:")
 			public boolean isMarkerStructuresAllowed = true;
 
-			@Comment({"The min. number of grave markers (gravestones, bones) per chest."})
+			@Comment({ "The min. number of grave markers (gravestones, bones) per chest." })
 			@Name("03. Min. grave markers per chest:")
 			@RangeInt(min = 1, max = 5)
 			public int minGravestonesPerChest = 4;
 
-			@Comment({"The max. number of grave markers (gravestones, bones) per chest."})
+			@Comment({ "The max. number of grave markers (gravestones, bones) per chest." })
 			@Name("04. Max. grave markers per chest: ")
 			@RangeInt(min = 1, max = 10)
 			public int maxGravestonesPerChest = 8;
-			
-			@Comment({"The probability that a gravestone will have fog."})
+
+			@Comment({ "The probability that a gravestone will have fog." })
 			@Name("05. Probability that grave marker has fog:")
-			@RangeInt(min = 0,  max = 100)
+			@RangeInt(min = 0, max = 100)
 			public int gravestoneFogProbability = 50;
 
-			@Comment({"The probability that a marker will be a structure."})
+			@Comment({ "The probability that a marker will be a structure." })
 			@Name("06. Probability that marker will be a structure:")
 			@RangeInt(min = 0, max = 100)
 			public int markerStructureProbability = 15;
+
+			@Comment({ "The probability that a gravestone will spawn a mob.",
+					"Currently gravestones spawn Bound Souls." })
+			@Name("07. Probability that grave marker will spawn a mob:")
+			@RangeInt(min = 0, max = 100)
+			public int gravestoneMobProbability = 80;
 		}
 
 		public MarkerProperties getMarkerProperties() {
@@ -999,7 +991,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 	@Override
 	public void setEnableVersionChecker(boolean enableVersionChecker) {
-		MOD.enableVersionChecker = enableVersionChecker;		
+		MOD.enableVersionChecker = enableVersionChecker;
 	}
 
 	@Override
@@ -1015,12 +1007,12 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 	@Override
 	public void setLatestVersionReminder(boolean latestVersionReminder) {
-		MOD.latestVersionReminder = latestVersionReminder;		
+		MOD.latestVersionReminder = latestVersionReminder;
 	}
 
 	@Override
 	public void setForgeConfiguration(Configuration forgeConfiguration) {
-		// NOTE do nothing		
+		// NOTE do nothing
 	}
 
 	@Override
@@ -1048,12 +1040,12 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 	@Override
 	public boolean isModEnabled() {
-		return MOD.enabled;		
+		return MOD.enabled;
 	}
 
 	@Override
 	public void setModEnabled(boolean modEnabled) {
-		MOD.enabled = modEnabled;		
+		MOD.enabled = modEnabled;
 	}
 
 	@Override
@@ -1068,7 +1060,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 	/*
 	 * ILoggerConfig inherited methods
-	 */	
+	 */
 
 	@Override
 	public String getLoggerLevel() {
@@ -1097,7 +1089,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 	@Override
 	public void setConfigFolder(String configFolder) {
-		MOD.configFolder = configFolder;		
+		MOD.configFolder = configFolder;
 	}
 
 }
