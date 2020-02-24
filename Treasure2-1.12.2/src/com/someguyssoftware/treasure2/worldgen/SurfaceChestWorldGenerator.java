@@ -48,6 +48,7 @@ import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.UncommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.AirPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.BigBottomMobTrapPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.CollapsingTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.LavaSideTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.LavaTrapPitGenerator;
@@ -161,6 +162,8 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		pitGens.put(PitTypes.STANDARD, Pits.BIG_BOTTOM_MOB_TRAP_PIT, new BigBottomMobTrapPitGenerator());
 		// NONE for STRUCTURE
 		
+		pitGens.put(PitTypes.STANDARD, Pits.COLLAPSING_TRAP_PIT,  new CollapsingTrapPitGenerator());
+		pitGens.put(PitTypes.STRUCTURE, Pits.COLLAPSING_TRAP_PIT, new StructurePitGenerator(new CollapsingTrapPitGenerator()));
 	}
 
 	/**
