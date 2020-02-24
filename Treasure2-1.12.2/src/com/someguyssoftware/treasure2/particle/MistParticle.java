@@ -17,17 +17,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class MistParticle extends AbstractMistParticle {
 	protected static final float ALPHA_VALUE = 0.1F;
 	protected static final float MAX_SCALE_VALUE = 12;
-	
+
 //	private final ResourceLocation mistResourceLocation = new ResourceLocation(Treasure.MODID, "particle/mist_particle");
 	private static ResourceLocation mistParticlesSprites[] = new ResourceLocation[4];
-	
+
 	static {
 		mistParticlesSprites[0] = new ResourceLocation(Treasure.MODID, "particle/mist_particle");
 		mistParticlesSprites[1] = new ResourceLocation(Treasure.MODID, "particle/mist_particle2");
 		mistParticlesSprites[2] = new ResourceLocation(Treasure.MODID, "particle/mist_particle3");
 		mistParticlesSprites[3] = new ResourceLocation(Treasure.MODID, "particle/mist_particle4");
 	}
-	
+
 	/**
 	 * 
 	 * @param world
@@ -39,25 +39,26 @@ public class MistParticle extends AbstractMistParticle {
 	 * @param velocityZ
 	 * @param parentCoords
 	 */
-	public MistParticle(World world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, ICoords parentCoords) {
-		super(world, x, y, z);//, velocityX, velocityY, velocityZ);
+	public MistParticle(World world, double x, double y, double z, double velocityX, double velocityY, double velocityZ,
+			ICoords parentCoords) {
+		super(world, x, y, z);// , velocityX, velocityY, velocityZ);
 		this.setParentEmitterCoords(parentCoords);
-                
+
 		// set the texture to the flame texture, which we have previously added using TextureStitchEvent
-		//   (see TextureStitcherBreathFX)
+		// (see TextureStitcherBreathFX)
 		// randomly select a mist sprite
 		Random random = new Random();
 		int index = random.nextInt(4);
-		TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(mistParticlesSprites[index].toString());
-//		TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(mistResourceLocation.toString());
-		setParticleTexture(sprite);  // initialise the icon to our custom texture
+		TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks()
+				.getAtlasSprite(mistParticlesSprites[index].toString());
+		setParticleTexture(sprite);
 	}
 
 	@Override
 	public void doPlayerCollisions(World world) {
 		// do nothing
 	}
-	
+
 	@Override
 	public void inflictEffectOnPlayer(EntityPlayer player) {
 		// do nothing
@@ -67,10 +68,9 @@ public class MistParticle extends AbstractMistParticle {
 	public float getMaxScale() {
 		return MAX_SCALE_VALUE;
 	}
-	
+
 	@Override
 	public float getMaxAlpha() {
 		return ALPHA_VALUE;
 	}
 }
-
