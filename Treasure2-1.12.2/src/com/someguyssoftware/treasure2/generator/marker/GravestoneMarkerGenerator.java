@@ -124,12 +124,13 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 				Treasure.logger.debug("should be placing skeleton block -> {}", spawnCoords.toShortString());
 				GenUtil.placeSkeleton(world, random, spawnCoords);
 			} else {
+				world.setBlockState(spawnCoords.toPos(),
+						marker.getDefaultState().withProperty(AbstractChestBlock.FACING, facing));
+
 				// determine if gravestone spawns an entity
-				if (RandomHelper.checkProbability(random,
-						TreasureConfig.WORLD_GEN.markerProperties.gravestoneMobProbability)) {
-					world.setBlockState(spawnCoords.toPos(),
-							marker.getDefaultState().withProperty(AbstractChestBlock.FACING, facing)
-					/* .withProperty(GravestoneBlock.HAS_ENTITY, Boolean.valueOf(true)) */);
+				if (TreasureConfig.WORLD_GEN.markerProperties.isGravestoneSpawnMobAllowed && RandomHelper
+						.checkProbability(random, TreasureConfig.WORLD_GEN.markerProperties.gravestoneMobProbability)) {
+
 					// update the tile entity
 					GravestoneProximitySpawnerTileEntity tileEntity = (GravestoneProximitySpawnerTileEntity) world
 							.getTileEntity(spawnCoords.toPos());
