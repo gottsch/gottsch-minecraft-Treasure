@@ -12,6 +12,8 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.particle.AbstractMistParticle;
+import com.someguyssoftware.treasure2.particle.BillowingMistParticle;
 import com.someguyssoftware.treasure2.particle.MistParticle;
 import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerTileEntity;
 
@@ -22,7 +24,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -196,8 +197,16 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock
 		double velocityZ = 0;
 
 		// create particle
-		Particle mistParticle = new MistParticle(world, xPos, yPos, zPos, velocityX, velocityY, velocityZ,
-				new Coords(pos));
+		AbstractMistParticle mistParticle = null;
+
+		if (RandomHelper.checkProbability(random, 80)) {
+			mistParticle = new MistParticle(world, xPos, yPos, zPos, velocityX, velocityY, velocityZ, new Coords(pos));
+		} else {
+			mistParticle = new BillowingMistParticle(world, xPos, yPos, zPos, velocityX, velocityY, velocityZ,
+					new Coords(pos));
+		}
+		mistParticle.init();
+
 		Minecraft.getMinecraft().effectRenderer.addEffect(mistParticle);
 	}
 

@@ -917,9 +917,10 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			@RangeInt(min = 1, max = 10)
 			public int maxGravestonesPerChest = 8;
 
-			@Comment({ "The probability that a gravestone will have fog." })
+			@Comment({ "@Deprecated. The probability that a gravestone will have fog." })
 			@Name("05. Probability that grave marker has fog:")
 			@RangeInt(min = 0, max = 100)
+			@Deprecated
 			public int gravestoneFogProbability = 50;
 
 			@Comment({ "The probability that a marker will be a structure." })
@@ -927,9 +928,13 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			@RangeInt(min = 0, max = 100)
 			public int markerStructureProbability = 15;
 
+			@Comment("Enable/Disable whether gravestones can spawn mobs (Bound Soul).")
+			@Name("07. Enable gravestones to spawn mobs:")
+			public boolean isGravestoneSpawnMobAllowed = true;
+
 			@Comment({ "The probability that a gravestone will spawn a mob.",
 					"Currently gravestones spawn Bound Souls." })
-			@Name("07. Probability that grave marker will spawn a mob:")
+			@Name("08. Probability that grave marker will spawn a mob:")
 			@RangeInt(min = 0, max = 100)
 			public int gravestoneMobProbability = 80;
 		}

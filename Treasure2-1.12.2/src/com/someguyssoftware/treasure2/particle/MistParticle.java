@@ -15,10 +15,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class MistParticle extends AbstractMistParticle {
-	protected static final float ALPHA_VALUE = 0.1F;
-	protected static final float MAX_SCALE_VALUE = 12;
-
-//	private final ResourceLocation mistResourceLocation = new ResourceLocation(Treasure.MODID, "particle/mist_particle");
 	private static ResourceLocation mistParticlesSprites[] = new ResourceLocation[4];
 
 	static {
@@ -44,7 +40,7 @@ public class MistParticle extends AbstractMistParticle {
 		super(world, x, y, z);// , velocityX, velocityY, velocityZ);
 		this.setParentEmitterCoords(parentCoords);
 
-		// set the texture to the flame texture, which we have previously added using TextureStitchEvent
+		// set the texture one fo the mist textures, which we have previously added using TextureStitchEvent
 		// (see TextureStitcherBreathFX)
 		// randomly select a mist sprite
 		Random random = new Random();
@@ -55,6 +51,30 @@ public class MistParticle extends AbstractMistParticle {
 	}
 
 	@Override
+	public void init() {
+		super.init();
+//
+//
+//
+//		// extra test if index == 1 then randomly select it to rise (anti-gravity)
+//		if (index == FLOATER_INDEX && RandomHelper.checkProbability(random, FLOATER_PROBABILITY)) {
+//			mistGravity = -DEFAULT_PARTICLE_GRAVITY * 0.2F;
+//			mistMaxAge = 260; // has to be greater than the transition out age, else it will just disappear and be
+//								// choppy
+//		} else {
+//			mistGravity = DEFAULT_PARTICLE_GRAVITY;
+//			mistMaxAge = DEFAULT_PARTICLE_MAX_AGE;
+//		}
+//		// set properties
+//		this.particleGravity = provideGravity();
+//		this.particleMaxAge = provideMaxAge();
+//		
+//		particleAlpha = provideMaxAlpha();
+//		particleScale = provideMaxScale();
+//		mistGravity = DEFAULT_PARTICLE_GRAVITY;
+	}
+
+	@Override
 	public void doPlayerCollisions(World world) {
 		// do nothing
 	}
@@ -62,15 +82,5 @@ public class MistParticle extends AbstractMistParticle {
 	@Override
 	public void inflictEffectOnPlayer(EntityPlayer player) {
 		// do nothing
-	}
-
-	@Override
-	public float getMaxScale() {
-		return MAX_SCALE_VALUE;
-	}
-
-	@Override
-	public float getMaxAlpha() {
-		return ALPHA_VALUE;
 	}
 }

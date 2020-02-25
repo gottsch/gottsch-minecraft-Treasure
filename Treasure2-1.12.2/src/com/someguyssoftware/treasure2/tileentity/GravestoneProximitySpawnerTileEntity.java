@@ -9,6 +9,7 @@ import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.entity.monster.BoundSoulEntity;
 
 import net.minecraft.entity.EntityList;
@@ -35,9 +36,9 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 		setMobName(new ResourceLocation(Treasure.MODID, "bound_soul"));
 		setMobNum(new Quantity(1, 1));
 		setSpawnRange(2D);
-//		setHasEntity(false);
-		// TEMP
-		setHasEntity(true);
+		setHasEntity(false);
+		// TEMP/DEBUG
+//		setHasEntity(true);
 	}
 
 	/*
@@ -47,10 +48,8 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 	 */
 	@Override
 	public void update() {
-		// only update if block stat HAS_ENTITY = true
-//		boolean hasEntity = this.world.getBlockState(getPos()).getValue(GravestoneBlock.HAS_ENTITY);
 		boolean hasEntity = hasEntity();
-		if (hasEntity) {
+		if (hasEntity && TreasureConfig.WORLD_GEN.getMarkerProperties().isGravestoneSpawnMobAllowed) {
 			super.update();
 		}
 	}
