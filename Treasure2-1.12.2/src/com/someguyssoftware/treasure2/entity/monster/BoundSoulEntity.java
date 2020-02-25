@@ -5,6 +5,9 @@ package com.someguyssoftware.treasure2.entity.monster;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.particle.MistParticle;
 
 import net.minecraft.client.Minecraft;
@@ -23,6 +26,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
@@ -33,7 +37,9 @@ import net.minecraft.world.World;
  *
  */
 public class BoundSoulEntity extends EntityZombie {
-	public static int MOB_ID = 3;
+	private static final ResourceLocation BOUND_SOUL_LOOT_TABLE_LOCATION = new ResourceLocation(Treasure.MODID,
+			"entities/bound_soul");
+	public static final int MOB_ID = 3;
 
 	/**
 	 * 
@@ -111,6 +117,12 @@ public class BoundSoulEntity extends EntityZombie {
 
 			this.setHealth(this.getHealth() + 1.0F);
 		}
+	}
+
+	@Override
+	@Nullable
+	protected ResourceLocation getLootTable() {
+		return BOUND_SOUL_LOOT_TABLE_LOCATION;
 	}
 
 	@Override
