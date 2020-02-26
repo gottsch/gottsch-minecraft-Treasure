@@ -12,7 +12,7 @@
     	{
     		"type": "image",
     		"text": "A Wishing Well",
-    		"images": [""]
+    		"images": ["treasure2:textures/gui/patchouli/guide/well1.png"]
     	}
     ]
 }

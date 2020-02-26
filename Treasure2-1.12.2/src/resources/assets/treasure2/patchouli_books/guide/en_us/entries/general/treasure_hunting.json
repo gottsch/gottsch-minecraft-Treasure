@@ -12,17 +12,17 @@
     	{
     		"title": "Graveyard",
     		"type": "image",
-    		"images": ["treasure2:textures/gui/patchouli/guide/graveyard1.png"]
+    		"images": ["treasure2:textures/gui/patchouli/guide/graveyard1.png", "treasure2:textures/gui/patchouli/guide/graveyard2.png"]
     	},
     	{
     		"title": "Abandoned Buildings",
     		"type": "image",
-    		"images": ["treasure2:textures/gui/patchouli/guide/tower1.png"]
+    		"images": ["treasure2:textures/gui/patchouli/guide/tower1.png", "treasure2:textures/gui/patchouli/guide/tower2.png", "treasure2:textures/gui/patchouli/guide/tower3.png", "treasure2:textures/gui/patchouli/guide/church1.png"]
     	},
     	{
     		"title": "Sunken Ships",
     		"type": "image",
-    		"images": [""]
+    		"images": ["treasure2:textures/gui/patchouli/guide/sunkenship1.png", "treasure2:textures/gui/patchouli/guide/sunkenship2.png"]
     	},
     	{
     		"title": "Sunken Ruins",
@@ -32,7 +32,7 @@
     	{
     		"title": "Wither Tree Groves",
     		"type": "image",
-    		"images": [""]
+    		"images": ["treasure2:textures/gui/patchouli/guide/withergrove1.png", "treasure2:textures/gui/patchouli/guide/withergrove2.png"]
     	}
     ]
 }
