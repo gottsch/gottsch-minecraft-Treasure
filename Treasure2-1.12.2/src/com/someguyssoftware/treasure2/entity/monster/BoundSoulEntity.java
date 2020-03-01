@@ -8,10 +8,10 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.particle.AbstractMistParticle;
 import com.someguyssoftware.treasure2.particle.MistParticle;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -31,6 +31,8 @@ import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Mark Gottschling on Feb 23, 2020
@@ -76,6 +78,7 @@ public class BoundSoulEntity extends EntityZombie {
 		this.applyEntityAI();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected void applyEntityAI() {
 		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
@@ -96,15 +99,8 @@ public class BoundSoulEntity extends EntityZombie {
 		super.onLivingUpdate();
 
 		// create a mist particle
-		if (this.ticksExisted % 4 == 0) {
-			Random random = new Random();
-			Particle mistParticle = new MistParticle(world,
-					this.getPosition().getX() + (random.nextFloat() * 0.5 - 0.25),
-					this.getPosition().getY() + (random.nextFloat() * 0.25),
-					this.getPosition().getZ() + (random.nextFloat() * 0.5 - 0.25), 0, 0, 0, null);
-			// reduce the max age - don't want it too misty around entity
-			mistParticle.setMaxAge(160);
-			Minecraft.getMinecraft().effectRenderer.addEffect(mistParticle);
+		if (!this.isServerWorld()) {
+			spawnMist();
 		}
 
 		// regeneration
@@ -116,6 +112,21 @@ public class BoundSoulEntity extends EntityZombie {
 				&& this.getHealth() < this.getMaxHealth()) {
 
 			this.setHealth(this.getHealth() + 1.0F);
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	private void spawnMist() {
+		if (this.ticksExisted % 4 == 0) {
+			Random random = new Random();
+			AbstractMistParticle mistParticle = new MistParticle(world,
+					this.getPosition().getX() + (random.nextFloat() * 0.5 - 0.25),
+					this.getPosition().getY() + (random.nextFloat() * 0.25),
+					this.getPosition().getZ() + (random.nextFloat() * 0.5 - 0.25), 0, 0, 0, null);
+			// reduce the max age - don't want it too misty around entity
+			mistParticle.setMaxAge(160);
+			mistParticle.init();
+			Minecraft.getMinecraft().effectRenderer.addEffect(mistParticle);
 		}
 	}
 

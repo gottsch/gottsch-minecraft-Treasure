@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 public class WitherMistMessageToServer implements IMessage {
 	private boolean messageIsValid;
 	private String playerName;
-	
+
 	/**
 	 * 
 	 * @param playerName
@@ -23,35 +23,35 @@ public class WitherMistMessageToServer implements IMessage {
 		messageIsValid = true;
 		this.playerName = playerName;
 	}
-	
+
 	public WitherMistMessageToServer() {
 		messageIsValid = false;
 	}
-	
+
 	@Override
 	public void fromBytes(ByteBuf buf) {
-	    try {
-	    	this.playerName = ByteBufUtils.readUTF8String(buf);
+		try {
+			this.playerName = ByteBufUtils.readUTF8String(buf);
 
-	        // these methods may also be of use for your code:
-	        // for Itemstacks - ByteBufUtils.readItemStack()
-	        // for NBT tags ByteBufUtils.readTag();
-	        // for Strings: ByteBufUtils.readUTF8String();
+			// these methods may also be of use for your code:
+			// for Itemstacks - ByteBufUtils.readItemStack()
+			// for NBT tags ByteBufUtils.readTag();
+			// for Strings: ByteBufUtils.readUTF8String();
 
-	      } catch (IndexOutOfBoundsException e) {
-	        System.err.println("Exception while reading PoisonMistMessageToServer: " + e);
-	        return;
-	      }
-	      messageIsValid = true;
-		
+		} catch (IndexOutOfBoundsException e) {
+			System.err.println("Exception while reading WitherMistMessageToServer: " + e);
+			return;
+		}
+		messageIsValid = true;
+
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-	    if (!messageIsValid) {
-	    	return;
-	    }
-	    ByteBufUtils.writeUTF8String(buf, this.playerName);
+		if (!messageIsValid) {
+			return;
+		}
+		ByteBufUtils.writeUTF8String(buf, this.playerName);
 	}
 
 	/**

@@ -16,7 +16,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -38,7 +37,7 @@ public class MimicChestBlock extends AbstractChestBlock {
 	 * the class of the mimic this BlockChest should spawn.
 	 */
 	private Class<? extends MimicEntity> mimicClass;
-	
+
 	/**
 	 * 
 	 * @param modID
@@ -48,15 +47,12 @@ public class MimicChestBlock extends AbstractChestBlock {
 	 * @param type
 	 * @param rarity
 	 */
-	public MimicChestBlock(String modID, String name, 
-			Class<? extends AbstractTreasureChestTileEntity> te,
-			Class<? extends MimicEntity> mimic,
-			TreasureChestType type,
-			Rarity rarity) {
+	public MimicChestBlock(String modID, String name, Class<? extends AbstractTreasureChestTileEntity> te,
+			Class<? extends MimicEntity> mimic, TreasureChestType type, Rarity rarity) {
 		this(modID, name, Material.WOOD, te, type, rarity);
 		setMimicClass(mimic);
 	}
-	
+
 	/**
 	 * 
 	 * @param modID
@@ -65,10 +61,8 @@ public class MimicChestBlock extends AbstractChestBlock {
 	 * @param te
 	 * @param type
 	 */
-	public MimicChestBlock(String modID, String name, Material material, 
-			Class<? extends AbstractTreasureChestTileEntity> te, 
-			TreasureChestType type, 
-			Rarity rarity) {
+	public MimicChestBlock(String modID, String name, Material material,
+			Class<? extends AbstractTreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
 		super(modID, name, material, te, type, rarity);
 	}
 
@@ -76,7 +70,8 @@ public class MimicChestBlock extends AbstractChestBlock {
 	 * Called just after the player places a block.
 	 */
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
+			ItemStack stack) {
 		Treasure.logger.debug("Placing mimic from item");
 
 		boolean shouldUpdate = false;
@@ -86,7 +81,7 @@ public class MimicChestBlock extends AbstractChestBlock {
 		// face the block towards the player (there isn't really a front)
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 3);
 		TileEntity te = worldIn.getTileEntity(pos);
-		if (te != null && te instanceof AbstractTreasureChestTileEntity) {				
+		if (te != null && te instanceof AbstractTreasureChestTileEntity) {
 			// get the backing tile entity
 			tcte = (AbstractTreasureChestTileEntity) te;
 
@@ -94,7 +89,7 @@ public class MimicChestBlock extends AbstractChestBlock {
 			if (stack.hasDisplayName()) {
 				tcte.setCustomName(stack.getDisplayName());
 			}
-		
+
 			// update the TCTE facing
 			tcte.setFacing(placer.getHorizontalFacing().getOpposite().getIndex());
 		}
@@ -114,15 +109,15 @@ public class MimicChestBlock extends AbstractChestBlock {
 		AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
 
 		// exit if on the client
-		if (WorldInfo.isClientSide(worldIn)) {			
+		if (WorldInfo.isClientSide(worldIn)) {
 			return true;
 		}
-		
+
 		// get the facing direction of the chest
 		EnumFacing chestFacing = state.getValue(FACING);
 //		Treasure.logger.debug("Mimic facing -> {}", chestFacing);
 		float yaw = 0.0F;
-		switch(chestFacing) {
+		switch (chestFacing) {
 		case NORTH:
 			yaw = 180.0F;
 			break;
@@ -137,36 +132,36 @@ public class MimicChestBlock extends AbstractChestBlock {
 			break;
 		}
 //		Treasure.logger.debug("Mimic yaw -> {}", yaw);
-		
+
 		// remove the tile entity
 		worldIn.setBlockToAir(pos);
-		
+
 		/*
 		 * spawn the mimic
 		 */
-		// TODO need a generic base class for MimicEntity
-    	EntityMob mimic = null;
+		MimicEntity mimic = null;
 		try {
 			mimic = getMimicClass().getConstructor(World.class).newInstance(worldIn);
 		} catch (Exception e) {
 			Treasure.logger.error("Error creating mimic:", e);
 		}
-		
+
 		if (mimic != null) {
-	    	 EntityLiving entityLiving = (EntityLiving)mimic;
-   	 
-	    	 // TODO why doesn't this set the initial rotation!!!
-	         entityLiving.setLocationAndAngles((double)pos.getX() + 0.5D,  (double)pos.getY(), (double)pos.getZ() + 0.5D, 45F, 0.0F);
-	    	 worldIn.spawnEntity(entityLiving);
-	         entityLiving.setLocationAndAngles((double)pos.getX() + 0.5D,  (double)pos.getY(), (double)pos.getZ() + 0.5D, 45F, 0.0F);
+			EntityLiving entityLiving = (EntityLiving) mimic;
+
+			// TODO why doesn't this set the initial rotation!!!
+			entityLiving.setLocationAndAngles((double) pos.getX() + 0.5D, (double) pos.getY(),
+					(double) pos.getZ() + 0.5D, yaw, 0.0F);
+			worldIn.spawnEntity(entityLiving);
+
 		}
 
-		// remove the tile entity 
+		// remove the tile entity
 		worldIn.removeTileEntity(pos);
-					
+
 		return true;
 	}
-	
+
 	@Override
 	public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
 		super.onBlockClicked(worldIn, pos, playerIn);
@@ -176,7 +171,7 @@ public class MimicChestBlock extends AbstractChestBlock {
 	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
 		super.onBlockDestroyedByExplosion(worldIn, pos, explosionIn);
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -191,7 +186,7 @@ public class MimicChestBlock extends AbstractChestBlock {
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return null;
-	}	
+	}
 
 	/**
 	 * @return the mimicClass

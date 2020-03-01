@@ -192,7 +192,8 @@ public class GenUtil {
 			world.setBlockState(pos, chest.getDefaultState().withProperty(FACING, facing), 3);
 			Treasure.logger.debug("placed chest -> {} into world at coords -> {} with prop -> {}",
 					chest.getClass().getSimpleName(), coords.toShortString(), facing);
-			// world.setBlockMetadataWithNotify(coords.getX(), coords.getY(), coords.getZ(), meta, 3);
+			// world.setBlockMetadataWithNotify(coords.getX(), coords.getY(), coords.getZ(),
+			// meta, 3);
 
 			// get the direction the block is facing.
 			Direction direction = Direction.fromFacing(facing);
@@ -296,7 +297,8 @@ public class GenUtil {
 				continue;
 			}
 
-			// don't place if the block underneath is of GenericBlock ChestConfig or Container
+			// don't place if the block underneath is of GenericBlock ChestConfig or
+			// Container
 			Block block = world.getBlockState(spawnCoords.add(0, -1, 0).toPos()).getBlock();
 			if (block instanceof BlockContainer || block instanceof AbstractModContainerBlock
 					|| block instanceof ITreasureBlock) {
@@ -359,9 +361,9 @@ public class GenUtil {
 				// randomize the size of the fog
 				int fogSize = RandomHelper.randomInt(1, 4);
 				// populate the fog density list
-				for (int f = 0; f < fogSize; f++)
-					fogDensity.add(TreasureBlocks.MED_FOG_BLOCK);
-				fogDensity.add(TreasureBlocks.LOW_FOG_BLOCK);
+//				for (int f = 0; f < fogSize; f++)
+//					fogDensity.add(TreasureBlocks.MED_FOG_BLOCK);
+//				fogDensity.add(TreasureBlocks.LOW_FOG_BLOCK);
 				// add fog around marker
 				addFog(world, random, spawnCoords, fogDensity.toArray(new FogBlock[] {}));
 			}
@@ -473,7 +475,8 @@ public class GenUtil {
 //					Treasure.logger.debug("2. selecting {} fog", ((FogBlock)block).getFog().getSize());
 
 					if (cube.equalsMaterial(TreasureItems.FOG)) {
-						// test if the block at fog coords is already fog, then whichever is bigger remains
+						// test if the block at fog coords is already fog, then whichever is bigger
+						// remains
 						FogBlock origBlock = (FogBlock) cube.getState().getBlock();
 //						Treasure.logger.debug("3. orig block IS {} at coords", origBlock.getFog().getSize());
 						if (origBlock.getFogHeight().getSize() > ((FogBlock) block).getFogHeight().getSize()) {
@@ -539,8 +542,8 @@ public class GenUtil {
 	}
 
 	/**
-	 * This method assumes that the 3 blocks above the chest has been generated and therefor starts at
-	 * pos.y + 4
+	 * This method assumes that the 3 blocks above the chest has been generated and
+	 * therefor starts at pos.y + 4
 	 * 
 	 * @param world
 	 * @param random

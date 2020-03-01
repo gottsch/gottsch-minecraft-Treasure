@@ -19,8 +19,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class WitherMistParticle extends AbstractMistParticle {
-	protected static final int MAX_AGE = 400;
-	protected static final float ALPHA_VALUE = 0.4F;
+	protected static final int MAX_AGE = 450;
+	protected static final float ALPHA_VALUE = 0.5F;
 	protected static final float MAX_SCALE_VALUE = 12;
 
 	private static ResourceLocation mistParticlesSprites[] = new ResourceLocation[4];

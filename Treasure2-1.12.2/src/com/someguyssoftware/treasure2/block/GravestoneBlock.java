@@ -17,8 +17,6 @@ import com.someguyssoftware.treasure2.particle.BillowingMistParticle;
 import com.someguyssoftware.treasure2.particle.MistParticle;
 import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerTileEntity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockTorch;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -39,7 +37,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 public class GravestoneBlock extends CardinalDirectionFacadeBlock
-		implements ITreasureBlock, IFogSupport, ITileEntityProvider {
+		implements ITreasureBlock, /* IFogSupport, */ IMistSupport, ITileEntityProvider {
 
 	// TODO add property HAS_ENTITY
 //	public static final PropertyBool HAS_ENTITY = PropertyBool.create("has_entity");
@@ -121,9 +119,9 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock
 	}
 
 	/**
-	 * NOTE randomDisplayTick is on the client side only. The server is not keeping track of any
-	 * particles NOTE cannot control the number of ticks per randomDisplayTick() call - it is not
-	 * controlled by tickRate()
+	 * NOTE randomDisplayTick is on the client side only. The server is not keeping
+	 * track of any particles NOTE cannot control the number of ticks per
+	 * randomDisplayTick() call - it is not controlled by tickRate()
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -140,57 +138,16 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock
 		int y = pos.getY();
 		int z = pos.getZ();
 
-		int numberOfTorches = 0;
-		// if all the blocks in the immediate area are loaded
-		if (world.isAreaLoaded(new BlockPos(x - 3, y - 3, z - 3), new BlockPos(x + 3, y + 3, z + 3))) {
-			// use a MutatableBlockPos instead of Cube\Coords or BlockPos to say the
-			// recreation of many objects
-			BlockPos.MutableBlockPos mbp = new BlockPos.MutableBlockPos();
-
-			/*
-			 * change the randomness of particle creation by number of torches o torches = 100% 1 torch = 50% 2
-			 * torches = 25% 3 torches = 0%
-			 */
-			for (int x1 = -3; x1 <= 3; ++x1) {
-				for (int y1 = -3; y1 <= 3; ++y1) {
-					for (int z1 = -3; z1 <= 3; ++z1) {
-						// that just checks a value.
-						IBlockState inspectBlockState = world.getBlockState(mbp.setPos(x + x1, y + y1, z + z1));
-						Block inspectBlock = inspectBlockState.getBlock();
-
-						// if the block is a torch, then destroy the fog and return
-						if (inspectBlock instanceof BlockTorch) {
-							numberOfTorches++;
-						}
-						if (numberOfTorches >= 3) {
-							x1 = 99;
-							y1 = 99;
-							z1 = 99;
-							break;
-						}
-					}
-				}
-			}
-		}
-
-		boolean isCreateParticle = true;
-		if (numberOfTorches == 1) {
-			isCreateParticle = RandomHelper.checkProbability(random, 50);
-		} else if (numberOfTorches == 2) {
-			isCreateParticle = RandomHelper.checkProbability(random, 25);
-		} else if (numberOfTorches > 2) {
-			isCreateParticle = false;
-		}
-
+		boolean isCreateParticle = checkTorchPrevention(world, random, x, y, z);
 		if (!isCreateParticle) {
 			return;
 		}
 
 		// initial positions - has a spread area of up to 1.5 blocks
-		double xPos = (x + 0.5F) + (random.nextFloat() * 3.0) - 1.5F;
+		double xPos = (x + 0.5D) + (random.nextFloat() * 3.0) - 1.5D;
 		double yPos = y;
 		// + state.getBoundingBox(world, pos).maxY; // + 1.0;
-		double zPos = (z + 0.5F) + (random.nextFloat() * 3.0) - 1.5F;
+		double zPos = (z + 0.5D) + (random.nextFloat() * 3.0) - 1.5D;
 		// initial velocities
 		double velocityX = 0;
 		double velocityY = 0;
@@ -243,11 +200,11 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock
 	 * @param pos   Block position in world
 	 * @return true if the presence this block can prevent leaves from decaying.
 	 */
-	@Override
-	public boolean canSustainFog(IBlockState state, IBlockAccess world, BlockPos pos) {
-//		return true;
-		return false;
-	}
+//	@Override
+//	public boolean canSustainFog(IBlockState state, IBlockAccess world, BlockPos pos) {
+////		return true;
+//		return false;
+//	}
 
 	/**
 	 * Convert the given metadata into a BlockState for this Block

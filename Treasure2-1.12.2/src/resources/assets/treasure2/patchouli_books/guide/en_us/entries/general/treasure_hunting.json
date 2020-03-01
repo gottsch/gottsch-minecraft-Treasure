@@ -12,7 +12,7 @@
     	{
     		"title": "Graveyard",
     		"type": "image",
-    		"images": ["treasure2:textures/gui/patchouli/guide/graveyard1.png", "treasure2:textures/gui/patchouli/guide/graveyard2.png"]
+    		"images": ["treasure2:textures/gui/patchouli/guide/graveyard1.png", "treasure2:textures/gui/patchouli/guide/graveyard2.png", "treasure2:textures/gui/patchouli/guide/graveyard3.png", "treasure2:textures/gui/patchouli/guide/graveyard4.png"]
     	},
     	{
     		"title": "Abandoned Buildings",

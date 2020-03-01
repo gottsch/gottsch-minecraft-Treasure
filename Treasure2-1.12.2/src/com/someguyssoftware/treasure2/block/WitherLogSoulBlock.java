@@ -17,8 +17,6 @@ import com.someguyssoftware.treasure2.particle.PoisonMistParticle;
 import com.someguyssoftware.treasure2.particle.WitherMistParticle;
 import com.someguyssoftware.treasure2.tileentity.MistEmitterTileEntity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockTorch;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -45,7 +43,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 public class WitherLogSoulBlock extends CardinalDirectionFacadeBlock
-		implements IFogSupport, ITreasureBlock, ITileEntityProvider {
+		implements /* IFogSupport, */IMistSupport, ITreasureBlock, ITileEntityProvider {
 
 	public static final PropertyEnum<Appearance> APPEARANCE = PropertyEnum.create("appearance", Appearance.class);
 
@@ -93,7 +91,8 @@ public class WitherLogSoulBlock extends CardinalDirectionFacadeBlock
 
 		// if all the blocks in the immediate area are loaded
 		if (worldIn.isAreaLoaded(new BlockPos(x - 5, y - 5, z - 5), new BlockPos(x + 5, y + 5, z + 5))) {
-			// use a MutatableBlockPos instead of Cube\Coords or BlockPos to say the recreation of many objects
+			// use a MutatableBlockPos instead of Cube\Coords or BlockPos to say the
+			// recreation of many objects
 			BlockPos.MutableBlockPos mbp = new BlockPos.MutableBlockPos();
 
 			for (int x1 = -5; x1 <= 5; ++x1) {
@@ -112,9 +111,9 @@ public class WitherLogSoulBlock extends CardinalDirectionFacadeBlock
 	}
 
 	/**
-	 * NOTE randomDisplayTick is on the client side only. The server is not keeping track of any
-	 * particles NOTE cannot control the number of ticks per randomDisplayTick() call - it is not
-	 * controlled by tickRate()
+	 * NOTE randomDisplayTick is on the client side only. The server is not keeping
+	 * track of any particles NOTE cannot control the number of ticks per
+	 * randomDisplayTick() call - it is not controlled by tickRate()
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -133,87 +132,38 @@ public class WitherLogSoulBlock extends CardinalDirectionFacadeBlock
 		int y = pos.getY();
 		int z = pos.getZ();
 
-		int numberOfTorches = 0;
-		// if all the blocks in the immediate area are loaded
-		if (world.isAreaLoaded(new BlockPos(x - 3, y - 3, z - 3), new BlockPos(x + 3, y + 3, z + 3))) {
-			// use a MutatableBlockPos instead of Cube\Coords or BlockPos to say the recreation of many objects
-			BlockPos.MutableBlockPos mbp = new BlockPos.MutableBlockPos();
-
-			// change the randomness of particle creation
-			// o torches = 100%
-			// 1 torch = 50%
-			// 2 torches = 25%
-			// 3 torches = 0%
-			for (int x1 = -3; x1 <= 3; ++x1) {
-				for (int y1 = -3; y1 <= 3; ++y1) {
-					for (int z1 = -3; z1 <= 3; ++z1) {
-						// that just checks a value.
-						IBlockState inspectBlockState = world.getBlockState(mbp.setPos(x + x1, y + y1, z + z1));
-						Block inspectBlock = inspectBlockState.getBlock();
-
-						// if the block is a torch, then destroy the fog and return
-						if (inspectBlock instanceof BlockTorch) {
-							numberOfTorches++;
-						}
-						if (numberOfTorches >= 3) {
-							x1 = 99;
-							y1 = 99;
-							z1 = 99;
-							break;
-						}
-					}
-				}
-			}
-		}
-
-		boolean isCreateParticle = true;
-		if (numberOfTorches == 1) {
-			isCreateParticle = RandomHelper.checkProbability(random, 50);
-		} else if (numberOfTorches == 2) {
-			isCreateParticle = RandomHelper.checkProbability(random, 25);
-		} else if (numberOfTorches > 2) {
-			isCreateParticle = false;
-		}
-
+		boolean isCreateParticle = checkTorchPrevention(world, random, x, y, z);
 		if (!isCreateParticle) {
 			return;
 		}
 
-		// TODO check appearance - if face block, then particles need to be generated on ground and further
-		// away (since main tree is 2x2
-		// appearance affects how wide to spawn the mist (because the main tree is 2x2, and the soul log is
-		// higher)
-		// (this is hard-coded knowledge - bad)
+		// check appearance - if face block, then particles need to be generated on
+		// ground and further away (since main tree is 2x2 appearance affects how
+		// wide to spawn the mist (because the main tree is 2x2, and the soul log is
+		// higher). (this is hard-coded knowledge - bad)
 		double xPos = 0;
 		double yPos = y;
 		double zPos = 0;
 
 		if (appearance == Appearance.FACE) {
 			// initial positions - has a spread area of up to 2.5 blocks radius
-			float xOffset = (random.nextFloat() * 5.0F) - 2.5F;
-			if (xOffset >= 0.0F) {
-				xOffset = Math.max(1.5F, xOffset);
-			} else {
-				xOffset = Math.min(-0.5F, xOffset);
-			}
-			xPos = (x + 0.5F) + xOffset;
+			double xOffset = (random.nextFloat() * 5.0D) - 2.5D;
+			double zOffset = (random.nextFloat() * 5.0D) - 2.5D;
 
-			// + state.getBoundingBox(world, pos).maxY; // + 1.0;
-			float zOffset = (random.nextFloat() * 5.0F) - 2.5F;
-			if (zOffset > 0.0F) {
-				zOffset = Math.max(0.5F, zOffset);
-			} else {
-				zOffset = Math.min(-1.5F, zOffset);
+			if (xOffset > 0D && (zOffset < 0.5D || zOffset > -1.5D)) {
+				xOffset = Math.max(1.5D, xOffset);
+			} else if (xOffset < 0D && (zOffset < 0.5D || zOffset > -1.5D)) {
+				xOffset = Math.min(-0.5D, xOffset);
 			}
-			zPos = (z + 0.5F) + zOffset;
+			xPos = (x + 0.5D) + xOffset;
+			zPos = (z + 0.5D) + zOffset;
 
 			// y is 2 blocks down as the face it up the trunk
-			yPos = y - 2.0F;
+			yPos = y - 1.875D;
 		} else {
-			// initial positions - has a spread area of up to 1.5 blocks
-			xPos = (x + 0.5F) + (random.nextFloat() * 3.0F) - 1.5F;
-			// + state.getBoundingBox(world, pos).maxY; // + 1.0;
-			zPos = (z + 0.5F) + (random.nextFloat() * 3.0F) - 1.5F;
+			// initial positions - has a spread area of up to 2.5 blocks
+			xPos = (x + 0.5D) + (random.nextFloat() * 5.0D) - 2.5D;
+			zPos = (z + 0.5D) + (random.nextFloat() * 5.0D) - 2.5D;
 		}
 
 		// initial velocities
@@ -234,6 +184,12 @@ public class WitherLogSoulBlock extends CardinalDirectionFacadeBlock
 		Minecraft.getMinecraft().effectRenderer.addEffect(mistParticle);
 
 		// TODO add wil-o-the-wisp particles
+//		if (RandomHelper.checkProbability(random, 20)) {
+//			Treasure.logger.debug("spawning will o wisp");
+////			WillWispParticle willWispParticle = new WillWispParticle(world, xPos, yPos, zPos);
+//			NewParticle willWispParticle = new NewParticle(world, xPos, yPos + 1F, zPos, 0, 0, 0);
+//			Minecraft.getMinecraft().effectRenderer.addEffect(willWispParticle);
+//		}
 	}
 
 	/**

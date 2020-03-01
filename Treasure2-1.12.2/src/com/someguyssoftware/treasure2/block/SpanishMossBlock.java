@@ -13,6 +13,9 @@ import com.someguyssoftware.treasure2.particle.AbstractMistParticle;
 import com.someguyssoftware.treasure2.particle.PoisonMistParticle;
 
 import net.minecraft.block.BlockBush;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
@@ -25,6 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 public class SpanishMossBlock extends BlockBush {
+	public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
 
 	/**
 	 * 
@@ -32,12 +36,21 @@ public class SpanishMossBlock extends BlockBush {
 	public SpanishMossBlock(String modID, String name) {
 		setRegistryName(modID, name);
 		setUnlocalizedName(getRegistryName().toString());
+		this.setDefaultState(blockState.getBaseState().withProperty(ACTIVATED, Boolean.valueOf(false)));
 	}
 
 	/**
-	 * NOTE randomDisplayTick is on the client side only. The server is not keeping track of any
-	 * particles NOTE cannot control the number of ticks per randomDisplayTick() call - it is not
-	 * controlled by tickRate()
+	 * 
+	 */
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { ACTIVATED });
+	}
+
+	/**
+	 * NOTE randomDisplayTick is on the client side only. The server is not keeping
+	 * track of any particles NOTE cannot control the number of ticks per
+	 * randomDisplayTick() call - it is not controlled by tickRate()
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -50,6 +63,10 @@ public class SpanishMossBlock extends BlockBush {
 			return;
 		}
 
+		if (!state.getValue(ACTIVATED)) {
+			return;
+		}
+
 		if (RandomHelper.checkProbability(random, 75D)) {
 			return;
 		}
@@ -59,10 +76,9 @@ public class SpanishMossBlock extends BlockBush {
 		int z = pos.getZ();
 
 		// initial positions - has a spread area of up to 1.5 blocks
-		double xPos = x;// (x + 0.5F) + (random.nextFloat() * 3.0) - 1.5F;
+		double xPos = x;
 		double yPos = y;
-		// + state.getBoundingBox(world, pos).maxY; // + 1.0;
-		double zPos = z;// (z + 0.5F) + (random.nextFloat() * 3.0) - 1.5F;
+		double zPos = z;
 		// initial velocities
 		double velocityX = 0;
 		double velocityY = 0;
@@ -78,6 +94,11 @@ public class SpanishMossBlock extends BlockBush {
 			@Override
 			public float provideAlpha() {
 				return DEFAULT_PARTICLE_ALPHA;
+			}
+
+			@Override
+			public float provideMaxScale() {
+				return 10F;
 			}
 
 			@Override
@@ -116,4 +137,22 @@ public class SpanishMossBlock extends BlockBush {
 		return true;
 	}
 
+	/**
+	 * Convert the given metadata into a BlockState for this Block
+	 */
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(ACTIVATED, Boolean.valueOf((meta & 1) > 0));
+	}
+
+	/**
+	 * Convert the BlockState into the correct metadata value
+	 */
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		int meta = 0;
+		if (state.getValue(ACTIVATED))
+			meta = 1;
+		return meta;
+	}
 }

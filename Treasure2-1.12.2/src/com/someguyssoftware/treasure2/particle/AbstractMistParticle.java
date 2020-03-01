@@ -13,15 +13,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Mark Gottschling on Feb 17, 2020
  *
  */
+@SideOnly(Side.CLIENT)
 public abstract class AbstractMistParticle extends Particle implements IMistParticle {
 	/*
-	 * particle lifespan: 200 = 10 seconds (10 * 20 ticks/sec): too short 400 = 20 seconds (10 * 20
-	 * ticks/sec): too long 320 = 16 seconds (16 * 20 ticks/sec): seems to be a good length
+	 * particle lifespan: 200 = 10 seconds (10 * 20 ticks/sec): too short 400 = 20
+	 * seconds (10 * 20 ticks/sec): too long 320 = 16 seconds (16 * 20 ticks/sec):
+	 * seems to be a good length
 	 */
 	public static final int DEFAULT_PARTICLE_MAX_AGE = 320;
 	public static final int DEFAULT_PARTICLE_MAX_SCALE = 12;
@@ -48,7 +52,8 @@ public abstract class AbstractMistParticle extends Particle implements IMistPart
 	protected AbstractMistParticle(World worldIn, double posXIn, double posYIn, double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 
-		// TODO none of these overridden methods -> getMaxScale(), getMaxAge() in the constructor may work
+		// TODO none of these overridden methods -> getMaxScale(), getMaxAge() in the
+		// constructor may work
 		// as expected. should eliminate/replace them.
 
 		// add horizontal movement
@@ -62,10 +67,11 @@ public abstract class AbstractMistParticle extends Particle implements IMistPart
 	@Override
 	public void init() {
 		/*
-		 * determine scale increments. this is the difference between the max scale size and the variable
-		 * scale size divided by variable (ex. stopAge - initial age(zero) = stopAge). this will not
-		 * actually result in the scale reaching max/min size, because that would assume that this method is
-		 * called every tick, which is unlikely.
+		 * determine scale increments. this is the difference between the max scale size
+		 * and the variable scale size divided by variable (ex. stopAge - initial
+		 * age(zero) = stopAge). this will not actually result in the scale reaching
+		 * max/min size, because that would assume that this method is called every
+		 * tick, which is unlikely.
 		 */
 		transitionInScaleIncrement = (provideMaxScale() - TRANSITION_IN_START_SCALE) / TRANSITION_IN_STOP_AGE;
 		transitionOutScaleIncrement = (provideMaxScale() - TRANSITION_OUT_FINAL_SCALE)
@@ -85,8 +91,8 @@ public abstract class AbstractMistParticle extends Particle implements IMistPart
 	}
 
 	/**
-	 * call once per tick to update the Particle position, calculate collisions, remove when max
-	 * lifetime is reached, etc
+	 * call once per tick to update the Particle position, calculate collisions,
+	 * remove when max lifetime is reached, etc
 	 */
 	@Override
 	public void onUpdate() {
@@ -105,7 +111,8 @@ public abstract class AbstractMistParticle extends Particle implements IMistPart
 
 		doTransitions();
 
-		// NOTE the movement coupled with the transitions gives the mist a "roiling" effect.
+		// NOTE the movement coupled with the transitions gives the mist a "roiling"
+		// effect.
 
 		// detect a collision while moving upwards (can't move up at all)
 		if (prevPosY == posY && motionY > 0) {
@@ -160,9 +167,6 @@ public abstract class AbstractMistParticle extends Particle implements IMistPart
 		// get the emitter tile entity
 		TileEntity emitterTileEntity = world.getTileEntity(getParentEmitterCoords().toPos());
 		if (emitterTileEntity == null) {
-			if (emitterTileEntity == null) {
-				Treasure.logger.debug("emitter tile entity is null");
-			}
 			return;
 		}
 
@@ -185,12 +189,13 @@ public abstract class AbstractMistParticle extends Particle implements IMistPart
 	public abstract void inflictEffectOnPlayer(EntityPlayer player);
 
 	/**
-	 * Used to control what texture and lighting is used for the EntityFX. Returns 1, which means "use a
-	 * texture from the blocks + items texture sheet" The vanilla layers are: normal particles: ignores
-	 * world brightness lighting map Layer 0 - uses the particles texture sheet
-	 * (textures\particle\particles.png) Layer 1 - uses the blocks + items texture sheet lit particles:
-	 * changes brightness depending on world lighting i.e. block light + sky light Layer 3 - uses the
-	 * blocks + items texture sheet (I think)
+	 * Used to control what texture and lighting is used for the EntityFX. Returns
+	 * 1, which means "use a texture from the blocks + items texture sheet" The
+	 * vanilla layers are: normal particles: ignores world brightness lighting map
+	 * Layer 0 - uses the particles texture sheet (textures\particle\particles.png)
+	 * Layer 1 - uses the blocks + items texture sheet lit particles: changes
+	 * brightness depending on world lighting i.e. block light + sky light Layer 3 -
+	 * uses the blocks + items texture sheet (I think)
 	 *
 	 * @return
 	 */
@@ -208,10 +213,11 @@ public abstract class AbstractMistParticle extends Particle implements IMistPart
 	}
 
 	/*
-	 * this function is used by ParticleManager.addEffect() to determine whether depthmask writing
-	 * should be on or not. FlameBreathFX uses alphablending (i.e. the FX is partially transparent) but
-	 * we want depthmask writing on, otherwise translucent objects (such as water) render over the top
-	 * of our breath, even if the particle is in front of the water and not behind.
+	 * this function is used by ParticleManager.addEffect() to determine whether
+	 * depthmask writing should be on or not. FlameBreathFX uses alphablending (i.e.
+	 * the FX is partially transparent) but we want depthmask writing on, otherwise
+	 * translucent objects (such as water) render over the top of our breath, even
+	 * if the particle is in front of the water and not behind.
 	 */
 	@Override
 	public boolean shouldDisableDepth() {
