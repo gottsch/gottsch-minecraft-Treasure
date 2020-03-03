@@ -279,6 +279,23 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 			return result.fail();
 		}
 
+		witherTreeCoords = surfaceCoords;
+
+		// ============ build the pit first ==============
+		// TODO wither tree world gen should probably extend SurfaceChestWorldGen
+		// TODO don't like that using static call to SurfaceChestWorldGenerator. Looks
+		// like more refactoring in the future.
+		// add pit
+		Treasure.logger.debug("generate pit");
+		GeneratorResult<ChestGeneratorData> genResult = SurfaceChestWorldGenerator.generatePit(world, random,
+				Rarity.SCARCE, witherTreeCoords, TreasureConfig.CHESTS.surfaceChests.scarceChestProperties);
+		Treasure.logger.debug("result -> {}", genResult.toString());
+		if (!genResult.isSuccess()) {
+			return result.fail();
+		}
+
+		// ========================================
+
 		// 2. clear the area
 		buildClearing(world, random, surfaceCoords);
 
@@ -289,7 +306,6 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 //		if (TreasureConfig.WORLD_GEN.getGeneralProperties().enableWitherFog) {
 //			GenUtil.addFog(world, random, surfaceCoords, fogDensity);
 //		}
-		witherTreeCoords = surfaceCoords;
 
 		// determine how many extra "withered" trees to include in the area
 		int numTrees = RandomHelper.randomInt(config.getMinSupportingTrees(), config.getMaxSupportingTrees());
@@ -322,26 +338,13 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 				}
 			}
 		}
-		// TODO wither tree world gen should probably extend SurfaceChestWorldGen
-		// TODO don't like that using static call to SurfaceChestWorldGenerator. Looks
-		// like more refactoring in the future.
-		// add pit/chest
-		Treasure.logger.debug("generate pit");
-		GeneratorResult<ChestGeneratorData> genResult = SurfaceChestWorldGenerator.generatePit(world, random,
-				Rarity.SCARCE, witherTreeCoords, TreasureConfig.CHESTS.surfaceChests.scarceChestProperties);
-		Treasure.logger.debug("result -> {}", genResult.toString());
-		if (!genResult.isSuccess()) {
-			return result.fail();
-		}
+
+		// add chest
 		ICoords chestCoords = genResult.getData().getChestContext().getCoords();
 		if (chestCoords == null) {
 			return result.fail();
 		}
-
-		// add chest
 		WitherChestGenerator chestGen = new WitherChestGenerator();
-		// TODO this is only building the chest... that's what the WitherChestGenerator
-		// was for
 		GeneratorResult<ChestGeneratorData> chestResult = chestGen.generate(world, random, chestCoords, Rarity.SCARCE,
 				null);
 		if (!chestResult.isSuccess()) {
