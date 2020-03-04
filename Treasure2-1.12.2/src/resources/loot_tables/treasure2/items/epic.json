@@ -93,7 +93,43 @@
 							}
 						}
 					]							
-				}
+				},
+				{
+					"entryName": "skeleton_head",
+					"type": "item",
+					"name": "minecraft:skull",
+					"weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_data",
+                            "data": 0
+                        }
+                    ]						
+				},
+				{
+					"entryName": "zombie_head",
+					"type": "item",
+					"name": "minecraft:skull",
+					"weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_data",
+                            "data": 2
+                        }
+                    ]						
+				},
+				{
+					"entryName": "creeper_head",
+					"type": "item",
+					"name": "minecraft:skull",
+					"weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_data",
+                            "data": 4
+                        }
+                    ]						
+				}				
 			]
 		}
 	]

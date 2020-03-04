@@ -31,7 +31,6 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
@@ -268,7 +267,10 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 		if (!genResult.isSuccess()) {
 			return result.fail();
 		}
-		chestCoords = genResult.getData().getChestCoords();
+		if (genResult.getData().getChestContext() == null) return result.fail();
+		
+		chestCoords = genResult.getData().getChestContext().getCoords();
+		
 		// if chest isn't generated, then fail
 		if (chestCoords == null) return result.fail();
 		markerCoords = genResult.getData().getSpawnCoords();
@@ -277,7 +279,7 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 		}
 		Treasure.logger.debug("submerged spawn coords -> {}", markerCoords.toShortString());
 
-		GeneratorResult<ChestGeneratorData> chestResult = chestSelector.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestState());
+		GeneratorResult<ChestGeneratorData> chestResult = chestSelector.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestContext().getState());
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}
@@ -303,7 +305,7 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 		SubmergedRuinGenerator generator = new SubmergedRuinGenerator();
 
 		// build the structure
-		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, spawnCoords);
+		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, random, spawnCoords);
 		Treasure.logger.debug("submerged struct result -> {}", genResult);
 		if (!genResult.isSuccess()) return result.fail();
 

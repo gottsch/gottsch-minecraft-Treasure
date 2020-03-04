@@ -18,7 +18,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 @SideOnly(Side.CLIENT)
-
 public class MimicEntityRenderer extends RenderLiving<MimicEntity> {
 
 	private ModelBase model;

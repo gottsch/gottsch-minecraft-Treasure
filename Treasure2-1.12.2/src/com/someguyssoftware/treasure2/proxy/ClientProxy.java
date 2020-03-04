@@ -18,6 +18,7 @@ import com.someguyssoftware.treasure2.client.model.SpiderChestModel;
 import com.someguyssoftware.treasure2.client.model.StandardChestModel;
 import com.someguyssoftware.treasure2.client.model.StrongboxModel;
 import com.someguyssoftware.treasure2.client.model.WitherChestModel;
+import com.someguyssoftware.treasure2.client.render.entity.BoundSoulRenderer;
 import com.someguyssoftware.treasure2.client.render.entity.MimicEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CauldronChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CompressorChestTileEntityRenderer;
@@ -28,8 +29,10 @@ import com.someguyssoftware.treasure2.client.render.tileentity.SkullChestTileEnt
 import com.someguyssoftware.treasure2.client.render.tileentity.StrongboxTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.WitherChestTileEntityRenderer;
+import com.someguyssoftware.treasure2.entity.monster.BoundSoulEntity;
 import com.someguyssoftware.treasure2.entity.monster.PirateMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
+import com.someguyssoftware.treasure2.particle.MistTextureStitcher;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CauldronChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.ClamChestTileEntity;
@@ -51,11 +54,17 @@ import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelZombie;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -69,6 +78,9 @@ public class ClientProxy {
 	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public static void registerRenderers(@SuppressWarnings("rawtypes") final RegistryEvent.Register event) {
+		// register the texture stitcher, which is used to insert the mist image into the blocks texture sheet
+	    MinecraftForge.EVENT_BUS.register(new MistTextureStitcher());
+	    
 		/*
 		 *  register tile entity special renderers
 		 */
@@ -180,5 +192,14 @@ public class ClientProxy {
 						Minecraft.getMinecraft().getRenderManager(), 
 						new MimicModel(),
 						new ResourceLocation(Treasure.MODID + ":textures/entity/mob/pirate-mimic.png")));
+		
+		RenderingRegistry.registerEntityRenderingHandler(BoundSoulEntity.class, 	
+				new BoundSoulRenderer(
+						Minecraft.getMinecraft().getRenderManager()));
+		
+//	    RenderingRegistry.registerEntityRenderingHandler(Bound, IRenderFactory<? super T> renderFactory)
+//	    {
+//	        INSTANCE.entityRenderers.put(entityClass, renderFactory);
+//	    }
 	}
 }

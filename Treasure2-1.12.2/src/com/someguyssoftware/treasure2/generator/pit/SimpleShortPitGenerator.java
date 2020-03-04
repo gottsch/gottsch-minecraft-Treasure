@@ -31,7 +31,7 @@ public class SimpleShortPitGenerator extends AbstractPitGenerator {
 		Treasure.logger.debug("Generating SimpleShortShaft.");
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(spawnCoords);
-		result.getData().setChestCoords(spawnCoords);
+		result.getData().getChestContext().setCoords(spawnCoords);
 		
 		ICoords checkCoords = null;
 		// check each position if already not air and generate

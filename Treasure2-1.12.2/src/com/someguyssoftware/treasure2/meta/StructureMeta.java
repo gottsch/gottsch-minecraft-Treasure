@@ -16,7 +16,8 @@ public class StructureMeta extends Meta {
 	private boolean includeGraves;
 	private boolean includeFog;
 	private List<String> decayRuleSetName;
-	
+	private String nullBlockName;
+
 	public StructureMeta() {}
 
 	public boolean isIncludeGraves() {
@@ -38,12 +39,12 @@ public class StructureMeta extends Meta {
 	@Override
 	public String toString() {
 		return "StructureMeta [verticalOffset=" + verticalOffset + ", includeGraves=" + includeGraves + ", includeFog="
-				+ includeFog + ", decayRuleSetName=" + decayRuleSetName + ", getName()=" + getName()
-				+ ", getDescription()=" + getDescription() + ", getAuthor()=" + getAuthor() + ", getParent()="
-				+ getParent() + ", getArchetypes()=" + getArchetypes() + ", getType()=" + getType() + ", getThemes()="
-				+ getThemes() + ", getBiomeWhiteList()=" + getBiomeWhiteList() + ", getBiomeBlackList()="
-				+ getBiomeBlackList() + ", getRarities()=" + getRarities() + ", getOrder()=" + getOrder()
-				+ ", getOffset()=" + getOffset() + "]";
+				+ includeFog + ", decayRuleSetName=" + decayRuleSetName + ", nullBlockName=" + nullBlockName
+				+ ", getName()=" + getName() + ", getDescription()=" + getDescription() + ", getAuthor()=" + getAuthor()
+				+ ", getParent()=" + getParent() + ", getArchetypes()=" + getArchetypes() + ", getType()=" + getType()
+				+ ", getThemes()=" + getThemes() + ", getBiomeWhiteList()=" + getBiomeWhiteList()
+				+ ", getBiomeBlackList()=" + getBiomeBlackList() + ", getRarities()=" + getRarities() + ", getOrder()="
+				+ getOrder() + ", getOffset()=" + getOffset() + "]";
 	}
 
 	public int getVerticalOffset() {
@@ -61,5 +62,12 @@ public class StructureMeta extends Meta {
 	public void setDecayRuleSetName(List<String> decayRuleSetName) {
 		this.decayRuleSetName = decayRuleSetName;
 	}
-		
+
+	public String getNullBlockName() {
+		return nullBlockName;
+	}
+
+	public void setNullBlockName(String nullBlockName) {
+		this.nullBlockName = nullBlockName;
+	}
 }

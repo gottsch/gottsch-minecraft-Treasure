@@ -4,43 +4,48 @@
 package com.someguyssoftware.treasure2.generator;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 
 import net.minecraft.block.state.IBlockState;
 
 /**
- * @author Mark Gottschling on Aug 21, 2019
+ * 
+ * @author Mark Gottschling on Feb 8, 2020
  *
  */
 public class ChestGeneratorData extends GeneratorData {
-	private ICoords chestCoords;
-	private IBlockState chestState;
+	private BlockContext chestContext;
 	
-	public ChestGeneratorData() {}
+	/**
+	 * 
+	 */
+	public ChestGeneratorData() {
+		this.chestContext = new BlockContext();
+	}
 	
+	/**
+	 * 
+	 * @param chestCoords
+	 * @param chestState
+	 */
 	public ChestGeneratorData(ICoords chestCoords, IBlockState chestState) {
 		super();
-		this.chestCoords = chestCoords;
-		this.chestState = chestState;
+		this.chestContext = new BlockContext(chestCoords, chestState);
+	}
+
+	public BlockContext getChestContext() {
+		if (chestContext == null) {
+			chestContext = new BlockContext();
+		}
+		return chestContext;
+	}
+
+	public void setChestContext(BlockContext chestContext) {
+		this.chestContext = chestContext;
 	}
 
 	@Override
 	public String toString() {
-		return "ChestGeneratorData [chestCoords=" + chestCoords + ", chestState=" + chestState + "]";
-	}
-
-	public ICoords getChestCoords() {
-		return chestCoords;
-	}
-
-	public void setChestCoords(ICoords chestCoords) {
-		this.chestCoords = chestCoords;
-	}
-
-	public IBlockState getChestState() {
-		return chestState;
-	}
-
-	public void setChestState(IBlockState chestState) {
-		this.chestState = chestState;
+		return "ChestGeneratorData2 [chestContext=" + chestContext + "]";
 	}
 }

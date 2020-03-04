@@ -43,4 +43,10 @@ public class ModConfig {
 	@Comment({"Enable/Disable a check to ensure the default templates exist on the file system.", "If enabled, then you will not be able to remove any default templates.", "Only disable if you know what you're doing."})
 	@Name("08. Enable default templates check:")
 	public boolean enableDefaultTemplatesCheck = true;
+	@Comment({"Enable/Disable a check to ensure the default decay rulesets exist on the file system.", "If enabled, then you will not be able to remove any default decay rulesets (but they can be edited).", "Only disable if you know what you're doing."})
+	@Name("09. Enable default decay rulesets check:")
+	public boolean enableDefaultDecayRuletSetsCheck = true;
+	@Comment({"Enble/Disable starting book.", "If enabled and in survival, you will begin the game with the Book of Fortunes in your inventory.", "This option requires Patchouli mod. If it is not present, the starting book will simply not appear in your inventory nor in the Treasure tab."})
+	@Name("10. Enable starting book:")
+	public boolean enableStartingBook = true;
 }

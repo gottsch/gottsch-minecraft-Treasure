@@ -1,0 +1,41 @@
+{
+	"variants": {
+		"normal": {
+			"model": "treasure2:falling_grass"
+		},
+		"activated=false": [
+			{
+				"model": "treasure2:falling_grass"
+			},
+			{
+				"model": "treasure2:falling_grass",
+				"y": 90
+			},
+			{
+				"model": "treasure2:falling_grass",
+				"y": 180
+			},
+			{
+				"model": "treasure2:falling_grass",
+				"y": 270
+			}
+		],
+		"activated=true": [
+			{
+				"model": "treasure2:falling_grass"
+			},
+			{
+				"model": "treasure2:falling_grass",
+				"y": 90
+			},
+			{
+				"model": "treasure2:falling_grass",
+				"y": 180
+			},
+			{
+				"model": "treasure2:falling_grass",
+				"y": 270
+			}
+		]
+	}
+}

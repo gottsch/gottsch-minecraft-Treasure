@@ -62,8 +62,15 @@ dependencies {
 compile files('../../ModCommonLibs/libs/commons-cli-1.4.jar')
 	//compile files(gottschcore_path)	
 	shadow files(gottschcore_path)	
+	compileOnly "vazkii.patchouli:Patchouli:${patchouli_version}"
 }
-	
+
+repositories {
+    maven { 
+        name = 'Patchouli'
+        url = "https://maven.blamejared.com" 
+    }
+ }
 processResources
 {
     // this will ensure that this task is redone when the versions change.

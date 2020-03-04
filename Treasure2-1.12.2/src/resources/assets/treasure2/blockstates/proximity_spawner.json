@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "normal": { "model": "treasure2:proximity_spawner" }
+    }
+}

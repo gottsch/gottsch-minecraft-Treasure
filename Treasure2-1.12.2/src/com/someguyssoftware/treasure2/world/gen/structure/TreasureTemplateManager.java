@@ -253,7 +253,11 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				for (String b : meta.getBiomeWhiteList()) {
 					String biomeName = b.trim().toLowerCase();
 					Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeName));
-					if (!BiomeDictionary.hasType(biome, Type.END)
+					if (biome == null) {
+						Treasure.logger.debug("Unable to locate biome for name -> {}", biomeName);
+						continue;
+					}
+					if (biome != null && !BiomeDictionary.hasType(biome, Type.END)
 							&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
 						Integer biomeID = Biome.getIdForBiome(biome);
 						if (!templatesByArchetypeTypeBiome.contains(key, biomeID)) {
@@ -272,6 +276,10 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 					if (biome != null) {
 						Integer biomeID = Biome.getIdForBiome(biome);
 						if (biomeID != null) blackListBiomeIDs.add(biomeID);
+					}
+					else {
+						Treasure.logger.debug("Unable to locate biome for name -> {}", b);
+						continue;
 					}
 				}
 				// get the set of all biomes

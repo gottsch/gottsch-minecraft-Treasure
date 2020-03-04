@@ -37,7 +37,6 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
@@ -49,6 +48,7 @@ import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.UncommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.AirPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.BigBottomMobTrapPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.CollapsingTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.LavaSideTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.LavaTrapPitGenerator;
@@ -162,6 +162,8 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		pitGens.put(PitTypes.STANDARD, Pits.BIG_BOTTOM_MOB_TRAP_PIT, new BigBottomMobTrapPitGenerator());
 		// NONE for STRUCTURE
 		
+		pitGens.put(PitTypes.STANDARD, Pits.COLLAPSING_TRAP_PIT,  new CollapsingTrapPitGenerator());
+		pitGens.put(PitTypes.STRUCTURE, Pits.COLLAPSING_TRAP_PIT, new StructurePitGenerator(new CollapsingTrapPitGenerator()));
 	}
 
 	/**
@@ -339,7 +341,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 					return result.fail();
 				}
 				// set the chest coords to the surface pos
-				chestCoords = genResult.getData().getChestCoords();
+				chestCoords = genResult.getData().getChestContext().getCoords();
 			}
 			else {
 				// set the chest coords to the surface pos
@@ -353,7 +355,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 			if (!genResult.isSuccess()) {
 				return result.fail();
 			}
-			chestCoords = genResult.getData().getChestCoords();
+			chestCoords = genResult.getData().getChestContext().getCoords();
 		}			
 				
 		// if chest isn't generated, then fail
@@ -366,7 +368,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		if (hasMarkers) {
 			chestGenerator.addMarkers(world, random, markerCoords, isSurfaceChest);
 		}		
-		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestState());
+		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestContext().getState());
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}
@@ -407,11 +409,11 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		SurfaceRuinGenerator generator = new SurfaceRuinGenerator();
 
 		// build the structure
-		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, spawnCoords, holder, decayRuleSet);
+		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, random, spawnCoords, holder, decayRuleSet);
 		Treasure.logger.debug("surface struct result -> {}", genResult);
 		if (!genResult.isSuccess()) return result.fail();
 
-		result.setData(genResult.getData());
+		result.setData(genResult.getData()); // TODO this step is unneeded now.
 		return result.success();
 	}
 	

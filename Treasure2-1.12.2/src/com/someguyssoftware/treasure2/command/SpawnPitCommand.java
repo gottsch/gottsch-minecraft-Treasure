@@ -86,9 +86,9 @@ public class SpawnPitCommand extends CommandBase {
 			if (result.isSuccess()) {
 				SurfaceChestWorldGenerator chestGens = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SURFACE_CHEST);
 				IChestGenerator gen = chestGens.getChestGenMap().get(rarity).next();
-				ICoords chestCoords = result.getData().getChestCoords();
+				ICoords chestCoords = result.getData().getChestContext().getCoords();
 				if (chestCoords != null) {
-					GeneratorResult<ChestGeneratorData> chestResult = gen.generate(world, random, chestCoords, rarity, result.getData().getChestState());
+					GeneratorResult<ChestGeneratorData> chestResult = gen.generate(world, random, chestCoords, rarity, result.getData().getChestContext().getState());
 				}
 			}			
 		}
