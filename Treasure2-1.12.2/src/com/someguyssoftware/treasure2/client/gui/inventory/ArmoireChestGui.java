@@ -24,26 +24,32 @@ import net.minecraft.util.ResourceLocation;
 public class ArmoireChestGui extends GuiContainer {
 
 	// This is the resource location for the background image for the GUI
-	private static final ResourceLocation texture = new ResourceLocation(Treasure.MODID, "textures/gui/container/wither_chest.png");
+	private static final ResourceLocation texture = new ResourceLocation(Treasure.MODID,
+			"textures/gui/container/wither_chest.png");
 	private AbstractTreasureChestTileEntity tileEntity;
 
 	/**
-	 * NOTE can pass anything into the ChestGui (GuiContainer) as long as the player's inventory and the container's inventory is present.
-	 * NOTE both can be IInventory - doesn't have to be TileEntity
+	 * NOTE can pass anything into the ChestGui (GuiContainer) as long as the
+	 * player's inventory and the container's inventory is present. NOTE both can be
+	 * IInventory - doesn't have to be TileEntity
+	 * 
 	 * @param invPlayer
 	 * @param tileEntity
 	 */
 	public ArmoireChestGui(InventoryPlayer invPlayer, AbstractTreasureChestTileEntity tileEntity) {
-		super(new ArmoireChestContainer(invPlayer, (IInventory) tileEntity.getInventoryProxy()));
+		super(new ArmoireChestContainer(invPlayer, (IInventory) tileEntity));
 		this.tileEntity = tileEntity;
-		
-		// Set the width and height of the gui.  Should match the size of the texture!
+
+		// Set the width and height of the gui. Should match the size of the texture!
 		xSize = 176;
 		ySize = 220;
-	}	
-	
-	/* (non-Javadoc)
-	 * @see net.minecraft.client.gui.inventory.GuiContainer#drawGuiContainerBackgroundLayer(float, int, int)
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.minecraft.client.gui.inventory.GuiContainer#
+	 * drawGuiContainerBackgroundLayer(float, int, int)
 	 */
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
@@ -54,22 +60,24 @@ public class ArmoireChestGui extends GuiContainer {
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 
-	// draw the foreground for the GUI - rendered after the slots, but before the dragged items and tooltips
+	// draw the foreground for the GUI - rendered after the slots, but before the
+	// dragged items and tooltips
 	// renders relative to the top left corner of the background
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		final int LABEL_XPOS = 5;
 		final int LABEL_YPOS = 5;
-		fontRenderer.drawString(tileEntity.getDisplayName().getUnformattedText(), LABEL_XPOS, LABEL_YPOS, Color.darkGray.getRGB());
+		fontRenderer.drawString(tileEntity.getDisplayName().getUnformattedText(), LABEL_XPOS, LABEL_YPOS,
+				Color.darkGray.getRGB());
 	}
-	
+
 	/**
 	 * 
 	 */
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		this.drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
 	}
 }

@@ -16,16 +16,14 @@ import net.minecraftforge.common.util.Constants;
  *
  */
 public class LockState {
-//	private int index;
 	private ILockSlot slot;
-//	private Item lockItem; // item or just LockItem ?
 	private LockItem lockItem;
-	
+
 	/**
 	 * 
 	 */
 	public LockState() {
-		
+
 	}
 
 	/**
@@ -45,60 +43,45 @@ public class LockState {
 				new ItemStack(this.getLock()).writeToNBT(lockNBT);
 				nbt.setTag("lockItem", lockNBT);
 			}
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			Treasure.logger.error("Unable to write state to NBT:", e);
-		}		
+		}
 		return nbt;
 	}
-	
+
 	/**
 	 * This method reads only this lockstate's properties from an NBT tag
+	 * 
 	 * @param tag
 	 */
 	public static LockState readFromNBT(NBTTagCompound tag) {
 		ILockSlot slot = null;
 		ItemStack lockStack = null;
-		
-	    NBTTagCompound slotNBT = null;
-	    if (tag.hasKey("slot", Constants.NBT.TAG_COMPOUND)) {
-	        slotNBT = tag.getCompoundTag("slot");
-	        slot = ILockSlot.readFromNBT(slotNBT);
-	    }
-	
-	    NBTTagCompound lockNBT = null;
-	    if (tag.hasKey("lockItem", Constants.NBT.TAG_COMPOUND)) {
-	    	lockNBT = tag.getCompoundTag("lockItem");	    	
-	    	if (lockNBT != null) {
-	    		lockStack = new ItemStack(lockNBT);
-	    	}
-	    }
 
-	    LockState lockState = new LockState();	    
-	    // update the properties
-	    if (slot != null) {
-	    	lockState.setSlot(slot);
-	    }
-	    if (lockStack != null) {
-	    	lockState.setLock((LockItem)lockStack.getItem());
-	    }
-	    return lockState;
+		NBTTagCompound slotNBT = null;
+		if (tag.hasKey("slot", Constants.NBT.TAG_COMPOUND)) {
+			slotNBT = tag.getCompoundTag("slot");
+			slot = ILockSlot.readFromNBT(slotNBT);
+		}
+
+		NBTTagCompound lockNBT = null;
+		if (tag.hasKey("lockItem", Constants.NBT.TAG_COMPOUND)) {
+			lockNBT = tag.getCompoundTag("lockItem");
+			if (lockNBT != null) {
+				lockStack = new ItemStack(lockNBT);
+			}
+		}
+
+		LockState lockState = new LockState();
+		// update the properties
+		if (slot != null) {
+			lockState.setSlot(slot);
+		}
+		if (lockStack != null) {
+			lockState.setLock((LockItem) lockStack.getItem());
+		}
+		return lockState;
 	}
-	
-	
-//	/**
-//	 * @return the index
-//	 */
-//	public int getIndex() {
-//		return index;
-//	}
-//
-//	/**
-//	 * @param index the index to set
-//	 */
-//	public void setIndex(int index) {
-//		this.index = index;
-//	}
 
 	/**
 	 * @return the slot
@@ -128,7 +111,9 @@ public class LockState {
 		this.lockItem = lockItem;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
