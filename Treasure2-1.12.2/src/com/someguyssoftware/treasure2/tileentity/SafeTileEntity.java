@@ -16,17 +16,17 @@ import net.minecraft.util.text.translation.I18n;
  *
  */
 public class SafeTileEntity extends AbstractTreasureChestTileEntity {
-    /** The angle of the latch last tick */
-    public float prevLatchPos;
-    
-    public float handleAngle;
-    public float prevHandleAngle;
-    
+	/** The angle of the latch last tick */
+	public float prevLatchPos;
+
+	public float handleAngle;
+	public float prevHandleAngle;
+
 	public boolean isHandleOpen = false;
 	public boolean isHandleClosed = true;
 	public boolean isLidOpen = false;
 	public boolean isLidClosed = false;
-	
+
 	/**
 	 * 
 	 * @param texture
@@ -36,9 +36,9 @@ public class SafeTileEntity extends AbstractTreasureChestTileEntity {
 		setCustomName(I18n.translateToLocal("display.safe.name"));
 	}
 
-	  /**
-     * Like the old updateEntity(), except more generic.
-     */
+	/**
+	 * Like the old updateEntity(), except more generic.
+	 */
 	@Override
 	public void update() {
 		int x = this.pos.getX();
@@ -49,7 +49,8 @@ public class SafeTileEntity extends AbstractTreasureChestTileEntity {
 		/*
 		 * recalculating if the chest is in use by any players
 		 */
-		if (WorldInfo.isServerSide(getWorld()) && this.numPlayersUsing != 0 && (this.ticksSinceSync + x + y + z) % 200 == 0) {
+		if (WorldInfo.isServerSide(getWorld()) && this.numPlayersUsing != 0
+				&& (this.ticksSinceSync + x + y + z) % 200 == 0) {
 			this.numPlayersUsing = 0;
 
 			for (EntityPlayer entityplayer : this.world.getEntitiesWithinAABB(EntityPlayer.class,
@@ -59,10 +60,9 @@ public class SafeTileEntity extends AbstractTreasureChestTileEntity {
 				if (entityplayer.openContainer instanceof ContainerChest) {
 					IInventory iinventory = ((ContainerChest) entityplayer.openContainer).getLowerChestInventory();
 
-					// TODO proxy goes here:  if (iinventory == this.getProxy() 
-                    if (iinventory == this) {
-                        ++this.numPlayersUsing;
-                    }
+					if (iinventory == this) {
+						++this.numPlayersUsing;
+					}
 				}
 			}
 		}
@@ -82,20 +82,19 @@ public class SafeTileEntity extends AbstractTreasureChestTileEntity {
 					this.handleAngle = -1.0F;
 					isHandleOpen = true;
 				}
-			}
-			else {
+			} else {
 				isHandleOpen = true;
 			}
-			
+
 			if (isHandleOpen) {
 				// play the opening chest sound the at the beginning of opening
 				if (this.lidAngle == 0.0F) {
 					double d1 = (double) x + 0.5D;
-					double d2 = (double) z + 0.5D;		
+					double d2 = (double) z + 0.5D;
 					this.world.playSound((EntityPlayer) null, d1, (double) y + 0.5D, d2, SoundEvents.BLOCK_CHEST_OPEN,
 							SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
-				}	
-				
+				}
+
 				// test the lid
 				if (this.lidAngle < 1.0F) {
 					isLidOpen = false;
@@ -105,17 +104,16 @@ public class SafeTileEntity extends AbstractTreasureChestTileEntity {
 						this.lidAngle = 1.0F;
 						isLidOpen = true;
 					}
-				}
-				else {
+				} else {
 					isLidOpen = true;
 				}
 			}
 		}
-		
+
 		// closing ie no players
 		else {
 			float f2 = this.lidAngle;
-			
+
 			if (this.lidAngle > 0.0F) {
 				isLidClosed = false;
 				this.lidAngle -= 0.1F;
@@ -124,20 +122,19 @@ public class SafeTileEntity extends AbstractTreasureChestTileEntity {
 					this.lidAngle = 0.0F;
 					isLidClosed = true;
 				}
-			}
-			else {
+			} else {
 				isLidClosed = true;
 			}
-			
+
 			// play the closing sound
 			if (this.lidAngle < 0.06F && f2 >= 0.06F) {
 				double d3 = (double) x + 0.5D;
 				double d0 = (double) z + 0.5D;
-	
+
 				this.world.playSound((EntityPlayer) null, d3, (double) y + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE,
 						SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
 			}
-			
+
 			if (isLidClosed) {
 				if (this.handleAngle < 0.0F) {
 					isHandleClosed = false;
@@ -147,15 +144,14 @@ public class SafeTileEntity extends AbstractTreasureChestTileEntity {
 						this.handleAngle = 0.0F;
 						isHandleClosed = true;
 					}
-				}
-				else {
+				} else {
 					isHandleClosed = true;
 				}
 			}
 
 		}
 	}
-	
+
 	/**
 	 * @return the prevLatchPos
 	 */

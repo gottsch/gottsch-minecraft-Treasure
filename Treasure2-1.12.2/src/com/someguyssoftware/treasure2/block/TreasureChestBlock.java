@@ -48,7 +48,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 	 * The GUIID;
 	 */
 	private int chestGuiID = GuiHandler.STANDARD_CHEST_GUIID;
-	
+
 	/**
 	 * 
 	 * @param modID
@@ -56,7 +56,8 @@ public class TreasureChestBlock extends AbstractChestBlock {
 	 * @param te
 	 * @param type
 	 */
-	public TreasureChestBlock(String modID, String name, Class<? extends AbstractTreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
+	public TreasureChestBlock(String modID, String name, Class<? extends AbstractTreasureChestTileEntity> te,
+			TreasureChestType type, Rarity rarity) {
 		this(modID, name, Material.WOOD, te, type, rarity);
 	}
 
@@ -68,7 +69,8 @@ public class TreasureChestBlock extends AbstractChestBlock {
 	 * @param te
 	 * @param type
 	 */
-	public TreasureChestBlock(String modID, String name, Material material, Class<? extends AbstractTreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
+	public TreasureChestBlock(String modID, String name, Material material,
+			Class<? extends AbstractTreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
 		super(modID, name, material, te, type, rarity);
 	}
 
@@ -86,7 +88,8 @@ public class TreasureChestBlock extends AbstractChestBlock {
 	 * Called just after the player places a block.
 	 */
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
+			ItemStack stack) {
 		Treasure.logger.debug("Placing chest from item");
 
 		boolean shouldRotate = false;
@@ -98,13 +101,13 @@ public class TreasureChestBlock extends AbstractChestBlock {
 		// face the block towards the player (there isn't really a front)
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 3);
 		TileEntity te = worldIn.getTileEntity(pos);
-		if (te != null && te instanceof AbstractTreasureChestTileEntity) {				
+		if (te != null && te instanceof AbstractTreasureChestTileEntity) {
 			// get the backing tile entity
 			tcte = (AbstractTreasureChestTileEntity) te;
 
 			// set the name of the chest
 			if (stack.hasDisplayName()) {
-				//		        	tcte.setCustomName(stack.getItem().getUnlocalizedName());
+				// tcte.setCustomName(stack.getItem().getUnlocalizedName());
 				tcte.setCustomName(stack.getDisplayName());
 			}
 
@@ -116,7 +119,6 @@ public class TreasureChestBlock extends AbstractChestBlock {
 				// get the old tcte facing direction
 				oldPersistedChestDirection = Direction.fromFacing(EnumFacing.getFront(tcte.getFacing()));
 
-				
 				// dump stack NBT
 				if (Treasure.logger.isDebugEnabled()) {
 					dump(stack.getTagCompound(), new Coords(pos), "STACK ITEM -> CHEST NBT");
@@ -127,13 +129,15 @@ public class TreasureChestBlock extends AbstractChestBlock {
 			Direction direction = Direction.fromFacing(placer.getHorizontalFacing().getOpposite());
 
 			// rotate the lock states
-			shouldUpdate = rotateLockStates(worldIn, pos, oldPersistedChestDirection.getRotation(direction)); // old -> Direction.NORTH //
+			shouldUpdate = rotateLockStates(worldIn, pos, oldPersistedChestDirection.getRotation(direction)); // old ->
+																												// Direction.NORTH
+																												// //
 
 //			Treasure.logger.debug("New lock states ->");
 //			for (LockState ls : tcte.getLockStates()) {
 //				Treasure.logger.debug(ls);
 //			}
-			
+
 			// update the TCTE facing
 			tcte.setFacing(placer.getHorizontalFacing().getOpposite().getIndex());
 		}
@@ -151,21 +155,21 @@ public class TreasureChestBlock extends AbstractChestBlock {
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
-	
+
 		// exit if on the client
-		if (WorldInfo.isClientSide(worldIn)) {			
+		if (WorldInfo.isClientSide(worldIn)) {
 			return true;
 		}
-		
+
 		boolean isLocked = false;
 		// determine if chest is locked
 		if (te.hasLocks()) {
 			isLocked = true;
 		}
-		
+
 		// open the chest
 		if (!isLocked) {
-			playerIn.openGui(Treasure.instance, getChestGuiID(), worldIn, pos.getX(), pos.getY(),	pos.getZ());
+			playerIn.openGui(Treasure.instance, getChestGuiID(), worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
 
 		return true;
@@ -179,32 +183,30 @@ public class TreasureChestBlock extends AbstractChestBlock {
 		AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
 
 		Treasure.logger.debug("Breaking block....!");
-		if (te != null && te.getInventoryProxy() != null) {
+		if (te != null) {
 			// unlocked!
 			if (!te.hasLocks()) {
-//				Treasure.logger.debug("Not locked, dropping all items!");
-				
 				/*
 				 * spawn inventory items
 				 */
-				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory)te.getInventoryProxy());
+				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) te);
 
 				/*
 				 * spawn chest item
 				 */
 				ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
 				Treasure.logger.debug("Item being created from chest -> {}", chestItem.getItem().getRegistryName());
-				InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), chestItem);
+				InventoryHelper.spawnItemStack(worldIn, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(),
+						chestItem);
 
 				/*
-				 *  write the properties to the nbt
+				 * write the properties to the nbt
 				 */
 				if (!chestItem.hasTagCompound()) {
 					chestItem.setTagCompound(new NBTTagCompound());
-				}		
+				}
 				te.writePropertiesToNBT(chestItem.getTagCompound());
-			}
-			else {
+			} else {
 				Treasure.logger.debug("[BreakingBlock] ChestConfig is locked, save locks and items to NBT");
 
 				/*
@@ -220,10 +222,11 @@ public class TreasureChestBlock extends AbstractChestBlock {
 					NBTTagCompound nbt = new NBTTagCompound();
 					nbt = te.writeToNBT(nbt);
 					chestItem.setTagCompound(nbt);
-					
-					InventoryHelper.spawnItemStack(worldIn, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), chestItem);
-					
-					//TEST  log all items in item
+
+					InventoryHelper.spawnItemStack(worldIn, (double) pos.getX(), (double) pos.getY(),
+							(double) pos.getZ(), chestItem);
+
+					// TEST log all items in item
 //					NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
 //					ItemStackHelper.loadAllItems(chestItem.getTagCompound(), items);
 //					for (ItemStack stack : items) {
@@ -232,7 +235,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 				}
 			}
 
-			// remove the tile entity 
+			// remove the tile entity
 			worldIn.removeTileEntity(pos);
 		}
 	}
@@ -250,16 +253,15 @@ public class TreasureChestBlock extends AbstractChestBlock {
 	 * @param tagCompound
 	 */
 	private void dump(NBTTagCompound tag, ICoords coords, String title) {
-		ChestNBTPrettyPrinter printer  =new ChestNBTPrettyPrinter();
+		ChestNBTPrettyPrinter printer = new ChestNBTPrettyPrinter();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyymmdd");
-		
-		String filename = String.format("chest-nbt-%s-%s.txt", 
-				formatter.format(new Date()), 
+
+		String filename = String.format("chest-nbt-%s-%s.txt", formatter.format(new Date()),
 				coords.toShortString().replaceAll(" ", "-"));
 
 		Path path = Paths.get(TreasureConfig.LOGGING.folder, "dumps").toAbsolutePath();
 		try {
-			Files.createDirectories(path);			
+			Files.createDirectories(path);
 		} catch (IOException e) {
 			Treasure.logger.error("Couldn't create directories for dump files:", e);
 			return;

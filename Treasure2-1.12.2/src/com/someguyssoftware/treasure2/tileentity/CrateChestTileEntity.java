@@ -16,10 +16,10 @@ import net.minecraft.util.text.translation.I18n;
  *
  */
 public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
-    /** The current angle of the latch (between 0 and 1) */
-    public float latchAngle;
-    /** The angle of the latch last tick */
-    public float prevLatchAngle;
+	/** The current angle of the latch (between 0 and 1) */
+	public float latchAngle;
+	/** The angle of the latch last tick */
+	public float prevLatchAngle;
 
 	/**
 	 * 
@@ -29,10 +29,10 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 		super();
 		setCustomName(I18n.translateToLocal("display.crate_chest.name"));
 	}
-	
-	  /**
-     * Like the old updateEntity(), except more generic.
-     */
+
+	/**
+	 * Like the old updateEntity(), except more generic.
+	 */
 	@Override
 	public void update() {
 		int i = this.pos.getX();
@@ -40,7 +40,8 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 		int k = this.pos.getZ();
 		++this.ticksSinceSync;
 
-		if (WorldInfo.isServerSide(getWorld()) && this.numPlayersUsing != 0 && (this.ticksSinceSync + i + j + k) % 200 == 0) {
+		if (WorldInfo.isServerSide(getWorld()) && this.numPlayersUsing != 0
+				&& (this.ticksSinceSync + i + j + k) % 200 == 0) {
 			this.numPlayersUsing = 0;
 
 			for (EntityPlayer entityplayer : this.world.getEntitiesWithinAABB(EntityPlayer.class,
@@ -50,10 +51,9 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 				if (entityplayer.openContainer instanceof ContainerChest) {
 					IInventory iinventory = ((ContainerChest) entityplayer.openContainer).getLowerChestInventory();
 
-					// TODO proxy goes here:  if (iinventory == this.getProxy() 
-                    if (iinventory == this) {
-                        ++this.numPlayersUsing;
-                    }
+					if (iinventory == this) {
+						++this.numPlayersUsing;
+					}
 				}
 			}
 		}
