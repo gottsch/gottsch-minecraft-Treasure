@@ -46,6 +46,7 @@ import com.someguyssoftware.treasure2.world.gen.structure.TreasureDecayManager;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.ITreasureWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.OasisWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.SubmergedChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
@@ -219,6 +220,7 @@ public class Treasure extends AbstractMod {
 		WORLD_GENERATORS.put(WorldGenerators.WELL, new WellWorldGenerator());
 		WORLD_GENERATORS.put(WorldGenerators.WITHER_TREE, new WitherTreeWorldGenerator());
 		WORLD_GENERATORS.put(WorldGenerators.GEM, new GemOreWorldGenerator());
+		WORLD_GENERATORS.put(WorldGenerators.OASIS, new OasisWorldGenerator());
 
 		int genWeight = 0;
 		for (Entry<WorldGenerators, ITreasureWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {

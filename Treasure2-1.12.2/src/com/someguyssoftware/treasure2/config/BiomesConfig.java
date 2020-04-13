@@ -48,12 +48,6 @@ public class BiomesConfig implements IBiomesConfig {
 		this.rawBiomeBlackList = blackList;
 		this.rawBiomeTypeWhiteList = typeWhiteList;
 		this.rawBiomeTypeBlackList = typeBlackList;
-		
-		// TODO maybe this doesn't go here, but in init() or (re)load()
-//		this.whiteList = TreasureBiomeHelper.loadBiomesList(whiteList);
-//		this.blackList = TreasureBiomeHelper.loadBiomesList(blackList);
-//		BiomeHelper.loadBiomeList(typeWhiteList, this.typeWhiteList);
-//		BiomeHelper.loadBiomeList(typeBlackList, this.typeBlackList);
 	}
 	
 	/**
