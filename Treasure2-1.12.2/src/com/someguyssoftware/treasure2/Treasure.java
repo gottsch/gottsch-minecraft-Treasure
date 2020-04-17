@@ -22,6 +22,7 @@ import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.command.SpawnChestCommand;
+import com.someguyssoftware.treasure2.command.SpawnOasisCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitStructureOnlyCommand;
@@ -200,6 +201,7 @@ public class Treasure extends AbstractMod {
 		event.registerServerCommand(new SpawnWellStructureCommand());
 		event.registerServerCommand(new SpawnWitherTreeCommand());
 		event.registerServerCommand(new SpawnRuinsCommand());
+		event.registerServerCommand(new SpawnOasisCommand());
 	}
 
 	/**

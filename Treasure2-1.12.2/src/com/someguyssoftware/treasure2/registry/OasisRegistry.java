@@ -24,8 +24,7 @@ import com.someguyssoftware.treasure2.generator.oasis.OasisInfo;
  *
  */
 public class OasisRegistry {
-	
-	// TODO wrong!! each dimension gets its own registry!
+
 	private static OasisRegistry instance = new OasisRegistry();
 	// TODO this does not need to be a ListMultimap, can be just a LinkedList to preserve order
 	private Map<Integer, ListMultimap<String, OasisInfo>> registry;

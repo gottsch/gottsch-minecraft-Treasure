@@ -696,8 +696,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		public OasisConfig desertOasisProperties = new OasisConfig(
 				true, 1000, 80, 
 				new String[] {"desert", "desert_hills", "desert_lakes", "badlands", 
-						"badlands_plateau", "taiga","taiga_hills","taiga_mountains",
-						"snowy_taiga","snowy_taiga_hills","snowy_taiga_mountains"}, 
+						"badlands_plateau"}, 
 				new String[] {},
 				new String[] {"mesa", "dry"},
 				new String[] { });

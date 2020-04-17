@@ -30,6 +30,16 @@ public class OasisConfig implements IOasisConfig {
 	@RangeDouble(min = 0.0, max = 100.0)
 	public double genProbability = 80.0;
 	
+	@Comment({"The number of trees per chunk (16x16 blocks) in an oasis."})
+	@Name("04. Trees per chunk:")
+	@RangeInt(min = 0, max = 256)
+	public int treesPerChunk = 15;
+	
+	@Comment({ "The rate at which the number of trees per chunk grows with the size of the oasis." })
+	@Name("05. Trees per chunk size factor:")
+	@RangeDouble(min = 0.0, max = 5.0)
+	public double treesPerChunkSizeFactor = 1.3D;
+	
 	@Name("biomes")
 	@Comment({"Biome white and black list properties."})
 	public BiomesConfig biomes = new BiomesConfig(
@@ -37,6 +47,8 @@ public class OasisConfig implements IOasisConfig {
 			new String[] {},
 			new String[] {},
 			new String[] {});
+
+	
 	
 	/*
 	 * 
@@ -87,5 +99,25 @@ public class OasisConfig implements IOasisConfig {
 	@Override
 	public List<Biome> getBiomeBlackList() {
 		return biomes.getBlackList();
+	}
+
+	@Override
+	public int getTreesPerChunk() {
+		return treesPerChunk;
+	}
+
+	@Override
+	public void setTreesPerChunk(int treesPerChunk) {
+		this.treesPerChunk = treesPerChunk;
+	}
+
+	@Override
+	public double getTreesPerChunkSizeFactor() {
+		return treesPerChunkSizeFactor;
+	}
+
+	@Override
+	public void setTreesPerChunkSizeFactor(double treesPerChunkSizeFactor) {
+		this.treesPerChunkSizeFactor = treesPerChunkSizeFactor;
 	}
 }

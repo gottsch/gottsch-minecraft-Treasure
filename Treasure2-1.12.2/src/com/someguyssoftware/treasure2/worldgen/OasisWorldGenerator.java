@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -17,27 +18,18 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.oasis.DesertOasisGenerator;
 import com.someguyssoftware.treasure2.generator.oasis.IOasisGenerator;
 import com.someguyssoftware.treasure2.generator.oasis.OasisInfo;
-import com.someguyssoftware.treasure2.generator.well.IWellGenerator;
-import com.someguyssoftware.treasure2.generator.well.WellGenerator;
-import com.someguyssoftware.treasure2.registry.ChestRegistry;
 import com.someguyssoftware.treasure2.registry.OasisRegistry;
 
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 /**
@@ -169,7 +161,7 @@ public class OasisWorldGenerator implements ITreasureWorldGenerator {
 		Integer chunksSinceLast = chunksSinceLastDimensionOasis.get(dimensionID);
 		chunksSinceLastDimensionOasis.put(dimensionID, ++chunksSinceLast);	
 		
-        ICoords coords = new Coords(xSpawn, 0, zSpawn);
+        ICoords coords = new Coords(xSpawn, 255, zSpawn);
 		Biome biome = world.getBiome(coords.toPos());
 		Integer biomeID = Biome.getIdForBiome(biome);
 		
@@ -187,19 +179,18 @@ public class OasisWorldGenerator implements ITreasureWorldGenerator {
 		if (chunksSinceLast >= TreasureConfig.OASES.minChunksPerOasis) {
 //			Treasure.logger.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLast, TreasureConfig.OASES.minChunksPerOasis));
 			// get a generator for the biome
-			List<IOasisGenerator<?>> generators = (List<IOasisGenerator<?>>) oasisGenerators.get(biomeID);
-			if (generators == null || generators.isEmpty()) {
-				Treasure.logger.debug("Couldn't find generator for biome ID -> {}", biomeID);
+			Optional<List<IOasisGenerator<?>>> generators = Optional.ofNullable((List<IOasisGenerator<?>>) oasisGenerators.get(biomeID));
+			if (!generators.isPresent() || generators.get().isEmpty()) {
 				return;
 			}
-			IOasisGenerator<?> generator = generators.get(random.nextInt(generators.size()));
+			IOasisGenerator<?> generator = generators.get().get(random.nextInt(generators.get().size()));
 			
 			// check if the min chunks per biome have been met
 			Integer chunksPerDimensionBiome = chunksSinceLastDimensionBiomeOasis.get(dimensionID).get(biomeID);
 			if (chunksPerDimensionBiome == null) chunksPerDimensionBiome = 0;
 			chunksSinceLastDimensionBiomeOasis.get(dimensionID).put(biomeID, ++chunksPerDimensionBiome);
 			
-			Treasure.logger.debug("config chunks per oasis by biome -> {}, chunksPerDimensionBiome -> {}", generator.getConfig().getChunksPerOasis(), chunksPerDimensionBiome);
+//			Treasure.logger.debug("config chunks per oasis by biome -> {}, chunksPerDimensionBiome -> {}", generator.getConfig().getChunksPerOasis(), chunksPerDimensionBiome);
 			if (chunksPerDimensionBiome >= generator.getConfig().getChunksPerOasis()) {
 				// 1. test if oasis meets the probability criteria
 				if (!RandomHelper.checkProbability(random, generator.getConfig().getGenProbability())) {
@@ -217,13 +208,12 @@ public class OasisWorldGenerator implements ITreasureWorldGenerator {
      			chunksSinceLastDimensionBiomeOasis.get(dimensionID).put(biomeID, 0);
  			
     			// generate the chest/pit/chambers
-				Treasure.logger.debug("Attempting to generate oasis.");
-				GeneratorResult<GeneratorData> result = null;
-				result = generator.generate(world, random, coords);
+				Treasure.logger.debug("Attempting to generate oasis @ {}", coords.toShortString());
+				Optional<GeneratorResult<GeneratorData>> result = Optional.ofNullable(generator.generate(world, random, coords));
 				
-    			if (result.isSuccess()) {
+    			if (result.isPresent() && result.get().isSuccess()) {
     				// add to registry
-    				OasisRegistry.getInstance().register(dimensionID, coords.toShortString(), new OasisInfo(coords, dimensionID, biomeID));
+    				OasisRegistry.getInstance().register(dimensionID, coords.toShortString(), new OasisInfo(result.get().getData().getSpawnCoords(), dimensionID, biomeID));
     				// reset the chunk counts
     				chunksSinceLastDimensionOasis.put(dimensionID, 0);	
     			}

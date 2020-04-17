@@ -25,4 +25,8 @@ public interface IOasisConfig {
 	public List<Biome> getBiomeBlackList();
 	public List<BiomeTypeHolder> getBiomeTypeWhiteList();
 	public List<BiomeTypeHolder> getBiomeTypeBlackList();
+	public int getTreesPerChunk();
+	public void setTreesPerChunk(int treesPerChunk);
+	public double getTreesPerChunkSizeFactor();
+	public void setTreesPerChunkSizeFactor(double treesPerChunkSizeFactor);
 }
