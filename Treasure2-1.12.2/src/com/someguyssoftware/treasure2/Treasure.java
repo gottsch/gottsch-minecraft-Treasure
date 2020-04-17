@@ -251,10 +251,6 @@ public class Treasure extends AbstractMod {
 		// perform any post init
 		super.postInit(event);
 
-		// register to the ore dictionary
-		OreDictionary.registerOre("sapphire", TreasureItems.SAPPHIRE);
-		OreDictionary.registerOre("ruby", TreasureItems.RUBY);
-
 		// associate painting items to painting blocks and vice versa
 		((PaintingItem) TreasureItems.PAINTING_BLOCKS_BRICKS).setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_BRICKS);
 		((PaintingItem) TreasureItems.PAINTING_BLOCKS_COBBLESTONE)
