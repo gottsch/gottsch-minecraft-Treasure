@@ -75,7 +75,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	// mimics
 	@Ignore public static final String WOOD_MIMIC_ID = "wood_mimic";
 	@Ignore public static final String PIRATE_MIMIC_ID = "pirate_mimic";
-	
+
 	// locks
 	@Ignore public static final String WOOD_LOCK_ID = "wood_lock";
 	@Ignore public static final String STONE_LOCK_ID = "stone_lock";
@@ -232,8 +232,8 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Comment({ "Chest properties" })
 	public static final Chests CHESTS = new Chests();
 
-//	@Name("04 actual chests")
-//	public static final ActualChests ACTUAL_CHESTS = new ActualChests();
+	//	@Name("04 actual chests")
+	//	public static final ActualChests ACTUAL_CHESTS = new ActualChests();
 
 	@Name("04 wells")
 	@Comment({ "Well properties" })
@@ -267,6 +267,10 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Comment("Foreign mod properties")
 	public static final ForeignModEnablements FOREIGN_MODS = new ForeignModEnablements();
 
+	@Name("11 oasis")
+	@Comment("Oasis properties")
+	public static final Oases OASES = new Oases();
+
 	@Ignore
 	public static TreasureConfig instance = new TreasureConfig();
 
@@ -285,6 +289,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		TreasureConfig.WELL.init();
 		TreasureConfig.WITHER_TREE.init();
 		TreasureConfig.WORLD_GEN.init();
+		TreasureConfig.OASES.init();
 	}
 
 	/*
@@ -295,7 +300,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@Name("01. Foreign mod IDs for custom loot tables:")
 		public String[] enableForeignModIDs = new String[] { "mocreatures", "sgs_metals" };
 		@Comment({ "A list of mods that have prebuilt loot tables available.",
-				"Note: used for informational purposes only." })
+		"Note: used for informational purposes only." })
 		@Name("02. Pre-build loot tables for foreign mod IDs:")
 		public String[] availableForeignModLootTables = new String[] { "mocreatures", "sgs_metals" };
 	}
@@ -305,17 +310,17 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	 */
 	public static class Chests {
 		@Comment({ "Chests that generate on land.",
-				"Note: There is a build-in check against ocean biomes for surface chests. Adding ocean biomes to the white lists will not change this functionality." })
+		"Note: There is a build-in check against ocean biomes for surface chests. Adding ocean biomes to the white lists will not change this functionality." })
 		@Name("01 Surface Chests")
 		public ChestCollection surfaceChests;
 		@Comment({ "Chests that generate underwater (in ocean biomes).",
-				"Note: There is a build-in check to only allow ocean biomes for submerged chests. Add other biomes to the white lists will not change this functionality." })
+		"Note: There is a build-in check to only allow ocean biomes for submerged chests. Adding other biomes to the white lists will not change this functionality." })
 		@Name("02 Submerged Chests")
 		public ChestCollection submergedChests;
 
 		@Comment({
-				"The number of chests that are monitored. Most recent additions replace least recent when the registry is full.",
-				"This is the set of chests used to measure distance between newly generated chests." })
+			"The number of chests that are monitored. Most recent additions replace least recent when the registry is full.",
+		"This is the set of chests used to measure distance between newly generated chests." })
 		@Name("01. Max. size of chest registry:")
 		@RangeInt(min = 5, max = 100)
 		@RequiresMcRestart
@@ -393,8 +398,8 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			public int minChunksPerChest = 35;
 
 			@Comment({ "The minimum distance, measured in chunks (16x16), that two chests can be in proximity.",
-					"Note: Only chests in the chest registry are checked against this property.",
-					"Used in conjunction with the chunks per chest and spawn probability.", "Ex. " })
+				"Note: Only chests in the chest registry are checked against this property.",
+				"Used in conjunction with the chunks per chest and spawn probability.", "Ex. " })
 			@Name("02. Min. distance per chest spawn:")
 			@RangeInt(min = 0, max = 32000)
 			public int minDistancePerChest = 75;
@@ -565,8 +570,8 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@RangeDouble(min = 0.0, max = 100.0)
 		public double genProbability = 90.0;
 		@Comment({ "The max. height a wither tree can reach.",
-				"This is the high end of a calculated range. ex size is randomized between minTrunkSize and maxTrunkSize.",
-				"(The min. is prefined.)" })
+			"This is the high end of a calculated range. ex size is randomized between minTrunkSize and maxTrunkSize.",
+		"(The min. is prefined.)" })
 		@Name("03. Max. trunk height (in blocks):")
 		@RangeInt(min = 7, max = 20)
 		public int maxTrunkSize = 13;
@@ -659,6 +664,48 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@Override
 		public List<BiomeTypeHolder> getBiomeTypeBlackList() {
 			return biomes.getTypeBlackList();
+		}
+	}
+
+	/*
+	 * 
+	 */
+	public static class Oases {
+		@Comment({"The minimum number of chunks generated before another attempt to spawn any type of oasis is made.",
+		"Ex. Both desert oasis and floating oasis have met their respective thresholds to spawn, but minChunksPerOasis was recently reset and hasn't met its threshold, therefor preventing a new oasis to spawn."})
+		@Name("01. Min. chunks per oasis spawn:")
+		@RangeInt(min = 0, max = 32000)
+		public int minChunksPerOasis = 100;
+
+		@Comment({ "The minimum distance, measured in blocks, that two oasis can be in proximity.",
+			"Note: Only oases in the oasis registry are checked against this property.",
+			"Used in conjunction with the chunks per oasis and spawn probability.", "Ex. " })
+		@Name("02. Min. distance per oasis spawn:")
+		@RangeInt(min = 0, max = 32000)
+		public int minDistancePerOasis = 500;
+
+		@Comment({
+			"The number of oases that are monitored. Most recent additions replace least recent when the registry is full.",
+		"This is the set of oases used to measure distance between newly generated oases." })
+		@Name("03. Max. size of oasis registry:")
+		@RangeInt(min = 5, max = 100)
+		@RequiresMcRestart
+		public int oasisRegistrySize = 25;
+
+		@Name("01 Desert oasis")
+		public OasisConfig desertOasisProperties = new OasisConfig(
+				true, 1000, 80, 
+				new String[] {"desert", "desert_hills", "desert_lakes", "badlands", 
+						"badlands_plateau"}, 
+				new String[] {},
+				new String[] {"mesa", "dry"},
+				new String[] { });
+
+		/**
+		 * 
+		 */
+		public void init() {
+			this.desertOasisProperties.init();
 		}
 	}
 
@@ -864,10 +911,10 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			@Name("03. Enable poison fog:")
 			public boolean enablePoisonFog = true;
 
-//			@Comment({"This is a temporary property.", "@since v1.5.0."})
-//			@Name("04. Probability of (under)water structure spawn:")
-//			@RangeDouble(min = 0.0, max = 100.0)
-//			public double waterStructureProbability = 50.0;
+			//			@Comment({"This is a temporary property.", "@since v1.5.0."})
+			//			@Name("04. Probability of (under)water structure spawn:")
+			//			@RangeDouble(min = 0.0, max = 100.0)
+			//			public double waterStructureProbability = 50.0;
 
 			@Comment({ "The probability that a surface structure will generate." })
 			@Name("04. Probability of surface structure spawn:")
@@ -876,7 +923,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 			@Name("05. Dimension white list:")
 			@Comment({
-					"Allowed Dimensions for generation.\nTreasure2 was designed for \"normal\" overworld-type dimensions.\nThis setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed." })
+			"Allowed Dimensions for generation.\nTreasure2 was designed for \"normal\" overworld-type dimensions.\nThis setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed." })
 			public Integer[] rawDimensionsWhiteList = new Integer[] { 0 };
 			@Ignore
 			public List<Integer> dimensionsWhiteList = new ArrayList<>(3);
@@ -933,7 +980,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			public boolean isGravestoneSpawnMobAllowed = true;
 
 			@Comment({ "The probability that a gravestone will spawn a mob.",
-					"Currently gravestones spawn Bound Souls." })
+			"Currently gravestones spawn Bound Souls." })
 			@Name("08. Probability that grave marker will spawn a mob:")
 			@RangeInt(min = 0, max = 100)
 			public int gravestoneMobProbability = 80;

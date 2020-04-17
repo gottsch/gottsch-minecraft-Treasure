@@ -14,7 +14,8 @@ public enum WorldGenerators {
 	GEM("gem"),
 	WITHER_TREE("witherTree"),
 	SURFACE_CHEST("surfaceChest"),
-	SUBMERGED_CHEST("submergedChest");
+	SUBMERGED_CHEST("submergedChest"),
+	OASIS("oasis");
 	
 	private String value;
 	
