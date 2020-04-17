@@ -18,6 +18,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
 import com.someguyssoftware.treasure2.block.FogBlock;
+import com.someguyssoftware.treasure2.block.ITreasureBlock;
 import com.someguyssoftware.treasure2.block.SpanishMossBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.WitherBranchBlock;
@@ -28,17 +29,21 @@ import com.someguyssoftware.treasure2.config.IWitherTreeConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.WitherChestGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -52,8 +57,8 @@ import net.minecraftforge.common.BiomeDictionary;
  */
 public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 	public static final int VERTICAL_MAX_DIFF = 3;
-	private static final int CLEARING_RADIUS = 3;
-	private static final int COARSE_DIRT_PROBABILITY = 75;
+	private static final int CLEARING_RADIUS = 7;
+	private static final int DIRT_REPLACEMENT_PROBABILITY = 90;// 75;
 	private static final int DEGREES = 360;
 	private static final double MIN_RADIUS = 5.0;
 	private static final double MAX_RADIUS = 10.0;
@@ -62,7 +67,11 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 	private static final int WITHER_ROOT_PROBABILITY = 50;
 	private static final int WITHER_BRANCH_PROBABILITY = 30;
 	private static final int SPANISH_MOSS_PROBABILITY = 80;
-
+	private static final int MAX_ROCKS = 5;
+	private static final int MIN_ROCKS = 0;
+	private static final int MIN_SCRUB = 5;
+	private static final int MAX_SCRUB = 20;
+	
 	FogBlock[] fogDensity = new FogBlock[] {
 //			TreasureBlocks.WITHER_FOG, 
 //			TreasureBlocks.WITHER_FOG,
@@ -145,13 +154,6 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 				.contains(Integer.valueOf(world.provider.getDimension()))) {
 			generate(world, random, chunkX, chunkZ);
 		}
-//		switch(world.provider.getDimension()){
-//		case 0:
-//			generateSurface(world, random, chunkX, chunkZ);
-//			break;
-//		default:
-//			break;
-//		}
 	}
 
 	/**
@@ -278,8 +280,9 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 			Treasure.logger.debug("Returning due to surface coords == null or EMPTY_COORDS");
 			return result.fail();
 		}
-
 		witherTreeCoords = surfaceCoords;
+
+		AxisAlignedBB witherGroveSize = new AxisAlignedBB(surfaceCoords.toPos());
 
 		// ============ build the pit first ==============
 		// TODO wither tree world gen should probably extend SurfaceChestWorldGen
@@ -301,6 +304,9 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 
 		// 3. build the main wither tree
 		buildMainTree(world, random, surfaceCoords, config);
+
+		// update size of grove
+		witherGroveSize = witherGroveSize.expand(CLEARING_RADIUS, 0, CLEARING_RADIUS);
 
 		// 4. add the fog
 //		if (TreasureConfig.WORLD_GEN.getGeneralProperties().enableWitherFog) {
@@ -328,17 +334,24 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 				if (c.getDistanceSq(witherTreeCoords) > 4) {
 					if (world.getBlockState(c.toPos()).getBlock() != TreasureBlocks.WITHER_LOG) {
 						buildClearing(world, random, c);
-						// TODO non-main trees need to have the soul block on the ground (for particle
-						// spawning purposes)
 						buildTree(world, random, c, config);
 //						if (TreasureConfig.WORLD_GEN.getGeneralProperties().enablePoisonFog) {
 //							GenUtil.addFog(world, random, c, poisonFogDensity);
 //						}
+						// add tree clearing to the grove size
+						AxisAlignedBB witherTreeClearingSize = new AxisAlignedBB(c.toPos()).expand(CLEARING_RADIUS, 0,
+								CLEARING_RADIUS);
+						witherGroveSize = witherGroveSize.union(witherTreeClearingSize);
 					}
 				}
 			}
 		}
+		Treasure.logger.debug("size of clearing -> {}", witherGroveSize.toString());
 
+		buildRocks(world, random, witherGroveSize);
+
+		buildScrub(world, random, witherGroveSize);
+		
 		// add chest
 		ICoords chestCoords = genResult.getData().getChestContext().getCoords();
 		if (chestCoords == null) {
@@ -356,6 +369,63 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		return result.success();
 	}
 
+	private void buildScrub(World world, Random random, AxisAlignedBB witherGroveSize) {
+		ICoords centerCoords = new Coords(witherGroveSize.getCenter());
+		int width = Math.abs((int) (witherGroveSize.maxX - witherGroveSize.minX));
+		int depth = Math.abs((int) (witherGroveSize.maxZ - witherGroveSize.minZ));
+
+		for (int rockIndex = 0; rockIndex < RandomHelper.randomInt(MIN_SCRUB, MAX_SCRUB); rockIndex++) {
+			int xOffset = (int) (random.nextFloat() * width - (width/2));
+			int zOffset = (int) (random.nextFloat() * depth - (depth/2));
+			
+			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, centerCoords.add(xOffset, 0, zOffset).withY(255));
+
+			// check if current block is a dirt, podzol, coarse dirt or sand
+			Block supportBlock = world.getBlockState(surfaceCoords.down(1).toPos()).getBlock();
+			if (supportBlock == Blocks.DIRT || supportBlock == Blocks.SAND) {
+				// randomize between bush and stump
+				if (RandomHelper.checkProbability(random, 25)) {
+					world.setBlockState(surfaceCoords.toPos(), Blocks.LOG.getDefaultState());
+				}
+				else {
+					world.setBlockState(surfaceCoords.toPos(), Blocks.DEADBUSH.getDefaultState());
+				}
+			}
+		}
+	}
+
+	private void buildRocks(World world, Random random, AxisAlignedBB witherGroveSize) {
+		ICoords centerCoords = new Coords(witherGroveSize.getCenter());
+		int width = Math.abs((int) (witherGroveSize.maxX - witherGroveSize.minX));
+		int depth = Math.abs((int) (witherGroveSize.maxZ - witherGroveSize.minZ));
+
+		for (int rockIndex = 0; rockIndex < RandomHelper.randomInt(MIN_ROCKS, MAX_ROCKS); rockIndex++) {
+			// randomize a position within the aabb
+			int xOffset = (int) (random.nextFloat() * width - (width/2));
+			int zOffset = (int) (random.nextFloat() * depth - (depth/2));
+			
+			ICoords rocksCoords = WorldInfo.getDryLandSurfaceCoords(world, centerCoords.add(xOffset, 0, zOffset).withY(255));
+			rocksCoords = rocksCoords.down(1);
+
+			// check if current block is a tree or any treasure block
+			if (world.getBlockState(rocksCoords.toPos()).getBlock() instanceof ITreasureBlock) {
+				continue;
+			}
+
+			// build rock
+			for (int y = 0; y < 2; y++) {
+				for (int z = 0; z < 2; z++) {
+					for (int x = 0; x < 2; x++) {
+						if (RandomHelper.checkProbability(random, 70)) {
+							ICoords spawnCoords = new Coords(rocksCoords).add(x, y, z);
+							world.setBlockState(spawnCoords.toPos(), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+						}
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * 
 	 * @param world
@@ -367,20 +437,29 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		// build clearing
 		for (int xOffset = -(CLEARING_RADIUS); xOffset <= CLEARING_RADIUS; xOffset++) {
 			for (int zOffset = -(CLEARING_RADIUS); zOffset <= CLEARING_RADIUS; zOffset++) {
-				if (Math.abs(xOffset) + Math.abs(zOffset) <= 2) {
+				if (Math.abs(xOffset) + Math.abs(zOffset) <= CLEARING_RADIUS) {
 
 					// find the first surface
 					int yHeight = WorldInfo.getHeightValue(world, coords.add(xOffset, 255, zOffset));
-					// NOTE have to use GenUtil here because it takes into account
-					// GenericBlockContainer
 					buildCoords = WorldInfo.getDryLandSurfaceCoords(world,
 							new Coords(coords.getX() + xOffset, yHeight, coords.getZ() + zOffset));
 
 					// additional check that it's not a tree and within 2 y-blocks of original
 					if (Math.abs(buildCoords.getY() - coords.getY()) < VERTICAL_MAX_DIFF) {
-						if (RandomHelper.checkProbability(random, COARSE_DIRT_PROBABILITY)) {
-							world.setBlockState(buildCoords.add(0, -1, 0).toPos(), Blocks.DIRT.getDefaultState()
-									.withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT));
+						Cube cube = new Cube(world, buildCoords.down(1));
+						if (cube.isLiquid()) {
+							continue;
+						}
+						if (RandomHelper.checkProbability(random, DIRT_REPLACEMENT_PROBABILITY)) {
+							if (Math.abs(xOffset) < 4 && Math.abs(zOffset) < 4 && !(Math.abs(xOffset) == 3 && Math.abs(zOffset) == 3)) {
+								world.setBlockState(buildCoords.add(0, -1, 0).toPos(),
+										Blocks.DIRT.getDefaultState()
+										.withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL));
+							} else {
+								world.setBlockState(buildCoords.add(0, -1, 0).toPos(),
+										Blocks.DIRT.getDefaultState()
+										.withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT));
+							}
 						}
 					}
 

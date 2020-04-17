@@ -3,7 +3,6 @@
  */
 package com.someguyssoftware.treasure2.inventory;
 
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
@@ -18,6 +17,7 @@ import net.minecraft.util.text.ITextComponent;
  * @author Mark Gottschling on Jan 16, 2018
  *
  */
+@Deprecated
 public class InventoryProxy implements IInventory {
 	/*
 	 * Reference to the owning Tile Entity
@@ -31,7 +31,7 @@ public class InventoryProxy implements IInventory {
 	public InventoryProxy(TileEntity entity) {
 		setTileEntity((AbstractTreasureChestTileEntity) entity);
 	}
-	
+
 	/**
 	 * @return the tileEntity
 	 */
@@ -45,8 +45,9 @@ public class InventoryProxy implements IInventory {
 	public void setTileEntity(AbstractTreasureChestTileEntity tileEntity) {
 		this.tileEntity = tileEntity;
 	}
-	
-	/////////////////////////// IInventory Implementation ///////////////////////////////
+
+	/////////////////////////// IInventory Implementation
+	/////////////////////////// ///////////////////////////////
 	@Override
 	public String getName() {
 		return getTileEntity().getName();
@@ -94,11 +95,11 @@ public class InventoryProxy implements IInventory {
 	 */
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
-        ItemStack itemstack = ItemStackHelper.getAndSplit(getTileEntity().getItems(), index, count);
-        if (!itemstack.isEmpty()) {
-            this.markDirty();
-        }
-        return itemstack;
+		ItemStack itemstack = ItemStackHelper.getAndSplit(getTileEntity().getItems(), index, count);
+		if (!itemstack.isEmpty()) {
+			this.markDirty();
+		}
+		return itemstack;
 	}
 
 	/**
@@ -114,16 +115,17 @@ public class InventoryProxy implements IInventory {
 	 */
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
-        getTileEntity().getItems().set(index, stack);
-        if (stack.getCount() > this.getInventoryStackLimit()) {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-        this.markDirty();
+		getTileEntity().getItems().set(index, stack);
+		if (stack.getCount() > this.getInventoryStackLimit()) {
+			stack.setCount(this.getInventoryStackLimit());
+		}
+		this.markDirty();
 	}
 
-    /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended.
-     */
+	/**
+	 * Returns the maximum stack size for a inventory slot. Seems to always be 64,
+	 * possibly will be extended.
+	 */
 	@Override
 	public int getInventoryStackLimit() {
 		return 64;
@@ -135,12 +137,12 @@ public class InventoryProxy implements IInventory {
 	@Override
 	public boolean isUsableByPlayer(EntityPlayer player) {
 		AbstractTreasureChestTileEntity te = getTileEntity();
-        if (te.getWorld().getTileEntity(te.getPos()) != te) {
-            return false;
-        }
-        else {
-            return player.getDistanceSq((double)te.getPos().getX() + 0.5D, (double)te.getPos().getY() + 0.5D, (double)te.getPos().getZ() + 0.5D) <= 64.0D;
-        }
+		if (te.getWorld().getTileEntity(te.getPos()) != te) {
+			return false;
+		} else {
+			return player.getDistanceSq((double) te.getPos().getX() + 0.5D, (double) te.getPos().getY() + 0.5D,
+					(double) te.getPos().getZ() + 0.5D) <= 64.0D;
+		}
 	}
 
 	/**
@@ -172,10 +174,10 @@ public class InventoryProxy implements IInventory {
 		}
 	}
 
-    /**
-     * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot. For
-     * guis use Slot.isItemValid
-     */
+	/**
+	 * Returns true if automation is allowed to insert the given stack (ignoring
+	 * stack size) into the given slot. For guis use Slot.isItemValid
+	 */
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 //		Treasure.logger.debug("Proxy.isItemValid() being called @ {} : {}", index, stack);
@@ -188,7 +190,7 @@ public class InventoryProxy implements IInventory {
 	}
 
 	@Override
-	public void setField(int id, int value) {		
+	public void setField(int id, int value) {
 	}
 
 	@Override
@@ -198,12 +200,13 @@ public class InventoryProxy implements IInventory {
 
 	@Override
 	public void clear() {
-        this.getTileEntity().getItems().clear();
+		this.getTileEntity().getItems().clear();
 	}
 
-    /**
-     * Get the formatted ChatComponent that will be used for the sender's username in chat
-     */
+	/**
+	 * Get the formatted ChatComponent that will be used for the sender's username
+	 * in chat
+	 */
 	@Override
 	public ITextComponent getDisplayName() {
 		return this.getTileEntity().getDisplayName();

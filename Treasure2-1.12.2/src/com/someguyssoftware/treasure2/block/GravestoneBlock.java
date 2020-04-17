@@ -39,9 +39,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GravestoneBlock extends CardinalDirectionFacadeBlock
 		implements ITreasureBlock, /* IFogSupport, */ IMistSupport, ITileEntityProvider {
 
-	// TODO add property HAS_ENTITY
-//	public static final PropertyBool HAS_ENTITY = PropertyBool.create("has_entity");
-
 	/*
 	 * An array of AxisAlignedBB bounds for the bounding box
 	 */
@@ -68,19 +65,9 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock
 		);
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
-//	@Override
-//	protected BlockStateContainer createBlockState() {
-//		return new BlockStateContainer(this, new IProperty[] { FACING, HAS_ENTITY });
-//	}
-
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		GravestoneProximitySpawnerTileEntity tileEntity = new GravestoneProximitySpawnerTileEntity();
-		Treasure.logger.debug("created TE.");
 		return (TileEntity) tileEntity;
 	}
 

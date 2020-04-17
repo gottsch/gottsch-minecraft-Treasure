@@ -30,6 +30,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 
 /**
@@ -460,7 +461,15 @@ public class TreasureItems {
 //					CLAM_MEAT,
 //					CLAM_STEW
 			};
-			registry.registerAll(items);		
+			registry.registerAll(items);
+			
+			// register to the ore dictionary
+			OreDictionary.registerOre("sapphire", TreasureItems.SAPPHIRE);
+			OreDictionary.registerOre("ruby", TreasureItems.RUBY);
+			
+			OreDictionary.registerOre("gemSapphire", TreasureItems.SAPPHIRE);
+			OreDictionary.registerOre("gemRuby", TreasureItems.RUBY);
+			
 		}
 	}
 }

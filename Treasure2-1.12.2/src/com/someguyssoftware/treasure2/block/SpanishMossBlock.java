@@ -13,12 +13,14 @@ import com.someguyssoftware.treasure2.particle.AbstractMistParticle;
 import com.someguyssoftware.treasure2.particle.PoisonMistParticle;
 
 import net.minecraft.block.BlockBush;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,6 +36,8 @@ public class SpanishMossBlock extends BlockBush {
 	 * 
 	 */
 	public SpanishMossBlock(String modID, String name) {
+		// TODO it is wood so I didn't have to update GottschCore.get..SurfaceCoods() to check for PLANTS.
+		super(Material.WOOD);
 		setRegistryName(modID, name);
 		setUnlocalizedName(getRegistryName().toString());
 		this.setDefaultState(blockState.getBaseState().withProperty(ACTIVATED, Boolean.valueOf(false)));
@@ -110,6 +114,10 @@ public class SpanishMossBlock extends BlockBush {
 		Minecraft.getMinecraft().effectRenderer.addEffect(mistParticle);
 	}
 
+	public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos) {
+		return true;
+	}
+	
 	/**
 	 * Checks if this block can be placed exactly at the given position.
 	 */

@@ -26,6 +26,7 @@ import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
@@ -49,14 +50,14 @@ public class SpawnChestCommand extends CommandBase {
 		return "/t2-chest <x> <y> <z> [-rarity <rarity>]: generates a Treasure! chest at location (x,y,z)";
 	}
 
-    /**
-     * Return the required permission level for this command.
-     */
+	/**
+	 * Return the required permission level for this command.
+	 */
 	@Override
-    public int getRequiredPermissionLevel() {
-        return 2;
-    }
-    
+	public int getRequiredPermissionLevel() {
+		return 2;
+	}
+
 	@Override
 	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
 		Treasure.logger.debug("Starting to spawn Treasure! chest ...");
@@ -68,7 +69,7 @@ public class SpawnChestCommand extends CommandBase {
 			z = Integer.parseInt(args[2]);
 
 			String[] parserArgs = (String[]) Arrays.copyOfRange(args, 3, args.length);
-			
+
 			// create the parser
 			CommandLineParser parser = new DefaultParser();
 
@@ -83,8 +84,8 @@ public class SpawnChestCommand extends CommandBase {
 			Rarity rarity = Rarity.COMMON;
 			if (line.hasOption(RARITY_ARG)) {
 				String rarityArg = line.getOptionValue(RARITY_ARG);
-				rarity = Rarity.valueOf(rarityArg.toUpperCase());			
-			}			
+				rarity = Rarity.valueOf(rarityArg.toUpperCase());
+			}
 			Treasure.logger.debug("Rarity:" + rarity + "; " + rarity.ordinal());
 
 			// if (player != null) {
@@ -120,24 +121,24 @@ public class SpawnChestCommand extends CommandBase {
 					Treasure.logger.debug(stack.getDisplayName());
 				}
 
-				lootTable.fillInventory(tileEntity.getInventoryProxy(), new Random(),
-						Treasure.LOOT_TABLES.getContext());
+				lootTable.fillInventory((IInventory) tileEntity, new Random(), Treasure.LOOT_TABLES.getContext());
 			}
 		} catch (Exception e) {
 			Treasure.logger.error("Error generating Treasure! chest: ", e);
 		}
 	}
-	
-    /**
-     * Get a list of options for when the user presses the TAB key
-     */
+
+	/**
+	 * Get a list of options for when the user presses the TAB key
+	 */
 	@Override
-    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-        if (args.length > 3) {
-        	if (args[args.length - 2].equals("-" + RARITY_ARG)) {
-        		return getListOfStringsMatchingLastWord(args, Rarity.getNames());
-        	}
-        }		
+	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args,
+			@Nullable BlockPos targetPos) {
+		if (args.length > 3) {
+			if (args[args.length - 2].equals("-" + RARITY_ARG)) {
+				return getListOfStringsMatchingLastWord(args, Rarity.getNames());
+			}
+		}
 		return Collections.emptyList();
-    }
+	}
 }
