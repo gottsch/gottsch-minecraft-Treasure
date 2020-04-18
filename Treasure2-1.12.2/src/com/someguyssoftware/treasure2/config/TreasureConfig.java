@@ -184,7 +184,9 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String SPANISH_MOSS_BLOCK_ID = "spanish_moss";
 	@Ignore public static final String SPANISH_MOSS_ITEM_ID = "spanish_moss";
 	@Ignore public static final String FALLING_GRASS_ID = "falling_grass";
-
+	@Ignore public static final String FALLING_SAND_ID = "falling_sand";
+	@Ignore public static final String FALLING_RED_SAND_ID = "falling_red_sand";
+	
 	@Ignore public static final String WITHER_PLANKS_ID = "wither_planks";
 
 	@Ignore public static final String SAPPHIRE_ORE_ID = "sapphire_ore";
