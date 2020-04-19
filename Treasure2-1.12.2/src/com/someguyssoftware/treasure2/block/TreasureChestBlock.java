@@ -180,9 +180,14 @@ public class TreasureChestBlock extends AbstractChestBlock {
 	 */
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
-
 		Treasure.logger.debug("Breaking block....!");
+		
+		TileEntity tileEntity = worldIn.getTileEntity(pos);
+		AbstractTreasureChestTileEntity te = null;
+		if (tileEntity instanceof AbstractTreasureChestTileEntity) {
+			te = (AbstractTreasureChestTileEntity)tileEntity;
+		}
+
 		if (te != null) {
 			// unlocked!
 			if (!te.hasLocks()) {
@@ -237,6 +242,10 @@ public class TreasureChestBlock extends AbstractChestBlock {
 
 			// remove the tile entity
 			worldIn.removeTileEntity(pos);
+		}
+		else {
+			// default to regular block break;
+			super.breakBlock(worldIn, pos, state);
 		}
 	}
 

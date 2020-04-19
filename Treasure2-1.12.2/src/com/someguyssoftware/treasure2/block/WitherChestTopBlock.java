@@ -108,7 +108,6 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy
 			downBlock.breakBlock(worldIn, downPos, worldIn.getBlockState(downPos));
 			worldIn.setBlockToAir(downPos);
 		}
-		
 	}
 	
 	/**
