@@ -1,8 +1,8 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.12.2-latest": "1.10.0",
-    "1.12.2-recommended": "1.10.0"
+    "1.12.2-latest": "1.11.0",
+    "1.12.2-recommended": "1.11.0"
   },
     "1.12.2": {
         "0.5.0": "alpha release",
@@ -35,7 +35,8 @@
         "1.7.0": "Refactored config files into one GUI config.\nAdded Desert Wishing Well block.\nFixed Rarity enum value mappings.\nPersisted ChestRegistry.\nFixed Well generation on podzol/mycelium generating mushroom block instead of mushrooms.\nReconfigured folder locations where logging and resource files go (moved out of /mods folder.)\nUsing GottschCore v1.9.0.\n*Fixed chests not generating in some pits.\n*Fixed world properties not clearing between game world loads.\nFixed loading of ChestRegistry.\n",
         "1.8.0": "Added Decay System.\nAdded 8 surface structures.\nAdded SpawnRuins command.\nFixed/enable other spawn commands.\nAdded Spanish translation.\nAdded Russian translation.\nFixed the number of uses a Key has.\nRemoved Lombok library.\nFixed solid base check for Surface/Submerged ruins.\nFixed Wither Tree crash bug.\nUsing GottschCore v1.10.0.\n",
         "1.9.0": "Added Spider Chest.\nAdded recipes for all grave/tombstones.\nFixed config white/black lists on change.\nAll logging config options require mc restart.\nAdded config whitelist for dimensions.\nAdded ability to pass template holder into IRuinGenerators.\nUpdated all SpawnCommands to work from Command blocks.\nAdding fill blocks for under structures so there isnt any overhang when on cliffs etc.\nUsing GottschCore v1.11.0.\nAdded 2 surface structures.\nFixed *huge* bug with decay processor not picking the correct rule.\n",
-        "1.10.0": "Replaced fog blocks with mist particles around gravestone and wither trees.\nAdded Bound Soul mob.\nAdded Collapsing Trap Pit.\nAdded 2 submerged structures.\nAdded beached shipwrecks.\nAdded skeleton, zombie and creeper heads to epic loot table.\nAdded config option to turn off gem ores gen.\nAdded config option to toggle default decay ruleset file enforcement.\nAdded config option to turn off starting book.\nUpdated spanish lang file.\nUsing GottschCore 1.12.1"
+        "1.10.0": "Replaced fog blocks with mist particles around gravestone and wither trees.\nAdded Bound Soul mob.\nAdded Collapsing Trap Pit.\nAdded 2 submerged structures.\nAdded beached shipwrecks.\nAdded skeleton, zombie and creeper heads to epic loot table.\nAdded config option to turn off gem ores gen.\nAdded config option to toggle default decay ruleset file enforcement.\nAdded config option to turn off starting book.\nUpdated spanish lang file.\nUsing GottschCore 1.12.1",
+        "1.11.0": "Added Viking Chest.\nAdded some environmentals to Wither Tree grove.\nAdded Oasis framework and Desert Oasis.\nFixed Collpasing Trap Pit in deserts.\nRegistered Ruby and Sapphire with OreDict as gemRuby, gemSappphire.\nFixed loot table error.\nFixed Wither Chest bug."
 	}
 }
  
