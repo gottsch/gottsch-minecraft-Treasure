@@ -17,13 +17,14 @@ public class TreasureChestTypes {
 	public static final TreasureChestType SINGLE_STANDARD;
 	public static final TreasureChestType STRONGBOX;
 	public static final TreasureChestType SAFE;
-	public static TreasureChestType SINGLE;
-	public static TreasureChestType POT;
+//	public static TreasureChestType SINGLE;
+//	public static TreasureChestType POT;
 	public static final TreasureChestType COMPRESSOR;
 	public static final TreasureChestType ARMOIRE;
 	public static final TreasureChestType SKULL;
 	public static final TreasureChestType TOP_SPLIT;
 	public static final TreasureChestType LOW_RISE;
+	public static final TreasureChestType VIKING;
 
 		
 	static {
@@ -86,6 +87,10 @@ public class TreasureChestTypes {
 				new LockSlot(0, Direction.NORTH, 0.5F, 0.2F, 0.05F, 0F),
 				new LockSlot(1, Direction.EAST, 0.88F, 0.2F, 0.5F, 90F),
 				new LockSlot(2, Direction.WEST, 0.12F, 0.2F, 0.5F, -90F)			
+			);
+		
+		VIKING = new TreasureChestType(1).addSlots(
+				new LockSlot(0, Direction.NORTH, 0.5F, 0.55F, 0.17F, 0F)
 			);
 	}
 }
