@@ -39,6 +39,7 @@ import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SpiderChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.VikingChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
@@ -77,6 +78,7 @@ public class TreasureBlocks {
 	public static final Block GOLD_SKULL_CHEST;
 	public static final Block CAULDRON_CHEST;
 	public static final Block SPIDER_CHEST;
+	public static final Block VIKING_CHEST;
 //	public static final Block WHALE_BONE_PIRATE_CHEST;
 //	public static final Block OYSTER_CHEST;
 //	public static final Block CLAM_CHEST;
@@ -88,6 +90,8 @@ public class TreasureBlocks {
 	// unimplemented chests
 	public static final Block VASE = null;
 	public static final Block INVISIBLE_CHEST = null;
+	public static final Block SAMURAI_CHEST = null;
+	public static final Block OBSIDIAN_CHEST = null;
 
 	// chest holder
 	public static Multimap<Rarity, Block> chests;
@@ -315,6 +319,15 @@ public class TreasureBlocks {
 		SPIDER_CHEST = new TreasureChestBlock(Treasure.MODID, TreasureConfig.SPIDER_CHEST_ID,
 				SpiderChestTileEntity.class, TreasureChestTypes.SINGLE_STANDARD, Rarity.RARE).setHardness(3.0F);
 
+		VIKING_CHEST = new TreasureChestBlock(Treasure.MODID, TreasureConfig.VIKING_CHEST_ID,
+				VikingChestTileEntity.class, TreasureChestTypes.VIKING, Rarity.UNCOMMON).setBounds(
+						new AxisAlignedBB[] {
+								new AxisAlignedBB(0, 0, 0.125, 1, 0.9375, 0.875), // S
+								new AxisAlignedBB(0.125, 0, 0, 0.875, 0.9375, 1), // W
+								new AxisAlignedBB(0, 0, 0.125, 1, 0.9375, 0.875), // N
+								new AxisAlignedBB(0.125, 0, 0, 0.875, 0.9375, 1)}
+						).setHardness(3.0F);
+		
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
 
@@ -529,7 +542,12 @@ public class TreasureBlocks {
 			final Block[] blocks = { WOOD_CHEST, CRATE_CHEST, MOLDY_CRATE_CHEST, IRONBOUND_CHEST, PIRATE_CHEST,
 					IRON_STRONGBOX, GOLD_STRONGBOX, SAFE, DREAD_PIRATE_CHEST,
 //					WHALE_BONE_PIRATE_CHEST,
-					COMPRESSOR_CHEST, SPIDER_CHEST, WOOD_MIMIC, PIRATE_MIMIC, GRAVESTONE1_STONE,
+					COMPRESSOR_CHEST,
+					SPIDER_CHEST, 
+					VIKING_CHEST,
+					WOOD_MIMIC, 
+					PIRATE_MIMIC, 
+					GRAVESTONE1_STONE,
 					GRAVESTONE1_COBBLESTONE, GRAVESTONE1_MOSSY_COBBLESTONE, GRAVESTONE1_POLISHED_GRANITE,
 					GRAVESTONE1_POLISHED_ANDESITE, GRAVESTONE1_POLISHED_DIORITE, GRAVESTONE1_OBSIDIAN,
 					GRAVESTONE2_STONE, GRAVESTONE2_COBBLESTONE, GRAVESTONE2_MOSSY_COBBLESTONE,
@@ -587,9 +605,9 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(COMPRESSOR_CHEST), new TreasureChestItemBlock(WITHER_CHEST),
 					new TreasureChestItemBlock(SKULL_CHEST), new TreasureChestItemBlock(GOLD_SKULL_CHEST),
 					new TreasureChestItemBlock(CAULDRON_CHEST),
-//					new TreasureChestItemBlock(OYSTER_CHEST),
-//					new TreasureChestItemBlock(CLAM_CHEST),
-					new TreasureChestItemBlock(SPIDER_CHEST), new MimicChestItemBlock(WOOD_MIMIC),
+					new TreasureChestItemBlock(SPIDER_CHEST), 
+					new TreasureChestItemBlock(VIKING_CHEST), 
+					new MimicChestItemBlock(WOOD_MIMIC),
 					new MimicChestItemBlock(PIRATE_MIMIC),
 
 					// TODO update with GravestonIetmBlock
@@ -656,6 +674,9 @@ public class TreasureBlocks {
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.CAULDRON_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(SpiderChestTileEntity.class,
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.SPIDER_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(VikingChestTileEntity.class,
+					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.VIKING_CHEST_TE_ID));
+			
 			GameRegistry.registerTileEntity(ProximitySpawnerTileEntity.class,
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.PROXIMITY_SPAWNER_TE_ID));
 			GameRegistry.registerTileEntity(GravestoneProximitySpawnerTileEntity.class,
