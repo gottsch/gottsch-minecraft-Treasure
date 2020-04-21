@@ -1,0 +1,17 @@
+{
+	"variants": {
+		"normal": {
+			"model": "treasure2:falling_red_sand"
+		},
+		"activated=false": [
+			{
+				"model": "treasure2:falling_red_sand"
+			}
+		],
+		"activated=true": [
+			{
+				"model": "treasure2:falling_red_sand"
+			}
+		]
+	}
+}

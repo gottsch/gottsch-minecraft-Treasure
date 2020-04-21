@@ -14,6 +14,7 @@ import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSand;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -25,19 +26,13 @@ import net.minecraft.world.World;
  *
  */
 public class CollapsingTrapPitGenerator extends AbstractPitGenerator {
-	
+
 	/**
 	 * 
 	 */
 	public CollapsingTrapPitGenerator() {
-		// TODO remove all
-		getBlockLayers().add(50, Blocks.AIR);
-		getBlockLayers().add(25,  Blocks.SAND);
-		getBlockLayers().add(15, Blocks.COBBLESTONE);
-		getBlockLayers().add(15, Blocks.GRAVEL);
-		getBlockLayers().add(10, Blocks.LOG);
 	}
-	
+
 	/**
 	 * 
 	 * @param world
@@ -53,7 +48,7 @@ public class CollapsingTrapPitGenerator extends AbstractPitGenerator {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 
 	 * @param world
@@ -70,18 +65,28 @@ public class CollapsingTrapPitGenerator extends AbstractPitGenerator {
 		int maxCoordsX = coords.getX() +2;
 		int minCoordsZ = coords.getZ() - 2;
 		int maxCoordsZ = coords.getZ() + 2;
-		
+
 		for (int x = minCoordsX; x <= maxCoordsX; x++) {
 			for (int z = minCoordsZ; z <= maxCoordsZ; z++ ) {
 				ICoords spawnCoords = WorldInfo.getSurfaceCoords(world, new Coords(x, 255, z));
 				spawnCoords = spawnCoords.down(1);
-				
-				if (world.getBlockState(spawnCoords.toPos()).getBlock() == Blocks.GRASS) {
-					// skip the corners
+
+				// skip the corners
+
+				IBlockState state = world.getBlockState(spawnCoords.toPos());
+				if (state.getBlock() == Blocks.GRASS) {	
 					if ((x == minCoordsX || x == maxCoordsX) && (z == minCoordsZ || z == maxCoordsZ)) {
 					}
 					else {
-						GenUtil.replaceWithBlockState(world, spawnCoords, TreasureBlocks.FALLING_GRASS.getDefaultState());
+						GenUtil.replaceWithBlockState(world, spawnCoords, TreasureBlocks.FALLING_GRASS.getDefaultState());	
+					}
+				}
+				else if (state.getBlock() == Blocks.SAND)  {
+					if (state.getValue(BlockSand.VARIANT) == BlockSand.EnumType.SAND) {
+						GenUtil.replaceWithBlockState(world, spawnCoords, TreasureBlocks.FALLING_SAND.getDefaultState());	
+					}
+					else {
+						GenUtil.replaceWithBlockState(world, spawnCoords, TreasureBlocks.FALLING_RED_SAND.getDefaultState());	
 					}
 				}
 				spawnCoords = spawnCoords.down(1);
@@ -93,7 +98,7 @@ public class CollapsingTrapPitGenerator extends AbstractPitGenerator {
 		}
 		return coords;
 	}
-	
+
 	/**
 	 * TODO could make this into a generic method in abstract buildXWideLayer
 	 * @param world
@@ -102,13 +107,12 @@ public class CollapsingTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	private ICoords build5WideLayer(World world, Random random, ICoords coords, Block block) {
-//		Treasure.logger.debug("Building 3 wide layer from {} @ {} ", block.getUnlocalizedName(), coords.toShortString());
 		IBlockState blockState = block.getDefaultState();
 		if (block == Blocks.LOG || block == Blocks.LOG2) {
 			int meta = random.nextInt() % 2 == 0 ? 8 : 4;
 			blockState = block.getStateFromMeta(meta);
 		}
-		
+
 		GenUtil.replaceWithBlockState(world, coords, blockState);
 		GenUtil.replaceWithBlockState(world, coords.add(1, 0, 0), blockState);
 		GenUtil.replaceWithBlockState(world, coords.add(-1, 0, 0), blockState);
@@ -118,7 +122,7 @@ public class CollapsingTrapPitGenerator extends AbstractPitGenerator {
 		GenUtil.replaceWithBlockState(world, coords.add(1, 0, 1), blockState);
 		GenUtil.replaceWithBlockState(world, coords.add(-1, 0, -1), blockState);
 		GenUtil.replaceWithBlockState(world, coords.add(1, 0, -1), blockState);	
-		
+
 		for (int x = coords.getX() - 2; x <= coords.getX() + 2; x++) {
 			for (int z = coords.getZ() -2; z <=coords.getZ() + 2; z++ ) {
 				// fill with AIR

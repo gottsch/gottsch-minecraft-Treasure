@@ -87,12 +87,8 @@ public class WitherChestBlock extends TreasureChestBlock {
 		return canPlaceAt;
 	}
 	
-	/**
-	 * 
-	 */
 	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
-		super.onBlockDestroyedByPlayer(worldIn, pos, state);
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		// destory placeholder above
 		BlockPos upPos = pos.up();
 		Block topBlock = worldIn.getBlockState(upPos).getBlock();
@@ -100,20 +96,37 @@ public class WitherChestBlock extends TreasureChestBlock {
 			topBlock.onBlockDestroyedByPlayer(worldIn, upPos, state);
 			worldIn.setBlockToAir(upPos);
 		}
+		// break as normal
+		super.breakBlock(worldIn, pos, state);
 	}
 	
 	/**
 	 * 
 	 */
-	@Override
-	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
-		super.onBlockDestroyedByExplosion(worldIn, pos, explosionIn);
-		// destory placeholder above
-		BlockPos upPos = pos.up();
-		Block topBlock = worldIn.getBlockState(upPos).getBlock();
-		if (topBlock == TreasureBlocks.WITHER_CHEST_TOP) {
-			topBlock.onBlockDestroyedByExplosion(worldIn, upPos, explosionIn);
-			worldIn.setBlockToAir(upPos);
-		}
-	}
+//	@Override
+//	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+//		super.onBlockDestroyedByPlayer(worldIn, pos, state);
+//		// destory placeholder above
+//		BlockPos upPos = pos.up();
+//		Block topBlock = worldIn.getBlockState(upPos).getBlock();
+//		if (topBlock == TreasureBlocks.WITHER_CHEST_TOP) {
+//			topBlock.onBlockDestroyedByPlayer(worldIn, upPos, state);
+//			worldIn.setBlockToAir(upPos);
+//		}
+//	}
+	
+	/**
+	 * 
+	 */
+//	@Override
+//	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
+//		super.onBlockDestroyedByExplosion(worldIn, pos, explosionIn);
+//		// destory placeholder above
+//		BlockPos upPos = pos.up();
+//		Block topBlock = worldIn.getBlockState(upPos).getBlock();
+//		if (topBlock == TreasureBlocks.WITHER_CHEST_TOP) {
+//			topBlock.onBlockDestroyedByExplosion(worldIn, upPos, explosionIn);
+//			worldIn.setBlockToAir(upPos);
+//		}
+//	}
 }

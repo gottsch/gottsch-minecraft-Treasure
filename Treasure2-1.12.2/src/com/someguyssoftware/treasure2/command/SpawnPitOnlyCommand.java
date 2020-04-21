@@ -24,6 +24,7 @@ import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
+import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 
@@ -89,8 +90,11 @@ public class SpawnPitOnlyCommand extends CommandBase {
 					new Coords(x, WorldInfo.getHeightValue(world, spawnCoords), z));
 			Map<Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenMap = SurfaceChestWorldGenerator.pitGens.row(PitTypes.STANDARD);
 			IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = pitGenMap.get(pit);
-			
 			GeneratorResult<ChestGeneratorData> result = pitGenerator.generate(world, random, surfaceCoords, spawnCoords);
+			
+			// generate markers
+			GravestoneMarkerGenerator markerGen = new GravestoneMarkerGenerator();
+			markerGen.generate(world, random, surfaceCoords);
 		} catch (Exception e) {
 			Treasure.logger.error("Error generating Treasure! pit:", e);
 			e.printStackTrace();

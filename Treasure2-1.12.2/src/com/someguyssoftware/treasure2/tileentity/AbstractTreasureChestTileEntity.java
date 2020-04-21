@@ -431,7 +431,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	@Override
 	public int getSizeInventory() {
 		if (!hasLocks()) {
-			return numberOfSlots;
+			return getNumberOfSlots();
 		}
 		return 0;
 	}

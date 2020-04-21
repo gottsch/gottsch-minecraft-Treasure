@@ -39,6 +39,7 @@ import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SpiderChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.VikingChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
@@ -77,6 +78,7 @@ public class TreasureBlocks {
 	public static final Block GOLD_SKULL_CHEST;
 	public static final Block CAULDRON_CHEST;
 	public static final Block SPIDER_CHEST;
+	public static final Block VIKING_CHEST;
 //	public static final Block WHALE_BONE_PIRATE_CHEST;
 //	public static final Block OYSTER_CHEST;
 //	public static final Block CLAM_CHEST;
@@ -88,6 +90,8 @@ public class TreasureBlocks {
 	// unimplemented chests
 	public static final Block VASE = null;
 	public static final Block INVISIBLE_CHEST = null;
+	public static final Block SAMURAI_CHEST = null;
+	public static final Block OBSIDIAN_CHEST = null;
 
 	// chest holder
 	public static Multimap<Rarity, Block> chests;
@@ -159,7 +163,9 @@ public class TreasureBlocks {
 	// other
 	public static final Block SPANISH_MOSS;
 	public static final Block FALLING_GRASS;
-
+	public static final Block FALLING_SAND;
+	public static final Block FALLING_RED_SAND;
+	
 	// treasures: paintings
 	public static final AbstractPaintingBlock PAINTING_BLOCKS_BRICKS;
 	public static final AbstractPaintingBlock PAINTING_BLOCKS_COBBLESTONE;
@@ -313,6 +319,15 @@ public class TreasureBlocks {
 		SPIDER_CHEST = new TreasureChestBlock(Treasure.MODID, TreasureConfig.SPIDER_CHEST_ID,
 				SpiderChestTileEntity.class, TreasureChestTypes.SINGLE_STANDARD, Rarity.RARE).setHardness(3.0F);
 
+		VIKING_CHEST = new TreasureChestBlock(Treasure.MODID, TreasureConfig.VIKING_CHEST_ID,
+				VikingChestTileEntity.class, TreasureChestTypes.VIKING, Rarity.UNCOMMON).setBounds(
+						new AxisAlignedBB[] {
+								new AxisAlignedBB(0, 0, 0.125, 1, 0.9375, 0.875), // S
+								new AxisAlignedBB(0.125, 0, 0, 0.875, 0.9375, 1), // W
+								new AxisAlignedBB(0, 0, 0.125, 1, 0.9375, 0.875), // N
+								new AxisAlignedBB(0.125, 0, 0, 0.875, 0.9375, 1)}
+						).setHardness(3.0F);
+		
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
 
@@ -475,6 +490,9 @@ public class TreasureBlocks {
 		WITHER_PLANKS = new WitherPlanksBlock(Treasure.MODID, TreasureConfig.WITHER_PLANKS_ID);
 		SPANISH_MOSS = new SpanishMossBlock(Treasure.MODID, TreasureConfig.SPANISH_MOSS_BLOCK_ID);
 		FALLING_GRASS = new FallingGrassBlock(Treasure.MODID, TreasureConfig.FALLING_GRASS_ID);
+		FALLING_SAND = new FallingSandBlock(Treasure.MODID, TreasureConfig.FALLING_SAND_ID);
+		FALLING_RED_SAND = new FallingRedSandBlock(Treasure.MODID, TreasureConfig.FALLING_RED_SAND_ID);
+		
 		// treasures: paintings
 		AxisAlignedBB[] pbs = new AxisAlignedBB[4];
 		pbs[0] = new AxisAlignedBB(0D, 0D, 0D, 1D, 1D, 0.0625D); // S
@@ -524,7 +542,12 @@ public class TreasureBlocks {
 			final Block[] blocks = { WOOD_CHEST, CRATE_CHEST, MOLDY_CRATE_CHEST, IRONBOUND_CHEST, PIRATE_CHEST,
 					IRON_STRONGBOX, GOLD_STRONGBOX, SAFE, DREAD_PIRATE_CHEST,
 //					WHALE_BONE_PIRATE_CHEST,
-					COMPRESSOR_CHEST, SPIDER_CHEST, WOOD_MIMIC, PIRATE_MIMIC, GRAVESTONE1_STONE,
+					COMPRESSOR_CHEST,
+					SPIDER_CHEST, 
+					VIKING_CHEST,
+					WOOD_MIMIC, 
+					PIRATE_MIMIC, 
+					GRAVESTONE1_STONE,
 					GRAVESTONE1_COBBLESTONE, GRAVESTONE1_MOSSY_COBBLESTONE, GRAVESTONE1_POLISHED_GRANITE,
 					GRAVESTONE1_POLISHED_ANDESITE, GRAVESTONE1_POLISHED_DIORITE, GRAVESTONE1_OBSIDIAN,
 					GRAVESTONE2_STONE, GRAVESTONE2_COBBLESTONE, GRAVESTONE2_MOSSY_COBBLESTONE,
@@ -537,7 +560,12 @@ public class TreasureBlocks {
 					WITHER_LOG, WITHER_BRANCH, WITHER_ROOT, WITHER_BROKEN_LOG, WITHER_LOG_SOUL, WITHER_CHEST_TOP,
 					WITHER_PLANKS, SPANISH_MOSS, PAINTING_BLOCKS_BRICKS, PAINTING_BLOCKS_COBBLESTONE,
 					PAINTING_BLOCKS_DIRT, PAINTING_BLOCKS_LAVA, PAINTING_BLOCKS_SAND, PAINTING_BLOCKS_WATER,
-					PAINTING_BLOCKS_WOOD, SAPPHIRE_ORE, RUBY_ORE, FALLING_GRASS };
+					PAINTING_BLOCKS_WOOD, SAPPHIRE_ORE, RUBY_ORE, 
+					FALLING_GRASS,
+					FALLING_SAND,
+					FALLING_RED_SAND
+				};
+			
 			registry.registerAll(blocks);
 			// register speciality chests separately (so they aren't in the rarity map)
 			registry.register(WITHER_CHEST);
@@ -577,9 +605,9 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(COMPRESSOR_CHEST), new TreasureChestItemBlock(WITHER_CHEST),
 					new TreasureChestItemBlock(SKULL_CHEST), new TreasureChestItemBlock(GOLD_SKULL_CHEST),
 					new TreasureChestItemBlock(CAULDRON_CHEST),
-//					new TreasureChestItemBlock(OYSTER_CHEST),
-//					new TreasureChestItemBlock(CLAM_CHEST),
-					new TreasureChestItemBlock(SPIDER_CHEST), new MimicChestItemBlock(WOOD_MIMIC),
+					new TreasureChestItemBlock(SPIDER_CHEST), 
+					new TreasureChestItemBlock(VIKING_CHEST), 
+					new MimicChestItemBlock(WOOD_MIMIC),
 					new MimicChestItemBlock(PIRATE_MIMIC),
 
 					// TODO update with GravestonIetmBlock
@@ -601,7 +629,11 @@ public class TreasureBlocks {
 //					new ItemBlock(HIGH_POISON_FOG), new ItemBlock(MED_POISON_FOG), new ItemBlock(LOW_POISON_FOG),
 					new ItemBlock(WITHER_LOG), new ItemBlock(WITHER_BROKEN_LOG), new ItemBlock(WITHER_LOG_SOUL),
 					new ItemBlock(WITHER_PLANKS), new ItemBlock(SAPPHIRE_ORE), new ItemBlock(RUBY_ORE),
-					new ItemBlock(PROXIMITY_SPAWNER), new ItemBlock(FALLING_GRASS) };
+					new ItemBlock(PROXIMITY_SPAWNER),
+					new ItemBlock(FALLING_GRASS),
+					new ItemBlock(FALLING_SAND),
+					new ItemBlock(FALLING_RED_SAND)
+			};
 
 			for (final ItemBlock item : items) {
 				final Block block = item.getBlock();
@@ -642,6 +674,9 @@ public class TreasureBlocks {
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.CAULDRON_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(SpiderChestTileEntity.class,
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.SPIDER_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(VikingChestTileEntity.class,
+					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.VIKING_CHEST_TE_ID));
+			
 			GameRegistry.registerTileEntity(ProximitySpawnerTileEntity.class,
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.PROXIMITY_SPAWNER_TE_ID));
 			GameRegistry.registerTileEntity(GravestoneProximitySpawnerTileEntity.class,

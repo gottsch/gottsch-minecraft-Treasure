@@ -12,6 +12,7 @@ import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
+import net.minecraft.block.BlockSand;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -32,10 +33,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * @author Mark Gottschling on Feb 22, 2020
+ * TODO refactor the falling blocks to inherit from parent class
+ * @author Mark Gottschling on Apr 17, 2020
  *
  */
-public class FallingGrassBlock extends ModFallingBlock {
+public class FallingSandBlock extends ModFallingBlock {
 	public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
 
 	protected static final AxisAlignedBB BOUNDING_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
@@ -46,12 +48,12 @@ public class FallingGrassBlock extends ModFallingBlock {
 	 * @param modID
 	 * @param name
 	 */
-	public FallingGrassBlock(String modID, String name) {
+	public FallingSandBlock(String modID, String name) {
 		super(modID, name, Material.GROUND);
 		this.setDefaultState(blockState.getBaseState().withProperty(ACTIVATED, Boolean.valueOf(false)));
 		setCreativeTab(Treasure.TREASURE_TAB);
 		setSoundType(SoundType.PLANT);
-		setHardness(0.6F);
+		setHardness(0.5F);
 	}
 
 	/**
@@ -92,7 +94,7 @@ public class FallingGrassBlock extends ModFallingBlock {
 
 	@Override
 	public void onEndFalling(World worldIn, BlockPos pos, IBlockState p_176502_3_, IBlockState p_176502_4_) {
-		worldIn.setBlockState(pos, Blocks.GRASS.getDefaultState());
+		worldIn.setBlockState(pos, Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.SAND));
 	}
 	
 	/**
@@ -113,7 +115,6 @@ public class FallingGrassBlock extends ModFallingBlock {
 		}
 
 		if ((worldIn.isAirBlock(pos.down()) || canFallThrough(worldIn.getBlockState(pos.down()))) && pos.getY() >= 0) {
-//			int i = 32;
 
 			if (!fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
 				if (!worldIn.isRemote) {
@@ -134,8 +135,8 @@ public class FallingGrassBlock extends ModFallingBlock {
 				}
 
 				if (blockpos.getY() > 0) {
-					worldIn.setBlockState(blockpos.up(), state); // Forge: Fix loss of state information during world
-																	// gen.
+					worldIn.setBlockState(blockpos.up(), state);
+					// Forge: Fix loss of state information during world gen.
 				}
 			}
 		}
@@ -151,9 +152,8 @@ public class FallingGrassBlock extends ModFallingBlock {
     /**
      * Get the Item that this Block should drop when harvested.
      */
-	@Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Blocks.DIRT.getItemDropped(Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT), rand, fortune);
+        return Blocks.SAND.getItemDropped(Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.SAND), rand, fortune);
     }
     
 	/**

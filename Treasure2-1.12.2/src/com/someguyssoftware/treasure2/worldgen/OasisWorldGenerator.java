@@ -166,14 +166,14 @@ public class OasisWorldGenerator implements ITreasureWorldGenerator {
 		Integer biomeID = Biome.getIdForBiome(biome);
 		
 		// TEMP
-    	if (Treasure.logger.isDebugEnabled()) {
-    		if (WorldInfo.isClientSide(world)) {
-    			Treasure.logger.debug("current biome {} @ {}", biome.getBiomeName(), coords.toShortString());
-    		}
-    		else {
-    			Treasure.logger.debug("current biomeID {} @ {}", biomeID, coords.toShortString());
-    		}
-    	}
+//    	if (Treasure.logger.isDebugEnabled()) {
+//    		if (WorldInfo.isClientSide(world)) {
+//    			Treasure.logger.debug("current biome {} @ {}", biome.getBiomeName(), coords.toShortString());
+//    		}
+//    		else {
+//    			Treasure.logger.debug("current biomeID {} @ {}", biomeID, coords.toShortString());
+//    		}
+//    	}
     	
 		// check if the minimum chunks have been met
 		if (chunksSinceLast >= TreasureConfig.OASES.minChunksPerOasis) {
