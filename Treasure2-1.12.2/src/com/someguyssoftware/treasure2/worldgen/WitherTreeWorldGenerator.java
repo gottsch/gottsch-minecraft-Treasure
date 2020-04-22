@@ -44,11 +44,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * 
@@ -370,16 +373,17 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 	}
 
 	private void buildScrub(World world, Random random, AxisAlignedBB witherGroveSize) {
-		ICoords centerCoords = new Coords(witherGroveSize.getCenter());
+//		Treasure.logger.debug("adding scrub ...");
 		int width = Math.abs((int) (witherGroveSize.maxX - witherGroveSize.minX));
 		int depth = Math.abs((int) (witherGroveSize.maxZ - witherGroveSize.minZ));
+		ICoords centerCoords = new Coords((int)(witherGroveSize.minX + width * 0.5D), (int)witherGroveSize.minY, (int)(witherGroveSize.minZ + depth * 0.5D));
 
-		for (int rockIndex = 0; rockIndex < RandomHelper.randomInt(MIN_SCRUB, MAX_SCRUB); rockIndex++) {
+		for (int scrubIndex = 0; scrubIndex < RandomHelper.randomInt(MIN_SCRUB, MAX_SCRUB); scrubIndex++) {
 			int xOffset = (int) (random.nextFloat() * width - (width/2));
 			int zOffset = (int) (random.nextFloat() * depth - (depth/2));
 			
 			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, centerCoords.add(xOffset, 0, zOffset).withY(255));
-
+//			Treasure.logger.debug("adding scrub at -> {}", surfaceCoords.toShortString());
 			// check if current block is a dirt, podzol, coarse dirt or sand
 			Block supportBlock = world.getBlockState(surfaceCoords.down(1).toPos()).getBlock();
 			if (supportBlock == Blocks.DIRT || supportBlock == Blocks.SAND) {
@@ -395,10 +399,11 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 	}
 
 	private void buildRocks(World world, Random random, AxisAlignedBB witherGroveSize) {
-		ICoords centerCoords = new Coords(witherGroveSize.getCenter());
+//		Treasure.logger.debug("adding rocks ...");
 		int width = Math.abs((int) (witherGroveSize.maxX - witherGroveSize.minX));
 		int depth = Math.abs((int) (witherGroveSize.maxZ - witherGroveSize.minZ));
-
+		ICoords centerCoords = new Coords((int)(witherGroveSize.minX + width * 0.5D), (int)witherGroveSize.minY, (int)(witherGroveSize.minZ + depth * 0.5D));
+		
 		for (int rockIndex = 0; rockIndex < RandomHelper.randomInt(MIN_ROCKS, MAX_ROCKS); rockIndex++) {
 			// randomize a position within the aabb
 			int xOffset = (int) (random.nextFloat() * width - (width/2));
@@ -406,7 +411,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 			
 			ICoords rocksCoords = WorldInfo.getDryLandSurfaceCoords(world, centerCoords.add(xOffset, 0, zOffset).withY(255));
 			rocksCoords = rocksCoords.down(1);
-
+//Treasure.logger.debug("adding rocks at -> {}", rocksCoords.toShortString());
 			// check if current block is a tree or any treasure block
 			if (world.getBlockState(rocksCoords.toPos()).getBlock() instanceof ITreasureBlock) {
 				continue;
