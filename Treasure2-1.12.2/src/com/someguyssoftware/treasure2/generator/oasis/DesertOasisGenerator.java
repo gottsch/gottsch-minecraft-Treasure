@@ -79,7 +79,10 @@ public class DesertOasisGenerator implements IOasisGenerator<GeneratorResult<Che
 		// determine size of oasis
 		int radius = RandomHelper.randomInt(random, MIN_OASIS_RADIUS, MAX_OASIS_RADIUS); // min of 8, so diameter = 16, area = 16x16, same as chunk
 		AxisAlignedBB oasisBounds = new AxisAlignedBB(coords.add(-radius, 0, -radius).toPos() , coords.add(radius, 0, radius).toPos());
-		ICoords centerCoords = new Coords(oasisBounds.getCenter());
+		int width = Math.abs((int) (oasisBounds.maxX - oasisBounds.minX));
+		int depth = Math.abs((int) (oasisBounds.maxZ - oasisBounds.minZ));
+		ICoords centerCoords = new Coords((int)(oasisBounds.minX + width * 0.5D), (int)oasisBounds.minY, (int)(oasisBounds.minZ + depth * 0.5D));
+
 		centerCoords = WorldInfo.getDryLandSurfaceCoords(world, centerCoords);
 		
 		generateBase(world, random, coords, radius);
