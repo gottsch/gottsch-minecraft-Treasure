@@ -3,23 +3,42 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.FogBlock;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.FogType;
+import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.item.charm.CharmCapabilityProvider;
+import com.someguyssoftware.treasure2.item.charm.CharmType;
+import com.someguyssoftware.treasure2.item.charm.ICharm;
+import com.someguyssoftware.treasure2.item.charm.ICharmCapability;
+import com.someguyssoftware.treasure2.item.charm.ICharmState;
+import com.someguyssoftware.treasure2.item.charm.ICharmed;
+import com.someguyssoftware.treasure2.network.CharmMessageToClient;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -109,7 +128,6 @@ public class PlayerEventHandler {
 					if (potionEffect == null) {
 						((EntityLivingBase) event.getEntity())
 								.addPotionEffect(new PotionEffect(MobEffects.WITHER, 300, 0));
-//		        		Treasure.logger.debug("wither potion effect is null, should be adding....");
 					}
 				} else if (((FogBlock) block).getFogType() == FogType.POISON) {
 					PotionEffect potionEffect = ((EntityLivingBase) event.getEntity())
@@ -118,7 +136,6 @@ public class PlayerEventHandler {
 					if (potionEffect == null) {
 						((EntityLivingBase) event.getEntity())
 								.addPotionEffect(new PotionEffect(MobEffects.POISON, 300, 0));
-//		        		Treasure.logger.debug("poison potion effect is null, should be adding....");
 					}
 				}
 			}
@@ -126,6 +143,133 @@ public class PlayerEventHandler {
 		}
 	}
 
+	// TODO refactor these charm methods. they all do the same thing except call a different charm event
+	/**
+	 * 
+	 * @param event
+	 */
+	@SubscribeEvent
+	public void checkCharmsInteraction(LivingUpdateEvent event) {
+		if (WorldInfo.isClientSide(event.getEntity().getEntityWorld())) {
+			return;
+		}
+
+		// do something to player every update tick:
+		if (event.getEntity() instanceof EntityPlayer) {
+			
+			// get the player
+			EntityPlayerMP player = (EntityPlayerMP) event.getEntity();
+			Optional<CharmContext> context = getCharmContext(player);
+			if (!context.isPresent()) {
+				return;
+			}
+			
+			if (context.get().itemStack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
+				ICharmCapability provider = context.get().itemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+				List<ICharmState> charmStates = provider.getCharmStates();
+				Treasure.logger.debug("has capability");
+				for (ICharmState charmState : charmStates) {
+					Treasure.logger.debug("charm state -> {}: {}", charmState.getCharm().getName(), charmState.toString());
+					if (charmState.doCharm(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event)) {
+						// send state message to client
+						CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmState, context.get().hand, null);
+						Treasure.logger.debug("sending living charm message to client -> {}", message);
+						Treasure.simpleNetworkWrapper.sendTo(message, player);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param event
+	 */
+	@SubscribeEvent
+	public void checkCharmsInteractionWithDamage(LivingDamageEvent event) {
+		if (WorldInfo.isClientSide(event.getEntity().getEntityWorld())) {
+			return;
+		}
+
+		// do something to player every update tick:
+		if (event.getEntity() instanceof EntityPlayer) {
+			// get the player
+			EntityPlayerMP player = (EntityPlayerMP) event.getEntity();
+			Optional<CharmContext> context = getCharmContext(player);
+			if (!context.isPresent()) {
+				Treasure.logger.debug("context not present");
+				return;
+			}
+			
+			if (context.get().itemStack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
+				ICharmCapability provider = context.get().itemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+				List<ICharmState> charmStates = provider.getCharmStates();
+				Treasure.logger.debug("has capability");
+				for (ICharmState charmState : charmStates) {
+					Treasure.logger.debug("charm state -> {}", charmState.getCharm().getName());
+					if (charmState.doCharm(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event)) {
+						// send state message to client
+						CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmState, context.get().hand, null);
+						Treasure.logger.debug("sending damage charm message to client -> {}", message);
+						Treasure.simpleNetworkWrapper.sendTo(message, player);
+					}
+				}
+			}
+		}		
+	}
+	
+	@SubscribeEvent
+	public void checkCharmsInteractionWithBlock(BlockEvent.HarvestDropsEvent event) {
+		if (WorldInfo.isClientSide(event.getWorld())) {
+			return;
+		}
+		
+		if (event.getHarvester() == null) {
+			return;
+		}
+		
+		// get the player
+		EntityPlayerMP player = (EntityPlayerMP) event.getHarvester();
+		Optional<CharmContext> context = getCharmContext(player);
+		if (!context.isPresent()) {
+			return;
+		}
+		if (context.get().itemStack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
+			ICharmCapability provider = context.get().itemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+			List<ICharmState> charmStates = provider.getCharmStates();
+			for (ICharmState charmState : charmStates) {
+				if (charmState.doCharm(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event)) {
+					CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmState, context.get().hand, null);
+					Treasure.logger.debug("sending harvest charm message to client -> {}", message);
+					Treasure.simpleNetworkWrapper.sendTo(message, player);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param player
+	 * @return
+	 */
+	private Optional<CharmContext> getCharmContext(EntityPlayerMP player) {
+		ItemStack mainHeldItem = player.getHeldItem(EnumHand.MAIN_HAND);
+		ItemStack offHeldItem = player.getHeldItem(EnumHand.OFF_HAND);
+		CharmContext context = new CharmContext();
+		if (offHeldItem.getItem() instanceof ICharmed ) {
+			context.hand = EnumHand.OFF_HAND;
+			context.itemStack = offHeldItem;
+		}
+		else if (mainHeldItem.getItem() instanceof ICharmed) {
+			context.hand = EnumHand.MAIN_HAND;
+			context.itemStack = mainHeldItem;
+		}
+		else {
+			return Optional.empty();
+		}
+		return Optional.of(context);
+	}
+	
 	/**
 	 * @return the mod
 	 */
@@ -140,4 +284,21 @@ public class PlayerEventHandler {
 		this.mod = mod;
 	}
 
+	/**
+	 * 
+	 * @author Mark Gottschling on Apr 30, 2020
+	 *
+	 */
+	private class CharmContext {
+		EnumHand hand;
+		int slot;
+		ItemStack itemStack;
+		
+		CharmContext() {}
+		CharmContext(ItemStack stack, EnumHand hand, int slot) {
+			this.itemStack = stack;
+			this.hand = hand;
+			this.slot = slot;
+		}
+	}
 }

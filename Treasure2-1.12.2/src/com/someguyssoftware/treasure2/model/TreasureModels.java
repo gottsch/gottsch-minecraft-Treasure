@@ -115,9 +115,14 @@ public class TreasureModels {
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);
 		registerItemModel(TreasureItems.SILVER_COIN);
+		registerItemModel(TreasureItems.CHARMED_SILVER_COIN);
+		registerItemModel(TreasureItems.ANGEL_BLESSED_COIN);
+		registerItemModel(TreasureItems.FOOLS_COIN);
+		
 		// PEARLS
 		registerItemModel(TreasureItems.WHITE_PEARL);
 		registerItemModel(TreasureItems.BLACK_PEARL);
+		
 		// LOCKS
 		registerItemModel(TreasureItems.WOOD_LOCK);
 		registerItemModel(TreasureItems.STONE_LOCK);
