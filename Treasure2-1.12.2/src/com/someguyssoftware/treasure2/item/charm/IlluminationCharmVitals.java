@@ -51,7 +51,7 @@ public class IlluminationCharmVitals extends CharmVitals {
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound tag = list.getCompoundTagAt(i);
 			ICoords coords = ICoords.readFromNBT(tag);
-			Treasure.logger.debug("read coords from nbt -> {}", coords.toShortString());
+//			Treasure.logger.debug("read coords from nbt -> {}", coords.toShortString());
 			if (coords != null) {
 				getCoordsList().add(coords);
 			}
@@ -107,6 +107,31 @@ public class IlluminationCharmVitals extends CharmVitals {
 	@Override
 	public String toString() {
 		return "IlluminationCharmVitals [coordsList=" + coordsList + ", toString()=" + super.toString() + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((coordsList == null) ? 0 : coordsList.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IlluminationCharmVitals other = (IlluminationCharmVitals) obj;
+		if (coordsList == null) {
+			if (other.coordsList != null)
+				return false;
+		} else if (!coordsList.equals(other.coordsList))
+			return false;
+		return true;
 	}
 
 }

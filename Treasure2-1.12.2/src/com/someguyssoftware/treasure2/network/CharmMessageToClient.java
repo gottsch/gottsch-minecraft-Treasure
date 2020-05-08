@@ -3,9 +3,11 @@
  */
 package com.someguyssoftware.treasure2.network;
 
+import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
 import com.someguyssoftware.treasure2.item.charm.CharmVitals;
 import com.someguyssoftware.treasure2.item.charm.ICharmState;
 import com.someguyssoftware.treasure2.item.charm.ICharmVitals;
+import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.EnumHand;
@@ -62,7 +64,11 @@ public class CharmMessageToClient implements IMessage {
 	    	double value = buf.readDouble();
 	    	int duration = buf.readInt();
 	    	double percent = buf.readDouble();
-	    	vitals = new CharmVitals(value, duration, percent);
+	    	vitals = CharmStateFactory.createCharmVitals(TreasureCharms.REGISTRY.get(charmName));
+	    	vitals.setDuration(duration);
+	    	vitals.setPercent(percent);
+	    	vitals.setValue(value);
+//	    	vitals = new CharmVitals(value, duration, percent);
 	    	String handStr = ByteBufUtils.readUTF8String(buf);
 	    	if (!handStr.isEmpty()) {
 	    		hand = EnumHand.valueOf(handStr);

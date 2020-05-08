@@ -118,6 +118,7 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.CHARMED_SILVER_COIN);
 		registerItemModel(TreasureItems.ANGEL_BLESSED_COIN);
 		registerItemModel(TreasureItems.FOOLS_COIN);
+		registerItemModel(TreasureItems.MINERS_FRIEND);
 		
 		// PEARLS
 		registerItemModel(TreasureItems.WHITE_PEARL);

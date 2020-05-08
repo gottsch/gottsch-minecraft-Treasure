@@ -67,13 +67,10 @@ public class CharmStorage implements Capability.IStorage<ICharmCapability> {
 			for (int index = 0; index < stateListTag.tagCount(); index++) {
 				NBTTagCompound stateTag = stateListTag.getCompoundTagAt(index);
 				ICharm charm = Charm.readFromNBT(stateTag.getCompoundTag("charm"));
-				// TODO need a factory here because we don't know what kind of vitals and state is needed.
 				ICharmVitals vitals = CharmStateFactory.createCharmVitals(charm);
-//				ICharmVitals vitals = new CharmVitals();
 				vitals.readFromNBT(stateTag.getCompoundTag("vitals"));
-				Treasure.logger.debug("attempted to read {} charm state -> {}", charm.getCharmType(), vitals);
+//				Treasure.logger.debug("attempted to read {} charm state -> {}", charm.getCharmType(), vitals);
 				ICharmState charmState = CharmStateFactory.createCharmState(charm, vitals);
-//				ICharmState charmState = new CharmState(charm, vitals);
 				instance.getCharmStates().add(charmState);
 			}
 

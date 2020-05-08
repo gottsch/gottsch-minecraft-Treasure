@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.item.charm;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -52,6 +53,9 @@ public class CharmState implements ICharmState {
 	@Override
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event) {
 		ICharmVitals newVitals = charm.doCharm(world, random, coords, player, event, vitals);
+//		if (newVitals != null) {
+//			Treasure.logger.debug("charm vitals are of type -> {}: {}", charm.getClass().getSimpleName(), newVitals.getClass().getSimpleName());
+//		}
 		return checkVitals(vitals, newVitals);
 	}
 	
@@ -75,7 +79,7 @@ public class CharmState implements ICharmState {
 	 */
 	private boolean checkVitals(ICharmVitals vitals, ICharmVitals newVitals) {
 		// check if they are different
-		if (vitals != null && !vitals.equals(newVitals)) {
+		if (vitals != null && newVitals != null && !vitals.equals(newVitals)) {
 			this.vitals = newVitals;
 			return true;
 		}

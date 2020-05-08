@@ -18,9 +18,9 @@ public class CharmStateFactory {
 	 */
 	public static ICharmState createCharmState(ICharm charm) {
 		ICharmState state = null;
-		if (charm.getCharmType() == CharmType.ILLUMINATION) {
-			Treasure.logger.debug("creating illumination charm state for charm -> {}", charm);
+		if (charm.getCharmType() == CharmType.ILLUMINATION) {			
 			state =  new IlluminationCharmState(charm);
+			Treasure.logger.debug("creating illumination charm state for charm -> {}", state);
 		}
 		else {
 //			Treasure.logger.debug("creating charm state for charm -> {}", charm);
@@ -44,11 +44,11 @@ public class CharmStateFactory {
 	public static ICharmVitals createCharmVitals(ICharm charm) {
 		ICharmVitals vitals = null;
 		if (charm.getCharmType() == CharmType.ILLUMINATION) {
-			Treasure.logger.debug("creating illumination charm vitals for charm -> {}", charm);
+//			Treasure.logger.debug("creating illumination charm vitals for charm -> {}", charm);
 			vitals =  new IlluminationCharmVitals();
 		}
 		else {
-			Treasure.logger.debug("creating charm vitals for charm -> {}", charm);
+//			Treasure.logger.debug("creating charm vitals for charm -> {}", charm);
 			vitals = new CharmVitals();
 		}
 		return vitals;

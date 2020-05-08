@@ -55,6 +55,7 @@ public class TreasureItems {
 	public static Item CHARMED_SILVER_COIN;
 	public static CharmedCoinItem CHARMED_GOLD_COIN;
 	public static CharmedCoinItem ANGEL_BLESSED_COIN;
+	public static CharmedCoinItem MINERS_FRIEND;
 	public static CharmedCoinItem FOOLS_COIN;
 	// pearls
 	public static Item WHITE_PEARL;
@@ -170,13 +171,23 @@ public class TreasureItems {
 		// add to creative tab since it is a known special coin (non-dynamic in charms)
 		ANGEL_BLESSED_COIN.setCreativeTab(Treasure.TREASURE_TAB);
 		
+		MINERS_FRIEND = new CharmedCoinItem(Treasure.MODID, TreasureConfig.MINERS_FRIEND_ID, Coins.GOLD) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GLORIOUS_ILLUMINATION));
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GRAND_HARVESTING));
+				return provider;
+			}
+		};
+		MINERS_FRIEND.setCreativeTab(Treasure.TREASURE_TAB);
+		
 		FOOLS_COIN = new CharmedCoinItem(Treasure.MODID, "fools_coin", Coins.GOLD) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.HEALING));
 				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.DECAY));
-//				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.ILLUMINATION));
 				return provider;
 			}
 		};
@@ -460,6 +471,7 @@ public class TreasureItems {
 					CHARMED_SILVER_COIN,
 					CHARMED_GOLD_COIN,
 					ANGEL_BLESSED_COIN,
+					MINERS_FRIEND,
 					FOOLS_COIN,
 					WHITE_PEARL,
 					BLACK_PEARL,

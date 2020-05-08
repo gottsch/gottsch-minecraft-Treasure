@@ -34,7 +34,11 @@ public class TreasureCharms {
 	public static final ICharm MAJOR_HARVESTING;
 	public static final ICharm GRAND_HARVESTING;
 		
-//	public static final ICharm ILLUMINATION;
+	public static final ICharm LESSER_ILLUMINATION;
+	public static final ICharm ILLUMINATION;
+	public static final ICharm GREATER_ILLUMINATION;
+	public static final ICharm GRAND_ILLUMINATION;
+	public static final ICharm GLORIOUS_ILLUMINATION;
 	
 	// curses
 	public static final ICharm LESSER_DECAY;
@@ -70,7 +74,11 @@ public class TreasureCharms {
 		MAJOR_HARVESTING = new CharmBuilder("major_havesting", CharmType.HARVESTING, CharmLevel.LEVEL3).build();
 		GRAND_HARVESTING = new CharmBuilder("grand_havesting", CharmType.HARVESTING, CharmLevel.LEVEL4).build();
 		
-//		ILLUMINATION = new CharmBuilder("illumination", CharmType.ILLUMINATION, CharmLevel.LEVEL1).build();
+		LESSER_ILLUMINATION = new CharmBuilder("lesser_illumination", CharmType.ILLUMINATION, CharmLevel.LEVEL1).build();
+		ILLUMINATION = new CharmBuilder("illumination", CharmType.ILLUMINATION, CharmLevel.LEVEL2).build();
+		GREATER_ILLUMINATION = new CharmBuilder("greater_illumination", CharmType.ILLUMINATION, CharmLevel.LEVEL3).build();
+		GRAND_ILLUMINATION = new CharmBuilder("grand_illumination", CharmType.ILLUMINATION, CharmLevel.LEVEL4).build();
+		GLORIOUS_ILLUMINATION = new CharmBuilder("glorious_illumination", CharmType.ILLUMINATION, CharmLevel.LEVEL4).valueModifier(1.5).build();
 		
 		// curses
 		LESSER_DECAY = new CharmBuilder("lesser_decay", CharmType.DECAY, CharmLevel.LEVEL1).build();
@@ -101,7 +109,11 @@ public class TreasureCharms {
 		REGISTRY.put(MAJOR_HARVESTING.getName(), MAJOR_HARVESTING);
 		REGISTRY.put(GRAND_HARVESTING.getName(), GRAND_HARVESTING);
 		
-//		REGISTRY.put(ILLUMINATION.getName(), ILLUMINATION);
+		REGISTRY.put(LESSER_ILLUMINATION.getName(), LESSER_ILLUMINATION);
+		REGISTRY.put(ILLUMINATION.getName(), ILLUMINATION);
+		REGISTRY.put(GREATER_ILLUMINATION.getName(), GREATER_ILLUMINATION);
+		REGISTRY.put(GRAND_ILLUMINATION.getName(), GRAND_ILLUMINATION);
+		REGISTRY.put(GLORIOUS_ILLUMINATION.getName(), GLORIOUS_ILLUMINATION);
 		
 		REGISTRY.put(LESSER_DECAY.getName(), LESSER_DECAY);
 		REGISTRY.put(DECAY.getName(), DECAY);

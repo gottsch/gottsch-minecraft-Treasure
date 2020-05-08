@@ -3,8 +3,6 @@
  */
 package com.someguyssoftware.treasure2.item.charm;
 
-import com.someguyssoftware.treasure2.Treasure;
-
 /**
  * @author Mark Gottschling on Apr 26, 2020
  *
@@ -45,7 +43,7 @@ public class CharmBuilder implements ICharmBuilder {
 				charm = new IlluminationCharm(this);
 			}
 
-			Treasure.logger.debug("building charm from -> {} to -> {}", this.toString(), charm.toString());
+//			Treasure.logger.debug("building charm from -> {} to -> {}", this.toString(), charm.toString());
 			return charm;
 		}
 		

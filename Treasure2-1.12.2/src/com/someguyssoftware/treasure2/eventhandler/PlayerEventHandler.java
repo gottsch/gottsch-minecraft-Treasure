@@ -167,13 +167,13 @@ public class PlayerEventHandler {
 			if (context.get().itemStack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
 				ICharmCapability provider = context.get().itemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 				List<ICharmState> charmStates = provider.getCharmStates();
-				Treasure.logger.debug("has capability");
+//				Treasure.logger.debug("has capability");
 				for (ICharmState charmState : charmStates) {
-					Treasure.logger.debug("charm state -> {}: {}", charmState.getCharm().getName(), charmState.toString());
+//					Treasure.logger.debug("charm state -> {}: {}", charmState.getCharm().getName(), charmState.toString());
 					if (charmState.doCharm(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event)) {
 						// send state message to client
 						CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmState, context.get().hand, null);
-						Treasure.logger.debug("sending living charm message to client -> {}", message);
+//						Treasure.logger.debug("sending living charm message to client -> {}", message);
 						Treasure.simpleNetworkWrapper.sendTo(message, player);
 					}
 				}
@@ -204,13 +204,13 @@ public class PlayerEventHandler {
 			if (context.get().itemStack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
 				ICharmCapability provider = context.get().itemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 				List<ICharmState> charmStates = provider.getCharmStates();
-				Treasure.logger.debug("has capability");
+//				Treasure.logger.debug("has capability");
 				for (ICharmState charmState : charmStates) {
-					Treasure.logger.debug("charm state -> {}", charmState.getCharm().getName());
+//					Treasure.logger.debug("charm state -> {}", charmState.getCharm().getName());
 					if (charmState.doCharm(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event)) {
 						// send state message to client
 						CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmState, context.get().hand, null);
-						Treasure.logger.debug("sending damage charm message to client -> {}", message);
+//						Treasure.logger.debug("sending damage charm message to client -> {}", message);
 						Treasure.simpleNetworkWrapper.sendTo(message, player);
 					}
 				}
