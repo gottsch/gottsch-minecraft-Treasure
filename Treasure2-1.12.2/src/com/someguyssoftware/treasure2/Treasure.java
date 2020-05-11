@@ -16,6 +16,10 @@ import com.someguyssoftware.gottschcore.annotation.Credits;
 import com.someguyssoftware.gottschcore.command.ShowVersionCommand;
 import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.config.ILoggerConfig;
+import com.someguyssoftware.gottschcore.loot.conditions.LootConditionManager;
+import com.someguyssoftware.gottschcore.loot.conditions.RandomChance;
+import com.someguyssoftware.gottschcore.loot.functions.LootFunctionManager;
+import com.someguyssoftware.gottschcore.loot.functions.SetCount;
 import com.someguyssoftware.gottschcore.mod.AbstractMod;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
@@ -37,8 +41,15 @@ import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.item.charm.CharmCapability;
+import com.someguyssoftware.treasure2.item.charm.CharmStorage;
+import com.someguyssoftware.treasure2.item.charm.ICharmCapability;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
+import com.someguyssoftware.treasure2.loot.function.CharmRandomly;
+import com.someguyssoftware.treasure2.loot.function.SetCharms;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
+import com.someguyssoftware.treasure2.network.CharmMessageHandlerOnClient;
+import com.someguyssoftware.treasure2.network.CharmMessageToClient;
 import com.someguyssoftware.treasure2.network.PoisonMistMessageHandlerOnServer;
 import com.someguyssoftware.treasure2.network.PoisonMistMessageToServer;
 import com.someguyssoftware.treasure2.network.WitherMistMessageHandlerOnServer;
@@ -56,6 +67,7 @@ import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -69,7 +81,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * 
@@ -89,7 +100,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.11.1";
+	protected static final String VERSION = "1.12.0";
 
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
 
@@ -177,6 +188,15 @@ public class Treasure extends AbstractMod {
 				PARTICLE_MESSAGE_ID, Side.SERVER);
 		simpleNetworkWrapper.registerMessage(WitherMistMessageHandlerOnServer.class, WitherMistMessageToServer.class,
 				15, Side.SERVER);
+		simpleNetworkWrapper.registerMessage(CharmMessageHandlerOnClient.class, CharmMessageToClient.class,
+				25, Side.CLIENT);
+		
+		// add capabilities
+		CapabilityManager.INSTANCE.register(ICharmCapability.class, new CharmStorage(), CharmCapability::new);
+		
+		// register custom loot functions
+		LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
+		LootFunctionManager.registerFunction(new SetCharms.Serializer());
 	}
 
 	/**
@@ -230,8 +250,8 @@ public class Treasure extends AbstractMod {
 		}
 
 		// add the loot table managers
-		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");
-
+		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");		
+		
 		TEMPLATE_MANAGER = new TreasureTemplateManager(Treasure.instance, "/structures",
 				FMLCommonHandler.instance().getDataFixer());
 
