@@ -23,6 +23,16 @@ public class CharmVitals implements ICharmVitals {
 	
 	/**
 	 * 
+	 * @param charm
+	 */
+	public CharmVitals(ICharm charm) {
+		this.value = charm.getMaxValue();
+		this.duration = charm.getMaxDuration();
+		this.percent = charm.getMaxPercent();
+	}
+	
+	/**
+	 * 
 	 * @param value
 	 * @param duration
 	 * @param percent

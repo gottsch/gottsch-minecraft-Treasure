@@ -40,25 +40,35 @@ public class IlluminationCharm extends Charm {
 	 * 
 	 */
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals) {
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals) {
+		boolean result = false;
 		if ( !player.isDead && vitals.getValue() > 0) {
 			if (world.getTotalWorldTime() % 100 == 0) {
-				ICoords currentCoords = new Coords((int)player.posX, (int)player.posY, (int)player.posZ);
+				ICoords currentCoords = new Coords((int)Math.floor(player.posX), (int)Math.floor(player.posY), (int)Math.floor(player.posZ));
+				
+				/*
+				 * validation checks
+				 */
+				// check that the block at current position is air or replaceable
+				Cube cube = new Cube(world, currentCoords);
+				if (!cube.isAir() && !cube.isReplaceable()) {
+					return false;
+				}
 				// check that the block underneath is solid
-				Cube cube = new Cube(world, currentCoords.down(1));
+				cube = new Cube(world, currentCoords.down(1));
 				if (!cube.isSolid()) {
 					Treasure.logger.debug("not solid at -> {}", currentCoords.down(1));
-					return null;
+					return false;
 				}
 				if (!(vitals instanceof IlluminationCharmVitals)) {
 					Treasure.logger.debug("vitals are not instance of IlluminationCharmVitals -> {}.{}", this.getClass().getSimpleName(), vitals.getClass().getSimpleName());
-					// TODO this is a hack until I find out why sometimes a IlluminationCharm doesn't have IlluminationCharmVitals?
-					return null;
+						return false;
 				}
+				
 				IlluminationCharmVitals charmVitals = (IlluminationCharmVitals)vitals;
 				// cast as linked list
 				List<ICoords> list = (List<ICoords>)charmVitals.getCoordsList();
-				Treasure.logger.debug("coords list size -> {}", list.size());
+//				Treasure.logger.debug("charm coords list size -> {}", list.size());
 				double value = vitals.getValue();
 				
 				boolean isUpdated = false;
@@ -66,68 +76,58 @@ public class IlluminationCharm extends Charm {
 				if (list.isEmpty()) {
 					// add current position
 					list.add(0, currentCoords);
-//					linkedCoords.addFirst(currentCoords);
 					isUpdated = true;
 				}
 				else {
-					// TODO check that current position is at least 5 blocks away from head position
-					
 					// determine if new position is different than last position - ie first element in vitals.coordsList
-//					ICoords firstCoords =list.getFirst();
 					ICoords firstCoords = list.get(0);
 					if (!currentCoords.equals(firstCoords) && firstCoords.getDistanceSq(currentCoords) >= 25) {
-						// set the light level of the current coords
-//						Block block = world.getBlockState(currentCoords.toPos()).getBlock();
-//						block.setLightLevel(0.95F);
-
 						// add current coords to coords list
 						list.add(0, currentCoords);
-//						list.addFirst(currentCoords);
-						
 						// check if coords list is greater than max (vitals.value)
 						if (list.size() > (int)charmVitals.getValue()) {
-							// reset light level of last
-							ICoords lastCoords = list.get(list.size()-1);
-							Block block = world.getBlockState(lastCoords.toPos()).getBlock();
-							if (block == Blocks.TORCH) {
-								Treasure.logger.debug("set torch to air at -> {}", lastCoords.toShortString());
-								world.setBlockToAir(lastCoords.toPos());
-							}
-							else {
-								Treasure.logger.debug("torch no longer found at -> {}", currentCoords.toShortString());
-								// decrement value since torch was harvested
-								value -= 1;
-							}
-//							block = world.getBlockState(list.getLast().toPos()).getBlock();
-//							block.setLightLevel(0);
-							list.remove(lastCoords);
-//							list.removeLast();							
+							// get difference in size
+							int diff = (int) (list.size() - charmVitals.getValue());
+							Treasure.logger.debug("diff -> {}", diff);
+							for (int index = 0; index < diff; index++) {
+								ICoords lastCoords = list.get(list.size()-1);
+								Block block = world.getBlockState(lastCoords.toPos()).getBlock();
+								if (block == Blocks.TORCH) {
+//									Treasure.logger.debug("set torch to air at -> {}", lastCoords.toShortString());
+									world.setBlockToAir(lastCoords.toPos());
+								}
+								else {
+//									Treasure.logger.debug("torch no longer found at -> {}", currentCoords.toShortString());
+									// decrement value since torch was harvested
+									value -= 1;
+								}
+								list.remove(lastCoords);
+//								Treasure.logger.debug("remove torch from list at -> {}; new size ->{}", lastCoords.toShortString(), list.size());								
+							}	
 						}
 						isUpdated = true;
 					}
 				}
 				if (isUpdated == true ) {
 					world.setBlockState(currentCoords.toPos(), Blocks.TORCH.getDefaultState());
-					Treasure.logger.debug("set torch at -> {}", currentCoords.toShortString());
-					// TODO vitals has exposed setters - just use them. CAN'T need a new object to compare against in CharmState.
-					// TODO else need to refactor doCharm() to return a result
-					IlluminationCharmVitals nv = new IlluminationCharmVitals(value, charmVitals.getDuration(), charmVitals.getPercent());
-					nv.getCoordsList().addAll(list);
-					Treasure.logger.debug("new vitals -> {}", nv);
-					return nv;
+//					Treasure.logger.debug("set torch at -> {}", currentCoords.toShortString());
+					if (value < 0) value = 0;
+					vitals.setValue(value);
+//					Treasure.logger.debug("new vitals -> {}", vitals);
+					result = true;
 				}
 			}
 		}
-		return vitals;
+		return result;
 	}
 
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmVitals vitals) {
-		return vitals;
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmVitals vitals) {
+		return false;
 	}
 	
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
-		return vitals;
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
+		return false;
 	}	
 }

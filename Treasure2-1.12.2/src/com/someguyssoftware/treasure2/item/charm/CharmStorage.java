@@ -37,12 +37,13 @@ public class CharmStorage implements Capability.IStorage<ICharmCapability> {
 					ICharmVitals vitals = state.getVitals();
 					vitals.writeToNBT(vitalsTag);
 					stateTag.setTag("vitals", vitalsTag);
-//					Treasure.logger.debug("attempting to save charm vitals -> {}", vitals);
+//					Treasure.logger.debug("attempting to save charm state -> {}", state);
 
 					// add the state to the list
 					stateTags.appendTag(stateTag);
 				}
 				// add the state list of the main capabilities tag
+				mainTag.removeTag("charmStates");		
 				mainTag.setTag("charmStates", stateTags);
 				// add the other properties -> modifiers
 				mainTag.setDouble("valueModifier", instance.getCharmValueModifier());

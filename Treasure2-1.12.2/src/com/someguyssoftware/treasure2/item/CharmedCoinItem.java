@@ -98,8 +98,13 @@ public class CharmedCoinItem extends CoinItem implements ICharmed {
 					color = TextFormatting.DARK_RED;
 					extra = TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.decay_rate");
 					break;
+				case ILLUMINATION:
+					color = TextFormatting.WHITE;
+					extra = TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.illumination_rate");
+					break;					
 				}
 				
+				// TODO this could change depending on charm. going to have to have sub classes or calls Charm.addInformation(...)
 				tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + state.getCharm().getName(), 
 						String.valueOf(Math.toIntExact(Math.round(state.getVitals().getValue()))), 
 						String.valueOf(Math.toIntExact(Math.round(state.getCharm().getMaxValue())))));

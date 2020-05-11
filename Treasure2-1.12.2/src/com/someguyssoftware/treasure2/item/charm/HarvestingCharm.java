@@ -30,20 +30,21 @@ public class HarvestingCharm extends Charm {
 	}
 
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals) {
-		return vitals;
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals) {
+		return false;
 	}
 	
 	/**
 	 * 
 	 */
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, ICharmVitals vitals) {
-		return vitals;
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, ICharmVitals vitals) {
+		return false;
 	}
 
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
+		boolean result = false;
 		if (vitals.getValue() > 0 && !player.isDead) {
 			// process all the drops
 			for (ItemStack stack : event.getDrops()) {
@@ -52,9 +53,9 @@ public class HarvestingCharm extends Charm {
 			}
 			// all items drop
 			event.setDropChance(1.0F);
-
-			return new CharmVitals(vitals.getValue() - 1, vitals.getDuration(), vitals.getPercent());
+			vitals.setValue(vitals.getValue() - 1);
+			result = true;
 		}
-		return vitals;
+		return result;
 	}
 }

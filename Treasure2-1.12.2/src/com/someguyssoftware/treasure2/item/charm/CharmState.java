@@ -27,10 +27,10 @@ public class CharmState implements ICharmState {
 	 * 
 	 * @param charm
 	 */
-	public CharmState(ICharm charm) {
-		this.charm = charm;
-		this.vitals = new CharmVitals(charm.getMaxValue(), charm.getMaxDuration(), charm.getMaxPercent());
-	}
+//	public CharmState(ICharm charm) {
+//		this.charm = charm;
+//		this.vitals = new CharmVitals(charm.getMaxValue(), charm.getMaxDuration(), charm.getMaxPercent());
+//	}
 	
 	/**
 	 * 
@@ -43,32 +43,27 @@ public class CharmState implements ICharmState {
 	}	
 
 	/**
-	 * Convenience method.
+	 * Provides the CharmVitals to the Charm.doCharm() method.
 	 * @param world
 	 * @param random
 	 * @param coords
 	 * @param player
 	 * @param vitals
+	 * @return boolean indication whether the call was successful (an update occurred) or not (no update).
 	 */
 	@Override
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event) {
-		ICharmVitals newVitals = charm.doCharm(world, random, coords, player, event, vitals);
-//		if (newVitals != null) {
-//			Treasure.logger.debug("charm vitals are of type -> {}: {}", charm.getClass().getSimpleName(), newVitals.getClass().getSimpleName());
-//		}
-		return checkVitals(vitals, newVitals);
+		return charm.doCharm(world, random, coords, player, event, vitals);
 	}
 	
 	@Override
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event) {
-		ICharmVitals newVitals = charm.doCharm(world, random, coords, player, event, vitals);
-		return checkVitals(vitals, newVitals);
+		return charm.doCharm(world, random, coords, player, event, vitals);
 	}
 	
 	@Override
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event) {
-		ICharmVitals newVitals = charm.doCharm(world, random, coords, player, event, vitals);
-		return checkVitals(vitals, newVitals);
+		return charm.doCharm(world, random, coords, player, event, vitals);
 	}
 	
 	/**
@@ -77,6 +72,7 @@ public class CharmState implements ICharmState {
 	 * @param newVitals
 	 * @return
 	 */
+	@Deprecated
 	private boolean checkVitals(ICharmVitals vitals, ICharmVitals newVitals) {
 		// check if they are different
 		if (vitals != null && newVitals != null && !vitals.equals(newVitals)) {

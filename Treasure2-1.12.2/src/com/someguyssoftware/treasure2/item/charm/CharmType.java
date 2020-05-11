@@ -12,7 +12,7 @@ public enum CharmType {
 	SHIELDING("shielding", new double[] {20, 50, 100, 200}, new double[] {0.5, 0.6, 0.7, 0.8}),
 	FULLNESS("fullness", new double[] {20, 50, 100, 200}),
 	HARVESTING("harvesting", new double[] {20, 30, 40, 50}, new double[] {2, 3, 4, 5}),				 // values here indicate number of harvestable blocks
-	ILLUMINATION("illumination", new double[] {3, 9, 15, 20}), //, new double[] {0, 0, 0, 0}, new int[] {20, 50, 100, 200}),
+	ILLUMINATION("illumination", new double[] {5, 5, 5, 5}),//3, 9, 15, 20}), //, new double[] {0, 0, 0, 0}, new int[] {20, 50, 100, 200}),
 	DECAY("decay", new double[] {20, 50, 100, 200});
 	
 	

@@ -30,6 +30,17 @@ public class IlluminationCharmVitals extends CharmVitals {
 	
 	/**
 	 * 
+	 * @param charm
+	 */
+	public IlluminationCharmVitals(ICharm charm) {
+		this();
+		setValue(charm.getMaxValue());
+		setDuration(charm.getMaxDuration());
+		setPercent(charm.getMaxPercent());
+	}
+	
+	/**
+	 * 
 	 * @param value
 	 * @param duration
 	 * @param percent
@@ -77,7 +88,9 @@ public class IlluminationCharmVitals extends CharmVitals {
 					list.appendTag(coordsTag);
 				}
 			}
+			nbt.removeTag("illuminationCoords");
 			nbt.setTag("illuminationCoords", list);
+			Treasure.logger.debug("size of illum coords list -> {}", list.tagCount());
 		}
 		catch(Exception e) {
 			Treasure.logger.error("Unable to write state to NBT:", e);

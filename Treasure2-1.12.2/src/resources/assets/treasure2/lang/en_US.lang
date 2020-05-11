@@ -90,6 +90,8 @@ item.treasure2:gold_coin.name=Gold Coin
 item.treasure2:silver_coin.name=Silver Coin
 item.treasure2:charmed_silver_coin.name=Charmed Silver Coin
 item.treasure2:angel_blessed_coin.name=Angel Blessed Coin
+item.treasure2:fools_coin.name=Fool's Coin
+item.treasure2:miners_friend.name=Miner's Friend
 
 item.treasure2:key_ring.name=Key Ring
 item.treasure2:wood_key.name=Wood Key
@@ -206,7 +208,13 @@ tooltip.charm.havesting=Havesting [%s/%s]
 tooltip.charm.major_havesting=Major Havesting [%s/%s]
 tooltip.charm.grand_havesting=Grand Havesting [%s/%s]
 
-tooltip.charm.illumination=Illumination
+tooltip.charm.illumination_rate=- illuminates every 5 sec
+tooltip.charm.lesser_illumination=Lesser Illumination [%s/%s]
+tooltip.charm.illumination=Illumination [%s/%s]
+tooltip.charm.greater_illumination=Greater Illumination [%s/%s]
+tooltip.charm.grand_illumination=Grand Illumination [%s/%s]
+tooltip.charm.glorious_illumination=Glorious Illumination [%s/%s]
+
 # curses
 tooltip.charm.decay_rate=- decays 1 heart/5 sec
 tooltip.charm.lesser_decay=Lesser Decay [%s/%s]

@@ -35,25 +35,26 @@ public class DecayCharm extends Charm {
 	 * 
 	 */
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals) {
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals) {
+		boolean result = false;
 		if (!player.isDead && vitals.getValue() > 0 && player.getHealth() > 0.0) {
 			if (world.getTotalWorldTime() % 100 == 0) {
 				player.setHealth(MathHelper.clamp(player.getHealth() - 2.0F, 0.0F, player.getMaxHealth()));				
-				ICharmVitals nv = new CharmVitals(MathHelper.clamp(vitals.getValue() - 1.0,  0D, vitals.getValue()), vitals.getDuration(), vitals.getPercent());
-				Treasure.logger.debug("new vitals -> {}", nv);
-				return nv;
+				vitals.setValue(MathHelper.clamp(vitals.getValue() - 1.0,  0D, vitals.getValue()));
+				Treasure.logger.debug("new vitals -> {}", vitals);
+				result = true;
 			}
 		}
-		return vitals;
+		return result;
 	}
 
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmVitals vitals) {
-		return vitals;
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmVitals vitals) {
+		return false;
 	}
 	
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
-		return vitals;
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
+		return false;
 	}	
 }

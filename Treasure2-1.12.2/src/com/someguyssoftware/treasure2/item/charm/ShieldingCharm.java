@@ -30,16 +30,16 @@ public class ShieldingCharm extends Charm {
 	}
 
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals) {
-		return vitals;
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals) {
+		return false;
 	}
 	
 	/**
 	 * 
 	 */
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, ICharmVitals vitals) {
-		Treasure.logger.debug("vitals in -> {}", vitals);
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, ICharmVitals vitals) {
+		boolean result = false;
 		if (vitals.getValue() > 0 && !player.isDead) {
 			// get the source and amount
 			double amount = event.getAmount();
@@ -51,24 +51,23 @@ public class ShieldingCharm extends Charm {
 			double amountToCharm = amount * vitals.getPercent(); //Math.toIntExact(Math.round(amount * vitals.getPercent()));
 			double amountToPlayer = amount - amountToCharm;
 			Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
-			ICharmVitals nv = null;
 			if (vitals.getValue() >= amountToCharm) {
-				nv = new CharmVitals(vitals.getValue() - amountToCharm, vitals.getDuration(), vitals.getPercent());
+				vitals.setValue(vitals.getValue() - amountToCharm);
 				newAmount = amountToPlayer;
 			}
 			else {
 				newAmount = amount - vitals.getValue();
-				nv = new CharmVitals(0, vitals.getDuration(), vitals.getPercent());
+				vitals.setValue(0);
 			}
 			event.setAmount((float) newAmount);
-			Treasure.logger.debug("new vitals -> {}", nv);
-			return nv;
+			Treasure.logger.debug("new vitals -> {}", vitals);
+			result = true;
 		}
-		return vitals;
+		return result;
 	}
 
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
-		return vitals;
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
+		return false;
 	}
 }

@@ -10,6 +10,7 @@ import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -34,25 +35,25 @@ public class FullnessCharm extends Charm {
 	 * 
 	 */
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals) {
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals) {
+		boolean result = false;
 		if (!player.isDead && vitals.getValue() > 0 && player.getFoodStats().getFoodLevel() < MAX_FOOD_LEVEL) {
 			if (world.getTotalWorldTime() % SECOND_IN_TICKS == 0) {			
 				player.getFoodStats().addStats(1, 1);
-				ICharmVitals nv = new CharmVitals(vitals.getValue() - 1, vitals.getDuration(), vitals.getPercent());
-				Treasure.logger.debug("new vitals -> {}", nv);
-				return nv;
+				vitals.setValue(vitals.getValue() - 1);
+				result = true;
 			}
 		}
-		return vitals;
+		return result;
 	}
 
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmVitals vitals) {
-		return vitals;
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmVitals vitals) {
+		return false;
 	}
 	
 	@Override
-	public ICharmVitals doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
-		return vitals;
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
+		return false;
 	}	
 }
