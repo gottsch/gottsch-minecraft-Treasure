@@ -14,11 +14,6 @@ import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.item.charm.CharmCapabilityProvider;
-import com.someguyssoftware.treasure2.item.charm.CharmState;
-import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
-import com.someguyssoftware.treasure2.item.charm.ICharmCapability;
-import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -28,12 +23,9 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -51,12 +43,6 @@ public class TreasureItems {
 	// coins
 	public static Item GOLD_COIN;
 	public static Item SILVER_COIN;
-	
-	public static Item CHARMED_SILVER_COIN;
-	public static CharmedCoinItem CHARMED_GOLD_COIN;
-	public static CharmedCoinItem ANGEL_BLESSED_COIN;
-	public static CharmedCoinItem MINERS_FRIEND;
-	public static CharmedCoinItem FOOLS_COIN;
 	// pearls
 	public static Item WHITE_PEARL;
 	public static Item BLACK_PEARL;
@@ -151,48 +137,6 @@ public class TreasureItems {
 		GOLD_COIN = new CoinItem(Treasure.MODID, TreasureConfig.GOLD_COIN_ID);
 		SILVER_COIN = new CoinItem(Treasure.MODID, TreasureConfig.SILVER_COIN_ID, Coins.SILVER);
 		
-		// CHARMED COINS
-		CHARMED_SILVER_COIN = new CharmedCoinItem(Treasure.MODID, TreasureConfig.CHARMED_SILVER_COIN_ID, Coins.SILVER);
-		CHARMED_GOLD_COIN = new CharmedCoinItem(Treasure.MODID, TreasureConfig.CHARMED_GOLD_COIN_ID, Coins.GOLD);
-		
-		// TODO in Charm Items add an add() method that only allows 1 Charm of the same name to be contained.
-		// TODO do the same for the LootFunctions
-		ANGEL_BLESSED_COIN = new CharmedCoinItem(Treasure.MODID, TreasureConfig.ANGEL_BLESSED_COIN_ID, Coins.GOLD) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
-				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GRAND_HEALING));
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.POWERFUL_SHIELDING));
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GORGED_FULLNESS));
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GRAND_HARVESTING));
-				return provider;
-			}
-		};
-		// add to creative tab since it is a known special coin (non-dynamic in charms)
-		ANGEL_BLESSED_COIN.setCreativeTab(Treasure.TREASURE_TAB);
-		
-		MINERS_FRIEND = new CharmedCoinItem(Treasure.MODID, TreasureConfig.MINERS_FRIEND_ID, Coins.GOLD) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
-				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GLORIOUS_ILLUMINATION));
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GRAND_HARVESTING));
-				return provider;
-			}
-		};
-		MINERS_FRIEND.setCreativeTab(Treasure.TREASURE_TAB);
-		
-		FOOLS_COIN = new CharmedCoinItem(Treasure.MODID, "fools_coin", Coins.GOLD) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
-				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.HEALING));
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.DECAY));
-				return provider;
-			}
-		};
-		FOOLS_COIN.setCreativeTab(Treasure.TREASURE_TAB);
-
 		// PEARLS
 		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.WHITE_PEARL_ID, Pearls.WHITE);
 		BLACK_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.BLACK_PEARL_ID, Pearls.BLACK);
@@ -425,7 +369,7 @@ public class TreasureItems {
 		// FOOD
 		// TODO need to create new items for stews and override the onItemUseFinish if there are effects
 		// TODO need to move ModFoodItem to GottschCore
-//		OYSTER_MEAT = new ModFoodItem(Treasure.MODID, "oyster_meat", 5, 0.8F, false);
+//		OYSTER_MEAT = new ModFoodItem(Treasure.MODID, "oyster_meat", 5, 0.8F, false);		
 //		CLAM_MEAT = new ModFoodItem(Treasure.MODID, "clam_meat", 4, 0.7F, false);
 
 //		OYSTER_STEW = new ModSoupItem(Treasure.MODID, "oyster_stew", 20, 1.0F); // TODO check the total health amount a player has
@@ -468,11 +412,6 @@ public class TreasureItems {
 					TREASURE_TAB,
 					SILVER_COIN,
 					GOLD_COIN,
-					CHARMED_SILVER_COIN,
-					CHARMED_GOLD_COIN,
-					ANGEL_BLESSED_COIN,
-					MINERS_FRIEND,
-					FOOLS_COIN,
 					WHITE_PEARL,
 					BLACK_PEARL,
 					WOOD_LOCK,
