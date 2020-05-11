@@ -57,7 +57,6 @@ public class KeyRingItem extends ModItem {
 	public KeyRingItem(String modID, String name) {
 		setItemName(modID, name);
 		setCreativeTab(Treasure.TREASURE_TAB);
-		setMaxStackSize(1); // 5/6/2020: set to max 1 because key are containers and can produce duping if they are stacked.
 	}
 
 	/**
