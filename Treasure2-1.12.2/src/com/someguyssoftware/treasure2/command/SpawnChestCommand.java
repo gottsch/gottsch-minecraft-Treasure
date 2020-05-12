@@ -58,15 +58,67 @@ public class SpawnChestCommand extends CommandBase {
 		return 2;
 	}
 
+	/**
+	 * Return the x, y, or z position for the whoever issued the command.
+	 * coordinateValue should be 'x', 'y', or 'z'.
+	 */
+	private int getOffsetInt (ICommandSender commandSender, char coordinateValue) {
+		if (coordinateValue == 'z') {
+			return commandSender.getPosition().getZ();
+		}
+		else if (coordinateValue == 'y') {
+			return commandSender.getPosition().getY();
+		}
+		else { // coordinateValue == 'x'
+			return commandSender.getPosition().getX();
+		}
+	}
+	
+	/**
+	 * Return the x, y, or z position based on the string entered.
+	 * designed to detect relative positioning using ~.
+	 * coordinateValue should be 'x', 'y', or 'z'.
+	 */
+	private int getPositionInt (String IntString, ICommandSender commandSender, char coordinateValue) {
+		int value = 0;
+		int offset = 0;
+		// -------------------- Just ~ notation -------------------------------
+		if (IntString == "~") {
+			offset = getOffsetInt (commandSender, coordinateValue);
+		}
+		// -------------------- ~ plus number notation ------------------------
+		else if (IntString.charAt(0)=='~') {
+			try {
+				value = Integer.parseInt(IntString.substring(1));
+			}
+			catch (Exception e) {
+				Treasure.logger.error("Error with " + coordinateValue + " coordinate: ", e);
+				value = 0;
+			}
+			offset = getOffsetInt (commandSender, coordinateValue);
+		}
+		// -------------------- Just number notation --------------------------
+		else {
+			try {
+				value = Integer.parseInt(IntString);
+			}
+			catch (Exception e) {
+				Treasure.logger.error("Error with " + coordinateValue + " coordinate: ", e);
+				value = 0;
+			}
+		}
+		return value + offset;		
+	}
+	
 	@Override
 	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
 		Treasure.logger.debug("Starting to spawn Treasure! chest ...");
 		try {
 
 			int x, y, z = 0;
-			x = Integer.parseInt(args[0]);
-			y = Integer.parseInt(args[1]);
-			z = Integer.parseInt(args[2]);
+			x = getPositionInt(args[0], commandSender, 'x');
+			y = getPositionInt(args[1], commandSender, 'y');
+			z = getPositionInt(args[2], commandSender, 'z');
 
 			String[] parserArgs = (String[]) Arrays.copyOfRange(args, 3, args.length);
 
