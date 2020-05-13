@@ -16,7 +16,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Table;
 import com.google.common.io.Files;
 import com.someguyssoftware.gottschcore.loot.LootTable;
-import com.someguyssoftware.gottschcore.loot.LootTableManager;
 import com.someguyssoftware.gottschcore.loot.LootTableMaster;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
@@ -221,13 +220,6 @@ public class TreasureLootTableMaster extends LootTableMaster {
 	 */
 	public Table<String, Rarity, List<LootTable>> getChestLootTablesTable() {
 		return CHEST_LOOT_TABLES_TABLE;
-	}
-	
-	/**
-	 * 
-	 */
-	public LootTableManager getLootTableManager() {
-		return super.getLootTableManager();
 	}
 	
 	/*

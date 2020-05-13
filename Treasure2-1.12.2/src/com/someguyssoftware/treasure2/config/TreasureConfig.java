@@ -112,11 +112,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 	@Ignore public static final String GOLD_COIN_ID = "gold_coin";
 	@Ignore public static final String SILVER_COIN_ID = "silver_coin";
-	@Ignore public static final String CHARMED_SILVER_COIN_ID = "charmed_silver_coin";
-	@Ignore public static final String CHARMED_GOLD_COIN_ID = "charmed_gold_coin";
-	@Ignore public static final String ANGEL_BLESSED_COIN_ID = "angel_blessed_coin";
-	@Ignore public static final String MINERS_FRIEND_ID = "miners_friend";
-	
+
 	@Ignore public static final String WHITE_PEARL_ID = "white_pearl";
 	@Ignore public static final String BLACK_PEARL_ID = "black_pearl";
 
@@ -278,7 +274,6 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Name("11 oasis")
 	@Comment("Oasis properties")
 	public static final Oases OASES = new Oases();
-
 
 	@Ignore
 	public static TreasureConfig instance = new TreasureConfig();

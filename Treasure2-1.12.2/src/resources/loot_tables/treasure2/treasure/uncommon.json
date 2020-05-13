@@ -1,5 +1,4 @@
 {
-	"version": "3.1",
 	"pools": [
 		{
 			"name": "uncommon_keys",
@@ -127,37 +126,7 @@
 							}
 						}
 					]
-				},
-				{
-					"entryName": "charm1",
-					"type": "item",
-					"name": "treasure2:charmed_silver_coin",
-					"weight": 125,
-					"functions": [
-						{
-							"function": "treasure2:charm_randomly",
-							"charms": [
-								"lesser_healing",
-								"durable_shielding"
-								]
-						}
-					]
-				},
-				{
-					"entryName": "charm2",
-					"type": "item",
-					"name": "treasure2:charmed_silver_coin",
-					"weight": 125,
-					"functions": [
-						{
-							"function": "treasure2:set_charms",
-							"charms": [
-								"healing",
-								"stout_shielding"
-								]
-						}
-					]
-				}	
+				}				
 			]
 		}
 	]
