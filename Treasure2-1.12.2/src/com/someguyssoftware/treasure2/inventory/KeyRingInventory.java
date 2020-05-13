@@ -4,34 +4,32 @@
 package com.someguyssoftware.treasure2.inventory;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.item.KeyItem;
-import com.someguyssoftware.treasure2.item.KeyRingItem;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
+import com.someguyssoftware.treasure2.capability.KeyRingCapabilityProvider;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.items.IItemHandler;
 
 /**
  * @author Mark Gottschling on Mar 9, 2018
  *
  */
 public class KeyRingInventory implements IInventory {
-
+	public static int INVENTORY_SIZE = 14;
+	
 	/*
 	 * Reference to the owning ItemStack
 	 */
 	private ItemStack itemStack;
 	
     /** IInventory properties */
-    private int numberOfSlots = 14; // default size
+    private int numberOfSlots = INVENTORY_SIZE; // default size
     private NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(numberOfSlots, ItemStack.EMPTY);
     
 	/**
@@ -42,40 +40,41 @@ public class KeyRingInventory implements IInventory {
         // save a ref to the item stack
 		this.itemStack = stack;
 		
-		// copy items from stack to items property;
-        if (stack.hasTagCompound()) {
-        	readInventoryFromNBT(stack.getTagCompound());
-        }
+		if (stack.hasCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null)) {
+			IItemHandler cap = stack.getCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null);
+			readInventoryFromNBT(cap);
+		}
 	}
 	
 	/**
 	 * 
-	 * @param parentNBT
+	 * @param handler
 	 */
-	public void readInventoryFromNBT(NBTTagCompound parentNBT) {
+	public void readInventoryFromNBT(IItemHandler handler) {
 		try {
 			// read the inventory
-			ItemStackHelper.loadAllItems(parentNBT, this.getItems());
+			for (int i = 0; i < INVENTORY_SIZE; i++) {
+                items.set(i, handler.getStackInSlot(i));
+			}
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Error reading Properties from NBT:",  e);
+			Treasure.logger.error("Error reading items from IItemHandler:",  e);
 		}
 	}
 	
 	/**
-	 * Writes the inventory to NBT
-	 * @param parentNBT
-	 * @return
+	 * 
+	 * @param handler
 	 */
-	public NBTTagCompound writeInventoryToNBT(NBTTagCompound parentNBT) {
+	public void writeInventoryToNBT(IItemHandler handler) {
 		try {
-			// write inventory
-			ItemStackHelper.saveAllItems(parentNBT, this.getItems());
+			for (int i = 0; i < items.size(); i++) {
+				handler.insertItem(i, items.get(i), false);
+			}
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Error writing Inventory to NBT:",  e);
+			Treasure.logger.error("Error writing Inventory to IItemHandler:",  e);
 		}
-		return parentNBT;
 	}
 	
 	///////////// IInventory Method
@@ -171,7 +170,7 @@ public class KeyRingInventory implements IInventory {
 	 */
 	@Override
 	public int getInventoryStackLimit() {
-		return 1; // 8
+		return 1;
 	}
 
 	/* (non-Javadoc)
@@ -201,12 +200,10 @@ public class KeyRingInventory implements IInventory {
 		 *  so now, if the player does dropping the key ring, it will not have any items in it's inventory and the player will lose any
 		 *  keys that are left in the gui when closed.
 		 */
-		if (getItemStack().getTagCompound() == null) return;
-		
-		getItemStack().getTagCompound().setTag("Items", new NBTTagList());
-
-		// set the IS_OPEN tag
-		getItemStack().getTagCompound().setBoolean(KeyRingItem.IS_OPEN, true);
+		if (getItemStack().hasCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null)) {
+			IKeyRingCapability cap = getItemStack().getCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null);
+			cap.setOpen(true);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -217,13 +214,14 @@ public class KeyRingInventory implements IInventory {
 		/*
 		 *  write the locked state to the nbt
 		 */
-		if (!getItemStack().hasTagCompound()) {
-			getItemStack().setTagCompound(new NBTTagCompound());
-		}		        
-		writeInventoryToNBT(getItemStack().getTagCompound());
-		
-		// update the IS_OPEN flag
-		getItemStack().getTagCompound().setBoolean(KeyRingItem.IS_OPEN, false);
+		if (getItemStack().hasCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null)) {
+			IItemHandler cap = getItemStack().getCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null);
+			writeInventoryToNBT(cap);
+		}
+		if (getItemStack().hasCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null)) {
+			IKeyRingCapability cap = getItemStack().getCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null);
+			cap.setOpen(false);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -284,13 +282,6 @@ public class KeyRingInventory implements IInventory {
 	 */
 	public int getNumberOfSlots() {
 		return numberOfSlots;
-	}
-
-	/**
-	 * @param numberOfSlots the numberOfSlots to set
-	 */
-	public void setNumberOfSlots(int numberOfSlots) {
-		this.numberOfSlots = numberOfSlots;
 	}
 
 	/////////// End of IInventory methods
