@@ -16,14 +16,14 @@ import com.someguyssoftware.gottschcore.annotation.Credits;
 import com.someguyssoftware.gottschcore.command.ShowVersionCommand;
 import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.config.ILoggerConfig;
-import com.someguyssoftware.gottschcore.loot.conditions.LootConditionManager;
-import com.someguyssoftware.gottschcore.loot.conditions.RandomChance;
 import com.someguyssoftware.gottschcore.loot.functions.LootFunctionManager;
-import com.someguyssoftware.gottschcore.loot.functions.SetCount;
 import com.someguyssoftware.gottschcore.mod.AbstractMod;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
+import com.someguyssoftware.treasure2.capability.KeyRingCapability;
+import com.someguyssoftware.treasure2.capability.KeyRingStorage;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.command.SpawnChestCommand;
 import com.someguyssoftware.treasure2.command.SpawnOasisCommand;
@@ -193,6 +193,7 @@ public class Treasure extends AbstractMod {
 		
 		// add capabilities
 		CapabilityManager.INSTANCE.register(ICharmCapability.class, new CharmStorage(), CharmCapability::new);
+		CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingStorage(), KeyRingCapability::new);
 		
 		// register custom loot functions
 		LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
