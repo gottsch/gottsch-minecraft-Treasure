@@ -9,9 +9,13 @@ import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
+import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
+import com.someguyssoftware.treasure2.capability.KeyRingCapability;
+import com.someguyssoftware.treasure2.capability.KeyRingCapabilityProvider;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
+import com.someguyssoftware.treasure2.item.charm.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
@@ -35,14 +39,14 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.items.IItemHandler;
 
 /**
  * @author Mark Gottschling on Mar 9, 2018
  *
  */
 public class KeyRingItem extends ModItem {
-	private static final String USED_ON_CHEST = "usedOnChest";
-	public static final String IS_OPEN = "isOpen";
 
 	/*
 	 * The GUIID;
@@ -57,49 +61,14 @@ public class KeyRingItem extends ModItem {
 	public KeyRingItem(String modID, String name) {
 		setItemName(modID, name);
 		setCreativeTab(Treasure.TREASURE_TAB);
+		setMaxStackSize(1); // 5/6/2020: set to max 1 because key are containers and can produce duping if they are stacked.
 	}
 
-	/**
-	 * Called when the item is crafted (not added via Creative).
-	 * Initializes the item with a tag compound inital values.
-	 */
 	@Override
-	public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
-		if (WorldInfo.isServerSide(worldIn)) {			
-			if (!stack.hasTagCompound()) {
-				stack.setTagCompound(new NBTTagCompound());
-			}
-			stack.getTagCompound().setBoolean(USED_ON_CHEST, false);
-			stack.getTagCompound().setBoolean(IS_OPEN, false);
-		}
-		super.onCreated(stack, worldIn, playerIn);
+	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+		KeyRingCapabilityProvider provider = new KeyRingCapabilityProvider();
+		return provider;
 	}
-	
-	/**
-	 * Call before the block is activated. (Isn't called for right click on non-item ie AIR)
-	 * Initializes the item with a tag compound inital values.
-	 * This *helps* initialize the itemStack's tag compound when it is added to the players inventory via the creative gui.
-	 * You still have to use on a block before you can open the inventory.
-	 * 
-	 *   This is called when the item is used, before the block is activated.
-     * @param stack The Item Stack
-     * @param player The Player that used the item
-     * @param world The Current World
-     * @param pos Target position
-     * @param side The side of the target hit
-     * @param hand Which hand the item is being held in.
-     * @return Return PASS to allow vanilla handling, any other to skip normal code.
-	 */
-    public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
-		if (WorldInfo.isServerSide(world)) {			
-			ItemStack heldItem = player.getHeldItem(hand);
-			if (!heldItem.hasTagCompound()) {
-				heldItem.setTagCompound(new NBTTagCompound());
-			}
-			heldItem.getTagCompound().setBoolean(USED_ON_CHEST, false);
-		}
-        return EnumActionResult.PASS;
-    }
     
 	/**
 	 * 
@@ -139,15 +108,17 @@ public class KeyRingItem extends ModItem {
 			AbstractTreasureChestTileEntity tcte = (AbstractTreasureChestTileEntity)te;
 
 			ItemStack heldItem = player.getHeldItem(hand);
-			if (!heldItem.hasTagCompound()) {
-				heldItem.setTagCompound(new NBTTagCompound());
-			}
 			
 			/*
 			 *  set a flag that the item was used on a treasure chest. this is used to determine
 			 *  if the keyring inventory should open or not.
 			 */
-			heldItem.getTagCompound().setBoolean(USED_ON_CHEST, true);
+			if (heldItem.hasCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null)) {
+				IKeyRingCapability capability = heldItem.getCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null);
+				if (capability != null) {
+					capability.setUsedOnChest(true);
+				}
+			}
 
 			// determine if chest is locked
 			if (!tcte.hasLocks()) {
@@ -155,10 +126,17 @@ public class KeyRingItem extends ModItem {
 			}
 
 			try {
-				KeyRingInventory inv = new KeyRingInventory(heldItem);
+				IItemHandler cap = null;
+				if (heldItem.hasCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null)) {
+					cap = heldItem.getCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null);
+				}
+				if (cap == null) {
+					return EnumActionResult.PASS;
+				}
+				
 				// cycle through all keys in key ring until one is able to fit lock and use it to unlock the lock.
-				for (int i = 0; i < inv.getSizeInventory(); i++) {
-					ItemStack keyStack = inv.getStackInSlot(i);
+				for (int i = 0; i < KeyRingInventory.INVENTORY_SIZE; i++) {
+					ItemStack keyStack = cap.getStackInSlot(i);
 					if (keyStack != null && keyStack.getItem() != Items.AIR)  {		
 						KeyItem key = (KeyItem) keyStack.getItem();
 						Treasure.logger.debug("Using key from keyring: {}", key.getUnlocalizedName());
@@ -214,13 +192,6 @@ public class KeyRingItem extends ModItem {
 							else {
 								Treasure.logger.debug("Key in keyring is NOT damageable.");
 							}			
-
-							/*
-							 * write inventory to the key ring and
-							 *  reset a flag that the item was used on a treasure chest, because it is overwritten by the ItemStackHelper
-							 */
-							ItemStackHelper.saveAllItems(heldItem.getTagCompound(), inv.getItems());
-							heldItem.getTagCompound().setBoolean(USED_ON_CHEST, true);
 							
 							// key unlocked a lock, end loop (ie only unlock 1 lock at a time
 							break;
@@ -246,15 +217,19 @@ public class KeyRingItem extends ModItem {
 		if (WorldInfo.isClientSide(worldIn)) {			
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
 		}
-
 		boolean useOnChest = false;
 		ItemStack stack = playerIn.getHeldItem(handIn);
-		if (stack.hasTagCompound()) {
-			useOnChest = stack.getTagCompound().getBoolean(USED_ON_CHEST);
+		IKeyRingCapability cap = null;
+		if (stack.hasCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null)) {
+			cap = stack.getCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null);
+			if (cap != null) {
+				useOnChest = cap.isUsedOnChest();
+			}
 		}
+		
 		// exit if item already used on chest
 		if (useOnChest) {
-			stack.getTagCompound().setBoolean(USED_ON_CHEST, false);
+			cap.setUsedOnChest(false);
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
 		}
 		else {		
@@ -268,13 +243,17 @@ public class KeyRingItem extends ModItem {
 	 * 
 	 */
 	@Override
-	public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player) {
+	public boolean onDroppedByPlayer(ItemStack stack, EntityPlayer player) {		
 		// NOTE only works on 'Q' press, not mouse drag and drop
-		if (item.getTagCompound().getBoolean(IS_OPEN)) {
+		IKeyRingCapability cap = null;
+		if (stack.hasCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null)) {
+			cap = stack.getCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null);
+		}
+		if (cap != null && cap.isOpen()) {
 			return false;
 		}
 		else {
-			return super.onDroppedByPlayer(item, player);
+			return super.onDroppedByPlayer(stack, player);
 		}
 	}
 	
