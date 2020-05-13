@@ -4,7 +4,6 @@
 package com.someguyssoftware.treasure2.capability;
 
 import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
-import com.someguyssoftware.treasure2.item.charm.ICharmCapability;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;

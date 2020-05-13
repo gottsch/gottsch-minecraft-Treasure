@@ -22,12 +22,12 @@ import com.someguyssoftware.gottschcore.loot.LootContext;
 import com.someguyssoftware.gottschcore.loot.conditions.LootCondition;
 import com.someguyssoftware.gottschcore.loot.functions.LootFunction;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.item.charm.CharmCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.item.charm.CharmState;
 import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
 import com.someguyssoftware.treasure2.item.charm.CharmType;
 import com.someguyssoftware.treasure2.item.charm.ICharm;
-import com.someguyssoftware.treasure2.item.charm.ICharmCapability;
 import com.someguyssoftware.treasure2.item.charm.ICharmState;
 import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 

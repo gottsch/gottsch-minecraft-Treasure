@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.item.charm;
+package com.someguyssoftware.treasure2.capability;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;

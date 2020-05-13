@@ -1,9 +1,11 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.item.charm;
+package com.someguyssoftware.treasure2.capability;
 
 import java.util.List;
+
+import com.someguyssoftware.treasure2.item.charm.ICharmState;
 
 /**
  * @author Mark Gottschling on Apr 27, 2020

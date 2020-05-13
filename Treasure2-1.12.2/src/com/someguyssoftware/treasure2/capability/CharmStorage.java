@@ -1,9 +1,14 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.item.charm;
+package com.someguyssoftware.treasure2.capability;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.item.charm.Charm;
+import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
+import com.someguyssoftware.treasure2.item.charm.ICharm;
+import com.someguyssoftware.treasure2.item.charm.ICharmState;
+import com.someguyssoftware.treasure2.item.charm.ICharmVitals;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;

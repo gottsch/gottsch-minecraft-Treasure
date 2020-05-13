@@ -4,8 +4,8 @@
 package com.someguyssoftware.treasure2.network;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.item.charm.CharmCapabilityProvider;
-import com.someguyssoftware.treasure2.item.charm.ICharmCapability;
+import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.item.charm.ICharmState;
 
 import net.minecraft.client.Minecraft;

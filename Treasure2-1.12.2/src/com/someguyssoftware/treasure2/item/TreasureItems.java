@@ -9,15 +9,15 @@ import com.someguyssoftware.gottschcore.armor.ModArmorBuilder;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.item.ModSwordBuilder;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.item.charm.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.item.charm.CharmState;
 import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
-import com.someguyssoftware.treasure2.item.charm.ICharmCapability;
 import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 
 import net.minecraft.block.material.MapColor;

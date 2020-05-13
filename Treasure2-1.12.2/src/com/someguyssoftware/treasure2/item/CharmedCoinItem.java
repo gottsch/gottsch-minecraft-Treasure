@@ -5,11 +5,11 @@ package com.someguyssoftware.treasure2.item;
 
 import java.util.List;
 
+import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.enums.Coins;
-import com.someguyssoftware.treasure2.item.charm.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.item.charm.CharmType;
 import com.someguyssoftware.treasure2.item.charm.ICharm;
-import com.someguyssoftware.treasure2.item.charm.ICharmCapability;
 import com.someguyssoftware.treasure2.item.charm.ICharmState;
 import com.someguyssoftware.treasure2.item.charm.ICharmed;
 

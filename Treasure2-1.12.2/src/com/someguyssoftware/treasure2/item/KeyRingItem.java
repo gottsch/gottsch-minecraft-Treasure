@@ -9,13 +9,13 @@ import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
+import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapabilityProvider;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
-import com.someguyssoftware.treasure2.item.charm.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
