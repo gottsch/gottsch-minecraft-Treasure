@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 public interface ICharmState {
 
@@ -20,6 +21,8 @@ public interface ICharmState {
 
 	void setVitals(ICharmVitals vitals);
 
+	boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, Event event);
+	
 	boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event);
 
 	boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event);

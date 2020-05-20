@@ -29,7 +29,7 @@ public class CharmBuilder implements ICharmBuilder {
 				charm = new HealingCharm(this);
 				break;
 			case SHIELDING:
-				charm = new HealingCharm(this);
+				charm = new ShieldingCharm(this);
 				break;
 			case FULLNESS:
 				charm = new FullnessCharm(this);

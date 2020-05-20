@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.inventory;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.PouchCapabilityProvider;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -16,12 +17,14 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.IItemHandler;
 
+// TODO make an abstract as different pouches will have different sizes
+
 /**
  * @author Mark Gottschling on Mar 9, 2018
  *
  */
-public class KeyRingInventory implements IInventory {
-	public static int INVENTORY_SIZE = 14;
+public class PouchInventory implements IInventory {
+	public static int INVENTORY_SIZE = 9;
 	
 	/*
 	 * Reference to the owning ItemStack
@@ -29,19 +32,18 @@ public class KeyRingInventory implements IInventory {
 	private ItemStack itemStack;
 	
     /** IInventory properties */
-//    private int numberOfSlots = INVENTORY_SIZE; // default size
     private NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(INVENTORY_SIZE, ItemStack.EMPTY);
     
 	/**
 	 * 
 	 * @param stack
 	 */
-	public KeyRingInventory(ItemStack stack) {
+	public PouchInventory(ItemStack stack) {
         // save a ref to the item stack
 		this.itemStack = stack;
 		
-		if (stack.hasCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null)) {
-			IItemHandler cap = stack.getCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null);
+		if (stack.hasCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null)) {
+			IItemHandler cap = stack.getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
 			readInventoryFromNBT(cap);
 		}
 	}
@@ -84,7 +86,7 @@ public class KeyRingInventory implements IInventory {
 	 */
 	@Override
 	public String getName() {
-		return "display.key_ring.name";
+		return "display.pouch.name";
 	}
 
 	/* (non-Javadoc)
@@ -108,7 +110,6 @@ public class KeyRingInventory implements IInventory {
 	 */
 	@Override
 	public int getSizeInventory() {
-//		return getNumberOfSlots();
 		return INVENTORY_SIZE;
 	}
 
@@ -171,7 +172,7 @@ public class KeyRingInventory implements IInventory {
 	 */
 	@Override
 	public int getInventoryStackLimit() {
-		return 1;
+		return 64;
 	}
 
 	/* (non-Javadoc)
@@ -201,10 +202,10 @@ public class KeyRingInventory implements IInventory {
 		 *  so now, if the player does dropping the key ring, it will not have any items in it's inventory and the player will lose any
 		 *  keys that are left in the gui when closed.
 		 */
-		if (getItemStack().hasCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null)) {
-			IKeyRingCapability cap = getItemStack().getCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null);
-			cap.setOpen(true);
-		}
+//		if (getItemStack().hasCapability(PouchCapabilityProvider.KEY_RING_CAPABILITY, null)) {
+//			IKeyRingCapability cap = getItemStack().getCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null);
+//			cap.setOpen(true);
+//		}
 	}
 
 	/* (non-Javadoc)
@@ -215,14 +216,14 @@ public class KeyRingInventory implements IInventory {
 		/*
 		 *  write the locked state to the nbt
 		 */
-		if (getItemStack().hasCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null)) {
-			IItemHandler cap = getItemStack().getCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null);
+		if (getItemStack().hasCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null)) {
+			IItemHandler cap = getItemStack().getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
 			writeInventoryToNBT(cap);
 		}
-		if (getItemStack().hasCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null)) {
-			IKeyRingCapability cap = getItemStack().getCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null);
-			cap.setOpen(false);
-		}
+//		if (getItemStack().hasCapability(PouchCapabilityProvider.KEY_RING_CAPABILITY, null)) {
+//			IKeyRingCapability cap = getItemStack().getCapability(PuchCapabilityProvider.KEY_RING_CAPABILITY, null);
+//			cap.setOpen(false);
+//		}
 	}
 
 	/* (non-Javadoc)

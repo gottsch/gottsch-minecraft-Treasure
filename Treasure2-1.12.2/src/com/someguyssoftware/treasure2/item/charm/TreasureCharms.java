@@ -28,12 +28,14 @@ public class TreasureCharms {
 	public static final ICharm SATED_FULLNESS;
 	public static final ICharm OVERFED_FULLNESS;
 	public static final ICharm GORGED_FULLNESS;
+	public static final ICharm BURSTING_FULLNESS;
 	
 	public static final ICharm MINOR_HARVESTING;
 	public static final ICharm HARVESTING;
 	public static final ICharm MAJOR_HARVESTING;
 	public static final ICharm GRAND_HARVESTING;
-		
+	public static final ICharm GLORIOUS_HARVESTING;
+	
 	public static final ICharm LESSER_ILLUMINATION;
 	public static final ICharm ILLUMINATION;
 	public static final ICharm GREATER_ILLUMINATION;
@@ -62,17 +64,19 @@ public class TreasureCharms {
 		STOUT_SHIELDING = new CharmBuilder("stout_shielding", CharmType.SHIELDING, CharmLevel.LEVEL2).build();
 		HARDENED_SHIELDING = new CharmBuilder("hardened_shielding", CharmType.SHIELDING, CharmLevel.LEVEL3).build();
 		POWERFUL_SHIELDING = new CharmBuilder("powerful_shielding", CharmType.SHIELDING, CharmLevel.LEVEL4).build();
-		ARMADILLO_SHIELDING = new CharmBuilder("armidillo_shielding", CharmType.SHIELDING, CharmLevel.LEVEL4).valueModifier(1.5).build();
+		ARMADILLO_SHIELDING = new CharmBuilder("armadillo_shielding", CharmType.SHIELDING, CharmLevel.LEVEL4).valueModifier(1.5).build();
 		
 		FULLNESS = new CharmBuilder("fullness", CharmType.FULLNESS, CharmLevel.LEVEL1).build();
 		SATED_FULLNESS = new CharmBuilder("sated_fullness", CharmType.FULLNESS, CharmLevel.LEVEL2).build(); 
 		OVERFED_FULLNESS = new CharmBuilder("overfed_fullness", CharmType.FULLNESS, CharmLevel.LEVEL3).build(); 
 		GORGED_FULLNESS = new CharmBuilder("gorged_fullness", CharmType.FULLNESS, CharmLevel.LEVEL4).build(); 
+		BURSTING_FULLNESS = new CharmBuilder("bursting_fullness", CharmType.FULLNESS, CharmLevel.LEVEL4).valueModifier(1.5).build(); 
 		
-		MINOR_HARVESTING = new CharmBuilder("minor_havesting", CharmType.HARVESTING, CharmLevel.LEVEL1).build();
-		HARVESTING = new CharmBuilder("havesting", CharmType.HARVESTING, CharmLevel.LEVEL2).build();
-		MAJOR_HARVESTING = new CharmBuilder("major_havesting", CharmType.HARVESTING, CharmLevel.LEVEL3).build();
-		GRAND_HARVESTING = new CharmBuilder("grand_havesting", CharmType.HARVESTING, CharmLevel.LEVEL4).build();
+		MINOR_HARVESTING = new CharmBuilder("minor_harvesting", CharmType.HARVESTING, CharmLevel.LEVEL1).build();
+		HARVESTING = new CharmBuilder("harvesting", CharmType.HARVESTING, CharmLevel.LEVEL2).build();
+		MAJOR_HARVESTING = new CharmBuilder("major_harvesting", CharmType.HARVESTING, CharmLevel.LEVEL3).build();
+		GRAND_HARVESTING = new CharmBuilder("grand_harvesting", CharmType.HARVESTING, CharmLevel.LEVEL4).build();
+		GLORIOUS_HARVESTING = new CharmBuilder("glorious_harvesting", CharmType.HARVESTING, CharmLevel.LEVEL4).valueModifier(1.5).build();
 		
 		LESSER_ILLUMINATION = new CharmBuilder("lesser_illumination", CharmType.ILLUMINATION, CharmLevel.LEVEL1).build();
 		ILLUMINATION = new CharmBuilder("illumination", CharmType.ILLUMINATION, CharmLevel.LEVEL2).build();

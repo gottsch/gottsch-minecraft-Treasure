@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * Contains an instance of a Charm and its Vitals
@@ -42,6 +43,19 @@ public class CharmState implements ICharmState {
 		this.vitals = vitals;
 	}	
 
+	@Override
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, Event event) {
+		if (event instanceof LivingUpdateEvent) {
+			return charm.doCharm(world, random, coords, player, (LivingUpdateEvent)event, vitals);
+		}
+		else if (event instanceof LivingDamageEvent) {
+			return charm.doCharm(world, random, coords, player, (LivingDamageEvent)event, vitals);
+		}
+		else {
+			return charm.doCharm(world, random, coords, player, (BlockEvent.HarvestDropsEvent)event, vitals);			
+		}
+	}
+	
 	/**
 	 * Provides the CharmVitals to the Charm.doCharm() method.
 	 * @param world

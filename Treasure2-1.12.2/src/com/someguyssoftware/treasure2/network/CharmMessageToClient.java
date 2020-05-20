@@ -71,7 +71,7 @@ public class CharmMessageToClient implements IMessage {
 //	    	vitals = new CharmVitals(value, duration, percent);
 	    	String handStr = ByteBufUtils.readUTF8String(buf);
 	    	if (!handStr.isEmpty()) {
-	    		hand = EnumHand.valueOf(handStr);
+	    		this.hand = EnumHand.valueOf(handStr);
 	    	}
 	    	this.slot = buf.readInt();
 	      } catch (RuntimeException e) {
@@ -97,6 +97,7 @@ public class CharmMessageToClient implements IMessage {
 	    	handStr = hand.name();
 	    }
 	    ByteBufUtils.writeUTF8String(buf, handStr);	    
+	    buf.writeInt(this.slot);
 	}
 
 	/**

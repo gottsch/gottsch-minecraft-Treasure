@@ -40,7 +40,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Sep 13, 2014
  *
  */
-public class CoinItem extends ModItem implements IWishable {
+public class CoinItem extends ModItem implements IWishable, IPouchable {
 	private static final int MAX_CUSTOM_STACK_SIZE = 64;
 	public static final int MAX_STACK_SIZE = 8;
 		

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+	" CT",
+	" X "
+  ],
+  "key": {
+	"X": {
+		"item": "minecraft:leather"
+	},
+	"K": [
+		{
+			"item": "treasure2:gold_coin"
+		},
+		{
+		"item": "treasure2:silver_coin"
+		}
+	]
+  },
+  "result": {
+    "item": "treasure2:pouch",
+    "count": 1
+  }
+}

@@ -1,7 +1,7 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "treasure2:items/coins/gold_coin"
+        "layer0": "treasure2:items/charmed_ruby"
     },
     "display": {
        "thirdperson_righthand": {
