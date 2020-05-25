@@ -77,10 +77,7 @@ public class PouchContainer extends AbstractChestContainer {
 		else if (pouchItem == TreasureItems.MASTERS_POUCH) {
 			arcaneSlots = 3;
 		}
-		else {
-			Treasure.logger.debug("pouch is -> {}", pouchItem.getRegistryName());
-		}
-		Treasure.logger.debug("arcane slots -> {}", arcaneSlots);
+
 		for (int y = 0; y < getContainerInventoryRowCount(); y++) {
 			for (int x = 0; x < getContainerInventoryColumnCount(); x++) {
 				int slotNumber = (y * getContainerInventoryColumnCount()) + x;
@@ -88,7 +85,6 @@ public class PouchContainer extends AbstractChestContainer {
 				int ypos = getContainerInventoryYPos() + y * getSlotYSpacing();
 				// pouches use PouchSlot or ArcanePouchSlot
 				if (slotNumber < arcaneSlots) {
-					Treasure.logger.debug("adding arcane slot at index -> {}", slotNumber);
 					addSlotToContainer(new ArcanePouchSlot(inventory, slotNumber, xpos, ypos));
 				}
 				else {

@@ -91,10 +91,12 @@ item.treasure2:silver_coin.name=Silver Coin
 item.treasure2:charmed_silver_coin.name=Charmed Silver Coin
 item.treasure2:charmed_gold_coin.name=Charmed Gold Coin
 item.treasure2:charmed_ruby.name=Charmed Ruby
+item.treasure2:charmed_sapphire.name=Charmed Sapphire
 
 item.treasure2:angel_blessed.name=Angel Blessed Coin
 item.treasure2:fools_coin.name=Fool's Coin
 item.treasure2:miners_friend.name=Miner's Friend
+item.treasure2:medics_token.name=Medic's Token
 item.treasure2:salandaars_ward.name=Sal'andaar's Ward
 item.treasure2:dwarven_talisman.name=Dwarven Talisman
 item.treasure2:adephagias_bounty.name=Adephagia's Bounty

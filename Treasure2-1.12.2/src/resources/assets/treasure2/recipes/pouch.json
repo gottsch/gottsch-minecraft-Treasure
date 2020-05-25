@@ -5,15 +5,18 @@
 	" X "
   ],
   "key": {
+    "T": {
+		"item": "treasure2:treasure_tool"
+	},
 	"X": {
 		"item": "minecraft:leather"
 	},
-	"K": [
+	"C": [
 		{
 			"item": "treasure2:gold_coin"
 		},
 		{
-		"item": "treasure2:silver_coin"
+			"item": "treasure2:silver_coin"
 		}
 	]
   },

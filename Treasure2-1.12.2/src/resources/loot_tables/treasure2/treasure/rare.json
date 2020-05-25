@@ -16,19 +16,19 @@
 					"type": "item",
 					"name": "treasure2:skeleton_key",
 					"weight": 7
-				},	
+				},
 				{
 					"entryName": "ruby_key",
 					"type": "item",
 					"name": "treasure2:ruby_key",
 					"weight": 25
-				},	
+				},
 				{
 					"entryName": "sapphire_key",
 					"type": "item",
 					"name": "treasure2:sapphire_key",
 					"weight": 25
-				},				
+				},
 				{
 					"entryName": "diamond_key",
 					"type": "item",
@@ -42,7 +42,7 @@
 								"max": 2
 							}
 						}
-					]					
+					]
 				},
 				{
 					"entryName": "emerald_key",
@@ -57,8 +57,8 @@
 								"max": 2
 							}
 						}
-					]					
-				}	
+					]
+				}
 			]
 		},
 		{
@@ -84,7 +84,7 @@
 					"entryName": "gold_coin",
 					"type": "item",
 					"name": "treasure2:gold_coin",
-					"weight":40,
+					"weight": 40,
 					"functions": [
 						{
 							"function": "set_count",
@@ -99,7 +99,7 @@
 					"entryName": "skull_sword",
 					"type": "item",
 					"name": "treasure2:skull_sword",
-					"weight":10,
+					"weight": 10,
 					"conditions": [
 						{
 							"condition": "random_chance",
@@ -118,19 +118,19 @@
 							"chance": 0.30
 						}
 					]
-				},		
+				},
 				{
 					"entryName": "sapphire",
 					"type": "item",
 					"name": "treasure2:sapphire",
 					"weight": 10
-				},	
+				},
 				{
 					"entryName": "ruby",
 					"type": "item",
 					"name": "treasure2:ruby",
 					"weight": 10
-				},	
+				},
 				{
 					"entryName": "white_pearl",
 					"type": "item",
@@ -160,8 +160,14 @@
 							"chance": 0.4
 						}
 					]
-				}												
+				}
 			]
-		}				
+		},
+		{
+			"name": "rare_charms",
+			"rolls": 1,
+			"entries": [
+			]
+		}
 	]
 }

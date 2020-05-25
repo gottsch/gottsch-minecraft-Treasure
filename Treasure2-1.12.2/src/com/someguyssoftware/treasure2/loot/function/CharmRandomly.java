@@ -26,14 +26,12 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.item.charm.CharmLevel;
-import com.someguyssoftware.treasure2.item.charm.CharmState;
 import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
 import com.someguyssoftware.treasure2.item.charm.CharmType;
 import com.someguyssoftware.treasure2.item.charm.ICharm;
 import com.someguyssoftware.treasure2.item.charm.ICharmState;
 import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
@@ -91,14 +89,11 @@ public class CharmRandomly extends LootFunction {
 				for (ICharmState state : charmStates) {
 					if (state.getCharm().getCharmType() == charm.getCharmType() ||
 							state.getCharm().getName().equals(charm.getName())) {
-						Treasure.logger.debug("item already has charm -> {}", charm.getName());
 								hasCharm = true;
 								break;
 							}
 				}
 				if (!hasCharm) {
-					Treasure.logger.debug("giving item charm -> {}", charm.getName());
-					// TODO what if IlluminationCharm ? need a CharmFactory
 					charmStates.add(CharmStateFactory.createCharmState(charm));
 				}
 			}
@@ -144,7 +139,6 @@ public class CharmRandomly extends LootFunction {
 
 					if (charm == null) {
 						Treasure.logger.warn("Unknown charm '{}'", charmName);
-						System.out.println("Unknown charm '" + charmName + "'");
 					}
 
 					// add to the map
@@ -152,7 +146,6 @@ public class CharmRandomly extends LootFunction {
 						charmsByType.put(charm.getCharmType(), charm);
 						// add to the list of charms
 						list.add(charm);
-						Treasure.logger.debug("adding charm to charm list -> {}", charm.getName());
 					}
 				}
 			}

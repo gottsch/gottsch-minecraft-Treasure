@@ -24,8 +24,8 @@
 								"max": 2
 							}
 						}
-					]					
-				},			
+					]
+				},
 				{
 					"entryName": "sapphire_key",
 					"type": "item",
@@ -39,8 +39,8 @@
 								"max": 2
 							}
 						}
-					]					
-				},	
+					]
+				},
 				{
 					"entryName": "diamond_key",
 					"type": "item",
@@ -54,7 +54,7 @@
 								"max": 2
 							}
 						}
-					]					
+					]
 				},
 				{
 					"entryName": "emerald_key",
@@ -69,7 +69,7 @@
 								"max": 2
 							}
 						}
-					]					
+					]
 				},
 				{
 					"entryName": "metallurgists_key",
@@ -82,7 +82,7 @@
 					"type": "item",
 					"name": "treasure2:skeleton_key",
 					"weight": 12
-				}				
+				}
 			]
 		},
 		{
@@ -108,7 +108,7 @@
 					"entryName": "gold_coin",
 					"type": "item",
 					"name": "treasure2:gold_coin",
-					"weight":20,
+					"weight": 20,
 					"functions": [
 						{
 							"function": "set_count",
@@ -123,7 +123,7 @@
 					"entryName": "skull_sword",
 					"type": "item",
 					"name": "treasure2:skull_sword",
-					"weight":10,
+					"weight": 10,
 					"conditions": [
 						{
 							"condition": "random_chance",
@@ -136,7 +136,7 @@
 					"type": "item",
 					"name": "treasure2:sapphire",
 					"weight": 10
-				},	
+				},
 				{
 					"entryName": "ruby",
 					"type": "item",
@@ -154,7 +154,7 @@
 					"type": "item",
 					"name": "treasure2:white_pearl",
 					"weight": 8
-				},				
+				},
 				{
 					"entryName": "eye_patch",
 					"type": "item",
@@ -166,7 +166,7 @@
 							"chance": 0.50
 						}
 					]
-				},					
+				},
 				{
 					"entryName": "painting_blocks_bricks",
 					"type": "item",
@@ -190,7 +190,14 @@
 							"chance": 0.25
 						}
 					]
-				}														
+				}
+			]
+		},
+		{
+			"name": "epic_charms",
+			"rolls": 1,
+			"entries": [
+
 			]
 		}
 	]

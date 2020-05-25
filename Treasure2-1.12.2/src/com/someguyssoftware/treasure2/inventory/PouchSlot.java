@@ -33,7 +33,6 @@ public class PouchSlot extends Slot {
      */
     public boolean isItemValid(ItemStack stack) {
     	if (stack.getItem() instanceof IPouchable) {
-    		Treasure.logger.debug("is pouchable PouchSlot");
     		return true;
     	}
     	return false;

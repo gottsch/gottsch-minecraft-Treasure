@@ -3,8 +3,6 @@
  */
 package com.someguyssoftware.treasure2.item.charm;
 
-import com.someguyssoftware.treasure2.Treasure;
-
 /**
  * @author Mark Gottschling on May 5, 2020
  *

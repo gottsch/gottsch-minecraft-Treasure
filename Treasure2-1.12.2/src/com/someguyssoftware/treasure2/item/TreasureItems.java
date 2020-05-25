@@ -54,8 +54,10 @@ public class TreasureItems {
 	
 	public static Item CHARMED_SILVER_COIN;
 	public static CharmedCoinItem CHARMED_GOLD_COIN;
-	public static CharmedCoinItem MINERS_FRIEND;
+	public static CharmedGemItem CHARMED_RUBY;
+	public static CharmedGemItem MINERS_FRIEND;
 	public static CharmedCoinItem FOOLS_COIN;
+	public static CharmedCoinItem MEDICS_TOKEN;
 	public static CharmedCoinItem SALANDAARS_WARD;
 	public static CharmedCoinItem DWARVEN_TALISMAN;
 	public static CharmedCoinItem ADEPHAGIAS_BOUNTY;
@@ -165,9 +167,8 @@ public class TreasureItems {
 		// CHARMED COINS
 		CHARMED_SILVER_COIN = new CharmedCoinItem(Treasure.MODID, TreasureConfig.CHARMED_SILVER_COIN_ID, Coins.SILVER);
 		CHARMED_GOLD_COIN = new CharmedCoinItem(Treasure.MODID, TreasureConfig.CHARMED_GOLD_COIN_ID, Coins.GOLD);
+		CHARMED_RUBY = new CharmedGemItem(Treasure.MODID, TreasureConfig.CHARMED_RUBY_ID);
 		
-		// TODO in Charm Items add an add() method that only allows 1 Charm of the same name to be contained.
-		// TODO do the same for the LootFunctions
 		ANGEL_BLESSED = new CharmedGemItem(Treasure.MODID, TreasureConfig.ANGEL_BLESSED_ID) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
@@ -181,7 +182,7 @@ public class TreasureItems {
 		// add to creative tab since it is a known special coin (non-dynamic in charms)
 		ANGEL_BLESSED.setCreativeTab(Treasure.TREASURE_TAB);
 		
-		MINERS_FRIEND = new CharmedCoinItem(Treasure.MODID, TreasureConfig.MINERS_FRIEND_ID, Coins.GOLD) {
+		MINERS_FRIEND = new CharmedGemItem(Treasure.MODID, TreasureConfig.MINERS_FRIEND_ID) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
@@ -192,7 +193,7 @@ public class TreasureItems {
 		};
 		MINERS_FRIEND.setCreativeTab(Treasure.TREASURE_TAB);
 		
-		FOOLS_COIN = new CharmedCoinItem(Treasure.MODID, "fools_coin", Coins.GOLD) {
+		FOOLS_COIN = new CharmedCoinItem(Treasure.MODID, "fools_coin", Coins.SILVER) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
@@ -202,6 +203,16 @@ public class TreasureItems {
 			}
 		};
 		FOOLS_COIN.setCreativeTab(Treasure.TREASURE_TAB);
+		
+		MEDICS_TOKEN = new CharmedCoinItem(Treasure.MODID, "medics_token", Coins.GOLD) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.SALANDAARS_CONVALESCENCE));
+				return provider;
+			}
+		};		
+		MEDICS_TOKEN.setCreativeTab(Treasure.TREASURE_TAB);
 		
 		SALANDAARS_WARD = new CharmedCoinItem(Treasure.MODID, "salandaars_ward", Coins.GOLD) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
@@ -526,9 +537,11 @@ public class TreasureItems {
 					GOLD_COIN,
 					CHARMED_SILVER_COIN,
 					CHARMED_GOLD_COIN,
+					CHARMED_RUBY,
 					ANGEL_BLESSED,
 					MINERS_FRIEND,
 					FOOLS_COIN,
+					MEDICS_TOKEN,
 					SALANDAARS_WARD,
 					DWARVEN_TALISMAN,
 					ADEPHAGIAS_BOUNTY,

@@ -61,7 +61,7 @@ public class IlluminationCharm extends Charm {
 					return false;
 				}
 				if (!(vitals instanceof IlluminationCharmVitals)) {
-					Treasure.logger.debug("vitals are not instance of IlluminationCharmVitals -> {}.{}", this.getClass().getSimpleName(), vitals.getClass().getSimpleName());
+//					Treasure.logger.debug("vitals are not instance of IlluminationCharmVitals -> {}.{}", this.getClass().getSimpleName(), vitals.getClass().getSimpleName());
 						return false;
 				}
 				
@@ -88,7 +88,7 @@ public class IlluminationCharm extends Charm {
 						if (list.size() > (int)charmVitals.getValue()) {
 							// get difference in size
 							int diff = (int) (list.size() - charmVitals.getValue());
-							Treasure.logger.debug("diff -> {}", diff);
+//							Treasure.logger.debug("diff -> {}", diff);
 							for (int index = 0; index < diff; index++) {
 								ICoords lastCoords = list.get(list.size()-1);
 								Block block = world.getBlockState(lastCoords.toPos()).getBlock();

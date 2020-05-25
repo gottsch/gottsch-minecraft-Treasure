@@ -39,8 +39,10 @@ public class CharmBuilder implements ICharmBuilder {
 				break;
 			case DECAY:
 				charm = new DecayCharm(this);
+				break;
 			case ILLUMINATION:
 				charm = new IlluminationCharm(this);
+				break;
 			}
 
 //			Treasure.logger.debug("building charm from -> {} to -> {}", this.toString(), charm.toString());

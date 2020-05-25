@@ -223,7 +223,6 @@ public class PlayerEventHandler {
 			for (int focusIndex = 0; focusIndex < slots; focusIndex++) {
 				ItemStack itemStack = cap.getStackInSlot(focusIndex);
 				if (itemStack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
-					Treasure.logger.debug("is a charm -> {}!", itemStack.getDisplayName());
 					// update the context to the specific charm
 					context.get().itemStack = itemStack;
 					context.get().slot = focusIndex;
@@ -245,13 +244,10 @@ public class PlayerEventHandler {
 	private void doCharms(Optional<CharmContext> context, EntityPlayerMP player, Event event) {
 		ICharmCapability capability = context.get().itemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 		List<ICharmState> charmStates = capability.getCharmStates();
-		Treasure.logger.debug("has capability");
 		for (ICharmState charmState : charmStates) {
-			Treasure.logger.debug("charm state -> {}: {}", charmState.getCharm().getName(), charmState.toString());
 			if (charmState.doCharm(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event)) {
 				// send state message to client
 				CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmState, context.get().hand, null);
-				Treasure.logger.debug("sending living charm message to client -> {}", message);
 				Treasure.simpleNetworkWrapper.sendTo(message, player);
 			}
 		}

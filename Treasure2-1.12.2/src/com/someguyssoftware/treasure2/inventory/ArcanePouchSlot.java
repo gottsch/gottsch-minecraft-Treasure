@@ -35,13 +35,11 @@ public class ArcanePouchSlot extends PouchSlot {
     public boolean isItemValid(ItemStack stack) {
 		boolean result = super.isItemValid(stack);
 		if (result) {
-			Treasure.logger.debug("item is pouchable");
 			if (!stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
 				Treasure.logger.debug("item is not charmed, disallowed in arcane pouch slot");
 				result = false;
 			}
 		}
-		Treasure.logger.debug("isItemValid -> {}", result);
 		return result;    	
     }
 	

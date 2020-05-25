@@ -62,7 +62,6 @@ public class IlluminationCharmVitals extends CharmVitals {
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound tag = list.getCompoundTagAt(i);
 			ICoords coords = ICoords.readFromNBT(tag);
-//			Treasure.logger.debug("read coords from nbt -> {}", coords.toShortString());
 			if (coords != null) {
 				getCoordsList().add(coords);
 			}
@@ -82,7 +81,6 @@ public class IlluminationCharmVitals extends CharmVitals {
 			synchronized (coordsList) {
 				for (ICoords coords : coordsList) {
 					// create a new nbt
-//					Treasure.logger.debug("writing coords to nbt -> {}", coords.toShortString());
 					NBTTagCompound coordsTag = new NBTTagCompound();
 					coords.writeToNBT(coordsTag);
 					list.appendTag(coordsTag);
@@ -90,7 +88,6 @@ public class IlluminationCharmVitals extends CharmVitals {
 			}
 			nbt.removeTag("illuminationCoords");
 			nbt.setTag("illuminationCoords", list);
-			Treasure.logger.debug("size of illum coords list -> {}", list.tagCount());
 		}
 		catch(Exception e) {
 			Treasure.logger.error("Unable to write state to NBT:", e);

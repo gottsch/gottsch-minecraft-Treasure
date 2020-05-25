@@ -153,6 +153,13 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "scarce_charms",
+			"rolls": 1,
+			"entries": [
+
+			]
 		}
 	]
 }

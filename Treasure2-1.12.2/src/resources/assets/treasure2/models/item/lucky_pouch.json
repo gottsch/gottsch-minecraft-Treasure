@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "treasure2:items/arcane_pouch"
+        "layer0": "treasure2:items/lucky_pouch"
     }
 }

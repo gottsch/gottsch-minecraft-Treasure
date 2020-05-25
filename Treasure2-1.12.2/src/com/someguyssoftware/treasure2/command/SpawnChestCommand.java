@@ -80,7 +80,7 @@ public class SpawnChestCommand extends CommandBase {
 		int origin = 0;
 		
 		// just ~ notation
-		if (coordStr == "~") {
+		if (coordStr.equals("~")) {
 			origin = getOriginValue (commandSender, coordName);
 		}
 		

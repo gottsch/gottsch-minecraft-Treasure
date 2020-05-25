@@ -1,5 +1,5 @@
 {
-	"version": "3.1",
+	"version": "1.0",
 	"pools": [
 		{
 			"name": "common_keys",
@@ -109,28 +109,7 @@
 								]
 						}
 					]
-				},
-				{
-					"entryName": "charm2",
-					"type": "item",
-					"name": "treasure2:charmed_gold_coin",
-					"weight": 1,
-					"conditions": [
-						{
-							"condition": "random_chance",
-							"chance": 0.1
-						}
-					],						
-					"functions": [
-						{
-							"function": "treasure2:set_charms",
-							"charms": [
-								"healing",
-								"stout_shielding"
-								]
-						}
-					]
-				}				
+				}			
 			]
 		}
 	]

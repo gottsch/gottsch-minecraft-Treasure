@@ -116,8 +116,11 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.GOLD_COIN);
 		registerItemModel(TreasureItems.SILVER_COIN);
 		registerItemModel(TreasureItems.CHARMED_SILVER_COIN);
+		registerItemModel(TreasureItems.CHARMED_GOLD_COIN);
+		registerItemModel(TreasureItems.CHARMED_RUBY);
 		registerItemModel(TreasureItems.ANGEL_BLESSED);
 		registerItemModel(TreasureItems.FOOLS_COIN);
+		registerItemModel(TreasureItems.MEDICS_TOKEN);
 		registerItemModel(TreasureItems.MINERS_FRIEND);
 		registerItemModel(TreasureItems.SALANDAARS_WARD);
 		registerItemModel(TreasureItems.DWARVEN_TALISMAN);
