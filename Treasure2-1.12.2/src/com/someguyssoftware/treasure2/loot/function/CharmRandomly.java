@@ -82,7 +82,6 @@ public class CharmRandomly extends LootFunction {
 				charm =this.charms.get(rand.nextInt(this.charms.size()));
 				Treasure.logger.debug("selected charm for item -> {}", charm.getName());
 			}
-			// TODO in future, ensure only the right type of item can get the appropriate level of charm
 			if (charm != null) {
 				// ensure that the item doesn't already have the same charm or same type or exceeded the maximum charms.
 				boolean hasCharm = false;

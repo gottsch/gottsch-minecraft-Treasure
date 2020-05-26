@@ -113,7 +113,6 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 				Treasure.logger.debug("attempted location for bound soul spawn -> {} {} {}", x, y, z);
 
 				EntityLiving entityLiving = (EntityLiving) entity;
-				// TODO attempt 3 times to spawn
 				for (int tries = 0; tries < 3; tries++) {
 					if (!entityLiving.isNotColliding()) {
 						Treasure.logger.debug("collision - no spawn");

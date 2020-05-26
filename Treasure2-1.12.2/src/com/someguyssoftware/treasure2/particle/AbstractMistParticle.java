@@ -37,6 +37,7 @@ public abstract class AbstractMistParticle extends Particle implements IMistPart
 	private static final int TRANSITION_OUT_START_AGE = 240;
 	private static final float TRANSITION_IN_START_SCALE = 2;
 	private static final float TRANSITION_OUT_FINAL_SCALE = 2;
+	private static final int DEFAULT_BRIGHTNESS = 0xe3e3e3;
 
 	private ICoords parentEmitterCoords;
 	private float transitionInScaleIncrement;
@@ -51,10 +52,6 @@ public abstract class AbstractMistParticle extends Particle implements IMistPart
 	 */
 	protected AbstractMistParticle(World worldIn, double posXIn, double posYIn, double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
-
-		// TODO none of these overridden methods -> getMaxScale(), getMaxAge() in the
-		// constructor may work
-		// as expected. should eliminate/replace them.
 
 		// add horizontal movement
 		this.motionX = (Math.random() * 2.0D - 1.0D) * 0.0050200D;
@@ -209,7 +206,7 @@ public abstract class AbstractMistParticle extends Particle implements IMistPart
 	 */
 	@Override
 	public int getBrightnessForRender(float partialTick) {
-		return 0xe3e3e3; // TODO make const
+		return DEFAULT_BRIGHTNESS;
 	}
 
 	/*

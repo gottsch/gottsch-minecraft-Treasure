@@ -33,7 +33,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * TODO refactor the falling blocks to inherit from parent class
+ * TODO refactor the falling blocks to inherit from parent class because only difference is getItemDropped and onEndFalling
  * @author Mark Gottschling on Apr 17, 2020
  *
  */

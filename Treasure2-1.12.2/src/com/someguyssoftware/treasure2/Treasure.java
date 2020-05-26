@@ -116,7 +116,7 @@ public class Treasure extends AbstractMod {
 	@Instance(value = Treasure.MODID)
 	public static Treasure instance;
 
-	// TODO remove this. should have static final properties.
+	// NOTE can't make final here as it is set during world load
 	// loot tables management
 	public static TreasureLootTableMaster LOOT_TABLES;
 

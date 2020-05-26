@@ -107,11 +107,8 @@ public interface IChestGenerator {
 				.get(RandomHelper.randomInt(random, 0, chestList.size() - 1));
 
 		// TODO should have a map of available mimics mapped by chest. for now, since
-		// only one mimic, just test for it
-		// determine if should be mimic
-		// get the config
-		IChestConfig config = TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity); // TODO how to change this from
-																							// just being surfaceChests.
+		// only one mimic, just test for it determine if should be mimic get the config
+		IChestConfig config = TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity);
 		if (chest == TreasureBlocks.WOOD_CHEST) {
 			if (RandomHelper.checkProbability(random, config.getMimicProbability())) {
 				chest = (AbstractChestBlock) TreasureBlocks.WOOD_MIMIC;

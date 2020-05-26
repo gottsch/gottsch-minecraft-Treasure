@@ -149,11 +149,10 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				// TODO interrogate the archetype to determine the marker scan list and/or replacement map to use
 				
 				// load template
-				Treasure.logger.debug("attempted to load custom template  with key -> {}", loc.toString());
 				Template template = load(loc, getMarkerScanList(), getReplacementMap()); // TODO the marker scan list and replace list should be determined before this call
 				// add the id to the map
 				if (template == null) {
-					// TODO message
+					Treasure.logger.debug("unable to load custom template  with key -> {}", loc.toString());
 					continue;
 				}
 				Treasure.logger.debug("loaded custom template  with key -> {}", loc.toString());

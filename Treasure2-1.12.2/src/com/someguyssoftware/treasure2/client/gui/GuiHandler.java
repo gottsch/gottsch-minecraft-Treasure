@@ -102,7 +102,7 @@ public class GuiHandler implements IGuiHandler {
 				return new MolluscChestContainer(player.inventory, (IInventory) tileEntity);
 			}
 			break;
-		case KEY_RING_GUIID: // TODO keyrings are currently unique, can use == instead of instanceof
+		case KEY_RING_GUIID:
 			// get the held item
 			ItemStack keyRingItem = player.getHeldItemMainhand();
 			if (keyRingItem == null || !(keyRingItem.getItem() instanceof KeyRingItem)) {
@@ -117,7 +117,6 @@ public class GuiHandler implements IGuiHandler {
 			return new KeyRingContainer(player.inventory, inventory);
 
 		case POUCH_GUIID:
-			// TODO interrogate item further to determine the container
 			// get the held item
 			ItemStack pouchStack = player.getHeldItemMainhand();
 			if (pouchStack == null || !(pouchStack.getItem() instanceof IPouch)) {

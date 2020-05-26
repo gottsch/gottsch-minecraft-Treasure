@@ -36,7 +36,7 @@ public class SpanishMossBlock extends BlockBush {
 	 * 
 	 */
 	public SpanishMossBlock(String modID, String name) {
-		// TODO it is wood so I didn't have to update GottschCore.get..SurfaceCoods() to check for PLANTS.
+		// NOTE it is wood so I didn't have to update GottschCore.get..SurfaceCoods() to check for PLANTS.
 		super(Material.WOOD);
 		setRegistryName(modID, name);
 		setUnlocalizedName(getRegistryName().toString());

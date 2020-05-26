@@ -90,20 +90,7 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 	        				}
 	        			}
 		        		else if (heldItemStack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
-	//	    	        	Treasure.logger.debug("valid item -> {}", heldItemStack.getDisplayName());
 		        			updateCharms(heldItemStack, message);
-//		        			ICharmCapability heldItemCaps = heldItemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-//		        			// get the charm that is being sent
-//		        			String charmName = message.getCharmName();
-//	//	    	        	Treasure.logger.debug("charm name -> {}", charmName);
-//		        			// cycle through the charm states to find the named charm
-//		        			for(ICharmState state : heldItemCaps.getCharmStates()) {
-//		        				if (state.getCharm().getName().equals(charmName)) {
-//		        		        	Treasure.logger.debug("found charm, updating vitals to -> {}", message.getVitals());
-//		        					// update vitals
-//		        					state.setVitals(message.getVitals());
-//		        				}
-//		        			}
 		        		}
 	        		}
 	        	}
@@ -128,11 +115,10 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 		ICharmCapability heldItemCaps = heldItemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 		// get the charm that is being sent
 		String charmName = message.getCharmName();
-//	    	        	Treasure.logger.debug("charm name -> {}", charmName);
 		// cycle through the charm states to find the named charm
 		for(ICharmState state : heldItemCaps.getCharmStates()) {
 			if (state.getCharm().getName().equals(charmName)) {
-	        	Treasure.logger.debug("found charm, updating vitals to -> {}", message.getVitals());
+//	        	Treasure.logger.debug("found charm, updating vitals to -> {}", message.getVitals());
 				// update vitals
 				state.setVitals(message.getVitals());
 			}

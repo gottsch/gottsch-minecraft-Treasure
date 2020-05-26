@@ -413,7 +413,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		Treasure.logger.debug("surface struct result -> {}", genResult);
 		if (!genResult.isSuccess()) return result.fail();
 
-		result.setData(genResult.getData()); // TODO this step is unneeded now.
+		result.setData(genResult.getData());
 		return result.success();
 	}
 	

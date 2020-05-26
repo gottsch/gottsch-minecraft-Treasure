@@ -44,13 +44,10 @@ public class ShieldingCharm extends Charm {
 			// get the source and amount
 			double amount = event.getAmount();
 			// calculate the new amount
-			// TODO add percents into the mix - no all is absorbed
 			double newAmount = 0;
-			// TODO rethink how charms value is.... not an int ???? because health is float
-			// TODO these 2 need to be ints, thus need rounding on the calcs
-			double amountToCharm = amount * vitals.getPercent(); //Math.toIntExact(Math.round(amount * vitals.getPercent()));
+			double amountToCharm = amount * vitals.getPercent();
 			double amountToPlayer = amount - amountToCharm;
-			Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
+//			Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
 			if (vitals.getValue() >= amountToCharm) {
 				vitals.setValue(vitals.getValue() - amountToCharm);
 				newAmount = amountToPlayer;
@@ -60,7 +57,6 @@ public class ShieldingCharm extends Charm {
 				vitals.setValue(0);
 			}
 			event.setAmount((float) newAmount);
-			Treasure.logger.debug("new vitals -> {}", vitals);
 			result = true;
 		}
 		return result;

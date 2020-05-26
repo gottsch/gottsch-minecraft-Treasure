@@ -481,22 +481,9 @@ public class TreasureItems {
 				.setPaintingName("Lava").setCollectionName("Blocks").setCollectionIssue("7").setCollectionSize("7").setArtist("o2xygeno");
 
 		SAPPHIRE = new GemItem(Treasure.MODID, TreasureConfig.SAPPHIRE_ID);
-//				.setItemName(Treasure.MODID, TreasureConfig.SAPPHIRE_ID)
-//				.setCreativeTab(Treasure.TREASURE_TAB);
 		RUBY = new GemItem(Treasure.MODID, TreasureConfig.RUBY_ID);
-//				.setItemName(Treasure.MODID, TreasureConfig.RUBY_ID)
-//				.setCreativeTab(Treasure.TREASURE_TAB);
 		
 		SKELETON = new SkeletonItem(Treasure.MODID, TreasureConfig.SKELETON_ID);
-		
-		// FOOD
-		// TODO need to create new items for stews and override the onItemUseFinish if there are effects
-		// TODO need to move ModFoodItem to GottschCore
-//		OYSTER_MEAT = new ModFoodItem(Treasure.MODID, "oyster_meat", 5, 0.8F, false);
-//		CLAM_MEAT = new ModFoodItem(Treasure.MODID, "clam_meat", 4, 0.7F, false);
-
-//		OYSTER_STEW = new ModSoupItem(Treasure.MODID, "oyster_stew", 20, 1.0F); // TODO check the total health amount a player has
-//		CLAM_STEW = new ModSoupItem(Treasure.MODID, "clam_stew", 15, 1.0F);
 	}
 	
 	/**

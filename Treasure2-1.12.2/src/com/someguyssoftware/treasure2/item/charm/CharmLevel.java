@@ -8,7 +8,7 @@ package com.someguyssoftware.treasure2.item.charm;
  *
  */
 public enum CharmLevel {
-	LEVEL1("level1", 1), // TODO should be i8n. // TODO better names, like Basic, Power, Might, etc 
+	LEVEL1("level1", 1),
 	LEVEL2("level2", 2),
 	LEVEL3("level3", 3),
 	LEVEL4("leve4", 4);

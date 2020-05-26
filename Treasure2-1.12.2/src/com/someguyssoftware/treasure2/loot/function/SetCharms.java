@@ -61,7 +61,6 @@ public class SetCharms extends LootFunction {
 			ICharmCapability provider = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 			List<ICharmState> charmStates = provider.getCharmStates();
 
-			// TODO in future, ensure only the right type of item can get the appropriate level of charm
 			if (!this.charms.isEmpty()) {
 				for (ICharm charm : charms) {
 					// ensure that the item doesn't already have the same charm or same type or exceeded the maximum charms.
