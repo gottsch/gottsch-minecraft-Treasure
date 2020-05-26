@@ -115,9 +115,27 @@ public class TreasureModels {
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);
 		registerItemModel(TreasureItems.SILVER_COIN);
+		registerItemModel(TreasureItems.CHARMED_SILVER_COIN);
+		registerItemModel(TreasureItems.CHARMED_GOLD_COIN);
+		registerItemModel(TreasureItems.CHARMED_RUBY);
+		registerItemModel(TreasureItems.ANGEL_BLESSED);
+		registerItemModel(TreasureItems.FOOLS_COIN);
+		registerItemModel(TreasureItems.MEDICS_TOKEN);
+		registerItemModel(TreasureItems.MINERS_FRIEND);
+		registerItemModel(TreasureItems.SALANDAARS_WARD);
+		registerItemModel(TreasureItems.DWARVEN_TALISMAN);
+		registerItemModel(TreasureItems.ADEPHAGIAS_BOUNTY);
+		registerItemModel(TreasureItems.MIRTHAS_TORCH);
+		
+		registerItemModel(TreasureItems.POUCH);
+		registerItemModel(TreasureItems.LUCKY_POUCH);
+		registerItemModel(TreasureItems.APPRENTICES_POUCH);
+		registerItemModel(TreasureItems.MASTERS_POUCH);
+		
 		// PEARLS
 		registerItemModel(TreasureItems.WHITE_PEARL);
 		registerItemModel(TreasureItems.BLACK_PEARL);
+		
 		// LOCKS
 		registerItemModel(TreasureItems.WOOD_LOCK);
 		registerItemModel(TreasureItems.STONE_LOCK);
@@ -147,6 +165,7 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.PILFERERS_LOCK_PICK);
 		registerItemModel(TreasureItems.THIEFS_LOCK_PICK);
 		registerItemModel(TreasureItems.KEY_RING);
+		
 
 		// WITHER ITEMS
 		registerItemModel(TreasureItems.WITHER_STICK_ITEM);

@@ -105,8 +105,6 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		GeneratorResult<TemplateGeneratorData> genResult = new TemplateGenerator().generate(world, random, holder, placement, spawnCoords);
 		if (!genResult.isSuccess()) return result.fail();
 
-		// TODO add fog around the perimeter of the structure
-		
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 		List<BlockContext> spawnerContexts =
 				(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));

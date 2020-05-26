@@ -300,7 +300,7 @@ public class TreasureBlocks {
 //				Treasure.MODID,
 //				TreasureConfig.OYSTER_CHEST_ID,
 //				OysterChestTileEntity.class,
-//				TreasureChestTypes.LOW_RISE, // TODO may have to create own
+//				TreasureChestTypes.LOW_RISE,
 //				Rarity.EPIC)
 //				.setChestGuiID(GuiHandler.MOLLUSCS_CHEST_GUIID)
 //				.setBounds(molluscChestBounds)
@@ -310,7 +310,7 @@ public class TreasureBlocks {
 //				Treasure.MODID,
 //				TreasureConfig.CLAM_CHEST_ID,
 //				ClamChestTileEntity.class,
-//				TreasureChestTypes.LOW_RISE, // TODO may have to create own
+//				TreasureChestTypes.LOW_RISE,
 //				Rarity.RARE)
 //				.setChestGuiID(GuiHandler.MOLLUSCS_CHEST_GUIID)
 //				.setBounds(molluscChestBounds)
@@ -574,7 +574,6 @@ public class TreasureBlocks {
 			registry.register(CAULDRON_CHEST);
 			registry.register(PROXIMITY_SPAWNER);
 
-			// TODO oyster and clam go here with speciality until chests have a meta file
 			// mapping
 //			registry.register(OYSTER_CHEST);
 //			registry.register(CLAM_CHEST);
@@ -610,7 +609,6 @@ public class TreasureBlocks {
 					new MimicChestItemBlock(WOOD_MIMIC),
 					new MimicChestItemBlock(PIRATE_MIMIC),
 
-					// TODO update with GravestonIetmBlock
 					new ItemBlock(GRAVESTONE1_STONE), new ItemBlock(GRAVESTONE1_COBBLESTONE),
 					new ItemBlock(GRAVESTONE1_MOSSY_COBBLESTONE), new ItemBlock(GRAVESTONE1_POLISHED_GRANITE),
 					new ItemBlock(GRAVESTONE1_POLISHED_ANDESITE), new ItemBlock(GRAVESTONE1_POLISHED_DIORITE),
@@ -623,10 +621,6 @@ public class TreasureBlocks {
 					new ItemBlock(GRAVESTONE3_POLISHED_ANDESITE), new ItemBlock(GRAVESTONE3_POLISHED_DIORITE),
 					new ItemBlock(GRAVESTONE3_OBSIDIAN), new ItemBlock(SKULL_CROSSBONES),
 					new ItemBlock(WISHING_WELL_BLOCK), new ItemBlock(DESERT_WISHING_WELL_BLOCK),
-//					new ItemBlock(FOG_BLOCK), new ItemBlock(HIGH_FOG_BLOCK), new ItemBlock(MED_FOG_BLOCK),
-//					new ItemBlock(LOW_FOG_BLOCK), new ItemBlock(WITHER_FOG), new ItemBlock(HIGH_WITHER_FOG),
-//					new ItemBlock(MED_WITHER_FOG), new ItemBlock(LOW_WITHER_FOG), new ItemBlock(POISON_FOG),
-//					new ItemBlock(HIGH_POISON_FOG), new ItemBlock(MED_POISON_FOG), new ItemBlock(LOW_POISON_FOG),
 					new ItemBlock(WITHER_LOG), new ItemBlock(WITHER_BROKEN_LOG), new ItemBlock(WITHER_LOG_SOUL),
 					new ItemBlock(WITHER_PLANKS), new ItemBlock(SAPPHIRE_ORE), new ItemBlock(RUBY_ORE),
 					new ItemBlock(PROXIMITY_SPAWNER),

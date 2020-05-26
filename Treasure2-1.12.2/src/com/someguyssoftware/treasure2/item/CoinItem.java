@@ -22,6 +22,7 @@ import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.item.wish.IWishable;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -39,7 +40,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Sep 13, 2014
  *
  */
-public class CoinItem extends ModItem {
+public class CoinItem extends ModItem implements IWishable, IPouchable {
 	private static final int MAX_CUSTOM_STACK_SIZE = 64;
 	public static final int MAX_STACK_SIZE = 8;
 		
@@ -50,8 +51,7 @@ public class CoinItem extends ModItem {
 	 */
 	public CoinItem (String modID, String name)	 {
 		super();
-		this.setItemName(modID, name);	
-//		this.setMaxStackSize(MAX_STACK_SIZE);
+		this.setItemName(modID, name);
 		this.setMaxStackSize(Math.min(MAX_CUSTOM_STACK_SIZE, TreasureConfig.COINS.maxStackSize));
 		this.setCreativeTab(Treasure.TREASURE_TAB);
 		// set the coin to gold by default
@@ -74,7 +74,7 @@ public class CoinItem extends ModItem {
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);		
-		tooltip.add(TextFormatting.GOLD + I18n.translateToLocal("tooltip.label.coin"));
+		tooltip.add(TextFormatting.GOLD + "" + TextFormatting.ITALIC + I18n.translateToLocal("tooltip.label.coin"));
 	}
 	
 	/**

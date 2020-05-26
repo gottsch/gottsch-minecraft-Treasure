@@ -104,7 +104,6 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			}
 			// update the chest coords in the result
 			result.getData().setSpawnCoords(spawnCoords);
-//			result.getData().setChestCoords(spawnCoords);
 		}
 	
 		// get distance to surface
@@ -165,9 +164,6 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 					return result.fail();
 				}
 			}
-
-			// update the spawn coords with the offset
-//	>>>		spawnCoords = spawnCoords.add(0, offset, 0);
 	
 			// find the entrance block
 			ICoords entranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
@@ -199,16 +195,8 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			if (!genResult.isSuccess()) return result.fail();
 			
 			result.getData().setSpawnCoords(genResult.getData().getSpawnCoords());
-//			result.setData(genResult.getData());
-			
-//			if (info == null) return result.fail();			
-//			Treasure.logger.debug("returned info -> {}", info);
-//			setInfo(info);
-			// TODO update result chest coords with that of info OR of the calculation of where chest should be.
 			
 			// interrogate info for spawners and any other special block processing (except chests that are handler by caller
-//			List<ICoords> spawnerCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
-//			List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
 			List<BlockContext> spawnerContexts =
 					(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
 			List<BlockContext> proximityContexts =
@@ -242,9 +230,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 		    	te.setMobNum(new Quantity(1, 2));
 		    	te.setProximity(5D);
 			}
-			
-//			Treasure.logger.debug("generating shaft (top of room) @ " + spawnCoords.add(0, size.getY(),0).toShortString());
-			
+
 			// shaft enterance
 			generateEntrance(world, random, surfaceCoords, spawnCoords.add(0, size.getY()+1, 0));
 			

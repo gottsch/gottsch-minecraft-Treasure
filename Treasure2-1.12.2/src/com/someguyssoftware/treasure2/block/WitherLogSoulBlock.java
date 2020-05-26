@@ -182,14 +182,6 @@ public class WitherLogSoulBlock extends CardinalDirectionFacadeBlock
 		// remember to init!
 		mistParticle.init();
 		Minecraft.getMinecraft().effectRenderer.addEffect(mistParticle);
-
-		// TODO add wil-o-the-wisp particles
-//		if (RandomHelper.checkProbability(random, 20)) {
-//			Treasure.logger.debug("spawning will o wisp");
-////			WillWispParticle willWispParticle = new WillWispParticle(world, xPos, yPos, zPos);
-//			NewParticle willWispParticle = new NewParticle(world, xPos, yPos + 1F, zPos, 0, 0, 0);
-//			Minecraft.getMinecraft().effectRenderer.addEffect(willWispParticle);
-//		}
 	}
 
 	/**

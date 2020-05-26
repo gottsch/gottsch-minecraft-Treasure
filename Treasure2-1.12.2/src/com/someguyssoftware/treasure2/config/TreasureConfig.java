@@ -109,10 +109,20 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String THIEFS_LOCK_PICK_ID = "thiefs_lock_pick";
 
 	@Ignore public static final String KEY_RING_ID = "key_ring";
-
+	@Ignore public static final String POUCH_ID = "pouch";
+	@Ignore public static final String LUCKY_POUCH_ID = "lucky_pouch";
+	@Ignore public static final String APPRENTICES_POUCH_ID = "apprentices_pouch";
+	@Ignore public static final String MASTERS_POUCH_ID = "masters_pouch";
+	
 	@Ignore public static final String GOLD_COIN_ID = "gold_coin";
 	@Ignore public static final String SILVER_COIN_ID = "silver_coin";
-
+	@Ignore public static final String CHARMED_SILVER_COIN_ID = "charmed_silver_coin";
+	@Ignore public static final String CHARMED_GOLD_COIN_ID = "charmed_gold_coin";
+	@Ignore public static final String CHARMED_RUBY_ID = "charmed_ruby";
+	@Ignore public static final String CHARMED_SAPPHIRE_ID ="charmed_sapphire";
+	@Ignore public static final String ANGEL_BLESSED_ID = "angel_blessed";
+	@Ignore public static final String MINERS_FRIEND_ID = "miners_friend";
+	
 	@Ignore public static final String WHITE_PEARL_ID = "white_pearl";
 	@Ignore public static final String BLACK_PEARL_ID = "black_pearl";
 
@@ -274,6 +284,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Name("11 oasis")
 	@Comment("Oasis properties")
 	public static final Oases OASES = new Oases();
+
 
 	@Ignore
 	public static TreasureConfig instance = new TreasureConfig();

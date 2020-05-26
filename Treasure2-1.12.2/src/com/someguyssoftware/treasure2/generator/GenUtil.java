@@ -407,10 +407,8 @@ public class GenUtil {
 					.withProperty(SkeletonBlock.PART, SkeletonBlock.EnumPartType.BOTTOM);
 
 			world.setBlockState(coords.toPos(), skeletonState, 3);
-//			Treasure.logger.debug("placing skeleton bottom");
 			world.setBlockState(coords2.toPos(),
 					skeletonState.withProperty(SkeletonBlock.PART, SkeletonBlock.EnumPartType.TOP), 3);
-//			Treasure.logger.debug("placing skeleton top");
 
 			world.notifyNeighborsRespectDebug(coords.toPos(), cube.getState().getBlock(), false);
 			world.notifyNeighborsRespectDebug(coords2.toPos(), cube.getState().getBlock(), false);

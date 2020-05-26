@@ -7,6 +7,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.gui.inventory.CompressorChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.KeyRingGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.MolluscChestGui;
+import com.someguyssoftware.treasure2.client.gui.inventory.PouchGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.SkullChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.StandardChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.StrongboxChestGui;
@@ -15,11 +16,16 @@ import com.someguyssoftware.treasure2.inventory.CompressorChestContainer;
 import com.someguyssoftware.treasure2.inventory.KeyRingContainer;
 import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
 import com.someguyssoftware.treasure2.inventory.MolluscChestContainer;
+import com.someguyssoftware.treasure2.inventory.PouchContainer;
+import com.someguyssoftware.treasure2.inventory.PouchInventory;
 import com.someguyssoftware.treasure2.inventory.SkullChestContainer;
 import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 import com.someguyssoftware.treasure2.inventory.StrongboxChestContainer;
 import com.someguyssoftware.treasure2.inventory.WitherChestContainer;
+import com.someguyssoftware.treasure2.item.IPouch;
 import com.someguyssoftware.treasure2.item.KeyRingItem;
+import com.someguyssoftware.treasure2.item.PouchItem;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,6 +56,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int ARMOIRE_GUID = 6;
 	public static final int WITHER_CHEST_GUIID = 7;
 	public static final int MOLLUSCS_CHEST_GUIID = 8;
+	public static final int POUCH_GUIID = 50;
 
 	/*
 	 * (non-Javadoc)
@@ -109,6 +116,20 @@ public class GuiHandler implements IGuiHandler {
 			// open the container
 			return new KeyRingContainer(player.inventory, inventory);
 
+		case POUCH_GUIID:
+			// get the held item
+			ItemStack pouchStack = player.getHeldItemMainhand();
+			if (pouchStack == null || !(pouchStack.getItem() instanceof IPouch)) {
+				pouchStack = player.getHeldItemOffhand();
+				if (pouchStack == null || !(pouchStack.getItem() instanceof IPouch))
+					return null;
+			}
+
+			// create inventory from item
+			IInventory pouchInventory = new PouchInventory(pouchStack);
+			// open the container
+			return new PouchContainer(player.inventory, pouchInventory, pouchStack);			
+			
 		default:
 			return null;
 		}
@@ -184,6 +205,22 @@ public class GuiHandler implements IGuiHandler {
 			IInventory inventory = new KeyRingInventory(keyRingItem);
 			// open the container
 			return new KeyRingGui(player.inventory, inventory, keyRingItem);
+			
+		case POUCH_GUIID:
+			// get the held item
+			ItemStack pouchStack = player.getHeldItemMainhand();
+			if (pouchStack == null || !(pouchStack.getItem() instanceof PouchItem)) {
+				pouchStack = player.getHeldItemOffhand();
+				if (pouchStack == null || !(pouchStack.getItem() instanceof PouchItem))
+					return null;
+			}
+			
+			// create inventory from item
+			IInventory pouchInventory = new PouchInventory(pouchStack);
+
+			// open the container
+			return new PouchGui(player.inventory, pouchInventory, pouchStack);	
+			
 		default:
 			return null;
 		}

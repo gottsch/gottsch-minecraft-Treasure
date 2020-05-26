@@ -17,6 +17,7 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.IWishingWellBlock;
 import com.someguyssoftware.treasure2.enums.Pearls;
+import com.someguyssoftware.treasure2.item.wish.IWishable;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster.SpecialLootTables;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -34,7 +35,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Aug 18, 2019
  *
  */
-public class PearlItem extends ModItem {
+public class PearlItem extends ModItem implements IWishable, IPouchable {
 
 	public static final int MAX_STACK_SIZE = 8;
 	private Pearls pearl;

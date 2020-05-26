@@ -9,11 +9,16 @@ import com.someguyssoftware.gottschcore.armor.ModArmorBuilder;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.item.ModSwordBuilder;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.item.charm.CharmState;
+import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
+import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -23,9 +28,12 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -43,12 +51,27 @@ public class TreasureItems {
 	// coins
 	public static Item GOLD_COIN;
 	public static Item SILVER_COIN;
+	
+	public static Item CHARMED_SILVER_COIN;
+	public static CharmedCoinItem CHARMED_GOLD_COIN;
+	public static CharmedGemItem CHARMED_RUBY;
+	public static CharmedGemItem MINERS_FRIEND;
+	public static CharmedCoinItem FOOLS_COIN;
+	public static CharmedCoinItem MEDICS_TOKEN;
+	public static CharmedCoinItem SALANDAARS_WARD;
+	public static CharmedCoinItem DWARVEN_TALISMAN;
+	public static CharmedCoinItem ADEPHAGIAS_BOUNTY;
+	public static CharmedCoinItem MIRTHAS_TORCH;
+	
 	// pearls
 	public static Item WHITE_PEARL;
 	public static Item BLACK_PEARL;
 	// gems
 	public static Item SAPPHIRE;
 	public static Item RUBY;
+	
+	public static CharmedGemItem ANGEL_BLESSED;
+	
 	// locks
 	public static LockItem WOOD_LOCK;
 	public static LockItem STONE_LOCK;
@@ -85,6 +108,10 @@ public class TreasureItems {
 	public static KeyItem THIEFS_LOCK_PICK;
 	
 	public static KeyRingItem KEY_RING;
+	public static PouchItem POUCH;
+	public static PouchItem LUCKY_POUCH;
+	public static PouchItem APPRENTICES_POUCH = null;
+	public static PouchItem MASTERS_POUCH = null;
 	
 	// wither items
 	public static Item WITHER_STICK_ITEM;
@@ -137,6 +164,96 @@ public class TreasureItems {
 		GOLD_COIN = new CoinItem(Treasure.MODID, TreasureConfig.GOLD_COIN_ID);
 		SILVER_COIN = new CoinItem(Treasure.MODID, TreasureConfig.SILVER_COIN_ID, Coins.SILVER);
 		
+		// CHARMED COINS
+		CHARMED_SILVER_COIN = new CharmedCoinItem(Treasure.MODID, TreasureConfig.CHARMED_SILVER_COIN_ID, Coins.SILVER);
+		CHARMED_GOLD_COIN = new CharmedCoinItem(Treasure.MODID, TreasureConfig.CHARMED_GOLD_COIN_ID, Coins.GOLD);
+		CHARMED_RUBY = new CharmedGemItem(Treasure.MODID, TreasureConfig.CHARMED_RUBY_ID);
+		
+		ANGEL_BLESSED = new CharmedGemItem(Treasure.MODID, TreasureConfig.ANGEL_BLESSED_ID) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GRAND_HEALING));
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.POWERFUL_SHIELDING));
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GORGED_FULLNESS));
+				return provider;
+			}
+		};
+		// add to creative tab since it is a known special coin (non-dynamic in charms)
+		ANGEL_BLESSED.setCreativeTab(Treasure.TREASURE_TAB);
+		
+		MINERS_FRIEND = new CharmedGemItem(Treasure.MODID, TreasureConfig.MINERS_FRIEND_ID) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GLORIOUS_ILLUMINATION));
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GRAND_HARVESTING));
+				return provider;
+			}
+		};
+		MINERS_FRIEND.setCreativeTab(Treasure.TREASURE_TAB);
+		
+		FOOLS_COIN = new CharmedCoinItem(Treasure.MODID, "fools_coin", Coins.SILVER) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.HEALING));
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.DECAY));
+				return provider;
+			}
+		};
+		FOOLS_COIN.setCreativeTab(Treasure.TREASURE_TAB);
+		
+		MEDICS_TOKEN = new CharmedCoinItem(Treasure.MODID, "medics_token", Coins.GOLD) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.SALANDAARS_CONVALESCENCE));
+				return provider;
+			}
+		};		
+		MEDICS_TOKEN.setCreativeTab(Treasure.TREASURE_TAB);
+		
+		SALANDAARS_WARD = new CharmedCoinItem(Treasure.MODID, "salandaars_ward", Coins.GOLD) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.ARMADILLO_SHIELDING));
+				return provider;
+			}
+		};
+		SALANDAARS_WARD.setCreativeTab(Treasure.TREASURE_TAB);
+		
+		DWARVEN_TALISMAN = new CharmedCoinItem(Treasure.MODID, "dwarven_talisman", Coins.GOLD) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GLORIOUS_HARVESTING));
+				return provider;
+			}
+		};
+		DWARVEN_TALISMAN.setCreativeTab(Treasure.TREASURE_TAB);
+		
+		ADEPHAGIAS_BOUNTY = new CharmedCoinItem(Treasure.MODID, "adephagias_bounty", Coins.GOLD) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.BURSTING_FULLNESS));
+				return provider;
+			}
+		};
+		ADEPHAGIAS_BOUNTY.setCreativeTab(Treasure.TREASURE_TAB);
+		
+		MIRTHAS_TORCH = new CharmedCoinItem(Treasure.MODID, "mirthas_torch", Coins.GOLD) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GLORIOUS_ILLUMINATION));
+				return provider;
+			}
+		};
+		MIRTHAS_TORCH.setCreativeTab(Treasure.TREASURE_TAB);
+
 		// PEARLS
 		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.WHITE_PEARL_ID, Pearls.WHITE);
 		BLACK_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.BLACK_PEARL_ID, Pearls.BLACK);
@@ -248,6 +365,12 @@ public class TreasureItems {
 		// KEY RING
 		KEY_RING = new KeyRingItem(Treasure.MODID, TreasureConfig.KEY_RING_ID);
 		
+		// POUCHES
+		POUCH = new PouchItem(Treasure.MODID, TreasureConfig.POUCH_ID);
+		LUCKY_POUCH = new PouchItem(Treasure.MODID, TreasureConfig.LUCKY_POUCH_ID).setPouchType(PouchType.ARCANE);
+		APPRENTICES_POUCH = new PouchItem(Treasure.MODID, TreasureConfig.APPRENTICES_POUCH_ID).setPouchType(PouchType.ARCANE);
+		MASTERS_POUCH = new PouchItem(Treasure.MODID, TreasureConfig.MASTERS_POUCH_ID).setPouchType(PouchType.ARCANE);
+		
 		// LOCKS
 		WOOD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.WOOD_LOCK_ID, new KeyItem[] {WOOD_KEY})
 				.setCategory(Category.BASIC)
@@ -357,23 +480,10 @@ public class TreasureItems {
 		PAINTING_BLOCKS_LAVA = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_LAVA_ID, Rarity.EPIC)
 				.setPaintingName("Lava").setCollectionName("Blocks").setCollectionIssue("7").setCollectionSize("7").setArtist("o2xygeno");
 
-		SAPPHIRE = new ModItem()
-				.setItemName(Treasure.MODID, TreasureConfig.SAPPHIRE_ID)
-				.setCreativeTab(Treasure.TREASURE_TAB);
-		RUBY = new ModItem()
-				.setItemName(Treasure.MODID, TreasureConfig.RUBY_ID)
-				.setCreativeTab(Treasure.TREASURE_TAB);
+		SAPPHIRE = new GemItem(Treasure.MODID, TreasureConfig.SAPPHIRE_ID);
+		RUBY = new GemItem(Treasure.MODID, TreasureConfig.RUBY_ID);
 		
 		SKELETON = new SkeletonItem(Treasure.MODID, TreasureConfig.SKELETON_ID);
-		
-		// FOOD
-		// TODO need to create new items for stews and override the onItemUseFinish if there are effects
-		// TODO need to move ModFoodItem to GottschCore
-//		OYSTER_MEAT = new ModFoodItem(Treasure.MODID, "oyster_meat", 5, 0.8F, false);		
-//		CLAM_MEAT = new ModFoodItem(Treasure.MODID, "clam_meat", 4, 0.7F, false);
-
-//		OYSTER_STEW = new ModSoupItem(Treasure.MODID, "oyster_stew", 20, 1.0F); // TODO check the total health amount a player has
-//		CLAM_STEW = new ModSoupItem(Treasure.MODID, "clam_stew", 15, 1.0F);
 	}
 	
 	/**
@@ -412,6 +522,17 @@ public class TreasureItems {
 					TREASURE_TAB,
 					SILVER_COIN,
 					GOLD_COIN,
+					CHARMED_SILVER_COIN,
+					CHARMED_GOLD_COIN,
+					CHARMED_RUBY,
+					ANGEL_BLESSED,
+					MINERS_FRIEND,
+					FOOLS_COIN,
+					MEDICS_TOKEN,
+					SALANDAARS_WARD,
+					DWARVEN_TALISMAN,
+					ADEPHAGIAS_BOUNTY,
+					MIRTHAS_TORCH,
 					WHITE_PEARL,
 					BLACK_PEARL,
 					WOOD_LOCK,
@@ -440,6 +561,10 @@ public class TreasureItems {
 					PILFERERS_LOCK_PICK,
 					THIEFS_LOCK_PICK,
 					KEY_RING,
+					POUCH,
+					LUCKY_POUCH,
+					APPRENTICES_POUCH,
+					MASTERS_POUCH,
 					SKULL_SWORD,
 					EYE_PATCH,
 					WITHER_STICK_ITEM,

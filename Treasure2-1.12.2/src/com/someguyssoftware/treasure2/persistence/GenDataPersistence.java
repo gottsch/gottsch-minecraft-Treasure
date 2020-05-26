@@ -170,8 +170,6 @@ public class GenDataPersistence extends WorldSavedData {
 
 		// Oasis Registry
 		OasisRegistry oasisRegistry = OasisRegistry.getInstance();
-		// TODO add contains() check
-//		Treasure.logger.debug("OasisRegistry dimension[0] size before loading -> {}", oasisRegistry.getDimensionEntry(0).size());
 		oasisRegistry.clear();
 		NBTTagList oasisRegistryDimensionTagList = treasureGen.getTagList(OASIS_REGISTRY_TAG_NAME, 10);
 		for (int dimIndex = 0; dimIndex < oasisRegistryDimensionTagList.tagCount(); dimIndex++) {

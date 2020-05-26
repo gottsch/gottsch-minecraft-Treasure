@@ -183,6 +183,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		 *  NOTE currently only 1 chest is allowed per structure - the rest are ignored.
 		 */
 		// check if there is a boss chest(s)
+		// TODO turn these checks into methods --> getChestContext();
 		BlockContext chestContext = null;
 		if (bossChestContexts != null && bossChestContexts.size() > 0) {
 			if (bossChestContexts.size() > 1) {
@@ -191,9 +192,8 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 			else {
 				chestContext = bossChestContexts.get(0);
 			}			
-		}
-		
-		// TODO turn these checks into methods
+		}		
+
 		// if a boss chest wasn't found, search for regular chests
 		if (chestContext == null) {
 			if (chestContexts != null && chestContexts.size() > 0) {
@@ -205,27 +205,6 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 				}			
 			}			
 		}
-		
-//		if (chestCoords != null) {
-//			// move the chest coords to the first solid block beneath it.
-//			chestCoords = getSolidSurfaceCoords(world, chestCoords.up(1));
-//			if (chestCoords == WorldInfo.EMPTY_COORDS) chestCoords = null;
-//		}
-//		genResult.getData().setChestCoords(chestCoords);
-//		
-//		
-//		if (proximityCoords != null)
-//			Treasure.logger.debug("Proximity spawners size -> {}", proximityCoords.size());
-//		else
-//			Treasure.logger.debug("No proximity spawners found.");
-//		
-//		// populate vanilla spawners
-//		buildVanillaSpawners(world, random, spawnerCoords);
-//		
-//		// populate proximity spawners
-//		buildOneTimeSpawners(world, random, proximityCoords, new Quantity(1,2), 5D);
-//		
-//		result.setData(genResult.getData());
 
 		ICoords chestCoords = null;
 		if (chestContext != null) {
@@ -250,7 +229,6 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		buildOneTimeSpawners(world, random, proximityContexts, new Quantity(1,2), 5D);
 		
 		// copy all data from genResult
-//		result.setData((IGeneratorData) genResult.getData()); // <-- this should work
 		result.getData().setSpawnCoords(genResult.getData().getSpawnCoords());
 		
 		// update with chest context

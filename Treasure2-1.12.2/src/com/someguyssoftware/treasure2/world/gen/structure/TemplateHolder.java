@@ -38,7 +38,9 @@ public class TemplateHolder {
 		return template;
 	}
 
-	// TODO placeholder method. In future will check if there are child templates associated.
+	/*
+	 * placeholder method. In future will check if there are child templates associated.
+	 */
 	public boolean isComplex() {
 		return false;
 	}

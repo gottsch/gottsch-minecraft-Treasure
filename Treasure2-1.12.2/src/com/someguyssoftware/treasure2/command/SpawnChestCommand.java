@@ -58,15 +58,65 @@ public class SpawnChestCommand extends CommandBase {
 		return 2;
 	}
 
+	/**
+	 * Return the x, y, or z position for the whoever issued the command.
+	 * coordinateValue should be 'x', 'y', or 'z'.
+	 */
+	private int getOriginValue (ICommandSender commandSender, char coordName) {
+		switch(coordName) {
+			case 'z': return commandSender.getPosition().getZ();
+			case 'y':	return commandSender.getPosition().getY();
+			default:	return commandSender.getPosition().getX();
+		}
+	}
+	
+	/**
+	 * Return the x, y, or z position based on the string entered.
+	 * designed to detect relative positioning using ~.
+	 * coordinateValue should be 'x', 'y', or 'z'.
+	 */
+	private int getPositionValue (String coordStr, ICommandSender commandSender, char coordName) {
+		int value = 0;
+		int origin = 0;
+		
+		// just ~ notation
+		if (coordStr.equals("~")) {
+			origin = getOriginValue (commandSender, coordName);
+		}
+		
+		// ~ plus number notation
+		else if (coordStr.charAt(0) == '~') {
+			try {
+				value = Integer.parseInt(coordStr.substring(1));
+			}
+			catch (Exception e) {
+				Treasure.logger.error("Error with " + coordName + " coordinate: ", e);
+				value = 0;
+			}
+			origin = getOriginValue (commandSender, coordName);
+		}
+		// just number notation
+		else {
+			try {
+				value = Integer.parseInt(coordStr);
+			}
+			catch (Exception e) {
+				Treasure.logger.error("Error with " + coordName + " coordinate: ", e);
+				value = 0;
+			}
+		}
+		return value + origin;		
+	}
+	
 	@Override
 	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
 		Treasure.logger.debug("Starting to spawn Treasure! chest ...");
 		try {
 
 			int x, y, z = 0;
-			x = Integer.parseInt(args[0]);
-			y = Integer.parseInt(args[1]);
-			z = Integer.parseInt(args[2]);
+			x = getPositionValue(args[0], commandSender, 'x');
+			y = getPositionValue(args[1], commandSender, 'y');
+			z = getPositionValue(args[2], commandSender, 'z');
 
 			String[] parserArgs = (String[]) Arrays.copyOfRange(args, 3, args.length);
 

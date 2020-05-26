@@ -76,9 +76,9 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		/*
 		 * Environment Checks
 		 */
-		// TODO use new GottschCore coords.withY()
 		// 1. determine y-coord of land surface for the actual spawn coords
-		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(actualSpawnCoords.getX(), 255, actualSpawnCoords.getZ()));
+//		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(actualSpawnCoords.getX(), 255, actualSpawnCoords.getZ()));
+		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, actualSpawnCoords.withY(255));
 		if (actualSpawnCoords == null || actualSpawnCoords == WorldInfo.EMPTY_COORDS) {
 			Treasure.logger.debug("Returning due to marker coords == null or EMPTY_COORDS");
 			return result.fail(); 
