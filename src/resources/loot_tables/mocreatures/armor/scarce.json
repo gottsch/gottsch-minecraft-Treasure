@@ -1,0 +1,59 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mo_scarce_armor",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "scorpplatedirt",
+					"type": "item",
+					"name": "mocreatures:scorpplatedirt",
+					"weight": 1
+				},
+				{
+					"entryName": "scorplegsdirt",
+					"type": "item",
+					"name": "mocreatures:scorplegsdirt",
+					"weight": 2
+				},
+				{
+					"entryName": "scorphelmetdirt",
+					"type": "item",
+					"name": "mocreatures:scorphelmetdirt",
+					"weight": 2
+				},
+				{
+					"entryName": "scorpbootsdirt",
+					"type": "item",
+					"name": "mocreatures:scorpbootsdirt",
+					"weight": 2
+				},
+				{
+					"entryName": "scorpplatecave",
+					"type": "item",
+					"name": "mocreatures:scorpplatecave",
+					"weight": 1
+				},
+				{
+					"entryName": "scorplegscave",
+					"type": "item",
+					"name": "mocreatures:scorplegscave",
+					"weight": 2
+				},
+				{
+					"entryName": "scorphelmetcave",
+					"type": "item",
+					"name": "mocreatures:scorphelmetcave",
+					"weight": 2
+				},
+				{
+					"entryName": "scorpbootscave",
+					"type": "item",
+					"name": "mocreatures:scorpbootscave",
+					"weight": 2
+				}
+			]
+		}
+	]
+}

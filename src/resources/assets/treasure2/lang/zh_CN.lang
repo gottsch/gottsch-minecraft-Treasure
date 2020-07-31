@@ -1,0 +1,185 @@
+#chests
+tile.treasure2:wood_chest.name=æœ¨ç®±å­�
+tile.treasure2:crate_chest.name=æ�¿æ�¡ç®±
+tile.treasure2:crate_chest_moldy.name=å�‘éœ‰æ�¿æ�¡ç®±
+tile.treasure2:ironbound_chest.name=é“�é’‰ç®±å­�
+tile.treasure2:iron_strongbox.name=é“�åŒ£å­�
+tile.treasure2:gold_strongbox.name=é‡‘åŒ£å­�
+tile.treasure2:pirate_chest.name=æµ·ç›—ç®±å­�
+tile.treasure2:safe.name=ä¿�é™©ç®±
+tile.treasure2:dread_pirate_chest.name=æ��æ€–æµ·ç›—ç®±å­�
+tile.treasure2:compressor_chest.name=åŽ‹ç¼©ç®±å­�
+tile.treasure2:wither_chest.name=å‡‹é›¶ç®±å­�
+tile.treasure2:skull_chest.name=éª·é«…ç®±å­�
+tile.treasure2:gold_skull_chest.name=é»„é‡‘éª·é«…ç®±å­�
+tile.treasure2:cauldron_chest.name=å�©åŸšç®±å­�
+
+tile.treasure2:wood_mimic.name=æœ¨åˆ¶æ¨¡ä»¿è€…
+
+#wells
+tile.treasure2:wishing_well_block.name=è®¸æ„¿äº•çŸ³
+tile.treasure2:desert_wishing_well_block.name=Desert Wishing Well Stone
+
+#gravestones
+tile.treasure2:gravestone1_stone.name=çŸ³å¤´å¢“ç¢‘
+tile.treasure2:gravestone1_cobblestone.name=åœ†çŸ³å¢“ç¢‘
+tile.treasure2:gravestone1_mossy_cobblestone.name=è‹”çŸ³å¢“ç¢‘
+tile.treasure2:gravestone1_polished_granite.name=èŠ±å²—å²©å¢“ç¢‘
+tile.treasure2:gravestone1_polished_andesite.name=å®‰å±±å²©å¢“ç¢‘
+tile.treasure2:gravestone1_polished_diorite.name=é—ªé•¿å²©å¢“ç¢‘
+tile.treasure2:gravestone1_obsidian.name=é»‘æ›œçŸ³å¢“ç¢‘
+
+tile.treasure2:gravestone2_stone.name=çŸ³å¤´å¢“ç¢‘
+tile.treasure2:gravestone2_cobblestone.name=åœ†çŸ³å¢“ç¢‘
+tile.treasure2:gravestone2_mossy_cobblestone.name=è‹”çŸ³å¢“ç¢‘
+tile.treasure2:gravestone2_polished_granite.name=èŠ±å²—å²©å¢“ç¢‘
+tile.treasure2:gravestone2_polished_andesite.name=å®‰å±±å²©å¢“ç¢‘
+tile.treasure2:gravestone2_polished_diorite.name=é—ªé•¿å²©å¢“ç¢‘
+tile.treasure2:gravestone2_obsidian.name=é»‘æ›œçŸ³å¢“ç¢‘
+
+tile.treasure2:gravestone3_stone.name=çŸ³å¤´å¢“ç¢‘
+tile.treasure2:gravestone3_cobblestone.name=åœ†çŸ³å¢“ç¢‘
+tile.treasure2:gravestone3_mossy_cobblestone.name=è‹”çŸ³å¢“ç¢‘
+tile.treasure2:gravestone3_polished_granite.name=èŠ±å²—å²©å¢“ç¢‘
+tile.treasure2:gravestone3_polished_andesite.name=å®‰å±±å²©å¢“ç¢‘
+tile.treasure2:gravestone3_polished_diorite.name=é—ªé•¿å²©å¢“ç¢‘
+tile.treasure2:gravestone3_obsidian.name=é»‘æ›œçŸ³å¢“ç¢‘
+
+tile.treasure2:skull_and_crossbones.name=å¤´éª¨
+tile.treasure2:skeleton.nameéª¨æž¶
+
+#wither tree
+tile.treasure2:wither_log.name=å‡‹é›¶åŽŸæœ¨
+tile.treasure2:wither_broken_log.name=å‡‹é›¶æ–­æœ¨
+tile.treasure2:wither_log_soul.name=å‡‹é›¶ç�µé­‚åŽŸæœ¨
+tile.treasure2:wither_branch.name=å‡‹é›¶æœ¨æž�
+tile.treasure2:wither_root.name=å‡‹é›¶æœ¨æ ¹
+tile.treasure2:wither_planks.name=å‡‹é›¶æœ¨æ�¿
+
+#fogs
+tile.treasure2:fog.name=é›¾
+tile.treasure2:high_fog.name=é«˜é›¾
+tile.treasure2:med_fog.name=ä¸­é›¾
+tile.treasure2:low_fog.name=ä½Žé›¾
+
+tile.treasure2:wither_fog.name=å‡‹é›¶é›¾
+tile.treasure2:high_wither_fog.name=é«˜å‡‹é›¶é›¾
+tile.treasure2:med_wither_fog.name=ä¸­å‡‹é›¶é›¾
+tile.treasure2:low_wither_fog.name=ä½Žå‡‹é›¶é›¾
+
+tile.treasure2:poison_fog.name=æ¯’é›¾
+tile.treasure2:high_poison_fog.name=é«˜æ¯’é›¾
+tile.treasure2:med_poison_fog.name=ä¸­æ¯’é›¾
+tile.treasure2:low_poison_fog.name=ä½Žæ¯’é›¾
+
+#ores
+tile.treasure2:sapphire_ore.name=è“�å®�çŸ³çŸ¿
+tile.treasure2:ruby_ore.name=çº¢å®�çŸ³çŸ¿
+
+#other
+tile.treasure2:spanish_moss.name=å¯„ç”Ÿè—¤
+
+#items
+item.treasure2:gold_coin.name=é‡‘å¸�
+item.treasure2:silver_coin.name=é“¶å¸�
+
+item.treasure2:key_ring.name=é’¥åŒ™ä¸²
+item.treasure2:wood_key.name=æœ¨é’¥åŒ™
+item.treasure2:stone_key.name=çŸ³é’¥åŒ™
+item.treasure2:iron_key.name=é“�é’¥åŒ™
+item.treasure2:gold_key.name=é‡‘é’¥åŒ™
+item.treasure2:diamond_key.name=é’»çŸ³é’¥åŒ™
+item.treasure2:emerald_key.name=ç»¿å®�çŸ³é’¥åŒ™
+item.treasure2:ruby_key.name=çº¢å®�çŸ³é’¥åŒ™
+item.treasure2:sapphire_key.name=è“�å®�çŸ³é’¥åŒ™
+item.treasure2:jewelled_key.name=å®�çŸ³é’¥åŒ™
+item.treasure2:metallurgists_key.name=å†¶é‡‘å¸ˆçš„é’¥åŒ™
+item.treasure2:skeleton_key.name=éª·é«…é’¥åŒ™
+item.treasure2:spider_key.name=èœ˜è››é’¥åŒ™
+item.treasure2:wither_key.name=å‡‹é›¶é’¥åŒ™
+
+item.treasure2:wood_lock.name=æœ¨é”�
+item.treasure2:stone_lock.name=çŸ³é”�
+item.treasure2:iron_lock.name=é“�é”�
+item.treasure2:gold_lock.name=é‡‘é”�
+item.treasure2:diamond_lock.name=é’»çŸ³é”�
+item.treasure2:emerald_lock.name=ç»¿å®�çŸ³é”�
+item.treasure2:ruby_lock.name=çº¢å®�çŸ³é”�
+item.treasure2:sapphire_lock.name=è“�å®�çŸ³é”�
+item.treasure2:spider_lock.name=èœ˜è››é”�
+item.treasure2:wither_lock.name=å‡‹é›¶é”�
+
+item.treasure2:wither_stick_item.name=å‡‹é›¶æœ¨æž�
+item.treasure2:wither_root_item.name=å‡‹é›¶æœ¨æ ¹
+item.treasure2:pilferers_lock_pick.name=å�·ç›—è€…çš„å¼€é”�å·¥å…·
+item.treasure2:thiefs_lock_pick.name=å°�å�·çš„å¼€é”�å·¥å…·
+
+item.treasure2:painting_blocks_bricks.name=o2xygenoç”»çš„ç –å�—
+item.treasure2:painting_blocks_cobblestone.name=o2xygenoç”»çš„åœ†çŸ³
+item.treasure2:painting_blocks_dirt.name=o2xygenoç”»çš„æ³¥åœŸ
+item.treasure2:painting_blocks_lava.name=o2xygenoç”»çš„å²©æµ†
+item.treasure2:painting_blocks_sand.name=o2xygenoç”»çš„æ²™å­�
+item.treasure2:painting_blocks_water.name=o2xygenoç”»çš„æ°´
+item.treasure2:painting_blocks_wood.name=o2xygenoç”»çš„æœ¨æ�¿
+
+item.treasure2:eye_patch.name=çœ¼ç½©
+item.treasure2:skull_sword.name=é¢…éª¨å‰‘
+item.treasure2:spanish_moss.name=å¯„ç”Ÿè—¤
+item.treasure2:sapphire.name=è“�å®�çŸ³
+item.treasure2:ruby.name=çº¢å®�çŸ³
+item.treasure2:skeleton_item.name=éª¨æž¶
+item.treasure2:treasure_tool.name=å®�è—�å·¥å…·
+
+#entities
+#TODO rename standard to wood
+entity.wood_mimic.name=æœ¨æ¨¡ä»¿è€…
+
+#groups
+itemGroup.treasure2:treasure_tab=å®�è—�II!
+
+# string resources
+tooltip.yes=æ˜¯
+tooltip.no=å�¦
+tooltip.label.rarity=ç¨€æœ‰åº¦: %s
+tooltip.label.category=ç±»åˆ«: %s
+tooltip.label.max_uses=æœ€å¤§ä½¿ç”¨æ¬¡æ•°: %s
+tooltip.label.breakable=æ˜¯å�¦å�¯æ–­å¼€: %s
+tooltip.label.craftable=æ˜¯å�¦å�¯åˆ¶ä½œ: %s
+tooltip.label.damageable=æ˜¯å�¦å�¯ç ´æ�Ÿ: %s
+tooltip.label.specials=ç‰¹æ®Šè¯´æ˜Ž: %s
+tooltip.label.accepts_keys=è®¤å�¯é’¥åŒ™: %s
+tooltip.label.coin=æŠ•å…¥è®¸æ„¿äº•é‡Œ
+tooltip.label.key_ring=é’¥åŒ™å®¹å™¨
+tooltip.label.treasure_tool=é’¥åŒ™/å¼€é”�å·¥å…· å�ˆæˆ�æ‰€éœ€.
+
+tooltip.label.max_locks=æœ€å¤§ä¸Šé”�é‡�: %s
+tooltip.label.container_size=å‚¨å­˜å¤§å°�: %s
+
+
+tooltip.metallurgists_key.specials=æ‰“å¼€é‡‘å±žç±»åˆ«çš„ä»»ä½•é”�
+tooltip.skeleton_key.specials=æ‰“å¼€æ™®é€šï¼Œç½•è§�ï¼Œç¨€æœ‰ï¼Œç��è´µçš„é”�(ä¸�åŒ…å�«å‡‹é›¶)
+tooltip.pilferers_lock_pick.specials=æ‰“å¼€æ™®é€š (%s%%)å’Œç½•è§� (%s%%)çš„é”�
+tooltip.thiefs_lock_pick.specials=æ‰“å¼€æ™®é€š (%s%%),ç½•è§� (%s%%)å’Œç¨€æœ‰ (%s%%)çš„é”�
+tooltip.jewelled_key.specials=æ‰“å¼€å®�çŸ³ç±»åž‹çš„ä»»ä½•é”�
+
+tooltip.painting.name=%s
+tooltip.painting.collection=æ”¶è—�å“�: %s
+tooltip.painting.issue=æœŸå�·: %s/%s
+tooltip.painting.artist=ä½œè€… %s
+
+
+#gui
+display.wood_chest.name=æœ¨ç®±å­�
+display.crate_chest.name=æ�¿æ�¡ç®±
+display.crate_chest_moldy.name=å�‘éœ‰çš„æ�¿æ�¡ç®±å­�
+display.ironbound_chest.name=é“�é’‰ç®±å­�
+display.pirate_chest.name=æµ·ç›—ç®±å­�
+display.iron_strongbox.name=é“�åŒ£å­�
+display.gold_strongbox.name=é‡‘åŒ£å­�
+display.safe.name=ä¿�é™©ç®±
+display.dread_pirate_chest.name=æ��æ€–æµ·ç›—ç®±å­�
+display.compressor_chest.name=åŽ‹ç¼©ç®±å­�
+display.wither_chest.name=å‡‹é›¶ç®±å­�
+display.skull_chest.name=éª·é«…ç®±å­�
+display.gold_skull_chest.name=é»„é‡‘éª·é«…ç®±å­�
+display.cauldron_chest.name=å�©åŸšç®±å­�

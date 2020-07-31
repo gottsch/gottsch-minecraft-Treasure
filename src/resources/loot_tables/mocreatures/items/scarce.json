@@ -1,0 +1,86 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mo_scarce_items",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "bigcatclaw",
+					"type": "item",
+					"name": "mocreatures:bigcatclaw",
+					"weight": 2,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				},
+				{
+					"entryName": "medallion",
+					"type": "item",
+					"name": "mocreatures:medallion",
+					"weight": 1
+				},
+				{
+					"entryName": "elephantgarment",
+					"type": "item",
+					"name": "mocreatures:elephantgarment",
+					"weight": 1
+				},						
+				{
+					"entryName": "whip",
+					"type": "item",
+					"name": "mocreatures:whip",
+					"weight": 2,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.5
+						}
+					]
+				},				
+				{
+					"entryName": "amuletpegasus",
+					"type": "item",
+					"name": "mocreatures:amuletpegasus",
+					"weight": 1,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.2
+						}
+					]
+				},
+				{
+					"entryName": "amuletfairy",
+					"type": "item",
+					"name": "mocreatures:amuletfairy",
+					"weight": 1,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.2
+						}
+					]
+				},				
+				{
+					"entryName": "amuletbone",
+					"type": "item",
+					"name": "mocreatures:amuletbone",
+					"weight": 1,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.2
+						}
+					]
+				}					
+			]
+		}
+	]
+}

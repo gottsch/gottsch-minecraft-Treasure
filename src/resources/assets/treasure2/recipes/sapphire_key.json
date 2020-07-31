@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "Treasure2",
+  "pattern": [
+	" KT",
+	" D ",
+	" S "
+  ],
+  "key": {
+    "T": {
+		"item": "treasure2:treasure_tool"
+	},
+	"K": {
+		"item": "treasure2:gold_key"
+	},
+	"D": {
+		"item": "minecraft:glowstone_dust"
+	},
+	"S": {
+		"item": "treasure2:sapphire"
+	}
+  },
+  "result": {
+    "item": "treasure2:sapphire_key",
+    "count": 1
+  }
+}

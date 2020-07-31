@@ -1,0 +1,15 @@
+{
+    "parent": "treasure2:block/gold_strongbox",
+    "display": {
+        "thirdperson": {
+           "rotation": [ 180, -90, 170 ],
+            "translation": [ 0, 1, -3 ],
+            "scale": [ 1.4, 1.4, 1.4 ]
+		},
+		"gui": {
+            "rotation": [ 30, 225, 0 ],
+            "translation": [ 0, 3, 0 ],	
+            "scale": [ 1, 1, 1 ]
+		}	
+    }
+}

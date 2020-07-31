@@ -1,0 +1,29 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mo_rare_tools",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "scorpswordfrost",
+					"type": "item",
+					"name": "mocreatures:scorpswordfrost",
+					"weight":2
+				},
+				{
+					"entryName": "scorpswordnether",
+					"type": "item",
+					"name": "mocreatures:scorpswordnether",
+					"weight":2
+				},
+				{
+					"entryName": "silversword",
+					"type": "item",
+					"name": "mocreatures:silversword",
+					"weight":1
+				}	
+			]
+		}
+	]
+}

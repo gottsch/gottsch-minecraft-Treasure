@@ -1,0 +1,71 @@
+	{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "sgs_metals_rare_armor",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "titanium_chestplate",
+					"type": "item",
+					"name": "sgs_metals:titanium_chestplate",
+					"weight": 8
+				},
+				{
+					"entryName": "titanium_leggings",
+					"type": "item",
+					"name": "sgs_metals:titanium_leggings",
+					"weight": 10				
+				},
+				{
+					"entryName": "titanium_helmet",
+					"type": "item",
+					"name": "sgs_metals:titanium_helmet",
+					"weight": 10			
+				},
+				{
+					"entryName": "titanium_boots",
+					"type": "item",
+					"name": "sgs_metals:titanium_boots",
+					"weight": 10				
+				},
+				{
+					"entryName": "autium_chestplate",
+					"type": "item",
+					"name": "sgs_metals:autium_chestplate",
+					"weight": 8
+				},
+				{
+					"entryName": "autium_leggings",
+					"type": "item",
+					"name": "sgs_metals:autium_leggings",
+					"weight": 10				
+				},
+				{
+					"entryName": "autium_helmet",
+					"type": "item",
+					"name": "sgs_metals:autium_helmet",
+					"weight": 10			
+				},
+				{
+					"entryName": "autium_boots",
+					"type": "item",
+					"name": "sgs_metals:autium_boots",
+					"weight": 10				
+				},								
+				{
+					"entryName": "iron_horse_armor",
+					"type": "item",
+					"name": "minecraft:iron_horse_armor",
+					"weight": 10		
+				},
+				{
+					"entryName": "golden_horse_armor",
+					"type": "item",
+					"name": "minecraft:golden_horse_armor",
+					"weight": 10		
+				}			
+			]
+		}
+	]
+}

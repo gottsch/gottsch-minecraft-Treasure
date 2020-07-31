@@ -1,0 +1,18 @@
+{
+    "variants": {
+		"normal": { "model": "treasure2:wither_log_soul" },
+        "appearance=none,facing=north": { "model": "treasure2:wither_log_normal" },
+        "appearance=none,facing=south": { "model": "treasure2:wither_log_normal", "y": 180, "uvlock": true },
+        "appearance=none,facing=west":  { "model": "treasure2:wither_log_normal", "y": 270, "uvlock": true },
+        "appearance=none,facing=east":  { "model": "treasure2:wither_log_normal", "y": 90, "uvlock": true },
+        "appearance=none,facing=up": { "model": "treasure2:wither_log_normal" },
+        "appearance=none,facing=down": { "model": "treasure2:wither_log_normal" },
+        
+        "appearance=face,facing=north": { "model": "treasure2:wither_log_soul" },
+        "appearance=face,facing=south": { "model": "treasure2:wither_log_soul", "y": 180, "uvlock": true },
+        "appearance=face,facing=west":  { "model": "treasure2:wither_log_soul", "y": 270, "uvlock": true },
+        "appearance=face,facing=east":  { "model": "treasure2:wither_log_soul", "y": 90, "uvlock": true },
+        "appearance=face,facing=up": { "model": "treasure2:wither_log_soul" },
+        "appearance=face,facing=down": { "model": "treasure2:wither_log_soul" }
+    }
+}

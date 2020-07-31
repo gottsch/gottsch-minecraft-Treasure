@@ -1,0 +1,199 @@
+#chests
+tile.treasure2:wood_chest.name=Cofre De Madera
+tile.treasure2:crate_chest.name=Caja De Madera
+tile.treasure2:crate_chest_moldy.name=Caja De Madera Mohosa
+tile.treasure2:ironbound_chest.name=Cofre de Hierro
+tile.treasure2:iron_strongbox.name=Caja Fuerte de Hierro
+tile.treasure2:gold_strongbox.name=Caja Fuerte de Oro
+tile.treasure2:pirate_chest.name=Cofre Pirata
+tile.treasure2:safe.name=Caja Fuerte
+tile.treasure2:dread_pirate_chest.name=Cofre Del Pirata Temible
+tile.treasure2:compressor_chest.name=Cofre Compresor
+tile.treasure2:wither_chest.name=Cofre Wither
+tile.treasure2:skull_chest.name=Cofre Calavera
+tile.treasure2:gold_skull_chest.name=Cofre de la Calavera Dorada
+tile.treasure2:cauldron_chest.name=Cofre Caldero
+tile.treasure2:spider_chest.name=Cofre Aracnido
+
+tile.treasure2:wood_mimic.name=Cofre De Madera falso
+tile.treasure2:pirate_mimic.name=Cofre Pirata falso
+
+#wells
+tile.treasure2:wishing_well_block.name=Piedra del Pozo de los Deseos
+tile.treasure2:desert_wishing_well_block.name=Piedra del Pozo de los Deseos del Desierto
+
+#gravestones
+tile.treasure2:gravestone1_stone.name=Lapida de Piedra
+tile.treasure2:gravestone1_cobblestone.name=Lapida de Adoquines
+tile.treasure2:gravestone1_mossy_cobblestone.name=Lapida de Adoquines Musgosos
+tile.treasure2:gravestone1_polished_granite.name=Lapida de Granito
+tile.treasure2:gravestone1_polished_andesite.name=Lapida de Andesita
+tile.treasure2:gravestone1_polished_diorite.name=Lapida de Diorita
+tile.treasure2:gravestone1_obsidian.name=Lapida de Obsidiana
+
+tile.treasure2:gravestone2_stone.name=Lapida de Piedra
+tile.treasure2:gravestone2_cobblestone.name=Lapida de Adoquines
+tile.treasure2:gravestone2_mossy_cobblestone.name=Lapida de Adoquines Musgosos
+tile.treasure2:gravestone2_polished_granite.name=Lapida de Granito
+tile.treasure2:gravestone2_polished_andesite.name=Lapida de Andesita
+tile.treasure2:gravestone2_polished_diorite.name=Lapida de Diorita
+tile.treasure2:gravestone2_obsidian.name=Lapida de Obsidiana
+
+tile.treasure2:gravestone3_stone.name=Lapida de Piedra
+tile.treasure2:gravestone3_cobblestone.name=Lapida de Adoquines
+tile.treasure2:gravestone3_mossy_cobblestone.name=Lapida de Adoquines Musgosos
+tile.treasure2:gravestone3_polished_granite.name=Lapida de Granito
+tile.treasure2:gravestone3_polished_andesite.name=Lapida de Andesita
+tile.treasure2:gravestone3_polished_diorite.name=Lapida de Diorita
+tile.treasure2:gravestone3_obsidian.name=Lapida de Obsidiana
+
+tile.treasure2:skull_and_crossbones.name=Calavera y Huesos
+tile.treasure2:skeleton.name=Esqueleto
+
+#wither tree
+tile.treasure2:wither_log.name=Tronco Wither
+tile.treasure2:wither_broken_log.name=Tronco Roto de Wither
+tile.treasure2:wither_log_soul.name=Alma de Tronco de Wither
+tile.treasure2:wither_branch.name=Rama Wither
+tile.treasure2:wither_root.name=Raiz Wither
+tile.treasure2:wither_planks.name=Tablones Wither
+
+#fogs
+tile.treasure2:fog.name=Niebla
+tile.treasure2:high_fog.name=Niebla Alta
+tile.treasure2:med_fog.name=Niebla Media
+tile.treasure2:low_fog.name=Niebla Baja
+
+tile.treasure2:wither_fog.name=Niebla Wither
+tile.treasure2:high_wither_fog.name=Niebla Wither Alta
+tile.treasure2:med_wither_fog.name=Niebla Wither Media
+tile.treasure2:low_wither_fog.name=Niebla Wither Baja
+
+tile.treasure2:poison_fog.name=Niebla Venenosa
+tile.treasure2:high_poison_fog.name=Niebla Venenosa Alta
+tile.treasure2:med_poison_fog.name=Niebla Venenosa Media
+tile.treasure2:low_poison_fog.name=Niebla Venenosa Baja
+
+#ores
+tile.treasure2:sapphire_ore.name=Mena de Zafiro
+tile.treasure2:ruby_ore.name=Mena de Rubi
+
+#other
+tile.treasure2:spanish_moss.name=Musgo hispano
+#items
+item.treasure2:gold_coin.name=Moneda de Oro
+item.treasure2:silver_coin.name=Moneda de Plata
+
+item.treasure2:key_ring.name=Llavero
+item.treasure2:wood_key.name=LLave de Madera
+item.treasure2:stone_key.name=LLave de Piedra
+item.treasure2:iron_key.name=LLave de Hierro
+item.treasure2:gold_key.name=LLave de Oro
+item.treasure2:diamond_key.name=LLave de Diamante
+item.treasure2:emerald_key.name=LLave de Esmeralda
+item.treasure2:ruby_key.name=LLave de Rubi
+item.treasure2:sapphire_key.name=LLave de Zafiro
+item.treasure2:jewelled_key.name=LLave Enjoyada
+item.treasure2:metallurgists_key.name=Llave del Metalurgo
+item.treasure2:skeleton_key.name=LLave del Esqueleto
+item.treasure2:spider_key.name=LLave Aracnida
+item.treasure2:wither_key.name=LLave Wither
+item.treasure2:shucking_knife.name=Navaja de Mano
+
+item.treasure2:wood_lock.name=Cerradura de Madera
+item.treasure2:stone_lock.name=Cerradura de Piedra
+item.treasure2:iron_lock.name=Cerradura de Hierro
+item.treasure2:gold_lock.name=Cerradura de Oro
+item.treasure2:diamond_lock.name=Cerradura de Diamante
+item.treasure2:emerald_lock.name=Cerradura de Esmeralda
+item.treasure2:ruby_lock.name=Cerradura de Rubi
+item.treasure2:sapphire_lock.name=Cerradura de Zafiro
+item.treasure2:spider_lock.name=Cerradura Aracnida
+item.treasure2:wither_lock.name=Cerradura Wither
+
+item.treasure2:wither_stick_item.name=Rama Wither
+item.treasure2:wither_root_item.name=Raiz Wither
+item.treasure2:pilferers_lock_pick.name=Garzua del Ladronzuelo
+item.treasure2:thiefs_lock_pick.name=Garzua Maestra del Ladron
+
+item.treasure2:painting_blocks_bricks.name=Cuadro Coleccionable de Ladrillo por o2xygeno
+item.treasure2:painting_blocks_cobblestone.name=Cuadro Coleccionable de Guijarro por o2xygeno
+item.treasure2:painting_blocks_dirt.name=Cuadro Coleccionable de Tierra por o2xygeno
+item.treasure2:painting_blocks_lava.name=Cuadro Coleccionable de Lava por o2xygeno
+item.treasure2:painting_blocks_sand.name=Cuadro Coleccionable de Arena por o2xygeno
+item.treasure2:painting_blocks_water.name=Cuadro Coleccionable de Agua por o2xygeno
+item.treasure2:painting_blocks_wood.name=Cuadro Coleccionable de Madera por o2xygeno
+
+item.treasure2:eye_patch.name=Parche Pirata
+item.treasure2:skull_sword.name=Espada Calavera
+item.treasure2:spanish_moss.name=Musgo hispano
+item.treasure2:sapphire.name=Zafiro
+item.treasure2:ruby.name=Rubi
+item.treasure2:skeleton_item.name=Esqueleto
+item.treasure2:white_pearl.name=Perla Blanca
+item.treasure2:black_pearl.name=Perla Negra
+item.treasure2:oyster_meat.name=Carne de Ostra
+item.treasure2:oyster_stew.name=Estofado de Ostra
+item.treasure2:clam_meat.name=Carne de Almeja
+item.treasure2:clam_stew.name=Estofado de Almeja
+item.treasure2:treasure_tool.name=Herramienta del Tesoro
+
+#entities
+#TODO rename standard to wood
+entity.wood_mimic.name=Cofre De Madera falso
+entity.pirate_mimic.name=Cofre Pirata falso
+
+#groups
+itemGroup.treasure2:treasure_tab=Treasure2!
+
+# string resources
+tooltip.yes=Si
+tooltip.no=No
+tooltip.label.rarity=Rareza: %s
+tooltip.label.category=Categoria: %s
+tooltip.label.max_uses= Usos Maximos: %s
+tooltip.label.breakable=Rompible: %s
+tooltip.label.craftable=Elaborable: %s
+tooltip.label.damageable=Dañable: %s
+tooltip.label.specials=Beneficio Extra: %s
+tooltip.label.accepts_keys=LLaves aceptadas: %s
+tooltip.label.coin=Tirala al Pozo de los Deseos y Mira lo que Pasa!
+tooltip.label.key_ring=Contenedor para Llaves
+tooltip.label.treasure_tool=Requerido para recetas de Llaves / Garzuas
+
+tooltip.label.max_locks=Max de Cerraduras: %s
+tooltip.label.container_size=Tamaño del Inventario: %s
+
+
+tooltip.metallurgists_key.specials=Abre cualquier cerradura de la categoria METALES
+tooltip.skeleton_key.specials=Abre cerraduras COMUNES, NO COMUNES, ESCASAS y RARAS (excluyendo Wither)
+tooltip.pilferers_lock_pick.specials=Abre cerraduras COMUNES (%s%%) y NO COMUNES (%s%%)
+tooltip.thiefs_lock_pick.specials=Abre cerraduras COMUNES (%s%%), NO COMUNES (%s%%) y ESCASAS (%s%%)
+tooltip.jewelled_key.specials=Abre cualquier cerradura de la categoria GEMAS
+
+tooltip.painting.name=%s
+tooltip.painting.collection=Coleccion: %s
+tooltip.painting.issue=Numero del Cuadro: %s/%s
+tooltip.painting.artist=por %s
+
+
+#gui
+display.wood_chest.name=Cofre de Madera
+display.crate_chest.name=Caja De Madera
+display.crate_chest_moldy.name=Caja De Madera Mohosa
+display.ironbound_chest.name=Cofre de Hierro
+display.pirate_chest.name=Cofre Pirata
+display.iron_strongbox.name=Caja Fuerte de Hierro
+display.gold_strongbox.name=Caja Fuerte de Oro
+display.safe.name=Caja Fuerte
+display.dread_pirate_chest.name=Cofre Del Pirata Temible
+display.compressor_chest.name=Cofre Compresor
+display.wither_chest.name=Cofre Wither
+display.skull_chest.name=Cofre Calavera
+display.gold_skull_chest.name=Cofre de la Calavera Dorada
+display.cauldron_chest.name=Cofre Caldero
+display.whale_bone_pirate_chest.name=Cofre Pirata de Hueso de Ballena
+display.clam_chest.name=Almeja
+display.oyster_chest.name=Ostra
+display.spider_chest.name=Cofre Aracnido
+

@@ -1,0 +1,8 @@
+{
+    "parent": "treasure2:block/crate",
+	"textures": {
+		"0": "treasure2:blocks/chests/crate_chest_moldy_north",
+		"1": "treasure2:blocks/chests/crate_chest_moldy_board",
+		"2": "treasure2:blocks/chests/crate_chest_metal"
+	}
+}

@@ -1,0 +1,11 @@
+{
+    "variants": {
+		"normal": { "model": "treasure2:gravestone1_polished_diorite" },
+        "facing=north": { "model": "treasure2:gravestone1_polished_diorite" },
+        "facing=south": { "model": "treasure2:gravestone1_polished_diorite", "y": 180, "uvlock": true },
+        "facing=west":  { "model": "treasure2:gravestone1_polished_diorite", "y": 270, "uvlock": true },
+        "facing=east":  { "model": "treasure2:gravestone1_polished_diorite", "y": 90, "uvlock": true },
+        "facing=up": { "model": "treasure2:gravestone1_polished_diorite" },
+        "facing=down": { "model": "treasure2:gravestone1_polished_diorite" }
+    }
+}

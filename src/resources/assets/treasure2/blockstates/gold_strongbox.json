@@ -1,0 +1,11 @@
+{
+    "variants": {
+		"normal": { "model": "treasure2:gold_strongbox" },
+        "facing=north": { "model": "treasure2:gold_strongbox" },
+        "facing=south": { "model": "treasure2:gold_strongbox", "y": 180, "uvlock": true },
+        "facing=west":  { "model": "treasure2:gold_strongbox", "y": 270, "uvlock": true },
+        "facing=east":  { "model": "treasure2:gold_strongbox", "y": 90, "uvlock": true },
+        "facing=up": { "model": "treasure2:gold_strongbox" },
+        "facing=down": { "model": "treasure2:gold_strongbox" }
+    }
+}

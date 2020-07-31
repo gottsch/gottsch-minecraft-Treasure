@@ -1,0 +1,41 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "sgs_metals_scarce_items",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "steel_ingot",
+					"type": "item",
+					"name": "sgs_metals:steel_ingot",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 2,
+								"max": 5
+							}
+						}
+					]						
+				},
+				{
+					"entryName": "bone_steel_ingot",
+					"type": "item",
+					"name": "sgs_metals:bone_steel_ingot",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 2,
+								"max": 5
+							}
+						}
+					]						
+				}
+			]
+		}
+	]
+}				

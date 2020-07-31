@@ -1,0 +1,17 @@
+{
+    "variants": {
+        "normal": { "model": "treasure2:skeleton_top" },
+        "facing=north,part=bottom": { "model": "treasure2:skeleton_bottom" },
+        "facing=south,part=bottom": { "model": "treasure2:skeleton_bottom", "y": 180},
+        "facing=west,part=bottom":  { "model": "treasure2:skeleton_bottom", "y": 270},
+        "facing=east,part=bottom":  { "model": "treasure2:skeleton_bottom", "y": 90},
+        "facing=up,part=bottom": { "model": "treasure2:skeleton_bottom" },
+        "facing=down,part=bottom": { "model": "treasure2:skeleton_bottom" },
+        "facing=north,part=top": { "model": "treasure2:skeleton_top" },
+        "facing=south,part=top": { "model": "treasure2:skeleton_top", "y": 180},
+        "facing=west,part=top":  { "model": "treasure2:skeleton_top", "y": 270},
+        "facing=east,part=top":  { "model": "treasure2:skeleton_top", "y": 90},
+        "facing=up,part=top": { "model": "treasure2:skeleton_top" },
+        "facing=down,part=top": { "model": "treasure2:skeleton_top" }        
+    }
+}

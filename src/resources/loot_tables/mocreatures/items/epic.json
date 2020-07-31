@@ -1,0 +1,65 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mo_scarce_items",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "essencedarkness",
+					"type": "item",
+					"name": "mocreatures:essencedarkness",
+					"weight": 1
+				},
+				{
+					"entryName": "essencefire",
+					"type": "item",
+					"name": "mocreatures:essencefire",
+					"weight": 1
+				},	
+				{
+					"entryName": "essenceundead",
+					"type": "item",
+					"name": "mocreatures:essenceundead",
+					"weight": 1
+				},
+				{
+					"entryName": "essencelight",
+					"type": "item",
+					"name": "mocreatures:essencelight",
+					"weight": 1,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.5
+						}
+					]					
+				},					
+				{
+					"entryName": "amuletghost",
+					"type": "item",
+					"name": "mocreatures:amuletghost",
+					"weight": 1,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.6
+						}
+					]
+				},
+				{
+					"entryName": "staffportal",
+					"type": "item",
+					"name": "mocreatures:staffportal",
+					"weight": 1,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.3
+						}
+					]					
+				}			
+			]
+		}
+	]
+}

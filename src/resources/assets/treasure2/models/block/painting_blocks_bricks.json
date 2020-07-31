@@ -1,0 +1,7 @@
+{
+    "parent": "treasure2:block/painting",
+    "textures": {
+        "0": "treasure2:blocks/paintings/painting_blocks_bricks",
+        "1": "treasure2:blocks/paintings/painting_frame"
+    }
+}

@@ -1,0 +1,59 @@
+	{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "sgs_metals_scarce_armor",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "bone_steel_chestplate",
+					"type": "item",
+					"name": "sgs_metals:bone_steel_chestplate",
+					"weight": 8
+				},
+				{
+					"entryName": "bone_steel_leggings",
+					"type": "item",
+					"name": "sgs_metals:bone_steel_leggings",
+					"weight": 10				
+				},
+				{
+					"entryName": "bone_steel_helmet",
+					"type": "item",
+					"name": "sgs_metals:bone_steel_helmet",
+					"weight": 10			
+				},
+				{
+					"entryName": "bone_steel_boots",
+					"type": "item",
+					"name": "sgs_metals:bone_steel_boots",
+					"weight": 10				
+				},
+				{
+					"entryName": "steel_chestplate",
+					"type": "item",
+					"name": "sgs_metals:steel_chestplate",
+					"weight": 8
+				},
+				{
+					"entryName": "steel_leggings",
+					"type": "item",
+					"name": "sgs_metals:steel_leggings",
+					"weight": 10			
+				},
+				{
+					"entryName": "steel_helmet",
+					"type": "item",
+					"name": "sgs_metals:steel_helmet",
+					"weight": 10			
+				},
+				{
+					"entryName": "steel_boots",
+					"type": "item",
+					"name": "sgs_metals:steel_boots",
+					"weight": 10				
+				}
+			]
+		}
+	]
+}

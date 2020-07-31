@@ -1,0 +1,44 @@
+{
+	"variants": {
+		"all": {"model": "treasure2:wither_log"},
+		"axis=x,bark=normal": [
+				{"model": "treasure2:wither_log_normal",	"x": 90, "y": 90},
+				{"model": "treasure2:wither_log_normal_mossy",	"x": 90, "y": 90}
+			],
+		"axis=x,bark=full": [ 
+				{"model": "treasure2:wither_log_full",	"x": 90, "y": 90},
+				{"model": "treasure2:wither_log_full_mossy",	"x": 90, "y": 90}
+			],			
+		"axis=x,bark=stripped": {"model": "treasure2:wither_log_stripped",	"y": 90},
+		"axis=y,bark=normal": [
+				{"model": "treasure2:wither_log_normal"},
+				{"model": "treasure2:wither_log_normal_mossy"}
+			],			
+		"axis=y,bark=full": [
+				{"model": "treasure2:wither_log_full"},
+				{"model": "treasure2:wither_log_full_mossy"}
+			],			
+		"axis=y,bark=stripped": {"model": "treasure2:wither_log_stripped"},		
+		"axis=z,bark=normal": [
+				{"model": "treasure2:wither_log_normal",	"x": 90},
+				{"model": "treasure2:wither_log_normal_mossy",	"x": 90}
+			],			
+		"axis=z,bark=full": [
+				{"model": "treasure2:wither_log_full"},
+				{"model": "treasure2:wither_log_full_mossy"}
+			],			
+		"axis=z,bark=stripped": {"model": "treasure2:wither_log_stripped"},	
+		"axis=none,bark=normal": [
+				{"model": "treasure2:wither_log_normal"},
+				{"model": "treasure2:wither_log_normal_mossy"}
+			],
+			"axis=none,bark=full": [
+				{"model": "treasure2:wither_log_normal"},
+				{"model": "treasure2:wither_log_normal_mossy"}
+			],
+			"axis=none,bark=stripped": [
+				{"model": "treasure2:wither_log_normal"},
+				{"model": "treasure2:wither_log_normal_mossy"}
+			]
+	}
+}

@@ -1,0 +1,37 @@
+	{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "sgs_metals_epic_tools",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "titanium_sword",
+					"type": "item",
+					"name": "sgs_metals:titanium_sword",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "enchant_with_levels",
+							"levels": 30,
+							"treasure": true
+						}					
+					]	
+				},
+				{
+					"entryName": "autium_sword",
+					"type": "item",
+					"name": "sgs_metals:autium_sword",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "enchant_with_levels",
+							"levels": 30,
+							"treasure": true
+						}				
+					]						
+				}
+			]
+		}
+	]
+}

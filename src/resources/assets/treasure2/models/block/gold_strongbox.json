@@ -1,0 +1,10 @@
+{
+    "parent": "treasure2:block/strongbox",
+    "textures": {
+		"0": "treasure2:blocks/chests/gold_strongbox_front",
+		"1": "treasure2:blocks/chests/gold_strongbox_side",
+		"2": "treasure2:blocks/chests/gold_strongbox_up",
+		"3": "treasure2:blocks/chests/gold_strongbox_foot",
+		"4": "treasure2:blocks/chests/gold_strongbox_pad"
+    }
+}

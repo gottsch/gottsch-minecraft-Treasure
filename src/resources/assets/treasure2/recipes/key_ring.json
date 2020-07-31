@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+	"KX ",
+	"X X",
+	" X "
+  ],
+  "key": {
+	"X": {
+		"item": "minecraft:iron_ingot"
+	},
+	"K": [
+		{
+			"item": "treasure2:wood_key"
+		},
+		{
+		"item": "treasure2:stone_key"
+		},
+		{
+			"item": "treasure2:iron_key"
+		}
+	]
+  },
+  "result": {
+    "item": "treasure2:key_ring",
+    "count": 1
+  }
+}

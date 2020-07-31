@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "Treasure2",
+  "pattern": [
+	"  T",
+	"   ",
+	" S "
+  ],
+  "key": {
+    "T": {
+		"item": "treasure2:treasure_tool"
+	},
+	"S": {
+		"item": "minecraft:stone",
+		"data":2
+	}
+  },
+  "result": {
+    "item": "treasure2:gravestone1_polished_granite",
+    "count": 1
+  }
+}

@@ -1,0 +1,23 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mo_scarce_food",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "ratburger",
+					"type": "item",
+					"name": "mocreatures:ratburger",
+					"weight": 1,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.5
+						}
+					]
+				}
+			]
+		}
+	]
+}

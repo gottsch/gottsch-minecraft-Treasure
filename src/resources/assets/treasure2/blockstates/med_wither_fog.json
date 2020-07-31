@@ -1,0 +1,14 @@
+{
+    "variants": {
+        "normal": { "model": "treasure2:med_wither_fog" },
+        "activated=false,check_decay=false,decayable=false": { "model": "treasure2:med_wither_fog" },
+        "activated=false,check_decay=false,decayable=true": { "model": "treasure2:med_wither_fog" },
+        "activated=false,check_decay=true,decayable=false": { "model": "treasure2:med_wither_fog" },
+        "activated=false,check_decay=true,decayable=true": { "model": "treasure2:med_wither_fog" },
+        
+        "activated=true,check_decay=false,decayable=false": { "model": "treasure2:med_wither_fog" },
+        "activated=true,check_decay=false,decayable=true": { "model": "treasure2:med_wither_fog" },
+        "activated=true,check_decay=true,decayable=false": { "model": "treasure2:med_wither_fog" },
+        "activated=true,check_decay=true,decayable=true": { "model": "treasure2:med_wither_fog" }
+	}
+}

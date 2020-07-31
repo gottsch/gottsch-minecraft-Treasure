@@ -1,0 +1,35 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mo_uncommon_tools",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "bo",
+					"type": "item",
+					"name": "mocreatures:bo",
+					"weight":1
+				},
+				{
+					"entryName": "katana",
+					"type": "item",
+					"name": "mocreatures:katana",
+					"weight":1
+				},
+				{
+					"entryName": "nunchaku",
+					"type": "item",
+					"name": "mocreatures:nunchaku",
+					"weight":1
+				},
+				{
+					"entryName": "sai",
+					"type": "item",
+					"name": "mocreatures:sai",
+					"weight":1
+				}		
+			]
+		}
+	]
+}

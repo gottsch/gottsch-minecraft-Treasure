@@ -1,0 +1,77 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "sgs_metals_rare_tools",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "titanium_sword",
+					"type": "item",
+					"name": "sgs_metals:titanium_sword",
+					"weight": 13,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]
+				},
+				{
+					"entryName": "autium_sword",
+					"type": "item",
+					"name": "sgs_metals:autium_sword",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]
+				},
+				{
+					"entryName": "titanium_pickaxe",
+					"type": "item",
+					"name": "sgs_metals:titanium_pickaxe",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]
+				},
+				{
+					"entryName": "autium_pickaxe",
+					"type": "item",
+					"name": "sgs_metals:autium_pickaxe",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]
+				},
+				{
+					"entryName": "titanium_axe",
+					"type": "item",
+					"name": "sgs_metals:titanium_axe",
+					"weight": 5,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]
+				},
+				{
+					"entryName": "autium_axe",
+					"type": "item",
+					"name": "sgs_metals:autium_axe",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]
+				}
+			]
+		}
+	]
+}				

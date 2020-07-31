@@ -1,0 +1,186 @@
+#chests
+tile.treasure2:wood_chest.name=Drewniana skrzynia
+tile.treasure2:crate_chest.name=Skrzynia
+tile.treasure2:crate_chest_moldy.name=SpleÅ›niaÅ‚a skrzynia
+tile.treasure2:ironbound_chest.name=Wzmacniana skrzynia
+tile.treasure2:iron_strongbox.name=Å»elazna szkatuÅ‚a
+tile.treasure2:gold_strongbox.name=ZÅ‚ota szkatuÅ‚a
+tile.treasure2:pirate_chest.name=Piracka skrzynia
+tile.treasure2:safe.name=Sejf
+tile.treasure2:dread_pirate_chest.name=Upiorna skrzynia piratÃ³w
+tile.treasure2:compressor_chest.name=SprzÄ™Å¼ajÄ…ca skrzynia
+tile.treasure2:wither_chest.name=Witherowa skrzynia
+tile.treasure2:skull_chest.name=Czaszka ze skarbem
+tile.treasure2:gold_skull_chest.name=ZÅ‚ota czaszka ze skarbem
+tile.treasure2:cauldron_chest.name=KocioÅ‚ ze skarbem
+
+tile.treasure2:wood_mimic.name=Drewniany mimik
+
+#wells
+tile.treasure2:wishing_well_block.name=KamieÅ„ studni Å¼yczeÅ„
+tile.treasure2:desert_wishing_well_block.name=Desert Wishing Well Stone
+
+#gravestones
+tile.treasure2:gravestone1_stone.name=Kamienny nagrobek
+tile.treasure2:gravestone1_cobblestone.name=Brukowy nagrobek
+tile.treasure2:gravestone1_mossy_cobblestone.name=Zamszony brukowy nagrobek
+tile.treasure2:gravestone1_polished_granite.name=Granitowy nagrobek
+tile.treasure2:gravestone1_polished_andesite.name=Andezytowy nagrobek
+tile.treasure2:gravestone1_polished_diorite.name=Diorytowy nagrobek
+tile.treasure2:gravestone1_obsidian.name=Obsydianowy nagrobek
+
+tile.treasure2:gravestone2_stone.name=Kamienny nagrobek
+tile.treasure2:gravestone2_cobblestone.name=Brukowy nagrobek
+tile.treasure2:gravestone2_mossy_cobblestone.name=Zamszony brukowy nagrobek
+tile.treasure2:gravestone2_polished_granite.name=Granitowy nagrobek
+tile.treasure2:gravestone2_polished_andesite.name=Andezytowy nagrobek
+tile.treasure2:gravestone2_polished_diorite.name=Diorytowy nagrobek
+tile.treasure2:gravestone2_obsidian.name=Obsydianowy nagrobek
+
+tile.treasure2:gravestone3_stone.name=Kamienny nagrobek
+tile.treasure2:gravestone3_cobblestone.name=Brukowy nagrobek
+tile.treasure2:gravestone3_mossy_cobblestone.name=Zamszony brukowy nagrobek
+tile.treasure2:gravestone3_polished_granite.name=Granitowy nagrobek
+tile.treasure2:gravestone3_polished_andesite.name=Andezytowy nagrobek
+tile.treasure2:gravestone3_polished_diorite.name=Diorytowy nagrobek
+tile.treasure2:gravestone3_obsidian.name=Obsydianowy nagrobek
+
+tile.treasure2:skull_and_crossbones.name=Czaszka i koÅ›ci
+tile.treasure2:skeleton.name=Szkielet
+
+#wither tree
+tile.treasure2:wither_log.name=Witherowe drewno
+tile.treasure2:wither_broken_log.name=Witherowe zÅ‚amane drewno
+tile.treasure2:wither_log_soul.name=Witherowe drewno duszy
+tile.treasure2:wither_branch.name=Witherowa gaÅ‚Ä…Åº
+tile.treasure2:wither_root.name=Witherowy korzeÅ„
+tile.treasure2:wither_planks.name=Witherowe deski
+
+#fogs
+tile.treasure2:fog.name=MgÅ‚a
+tile.treasure2:high_fog.name=Wysoka mgÅ‚a
+tile.treasure2:med_fog.name=Åšrednia mgÅ‚a
+tile.treasure2:low_fog.name=Niska mgÅ‚a
+
+tile.treasure2:wither_fog.name=Witherowa mgÅ‚a
+tile.treasure2:high_wither_fog.name=Wysoka witherowa mgÅ‚a
+tile.treasure2:med_wither_fog.name=Åšrednia witherowa mgÅ‚a
+tile.treasure2:low_wither_fog.name=Niska witherowa mgÅ‚a
+
+tile.treasure2:poison_fog.name=TrujÄ…ca mgÅ‚a
+tile.treasure2:high_poison_fog.name=Wysoka trujÄ…ca mgÅ‚a
+tile.treasure2:med_poison_fog.name=Åšrednia trujÄ…ca mgÅ‚a
+tile.treasure2:low_poison_fog.name=Niska trujÄ…ca mgÅ‚a
+
+#ores
+tile.treasure2:sapphire_ore.name=Ruda szafiru
+tile.treasure2:ruby_ore.name=Ruda rubinu
+
+#other
+tile.treasure2:spanish_moss.name=HiszpaÅ„ski mech
+
+#items
+item.treasure2:gold_coin.name=ZÅ‚ota moneta
+item.treasure2:silver_coin.name=Srebrna moneta
+
+item.treasure2:key_ring.name=PierÅ›cieÅ„ na klucze
+item.treasure2:wood_key.name=Drewniany klucz
+item.treasure2:stone_key.name=Kamienny klucz
+item.treasure2:iron_key.name=Å»elazny klucz
+item.treasure2:gold_key.name=ZÅ‚oty klucz
+item.treasure2:diamond_key.name=Diamentowy klucz
+item.treasure2:emerald_key.name=Szmaragdowy klucz
+item.treasure2:ruby_key.name=Rubinowy klucz
+item.treasure2:sapphire_key.name=Szafirowy klucz
+item.treasure2:jewelled_key.name=Zdobiony klucz
+item.treasure2:metallurgists_key.name=Klucz hutnika
+item.treasure2:skeleton_key.name=KoÅ›ciany klucz
+item.treasure2:spider_key.name=PajÄ™czy klucz
+item.treasure2:wither_key.name=Witherowy klucz
+
+item.treasure2:wood_lock.name=Drewniany zamek
+item.treasure2:stone_lock.name=Kamienny zamek
+item.treasure2:iron_lock.name=Å»elazny zamek
+item.treasure2:gold_lock.name=ZÅ‚oty zamek
+item.treasure2:diamond_lock.name=Diamentowy zamek
+item.treasure2:emerald_lock.name=Szmaragdowy zamek
+item.treasure2:ruby_lock.name=Rubinowy zamek
+item.treasure2:sapphire_lock.name=Szafirowy zamek
+item.treasure2:spider_lock.name=PajÄ™czy zamek
+item.treasure2:wither_lock.name=Witherowy zamek
+
+item.treasure2:wither_stick_item.name=Witherowa gaÅ‚Ä…Åº
+item.treasure2:wither_root_item.name=Witherowy korzeÅ„
+item.treasure2:pilferers_lock_pick.name=Prosty wytrych
+item.treasure2:thiefs_lock_pick.name=ZÅ‚odziejski wytrych
+
+item.treasure2:painting_blocks_bricks.name=CegÅ‚y przez o2xygeno
+item.treasure2:painting_blocks_cobblestone.name=Bruk przez o2xygeno
+item.treasure2:painting_blocks_dirt.name=Ziemia przez o2xygeno
+item.treasure2:painting_blocks_lava.name=Lawa przez o2xygeno
+item.treasure2:painting_blocks_sand.name=Piasek przez o2xygeno
+item.treasure2:painting_blocks_water.name=Woda przez o2xygeno
+item.treasure2:painting_blocks_wood.name=Drewno przez o2xygeno
+
+item.treasure2:eye_patch.name=Opaska na oko
+item.treasure2:skull_sword.name=Miecz z czaszkÄ…
+item.treasure2:spanish_moss.name=HiszpaÅ„ski mech
+item.treasure2:sapphire.name=Szafir
+item.treasure2:ruby.name=Rubin
+item.treasure2:skeleton_item.name=Szkielet
+item.treasure2:treasure_tool.name=NarzÄ™dzie do kluczy
+
+#entities
+#TODO rename standard to wood
+entity.wood_mimic.name=Drewniany mimik
+
+#groups
+itemGroup.treasure2:treasure_tab=Treasure2!
+
+# string resources
+tooltip.yes=Tak
+tooltip.no=Nie
+tooltip.label.rarity=RzadkoÅ›Ä‡: %s
+tooltip.label.category=Kategoria: %s
+tooltip.label.max_uses=Maks. uÅ¼yÄ‡: %s
+tooltip.label.breakable=Zniszczalne: %s
+tooltip.label.craftable=MoÅ¼liwe do stworzenia: %s
+tooltip.label.damageable=Podatne na uszkodzenia: %s
+tooltip.label.specials=Specjalne: %s
+tooltip.label.accepts_keys=MoÅ¼liwe klucze: %s
+tooltip.label.coin=WrzuÄ‡ do studni Å¼yczeÅ„
+tooltip.label.key_ring=Zbiornik na klucze
+tooltip.label.treasure_tool=Wymagany do receptur kluczy/wytrychÃ³w
+
+tooltip.label.max_locks=Maks. zamkÃ³w: %s
+tooltip.label.container_size=Wielk. ekwipunku: %s
+
+
+tooltip.metallurgists_key.specials=Otwiera wszystkie zamki w kategorii METALE
+tooltip.skeleton_key.specials=Otwiera ZWYKÅ�E, NIETYPOWE, POÅ»Ä„DANE i RZADKIE zamki (oprÃ³cz Witherowego)
+tooltip.pilferers_lock_pick.specials=Otwiera ZWYKÅ�E (%s%%) i NIETYPOWE (%s%%) zamki
+tooltip.thiefs_lock_pick.specials=Otwiera ZWYKÅ�E (%s%%), NIETYPOWE (%s%%) i POÅ»Ä„DANE (%s%%) zamki
+tooltip.jewelled_key.specials=Otwiera zamki z kategorii KLEJNOTY
+
+tooltip.painting.name=%s
+tooltip.painting.collection=Kolekcja: %s
+tooltip.painting.issue=Wydanie: %s/%s
+tooltip.painting.artist=przez %s
+
+
+#gui
+display.wood_chest.name=Drewniana skrzynia
+display.crate_chest.name=Skrzynia
+display.crate_chest_moldy.name=SpleÅ›niaÅ‚a skrzynia
+display.ironbound_chest.name=Wzmacniana skrzynia
+display.pirate_chest.name=Piracka skrzynia
+display.iron_strongbox.name=Å»elazna szkatuÅ‚a
+display.gold_strongbox.name=ZÅ‚ota szkatuÅ‚a
+display.safe.name=Sejf
+display.dread_pirate_chest.name=Upiorna piracka skrzynia
+display.compressor_chest.name=SprzÄ™Å¼ajÄ…ca skrzynia
+display.wither_chest.name=Witherowa skrzynia
+display.skull_chest.name=Czaszka ze skarbem
+display.gold_skull_chest.name=ZÅ‚ota czaszka ze skarbem
+display.cauldron_chest.name=KocioÅ‚ ze skarbem
+

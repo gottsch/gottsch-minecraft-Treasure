@@ -1,0 +1,63 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"1": "treasure2:blocks/chests/skull_eyes",
+		"2": "treasure2:blocks/chests/skull_mouth_front",
+		"3": "treasure2:blocks/chests/skull_texture",
+		"particle": "treasure2:blocks/chests/skull_texture"
+	},
+	"elements": [
+		{
+			"name": "top",
+			"from": [5, 8, 5],
+			"to": [11, 9, 11],
+			"faces": {
+				"north": {"uv": [4, 4, 10, 5], "texture": "#3"},
+				"east": {"uv": [4, 4, 10, 5], "texture": "#3"},
+				"south": {"uv": [4, 4, 10, 5], "texture": "#3"},
+				"west": {"uv": [4, 4, 10, 5], "texture": "#3"},
+				"up": {"uv": [5, 5, 11, 11], "texture": "#3"},
+				"down": {"uv": [0, 0, 6, 6], "texture": "#missing"}
+			}
+		},
+		{
+			"name": "head",
+			"from": [4, 3, 4],
+			"to": [12, 8, 12],
+			"faces": {
+				"north": {"uv": [4, 6, 12, 11], "texture": "#1"},
+				"east": {"uv": [4, 4, 12, 9], "texture": "#3"},
+				"south": {"uv": [4, 6, 12, 11], "texture": "#3"},
+				"west": {"uv": [4, 4, 12, 9], "texture": "#3"},
+				"up": {"uv": [4, 4, 12, 12], "texture": "#3"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#3"}
+			}
+		},
+		{
+			"name": "jaw",
+			"from": [5, 0, 4],
+			"to": [11, 3, 9],
+			"faces": {
+				"north": {"uv": [5, 7, 11, 10], "texture": "#2"},
+				"east": {"uv": [4, 7, 9, 10], "texture": "#2"},
+				"south": {"uv": [5, 5, 11, 8], "texture": "#3"},
+				"west": {"uv": [7, 7, 12, 10], "texture": "#2"},
+				"up": {"uv": [0, 0, 6, 5], "texture": "#missing"},
+				"down": {"uv": [5, 5, 11, 10], "texture": "#3"}
+			}
+		},
+		{
+			"name": "back",
+			"from": [5, 2, 9],
+			"to": [11, 3, 10],
+			"faces": {
+				"north": {"uv": [0, 0, 6, 1], "texture": "#missing"},
+				"east": {"uv": [4, 4, 5, 5], "texture": "#3"},
+				"south": {"uv": [5, 10, 11, 11], "texture": "#3"},
+				"west": {"uv": [6, 6, 7, 7], "texture": "#3"},
+				"up": {"uv": [0, 0, 6, 1], "texture": "#missing"},
+				"down": {"uv": [5, 5, 11, 6], "texture": "#3"}
+			}
+		}
+	]
+}

@@ -1,0 +1,11 @@
+{
+    "variants": {
+		"normal": { "model": "treasure2:gravestone3_mossy_cobblestone" },
+        "facing=north": { "model": "treasure2:gravestone3_mossy_cobblestone" },
+        "facing=south": { "model": "treasure2:gravestone3_mossy_cobblestone", "y": 180, "uvlock": true },
+        "facing=west":  { "model": "treasure2:gravestone3_mossy_cobblestone", "y": 270, "uvlock": true },
+        "facing=east":  { "model": "treasure2:gravestone3_mossy_cobblestone", "y": 90, "uvlock": true },
+        "facing=up": { "model": "treasure2:gravestone3_mossy_cobblestone" },
+        "facing=down": { "model": "treasure2:gravestone3_mossy_cobblestone" }
+    }
+}

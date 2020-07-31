@@ -1,0 +1,11 @@
+{
+    "variants": {
+		"normal": { "model": "treasure2:painting_blocks_bricks" },
+        "facing=north": { "model": "treasure2:painting_blocks_bricks" },
+        "facing=south": { "model": "treasure2:painting_blocks_bricks", "y": 180, "uvlock": true },
+        "facing=west":  { "model": "treasure2:painting_blocks_bricks", "y": 270, "uvlock": true },
+        "facing=east":  { "model": "treasure2:painting_blocks_bricks", "y": 90, "uvlock": true },
+        "facing=up": { "model": "treasure2:painting_blocks_bricks" },
+        "facing=down": { "model": "treasure2:painting_blocks_bricks" }
+    }
+}

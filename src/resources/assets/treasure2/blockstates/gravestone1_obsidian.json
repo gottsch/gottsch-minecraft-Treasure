@@ -1,0 +1,11 @@
+{
+    "variants": {
+		"normal": { "model": "treasure2:gravestone1_obsidian" },
+        "facing=north": { "model": "treasure2:gravestone1_obsidian" },
+        "facing=south": { "model": "treasure2:gravestone1_obsidian", "y": 180, "uvlock": true },
+        "facing=west":  { "model": "treasure2:gravestone1_obsidian", "y": 270, "uvlock": true },
+        "facing=east":  { "model": "treasure2:gravestone1_obsidian", "y": 90, "uvlock": true },
+        "facing=up": { "model": "treasure2:gravestone1_obsidian" },
+        "facing=down": { "model": "treasure2:gravestone1_obsidian" }
+    }
+}

@@ -1,0 +1,101 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mo_common_food",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "turkeyraw",
+					"type": "item",
+					"name": "mocreatures:turkeyraw",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]	
+				},
+				{
+					"entryName": "crabraw",
+					"type": "item",
+					"name": "mocreatures:crabraw",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]	
+				},
+				{
+					"entryName": "ostrichraw",
+					"type": "item",
+					"name": "mocreatures:ostrichraw",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]	
+				},
+				{
+					"entryName": "ratraw",
+					"type": "item",
+					"name": "mocreatures:ratraw",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]	
+				},
+										{
+					"entryName": "turtleraw",
+					"type": "item",
+					"name": "mocreatures:turtleraw",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]	
+				},	
+				{
+					"entryName": "omelet",
+					"type": "item",
+					"name": "mocreatures:omelet",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]	
+				}
+			]
+		}
+	]
+}

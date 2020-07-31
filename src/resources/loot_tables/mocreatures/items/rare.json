@@ -1,0 +1,47 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mo_scarce_items",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "unicornhorn",
+					"type": "item",
+					"name": "mocreatures:unicornhorn",
+					"weight": 1
+				},	
+				{
+					"entryName": "heartdarkness",
+					"type": "item",
+					"name": "mocreatures:heartdarkness",
+					"weight": 1
+				},
+				{
+					"entryName": "heartfire",
+					"type": "item",
+					"name": "mocreatures:heartfire",
+					"weight": 1
+				},	
+				{
+					"entryName": "heartundead",
+					"type": "item",
+					"name": "mocreatures:heartundead",
+					"weight": 1
+				},	
+				{
+					"entryName": "amuletghost",
+					"type": "item",
+					"name": "mocreatures:amuletghost",
+					"weight": 1,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.6
+						}
+					]
+				}
+			]
+		}
+	]
+}

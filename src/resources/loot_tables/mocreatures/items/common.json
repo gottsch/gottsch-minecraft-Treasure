@@ -1,0 +1,107 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mo_common_items",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "elephanthowdah",
+					"type": "item",
+					"name": "mocreatures:elephanthowdah",
+					"weight": 1
+				},
+				{
+					"entryName": "elephantharness",
+					"type": "item",
+					"name": "mocreatures:elephantharness",
+					"weight": 1
+				},
+				{
+					"entryName": "elephantchest",
+					"type": "item",
+					"name": "mocreatures:elephantchest",
+					"weight": 1
+				},						
+				{
+					"entryName": "scorp1",
+					"type": "item",
+					"name": "mocreatures:scorpstingdirt",
+					"weight": 2,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				},
+				{
+					"entryName": "scorp2",
+					"type": "item",
+					"name": "mocreatures:scorpstingcave",
+					"weight": 2,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				},
+				{
+					"entryName": "chitin1",
+					"type": "item",
+					"name": "mocreatures:chitin",
+					"weight": 2
+				},
+				{
+					"entryName": "chitin2",
+					"type": "item",
+					"name": "mocreatures:chitinblack",
+					"weight": 2
+				},
+				{
+					"entryName": "hide",
+					"type": "item",
+					"name": "mocreatures:hide",
+					"weight": 3,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 3
+							}
+						}
+					]
+				},
+				{
+					"entryName": "fur",
+					"type": "item",
+					"name": "mocreatures:fur",
+					"weight": 3,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 3
+							}
+						}
+					]
+				},
+				{
+					"entryName": "woolball",
+					"type": "item",
+					"name": "mocreatures:woolball",
+					"weight": 1
+				}
+			]
+		}
+	]
+}

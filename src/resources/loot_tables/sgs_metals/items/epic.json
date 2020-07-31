@@ -1,0 +1,41 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "sgs_metals_scarce_items",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "titanium_block",
+					"type": "item",
+					"name": "sgs_metals:titanium_block",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]						
+				},
+				{
+					"entryName": "autium_block",
+					"type": "item",
+					"name": "sgs_metals:autium_block",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]						
+				}
+			]
+		}
+	]
+}				

@@ -1,0 +1,29 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mo_scarce_tools",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "sharksword",
+					"type": "item",
+					"name": "mocreatures:sharksword",
+					"weight": 10
+				},		
+				{
+					"entryName": "scorpsworddirt",
+					"type": "item",
+					"name": "mocreatures:scorpsworddirt",
+					"weight":1
+				},
+				{
+					"entryName": "scorpswordcave",
+					"type": "item",
+					"name": "mocreatures:scorpswordcave",
+					"weight":1
+				}
+			]
+		}
+	]
+}

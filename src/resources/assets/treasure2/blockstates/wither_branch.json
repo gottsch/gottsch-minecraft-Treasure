@@ -1,0 +1,47 @@
+{
+    "variants": {
+		"normal": { "model": "treasure2:wither_branch1a" },
+        "facing=north": [
+	        	{ "model": "treasure2:wither_branch1a" },
+	        	{ "model": "treasure2:wither_branch2a" },
+	        	{ "model": "treasure2:wither_branch3a" },
+	        	{ "model": "treasure2:wither_branch5a" },
+	        	{ "model": "treasure2:wither_branch1b" },
+	        	{ "model": "treasure2:wither_branch2b" },
+	        	{ "model": "treasure2:wither_branch3b" },
+	        	{ "model": "treasure2:wither_branch5b" }
+        	],
+        "facing=south": [
+	        	{ "model": "treasure2:wither_branch1a", "y": 180, "uvlock": true },
+	        	{ "model": "treasure2:wither_branch2a", "y": 180, "uvlock": true },
+	        	{ "model": "treasure2:wither_branch3a" , "y": 180, "uvlock": true},
+	        	{ "model": "treasure2:wither_branch5a", "y": 180, "uvlock": true },
+	        	{ "model": "treasure2:wither_branch1b", "y": 180, "uvlock": true },
+	        	{ "model": "treasure2:wither_branch2b", "y": 180, "uvlock": true },
+	        	{ "model": "treasure2:wither_branch3b" , "y": 180, "uvlock": true},
+	        	{ "model": "treasure2:wither_branch5b", "y": 180, "uvlock": true }        	
+        	],
+        "facing=west":  [
+	        	{ "model": "treasure2:wither_branch1a" , "y": 270, "uvlock": true},
+	        	{ "model": "treasure2:wither_branch2a" , "y": 270, "uvlock": true},
+	        	{ "model": "treasure2:wither_branch3a", "y": 270, "uvlock": true },
+	        	{ "model": "treasure2:wither_branch5a", "y": 270, "uvlock": true },
+	        	{ "model": "treasure2:wither_branch1b" , "y": 270, "uvlock": true},
+	        	{ "model": "treasure2:wither_branch2b" , "y": 270, "uvlock": true},
+	        	{ "model": "treasure2:wither_branch3b", "y": 270, "uvlock": true },
+	        	{ "model": "treasure2:wither_branch5b", "y": 270, "uvlock": true }        	
+        	],
+        "facing=east": [
+	        	{ "model": "treasure2:wither_branch1a" , "y": 90, "uvlock": true},
+	        	{ "model": "treasure2:wither_branch2a", "y": 90, "uvlock": true },
+	        	{ "model": "treasure2:wither_branch3a", "y": 90, "uvlock": true },
+	        	{ "model": "treasure2:wither_branch5a", "y": 90, "uvlock": true },
+	        	{ "model": "treasure2:wither_branch1b" , "y": 90, "uvlock": true},
+	        	{ "model": "treasure2:wither_branch2b", "y": 90, "uvlock": true },
+	        	{ "model": "treasure2:wither_branch3b", "y": 90, "uvlock": true },
+	        	{ "model": "treasure2:wither_branch5b", "y": 90, "uvlock": true }
+        	],
+        "facing=up": { "model": "treasure2:wither_branch1a" },
+        "facing=down": { "model": "treasure2:wither_branch1a" }
+    }
+}

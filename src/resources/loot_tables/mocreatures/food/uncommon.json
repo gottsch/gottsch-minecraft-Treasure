@@ -1,0 +1,101 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mo_uncommon_food",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "turkeycooked",
+					"type": "item",
+					"name": "mocreatures:turkeycooked",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]	
+				},
+				{
+					"entryName": "crabcooked",
+					"type": "item",
+					"name": "mocreatures:crabcooked",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]	
+				},
+				{
+					"entryName": "ostrichcooked",
+					"type": "item",
+					"name": "mocreatures:ostrichcooked",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]	
+				},
+				{
+					"entryName": "ratcooked",
+					"type": "item",
+					"name": "mocreatures:ratcooked",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]	
+				},
+				{
+					"entryName": "omelet",
+					"type": "item",
+					"name": "mocreatures:omelet",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]	
+				},
+				{
+					"entryName": "turtlesoup",
+					"type": "item",
+					"name": "mocreatures:turtlesoup",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]	
+				}				
+			]
+		}
+	]
+}

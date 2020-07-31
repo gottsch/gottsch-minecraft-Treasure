@@ -1,0 +1,29 @@
+{
+	"variants": {
+		"all": {"model": "treasure2:wither_broken_log_normal"},
+		"facing=north": [
+				{"model": "treasure2:wither_broken_log_normal"},
+				{"model": "treasure2:wither_broken_log_mossy"}
+			],
+		"facing=south": [ 
+				{"model": "treasure2:wither_broken_log_normal",	"y": 180},
+				{"model": "treasure2:wither_broken_log_mossy",	"y": 180}
+			],			
+		"facing=west": [
+				{"model": "treasure2:wither_broken_log_normal",	"y": 270},
+				{"model": "treasure2:wither_broken_log_mossy",	"y": 270}
+			],
+		"facing=east": [
+				{"model": "treasure2:wither_broken_log_normal", "y": 90},
+				{"model": "treasure2:wither_broken_log_mossy", "y": 90}
+			],
+		"facing=up": [
+				{"model": "treasure2:wither_broken_log_normal", "y": 90},
+				{"model": "treasure2:wither_broken_log_mossy", "y": 90}
+			],
+		"facing=down": [
+				{"model": "treasure2:wither_broken_log_normal", "y": 90},
+				{"model": "treasure2:wither_broken_log_mossy", "y": 90}
+			]			
+	}
+}

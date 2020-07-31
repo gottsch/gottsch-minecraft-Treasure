@@ -1,0 +1,59 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mo_scarce_armor",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "scorpplatefrost",
+					"type": "item",
+					"name": "mocreatures:scorpplatefrost",
+					"weight": 1
+				},
+				{
+					"entryName": "scorplegsfrost",
+					"type": "item",
+					"name": "mocreatures:scorplegsfrost",
+					"weight": 2
+				},
+				{
+					"entryName": "scorphelmetfrost",
+					"type": "item",
+					"name": "mocreatures:scorphelmetfrost",
+					"weight": 2
+				},
+				{
+					"entryName": "scorpbootsfrost",
+					"type": "item",
+					"name": "mocreatures:scorpbootsfrost",
+					"weight": 2
+				},
+				{
+					"entryName": "scorpplatenether",
+					"type": "item",
+					"name": "mocreatures:scorpplatenether",
+					"weight": 1
+				},
+				{
+					"entryName": "scorplegsnether",
+					"type": "item",
+					"name": "mocreatures:scorplegsnether",
+					"weight": 2
+				},
+				{
+					"entryName": "scorphelmetnether",
+					"type": "item",
+					"name": "mocreatures:scorphelmetnether",
+					"weight": 2
+				},
+				{
+					"entryName": "scorpbootsnether",
+					"type": "item",
+					"name": "mocreatures:scorpbootsnether",
+					"weight": 2
+				}
+			]
+		}
+	]
+}

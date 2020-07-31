@@ -1,0 +1,59 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mo_common_armor",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "furchest",
+					"type": "item",
+					"name": "mocreatures:furchest",
+					"weight": 1
+				},
+				{
+					"entryName": "furlegs",
+					"type": "item",
+					"name": "mocreatures:furlegs",
+					"weight": 2
+				},
+				{
+					"entryName": "furhelmet",
+					"type": "item",
+					"name": "mocreatures:furhelmet",
+					"weight": 2
+				},
+				{
+					"entryName": "furboots",
+					"type": "item",
+					"name": "mocreatures:furboots",
+					"weight": 2
+				},			
+				{
+					"entryName": "hidechest",
+					"type": "item",
+					"name": "mocreatures:hidechest",
+					"weight": 1
+				},
+				{
+					"entryName": "hidelegs",
+					"type": "item",
+					"name": "mocreatures:hidelegs",
+					"weight": 2
+				},
+				{
+					"entryName": "hidehelmet",
+					"type": "item",
+					"name": "mocreatures:hidehelmet",
+					"weight": 2
+				},
+				{
+					"entryName": "hideboots",
+					"type": "item",
+					"name": "mocreatures:hideboots",
+					"weight": 2
+				}
+			]
+		}
+	]
+}

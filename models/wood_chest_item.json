@@ -1,0 +1,39 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"textures": {
+		"0": "blocks/chests/wooden_chest_north",
+		"1": "blocks/chests/wooden_chest_east",
+		"2": "blocks/chests/wooden_chest_up",
+		"particle": "blocks/chests/wooden_chest_north"
+	},
+	"elements": [
+		{
+			"name": "chest",
+			"from": [1, 0, 1],
+			"to": [15, 14, 15],
+			"faces": {
+				"north": {"uv": [0, 0, 14, 14], "texture": "#0"},
+				"east": {"uv": [0, 0, 14, 14], "texture": "#1"},
+				"south": {
+					"uv": [0, 0, 14, 14],
+					"texture": "#missing"
+				},
+				"west": {
+					"uv": [0, 0, 14, 14],
+					"texture": "#missing"
+				},
+				"up": {"uv": [0, 0, 14, 14], "texture": "#2"},
+				"down": {
+					"uv": [0, 0, 14, 14],
+					"texture": "#missing"
+				}
+			},
+			"rotation": {
+				"origin": [9, 8, 9],
+				"axis": "y",
+				"angle": 0
+			},
+			"type": "cube"
+		}
+	]
+}

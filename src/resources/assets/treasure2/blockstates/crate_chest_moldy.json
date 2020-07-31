@@ -1,0 +1,11 @@
+{
+    "variants": {
+		"normal": { "model": "treasure2:crate_chest_moldy" },
+        "facing=north": { "model": "treasure2:crate_chest_moldy" },
+        "facing=south": { "model": "treasure2:crate_chest_moldy", "y": 180, "uvlock": true },
+        "facing=west":  { "model": "treasure2:crate_chest_moldy", "y": 270, "uvlock": true },
+        "facing=east":  { "model": "treasure2:crate_chest_moldy", "y": 90, "uvlock": true },
+        "facing=up": { "model": "treasure2:crate_chest_moldy" },
+        "facing=down": { "model": "treasure2:crate_chest_moldy" }
+    }
+}
