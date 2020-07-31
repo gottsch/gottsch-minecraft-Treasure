@@ -1,6 +1,0 @@
-{
-    "parent": "treasure2:block/ore_parent",
-    "textures": {
-        "0": "treasure2:blocks/ruby_nugget"
-    }
-}

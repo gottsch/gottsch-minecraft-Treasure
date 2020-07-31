@@ -1,7 +1,0 @@
-{
-    "variants": {
-        "normal": { "model": "treasure2:spanish_moss" },
-        "activated=false": { "model": "treasure2:spanish_moss" },
-        "activated=true": { "model": "treasure2:spanish_moss" }
-    }
-}

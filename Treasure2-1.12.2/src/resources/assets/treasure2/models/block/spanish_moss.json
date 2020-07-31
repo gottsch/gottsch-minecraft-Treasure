@@ -1,6 +1,0 @@
-{
-    "parent": "block/cross",
-    "textures": {
-        "cross": "treasure2:blocks/spanish_moss"
-    }
-}
