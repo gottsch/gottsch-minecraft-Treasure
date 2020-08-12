@@ -1,0 +1,127 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'org.ajoberstar:grgit:1.7.2'
+    }
+}
+
+plugins {
+//	id 'io.franzbecker.gradle-lombok' version '3.1.0'
+	 //  must use gradle v3.0+ for this version of shadow (2.0.1).  Update gradle-wrapper.properties
+	id "com.github.johnrengelman.shadow" version "2.0.1"
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+//Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
+
+ext {
+    // Open the Git repository in the parent directory.
+    git = org.ajoberstar.grgit.Grgit.open(file('../'))
+
+    // Get commit id of HEAD.
+    revision = git.head().id
+    // Alternative is using abbreviatedId of head() method.
+    // revision = git.head().abbreviatedId
+}
+
+//version = "mc${mc_version}-v${mod_version}-${git.head().abbreviatedId}"
+version = "mc${mc_version}-f${forge_version}-${mod_version_type}${mod_version}"
+group = "${package_group}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "${mod_name}"
+
+sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+}
+
+minecraft {
+    version = "${mc_version}-${forge_version}"
+    runDir = "run"
+
+    if (project.hasProperty('mappings_version'))
+        mappings = project.mappings_version
+}
+
+//Optional: change the project structure
+sourceSets.main{
+    java{
+		srcDirs 'src' //, 'test' //set the source folder as the /src subfolder
+	}
+    resources{
+		srcDirs 'src/resources'//set the resources folder as the /resources subfolder
+	}
+}
+
+def gottschcore_path="../../gottsch-minecraft-GottschCore/GottschCore${mc_version}/build/libs/GottschCore-mc${mc_version}-f${forge_version}-v${gottschcore_version}.jar"
+dependencies {
+compile files('../../ModCommonLibs/libs/commons-cli-1.4.jar')
+	//compile files(gottschcore_path)	
+	shadow files(gottschcore_path)	
+	compileOnly "vazkii.patchouli:Patchouli:${patchouli_version}"
+}
+
+repositories {
+    maven { 
+        name = 'Patchouli'
+        url = "https://maven.blamejared.com" 
+    }
+ }
+processResources
+{
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    } 
+}
+
+shadowJar {
+    // move everything under "io.github" (which in the DelaunayTriangulator lib) to "com.someguyssoftware.dungeons2.triangulation"
+    relocate "org.apache.commons.cli", "com.someguyssoftware.treasure2.cli"
+	// Replace the default JAR
+    classifier '' 
+}
+
+reobf {
+	// Reobfuscate the shadowed JAR
+    shadowJar {} 
+}
+
+//an array containing destination paths
+def destinations = ["${dest_folder}", "${dest_server_folder}"]
+println destinations[0]
+
+task deleteOldJar(type: Delete) {
+        delete fileTree("${dest_folder}") {
+            include "**/${mod_name}-*.*"
+
+        }
+        delete fileTree("${dest_server_folder}") {
+            include "**/${mod_name}-*.*"
+        }
+    }
+task copyJar << {
+	// iterate over the array with destination paths
+ 	destinations.each { destination ->
+        // for every destination define new CopySpec
+        println destination
+        copy {
+            from jar
+            into destination
+        }
+    }
+}
+
+build.dependsOn copyJar
+copyJar.dependsOn deleteOldJar
