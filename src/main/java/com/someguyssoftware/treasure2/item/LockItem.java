@@ -9,12 +9,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
+import net.minecraft.block.AbstractChestBlock;
+import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -61,7 +71,7 @@ public class LockItem extends ModItem {
 	 * @param item
 	 */
 	public LockItem(String modID, String name, Item.Properties properties) {
-		super(modID, name, properties.group(ModItemGroups.MOD_ITEM_GROUP));
+		super(modID, name, properties.group(TreasureItemGroups.MOD_ITEM_GROUP));
 		setCategory(Category.BASIC);
 		setRarity(Rarity.COMMON);
 		setCraftable(false);
@@ -99,39 +109,39 @@ public class LockItem extends ModItem {
 	/**
 	 * 
 	 */
-//	@Override
-//	public ActionResultType onItemUse(ItemUseContext context) {
-//
-//		BlockPos chestPos = context.getPos();
-//		// determine if block at pos is a treasure chest
-//		Block block = context.getWorld().getBlockState(chestPos).getBlock();
-//		if (block instanceof ITreasureChestProxy) {
-//			chestPos = ((ITreasureChestProxy) block).getChestPos(chestPos);
-//			block = context.getWorld().getBlockState(chestPos).getBlock();
-//		}
-//
-//		if (block instanceof AbstractChestBlock) {
-//			// get the tile entity
-//			AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) context.getWorld().getTileEntity(chestPos);
-//
-//			// exit if on the client
-//			if (WorldInfo.isClientSide(context.getWorld())) {
-//				return EnumActionResult.FAIL;
-//			}
-//
-//			try {
-//				ItemStack heldItem = context.getPlayer().getHeldItem(context.getHand());
-//				// handle the lock
-//				// NOTE don't use the return boolean as the locked flag here, as the chest is
-//				// already locked and if the method was
-//				// unsuccessful it could state the chest is unlocked.
-//				handleHeldLock(te, context.getPlayer(), heldItem);
-//			} catch (Exception e) {
-//				Treasure.LOGGER.error("error: ", e);
-//			}
-//		}
-//		return super.onItemUse(context);
-//	}
+	@Override
+	public ActionResultType onItemUse(ItemUseContext context) {
+
+		BlockPos chestPos = context.getPos();
+		// determine if block at pos is a treasure chest
+		Block block = context.getWorld().getBlockState(chestPos).getBlock();
+		if (block instanceof ITreasureChestProxy) {
+			chestPos = ((ITreasureChestProxy) block).getChestPos(chestPos);
+			block = context.getWorld().getBlockState(chestPos).getBlock();
+		}
+
+		if (block instanceof AbstractChestBlock) {
+			// get the tile entity
+			AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) context.getWorld().getTileEntity(chestPos);
+
+			// exit if on the client
+			if (WorldInfo.isClientSide(context.getWorld())) {
+				return ActionResultType.FAIL;
+			}
+
+			try {
+				ItemStack heldItem = context.getPlayer().getHeldItem(context.getHand());
+				// handle the lock
+				// NOTE don't use the return boolean as the locked flag here, as the chest is
+				// already locked and if the method was
+				// unsuccessful it could state the chest is unlocked.
+				handleHeldLock(te, context.getPlayer(), heldItem);
+			} catch (Exception e) {
+				Treasure.LOGGER.error("error: ", e);
+			}
+		}
+		return super.onItemUse(context);
+	}
 
 	/**
 	 * 
@@ -140,8 +150,8 @@ public class LockItem extends ModItem {
 	 * @param heldItem
 	 * @return flag indicating if a lock was added
 	 */
-//	private boolean handleHeldLock(AbstractTreasureChestTileEntity te, PlayerEntity player, ItemStack heldItem) {
-//		boolean lockedAdded = false;
+	private boolean handleHeldLock(AbstractTreasureChestTileEntity te, PlayerEntity player, ItemStack heldItem) {
+		boolean lockedAdded = false;
 //		LockItem lock = (LockItem) heldItem.getItem();
 //		// add the lock to the first lockstate that has an available slot
 //		for (LockState lockState : te.getLockStates()) {
@@ -158,8 +168,8 @@ public class LockItem extends ModItem {
 //				break;
 //			}
 //		}
-//		return lockedAdded;
-//	}
+		return lockedAdded;
+	}
 
 	/**
 	 * 

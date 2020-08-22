@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
  * @author Mark Gottschling on Aug 12, 2020
  *
  */
-public class ModItemGroups {
+public class TreasureItemGroups {
 	public static final ItemGroup MOD_ITEM_GROUP = new ModItemGroup(
 			Treasure.MODID,	() -> new ItemStack(TreasureItems.LOGO));
 	

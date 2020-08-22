@@ -26,7 +26,7 @@ public class TreasureToolItem extends ModItem {
 	 * @param name
 	 */
 	public TreasureToolItem(String modID, String name, Item.Properties properties) {
-		super(modID, name, properties.group(ModItemGroups.MOD_ITEM_GROUP));
+		super(modID, name, properties.group(TreasureItemGroups.MOD_ITEM_GROUP));
 	}
 	
 	@Override

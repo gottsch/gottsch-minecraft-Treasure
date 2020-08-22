@@ -68,6 +68,20 @@ public class TreasureConfig extends AbstractConfig {
 		 public static final String THIEFS_LOCK_PICK_ID = "thiefs_lock_pick";
 	}
 	
+	public static class ChestID {
+		public static final String WOOD_CHEST_ID = "wood_chest";
+		public static final String CRATE_CHEST_ID = "crate_chest";
+		public static final String MOLDY_CRATE_CHEST_ID = "crate_chest_moldy";
+		public static final String IRONBOUND_CHEST_ID = "ironbound_chest";
+	}
+	
+	public static class TileEntityID {
+		public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity_type";
+		public static final String CRATE_CHEST_TE_ID = "crate_chest_tile_entity_type";
+		public static final String MOLDY_CRATE_CHEST_TE_ID = "crate_chest_moldy_tile_entity_type";
+		public static final String IRONBOUND_CHEST_TE_ID = "ironbound_chest_tile_entity_type";
+	}
+	
 	public static class KeysAndLocks {
 //		@Comment({ "The maximum uses for a given pilferers lock pick." })
 //		@Name("03. Pilferer's lockpick max. uses:")
@@ -161,7 +175,6 @@ public class TreasureConfig extends AbstractConfig {
 	}
 	
 	public static final KeysAndLocks KEYS_LOCKS = new KeysAndLocks();
-
 	
 	@SubscribeEvent
 	public static void onLoad(final ModConfig.Loading configEvent) {
