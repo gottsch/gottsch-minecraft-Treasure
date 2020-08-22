@@ -68,7 +68,7 @@ public class KeyItem extends ModItem {
 	public KeyItem(String modID, String name, Item.Properties properties) {
 		super(modID, name, 
 				properties
-				.group(ModItemGroups.MOD_ITEM_GROUP)
+				.group(TreasureItemGroups.MOD_ITEM_GROUP)
 //				.maxStackSize(1)
 				.maxDamage(DEFAULT_MAX_USES));
 
