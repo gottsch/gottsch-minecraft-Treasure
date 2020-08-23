@@ -5,7 +5,11 @@ import com.someguyssoftware.treasure2.gui.model.StandardChestModel;
 
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+// NOTE @OnlyIn extremely important! add to all Renderers
+@OnlyIn(Dist.CLIENT)
 public class WoodChestTileEntityRenderer extends TreasureChestTileEntityRenderer {
 
 	public WoodChestTileEntityRenderer(TileEntityRendererDispatcher tileEntityRendererDispatcher) {

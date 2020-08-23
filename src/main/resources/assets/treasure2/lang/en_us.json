@@ -65,5 +65,22 @@
 	"tooltip.skeleton_key.specials":"Opens COMMON, UNCOMMON, SCARCE and RARE locks (excluding Wither)",
 	"tooltip.pilferers_lock_pick.specials":"Opens COMMON (%s%%) and UNCOMMON (%s%%) locks",
 	"tooltip.thiefs_lock_pick.specials":"Opens COMMON (%s%%), UNCOMMON (%s%%) and SCARCE (%s%%) locks",
-	"tooltip.jewelled_key.specials":"Opens any lock in GEMS category"
+	"tooltip.jewelled_key.specials":"Opens any lock in GEMS category",
+
+	"display.wood_chest.name":"Wood Chest",
+	"display.crate_chest.name":"Crate",
+	"display.crate_chest_moldy.name":"Moldy Crate",
+	"display.ironbound_chest.name":"Ironbound Chest",
+	"display.pirate_chest.name":"Pirate Chest",
+	"display.iron_strongbox.name":"Iron Strongbox",
+	"display.gold_strongbox.name":"Gold Strongbox",
+	"display.safe.name":"Safe",
+	"display.dread_pirate_chest.name":"Dread Pirate Chest",
+	"display.compressor_chest.name":"Compressor Chest",
+	"display.wither_chest.name":"Wither Chest",
+	"display.skull_chest.name":"Skull Chest",
+	"display.gold_skull_chest.name":"Golden Skull Chest",
+	"display.cauldron_chest.name":"Cauldron Chest",
+	"display.spider_chest.name":"Spider Chest",
+	"display.viking_chest.name":"Viking Chest"
 }

@@ -2,6 +2,7 @@ package com.someguyssoftware.treasure2.tileentity;
 
 import javax.annotation.Nullable;
 
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 import com.someguyssoftware.treasure2.inventory.TreasureContainers;
 
@@ -43,6 +44,7 @@ public class WoodChestTileEntity extends AbstractTreasureChestTileEntity {
 	@Nullable
 	@Override
 	public Container createMenu(int windowID, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+		Treasure.LOGGER.info("createMenu evoked.");
 	    return createServerContainer(windowID, playerInventory, playerEntity);
 	}
 	
@@ -54,6 +56,7 @@ public class WoodChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @return
 	 */
 	public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player) {
+		Treasure.LOGGER.info("createServerContainer evoked.");
 		return new StandardChestContainer(windowID, inventory, this);
 	}
 }

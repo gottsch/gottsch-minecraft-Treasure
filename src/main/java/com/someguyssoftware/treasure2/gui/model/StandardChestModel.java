@@ -152,5 +152,6 @@ public class StandardChestModel extends Model implements ITreasureChestModel {
 	@Override
 	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn,
 			float red, float green, float blue, float alpha) {
+		Treasure.LOGGER.info("THIS SHOULD NEVER BE CALLED");
 	}
 }

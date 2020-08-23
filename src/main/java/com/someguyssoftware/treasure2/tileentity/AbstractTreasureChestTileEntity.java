@@ -57,7 +57,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/*
 	 * The FACING index value of the TreasureChestBlock
 	 */
-//	private int facing;
 	private Direction facing;
 
 	/*
@@ -106,13 +105,10 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 					(double) ((float) k - 5.0F), (double) ((float) (i + 1) + 5.0F),
 					(double) ((float) (j + 1) + 5.0F), (double) ((float) (k + 1) + 5.0F)))) {
 				
-				Treasure.LOGGER.info("for player -> {}", player.getName());
 				if (player.openContainer instanceof ITreasureContainer) {
-					Treasure.LOGGER.info("it is an ITreasureContainer");
 					IInventory inventory = ((ITreasureContainer) player.openContainer).getContents();
 					if (inventory == this) {
 						++this.numPlayersUsing;
-						Treasure.LOGGER.info("it is one in the same. num players -> {}", numPlayersUsing);
 					}
 				}
 			}
@@ -125,7 +121,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			this.playSound(SoundEvents.BLOCK_CHEST_OPEN);
 		}
 
-		Treasure.LOGGER.info("test: numPlayers -> {}, previous angle -> {}, new angle -> {}", this.numPlayersUsing, this.prevLidAngle, this.lidAngle);
+//		Treasure.LOGGER.info("test: numPlayers -> {}, previous angle -> {}, new angle -> {}", this.numPlayersUsing, this.prevLidAngle, this.lidAngle);
 		if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
 			float f2 = this.lidAngle;
 
@@ -147,8 +143,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			if (this.lidAngle < 0.0F) {
 				this.lidAngle = 0.0F;
 			}
-			
-			Treasure.LOGGER.info("result lid previous angle -> {}, new angle -> {}", this.prevLidAngle, this.lidAngle);
 		}
 	}
 
@@ -219,8 +213,8 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				parentNBT.putString("CustomName", ITextComponent.Serializer.toJson(this.customName));
 			}
 			// write facing
-			//			Treasure.LOGGER.debug("Writing FACING to NBT ->{}", getFacing());
 			parentNBT.putInt("facing", getFacing().getIndex());
+
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Error writing Properties to NBT:", e);
 		}
@@ -264,12 +258,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		try {
 			// read the lockstates
 			if (parentNBT.contains("lockStates")) {
-				//				Treasure.LOGGER.debug("Has lockStates");
+								Treasure.LOGGER.info("Has lockStates");
 				if (this.getLockStates() != null) {
-					//					Treasure.LOGGER.debug("size of internal lockstates:" + this.getLockStates().size());
+										Treasure.LOGGER.debug("size of internal lockstates:" + this.getLockStates().size());
 				} else {
 					this.setLockStates(new LinkedList<LockState>());
-					//					Treasure.LOGGER.debug("created lockstates:" + this.getLockStates().size());
+										Treasure.LOGGER.debug("created lockstates:" + this.getLockStates().size());
 				}
 
 				List<LockState> states = new LinkedList<LockState>();
@@ -278,7 +272,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 					CompoundNBT c = list.getCompound(i);
 					LockState lockState = LockState.readFromNBT(c);
 					states.add(lockState.getSlot().getIndex(), lockState);
-					//					Treasure.LOGGER.debug("Read NBT lockstate:" + lockState);
+										Treasure.LOGGER.debug("Read NBT lockstate:" + lockState);
 				}
 				// update the tile entity
 				setLockStates(states);
@@ -300,9 +294,9 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			}
 			// read the facing
 			if (nbt.contains("facing")) {
-				//				Treasure.LOGGER.debug("Has 'facing' key -> {}", parentNBT.getInteger("facing"));
 				this.setFacing(nbt.getInt("facing"));
 			}
+
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Error reading Properties from NBT:", e);
 		}
@@ -319,6 +313,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			readLockStatesFromNBT(parentNBT);
 			readInventoryFromNBT(parentNBT);
 			readPropertiesFromNBT(parentNBT);
+			Treasure.LOGGER.info("completed read");
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Error reading to NBT:", e);
 		}
@@ -340,18 +335,22 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	@Override
 	@Nullable
 	public SUpdateTileEntityPacket getUpdatePacket() {
+		Treasure.LOGGER.info("getUpdatePacket is writing packet");
 		return new SUpdateTileEntityPacket(this.pos, 3, this.getUpdateTag());
 	}
 
 	@Override
 	public CompoundNBT getUpdateTag() {
+		Treasure.LOGGER.info("getUpdateTag is writing data");
 		return this.write(new CompoundNBT());
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		super.onDataPacket(net, pkt);
-		handleUpdateTag(pkt.getNbtCompound());
+		Treasure.LOGGER.info("onDataPacket is reading data");
+//		super.onDataPacket(net, pkt);
+//		handleUpdateTag(pkt.getNbtCompound());
+		read(pkt.getNbtCompound());
 	}
 
 	/**
@@ -514,7 +513,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public boolean isUsableByPlayer(PlayerEntity player) {
-		Treasure.LOGGER.info("in useblebyplayer with player -> {}", player);
 		if (this.world.getTileEntity(this.pos) != this) {
 			return false;
 		} else {
@@ -524,15 +522,29 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		}
 	}
 
+	   /**
+	    * See {@link Block#eventReceived} for more information. This must return true serverside before it is called
+	    * clientside.
+	    */
+		@Override
+	   public boolean receiveClientEvent(int id, int type) {
+	      if (id == 1) {
+	         this.numPlayersUsing = type;
+	         return true;
+	      } else {
+	         return super.receiveClientEvent(id, type);
+	      }
+	   }
+	   
 	/**
 	 * 
 	 */
 	@Override
 	public void openInventory(PlayerEntity player) {
-		Treasure.LOGGER.debug("opening inventory -> {}", player.getName());
+		Treasure.LOGGER.info("opening inventory -> {}", player.getName());
 		
 		if (hasLocks()) {
-			Treasure.LOGGER.debug("has locks - don't increment num players");
+			Treasure.LOGGER.info("has locks - don't increment num players");
 			return;
 		}
 		if (!player.isSpectator()) {
@@ -540,7 +552,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				this.numPlayersUsing = 0;
 			}
 			++this.numPlayersUsing;
-			Treasure.LOGGER.debug("Incremented numPlayersUsing to:" + numPlayersUsing);
+			Treasure.LOGGER.info("Incremented numPlayersUsing to:" + numPlayersUsing);
 			onOpenOrClose();
 		}
 	}
