@@ -38,7 +38,7 @@ public class StandardChestContainerScreen extends ContainerScreen<StandardChestC
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		final float LABEL_XPOS = 5;
 		final float FONT_Y_SPACING = 10;
-		final float CHEST_LABEL_YPOS = StandardChestContainer.TILE_INVENTORY_YPOS - FONT_Y_SPACING;
+		final float CHEST_LABEL_YPOS = StandardChestContainer.CONTAINER_INVENTORY_YPOS - FONT_Y_SPACING;
 		font.drawString(this.title.getFormattedText(), LABEL_XPOS, CHEST_LABEL_YPOS, Color.darkGray.getRGB());
 		final float PLAYER_INV_LABEL_YPOS = StandardChestContainer.PLAYER_INVENTORY_YPOS - FONT_Y_SPACING;
 		this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 

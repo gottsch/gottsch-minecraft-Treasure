@@ -12,6 +12,7 @@ import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
+import com.someguyssoftware.treasure2.chest.ChestSlotCount;
 import com.someguyssoftware.treasure2.inventory.ITreasureContainer;
 import com.someguyssoftware.treasure2.lock.LockState;
 
@@ -19,9 +20,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.ChestContainer;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -72,7 +75,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	public int ticksSinceSync;
 
 	/** IInventory properties */
-	private int numberOfSlots = 27; // default size
+//	private int numberOfSlots = 27; // default size
 	private NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(getNumberOfSlots(), ItemStack.EMPTY);
 	private ITextComponent customName;
 
@@ -102,9 +105,9 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 
 			for (PlayerEntity player : getWorld().getEntitiesWithinAABB(PlayerEntity.class,
 					new AxisAlignedBB((double) ((float) i - 5.0F), (double) ((float) j - 5.0F),
-					(double) ((float) k - 5.0F), (double) ((float) (i + 1) + 5.0F),
-					(double) ((float) (j + 1) + 5.0F), (double) ((float) (k + 1) + 5.0F)))) {
-				
+							(double) ((float) k - 5.0F), (double) ((float) (i + 1) + 5.0F),
+							(double) ((float) (j + 1) + 5.0F), (double) ((float) (k + 1) + 5.0F)))) {
+
 				if (player.openContainer instanceof ITreasureContainer) {
 					IInventory inventory = ((ITreasureContainer) player.openContainer).getContents();
 					if (inventory == this) {
@@ -117,11 +120,10 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		// TODO checkout the vanilla on angle update -- somehow the renderThread isn't getting updates to the TE.
 		this.prevLidAngle = this.lidAngle;
 		if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F) {
-			Treasure.LOGGER.info("open chest sound: numPlayers -> {}, previous angle -> {}, new angle -> {}", this.numPlayersUsing, this.prevLidAngle, this.lidAngle);
 			this.playSound(SoundEvents.BLOCK_CHEST_OPEN);
 		}
 
-//		Treasure.LOGGER.info("test: numPlayers -> {}, previous angle -> {}, new angle -> {}", this.numPlayersUsing, this.prevLidAngle, this.lidAngle);
+//				Treasure.LOGGER.info("test: numPlayers -> {}, previous angle -> {}, new angle -> {}", this.numPlayersUsing, this.prevLidAngle, this.lidAngle);
 		if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
 			float f2 = this.lidAngle;
 
@@ -161,6 +163,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		try {
 			parentNBT = super.write(parentNBT);
 
+			// TODO LockSlots don't have a Heading ???
 			// write lock states
 			writeLockStatesToNBT(parentNBT);
 
@@ -187,7 +190,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				ListNBT list = new ListNBT();
 				// write custom tile entity properties
 				for (LockState state : getLockStates()) {
-						Treasure.LOGGER.debug("Writing lock state:" + state);
+//					Treasure.LOGGER.info("Writing lock state:" + state);
 					CompoundNBT stateNBT = new CompoundNBT();
 					state.writeToNBT(stateNBT);
 					list.add(stateNBT);
@@ -258,12 +261,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		try {
 			// read the lockstates
 			if (parentNBT.contains("lockStates")) {
-								Treasure.LOGGER.info("Has lockStates");
+//				Treasure.LOGGER.info("Has lockStates");
 				if (this.getLockStates() != null) {
-										Treasure.LOGGER.debug("size of internal lockstates:" + this.getLockStates().size());
+//					Treasure.LOGGER.info("size of internal lockstates:" + this.getLockStates().size());
 				} else {
 					this.setLockStates(new LinkedList<LockState>());
-										Treasure.LOGGER.debug("created lockstates:" + this.getLockStates().size());
+//					Treasure.LOGGER.info("created lockstates:" + this.getLockStates().size());
 				}
 
 				List<LockState> states = new LinkedList<LockState>();
@@ -272,7 +275,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 					CompoundNBT c = list.getCompound(i);
 					LockState lockState = LockState.readFromNBT(c);
 					states.add(lockState.getSlot().getIndex(), lockState);
-										Treasure.LOGGER.debug("Read NBT lockstate:" + lockState);
+//					Treasure.LOGGER.info("Read NBT lockstate:" + lockState);
 				}
 				// update the tile entity
 				setLockStates(states);
@@ -313,7 +316,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			readLockStatesFromNBT(parentNBT);
 			readInventoryFromNBT(parentNBT);
 			readPropertiesFromNBT(parentNBT);
-			Treasure.LOGGER.info("completed read");
+//			Treasure.LOGGER.info("completed read");
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Error reading to NBT:", e);
 		}
@@ -335,21 +338,21 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	@Override
 	@Nullable
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		Treasure.LOGGER.info("getUpdatePacket is writing packet");
+//		Treasure.LOGGER.info("getUpdatePacket is writing packet");
 		return new SUpdateTileEntityPacket(this.pos, 3, this.getUpdateTag());
 	}
 
 	@Override
 	public CompoundNBT getUpdateTag() {
-		Treasure.LOGGER.info("getUpdateTag is writing data");
+//		Treasure.LOGGER.info("getUpdateTag is writing data");
 		return this.write(new CompoundNBT());
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		Treasure.LOGGER.info("onDataPacket is reading data");
-//		super.onDataPacket(net, pkt);
-//		handleUpdateTag(pkt.getNbtCompound());
+//		Treasure.LOGGER.info("onDataPacket is reading data");
+		//		super.onDataPacket(net, pkt);
+		//		handleUpdateTag(pkt.getNbtCompound());
 		read(pkt.getNbtCompound());
 	}
 
@@ -408,6 +411,15 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		return false;
 	}
 
+	/**
+	 * Creates the server container. Wrapped by vanilla createMenu().
+	 * @param windowID
+	 * @param inventory
+	 * @param player
+	 * @return
+	 */
+	abstract public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player);
+	
 	protected ITextComponent getDefaultName() {
 		return new TranslationTextComponent("container.chest");
 	}
@@ -422,6 +434,19 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		return this.getName();
 	}
 
+	  /**
+	   * The name is misleading; createMenu has nothing to do with creating a Screen, it is used to create the Container on the server only
+	   * @param windowID
+	   * @param playerInventory
+	   * @param playerEntity
+	   * @return
+	   */
+	@Nullable
+	@Override
+	public Container createMenu(int windowID, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+	    return createServerContainer(windowID, playerInventory, playerEntity);
+	}
+	
 	///////////// IInventory Methods ///////////////////////
 
 	/**
@@ -522,29 +547,29 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		}
 	}
 
-	   /**
-	    * See {@link Block#eventReceived} for more information. This must return true serverside before it is called
-	    * clientside.
-	    */
-		@Override
-	   public boolean receiveClientEvent(int id, int type) {
-	      if (id == 1) {
-	         this.numPlayersUsing = type;
-	         return true;
-	      } else {
-	         return super.receiveClientEvent(id, type);
-	      }
-	   }
-	   
+	/**
+	 * See {@link Block#eventReceived} for more information. This must return true serverside before it is called
+	 * clientside.
+	 */
+	@Override
+	public boolean receiveClientEvent(int id, int type) {
+		if (id == 1) {
+			this.numPlayersUsing = type;
+			return true;
+		} else {
+			return super.receiveClientEvent(id, type);
+		}
+	}
+
 	/**
 	 * 
 	 */
 	@Override
 	public void openInventory(PlayerEntity player) {
-		Treasure.LOGGER.info("opening inventory -> {}", player.getName());
-		
+//		Treasure.LOGGER.info("opening inventory -> {}", player.getName());
+
 		if (hasLocks()) {
-			Treasure.LOGGER.info("has locks - don't increment num players");
+//			Treasure.LOGGER.info("has locks - don't increment num players");
 			return;
 		}
 		if (!player.isSpectator()) {
@@ -552,7 +577,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				this.numPlayersUsing = 0;
 			}
 			++this.numPlayersUsing;
-			Treasure.LOGGER.info("Incremented numPlayersUsing to:" + numPlayersUsing);
 			onOpenOrClose();
 		}
 	}
@@ -612,15 +636,15 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * @return the numberOfSlots
 	 */
 	public int getNumberOfSlots() {
-		return numberOfSlots;
+		return ChestSlotCount.STANDARD.getSize();
 	}
 
 	/**
 	 * @param numberOfSlots the numberOfSlots to set
 	 */
-	public void setNumberOfSlots(int numberOfSlots) {
-		this.numberOfSlots = numberOfSlots;
-	}
+//	public void setNumberOfSlots(int numberOfSlots) {
+//		this.numberOfSlots = numberOfSlots;
+//	}
 
 	/**
 	 * @return the items
@@ -637,19 +661,19 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	}
 
 	public Direction getFacing() {
-//	public int getFacing() {
-				return facing;
+		//	public int getFacing() {
+		return facing;
 	}
 
 	public void setFacing(Direction facing) {
 		this.facing = facing;
 	}
-	
+
 	public void setFacing(int facingIndex) {
-//		this.facing = facing;
+		//		this.facing = facing;
 		this.facing = Direction.byIndex(facingIndex);
 	}
-	
+
 	@Override
 	public float getLidAngle(float partialTicks) {
 		return this.lidAngle;
