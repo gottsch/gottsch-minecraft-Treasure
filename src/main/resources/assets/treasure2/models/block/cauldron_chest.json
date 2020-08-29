@@ -3,11 +3,11 @@
 	"parent": "block/block",	
 	"ambientocclusion": false,
 	"textures": {
-		"top": "blocks/cauldron_top",
-		"bottom": "blocks/cauldron_bottom",
+		"top": "block/cauldron_top",
+		"bottom": "block/cauldron_bottom",
 		"side": "treasure2:blocks/chests/cauldron_chest_side",
-		"particle": "blocks/cauldron_side",
-		"inside": "blocks/cauldron_inner"
+		"particle": "block/cauldron_side",
+		"inside": "block/cauldron_inner"
 	},
 	"elements": [
 		{

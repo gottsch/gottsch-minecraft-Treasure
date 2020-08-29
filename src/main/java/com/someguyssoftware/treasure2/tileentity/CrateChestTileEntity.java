@@ -1,17 +1,14 @@
 package com.someguyssoftware.treasure2.tileentity;
 
-import javax.annotation.Nullable;
-
 import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.treasure2.inventory.TreasureContainers;
+import com.someguyssoftware.treasure2.inventory.ITreasureContainer;
+import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -42,6 +39,17 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 	}
 
 	/**
+	 * 
+	 * @param windowID
+	 * @param inventory
+	 * @param player
+	 * @return
+	 */
+	public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player) {
+		return new StandardChestContainer(windowID, inventory, this);
+	}
+	
+	/**
 	 * Like the old updateEntity(), except more generic.
 	 */
 	@Override
@@ -55,12 +63,12 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 				&& (this.ticksSinceSync + i + j + k) % 200 == 0) {
 			this.numPlayersUsing = 0;
 
-			for (PlayerEntity entityplayer : this.world.getEntitiesWithinAABB(PlayerEntity.class,
+			for (PlayerEntity player : this.world.getEntitiesWithinAABB(PlayerEntity.class,
 					new AxisAlignedBB((double) ((float) i - 5.0F), (double) ((float) j - 5.0F),
 							(double) ((float) k - 5.0F), (double) ((float) (i + 1) + 5.0F),
 							(double) ((float) (j + 1) + 5.0F), (double) ((float) (k + 1) + 5.0F)))) {
-				if (entityplayer.openContainer instanceof ChestContainer) {
-					IInventory iinventory = ((ChestContainer) entityplayer.openContainer).getLowerChestInventory();
+				if (player.openContainer instanceof ITreasureContainer) {
+					IInventory iinventory = ((ITreasureContainer) player.openContainer).getContents();
 
 					if (iinventory == this) {
 						++this.numPlayersUsing;
@@ -112,17 +120,4 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 		return this.lidAngle;
 	}
 
-	  /**
-	   * The name is misleading; createMenu has nothing to do with creating a Screen, it is used to create the Container on the server only
-	   * @param windowID
-	   * @param playerInventory
-	   * @param playerEntity
-	   * @return
-	   */
-	  @Nullable
-	  @Override
-	  public Container createMenu(int windowID, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-//	    return TreasureContainers.createContainerServerSide(windowID, playerInventory, chestContents);
-		  return null;
-	  }
 }

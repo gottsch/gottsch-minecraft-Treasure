@@ -73,6 +73,19 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String CRATE_CHEST_ID = "crate_chest";
 		public static final String MOLDY_CRATE_CHEST_ID = "crate_chest_moldy";
 		public static final String IRONBOUND_CHEST_ID = "ironbound_chest";
+		public static final String PIRATE_CHEST_ID = "pirate_chest";
+		public static final String IRON_STRONGBOX_ID = "iron_strongbox";
+		public static final String GOLD_STRONGBOX_ID = "gold_strongbox";
+		public static final String SAFE_ID = "safe";
+		public static final String DREAD_PIRATE_CHEST_ID = "dread_pirate_chest";
+		public static final String COMPRESSOR_CHEST_ID = "compressor_chest";
+		public static final String WITHER_CHEST_ID = "wither_chest";
+		public static final String WITHER_CHEST_TOP_ID = "wither_chest_top";
+		public static final String SKULL_CHEST_ID = "skull_chest";
+		public static final String GOLD_SKULL_CHEST_ID = "gold_skull_chest";
+		public static final String CAULDRON_CHEST_ID = "cauldron_chest";
+		public static final String SPIDER_CHEST_ID = "spider_chest";
+		public static final String VIKING_CHEST_ID = "viking_chest";
 	}
 	
 	public static class TileEntityID {
@@ -80,9 +93,35 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String CRATE_CHEST_TE_ID = "crate_chest_tile_entity_type";
 		public static final String MOLDY_CRATE_CHEST_TE_ID = "crate_chest_moldy_tile_entity_type";
 		public static final String IRONBOUND_CHEST_TE_ID = "ironbound_chest_tile_entity_type";
+		public static final String PIRATE_CHEST_TE_ID = "pirate_chest_tile_entity";
+		public static final String IRON_STRONGBOX_TE_ID = "iron_strongbox_tile_entity";
+		public static final String GOLD_STRONGBOX_TE_ID = "gold_strongbox_tile_entity";
+		public static final String SAFE_TE_ID = "safe_tile_entity";
+		public static final String DREAD_PIRATE_CHEST_TE_ID = "dread_pirate_chest_tile_entity";
+		public static final String WHALE_BONE_PIRATE_CHEST_TE_ID = "whale_bone_pirate_chest_tile_entity";
+		public static final String COMPRESSOR_CHEST_TE_ID = "compressor_chest_tile_entity";
+		public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
+		public static final String SKULL_CHEST_TE_ID = "skull_chest_tile_entity";
+		public static final String GOLD_SKULL_CHEST_TE_ID = "gold_skull_chest_tile_entity";
+		public static final String CAULDRON_CHEST_TE_ID = "cauldron_chest_tile_entity";
+		public static final String OYSTER_CHEST_TE_ID = "oyster_chest_tile_entity";
+		public static final String CLAM_CHEST_TE_ID = "clam_chest_tile_entity";
+		public static final String SPIDER_CHEST_TE_ID = "spider_chest_tile_entity";
+		public static final String VIKING_CHEST_TE_ID = "viking_chest_tile_entity";
+		public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
+		public static final String GRAVESTONE_TE_ID = "gravestone_tile_entity";
+		public static final String GRAVESTONE_PROXIMITY_SPAWNER_TE_ID = "gravestone_proximity_spawner_tile_entity";
 	}
 	
 	public static class KeysAndLocks {
+//		@Comment({ "Enable/Disable whether a Key can break when attempting to unlock a Lock." })
+//		@Name("01. Enable key breaks:")
+		public boolean enableKeyBreaks = true;
+
+//		@Comment({ "Enable/Disable whether a Lock item is dropped when unlocked by Key item." })
+//		@Name("02. Enable lock drops:")
+		public boolean enableLockDrops = true;
+		
 //		@Comment({ "The maximum uses for a given pilferers lock pick." })
 //		@Name("03. Pilferer's lockpick max. uses:")
 //		@RangeInt(min = 1, max = 32000)

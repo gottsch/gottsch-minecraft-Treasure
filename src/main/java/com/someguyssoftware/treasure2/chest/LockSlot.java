@@ -3,9 +3,9 @@
  */
 package com.someguyssoftware.treasure2.chest;
 
-import com.someguyssoftware.gottschcore.GottschCore;
 import com.someguyssoftware.gottschcore.spatial.Heading;
 import com.someguyssoftware.gottschcore.spatial.Rotate;
+import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.nbt.CompoundNBT;
 
@@ -148,13 +148,14 @@ public class LockSlot implements ILockSlot {
 		try {
 			nbt.putInt("index", getIndex());
 			nbt.putInt("face", getFace().getIndex());
+//			Treasure.LOGGER.info("LockSlot | writeToNBT | wrote face -> {}", nbt.get("face"));
 			nbt.putFloat("x", getXOffset());
 			nbt.putFloat("y", getYOffset());
 			nbt.putFloat("z", getZOffset());
 			nbt.putFloat("rotation", getRotation());
 		}
 		catch(Exception e) {
-			GottschCore.LOGGER.error("Unable to write state to NBT:", e);
+			Treasure.LOGGER.error("Unable to write state to NBT:", e);
 		}		
 		return nbt;
 	}
