@@ -7,6 +7,7 @@ import com.someguyssoftware.gottschcore.config.AbstractConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.config.ModConfig;
@@ -18,11 +19,16 @@ import net.minecraftforge.fml.loading.FMLPaths;
  * @author Mark Gottschling on Aug 11, 2020
  *
  */
-@EventBusSubscriber
+@EventBusSubscriber(modid = Treasure.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class TreasureConfig extends AbstractConfig {
+    public static final String KEYS_AND_LOCKS_CATEGORY = "04-keys-and-locks";
+
 	public static ForgeConfigSpec COMMON_CONFIG;
 
+    public static static KeysAndLocks KEYS_LOCKS;
+
 	static {
+		KEYS_LOCKS = new KeysAndLocks(COMMON_BUILDER);
 		COMMON_CONFIG = COMMON_BUILDER.build();
 	}
 
@@ -116,17 +122,17 @@ public class TreasureConfig extends AbstractConfig {
 	public static class KeysAndLocks {
 //		@Comment({ "Enable/Disable whether a Key can break when attempting to unlock a Lock." })
 //		@Name("01. Enable key breaks:")
-		public boolean enableKeyBreaks = true;
+		public ForgeConfigSpec.BooleanValue enableKeyBreaks;
 
 //		@Comment({ "Enable/Disable whether a Lock item is dropped when unlocked by Key item." })
 //		@Name("02. Enable lock drops:")
-		public boolean enableLockDrops = true;
+		public ForgeConfigSpec.BooleanValue enableLockDrops;
 		
 //		@Comment({ "The maximum uses for a given pilferers lock pick." })
 //		@Name("03. Pilferer's lockpick max. uses:")
 //		@RangeInt(min = 1, max = 32000)
 //		@RequiresMcRestart
-		public int pilferersLockPickMaxUses = 10;
+		public ForgeConfigSpec.ConfigValue<Integer> pilferersLockPickMaxUses;
 
 //		@Comment({ "The maximum uses for a given thiefs lock pick." })
 //		@Name("04. Thief's lockpick max. uses:")
@@ -210,10 +216,23 @@ public class TreasureConfig extends AbstractConfig {
 //		@Name("17. Wither key max. uses:")
 //		@RangeInt(min = 1, max = 32000)
 //		@RequiresMcRestart
-		public int witherKeyMaxUses = 5;		
+        public int witherKeyMaxUses = 5;		
+        
+        KeysAndLocks(final ForgeConfigSpec.Builder builder) {
+            builder.comment("Keys and Locks properties").push(KEYS_AND_LOCKS_CATEGORY);
+            
+            enableKeyBreaks = builder
+                .comment("Enable/Disable whether a Key can break when attempting to unlock a Lock.")
+                .define("01. Enable key breaks:", true);
+
+            enableLockDrops = builder.comment("Enable/Disable whether a Lock item is dropped when unlocked by Key item.")
+                .define("02. Enable lock drops:", true);
+		
+            pilferersLockPickMaxUses = builder.comment("").define("", 10);
+        }
 	}
 	
-	public static final KeysAndLocks KEYS_LOCKS = new KeysAndLocks();
+	// public static final KeysAndLocks KEYS_LOCKS = new KeysAndLocks();
 	
 	@SubscribeEvent
 	public static void onLoad(final ModConfig.Loading configEvent) {
