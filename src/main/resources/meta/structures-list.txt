@@ -1,0 +1,5 @@
+meta/treasure2/structures/basic1.json
+meta/treasure2/structures/basic2.json
+meta/treasure2/structures/basic3.json
+meta/treasure2/structures/basic4.json
+meta/treasure2/structures/basic5.json
