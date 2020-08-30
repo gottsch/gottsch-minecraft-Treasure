@@ -1,0 +1,7 @@
+{
+	"name": "stone-chest",
+	"description": "",
+	"author": "gottsch",
+	"archetypes": ["*"],
+	"rarities": ["common", "uncommon"]
+}

@@ -47,7 +47,11 @@ import net.minecraft.util.ResourceLocation;
  * @author Mark Gottschling on Jul 29, 2019
  *
  */
+// TODO need a meta manager for each type of resource
+// TODO need specific deserializers for each type of resource or use some lambda
+
 public class TreasureMetaManager extends MetaManager {
+    private static final String DEFAULT_RESOURCE_LIST = "meta/default-structure-list.txt";
 	private static List<String> FOLDER_LOCATIONS = ImmutableList.of("structures");
 
 	public TreasureMetaManager(IMod mod, String resourceFolder) {

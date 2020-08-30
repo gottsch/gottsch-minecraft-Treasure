@@ -1,0 +1,2 @@
+meta/treasure2/chests/wood-chest.json
+meta/treasure2/chests/stone-chest.json
