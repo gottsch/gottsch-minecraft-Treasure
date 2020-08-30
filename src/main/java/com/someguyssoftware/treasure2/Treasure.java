@@ -3,8 +3,17 @@
  */
 package com.someguyssoftware.treasure2;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.security.CodeSource;
+import java.util.Enumeration;
+import java.util.Objects;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +37,7 @@ import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -67,6 +77,9 @@ public class Treasure implements IMod {
 	public static Treasure instance;
 	private static TreasureConfig config;
 
+	// meta manager // NOTE can't be final as Treasure.instance is required.
+	public static TreasureMetaManager metaManager;
+		
 	public Treasure() {
 		Treasure.instance = this;
 		Treasure.config = new TreasureConfig(this);
@@ -75,6 +88,7 @@ public class Treasure implements IMod {
 
 		// Register the setup method for modloading
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onServerStarted);
 
 		TreasureConfig.loadConfig(TreasureConfig.COMMON_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve("treasure2-common.toml"));
@@ -84,6 +98,21 @@ public class Treasure implements IMod {
 
 		// TODO research overridding the log4j.json/xml to see if custom logging can be
 		// added
+//		try {
+			// works if file names are known
+//			FileUtils.copyInputStreamToFile(
+//			        Treasure.class.getClassLoader().getResourceAsStream("meta/treasure2/structures/basic1.json"),
+//			        new File("F:/test/out.json"));
+			
+			/*
+			 *  TODO what i'm going to have to do is have a known location text file that has a list of all the resources (json) that i wish to expose.
+			 *  run through the text files, and grab each file directly and expose it. then later is when the files are read from the file system. yuck
+			 */
+
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 	/**
@@ -95,6 +124,16 @@ public class Treasure implements IMod {
 		// TODO try calling this onWorldLoad
 		// create a logger
 //		createLogger();
+
+//		InputStream is = Dungeons2.instance.getClass().getResourceAsStream(BUILT_IN_STYLE_SHEET_PATH);
+//		URL url = this.getClass().getResource("/meta");
+		URL url = Treasure.class.getClassLoader().getResource("/meta");
+		Treasure.LOGGER.info("setup resource URL -> {}", url.toString());
+	}
+	
+	private void onServerStarted(final FMLServerStartedEvent event) {
+//		Treasure.metaManager.register(Treasure.MODID);
+//		Treasure.DECAY_MANAGER.register(getMod().getId());
 	}
 
 	

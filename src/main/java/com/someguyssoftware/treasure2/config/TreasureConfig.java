@@ -5,9 +5,9 @@ package com.someguyssoftware.treasure2.config;
 
 import com.someguyssoftware.gottschcore.config.AbstractConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.config.ModConfig;
@@ -19,15 +19,18 @@ import net.minecraftforge.fml.loading.FMLPaths;
  * @author Mark Gottschling on Aug 11, 2020
  *
  */
-@EventBusSubscriber(modid = Treasure.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class TreasureConfig extends AbstractConfig {
-    public static final String KEYS_AND_LOCKS_CATEGORY = "04-keys-and-locks";
+	public static final String CHESTS_CATEGORY = "03 chests";
+    public static final String KEYS_AND_LOCKS_CATEGORY = "07 keys and locks";
 
 	public static ForgeConfigSpec COMMON_CONFIG;
 
-    public static static KeysAndLocks KEYS_LOCKS;
+	public static final Chests CHESTS;
+    public static final KeysAndLocks KEYS_LOCKS;
 
 	static {
+		CHESTS = new Chests(COMMON_BUILDER);
 		KEYS_LOCKS = new KeysAndLocks(COMMON_BUILDER);
 		COMMON_CONFIG = COMMON_BUILDER.build();
 	}
@@ -119,107 +122,37 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String GRAVESTONE_PROXIMITY_SPAWNER_TE_ID = "gravestone_proximity_spawner_tile_entity";
 	}
 	
+	public static class Chests {
+        Chests(final ForgeConfigSpec.Builder builder) {
+            builder.comment("Chests that generate on land.",
+            		"Note: There is a build-in check against ocean biomes for surface chests. Adding ocean biomes to the white lists will not change this functionality.")
+            .push(CHESTS_CATEGORY);
+			builder.pop();
+        }
+	}
+	
 	public static class KeysAndLocks {
-//		@Comment({ "Enable/Disable whether a Key can break when attempting to unlock a Lock." })
-//		@Name("01. Enable key breaks:")
 		public ForgeConfigSpec.BooleanValue enableKeyBreaks;
-
-//		@Comment({ "Enable/Disable whether a Lock item is dropped when unlocked by Key item." })
-//		@Name("02. Enable lock drops:")
 		public ForgeConfigSpec.BooleanValue enableLockDrops;
-		
-//		@Comment({ "The maximum uses for a given pilferers lock pick." })
-//		@Name("03. Pilferer's lockpick max. uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
 		public ForgeConfigSpec.ConfigValue<Integer> pilferersLockPickMaxUses;
-
-//		@Comment({ "The maximum uses for a given thiefs lock pick." })
-//		@Name("04. Thief's lockpick max. uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
-		public int thiefsLockPickMaxUses = 10;
-		
-//		@Comment({ "The maximum uses for a given wooden key." })
-//		@Name("05. Wood key max. uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
-		public int woodKeyMaxUses = 20;
-		
-//		@Comment({ "The maximum uses for a given stone key." })
-//		@Name("06. Stone key max uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
-		public int stoneKeyMaxUses = 10;
-
-//		@Comment({ "The maximum uses for a given iron key." })
-//		@Name("07. Iron key max. uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
-		public int ironKeyMaxUses = 10;
-
-//		@Comment({ "The maximum uses for a given gold key." })
-//		@Name("08. Gold key max. uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
-		public int goldKeyMaxUses = 15;
-
-//		@Comment({ "The maximum uses for a given diamond key." })
-//		@Name("09. Diamond key max. uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
-		public int diamondKeyMaxUses = 20;
-
-//		@Comment({ "The maximum uses for a given emerald key." })
-//		@Name("10. Emerald key max. uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
-		public int emeraldKeyMaxUses = 10;
-
-//		@Comment({ "The maximum uses for a given ruby key." })
-//		@Name("11. Ruby key max. uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
-		public int rubyKeyMaxUses = 5;
-
-//		@Comment({ "The maximum uses for a given sapphire key." })
-//		@Name("12. Sapphire key max. uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
-		public int sapphireKeyMaxUses = 5;
-
-//		@Comment({ "The maximum uses for a given metallurgists key." })
-//		@Name("13. Metallurgists key max. uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
-		public int metallurgistsKeyMaxUses = 25;
-
-//		@Comment({ "The maximum uses for a given skeleton key." })
-//		@Name("14. Skeleton key max. uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
-		public int skeletonKeyMaxUses = 5;
-
-//		@Comment({ "The maximum uses for a given jewelled key." })
-//		@Name("15. Jewelled Key max. uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
-		public int jewelledKeyMaxUses = 5;
-
-//		@Comment({ "The maximum uses for a given spider key." })
-//		@Name("16. Spider key max uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
-		public int spiderKeyMaxUses = 5;
-
-//		@Comment({ "The maximum uses for a given wither key." })
-//		@Name("17. Wither key max. uses:")
-//		@RangeInt(min = 1, max = 32000)
-//		@RequiresMcRestart
-        public int witherKeyMaxUses = 5;		
+		public ForgeConfigSpec.ConfigValue<Integer> thiefsLockPickMaxUses;
+		public ForgeConfigSpec.ConfigValue<Integer> woodKeyMaxUses;
+		public ForgeConfigSpec.ConfigValue<Integer> stoneKeyMaxUses;
+		public ForgeConfigSpec.ConfigValue<Integer> ironKeyMaxUses;
+		public ForgeConfigSpec.ConfigValue<Integer> goldKeyMaxUses;
+		public ForgeConfigSpec.ConfigValue<Integer> diamondKeyMaxUses;
+		public ForgeConfigSpec.ConfigValue<Integer> emeraldKeyMaxUses;
+		public ForgeConfigSpec.ConfigValue<Integer> rubyKeyMaxUses;
+		public ForgeConfigSpec.ConfigValue<Integer> sapphireKeyMaxUses;
+		public ForgeConfigSpec.ConfigValue<Integer> metallurgistsKeyMaxUses;
+		public ForgeConfigSpec.ConfigValue<Integer> skeletonKeyMaxUses;
+		public ForgeConfigSpec.ConfigValue<Integer> jewelledKeyMaxUses;
+		public ForgeConfigSpec.ConfigValue<Integer> spiderKeyMaxUses;
+        public ForgeConfigSpec.ConfigValue<Integer> witherKeyMaxUses;		
         
         KeysAndLocks(final ForgeConfigSpec.Builder builder) {
-            builder.comment("Keys and Locks properties").push(KEYS_AND_LOCKS_CATEGORY);
+            builder.comment("Keys and Locks properties")
+            .push(KEYS_AND_LOCKS_CATEGORY);
             
             enableKeyBreaks = builder
                 .comment("Enable/Disable whether a Key can break when attempting to unlock a Lock.")
@@ -228,7 +161,80 @@ public class TreasureConfig extends AbstractConfig {
             enableLockDrops = builder.comment("Enable/Disable whether a Lock item is dropped when unlocked by Key item.")
                 .define("02. Enable lock drops:", true);
 		
-            pilferersLockPickMaxUses = builder.comment("").define("", 10);
+            pilferersLockPickMaxUses = builder
+            		.comment("The maximum uses for a given pilferers lock pick.")
+            		.defineInRange("03. Pilferer's lockpick max. uses:", 10, 1, 32000);
+            
+            thiefsLockPickMaxUses = builder
+            		.comment("The maximum uses for a given thiefs lock pick.")
+            		.defineInRange("04. Thief's lockpick max. uses:", 10, 1, 32000);
+            
+//    		@RequiresMcRestart
+    		woodKeyMaxUses = builder
+    				.comment("The maximum uses for a given wooden key.")
+    				.defineInRange("05. Wood key max. uses:", 20, 1, 32000);
+
+//    		@RequiresMcRestart
+    		stoneKeyMaxUses = builder
+    				.comment("The maximum uses for a given stone key.")
+    				.defineInRange("06. Stone key max uses:", 10, 1, 32000);
+
+//    		@RequiresMcRestart
+    		ironKeyMaxUses = builder
+    				.comment("The maximum uses for a given iron key.")
+    				.defineInRange("07. Iron key max. uses:", 10, 1, 32000);
+
+//    		@RequiresMcRestart
+    		goldKeyMaxUses = builder
+    				.comment("The maximum uses for a given gold key.")
+    				.defineInRange("08. Gold key max. uses:", 15, 1, 32000);
+
+//    		@RequiresMcRestart
+    		diamondKeyMaxUses = builder
+    				.comment("The maximum uses for a given diamond key.")
+    				.defineInRange("09. Diamond key max. uses:", 20, 1, 32000);
+
+//    		@RequiresMcRestart
+    		emeraldKeyMaxUses = builder
+    				.comment("The maximum uses for a given emerald key.")
+    				.defineInRange("10. Emerald key max. uses:", 10, 1, 32000);
+
+//    		@RequiresMcRestart
+    		rubyKeyMaxUses = builder
+    				.comment("The maximum uses for a given ruby key.")
+    				.defineInRange("11. Ruby key max. uses:", 5, 1, 32000);
+
+//    		@RequiresMcRestart
+    		sapphireKeyMaxUses = builder
+    				.comment("The maximum uses for a given sapphire key.")
+    				.defineInRange("12. Sapphire key max. uses:", 5, 1, 32000);
+
+//    		@RequiresMcRestart
+    		metallurgistsKeyMaxUses = builder
+    				.comment("The maximum uses for a given metallurgists key.")
+    				.defineInRange("13. Metallurgists key max. uses:", 25, 1, 32000);
+
+//    		@RequiresMcRestart
+    		skeletonKeyMaxUses = builder
+    				.comment("The maximum uses for a given skeleton key.")
+    				.defineInRange("14. Skeleton key max. uses:", 5, 1, 32000);
+
+//    		@RequiresMcRestart
+    		jewelledKeyMaxUses = builder
+    				.comment("The maximum uses for a given jewelled key.")
+    				.defineInRange("15. Jewelled Key max. uses:", 5, 1, 32000);
+
+//    		@RequiresMcRestart
+    		spiderKeyMaxUses = builder
+    				.comment("The maximum uses for a given spider key.")
+    				.defineInRange("16. Spider key max uses:", 5, 1, 32000);
+
+//    		@RequiresMcRestart
+            witherKeyMaxUses = builder
+    				.comment("The maximum uses for a given wither key.")
+    				.defineInRange("17. Wither key max. uses:", 5, 1, 32000);
+    		
+			builder.pop();
         }
 	}
 	
@@ -294,3 +300,4 @@ public class TreasureConfig extends AbstractConfig {
 		TreasureConfig.MOD.configFolder.set(configFolder);
 	}
 }
+

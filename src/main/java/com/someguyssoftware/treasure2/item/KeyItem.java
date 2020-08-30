@@ -195,7 +195,7 @@ public class KeyItem extends ModItem {
 						// update the client
 						tcte.sendUpdates();
 						// spawn the lock
-						if (TreasureConfig.KEYS_LOCKS.enableLockDrops) {
+						if (TreasureConfig.KEYS_LOCKS.enableLockDrops.get()) {
 							InventoryHelper.spawnItemStack(context.getWorld(), (double)chestPos.getX(), (double)chestPos.getY(), (double)chestPos.getZ(), new ItemStack(lock));
 						}
 						// don't break the key
@@ -205,7 +205,7 @@ public class KeyItem extends ModItem {
 						
 				// check key's breakability
 				if (breakKey) {
-					if (isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
+					if (isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks.get()) {
 						// break key;
 						heldItem.shrink(1);
 						context.getPlayer().sendMessage(new StringTextComponent("Key broke."));
