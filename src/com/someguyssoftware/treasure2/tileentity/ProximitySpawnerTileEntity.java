@@ -55,8 +55,9 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 				this.mobName = new ResourceLocation(parentNBT.getString("mobName"));
 			}
 			else {
-				// select a random mob
-				this.mobName = DungeonHooks.getRandomDungeonMob(new Random());
+                // select a random mob
+                // TODO check if this return as a ResourceLocation string
+				this.mobName = new ResourceLocation(DungeonHooks.getRandomDungeonMob(new Random()));
 			}
 			
 			int min = 1;
@@ -85,14 +86,27 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 	 */
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-	    super.writeToNBT(tag);
+        super.writeToNBT(tag);
+        if (StringUtils.isEmpty(getMobName())) {
+            defaultMobSpawnerSettings();
+        }
 	    tag.setString("mobName", getMobName().toString());
 	    tag.setInteger("mobNumMin", getMobNum().getMinInt());
 	    tag.setInteger("mobNumMax", getMobNum().getMaxInt());
 	    tag.setDouble("spawnRange", getSpawnRange());
 	    return tag;
 	}
-	
+    
+    /**
+     * 
+     */
+    private void defaultMobSpawnerSettings() {
+        setMobName(new ResourceLocation("minecraft", "zombie"));
+        getMobNum().setMinInt(1);
+        getMobNum().setMaxInt(1);
+        setSpawnRange(5.0D);
+    }
+
 	/**
 	 * 
 	 */
