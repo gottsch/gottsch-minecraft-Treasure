@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -56,8 +57,12 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 			}
 			else {
                 // select a random mob
-                // TODO check if this return as a ResourceLocation string
-				this.mobName = new ResourceLocation(DungeonHooks.getRandomDungeonMob(new Random()));
+				this.mobName = DungeonHooks.getRandomDungeonMob(new Random());
+			}
+			
+			if (getMobName() == null || StringUtils.isNullOrEmpty(getMobName().toString())) {
+				defaultMobSpawnerSettings();
+				return;
 			}
 			
 			int min = 1;
@@ -87,7 +92,7 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        if (StringUtils.isEmpty(getMobName())) {
+        if (getMobName() == null || StringUtils.isNullOrEmpty(getMobName().toString())) {        	
             defaultMobSpawnerSettings();
         }
 	    tag.setString("mobName", getMobName().toString());
@@ -102,8 +107,7 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
      */
     private void defaultMobSpawnerSettings() {
         setMobName(new ResourceLocation("minecraft", "zombie"));
-        getMobNum().setMinInt(1);
-        getMobNum().setMaxInt(1);
+        setMobNum(new Quantity(1, 1));
         setSpawnRange(5.0D);
     }
 

@@ -21,10 +21,10 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 ext {
     // Open the Git repository in the parent directory.
-    git = org.ajoberstar.grgit.Grgit.open(file('../'))
+//    git = org.ajoberstar.grgit.Grgit.open(file('../'))
 
     // Get commit id of HEAD.
-    revision = git.head().id
+//    revision = git.head().id
     // Alternative is using abbreviatedId of head() method.
     // revision = git.head().abbreviatedId
 }
@@ -53,13 +53,14 @@ sourceSets.main{
 		srcDirs 'src' //, 'test' //set the source folder as the /src subfolder
 	}
     resources{
-		srcDirs 'src/resources'//set the resources folder as the /resources subfolder
+		srcDirs 'src/resources' //set the resources folder as the /resources subfolder
 	}
 }
 
-def gottschcore_path="../../gottsch-minecraft-GottschCore/GottschCore${mc_version}/build/libs/GottschCore-mc${mc_version}-f${forge_version}-v${gottschcore_version}.jar"
+def gottschcore_path="../gottsch-minecraft-GottschCore/GottschCore${mc_version}/build/libs/GottschCore-mc${mc_version}-f${forge_version}-v${gottschcore_version}.jar"
+
 dependencies {
-compile files('../../ModCommonLibs/libs/commons-cli-1.4.jar')
+compile files('../ModCommonLibs/libs/commons-cli-1.4.jar')
 	//compile files(gottschcore_path)	
 	shadow files(gottschcore_path)	
 	compileOnly "vazkii.patchouli:Patchouli:${patchouli_version}"
