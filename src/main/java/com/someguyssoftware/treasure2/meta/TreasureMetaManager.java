@@ -155,7 +155,7 @@ public class TreasureMetaManager extends MetaManager {
 			try {
 				jsonReader.close();
 			} catch (IOException e) {
-				GottschCore.LOGGER.warn("Unable to close JSON Reader when reading meta file.");
+				Treasure.LOGGER.warn("Unable to close JSON Reader when reading meta file.");
 			}
 		}
 

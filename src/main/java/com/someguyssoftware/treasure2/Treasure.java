@@ -7,8 +7,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.security.CodeSource;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -37,12 +39,22 @@ import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.IResource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.config.ModConfig.ModConfigEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -78,6 +90,8 @@ public class Treasure implements IMod {
 	private static TreasureConfig config;
 
 	// meta manager // NOTE can't be final as Treasure.instance is required.
+	// TODO move to TreasureData
+	public static TreasureLootTableMaster lootTableMaster;
 	public static TreasureMetaManager metaManager;
 		
 	public Treasure() {
@@ -87,8 +101,12 @@ public class Treasure implements IMod {
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, TreasureConfig.COMMON_CONFIG);
 
 		// Register the setup method for modloading
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onServerStarted);
+		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		eventBus.addListener(this::config);
+		eventBus.addListener(this::setup);
+		eventBus.addListener(this::clientSetup);
+		eventBus.addListener(this::postSetup);
+		eventBus.addListener(this::onServerStarted);
 
 		TreasureConfig.loadConfig(TreasureConfig.COMMON_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve("treasure2-common.toml"));
@@ -102,17 +120,12 @@ public class Treasure implements IMod {
 			// works if file names are known
 //			FileUtils.copyInputStreamToFile(
 //			        Treasure.class.getClassLoader().getResourceAsStream("meta/treasure2/structures/basic1.json"),
-//			        new File("F:/test/out.json"));
-			
-			/*
-			 *  TODO what i'm going to have to do is have a known location text file that has a list of all the resources (json) that i wish to expose.
-			 *  run through the text files, and grab each file directly and expose it. then later is when the files are read from the file system. yuck
-			 */
-
+//			        Paths.get(Treasure.config.getConfigFolder(), this.getId(),"meta/treasure2/structures/basic1.json").toFile());
 //		} catch (IOException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
+		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
 	}
 	
 	/**
@@ -121,19 +134,39 @@ public class Treasure implements IMod {
 	 * @param event
 	 */
 	private void setup(final FMLCommonSetupEvent event) {
+		Treasure.lootTableMaster = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");
 		// TODO try calling this onWorldLoad
 		// create a logger
 //		createLogger();
 
 //		InputStream is = Dungeons2.instance.getClass().getResourceAsStream(BUILT_IN_STYLE_SHEET_PATH);
 //		URL url = this.getClass().getResource("/meta");
-		URL url = Treasure.class.getClassLoader().getResource("/meta");
-		Treasure.LOGGER.info("setup resource URL -> {}", url.toString());
+//		URL url = Treasure.class.getClassLoader().getResource("/meta");
+//		Treasure.LOGGER.info("setup resource URL -> {}", url.toString());
+//		
+//		List<IResource> r;
+//		try {
+//			r = Minecraft.getInstance().getResourceManager().getAllResources(new ResourceLocation("treasure2" ,"meta/treasure2/structures"));
+//			Treasure.LOGGER.info("testing resource manager -> {}", r.get(0).getLocation());
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
+	private void clientSetup(final FMLClientSetupEvent event) {
+		Treasure.LOGGER.info("in client setup event");
+	}
+	 private void postSetup(final FMLLoadCompleteEvent event) { 
+		 Treasure.LOGGER.info("in post setup event");
+	 }
+	 
+	 private void config(final ModConfigEvent evt) {
+		 Treasure.LOGGER.info("in config event");
+	 }
+	 
 	private void onServerStarted(final FMLServerStartedEvent event) {
-//		Treasure.metaManager.register(Treasure.MODID);
-//		Treasure.DECAY_MANAGER.register(getMod().getId());
+		Treasure.LOGGER.info("in onServerStarted");
 	}
 
 	

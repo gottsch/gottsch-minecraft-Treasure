@@ -3,11 +3,15 @@
  */
 package com.someguyssoftware.treasure2.config;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.someguyssoftware.gottschcore.config.AbstractConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.config.ModConfig;
@@ -21,17 +25,22 @@ import net.minecraftforge.fml.loading.FMLPaths;
  */
 @EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class TreasureConfig extends AbstractConfig {
-	public static final String CHESTS_CATEGORY = "03 chests";
-    public static final String KEYS_AND_LOCKS_CATEGORY = "07 keys and locks";
+	public static final String CHESTS_CATEGORY = "04-chests";
+    public static final String KEYS_AND_LOCKS_CATEGORY = "07-keys and locks";
+	public static final String FOREIGN_MODS_CATEGORY = "08-foreign mods";
 
 	public static ForgeConfigSpec COMMON_CONFIG;
 
+	public static final General GENERAL;
 	public static final Chests CHESTS;
     public static final KeysAndLocks KEYS_LOCKS;
+    public static final ForeignModEnablements FOREIGN_MODS;
 
 	static {
+		GENERAL = new General(COMMON_BUILDER);
 		CHESTS = new Chests(COMMON_BUILDER);
 		KEYS_LOCKS = new KeysAndLocks(COMMON_BUILDER);
+		FOREIGN_MODS = new ForeignModEnablements(COMMON_BUILDER);
 		COMMON_CONFIG = COMMON_BUILDER.build();
 	}
 
@@ -122,11 +131,26 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String GRAVESTONE_PROXIMITY_SPAWNER_TE_ID = "gravestone_proximity_spawner_tile_entity";
 	}
 	
+	public static class General {
+		public ForgeConfigSpec.BooleanValue  enableDefaultLootTablesCheck;
+		
+		General(final ForgeConfigSpec.Builder builder) {
+			builder.comment("General properties for Treasure mod.").push("03-general");
+			
+			enableDefaultLootTablesCheck = builder
+            .comment("Enable/Disable a check to ensure the default loot tables exist on the file system.", "If enabled, then you will not be able to remove any default loot tables (but they can be edited).", "Only disable if you know what you're doing.")
+            .define("Enable default loot tables check:", true);
+			
+			builder.pop();
+		}
+	}
+	
 	public static class Chests {
         Chests(final ForgeConfigSpec.Builder builder) {
             builder.comment("Chests that generate on land.",
             		"Note: There is a build-in check against ocean biomes for surface chests. Adding ocean biomes to the white lists will not change this functionality.")
             .push(CHESTS_CATEGORY);
+
 			builder.pop();
         }
 	}
@@ -156,89 +180,109 @@ public class TreasureConfig extends AbstractConfig {
             
             enableKeyBreaks = builder
                 .comment("Enable/Disable whether a Key can break when attempting to unlock a Lock.")
-                .define("01. Enable key breaks:", true);
+                .define("Enable key breaks:", true);
 
             enableLockDrops = builder.comment("Enable/Disable whether a Lock item is dropped when unlocked by Key item.")
-                .define("02. Enable lock drops:", true);
+                .define("Enable lock drops:", true);
 		
             pilferersLockPickMaxUses = builder
             		.comment("The maximum uses for a given pilferers lock pick.")
-            		.defineInRange("03. Pilferer's lockpick max. uses:", 10, 1, 32000);
+            		.defineInRange("Pilferer's lockpick max uses:", 10, 1, 32000);
             
             thiefsLockPickMaxUses = builder
             		.comment("The maximum uses for a given thiefs lock pick.")
-            		.defineInRange("04. Thief's lockpick max. uses:", 10, 1, 32000);
+            		.defineInRange("Thief's lockpick max uses:", 10, 1, 32000);
             
 //    		@RequiresMcRestart
     		woodKeyMaxUses = builder
     				.comment("The maximum uses for a given wooden key.")
-    				.defineInRange("05. Wood key max. uses:", 20, 1, 32000);
+    				.defineInRange("Wood key max uses:", 20, 1, 32000);
 
 //    		@RequiresMcRestart
     		stoneKeyMaxUses = builder
     				.comment("The maximum uses for a given stone key.")
-    				.defineInRange("06. Stone key max uses:", 10, 1, 32000);
+    				.defineInRange("Stone key max uses:", 10, 1, 32000);
 
 //    		@RequiresMcRestart
     		ironKeyMaxUses = builder
     				.comment("The maximum uses for a given iron key.")
-    				.defineInRange("07. Iron key max. uses:", 10, 1, 32000);
+    				.defineInRange("Iron key max uses:", 10, 1, 32000);
 
 //    		@RequiresMcRestart
     		goldKeyMaxUses = builder
     				.comment("The maximum uses for a given gold key.")
-    				.defineInRange("08. Gold key max. uses:", 15, 1, 32000);
+    				.defineInRange("Gold key max uses:", 15, 1, 32000);
 
 //    		@RequiresMcRestart
     		diamondKeyMaxUses = builder
     				.comment("The maximum uses for a given diamond key.")
-    				.defineInRange("09. Diamond key max. uses:", 20, 1, 32000);
+    				.defineInRange("Diamond key max uses:", 20, 1, 32000);
 
 //    		@RequiresMcRestart
     		emeraldKeyMaxUses = builder
     				.comment("The maximum uses for a given emerald key.")
-    				.defineInRange("10. Emerald key max. uses:", 10, 1, 32000);
+    				.defineInRange("Emerald key max uses:", 10, 1, 32000);
 
 //    		@RequiresMcRestart
     		rubyKeyMaxUses = builder
     				.comment("The maximum uses for a given ruby key.")
-    				.defineInRange("11. Ruby key max. uses:", 5, 1, 32000);
+    				.defineInRange("Ruby key max uses:", 5, 1, 32000);
 
 //    		@RequiresMcRestart
     		sapphireKeyMaxUses = builder
     				.comment("The maximum uses for a given sapphire key.")
-    				.defineInRange("12. Sapphire key max. uses:", 5, 1, 32000);
+    				.defineInRange("Sapphire key max uses:", 5, 1, 32000);
 
 //    		@RequiresMcRestart
     		metallurgistsKeyMaxUses = builder
     				.comment("The maximum uses for a given metallurgists key.")
-    				.defineInRange("13. Metallurgists key max. uses:", 25, 1, 32000);
+    				.defineInRange("Metallurgists key max uses:", 25, 1, 32000);
 
 //    		@RequiresMcRestart
     		skeletonKeyMaxUses = builder
     				.comment("The maximum uses for a given skeleton key.")
-    				.defineInRange("14. Skeleton key max. uses:", 5, 1, 32000);
+    				.defineInRange("Skeleton key max uses:", 5, 1, 32000);
 
 //    		@RequiresMcRestart
     		jewelledKeyMaxUses = builder
     				.comment("The maximum uses for a given jewelled key.")
-    				.defineInRange("15. Jewelled Key max. uses:", 5, 1, 32000);
+    				.defineInRange("Jewelled Key max uses:", 5, 1, 32000);
 
 //    		@RequiresMcRestart
     		spiderKeyMaxUses = builder
     				.comment("The maximum uses for a given spider key.")
-    				.defineInRange("16. Spider key max uses:", 5, 1, 32000);
+    				.defineInRange("Spider key max uses:", 5, 1, 32000);
 
 //    		@RequiresMcRestart
             witherKeyMaxUses = builder
     				.comment("The maximum uses for a given wither key.")
-    				.defineInRange("17. Wither key max. uses:", 5, 1, 32000);
+    				.defineInRange("Wither key max uses:", 5, 1, 32000);
     		
 			builder.pop();
         }
 	}
 	
-	// public static final KeysAndLocks KEYS_LOCKS = new KeysAndLocks();
+	public static class ForeignModEnablements {
+
+		public ConfigValue<List<? extends String>> enableForeignModIDs;
+		public ConfigValue<List<? extends String>> availableForeignModLootTables;
+		
+		ForeignModEnablements(final ForgeConfigSpec.Builder builder) {
+            builder.comment("Foreign mod properties")
+            .push(FOREIGN_MODS_CATEGORY);
+
+            enableForeignModIDs = builder
+            	.comment("Add mod's MODID to this list to enable custom loot tables for a mod.")
+            	.defineList("Foreign mod IDs for custom loot tables:", Arrays.asList(new String []{"mocreatures", "sgs_metals"}), s -> s instanceof String);
+
+    		availableForeignModLootTables = builder
+    			.comment("A list of mods that have prebuilt loot tables available.", "Note: used for informational purposes only.")
+    			.defineList("Pre-build loot tables for foreign mod IDs:", Arrays.asList(new String[] { "mocreatures", "sgs_metals"}), s -> s instanceof String);
+            
+            builder.pop();
+		}
+	}
+
 	
 	@SubscribeEvent
 	public static void onLoad(final ModConfig.Loading configEvent) {

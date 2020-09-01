@@ -1,0 +1,51 @@
+{
+	"supportingResources": [
+		"loot_tables/treasure2/treasure/common.json",
+		"loot_tables/treasure2/treasure/uncommon.json",
+		"loot_tables/treasure2/treasure/scarce.json",
+		"loot_tables/treasure2/treasure/rare.json",
+		"loot_tables/treasure2/treasure/epic.json"	
+	],
+	"chestResources": [
+		"loot_tables/treasure2/chests/common/armor_tool_chest.json",
+		"loot_tables/treasure2/chests/common/food_potion_chest.json",
+		"loot_tables/treasure2/chests/common/general_chest.json",
+		
+		"loot_tables/treasure2/chests/uncommon/armor_tool_chest.json",
+		"loot_tables/treasure2/chests/uncommon/food_potion_chest.json",
+		"loot_tables/treasure2/chests/uncommon/general_chest.json",
+		
+		"loot_tables/treasure2/chests/scarce/armor_tool_chest.json",
+		"loot_tables/treasure2/chests/scarce/food_potion_chest.json",
+		"loot_tables/treasure2/chests/scarce/general_chest.json",
+		
+		"loot_tables/treasure2/chests/rare/armor_tool_chest.json",
+		"loot_tables/treasure2/chests/rare/food_potion_chest.json",
+		"loot_tables/treasure2/chests/rare/general_chest.json",
+	
+		"loot_tables/treasure2/chests/epic/general_chest.json"
+	],
+	"specialResources": [
+		"loot_tables/treasure2/chests/special/black_pearl_well.json",
+		"loot_tables/treasure2/chests/special/cauldron_chest.json"
+	],
+	
+	"chestLootTableFolderLocations": [
+		"chests/special"
+	],
+	"specialLootTableFolderLocations": [
+		"chests/common",
+		"chests/uncommon",
+		"chests/scarce",
+		"chests/rare",
+		"chests/epic"
+	],
+	"supportingLootTableFolderLocations": [
+		"treasure",
+		"armor",
+		"food",
+		"items",
+		"potions",
+		"tools"
+	]
+}
