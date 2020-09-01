@@ -34,11 +34,13 @@ public class TreasureGuis {
 		  public static void onClientSetupEvent(FMLClientSetupEvent event) {
 		    ScreenManager.registerFactory(TreasureContainers.standardChestContainerType, StandardChestContainerScreen::new);
 		    
-		    // tell the renderer that the base is rendered using CUTOUT_MIPPED (to match the Block Hopper)
+		    // Tell the renderer that the base is rendered using CUTOUT_MIPPED (to match the Block Hopper)
 		    RenderTypeLookup.setRenderLayer(TreasureBlocks.WOOD_CHEST, RenderType.getCutoutMipped());
-		    
-		    // register the custom renderer for our tile entity
+		    // Register the custom renderer for our tile entity
 		    ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.woodChestTileEntityType, WoodChestTileEntityRenderer::new);
+
+		    // NOTE don't need this
+		    MinecraftForge.EVENT_BUS.register(AnimationTickCounter.class);  // counts ticks, used for animation
 		  }
 	}
 }

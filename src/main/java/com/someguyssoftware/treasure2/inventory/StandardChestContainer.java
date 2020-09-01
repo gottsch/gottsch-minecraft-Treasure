@@ -32,12 +32,6 @@ public class StandardChestContainer extends Container implements ITreasureContai
 	private static final int CONTAINER_INVENTORY_COLUMN_COUNT = 9;
 	private static final int CONTAINER_INVENTORY_SLOT_COUNT = CONTAINER_INVENTORY_ROW_COUNT * CONTAINER_INVENTORY_COLUMN_COUNT;
 	
-	public static final int TILE_INVENTORY_XPOS = 8;
-	public static final int TILE_INVENTORY_YPOS = 18;
-	
-	public static final int PLAYER_INVENTORY_XPOS = 8;
-	public static final int PLAYER_INVENTORY_YPOS = 84;
-		
 	/*
 	 * TODO  this class should extend an AbstractChestContainer where all the container consts are properties that can be
 	 * set. As well as the pixel offsets etc. The init code can be put in the abstract, so only the contrete classes would set
@@ -54,13 +48,10 @@ public class StandardChestContainer extends Container implements ITreasureContai
 	 * @return
 	 */
 	public static StandardChestContainer create(int windowID, PlayerInventory playerInventory, PacketBuffer extraData) {
-		Treasure.LOGGER.info("CLIENT factory for standard chest container");
 		return new StandardChestContainer(windowID, playerInventory);
 	}
 	
-	// THIS IS NEVER Called
 	public static StandardChestContainer create(int windowID, PlayerInventory playerInventory, IInventory inventory) {
-		Treasure.LOGGER.info("SERVER factory for standard chest container");
 		return new StandardChestContainer(windowID, playerInventory);
 	}
 	
@@ -71,7 +62,6 @@ public class StandardChestContainer extends Container implements ITreasureContai
 	 */
 	public StandardChestContainer(int windowID, PlayerInventory playerInventory) {
 		this(windowID, playerInventory, new Inventory(CONTAINER_INVENTORY_SLOT_COUNT));
-		Treasure.LOGGER.info("standard chest container created for CLIENT");
 	}
 	
 	/**
@@ -98,6 +88,9 @@ public class StandardChestContainer extends Container implements ITreasureContai
 			int slotNumber = x;
 			addSlot(new Slot(playerInventory, slotNumber, HOTBAR_XPOS + SLOT_X_SPACING * x, HOTBAR_YPOS));
 		}
+
+		final int PLAYER_INVENTORY_XPOS = 8;
+		final int PLAYER_INVENTORY_YPOS = 84;
 		
 		/*
 		 *  Add the rest of the players inventory to the gui
@@ -117,7 +110,8 @@ public class StandardChestContainer extends Container implements ITreasureContai
 												  + ") and TileInventory (" + inventory.getSizeInventory()+")");
 		}
 
-
+		final int TILE_INVENTORY_XPOS = 8;
+		final int TILE_INVENTORY_YPOS = 18;
 		
 		/*
 		 *  Add the tile inventory container to the gui

@@ -52,17 +52,17 @@ public class TreasureBlocks {
 		VoxelShape vanillaChestShape = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 14.0D, 14.0D, 14.0D);
 		VoxelShape[] standardChestBounds = new VoxelShape[] {vanillaChestShape, vanillaChestShape, vanillaChestShape, vanillaChestShape};
 		
-		WOOD_CHEST = new StandardChestBlock(Treasure.MODID, TreasureConfig.ChestID.WOOD_CHEST_ID, WoodChestTileEntity.class,
+		WOOD_CHEST = new TreasureChestBlock(Treasure.MODID, TreasureConfig.ChestID.WOOD_CHEST_ID, WoodChestTileEntity.class,
 				TreasureChestTypes.STANDARD, Rarity.COMMON, Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.5F))
 				.setBounds(standardChestBounds);
 		
-		CRATE_CHEST = new StandardChestBlock(Treasure.MODID, TreasureConfig.ChestID.CRATE_CHEST_ID, CrateChestTileEntity.class,
+		CRATE_CHEST = new TreasureChestBlock(Treasure.MODID, TreasureConfig.ChestID.CRATE_CHEST_ID, CrateChestTileEntity.class,
 				TreasureChestTypes.CRATE, Rarity.UNCOMMON, Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.5F));
 		
-		MOLDY_CRATE_CHEST = new StandardChestBlock(Treasure.MODID, TreasureConfig.ChestID.MOLDY_CRATE_CHEST_ID, MoldyCrateChestTileEntity.class,
+		MOLDY_CRATE_CHEST = new TreasureChestBlock(Treasure.MODID, TreasureConfig.ChestID.MOLDY_CRATE_CHEST_ID, MoldyCrateChestTileEntity.class,
 				TreasureChestTypes.CRATE, Rarity.COMMON, Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F));
 		
-		IRONBOUND_CHEST = new StandardChestBlock(Treasure.MODID, TreasureConfig.ChestID.IRONBOUND_CHEST_ID, IronboundChestTileEntity.class,
+		IRONBOUND_CHEST = new TreasureChestBlock(Treasure.MODID, TreasureConfig.ChestID.IRONBOUND_CHEST_ID, IronboundChestTileEntity.class,
 				TreasureChestTypes.STANDARD, Rarity.UNCOMMON, Block.Properties.create(Material.IRON, MaterialColor.IRON).hardnessAndResistance(3.0F))
 				.setBounds(standardChestBounds);
 		

@@ -1,7 +1,5 @@
 package com.someguyssoftware.treasure2.gui;
 
-import java.awt.Color;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
@@ -12,10 +10,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 public class StandardChestContainerScreen extends ContainerScreen<StandardChestContainer> {
-
-	// this is the resource location for the background image for the GUI
-	private static final ResourceLocation texture = new ResourceLocation(Treasure.MODID, "textures/gui/container/treasure_chest.png");
-
+	
+	  // this is the resource location for the background image for the GUI
+	  private static final ResourceLocation texture = new ResourceLocation(Treasure.MODID, "textures/gui/container/treasure_chest.png");
+	  
 	/**
 	 * 
 	 * @param screenContainer
@@ -30,33 +28,37 @@ public class StandardChestContainerScreen extends ContainerScreen<StandardChestC
 		ySize = 167;
 	}
 
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 * Taken directly from ChestScreen
-	 */
-	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		final float LABEL_XPOS = 5;
-		final float FONT_Y_SPACING = 10;
-		final float CHEST_LABEL_YPOS = StandardChestContainer.TILE_INVENTORY_YPOS - FONT_Y_SPACING;
-		font.drawString(this.title.getFormattedText(), LABEL_XPOS, CHEST_LABEL_YPOS, Color.darkGray.getRGB());
-		final float PLAYER_INV_LABEL_YPOS = StandardChestContainer.PLAYER_INVENTORY_YPOS - FONT_Y_SPACING;
-		this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 
-				LABEL_XPOS, PLAYER_INV_LABEL_YPOS, Color.darkGray.getRGB());
-	}
-
+	  /**
+	   * Draw the foreground layer for the GuiContainer (everything in front of the items)
+	   * Taken directly from ChestScreen
+	   */
+//	@Override
+//	  protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+//			final float LABEL_XPOS = 5;
+//			final float FONT_Y_SPACING = 12;
+//			final float CHEST_LABEL_YPOS = ContainerBasic.TILE_INVENTORY_YPOS - FONT_Y_SPACING;
+//	    font.drawString(this.title.getFormattedText(), LABEL_XPOS, CHEST_LABEL_YPOS, Color.darkGray.getRGB());
+//	    final float PLAYER_INV_LABEL_YPOS = ContainerBasic.PLAYER_INVENTORY_YPOS - FONT_Y_SPACING;
+//	    this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 
+//	                         LABEL_XPOS, PLAYER_INV_LABEL_YPOS, Color.darkGray.getRGB());
+//		final int LABEL_XPOS = 5;
+//		final int LABEL_YPOS = 5;
+//		this.font.drawString(tileEntity.getDisplayName().getUnformattedText(), LABEL_XPOS, LABEL_YPOS,
+//				Color.darkGray.getRGB());
+//	  }
+	  
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.minecraft.getTextureManager().bindTexture(texture);
+	    RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+	    this.minecraft.getTextureManager().bindTexture(texture);
 
-		// width and height are the size provided to the window when initialised after creation.
-		// xSize, ySize are the expected size of the texture-? usually seems to be left as a default.
-		// The code below is typical for vanilla containers, so I've just copied that- it appears to centre the texture within
-		//  the available window
-		int edgeSpacingX = (this.width - this.xSize) / 2;
-		int edgeSpacingY = (this.height - this.ySize) / 2;
-		this.blit(edgeSpacingX, edgeSpacingY, 0, 0, this.xSize, this.ySize);
+	    // width and height are the size provided to the window when initialised after creation.
+	    // xSize, ySize are the expected size of the texture-? usually seems to be left as a default.
+	    // The code below is typical for vanilla containers, so I've just copied that- it appears to centre the texture within
+	    //  the available window
+	    int edgeSpacingX = (this.width - this.xSize) / 2;
+	    int edgeSpacingY = (this.height - this.ySize) / 2;
+	    this.blit(edgeSpacingX, edgeSpacingY, 0, 0, this.xSize, this.ySize);
 	}
 
 }

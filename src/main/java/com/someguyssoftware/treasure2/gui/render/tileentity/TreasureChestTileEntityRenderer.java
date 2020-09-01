@@ -8,17 +8,13 @@ import java.util.Random;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.block.AbstractChestBlock;
-import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.block.StandardChestBlock;
+import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.gui.model.ITreasureChestModel;
 import com.someguyssoftware.treasure2.gui.model.StandardChestModel;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.util.AnimationTickCounter;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Vector3f;
@@ -27,7 +23,6 @@ import net.minecraft.client.renderer.tileentity.DualBrightnessCallback;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.tileentity.IChestLid;
 import net.minecraft.tileentity.TileEntityMerger;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -39,6 +34,11 @@ import net.minecraft.world.World;
  *
  */
 public abstract class TreasureChestTileEntityRenderer extends TileEntityRenderer<AbstractTreasureChestTileEntity> {
+	public static final int NORTH = 2;
+	public static final int SOUTH = 3;
+	public static final int WEST = 4;
+	public static final int EAST = 5;
+
 	private ResourceLocation texture;
 	private StandardChestModel model;
 
@@ -66,18 +66,17 @@ public abstract class TreasureChestTileEntityRenderer extends TileEntityRenderer
 	public void render(AbstractTreasureChestTileEntity tileEntity, float partialTicks, MatrixStack matrixStack,
 			IRenderTypeBuffer renderTypeBuffer, int combinedLight, int combinedOverlay) {
 
-		if (!(tileEntity instanceof AbstractTreasureChestTileEntity)) {
+		if (!(tileEntity instanceof AbstractTreasureChestTileEntity))
 			return; // should never happen
-		}
 		
 		World world = tileEntity.getWorld();
 	    boolean hasWorld = (world != null);
 	    BlockState state = tileEntity.getBlockState();
 	    Direction facing = Direction.NORTH;
 	    if (hasWorld) {
-	    	facing = state.get(StandardChestBlock.FACING);
+	    	facing = state.get(TreasureChestBlock.FACING);
 	    }
-
+	    
 	 // push the current transformation matrix + normals matrix
 		matrixStack.push(); 
 
@@ -89,13 +88,15 @@ public abstract class TreasureChestTileEntityRenderer extends TileEntityRenderer
 	    matrixStack.scale(-1, -1, 1);
 	    float f = getHorizontalAngle(facing);
         matrixStack.rotate(Vector3f.YP.rotationDegrees(-f));
-        
+
         // update the lid rotation
      	updateModelLidRotation(tileEntity, partialTicks);
      		
 	    IVertexBuilder renderBuffer = renderTypeBuffer.getBuffer(model.getRenderType(getTexture()));
+//	    Treasure.LOGGER.info("combinedLight -> {}", combinedLight);
 	    model.renderAll(matrixStack, renderBuffer, combinedLight, combinedOverlay, tileEntity);
-	    matrixStack.pop();		
+	    matrixStack.pop();
+		
 	}
 	
 	/**
@@ -193,20 +194,15 @@ public abstract class TreasureChestTileEntityRenderer extends TileEntityRenderer
 	// TODO move out to interface
 	/**
 	 * 
-	 * @param tileEntity
+	 * @param te
 	 * @param partialTicks
 	 */
-	public void updateModelLidRotation(AbstractTreasureChestTileEntity tileEntity, float partialTicks) {
-//		Treasure.LOGGER.info("numUsing -> {}, prevLidAngle -> {}, lidAngle -> {}, partialTicks -> {}", tileEntity.numPlayersUsing, tileEntity.prevLidAngle, tileEntity.lidAngle, partialTicks);
-		float lidRotation = tileEntity.prevLidAngle + (tileEntity.lidAngle - tileEntity.prevLidAngle) * partialTicks;
-//		Treasure.LOGGER.info("0. lidRotation -> {}", lidRotation);
+	public void updateModelLidRotation(AbstractTreasureChestTileEntity te, float partialTicks) {
+		float lidRotation = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
 		lidRotation = 1.0F - lidRotation;
-//		Treasure.LOGGER.info("1. lidRotation -> {}", lidRotation);
 		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-//		Treasure.LOGGER.info("2. lidRotation -> {}", lidRotation);
 		model.getLid().rotateAngleX = -(lidRotation * (float) Math.PI / getAngleModifier());
-//		Treasure.LOGGER.info("3. lidRotation -> {}", -(lidRotation * (float) Math.PI / getAngleModifier()));
-//		Treasure.LOGGER.info("new lid angle -> {}", model.getLid().rotateAngleX);
+		Treasure.LOGGER.info("new lid angle -> {}", model.getLid().rotateAngleX);
 	}
 
 	/**
