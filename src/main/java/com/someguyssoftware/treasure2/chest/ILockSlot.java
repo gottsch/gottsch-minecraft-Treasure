@@ -5,7 +5,6 @@ package com.someguyssoftware.treasure2.chest;
 
 import com.someguyssoftware.gottschcore.spatial.Heading;
 import com.someguyssoftware.gottschcore.spatial.Rotate;
-import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.nbt.CompoundNBT;
 
@@ -32,7 +31,6 @@ public interface ILockSlot {
 		}
 		if (nbt.contains("face")) {
 			face = nbt.getInt("face");
-//			Treasure.LOGGER.info("ILockSlot | readFromNBT | read face -> {}", face);
 		}
 		if (nbt.contains("x")) {
 			x = nbt.getFloat("x");
@@ -46,7 +44,6 @@ public interface ILockSlot {
 		if (nbt.contains("rotation")) {
 			rotate = nbt.getFloat("rotation");
 		}
-//		Treasure.LOGGER.info("LockSlot |readNBT | Heading.getByIndex({}) -> {}", face, Heading.getByIndex(face));
 		slot = new LockSlot(index, Heading.getByIndex(face), x, y, z, rotate);
 		return slot;
 	}

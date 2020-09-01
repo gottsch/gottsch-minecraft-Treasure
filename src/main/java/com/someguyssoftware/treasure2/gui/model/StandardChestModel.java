@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
  * @author Mark Gottschling on Jan 15, 2018
  *
  */
-public class StandardChestModel extends AbstractTreasureChestModel {
+public class StandardChestModel extends Model implements ITreasureChestModel {
 
 	//fields
 	ModelRenderer base;
@@ -149,4 +149,9 @@ public class StandardChestModel extends AbstractTreasureChestModel {
 		this.lid = lid;
 	}
 
+	@Override
+	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn,
+			float red, float green, float blue, float alpha) {
+		Treasure.LOGGER.info("THIS SHOULD NEVER BE CALLED");
+	}
 }

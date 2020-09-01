@@ -1,7 +1,5 @@
 package com.someguyssoftware.treasure2.tileentity;
 
-import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -22,15 +20,10 @@ public class IronboundChestTileEntity extends AbstractTreasureChestTileEntity {
 		super(TreasureTileEntities.ironboundChestTileEntityType);
 		setCustomName(new TranslationTextComponent("display.ironbound_chest.name"));
 	}
-	
-	/**
-	 * 
-	 * @param windowID
-	 * @param inventory
-	 * @param player
-	 * @return
-	 */
-	public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player) {
-		return new StandardChestContainer(windowID, inventory, this);
+
+	@Override
+	public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

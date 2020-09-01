@@ -8,30 +8,16 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
-import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.block.AbstractChestBlock;
-import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
-import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -83,7 +69,7 @@ public class KeyItem extends ModItem {
 		super(modID, name, 
 				properties
 				.group(TreasureItemGroups.MOD_ITEM_GROUP)
-//				.maxStackSize(1) // can't have damage AND stacksize.
+//				.maxStackSize(1)
 				.maxDamage(DEFAULT_MAX_USES));
 
 		setCategory(Category.BASIC);
@@ -143,102 +129,100 @@ public class KeyItem extends ModItem {
 		tooltip.add(
 				new TranslationTextComponent("tooltip.label.damageable", damageable));
 	}
-		
-	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		BlockPos chestPos = context.getPos();
-		// determine if block at pos is a treasure chest
-		Block block = context.getWorld().getBlockState(chestPos).getBlock();
-		if (block instanceof ITreasureChestProxy) {
-			chestPos = ((ITreasureChestProxy)block).getChestPos(chestPos);
-			block = context.getWorld().getBlockState(chestPos).getBlock();
-		}
-		
-		if (block instanceof AbstractChestBlock) {
-			// get the tile entity
-			TileEntity te = context.getWorld().getTileEntity(chestPos);
-			if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
-				Treasure.LOGGER.warn("Null or incorrect TileEntity");
-				return ActionResultType.FAIL;
-			}
-			AbstractTreasureChestTileEntity tcte = (AbstractTreasureChestTileEntity)te;
-						
-			// exit if on the client
-			if (WorldInfo.isClientSide(context.getWorld())) {			
-				return ActionResultType.FAIL;
-			}
-
-			// determine if chest is locked
-			if (!tcte.hasLocks()) {
-				return ActionResultType.SUCCESS;
-			}
-			
-			try {
-				ItemStack heldItem = context.getPlayer().getHeldItem(context.getHand());	
-				boolean breakKey = true;
-				boolean fitsLock = false;
-				LockState lockState = null;
-				boolean isKeyBroken = false;
-				// check if this key is one that opens a lock (only first lock that key fits is unlocked).
-				lockState = fitsFirstLock(tcte.getLockStates());
-				if (lockState != null) {
-					fitsLock = true;
-				}
-				
-				if (fitsLock) {
-					if (unlock(lockState.getLock())) {
-						LockItem lock = lockState.getLock();
-						// remove the lock
-						lockState.setLock(null);
-						// play noise
-						context.getWorld().playSound(context.getPlayer(), chestPos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-						// update the client
-						tcte.sendUpdates();
-						// spawn the lock
-						if (TreasureConfig.KEYS_LOCKS.enableLockDrops) {
-							InventoryHelper.spawnItemStack(context.getWorld(), (double)chestPos.getX(), (double)chestPos.getY(), (double)chestPos.getZ(), new ItemStack(lock));
-						}
-						// don't break the key
-						breakKey = false;
-					}
-				}
-						
-				// check key's breakability
-				if (breakKey) {
-					if (isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
-						// break key;
-						heldItem.shrink(1);
-						context.getPlayer().sendMessage(new StringTextComponent("Key broke."));
-						context.getWorld().playSound(context.getPlayer(), chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-						// flag the key as broken
-						isKeyBroken = true;
-						// if the keyStack > 0, then reset the damage - don't break a brand new key and leave the used one
-						if (heldItem.getCount() > 0) {
-							heldItem.setDamage(0);
-						}
-					}
-					else {
-						context.getPlayer().sendMessage(new StringTextComponent("Failed to unlock."));
-					}						
-				}
-				
-				// user attempted to use key - increment the damage
-				if (isDamageable() && !isKeyBroken) {
-						heldItem.damageItem(1,  context.getPlayer(), p -> {
-							p.sendBreakAnimation(EquipmentSlotType.MAINHAND);
-						});
-						if (heldItem.getDamage() == heldItem.getMaxDamage()) {
-							heldItem.shrink(1);
-					}
-				}
-			}
-			catch (Exception e) {
-				Treasure.LOGGER.error("error: ", e);
-			}			
-		}		
-		
-		return super.onItemUse(context);
-	}
+//		
+//	@Override
+//	public ActionResultType onItemUse(ItemUseContext context) {
+//		BlockPos chestPos = context.getPos();
+//		// determine if block at pos is a treasure chest
+//		Block block = worldIn.getBlockState(chestPos).getBlock();
+//		if (block instanceof ITreasureChestProxy) {
+//			chestPos = ((ITreasureChestProxy)block).getChestPos(chestPos);
+//			block = worldIn.getBlockState(chestPos).getBlock();
+//		}
+//		
+//		if (block instanceof AbstractChestBlock) {
+//			// get the tile entity
+//			TileEntity te = worldIn.getTileEntity(chestPos);
+//			if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
+//				Treasure.logger.warn("Null or incorrect TileEntity");
+//				return EnumActionResult.FAIL;
+//			}
+//			AbstractTreasureChestTileEntity tcte = (AbstractTreasureChestTileEntity)te;
+//						
+//			// exit if on the client
+//			if (WorldInfo.isClientSide(worldIn)) {			
+//				return EnumActionResult.FAIL;
+//			}
+//
+//			// determine if chest is locked
+//			if (!tcte.hasLocks()) {
+//				return EnumActionResult.SUCCESS;
+//			}
+//			
+//			try {
+//				ItemStack heldItem = player.getHeldItem(hand);	
+//				boolean breakKey = true;
+//				boolean fitsLock = false;
+//				LockState lockState = null;
+//				boolean isKeyBroken = false;
+//				// check if this key is one that opens a lock (only first lock that key fits is unlocked).
+//				lockState = fitsFirstLock(tcte.getLockStates());
+//				if (lockState != null) {
+//					fitsLock = true;
+//				}
+//				
+//				if (fitsLock) {
+//					if (unlock(lockState.getLock())) {
+//						LockItem lock = lockState.getLock();
+//						// remove the lock
+//						lockState.setLock(null);
+//						// play noise
+//						worldIn.playSound(player, chestPos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+//						// update the client
+//						tcte.sendUpdates();
+//						// spawn the lock
+//						if (TreasureConfig.KEYS_LOCKS.enableLockDrops) {
+//							InventoryHelper.spawnItemStack(worldIn, (double)chestPos.getX(), (double)chestPos.getY(), (double)chestPos.getZ(), new ItemStack(lock));
+//						}
+//						// don't break the key
+//						breakKey = false;
+//					}
+//				}
+//						
+//				// check key's breakability
+//				if (breakKey) {
+//					if (isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
+//						// break key;
+//						heldItem.shrink(1);
+//						player.sendMessage(new TextComponentString("Key broke."));
+//						worldIn.playSound(player, chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+//						// flag the key as broken
+//						isKeyBroken = true;
+//						// if the keyStack > 0, then reset the damage - don't break a brand new key and leave the used one
+//						if (heldItem.getCount() > 0) {
+//							heldItem.setItemDamage(0);
+//						}
+//					}
+//					else {
+//						player.sendMessage(new TextComponentString("Failed to unlock."));
+//					}						
+//				}
+//				
+//				// user attempted to use key - increment the damage
+//				if (isDamageable() && !isKeyBroken) {
+//						heldItem.damageItem(1, player);
+//						if (heldItem.getItemDamage() == heldItem.getMaxDamage()) {
+//							heldItem.shrink(1);
+//					}
+//				}
+//			}
+//			catch (Exception e) {
+//				Treasure.logger.error("error: ", e);
+//			}			
+//		}		
+//		
+//		return super.onItemUse(player, worldIn, chestPos, hand, facing, hitX, hitY, hitZ);
+//	}
 	
 	/**
 	 * This method is a secondary check against a lock item.
@@ -354,6 +338,14 @@ public class KeyItem extends ModItem {
 		this.breakable = breakable;
 		return this;
 	}
+//
+//	/**
+//	 * @param damage the uses to set
+//	 */
+//	public KeyItem setMaxDamage(int damage) {
+//		super.setMaxDamage(damage);
+//		return this;
+//	}
 
 	/**
 	 * @return the successProbability

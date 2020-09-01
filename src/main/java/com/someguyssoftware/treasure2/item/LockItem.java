@@ -11,13 +11,12 @@ import java.util.stream.Collectors;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
+import net.minecraft.block.AbstractChestBlock;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -113,21 +112,18 @@ public class LockItem extends ModItem {
 	@Override
 	public ActionResultType onItemUse(ItemUseContext context) {
 
-		BlockPos chestPos = context.getPos();		
+		BlockPos chestPos = context.getPos();
+		// determine if block at pos is a treasure chest
 		Block block = context.getWorld().getBlockState(chestPos).getBlock();
-//		Treasure.LOGGER.info("LockItem | onItemUse | chestPos start -> {}", chestPos);
-		// if the block is a proxy of a chest (ie wither chest top block or other special block)
 		if (block instanceof ITreasureChestProxy) {
-			Treasure.LOGGER.info("LockItem | onItemUse | block is an ITreasureChestProxy");
 			chestPos = ((ITreasureChestProxy) block).getChestPos(chestPos);
 			block = context.getWorld().getBlockState(chestPos).getBlock();
 		}
-//		Treasure.LOGGER.info("LockItem | onItemUse | chestPos after proxy check -> {}", chestPos);
-		// determine if block at pos is a treasure chest
+
 		if (block instanceof AbstractChestBlock) {
 			// get the tile entity
 			AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) context.getWorld().getTileEntity(chestPos);
-//			Treasure.LOGGER.info("LockItem | onItemUse | tileEntity -> {}", te);
+
 			// exit if on the client
 			if (WorldInfo.isClientSide(context.getWorld())) {
 				return ActionResultType.FAIL;
@@ -149,32 +145,29 @@ public class LockItem extends ModItem {
 
 	/**
 	 * 
-	 * @param tileEntity
+	 * @param te
 	 * @param player
 	 * @param heldItem
 	 * @return flag indicating if a lock was added
 	 */
-	private boolean handleHeldLock(AbstractTreasureChestTileEntity tileEntity, PlayerEntity player, ItemStack heldItem) {
+	private boolean handleHeldLock(AbstractTreasureChestTileEntity te, PlayerEntity player, ItemStack heldItem) {
 		boolean lockedAdded = false;
-		LockItem lock = (LockItem) heldItem.getItem();
-		Treasure.LOGGER.info("LockItem | handleHeldLock | lock -> {}", lock);
-		Treasure.LOGGER.info("LockItem | handleHeldLock | lockState -> {}", tileEntity.getLockStates());
-		// add the lock to the first lockstate that has an available slot
-		for (LockState lockState : tileEntity.getLockStates()) {
-			Treasure.LOGGER.info("handleHeldLock | lockState -> {}", lockState);
-			if (lockState != null && lockState.getLock() == null) {
-				lockState.setLock(lock);
-				tileEntity.sendUpdates(); // TODO won't send until implement read/write nbt
-				// decrement item in hand
-				heldItem.shrink(1);
-//				if (heldItem.getCount() <=0 && !player.capabilities.isCreativeMode) {
-//					IInventory inventory = player.inventory;
-//					inventory.setInventorySlotContents(player.inventory.currentItem, null);
-//				}
-				lockedAdded = true;
-				break;
-			}
-		}
+//		LockItem lock = (LockItem) heldItem.getItem();
+//		// add the lock to the first lockstate that has an available slot
+//		for (LockState lockState : te.getLockStates()) {
+//			if (lockState != null && lockState.getLock() == null) {
+//				lockState.setLock(lock);
+//				te.sendUpdates();
+//				// decrement item in hand
+//				heldItem.shrink(1);
+////				if (heldItem.getCount() <=0 && !player.capabilities.isCreativeMode) {
+////					IInventory inventory = player.inventory;
+////					inventory.setInventorySlotContents(player.inventory.currentItem, null);
+////				}
+//				lockedAdded = true;
+//				break;
+//			}
+//		}
 		return lockedAdded;
 	}
 

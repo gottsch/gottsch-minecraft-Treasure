@@ -95,7 +95,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 		setRarity(rarity);
 
 		// set the default bounds/shape
-		VoxelShape shape = Block.makeCuboidShape(1, 0, 1, 15, 14, 15);
+		VoxelShape shape = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 14.0D, 14.0D, 14.0D);
 		setBounds(
 				new VoxelShape[] {
 						shape, 	// N
@@ -133,12 +133,10 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 				lockStates.add(lockState.getSlot().getIndex(), lockState);
 			}
 			chestTileEntity.setLockStates(lockStates);
-//			Treasure.LOGGER.info("AbstractChestBlock | createNewTileEntity | lockStates -> {}", chestTileEntity.getLockStates());
 		}
 		catch(Exception e) {
-			Treasure.LOGGER.error(e);
+			e.printStackTrace();
 		}
-//		Treasure.LOGGER.info("AbstractChestBlock | createNewTileEntity | tileEntity -> {} @ {}", chestTileEntity, chestTileEntity.getPos());
 		return chestTileEntity;
 	}
 

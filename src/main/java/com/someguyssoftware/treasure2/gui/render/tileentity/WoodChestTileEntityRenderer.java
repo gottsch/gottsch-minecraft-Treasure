@@ -10,11 +10,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 // NOTE @OnlyIn extremely important! add to all Renderers
 @OnlyIn(Dist.CLIENT)
-public class WoodChestTileEntityRenderer extends AbstractChestTileEntityRenderer {
+public class WoodChestTileEntityRenderer extends TreasureChestTileEntityRenderer {
 
 	public WoodChestTileEntityRenderer(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
 		super(tileEntityRendererDispatcher);
-
+		Treasure.LOGGER.info("Creating Wood CHest TileEntity Renderer.");
 		setTexture(new ResourceLocation(Treasure.MODID + ":textures/entity/chest/wood-chest.png"));
 		setModel(new StandardChestModel());
 	}

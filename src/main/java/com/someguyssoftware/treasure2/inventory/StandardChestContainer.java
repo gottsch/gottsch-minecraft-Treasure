@@ -32,8 +32,8 @@ public class StandardChestContainer extends Container implements ITreasureContai
 	private static final int CONTAINER_INVENTORY_COLUMN_COUNT = 9;
 	private static final int CONTAINER_INVENTORY_SLOT_COUNT = CONTAINER_INVENTORY_ROW_COUNT * CONTAINER_INVENTORY_COLUMN_COUNT;
 	
-	public static final int CONTAINER_INVENTORY_XPOS = 8;
-	public static final int CONTAINER_INVENTORY_YPOS = 18;
+	public static final int TILE_INVENTORY_XPOS = 8;
+	public static final int TILE_INVENTORY_YPOS = 18;
 	
 	public static final int PLAYER_INVENTORY_XPOS = 8;
 	public static final int PLAYER_INVENTORY_YPOS = 84;
@@ -54,14 +54,15 @@ public class StandardChestContainer extends Container implements ITreasureContai
 	 * @return
 	 */
 	public static StandardChestContainer create(int windowID, PlayerInventory playerInventory, PacketBuffer extraData) {
+		Treasure.LOGGER.info("CLIENT factory for standard chest container");
 		return new StandardChestContainer(windowID, playerInventory);
 	}
 	
 	// THIS IS NEVER Called
-//	public static StandardChestContainer create(int windowID, PlayerInventory playerInventory, IInventory inventory) {
-//		Treasure.LOGGER.info("SERVER factory for standard chest container");
-//		return new StandardChestContainer(windowID, playerInventory);
-//	}
+	public static StandardChestContainer create(int windowID, PlayerInventory playerInventory, IInventory inventory) {
+		Treasure.LOGGER.info("SERVER factory for standard chest container");
+		return new StandardChestContainer(windowID, playerInventory);
+	}
 	
 	/**
 	 * AKA Client-side constructor
@@ -124,8 +125,8 @@ public class StandardChestContainer extends Container implements ITreasureContai
 		for (int y = 0; y < CONTAINER_INVENTORY_ROW_COUNT; y++) {
 			for (int x = 0; x < CONTAINER_INVENTORY_COLUMN_COUNT; x++) {
 				int slotNumber = y * CONTAINER_INVENTORY_COLUMN_COUNT + x;
-				int xpos = CONTAINER_INVENTORY_XPOS + x * SLOT_X_SPACING;
-				int ypos = CONTAINER_INVENTORY_YPOS + y * SLOT_Y_SPACING;
+				int xpos = TILE_INVENTORY_XPOS + x * SLOT_X_SPACING;
+				int ypos = TILE_INVENTORY_YPOS + y * SLOT_Y_SPACING;
 				addSlot(new Slot(inventory, slotNumber, xpos, ypos));
 			}
 		}
