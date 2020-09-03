@@ -16,8 +16,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.IItemHandler;
-
-// TODO make an abstract as different pouches will have different sizes
+import net.minecraftforge.items.ItemStackHandler;
 
 /**
  * @author Mark Gottschling on Mar 9, 2018
@@ -44,7 +43,7 @@ public class PouchInventory implements IInventory {
 		
 		if (stack.hasCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null)) {
 			IItemHandler cap = stack.getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
-			readInventoryFromNBT(cap);
+			readInventory(cap);
 		}
 	}
 	
@@ -52,7 +51,7 @@ public class PouchInventory implements IInventory {
 	 * 
 	 * @param handler
 	 */
-	public void readInventoryFromNBT(IItemHandler handler) {
+	public void readInventory(IItemHandler handler) {
 		try {
 			// read the inventory
 			for (int i = 0; i < INVENTORY_SIZE; i++) {
@@ -68,8 +67,17 @@ public class PouchInventory implements IInventory {
 	 * 
 	 * @param handler
 	 */
-	public void writeInventoryToNBT(IItemHandler handler) {
+	public void writeInventory(IItemHandler handler) {
 		try {
+			/* 
+			 * NOTE must clear the ItemStackHandler first because it retains it's inventory, the
+			 * when insertItem is called, it actually appends, not replaces, items into it's inventory
+			 * causing doubling of items.
+			 */
+			// clear the item handler capability			
+			((ItemStackHandler)handler).setSize(PouchInventory.INVENTORY_SIZE);
+			
+			// add all items from inventory into item handler
 			for (int i = 0; i < items.size(); i++) {
 				handler.insertItem(i, items.get(i), false);
 			}
@@ -217,8 +225,9 @@ public class PouchInventory implements IInventory {
 		 *  write the locked state to the nbt
 		 */
 		if (getItemStack().hasCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null)) {
-			IItemHandler cap = getItemStack().getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
-			writeInventoryToNBT(cap);
+			IItemHandler itemHandler = getItemStack().getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
+			// persist 
+			writeInventory(itemHandler);
 		}
 //		if (getItemStack().hasCapability(PouchCapabilityProvider.KEY_RING_CAPABILITY, null)) {
 //			IKeyRingCapability cap = getItemStack().getCapability(PuchCapabilityProvider.KEY_RING_CAPABILITY, null);

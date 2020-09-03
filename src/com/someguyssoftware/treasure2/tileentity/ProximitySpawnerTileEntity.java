@@ -5,15 +5,18 @@ package com.someguyssoftware.treasure2.tileentity;
 
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.GottschCore;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
@@ -29,7 +32,7 @@ import net.minecraftforge.common.DungeonHooks;
 public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 	private ResourceLocation mobName;
 	private Quantity mobNum;
-	private Double spawnRange = 1D;
+	private Double spawnRange = 5D;
 	
 	/**
 	 * 
@@ -48,18 +51,17 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 	 * 
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound parentNBT) {
-		super.readFromNBT(parentNBT);
+	public void readFromNBT(NBTTagCompound sourceTag) {
+		super.readFromNBT(sourceTag);
 		try {
 			// read the custom name
-			if (parentNBT.hasKey("mobName", 8)) {
-				this.mobName = new ResourceLocation(parentNBT.getString("mobName"));
+			if (sourceTag.hasKey("mobName", 8)) {
+				this.mobName = new ResourceLocation(sourceTag.getString("mobName"));
 			}
 			else {
                 // select a random mob
 				this.mobName = DungeonHooks.getRandomDungeonMob(new Random());
 			}
-			
 			if (getMobName() == null || StringUtils.isNullOrEmpty(getMobName().toString())) {
 				defaultMobSpawnerSettings();
 				return;
@@ -67,16 +69,16 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 			
 			int min = 1;
 			int max = 1;
-			if (parentNBT.hasKey("mobNumMin")) {
-				min = parentNBT.getInteger("mobNumMin");
+			if (sourceTag.hasKey("mobNumMin")) {
+				min = sourceTag.getInteger("mobNumMin");
 			}
-			if (parentNBT.hasKey("mobNumMax")) {
-				min = parentNBT.getInteger("mobNumMax");
+			if (sourceTag.hasKey("mobNumMax")) {
+				min = sourceTag.getInteger("mobNumMax");
 			}
 			this.mobNum = new Quantity(min, max);
 			
-			if (parentNBT.hasKey("spawnRange")) {
-				Double spawnRange = parentNBT.getDouble("spawnRange");
+			if (sourceTag.hasKey("spawnRange")) {
+				Double spawnRange = sourceTag.getDouble("spawnRange");
 				setSpawnRange(spawnRange);
 			}
 			
@@ -90,16 +92,17 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 	 * 
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
+	public NBTTagCompound writeToNBT(NBTTagCompound sourceTag) {
+        super.writeToNBT(sourceTag);
         if (getMobName() == null || StringUtils.isNullOrEmpty(getMobName().toString())) {        	
             defaultMobSpawnerSettings();
         }
-	    tag.setString("mobName", getMobName().toString());
-	    tag.setInteger("mobNumMin", getMobNum().getMinInt());
-	    tag.setInteger("mobNumMax", getMobNum().getMaxInt());
-	    tag.setDouble("spawnRange", getSpawnRange());
-	    return tag;
+	    sourceTag.setString("mobName", getMobName().toString());
+	    sourceTag.setInteger("mobNumMin", getMobNum().getMinInt());
+	    sourceTag.setInteger("mobNumMax", getMobNum().getMaxInt());
+	    sourceTag.setDouble("spawnRange", getSpawnRange());
+	    
+	    return sourceTag;
 	}
     
     /**
@@ -111,6 +114,43 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
         setSpawnRange(5.0D);
     }
 
+    ///// TEMP
+	@Override
+	public void update() {
+        if (WorldInfo.isClientSide()) {
+        	return;
+        }      
+        
+    	// get all players within range
+        EntityPlayer player = null;
+
+        boolean isTriggered = false;         
+        double proximitySq = getProximity() * getProximity();
+        if (proximitySq < 1) proximitySq = 1;
+        
+        // for each player
+        for (int playerIndex = 0; playerIndex < getWorld().playerEntities.size(); ++playerIndex) {
+            player = (EntityPlayer)getWorld().playerEntities.get(playerIndex);
+            // get the distance
+            double distanceSq = player.getDistanceSq(this.getPos().add(0.5D, 0.5D, 0.5D));
+            if (this.getMobName().getResourcePath().equals("bound_soul")) {
+            Treasure.logger.debug("PTE for mob -> {} @ -> {}, proximity -> {}, distance -> {}, triggered -> {}, dead -> {}, result -> {}", this.getMobName(),
+            		this.pos, proximitySq, distanceSq, isTriggered, this.isDead(), (!isTriggered && !this.isDead() && (distanceSq < proximitySq)) ? "met" : "not met");
+            }
+            if (!isTriggered && !this.isDead() && (distanceSq < proximitySq)) {
+            	Treasure.logger.debug("PTE proximity was met.");
+            	isTriggered = true;
+            	// exectute action
+            	execute(this.getWorld(), new Random(), new Coords(this.getPos()), new Coords(player.getPosition()));
+
+            	// NOTE: does not self-destruct that is up to the execute action to perform
+            }
+            
+            if (this.isDead()) break;
+        }
+	}
+    ///////
+    
 	/**
 	 * 
 	 */
@@ -132,6 +172,7 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
             double z = (double)blockCoords.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * getSpawnRange() + 0.5D;
             entity.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
 
+            Treasure.logger.debug("entity instanceof EntityLiving -> {}", (entity instanceof EntityLiving));
             if (entity instanceof EntityLiving) {
             	EntityLiving entityLiving = (EntityLiving)entity;
             	if (entityLiving.getCanSpawnHere() && entityLiving.isNotColliding()) {                
