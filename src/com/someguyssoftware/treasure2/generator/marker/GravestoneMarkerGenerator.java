@@ -130,7 +130,7 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 				// determine if gravestone spawns an entity
 				if (TreasureConfig.WORLD_GEN.markerProperties.isGravestoneSpawnMobAllowed && RandomHelper
 						.checkProbability(random, TreasureConfig.WORLD_GEN.markerProperties.gravestoneMobProbability)) {
-
+					Treasure.logger.debug("Created Gravestone with mob entity @ -> {}", spawnCoords.toShortString());
 					// update the tile entity
 					GravestoneProximitySpawnerTileEntity tileEntity = (GravestoneProximitySpawnerTileEntity) world
 							.getTileEntity(spawnCoords.toPos());

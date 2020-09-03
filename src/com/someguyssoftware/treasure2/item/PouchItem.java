@@ -79,7 +79,8 @@ public class PouchItem extends ModItem implements IPouch {
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		// exit if on the client
 		if (WorldInfo.isClientSide(worldIn)) {			
-			return new ActionResult<ItemStack>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
+//			return new ActionResult<ItemStack>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
+			return new ActionResult<ItemStack>(EnumActionResult.PASS, playerIn.getHeldItem(handIn)); // 9/2/20
 		}
 
 		BlockPos pos = playerIn.getPosition();

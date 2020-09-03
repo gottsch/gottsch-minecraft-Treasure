@@ -3,7 +3,7 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
-import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
+import com.someguyssoftware.treasure2.inventory.PouchInventory;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -27,7 +27,7 @@ public class PouchCapabilityProvider implements ICapabilityProvider, ICapability
 	 */
 	@CapabilityInject(IItemHandler.class)
 	public static Capability<IItemHandler> INVENTORY_CAPABILITY = null;		
-	private final ItemStackHandler inventory_instance = new ItemStackHandler(KeyRingInventory.INVENTORY_SIZE);
+	private final ItemStackHandler inventory_instance = new ItemStackHandler(PouchInventory.INVENTORY_SIZE);
 	
 	/**
 	 * 
