@@ -130,6 +130,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 	    	te.setMobName(r);
 	    	te.setMobNum(new Quantity(1, 2));
 	    	te.setProximity(10D);
+//		    Treasure.logger.debug("Creating proximity spawner @ {} -> [mobName={}, spawnRange={}", c.getCoords().toShortString(), r, te.getProximity());
 		}		
 
 		result.setData(genResult.getData());

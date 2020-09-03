@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.loot.function;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ import com.someguyssoftware.gottschcore.loot.functions.LootFunction;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
+import com.someguyssoftware.treasure2.item.charm.CharmLevel;
 import com.someguyssoftware.treasure2.item.charm.CharmState;
 import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
 import com.someguyssoftware.treasure2.item.charm.CharmType;
@@ -77,6 +79,22 @@ public class SetCharms extends LootFunction {
 						Treasure.logger.debug("giving item charm -> {}", charm.getName());
 						charmStates.add(CharmStateFactory.createCharmState(charm));
 					}
+				}
+			}
+			else {
+				// randomly add a charm (in case loot table is misconfigured)
+				List<ICharm> tempCharms = new ArrayList<>();
+				// if charms list is empty, create a default list of minor charms
+				for (ICharm c : TreasureCharms.REGISTRY.values()) {
+					if (c.getCharmLevel() == CharmLevel.LEVEL1 || c.getCharmLevel() == CharmLevel.LEVEL2) {
+						tempCharms.add(c);
+					}
+				}
+				if (!tempCharms.isEmpty()) {
+					// select a charm randomly					
+					ICharm charm = tempCharms.get(rand.nextInt(tempCharms.size()));
+					Treasure.logger.debug("giving item a random charm -> {}", charm.getName());
+					charmStates.add(CharmStateFactory.createCharmState(charm));
 				}
 			}
 		}

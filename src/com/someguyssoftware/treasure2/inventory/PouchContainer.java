@@ -1,6 +1,5 @@
 package com.someguyssoftware.treasure2.inventory;
 
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.item.PouchItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 
@@ -19,11 +18,11 @@ public class PouchContainer extends AbstractChestContainer {
 	private ItemStack stack;
 	/**
 	 * 
-	 * @param invPlayer
+	 * @param playerInventory
 	 * @param inventory
 	 */
-	public PouchContainer(InventoryPlayer invPlayer, IInventory inventory, ItemStack stack) {
-		super(invPlayer, inventory);
+	public PouchContainer(InventoryPlayer playerInventory, IInventory inventory, ItemStack stack) {
+		super(playerInventory, inventory);
 
 		this.stack = stack;
 		
@@ -38,7 +37,7 @@ public class PouchContainer extends AbstractChestContainer {
 		setContainerInventoryColumnCount(3);
 
 		// build the container
-		buildContainer(invPlayer, inventory);
+		buildContainer(playerInventory, inventory);
 	}
 	
 	@Override
