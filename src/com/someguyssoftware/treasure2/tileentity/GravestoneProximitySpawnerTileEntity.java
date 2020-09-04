@@ -39,8 +39,7 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 		setMobNum(new Quantity(1, 1));
 		setSpawnRange(3D);
 		setHasEntity(false);
-		// TEMP/DEBUG
-//		setHasEntity(true);
+//		Treasure.logger.debug("Created Gravestone tile entity @ -> {}", this.pos);
 	}
 
 	/**
@@ -48,12 +47,8 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 	 */
 	@Override
 	public void update() {
-		// TODO somehow the update is getting called right away and setting the
-		// hasEntity to fall before
-		// player is in range.
 		boolean hasEntity = hasEntity();
 		if (hasEntity && TreasureConfig.WORLD_GEN.getMarkerProperties().isGravestoneSpawnMobAllowed) {
-//			super.update();
 
 			// this is copied fromt he abstract
 			if (WorldInfo.isClientSide()) {
@@ -74,7 +69,7 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 				// get the distance
 				double distanceSq = player.getDistanceSq(this.getPos().add(0.5D, 0.5D, 0.5D));
 				if (!isTriggered && !this.isDead() && (distanceSq < proximitySq)) {
-					Treasure.logger.debug("PTE proximity was met.");
+//					Treasure.logger.debug("PTE proximity @ -> {} was met.", new Coords(this.pos).toShortString());
 					isTriggered = true;
 					// exectute action
 					execute(this.getWorld(), new Random(), new Coords(this.getPos()), new Coords(player.getPosition()));
@@ -154,8 +149,9 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 			// read the custom name
 			if (parentNBT.hasKey("hasEntity", 8)) {
 				this.hasEntity = parentNBT.getBoolean("hasEntity");
-				Treasure.logger.debug("value of nbt entity -> {}", parentNBT.getBoolean("hasEntity"));
+//				Treasure.logger.debug("value of nbt entity -> {}", parentNBT.getBoolean("hasEntity"));
 			}
+//		    Treasure.logger.debug("reading proximity spawner @ {} -> [hasEntity={}, mobName={}, mobName={}", this.pos, parentNBT.getBoolean("hasEntity"), parentNBT.getString("mobName"), this.getMobName());
 		} catch (Exception e) {
 			Treasure.logger.error("Error reading AbstractProximity properties from NBT:", e);
 		}
@@ -168,6 +164,8 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setBoolean("hasEntity", hasEntity());
+//	    Treasure.logger.debug("writing proximity spawner @ {} -> [hasEntity={}, mobName={}, spawnRange={}", this.pos, tag.getBoolean("hasEntity"), tag.getString("mobName"), tag.getDouble("spawnRange"));
+
 		return tag;
 	}
 
