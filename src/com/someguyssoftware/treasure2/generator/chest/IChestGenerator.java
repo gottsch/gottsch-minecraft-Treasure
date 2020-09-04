@@ -47,11 +47,11 @@ public interface IChestGenerator {
 		result.getData().setSpawnCoords(coords);
 
 		// select a loot table
-		LootTable lootTable = selectLootTable(random, rarity);
-		if (lootTable == null) {
-			Treasure.logger.warn("Unable to select a lootTable.");
-			return result.fail();
-		}
+		// LootTable lootTable = selectLootTable(random, rarity);
+		// if (lootTable == null) {
+		// 	Treasure.logger.warn("Unable to select a lootTable.");
+		// 	return result.fail();
+		// }
 
 		// select a chest from the rarity
 		AbstractChestBlock chest = selectChest(random, rarity);
@@ -73,10 +73,10 @@ public interface IChestGenerator {
 			return result.fail();
 		}
 
-		if (!(chest instanceof IMimicBlock)) {
-			Treasure.logger.debug("Generating loot from loot table for rarity {}", rarity);
-			lootTable.fillInventory((IInventory) te, random, Treasure.LOOT_TABLES.getContext());
-		}
+		// if (!(chest instanceof IMimicBlock)) {
+		// 	Treasure.logger.debug("Generating loot from loot table for rarity {}", rarity);
+		// 	lootTable.fillInventory((IInventory) te, random, Treasure.LOOT_TABLES.getContext());
+		// }
 
 		// add locks
 		addLocks(random, chest, (AbstractTreasureChestTileEntity) te, rarity);
@@ -138,13 +138,30 @@ public interface IChestGenerator {
 		// select a random table from the list
 		if (tables != null && !tables.isEmpty()) {
 			int index = 0;
-			/*
-			 * get a random container
-			 */
 			if (tables.size() == 1) {
 				table = tables.get(0);
 			} else {
 				index = RandomHelper.randomInt(random, 0, tables.size() - 1);
+				table = tables.get(index);
+			}
+			Treasure.logger.debug("Selected loot table index --> {}", index);
+		}
+		return table;
+    }
+    
+    default public LootTable selectLootTable(Supplier<Random> factory, final Rarity rarity) {
+		LootTable table = null;
+
+		// select the loot table by rarity
+		List<LootTable> tables = buildLootTableList(rarity);
+
+		// select a random table from the list
+		if (tables != null && !tables.isEmpty()) {
+			int index = 0;
+			if (tables.size() == 1) {
+				table = tables.get(0);
+			} else {
+				index = RandomHelper.randomInt(factory.get(), 0, tables.size() - 1);
 				table = tables.get(index);
 			}
 			Treasure.logger.debug("Selected loot table index --> {}", index);
