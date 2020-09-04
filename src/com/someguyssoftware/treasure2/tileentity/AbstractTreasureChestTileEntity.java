@@ -54,6 +54,16 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	private int facing;
 
+    /*
+     * A flag to indicate if the chest has been opened for the first time
+     */
+    private boolean sealed;
+
+    /*
+     * The rarity level of the loot that the chest will contain
+     */
+    private Rarity lootRarity;
+
 	/*
 	 * Vanilla properties for controlling the lid
 	 */
@@ -75,7 +85,8 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 */
 	public AbstractTreasureChestTileEntity() {
-		setFacing(EnumFacing.NORTH.getIndex());
+        setFacing(EnumFacing.NORTH.getIndex());
+        setSealed(false);
 	}
 
 	/**
@@ -206,7 +217,8 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			}
 			// write facing
 //			Treasure.logger.debug("Writing FACING to NBT ->{}", getFacing());
-			parentNBT.setInteger("facing", getFacing());
+            parentNBT.setInteger("facing", getFacing());
+            parentNBT.setInteger("sealed", isSealed());
 		} catch (Exception e) {
 			Treasure.logger.error("Error writing Properties to NBT:", e);
 		}
@@ -288,7 +300,10 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			if (parentNBT.hasKey("facing")) {
 //				Treasure.logger.debug("Has 'facing' key -> {}", parentNBT.getInteger("facing"));
 				this.setFacing(parentNBT.getInteger("facing"));
-			}
+            }
+            if (parentNBT.hasKey("sealed")) {
+                this.setSealed(parentNBT.getInteger("sealed"));
+            }
 		} catch (Exception e) {
 			Treasure.logger.error("Error reading Properties from NBT:", e);
 		}
@@ -634,4 +649,19 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		this.facing = facing;
 	}
 
+    public boolean isSealed() {
+        return sealed;
+    }
+
+    public void setSealed(boolean sealed) {
+        this.sealed = sealed;
+    }
+
+    public Rarity getLootRarity() {
+        return lootRarity;
+    }
+
+    public void setLootRarity(Rarity rarity) {
+        this.lootRarity = rarity;
+    }
 }

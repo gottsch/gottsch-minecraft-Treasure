@@ -71,36 +71,46 @@ public class GuiHandler implements IGuiHandler {
 		BlockPos pos = new BlockPos(x, y, z);
 		TileEntity tileEntity = world.getTileEntity(pos);
 
+        // TODO test the sealed property of the tileEntity to determine if it has been opened before and requires being filled with loot
+        
+        if (tileEntity instanceof AbstractTreasureChestTileEntity) {
+            AbstractTreasureChestTileEntity chestTileEntity = (AbstractTreasureChestTileEntity) tileEntity;
+            if (chestTileEntity.isSealed()) {
+                (chestTileEntity.setSealed(false);
+                // select a loot table
+                LootTable lootTable = IChestGenerator.selectLootTable(Random::new, chestTileEntity.getLootRarity());
+                if (lootTable == null) {
+                    Treasure.logger.warn("Unable to select a lootTable.");
+                    return null;
+                }
+                Treasure.logger.debug("Generating loot from loot table for rarity {}", rarity);
+                // TODO here we can alter the content
+                lootTable.fillInventory((IInventory) te, random, Treasure.LOOT_TABLES.getContext());
+            }
+        }
+        else {
+            return null;
+        }
+
+        Container container = null;
 		switch (ID) {
 		case STANDARD_CHEST_GUIID:
-			if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-				return new StandardChestContainer(player.inventory, (IInventory) tileEntity);
-			}
+            container = new StandardChestContainer(player.inventory, (IInventory) tileEntity);
 			break;
 		case STRONGBOX_CHEST_GUIID:
-			if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-				return new StrongboxChestContainer(player.inventory, (IInventory) tileEntity);
-			}
+			container = new StrongboxChestContainer(player.inventory, (IInventory) tileEntity);
 			break;
 		case COMPRESSOR_CHEST_GUIID:
-			if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-				return new CompressorChestContainer(player.inventory, (IInventory) tileEntity);
-			}
+			container = return new CompressorChestContainer(player.inventory, (IInventory) tileEntity);
 			break;
 		case SKULL_CHEST_GUIID:
-			if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-				return new SkullChestContainer(player.inventory, (IInventory) tileEntity);
-			}
+			container = new SkullChestContainer(player.inventory, (IInventory) tileEntity);
 			break;
 		case WITHER_CHEST_GUIID:
-			if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-				return new WitherChestContainer(player.inventory, (IInventory) tileEntity);
-			}
+			container = new WitherChestContainer(player.inventory, (IInventory) tileEntity);
 			break;
 		case MOLLUSCS_CHEST_GUIID:
-			if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-				return new MolluscChestContainer(player.inventory, (IInventory) tileEntity);
-			}
+			container = new MolluscChestContainer(player.inventory, (IInventory) tileEntity);
 			break;
 		case KEY_RING_GUIID:
 			// get the held item
@@ -114,7 +124,7 @@ public class GuiHandler implements IGuiHandler {
 			// create inventory from item
 			IInventory inventory = new KeyRingInventory(keyRingItem);
 			// open the container
-			return new KeyRingContainer(player.inventory, inventory);
+			container = new KeyRingContainer(player.inventory, inventory);
 
 		case POUCH_GUIID:
 			// get the held item
@@ -128,12 +138,12 @@ public class GuiHandler implements IGuiHandler {
 			// create inventory from item
 			IInventory pouchInventory = new PouchInventory(pouchStack);
 			// open the container
-			return new PouchContainer(player.inventory, pouchInventory, pouchStack);			
+			container = new PouchContainer(player.inventory, pouchInventory, pouchStack);			
 			
-		default:
-			return null;
+        default:
+        
 		}
-		return null;
+		return container;
 	}
 
 	/*
