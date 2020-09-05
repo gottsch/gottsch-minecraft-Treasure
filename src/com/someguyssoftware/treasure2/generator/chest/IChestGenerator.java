@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.generator.chest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import com.someguyssoftware.gottschcore.loot.LootTable;
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -129,6 +130,7 @@ public interface IChestGenerator {
 	 * @param rarity
 	 * @return
 	 */
+	@Deprecated
 	default public LootTable selectLootTable(Random random, final Rarity rarity) {
 		LootTable table = null;
 
@@ -149,6 +151,12 @@ public interface IChestGenerator {
 		return table;
     }
     
+	/**
+	 * 
+	 * @param factory
+	 * @param rarity
+	 * @return
+	 */
     default public LootTable selectLootTable(Supplier<Random> factory, final Rarity rarity) {
 		LootTable table = null;
 

@@ -19,7 +19,7 @@ import com.someguyssoftware.gottschcore.loot.LootTable;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.enums.WorldGenerators;
+import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
@@ -144,7 +144,7 @@ public class SpawnChestCommand extends CommandBase {
 
 			// get the chest world generator
 			SurfaceChestWorldGenerator chestGens = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS
-					.get(WorldGenerators.SURFACE_CHEST);
+					.get(WorldGeneratorType.SURFACE_CHEST);
 			// get the rarity chest generator
 			IChestGenerator gen = chestGens.getChestGenMap().get(rarity).next();
 			BlockPos pos = new BlockPos(x, y, z);
