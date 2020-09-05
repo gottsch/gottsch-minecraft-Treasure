@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.loot.LootTable;
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
@@ -47,13 +46,13 @@ public class CommonChestGenerator implements IChestGenerator {
 	 * @param chest
 	 */
 	@Override
-	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
+	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity chestTileEntity, Rarity rarity) {
 		// select a rarity locks
 		List<LockItem> locks = new ArrayList<>();
 		locks.addAll((List<LockItem>) TreasureItems.locks.get(Rarity.COMMON));
 		locks.addAll(TreasureItems.locks.get(Rarity.UNCOMMON));
 
-		addLocks(random, chest, te, locks);
+		addLocks(random, chest, chestTileEntity, locks);
 		locks.clear();
 	}
 }

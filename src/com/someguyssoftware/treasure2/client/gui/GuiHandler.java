@@ -5,8 +5,8 @@ package com.someguyssoftware.treasure2.client.gui;
 
 import java.util.Random;
 
+import static com.someguyssoftware.treasure2.Treasure.logger;
 import com.someguyssoftware.gottschcore.loot.LootTable;
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.gui.inventory.CompressorChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.KeyRingGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.MolluscChestGui;
@@ -41,15 +41,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 /**
-
- *
- */
-/**
  * @author Mark Gottschling on Jan 16, 2018
  *
- *         This class is used to get the client and server gui elements when a
- *         player opens a gui. There can only be one registered IGuiHandler
- *         instance handler per mod.
+ * This class is used to get the client and server gui elements when a
+ * player opens a gui. There can only be one registered IGuiHandler
+ * instance handler per mod.
  */
 public class GuiHandler implements IGuiHandler {
 	public static final int STANDARD_CHEST_GUIID = 1;
@@ -72,28 +68,23 @@ public class GuiHandler implements IGuiHandler {
 	 */
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		BlockPos pos = new BlockPos(x, y, z);
-		TileEntity tileEntity = world.getTileEntity(pos);
-
-		// TODO test the sealed property of the tileEntity to determine if it has been opened before and requires being filled with loot
+		TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
 
 		if (tileEntity instanceof AbstractTreasureChestTileEntity) {
 			AbstractTreasureChestTileEntity chestTileEntity = (AbstractTreasureChestTileEntity) tileEntity;
 			if (chestTileEntity.isSealed()) {
 				chestTileEntity.setSealed(false);
-				/*
-				 TODO need to know the chest generator so that a proper loot table can be selected. selectLootTable() must be overridable.
-				 ex Wither and Cauldron chests use a special loot tables
-				 by interrogating the GUIID, a generator could be selected - that doesn't map as well, ex how to tell different between skull and gold skull
-				 might have to save the generator context in the tile entity - worldGenerator enum, (add) chestGenerator enum, rarity
-				*/
+  
+                // construct the chest generator used to create the tile entity
+                IChestGenerator chestGenerator = chestTileEntity.getGenerationContext().getChestGeneratorType().getChestGenerator();
+
 				// select a loot table
-				LootTable lootTable = IChestGenerator.selectLootTable(Random::new, chestTileEntity.getLootRarity());
+				LootTable lootTable = chestGenerator.selectLootTable(Random::new, chestTileEntity.getLootRarity());
 				if (lootTable == null) {
-					Treasure.logger.warn("Unable to select a lootTable.");
+					logger.warn("Unable to select a lootTable.");
 					return null;
 				}
-				Treasure.logger.debug("Generating loot from loot table for rarity {}", chestTileEntity.getLootRarity());
+				logger.debug("Generating loot from loot table for rarity {}", chestTileEntity.getLootRarity());
 				// TODO here we can alter the content
 				lootTable.fillInventory((IInventory) tileEntity, new Random(), Treasure.LOOT_TABLES.getContext());
 			}
@@ -135,7 +126,7 @@ public class GuiHandler implements IGuiHandler {
 			IInventory inventory = new KeyRingInventory(keyRingItem);
 			// open the container
 			container = new KeyRingContainer(player.inventory, inventory);
-
+            break;
 		case POUCH_GUIID:
 			// get the held item
 			ItemStack pouchStack = player.getHeldItemMainhand();
@@ -149,7 +140,7 @@ public class GuiHandler implements IGuiHandler {
 			IInventory pouchInventory = new PouchInventory(pouchStack);
 			// open the container
 			container = new PouchContainer(player.inventory, pouchInventory, pouchStack);			
-
+            break;
 		default:
 
 		}
@@ -166,51 +157,33 @@ public class GuiHandler implements IGuiHandler {
 	 */
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		BlockPos xyz = new BlockPos(x, y, z);
-		TileEntity tileEntity = world.getTileEntity(xyz);
+        TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
+        AbstractTreasureChestTileEntity chestTileEntity = (tileEntity instanceof AbstractTreasureChestTileEntity) 
+            ? (AbstractTreasureChestTileEntity) tileEntity : null;
+        if (chestTileEntity == null) {
+            logger.warn("Umm, GUI handler error - wrong tile entity.");
+            return;
+        }
+
 		switch (ID) {
 		case STANDARD_CHEST_GUIID:
-			if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-				// NOTE could pass in the different bg textures here
-				return new StandardChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
-			} else {
-				Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");
-			}
+			// NOTE could pass in the different bg textures here
+			return new StandardChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
 			break;
 		case STRONGBOX_CHEST_GUIID:
-			if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-				return new StrongboxChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
-			} else {
-				Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");
-			}
+			return new StrongboxChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
 			break;
 		case COMPRESSOR_CHEST_GUIID:
-			if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-				return new CompressorChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
-			} else {
-				Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");
-			}
+			return new CompressorChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
 			break;
 		case SKULL_CHEST_GUIID:
-			if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-				return new SkullChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
-			} else {
-				Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");
-			}
+			return new SkullChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
 			break;
 		case WITHER_CHEST_GUIID:
-			if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-				return new WitherChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
-			} else {
-				Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");
-			}
+			return new WitherChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
 			break;
 		case MOLLUSCS_CHEST_GUIID:
-			if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-				return new MolluscChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
-			} else {
-				Treasure.logger.warn("Umm, GUI handler error - wrong tile entity.");
-			}
+			return new MolluscChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
 			break;
 		case KEY_RING_GUIID:
 			// get the held item
