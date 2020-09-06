@@ -109,6 +109,7 @@ item.treasure2:masters_pouch.name=Master's Pouch
 item.treasure2:key_ring.name=Key Ring
 item.treasure2:wood_key.name=Wood Key
 item.treasure2:stone_key.name=Stone Key
+item.treasure2:ember_key.name=Ember Key
 item.treasure2:iron_key.name=Iron Key
 item.treasure2:gold_key.name=Gold Key
 item.treasure2:diamond_key.name=Diamond Key
@@ -124,6 +125,7 @@ item.treasure2:shucking_knife.name=Shucking Knife
 
 item.treasure2:wood_lock.name=Wood Lock
 item.treasure2:stone_lock.name=Stone Lock
+item.treasure2:ember_lock.name=Ember Lock
 item.treasure2:iron_lock.name=Iron Lock
 item.treasure2:gold_lock.name=Gold Lock
 item.treasure2:diamond_lock.name=Diamond Lock
@@ -161,7 +163,6 @@ item.treasure2:clam_stew.name=Clam Stew
 item.treasure2:treasure_tool.name=Treasure Tool
 
 #entities
-#TODO rename standard to wood
 entity.wood_mimic.name=Wood Mimic
 entity.pirate_mimic.name=Pirate Mimic
 entity.bound_soul.name=Bound Soul
@@ -190,6 +191,8 @@ tooltip.label.charms=Charms:
 tooltip.label.max_locks=Max Locks: %s
 tooltip.label.container_size=Inventory Size: %s
 
+tooltip.ember_key.specials=Destroys Wood Locks
+tooltip.ember_lock.specials=Destroys Wood Keys regardless of breakability
 tooltip.metallurgists_key.specials=Opens any lock in METALS category
 tooltip.skeleton_key.specials=Opens COMMON, UNCOMMON, SCARCE and RARE locks (excluding Wither)
 tooltip.pilferers_lock_pick.specials=Opens COMMON (%s%%) and UNCOMMON (%s%%) locks

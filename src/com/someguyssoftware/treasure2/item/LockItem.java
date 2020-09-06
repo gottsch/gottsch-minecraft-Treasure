@@ -123,7 +123,7 @@ public class LockItem extends ModItem {
 
 		if (block instanceof AbstractChestBlock) {
 			// get the tile entity
-			AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(chestPos);
+			AbstractTreasureChestTileEntity tileEntity = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(chestPos);
 
 			// exit if on the client
 			if (WorldInfo.isClientSide(worldIn)) {
@@ -136,7 +136,7 @@ public class LockItem extends ModItem {
 				// NOTE don't use the return boolean as the locked flag here, as the chest is
 				// already locked and if the method was
 				// unsuccessful it could state the chest is unlocked.
-				handleHeldLock(te, player, heldItem);
+				handleHeldLock(tileEntity, player, heldItem);
 			} catch (Exception e) {
 				Treasure.logger.error("error: ", e);
 			}
@@ -151,20 +151,16 @@ public class LockItem extends ModItem {
 	 * @param heldItem
 	 * @return flag indicating if a lock was added
 	 */
-	private boolean handleHeldLock(AbstractTreasureChestTileEntity te, EntityPlayer player, ItemStack heldItem) {
+	private boolean handleHeldLock(AbstractTreasureChestTileEntity tileEntity, EntityPlayer player, ItemStack heldItem) {
 		boolean lockedAdded = false;
 		LockItem lock = (LockItem) heldItem.getItem();
 		// add the lock to the first lockstate that has an available slot
 		for (LockState lockState : te.getLockStates()) {
 			if (lockState != null && lockState.getLock() == null) {
 				lockState.setLock(lock);
-				te.sendUpdates();
+				tileEntity.sendUpdates();
 				// decrement item in hand
 				heldItem.shrink(1);
-//				if (heldItem.getCount() <=0 && !player.capabilities.isCreativeMode) {
-//					IInventory inventory = player.inventory;
-//					inventory.setInventorySlotContents(player.inventory.currentItem, null);
-//				}
 				lockedAdded = true;
 				break;
 			}
@@ -178,12 +174,17 @@ public class LockItem extends ModItem {
 	 * @return
 	 */
 	public boolean acceptsKey(KeyItem keyItem) {
-		for (KeyItem k : getKeys()) {
-			if (k == keyItem)
-				return true;
-		}
+        getKeys().forEach(key -> {
+            if (k == keyItem) {
+                return true;
+            }
+        });
 		return false;
 	}
+
+    public boolean breaksKey(KeyItem keyItem) {
+        return false;
+    }
 
 	/**
 	 * @return the rarity

@@ -79,7 +79,8 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 	// locks
 	@Ignore public static final String WOOD_LOCK_ID = "wood_lock";
-	@Ignore public static final String STONE_LOCK_ID = "stone_lock";
+    @Ignore public static final String STONE_LOCK_ID = "stone_lock";
+    @Ignore public static final String EMBER_LOCK_ID = "ember_lock";
 	@Ignore public static final String IRON_LOCK_ID = "iron_lock";
 	@Ignore public static final String GOLD_LOCK_ID = "gold_lock";
 	@Ignore public static final String DIAMOND_LOCK_ID = "diamond_lock";
@@ -91,7 +92,8 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 	// keys
 	@Ignore public static final String WOOD_KEY_ID = "wood_key";
-	@Ignore public static final String IRON_KEY_ID = "iron_key";
+    @Ignore public static final String IRON_KEY_ID = "iron_key";
+    @Ignore public static final String EMBER_KEY_ID = "ember_key";
 	@Ignore public static final String GOLD_KEY_ID = "gold_key";
 	@Ignore public static final String DIAMOND_KEY_ID = "diamond_key";
 
@@ -835,8 +837,8 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@Name("06. Stone key max uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
-		public int stoneKeyMaxUses = 10;
-
+        public int stoneKeyMaxUses = 10;
+            
 		@Comment({ "The maximum uses for a given iron key." })
 		@Name("07. Iron key max. uses:")
 		@RangeInt(min = 1, max = 32000)
@@ -901,7 +903,13 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@Name("17. Wither key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
-		public int witherKeyMaxUses = 5;
+        public int witherKeyMaxUses = 5;
+        
+        @Comment({ "The maximum uses for a given ember key." })
+		@Name("18. Ember key max uses:")
+		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
+		public int emberKeyMaxUses = 15;    
 	}
 
 	/*
