@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2.tileentity;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -15,6 +16,7 @@ import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
+import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.lock.LockState;
 
 import net.minecraft.block.state.IBlockState;
@@ -51,31 +53,22 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		 * The rarity level of the loot that the chest will contain
 		 */
 		private Rarity lootRarity;
-		private WorldGeneratorType worldGeneratorType;
+		/*
+		 * 
+		 */
 		private ChestGeneratorType chestGeneratorType;
 
+		public GenerationContext(Rarity rarity, ChestGeneratorType chestGeneratorType) {
+			this.lootRarity = rarity;
+			this.chestGeneratorType = chestGeneratorType;
+		}
+		
 		public Rarity getLootRarity() {
 			return lootRarity;
 		}
-
-		public void setLootRarity(Rarity rarity) {
-			this.lootRarity = rarity;
-		}
-
-		public WorldGeneratorType getWorldGeneratorType() {
-			return worldGeneratorType;
-		}
-
-		public void setWorldGeneratorType(WorldGeneratorType worldGeneratorType) {
-			this.worldGeneratorType = worldGeneratorType;
-		}
-
+		
 		public ChestGeneratorType getChestGeneratorType() {
 			return chestGeneratorType;
-		}
-
-		public void setChestGeneratorType(ChestGeneratorType chestGeneratorType) {
-			this.chestGeneratorType = chestGeneratorType;
 		}
 
 	}
@@ -124,7 +117,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	public AbstractTreasureChestTileEntity() {
 		setFacing(EnumFacing.NORTH.getIndex());
 		setSealed(false);
-		generationContext = new GenerationContext();
 	}
 
 	/**
@@ -257,11 +249,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			//			logger.debug("Writing FACING to NBT ->{}", getFacing());
 			sourceTag.setInteger("facing", getFacing());
 			sourceTag.setBoolean("sealed", isSealed());
-			NBTTagCompound contextTag = new NBTTagCompound();
-			contextTag.setString("lootRarity", getGenerationContext().getLootRarity().getValue());
-			contextTag.setString("worldGenType", getGenerationContext().getWorldGeneratorType().name());
-			contextTag.setString("chestGenType", getGenerationContext().getChestGeneratorType().name());
-			sourceTag.setTag("genContext", contextTag);			
+			if (getGenerationContext() != null) {
+				NBTTagCompound contextTag = new NBTTagCompound();
+				contextTag.setString("lootRarity", getGenerationContext().getLootRarity().getValue());
+				contextTag.setString("chestGenType", getGenerationContext().getChestGeneratorType().name());
+				sourceTag.setTag("genContext", contextTag);
+			}
 		} catch (Exception e) {
 			logger.error("Error writing Properties to NBT:", e);
 		}
@@ -349,15 +342,16 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			}
 			if (sourceTag.hasKey("genContext")) {
 				NBTTagCompound contextTag = sourceTag.getCompoundTag("genContext");
+				Rarity rarity = null;
+				ChestGeneratorType genType = null;
 				if (contextTag.hasKey("lootRarity")) {
-					this.getGenerationContext().setLootRarity(Rarity.getByValue(contextTag.getString("lootRarity")));
-				}
-				if (contextTag.hasKey("worldGenType")) {
-					this.getGenerationContext().setWorldGeneratorType(WorldGeneratorType.valueOf(contextTag.getString("worldGenType")));
+					rarity = Rarity.getByValue(contextTag.getString("lootRarity"));
 				}
 				if (contextTag.hasKey("chestGenType")) {
-					this.getGenerationContext().setChestGeneratorType(ChestGeneratorType.valueOf(contextTag.getString("chestGenType")));
+					genType = ChestGeneratorType.valueOf(contextTag.getString("chestGenType"));
 				}
+				AbstractTreasureChestTileEntity.GenerationContext genContext = this.new GenerationContext(rarity, genType);
+				this.setGenerationContext(genContext);
 			}
 		} catch (Exception e) {
 			logger.error("Error reading Properties from NBT:", e);
@@ -714,5 +708,9 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 
 	public GenerationContext getGenerationContext() {
 		return generationContext;
+	}
+	
+	public void setGenerationContext(GenerationContext context) {
+		generationContext = context;
 	}
 }
