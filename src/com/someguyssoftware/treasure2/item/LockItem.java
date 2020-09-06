@@ -155,7 +155,7 @@ public class LockItem extends ModItem {
 		boolean lockedAdded = false;
 		LockItem lock = (LockItem) heldItem.getItem();
 		// add the lock to the first lockstate that has an available slot
-		for (LockState lockState : te.getLockStates()) {
+		for (LockState lockState : tileEntity.getLockStates()) {
 			if (lockState != null && lockState.getLock() == null) {
 				lockState.setLock(lock);
 				tileEntity.sendUpdates();
@@ -174,11 +174,10 @@ public class LockItem extends ModItem {
 	 * @return
 	 */
 	public boolean acceptsKey(KeyItem keyItem) {
-        getKeys().forEach(key -> {
-            if (k == keyItem) {
-                return true;
-            }
-        });
+		for (KeyItem k : getKeys()) {
+			if (k == keyItem)
+				return true;
+		}
 		return false;
 	}
 

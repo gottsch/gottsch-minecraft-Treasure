@@ -5,6 +5,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
@@ -12,8 +13,8 @@ import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
 
@@ -24,12 +25,12 @@ import net.minecraft.world.World;
  */
 public class VolcanoPitGenerator extends AbstractPitGenerator {
 	private static final int MIN_VOLCANO_RADIUS = 3;
-    private static final int MAX_VOCANO_RADIUS = 7;
+    private static final int MAX_VOLCANO_RADIUS = 7;
     
 	/**
 	 * 
 	 */
-	public LavaTrapPitGenerator() {
+	public VolcanoPitGenerator() {
 		getBlockLayers().add(50, Blocks.AIR);
 		getBlockLayers().add(25, Blocks.SAND);
 		getBlockLayers().add(15, Blocks.COBBLESTONE);
@@ -87,7 +88,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 
         // taper in until 2/3 point is reached
         while (nextCoords.getY() < midY && radius > 1) {
-            nextCoords = builderLayer(world, nextCoords, radius--, Blocks.AIR);
+            nextCoords = buildLayer(world, nextCoords, radius--, Blocks.AIR);
         }
 
         // build shaft

@@ -4,10 +4,6 @@
 package com.someguyssoftware.treasure2.item;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import com.someguyssoftware.treasure2.enums.Category;
-import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -20,14 +16,14 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Sep 5, 2018
  *
  */
-public class SkeletonKey extends KeyItem {
+public class EmberKey extends KeyItem {
 
 	/**
 	 * 
 	 * @param modID
 	 * @param name
 	 */
-	public SkeletonKey(String modID, String name) {
+	public EmberKey(String modID, String name) {
 		super(modID, name);
 	}
 	
@@ -63,5 +59,6 @@ public class SkeletonKey extends KeyItem {
         if (lockItem == TreasureItems.WOOD_LOCK) { 
             return true;
         }
+        return false;
     }
 }

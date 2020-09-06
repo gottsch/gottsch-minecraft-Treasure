@@ -56,6 +56,7 @@ import com.someguyssoftware.treasure2.generator.pit.MobTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.StructurePitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.VolcanoPitGenerator;
 import com.someguyssoftware.treasure2.generator.ruins.SurfaceRuinGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
