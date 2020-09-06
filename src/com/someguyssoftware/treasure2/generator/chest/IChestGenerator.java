@@ -14,6 +14,8 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 
 import static com.someguyssoftware.treasure2.Treasure.logger;
+
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.IMimicBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
@@ -47,7 +49,6 @@ public interface IChestGenerator {
 			final Rarity rarity, IBlockState state) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(coords);
-
 		// select a loot table
 		// LootTable lootTable = selectLootTable(random, rarity);
 		// if (lootTable == null) {
@@ -75,14 +76,20 @@ public interface IChestGenerator {
 			return result.fail();
 		}
 
+		// seal the chest
+		addSeal((AbstractTreasureChestTileEntity) tileEntity);
+		
+		// update the backing tile entity's generation contxt
+		addGenerationContext((AbstractTreasureChestTileEntity) tileEntity, rarity);
+		
 		// if (!(chest instanceof IMimicBlock)) {
 		// 	logger.debug("Generating loot from loot table for rarity {}", rarity);
 		// 	lootTable.fillInventory((IInventory) te, random, Treasure.LOOT_TABLES.getContext());
 		// }
 
 		// add locks
-		addLocks(random, chest, (AbstractTreasureChestTileEntity) te, rarity);
-
+		addLocks(random, chest, (AbstractTreasureChestTileEntity) tileEntity, rarity);
+		
 		// update result
 		result.getData().setChestContext(new BlockContext(coords, state));
 
@@ -154,6 +161,13 @@ public interface IChestGenerator {
     
 	/**
 	 * 
+	 * @param tileEntity
+	 * @param rarity
+	 */
+	public void addGenerationContext(AbstractTreasureChestTileEntity tileEntity, Rarity rarity);
+	
+	/**
+	 * 
 	 * @param factory
 	 * @param rarity
 	 * @return
@@ -178,6 +192,14 @@ public interface IChestGenerator {
 		return table;
 	}
 
+	/**
+	 * 
+	 * @param tileEntity
+	 */
+	default public void addSeal(AbstractTreasureChestTileEntity tileEntity) {
+		tileEntity.setSealed(true);
+	}
+	
 	/**
 	 * Default implementation. Select locks only from with the same Rarity.
 	 * 
@@ -284,7 +306,7 @@ public interface IChestGenerator {
 			logger.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}
-		return te;
+		return tileEntity;
 	}
 
 	/**

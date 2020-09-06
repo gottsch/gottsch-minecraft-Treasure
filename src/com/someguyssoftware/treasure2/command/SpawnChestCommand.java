@@ -157,7 +157,7 @@ public class SpawnChestCommand extends CommandBase {
 			if (tileEntity != null) {
 
 				// get the loot table
-				LootTable lootTable = gen.selectLootTable(new Random(), rarity);
+				LootTable lootTable = gen.selectLootTable(Random::new, rarity);
 
 				if (lootTable == null) {
 					Treasure.logger.warn("Unable to select a lootTable for rarity -> {}", rarity);

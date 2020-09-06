@@ -3,10 +3,13 @@
  */
 package com.someguyssoftware.treasure2.client.gui;
 
+import static com.someguyssoftware.treasure2.Treasure.logger;
+
 import java.util.Random;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
+import com.someguyssoftware.gottschcore.loot.LootContext;
 import com.someguyssoftware.gottschcore.loot.LootTable;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.gui.inventory.CompressorChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.KeyRingGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.MolluscChestGui;
@@ -29,15 +32,16 @@ import com.someguyssoftware.treasure2.inventory.WitherChestContainer;
 import com.someguyssoftware.treasure2.item.IPouch;
 import com.someguyssoftware.treasure2.item.KeyRingItem;
 import com.someguyssoftware.treasure2.item.PouchItem;
-import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 /**
@@ -72,21 +76,31 @@ public class GuiHandler implements IGuiHandler {
 
 		if (tileEntity instanceof AbstractTreasureChestTileEntity) {
 			AbstractTreasureChestTileEntity chestTileEntity = (AbstractTreasureChestTileEntity) tileEntity;
+//			logger.debug("is chest sealed -> {}", chestTileEntity.isSealed());
 			if (chestTileEntity.isSealed()) {
 				chestTileEntity.setSealed(false);
-  
+//                logger.debug("chest gen type -> {}", chestTileEntity.getGenerationContext().getChestGeneratorType()); 
                 // construct the chest generator used to create the tile entity
                 IChestGenerator chestGenerator = chestTileEntity.getGenerationContext().getChestGeneratorType().getChestGenerator();
-
+//                logger.debug("chest gen  -> {}", chestTileEntity.getGenerationContext().getChestGeneratorType().getChestGenerator().getClass().getSimpleName());
+                
 				// select a loot table
-				LootTable lootTable = chestGenerator.selectLootTable(Random::new, chestTileEntity.getLootRarity());
+				LootTable lootTable = chestGenerator.selectLootTable(Random::new, chestTileEntity.getGenerationContext().getLootRarity());
 				if (lootTable == null) {
 					logger.warn("Unable to select a lootTable.");
 					return null;
 				}
-				logger.debug("Generating loot from loot table for rarity {}", chestTileEntity.getLootRarity());
-				// TODO here we can alter the content
-				lootTable.fillInventory((IInventory) tileEntity, new Random(), Treasure.LOOT_TABLES.getContext());
+				logger.debug("Generating loot from loot table for rarity {}", chestTileEntity.getGenerationContext().getLootRarity());
+				LootContext lootContext = new LootContext.Builder((WorldServer) world, Treasure.LOOT_TABLES.getLootTableManager())
+						.withLuck(player.getLuck())
+						.withPlayer(player)
+						.build();
+				if (lootContext == null) {
+					lootContext = Treasure.LOOT_TABLES.getContext();
+				}
+				lootTable.fillInventory((IInventory) tileEntity, new Random(), lootContext);
+				
+				// TODO future IChestGenerator.addSpecialLoot(world, random, chestTileEntity);
 			}
 		}
 		else {
@@ -102,7 +116,7 @@ public class GuiHandler implements IGuiHandler {
 			container = new StrongboxChestContainer(player.inventory, (IInventory) tileEntity);
 			break;
 		case COMPRESSOR_CHEST_GUIID:
-			container = return new CompressorChestContainer(player.inventory, (IInventory) tileEntity);
+			container = new CompressorChestContainer(player.inventory, (IInventory) tileEntity);
 			break;
 		case SKULL_CHEST_GUIID:
 			container = new SkullChestContainer(player.inventory, (IInventory) tileEntity);
@@ -162,29 +176,23 @@ public class GuiHandler implements IGuiHandler {
             ? (AbstractTreasureChestTileEntity) tileEntity : null;
         if (chestTileEntity == null) {
             logger.warn("Umm, GUI handler error - wrong tile entity.");
-            return;
+            return null;
         }
 
 		switch (ID) {
 		case STANDARD_CHEST_GUIID:
 			// NOTE could pass in the different bg textures here
 			return new StandardChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
-			break;
 		case STRONGBOX_CHEST_GUIID:
 			return new StrongboxChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
-			break;
 		case COMPRESSOR_CHEST_GUIID:
 			return new CompressorChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
-			break;
 		case SKULL_CHEST_GUIID:
 			return new SkullChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
-			break;
 		case WITHER_CHEST_GUIID:
 			return new WitherChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
-			break;
 		case MOLLUSCS_CHEST_GUIID:
 			return new MolluscChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
-			break;
 		case KEY_RING_GUIID:
 			// get the held item
 			ItemStack keyRingItem = player.getHeldItemMainhand();
@@ -217,6 +225,5 @@ public class GuiHandler implements IGuiHandler {
 		default:
 			return null;
 		}
-		return null;
 	}
 }
