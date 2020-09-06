@@ -120,7 +120,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 				oldPersistedChestDirection = Direction.fromFacing(EnumFacing.getFront(tcte.getFacing()));
 
 				// dump stack NBT
-				if (Treasure.logger.isDebugEnabled()) {
+				if (Treasure.logger.isDebugEnabled() && WorldInfo.isServerSide(worldIn)) {
 					dump(stack.getTagCompound(), new Coords(pos), "STACK ITEM -> CHEST NBT");
 				}
 			}
