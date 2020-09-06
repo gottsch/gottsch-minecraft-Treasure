@@ -163,7 +163,10 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		// NONE for STRUCTURE
 		
 		pitGens.put(PitTypes.STANDARD, Pits.COLLAPSING_TRAP_PIT,  new CollapsingTrapPitGenerator());
-		pitGens.put(PitTypes.STRUCTURE, Pits.COLLAPSING_TRAP_PIT, new StructurePitGenerator(new CollapsingTrapPitGenerator()));
+        pitGens.put(PitTypes.STRUCTURE, Pits.COLLAPSING_TRAP_PIT, new StructurePitGenerator(new CollapsingTrapPitGenerator()));
+        
+        pitGens.put(PitTypes.STANDARD, Pits.VOLCANO_PIT, new VolcanoPitGenerator());
+		// NONE for STRUCTURE
 	}
 
 	/**
@@ -174,14 +177,6 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		if (TreasureConfig.WORLD_GEN.getGeneralProperties().getDimensionsWhiteList().contains(Integer.valueOf(world.provider.getDimension()))) {
 			generate(world, random, chunkX, chunkZ);
 		}
-		
-//		switch(world.provider.getDimension()){
-//		case 0:
-//		    generateInOverworld(world, random, chunkX, chunkZ);
-//		    break;
-//	    default:
-//	    	break;
-//		}
 	}
 
 	/**
@@ -372,7 +367,9 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}
-		
+        
+        // TODO can update tile entity GenerationContext with WorldGenerationType here
+        
 		Treasure.logger.info("CHEATER! {} chest at coords: {}", chestRarity, markerCoords.toShortString());
 		result.setData(chestResult.getData());
 		return result.success();
