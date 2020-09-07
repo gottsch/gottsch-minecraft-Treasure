@@ -91,6 +91,14 @@ public class KeyItem extends ModItem {
 		setMaxStackSize(1); // 12/3/2018: set to max 1 because keys are damaged and don't stack well.
 	}
 
+    @Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+        EffectiveMaxDamageCapabilityProvider provider = new EffectiveMaxDamageCapabilityProvider();
+        IEffectiveMaxDamageCapability cap = provider.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+		cap.setEffectiveMaxDamage(getMaxDamage);
+		return provider;
+    }
+    
 	/**
 	 * Format:
 	 * 		Item Name (vanilla minecraft)
@@ -107,7 +115,9 @@ public class KeyItem extends ModItem {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		
 		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.rarity", TextFormatting.DARK_BLUE + getRarity().toString()));
-		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.category", getCategory()));
+        tooltip.add(I18n.translateToLocalFormatted("tooltip.label.category", getCategory()));
+        // TODO update to getEffectiveMaxDamage()
+        // TODO add remaining uses
 		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.max_uses", getMaxDamage()));
 
 		// is breakable tooltip
@@ -204,20 +214,27 @@ public class KeyItem extends ModItem {
 						breakKey = false;
 					}
 				}
-						
+                
+                // get capability
+                EffectiveMaxDamageCapabilityProvider provider = new EffectiveMaxDamageCapabilityProvider();
+                IEffectiveMaxDamageCapability cap = provider.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+                int remainingUses = cap.getEffectiveMaxDamage - getItemDamage();
+                
 				// check key's breakability
 				if (breakKey) {
 					if (isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
+                        // TODO update - itemDamage += remainingUses % maxDamage; then if itemDamage == effectiveMaxDamage, shrink
 						// break key;
-						heldItem.shrink(1);
+                        heldItem.shrink(1);
 						player.sendMessage(new TextComponentString("Key broke."));
 						worldIn.playSound(player, chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 						// flag the key as broken
 						isKeyBroken = true;
-						// if the keyStack > 0, then reset the damage - don't break a brand new key and leave the used one
-						if (heldItem.getCount() > 0) {
-							heldItem.setItemDamage(0);
-						}
+                        // if the keyStack > 0, then reset the damage - don't break a brand new key and leave the used one
+                        // this is moot - keys are no longer stackable
+						// if (heldItem.getCount() > 0) {
+						// 	heldItem.setItemDamage(0);
+						// }
 					}
 					else {
 						player.sendMessage(new TextComponentString("Failed to unlock."));
@@ -226,7 +243,9 @@ public class KeyItem extends ModItem {
 				
 				// user attempted to use key - increment the damage
 				if (isDamageable() && !isKeyBroken) {
-						heldItem.damageItem(1, player);
+                        heldItem.damageItem(1, player);
+                        // TODO update this. if getItemDamage() == getEffectiveMaxDamage() which is a nbt property OR a capability
+
 						if (heldItem.getItemDamage() == heldItem.getMaxDamage()) {
 							heldItem.shrink(1);
 					}
