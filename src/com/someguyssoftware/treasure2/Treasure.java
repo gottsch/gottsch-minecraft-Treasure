@@ -37,7 +37,7 @@ import com.someguyssoftware.treasure2.command.SpawnRuinsCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellStructureCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.enums.WorldGenerators;
+import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.MimicEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
@@ -101,7 +101,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.12.1";
+	protected static final String VERSION = "1.12.2";
 
 	// TODO point to: https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.12.2-master/update.json
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
@@ -135,7 +135,7 @@ public class Treasure extends AbstractMod {
 	};
 
 	// forge world generators
-	public final static Map<WorldGenerators, ITreasureWorldGenerator> WORLD_GENERATORS = new HashMap<>();
+	public final static Map<WorldGeneratorType, ITreasureWorldGenerator> WORLD_GENERATORS = new HashMap<>();
 
 	// template manager
 	public static TreasureTemplateManager TEMPLATE_MANAGER;
@@ -240,15 +240,15 @@ public class Treasure extends AbstractMod {
 		super.init(event);
 
 		// register world generators
-		WORLD_GENERATORS.put(WorldGenerators.SURFACE_CHEST, new SurfaceChestWorldGenerator());
-		WORLD_GENERATORS.put(WorldGenerators.SUBMERGED_CHEST, new SubmergedChestWorldGenerator());
-		WORLD_GENERATORS.put(WorldGenerators.WELL, new WellWorldGenerator());
-		WORLD_GENERATORS.put(WorldGenerators.WITHER_TREE, new WitherTreeWorldGenerator());
-		WORLD_GENERATORS.put(WorldGenerators.GEM, new GemOreWorldGenerator());
-		WORLD_GENERATORS.put(WorldGenerators.OASIS, new OasisWorldGenerator());
+		WORLD_GENERATORS.put(WorldGeneratorType.SURFACE_CHEST, new SurfaceChestWorldGenerator());
+		WORLD_GENERATORS.put(WorldGeneratorType.SUBMERGED_CHEST, new SubmergedChestWorldGenerator());
+		WORLD_GENERATORS.put(WorldGeneratorType.WELL, new WellWorldGenerator());
+		WORLD_GENERATORS.put(WorldGeneratorType.WITHER_TREE, new WitherTreeWorldGenerator());
+		WORLD_GENERATORS.put(WorldGeneratorType.GEM, new GemOreWorldGenerator());
+		WORLD_GENERATORS.put(WorldGeneratorType.OASIS, new OasisWorldGenerator());
 
 		int genWeight = 0;
-		for (Entry<WorldGenerators, ITreasureWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
+		for (Entry<WorldGeneratorType, ITreasureWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
 			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);
 		}
 
