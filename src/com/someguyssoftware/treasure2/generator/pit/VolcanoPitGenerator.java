@@ -21,13 +21,14 @@ import net.minecraft.world.World;
 
 
 /**
- * A Volcano Pit requires at least 25 blocks under the surface to construct.
+ * A Volcano Pit requires at least 15 blocks under the surface to construct.
  * @author Mark Gottschling on Sep 5, 2020
  *
  */
 public class VolcanoPitGenerator extends AbstractPitGenerator {
 	private static final int MIN_VOLCANO_RADIUS = 4;
     private static final int MAX_VOLCANO_RADIUS = 8;
+    private static final int MIN_VERTICAL_DISTANCE = 15;
     
 	/**
 	 * 
@@ -78,14 +79,10 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 
 		// build lava around base
 		buildLavaBaseLayer(world, coords.down(1), radius);
-        
-		logger.debug("midY-4 -> {}", shaftStartY-4);
-//        int layerIndex = 0;
+
         nextCoords = coords;
         while (nextCoords.getY() < (shaftStartY - 4)) {
-        	logger.debug("nextCoords.y -> {}", nextCoords.getY());
             nextCoords = buildLayer(world, nextCoords, radius, Blocks.AIR);
-//            layerIndex++;
         }
 
         // taper in until 2/3 point is reached
@@ -158,10 +155,43 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 
 				if (isDistanceMet) {
                     GenUtil.replaceWithBlock(world, spawnCoords, block);
-				}
+                    // TODO insert blackstone and lava flows here
+                    if (xOffset < 0) {
+                        ICoords replaceCoords = spawnCoords.west(1);
+                        addDecorations(world, random, replaceCoords);
+                    }
+                    else if (xOffset > 0) {
+                        ICoords replaceCoords = spawnCoords.east(1);
+                        addDecorations(world, random, replaceCoords);
+                    }
+
+                    if (zOffset < 0) {
+                        ICoords replaceCoords = spawnCoords.north(1);
+                        addDecorations(world, random, replaceCoords);
+                    }
+                    else if (zOffset > 0{
+                        ICoords replaceCoords = spawnCoords.soouth(1);
+                        addDecorations(world, random, replaceCoords);
+                    }
+                }
 			}
-		}
+        }
+        
         return coords.up(1);
+    }
+
+    /**
+     * 
+     */
+    private void addDecorations(World world, Random random, ICoords coords) {
+        if (world.getBlockState(rcoords.toPos()).getBlock != Blocks.AIR) {
+            if (RandomHelper.checkProbability(random, 30)) {
+                world.replaceWithBlock(coords.toPos(), Blocks.STONE);
+            }
+            else if (RandomHelper.checkProbability(random, 10)) {
+                world.replaceWithBlock(coords.toPos(), Blocks.LAVA);
+            }
+        }
     }
 
 	/**
@@ -176,21 +206,11 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
         buildLayer(world, coords, radius, Blocks.LAVA);
 
         // add the chest
-        GenUtil.replaceWithBlock(world, coords, Blocks.STONE);
-
-        // for square chamber
-        // for (int z = -3; z <= 3; z++) {
-        //     for (int x = -3; x <= 3; x++) {
-        //         if (z == 0 && x == 0) {
-        //             continue;
-        //         }
-        //         GenUtil.replaceWithBlock(world, coords.add(x, 0, z), Blocks.LAVA);
-        //     }
-        // }	
+        GenUtil.replaceWithBlock(world, coords, Blocks.STONE);	
 	}
 	
 	@Override
 	public int getMinSurfaceToSpawnDistance() {
-		return 15;
+		return MIN_VERTICAL_DISTANCE;
 	}
 }
