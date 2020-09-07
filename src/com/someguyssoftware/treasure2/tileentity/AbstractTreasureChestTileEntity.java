@@ -8,9 +8,9 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import static import com.someguyssoftware.treasure2.Treasure.logger;
 import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.lock.LockState;
 
@@ -42,7 +42,7 @@ import net.minecraftforge.common.util.Constants;
  * @author Mark Gottschling onDec 22, 2017
  *
  */
-public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements IInventory, ITickable {
+public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITreasureChestTileEntity, IInventory, ITickable {
 	/*
 	 * A list of lockStates the chest has. The list should be the size of the max
 	 * allowed for the chestType.
@@ -81,6 +81,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * Like the old updateEntity(), except more generic.
 	 */
+    @Override
 	public void update() {
 		int i = this.pos.getX();
 		int j = this.pos.getY();
@@ -162,7 +163,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			// write custom name
 			writePropertiesToNBT(parentNBT);
 		} catch (Exception e) {
-			Treasure.logger.error("Error writing to NBT:", e);
+			logger.error("Error writing to NBT:", e);
 		}
 		return parentNBT;
 	}
@@ -179,7 +180,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				NBTTagList list = new NBTTagList();
 				// write custom tile entity properties
 				for (LockState state : getLockStates()) {
-//					Treasure.logger.debug("Writing lock state:" + state);
+//					logger.debug("Writing lock state:" + state);
 					NBTTagCompound stateNBT = new NBTTagCompound();
 					state.writeToNBT(stateNBT);
 					list.appendTag(stateNBT);
@@ -187,7 +188,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				parentNBT.setTag("lockStates", list);
 			}
 		} catch (Exception e) {
-			Treasure.logger.error("Error writing LockStates to NBT:", e);
+			logger.error("Error writing LockStates to NBT:", e);
 		}
 		return parentNBT;
 	}
@@ -205,10 +206,10 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				parentNBT.setString("CustomName", this.customName);
 			}
 			// write facing
-//			Treasure.logger.debug("Writing FACING to NBT ->{}", getFacing());
+//			logger.debug("Writing FACING to NBT ->{}", getFacing());
 			parentNBT.setInteger("facing", getFacing());
 		} catch (Exception e) {
-			Treasure.logger.error("Error writing Properties to NBT:", e);
+			logger.error("Error writing Properties to NBT:", e);
 		}
 		return parentNBT;
 	}
@@ -224,7 +225,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			// write inventory
 			ItemStackHelper.saveAllItems(parentNBT, this.getItems());
 		} catch (Exception e) {
-			Treasure.logger.error("Error writing Inventory to NBT:", e);
+			logger.error("Error writing Inventory to NBT:", e);
 		}
 		return parentNBT;
 	}
@@ -238,7 +239,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			// read the inventory
 			ItemStackHelper.loadAllItems(parentNBT, this.getItems());
 		} catch (Exception e) {
-			Treasure.logger.error("Error reading Properties from NBT:", e);
+			logger.error("Error reading Properties from NBT:", e);
 		}
 	}
 
@@ -250,12 +251,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		try {
 			// read the lockstates
 			if (parentNBT.hasKey("lockStates")) {
-//				Treasure.logger.debug("Has lockStates");
+//				logger.debug("Has lockStates");
 				if (this.getLockStates() != null) {
-//					Treasure.logger.debug("size of internal lockstates:" + this.getLockStates().size());
+//					logger.debug("size of internal lockstates:" + this.getLockStates().size());
 				} else {
 					this.setLockStates(new LinkedList<LockState>());
-//					Treasure.logger.debug("created lockstates:" + this.getLockStates().size());
+//					logger.debug("created lockstates:" + this.getLockStates().size());
 				}
 
 				List<LockState> states = new LinkedList<LockState>();
@@ -264,13 +265,13 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 					NBTTagCompound c = list.getCompoundTagAt(i);
 					LockState lockState = LockState.readFromNBT(c);
 					states.add(lockState.getSlot().getIndex(), lockState);
-//					Treasure.logger.debug("Read NBT lockstate:" + lockState);
+//					logger.debug("Read NBT lockstate:" + lockState);
 				}
 				// update the tile entity
 				setLockStates(states);
 			}
 		} catch (Exception e) {
-			Treasure.logger.error("Error reading Lock States from NBT:", e);
+			logger.error("Error reading Lock States from NBT:", e);
 		}
 	}
 
@@ -286,11 +287,11 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			}
 			// read the facing
 			if (parentNBT.hasKey("facing")) {
-//				Treasure.logger.debug("Has 'facing' key -> {}", parentNBT.getInteger("facing"));
+//				logger.debug("Has 'facing' key -> {}", parentNBT.getInteger("facing"));
 				this.setFacing(parentNBT.getInteger("facing"));
 			}
 		} catch (Exception e) {
-			Treasure.logger.error("Error reading Properties from NBT:", e);
+			logger.error("Error reading Properties from NBT:", e);
 		}
 	}
 
@@ -306,7 +307,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			readInventoryFromNBT(parentNBT);
 			readPropertiesFromNBT(parentNBT);
 		} catch (Exception e) {
-			Treasure.logger.error("Error reading to NBT:", e);
+			logger.error("Error reading to NBT:", e);
 		}
 	}
 
@@ -319,7 +320,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			readInventoryFromNBT(nbt);
 			readPropertiesFromNBT(nbt);
 		} catch (Exception e) {
-			Treasure.logger.error("Error reading to NBT:", e);
+			logger.error("Error reading to NBT:", e);
 		}
 	}
 
@@ -347,7 +348,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-//		Treasure.logger.debug("ShouldRefresh:" + (oldState.getBlock() != newState.getBlock()));
+//		logger.debug("ShouldRefresh:" + (oldState.getBlock() != newState.getBlock()));
 		return oldState.getBlock() != newState.getBlock();
 
 	}
@@ -373,6 +374,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @return the lockStates
 	 */
+    @Override
 	public List<LockState> getLockStates() {
 		return lockStates;
 	}
@@ -380,6 +382,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @param lockStates the lockStates to set
 	 */
+    @Override
 	public void setLockStates(List<LockState> lockStates) {
 		this.lockStates = lockStates;
 	}
@@ -388,6 +391,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 * @return
 	 */
+    @Override
 	public boolean hasLocks() {
 		// TODO TEMP do this for now. should have another property numActiveLocks so
 		// that the renderer doesn't keep calling this
@@ -400,6 +404,16 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		return false;
 	}
 
+    @Override
+	public int getFacing() {
+		return facing;
+	}
+
+    @Override
+	public void setFacing(int facing) {
+		this.facing = facing;
+    }
+    
 	/**
 	 * Get the formatted ChatComponent that will be used for the sender's username
 	 * in chat
@@ -536,7 +550,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				this.numPlayersUsing = 0;
 			}
 			++this.numPlayersUsing;
-			Treasure.logger.debug("Incremented numPlayersUsing to:" + numPlayersUsing);
+			logger.debug("Incremented numPlayersUsing to:" + numPlayersUsing);
 			this.world.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
 			this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType(), false);
 		}
@@ -625,13 +639,4 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	public void setItems(NonNullList<ItemStack> chestContents) {
 		this.items = chestContents;
 	}
-
-	public int getFacing() {
-		return facing;
-	}
-
-	public void setFacing(int facing) {
-		this.facing = facing;
-	}
-
 }
