@@ -192,7 +192,7 @@ tooltip.label.max_locks=Max Locks: %s
 tooltip.label.container_size=Inventory Size: %s
 
 tooltip.ember_key.specials=Destroys Wood Locks
-tooltip.ember_lock.specials=Destroys Wood Keys regardless of breakability
+tooltip.ember_lock.specials=Destroys All Keys regardless of breakability (excluding Ember)
 tooltip.metallurgists_key.specials=Opens any lock in METALS category
 tooltip.skeleton_key.specials=Opens COMMON, UNCOMMON, SCARCE and RARE locks (excluding Wither)
 tooltip.pilferers_lock_pick.specials=Opens COMMON (%s%%) and UNCOMMON (%s%%) locks

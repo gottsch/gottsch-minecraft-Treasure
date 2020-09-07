@@ -43,7 +43,7 @@ public class EmberLock extends LockItem {
     
     @Override
     public boolean breaksKey(KeyItem key) {
-        if (key == TreasureItems.WOOD_KEY) {
+        if (key != TreasureItems.EMBER_KEY) {
             return true;
         }
         return false;

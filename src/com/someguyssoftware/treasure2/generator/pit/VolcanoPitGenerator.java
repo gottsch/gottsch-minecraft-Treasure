@@ -2,15 +2,17 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
+import static com.someguyssoftware.treasure2.Treasure.logger;
 import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
-import com.someguyssoftware.treasure2.Treasure;
+
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
+import com.sun.media.jfxmedia.logging.Logger;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -24,8 +26,8 @@ import net.minecraft.world.World;
  *
  */
 public class VolcanoPitGenerator extends AbstractPitGenerator {
-	private static final int MIN_VOLCANO_RADIUS = 3;
-    private static final int MAX_VOLCANO_RADIUS = 7;
+	private static final int MIN_VOLCANO_RADIUS = 4;
+    private static final int MAX_VOLCANO_RADIUS = 8;
     
 	/**
 	 * 
@@ -50,7 +52,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
-			Treasure.logger.debug("Generated Volcano Pit at " + spawnCoords.toShortString());
+			logger.debug("Generated Volcano Pit at " + spawnCoords.toShortString());
 		}
 		return result;
 	}
@@ -69,30 +71,33 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 		ICoords expectedCoords = null;
         
         // determine size of volcano
-		int radius = RandomHelper.randomInt(random, MIN_VOLCANO_RADIUS, MAX_VOLCANO_RADIUS); // min of 3, so diameter = 7 (3*2 + 1 (center)), area = 7x7
-        AxisAlignedBB oasisBounds = new AxisAlignedBB(coords.add(-radius, 0, -radius).toPos() , coords.add(radius, 0, radius).toPos());
+		int radius = RandomHelper.randomInt(random, MIN_VOLCANO_RADIUS, MAX_VOLCANO_RADIUS); // min of 4, so diameter = 9 (4*2 + 1 (center)), area = 9x9
         
 		// select 2/3 point of pit length - topmost coords of volcano chamber / bottom of pit shaft
-		int midY = (surfaceCoords.getY() + coords.getY()) / 3 * 2;
+		int shaftStartY = coords.getY() + ((surfaceCoords.getY() - coords.getY()) / 3 * 2);
 
 		// build lava around base
 		buildLavaBaseLayer(world, coords.down(1), radius);
         
-        // TODO build at least 5-7 layers at widest
-        int layerIndex = 0;
+		logger.debug("midY-4 -> {}", shaftStartY-4);
+//        int layerIndex = 0;
         nextCoords = coords;
-        while (layerIndex < 7 && nextCoords.getY() < midY) {
+        while (nextCoords.getY() < (shaftStartY - 4)) {
+        	logger.debug("nextCoords.y -> {}", nextCoords.getY());
             nextCoords = buildLayer(world, nextCoords, radius, Blocks.AIR);
-            layerIndex++;
+//            layerIndex++;
         }
 
         // taper in until 2/3 point is reached
-        while (nextCoords.getY() < midY && radius > 1) {
+        while (nextCoords.getY() < shaftStartY && radius > 1) {
             nextCoords = buildLayer(world, nextCoords, radius--, Blocks.AIR);
         }
 
+        // build one layer of logs
+        nextCoords = buildLogLayer(world, random, nextCoords, Blocks.LOG);
+        
         // build shaft
-		for (int yIndex = nextCoords.getY(); yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
+		for (int yIndex = nextCoords.getY() + 1; yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
 			// if the block to be replaced is air block then skip to the next pos
 			Cube cube = new Cube(world, new Coords(coords.getX(), yIndex, coords.getZ()));
 			if (cube.isAir()) {
@@ -123,6 +128,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 */
 	@Override
 	public void buildAboveChestLayers(World world, Random random, ICoords spawnCoords) {
+		
 	}
 	
     /**
@@ -164,7 +170,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * @param coords
 	 */
 	private void buildLavaBaseLayer(World world, ICoords coords, int radius) {
-        Treasure.logger.debug("Building lava baselayer from @ {} ", coords.toShortString());
+        logger.debug("Building lava baselayer from @ {} ", coords.toShortString());
 
         // for circular chamber
         buildLayer(world, coords, radius, Blocks.LAVA);
@@ -181,5 +187,10 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
         //         GenUtil.replaceWithBlock(world, coords.add(x, 0, z), Blocks.LAVA);
         //     }
         // }	
+	}
+	
+	@Override
+	public int getMinSurfaceToSpawnDistance() {
+		return 15;
 	}
 }

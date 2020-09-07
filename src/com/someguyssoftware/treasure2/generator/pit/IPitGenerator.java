@@ -29,4 +29,6 @@ public interface IPitGenerator<RESULT extends IGeneratorResult<?>> {
 
 	public int getOffsetY();
 	public void setOffsetY(int i);
+
+	int getMinSurfaceToSpawnDistance();
 }

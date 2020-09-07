@@ -209,19 +209,15 @@ public class KeyItem extends ModItem {
 				}
 						
 				// check key's breakability
-				if (breakKey) {
-                    LockItem lock = lockState.getLock();
-					if ((isBreakable() || lock.breaksKey(this)) && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
+				if (breakKey) {                    
+					if ((isBreakable() || anyLockBreaksKey(chestTileEntity.getLockStates(), this)) && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
 						// break key;
 						heldItem.shrink(1);
 						player.sendMessage(new TextComponentString("Key broke."));
 						worldIn.playSound(player, chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 						// flag the key as broken
 						isKeyBroken = true;
-						// if the keyStack > 0, then reset the damage - don't break a brand new key and leave the used one
-						if (heldItem.getCount() > 0) {
-							heldItem.setItemDamage(0);
-						}
+						// TODO why isn't the key breaking - creative?
 					}
 					else {
 						player.sendMessage(new TextComponentString("Failed to unlock."));
@@ -243,7 +239,7 @@ public class KeyItem extends ModItem {
 		
 		return super.onItemUse(player, worldIn, chestPos, hand, facing, hitX, hitY, hitZ);
 	}
-	
+
 	/**
 	 * This method is a secondary check against a lock item.
 	 * Override this method to overrule LockItem.acceptsKey() if this is a key with special abilities.
@@ -275,6 +271,23 @@ public class KeyItem extends ModItem {
 	
 	/**
 	 * 
+	 * @param lockStates
+	 * @param key
+	 * @return
+	 */
+	private boolean anyLockBreaksKey(List<LockState> lockStates, KeyItem key) {
+		for (LockState ls : lockStates) {
+			if (ls.getLock() != null) {
+				if (ls.getLock().breaksKey(key)) {
+					return true;
+				}				
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * 
 	 * @param lockItem
 	 * @return
 	 */
@@ -292,7 +305,7 @@ public class KeyItem extends ModItem {
     public boolean breaksLock(LockItem lockItem) {
         return false;
     }
-	
+    
 	/**
 	 * @return the rarity
 	 */

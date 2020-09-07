@@ -386,7 +386,7 @@ public class TreasureItems {
 		STONE_LOCK = new LockItem(Treasure.MODID, TreasureConfig.STONE_LOCK_ID, new KeyItem[] {STONE_KEY})
 				.setCategory(Category.BASIC)
                 .setRarity(Rarity.COMMON);
-    	EMBER_LOCK = new LockItem(Treasure.MODID, TreasureConfig.EMBER_LOCK_ID, new KeyItem[] {EMBER_KEY})
+    	EMBER_LOCK = new EmberLock(Treasure.MODID, TreasureConfig.EMBER_LOCK_ID, new KeyItem[] {EMBER_KEY})
 				.setCategory(Category.BASIC)
 				.setRarity(Rarity.SCARCE);
 		IRON_LOCK = new LockItem(Treasure.MODID, TreasureConfig.IRON_LOCK_ID, new KeyItem[] {IRON_KEY})
