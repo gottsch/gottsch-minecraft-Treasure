@@ -47,7 +47,6 @@ import net.minecraftforge.common.util.Constants;
  * @author Mark Gottschling onDec 22, 2017
  *
  */
-
 public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITreasureChestTileEntity, IInventory, ITickable {
 	public class GenerationContext {
 		/*
@@ -222,6 +221,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				NBTTagList list = new NBTTagList();
 				// write custom tile entity properties
 				for (LockState state : getLockStates()) {
+					//					logger.debug("Writing lock state:" + state);
 					NBTTagCompound stateNBT = new NBTTagCompound();
 					state.writeToNBT(stateNBT);
 					list.appendTag(stateNBT);
@@ -247,7 +247,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				sourceTag.setString("CustomName", this.customName);
 			}
 			// write facing
-
 			//			logger.debug("Writing FACING to NBT ->{}", getFacing());
 			sourceTag.setInteger("facing", getFacing());
 			sourceTag.setBoolean("sealed", isSealed());
@@ -300,14 +299,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		try {
 			// read the lockstates
 			if (parentNBT.hasKey("lockStates")) {
-
 				//				logger.debug("Has lockStates");
 				if (this.getLockStates() != null) {
 					//					logger.debug("size of internal lockstates:" + this.getLockStates().size());
 				} else {
 					this.setLockStates(new LinkedList<LockState>());
 					//					logger.debug("created lockstates:" + this.getLockStates().size());
-
 				}
 
 				List<LockState> states = new LinkedList<LockState>();
@@ -336,7 +333,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				this.customName = sourceTag.getString("CustomName");
 			}
 			// read the facing
-
 			if (sourceTag.hasKey("facing")) {
 				//				logger.debug("Has 'facing' key -> {}", parentNBT.getInteger("facing"));
 				this.setFacing(sourceTag.getInteger("facing"));
@@ -356,7 +352,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				}
 				AbstractTreasureChestTileEntity.GenerationContext genContext = this.new GenerationContext(rarity, genType);
 				this.setGenerationContext(genContext);
-
 			}
 		} catch (Exception e) {
 			logger.error("Error reading Properties from NBT:", e);
@@ -416,6 +411,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+		//		logger.debug("ShouldRefresh:" + (oldState.getBlock() != newState.getBlock()));
 		return oldState.getBlock() != newState.getBlock();
 	}
 

@@ -74,7 +74,8 @@ public class TreasureItems {
 	
 	// locks
 	public static LockItem WOOD_LOCK;
-	public static LockItem STONE_LOCK;
+    public static LockItem STONE_LOCK;
+    public static LockItem EMBER_LOCK;
 	public static LockItem IRON_LOCK;
 	public static LockItem GOLD_LOCK;
 	public static LockItem DIAMOND_LOCK;
@@ -86,7 +87,8 @@ public class TreasureItems {
 	
 	// keys
 	public static KeyItem WOOD_KEY;
-	public static KeyItem STONE_KEY;
+    public static KeyItem STONE_KEY;
+    public static KeyItem EMBER_KEY;
 	public static KeyItem IRON_KEY;
 	public static KeyItem GOLD_KEY;
 	public static KeyItem METALLURGISTS_KEY;
@@ -271,12 +273,18 @@ public class TreasureItems {
 				.setCraftable(false)
 				.setMaxDamage(TreasureConfig.KEYS_LOCKS.stoneKeyMaxUses);
 
+        EMBER_KEY = new EmberKey(Treasure.MODID, TreasureConfig.EMBER_KEY_ID)
+				.setCategory(Category.BASIC)
+				.setRarity(Rarity.SCARCE)
+				.setCraftable(false)
+                .setMaxDamage(TreasureConfig.KEYS_LOCKS.emberKeyMaxUses);      
+
 		IRON_KEY = new KeyItem(Treasure.MODID, TreasureConfig.IRON_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.UNCOMMON)
 				.setCraftable(false)
-				.setMaxDamage(TreasureConfig.KEYS_LOCKS.ironKeyMaxUses);
-		
+                .setMaxDamage(TreasureConfig.KEYS_LOCKS.ironKeyMaxUses);
+        
 		GOLD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.GOLD_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.SCARCE)
@@ -377,10 +385,13 @@ public class TreasureItems {
 				.setRarity(Rarity.COMMON);
 		STONE_LOCK = new LockItem(Treasure.MODID, TreasureConfig.STONE_LOCK_ID, new KeyItem[] {STONE_KEY})
 				.setCategory(Category.BASIC)
-				.setRarity(Rarity.COMMON);
+                .setRarity(Rarity.COMMON);
+    	EMBER_LOCK = new EmberLock(Treasure.MODID, TreasureConfig.EMBER_LOCK_ID, new KeyItem[] {EMBER_KEY})
+				.setCategory(Category.BASIC)
+				.setRarity(Rarity.SCARCE);
 		IRON_LOCK = new LockItem(Treasure.MODID, TreasureConfig.IRON_LOCK_ID, new KeyItem[] {IRON_KEY})
 				.setCategory(Category.METALS)
-				.setRarity(Rarity.UNCOMMON);
+                .setRarity(Rarity.UNCOMMON);
 		GOLD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.GOLD_LOCK_ID, new KeyItem[] {GOLD_KEY})
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.SCARCE);
@@ -406,7 +417,8 @@ public class TreasureItems {
 		
 		locks = ArrayListMultimap.create();
 		locks.put(WOOD_LOCK.getRarity(), WOOD_LOCK);
-		locks.put(STONE_LOCK.getRarity(), STONE_LOCK);
+        locks.put(STONE_LOCK.getRarity(), STONE_LOCK);
+        locks.put(EMBER_LOCK.getRarity(), EMBER_LOCK);
 		locks.put(IRON_LOCK.getRarity(), IRON_LOCK);
 		locks.put(GOLD_LOCK.getRarity(), GOLD_LOCK);
 		locks.put(DIAMOND_LOCK.getRarity(), DIAMOND_LOCK);
@@ -536,7 +548,8 @@ public class TreasureItems {
 					WHITE_PEARL,
 					BLACK_PEARL,
 					WOOD_LOCK,
-					STONE_LOCK,
+                    STONE_LOCK,
+                    EMBER_LOCK,
 					IRON_LOCK,
 					GOLD_LOCK,
 					DIAMOND_LOCK,
@@ -546,8 +559,9 @@ public class TreasureItems {
 					SPIDER_LOCK,
 					WITHER_LOCK,
 					WOOD_KEY,
-					STONE_KEY,
-					IRON_KEY,
+                    STONE_KEY,
+                    EMBER_KEY,
+                    IRON_KEY,
 					GOLD_KEY,
 					DIAMOND_KEY,
 					EMERALD_KEY,

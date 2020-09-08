@@ -22,10 +22,8 @@ public enum Pits implements IEnum {
 	MOB_TRAP_PIT(4, "Mob Trapped Pit"),
 	LAVA_SIDE_TRAP_PIT(5, "Lava Side Trapped Pit"),
 	BIG_BOTTOM_MOB_TRAP_PIT(6, "Big Bottom Mob Trapped Pit"),
-	COLLAPSING_TRAP_PIT(7, "Collapsing Trapped Pit");
-	
-//	
-//	STRUCTURE_PIT(7, "Structure Pit");
+    COLLAPSING_TRAP_PIT(7, "Collapsing Trapped Pit"),
+    VOLCANO_PIT(8, "Volcano Pit");
 	
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();
