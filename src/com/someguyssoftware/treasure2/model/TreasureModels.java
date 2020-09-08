@@ -111,6 +111,7 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FALLING_GRASS));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FALLING_SAND));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FALLING_RED_SAND));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.BLACKSTONE));
 		
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);

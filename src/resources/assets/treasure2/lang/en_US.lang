@@ -84,6 +84,7 @@ tile.treasure2:spanish_moss.name=Spanish Moss
 tile.treasure2:falling_grass.name=Grass Block
 tile.treasure2:falling_sand.name=Sand Block
 tile.treasure2:falling_red_sand.name=Red Sand Block
+tile.treasure2:blackstone.name=Blackstone
 
 #items
 item.treasure2:gold_coin.name=Gold Coin

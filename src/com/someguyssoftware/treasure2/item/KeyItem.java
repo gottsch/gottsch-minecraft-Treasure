@@ -217,7 +217,6 @@ public class KeyItem extends ModItem {
 						worldIn.playSound(player, chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 						// flag the key as broken
 						isKeyBroken = true;
-						// TODO why isn't the key breaking - creative?
 					}
 					else {
 						player.sendMessage(new TextComponentString("Failed to unlock."));

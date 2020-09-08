@@ -8,7 +8,7 @@ import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
-
+import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
@@ -82,12 +82,12 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 
         nextCoords = coords;
         while (nextCoords.getY() < (shaftStartY - 4)) {
-            nextCoords = buildLayer(world, nextCoords, radius, Blocks.AIR);
+            nextCoords = buildLayer(world, nextCoords, radius, Blocks.AIR, true);
         }
 
         // taper in until 2/3 point is reached
         while (nextCoords.getY() < shaftStartY && radius > 1) {
-            nextCoords = buildLayer(world, nextCoords, radius--, Blocks.AIR);
+            nextCoords = buildLayer(world, nextCoords, radius--, Blocks.AIR, false);
         }
 
         // build one layer of logs
@@ -131,9 +131,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
     /**
      * 
      */
-    private ICoords buildLayer(World world, ICoords coords, int radius, Block block) {
-        // TODO add random obsidian blocks at outer edges
-        // TODO add random lava falls (lava blocks at outer edges)
+    private ICoords buildLayer(World world, ICoords coords, int radius, Block block, boolean addDecorations) {
 		int radiusSquared = radius * radius;
 		Integer[] distancesMet = new Integer[radius + 1];
 		ICoords spawnCoords = null;
@@ -154,24 +152,27 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 				}
 
 				if (isDistanceMet) {
+					Random random = new Random();
                     GenUtil.replaceWithBlock(world, spawnCoords, block);
-                    // TODO insert blackstone and lava flows here
-                    if (xOffset < 0) {
-                        ICoords replaceCoords = spawnCoords.west(1);
-                        addDecorations(world, random, replaceCoords);
-                    }
-                    else if (xOffset > 0) {
-                        ICoords replaceCoords = spawnCoords.east(1);
-                        addDecorations(world, random, replaceCoords);
-                    }
-
-                    if (zOffset < 0) {
-                        ICoords replaceCoords = spawnCoords.north(1);
-                        addDecorations(world, random, replaceCoords);
-                    }
-                    else if (zOffset > 0{
-                        ICoords replaceCoords = spawnCoords.soouth(1);
-                        addDecorations(world, random, replaceCoords);
+                    
+                    if (addDecorations) {
+	                    if (xOffset < 0) {
+	                        ICoords replaceCoords = spawnCoords.west(1);
+	                        addDecorations(world, random, replaceCoords);
+	                    }
+	                    else if (xOffset > 0) {
+	                        ICoords replaceCoords = spawnCoords.east(1);
+	                        addDecorations(world, random, replaceCoords);
+	                    }
+	
+	                    if (zOffset < 0) {
+	                        ICoords replaceCoords = spawnCoords.north(1);
+	                        addDecorations(world, random, replaceCoords);
+	                    }
+	                    else if (zOffset > 0) {
+	                        ICoords replaceCoords = spawnCoords.south(1);
+	                        addDecorations(world, random, replaceCoords);
+	                    }
                     }
                 }
 			}
@@ -184,12 +185,12 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
      * 
      */
     private void addDecorations(World world, Random random, ICoords coords) {
-        if (world.getBlockState(rcoords.toPos()).getBlock != Blocks.AIR) {
+        if (world.getBlockState(coords.toPos()).getBlock() != Blocks.AIR) {
             if (RandomHelper.checkProbability(random, 30)) {
-                world.replaceWithBlock(coords.toPos(), Blocks.STONE);
+                world.setBlockState(coords.toPos(), TreasureBlocks.BLACKSTONE.getDefaultState());
             }
             else if (RandomHelper.checkProbability(random, 10)) {
-                world.replaceWithBlock(coords.toPos(), Blocks.LAVA);
+            	world.setBlockState(coords.toPos(), Blocks.LAVA.getDefaultState());
             }
         }
     }
@@ -203,7 +204,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
         logger.debug("Building lava baselayer from @ {} ", coords.toShortString());
 
         // for circular chamber
-        buildLayer(world, coords, radius, Blocks.LAVA);
+        buildLayer(world, coords, radius, Blocks.LAVA, false);
 
         // add the chest
         GenUtil.replaceWithBlock(world, coords, Blocks.STONE);	

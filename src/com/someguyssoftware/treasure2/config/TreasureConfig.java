@@ -166,6 +166,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 	@Ignore public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
 	@Ignore public static final String DESERT_WISHING_WELL_BLOCK_ID = "desert_wishing_well_block";
+	@Ignore public static final String BLACKSTONE_ID = "blackstone";
 	@Ignore public static final String FOG_BLOCK_ID = "fog";
 	@Ignore public static final String HIGH_FOG_BLOCK_ID = "high_fog";
 	@Ignore public static final String MED_FOG_BLOCK_ID = "med_fog";
