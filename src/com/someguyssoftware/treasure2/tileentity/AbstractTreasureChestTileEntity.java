@@ -47,7 +47,7 @@ import net.minecraftforge.common.util.Constants;
  * @author Mark Gottschling onDec 22, 2017
  *
  */
-public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements IInventory, ITickable {
+public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITreasureChestTileEntity, IInventory, ITickable {
 	public class GenerationContext {
 		/*
 		 * The rarity level of the loot that the chest will contain
@@ -122,6 +122,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * Like the old updateEntity(), except more generic.
 	 */
+    @Override
 	public void update() {
 		int i = this.pos.getX();
 		int j = this.pos.getY();
@@ -312,7 +313,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 					NBTTagCompound c = list.getCompoundTagAt(i);
 					LockState lockState = LockState.readFromNBT(c);
 					states.add(lockState.getSlot().getIndex(), lockState);
-					//					logger.debug("Read NBT lockstate:" + lockState);
 				}
 				// update the tile entity
 				setLockStates(states);
@@ -413,7 +413,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		//		logger.debug("ShouldRefresh:" + (oldState.getBlock() != newState.getBlock()));
 		return oldState.getBlock() != newState.getBlock();
-
 	}
 
 	/**
@@ -437,6 +436,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @return the lockStates
 	 */
+    @Override
 	public List<LockState> getLockStates() {
 		return lockStates;
 	}
@@ -444,6 +444,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @param lockStates the lockStates to set
 	 */
+    @Override
 	public void setLockStates(List<LockState> lockStates) {
 		this.lockStates = lockStates;
 	}
@@ -452,6 +453,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 * @return
 	 */
+    @Override
 	public boolean hasLocks() {
 		// TODO TEMP do this for now. should have another property numActiveLocks so
 		// that the renderer doesn't keep calling this
@@ -464,6 +466,16 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		return false;
 	}
 
+    @Override
+	public int getFacing() {
+		return facing;
+	}
+
+    @Override
+	public void setFacing(int facing) {
+		this.facing = facing;
+    }
+    
 	/**
 	 * Get the formatted ChatComponent that will be used for the sender's username
 	 * in chat
