@@ -34,12 +34,40 @@ public class KeysEventHandler {
 
         // add all uses/damage remaining in the right item to the left item.
         if (leftItem == rightItem && (leftItem instanceof KeyItem)) {
-            // TODO research the setter/getters for the damages -> maybe have to override
-            leftItem.setDamage(leftItem.getDamage() + rightItem.getDamager());
-        }
+            if (leftItem.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)
+                && rightItem.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)) {
 
-        // cancel vanilla behaviour
-        event.setCanceled(true);
+                EffectiveMaxDamageCapability leftItemCap = leftItem.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+                EffectiveMaxDamageCapability rightItemCap = rightItem.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+            
+                if (leftItemCap != null && rightItemCap != null) {
+                    int leftRemainingUses = leftItemCap.getEffectiveMaxDamage() - leftItem.getItemDamage();
+                    int rightRemainingUses = rightItemCap.getEffectiveMaxDamage() - rightItem.getItemDamage();
+
+                    if (leftRemainingUses + rightRemainingUses > leftItemCap.getEffectiveMaxDamage()) {
+                        leftItemCap.setEffectiveMaxDamage(leftRemainingUses + rightRemainingUses);
+                        leftItem.setItemDamage(0);
+                    }
+                    else {
+                        leftItem.setItemDamage(leftItem.getItemDamage() - rightRemainingUses);
+                    }
+
+                    // cancel vanilla behaviour - OR should vanilla behaviour ALWAYS be cancelled, so other tools can't fix the key
+                    event.setCanceled(true);
+                }
+                
+            // TODO research the setter/getters for the damages -> maybe have to override
+            // ru1 = emd1 - damage1
+            // ru2 = emd2 - damage2
+            // if (ru1 + ru2 > emd1) {
+                // emd1 = ru1 + ru2
+                // damage1 = 0
+            //}
+            // else {
+                // damage1 = damage1 - ru2
+            //}
+            }
+        }
 	}
 	
 	/**
