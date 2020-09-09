@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.item;
 import java.util.List;
 import java.util.Random;
 
+import static com.someguyssoftware.treasure2.Treasure.logger;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
@@ -172,12 +173,12 @@ public class KeyItem extends ModItem {
 		
 		if (block instanceof AbstractChestBlock) {
 			// get the tile entity
-			TileEntity te = worldIn.getTileEntity(chestPos);
-			if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
-				Treasure.logger.warn("Null or incorrect TileEntity");
+			TileEntity tileEntity = worldIn.getTileEntity(chestPos);
+			if (tileEntity == null || !(tileEntity instanceof AbstractTreasureChestTileEntity)) {
+				logger.warn("Null or incorrect TileEntity");
 				return EnumActionResult.FAIL;
 			}
-			AbstractTreasureChestTileEntity tcte = (AbstractTreasureChestTileEntity)te;
+			AbstractTreasureChestTileEntity chestTileEntity = (AbstractTreasureChestTileEntity)tileEntity;
 						
 			// exit if on the client
 			if (WorldInfo.isClientSide(worldIn)) {			
@@ -185,7 +186,7 @@ public class KeyItem extends ModItem {
 			}
 
 			// determine if chest is locked
-			if (!tcte.hasLocks()) {
+			if (!chestTileEntity.hasLocks()) {
 				return EnumActionResult.SUCCESS;
 			}
 			
@@ -196,7 +197,7 @@ public class KeyItem extends ModItem {
 				LockState lockState = null;
 				boolean isKeyBroken = false;
 				// check if this key is one that opens a lock (only first lock that key fits is unlocked).
-				lockState = fitsFirstLock(tcte.getLockStates());
+				lockState = fitsFirstLock(chestTileEntity.getLockStates());
 				if (lockState != null) {
 					fitsLock = true;
 				}
@@ -209,13 +210,15 @@ public class KeyItem extends ModItem {
 						// play noise
 						worldIn.playSound(player, chestPos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 						// update the client
-						tcte.sendUpdates();
-						// spawn the lock
-						if (TreasureConfig.KEYS_LOCKS.enableLockDrops) {
-							InventoryHelper.spawnItemStack(worldIn, (double)chestPos.getX(), (double)chestPos.getY(), (double)chestPos.getZ(), new ItemStack(lock));
-						}
-						// don't break the key
-						breakKey = false;
+                        chestTileEntity.sendUpdates();
+                        if(!breaksLock(lock)) {
+                            // spawn the lock
+                            if (TreasureConfig.KEYS_LOCKS.enableLockDrops) {
+                                InventoryHelper.spawnItemStack(worldIn, (double)chestPos.getX(), (double)chestPos.getY(), (double)chestPos.getZ(), new ItemStack(lock));
+                            }
+                        }
+                        // don't break the key
+                        breakKey = false;
 					}
 				}
                 
@@ -224,8 +227,9 @@ public class KeyItem extends ModItem {
                 int remainingUses = cap.getEffectiveMaxDamage() - heldItem.getItemDamage();
                 
 				// check key's breakability
-				if (breakKey) {
-					if (isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
+
+				if (breakKey) {                    
+					if ((isBreakable() || anyLockBreaksKey(chestTileEntity.getLockStates(), this)) && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
                         // TODO update - itemDamage += remainingUses % maxDamage; then if itemDamage == effectiveMaxDamage, shrink & flag as broke
                         heldItem.setItemDamage(heldItem.getItemDamage() + (remainingUses % getMaxDamage()));
                         if (heldItem.getItemDamage() == cap.getEffectiveMaxDamage()) {
@@ -255,13 +259,13 @@ public class KeyItem extends ModItem {
 				}
 			}
 			catch (Exception e) {
-				Treasure.logger.error("error: ", e);
+				logger.error("error: ", e);
 			}			
 		}		
 		
 		return super.onItemUse(player, worldIn, chestPos, hand, facing, hitX, hitY, hitZ);
 	}
-	
+
 	/**
 	 * This method is a secondary check against a lock item.
 	 * Override this method to overrule LockItem.acceptsKey() if this is a key with special abilities.
@@ -277,7 +281,7 @@ public class KeyItem extends ModItem {
 	 * @param lockStates
 	 * @return
 	 */
-	public LockState  fitsFirstLock(List<LockState> lockStates) {
+	public LockState fitsFirstLock(List<LockState> lockStates) {
 		LockState lockState = null;
 		// check if this key is one that opens a lock (only first lock that key fits is unlocked).
 		for (LockState ls : lockStates) {
@@ -293,20 +297,41 @@ public class KeyItem extends ModItem {
 	
 	/**
 	 * 
-	 * @param lockItem
+	 * @param lockStates
+	 * @param key
 	 * @return
 	 */
-	public boolean unlock(LockItem lockItem) {	
-		if (lockItem.acceptsKey(this) || fitsLock(lockItem)) {
-			Treasure.logger.debug("Lock -> {} accepts key -> {}", lockItem.getRegistryName(), this.getRegistryName());
-			if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability())) {
-				Treasure.logger.debug("Unlock attempt met probability");
-				return true;
+	private boolean anyLockBreaksKey(List<LockState> lockStates, KeyItem key) {
+		for (LockState ls : lockStates) {
+			if (ls.getLock() != null) {
+				if (ls.getLock().breaksKey(key)) {
+					return true;
+				}				
 			}
 		}
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param lockItem
+	 * @return
+	 */
+	public boolean unlock(LockItem lockItem) {	
+		if (lockItem.acceptsKey(this) || fitsLock(lockItem)) {
+			logger.debug("Lock -> {} accepts key -> {}", lockItem.getRegistryName(), this.getRegistryName());
+			if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability())) {
+				logger.debug("Unlock attempt met probability");
+				return true;
+			}
+		}
+		return false;
+    }
+    
+    public boolean breaksLock(LockItem lockItem) {
+        return false;
+    }
+    
 	/**
 	 * @return the rarity
 	 */
