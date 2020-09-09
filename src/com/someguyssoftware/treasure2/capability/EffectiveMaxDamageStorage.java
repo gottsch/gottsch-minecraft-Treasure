@@ -21,7 +21,7 @@ public class EffectiveMaxDamageStorage implements Capability.IStorage<IEffective
 	public NBTBase writeNBT(Capability<IEffectiveMaxDamageCapability> capability, IEffectiveMaxDamageCapability instance, EnumFacing side) {
 		NBTTagCompound mainTag = new NBTTagCompound();
 		try {
-			mainTag.setInt(EFFECTIVE_MAX_DAMAGE_TAG, instance.getEffectiveMaxDamage());
+			mainTag.setInteger(EFFECTIVE_MAX_DAMAGE_TAG, instance.getEffectiveMaxDamage());
 		} catch (Exception e) {
 			logger.error("Unable to write state to NBT:", e);
 		}
@@ -34,7 +34,7 @@ public class EffectiveMaxDamageStorage implements Capability.IStorage<IEffective
 		if (nbt instanceof NBTTagCompound) {
 			NBTTagCompound tag = (NBTTagCompound) nbt;
 			if (tag.hasKey(EFFECTIVE_MAX_DAMAGE_TAG)) {
-				instance.setOpen(tag.getInt(EFFECTIVE_MAX_DAMAGE_TAG));
+				instance.setEffectiveMaxDamage(tag.getInteger(EFFECTIVE_MAX_DAMAGE_TAG));
 			}
 		}		
 	}

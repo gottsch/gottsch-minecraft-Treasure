@@ -12,6 +12,8 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
+import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.IEffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -24,6 +26,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -34,6 +37,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 /**
  * 
@@ -95,7 +99,7 @@ public class KeyItem extends ModItem {
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
         EffectiveMaxDamageCapabilityProvider provider = new EffectiveMaxDamageCapabilityProvider();
         IEffectiveMaxDamageCapability cap = provider.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-		cap.setEffectiveMaxDamage(getMaxDamage);
+		cap.setEffectiveMaxDamage(getMaxDamage());
 		return provider;
     }
     
@@ -217,14 +221,14 @@ public class KeyItem extends ModItem {
                 
                 // get capability
                 IEffectiveMaxDamageCapability cap = heldItem.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-                int remainingUses = cap.getEffectiveMaxDamage - heldItem.getItemDamage();
+                int remainingUses = cap.getEffectiveMaxDamage() - heldItem.getItemDamage();
                 
 				// check key's breakability
 				if (breakKey) {
 					if (isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
                         // TODO update - itemDamage += remainingUses % maxDamage; then if itemDamage == effectiveMaxDamage, shrink & flag as broke
                         heldItem.setItemDamage(heldItem.getItemDamage() + (remainingUses % getMaxDamage()));
-                        if (heldItem.getItemDamage == cap.getEffectiveMaxDamage()) {
+                        if (heldItem.getItemDamage() == cap.getEffectiveMaxDamage()) {
                             // break key;
                             heldItem.shrink(1);
                         }
@@ -240,15 +244,14 @@ public class KeyItem extends ModItem {
 				
 				// user attempted to use key - increment the damage
 				if (isDamageable() && !isKeyBroken) {
-                        // heldItem.damageItem(1, player);
-                        // TODO update this. setItemDamage(+1), if getItemDamage() == getEffectiveMaxDamage() which is a nbt property OR a capability
-                        heldItem.setItemDamage(heldItem.getItemDamage() +1);
-                        if (heldItem.getItemDamage() == cap.getEffectiveMaxDamage()) {
-                            heldItem.shrink(1);
-                        }
-						// if (heldItem.getItemDamage() == heldItem.getMaxDamage()) {
-						// 	heldItem.shrink(1);
-					}
+                    // heldItem.damageItem(1, player);
+                    // TODO update this. setItemDamage(+1), if getItemDamage() == getEffectiveMaxDamage() which is a nbt property OR a capability
+                    heldItem.setItemDamage(heldItem.getItemDamage() +1);
+                    if (heldItem.getItemDamage() == cap.getEffectiveMaxDamage()) {
+                        heldItem.shrink(1);
+                    }
+					// if (heldItem.getItemDamage() == heldItem.getMaxDamage()) {
+					// 	heldItem.shrink(1);
 				}
 			}
 			catch (Exception e) {

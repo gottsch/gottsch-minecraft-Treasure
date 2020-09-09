@@ -6,9 +6,9 @@ package com.someguyssoftware.treasure2.capability;
  *
  */
 public interface IEffectiveMaxDamageCapability {
-    public static final EFFECTIVE_MAX_DAMAGE_MAX = 1000; 
+    public static final int EFFECTIVE_MAX_DAMAGE_MAX = 1000; 
 
-	public int getEffectiveMaxDamage()
+	public int getEffectiveMaxDamage();
 
 	public void setEffectiveMaxDamage(int damage);
 }

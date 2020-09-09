@@ -38,6 +38,7 @@ import com.someguyssoftware.treasure2.command.SpawnWellStructureCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
+import com.someguyssoftware.treasure2.eventhandler.AnvilEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.MimicEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
@@ -171,7 +172,7 @@ public class Treasure extends AbstractMod {
 		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
         MinecraftForge.EVENT_BUS.register(new MimicEventHandler(getInstance()));
-        MinecraftForge.EVENT_BUS.register(new KeysEventsHandler(getInstance()));
+        MinecraftForge.EVENT_BUS.register(new AnvilEventHandler(getInstance()));
 
 		// configure logging
 		// create a rolling file appender

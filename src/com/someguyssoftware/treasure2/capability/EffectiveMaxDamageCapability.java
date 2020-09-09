@@ -18,7 +18,7 @@ public class EffectiveMaxDamageCapability implements IEffectiveMaxDamageCapabili
 	}
 	
 	@Override
-	public boolean getEffectiveMaxDamage() {
+	public int getEffectiveMaxDamage() {
 		return effectiveMaxDamage;
 	}
 	@Override

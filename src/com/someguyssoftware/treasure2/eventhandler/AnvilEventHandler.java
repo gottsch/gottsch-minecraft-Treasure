@@ -5,7 +5,12 @@ package com.someguyssoftware.treasure2.eventhandler;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
+import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
+import com.someguyssoftware.treasure2.item.KeyItem;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -14,14 +19,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * @author Mark Gottschling on Sep 6, 2020
  *
  */
-public class KeysEventHandler {
+public class AnvilEventHandler {
 	// reference to the mod.
 	private IMod mod;
 	
 	/**
 	 * 
 	 */
-	public ServerEventHandler(IMod mod) {
+	public AnvilEventHandler(IMod mod) {
 		setMod(mod);
 	}
 	
@@ -33,12 +38,12 @@ public class KeysEventHandler {
         ItemStack rightItem = event.getRight();
 
         // add all uses/damage remaining in the right item to the left item.
-        if (leftItem == rightItem && (leftItem instanceof KeyItem)) {
+        if (leftItem == rightItem && (leftItem.getItem() instanceof KeyItem)) {
             if (leftItem.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)
                 && rightItem.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)) {
 
-                EffectiveMaxDamageCapability leftItemCap = leftItem.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-                EffectiveMaxDamageCapability rightItemCap = rightItem.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+                EffectiveMaxDamageCapability leftItemCap = (EffectiveMaxDamageCapability) leftItem.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+                EffectiveMaxDamageCapability rightItemCap = (EffectiveMaxDamageCapability) rightItem.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
             
                 if (leftItemCap != null && rightItemCap != null) {
                     int leftRemainingUses = leftItemCap.getEffectiveMaxDamage() - leftItem.getItemDamage();
