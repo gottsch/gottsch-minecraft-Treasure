@@ -13,6 +13,8 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
+import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.IEffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -25,6 +27,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -35,6 +38,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 /**
  * 
@@ -92,6 +96,14 @@ public class KeyItem extends ModItem {
 		setMaxStackSize(1); // 12/3/2018: set to max 1 because keys are damaged and don't stack well.
 	}
 
+    @Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+        EffectiveMaxDamageCapabilityProvider provider = new EffectiveMaxDamageCapabilityProvider();
+        IEffectiveMaxDamageCapability cap = provider.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+		cap.setEffectiveMaxDamage(getMaxDamage());
+		return provider;
+    }
+    
 	/**
 	 * Format:
 	 * 		Item Name (vanilla minecraft)
@@ -108,7 +120,9 @@ public class KeyItem extends ModItem {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		
 		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.rarity", TextFormatting.DARK_BLUE + getRarity().toString()));
-		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.category", getCategory()));
+        tooltip.add(I18n.translateToLocalFormatted("tooltip.label.category", getCategory()));
+        // TODO update to getEffectiveMaxDamage()
+        // TODO add remaining uses
 		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.max_uses", getMaxDamage()));
 
 		// is breakable tooltip
@@ -207,16 +221,25 @@ public class KeyItem extends ModItem {
                         breakKey = false;
 					}
 				}
-						
+                
+                // get capability
+                IEffectiveMaxDamageCapability cap = heldItem.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+                int remainingUses = cap.getEffectiveMaxDamage() - heldItem.getItemDamage();
+                
 				// check key's breakability
+
 				if (breakKey) {                    
 					if ((isBreakable() || anyLockBreaksKey(chestTileEntity.getLockStates(), this)) && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
-						// break key;
-						heldItem.shrink(1);
-						player.sendMessage(new TextComponentString("Key broke."));
-						worldIn.playSound(player, chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-						// flag the key as broken
-						isKeyBroken = true;
+                        // TODO update - itemDamage += remainingUses % maxDamage; then if itemDamage == effectiveMaxDamage, shrink & flag as broke
+                        heldItem.setItemDamage(heldItem.getItemDamage() + (remainingUses % getMaxDamage()));
+                        if (heldItem.getItemDamage() == cap.getEffectiveMaxDamage()) {
+                            // break key;
+                            heldItem.shrink(1);
+                        }
+                        player.sendMessage(new TextComponentString("Key broke."));
+                        worldIn.playSound(player, chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+                        // flag the key as broken
+                        isKeyBroken = true;
 					}
 					else {
 						player.sendMessage(new TextComponentString("Failed to unlock."));
@@ -225,10 +248,14 @@ public class KeyItem extends ModItem {
 				
 				// user attempted to use key - increment the damage
 				if (isDamageable() && !isKeyBroken) {
-						heldItem.damageItem(1, player);
-						if (heldItem.getItemDamage() == heldItem.getMaxDamage()) {
-							heldItem.shrink(1);
-					}
+                    // heldItem.damageItem(1, player);
+                    // TODO update this. setItemDamage(+1), if getItemDamage() == getEffectiveMaxDamage() which is a nbt property OR a capability
+                    heldItem.setItemDamage(heldItem.getItemDamage() +1);
+                    if (heldItem.getItemDamage() == cap.getEffectiveMaxDamage()) {
+                        heldItem.shrink(1);
+                    }
+					// if (heldItem.getItemDamage() == heldItem.getMaxDamage()) {
+					// 	heldItem.shrink(1);
 				}
 			}
 			catch (Exception e) {
