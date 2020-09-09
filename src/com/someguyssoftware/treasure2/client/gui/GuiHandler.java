@@ -32,7 +32,7 @@ import com.someguyssoftware.treasure2.inventory.WitherChestContainer;
 import com.someguyssoftware.treasure2.item.IPouch;
 import com.someguyssoftware.treasure2.item.KeyRingItem;
 import com.someguyssoftware.treasure2.item.PouchItem;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -74,8 +74,8 @@ public class GuiHandler implements IGuiHandler {
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
 
-		if (tileEntity instanceof AbstractTreasureChestTileEntity) {
-			AbstractTreasureChestTileEntity chestTileEntity = (AbstractTreasureChestTileEntity) tileEntity;
+		if (tileEntity instanceof ITreasureChestTileEntity) {
+			ITreasureChestTileEntity chestTileEntity = (ITreasureChestTileEntity) tileEntity;
 //			logger.debug("is chest sealed -> {}", chestTileEntity.isSealed());
 			if (chestTileEntity.isSealed()) {
 				chestTileEntity.setSealed(false);
@@ -172,8 +172,7 @@ public class GuiHandler implements IGuiHandler {
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
-        AbstractTreasureChestTileEntity chestTileEntity = (tileEntity instanceof AbstractTreasureChestTileEntity) 
-            ? (AbstractTreasureChestTileEntity) tileEntity : null;
+        ITreasureChestTileEntity chestTileEntity = (tileEntity instanceof ITreasureChestTileEntity) ? (ITreasureChestTileEntity) tileEntity : null;
         if (chestTileEntity == null) {
             logger.warn("Umm, GUI handler error - wrong tile entity.");
             return null;
@@ -182,17 +181,17 @@ public class GuiHandler implements IGuiHandler {
 		switch (ID) {
 		case STANDARD_CHEST_GUIID:
 			// NOTE could pass in the different bg textures here
-			return new StandardChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
+			return new StandardChestGui(player.inventory, chestTileEntity);
 		case STRONGBOX_CHEST_GUIID:
-			return new StrongboxChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
+			return new StrongboxChestGui(player.inventory, chestTileEntity);
 		case COMPRESSOR_CHEST_GUIID:
-			return new CompressorChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
+			return new CompressorChestGui(player.inventory, chestTileEntity);
 		case SKULL_CHEST_GUIID:
-			return new SkullChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
+			return new SkullChestGui(player.inventory, chestTileEntity);
 		case WITHER_CHEST_GUIID:
-			return new WitherChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
+			return new WitherChestGui(player.inventory, chestTileEntity);
 		case MOLLUSCS_CHEST_GUIID:
-			return new MolluscChestGui(player.inventory, (AbstractTreasureChestTileEntity) tileEntity);
+			return new MolluscChestGui(player.inventory, chestTileEntity);
 		case KEY_RING_GUIID:
 			// get the held item
 			ItemStack keyRingItem = player.getHeldItemMainhand();

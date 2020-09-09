@@ -3,7 +3,7 @@
  */
 package com.someguyssoftware.treasure2.client.model;
 
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 
 import net.minecraft.client.model.ModelBase;
@@ -145,7 +145,7 @@ public class SafeModel extends ModelBase implements ITreasureChestModel {
 	 * .someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity)
 	 */
 	@Override
-	public void renderAll(AbstractTreasureChestTileEntity te) {
+	public void renderAll(ITreasureChestTileEntity te) {
 		SafeTileEntity ste = (SafeTileEntity) te;
 		
 		float scale = 0.0625F;

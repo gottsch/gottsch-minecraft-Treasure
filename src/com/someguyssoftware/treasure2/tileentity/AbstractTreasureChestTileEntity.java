@@ -47,7 +47,7 @@ import net.minecraftforge.common.util.Constants;
  * @author Mark Gottschling onDec 22, 2017
  *
  */
-public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITreasureChestTileEntity, IInventory, ITickable {
+public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITreasureChestTileEntity, ITickable {
 	public class GenerationContext {
 		/*
 		 * The rarity level of the loot that the chest will contain
@@ -94,6 +94,8 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	private GenerationContext generationContext;
 
+	private int numberOfSlots = 27; // default size
+	
 	/*
 	 * Vanilla properties for controlling the lid
 	 */
@@ -107,7 +109,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	public int ticksSinceSync;
 
 	/** IInventory properties */
-	private int numberOfSlots = 27; // default size
 	private NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(getNumberOfSlots(), ItemStack.EMPTY);
 	private String customName;
 
@@ -677,6 +678,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @return the numberOfSlots
 	 */
+	@Override
 	public int getNumberOfSlots() {
 		return numberOfSlots;
 	}
@@ -684,6 +686,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @param numberOfSlots the numberOfSlots to set
 	 */
+	@Override
 	public void setNumberOfSlots(int numberOfSlots) {
 		this.numberOfSlots = numberOfSlots;
 	}
@@ -702,26 +705,22 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		this.items = chestContents;
 	}
 
-	public int getFacing() {
-		return facing;
-	}
-
-	public void setFacing(int facing) {
-		this.facing = facing;
-	}
-
+	@Override
 	public boolean isSealed() {
 		return sealed;
 	}
 
+	@Override
 	public void setSealed(boolean sealed) {
 		this.sealed = sealed;
 	}
 
+	@Override
 	public GenerationContext getGenerationContext() {
 		return generationContext;
 	}
 	
+	@Override
 	public void setGenerationContext(GenerationContext context) {
 		generationContext = context;
 	}
