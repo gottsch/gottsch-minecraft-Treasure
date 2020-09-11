@@ -1,6 +1,6 @@
 package com.someguyssoftware.treasure2.client.model;
 
-import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -173,7 +173,7 @@ public class BandedChestModel extends ModelBase implements ITreasureChestModel {
 	 * 
 	 */
 	@Override
-	public void renderAll(ITreasureChestTileEntity te) {
+	public void renderAll(AbstractTreasureChestTileEntity te) {
 		// set the angles of the latch to same as the lib
 		RightTopBand.rotateAngleX = lid.rotateAngleX;
 		LeftTopBand.rotateAngleX = lid.rotateAngleX;

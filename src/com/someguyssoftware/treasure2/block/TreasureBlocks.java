@@ -13,7 +13,6 @@ import java.util.Set;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.someguyssoftware.gottschcore.block.ModBlock;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
@@ -166,7 +165,6 @@ public class TreasureBlocks {
 	public static final Block FALLING_GRASS;
 	public static final Block FALLING_SAND;
 	public static final Block FALLING_RED_SAND;
-	public static final Block BLACKSTONE;
 	
 	// treasures: paintings
 	public static final AbstractPaintingBlock PAINTING_BLOCKS_BRICKS;
@@ -494,7 +492,6 @@ public class TreasureBlocks {
 		FALLING_GRASS = new FallingGrassBlock(Treasure.MODID, TreasureConfig.FALLING_GRASS_ID);
 		FALLING_SAND = new FallingSandBlock(Treasure.MODID, TreasureConfig.FALLING_SAND_ID);
 		FALLING_RED_SAND = new FallingRedSandBlock(Treasure.MODID, TreasureConfig.FALLING_RED_SAND_ID);
-		BLACKSTONE = new BlackstoneBlock(Treasure.MODID, TreasureConfig.BLACKSTONE_ID);
 		
 		// treasures: paintings
 		AxisAlignedBB[] pbs = new AxisAlignedBB[4];
@@ -566,8 +563,7 @@ public class TreasureBlocks {
 					PAINTING_BLOCKS_WOOD, SAPPHIRE_ORE, RUBY_ORE, 
 					FALLING_GRASS,
 					FALLING_SAND,
-					FALLING_RED_SAND,
-					BLACKSTONE
+					FALLING_RED_SAND
 				};
 			
 			registry.registerAll(blocks);
@@ -630,8 +626,7 @@ public class TreasureBlocks {
 					new ItemBlock(PROXIMITY_SPAWNER),
 					new ItemBlock(FALLING_GRASS),
 					new ItemBlock(FALLING_SAND),
-					new ItemBlock(FALLING_RED_SAND),
-					new ItemBlock(BLACKSTONE)
+					new ItemBlock(FALLING_RED_SAND)
 			};
 
 			for (final ItemBlock item : items) {

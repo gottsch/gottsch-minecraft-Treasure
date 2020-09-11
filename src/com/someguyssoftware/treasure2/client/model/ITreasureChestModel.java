@@ -3,7 +3,7 @@
  */
 package com.someguyssoftware.treasure2.client.model;
 
-import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.client.model.ModelRenderer;
 
@@ -13,7 +13,7 @@ import net.minecraft.client.model.ModelRenderer;
  */
 public interface ITreasureChestModel {
 
-	public void renderAll(ITreasureChestTileEntity te);
+	public void renderAll(AbstractTreasureChestTileEntity te);
 
 	public ModelRenderer getLid();
 }

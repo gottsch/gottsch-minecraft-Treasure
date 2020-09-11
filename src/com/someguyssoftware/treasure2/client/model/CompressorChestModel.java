@@ -1,7 +1,7 @@
 package com.someguyssoftware.treasure2.client.model;
 
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -153,7 +153,7 @@ public class CompressorChestModel extends ModelBase implements ITreasureChestMod
 	 * 
 	 */
 	@Override
-	public void renderAll(ITreasureChestTileEntity te) {
+	public void renderAll(AbstractTreasureChestTileEntity te) {
 		float originalAngle = lid1.rotateAngleX;
 		float f5 = 0.0625F;
 		

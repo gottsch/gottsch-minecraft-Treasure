@@ -111,7 +111,6 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FALLING_GRASS));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FALLING_SAND));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FALLING_RED_SAND));
-		registerItemModel(Item.getItemFromBlock(TreasureBlocks.BLACKSTONE));
 		
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);
@@ -140,7 +139,6 @@ public class TreasureModels {
 		// LOCKS
 		registerItemModel(TreasureItems.WOOD_LOCK);
 		registerItemModel(TreasureItems.STONE_LOCK);
-		registerItemModel(TreasureItems.EMBER_LOCK);
 		registerItemModel(TreasureItems.IRON_LOCK);
 		registerItemModel(TreasureItems.GOLD_LOCK);
 		registerItemModel(TreasureItems.DIAMOND_LOCK);
@@ -153,7 +151,6 @@ public class TreasureModels {
 		// KEYS
 		registerItemModel(TreasureItems.WOOD_KEY);
 		registerItemModel(TreasureItems.STONE_KEY);
-		registerItemModel(TreasureItems.EMBER_KEY);
 		registerItemModel(TreasureItems.IRON_KEY);
 		registerItemModel(TreasureItems.GOLD_KEY);
 		registerItemModel(TreasureItems.DIAMOND_KEY);

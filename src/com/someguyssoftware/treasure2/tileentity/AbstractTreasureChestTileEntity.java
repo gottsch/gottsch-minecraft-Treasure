@@ -3,8 +3,6 @@
  */
 package com.someguyssoftware.treasure2.tileentity;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,9 +10,8 @@ import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
-import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
-import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
 
 import net.minecraft.block.state.IBlockState;
@@ -45,32 +42,7 @@ import net.minecraftforge.common.util.Constants;
  * @author Mark Gottschling onDec 22, 2017
  *
  */
-public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITreasureChestTileEntity, ITickable {
-	public class GenerationContext {
-		/*
-		 * The rarity level of the loot that the chest will contain
-		 */
-		private Rarity lootRarity;
-		/*
-		 * 
-		 */
-		private ChestGeneratorType chestGeneratorType;
-
-		public GenerationContext(Rarity rarity, ChestGeneratorType chestGeneratorType) {
-			this.lootRarity = rarity;
-			this.chestGeneratorType = chestGeneratorType;
-		}
-		
-		public Rarity getLootRarity() {
-			return lootRarity;
-		}
-		
-		public ChestGeneratorType getChestGeneratorType() {
-			return chestGeneratorType;
-		}
-
-	}
-
+public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements IInventory, ITickable {
 	/*
 	 * A list of lockStates the chest has. The list should be the size of the max
 	 * allowed for the chestType.
@@ -82,18 +54,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	private int facing;
 
-	/*
-	 * A flag to indicate if the chest has been opened for the first time
-	 */
-	private boolean sealed;
-
-	/*
-	 * Properties detailing how the tile entity was generated
-	 */
-	private GenerationContext generationContext;
-
-	private int numberOfSlots = 27; // default size
-	
 	/*
 	 * Vanilla properties for controlling the lid
 	 */
@@ -107,6 +67,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	public int ticksSinceSync;
 
 	/** IInventory properties */
+	private int numberOfSlots = 27; // default size
 	private NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(getNumberOfSlots(), ItemStack.EMPTY);
 	private String customName;
 
@@ -115,13 +76,11 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	public AbstractTreasureChestTileEntity() {
 		setFacing(EnumFacing.NORTH.getIndex());
-		setSealed(false);
 	}
 
 	/**
 	 * Like the old updateEntity(), except more generic.
 	 */
-    @Override
 	public void update() {
 		int i = this.pos.getX();
 		int j = this.pos.getY();
@@ -203,7 +162,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			// write custom name
 			writePropertiesToNBT(parentNBT);
 		} catch (Exception e) {
-			logger.error("Error writing to NBT:", e);
+			Treasure.logger.error("Error writing to NBT:", e);
 		}
 		return parentNBT;
 	}
@@ -220,7 +179,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				NBTTagList list = new NBTTagList();
 				// write custom tile entity properties
 				for (LockState state : getLockStates()) {
-					//					logger.debug("Writing lock state:" + state);
+//					Treasure.logger.debug("Writing lock state:" + state);
 					NBTTagCompound stateNBT = new NBTTagCompound();
 					state.writeToNBT(stateNBT);
 					list.appendTag(stateNBT);
@@ -228,7 +187,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				parentNBT.setTag("lockStates", list);
 			}
 		} catch (Exception e) {
-			logger.error("Error writing LockStates to NBT:", e);
+			Treasure.logger.error("Error writing LockStates to NBT:", e);
 		}
 		return parentNBT;
 	}
@@ -236,29 +195,22 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * Write custom properties to NBT
 	 * 
-	 * @param sourceTag
+	 * @param parentNBT
 	 * @return
 	 */
-	public NBTTagCompound writePropertiesToNBT(NBTTagCompound sourceTag) {
+	public NBTTagCompound writePropertiesToNBT(NBTTagCompound parentNBT) {
 		try {
 			// write custom name
 			if (this.hasCustomName()) {
-				sourceTag.setString("CustomName", this.customName);
+				parentNBT.setString("CustomName", this.customName);
 			}
 			// write facing
-			//			logger.debug("Writing FACING to NBT ->{}", getFacing());
-			sourceTag.setInteger("facing", getFacing());
-			sourceTag.setBoolean("sealed", isSealed());
-			if (getGenerationContext() != null) {
-				NBTTagCompound contextTag = new NBTTagCompound();
-				contextTag.setString("lootRarity", getGenerationContext().getLootRarity().getValue());
-				contextTag.setString("chestGenType", getGenerationContext().getChestGeneratorType().name());
-				sourceTag.setTag("genContext", contextTag);
-			}
+//			Treasure.logger.debug("Writing FACING to NBT ->{}", getFacing());
+			parentNBT.setInteger("facing", getFacing());
 		} catch (Exception e) {
-			logger.error("Error writing Properties to NBT:", e);
+			Treasure.logger.error("Error writing Properties to NBT:", e);
 		}
-		return sourceTag;
+		return parentNBT;
 	}
 
 	/**
@@ -272,7 +224,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			// write inventory
 			ItemStackHelper.saveAllItems(parentNBT, this.getItems());
 		} catch (Exception e) {
-			logger.error("Error writing Inventory to NBT:", e);
+			Treasure.logger.error("Error writing Inventory to NBT:", e);
 		}
 		return parentNBT;
 	}
@@ -286,7 +238,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			// read the inventory
 			ItemStackHelper.loadAllItems(parentNBT, this.getItems());
 		} catch (Exception e) {
-			logger.error("Error reading Properties from NBT:", e);
+			Treasure.logger.error("Error reading Properties from NBT:", e);
 		}
 	}
 
@@ -298,12 +250,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		try {
 			// read the lockstates
 			if (parentNBT.hasKey("lockStates")) {
-				//				logger.debug("Has lockStates");
+//				Treasure.logger.debug("Has lockStates");
 				if (this.getLockStates() != null) {
-					//					logger.debug("size of internal lockstates:" + this.getLockStates().size());
+//					Treasure.logger.debug("size of internal lockstates:" + this.getLockStates().size());
 				} else {
 					this.setLockStates(new LinkedList<LockState>());
-					//					logger.debug("created lockstates:" + this.getLockStates().size());
+//					Treasure.logger.debug("created lockstates:" + this.getLockStates().size());
 				}
 
 				List<LockState> states = new LinkedList<LockState>();
@@ -312,48 +264,33 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 					NBTTagCompound c = list.getCompoundTagAt(i);
 					LockState lockState = LockState.readFromNBT(c);
 					states.add(lockState.getSlot().getIndex(), lockState);
+//					Treasure.logger.debug("Read NBT lockstate:" + lockState);
 				}
 				// update the tile entity
 				setLockStates(states);
 			}
 		} catch (Exception e) {
-			logger.error("Error reading Lock States from NBT:", e);
+			Treasure.logger.error("Error reading Lock States from NBT:", e);
 		}
 	}
 
 	/**
 	 * 
-	 * @param sourceTag
+	 * @param parentNBT
 	 */
-	public void readPropertiesFromNBT(NBTTagCompound sourceTag) {
+	public void readPropertiesFromNBT(NBTTagCompound parentNBT) {
 		try {
 			// read the custom name
-			if (sourceTag.hasKey("CustomName", 8)) {
-				this.customName = sourceTag.getString("CustomName");
+			if (parentNBT.hasKey("CustomName", 8)) {
+				this.customName = parentNBT.getString("CustomName");
 			}
 			// read the facing
-			if (sourceTag.hasKey("facing")) {
-				//				logger.debug("Has 'facing' key -> {}", parentNBT.getInteger("facing"));
-				this.setFacing(sourceTag.getInteger("facing"));
-			}
-			if (sourceTag.hasKey("sealed")) {
-				this.setSealed(sourceTag.getBoolean("sealed"));
-			}
-			if (sourceTag.hasKey("genContext")) {
-				NBTTagCompound contextTag = sourceTag.getCompoundTag("genContext");
-				Rarity rarity = null;
-				ChestGeneratorType genType = null;
-				if (contextTag.hasKey("lootRarity")) {
-					rarity = Rarity.getByValue(contextTag.getString("lootRarity"));
-				}
-				if (contextTag.hasKey("chestGenType")) {
-					genType = ChestGeneratorType.valueOf(contextTag.getString("chestGenType"));
-				}
-				AbstractTreasureChestTileEntity.GenerationContext genContext = this.new GenerationContext(rarity, genType);
-				this.setGenerationContext(genContext);
+			if (parentNBT.hasKey("facing")) {
+//				Treasure.logger.debug("Has 'facing' key -> {}", parentNBT.getInteger("facing"));
+				this.setFacing(parentNBT.getInteger("facing"));
 			}
 		} catch (Exception e) {
-			logger.error("Error reading Properties from NBT:", e);
+			Treasure.logger.error("Error reading Properties from NBT:", e);
 		}
 	}
 
@@ -369,7 +306,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			readInventoryFromNBT(parentNBT);
 			readPropertiesFromNBT(parentNBT);
 		} catch (Exception e) {
-			logger.error("Error reading to NBT:", e);
+			Treasure.logger.error("Error reading to NBT:", e);
 		}
 	}
 
@@ -382,7 +319,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			readInventoryFromNBT(nbt);
 			readPropertiesFromNBT(nbt);
 		} catch (Exception e) {
-			logger.error("Error reading to NBT:", e);
+			Treasure.logger.error("Error reading to NBT:", e);
 		}
 	}
 
@@ -410,14 +347,14 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-		//		logger.debug("ShouldRefresh:" + (oldState.getBlock() != newState.getBlock()));
+//		Treasure.logger.debug("ShouldRefresh:" + (oldState.getBlock() != newState.getBlock()));
 		return oldState.getBlock() != newState.getBlock();
+
 	}
 
 	/**
 	 * Sync client and server states
 	 */
-	@Override
 	public void sendUpdates() {
 		world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyBlockUpdate(pos, getState(), getState(), 3);
@@ -436,7 +373,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @return the lockStates
 	 */
-    @Override
 	public List<LockState> getLockStates() {
 		return lockStates;
 	}
@@ -444,7 +380,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @param lockStates the lockStates to set
 	 */
-    @Override
 	public void setLockStates(List<LockState> lockStates) {
 		this.lockStates = lockStates;
 	}
@@ -453,7 +388,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 * @return
 	 */
-    @Override
 	public boolean hasLocks() {
 		// TODO TEMP do this for now. should have another property numActiveLocks so
 		// that the renderer doesn't keep calling this
@@ -466,16 +400,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		return false;
 	}
 
-    @Override
-	public int getFacing() {
-		return facing;
-	}
-
-    @Override
-	public void setFacing(int facing) {
-		this.facing = facing;
-    }
-    
 	/**
 	 * Get the formatted ChatComponent that will be used for the sender's username
 	 * in chat
@@ -612,7 +536,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				this.numPlayersUsing = 0;
 			}
 			++this.numPlayersUsing;
-//			logger.debug("Incremented numPlayersUsing to:" + numPlayersUsing);
+			Treasure.logger.debug("Incremented numPlayersUsing to:" + numPlayersUsing);
 			this.world.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
 			this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType(), false);
 		}
@@ -677,7 +601,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @return the numberOfSlots
 	 */
-	@Override
 	public int getNumberOfSlots() {
 		return numberOfSlots;
 	}
@@ -685,7 +608,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @param numberOfSlots the numberOfSlots to set
 	 */
-	@Override
 	public void setNumberOfSlots(int numberOfSlots) {
 		this.numberOfSlots = numberOfSlots;
 	}
@@ -704,23 +626,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		this.items = chestContents;
 	}
 
-	@Override
-	public boolean isSealed() {
-		return sealed;
+	public int getFacing() {
+		return facing;
 	}
 
-	@Override
-	public void setSealed(boolean sealed) {
-		this.sealed = sealed;
+	public void setFacing(int facing) {
+		this.facing = facing;
 	}
 
-	@Override
-	public GenerationContext getGenerationContext() {
-		return generationContext;
-	}
-	
-	@Override
-	public void setGenerationContext(GenerationContext context) {
-		generationContext = context;
-	}
 }

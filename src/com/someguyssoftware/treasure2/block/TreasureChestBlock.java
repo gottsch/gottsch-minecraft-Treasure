@@ -22,7 +22,6 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.printer.ChestNBTPrettyPrinter;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -57,7 +56,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 	 * @param te
 	 * @param type
 	 */
-	public TreasureChestBlock(String modID, String name, Class<? extends ITreasureChestTileEntity> te,
+	public TreasureChestBlock(String modID, String name, Class<? extends AbstractTreasureChestTileEntity> te,
 			TreasureChestType type, Rarity rarity) {
 		this(modID, name, Material.WOOD, te, type, rarity);
 	}
@@ -71,7 +70,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 	 * @param type
 	 */
 	public TreasureChestBlock(String modID, String name, Material material,
-			Class<? extends ITreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
+			Class<? extends AbstractTreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
 		super(modID, name, material, te, type, rarity);
 	}
 
@@ -121,7 +120,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 				oldPersistedChestDirection = Direction.fromFacing(EnumFacing.getFront(tcte.getFacing()));
 
 				// dump stack NBT
-				if (Treasure.logger.isDebugEnabled() && WorldInfo.isServerSide(worldIn)) {
+				if (Treasure.logger.isDebugEnabled()) {
 					dump(stack.getTagCompound(), new Coords(pos), "STACK ITEM -> CHEST NBT");
 				}
 			}

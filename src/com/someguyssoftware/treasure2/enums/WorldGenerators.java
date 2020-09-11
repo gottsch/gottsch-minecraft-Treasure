@@ -8,7 +8,7 @@ package com.someguyssoftware.treasure2.enums;
  * @author Mark Gottschling on Jan 30, 2019
  *
  */
-public enum WorldGeneratorType {
+public enum WorldGenerators {
 	CHEST("chest"),
 	WELL("well"),
 	GEM("gem"),
@@ -23,7 +23,7 @@ public enum WorldGeneratorType {
 	 * 
 	 * @param value
 	 */
-	WorldGeneratorType(String value) {
+	WorldGenerators(String value) {
 		this.value = value;
 	}
 	

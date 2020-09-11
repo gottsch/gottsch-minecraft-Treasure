@@ -1,6 +1,6 @@
 package com.someguyssoftware.treasure2.client.model;
 
-import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -137,7 +137,7 @@ public class WitherChestModel extends ModelBase implements ITreasureChestModel {
 	/**
 	 * 
 	 */
-	public void renderAll(ITreasureChestTileEntity te) {
+	public void renderAll(AbstractTreasureChestTileEntity te) {
 		rside.rotateAngleY = rfront.rotateAngleY;
 		lfront.rotateAngleY = -(rfront.rotateAngleY);
 		lside.rotateAngleY = lfront.rotateAngleY;

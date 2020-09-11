@@ -6,16 +6,12 @@ package com.someguyssoftware.treasure2.item;
 import java.util.List;
 import java.util.Random;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
-import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
-import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.IEffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -28,7 +24,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -39,7 +34,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 /**
  * 
@@ -93,18 +87,10 @@ public class KeyItem extends ModItem {
 		setDamageable(true);
 		setCraftable(false);
 		setMaxDamage(DEFAULT_MAX_USES);
-		setSuccessProbability(95);	
+		setSuccessProbability(90D);	
 		setMaxStackSize(1); // 12/3/2018: set to max 1 because keys are damaged and don't stack well.
 	}
 
-    @Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-        EffectiveMaxDamageCapabilityProvider provider = new EffectiveMaxDamageCapabilityProvider();
-        IEffectiveMaxDamageCapability cap = provider.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-		cap.setEffectiveMaxDamage(getMaxDamage());
-		return provider;
-    }
-    
 	/**
 	 * Format:
 	 * 		Item Name (vanilla minecraft)
@@ -121,17 +107,9 @@ public class KeyItem extends ModItem {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		
 		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.rarity", TextFormatting.DARK_BLUE + getRarity().toString()));
-        tooltip.add(I18n.translateToLocalFormatted("tooltip.label.category", getCategory()));
-		
-        if (stack.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)) {
-            EffectiveMaxDamageCapability cap = (EffectiveMaxDamageCapability) stack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-            tooltip.add(I18n.translateToLocalFormatted("tooltip.label.uses", cap.getEffectiveMaxDamage() - stack.getItemDamage(), cap.getEffectiveMaxDamage()));
-//            tooltip.add(I18n.translateToLocalFormatted("tooltip.label.effective_max_uses", cap.getEffectiveMaxDamage()));
-//    		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.remaining_uses", cap.getEffectiveMaxDamage() - stack.getItemDamage()));
-        }
-       	tooltip.add(I18n.translateToLocalFormatted("tooltip.label.max_uses", getMaxDamage()));
+		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.category", getCategory()));
+		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.max_uses", getMaxDamage()));
 
-        
 		// is breakable tooltip
 		String breakable = "";
 		if (isBreakable()) {
@@ -162,35 +140,7 @@ public class KeyItem extends ModItem {
 		tooltip.add(
 				I18n.translateToLocalFormatted("tooltip.label.damageable", damageable));
 	}
-	
-    /**
-     * Queries the percentage of the 'Durability' bar that should be drawn.
-     *
-     * @param stack The current ItemStack
-     * @return 0.0 for 100% (no damage / full bar), 1.0 for 0% (fully damaged / empty bar)
-     */
-	@Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-        if (stack.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)) {
-            EffectiveMaxDamageCapability cap = (EffectiveMaxDamageCapability) stack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-            return (double)stack.getItemDamage() / (double) cap.getEffectiveMaxDamage();
-        }
-        else {
-        	return (double)stack.getItemDamage() / (double)stack.getMaxDamage();
-        }
-    }
-    
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
-	@Override
-	public boolean getIsRepairable(ItemStack itemToRepair, ItemStack resourceItem) {
-		if (itemToRepair.isItemDamaged() && itemToRepair.getItem() == this && resourceItem.getItem() == this) {
-			return true;
-		}
-		return false;
-    }
-	
+		
 	/**
 	 * 
 	 */
@@ -208,12 +158,12 @@ public class KeyItem extends ModItem {
 		
 		if (block instanceof AbstractChestBlock) {
 			// get the tile entity
-			TileEntity tileEntity = worldIn.getTileEntity(chestPos);
-			if (tileEntity == null || !(tileEntity instanceof AbstractTreasureChestTileEntity)) {
-				logger.warn("Null or incorrect TileEntity");
+			TileEntity te = worldIn.getTileEntity(chestPos);
+			if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
+				Treasure.logger.warn("Null or incorrect TileEntity");
 				return EnumActionResult.FAIL;
 			}
-			AbstractTreasureChestTileEntity chestTileEntity = (AbstractTreasureChestTileEntity)tileEntity;
+			AbstractTreasureChestTileEntity tcte = (AbstractTreasureChestTileEntity)te;
 						
 			// exit if on the client
 			if (WorldInfo.isClientSide(worldIn)) {			
@@ -221,18 +171,18 @@ public class KeyItem extends ModItem {
 			}
 
 			// determine if chest is locked
-			if (!chestTileEntity.hasLocks()) {
+			if (!tcte.hasLocks()) {
 				return EnumActionResult.SUCCESS;
 			}
 			
 			try {
-				ItemStack heldItemStack = player.getHeldItem(hand);	
+				ItemStack heldItem = player.getHeldItem(hand);	
 				boolean breakKey = true;
 				boolean fitsLock = false;
 				LockState lockState = null;
 				boolean isKeyBroken = false;
 				// check if this key is one that opens a lock (only first lock that key fits is unlocked).
-				lockState = fitsFirstLock(chestTileEntity.getLockStates());
+				lockState = fitsFirstLock(tcte.getLockStates());
 				if (lockState != null) {
 					fitsLock = true;
 				}
@@ -245,34 +195,29 @@ public class KeyItem extends ModItem {
 						// play noise
 						worldIn.playSound(player, chestPos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 						// update the client
-                        chestTileEntity.sendUpdates();
-                        if(!breaksLock(lock)) {
-                            // spawn the lock
-                            if (TreasureConfig.KEYS_LOCKS.enableLockDrops) {
-                                InventoryHelper.spawnItemStack(worldIn, (double)chestPos.getX(), (double)chestPos.getY(), (double)chestPos.getZ(), new ItemStack(lock));
-                            }
-                        }
-                        // don't break the key
-                        breakKey = false;
+						tcte.sendUpdates();
+						// spawn the lock
+						if (TreasureConfig.KEYS_LOCKS.enableLockDrops) {
+							InventoryHelper.spawnItemStack(worldIn, (double)chestPos.getX(), (double)chestPos.getY(), (double)chestPos.getZ(), new ItemStack(lock));
+						}
+						// don't break the key
+						breakKey = false;
 					}
 				}
-                
-                // get capability
-                IEffectiveMaxDamageCapability cap = heldItemStack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-
+						
 				// check key's breakability
-				if (breakKey) {                    
-					if ((isBreakable() || anyLockBreaksKey(chestTileEntity.getLockStates(), this)) && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
-						int damage = heldItemStack.getItemDamage() + (getMaxDamage() - (heldItemStack.getItemDamage() % getMaxDamage()));
-                        heldItemStack.setItemDamage(damage);
-                        if (heldItemStack.getItemDamage() >= cap.getEffectiveMaxDamage()) {
-                            // break key;
-                            heldItemStack.shrink(1);
-                        }
-                        player.sendMessage(new TextComponentString("Key broke."));
-                        worldIn.playSound(player, chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-                        // flag the key as broken
-                        isKeyBroken = true;
+				if (breakKey) {
+					if (isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
+						// break key;
+						heldItem.shrink(1);
+						player.sendMessage(new TextComponentString("Key broke."));
+						worldIn.playSound(player, chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+						// flag the key as broken
+						isKeyBroken = true;
+						// if the keyStack > 0, then reset the damage - don't break a brand new key and leave the used one
+						if (heldItem.getCount() > 0) {
+							heldItem.setItemDamage(0);
+						}
 					}
 					else {
 						player.sendMessage(new TextComponentString("Failed to unlock."));
@@ -281,22 +226,20 @@ public class KeyItem extends ModItem {
 				
 				// user attempted to use key - increment the damage
 				if (isDamageable() && !isKeyBroken) {
-//					logger.debug("before damage -> {}", heldItemStack.getItemDamage());
-                    heldItemStack.setItemDamage(heldItemStack.getItemDamage() + 1);
-//                    logger.debug("after damage -> {}", heldItemStack.getItemDamage());
-                    if (heldItemStack.getItemDamage() >= cap.getEffectiveMaxDamage()) {
-                        heldItemStack.shrink(1);
-                    }
+						heldItem.damageItem(1, player);
+						if (heldItem.getItemDamage() == heldItem.getMaxDamage()) {
+							heldItem.shrink(1);
+					}
 				}
 			}
 			catch (Exception e) {
-				logger.error("error: ", e);
+				Treasure.logger.error("error: ", e);
 			}			
 		}		
 		
 		return super.onItemUse(player, worldIn, chestPos, hand, facing, hitX, hitY, hitZ);
 	}
-
+	
 	/**
 	 * This method is a secondary check against a lock item.
 	 * Override this method to overrule LockItem.acceptsKey() if this is a key with special abilities.
@@ -312,7 +255,7 @@ public class KeyItem extends ModItem {
 	 * @param lockStates
 	 * @return
 	 */
-	public LockState fitsFirstLock(List<LockState> lockStates) {
+	public LockState  fitsFirstLock(List<LockState> lockStates) {
 		LockState lockState = null;
 		// check if this key is one that opens a lock (only first lock that key fits is unlocked).
 		for (LockState ls : lockStates) {
@@ -328,41 +271,20 @@ public class KeyItem extends ModItem {
 	
 	/**
 	 * 
-	 * @param lockStates
-	 * @param key
-	 * @return
-	 */
-	private boolean anyLockBreaksKey(List<LockState> lockStates, KeyItem key) {
-		for (LockState ls : lockStates) {
-			if (ls.getLock() != null) {
-				if (ls.getLock().breaksKey(key)) {
-					return true;
-				}				
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * 
 	 * @param lockItem
 	 * @return
 	 */
 	public boolean unlock(LockItem lockItem) {	
 		if (lockItem.acceptsKey(this) || fitsLock(lockItem)) {
-			logger.debug("Lock -> {} accepts key -> {}", lockItem.getRegistryName(), this.getRegistryName());
+			Treasure.logger.debug("Lock -> {} accepts key -> {}", lockItem.getRegistryName(), this.getRegistryName());
 			if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability())) {
-				logger.debug("Unlock attempt met probability");
+				Treasure.logger.debug("Unlock attempt met probability");
 				return true;
 			}
 		}
 		return false;
-    }
-    
-    public boolean breaksLock(LockItem lockItem) {
-        return false;
-    }
-    
+	}
+	
 	/**
 	 * @return the rarity
 	 */

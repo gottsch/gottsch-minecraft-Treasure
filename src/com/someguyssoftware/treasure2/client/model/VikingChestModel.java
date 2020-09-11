@@ -3,7 +3,7 @@
  */
 package com.someguyssoftware.treasure2.client.model;
 
-import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
@@ -91,7 +91,7 @@ public class VikingChestModel  extends ModelBase implements ITreasureChestModel 
 	}
 
 	@Override
-	public void renderAll(ITreasureChestTileEntity te) {
+	public void renderAll(AbstractTreasureChestTileEntity te) {
 		mainBox.render(0.0625F);
 		lid.render(0.0625F);
 		side1.render(0.0625F);

@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "treasure2:blocks/blackstone_top",
-    "side": "treasure2:blocks/blackstone"
-  }
-}

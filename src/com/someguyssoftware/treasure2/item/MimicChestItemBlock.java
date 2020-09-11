@@ -5,13 +5,26 @@ package com.someguyssoftware.treasure2.item;
 
 import java.util.List;
 
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.MimicChestBlock;
-import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
+import com.someguyssoftware.treasure2.block.TreasureChestBlock;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -39,7 +52,7 @@ public class MimicChestItemBlock extends ItemBlock {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		// get the block
 		MimicChestBlock tb = (MimicChestBlock)getBlock();
-		ITreasureChestTileEntity te = tb.getTileEntity();
+		AbstractTreasureChestTileEntity te = tb.getTileEntity();
 	
 		// chest info		
 		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.rarity", TextFormatting.DARK_BLUE + tb.getRarity().toString()));

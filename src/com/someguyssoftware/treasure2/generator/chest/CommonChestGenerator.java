@@ -10,7 +10,6 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.loot.LootTable;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
-import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
@@ -28,15 +27,6 @@ public class CommonChestGenerator implements IChestGenerator {
 	 */
 	public CommonChestGenerator() {}
 
-	/**
-	 * 
-	 */
-	@Override
-	public void addGenerationContext(AbstractTreasureChestTileEntity tileEntity, Rarity rarity) {
-		AbstractTreasureChestTileEntity.GenerationContext generationContext = tileEntity.new GenerationContext(rarity, ChestGeneratorType.COMMON);
-		tileEntity.setGenerationContext(generationContext);
-	}
-	
 	/**
 	 * 
 	 * @param random
@@ -57,13 +47,13 @@ public class CommonChestGenerator implements IChestGenerator {
 	 * @param chest
 	 */
 	@Override
-	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity chestTileEntity, Rarity rarity) {
+	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te, Rarity rarity) {
 		// select a rarity locks
 		List<LockItem> locks = new ArrayList<>();
 		locks.addAll((List<LockItem>) TreasureItems.locks.get(Rarity.COMMON));
 		locks.addAll(TreasureItems.locks.get(Rarity.UNCOMMON));
 
-		addLocks(random, chest, chestTileEntity, locks);
+		addLocks(random, chest, te, locks);
 		locks.clear();
 	}
 }

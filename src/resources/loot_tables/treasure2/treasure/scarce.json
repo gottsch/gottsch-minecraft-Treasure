@@ -36,21 +36,6 @@
 					]
 				},
 				{
-					"entryName": "ember_key",
-					"type": "item",
-					"name": "treasure2:ember_key",
-					"weight": 25,
-					"functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 1,
-								"max": 2
-							}
-						}
-					]
-				},
-				{
 					"entryName": "gold_key",
 					"type": "item",
 					"name": "treasure2:gold_key",

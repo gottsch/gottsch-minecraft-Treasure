@@ -1,6 +1,6 @@
 package com.someguyssoftware.treasure2.client.model;
 
-import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
@@ -62,7 +62,7 @@ public class SpiderChestModel extends ModelBase implements ITreasureChestModel {
 	}
 	
 	@Override
-	public void renderAll(ITreasureChestTileEntity te) {
+	public void renderAll(AbstractTreasureChestTileEntity te) {
 		headBone.rotateAngleX = lid.rotateAngleX;
 		chest.render(0.0625F);
 		bone.render(0.0625F);

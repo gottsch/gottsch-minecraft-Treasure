@@ -16,7 +16,7 @@ import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.IOasisConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
+import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
@@ -139,7 +139,7 @@ public class DesertOasisGenerator implements IOasisGenerator<GeneratorResult<Che
 		Rarity rarity = Rarity.values()[random.nextInt(Rarity.values().length)];
 		// select a random facing
 		IBlockState chestState = Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
-		SurfaceChestWorldGenerator chestWorldGen = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.SURFACE_CHEST);
+		SurfaceChestWorldGenerator chestWorldGen = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SURFACE_CHEST);
 		IChestGenerator chestGen = chestWorldGen.getChestGenMap().get(rarity).next();
 		Optional<GeneratorResult<ChestGeneratorData>> result = Optional.ofNullable(chestGen.generate(world, random, chestCoords, rarity, chestState));
 		if (result.isPresent() && result.get().isSuccess()) {

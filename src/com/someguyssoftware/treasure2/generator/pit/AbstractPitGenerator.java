@@ -121,7 +121,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 		int yDist = (surfaceCoords.getY() - spawnCoords.getY()) - 2;
 		Treasure.logger.debug("Distance to ySurface =" + yDist);
 	
-		if (yDist > getMinSurfaceToSpawnDistance()) {			
+		if (yDist > 6) {			
 			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
 
 			generateBase(world, random, surfaceCoords, spawnCoords);
@@ -140,15 +140,6 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 		return result.success();
 	}	
 	
-	/**
-	 * 
-	 * @return
-	 */
-	@Override
-	public int getMinSurfaceToSpawnDistance() {
-		return 6;
-	}
-
 	/**
 	 * 
 	 * @param world

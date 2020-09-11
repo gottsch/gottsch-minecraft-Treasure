@@ -13,7 +13,7 @@ import com.someguyssoftware.treasure2.chest.ILockSlot;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -48,7 +48,7 @@ public abstract class AbstractChestBlock extends AbstractModContainerBlock imple
 	/*
 	 * the concrete object of the tile entity
 	 */
-	private ITreasureChestTileEntity tileEntity;
+	private AbstractTreasureChestTileEntity tileEntity;
 	
 	/*
 	 * the type of chest
@@ -68,7 +68,7 @@ public abstract class AbstractChestBlock extends AbstractModContainerBlock imple
 	/**
 	 * 
 	 */
-	public AbstractChestBlock(String modID, String name, Material material, Class<? extends ITreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
+	public AbstractChestBlock(String modID, String name, Material material, Class<? extends AbstractTreasureChestTileEntity> te, TreasureChestType type, Rarity rarity) {
 		this(modID, name, material);
 		setTileEntityClass(te);
 		setChestType(type);
@@ -85,10 +85,10 @@ public abstract class AbstractChestBlock extends AbstractModContainerBlock imple
 		
 		// set the tile entity reference
 		try {
-			setTileEntity((ITreasureChestTileEntity)getTileEntityClass().newInstance());
+			setTileEntity((AbstractTreasureChestTileEntity)getTileEntityClass().newInstance());
 		}
 		catch(Exception e) {
-			Treasure.logger.warn("Unable to create reference ITreasureChestTileEntity object.");
+			Treasure.logger.warn("Unable to create reference AbstractTreasureChestTileEntity object.");
 		}
 
 	}
@@ -108,9 +108,9 @@ public abstract class AbstractChestBlock extends AbstractModContainerBlock imple
 	 */
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		ITreasureChestTileEntity chestTileEntity = null;
+		AbstractTreasureChestTileEntity chestTileEntity = null;
 		try {
-			chestTileEntity = (ITreasureChestTileEntity) getTileEntityClass().newInstance();
+			chestTileEntity = (AbstractTreasureChestTileEntity) getTileEntityClass().newInstance();
 
 			// setup lock states
 			List<LockState> lockStates = new LinkedList<>();
@@ -126,7 +126,7 @@ public abstract class AbstractChestBlock extends AbstractModContainerBlock imple
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		return (TileEntity) chestTileEntity;
+		return chestTileEntity;
 	}
 
 	/**
@@ -178,11 +178,11 @@ public abstract class AbstractChestBlock extends AbstractModContainerBlock imple
 		if (rotate != Rotate.NO_ROTATE) shouldRotate = true;
 //		Treasure.logger.debug("Rotate to:" + rotate);
 		
-		ITreasureChestTileEntity tcte = null;
+		AbstractTreasureChestTileEntity tcte = null;
 		TileEntity te = world.getTileEntity(pos);
-		if (te != null && te instanceof ITreasureChestTileEntity) {
+		if (te != null && te instanceof AbstractTreasureChestTileEntity) {
 			// get the backing tile entity
-			tcte = (ITreasureChestTileEntity) te;
+			tcte = (AbstractTreasureChestTileEntity) te;
 		}
 		else {
 			return false;
@@ -304,14 +304,14 @@ public abstract class AbstractChestBlock extends AbstractModContainerBlock imple
 	/**
 	 * @return the tileEntity
 	 */
-	public ITreasureChestTileEntity getTileEntity() {
+	public AbstractTreasureChestTileEntity getTileEntity() {
 		return tileEntity;
 	}
 
 	/**
 	 * @param tileEntity the tileEntity to set
 	 */
-	public AbstractChestBlock setTileEntity(ITreasureChestTileEntity tileEntity) {
+	public AbstractChestBlock setTileEntity(AbstractTreasureChestTileEntity tileEntity) {
 		this.tileEntity = tileEntity;
 		return this;
 	}

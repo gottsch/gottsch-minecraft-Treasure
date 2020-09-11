@@ -14,12 +14,10 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
-import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity.GenerationContext;
 
 
 /**
@@ -33,15 +31,6 @@ public class ScarceChestGenerator implements IChestGenerator {
 	 * 
 	 */
 	public ScarceChestGenerator() {}
-	
-	/**
-	 * 
-	 */
-	@Override
-	public void addGenerationContext(AbstractTreasureChestTileEntity tileEntity, Rarity rarity) {
-		AbstractTreasureChestTileEntity.GenerationContext generationContext = tileEntity.new GenerationContext(rarity, ChestGeneratorType.SCARCE);
-		tileEntity.setGenerationContext(generationContext);
-	}
 	
 	/**
 	 * 

@@ -2,7 +2,7 @@ package com.someguyssoftware.treasure2.client.model;
 //Made with Blockbench
 //Paste this code into your mod.
 
-import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
@@ -57,7 +57,7 @@ public class OysterChestModel extends ModelBase implements ITreasureChestModel {
 	}
 	
 	@Override
-	public void renderAll(ITreasureChestTileEntity te) {
+	public void renderAll(AbstractTreasureChestTileEntity te) {
 		bottom.render(0.0625F);
 		lid.render(0.0625F);
 		hinge.render(0.0625F);	

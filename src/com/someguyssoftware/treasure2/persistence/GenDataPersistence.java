@@ -12,7 +12,7 @@ import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
+import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.generator.oasis.OasisInfo;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 import com.someguyssoftware.treasure2.registry.OasisRegistry;
@@ -82,12 +82,12 @@ public class GenDataPersistence extends WorldSavedData {
 		Treasure.logger.debug("Loading Treasure! saved gen data...");
 
 		// get the world generators
-		SurfaceChestWorldGenerator surfaceChestGen = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.SURFACE_CHEST);
-		SubmergedChestWorldGenerator submergedChestGen = (SubmergedChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.SUBMERGED_CHEST);
-		WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.WELL);
-		WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.WITHER_TREE);
-		GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.GEM);
-		OasisWorldGenerator oasisGen = (OasisWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.OASIS);
+		SurfaceChestWorldGenerator surfaceChestGen = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SURFACE_CHEST);
+		SubmergedChestWorldGenerator submergedChestGen = (SubmergedChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SUBMERGED_CHEST);
+		WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WELL);
+		WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WITHER_TREE);
+		GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.GEM);
+		OasisWorldGenerator oasisGen = (OasisWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.OASIS);
 
 		// treasure
 		NBTTagCompound treasureGen = tag.getCompoundTag(TREASURE_GEN_TAG_NAME);
@@ -207,8 +207,8 @@ public class GenDataPersistence extends WorldSavedData {
 			
 			///// Chests //////
 			// get the chest world generators
-			SurfaceChestWorldGenerator surfaceChestGen = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.SURFACE_CHEST);
-			SubmergedChestWorldGenerator submergedChestGen = (SubmergedChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.SUBMERGED_CHEST);
+			SurfaceChestWorldGenerator surfaceChestGen = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SURFACE_CHEST);
+			SubmergedChestWorldGenerator submergedChestGen = (SubmergedChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.SUBMERGED_CHEST);
 			
 			// create a new compounds
 			NBTTagCompound surfaceTag = new NBTTagCompound();
@@ -252,7 +252,7 @@ public class GenDataPersistence extends WorldSavedData {
 			
 			///// Oasis ////
 			// get the oasis world generators
-			OasisWorldGenerator oasisGen = (OasisWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.OASIS);
+			OasisWorldGenerator oasisGen = (OasisWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.OASIS);
 			// create a new compound
 			NBTTagCompound oasisTag = new NBTTagCompound();
 			
@@ -283,19 +283,19 @@ public class GenDataPersistence extends WorldSavedData {
 			
 			///// Well ////
 			// get the well world generator
-			WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.WELL);
+			WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WELL);
 			
 			// add the chest gen last count to the treasure compound
 			treasureGen.setInteger("chunksSinceLastWell", wellGen.getChunksSinceLastWell());
 			
 			//// Wither Tree /////
-			WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.WITHER_TREE);
+			WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WITHER_TREE);
 			
 			// add the chest gen last count to the treasure compound
 			treasureGen.setInteger("chunksSinceLastTree", witherGen.getChunksSinceLastTree());
 			
 			//// Gem Ore ////
-			GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.GEM);
+			GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.GEM);
 			treasureGen.setInteger("chunksSinceLastOre", gemGen.getChunksSinceLastOre());
 			
 			///// ChestConfig Registry /////
