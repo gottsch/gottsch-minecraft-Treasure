@@ -13,6 +13,7 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
+import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.IEffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -92,7 +93,7 @@ public class KeyItem extends ModItem {
 		setDamageable(true);
 		setCraftable(false);
 		setMaxDamage(DEFAULT_MAX_USES);
-		setSuccessProbability(90D);	
+		setSuccessProbability(95);	
 		setMaxStackSize(1); // 12/3/2018: set to max 1 because keys are damaged and don't stack well.
 	}
 
@@ -121,10 +122,16 @@ public class KeyItem extends ModItem {
 		
 		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.rarity", TextFormatting.DARK_BLUE + getRarity().toString()));
         tooltip.add(I18n.translateToLocalFormatted("tooltip.label.category", getCategory()));
-        // TODO update to getEffectiveMaxDamage()
-        // TODO add remaining uses
-		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.max_uses", getMaxDamage()));
+		
+        if (stack.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)) {
+            EffectiveMaxDamageCapability cap = (EffectiveMaxDamageCapability) stack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+            tooltip.add(I18n.translateToLocalFormatted("tooltip.label.uses", cap.getEffectiveMaxDamage() - stack.getItemDamage(), cap.getEffectiveMaxDamage()));
+//            tooltip.add(I18n.translateToLocalFormatted("tooltip.label.effective_max_uses", cap.getEffectiveMaxDamage()));
+//    		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.remaining_uses", cap.getEffectiveMaxDamage() - stack.getItemDamage()));
+        }
+       	tooltip.add(I18n.translateToLocalFormatted("tooltip.label.max_uses", getMaxDamage()));
 
+        
 		// is breakable tooltip
 		String breakable = "";
 		if (isBreakable()) {
@@ -155,7 +162,35 @@ public class KeyItem extends ModItem {
 		tooltip.add(
 				I18n.translateToLocalFormatted("tooltip.label.damageable", damageable));
 	}
-		
+	
+    /**
+     * Queries the percentage of the 'Durability' bar that should be drawn.
+     *
+     * @param stack The current ItemStack
+     * @return 0.0 for 100% (no damage / full bar), 1.0 for 0% (fully damaged / empty bar)
+     */
+	@Override
+    public double getDurabilityForDisplay(ItemStack stack) {
+        if (stack.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)) {
+            EffectiveMaxDamageCapability cap = (EffectiveMaxDamageCapability) stack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+            return (double)stack.getItemDamage() / (double) cap.getEffectiveMaxDamage();
+        }
+        else {
+        	return (double)stack.getItemDamage() / (double)stack.getMaxDamage();
+        }
+    }
+    
+    /**
+     * Return whether this item is repairable in an anvil.
+     */
+	@Override
+	public boolean getIsRepairable(ItemStack itemToRepair, ItemStack resourceItem) {
+		if (itemToRepair.isItemDamaged() && itemToRepair.getItem() == this && resourceItem.getItem() == this) {
+			return true;
+		}
+		return false;
+    }
+	
 	/**
 	 * 
 	 */
@@ -191,7 +226,7 @@ public class KeyItem extends ModItem {
 			}
 			
 			try {
-				ItemStack heldItem = player.getHeldItem(hand);	
+				ItemStack heldItemStack = player.getHeldItem(hand);	
 				boolean breakKey = true;
 				boolean fitsLock = false;
 				LockState lockState = null;
@@ -223,18 +258,16 @@ public class KeyItem extends ModItem {
 				}
                 
                 // get capability
-                IEffectiveMaxDamageCapability cap = heldItem.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-                int remainingUses = cap.getEffectiveMaxDamage() - heldItem.getItemDamage();
-                
-				// check key's breakability
+                IEffectiveMaxDamageCapability cap = heldItemStack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
 
+				// check key's breakability
 				if (breakKey) {                    
 					if ((isBreakable() || anyLockBreaksKey(chestTileEntity.getLockStates(), this)) && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
-                        // TODO update - itemDamage += remainingUses % maxDamage; then if itemDamage == effectiveMaxDamage, shrink & flag as broke
-                        heldItem.setItemDamage(heldItem.getItemDamage() + (remainingUses % getMaxDamage()));
-                        if (heldItem.getItemDamage() == cap.getEffectiveMaxDamage()) {
+						int damage = heldItemStack.getItemDamage() + (getMaxDamage() - (heldItemStack.getItemDamage() % getMaxDamage()));
+                        heldItemStack.setItemDamage(damage);
+                        if (heldItemStack.getItemDamage() >= cap.getEffectiveMaxDamage()) {
                             // break key;
-                            heldItem.shrink(1);
+                            heldItemStack.shrink(1);
                         }
                         player.sendMessage(new TextComponentString("Key broke."));
                         worldIn.playSound(player, chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
@@ -248,14 +281,12 @@ public class KeyItem extends ModItem {
 				
 				// user attempted to use key - increment the damage
 				if (isDamageable() && !isKeyBroken) {
-                    // heldItem.damageItem(1, player);
-                    // TODO update this. setItemDamage(+1), if getItemDamage() == getEffectiveMaxDamage() which is a nbt property OR a capability
-                    heldItem.setItemDamage(heldItem.getItemDamage() +1);
-                    if (heldItem.getItemDamage() == cap.getEffectiveMaxDamage()) {
-                        heldItem.shrink(1);
+//					logger.debug("before damage -> {}", heldItemStack.getItemDamage());
+                    heldItemStack.setItemDamage(heldItemStack.getItemDamage() + 1);
+//                    logger.debug("after damage -> {}", heldItemStack.getItemDamage());
+                    if (heldItemStack.getItemDamage() >= cap.getEffectiveMaxDamage()) {
+                        heldItemStack.shrink(1);
                     }
-					// if (heldItem.getItemDamage() == heldItem.getMaxDamage()) {
-					// 	heldItem.shrink(1);
 				}
 			}
 			catch (Exception e) {

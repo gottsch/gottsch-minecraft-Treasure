@@ -23,7 +23,10 @@ import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.capability.CharmCapability;
 import com.someguyssoftware.treasure2.capability.CharmStorage;
+import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
+import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageStorage;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
+import com.someguyssoftware.treasure2.capability.IEffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingStorage;
@@ -165,7 +168,7 @@ public class Treasure extends AbstractMod {
 		super.preInt(event);
 
 		// initialize/reload the config
-		((TreasureConfig) getConfig()).init();
+		TreasureConfig.init();
 
 		// register additional events
 		MinecraftForge.EVENT_BUS.register(new LogoutEventHandler(getInstance()));
@@ -198,6 +201,7 @@ public class Treasure extends AbstractMod {
 		// add capabilities
 		CapabilityManager.INSTANCE.register(ICharmCapability.class, new CharmStorage(), CharmCapability::new);
 		CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingStorage(), KeyRingCapability::new);
+		CapabilityManager.INSTANCE.register(IEffectiveMaxDamageCapability.class, new EffectiveMaxDamageStorage(), EffectiveMaxDamageCapability::new);
 		
 		// register custom loot functions
 		LootFunctionManager.registerFunction(new CharmRandomly.Serializer());

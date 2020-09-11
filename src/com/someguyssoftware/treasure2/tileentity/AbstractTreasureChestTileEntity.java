@@ -3,20 +3,18 @@
  */
 package com.someguyssoftware.treasure2.tileentity;
 
+import static com.someguyssoftware.treasure2.Treasure.logger;
+
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
 import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
-import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.lock.LockState;
 
 import net.minecraft.block.state.IBlockState;
@@ -419,6 +417,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * Sync client and server states
 	 */
+	@Override
 	public void sendUpdates() {
 		world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyBlockUpdate(pos, getState(), getState(), 3);
@@ -613,7 +612,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				this.numPlayersUsing = 0;
 			}
 			++this.numPlayersUsing;
-			logger.debug("Incremented numPlayersUsing to:" + numPlayersUsing);
+//			logger.debug("Incremented numPlayersUsing to:" + numPlayersUsing);
 			this.world.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
 			this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType(), false);
 		}

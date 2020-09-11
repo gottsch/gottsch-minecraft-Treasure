@@ -4,10 +4,12 @@
 package com.someguyssoftware.treasure2.eventhandler;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
-import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
+import static com.someguyssoftware.treasure2.Treasure.logger;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
 import com.someguyssoftware.treasure2.item.KeyItem;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -22,59 +24,58 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class AnvilEventHandler {
 	// reference to the mod.
 	private IMod mod;
-	
+
 	/**
 	 * 
 	 */
 	public AnvilEventHandler(IMod mod) {
 		setMod(mod);
 	}
-	
+
 	@SubscribeEvent
 	public void onAnvilUpdate(AnvilUpdateEvent event) {
-		Treasure.logger.debug("Anvil update...");
+		ItemStack leftItemStack = event.getLeft();
+		ItemStack rightItemStack = event.getRight();
 
-        ItemStack leftItem = event.getLeft();
-        ItemStack rightItem = event.getRight();
+		// add all uses/damage remaining in the right item to the left item.
+		if (leftItemStack.getItem() == rightItemStack.getItem() && (leftItemStack.getItem() instanceof KeyItem)) {
+			if (leftItemStack.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)
+					&& rightItemStack.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)) {
 
-        // add all uses/damage remaining in the right item to the left item.
-        if (leftItem == rightItem && (leftItem.getItem() instanceof KeyItem)) {
-            if (leftItem.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)
-                && rightItem.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)) {
+				event.setCost(1);
+				EffectiveMaxDamageCapability leftItemCap = (EffectiveMaxDamageCapability) leftItemStack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+				EffectiveMaxDamageCapability rightItemCap = (EffectiveMaxDamageCapability) rightItemStack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
 
-                EffectiveMaxDamageCapability leftItemCap = (EffectiveMaxDamageCapability) leftItem.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-                EffectiveMaxDamageCapability rightItemCap = (EffectiveMaxDamageCapability) rightItem.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-            
-                if (leftItemCap != null && rightItemCap != null) {
-                    int leftRemainingUses = leftItemCap.getEffectiveMaxDamage() - leftItem.getItemDamage();
-                    int rightRemainingUses = rightItemCap.getEffectiveMaxDamage() - rightItem.getItemDamage();
+				if (leftItemCap != null && rightItemCap != null) {
+					int leftRemainingUses = leftItemCap.getEffectiveMaxDamage() - leftItemStack.getItemDamage();
+					int rightRemainingUses = rightItemCap.getEffectiveMaxDamage() - rightItemStack.getItemDamage();
+					ItemStack outputItem = new ItemStack(leftItemStack.getItem());
 
-                    if (leftRemainingUses + rightRemainingUses > leftItemCap.getEffectiveMaxDamage()) {
-                        leftItemCap.setEffectiveMaxDamage(leftRemainingUses + rightRemainingUses);
-                        leftItem.setItemDamage(0);
-                    }
-                    else {
-                        leftItem.setItemDamage(leftItem.getItemDamage() - rightRemainingUses);
-                    }
+					EffectiveMaxDamageCapability outputItemCap = (EffectiveMaxDamageCapability) outputItem.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
 
-                    // cancel vanilla behaviour - OR should vanilla behaviour ALWAYS be cancelled, so other tools can't fix the key
-                    event.setCanceled(true);
-                }
-                
-            // TODO research the setter/getters for the damages -> maybe have to override
-            // ru1 = emd1 - damage1
-            // ru2 = emd2 - damage2
-            // if (ru1 + ru2 > emd1) {
-                // emd1 = ru1 + ru2
-                // damage1 = 0
-            //}
-            // else {
-                // damage1 = damage1 - ru2
-            //}
-            }
-        }
+					int remainingUses = leftRemainingUses + rightRemainingUses;
+					if (remainingUses > Math.max(leftItemCap.getEffectiveMaxDamage(), rightItemCap.getEffectiveMaxDamage())) {
+//						if (logger.isDebugEnabled()) {
+//							logger.debug("output has greater uses -> {} than emd -> {} - update emd", remainingUses, Math.max(leftItemCap.getEffectiveMaxDamage(), rightItemCap.getEffectiveMaxDamage()));
+//						}
+						outputItemCap.setEffectiveMaxDamage(Math.max(leftItemCap.getEffectiveMaxDamage(), rightItemCap.getEffectiveMaxDamage()) + leftItemStack.getMaxDamage());
+						outputItem.setItemDamage(leftItemStack.getItemDamage() + rightItemStack.getItemDamage());
+					}
+					else {
+						if (remainingUses < Math.min(leftItemCap.getEffectiveMaxDamage(), rightItemCap.getEffectiveMaxDamage())) {
+							outputItemCap.setEffectiveMaxDamage(Math.min(leftItemCap.getEffectiveMaxDamage(), rightItemCap.getEffectiveMaxDamage()));
+						}
+						else {
+							outputItemCap.setEffectiveMaxDamage(Math.max(leftItemCap.getEffectiveMaxDamage(), rightItemCap.getEffectiveMaxDamage()));
+						}
+						outputItem.setItemDamage(outputItemCap.getEffectiveMaxDamage() - remainingUses);
+					}
+					event.setOutput(outputItem);
+				}
+			}
+		}
 	}
-	
+
 	/**
 	 * @return the mod
 	 */

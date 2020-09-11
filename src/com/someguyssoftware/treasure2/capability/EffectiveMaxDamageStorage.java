@@ -5,6 +5,8 @@ package com.someguyssoftware.treasure2.capability;
 
 import static com.someguyssoftware.treasure2.Treasure.logger;
 
+import com.someguyssoftware.treasure2.Treasure;
+
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
