@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.client.gui;
 import static com.someguyssoftware.treasure2.Treasure.logger;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
 import com.someguyssoftware.gottschcore.loot.LootContext;
 import com.someguyssoftware.gottschcore.loot.LootTable;
@@ -34,6 +35,7 @@ import com.someguyssoftware.treasure2.item.KeyRingItem;
 import com.someguyssoftware.treasure2.item.PouchItem;
 import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -103,9 +105,6 @@ public class GuiHandler implements IGuiHandler {
 				// TODO future IChestGenerator.addSpecialLoot(world, random, chestTileEntity);
 			}
 		}
-		else {
-			return null;
-		}
 
 		Container container = null;
 		switch (ID) {
@@ -171,26 +170,28 @@ public class GuiHandler implements IGuiHandler {
 	 */
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
-        ITreasureChestTileEntity chestTileEntity = (tileEntity instanceof ITreasureChestTileEntity) ? (ITreasureChestTileEntity) tileEntity : null;
-        if (chestTileEntity == null) {
-            logger.warn("Umm, GUI handler error - wrong tile entity.");
-            return null;
-        }
-
+		TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
+        ITreasureChestTileEntity chestTileEntity = null;
+        
 		switch (ID) {
 		case STANDARD_CHEST_GUIID:
 			// NOTE could pass in the different bg textures here
-			return new StandardChestGui(player.inventory, chestTileEntity);
+			if ((chestTileEntity = getChestTileEntity(tileEntity)) == null) return null;
+			return new StandardChestGui(player.inventory, chestTileEntity);			
 		case STRONGBOX_CHEST_GUIID:
+			if ((chestTileEntity = getChestTileEntity(tileEntity)) == null) return null;
 			return new StrongboxChestGui(player.inventory, chestTileEntity);
 		case COMPRESSOR_CHEST_GUIID:
+			if ((chestTileEntity = getChestTileEntity(tileEntity)) == null) return null;
 			return new CompressorChestGui(player.inventory, chestTileEntity);
 		case SKULL_CHEST_GUIID:
+			if ((chestTileEntity = getChestTileEntity(tileEntity)) == null) return null;
 			return new SkullChestGui(player.inventory, chestTileEntity);
 		case WITHER_CHEST_GUIID:
+			if ((chestTileEntity = getChestTileEntity(tileEntity)) == null) return null;
 			return new WitherChestGui(player.inventory, chestTileEntity);
 		case MOLLUSCS_CHEST_GUIID:
+			if ((chestTileEntity = getChestTileEntity(tileEntity)) == null) return null;
 			return new MolluscChestGui(player.inventory, chestTileEntity);
 		case KEY_RING_GUIID:
 			// get the held item
@@ -224,5 +225,14 @@ public class GuiHandler implements IGuiHandler {
 		default:
 			return null;
 		}
+	}
+
+	private ITreasureChestTileEntity getChestTileEntity(TileEntity tileEntity) {        
+      ITreasureChestTileEntity chestTileEntity = (tileEntity instanceof ITreasureChestTileEntity) ? (ITreasureChestTileEntity) tileEntity : null;
+      if (chestTileEntity == null) {
+          logger.warn("Umm, GUI handler error - wrong tile entity.");
+          return null;
+      }
+      return chestTileEntity;
 	}
 }
