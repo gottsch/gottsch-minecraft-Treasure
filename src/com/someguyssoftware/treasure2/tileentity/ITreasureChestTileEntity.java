@@ -27,5 +27,6 @@ public interface ITreasureChestTileEntity extends IInventory {
     
 	int getNumberOfSlots();
 	void setNumberOfSlots(int numberOfSlots);
+	void sendUpdates();
     
 }

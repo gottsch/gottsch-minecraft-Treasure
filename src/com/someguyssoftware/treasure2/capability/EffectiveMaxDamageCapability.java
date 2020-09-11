@@ -21,6 +21,7 @@ public class EffectiveMaxDamageCapability implements IEffectiveMaxDamageCapabili
 	public int getEffectiveMaxDamage() {
 		return effectiveMaxDamage;
 	}
+	
 	@Override
 	public void setEffectiveMaxDamage(int maxDamage) {
 		if (maxDamage > IEffectiveMaxDamageCapability.EFFECTIVE_MAX_DAMAGE_MAX) {
