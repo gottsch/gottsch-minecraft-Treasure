@@ -93,7 +93,7 @@ public class KeyItem extends ModItem {
 		setDamageable(true);
 		setCraftable(false);
 		setMaxDamage(DEFAULT_MAX_USES);
-		setSuccessProbability(95D);	
+		setSuccessProbability(95);	
 		setMaxStackSize(1); // 12/3/2018: set to max 1 because keys are damaged and don't stack well.
 	}
 
@@ -281,15 +281,12 @@ public class KeyItem extends ModItem {
 				
 				// user attempted to use key - increment the damage
 				if (isDamageable() && !isKeyBroken) {
-//                     heldItemStack.damageItem(1, player);
-					logger.debug("before damage -> {}", heldItemStack.getItemDamage());
+//					logger.debug("before damage -> {}", heldItemStack.getItemDamage());
                     heldItemStack.setItemDamage(heldItemStack.getItemDamage() + 1);
-                    logger.debug("after damage -> {}", heldItemStack.getItemDamage());
+//                    logger.debug("after damage -> {}", heldItemStack.getItemDamage());
                     if (heldItemStack.getItemDamage() >= cap.getEffectiveMaxDamage()) {
                         heldItemStack.shrink(1);
                     }
-					// if (heldItem.getItemDamage() == heldItem.getMaxDamage()) {
-					// 	heldItem.shrink(1);
 				}
 			}
 			catch (Exception e) {

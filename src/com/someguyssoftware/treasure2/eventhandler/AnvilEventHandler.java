@@ -34,8 +34,6 @@ public class AnvilEventHandler {
 
 	@SubscribeEvent
 	public void onAnvilUpdate(AnvilUpdateEvent event) {
-		logger.debug("Anvil update...");
-
 		ItemStack leftItemStack = event.getLeft();
 		ItemStack rightItemStack = event.getRight();
 
