@@ -7,7 +7,7 @@ import java.awt.Color;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.inventory.CompressorChestContainer;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -25,7 +25,7 @@ public class CompressorChestGui extends GuiContainer {
 	// This is the resource location for the background image for the GUI
 	private static final ResourceLocation texture = new ResourceLocation(Treasure.MODID,
 			"textures/gui/container/compressor_chest.png");
-	private AbstractTreasureChestTileEntity tileEntity;
+	private ITreasureChestTileEntity tileEntity;
 
 	/**
 	 * NOTE can pass anything into the ChestGui (GuiContainer) as long as the
@@ -35,7 +35,7 @@ public class CompressorChestGui extends GuiContainer {
 	 * @param invPlayer
 	 * @param tileEntity
 	 */
-	public CompressorChestGui(InventoryPlayer invPlayer, AbstractTreasureChestTileEntity tileEntity) {
+	public CompressorChestGui(InventoryPlayer invPlayer, ITreasureChestTileEntity tileEntity) {
 		super(new CompressorChestContainer(invPlayer, (IInventory) tileEntity));
 		this.tileEntity = tileEntity;
 

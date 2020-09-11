@@ -1,6 +1,6 @@
 package com.someguyssoftware.treasure2.client.model;
 
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -172,7 +172,7 @@ public class CrateChestModel extends ModelBase implements ITreasureChestModel {
 	 * 
 	 */
 	@Override
-	public void renderAll(AbstractTreasureChestTileEntity te) {
+	public void renderAll(ITreasureChestTileEntity te) {
 		float f5 = 0.0625F;
 
 		// set the angles

@@ -8,6 +8,10 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
+import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
+import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity.GenerationContext;
 
 /**
  * 
@@ -20,6 +24,15 @@ public class EpicChestGenerator implements IChestGenerator {
 	 * 
 	 */
 	public EpicChestGenerator() {}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public void addGenerationContext(AbstractTreasureChestTileEntity tileEntity, Rarity rarity) {
+		AbstractTreasureChestTileEntity.GenerationContext generationContext = tileEntity.new GenerationContext(rarity, ChestGeneratorType.EPIC);
+		tileEntity.setGenerationContext(generationContext);
+	}
 	
 	/**
 	 * Epic will have at least one lock.
