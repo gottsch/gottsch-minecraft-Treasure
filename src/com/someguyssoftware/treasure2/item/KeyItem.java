@@ -87,7 +87,7 @@ public class KeyItem extends ModItem {
 	public KeyItem(String modID, String name) {
 		setItemName(modID, name);
 		setCreativeTab(Treasure.TREASURE_TAB);
-		setCategory(Category.BASIC);
+		setCategory(Category.ELEMENTAL);
 		setRarity(Rarity.COMMON);
 		setBreakable(true);
 		setDamageable(true);

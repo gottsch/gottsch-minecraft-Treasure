@@ -72,7 +72,7 @@ public class LockItem extends ModItem {
 	 */
 	public LockItem(String modID, String name) {
 		setItemName(modID, name);
-		setCategory(Category.BASIC);
+		setCategory(Category.ELEMENTAL);
 		setRarity(Rarity.COMMON);
 		setCraftable(false);
 		setCreativeTab(Treasure.TREASURE_TAB);

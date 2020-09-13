@@ -81,6 +81,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String WOOD_LOCK_ID = "wood_lock";
     @Ignore public static final String STONE_LOCK_ID = "stone_lock";
     @Ignore public static final String EMBER_LOCK_ID = "ember_lock";
+    @Ignore public static final String LEAF_LOCK_ID = "leaf_lock";
 	@Ignore public static final String IRON_LOCK_ID = "iron_lock";
 	@Ignore public static final String GOLD_LOCK_ID = "gold_lock";
 	@Ignore public static final String DIAMOND_LOCK_ID = "diamond_lock";
@@ -92,12 +93,14 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 	// keys
 	@Ignore public static final String WOOD_KEY_ID = "wood_key";
-    @Ignore public static final String IRON_KEY_ID = "iron_key";
-    @Ignore public static final String EMBER_KEY_ID = "ember_key";
-	@Ignore public static final String GOLD_KEY_ID = "gold_key";
-	@Ignore public static final String DIAMOND_KEY_ID = "diamond_key";
-
 	@Ignore public static final String STONE_KEY_ID = "stone_key";
+    @Ignore public static final String EMBER_KEY_ID = "ember_key";
+    @Ignore public static final String LEAF_KEY_ID = "leaf_key";
+    @Ignore public static final String LIGHTNING_KEY_ID = "lightning_key";
+    
+	@Ignore public static final String GOLD_KEY_ID = "gold_key";
+	@Ignore public static final String IRON_KEY_ID = "iron_key";
+	@Ignore public static final String DIAMOND_KEY_ID = "diamond_key";	
 	@Ignore public static final String EMERALD_KEY_ID = "emerald_key";
 	@Ignore public static final String RUBY_KEY_ID = "ruby_key";
 	@Ignore public static final String SAPPHIRE_KEY_ID = "sapphire_key";
@@ -910,7 +913,19 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@Name("18. Ember key max uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
-		public int emberKeyMaxUses = 15;    
+		public int emberKeyMaxUses = 15;
+        
+        @Comment({ "The maximum uses for a given leaf key." })
+		@Name("19. Leaf key max uses:")
+		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
+		public int leafKeyMaxUses = 15;
+        
+        @Comment({ "The maximum uses for a given lightning key." })
+		@Name("20. Lightning key max uses:")
+		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
+		public int lightningKeyMaxUses = 10;
 	}
 
 	/*
