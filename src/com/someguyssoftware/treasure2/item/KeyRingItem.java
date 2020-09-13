@@ -9,15 +9,13 @@ import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
-import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
-import com.someguyssoftware.treasure2.capability.KeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapabilityProvider;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -25,7 +23,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -101,11 +98,11 @@ public class KeyRingItem extends ModItem {
 		if (block instanceof TreasureChestBlock) {
 			// get the tile entity
 			TileEntity te = worldIn.getTileEntity(pos);
-			if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
+			if (te == null || !(te instanceof ITreasureChestTileEntity)) {
 				Treasure.logger.warn("Null or incorrect TileEntity");
 				return EnumActionResult.FAIL;
 			}
-			AbstractTreasureChestTileEntity tcte = (AbstractTreasureChestTileEntity)te;
+			ITreasureChestTileEntity tcte = (ITreasureChestTileEntity)te;
 
 			ItemStack heldItem = player.getHeldItem(hand);
 			

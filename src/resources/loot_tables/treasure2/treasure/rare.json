@@ -1,10 +1,16 @@
 {
-	"version": "1.0",
+	"version": "1.1",
 	"pools": [
 		{
 			"name": "rare_keys",
 			"rolls": 1,
 			"entries": [
+				{
+					"entryName": "lightning_key",
+					"type": "item",
+					"name": "treasure2:lightning_key",
+					"weight": 10
+				},			
 				{
 					"entryName": "metallurgists_key",
 					"type": "item",

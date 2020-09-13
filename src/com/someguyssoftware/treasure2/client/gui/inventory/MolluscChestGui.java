@@ -7,7 +7,7 @@ import java.awt.Color;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.inventory.MolluscChestContainer;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -25,7 +25,7 @@ public class MolluscChestGui extends GuiContainer {
 	// This is the resource location for the background image for the GUI
 	private static final ResourceLocation texture = new ResourceLocation(Treasure.MODID,
 			"textures/gui/container/mollusc_chest.png");
-	private AbstractTreasureChestTileEntity tileEntity;
+	private ITreasureChestTileEntity tileEntity;
 
 	/**
 	 * NOTE can pass anything into the ChestGui (GuiContainer) as long as the
@@ -35,7 +35,7 @@ public class MolluscChestGui extends GuiContainer {
 	 * @param invPlayer
 	 * @param tileEntity
 	 */
-	public MolluscChestGui(InventoryPlayer invPlayer, AbstractTreasureChestTileEntity tileEntity) {
+	public MolluscChestGui(InventoryPlayer invPlayer, ITreasureChestTileEntity tileEntity) {
 		super(new MolluscChestContainer(invPlayer, (IInventory) tileEntity));
 		this.tileEntity = tileEntity;
 

@@ -16,3 +16,5 @@
 
 ## Key and Locks
 Hold the **Shift** key while using a key or a lock on a chest in order to use it.
+
+## Read the [documentation](https://github.com/gottsch/gottsch-minecraft-Treasure/wiki)

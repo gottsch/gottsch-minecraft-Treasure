@@ -23,7 +23,10 @@ import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.capability.CharmCapability;
 import com.someguyssoftware.treasure2.capability.CharmStorage;
+import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
+import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageStorage;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
+import com.someguyssoftware.treasure2.capability.IEffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingStorage;
@@ -37,7 +40,8 @@ import com.someguyssoftware.treasure2.command.SpawnRuinsCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellStructureCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.enums.WorldGenerators;
+import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
+import com.someguyssoftware.treasure2.eventhandler.AnvilEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.MimicEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
@@ -94,18 +98,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 		"Credits to CuddleBeak for some Keys and Locks textures.",
 		"Credits to mn_ti for Chinese and to DarkKnightComes for Polish translation.",
 		"Credits to Mythical Sausage for tutorials on house/tower designs.",
-		"Credits to OdinsRagnarok for Spanish translation and DarvinSlav for Russian translation." })
+		"Credits to OdinsRagnarok for Spanish translation and DarvinSlav for Russian translation.",
+		"Credits to sfs131010 for updated Chinese translation."})
 public class Treasure extends AbstractMod {
 
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.12.1";
+	protected static final String VERSION = "1.12.2";
 
-	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/Treasure2-1.12.2/update.json";
+	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/update.json";
 
 	private static final String VERSION_URL = "";
-	private static final BuildVersion MINECRAFT_VERSION = new BuildVersion(1, 12, 2);
+	private static final BuildVersion MINECRAFT_VERSION = new BuildVersion(1, 13, 0);
 
 	// latest version
 	private static BuildVersion latestVersion;
@@ -133,7 +138,7 @@ public class Treasure extends AbstractMod {
 	};
 
 	// forge world generators
-	public final static Map<WorldGenerators, ITreasureWorldGenerator> WORLD_GENERATORS = new HashMap<>();
+	public final static Map<WorldGeneratorType, ITreasureWorldGenerator> WORLD_GENERATORS = new HashMap<>();
 
 	// template manager
 	public static TreasureTemplateManager TEMPLATE_MANAGER;
@@ -162,13 +167,14 @@ public class Treasure extends AbstractMod {
 		super.preInt(event);
 
 		// initialize/reload the config
-		((TreasureConfig) getConfig()).init();
+		TreasureConfig.init();
 
 		// register additional events
 		MinecraftForge.EVENT_BUS.register(new LogoutEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
-		MinecraftForge.EVENT_BUS.register(new MimicEventHandler(getInstance()));
+        MinecraftForge.EVENT_BUS.register(new MimicEventHandler(getInstance()));
+        MinecraftForge.EVENT_BUS.register(new AnvilEventHandler(getInstance()));
 
 		// configure logging
 		// create a rolling file appender
@@ -194,6 +200,7 @@ public class Treasure extends AbstractMod {
 		// add capabilities
 		CapabilityManager.INSTANCE.register(ICharmCapability.class, new CharmStorage(), CharmCapability::new);
 		CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingStorage(), KeyRingCapability::new);
+		CapabilityManager.INSTANCE.register(IEffectiveMaxDamageCapability.class, new EffectiveMaxDamageStorage(), EffectiveMaxDamageCapability::new);
 		
 		// register custom loot functions
 		LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
@@ -238,15 +245,15 @@ public class Treasure extends AbstractMod {
 		super.init(event);
 
 		// register world generators
-		WORLD_GENERATORS.put(WorldGenerators.SURFACE_CHEST, new SurfaceChestWorldGenerator());
-		WORLD_GENERATORS.put(WorldGenerators.SUBMERGED_CHEST, new SubmergedChestWorldGenerator());
-		WORLD_GENERATORS.put(WorldGenerators.WELL, new WellWorldGenerator());
-		WORLD_GENERATORS.put(WorldGenerators.WITHER_TREE, new WitherTreeWorldGenerator());
-		WORLD_GENERATORS.put(WorldGenerators.GEM, new GemOreWorldGenerator());
-		WORLD_GENERATORS.put(WorldGenerators.OASIS, new OasisWorldGenerator());
+		WORLD_GENERATORS.put(WorldGeneratorType.SURFACE_CHEST, new SurfaceChestWorldGenerator());
+		WORLD_GENERATORS.put(WorldGeneratorType.SUBMERGED_CHEST, new SubmergedChestWorldGenerator());
+		WORLD_GENERATORS.put(WorldGeneratorType.WELL, new WellWorldGenerator());
+		WORLD_GENERATORS.put(WorldGeneratorType.WITHER_TREE, new WitherTreeWorldGenerator());
+		WORLD_GENERATORS.put(WorldGeneratorType.GEM, new GemOreWorldGenerator());
+		WORLD_GENERATORS.put(WorldGeneratorType.OASIS, new OasisWorldGenerator());
 
 		int genWeight = 0;
-		for (Entry<WorldGenerators, ITreasureWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
+		for (Entry<WorldGeneratorType, ITreasureWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
 			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);
 		}
 
