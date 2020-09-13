@@ -6,11 +6,15 @@ package com.someguyssoftware.treasure2.generator.chest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import com.someguyssoftware.gottschcore.loot.LootTable;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
+
+import static com.someguyssoftware.treasure2.Treasure.logger;
+
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.IMimicBlock;
@@ -45,42 +49,47 @@ public interface IChestGenerator {
 			final Rarity rarity, IBlockState state) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(coords);
-
 		// select a loot table
-		LootTable lootTable = selectLootTable(random, rarity);
-		if (lootTable == null) {
-			Treasure.logger.warn("Unable to select a lootTable.");
-			return result.fail();
-		}
+		// LootTable lootTable = selectLootTable(random, rarity);
+		// if (lootTable == null) {
+		// 	logger.warn("Unable to select a lootTable.");
+		// 	return result.fail();
+		// }
 
 		// select a chest from the rarity
 		AbstractChestBlock chest = selectChest(random, rarity);
 		if (chest == null) {
-			Treasure.logger.warn("Unable to select a chest for rarity {}.", rarity);
+			logger.warn("Unable to select a chest for rarity {}.", rarity);
 			return result.fail();
 		}
 
 		// place the chest in the world
-		TileEntity te = null;
+		TileEntity tileEntity = null;
 		if (state != null) {
-			te = placeInWorld(world, random, coords, chest, state);
+			tileEntity = placeInWorld(world, random, coords, chest, state);
 		} else {
-			te = placeInWorld(world, random, chest, coords);
+			tileEntity = placeInWorld(world, random, chest, coords);
 		}
 
-		if (te == null) {
-			Treasure.logger.debug("Unable to locate tile entity for chest -> {}", coords);
+		if (tileEntity == null) {
+			logger.debug("Unable to locate tile entity for chest -> {}", coords);
 			return result.fail();
 		}
 
-		if (!(chest instanceof IMimicBlock)) {
-			Treasure.logger.debug("Generating loot from loot table for rarity {}", rarity);
-			lootTable.fillInventory((IInventory) te, random, Treasure.LOOT_TABLES.getContext());
-		}
+		// seal the chest
+		addSeal((AbstractTreasureChestTileEntity) tileEntity);
+		
+		// update the backing tile entity's generation contxt
+		addGenerationContext((AbstractTreasureChestTileEntity) tileEntity, rarity);
+		
+		// if (!(chest instanceof IMimicBlock)) {
+		// 	logger.debug("Generating loot from loot table for rarity {}", rarity);
+		// 	lootTable.fillInventory((IInventory) te, random, Treasure.LOOT_TABLES.getContext());
+		// }
 
 		// add locks
-		addLocks(random, chest, (AbstractTreasureChestTileEntity) te, rarity);
-
+		addLocks(random, chest, (AbstractTreasureChestTileEntity) tileEntity, rarity);
+		
 		// update result
 		result.getData().setChestContext(new BlockContext(coords, state));
 
@@ -112,12 +121,12 @@ public interface IChestGenerator {
 		if (chest == TreasureBlocks.WOOD_CHEST) {
 			if (RandomHelper.checkProbability(random, config.getMimicProbability())) {
 				chest = (AbstractChestBlock) TreasureBlocks.WOOD_MIMIC;
-				Treasure.logger.debug("Selecting a WOOD MIMIC chest!");
+				logger.debug("Selecting a WOOD MIMIC chest!");
 			}
 		} else if (chest == TreasureBlocks.PIRATE_CHEST) {
 			if (RandomHelper.checkProbability(random, config.getMimicProbability())) {
 				chest = (AbstractChestBlock) TreasureBlocks.PIRATE_MIMIC;
-				Treasure.logger.debug("Selecting a PIRATE MIMIC chest!");
+				logger.debug("Selecting a PIRATE MIMIC chest!");
 			}
 		}
 		return chest;
@@ -129,6 +138,7 @@ public interface IChestGenerator {
 	 * @param rarity
 	 * @return
 	 */
+	@Deprecated
 	default public LootTable selectLootTable(Random random, final Rarity rarity) {
 		LootTable table = null;
 
@@ -138,30 +148,68 @@ public interface IChestGenerator {
 		// select a random table from the list
 		if (tables != null && !tables.isEmpty()) {
 			int index = 0;
-			/*
-			 * get a random container
-			 */
 			if (tables.size() == 1) {
 				table = tables.get(0);
 			} else {
 				index = RandomHelper.randomInt(random, 0, tables.size() - 1);
 				table = tables.get(index);
 			}
-			Treasure.logger.debug("Selected loot table index --> {}", index);
+			logger.debug("Selected loot table index --> {}", index);
+		}
+		return table;
+    }
+    
+	/**
+	 * 
+	 * @param tileEntity
+	 * @param rarity
+	 */
+	public void addGenerationContext(AbstractTreasureChestTileEntity tileEntity, Rarity rarity);
+	
+	/**
+	 * 
+	 * @param factory
+	 * @param rarity
+	 * @return
+	 */
+    default public LootTable selectLootTable(Supplier<Random> factory, final Rarity rarity) {
+		LootTable table = null;
+
+		// select the loot table by rarity
+		List<LootTable> tables = buildLootTableList(rarity);
+
+		// select a random table from the list
+		if (tables != null && !tables.isEmpty()) {
+			int index = 0;
+			if (tables.size() == 1) {
+				table = tables.get(0);
+			} else {
+				index = RandomHelper.randomInt(factory.get(), 0, tables.size() - 1);
+				table = tables.get(index);
+			}
+			logger.debug("Selected loot table index --> {}", index);
 		}
 		return table;
 	}
 
 	/**
+	 * 
+	 * @param tileEntity
+	 */
+	default public void addSeal(AbstractTreasureChestTileEntity tileEntity) {
+		tileEntity.setSealed(true);
+	}
+	
+	/**
 	 * Default implementation. Select locks only from with the same Rarity.
 	 * 
 	 * @param chest
 	 */
-	default public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te,
+	default public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity chestTileEntity,
 			Rarity rarity) {
 		List<LockItem> locks = new ArrayList<>();
 		locks.addAll(TreasureItems.locks.get(rarity));
-		addLocks(random, chest, te, locks);
+		addLocks(random, chest, chestTileEntity, locks);
 		locks.clear();
 	}
 
@@ -172,16 +220,16 @@ public interface IChestGenerator {
 	 * @param te
 	 * @param locks
 	 */
-	default public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te,
+	default public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity chestTileEntity,
 			List<LockItem> locks) {
 		int numLocks = randomizedNumberOfLocksByChestType(random, chest.getChestType());
 
 		// get the lock states
-		List<LockState> lockStates = te.getLockStates();
+		List<LockState> lockStates = chestTileEntity.getLockStates();
 
 		for (int i = 0; i < numLocks; i++) {
 			LockItem lock = locks.get(RandomHelper.randomInt(random, 0, locks.size() - 1));
-			Treasure.logger.debug("adding lock: {}", lock);
+			logger.debug("adding lock: {}", lock);
 			// add the lock to the chest
 			lockStates.get(i).setLock(lock);
 		}
@@ -196,7 +244,7 @@ public interface IChestGenerator {
 	default public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 0, type.getMaxLocks());
-		Treasure.logger.debug("# of locks to use: {})", numLocks);
+		logger.debug("# of locks to use: {})", numLocks);
 		return numLocks;
 	}
 
@@ -218,7 +266,7 @@ public interface IChestGenerator {
 		// GenUtil.placeMarkers(world, random, coords);
 		if (!isSurfaceChest && TreasureConfig.WORLD_GEN.getMarkerProperties().isMarkerStructuresAllowed && RandomHelper
 				.checkProbability(random, TreasureConfig.WORLD_GEN.getMarkerProperties().markerStructureProbability)) {
-			Treasure.logger.debug("generating a random structure marker -> {}", coords.toShortString());
+			logger.debug("generating a random structure marker -> {}", coords.toShortString());
 			new StructureMarkerGenerator().generate(world, random, coords);
 		} else {
 			new GravestoneMarkerGenerator().generate(world, random, coords);
@@ -238,27 +286,27 @@ public interface IChestGenerator {
 		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
 
 		// get the backing tile entity of the chest
-		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());
+		TileEntity tileEntity = (TileEntity) world.getTileEntity(chestCoords.toPos());
 
 		// check to ensure the chest has been generated
 		if (!isPlaced || !(world.getBlockState(chestCoords.toPos()).getBlock() instanceof AbstractChestBlock)) {
-			Treasure.logger.debug("Unable to place chest @ {}", chestCoords.toShortString());
+			logger.debug("Unable to place chest @ {}", chestCoords.toShortString());
 			// remove the title entity (if exists)
 
-			if (te != null && (te instanceof AbstractTreasureChestTileEntity)) {
+			if (tileEntity != null && (tileEntity instanceof AbstractTreasureChestTileEntity)) {
 				world.removeTileEntity(chestCoords.toPos());
 			}
 			return null;
 		}
 
 		// if tile entity failed to create, remove the chest
-		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
+		if (tileEntity == null || !(tileEntity instanceof AbstractTreasureChestTileEntity)) {
 			// remove chest
 			world.setBlockToAir(chestCoords.toPos());
-			Treasure.logger.debug("Unable to create TileEntityChest, removing BlockChest");
+			logger.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}
-		return te;
+		return tileEntity;
 	}
 
 	/**
@@ -274,28 +322,28 @@ public interface IChestGenerator {
 			IBlockState state) {
 		// replace block @ coords
 		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chestCoords, chest, state);
-		Treasure.logger.debug("isPlaced -> {}", isPlaced);
+		logger.debug("isPlaced -> {}", isPlaced);
 		// get the backing tile entity of the chest
-		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());
+		TileEntity tileEntity = (TileEntity) world.getTileEntity(chestCoords.toPos());
 
 		// check to ensure the chest has been generated
 		if (!isPlaced || !(world.getBlockState(chestCoords.toPos()).getBlock() instanceof AbstractChestBlock)) {
-			Treasure.logger.debug("Unable to place chest @ {}", chestCoords.toShortString());
+			logger.debug("Unable to place chest @ {}", chestCoords.toShortString());
 			// remove the title entity (if exists)
 
-			if (te != null && (te instanceof AbstractTreasureChestTileEntity)) {
+			if (tileEntity != null && (tileEntity instanceof AbstractTreasureChestTileEntity)) {
 				world.removeTileEntity(chestCoords.toPos());
 			}
 			return null;
 		}
 
 		// if tile entity failed to create, remove the chest
-		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
+		if (tileEntity == null || !(tileEntity instanceof AbstractTreasureChestTileEntity)) {
 			// remove chest
 			world.setBlockToAir(chestCoords.toPos());
-			Treasure.logger.debug("Unable to create TileEntityChest, removing BlockChest");
+			logger.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}
-		return te;
+		return tileEntity;
 	}
 }

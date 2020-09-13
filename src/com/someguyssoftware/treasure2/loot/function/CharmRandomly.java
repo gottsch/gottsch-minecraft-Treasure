@@ -74,7 +74,6 @@ public class CharmRandomly extends LootFunction {
 				if (!tempCharms.isEmpty()) {
 					// select a charm randomly
 					charm = tempCharms.get(rand.nextInt(tempCharms.size()));
-
 				}
 			}
 			else {

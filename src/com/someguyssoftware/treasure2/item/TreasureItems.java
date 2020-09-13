@@ -74,7 +74,9 @@ public class TreasureItems {
 	
 	// locks
 	public static LockItem WOOD_LOCK;
-	public static LockItem STONE_LOCK;
+    public static LockItem STONE_LOCK;
+    public static LockItem EMBER_LOCK;
+    public static LockItem LEAF_LOCK;
 	public static LockItem IRON_LOCK;
 	public static LockItem GOLD_LOCK;
 	public static LockItem DIAMOND_LOCK;
@@ -86,7 +88,10 @@ public class TreasureItems {
 	
 	// keys
 	public static KeyItem WOOD_KEY;
-	public static KeyItem STONE_KEY;
+    public static KeyItem STONE_KEY;
+    public static KeyItem EMBER_KEY;
+    public static KeyItem LEAF_KEY;
+    public static KeyItem LIGHTNING_KEY;
 	public static KeyItem IRON_KEY;
 	public static KeyItem GOLD_KEY;
 	public static KeyItem METALLURGISTS_KEY;
@@ -260,23 +265,42 @@ public class TreasureItems {
 		
 		// KEYS
 		WOOD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.WOOD_KEY_ID)
-				.setCategory(Category.BASIC)
+				.setCategory(Category.ELEMENTAL)
 				.setRarity(Rarity.COMMON)
 				.setCraftable(false)
 				.setMaxDamage(TreasureConfig.KEYS_LOCKS.woodKeyMaxUses);
 
 		STONE_KEY = new KeyItem(Treasure.MODID, TreasureConfig.STONE_KEY_ID)
-				.setCategory(Category.BASIC)
+				.setCategory(Category.ELEMENTAL)
 				.setRarity(Rarity.COMMON)
 				.setCraftable(false)
 				.setMaxDamage(TreasureConfig.KEYS_LOCKS.stoneKeyMaxUses);
 
+        EMBER_KEY = new EmberKey(Treasure.MODID, TreasureConfig.EMBER_KEY_ID)
+				.setCategory(Category.ELEMENTAL)
+				.setRarity(Rarity.SCARCE)
+				.setCraftable(false)
+                .setMaxDamage(TreasureConfig.KEYS_LOCKS.emberKeyMaxUses);      
+
+        LEAF_KEY = new KeyItem(Treasure.MODID, TreasureConfig.LEAF_KEY_ID)
+				.setCategory(Category.ELEMENTAL)
+				.setRarity(Rarity.UNCOMMON)
+				.setCraftable(false)
+                .setMaxDamage(TreasureConfig.KEYS_LOCKS.leafKeyMaxUses);      
+        
+		LIGHTNING_KEY = new LightningKey(Treasure.MODID, TreasureConfig.LIGHTNING_KEY_ID)
+				.setCategory(Category.ELEMENTAL)
+				.setRarity(Rarity.SCARCE)
+				.setBreakable(false)
+				.setCraftable(false)
+				.setMaxDamage(TreasureConfig.KEYS_LOCKS.lightningKeyMaxUses);
+		
 		IRON_KEY = new KeyItem(Treasure.MODID, TreasureConfig.IRON_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.UNCOMMON)
 				.setCraftable(false)
-				.setMaxDamage(TreasureConfig.KEYS_LOCKS.ironKeyMaxUses);
-		
+                .setMaxDamage(TreasureConfig.KEYS_LOCKS.ironKeyMaxUses);
+        
 		GOLD_KEY = new KeyItem(Treasure.MODID, TreasureConfig.GOLD_KEY_ID)
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.SCARCE)
@@ -326,7 +350,7 @@ public class TreasureItems {
 				.setMaxDamage(TreasureConfig.KEYS_LOCKS.metallurgistsKeyMaxUses);
 		
 		SKELETON_KEY = new SkeletonKey(Treasure.MODID, TreasureConfig.SKELETON_KEY_ID)
-				.setCategory(Category.BASIC)
+				.setCategory(Category.ELEMENTAL)
 				.setRarity(Rarity.RARE)
 				.setBreakable(false)
 				.setCraftable(false)
@@ -347,20 +371,20 @@ public class TreasureItems {
 				.setMaxDamage(TreasureConfig.KEYS_LOCKS.witherKeyMaxUses);
 		
 		PILFERERS_LOCK_PICK = new PilferersLockPick(Treasure.MODID, TreasureConfig.PILFERERS_LOCK_PICK_ID)
-				.setCategory(Category.BASIC)
+				.setCategory(Category.ELEMENTAL)
 				.setRarity(Rarity.COMMON)
 				.setBreakable(true)
 				.setCraftable(true)
 				.setMaxDamage(TreasureConfig.KEYS_LOCKS.pilferersLockPickMaxUses)
-				.setSuccessProbability(24);
+				.setSuccessProbability(32);
 		
 		THIEFS_LOCK_PICK = new ThiefsLockPick(Treasure.MODID, TreasureConfig.THIEFS_LOCK_PICK_ID)
-				.setCategory(Category.BASIC)
+				.setCategory(Category.ELEMENTAL)
 				.setRarity(Rarity.UNCOMMON)
 				.setBreakable(true)
 				.setCraftable(true)
 				.setMaxDamage(TreasureConfig.KEYS_LOCKS.thiefsLockPickMaxUses)
-				.setSuccessProbability(32);
+				.setSuccessProbability(48);
 		
 		// KEY RING
 		KEY_RING = new KeyRingItem(Treasure.MODID, TreasureConfig.KEY_RING_ID);
@@ -373,14 +397,20 @@ public class TreasureItems {
 		
 		// LOCKS
 		WOOD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.WOOD_LOCK_ID, new KeyItem[] {WOOD_KEY})
-				.setCategory(Category.BASIC)
+				.setCategory(Category.ELEMENTAL)
 				.setRarity(Rarity.COMMON);
 		STONE_LOCK = new LockItem(Treasure.MODID, TreasureConfig.STONE_LOCK_ID, new KeyItem[] {STONE_KEY})
-				.setCategory(Category.BASIC)
-				.setRarity(Rarity.COMMON);
+				.setCategory(Category.ELEMENTAL)
+                .setRarity(Rarity.COMMON);
+    	EMBER_LOCK = new EmberLock(Treasure.MODID, TreasureConfig.EMBER_LOCK_ID, new KeyItem[] {EMBER_KEY})
+				.setCategory(Category.ELEMENTAL)
+				.setRarity(Rarity.SCARCE);
+    	LEAF_LOCK = new LockItem(Treasure.MODID, TreasureConfig.LEAF_LOCK_ID, new KeyItem[] {LEAF_KEY})
+				.setCategory(Category.ELEMENTAL)
+				.setRarity(Rarity.UNCOMMON);    	
 		IRON_LOCK = new LockItem(Treasure.MODID, TreasureConfig.IRON_LOCK_ID, new KeyItem[] {IRON_KEY})
 				.setCategory(Category.METALS)
-				.setRarity(Rarity.UNCOMMON);
+                .setRarity(Rarity.UNCOMMON);
 		GOLD_LOCK = new LockItem(Treasure.MODID, TreasureConfig.GOLD_LOCK_ID, new KeyItem[] {GOLD_KEY})
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.SCARCE);
@@ -406,7 +436,9 @@ public class TreasureItems {
 		
 		locks = ArrayListMultimap.create();
 		locks.put(WOOD_LOCK.getRarity(), WOOD_LOCK);
-		locks.put(STONE_LOCK.getRarity(), STONE_LOCK);
+        locks.put(STONE_LOCK.getRarity(), STONE_LOCK);
+        locks.put(EMBER_LOCK.getRarity(), EMBER_LOCK);
+        locks.put(LEAF_LOCK.getRarity(), LEAF_LOCK);
 		locks.put(IRON_LOCK.getRarity(), IRON_LOCK);
 		locks.put(GOLD_LOCK.getRarity(), GOLD_LOCK);
 		locks.put(DIAMOND_LOCK.getRarity(), DIAMOND_LOCK);
@@ -536,7 +568,9 @@ public class TreasureItems {
 					WHITE_PEARL,
 					BLACK_PEARL,
 					WOOD_LOCK,
-					STONE_LOCK,
+                    STONE_LOCK,
+                    EMBER_LOCK,
+                    LEAF_LOCK,
 					IRON_LOCK,
 					GOLD_LOCK,
 					DIAMOND_LOCK,
@@ -546,8 +580,11 @@ public class TreasureItems {
 					SPIDER_LOCK,
 					WITHER_LOCK,
 					WOOD_KEY,
-					STONE_KEY,
-					IRON_KEY,
+                    STONE_KEY,
+                    EMBER_KEY,
+                    LEAF_KEY,
+                    LIGHTNING_KEY,
+                    IRON_KEY,
 					GOLD_KEY,
 					DIAMOND_KEY,
 					EMERALD_KEY,

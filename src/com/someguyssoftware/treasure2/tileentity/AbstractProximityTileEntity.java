@@ -84,7 +84,8 @@ public abstract class AbstractProximityTileEntity extends AbstractModTileEntity 
             player = (EntityPlayer)getWorld().playerEntities.get(playerIndex);
             // get the distance
             double distanceSq = player.getDistanceSq(this.getPos().add(0.5D, 0.5D, 0.5D));
-           
+//            GottschCore.logger.debug("PTE @ -> {}, proximity -> {}, distance -> {}, triggered -> {}, dead -> {}, result -> {}", 
+//            		this.pos, proximitySq, distanceSq, isTriggered, this.isDead, (!isTriggered && !this.isDead && (distanceSq < proximitySq)) ? "met" : "not met");
             if (!isTriggered && !this.isDead && (distanceSq < proximitySq)) {
             	GottschCore.logger.debug("PTE proximity was met.");
             	isTriggered = true;

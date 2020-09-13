@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.lock.LockState;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -107,7 +108,21 @@ public class ChestNBTPrettyPrinter {
 			if (tag.hasKey("facing")) {
 				sb.append(String.format(format,  "Facing", EnumFacing.getFront(tag.getInteger("facing"))));
 			}
+			
+			if (tag.hasKey("sealed")) {
+				sb.append(String.format(format,  "Sealed", tag.getBoolean("sealed")));
+			}
 
+			if (tag.hasKey("genContext")) {
+				NBTTagCompound contextTag = tag.getCompoundTag("genContext");
+				if (contextTag.hasKey("lootRarity")) {
+					sb.append(String.format(format,  "Loot Rarity", contextTag.getString("lootRarity")));
+				}
+				if (contextTag.hasKey("chestGenType")) {
+					sb.append(String.format(format,  "Chest Generation Type", ChestGeneratorType.valueOf(contextTag.getString("chestGenType")).name()));
+				}
+			}
+			
 			// print each lock state
 			if (lockStates != null) {
 				for (int i = 0; i < lockStates.tagCount(); i++) {

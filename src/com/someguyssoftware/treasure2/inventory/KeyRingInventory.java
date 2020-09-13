@@ -29,7 +29,6 @@ public class KeyRingInventory implements IInventory {
 	private ItemStack itemStack;
 	
     /** IInventory properties */
-//    private int numberOfSlots = INVENTORY_SIZE; // default size
     private NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(INVENTORY_SIZE, ItemStack.EMPTY);
     
 	/**
@@ -41,8 +40,8 @@ public class KeyRingInventory implements IInventory {
 		this.itemStack = stack;
 		
 		if (stack.hasCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null)) {
-			IItemHandler cap = stack.getCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null);
-			readInventoryFromNBT(cap);
+			IItemHandler itemHandler = stack.getCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null);
+			readInventoryFromHandler(itemHandler);
 		}
 	}
 	
@@ -50,7 +49,7 @@ public class KeyRingInventory implements IInventory {
 	 * 
 	 * @param handler
 	 */
-	public void readInventoryFromNBT(IItemHandler handler) {
+	public void readInventoryFromHandler(IItemHandler handler) {
 		try {
 			// read the inventory
 			for (int i = 0; i < INVENTORY_SIZE; i++) {
@@ -66,7 +65,7 @@ public class KeyRingInventory implements IInventory {
 	 * 
 	 * @param handler
 	 */
-	public void writeInventoryToNBT(IItemHandler handler) {
+	public void writeInventoryToHandler(IItemHandler handler) {
 		try {
 			for (int i = 0; i < items.size(); i++) {
 				handler.insertItem(i, items.get(i), false);
@@ -216,8 +215,8 @@ public class KeyRingInventory implements IInventory {
 		 *  write the locked state to the nbt
 		 */
 		if (getItemStack().hasCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null)) {
-			IItemHandler cap = getItemStack().getCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null);
-			writeInventoryToNBT(cap);
+			IItemHandler itemHandler = getItemStack().getCapability(KeyRingCapabilityProvider.KEY_RING_INVENTORY_CAPABILITY, null);
+			writeInventoryToHandler(itemHandler);
 		}
 		if (getItemStack().hasCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null)) {
 			IKeyRingCapability cap = getItemStack().getCapability(KeyRingCapabilityProvider.KEY_RING_CAPABILITY, null);
