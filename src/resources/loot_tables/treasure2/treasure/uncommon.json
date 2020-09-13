@@ -85,7 +85,13 @@
 					"type": "item",
 					"name": "treasure2:ember_key",
 					"weight": 10
-				},               
+				},
+				{
+					"entryName": "leaf_key",
+					"type": "item",
+					"name": "treasure2:leaf_key",
+					"weight": 15
+				},   
 				{
 					"entryName": "gold_key",
 					"type": "item",

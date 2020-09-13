@@ -8,7 +8,7 @@ package com.someguyssoftware.treasure2.enums;
  *
  */
 public enum Category {
-	BASIC,
+	ELEMENTAL,
 	METALS,
 	GEMS,
 	MAGIC,

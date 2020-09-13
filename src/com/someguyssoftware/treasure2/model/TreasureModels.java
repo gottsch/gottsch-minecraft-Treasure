@@ -141,6 +141,7 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.WOOD_LOCK);
 		registerItemModel(TreasureItems.STONE_LOCK);
 		registerItemModel(TreasureItems.EMBER_LOCK);
+		registerItemModel(TreasureItems.LEAF_LOCK);
 		registerItemModel(TreasureItems.IRON_LOCK);
 		registerItemModel(TreasureItems.GOLD_LOCK);
 		registerItemModel(TreasureItems.DIAMOND_LOCK);
@@ -154,6 +155,8 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.WOOD_KEY);
 		registerItemModel(TreasureItems.STONE_KEY);
 		registerItemModel(TreasureItems.EMBER_KEY);
+		registerItemModel(TreasureItems.LEAF_KEY);
+		registerItemModel(TreasureItems.LIGHTNING_KEY);
 		registerItemModel(TreasureItems.IRON_KEY);
 		registerItemModel(TreasureItems.GOLD_KEY);
 		registerItemModel(TreasureItems.DIAMOND_KEY);
