@@ -22,6 +22,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -37,7 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 public class GravestoneBlock extends CardinalDirectionFacadeBlock
-		implements ITreasureBlock, /* IFogSupport, */ IMistSupport, ITileEntityProvider {
+		implements ITreasureBlock, IMistSupport {
 
 	/*
 	 * An array of AxisAlignedBB bounds for the bounding box
@@ -55,20 +57,12 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock
 		setSoundType(SoundType.STONE);
 		setCreativeTab(Treasure.TREASURE_TAB);
 		setHardness(3.0F);
-//		this.setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(HAS_ENTITY,
-//				Boolean.valueOf(false)));
 
 		setBoundingBox(new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), // N
 				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), // E
 				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), // S
 				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F) // W
 		);
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		GravestoneProximitySpawnerTileEntity tileEntity = new GravestoneProximitySpawnerTileEntity();
-		return (TileEntity) tileEntity;
 	}
 
 	/**
@@ -92,10 +86,8 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock
 					for (int z1 = -4; z1 <= 4; ++z1) {
 						// that just checks a value.
 						IBlockState inspectBlockState = worldIn.getBlockState(mbp.setPos(x + x1, y + y1, z + z1));
-//						Block inspectBlock = inspectBlockState.getBlock();
 						if (inspectBlockState.getMaterial() == TreasureItems.FOG) {
 							worldIn.setBlockState(mbp, inspectBlockState.withProperty(FogBlock.CHECK_DECAY, true));
-//							Treasure.logger.debug("Setting fog block @ {} to check decay = true", mbp);
 						}
 					}
 				}
@@ -178,42 +170,7 @@ public class GravestoneBlock extends CardinalDirectionFacadeBlock
 			return bounds[EnumFacing.NORTH.getHorizontalIndex()];
 		}
 	}
-
-	/**
-	 * Determines if this block can prevent leaves connected to it from decaying.
-	 * 
-	 * @param state The current state
-	 * @param world The current world
-	 * @param pos   Block position in world
-	 * @return true if the presence this block can prevent leaves from decaying.
-	 */
-//	@Override
-//	public boolean canSustainFog(IBlockState state, IBlockAccess world, BlockPos pos) {
-////		return true;
-//		return false;
-//	}
-
-	/**
-	 * Convert the given metadata into a BlockState for this Block
-	 */
-//	@Override
-//	public IBlockState getStateFromMeta(int meta) {
-//		IBlockState state = super.getStateFromMeta(meta);
-//		return state.withProperty(HAS_ENTITY, Boolean.valueOf((meta & 8) > 0));
-//	}
-
-	/**
-	 * Convert the BlockState into the correct metadata value
-	 */
-//	@Override
-//	public int getMetaFromState(IBlockState state) {
-//		int meta = 0;
-//		meta = state.getValue(FACING).getIndex();
-//		if (state.getValue(HAS_ENTITY))
-//			meta += 8;
-//		return meta;
-//	}
-
+	
 	/**
 	 * @return the bounds
 	 */
