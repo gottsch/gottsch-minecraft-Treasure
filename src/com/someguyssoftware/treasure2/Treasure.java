@@ -105,12 +105,12 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.12.2";
+	protected static final String VERSION = "1.13.1";
 
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/update.json";
 
 	private static final String VERSION_URL = "";
-	private static final BuildVersion MINECRAFT_VERSION = new BuildVersion(1, 13, 0);
+	private static final BuildVersion MINECRAFT_VERSION = new BuildVersion(1, 12, 2);
 
 	// latest version
 	private static BuildVersion latestVersion;

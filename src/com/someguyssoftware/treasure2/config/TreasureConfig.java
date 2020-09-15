@@ -164,6 +164,10 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String GRAVESTONE3_POLISHED_DIORITE_ID = "gravestone3_polished_diorite";
 	@Ignore public static final String GRAVESTONE3_OBSIDIAN_ID = "gravestone3_obsidian";
 
+	@Ignore public static final String GRAVESTONE1_SPAWNER_STONE_ID = "gravestone1_spawner_stone";
+	@Ignore public static final String GRAVESTONE2_SPAWNER_COBBLESTONE_ID = "gravestone2_spawner_cobblestone";
+	@Ignore public static final String GRAVESTONE3_SPAWNER_OBSIDIAN_ID = "gravestone3_spawner_obsidian";
+	
 	@Ignore public static final String SKULL_CROSSBONES_ID = "skull_and_crossbones";
 	@Ignore public static final String SKELETON_ID = "skeleton";
 
@@ -290,7 +294,6 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Name("11 oasis")
 	@Comment("Oasis properties")
 	public static final Oases OASES = new Oases();
-
 
 	@Ignore
 	public static TreasureConfig instance = new TreasureConfig();
@@ -1022,7 +1025,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			"Currently gravestones spawn Bound Souls." })
 			@Name("08. Probability that grave marker will spawn a mob:")
 			@RangeInt(min = 0, max = 100)
-			public int gravestoneMobProbability = 80;
+			public int gravestoneMobProbability = 30;
 		}
 
 		public MarkerProperties getMarkerProperties() {

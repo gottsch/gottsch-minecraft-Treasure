@@ -62,7 +62,7 @@ import net.minecraftforge.registries.IForgeRegistry;
  */
 public class TreasureBlocks {
 
-	// CHESTS
+	// chests
 	public static final Block WOOD_CHEST;
 	public static final Block CRATE_CHEST;
 	public static final Block MOLDY_CRATE_CHEST;
@@ -80,11 +80,8 @@ public class TreasureBlocks {
 	public static final Block CAULDRON_CHEST;
 	public static final Block SPIDER_CHEST;
 	public static final Block VIKING_CHEST;
-//	public static final Block WHALE_BONE_PIRATE_CHEST;
-//	public static final Block OYSTER_CHEST;
-//	public static final Block CLAM_CHEST;
 
-	// MIMIC CHESTS
+	// mimic chests
 	public static final Block WOOD_MIMIC;
 	public static final Block PIRATE_MIMIC;
 
@@ -99,8 +96,11 @@ public class TreasureBlocks {
 
 	// gravestone holder
 	public static List<Block> gravestones;
+	
+	// gravestone spawner holder
+	public static List<Block> gravestoneSpawners;
 
-	// GRAVESTONES
+	// gravestones
 	public static final Block GRAVESTONE1_STONE;
 	public static final Block GRAVESTONE1_COBBLESTONE;
 	public static final Block GRAVESTONE1_MOSSY_COBBLESTONE;
@@ -124,26 +124,15 @@ public class TreasureBlocks {
 	public static final Block GRAVESTONE3_OBSIDIAN;
 	public static final Block SKULL_CROSSBONES;
 	public static final Block SKELETON;
-
+	
+	// gravestone spawners
+	public static final Block GRAVESTONE1_SPAWNER_STONE;
+	public static final Block GRAVESTONE2_SPAWNER_COBBLESTONE;
+	public static final Block GRAVESTONE3_SPAWNER_OBSIDIAN;
+	
 	// wells
 	public static final Block WISHING_WELL_BLOCK;
 	public static final Block DESERT_WISHING_WELL_BLOCK;
-
-	// fogs
-//	public static final FogBlock FOG_BLOCK;
-//	public static final FogBlock HIGH_FOG_BLOCK;
-//	public static final FogBlock MED_FOG_BLOCK;
-//	public static final FogBlock LOW_FOG_BLOCK;
-//
-//	public static final FogBlock WITHER_FOG;
-//	public static final FogBlock HIGH_WITHER_FOG;
-//	public static final FogBlock MED_WITHER_FOG;
-//	public static final FogBlock LOW_WITHER_FOG;
-//
-//	public static final FogBlock POISON_FOG;
-//	public static final FogBlock HIGH_POISON_FOG;
-//	public static final FogBlock MED_POISON_FOG;
-//	public static final FogBlock LOW_POISON_FOG;
 
 	public static Map<FogHeight, FogBlock> fogMap = new HashMap<>();;
 	public static Map<FogHeight, FogBlock> witherFogMap = new HashMap<>();
@@ -350,21 +339,21 @@ public class TreasureBlocks {
 		gbs[3] = new AxisAlignedBB(0.375D, 0.0D, 0.125D, 0.675D, 0.75D, 0.875D); // E
 
 		// Gravestones
-		GRAVESTONE1_STONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_STONE_ID, Material.ROCK)
+		GRAVESTONE1_STONE = new GravestoneSpawnerBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_STONE_ID, Material.ROCK)
 				.setBounds(gbs);
-		GRAVESTONE1_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_COBBLESTONE_ID,
+		GRAVESTONE1_COBBLESTONE = new GravestoneSpawnerBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_COBBLESTONE_ID,
 				Material.ROCK).setBounds(gbs);
-		GRAVESTONE1_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID,
+		GRAVESTONE1_MOSSY_COBBLESTONE = new GravestoneSpawnerBlock(Treasure.MODID,
 				TreasureConfig.GRAVESTONE1_MOSSY_COBBLESTONE_ID, Material.ROCK).setBounds(gbs);
-		GRAVESTONE1_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID,
+		GRAVESTONE1_POLISHED_GRANITE = new GravestoneSpawnerBlock(Treasure.MODID,
 				TreasureConfig.GRAVESTONE1_POLISHED_GRANITE_ID, Material.ROCK).setBounds(gbs);
-		GRAVESTONE1_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID,
+		GRAVESTONE1_POLISHED_ANDESITE = new GravestoneSpawnerBlock(Treasure.MODID,
 				TreasureConfig.GRAVESTONE1_POLISHED_ANDESITE_ID, Material.ROCK).setBounds(gbs);
-		GRAVESTONE1_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID,
+		GRAVESTONE1_POLISHED_DIORITE = new GravestoneSpawnerBlock(Treasure.MODID,
 				TreasureConfig.GRAVESTONE1_POLISHED_DIORITE_ID, Material.ROCK).setBounds(gbs);
-		GRAVESTONE1_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_OBSIDIAN_ID,
+		GRAVESTONE1_OBSIDIAN = new GravestoneSpawnerBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_OBSIDIAN_ID,
 				Material.ROCK).setBounds(gbs);
-
+		
 		AxisAlignedBB[] gbs2 = new AxisAlignedBB[4];
 		gbs2[0] = new AxisAlignedBB(0.125D, 0.0D, 0.375D, 0.875D, 1.375D, 0.675D); // S
 		gbs2[1] = new AxisAlignedBB(0.375D, 0.0D, 0.125D, 0.675D, 1.375D, 0.875D); // W
@@ -402,6 +391,14 @@ public class TreasureBlocks {
 		GRAVESTONE3_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_OBSIDIAN_ID,
 				Material.ROCK).setBounds(gbs2);
 
+		// gravestone spawners
+		GRAVESTONE1_SPAWNER_STONE = new GravestoneSpawnerBlock(Treasure.MODID, TreasureConfig.GRAVESTONE1_SPAWNER_STONE_ID, Material.ROCK)
+				.setBounds(gbs);
+		GRAVESTONE2_SPAWNER_COBBLESTONE = new GravestoneSpawnerBlock(Treasure.MODID, TreasureConfig.GRAVESTONE2_SPAWNER_COBBLESTONE_ID,
+				Material.ROCK).setBounds(gbs2);
+		GRAVESTONE3_SPAWNER_OBSIDIAN = new GravestoneSpawnerBlock(Treasure.MODID, TreasureConfig.GRAVESTONE3_SPAWNER_OBSIDIAN_ID,
+				Material.ROCK).setBounds(gbs2);
+		
 		// other
 		SKULL_CROSSBONES = new SkullAndBonesBlock(Treasure.MODID, TreasureConfig.SKULL_CROSSBONES_ID, Material.ROCK);
 
@@ -433,48 +430,10 @@ public class TreasureBlocks {
 		gravestones.add(SKULL_CROSSBONES);
 		gravestones.add(SKELETON);
 
-		// FOG
-//		FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.FOG_BLOCK_ID, TreasureItems.FOG, fogMap)
-//				.setFogHeight(FogHeight.FULL_FOG);
-//		HIGH_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.HIGH_FOG_BLOCK_ID, TreasureItems.FOG, fogMap)
-//				.setFogHeight(FogHeight.HIGH_FOG);
-//		MED_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.MED_FOG_BLOCK_ID, TreasureItems.FOG, fogMap)
-//				.setFogHeight(FogHeight.MEDIUM_FOG);
-//		LOW_FOG_BLOCK = new FogBlock(Treasure.MODID, TreasureConfig.LOW_FOG_BLOCK_ID, TreasureItems.FOG, fogMap)
-//				.setFogHeight(FogHeight.LOW_FOG);
-//
-//		WITHER_FOG = new WitherFogBlock(Treasure.MODID, TreasureConfig.WITHER_FOG_ID, TreasureItems.FOG, witherFogMap)
-//				.setFogType(FogType.WITHER).setFogHeight(FogHeight.FULL_FOG);
-//		HIGH_WITHER_FOG = new WitherFogBlock(Treasure.MODID, TreasureConfig.HIGH_WITHER_FOG_ID, TreasureItems.FOG,
-//				witherFogMap).setFogType(FogType.WITHER).setFogHeight(FogHeight.HIGH_FOG);
-//		MED_WITHER_FOG = new WitherFogBlock(Treasure.MODID, TreasureConfig.MED_WITHER_FOG_ID, TreasureItems.FOG,
-//				witherFogMap).setFogType(FogType.WITHER).setFogHeight(FogHeight.MEDIUM_FOG);
-//		LOW_WITHER_FOG = new WitherFogBlock(Treasure.MODID, TreasureConfig.LOW_WITHER_FOG_ID, TreasureItems.FOG,
-//				witherFogMap).setFogType(FogType.WITHER).setFogHeight(FogHeight.LOW_FOG);
-//
-//		POISON_FOG = new PoisonFogBlock(Treasure.MODID, TreasureConfig.POISON_FOG_ID, TreasureItems.FOG, poisonFogMap)
-//				.setFogType(FogType.POISON).setFogHeight(FogHeight.FULL_FOG);
-//		HIGH_POISON_FOG = new PoisonFogBlock(Treasure.MODID, TreasureConfig.HIGH_POISON_FOG_ID, TreasureItems.FOG,
-//				poisonFogMap).setFogType(FogType.POISON).setFogHeight(FogHeight.HIGH_FOG);
-//		MED_POISON_FOG = new PoisonFogBlock(Treasure.MODID, TreasureConfig.MED_POISON_FOG_ID, TreasureItems.FOG,
-//				poisonFogMap).setFogType(FogType.POISON).setFogHeight(FogHeight.MEDIUM_FOG);
-//		LOW_POISON_FOG = new PoisonFogBlock(Treasure.MODID, TreasureConfig.LOW_POISON_FOG_ID, TreasureItems.FOG,
-//				poisonFogMap).setFogType(FogType.POISON).setFogHeight(FogHeight.LOW_FOG);
-//
-//		fogMap.put(FogHeight.FULL_FOG, TreasureBlocks.FOG_BLOCK);
-//		fogMap.put(FogHeight.HIGH_FOG, TreasureBlocks.HIGH_FOG_BLOCK);
-//		fogMap.put(FogHeight.MEDIUM_FOG, TreasureBlocks.MED_FOG_BLOCK);
-//		fogMap.put(FogHeight.LOW_FOG, TreasureBlocks.LOW_FOG_BLOCK);
-//
-//		witherFogMap.put(FogHeight.FULL_FOG, TreasureBlocks.WITHER_FOG);
-//		witherFogMap.put(FogHeight.HIGH_FOG, TreasureBlocks.HIGH_WITHER_FOG);
-//		witherFogMap.put(FogHeight.MEDIUM_FOG, TreasureBlocks.MED_WITHER_FOG);
-//		witherFogMap.put(FogHeight.LOW_FOG, TreasureBlocks.LOW_WITHER_FOG);
-//
-//		poisonFogMap.put(FogHeight.FULL_FOG, TreasureBlocks.POISON_FOG);
-//		poisonFogMap.put(FogHeight.HIGH_FOG, TreasureBlocks.HIGH_POISON_FOG);
-//		poisonFogMap.put(FogHeight.MEDIUM_FOG, TreasureBlocks.MED_POISON_FOG);
-//		poisonFogMap.put(FogHeight.LOW_FOG, TreasureBlocks.LOW_POISON_FOG);
+		gravestoneSpawners = new ArrayList<>();
+		gravestoneSpawners.add(GRAVESTONE1_SPAWNER_STONE);
+		gravestoneSpawners.add(GRAVESTONE2_SPAWNER_COBBLESTONE);
+		gravestoneSpawners.add(GRAVESTONE3_SPAWNER_OBSIDIAN);
 
 		// ORES/GEMS
 		SAPPHIRE_ORE = new OreBlock(Treasure.MODID, TreasureConfig.SAPPHIRE_ORE_ID, Material.ROCK);
@@ -551,15 +510,24 @@ public class TreasureBlocks {
 					WOOD_MIMIC, 
 					PIRATE_MIMIC, 
 					GRAVESTONE1_STONE,
-					GRAVESTONE1_COBBLESTONE, GRAVESTONE1_MOSSY_COBBLESTONE, GRAVESTONE1_POLISHED_GRANITE,
-					GRAVESTONE1_POLISHED_ANDESITE, GRAVESTONE1_POLISHED_DIORITE, GRAVESTONE1_OBSIDIAN,
+					GRAVESTONE1_COBBLESTONE,
+					GRAVESTONE1_MOSSY_COBBLESTONE,
+					GRAVESTONE1_POLISHED_GRANITE,
+					GRAVESTONE1_POLISHED_ANDESITE,
+					GRAVESTONE1_POLISHED_DIORITE,
+					GRAVESTONE1_OBSIDIAN,
 					GRAVESTONE2_STONE, GRAVESTONE2_COBBLESTONE, GRAVESTONE2_MOSSY_COBBLESTONE,
 					GRAVESTONE2_POLISHED_GRANITE, GRAVESTONE2_POLISHED_ANDESITE, GRAVESTONE2_POLISHED_DIORITE,
 					GRAVESTONE2_OBSIDIAN, GRAVESTONE3_STONE, GRAVESTONE3_COBBLESTONE, GRAVESTONE3_MOSSY_COBBLESTONE,
 					GRAVESTONE3_POLISHED_GRANITE, GRAVESTONE3_POLISHED_ANDESITE, GRAVESTONE3_POLISHED_DIORITE,
-					GRAVESTONE3_OBSIDIAN, SKULL_CROSSBONES, SKELETON, WISHING_WELL_BLOCK, DESERT_WISHING_WELL_BLOCK,
-//					FOG_BLOCK, HIGH_FOG_BLOCK, MED_FOG_BLOCK, LOW_FOG_BLOCK, WITHER_FOG, HIGH_WITHER_FOG,
-//					MED_WITHER_FOG, LOW_WITHER_FOG, POISON_FOG, HIGH_POISON_FOG, MED_POISON_FOG, LOW_POISON_FOG,
+					GRAVESTONE3_OBSIDIAN,
+					GRAVESTONE1_SPAWNER_STONE,
+					GRAVESTONE2_SPAWNER_COBBLESTONE,
+					GRAVESTONE3_SPAWNER_OBSIDIAN,
+					SKULL_CROSSBONES,
+					SKELETON,
+					WISHING_WELL_BLOCK,
+					DESERT_WISHING_WELL_BLOCK,
 					WITHER_LOG, WITHER_BRANCH, WITHER_ROOT, WITHER_BROKEN_LOG, WITHER_LOG_SOUL, WITHER_CHEST_TOP,
 					WITHER_PLANKS, SPANISH_MOSS, PAINTING_BLOCKS_BRICKS, PAINTING_BLOCKS_COBBLESTONE,
 					PAINTING_BLOCKS_DIRT, PAINTING_BLOCKS_LAVA, PAINTING_BLOCKS_SAND, PAINTING_BLOCKS_WATER,
@@ -623,7 +591,11 @@ public class TreasureBlocks {
 					new ItemBlock(GRAVESTONE3_STONE), new ItemBlock(GRAVESTONE3_COBBLESTONE),
 					new ItemBlock(GRAVESTONE3_MOSSY_COBBLESTONE), new ItemBlock(GRAVESTONE3_POLISHED_GRANITE),
 					new ItemBlock(GRAVESTONE3_POLISHED_ANDESITE), new ItemBlock(GRAVESTONE3_POLISHED_DIORITE),
-					new ItemBlock(GRAVESTONE3_OBSIDIAN), new ItemBlock(SKULL_CROSSBONES),
+					new ItemBlock(GRAVESTONE3_OBSIDIAN),
+					new ItemBlock(GRAVESTONE1_SPAWNER_STONE),
+					new ItemBlock(GRAVESTONE2_SPAWNER_COBBLESTONE),
+					new ItemBlock(GRAVESTONE3_SPAWNER_OBSIDIAN),
+					new ItemBlock(SKULL_CROSSBONES),
 					new ItemBlock(WISHING_WELL_BLOCK), new ItemBlock(DESERT_WISHING_WELL_BLOCK),
 					new ItemBlock(WITHER_LOG), new ItemBlock(WITHER_BROKEN_LOG), new ItemBlock(WITHER_LOG_SOUL),
 					new ItemBlock(WITHER_PLANKS), new ItemBlock(SAPPHIRE_ORE), new ItemBlock(RUBY_ORE),
