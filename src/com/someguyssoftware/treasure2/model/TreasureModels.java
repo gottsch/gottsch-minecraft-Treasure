@@ -76,6 +76,10 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE3_POLISHED_DIORITE));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE3_OBSIDIAN));
 
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1_SPAWNER_STONE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE2_SPAWNER_COBBLESTONE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GRAVESTONE3_SPAWNER_OBSIDIAN));
+		
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SKULL_CROSSBONES));
 		registerItemModel(TreasureItems.SKELETON);
 
