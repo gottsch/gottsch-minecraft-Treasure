@@ -69,21 +69,24 @@ public class TreasureConfig extends AbstractConfig {
 	
 	public static class KeyID {
 		public static final String WOOD_KEY_ID = "wood_key";
-		 public static final String STONE_KEY_ID = "stone_key";
-		 public static final String IRON_KEY_ID = "iron_key";
-		 public static final String GOLD_KEY_ID = "gold_key";
-		 public static final String DIAMOND_KEY_ID = "diamond_key";
-		 public static final String EMERALD_KEY_ID = "emerald_key";
-		 public static final String RUBY_KEY_ID = "ruby_key";
-		 public static final String SAPPHIRE_KEY_ID = "sapphire_key";
-		 public static final String JEWELLED_KEY_ID = "jewelled_key";
-		 public static final String METALLURGISTS_KEY_ID = "metallurgists_key";
-		 public static final String SKELETON_KEY_ID = "skeleton_key";
-		 public static final String WITHER_KEY_ID = "wither_key";
-		 public static final String SPIDER_KEY_ID = "spider_key";
+        public static final String STONE_KEY_ID = "stone_key";
+        public static final String EMBER_KEY_ID = "ember_key";
+        public static final String LEAF_KEY_ID = "leaf_key";
+        public static final String LIGHTNING_KEY_ID = "lightning_key";
+		public static final String IRON_KEY_ID = "iron_key";
+		public static final String GOLD_KEY_ID = "gold_key";
+		public static final String DIAMOND_KEY_ID = "diamond_key";
+		public static final String EMERALD_KEY_ID = "emerald_key";
+		public static final String RUBY_KEY_ID = "ruby_key";
+		public static final String SAPPHIRE_KEY_ID = "sapphire_key";
+		public static final String JEWELLED_KEY_ID = "jewelled_key";
+		public static final String METALLURGISTS_KEY_ID = "metallurgists_key";
+		public static final String SKELETON_KEY_ID = "skeleton_key";
+		public static final String WITHER_KEY_ID = "wither_key";
+		public static final String SPIDER_KEY_ID = "spider_key";
 
-		 public static final String PILFERERS_LOCK_PICK_ID = "pilferers_lock_pick";
-		 public static final String THIEFS_LOCK_PICK_ID = "thiefs_lock_pick";
+		public static final String PILFERERS_LOCK_PICK_ID = "pilferers_lock_pick";
+		public static final String THIEFS_LOCK_PICK_ID = "thiefs_lock_pick";
 	}
 	
 	public static class ChestID {
@@ -161,7 +164,8 @@ public class TreasureConfig extends AbstractConfig {
 		public ForgeConfigSpec.ConfigValue<Integer> pilferersLockPickMaxUses;
 		public ForgeConfigSpec.ConfigValue<Integer> thiefsLockPickMaxUses;
 		public ForgeConfigSpec.ConfigValue<Integer> woodKeyMaxUses;
-		public ForgeConfigSpec.ConfigValue<Integer> stoneKeyMaxUses;
+        public ForgeConfigSpec.ConfigValue<Integer> stoneKeyMaxUses;
+        public ForgeConfigSpec.ConfigValue<Integer> emberKeyMaxUses;
 		public ForgeConfigSpec.ConfigValue<Integer> ironKeyMaxUses;
 		public ForgeConfigSpec.ConfigValue<Integer> goldKeyMaxUses;
 		public ForgeConfigSpec.ConfigValue<Integer> diamondKeyMaxUses;
@@ -203,6 +207,10 @@ public class TreasureConfig extends AbstractConfig {
     				.comment("The maximum uses for a given stone key.")
     				.defineInRange("Stone key max uses:", 10, 1, 32000);
 
+     		emberKeyMaxUses = builder
+    				.comment("The maximum uses for a given stone key.")
+                    .defineInRange("Stone key max uses:", 15, 1, 32000); 
+                                      
 //    		@RequiresMcRestart
     		ironKeyMaxUses = builder
     				.comment("The maximum uses for a given iron key.")

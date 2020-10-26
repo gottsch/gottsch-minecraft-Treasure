@@ -40,7 +40,10 @@ public class TreasureItems {
 
 	// keys
 	public static KeyItem WOOD_KEY;
-	public static KeyItem STONE_KEY;
+    public static KeyItem STONE_KEY;
+    public static KeyItem EMBER_KEY;
+    public static KeyItem LEAF_KEY;
+    public static KeyItem LIGHTNING_KEY;
 	public static KeyItem IRON_KEY;
 	public static KeyItem GOLD_KEY;
 	public static KeyItem METALLURGISTS_KEY;
@@ -89,6 +92,25 @@ public class TreasureItems {
 				.setRarity(Rarity.COMMON)
 				.setCraftable(false);
 
+        EMBER_KEY = new EmberKey(Treasure.MODID, TreasureConfig.EMBER_KEY_ID, new Item.Properties().maxDamage(TreasureConfig.KEYS_LOCKS.emberKeyMaxUses.get()))
+				.setCategory(Category.ELEMENTAL)
+				.setRarity(Rarity.SCARCE)
+				.setCraftable(false)
+                .setMaxDamage(TreasureConfig.KEYS_LOCKS.emberKeyMaxUses);      
+
+        LEAF_KEY = new KeyItem(Treasure.MODID, TreasureConfig.LEAF_KEY_ID)
+				.setCategory(Category.ELEMENTAL)
+				.setRarity(Rarity.UNCOMMON)
+				.setCraftable(false)
+                .setMaxDamage(TreasureConfig.KEYS_LOCKS.leafKeyMaxUses);      
+        
+		LIGHTNING_KEY = new LightningKey(Treasure.MODID, TreasureConfig.LIGHTNING_KEY_ID)
+				.setCategory(Category.ELEMENTAL)
+				.setRarity(Rarity.SCARCE)
+				.setBreakable(false)
+				.setCraftable(false)
+                .setMaxDamage(TreasureConfig.KEYS_LOCKS.lightningKeyMaxUses);
+        
 		IRON_KEY = new KeyItem(Treasure.MODID, KeyID.IRON_KEY_ID, new Item.Properties().maxDamage(TreasureConfig.KEYS_LOCKS.ironKeyMaxUses.get()))
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.UNCOMMON)
@@ -239,7 +261,10 @@ public class TreasureItems {
 				SPIDER_LOCK,
 				WITHER_LOCK,
 				WOOD_KEY,
-				STONE_KEY,
+                STONE_KEY,
+                EMBER_KEY,
+                LEAF_KEY,
+                LIGHTNING_KEY,
 				IRON_KEY,
 				GOLD_KEY,
 				DIAMOND_KEY,
