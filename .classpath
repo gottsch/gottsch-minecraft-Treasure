@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/ModCommonLibs/libs/commons-cli-1.4.jar"/>
+	<classpathentry kind="lib" path="/gottsch-minecraft-GottschCore1.15.2/build/libs/GottschCore-mc1.15.2-f31.2.0-v0.0.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/forge-1.15.2-31.2"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
