@@ -6,9 +6,11 @@ package com.someguyssoftware.treasure2.item;
 import java.util.List;
 
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 /**
@@ -23,8 +25,8 @@ public class EmberKey extends KeyItem {
 	 * @param modID
 	 * @param name
 	 */
-	public EmberKey(String modID, String name) {
-		super(modID, name);
+	public EmberKey(String modID, String name, Item.Properties properties) {
+		super(modID, name, properties);
 	}
 	
 	/**
@@ -34,13 +36,13 @@ public class EmberKey extends KeyItem {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		
+	
 		tooltip.add(
-				I18n.translateToLocalFormatted("tooltip.label.specials", 
-				TextFormatting.GOLD) + I18n.translateToLocal("tooltip.ember_key.specials")
-			);
+				new TranslationTextComponent("tooltip.label.specials", 
+						TextFormatting.GOLD + new TranslationTextComponent("tooltip.ember_key.specials").getFormattedText())
+				);			
 	}
 	
 	/**

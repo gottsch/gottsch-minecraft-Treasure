@@ -43,12 +43,12 @@ import net.minecraft.world.World;
  */
 public class KeyItem extends ModItem {
 	public static final int DEFAULT_MAX_USES = 25;
-	
+
 	/*
 	 * The category that the key belongs to
 	 */
 	private Category category;
-	
+
 	/*
 	 * The rarity of the key
 	 */
@@ -58,7 +58,7 @@ public class KeyItem extends ModItem {
 	 * Is the key craftable
 	 */
 	private boolean craftable;
-	
+
 	/*
 	 * Can the key break attempting to unlock a lock
 	 */
@@ -68,12 +68,12 @@ public class KeyItem extends ModItem {
 	 * Can the key take damage and lose durability
 	 */
 	private boolean damageable;
-	
+
 	/*
 	 * The probability of a successful unlocking
 	 */
 	private double successProbability;
-	
+
 	/**
 	 * 
 	 * @param modID
@@ -83,10 +83,10 @@ public class KeyItem extends ModItem {
 		super(modID, name, 
 				properties
 				.group(TreasureItemGroups.MOD_ITEM_GROUP)
-//				.maxStackSize(1) // can't have damage AND stacksize.
+				//				.maxStackSize(1) // can't have damage AND stacksize.
 				.maxDamage(DEFAULT_MAX_USES));
 
-		setCategory(Category.BASIC);
+		setCategory(Category.ELEMENTAL);
 		setRarity(Rarity.COMMON);
 		setBreakable(true);
 		setDamageable(true);
@@ -108,7 +108,7 @@ public class KeyItem extends ModItem {
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		
+
 		tooltip.add(new TranslationTextComponent("tooltip.label.rarity", TextFormatting.DARK_BLUE + getRarity().toString()));
 		tooltip.add(new TranslationTextComponent("tooltip.label.category", TextFormatting.GOLD + getCategory().toString()));
 		tooltip.add(new TranslationTextComponent("tooltip.label.max_uses", TextFormatting.GOLD + String.valueOf(getMaxDamage())));
@@ -123,7 +123,7 @@ public class KeyItem extends ModItem {
 		}
 		tooltip.add(
 				new TranslationTextComponent("tooltip.label.breakable", breakable));
-		
+
 		ITextComponent craftable = null;
 		if (isCraftable()) {
 			craftable = new TranslationTextComponent("tooltip.yes").applyTextStyle(TextFormatting.GREEN);
@@ -132,7 +132,7 @@ public class KeyItem extends ModItem {
 			craftable = new TranslationTextComponent("tooltip.no").applyTextStyle(TextFormatting.DARK_RED);
 		}
 		tooltip.add(new TranslationTextComponent("tooltip.label.craftable", craftable));
-		
+
 		ITextComponent damageable = null;
 		if (isDamageable()) {
 			damageable = new TranslationTextComponent("tooltip.yes").applyTextStyle(TextFormatting.DARK_RED);
@@ -143,7 +143,7 @@ public class KeyItem extends ModItem {
 		tooltip.add(
 				new TranslationTextComponent("tooltip.label.damageable", damageable));
 	}
-		
+
 	@Override
 	public ActionResultType onItemUse(ItemUseContext context) {
 		BlockPos chestPos = context.getPos();
@@ -153,7 +153,7 @@ public class KeyItem extends ModItem {
 			chestPos = ((ITreasureChestProxy)block).getChestPos(chestPos);
 			block = context.getWorld().getBlockState(chestPos).getBlock();
 		}
-		
+
 		if (block instanceof AbstractChestBlock) {
 			// get the tile entity
 			TileEntity te = context.getWorld().getTileEntity(chestPos);
@@ -162,7 +162,7 @@ public class KeyItem extends ModItem {
 				return ActionResultType.FAIL;
 			}
 			AbstractTreasureChestTileEntity tcte = (AbstractTreasureChestTileEntity)te;
-						
+
 			// exit if on the client
 			if (WorldInfo.isClientSide(context.getWorld())) {			
 				return ActionResultType.FAIL;
@@ -172,7 +172,7 @@ public class KeyItem extends ModItem {
 			if (!tcte.hasLocks()) {
 				return ActionResultType.SUCCESS;
 			}
-			
+
 			try {
 				ItemStack heldItem = context.getPlayer().getHeldItem(context.getHand());	
 				boolean breakKey = true;
@@ -184,7 +184,7 @@ public class KeyItem extends ModItem {
 				if (lockState != null) {
 					fitsLock = true;
 				}
-				
+
 				if (fitsLock) {
 					if (unlock(lockState.getLock())) {
 						LockItem lock = lockState.getLock();
@@ -202,7 +202,7 @@ public class KeyItem extends ModItem {
 						breakKey = false;
 					}
 				}
-						
+
 				// check key's breakability
 				if (breakKey) {
 					if (isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks.get()) {
@@ -221,14 +221,14 @@ public class KeyItem extends ModItem {
 						context.getPlayer().sendMessage(new StringTextComponent("Failed to unlock."));
 					}						
 				}
-				
+
 				// user attempted to use key - increment the damage
 				if (isDamageable() && !isKeyBroken) {
-						heldItem.damageItem(1,  context.getPlayer(), p -> {
-							p.sendBreakAnimation(EquipmentSlotType.MAINHAND);
-						});
-						if (heldItem.getDamage() == heldItem.getMaxDamage()) {
-							heldItem.shrink(1);
+					heldItem.damageItem(1,  context.getPlayer(), p -> {
+						p.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+					});
+					if (heldItem.getDamage() == heldItem.getMaxDamage()) {
+						heldItem.shrink(1);
 					}
 				}
 			}
@@ -236,10 +236,10 @@ public class KeyItem extends ModItem {
 				Treasure.LOGGER.error("error: ", e);
 			}			
 		}		
-		
+
 		return super.onItemUse(context);
 	}
-	
+
 	/**
 	 * This method is a secondary check against a lock item.
 	 * Override this method to overrule LockItem.acceptsKey() if this is a key with special abilities.
@@ -249,7 +249,7 @@ public class KeyItem extends ModItem {
 	public boolean fitsLock(LockItem lockItem) {
 		return false;
 	}
-	
+
 	/**
 	 * 
 	 * @param lockStates
@@ -268,7 +268,7 @@ public class KeyItem extends ModItem {
 		}
 		return null; // <-- TODO should return EMPTY_LOCKSTATE
 	}
-	
+
 	/**
 	 * 
 	 * @param lockItem
@@ -280,6 +280,32 @@ public class KeyItem extends ModItem {
 			if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability())) {
 				Treasure.LOGGER.debug("Unlock attempt met probability");
 				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 
+	 * @param lockItem
+	 * @return
+	 */
+	public boolean breaksLock(LockItem lockItem) {
+		return false;
+	}
+
+	/**
+	 * 
+	 * @param lockStates
+	 * @param key
+	 * @return
+	 */
+	private boolean anyLockBreaksKey(List<LockState> lockStates, KeyItem key) {
+		for (LockState ls : lockStates) {
+			if (ls.getLock() != null) {
+				if (ls.getLock().breaksKey(key)) {
+					return true;
+				}				
 			}
 		}
 		return false;
@@ -345,7 +371,7 @@ public class KeyItem extends ModItem {
 	public boolean isBreakable() {
 		return breakable;
 	}
-	
+
 	/**
 	 * 
 	 * @param breakable

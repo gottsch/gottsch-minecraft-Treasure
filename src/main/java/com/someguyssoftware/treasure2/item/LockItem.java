@@ -73,7 +73,7 @@ public class LockItem extends ModItem {
 	 */
 	public LockItem(String modID, String name, Item.Properties properties) {
 		super(modID, name, properties.group(TreasureItemGroups.MOD_ITEM_GROUP));
-		setCategory(Category.BASIC);
+		setCategory(Category.ELEMENTAL);
 		setRarity(Rarity.COMMON);
 		setCraftable(false);
 	}
@@ -191,6 +191,15 @@ public class LockItem extends ModItem {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param keyItem
+	 * @return
+	 */
+    public boolean breaksKey(KeyItem keyItem) {
+        return false;
+    }
+    
 	/**
 	 * @return the rarity
 	 */

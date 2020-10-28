@@ -8,9 +8,11 @@ import java.util.List;
 import com.someguyssoftware.treasure2.enums.Category;
 
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 /**
@@ -25,10 +27,10 @@ public class LightningKey extends KeyItem {
 	 * @param modID
 	 * @param name
 	 */
-	public LightningKey(String modID, String name) {
-		super(modID, name);
+	public LightningKey(String modID, String name, Item.Properties properties) {
+		super(modID, name, properties);
 	}
-	
+
 	/**
 	 * Format: (Additions)
 	 * 
@@ -36,16 +38,15 @@ public class LightningKey extends KeyItem {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		
+
 		tooltip.add(
-				I18n.translateToLocalFormatted("tooltip.label.specials", 
-				TextFormatting.GOLD) + I18n.translateToLocal("tooltip.lightning_key.specials")
-			);
-	
+				new TranslationTextComponent("tooltip.label.specials", 
+						TextFormatting.GOLD + new TranslationTextComponent("tooltip.lightning_key.specials").getFormattedText())
+				);	
 	}
-	
+
 	/**
 	 * This key can fits any lock from the with a Category of [ELEMENTAL].
 	 */

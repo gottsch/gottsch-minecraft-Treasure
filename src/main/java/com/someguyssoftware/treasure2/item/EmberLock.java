@@ -3,9 +3,11 @@ package com.someguyssoftware.treasure2.item;
 import java.util.List;
 
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 /**
@@ -21,8 +23,8 @@ public class EmberLock extends LockItem {
 	 * @param name
 	 * @param keys
 	 */
-    public EmberLock(String modID, String name, KeyItem[] keys) {
-		super(modID, name, keys);
+	public EmberLock(String modID, String name, Item.Properties properties, KeyItem[] keys) {
+		super(modID, name, properties, keys);
 	}
 
 	/**
@@ -32,20 +34,19 @@ public class EmberLock extends LockItem {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		
-		tooltip.add(
-				I18n.translateToLocalFormatted("tooltip.label.specials", 
-				TextFormatting.GOLD) + I18n.translateToLocal("tooltip.ember_lock.specials")
-			);
-    }
-    
-    @Override
-    public boolean breaksKey(KeyItem key) {
-        if (key != TreasureItems.EMBER_KEY && key != TreasureItems.LIGHTNING_KEY) {
-            return true;
-        }
-        return false;
-    }
+
+		tooltip.add(new TranslationTextComponent("tooltip.label.specials",
+				TextFormatting.GOLD + new TranslationTextComponent("tooltip.ember_lock.specials").getFormattedText())
+				);		
+	}
+
+	@Override
+	public boolean breaksKey(KeyItem key) {
+		if (key != TreasureItems.EMBER_KEY && key != TreasureItems.LIGHTNING_KEY) {
+			return true;
+		}
+		return false;
+	}
 }
