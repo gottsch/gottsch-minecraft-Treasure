@@ -175,7 +175,12 @@ public class ClientProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				VikingChestTileEntity.class,
 				new TreasureChestTileEntityRenderer("viking-chest", new VikingChestModel()));
-		
+        
+        // cardboard box
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				CardboardBoxTileEntity.class,
+				new TreasureChestTileEntityRenderer("cardboard-box", new StandardChestModel()));        
+
 		// oyster chest
 //		ClientRegistry.bindTileEntitySpecialRenderer(
 //				OysterChestTileEntity.class,

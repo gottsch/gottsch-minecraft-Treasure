@@ -79,7 +79,8 @@ public class TreasureBlocks {
 	public static final Block GOLD_SKULL_CHEST;
 	public static final Block CAULDRON_CHEST;
 	public static final Block SPIDER_CHEST;
-	public static final Block VIKING_CHEST;
+    public static final Block VIKING_CHEST;
+    public static final Block CARDBOARD_BOX;
 
 	// mimic chests
 	public static final Block WOOD_MIMIC;
@@ -318,7 +319,10 @@ public class TreasureBlocks {
 								new AxisAlignedBB(0, 0, 0.125, 1, 0.9375, 0.875), // N
 								new AxisAlignedBB(0.125, 0, 0, 0.875, 0.9375, 1)}
 						).setHardness(3.0F);
-		
+        
+        CARDBOARD_BOX = new TreasureChestBlock(Treasure.MODID, TreasureConfig.CARDBOARD_BOX_ID, CardboardBoxTileEntity.class,
+                TreasureChestTypes.STANDARD, Rarity.COMMON).setBounds(stdChestBounds).setHardness(2.5F);
+                
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
 
@@ -506,7 +510,8 @@ public class TreasureBlocks {
 //					WHALE_BONE_PIRATE_CHEST,
 					COMPRESSOR_CHEST,
 					SPIDER_CHEST, 
-					VIKING_CHEST,
+                    VIKING_CHEST,
+                    CARDBOARD_BOX,
 					WOOD_MIMIC, 
 					PIRATE_MIMIC, 
 					GRAVESTONE1_STONE,
@@ -577,7 +582,8 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(SKULL_CHEST), new TreasureChestItemBlock(GOLD_SKULL_CHEST),
 					new TreasureChestItemBlock(CAULDRON_CHEST),
 					new TreasureChestItemBlock(SPIDER_CHEST), 
-					new TreasureChestItemBlock(VIKING_CHEST), 
+                    new TreasureChestItemBlock(VIKING_CHEST),
+                    new TreasureChestItemBlock(CARDBOARD_BOX),
 					new MimicChestItemBlock(WOOD_MIMIC),
 					new MimicChestItemBlock(PIRATE_MIMIC),
 
@@ -647,7 +653,10 @@ public class TreasureBlocks {
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.SPIDER_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(VikingChestTileEntity.class,
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.VIKING_CHEST_TE_ID));
-			
+            
+            GameRegistry.registerTileEntity(CardboardBoxTileEntity.class,
+                    new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.CARDBOARD_BOX_TE_ID));
+                    
 			GameRegistry.registerTileEntity(ProximitySpawnerTileEntity.class,
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.PROXIMITY_SPAWNER_TE_ID));
 			GameRegistry.registerTileEntity(GravestoneProximitySpawnerTileEntity.class,

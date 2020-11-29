@@ -15,6 +15,7 @@ tile.treasure2:gold_skull_chest.name=Golden Skull Chest
 tile.treasure2:cauldron_chest.name=Cauldron Chest
 tile.treasure2:spider_chest.name=Spider Chest
 tile.treasure2:viking_chest.name=Viking Chest
+tile.treasure2:cardboard_box.name=Cardboard Box
 
 tile.treasure2:wood_mimic.name=Wood Mimic
 tile.treasure2:pirate_mimic.name=Pirate Mimic
@@ -280,3 +281,4 @@ display.cauldron_chest.name=Cauldron Chest
 #display.oyster_chest.name=Oyster
 display.spider_chest.name=Spider Chest
 display.viking_chest.name=Viking Chest
+display.cardboard_box.name=Cardboard Box
