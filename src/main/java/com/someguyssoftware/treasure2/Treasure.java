@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.someguyssoftware.treasure2;
 
 import java.io.IOException;
@@ -59,8 +56,7 @@ import net.minecraftforge.fml.loading.FMLPaths;
 public class Treasure implements IMod {
 	// logger
 	public static final Logger LOGGER = LogManager.getLogger(Treasure.NAME);
-//	public static Logger LOGGER;
-//	
+
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
