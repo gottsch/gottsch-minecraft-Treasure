@@ -184,6 +184,11 @@ public class ClientProxy {
 				CardboardBoxTileEntity.class,
 				new CardboardBoxTileEntityRenderer("cardboard-box", new CardboardBoxModel()));        
 
+        // milk crate
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				MilkCrateTileEntity.class,
+                new MilkCrateTileEntityRenderer("milk-crate", new MilkCrateModel()));  
+                
 		// oyster chest
 //		ClientRegistry.bindTileEntitySpecialRenderer(
 //				OysterChestTileEntity.class,

@@ -35,6 +35,7 @@ import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerTileE
 import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MistEmitterTileEntity;
+import com.someguyssoftware.treasure2.tileentity.MilkCrateTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
@@ -82,7 +83,8 @@ public class TreasureBlocks {
 	public static final Block SPIDER_CHEST;
     public static final Block VIKING_CHEST;
     public static final Block CARDBOARD_BOX;
-
+    public static final Block MILK_CRATE;
+    
 	// mimic chests
 	public static final Block WOOD_MIMIC;
 	public static final Block PIRATE_MIMIC;
@@ -95,7 +97,6 @@ public class TreasureBlocks {
 	public static final Block CRYSTAL_SKULL_CHEST = null;
 	public static final Block AZTEC_CHEST = null;
 	public static final Block CANOPIC_CHEST = null;
-	public static final Block MILK_CRATE = null;
 
 	// chest holder
 	public static Multimap<Rarity, Block> chests;
@@ -327,7 +328,10 @@ public class TreasureBlocks {
         
         CARDBOARD_BOX = new TreasureChestBlock(Treasure.MODID, TreasureConfig.CARDBOARD_BOX_ID, CardboardBoxTileEntity.class,
                 TreasureChestTypes.TOP_SPLIT, Rarity.COMMON).setBounds(stdChestBounds).setHardness(2.5F);
-                
+         
+        MILK_CRATE = new TreasureChestBlock(Treasure.MODID, TreasureConfig.MILK_CRATE_ID, MilkCreateTileEntity.class,
+                TreasureChestTypes.STANDARD, Rarity.COMMON).setBounds(stdChestBounds).setHardness(2.5F);
+
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
 
@@ -517,6 +521,7 @@ public class TreasureBlocks {
 					SPIDER_CHEST, 
                     VIKING_CHEST,
                     CARDBOARD_BOX,
+                    MILK_CRATE,
 					WOOD_MIMIC, 
 					PIRATE_MIMIC, 
 					GRAVESTONE1_STONE,
@@ -589,6 +594,7 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(SPIDER_CHEST), 
                     new TreasureChestItemBlock(VIKING_CHEST),
                     new TreasureChestItemBlock(CARDBOARD_BOX),
+                    new TreasureChestItemBlock(MILK_CRATE),
 					new MimicChestItemBlock(WOOD_MIMIC),
 					new MimicChestItemBlock(PIRATE_MIMIC),
 
@@ -661,7 +667,9 @@ public class TreasureBlocks {
             
             GameRegistry.registerTileEntity(CardboardBoxTileEntity.class,
                     new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.CARDBOARD_BOX_TE_ID));
-                    
+            GameRegistry.registerTileEntity(MilkCrateTileEntity.class,
+                    new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.MILK_CRATE_TE_ID));
+
 			GameRegistry.registerTileEntity(ProximitySpawnerTileEntity.class,
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.PROXIMITY_SPAWNER_TE_ID));
 			GameRegistry.registerTileEntity(GravestoneProximitySpawnerTileEntity.class,
