@@ -41,6 +41,7 @@
 		"1.12.0": "Added Charms system.\nAdded Pouches (Coin Pouch, Lucky Pouch, Apprentice's Pouch, Master's Pouch).\nAdded versions to all loot table files - if new versions made, old version will be backed up as .bak files.\nAdded Charms to loot tables.\nAdded relative positioning for t2-chest command.\nConvert KeyRing to use Capabilities.BACKUP your world, you will lose KeyRing items on update!\nUsing GottschCore v1.13.0.\n",
 		"1.12.1": "Fixed doubling of coins in Pouches bug (https://github.com/gottsch/gottsch-minecraft-Treasure/issues/142).\nAdded default values for MobProximitySpawners to prevent crashes (https://github.com/gottsch/gottsch-minecraft-Treasure/issues/152).\nAdded default charm assignments if loot table incorreclty configured (https://github.com/gottsch/gottsch-minecraft-Treasure/issues/146).",
 		"1.13.0": "Added Ember Lock and Key.\nAdded Leaf Lock and Key.\nAdded Lightning Key.\nAdded ability to merge Keys on anvil.\nAdded Volcano Pit.\nAdded Blackstone Block (from mc1.16).\nIncreased Key success rate to 95%.\nIncreased Pilferer's Lock Pick success rate to 32%.\nIncreased Thief's Lock Pick success rate to 48%.\nUpdated loot tables to include Ember, Leaf and Lightning Keys.\nUpdated Chinese lang file.\n",
-		"1.13.1": "Fixed the large number of TileEntities created because of Gravestones. (Note, this is only for newly generated chunks).\nReduced likihood of Bound Soul gravestone to 30%.\nFixed the versioning.\n"
+		"1.13.1": "Fixed the large number of TileEntities created because of Gravestones. (Note, this is only for newly generated chunks).\nReduced likihood of Bound Soul gravestone to 30%.\nFixed the versioning.\n",
+		"1.chests": ""
 	}
 }

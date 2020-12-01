@@ -147,6 +147,8 @@ public class TreasureChestTileEntityRenderer extends TileEntitySpecialRenderer<A
 	 * The max swing angle by default is 180 degrees. The max swing angle is divided the modifier.
 	 * Increasing the size of the modifier reduces the size of the max swing angle.
 	 * Ex:
+	 * Return 0.8 = 225 degrees
+	 * Return 1.0 = 180 degrees
 	 * Return 2.0 = 90 degrees
 	 * Return 3.0 = 60 degrees
 	 * Return 4.0 = 45 degrees

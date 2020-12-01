@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2.proxy;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.model.BandedChestModel;
+import com.someguyssoftware.treasure2.client.model.CardboardBoxModel;
 import com.someguyssoftware.treasure2.client.model.CauldronChestModel;
 import com.someguyssoftware.treasure2.client.model.ClamChestModel;
 import com.someguyssoftware.treasure2.client.model.CompressorChestModel;
@@ -21,6 +22,7 @@ import com.someguyssoftware.treasure2.client.model.VikingChestModel;
 import com.someguyssoftware.treasure2.client.model.WitherChestModel;
 import com.someguyssoftware.treasure2.client.render.entity.BoundSoulRenderer;
 import com.someguyssoftware.treasure2.client.render.entity.MimicEntityRenderer;
+import com.someguyssoftware.treasure2.client.render.tileentity.CardboardBoxTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CauldronChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CompressorChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.CrateChestTileEntityRenderer;
@@ -35,6 +37,7 @@ import com.someguyssoftware.treasure2.entity.monster.PirateMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
 import com.someguyssoftware.treasure2.particle.MistTextureStitcher;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.CardboardBoxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CauldronChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.ClamChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
@@ -179,7 +182,7 @@ public class ClientProxy {
         // cardboard box
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				CardboardBoxTileEntity.class,
-				new TreasureChestTileEntityRenderer("cardboard-box", new StandardChestModel()));        
+				new CardboardBoxTileEntityRenderer("cardboard-box", new CardboardBoxModel()));        
 
 		// oyster chest
 //		ClientRegistry.bindTileEntitySpecialRenderer(

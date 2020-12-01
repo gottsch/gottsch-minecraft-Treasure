@@ -24,6 +24,7 @@ import com.someguyssoftware.treasure2.enums.FogHeight;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.MimicChestItemBlock;
 import com.someguyssoftware.treasure2.item.TreasureChestItemBlock;
+import com.someguyssoftware.treasure2.tileentity.CardboardBoxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CauldronChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
@@ -91,6 +92,10 @@ public class TreasureBlocks {
 	public static final Block INVISIBLE_CHEST = null;
 	public static final Block SAMURAI_CHEST = null;
 	public static final Block OBSIDIAN_CHEST = null;
+	public static final Block CRYSTAL_SKULL_CHEST = null;
+	public static final Block AZTEC_CHEST = null;
+	public static final Block CANOPIC_CHEST = null;
+	public static final Block MILK_CRATE = null;
 
 	// chest holder
 	public static Multimap<Rarity, Block> chests;
@@ -321,7 +326,7 @@ public class TreasureBlocks {
 						).setHardness(3.0F);
         
         CARDBOARD_BOX = new TreasureChestBlock(Treasure.MODID, TreasureConfig.CARDBOARD_BOX_ID, CardboardBoxTileEntity.class,
-                TreasureChestTypes.STANDARD, Rarity.COMMON).setBounds(stdChestBounds).setHardness(2.5F);
+                TreasureChestTypes.TOP_SPLIT, Rarity.COMMON).setBounds(stdChestBounds).setHardness(2.5F);
                 
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
