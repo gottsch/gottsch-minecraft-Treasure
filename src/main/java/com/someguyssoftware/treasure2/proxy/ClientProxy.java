@@ -47,6 +47,7 @@ import com.someguyssoftware.treasure2.tileentity.GoldSkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.MilkCrateTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.OysterChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
@@ -185,20 +186,10 @@ public class ClientProxy {
 				new CardboardBoxTileEntityRenderer("cardboard-box", new CardboardBoxModel()));        
 
         // milk crate
-		ClientRegistry.bindTileEntitySpecialRenderer(
-				MilkCrateTileEntity.class,
-                new MilkCrateTileEntityRenderer("milk-crate", new MilkCrateModel()));  
-                
-		// oyster chest
 //		ClientRegistry.bindTileEntitySpecialRenderer(
-//				OysterChestTileEntity.class,
-//				new MolluscChestTileEntityRenderer("oyster-chest", new OysterChestModel()));
+//				MilkCrateTileEntity.class,
+//                new MilkCrateTileEntityRenderer("milk-crate", new MilkCrateModel()));  
 
-		// clam chest
-//		ClientRegistry.bindTileEntitySpecialRenderer(
-//				ClamChestTileEntity.class,
-//				new MolluscChestTileEntityRenderer("clam-chest", new ClamChestModel()));
-		
 		/*
 		 *  register the entity render handlers
 		 */		

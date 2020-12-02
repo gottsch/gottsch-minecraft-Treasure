@@ -278,58 +278,28 @@ public class TreasureBlocks {
 				CauldronChestTileEntity.class, TreasureChestTypes.TOP_SPLIT, Rarity.EPIC)
 						.setChestGuiID(GuiHandler.STANDARD_CHEST_GUIID).setHardness(3.0F);
 
-//		WHALE_BONE_PIRATE_CHEST = new TreasureChestBlock(
-//				Treasure.MODID,
-//				TreasureConfig.WHALE_BONE_PIRATE_CHEST_ID,
-//				WhaleBonePirateChestTileEntity.class,
-//				TreasureChestTypes.STANDARD, 
-//				Rarity.EPIC)
-//				.setBounds(stdChestBounds)
-//				.setHardness(4.0F);
-
-		AxisAlignedBB molluscBB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);
-		AxisAlignedBB[] molluscChestBounds = new AxisAlignedBB[4];
-		molluscChestBounds[0] = molluscBB; // S
-		molluscChestBounds[1] = molluscBB; // W
-		molluscChestBounds[2] = molluscBB; // N
-		molluscChestBounds[3] = molluscBB; // E
-
-//		OYSTER_CHEST = new TreasureChestBlock(
-//				Treasure.MODID,
-//				TreasureConfig.OYSTER_CHEST_ID,
-//				OysterChestTileEntity.class,
-//				TreasureChestTypes.LOW_RISE,
-//				Rarity.EPIC)
-//				.setChestGuiID(GuiHandler.MOLLUSCS_CHEST_GUIID)
-//				.setBounds(molluscChestBounds)
-//				.setHardness(3.0F);
-
-//		CLAM_CHEST = new TreasureChestBlock(
-//				Treasure.MODID,
-//				TreasureConfig.CLAM_CHEST_ID,
-//				ClamChestTileEntity.class,
-//				TreasureChestTypes.LOW_RISE,
-//				Rarity.RARE)
-//				.setChestGuiID(GuiHandler.MOLLUSCS_CHEST_GUIID)
-//				.setBounds(molluscChestBounds)
-//				.setHardness(3.0F);
-
 		SPIDER_CHEST = new TreasureChestBlock(Treasure.MODID, TreasureConfig.SPIDER_CHEST_ID,
 				SpiderChestTileEntity.class, TreasureChestTypes.SINGLE_STANDARD, Rarity.RARE).setHardness(3.0F);
 
 		VIKING_CHEST = new TreasureChestBlock(Treasure.MODID, TreasureConfig.VIKING_CHEST_ID,
 				VikingChestTileEntity.class, TreasureChestTypes.VIKING, Rarity.UNCOMMON).setBounds(
 						new AxisAlignedBB[] {
-								new AxisAlignedBB(0, 0, 0.125, 1, 0.9375, 0.875), // S
-								new AxisAlignedBB(0.125, 0, 0, 0.875, 0.9375, 1), // W
-								new AxisAlignedBB(0, 0, 0.125, 1, 0.9375, 0.875), // N
-								new AxisAlignedBB(0.125, 0, 0, 0.875, 0.9375, 1)}
-						).setHardness(3.0F);
+								new AxisAlignedBB(0.0625, 0, 0.1875, 0.9375, 0.9375, 0.8125), // S
+								new AxisAlignedBB(0.1875, 0, 0.0625, 0.8125, 0.9375, 0.9375), // W
+								new AxisAlignedBB(0.0625, 0, 0.1875, 0.9375, 0.9375, 0.8125), // N
+								new AxisAlignedBB(0.1875, 0, 0.0625, 0.8125, 0.9375, 0.9375) //E
+							}).setHardness(3.0F);
         
         CARDBOARD_BOX = new TreasureChestBlock(Treasure.MODID, TreasureConfig.CARDBOARD_BOX_ID, CardboardBoxTileEntity.class,
-                TreasureChestTypes.TOP_SPLIT, Rarity.COMMON).setBounds(stdChestBounds).setHardness(2.5F);
+                TreasureChestTypes.TOP_SPLIT, Rarity.COMMON).setBounds(
+                		new AxisAlignedBB[] {
+                				new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D),
+                				new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D),
+                				new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D),
+                				new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.9375D, 0.9375D)
+                		}).setHardness(2.5F);
          
-        MILK_CRATE = new TreasureChestBlock(Treasure.MODID, TreasureConfig.MILK_CRATE_ID, MilkCreateTileEntity.class,
+        MILK_CRATE = new TreasureChestBlock(Treasure.MODID, TreasureConfig.MILK_CRATE_ID, MilkCrateTileEntity.class,
                 TreasureChestTypes.STANDARD, Rarity.COMMON).setBounds(stdChestBounds).setHardness(2.5F);
 
 		// map the chests by rarity
@@ -514,9 +484,16 @@ public class TreasureBlocks {
 		public static void registerBlocks(final RegistryEvent.Register<Block> event) {
 			final IForgeRegistry<Block> registry = event.getRegistry();
 
-			final Block[] blocks = { WOOD_CHEST, CRATE_CHEST, MOLDY_CRATE_CHEST, IRONBOUND_CHEST, PIRATE_CHEST,
-					IRON_STRONGBOX, GOLD_STRONGBOX, SAFE, DREAD_PIRATE_CHEST,
-//					WHALE_BONE_PIRATE_CHEST,
+			final Block[] blocks = { 
+					WOOD_CHEST, 
+					CRATE_CHEST, 
+					MOLDY_CRATE_CHEST, 
+					IRONBOUND_CHEST, 
+					PIRATE_CHEST,
+					IRON_STRONGBOX, 
+					GOLD_STRONGBOX, 
+					SAFE, 
+					DREAD_PIRATE_CHEST,
 					COMPRESSOR_CHEST,
 					SPIDER_CHEST, 
                     VIKING_CHEST,
