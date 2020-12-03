@@ -48,7 +48,9 @@ import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.loot.LootTableMaster2;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.function.CharmRandomly;
 import com.someguyssoftware.treasure2.loot.function.SetCharms;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
@@ -125,6 +127,8 @@ public class Treasure extends AbstractMod {
 	// loot tables management
 	public static TreasureLootTableMaster LOOT_TABLES;
 
+	public static TreasureLootTableMaster2 LOOT_TABLE_MASTER;
+	
 	/*
 	 * Treasure Creative Tab Must be initialized <b>before</b> any registry events
 	 * so that it is available to assign to blocks and items.
@@ -259,6 +263,7 @@ public class Treasure extends AbstractMod {
 
 		// add the loot table managers
 		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");		
+		LOOT_TABLE_MASTER = new TreasureLootTableMaster2(Treasure.instance);
 		
 		TEMPLATE_MANAGER = new TreasureTemplateManager(Treasure.instance, "/structures",
 				FMLCommonHandler.instance().getDataFixer());

@@ -3,13 +3,17 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map.Entry;
+import java.util.Optional;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
+import com.someguyssoftware.treasure2.loot.LootTableShell;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
@@ -19,9 +23,12 @@ import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.MapStorage;
+import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.Loader;
@@ -54,6 +61,32 @@ public class WorldEventHandler {
 //			Treasure.logger.debug("server event");
 			WorldServer world = (WorldServer) event.getWorld();
 //			TreasureLootTables.init(world);
+			
+			///////////////////////////
+			/// New Loot Table Master
+			///============
+			// called once to initiate world-level properties in the LootTableMaster
+			Treasure.LOOT_TABLE_MASTER.init(world);
+			// register mod's loot tables with the LootTableMaster
+			Treasure.LOOT_TABLE_MASTER.register(mod.getId());
+			
+			// TEST ///
+			ResourceLocation loc = new ResourceLocation("treasure2", "test/one");
+			Optional<LootTableShell> lootTableShell = Treasure.LOOT_TABLE_MASTER.loadLootTable(Treasure.LOOT_TABLE_MASTER.getWorldDataBaseFolder(), loc);
+			if (lootTableShell.isPresent()) {
+				Treasure.logger.debug("Found world data loot table with version -> {}, # of pools -> {}", lootTableShell.get().getVersion(), lootTableShell.get().getPools().size());
+				// register it with MC
+				ResourceLocation newLoc = LootTableList.register(loc);
+				Treasure.logger.debug("registered world data loot table -> {}", newLoc);
+				LootTable table = world.getLootTableManager().getLootTableFromLocation(newLoc); 
+				Treasure.logger.debug("got the loot table -> {}", table);
+			}
+			else {
+				Treasure.logger.debug("Couldn't find world data loot table -> {}", loc);
+			}
+			// END TEST ///
+			///////////////////////////
+
 			Treasure.LOOT_TABLES.init(world);
 			Treasure.LOOT_TABLES.register(getMod().getId());
 			// register any foreign mod loot tables
@@ -83,6 +116,11 @@ public class WorldEventHandler {
 			GenDataPersistence.get(world);			
 			Treasure.logger.debug("Chest registry size after world event load -> {}", ChestRegistry.getInstance().getValues().size());
 		}	
+	}
+	
+	@SubscribeEvent
+	public void onWorldUnLoad(WorldEvent.Unload event) {
+		// TODO clear LOOT_TABLES_MASTER
 	}
 	
 	/**
