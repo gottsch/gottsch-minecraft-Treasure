@@ -18,17 +18,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -38,11 +41,11 @@ import com.someguyssoftware.gottschcore.loot.LootTableMaster;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.gottschcore.version.VersionChecker;
-import com.someguyssoftware.treasure2.Treasure;
 
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.LootTableManager;
 import net.minecraft.world.storage.loot.RandomValueRange;
 
@@ -50,8 +53,8 @@ import net.minecraft.world.storage.loot.RandomValueRange;
  * @author Mark Gottschling on Dec 1, 2020
  *
  */
-public class LootTableMaster2 {
-	public static Logger LOGGER = LogManager.getLogger(Treasure.logger.getName());
+public class LootTableMaster2 implements ILootTableMaster {
+	public static Logger LOGGER = LogManager.getLogger(GottschCore.logger.getName());
 
 	public static final String LOOT_TABLES_FOLDER = "loot_tables";
 	private static final String BASE_FOLDER = "base";
@@ -71,8 +74,7 @@ public class LootTableMaster2 {
 	}
 
 	/**
-	 * From WorldServer.class: this.lootTable = new LootTableManager(new File(new
-	 * File(this.saveHandler.getWorldDirectory(), "data"), "loot_tables"));
+	 *
 	 */
 	public LootTableMaster2(IMod mod, File folder) {
 		this.mod = mod;
@@ -83,12 +85,17 @@ public class LootTableMaster2 {
 	 * Call in WorldEvent.Load event handler.
 	 * @param world
 	 */
+	@Override
 	public void init(WorldServer world) {
 		Path path = Paths.get(world.getSaveHandler().getWorldDirectory().getPath(), "data", "loot_tables");
-		Treasure.logger.debug("path to world data loot tables -> {}", path.toAbsolutePath());
 		setWorldDataBaseFolder(path.toFile());
 	}
 
+	@Override
+	public void clear() {
+		
+	}
+	
 	/**
 	 * CREATES CONFIG FOLDERS/RESOURCES - on mod/manager creation
 	 * Creates all the necessary folder and resources before actual loading of loot tables.
@@ -97,6 +104,7 @@ public class LootTableMaster2 {
 	 * @param resourceRootPath
 	 * @param modID
 	 */
+	@Override
 	public void buildAndExpose(String resourceRootPath, String modID, List<String> locations) {
 		GottschCore.logger.debug("loot table folder locations -> {}", locations);
 		// create paths to custom loot tables if they don't exist
@@ -114,17 +122,14 @@ public class LootTableMaster2 {
 	 * Overide this method if you have a different cache mechanism.
 	 * @param location
 	 */
+	@Override
 	public void register(WorldServer world, String modID, List<String> locations) {
 		// TODO copy files from config location to world data location if not there already
 		
-
 		for (String location : locations) {
 			// get loot table files as ResourceLocations from the world data location
 			List<ResourceLocation> locs = getLootTablesResourceLocations(modID, location);
 		}
-		
-		// register it with MC
-//		ResourceLocation newLoc = LootTableList.register(loc);
 		
 		// TODO finish
 	}
@@ -544,6 +549,57 @@ public class LootTableMaster2 {
 			}
 		}
 	}
+	
+	/**
+	 * 
+	 * @param inventory
+	 * @param random
+	 * @param context
+	 */
+	public void fillInventory(IInventory inventory, Random random, List<ItemStack> list) {
+		List<Integer> emptySlots = getEmptySlotsRandomized(inventory, random);
+		this.shuffleItems(list, emptySlots.size(), random);
+
+		for (ItemStack itemstack : list) {
+			// if no more empty slots are available
+			if (emptySlots.isEmpty()) {
+				return;
+			}
+
+			if (itemstack.isEmpty()) {
+				inventory.setInventorySlotContents(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), ItemStack.EMPTY);
+			} 
+			else {
+				inventory.setInventorySlotContents(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), itemstack);
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param inventory
+	 * @param rand
+	 * @return
+	 */
+	private List<Integer> getEmptySlotsRandomized(IInventory inventory, Random rand) {
+		List<Integer> list = Lists.<Integer>newArrayList();
+
+		for (int i = 0; i < inventory.getSizeInventory(); ++i) {
+			if (inventory.getStackInSlot(i).isEmpty()) {
+				list.add(Integer.valueOf(i));
+			}
+		}
+
+		Collections.shuffle(list, rand);
+		return list;
+	}
+	
+	/**
+	 * shuffles items by changing their order (no stack splitting)
+	 */
+	private void shuffleItems(List<ItemStack> stacks, int emptySlotsSize, Random rand) {
+		Collections.shuffle(stacks, rand);
+	}
 
 	public File getWorldDataBaseFolder() {
 		return worldDataBaseFolder;
@@ -553,6 +609,7 @@ public class LootTableMaster2 {
 		this.worldDataBaseFolder = baseFolder;
 	}
 
+	@Override
 	public IMod getMod() {
 		return mod;
 	}

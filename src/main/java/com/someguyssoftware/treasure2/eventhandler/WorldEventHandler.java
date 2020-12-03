@@ -3,8 +3,6 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map.Entry;
 import java.util.Optional;
 
@@ -16,21 +14,13 @@ import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
 import com.someguyssoftware.treasure2.loot.LootTableShell;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
-import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.ITreasureWorldGenerator;
-import com.someguyssoftware.treasure2.worldgen.SubmergedChestWorldGenerator;
-import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
-import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
-import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -78,7 +68,7 @@ public class WorldEventHandler {
 				// register it with MC
 				ResourceLocation newLoc = LootTableList.register(loc);
 				Treasure.logger.debug("registered world data loot table -> {}", newLoc);
-				LootTable table = world.getLootTableManager().getLootTableFromLocation(newLoc); 
+				LootTable table = world.getLootTableManager().getLootTableFromLocation(newLoc);
 				Treasure.logger.debug("got the loot table -> {}", table);
 			}
 			else {
@@ -87,14 +77,19 @@ public class WorldEventHandler {
 			// END TEST ///
 			///////////////////////////
 
+			// TODO deprecated calls
 			Treasure.LOOT_TABLES.init(world);
 			Treasure.LOOT_TABLES.register(getMod().getId());
+			
+			// TODO deprecated system
 			// register any foreign mod loot tables
 			for (String foreignModID : TreasureConfig.FOREIGN_MODS.enableForeignModIDs) {
 				if (Loader.isModLoaded(foreignModID)) {		
 					Treasure.LOOT_TABLES.register(foreignModID);
 				}
 			}
+			
+			// register files with their respective managers
 			Treasure.META_MANAGER.register(getMod().getId());
 			Treasure.TEMPLATE_MANAGER.register(getMod().getId());
 			Treasure.DECAY_MANAGER.register(getMod().getId());
@@ -120,7 +115,7 @@ public class WorldEventHandler {
 	
 	@SubscribeEvent
 	public void onWorldUnLoad(WorldEvent.Unload event) {
-		// TODO clear LOOT_TABLES_MASTER
+		Treasure.LOOT_TABLE_MASTER.clear();
 	}
 	
 	/**

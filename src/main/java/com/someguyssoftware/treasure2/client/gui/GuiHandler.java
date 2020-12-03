@@ -44,6 +44,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootPool;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 /**
@@ -86,6 +87,9 @@ public class GuiHandler implements IGuiHandler {
                 IChestGenerator chestGenerator = chestTileEntity.getGenerationContext().getChestGeneratorType().getChestGenerator();
 //                logger.debug("chest gen  -> {}", chestTileEntity.getGenerationContext().getChestGeneratorType().getChestGenerator().getClass().getSimpleName());
                 
+                // TODO this loot selection will change
+                // 
+                // TODO these details will be hidden behind another method
 				// select a loot table
 				LootTable lootTable = chestGenerator.selectLootTable(Random::new, chestTileEntity.getGenerationContext().getLootRarity());
 				if (lootTable == null) {
