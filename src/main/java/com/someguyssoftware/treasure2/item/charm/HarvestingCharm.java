@@ -47,6 +47,7 @@ public class HarvestingCharm extends Charm {
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
 		boolean result = false;
 		if (vitals.getValue() > 0 && !player.isDead) {
+            // TODO exclude all Charms, Chests, ie any Treasure items
 			// process all the drops
 			for (ItemStack stack : event.getDrops()) {
 				Treasure.logger.debug("current stack size is -> {}", stack.getCount());

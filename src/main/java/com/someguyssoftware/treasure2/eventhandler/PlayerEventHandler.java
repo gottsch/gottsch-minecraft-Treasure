@@ -196,7 +196,10 @@ public class PlayerEventHandler {
 		if (event.getHarvester() == null) {
 			return;
 		}
-		
+        
+        // TODO check to see if the block being harvested is in the event. if so, then check what the block is
+        // if it implements IInventory or ITileEntity provider or any sort of container then don't process
+        
 		// get the player
 		EntityPlayerMP player = (EntityPlayerMP) event.getHarvester();
 		processCharms(event, player);
