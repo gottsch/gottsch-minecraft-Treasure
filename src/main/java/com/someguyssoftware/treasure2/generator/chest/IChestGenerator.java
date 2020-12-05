@@ -225,11 +225,14 @@ public interface IChestGenerator {
 		// fetch all injected loot tables by 
 		Optional<List<LootTableShell>> injectLootTableShells = buildInjectedLootTableList(lootTableShell.get().getCategory(), rarity);
 		if (injectLootTableShells.isPresent()) {
+			logger.debug("found injectable tables for category ->{}, rarity -> {}", lootTableShell.get().getCategory(), rarity);
 			for (LootTableShell injectLootTableShell : injectLootTableShells.get()) {
+				logger.debug("injectable resource -> {}", injectLootTableShell.getResourceLocation());
 				// get the vanilla managed loot table
 				net.minecraft.world.storage.loot.LootTable injectLootTable = world.getLootTableManager().getLootTableFromLocation(injectLootTableShell.getResourceLocation());
 				// add loot from tables to itemStacks
 				itemStacks.addAll(injectLootTable.generateLootForPools(random, lootContext));
+				logger.debug("size of item stacks after inject -> {}", itemStacks.size());
 			}
 		}
 		
