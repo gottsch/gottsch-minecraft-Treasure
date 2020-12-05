@@ -18,20 +18,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -42,8 +39,6 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.gottschcore.version.VersionChecker;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootTableManager;
@@ -126,10 +121,10 @@ public class LootTableMaster2 implements ILootTableMaster {
 	public void register(WorldServer world, String modID, List<String> locations) {
 		// TODO copy files from config location to world data location if not there already
 		
-		for (String location : locations) {
-			// get loot table files as ResourceLocations from the world data location
-			List<ResourceLocation> locs = getLootTablesResourceLocations(modID, location);
-		}
+//		for (String location : locations) {
+//			// get loot table files as ResourceLocations from the world data location
+//			List<ResourceLocation> locs = getLootTablesResourceLocations(modID, location);
+//		}
 		
 		// TODO finish
 	}
@@ -550,57 +545,6 @@ public class LootTableMaster2 implements ILootTableMaster {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param inventory
-	 * @param random
-	 * @param context
-	 */
-	public void fillInventory(IInventory inventory, Random random, List<ItemStack> list) {
-		List<Integer> emptySlots = getEmptySlotsRandomized(inventory, random);
-		this.shuffleItems(list, emptySlots.size(), random);
-
-		for (ItemStack itemstack : list) {
-			// if no more empty slots are available
-			if (emptySlots.isEmpty()) {
-				return;
-			}
-
-			if (itemstack.isEmpty()) {
-				inventory.setInventorySlotContents(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), ItemStack.EMPTY);
-			} 
-			else {
-				inventory.setInventorySlotContents(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), itemstack);
-			}
-		}
-	}
-	
-	/**
-	 * 
-	 * @param inventory
-	 * @param rand
-	 * @return
-	 */
-	private List<Integer> getEmptySlotsRandomized(IInventory inventory, Random rand) {
-		List<Integer> list = Lists.<Integer>newArrayList();
-
-		for (int i = 0; i < inventory.getSizeInventory(); ++i) {
-			if (inventory.getStackInSlot(i).isEmpty()) {
-				list.add(Integer.valueOf(i));
-			}
-		}
-
-		Collections.shuffle(list, rand);
-		return list;
-	}
-	
-	/**
-	 * shuffles items by changing their order (no stack splitting)
-	 */
-	private void shuffleItems(List<ItemStack> stacks, int emptySlotsSize, Random rand) {
-		Collections.shuffle(stacks, rand);
-	}
-
 	public File getWorldDataBaseFolder() {
 		return worldDataBaseFolder;
 	}

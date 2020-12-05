@@ -89,20 +89,20 @@ public class TreasureLootTableMaster extends LootTableMaster {
 	public TreasureLootTableMaster(IMod mod, String resourcePath, String folderName) {
 		super(mod, resourcePath, folderName);
 		
-		if (TreasureConfig.MOD.enableDefaultLootTablesCheck) {
-			buildAndExpose(Treasure.MODID);
-			for (String foreignModID : TreasureConfig.FOREIGN_MODS.enableForeignModIDs) {
-				if (Loader.isModLoaded(foreignModID)) {				
-					buildAndExpose(foreignModID);
-				}
-			}
-		}
-		
-		// initialize the maps
-		for (Rarity r : Rarity.values()) {
-			CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<ResourceLocation>());
-			CHEST_LOOT_TABLES_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<LootTable>());
-		}
+//		if (TreasureConfig.MOD.enableDefaultLootTablesCheck) {
+//			buildAndExpose(Treasure.MODID);
+//			for (String foreignModID : TreasureConfig.FOREIGN_MODS.enableForeignModIDs) {
+//				if (Loader.isModLoaded(foreignModID)) {				
+//					buildAndExpose(foreignModID);
+//				}
+//			}
+//		}
+//		
+//		// initialize the maps
+//		for (Rarity r : Rarity.values()) {
+//			CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<ResourceLocation>());
+//			CHEST_LOOT_TABLES_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<LootTable>());
+//		}
 	}
 
 	/**

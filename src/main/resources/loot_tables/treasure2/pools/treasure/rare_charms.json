@@ -18,7 +18,7 @@
 					],
 					"functions": [
 						{
-							"function": "treasure2:charm_randomly",
+							"function": "treasure2:charm_randomly2",
 							"charms": [
 								"greater_healing",
 								"hardened_shielding",
@@ -28,7 +28,7 @@
 							]
 						},
 						{
-							"function": "treasure2:charm_randomly",
+							"function": "treasure2:charm_randomly2",
 							"charms": [
 								"greater_healing",
 								"hardened_shielding",
@@ -53,7 +53,7 @@
 					],
 					"functions": [
 						{
-							"function": "treasure2:charm_randomly",
+							"function": "treasure2:charm_randomly2",
 							"charms": [
 								"grand_healing",
 								"powerful_shielding",

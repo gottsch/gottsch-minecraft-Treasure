@@ -1,5 +1,6 @@
 {
 	"version": "1.0",
+	"category": "food",
 	"pools": [
 		{
 			"name": "treasure",
@@ -7,7 +8,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:loot_tables/treasure2/treasure/uncommon",
+                    "name": "treasure2:pools/treasure/uncommon",
                     "weight": 30
                 }
 			]
@@ -18,7 +19,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:loot_tables/treasure2/treasure/uncommon_charms",
+                    "name": "treasure2:pools/treasure/uncommon_charms",
                     "weight": 1
                 }
 			]
@@ -32,7 +33,7 @@
 			"entries": [
 	            {
 	                "type": "loot_table",
-	                "name": "treasure2:loot_tables/treasure2/items/uncommon",
+	                "name": "treasure2:pools/items/uncommon",
 	                "weight": 1
 	            }
 			]
@@ -47,7 +48,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:loot_tables/treasure2/food/uncommon",
+                    "name": "treasure2:pools/food/uncommon",
                     "weight": 1
                 }			
 			]
@@ -62,7 +63,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:loot_tables/treasure2/potions/uncommon",
+                    "name": "treasure2:pools/potions/uncommon",
                     "weight": 1
                 }			
 			]
@@ -76,7 +77,7 @@
 			"entries": [
 	            {
 	                "type": "loot_table",
-	                "name": "treasure2:loot_tables/treasure2/items/common",
+	                "name": "treasure2:pools/items/common",
 	                "weight": 1
 	            }
 			]
@@ -91,7 +92,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:loot_tables/treasure2/food/common",
+                    "name": "treasure2:pools/food/common",
                     "weight": 1
                 }			
 			]
@@ -106,7 +107,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:loot_tables/treasure2/potions/common",
+                    "name": "treasure2:pools/potions/common",
                     "weight": 1
                 }			
 			]

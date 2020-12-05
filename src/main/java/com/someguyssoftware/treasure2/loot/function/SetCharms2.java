@@ -19,13 +19,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
-import com.someguyssoftware.gottschcore.loot.LootContext;
-import com.someguyssoftware.gottschcore.loot.conditions.LootCondition;
-import com.someguyssoftware.gottschcore.loot.functions.LootFunction;
+
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.item.charm.CharmLevel;
+import com.someguyssoftware.treasure2.item.charm.CharmState;
 import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
 import com.someguyssoftware.treasure2.item.charm.CharmType;
 import com.someguyssoftware.treasure2.item.charm.ICharm;
@@ -35,13 +34,16 @@ import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.conditions.LootCondition;
+import net.minecraft.world.storage.loot.functions.LootFunction;
 
 /**
  * 
  * @author Mark Gottschling on May 2, 2020
  *
  */
-public class SetCharms extends LootFunction {
+public class SetCharms2 extends LootFunction {
 	private List<ICharm> charms;
 
 	/**
@@ -49,7 +51,7 @@ public class SetCharms extends LootFunction {
 	 * @param conditions
 	 * @param charms
 	 */
-	public SetCharms(LootCondition[] conditions, @Nullable List<ICharm> charms) {
+	public SetCharms2(LootCondition[] conditions, @Nullable List<ICharm> charms) {
 		super(conditions);
 		this.charms = charms == null ? Collections.emptyList() : charms;
 	}
@@ -105,15 +107,15 @@ public class SetCharms extends LootFunction {
 	 * @author Mark Gottschling on May 2, 2020
 	 *
 	 */
-	public static class Serializer extends LootFunction.Serializer<SetCharms> {
+	public static class Serializer extends LootFunction.Serializer<SetCharms2> {
 		public Serializer() {
-			super(new ResourceLocation("treasure2:set_charms"), SetCharms.class);
+			super(new ResourceLocation("treasure2:set_charms2"), SetCharms2.class);
 		}
 
 		/**
 		 * 
 		 */
-		public void serialize(JsonObject json, SetCharms value, JsonSerializationContext context) {
+		public void serialize(JsonObject json, SetCharms2 value, JsonSerializationContext context) {
 			if (!value.charms.isEmpty()) {
 				JsonArray jsonArray = new JsonArray();
 				for (ICharm charm : value.charms) {
@@ -126,7 +128,7 @@ public class SetCharms extends LootFunction {
 		/**
 		 * 
 		 */
-		public SetCharms deserialize(JsonObject json, JsonDeserializationContext deserializationContext,
+		public SetCharms2 deserialize(JsonObject json, JsonDeserializationContext deserializationContext,
 				LootCondition[] conditionsIn) {
 			Map<CharmType, ICharm> charmsByType = new HashMap<>(10);
 			List<ICharm> list = Lists.<ICharm>newArrayList();
@@ -150,7 +152,7 @@ public class SetCharms extends LootFunction {
 					}
 				}
 			}
-			return new SetCharms(conditionsIn, list);
+			return new SetCharms2(conditionsIn, list);
 		}
 	}
 }

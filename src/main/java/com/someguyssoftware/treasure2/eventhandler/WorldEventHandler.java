@@ -22,6 +22,10 @@ import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
@@ -40,13 +44,14 @@ public class WorldEventHandler {
 		setMod(mod);
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void onWorldLoad(WorldEvent.Load event) {
-//		Treasure.logger.debug("In world load event for dimension {}", event.getWorld().provider.getDimension());
+		Treasure.logger.debug("In world load event for dimension {}", event.getWorld().provider.getDimension());
 		
 		/*
 		 * On load of dimension 0 (overworld), initialize the loot table's context and other static loot tables
 		 */
+		// TODO revisit this!!!! 1) not obeying multi-dimension rules 2) what if they saved off in a different dimension ?
 		if (WorldInfo.isServerSide(event.getWorld()) && event.getWorld().provider.getDimension() == 0) {
 //			Treasure.logger.debug("server event");
 			WorldServer world = (WorldServer) event.getWorld();
@@ -61,33 +66,33 @@ public class WorldEventHandler {
 			Treasure.LOOT_TABLE_MASTER.register(mod.getId());
 			
 			// TEST ///
-			ResourceLocation loc = new ResourceLocation("treasure2", "test/one");
-			Optional<LootTableShell> lootTableShell = Treasure.LOOT_TABLE_MASTER.loadLootTable(Treasure.LOOT_TABLE_MASTER.getWorldDataBaseFolder(), loc);
-			if (lootTableShell.isPresent()) {
-				Treasure.logger.debug("Found world data loot table with version -> {}, # of pools -> {}", lootTableShell.get().getVersion(), lootTableShell.get().getPools().size());
-				// register it with MC
-				ResourceLocation newLoc = LootTableList.register(loc);
-				Treasure.logger.debug("registered world data loot table -> {}", newLoc);
-				LootTable table = world.getLootTableManager().getLootTableFromLocation(newLoc);
-				Treasure.logger.debug("got the loot table -> {}", table);
-			}
-			else {
-				Treasure.logger.debug("Couldn't find world data loot table -> {}", loc);
-			}
+//			ResourceLocation loc = new ResourceLocation("treasure2", "test/one");
+//			Optional<LootTableShell> lootTableShell = Treasure.LOOT_TABLE_MASTER.loadLootTable(Treasure.LOOT_TABLE_MASTER.getWorldDataBaseFolder(), loc);
+//			if (lootTableShell.isPresent()) {
+//				Treasure.logger.debug("Found world data loot table with version -> {}, # of pools -> {}", lootTableShell.get().getVersion(), lootTableShell.get().getPools().size());
+//				// register it with MC
+//				ResourceLocation newLoc = LootTableList.register(loc);
+//				Treasure.logger.debug("registered world data loot table -> {}", newLoc);
+//				LootTable table = world.getLootTableManager().getLootTableFromLocation(newLoc);
+//				Treasure.logger.debug("got the loot table -> {}", table);
+//			}
+//			else {
+//				Treasure.logger.debug("Couldn't find world data loot table -> {}", loc);
+//			}
 			// END TEST ///
 			///////////////////////////
 
 			// TODO deprecated calls
 			Treasure.LOOT_TABLES.init(world);
-			Treasure.LOOT_TABLES.register(getMod().getId());
+//			Treasure.LOOT_TABLES.register(getMod().getId());
 			
 			// TODO deprecated system
 			// register any foreign mod loot tables
-			for (String foreignModID : TreasureConfig.FOREIGN_MODS.enableForeignModIDs) {
-				if (Loader.isModLoaded(foreignModID)) {		
-					Treasure.LOOT_TABLES.register(foreignModID);
-				}
-			}
+//			for (String foreignModID : TreasureConfig.FOREIGN_MODS.enableForeignModIDs) {
+//				if (Loader.isModLoaded(foreignModID)) {		
+//					Treasure.LOOT_TABLES.register(foreignModID);
+//				}
+//			}
 			
 			// register files with their respective managers
 			Treasure.META_MANAGER.register(getMod().getId());
@@ -111,11 +116,6 @@ public class WorldEventHandler {
 			GenDataPersistence.get(world);			
 			Treasure.logger.debug("Chest registry size after world event load -> {}", ChestRegistry.getInstance().getValues().size());
 		}	
-	}
-	
-	@SubscribeEvent
-	public void onWorldUnLoad(WorldEvent.Unload event) {
-		Treasure.LOOT_TABLE_MASTER.clear();
 	}
 	
 	/**
