@@ -28,11 +28,13 @@ import com.someguyssoftware.treasure2.item.charm.ICharmed;
 import com.someguyssoftware.treasure2.network.CharmMessageToClient;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -196,10 +198,15 @@ public class PlayerEventHandler {
 		if (event.getHarvester() == null) {
 			return;
 		}
-        
-        // TODO check to see if the block being harvested is in the event. if so, then check what the block is
-        // if it implements IInventory or ITileEntity provider or any sort of container then don't process
-        
+
+		// if the harvested blcok has a tile entity then don't process
+		// NOTE this may exclude non-inventory blocks
+		IBlockState harvestedState = event.getState();
+		Block harvestedBlock = harvestedState.getBlock();
+		if (harvestedBlock.hasTileEntity(harvestedState)) {
+			return;
+		}
+		
 		// get the player
 		EntityPlayerMP player = (EntityPlayerMP) event.getHarvester();
 		processCharms(event, player);
