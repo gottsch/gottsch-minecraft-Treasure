@@ -50,10 +50,10 @@ minecraft {
 //Optional: change the project structure
 sourceSets.main{
     java{
-		srcDirs 'src' //, 'test' //set the source folder as the /src subfolder
+		srcDirs 'src/main/java' //, 'test' //set the source folder as the /src subfolder
 	}
     resources{
-		srcDirs 'src/resources' //set the resources folder as the /resources subfolder
+		srcDirs 'src/main/resources' //set the resources folder as the /resources subfolder
 	}
 }
 
