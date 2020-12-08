@@ -44,6 +44,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootPool;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 /**
@@ -78,31 +79,17 @@ public class GuiHandler implements IGuiHandler {
 
 		if (tileEntity instanceof ITreasureChestTileEntity) {
 			ITreasureChestTileEntity chestTileEntity = (ITreasureChestTileEntity) tileEntity;
-//			logger.debug("is chest sealed -> {}", chestTileEntity.isSealed());
+			logger.debug("is chest sealed -> {}", chestTileEntity.isSealed());
 			if (chestTileEntity.isSealed()) {
 				chestTileEntity.setSealed(false);
-//                logger.debug("chest gen type -> {}", chestTileEntity.getGenerationContext().getChestGeneratorType()); 
+                logger.debug("chest gen type -> {}", chestTileEntity.getGenerationContext().getChestGeneratorType()); 
                 // construct the chest generator used to create the tile entity
                 IChestGenerator chestGenerator = chestTileEntity.getGenerationContext().getChestGeneratorType().getChestGenerator();
-//                logger.debug("chest gen  -> {}", chestTileEntity.getGenerationContext().getChestGeneratorType().getChestGenerator().getClass().getSimpleName());
+                logger.debug("chest gen  -> {}", chestTileEntity.getGenerationContext().getChestGeneratorType().getChestGenerator().getClass().getSimpleName());
                 
-				// select a loot table
-				LootTable lootTable = chestGenerator.selectLootTable(Random::new, chestTileEntity.getGenerationContext().getLootRarity());
-				if (lootTable == null) {
-					logger.warn("Unable to select a lootTable.");
-					return null;
-				}
-				logger.debug("Generating loot from loot table for rarity {}", chestTileEntity.getGenerationContext().getLootRarity());
-				LootContext lootContext = new LootContext.Builder((WorldServer) world, Treasure.LOOT_TABLES.getLootTableManager())
-						.withLuck(player.getLuck())
-						.withPlayer(player)
-						.build();
-				if (lootContext == null) {
-					lootContext = Treasure.LOOT_TABLES.getContext();
-				}
-				lootTable.fillInventory((IInventory) tileEntity, new Random(), lootContext);
-				
-				// TODO future IChestGenerator.addSpecialLoot(world, random, chestTileEntity);
+                // fill the chest with loot
+                chestGenerator.fillChest(world, new Random(), tileEntity, chestTileEntity.getGenerationContext().getLootRarity(), player);
+
 			}
 		}
 

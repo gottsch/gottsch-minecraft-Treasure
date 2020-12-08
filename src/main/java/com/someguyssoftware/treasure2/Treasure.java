@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.config.AppenderRef;
 
 import com.someguyssoftware.gottschcore.GottschCore;
 import com.someguyssoftware.gottschcore.annotation.Credits;
@@ -48,9 +49,13 @@ import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.loot.LootTableMaster2;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.function.CharmRandomly;
+import com.someguyssoftware.treasure2.loot.function.CharmRandomly2;
 import com.someguyssoftware.treasure2.loot.function.SetCharms;
+import com.someguyssoftware.treasure2.loot.function.SetCharms2;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 import com.someguyssoftware.treasure2.network.CharmMessageHandlerOnClient;
 import com.someguyssoftware.treasure2.network.CharmMessageToClient;
@@ -105,7 +110,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.13.2";
+	protected static final String VERSION = "1.14.0";
 
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/update.json";
 
@@ -123,8 +128,10 @@ public class Treasure extends AbstractMod {
 
 	// NOTE can't make final here as it is set during world load
 	// loot tables management
-	public static TreasureLootTableMaster LOOT_TABLES;
+//	public static TreasureLootTableMaster LOOT_TABLES;
 
+	public static TreasureLootTableMaster2 LOOT_TABLE_MASTER;
+	
 	/*
 	 * Treasure Creative Tab Must be initialized <b>before</b> any registry events
 	 * so that it is available to assign to blocks and items.
@@ -185,6 +192,11 @@ public class Treasure extends AbstractMod {
 		// add appender to the GottschCore logger
 		addAppenderToLogger(appender, GottschCore.instance.getName(), (ILoggerConfig) getConfig());
 
+		// TEST ///////
+		AppenderRef appenderReference = AppenderRef.createAppenderRef(appender.getName(), null, null);
+		Treasure.logger.debug("appender -> {}, appenderRef.ref -> {}", appender.getName(), appenderReference.getRef());
+		// END OF TEST //////
+		
 		// register the GUI handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
@@ -202,9 +214,14 @@ public class Treasure extends AbstractMod {
 		CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingStorage(), KeyRingCapability::new);
 		CapabilityManager.INSTANCE.register(IEffectiveMaxDamageCapability.class, new EffectiveMaxDamageStorage(), EffectiveMaxDamageCapability::new);
 		
+		// TODO remove these
 		// register custom loot functions
 		LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
 		LootFunctionManager.registerFunction(new SetCharms.Serializer());
+		
+		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new CharmRandomly2.Serializer());
+		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms2.Serializer());
+		
 	}
 
 	/**
@@ -258,7 +275,8 @@ public class Treasure extends AbstractMod {
 		}
 
 		// add the loot table managers
-		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");		
+//		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");		
+		LOOT_TABLE_MASTER = new TreasureLootTableMaster2(Treasure.instance);
 		
 		TEMPLATE_MANAGER = new TreasureTemplateManager(Treasure.instance, "/structures",
 				FMLCommonHandler.instance().getDataFixer());

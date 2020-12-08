@@ -259,19 +259,21 @@ public class GenDataPersistence extends WorldSavedData {
 			// add the oasis gen last count to the treasure compound for each dimension
 			NBTTagList dimTagList = new NBTTagList();
 			for (Entry<Integer, Integer> entry : oasisGen.getChunksSinceLastDimensionOasis().entrySet()) {
-				Treasure.logger.debug("dimension ID -> {}", entry.getKey());
+				Treasure.logger.debug("oasis dimension ID -> {}", entry.getKey());
 				
 				NBTTagCompound dimTag = new NBTTagCompound();
 				dimTag.setInteger(DIMENSION_ID_TAG_NAME, entry.getKey());
 				dimTag.setInteger(CHUNKS_SINCE_LAST_OASIS_TAG_NAME, entry.getValue());
-
+				Treasure.logger.debug("chunks since last oasis -> {}", entry.getValue());
 				Map<Integer, Integer> biomeMap = oasisGen.getChunksSinceLastDimensionBiomeOasis().get(entry.getKey());
-				Treasure.logger.debug("biome map size -> {}", biomeMap.size());
+				Treasure.logger.debug("oasis biome map size -> {}", biomeMap.size());
+				
 				NBTTagList biomeTagList = new NBTTagList();
 				for (Entry<Integer, Integer> biomeEntry : biomeMap.entrySet()) {
 					NBTTagCompound biomeTag = new NBTTagCompound();
 					biomeTag.setInteger(BIOME_ID_TAG_NAME, biomeEntry.getKey());
 					biomeTag.setInteger(CHUNKS_SINCE_LAST_OASIS_TAG_NAME, biomeEntry.getValue());
+					Treasure.logger.debug("chunks since last biome {} oasis -> {}", biomeEntry.getKey(), biomeEntry.getValue());
 					biomeTagList.appendTag(biomeTag);
 				}
 				dimTag.setTag(BIOMES_TAG_NAME, biomeTagList);

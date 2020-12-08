@@ -31,6 +31,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -55,8 +56,13 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		 * 
 		 */
 		private ChestGeneratorType chestGeneratorType;
-
+		
 		public GenerationContext(Rarity rarity, ChestGeneratorType chestGeneratorType) {
+			this.lootRarity = rarity;
+			this.chestGeneratorType = chestGeneratorType;
+		}
+		
+		public GenerationContext(ResourceLocation lootTable, Rarity rarity, ChestGeneratorType chestGeneratorType) {
 			this.lootRarity = rarity;
 			this.chestGeneratorType = chestGeneratorType;
 		}
@@ -67,6 +73,10 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		
 		public ChestGeneratorType getChestGeneratorType() {
 			return chestGeneratorType;
+		}
+
+		public ResourceLocation getLootTable() {
+			return lootTable;
 		}
 
 	}
@@ -87,6 +97,8 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	private boolean sealed;
 
+	private ResourceLocation lootTable;
+	
 	/*
 	 * Properties detailing how the tile entity was generated
 	 */
@@ -249,6 +261,9 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			//			logger.debug("Writing FACING to NBT ->{}", getFacing());
 			sourceTag.setInteger("facing", getFacing());
 			sourceTag.setBoolean("sealed", isSealed());
+			if (getLootTable() != null) {
+				sourceTag.setString("lootTable", getLootTable().toString());
+			}
 			if (getGenerationContext() != null) {
 				NBTTagCompound contextTag = new NBTTagCompound();
 				contextTag.setString("lootRarity", getGenerationContext().getLootRarity().getValue());
@@ -338,6 +353,11 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			}
 			if (sourceTag.hasKey("sealed")) {
 				this.setSealed(sourceTag.getBoolean("sealed"));
+			}
+			if (sourceTag.hasKey("lootTable")) {
+				if (!sourceTag.getString("lootTable").isEmpty()) {
+					this.setLootTable(new ResourceLocation(sourceTag.getString("lootTable")));
+				}
 			}
 			if (sourceTag.hasKey("genContext")) {
 				NBTTagCompound contextTag = sourceTag.getCompoundTag("genContext");
@@ -722,5 +742,13 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	@Override
 	public void setGenerationContext(GenerationContext context) {
 		generationContext = context;
+	}
+
+	public ResourceLocation getLootTable() {
+		return lootTable;
+	}
+
+	public void setLootTable(ResourceLocation lootTable) {
+		this.lootTable = lootTable;
 	}
 }

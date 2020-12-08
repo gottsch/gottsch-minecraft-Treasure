@@ -25,6 +25,7 @@ import com.someguyssoftware.treasure2.item.charm.CharmType;
 import com.someguyssoftware.treasure2.item.charm.ICharm;
 import com.someguyssoftware.treasure2.item.charm.ICharmState;
 import com.someguyssoftware.treasure2.item.charm.ICharmed;
+import com.someguyssoftware.treasure2.item.wish.IWishable;
 import com.someguyssoftware.treasure2.network.CharmMessageToClient;
 
 import net.minecraft.block.Block;
@@ -43,6 +44,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -300,6 +302,25 @@ public class PlayerEventHandler {
 		// TODO scan hotbar ( 0-8)
 		
 		return Optional.of(context);
+	}
+	
+	/**
+	 * 
+	 * @param event
+	 */
+	@SubscribeEvent
+	public void onTossCoinEvent(ItemTossEvent event) {
+		if (WorldInfo.isClientSide(event.getPlayer().world)) {
+			return;
+		}
+
+		Item item = event.getEntityItem().getItem().getItem();
+		if (item instanceof IWishable) {
+			ItemStack stack = event.getEntityItem().getItem();
+			NBTTagCompound nbt = new NBTTagCompound();
+			nbt.setString(IWishable.DROPPED_BY_KEY, event.getPlayer().getName());
+			stack.setTagCompound(nbt);			
+		}		
 	}
 	
 	/**

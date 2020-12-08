@@ -1,4 +1,6 @@
 {	"version" : "1.0.0",
+	"category": "armor",
+	"rarity": "common",
 	"pools": [
 		{
 			"name": "treasure",
@@ -6,11 +8,11 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:loot_tables/treasure2/treasure/common",
+                    "name": "treasure2:pools/treasure/common",
                     "weight": 30
                 }
 			]
-		},	
+		},
 		{
 			"name": "items",
 			"rolls": {
@@ -20,7 +22,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:loot_tables/treasure2/items/common",
+                    "name": "treasure2:pools/items/common",
                     "weight": 1
                 }
 			]
@@ -34,9 +36,9 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:loot_tables/treasure2/armor/common",
+                    "name": "treasure2:pools/armor/common",
                     "weight": 1
-                }			
+                }
 			]
 		},
 		{
@@ -48,9 +50,9 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:loot_tables/treasure2/tools/common",
+                    "name": "treasure2:pools/tools/common",
                     "weight": 1
-                }			
+                }
 			]
 		}
 	]

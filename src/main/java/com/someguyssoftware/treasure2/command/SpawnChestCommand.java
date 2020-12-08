@@ -3,9 +3,13 @@
  */
 package com.someguyssoftware.treasure2.command;
 
+import static com.someguyssoftware.treasure2.Treasure.logger;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -15,22 +19,26 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 
-import com.someguyssoftware.gottschcore.loot.LootTable;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
+import com.someguyssoftware.treasure2.loot.LootTableShell;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * 
@@ -154,25 +162,32 @@ public class SpawnChestCommand extends CommandBase {
 			world.setBlockState(pos, chest.getDefaultState());
 			AbstractTreasureChestTileEntity tileEntity = (AbstractTreasureChestTileEntity) world.getTileEntity(pos);
 
-			if (tileEntity != null) {
-
-				// get the loot table
-				LootTable lootTable = gen.selectLootTable(Random::new, rarity);
-
-				if (lootTable == null) {
-					Treasure.logger.warn("Unable to select a lootTable for rarity -> {}", rarity);
-				}
-
-				Treasure.logger.debug("Generating loot from loot table for rarity {}", rarity);
-				List<ItemStack> stacks = lootTable.generateLootFromPools(new Random(),
-						Treasure.LOOT_TABLES.getContext());
-				Treasure.logger.debug("Generated loot:");
-				for (ItemStack stack : stacks) {
-					Treasure.logger.debug(stack.getDisplayName());
-				}
-
-				lootTable.fillInventory((IInventory) tileEntity, new Random(), Treasure.LOOT_TABLES.getContext());
+			// TODO no - need to select the loot table, set the resource location and sealed props in the tileentity
+			Optional<LootTableShell> lootTableShell = gen.selectLootTable2(random, rarity);
+			ResourceLocation lootTableResourceLocation = null;
+			if (lootTableShell.isPresent()) {
+				lootTableResourceLocation = lootTableShell.get().getResourceLocation();
 			}
+			else {
+				Treasure.logger.debug("Unable to select a LootTable for rarity -> {}", rarity);
+				return;
+			}
+			if (lootTableResourceLocation == null) {
+				Treasure.logger.debug("Unable to select a LootTable for rarity -> {}", rarity);
+				return;
+			}
+			
+			if (tileEntity != null) {
+				// add the loot table
+				gen.addLootTable((AbstractTreasureChestTileEntity) tileEntity, lootTableResourceLocation);
+				
+				// seal the chest
+				gen.addSeal((AbstractTreasureChestTileEntity) tileEntity);
+				
+				// update the backing tile entity's generation contxt
+				gen.addGenerationContext((AbstractTreasureChestTileEntity) tileEntity, rarity);
+			}
+			
 		} catch (Exception e) {
 			Treasure.logger.error("Error generating Treasure! chest: ", e);
 		}

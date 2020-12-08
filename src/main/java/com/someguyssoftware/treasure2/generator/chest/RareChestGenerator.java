@@ -18,6 +18,7 @@ import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.loot.LootTableShell;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity.GenerationContext;
 
@@ -44,18 +45,13 @@ public class RareChestGenerator implements IChestGenerator {
 	}
 	
 	@Override
-	public List<LootTable> buildLootTableList(final Rarity chestRarity) {
-		List<LootTable> tables = new ArrayList<>();
-		Map<String, List<LootTable>> mapOfLootTables = Treasure.LOOT_TABLES.getChestLootTablesTable().column(Rarity.SCARCE);
-		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
-			tables.addAll(n.getValue());
-		}
-		mapOfLootTables = Treasure.LOOT_TABLES.getChestLootTablesTable().column(Rarity.RARE);
-		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
-			tables.addAll(n.getValue());
-		}		
+	public List<LootTableShell> buildLootTableList2(final Rarity chestRarity) {
+		// get all loot tables by column key
+		List<LootTableShell> tables = new ArrayList<>();
+		tables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.SCARCE));
+		tables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.RARE));
 		return tables;
-	}
+	}	
 	
 	/**
 	 * Rare will have at least one lock.
