@@ -51,16 +51,6 @@ public class GoldSkullChestGenerator implements IChestGenerator {
 	 * @param chestRarity
 	 * @return
 	 */
-//	@Override
-//	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
-//		return Treasure.LOOT_TABLES.getSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST);
-//	}
-//
-//	@Override
-//	public LootTable selectLootTable(Supplier<Random> factory, final Rarity rarity) {
-//		return Treasure.LOOT_TABLES.getSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST);
-//	}
-	
 	@Override
 	public Optional<LootTableShell> selectLootTable2(Random random, final Rarity chestRarity) {
 		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST));

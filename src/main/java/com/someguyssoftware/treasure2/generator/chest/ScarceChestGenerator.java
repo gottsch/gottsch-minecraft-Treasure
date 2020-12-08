@@ -47,23 +47,6 @@ public class ScarceChestGenerator implements IChestGenerator {
 	/**
 	 * 
 	 */
-//	@Override
-//	public List<LootTable> buildLootTableList(final Rarity chestRarity) {
-//		// get all loot tables by column key
-//		List<LootTable> tables = new ArrayList<>();
-//		Map<String, List<LootTable>> mapOfLootTables = Treasure.LOOT_TABLES.getChestLootTablesTable().column(Rarity.UNCOMMON);
-//		// convert to a single list
-//		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
-//			tables.addAll(n.getValue());
-//		}
-//		mapOfLootTables = Treasure.LOOT_TABLES.getChestLootTablesTable().column(Rarity.SCARCE);
-//		// convert to a single list
-//		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
-//			tables.addAll(n.getValue());
-//		}		
-//		return tables;
-//	}
-	
 	@Override
 	public List<LootTableShell> buildLootTableList2(final Rarity chestRarity) {
 		// get all loot tables by column key
