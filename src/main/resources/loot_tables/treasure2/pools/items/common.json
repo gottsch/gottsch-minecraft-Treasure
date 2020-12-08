@@ -18,7 +18,22 @@
 								"max": 5
 							}
 						}
-					]			
+					]
+				},
+				{
+					"entryName": "apple",
+					"type": "item",
+					"name": "minecraft:bread",
+					"weight": 60,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 4
+							}
+						}
+					]
 				},
 				{
 					"entryName": "wool",
@@ -33,7 +48,7 @@
 								"max": 3
 							}
 						}
-					]				
+					]
 				},
 				{
 					"entryName": "torch",
@@ -48,7 +63,7 @@
 								"max": 5
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "leather",
@@ -63,7 +78,7 @@
 								"max": 3
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "rabbit_hide",
@@ -78,7 +93,7 @@
 								"max": 3
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "gold_nugget",
@@ -93,7 +108,7 @@
 								"max": 3
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "iron_ingot",
@@ -108,7 +123,7 @@
 								"max": 5
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "arrow",
@@ -123,7 +138,7 @@
 								"max": 10
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "bone",
@@ -138,8 +153,8 @@
 								"max": 3
 							}
 						}
-					]						
-				},				
+					]
+				},
 				{
 					"entryName": "spider_eye",
 					"type": "item",
@@ -153,13 +168,13 @@
 								"max": 3
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "rotten_flesh",
 					"type": "item",
 					"name": "minecraft:rotten_flesh",
-					"weight": 50				
+					"weight": 50
 				},
 				{
 					"entryName": "string",
@@ -174,8 +189,38 @@
 								"max": 3
 							}
 						}
-					]						
-				}		
+					]
+				},
+				{
+					"entryName": "clay_ball",
+					"type": "item",
+					"name": "minecraft:iron_ingot",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				},
+				{
+					"entryName": "brick",
+					"type": "item",
+					"name": "minecraft:iron_ingot",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				}
 			]
 		}
 	]

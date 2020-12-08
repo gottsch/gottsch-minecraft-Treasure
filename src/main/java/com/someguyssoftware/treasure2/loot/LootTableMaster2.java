@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.loot;
 
+import static com.someguyssoftware.treasure2.Treasure.logger;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
@@ -34,13 +37,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.someguyssoftware.gottschcore.GottschCore;
-import com.someguyssoftware.gottschcore.loot.LootTableMaster;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.gottschcore.version.VersionChecker;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTableManager;
 import net.minecraft.world.storage.loot.RandomValueRange;
 
@@ -52,14 +57,13 @@ public class LootTableMaster2 implements ILootTableMaster {
 	public static Logger LOGGER = LogManager.getLogger(GottschCore.logger.getName());
 
 	public static final String LOOT_TABLES_FOLDER = "loot_tables";
-	private static final String BASE_FOLDER = "base";
-	private static final String INJECT_FOLDER = "inject";
 
 	private static final Gson GSON_INSTANCE = (new GsonBuilder())
 			.registerTypeAdapter(RandomValueRange.class, new RandomValueRange.Serializer()).create();
 
 	private final IMod mod;
 	private File worldDataBaseFolder;
+	private LootContext context;
 
 	/**
 	 * 
@@ -84,6 +88,7 @@ public class LootTableMaster2 implements ILootTableMaster {
 	public void init(WorldServer world) {
 		Path path = Paths.get(world.getSaveHandler().getWorldDirectory().getPath(), "data", "loot_tables");
 		setWorldDataBaseFolder(path.toFile());
+		this.context = new LootContext.Builder(world).build();
 	}
 
 	@Override
@@ -281,7 +286,7 @@ public class LootTableMaster2 implements ILootTableMaster {
 	 * @param fileSystemFilePath
 	 */
 	private void copyResourceToFileSystem(Path resourceFilePath, Path fileSystemFilePath) {
-		InputStream is = LootTableMaster.class.getResourceAsStream(resourceFilePath.toString());
+		InputStream is = LootTableMaster2.class.getResourceAsStream(resourceFilePath.toString());
 		try (FileOutputStream fos = new FileOutputStream(fileSystemFilePath.toFile())) {
 			byte[] buf = new byte[2048];
 			int r;
@@ -545,6 +550,31 @@ public class LootTableMaster2 implements ILootTableMaster {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param list
+	 * @param lootContext
+	 * @return
+	 */
+	public List<ItemStack> getInjectedLootItems(World world, Random random, List<LootTableShell> list,
+			LootContext lootContext) {
+		List<ItemStack> itemStacks = new ArrayList<>();
+		
+		for (LootTableShell injectLootTableShell : list) {
+			logger.debug("injectable resource -> {}", injectLootTableShell.getResourceLocation());
+			// get the vanilla managed loot table
+			net.minecraft.world.storage.loot.LootTable injectLootTable = world.getLootTableManager().getLootTableFromLocation(injectLootTableShell.getResourceLocation());
+			if (injectLootTable != null) {
+				// add loot from tables to itemStacks
+				itemStacks.addAll(injectLootTable.generateLootForPools(random, lootContext));
+				logger.debug("size of item stacks after inject -> {}", itemStacks.size());
+			}
+		}
+		return itemStacks;
+	}
+	
 	public File getWorldDataBaseFolder() {
 		return worldDataBaseFolder;
 	}
@@ -560,5 +590,13 @@ public class LootTableMaster2 implements ILootTableMaster {
 	
 	public Gson getGsonInstance() {
 		return GSON_INSTANCE;
+	}
+
+	public LootContext getContext() {
+		return context;
+	}
+
+	public void setContext(LootContext context) {
+		this.context = context;
 	}
 }

@@ -1,6 +1,7 @@
 {
 	"version": "1.0",
 	"category": "general",
+	"rarity": "uncommon",
 	"pools": [
 		{
 			"name": "treasure",
@@ -12,7 +13,7 @@
                     "weight": 30
                 }
 			]
-		},	
+		},
 		{
 			"name": "charms",
 			"rolls": 1,
@@ -23,7 +24,7 @@
                     "weight": 1
                 }
 			]
-		},				
+		},
 		{
 			"name": "items",
 			"rolls": {
@@ -49,7 +50,7 @@
                     "type": "loot_table",
                     "name": "treasure2:pools/armor/uncommon",
                     "weight": 1
-                }		
+                }
 			]
 		},
 		{
@@ -63,7 +64,7 @@
                     "type": "loot_table",
                     "name": "treasure2:pools/food/uncommon",
                     "weight": 1
-                }				
+                }
 			]
 		},
 		{
@@ -77,7 +78,7 @@
                     "type": "loot_table",
                     "name": "treasure2:pools/tools/uncommon",
                     "weight": 1
-                }				
+                }
 			]
 		},
 		{
@@ -91,7 +92,7 @@
                     "type": "loot_table",
                     "name": "treasure2:pools/potions/uncommon",
                     "weight": 1
-                }			
+                }
 			]
 		},
 
@@ -120,7 +121,7 @@
                     "type": "loot_table",
                     "name": "treasure2:pools/armor/common",
                     "weight": 1
-                }		
+                }
 			]
 		},
 		{
@@ -134,7 +135,7 @@
                     "type": "loot_table",
                     "name": "treasure2:pools/food/common",
                     "weight": 1
-                }				
+                }
 			]
 		},
 		{
@@ -148,7 +149,7 @@
                     "type": "loot_table",
                     "name": "treasure2:pools/tools/common",
                     "weight": 1
-                }				
+                }
 			]
 		},
 		{
@@ -162,8 +163,8 @@
                     "type": "loot_table",
                     "name": "treasure2:pools/potions/common",
                     "weight": 1
-                }			
+                }
 			]
-		}		
+		}
 	]
 }

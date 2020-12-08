@@ -1,6 +1,7 @@
 {
 	"version" : "1.0.0",
 	"category": "general",
+	"rarity": "common",
 	"pools": [
 		{
 			"name": "treasure",

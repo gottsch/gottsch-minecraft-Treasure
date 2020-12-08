@@ -18,6 +18,7 @@ public class LootTableShell {
 	private String version;
 	private String category;
 	private List<String> categories;
+	private String rarity;
 	private List<LootPoolShell> pools;
 
 	public LootTableShell() {}
@@ -57,7 +58,8 @@ public class LootTableShell {
 
 	@Override
 	public String toString() {
-		return "LootTableShell [version=" + version + ", categories=" + getCategories() + "]";
+		return "LootTableShell [resourceLocation=" + resourceLocation + ", version=" + version + ", category="
+				+ category + ", categories=" + categories + ", rarity=" + rarity + "]";
 	}
 
 	public String getCategory() {
@@ -74,5 +76,13 @@ public class LootTableShell {
 
 	public void setResourceLocation(ResourceLocation resourceLocation) {
 		this.resourceLocation = resourceLocation;
+	}
+
+	public String getRarity() {
+		return rarity;
+	}
+
+	public void setRarity(String rarity) {
+		this.rarity = rarity;
 	}
 }

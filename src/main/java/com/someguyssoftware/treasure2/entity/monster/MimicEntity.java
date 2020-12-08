@@ -159,7 +159,7 @@ public abstract class MimicEntity extends EntityMob {
 		ResourceLocation location = null;
 
 		// select the loot table by rarity
-		List<ResourceLocation> locations = Treasure.LOOT_TABLES.getLootTableResourceByRarity(chestRarity);
+		List<ResourceLocation> locations = Treasure.LOOT_TABLE_MASTER.getLootTableResourceByRarity(chestRarity);
 		
 		// select a random location from the list
 		if (locations != null && !locations.isEmpty()) {

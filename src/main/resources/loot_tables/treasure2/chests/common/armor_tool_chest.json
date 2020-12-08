@@ -1,5 +1,6 @@
 {	"version" : "1.0.0",
 	"category": "armor",
+	"rarity": "common",
 	"pools": [
 		{
 			"name": "treasure",
@@ -11,7 +12,7 @@
                     "weight": 30
                 }
 			]
-		},	
+		},
 		{
 			"name": "items",
 			"rolls": {
@@ -37,7 +38,7 @@
                     "type": "loot_table",
                     "name": "treasure2:pools/armor/common",
                     "weight": 1
-                }			
+                }
 			]
 		},
 		{
@@ -51,7 +52,7 @@
                     "type": "loot_table",
                     "name": "treasure2:pools/tools/common",
                     "weight": 1
-                }			
+                }
 			]
 		}
 	]

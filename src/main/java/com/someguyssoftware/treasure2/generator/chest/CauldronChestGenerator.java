@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.generator.chest;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
 
@@ -12,6 +13,7 @@ import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.loot.LootTableShell;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster.SpecialLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
@@ -42,13 +44,13 @@ public class CauldronChestGenerator extends EpicChestGenerator {
 	 * @return
 	 */
 	@Override
-	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
-		return Treasure.LOOT_TABLES.getSpecialLootTable(SpecialLootTables.CAULDRON_CHEST);
+	public Optional<LootTableShell> selectLootTable2(Random random, final Rarity chestRarity) {
+		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.CAULDRON_CHEST));
 	}
 
 	@Override
-	public LootTable selectLootTable(Supplier<Random> factory, final Rarity rarity) {
-		return Treasure.LOOT_TABLES.getSpecialLootTable(SpecialLootTables.CAULDRON_CHEST);
+	public Optional<LootTableShell> selectLootTable2(Supplier<Random> factory, final Rarity rarity) {
+		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.CAULDRON_CHEST));
 	}
 
 	/**

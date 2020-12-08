@@ -4,10 +4,10 @@
 package com.someguyssoftware.treasure2.generator.chest;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import com.someguyssoftware.gottschcore.loot.LootTable;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
@@ -21,9 +21,9 @@ import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
+import com.someguyssoftware.treasure2.loot.LootTableShell;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster.SpecialLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity.GenerationContext;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -55,16 +55,25 @@ public class WitherChestGenerator implements IChestGenerator {
 	 * @param chestRarity
 	 * @return
 	 */
-	@Override
-	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
-		return Treasure.LOOT_TABLES.getSpecialLootTable(SpecialLootTables.WITHER_CHEST);
-	}
-	
-	@Override
-   public LootTable selectLootTable(Supplier<Random> factory, final Rarity rarity) {
-		return Treasure.LOOT_TABLES.getSpecialLootTable(SpecialLootTables.WITHER_CHEST);
-    }
+//	@Override
+//	public LootTable selectLootTable(Random random, final Rarity chestRarity) {
+//		return Treasure.LOOT_TABLES.getSpecialLootTable(SpecialLootTables.WITHER_CHEST);
+//	}
+//	
+//	@Override
+//   public LootTable selectLootTable(Supplier<Random> factory, final Rarity rarity) {
+//		return Treasure.LOOT_TABLES.getSpecialLootTable(SpecialLootTables.WITHER_CHEST);
+//    }
 	 
+	@Override
+	public Optional<LootTableShell> selectLootTable2(Random random, final Rarity chestRarity) {
+		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.WITHER_CHEST));
+	}
+
+	@Override
+	public Optional<LootTableShell> selectLootTable2(Supplier<Random> factory, final Rarity rarity) {
+		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.WITHER_CHEST));
+	}
 	/**
 	 * Always select a wither chest.
 	 */

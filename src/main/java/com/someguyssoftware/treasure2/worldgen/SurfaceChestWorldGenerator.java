@@ -262,7 +262,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 			    
      			// 3. check against all registered chests
      			if (isRegisteredChestWithinDistance(world, coords, TreasureConfig.CHESTS.surfaceChests.minDistancePerChest)) {
-   					Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
+//   					Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
      				return;
      			}
      			     			

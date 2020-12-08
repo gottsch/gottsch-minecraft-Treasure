@@ -32,6 +32,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster.SpecialLootTables;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StringUtils;
 import net.minecraft.world.storage.loot.LootTableList;
 
 /**
@@ -98,7 +99,6 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	/*
 	 * Guava Table of loot table ResourceLocations for Chests based on LootTableManager-key and Rarity 
 	 */
-	@Deprecated
 	private final Table<String, Rarity, List<ResourceLocation>> CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE = HashBasedTable.create();
 
 	/*
@@ -112,6 +112,11 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 * Guava Table of LootTableShell for Chests based on LootTableManager-key and Rarity
 	 */
 	private final Table<String, Rarity, List<LootTableShell>> CHEST_LOOT_TABLES_TABLE = HashBasedTable.create();
+	
+	/*
+	 * Map of LootTableShell for Chests base on ResourceLocation
+	 */
+	private final Map<ResourceLocation, LootTableShell> CHEST_LOOT_TABLES_MAP = new HashMap<>();
 
 	/*
 	 * 
@@ -146,6 +151,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		super.clear();
 		CHEST_LOOT_TABLES_TABLE.clear();
 		CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.clear();
+		CHEST_LOOT_TABLES_MAP.clear();
 		SPECIAL_LOOT_TABLES_MAP.clear();
 		INJECT_LOOT_TABLES_TABLE.clear();
 		INJECT_LOOT_TABLES_RESOURCE_LOCATION_TABLE.clear();
@@ -191,6 +197,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 					// add loot table to map
 					CHEST_LOOT_TABLES_TABLE.get(CUSTOM_LOOT_TABLE_KEY, key).add(lootTable.get());
 					LOGGER.debug("tabling loot table: {} {} -> {}", CUSTOM_LOOT_TABLE_KEY, key, resourceLocation);
+					CHEST_LOOT_TABLES_MAP.put(resourceLocation, lootTable.get());
 				}
 				else {
 					LOGGER.debug("unable to load loot table from -> {} : {}", getWorldDataBaseFolder(), resourceLocation);
@@ -206,18 +213,26 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		 */
 		for (String location : SPECIAL_CHEST_LOOT_TABLE_FOLDER_LOCATIONS) {
 			List<ResourceLocation> specialLocations = getLootTablesResourceLocations(modID, location);
-
+			LOGGER.debug("size of special chest loot table locations -> {}", specialLocations.size());
 			// load each ResourceLocation as LootTable and map it.
 			for (ResourceLocation resourceLocation : specialLocations) {
 				Path path = Paths.get(resourceLocation.getResourcePath());
+				LOGGER.debug("path to special resource loc -> {}", path.toString());
 				// create loot table
 				Optional<LootTableShell> lootTable = loadLootTable(getWorldDataBaseFolder(), resourceLocation);
 				if (lootTable.isPresent()) {
+					// add resource location to table
+					lootTable.get().setResourceLocation(resourceLocation);
 					// add to map
 					SpecialLootTables specialLootTables = SpecialLootTables.valueOf(com.google.common.io.Files.getNameWithoutExtension(path.getName(path.getNameCount()-1).toString().toUpperCase()));
+					LOGGER.debug("special loot tables enum -> {}", specialLootTables);
 					// add to map
 					SPECIAL_LOOT_TABLES_MAP.put(specialLootTables, lootTable.get());
+					LOGGER.debug("tabling special loot table: {} -> {}", specialLootTables, resourceLocation);
 					LootTableList.register(resourceLocation);
+				}
+				else {
+					LOGGER.debug("unable to load special loot table from -> {} : {}", getWorldDataBaseFolder(), resourceLocation);
 				}
 			}
 		}
@@ -237,8 +252,12 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 				// create loot table
 				Optional<LootTableShell> lootTable = loadLootTable(getWorldDataBaseFolder(), resourceLocation);
 				if (lootTable.isPresent()) {
+					// add resource location to table
+					lootTable.get().setResourceLocation(resourceLocation);
+					LOGGER.debug("loaded inject loot table shell -> {}", resourceLocation);
 					List<String> keys = lootTable.get().getCategories();
 					keys.forEach(key -> {
+						LOGGER.debug("using inject key to table -> {}", key);
 						key = key.isEmpty() ? "general" : key;
 						if (!INJECT_LOOT_TABLES_RESOURCE_LOCATION_TABLE.containsRow(key)) {
 							// initialize 
@@ -249,6 +268,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 						}
 						INJECT_LOOT_TABLES_RESOURCE_LOCATION_TABLE.get(key, rarity).add(resourceLocation);	
 						INJECT_LOOT_TABLES_TABLE.get(key, rarity).add(lootTable.get());
+						LOGGER.debug("tabling inject loot table: {} {} -> {}", key, rarity, resourceLocation);
 					});
 				}
 				LootTableList.register(resourceLocation);
@@ -342,6 +362,16 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	
 	/**
 	 * 
+	 * @param location
+	 * @return
+	 */
+	public Optional<LootTableShell> getLootTableByResourceLocation(ResourceLocation location) {
+		LootTableShell lootTableShell = CHEST_LOOT_TABLES_MAP.get(location);
+		return Optional.ofNullable(lootTableShell);
+	}
+	
+	/**
+	 * 
 	 * @param tableType
 	 * @param rarity
 	 * @return
@@ -379,7 +409,6 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 * @param rarity
 	 * @return
 	 */
-	@Deprecated
 	public List<ResourceLocation> getLootTableResourceByRarity(Rarity rarity) {
 		// get all loot tables by column key
 		List<ResourceLocation> tables = new ArrayList<>();
@@ -397,7 +426,19 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 * @return
 	 */
 	public LootTableShell getSpecialLootTable(SpecialLootTables table) {
+		Treasure.logger.debug("searching for special loot table --> {}", table);
+		
 		LootTableShell lootTable = SPECIAL_LOOT_TABLES_MAP.get(table);
 		return lootTable;
+	}
+	
+	/**
+	 * 
+	 * @param lootTableShell
+	 * @param defaultRarity
+	 * @return
+	 */
+	public Rarity getEffectiveRarity(LootTableShell lootTableShell, Rarity defaultRarity) {
+		return !StringUtils.isNullOrEmpty(lootTableShell.getRarity()) ? Rarity.getByValue(lootTableShell.getRarity().toLowerCase()) : defaultRarity;
 	}
 }

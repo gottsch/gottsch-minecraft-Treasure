@@ -89,22 +89,7 @@ public class GuiHandler implements IGuiHandler {
                 
                 // fill the chest with loot
                 chestGenerator.fillChest(world, new Random(), tileEntity, chestTileEntity.getGenerationContext().getLootRarity(), player);
-            
-				// select a loot table
-//				LootTable lootTable = chestGenerator.selectLootTable(Random::new, chestTileEntity.getGenerationContext().getLootRarity());
-//				if (lootTable == null) {
-//					logger.warn("Unable to select a lootTable.");
-//					return null;
-//				}
-//				logger.debug("Generating loot from loot table for rarity {}", chestTileEntity.getGenerationContext().getLootRarity());
-//				LootContext lootContext = new LootContext.Builder((WorldServer) world, Treasure.LOOT_TABLES.getLootTableManager())
-//						.withLuck(player.getLuck())
-//						.withPlayer(player)
-//						.build();
-//				if (lootContext == null) {
-//					lootContext = Treasure.LOOT_TABLES.getContext();
-//				}
-//				lootTable.fillInventory((IInventory) tileEntity, new Random(), lootContext);
+
 			}
 		}
 

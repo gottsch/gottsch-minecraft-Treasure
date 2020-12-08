@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.config.AppenderRef;
 
 import com.someguyssoftware.gottschcore.GottschCore;
 import com.someguyssoftware.gottschcore.annotation.Credits;
@@ -109,7 +110,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.13.1";
+	protected static final String VERSION = "1.14.0";
 
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/update.json";
 
@@ -127,7 +128,7 @@ public class Treasure extends AbstractMod {
 
 	// NOTE can't make final here as it is set during world load
 	// loot tables management
-	public static TreasureLootTableMaster LOOT_TABLES;
+//	public static TreasureLootTableMaster LOOT_TABLES;
 
 	public static TreasureLootTableMaster2 LOOT_TABLE_MASTER;
 	
@@ -191,6 +192,11 @@ public class Treasure extends AbstractMod {
 		// add appender to the GottschCore logger
 		addAppenderToLogger(appender, GottschCore.instance.getName(), (ILoggerConfig) getConfig());
 
+		// TEST ///////
+		AppenderRef appenderReference = AppenderRef.createAppenderRef(appender.getName(), null, null);
+		Treasure.logger.debug("appender -> {}, appenderRef.ref -> {}", appender.getName(), appenderReference.getRef());
+		// END OF TEST //////
+		
 		// register the GUI handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
@@ -269,7 +275,7 @@ public class Treasure extends AbstractMod {
 		}
 
 		// add the loot table managers
-		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");		
+//		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");		
 		LOOT_TABLE_MASTER = new TreasureLootTableMaster2(Treasure.instance);
 		
 		TEMPLATE_MANAGER = new TreasureTemplateManager(Treasure.instance, "/structures",
