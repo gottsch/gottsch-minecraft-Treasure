@@ -300,7 +300,13 @@ public class TreasureBlocks {
                 		}).setHardness(2.5F);
          
         MILK_CRATE = new TreasureChestBlock(Treasure.MODID, TreasureConfig.MILK_CRATE_ID, MilkCrateTileEntity.class,
-                TreasureChestTypes.STANDARD, Rarity.COMMON).setBounds(stdChestBounds).setHardness(2.5F);
+                TreasureChestTypes.STANDARD, Rarity.COMMON).setBounds(
+                		new AxisAlignedBB[] {                				
+                		new AxisAlignedBB(0.171875D, 0.0D, 0.171875D, 0.828125D, 0.640625D, 0.828125D),
+                		new AxisAlignedBB(0.171875D, 0.0D, 0.171875D,  0.828125D, 0.640625D,  0.828125D),
+                		new AxisAlignedBB(0.171875D, 0.0D, 0.171875D,  0.828125D, 0.640625D,  0.828125D),
+                		new AxisAlignedBB(0.171875D, 0.0D, 0.171875D,  0.828125D, 0.640625D,  0.828125D)
+                		}).setHardness(2.5F);
 
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
