@@ -1,0 +1,11 @@
+{
+    "variants": {
+		"normal": { "model": "treasure2:cardboard_box" },
+        "facing=north": { "model": "treasure2:cardboard_box" },
+        "facing=south": { "model": "treasure2:cardboard_box", "y": 180, "uvlock": true },
+        "facing=west":  { "model": "treasure2:cardboard_box", "y": 270, "uvlock": true },
+        "facing=east":  { "model": "treasure2:cardboard_box", "y": 90, "uvlock": true },
+        "facing=up": { "model": "treasure2:cardboard_box" },
+        "facing=down": { "model": "treasure2:cardboard_box" }
+    }
+}

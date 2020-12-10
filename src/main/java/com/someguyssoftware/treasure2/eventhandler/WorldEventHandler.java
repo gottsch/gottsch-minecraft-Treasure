@@ -54,26 +54,11 @@ public class WorldEventHandler {
 		if (WorldInfo.isServerSide(event.getWorld()) && event.getWorld().provider.getDimension() == 0) {
 //			Treasure.logger.debug("server event");
 			WorldServer world = (WorldServer) event.getWorld();
-			
-			///////////////////////////
-			/// New Loot Table Master
-			///============
+
 			// called once to initiate world-level properties in the LootTableMaster
 			Treasure.LOOT_TABLE_MASTER.init(world);
 			// register mod's loot tables with the LootTableMaster
 			Treasure.LOOT_TABLE_MASTER.register(mod.getId());
-
-			// TODO deprecated calls
-//			Treasure.LOOT_TABLES.init(world);
-//			Treasure.LOOT_TABLES.register(getMod().getId());
-			
-			// TODO deprecated system
-			// register any foreign mod loot tables
-//			for (String foreignModID : TreasureConfig.FOREIGN_MODS.enableForeignModIDs) {
-//				if (Loader.isModLoaded(foreignModID)) {		
-//					Treasure.LOOT_TABLES.register(foreignModID);
-//				}
-//			}
 			
 			// register files with their respective managers
 			Treasure.META_MANAGER.register(getMod().getId());
