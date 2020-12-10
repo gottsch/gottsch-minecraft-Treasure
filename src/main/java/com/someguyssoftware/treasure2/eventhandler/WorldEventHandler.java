@@ -4,27 +4,18 @@
 package com.someguyssoftware.treasure2.eventhandler;
 
 import java.util.Map.Entry;
-import java.util.Optional;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
-import com.someguyssoftware.treasure2.loot.LootTableShell;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 import com.someguyssoftware.treasure2.worldgen.ITreasureWorldGenerator;
 
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.storage.loot.LootTable;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -57,8 +48,9 @@ public class WorldEventHandler {
 
 			// called once to initiate world-level properties in the LootTableMaster
 			Treasure.LOOT_TABLE_MASTER.init(world);
-			// register mod's loot tables with the LootTableMaster
-			Treasure.LOOT_TABLE_MASTER.register(mod.getId());
+			
+			// register mod's loot tables
+			TreasureLootTableRegistry.register(mod.getId());
 			
 			// register files with their respective managers
 			Treasure.META_MANAGER.register(getMod().getId());

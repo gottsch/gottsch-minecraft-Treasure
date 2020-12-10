@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.loot.LootTableShell;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.wish.IWishProvider;
 import com.someguyssoftware.treasure2.wish.IWishProviderFunction;

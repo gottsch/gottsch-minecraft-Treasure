@@ -12,6 +12,8 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.item.ModItem;
+import com.someguyssoftware.gottschcore.loot.LootPoolShell;
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
@@ -21,9 +23,7 @@ import com.someguyssoftware.treasure2.block.IWishingWellBlock;
 import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.wish.IWishable;
-import com.someguyssoftware.treasure2.loot.LootPoolShell;
-import com.someguyssoftware.treasure2.loot.LootTableShell;
-import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster.SpecialLootTables;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;

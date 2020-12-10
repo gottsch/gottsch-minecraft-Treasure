@@ -27,9 +27,10 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Table;
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.gottschcore.loot.LootTableMaster2;
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster.SpecialLootTables;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
@@ -440,5 +441,22 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 */
 	public Rarity getEffectiveRarity(LootTableShell lootTableShell, Rarity defaultRarity) {
 		return !StringUtils.isNullOrEmpty(lootTableShell.getRarity()) ? Rarity.getByValue(lootTableShell.getRarity().toLowerCase()) : defaultRarity;
+	}
+	
+	/*
+	 * Enum of special loot tables (not necessarily chests)
+	 */
+	public enum SpecialLootTables {
+		WITHER_CHEST,
+		SKULL_CHEST,
+		GOLD_SKULL_CHEST,
+		CRYSTAL_SKULL_CHEST,
+		CAULDRON_CHEST,
+		CLAM_CHEST,
+		OYSTER_CHEST,
+		SILVER_WELL,
+		GOLD_WELL,
+		WHITE_PEARL_WELL,
+		BLACK_PEARL_WELL
 	}
 }

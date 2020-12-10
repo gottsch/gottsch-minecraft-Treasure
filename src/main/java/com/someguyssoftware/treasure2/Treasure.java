@@ -17,7 +17,6 @@ import com.someguyssoftware.gottschcore.annotation.Credits;
 import com.someguyssoftware.gottschcore.command.ShowVersionCommand;
 import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.config.ILoggerConfig;
-import com.someguyssoftware.gottschcore.loot.functions.LootFunctionManager;
 import com.someguyssoftware.gottschcore.mod.AbstractMod;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
@@ -49,13 +48,9 @@ import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
-import com.someguyssoftware.treasure2.loot.LootTableMaster2;
-import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.function.CharmRandomly;
-import com.someguyssoftware.treasure2.loot.function.CharmRandomly2;
 import com.someguyssoftware.treasure2.loot.function.SetCharms;
-import com.someguyssoftware.treasure2.loot.function.SetCharms2;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 import com.someguyssoftware.treasure2.network.CharmMessageHandlerOnClient;
 import com.someguyssoftware.treasure2.network.CharmMessageToClient;
@@ -214,13 +209,9 @@ public class Treasure extends AbstractMod {
 		CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingStorage(), KeyRingCapability::new);
 		CapabilityManager.INSTANCE.register(IEffectiveMaxDamageCapability.class, new EffectiveMaxDamageStorage(), EffectiveMaxDamageCapability::new);
 		
-		// TODO remove these
 		// register custom loot functions
-		LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
-		LootFunctionManager.registerFunction(new SetCharms.Serializer());
-		
-		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new CharmRandomly2.Serializer());
-		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms2.Serializer());
+		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
+		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms.Serializer());
 		
 	}
 
