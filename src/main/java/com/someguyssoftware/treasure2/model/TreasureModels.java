@@ -40,15 +40,17 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GOLD_STRONGBOX));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SAFE));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.DREAD_PIRATE_CHEST));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WHALE_BONE_PIRATE_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.COMPRESSOR_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GOLD_SKULL_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SKULL_CHEST));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CRYSTAL_SKULL_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CAULDRON_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SPIDER_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.VIKING_CHEST));
-		
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CARDBOARD_BOX));
+        registerItemModel(Item.getItemFromBlock(TreasureBlocks.MILK_CRATE));
+        
 		// MIMICS
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WOOD_MIMIC));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.PIRATE_MIMIC));

@@ -3,35 +3,50 @@
  */
 package com.someguyssoftware.treasure2.client.render.tileentity;
 
+import com.someguyssoftware.treasure2.client.model.CardboardBoxModel;
 import com.someguyssoftware.treasure2.client.model.ITreasureChestModel;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.CauldronChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.CardboardBoxTileEntity;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.item.ItemStack;
 
 /**
  * @author Mark Gottschling onJan 9, 2018
  *
  */
-public class CauldronChestTileEntityRenderer extends TreasureChestTileEntityRenderer {
+public class CardboardBoxTileEntityRenderer extends TreasureChestTileEntityRenderer {
 
 	/**
 	 * 
 	 * @param texture
 	 */
-	public CauldronChestTileEntityRenderer(String texture, ITreasureChestModel model) {
+	public CardboardBoxTileEntityRenderer(String texture, ITreasureChestModel model) {
 		super(texture, model);
 	}
 
 	@Override
 	public void updateModelLidRotation(AbstractTreasureChestTileEntity te, float partialTicks) {
-		CauldronChestTileEntity cte = (CauldronChestTileEntity) te;
-		float lidRotation = cte.prevLidAngle + (cte.lidAngle - cte.prevLidAngle) * partialTicks;
+		CardboardBoxTileEntity cte = (CardboardBoxTileEntity) te;
+
+		// update in the inner lid
+		float innerLidRotation = cte.prevInnerLidAngle + (cte.innerLidAngle - cte.prevInnerLidAngle) * partialTicks;
+		innerLidRotation = 1.0F - innerLidRotation;
+		innerLidRotation = 1.0F - innerLidRotation * innerLidRotation * innerLidRotation;
+		((CardboardBoxModel)getModel()).getInnerLid().rotateAngleX = (innerLidRotation * (float) Math.PI / getAngleModifier()); // not negated
+		
+		float lidRotation = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
 		lidRotation = 1.0F - lidRotation;
 		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-		// NOTE positive rotation here (getLid() returns lidLeft property)
-		getModel().getLid().rotateAngleZ = (lidRotation * (float)Math.PI / getAngleModifier());
+		getModel().getLid().rotateAngleZ = -(lidRotation * (float) Math.PI / getAngleModifier());
+	}
+	
+	@Override
+	public float getAngleModifier() {
+		return 0.8F;
 	}
 	
 	@Override
