@@ -218,12 +218,8 @@ public class TreasureChestBlock extends AbstractChestBlock {
 				/*
 				 * spawn chest item
 				 */
-
 				if (WorldInfo.isServerSide(worldIn)) {
 					ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
-
-					// give the chest a tag compound
-//					Treasure.logger.debug("[BreakingBlock]Saving chest items:");
 
 					NBTTagCompound nbt = new NBTTagCompound();
 					nbt = te.writeToNBT(nbt);
@@ -231,13 +227,6 @@ public class TreasureChestBlock extends AbstractChestBlock {
 
 					InventoryHelper.spawnItemStack(worldIn, (double) pos.getX(), (double) pos.getY(),
 							(double) pos.getZ(), chestItem);
-
-					// TEST log all items in item
-//					NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
-//					ItemStackHelper.loadAllItems(chestItem.getTagCompound(), items);
-//					for (ItemStack stack : items) {
-//						Treasure.logger.debug("[BreakingBlock] item in chest item -> {}", stack.getDisplayName());
-//					}
 				}
 			}
 

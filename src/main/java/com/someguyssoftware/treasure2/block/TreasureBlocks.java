@@ -30,6 +30,7 @@ import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.DreadPirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldSkullChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.CrystalSkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
@@ -79,6 +80,7 @@ public class TreasureBlocks {
 	public static final Block WITHER_CHEST_TOP;
 	public static final Block SKULL_CHEST;
 	public static final Block GOLD_SKULL_CHEST;
+	public static final Block CRYSTAL_SKULL_CHEST;
 	public static final Block CAULDRON_CHEST;
 	public static final Block SPIDER_CHEST;
     public static final Block VIKING_CHEST;
@@ -93,8 +95,7 @@ public class TreasureBlocks {
 	public static final Block VASE = null;
 	public static final Block INVISIBLE_CHEST = null;
 	public static final Block SAMURAI_CHEST = null;
-	public static final Block OBSIDIAN_CHEST = null;
-	public static final Block CRYSTAL_SKULL_CHEST = null;
+	public static final Block OBSIDIAN_CHEST = null;	
 	public static final Block AZTEC_CHEST = null;
 	public static final Block CANOPIC_CHEST = null;
 
@@ -274,6 +275,10 @@ public class TreasureBlocks {
 				GoldSkullChestTileEntity.class, TreasureChestTypes.SKULL, Rarity.RARE)
 						.setChestGuiID(GuiHandler.SKULL_CHEST_GUIID).setBounds(skullChestBounds).setHardness(3.0F);
 
+		CRYSTAL_SKULL_CHEST = new TreasureChestBlock(Treasure.MODID, TreasureConfig.CRYSTAL_SKULL_CHEST_ID,
+				CrystalSkullChestTileEntity.class, TreasureChestTypes.SKULL, Rarity.EPIC)
+						.setChestGuiID(GuiHandler.SKULL_CHEST_GUIID).setBounds(skullChestBounds).setHardness(3.0F);
+		
 		CAULDRON_CHEST = new TreasureChestBlock(Treasure.MODID, TreasureConfig.CAULDRON_CHEST_ID, Material.IRON,
 				CauldronChestTileEntity.class, TreasureChestTypes.TOP_SPLIT, Rarity.EPIC)
 						.setChestGuiID(GuiHandler.STANDARD_CHEST_GUIID).setHardness(3.0F);
@@ -300,7 +305,7 @@ public class TreasureBlocks {
                 		}).setHardness(2.5F);
          
         MILK_CRATE = new TreasureChestBlock(Treasure.MODID, TreasureConfig.MILK_CRATE_ID, MilkCrateTileEntity.class,
-                TreasureChestTypes.STANDARD, Rarity.COMMON).setBounds(
+                TreasureChestTypes.MILK_CRATE, Rarity.COMMON).setBounds(
                 		new AxisAlignedBB[] {                				
                 		new AxisAlignedBB(0.171875D, 0.0D, 0.171875D, 0.828125D, 0.640625D, 0.828125D),
                 		new AxisAlignedBB(0.171875D, 0.0D, 0.171875D,  0.828125D, 0.640625D,  0.828125D),
@@ -541,6 +546,7 @@ public class TreasureBlocks {
 			registry.register(WITHER_CHEST);
 			registry.register(SKULL_CHEST);
 			registry.register(GOLD_SKULL_CHEST);
+			registry.register(CRYSTAL_SKULL_CHEST);
 			registry.register(CAULDRON_CHEST);
 			registry.register(PROXIMITY_SPAWNER);
 
@@ -572,7 +578,9 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(DREAD_PIRATE_CHEST),
 //					new TreasureChestItemBlock(WHALE_BONE_PIRATE_CHEST),
 					new TreasureChestItemBlock(COMPRESSOR_CHEST), new TreasureChestItemBlock(WITHER_CHEST),
-					new TreasureChestItemBlock(SKULL_CHEST), new TreasureChestItemBlock(GOLD_SKULL_CHEST),
+					new TreasureChestItemBlock(SKULL_CHEST),
+					new TreasureChestItemBlock(GOLD_SKULL_CHEST),
+					new TreasureChestItemBlock(CRYSTAL_SKULL_CHEST),
 					new TreasureChestItemBlock(CAULDRON_CHEST),
 					new TreasureChestItemBlock(SPIDER_CHEST), 
                     new TreasureChestItemBlock(VIKING_CHEST),
@@ -641,6 +649,8 @@ public class TreasureBlocks {
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.SKULL_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(GoldSkullChestTileEntity.class,
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.GOLD_SKULL_CHEST_TE_ID));
+			GameRegistry.registerTileEntity(CrystalSkullChestTileEntity.class,
+					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.CRYSTAL_SKULL_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(CauldronChestTileEntity.class,
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.CAULDRON_CHEST_TE_ID));
 			GameRegistry.registerTileEntity(SpiderChestTileEntity.class,

@@ -34,5 +34,8 @@ public class MilkCrateTileEntityRenderer extends TreasureChestTileEntityRenderer
 		GlStateManager.scale(0.75F, 0.75F, 0.75F);
 	}
     
-    
+	 @Override
+	 public void updateLockScale() {
+		 GlStateManager.scale(0.28F, 0.28F, 0.28F);
+	}
 }

@@ -44,6 +44,7 @@ import com.someguyssoftware.treasure2.tileentity.CauldronChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.ClamChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.CrystalSkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.DreadPirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldSkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
@@ -166,6 +167,11 @@ public class ClientProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(
 				GoldSkullChestTileEntity.class,
 				new SkullChestTileEntityRenderer("gold-skull-chest", new SkullChestModel()));
+		
+		// crystal skull chest
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				CrystalSkullChestTileEntity.class,
+				new SkullChestTileEntityRenderer("crystal-skull-chest", new SkullChestModel()));
 		
 		// cauldron chest
 		ClientRegistry.bindTileEntitySpecialRenderer(

@@ -69,6 +69,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String WITHER_CHEST_TOP_ID = "wither_chest_top";
 	@Ignore public static final String SKULL_CHEST_ID = "skull_chest";
 	@Ignore public static final String GOLD_SKULL_CHEST_ID = "gold_skull_chest";
+	@Ignore public static final String CRYSTAL_SKULL_CHEST_ID = "crystal_skull_chest";
 	@Ignore public static final String CAULDRON_CHEST_ID = "cauldron_chest";
 	@Ignore public static final String SPIDER_CHEST_ID = "spider_chest";
     @Ignore public static final String VIKING_CHEST_ID = "viking_chest";
@@ -236,6 +237,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
 	@Ignore public static final String SKULL_CHEST_TE_ID = "skull_chest_tile_entity";
 	@Ignore public static final String GOLD_SKULL_CHEST_TE_ID = "gold_skull_chest_tile_entity";
+	@Ignore public static final String CRYSTAL_SKULL_CHEST_TE_ID = "crystal_skull_chest_tile_entity";
 	@Ignore public static final String CAULDRON_CHEST_TE_ID = "cauldron_chest_tile_entity";
 	@Ignore public static final String OYSTER_CHEST_TE_ID = "oyster_chest_tile_entity";
 	@Ignore public static final String CLAM_CHEST_TE_ID = "clam_chest_tile_entity";

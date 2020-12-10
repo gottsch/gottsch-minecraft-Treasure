@@ -44,6 +44,7 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.COMPRESSOR_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.GOLD_SKULL_CHEST));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CRYSTAL_SKULL_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SKULL_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CAULDRON_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SPIDER_CHEST));
@@ -87,20 +88,6 @@ public class TreasureModels {
 
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WISHING_WELL_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.DESERT_WISHING_WELL_BLOCK));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FOG_BLOCK));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.HIGH_FOG_BLOCK));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.MED_FOG_BLOCK));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.LOW_FOG_BLOCK));
-//		
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_FOG));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.HIGH_WITHER_FOG));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.MED_WITHER_FOG));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.LOW_WITHER_FOG));
-//
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.POISON_FOG));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.HIGH_POISON_FOG));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.MED_POISON_FOG));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.LOW_POISON_FOG));
 
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_LOG));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_BROKEN_LOG));

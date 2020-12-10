@@ -9,6 +9,7 @@ import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.CrystalSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.RareChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
@@ -29,6 +30,7 @@ public enum ChestGeneratorType {
 	WITHER(WitherChestGenerator::new),
 	SKULL(SkullChestGenerator::new),
 	GOLD_SKULL(GoldSkullChestGenerator::new),
+	CRYSTAL_SKULL(CrystalSkullChestGenerator::new),
     CAULDRON(CauldronChestGenerator::new);
     
     private Supplier<IChestGenerator> factory;

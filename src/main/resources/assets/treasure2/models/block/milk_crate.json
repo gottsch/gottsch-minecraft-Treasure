@@ -4,7 +4,7 @@
 	"textures": {
 		"0": "treasure2:blocks/chests/milk-crate-side",
 		"1": "treasure2:blocks/chests/milk-crate-top",
-		"particle": treasure2:blocks/"chests/milk-crate-top"
+		"particle": "treasure2:blocks/chests/milk-crate-top"
 	},
 	"elements": [
 		{
