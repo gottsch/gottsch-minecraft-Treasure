@@ -61,11 +61,6 @@ public interface IChestGenerator {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(coords);
 		// select a loot table
-		// LootTable lootTable = selectLootTable(random, rarity);
-		// if (lootTable == null) {
-		// 	logger.warn("Unable to select a lootTable.");
-		// 	return result.fail();
-		// }
 		Optional<LootTableShell> lootTableShell = selectLootTable2(random, rarity);
 		ResourceLocation lootTableResourceLocation = null;
 		if (lootTableShell.isPresent()) {

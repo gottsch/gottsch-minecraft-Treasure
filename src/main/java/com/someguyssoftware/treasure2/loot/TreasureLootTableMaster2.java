@@ -12,11 +12,13 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.Optional;
 import java.util.Set;
 
@@ -457,6 +459,15 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		SILVER_WELL,
 		GOLD_WELL,
 		WHITE_PEARL_WELL,
-		BLACK_PEARL_WELL
+		BLACK_PEARL_WELL;
+		
+		/**
+		 * 
+		 * @return
+		 */
+		public static List<String> getNames() {
+			List<String> names = EnumSet.allOf(SpecialLootTables.class).stream().map(x -> x.name()).collect(Collectors.toList());
+			return names;
+		}		
 	}
 }
