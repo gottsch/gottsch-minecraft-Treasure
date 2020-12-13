@@ -69,19 +69,22 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String WITHER_CHEST_TOP_ID = "wither_chest_top";
 	@Ignore public static final String SKULL_CHEST_ID = "skull_chest";
 	@Ignore public static final String GOLD_SKULL_CHEST_ID = "gold_skull_chest";
+	@Ignore public static final String CRYSTAL_SKULL_CHEST_ID = "crystal_skull_chest";
 	@Ignore public static final String CAULDRON_CHEST_ID = "cauldron_chest";
 	@Ignore public static final String SPIDER_CHEST_ID = "spider_chest";
 	@Ignore public static final String VIKING_CHEST_ID = "viking_chest";
-	
+	@Ignore public static final String CARDBOARD_BOX_ID = "cardboard_box";
+	@Ignore public static final String MILK_CRATE_ID = "milk_crate";
+
 	// mimics
 	@Ignore public static final String WOOD_MIMIC_ID = "wood_mimic";
 	@Ignore public static final String PIRATE_MIMIC_ID = "pirate_mimic";
 
 	// locks
 	@Ignore public static final String WOOD_LOCK_ID = "wood_lock";
-    @Ignore public static final String STONE_LOCK_ID = "stone_lock";
-    @Ignore public static final String EMBER_LOCK_ID = "ember_lock";
-    @Ignore public static final String LEAF_LOCK_ID = "leaf_lock";
+	@Ignore public static final String STONE_LOCK_ID = "stone_lock";
+	@Ignore public static final String EMBER_LOCK_ID = "ember_lock";
+	@Ignore public static final String LEAF_LOCK_ID = "leaf_lock";
 	@Ignore public static final String IRON_LOCK_ID = "iron_lock";
 	@Ignore public static final String GOLD_LOCK_ID = "gold_lock";
 	@Ignore public static final String DIAMOND_LOCK_ID = "diamond_lock";
@@ -94,10 +97,10 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	// keys
 	@Ignore public static final String WOOD_KEY_ID = "wood_key";
 	@Ignore public static final String STONE_KEY_ID = "stone_key";
-    @Ignore public static final String EMBER_KEY_ID = "ember_key";
-    @Ignore public static final String LEAF_KEY_ID = "leaf_key";
-    @Ignore public static final String LIGHTNING_KEY_ID = "lightning_key";
-    
+	@Ignore public static final String EMBER_KEY_ID = "ember_key";
+	@Ignore public static final String LEAF_KEY_ID = "leaf_key";
+	@Ignore public static final String LIGHTNING_KEY_ID = "lightning_key";
+
 	@Ignore public static final String GOLD_KEY_ID = "gold_key";
 	@Ignore public static final String IRON_KEY_ID = "iron_key";
 	@Ignore public static final String DIAMOND_KEY_ID = "diamond_key";	
@@ -118,7 +121,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String LUCKY_POUCH_ID = "lucky_pouch";
 	@Ignore public static final String APPRENTICES_POUCH_ID = "apprentices_pouch";
 	@Ignore public static final String MASTERS_POUCH_ID = "masters_pouch";
-	
+
 	@Ignore public static final String GOLD_COIN_ID = "gold_coin";
 	@Ignore public static final String SILVER_COIN_ID = "silver_coin";
 	@Ignore public static final String CHARMED_SILVER_COIN_ID = "charmed_silver_coin";
@@ -127,7 +130,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String CHARMED_SAPPHIRE_ID ="charmed_sapphire";
 	@Ignore public static final String ANGEL_BLESSED_ID = "angel_blessed";
 	@Ignore public static final String MINERS_FRIEND_ID = "miners_friend";
-	
+
 	@Ignore public static final String WHITE_PEARL_ID = "white_pearl";
 	@Ignore public static final String BLACK_PEARL_ID = "black_pearl";
 
@@ -167,7 +170,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String GRAVESTONE1_SPAWNER_STONE_ID = "gravestone1_spawner_stone";
 	@Ignore public static final String GRAVESTONE2_SPAWNER_COBBLESTONE_ID = "gravestone2_spawner_cobblestone";
 	@Ignore public static final String GRAVESTONE3_SPAWNER_OBSIDIAN_ID = "gravestone3_spawner_obsidian";
-	
+
 	@Ignore public static final String SKULL_CROSSBONES_ID = "skull_and_crossbones";
 	@Ignore public static final String SKELETON_ID = "skeleton";
 
@@ -207,7 +210,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String FALLING_GRASS_ID = "falling_grass";
 	@Ignore public static final String FALLING_SAND_ID = "falling_sand";
 	@Ignore public static final String FALLING_RED_SAND_ID = "falling_red_sand";
-	
+
 	@Ignore public static final String WITHER_PLANKS_ID = "wither_planks";
 
 	@Ignore public static final String SAPPHIRE_ORE_ID = "sapphire_ore";
@@ -234,11 +237,14 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
 	@Ignore public static final String SKULL_CHEST_TE_ID = "skull_chest_tile_entity";
 	@Ignore public static final String GOLD_SKULL_CHEST_TE_ID = "gold_skull_chest_tile_entity";
+	@Ignore public static final String CRYSTAL_SKULL_CHEST_TE_ID = "crystal_skull_chest_tile_entity";
 	@Ignore public static final String CAULDRON_CHEST_TE_ID = "cauldron_chest_tile_entity";
 	@Ignore public static final String OYSTER_CHEST_TE_ID = "oyster_chest_tile_entity";
 	@Ignore public static final String CLAM_CHEST_TE_ID = "clam_chest_tile_entity";
 	@Ignore public static final String SPIDER_CHEST_TE_ID = "spider_chest_tile_entity";
 	@Ignore public static final String VIKING_CHEST_TE_ID = "viking_chest_tile_entity";
+	@Ignore public static final String CARDBOARD_BOX_TE_ID = "cardboard_box_tile_entity";
+	@Ignore public static final String MILK_CRATE_TE_ID = "milk_crate_tile_entity";
 	@Ignore public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
 	@Ignore public static final String GRAVESTONE_TE_ID = "gravestone_tile_entity";
 	@Ignore public static final String GRAVESTONE_PROXIMITY_SPAWNER_TE_ID = "gravestone_proximity_spawner_tile_entity";
@@ -288,7 +294,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	public static final WorldGen WORLD_GEN = new WorldGen();
 
 	@Name("10 foreign mods")
-	@Comment("Foreign mod properties")
+	@Comment({"Foreign mod properties", "@Deprecated - As of v1.14.0, these properties are no longer used."})
 	public static final ForeignModEnablements FOREIGN_MODS = new ForeignModEnablements();
 
 	@Name("11 oasis")
@@ -320,11 +326,11 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	 * 
 	 */
 	public static class ForeignModEnablements {
-		@Comment({ "Add mod's MODID to this list to enable custom loot tables for a mod." })
+		@Comment({ "Add mod's MODID to this list to enable custom loot tables for a mod.", "@Deprecated - As of v1.14.0, this property is no longer used."})
 		@Name("01. Foreign mod IDs for custom loot tables:")
 		public String[] enableForeignModIDs = new String[] { "mocreatures", "sgs_metals" };
 		@Comment({ "A list of mods that have prebuilt loot tables available.",
-		"Note: used for informational purposes only." })
+		"Note: used for informational purposes only.", "@Deprecated - As of v1.14.0, this property is no longer used." })
 		@Name("02. Pre-build loot tables for foreign mod IDs:")
 		public String[] availableForeignModLootTables = new String[] { "mocreatures", "sgs_metals" };
 	}
@@ -720,7 +726,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		public OasisConfig desertOasisProperties = new OasisConfig(
 				true, 1000, 80, 
 				new String[] {"desert", "desert_hills", "desert_lakes", "badlands", 
-						"badlands_plateau"}, 
+				"badlands_plateau"}, 
 				new String[] {},
 				new String[] {"mesa", "dry"},
 				new String[] { });
@@ -844,8 +850,8 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@Name("06. Stone key max uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
-        public int stoneKeyMaxUses = 10;
-            
+		public int stoneKeyMaxUses = 10;
+
 		@Comment({ "The maximum uses for a given iron key." })
 		@Name("07. Iron key max. uses:")
 		@RangeInt(min = 1, max = 32000)
@@ -910,21 +916,21 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@Name("17. Wither key max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
-        public int witherKeyMaxUses = 5;
-        
-        @Comment({ "The maximum uses for a given ember key." })
+		public int witherKeyMaxUses = 5;
+
+		@Comment({ "The maximum uses for a given ember key." })
 		@Name("18. Ember key max uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int emberKeyMaxUses = 15;
-        
-        @Comment({ "The maximum uses for a given leaf key." })
+
+		@Comment({ "The maximum uses for a given leaf key." })
 		@Name("19. Leaf key max uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int leafKeyMaxUses = 15;
-        
-        @Comment({ "The maximum uses for a given lightning key." })
+
+		@Comment({ "The maximum uses for a given lightning key." })
 		@Name("20. Lightning key max uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart

@@ -19,9 +19,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
-import com.someguyssoftware.gottschcore.loot.LootContext;
-import com.someguyssoftware.gottschcore.loot.conditions.LootCondition;
-import com.someguyssoftware.gottschcore.loot.functions.LootFunction;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
@@ -35,6 +32,9 @@ import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.conditions.LootCondition;
+import net.minecraft.world.storage.loot.functions.LootFunction;
 
 /**
  * @author Mark Gottschling on May 1, 2020

@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.entity.monster;
 import java.util.List;
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -156,26 +157,26 @@ public abstract class MimicEntity extends EntityMob {
 	 * @return
 	 */
 	protected ResourceLocation selectLootTableResourceLocation(Random random, final Rarity chestRarity) {
-		ResourceLocation location = null;
+		LootTableShell location = null;
 
 		// select the loot table by rarity
-		List<ResourceLocation> locations = Treasure.LOOT_TABLES.getLootTableResourceByRarity(chestRarity);
+		List<LootTableShell> tableShells = Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.SCARCE);
 		
 		// select a random location from the list
-		if (locations != null && !locations.isEmpty()) {
+		if (tableShells != null && !tableShells.isEmpty()) {
 			int index = 0;		
 			/*
 			 * get a random container
 			 */
-			if (locations.size() == 1) {
-				location = locations.get(0);
+			if (tableShells.size() == 1) {
+				location = tableShells.get(0);
 			}
 			else {
-				index = RandomHelper.randomInt(random, 0, locations.size()-1);
-				location = locations.get(index);
+				index = RandomHelper.randomInt(random, 0, tableShells.size()-1);
+				location = tableShells.get(index);
 			}
 			Treasure.logger.debug("Selected resource location index --> {}", index);
 		}
-		return location;
+		return location.getResourceLocation();
 	}	
 }

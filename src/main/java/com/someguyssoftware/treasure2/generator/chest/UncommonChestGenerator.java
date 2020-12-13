@@ -5,11 +5,9 @@ package com.someguyssoftware.treasure2.generator.chest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.loot.LootTable;
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
@@ -17,7 +15,6 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity.GenerationContext;
 
 /**
  * 
@@ -44,22 +41,13 @@ public class UncommonChestGenerator implements IChestGenerator {
 	 * 
 	 */
 	@Override
-	public List<LootTable> buildLootTableList(final Rarity chestRarity) {
-		List<LootTable> tables = new ArrayList<>();
-		
+	public List<LootTableShell> buildLootTableList2(final Rarity chestRarity) {
 		// get all loot tables by column key
-		Map<String, List<LootTable>> mapOfLootTables = Treasure.LOOT_TABLES.getChestLootTablesTable().column(Rarity.COMMON);
-		// convert to a single list
-		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
-			tables.addAll(n.getValue());
-		}
-		
-		mapOfLootTables = Treasure.LOOT_TABLES.getChestLootTablesTable().column(Rarity.UNCOMMON);
-		for(Entry<String, List<LootTable>> n : mapOfLootTables.entrySet()) {
-			tables.addAll(n.getValue());
-		}
+		List<LootTableShell> tables = new ArrayList<>();
+		tables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.COMMON));
+		tables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.UNCOMMON));
 		return tables;
-	}
+	}	
 	
 	/**
 	 * @param chest

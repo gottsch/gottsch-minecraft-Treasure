@@ -80,15 +80,7 @@ public class SafeTileEntityRenderer extends TreasureChestTileEntityRenderer {
         GlStateManager.rotate((float)rotation, 0.0F, 1.0F, 0.0F);
         
     	SafeTileEntity ste = (SafeTileEntity) te;
-//            float latchRotation = ste.prevLatchAngle + (ste.latchAngle - ste.prevLatchAngle) * partialTicks;
-//            latchRotation = 1.0F - latchRotation;
-//            latchRotation = 1.0F - latchRotation * latchRotation * latchRotation;
-//            model.getLatch1().rotateAngleX = -(latchRotation * (float)Math.PI / 2.0F);
-    	
-//        	float latchSlide = ste.prevLatchPos + (ste.latchPos - ste.prevLatchPos) * partialTicks;
-//            latchSlide = 1.0F - latchSlide;
-//            model.latch1.rotationPointX += latchSlide;
-        
+       
         if (ste.isLidClosed) {
             float handleRotation = ste.prevHandleAngle + (ste.handleAngle - ste.prevHandleAngle) * partialTicks;
             handleRotation = 1.0F - handleRotation;
@@ -124,37 +116,9 @@ public class SafeTileEntityRenderer extends TreasureChestTileEntityRenderer {
         ////////////// end of render the locks //////////////////////////////////////
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
-	
-	    /**
-	     * 
-	     * @param te
-	     * @param x
-	     * @param y
-	     * @param z
-	     */
+	 
 	 @Override
-	    public void renderLocks(AbstractTreasureChestTileEntity te, double x, double y, double z) {
-	        // render locks
-	        for (LockState lockState : te.getLockStates()) {
-	        	if (lockState.getLock() != null) {        		
-	        		// convert lock to an item stack
-	        		ItemStack lockStack = new ItemStack(lockState.getLock());
-	        		
-	                GlStateManager.pushMatrix();                
-	                // NOTE when rotating the item to match the face of chest, must adjust the amount of offset to the x,z axises and 
-	                // not rotate() the item - rotate() just spins it in place, not around the axis of the block
-	    	        GlStateManager.translate(
-	    	        		(float)x + lockState.getSlot().getXOffset(),
-	    	        		(float)y + lockState.getSlot().getYOffset(),
-	    	        		(float)z + lockState.getSlot().getZOffset());
-	    	        GlStateManager.rotate(lockState.getSlot().getRotation(), 0F, 1.0F, 0.0F);
-	    	        // TODO would be better if there was a property for scale
-	    	        // reduce the size of the locks
-	    	        GlStateManager.scale(0.3F, 0.3F, 0.3F);
-		        	Minecraft.getMinecraft().getRenderItem().renderItem(lockStack, ItemCameraTransforms.TransformType.NONE);
-		        	GlStateManager.popMatrix();
-	        	}
-	        }
-	    }  
- 
+	 public void updateLockScale() {
+		 GlStateManager.scale(0.3F, 0.3F, 0.3F);
+	} 
 }

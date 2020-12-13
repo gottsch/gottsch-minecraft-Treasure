@@ -3,10 +3,14 @@
  */
 package com.someguyssoftware.treasure2.enums;
 
+import java.util.EnumSet;
+import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.CrystalSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
@@ -29,21 +33,31 @@ public enum ChestGeneratorType {
 	WITHER(WitherChestGenerator::new),
 	SKULL(SkullChestGenerator::new),
 	GOLD_SKULL(GoldSkullChestGenerator::new),
-    CAULDRON(CauldronChestGenerator::new);
-    
-    private Supplier<IChestGenerator> factory;
+	CRYSTAL_SKULL(CrystalSkullChestGenerator::new),
+	CAULDRON(CauldronChestGenerator::new);
 
-    /**
-     * 
-     */
-    ChestGeneratorType(Supplier<IChestGenerator> factory) {
-        this.factory = factory;
-    }
+	private Supplier<IChestGenerator> factory;
 
-    /**
-     * 
-     */
-    public IChestGenerator getChestGenerator() {
-        return factory.get();
-    }
+	/**
+	 * 
+	 */
+	ChestGeneratorType(Supplier<IChestGenerator> factory) {
+		this.factory = factory;
+	}
+
+	/**
+	 * 
+	 */
+	public IChestGenerator getChestGenerator() {
+		return factory.get();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static List<String> getNames() {
+		List<String> names = EnumSet.allOf(ChestGeneratorType.class).stream().map(x -> x.name()).collect(Collectors.toList());
+		return names;
+	}
 }

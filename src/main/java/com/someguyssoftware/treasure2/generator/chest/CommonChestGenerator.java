@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.loot.LootTable;
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
@@ -44,11 +44,11 @@ public class CommonChestGenerator implements IChestGenerator {
 	 * @return
 	 */
 	@Override
-	public List<LootTable> buildLootTableList(final Rarity chestRarity) {
+	public List<LootTableShell> buildLootTableList2(final Rarity chestRarity) {
 		// get all loot tables by column key
-		List<LootTable> tables = new ArrayList<>();
-		tables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.COMMON));
-		tables.addAll(Treasure.LOOT_TABLES.getLootTableByRarity(Rarity.UNCOMMON));
+		List<LootTableShell> tables = new ArrayList<>();
+		tables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.COMMON));
+		tables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.UNCOMMON));
 		return tables;
 	}	
 	

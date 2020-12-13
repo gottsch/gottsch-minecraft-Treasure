@@ -66,6 +66,14 @@ public class CharmedCoinItem extends CoinItem implements ICharmed {
 		addCharmedInfo(stack, worldIn, tooltip, flagIn);
 	}
 
+	/**
+	 * 
+	 */
+	@Override
+	public boolean hasEffect(ItemStack stack) {
+		return true;
+	}
+	
 	/*
 	 * Example
 	 */
