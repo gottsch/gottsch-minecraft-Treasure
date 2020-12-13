@@ -7,14 +7,13 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import com.someguyssoftware.gottschcore.loot.LootTable;
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.loot.LootTableShell;
-import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster.SpecialLootTables;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 /**

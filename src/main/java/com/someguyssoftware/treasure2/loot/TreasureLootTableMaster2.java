@@ -12,11 +12,13 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,9 +29,10 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Table;
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.gottschcore.loot.LootTableMaster2;
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster.SpecialLootTables;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
@@ -188,7 +191,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 				// map the loot table resource location
 				Rarity key = Rarity.valueOf(path.getName(path.getNameCount()-2).toString().toUpperCase());
 				// add to resourcemap
-//				CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.get(CUSTOM_LOOT_TABLE_KEY, key).add(resourceLocation);
+				CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.get(CUSTOM_LOOT_TABLE_KEY, key).add(resourceLocation);
 				// create loot table
 				Optional<LootTableShell> lootTable = loadLootTable(getWorldDataBaseFolder(), resourceLocation);
 				if (lootTable.isPresent()) {
@@ -226,9 +229,12 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 					// add to map
 					SpecialLootTables specialLootTables = SpecialLootTables.valueOf(com.google.common.io.Files.getNameWithoutExtension(path.getName(path.getNameCount()-1).toString().toUpperCase()));
 					LOGGER.debug("special loot tables enum -> {}", specialLootTables);
-					// add to map
+					// add to special map
 					SPECIAL_LOOT_TABLES_MAP.put(specialLootTables, lootTable.get());
 					LOGGER.debug("tabling special loot table: {} -> {}", specialLootTables, resourceLocation);
+					// add to the resource location -> lootTableShell map
+					CHEST_LOOT_TABLES_MAP.put(resourceLocation, lootTable.get());
+					// register with vanilla
 					LootTableList.register(resourceLocation);
 				}
 				else {
@@ -440,5 +446,31 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 */
 	public Rarity getEffectiveRarity(LootTableShell lootTableShell, Rarity defaultRarity) {
 		return !StringUtils.isNullOrEmpty(lootTableShell.getRarity()) ? Rarity.getByValue(lootTableShell.getRarity().toLowerCase()) : defaultRarity;
+	}
+	
+	/*
+	 * Enum of special loot tables (not necessarily chests)
+	 */
+	public enum SpecialLootTables {
+		WITHER_CHEST,
+		SKULL_CHEST,
+		GOLD_SKULL_CHEST,
+		CRYSTAL_SKULL_CHEST,
+		CAULDRON_CHEST,
+		CLAM_CHEST,
+		OYSTER_CHEST,
+		SILVER_WELL,
+		GOLD_WELL,
+		WHITE_PEARL_WELL,
+		BLACK_PEARL_WELL;
+		
+		/**
+		 * 
+		 * @return
+		 */
+		public static List<String> getNames() {
+			List<String> names = EnumSet.allOf(SpecialLootTables.class).stream().map(x -> x.name()).collect(Collectors.toList());
+			return names;
+		}		
 	}
 }

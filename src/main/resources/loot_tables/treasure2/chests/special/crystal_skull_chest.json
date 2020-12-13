@@ -1,6 +1,7 @@
 {
 	"version": "1.0",
 	"category": "general",
+		"rarity": "epic",
 	"pools": [
 		{
 			"name": "treasure",
@@ -71,7 +72,7 @@
 							}
 						}
 					]
-				},
+				}
 			]
 		},
 		{

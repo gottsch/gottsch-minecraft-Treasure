@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.loot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -15,14 +16,18 @@ import com.someguyssoftware.treasure2.Treasure;
  *
  */
 public final class TreasureLootTableRegistry {
-	
+	private static final List<String> registeredMods = new ArrayList<>();
+
 	/**
 	 * 
 	 * @param modID
 	 */
 	public static void register(final String modID) {
-		buildAndExpose(modID);
-		Treasure.LOOT_TABLE_MASTER.register(modID);
+		if (!registeredMods.contains(modID)) {
+			buildAndExpose(modID);
+			Treasure.LOOT_TABLE_MASTER.register(modID);
+			registeredMods.add(modID);
+		}
 	}
 	
 	/**
@@ -31,10 +36,12 @@ public final class TreasureLootTableRegistry {
 	 * @param customFolders
 	 */
 	public static void register(final String modID, final @Nullable List<String> customFolders) {
-		if (customFolders != null && !customFolders.isEmpty()) {
-			Treasure.LOOT_TABLE_MASTER.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, customFolders);
+		if (!registeredMods.contains(modID)) {
+			if (customFolders != null && !customFolders.isEmpty()) {
+				Treasure.LOOT_TABLE_MASTER.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, customFolders);
+			}
+			register(modID);
 		}
-		register(modID);
 	}
 	
 	/**
@@ -46,5 +53,9 @@ public final class TreasureLootTableRegistry {
 		Treasure.LOOT_TABLE_MASTER.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, TreasureLootTableMaster2.SPECIAL_CHEST_LOOT_TABLE_FOLDER_LOCATIONS);
 		Treasure.LOOT_TABLE_MASTER.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, TreasureLootTableMaster2.POOL_LOOT_TABLE_FOLDER_LOCATIONS);
 		Treasure.LOOT_TABLE_MASTER.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, TreasureLootTableMaster2.INJECT_LOOT_TABLE_FOLDER_LOCATIONS);
+	}
+
+	public static List<String> getRegisteredmods() {
+		return registeredMods;
 	}
 }

@@ -7,6 +7,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.particle.AbstractMistParticle;
 import com.someguyssoftware.treasure2.particle.MistParticle;
@@ -98,9 +99,14 @@ public class BoundSoulEntity extends EntityZombie {
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 
-		// create a mist particle
-		if (!this.isServerWorld()) {
-			spawnMist();
+		/*
+		 *  create a mist particle if on client.
+		 *  this is slight change to the vanilla call EntityLiving#isServerWorld()
+		 */
+		if (WorldInfo.isClientSide(this.world)) {
+			if (!this.isAIDisabled()) {
+				spawnMist();
+			}
 		}
 
 		// regeneration

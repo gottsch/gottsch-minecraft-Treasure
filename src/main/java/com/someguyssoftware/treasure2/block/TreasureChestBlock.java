@@ -130,9 +130,8 @@ public class TreasureChestBlock extends AbstractChestBlock {
 			Direction direction = Direction.fromFacing(placer.getHorizontalFacing().getOpposite());
 
 			// rotate the lock states
-			shouldUpdate = rotateLockStates(worldIn, pos, oldPersistedChestDirection.getRotation(direction)); // old ->
-																												// Direction.NORTH
-																												// //
+			shouldUpdate = rotateLockStates(worldIn, pos, oldPersistedChestDirection.getRotation(direction));
+			// old -> Direction.NORTH
 
 //			Treasure.logger.debug("New lock states ->");
 //			for (LockState ls : tcte.getLockStates()) {

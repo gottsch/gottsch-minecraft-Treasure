@@ -294,7 +294,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	public static final WorldGen WORLD_GEN = new WorldGen();
 
 	@Name("10 foreign mods")
-	@Comment("Foreign mod properties")
+	@Comment({"Foreign mod properties", "@Deprecated - As of v1.14.0, these properties are no longer used."})
 	public static final ForeignModEnablements FOREIGN_MODS = new ForeignModEnablements();
 
 	@Name("11 oasis")
@@ -326,11 +326,11 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	 * 
 	 */
 	public static class ForeignModEnablements {
-		@Comment({ "Add mod's MODID to this list to enable custom loot tables for a mod." })
+		@Comment({ "Add mod's MODID to this list to enable custom loot tables for a mod.", "@Deprecated - As of v1.14.0, this property is no longer used."})
 		@Name("01. Foreign mod IDs for custom loot tables:")
 		public String[] enableForeignModIDs = new String[] { "mocreatures", "sgs_metals" };
 		@Comment({ "A list of mods that have prebuilt loot tables available.",
-		"Note: used for informational purposes only." })
+		"Note: used for informational purposes only.", "@Deprecated - As of v1.14.0, this property is no longer used." })
 		@Name("02. Pre-build loot tables for foreign mod IDs:")
 		public String[] availableForeignModLootTables = new String[] { "mocreatures", "sgs_metals" };
 	}

@@ -14,6 +14,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
+import com.someguyssoftware.gottschcore.loot.LootPoolShell;
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
@@ -32,8 +34,6 @@ import com.someguyssoftware.treasure2.generator.marker.StructureMarkerGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.loot.LootPoolShell;
-import com.someguyssoftware.treasure2.loot.LootTableShell;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
@@ -44,7 +44,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
@@ -62,11 +61,6 @@ public interface IChestGenerator {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(coords);
 		// select a loot table
-		// LootTable lootTable = selectLootTable(random, rarity);
-		// if (lootTable == null) {
-		// 	logger.warn("Unable to select a lootTable.");
-		// 	return result.fail();
-		// }
 		Optional<LootTableShell> lootTableShell = selectLootTable2(random, rarity);
 		ResourceLocation lootTableResourceLocation = null;
 		if (lootTableShell.isPresent()) {
