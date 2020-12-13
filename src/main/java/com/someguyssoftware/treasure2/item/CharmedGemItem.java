@@ -48,4 +48,12 @@ public class CharmedGemItem extends GemItem implements ICharmed {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		addCharmedInfo(stack, worldIn, tooltip, flagIn);
 	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public boolean hasEffect(ItemStack stack) {
+		return true;
+	}
 }

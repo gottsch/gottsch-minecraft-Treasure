@@ -1,8 +1,8 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/treasure2",
 	"promos": {
-		"1.12.2-latest": "1.13.2",
-		"1.12.2-recommended": "1.13.2"
+		"1.12.2-latest": "1.14.0",
+		"1.12.2-recommended": "1.14.0"
 	},
 	"1.12.2": {
 		"0.5.0": "alpha release",
@@ -42,6 +42,7 @@
 		"1.12.1": "Fixed doubling of coins in Pouches bug (https://github.com/gottsch/gottsch-minecraft-Treasure/issues/142).\nAdded default values for MobProximitySpawners to prevent crashes (https://github.com/gottsch/gottsch-minecraft-Treasure/issues/152).\nAdded default charm assignments if loot table incorreclty configured (https://github.com/gottsch/gottsch-minecraft-Treasure/issues/146).",
 		"1.13.0": "Added Ember Lock and Key.\nAdded Leaf Lock and Key.\nAdded Lightning Key.\nAdded ability to merge Keys on anvil.\nAdded Volcano Pit.\nAdded Blackstone Block (from mc1.16).\nIncreased Key success rate to 95%.\nIncreased Pilferer's Lock Pick success rate to 32%.\nIncreased Thief's Lock Pick success rate to 48%.\nUpdated loot tables to include Ember, Leaf and Lightning Keys.\nUpdated Chinese lang file.\n",
 		"1.13.1": "Fixed the large number of TileEntities created because of Gravestones. (Note, this is only for newly generated chunks).\nReduced likihood of Bound Soul gravestone to 30%.\nFixed the versioning.\n",
-		"1.13.2": "Fixed duplication bug on Harvesting Charms.\nFixed some loot tables with item spelling errors.Tweaked the epic charmed loot table.\n"
+		"1.13.2": "Fixed duplication bug on Harvesting Charms.\nFixed some loot tables with item spelling errors.Tweaked the epic charmed loot table.",
+		"1.14.0": "Revamped Loot Table management system - uses vanilla with tweaks.\nAdded Cardboard Box, Milk Crate and Crystal Skull chests.\nAdded -facing, -chest, -locked and -sealed arguments to SpawnChestCommand.\nAdded Enchantment glow to Charmed Coins/Gems and updated images.\nUpdated to Forge 1.12.2-14.23.5.2854.\n"
 	}
 }
