@@ -191,7 +191,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 				// map the loot table resource location
 				Rarity key = Rarity.valueOf(path.getName(path.getNameCount()-2).toString().toUpperCase());
 				// add to resourcemap
-//				CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.get(CUSTOM_LOOT_TABLE_KEY, key).add(resourceLocation);
+				CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.get(CUSTOM_LOOT_TABLE_KEY, key).add(resourceLocation);
 				// create loot table
 				Optional<LootTableShell> lootTable = loadLootTable(getWorldDataBaseFolder(), resourceLocation);
 				if (lootTable.isPresent()) {
@@ -229,9 +229,12 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 					// add to map
 					SpecialLootTables specialLootTables = SpecialLootTables.valueOf(com.google.common.io.Files.getNameWithoutExtension(path.getName(path.getNameCount()-1).toString().toUpperCase()));
 					LOGGER.debug("special loot tables enum -> {}", specialLootTables);
-					// add to map
+					// add to special map
 					SPECIAL_LOOT_TABLES_MAP.put(specialLootTables, lootTable.get());
 					LOGGER.debug("tabling special loot table: {} -> {}", specialLootTables, resourceLocation);
+					// add to the resource location -> lootTableShell map
+					CHEST_LOOT_TABLES_MAP.put(resourceLocation, lootTable.get());
+					// register with vanilla
 					LootTableList.register(resourceLocation);
 				}
 				else {

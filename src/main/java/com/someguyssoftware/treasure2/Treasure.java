@@ -99,7 +99,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 		"Credits to mn_ti for Chinese and to DarkKnightComes for Polish translation.",
 		"Credits to Mythical Sausage for tutorials on house/tower designs.",
 		"Credits to OdinsRagnarok for Spanish translation and DarvinSlav for Russian translation.",
-		"Credits to sfs131010 for updated Chinese translation."})
+"Credits to sfs131010 for updated Chinese translation."})
 public class Treasure extends AbstractMod {
 
 	// constants
@@ -123,10 +123,8 @@ public class Treasure extends AbstractMod {
 
 	// NOTE can't make final here as it is set during world load
 	// loot tables management
-//	public static TreasureLootTableMaster LOOT_TABLES;
-
 	public static TreasureLootTableMaster2 LOOT_TABLE_MASTER;
-	
+
 	/*
 	 * Treasure Creative Tab Must be initialized <b>before</b> any registry events
 	 * so that it is available to assign to blocks and items.
@@ -175,8 +173,8 @@ public class Treasure extends AbstractMod {
 		MinecraftForge.EVENT_BUS.register(new LogoutEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
-        MinecraftForge.EVENT_BUS.register(new MimicEventHandler(getInstance()));
-        MinecraftForge.EVENT_BUS.register(new AnvilEventHandler(getInstance()));
+		MinecraftForge.EVENT_BUS.register(new MimicEventHandler(getInstance()));
+		MinecraftForge.EVENT_BUS.register(new AnvilEventHandler(getInstance()));
 
 		// configure logging
 		// create a rolling file appender
@@ -187,11 +185,6 @@ public class Treasure extends AbstractMod {
 		// add appender to the GottschCore logger
 		addAppenderToLogger(appender, GottschCore.instance.getName(), (ILoggerConfig) getConfig());
 
-		// TEST ///////
-		AppenderRef appenderReference = AppenderRef.createAppenderRef(appender.getName(), null, null);
-		Treasure.logger.debug("appender -> {}, appenderRef.ref -> {}", appender.getName(), appenderReference.getRef());
-		// END OF TEST //////
-		
 		// register the GUI handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
@@ -203,16 +196,16 @@ public class Treasure extends AbstractMod {
 				15, Side.SERVER);
 		simpleNetworkWrapper.registerMessage(CharmMessageHandlerOnClient.class, CharmMessageToClient.class,
 				25, Side.CLIENT);
-		
+
 		// add capabilities
 		CapabilityManager.INSTANCE.register(ICharmCapability.class, new CharmStorage(), CharmCapability::new);
 		CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingStorage(), KeyRingCapability::new);
 		CapabilityManager.INSTANCE.register(IEffectiveMaxDamageCapability.class, new EffectiveMaxDamageStorage(), EffectiveMaxDamageCapability::new);
-		
+
 		// register custom loot functions
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms.Serializer());
-		
+
 	}
 
 	/**
@@ -266,9 +259,8 @@ public class Treasure extends AbstractMod {
 		}
 
 		// add the loot table managers
-//		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");		
 		LOOT_TABLE_MASTER = new TreasureLootTableMaster2(Treasure.instance);
-		
+
 		TEMPLATE_MANAGER = new TreasureTemplateManager(Treasure.instance, "/structures",
 				FMLCommonHandler.instance().getDataFixer());
 
@@ -291,7 +283,7 @@ public class Treasure extends AbstractMod {
 		// associate painting items to painting blocks and vice versa
 		((PaintingItem) TreasureItems.PAINTING_BLOCKS_BRICKS).setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_BRICKS);
 		((PaintingItem) TreasureItems.PAINTING_BLOCKS_COBBLESTONE)
-				.setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_COBBLESTONE);
+		.setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_COBBLESTONE);
 		((PaintingItem) TreasureItems.PAINTING_BLOCKS_DIRT).setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_DIRT);
 		((PaintingItem) TreasureItems.PAINTING_BLOCKS_LAVA).setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_LAVA);
 		((PaintingItem) TreasureItems.PAINTING_BLOCKS_SAND).setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_SAND);
@@ -318,7 +310,7 @@ public class Treasure extends AbstractMod {
 	 */
 	@Override
 	public IConfig getConfig() {
-//		return Configs.modConfig;
+		//		return Configs.modConfig;
 		return TreasureConfig.instance;
 	}
 
