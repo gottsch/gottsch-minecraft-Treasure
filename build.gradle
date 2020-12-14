@@ -8,6 +8,10 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
     }
 }
+plugins {
+	 //  must use gradle v3.0+ for this version of shadow (2.0.1).  Update gradle-wrapper.properties
+	id "com.github.johnrengelman.shadow" version "4.0.4"
+}
 
 apply plugin: 'net.minecraftforge.gradle'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.

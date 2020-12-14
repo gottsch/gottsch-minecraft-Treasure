@@ -18,7 +18,7 @@
 								"max": 2
 							}
 						}
-					]			
+					]
 				},
 				{
 					"entryName": "stone_key",
@@ -33,7 +33,7 @@
 								"max": 2
 							}
 						}
-					]					
+					]
 				},
 				{
 					"entryName": "pilferers_lock_pick",
@@ -63,7 +63,7 @@
 								"max": 2
 							}
 						}
-					]					
+					]
 				},
 				{
 					"entryName": "thiefs_lock_pick",
@@ -78,7 +78,7 @@
 								"max": 2
 							}
 						}
-					]					
+					]
 				},
  				{
 					"entryName": "ember_key",
@@ -91,7 +91,7 @@
 					"type": "item",
 					"name": "treasure2:leaf_key",
 					"weight": 15
-				},   
+				},
 				{
 					"entryName": "gold_key",
 					"type": "item",
@@ -103,7 +103,7 @@
 					"type": "item",
 					"name": "treasure2:spider_key",
 					"weight": 10
-				}												
+				}
 			]
 		},
 		{
@@ -141,12 +141,6 @@
 					]
 				}
 			]
-		},
-		{
-			"name": "uncommon_charms",
-			"rolls": 1,
-			"entries": [	
-			]
-		}		
+		}	
 	]
 }
