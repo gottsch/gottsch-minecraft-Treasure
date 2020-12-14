@@ -10,7 +10,7 @@
 					"type": "item",
 					"name": "treasure2:lightning_key",
 					"weight": 10
-				},			
+				},
 				{
 					"entryName": "metallurgists_key",
 					"type": "item",
@@ -167,12 +167,6 @@
 						}
 					]
 				}
-			]
-		},
-		{
-			"name": "rare_charms",
-			"rolls": 1,
-			"entries": [
 			]
 		}
 	]
