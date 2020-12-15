@@ -65,6 +65,13 @@ public class TreasureCharms {
 		HARDENED_SHIELDING = new CharmBuilder("hardened_shielding", CharmType.SHIELDING, CharmLevel.LEVEL3).build();
 		POWERFUL_SHIELDING = new CharmBuilder("powerful_shielding", CharmType.SHIELDING, CharmLevel.LEVEL4).build();
 		ARMADILLO_SHIELDING = new CharmBuilder("armadillo_shielding", CharmType.SHIELDING, CharmLevel.LEVEL4).valueModifier(1.5).build();
+		// TODO add absolute Shielding Charms with lower amounts
+		// 10 Units @ 100% shielding
+		SMALL_ABSOLUTE_SHIELDING = new CharmBuilder("small_absolute_shielding", CharmType.SHIELDING, CharmLevel.LEVEL1).valueModifier(0.5).percentModifier(2.0).build();
+		MEDIUM_ABSOLUTE_SHIELDING = new CharmBuilder("medium_absolute_shielding", CharmType.SHIELDING, CharmLevel.LEVEL1).percentModifier(2.0).build();
+		LARGE_ABSOLUTE_SHIELDING = new CharmBuilder("large_absolute_shielding", CharmType.SHIELDING, CharmLevel.LEVEL1).valueModifier(1.5).percentModifier(2.0).build();
+		GRAND_ABSOLUTE_SHEILDING = new CharmBuilder("grand_absolute_shielding", CharmType.SHIELDING, CharmLevel.LEVEL1).valueModifier(2).percentModifier(2.0).build();
+		WHALE_ABSOLUTE_SHIELDING = new CharmBuilder("whale_absolute_shielding", CharmType.SHIELDING, CharmLevel.LEVEL1).valueModifier(5).percentModifier(2.0).build();
 		
 		FULLNESS = new CharmBuilder("fullness", CharmType.FULLNESS, CharmLevel.LEVEL1).build();
 		SATED_FULLNESS = new CharmBuilder("sated_fullness", CharmType.FULLNESS, CharmLevel.LEVEL2).build(); 
@@ -102,6 +109,12 @@ public class TreasureCharms {
 		REGISTRY.put(HARDENED_SHIELDING.getName(), HARDENED_SHIELDING);
 		REGISTRY.put(POWERFUL_SHIELDING.getName(), POWERFUL_SHIELDING);
 		REGISTRY.put(ARMADILLO_SHIELDING.getName(), ARMADILLO_SHIELDING);
+		
+		REGISTRY.put(SMALL_ABSOLUTED_SHIELDING.getName(), SMALL_ABSOLUTE_SHIELDING);
+		REGISTRY.put(MEDIUM_ABSOLUTED_SHIELDING.getName(), MEDIUM_ABSOLUTE_SHIELDING);
+		REGISTRY.put(LARGE_ABSOLUTED_SHIELDING.getName(), LARGE_ABSOLUTE_SHIELDING);
+		REGISTRY.put(GRAND_ABSOLUTED_SHIELDING.getName(), GRAND_ABSOLUTE_SHIELDING);
+		REGISTRY.put(WHALE_ABSOLUTED_SHIELDING.getName(), WHALE_ABSOLUTE_SHIELDING);
 		
 		REGISTRY.put(FULLNESS.getName(), FULLNESS);
 		REGISTRY.put(SATED_FULLNESS.getName(), SATED_FULLNESS);
