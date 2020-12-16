@@ -74,9 +74,9 @@ public class TreasureItems {
 	
 	// locks
 	public static LockItem WOOD_LOCK;
-    public static LockItem STONE_LOCK;
-    public static LockItem EMBER_LOCK;
-    public static LockItem LEAF_LOCK;
+    	public static LockItem STONE_LOCK;
+    	public static LockItem EMBER_LOCK;
+    	public static LockItem LEAF_LOCK;
 	public static LockItem IRON_LOCK;
 	public static LockItem GOLD_LOCK;
 	public static LockItem DIAMOND_LOCK;
@@ -88,10 +88,10 @@ public class TreasureItems {
 	
 	// keys
 	public static KeyItem WOOD_KEY;
-    public static KeyItem STONE_KEY;
-    public static KeyItem EMBER_KEY;
-    public static KeyItem LEAF_KEY;
-    public static KeyItem LIGHTNING_KEY;
+    	public static KeyItem STONE_KEY;
+    	public static KeyItem EMBER_KEY;
+    	public static KeyItem LEAF_KEY;
+    	public static KeyItem LIGHTNING_KEY;
 	public static KeyItem IRON_KEY;
 	public static KeyItem GOLD_KEY;
 	public static KeyItem METALLURGISTS_KEY;
@@ -186,6 +186,18 @@ public class TreasureItems {
 		};
 		// add to creative tab since it is a known special coin (non-dynamic in charms)
 		ANGEL_BLESSED.setCreativeTab(Treasure.TREASURE_TAB);
+		
+		// TODO add Ring of Angels
+		CharmedWearable RING_OF_ANGELS = new CharmedWearable(Treasure.MODID, TreasureConfig.RING_OF_ANGELS_ID) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.SALANDAARS_CONVALESCENCE));
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.ARMADILLO_SHIELDING));
+				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.FIRE_RESISTANCE));
+				return provider;
+			}	
+		};
 		
 		MINERS_FRIEND = new CharmedGemItem(Treasure.MODID, TreasureConfig.MINERS_FRIEND_ID) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
