@@ -229,6 +229,12 @@ tooltip.charm.hardened_shielding=Hardened Shielding [%s/%s]
 tooltip.charm.powerful_shielding=Powerful Shielding [%s/%s]
 tooltip.charm.armadillo_shielding=Shield of the Armadillo [%s/%s]
 
+tooltip.charm.small_absolute_shielding=Small Absolute Shielding [%s/%s]
+tooltip.charm.medium_absolute_shielding=Medium Absolute Shielding [%s/%s]
+tooltip.charm.large_absolute_shielding=Large Absolute Shielding [%s/%s]
+tooltip.charm.grand_absolute_shielding=Grand Absolute Shielding [%s/%s]
+tooltip.charm.whale_absolute_shielding=Absolute Shielding of the Whale [%s/%s]
+
 tooltip.charm.fullness_rate=- restores 0.5 hunger/sec
 tooltip.charm.fullness=Fullness [%s/%s]
 tooltip.charm.sated_fullness=Sated Fullness [%s/%s]
