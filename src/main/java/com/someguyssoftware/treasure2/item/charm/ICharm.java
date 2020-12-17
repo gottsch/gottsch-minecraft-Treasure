@@ -20,15 +20,20 @@ import net.minecraftforge.event.world.BlockEvent;
  *
  */
 public interface ICharm {
+	// TODO type may go away
 	public CharmType getCharmType();
+	// TODO can we get rid of level ?
 	public CharmLevel getCharmLevel();
 	public String getName();
 	public double getMaxValue();
 	public int getMaxDuration();
 	public double getMaxPercent();
 	
+	public void addInformation(stack, worldIn, tooltip, flagIn);
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt);
 
+	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmVitals vitals);
+	// TODO remove thses for a generic one that will check the instance
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals);
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmVitals vitals);
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals);
