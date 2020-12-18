@@ -51,8 +51,8 @@ public class CharmStorage implements Capability.IStorage<ICharmCapability> {
 				mainTag.removeTag("charmStates");		
 				mainTag.setTag("charmStates", stateTags);
 				// add the other properties -> modifiers
-				mainTag.setDouble("valueModifier", instance.getCharmValueModifier());
-				mainTag.setDouble("percentModifier", instance.getCharmPercentModifier());
+//				mainTag.setDouble("valueModifier", instance.getCharmValueModifier());
+//				mainTag.setDouble("percentModifier", instance.getCharmPercentModifier());
 
 			}
 		} catch (Exception e) {
@@ -82,12 +82,12 @@ public class CharmStorage implements Capability.IStorage<ICharmCapability> {
 
 			// TODO these 2 are modifier's owned by the Item. If they are not 1.0, then a new charm has to be recreated from the old charm incorporating these values.
 			// load other props of charm capability
-			if (tag.hasKey("valueModifier")) {
-				instance.setCharmValueModifier(tag.getDouble("valueModifier"));
-			}
-			if (tag.hasKey("percentModifier")) {
-				instance.setCharmPercentModifier(tag.getDouble("percentModifier"));
-			}
+//			if (tag.hasKey("valueModifier")) {
+//				instance.setCharmValueModifier(tag.getDouble("valueModifier"));
+//			}
+//			if (tag.hasKey("percentModifier")) {
+//				instance.setCharmPercentModifier(tag.getDouble("percentModifier"));
+//			}
 		} else {
 			Treasure.logger.warn("Not a tag compound!");
 		}

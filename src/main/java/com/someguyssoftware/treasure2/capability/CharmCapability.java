@@ -14,8 +14,8 @@ import com.someguyssoftware.treasure2.item.charm.ICharmState;
  */
 public class CharmCapability implements ICharmCapability {
 	private List<ICharmState> charmStates = new ArrayList<>(3);
-	private double charmValueModifier = 1.0;
-	private double charmPercentModifier = 1.0;
+//	private double charmValueModifier = 1.0;
+//	private double charmPercentModifier = 1.0;
 	
 	/**
 	 * 
@@ -37,24 +37,24 @@ public class CharmCapability implements ICharmCapability {
 
 	}
 
-	@Override
-	public double getCharmValueModifier() {
-		return charmValueModifier;
-	}
-
-	@Override
-	public void setCharmValueModifier(double charmMaxModifier) {
-		this.charmValueModifier = charmMaxModifier;
-	}
-
-	@Override
-	public double getCharmPercentModifier() {
-		return charmPercentModifier;
-	}
-
-	@Override
-	public void setCharmPercentModifier(double charmPercentModifier) {
-		this.charmPercentModifier = charmPercentModifier;
-	}
+//	@Override
+//	public double getCharmValueModifier() {
+//		return charmValueModifier;
+//	}
+//
+//	@Override
+//	public void setCharmValueModifier(double charmMaxModifier) {
+//		this.charmValueModifier = charmMaxModifier;
+//	}
+//
+//	@Override
+//	public double getCharmPercentModifier() {
+//		return charmPercentModifier;
+//	}
+//
+//	@Override
+//	public void setCharmPercentModifier(double charmPercentModifier) {
+//		this.charmPercentModifier = charmPercentModifier;
+//	}
 
 }

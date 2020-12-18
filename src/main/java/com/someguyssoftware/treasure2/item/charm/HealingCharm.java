@@ -28,6 +28,14 @@ public class HealingCharm extends Charm {
 	HealingCharm(ICharmBuilder builder) {
 		super(builder);
 	}
+	
+	/**
+	 * 
+	 * @param builder
+	 */
+	HealingCharm(Builder builder) {
+		super(builder);
+	}
 
 	/**
 	 * 

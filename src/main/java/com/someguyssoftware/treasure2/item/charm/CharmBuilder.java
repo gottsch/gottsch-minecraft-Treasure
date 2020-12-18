@@ -7,9 +7,10 @@ package com.someguyssoftware.treasure2.item.charm;
  * @author Mark Gottschling on Apr 26, 2020
  *
  */
+// TODO move the builder into Charm
 public class CharmBuilder implements ICharmBuilder {
 		private final String name;
-		private final CharmType type;
+		private final CharmType type; // TODO remove enums
 		private final CharmLevel level;
 		private double charmValueModifier = 1.0;
 		private double charmPercentModifier = 1.0;
@@ -24,6 +25,8 @@ public class CharmBuilder implements ICharmBuilder {
 		@Override
 		public ICharm build() {
 			ICharm charm = null;
+			// TODO remove all this
+			// use new Charm(this) or override or each type of charm.
 			switch(this.type) {
 			case HEALING:
 				charm = new HealingCharm(this);

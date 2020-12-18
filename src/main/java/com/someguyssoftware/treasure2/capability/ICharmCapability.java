@@ -14,8 +14,8 @@ import com.someguyssoftware.treasure2.item.charm.ICharmState;
 public interface ICharmCapability {
 	public List<ICharmState> getCharmStates();
 	public void setCharmStates(List<ICharmState> states);
-	double getCharmValueModifier();
-	void setCharmValueModifier(double valueModifier);
-	double getCharmPercentModifier();
-	void setCharmPercentModifier(double charmPercentModifier);
+//	double getCharmValueModifier();
+//	void setCharmValueModifier(double valueModifier);
+//	double getCharmPercentModifier();
+//	void setCharmPercentModifier(double charmPercentModifier);
 }

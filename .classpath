@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/forge-1.12.2-2854"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/GottschCore1.12.2"/>
+	<classpathentry kind="lib" path="/ModCommonLibs/libs/commons-cli-1.4.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

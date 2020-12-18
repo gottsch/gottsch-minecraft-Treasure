@@ -14,15 +14,17 @@ import net.minecraft.nbt.NBTTagCompound;
 public abstract class Charm implements ICharm {
 	public static final int SECOND_IN_TICKS = 20;
 	
-	private CharmType type; // TODO go away or just String
-	private CharmLevel level; // TODO go away or just Integer
+//	private CharmType type; // TODO go away or just String
+//	private CharmLevel level; // TODO go away or just Integer
 	private String name;
+	private String type;
+	private int level;
 	private double maxValue;
 	private double maxPercent;
 	private int maxDuration;
-	private double valueModifier;
-	private double percentModifier;
-	private double durationModifier;
+//	private double valueModifier;
+//	private double percentModifier;
+//	private double durationModifier;
     
     // TODO a Charm should know how to create it's own vitals, like a Block knows how to create a tile entity ie CharmEntity/**CharmData
     // rename CharmState to CharmInstance; CharmInstance -> (Charm, CharmData);
@@ -33,18 +35,32 @@ public abstract class Charm implements ICharm {
 	 * 
 	 * @param builder
 	 */
+	@Deprecated
 	protected Charm(ICharmBuilder builder) {
-		this.name = builder.getName();
-		this.type = builder.getType();
-		this.level = builder.getLevel();
-		this.valueModifier = builder.getCharmValueModifier();
-		this.percentModifier = builder.getCharmPercentModifier();
-		this.durationModifier = builder.getCharmDurationModifier();
-		
-		this.maxValue = (int) (type.getBaseValues()[level.getValue()-1] * valueModifier);
-		this.maxPercent = type.getBasePercents()[level.getValue()-1] * percentModifier;
-		this.maxDuration = (int) (type.getBaseDurations()[level.getValue()-1] * durationModifier);
-		
+//		this.name = builder.getName();
+//		this.type = builder.getType();
+//		this.level = builder.getLevel();
+//		this.valueModifier = builder.getCharmValueModifier();
+//		this.percentModifier = builder.getCharmPercentModifier();
+//		this.durationModifier = builder.getCharmDurationModifier();
+//		
+//		this.maxValue = (int) (type.getBaseValues()[level.getValue()-1] * valueModifier);
+//		this.maxPercent = type.getBasePercents()[level.getValue()-1] * percentModifier;
+//		this.maxDuration = (int) (type.getBaseDurations()[level.getValue()-1] * durationModifier);
+//		
+	}
+	
+	/**
+	 * 
+	 * @param builder
+	 */
+	protected Charm(Builder builder) {
+		this.name = builder.name;
+		this.type = builder.type;
+		this.level = builder.level;
+		this.maxValue = builder.value;
+		this.maxDuration = builder.duration.intValue();
+		this.maxPercent = builder.percent;
 	}
 	
 	/**
@@ -53,32 +69,26 @@ public abstract class Charm implements ICharm {
 	 * @param tag
 	 */
 	public static ICharm readFromNBT(NBTTagCompound tag) {
-		String typeStr = tag.getString("type");
-		String levelStr = tag.getString("level");
+		ICharm charm = null;
+		// read the name of the charm and fetch from the registry
+		try {
+			String charmName = tag.getString("name");
+			charm = TreasureCharms.REGISTRY.get(charmName);
+		}
+		catch(Exception e) {
+			Treasure.logger.error("Unable to read state to NBT:", e);
+		}
+
+//		String typeStr = tag.getString("type");
+//		String levelStr = tag.getString("level");		
+		/*
+		 * This code would only be needed if a modifying system AFTER a Charm has been create was in effect.
 		CharmBuilder builder = new CharmBuilder(tag.getString("name"), CharmType.valueOf(typeStr), CharmLevel.valueOf(levelStr));
 		builder.valueModifier(tag.getDouble("valueModifier")).percentModifier(tag.getDouble("percentModifier"))
 		.percentModifier(tag.getDouble("durationModifier"));
 		return builder.build();
-	}
-	
-	/**
-	 * New Way takes in a MultiConsumer 
-	 */
-	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, @Nullable CharmTooltipAppender tooltipAppender) {
-        if (tooltipAppender != null) {
-            tooltipAppender.update(stack, worldIn, tooptip, flagIn);
-        }
-        else {
-            addInformation(stack, worldIn, tooltip, flagIn);
-        }
-	}
-	
-	/**
-	 * Old Way
-	 */
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        // TODO have a default tooltip update here
+		*/
+		return charm;
 	}
 	
 	/**
@@ -89,19 +99,19 @@ public abstract class Charm implements ICharm {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		try {
-			if (this.type != null) {
-				nbt.setString("type", this.type.name());
-			}
-			if (this.level != null) {
-				nbt.setString("level", this.level.name());
-			}
+//			if (this.type != null) {
+//				nbt.setString("type", this.type.name());
+//			}
+//			if (this.level != null) {
+//				nbt.setString("level", this.level.name());
+//			}
 			nbt.setString("name", this.name);
-			nbt.setDouble("maxValue", maxValue);
-			nbt.setDouble("maxPercent", maxPercent);
-			nbt.setDouble("maxDuration", maxDuration);
-			nbt.setDouble("valueModifier", valueModifier);
-			nbt.setDouble("percentModifier", percentModifier);
-			nbt.setDouble("durationModifier", durationModifier);
+//			nbt.setDouble("maxValue", maxValue);
+//			nbt.setDouble("maxPercent", maxPercent);
+//			nbt.setDouble("maxDuration", maxDuration);
+//			nbt.setDouble("valueModifier", valueModifier);
+//			nbt.setDouble("percentModifier", percentModifier);
+//			nbt.setDouble("durationModifier", durationModifier);
 		}
 		catch(Exception e) {
 			Treasure.logger.error("Unable to write state to NBT:", e);
@@ -109,21 +119,51 @@ public abstract class Charm implements ICharm {
 		return nbt;
 	}
 	
-	@Override
-	public CharmType getCharmType() {
-		return type;
-	}
-
-	@Override
-	public CharmLevel getCharmLevel() {
-		return level;
-	}
+	/**
+	 * New Way takes in a MultiConsumer 
+	 */
+//	@Override
+//	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, @Nullable CharmTooltipAppender tooltipAppender) {
+//        if (tooltipAppender != null) {
+//            tooltipAppender.update(stack, worldIn, tooptip, flagIn);
+//        }
+//        else {
+//            addInformation(stack, worldIn, tooltip, flagIn);
+//        }
+//	}
+//	
+//	/**
+//	 * Old Way
+//	 */
+//	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+//        // TODO have a default tooltip update here
+//	}
+	
+//	@Override
+//	public CharmType getCharmType() {
+//		return type;
+//	}
+//
+//	@Override
+//	public CharmLevel getCharmLevel() {
+//		return level;
+//	}
 
 	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
+	public String getType() {
+		return type;
+	}
+
+	@Override
+	public int getLevel() {
+		return level;
+	}
+	
 	@Override
 	public double getMaxValue() {
 		return maxValue;
@@ -140,35 +180,84 @@ public abstract class Charm implements ICharm {
 
 
 
-	public CharmType getType() {
-		return type;
-	}
-
-	public CharmLevel getLevel() {
-		return level;
-	}
-
-	public double getValueModifier() {
-		return valueModifier;
-	}
-
-
-	public double getPercentModifier() {
-		return percentModifier;
-	}
-
-	public void setMaxPercent(double maxPercent) {
-		this.maxPercent = maxPercent;
-	}
-
-	public double getDurationModifier() {
-		return durationModifier;
-	}
-
-	@Override
-	public String toString() {
-		return "Charm [type=" + type + ", level=" + level + ", name=" + name + ", maxValue=" + maxValue
-				+ ", maxPercent=" + maxPercent + ", maxDuration=" + maxDuration + ", valueModifier=" + valueModifier
-				+ ", percentModifier=" + percentModifier + ", durationModifier=" + durationModifier + "]";
+//	public CharmType getType() {
+//		return type;
+//	}
+//
+//	public CharmLevel getLevel() {
+//		return level;
+//	}
+//
+//	public double getValueModifier() {
+//		return valueModifier;
+//	}
+//
+//
+//	public double getPercentModifier() {
+//		return percentModifier;
+//	}
+//
+//	public void setMaxPercent(double maxPercent) {
+//		this.maxPercent = maxPercent;
+//	}
+//
+//	public double getDurationModifier() {
+//		return durationModifier;
+//	}
+//
+//	@Override
+//	public String toString() {
+//		return "Charm [type=" + type + ", level=" + level + ", name=" + name + ", maxValue=" + maxValue
+//				+ ", maxPercent=" + maxPercent + ", maxDuration=" + maxDuration + ", valueModifier=" + valueModifier
+//				+ ", percentModifier=" + percentModifier + ", durationModifier=" + durationModifier + "]";
+//	}
+	
+	/**
+	 * 
+	 * @author Mark Gottschling on Dec 18, 2020
+	 *
+	 */
+	public static class Builder {
+		private final String name;
+		private final String type;
+		private final Integer level;
+		private Double value;
+		private Double duration;
+		private Double percent;
+		
+		private Class<? extends ICharm> charmClass;
+		
+		public Builder(String name, String type, Integer level, Class<? extends ICharm> charmClass) {
+			this.name = name;
+			this.type = type;
+			this.level = level;
+			this.charmClass = charmClass;
+		}
+		
+		public ICharm build() {
+			ICharm charm = null;
+			try {
+				charm = charmClass.getDeclaredConstructor(Builder.class).newInstance();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}			
+			Treasure.logger.debug("building charm from -> {} to -> {}", this.toString(), charm.toString());
+			return charm;
+		}
+		
+		public Builder withValue(Double value) {
+			this.value = value;
+			return Charm.Builder.this;
+		}
+		
+		public Builder withDuration(Double duration) {
+			this.duration = duration;
+			return Charm.Builder.this;
+		}
+		
+		public Builder withPercent(Double percent) {
+			this.percent = percent;
+			return Charm.Builder.this;
+		}
 	}
 }

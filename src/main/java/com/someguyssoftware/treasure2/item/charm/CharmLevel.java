@@ -7,6 +7,7 @@ package com.someguyssoftware.treasure2.item.charm;
  * @author Mark Gottschling on Apr 25, 2020
  *
  */
+@Deprecated
 public enum CharmLevel {
 	LEVEL1("level1", 1),
 	LEVEL2("level2", 2),
