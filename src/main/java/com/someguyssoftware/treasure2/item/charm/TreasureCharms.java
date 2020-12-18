@@ -52,7 +52,7 @@ public class TreasureCharms {
 	
 	static {
 		/*
-		 * NOTE don't forge to update the CharmBuilder to create the correct concrete Charm class.
+		 * NOTE don't forget to update the CharmBuilder to create the correct concrete Charm class.
 		 */
 		LESSER_HEALING = new CharmBuilder("lesser_healing", CharmType.HEALING, CharmLevel.LEVEL1).build();
 		HEALING = new CharmBuilder("healing", CharmType.HEALING, CharmLevel.LEVEL2).build();

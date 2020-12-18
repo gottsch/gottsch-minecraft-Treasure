@@ -139,7 +139,7 @@ public class CharmRandomly extends LootFunction {
 						Treasure.logger.warn("Unknown charm '{}'", charmName);
 					}
 
-					// add to the map
+					// add to the map to prevent duplicates of same charm
 					if (!charmsByType.containsKey(charm.getCharmType())) {
 						charmsByType.put(charm.getCharmType(), charm);
 						// add to the list of charms

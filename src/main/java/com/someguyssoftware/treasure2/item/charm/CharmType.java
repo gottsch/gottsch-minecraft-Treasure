@@ -4,6 +4,7 @@
 package com.someguyssoftware.treasure2.item.charm;
 
 /**
+ * TODO this has to go away or you can't make any new charms unless it is in this type. ie bad for modders
  * @author Mark Gottschling on Apr 25, 2020
  *
  */

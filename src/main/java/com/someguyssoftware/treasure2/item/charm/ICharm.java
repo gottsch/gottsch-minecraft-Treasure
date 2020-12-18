@@ -29,7 +29,7 @@ public interface ICharm {
 	public int getMaxDuration();
 	public double getMaxPercent();
 	
-	public void addInformation(stack, worldIn, tooltip, flagIn);
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, @Nullable CharmTooltipAppender tooltipAppender);
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt);
 
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmVitals vitals);

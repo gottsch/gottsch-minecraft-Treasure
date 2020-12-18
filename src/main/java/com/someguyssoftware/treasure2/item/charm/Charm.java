@@ -14,8 +14,8 @@ import net.minecraft.nbt.NBTTagCompound;
 public abstract class Charm implements ICharm {
 	public static final int SECOND_IN_TICKS = 20;
 	
-	private CharmType type;
-	private CharmLevel level;
+	private CharmType type; // TODO go away or just String
+	private CharmLevel level; // TODO go away or just Integer
 	private String name;
 	private double maxValue;
 	private double maxPercent;
@@ -23,7 +23,11 @@ public abstract class Charm implements ICharm {
 	private double valueModifier;
 	private double percentModifier;
 	private double durationModifier;
-	
+    
+    // TODO a Charm should know how to create it's own vitals, like a Block knows how to create a tile entity ie CharmEntity/**CharmData
+    // rename CharmState to CharmInstance; CharmInstance -> (Charm, CharmData);
+    // rename CharmVitals to CharmData
+    // remove CharmStateFactory - move factory into Charm
 	
 	/**
 	 * 
@@ -61,15 +65,20 @@ public abstract class Charm implements ICharm {
 	 * New Way takes in a MultiConsumer 
 	 */
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, CharmInfoAdder infoAdder) {
-		infoAdder.update(stack, worldIn, tooptip, flagIn);
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, @Nullable CharmTooltipAppender tooltipAppender) {
+        if (tooltipAppender != null) {
+            tooltipAppender.update(stack, worldIn, tooptip, flagIn);
+        }
+        else {
+            addInformation(stack, worldIn, tooltip, flagIn);
+        }
 	}
 	
 	/**
 	 * Old Way
 	 */
-	public void addCharmedInfo(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-	
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        // TODO have a default tooltip update here
 	}
 	
 	/**
