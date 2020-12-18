@@ -36,13 +36,15 @@ public interface ICharm {
 	public double getMaxValue();
 	public int getMaxDuration();
 	public double getMaxPercent();
-	
+    
+    public ICharmInstance createInstance();
+    public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmData data);
+
 //	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, @Nullable CharmTooltipAppender tooltipAppender);
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt);
 
-//	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmVitals vitals);
 	// TODO remove thses for a generic one that will check the instance
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals);
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmVitals vitals);
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals);
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmData data);
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmData data);
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmData data);
 }

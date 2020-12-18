@@ -16,43 +16,34 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
- * Contains an instance of a Charm and its Vitals
+ * Contains an instance of a Charm and its CharmData
  * @author Mark Gottschling on Apr 27, 2020
  *
  */
-public class CharmState implements ICharmState {
+public class CharmInstance implements ICharmInstance {
 	private ICharm charm;
-	private ICharmVitals vitals;
+	private ICharmData data;
 
 	/**
 	 * 
 	 * @param charm
+	 * @param data
 	 */
-//	public CharmState(ICharm charm) {
-//		this.charm = charm;
-//		this.vitals = new CharmVitals(charm.getMaxValue(), charm.getMaxDuration(), charm.getMaxPercent());
-//	}
-	
-	/**
-	 * 
-	 * @param charm
-	 * @param vitals
-	 */
-	public CharmState(ICharm charm, ICharmVitals vitals) {
+	public CharmInstance(ICharm charm, ICharmData data) {
 		this.charm = charm;
-		this.vitals = vitals;
+		this.data = data;
 	}	
 
 	@Override
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, Event event) {
 		if (event instanceof LivingUpdateEvent) {
-			return charm.doCharm(world, random, coords, player, (LivingUpdateEvent)event, vitals);
+			return charm.doCharm(world, random, coords, player, (LivingUpdateEvent)event, data);
 		}
 		else if (event instanceof LivingDamageEvent) {
-			return charm.doCharm(world, random, coords, player, (LivingDamageEvent)event, vitals);
+			return charm.doCharm(world, random, coords, player, (LivingDamageEvent)event, data);
 		}
 		else {
-			return charm.doCharm(world, random, coords, player, (BlockEvent.HarvestDropsEvent)event, vitals);			
+			return charm.doCharm(world, random, coords, player, (BlockEvent.HarvestDropsEvent)event, data);			
 		}
 	}
 	
@@ -62,35 +53,35 @@ public class CharmState implements ICharmState {
 	 * @param random
 	 * @param coords
 	 * @param player
-	 * @param vitals
+	 * @param data
 	 * @return boolean indication whether the call was successful (an update occurred) or not (no update).
 	 */
 	@Override
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event) {
-		return charm.doCharm(world, random, coords, player, event, vitals);
+		return charm.doCharm(world, random, coords, player, event, data);
 	}
 	
 	@Override
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event) {
-		return charm.doCharm(world, random, coords, player, event, vitals);
+		return charm.doCharm(world, random, coords, player, event, data);
 	}
 	
 	@Override
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event) {
-		return charm.doCharm(world, random, coords, player, event, vitals);
+		return charm.doCharm(world, random, coords, player, event, data);
 	}
 	
 	/**
 	 * 
-	 * @param vitals
+	 * @param data
 	 * @param newVitals
 	 * @return
 	 */
 	@Deprecated
-	private boolean checkVitals(ICharmVitals vitals, ICharmVitals newVitals) {
+	private boolean checkVitals(ICharmData data, ICharmData newVitals) {
 		// check if they are different
-		if (vitals != null && newVitals != null && !vitals.equals(newVitals)) {
-			this.vitals = newVitals;
+		if (data != null && newVitals != null && !data.equals(newVitals)) {
+			this.data = newVitals;
 			return true;
 		}
 		return false;
@@ -107,17 +98,17 @@ public class CharmState implements ICharmState {
 	}
 
 	@Override
-	public ICharmVitals getVitals() {
-		return vitals;
+	public ICharmData getData() {
+		return data;
 	}
 
 	@Override
-	public void setVitals(ICharmVitals vitals) {
-		this.vitals = vitals;
+	public void setVitals(ICharmData data) {
+		this.data = data;
 	}
 
 	@Override
 	public String toString() {
-		return "CharmState [charm=" + charm + ", vitals=" + vitals + "]";
+		return "CharmInstance [charm=" + charm + ", data=" + data + "]";
 	}
 }

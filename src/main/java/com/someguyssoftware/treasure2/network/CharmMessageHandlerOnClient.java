@@ -7,7 +7,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.capability.PouchCapabilityProvider;
-import com.someguyssoftware.treasure2.item.charm.ICharmState;
+import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -116,11 +116,11 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 		// get the charm that is being sent
 		String charmName = message.getCharmName();
 		// cycle through the charm states to find the named charm
-		for(ICharmState state : heldItemCaps.getCharmStates()) {
-			if (state.getCharm().getName().equals(charmName)) {
+		for(ICharmInstance instance : heldItemCaps.getCharmStates()) {
+			if (instance.getCharm().getName().equals(charmName)) {
 //	        	Treasure.logger.debug("found charm, updating vitals to -> {}", message.getVitals());
 				// update vitals
-				state.setVitals(message.getVitals());
+				instance.setVitals(message.getData());
 			}
 		}
 	}

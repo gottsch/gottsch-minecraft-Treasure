@@ -25,6 +25,7 @@ public class HealingCharm extends Charm {
 	 * 
 	 * @param builder
 	 */
+    @Deprecated
 	HealingCharm(ICharmBuilder builder) {
 		super(builder);
 	}
@@ -37,31 +38,51 @@ public class HealingCharm extends Charm {
 		super(builder);
 	}
 
+    @Override
+	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmData data) {
+        boolean result = false;
+        if (world.getTotalWorldTime() % 20 == 0) {
+            if (event instanceof LivingUpdateEvent) {
+                if (data.getValue() > 0 && player.getHealth() < player.getMaxHealth() && !player.isDead) {
+                    float amount = Math.min(1F, player.getMaxHealth() - player.getHealth());
+                    player.setHealth(MathHelper.clamp(player.getHealth() + amount, 0.0F, player.getMaxHealth()));		
+                    data.setValue(MathHelper.clamp(data.getValue() - amount,  0D, data.getValue()));
+                    Treasure.logger.debug("new data -> {}", data);
+                    result = true;
+                }
+            }
+        }
+        return false;
+    }
+
 	/**
 	 * 
 	 */
+    @Deprecated
 	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals) {
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmData data) {
 		boolean result = false;
-		if (vitals.getValue() > 0 && player.getHealth() < player.getMaxHealth() && !player.isDead) {
+		if (data.getValue() > 0 && player.getHealth() < player.getMaxHealth() && !player.isDead) {
 			if (world.getTotalWorldTime() % 20 == 0) {
 				float amount = Math.min(1F, player.getMaxHealth() - player.getHealth());
 				player.setHealth(MathHelper.clamp(player.getHealth() + amount, 0.0F, player.getMaxHealth()));		
-				vitals.setValue(MathHelper.clamp(vitals.getValue() - amount,  0D, vitals.getValue()));
-				Treasure.logger.debug("new vitals -> {}", vitals);
+				data.setValue(MathHelper.clamp(data.getValue() - amount,  0D, data.getValue()));
+				Treasure.logger.debug("new data -> {}", data);
 				result = true;
 			}
 		}
 		return result;
 	}
 
+    @Deprecated
 	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmVitals vitals) {
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmData data) {
 		return false;
 	}
-	
+    
+    @Deprecated
 	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmData data) {
 		return false;
 	}	
 }

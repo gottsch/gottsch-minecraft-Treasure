@@ -13,23 +13,18 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public abstract class Charm implements ICharm {
 	public static final int SECOND_IN_TICKS = 20;
-	
-//	private CharmType type; // TODO go away or just String
-//	private CharmLevel level; // TODO go away or just Integer
+
 	private String name;
 	private String type;
 	private int level;
 	private double maxValue;
 	private double maxPercent;
 	private int maxDuration;
-//	private double valueModifier;
-//	private double percentModifier;
-//	private double durationModifier;
-    
-    // TODO a Charm should know how to create it's own vitals, like a Block knows how to create a tile entity ie CharmEntity/**CharmData
-    // rename CharmState to CharmInstance; CharmInstance -> (Charm, CharmData);
-    // rename CharmVitals to CharmData
-    // remove CharmStateFactory - move factory into Charm
+
+    // [x]TODO a Charm should know how to create it's own data, like a Block knows how to create a tile entity ie CharmEntity/**CharmData
+    // [x] rename CharmState to CharmInstance; CharmInstance -> (Charm, CharmData);
+    // [x]rename CharmVitals to CharmData
+    // [x]remove CharmStateFactory - move factory into Charm
 	
 	/**
 	 * 
@@ -62,7 +57,16 @@ public abstract class Charm implements ICharm {
 		this.maxDuration = builder.duration.intValue();
 		this.maxPercent = builder.percent;
 	}
-	
+    
+    @Override
+    public ICharmInstance createInstance() {
+        ICharmData data = new CharmData();
+        data.setValue(charm.getMaxValue());
+        data.setPercent(charm.getMaxPercent());
+		data.setDuration(charm.getMaxDuration());
+        ICharmInstance instance = new CharmInstance(this, data);
+    }
+    
 	/**
 	 * This method reads only this Charm's properties from an NBT tag
 	 * 
@@ -77,10 +81,7 @@ public abstract class Charm implements ICharm {
 		}
 		catch(Exception e) {
 			Treasure.logger.error("Unable to read state to NBT:", e);
-		}
-
-//		String typeStr = tag.getString("type");
-//		String levelStr = tag.getString("level");		
+		}	
 		/*
 		 * This code would only be needed if a modifying system AFTER a Charm has been create was in effect.
 		CharmBuilder builder = new CharmBuilder(tag.getString("name"), CharmType.valueOf(typeStr), CharmLevel.valueOf(levelStr));
@@ -99,19 +100,7 @@ public abstract class Charm implements ICharm {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		try {
-//			if (this.type != null) {
-//				nbt.setString("type", this.type.name());
-//			}
-//			if (this.level != null) {
-//				nbt.setString("level", this.level.name());
-//			}
 			nbt.setString("name", this.name);
-//			nbt.setDouble("maxValue", maxValue);
-//			nbt.setDouble("maxPercent", maxPercent);
-//			nbt.setDouble("maxDuration", maxDuration);
-//			nbt.setDouble("valueModifier", valueModifier);
-//			nbt.setDouble("percentModifier", percentModifier);
-//			nbt.setDouble("durationModifier", durationModifier);
 		}
 		catch(Exception e) {
 			Treasure.logger.error("Unable to write state to NBT:", e);
@@ -137,16 +126,6 @@ public abstract class Charm implements ICharm {
 //	 */
 //	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 //        // TODO have a default tooltip update here
-//	}
-	
-//	@Override
-//	public CharmType getCharmType() {
-//		return type;
-//	}
-//
-//	@Override
-//	public CharmLevel getCharmLevel() {
-//		return level;
 //	}
 
 	@Override

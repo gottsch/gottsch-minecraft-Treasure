@@ -7,7 +7,7 @@ package com.someguyssoftware.treasure2.item.charm;
  * @author Mark Gottschling on Apr 26, 2020
  *
  */
-// TODO move the builder into Charm
+@Deprecated
 public class CharmBuilder implements ICharmBuilder {
 		private final String name;
 		private final CharmType type; // TODO remove enums

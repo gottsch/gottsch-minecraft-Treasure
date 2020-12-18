@@ -7,6 +7,7 @@ package com.someguyssoftware.treasure2.item.charm;
  * @author Mark Gottschling on May 5, 2020
  *
  */
+@Deprecated
 public class CharmStateFactory {
 
 	/**

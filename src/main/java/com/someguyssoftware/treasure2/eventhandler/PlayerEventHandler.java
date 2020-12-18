@@ -21,9 +21,8 @@ import com.someguyssoftware.treasure2.item.IPouch;
 import com.someguyssoftware.treasure2.item.PouchItem;
 import com.someguyssoftware.treasure2.item.PouchType;
 import com.someguyssoftware.treasure2.item.TreasureItems;
-import com.someguyssoftware.treasure2.item.charm.CharmType;
 import com.someguyssoftware.treasure2.item.charm.ICharm;
-import com.someguyssoftware.treasure2.item.charm.ICharmState;
+import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import com.someguyssoftware.treasure2.item.charm.ICharmed;
 import com.someguyssoftware.treasure2.item.wish.IWishable;
 import com.someguyssoftware.treasure2.network.CharmMessageToClient;
@@ -228,7 +227,8 @@ public class PlayerEventHandler {
 		// check if charmed/magic pouch
 		if (context.get().type == CharmedType.FOCUS) {
 			// get the capability of the pouch
-			IItemHandler cap = context.get().itemStack.getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
+            IItemHandler cap = context.get().itemStack.getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
+            // TODO this slots bit could be better. Maybe pouch item should have number of slots property
 			// scan the first 3 slots of pouch (this only works for pouches... what if in future there are other focuses ?
 			int slots = context.get().itemStack.getItem() == TreasureItems.LUCKY_POUCH ? 1 : 
 				 context.get().itemStack.getItem() == TreasureItems.APPRENTICES_POUCH ? 2 : 3;
@@ -255,11 +255,11 @@ public class PlayerEventHandler {
 	 */
 	private void doCharms(Optional<CharmContext> context, EntityPlayerMP player, Event event) {
 		ICharmCapability capability = context.get().itemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-		List<ICharmState> charmStates = capability.getCharmStates();
-		for (ICharmState charmState : charmStates) {
-			if (charmState.doCharm(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event)) {
+		List<ICharmInstance> charmInstances = capability.getCharmInstances();
+		for (ICharmInstance charmInstance : charmInstances) {
+			if (charmInstance.update(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event)) {
 				// send state message to client
-				CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmState, context.get().hand, null);
+				CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmInstance, context.get().hand, null);
 				Treasure.simpleNetworkWrapper.sendTo(message, player);
 			}
 		}
