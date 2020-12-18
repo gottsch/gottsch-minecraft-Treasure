@@ -58,6 +58,21 @@ public abstract class Charm implements ICharm {
 	}
 	
 	/**
+	 * New Way takes in a MultiConsumer 
+	 */
+	@Override
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, CharmInfoAdder infoAdder) {
+		infoAdder.update(stack, worldIn, tooptip, flagIn);
+	}
+	
+	/**
+	 * Old Way
+	 */
+	public void addCharmedInfo(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	
+	}
+	
+	/**
 	 * 
 	 * @param tag
 	 * @return
