@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2.tileentity;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nullable;
 
@@ -13,6 +14,9 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.chest.ChestSlotCount;
+import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
+import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.inventory.ITreasureContainer;
 import com.someguyssoftware.treasure2.lock.LockState;
 
@@ -38,6 +42,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.INameable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -50,7 +55,41 @@ import net.minecraftforge.common.util.Constants;
  * @author Mark Gottschling onDec 22, 2017
  *
  */
-public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements IChestLid, ITickableTileEntity, IInventory, INamedContainerProvider, INameable {
+public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITreasureChestTileEntity, IChestLid, ITickableTileEntity, INamedContainerProvider, INameable {
+	public class GenerationContext {
+		/*
+		 * The rarity level of the loot that the chest will contain
+		 */
+		private Rarity lootRarity;
+		/*
+		 * 
+		 */
+		private ChestGeneratorType chestGeneratorType;
+		
+		public GenerationContext(Rarity rarity, ChestGeneratorType chestGeneratorType) {
+			this.lootRarity = rarity;
+			this.chestGeneratorType = chestGeneratorType;
+		}
+		
+		public GenerationContext(ResourceLocation lootTable, Rarity rarity, ChestGeneratorType chestGeneratorType) {
+			this.lootRarity = rarity;
+			this.chestGeneratorType = chestGeneratorType;
+		}
+		
+		public Rarity getLootRarity() {
+			return lootRarity;
+		}
+		
+		public ChestGeneratorType getChestGeneratorType() {
+			return chestGeneratorType;
+		}
+
+		public ResourceLocation getLootTable() {
+			return lootTable;
+		}
+
+	}
+	
 	/*
 	 * A list of lockStates the chest has. The list should be the size of the max
 	 * allowed for the chestType.
@@ -62,6 +101,20 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	private Direction facing;
 
+	/*
+	 * A flag to indicate if the chest has been opened for the first time
+	 */
+	private boolean sealed;
+
+	private ResourceLocation lootTable;
+
+	/*
+	 * Properties detailing how the tile entity was generated
+	 */
+	private GenerationContext generationContext;
+	
+	private int numberOfSlots = 27; // default size
+	
 	/*
 	 * Vanilla properties for controlling the lid
 	 */
@@ -75,7 +128,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	public int ticksSinceSync;
 
 	/** IInventory properties */
-//	private int numberOfSlots = 27; // default size
+	//	private int numberOfSlots = 27; // default size
 	private NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(getNumberOfSlots(), ItemStack.EMPTY);
 	private ITextComponent customName;
 
@@ -123,7 +176,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			this.playSound(SoundEvents.BLOCK_CHEST_OPEN);
 		}
 
-//				Treasure.LOGGER.info("test: numPlayers -> {}, previous angle -> {}, new angle -> {}", this.numPlayersUsing, this.prevLidAngle, this.lidAngle);
+		//				Treasure.LOGGER.info("test: numPlayers -> {}, previous angle -> {}, new angle -> {}", this.numPlayersUsing, this.prevLidAngle, this.lidAngle);
 		if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
 			float f2 = this.lidAngle;
 
@@ -190,7 +243,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				ListNBT list = new ListNBT();
 				// write custom tile entity properties
 				for (LockState state : getLockStates()) {
-//					Treasure.LOGGER.info("Writing lock state:" + state);
+					//					Treasure.LOGGER.info("Writing lock state:" + state);
 					CompoundNBT stateNBT = new CompoundNBT();
 					state.writeToNBT(stateNBT);
 					list.add(stateNBT);
@@ -217,7 +270,16 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			}
 			// write facing
 			parentNBT.putInt("facing", getFacing().getIndex());
-
+			parentNBT.putBoolean("sealed", isSealed());
+			if (getLootTable() != null) {
+				parentNBT.putString("lootTable", getLootTable().toString());
+			}
+			//			if (getGenerationContext() != null) {
+			//				NBTTagCompound contextTag = new NBTTagCompound();
+			//				contextTag.setString("lootRarity", getGenerationContext().getLootRarity().getValue());
+			//				contextTag.setString("chestGenType", getGenerationContext().getChestGeneratorType().name());
+			//				sourceTag.setTag("genContext", contextTag);
+			//			}
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Error writing Properties to NBT:", e);
 		}
@@ -261,12 +323,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		try {
 			// read the lockstates
 			if (parentNBT.contains("lockStates")) {
-//				Treasure.LOGGER.info("Has lockStates");
+				//				Treasure.LOGGER.info("Has lockStates");
 				if (this.getLockStates() != null) {
-//					Treasure.LOGGER.info("size of internal lockstates:" + this.getLockStates().size());
+					//					Treasure.LOGGER.info("size of internal lockstates:" + this.getLockStates().size());
 				} else {
 					this.setLockStates(new LinkedList<LockState>());
-//					Treasure.LOGGER.info("created lockstates:" + this.getLockStates().size());
+					//					Treasure.LOGGER.info("created lockstates:" + this.getLockStates().size());
 				}
 
 				List<LockState> states = new LinkedList<LockState>();
@@ -275,7 +337,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 					CompoundNBT c = list.getCompound(i);
 					LockState lockState = LockState.readFromNBT(c);
 					states.add(lockState.getSlot().getIndex(), lockState);
-//					Treasure.LOGGER.info("Read NBT lockstate:" + lockState);
+					//					Treasure.LOGGER.info("Read NBT lockstate:" + lockState);
 				}
 				// update the tile entity
 				setLockStates(states);
@@ -299,7 +361,27 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			if (nbt.contains("facing")) {
 				this.setFacing(nbt.getInt("facing"));
 			}
-
+			if (nbt.contains("sealed")) {
+				this.setSealed(nbt.getBoolean("sealed"));
+			}
+			if (nbt.contains("lootTable")) {
+				if (!nbt.getString("lootTable").isEmpty()) {
+					this.setLootTable(new ResourceLocation(nbt.getString("lootTable")));
+				}
+			}
+//			if (sourceTag.hasKey("genContext")) {
+//				NBTTagCompound contextTag = sourceTag.getCompoundTag("genContext");
+//				Rarity rarity = null;
+//				ChestGeneratorType genType = null;
+//				if (contextTag.hasKey("lootRarity")) {
+//					rarity = Rarity.getByValue(contextTag.getString("lootRarity"));
+//				}
+//				if (contextTag.hasKey("chestGenType")) {
+//					genType = ChestGeneratorType.valueOf(contextTag.getString("chestGenType"));
+//				}
+//				AbstractTreasureChestTileEntity.GenerationContext genContext = this.new GenerationContext(rarity, genType);
+//				this.setGenerationContext(genContext);
+//			}	
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Error reading Properties from NBT:", e);
 		}
@@ -316,7 +398,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			readLockStatesFromNBT(parentNBT);
 			readInventoryFromNBT(parentNBT);
 			readPropertiesFromNBT(parentNBT);
-//			Treasure.LOGGER.info("completed read");
+			//			Treasure.LOGGER.info("completed read");
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Error reading to NBT:", e);
 		}
@@ -338,19 +420,19 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	@Override
 	@Nullable
 	public SUpdateTileEntityPacket getUpdatePacket() {
-//		Treasure.LOGGER.info("getUpdatePacket is writing packet");
+		//		Treasure.LOGGER.info("getUpdatePacket is writing packet");
 		return new SUpdateTileEntityPacket(this.pos, 3, this.getUpdateTag());
 	}
 
 	@Override
 	public CompoundNBT getUpdateTag() {
-//		Treasure.LOGGER.info("getUpdateTag is writing data");
+		//		Treasure.LOGGER.info("getUpdateTag is writing data");
 		return this.write(new CompoundNBT());
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-//		Treasure.LOGGER.info("onDataPacket is reading data");
+		//		Treasure.LOGGER.info("onDataPacket is reading data");
 		//		super.onDataPacket(net, pkt);
 		//		handleUpdateTag(pkt.getNbtCompound());
 		read(pkt.getNbtCompound());
@@ -419,7 +501,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * @return
 	 */
 	abstract public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player);
-	
+
 	protected ITextComponent getDefaultName() {
 		return new TranslationTextComponent("container.chest");
 	}
@@ -434,19 +516,35 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		return this.getName();
 	}
 
-	  /**
-	   * The name is misleading; createMenu has nothing to do with creating a Screen, it is used to create the Container on the server only
-	   * @param windowID
-	   * @param playerInventory
-	   * @param playerEntity
-	   * @return
-	   */
+	/**
+	 * The name is misleading; createMenu has nothing to do with creating a Screen, it is used to create the Container on the server only
+	 * @param windowID
+	 * @param playerInventory
+	 * @param playerEntity
+	 * @return
+	 */
 	@Nullable
 	@Override
 	public Container createMenu(int windowID, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-	    return createServerContainer(windowID, playerInventory, playerEntity);
+		// TODO it would seem that this is the place where fillWithLoot() should be called
+		// see net.minecraft.tileentity.LockableLootTileEntity.createMenu()
+
+		Treasure.LOGGER.debug("is chest sealed -> {}", this.isSealed());
+		if (this.isSealed()) {
+			this.setSealed(false);
+			Treasure.LOGGER.debug("chest gen type -> {}", this.getGenerationContext().getChestGeneratorType()); 
+			// construct the chest generator used to create the tile entity
+			IChestGenerator chestGenerator = this.getGenerationContext().getChestGeneratorType().getChestGenerator();
+			Treasure.LOGGER.debug("chest gen  -> {}", this.getGenerationContext().getChestGeneratorType().getChestGenerator().getClass().getSimpleName());
+
+			// fill the chest with loot
+			chestGenerator.fillChest(world, new Random(), this, this.getGenerationContext().getLootRarity(), playerEntity);
+
+		}
+
+		return createServerContainer(windowID, playerInventory, playerEntity);
 	}
-	
+
 	///////////// IInventory Methods ///////////////////////
 
 	/**
@@ -566,10 +664,10 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public void openInventory(PlayerEntity player) {
-//		Treasure.LOGGER.info("opening inventory -> {}", player.getName());
+		//		Treasure.LOGGER.info("opening inventory -> {}", player.getName());
 
 		if (hasLocks()) {
-//			Treasure.LOGGER.info("has locks - don't increment num players");
+			//			Treasure.LOGGER.info("has locks - don't increment num players");
 			return;
 		}
 		if (!player.isSpectator()) {
@@ -635,6 +733,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @return the numberOfSlots
 	 */
+	@Override
 	public int getNumberOfSlots() {
 		return ChestSlotCount.STANDARD.getSize();
 	}
@@ -642,9 +741,17 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/**
 	 * @param numberOfSlots the numberOfSlots to set
 	 */
-//	public void setNumberOfSlots(int numberOfSlots) {
-//		this.numberOfSlots = numberOfSlots;
-//	}
+	@Override
+	public void setNumberOfSlots(int numberOfSlots) {
+		this.numberOfSlots = numberOfSlots;
+	}
+	
+	/**
+	 * @param numberOfSlots the numberOfSlots to set
+	 */
+	//	public void setNumberOfSlots(int numberOfSlots) {
+	//		this.numberOfSlots = numberOfSlots;
+	//	}
 
 	/**
 	 * @return the items
@@ -677,5 +784,33 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	@Override
 	public float getLidAngle(float partialTicks) {
 		return this.lidAngle;
+	}
+	
+	@Override
+	public boolean isSealed() {
+		return sealed;
+	}
+
+	@Override
+	public void setSealed(boolean sealed) {
+		this.sealed = sealed;
+	}
+
+	@Override
+	public GenerationContext getGenerationContext() {
+		return generationContext;
+	}
+	
+	@Override
+	public void setGenerationContext(GenerationContext context) {
+		generationContext = context;
+	}
+
+	public ResourceLocation getLootTable() {
+		return lootTable;
+	}
+
+	public void setLootTable(ResourceLocation lootTable) {
+		this.lootTable = lootTable;
 	}
 }

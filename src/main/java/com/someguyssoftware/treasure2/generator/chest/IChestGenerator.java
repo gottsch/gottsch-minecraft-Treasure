@@ -3,11 +3,19 @@
  */
 package com.someguyssoftware.treasure2.generator.chest;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
-import com.someguyssoftware.gottschcore.loot.LootTable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import com.google.common.collect.Lists;
+import com.someguyssoftware.gottschcore.loot.LootPoolShell;
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
@@ -22,13 +30,23 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameterSets;
+import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * @author Mark Gottschling on Dec 4, 2019
@@ -94,6 +112,14 @@ public interface IChestGenerator {
 		return new ArrayList<LootTable>();
 	}
 
+	// TODO this should be a generic call that passes in ManagedTableType
+	default public List<LootTableShell> buildLootTableList2(Rarity rarity) {
+		return Treasure.getLootTableMaster().getLootTableByRarity(TreasureLootTableMaster2.ManagedTableType.CHEST, rarity);
+	}
+
+	default public Optional<List<LootTableShell>> buildInjectedLootTableList(String key, Rarity rarity) {
+		return Optional.ofNullable(Treasure.getLootTableMaster().getLootTableByKeyRarity(TreasureLootTableMaster2.ManagedTableType.INJECT, key, rarity));
+	}
 	/**
 	 * 
 	 * @param rarity
@@ -124,6 +150,133 @@ public interface IChestGenerator {
 
 	/**
 	 * 
+	 * @param world
+	 * @param random
+	 * @param tileEntity
+	 * @param lootRarity
+	 */
+	default public void fillChest(final World world, Random random, final TileEntity tileEntity, final Rarity rarity, PlayerEntity player) {
+		Optional<LootTableShell> lootTableShell = null;
+		ResourceLocation lootTableResourceLocation = ((AbstractTreasureChestTileEntity)tileEntity).getLootTable();
+		Treasure.LOGGER.debug("chest has loot table property of -> {}", lootTableResourceLocation);
+
+		if (lootTableResourceLocation == null) {
+			lootTableShell = selectLootTable2(random, rarity);
+		}
+		else {
+			lootTableShell = Treasure.getLootTableMaster().getLootTableByResourceLocation(lootTableResourceLocation);
+		}	
+		// is valid loot table shell
+		if (lootTableShell.isPresent()) {
+			Treasure.LOGGER.debug("using loot table shell -> {}, {}", lootTableShell.get().getCategory(), lootTableShell.get().getRarity());
+			lootTableResourceLocation = lootTableShell.get().getResourceLocation();
+		}
+		else {
+			Treasure.LOGGER.debug("Unable to select a LootTable for rarity -> {}", rarity);
+			return;
+		}
+		Treasure.LOGGER.debug("loot table resource -> {}", lootTableResourceLocation); 
+		
+		LootTable lootTable = world.getServer().getLootTableManager().getLootTableFromLocation(lootTableResourceLocation);
+		if (lootTable == null) {
+			LOGGER.warn("Unable to select a lootTable.");
+			return;
+		}		
+		Treasure.LOGGER.debug("selected loot table -> {} from resource -> {}", lootTable, lootTableResourceLocation);
+		
+		// update rarity from lootTableShell		
+		Rarity effectiveRarity = Treasure.getLootTableMaster().getEffectiveRarity(lootTableShell.get(), rarity);		
+		LOGGER.debug("Generating loot from loot table for effective rarity {}", effectiveRarity);
+		
+		// setup lists of items
+		List<ItemStack> treasureStacks = new ArrayList<>();
+		List<ItemStack> itemStacks = new ArrayList<>();
+		
+		/*
+		 * Using per loot table file - category strategy (instead of per pool strategy)
+		 */
+		// get a list of loot pools
+		List<LootPoolShell> lootPoolShells = lootTableShell.get().getPools();
+		if (lootPoolShells != null && lootPoolShells.size() > 0) {
+			LOGGER.debug("# of pools -> {}", lootPoolShells.size());
+		}
+		
+		// setup context
+		LootContext lootContext = null;
+		if (player == null) {
+			lootContext = Treasure.getLootTableMaster().getContext();
+		}
+		else {
+			lootContext = new LootContext.Builder((ServerWorld) world).withLuck(player.getLuck()).build(LootParameterSets.CHEST);
+		}
+		
+		for (LootPoolShell pool : lootPoolShells) {
+			LOGGER.debug("processing pool -> {}", pool.getName());
+			// go get the vanilla managed pool
+			LootPool lootPool = lootTable.getPool(pool.getName());
+			
+			// geneate loot from pools
+			if (pool.getName().equalsIgnoreCase("treasure")) {
+				lootPool.generate(itemStacks::add, lootContext);
+			}
+			else {
+				lootPool.generate(itemStacks::add, lootContext);
+			}
+		}
+		LOGGER.debug("size of treasure stacks -> {}", treasureStacks.size());
+		LOGGER.debug("size of item stacks -> {}", itemStacks.size());
+		
+		// record original item size (max number of items to pull from final list)
+		int lootItemSize = itemStacks.size();
+		
+		// TODO move to separate method
+		// fetch all injected loot tables by category/rarity
+		LOGGER.debug("searching for injectable tables for category ->{}, rarity -> {}", lootTableShell.get().getCategory(), effectiveRarity);
+		Optional<List<LootTableShell>> injectLootTableShells = buildInjectedLootTableList(lootTableShell.get().getCategory(), effectiveRarity);
+		if (injectLootTableShells.isPresent()) {
+			LOGGER.debug("found injectable tables for category ->{}, rarity -> {}", lootTableShell.get().getCategory(), effectiveRarity);
+			LOGGER.debug("size of injectable tables -> {}", injectLootTableShells.get().size());
+			itemStacks.addAll(Treasure.getLootTableMaster().getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext));
+		}
+		
+		// add the treasure items to the chest
+		fillInventory((IInventory) tileEntity, random, treasureStacks);
+		
+		// shuffle the items list
+		Collections.shuffle(itemStacks, random);
+		
+		// fill the chest with items
+		fillInventory((IInventory) tileEntity, random, itemStacks.stream().limit(lootItemSize).collect(Collectors.toList()));
+	}
+
+	/**
+	 * 
+	 * @param inventory
+	 * @param random
+	 * @param context
+	 */
+	default public void fillInventory(IInventory inventory, Random random, List<ItemStack> list) {
+		List<Integer> emptySlots = getEmptySlotsRandomized(inventory, random);
+		LOGGER.debug("empty slots size -> {}", emptySlots.size());
+		this.shuffleItems(list, emptySlots.size(), random);
+
+		for (ItemStack itemstack : list) {
+			// if no more empty slots are available
+			if (emptySlots.isEmpty()) {
+				return;
+			}
+
+			if (itemstack.isEmpty()) {
+				inventory.setInventorySlotContents(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), ItemStack.EMPTY);
+			} 
+			else {
+				inventory.setInventorySlotContents(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), itemstack);
+			}
+		}
+	}
+	
+	/**
+	 * 
 	 * @param random
 	 * @param rarity
 	 * @return
@@ -151,6 +304,71 @@ public interface IChestGenerator {
 		return table;
 	}
 
+	/**
+	 * 
+	 * @param random
+	 * @param rarity
+	 * @return
+	 */
+    default public Optional<LootTableShell> selectLootTable2(Random random, final Rarity rarity) {
+    	LootTableShell lootTableShell = null;
+
+		// select the loot table by rarity
+		List<LootTableShell> tables = buildLootTableList2(rarity);
+		if (tables !=null) { 
+			LOGGER.debug("tables size -> {}", tables.size());
+		}
+		
+		// select a random table from the list
+		if (tables != null && !tables.isEmpty()) {
+			int index = 0;
+			if (tables.size() == 1) {
+				lootTableShell = tables.get(0);
+			} else {
+				index = RandomHelper.randomInt(random, 0, tables.size() - 1);
+				lootTableShell = tables.get(index);
+			}
+			LOGGER.debug("Selected loot table shell index --> {}", index);
+		}
+		return Optional.ofNullable(lootTableShell);
+	}
+    
+    /**
+     * 
+     * @param factory
+     * @param rarity
+     * @return
+     */
+    default public Optional<LootTableShell> selectLootTable2(Supplier<Random> factory, Rarity rarity) {
+    	LootTableShell lootTableShell = null;
+
+		// select the loot table by rarity
+		List<LootTableShell> tables = buildLootTableList2(rarity);
+		if (tables !=null) {
+			LOGGER.debug("tables size -> {}", tables.size());
+		}
+		
+		// select a random table from the list
+		if (tables != null && !tables.isEmpty()) {
+			int index = 0;
+			if (tables.size() == 1) {
+				lootTableShell = tables.get(0);
+			} else {
+				index = RandomHelper.randomInt(factory.get(), 0, tables.size() - 1);
+				lootTableShell = tables.get(index);
+			}
+			LOGGER.debug("Selected loot table shell index --> {}", index);
+		}
+		return Optional.ofNullable(lootTableShell);	
+    }
+
+	/**
+	 * 
+	 * @param tileEntity
+	 * @param rarity
+	 */
+	public void addGenerationContext(AbstractTreasureChestTileEntity tileEntity, Rarity rarity);
+	
 	/**
 	 * Default implementation. Select locks only from with the same Rarity.
 	 * 
@@ -199,6 +417,33 @@ public interface IChestGenerator {
 		return numLocks;
 	}
 
+
+	/**
+	 * 
+	 * @param inventory
+	 * @param rand
+	 * @return
+	 */
+	default public List<Integer> getEmptySlotsRandomized(IInventory inventory, Random rand) {
+		List<Integer> list = Lists.<Integer>newArrayList();
+
+		for (int i = 0; i < inventory.getSizeInventory(); ++i) {
+			if (inventory.getStackInSlot(i).isEmpty()) {
+				list.add(Integer.valueOf(i));
+			}
+		}
+
+		Collections.shuffle(list, rand);
+		return list;
+	}
+	
+	/**
+	 * shuffles items by changing their order (no stack splitting)
+	 */
+	default public void shuffleItems(List<ItemStack> stacks, int emptySlotsSize, Random rand) {
+		Collections.shuffle(stacks, rand);
+	}
+	
 	/**
 	 * Wrapper method so that is can be overridden (as used in the Template Pattern)
 	 * 

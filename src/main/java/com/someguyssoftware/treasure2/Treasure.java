@@ -23,6 +23,7 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -68,7 +69,8 @@ public class Treasure implements IMod {
 
 	// meta manager // NOTE can't be final as Treasure.instance is required.
 	// TODO move to TreasureData
-	public static TreasureLootTableMaster lootTableMaster;
+//	public static TreasureLootTableMaster lootTableMaster;
+	public static TreasureLootTableMaster2 lootTableMaster;
 	public static TreasureMetaManager metaManager;
 		
 	public Treasure() {
@@ -111,7 +113,8 @@ public class Treasure implements IMod {
 	 * @param event
 	 */
 	private void setup(final FMLCommonSetupEvent event) {
-		Treasure.lootTableMaster = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");
+		Treasure.lootTableMaster = new TreasureLootTableMaster2(Treasure.instance);
+		
 		// TODO try calling this onWorldLoad
 		// create a logger
 //		createLogger();
@@ -398,5 +401,9 @@ ctx.updateLoggers();
 	@Override
 	public IConfig getConfig() {
 		return Treasure.config;
+	}
+
+	public static TreasureLootTableMaster2 getLootTableMaster() {
+		return lootTableMaster;
 	}
 }

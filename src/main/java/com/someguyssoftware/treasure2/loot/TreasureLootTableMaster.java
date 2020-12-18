@@ -50,6 +50,7 @@ import net.minecraft.util.ResourceLocation;
  * @author Mark Gottschling on Jul 4, 2019
  *
  */
+@Deprecated
 public class TreasureLootTableMaster extends LootTableMaster {
 	private static final String DEFAULT_RESOURCES_LIST_PATH = "loot_tables/default_loot_tables_list.json";
 	private static final String CUSTOM_LOOT_TABLES_RESOURCE_PATH = "/loot_tables/";

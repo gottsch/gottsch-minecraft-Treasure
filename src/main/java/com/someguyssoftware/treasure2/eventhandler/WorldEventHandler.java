@@ -39,13 +39,14 @@ public class WorldEventHandler {
 		 * On load of dimension 0 (overworld), initialize the loot table's context and other static loot tables
 		 */
 		if (WorldInfo.isServerSide((World)event.getWorld()) && event.getWorld().getDimension().isSurfaceWorld()) {
-//			Treasure.logger.debug("server event");
 			ServerWorld world = (ServerWorld) event.getWorld();
 
-			// TODO facade pattern here - make one call to lootTableMaster.start()
+			// called once to initiate world-level properties in the LootTableMaster
 			Treasure.lootTableMaster.init(world);
-			Treasure.lootTableMaster.load(getMod().getId());
-			Treasure.lootTableMaster.register(getMod().getId());
+			
+			// register mod's loot tables
+			TreasureLootTableRegistry.register(mod.getId());
+
 			// register any foreign mod loot tables
 //			for (String foreignModID : TreasureConfig.FOREIGN_MODS.enableForeignModIDs) {
 //				if (Loader.isModLoaded(foreignModID)) {		
