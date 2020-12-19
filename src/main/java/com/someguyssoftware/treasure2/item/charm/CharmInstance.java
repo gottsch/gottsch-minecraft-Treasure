@@ -34,18 +34,18 @@ public class CharmInstance implements ICharmInstance {
 		this.data = data;
 	}	
 
-	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, Event event) {
-		if (event instanceof LivingUpdateEvent) {
-			return charm.doCharm(world, random, coords, player, (LivingUpdateEvent)event, data);
-		}
-		else if (event instanceof LivingDamageEvent) {
-			return charm.doCharm(world, random, coords, player, (LivingDamageEvent)event, data);
-		}
-		else {
-			return charm.doCharm(world, random, coords, player, (BlockEvent.HarvestDropsEvent)event, data);			
-		}
-	}
+//	@Override
+//	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, Event event) {
+//		if (event instanceof LivingUpdateEvent) {
+//			return charm.doCharm(world, random, coords, player, (LivingUpdateEvent)event, data);
+//		}
+//		else if (event instanceof LivingDamageEvent) {
+//			return charm.doCharm(world, random, coords, player, (LivingDamageEvent)event, data);
+//		}
+//		else {
+//			return charm.doCharm(world, random, coords, player, (BlockEvent.HarvestDropsEvent)event, data);			
+//		}
+//	}
 	
 	/**
 	 * Provides the CharmVitals to the Charm.doCharm() method.
@@ -56,20 +56,20 @@ public class CharmInstance implements ICharmInstance {
 	 * @param data
 	 * @return boolean indication whether the call was successful (an update occurred) or not (no update).
 	 */
-	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event) {
-		return charm.doCharm(world, random, coords, player, event, data);
-	}
-	
-	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event) {
-		return charm.doCharm(world, random, coords, player, event, data);
-	}
-	
-	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event) {
-		return charm.doCharm(world, random, coords, player, event, data);
-	}
+//	@Override
+//	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event) {
+//		return charm.doCharm(world, random, coords, player, event, data);
+//	}
+//	
+//	@Override
+//	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event) {
+//		return charm.doCharm(world, random, coords, player, event, data);
+//	}
+//	
+//	@Override
+//	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event) {
+//		return charm.doCharm(world, random, coords, player, event, data);
+//	}
 	
 	/**
 	 * 
@@ -103,7 +103,7 @@ public class CharmInstance implements ICharmInstance {
 	}
 
 	@Override
-	public void setVitals(ICharmData data) {
+	public void setData(ICharmData data) {
 		this.data = data;
 	}
 

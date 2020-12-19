@@ -17,13 +17,13 @@ import net.minecraft.nbt.NBTTagList;
  * @author Mark Gottschling on May 5, 2020
  *
  */
-public class IlluminationCharmVitals extends CharmVitals {
+public class IlluminationCharmData extends CharmData {
 	private List<ICoords> coordsList;
 
 	/**
 	 * 
 	 */
-	public IlluminationCharmVitals() {
+	public IlluminationCharmData() {
 		super();
 		coordsList = Collections.synchronizedList(new LinkedList<>());
 	}
@@ -32,7 +32,7 @@ public class IlluminationCharmVitals extends CharmVitals {
 	 * 
 	 * @param charm
 	 */
-	public IlluminationCharmVitals(ICharm charm) {
+	public IlluminationCharmData(ICharm charm) {
 		this();
 		setValue(charm.getMaxValue());
 		setDuration(charm.getMaxDuration());
@@ -45,7 +45,7 @@ public class IlluminationCharmVitals extends CharmVitals {
 	 * @param duration
 	 * @param percent
 	 */
-	public IlluminationCharmVitals(double value, int duration, double percent) {
+	public IlluminationCharmData(double value, int duration, double percent) {
 		this();
 		setValue(value);
 		setDuration(duration);
@@ -135,7 +135,7 @@ public class IlluminationCharmVitals extends CharmVitals {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		IlluminationCharmVitals other = (IlluminationCharmVitals) obj;
+		IlluminationCharmData other = (IlluminationCharmData) obj;
 		if (coordsList == null) {
 			if (other.coordsList != null)
 				return false;

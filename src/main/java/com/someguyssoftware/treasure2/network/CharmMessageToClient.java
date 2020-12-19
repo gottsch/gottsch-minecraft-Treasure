@@ -3,10 +3,8 @@
  */
 package com.someguyssoftware.treasure2.network;
 
-import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
-import com.someguyssoftware.treasure2.item.charm.CharmVitals;
-import com.someguyssoftware.treasure2.item.charm.ICharmState;
 import com.someguyssoftware.treasure2.item.charm.ICharmData;
+import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 
 import io.netty.buffer.ByteBuf;

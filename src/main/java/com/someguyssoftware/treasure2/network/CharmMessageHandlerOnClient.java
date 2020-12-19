@@ -12,12 +12,7 @@ import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -116,11 +111,11 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 		// get the charm that is being sent
 		String charmName = message.getCharmName();
 		// cycle through the charm states to find the named charm
-		for(ICharmInstance instance : heldItemCaps.getCharmStates()) {
+		for(ICharmInstance instance : heldItemCaps.getCharmInstances()) {
 			if (instance.getCharm().getName().equals(charmName)) {
 //	        	Treasure.logger.debug("found charm, updating vitals to -> {}", message.getVitals());
 				// update vitals
-				instance.setVitals(message.getData());
+				instance.setData(message.getData());
 			}
 		}
 	}

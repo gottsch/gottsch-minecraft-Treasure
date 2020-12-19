@@ -23,10 +23,8 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.item.charm.CharmLevel;
-import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
-import com.someguyssoftware.treasure2.item.charm.CharmType;
 import com.someguyssoftware.treasure2.item.charm.ICharm;
-import com.someguyssoftware.treasure2.item.charm.ICharmState;
+import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 
 import net.minecraft.item.ItemStack;
@@ -61,13 +59,13 @@ public class CharmRandomly extends LootFunction {
 		// ensure that the stack has charm capabilities
 		if (stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
 			ICharmCapability provider = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-			List<ICharmState> charmStates = provider.getCharmStates();
+			List<ICharmInstance> charmInstances = provider.getCharmInstances();
 
 			if (this.charms.isEmpty()) {
 				List<ICharm> tempCharms = new ArrayList<>();
 				// if charms list is empty, create a default list of minor charms
 				for (ICharm c : TreasureCharms.REGISTRY.values()) {
-					if (c.getCharmLevel() == CharmLevel.LEVEL1 || c.getCharmLevel() == CharmLevel.LEVEL2) {
+					if (c.getLevel() == CharmLevel.LEVEL1.getValue() || c.getLevel() == CharmLevel.LEVEL2.getValue()) {
 						tempCharms.add(c);
 					}
 				}
@@ -84,15 +82,15 @@ public class CharmRandomly extends LootFunction {
 			if (charm != null) {
 				// ensure that the item doesn't already have the same charm or same type or exceeded the maximum charms.
 				boolean hasCharm = false;
-				for (ICharmState state : charmStates) {
-					if (state.getCharm().getCharmType() == charm.getCharmType() ||
-							state.getCharm().getName().equals(charm.getName())) {
+				for (ICharmInstance instance : charmInstances) {
+					if (instance.getCharm().getType().equalsIgnoreCase(charm.getType()) ||
+							instance.getCharm().getName().equalsIgnoreCase(charm.getName())) {
 								hasCharm = true;
 								break;
 							}
 				}
 				if (!hasCharm) {
-					charmStates.add(CharmStateFactory.createCharmState(charm));
+					charmInstances.add(charm.createInstance());
 				}
 			}
 		}
@@ -127,7 +125,7 @@ public class CharmRandomly extends LootFunction {
 		 */
 		public CharmRandomly deserialize(JsonObject json, JsonDeserializationContext deserializationContext,
 				LootCondition[] conditionsIn) {
-			Map<CharmType, ICharm> charmsByType = new HashMap<>(10);
+			Map<String, ICharm> charmsByType = new HashMap<>(10);
 			List<ICharm> list = Lists.<ICharm>newArrayList();
 
 			if (json.has("charms")) {
@@ -140,8 +138,8 @@ public class CharmRandomly extends LootFunction {
 					}
 
 					// add to the map to prevent duplicates of same charm
-					if (!charmsByType.containsKey(charm.getCharmType())) {
-						charmsByType.put(charm.getCharmType(), charm);
+					if (!charmsByType.containsKey(charm.getType())) {
+						charmsByType.put(charm.getType(), charm);
 						// add to the list of charms
 						list.add(charm);
 					}

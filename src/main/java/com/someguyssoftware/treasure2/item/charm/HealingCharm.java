@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * @author Mark Gottschling on Apr 26, 2020
@@ -52,7 +53,7 @@ public class HealingCharm extends Charm {
                 }
             }
         }
-        return false;
+        return result;
     }
 
 	/**
@@ -84,5 +85,5 @@ public class HealingCharm extends Charm {
 	@Override
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmData data) {
 		return false;
-	}	
+	}
 }

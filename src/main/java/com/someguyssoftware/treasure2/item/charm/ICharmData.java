@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * @author Mark Gottschling on Apr 27, 2020
  *
  */
-public interface ICharmVitals {
+public interface ICharmData {
 	public double getValue();
 	public void setValue(double value);
 	

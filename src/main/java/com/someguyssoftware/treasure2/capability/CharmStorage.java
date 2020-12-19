@@ -5,10 +5,9 @@ package com.someguyssoftware.treasure2.capability;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.item.charm.Charm;
-import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
 import com.someguyssoftware.treasure2.item.charm.ICharm;
-import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import com.someguyssoftware.treasure2.item.charm.ICharmData;
+import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,7 +21,7 @@ import net.minecraftforge.common.capabilities.Capability;
  */
 public class CharmStorage implements Capability.IStorage<ICharmCapability> {
     private static final String CHARM_INSTANCES_TAG = "charmInstances";
-    private static final String LEGACY_INSTANCES_TAG = "charmStates";
+    private static final String LEGACY_CHARM_INSTANCES_TAG = "charmStates";
     private static final String CHARM_TAG = "charm";
     private static final String CHARM_DATA_TAG = "data";
     private static final String LEGACY_CHARM_DATA_TAG = "data";
@@ -72,7 +71,7 @@ public class CharmStorage implements Capability.IStorage<ICharmCapability> {
             // TODO get "charmInstances". if null, check for "charmStates"
             NBTTagList instanceListTag = tag.getTagList(CHARM_INSTANCES_TAG, 10);
             if (instanceListTag == null) {
-                instanceListTag = tag.getTagList(CHARM_INSTANCES_TAG, 10);
+                instanceListTag = tag.getTagList(LEGACY_CHARM_INSTANCES_TAG, 10);
             }
 			for (int index = 0; index < instanceListTag.tagCount(); index++) {
 				NBTTagCompound instanceTag = instanceListTag.getCompoundTagAt(index);

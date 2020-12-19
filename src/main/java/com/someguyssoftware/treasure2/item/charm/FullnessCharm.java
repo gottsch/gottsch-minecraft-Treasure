@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * 
@@ -31,16 +32,31 @@ public class FullnessCharm extends Charm {
 		super(builder);
 	}
 
+	@Override
+	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmData data) {
+		boolean result = false;
+		if (event instanceof LivingUpdateEvent) {
+			if (world.getTotalWorldTime() % SECOND_IN_TICKS == 0) {	
+				if (!player.isDead && data.getValue() > 0 && player.getFoodStats().getFoodLevel() < MAX_FOOD_LEVEL) {
+					player.getFoodStats().addStats(1, 1);
+					data.setValue(data.getValue() - 1);
+					result = true;
+				}
+			}
+		}
+		return result;
+	}
+
 	/**
 	 * 
 	 */
 	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals) {
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmData data) {
 		boolean result = false;
-		if (!player.isDead && vitals.getValue() > 0 && player.getFoodStats().getFoodLevel() < MAX_FOOD_LEVEL) {
+		if (!player.isDead && data.getValue() > 0 && player.getFoodStats().getFoodLevel() < MAX_FOOD_LEVEL) {
 			if (world.getTotalWorldTime() % SECOND_IN_TICKS == 0) {			
 				player.getFoodStats().addStats(1, 1);
-				vitals.setValue(vitals.getValue() - 1);
+				data.setValue(data.getValue() - 1);
 				result = true;
 			}
 		}
@@ -48,12 +64,12 @@ public class FullnessCharm extends Charm {
 	}
 
 	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmVitals vitals) {
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmData data) {
 		return false;
 	}
-	
+
 	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmData data) {
 		return false;
 	}	
 }

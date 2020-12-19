@@ -58,13 +58,17 @@ public abstract class Charm implements ICharm {
 		this.maxPercent = builder.percent;
 	}
     
+	/**
+	 * 
+	 */
     @Override
     public ICharmInstance createInstance() {
         ICharmData data = new CharmData();
-        data.setValue(charm.getMaxValue());
-        data.setPercent(charm.getMaxPercent());
-		data.setDuration(charm.getMaxDuration());
+        data.setValue(this.getMaxValue());
+        data.setPercent(this.getMaxPercent());
+		data.setDuration(this.getMaxDuration());
         ICharmInstance instance = new CharmInstance(this, data);
+        return instance;
     }
     
 	/**

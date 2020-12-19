@@ -19,16 +19,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
-
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.item.charm.CharmLevel;
-import com.someguyssoftware.treasure2.item.charm.CharmState;
-import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
-import com.someguyssoftware.treasure2.item.charm.CharmType;
 import com.someguyssoftware.treasure2.item.charm.ICharm;
-import com.someguyssoftware.treasure2.item.charm.ICharmState;
+import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 
 import net.minecraft.item.ItemStack;
@@ -62,14 +58,14 @@ public class SetCharms extends LootFunction {
 		// ensure that the stack has charm capabilities
 		if (stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
 			ICharmCapability provider = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-			List<ICharmState> charmStates = provider.getCharmStates();
+			List<ICharmInstance> charmInstances = provider.getCharmInstances();
 
 			if (!this.charms.isEmpty()) {
 				for (ICharm charm : charms) {
 					// ensure that the item doesn't already have the same charm or same type or exceeded the maximum charms.
 					boolean hasCharm = false;
-					for (ICharmState state : charmStates) {
-						if (state.getCharm().getCharmType() == charm.getCharmType() ||
+					for (ICharmInstance state : charmInstances) {
+						if (state.getCharm().getType().equalsIgnoreCase(charm.getType()) ||
 								state.getCharm().getName().equals(charm.getName())) {
 							Treasure.logger.debug("item already has charm -> {}", charm.getName());
 							hasCharm = true;
@@ -78,7 +74,7 @@ public class SetCharms extends LootFunction {
 					}
 					if (!hasCharm) {
 						Treasure.logger.debug("giving item charm -> {}", charm.getName());
-						charmStates.add(CharmStateFactory.createCharmState(charm));
+						charmInstances.add(charm.createInstance());
 					}
 				}
 			}
@@ -87,7 +83,7 @@ public class SetCharms extends LootFunction {
 				List<ICharm> tempCharms = new ArrayList<>();
 				// if charms list is empty, create a default list of minor charms
 				for (ICharm c : TreasureCharms.REGISTRY.values()) {
-					if (c.getCharmLevel() == CharmLevel.LEVEL1 || c.getCharmLevel() == CharmLevel.LEVEL2) {
+					if (c.getLevel() == CharmLevel.LEVEL1.getValue() || c.getLevel() == CharmLevel.LEVEL2.getValue()) {
 						tempCharms.add(c);
 					}
 				}
@@ -95,7 +91,7 @@ public class SetCharms extends LootFunction {
 					// select a charm randomly					
 					ICharm charm = tempCharms.get(rand.nextInt(tempCharms.size()));
 					Treasure.logger.debug("giving item a random charm -> {}", charm.getName());
-					charmStates.add(CharmStateFactory.createCharmState(charm));
+					charmInstances.add(charm.createInstance());
 				}
 			}
 		}
@@ -130,7 +126,7 @@ public class SetCharms extends LootFunction {
 		 */
 		public SetCharms deserialize(JsonObject json, JsonDeserializationContext deserializationContext,
 				LootCondition[] conditionsIn) {
-			Map<CharmType, ICharm> charmsByType = new HashMap<>(10);
+			Map<String, ICharm> charmsByType = new HashMap<>(10);
 			List<ICharm> list = Lists.<ICharm>newArrayList();
 
 			if (json.has("charms")) {
@@ -144,8 +140,8 @@ public class SetCharms extends LootFunction {
 					}
 
 					// add to the map
-					if (!charmsByType.containsKey(charm.getCharmType())) {
-						charmsByType.put(charm.getCharmType(), charm);
+					if (!charmsByType.containsKey(charm.getType())) {
+						charmsByType.put(charm.getType(), charm);
 						// add to the list of charms
 						list.add(charm);
 						Treasure.logger.debug("adding charm to charm list -> {}", charm.getName());

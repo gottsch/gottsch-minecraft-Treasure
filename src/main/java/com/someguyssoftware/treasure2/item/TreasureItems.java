@@ -16,8 +16,6 @@ import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.item.charm.CharmState;
-import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
 import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 
 import net.minecraft.block.material.MapColor;
@@ -28,9 +26,9 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -178,9 +176,9 @@ public class TreasureItems {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GRAND_HEALING));
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.POWERFUL_SHIELDING));
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GORGED_FULLNESS));
+				cap.getCharmInstances().add(TreasureCharms.GRAND_HEALING.createInstance());
+				cap.getCharmInstances().add(TreasureCharms.POWERFUL_SHIELDING.createInstance());
+				cap.getCharmInstances().add(TreasureCharms.GORGED_FULLNESS.createInstance());
 				return provider;
 			}
 		};
@@ -203,8 +201,8 @@ public class TreasureItems {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GLORIOUS_ILLUMINATION));
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GRAND_HARVESTING));
+				cap.getCharmInstances().add(TreasureCharms.GLORIOUS_ILLUMINATION.createInstance());
+				cap.getCharmInstances().add(TreasureCharms.GRAND_HARVESTING.createInstance());
 				return provider;
 			}
 		};
@@ -214,8 +212,8 @@ public class TreasureItems {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.HEALING));
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.DECAY));
+				cap.getCharmInstances().add(TreasureCharms.HEALING.createInstance());
+				cap.getCharmInstances().add(TreasureCharms.DECAY.createInstance());
 				return provider;
 			}
 		};
@@ -225,7 +223,7 @@ public class TreasureItems {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.SALANDAARS_CONVALESCENCE));
+				cap.getCharmInstances().add(TreasureCharms.SALANDAARS_CONVALESCENCE.createInstance());
 				return provider;
 			}
 		};		
@@ -235,7 +233,7 @@ public class TreasureItems {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.ARMADILLO_SHIELDING));
+				cap.getCharmInstances().add(TreasureCharms.ARMADILLO_SHIELDING.createInstance());
 				return provider;
 			}
 		};
@@ -245,7 +243,7 @@ public class TreasureItems {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GLORIOUS_HARVESTING));
+				cap.getCharmInstances().add(TreasureCharms.GLORIOUS_HARVESTING.createInstance());
 				return provider;
 			}
 		};
@@ -255,7 +253,7 @@ public class TreasureItems {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.BURSTING_FULLNESS));
+				cap.getCharmInstances().add(TreasureCharms.BURSTING_FULLNESS.createInstance());
 				return provider;
 			}
 		};
@@ -265,7 +263,7 @@ public class TreasureItems {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.GLORIOUS_ILLUMINATION));
+				cap.getCharmInstances().add(TreasureCharms.GLORIOUS_ILLUMINATION.createInstance());
 				return provider;
 			}
 		};

@@ -257,7 +257,7 @@ public class PlayerEventHandler {
 		ICharmCapability capability = context.get().itemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 		List<ICharmInstance> charmInstances = capability.getCharmInstances();
 		for (ICharmInstance charmInstance : charmInstances) {
-			if (charmInstance.update(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event)) {
+			if (charmInstance.getCharm().update(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event, charmInstance.getData())) {
 				// send state message to client
 				CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmInstance, context.get().hand, null);
 				Treasure.simpleNetworkWrapper.sendTo(message, player);

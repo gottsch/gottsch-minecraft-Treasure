@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * 
@@ -33,15 +34,36 @@ public class DecayCharm extends Charm {
 	 * 
 	 */
 	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals) {
+	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmData data) {
 		boolean result = false;
-//		Treasure.logger.debug("in decay");
-		if (!player.isDead && vitals.getValue() > 0 && player.getHealth() > 0.0) {
-//			Treasure.logger.debug("player is alive and charm is good still...");
+		//		Treasure.logger.debug("in decay");
+		if (event instanceof LivingUpdateEvent) {
+			if (!player.isDead && data.getValue() > 0 && player.getHealth() > 0.0) {
+				//			Treasure.logger.debug("player is alive and charm is good still...");
+				if (world.getTotalWorldTime() % 100 == 0) {
+					player.setHealth(MathHelper.clamp(player.getHealth() - 2.0F, 0.0F, player.getMaxHealth()));				
+					data.setValue(MathHelper.clamp(data.getValue() - 1.0,  0D, data.getValue()));
+					//				Treasure.logger.debug("new data -> {}", data);
+					result = true;
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmData data) {
+		boolean result = false;
+		//		Treasure.logger.debug("in decay");
+		if (!player.isDead && data.getValue() > 0 && player.getHealth() > 0.0) {
+			//			Treasure.logger.debug("player is alive and charm is good still...");
 			if (world.getTotalWorldTime() % 100 == 0) {
 				player.setHealth(MathHelper.clamp(player.getHealth() - 2.0F, 0.0F, player.getMaxHealth()));				
-				vitals.setValue(MathHelper.clamp(vitals.getValue() - 1.0,  0D, vitals.getValue()));
-//				Treasure.logger.debug("new vitals -> {}", vitals);
+				data.setValue(MathHelper.clamp(data.getValue() - 1.0,  0D, data.getValue()));
+				//				Treasure.logger.debug("new data -> {}", data);
 				result = true;
 			}
 		}
@@ -49,12 +71,12 @@ public class DecayCharm extends Charm {
 	}
 
 	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmVitals vitals) {
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmData data) {
 		return false;
 	}
-	
+
 	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmData data) {
 		return false;
 	}	
 }

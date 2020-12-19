@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.item.charm;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -18,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * Adds light level to a blocks as the player moves every y seconds for a simutaneous maximum x blocks.
@@ -36,16 +38,114 @@ public class IlluminationCharm extends Charm {
 		super(builder);
 	}
 
+	@Override
+	public ICharmInstance createInstance() {
+        IlluminationCharmData data = new IlluminationCharmData();
+        data.setValue(this.getMaxValue());
+        data.setPercent(this.getMaxPercent());
+		data.setDuration(this.getMaxDuration());
+		data.setCoordsList(new ArrayList<>());
+        ICharmInstance instance = new CharmInstance(this, data);
+        return instance;
+	}
+	
 	/**
 	 * 
 	 */
 	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmVitals vitals) {
+	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmData data) {
 		boolean result = false;
-		if ( !player.isDead && vitals.getValue() > 0) {
+		if (event instanceof LivingUpdateEvent) {
+			if ( !player.isDead && data.getValue() > 0) {
+				if (world.getTotalWorldTime() % 100 == 0) {
+					ICoords currentCoords = new Coords((int)Math.floor(player.posX), (int)Math.floor(player.posY), (int)Math.floor(player.posZ));
+
+					/*
+					 * validation checks
+					 */
+					// check that the block at current position is air or replaceable
+					Cube cube = new Cube(world, currentCoords);
+					if (!cube.isAir() && !cube.isReplaceable()) {
+						return false;
+					}
+					// check that the block underneath is solid
+					cube = new Cube(world, currentCoords.down(1));
+					if (!cube.isSolid()) {
+						Treasure.logger.debug("not solid at -> {}", currentCoords.down(1));
+						return false;
+					}
+					if (!(data instanceof IlluminationCharmData)) {
+						//					Treasure.logger.debug("data are not instance of IlluminationCharmData -> {}.{}", this.getClass().getSimpleName(), data.getClass().getSimpleName());
+						return false;
+					}
+
+					IlluminationCharmData charmData = (IlluminationCharmData)data;
+					// cast as linked list
+					List<ICoords> list = (List<ICoords>)charmData.getCoordsList();
+					//				Treasure.logger.debug("charm coords list size -> {}", list.size());
+					double value = data.getValue();
+
+					boolean isUpdated = false;
+					// check if the coordsList is empty or not
+					if (list.isEmpty()) {
+						// add current position
+						list.add(0, currentCoords);
+						isUpdated = true;
+					}
+					else {
+						// determine if new position is different than last position - ie first element in data.coordsList
+						ICoords firstCoords = list.get(0);
+						if (!currentCoords.equals(firstCoords) && firstCoords.getDistanceSq(currentCoords) >= 25) {
+							// add current coords to coords list
+							list.add(0, currentCoords);
+							// check if coords list is greater than max (data.value)
+							if (list.size() > (int)charmData.getValue()) {
+								// get difference in size
+								int diff = (int) (list.size() - charmData.getValue());
+								//							Treasure.logger.debug("diff -> {}", diff);
+								for (int index = 0; index < diff; index++) {
+									ICoords lastCoords = list.get(list.size()-1);
+									Block block = world.getBlockState(lastCoords.toPos()).getBlock();
+									if (block == Blocks.TORCH) {
+										//									Treasure.logger.debug("set torch to air at -> {}", lastCoords.toShortString());
+										world.setBlockToAir(lastCoords.toPos());
+									}
+									else {
+										//									Treasure.logger.debug("torch no longer found at -> {}", currentCoords.toShortString());
+										// decrement value since torch was harvested
+										value -= 1;
+									}
+									list.remove(lastCoords);
+									//								Treasure.logger.debug("remove torch from list at -> {}; new size ->{}", lastCoords.toShortString(), list.size());								
+								}	
+							}
+							isUpdated = true;
+						}
+					}
+					if (isUpdated == true ) {
+						world.setBlockState(currentCoords.toPos(), Blocks.TORCH.getDefaultState());
+						//					Treasure.logger.debug("set torch at -> {}", currentCoords.toShortString());
+						if (value < 0) value = 0;
+						data.setValue(value);
+						//					Treasure.logger.debug("new data -> {}", data);
+						result = true;
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmData data) {
+		boolean result = false;
+		if ( !player.isDead && data.getValue() > 0) {
 			if (world.getTotalWorldTime() % 100 == 0) {
 				ICoords currentCoords = new Coords((int)Math.floor(player.posX), (int)Math.floor(player.posY), (int)Math.floor(player.posZ));
-				
+
 				/*
 				 * validation checks
 				 */
@@ -60,17 +160,17 @@ public class IlluminationCharm extends Charm {
 					Treasure.logger.debug("not solid at -> {}", currentCoords.down(1));
 					return false;
 				}
-				if (!(vitals instanceof IlluminationCharmVitals)) {
-//					Treasure.logger.debug("vitals are not instance of IlluminationCharmVitals -> {}.{}", this.getClass().getSimpleName(), vitals.getClass().getSimpleName());
-						return false;
+				if (!(data instanceof IlluminationCharmData)) {
+					//					Treasure.logger.debug("data are not instance of IlluminationCharmData -> {}.{}", this.getClass().getSimpleName(), data.getClass().getSimpleName());
+					return false;
 				}
-				
-				IlluminationCharmVitals charmVitals = (IlluminationCharmVitals)vitals;
+
+				IlluminationCharmData charmData = (IlluminationCharmData)data;
 				// cast as linked list
-				List<ICoords> list = (List<ICoords>)charmVitals.getCoordsList();
-//				Treasure.logger.debug("charm coords list size -> {}", list.size());
-				double value = vitals.getValue();
-				
+				List<ICoords> list = (List<ICoords>)charmData.getCoordsList();
+				//				Treasure.logger.debug("charm coords list size -> {}", list.size());
+				double value = data.getValue();
+
 				boolean isUpdated = false;
 				// check if the coordsList is empty or not
 				if (list.isEmpty()) {
@@ -79,30 +179,30 @@ public class IlluminationCharm extends Charm {
 					isUpdated = true;
 				}
 				else {
-					// determine if new position is different than last position - ie first element in vitals.coordsList
+					// determine if new position is different than last position - ie first element in data.coordsList
 					ICoords firstCoords = list.get(0);
 					if (!currentCoords.equals(firstCoords) && firstCoords.getDistanceSq(currentCoords) >= 25) {
 						// add current coords to coords list
 						list.add(0, currentCoords);
-						// check if coords list is greater than max (vitals.value)
-						if (list.size() > (int)charmVitals.getValue()) {
+						// check if coords list is greater than max (data.value)
+						if (list.size() > (int)charmData.getValue()) {
 							// get difference in size
-							int diff = (int) (list.size() - charmVitals.getValue());
-//							Treasure.logger.debug("diff -> {}", diff);
+							int diff = (int) (list.size() - charmData.getValue());
+							//							Treasure.logger.debug("diff -> {}", diff);
 							for (int index = 0; index < diff; index++) {
 								ICoords lastCoords = list.get(list.size()-1);
 								Block block = world.getBlockState(lastCoords.toPos()).getBlock();
 								if (block == Blocks.TORCH) {
-//									Treasure.logger.debug("set torch to air at -> {}", lastCoords.toShortString());
+									//									Treasure.logger.debug("set torch to air at -> {}", lastCoords.toShortString());
 									world.setBlockToAir(lastCoords.toPos());
 								}
 								else {
-//									Treasure.logger.debug("torch no longer found at -> {}", currentCoords.toShortString());
+									//									Treasure.logger.debug("torch no longer found at -> {}", currentCoords.toShortString());
 									// decrement value since torch was harvested
 									value -= 1;
 								}
 								list.remove(lastCoords);
-//								Treasure.logger.debug("remove torch from list at -> {}; new size ->{}", lastCoords.toShortString(), list.size());								
+								//								Treasure.logger.debug("remove torch from list at -> {}; new size ->{}", lastCoords.toShortString(), list.size());								
 							}	
 						}
 						isUpdated = true;
@@ -110,10 +210,10 @@ public class IlluminationCharm extends Charm {
 				}
 				if (isUpdated == true ) {
 					world.setBlockState(currentCoords.toPos(), Blocks.TORCH.getDefaultState());
-//					Treasure.logger.debug("set torch at -> {}", currentCoords.toShortString());
+					//					Treasure.logger.debug("set torch at -> {}", currentCoords.toShortString());
 					if (value < 0) value = 0;
-					vitals.setValue(value);
-//					Treasure.logger.debug("new vitals -> {}", vitals);
+					data.setValue(value);
+					//					Treasure.logger.debug("new data -> {}", data);
 					result = true;
 				}
 			}
@@ -122,12 +222,12 @@ public class IlluminationCharm extends Charm {
 	}
 
 	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmVitals vitals) {
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmData data) {
 		return false;
 	}
-	
+
 	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmVitals vitals) {
+	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmData data) {
 		return false;
 	}	
 }
