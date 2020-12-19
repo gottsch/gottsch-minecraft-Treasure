@@ -16,6 +16,7 @@ public abstract class Charm implements ICharm {
     // TODO revisit how it is NBT read/write with legacy support
     // TODO then update TreasureCharmRegistry
 	private String name;
+	private ResourceLocation name2;
 	private String type;
 	private int level;
 	private double maxValue;
@@ -52,6 +53,7 @@ public abstract class Charm implements ICharm {
 	 */
 	protected Charm(Builder builder) {
 		this.name = builder.name;
+		this.namne2 = builder.name2;
 		this.type = builder.type;
 		this.level = builder.level;
 		this.maxValue = builder.value;
@@ -133,6 +135,11 @@ public abstract class Charm implements ICharm {
 	}
 
 	@Override
+	public ResourceLocation getName2() {
+		return name2;
+	}
+	
+	@Override
 	public String getType() {
 		return type;
 	}
@@ -197,6 +204,7 @@ public abstract class Charm implements ICharm {
 	 */
 	public static class Builder {
 		private final String name;
+		private final ResourceLocation name2;
 		private final String type;
 		private final Integer level;
 		private Double value;
@@ -207,6 +215,14 @@ public abstract class Charm implements ICharm {
 		
 		public Builder(String name, String type, Integer level, Class<? extends ICharm> charmClass) {
 			this.name = name;
+			this.name2 = new ResourceLocation(Treasure.MODID, name);
+			this.type = type;
+			this.level = level;
+			this.charmClass = charmClass;
+		}
+		
+		public Builder(ResourceLocation name, String type, Integer level, Class<? extends ICharm> charmClass) {
+			this.name2 = name;
 			this.type = type;
 			this.level = level;
 			this.charmClass = charmClass;
