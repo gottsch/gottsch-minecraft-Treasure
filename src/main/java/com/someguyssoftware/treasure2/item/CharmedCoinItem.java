@@ -8,9 +8,8 @@ import java.util.List;
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.enums.Coins;
-import com.someguyssoftware.treasure2.item.charm.CharmType;
 import com.someguyssoftware.treasure2.item.charm.ICharm;
-import com.someguyssoftware.treasure2.item.charm.ICharmState;
+import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import com.someguyssoftware.treasure2.item.charm.ICharmed;
 
 import net.minecraft.client.util.ITooltipFlag;
