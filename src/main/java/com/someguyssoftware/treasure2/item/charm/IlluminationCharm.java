@@ -34,7 +34,16 @@ public class IlluminationCharm extends Charm {
 	 * 
 	 * @param builder
 	 */
+    @Deprecated
 	IlluminationCharm(ICharmBuilder builder) {
+		super(builder);
+    }
+    
+    	/**
+	 * 
+	 * @param builder
+	 */
+	IlluminationCharm(Builder builder) {
 		super(builder);
 	}
 
@@ -44,7 +53,6 @@ public class IlluminationCharm extends Charm {
         data.setValue(this.getMaxValue());
         data.setPercent(this.getMaxPercent());
 		data.setDuration(this.getMaxDuration());
-		data.setCoordsList(new ArrayList<>());
         ICharmInstance instance = new CharmInstance(this, data);
         return instance;
 	}
@@ -135,6 +143,18 @@ public class IlluminationCharm extends Charm {
 		}
 		return result;
 	}
+
+    /**
+     * 
+     */
+    @Override
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmDatat data) {
+        TextFormatting color = TextFormatting.WHITE;
+        tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toLowerCase(), 
+						String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+                        String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));
+        tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.illumination_rate"));
+    }
 
 	/**
 	 * 

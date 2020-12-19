@@ -56,6 +56,18 @@ public class HealingCharm extends Charm {
         return result;
     }
 
+    /**
+     * 
+     */
+    @Override
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmDatat data) {
+        TextFormatting color = TextFormatting.RED;
+        tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toLowerCase(), 
+						String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+                        String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));
+        tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.healing_rate"));
+    }
+
 	/**
 	 * 
 	 */

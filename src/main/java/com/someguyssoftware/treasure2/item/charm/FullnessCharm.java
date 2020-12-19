@@ -28,10 +28,19 @@ public class FullnessCharm extends Charm {
 	 * 
 	 * @param builder
 	 */
+    @Deprecated
 	FullnessCharm(ICharmBuilder builder) {
 		super(builder);
 	}
 
+    	/**
+	 * 
+	 * @param builder
+	 */
+	FullnessCharm(Builder builder) {
+		super(builder);
+    }
+    
 	@Override
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmData data) {
 		boolean result = false;
@@ -46,6 +55,18 @@ public class FullnessCharm extends Charm {
 		}
 		return result;
 	}
+
+    /**
+     * 
+     */
+    @Override
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmDatat data) {
+        TextFormatting color = TextFormatting.DARK_GREEN;
+        tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toLowerCase(), 
+						String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+                        String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));
+        tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.fullness_rate"));
+    }
 
 	/**
 	 * 

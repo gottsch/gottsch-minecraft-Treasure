@@ -25,6 +25,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
  * @author Mark Gottschling on Apr 24, 2020
  *
  */
+// TODO rename CharmedCoin
 public class CharmedCoinItem extends CoinItem implements ICharmed {
 
 	/**
@@ -63,7 +64,7 @@ public class CharmedCoinItem extends CoinItem implements ICharmed {
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		addCharmedInfo(stack, worldIn, tooltip, flagIn);
+		addCharmedInfo2(stack, worldIn, tooltip, flagIn);
 	}
 
 	/**

@@ -26,17 +26,37 @@ public interface ICharmed {
 	 * @param stack
 	 * @return
 	 */
-	default public List<ICharmState> getCharmStates(ItemStack stack) {
-		List<ICharmState> charmStates = null;
+	default public List<ICharmInstance> getCharmInstances(ItemStack stack) {
+		List<ICharmInstance> charmInstances = null;
 		if (stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
 			ICharmCapability cap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 			if (cap != null) {
-				charmStates = cap.getCharmStates();
+				charmInstances = cap.getCharmInstances();
 			}
 		}
-		return charmStates;
+		return charmInstances;
 	}
-	
+    
+    /**
+     * 
+     * @param stack
+     * @param world
+     * @param tooltip
+     * @param flag
+     */
+    default public void addCharmedInfo2(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+	    tooltip.add(TextFormatting.GOLD.toString() + "" + TextFormatting.ITALIC.toString() + I18n.translateToLocal("tooltip.label.charmed"));
+		tooltip.add(TextFormatting.YELLOW.toString() + "" + TextFormatting.BOLD+ I18n.translateToLocal("tooltip.label.charms"));
+		// get the capabilities
+		ICharmCapability cap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+		if (cap != null) {
+			List<ICharmInstance> charmInstances = cap.getCharmInstances();
+			for (ICharmInstance instance : charmInstances) {
+                instance.getCharm().addInformation(stack, world, tooltip, flag, instance.getData());
+            }
+        }
+    }
+
 	/**
 	 * 
 	 * @param stack
@@ -44,6 +64,7 @@ public interface ICharmed {
 	 * @param tooltip
 	 * @param flagIn
 	 */
+    @Deprecated
 	@SuppressWarnings("deprecation")
 	default public void addCharmedInfo(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(TextFormatting.GOLD.toString() + "" + TextFormatting.ITALIC.toString() + I18n.translateToLocal("tooltip.label.charmed"));
@@ -51,8 +72,8 @@ public interface ICharmed {
 		// get the capabilities
 		ICharmCapability cap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 		if (cap != null) {
-			List<ICharmState> charmStates = cap.getCharmStates();
-			for (ICharmState state : charmStates) {
+			List<ICharmInstance> charmInstances = cap.getCharmInstances();
+			for (ICharmInstance state : charmInstances) {
 				TextFormatting color = TextFormatting.WHITE;
 				CharmType type = state.getCharm().getCharmType();
 				String extra = "";

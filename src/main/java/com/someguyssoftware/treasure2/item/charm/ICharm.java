@@ -40,7 +40,7 @@ public interface ICharm {
     public ICharmInstance createInstance();
     public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmData data);
 
-//	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, @Nullable CharmTooltipAppender tooltipAppender);
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag);
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt);
 
 	// TODO remove thses for a generic one that will check the instance

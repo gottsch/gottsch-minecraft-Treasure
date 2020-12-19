@@ -9,11 +9,12 @@ import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * @author Mark Gottschling on Apr 25, 2020
- *
  */
 public abstract class Charm implements ICharm {
 	public static final int SECOND_IN_TICKS = 20;
-
+    // TODO revisit the name.  it should be a ResourceLocation so it can be expanded upon by modders.
+    // TODO revisit how it is NBT read/write with legacy support
+    // TODO then update TreasureCharmRegistry
 	private String name;
 	private String type;
 	private int level;
@@ -71,6 +72,20 @@ public abstract class Charm implements ICharm {
         return instance;
     }
     
+    /**
+     * Default method. Concrete classes should override.
+     * @param stack
+     * @param world
+     * @param tooltip
+     * @param flag
+     * @param data
+     */
+    @Override
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmDatat data) {
+        TextFormatting color = TextFormatting.RED;
+        tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toLowerCase()));
+    }
+
 	/**
 	 * This method reads only this Charm's properties from an NBT tag
 	 * 
@@ -112,26 +127,6 @@ public abstract class Charm implements ICharm {
 		return nbt;
 	}
 	
-	/**
-	 * New Way takes in a MultiConsumer 
-	 */
-//	@Override
-//	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, @Nullable CharmTooltipAppender tooltipAppender) {
-//        if (tooltipAppender != null) {
-//            tooltipAppender.update(stack, worldIn, tooptip, flagIn);
-//        }
-//        else {
-//            addInformation(stack, worldIn, tooltip, flagIn);
-//        }
-//	}
-//	
-//	/**
-//	 * Old Way
-//	 */
-//	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-//        // TODO have a default tooltip update here
-//	}
-
 	@Override
 	public String getName() {
 		return name;

@@ -47,7 +47,8 @@ public class TreasureCharms {
 	public static final ICharm DECAY;
 	public static final ICharm GREATER_DECAY;
 	public static final ICharm PERISHING_DECAY;
-	
+    
+    @Deprecated
 	public static final Map<String, ICharm> REGISTRY = new HashMap<>();
 	
 	static {
@@ -99,7 +100,13 @@ public class TreasureCharms {
 		DECAY = new Charm.Builder("decay", CharmType.DECAY.getName(), 2, DecayCharm.class).withValue(50.0).build();
 		GREATER_DECAY = new Charm.Builder("greater_decay", CharmType.DECAY.getName(), 3, DecayCharm.class).withValue(100.0).build();
 		PERISHING_DECAY = new Charm.Builder("perishing_decay", CharmType.DECAY.getName(), 4, DecayCharm.class).withValue(200.0).build();
-		
+        
+        TreasureCharmRegistry.register(Treasure.MODID, LESSER_HEALING);
+        TreasureCharmRegistry.register(Treasure.MODID, HEALING);
+        TreasureCharmRegistry.register(Treasure.MODID, GREATER_HEALING);
+        TreasureCharmRegistry.register(Treasure.MODID, GRAND_HEALING);
+        TreasureCharmRegistry.register(Treasure.MODID, SALANDAARS_CONVALESCENCE);
+
 		// register all charms
 		REGISTRY.put(LESSER_HEALING.getName(), LESSER_HEALING);
 		REGISTRY.put(HEALING.getName(), HEALING);

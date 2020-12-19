@@ -26,9 +26,18 @@ public class ShieldingCharm extends Charm {
 	 * 
 	 * @param builder
 	 */
+    @Deprecated
 	ShieldingCharm(ICharmBuilder builder) {
 		super(builder);
 	}
+
+    /**
+	 * 
+	 * @param builder
+	 */
+	ShieldingCharm(Builder builder) {
+		super(builder);
+    }
 
     @Override
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmData data) {
@@ -57,6 +66,18 @@ public class ShieldingCharm extends Charm {
     	return result;
     }
     
+    /**
+     * 
+     */
+    @Override
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmDatat data) {
+        TextFormatting color = TextFormatting.AQUA;
+        tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toLowerCase(), 
+						String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+                        String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));
+        tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.shield_rate", state.getCharm().getMaxPercent()*100F));
+    }
+
 	@Deprecated
 	@Override
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmData data) {

@@ -26,10 +26,19 @@ public class DecayCharm extends Charm {
 	 * 
 	 * @param builder
 	 */
+    @Deprecated
 	DecayCharm(ICharmBuilder builder) {
 		super(builder);
 	}
 
+    /**
+	 * 
+	 * @param builder
+	 */
+	DecayCharm(Builder builder) {
+		super(builder);
+    }
+    
 	/**
 	 * 
 	 */
@@ -50,6 +59,18 @@ public class DecayCharm extends Charm {
 		}
 		return result;
 	}
+
+    /**
+     * 
+     */
+    @Override
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmDatat data) {
+        TextFormatting color = TextFormatting.DARK_RED;
+        tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toLowerCase(), 
+						String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+                        String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));
+        tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.decay_rate"));
+    }
 
 	/**
 	 * 

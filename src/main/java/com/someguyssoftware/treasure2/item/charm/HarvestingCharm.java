@@ -30,10 +30,19 @@ public class HarvestingCharm extends Charm {
 	 * 
 	 * @param builder
 	 */
+    @Deprecated
 	HarvestingCharm(ICharmBuilder builder) {
 		super(builder);
 	}
 
+    /**
+	 * 
+	 * @param builder
+	 */
+	HarvestingCharm(Builder builder) {
+		super(builder);
+    }
+    
 	@Override
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmData data) {
 		boolean result = false;
@@ -70,6 +79,18 @@ public class HarvestingCharm extends Charm {
 		return result;
 	}
 
+    /**
+     * 
+     */
+    @Override
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmDatat data) {
+        TextFormatting color = TextFormatting.GREEN;
+        tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toLowerCase(), 
+						String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+                        String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));
+        tooltip.add(" " + TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.harvest_rate", state.getCharm().getMaxPercent()));
+    }
+    
 	@Override
 	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmData data) {
 		return false;
