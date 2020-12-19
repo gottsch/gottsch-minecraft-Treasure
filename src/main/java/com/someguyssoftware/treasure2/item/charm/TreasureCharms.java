@@ -62,8 +62,10 @@ public class TreasureCharms {
 		GREATER_HEALING = new Charm.Builder("greater_healing", CharmType.HEALING.getName(), 3, HealingCharm.class).withValue(100.0).build();
 		GRAND_HEALING = new Charm.Builder("grand_healing", CharmType.HEALING.getName(), 4, HealingCharm.class).withValue(200.0).build();
 		SALANDAARS_CONVALESCENCE = new Charm.Builder("salandaars_convalescence", CharmType.HEALING.getName(), 5, HealingCharm.class).withValue(300.0).build();
-
-		DURABLE_SHIELDING = new Charm.Builder("durable_shielding", CharmType.SHIELDING.getName(), 1, ShieldingCharm.class).withValue(20.0).withPercent(0.5).build();
+        WHALE_HEALING = new Charm.Builder(
+            new ResourceLocation(Treasure.MODID, "whale_healing"), CharmType.HEALING.getName(), 99, HealingCharm.class).withValue(500.0).build();
+        
+            DURABLE_SHIELDING = new Charm.Builder("durable_shielding", CharmType.SHIELDING.getName(), 1, ShieldingCharm.class).withValue(20.0).withPercent(0.5).build();
 		STOUT_SHIELDING = new Charm.Builder("stout_shielding", CharmType.SHIELDING.getName(), 2, ShieldingCharm.class).withValue(50.0).withPercent(0.6).build();
 		HARDENED_SHIELDING = new Charm.Builder("hardened_shielding", CharmType.SHIELDING.getName(), 3, ShieldingCharm.class).withValue(100.0).withPercent(0.7).build();
 		POWERFUL_SHIELDING = new Charm.Builder("powerful_shielding", CharmType.SHIELDING.getName(), 4, ShieldingCharm.class).withValue(200.0).withPercent(0.8).build();
@@ -71,11 +73,21 @@ public class TreasureCharms {
 		
 		// TODO add absolute Shielding Charms with lower amounts
 		// 10 Units @ 100% shielding
-//		SMALL_ABSOLUTE_SHIELDING = new Charm.Builder("small_absolute_shielding", CharmType.SHIELDING, 1).valueModifier(0.5).percentModifier(2.0).build();
-//		MEDIUM_ABSOLUTE_SHIELDING = new Charm.Builder("medium_absolute_shielding", CharmType.SHIELDING, 1).percentModifier(2.0).build();
-//		LARGE_ABSOLUTE_SHIELDING = new Charm.Builder("large_absolute_shielding", CharmType.SHIELDING, 1).valueModifier(1.5).percentModifier(2.0).build();
-//		GRAND_ABSOLUTE_SHEILDING = new Charm.Builder("grand_absolute_shielding", CharmType.SHIELDING, 1).valueModifier(2).percentModifier(2.0).build();
-//		WHALE_ABSOLUTE_SHIELDING = new Charm.Builder("whale_absolute_shielding", CharmType.SHIELDING, 1).valueModifier(5).percentModifier(2.0).build();
+		SMALL_ABSOLUTE_SHIELDING = new Charm.Builder(
+            new ResourceLocation(Treasure.MODID, "small_absolute_shielding"), CharmType.SHIELDING.getName(), 1, ShieldingCharm.class)
+            .withValue(10.0).withPercent(100.0).build();
+		MEDIUM_ABSOLUTE_SHIELDING = new Charm.Builder(
+            new ResourceLocation(Treasure.MODID, "medium_absolute_shielding"), CharmType.SHIELDING.getName(), 2, ShieldingCharm.class)
+            .withValue(20.0).withPercent(100.0).build();
+		LARGE_ABSOLUTE_SHIELDING = new Charm.Builder(
+            new ResourceLocation(Treasure.MODID, "large_absolute_shielding"), CharmType.SHIELDING.getName(), 3, ShieldingCharm.class)
+            .withValue(30.0).withPercent(100.0).build();
+		GRAND_ABSOLUTE_SHEILDING = new Charm.Builder(
+            new ResourceLocation(Treasure.MODID, "grand_absolute_shielding"), CharmType.SHIELDING.getName(), 4, ShieldingCharm.class)
+            .withValue(40.0).withPercent(100.0).build();
+		WHALE_ABSOLUTE_SHIELDING = new Charm.Builder(
+            new ResourceLocation(Treasure.MODID, "whale_absolute_shielding"), CharmType.SHIELDING.getName(), 99, ShieldingCharm.class)
+            .withValue(100.0).withPercent(100.0).build();
 	
 		FULLNESS = new Charm.Builder("fullness", CharmType.FULLNESS.getName(), 1, FullnessCharm.class).withValue(20.0).build();
 		SATED_FULLNESS = new Charm.Builder("sated_fullness", CharmType.FULLNESS.getName(), 2, FullnessCharm.class).withValue(50.0).build(); 
@@ -106,6 +118,13 @@ public class TreasureCharms {
         TreasureCharmRegistry.register(Treasure.MODID, GREATER_HEALING);
         TreasureCharmRegistry.register(Treasure.MODID, GRAND_HEALING);
         TreasureCharmRegistry.register(Treasure.MODID, SALANDAARS_CONVALESCENCE);
+
+        TreasureCharmRegistry.register(WHALE_HEALING);
+        TreasureCharmRegistry.register(SMALL_ABSOLUTE_SHIELDING);
+        TreasureCharmRegistry.register(MEDIUM_ABSOLUTE_SHIELDING);
+        TreasureCharmRegistry.register(LARGE_ABSOLUTE_SHIELDING);
+        TreasureCharmRegistry.register(GRAND_ABSOLUTE_SHIELDING);
+        TreasureCharmRegistry.register(WHALE_ABSOLUTE_SHIELDING);
 
 		// register all charms
 		REGISTRY.put(LESSER_HEALING.getName(), LESSER_HEALING);
