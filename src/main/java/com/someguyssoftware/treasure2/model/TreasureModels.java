@@ -139,6 +139,9 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.APPRENTICES_POUCH);
 		registerItemModel(TreasureItems.MASTERS_POUCH);
 		
+		// ADORNMENTS
+		registerItemModel(TreasureItems.RING);
+		
 		// PEARLS
 		registerItemModel(TreasureItems.WHITE_PEARL);
 		registerItemModel(TreasureItems.BLACK_PEARL);
