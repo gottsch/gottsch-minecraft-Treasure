@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
+import java.util.Optional;
+
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.item.charm.Charm;
 import com.someguyssoftware.treasure2.item.charm.ICharm;
@@ -68,21 +70,22 @@ public class CharmStorage implements Capability.IStorage<ICharmCapability> {
 			// clear the states
 			charmCapabilityInstance.getCharmInstances().clear();
             NBTTagCompound tag = (NBTTagCompound) nbt;
-            // TODO get "charmInstances". if null, check for "charmStates"
             NBTTagList instanceListTag = tag.getTagList(CHARM_INSTANCES_TAG, 10);
             if (instanceListTag == null || instanceListTag.tagCount() == 0) {
                 instanceListTag = tag.getTagList(LEGACY_CHARM_INSTANCES_TAG, 10);
             }
 			for (int index = 0; index < instanceListTag.tagCount(); index++) {
 				NBTTagCompound instanceTag = instanceListTag.getCompoundTagAt(index);
-				ICharm charm = Charm.readFromNBT(instanceTag.getCompoundTag(CHARM_TAG));
-                // ICharmData data = CharmStateFactory.createCharmVitals(charm);
+				Optional<ICharm> charm = Charm.readFromNBT(instanceTag.getCompoundTag(CHARM_TAG));
+				if (!charm.isPresent()) {
+					continue;
+				}
                 
                 NBTTagCompound dataTag = instanceTag.getCompoundTag(CHARM_DATA_TAG);
                 if (dataTag == null) {
                     dataTag = instanceTag.getCompoundTag(LEGACY_CHARM_DATA_TAG);
                 }
-                ICharmInstance instance = charm.createInstance();
+                ICharmInstance instance = charm.get().createInstance();
                 if (dataTag != null) {
                     instance.getData().readFromNBT(dataTag);
                 }

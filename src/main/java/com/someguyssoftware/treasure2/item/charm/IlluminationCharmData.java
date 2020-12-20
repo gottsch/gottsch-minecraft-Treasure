@@ -59,7 +59,7 @@ public class IlluminationCharmData extends CharmData {
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);		
 		NBTTagList list = nbt.getTagList("illuminationCoords", 10);
-		Treasure.logger.debug("illumination tag list size -> {}", list.tagCount());
+//		Treasure.logger.debug("illumination tag list size -> {}", list.tagCount());
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound tag = list.getCompoundTagAt(i);
 			ICoords coords = ICoords.readFromNBT(tag);

@@ -15,9 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
@@ -26,15 +24,6 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  *
  */
 public class DecayCharm extends Charm {
-
-	/**
-	 * 
-	 * @param builder
-	 */
-    @Deprecated
-	DecayCharm(ICharmBuilder builder) {
-		super(builder);
-	}
 
     /**
 	 * 
@@ -72,38 +61,9 @@ public class DecayCharm extends Charm {
 	@Override
     public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
         TextFormatting color = TextFormatting.DARK_RED;
-        tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toLowerCase(), 
+        tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toString().toLowerCase(), 
 						String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
                         String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));
         tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.decay_rate"));
     }
-
-	/**
-	 * 
-	 */
-	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmData data) {
-		boolean result = false;
-		//		Treasure.logger.debug("in decay");
-		if (!player.isDead && data.getValue() > 0 && player.getHealth() > 0.0) {
-			//			Treasure.logger.debug("player is alive and charm is good still...");
-			if (world.getTotalWorldTime() % 100 == 0) {
-				player.setHealth(MathHelper.clamp(player.getHealth() - 2.0F, 0.0F, player.getMaxHealth()));				
-				data.setValue(MathHelper.clamp(data.getValue() - 1.0,  0D, data.getValue()));
-				//				Treasure.logger.debug("new data -> {}", data);
-				result = true;
-			}
-		}
-		return result;
-	}
-
-	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, final ICharmData data) {
-		return false;
-	}
-
-	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmData data) {
-		return false;
-	}	
 }

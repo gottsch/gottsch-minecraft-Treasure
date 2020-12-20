@@ -18,8 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
@@ -29,24 +27,15 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  *
  */
 public class HarvestingCharm extends Charm {
-
+	
 	/**
-	 * 
-	 * @param builder
-	 */
-    @Deprecated
-	HarvestingCharm(ICharmBuilder builder) {
-		super(builder);
-	}
-
-    /**
 	 * 
 	 * @param builder
 	 */
 	HarvestingCharm(Builder builder) {
 		super(builder);
-    }
-    
+	}
+
 	@Override
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmData data) {
 		boolean result = false;
@@ -69,10 +58,10 @@ public class HarvestingCharm extends Charm {
 						}
 					}
 
-//					Treasure.logger.debug("current stack size is -> {}", stack.getCount());
+					//					Treasure.logger.debug("current stack size is -> {}", stack.getCount());
 					int size = (int)(stack.getCount() * data.getPercent());
 					stack.setCount(size);
-//					Treasure.logger.debug("resulting stack size is -> {}", stack.getCount());
+					//					Treasure.logger.debug("resulting stack size is -> {}", stack.getCount());
 				}
 				// all items drop
 				((BlockEvent.HarvestDropsEvent)event).setDropChance(1.0F);
@@ -83,63 +72,17 @@ public class HarvestingCharm extends Charm {
 		return result;
 	}
 
-    /**
-     * 
-     */
-    @SuppressWarnings("deprecation")
-	@Override
-    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
-        TextFormatting color = TextFormatting.GREEN;
-        tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toLowerCase(), 
-						String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
-                        String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));
-        tooltip.add(" " + TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.harvest_rate", getMaxPercent()));
-    }
-    
-	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event, final ICharmData data) {
-		return false;
-	}
-
 	/**
 	 * 
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event, ICharmData data) {
-		return false;
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
+		TextFormatting color = TextFormatting.GREEN;
+		tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toString().toLowerCase(), 
+				String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+				String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));
+		tooltip.add(" " + TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.harvest_rate", getMaxPercent()));
 	}
 
-	@Override
-	public boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event, final ICharmData data) {
-		boolean result = false;
-		if (data.getValue() > 0 && !player.isDead) {           
-			// process all the drops
-			for (ItemStack stack : event.getDrops()) {
-
-				// exclude all Charms, Pouches or Blocks with Tile Entities
-				Block block = Block.getBlockFromItem(stack.getItem());
-				if (block != Blocks.AIR) {
-					if (block.hasTileEntity(block.getDefaultState())) {
-						Treasure.logger.debug("skipped item because it has a tile entity.");
-						continue;
-					}
-				} else {
-					if (stack.getItem() instanceof ICharmed || stack.getItem() instanceof IPouch) {
-						Treasure.logger.debug("skipped item because it is a charm or pouch.");
-						continue;
-					}
-				}
-
-				Treasure.logger.debug("current stack size is -> {}", stack.getCount());
-				int size = (int)(stack.getCount() * data.getPercent());
-				stack.setCount(size);
-				Treasure.logger.debug("resulting stack size is -> {}", stack.getCount());
-			}
-			// all items drop
-			event.setDropChance(1.0F);
-			data.setValue(data.getValue() - 1);
-			result = true;
-		}
-		return result;
-	}
 }

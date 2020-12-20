@@ -216,52 +216,52 @@ tooltip.thiefs_lock_pick.specials=Opens COMMON (%s%%), UNCOMMON (%s%%) and SCARC
 tooltip.jewelled_key.specials=Opens any lock in GEMS category
 
 tooltip.charm.healing_rate=- heals 0.5 hearts/sec
-tooltip.charm.lesser_healing=Lesser Healing [%s/%s]
-tooltip.charm.healing=Healing [%s/%s]
-tooltip.charm.greater_healing=Greater Healing [%s/%s]
-tooltip.charm.grand_healing=Grand Healing [%s/%s]
-tooltip.charm.salandaars_convalescence=Salandaar's Charm of Convalescence [%s/%s]
+tooltip.charm.treasure2:lesser_healing=Lesser Healing [%s/%s]
+tooltip.charm.treasure2:healing=Healing [%s/%s]
+tooltip.charm.treasure2:greater_healing=Greater Healing [%s/%s]
+tooltip.charm.treasure2:grand_healing=Grand Healing [%s/%s]
+tooltip.charm.treasure2:salandaars_convalescence=Salandaar's Charm of Convalescence [%s/%s]
 
 tooltip.charm.shield_rate=- absorbs %s%% of damage
-tooltip.charm.durable_shielding=Durable Shielding [%s/%s]
-tooltip.charm.stout_shielding=Stout Shielding [%s/%s]
-tooltip.charm.hardened_shielding=Hardened Shielding [%s/%s]
-tooltip.charm.powerful_shielding=Powerful Shielding [%s/%s]
-tooltip.charm.armadillo_shielding=Shield of the Armadillo [%s/%s]
+tooltip.charm.treasure2:durable_shielding=Durable Shielding [%s/%s]
+tooltip.charm.treasure2:stout_shielding=Stout Shielding [%s/%s]
+tooltip.charm.treasure2:hardened_shielding=Hardened Shielding [%s/%s]
+tooltip.charm.treasure2:powerful_shielding=Powerful Shielding [%s/%s]
+tooltip.charm.treasure2:armadillo_shielding=Shield of the Armadillo [%s/%s]
 
-tooltip.charm.small_absolute_shielding=Small Absolute Shielding [%s/%s]
-tooltip.charm.medium_absolute_shielding=Medium Absolute Shielding [%s/%s]
-tooltip.charm.large_absolute_shielding=Large Absolute Shielding [%s/%s]
-tooltip.charm.grand_absolute_shielding=Grand Absolute Shielding [%s/%s]
-tooltip.charm.whale_absolute_shielding=Absolute Shielding of the Whale [%s/%s]
+tooltip.charm.treasure2:small_absolute_shielding=Small Absolute Shielding [%s/%s]
+tooltip.charm.treasure2:medium_absolute_shielding=Medium Absolute Shielding [%s/%s]
+tooltip.charm.treasure2:large_absolute_shielding=Large Absolute Shielding [%s/%s]
+tooltip.charm.treasure2:grand_absolute_shielding=Grand Absolute Shielding [%s/%s]
+tooltip.charm.treasure2:whale_absolute_shielding=Absolute Shielding of the Whale [%s/%s]
 
 tooltip.charm.fullness_rate=- restores 0.5 hunger/sec
-tooltip.charm.fullness=Fullness [%s/%s]
-tooltip.charm.sated_fullness=Sated Fullness [%s/%s]
-tooltip.charm.overfed_fullness=Overfed Fullness [%s/%s]
-tooltip.charm.gorged_fullness=Gorged Fullness [%s/%s]
-tooltip.charm.bursting_fullness=Bursting Fullness [%s/%s]
+tooltip.charm.treasure2:fullness=Fullness [%s/%s]
+tooltip.charm.treasure2:sated_fullness=Sated Fullness [%s/%s]
+tooltip.charm.treasure2:overfed_fullness=Overfed Fullness [%s/%s]
+tooltip.charm.treasure2:gorged_fullness=Gorged Fullness [%s/%s]
+tooltip.charm.treasure2:bursting_fullness=Bursting Fullness [%s/%s]
 
 tooltip.charm.harvest_rate=- harvests %sX the drop
-tooltip.charm.minor_harvesting=Minor Harvesting [%s/%s]
-tooltip.charm.harvesting=Harvesting [%s/%s]
-tooltip.charm.major_harvesting=Major Harvesting [%s/%s]
-tooltip.charm.grand_harvesting=Grand Harvesting [%s/%s]
-tooltip.charm.glorious_harvesting=Glorious Harvesting [%s/%s]
+tooltip.charm.treasure2:minor_harvesting=Minor Harvesting [%s/%s]
+tooltip.charm.treasure2:harvesting=Harvesting [%s/%s]
+tooltip.charm.treasure2:major_harvesting=Major Harvesting [%s/%s]
+tooltip.charm.treasure2:grand_harvesting=Grand Harvesting [%s/%s]
+tooltip.charm.treasure2:glorious_harvesting=Glorious Harvesting [%s/%s]
 
 tooltip.charm.illumination_rate=- illuminates every 5 sec
-tooltip.charm.lesser_illumination=Lesser Illumination [%s/%s]
-tooltip.charm.illumination=Illumination [%s/%s]
-tooltip.charm.greater_illumination=Greater Illumination [%s/%s]
-tooltip.charm.grand_illumination=Grand Illumination [%s/%s]
-tooltip.charm.glorious_illumination=Glorious Illumination [%s/%s]
+tooltip.charm.treasure2:lesser_illumination=Lesser Illumination [%s/%s]
+tooltip.charm.treasure2:illumination=Illumination [%s/%s]
+tooltip.charm.treasure2:greater_illumination=Greater Illumination [%s/%s]
+tooltip.charm.treasure2:grand_illumination=Grand Illumination [%s/%s]
+tooltip.charm.treasure2:glorious_illumination=Glorious Illumination [%s/%s]
 
 # curses
 tooltip.charm.decay_rate=- decays 1 heart/5 sec
-tooltip.charm.lesser_decay=Lesser Decay [%s/%s]
-tooltip.charm.decay=Decay [%s/%s]
-tooltip.charm.greater_decay=Greater Decay [%s/%s]
-tooltip.charm.perishing_decay=Perishing Decay [%s/%s]
+tooltip.charm.treasure2:lesser_decay=Lesser Decay [%s/%s]
+tooltip.charm.treasure2:decay=Decay [%s/%s]
+tooltip.charm.treasure2:greater_decay=Greater Decay [%s/%s]
+tooltip.charm.treasure2:perishing_decay=Perishing Decay [%s/%s]
 
 tooltip.painting.name=%s
 tooltip.painting.collection=Collection: %s

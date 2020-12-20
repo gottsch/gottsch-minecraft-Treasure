@@ -113,7 +113,7 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 		// cycle through the charm states to find the named charm
 		for(ICharmInstance instance : heldItemCaps.getCharmInstances()) {
 			if (instance.getCharm().getName().equals(charmName)) {
-	        	Treasure.logger.debug("found charm, updating vitals to -> {}", message.getData());
+//	        	Treasure.logger.debug("found charm, updating vitals to -> {}", message.getData());
 				// update vitals
 				instance.setData(message.getData());
 			}

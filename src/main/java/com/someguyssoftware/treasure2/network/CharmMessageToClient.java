@@ -3,12 +3,18 @@
  */
 package com.someguyssoftware.treasure2.network;
 
+import java.util.Optional;
+
+import com.someguyssoftware.treasure2.item.charm.ICharm;
 import com.someguyssoftware.treasure2.item.charm.ICharmData;
 import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
+import com.someguyssoftware.treasure2.item.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
@@ -32,7 +38,7 @@ public class CharmMessageToClient implements IMessage {
 	public CharmMessageToClient(String playerName, ICharmInstance instance, EnumHand hand, Integer slot) {
 		messageIsValid = true;
 		this.playerName = playerName;
-		this.charmName = instance.getCharm().getName();
+		this.charmName = instance.getCharm().getName().toString();
 		this.data = instance.getData();
 		this.hand = hand;
 		if (slot == null) {
@@ -63,7 +69,14 @@ public class CharmMessageToClient implements IMessage {
 	    	int duration = buf.readInt();
 	    	double percent = buf.readDouble();
             // data = CharmStateFactory.createCharmVitals(TreasureCharms.REGISTRY.get(charmName));
-            data = TreasureCharms.REGISTRY.get(charmName).createInstance().getData();
+//            data = TreasureCharms.REGISTRY.get(charmName).createInstance().getData();
+	    	// TODO ensure charmName contains a domain
+	    	/// TODO check optional value
+	    	Optional<ICharm> optionalCharm = TreasureCharmRegistry.get(ResourceLocationUtil.create(charmName));
+	    	if (!optionalCharm.isPresent()) {
+	    		throw new RuntimeException(String.format("Unable to find charm %s in registry.", charmName));
+	    	}
+	    	data = optionalCharm.get().createInstance().getData();
 	    	data.setDuration(duration);
 	    	data.setPercent(percent);
 	    	data.setValue(value);
@@ -74,7 +87,7 @@ public class CharmMessageToClient implements IMessage {
 	    	}
 	    	this.slot = buf.readInt();
 	      } catch (RuntimeException e) {
-	        System.err.println("Exception while reading PoisonMistMessageToServer: " + e);
+	        System.err.println("Exception while reading CharmMessageToClient: " + e);
 	        return;
 	      }
 	      messageIsValid = true;
