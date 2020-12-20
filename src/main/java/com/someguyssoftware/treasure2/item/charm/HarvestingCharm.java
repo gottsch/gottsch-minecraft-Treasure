@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.item.charm;
 
+import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -10,9 +11,12 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.item.IPouch;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -65,10 +69,10 @@ public class HarvestingCharm extends Charm {
 						}
 					}
 
-					Treasure.logger.debug("current stack size is -> {}", stack.getCount());
+//					Treasure.logger.debug("current stack size is -> {}", stack.getCount());
 					int size = (int)(stack.getCount() * data.getPercent());
 					stack.setCount(size);
-					Treasure.logger.debug("resulting stack size is -> {}", stack.getCount());
+//					Treasure.logger.debug("resulting stack size is -> {}", stack.getCount());
 				}
 				// all items drop
 				((BlockEvent.HarvestDropsEvent)event).setDropChance(1.0F);
@@ -82,13 +86,14 @@ public class HarvestingCharm extends Charm {
     /**
      * 
      */
-    @Override
-    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmDatat data) {
+    @SuppressWarnings("deprecation")
+	@Override
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
         TextFormatting color = TextFormatting.GREEN;
         tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toLowerCase(), 
 						String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
                         String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));
-        tooltip.add(" " + TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.harvest_rate", state.getCharm().getMaxPercent()));
+        tooltip.add(" " + TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.harvest_rate", getMaxPercent()));
     }
     
 	@Override

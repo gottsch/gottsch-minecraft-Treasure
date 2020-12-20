@@ -70,7 +70,7 @@ public class CharmStorage implements Capability.IStorage<ICharmCapability> {
             NBTTagCompound tag = (NBTTagCompound) nbt;
             // TODO get "charmInstances". if null, check for "charmStates"
             NBTTagList instanceListTag = tag.getTagList(CHARM_INSTANCES_TAG, 10);
-            if (instanceListTag == null) {
+            if (instanceListTag == null || instanceListTag.tagCount() == 0) {
                 instanceListTag = tag.getTagList(LEGACY_CHARM_INSTANCES_TAG, 10);
             }
 			for (int index = 0; index < instanceListTag.tagCount(); index++) {

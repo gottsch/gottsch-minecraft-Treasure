@@ -63,7 +63,7 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 	   *  This message is called from the Server thread.
 	   */
 	  void processMessage(WorldClient worldClient, CharmMessageToClient message) {
-//		  Treasure.logger.debug("received charm message -> {}", message);
+		  Treasure.logger.debug("received charm message -> {}", message);
 		  try {
 	        EntityPlayer player = worldClient.getPlayerEntityByName(message.getPlayerName());
 
@@ -113,7 +113,7 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 		// cycle through the charm states to find the named charm
 		for(ICharmInstance instance : heldItemCaps.getCharmInstances()) {
 			if (instance.getCharm().getName().equals(charmName)) {
-//	        	Treasure.logger.debug("found charm, updating vitals to -> {}", message.getVitals());
+	        	Treasure.logger.debug("found charm, updating vitals to -> {}", message.getData());
 				// update vitals
 				instance.setData(message.getData());
 			}

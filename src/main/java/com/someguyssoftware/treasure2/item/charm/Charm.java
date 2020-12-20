@@ -3,9 +3,16 @@
  */
 package com.someguyssoftware.treasure2.item.charm;
 
+import java.util.List;
+
 import com.someguyssoftware.treasure2.Treasure;
 
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
 
 /**
  * @author Mark Gottschling on Apr 25, 2020
@@ -82,8 +89,9 @@ public abstract class Charm implements ICharm {
      * @param flag
      * @param data
      */
-    @Override
-    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmDatat data) {
+    @SuppressWarnings("deprecation")
+	@Override
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
         TextFormatting color = TextFormatting.RED;
         tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toLowerCase()));
     }
@@ -207,9 +215,9 @@ public abstract class Charm implements ICharm {
 		private final ResourceLocation name2;
 		private final String type;
 		private final Integer level;
-		private Double value;
-		private Double duration;
-		private Double percent;
+		private Double value = 0.0;
+		private Double duration = 0.0;
+		private Double percent = 0.0;
 		
 		private Class<? extends ICharm> charmClass;
 		
@@ -231,11 +239,12 @@ public abstract class Charm implements ICharm {
 		public ICharm build() {
 			ICharm charm = null;
 			try {
-				charm = charmClass.getDeclaredConstructor(Builder.class).newInstance();
+				charm = charmClass.getDeclaredConstructor(Builder.class).newInstance(Charm.Builder.this);
+				Treasure.logger.debug("building charm from -> {} to -> {}", Charm.Builder.this.toString(), charm.toString());
 			} catch (Exception e) {
-				e.printStackTrace();
+				Treasure.logger.error("Couldn't create charm", e);
 			}			
-			Treasure.logger.debug("building charm from -> {} to -> {}", this.toString(), charm.toString());
+
 			return charm;
 		}
 		

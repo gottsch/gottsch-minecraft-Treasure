@@ -1,5 +1,10 @@
+package com.someguyssoftware.treasure2.item.charm;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import net.minecraft.util.ResourceLocation;
 
 public class TreasureCharmRegistry {
     private static final Map<ResourceLocation, ICharm> REGISTRY = new HashMap<>();

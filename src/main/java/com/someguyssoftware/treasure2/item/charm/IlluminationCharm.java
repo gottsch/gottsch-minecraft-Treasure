@@ -3,7 +3,6 @@
  */
 package com.someguyssoftware.treasure2.item.charm;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -13,8 +12,12 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -49,6 +52,7 @@ public class IlluminationCharm extends Charm {
 
 	@Override
 	public ICharmInstance createInstance() {
+		Treasure.logger.debug("creating new illumination charm instance");
         IlluminationCharmData data = new IlluminationCharmData();
         data.setValue(this.getMaxValue());
         data.setPercent(this.getMaxPercent());
@@ -83,14 +87,14 @@ public class IlluminationCharm extends Charm {
 						return false;
 					}
 					if (!(data instanceof IlluminationCharmData)) {
-						//					Treasure.logger.debug("data are not instance of IlluminationCharmData -> {}.{}", this.getClass().getSimpleName(), data.getClass().getSimpleName());
+											Treasure.logger.debug("data are not instance of IlluminationCharmData -> {}.{}", this.getClass().getSimpleName(), data.getClass().getSimpleName());
 						return false;
 					}
 
 					IlluminationCharmData charmData = (IlluminationCharmData)data;
 					// cast as linked list
 					List<ICoords> list = (List<ICoords>)charmData.getCoordsList();
-					//				Treasure.logger.debug("charm coords list size -> {}", list.size());
+									Treasure.logger.debug("charm coords list size -> {}", list.size());
 					double value = data.getValue();
 
 					boolean isUpdated = false;
@@ -115,11 +119,11 @@ public class IlluminationCharm extends Charm {
 									ICoords lastCoords = list.get(list.size()-1);
 									Block block = world.getBlockState(lastCoords.toPos()).getBlock();
 									if (block == Blocks.TORCH) {
-										//									Treasure.logger.debug("set torch to air at -> {}", lastCoords.toShortString());
+																			Treasure.logger.debug("set torch to air at -> {}", lastCoords.toShortString());
 										world.setBlockToAir(lastCoords.toPos());
 									}
 									else {
-										//									Treasure.logger.debug("torch no longer found at -> {}", currentCoords.toShortString());
+																			Treasure.logger.debug("torch no longer found at -> {}", currentCoords.toShortString());
 										// decrement value since torch was harvested
 										value -= 1;
 									}
@@ -132,10 +136,10 @@ public class IlluminationCharm extends Charm {
 					}
 					if (isUpdated == true ) {
 						world.setBlockState(currentCoords.toPos(), Blocks.TORCH.getDefaultState());
-						//					Treasure.logger.debug("set torch at -> {}", currentCoords.toShortString());
+											Treasure.logger.debug("set torch at -> {}", currentCoords.toShortString());
 						if (value < 0) value = 0;
 						data.setValue(value);
-						//					Treasure.logger.debug("new data -> {}", data);
+											Treasure.logger.debug("new data -> {}", data);
 						result = true;
 					}
 				}
@@ -143,12 +147,13 @@ public class IlluminationCharm extends Charm {
 		}
 		return result;
 	}
-
+    
     /**
      * 
      */
-    @Override
-    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmDatat data) {
+    @SuppressWarnings("deprecation")
+	@Override
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
         TextFormatting color = TextFormatting.WHITE;
         tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toLowerCase(), 
 						String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 

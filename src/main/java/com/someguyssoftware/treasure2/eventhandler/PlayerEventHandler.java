@@ -260,6 +260,7 @@ public class PlayerEventHandler {
 			if (charmInstance.getCharm().update(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event, charmInstance.getData())) {
 				// send state message to client
 				CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmInstance, context.get().hand, null);
+				Treasure.logger.debug("Message to client -> {}", message);
 				Treasure.simpleNetworkWrapper.sendTo(message, player);
 			}
 		}

@@ -75,42 +75,42 @@ public interface ICharmed {
 			List<ICharmInstance> charmInstances = cap.getCharmInstances();
 			for (ICharmInstance state : charmInstances) {
 				TextFormatting color = TextFormatting.WHITE;
-				CharmType type = state.getCharm().getCharmType();
-				String extra = "";
-				switch(type) {
-				case HEALING:
-					color = TextFormatting.RED;
-					extra = TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.healing_rate");
-					break;
-				case SHIELDING:
-					color = TextFormatting.AQUA;
-					extra = TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.shield_rate", state.getCharm().getMaxPercent()*100F);
-					break;
-				case FULLNESS:
-					color = TextFormatting.DARK_GREEN;
-					extra = TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.fullness_rate");
-					break;
-				case HARVESTING:
-					color = TextFormatting.GREEN;
-					extra = TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.harvest_rate", state.getCharm().getMaxPercent());
-					break;
-				case DECAY:
-					color = TextFormatting.DARK_RED;
-					extra = TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.decay_rate");
-					break;
-				case ILLUMINATION:
-					color = TextFormatting.WHITE;
-					extra = TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.illumination_rate");
-					break;					
-				}
-				
-				// TODO this could change depending on charm. going to have to have sub classes or calls Charm.addInformation(...)
-				tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + state.getCharm().getName(), 
-						String.valueOf(Math.toIntExact(Math.round(state.getVitals().getValue()))), 
-						String.valueOf(Math.toIntExact(Math.round(state.getCharm().getMaxValue())))));
-				if (!"".equals(extra)) {
-					tooltip.add(" " + extra);
-				}
+//				CharmType type = state.getCharm().getCharmType();
+//				String extra = "";
+//				switch(type) {
+//				case HEALING:
+//					color = TextFormatting.RED;
+//					extra = TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.healing_rate");
+//					break;
+//				case SHIELDING:
+//					color = TextFormatting.AQUA;
+//					extra = TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.shield_rate", state.getCharm().getMaxPercent()*100F);
+//					break;
+//				case FULLNESS:
+//					color = TextFormatting.DARK_GREEN;
+//					extra = TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.fullness_rate");
+//					break;
+//				case HARVESTING:
+//					color = TextFormatting.GREEN;
+//					extra = TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.harvest_rate", state.getCharm().getMaxPercent());
+//					break;
+//				case DECAY:
+//					color = TextFormatting.DARK_RED;
+//					extra = TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.decay_rate");
+//					break;
+//				case ILLUMINATION:
+//					color = TextFormatting.WHITE;
+//					extra = TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.illumination_rate");
+//					break;					
+//				}
+//				
+//				// TODO this could change depending on charm. going to have to have sub classes or calls Charm.addInformation(...)
+//				tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + state.getCharm().getName(), 
+//						String.valueOf(Math.toIntExact(Math.round(state.getVitals().getValue()))), 
+//						String.valueOf(Math.toIntExact(Math.round(state.getCharm().getMaxValue())))));
+//				if (!"".equals(extra)) {
+//					tooltip.add(" " + extra);
+//				}
 			}
 		}
 	}

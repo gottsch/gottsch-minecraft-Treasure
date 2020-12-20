@@ -3,12 +3,17 @@
  */
 package com.someguyssoftware.treasure2.item.charm;
 
+import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -50,7 +55,7 @@ public class ShieldingCharm extends Charm {
     			double newAmount = 0;
     			double amountToCharm = amount * data.getPercent();
     			double amountToPlayer = amount - amountToCharm;
-    			Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
+//    			Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
     			if (data.getValue() >= amountToCharm) {
     				data.setValue(data.getValue() - amountToCharm);
     				newAmount = amountToPlayer;
@@ -69,13 +74,14 @@ public class ShieldingCharm extends Charm {
     /**
      * 
      */
-    @Override
-    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmDatat data) {
+    @SuppressWarnings("deprecation")
+	@Override
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
         TextFormatting color = TextFormatting.AQUA;
         tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toLowerCase(), 
 						String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
                         String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));
-        tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.shield_rate", state.getCharm().getMaxPercent()*100F));
+        tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.shield_rate", getMaxPercent()*100F));
     }
 
 	@Deprecated

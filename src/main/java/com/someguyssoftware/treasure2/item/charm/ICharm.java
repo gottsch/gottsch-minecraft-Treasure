@@ -26,10 +26,6 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  *
  */
 public interface ICharm {
-	// TODO type may go away
-//	public CharmType getCharmType();
-	// TODO can we get rid of level ?
-//	public CharmLevel getCharmLevel();
 	public String getName();
 	public String getType();
 	public int getLevel();
@@ -40,7 +36,7 @@ public interface ICharm {
     public ICharmInstance createInstance();
     public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmData data);
 
-    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag);
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data);
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt);
 
 	// TODO remove thses for a generic one that will check the instance
