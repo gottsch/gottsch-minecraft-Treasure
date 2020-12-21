@@ -21,10 +21,13 @@ import com.someguyssoftware.gottschcore.mod.AbstractMod;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.capability.CharmableCapability;
+import com.someguyssoftware.treasure2.capability.CharmableStorage;
 import com.someguyssoftware.treasure2.capability.CharmCapability;
 import com.someguyssoftware.treasure2.capability.CharmStorage;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageStorage;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.capability.IEffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
@@ -199,6 +202,7 @@ public class Treasure extends AbstractMod {
 
 		// add capabilities
 		CapabilityManager.INSTANCE.register(ICharmCapability.class, new CharmStorage(), CharmCapability::new);
+		CapabilityManager.INSTANCE.register(ICharmableCapability.class, new CharmableStorage(), CharmableCapability::new);
 		CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingStorage(), KeyRingCapability::new);
 		CapabilityManager.INSTANCE.register(IEffectiveMaxDamageCapability.class, new EffectiveMaxDamageStorage(), EffectiveMaxDamageCapability::new);
 

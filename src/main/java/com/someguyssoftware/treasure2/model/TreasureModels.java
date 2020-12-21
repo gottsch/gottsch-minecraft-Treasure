@@ -141,7 +141,8 @@ public class TreasureModels {
 		
 		// ADORNMENTS
 		registerItemModel(TreasureItems.RING);
-		
+		registerItemModel(TreasureItems.GOLD_RING);
+		registerItemModel(TreasureItems.RUBY_GOLD_RING);
 		// PEARLS
 		registerItemModel(TreasureItems.WHITE_PEARL);
 		registerItemModel(TreasureItems.BLACK_PEARL);

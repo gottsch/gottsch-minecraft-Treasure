@@ -9,8 +9,10 @@ import com.someguyssoftware.gottschcore.armor.ModArmorBuilder;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.item.ModSwordBuilder;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
 import com.someguyssoftware.treasure2.enums.Category;
@@ -64,6 +66,8 @@ public class TreasureItems {
 
 	// adornments
 	public static Item RING;
+	public static Item GOLD_RING;
+	public static Item RUBY_GOLD_RING;
     public static Item AMULET;
     
 	// pearls
@@ -276,6 +280,20 @@ public class TreasureItems {
 
 		// ADORNMENTS
         RING = new Adornment(Treasure.MODID, "silver_ring", AdornmentType.RING).setMaxSlots(2);
+        GOLD_RING = new Adornment(Treasure.MODID, "gold_ring", AdornmentType.RING).setMaxSlots(2);
+        // TEMP
+        RUBY_GOLD_RING = new Adornment(Treasure.MODID, "ruby_gold_ring", AdornmentType.RING) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+				CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
+				ICharmCapability cap = provider.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
+				cap.getCharmInstances().add(TreasureCharms.GRAND_HEALING.createInstance());
+				ICharmableCapability charmableCap = provider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+				charmableCap.setSlots(2);
+				charmableCap.setCustomName("Mark's Ring of Power");
+				return provider;
+			}
+        }.setMaxSlots(2);
+        
         AMULET = new Adornment(Treasure.MODID, "amulet", AdornmentType.AMULET).setMaxSlots(4);
 
 		// PEARLS
@@ -585,6 +603,8 @@ public class TreasureItems {
 					ADEPHAGIAS_BOUNTY,
 					MIRTHAS_TORCH,
 					RING,
+					GOLD_RING,
+					RUBY_GOLD_RING,
 					WHITE_PEARL,
 					BLACK_PEARL,
 					WOOD_LOCK,
