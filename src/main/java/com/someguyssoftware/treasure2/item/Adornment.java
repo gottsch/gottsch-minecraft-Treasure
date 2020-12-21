@@ -25,8 +25,21 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
  *
  */
 public class Adornment extends ModItem implements IAdornment, ICharmable, IPouchable {
-	private AdornmentType type;
-	private int maxCharms = 2;
+    private AdornmentType type;
+    // TODO add customName to capability
+
+    // TODO this is max slots which exists in Item class
+    // TODO need slots in a Capability that is saved to NBT
+    // ex Rings can have a max of 2 charms, but Ring of Healing or low-level rings are made with only 1 slot
+    /*
+     * default max of slot.
+     * maxSlots are the max number of charms an Adornment can hold.
+     * // capability slots below
+     * once a charm is added, a slot is filled and the count is decremented.
+     * when a charm runs out of uses, it is removed from teh Adornment, but the maxSlots are not incremented.
+     * once all maxSlots are used, the Adornment can not add any new Charms
+     */
+    private int maxSlots = 2;
 	
 	/**
 	 * 
@@ -83,11 +96,12 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 		this.type = type;
 	}
 
-	public int getMaxCharms() {
-		return maxCharms;
+	public int getMaxSlots() {
+        return maxSlots;
 	}
 
-	public void setMaxCharms(int maxCharms) {
-		this.maxCharms = maxCharms;
+    public Adornment setMaxSlots(int maxSlots) {
+        this.maxSlots = maxSlots;
+        return this;
 	}
 }

@@ -62,9 +62,10 @@ public class TreasureItems {
 	public static CharmedCoinItem ADEPHAGIAS_BOUNTY;
 	public static CharmedCoinItem MIRTHAS_TORCH;
 
-	// rings
+	// adornments
 	public static Item RING;
-	
+    public static Item AMULET;
+    
 	// pearls
 	public static Item WHITE_PEARL;
 	public static Item BLACK_PEARL;
@@ -274,7 +275,8 @@ public class TreasureItems {
 		MIRTHAS_TORCH.setCreativeTab(Treasure.TREASURE_TAB);
 
 		// ADORNMENTS
-		RING = new Adornment(Treasure.MODID, "silver_ring", AdornmentType.RING);
+        RING = new Adornment(Treasure.MODID, "silver_ring", AdornmentType.RING).setMaxSlots(2);
+        AMULET = new Adornment(Treasure.MODID, "amulet", AdornmentType.AMULET).setMaxSlots(4);
 
 		// PEARLS
 		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.WHITE_PEARL_ID, Pearls.WHITE);
