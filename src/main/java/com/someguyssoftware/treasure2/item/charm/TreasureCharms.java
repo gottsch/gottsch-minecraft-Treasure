@@ -57,7 +57,18 @@ public class TreasureCharms {
 	public static final ICharm LESSER_DECAY;
 	public static final ICharm DECAY;
 	public static final ICharm GREATER_DECAY;
-	public static final ICharm PERISHING_DECAY;
+    public static final ICharm PERISHING_DECAY;
+    
+    public static final ICharm DIRT_FILL;
+    
+    // TODO add charms
+    // TODO RUIN
+    // TODO CACTUS
+    // TODO DOUBLE_DAMAGE (curse get hit for 2x the damage)
+    // TODO DIRT (mound)
+    // TODO DIRT (inventory filler )
+    // TODO FIRE RESISTENCE
+    // TODO LIFESTRIKE
 
 	//    @Deprecated
 	//	public static final Map<String, ICharm> REGISTRY = new HashMap<>();
@@ -118,6 +129,8 @@ public class TreasureCharms {
 		DECAY = new Charm.Builder(new ResourceLocation(Treasure.MODID, "decay"), CharmType.DECAY.getName(), 2, DecayCharm.class).withValue(50.0).build();
 		GREATER_DECAY = new Charm.Builder(new ResourceLocation(Treasure.MODID, "greater_decay"), CharmType.DECAY.getName(), 3, DecayCharm.class).withValue(100.0).build();
 		PERISHING_DECAY = new Charm.Builder(new ResourceLocation(Treasure.MODID, "perishing_decay"), CharmType.DECAY.getName(), 4, DecayCharm.class).withValue(200.0).build();
+
+        DIRT_FILL = new Charm.Builder(new ResourceLocation(Treasure.MODID, "dirt_fill_1"), "dirt_fill", 1, DirtFillCharm.class).withValue(100.0).build();
 
 		TreasureCharmRegistry.register(LESSER_HEALING);
 		TreasureCharmRegistry.register(HEALING);
@@ -201,6 +214,8 @@ public class TreasureCharms {
 		//		REGISTRY.put(LESSER_DECAY.getName(), LESSER_DECAY);
 		//		REGISTRY.put(DECAY.getName(), DECAY);
 		//		REGISTRY.put(GREATER_DECAY.getName(), GREATER_DECAY);
-		//		REGISTRY.put(PERISHING_DECAY.getName(), PERISHING_DECAY);
+        //		REGISTRY.put(PERISHING_DECAY.getName(), PERISHING_DECAY);
+        
+        TreasureCharmRegistry.register(DIRT_FILL);
 	}
 }

@@ -6,10 +6,15 @@ package com.someguyssoftware.treasure2.eventhandler;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import static com.someguyssoftware.treasure2.Treasure.logger;
+
+import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.ICharmCapability;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.item.KeyItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.item.charm.ICharmable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -73,8 +78,63 @@ public class AnvilEventHandler {
 					event.setOutput(outputItem);
 				}
 			}
-		}
-	}
+        }
+        else if (leftItemStack.getItem() instanceof ICharmable && rightItemStack.getItem() instanceof GemItem) {
+            if (addSlotsToCharmable(leftItemStack, gemItemStack)) {
+                event.setOutput(leftItemStack);
+            }
+            else {
+                // TODO cancel event ?
+            }
+        }
+        else if (leftItemStack.getItem() instanceof ICharmable && rightItemStack.getItem() instanceof ICharmed) {
+            if (addCharmsToCharmable(leftItemStack, rightItemStack)) {
+                event.setOutput(leftItemStack);
+            }
+        }
+    }
+
+    /**
+     * 
+     * @param charmableStack
+     * @param gemItem
+     */
+    public void addSlotsToCharmable(ItemStack charmableStack, ItemStack gemStack) {
+        
+        if (charmableStack.hasCapability(CharmCapabilityProvider.CHARMABLE_CAPABILITY, null)) {
+            ICharmableCapability charmableCap = charmableStack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+            // check is slots available
+            ICharmable charmableItem = (ICharmable)charmableStack.getItem();
+            if (charmableItem.getMaxSlots() > 0 && charmableCap.getSlots() < charmableItem.getMaxSlots()) {
+                // add a slot to the charmable stack
+                charmableCap.setSlots(charmableCap.getSlots() + 1);
+            }
+        }
+
+    }
+
+    /**
+     * 
+     * @param charmableStack
+     * @param charmedStack
+     */
+    public void addCharmsToCharmable(ItemStack charmableStack, ItemStack charmedStack) {
+                
+        if (charmableStack.hasCapability(CharmCapabilityProvider.CHARMABLE_CAPABILITY, null)) {
+            ICharmableCapability charmableCap = charmableStack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+            ICharmCapability charmedCap = charmableStack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
+            ICharmCapability soureCharmedCap = charmedStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+            // check is slots available
+            ICharmable charmableItem = (ICharmable)charmableStack.getItem();
+            if (charmableItem.getMaxSlots() > 0 && charmableCap.getSlots() > 0 && sourceCharmedCap.getCharmInstances().size() > 0) {
+                // TODO add charm to charmable
+                int freeSlots = charmableItem.getMaxSlots() - charmableCap.getSlots();
+                for (int x = 0; x < Math.min(freeSlots, sourceCharmedCap.getCharmInstances().size()); x++) {
+                    charmedCap.getCharmInstances().add(sourceCharmedCap.get(x));
+                }
+            }
+        }
+    }
 
 	/**
 	 * @return the mod

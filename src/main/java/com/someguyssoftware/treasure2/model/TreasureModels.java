@@ -87,20 +87,6 @@ public class TreasureModels {
 
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WISHING_WELL_BLOCK));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.DESERT_WISHING_WELL_BLOCK));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FOG_BLOCK));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.HIGH_FOG_BLOCK));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.MED_FOG_BLOCK));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.LOW_FOG_BLOCK));
-//		
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_FOG));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.HIGH_WITHER_FOG));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.MED_WITHER_FOG));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.LOW_WITHER_FOG));
-//
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.POISON_FOG));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.HIGH_POISON_FOG));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.MED_POISON_FOG));
-//		registerItemModel(Item.getItemFromBlock(TreasureBlocks.LOW_POISON_FOG));
 
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_LOG));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_BROKEN_LOG));
@@ -140,9 +126,16 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.MASTERS_POUCH);
 		
 		// ADORNMENTS
-		registerItemModel(TreasureItems.RING);
+        registerItemModel(TreasureItems.RING);
+        registerItemModel(TreasureItems.SILVER_SIGNET_RING);
+        registerItemModel(TreasureItems.ONYX_SILVER_SIGNET_RING);
 		registerItemModel(TreasureItems.GOLD_RING);
-		registerItemModel(TreasureItems.RUBY_GOLD_RING);
+        registerItemModel(TreasureItems.RUBY_GOLD_RING);
+        registerItemModel(TreasureItems.RUBY_GOLD_RING2);
+        registerItemModel(TreasureItems.EMERALD_GOLD_RING);
+        registerItemModel(TreasureItems.DIAMOND_GOLD_RING);
+        registerItemModel(TreasureItems.SAPPHIRE_GOLD_RING);
+        registerItemModel(TreasureItems.AMULET);
 		// PEARLS
 		registerItemModel(TreasureItems.WHITE_PEARL);
 		registerItemModel(TreasureItems.BLACK_PEARL);

@@ -65,9 +65,15 @@ public class TreasureItems {
 	public static CharmedCoinItem MIRTHAS_TORCH;
 
 	// adornments
-	public static Item RING;
-	public static Item GOLD_RING;
-	public static Item RUBY_GOLD_RING;
+    public static Item RING;
+    public static Item SILVER_SIGNET_RING;
+    public static Item ONYX_SILVER_SIGNET_RING;
+    public static Item GOLD_RING;
+    public static Item EMERALD_GOLD_RING;
+    public static Item RUBY_GOLD_RING;
+    public static Item RUBY_GOLD_RING2;
+    public static Item DIAMOND_GOLD_RING;
+    public static Item SAPPHIRE_GOLD_RING;
     public static Item AMULET;
     
 	// pearls
@@ -279,8 +285,16 @@ public class TreasureItems {
 		MIRTHAS_TORCH.setCreativeTab(Treasure.TREASURE_TAB);
 
 		// ADORNMENTS
-        RING = new Adornment(Treasure.MODID, "silver_ring", AdornmentType.RING).setMaxSlots(2);
-        GOLD_RING = new Adornment(Treasure.MODID, "gold_ring", AdornmentType.RING).setMaxSlots(2);
+        RING = new Adornment(Treasure.MODID, "silver_ring", AdornmentType.RING).setMaxSlots(2).setLevel(1);
+        SILVER_SIGNET_RING = new Adornment(Treasure.MODID, "silver_signet_ring", AdornmentType.RING).setMaxSlots(2).setLevel(1);
+        ONYX_SILVER_SIGNET_RING = new Adornment(Treasure.MODID, "onyx_silver_signet_ring", AdornmentType.RING).setMaxSlots(2).setLevel(2);
+
+        EMERALD_GOLD_RING = new Adornment(Treasure.MODID, "emerald_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(2);
+        RUBY_GOLD_RING2 = new Adornment(Treasure.MODID, "ruby_gold_ring2", AdornmentType.RING).setMaxSlots(2).setLevel(2);
+        DIAMOND_GOLD_RING = new Adornment(Treasure.MODID, "diamond_gold_ring", AdornmentType.RING).setMaxSlots(3).setLevel(4);
+        SAPPHIRE_GOLD_RING = new Adornment(Treasure.MODID, "sapphire_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(3);
+        GOLD_RING = new Adornment(Treasure.MODID, "gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(2);
+
         // TEMP
         RUBY_GOLD_RING = new Adornment(Treasure.MODID, "ruby_gold_ring", AdornmentType.RING) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
@@ -292,9 +306,9 @@ public class TreasureItems {
 				charmableCap.setCustomName("Mark's Ring of Power");
 				return provider;
 			}
-        }.setMaxSlots(2);
+        }.setMaxSlots(2).setLevel(2);
         
-        AMULET = new Adornment(Treasure.MODID, "amulet", AdornmentType.AMULET).setMaxSlots(4);
+        AMULET = new Adornment(Treasure.MODID, "amulet", AdornmentType.AMULET).setMaxSlots(4).setLevel(4);
 
 		// PEARLS
 		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.WHITE_PEARL_ID, Pearls.WHITE);
@@ -602,9 +616,16 @@ public class TreasureItems {
 					DWARVEN_TALISMAN,
 					ADEPHAGIAS_BOUNTY,
 					MIRTHAS_TORCH,
-					RING,
+                    RING,
+                    SILVER_SIGNET_RING,
+                    ONYX_SILVER_SIGNET_RING,
 					GOLD_RING,
-					RUBY_GOLD_RING,
+                    RUBY_GOLD_RING,
+                    RUBY_GOLD_RING2,
+                    EMERALD_GOLD_RING,
+                    DIAMOND_GOLD_RING,
+                    SAPPHIRE_GOLD_RING,
+                    AMULET,
 					WHITE_PEARL,
 					BLACK_PEARL,
 					WOOD_LOCK,

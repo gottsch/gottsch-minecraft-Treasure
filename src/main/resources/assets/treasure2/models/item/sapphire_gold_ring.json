@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "treasure2:items/adornments/ruby_gold_ring"
+        "layer0": "treasure2:items/adornments/sapphire_gold_ring"
     },
    "display": {
        "thirdperson_righthand": {

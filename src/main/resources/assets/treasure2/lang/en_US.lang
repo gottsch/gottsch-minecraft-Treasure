@@ -269,11 +269,31 @@ tooltip.charm.treasure2:decay=Decay [%s/%s]
 tooltip.charm.treasure2:greater_decay=Greater Decay [%s/%s]
 tooltip.charm.treasure2:perishing_decay=Perishing Decay [%s/%s]
 
+#charm levels (general)
+tooltip.charm.prefix.level1=Lesser
+tooltip.charm.prefix.level2=
+tooltip.charm.prefix.level3=Greater
+tooltip.charm.prefix.level4=Huge
+tooltip.charm.prefix.level5=Giant
+tooltip.charm.prefix.level6=Grand
+tooltip.charm.prefix.level8=Massive
+tooltip.charm.prefix.level9=Cyclopean
+tooltip.charm.prefix.level10=Brobdingnagian
+
+tooltip.charm.suffix.level11=of the Leviathan
+tooltip.charm.suffix.level12=of the Demogorgon
+tooltip.charm.suffix.level13=of the Whale
+
+# charm levels (healing)
+tooltip.charm.shielding.prefix.level1=Durable
+tooltip.charm.shielding.prefix.level2=Stout
+tooltip.charm.shielding.prefix.level3=Hardened
+tooltip.charm.shielding.prefix.level4=Powerful
+
 tooltip.painting.name=%s
 tooltip.painting.collection=Collection: %s
 tooltip.painting.issue=Issue: %s/%s
 tooltip.painting.artist=by %s
-
 
 #gui
 display.wood_chest.name=Wood Chest
@@ -290,9 +310,6 @@ display.wither_chest.name=Wither Chest
 display.skull_chest.name=Skull Chest
 display.gold_skull_chest.name=Golden Skull Chest
 display.cauldron_chest.name=Cauldron Chest
-#display.whale_bone_pirate_chest.name=Whale Bone Pirate Chest
-#display.clam_chest.name=Clam
-#display.oyster_chest.name=Oyster
 display.spider_chest.name=Spider Chest
 display.viking_chest.name=Viking Chest
 display.cardboard_box.name=Cardboard Box

@@ -7,4 +7,6 @@ package com.someguyssoftware.treasure2.item;
  */
 public interface IAdornment {
 
+    public int getLevel();
+    public IAdornment setLevel(int level);
 }

@@ -42,6 +42,8 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 	 */
 	private int maxSlots = 2;
 
+    private int level = 1;
+
 	/**
 	 * 
 	 * @param modID
@@ -117,5 +119,16 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 	public Adornment setMaxSlots(int maxSlots) {
 		this.maxSlots = maxSlots;
 		return this;
-	}
+    }
+    
+    @Override
+    public int getLevel() {
+        return level;
+    }
+
+    @Override
+    public IAdornment setLevel(int level) {
+        this.level = level;
+        return this;
+    }
 }
