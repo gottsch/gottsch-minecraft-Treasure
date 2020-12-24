@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 
@@ -26,7 +27,7 @@ public class DirtFillCharmData extends CharmData {
 	public DirtFillCharmData() {
 		super();
 	}
-	
+
 	/**
 	 * 
 	 * @param charm
@@ -35,10 +36,9 @@ public class DirtFillCharmData extends CharmData {
 		this();
 		setValue(charm.getMaxValue());
 		setDuration(charm.getMaxDuration());
-        setPercent(charm.getMaxPercent());
-        // setLastCoords();
+		setPercent(charm.getMaxPercent());
 	}
-	
+
 	/**
 	 * 
 	 * @param value
@@ -51,6 +51,18 @@ public class DirtFillCharmData extends CharmData {
 		setDuration(duration);
 		setPercent(percent);
 	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @param duration
+	 * @param percent
+	 * @param coords
+	 */
+	public DirtFillCharmData(double value, int duration, double percent, ICoords coords) {
+		this(value, duration, percent);
+		setLastCoords(coords);
+	}
 
 	/**
 	 * 
@@ -58,17 +70,15 @@ public class DirtFillCharmData extends CharmData {
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);		
-		NBTTagList list = nbt.getTagList("lastCoords", 10);
-//		Treasure.logger.debug("illumination tag list size -> {}", list.tagCount());
-		for (int i = 0; i < list.tagCount(); i++) {
-			NBTTagCompound tag = list.getCompoundTagAt(i);
-			ICoords coords = ICoords.readFromNBT(tag);
-			if (coords != null) {
-				getCoordsList().add(coords);
-			}
-		}
+		
+		if (!nbt.hasKey("lastCoords")) {
+			return;
+		}		
+		NBTTagCompound coordsTag = (NBTTagCompound) nbt.getTag("lastCoords");
+		ICoords lastCoords = new Coords(coordsTag.getInteger("x"), coordsTag.getInteger("y"), coordsTag.getInteger("z"));
+		this.setLastCoords(lastCoords);
 	}
-	
+
 	/**
 	 * 
 	 * @param tag
@@ -78,12 +88,13 @@ public class DirtFillCharmData extends CharmData {
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		nbt = super.writeToNBT(nbt);
 		try {
-					// create a new nbt
-					NBTTagCompound coordsTag = new NBTTagCompound();
-					coords.writeToNBT(coordsTag);
-			
+			// create a new nbt
+			NBTTagCompound coordsTag = new NBTTagCompound();
+			coordsTag.setInteger("x", this.getLastCoords().getX());
+			coordsTag.setInteger("y", this.getLastCoords().getY());
+			coordsTag.setInteger("z", this.getLastCoords().getZ());
 			nbt.removeTag("lastCoords");
-			nbt.setTag("lastCoords", list);
+			nbt.setTag("lastCoords", coordsTag);
 		}
 		catch(Exception e) {
 			Treasure.logger.error("Unable to write state to NBT:", e);
@@ -109,14 +120,14 @@ public class DirtFillCharmData extends CharmData {
 
 	@Override
 	public String toString() {
-		return "IlluminationCharmData [" + /*coordsList=" + coordsList + ",*/ " toString()=" + super.toString() + "]";
+		return "DirtFillCharmData [lastCoords=" + lastCoords + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((coordsList == null) ? 0 : coordsList.hashCode());
+		result = prime * result + ((lastCoords == null) ? 0 : lastCoords.hashCode());
 		return result;
 	}
 
@@ -128,13 +139,12 @@ public class DirtFillCharmData extends CharmData {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		IlluminationCharmData other = (IlluminationCharmData) obj;
-		if (coordsList == null) {
-			if (other.coordsList != null)
+		DirtFillCharmData other = (DirtFillCharmData) obj;
+		if (lastCoords == null) {
+			if (other.lastCoords != null)
 				return false;
-		} else if (!coordsList.equals(other.coordsList))
+		} else if (!lastCoords.equals(other.lastCoords))
 			return false;
 		return true;
 	}
-
 }
