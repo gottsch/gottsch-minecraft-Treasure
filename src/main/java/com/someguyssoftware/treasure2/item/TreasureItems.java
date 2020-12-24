@@ -68,6 +68,7 @@ public class TreasureItems {
     public static Item RING;
     public static Item SILVER_SIGNET_RING;
     public static Item ONYX_SILVER_SIGNET_RING;
+    public static Item ONYX_GOLD_RING;
     public static Item GOLD_RING;
     public static Item EMERALD_GOLD_RING;
     public static Item RUBY_GOLD_RING;
@@ -289,10 +290,11 @@ public class TreasureItems {
         SILVER_SIGNET_RING = (Item) new Adornment(Treasure.MODID, "silver_signet_ring", AdornmentType.RING).setMaxSlots(2).setLevel(1);
         ONYX_SILVER_SIGNET_RING = (Item) new Adornment(Treasure.MODID, "onyx_silver_signet_ring", AdornmentType.RING).setMaxSlots(2).setLevel(2);
 
+        ONYX_GOLD_RING = (Item) new Adornment(Treasure.MODID, "onyx_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(2);
         EMERALD_GOLD_RING = (Item) new Adornment(Treasure.MODID, "emerald_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(2);
         RUBY_GOLD_RING2 = (Item) new Adornment(Treasure.MODID, "ruby_gold_ring2", AdornmentType.RING).setMaxSlots(2).setLevel(2);
-        DIAMOND_GOLD_RING = (Item) new Adornment(Treasure.MODID, "diamond_gold_ring", AdornmentType.RING).setMaxSlots(3).setLevel(4);
-        SAPPHIRE_GOLD_RING = (Item) new Adornment(Treasure.MODID, "sapphire_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(3);
+        DIAMOND_GOLD_RING = (Item) new Adornment(Treasure.MODID, "diamond_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(3);
+        SAPPHIRE_GOLD_RING = (Item) new Adornment(Treasure.MODID, "sapphire_gold_ring", AdornmentType.RING).setMaxSlots(3).setLevel(4);
         GOLD_RING = (Item) new Adornment(Treasure.MODID, "gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(2);
 
         // TEMP
@@ -619,6 +621,7 @@ public class TreasureItems {
                     RING,
                     SILVER_SIGNET_RING,
                     ONYX_SILVER_SIGNET_RING,
+                    ONYX_GOLD_RING,
 					GOLD_RING,
                     RUBY_GOLD_RING,
                     RUBY_GOLD_RING2,

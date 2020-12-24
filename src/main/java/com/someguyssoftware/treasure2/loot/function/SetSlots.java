@@ -38,35 +38,51 @@ import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 
 /**
- * @author Mark Gottschling on May 1, 2020
- * @param <ICharmType>
+ * 
+ * @author Mark Gottschling on Dec 23, 2020
  *
  */
-public class CharmRandomly extends LootFunction {
-	private List<ICharm> charms;
+public class SetSlots extends LootFunction {
+	private Integer slots;
 
 	/**
 	 * 
 	 * @param conditions
-	 * @param charms
+	 * @param slots
 	 */
-	public CharmRandomly(LootCondition[] conditions, @Nullable List<ICharm> charms) {
+	public SetSlots(LootCondition[] conditions, @Nullable Integer slots) {
 		super(conditions);
-		this.charms = charms == null ? Collections.emptyList() : charms;
+		this.slots = slots == null ? 99 : slots;
 	}
 
 	@Override
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
-		ICharm charm = null;
 
-        // TODO update to check for CharmableCapability too ... then would have to check for available slots
-        // TODO add property for number of charms
 		// ensure that the stack has charm capabilities
 		if (stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
 			ICharmCapability provider = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 			List<ICharmInstance> charmInstances = provider.getCharmInstances();
 
-			if (this.charms.isEmpty()) {
+			if (!this.charms.isEmpty()) {
+				for (ICharm charm : charms) {
+					// ensure that the item doesn't already have the same charm or same type or exceeded the maximum charms.
+					boolean hasCharm = false;
+					for (ICharmInstance instance : charmInstances) {
+						if (instance.getCharm().getType().equalsIgnoreCase(charm.getType()) ||
+								instance.getCharm().getName().equals(charm.getName())) {
+							Treasure.logger.debug("item already has charm -> {}", charm.getName());
+							hasCharm = true;
+							break;
+						}
+					}
+					if (!hasCharm) {
+						Treasure.logger.debug("giving item charm -> {}", charm.getName());
+						charmInstances.add(charm.createInstance());
+					}
+				}
+			}
+			else {
+				// randomly add a charm (in case loot table is misconfigured)
 				List<ICharm> tempCharms = new ArrayList<>();
 				// if charms list is empty, create a default list of minor charms
 				for (ICharm c : TreasureCharmRegistry.values()) {
@@ -75,26 +91,9 @@ public class CharmRandomly extends LootFunction {
 					}
 				}
 				if (!tempCharms.isEmpty()) {
-					// select a charm randomly
-					charm = tempCharms.get(rand.nextInt(tempCharms.size()));
-				}
-			}
-			else {
-				// select a charm randomly
-				charm =this.charms.get(rand.nextInt(this.charms.size()));
-				Treasure.logger.debug("selected charm for item -> {}", charm.getName().toString());
-			}
-			if (charm != null) {
-				// ensure that the item doesn't already have the same charm or same type or exceeded the maximum charms.
-				boolean hasCharm = false;
-				for (ICharmInstance instance : charmInstances) {
-					if (instance.getCharm().getType().equalsIgnoreCase(charm.getType()) ||
-							instance.getCharm().getName().equals(charm.getName())) {
-								hasCharm = true;
-								break;
-							}
-				}
-				if (!hasCharm) {
+					// select a charm randomly					
+					ICharm charm = tempCharms.get(rand.nextInt(tempCharms.size()));
+					Treasure.logger.debug("giving item a random charm -> {}", charm.getName());
 					charmInstances.add(charm.createInstance());
 				}
 			}
@@ -104,53 +103,44 @@ public class CharmRandomly extends LootFunction {
 
 	/**
 	 * 
-	 * @author Mark Gottschling on May 1, 2020
+	 * @author Mark Gottschling on May 2, 2020
 	 *
 	 */
-	public static class Serializer extends LootFunction.Serializer<CharmRandomly> {
+	public static class Serializer extends LootFunction.Serializer<SetSlots> {
 		public Serializer() {
-			super(new ResourceLocation("treasure2:charm_randomly"), CharmRandomly.class);
+			super(new ResourceLocation("treasure2:set_slots"), SetSlots.class);
 		}
 
 		/**
 		 * 
 		 */
-		public void serialize(JsonObject json, CharmRandomly value, JsonSerializationContext context) {
-            if (!value.charms.isEmpty()) {
-                JsonArray jsonArray = new JsonArray();
-                for (ICharm charm : value.charms) {
-                    jsonArray.add(new JsonPrimitive(charm.getName().toString()));
-                }
-                json.add("charms", jsonArray);
-            }
+		public void serialize(JsonObject json, SetSlots value, JsonSerializationContext context) {
+			if (value.slots != null) {
+				json.add("slots", new JsonPrimitive(value.slots));
+			}
 		}
 
 		/**
-		 * 
+		 * TODO see setMeta
 		 */
-		public CharmRandomly deserialize(JsonObject json, JsonDeserializationContext deserializationContext,
+		public SetCharms deserialize(JsonObject json, JsonDeserializationContext deserializationContext,
 				LootCondition[] conditionsIn) {
-			Map<String, ICharm> charmsByType = new HashMap<>(10);
-			List<ICharm> list = Lists.<ICharm>newArrayList();
-
-			if (json.has("charms")) {
+			
+			if (json.has("slots")) {
 				for (JsonElement element : JsonUtils.getJsonArray(json, "charms")) {
 					String charmName = JsonUtils.getString(element, "charm");
 					Optional<ICharm> charm = TreasureCharmRegistry.get(ResourceLocationUtil.create(charmName));
 
-					if (!charm.isPresent()) {
-						Treasure.logger.warn("Unknown charm '{}'", charmName);
-					}
-
-					// add to the map to prevent duplicates of same charm
+					// add to the map
 					if (!charmsByType.containsKey(charm.get().getType())) {
 						charmsByType.put(charm.get().getType(), charm.get());
 						// add to the list of charms
 						list.add(charm.get());
+						Treasure.logger.debug("adding charm to charm list -> {}", charm.get().getName());
 					}
 				}
 			}
-			return new CharmRandomly(conditionsIn, list);
+			return new SetCharms(conditionsIn, list);
 		}
 	}
 }

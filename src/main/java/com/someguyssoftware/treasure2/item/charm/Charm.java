@@ -22,9 +22,7 @@ import net.minecraft.world.World;
  */
 public abstract class Charm implements ICharm {
 	public static final int SECOND_IN_TICKS = 20;
-	// TODO revisit the name.  it should be a ResourceLocation so it can be expanded upon by modders.
-	// TODO revisit how it is NBT read/write with legacy support
-	// TODO then update TreasureCharmRegistry
+
 	private ResourceLocation name;
 	private String type;
 	private int level;

@@ -73,7 +73,9 @@ public class DirtFillCharm extends Charm {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
-		TextFormatting color = TextFormatting.DARK_RED;
+        TextFormatting color = TextFormatting.DARK_RED;
+        // check for specific name prefix (levels 1-10),  
+        // tooltip.charm.shielding.prefix.level[x], else look for tooltip.charm.prefix.level[x] + tooltip.charm.[type]
 		tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toString().toLowerCase(), 
 				String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
 				String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));

@@ -60,13 +60,13 @@ public class TreasureCharms {
     public static final ICharm PERISHING_DECAY;
     
     public static final ICharm DIRT_FILL;
-    
+    public static final ICharm DIRT_FILL_2;
     // TODO add charms
     // TODO RUIN
     // TODO CACTUS
     // TODO DOUBLE_DAMAGE (curse get hit for 2x the damage)
     // TODO DIRT (mound)
-    // TODO DIRT (inventory filler )
+    // [x] TODO DIRT (inventory filler )
     // TODO FIRE RESISTENCE
     // TODO LIFESTRIKE
 
@@ -131,6 +131,7 @@ public class TreasureCharms {
 		PERISHING_DECAY = new Charm.Builder(new ResourceLocation(Treasure.MODID, "perishing_decay"), CharmType.DECAY.getName(), 4, DecayCharm.class).withValue(200.0).build();
 
         DIRT_FILL = new Charm.Builder(new ResourceLocation(Treasure.MODID, "dirt_fill_1"), "dirt_fill", 1, DirtFillCharm.class).withValue(100.0).build();
+        DIRT_FILL_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "dirt_fill_2"), "dirt_fill", 2, DirtFillCharm.class).withValue(150.0).build();
 
 		TreasureCharmRegistry.register(LESSER_HEALING);
 		TreasureCharmRegistry.register(HEALING);
@@ -145,42 +146,17 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(GRAND_ABSOLUTE_SHIELDING);
 		TreasureCharmRegistry.register(WHALE_ABSOLUTE_SHIELDING);
 
-		// register all charms
-		//		REGISTRY.put(LESSER_HEALING.getName(), LESSER_HEALING);
-		//		REGISTRY.put(HEALING.getName(), HEALING);
-		//		REGISTRY.put(GREATER_HEALING.getName(), GREATER_HEALING);
-		//		REGISTRY.put(GRAND_HEALING.getName(), GRAND_HEALING);
-		//		REGISTRY.put(SALANDAARS_CONVALESCENCE.getName(), SALANDAARS_CONVALESCENCE);
-
 		TreasureCharmRegistry.register(DURABLE_SHIELDING);
 		TreasureCharmRegistry.register(STOUT_SHIELDING);
 		TreasureCharmRegistry.register(HARDENED_SHIELDING);
 		TreasureCharmRegistry.register(POWERFUL_SHIELDING);
 		TreasureCharmRegistry.register(ARMADILLO_SHIELDING);
 
-		//		REGISTRY.put(DURABLE_SHIELDING.getName(), DURABLE_SHIELDING);
-		//		REGISTRY.put(STOUT_SHIELDING.getName(), STOUT_SHIELDING);
-		//		REGISTRY.put(HARDENED_SHIELDING.getName(), HARDENED_SHIELDING);
-		//		REGISTRY.put(POWERFUL_SHIELDING.getName(), POWERFUL_SHIELDING);
-		//		REGISTRY.put(ARMADILLO_SHIELDING.getName(), ARMADILLO_SHIELDING);
-
-		//		REGISTRY.put(SMALL_ABSOLUTED_SHIELDING.getName(), SMALL_ABSOLUTE_SHIELDING);
-		//		REGISTRY.put(MEDIUM_ABSOLUTED_SHIELDING.getName(), MEDIUM_ABSOLUTE_SHIELDING);
-		//		REGISTRY.put(LARGE_ABSOLUTED_SHIELDING.getName(), LARGE_ABSOLUTE_SHIELDING);
-		//		REGISTRY.put(GRAND_ABSOLUTED_SHIELDING.getName(), GRAND_ABSOLUTE_SHIELDING);
-		//		REGISTRY.put(WHALE_ABSOLUTED_SHIELDING.getName(), WHALE_ABSOLUTE_SHIELDING);
-
-		TreasureCharmRegistry.register(FULLNESS);
+        TreasureCharmRegistry.register(FULLNESS);
 		TreasureCharmRegistry.register(SATED_FULLNESS);
 		TreasureCharmRegistry.register(OVERFED_FULLNESS);
 		TreasureCharmRegistry.register(GORGED_FULLNESS);
 		TreasureCharmRegistry.register(BURSTING_FULLNESS);
-
-		//		REGISTRY.put(FULLNESS.getName(), FULLNESS);
-		//		REGISTRY.put(SATED_FULLNESS.getName(), SATED_FULLNESS);
-		//		REGISTRY.put(OVERFED_FULLNESS.getName(), OVERFED_FULLNESS);
-		//		REGISTRY.put(GORGED_FULLNESS.getName(), GORGED_FULLNESS);
-		//		REGISTRY.put(BURSTING_FULLNESS.getName(), BURSTING_FULLNESS);
 
 		TreasureCharmRegistry.register(MINOR_HARVESTING);
 		TreasureCharmRegistry.register(HARVESTING);
@@ -188,34 +164,18 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(GRAND_HARVESTING);
 		TreasureCharmRegistry.register(GLORIOUS_HARVESTING);
 
-		//		REGISTRY.put(MINOR_HARVESTING.getName(), MINOR_HARVESTING);
-		//		REGISTRY.put(HARVESTING.getName(), HARVESTING);
-		//		REGISTRY.put(MAJOR_HARVESTING.getName(), MAJOR_HARVESTING);
-		//		REGISTRY.put(GRAND_HARVESTING.getName(), GRAND_HARVESTING);
-		//		REGISTRY.put(GLORIOUS_HARVESTING.getName(), GLORIOUS_HARVESTING);
-
 		TreasureCharmRegistry.register(LESSER_ILLUMINATION);
 		TreasureCharmRegistry.register(ILLUMINATION);
 		TreasureCharmRegistry.register(GREATER_ILLUMINATION);
 		TreasureCharmRegistry.register(GRAND_ILLUMINATION);
 		TreasureCharmRegistry.register(GLORIOUS_ILLUMINATION);
 
-		//		REGISTRY.put(LESSER_ILLUMINATION.getName(), LESSER_ILLUMINATION);
-		//		REGISTRY.put(ILLUMINATION.getName(), ILLUMINATION);
-		//		REGISTRY.put(GREATER_ILLUMINATION.getName(), GREATER_ILLUMINATION);
-		//		REGISTRY.put(GRAND_ILLUMINATION.getName(), GRAND_ILLUMINATION);
-		//		REGISTRY.put(GLORIOUS_ILLUMINATION.getName(), GLORIOUS_ILLUMINATION);
-
 		TreasureCharmRegistry.register(LESSER_DECAY);
 		TreasureCharmRegistry.register(DECAY);
 		TreasureCharmRegistry.register(GREATER_DECAY);
 		TreasureCharmRegistry.register(PERISHING_DECAY);
-
-		//		REGISTRY.put(LESSER_DECAY.getName(), LESSER_DECAY);
-		//		REGISTRY.put(DECAY.getName(), DECAY);
-		//		REGISTRY.put(GREATER_DECAY.getName(), GREATER_DECAY);
-        //		REGISTRY.put(PERISHING_DECAY.getName(), PERISHING_DECAY);
         
         TreasureCharmRegistry.register(DIRT_FILL);
+        TreasureCharmRegistry.register(DIRT_FILL_2);
 	}
 }

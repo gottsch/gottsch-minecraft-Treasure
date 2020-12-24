@@ -9,4 +9,7 @@ public interface IAdornment {
 
     public int getLevel();
     public IAdornment setLevel(int level);
+
+    public int getMaxSlots();
+    public void setMaxSlots(int slots);
 }
