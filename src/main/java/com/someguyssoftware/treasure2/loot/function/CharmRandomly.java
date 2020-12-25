@@ -22,10 +22,13 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.item.charm.CharmLevel;
 import com.someguyssoftware.treasure2.item.charm.ICharm;
 import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
+import com.someguyssoftware.treasure2.item.charm.ICharmable;
+import com.someguyssoftware.treasure2.item.charm.ICharmed;
 import com.someguyssoftware.treasure2.item.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
@@ -62,9 +65,16 @@ public class CharmRandomly extends LootFunction {
         // TODO update to check for CharmableCapability too ... then would have to check for available slots
         // TODO add property for number of charms
 		// ensure that the stack has charm capabilities
-		if (stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
-			ICharmCapability provider = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-			List<ICharmInstance> charmInstances = provider.getCharmInstances();
+		ICharmCapability charmCap = null;
+		if (stack.getItem() instanceof ICharmed) {
+			charmCap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+		}
+		else if (stack.getItem() instanceof ICharmable) {
+			charmCap = stack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
+		}
+		if (charmCap != null) {
+//			provider = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+			List<ICharmInstance> charmInstances = charmCap.getCharmInstances();
 
 			if (this.charms.isEmpty()) {
 				List<ICharm> tempCharms = new ArrayList<>();

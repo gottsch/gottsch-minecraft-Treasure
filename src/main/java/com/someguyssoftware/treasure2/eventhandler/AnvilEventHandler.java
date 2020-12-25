@@ -84,7 +84,8 @@ public class AnvilEventHandler {
         }
         else if (leftItemStack.getItem() instanceof ICharmable && rightItemStack.getItem() instanceof GemItem) {
             if (addSlotsToCharmable(leftItemStack, rightItemStack)) {
-                event.setOutput(leftItemStack);
+            	event.setCost(1);
+                event.setOutput(leftItemStack); // TODO create a new item
             }
             else {
                 // TODO cancel event ?
@@ -92,6 +93,7 @@ public class AnvilEventHandler {
         }
         else if (leftItemStack.getItem() instanceof ICharmable && rightItemStack.getItem() instanceof ICharmed) {
             if (addCharmsToCharmable(leftItemStack, rightItemStack)) {
+            	event.setCost(1);
                 event.setOutput(leftItemStack);
             }
         }

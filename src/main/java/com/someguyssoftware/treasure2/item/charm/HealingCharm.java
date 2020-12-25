@@ -60,31 +60,34 @@ public class HealingCharm extends Charm {
         // tooltip.charm.shielding.prefix.level[x], else look for tooltip.charm.prefix.level[x] + tooltip.charm.[type]
 
         // first check for mod specific label
-        String label = I18n.translateToLocalFormatted("tooltip.charm." + getName().toString().toLowerCase());
+        String label = I18n.translateToLocalFormatted("tooltip.charm." + getName().toString().toLowerCase(),
+				String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
         String prefix = "";
         String suffix = "";
         String type = "";
-        if (label.isBlank()) {
-            type = I18n.translateToLocalFormatted("tooltip.charm." + getName().toString().toLowerCase());
+        
+        if (label.isEmpty()) {
+            type = I18n.translateToLocalFormatted("tooltip.charm." + getType(), 
+            		String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+    				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
             if (this.getLevel() <= 10) {
                 prefix = I18n.translateToLocalFormatted("tooltip.charm." + getType() + ".prefix.level" + String.valueOf(this.getLevel()));
-                if (prefix.isBlank()) {
+                if (prefix.isEmpty()) {
                     I18n.translateToLocalFormatted("tooltip.charm.prefix.level" + String.valueOf(this.getLevel()));
                 }
                 label = prefix + " " + type;
             }
             else {
                 suffix = I18n.translateToLocalFormatted("tooltip.charm." + getType() + ".suffix.level" + String.valueOf(this.getLevel()));
-                if (suffix.isBlank()) {
+                if (suffix.isEmpty()) {
                     I18n.translateToLocalFormatted("tooltip.charm.suffix.level" + String.valueOf(this.getLevel()));
                 }
             }
             label = type + " " + suffix;
         }
         
-		tooltip.add("  " + color + label,
-				String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
-				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
+		tooltip.add("  " + color + label);
 		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.healing_rate"));
 	}
 }

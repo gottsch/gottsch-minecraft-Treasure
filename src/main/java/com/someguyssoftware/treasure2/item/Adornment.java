@@ -99,7 +99,8 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 
 	// TODO use capability custom name here
 	public String getHighlightTip( ItemStack item, String displayName ) {
-		return displayName;
+//		return displayName;
+		return "Mark's Test Ring";
 	}
 
 	// TODO add subtypes
@@ -116,7 +117,7 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 		return maxSlots;
 	}
 
-	public Adornment setMaxSlots(int maxSlots) {
+	public IAdornment setMaxSlots(int maxSlots) {
 		this.maxSlots = maxSlots;
 		return this;
     }

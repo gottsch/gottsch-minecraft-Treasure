@@ -11,5 +11,5 @@ public interface IAdornment {
     public IAdornment setLevel(int level);
 
     public int getMaxSlots();
-    public void setMaxSlots(int slots);
+    public IAdornment setMaxSlots(int slots);
 }

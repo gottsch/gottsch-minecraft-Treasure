@@ -117,6 +117,8 @@ item.treasure2:masters_pouch.name=Master's Pouch
 item.treasure2:silver_ring.name=Silver Ring
 item.treasure2:gold_ring.name=Gold Ring
 item.treasure2:ruby_gold_ring.name=Gold Ring
+item.treasure2:ruby_gold_ring2.name=Gold Ring
+item.treasure2:onyx_gold_ring.name=Gold Ring
 
 item.treasure2:key_ring.name=Key Ring
 item.treasure2:wood_key.name=Wood Key
@@ -222,7 +224,7 @@ tooltip.thiefs_lock_pick.specials=Opens COMMON (%s%%), UNCOMMON (%s%%) and SCARC
 tooltip.jewelled_key.specials=Opens any lock in GEMS category
 
 tooltip.charm.healing_rate=- heals 0.5 hearts/sec
-tooltip.charm.healing=Healing
+tooltip.charm.healing=Healing [%s/%s]
 #tooltip.charm.treasure2:lesser_healing=Lesser Healing [%s/%s]
 tooltip.charm.treasure2:healing=Healing [%s/%s]
 tooltip.charm.treasure2:greater_healing=Greater Healing [%s/%s]

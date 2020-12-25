@@ -303,6 +303,7 @@ public class TreasureItems {
 				CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
 				cap.getCharmInstances().add(TreasureCharms.DIRT_FILL.createInstance());
+				cap.getCharmInstances().add(TreasureCharms.LESSER_HEALING.createInstance());
 				ICharmableCapability charmableCap = provider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
 				charmableCap.setSlots(2);
 				charmableCap.setCustomName("Mark's Ring of Power");

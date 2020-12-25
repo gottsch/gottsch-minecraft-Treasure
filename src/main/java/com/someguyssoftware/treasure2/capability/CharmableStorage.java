@@ -25,7 +25,9 @@ public class CharmableStorage implements Capability.IStorage<ICharmableCapabilit
 		NBTTagCompound mainTag = new NBTTagCompound();
 		try {
 			mainTag.setInteger("slots", charmCapabilityInstance.getSlots());
-			mainTag.setString("customName", charmCapabilityInstance.getCustomName());
+			if (charmCapabilityInstance.getCustomName() != null) {
+				mainTag.setString("customName", charmCapabilityInstance.getCustomName());
+			}
 		} catch (Exception e) {
 			Treasure.logger.error("Unable to write instance to NBT:", e);
 		}
@@ -39,9 +41,11 @@ public class CharmableStorage implements Capability.IStorage<ICharmableCapabilit
 		if (nbt instanceof NBTTagCompound) {
 			NBTTagCompound tag = (NBTTagCompound) nbt;
                 int slots = tag.getInteger(SLOTS_TAG);
-               String customName = tag.getString(CUSTOM_NAME_TAG);
-               adornmentCapabilityInstance.setSlots(slots);
-               adornmentCapabilityInstance.setCustomName(customName);
+                adornmentCapabilityInstance.setSlots(slots);
+                if (tag.hasKey(CUSTOM_NAME_TAG)) {
+                	String customName = tag.getString(CUSTOM_NAME_TAG);
+                    adornmentCapabilityInstance.setCustomName(customName);
+                }
 		} else {
 			Treasure.logger.warn("Not a tag compound!");
 		}
