@@ -90,11 +90,13 @@ public class DirtFillCharmData extends CharmData {
 		try {
 			// create a new nbt
 			NBTTagCompound coordsTag = new NBTTagCompound();
-			coordsTag.setInteger("x", this.getLastCoords().getX());
-			coordsTag.setInteger("y", this.getLastCoords().getY());
-			coordsTag.setInteger("z", this.getLastCoords().getZ());
-			nbt.removeTag("lastCoords");
-			nbt.setTag("lastCoords", coordsTag);
+			if (this.getLastCoords() != null) {
+				coordsTag.setInteger("x", this.getLastCoords().getX());
+				coordsTag.setInteger("y", this.getLastCoords().getY());
+				coordsTag.setInteger("z", this.getLastCoords().getZ());
+				nbt.removeTag("lastCoords");
+				nbt.setTag("lastCoords", coordsTag);
+			}
 		}
 		catch(Exception e) {
 			Treasure.logger.error("Unable to write state to NBT:", e);

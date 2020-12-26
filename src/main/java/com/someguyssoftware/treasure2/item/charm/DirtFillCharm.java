@@ -89,7 +89,7 @@ public class DirtFillCharm extends Charm {
 	 */
     private List<Integer> getEmptySlotsRandomized(IInventory inventory, Random rand) {
         List<Integer> list = Lists.<Integer>newArrayList();
-        for (int i = 0; i < inventory.getSizeInventory(); ++i) {
+        for (int i = 0; i < Math.min(36, inventory.getSizeInventory()); ++i) {
             if (inventory.getStackInSlot(i).isEmpty()) {
                 list.add(Integer.valueOf(i));
             }
