@@ -52,7 +52,7 @@ public class HarvestingCharm extends Charm {
 							continue;
 						}
 					} else {
-						if (stack.getItem() instanceof ICharmed || stack.getItem() instanceof IPouch) {
+						if (stack.getItem() instanceof ICharmed || stack.getItem() instanceof ICharmable || stack.getItem() instanceof IPouch) {
 							Treasure.logger.debug("skipped item because it is a charm or pouch.");
 							continue;
 						}

@@ -116,9 +116,11 @@ item.treasure2:masters_pouch.name=Master's Pouch
 
 item.treasure2:silver_ring.name=Silver Ring
 item.treasure2:gold_ring.name=Gold Ring
-item.treasure2:ruby_gold_ring.name=Gold Ring
-item.treasure2:ruby_gold_ring2.name=Gold Ring
-item.treasure2:onyx_gold_ring.name=Gold Ring
+item.treasure2:ruby_gold_ring.name=Ruby Ring
+item.treasure2:onyx_gold_ring.name=Onyx Ring
+item.treasure2:sapphire_gold_ring.name=Sapphire Ring
+item.treasure2:diamond_gold_ring.name=Diamond Ring
+item.treasure2:emerald_gold_ring.name=Emerald Ring
 
 item.treasure2:key_ring.name=Key Ring
 item.treasure2:wood_key.name=Wood Key
@@ -207,6 +209,7 @@ tooltip.label.key_ring=Container for keys
 tooltip.label.coin_pouch=Holds coins, gems, pearls, and charms
 tooltip.label.treasure_tool=Required for Key/Pick recipes
 tooltip.label.charmed=Hold in hand or in coin pouch for buffs
+tooltip.label.charmed.adornment=Hold in hand, coin pouch, or hotbar for buffs
 tooltip.label.charms=Charms:
 tooltip.label.charmable=To charm, add charmed items to slots
 tooltip.label.charmable.slots=Slots: [%s/%s]
@@ -238,6 +241,7 @@ tooltip.charm.treasure2:hardened_shielding=Hardened Shielding [%s/%s]
 tooltip.charm.treasure2:powerful_shielding=Powerful Shielding [%s/%s]
 tooltip.charm.treasure2:armadillo_shielding=Shield of the Armadillo [%s/%s]
 
+tooltip.charm.absolute_shielding=Absolute Shielding [%s/%s]
 tooltip.charm.treasure2:small_absolute_shielding=Small Absolute Shielding [%s/%s]
 tooltip.charm.treasure2:medium_absolute_shielding=Medium Absolute Shielding [%s/%s]
 tooltip.charm.treasure2:large_absolute_shielding=Large Absolute Shielding [%s/%s]

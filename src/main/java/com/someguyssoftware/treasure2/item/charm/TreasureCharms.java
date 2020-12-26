@@ -14,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
  * @author Mark Gottschling on Apr 25, 2020
  *
  */
+@SuppressWarnings("deprecation")
 public class TreasureCharms {
 
 	public static final ICharm LESSER_HEALING;
@@ -29,9 +30,9 @@ public class TreasureCharms {
 	public static final ICharm POWERFUL_SHIELDING;
 	public static final ICharm ARMADILLO_SHIELDING;
 
-	public static final ICharm SMALL_ABSOLUTE_SHIELDING;
-	public static final ICharm MEDIUM_ABSOLUTE_SHIELDING;
-	public static final ICharm LARGE_ABSOLUTE_SHIELDING;
+	public static final ICharm ABSOLUTE_SHIELDING_1;
+	public static final ICharm ABSOLUTE_SHIELDING_2;
+	public static final ICharm ABSOLUTE_SHIELDING_3;
 	public static final ICharm GRAND_ABSOLUTE_SHIELDING;
 	public static final ICharm WHALE_ABSOLUTE_SHIELDING;
 
@@ -74,11 +75,11 @@ public class TreasureCharms {
 	//	public static final Map<String, ICharm> REGISTRY = new HashMap<>();
 
 	static {
-		LESSER_HEALING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "lesser_healing"), CharmType.HEALING.getName(), 1, HealingCharm.class).withValue(20.0).build();
-		HEALING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "healing"), CharmType.HEALING.getName(), 2, HealingCharm.class).withValue(50.0).build();
-		GREATER_HEALING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "greater_healing"), CharmType.HEALING.getName(), 3, HealingCharm.class).withValue(100.0).build();
-		GRAND_HEALING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "grand_healing"), CharmType.HEALING.getName(), 4, HealingCharm.class).withValue(200.0).build();
-		SALANDAARS_CONVALESCENCE = new Charm.Builder(new ResourceLocation(Treasure.MODID, "salandaars_convalescence"), CharmType.HEALING.getName(), 5, HealingCharm.class).withValue(300.0).build();
+		LESSER_HEALING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "lesser_healing"), CharmType.HEALING.getName(), 1, HealingCharm.class).withValue(20.0).withAllowMultipleUpdates(true).build();
+		HEALING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "healing"), CharmType.HEALING.getName(), 2, HealingCharm.class).withValue(50.0).withAllowMultipleUpdates(true).build();
+		GREATER_HEALING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "greater_healing"), CharmType.HEALING.getName(), 3, HealingCharm.class).withValue(100.0).withAllowMultipleUpdates(true).build();
+		GRAND_HEALING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "grand_healing"), CharmType.HEALING.getName(), 4, HealingCharm.class).withValue(200.0).withAllowMultipleUpdates(true).build();
+		SALANDAARS_CONVALESCENCE = new Charm.Builder(new ResourceLocation(Treasure.MODID, "salandaars_convalescence"), CharmType.HEALING.getName(), 5, HealingCharm.class).withValue(300.0).withAllowMultipleUpdates(true).build();
 		WHALE_HEALING = new Charm.Builder(
 				new ResourceLocation(Treasure.MODID, "whale_healing"), CharmType.HEALING.getName(), 99, HealingCharm.class).withValue(500.0).build();
 
@@ -90,19 +91,19 @@ public class TreasureCharms {
 
 		// TODO add absolute Shielding Charms with lower amounts
 		// 10 Units @ 100% shielding
-		SMALL_ABSOLUTE_SHIELDING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "small_absolute_shielding"), CharmType.SHIELDING.getName(), 1, ShieldingCharm.class)
+		ABSOLUTE_SHIELDING_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "absolute_shielding_1"), "absolute_shielding", 1, ShieldingCharm.class)
 				.withValue(10.0).withPercent(100.0).build();
-		MEDIUM_ABSOLUTE_SHIELDING = new Charm.Builder(
-				new ResourceLocation(Treasure.MODID, "medium_absolute_shielding"), CharmType.SHIELDING.getName(), 2, ShieldingCharm.class)
+		ABSOLUTE_SHIELDING_2 = new Charm.Builder(
+				new ResourceLocation(Treasure.MODID, "absolute_shielding_2"), CharmType.SHIELDING.getName(), 2, ShieldingCharm.class)
 				.withValue(20.0).withPercent(100.0).build();
-		LARGE_ABSOLUTE_SHIELDING = new Charm.Builder(
-				new ResourceLocation(Treasure.MODID, "large_absolute_shielding"), CharmType.SHIELDING.getName(), 3, ShieldingCharm.class)
+		ABSOLUTE_SHIELDING_3 = new Charm.Builder(
+				new ResourceLocation(Treasure.MODID, "absolute_shielding_3"), CharmType.SHIELDING.getName(), 3, ShieldingCharm.class)
 				.withValue(30.0).withPercent(100.0).build();
 		GRAND_ABSOLUTE_SHIELDING = new Charm.Builder(
 				new ResourceLocation(Treasure.MODID, "grand_absolute_shielding"), CharmType.SHIELDING.getName(), 4, ShieldingCharm.class)
 				.withValue(40.0).withPercent(100.0).build();
 		WHALE_ABSOLUTE_SHIELDING = new Charm.Builder(
-				new ResourceLocation(Treasure.MODID, "whale_absolute_shielding"), CharmType.SHIELDING.getName(), 99, ShieldingCharm.class)
+				new ResourceLocation(Treasure.MODID, "whale_absolute_shielding"), "absolute_shielding", 13, ShieldingCharm.class)
 				.withValue(100.0).withPercent(100.0).build();
 
 		FULLNESS = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fullness"), CharmType.FULLNESS.getName(), 1, FullnessCharm.class).withValue(20.0).build();
@@ -140,9 +141,9 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(SALANDAARS_CONVALESCENCE);
 		TreasureCharmRegistry.register(WHALE_HEALING);
 
-		TreasureCharmRegistry.register(SMALL_ABSOLUTE_SHIELDING);
-		TreasureCharmRegistry.register(MEDIUM_ABSOLUTE_SHIELDING);
-		TreasureCharmRegistry.register(LARGE_ABSOLUTE_SHIELDING);
+		TreasureCharmRegistry.register(ABSOLUTE_SHIELDING_1);
+		TreasureCharmRegistry.register(ABSOLUTE_SHIELDING_2);
+		TreasureCharmRegistry.register(ABSOLUTE_SHIELDING_3);
 		TreasureCharmRegistry.register(GRAND_ABSOLUTE_SHIELDING);
 		TreasureCharmRegistry.register(WHALE_ABSOLUTE_SHIELDING);
 

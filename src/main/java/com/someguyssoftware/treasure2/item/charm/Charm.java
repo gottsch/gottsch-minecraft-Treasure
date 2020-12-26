@@ -29,6 +29,11 @@ public abstract class Charm implements ICharm {
 	private double maxValue;
 	private double maxPercent;
 	private int maxDuration;
+	/*
+	 * if multiple charms of the same type are being processed, only 1 should be updated/executed.
+	 * ex. if multiple harvesting charms are held, only one should update.
+	 */
+	private boolean allowMultipleUpdates = false;
 
 	/**
 	 * 
@@ -41,6 +46,7 @@ public abstract class Charm implements ICharm {
 		this.maxValue = builder.value;
 		this.maxDuration = builder.duration.intValue();
 		this.maxPercent = builder.percent;
+		this.allowMultipleUpdates = builder.allowMultipleUpdates;
 	}
 
 	/**
@@ -67,10 +73,57 @@ public abstract class Charm implements ICharm {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
-		TextFormatting color = TextFormatting.RED;
-		tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toString().toLowerCase()));
+		TextFormatting color = TextFormatting.WHITE;
+		tooltip.add("  " + color + getLabel(data));
 	}
 
+	/**
+	 * 
+	 * @param data
+	 * @return
+	 */
+	@SuppressWarnings("deprecation")
+	public String getLabel(ICharmData data) {
+        /*
+         * 1. check for mod item specific label
+         * 2. check for specific type prefix (levels 1-10)
+         * 3. check for general prefix (levels 1-10)
+         * OR
+         * 4. check for specific type suffix (levels 11+)
+         * 5. check for general suffix (levels 11+)
+         * ex. tooltip.charm.shielding.prefix.level[x], else look for tooltip.charm.prefix.level[x] + tooltip.charm.[type]
+         */
+        String tooltipKey = "tooltip.charm." + getName().toString().toLowerCase();
+        String label = I18n.translateToLocalFormatted(tooltipKey,
+				String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
+        String prefix = "";
+        String suffix = "";
+        String type = "";
+        if (label.equals(tooltipKey)) {
+            type = I18n.translateToLocalFormatted("tooltip.charm." + getType(), 
+            		String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+    				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
+            if (this.getLevel() <= 10) {
+            	String prefixKey = "tooltip.charm." + getType() + ".prefix.level" + String.valueOf(this.getLevel());
+                prefix = I18n.translateToLocalFormatted(prefixKey);
+                if (prefix.equals(prefixKey)) {
+                    prefix = I18n.translateToLocalFormatted("tooltip.charm.prefix.level" + String.valueOf(this.getLevel()));
+                }
+                label = prefix + " " + type;
+            }
+            else {
+            	String suffixKey = "tooltip.charm." + getType() + ".suffix.level" + String.valueOf(this.getLevel());
+                suffix = I18n.translateToLocalFormatted(suffixKey);
+                if (suffix.equals(suffixKey)) {
+                    suffix = I18n.translateToLocalFormatted("tooltip.charm.suffix.level" + String.valueOf(this.getLevel()));
+                }
+                label = type + " " + suffix;
+            }
+        }
+        return label;
+	}
+	
 	/**
 	 * This method reads only this Charm's properties from an NBT tag
 	 * 
@@ -145,6 +198,11 @@ public abstract class Charm implements ICharm {
 	public int getMaxDuration() {
 		return maxDuration;
 	}
+	
+	@Override
+	public boolean isAllowMultipleUpdates() {
+		return allowMultipleUpdates;
+	}
 
 	/**
 	 * 
@@ -158,7 +216,8 @@ public abstract class Charm implements ICharm {
 		private Double value = 0.0;
 		private Double duration = 0.0;
 		private Double percent = 0.0;
-
+		private boolean allowMultipleUpdates = false;
+		
 		private Class<? extends ICharm> charmClass;
 
 		/**
@@ -201,18 +260,24 @@ public abstract class Charm implements ICharm {
 			this.percent = percent;
 			return Charm.Builder.this;
 		}
+		
+		public Builder withAllowMultipleUpdates(boolean allow) {
+			this.allowMultipleUpdates = allow;
+			return Charm.Builder.this;
+		}
 
 		@Override
 		public String toString() {
-			return "Builder [name=" + name + ", type=" + type + ", level=" + level + ", value="
-					+ value + ", duration=" + duration + ", percent=" + percent + ", charmClass=" + charmClass + "]";
+			return "Builder [name=" + name + ", type=" + type + ", level=" + level + ", value=" + value + ", duration="
+					+ duration + ", percent=" + percent + ", allowMultipleUpdates=" + allowMultipleUpdates
+					+ ", charmClass=" + charmClass + "]";
 		}
 	}
 
 	@Override
 	public String toString() {
 		return "Charm [name=" + name + ", type=" + type + ", level=" + level + ", maxValue=" + maxValue
-				+ ", maxPercent=" + maxPercent + ", maxDuration=" + maxDuration + "]";
+				+ ", maxPercent=" + maxPercent + ", maxDuration=" + maxDuration + ", allowMultipleUpdates="
+				+ allowMultipleUpdates + "]";
 	}
-
 }

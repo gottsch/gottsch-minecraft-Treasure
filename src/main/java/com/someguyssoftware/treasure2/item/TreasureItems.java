@@ -72,7 +72,6 @@ public class TreasureItems {
     public static Item GOLD_RING;
     public static Item EMERALD_GOLD_RING;
     public static Item RUBY_GOLD_RING;
-    public static Item RUBY_GOLD_RING2;
     public static Item DIAMOND_GOLD_RING;
     public static Item SAPPHIRE_GOLD_RING;
     public static Item AMULET;
@@ -292,14 +291,13 @@ public class TreasureItems {
 
         ONYX_GOLD_RING = (Item) new Adornment(Treasure.MODID, "onyx_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(2);
         EMERALD_GOLD_RING = (Item) new Adornment(Treasure.MODID, "emerald_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(2);
-        RUBY_GOLD_RING2 = (Item) new Adornment(Treasure.MODID, "ruby_gold_ring2", AdornmentType.RING).setMaxSlots(2).setLevel(2);
         DIAMOND_GOLD_RING = (Item) new Adornment(Treasure.MODID, "diamond_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(3);
         SAPPHIRE_GOLD_RING = (Item) new Adornment(Treasure.MODID, "sapphire_gold_ring", AdornmentType.RING).setMaxSlots(3).setLevel(4);
         GOLD_RING = (Item) new Adornment(Treasure.MODID, "gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(2);
 
         // TEMP
-        RUBY_GOLD_RING = (Item) new Adornment(Treasure.MODID, "ruby_gold_ring", AdornmentType.RING) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+        RUBY_GOLD_RING = (Item) new Adornment(Treasure.MODID, "ruby_gold_ring2", AdornmentType.RING) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {		
 				CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
 				cap.getCharmInstances().add(TreasureCharms.DIRT_FILL.createInstance());
@@ -625,7 +623,6 @@ public class TreasureItems {
                     ONYX_GOLD_RING,
 					GOLD_RING,
                     RUBY_GOLD_RING,
-                    RUBY_GOLD_RING2,
                     EMERALD_GOLD_RING,
                     DIAMOND_GOLD_RING,
                     SAPPHIRE_GOLD_RING,

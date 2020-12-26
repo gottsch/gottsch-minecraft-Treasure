@@ -27,10 +27,12 @@ public interface ICharm {
 	public double getMaxValue();
 	public int getMaxDuration();
 	public double getMaxPercent();
-    
+	boolean isAllowMultipleUpdates();
+	
     public ICharmInstance createInstance();
     public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmData data);
 
     public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data);
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt);
+
 }

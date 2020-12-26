@@ -10,6 +10,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
 import com.someguyssoftware.treasure2.item.charm.ICharmable;
 
@@ -68,6 +69,21 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 	 * 
 	 */
 	@Override
+    public String getItemStackDisplayName(ItemStack stack) {
+    	String name = super.getItemStackDisplayName(stack);
+		if (stack.hasCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null)) {
+			ICharmableCapability cap = stack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+			if (cap.getCustomName() != null && !cap.getCustomName().isEmpty()) {
+				name = cap.getCustomName();
+			}
+		}
+		return name;
+    }
+    
+	/**
+	 * 
+	 */
+	@Override
 	public boolean hasEffect(ItemStack stack) {
 		boolean charmed =  false;
 		if (stack.hasCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null)) {
@@ -85,8 +101,6 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 	@SuppressWarnings("deprecation")
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-		super.addInformation(stack, world, tooltip, flag);		
-		// TODO needs to take into account if has charms or not
 		super.addInformation(stack, world, tooltip, flag);
 		if (isCharmed(stack)) {
 			addCharmedInfo(stack, world, tooltip, flag);
@@ -97,13 +111,6 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 		addSlotsInfo(stack, world, tooltip, flag);
 	}
 
-	// TODO use capability custom name here
-	public String getHighlightTip( ItemStack item, String displayName ) {
-//		return displayName;
-		return "Mark's Test Ring";
-	}
-
-	// TODO add subtypes
 	public AdornmentType getType() {
 		return type;
 	}
