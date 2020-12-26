@@ -218,17 +218,18 @@ public class PlayerEventHandler {
 	 * @param player
 	 */
 	private void processCharms(Event event, EntityPlayerMP player) {
+		List<String> nonMultipleUpdateCharms = new ArrayList<>();
+		
 		// check each hand
 		Optional<CharmContext> context = null;
 		for (EnumHand hand : EnumHand.values()) {
-			boolean isCharmUpdatable = true;
 			context = getCharmContext(player, hand);
 			if (context.isPresent()) {
 				if (context.get().type == CharmedType.CHARM || context.get().type == CharmedType.ADORNMENT) {
-					doCharms(context.get(), player, event);
+					doCharms(context.get(), player, event, nonMultipleUpdateCharms);
 				}
 				else {
-					doPouch(context.get(), player, event);
+					doPouch(context.get(), player, event, nonMultipleUpdateCharms);
 				}
 			}
 		}
@@ -241,7 +242,7 @@ public class PlayerEventHandler {
 					if (context.get().type == CharmedType.ADORNMENT) {
 						//					Treasure.logger.debug("is a hotbar adornment -> {} @ slot -> {}", context.get().itemStack.getItem().getRegistryName(), context.get().slot);
 						// at this point, we know the item in slot x has charm capabilities
-						doCharms(context.get(), player, event);
+						doCharms(context.get(), player, event, nonMultipleUpdateCharms);
 					}
 				}
 			}
@@ -257,7 +258,7 @@ public class PlayerEventHandler {
 	 * @param player
 	 * @param event
 	 */
-	public void doPouch(CharmContext context, EntityPlayerMP player, Event event) {
+	public void doPouch(CharmContext context, EntityPlayerMP player, Event event, final List<String> nonMultipleUpdateCharms) {
 		// get the capability of the pouch
 		IItemHandler cap = context.itemStack.getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
 		// TODO this slots bit could be better. Maybe pouch item should have number of slots property
@@ -273,13 +274,13 @@ public class PlayerEventHandler {
 			//			if (itemStack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
 			if (itemStack.getItem() instanceof ICharmed) {
 				context.capability = itemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				doCharms(context, player, event);
+				doCharms(context, player, event, nonMultipleUpdateCharms);
 			}
 			else if (itemStack.getItem() instanceof ICharmable) {
 				// TODO need to check the cap because it might not be charmed
 				//			else if (itemStack.hasCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null)) {
 				context.capability = itemStack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
-				doCharms(context, player, event);
+				doCharms(context, player, event, nonMultipleUpdateCharms);
 			}
 		}
 	}
@@ -290,9 +291,7 @@ public class PlayerEventHandler {
 	 * @param player
 	 * @param event
 	 */
-	private void doCharms(CharmContext context, EntityPlayerMP player, Event event) {
-		List<ICharm> noMultipleUpdateCharms = new ArrayList<>();
-
+	private void doCharms(CharmContext context, EntityPlayerMP player, Event event, final List<String> nonMultipleUpdateCharms) {
 		//		ICharmCapability capability = context.get().itemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 		ICharmCapability capability = context.capability;
 		List<ICharmInstance> charmInstances = capability.getCharmInstances();
@@ -301,12 +300,12 @@ public class PlayerEventHandler {
 			ICharm charm = (ICharm)charmInstance.getCharm();
 			if (!charm.isAllowMultipleUpdates()) {
 				// check if in list
-				if (noMultipleUpdateCharms.contains(charm)) {
+				if (nonMultipleUpdateCharms.contains(charm.getType())) {
 					isCharmUpdatable = false;
 				}
 			}
 			else {
-				noMultipleUpdateCharms.add(charm);
+				nonMultipleUpdateCharms.add(charm.getType());
 			}
 			
 			if (isCharmUpdatable && 
