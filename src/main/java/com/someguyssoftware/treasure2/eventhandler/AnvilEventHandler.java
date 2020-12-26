@@ -7,6 +7,8 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import static com.someguyssoftware.treasure2.Treasure.logger;
 
+import java.util.Optional;
+
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
@@ -83,12 +85,10 @@ public class AnvilEventHandler {
 			}
         }
         else if (leftItemStack.getItem() instanceof ICharmable && rightItemStack.getItem() instanceof GemItem) {
-            if (addSlotsToCharmable(leftItemStack, rightItemStack)) {
+            Optional<ItemStack> outputItemStack = addSlotsToCharmable(leftItemStack, rightItemStack);
+            if (outputItem.isPresent()) {
             	event.setCost(1);
-                event.setOutput(leftItemStack); // TODO create a new item
-            }
-            else {
-                // TODO cancel event ?
+                event.setOutput(outputItemStack.get());
             }
         }
         else if (leftItemStack.getItem() instanceof ICharmable && rightItemStack.getItem() instanceof ICharmed) {
@@ -99,24 +99,31 @@ public class AnvilEventHandler {
         }
     }
 
+    public boolean doKeyMerge() {
+
+        return true;
+    }
+
     /**
      * 
      * @param charmableStack
      * @param gemItem
      */
-    public boolean addSlotsToCharmable(ItemStack charmableStack, ItemStack gemStack) {
-        
-        if (charmableStack.hasCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null)) {
-            ICharmableCapability charmableCap = charmableStack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+    public Optional<ItemStack> addSlotsToCharmable(ItemStack leftStack, ItemStack gemStack) {
+        ItemStack output = new ItemStack(leftStack.getItem());
+        if (leftStack.hasCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null)) {
+            ICharmableCapability leftCap = leftStack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+            ICharmableCapability outputCap = charmableStack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+            outputCap.setSlots(leftCap.getSlots());
             // check is slots available
-            ICharmable charmableItem = (ICharmable)charmableStack.getItem();
-            if (charmableItem.getMaxSlots() > 0 && charmableCap.getSlots() < charmableItem.getMaxSlots()) {
+            ICharmable outputItem = (ICharmable)output.getItem();
+            if (outputItem.getMaxSlots() > 0 && outputCap.getSlots() < outputItem.getMaxSlots()) {
                 // add a slot to the charmable stack
-                charmableCap.setSlots(charmableCap.getSlots() + 1);
-                return true;
+                outputCap.setSlots(outputCap.getSlots() + 1);
+                return Optional.of(output);
             }
         }
-        return false;
+        return Optional.empty();
     }
 
     /**
@@ -124,24 +131,31 @@ public class AnvilEventHandler {
      * @param charmableStack
      * @param charmedStack
      */
-    public boolean addCharmsToCharmable(ItemStack charmableStack, ItemStack charmedStack) {
+    public Optional<ItemStack> addCharmsToCharmable(ItemStack leftStack, ItemStack rightStack) {
                 
-        if (charmableStack.hasCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null)) {
-            ICharmableCapability charmableCap = charmableStack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-            ICharmCapability charmedCap = charmableStack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
-            ICharmCapability sourceCharmedCap = charmedStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+        if (leftStack.hasCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null)) {
+            ItemStack output = new ItemStack(leftStack.getItem());
+            ICharmCapability outputCharmedCap = output.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
+            
+            ICharmableCapability leftCharmableCap = leftStack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+            ICharmCapability leftCharmedCap = leftStack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
+            ICharmCapability rightCharmedCap = rightStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+            
+            // copy left's charms to output
+            outputCharmedCap.getCharmInstances().addAll(leftCharmedCap.getCharmInstances());
+
+            ICharmable leftItem = (ICharmable)leftStack.getItem();
             // check is slots available
-            ICharmable charmableItem = (ICharmable)charmableStack.getItem();
-            if (charmableItem.getMaxSlots() > 0 && charmableCap.getSlots() > 0 && sourceCharmedCap.getCharmInstances().size() > 0) {
-                // TODO add charm to charmable
-                int freeSlots = charmableItem.getMaxSlots() - charmableCap.getSlots();
-                for (int x = 0; x < Math.min(freeSlots, sourceCharmedCap.getCharmInstances().size()); x++) {
-                    charmedCap.getCharmInstances().add(sourceCharmedCap.getCharmInstances().get(x));
+            if (leftItem.getMaxSlots() > 0 && leftCharmableCap.getSlots() > 0 && rightCharmedCap.getCharmInstances().size() > 0) {
+                // copy charms from right to output
+                int freeSlots = leftItem.getMaxSlots() - leftCharmableCap.getSlots();
+                for (int x = 0; x < Math.min(freeSlots, rightCharmedCap.getCharmInstances().size()); x++) {
+                    outputCharmedCap.getCharmInstances().add(rightCharmedCap.getCharmInstances().get(x));
                 }
-                return true;
+                return Optional.of(output);
             }
         }
-        return false;
+        return Optional.empty();
     }
 
 	/**

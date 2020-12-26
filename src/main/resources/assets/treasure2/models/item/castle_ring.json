@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "treasure2:items/adornments/diamond_gold_ring"
+        "layer0": "treasure2:items/adornments/castle_ring"
     },
     "display": {
        "thirdperson_righthand": {
