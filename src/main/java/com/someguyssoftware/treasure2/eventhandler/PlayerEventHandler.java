@@ -218,7 +218,7 @@ public class PlayerEventHandler {
 	 * @param player
 	 */
 	private void processCharms(Event event, EntityPlayerMP player) {
-		List<String> nonMultipleUpdateCharms = new ArrayList<>();
+		final List<String> nonMultipleUpdateCharms = new ArrayList<>(5);
 		
 		// check each hand
 		Optional<CharmContext> context = null;
@@ -292,22 +292,26 @@ public class PlayerEventHandler {
 	 * @param event
 	 */
 	private void doCharms(CharmContext context, EntityPlayerMP player, Event event, final List<String> nonMultipleUpdateCharms) {
-		//		ICharmCapability capability = context.get().itemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 		ICharmCapability capability = context.capability;
 		List<ICharmInstance> charmInstances = capability.getCharmInstances();
 		for (ICharmInstance charmInstance : charmInstances) {
 			boolean isCharmUpdatable = true;
-			ICharm charm = (ICharm)charmInstance.getCharm();
+            ICharm charm = (ICharm)charmInstance.getCharm();
+            Treasure.logger.debug("{} charm allows multiple updates -> {}", charm.getName(), charm.isAllowMultipleUpdates());
 			if (!charm.isAllowMultipleUpdates()) {
+                Treasure.logger.debug("{} charm denies multiple updates", charm.getName());
 				// check if in list
 				if (nonMultipleUpdateCharms.contains(charm.getType())) {
+                    Treasure.logger.debug("blacklist contains charm type -> {}", charm.getType());
 					isCharmUpdatable = false;
 				}
 			}
 			else {
+                Treasure.logger.debug("blacklist doesn't contain charm type -> {}", charm.getType());
 				nonMultipleUpdateCharms.add(charm.getType());
 			}
-			
+            
+            Treasure.logger.debug("is charm {} updatable -> {}", charm.getName(), isCharmUpdatable);
 			if (isCharmUpdatable && 
 					charmInstance.getCharm().update(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event, charmInstance.getData())) {
 				// send state message to client

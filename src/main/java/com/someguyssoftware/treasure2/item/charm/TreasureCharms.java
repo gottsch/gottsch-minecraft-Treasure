@@ -112,11 +112,11 @@ public class TreasureCharms {
 		GORGED_FULLNESS = new Charm.Builder(new ResourceLocation(Treasure.MODID, "gorged_fullness"), CharmType.FULLNESS.getName(), 4, FullnessCharm.class).withValue(200.0).build(); 
 		BURSTING_FULLNESS = new Charm.Builder(new ResourceLocation(Treasure.MODID, "bursting_fullness"), CharmType.FULLNESS.getName(), 5, FullnessCharm.class).withValue(300.0).build(); 
 
-		MINOR_HARVESTING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "minor_harvesting"), CharmType.HARVESTING.getName(), 1, HarvestingCharm.class).withValue(20.0).withPercent(2.0).build();
-		HARVESTING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "harvesting"), CharmType.HARVESTING.getName(), 2, HarvestingCharm.class).withValue(30.0).withPercent(3.0).build();
-		MAJOR_HARVESTING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "major_harvesting"), CharmType.HARVESTING.getName(), 3, HarvestingCharm.class).withValue(40.0).withPercent(4.0).build();
-		GRAND_HARVESTING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "grand_harvesting"), CharmType.HARVESTING.getName(), 4, HarvestingCharm.class).withValue(50.0).withPercent(5.0).build();
-		GLORIOUS_HARVESTING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "glorious_harvesting"), CharmType.HARVESTING.getName(), 5, HarvestingCharm.class).withValue(75.0).withPercent(5.0).build();
+		MINOR_HARVESTING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "minor_harvesting"), CharmType.HARVESTING.getName(), 1, HarvestingCharm.class).withValue(20.0).withPercent(2.0).withAllowMultipleUpdates(false).build();
+		HARVESTING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "harvesting"), CharmType.HARVESTING.getName(), 2, HarvestingCharm.class).withValue(30.0).withPercent(3.0).withAllowMultipleUpdates(false).build();
+		MAJOR_HARVESTING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "major_harvesting"), CharmType.HARVESTING.getName(), 3, HarvestingCharm.class).withValue(40.0).withPercent(4.0).withAllowMultipleUpdates(false).build();
+		GRAND_HARVESTING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "grand_harvesting"), CharmType.HARVESTING.getName(), 4, HarvestingCharm.class).withValue(50.0).withPercent(5.0).withAllowMultipleUpdates(false).build();
+		GLORIOUS_HARVESTING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "glorious_harvesting"), CharmType.HARVESTING.getName(), 5, HarvestingCharm.class).withValue(75.0).withPercent(5.0).withAllowMultipleUpdates(false).build();
 
 		LESSER_ILLUMINATION = new Charm.Builder(new ResourceLocation(Treasure.MODID, "lesser_illumination"), CharmType.ILLUMINATION.getName(), 1, IlluminationCharm.class).withValue(3.0).build();
 		ILLUMINATION = new Charm.Builder(new ResourceLocation(Treasure.MODID, "illumination"), CharmType.ILLUMINATION.getName(), 2, IlluminationCharm.class).withValue(6.0).build();
