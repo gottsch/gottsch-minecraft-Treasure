@@ -10,6 +10,7 @@ import java.util.Random;
 import com.google.common.collect.Lists;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -45,9 +46,9 @@ public class DirtWalkCharm extends Charm {
 			if (event instanceof LivingUpdateEvent) {
 				if (!player.isDead && data.getValue() > 0) {
                     // if the current position where standing isn't already dirt, change it to dirt
-                    BlockState state = world.getBlockState(coords.down().toPos());
-					if (state.getBlock != Blocks.DIRT) {
-                        world.setBlockState(coords.down().toPos, Blocks.DIRT.getDefaultState());
+                    IBlockState state = world.getBlockState(coords.down(1).toPos());
+					if (state.getBlock() != Blocks.DIRT) {
+                        world.setBlockState(coords.down(1).toPos(), Blocks.DIRT.getDefaultState());
                         data.setValue(MathHelper.clamp(data.getValue() - 1.0,  0D, data.getValue()));
 						result = true;
 					}

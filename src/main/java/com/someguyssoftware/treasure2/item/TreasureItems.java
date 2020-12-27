@@ -303,17 +303,17 @@ public class TreasureItems {
 			}
         }.setMaxSlots(2).setLevel(5);
         
-        ANGELS_RING = new Adornment(Treasure.MODID, TreasureConfig.ANGELS_RING_ID, AdornmentType.RING) {
+        ANGELS_RING = (Item) new Adornment(Treasure.MODID, "angles_ring", AdornmentType.RING) {
             public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-                CharmCapabilityProvider provider =  new CharmCapabilityProvider();
-                ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-                cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.SALANDAARS_CONVALESCENCE));
-                cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.ARMADILLO_SHIELDING));
-                // cap.getCharmStates().add(CharmStateFactory.createCharmState(TreasureCharms.FIRE_RESISTANCE_5));
-                ICharmableCapability charmableCap = provider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+                CharmableCapabilityProvider charmableProvider =  new CharmableCapabilityProvider();
+                ICharmCapability charmCap = charmableProvider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+                charmCap.getCharmInstances().add(TreasureCharms.SALANDAARS_CONVALESCENCE.createInstance());
+                charmCap.getCharmInstances().add(TreasureCharms.ARMADILLO_SHIELDING.createInstance());
+                // cap.getCharmInstances().add(TreasureCharms.FIRE_RESISTANCE_5.createInstance()));
+                ICharmableCapability charmableCap = charmableProvider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
                 charmableCap.setSlots(1);
 				charmableCap.setCustomName("Ring of the Angels");
-                return provider;
+                return charmableProvider;
             }	
         }.setMaxSlots(4).setLevel(10);
         

@@ -322,7 +322,7 @@ public class PlayerEventHandler {
             }
 
             // mark Charm if instanceof ICharmable and no uses remain
-            if (charmInstance.getData().getValue() <= 0.0 && getCharm() instanceof ICharmable) {
+            if (charmInstance.getData().getValue() <= 0.0 && charmInstance.getCharm() instanceof ICharmable) {
                 removeInstances.add(charmInstance);
             }
         }

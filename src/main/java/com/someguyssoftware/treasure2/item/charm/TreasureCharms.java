@@ -33,8 +33,8 @@ public class TreasureCharms {
 	public static final ICharm ABSOLUTE_SHIELDING_1;
 	public static final ICharm ABSOLUTE_SHIELDING_2;
 	public static final ICharm ABSOLUTE_SHIELDING_3;
-	public static final ICharm GRAND_ABSOLUTE_SHIELDING;
-	public static final ICharm WHALE_ABSOLUTE_SHIELDING;
+	public static final ICharm ABSOLUTE_SHIELDING_4;
+	public static final ICharm ABSOLUTE_SHIELDING_13;
 
 	public static final ICharm FULLNESS;
 	public static final ICharm SATED_FULLNESS;
@@ -62,8 +62,6 @@ public class TreasureCharms {
 
     public static final ICharm RUIN_1;
     public static final ICharm RUIN_2;
-    public static final ICharm RUIN_3;
-    public static final ICharm RUIN_4;
     
     public static final ICharm DIRT_FILL;
     public static final ICharm DIRT_FILL_2;
