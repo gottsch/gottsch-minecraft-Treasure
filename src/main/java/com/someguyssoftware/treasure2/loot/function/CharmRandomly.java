@@ -62,8 +62,6 @@ public class CharmRandomly extends LootFunction {
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
 		ICharm charm = null;
 
-        // TODO update to check for CharmableCapability too ... then would have to check for available slots
-        // TODO add property for number of charms
 		// ensure that the stack has charm capabilities
 		ICharmCapability charmCap = null;
 		if (stack.getItem() instanceof ICharmed) {

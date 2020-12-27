@@ -20,16 +20,16 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * 
- * @author Mark Gottschling on May 4, 2020
+ * @author Mark Gottschling on May 26, 2020
  *
  */
-public class DecayCharm extends Charm {
+public class RuinCharm extends Charm {
 
     /**
 	 * 
 	 * @param builder
 	 */
-	DecayCharm(Builder builder) {
+	RuinCharm(Builder builder) {
 		super(builder);
     }
     
@@ -62,6 +62,7 @@ public class DecayCharm extends Charm {
     public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
         TextFormatting color = TextFormatting.DARK_RED;
         tooltip.add("  " + color + getLabel(data));
+        // TODO the rate is dynamic
         tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.decay_rate"));
     }
 }

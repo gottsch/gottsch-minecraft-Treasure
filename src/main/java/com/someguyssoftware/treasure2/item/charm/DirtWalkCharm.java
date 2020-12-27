@@ -23,24 +23,14 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 
-public class DirtFillCharm extends Charm {
+public class DirtWalkCharm extends Charm {
 
 	/**
 	 * 
 	 * @param builder
 	 */
-	DirtFillCharm(Builder builder) {
+	DirtWalkCharm(Builder builder) {
 		super(builder);
-	}
-
-	@Override
-	public ICharmInstance createInstance() {
-		DirtFillCharmData data = new DirtFillCharmData();
-		data.setValue(this.getMaxValue());
-		data.setPercent(this.getMaxPercent());
-		data.setDuration(this.getMaxDuration());
-		ICharmInstance instance = new CharmInstance(this, data);
-		return instance;
 	}
 
 	/**
@@ -54,11 +44,11 @@ public class DirtFillCharm extends Charm {
 		if (world.getTotalWorldTime() % 200 == 0) {
 			if (event instanceof LivingUpdateEvent) {
 				if (!player.isDead && data.getValue() > 0) {
-					// randomly select an empty inventory slot and fill it with dirt
-					List<Integer> emptySlots = getEmptySlotsRandomized(player.inventory, random);
-					if (emptySlots != null && !emptySlots.isEmpty()) {
-						player.inventory.setInventorySlotContents(((Integer)emptySlots.get(emptySlots.size() - 1)).intValue(), new ItemStack(Blocks.DIRT, 1));		
-						data.setValue(MathHelper.clamp(data.getValue() - 1.0,  0D, data.getValue()));
+                    // if the current position where standing isn't already dirt, change it to dirt
+                    BlockState state = world.getBlockState(coords.down().toPos());
+					if (state.getBlock != Blocks.DIRT) {
+                        world.setBlockState(coords.down().toPos, Blocks.DIRT.getDefaultState());
+                        data.setValue(MathHelper.clamp(data.getValue() - 1.0,  0D, data.getValue()));
 						result = true;
 					}
 				}
@@ -76,21 +66,4 @@ public class DirtFillCharm extends Charm {
         TextFormatting color = TextFormatting.DARK_RED;
 		tooltip.add("  " + color + getLabel(data));
 	}
-	
-	/**
-	 * 
-	 * @param inventory
-	 * @param rand
-	 * @return
-	 */
-    private List<Integer> getEmptySlotsRandomized(IInventory inventory, Random rand) {
-        List<Integer> list = Lists.<Integer>newArrayList();
-        for (int i = 0; i < Math.min(36, inventory.getSizeInventory()); ++i) {
-            if (inventory.getStackInSlot(i).isEmpty()) {
-                list.add(Integer.valueOf(i));
-            }
-        }
-        Collections.shuffle(list, rand);
-        return list;
-    }
 }

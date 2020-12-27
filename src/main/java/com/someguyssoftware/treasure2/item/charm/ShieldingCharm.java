@@ -62,53 +62,10 @@ public class ShieldingCharm extends Charm {
 	/**
 	 * 
 	 */
-	@SuppressWarnings("deprecation")
-//	@Override
-//	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
-//		TextFormatting color = TextFormatting.AQUA;
-//		tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toString().toLowerCase(), 
-//				String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
-//				String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));
-//		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.shield_rate", getMaxPercent()*100F));
-//	}
-	/**
-	 * 
-	 */
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
-        TextFormatting color = TextFormatting.RED;
-        // check for specific name prefix (levels 1-10),  
-        // tooltip.charm.shielding.prefix.level[x], else look for tooltip.charm.prefix.level[x] + tooltip.charm.[type]
-
-        // first check for mod specific label
-        String label = I18n.translateToLocalFormatted("tooltip.charm." + getName().toString().toLowerCase(),
-				String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
-				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
-        String prefix = "";
-        String suffix = "";
-        String type = "";
-        
-        if (label.isEmpty()) {
-            type = I18n.translateToLocalFormatted("tooltip.charm." + getType(), 
-            		String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
-    				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
-            if (this.getLevel() <= 10) {
-                prefix = I18n.translateToLocalFormatted("tooltip.charm." + getType() + ".prefix.level" + String.valueOf(this.getLevel()));
-                if (prefix.isEmpty()) {
-                    I18n.translateToLocalFormatted("tooltip.charm.prefix.level" + String.valueOf(this.getLevel()));
-                }
-                label = prefix + " " + type;
-            }
-            else {
-                suffix = I18n.translateToLocalFormatted("tooltip.charm." + getType() + ".suffix.level" + String.valueOf(this.getLevel()));
-                if (suffix.isEmpty()) {
-                    I18n.translateToLocalFormatted("tooltip.charm.suffix.level" + String.valueOf(this.getLevel()));
-                }
-            }
-            label = type + " " + suffix;
-        }
-        
-		tooltip.add("  " + color + label);
+        TextFormatting color = TextFormatting.BLUE;
+		tooltip.add("  " + color + getLabel(data));
 		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.shielding_rate"));
 	}
 }

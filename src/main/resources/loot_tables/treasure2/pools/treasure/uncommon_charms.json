@@ -73,7 +73,7 @@
 				{
 					"entryName": "adornment1",
 					"type": "item",
-					"name": "treasure2:ruby_gold_ring2",
+					"name": "treasure2:ruby_gold_ring",
 					"weight": 1,
 					"conditions": [
 						{
@@ -82,19 +82,19 @@
 						}
 					],
 					"functions": [
+                        {
+							"function": "treasure2:set_slots",
+							"slots": {
+								"min": 1,
+								"max": 2
+							}
+						},
 						{
 							"function": "treasure2:charm_randomly",
 							"charms": [
 								"healing",
 								"stout_shielding"
 								]
-						},
-						{
-							"function": "treasure2:set_slots",
-							"slots": {
-								"min": 1,
-								"max": 2
-							}
 						}
 					]
 				}

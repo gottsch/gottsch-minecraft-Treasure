@@ -56,9 +56,7 @@ public class FullnessCharm extends Charm {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
 		TextFormatting color = TextFormatting.DARK_GREEN;
-		tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toString().toLowerCase(), 
-				String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
-				String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));
+		tooltip.add("  " + color + getLabel(data));
 		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.fullness_rate"));
 	}
 }

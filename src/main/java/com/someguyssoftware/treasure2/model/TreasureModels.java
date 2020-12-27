@@ -135,7 +135,10 @@ public class TreasureModels {
         registerItemModel(TreasureItems.EMERALD_GOLD_RING);
         registerItemModel(TreasureItems.DIAMOND_GOLD_RING);
         registerItemModel(TreasureItems.SAPPHIRE_GOLD_RING);
+        registerItemModel(TreasureItems.CASTLE_RING);
+        registerItemModel(TreasureItems.ANGELS_RING);
         registerItemModel(TreasureItems.AMULET);
+        
 		// PEARLS
 		registerItemModel(TreasureItems.WHITE_PEARL);
 		registerItemModel(TreasureItems.BLACK_PEARL);

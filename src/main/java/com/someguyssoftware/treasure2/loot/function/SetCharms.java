@@ -58,10 +58,19 @@ public class SetCharms extends LootFunction {
 	@Override
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
 
-		// ensure that the stack has charm capabilities
-		if (stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
-			ICharmCapability provider = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-			List<ICharmInstance> charmInstances = provider.getCharmInstances();
+        // ensure that the stack has charm capabilities
+        ICharmCapability charmCap = null;
+		if (stack.getItem() instanceof ICharmed) {
+			charmCap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+		}
+		else if (stack.getItem() instanceof ICharmable) {
+			charmCap = stack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
+        }
+        
+        if (charmCap != null) {
+		// if (stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
+		// 	ICharmCapability provider = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+			List<ICharmInstance> charmInstances = charmCap.getCharmInstances();
 
 			if (!this.charms.isEmpty()) {
 				for (ICharm charm : charms) {

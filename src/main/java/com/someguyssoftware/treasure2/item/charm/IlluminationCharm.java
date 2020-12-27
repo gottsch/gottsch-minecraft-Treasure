@@ -109,16 +109,16 @@ public class IlluminationCharm extends Charm {
 									ICoords lastCoords = list.get(list.size()-1);
 									Block block = world.getBlockState(lastCoords.toPos()).getBlock();
 									if (block == Blocks.TORCH) {
-										//																			Treasure.logger.debug("set torch to air at -> {}", lastCoords.toShortString());
+										//	Treasure.logger.debug("set torch to air at -> {}", lastCoords.toShortString());
 										world.setBlockToAir(lastCoords.toPos());
 									}
 									else {
-										//																			Treasure.logger.debug("torch no longer found at -> {}", currentCoords.toShortString());
+										//	Treasure.logger.debug("torch no longer found at -> {}", currentCoords.toShortString());
 										// decrement value since torch was harvested
 										value -= 1;
 									}
 									list.remove(lastCoords);
-									//								Treasure.logger.debug("remove torch from list at -> {}; new size ->{}", lastCoords.toShortString(), list.size());								
+									//	Treasure.logger.debug("remove torch from list at -> {}; new size ->{}", lastCoords.toShortString(), list.size());								
 								}	
 							}
 							isUpdated = true;
@@ -126,10 +126,10 @@ public class IlluminationCharm extends Charm {
 					}
 					if (isUpdated == true ) {
 						world.setBlockState(currentCoords.toPos(), Blocks.TORCH.getDefaultState());
-						//											Treasure.logger.debug("set torch at -> {}", currentCoords.toShortString());
+						//	Treasure.logger.debug("set torch at -> {}", currentCoords.toShortString());
 						if (value < 0) value = 0;
 						data.setValue(value);
-						//											Treasure.logger.debug("new data -> {}", data);
+						//	Treasure.logger.debug("new data -> {}", data);
 						result = true;
 					}
 				}
@@ -145,9 +145,7 @@ public class IlluminationCharm extends Charm {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
 		TextFormatting color = TextFormatting.WHITE;
-		tooltip.add("  " + color + I18n.translateToLocalFormatted("tooltip.charm." + getName().toString().toLowerCase(), 
-				String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
-				String.valueOf(Math.toIntExact(Math.round(getMaxValue())))));
+		tooltip.add("  " + color + getLabel(data));
 		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.illumination_rate"));
 	}
 
