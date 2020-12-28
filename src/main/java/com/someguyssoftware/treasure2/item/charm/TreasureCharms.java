@@ -67,6 +67,12 @@ public class TreasureCharms {
     public static final ICharm FIRE_IMMUNITY_4;
     public static final ICharm FIRE_IMMUNITY_13;
     
+    public static final ICharm LIFE_STRIKE_1;
+    public static final ICharm LIFE_STRIKE_2;
+    public static final ICharm LIFE_STRIKE_3;
+    public static final ICharm LIFE_STRIKE_4;
+    public static final ICharm LIFE_STRIKE_10;
+    
 	// curses
 	public static final ICharm LESSER_DECAY;
 	public static final ICharm DECAY;
@@ -87,12 +93,12 @@ public class TreasureCharms {
     // TODO add charms
     // [x] TODO RUIN
     // TODO CACTUS
-    // TODO DOUBLE_DAMAGE (curse get hit for 2x the damage)
+    // TODO DECREPIT (curse get hit for 2x the damage) 
     // TODO DIRT (mound)
     // [x] TODO DIRT FILL (inventory filler)
     // [x] TODO DIRT WALK (space below turns to dirt)
     // [x] TODO FIRE RESISTENCE
-    // [] TODO FIRE IMMUNITY
+    // [x] TODO FIRE IMMUNITY
     // TODO LIFESTRIKE
 
 	//    @Deprecated
@@ -162,17 +168,28 @@ public class TreasureCharms {
 		FIRE_RESISTENCE_13 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_resistence_13"), "fire_resistence", 13, FireResistenceCharm.class).withValue(1000.0)
 				.withPercent(0.8).withAllowMultipleUpdates(true).build();
         
-        FIRE_IMMUNITY_1 = new Charm.Buillder(new ResourceLocation(Treasure.MODID, "fire_immunity_1"), "fire_immunity", 1, FireImmunityCharm.class).withValue(25.0)
+        FIRE_IMMUNITY_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_immunity_1"), "fire_immunity", 1, FireImmunityCharm.class).withValue(25.0)
                 .withAllowMultipleUpdates(false).build();
-        FIRE_IMMUNITY_2 = new Charm.Buillder(new ResourceLocation(Treasure.MODID, "fire_immunity_2"), "fire_immunity", 2, FireImmunityCharm.class).withValue(50.0)
+        FIRE_IMMUNITY_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_immunity_2"), "fire_immunity", 2, FireImmunityCharm.class).withValue(50.0)
                 .withAllowMultipleUpdates(false).build();
-        FIRE_IMMUNITY_3 = new Charm.Buillder(new ResourceLocation(Treasure.MODID, "fire_immunity_3"), "fire_immunity", 3, FireImmunityCharm.class).withValue(75.0)
+        FIRE_IMMUNITY_3 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_immunity_3"), "fire_immunity", 3, FireImmunityCharm.class).withValue(75.0)
                 .withAllowMultipleUpdates(false).build();
-        FIRE_IMMUNITY_4 = new Charm.Buillder(new ResourceLocation(Treasure.MODID, "fire_immunity_4"), "fire_immunity", 4, FireImmunityCharm.class).withValue(100.0)
+        FIRE_IMMUNITY_4 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_immunity_4"), "fire_immunity", 4, FireImmunityCharm.class).withValue(100.0)
                 .withAllowMultipleUpdates(false).build();
-        FIRE_IMMUNITY_13 = new Charm.Buillder(new ResourceLocation(Treasure.MODID, "fire_immunity_13"), "fire_immunity", 13, FireImmunityCharm.class).withValue(1000.0)
+        FIRE_IMMUNITY_13 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_immunity_13"), "fire_immunity", 13, FireImmunityCharm.class).withValue(1000.0)
                 .withAllowMultipleUpdates(false).build();
 
+        LIFE_STRIKE_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "life_strike_1"), "life_strike", 1, LifeStrikeCharm.class).withValue(20.0).withPercent(1.20)
+                .withAllowMultipleUpdates(false).build();
+        LIFE_STRIKE_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "life_strike_2"), "life_strike", 2, LifeStrikeCharm.class).withValue(30.0).withPercent(1.30)
+                .withAllowMultipleUpdates(false).build();
+        LIFE_STRIKE_3 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "life_strike_3"), "life_strike", 3, LifeStrikeCharm.class).withValue(40.0).withPercent(1.40)
+                .withAllowMultipleUpdates(false).build();
+        LIFE_STRIKE_4 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "life_strike_4"), "life_strike", 4, LifeStrikeCharm.class).withValue(50.0).withPercent(1.50)
+                .withAllowMultipleUpdates(false).build();        
+        LIFE_STRIKE_10 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "life_strike_10"), "life_strike", 10, LifeStrikeCharm.class).withValue(50.0).withPercent(2.0)
+                .withAllowMultipleUpdates(false).build();
+        
         // curses
 		LESSER_DECAY = new Charm.Builder(new ResourceLocation(Treasure.MODID, "lesser_decay"), CharmType.DECAY.getName(), 1, DecayCharm.class).withValue(20.0).withAllowMultipleUpdates(true).build();
 		DECAY = new Charm.Builder(new ResourceLocation(Treasure.MODID, "decay"), CharmType.DECAY.getName(), 2, DecayCharm.class).withValue(50.0).withAllowMultipleUpdates(true).build();
@@ -248,7 +265,13 @@ public class TreasureCharms {
         TreasureCharmRegistry.register(FIRE_IMMUNITY_3);
         TreasureCharmRegistry.register(FIRE_IMMUNITY_4);
         TreasureCharmRegistry.register(FIRE_IMMUNITY_13);
-
+        
+        TreasureCharmRegistry.register(LIFE_STRIKE_1);
+        TreasureCharmRegistry.register(LIFE_STRIKE_2);
+        TreasureCharmRegistry.register(LIFE_STRIKE_3);
+        TreasureCharmRegistry.register(LIFE_STRIKE_4);
+        TreasureCharmRegistry.register(LIFE_STRIKE_10);
+        
 		TreasureCharmRegistry.register(LESSER_DECAY);
 		TreasureCharmRegistry.register(DECAY);
 		TreasureCharmRegistry.register(GREATER_DECAY);

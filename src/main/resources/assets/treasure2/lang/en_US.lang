@@ -284,6 +284,9 @@ tooltip.charm.fire_resistence=Fire Resistence
 tooltip.charm.fire_immunity_rate=- absorbs all fire damage
 tooltip.charm.fire_immunity=Fire Immunity
 
+tooltip.charm.life_strike_rate=- inflicts +%s%% damage for 1 heart health
+tooltip.charm.life_strike=Life Strike
+
 # curses
 tooltip.charm.decay_rate=- decays 1 heart/5 sec
 tooltip.charm.decay=Decay

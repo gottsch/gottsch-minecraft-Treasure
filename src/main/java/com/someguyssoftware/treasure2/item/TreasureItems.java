@@ -302,9 +302,10 @@ public class TreasureItems {
 				CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
 //				cap.getCharmInstances().add(TreasureCharms.DIRT_FILL.createInstance());
-				cap.getCharmInstances().add(TreasureCharms.RUIN_2.createInstance());
+//				cap.getCharmInstances().add(TreasureCharms.RUIN_2.createInstance());
 //				cap.getCharmInstances().add(TreasureCharms.DIRT_WALK.createInstance());
 				cap.getCharmInstances().add(TreasureCharms.FIRE_IMMUNITY_13.createInstance());
+				cap.getCharmInstances().add(TreasureCharms.LIFE_STRIKE_10.createInstance());
 				ICharmableCapability charmableCap = provider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
 				charmableCap.setSlots(0);
 				charmableCap.setCustomName("Ring of X");

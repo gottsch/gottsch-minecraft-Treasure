@@ -43,8 +43,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -187,6 +189,23 @@ public class PlayerEventHandler {
 			EntityPlayerMP player = (EntityPlayerMP) event.getEntity();
 			processCharms(event, player);
 		}		
+	}
+	
+	/**
+	 * 
+	 * @param event
+	 */
+	@SubscribeEvent
+	public void checkCharmsInteractionWithAttack(LivingHurtEvent event) {
+		if (WorldInfo.isClientSide(event.getEntity().getEntityWorld())) {
+			return;
+		}
+		
+		if (event.getSource().getTrueSource() instanceof EntityPlayer) {
+			// get the player
+			EntityPlayerMP player = (EntityPlayerMP) event.getSource().getTrueSource();
+			processCharms(event, player);
+		}
 	}
 
 	@SubscribeEvent
