@@ -294,16 +294,18 @@ public class TreasureItems {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {		
 				CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
 				ICharmCapability cap = provider.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmInstances().add(TreasureCharms.DIRT_FILL.createInstance());
-				cap.getCharmInstances().add(TreasureCharms.DIRT_WALK.createInstance());
+//				cap.getCharmInstances().add(TreasureCharms.DIRT_FILL.createInstance());
+				cap.getCharmInstances().add(TreasureCharms.RUIN_2.createInstance());
+//				cap.getCharmInstances().add(TreasureCharms.DIRT_WALK.createInstance());
+				cap.getCharmInstances().add(TreasureCharms.FIRE_RESISTENCE_13.createInstance());
 				ICharmableCapability charmableCap = provider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
 				charmableCap.setSlots(2);
-				charmableCap.setCustomName("Ring of Dirt");
+				charmableCap.setCustomName("Ring of X");
 				return provider;
 			}
         }.setMaxSlots(2).setLevel(5);
         
-        ANGELS_RING = (Item) new Adornment(Treasure.MODID, "angles_ring", AdornmentType.RING) {
+        ANGELS_RING = (Item) new Adornment(Treasure.MODID, "angels_ring", AdornmentType.RING) {
             public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
                 CharmableCapabilityProvider charmableProvider =  new CharmableCapabilityProvider();
                 ICharmCapability charmCap = charmableProvider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
@@ -317,7 +319,7 @@ public class TreasureItems {
             }	
         }.setMaxSlots(4).setLevel(10);
         
-        AMULET = (Item) new Adornment(Treasure.MODID, "sapphire_gold_amulet", AdornmentType.AMULET).setMaxSlots(4).setLevel(10);
+        AMULET = (Item) new Adornment(Treasure.MODID, "sapphire_amulet", AdornmentType.AMULET).setMaxSlots(4).setLevel(10);
 
 		// PEARLS
 		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.WHITE_PEARL_ID, Pearls.WHITE);

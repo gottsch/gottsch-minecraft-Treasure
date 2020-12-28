@@ -38,7 +38,7 @@ public class FullnessCharm extends Charm {
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmData data) {
 		boolean result = false;
 		if (event instanceof LivingUpdateEvent) {
-			if (world.getTotalWorldTime() % SECOND_IN_TICKS == 0) {	
+			if (world.getTotalWorldTime() % TICKS_PER_SECOND == 0) {	
 				if (!player.isDead && data.getValue() > 0 && player.getFoodStats().getFoodLevel() < MAX_FOOD_LEVEL) {
 					player.getFoodStats().addStats(1, 1);
 					data.setValue(data.getValue() - 1);

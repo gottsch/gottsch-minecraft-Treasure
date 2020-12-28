@@ -54,6 +54,13 @@ public class TreasureCharms {
 	public static final ICharm GRAND_ILLUMINATION;
 	public static final ICharm GLORIOUS_ILLUMINATION;
 
+	public static final ICharm FIRE_RESISTENCE_1;
+	public static final ICharm FIRE_RESISTENCE_2;
+	public static final ICharm FIRE_RESISTENCE_3;
+	public static final ICharm FIRE_RESISTENCE_4;
+	public static final ICharm FIRE_RESISTENCE_10;
+	public static final ICharm FIRE_RESISTENCE_13;
+	
 	// curses
 	public static final ICharm LESSER_DECAY;
 	public static final ICharm DECAY;
@@ -62,6 +69,8 @@ public class TreasureCharms {
 
     public static final ICharm RUIN_1;
     public static final ICharm RUIN_2;
+    public static final ICharm RUIN_3;
+    public static final ICharm RUIN_4;
     
     public static final ICharm DIRT_FILL;
     public static final ICharm DIRT_FILL_2;
@@ -70,13 +79,14 @@ public class TreasureCharms {
     public static final ICharm DIRT_WALK_2;
 
     // TODO add charms
-    // TODO RUIN
+    // [x] TODO RUIN
     // TODO CACTUS
     // TODO DOUBLE_DAMAGE (curse get hit for 2x the damage)
     // TODO DIRT (mound)
     // [x] TODO DIRT FILL (inventory filler)
     // [x] TODO DIRT WALK (space below turns to dirt)
-    // TODO FIRE RESISTENCE
+    // [x] TODO FIRE RESISTENCE
+    // [] TODO FIRE IMMUNITY
     // TODO LIFESTRIKE
 
 	//    @Deprecated
@@ -91,11 +101,11 @@ public class TreasureCharms {
 		WHALE_HEALING = new Charm.Builder(
 				new ResourceLocation(Treasure.MODID, "whale_healing"), CharmType.HEALING.getName(), 99, HealingCharm.class).withValue(500.0).build();
 
-		DURABLE_SHIELDING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "durable_shielding"), CharmType.SHIELDING.getName(), 1, ShieldingCharm.class).withValue(20.0).withPercent(0.5).withAllowMultipleUpdates(false).build();
-		STOUT_SHIELDING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "stout_shielding"), CharmType.SHIELDING.getName(), 2, ShieldingCharm.class).withValue(50.0).withPercent(0.6).withAllowMultipleUpdates(false).build();
-		HARDENED_SHIELDING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "hardened_shielding"), CharmType.SHIELDING.getName(), 3, ShieldingCharm.class).withValue(100.0).withPercent(0.7).withAllowMultipleUpdates(false).build();
-		POWERFUL_SHIELDING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "powerful_shielding"), CharmType.SHIELDING.getName(), 4, ShieldingCharm.class).withValue(200.0).withPercent(0.8).withAllowMultipleUpdates(false).build();
-		ARMADILLO_SHIELDING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "armadillo_shielding"), CharmType.SHIELDING.getName(), 5, ShieldingCharm.class).withValue(300.0).withPercent(0.8).withAllowMultipleUpdates(false).build();
+		DURABLE_SHIELDING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "durable_shielding"), CharmType.SHIELDING.getName(), 1, ShieldingCharm.class).withValue(20.0).withPercent(0.5).withAllowMultipleUpdates(true).build();
+		STOUT_SHIELDING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "stout_shielding"), CharmType.SHIELDING.getName(), 2, ShieldingCharm.class).withValue(50.0).withPercent(0.6).withAllowMultipleUpdates(true).build();
+		HARDENED_SHIELDING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "hardened_shielding"), CharmType.SHIELDING.getName(), 3, ShieldingCharm.class).withValue(100.0).withPercent(0.7).withAllowMultipleUpdates(true).build();
+		POWERFUL_SHIELDING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "powerful_shielding"), CharmType.SHIELDING.getName(), 4, ShieldingCharm.class).withValue(200.0).withPercent(0.8).withAllowMultipleUpdates(true).build();
+		ARMADILLO_SHIELDING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "armadillo_shielding"), CharmType.SHIELDING.getName(), 5, ShieldingCharm.class).withValue(300.0).withPercent(0.8).withAllowMultipleUpdates(true).build();
 
 		// 10 Units @ 100% shielding
 		ABSOLUTE_SHIELDING_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "absolute_shielding_1"), "absolute_shielding", 1, ShieldingCharm.class)
@@ -132,18 +142,36 @@ public class TreasureCharms {
 		GRAND_ILLUMINATION = new Charm.Builder(new ResourceLocation(Treasure.MODID, "grand_illumination"), CharmType.ILLUMINATION.getName(), 4, IlluminationCharm.class).withValue(20.0).withAllowMultipleUpdates(false).build();
 		GLORIOUS_ILLUMINATION = new Charm.Builder(new ResourceLocation(Treasure.MODID, "glorious_illumination"), CharmType.ILLUMINATION.getName(), 5, IlluminationCharm.class).withValue(30.0).withAllowMultipleUpdates(false).build();
 
+		// ruin: value = # of total durability/damage points to resist, duration = rate: 1 point per x seconds
+		FIRE_RESISTENCE_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_resistence_1"), "fire_resistence", 1, FireResistenceCharm.class).withValue(25.0)
+				.withPercent(0.3).withAllowMultipleUpdates(true).build();
+		FIRE_RESISTENCE_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_resistence_2"), "fire_resistence", 2, FireResistenceCharm.class).withValue(50.0)
+				.withPercent(0.3).withAllowMultipleUpdates(true).build();
+		FIRE_RESISTENCE_3 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_resistence_3"), "fire_resistence", 3, FireResistenceCharm.class).withValue(75.0)
+				.withPercent(0.5).withAllowMultipleUpdates(true).build();
+		FIRE_RESISTENCE_4 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_resistence_4"), "fire_resistence", 4, FireResistenceCharm.class).withValue(100.0)
+				.withPercent(0.5).withAllowMultipleUpdates(true).build();
+		FIRE_RESISTENCE_10 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_resistence_10"), "fire_resistence", 10, FireResistenceCharm.class).withValue(500.0)
+				.withPercent(0.8).withAllowMultipleUpdates(true).build();
+		FIRE_RESISTENCE_13 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_resistence_13"), "fire_resistence", 13, FireResistenceCharm.class).withValue(1000.0)
+				.withPercent(0.8).withAllowMultipleUpdates(true).build();
+		
 		// curses
 		LESSER_DECAY = new Charm.Builder(new ResourceLocation(Treasure.MODID, "lesser_decay"), CharmType.DECAY.getName(), 1, DecayCharm.class).withValue(20.0).withAllowMultipleUpdates(true).build();
 		DECAY = new Charm.Builder(new ResourceLocation(Treasure.MODID, "decay"), CharmType.DECAY.getName(), 2, DecayCharm.class).withValue(50.0).withAllowMultipleUpdates(true).build();
 		GREATER_DECAY = new Charm.Builder(new ResourceLocation(Treasure.MODID, "greater_decay"), CharmType.DECAY.getName(), 3, DecayCharm.class).withValue(100.0).withAllowMultipleUpdates(true).build();
 		PERISHING_DECAY = new Charm.Builder(new ResourceLocation(Treasure.MODID, "perishing_decay"), CharmType.DECAY.getName(), 4, DecayCharm.class).withValue(200.0).withAllowMultipleUpdates(true).build();
 
-        // ruin: value = # of total durability/damage points to distribute, duration = rate - 1 point per x seconds
-        RUIN_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "ruin_1"), "ruin", 1, DecayCharm.class).withValue(20.0)
+        // ruin: value = # of total durability/damage points to distribute, duration = rate: 1 point per x seconds
+        RUIN_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "ruin_1"), "ruin", 1, RuinCharm.class).withValue(25.0)
                 .withDuration(20.0).withAllowMultipleUpdates(true).build();
-        RUIN_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "ruin_2"), "ruin", 2, DecayCharm.class).withValue(40.0)
+        RUIN_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "ruin_2"), "ruin", 2, RuinCharm.class).withValue(50.0)
                 .withDuration(18.0).withAllowMultipleUpdates(true).build();
-                
+        RUIN_3 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "ruin_3"), "ruin", 3, RuinCharm.class).withValue(100.0)
+                .withDuration(15.0).withAllowMultipleUpdates(true).build();
+        RUIN_4 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "ruin_4"), "ruin", 4, RuinCharm.class).withValue(200.0)
+                .withDuration(10.0).withAllowMultipleUpdates(true).build();
+        
         DIRT_FILL = new Charm.Builder(new ResourceLocation(Treasure.MODID, "dirt_fill_1"), "dirt_fill", 1, DirtFillCharm.class)
                 .withValue(100.0).withAllowMultipleUpdates(true).build();
         DIRT_FILL_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "dirt_fill_2"), "dirt_fill", 2, DirtFillCharm.class)
@@ -191,6 +219,13 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(GRAND_ILLUMINATION);
 		TreasureCharmRegistry.register(GLORIOUS_ILLUMINATION);
 
+		TreasureCharmRegistry.register(FIRE_RESISTENCE_1);
+		TreasureCharmRegistry.register(FIRE_RESISTENCE_2);
+		TreasureCharmRegistry.register(FIRE_RESISTENCE_3);
+		TreasureCharmRegistry.register(FIRE_RESISTENCE_4);
+		TreasureCharmRegistry.register(FIRE_RESISTENCE_10);
+		TreasureCharmRegistry.register(FIRE_RESISTENCE_13);
+		
 		TreasureCharmRegistry.register(LESSER_DECAY);
 		TreasureCharmRegistry.register(DECAY);
 		TreasureCharmRegistry.register(GREATER_DECAY);
@@ -198,6 +233,8 @@ public class TreasureCharms {
         
         TreasureCharmRegistry.register(RUIN_1);
         TreasureCharmRegistry.register(RUIN_2);
+        TreasureCharmRegistry.register(RUIN_3);
+        TreasureCharmRegistry.register(RUIN_4);
         
         TreasureCharmRegistry.register(DIRT_FILL);
         TreasureCharmRegistry.register(DIRT_FILL_2);

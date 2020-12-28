@@ -21,7 +21,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Apr 25, 2020
  */
 public abstract class Charm implements ICharm {
-	public static final int SECOND_IN_TICKS = 20;
+	public static final int TICKS_PER_SECOND = 20;
 
 	private ResourceLocation name;
 	private String type;
@@ -121,7 +121,9 @@ public abstract class Charm implements ICharm {
                 label = type + " " + suffix;
             }
         }
-        return label;
+        return label + " " + I18n.translateToLocalFormatted("tooltip.charm.uses_gauge",
+        		String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
 	}
 	
 	/**

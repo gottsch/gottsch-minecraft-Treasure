@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "treasure2:items/adornments/gold_ring3"
+        "layer0": "treasure2:items/adornments/gold_ring"
     },
    "display": {
        "thirdperson_righthand": {

@@ -1,11 +1,14 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "treasure2:items/adornments/silver_ring2"
+        "layer0": "treasure2:items/adornments/silver_ring"
     },
    "display": {
        "thirdperson_righthand": {
             "translation": [ 0, 1, 0],
+            "scale":[ 0.25, 0.25, 0.25]
+        },
+        "thirdperson_lefthand": {
             "scale":[ 0.25, 0.25, 0.25]
         },
         "firstperson_righthand": {

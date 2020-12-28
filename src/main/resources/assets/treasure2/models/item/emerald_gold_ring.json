@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "treasure2:items/adornments/emerald_gold_ring4"
+        "layer0": "treasure2:items/adornments/emerald_gold_ring"
     },
     "display": {
        "thirdperson_righthand": {

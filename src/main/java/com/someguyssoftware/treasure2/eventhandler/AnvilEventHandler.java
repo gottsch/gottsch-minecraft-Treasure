@@ -3,12 +3,9 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
-import com.someguyssoftware.gottschcore.mod.IMod;
-import com.someguyssoftware.gottschcore.world.WorldInfo;
-import static com.someguyssoftware.treasure2.Treasure.logger;
-
 import java.util.Optional;
 
+import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
@@ -18,14 +15,11 @@ import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.item.GemItem;
 import com.someguyssoftware.treasure2.item.KeyItem;
-import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.item.charm.ICharmable;
 import com.someguyssoftware.treasure2.item.charm.ICharmed;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
