@@ -60,7 +60,13 @@ public class TreasureCharms {
 	public static final ICharm FIRE_RESISTENCE_4;
 	public static final ICharm FIRE_RESISTENCE_10;
 	public static final ICharm FIRE_RESISTENCE_13;
-	
+    
+    public static final ICharm FIRE_IMMUNITY_1;
+    public static final ICharm FIRE_IMMUNITY_2;
+    public static final ICharm FIRE_IMMUNITY_3;
+    public static final ICharm FIRE_IMMUNITY_4;
+    public static final ICharm FIRE_IMMUNITY_13;
+    
 	// curses
 	public static final ICharm LESSER_DECAY;
 	public static final ICharm DECAY;
@@ -142,7 +148,7 @@ public class TreasureCharms {
 		GRAND_ILLUMINATION = new Charm.Builder(new ResourceLocation(Treasure.MODID, "grand_illumination"), CharmType.ILLUMINATION.getName(), 4, IlluminationCharm.class).withValue(20.0).withAllowMultipleUpdates(false).build();
 		GLORIOUS_ILLUMINATION = new Charm.Builder(new ResourceLocation(Treasure.MODID, "glorious_illumination"), CharmType.ILLUMINATION.getName(), 5, IlluminationCharm.class).withValue(30.0).withAllowMultipleUpdates(false).build();
 
-		// ruin: value = # of total durability/damage points to resist, duration = rate: 1 point per x seconds
+		// fire resistence: value = # of total durability/damage points to resist, duration = rate: 1 point per x seconds
 		FIRE_RESISTENCE_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_resistence_1"), "fire_resistence", 1, FireResistenceCharm.class).withValue(25.0)
 				.withPercent(0.3).withAllowMultipleUpdates(true).build();
 		FIRE_RESISTENCE_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_resistence_2"), "fire_resistence", 2, FireResistenceCharm.class).withValue(50.0)
@@ -155,8 +161,19 @@ public class TreasureCharms {
 				.withPercent(0.8).withAllowMultipleUpdates(true).build();
 		FIRE_RESISTENCE_13 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_resistence_13"), "fire_resistence", 13, FireResistenceCharm.class).withValue(1000.0)
 				.withPercent(0.8).withAllowMultipleUpdates(true).build();
-		
-		// curses
+        
+        FIRE_IMMUNITY_1 = new Charm.Buillder(new ResourceLocation(Treasure.MODID, "fire_immunity_1"), "fire_immunity", 1, FireImmunityCharm.class).withValue(25.0)
+                .withAllowMultipleUpdates(false).build();
+        FIRE_IMMUNITY_2 = new Charm.Buillder(new ResourceLocation(Treasure.MODID, "fire_immunity_2"), "fire_immunity", 2, FireImmunityCharm.class).withValue(50.0)
+                .withAllowMultipleUpdates(false).build();
+        FIRE_IMMUNITY_3 = new Charm.Buillder(new ResourceLocation(Treasure.MODID, "fire_immunity_3"), "fire_immunity", 3, FireImmunityCharm.class).withValue(75.0)
+                .withAllowMultipleUpdates(false).build();
+        FIRE_IMMUNITY_4 = new Charm.Buillder(new ResourceLocation(Treasure.MODID, "fire_immunity_4"), "fire_immunity", 4, FireImmunityCharm.class).withValue(100.0)
+                .withAllowMultipleUpdates(false).build();
+        FIRE_IMMUNITY_13 = new Charm.Buillder(new ResourceLocation(Treasure.MODID, "fire_immunity_13"), "fire_immunity", 13, FireImmunityCharm.class).withValue(1000.0)
+                .withAllowMultipleUpdates(false).build();
+
+        // curses
 		LESSER_DECAY = new Charm.Builder(new ResourceLocation(Treasure.MODID, "lesser_decay"), CharmType.DECAY.getName(), 1, DecayCharm.class).withValue(20.0).withAllowMultipleUpdates(true).build();
 		DECAY = new Charm.Builder(new ResourceLocation(Treasure.MODID, "decay"), CharmType.DECAY.getName(), 2, DecayCharm.class).withValue(50.0).withAllowMultipleUpdates(true).build();
 		GREATER_DECAY = new Charm.Builder(new ResourceLocation(Treasure.MODID, "greater_decay"), CharmType.DECAY.getName(), 3, DecayCharm.class).withValue(100.0).withAllowMultipleUpdates(true).build();
@@ -225,7 +242,13 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(FIRE_RESISTENCE_4);
 		TreasureCharmRegistry.register(FIRE_RESISTENCE_10);
 		TreasureCharmRegistry.register(FIRE_RESISTENCE_13);
-		
+        
+        TreasureCharmRegistry.register(FIRE_IMMUNITY_1);
+        TreasureCharmRegistry.register(FIRE_IMMUNITY_2);
+        TreasureCharmRegistry.register(FIRE_IMMUNITY_3);
+        TreasureCharmRegistry.register(FIRE_IMMUNITY_4);
+        TreasureCharmRegistry.register(FIRE_IMMUNITY_13);
+
 		TreasureCharmRegistry.register(LESSER_DECAY);
 		TreasureCharmRegistry.register(DECAY);
 		TreasureCharmRegistry.register(GREATER_DECAY);

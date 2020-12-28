@@ -17,7 +17,8 @@ import java.util.stream.Collectors;
  */
 public enum AdornmentType implements IEnum {
 	RING(0, "ring"),
-	AMULET(1, "amulet");
+    AMULET(1, "amulet"),
+    BRACELET(2, "bracelet");
 	
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();

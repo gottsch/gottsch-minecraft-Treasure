@@ -123,6 +123,7 @@ item.treasure2:diamond_gold_ring.name=Diamond Ring
 item.treasure2:emerald_gold_ring.name=Emerald Ring
 item.treasure2:castle_ring.name=Castle Ring
 item.treasure2:sapphire_gold_amulet.name=Sapphire Amulet
+item.treasure2:gold_bracelet.name=Gold Bracelet
 
 item.treasure2:key_ring.name=Key Ring
 item.treasure2:wood_key.name=Wood Key
@@ -277,8 +278,11 @@ tooltip.charm.illumination=Illumination
 #tooltip.charm.treasure2:grand_illumination=Grand Illumination
 #tooltip.charm.treasure2:glorious_illumination=Glorious Illumination
 
-tooltip.charm.fire_resistence_rate=- resists fire damage/%s sec
+tooltip.charm.fire_resistence_rate=- absorbs %s%% of fire damage
 tooltip.charm.fire_resistence=Fire Resistence
+
+tooltip.charm.fire_immunity_rate=- absorbs all fire damage
+tooltip.charm.fire_immunity=Fire Immunity
 
 # curses
 tooltip.charm.decay_rate=- decays 1 heart/5 sec

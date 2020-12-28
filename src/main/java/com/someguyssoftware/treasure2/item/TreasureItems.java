@@ -77,6 +77,7 @@ public class TreasureItems {
     public static Item CASTLE_RING;
     public static Item ANGELS_RING;
     public static Item AMULET;
+    public static Item GOLD_BRACELET;
     
 	// pearls
 	public static Item WHITE_PEARL;
@@ -274,19 +275,25 @@ public class TreasureItems {
 		};
 		MIRTHAS_TORCH.setCreativeTab(Treasure.TREASURE_TAB);
 
-		// ADORNMENTS
+        // ADORNMENTS
+        // 1x max slot. 0x slots. level 2
         RING = (Item) new Adornment(Treasure.MODID, "silver_ring", AdornmentType.RING).setMaxSlots(1).setLevel(3);
+        // 2x max slot. 0x slots. level 4
         GOLD_RING = (Item) new Adornment(Treasure.MODID, "gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(4);
 
         SILVER_SIGNET_RING = (Item) new Adornment(Treasure.MODID, "silver_signet_ring", AdornmentType.RING).setMaxSlots(2).setLevel(1);
         ONYX_SILVER_SIGNET_RING = (Item) new Adornment(Treasure.MODID, "onyx_silver_signet_ring", AdornmentType.RING).setMaxSlots(2).setLevel(2);
-
+        // 2x max slot. 1x slots. 1x charm. level 5
         ONYX_GOLD_RING = (Item) new Adornment(Treasure.MODID, "onyx_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(5);
-        
-        EMERALD_GOLD_RING = (Item) new Adornment(Treasure.MODID, "emerald_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(11);
+        // 2x max slot. 1x slots. 1x charm. level 10
         DIAMOND_GOLD_RING = (Item) new Adornment(Treasure.MODID, "diamond_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(10);
+        // 2x max slot. 1x slots. 1x charm. level 11
+        EMERALD_GOLD_RING = (Item) new Adornment(Treasure.MODID, "emerald_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(11);
+        // TODO ruby_gold_ring 3x max slot. 1x slot. 2x charm level 12
+        // 3x max slots. 1x slots. 2x charms. level 13
         SAPPHIRE_GOLD_RING = (Item) new Adornment(Treasure.MODID, "sapphire_gold_ring", AdornmentType.RING).setMaxSlots(3).setLevel(13);
         
+        // 2x max slots. 1x slots. 1x charms. level 12
         CASTLE_RING = (Item) new Adornment(Treasure.MODID, "castle_ring", AdornmentType.RING).setMaxSlots(2).setLevel(12);
 
         // TEMP
@@ -297,9 +304,9 @@ public class TreasureItems {
 //				cap.getCharmInstances().add(TreasureCharms.DIRT_FILL.createInstance());
 				cap.getCharmInstances().add(TreasureCharms.RUIN_2.createInstance());
 //				cap.getCharmInstances().add(TreasureCharms.DIRT_WALK.createInstance());
-				cap.getCharmInstances().add(TreasureCharms.FIRE_RESISTENCE_13.createInstance());
+				cap.getCharmInstances().add(TreasureCharms.FIRE_IMMUNITY_13.createInstance());
 				ICharmableCapability charmableCap = provider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-				charmableCap.setSlots(2);
+				charmableCap.setSlots(0);
 				charmableCap.setCustomName("Ring of X");
 				return provider;
 			}
@@ -309,9 +316,10 @@ public class TreasureItems {
             public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
                 CharmableCapabilityProvider charmableProvider =  new CharmableCapabilityProvider();
                 ICharmCapability charmCap = charmableProvider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-                charmCap.getCharmInstances().add(TreasureCharms.SALANDAARS_CONVALESCENCE.createInstance());
+                charmCap.getCharmInstances().add(TreasureCharms.FIRE_IMMUNITY_13.createInstance());
                 charmCap.getCharmInstances().add(TreasureCharms.ARMADILLO_SHIELDING.createInstance());
-                // cap.getCharmInstances().add(TreasureCharms.FIRE_RESISTANCE_5.createInstance()));
+                charmCap.getCharmInstances().add(TreasureCharms.SALANDAARS_CONVALESCENCE.createInstance());
+                
                 ICharmableCapability charmableCap = charmableProvider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
                 charmableCap.setSlots(1);
 				charmableCap.setCustomName("Ring of the Angels");
@@ -319,7 +327,11 @@ public class TreasureItems {
             }	
         }.setMaxSlots(4).setLevel(10);
         
+        // 4x max slots. 2x slots. 2x charms. level 10
         AMULET = (Item) new Adornment(Treasure.MODID, "sapphire_amulet", AdornmentType.AMULET).setMaxSlots(4).setLevel(10);
+
+        // 4x max slots. 1x slots. 1x charms. level 10
+        GOLD_BRACELET = (Item) new Adornment(Treasure.MODID, "gold_bracelet", AdornmentType.BRACELET).setMaxSlots(4).setLevel(10);
 
 		// PEARLS
 		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.WHITE_PEARL_ID, Pearls.WHITE);
