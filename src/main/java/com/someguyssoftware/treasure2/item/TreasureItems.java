@@ -305,7 +305,8 @@ public class TreasureItems {
 //				cap.getCharmInstances().add(TreasureCharms.RUIN_2.createInstance());
 //				cap.getCharmInstances().add(TreasureCharms.DIRT_WALK.createInstance());
 //				cap.getCharmInstances().add(TreasureCharms.FIRE_IMMUNITY_13.createInstance());
-				cap.getCharmInstances().add(TreasureCharms.DECREPIT_4.createInstance());
+//				cap.getCharmInstances().add(TreasureCharms.DECREPIT_4.createInstance());
+				cap.getCharmInstances().add(TreasureCharms.REFLECTION_10.createInstance());
 				cap.getCharmInstances().add(TreasureCharms.LIFE_STRIKE_10.createInstance());
 				ICharmableCapability charmableCap = provider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
 				charmableCap.setSlots(0);
@@ -653,6 +654,7 @@ public class TreasureItems {
                     CASTLE_RING,
                     ANGELS_RING,
                     AMULET,
+                    GOLD_BRACELET,
 					WHITE_PEARL,
 					BLACK_PEARL,
 					WOOD_LOCK,

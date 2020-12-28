@@ -1,5 +1,6 @@
 package com.someguyssoftware.treasure2.item.charm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class TreasureCharmRegistry {
     private static final Map<ResourceLocation, ICharm> REGISTRY = new HashMap<>();
-    private static final Map<Integer, List<ICharm>> REGISTRY_BY_LEVEL = HashMap<>();
+    private static final Map<Integer, List<ICharm>> REGISTRY_BY_LEVEL = new HashMap<>();
 
     /**
      * 
@@ -20,8 +21,12 @@ public class TreasureCharmRegistry {
             REGISTRY.put(charm.getName(), charm);
         }
         if (!REGISTRY_BY_LEVEL.containsKey(Integer.valueOf(charm.getLevel()))) {
-            List<> charmList = REGISTRY_BY_LEVEL.put(Integer.valueOf(charm.getLevel()), new ArrayList<>());
-            charmList.add(charm);
+        	List<ICharm> charmList = new ArrayList<>();
+        	charmList.add(charm);
+        	REGISTRY_BY_LEVEL.put(Integer.valueOf(charm.getLevel()), charmList);            
+        }
+        else {
+        	REGISTRY_BY_LEVEL.get(Integer.valueOf(charm.getLevel())).add(charm);
         }
     }
 

@@ -287,6 +287,9 @@ tooltip.charm.fire_immunity=Fire Immunity
 tooltip.charm.life_strike_rate=- inflicts +%s%% damage for 1 heart health
 tooltip.charm.life_strike=Life Strike
 
+tooltip.charm.reflection_rate=- reflects +%s%% damage to all in %s block radius
+tooltip.charm.reflection=Reflection
+
 # curses
 tooltip.charm.decay_rate=- decays 1 heart/5 sec
 tooltip.charm.decay=Decay
@@ -315,12 +318,12 @@ tooltip.charm.uses_gauge=[%s/%s]
 tooltip.charm.prefix.level1=Lesser
 tooltip.charm.prefix.level2=
 tooltip.charm.prefix.level3=Greater
-tooltip.charm.prefix.level4=Huge
-tooltip.charm.prefix.level5=Giant
-tooltip.charm.prefix.level6=Grand
-tooltip.charm.prefix.level8=Massive
+tooltip.charm.prefix.level4=Grand
+tooltip.charm.prefix.level5=Huge
+tooltip.charm.prefix.level6=Massive
+tooltip.charm.prefix.level8=Giant
 tooltip.charm.prefix.level9=Cyclopean
-tooltip.charm.prefix.level10=Brobdingnagian
+tooltip.charm.prefix.level10=Colossal
 
 tooltip.charm.suffix.level11=of the Leviathan
 tooltip.charm.suffix.level12=of the Demogorgon

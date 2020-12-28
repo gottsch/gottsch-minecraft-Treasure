@@ -73,6 +73,18 @@ public class TreasureCharms {
     public static final ICharm LIFE_STRIKE_4;
     public static final ICharm LIFE_STRIKE_10;
     
+    public static final ICharm REFLECTION_1;
+    public static final ICharm REFLECTION_2;
+    public static final ICharm REFLECTION_3;
+    public static final ICharm REFLECTION_4;
+    public static final ICharm REFLECTION_10;
+    
+    public static final ICharm DRAIN_1;
+    public static final ICharm DRAIN_2;
+    public static final ICharm DRAIN_3;
+    public static final ICharm DRAIN_4;
+    public static final ICharm DRAIN_5;
+    
 	// curses
 	public static final ICharm LESSER_DECAY;
 	public static final ICharm DECAY;
@@ -88,7 +100,7 @@ public class TreasureCharms {
     public static final ICharm DECREPIT_2;
     public static final ICharm DECREPIT_3;
     public static final ICharm DECREPIT_4;
-    
+        
     public static final ICharm DIRT_FILL;
     public static final ICharm DIRT_FILL_2;
 
@@ -98,7 +110,8 @@ public class TreasureCharms {
     // TODO add charms
     // [x] RUIN
     // [] CACTUS
-    // [] REFLECTION x%, y# of enemies, z blocks of range
+    // [x] REFLECTION x%, y# of enemies, z blocks of range
+    // [] DRAIN drains 1 damage from each mob, z blocks of range
     // [x] DECREPIT (curse get hit for 2x the damage) 
     // [] DIRT (mound)
     // [x] DIRT FILL (inventory filler)
@@ -106,7 +119,6 @@ public class TreasureCharms {
     // [x] FIRE RESISTENCE
     // [x] FIRE IMMUNITY
     // [x] LIFESTRIKE
-    // [] BURN
 
 	//    @Deprecated
 	//	public static final Map<String, ICharm> REGISTRY = new HashMap<>();
@@ -161,7 +173,7 @@ public class TreasureCharms {
 		GRAND_ILLUMINATION = new Charm.Builder(new ResourceLocation(Treasure.MODID, "grand_illumination"), CharmType.ILLUMINATION.getName(), 4, IlluminationCharm.class).withValue(20.0).withAllowMultipleUpdates(false).build();
 		GLORIOUS_ILLUMINATION = new Charm.Builder(new ResourceLocation(Treasure.MODID, "glorious_illumination"), CharmType.ILLUMINATION.getName(), 5, IlluminationCharm.class).withValue(30.0).withAllowMultipleUpdates(false).build();
 
-		// fire resistence: value = # of total durability/damage points to resist, duration = rate: 1 point per x seconds
+		// fire resistence: value = # of total durability/damage points to resist
 		FIRE_RESISTENCE_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_resistence_1"), "fire_resistence", 1, FireResistenceCharm.class).withValue(25.0)
 				.withPercent(0.3).withAllowMultipleUpdates(true).build();
 		FIRE_RESISTENCE_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fire_resistence_2"), "fire_resistence", 2, FireResistenceCharm.class).withValue(50.0)
@@ -196,6 +208,30 @@ public class TreasureCharms {
                 .withAllowMultipleUpdates(false).build();        
         LIFE_STRIKE_10 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "life_strike_10"), "life_strike", 10, LifeStrikeCharm.class).withValue(50.0).withPercent(2.0)
                 .withAllowMultipleUpdates(false).build();
+        
+     // reflection: value = # of uses, duration = # of mobs affected or range?, percent = % of damage reflected
+        REFLECTION_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "reflection_1"), "reflection", 1, ReflectionCharm.class).withValue(20.0).withPercent(0.20)
+                .withDuration(2.0).withAllowMultipleUpdates(true).build();
+        REFLECTION_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "reflection_2"), "reflection", 2, ReflectionCharm.class).withValue(30.0).withPercent(0.25)
+                .withDuration(2.0).withAllowMultipleUpdates(true).build();
+        REFLECTION_3 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "reflection_3"), "reflection", 3, ReflectionCharm.class).withValue(40.0).withPercent(0.30)
+                .withDuration(3.0).withAllowMultipleUpdates(true).build();
+        REFLECTION_4 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "reflection_4"), "reflection", 4, ReflectionCharm.class).withValue(50.0).withPercent(0.35)
+                .withDuration(3.0).withAllowMultipleUpdates(true).build();
+        REFLECTION_10 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "reflection_10"), "reflection", 10, ReflectionCharm.class).withValue(20.0).withPercent(0.65)
+                .withDuration(5.0).withAllowMultipleUpdates(true).build();
+        
+        // drains 1 health; value = uses, duration = x seconds
+        DRAIN_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_1"), "drain", 1, DrainCharm.class).withValue(20.0).withDuration(2.0)
+                .withAllowMultipleUpdates(true).build();
+        DRAIN_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_2"), "drain", 2, DrainCharm.class).withValue(20.0).withDuration(2.0)
+                .withAllowMultipleUpdates(true).build();
+        DRAIN_3 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_3"), "drain", 3, DrainCharm.class).withValue(20.0).withDuration(2.5)
+                .withAllowMultipleUpdates(true).build();
+        DRAIN_4 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_4"), "drain", 4, DrainCharm.class).withValue(20.0).withDuration(2.5)
+                .withAllowMultipleUpdates(true).build();
+        DRAIN_5 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_5"), "drain", 5, DrainCharm.class).withValue(20.0).withDuration(3.0)
+                .withAllowMultipleUpdates(true).build();
         
         // curses
 		LESSER_DECAY = new Charm.Builder(new ResourceLocation(Treasure.MODID, "lesser_decay"), CharmType.DECAY.getName(), 1, DecayCharm.class).withValue(20.0).withAllowMultipleUpdates(true).build();
@@ -287,6 +323,12 @@ public class TreasureCharms {
         TreasureCharmRegistry.register(LIFE_STRIKE_3);
         TreasureCharmRegistry.register(LIFE_STRIKE_4);
         TreasureCharmRegistry.register(LIFE_STRIKE_10);
+        
+        TreasureCharmRegistry.register(REFLECTION_1);
+        TreasureCharmRegistry.register(REFLECTION_2);
+        TreasureCharmRegistry.register(REFLECTION_3);
+        TreasureCharmRegistry.register(REFLECTION_4);
+        TreasureCharmRegistry.register(REFLECTION_10);
         
 		TreasureCharmRegistry.register(LESSER_DECAY);
 		TreasureCharmRegistry.register(DECAY);
