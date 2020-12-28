@@ -96,15 +96,17 @@ public class TreasureCharms {
     public static final ICharm DIRT_WALK_2;
 
     // TODO add charms
-    // [x] TODO RUIN
-    // TODO CACTUS
-    // [x] TODO DECREPIT (curse get hit for 2x the damage) 
-    // TODO DIRT (mound)
-    // [x] TODO DIRT FILL (inventory filler)
-    // [x] TODO DIRT WALK (space below turns to dirt)
-    // [x] TODO FIRE RESISTENCE
-    // [x] TODO FIRE IMMUNITY
-    // [x] TODO LIFESTRIKE
+    // [x] RUIN
+    // [] CACTUS
+    // [] REFLECTION x%, y# of enemies, z blocks of range
+    // [x] DECREPIT (curse get hit for 2x the damage) 
+    // [] DIRT (mound)
+    // [x] DIRT FILL (inventory filler)
+    // [x] DIRT WALK (space below turns to dirt)
+    // [x] FIRE RESISTENCE
+    // [x] FIRE IMMUNITY
+    // [x] LIFESTRIKE
+    // [] BURN
 
 	//    @Deprecated
 	//	public static final Map<String, ICharm> REGISTRY = new HashMap<>();
