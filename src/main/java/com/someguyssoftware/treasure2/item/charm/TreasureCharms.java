@@ -84,6 +84,11 @@ public class TreasureCharms {
     public static final ICharm RUIN_3;
     public static final ICharm RUIN_4;
     
+    public static final ICharm DECREPIT_1;
+    public static final ICharm DECREPIT_2;
+    public static final ICharm DECREPIT_3;
+    public static final ICharm DECREPIT_4;
+    
     public static final ICharm DIRT_FILL;
     public static final ICharm DIRT_FILL_2;
 
@@ -93,13 +98,13 @@ public class TreasureCharms {
     // TODO add charms
     // [x] TODO RUIN
     // TODO CACTUS
-    // TODO DECREPIT (curse get hit for 2x the damage) 
+    // [x] TODO DECREPIT (curse get hit for 2x the damage) 
     // TODO DIRT (mound)
     // [x] TODO DIRT FILL (inventory filler)
     // [x] TODO DIRT WALK (space below turns to dirt)
     // [x] TODO FIRE RESISTENCE
     // [x] TODO FIRE IMMUNITY
-    // TODO LIFESTRIKE
+    // [x] TODO LIFESTRIKE
 
 	//    @Deprecated
 	//	public static final Map<String, ICharm> REGISTRY = new HashMap<>();
@@ -206,6 +211,15 @@ public class TreasureCharms {
         RUIN_4 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "ruin_4"), "ruin", 4, RuinCharm.class).withValue(200.0)
                 .withDuration(10.0).withAllowMultipleUpdates(true).build();
         
+        DECREPIT_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "decrepit_1"), "decrepit", 1, DecrepitCharm.class).withValue(20.0).withPercent(1.10)
+                .withDuration(20.0).withAllowMultipleUpdates(true).build();
+        DECREPIT_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "decrepit_2"), "decrepit", 2, DecrepitCharm.class).withValue(30.0).withPercent(1.10)
+                .withDuration(18.0).withAllowMultipleUpdates(true).build();
+        DECREPIT_3 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "decrepit_3"), "decrepit", 3, DecrepitCharm.class).withValue(40.0).withPercent(1.20)
+                .withDuration(15.0).withAllowMultipleUpdates(true).build();
+        DECREPIT_4 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "decrepit_4"), "decrepit", 4, DecrepitCharm.class).withValue(50.0).withPercent(1.20)
+                .withDuration(10.0).withAllowMultipleUpdates(true).build();
+        
         DIRT_FILL = new Charm.Builder(new ResourceLocation(Treasure.MODID, "dirt_fill_1"), "dirt_fill", 1, DirtFillCharm.class)
                 .withValue(100.0).withAllowMultipleUpdates(true).build();
         DIRT_FILL_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "dirt_fill_2"), "dirt_fill", 2, DirtFillCharm.class)
@@ -281,6 +295,11 @@ public class TreasureCharms {
         TreasureCharmRegistry.register(RUIN_2);
         TreasureCharmRegistry.register(RUIN_3);
         TreasureCharmRegistry.register(RUIN_4);
+        
+        TreasureCharmRegistry.register(DECREPIT_1);
+        TreasureCharmRegistry.register(DECREPIT_2);
+        TreasureCharmRegistry.register(DECREPIT_3);
+        TreasureCharmRegistry.register(DECREPIT_4);
         
         TreasureCharmRegistry.register(DIRT_FILL);
         TreasureCharmRegistry.register(DIRT_FILL_2);

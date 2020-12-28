@@ -298,6 +298,9 @@ tooltip.charm.decay=Decay
 tooltip.charm.ruin_rate=- ruins 1 damage/%s sec
 tooltip.charm.ruin=Ruin
 
+tooltip.charm.decrepit_rate=- you take +%s%% damage when hit
+tooltip.charm.decrepit=Decrepit
+
 # dirt curses = use specific mod level labels
 tooltip.charm.treasure2:dirt_fill_1=Dirt
 tooltip.charm.treasure2:dirt_fill_2=Dirt
