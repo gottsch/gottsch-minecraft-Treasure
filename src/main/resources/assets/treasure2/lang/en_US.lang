@@ -125,6 +125,9 @@ item.treasure2:castle_ring.name=Castle Ring
 item.treasure2:sapphire_gold_amulet.name=Sapphire Amulet
 item.treasure2:gold_bracelet.name=Gold Bracelet
 
+item.treasure2:bracelet_of_wonder=Bracelet of Wonder
+item.treasure2:ring_of_fortitude=Ring of Fortitude
+
 item.treasure2:key_ring.name=Key Ring
 item.treasure2:wood_key.name=Wood Key
 item.treasure2:stone_key.name=Stone Key
@@ -289,6 +292,9 @@ tooltip.charm.life_strike=Life Strike
 
 tooltip.charm.reflection_rate=- reflects +%s%% damage to all in %s block radius
 tooltip.charm.reflection=Reflection
+
+tooltip.charm.drain_rate=- drains 0.5 hearts/5 sec from all in %s block radius
+tooltip.charm.drain=Drain
 
 # curses
 tooltip.charm.decay_rate=- decays 1 heart/5 sec

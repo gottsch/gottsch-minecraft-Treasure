@@ -55,7 +55,8 @@ public class TreasureItems {
 
 	public static Item CHARMED_SILVER_COIN;
 	public static CharmedCoinItem CHARMED_GOLD_COIN;
-	public static CharmedGemItem CHARMED_RUBY;
+    public static CharmedGemItem CHARMED_RUBY;
+    public static CharmedGemItem CHARMED_SAPPHIRE;
 	public static CharmedGemItem MINERS_FRIEND;
 	public static CharmedCoinItem FOOLS_COIN;
 	public static CharmedCoinItem MEDICS_TOKEN;
@@ -75,10 +76,14 @@ public class TreasureItems {
     public static Item DIAMOND_GOLD_RING;
     public static Item SAPPHIRE_GOLD_RING;
     public static Item CASTLE_RING;
-    public static Item ANGELS_RING;
     public static Item AMULET;
     public static Item GOLD_BRACELET;
     
+    // special adornments
+    public static Item ANGELS_RING;
+    public static Item BRACELET_OF_WONDER;
+    public static Item RING_OF_FORTITUDE;
+
 	// pearls
 	public static Item WHITE_PEARL;
 	public static Item BLACK_PEARL;
@@ -188,7 +193,8 @@ public class TreasureItems {
 		// CHARMED COINS
 		CHARMED_SILVER_COIN = new CharmedCoinItem(Treasure.MODID, TreasureConfig.CHARMED_SILVER_COIN_ID, Coins.SILVER);
 		CHARMED_GOLD_COIN = new CharmedCoinItem(Treasure.MODID, TreasureConfig.CHARMED_GOLD_COIN_ID, Coins.GOLD);
-		CHARMED_RUBY = new CharmedGemItem(Treasure.MODID, TreasureConfig.CHARMED_RUBY_ID);
+        CHARMED_RUBY = new CharmedGemItem(Treasure.MODID, TreasureConfig.CHARMED_RUBY_ID);
+        CHARMED_SAPPHIRE = new CharmedGemItem(Treasure.MODID, TreasureConfig.CHARMED_SAPPHIRE_ID);
 
 		ANGEL_BLESSED = new CharmedGemItem(Treasure.MODID, TreasureConfig.ANGEL_BLESSED_ID) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
@@ -296,6 +302,13 @@ public class TreasureItems {
         // 2x max slots. 1x slots. 1x charms. level 12
         CASTLE_RING = (Item) new Adornment(Treasure.MODID, "castle_ring", AdornmentType.RING).setMaxSlots(2).setLevel(12);
 
+        // 4x max slots. 2x slots. 2x charms. level 10
+        AMULET = (Item) new Adornment(Treasure.MODID, "sapphire_amulet", AdornmentType.AMULET).setMaxSlots(4).setLevel(10);
+
+        // 4x max slots. 1x slots. 1x charms. level 10
+        GOLD_BRACELET = (Item) new Adornment(Treasure.MODID, "gold_bracelet", AdornmentType.BRACELET).setMaxSlots(4).setLevel(10);
+
+
         // TEMP
         RUBY_GOLD_RING = (Item) new Adornment(Treasure.MODID, "ruby_gold_ring", AdornmentType.RING) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {		
@@ -306,8 +319,9 @@ public class TreasureItems {
 //				cap.getCharmInstances().add(TreasureCharms.DIRT_WALK.createInstance());
 //				cap.getCharmInstances().add(TreasureCharms.FIRE_IMMUNITY_13.createInstance());
 //				cap.getCharmInstances().add(TreasureCharms.DECREPIT_4.createInstance());
-				cap.getCharmInstances().add(TreasureCharms.REFLECTION_10.createInstance());
-				cap.getCharmInstances().add(TreasureCharms.LIFE_STRIKE_10.createInstance());
+				// cap.getCharmInstances().add(TreasureCharms.REFLECTION_10.createInstance());
+                // cap.getCharmInstances().add(TreasureCharms.LIFE_STRIKE_10.createInstance());              
+				cap.getCharmInstances().add(TreasureCharms.DRAIN_5.createInstance());
 				ICharmableCapability charmableCap = provider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
 				charmableCap.setSlots(0);
 				charmableCap.setCustomName("Ring of X");
@@ -329,12 +343,34 @@ public class TreasureItems {
                 return charmableProvider;
             }	
         }.setMaxSlots(4).setLevel(10);
-        
-        // 4x max slots. 2x slots. 2x charms. level 10
-        AMULET = (Item) new Adornment(Treasure.MODID, "sapphire_amulet", AdornmentType.AMULET).setMaxSlots(4).setLevel(10);
 
-        // 4x max slots. 1x slots. 1x charms. level 10
-        GOLD_BRACELET = (Item) new Adornment(Treasure.MODID, "gold_bracelet", AdornmentType.BRACELET).setMaxSlots(4).setLevel(10);
+        RING_OF_FORTITUDE = (Item) new Adornment(Treasure.MODID, "ring_of_fortitude", AdornmentType.RING) {
+            public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+                CharmableCapabilityProvider charmableProvider =  new CharmableCapabilityProvider();
+                ICharmCapability charmCap = charmableProvider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+                charmCap.getCharmInstances().add(TreasureCharms.ARMADILLO_SHIELDING.createInstance());
+                charmCap.getCharmInstances().add(TreasureCharms.REFLECTION_5.createInstance());
+                
+                ICharmableCapability charmableCap = charmableProvider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+                charmableCap.setSlots(2);
+				charmableCap.setCustomName("Ring of Fortitude");
+                return charmableProvider;
+            }	
+        }.setMaxSlots(2).setLevel(12);
+
+        BRACELET_OF_WONDER = (Item) new Adornment(Treasure.MODID, "bracelet_of_wonder", AdornmentType.BRACELET) {
+            public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+                CharmableCapabilityProvider charmableProvider =  new CharmableCapabilityProvider();
+                ICharmCapability charmCap = charmableProvider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+                charmCap.getCharmInstances().add(TreasureCharms.SHIELDING_13.createInstance());
+                charmCap.getCharmInstances().add(TreasureCharms.REFLECTION_10.createInstance());
+                
+                ICharmableCapability charmableCap = charmableProvider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+                charmableCap.setSlots(4);
+				charmableCap.setCustomName("Bracelet of Wonder");
+                return charmableProvider;
+            }
+        }.setMaxSlots(4).setLevel(10);
 
 		// PEARLS
 		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.WHITE_PEARL_ID, Pearls.WHITE);
@@ -633,7 +669,8 @@ public class TreasureItems {
 					GOLD_COIN,
 					CHARMED_SILVER_COIN,
 					CHARMED_GOLD_COIN,
-					CHARMED_RUBY,
+                    CHARMED_RUBY,
+                    CHARMED_SAPPHIRE,
 					ANGEL_BLESSED,
 					MINERS_FRIEND,
 					FOOLS_COIN,

@@ -1,5 +1,5 @@
 {
-	"version": "1.0",
+	"version": "2.0",
 	"pools": [
 		{
 			"name": "common_keys",
@@ -93,7 +93,7 @@
 					"entryName": "charm1",
 					"type": "item",
 					"name": "treasure2:charmed_silver_coin",
-					"weight": 1,
+					"weight": 10,
 					"conditions": [
 						{
 							"condition": "random_chance",
@@ -109,7 +109,28 @@
 								]
 						}
 					]
-				}			
+                },
+                {
+					"entryName": "adornment1",
+					"type": "item",
+					"name": "treasure2:silver_ring",
+					"weight": 1,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.1
+						}
+					],					
+					"functions": [
+						{
+							"function": "treasure2:set_slots",
+							"slots": {
+								"min": 0,
+								"max": 0
+							}
+						}
+					]
+				}		
 			]
 		}
 	]

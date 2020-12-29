@@ -1,5 +1,5 @@
 {
-	"version": "1.0",
+	"version": "2.0",
 	"pools": [
 		{
 			"name": "epic_charms",
@@ -48,7 +48,14 @@
 								"hardened_shielding",
 								"overfed_fullness",
 								"major_harvesting",
-								"greater_illumination"
+                                "greater_illumination",
+                                "absolute_shielding_3",
+                                "fire_resistence_3",
+                                "fire_immunity_3",
+                                "life_strike_3",
+                                "reflection_3",
+                                "drain_3",
+                                "decrepit_3"
 							]
 						},
 						{
@@ -58,7 +65,14 @@
 								"hardened_shielding",
 								"overfed_fullness",
 								"major_harvesting",
-								"greater_illumination"
+                                "greater_illumination",
+                                "absolute_shielding_3",
+                                "fire_resistence_3",
+                                "fire_immunity_3",
+                                "life_strike_3",
+                                "reflection_3",
+                                "drain_3",
+                                "dirt_fill"        
 							]
 						}
 					]
@@ -82,8 +96,15 @@
 								"hardened_shielding",
 								"overfed_fullness",
 								"major_harvesting",
-								"greater_illumination",
-								"greater_decay"
+                                "greater_illumination",
+                                "absolute_shielding_3",
+                                "fire_resistence_3",
+                                "fire_immunity_3",
+                                "life_strike_3",
+                                "reflection_3",
+                                "drain_3",
+                                "greater_decay",
+                                "dirt_fill_2"
 							]
 						},
 						{
@@ -93,11 +114,69 @@
 								"powerful_shielding",
 								"gorged_fullness",
 								"grand_harvesting",
-								"grand_illumination"
+								"grand_illumination",
+                                "absolute_shielding_3",
+                                "fire_resistence_3",
+                                "fire_immunity_3",
+                                "life_strike_3",
+                                "reflection_3",
+                                "drain_3",
+                                "ruin_3",
+                                "dirt_walk"
 							]
 						}
 					]
-				},
+                },
+				{
+					"entryName": "charm3",
+					"type": "item",
+					"name": "treasure2:charmed_sapphire",
+					"weight":8,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.15
+						}
+					],
+					"functions": [
+						{
+							"function": "treasure2:charm_randomly",
+							"charms": [
+								"grand_healing",
+								"powerful_shielding",
+								"gorged_fullness",
+								"grand_harvesting",
+                                "grand_illumination",
+                                "absolute_shielding_4",
+                                "fire_resistence_4",
+                                "fire_immunity_4",
+                                "life_strike_4",
+                                "reflection_4",
+                                "drain_4",
+                                "greater_decay",
+                                "dirt_fill_2"
+							]
+						},
+						{
+							"function": "treasure2:charm_randomly",
+							"charms": [
+								"whale_healing",
+								"shielding_13",
+								"bursting_fullness",
+								"glorious_harvesting",
+								"glorious_illumination",
+                                "absolute_shielding_13",
+                                "fire_resistence_13",
+                                "fire_immunity_13",
+                                "life_strike_10",
+                                "reflection_10",
+                                "drain_5",
+                                "ruin_3",
+                                "dirt_walk"
+							]
+						}
+					]
+				},                
 				{
 					"entryName": "masters_pouch",
 					"type": "item",
@@ -109,7 +188,113 @@
 							"chance": 0.12
 						}
 					]
-				}
+                },
+                {
+					"entryName": "adornment1",
+					"type": "item",
+					"name": "treasure2:ruby_gold_ring",
+					"weight": 10,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.08
+						}
+                    ],
+                    "functions": [
+						{
+                            "function": "treasure2:set_slots",
+                            "slots": {
+                                "min":1,
+                                "max":4
+                            }      
+                        }
+                    ]
+                },
+                {
+					"entryName": "adornment2",
+					"type": "item",
+					"name": "treasure2:sapphire_gold_ring",
+					"weight": 10,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.06
+						}
+                    ],
+                    "functions": [
+						{
+                            "function": "treasure2:set_slots",
+                            "slots": {
+                                "min":1,
+                                "max":4
+                            }      
+                        }
+                    ]
+                },
+                {
+					"entryName": "adornment3",
+					"type": "item",
+					"name": "treasure2:sapphire_amulet",
+					"weight": 8,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.04
+						}
+                    ],
+                    "functions": [
+						{
+                            "function": "treasure2:set_slots",
+                            "slots": {
+                                "min":1,
+                                "max":4
+                            }      
+                        }
+                    ]
+                },
+                {
+					"entryName": "angels_ring",
+					"type": "item",
+					"name": "treasure2:angels_ring",
+					"weight": 1,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.01
+						}
+					]
+                },
+                {
+					"entryName": "amulet_of_the_whale",
+					"type": "item",
+					"name": "treasure2:sapphire_amulet",
+					"weight": 1,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.01
+						}
+                    ],
+                    "functions": [
+						{
+                            "function": "treasure2:set_slots",
+                            "slots": {
+                                "min":1,
+                                "max":4
+                            }      
+                        },
+                        {
+							"function": "treasure2:charm_randomly",
+							"charms": [
+                                "whale_healing",
+                                "shielding_13",
+                                "absolute_shielding_13",
+                                "fire_resistence_13",
+                                "fire_immunity_13"
+                            ]
+                        }
+                    ]
+				}                        
 			]
 		}
 	]

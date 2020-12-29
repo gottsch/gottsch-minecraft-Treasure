@@ -110,7 +110,8 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.SILVER_COIN);
 		registerItemModel(TreasureItems.CHARMED_SILVER_COIN);
 		registerItemModel(TreasureItems.CHARMED_GOLD_COIN);
-		registerItemModel(TreasureItems.CHARMED_RUBY);
+        registerItemModel(TreasureItems.CHARMED_RUBY);
+        registerItemModel(TreasureItems.CHARMED_SAPPHIRE);
 		registerItemModel(TreasureItems.ANGEL_BLESSED);
 		registerItemModel(TreasureItems.FOOLS_COIN);
 		registerItemModel(TreasureItems.MEDICS_TOKEN);
@@ -139,6 +140,9 @@ public class TreasureModels {
         registerItemModel(TreasureItems.ANGELS_RING);
         registerItemModel(TreasureItems.AMULET);
         registerItemModel(TreasureItems.GOLD_BRACELET);
+        
+        registerItemModel(TreasureItems.BRACELET_OF_WONDER);
+        registerItemModel(TreasureItems.RING_OF_FORTITUDE);
         
 		// PEARLS
 		registerItemModel(TreasureItems.WHITE_PEARL);

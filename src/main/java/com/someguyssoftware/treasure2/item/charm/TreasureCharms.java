@@ -28,7 +28,8 @@ public class TreasureCharms {
 	public static final ICharm STOUT_SHIELDING;
 	public static final ICharm HARDENED_SHIELDING;
 	public static final ICharm POWERFUL_SHIELDING;
-	public static final ICharm ARMADILLO_SHIELDING;
+    public static final ICharm ARMADILLO_SHIELDING;
+    public static final ICharm SHIELDING_13;
 
 	public static final ICharm ABSOLUTE_SHIELDING_1;
 	public static final ICharm ABSOLUTE_SHIELDING_2;
@@ -77,6 +78,7 @@ public class TreasureCharms {
     public static final ICharm REFLECTION_2;
     public static final ICharm REFLECTION_3;
     public static final ICharm REFLECTION_4;
+    public static final ICharm REFLECTION_5;
     public static final ICharm REFLECTION_10;
     
     public static final ICharm DRAIN_1;
@@ -111,7 +113,7 @@ public class TreasureCharms {
     // [x] RUIN
     // [] CACTUS
     // [x] REFLECTION x%, y# of enemies, z blocks of range
-    // [] DRAIN drains 1 damage from each mob, z blocks of range
+    // [x] DRAIN drains 1 damage from each mob, z blocks of range
     // [x] DECREPIT (curse get hit for 2x the damage) 
     // [] DIRT (mound)
     // [x] DIRT FILL (inventory filler)
@@ -137,6 +139,7 @@ public class TreasureCharms {
 		HARDENED_SHIELDING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "hardened_shielding"), CharmType.SHIELDING.getName(), 3, ShieldingCharm.class).withValue(100.0).withPercent(0.7).withAllowMultipleUpdates(true).build();
 		POWERFUL_SHIELDING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "powerful_shielding"), CharmType.SHIELDING.getName(), 4, ShieldingCharm.class).withValue(200.0).withPercent(0.8).withAllowMultipleUpdates(true).build();
 		ARMADILLO_SHIELDING = new Charm.Builder(new ResourceLocation(Treasure.MODID, "armadillo_shielding"), CharmType.SHIELDING.getName(), 5, ShieldingCharm.class).withValue(300.0).withPercent(0.8).withAllowMultipleUpdates(true).build();
+        SHIELDING_13 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "shielding_13"), CharmType.SHIELDING.getName(), 13, ShieldingCharm.class).withValue(1000.0).withPercent(0.8).withAllowMultipleUpdates(true).build();
 
 		// 10 Units @ 100% shielding
 		ABSOLUTE_SHIELDING_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "absolute_shielding_1"), "absolute_shielding", 1, ShieldingCharm.class)
@@ -209,7 +212,7 @@ public class TreasureCharms {
         LIFE_STRIKE_10 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "life_strike_10"), "life_strike", 10, LifeStrikeCharm.class).withValue(50.0).withPercent(2.0)
                 .withAllowMultipleUpdates(false).build();
         
-     // reflection: value = # of uses, duration = # of mobs affected or range?, percent = % of damage reflected
+     // reflection: value = # of uses, duration = range?, percent = % of damage reflected
         REFLECTION_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "reflection_1"), "reflection", 1, ReflectionCharm.class).withValue(20.0).withPercent(0.20)
                 .withDuration(2.0).withAllowMultipleUpdates(true).build();
         REFLECTION_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "reflection_2"), "reflection", 2, ReflectionCharm.class).withValue(30.0).withPercent(0.25)
@@ -218,19 +221,21 @@ public class TreasureCharms {
                 .withDuration(3.0).withAllowMultipleUpdates(true).build();
         REFLECTION_4 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "reflection_4"), "reflection", 4, ReflectionCharm.class).withValue(50.0).withPercent(0.35)
                 .withDuration(3.0).withAllowMultipleUpdates(true).build();
-        REFLECTION_10 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "reflection_10"), "reflection", 10, ReflectionCharm.class).withValue(20.0).withPercent(0.65)
+        REFLECTION_5 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "reflection_5"), "reflection", 5, ReflectionCharm.class).withValue(50.0).withPercent(0.40)
+                .withDuration(3.0).withAllowMultipleUpdates(true).build();
+        REFLECTION_10 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "reflection_10"), "reflection", 10, ReflectionCharm.class).withValue(80.0).withPercent(0.65)
                 .withDuration(5.0).withAllowMultipleUpdates(true).build();
         
-        // drains 1 health; value = uses, duration = x seconds
+        // drains 1 health; value = uses, duration = range
         DRAIN_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_1"), "drain", 1, DrainCharm.class).withValue(20.0).withDuration(2.0)
                 .withAllowMultipleUpdates(true).build();
-        DRAIN_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_2"), "drain", 2, DrainCharm.class).withValue(20.0).withDuration(2.0)
+        DRAIN_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_2"), "drain", 2, DrainCharm.class).withValue(30.0).withDuration(2.0)
                 .withAllowMultipleUpdates(true).build();
-        DRAIN_3 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_3"), "drain", 3, DrainCharm.class).withValue(20.0).withDuration(2.5)
+        DRAIN_3 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_3"), "drain", 3, DrainCharm.class).withValue(40.0).withDuration(2.5)
                 .withAllowMultipleUpdates(true).build();
-        DRAIN_4 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_4"), "drain", 4, DrainCharm.class).withValue(20.0).withDuration(2.5)
+        DRAIN_4 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_4"), "drain", 4, DrainCharm.class).withValue(50.0).withDuration(2.5)
                 .withAllowMultipleUpdates(true).build();
-        DRAIN_5 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_5"), "drain", 5, DrainCharm.class).withValue(20.0).withDuration(3.0)
+        DRAIN_5 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_5"), "drain", 5, DrainCharm.class).withValue(60.0).withDuration(3.0)
                 .withAllowMultipleUpdates(true).build();
         
         // curses
@@ -285,7 +290,8 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(STOUT_SHIELDING);
 		TreasureCharmRegistry.register(HARDENED_SHIELDING);
 		TreasureCharmRegistry.register(POWERFUL_SHIELDING);
-		TreasureCharmRegistry.register(ARMADILLO_SHIELDING);
+        TreasureCharmRegistry.register(ARMADILLO_SHIELDING);
+        TreasureCharmRegistry.register(SHIELDING_13);
 
         TreasureCharmRegistry.register(FULLNESS);
 		TreasureCharmRegistry.register(SATED_FULLNESS);
@@ -328,7 +334,14 @@ public class TreasureCharms {
         TreasureCharmRegistry.register(REFLECTION_2);
         TreasureCharmRegistry.register(REFLECTION_3);
         TreasureCharmRegistry.register(REFLECTION_4);
+        TreasureCharmRegistry.register(REFLECTION_5);
         TreasureCharmRegistry.register(REFLECTION_10);
+        
+        TreasureCharmRegistry.register(DRAIN_1);
+        TreasureCharmRegistry.register(DRAIN_2);
+        TreasureCharmRegistry.register(DRAIN_3);
+        TreasureCharmRegistry.register(DRAIN_4);
+        TreasureCharmRegistry.register(DRAIN_5);
         
 		TreasureCharmRegistry.register(LESSER_DECAY);
 		TreasureCharmRegistry.register(DECAY);

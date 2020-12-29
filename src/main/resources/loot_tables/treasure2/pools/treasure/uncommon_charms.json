@@ -1,5 +1,5 @@
 {
-	"version": "1.1",
+	"version": "2.0",
 	"pools": [
 		{
 			"name": "uncommon_charms",
@@ -9,7 +9,7 @@
 					"entryName": "charm1",
 					"type": "item",
 					"name": "treasure2:charmed_silver_coin",
-					"weight": 1,
+					"weight": 30,
 					"conditions": [
 						{
 							"condition": "random_chance",
@@ -30,7 +30,7 @@
 					"entryName": "charm2",
 					"type": "item",
 					"name": "treasure2:charmed_silver_coin",
-					"weight": 1,
+					"weight": 30,
 					"conditions": [
 						{
 							"condition": "random_chance",
@@ -53,7 +53,7 @@
 					"entryName": "charm3",
 					"type": "item",
 					"name": "treasure2:charmed_silver_coin",
-					"weight": 1,
+					"weight": 30,
 					"conditions": [
 						{
 							"condition": "random_chance",
@@ -69,16 +69,38 @@
 								]
 						}
 					]
-				},
-				{
+                },
+                {
 					"entryName": "adornment1",
 					"type": "item",
-					"name": "treasure2:ruby_gold_ring",
-					"weight": 1,
+					"name": "treasure2:silver_ring",
+                    "weight": 3,
+                    "quality": 3,
 					"conditions": [
 						{
 							"condition": "random_chance",
-							"chance": 0.99
+							"chance": 0.1
+						}
+					],					
+					"functions": [
+						{
+							"function": "treasure2:set_slots",
+							"slots": {
+								"min": 0,
+								"max": 0
+							}
+						}
+					]
+				},
+				{
+					"entryName": "adornment2",
+					"type": "item",
+					"name": "treasure2:gold_ring",
+					"weight": 3,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.08
 						}
 					],
 					"functions": [
@@ -88,13 +110,27 @@
 								"min": 1,
 								"max": 2
 							}
-						},
+						}
+					]
+                },
+                {
+					"entryName": "adornment3",
+					"type": "item",
+					"name": "treasure2:silver_ring",
+					"weight": 3,
+					"conditions": [
 						{
-							"function": "treasure2:charm_randomly",
-							"charms": [
-								"healing",
-								"stout_shielding"
-								]
+							"condition": "random_chance",
+							"chance": 0.05
+						}
+					],					
+					"functions": [
+						{
+							"function": "treasure2:set_slots",
+							"slots": {
+								"min": 1,
+								"max": 1
+							}
 						}
 					]
 				}
