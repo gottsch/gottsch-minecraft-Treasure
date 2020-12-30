@@ -20,11 +20,11 @@
 							"function": "enchant_with_levels",
 							"levels": 20,
 							"treasure": true
-						},	
+						},
 						{
 							"function": "enchant_randomly"
 						}
-					]					
+					]
 				},
 				{
 					"entryName": "diamond_sword",
@@ -36,12 +36,12 @@
 							"function": "enchant_with_levels",
 							"levels": 30,
 							"treasure": true
-						},					
+						},
 						{
 							"function": "enchant_randomly"
-						}					
-					]					
-				}			
+						}
+					]
+				}
 			]
 		}
 	]

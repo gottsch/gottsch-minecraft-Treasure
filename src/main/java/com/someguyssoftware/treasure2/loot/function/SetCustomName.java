@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
@@ -21,20 +23,20 @@ import net.minecraft.world.storage.loot.functions.LootFunction;
 
 /**
  * 
- * @author Mark Gottschling on Dec 24, 2020
+ * @author Mark Gottschling on Dec 29, 2020
  *
  */
-public class SetSlots extends LootFunction {
-	private final RandomValueRange slots;
+public class SetCustomName extends LootFunction {
+	private final String customName;
 
 	/**
 	 * 
 	 * @param conditions
 	 * @param slots
 	 */
-	public SetSlots(LootCondition[] conditions, RandomValueRange countRange) {
+	public SetCustomName(LootCondition[] conditions, String customName) {
 		super(conditions);
-		this.slots = countRange;
+		this.customName = customName;
 	}
 
 	/**
@@ -42,27 +44,32 @@ public class SetSlots extends LootFunction {
 	 */
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
 		// check for charmable capability
-		if (stack.hasCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null)) {
+		if (stack.hasCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null)) {
 			ICharmableCapability charmableCap = stack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-			charmableCap.setSlots(Math.min(this.slots.generateInt(rand), ((ICharmable)stack.getItem()).getMaxSlots()));
+			charmableCap.setCustomName(this.customName);
 		}
 		return stack;
 	}
 
-	public static class Serializer extends LootFunction.Serializer<SetSlots> {
+	public static class Serializer extends LootFunction.Serializer<SetCustomName> {
 		public Serializer() {
-			super(new ResourceLocation("treasure2:set_slots"), SetSlots.class);
+			super(new ResourceLocation("treasure2:set_custom_name"), SetCustomName.class);
 		}
 
-		public void serialize(JsonObject object, SetSlots functionClazz,
-				JsonSerializationContext serializationContext) {
-			object.add("slots", serializationContext.serialize(functionClazz.slots));
+		public void serialize(JsonObject json, SetCustomName value, JsonSerializationContext serializationContext) {
+			json.add("customName", new JsonPrimitive(value.customName));
 		}
 
-		public SetSlots deserialize(JsonObject object, JsonDeserializationContext deserializationContext,
+		/**
+		 * 
+		 */
+		public SetCustomName deserialize(JsonObject json, JsonDeserializationContext deserializationContext,
 				LootCondition[] conditions) {
-			return new SetSlots(conditions, (RandomValueRange) JsonUtils.deserializeClass(object, "slots",
-					deserializationContext, RandomValueRange.class));
+			String name = "";
+			if (json.has("customName")) {
+				name = JsonUtils.getString(json, "customName");	
+			}
+			return new SetCustomName(conditions, name);
 		}
 	}
 }

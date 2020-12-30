@@ -290,7 +290,7 @@ tooltip.charm.fire_immunity=Fire Immunity
 tooltip.charm.life_strike_rate=- inflicts +%s%% damage for 1 heart health
 tooltip.charm.life_strike=Life Strike
 
-tooltip.charm.reflection_rate=- reflects +%s%% damage to all in %s block radius
+tooltip.charm.reflection_rate=- reflects %s%% damage to all in %s block radius
 tooltip.charm.reflection=Reflection
 
 tooltip.charm.drain_rate=- drains 0.5 hearts/5 sec from all in %s block radius

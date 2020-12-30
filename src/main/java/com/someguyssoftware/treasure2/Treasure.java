@@ -54,6 +54,7 @@ import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.function.CharmRandomly;
 import com.someguyssoftware.treasure2.loot.function.SetCharms;
+import com.someguyssoftware.treasure2.loot.function.SetSlots;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 import com.someguyssoftware.treasure2.network.CharmMessageHandlerOnClient;
 import com.someguyssoftware.treasure2.network.CharmMessageToClient;
@@ -209,7 +210,7 @@ public class Treasure extends AbstractMod {
 		// register custom loot functions
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms.Serializer());
-
+		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetSlots.Serializer());
 	}
 
 	/**

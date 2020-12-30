@@ -127,7 +127,7 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.MASTERS_POUCH);
 		
 		// ADORNMENTS
-        registerItemModel(TreasureItems.RING);
+        registerItemModel(TreasureItems.SILVER_RING);
         registerItemModel(TreasureItems.SILVER_SIGNET_RING);
         registerItemModel(TreasureItems.ONYX_SILVER_SIGNET_RING);
         registerItemModel(TreasureItems.ONYX_GOLD_RING);

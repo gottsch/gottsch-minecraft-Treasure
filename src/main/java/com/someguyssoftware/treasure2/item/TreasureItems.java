@@ -66,7 +66,7 @@ public class TreasureItems {
 	public static CharmedCoinItem MIRTHAS_TORCH;
 
 	// adornments
-    public static Item RING; // (silver)
+    public static Item SILVER_RING; // (silver)
     public static Item SILVER_SIGNET_RING;
     public static Item ONYX_SILVER_SIGNET_RING;
     public static Item ONYX_GOLD_RING;
@@ -283,7 +283,7 @@ public class TreasureItems {
 
         // ADORNMENTS
         // 1x max slot. 0x slots. level 2
-        RING = (Item) new Adornment(Treasure.MODID, "silver_ring", AdornmentType.RING).setMaxSlots(1).setLevel(3);
+        SILVER_RING = (Item) new Adornment(Treasure.MODID, "silver_ring", AdornmentType.RING).setMaxSlots(1).setLevel(3);
         // 2x max slot. 0x slots. level 4
         GOLD_RING = (Item) new Adornment(Treasure.MODID, "gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(4);
 
@@ -295,7 +295,8 @@ public class TreasureItems {
         DIAMOND_GOLD_RING = (Item) new Adornment(Treasure.MODID, "diamond_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(10);
         // 2x max slot. 1x slots. 1x charm. level 11
         EMERALD_GOLD_RING = (Item) new Adornment(Treasure.MODID, "emerald_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(11);
-        // TODO ruby_gold_ring 3x max slot. 1x slot. 2x charm level 12
+        // 3x max slot. 1x slot. 2x charm level 12
+        RUBY_GOLD_RING = (Item) new Adornment(Treasure.MODID, "ruby_gold_ring", AdornmentType.RING).setMaxSlots(3).setLevel(12);
         // 3x max slots. 1x slots. 2x charms. level 13
         SAPPHIRE_GOLD_RING = (Item) new Adornment(Treasure.MODID, "sapphire_gold_ring", AdornmentType.RING).setMaxSlots(3).setLevel(13);
         
@@ -310,24 +311,17 @@ public class TreasureItems {
 
 
         // TEMP
-        RUBY_GOLD_RING = (Item) new Adornment(Treasure.MODID, "ruby_gold_ring", AdornmentType.RING) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {		
-				CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
-				ICharmCapability cap = provider.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
-//				cap.getCharmInstances().add(TreasureCharms.DIRT_FILL.createInstance());
-//				cap.getCharmInstances().add(TreasureCharms.RUIN_2.createInstance());
-//				cap.getCharmInstances().add(TreasureCharms.DIRT_WALK.createInstance());
-//				cap.getCharmInstances().add(TreasureCharms.FIRE_IMMUNITY_13.createInstance());
-//				cap.getCharmInstances().add(TreasureCharms.DECREPIT_4.createInstance());
-				// cap.getCharmInstances().add(TreasureCharms.REFLECTION_10.createInstance());
-                // cap.getCharmInstances().add(TreasureCharms.LIFE_STRIKE_10.createInstance());              
-				cap.getCharmInstances().add(TreasureCharms.DRAIN_5.createInstance());
-				ICharmableCapability charmableCap = provider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-				charmableCap.setSlots(0);
-				charmableCap.setCustomName("Ring of X");
-				return provider;
-			}
-        }.setMaxSlots(2).setLevel(5);
+//        RUBY_GOLD_RING = (Item) new Adornment(Treasure.MODID, "ruby_gold_ring", AdornmentType.RING) {
+//			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {		
+//				CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
+//				ICharmCapability cap = provider.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);      
+//				cap.getCharmInstances().add(TreasureCharms.DRAIN_5.createInstance());
+//				ICharmableCapability charmableCap = provider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+//				charmableCap.setSlots(0);
+//				charmableCap.setCustomName("Ring of X");
+//				return provider;
+//			}
+//        }.setMaxSlots(2).setLevel(5);
         
         ANGELS_RING = (Item) new Adornment(Treasure.MODID, "angels_ring", AdornmentType.RING) {
             public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
@@ -499,7 +493,7 @@ public class TreasureItems {
 				.setMaxDamage(TreasureConfig.KEYS_LOCKS.thiefsLockPickMaxUses)
 				.setSuccessProbability(48);
 
-		// KEY RING
+		// KEY SILVER_RING
 		KEY_RING = new KeyRingItem(Treasure.MODID, TreasureConfig.KEY_RING_ID);
 
 		// POUCHES
@@ -679,7 +673,7 @@ public class TreasureItems {
 					DWARVEN_TALISMAN,
 					ADEPHAGIAS_BOUNTY,
 					MIRTHAS_TORCH,
-                    RING,
+                    SILVER_RING,
                     SILVER_SIGNET_RING,
                     ONYX_SILVER_SIGNET_RING,
                     ONYX_GOLD_RING,
@@ -690,6 +684,8 @@ public class TreasureItems {
                     SAPPHIRE_GOLD_RING,
                     CASTLE_RING,
                     ANGELS_RING,
+                    RING_OF_FORTITUDE,
+                    BRACELET_OF_WONDER,
                     AMULET,
                     GOLD_BRACELET,
 					WHITE_PEARL,

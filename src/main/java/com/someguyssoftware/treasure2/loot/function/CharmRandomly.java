@@ -37,6 +37,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 
@@ -47,6 +48,7 @@ import net.minecraft.world.storage.loot.functions.LootFunction;
  */
 public class CharmRandomly extends LootFunction {
 	private List<ICharm> charms;
+	private RandomValueRange levels;
 
 	/**
 	 * 
@@ -57,42 +59,84 @@ public class CharmRandomly extends LootFunction {
 		super(conditions);
 		this.charms = charms == null ? Collections.emptyList() : charms;
 	}
+	
+	/**
+	 * 
+	 * @param conditions
+	 * @param charms
+	 * @param range
+	 */
+	public CharmRandomly(LootCondition[] conditions, @Nullable List<ICharm> charms, RandomValueRange levels) {
+		super(conditions);
+		this.charms = charms == null ? Collections.emptyList() : charms;
+		this.levels = levels;
+	}
+	
 
 	@Override
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
 		ICharm charm = null;
-
+		Treasure.logger.debug("selected item from charm pool -> {}", stack.getDisplayName());
 		// ensure that the stack has charm capabilities
 		ICharmCapability charmCap = null;
 		if (stack.getItem() instanceof ICharmed) {
+			Treasure.logger.debug("is an ICharmed");
 			charmCap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 		}
 		else if (stack.getItem() instanceof ICharmable) {
+			Treasure.logger.debug("is an ICharmable");
 			charmCap = stack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
 		}
 		if (charmCap != null) {
+			Treasure.logger.debug("has charm cap");
 //			provider = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 			List<ICharmInstance> charmInstances = charmCap.getCharmInstances();
-
-			if (this.charms.isEmpty()) {
-				List<ICharm> tempCharms = new ArrayList<>();
-				// if charms list is empty, create a default list of minor charms
-				for (ICharm c : TreasureCharmRegistry.values()) {
-					if (c.getLevel() == CharmLevel.LEVEL1.getValue() || c.getLevel() == CharmLevel.LEVEL2.getValue()) {
-						tempCharms.add(c);
+			List<ICharm> tempCharms = new ArrayList<>();
+			
+			if (this.charms.isEmpty()) {			
+				// check the levels property
+				if(levels != null) {
+					int level = this.levels.generateInt(rand);
+					// get all the charms from level
+					Optional<List<ICharm>> levelCharms = TreasureCharmRegistry.get(level);
+					if (levelCharms.isPresent()) {
+						tempCharms.addAll(levelCharms.get());
 					}
 				}
+				else {
+					// if charms list is empty, create a default list of minor charms
+					for (ICharm c : TreasureCharmRegistry.values()) {
+						if (c.getLevel() == CharmLevel.LEVEL1.getValue() || c.getLevel() == CharmLevel.LEVEL2.getValue()) {
+							tempCharms.add(c);
+						}
+					}
+				}
+				Treasure.logger.debug("temp charms size -> {}", tempCharms.size());
 				if (!tempCharms.isEmpty()) {
 					// select a charm randomly
 					charm = tempCharms.get(rand.nextInt(tempCharms.size()));
+					Treasure.logger.debug("selected charm for item -> {}", charm.getName().toString());
 				}
 			}
 			else {
+				// check the levels property
+				if(levels != null) {
+					int level = this.levels.generateInt(rand);
+					// get all the charms from level
+					Optional<List<ICharm>> levelCharms = TreasureCharmRegistry.get(level);
+					if (levelCharms.isPresent()) {
+						tempCharms.addAll(levelCharms.get());
+					}
+				}
+				// add the listed charms to the temp list
+				tempCharms.addAll(charms);
+				
 				// select a charm randomly
-				charm =this.charms.get(rand.nextInt(this.charms.size()));
+				charm =tempCharms.get(rand.nextInt(tempCharms.size()));
 				Treasure.logger.debug("selected charm for item -> {}", charm.getName().toString());
 			}
 			if (charm != null) {
+				Treasure.logger.debug("charm is not null -> {}", charm.getName());
 				// ensure that the item doesn't already have the same charm or same type or exceeded the maximum charms.
 				boolean hasCharm = false;
 				for (ICharmInstance instance : charmInstances) {
@@ -103,10 +147,12 @@ public class CharmRandomly extends LootFunction {
 							}
 				}
 				if (!hasCharm) {
+					Treasure.logger.debug("adding charm to charm instances.");
 					charmInstances.add(charm.createInstance());
 				}
 			}
 		}
+		Treasure.logger.debug("returning charmed item -> {}", stack.getDisplayName());
 		return stack;
 	}
 
@@ -140,7 +186,12 @@ public class CharmRandomly extends LootFunction {
 				LootCondition[] conditionsIn) {
 			Map<String, ICharm> charmsByType = new HashMap<>(10);
 			List<ICharm> list = Lists.<ICharm>newArrayList();
-
+			
+			RandomValueRange range = null;
+			if (json.has("levels")) {
+				 range = JsonUtils.deserializeClass(json, "levels", deserializationContext, RandomValueRange.class);	
+			}
+			
 			if (json.has("charms")) {
 				for (JsonElement element : JsonUtils.getJsonArray(json, "charms")) {
 					String charmName = JsonUtils.getString(element, "charm");
@@ -158,7 +209,7 @@ public class CharmRandomly extends LootFunction {
 					}
 				}
 			}
-			return new CharmRandomly(conditionsIn, list);
+			return new CharmRandomly(conditionsIn, list, range);
 		}
 	}
 }

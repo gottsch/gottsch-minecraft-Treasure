@@ -66,6 +66,6 @@ public class ShieldingCharm extends Charm {
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
         TextFormatting color = TextFormatting.BLUE;
 		tooltip.add("  " + color + getLabel(data));
-		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.shielding_rate", data.getPercent()));
+		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.shielding_rate", data.getPercent()*100));
 	}
 }

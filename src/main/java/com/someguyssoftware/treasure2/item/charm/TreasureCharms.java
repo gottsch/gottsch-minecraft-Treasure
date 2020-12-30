@@ -227,15 +227,15 @@ public class TreasureCharms {
                 .withDuration(5.0).withAllowMultipleUpdates(true).build();
         
         // drains 1 health; value = uses, duration = range
-        DRAIN_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_1"), "drain", 1, DrainCharm.class).withValue(20.0).withDuration(2.0)
+        DRAIN_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_1"), "drain", 1, DrainCharm.class).withValue(20.0).withDuration(2.5)
                 .withAllowMultipleUpdates(true).build();
-        DRAIN_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_2"), "drain", 2, DrainCharm.class).withValue(30.0).withDuration(2.0)
+        DRAIN_2 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_2"), "drain", 2, DrainCharm.class).withValue(30.0).withDuration(2.5)
                 .withAllowMultipleUpdates(true).build();
-        DRAIN_3 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_3"), "drain", 3, DrainCharm.class).withValue(40.0).withDuration(2.5)
+        DRAIN_3 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_3"), "drain", 3, DrainCharm.class).withValue(40.0).withDuration(3.0)
                 .withAllowMultipleUpdates(true).build();
-        DRAIN_4 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_4"), "drain", 4, DrainCharm.class).withValue(50.0).withDuration(2.5)
+        DRAIN_4 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_4"), "drain", 4, DrainCharm.class).withValue(50.0).withDuration(3.0)
                 .withAllowMultipleUpdates(true).build();
-        DRAIN_5 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_5"), "drain", 5, DrainCharm.class).withValue(60.0).withDuration(3.0)
+        DRAIN_5 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "drain_5"), "drain", 5, DrainCharm.class).withValue(60.0).withDuration(3.5)
                 .withAllowMultipleUpdates(true).build();
         
         // curses
