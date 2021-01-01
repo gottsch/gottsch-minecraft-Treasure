@@ -230,7 +230,7 @@ public interface IChestGenerator {
 			LootPool lootPool = lootTable.getPool(pool.getName());
 			
 			// geneate loot from pools
-			if (pool.getName().equalsIgnoreCase("treasure")) {
+			if (pool.getName().equalsIgnoreCase("treasure") || pool.getName().equalsIgnoreCase("charms")) {
 				lootPool.generateLoot(treasureStacks, random, lootContext);
 			}
 			else {
@@ -271,7 +271,7 @@ public interface IChestGenerator {
 	 */
 	default public void fillInventory(IInventory inventory, Random random, List<ItemStack> list) {
 		List<Integer> emptySlots = getEmptySlotsRandomized(inventory, random);
-		logger.debug("empty slots size -> {}", emptySlots.size());
+		logger.debug("beginning empty slots size -> {}", emptySlots.size());
 		this.shuffleItems(list, emptySlots.size(), random);
 
 		for (ItemStack itemstack : list) {
@@ -281,12 +281,15 @@ public interface IChestGenerator {
 			}
 
 			if (itemstack.isEmpty()) {
+				logger.debug("add item -> {} to slot -> {}", itemstack.getDisplayName(), emptySlots.get(emptySlots.size()-1));
 				inventory.setInventorySlotContents(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), ItemStack.EMPTY);
 			} 
 			else {
+				logger.debug("add item -> {} to slot -> {}", itemstack.getDisplayName(), emptySlots.get(emptySlots.size()-1));
 				inventory.setInventorySlotContents(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), itemstack);
 			}
 		}
+		logger.debug("ending empty slots size -> {}", emptySlots.size());
 	}
 	
 	/**
