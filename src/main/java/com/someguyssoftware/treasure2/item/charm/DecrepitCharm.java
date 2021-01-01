@@ -67,6 +67,6 @@ public class DecrepitCharm extends Charm {
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
 		TextFormatting color = TextFormatting.DARK_RED;
 		tooltip.add("  " + color + getLabel(data));
-		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.decrepit_rate", (data.getPercent()-1)*100));
+		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.decrepit_rate", Math.round((data.getPercent()-1)*100)));
 	}
 }
