@@ -10,7 +10,7 @@
 				"weight": 30,
 				"conditions": [{
 					"condition": "random_chance",
-					"chance": 0.12
+					"chance": 0.20
 				}],
 				"functions": [{
 					"function": "treasure2:charm_randomly",
@@ -24,7 +24,7 @@
 				"weight": 30,
 				"conditions": [{
 					"condition": "random_chance",
-					"chance": 0.12
+					"chance": 0.15
 				}],
 				"functions": [{
 						"function": "treasure2:charm_randomly",
@@ -53,6 +53,37 @@
 			{
 				"entryName": "adornment0",
 				"type": "item",
+				"name": "treasure2:silver_ring",
+				"weight": 15,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.5
+				}],
+				"functions": [{
+					"function": "treasure2:set_slots",
+					"slots": 0
+				}]
+			},
+			{
+				"entryName": "adornment1",
+				"type": "item",
+				"name": "treasure2:gold_ring",
+				"weight": 15,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.5
+				}],
+				"functions": [{
+					"function": "treasure2:set_slots",
+					"slots": {
+						"min": 1,
+						"max": 2
+					}
+				}]
+			},
+			{
+				"entryName": "adornment2",
+				"type": "item",
 				"name": "treasure2:onyx_gold_ring",
 				"weight": 10,
 				"quality": 2,
@@ -69,7 +100,7 @@
 				}]
 			},
 			{
-				"entryName": "adornment1",
+				"entryName": "adornment3",
 				"type": "item",
 				"name": "treasure2:diamond_gold_ring",
 				"weight": 10,
@@ -87,7 +118,7 @@
 				}]
 			},
 			{
-				"entryName": "adornment2",
+				"entryName": "adornment4",
 				"type": "item",
 				"name": "treasure2:emerald_gold_ring",
 				"weight": 10,

@@ -122,7 +122,7 @@ item.treasure2:sapphire_gold_ring.name=Sapphire Ring
 item.treasure2:diamond_gold_ring.name=Diamond Ring
 item.treasure2:emerald_gold_ring.name=Emerald Ring
 item.treasure2:castle_ring.name=Castle Ring
-item.treasure2:sapphire_gold_amulet.name=Sapphire Amulet
+item.treasure2:sapphire_amulet.name=Sapphire Amulet
 item.treasure2:gold_bracelet.name=Gold Bracelet
 
 item.treasure2:bracelet_of_wonder=Bracelet of Wonder

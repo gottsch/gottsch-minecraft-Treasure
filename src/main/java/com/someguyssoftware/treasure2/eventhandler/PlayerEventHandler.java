@@ -336,12 +336,13 @@ public class PlayerEventHandler {
 					charmInstance.getCharm().update(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event, charmInstance.getData())) {
 				// send state message to client
 				CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmInstance, context.hand, context.slot);
-				Treasure.logger.debug("Message to client -> {}", message);
+//				Treasure.logger.debug("Message to client -> {}", message);
 				Treasure.simpleNetworkWrapper.sendTo(message, player);
             }
 
             // mark Charm if instanceof ICharmable and no uses remain
             if (charmInstance.getData().getValue() <= 0.0 && charmInstance.getCharm() instanceof ICharmable) {
+            	Treasure.logger.debug("charm is empty, add to remove list");
                 removeInstances.add(charmInstance);
             }
         }
@@ -350,6 +351,7 @@ public class PlayerEventHandler {
         if (!removeInstances.isEmpty()) {
             removeInstances.forEach(instance -> {
                 charmInstances.remove(instance);
+                // TODO send message to client to remove charm";
             });
         }
 	}

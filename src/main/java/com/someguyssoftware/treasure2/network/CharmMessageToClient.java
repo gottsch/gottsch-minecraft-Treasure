@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2.network;
 
 import java.util.Optional;
 
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.item.charm.ICharm;
 import com.someguyssoftware.treasure2.item.charm.ICharmData;
 import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
@@ -87,7 +88,7 @@ public class CharmMessageToClient implements IMessage {
 	    	}
 	    	this.slot = buf.readInt();
 	      } catch (RuntimeException e) {
-	        System.err.println("Exception while reading CharmMessageToClient: " + e);
+	        Treasure.logger.error("Exception while reading CharmMessageToClient: ", e);
 	        return;
 	      }
 	      messageIsValid = true;
