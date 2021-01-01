@@ -287,7 +287,9 @@ public class TreasureItems {
         // 2x max slot. 0x slots. level 4
         GOLD_RING = (Item) new Adornment(Treasure.MODID, "gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(4);
 
+        // 1x max slot. 0-1x slots. level 5
         SILVER_SIGNET_RING = (Item) new Adornment(Treasure.MODID, "silver_signet_ring", AdornmentType.RING).setMaxSlots(2).setLevel(1);
+        // TODO remove
         ONYX_SILVER_SIGNET_RING = (Item) new Adornment(Treasure.MODID, "onyx_silver_signet_ring", AdornmentType.RING).setMaxSlots(2).setLevel(2);
         // 2x max slot. 1x slots. 1x charm. level 5
         ONYX_GOLD_RING = (Item) new Adornment(Treasure.MODID, "onyx_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(5);

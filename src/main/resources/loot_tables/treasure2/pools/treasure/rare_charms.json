@@ -179,7 +179,17 @@
 						"max": 2
 					}
 				}]
-			},
+            },
+    		{
+				"entryName": "adornment5",
+				"type": "item",
+				"name": "treasure2:gold_bracelet",
+                "weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.3
+				}]       
+            },      
 			{
 				"entryName": "apprentices_pouch",
 				"type": "item",
