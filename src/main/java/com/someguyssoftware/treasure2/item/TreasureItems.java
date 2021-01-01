@@ -310,12 +310,12 @@ public class TreasureItems {
         GOLD_BRACELET = (Item) new Adornment(Treasure.MODID, "gold_bracelet", AdornmentType.BRACELET).setMaxSlots(4).setLevel(10);
 
 
-        // TEMP
+        // TEMP DEBUGGING
 //        RUBY_GOLD_RING = (Item) new Adornment(Treasure.MODID, "ruby_gold_ring", AdornmentType.RING) {
 //			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {		
 //				CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
 //				ICharmCapability cap = provider.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);      
-//				cap.getCharmInstances().add(TreasureCharms.DRAIN_5.createInstance());
+//				cap.getCharmInstances().add(TreasureCharms.ABSOLUTE_SHIELDING_4.createInstance());
 //				ICharmableCapability charmableCap = provider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
 //				charmableCap.setSlots(0);
 //				charmableCap.setCustomName("Ring of X");

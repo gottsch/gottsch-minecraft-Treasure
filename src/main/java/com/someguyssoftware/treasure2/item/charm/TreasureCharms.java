@@ -143,19 +143,19 @@ public class TreasureCharms {
 
 		// 10 Units @ 100% shielding
 		ABSOLUTE_SHIELDING_1 = new Charm.Builder(new ResourceLocation(Treasure.MODID, "absolute_shielding_1"), "absolute_shielding", 1, ShieldingCharm.class)
-				.withValue(10.0).withPercent(100.0).withAllowMultipleUpdates(false).build();
+				.withValue(10.0).withPercent(1.0).withAllowMultipleUpdates(false).build();
 		ABSOLUTE_SHIELDING_2 = new Charm.Builder(
 				new ResourceLocation(Treasure.MODID, "absolute_shielding_2"), "absolute_shielding", 2, ShieldingCharm.class)
-				.withValue(20.0).withPercent(100.0).withAllowMultipleUpdates(false).build();
+				.withValue(20.0).withPercent(1.0).withAllowMultipleUpdates(false).build();
 		ABSOLUTE_SHIELDING_3 = new Charm.Builder(
 				new ResourceLocation(Treasure.MODID, "absolute_shielding_3"), "absolute_shielding", 3, ShieldingCharm.class)
-				.withValue(30.0).withPercent(100.0).withAllowMultipleUpdates(false).build();
+				.withValue(30.0).withPercent(1.0).withAllowMultipleUpdates(false).build();
 		ABSOLUTE_SHIELDING_4 = new Charm.Builder(
 				new ResourceLocation(Treasure.MODID, "absolute_shielding_4"), "absolute_shielding", 4, ShieldingCharm.class)
-				.withValue(40.0).withPercent(100.0).withAllowMultipleUpdates(false).build();
+				.withValue(40.0).withPercent(1.0).withAllowMultipleUpdates(false).build();
 		ABSOLUTE_SHIELDING_13 = new Charm.Builder(
 				new ResourceLocation(Treasure.MODID, "absolute_shielding_13"), "absolute_shielding", 13, ShieldingCharm.class)
-				.withValue(100.0).withPercent(100.0).withAllowMultipleUpdates(false).build();
+				.withValue(250.0).withPercent(1.0).withAllowMultipleUpdates(false).build();
 
         FULLNESS = new Charm.Builder(new ResourceLocation(Treasure.MODID, "fullness"), CharmType.FULLNESS.getName(), 1, FullnessCharm.class)
                 .withValue(20.0).withAllowMultipleUpdates(true).build();

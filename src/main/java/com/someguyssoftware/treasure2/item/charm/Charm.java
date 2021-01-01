@@ -121,7 +121,18 @@ public abstract class Charm implements ICharm {
                 label = type + " " + suffix;
             }
         }
-        return label + " " + I18n.translateToLocalFormatted("tooltip.charm.uses_gauge",
+        // TODO redo this in future.
+        return label + " " + getUsesGauge(data) + " " + (this.isAllowMultipleUpdates() ? (TextFormatting.DARK_PURPLE + "* combinable") : "");
+	}
+	
+	/**
+	 * 
+	 * @param data
+	 * @return
+	 */
+	@SuppressWarnings("deprecation")
+	public String getUsesGauge(ICharmData data) {
+		return I18n.translateToLocalFormatted("tooltip.charm.uses_gauge",
         		String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
 				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
 	}
