@@ -115,6 +115,7 @@ item.treasure2:apprentices_pouch.name=Apprentice's Pouch
 item.treasure2:masters_pouch.name=Master's Pouch
 
 item.treasure2:silver_ring.name=Silver Ring
+item.treasure2:silver_signet_ring.name=Silver Signet Ring
 item.treasure2:gold_ring.name=Gold Ring
 item.treasure2:ruby_gold_ring.name=Ruby Ring
 item.treasure2:onyx_gold_ring.name=Onyx Ring

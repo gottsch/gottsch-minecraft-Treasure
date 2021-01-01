@@ -129,7 +129,6 @@ public class TreasureModels {
 		// ADORNMENTS
         registerItemModel(TreasureItems.SILVER_RING);
         registerItemModel(TreasureItems.SILVER_SIGNET_RING);
-        registerItemModel(TreasureItems.ONYX_SILVER_SIGNET_RING);
         registerItemModel(TreasureItems.ONYX_GOLD_RING);
 		registerItemModel(TreasureItems.GOLD_RING);
         registerItemModel(TreasureItems.RUBY_GOLD_RING);

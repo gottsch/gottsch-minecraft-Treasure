@@ -133,6 +133,23 @@
 						"max": 2
 					}
 				}]
+            },
+            {
+				"entryName": "adornment5",
+				"type": "item",
+				"name": "treasure2:silver_signet_ring",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.5
+				}],
+				"functions": [{
+					"function": "treasure2:set_slots",
+					"slots": {
+						"min": 0,
+						"max": 1
+					}
+				}]
 			},
 			{
 				"entryName": "fools_coin",
