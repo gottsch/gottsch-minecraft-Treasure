@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * @author Mark Gottschling on Apr 27, 2020
  *
  */
-public class CharmVitals implements ICharmVitals {
+public class CharmData implements ICharmData {
 	private double value;
 	private int duration;
 	private double percent;
@@ -19,13 +19,14 @@ public class CharmVitals implements ICharmVitals {
 	/**
 	 * 
 	 */
-	public CharmVitals() {};
+    public CharmData
+() {};
 	
 	/**
 	 * 
 	 * @param charm
 	 */
-	public CharmVitals(ICharm charm) {
+    public CharmData(ICharm charm) {
 		this.value = charm.getMaxValue();
 		this.duration = charm.getMaxDuration();
 		this.percent = charm.getMaxPercent();
@@ -37,7 +38,8 @@ public class CharmVitals implements ICharmVitals {
 	 * @param duration
 	 * @param percent
 	 */
-	public CharmVitals(double value, int duration, double percent) {
+    public CharmData
+(double value, int duration, double percent) {
 		this.value = value;
 		this.duration = duration;
 		this.percent = percent;
@@ -47,7 +49,7 @@ public class CharmVitals implements ICharmVitals {
 	 * 
 	 * @param vitals
 	 */
-	public CharmVitals(ICharmVitals vitals) {
+    public CharmData(ICharmData vitals) {
 		this.value = vitals.getValue();
 		this.duration = vitals.getDuration();
 		this.percent = vitals.getPercent();
@@ -115,7 +117,7 @@ public class CharmVitals implements ICharmVitals {
 
 	@Override
 	public String toString() {
-		return "CharmVitals [value=" + value + ", duration=" + duration + ", percent=" + percent + "]";
+        return "CharmData[value=" + value + ", duration=" + duration + ", percent=" + percent + "]";
 	}
 
 	@Override
@@ -139,7 +141,8 @@ public class CharmVitals implements ICharmVitals {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CharmVitals other = (CharmVitals) obj;
+        CharmData
+     other = (CharmData) obj;
 		if (duration != other.duration)
 			return false;
 		if (Double.doubleToLongBits(percent) != Double.doubleToLongBits(other.percent))

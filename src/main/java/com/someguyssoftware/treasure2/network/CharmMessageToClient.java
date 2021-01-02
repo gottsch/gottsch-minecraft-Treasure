@@ -3,14 +3,19 @@
  */
 package com.someguyssoftware.treasure2.network;
 
-import com.someguyssoftware.treasure2.item.charm.CharmStateFactory;
-import com.someguyssoftware.treasure2.item.charm.CharmVitals;
-import com.someguyssoftware.treasure2.item.charm.ICharmState;
-import com.someguyssoftware.treasure2.item.charm.ICharmVitals;
+import java.util.Optional;
+
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.item.charm.ICharm;
+import com.someguyssoftware.treasure2.item.charm.ICharmData;
+import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
+import com.someguyssoftware.treasure2.item.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
@@ -21,7 +26,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 public class CharmMessageToClient implements IMessage {
 	private boolean messageIsValid;
 	private String charmName;
-	private ICharmVitals vitals;
+	private ICharmData data;
 	// location properties of charm(s) - who, what hand or what pouch slot
 	private String playerName;
 	private EnumHand hand;
@@ -31,11 +36,11 @@ public class CharmMessageToClient implements IMessage {
 	 * 
 	 * @param playerName
 	 */
-	public CharmMessageToClient(String playerName, ICharmState state, EnumHand hand, Integer slot) {
+	public CharmMessageToClient(String playerName, ICharmInstance instance, EnumHand hand, Integer slot) {
 		messageIsValid = true;
 		this.playerName = playerName;
-		this.charmName = state.getCharm().getName();
-		this.vitals = state.getVitals();
+		this.charmName = instance.getCharm().getName().toString();
+		this.data = instance.getData();
 		this.hand = hand;
 		if (slot == null) {
 			this.slot = -1;
@@ -64,18 +69,26 @@ public class CharmMessageToClient implements IMessage {
 	    	double value = buf.readDouble();
 	    	int duration = buf.readInt();
 	    	double percent = buf.readDouble();
-	    	vitals = CharmStateFactory.createCharmVitals(TreasureCharms.REGISTRY.get(charmName));
-	    	vitals.setDuration(duration);
-	    	vitals.setPercent(percent);
-	    	vitals.setValue(value);
-//	    	vitals = new CharmVitals(value, duration, percent);
+            // data = CharmStateFactory.createCharmVitals(TreasureCharms.REGISTRY.get(charmName));
+//            data = TreasureCharms.REGISTRY.get(charmName).createInstance().getData();
+	    	// TODO ensure charmName contains a domain
+	    	/// TODO check optional value
+	    	Optional<ICharm> optionalCharm = TreasureCharmRegistry.get(ResourceLocationUtil.create(charmName));
+	    	if (!optionalCharm.isPresent()) {
+	    		throw new RuntimeException(String.format("Unable to find charm %s in registry.", charmName));
+	    	}
+	    	data = optionalCharm.get().createInstance().getData();
+	    	data.setDuration(duration);
+	    	data.setPercent(percent);
+	    	data.setValue(value);
+//	    	data = new CharmVitals(value, duration, percent);
 	    	String handStr = ByteBufUtils.readUTF8String(buf);
 	    	if (!handStr.isEmpty()) {
 	    		this.hand = EnumHand.valueOf(handStr);
 	    	}
 	    	this.slot = buf.readInt();
 	      } catch (RuntimeException e) {
-	        System.err.println("Exception while reading PoisonMistMessageToServer: " + e);
+	        Treasure.logger.error("Exception while reading CharmMessageToClient: ", e);
 	        return;
 	      }
 	      messageIsValid = true;
@@ -89,9 +102,9 @@ public class CharmMessageToClient implements IMessage {
 	    }
 	    ByteBufUtils.writeUTF8String(buf, playerName);
 	    ByteBufUtils.writeUTF8String(buf, charmName);
-	    buf.writeDouble(vitals.getValue());
-	    buf.writeInt(vitals.getDuration());
-	    buf.writeDouble(vitals.getPercent());
+	    buf.writeDouble(data.getValue());
+	    buf.writeInt(data.getDuration());
+	    buf.writeDouble(data.getPercent());
 	    String handStr = "";
 	    if (hand != null) {
 	    	handStr = hand.name();
@@ -105,7 +118,7 @@ public class CharmMessageToClient implements IMessage {
 	 * @return
 	 */
 	public boolean isMessageValid() {
-		if (charmName != null && playerName != null && vitals != null) {
+		if (charmName != null && playerName != null && data != null) {
 			return true;
 		}
 		return false;
@@ -119,8 +132,8 @@ public class CharmMessageToClient implements IMessage {
 		this.messageIsValid = messageIsValid;
 	}
 
-	public ICharmVitals getVitals() {
-		return vitals;
+	public ICharmData getData() {
+		return data;
 	}
 	
 	public String getPlayerName() {
@@ -141,7 +154,7 @@ public class CharmMessageToClient implements IMessage {
 
 	@Override
 	public String toString() {
-		return "CharmMessageToClient [messageIsValid=" + messageIsValid + ", charmName=" + charmName + ", vitals="
-				+ vitals + ", playerName=" + playerName + ", hand=" + hand + ", slot=" + slot + "]";
+		return "CharmMessageToClient [messageIsValid=" + messageIsValid + ", charmName=" + charmName + ", data="
+				+ data + ", playerName=" + playerName + ", hand=" + hand + ", slot=" + slot + "]";
 	}
 }

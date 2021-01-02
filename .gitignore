@@ -1,5 +1,6 @@
 /*
 gradle.log
+!.classpath
 !/src/
 !.gitignore
 !gradlew*
