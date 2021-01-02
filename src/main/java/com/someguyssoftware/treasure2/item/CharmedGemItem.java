@@ -8,7 +8,6 @@ import java.util.List;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
-import com.someguyssoftware.treasure2.item.charm.ICharmState;
 import com.someguyssoftware.treasure2.item.charm.ICharmed;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -46,7 +45,7 @@ public class CharmedGemItem extends GemItem implements ICharmed {
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		addCharmedInfo(stack, worldIn, tooltip, flagIn);
+		addCharmedInfo2(stack, worldIn, tooltip, flagIn);
 	}
 	
 	/**

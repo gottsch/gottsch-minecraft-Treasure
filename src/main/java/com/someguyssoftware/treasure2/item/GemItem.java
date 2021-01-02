@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.someguyssoftware.treasure2.item;
 
 import com.someguyssoftware.gottschcore.item.ModItem;

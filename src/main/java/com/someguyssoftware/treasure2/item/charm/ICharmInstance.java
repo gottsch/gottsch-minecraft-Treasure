@@ -11,21 +11,13 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
-public interface ICharmState {
+public interface ICharmInstance {
 
 	ICharm getCharm();
 
 	void setCharm(ICharm charm);
 
-	ICharmVitals getVitals();
+	ICharmData getData();
 
-	void setVitals(ICharmVitals vitals);
-
-	boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, Event event);
-	
-	boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingUpdateEvent event);
-
-	boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, LivingDamageEvent event);
-	
-	boolean doCharm(World world, Random random, ICoords coords, EntityPlayer player, BlockEvent.HarvestDropsEvent event);
+	void setData(ICharmData data);
 }
