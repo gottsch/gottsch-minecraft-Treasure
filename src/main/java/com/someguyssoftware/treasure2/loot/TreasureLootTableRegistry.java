@@ -25,7 +25,7 @@ public final class TreasureLootTableRegistry {
 	public static void register(final String modID) {
 		if (!registeredMods.contains(modID)) {
 			buildAndExpose(modID);
-			Treasure.LOOT_TABLE_MASTER.register(modID);
+			Treasure.lootTableMaster.register(modID);
 			registeredMods.add(modID);
 		}
 	}
@@ -38,7 +38,7 @@ public final class TreasureLootTableRegistry {
 	public static void register(final String modID, final @Nullable List<String> customFolders) {
 		if (!registeredMods.contains(modID)) {
 			if (customFolders != null && !customFolders.isEmpty()) {
-				Treasure.LOOT_TABLE_MASTER.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, customFolders);
+				Treasure.lootTableMaster.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, customFolders);
 			}
 			register(modID);
 		}
@@ -49,10 +49,10 @@ public final class TreasureLootTableRegistry {
 	 * @param modID
 	 */
 	private static void buildAndExpose(String modID) {
-		Treasure.LOOT_TABLE_MASTER.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, TreasureLootTableMaster2.CHEST_LOOT_TABLE_FOLDER_LOCATIONS);
-		Treasure.LOOT_TABLE_MASTER.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, TreasureLootTableMaster2.SPECIAL_CHEST_LOOT_TABLE_FOLDER_LOCATIONS);
-		Treasure.LOOT_TABLE_MASTER.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, TreasureLootTableMaster2.POOL_LOOT_TABLE_FOLDER_LOCATIONS);
-		Treasure.LOOT_TABLE_MASTER.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, TreasureLootTableMaster2.INJECT_LOOT_TABLE_FOLDER_LOCATIONS);
+		Treasure.lootTableMaster.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, TreasureLootTableMaster2.CHEST_LOOT_TABLE_FOLDER_LOCATIONS);
+		Treasure.lootTableMaster.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, TreasureLootTableMaster2.SPECIAL_CHEST_LOOT_TABLE_FOLDER_LOCATIONS);
+		Treasure.lootTableMaster.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, TreasureLootTableMaster2.POOL_LOOT_TABLE_FOLDER_LOCATIONS);
+		Treasure.lootTableMaster.buildAndExpose(TreasureLootTableMaster2.CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, TreasureLootTableMaster2.INJECT_LOOT_TABLE_FOLDER_LOCATIONS);
 	}
 
 	public static List<String> getRegisteredmods() {

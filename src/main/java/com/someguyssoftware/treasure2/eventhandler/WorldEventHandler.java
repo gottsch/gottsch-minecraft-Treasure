@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.eventhandler;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
