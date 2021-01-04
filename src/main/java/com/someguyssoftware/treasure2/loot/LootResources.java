@@ -10,15 +10,20 @@ import java.util.List;
  *
  */
 public class LootResources {
-	// lists
-	private List<String> supportingResources;
+    // lists
+    // TODO rename
+    private List<String> supportingResources;
+    private List<String> injectResources;
 	private List<String> chestResources;
 	private List<String> specialResources;
 	
 	// folders
 	private List<String> specialChestLootTableFolderLocations;
-	private List<String> chestLootTableFolderLocations;
-	private List<String> supportingLootTableFolderLocatoins;
+    private List<String> chestLootTableFolderLocations;
+    // TODO fix
+    private List<String> injectLootTableFolderLocations;
+    // TODO rename
+    private List<String> supportingLootTableFolderLocatoins;
 	
 	/**
 	 * 
@@ -32,6 +37,14 @@ public class LootResources {
 	public void setSupportingResources(List<String> supportingResources) {
 		this.supportingResources = supportingResources;
 	}
+
+    public List<String> getInjectResources() {
+        return injectResources;
+    }
+
+    public void setInjectResources(List<String> injectResources) {
+        this.injectResources = injectLootTableFolderLocations;
+    }
 
 	public List<String> getChestResources() {
 		return chestResources;
@@ -71,7 +84,15 @@ public class LootResources {
 
 	public void setSupportingLootTableFolderLocatoins(List<String> supportingLootTableFolderLocatoins) {
 		this.supportingLootTableFolderLocatoins = supportingLootTableFolderLocatoins;
-	}
+    }
+    
+    public List<String> getInjectLootTableFolderLocations() {
+        return injectLootTableFolderLocations;
+    }
+
+    public void setInjectLootTableFolderLocations(List<String> locations) {
+        this.injectLootTableFolderLocations = locations;
+    }
 
 	@Override
 	public String toString() {

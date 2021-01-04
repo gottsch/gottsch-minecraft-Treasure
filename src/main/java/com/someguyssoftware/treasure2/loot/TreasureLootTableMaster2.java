@@ -135,8 +135,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 * @param mod
 	 */
 	public TreasureLootTableMaster2(IMod mod) {
-		super(mod);
-		buildAndExpose(Treasure.MODID);
+        super(mod);
 
 		// initialize the maps
 		for (Rarity r : Rarity.values()) {
@@ -158,17 +157,30 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		INJECT_LOOT_TABLES_TABLE.clear();
 		INJECT_LOOT_TABLES_RESOURCE_LOCATION_TABLE.clear();
 	}
-	
-	/**
-	 * @deprecated moved to TreasureLootTableRegistry
+
+    /**
+	 * TODO move this to GottschCore as this will be the defacto way to do it in 1.15+
 	 * @param modID
+	 * @param resourcePaths
 	 */
-	private void buildAndExpose(String modID) {
-		buildAndExpose(CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, CHEST_LOOT_TABLE_FOLDER_LOCATIONS);
-		buildAndExpose(CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, SPECIAL_CHEST_LOOT_TABLE_FOLDER_LOCATIONS);
-		buildAndExpose(CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, POOL_LOOT_TABLE_FOLDER_LOCATIONS);
-		buildAndExpose(CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, INJECT_LOOT_TABLE_FOLDER_LOCATIONS);
-	}
+	private void buildAndExpose(String basePath, String modID, List<String> resourcePaths) {
+		resourcePaths.forEach(resourcePath -> {
+			Treasure.LOGGER.info("TreasureLootTableMaster | buildAndExpose | processing resource path -> {}", resourcePath);
+			// this represents the entire file path
+			Path fileSystemFilePath = Paths.get(getMod().getConfig().getConfigFolder(), getMod().getId(), resourcePath);
+			Treasure.LOGGER.info("TreasureLootTableMaster | buildAndExpose | file system path -> {}", fileSystemFilePath.toString());
+			try {
+				// check if file already exists
+				if (Files.notExists(fileSystemFilePath)) { 
+					FileUtils.copyInputStreamToFile(Objects.requireNonNull(Treasure.class.getClassLoader().getResourceAsStream(resourcePath)),
+							fileSystemFilePath.toFile());
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+    }
 
 	/**
 	 * Call in WorldEvent.Load event handler.
@@ -457,8 +469,6 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		GOLD_SKULL_CHEST,
 		CRYSTAL_SKULL_CHEST,
 		CAULDRON_CHEST,
-		CLAM_CHEST,
-		OYSTER_CHEST,
 		SILVER_WELL,
 		GOLD_WELL,
 		WHITE_PEARL_WELL,

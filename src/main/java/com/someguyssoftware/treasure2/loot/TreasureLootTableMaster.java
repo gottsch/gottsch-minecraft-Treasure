@@ -222,7 +222,7 @@ public class TreasureLootTableMaster extends LootTableMaster {
 	}
 	
 	/**
-	 * 
+	 * TODO move this to GottschCore as this will be the defacto way to do it in 1.15+
 	 * @param modID
 	 * @param resourcePaths
 	 */
