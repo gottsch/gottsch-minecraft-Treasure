@@ -215,14 +215,16 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 */
 	public void buildAndExpose(String basePath, String modID, List<String> resourceRelativePaths) {
 		resourceRelativePaths.forEach(resourceRelativePath -> {
-			Treasure.LOGGER.debug("TreasureLootTableMaster2 | buildAndExpose | processing resource path -> {}", resourceRelativePath);
+			Treasure.LOGGER.debug("TreasureLootTableMaster2 | buildAndExpose | processing relative resource path -> {}", resourceRelativePath);
 			// this represents the entire file path
 			Path fileSystemFilePath = Paths.get(getMod().getConfig().getConfigFolder(), getMod().getId(), "mc1_15", basePath, resourceRelativePath);
 			Treasure.LOGGER.debug("TreasureLootTableMaster2 | buildAndExpose | file system path -> {}", fileSystemFilePath.toString());
 			try {
 				// check if file already exists
 				if (Files.notExists(fileSystemFilePath)) { 
-					Path resourcePath = Paths.get(basePath, modID, resourceRelativePath);
+//					Path resourcePath = Paths.get(basePath, modID, resourceRelativePath);
+					Path resourcePath = Paths.get("data", modID, basePath, resourceRelativePath);
+					Treasure.LOGGER.debug("TreasureLootTableMaster2 | buildAndExpose | full resource path -> {}", resourcePath.toString());
 					FileUtils.copyInputStreamToFile(Objects.requireNonNull(Treasure.class.getClassLoader().getResourceAsStream(resourcePath.toString())),
 							fileSystemFilePath.toFile());
 					// TODO add a flag if a file was copied over - save it in the manager
