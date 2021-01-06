@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
+import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -71,6 +72,8 @@ public class TreasureBlocks {
 	public static final Block SPIDER_CHEST;
 	public static final Block VIKING_CHEST;
 
+	public static final ProximityBlock PROXIMITY_SPAWNER;
+	
 	public static List<Block> BLOCKS = new ArrayList<>(100);
 	public static final Set<BlockItem> ITEM_BLOCKS = new HashSet<>();
 
@@ -219,7 +222,10 @@ public class TreasureBlocks {
 		// TODO PAINTINGS
 
 		// TODO PROXIMITY BLOCKS
-
+		// proximity blocks
+		PROXIMITY_SPAWNER = new ProximityBlock<ProximitySpawnerTileEntity>(Treasure.MODID, TreasureConfig.BlockID.PROXIMITY_SPAWNER_ID,
+				ProximitySpawnerTileEntity.class, Block.Properties.create(Material.AIR).doesNotBlockMovement().noDrops());
+				
 		// add blocks to the list
 		BLOCKS.add(WOOD_CHEST);
 		BLOCKS.add(CRATE_CHEST);
@@ -256,6 +262,7 @@ public class TreasureBlocks {
 			}
 			// special case registry
 			registry.register(WITHER_CHEST);
+			registry.register(PROXIMITY_SPAWNER);
 		}
 
 		/**
@@ -266,6 +273,13 @@ public class TreasureBlocks {
 		@SubscribeEvent
 		public static void registerItemBlocks(final RegistryEvent.Register<Item> event) {
 			final IForgeRegistry<Item> registry = event.getRegistry();
+
+			// add all specialty blocks to an array
+			final Block[] specialtyBlocks = { 
+					WITHER_CHEST,
+					PROXIMITY_SPAWNER					
+			};
+			
 			for (Block b : BLOCKS) {
 				BlockItem itemBlock = new BlockItem(b, new Item.Properties().group(TreasureItemGroups.MOD_ITEM_GROUP));
 				final ResourceLocation registryName = Preconditions.checkNotNull(b.getRegistryName(),
@@ -274,12 +288,20 @@ public class TreasureBlocks {
 				ITEM_BLOCKS.add(itemBlock);
 			}
 			
+			for (Block b : specialtyBlocks) {
+				BlockItem itemBlock = new BlockItem(b, new Item.Properties().group(TreasureItemGroups.MOD_ITEM_GROUP));
+				final ResourceLocation registryName = Preconditions.checkNotNull(b.getRegistryName(),
+						"Block %s has null registry name", b);
+				registry.register(itemBlock.setRegistryName(registryName));
+				ITEM_BLOCKS.add(itemBlock);
+			}
+			
 			// special case registry
-			BlockItem itemBlock = new BlockItem(WITHER_CHEST, new Item.Properties().group(TreasureItemGroups.MOD_ITEM_GROUP));
-			final ResourceLocation registryName = Preconditions.checkNotNull(WITHER_CHEST.getRegistryName(),
-					"Block %s has null registry name", WITHER_CHEST);
-			registry.register(itemBlock.setRegistryName(registryName));
-			ITEM_BLOCKS.add(itemBlock);
+//			BlockItem itemBlock = new BlockItem(WITHER_CHEST, new Item.Properties().group(TreasureItemGroups.MOD_ITEM_GROUP));
+//			final ResourceLocation registryName = Preconditions.checkNotNull(WITHER_CHEST.getRegistryName(),
+//					"Block %s has null registry name", WITHER_CHEST);
+//			registry.register(itemBlock.setRegistryName(registryName));
+//			ITEM_BLOCKS.add(itemBlock);
 		}
 	}
 }

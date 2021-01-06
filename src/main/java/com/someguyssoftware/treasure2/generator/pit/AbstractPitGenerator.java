@@ -325,8 +325,8 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	public void spawnRandomMob(World world, Random random, ICoords spawnCoords) {
     	world.setBlockState(spawnCoords.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
     	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(spawnCoords.toPos());
-    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
-    	te.setMobName(r);
+    	EntityType<?> mobEntityType = DungeonHooks.getRandomDungeonMob(random);
+    	te.setMobName(mobEntityType.getRegistryName());
     	te.setMobNum(new Quantity(1, 1));
     	te.setProximity(3D);
 	}

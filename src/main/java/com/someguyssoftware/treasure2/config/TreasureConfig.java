@@ -35,6 +35,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final Chests CHESTS;
 	public static final KeysAndLocks KEYS_LOCKS;
 //	public static final ForeignModEnablements FOREIGN_MODS;
+	
 
 	static {
 		// TODO add LOGGING
@@ -92,6 +93,10 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String THIEFS_LOCK_PICK_ID = "thiefs_lock_pick";
 	}
 
+	public static class BlockID {
+		public static final String PROXIMITY_SPAWNER_ID = "proximity_spawner";
+	}
+	
 	public static class ChestID {
 		public static final String WOOD_CHEST_ID = "wood_chest";
 		public static final String CRATE_CHEST_ID = "crate_chest";
