@@ -112,7 +112,7 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 	 */
 	@Override
 	public void renderLocks(AbstractTreasureChestTileEntity tileEntity, MatrixStack matrixStack, IRenderTypeBuffer renderBuffer, int combinedLight, int combinedOverlay) {
-		 Treasure.LOGGER.debug("=====================================================================");
+//		 Treasure.LOGGER.debug("=====================================================================");
 		if (tileEntity.getLockStates().isEmpty()) {
 			return;
 		}

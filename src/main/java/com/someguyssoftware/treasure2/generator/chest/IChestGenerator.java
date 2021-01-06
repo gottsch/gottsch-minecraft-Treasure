@@ -31,6 +31,7 @@ import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
@@ -41,10 +42,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootParameterSets;
+import net.minecraft.world.storage.loot.LootParameters;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTable;
 
@@ -114,11 +117,11 @@ public interface IChestGenerator {
 
 	// TODO this should be a generic call that passes in ManagedTableType
 	default public List<LootTableShell> buildLootTableList2(Rarity rarity) {
-		return Treasure.getLootTableMaster().getLootTableByRarity(TreasureLootTableMaster2.ManagedTableType.CHEST, rarity);
+		return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(TreasureLootTableMaster2.ManagedTableType.CHEST, rarity);
 	}
 
 	default public Optional<List<LootTableShell>> buildInjectedLootTableList(String key, Rarity rarity) {
-		return Optional.ofNullable(Treasure.getLootTableMaster().getLootTableByKeyRarity(TreasureLootTableMaster2.ManagedTableType.INJECT, key, rarity));
+		return Optional.ofNullable(TreasureLootTableRegistry.getLootTableMaster().getLootTableByKeyRarity(TreasureLootTableMaster2.ManagedTableType.INJECT, key, rarity));
 	}
 	/**
 	 * 
@@ -164,7 +167,7 @@ public interface IChestGenerator {
 			lootTableShell = selectLootTable2(random, rarity);
 		}
 		else {
-			lootTableShell = Treasure.getLootTableMaster().getLootTableByResourceLocation(lootTableResourceLocation);
+			lootTableShell = TreasureLootTableRegistry.getLootTableMaster().getLootTableByResourceLocation(lootTableResourceLocation);
 		}	
 		// is valid loot table shell
 		if (lootTableShell.isPresent()) {
@@ -185,7 +188,7 @@ public interface IChestGenerator {
 		Treasure.LOGGER.debug("selected loot table -> {} from resource -> {}", lootTable, lootTableResourceLocation);
 		
 		// update rarity from lootTableShell		
-		Rarity effectiveRarity = Treasure.getLootTableMaster().getEffectiveRarity(lootTableShell.get(), rarity);		
+		Rarity effectiveRarity = TreasureLootTableRegistry.getLootTableMaster().getEffectiveRarity(lootTableShell.get(), rarity);		
 		LOGGER.debug("Generating loot from loot table for effective rarity {}", effectiveRarity);
 		
 		// setup lists of items
@@ -203,29 +206,43 @@ public interface IChestGenerator {
 		
 		// setup context
 		LootContext lootContext = null;
-		if (player == null) {
-			lootContext = Treasure.getLootTableMaster().getContext();
-		}
-		else {
-			lootContext = new LootContext.Builder((ServerWorld) world).withLuck(player.getLuck()).build(LootParameterSets.CHEST);
-		}
+//		if (player == null) {
+//			lootContext = Treasure.getLootTableMaster().getContext(); // TODO review this
+//		}
+//		else {
+			lootContext = new LootContext.Builder((ServerWorld) world)
+					.withLuck(player.getLuck())
+					.withParameter(LootParameters.THIS_ENTITY, player)
+					.withParameter(LootParameters.POSITION, new BlockPos(tileEntity.getPos())).build(LootParameterSets.CHEST);
+//		}
 		
+		LOGGER.debug("loot context -> {}", lootContext);
+
 		for (LootPoolShell pool : lootPoolShells) {
-			LOGGER.debug("processing pool -> {}", pool.getName());
+			LOGGER.debug("processing pool (from poolShell) -> {}", pool.getName());
 			// go get the vanilla managed pool
 			LootPool lootPool = lootTable.getPool(pool.getName());
+			LOGGER.debug("loot pool object (from lootTable) -> {}", lootPool);
 			
-			// geneate loot from pools
-			if (pool.getName().equalsIgnoreCase("treasure")) {
-				lootPool.generate(itemStacks::add, lootContext);
-			}
-			else {
-				lootPool.generate(itemStacks::add, lootContext);
+			if (lootPool != null) {
+				// geneate loot from pools
+				if (pool.getName().equalsIgnoreCase("treasure")) {
+					lootPool.generate(itemStacks::add, lootContext);
+				}
+				else {
+					LOGGER.debug("generating loot from loot pool -> {}", pool.getName());
+					lootPool.generate(itemStacks::add, lootContext);
+				}
 			}
 		}
 		LOGGER.debug("size of treasure stacks -> {}", treasureStacks.size());
 		LOGGER.debug("size of item stacks -> {}", itemStacks.size());
 		
+		List<ItemStack> tempStacks = lootTable.generate(lootContext);
+		tempStacks.forEach(stack -> {
+			LOGGER.debug("gen from tempStacks -> {}", stack.getDisplayName());
+		});
+
 		// record original item size (max number of items to pull from final list)
 		int lootItemSize = itemStacks.size();
 		
@@ -236,7 +253,7 @@ public interface IChestGenerator {
 		if (injectLootTableShells.isPresent()) {
 			LOGGER.debug("found injectable tables for category ->{}, rarity -> {}", lootTableShell.get().getCategory(), effectiveRarity);
 			LOGGER.debug("size of injectable tables -> {}", injectLootTableShells.get().size());
-			itemStacks.addAll(Treasure.getLootTableMaster().getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext));
+			itemStacks.addAll(TreasureLootTableRegistry.getLootTableMaster().getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext));
 		}
 		
 		// add the treasure items to the chest
@@ -368,6 +385,23 @@ public interface IChestGenerator {
 	 * @param rarity
 	 */
 	public void addGenerationContext(AbstractTreasureChestTileEntity tileEntity, Rarity rarity);
+	
+	/**
+	 * 
+	 * @param tileEntity
+	 * @param location
+	 */
+	default public void addLootTable(AbstractTreasureChestTileEntity tileEntity, ResourceLocation location) {
+		tileEntity.setLootTable(location);
+	}
+	
+	/**
+	 * 
+	 * @param tileEntity
+	 */
+	default public void addSeal(AbstractTreasureChestTileEntity tileEntity) {
+		tileEntity.setSealed(true);
+	}
 	
 	/**
 	 * Default implementation. Select locks only from with the same Rarity.

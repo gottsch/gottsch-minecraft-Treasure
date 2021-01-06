@@ -57,7 +57,7 @@ public class CommonChestGenerator implements IChestGenerator {
 	 * @param chest
 	 */
 	@Override
-	public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity chestTileEntity, Rarity rarity) {
+	public void addLocks(Random random, AbstractChestBlock<?> chest, AbstractTreasureChestTileEntity chestTileEntity, Rarity rarity) {
 		// select a rarity locks
 		List<LockItem> locks = new ArrayList<>();
 		locks.addAll((List<LockItem>) TreasureItems.locks.get(Rarity.COMMON));

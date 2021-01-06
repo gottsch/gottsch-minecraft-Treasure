@@ -1,12 +1,19 @@
 package com.someguyssoftware.treasure2;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.FileAppender;
+import org.apache.logging.log4j.core.config.AppenderRef;
+import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
 import org.apache.logging.log4j.core.config.builder.api.ComponentBuilder;
 import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
@@ -15,19 +22,24 @@ import org.apache.logging.log4j.core.config.builder.api.LayoutComponentBuilder;
 import org.apache.logging.log4j.core.config.builder.api.LoggerComponentBuilder;
 import org.apache.logging.log4j.core.config.builder.api.RootLoggerComponentBuilder;
 import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
+import org.apache.logging.log4j.core.layout.PatternLayout;
 
 import com.someguyssoftware.gottschcore.annotation.Credits;
 import com.someguyssoftware.gottschcore.annotation.ModInfo;
 import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
+import com.someguyssoftware.treasure2.init.TreasureSetup;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
+import com.someguyssoftware.treasure2.worldgen.feature.TreasureFeatures;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -56,7 +68,7 @@ import net.minecraftforge.fml.loading.FMLPaths;
 		"Credits to OdinsRagnarok for Spanish translation and DarvinSlav for Russian translation." })
 public class Treasure implements IMod {
 	// logger
-	public static final Logger LOGGER = LogManager.getLogger(Treasure.NAME);
+	public static Logger LOGGER = LogManager.getLogger(Treasure.NAME);
 
 	// constants
 	public static final String MODID = "treasure2";
@@ -70,7 +82,7 @@ public class Treasure implements IMod {
 	// meta manager // NOTE can't be final as Treasure.instance is required.
 	// TODO move to TreasureData
 //	public static TreasureLootTableMaster lootTableMaster;
-	public static TreasureLootTableMaster2 lootTableMaster;
+//	public static TreasureLootTableMaster2 lootTableMaster;
 	public static TreasureMetaManager metaManager;
 		
 	public Treasure() {
@@ -83,6 +95,7 @@ public class Treasure implements IMod {
 		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		eventBus.addListener(this::config);
 		eventBus.addListener(this::setup);
+		eventBus.addListener(TreasureSetup::common);
 		eventBus.addListener(this::clientSetup);
 		eventBus.addListener(this::postSetup);
 		eventBus.addListener(this::onServerStarted);
@@ -104,6 +117,7 @@ public class Treasure implements IMod {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
+		// needs to be registered here instead of @Mod.EventBusSubscriber because we need to pass in a constructor argument
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
 	}
 	
@@ -112,12 +126,13 @@ public class Treasure implements IMod {
 	 * 
 	 * @param event
 	 */
+	@SuppressWarnings("deprecation")
 	private void setup(final FMLCommonSetupEvent event) {
-		Treasure.lootTableMaster = new TreasureLootTableMaster2(Treasure.instance);
+//		TreasureData.initializeData();
+//		Treasure.lootTableMaster = new TreasureLootTableMaster2(Treasure.instance);
+//		
+//		DeferredWorkQueue.runLater(TreasureFeatures::addFeatureToBiomes);
 		
-		// TODO try calling this onWorldLoad
-		// create a logger
-//		createLogger();
 
 //		InputStream is = Dungeons2.instance.getClass().getResourceAsStream(BUILT_IN_STYLE_SHEET_PATH);
 //		URL url = this.getClass().getResource("/meta");
@@ -403,7 +418,7 @@ ctx.updateLoggers();
 		return Treasure.config;
 	}
 
-	public static TreasureLootTableMaster2 getLootTableMaster() {
-		return lootTableMaster;
-	}
+//	public static TreasureLootTableMaster2 getLootTableMaster() {
+//		return lootTableMaster;
+//	}
 }

@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.eventhandler;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
 import net.minecraft.world.World;
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
  * @author Mark Gottschling on Jun 29, 2018
  *
  */
-@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
+//@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class WorldEventHandler {
 
 	// reference to the mod.
@@ -34,7 +35,7 @@ public class WorldEventHandler {
 
 	@SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load event) {
-		Treasure.LOGGER.debug("In world load event for dimension {}", event.getWorld().getDimension().toString());
+		Treasure.LOGGER.info("In world load event for dimension {}", event.getWorld().getDimension().toString());
 		
 		/*
 		 * On load of dimension 0 (overworld), initialize the loot table's context and other static loot tables
@@ -43,17 +44,12 @@ public class WorldEventHandler {
 			ServerWorld world = (ServerWorld) event.getWorld();
 
 			// called once to initiate world-level properties in the LootTableMaster
-			Treasure.lootTableMaster.init(world);
+//			Treasure.lootTableMaster.init(world);
+			TreasureLootTableRegistry.initialize(world);
 			
 			// register mod's loot tables
 			TreasureLootTableRegistry.register(mod.getId());
 
-			// register any foreign mod loot tables
-//			for (String foreignModID : TreasureConfig.FOREIGN_MODS.enableForeignModIDs) {
-//				if (Loader.isModLoaded(foreignModID)) {		
-//					Treasure.LOOT_TABLES.register(foreignModID);
-//				}
-//			}
 //			Treasure.META_MANAGER.register(getMod().getId());
 //			Treasure.TEMPLATE_MANAGER.register(getMod().getId());
 //			Treasure.DECAY_MANAGER.register(getMod().getId());

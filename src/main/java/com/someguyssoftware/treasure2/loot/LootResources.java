@@ -18,7 +18,7 @@ public class LootResources {
 	private List<String> specialResources;
 	
 	// folders
-	private List<String> specialChestLootTableFolderLocations;
+	private List<String> specialLootTableFolderLocations;
     private List<String> chestLootTableFolderLocations;
     // TODO fix
     private List<String> injectLootTableFolderLocations;
@@ -62,12 +62,12 @@ public class LootResources {
 		this.specialResources = specialResources;
 	}
 
-	public List<String> getSpecialChestLootTableFolderLocations() {
-		return specialChestLootTableFolderLocations;
+	public List<String> getSpecialLootTableFolderLocations() {
+		return specialLootTableFolderLocations;
 	}
 
-	public void setSpecialChestLootTableFolderLocations(List<String> specialChestLootTableFolderLocations) {
-		this.specialChestLootTableFolderLocations = specialChestLootTableFolderLocations;
+	public void setSpecialLootTableFolderLocations(List<String> specialChestLootTableFolderLocations) {
+		this.specialLootTableFolderLocations = specialChestLootTableFolderLocations;
 	}
 
 	public List<String> getChestLootTableFolderLocations() {
@@ -97,8 +97,8 @@ public class LootResources {
 	@Override
 	public String toString() {
 		return "LootResources [supportingResources=" + supportingResources + ", chestResources=" + chestResources
-				+ ", specialResources=" + specialResources + ", specialChestLootTableFolderLocations="
-				+ specialChestLootTableFolderLocations + ", chestLootTableFolderLocations="
+				+ ", specialResources=" + specialResources + ", specialLootTableFolderLocations="
+				+ specialLootTableFolderLocations + ", chestLootTableFolderLocations="
 				+ chestLootTableFolderLocations + ", supportingLootTableFolderLocatoins="
 				+ supportingLootTableFolderLocatoins + "]";
 	}

@@ -140,12 +140,12 @@ public class TreasureLootTableMaster extends LootTableMaster {
 			}			
 
 			// TODO 1.15.2 figure out how to check if mod is loaded
-			for (String foreignModID : TreasureConfig.FOREIGN_MODS.enableForeignModIDs.get()) {
+//			for (String foreignModID : TreasureConfig.FOREIGN_MODS.enableForeignModIDs.get()) {
 //				if (Loader.isModLoaded(foreignModID)) {	
 //					buildAndExpose(foreignModID);
 //				}
 
-			}
+//			}
 		}
 		
 		// initialize the maps

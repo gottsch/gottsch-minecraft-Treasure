@@ -27,20 +27,21 @@ import net.minecraftforge.fml.loading.FMLPaths;
 public class TreasureConfig extends AbstractConfig {
 	public static final String CHESTS_CATEGORY = "04-chests";
 	public static final String KEYS_AND_LOCKS_CATEGORY = "07-keys and locks";
-	public static final String FOREIGN_MODS_CATEGORY = "08-foreign mods";
+//	public static final String FOREIGN_MODS_CATEGORY = "08-foreign mods";
 
 	public static ForgeConfigSpec COMMON_CONFIG;
 
 	public static final General GENERAL;
 	public static final Chests CHESTS;
 	public static final KeysAndLocks KEYS_LOCKS;
-	public static final ForeignModEnablements FOREIGN_MODS;
+//	public static final ForeignModEnablements FOREIGN_MODS;
 
 	static {
+		// TODO add LOGGING
 		GENERAL = new General(COMMON_BUILDER);
 		CHESTS = new Chests(COMMON_BUILDER);
 		KEYS_LOCKS = new KeysAndLocks(COMMON_BUILDER);
-		FOREIGN_MODS = new ForeignModEnablements(COMMON_BUILDER);
+//		FOREIGN_MODS = new ForeignModEnablements(COMMON_BUILDER);
 		COMMON_CONFIG = COMMON_BUILDER.build();
 	}
 
@@ -156,6 +157,7 @@ public class TreasureConfig extends AbstractConfig {
 					"Note: There is a build-in check against ocean biomes for surface chests. Adding ocean biomes to the white lists will not change this functionality.")
 			.push(CHESTS_CATEGORY);
 
+			// TODO add
 			builder.pop();
 		}
 	}
@@ -282,26 +284,26 @@ public class TreasureConfig extends AbstractConfig {
 		}
 	}
 
-	public static class ForeignModEnablements {
-
-		public ConfigValue<List<? extends String>> enableForeignModIDs;
-		public ConfigValue<List<? extends String>> availableForeignModLootTables;
-
-		ForeignModEnablements(final ForgeConfigSpec.Builder builder) {
-			builder.comment("Foreign mod properties")
-			.push(FOREIGN_MODS_CATEGORY);
-
-			enableForeignModIDs = builder
-					.comment("Add mod's MODID to this list to enable custom loot tables for a mod.")
-					.defineList("Foreign mod IDs for custom loot tables:", Arrays.asList(new String []{"mocreatures", "sgs_metals"}), s -> s instanceof String);
-
-			availableForeignModLootTables = builder
-					.comment("A list of mods that have prebuilt loot tables available.", "Note: used for informational purposes only.")
-					.defineList("Pre-build loot tables for foreign mod IDs:", Arrays.asList(new String[] { "mocreatures", "sgs_metals"}), s -> s instanceof String);
-
-			builder.pop();
-		}
-	}
+//	public static class ForeignModEnablements {
+//
+//		public ConfigValue<List<? extends String>> enableForeignModIDs;
+//		public ConfigValue<List<? extends String>> availableForeignModLootTables;
+//
+//		ForeignModEnablements(final ForgeConfigSpec.Builder builder) {
+//			builder.comment("Foreign mod properties")
+//			.push(FOREIGN_MODS_CATEGORY);
+//
+//			enableForeignModIDs = builder
+//					.comment("Add mod's MODID to this list to enable custom loot tables for a mod.")
+//					.defineList("Foreign mod IDs for custom loot tables:", Arrays.asList(new String []{"mocreatures", "sgs_metals"}), s -> s instanceof String);
+//
+//			availableForeignModLootTables = builder
+//					.comment("A list of mods that have prebuilt loot tables available.", "Note: used for informational purposes only.")
+//					.defineList("Pre-build loot tables for foreign mod IDs:", Arrays.asList(new String[] { "mocreatures", "sgs_metals"}), s -> s instanceof String);
+//
+//			builder.pop();
+//		}
+//	}
 
 
 	@SubscribeEvent

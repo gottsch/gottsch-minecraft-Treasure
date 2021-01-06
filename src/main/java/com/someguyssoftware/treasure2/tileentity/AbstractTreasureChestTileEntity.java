@@ -274,12 +274,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			if (getLootTable() != null) {
 				parentNBT.putString("lootTable", getLootTable().toString());
 			}
-			//			if (getGenerationContext() != null) {
-			//				NBTTagCompound contextTag = new NBTTagCompound();
-			//				contextTag.setString("lootRarity", getGenerationContext().getLootRarity().getValue());
-			//				contextTag.setString("chestGenType", getGenerationContext().getChestGeneratorType().name());
-			//				sourceTag.setTag("genContext", contextTag);
-			//			}
+			if (getGenerationContext() != null) {
+				CompoundNBT contextTag = new CompoundNBT();
+				contextTag.putString("lootRarity", getGenerationContext().getLootRarity().getValue());
+				contextTag.putString("chestGenType", getGenerationContext().getChestGeneratorType().name());
+				parentNBT.put("genContext", contextTag);
+			}
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Error writing Properties to NBT:", e);
 		}
@@ -369,19 +369,19 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 					this.setLootTable(new ResourceLocation(nbt.getString("lootTable")));
 				}
 			}
-//			if (sourceTag.hasKey("genContext")) {
-//				NBTTagCompound contextTag = sourceTag.getCompoundTag("genContext");
-//				Rarity rarity = null;
-//				ChestGeneratorType genType = null;
-//				if (contextTag.hasKey("lootRarity")) {
-//					rarity = Rarity.getByValue(contextTag.getString("lootRarity"));
-//				}
-//				if (contextTag.hasKey("chestGenType")) {
-//					genType = ChestGeneratorType.valueOf(contextTag.getString("chestGenType"));
-//				}
-//				AbstractTreasureChestTileEntity.GenerationContext genContext = this.new GenerationContext(rarity, genType);
-//				this.setGenerationContext(genContext);
-//			}	
+			if (nbt.contains("genContext")) {
+				CompoundNBT contextTag = nbt.getCompound("genContext");
+				Rarity rarity = null;
+				ChestGeneratorType genType = null;
+				if (contextTag.contains("lootRarity")) {
+					rarity = Rarity.getByValue(contextTag.getString("lootRarity"));
+				}
+				if (contextTag.contains("chestGenType")) {
+					genType = ChestGeneratorType.valueOf(contextTag.getString("chestGenType"));
+				}
+				AbstractTreasureChestTileEntity.GenerationContext genContext = this.new GenerationContext(rarity, genType);
+				this.setGenerationContext(genContext);
+			}	
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Error reading Properties from NBT:", e);
 		}
