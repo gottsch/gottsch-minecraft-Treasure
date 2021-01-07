@@ -33,9 +33,6 @@ public class TreasureSetup implements IModSetup {
 		// start the loot table master
 		TreasureLootTableRegistry.create(Treasure.instance);
 		
-		// TODO this needs to go away
-//		Treasure.lootTableMaster = TreasureLootTableMaster2.getInstance(); //new TreasureLootTableMaster2(Treasure.instance);
-		
 		// add features to biomes
 		DeferredWorkQueue.runLater(TreasureFeatures::addFeatureToBiomes);
 	}

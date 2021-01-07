@@ -144,7 +144,8 @@ public class TreasureConfig extends AbstractConfig {
 
 	public static class General {
 		public ForgeConfigSpec.BooleanValue  enableDefaultLootTablesCheck;
-
+		public ConfigValue<List<? extends String>> dimensionsWhiteList;
+		
 		General(final ForgeConfigSpec.Builder builder) {
 			builder.comment("General properties for Treasure mod.").push("03-general");
 
@@ -152,6 +153,12 @@ public class TreasureConfig extends AbstractConfig {
 					.comment("Enable/Disable a check to ensure the default loot tables exist on the file system.", "If enabled, then you will not be able to remove any default loot tables (but they can be edited).", "Only disable if you know what you're doing.")
 					.define("Enable default loot tables check:", true);
 
+			dimensionsWhiteList = builder
+					.comment("Allowed Dimensions for generation.", 
+							"Treasure2 was designed for 'normal' overworld-type dimensions.", 
+							"This setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed.", 
+							"ex. minecraft:overworld")
+					.defineList("Foreign mod IDs for custom loot tables:", Arrays.asList(new String []{"mocreatures", "sgs_metals"}), s -> s instanceof String);
 			builder.pop();
 		}
 	}

@@ -1,6 +1,6 @@
 package com.someguyssoftware.treasure2.worldgen;
 
-import com.someguyssoftware.treasure2.worldgen.feature.ChestFeature;
+import com.someguyssoftware.treasure2.worldgen.feature.SurfaceChestFeature;
 
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
@@ -24,15 +24,8 @@ public class TestOreGen {
 			if (biome == Biomes.PLAINS) {
 				ConfiguredPlacement customConfig = Placement.COUNT_RANGE.configure(new CountRangeConfig(20, 5, 5, 25));
 				biome.addFeature(GenerationStage.Decoration.RAW_GENERATION,
-						new ChestFeature(NoFeatureConfig::deserialize).withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+						new SurfaceChestFeature(NoFeatureConfig::deserialize).withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
 			}
 		}
 	}
-	
-//	@SubscribeEvent
-//	public static void registerStructurePieces(RegistryEvent.Register<Feature<?>> event) {
-//		Registry.register(Registry.STRUCTURE_PIECE, "HOUSE".toLowerCase(Locale.ROOT), HOUSE_PIECE);
-//		
-//		ForgeRegistries.FEATURES.register(value); // mimic block init and registry but for features. Still how to assign to biomes?
-//	}
 }

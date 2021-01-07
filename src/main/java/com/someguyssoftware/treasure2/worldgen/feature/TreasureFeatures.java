@@ -22,7 +22,7 @@ import net.minecraftforge.registries.IForgeRegistry;
  *
  */
 public class TreasureFeatures {
-	public static final ChestFeature CHEST_FEATURE = new ChestFeature(NoFeatureConfig::deserialize);
+	public static final SurfaceChestFeature SURFACE_CHEST_FEATURE = new SurfaceChestFeature(NoFeatureConfig::deserialize);
 
 	/**
 	 * This method is called in Treasure.setup(final FMLCommonSetupEvent event) by a DeferredWorkQueue.
@@ -30,7 +30,7 @@ public class TreasureFeatures {
 	 */
 	public static void addFeatureToBiomes() {
 		for (Biome biome : ForgeRegistries.BIOMES) {
-			biome.addFeature(Decoration.RAW_GENERATION, CHEST_FEATURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			biome.addFeature(Decoration.RAW_GENERATION, SURFACE_CHEST_FEATURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
 		}
 	}
 
@@ -42,7 +42,7 @@ public class TreasureFeatures {
 		@SubscribeEvent
 		public static void registerFeatures(RegistryEvent.Register<Feature<?>> event) {
 			final IForgeRegistry<Feature<?>> registry = event.getRegistry();
-			registry.register(CHEST_FEATURE);
+			registry.register(SURFACE_CHEST_FEATURE);
 		}
 	}
 }
