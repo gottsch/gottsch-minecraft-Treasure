@@ -78,6 +78,10 @@ public class TreasureData {
 			
 			pitGens.put(PitTypes.STANDARD, Pits.AIR_PIT,  new AirPitGenerator());
 //			pitGens.put(PitTypes.STRUCTURE, Pits.AIR_PIT, new StructurePitGenerator(new AirPitGenerator()));
+
+            pitGens.put(PitTypes.STANDARD, Pits.LAVA_SIDE_TRAP_PIT,  new LavaSideTrapPitGenerator());
+            pitGens.put(PitTypes.STANDARD, Pits.LAVA_TRAP_PIT,  new LavaTrapPitGenerator());
+            pitGens.put(PitTypes.STANDARD, Pits.TNT_TRAP_PIT,  new TntTrapPitGenerator());
 	}
 	
 	public static void addRarityToMap(WorldGenerators worldGen, Rarity rarity) {

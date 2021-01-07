@@ -71,13 +71,38 @@ protected static int UNDERGROUND_OFFSET = 5;
 			BlockPos pos, NoFeatureConfig config) {
 		
 		// test the dimension white list
-		// TODO test what the dimension names are.  ex minecraft:overworld
-		// TODO setup config with dimension whitelist names
 		// TODO chests should have a properties for the depth range from "surface"
-		if (TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(world.getDimension().getType().getRegistryName().toString())) {
-			generate(world, random, chunkX, chunkZ);
+		if (!TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(world.getDimension().getType().getRegistryName().toString())) {
+			return false;
+		}
+        
+        // spawn @ middle of chunk
+        ICoords spawnCoords = new Coords(pos).add(WorldInfo.CHUNK_RADIUS, 0, WorldInfo.CHUNK_RADIUS);
+
+        // 0. hard check against ocean biomes
+        Biome biome = world.getBiome(spawnCoords.toPos());
+		if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN ||
+				BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
+			return false;
 		}
 		
+		// increment the chunk counts
+		chunksSinceLastChest++;
+
+		for (Rarity rarity : RARITIES) {
+			Integer i = chunksSinceLastRarityChest.get(rarity);
+			chunksSinceLastRarityChest.put(rarity, ++i);			
+        }
+        
+        		// test if min chunks was met
+     	if (chunksSinceLastChest > TreasureConfig.CHESTS.surfaceChests.minChunksPerChest) {
+            
+            // the get first surface y (could be leaves, trunk, water, etc)
+            // TODO this probably wont work
+            int ySpawn = world.getChunkFromChunkCoords(chunkX, chunkZ).getHeightValue(WorldInfo.CHUNK_RADIUS, WorldInfo.CHUNK_RADIUS);
+            spawnCoords = spawnCoords.add(0, ySpawn, 0);
+
+         }
 		// TODO do what a world gen normally does here.
 //		Treasure.LOGGER.info("chest feature works @ {}", pos);
 

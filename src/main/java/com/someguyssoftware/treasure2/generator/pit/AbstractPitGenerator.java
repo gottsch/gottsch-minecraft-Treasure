@@ -253,7 +253,9 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	public ICoords buildLogLayer(final World world, final Random random, final ICoords coords, final Block block) {
 //		Treasure.LOGGER.debug("Building log layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
 		// ensure that block is of type LOG/LOG2
-		if (!(block instanceof LogBlock)) return coords;
+		if (!(block instanceof LogBlock)) {
+            return coords;
+        }
 		
 		 // determine the direction the logs are facing - north/south (8) or east/west (4)
 //		int meta = random.nextInt() % 2 == 0 ? 8 : 4;
