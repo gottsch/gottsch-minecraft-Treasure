@@ -2,13 +2,17 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.block.BlockContext;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
+import com.someguyssoftware.gottschcore.spatial.Coords;
+import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.world.World;
 
 
@@ -40,7 +44,7 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
-			Treasure.logger.debug("Generated TNT Trap Pit at " + spawnCoords.toShortString());
+			Treasure.LOGGER.debug("Generated TNT Trap Pit at " + spawnCoords.toShortString());
 		}
 		return result;
 	}
@@ -130,7 +134,7 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 		// add aother  log layer
 		nextCoords = buildLogLayer(world, random, nextCoords, block);
 		// core 4-square pressure plate (above log)
-		Block plate = Blocks.WOODEN_PRESSURE_PLATE;
+		Block plate = Blocks.OAK_PRESSURE_PLATE;
 		GenUtil.replaceWithBlock(world, nextCoords, plate);
 		GenUtil.replaceWithBlock(world, nextCoords.add(1, 0, 0), plate);
 		GenUtil.replaceWithBlock(world, nextCoords.add(0, 0, 1), plate);

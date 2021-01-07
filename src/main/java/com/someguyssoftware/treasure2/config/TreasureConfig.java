@@ -4,11 +4,15 @@
 package com.someguyssoftware.treasure2.config;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.someguyssoftware.gottschcore.config.AbstractConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.ChestConfig.Data;
+import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
@@ -33,14 +37,19 @@ public class TreasureConfig extends AbstractConfig {
 	public static final General GENERAL;
 	public static final Chests CHESTS;
 	public static final KeysAndLocks KEYS_LOCKS;
-	
 
+	public static final String CATEGORY_DIV = "##############################";
+	public static final String UNDERLINE_DIV = "------------------------------";
+	
 	static {
 		// TODO add LOGGING
 		GENERAL = new General(COMMON_BUILDER);
 		CHESTS = new Chests(COMMON_BUILDER);
 		KEYS_LOCKS = new KeysAndLocks(COMMON_BUILDER);
 		COMMON_CONFIG = COMMON_BUILDER.build();
+
+		// load raw arrays into lists
+		TreasureConfig.CHESTS.init();
 	}
 
 	private static IMod mod;
@@ -93,7 +102,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static class BlockID {
 		public static final String PROXIMITY_SPAWNER_ID = "proximity_spawner";
 	}
-	
+
 	public static class ChestID {
 		public static final String WOOD_CHEST_ID = "wood_chest";
 		public static final String CRATE_CHEST_ID = "crate_chest";
@@ -142,32 +151,114 @@ public class TreasureConfig extends AbstractConfig {
 	public static class General {
 		public ForgeConfigSpec.BooleanValue  enableDefaultLootTablesCheck;
 		public ConfigValue<List<? extends String>> dimensionsWhiteList;
-		
+
 		General(final ForgeConfigSpec.Builder builder) {
-			builder.comment("General properties for Treasure mod.").push("03-general");
+			builder.comment(CATEGORY_DIV, " General properties for Treasure mod.", CATEGORY_DIV).push("03-general");
 
 			enableDefaultLootTablesCheck = builder
-					.comment("Enable/Disable a check to ensure the default loot tables exist on the file system.", "If enabled, then you will not be able to remove any default loot tables (but they can be edited).", "Only disable if you know what you're doing.")
+					.comment(" Enable/Disable a check to ensure the default loot tables exist on the file system.", "If enabled, then you will not be able to remove any default loot tables (but they can be edited).", "Only disable if you know what you're doing.")
 					.define("Enable default loot tables check:", true);
 
 			dimensionsWhiteList = builder
-					.comment("Allowed Dimensions for generation.", 
-							"Treasure2 was designed for 'normal' overworld-type dimensions.", 
-							"This setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed.", 
-							"ex. minecraft:overworld")
+					.comment(" Allowed Dimensions for generation.", 
+							" Treasure2 was designed for 'normal' overworld-type dimensions.", 
+							" This setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed.", 
+							" ex. minecraft:overworld")
 					.defineList("Dimension White List:", Arrays.asList(new String []{"minecraft:overworld"}), s -> s instanceof String);
 			builder.pop();
 		}
 	}
 
 	public static class Chests {
+		public ChestCollection surfaceChests;
+		public ChestCollection submergedChests;
+
+		/**
+		 * 
+		 * @param builder
+		 */
 		Chests(final ForgeConfigSpec.Builder builder) {
-			builder.comment("Chests that generate on land.",
-					"Note: There is a build-in check against ocean biomes for surface chests. Adding ocean biomes to the white lists will not change this functionality.")
+			builder.comment(CATEGORY_DIV, " Chest properties", CATEGORY_DIV)
 			.push(CHESTS_CATEGORY);
 
+			Map<Rarity, ChestConfig.Data> surfaceConfigs = new HashMap<>();
+			Map<Rarity, ChestConfig.Data> submergedConfigs = new HashMap<>();
+			
+			// setup surface properties
+			surfaceConfigs.put(Rarity.COMMON, new ChestConfig.Data(true, 75, 85, 50, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+
+			// TODO needs all the builder stuff
+			surfaceChests = new ChestCollection(builder,
+					"01-Surface Chests", 
+					new String[] {
+							CATEGORY_DIV,
+							" Chests that generate on land.", 
+							UNDERLINE_DIV,
+							" Note: There is a build-in check against ocean biomes for surface chests. Adding ocean biomes to the white lists will not change this functionality.",
+							CATEGORY_DIV},
+					surfaceConfigs);
+
+			// setup submerged properties
+			submergedConfigs.put(Rarity.COMMON, new ChestConfig.Data(false, 150, 85, 40, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			
+			submergedChests = new ChestCollection(builder, 
+					"02-Submerged Chests", 
+					new String[] {
+							CATEGORY_DIV,
+							" Chests that generate underwater (in ocean biomes).", 
+							UNDERLINE_DIV,
+							" Note: There is a build-in check to only allow ocean biomes for submerged chests. Adding other biomes to the white lists will not change this functionality.",
+							CATEGORY_DIV,}, 
+					submergedConfigs);
+			
+			// TODO pass in extra properties into constructor
+			// setup extra properties
+			surfaceChests.commonChestProperties.mimicProbability = 20.0;
+			submergedChests.commonChestProperties.mimicProbability = 0.0;
+//			surfaceChests.scarceChestProperties.mimicProbability = 15.0;
+//			submergedChests.scarceChestProperties.mimicProbability = 0.0;
+			
 			// TODO add
 			builder.pop();
+		}
+
+		public void init() {
+			this.surfaceChests.init();
+		}
+		
+		public class ChestCollection {
+			/*
+			 * Map of chest configs by rarity.
+			 */
+			public Map<Rarity, IChestConfig> configMap = new HashMap<>();
+
+			public ForgeConfigSpec.ConfigValue<Integer> minChunksPerChest;
+			public ChestConfig commonChestProperties;
+
+
+			/**
+			 * 
+			 * @param configs
+			 */
+			public ChestCollection(final ForgeConfigSpec.Builder builder, String category, String[] comments, Map<Rarity, ChestConfig.Data> configs) {
+				builder.comment(comments).push(category);
+								
+				minChunksPerChest = builder
+						.comment(" The minimum number of chunks generated before another attempt to spawn a chest is made.")
+						.defineInRange("Minimum chunks per chest spawn:", 50, 25, 32000);
+				
+				commonChestProperties = new ChestConfig(builder, configs.get(Rarity.COMMON));
+//				commonChestProperties = configs.get(Rarity.COMMON);
+				
+				// update the map
+				configMap.put(Rarity.COMMON, commonChestProperties);
+				
+				builder.pop();
+			}
+			
+			public void init() {
+				this.commonChestProperties.init();
+			}
 		}
 	}
 
@@ -194,99 +285,99 @@ public class TreasureConfig extends AbstractConfig {
 		public ForgeConfigSpec.ConfigValue<Integer> witherKeyMaxUses;		
 
 		KeysAndLocks(final ForgeConfigSpec.Builder builder) {
-			builder.comment("Keys and Locks properties")
+			builder.comment(CATEGORY_DIV, " Keys and Locks properties", CATEGORY_DIV)
 			.push(KEYS_AND_LOCKS_CATEGORY);
 
 			enableKeyBreaks = builder
-					.comment("Enable/Disable whether a Key can break when attempting to unlock a Lock.")
+					.comment(" Enable/Disable whether a Key can break when attempting to unlock a Lock.")
 					.define("Enable key breaks:", true);
 
 			enableLockDrops = builder.comment("Enable/Disable whether a Lock item is dropped when unlocked by Key item.")
 					.define("Enable lock drops:", true);
 
 			pilferersLockPickMaxUses = builder
-					.comment("The maximum uses for a given pilferers lock pick.")
+					.comment(" The maximum uses for a given pilferers lock pick.")
 					.defineInRange("Pilferer's lockpick max uses:", 10, 1, 32000);
 
 			thiefsLockPickMaxUses = builder
-					.comment("The maximum uses for a given thiefs lock pick.")
+					.comment(" The maximum uses for a given thiefs lock pick.")
 					.defineInRange("Thief's lockpick max uses:", 10, 1, 32000);
 
 			//    		@RequiresMcRestart
 			woodKeyMaxUses = builder
-					.comment("The maximum uses for a given wooden key.")
+					.comment(" The maximum uses for a given wooden key.")
 					.defineInRange("Wood key max uses:", 20, 1, 32000);
 
 			//    		@RequiresMcRestart
 			stoneKeyMaxUses = builder
-					.comment("The maximum uses for a given stone key.")
+					.comment(" The maximum uses for a given stone key.")
 					.defineInRange("Stone key max uses:", 10, 1, 32000);
 
 			emberKeyMaxUses = builder
-					.comment("The maximum uses for a given ember key.")
+					.comment(" The maximum uses for a given ember key.")
 					.defineInRange("Stone key max uses:", 15, 1, 32000);
 
 			leafKeyMaxUses = builder
-					.comment("The maximum uses for a given leaf key.")
+					.comment(" The maximum uses for a given leaf key.")
 					.defineInRange("Stone key max uses:", 15, 1, 32000); 
 
 			lightningKeyMaxUses = builder
-					.comment("The maximum uses for a given lightning key.")
+					.comment(" The maximum uses for a given lightning key.")
 					.defineInRange("Stone key max uses:", 10, 1, 32000); 
 
 			//    		@RequiresMcRestart
 			ironKeyMaxUses = builder
-					.comment("The maximum uses for a given iron key.")
+					.comment(" The maximum uses for a given iron key.")
 					.defineInRange("Iron key max uses:", 10, 1, 32000);
 
 			//    		@RequiresMcRestart
 			goldKeyMaxUses = builder
-					.comment("The maximum uses for a given gold key.")
+					.comment(" The maximum uses for a given gold key.")
 					.defineInRange("Gold key max uses:", 15, 1, 32000);
 
 			//    		@RequiresMcRestart
 			diamondKeyMaxUses = builder
-					.comment("The maximum uses for a given diamond key.")
+					.comment(" The maximum uses for a given diamond key.")
 					.defineInRange("Diamond key max uses:", 20, 1, 32000);
 
 			//    		@RequiresMcRestart
 			emeraldKeyMaxUses = builder
-					.comment("The maximum uses for a given emerald key.")
+					.comment(" The maximum uses for a given emerald key.")
 					.defineInRange("Emerald key max uses:", 10, 1, 32000);
 
 			//    		@RequiresMcRestart
 			rubyKeyMaxUses = builder
-					.comment("The maximum uses for a given ruby key.")
+					.comment(" The maximum uses for a given ruby key.")
 					.defineInRange("Ruby key max uses:", 5, 1, 32000);
 
 			//    		@RequiresMcRestart
 			sapphireKeyMaxUses = builder
-					.comment("The maximum uses for a given sapphire key.")
+					.comment(" The maximum uses for a given sapphire key.")
 					.defineInRange("Sapphire key max uses:", 5, 1, 32000);
 
 			//    		@RequiresMcRestart
 			metallurgistsKeyMaxUses = builder
-					.comment("The maximum uses for a given metallurgists key.")
+					.comment(" The maximum uses for a given metallurgists key.")
 					.defineInRange("Metallurgists key max uses:", 25, 1, 32000);
 
 			//    		@RequiresMcRestart
 			skeletonKeyMaxUses = builder
-					.comment("The maximum uses for a given skeleton key.")
+					.comment(" The maximum uses for a given skeleton key.")
 					.defineInRange("Skeleton key max uses:", 5, 1, 32000);
 
 			//    		@RequiresMcRestart
 			jewelledKeyMaxUses = builder
-					.comment("The maximum uses for a given jewelled key.")
+					.comment(" The maximum uses for a given jewelled key.")
 					.defineInRange("Jewelled Key max uses:", 5, 1, 32000);
 
 			//    		@RequiresMcRestart
 			spiderKeyMaxUses = builder
-					.comment("The maximum uses for a given spider key.")
+					.comment(" The maximum uses for a given spider key.")
 					.defineInRange("Spider key max uses:", 5, 1, 32000);
 
 			//    		@RequiresMcRestart
 			witherKeyMaxUses = builder
-					.comment("The maximum uses for a given wither key.")
+					.comment(" The maximum uses for a given wither key.")
 					.defineInRange("Wither key max uses:", 5, 1, 32000);
 
 			builder.pop();

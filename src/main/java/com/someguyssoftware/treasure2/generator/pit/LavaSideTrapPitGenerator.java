@@ -2,14 +2,18 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.block.BlockContext;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
+import com.someguyssoftware.gottschcore.spatial.Coords;
+import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.world.World;
 
 
@@ -41,7 +45,7 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords); 
 		if (result.isSuccess()) {
-			Treasure.logger.debug("Generated Lave Side Trap Pit at " + spawnCoords.toShortString());
+			Treasure.LOGGER.debug("Generated Lave Side Trap Pit at " + spawnCoords.toShortString());
 		}
 		return result;
 	}
@@ -72,10 +76,10 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 			Block block = col.next();
 			if (block == DEFAULT_LOG) {
 				// special log build layer
-				nextCoords = buildLogLayer(world, random, cube.getCoords(), block); // could have difference classes and implement buildLayer differently
+				nextCoords = buildLogLayer(world, random, context.getCoords(), block); // could have difference classes and implement buildLayer differently
 			}
 			else {
-				nextCoords = buildLayer(world, cube.getCoords(), block);
+				nextCoords = buildLayer(world, context.getCoords(), block);
 			}
 	
 			// select random - 30% chance of lava layer
@@ -84,11 +88,11 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 			// check for midpoint and that there is enough room to build the trap
 			if (isLava) {
 				// build trap layer
-				buildTrapLayer(world, random, cube.getCoords(), Blocks.LAVA); // could have difference classes and implement buildLayer differently
+				buildTrapLayer(world, random, context.getCoords(), Blocks.LAVA); // could have difference classes and implement buildLayer differently
 			}
 			
 			// get the expected coords
-			expectedCoords = cube.getCoords().add(0, 1, 0);
+			expectedCoords = context.getCoords().add(0, 1, 0);
 			
 			// check if the return coords is different than the anticipated coords and resolve
 			yIndex = autoCorrectIndex(yIndex, nextCoords, expectedCoords);

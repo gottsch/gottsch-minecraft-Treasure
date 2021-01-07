@@ -2,13 +2,20 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.block.BlockContext;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
+import com.someguyssoftware.gottschcore.spatial.Coords;
+import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.LogBlock;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 
 
@@ -41,7 +48,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
-			Treasure.logger.debug("Generated Lava Trap Pit at " + spawnCoords.toShortString());
+			Treasure.LOGGER.debug("Generated Lava Trap Pit at " + spawnCoords.toShortString());
 		}
 		return result;
 	}
@@ -72,7 +79,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 		for (int yIndex = coords.getY() + OFFSET_Y; yIndex <= midY; yIndex++) {
 			nextCoords = build3WideLayer(world, random, new Coords(coords.getX(), yIndex, coords.getZ()), Blocks.AIR);
 		}		
-		nextCoords = build3WideLayer(world, random, new Coords(coords.getX(), midY+1, coords.getZ()), Blocks.LOG);
+		nextCoords = build3WideLayer(world, random, new Coords(coords.getX(), midY+1, coords.getZ()), DEFAULT_LOG);
 		
 		for (int yIndex = nextCoords.getY(); yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
 			
@@ -86,14 +93,14 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 			Block block = col.next();
 			if (block == DEFAULT_LOG) {
 				// special log build layer
-				nextCoords = buildLogLayer(world, random, cube.getCoords(), block); // could have difference classes and implement buildLayer differently
+				nextCoords = buildLogLayer(world, random, context.getCoords(), block); // could have difference classes and implement buildLayer differently
 			}
 			else {
-				nextCoords = buildLayer(world, cube.getCoords(), block);
+				nextCoords = buildLayer(world, context.getCoords(), block);
 			}
 
 			// get the expected coords
-			expectedCoords = cube.getCoords().add(0, 1, 0);
+			expectedCoords = context.getCoords().add(0, 1, 0);
 			
 			// check if the return coords is different than the anticipated coords and resolve
 			yIndex = autoCorrectIndex(yIndex, nextCoords, expectedCoords);
@@ -120,11 +127,10 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	private ICoords build3WideLayer(World world, Random random, ICoords coords, Block block) {
-     
+        BlockState blockState = block.getDefaultState();
         // randomly select the axis the logs are facing (0 = Z, 1 = X);
         if (block == DEFAULT_LOG) {
             int axis = random.nextInt(2);
-            BlockState blockState = block.getDefaultState();
             if (axis == 0) {
                 blockState.with(LogBlock.AXIS, Direction.Axis.Z);
             }
@@ -152,7 +158,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @param coords
 	 */
 	private void buildLavaBaseLayer(World world, ICoords coords) {
-		Treasure.logger.debug("Building lava baselayer from @ {} ", coords.toShortString());
+		Treasure.LOGGER.debug("Building lava baselayer from @ {} ", coords.toShortString());
 		GenUtil.replaceWithBlock(world, coords.add(1, 0, 0), Blocks.LAVA);
 		GenUtil.replaceWithBlock(world, coords.add(-1, 0, 0), Blocks.LAVA);
 		GenUtil.replaceWithBlock(world, coords.add(0, 0, 1), Blocks.LAVA);

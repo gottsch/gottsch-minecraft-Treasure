@@ -27,7 +27,10 @@ import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.AirPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.LavaSideTrapPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.LavaTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
 
 import net.minecraft.block.Block;
 
