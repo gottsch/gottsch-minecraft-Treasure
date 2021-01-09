@@ -24,7 +24,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DungeonHooks;
 
@@ -58,7 +58,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * 
 	 */
 	@Override
-	public boolean generateBase(World world, Random random, ICoords surfaceCorods, ICoords spawnCoords) {
+	public boolean generateBase(IWorld world, Random random, ICoords surfaceCorods, ICoords spawnCoords) {
 		// at chest level
 		buildLayer(world, spawnCoords, Blocks.AIR);
 		
@@ -69,13 +69,13 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	}
 	
 	@Override
-	public boolean generatePit(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public boolean generatePit(IWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		buildPit(world, random, spawnCoords, surfaceCoords, getBlockLayers());
 		return true;
 	}
 	
 	@Override
-	public boolean generateEntrance(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public boolean generateEntrance(IWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		// pit enterance
 		buildLogLayer(world, random, surfaceCoords.add(0, -3, 0), DEFAULT_LOG);
 		buildLayer(world, surfaceCoords.add(0, -4, 0), Blocks.SAND);
@@ -92,7 +92,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @return
 	 */
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(IWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
 		result.getData().setSpawnCoords(spawnCoords);
 		result.getData().getChestContext().setCoords(spawnCoords);
@@ -125,7 +125,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 		int yDist = (surfaceCoords.getY() - spawnCoords.getY()) - 2;
 		Treasure.LOGGER.debug("Distance to ySurface =" + yDist);
 	
-		if (yDist > getMinSurfaceToSpawnDistance()) {			
+		if (yDist > getMinSurfaceToSpawnDistance()) {
 			Treasure.LOGGER.debug("Generating shaft @ " + spawnCoords.toShortString());
 
 			generateBase(world, random, surfaceCoords, spawnCoords);
@@ -138,6 +138,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 		}			
 		// shaft is only 2-6 blocks long - can only support small covering
 		else if (yDist >= 2) {
+			Treasure.LOGGER.debug("less than 2, generate simple short pit gen");
 			// simple short pit
 			result = new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
 		}
@@ -158,7 +159,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @param world
 	 * @param spawnCoords
 	 */
-	public void buildAboveChestLayers(World world, Random random, ICoords spawnCoords) {
+	public void buildAboveChestLayers(IWorld world, Random random, ICoords spawnCoords) {
 		buildLayer(world, spawnCoords.add(0, 1, 0), Blocks.AIR);
 		buildLayer(world, spawnCoords.add(0, 2, 0), Blocks.AIR);
 		buildLogLayer(world, random, spawnCoords.add(0, 3, 0), DEFAULT_LOG);
@@ -173,7 +174,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @param surfaceCoords
 	 * @return
 	 */
-	public ICoords buildPit(World world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
+	public ICoords buildPit(IWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
 		
@@ -233,7 +234,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @param block
 	 * @return
 	 */
-	public ICoords buildLayer(World world, ICoords coords, Block block) {
+	public ICoords buildLayer(IWorld world, ICoords coords, Block block) {
 //		Treasure.LOGGER.debug("Building layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
 		GenUtil.replaceWithBlock(world, coords, block);
 		GenUtil.replaceWithBlock(world, coords.add(1, 0, 0), block);
@@ -250,7 +251,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @param block
 	 * @return
 	 */
-	public ICoords buildLogLayer(final World world, final Random random, final ICoords coords, final Block block) {
+	public ICoords buildLogLayer(final IWorld world, final Random random, final ICoords coords, final Block block) {
 //		Treasure.LOGGER.debug("Building log layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
 		// ensure that block is of type LOG/LOG2
 		if (!(block instanceof LogBlock)) {
@@ -266,10 +267,10 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 		int axis = random.nextInt(2);
 		BlockState blockState = block.getDefaultState();
 		if (axis == 0) {
-			blockState.with(LogBlock.AXIS, Direction.Axis.Z);
+			blockState = blockState.with(LogBlock.AXIS, Direction.Axis.Z);
 		}
 		else {
-			blockState.with(LogBlock.AXIS,  Direction.Axis.X);
+			blockState = blockState.with(LogBlock.AXIS,  Direction.Axis.X);
 		}
 				
 		// core 4-square
@@ -304,14 +305,14 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @param spawnCoords
 	 * @param mob
 	 */
-	public void spawnMob(World world, ICoords spawnCoords, String mobName) {
+	public void spawnMob(IWorld world, ICoords spawnCoords, String mobName) {
 		MobEntity mob = null;
 		switch (mobName) {
 		case "zombie":
-			mob = new ZombieEntity(world);
+			mob = new ZombieEntity(world.getWorld());
 			break;
 		case "skeleton":
-			mob = new SkeletonEntity(EntityType.SKELETON, world);
+			mob = new SkeletonEntity(EntityType.SKELETON, world.getWorld());
 			break;
 		}
     	mob.setLocationAndAngles((double)spawnCoords.getX() + 0.5D,  (double)spawnCoords.getY(), (double)spawnCoords.getZ() + 0.5D, 0.0F, 0.0F);
@@ -324,8 +325,8 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @param random
 	 * @param spawnCoords
 	 */
-	public void spawnRandomMob(World world, Random random, ICoords spawnCoords) {
-    	world.setBlockState(spawnCoords.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
+	public void spawnRandomMob(IWorld world, Random random, ICoords spawnCoords) {
+    	world.getWorld().setBlockState(spawnCoords.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
     	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(spawnCoords.toPos());
     	EntityType<?> mobEntityType = DungeonHooks.getRandomDungeonMob(random);
     	te.setMobName(mobEntityType.getRegistryName());

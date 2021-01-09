@@ -61,48 +61,106 @@ public interface IChestGenerator {
 			final Rarity rarity, BlockState state) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(coords);
-
 		// select a loot table
-		LootTable lootTable = selectLootTable(random, rarity);
-		if (lootTable == null) {
-			Treasure.LOGGER.warn("Unable to select a lootTable.");
+		Optional<LootTableShell> lootTableShell = selectLootTable2(random, rarity);
+		ResourceLocation lootTableResourceLocation = null;
+		if (lootTableShell.isPresent()) {
+			lootTableResourceLocation = lootTableShell.get().getResourceLocation();
+		}
+		else {
+			LOGGER.debug("Unable to select a LootTable for rarity -> {}", rarity);
 			return result.fail();
 		}
-
+		
 		// select a chest from the rarity
-		AbstractChestBlock<?> chest = selectChest(random, rarity);
+		AbstractChestBlock chest = selectChest(random, rarity);
 		if (chest == null) {
-			Treasure.LOGGER.warn("Unable to select a chest for rarity {}.", rarity);
+			LOGGER.warn("Unable to select a chest for rarity -> {}.", rarity);
 			return result.fail();
 		}
 
 		// place the chest in the world
-		TileEntity te = null;
+		TileEntity tileEntity = null;
 		if (state != null) {
-			te = placeInWorld(world, random, coords, chest, state);
+			tileEntity = placeInWorld(world, random, coords, chest, state);
 		} else {
-			te = placeInWorld(world, random, chest, coords);
+			tileEntity = placeInWorld(world, random, chest, coords);
 		}
 
-		if (te == null) {
-			Treasure.LOGGER.debug("Unable to locate tile entity for chest -> {}", coords);
+		if (tileEntity == null) {
+			LOGGER.debug("Unable to locate tile entity for chest -> {}", coords);
 			return result.fail();
 		}
+
+		// add the loot table
+		addLootTable((AbstractTreasureChestTileEntity) tileEntity, lootTableResourceLocation);
 		
-//	TODO 1.15.2
-//		if (!(chest instanceof IMimicBlock)) {
-//			Treasure.LOGGER.debug("Generating loot from loot table for rarity {}", rarity);
-//			lootTable.fillInventory((IInventory) te, random, Treasure.LOOT_TABLES.getContext());
-//		}
+		// seal the chest
+		addSeal((AbstractTreasureChestTileEntity) tileEntity);
+		
+		// update the backing tile entity's generation contxt
+		addGenerationContext((AbstractTreasureChestTileEntity) tileEntity, rarity);
+		
+		// if (!(chest instanceof IMimicBlock)) {
+		// 	LOGGER.debug("Generating loot from loot table for rarity {}", rarity);
+		// 	lootTable.fillInventory((IInventory) te, random, Treasure.LOOT_TABLES.getContext());
+		// }
 
 		// add locks
-		addLocks(random, chest, (AbstractTreasureChestTileEntity) te, rarity);
-
+		addLocks(random, chest, (AbstractTreasureChestTileEntity) tileEntity, rarity);
+		
 		// update result
 		result.getData().setChestContext(new BlockContext(coords, state));
 
 		return result.success();
 	}
+	
+//	default public GeneratorResult<ChestGeneratorData> generate(final World world, final Random random, ICoords coords,
+//			final Rarity rarity, BlockState state) {
+//		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
+//		result.getData().setSpawnCoords(coords);
+//
+//		// select a loot table
+//		LootTable lootTable = selectLootTable(random, rarity);
+//		if (lootTable == null) {
+//			Treasure.LOGGER.warn("Unable to select a lootTable.");
+//			return result.fail();
+//		}
+//
+//		// select a chest from the rarity
+//		AbstractChestBlock<?> chest = selectChest(random, rarity);
+//		if (chest == null) {
+//			Treasure.LOGGER.warn("Unable to select a chest for rarity {}.", rarity);
+//			return result.fail();
+//		}
+//
+//		// place the chest in the world
+//		TileEntity te = null;
+//		if (state != null) {
+//			te = placeInWorld(world, random, coords, chest, state);
+//		} else {
+//			te = placeInWorld(world, random, chest, coords);
+//		}
+//
+//		if (te == null) {
+//			Treasure.LOGGER.debug("Unable to locate tile entity for chest -> {}", coords);
+//			return result.fail();
+//		}
+//		
+////	TODO 1.15.2
+////		if (!(chest instanceof IMimicBlock)) {
+////			Treasure.LOGGER.debug("Generating loot from loot table for rarity {}", rarity);
+////			lootTable.fillInventory((IInventory) te, random, Treasure.LOOT_TABLES.getContext());
+////		}
+//
+//		// add locks
+//		addLocks(random, chest, (AbstractTreasureChestTileEntity) te, rarity);
+//
+//		// update result
+//		result.getData().setChestContext(new BlockContext(coords, state));
+//
+//		return result.success();
+//	}
 
 	/**
 	 * 

@@ -15,16 +15,16 @@ import net.minecraft.world.biome.Biome;
  */
 public interface IBiomesConfig {
 
-	List<Biome>  getWhiteList();
-	void setWhiteList(List<Biome> whiteList);
+//	List<Biome>  getWhiteList();
+//	void setWhiteList(List<Biome> whiteList);
+//	
+//	List<Biome>  getBlackList();
+//	void setBlackList(List<Biome> blackList);
 	
-	List<Biome>  getBlackList();
-	void setBlackList(List<Biome> blackList);
-	
-	List<BiomeTypeHolder> getTypeWhiteList();
-	void setTypeWhiteList(List<BiomeTypeHolder> whiteList);
-
-	List<BiomeTypeHolder> getTypeBlackList();
-	void setTypeBlackList(List<BiomeTypeHolder> blackList);
+//	List<BiomeTypeHolder> getTypeWhiteList();
+//	void setTypeWhiteList(List<BiomeTypeHolder> whiteList);
+//
+//	List<BiomeTypeHolder> getTypeBlackList();
+//	void setTypeBlackList(List<BiomeTypeHolder> blackList);
 
 }

@@ -346,62 +346,6 @@ public class Treasure implements IMod {
 //		TreasureBlocks.RUBY_ORE.setItem(TreasureItems.RUBY);
 //	}
 
-	private void createLogger() {
-		ConfigurationBuilder< BuiltConfiguration > builder = ConfigurationBuilderFactory.newConfigurationBuilder();
-
-		builder.setStatusLevel( Level.ERROR);
-		builder.setConfigurationName("RollingBuilder");
-		// create a console appender
-//		AppenderComponentBuilder appenderBuilder = builder.newAppender("Stdout", "CONSOLE").addAttribute("target",
-//		    ConsoleAppender.Target.SYSTEM_OUT);
-//		appenderBuilder.add(builder.newLayout("PatternLayout")
-//		    .addAttribute("pattern", "%d [%t] %-5level: %msg%n%throwable"));
-//		builder.add( appenderBuilder );
-		// create a rolling file appender
-		LayoutComponentBuilder layoutBuilder = builder.newLayout("PatternLayout")
-		    .addAttribute("pattern", "%d [%t] %-5level: %msg%n");
-		ComponentBuilder triggeringPolicy = builder.newComponent("Policies")
-//		    .addComponent(builder.newComponent("CronTriggeringPolicy").addAttribute("schedule", "0 0 0 * * ?"))
-		    .addComponent(builder.newComponent("SizeBasedTriggeringPolicy").addAttribute("size", "1M"));
-		AppenderComponentBuilder appenderBuilder = builder.newAppender("rolling", "RollingFile")
-		    .addAttribute("fileName", "target/rolling.log")
-		    .addAttribute("filePattern", "target/archive/rolling-%d{MM-dd-yy}.log.gz")
-		    .add(layoutBuilder)
-		    .addComponent(triggeringPolicy);
-		builder.add(appenderBuilder);
-
-		// create the new logger
-//		builder.add( builder.newLogger( "Treasure2", Level.DEBUG )
-//		    .add( builder.newAppenderRef( "rolling" ) )
-//		    .addAttribute( "additivity", false ) );
-
-		LoggerComponentBuilder logger = builder.newLogger("Treasure2", Level.DEBUG);
-		logger.add(builder.newAppenderRef("rolling"));
-		logger.addAttribute("additivity", false);		 
-		builder.add(logger);
-		
-		try {
-			builder.writeXmlConfiguration(System.out);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		RootLoggerComponentBuilder rootLogger 
-		  = builder.newRootLogger(Level.DEBUG);
-		rootLogger.add(builder.newAppenderRef("rolling"));
-		 
-		builder.add(rootLogger);
-		
-//		builder.add( builder.newRootLogger( Level.DEBUG )
-//		    .add( builder.newAppenderRef( "rolling" ) ) );
-		LoggerContext ctx = Configurator.initialize(builder.build());
-ctx.updateLoggers();
-//		Treasure.LOGGER =LogManager.getLogger(Treasure.NAME);
-//		System.out.println("my logger -> " + LOGGER);
-//		Treasure.LOGGER.info("hey my logger WORKS!");
-
-	}
 
 	@Override
 	public IMod getInstance() {

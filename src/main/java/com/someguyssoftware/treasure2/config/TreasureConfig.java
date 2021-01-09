@@ -30,12 +30,14 @@ import net.minecraftforge.fml.loading.FMLPaths;
 @EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class TreasureConfig extends AbstractConfig {
 	public static final String CHESTS_CATEGORY = "04-chests";
+	public static final String PITS_CATEGORY = "06 pits";
 	public static final String KEYS_AND_LOCKS_CATEGORY = "07-keys and locks";
 
 	public static ForgeConfigSpec COMMON_CONFIG;
 
 	public static final General GENERAL;
 	public static final Chests CHESTS;
+	public static final Pits PITS;
 	public static final KeysAndLocks KEYS_LOCKS;
 
 	public static final String CATEGORY_DIV = "##############################";
@@ -45,6 +47,7 @@ public class TreasureConfig extends AbstractConfig {
 		// TODO add LOGGING
 		GENERAL = new General(COMMON_BUILDER);
 		CHESTS = new Chests(COMMON_BUILDER);
+		PITS = new Pits(COMMON_BUILDER);
 		KEYS_LOCKS = new KeysAndLocks(COMMON_BUILDER);
 		COMMON_CONFIG = COMMON_BUILDER.build();
 
@@ -148,10 +151,14 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String GRAVESTONE_PROXIMITY_SPAWNER_TE_ID = "gravestone_proximity_spawner_tile_entity";
 	}
 
+	/*
+	 * 
+	 */
 	public static class General {
 		public ForgeConfigSpec.BooleanValue  enableDefaultLootTablesCheck;
 		public ConfigValue<List<? extends String>> dimensionsWhiteList;
-
+		public ForgeConfigSpec.ConfigValue<Integer> surfaceStructureProbability;
+		
 		General(final ForgeConfigSpec.Builder builder) {
 			builder.comment(CATEGORY_DIV, " General properties for Treasure mod.", CATEGORY_DIV).push("03-general");
 
@@ -159,6 +166,10 @@ public class TreasureConfig extends AbstractConfig {
 					.comment(" Enable/Disable a check to ensure the default loot tables exist on the file system.", "If enabled, then you will not be able to remove any default loot tables (but they can be edited).", "Only disable if you know what you're doing.")
 					.define("Enable default loot tables check:", true);
 
+			surfaceStructureProbability = builder
+					.comment("The probability that a surface structure will generate.")
+					.defineInRange("Probability of surface structure spawn:", 25, 0, 100);
+			
 			dimensionsWhiteList = builder
 					.comment(" Allowed Dimensions for generation.", 
 							" Treasure2 was designed for 'normal' overworld-type dimensions.", 
@@ -169,10 +180,16 @@ public class TreasureConfig extends AbstractConfig {
 		}
 	}
 
+	/*
+	 * 
+	 */
 	public static class Chests {
 		public ChestCollection surfaceChests;
 		public ChestCollection submergedChests;
 
+//		@RequiresMcRestart
+		public ForgeConfigSpec.ConfigValue<Integer> chestRegistrySize;
+		
 		/**
 		 * 
 		 * @param builder
@@ -181,12 +198,18 @@ public class TreasureConfig extends AbstractConfig {
 			builder.comment(CATEGORY_DIV, " Chest properties", CATEGORY_DIV)
 			.push(CHESTS_CATEGORY);
 
+			chestRegistrySize = builder
+					.comment("The number of chests that are monitored. Most recent additions replace least recent when the registry is full.",
+							"This is the set of chests used to measure distance between newly generated chests.")
+					.defineInRange("Max. size of chest registry:", 75, 5, 100);
+			
 			Map<Rarity, ChestConfig.Data> surfaceConfigs = new HashMap<>();
 			Map<Rarity, ChestConfig.Data> submergedConfigs = new HashMap<>();
 			
 			// setup surface properties
-			surfaceConfigs.put(Rarity.COMMON, new ChestConfig.Data(true, 75, 85, 50, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-
+			surfaceConfigs.put(Rarity.COMMON, new ChestConfig.Data(true, 75, 85, 50, 20.0, new String[] {}, new String[] {"ocean"}, new String[] {}, new String[] {}));
+			surfaceConfigs.put(Rarity.UNCOMMON, new ChestConfig.Data(true, 150, 75, 40, 17.5, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			
 			// TODO needs all the builder stuff
 			surfaceChests = new ChestCollection(builder,
 					"01-Surface Chests", 
@@ -199,7 +222,14 @@ public class TreasureConfig extends AbstractConfig {
 					surfaceConfigs);
 
 			// setup submerged properties
-			submergedConfigs.put(Rarity.COMMON, new ChestConfig.Data(false, 150, 85, 40, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			submergedConfigs.put(Rarity.COMMON, new ChestConfig.Data(false, 150, 85, 40, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			
+			// FOR submerged scarce+ chests
+//					new String[] {},
+//					new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
+//							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
+//					new String[] {},
+//					new String[] {"ocean", "deep_ocean"});
 			
 			submergedChests = new ChestCollection(builder, 
 					"02-Submerged Chests", 
@@ -210,22 +240,24 @@ public class TreasureConfig extends AbstractConfig {
 							" Note: There is a build-in check to only allow ocean biomes for submerged chests. Adding other biomes to the white lists will not change this functionality.",
 							CATEGORY_DIV,}, 
 					submergedConfigs);
+
+			
+			builder.pop();
 			
 			// TODO pass in extra properties into constructor
 			// setup extra properties
-			surfaceChests.commonChestProperties.mimicProbability = 20.0;
-			submergedChests.commonChestProperties.mimicProbability = 0.0;
+
 //			surfaceChests.scarceChestProperties.mimicProbability = 15.0;
 //			submergedChests.scarceChestProperties.mimicProbability = 0.0;
-			
-			// TODO add
-			builder.pop();
 		}
 
 		public void init() {
 			this.surfaceChests.init();
 		}
 		
+		/*
+		 * 
+		 */
 		public class ChestCollection {
 			/*
 			 * Map of chest configs by rarity.
@@ -233,6 +265,11 @@ public class TreasureConfig extends AbstractConfig {
 			public Map<Rarity, IChestConfig> configMap = new HashMap<>();
 
 			public ForgeConfigSpec.ConfigValue<Integer> minChunksPerChest;
+			
+			public ForgeConfigSpec.ConfigValue<Integer> minDistancePerChest;
+
+			public ForgeConfigSpec.ConfigValue<Integer> surfaceChestProbability;
+			
 			public ChestConfig commonChestProperties;
 
 
@@ -247,9 +284,18 @@ public class TreasureConfig extends AbstractConfig {
 						.comment(" The minimum number of chunks generated before another attempt to spawn a chest is made.")
 						.defineInRange("Minimum chunks per chest spawn:", 50, 25, 32000);
 				
-				commonChestProperties = new ChestConfig(builder, configs.get(Rarity.COMMON));
-//				commonChestProperties = configs.get(Rarity.COMMON);
+				minDistancePerChest = builder
+						.comment(" The minimum distance, measured in chunks (16x16), that two chests can be in proximity.",
+								" Note: Only chests in the chest registry are checked against this property.",
+								" Used in conjunction with the chunks per chest and spawn probability.", " Ex. ")
+						.defineInRange("Min. distance per chest spawn:", 75, 0, 32000);
+		
+				surfaceChestProbability = builder
+						.comment(" The probability chest will appear on the surface, instead of in a pit.")
+						.defineInRange("Probability of chest spawn on the surface:", 15, 0, 100);
 				
+				commonChestProperties = new ChestConfig(builder, configs.get(Rarity.COMMON));
+			
 				// update the map
 				configMap.put(Rarity.COMMON, commonChestProperties);
 				
@@ -262,6 +308,26 @@ public class TreasureConfig extends AbstractConfig {
 		}
 	}
 
+	/*
+	 * 
+	 */
+	public static class Pits {
+		public ForgeConfigSpec.ConfigValue<Integer> pitStructureProbability;
+		
+		Pits(final ForgeConfigSpec.Builder builder) {
+			builder.comment(CATEGORY_DIV, " Pit properties", CATEGORY_DIV)
+			.push(PITS_CATEGORY);
+			
+			pitStructureProbability = builder
+					.comment("The probability that a pit will contain a structure (treasure room(s), cavern etc.)")
+					.defineInRange("Probability of pit structure spawn:", 25, 0, 100);
+			builder.pop();
+		}
+	}
+	
+	/*
+	 * 
+	 */
 	public static class KeysAndLocks {
 		public ForgeConfigSpec.BooleanValue enableKeyBreaks;
 		public ForgeConfigSpec.BooleanValue enableLockDrops;

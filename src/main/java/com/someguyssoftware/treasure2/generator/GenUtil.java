@@ -21,6 +21,7 @@ import net.minecraft.state.EnumProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 /**
@@ -79,13 +80,13 @@ public class GenUtil {
 	 * @param block
 	 * @return
 	 */
-	public static boolean replaceWithBlock(World world, ICoords coords, Block block) {
+	public static boolean replaceWithBlock(IWorld world, ICoords coords, Block block) {
 		// don't change if old block is air
 		BlockContext context = new BlockContext(world, coords);
 		if (context.isAir()) {
 			return false;
 		}
-		world.setBlockState(coords.toPos(), block.getDefaultState());
+		world.getWorld().setBlockState(coords.toPos(), block.getDefaultState());
 		return true;
 	}
 
@@ -96,13 +97,13 @@ public class GenUtil {
 	 * @param blockState
 	 * @return
 	 */
-	public static boolean replaceWithBlockState(World world, ICoords coords, BlockState blockState) {
+	public static boolean replaceWithBlockState(IWorld world, ICoords coords, BlockState blockState) {
 		// don't change if old block is air
 		BlockContext context = new BlockContext(world, coords);
 		if (context.isAir()) {
 			return false;
 		}
-		world.setBlockState(coords.toPos(), blockState);
+		world.getWorld().setBlockState(coords.toPos(), blockState);
 		return true;
 	}
 
@@ -468,7 +469,7 @@ public class GenUtil {
 	 * @param coords
 	 * @return
 	 */
-	public static ICoords findUndergroundCeiling(World world, ICoords coords) {
+	public static ICoords findUndergroundCeiling(IWorld world, ICoords coords) {
 		final int CEILING_FAIL_SAFE = 50;
 		int ceilingHeight = 1;
 

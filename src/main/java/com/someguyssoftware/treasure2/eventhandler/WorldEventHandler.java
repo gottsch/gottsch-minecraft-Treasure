@@ -68,7 +68,7 @@ public class WorldEventHandler {
 //			ChestRegistry.getInstance().clear();	
 //			Treasure.logger.debug("Chest registry size AFTER cleaning -> {}", ChestRegistry.getInstance().getValues().size());
 //			
-//			GenDataPersistence.get(world);			
+//			TreasureGenerationSavedData.get(world);			
 //			Treasure.logger.debug("Chest registry size after world event load -> {}", ChestRegistry.getInstance().getValues().size());
 		}	
 	}

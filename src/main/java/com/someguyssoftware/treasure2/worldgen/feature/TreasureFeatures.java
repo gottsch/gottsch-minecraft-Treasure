@@ -3,6 +3,9 @@
  */
 package com.someguyssoftware.treasure2.worldgen.feature;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.world.biome.Biome;
@@ -24,6 +27,12 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class TreasureFeatures {
 	public static final SurfaceChestFeature SURFACE_CHEST_FEATURE = new SurfaceChestFeature(NoFeatureConfig::deserialize);
 
+	public static final List<ITreasureFeature> FEATURES = new ArrayList<>();
+	
+	static {
+		FEATURES.add(SURFACE_CHEST_FEATURE);
+	}
+	
 	/**
 	 * This method is called in Treasure.setup(final FMLCommonSetupEvent event) by a DeferredWorkQueue.
 	 * This method assigns the Features to all applicable biomes

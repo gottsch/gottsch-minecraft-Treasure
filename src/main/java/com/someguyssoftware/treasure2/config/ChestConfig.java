@@ -2,9 +2,7 @@ package com.someguyssoftware.treasure2.config;
 
 import java.util.List;
 
-import com.ibm.icu.util.ULocale.Category;
 import com.someguyssoftware.gottschcore.biome.BiomeTypeHolder;
-import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -25,10 +23,18 @@ public class ChestConfig implements IChestConfig {
 		boolean enableChest;
 		int chunksPerChest;
 		double genProbability;
-		int minYSpawn; // TODO refactor to depth range
+		int minYSpawn;
+		// TODO add depth range from spawn ie. common will be at depth of 6-20 blocks from "surface"
 		double mimicProbability;
 		boolean surfaceAllowed = true;
 		boolean subterraneanAllowed = true;
+		
+		String[] whiteList;
+		String[] blackList;
+		String[] typeWhiteList;
+		String[] typeBlackList;
+		
+		BiomesConfig.Data biomesData;
 		
 		/**
 		 * 
@@ -41,12 +47,13 @@ public class ChestConfig implements IChestConfig {
 		 * @param typeWhiteList
 		 * @param typeBlackList
 		 */
-		public Data(boolean enableChest, int chunksPerChest, double genProbability, int minYSpawn, String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
+		public Data(boolean enableChest, int chunksPerChest, double genProbability, int minYSpawn, double mimicProbability, String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
 			this.enableChest = enableChest;
 			this.chunksPerChest = chunksPerChest;
 			this.genProbability = genProbability;
 			this.minYSpawn = minYSpawn;
-			// TODO create BiomeConfig and pass rest of values
+			this.mimicProbability = mimicProbability;
+			this.biomesData = new BiomesConfig.Data(whiteList, blackList, typeWhiteList, typeBlackList);
 		}
 
 		@Override
@@ -58,98 +65,58 @@ public class ChestConfig implements IChestConfig {
 	}
 	
 //	@RequiresWorldRestart
-	public ForgeConfigSpec.ConfigValue<Boolean> enableChest;// = true;
-
-//	@Comment({"The number of chunks generated before the chest spawn is attempted."})
-//	@Name("01. Chunks per chest spawn:")
-//	@RangeInt(min = 50, max = 32000)
-	public ForgeConfigSpec.ConfigValue<Integer> chunksPerChest;// = 75;
-
-//	@Comment({"The probability that a chest will spawn."})
-//	@Name("02. Probability of chest spawn:")
-//	@RangeDouble(min = 0.0, max = 100.0)
-	public double genProbability = 50.0;
-
-//	@Comment({"The minimum depth (y-axis) that a chest can generate at."})
-//	@Name("03. Min. y-value for spawn location:")
-//	@RangeInt(min = 5, max = 250)
-	public int minYSpawn = 25;
-
-//	@Comment({"The probability that a chest will be a mimic.", "NOTE: only common Wooden ChestConfig have mimics avaiable."})
-//	@Name("04. Mimic probability:")
-//	@RangeDouble(min = 0.0, max = 100.0)
-	public double mimicProbability = 0.0;
-
+	public ForgeConfigSpec.ConfigValue<Boolean> enableChest;
+	public ForgeConfigSpec.ConfigValue<Integer> chunksPerChest;
+	public ForgeConfigSpec.ConfigValue<Double> genProbability;
+	public ForgeConfigSpec.ConfigValue<Integer> minYSpawn;
+	public ForgeConfigSpec.ConfigValue<Double> mimicProbability;
+	
 	// TODO most likely going to be removed with the use of meta files / archetype : type : biome categorizations
-//	@Name("05. Enable surface spawn:")
-	public boolean surfaceAllowed = true;
+	@Deprecated
+	public ForgeConfigSpec.ConfigValue<Boolean> surfaceAllowed;
+	@Deprecated
+	public ForgeConfigSpec.ConfigValue<Boolean> subterraneanAllowed;
 
-//	@Name("06. Enable subterranean spawn:")
-	public boolean subterraneanAllowed = true;
-
-//	@Nam ment({"Biome white and black list properties."})
-	public BiomesConfig biomes = new BiomesConfig(
-			new String[] {},
-			new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-					"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
-			new String[] {},
-			new String[] {"ocean", "deep_ocean"});
-
-	/*
-	 * 
-	 */
-//	public ChestConfig(final ForgeConfigSpec.Builder builder, boolean isAllowed, int chunksPer, double probability, int minYSpawn,
-//			String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
-//		// build out properties
-//		builder.comment().push("01-Common chest");
-//		enableChest = builder
-//		.comment("Enable/Disable generating chests associated with this rarity.")
-//		.define("Enable chests for rarity:", true);
-//		
-//
-//		
-//		// update values
-////		this.enableChest = isAllowed;
-//		this.enableChest.set(isAllowed);
-////		this.chunksPerChest = chunksPer;
-//		this.chunksPerChest.set(chunksPer);
-//		this.genProbability = probability;
-//		this.minYSpawn = minYSpawn;
-//		this.biomes = new BiomesConfig(whiteList, blackList, typeWhiteList, typeBlackList);
-//		
-//		builder.pop();
-//	}
+	public BiomesConfig biomes; 
 
 	/**
 	 * 
 	 * @param builder
+	 * @param data
 	 */
-//	public ChestConfig(final ForgeConfigSpec.Builder builder) {
-//		builder.comment().push("01-Common chest");
-//		enableChest = builder
-//		.comment("Enable/Disable generating chests associated with this rarity.")
-//		.define("Enable chests for rarity:", true);
-//		
-//		builder.pop();
-//	}
-
 	public ChestConfig(Builder builder, Data data) {
 		// build out properties
 		builder.comment(TreasureConfig.CATEGORY_DIV, " Common chest properties", TreasureConfig.CATEGORY_DIV).push("01-Common chest");
+		
 		enableChest = builder
-		.comment(" Enable/Disable generating chests associated with this rarity.")
-		.define("Enable chests for rarity:", data.enableChest);
+			.comment(" Enable/Disable generating chests associated with this rarity.")
+			.define("Enable chests for rarity:", data.enableChest);
 		
+		chunksPerChest = builder
+				.comment("The number of chunks generated before the chest spawn is attempted.")
+				.defineInRange("Chunks per chest spawn:", data.chunksPerChest, 50, 32000	);
 
+		genProbability= builder
+				.comment("The probability that a chest will spawn.")
+				.defineInRange("Probability of chest spawn:", data.genProbability, 0.0, 100.0);
+
+		minYSpawn = builder
+				.comment("The minimum depth (y-axis) that a chest can generate at.")
+				.defineInRange("Minimum depth for spawn location:", data.minYSpawn, 5, 250);
+
+		mimicProbability = builder
+				.comment("The probability that a chest will be a mimic.")
+				.defineInRange("Mimic probability:", data.mimicProbability, 0.0, 100.0);
+
+		surfaceAllowed = builder
+				.comment("")
+				.define("Enable surface spawn:", data.surfaceAllowed);
 		
-		// update values
-//		this.enableChest = isAllowed;
-//		this.enableChest.set(isAllowed);
-//		this.chunksPerChest = chunksPer;
-//		this.chunksPerChest.set(chunksPer);
-//		this.genProbability = probability;
-//		this.minYSpawn = minYSpawn;
-//		this.biomes = new BiomesConfig(whiteList, blackList, typeWhiteList, typeBlackList);
+		subterraneanAllowed = builder
+				.comment("")
+				.define("Enable subterranean spawn:", data.subterraneanAllowed);
+		
+		biomes = new BiomesConfig(builder, data.biomesData);
 		
 		builder.pop();
 	}
@@ -173,46 +140,48 @@ public class ChestConfig implements IChestConfig {
 
 	@Override
 	public double getGenProbability() {
-		return genProbability;
+		return genProbability.get();
 	}
 
 	@Override
 	public int getMinYSpawn() {
-		return minYSpawn;
+		return minYSpawn.get();
 	}
 
 	@Override
 	public boolean isSurfaceAllowed() {
-		return surfaceAllowed;
+		return surfaceAllowed.get();
 	}
 
 	@Override
 	public boolean isSubterraneanAllowed() {
-		return subterraneanAllowed;
+		return subterraneanAllowed.get();
 	}
 
 	@Override
 	public List<BiomeTypeHolder> getBiomeTypeWhiteList() {
-		return biomes.getTypeWhiteList();
+//		return biomes.getTypeWhiteList();
+		return null;
 	}
 
 	@Override
 	public List<BiomeTypeHolder> getBiomeTypeBlackList() {
-		return biomes.getTypeBlackList();
+//		return biomes.getTypeBlackList();
+		return null;
 	}
 
 	@Override
 	public double getMimicProbability() {
-		return mimicProbability;
+		return mimicProbability.get();
 	}
 
 	@Override
-	public List<Biome> getBiomeWhiteList() {
-		return biomes.getWhiteList();
+	public List<String> getBiomeWhiteList() {
+		return (List<String>) biomes.whiteList.get();
 	}
 
 	@Override
-	public List<Biome> getBiomeBlackList() {
-		return biomes.getBlackList();
+	public List<String> getBiomeBlackList() {
+		return (List<String>) biomes.blackList.get();
 	}
 }

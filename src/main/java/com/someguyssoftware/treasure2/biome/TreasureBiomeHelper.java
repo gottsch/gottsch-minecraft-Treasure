@@ -70,16 +70,41 @@ public class TreasureBiomeHelper {
 	 * @param blackList
 	 * @return
 	 */
-	public static Result isBiomeAllowed(Biome biome, List<Biome> whiteList, List<Biome> blackList) {
+//	public static Result isBiomeAllowed(Biome biome, List<Biome> whiteList, List<Biome> blackList) {
+//        if (whiteList != null && whiteList.size() > 0) {
+//        	if (whiteList.contains(biome)) {
+//        		return Result.WHITE_LISTED;
+//        	}
+//        }
+//        
+//        if (blackList != null && blackList.size() > 0) {
+//        	if (blackList.contains(biome)) {
+//        		return Result.BLACK_LISTED;
+//        	}
+//        }
+//        
+//    	// neither white list nor black list have values = all biomes are valid
+//    	return Result.OK;
+//	}
+	
+	public static Result isBiomeAllowed(Biome biome, List<String> whiteList, List<String> blackList) {
         if (whiteList != null && whiteList.size() > 0) {
-        	if (whiteList.contains(biome)) {
-        		return Result.WHITE_LISTED;
-        	}
+//        	if (whiteList.contains(biome)) {
+        	for (String biomeName : whiteList) {
+	        	if (biomeName.equals(biome.getRegistryName())) {
+	        		return Result.WHITE_LISTED;
+	        	}
+	        }
+        	// added in 1.15. If white list has values and biome is not in it, then by definition, it is black listed.
+        	return Result.BLACK_LISTED;
         }
         
         if (blackList != null && blackList.size() > 0) {
-        	if (blackList.contains(biome)) {
-        		return Result.BLACK_LISTED;
+//        	if (blackList.contains(biome)) {
+        	for (String biomeName : blackList) {
+        		if (biomeName.equals(biome.getRegistryName())) {
+        			return Result.BLACK_LISTED;
+        		}
         	}
         }
         

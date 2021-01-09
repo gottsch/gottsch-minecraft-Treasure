@@ -14,7 +14,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorld;
 
 
 /**
@@ -42,7 +42,7 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(IWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords); 
 		if (result.isSuccess()) {
 			Treasure.LOGGER.debug("Generated Lave Side Trap Pit at " + spawnCoords.toShortString());
@@ -59,7 +59,7 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ICoords buildPit(World world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
+	public ICoords buildPit(IWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
 		
@@ -108,7 +108,7 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 	 * @param block
 	 * @return
 	 */
-	public ICoords buildTrapLayer(final World world, final Random random, final ICoords coords, final Block block) {
+	public ICoords buildTrapLayer(final IWorld world, final Random random, final ICoords coords, final Block block) {
 		final int MAX_REPLACES = 5;
 		
 		ICoords[] matrix = {

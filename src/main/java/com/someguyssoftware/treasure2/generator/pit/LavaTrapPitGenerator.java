@@ -16,6 +16,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LogBlock;
 import net.minecraft.util.Direction;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 
@@ -62,7 +63,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ICoords buildPit(World world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
+	public ICoords buildPit(IWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
 		
@@ -104,6 +105,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 			
 			// check if the return coords is different than the anticipated coords and resolve
 			yIndex = autoCorrectIndex(yIndex, nextCoords, expectedCoords);
+			Treasure.LOGGER.debug("yIndex -> {}", yIndex);
 		}		
 		return nextCoords;
 	}
@@ -112,7 +114,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * 
 	 */
 	@Override
-	public void buildAboveChestLayers(World world, Random random, ICoords spawnCoords) {
+	public void buildAboveChestLayers(IWorld world, Random random, ICoords spawnCoords) {
 		build3WideLayer(world, random, spawnCoords.add(0, 1, 0), Blocks.AIR);
 		build3WideLayer(world, random, spawnCoords.add(0, 2, 0), Blocks.AIR);	
 		build3WideLayer(world, random, spawnCoords.add(0, 3, 0), Blocks.AIR);	
@@ -126,7 +128,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @param block
 	 * @return
 	 */
-	private ICoords build3WideLayer(World world, Random random, ICoords coords, Block block) {
+	private ICoords build3WideLayer(IWorld world, Random random, ICoords coords, Block block) {
         BlockState blockState = block.getDefaultState();
         // randomly select the axis the logs are facing (0 = Z, 1 = X);
         if (block == DEFAULT_LOG) {
@@ -157,7 +159,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @param world
 	 * @param coords
 	 */
-	private void buildLavaBaseLayer(World world, ICoords coords) {
+	private void buildLavaBaseLayer(IWorld world, ICoords coords) {
 		Treasure.LOGGER.debug("Building lava baselayer from @ {} ", coords.toShortString());
 		GenUtil.replaceWithBlock(world, coords.add(1, 0, 0), Blocks.LAVA);
 		GenUtil.replaceWithBlock(world, coords.add(-1, 0, 0), Blocks.LAVA);

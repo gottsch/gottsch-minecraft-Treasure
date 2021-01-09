@@ -24,8 +24,10 @@ public interface IChestConfig {
 	public int getMinYSpawn();
 	public double getMimicProbability();
 	
-	public List<Biome> getBiomeWhiteList();
-	public List<Biome> getBiomeBlackList();
+//	public List<Biome> getBiomeWhiteList();
+//	public List<Biome> getBiomeBlackList();
+	public List<String> getBiomeWhiteList();
+	public List<String> getBiomeBlackList();
 	public List<BiomeTypeHolder> getBiomeTypeWhiteList();
 	public List<BiomeTypeHolder> getBiomeTypeBlackList();
 }
