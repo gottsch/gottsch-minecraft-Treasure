@@ -72,7 +72,8 @@ public class TreasureBlocks {
 	public static final Block SPIDER_CHEST;
 	public static final Block VIKING_CHEST;
 
-	public static final ProximityBlock PROXIMITY_SPAWNER;
+    public static final ProximityBlock PROXIMITY_SPAWNER;
+    public static final Block WISHING_WELL_BLOCK;
 	
 	public static List<Block> BLOCKS = new ArrayList<>(100);
 	public static final Set<BlockItem> ITEM_BLOCKS = new HashSet<>();
@@ -214,6 +215,8 @@ public class TreasureBlocks {
 		// TODO ORES
 
 		// TODO WISHING WELL BLOCKS
+        WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.WISHING_WELL_BLOCK_ID, Block.Properties.create(Material.ROCK, MaterialColor.ROCK)
+                .hardnessAndResistance(2.0F));
 
 		// TODO WITHER BIOME BLOCKS
 
@@ -243,7 +246,10 @@ public class TreasureBlocks {
 		BLOCKS.add(SPIDER_CHEST);
 		BLOCKS.add(VIKING_CHEST);
 //		BLOCKS.add(WITHER_CHEST); // TODO this will have to be removed later when chests are registered by rarity unless using a table that flags wither chest
-		BLOCKS.add(WITHER_CHEST_TOP);
+        BLOCKS.add(WITHER_CHEST_TOP);
+        
+        BLOCKS.add(WISHING_WELL_BLOCK);
+        BLOCKS.add(PROXIMITY_SPAWNER);
 	}
 
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -262,7 +268,7 @@ public class TreasureBlocks {
 			}
 			// special case registry
 			registry.register(WITHER_CHEST);
-			registry.register(PROXIMITY_SPAWNER);
+			// registry.register(PROXIMITY_SPAWNER);
 		}
 
 		/**
@@ -276,8 +282,8 @@ public class TreasureBlocks {
 
 			// add all specialty blocks to an array
 			final Block[] specialtyBlocks = { 
-					WITHER_CHEST,
-					PROXIMITY_SPAWNER					
+					WITHER_CHEST
+					// PROXIMITY_SPAWNER					
 			};
 			
 			for (Block b : BLOCKS) {

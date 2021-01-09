@@ -37,7 +37,8 @@ public class TreasureConfig extends AbstractConfig {
 
 	public static final General GENERAL;
 	public static final Chests CHESTS;
-	public static final Pits PITS;
+    public static final Pits PITS;
+    public static final Wells WELLS;
 	public static final KeysAndLocks KEYS_LOCKS;
 
 	public static final String CATEGORY_DIV = "##############################";
@@ -47,7 +48,8 @@ public class TreasureConfig extends AbstractConfig {
 		// TODO add LOGGING
 		GENERAL = new General(COMMON_BUILDER);
 		CHESTS = new Chests(COMMON_BUILDER);
-		PITS = new Pits(COMMON_BUILDER);
+        PITS = new Pits(COMMON_BUILDER);
+        WELLS = new Wells(COMMON_BUILDER);
 		KEYS_LOCKS = new KeysAndLocks(COMMON_BUILDER);
 		COMMON_CONFIG = COMMON_BUILDER.build();
 
@@ -124,7 +126,11 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String CAULDRON_CHEST_ID = "cauldron_chest";
 		public static final String SPIDER_CHEST_ID = "spider_chest";
 		public static final String VIKING_CHEST_ID = "viking_chest";
-	}
+    }
+    
+    public static class BlockID {
+        public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
+    }
 
 	public static class TileEntityID {
 		public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity_type";
@@ -324,7 +330,24 @@ public class TreasureConfig extends AbstractConfig {
 			builder.pop();
 		}
 	}
-	
+    
+    /*
+     *
+     */
+    public static class Wells {
+        public ForgeConfigSpec.ConfigValue<Integer> chunksPerWell;
+    
+        Wells(final ForgeConfigSpec.Builder builder) {
+			builder.comment(CATEGORY_DIV, " Well properties", CATEGORY_DIV)
+			.push(WELLS_CATEGORY);
+			
+			chunksPerWell = builder
+					.comment("")
+					.defineInRange("", 500, 0, 32000);
+			builder.pop();
+		}
+    }
+
 	/*
 	 * 
 	 */
