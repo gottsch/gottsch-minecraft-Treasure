@@ -1,0 +1,10 @@
+{
+	"resources": [
+		"aged_ruleset.json",
+		"default_ruleset.json",
+		"ruinous_ruleset.json"
+    ],
+	"resourceFolderLocations": [
+		""
+    ]
+}

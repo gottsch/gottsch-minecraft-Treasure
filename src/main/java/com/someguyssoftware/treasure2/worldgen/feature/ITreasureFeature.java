@@ -2,7 +2,14 @@ package com.someguyssoftware.treasure2.worldgen.feature;
 
 import java.util.Map;
 
+import com.someguyssoftware.gottschcore.spatial.ICoords;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
+
+import net.minecraft.world.IWorld;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
+import net.minecraftforge.common.BiomeDictionary;
 
 public interface ITreasureFeature {
 
@@ -18,11 +25,11 @@ public interface ITreasureFeature {
         return true;
     }
 
-    default public boolean checkOceanBiomes(ICoords coords) {
-        Biome biome = world.getBiome(coords.toPos());
+    default public boolean checkOceanBiomes(Biome biome) {
 		if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN ||
 				BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
-			return false;
+			return true;
 		}
+		return false;
     }
 }

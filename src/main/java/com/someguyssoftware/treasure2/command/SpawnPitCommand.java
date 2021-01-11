@@ -34,16 +34,7 @@ import net.minecraft.world.server.ServerWorld;
  */
 public class SpawnPitCommand {
 	private static final String RARITY_ARG = "rarity";
-	
-//	@Override
-//	public String getName() {
-//		return "t2-pit";
-//	}
-//
-//	@Override
-//	public String getUsage(ICommandSender var1) {
-//		return "/t2-pit <x> <y> <z> [-rarity <rarity>]: spawns a Treasure! pit at location (x,y,z)";
-//	}
+
 	
 	public static void register(CommandDispatcher<CommandSource> dispatcher) {
 		dispatcher
@@ -55,10 +46,10 @@ public class SpawnPitCommand {
 							.executes(source -> {
 								return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"), Rarity.COMMON.name());
 							})
-							.then(Commands.argument("rarity", StringArgumentType.string())
+							.then(Commands.argument(RARITY_ARG, StringArgumentType.string())
 									.suggests(SUGGEST_CHEST).executes(source -> {
 										return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"),
-												StringArgumentType.getString(source, "rarity"));
+												StringArgumentType.getString(source, RARITY_ARG));
 									})
 							)
 					)
@@ -98,8 +89,6 @@ public class SpawnPitCommand {
 			GeneratorResult<ChestGeneratorData> result = TreasureFeatures.SURFACE_CHEST_FEATURE.generatePit(world, random, rarity, new Coords(pos), TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
 			if (result.isSuccess()) {
 				IChestGenerator generator = TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SURFACE_CHEST).next();
-//				SurfaceChestWorldGenerator chestGens = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.SURFACE_CHEST);
-//				IChestGenerator gen = chestGens.getChestGenMap().get(rarity).next();
 				ICoords chestCoords = result.getData().getChestContext().getCoords();
 				if (chestCoords != null) {
 					GeneratorResult<ChestGeneratorData> chestResult = generator.generate(world, random, chestCoords, rarity, result.getData().getChestContext().getState());
@@ -112,52 +101,4 @@ public class SpawnPitCommand {
 		}
 		return 1;
 	}
-	
-//	@Override
-//	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
-//		Treasure.LOGGER.debug("Starting to build Treasure! pit ...");
-//		
-//		try {
-//			int x, y, z = 0;
-//			x = Integer.parseInt(args[0]);
-//			y = Integer.parseInt(args[1]);
-//			z = Integer.parseInt(args[2]);
-//			
-//			String[] parserArgs = (String[]) Arrays.copyOfRange(args, 3, args.length);
-//			
-//			// create the parser
-//			CommandLineParser parser = new DefaultParser();
-//
-//			// create Options object
-//			Options options = new Options();
-//			options.addOption(RARITY_ARG, true, "");
-//
-//			// parse the command line arguments
-//			CommandLine line = parser.parse(options, parserArgs);
-//			
-//			Rarity rarity = Rarity.COMMON;
-//			if (line.hasOption(RARITY_ARG)) {
-//				String rarityArg = line.getOptionValue(RARITY_ARG);
-//				rarity = Rarity.valueOf(rarityArg.toUpperCase());
-//			}
-//			
-//			Treasure.LOGGER.debug("Rarity:" + rarity + "; " + rarity.ordinal());
-//			World world = commandSender.getEntityWorld();
-//
-//			Random random = new Random();
-//			GeneratorResult<ChestGeneratorData> result = SurfaceChestWorldGenerator.generatePit(world, random, rarity, new Coords(x, y, z), TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
-//			if (result.isSuccess()) {
-//				SurfaceChestWorldGenerator chestGens = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.SURFACE_CHEST);
-//				IChestGenerator gen = chestGens.getChestGenMap().get(rarity).next();
-//				ICoords chestCoords = result.getData().getChestContext().getCoords();
-//				if (chestCoords != null) {
-//					GeneratorResult<ChestGeneratorData> chestResult = gen.generate(world, random, chestCoords, rarity, result.getData().getChestContext().getState());
-//				}
-//			}			
-//		}
-//		catch(Exception e) {
-//			Treasure.LOGGER.error("Error generating Treasure! chest:", e);
-//		}
-//	}
-
 }

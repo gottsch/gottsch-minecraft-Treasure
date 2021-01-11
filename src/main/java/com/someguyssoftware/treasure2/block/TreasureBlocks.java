@@ -36,6 +36,7 @@ import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Block.Properties;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
@@ -215,8 +216,8 @@ public class TreasureBlocks {
 		// TODO ORES
 
 		// TODO WISHING WELL BLOCKS
-        WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.WISHING_WELL_BLOCK_ID, Block.Properties.create(Material.ROCK, MaterialColor.ROCK)
-                .hardnessAndResistance(2.0F));
+        WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.BlockID.WISHING_WELL_BLOCK_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(2.0F).sound(SoundType.STONE));
 
 		// TODO WITHER BIOME BLOCKS
 

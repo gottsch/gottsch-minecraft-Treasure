@@ -8,6 +8,9 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -49,10 +52,9 @@ public class WorldEventHandler {
 			
 			// register mod's loot tables
 			TreasureLootTableRegistry.register(mod.getId());
-
-//			Treasure.META_MANAGER.register(getMod().getId());
-//			Treasure.TEMPLATE_MANAGER.register(getMod().getId());
-//			Treasure.DECAY_MANAGER.register(getMod().getId());
+			TreasureMetaRegistry.register(getMod().getId());
+			TreasureTemplateRegistry.register(getMod().getId());
+			TreasureDecayRegistry.register(getMod().getId());
 					
 			/*
 			 * clear the current World Gens values and reload

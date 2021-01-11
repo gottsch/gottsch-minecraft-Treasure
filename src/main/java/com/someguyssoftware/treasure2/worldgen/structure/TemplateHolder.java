@@ -1,13 +1,13 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.world.gen.structure;
+package com.someguyssoftware.treasure2.worldgen.structure;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.structure.template.Template;
+import net.minecraft.world.gen.feature.template.Template;
 
 /**
  * @author Mark Gottschling on Aug 1, 2019

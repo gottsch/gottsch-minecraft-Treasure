@@ -1,0 +1,19 @@
+{
+	"resources": [
+		"structures/basic1.json",
+		"structures/basic2.json",
+		"structures/basic3.json",
+		"structures/basic4.json",
+		"structures/basic5.json",
+		
+		"structures/canopy-wishing-well1.json",
+		"structures/desert-wishing-well1.json",
+		"structures/desert-wishing-well2.json",
+		"structures/simple-well1.json",
+		"structures/wood-draw-wishing-well1.json"
+    ],
+	"resourceFolderLocations": [
+		"chests",
+		"structures"
+    ]
+}

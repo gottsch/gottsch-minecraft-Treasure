@@ -9,8 +9,10 @@ import com.someguyssoftware.gottschcore.block.BlockContext;
 import com.someguyssoftware.gottschcore.spatial.Heading;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
@@ -36,17 +38,9 @@ public class GenUtil {
 //	protected static final int UNDERGROUND_OFFSET = 5;
 //	protected static final int VERTICAL_MAX_DIFF = 2;
 //	private static final int FOG_RADIUS = 5;
-//
-//	/**
-//	 * convenience method
-//	 * 
-//	 * @param offset
-//	 * @return
-//	 */
-//	public static Block getMarkerBlock(StructureMarkers marker) {
-//		return Treasure.TEMPLATE_MANAGER.getMarkerMap().get(marker);
-//	}
-//
+
+
+
 //	/**
 //	 * 
 //	 * @param world

@@ -24,6 +24,7 @@ import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
@@ -33,6 +34,8 @@ import com.someguyssoftware.treasure2.generator.pit.LavaSideTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.LavaTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
+import com.someguyssoftware.treasure2.generator.well.IWellGenerator;
+import com.someguyssoftware.treasure2.generator.well.WellGenerator;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
 import net.minecraft.block.Block;
@@ -61,6 +64,9 @@ public class TreasureData {
 
 	// the pit chestGeneratorsMap
 	public static final Table<PitTypes, Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> PIT_GENS =  HashBasedTable.create();
+	
+	// well generator(s)
+	public static final IWellGenerator<GeneratorResult<GeneratorData>> WELL_GEN = new WellGenerator();
 
 	public static final List<Rarity> RARITIES = new ArrayList<>();
 

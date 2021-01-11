@@ -58,7 +58,7 @@ public class TreasureMetaManager extends MetaManager {
 		super(mod, resourceFolder);
 
 		// build and expose template/structure folders
-		buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
+//		buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
 	}
 
 	/**
@@ -74,9 +74,9 @@ public class TreasureMetaManager extends MetaManager {
 	 * 
 	 * @param modID
 	 */
-	public void register(String modID) {
-		for (String location : FOLDER_LOCATIONS) {
-			Treasure.LOGGER.debug("registering meta files from location -> {}", location);
+	public void register(String modID, List<String> locations) {
+		for (String location : locations) {
+			Treasure.LOGGER.debug("registering meta file -> {}", location);
 			// get loot table files as ResourceLocations from the file system location
 			List<ResourceLocation> locs = getResourceLocations(modID, location);
 
@@ -100,6 +100,15 @@ public class TreasureMetaManager extends MetaManager {
 		}
 	}
 
+	/**
+	 * Wrapper to hide the metaMap and return StructureMeta
+	 * @param location
+	 * @return
+	 */
+	public StructureMeta get(String key) {
+		return (StructureMeta) getMetaMap().get(key);
+	}
+	
 	/**
 	 * TODO need different "reader" classes or lambda to read different concrete metas. ie ChestMeta
 	 * TODO move to GottschCore - NO cannot - this is a StructureMeta specific

@@ -11,7 +11,6 @@ import java.util.Map;
 import com.someguyssoftware.gottschcore.config.AbstractConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.ChestConfig.Data;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -29,11 +28,14 @@ import net.minecraftforge.fml.loading.FMLPaths;
  */
 @EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class TreasureConfig extends AbstractConfig {
-	public static final String CHESTS_CATEGORY = "04-chests";
-	public static final String PITS_CATEGORY = "06 pits";
-	public static final String KEYS_AND_LOCKS_CATEGORY = "07-keys and locks";
-
+	protected static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
+	protected static final ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
 	public static ForgeConfigSpec COMMON_CONFIG;
+	
+	public static final String CHESTS_CATEGORY = "04-chests";
+	public static final String WELLS_CATEGORY = "wells";
+	public static final String PITS_CATEGORY = "06 pits";	
+	public static final String KEYS_AND_LOCKS_CATEGORY = "07-keys and locks";
 
 	public static final General GENERAL;
 	public static final Chests CHESTS;
@@ -45,7 +47,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String UNDERLINE_DIV = "------------------------------";
 	
 	static {
-		// TODO add LOGGING
+		MOD = new Mod(COMMON_BUILDER);
+		LOGGING = new Logging(COMMON_BUILDER);
 		GENERAL = new General(COMMON_BUILDER);
 		CHESTS = new Chests(COMMON_BUILDER);
         PITS = new Pits(COMMON_BUILDER);
@@ -105,6 +108,7 @@ public class TreasureConfig extends AbstractConfig {
 	}
 
 	public static class BlockID {
+        public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
 		public static final String PROXIMITY_SPAWNER_ID = "proximity_spawner";
 	}
 
@@ -126,10 +130,6 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String CAULDRON_CHEST_ID = "cauldron_chest";
 		public static final String SPIDER_CHEST_ID = "spider_chest";
 		public static final String VIKING_CHEST_ID = "viking_chest";
-    }
-    
-    public static class BlockID {
-        public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
     }
 
 	public static class TileEntityID {
@@ -162,6 +162,9 @@ public class TreasureConfig extends AbstractConfig {
 	 */
 	public static class General {
 		public ForgeConfigSpec.BooleanValue  enableDefaultLootTablesCheck;
+		public ForgeConfigSpec.BooleanValue enableDefaultTemplatesCheck;
+		public ForgeConfigSpec.BooleanValue enableDefaultDecayRuleSetsCheck;
+		
 		public ConfigValue<List<? extends String>> dimensionsWhiteList;
 		public ForgeConfigSpec.ConfigValue<Integer> surfaceStructureProbability;
 		
@@ -171,6 +174,14 @@ public class TreasureConfig extends AbstractConfig {
 			enableDefaultLootTablesCheck = builder
 					.comment(" Enable/Disable a check to ensure the default loot tables exist on the file system.", "If enabled, then you will not be able to remove any default loot tables (but they can be edited).", "Only disable if you know what you're doing.")
 					.define("Enable default loot tables check:", true);
+			
+			enableDefaultTemplatesCheck = builder
+					.comment(" Enable/Disable a check to ensure the default templates exist on the file system.", " If enabled, then you will not be able to remove any default templates.", " Only disable if you know what you're doing.")
+					.define("Enable default templates check:", true);
+			
+			enableDefaultDecayRuleSetsCheck = builder
+					.comment(" Enable/Disable a check to ensure the default decay rulesets exist on the file system.", " If enabled, then you will not be able to remove any default decay rulesets (but they can be edited).", " Only disable if you know what you're doing.")
+					.define("Enable default decay rulesets check:", true);
 
 			surfaceStructureProbability = builder
 					.comment("The probability that a surface structure will generate.")
@@ -270,14 +281,10 @@ public class TreasureConfig extends AbstractConfig {
 			 */
 			public Map<Rarity, IChestConfig> configMap = new HashMap<>();
 
-			public ForgeConfigSpec.ConfigValue<Integer> minChunksPerChest;
-			
+			public ForgeConfigSpec.ConfigValue<Integer> minChunksPerChest;			
 			public ForgeConfigSpec.ConfigValue<Integer> minDistancePerChest;
-
-			public ForgeConfigSpec.ConfigValue<Integer> surfaceChestProbability;
-			
+			public ForgeConfigSpec.ConfigValue<Integer> surfaceChestProbability;			
 			public ChestConfig commonChestProperties;
-
 
 			/**
 			 * 
@@ -294,7 +301,7 @@ public class TreasureConfig extends AbstractConfig {
 						.comment(" The minimum distance, measured in chunks (16x16), that two chests can be in proximity.",
 								" Note: Only chests in the chest registry are checked against this property.",
 								" Used in conjunction with the chunks per chest and spawn probability.", " Ex. ")
-						.defineInRange("Min. distance per chest spawn:", 75, 0, 32000);
+						.defineInRange("Minimum distance per chest spawn:", 75, 0, 32000);
 		
 				surfaceChestProbability = builder
 						.comment(" The probability chest will appear on the surface, instead of in a pit.")
@@ -334,17 +341,64 @@ public class TreasureConfig extends AbstractConfig {
     /*
      *
      */
-    public static class Wells {
+    public static class Wells implements IWellsConfig {
+    	public ForgeConfigSpec.BooleanValue wellAllowed;
+    	public ForgeConfigSpec.ConfigValue<Double> genProbability;
         public ForgeConfigSpec.ConfigValue<Integer> chunksPerWell;
-    
+        public BiomesConfig biomes; 
+        
         Wells(final ForgeConfigSpec.Builder builder) {
 			builder.comment(CATEGORY_DIV, " Well properties", CATEGORY_DIV)
 			.push(WELLS_CATEGORY);
 			
+			wellAllowed = builder
+					.comment("Toggle to allow/disallow the spawn of well.")
+					.define("Enabled wells:", true);
+			
 			chunksPerWell = builder
-					.comment("")
-					.defineInRange("", 500, 0, 32000);
+					.comment("The minimum number of chunks generated before another attempt to spawn a well is made.")
+					.defineInRange("Chunks per well spawn:", 400, 100, 32000);
+			
+			genProbability = builder
+					.comment("The probability that a well will generate.")
+					.defineInRange("Generation probability:", 80.0, 0.0, 100.0);
+			
+			BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean",
+					"deep_cold_ocean", "lukewarm_ocean", "warm_ocean" },
+			new String[] {}, new String[] { "ocean", "deep_ocean" });
+			biomes = new BiomesConfig(builder, biomesData);
+			
 			builder.pop();
+		}
+
+		@Override
+		public void init() {
+			this.biomes.init();
+		}
+
+		@Override
+		public boolean isWellAllowed() {
+			return wellAllowed.get();
+		}
+
+		@Override
+		public int getChunksPerWell() {
+			return chunksPerWell.get();
+		}
+
+		@Override
+		public double getGenProbability() {
+			return genProbability.get();
+		}
+
+		@Override
+		public List<String> getBiomeWhiteList() {
+			return (List<String>) biomes.whiteList.get();
+		}
+
+		@Override
+		public List<String> getBiomeBlackList() {
+			return (List<String>) biomes.blackList.get();
 		}
     }
 

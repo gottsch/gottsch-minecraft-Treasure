@@ -78,12 +78,6 @@ public class Treasure implements IMod {
 
 	public static Treasure instance;
 	private static TreasureConfig config;
-
-	// meta manager // NOTE can't be final as Treasure.instance is required.
-	// TODO move to TreasureData
-//	public static TreasureLootTableMaster lootTableMaster;
-//	public static TreasureLootTableMaster2 lootTableMaster;
-	public static TreasureMetaManager metaManager;
 		
 	public Treasure() {
 		Treasure.instance = this;

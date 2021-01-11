@@ -1,18 +1,17 @@
-package com.someguyssoftware.treasure2.world.gen.structure;
+package com.someguyssoftware.treasure2.worldgen.structure;
 
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
+import com.someguyssoftware.gottschcore.world.gen.structure.PlacementSettings;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.IGeneratorResult;
-
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.template.PlacementSettings;
+import net.minecraft.world.IWorld;
 
 /**
  * 

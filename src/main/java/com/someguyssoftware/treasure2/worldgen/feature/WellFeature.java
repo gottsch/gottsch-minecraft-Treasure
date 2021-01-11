@@ -1,36 +1,38 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.worldgen;
+package com.someguyssoftware.treasure2.worldgen.feature;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.function.Function;
 
-import com.someguyssoftware.gottschcore.biome.BiomeHelper;
-import com.someguyssoftware.gottschcore.positional.Coords;
-import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.mojang.datafixers.Dynamic;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.gottschcore.spatial.Coords;
+import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
-import com.someguyssoftware.treasure2.chest.ChestInfo;
-import com.someguyssoftware.treasure2.config.IWellConfig;
+import com.someguyssoftware.treasure2.config.IWellsConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.data.TreasureData;
+import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.Wells;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.well.IWellGenerator;
-import com.someguyssoftware.treasure2.generator.well.WellGenerator;
-import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
-import com.someguyssoftware.treasure2.registry.ChestRegistry;
+import com.someguyssoftware.treasure2.persistence.TreasureGenerationSavedData;
 
-import net.minecraft.init.Biomes;
-import net.minecraft.world.World;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 
 public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFeature {
@@ -39,9 +41,6 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 
 	// private int chunksSinceLastWell;
     private Map<String, Integer> chunksSinceLastDimensionWell = new HashMap<>();
-	
-	// // the well geneators
-	// private IWellGenerator<GeneratorResult<GeneratorData>> generator = new WellGenerator();
 
 	/**
 	 * 
@@ -53,42 +52,31 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
         try {
 			init();
 		} catch (Exception e) {
-			Treasure.logger.error("Unable to instantiate SurfaceChestGenerator:", e);
+			Treasure.LOGGER.error("Unable to instantiate SurfaceChestGenerator:", e);
 		}
 	}
 
-	@Override
 	public void init() {
-		// intialize chunks since last array
-        // chunksSinceLastWell = 0;
         // setup dimensional properties
 		for (String dimension : TreasureConfig.GENERAL.dimensionsWhiteList.get()) {
-			chunksSinceLastDimensionChest.put(dimension, 0);
+			chunksSinceLastDimensionWell.put(dimension, 0);
 		}
 	}
-
-	/**
-	 * 
-	 */
-	// @Override
-	// public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-	// 	if (TreasureConfig.WORLD_GEN.getGeneralProperties().getDimensionsWhiteList().contains(Integer.valueOf(world.provider.getDimension()))) {
-	// 		generate(world, random, chunkX, chunkZ);
-	// 	}
-	// }		
-
-    @Override
+	
+	@Override
 	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random,
 			BlockPos pos, NoFeatureConfig config) {
 
+    	String dimensionName = world.getDimension().getType().getRegistryName().toString();
+    	
         if (!checkDimensionWhiteList(dimensionName)) {
             return false;
         }
 
 		// spawn @ middle of chunk
 		ICoords spawnCoords = new Coords(pos).add(WorldInfo.CHUNK_RADIUS, 0, WorldInfo.CHUNK_RADIUS);
-
-        if (!checkOceanBiomes(spawnCoords)) {
+		Biome biome = world.getBiome(spawnCoords.toPos());
+        if (checkOceanBiomes(biome)) {
             return false;
         }
 
@@ -99,155 +87,56 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 
         		// test if min chunks was met
 		if (chunksSinceLastDimensionWell.get(dimensionName) > TreasureConfig.WELLS.chunksPerWell.get()) {
-//			Treasure.logger.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastWell, TreasureConfig.minChunksPerWell));
+//			Treasure.LOGGER.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastWell, TreasureConfig.minChunksPerWell));
 
-        }
-    }
-
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param i
-	 * @param j
-	 */
-	private void generate(World world, Random random, int chunkX, int chunkZ) {
-		/*
-		 * get current chunk position
-		 */            
-		// spawn @ middle of chunk
-		int xSpawn = chunkX * 16 + 8;
-		int zSpawn = chunkZ * 16 + 8;
-		
-		// 0. hard check against ocean biomes
-        ICoords coords = new Coords(xSpawn, 0, zSpawn);
-		Biome biome = world.getBiome(coords.toPos());
-		if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN ||
-				BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
-			return;
-		}
-		
-		// increment the chunk counts
-		chunksSinceLastWell++;
-
-		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
-
-		// test if min chunks was met
-		if (chunksSinceLastWell > TreasureConfig.WELL.chunksPerWell) {
-//			Treasure.logger.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastWell, TreasureConfig.minChunksPerWell));
-
-			// get first surface y (could be leaves, trunk, water, etc)
-			int ySpawn = world.getChunkFromChunkCoords(chunkX, chunkZ).getHeightValue(8, 8);
-			coords = new Coords(xSpawn, ySpawn, zSpawn);
+			int ySpawn = world.getChunk(pos).getTopBlockY(Heightmap.Type.WORLD_SURFACE, WorldInfo.CHUNK_RADIUS, WorldInfo.CHUNK_RADIUS);
+			spawnCoords = spawnCoords.withY(ySpawn);
+			Treasure.LOGGER.debug("spawns coords -> {}", spawnCoords.toShortString());
 
 			// determine what type to generate
 			Wells well = Wells.values()[random.nextInt(Wells.values().length)];
-			IWellConfig wellConfig = TreasureConfig.WELL;
+			IWellsConfig wellConfig = TreasureConfig.WELLS;
 			if (wellConfig == null) {
-				Treasure.logger.warn("Unable to locate a config for well {}.", well);
-				return;
+				Treasure.LOGGER.warn("Unable to locate a config for well {}.", well);
+				return false;
+			}
+			
+			// 1. test if chest meets the probability criteria
+			if (!RandomHelper.checkProbability(random, wellConfig.getGenProbability())) {
+				Treasure.LOGGER.debug("Well does not meet generate probability.");
+				return false;
 			}
 
-			if (chunksSinceLastWell >= wellConfig.getChunksPerWell()) {
-
-				// 1. test if correct biome
-				// TODO this whole biome check should be wrapped in a method that returns true/false
-				TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, wellConfig.getBiomeWhiteList(), wellConfig.getBiomeBlackList());
-				if(biomeCheck == Result.BLACK_LISTED ) {
-					chunksSinceLastWell = 0;
-					return;
+			// 2. test if the override (global) biome is allowed
+			TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, wellConfig.getBiomeWhiteList(), wellConfig.getBiomeBlackList());
+			if(biomeCheck == Result.BLACK_LISTED ) {
+				if (WorldInfo.isClientSide(world.getWorld())) {
+					Treasure.LOGGER.debug("{} is not a valid biome @ {}", biome.getDisplayName().getString(), spawnCoords.toShortString());
 				}
-				else if (biomeCheck == Result.OK) {
-					if (!BiomeHelper.isBiomeAllowed(biome, wellConfig.getBiomeTypeWhiteList(), wellConfig.getBiomeTypeBlackList())) {
-						if (Treasure.logger.isDebugEnabled()) {
-				    		if (WorldInfo.isClientSide(world)) {
-				    			Treasure.logger.debug("{} is not a valid biome @ {} for Well", biome.getBiomeName(), coords.toShortString());
-				    		}
-				    		else {
-				    			Treasure.logger.debug("Biome is not valid @ {} for Well", coords.toShortString());
-				    		}
-						}
-						chunksSinceLastWell = 0;
-						return;
-					}
-				}
-				
-				// 2. test if well meets the probability criteria
-//				Treasure.logger.debug("{} well probability: {}", well, wellConfig.getGenProbability());
-				if (!RandomHelper.checkProbability(random, wellConfig.getGenProbability())) {
-					Treasure.logger.debug("Well does not meet generate probability.");
-					return;
-				}
-
-				// increment chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
-				chunksSinceLastWell++;    	    	
-
-				// generate the well
-				Treasure.logger.debug("Attempting to generate a well");
-//				isGenerated = generators.get(well)
-				result = generator.generate(world, random, coords, wellConfig); 
-				Treasure.logger.debug("well world gen result -> {}", result.isSuccess());
-				if (result.isSuccess()) {
-					// add to registry
-					//				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
-					chunksSinceLastWell = 0;
-				}
+				else {
+					Treasure.LOGGER.debug("Biome is not valid @ {} for Well", spawnCoords.toShortString());
+				}					
+				return false;
 			}
+			
+			incrementDimensionalChunkCount(dimensionName);
+			
+			// generate the well
+			Treasure.LOGGER.debug("Attempting to generate a well");
+			result = TreasureData.WELL_GEN.generate(world, random, spawnCoords, wellConfig); 
+			Treasure.LOGGER.debug("well world gen result -> {}", result.isSuccess());
+			if (result.isSuccess()) {
+				chunksSinceLastDimensionWell.put(dimensionName, 0);
+			}
+			
 			// save world data
-			GenDataPersistence savedData = GenDataPersistence.get(world);
+			TreasureGenerationSavedData savedData = TreasureGenerationSavedData.get(world.getWorld());
 			if (savedData != null) {
 				savedData.markDirty();
 			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param i
-	 * @param j
-	 */
-	@SuppressWarnings("unused")
-	private void generateNether(World world, Random random, int i, int j) {}
-
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param i
-	 * @param j
-	 */
-	@SuppressWarnings("unused")
-	private void generateEnd(World world, Random random, int i, int j) {}
-
-	/**
-	 * 
-	 * @param world
-	 * @param pos
-	 * @param minDistance
-	 * @return
-	 */
-	public boolean isRegisteredChestWithinDistance(World world, ICoords coords, int minDistance) {
-
-		double minDistanceSq = minDistance * minDistance;
-
-		// get a list of dungeons
-		List<ChestInfo> infos = ChestRegistry.getInstance().getValues();
-
-		if (infos == null || infos.size() == 0) {
-			Treasure.logger.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");
-			return false;
-		}
-
-		for (ChestInfo info : infos) {
-			// calculate the distance to the poi
-			double distance = coords.getDistanceSq(info.getCoords());
-			//		    Dungeons2.log.debug("Dungeon dist^2: " + distance);
-			if (distance < minDistanceSq) {
-				return true;
-			}
-		}
+			return true;
+        }
+		
 		return false;
     }
     
@@ -257,5 +146,15 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 	 */
 	private void incrementDimensionalChunkCount(String dimensionName) {
 		chunksSinceLastDimensionWell.merge(dimensionName, 1, Integer::sum);		
+	}
+
+	@Override
+	public Map<String, Integer> getChunksSinceLastDimensionFeature() {
+		return chunksSinceLastDimensionWell;
+	}
+
+	@Override
+	public Map<String, Map<Rarity, Integer>> getChunksSinceLastDimensionRarityFeature() {
+		return null;
 	}
 }

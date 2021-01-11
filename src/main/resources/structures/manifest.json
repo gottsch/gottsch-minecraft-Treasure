@@ -1,0 +1,14 @@
+{
+	"resources": [
+		"wells/canopy-wishing-well1.nbt",
+		"wells/desert-wishing-well1.nbt",
+		"wells/desert-wishing-well2.nbt",
+		"wells/simple-well1.nbt",
+		"wells/wood-draw-wishing-well1.nbt"
+    ],
+	"resourceFolderLocations": [
+		"subterranean",
+		"surface",
+		"wells"
+    ]
+}

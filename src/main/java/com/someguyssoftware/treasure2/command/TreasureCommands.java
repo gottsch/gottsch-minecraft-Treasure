@@ -20,5 +20,6 @@ public class TreasureCommands {
 	public static void onServerStarting(FMLServerStartingEvent event) {
 		SpawnChestCommand.register(event.getCommandDispatcher());
 		SpawnPitCommand.register(event.getCommandDispatcher());
+		SpawnWellCommand.register(event.getCommandDispatcher());
 	}
 }

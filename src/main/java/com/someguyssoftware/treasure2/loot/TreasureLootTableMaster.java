@@ -74,7 +74,7 @@ public class TreasureLootTableMaster extends LootTableMaster {
 	private final Table<String, Rarity, List<LootTable>> CHEST_LOOT_TABLES_TABLE = HashBasedTable.create();
 	
 	/**
-	 * TODO move to the LootResources class
+	 * TODO move to the DecayResources class
 	 * constants used for registering (used for finding files on the file system
 	 */
 	
@@ -116,10 +116,10 @@ public class TreasureLootTableMaster extends LootTableMaster {
 	 * @param folderName
 	 */
 	public TreasureLootTableMaster(IMod mod, String resourcePath, String folderName) {
-		// NOTE resourcePath, folderName and ...FOLDER_LOCATION properties don't really matter unless they match the LootResources input paths
+		// NOTE resourcePath, folderName and ...FOLDER_LOCATION properties don't really matter unless they match the DecayResources input paths
 		// it is currently copying the file extactly as specified ie no path renames.
 		// will have to expand upon buildAndExpose(String modID, List<String> resourcePaths) in order to customize the destination path
-		// this would also mean updating GottschCore to use the new method of LootResources class
+		// this would also mean updating GottschCore to use the new method of DecayResources class
 		super(mod, resourcePath, folderName);
 
 		if (TreasureConfig.GENERAL.enableDefaultLootTablesCheck.get()) {

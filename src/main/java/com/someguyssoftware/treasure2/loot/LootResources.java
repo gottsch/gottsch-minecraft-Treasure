@@ -96,7 +96,7 @@ public class LootResources {
 
 	@Override
 	public String toString() {
-		return "LootResources [supportingResources=" + supportingResources + ", chestResources=" + chestResources
+		return "DecayResources [supportingResources=" + supportingResources + ", chestResources=" + chestResources
 				+ ", specialResources=" + specialResources + ", specialLootTableFolderLocations="
 				+ specialLootTableFolderLocations + ", chestLootTableFolderLocations="
 				+ chestLootTableFolderLocations + ", supportingLootTableFolderLocatoins="

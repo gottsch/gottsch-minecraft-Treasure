@@ -7,6 +7,9 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.worldgen.feature.TreasureFeatures;
 
 import net.minecraftforge.fml.DeferredWorkQueue;
@@ -30,8 +33,11 @@ public class TreasureSetup implements IModSetup {
 		// initialize all the data lists, maps, etc
 		TreasureData.initialize();
 		
-		// start the loot table master
+		// start the registries
 		TreasureLootTableRegistry.create(Treasure.instance);
+		TreasureMetaRegistry.create(Treasure.instance);
+		TreasureTemplateRegistry.create(Treasure.instance);
+		TreasureDecayRegistry.create(Treasure.instance);
 		
 		// add features to biomes
 		DeferredWorkQueue.runLater(TreasureFeatures::addFeatureToBiomes);

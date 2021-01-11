@@ -5,30 +5,26 @@ package com.someguyssoftware.treasure2.generator.well;
 
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.cube.Cube;
-import com.someguyssoftware.gottschcore.positional.Coords;
-import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.gottschcore.spatial.Coords;
+import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.gottschcore.world.gen.structure.PlacementSettings;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.IWellConfig;
+import com.someguyssoftware.treasure2.config.IWellsConfig;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
-import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
-import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
+import com.someguyssoftware.treasure2.worldgen.structure.TemplateGenerator;
+import com.someguyssoftware.treasure2.worldgen.structure.TemplateHolder;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirt;
-import net.minecraft.block.BlockDirt.DirtType;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.Rotation;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.structure.template.PlacementSettings;
 
 /**
  * @author Mark Gottschling on Aug 20, 2019
@@ -38,13 +34,13 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 
 	@Override
 	public GeneratorResult<GeneratorData> generate(IWorld world, Random random,
-			ICoords originalSpawnCoords, IWellConfig config) {
+			ICoords originalSpawnCoords, IWellsConfig config) {
 		return generate(world, random, originalSpawnCoords, null, config);
 	}
 	
 	@Override
 	public GeneratorResult<GeneratorData> generate(IWorld world, Random random,
-			ICoords originalSpawnCoords, TemplateHolder templateHolder, IWellConfig config) {
+			ICoords originalSpawnCoords, TemplateHolder templateHolder, IWellsConfig config) {
 		/*
 		 * Setup
 		 */
@@ -59,8 +55,10 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		
 		// get the template
 		if (templateHolder == null) {
-			templateHolder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, StructureArchetype.SURFACE, StructureType.WELL, biome);
+			Treasure.LOGGER.debug("find well template by archetype -> {}, type -> {}, biome -> {}", StructureArchetype.SURFACE, StructureType.WELL, biome.getRegistryName());
+			templateHolder = TreasureTemplateRegistry.getTemplateManager().getTemplate(world, random, StructureArchetype.SURFACE, StructureType.WELL, biome);
 		}
+		Treasure.LOGGER.debug("templateHolder -> {}", templateHolder);
 		if (templateHolder == null) return result.fail();
 				
 		// select a random rotation
@@ -80,14 +78,14 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 //		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(actualSpawnCoords.getX(), 255, actualSpawnCoords.getZ()));
 		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, actualSpawnCoords.withY(255));
 		if (actualSpawnCoords == null || actualSpawnCoords == WorldInfo.EMPTY_COORDS) {
-			Treasure.logger.debug("Returning due to marker coords == null or EMPTY_COORDS");
+			Treasure.LOGGER.debug("Returning due to marker coords == null or EMPTY_COORDS");
 			return result.fail(); 
 		}
-		Treasure.logger.debug("actual spawn coords after dry land surface check -> {}", actualSpawnCoords);
+		Treasure.LOGGER.debug("actual spawn coords after dry land surface check -> {}", actualSpawnCoords);
 		
 		// 2. check if it has 50% land
 		if (!WorldInfo.isSolidBase(world, actualSpawnCoords, 3, 3, 50)) {
-			Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", actualSpawnCoords.toShortString(), 3, 3);
+			Treasure.LOGGER.debug("Coords [{}] does not meet solid base requires for {} x {}", actualSpawnCoords.toShortString(), 3, 3);
 			return result.fail();
 		}	
 		
@@ -101,9 +99,9 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		
 		// build well
 		 GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, templateHolder,  placement, originalSpawnCoords);
-		Treasure.logger.debug("Well gen  structure result -> {}", genResult.isSuccess());
+		Treasure.LOGGER.debug("Well gen  structure result -> {}", genResult.isSuccess());
 		 if (!genResult.isSuccess()) {
-			 Treasure.logger.debug("failing well gen.");
+			 Treasure.LOGGER.debug("failing well gen.");
 			return result.fail();
 		}
 		
@@ -119,7 +117,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		// add the structure data to the result
 		result.setData(genResult.getData());
 
-		Treasure.logger.info("CHEATER! Wishing Well at coords: {}", result.getData().getSpawnCoords().toShortString());
+		Treasure.LOGGER.info("CHEATER! Wishing Well at coords: {}", result.getData().getSpawnCoords().toShortString());
 		
 		return result.success();
 	}
@@ -132,7 +130,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 	 * @param width
 	 * @param depth
 	 */
-	public void addDecorations(World world, Random random, ICoords coords, int width, int depth) {
+	public void addDecorations(IWorld world, Random random, ICoords coords, int width, int depth) {
 		ICoords startCoords = coords.add(-1, 0, -1);
 	
 		// TODO change to scan the entire size (x,z) of well footprint and detect the edges ... place flowers adjacent to edge blocks. 
@@ -170,54 +168,54 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		}
 	}
 
-	@Override
-	public void addDecoration(World world, Random random, ICoords coords) {
-		IBlockState blockState = null;
-		ICoords markerCoords = WorldInfo.getDryLandSurfaceCoords(world, coords);
-		
-		if (markerCoords == null || markerCoords == WorldInfo.EMPTY_COORDS) {
-			Treasure.logger.debug("Returning due to marker coords == null or EMPTY_COORDS");
-			return;
-		}
-		Cube markerCube = new Cube(world, markerCoords);
-		if (!markerCube.isAir() && !markerCube.isReplaceable()) {
-			Treasure.logger.debug("Returning due to marker coords is not air nor replaceable.");
-			return;
-		}
-		
-		markerCube = new Cube(world, markerCoords.add(0, -1, 0));
-//		Treasure.logger.debug("Marker on block: {}", markerCube.getState());
-		if (markerCube.equalsBlock(Blocks.GRASS)) {
-			blockState = getDecorationBlockState(world, Blocks.RED_FLOWER);
-		}
-		else if (markerCube.equalsBlock(Blocks.DIRT)) {
-			DirtType dirtType = markerCube.getState().getValue(BlockDirt.VARIANT);
-			if (dirtType == DirtType.DIRT) {
-				blockState = getDecorationBlockState(world, Blocks.RED_FLOWER);
-			}
-			else if (dirtType == DirtType.PODZOL) {
-//				Treasure.logger.debug("On podzol block");
-				Block mushBlock = random.nextInt(2) == 0 ? Blocks.BROWN_MUSHROOM : Blocks.RED_MUSHROOM;
-				blockState = getDecorationBlockState(world, mushBlock);
-			}
-			else {
-//				Treasure.logger.debug("On coarse dirt block");
-//				Block grassBlock = Blocks.TALLGRASS;
-//				blockState = grassBlock.getDefaultState().withProperty(BlockTallGrass.TYPE, BlockTallGrass.EnumType.values()[meta]);			
-				blockState = getDecorationBlockState(world, Blocks.TALLGRASS);
-			}
-		}
-		else if (markerCube.equalsBlock(Blocks.MYCELIUM)) {
-//			Treasure.logger.debug("On mycelium block");
-			Block mushBlock = random.nextInt(2) == 0 ? Blocks.BROWN_MUSHROOM : Blocks.RED_MUSHROOM;
-			blockState = getDecorationBlockState(world, mushBlock);					
-		}
-		else {
-//			Treasure.logger.debug("On other block");
-			blockState = getDecorationBlockState(world, Blocks.TALLGRASS);
-	}				
-		// set the block state
-		world.getWorld().setBlockState(coords.toPos(), blockState, 3);
-//		Treasure.logger.debug("Generating blockstate: {}", blockState);
-	}
+//	@Override
+//	public void addDecoration(World world, Random random, ICoords coords) {
+//		IBlockState blockState = null;
+//		ICoords markerCoords = WorldInfo.getDryLandSurfaceCoords(world, coords);
+//		
+//		if (markerCoords == null || markerCoords == WorldInfo.EMPTY_COORDS) {
+//			Treasure.LOGGER.debug("Returning due to marker coords == null or EMPTY_COORDS");
+//			return;
+//		}
+//		Cube markerCube = new Cube(world, markerCoords);
+//		if (!markerCube.isAir() && !markerCube.isReplaceable()) {
+//			Treasure.LOGGER.debug("Returning due to marker coords is not air nor replaceable.");
+//			return;
+//		}
+//		
+//		markerCube = new Cube(world, markerCoords.add(0, -1, 0));
+////		Treasure.LOGGER.debug("Marker on block: {}", markerCube.getState());
+//		if (markerCube.equalsBlock(Blocks.GRASS)) {
+//			blockState = getDecorationBlockState(world, Blocks.RED_FLOWER);
+//		}
+//		else if (markerCube.equalsBlock(Blocks.DIRT)) {
+//			DirtType dirtType = markerCube.getState().getValue(BlockDirt.VARIANT);
+//			if (dirtType == DirtType.DIRT) {
+//				blockState = getDecorationBlockState(world, Blocks.RED_FLOWER);
+//			}
+//			else if (dirtType == DirtType.PODZOL) {
+////				Treasure.LOGGER.debug("On podzol block");
+//				Block mushBlock = random.nextInt(2) == 0 ? Blocks.BROWN_MUSHROOM : Blocks.RED_MUSHROOM;
+//				blockState = getDecorationBlockState(world, mushBlock);
+//			}
+//			else {
+////				Treasure.LOGGER.debug("On coarse dirt block");
+////				Block grassBlock = Blocks.TALLGRASS;
+////				blockState = grassBlock.getDefaultState().withProperty(BlockTallGrass.TYPE, BlockTallGrass.EnumType.values()[meta]);			
+//				blockState = getDecorationBlockState(world, Blocks.TALLGRASS);
+//			}
+//		}
+//		else if (markerCube.equalsBlock(Blocks.MYCELIUM)) {
+////			Treasure.LOGGER.debug("On mycelium block");
+//			Block mushBlock = random.nextInt(2) == 0 ? Blocks.BROWN_MUSHROOM : Blocks.RED_MUSHROOM;
+//			blockState = getDecorationBlockState(world, mushBlock);					
+//		}
+//		else {
+////			Treasure.LOGGER.debug("On other block");
+//			blockState = getDecorationBlockState(world, Blocks.TALLGRASS);
+//	}				
+//		// set the block state
+//		world.getWorld().setBlockState(coords.toPos(), blockState, 3);
+////		Treasure.LOGGER.debug("Generating blockstate: {}", blockState);
+//	}
 }
