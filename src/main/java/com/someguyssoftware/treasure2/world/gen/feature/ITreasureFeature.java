@@ -1,4 +1,4 @@
-package com.someguyssoftware.treasure2.worldgen.feature;
+package com.someguyssoftware.treasure2.world.gen.feature;
 
 import java.util.Map;
 

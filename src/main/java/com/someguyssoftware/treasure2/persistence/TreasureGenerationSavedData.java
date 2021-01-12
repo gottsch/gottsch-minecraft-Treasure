@@ -14,8 +14,8 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
-import com.someguyssoftware.treasure2.worldgen.feature.SurfaceChestFeature;
-import com.someguyssoftware.treasure2.worldgen.feature.TreasureFeatures;
+import com.someguyssoftware.treasure2.world.gen.feature.SurfaceChestFeature;
+import com.someguyssoftware.treasure2.world.gen.feature.TreasureFeatures;
 
 import net.minecraft.item.crafting.Ingredient.TagList;
 import net.minecraft.nbt.CompoundNBT;

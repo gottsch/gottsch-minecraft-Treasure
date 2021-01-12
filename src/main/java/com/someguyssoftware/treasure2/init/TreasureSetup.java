@@ -10,7 +10,7 @@ import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
-import com.someguyssoftware.treasure2.worldgen.feature.TreasureFeatures;
+import com.someguyssoftware.treasure2.world.gen.feature.TreasureFeatures;
 
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;

@@ -1,6 +1,6 @@
 package com.someguyssoftware.treasure2.worldgen;
 
-import com.someguyssoftware.treasure2.worldgen.feature.SurfaceChestFeature;
+import com.someguyssoftware.treasure2.world.gen.feature.SurfaceChestFeature;
 
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.worldgen.structure;
+package com.someguyssoftware.treasure2.world.gen.structure;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

@@ -22,11 +22,14 @@ import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
+import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator;
+import com.someguyssoftware.treasure2.generator.marker.StructureMarkerGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
@@ -43,6 +46,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
@@ -73,7 +77,7 @@ public interface IChestGenerator {
 		}
 		
 		// select a chest from the rarity
-		AbstractChestBlock chest = selectChest(random, rarity);
+		AbstractChestBlock<?> chest = selectChest(random, rarity);
 		if (chest == null) {
 			LOGGER.warn("Unable to select a chest for rarity -> {}.", rarity);
 			return result.fail();
@@ -100,11 +104,6 @@ public interface IChestGenerator {
 		
 		// update the backing tile entity's generation contxt
 		addGenerationContext((AbstractTreasureChestTileEntity) tileEntity, rarity);
-		
-		// if (!(chest instanceof IMimicBlock)) {
-		// 	LOGGER.debug("Generating loot from loot table for rarity {}", rarity);
-		// 	lootTable.fillInventory((IInventory) te, random, Treasure.LOOT_TABLES.getContext());
-		// }
 
 		// add locks
 		addLocks(random, chest, (AbstractTreasureChestTileEntity) tileEntity, rarity);
@@ -114,64 +113,17 @@ public interface IChestGenerator {
 
 		return result.success();
 	}
-	
-//	default public GeneratorResult<ChestGeneratorData> generate(final World world, final Random random, ICoords coords,
-//			final Rarity rarity, BlockState state) {
-//		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
-//		result.getData().setSpawnCoords(coords);
-//
-//		// select a loot table
-//		LootTable lootTable = selectLootTable(random, rarity);
-//		if (lootTable == null) {
-//			Treasure.LOGGER.warn("Unable to select a lootTable.");
-//			return result.fail();
-//		}
-//
-//		// select a chest from the rarity
-//		AbstractChestBlock<?> chest = selectChest(random, rarity);
-//		if (chest == null) {
-//			Treasure.LOGGER.warn("Unable to select a chest for rarity {}.", rarity);
-//			return result.fail();
-//		}
-//
-//		// place the chest in the world
-//		TileEntity te = null;
-//		if (state != null) {
-//			te = placeInWorld(world, random, coords, chest, state);
-//		} else {
-//			te = placeInWorld(world, random, chest, coords);
-//		}
-//
-//		if (te == null) {
-//			Treasure.LOGGER.debug("Unable to locate tile entity for chest -> {}", coords);
-//			return result.fail();
-//		}
-//		
-////	TODO 1.15.2
-////		if (!(chest instanceof IMimicBlock)) {
-////			Treasure.LOGGER.debug("Generating loot from loot table for rarity {}", rarity);
-////			lootTable.fillInventory((IInventory) te, random, Treasure.LOOT_TABLES.getContext());
-////		}
-//
-//		// add locks
-//		addLocks(random, chest, (AbstractTreasureChestTileEntity) te, rarity);
-//
-//		// update result
-//		result.getData().setChestContext(new BlockContext(coords, state));
-//
-//		return result.success();
-//	}
 
 	/**
 	 * 
 	 * @param rarity
 	 * @return
 	 */
-	default public List<LootTable> buildLootTableList(Rarity rarity) {
-//		TODO 1.15.2
-//		return Treasure.LOOT_TABLES.getLootTableByRarity(rarity);
-		return new ArrayList<LootTable>();
-	}
+//	default public List<LootTable> buildLootTableList(Rarity rarity) {
+////		TODO 1.15.2
+////		return Treasure.LOOT_TABLES.getLootTableByRarity(rarity);
+//		return new ArrayList<LootTable>();
+//	}
 
 	// TODO this should be a generic call that passes in ManagedTableType
 	default public List<LootTableShell> buildLootTableList2(Rarity rarity) {
@@ -188,8 +140,7 @@ public interface IChestGenerator {
 	 */
 	default public AbstractChestBlock selectChest(final Random random, final Rarity rarity) {
 		List<Block> chestList = (List<Block>) TreasureData.CHESTS_BY_RARITY.get(rarity); //TreasureBlocks.chests.get(rarity);
-		AbstractChestBlock chest = (AbstractChestBlock) chestList
-				.get(RandomHelper.randomInt(random, 0, chestList.size() - 1));
+		AbstractChestBlock chest = (AbstractChestBlock) chestList.get(RandomHelper.randomInt(random, 0, chestList.size() - 1));
 
 		// TODO should have a map of available mimics mapped by chest. for now, since
 		// only one mimic, just test for it determine if should be mimic get the config
@@ -356,28 +307,28 @@ public interface IChestGenerator {
 	 * @param rarity
 	 * @return
 	 */
-	default public LootTable selectLootTable(Random random, final Rarity rarity) {
-		LootTable table = null;
-
-		// select the loot table by rarity
-		List<LootTable> tables = buildLootTableList(rarity);
-
-		// select a random table from the list
-		if (tables != null && !tables.isEmpty()) {
-			int index = 0;
-			/*
-			 * get a random container
-			 */
-			if (tables.size() == 1) {
-				table = tables.get(0);
-			} else {
-				index = RandomHelper.randomInt(random, 0, tables.size() - 1);
-				table = tables.get(index);
-			}
-			Treasure.LOGGER.debug("Selected loot table index --> {}", index);
-		}
-		return table;
-	}
+//	default public LootTable selectLootTable(Random random, final Rarity rarity) {
+//		LootTable table = null;
+//
+//		// select the loot table by rarity
+//		List<LootTable> tables = buildLootTableList(rarity);
+//
+//		// select a random table from the list
+//		if (tables != null && !tables.isEmpty()) {
+//			int index = 0;
+//			/*
+//			 * get a random container
+//			 */
+//			if (tables.size() == 1) {
+//				table = tables.get(0);
+//			} else {
+//				index = RandomHelper.randomInt(random, 0, tables.size() - 1);
+//				table = tables.get(index);
+//			}
+//			Treasure.LOGGER.debug("Selected loot table index --> {}", index);
+//		}
+//		return table;
+//	}
 
 	/**
 	 * 
@@ -543,15 +494,14 @@ public interface IChestGenerator {
 	 * @param random
 	 * @param coods
 	 */
-	default public void addMarkers(World world, Random random, ICoords coords, final boolean isSurfaceChest) {
-//		TODO 1.15.2
-//		if (!isSurfaceChest && TreasureConfig.WORLD_GEN.getMarkerProperties().isMarkerStructuresAllowed && RandomHelper
-//				.checkProbability(random, TreasureConfig.WORLD_GEN.getMarkerProperties().markerStructureProbability)) {
-//			Treasure.LOGGER.debug("generating a random structure marker -> {}", coords.toShortString());
-//			new StructureMarkerGenerator().generate(world, random, coords);
-//		} else {
-//			new GravestoneMarkerGenerator().generate(world, random, coords);
-//		}
+	default public void addMarkers(IWorld world, Random random, ICoords coords, final boolean isSurfaceChest) {
+		if (!isSurfaceChest && TreasureConfig.MARKERS.markerStructuresAllowed.get() && RandomHelper
+				.checkProbability(random, TreasureConfig.MARKERS.markerStructureProbability.get())) {
+			Treasure.LOGGER.debug("generating a random structure marker -> {}", coords.toShortString());
+			new StructureMarkerGenerator().generate(world, random, coords);
+		} else {
+			new GravestoneMarkerGenerator().generate(world, random, coords);
+		}
 	}
 
 	/**

@@ -5,8 +5,8 @@ import java.util.Objects;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.worldgen.structure.DecayResources;
-import com.someguyssoftware.treasure2.worldgen.structure.TreasureDecayManager;
+import com.someguyssoftware.treasure2.world.gen.structure.DecayResources;
+import com.someguyssoftware.treasure2.world.gen.structure.TreasureDecayManager;
 
 public class TreasureDecayRegistry implements ITreasureResourceRegistry {
 	private static final String DEFAULT_RESOURCES_LIST_PATH = "decay/default_ruleset_list.json";	

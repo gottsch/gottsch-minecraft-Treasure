@@ -32,14 +32,16 @@ public class TreasureConfig extends AbstractConfig {
 	protected static final ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
 	public static ForgeConfigSpec COMMON_CONFIG;
 	
-	public static final String CHESTS_CATEGORY = "04-chests";
+	public static final String CHESTS_CATEGORY = "chests";
 	public static final String WELLS_CATEGORY = "wells";
-	public static final String PITS_CATEGORY = "06 pits";	
-	public static final String KEYS_AND_LOCKS_CATEGORY = "07-keys and locks";
+	public static final String PITS_CATEGORY = "pits";
+	public static final String MARKERS_CATEGORY = "markers";
+	public static final String KEYS_AND_LOCKS_CATEGORY = "keys and locks";
 
 	public static final General GENERAL;
 	public static final Chests CHESTS;
     public static final Pits PITS;
+    public static final Markers MARKERS;
     public static final Wells WELLS;
 	public static final KeysAndLocks KEYS_LOCKS;
 
@@ -52,6 +54,7 @@ public class TreasureConfig extends AbstractConfig {
 		GENERAL = new General(COMMON_BUILDER);
 		CHESTS = new Chests(COMMON_BUILDER);
         PITS = new Pits(COMMON_BUILDER);
+        MARKERS = new Markers(COMMON_BUILDER);
         WELLS = new Wells(COMMON_BUILDER);
 		KEYS_LOCKS = new KeysAndLocks(COMMON_BUILDER);
 		COMMON_CONFIG = COMMON_BUILDER.build();
@@ -366,6 +369,49 @@ public class TreasureConfig extends AbstractConfig {
 		}
 	}
     
+	public static class Markers {
+		public ForgeConfigSpec.BooleanValue markersAllowed;
+		public ForgeConfigSpec.BooleanValue markerStructuresAllowed;
+		public ForgeConfigSpec.ConfigValue<Integer> minGravestonesPerChest;
+		public ForgeConfigSpec.ConfigValue<Integer> maxGravestonesPerChest;
+		public ForgeConfigSpec.ConfigValue<Integer> markerStructureProbability;
+		public ForgeConfigSpec.BooleanValue gravestoneSpawnMobAllowed;
+		public ForgeConfigSpec.ConfigValue<Integer> gravestoneMobProbability;
+		
+		public Markers(final ForgeConfigSpec.Builder builder) {
+			builder.comment(CATEGORY_DIV, " Gravestones and Markers properties", CATEGORY_DIV)
+			.push(MARKERS_CATEGORY);
+			
+			markersAllowed = builder
+					.comment(" Enable/Disable whether chest markers (gravestones, bones)  are generated when generating treasure chests.")
+					.define("Enable markers:", true);
+			
+			markerStructuresAllowed = builder
+					.comment(" Enable/Disable whether structures (buildings) are generated when generating  treasure chests.")
+					.define("Enable structure markers:", true);
+			
+			minGravestonesPerChest = builder
+					.comment(" The minimum number of markers (gravestones, bones) per chest.")
+					.defineInRange("Minimum markers per chest:", 2, 1, 5);
+			
+			maxGravestonesPerChest = builder
+					.comment(" The max. number of markers (gravestones, bones) per chest.")
+					.defineInRange("Maximum markers per chest:", 5, 1, 10);
+			
+			markerStructureProbability = builder
+					.comment(" The probability that a marker will be a structure.")
+					.defineInRange("Probability that marker will be a structure:", 15, 1, 100);
+			
+			gravestoneSpawnMobAllowed = builder
+					.comment(" Enable/Disable whether gravestone markers can spawn mobs (ex. Bound Soul).")
+					.define("Enable gravestone markers to spawn mobs:", true);
+			
+			gravestoneMobProbability = builder
+					.comment(" The probability that a gravestone will spawn a mob.", " Currently gravestones can spawn Bound Souls.")
+					.defineInRange("Probability that grave marker will spawn a mob:", 25, 1, 100);
+		}
+	}
+	
     /*
      *
      */

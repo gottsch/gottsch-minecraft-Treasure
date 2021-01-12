@@ -35,7 +35,7 @@ import com.someguyssoftware.treasure2.init.TreasureSetup;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
-import com.someguyssoftware.treasure2.worldgen.feature.TreasureFeatures;
+import com.someguyssoftware.treasure2.world.gen.feature.TreasureFeatures;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;

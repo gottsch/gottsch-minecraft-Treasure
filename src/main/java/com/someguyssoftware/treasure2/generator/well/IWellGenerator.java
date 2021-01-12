@@ -14,7 +14,7 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.IWellsConfig;
 import com.someguyssoftware.treasure2.generator.IGeneratorResult;
-import com.someguyssoftware.treasure2.worldgen.structure.TemplateHolder;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

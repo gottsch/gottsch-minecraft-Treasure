@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.worldgen.feature;
+package com.someguyssoftware.treasure2.world.gen.feature;
 
 import java.util.HashMap;
 import java.util.List;
@@ -245,7 +245,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	 * @return
 	 */
 	private GeneratorResult<GeneratorData> generateChest(IWorld world, Random random, ICoords coords, Rarity rarity,
-			IChestGenerator next, IChestConfig config) {
+			IChestGenerator chestGenerator, IChestConfig config) {
 
 		// result to return to the caller
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
@@ -298,7 +298,26 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 			chestCoords = genResult.getData().getChestContext().getCoords();
 		}
 		
-		return result;
+		// if chest isn't generated, then fail
+		if (chestCoords == null) {
+			Treasure.LOGGER.debug("chest coords were not provided in result -> {}", genResult.toString());
+			return result.fail();
+		}
+
+		// add markers (above chest or shaft)
+		if (hasMarkers) {
+			chestGenerator.addMarkers(world, random, markerCoords, isSurfaceChest);
+		}
+
+		// TODO needs to take in IWorld
+		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(world.getWorld(), random, chestCoords, rarity, genResult.getData().getChestContext().getState());
+		if (!chestResult.isSuccess()) {
+			return result.fail();
+		}
+		
+		Treasure.LOGGER.info("CHEATER! {} chest at coords: {}", rarity, markerCoords.toShortString());
+		result.setData(chestResult.getData());
+		return result.success();
 	}
 
 	/**

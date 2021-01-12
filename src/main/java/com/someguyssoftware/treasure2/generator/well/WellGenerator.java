@@ -19,8 +19,8 @@ import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
-import com.someguyssoftware.treasure2.worldgen.structure.TemplateGenerator;
-import com.someguyssoftware.treasure2.worldgen.structure.TemplateHolder;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

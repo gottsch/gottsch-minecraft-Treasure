@@ -21,7 +21,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.well.WellGenerator;
-import com.someguyssoftware.treasure2.worldgen.feature.TreasureFeatures;
+import com.someguyssoftware.treasure2.world.gen.feature.TreasureFeatures;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;

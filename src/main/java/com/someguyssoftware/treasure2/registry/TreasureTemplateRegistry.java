@@ -8,9 +8,9 @@ import java.util.Objects;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.worldgen.structure.DecayResources;
-import com.someguyssoftware.treasure2.worldgen.structure.TemplateManifest;
-import com.someguyssoftware.treasure2.worldgen.structure.TreasureTemplateManager;
+import com.someguyssoftware.treasure2.world.gen.structure.DecayResources;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateManifest;
+import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.datafix.DataFixesManager;

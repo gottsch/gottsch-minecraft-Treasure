@@ -1,4 +1,4 @@
-package com.someguyssoftware.treasure2.worldgen.structure;
+package com.someguyssoftware.treasure2.world.gen.structure;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,7 +31,9 @@ import com.mojang.datafixers.DataFixer;
 import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 import com.someguyssoftware.gottschcore.meta.IMetaType;
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate2;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplateManager;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
@@ -439,7 +441,12 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 			Treasure.LOGGER.error("Error writing TreasureTemplateManager to dump file", e);
 		}
 	}
-
+	
+	public ICoords getOffset(Random random, TemplateHolder holder, StructureMarkers marker) {
+		ICoords offsetCoords = ((GottschTemplate2)holder.getTemplate()).findCoords(random, getMarkerMap().get(marker));
+		return offsetCoords;
+	}
+	
 	/**
 	 * 
 	 * @return
