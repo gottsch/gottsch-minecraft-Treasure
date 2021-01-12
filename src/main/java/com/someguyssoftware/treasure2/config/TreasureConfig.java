@@ -111,7 +111,33 @@ public class TreasureConfig extends AbstractConfig {
         public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
         public static final String DESERT_WISHING_WELL_BLOCK_ID = "desert_wishing_well_block";
 		public static final String PROXIMITY_SPAWNER_ID = "proximity_spawner";
-		public static final String GRAVESTONE1_STONE_ID = "gravestone1_stone";		
+		
+		public static final String GRAVESTONE1_STONE_ID = "gravestone1_stone";
+		public static final String GRAVESTONE1_COBBLESTONE_ID = "gravestone1_cobblestone";
+		public static final String GRAVESTONE1_MOSSY_COBBLESTONE_ID = "gravestone1_mossy_cobblestone";
+		public static final String GRAVESTONE1_POLISHED_GRANITE_ID = "gravestone1_polished_granite";
+		public static final String GRAVESTONE1_POLISHED_ANDESITE_ID = "gravestone1_polished_andesite";
+		public static final String GRAVESTONE1_POLISHED_DIORITE_ID = "gravestone1_polished_diorite";
+		public static final String GRAVESTONE1_OBSIDIAN_ID = "gravestone1_obsidian";
+		public static final String GRAVESTONE1_SMOOTH_QUARTZ_ID = "gravestone1_smooth_quartz";	
+		
+		public static final String GRAVESTONE2_STONE_ID = "gravestone2_stone";
+		public static final String GRAVESTONE2_COBBLESTONE_ID = "gravestone2_cobblestone";
+		public static final String GRAVESTONE2_MOSSY_COBBLESTONE_ID = "gravestone2_mossy_cobblestone";
+		public static final String GRAVESTONE2_POLISHED_GRANITE_ID = "gravestone2_polished_granite";
+		public static final String GRAVESTONE2_POLISHED_ANDESITE_ID = "gravestone2_polished_andesite";
+		public static final String GRAVESTONE2_POLISHED_DIORITE_ID = "gravestone2_polished_diorite";
+		public static final String GRAVESTONE2_OBSIDIAN_ID = "gravestone2_obsidian";
+		public static final String GRAVESTONE2_SMOOTH_QUARTZ_ID = "gravestone2_smooth_quartz";	
+		
+		public static final String GRAVESTONE3_STONE_ID = "gravestone3_stone";
+		public static final String GRAVESTONE3_COBBLESTONE_ID = "gravestone3_cobblestone";
+		public static final String GRAVESTONE3_MOSSY_COBBLESTONE_ID = "gravestone3_mossy_cobblestone";
+		public static final String GRAVESTONE3_POLISHED_GRANITE_ID = "gravestone3_polished_granite";
+		public static final String GRAVESTONE3_POLISHED_ANDESITE_ID = "gravestone3_polished_andesite";
+		public static final String GRAVESTONE3_POLISHED_DIORITE_ID = "gravestone3_polished_diorite";
+		public static final String GRAVESTONE3_OBSIDIAN_ID = "gravestone3_obsidian";
+		public static final String GRAVESTONE3_SMOOTH_QUARTZ_ID = "gravestone3_smooth_quartz";	
 	}
 
 	public static class ChestID {

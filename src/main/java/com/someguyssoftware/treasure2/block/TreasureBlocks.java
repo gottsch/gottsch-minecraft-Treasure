@@ -79,26 +79,29 @@ public class TreasureBlocks {
 	
 	// gravestones
 	public static final Block GRAVESTONE1_STONE;
-//	public static final Block GRAVESTONE1_COBBLESTONE;
-//	public static final Block GRAVESTONE1_MOSSY_COBBLESTONE;
-//	public static final Block GRAVESTONE1_POLISHED_GRANITE;
-//	public static final Block GRAVESTONE1_POLISHED_ANDESITE;
-//	public static final Block GRAVESTONE1_POLISHED_DIORITE;
-//	public static final Block GRAVESTONE1_OBSIDIAN;
-//	public static final Block GRAVESTONE2_STONE;
-//	public static final Block GRAVESTONE2_COBBLESTONE;
-//	public static final Block GRAVESTONE2_MOSSY_COBBLESTONE;
-//	public static final Block GRAVESTONE2_POLISHED_GRANITE;
-//	public static final Block GRAVESTONE2_POLISHED_ANDESITE;
-//	public static final Block GRAVESTONE2_POLISHED_DIORITE;
-//	public static final Block GRAVESTONE2_OBSIDIAN;
-//	public static final Block GRAVESTONE3_STONE;
-//	public static final Block GRAVESTONE3_COBBLESTONE;
-//	public static final Block GRAVESTONE3_MOSSY_COBBLESTONE;
-//	public static final Block GRAVESTONE3_POLISHED_GRANITE;
-//	public static final Block GRAVESTONE3_POLISHED_ANDESITE;
-//	public static final Block GRAVESTONE3_POLISHED_DIORITE;
-//	public static final Block GRAVESTONE3_OBSIDIAN;
+	public static final Block GRAVESTONE1_COBBLESTONE;
+	public static final Block GRAVESTONE1_MOSSY_COBBLESTONE;
+	public static final Block GRAVESTONE1_POLISHED_GRANITE;
+	public static final Block GRAVESTONE1_POLISHED_ANDESITE;
+	public static final Block GRAVESTONE1_POLISHED_DIORITE;
+	public static final Block GRAVESTONE1_OBSIDIAN;
+	public static final Block GRAVESTONE1_SMOOTH_QUARTZ;	
+	public static final Block GRAVESTONE2_STONE;
+	public static final Block GRAVESTONE2_COBBLESTONE;
+	public static final Block GRAVESTONE2_MOSSY_COBBLESTONE;
+	public static final Block GRAVESTONE2_POLISHED_GRANITE;
+	public static final Block GRAVESTONE2_POLISHED_ANDESITE;
+	public static final Block GRAVESTONE2_POLISHED_DIORITE;
+	public static final Block GRAVESTONE2_OBSIDIAN;
+	public static final Block GRAVESTONE2_SMOOTH_QUARTZ;	
+	public static final Block GRAVESTONE3_STONE;
+	public static final Block GRAVESTONE3_COBBLESTONE;
+	public static final Block GRAVESTONE3_MOSSY_COBBLESTONE;
+	public static final Block GRAVESTONE3_POLISHED_GRANITE;
+	public static final Block GRAVESTONE3_POLISHED_ANDESITE;
+	public static final Block GRAVESTONE3_POLISHED_DIORITE;
+	public static final Block GRAVESTONE3_OBSIDIAN;
+	public static final Block GRAVESTONE3_SMOOTH_QUARTZ;	
 //	public static final Block SKULL_CROSSBONES;
 //	public static final Block SKELETON;
     
@@ -247,10 +250,56 @@ public class TreasureBlocks {
 
 		// TODO MIMICS
 
-		// TODO GRAVESTONES
+		// GRAVESTONES
 		GRAVESTONE1_STONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE1_STONE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
                 .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
-
+		GRAVESTONE1_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE1_COBBLESTONE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE1_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE1_MOSSY_COBBLESTONE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE1_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE1_POLISHED_GRANITE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE1_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE1_POLISHED_ANDESITE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE1_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE1_POLISHED_DIORITE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE1_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE1_OBSIDIAN_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE1_SMOOTH_QUARTZ = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE1_SMOOTH_QUARTZ_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE2_STONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_STONE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE2_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_COBBLESTONE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE2_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_MOSSY_COBBLESTONE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE2_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_POLISHED_GRANITE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE2_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_POLISHED_ANDESITE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE2_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_POLISHED_DIORITE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE2_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_OBSIDIAN_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE2_SMOOTH_QUARTZ = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_SMOOTH_QUARTZ_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE3_STONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_STONE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE3_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_COBBLESTONE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE3_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_MOSSY_COBBLESTONE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE3_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_POLISHED_GRANITE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE3_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_POLISHED_ANDESITE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE3_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_POLISHED_DIORITE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE3_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_OBSIDIAN_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		GRAVESTONE3_SMOOTH_QUARTZ = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_SMOOTH_QUARTZ_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+		
 		// TODO ORES
 
 		// TODO WISHING WELL BLOCKS
@@ -290,12 +339,58 @@ public class TreasureBlocks {
         BLOCKS.add(WITHER_CHEST_TOP);
         
         BLOCKS.add(GRAVESTONE1_STONE);
+        BLOCKS.add(GRAVESTONE1_COBBLESTONE);
+		BLOCKS.add(GRAVESTONE1_MOSSY_COBBLESTONE);
+		BLOCKS.add(GRAVESTONE1_POLISHED_ANDESITE);
+		BLOCKS.add(GRAVESTONE1_POLISHED_DIORITE);
+		BLOCKS.add(GRAVESTONE1_POLISHED_GRANITE);
+		BLOCKS.add(GRAVESTONE1_OBSIDIAN);
+		BLOCKS.add(GRAVESTONE1_SMOOTH_QUARTZ);
+		BLOCKS.add(GRAVESTONE2_STONE);
+        BLOCKS.add(GRAVESTONE2_COBBLESTONE);
+		BLOCKS.add(GRAVESTONE2_MOSSY_COBBLESTONE);
+		BLOCKS.add(GRAVESTONE2_POLISHED_ANDESITE);
+		BLOCKS.add(GRAVESTONE2_POLISHED_DIORITE);
+		BLOCKS.add(GRAVESTONE2_POLISHED_GRANITE);
+		BLOCKS.add(GRAVESTONE2_OBSIDIAN);
+		BLOCKS.add(GRAVESTONE2_SMOOTH_QUARTZ);
+		BLOCKS.add(GRAVESTONE3_STONE);
+        BLOCKS.add(GRAVESTONE3_COBBLESTONE);
+		BLOCKS.add(GRAVESTONE3_MOSSY_COBBLESTONE);
+		BLOCKS.add(GRAVESTONE3_POLISHED_ANDESITE);
+		BLOCKS.add(GRAVESTONE3_POLISHED_DIORITE);
+		BLOCKS.add(GRAVESTONE3_POLISHED_GRANITE);
+		BLOCKS.add(GRAVESTONE3_OBSIDIAN);
+		BLOCKS.add(GRAVESTONE3_SMOOTH_QUARTZ);
         
         BLOCKS.add(WISHING_WELL_BLOCK);
         BLOCKS.add(DESERT_WISHING_WELL_BLOCK);
-        BLOCKS.add(PROXIMITY_SPAWNER);
+//        BLOCKS.add(PROXIMITY_SPAWNER);
         
         GRAVESTONES.add(GRAVESTONE1_STONE);
+        GRAVESTONES.add(GRAVESTONE1_COBBLESTONE);
+		GRAVESTONES.add(GRAVESTONE1_MOSSY_COBBLESTONE);
+		GRAVESTONES.add(GRAVESTONE1_POLISHED_ANDESITE);
+		GRAVESTONES.add(GRAVESTONE1_POLISHED_DIORITE);
+		GRAVESTONES.add(GRAVESTONE1_POLISHED_GRANITE);
+		GRAVESTONES.add(GRAVESTONE1_OBSIDIAN);
+		GRAVESTONES.add(GRAVESTONE1_SMOOTH_QUARTZ);
+		GRAVESTONES.add(GRAVESTONE2_STONE);
+        GRAVESTONES.add(GRAVESTONE2_COBBLESTONE);
+		GRAVESTONES.add(GRAVESTONE2_MOSSY_COBBLESTONE);
+		GRAVESTONES.add(GRAVESTONE2_POLISHED_ANDESITE);
+		GRAVESTONES.add(GRAVESTONE2_POLISHED_DIORITE);
+		GRAVESTONES.add(GRAVESTONE2_POLISHED_GRANITE);
+		GRAVESTONES.add(GRAVESTONE2_OBSIDIAN);
+		GRAVESTONES.add(GRAVESTONE2_SMOOTH_QUARTZ);
+		GRAVESTONES.add(GRAVESTONE3_STONE);
+        GRAVESTONES.add(GRAVESTONE3_COBBLESTONE);
+		GRAVESTONES.add(GRAVESTONE3_MOSSY_COBBLESTONE);
+		GRAVESTONES.add(GRAVESTONE3_POLISHED_ANDESITE);
+		GRAVESTONES.add(GRAVESTONE3_POLISHED_DIORITE);
+		GRAVESTONES.add(GRAVESTONE3_POLISHED_GRANITE);
+		GRAVESTONES.add(GRAVESTONE3_OBSIDIAN);
+		GRAVESTONES.add(GRAVESTONE3_SMOOTH_QUARTZ);
 	}
 
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -314,7 +409,7 @@ public class TreasureBlocks {
 			}
 			// special case registry
 			registry.register(WITHER_CHEST);
-			// registry.register(PROXIMITY_SPAWNER);
+			 registry.register(PROXIMITY_SPAWNER);
 		}
 
 		/**
@@ -329,7 +424,7 @@ public class TreasureBlocks {
 			// add all specialty blocks to an array
 			final Block[] specialtyBlocks = { 
 					WITHER_CHEST
-					// PROXIMITY_SPAWNER					
+//					 PROXIMITY_SPAWNER					// --> not added to Treasure tab, not visible in creative
 			};
 			
 			for (Block b : BLOCKS) {

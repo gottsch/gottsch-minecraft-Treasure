@@ -2,6 +2,6 @@
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"parent": "treasure2:block/gravestone2",
 	"textures": {
-		"side": "blocks/stone_diorite_smooth"
+		"side": "block/polished_diorite"
 	}
 }
