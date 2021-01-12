@@ -80,7 +80,7 @@ public class GenUtil {
 		if (context.isAir()) {
 			return false;
 		}
-		world.getWorld().setBlockState(coords.toPos(), block.getDefaultState());
+		world.setBlockState(coords.toPos(), block.getDefaultState(), 3);
 		return true;
 	}
 
@@ -93,11 +93,16 @@ public class GenUtil {
 	 */
 	public static boolean replaceWithBlockState(IWorld world, ICoords coords, BlockState blockState) {
 		// don't change if old block is air
+//		Treasure.LOGGER.debug("getting block context...");
 		BlockContext context = new BlockContext(world, coords);
+//		Treasure.LOGGER.debug("block context -> {}", context);
 		if (context.isAir()) {
+//			Treasure.LOGGER.debug("is air");
 			return false;
 		}
-		world.getWorld().setBlockState(coords.toPos(), blockState);
+//		Treasure.LOGGER.debug("about to change state in world -> {}", world.getWorldInfo());
+		world.setBlockState(coords.toPos(), blockState, 3);
+//		Treasure.LOGGER.debug("updated the state.");
 		return true;
 	}
 
@@ -109,7 +114,7 @@ public class GenUtil {
 	 * @param coords
 	 * @return
 	 */
-	public static boolean replaceBlockWithChest(World world, Random random, Block chest, ICoords coords) {
+	public static boolean replaceBlockWithChest(IWorld world, Random random, Block chest, ICoords coords) {
 		// get the old state
 		BlockState oldState = world.getBlockState(coords.toPos());
 
@@ -133,7 +138,7 @@ public class GenUtil {
 	 * @param state
 	 * @return
 	 */
-	public static boolean replaceBlockWithChest(World world, Random random, ICoords coords, Block chest,
+	public static boolean replaceBlockWithChest(IWorld world, Random random, ICoords coords, Block chest,
 			BlockState state) {
 		if (state.getProperties().contains(FACING)) {
 			Treasure.LOGGER.debug("Given marker state has FACING property -> {}", state.get(FACING));
@@ -158,7 +163,7 @@ public class GenUtil {
 	 * @param pos
 	 * @return
 	 */
-	public static boolean placeChest(World world, Block chest, ICoords coords, Direction direction) {
+	public static boolean placeChest(IWorld world, Block chest, ICoords coords, Direction direction) {
 		// TODO wrap all Direction in Heading
 		// check if spawn pos is valid
 		if (!WorldInfo.isValidY(coords)) {
@@ -182,7 +187,7 @@ public class GenUtil {
 
 			if (tileEntity == null) {
 				// remove the chest block
-				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
 				Treasure.LOGGER.warn("Unable to create ChestConfig's TileEntity, removing ChestConfig.");
 				return false;
 			}

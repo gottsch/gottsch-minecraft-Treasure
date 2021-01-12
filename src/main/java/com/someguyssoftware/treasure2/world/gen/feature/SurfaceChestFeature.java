@@ -173,7 +173,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 				// 2. test if the override (global) biome is allowed
 				TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList());
 				if(biomeCheck == Result.BLACK_LISTED ) {
-					if (WorldInfo.isClientSide((World)world)) {
+					if (WorldInfo.isClientSide(world.getWorld())) {
 						Treasure.LOGGER.debug("{} is not a valid biome @ {}", biome.getDisplayName().getString(), spawnCoords.toShortString());
 					}
 					else {
@@ -208,8 +208,8 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 				// generate the chest/pit/chambers
 				Treasure.LOGGER.debug("Attempting to generate pit/chest.");
 				Treasure.LOGGER.debug("rarity -> {}", rarity);
-				Treasure.LOGGER.debug("randcollection -> {}", TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SURFACE_CHEST));
-				Treasure.LOGGER.debug("gen -> {}", TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SURFACE_CHEST).next());
+				Treasure.LOGGER.debug("randcollection -> {}", TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SURFACE_CHEST).getClass().getSimpleName());
+				Treasure.LOGGER.debug("gen -> {}", TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SURFACE_CHEST).next().getClass().getSimpleName());
 				Treasure.LOGGER.debug("configmap -> {}", TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
 				
 				GeneratorResult<GeneratorData> result = null;
@@ -286,6 +286,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 			else {
 				// set the chest coords to the surface pos
 				chestCoords = new Coords(markerCoords);
+				Treasure.LOGGER.debug("surface chest coords -> {}", chestCoords);
 			}
 		}
 		else if (config.isSubterraneanAllowed()) {
@@ -306,11 +307,11 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 
 		// add markers (above chest or shaft)
 		if (hasMarkers) {
+			Treasure.LOGGER.debug("marker coords -> {}", markerCoords);
 			chestGenerator.addMarkers(world, random, markerCoords, isSurfaceChest);
 		}
 
-		// TODO needs to take in IWorld
-		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(world.getWorld(), random, chestCoords, rarity, genResult.getData().getChestContext().getState());
+		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(world, random, chestCoords, rarity, genResult.getData().getChestContext().getState());
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}
@@ -394,6 +395,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	 */
 	public static IPitGenerator<GeneratorResult<ChestGeneratorData>> selectPitGenerator(Random random) {
 		PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.PITS.pitStructureProbability.get()) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
+		Treasure.LOGGER.debug("using pit type -> {}", pitType);
 		List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerators = TreasureData.PIT_GENS.row(pitType).values().stream()
 				.collect(Collectors.toList());
 		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));

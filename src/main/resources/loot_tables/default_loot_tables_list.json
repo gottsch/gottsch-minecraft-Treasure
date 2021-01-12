@@ -3,14 +3,16 @@
 		"pools/items/common.json"
     ],
     "injectResources": [],
-	"chestResources": [
-		"chests/common/general_chest.json"
+		"chestResources": [
+			"chests/common/general_chest.json",
+			"chests/uncommon/general_chest.json"
 	],
 	"specialResources": [
 	],
 
 	"chestLootTableFolderLocations": [
-		"chests/common"
+		"chests/common",
+		"chests/uncommon"
 	],
 	"specialLootTableFolderLocations": [
 	],

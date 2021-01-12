@@ -61,7 +61,7 @@ import net.minecraft.world.storage.loot.LootTable;
  */
 public interface IChestGenerator {
 
-	default public GeneratorResult<ChestGeneratorData> generate(final World world, final Random random, ICoords coords,
+	default public GeneratorResult<ChestGeneratorData> generate(final IWorld world, final Random random, ICoords coords,
 			final Rarity rarity, BlockState state) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(coords);
@@ -512,7 +512,7 @@ public interface IChestGenerator {
 	 * @param chestCoords
 	 * @return
 	 */
-	default public TileEntity placeInWorld(World world, Random random, AbstractChestBlock<?> chest, ICoords chestCoords) {
+	default public TileEntity placeInWorld(IWorld world, Random random, AbstractChestBlock<?> chest, ICoords chestCoords) {
 		// replace block @ coords
 		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
 
@@ -525,7 +525,7 @@ public interface IChestGenerator {
 			// remove the title entity (if exists)
 
 			if (te != null && (te instanceof AbstractTreasureChestTileEntity)) {
-				world.removeTileEntity(chestCoords.toPos());
+				world.getWorld().removeTileEntity(chestCoords.toPos());
 			}
 			return null;
 		}
@@ -533,7 +533,7 @@ public interface IChestGenerator {
 		// if tile entity failed to create, remove the chest
 		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
 			// remove chest
-			world.setBlockState(chestCoords.toPos(), Blocks.AIR.getDefaultState());
+			world.setBlockState(chestCoords.toPos(), Blocks.AIR.getDefaultState(), 3);
 			Treasure.LOGGER.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}
@@ -549,7 +549,7 @@ public interface IChestGenerator {
 	 * @param state
 	 * @return
 	 */
-	default public TileEntity placeInWorld(World world, Random random, ICoords chestCoords, AbstractChestBlock<?> chest,
+	default public TileEntity placeInWorld(IWorld world, Random random, ICoords chestCoords, AbstractChestBlock<?> chest,
 			BlockState state) {
 		// replace block @ coords
 		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chestCoords, chest, state);
@@ -562,7 +562,7 @@ public interface IChestGenerator {
 			Treasure.LOGGER.debug("Unable to place chest @ {}", chestCoords.toShortString());
 			// remove the title entity (if exists)
 			if (te != null && (te instanceof AbstractTreasureChestTileEntity)) {
-				world.removeTileEntity(chestCoords.toPos());
+				world.getWorld().removeTileEntity(chestCoords.toPos());
 			}
 			return null;
 		}
@@ -570,7 +570,7 @@ public interface IChestGenerator {
 		// if tile entity failed to create, remove the chest
 		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
 			// remove chest
-			world.setBlockState(chestCoords.toPos(), Blocks.AIR.getDefaultState());
+			world.setBlockState(chestCoords.toPos(), Blocks.AIR.getDefaultState(), 3);
 			Treasure.LOGGER.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}

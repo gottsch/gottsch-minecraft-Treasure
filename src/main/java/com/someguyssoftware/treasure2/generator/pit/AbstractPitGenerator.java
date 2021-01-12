@@ -59,6 +59,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 */
 	@Override
 	public boolean generateBase(IWorld world, Random random, ICoords surfaceCorods, ICoords spawnCoords) {
+		Treasure.LOGGER.debug("generating base ...");
 		// at chest level
 		buildLayer(world, spawnCoords, Blocks.AIR);
 		
@@ -76,6 +77,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	
 	@Override
 	public boolean generateEntrance(IWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		Treasure.LOGGER.debug("generating entrance ...");
 		// pit enterance
 		buildLogLayer(world, random, surfaceCoords.add(0, -3, 0), DEFAULT_LOG);
 		buildLayer(world, surfaceCoords.add(0, -4, 0), Blocks.SAND);
@@ -175,6 +177,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @return
 	 */
 	public ICoords buildPit(IWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
+		Treasure.LOGGER.debug("generating pit ...");
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
 		
@@ -235,7 +238,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @return
 	 */
 	public ICoords buildLayer(IWorld world, ICoords coords, Block block) {
-//		Treasure.LOGGER.debug("Building layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
+		Treasure.LOGGER.debug("Building layer from {} @ {} ", block.getRegistryName(), coords.toShortString());
 		GenUtil.replaceWithBlock(world, coords, block);
 		GenUtil.replaceWithBlock(world, coords.add(1, 0, 0), block);
 		GenUtil.replaceWithBlock(world, coords.add(0, 0, 1), block);
@@ -252,9 +255,10 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @return
 	 */
 	public ICoords buildLogLayer(final IWorld world, final Random random, final ICoords coords, final Block block) {
-//		Treasure.LOGGER.debug("Building log layer from {} @ {} ", block.getLocalizedName(), coords.toShortString());
+		Treasure.LOGGER.debug("building log layer from {} @ {} ", block.getRegistryName(), coords.toShortString());
 		// ensure that block is of type LOG/LOG2
 		if (!(block instanceof LogBlock)) {
+			Treasure.LOGGER.debug("block is not a log");
             return coords;
         }
 		
@@ -273,6 +277,8 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 			blockState = blockState.with(LogBlock.AXIS,  Direction.Axis.X);
 		}
 				
+//		Treasure.LOGGER.debug("block state -> {}", blockState.getBlock().getRegistryName());
+		
 		// core 4-square
 		GenUtil.replaceWithBlockState(world, coords, blockState);
 		GenUtil.replaceWithBlockState(world, coords.add(1, 0, 0), blockState);
@@ -296,6 +302,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 			GenUtil.replaceWithBlockState(world, coords.add(2, 0, 0), blockState);
 			GenUtil.replaceWithBlockState(world, coords.add(2, 0, 1), blockState);
 		}
+		Treasure.LOGGER.debug("log level complete");
 		return coords.add(0, 1, 0);
 	}
 	
@@ -326,7 +333,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @param spawnCoords
 	 */
 	public void spawnRandomMob(IWorld world, Random random, ICoords spawnCoords) {
-    	world.getWorld().setBlockState(spawnCoords.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
+    	world.setBlockState(spawnCoords.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState(), 3);
     	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(spawnCoords.toPos());
     	EntityType<?> mobEntityType = DungeonHooks.getRandomDungeonMob(random);
     	te.setMobName(mobEntityType.getRegistryName());

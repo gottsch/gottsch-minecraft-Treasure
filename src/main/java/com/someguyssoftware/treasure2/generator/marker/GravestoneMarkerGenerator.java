@@ -92,7 +92,7 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 
 			// get a valid surface location
 			spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, spawnCoords);
-			if (spawnCoords == null) {
+			if (spawnCoords == null || spawnCoords == WorldInfo.EMPTY_COORDS) {
 				LOGGER.debug(String.format("Not a valid surface @ %s", coords));
 				continue;
 			}

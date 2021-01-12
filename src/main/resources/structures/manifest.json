@@ -1,5 +1,13 @@
 {
 	"resources": [
+		"submerged/dingy1.nbt",
+		"submerged/sunken-ship1.nbt",
+		"submerged/sunken-ship2.nbt",
+		"submerged/sunken-ship3.nbt",
+		"submerged/underwater-ruin1.nbt",
+		"submerged/underwater-ruin2.nbt",
+		"submerged/underwater-ruin3.nbt",
+
 		"subterranean/basic1.nbt",
 		"subterranean/basic2.nbt",
 		"subterranean/basic3.nbt",
@@ -17,6 +25,25 @@
 		"subterranean/pirate-chamber1.nbt",
 		"subterranean/pirate-chamber2.nbt",
 		"subterranean/wither-chamber1.nbt",
+
+		"surface/beached-ship1.nbt",
+		"surface/beached-ship2.nbt",
+		"surface/beached-ship3.nbt",
+		"surface/balcksmith1.nbt",
+		"surface/castle1.nbt",
+		"surface/church1.nbt",
+		"surface/crypt2.nbt",
+		"surface/crypt3.nbt",
+		"surface/desert-tower2.nbt",
+		"surface/fortress1.nbt",
+		"surface/house1.nbt",
+		"surface/large-tower1.nbt",
+		"surface/tower1.nbt",
+		"surface/tower2.nbt",
+		"surface/tower3.nbt",
+		"surface/tower4.nbt",
+		"surface/tower5.nbt",
+
 		"wells/canopy-wishing-well1.nbt",
 		"wells/desert-wishing-well1.nbt",
 		"wells/desert-wishing-well2.nbt",
@@ -24,6 +51,7 @@
 		"wells/wood-draw-wishing-well1.nbt"
     ],
 	"resourceFolderLocations": [
+		"submerged",
 		"subterranean",
 		"surface",
 		"wells"

@@ -43,6 +43,7 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	public GeneratorResult<ChestGeneratorData> generate(IWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		Treasure.LOGGER.debug("generating pit...");
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords); 
 		if (result.isSuccess()) {
 			Treasure.LOGGER.debug("Generated Lave Side Trap Pit at " + spawnCoords.toShortString());
@@ -60,6 +61,7 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 	 */
 	@Override
 	public ICoords buildPit(IWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
+		Treasure.LOGGER.debug("generating pit ...");
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
 		
@@ -69,6 +71,7 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 			// if the block to be replaced is air block then skip to the next pos
 		    BlockContext context = new BlockContext(world, new Coords(coords.getX(), yIndex, coords.getZ()));
 			if (context.isAir()) {
+				Treasure.LOGGER.debug("block is air...");
 				continue;
 			}
 

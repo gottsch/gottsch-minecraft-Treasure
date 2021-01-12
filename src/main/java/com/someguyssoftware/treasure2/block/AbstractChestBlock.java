@@ -386,7 +386,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 	 * @param rotate
 	 * @return
 	 */
-	public boolean  rotateLockStates(World world, BlockPos pos, Rotate rotate) {
+	public boolean  rotateLockStates(IWorld world, BlockPos pos, Rotate rotate) {
 		boolean hasRotated = false;
 		boolean shouldRotate = false;
 		if (rotate != Rotate.NO_ROTATE) shouldRotate = true;

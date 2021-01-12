@@ -9,14 +9,16 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
-import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;;
+import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.UncommonChestGenerator;
+
 /**
  * @author Mark Gottschling on Sep 4, 2020
  *
  */
 public enum ChestGeneratorType {
-	COMMON(CommonChestGenerator::new);
-//	UNCOMMON(UncommonChestGenerator::new),
+	COMMON(CommonChestGenerator::new),
+	UNCOMMON(UncommonChestGenerator::new);
 //	SCARCE(ScarceChestGenerator::new),
 //	RARE(RareChestGenerator::new),
 //	EPIC(EpicChestGenerator::new),

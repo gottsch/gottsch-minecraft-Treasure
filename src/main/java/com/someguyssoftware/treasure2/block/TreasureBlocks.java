@@ -423,8 +423,12 @@ public class TreasureBlocks {
 
 			// add all specialty blocks to an array
 			final Block[] specialtyBlocks = { 
-					WITHER_CHEST
-//					 PROXIMITY_SPAWNER					// --> not added to Treasure tab, not visible in creative
+					WITHER_CHEST			
+			};
+			
+			// TODO need this list ?
+			final Block[] nonCreativeBlocks = {
+					PROXIMITY_SPAWNER // --> not added to Treasure tab, not visible in creative
 			};
 			
 			for (Block b : BLOCKS) {

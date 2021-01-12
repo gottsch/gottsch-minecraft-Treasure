@@ -119,7 +119,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		// populate vanilla spawners
 		for (BlockContext c : spawnerContexts) {
 			ICoords c2 = spawnCoords.add(c.getCoords());
-			world.getWorld().setBlockState(c2.toPos(), Blocks.SPAWNER.getDefaultState());
+			world.setBlockState(c2.toPos(), Blocks.SPAWNER.getDefaultState(), 3);
 			MobSpawnerTileEntity te = (MobSpawnerTileEntity) world.getTileEntity(c2.toPos());
 			EntityType<?> r = DungeonHooks.getRandomDungeonMob(random);
 			te.getSpawnerBaseLogic().setEntityType(r);
@@ -128,7 +128,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		// populate proximity spawners
 		for (BlockContext c : proximityContexts) {
 			ICoords c2 = spawnCoords.add(c.getCoords());
-	    	world.getWorld().setBlockState(c2.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
+	    	world.setBlockState(c2.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState(), 3);
 	    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c2.toPos());
 	    	EntityType<?> r = DungeonHooks.getRandomDungeonMob(random);
 	    	te.setMobName(r.getRegistryName());

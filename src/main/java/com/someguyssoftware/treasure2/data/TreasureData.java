@@ -33,6 +33,7 @@ import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.LavaSideTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.LavaTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.StructurePitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.well.IWellGenerator;
 import com.someguyssoftware.treasure2.generator.well.WellGenerator;
@@ -88,15 +89,19 @@ public class TreasureData {
 
 		// setup pit generators
 		PIT_GENS.put(PitTypes.STANDARD, Pits.SIMPLE_PIT, new SimplePitGenerator());
-		//			PIT_GENS.put(PitTypes.STRUCTURE, Pits.SIMPLE_PIT, new StructurePitGenerator(new SimplePitGenerator()));
+		PIT_GENS.put(PitTypes.STRUCTURE, Pits.SIMPLE_PIT, new StructurePitGenerator(new SimplePitGenerator()));
 
 		PIT_GENS.put(PitTypes.STANDARD, Pits.AIR_PIT,  new AirPitGenerator());
-		//			PIT_GENS.put(PitTypes.STRUCTURE, Pits.AIR_PIT, new StructurePitGenerator(new AirPitGenerator()));
+		PIT_GENS.put(PitTypes.STRUCTURE, Pits.AIR_PIT, new StructurePitGenerator(new AirPitGenerator()));
 
 		PIT_GENS.put(PitTypes.STANDARD, Pits.LAVA_SIDE_TRAP_PIT,  new LavaSideTrapPitGenerator());
+		PIT_GENS.put(PitTypes.STRUCTURE, Pits.LAVA_SIDE_TRAP_PIT,  new LavaSideTrapPitGenerator());
+		
 		PIT_GENS.put(PitTypes.STANDARD, Pits.LAVA_TRAP_PIT,  new LavaTrapPitGenerator());
+		
 		PIT_GENS.put(PitTypes.STANDARD, Pits.TNT_TRAP_PIT,  new TntTrapPitGenerator());
-
+		PIT_GENS.put(PitTypes.STRUCTURE, Pits.TNT_TRAP_PIT,  new TntTrapPitGenerator());
+		
 		for (String dimension : TreasureConfig.GENERAL.dimensionsWhiteList.get()) {
 			Treasure.LOGGER.debug("white list dimension -> {}", dimension);
 			CHEST_REGISTRIES.put(dimension, new ChestRegistry());
