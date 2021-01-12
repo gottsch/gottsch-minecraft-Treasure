@@ -109,7 +109,9 @@ public class TreasureConfig extends AbstractConfig {
 
 	public static class BlockID {
         public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
+        public static final String DESERT_WISHING_WELL_BLOCK_ID = "desert_wishing_well_block";
 		public static final String PROXIMITY_SPAWNER_ID = "proximity_spawner";
+		public static final String GRAVESTONE1_STONE_ID = "gravestone1_stone";		
 	}
 
 	public static class ChestID {

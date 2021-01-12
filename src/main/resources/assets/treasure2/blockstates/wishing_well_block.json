@@ -1,5 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "treasure2:wishing_well_block" }
+        "": { "model": "treasure2:block/wishing_well_block" }
     }
 }

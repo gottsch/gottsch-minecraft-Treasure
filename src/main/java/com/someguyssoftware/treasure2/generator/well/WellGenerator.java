@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2.generator.well;
 
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.block.BlockContext;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
@@ -21,6 +22,8 @@ import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.worldgen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.worldgen.structure.TemplateHolder;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.IWorld;
@@ -63,7 +66,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 				
 		// select a random rotation
 		Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
-		
+		Treasure.LOGGER.debug("with rotation -> {}", rotation);
 		// setup placement
 		PlacementSettings placement = new PlacementSettings();
 		placement.setRotation(rotation).setRandom(random);
@@ -108,7 +111,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		// get the rotated/transformed size
 		//BlockPos transformedSize = holder.getTemplate().transformedSize(rotation);
 		ICoords transformedSize = genResult.getData().getSize();
-		Treasure.LOGGER.debug("Well transformed coords -> {}", transformedSize.toShortString());
+		Treasure.LOGGER.debug("Well transformed size -> {}", transformedSize.toShortString());
 		// add flowers around well
 		addDecorations(world, random, genResult.getData().getSpawnCoords(), transformedSize.getX(), transformedSize.getZ());
 		 
@@ -166,5 +169,38 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 				addDecoration(world, random, startCoords.add(0, 0, depthIndex));
 			}
 		}
+	}
+	
+	@Override
+	public void addDecoration(IWorld world, Random random, ICoords coords) {
+		BlockState blockState = null;
+		ICoords markerCoords = WorldInfo.getDryLandSurfaceCoords(world, coords);
+		
+		if (markerCoords == null || markerCoords == WorldInfo.EMPTY_COORDS) {
+			Treasure.LOGGER.debug("Returning due to marker coords == null or EMPTY_COORDS");
+			return;
+		}
+		BlockContext markerContext = new BlockContext(world, markerCoords);
+		if (!markerContext.isAir() && !markerContext.isReplaceable()) {
+			Treasure.LOGGER.debug("Returning due to marker coords is not air nor replaceable.");
+			return;
+		}
+		
+		markerContext = new BlockContext(world, markerCoords.add(0, -1, 0));
+		Treasure.LOGGER.debug("Marker on block: {}", markerContext.getState());
+		if (markerContext.equalsBlock(Blocks.GRASS_BLOCK) || markerContext.equalsBlock(Blocks.DIRT)) {
+			blockState = FLOWERS.get(random.nextInt(FLOWERS.size())).getDefaultState();
+		}
+		else if (markerContext.equalsBlock(Blocks.COARSE_DIRT)) {
+			blockState = Blocks.TALL_GRASS.getDefaultState();
+		}
+		else if (markerContext.equalsBlock(Blocks.MYCELIUM) || markerContext.equalsBlock(Blocks.PODZOL)) {
+			blockState = MUSHROOMS.get(random.nextInt(MUSHROOMS.size())).getDefaultState();			
+		}
+		else {
+			blockState = TALL_PLANTS.get(random.nextInt(TALL_PLANTS.size())).getDefaultState();
+		}				
+		// set the block state
+		world.setBlockState(coords.toPos(), blockState, 3);
 	}
 }

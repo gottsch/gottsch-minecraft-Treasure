@@ -75,10 +75,38 @@ public class TreasureBlocks {
 
     public static final ProximityBlock PROXIMITY_SPAWNER;
     public static final Block WISHING_WELL_BLOCK;
+    public static final Block DESERT_WISHING_WELL_BLOCK;
 	
+	// gravestones
+	public static final Block GRAVESTONE1_STONE;
+//	public static final Block GRAVESTONE1_COBBLESTONE;
+//	public static final Block GRAVESTONE1_MOSSY_COBBLESTONE;
+//	public static final Block GRAVESTONE1_POLISHED_GRANITE;
+//	public static final Block GRAVESTONE1_POLISHED_ANDESITE;
+//	public static final Block GRAVESTONE1_POLISHED_DIORITE;
+//	public static final Block GRAVESTONE1_OBSIDIAN;
+//	public static final Block GRAVESTONE2_STONE;
+//	public static final Block GRAVESTONE2_COBBLESTONE;
+//	public static final Block GRAVESTONE2_MOSSY_COBBLESTONE;
+//	public static final Block GRAVESTONE2_POLISHED_GRANITE;
+//	public static final Block GRAVESTONE2_POLISHED_ANDESITE;
+//	public static final Block GRAVESTONE2_POLISHED_DIORITE;
+//	public static final Block GRAVESTONE2_OBSIDIAN;
+//	public static final Block GRAVESTONE3_STONE;
+//	public static final Block GRAVESTONE3_COBBLESTONE;
+//	public static final Block GRAVESTONE3_MOSSY_COBBLESTONE;
+//	public static final Block GRAVESTONE3_POLISHED_GRANITE;
+//	public static final Block GRAVESTONE3_POLISHED_ANDESITE;
+//	public static final Block GRAVESTONE3_POLISHED_DIORITE;
+//	public static final Block GRAVESTONE3_OBSIDIAN;
+//	public static final Block SKULL_CROSSBONES;
+//	public static final Block SKELETON;
+    
 	public static List<Block> BLOCKS = new ArrayList<>(100);
 	public static final Set<BlockItem> ITEM_BLOCKS = new HashSet<>();
 
+	public static List<Block> GRAVESTONES = new ArrayList<>(15);
+	
 	static {
 		/** initialize chest shapes/bounds */
 		// standard chest bounds
@@ -141,6 +169,14 @@ public class TreasureBlocks {
 		witherChestBounds[2] = witherChestBounds[0]; // N
 		witherChestBounds[3] = witherChestBounds[0]; // E
 
+		// gravestone bounds
+		VoxelShape[] gravestoneBounds = new VoxelShape[] {
+				Block.makeCuboidShape(2, 0, 6, 14, 12, 10.8),	// S
+				Block.makeCuboidShape(6, 0, 2, 10.8, 12, 14),	// W
+				Block.makeCuboidShape(2, 0, 6, 14, 12, 10.8),	// N
+				Block.makeCuboidShape(6, 0, 2, 10.8, 12, 14),	// E
+		};
+		
 		/** initialize chests */
 		WOOD_CHEST = new StandardChestBlock(Treasure.MODID, TreasureConfig.ChestID.WOOD_CHEST_ID, WoodChestTileEntity.class,
 				TreasureChestTypes.STANDARD, Rarity.COMMON, Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.5F))
@@ -212,11 +248,15 @@ public class TreasureBlocks {
 		// TODO MIMICS
 
 		// TODO GRAVESTONES
+		GRAVESTONE1_STONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE1_STONE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
 
 		// TODO ORES
 
 		// TODO WISHING WELL BLOCKS
         WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.BlockID.WISHING_WELL_BLOCK_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(2.0F).sound(SoundType.STONE));
+        DESERT_WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.BlockID.DESERT_WISHING_WELL_BLOCK_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
                 .hardnessAndResistance(2.0F).sound(SoundType.STONE));
 
 		// TODO WITHER BIOME BLOCKS
@@ -249,8 +289,13 @@ public class TreasureBlocks {
 //		BLOCKS.add(WITHER_CHEST); // TODO this will have to be removed later when chests are registered by rarity unless using a table that flags wither chest
         BLOCKS.add(WITHER_CHEST_TOP);
         
+        BLOCKS.add(GRAVESTONE1_STONE);
+        
         BLOCKS.add(WISHING_WELL_BLOCK);
+        BLOCKS.add(DESERT_WISHING_WELL_BLOCK);
         BLOCKS.add(PROXIMITY_SPAWNER);
+        
+        GRAVESTONES.add(GRAVESTONE1_STONE);
 	}
 
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
