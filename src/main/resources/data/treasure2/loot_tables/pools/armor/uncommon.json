@@ -1,5 +1,6 @@
 {
 	"version": "1.0",
+	"type": "minecraft:chest",
 	"pools": [
 		{
 			"name": "uncommon_armor",
@@ -7,78 +8,78 @@
 			"entries": [
 				{
 					"entryName": "iron_chestplate",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:iron_chestplate",
-					"weight": 12.5		
+					"weight": 12.5
 				},
 				{
 					"entryName": "iron_leggings",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:iron_leggings",
-					"weight": 20		
+					"weight": 20
 				},
 				{
 					"entryName": "iron_helmet",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:iron_helmet",
-					"weight": 20		
+					"weight": 20
 				},
 				{
 					"entryName": "iron_boots",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:iron_boots",
-					"weight": 20		
+					"weight": 20
 				},
 				{
 					"entryName": "shield",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:shield",
-					"weight": 20		
-				},				
+					"weight": 20
+				},
 				{
 					"entryName": "golden_chestplate",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:golden_chestplate",
 					"weight": 10,
 					"functions": [
 						{
-							"function": "enchant_randomly"
+							"function": "minecraft:enchant_randomly"
 						}
 					]
 				},
 				{
 					"entryName": "golden_leggings",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:golden_leggings",
 					"weight": 10,
 					"functions": [
 						{
-							"function": "enchant_randomly"
+							"function": "minecraft:enchant_randomly"
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "golden_helmet",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:golden_helmet",
 					"weight": 10,
 					"functions": [
 						{
-							"function": "enchant_randomly"
+							"function": "minecraft:enchant_randomly"
 						}
-					]		
+					]
 				},
 				{
 					"entryName": "golden_boots",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:golden_boots",
 					"weight": 10,
 					"functions": [
 						{
-							"function": "enchant_randomly"
+							"function": "minecraft:enchant_randomly"
 						}
-					]	
-				}	
+					]
+				}
 			]
 		}
 	]

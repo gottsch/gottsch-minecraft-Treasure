@@ -52,9 +52,9 @@
 					]
 				},
 				{
-					"entryName": "reeds",
+					"entryName": "sugar_cane",
 					"type": "minecraft:item",
-					"name": "minecraft:reeds",
+					"name": "minecraft:sugar_cane",
 					"weight": 50,
 					"functions": [
 						{

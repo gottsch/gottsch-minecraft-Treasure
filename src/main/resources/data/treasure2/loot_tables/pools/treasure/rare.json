@@ -1,0 +1,168 @@
+{
+	"version": "1.0",
+	"type": "minecraft:chest",
+	"pools": [
+		{
+			"name": "rare_keys",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "metallurgists_key",
+					"type": "minecraft:item",
+					"name": "treasure2:metallurgists_key",
+					"weight": 10
+				},
+				{
+					"entryName": "skeleton_key",
+					"type": "minecraft:item",
+					"name": "treasure2:skeleton_key",
+					"weight": 7
+				},
+				{
+					"entryName": "ruby_key",
+					"type": "minecraft:item",
+					"name": "treasure2:ruby_key",
+					"weight": 25
+				},
+				{
+					"entryName": "sapphire_key",
+					"type": "minecraft:item",
+					"name": "treasure2:sapphire_key",
+					"weight": 25
+				},
+				{
+					"entryName": "diamond_key",
+					"type": "minecraft:item",
+					"name": "treasure2:diamond_key",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				},
+				{
+					"entryName": "emerald_key",
+					"type": "minecraft:item",
+					"name": "treasure2:emerald_key",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "rare_treasure",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "silver_coin",
+					"type": "minecraft:item",
+					"name": "treasure2:silver_coin",
+					"weight": 50,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 2,
+								"max": 6
+							}
+						}
+					]
+				},
+				{
+					"entryName": "gold_coin",
+					"type": "minecraft:item",
+					"name": "treasure2:gold_coin",
+					"weight": 40,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 3
+							}
+						}
+					]
+				},
+				{
+					"entryName": "skull_sword",
+					"type": "minecraft:item",
+					"name": "treasure2:skull_sword",
+					"weight": 10,
+					"conditions": [
+						{
+							"condition": "minecraft:random_chance",
+							"chance": 0.30
+						}
+					]
+				},
+				{
+					"entryName": "eye_patch",
+					"type": "minecraft:item",
+					"name": "treasure2:eye_patch",
+					"weight": 10,
+					"conditions": [
+						{
+							"condition": "minecraft:random_chance",
+							"chance": 0.30
+						}
+					]
+				},
+				{
+					"entryName": "sapphire",
+					"type": "minecraft:item",
+					"name": "treasure2:sapphire",
+					"weight": 10
+				},
+				{
+					"entryName": "ruby",
+					"type": "minecraft:item",
+					"name": "treasure2:ruby",
+					"weight": 10
+				},
+				{
+					"entryName": "white_pearl",
+					"type": "minecraft:item",
+					"name": "treasure2:white_pearl",
+					"weight": 8
+				},
+				{
+					"entryName": "painting_blocks_sand",
+					"type": "minecraft:item",
+					"name": "treasure2:painting_blocks_sand",
+					"weight": 10,
+					"conditions": [
+						{
+							"condition": "minecraft:random_chance",
+							"chance": 0.4
+						}
+					]
+				},
+				{
+					"entryName": "painting_blocks_wood",
+					"type": "minecraft:item",
+					"name": "treasure2:painting_blocks_wood",
+					"weight": 10,
+					"conditions": [
+						{
+							"condition": "minecraft:random_chance",
+							"chance": 0.4
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,24 @@
+{
+	"version": "1.0",
+	"type": "minecraft:chest",
+	"pools": [
+		{
+			"name": "epic_food",
+			"rolls": 1,
+			"entries": [
+					{
+					"entryName": "golden_apple",
+					"type": "minecraft:item",
+					"name": "minecraft:golden_apple",
+					"weight": 50
+				},
+				{
+					"entryName": "golden_carrot",
+					"type": "minecraft:item",
+					"name": "minecraft:golden_carrot",
+					"weight": 50
+				}
+			]
+		}
+	]
+}

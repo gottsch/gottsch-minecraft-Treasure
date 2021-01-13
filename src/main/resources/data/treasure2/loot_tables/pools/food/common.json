@@ -3,43 +3,88 @@
 	"type": "minecraft:chest",
 	"pools": [
 		{
-			"name": "uncommon_items",
+			"name": "common_food",
 			"rolls": 1,
 			"entries": [
 				{
-					"entryName": "spectral_arrow",
+					"entryName": "apple",
 					"type": "minecraft:item",
-					"name": "minecraft:spectral_arrow",
-					"weight": 15,
+					"name": "minecraft:apple",
+					"weight": 80,
 					"functions": [
 						{
 							"function": "minecraft:set_count",
 							"count": {
-								"min": 2,
-								"max": 6
+								"min": 1,
+								"max": 5
 							}
 						}
 					]
 				},
 				{
-					"entryName": "iron_ingot",
+					"entryName": "wheat",
 					"type": "minecraft:item",
-					"name": "minecraft:iron_ingot",
-					"weight": 20,
+					"name": "minecraft:wheat",
+					"weight": 80,
 					"functions": [
 						{
 							"function": "minecraft:set_count",
 							"count": {
 								"min": 2,
-								"max": 7
+								"max": 5
 							}
 						}
 					]
 				},
 				{
-					"entryName": "paper",
+					"entryName": "wheat_seeds",
 					"type": "minecraft:item",
-					"name": "minecraft:paper",
+					"name": "minecraft:wheat_seeds",
+					"weight": 80,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 3,
+								"max": 5
+							}
+						}
+					]
+				},
+				{
+					"entryName": "brown_mushroom",
+					"type": "minecraft:item",
+					"name": "minecraft:brown_mushroom",
+					"weight": 80,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 5
+							}
+						}
+					]
+				},
+				{
+					"entryName": "red_mushroom",
+					"type": "minecraft:item",
+					"name": "minecraft:red_mushroom",
+					"weight": 80,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 5
+							}
+						}
+					]
+				},
+				{
+					"entryName": "porkchop",
+					"type": "minecraft:item",
+					"name": "minecraft:porkchop",
 					"weight": 25,
 					"functions": [
 						{
@@ -52,24 +97,9 @@
 					]
 				},
 				{
-					"entryName": "reeds",
+					"entryName": "rabbit",
 					"type": "minecraft:item",
-					"name": "minecraft:reeds",
-					"weight": 50,
-					"functions": [
-						{
-							"function": "minecraft:set_count",
-							"count": {
-								"min": 1,
-								"max": 2
-							}
-						}
-					]
-				},
-				{
-					"entryName": "book",
-					"type": "minecraft:item",
-					"name": "minecraft:book",
+					"name": "minecraft:rabbit",
 					"weight": 25,
 					"functions": [
 						{
@@ -82,15 +112,54 @@
 					]
 				},
 				{
-					"entryName": "bowl",
+					"entryName": "egg",
 					"type": "minecraft:item",
-					"name": "minecraft:bowl",
-					"weight": 30
+					"name": "minecraft:egg",
+					"weight": 80,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 3
+							}
+						}
+					]
 				},
 				{
-					"entryName": "redstone",
+					"entryName": "chicken",
 					"type": "minecraft:item",
-					"name": "minecraft:redstone",
+					"name": "minecraft:chicken",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				},
+				{
+					"entryName": "fish",
+					"type": "minecraft:item",
+					"name": "minecraft:fish",
+					"weight": 35,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 5
+							}
+						}
+					]
+				},
+				{
+					"entryName": "cooked_fish",
+					"type": "minecraft:item",
+					"name": "minecraft:cooked_fish",
 					"weight": 30,
 					"functions": [
 						{
@@ -103,10 +172,31 @@
 					]
 				},
 				{
-					"entryName": "redstone_torch",
+					"entryName": "beef",
 					"type": "minecraft:item",
-					"name": "minecraft:redstone_torch",
-					"weight": 40,
+					"name": "minecraft:beef",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 3
+							}
+						}
+					]
+				},
+				{
+					"entryName": "pumpkin",
+					"type": "minecraft:item",
+					"name": "minecraft:pumpkin",
+					"weight": 15
+				},
+				{
+					"entryName": "pumpkin_seeds",
+					"type": "minecraft:item",
+					"name": "minecraft:pumpkin_seeds",
+					"weight": 50,
 					"functions": [
 						{
 							"function": "minecraft:set_count",
@@ -118,10 +208,16 @@
 					]
 				},
 				{
-					"entryName": "coal",
+					"entryName": "melon",
 					"type": "minecraft:item",
-					"name": "minecraft:coal",
-					"weight": 50,
+					"name": "minecraft:melon",
+					"weight": 10
+				},
+				{
+					"entryName": "melon_seeds",
+					"type": "minecraft:item",
+					"name": "minecraft:melon_seeds",
+					"weight": 10,
 					"functions": [
 						{
 							"function": "minecraft:set_count",
@@ -133,73 +229,16 @@
 					]
 				},
 				{
-					"entryName": "bow",
+					"entryName": "mutton",
 					"type": "minecraft:item",
-					"name": "minecraft:bow",
-					"weight": 25
-				},
-				{
-					"entryName": "clay",
-					"type": "minecraft:item",
-					"name": "minecraft:clay",
-					"weight": 15,
-					"functions": [
-						{
-							"function": "minecraft:set_count",
-							"count": {
-								"min": 1,
-								"max": 3
-							}
-						}
-					]
-				},
-				{
-					"entryName": "bucket",
-					"type": "minecraft:item",
-					"name": "minecraft:bucket",
-					"weight": 50
-				},
-				{
-					"entryName": "slime_ball",
-					"type": "minecraft:item",
-					"name": "minecraft:slime_ball",
-					"weight": 35,
-					"functions": [
-						{
-							"function": "minecraft:set_count",
-							"count": {
-								"min": 1,
-								"max": 3
-							}
-						}
-					]
-				},
-				{
-					"entryName": "lead",
-					"type": "minecraft:item",
-					"name": "minecraft:lead",
-					"weight": 35,
-					"functions": [
-						{
-							"function": "minecraft:set_count",
-							"count": {
-								"min": 1,
-								"max": 3
-							}
-						}
-					]
-				},
-				{
-					"entryName": "fermented_spider_eye",
-					"type": "minecraft:item",
-					"name": "minecraft:fermented_spider_eye",
+					"name": "minecraft:mutton",
 					"weight": 25,
 					"functions": [
 						{
 							"function": "minecraft:set_count",
 							"count": {
 								"min": 1,
-								"max": 3
+								"max": 5
 							}
 						}
 					]

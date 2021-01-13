@@ -12,6 +12,7 @@
 		"structures/castle1.json",
 		"structures/cave1.json",
 		"structures/cave2.json",
+		"structures/church1.json",
 		"structures/cobb1.json",
 		"structures/crypt1.json",
 		"structures/crypt2.json",
@@ -39,7 +40,6 @@
 		"structures/underwater-ruin2.json",
 		"structures/underwater-ruin3.json",
 		"structures/wither-chamber1.json",
-
 		"structures/canopy-wishing-well1.json",
 		"structures/desert-wishing-well1.json",
 		"structures/desert-wishing-well2.json",

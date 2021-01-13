@@ -1,6 +1,5 @@
 {
 	"version": "1.0",
-	"type": "minecraft:chest",
 	"pools": [
 		{
 			"name": "scarce_items",
@@ -8,22 +7,22 @@
 			"entries": [
 				{
 					"entryName": "arrow",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:arrow",
 					"weight": 50,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 10,
 								"max": 20
 							}
 						}
-					]
-				},
+					]						
+				},			
 				{
 					"entryName": "tnt",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:tnt",
 					"weight": 35,
 					"functions": [
@@ -34,11 +33,11 @@
 								"max": 2
 							}
 						}
-					]
+					]						
 				},
 				{
 					"entryName": "blaze_powder",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:blaze_powder",
 					"weight": 25,
 					"functions": [
@@ -49,11 +48,11 @@
 								"max": 4
 							}
 						}
-					]
+					]						
 				},
 				{
 					"entryName": "diamond",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:diamond",
 					"weight": 15,
 					"functions": [
@@ -64,11 +63,11 @@
 								"max": 2
 							}
 						}
-					]
-				},
+					]						
+				},				
 				{
 					"entryName": "iron_ingot",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:iron_ingot",
 					"weight": 20,
 					"functions": [
@@ -79,11 +78,11 @@
 								"max": 12
 							}
 						}
-					]
+					]						
 				},
 				{
 					"entryName": "iron_block",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:iron_block",
 					"weight": 15,
 					"functions": [
@@ -94,20 +93,20 @@
 								"max": 2
 							}
 						}
-					]
+					]							
 				},
 				{
 					"entryName": "ender_pearl",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:ender_pearl",
-					"weight": 15
+					"weight": 15				
 				},
 				{
 					"entryName": "gunpowder",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:gunpowder",
 					"weight": 20
-				}
+				}				
 			]
 		}
 	]

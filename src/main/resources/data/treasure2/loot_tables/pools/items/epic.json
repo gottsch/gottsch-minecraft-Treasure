@@ -1,6 +1,5 @@
 {
 	"version": "1.0",
-	"type": "minecraft:chest",
 	"pools": [
 		{
 			"name": "epic_items",
@@ -8,97 +7,97 @@
 			"entries": [
 				{
 					"entryName": "shulker_box",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:black_shulker_box",
-					"weight": 15
+					"weight": 15					
 				},
 				{
 					"entryName": "shulker_shell",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:shulker_shell",
-					"weight": 20
+					"weight": 20			
 				},
 				{
 					"entryName": "dragon_breath",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:dragon_breath",
-					"weight": 15
-				},
+					"weight": 15				
+				},		
 				{
 					"entryName": "elytra",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:elytra",
 					"weight": 10
 				},
 				{
 					"entryName": "totem_of_undying",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:totem_of_undying",
-					"weight": 10
-				},
+					"weight": 10				
+				},		
 				{
 					"entryName": "experience_bottle",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:experience_bottle",
 					"weight": 50,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 1,
 								"max": 3
 							}
 						}
-					]
+					]						
 				},
 				{
 					"entryName": "emerald",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:emerald",
 					"weight": 50,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 1,
 								"max": 3
 							}
 						}
-					]
+					]							
 				},
 				{
 					"entryName": "end_crystal",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:end_crystal",
 					"weight": 25,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 1,
 								"max": 2
 							}
 						}
-					]
-				},
+					]							
+				},			
 				{
 					"entryName": "chorus_fruit_popped",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:chorus_fruit_popped",
 					"weight": 25,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 1,
 								"max": 3
 							}
 						}
-					]
+					]							
 				},
 				{
 					"entryName": "skeleton_head",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:skull",
 					"weight": 5,
                     "functions": [
@@ -106,11 +105,11 @@
                             "function": "set_data",
                             "data": 0
                         }
-                    ]
+                    ]						
 				},
 				{
 					"entryName": "zombie_head",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:skull",
 					"weight": 5,
                     "functions": [
@@ -118,11 +117,11 @@
                             "function": "set_data",
                             "data": 2
                         }
-                    ]
+                    ]						
 				},
 				{
 					"entryName": "creeper_head",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "minecraft:skull",
 					"weight": 5,
                     "functions": [
@@ -130,8 +129,8 @@
                             "function": "set_data",
                             "data": 4
                         }
-                    ]
-				}
+                    ]						
+				}				
 			]
 		}
 	]
