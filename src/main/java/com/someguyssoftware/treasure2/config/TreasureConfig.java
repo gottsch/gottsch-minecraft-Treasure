@@ -113,6 +113,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static class BlockID {
         public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
         public static final String DESERT_WISHING_WELL_BLOCK_ID = "desert_wishing_well_block";
+        public static final String BLACKSTONE_ID = "blackstone";	
 		public static final String PROXIMITY_SPAWNER_ID = "proximity_spawner";
 		
 		public static final String GRAVESTONE1_STONE_ID = "gravestone1_stone";
@@ -140,7 +141,7 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String GRAVESTONE3_POLISHED_ANDESITE_ID = "gravestone3_polished_andesite";
 		public static final String GRAVESTONE3_POLISHED_DIORITE_ID = "gravestone3_polished_diorite";
 		public static final String GRAVESTONE3_OBSIDIAN_ID = "gravestone3_obsidian";
-		public static final String GRAVESTONE3_SMOOTH_QUARTZ_ID = "gravestone3_smooth_quartz";	
+		public static final String GRAVESTONE3_SMOOTH_QUARTZ_ID = "gravestone3_smooth_quartz";
 	}
 
 	public static class ChestID {

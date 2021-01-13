@@ -76,6 +76,7 @@ public class TreasureBlocks {
     public static final ProximityBlock PROXIMITY_SPAWNER;
     public static final Block WISHING_WELL_BLOCK;
     public static final Block DESERT_WISHING_WELL_BLOCK;
+    public static final Block BLACKSTONE;
 	
 	// gravestones
 	public static final Block GRAVESTONE1_STONE;
@@ -107,8 +108,7 @@ public class TreasureBlocks {
     
 	public static List<Block> BLOCKS = new ArrayList<>(100);
 	public static final Set<BlockItem> ITEM_BLOCKS = new HashSet<>();
-
-	public static List<Block> GRAVESTONES = new ArrayList<>(15);
+	public static List<Block> GRAVESTONES = new ArrayList<>(20);
 	
 	static {
 		/** initialize chest shapes/bounds */
@@ -307,6 +307,8 @@ public class TreasureBlocks {
                 .hardnessAndResistance(2.0F).sound(SoundType.STONE));
         DESERT_WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.BlockID.DESERT_WISHING_WELL_BLOCK_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
                 .hardnessAndResistance(2.0F).sound(SoundType.STONE));
+        BLACKSTONE = new WishingWellBlock(Treasure.MODID, TreasureConfig.BlockID.BLACKSTONE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE));
 
 		// TODO WITHER BIOME BLOCKS
 
@@ -365,6 +367,7 @@ public class TreasureBlocks {
         
         BLOCKS.add(WISHING_WELL_BLOCK);
         BLOCKS.add(DESERT_WISHING_WELL_BLOCK);
+        BLOCKS.add(BLACKSTONE);
 //        BLOCKS.add(PROXIMITY_SPAWNER);
         
         GRAVESTONES.add(GRAVESTONE1_STONE);

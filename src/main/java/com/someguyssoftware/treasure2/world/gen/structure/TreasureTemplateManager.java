@@ -241,7 +241,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		// TODO somehow extract the indexing of biomes to a helper class
 		if (meta.getBiomeWhiteList().contains("*")
 				|| (meta.getBiomeWhiteList().isEmpty() && meta.getBiomeBlackList().isEmpty())) {
-			List<Biome> biomes = (List<Biome>) ForgeRegistries.BIOMES.getValues();
+			Set<Biome> biomes = (Set<Biome>) ForgeRegistries.BIOMES.getValues();
 
 			for (Biome biome : biomes) {
 				if (!BiomeDictionary.hasType(biome, Type.END)
