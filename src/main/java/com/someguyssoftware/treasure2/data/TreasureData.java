@@ -100,8 +100,15 @@ public class TreasureData {
 		PIT_GENS.put(PitTypes.STANDARD, Pits.LAVA_TRAP_PIT,  new LavaTrapPitGenerator());
 		
 		PIT_GENS.put(PitTypes.STANDARD, Pits.TNT_TRAP_PIT,  new TntTrapPitGenerator());
-		PIT_GENS.put(PitTypes.STRUCTURE, Pits.TNT_TRAP_PIT,  new TntTrapPitGenerator());
-		
+        PIT_GENS.put(PitTypes.STRUCTURE, Pits.TNT_TRAP_PIT,  new TntTrapPitGenerator());
+        
+		PIT_GENS.put(PitTypes.STANDARD, Pits.MOB_TRAP_PIT,  new MobTrapPitGenerator());
+        PIT_GENS.put(PitTypes.STRUCTURE, Pits.MOB_TRAP_PIT,  new MobTrapPitGenerator());
+
+		PIT_GENS.put(PitTypes.STANDARD, Pits.BIG_BOTTOM_MOB_TRAP_PIT,  new BigBottomMobTrapPitGenerator());
+
+        PIT_GENS.put(PitTypes.STANDARD, Pits.VOLCANO_PIT,  new BigBottomMobTrapPitGenerator());
+        
 		for (String dimension : TreasureConfig.GENERAL.dimensionsWhiteList.get()) {
 			Treasure.LOGGER.debug("white list dimension -> {}", dimension);
 			CHEST_REGISTRIES.put(dimension, new ChestRegistry());

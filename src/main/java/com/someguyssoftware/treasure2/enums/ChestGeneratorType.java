@@ -18,15 +18,15 @@ import com.someguyssoftware.treasure2.generator.chest.UncommonChestGenerator;
  */
 public enum ChestGeneratorType {
 	COMMON(CommonChestGenerator::new),
-	UNCOMMON(UncommonChestGenerator::new);
-//	SCARCE(ScarceChestGenerator::new),
-//	RARE(RareChestGenerator::new),
-//	EPIC(EpicChestGenerator::new),
-//	WITHER(WitherChestGenerator::new),
-//	SKULL(SkullChestGenerator::new),
-//	GOLD_SKULL(GoldSkullChestGenerator::new),
-//	CRYSTAL_SKULL(CrystalSkullChestGenerator::new),
-//	CAULDRON(CauldronChestGenerator::new);
+	UNCOMMON(UncommonChestGenerator::new),
+	SCARCE(ScarceChestGenerator::new),
+	RARE(RareChestGenerator::new),
+	EPIC(EpicChestGenerator::new),
+	WITHER(WitherChestGenerator::new),
+	SKULL(SkullChestGenerator::new),
+	GOLD_SKULL(GoldSkullChestGenerator::new),
+	CRYSTAL_SKULL(CrystalSkullChestGenerator::new),
+	CAULDRON(CauldronChestGenerator::new);
 
 	private Supplier<IChestGenerator> factory;
 

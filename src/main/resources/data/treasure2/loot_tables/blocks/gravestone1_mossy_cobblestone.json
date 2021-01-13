@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "gravestone1_mossy_cobblestone",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "treasure2:gravestone1_mossy_cobblestone"
+        }
+      ]
+    }
+  ]
+}
