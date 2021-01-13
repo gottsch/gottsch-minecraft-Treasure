@@ -46,7 +46,7 @@ public class RareChestGenerator implements IChestGenerator {
 	public List<LootTableShell> buildLootTableList2(final Rarity chestRarity) {
 		// get all loot tables by column key
 		List<LootTableShell> tables = new ArrayList<>();
-		tables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByKeyRarity(Rarity.SCARCE));
+		tables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
 		tables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE));
 		return tables;
 	}	
@@ -57,7 +57,7 @@ public class RareChestGenerator implements IChestGenerator {
 	@Override
 	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
-		Treasure.logger.debug("# of locks to use: {})", numLocks);
+		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);
 		
 		return numLocks;
 	}

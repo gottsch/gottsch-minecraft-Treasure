@@ -13,15 +13,14 @@ import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
-import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.block.TreasureChestBlock;
+import com.someguyssoftware.treasure2.block.StandardChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
-import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 /**
@@ -64,9 +63,10 @@ public class CrystalSkullChestGenerator implements IChestGenerator {
 	 * Always select a wither chest.
 	 */
 	@Override
-	public TreasureChestBlock  selectChest(final Random random, final Rarity rarity) {
-		TreasureChestBlock chest = (TreasureChestBlock) TreasureBlocks.CRYSTAL_SKULL_CHEST;
-		return chest;
+	public StandardChestBlock  selectChest(final Random random, final Rarity rarity) {
+//		StandardChestBlock chest = (StandardChestBlock) TreasureBlocks.CRYSTAL_SKULL_CHEST;
+//		return chest;
+		return null;
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class CrystalSkullChestGenerator implements IChestGenerator {
 	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
-		Treasure.logger.debug("# of locks to use: {})", numLocks);
+		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);
 
 		return numLocks;
 	}

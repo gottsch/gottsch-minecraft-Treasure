@@ -11,7 +11,6 @@ import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity.GenerationContext;
 
 /**
  * 
@@ -40,7 +39,7 @@ public class EpicChestGenerator implements IChestGenerator {
 	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
-		Treasure.logger.debug("# of locks to use: {})", numLocks);
+		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);
 		
 		return numLocks;
 	}

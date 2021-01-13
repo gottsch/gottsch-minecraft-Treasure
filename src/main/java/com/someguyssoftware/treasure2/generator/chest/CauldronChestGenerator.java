@@ -8,13 +8,12 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 import com.someguyssoftware.gottschcore.loot.LootTableShell;
-import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.StandardChestBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 /**
@@ -57,8 +56,8 @@ public class CauldronChestGenerator extends EpicChestGenerator {
 	 * Always select a cauldron chest.
 	 */
 	@Override
-	public TreasureChestBlock  selectChest(final Random random, final Rarity rarity) {
-		TreasureChestBlock chest = (TreasureChestBlock) TreasureBlocks.CAULDRON_CHEST;
+	public StandardChestBlock  selectChest(final Random random, final Rarity rarity) {
+		StandardChestBlock chest = (StandardChestBlock) TreasureBlocks.CAULDRON_CHEST;
 		return chest;
 	}
 }

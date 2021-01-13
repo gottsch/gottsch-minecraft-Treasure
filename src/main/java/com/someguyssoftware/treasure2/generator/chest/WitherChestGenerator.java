@@ -9,12 +9,12 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 import com.someguyssoftware.gottschcore.loot.LootTableShell;
-import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
+import com.someguyssoftware.treasure2.block.StandardChestBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -22,12 +22,14 @@ import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 /**
@@ -69,8 +71,8 @@ public class WitherChestGenerator implements IChestGenerator {
 	 * Always select a wither chest.
 	 */
 	@Override
-	public TreasureChestBlock  selectChest(final Random random, final Rarity rarity) {
-		TreasureChestBlock chest = (TreasureChestBlock) TreasureBlocks.WITHER_CHEST;
+	public StandardChestBlock  selectChest(final Random random, final Rarity rarity) {
+		StandardChestBlock chest = (StandardChestBlock) TreasureBlocks.WITHER_CHEST;
 		return chest;
 	}
 	
@@ -80,7 +82,7 @@ public class WitherChestGenerator implements IChestGenerator {
 	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
-		Treasure.logger.debug("# of locks to use: {})", numLocks);
+		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);
 		
 		return numLocks;
 	}
@@ -107,7 +109,7 @@ public class WitherChestGenerator implements IChestGenerator {
 	 * Don't place any markers
 	 */
 	@Override
-	public void addMarkers(World world, Random random, ICoords coords, boolean isSurfaceChest) {
+	public void addMarkers(IWorld world, Random random, ICoords coords, boolean isSurfaceChest) {
 		return;
 	}
 	
@@ -120,13 +122,13 @@ public class WitherChestGenerator implements IChestGenerator {
 	 * @return
 	 */
 	@Override
-	public TileEntity placeInWorld(World world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
+	public TileEntity placeInWorld(IWorld world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
 		GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
 		// ensure that chest is of type WITHER_CHEST
 		if (world.getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST) {
 			// add top placeholder
-			world.setBlockState(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.getDefaultState());
+			world.setBlockState(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.getDefaultState(), 3);
 		}
 		// get the backing tile entity of the chest 
 		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());
@@ -134,22 +136,22 @@ public class WitherChestGenerator implements IChestGenerator {
 		// if tile entity failed to create, remove the chest
 		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
 			// remove chest
-			world.setBlockToAir(chestCoords.toPos());
-			Treasure.logger.debug("Unable to create TileEntityChest, removing BlockChest");
+			world.setBlockState(chestCoords.toPos(), Blocks.AIR.getDefaultState(), 3);
+			Treasure.LOGGER.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}
 		return te;
 	}
 	
 	@Override
-	public TileEntity placeInWorld(World world, Random random, ICoords chestCoords, AbstractChestBlock chest, IBlockState state) {
+	public TileEntity placeInWorld(IWorld world, Random random, ICoords chestCoords, AbstractChestBlock chest, BlockState state) {
 		// replace block @ coords
 		GenUtil.replaceBlockWithChest(world, random, chestCoords, chest, state);
 		
 		// ensure that chest is of type WITHER_CHEST
 		if (world.getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST) {
 			// add top placeholder
-			world.setBlockState(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.getDefaultState()); // TODO this needs to rotate to state as well.
+			world.setBlockState(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.getDefaultState(), 3); // TODO this needs to rotate to state as well.
 		}
 		// get the backing tile entity of the chest 
 		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());
@@ -157,8 +159,8 @@ public class WitherChestGenerator implements IChestGenerator {
 		// if tile entity failed to create, remove the chest
 		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
 			// remove chest
-			world.setBlockToAir(chestCoords.toPos());
-			Treasure.logger.debug("Unable to create TileEntityChest, removing BlockChest");
+			world.setBlockState(chestCoords.toPos(), Blocks.AIR.getDefaultState(), 3);
+			Treasure.LOGGER.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}
 		return te;

@@ -8,9 +8,17 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.CrystalSkullChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.RareChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.UncommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.WitherChestGenerator;
 
 /**
  * @author Mark Gottschling on Sep 4, 2020
