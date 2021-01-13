@@ -1,0 +1,89 @@
+{
+	"version": "1.0",
+	"category": "black_pearl_well",
+	"rarity": "epic",
+	"type": "minecraft:chest",
+	"pools": [
+		{
+			"name": "treasure",
+			"rolls": {
+				"min": 2,
+				"max": 3
+			},
+			"entries": [
+                {
+                    "type": "minecraft:loot_table",
+                    "name": "treasure2:pools/treasure/epic",
+                    "weight": 1
+                }
+			]
+		},
+		{
+			"name": "items",
+			"rolls": {
+				"min": 2,
+				"max": 6
+			},
+			"entries": [
+                {
+                    "type": "minecraft:loot_table",
+                    "name": "treasure2:pools/items/epic",
+                    "weight": 1
+                }
+			]
+		},
+		{
+			"name": "armor",
+			"rolls": {
+				"min": 1,
+				"max": 2
+			},
+			"entries": [
+	                {
+                    "type": "minecraft:loot_table",
+                    "name": "treasure2:pools/armor/epic",
+                    "weight": 1
+                }
+			]
+		},
+		{
+			"name": "food",
+			"rolls": {
+				"min": 1,
+				"max": 2
+			},
+			"entries": [
+	                {
+                    "type": "minecraft:loot_table",
+                    "name": "treasure2:pools/food/epic",
+                    "weight": 1
+                }
+			]
+		},
+		{
+			"name": "tools",
+			"rolls": 1,
+			"entries": [
+	            {
+                    "type": "minecraft:loot_table",
+                    "name": "treasure2:pools/tools/epic",
+                    "weight": 1
+                }
+			]
+		},
+		{
+			"name": "potions",
+			"rolls": {
+				"min": 1,
+				"max": 2
+			},
+			"entries": [
+		            {
+                    "type": "minecraft:loot_table",
+                    "name": "treasure2:pools/potions/epic",
+                    "weight": 1
+                }
+			]
+		}
+	]
+}

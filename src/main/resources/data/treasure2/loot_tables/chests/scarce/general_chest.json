@@ -1,16 +1,19 @@
 {
 	"version": "1.0",
 	"category": "general",
-	"rarity": "uncommon",
+	"rarity": "scarce",
 	"type": "minecraft:chest",
 	"pools": [
 		{
 			"name": "treasure",
-			"rolls": 2,
+			"rolls": {
+				"min": 2,
+				"max": 3
+			},
 			"entries": [
                 {
                     "type": "minecraft:loot_table",
-                    "name": "treasure2:pools/treasure/uncommon",
+                    "name": "treasure2:pools/treasure/scarce",
                     "weight": 30
                 }
 			]
@@ -19,12 +22,12 @@
 			"name": "items",
 			"rolls": {
 				"min": 2,
-				"max": 4
+				"max": 3
 			},
 			"entries": [
                 {
                     "type": "minecraft:loot_table",
-                    "name": "treasure2:pools/items/uncommon",
+                    "name": "treasure2:pools/items/scarce",
                     "weight": 1
                 }
 			]
@@ -38,7 +41,7 @@
 			"entries": [
 	                {
                     "type": "minecraft:loot_table",
-                    "name": "treasure2:pools/armor/uncommon",
+                    "name": "treasure2:pools/armor/scarce",
                     "weight": 1
                 }
 			]
@@ -47,12 +50,12 @@
 			"name": "food",
 			"rolls": {
 				"min": 0,
-				"max": 2
+				"max": 1
 			},
 			"entries": [
 	                {
                     "type": "minecraft:loot_table",
-                    "name": "treasure2:pools/food/uncommon",
+                    "name": "treasure2:pools/food/scarce",
                     "weight": 1
                 }
 			]
@@ -66,13 +69,84 @@
 			"entries": [
 	            {
                     "type": "minecraft:loot_table",
-                    "name": "treasure2:pools/tools/uncommon",
+                    "name": "treasure2:pools/tools/scarce",
                     "weight": 1
                 }
 			]
 		},
 		{
 			"name": "potions",
+			"rolls": {
+				"min": 1,
+				"max": 2
+			},
+			"entries": [
+		            {
+                    "type": "minecraft:loot_table",
+                    "name": "treasure2:pools/potions/scarce",
+                    "weight": 1
+                }
+			]
+		},
+
+		{
+			"name": "uncommon_items",
+			"rolls": {
+				"min": 0,
+				"max": 4
+			},
+			"entries": [
+                {
+                    "type": "minecraft:loot_table",
+                    "name": "treasure2:pools/items/uncommon",
+                    "weight": 1
+                }
+			]
+		},
+		{
+			"name": "uncommon_armor",
+			"rolls": {
+				"min": 0,
+				"max": 2
+			},
+			"entries": [
+	                {
+                    "type": "minecraft:loot_table",
+                    "name": "treasure2:pools/armor/uncommon",
+                    "weight": 1
+                }
+			]
+		},
+		{
+			"name": "uncommon_food",
+			"rolls": {
+				"min": 0,
+				"max": 2
+			},
+			"entries": [
+	                {
+                    "type": "minecraft:loot_table",
+                    "name": "treasure2:pools/food/uncommon",
+                    "weight": 1
+                }
+			]
+		},
+		{
+			"name": "uncommon_tools",
+			"rolls": {
+				"min": 0,
+				"max": 1
+			},
+			"entries": [
+	            {
+                    "type": "minecraft:loot_table",
+                    "name": "treasure2:pools/tools/uncommon",
+                    "weight": 1
+                }
+			]
+		},
+		{
+			"name": "uncommon_potions",
 			"rolls": {
 				"min": 0,
 				"max": 2
@@ -81,77 +155,6 @@
 		            {
                     "type": "minecraft:loot_table",
                     "name": "treasure2:pools/potions/uncommon",
-                    "weight": 1
-                }
-			]
-		},
-
-		{
-			"name": "common_items",
-			"rolls": {
-				"min": 0,
-				"max": 2
-			},
-			"entries": [
-                {
-                    "type": "minecraft:loot_table",
-                    "name": "treasure2:pools/items/common",
-                    "weight": 1
-                }
-			]
-		},
-		{
-			"name": "common_armor",
-			"rolls": {
-				"min": 0,
-				"max": 1
-			},
-			"entries": [
-	                {
-                    "type": "minecraft:loot_table",
-                    "name": "treasure2:pools/armor/common",
-                    "weight": 1
-                }
-			]
-		},
-		{
-			"name": "common_food",
-			"rolls": {
-				"min": 0,
-				"max": 1
-			},
-			"entries": [
-	                {
-                    "type": "minecraft:loot_table",
-                    "name": "treasure2:pools/food/common",
-                    "weight": 1
-                }
-			]
-		},
-		{
-			"name": "common_tools",
-			"rolls": {
-				"min": 0,
-				"max": 1
-			},
-			"entries": [
-	            {
-                    "type": "minecraft:loot_table",
-                    "name": "treasure2:pools/tools/common",
-                    "weight": 1
-                }
-			]
-		},
-		{
-			"name": "common_potions",
-			"rolls": {
-				"min": 0,
-				"max": 1
-			},
-			"entries": [
-		            {
-                    "type": "minecraft:loot_table",
-                    "name": "treasure2:pools/potions/common",
                     "weight": 1
                 }
 			]
