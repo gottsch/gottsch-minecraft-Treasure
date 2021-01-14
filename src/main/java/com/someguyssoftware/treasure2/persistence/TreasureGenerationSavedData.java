@@ -40,8 +40,6 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	
 	public static final String GEN_DATA_KEY = Treasure.MODID + ":generationData";
 
-//	private static final String SURFACE_CHEST_GEN_TAG_NAME = "surfaceChestGen";
-//	private static final String SUBMERGED_CHEST_GEN_TAG_NAME = "submergedChestGen";
 //	private static final String OASIS_GEN_TAG_NAME = "oasisGen";
 	private static final String KEY_TAG_NAME = "key";
 //	private static final String COUNT_TAG_NAME = "count";
@@ -117,40 +115,27 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 			}
 		});
 		
-		// TODO
-		///// ChestConfig Registry /////
-		TreasureData.CHEST_REGISTRIES.entrySet().forEach(entry -> {
-			
-		});
-//		ChestRegistry chestRegistry = ChestRegistry.getInstance();
-//		Treasure.LOGGER.debug("ChestConfig Registry size before loading -> {}", chestRegistry.getValues().size());
-//		chestRegistry.clear();
-//		// load the chest registry
-//		NBTTagList chestRegistryTagList = treasureGen.getTagList(CHEST_REGISTRY_TAG_NAME, 10);
-//		for (int i = 0; i < chestRegistryTagList.tagCount(); i++) {
-//			NBTTagCompound chunkTag = chestRegistryTagList.getCompoundTagAt(i);
-//			String key = chunkTag.getString(KEY_TAG_NAME);
-//			String rarity = chunkTag.getString(RARITY_TAG_NAME);
-//			NBTTagCompound coords = chunkTag.getCompoundTag(COORDS_TAG_NAME);
-//			int x = coords.getInteger("x");
-//			int y = coords.getInteger("y");
-//			int z = coords.getInteger("z");
-//			chestRegistry.register(key, new ChestInfo(Rarity.getByValue(rarity), new Coords(x, y, z)));
-//		}
-		
-//		///// Chests /////
-//		/// Surface Chests ///
-//		if (surfaceTag != null) {
-//			surfaceChestGen.setChunksSinceLastChest(surfaceTag.getInteger(CHUNKS_SINCE_LAST_CHEST_TAG_NAME));
-//			NBTTagList chunksSinceTagList = surfaceTag.getTagList(CHUNKS_SINCE_LAST_RARITY_CHEST_TAG_NAME, 10);
-//			// load all the chunks since last rarity chest properites
-//			for (int i = 0; i < chunksSinceTagList.tagCount(); i++) {
-//				NBTTagCompound chunkTag = chunksSinceTagList.getCompoundTagAt(i);
-//				int count = chunkTag.getInteger(COUNT_TAG_NAME);
-//				String key = chunkTag.getString(KEY_TAG_NAME);
-//				surfaceChestGen.getChunksSinceLastRarityChest().put(Rarity.valueOf(key), count);
-//			}
-//		}
+        ///// ChestConfig Registry /////
+        ListNBT chestRegistriesTag = genTag.getList("chestRegistries", 10);
+        if (chestRegistriesTag != null) {
+            chestRegistriesTag.forEach(dimTag -> {
+                String dimensionID = ((CompoundNBT) dimTag).getString(DIMENSION_ID_TAG_NAME);
+                Treasure.LOGGER.debug("loading dimension -> {}", dimensionID);
+                // get the registry
+                ListNBT registries = dimTag.getList(CHEST_REGISTRY_TAG_NAME, 10);
+                registries.forEach(registryTag -> {
+                    String key = registryTab.getString(KEY_TAG_NAME);
+                    String rarity = registryTag.getString(RARITY_TAG_NAME);
+                    CompoundTag coords = registryTag.get(COORDS_TAG_NAME);
+                    int x = coords.getInt("x");
+                    int y = coords.getInt("y");
+                    int z = coords.getInt("z");
+                    Treasure.LOGGER.debug("loading registry entry -> k:{} r:{} x:{} y:{} z:{}", key, rarity, x, y, z);
+                    TreasureData.CHEST_REGISTRIES.get(dimensionID).register(key, new ChestInfo(Rarity.getByValue(rarity), new Coords(x, y, z)));
+                });
+                    
+            });
+        }
 
 //		
 //		/// Oasis ///
