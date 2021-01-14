@@ -203,7 +203,6 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 
 				// reset chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
 				chunksSinceLastDimensionRarityChest.get(dimensionName).put(rarity, 0);
-				//				chunksSinceLastRarityChest.put(rarity, 0);
 
 				// generate the chest/pit/chambers
 				Treasure.LOGGER.debug("Attempting to generate pit/chest.");
@@ -215,11 +214,9 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 				GeneratorResult<GeneratorData> result = null;
 				result = generateChest(world, random, spawnCoords, rarity, TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SURFACE_CHEST).next(), TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
 
-				//				GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class).success();
-
 				if (result.isSuccess()) {
 					// add to registry
-					//    				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
+					TreasureData.CHEST_REGISTRIES.get(dimensionName).register(spawnCoords.toShortString(), new ChestInfo(rarity, spawnCoords));
 					// reset the chunk counts
 					chunksSinceLastDimensionChest.put(dimensionName, 0);
 				}				

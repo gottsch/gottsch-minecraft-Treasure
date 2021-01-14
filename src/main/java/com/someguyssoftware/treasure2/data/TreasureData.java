@@ -67,7 +67,7 @@ public class TreasureData {
 
 	// the pit chestGeneratorsMap
 	public static final Table<PitTypes, Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> PIT_GENS =  HashBasedTable.create();
-	
+
 	// well generator(s)
 	public static final IWellGenerator<GeneratorResult<GeneratorData>> WELL_GEN = new WellGenerator();
 
@@ -82,13 +82,37 @@ public class TreasureData {
 		CHESTS_BY_RARITY_FLAGS.put(Rarity.COMMON, ChestEnvironment.SURFACE, TreasureBlocks.WOOD_CHEST);
 
 		// setup chest collection generator maps
-		//		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(COMMON).isEnableChest()) {
-		//			RARITIES.add(COMMON);
-		addRarityToMap(WorldGenerators.SURFACE_CHEST, Rarity.COMMON);
-		CHEST_GENS.put(Rarity.COMMON, WorldGenerators.SURFACE_CHEST, new RandomWeightedCollection<>());
-		CHEST_GENS.get(Rarity.COMMON, WorldGenerators.SURFACE_CHEST).add(1, ChestGeneratorType.COMMON.getChestGenerator());
-		//		}
-
+		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(Rarity.COMMON).isEnableChest()) {
+			addRarityToMap(WorldGenerators.SURFACE_CHEST, Rarity.COMMON);
+			CHEST_GENS.put(Rarity.COMMON, WorldGenerators.SURFACE_CHEST, new RandomWeightedCollection<>());
+			CHEST_GENS.get(Rarity.COMMON, WorldGenerators.SURFACE_CHEST).add(1, ChestGeneratorType.COMMON.getChestGenerator());
+		}
+		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(Rarity.UNCOMMON).isEnableChest()) {
+			addRarityToMap(WorldGenerators.SURFACE_CHEST, Rarity.UNCOMMON);
+			CHEST_GENS.put(Rarity.UNCOMMON, WorldGenerators.SURFACE_CHEST, new RandomWeightedCollection<>());
+			CHEST_GENS.get(Rarity.UNCOMMON, WorldGenerators.SURFACE_CHEST).add(1, ChestGeneratorType.UNCOMMON.getChestGenerator());
+		}
+		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(Rarity.SCARCE).isEnableChest()) {
+			addRarityToMap(WorldGenerators.SURFACE_CHEST, Rarity.SCARCE);
+			CHEST_GENS.put(Rarity.SCARCE, WorldGenerators.SURFACE_CHEST, new RandomWeightedCollection<>());
+			CHEST_GENS.get(Rarity.SCARCE, WorldGenerators.SURFACE_CHEST).add(75, ChestGeneratorType.SCARCE.getChestGenerator());
+			CHEST_GENS.get(Rarity.SCARCE, WorldGenerators.SURFACE_CHEST).add(25, ChestGeneratorType.SKULL.getChestGenerator());
+		}
+		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(Rarity.RARE).isEnableChest()) {
+			addRarityToMap(WorldGenerators.SURFACE_CHEST, Rarity.RARE);
+			CHEST_GENS.put(Rarity.RARE, WorldGenerators.SURFACE_CHEST, new RandomWeightedCollection<>());
+			CHEST_GENS.get(Rarity.RARE, WorldGenerators.SURFACE_CHEST).add(85, ChestGeneratorType.RARE.getChestGenerator());
+			CHEST_GENS.get(Rarity.RARE, WorldGenerators.SURFACE_CHEST).add(15, ChestGeneratorType.GOLD_SKULL.getChestGenerator());
+		}
+		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(Rarity.EPIC).isEnableChest()) {
+			addRarityToMap(WorldGenerators.SURFACE_CHEST, Rarity.EPIC);
+			CHEST_GENS.put(Rarity.EPIC, WorldGenerators.SURFACE_CHEST, new RandomWeightedCollection<>());
+			CHEST_GENS.get(Rarity.EPIC, WorldGenerators.SURFACE_CHEST).add(240, ChestGeneratorType.EPIC.getChestGenerator());
+			CHEST_GENS.get(Rarity.EPIC, WorldGenerators.SURFACE_CHEST).add(30, ChestGeneratorType.CRYSTAL_SKULL.getChestGenerator());
+			CHEST_GENS.get(Rarity.EPIC, WorldGenerators.SURFACE_CHEST).add(30, ChestGeneratorType.CAULDRON.getChestGenerator());
+		}
+		
+		
 		// setup pit generators
 		PIT_GENS.put(PitTypes.STANDARD, Pits.SIMPLE_PIT, new SimplePitGenerator());
 		PIT_GENS.put(PitTypes.STRUCTURE, Pits.SIMPLE_PIT, new StructurePitGenerator(new SimplePitGenerator()));
@@ -98,19 +122,19 @@ public class TreasureData {
 
 		PIT_GENS.put(PitTypes.STANDARD, Pits.LAVA_SIDE_TRAP_PIT,  new LavaSideTrapPitGenerator());
 		PIT_GENS.put(PitTypes.STRUCTURE, Pits.LAVA_SIDE_TRAP_PIT,  new LavaSideTrapPitGenerator());
-		
+
 		PIT_GENS.put(PitTypes.STANDARD, Pits.LAVA_TRAP_PIT,  new LavaTrapPitGenerator());
-		
+
 		PIT_GENS.put(PitTypes.STANDARD, Pits.TNT_TRAP_PIT,  new TntTrapPitGenerator());
-        PIT_GENS.put(PitTypes.STRUCTURE, Pits.TNT_TRAP_PIT,  new TntTrapPitGenerator());
-        
+		PIT_GENS.put(PitTypes.STRUCTURE, Pits.TNT_TRAP_PIT,  new TntTrapPitGenerator());
+
 		PIT_GENS.put(PitTypes.STANDARD, Pits.MOB_TRAP_PIT,  new MobTrapPitGenerator());
-        PIT_GENS.put(PitTypes.STRUCTURE, Pits.MOB_TRAP_PIT,  new MobTrapPitGenerator());
+		PIT_GENS.put(PitTypes.STRUCTURE, Pits.MOB_TRAP_PIT,  new MobTrapPitGenerator());
 
 		PIT_GENS.put(PitTypes.STANDARD, Pits.BIG_BOTTOM_MOB_TRAP_PIT,  new BigBottomMobTrapPitGenerator());
 
-        PIT_GENS.put(PitTypes.STANDARD, Pits.VOLCANO_PIT,  new BigBottomMobTrapPitGenerator());
-        
+		PIT_GENS.put(PitTypes.STANDARD, Pits.VOLCANO_PIT,  new BigBottomMobTrapPitGenerator());
+
 		for (String dimension : TreasureConfig.GENERAL.dimensionsWhiteList.get()) {
 			Treasure.LOGGER.debug("white list dimension -> {}", dimension);
 			CHEST_REGISTRIES.put(dimension, new ChestRegistry());
