@@ -3,40 +3,48 @@
  */
 package com.someguyssoftware.treasure2.item;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
+import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.cube.Cube;
+import com.someguyssoftware.gottschcore.block.BlockContext;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.loot.LootPoolShell;
 import com.someguyssoftware.gottschcore.loot.LootTableShell;
-import com.someguyssoftware.gottschcore.positional.Coords;
-import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.gottschcore.spatial.Coords;
+import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.IWishingWellBlock;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.item.wish.IWishable;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameterSets;
+import net.minecraft.world.storage.loot.LootParameters;
 import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * 
@@ -46,7 +54,10 @@ import net.minecraft.world.storage.loot.LootPool;
 public class CoinItem extends ModItem {
 	private static final int MAX_CUSTOM_STACK_SIZE = 64;
 	public static final int MAX_STACK_SIZE = 8;
-		
+	
+	// TODO move to IWishable when added
+	public static final String DROPPED_BY_KEY = "droppedBy";
+	
 	private Coins coin;
 	
 	/**
@@ -54,7 +65,7 @@ public class CoinItem extends ModItem {
 	 */
 	public CoinItem (String modID, String name, Item.Properties properties)	 {
         super(modID, name, properties.group(TreasureItemGroups.MOD_ITEM_GROUP)
-        .maxStackSize(Math.min(MAX_CUSTOM_STACK_SIZE, TreasureConfig.COINS.maxStackSize)));
+        		.maxStackSize(Math.min(MAX_CUSTOM_STACK_SIZE, TreasureConfig.COINS.coinMaxStackSize.get())));
 		// set the coin to gold by default
 		this.coin = Coins.GOLD;
 	}
@@ -64,37 +75,35 @@ public class CoinItem extends ModItem {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-        
-		tooltip.add(TextFormatting.GOLD + "" + TextFormatting.ITALIC + new TranslationTextComponent("tooltip.label.coin"));
-		// tooltip.add(TextFormatting.GOLD + "" + TextFormatting.ITALIC + I18n.translateToLocal("tooltip.label.coin"));
+	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.addInformation(stack, worldIn, tooltip, flagIn);        
+		tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "" + TextFormatting.ITALIC + "tooltip.label.coin"));
 	}
 	
 	/**
 	 * 
 	 */
 	@Override
-	public boolean onEntityItemUpdate(EntityItem entityItem) {
+	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entityItem) {
 		// get the item stack or number of items.
 		ItemStack entityItemStack = entityItem.getItem();
 		
 		World world = entityItem.getEntityWorld();
 		if (WorldInfo.isClientSide(world)) {
-			return super.onEntityItemUpdate(entityItem);
+			return super.onEntityItemUpdate(stack, entityItem);
 		}
 		
 		// get the position
 		ICoords coords = new Coords(entityItem.getPosition());
-		BlockContext cube = new BlockContext(world, coords);
+		BlockContext blockContext = new BlockContext(world, coords);
 		int numWishingWellBlocks = 0;
 		// check if in water
-		if (cube.equalsBlock(Blocks.WATER)) {
+		if (blockContext.equalsBlock(Blocks.WATER)) {
 			// check if the water block is adjacent to 2 wishing well blocks
 			ICoords checkCoords = coords.add(-1, 0, -1);
 			for (int z = 0; z < 3; z++) {
 				for (int x = 0; x < 3; x++) {
-					Cube checkCube = new Cube(world, checkCoords);
+					BlockContext checkCube = new BlockContext(world, checkCoords);
 					if (checkCube.toBlock() instanceof IWishingWellBlock) {
 						numWishingWellBlocks++;
 					}					
@@ -114,7 +123,7 @@ public class CoinItem extends ModItem {
 			}
 		}
 		
-		return super.onEntityItemUpdate(entityItem);
+		return super.onEntityItemUpdate(stack, entityItem);
 	}
 	
 	/**
@@ -124,17 +133,17 @@ public class CoinItem extends ModItem {
 	 * @param entityItem
 	 * @param coords
 	 */
-	private void generateLootItem(World world, Random random, EntityItem entityItem, ICoords coords) {
+	private void generateLootItem(World world, Random random, ItemEntity entityItem, ICoords coords) {
 		List<LootTableShell> lootTables = new ArrayList<>();
 
 		// determine coin type
 		if (getCoin() == Coins.SILVER) {
-			lootTables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.UNCOMMON));
-			lootTables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.SCARCE));
+			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.UNCOMMON));
+			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
 		}
 		else if (getCoin() == Coins.GOLD) {					
-			lootTables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.SCARCE));
-			lootTables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.RARE));
+			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
+			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE));
 		}
 		
 		ItemStack stack = null;
@@ -143,6 +152,22 @@ public class CoinItem extends ModItem {
 			stack = new ItemStack(Items.APPLE);
 		}
 		else {
+			// attempt to get the player who dropped the coin
+			ItemStack coinItem = entityItem.getItem();
+			CompoundNBT nbt = coinItem.getTag();
+			PlayerEntity player = null;
+			if (nbt != null && nbt.contains(DROPPED_BY_KEY)) {
+				// TODO change to check by UUID
+				for (PlayerEntity p : world.getPlayers()) {
+					if (p.getName().getString().equalsIgnoreCase(nbt.getString(DROPPED_BY_KEY))) {
+						player = p;
+					}
+				}
+				if (player != null && LOGGER.isDebugEnabled()) {
+					LOGGER.debug("coin dropped by player -> {}", player.getName());
+				}
+			}
+			
 			// select a table shell
 			LootTableShell tableShell = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
 			if (tableShell.getResourceLocation() == null) {
@@ -150,43 +175,50 @@ public class CoinItem extends ModItem {
 			}
 			
 			// get the vanilla table from shell
-			net.minecraft.world.storage.loot.LootTable table = world.getLootTableManager().getLootTableFromLocation(tableShell.getResourceLocation());
+			LootTable table = world.getServer().getLootTableManager().getLootTableFromLocation(tableShell.getResourceLocation());
 			// get a list of loot pools
 			List<LootPoolShell> lootPoolShells = tableShell.getPools();
 			
+			// generate a context
+			LootContext lootContext = new LootContext.Builder((ServerWorld) world)
+					.withLuck((player != null) ? player.getLuck() : 0)
+					.withParameter(LootParameters.THIS_ENTITY, player)
+					.withParameter(LootParameters.POSITION, new BlockPos(coords.toPos())).build(LootParameterSets.CHEST);
+
 			List<ItemStack> itemStacks = new ArrayList<>();
 			for (LootPoolShell pool : lootPoolShells) {
-				logger.debug("coin: processing pool -> {}", pool.getName());
+				LOGGER.debug("coin: processing pool -> {}", pool.getName());
 				// go get the vanilla managed pool
 				LootPool lootPool = table.getPool(pool.getName());
 				
 				// geneate loot from pools
-				lootPool.generateLoot(itemStacks, random, Treasure.LOOT_TABLE_MASTER.getContext());
+				lootPool.generate(itemStacks::add, lootContext);
 			}
 			
+			// TODO add back when inject loot tables are working
 			// get effective rarity
-			Rarity effectiveRarity = Treasure.LOOT_TABLE_MASTER.getEffectiveRarity(tableShell, (getCoin() == Coins.SILVER) ? Rarity.UNCOMMON : Rarity.SCARCE);	
-			logger.debug("coin: using effective rarity -> {}", effectiveRarity);
-			
-			// get all injected loot tables
-			logger.debug("coin: searching for injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
-			Optional<List<LootTableShell>> injectLootTableShells = buildInjectedLootTableList(tableShell.getCategory(), effectiveRarity);			
-			if (injectLootTableShells.isPresent()) {
-				logger.debug("coin: found injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
-				logger.debug("coin: size of injectable tables -> {}", injectLootTableShells.get().size());
-
-				// attempt to get the player who dropped the coin
-				ItemStack coinItem = entityItem.getItem();
-				NBTTagCompound nbt = coinItem.getTagCompound();
-				EntityPlayer player = null;
-				if (nbt != null && nbt.hasKey(DROPPED_BY_KEY)) {					
-					player = world.getPlayerEntityByName(nbt.getString(DROPPED_BY_KEY));
-					if (player != null && logger.isDebugEnabled()) {
-						logger.debug("coin dropped by player -> {}", player.getName());
-					}
-				}
-				itemStacks.addAll(getLootItems(world, random, injectLootTableShells.get(), getLootContext(world, player)));
-			}
+//			Rarity effectiveRarity = Treasure.LOOT_TABLE_MASTER.getEffectiveRarity(tableShell, (getCoin() == Coins.SILVER) ? Rarity.UNCOMMON : Rarity.SCARCE);	
+//			LOGGER.debug("coin: using effective rarity -> {}", effectiveRarity);
+//			
+//			// get all injected loot tables
+//			LOGGER.debug("coin: searching for injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
+//			Optional<List<LootTableShell>> injectLootTableShells = buildInjectedLootTableList(tableShell.getCategory(), effectiveRarity);			
+//			if (injectLootTableShells.isPresent()) {
+//				LOGGER.debug("coin: found injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
+//				LOGGER.debug("coin: size of injectable tables -> {}", injectLootTableShells.get().size());
+//
+//				// attempt to get the player who dropped the coin
+//				ItemStack coinItem = entityItem.getItem();
+//				NBTTagCompound nbt = coinItem.getTagCompound();
+//				EntityPlayer player = null;
+//				if (nbt != null && nbt.hasKey(DROPPED_BY_KEY)) {					
+//					player = world.getPlayerEntityByName(nbt.getString(DROPPED_BY_KEY));
+//					if (player != null && LOGGER.isDebugEnabled()) {
+//						LOGGER.debug("coin dropped by player -> {}", player.getName());
+//					}
+//				}
+//				itemStacks.addAll(getLootItems(world, random, injectLootTableShells.get(), getLootContext(world, player)));
+//			}
 			
 			// select one item randomly
 			stack = itemStacks.get(RandomHelper.randomInt(0, itemStacks.size()-1));
@@ -197,7 +229,7 @@ public class CoinItem extends ModItem {
 			InventoryHelper.spawnItemStack(world, (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), stack);
 		}
 		// remove the item entity
-		entityItem.setDead();
+		entityItem.remove();
 	}
 
 	/**

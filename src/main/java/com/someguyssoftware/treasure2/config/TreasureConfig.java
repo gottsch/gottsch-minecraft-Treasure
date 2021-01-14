@@ -37,6 +37,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String PITS_CATEGORY = "pits";
 	public static final String MARKERS_CATEGORY = "markers";
 	public static final String KEYS_AND_LOCKS_CATEGORY = "keys and locks";
+	public static final String COINS_CATEGORY = "coins";
 
 	public static final General GENERAL;
 	public static final Chests CHESTS;
@@ -44,6 +45,7 @@ public class TreasureConfig extends AbstractConfig {
     public static final Markers MARKERS;
     public static final Wells WELLS;
 	public static final KeysAndLocks KEYS_LOCKS;
+	public static final Coins COINS;
 
 	public static final String CATEGORY_DIV = "##############################";
 	public static final String UNDERLINE_DIV = "------------------------------";
@@ -57,6 +59,7 @@ public class TreasureConfig extends AbstractConfig {
         MARKERS = new Markers(COMMON_BUILDER);
         WELLS = new Wells(COMMON_BUILDER);
 		KEYS_LOCKS = new KeysAndLocks(COMMON_BUILDER);
+		COINS = new Coins(COMMON_BUILDER);
 		COMMON_CONFIG = COMMON_BUILDER.build();
 
 		// load raw arrays into lists
@@ -73,6 +76,13 @@ public class TreasureConfig extends AbstractConfig {
 		TreasureConfig.mod = mod;
 	}
 
+	public static class ItemID {
+
+		public static final String SILVER_COIN_ID = "silver_coin";
+		public static final String GOLD_COIN_ID = "gold_coin";
+		
+	}
+	
 	public static class LockID {
 		public static final String WOOD_LOCK_ID = "wood_lock";
 		public static final String STONE_LOCK_ID = "stone_lock";
@@ -598,6 +608,26 @@ public class TreasureConfig extends AbstractConfig {
 					.comment(" The maximum uses for a given wither key.")
 					.defineInRange("Wither key max uses:", 5, 1, 32000);
 
+			builder.pop();
+		}
+	}
+	
+	/**
+	 * 
+	 * @author Mark Gottschling on Jan 13, 2021
+	 *
+	 */
+	public static class Coins {
+//		@RequiresMcRestart
+		public ForgeConfigSpec.ConfigValue<Integer> coinMaxStackSize;		
+
+		public Coins(final ForgeConfigSpec.Builder builder)	 {
+			builder.comment(CATEGORY_DIV, " Coins and Valuables properties", CATEGORY_DIV)
+			.push(COINS_CATEGORY);
+			
+			coinMaxStackSize = builder
+					.comment(" The maximum size of a coin item stack.")
+					.defineInRange("Maximum Stack Size:", 8, 1, 64);
 			builder.pop();
 		}
 	}

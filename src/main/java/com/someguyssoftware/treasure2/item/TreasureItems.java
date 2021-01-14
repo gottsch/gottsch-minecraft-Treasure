@@ -13,6 +13,7 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig.KeyID;
 import com.someguyssoftware.treasure2.config.TreasureConfig.LockID;
 import com.someguyssoftware.treasure2.enums.Category;
+import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.item.Item;
@@ -77,7 +78,11 @@ public class TreasureItems {
 	public static LockItem SPIDER_LOCK;
 	public static LockItem WITHER_LOCK;
 
-	// chest holder
+	// coins
+	public static Item SILVER_COIN;
+	public static Item GOLD_COIN;	
+		
+	// lock map
 	public static Multimap<Rarity, LockItem> locks;
 
 	static {
@@ -244,6 +249,11 @@ public class TreasureItems {
 		locks.put(SAPPHIRE_LOCK.getRarity(), SAPPHIRE_LOCK);
 		locks.put(SPIDER_LOCK.getRarity(), SPIDER_LOCK);
 		// NOTE wither lock is a special and isn't used in the general locks list
+		
+		// COINS
+		SILVER_COIN = new CoinItem(Treasure.MODID, TreasureConfig.ItemID.SILVER_COIN_ID, new Item.Properties()).setCoin(Coins.SILVER);
+		GOLD_COIN = new CoinItem(Treasure.MODID, TreasureConfig.ItemID.GOLD_COIN_ID, new Item.Properties());
+		
 	}
 
 	/**
@@ -287,7 +297,9 @@ public class TreasureItems {
 				SPIDER_KEY,
 				WITHER_KEY,
 				PILFERERS_LOCK_PICK,
-				THIEFS_LOCK_PICK
+				THIEFS_LOCK_PICK,
+				SILVER_COIN,
+				GOLD_COIN
 				);
 	}
 
