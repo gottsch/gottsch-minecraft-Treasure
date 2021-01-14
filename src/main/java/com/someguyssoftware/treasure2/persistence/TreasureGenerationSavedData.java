@@ -92,12 +92,17 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 					feature.getChunksSinceLastDimensionFeature().put(dimensionID, chunksSince);
 					Treasure.LOGGER.debug("loading chunks since -> {}", chunksSince);
 					ListNBT rarityTagList = ((CompoundNBT) dimTag).getList(RARITIES_TAG_NAME, 10);
+					if (rarityTagList != null && !rarityTagList.isEmpty()) {
+						Treasure.LOGGER.debug("rarity tag list size -> {}", rarityTagList.size());
+					}
 					for (int index = 0; index < rarityTagList.size(); index++) {
-						CompoundNBT rarityTag = dimTagList.getCompound(index);
+						CompoundNBT rarityTag = rarityTagList.getCompound(index);
 						String rarityID = rarityTag.getString(RARITY_TAG_NAME);
+						Treasure.LOGGER.debug("loading rarity ID -> {}", rarityID);
 						Rarity rarity = Rarity.getByValue(rarityID);
 						if (rarity != null) {
 							int chunksSinceRarityFeature = rarityTag.getInt(CHUNKS_SINCE_LAST_RARITY_FEATURE_TAG_NAME);
+							Treasure.LOGGER.debug("loading chunks since last rarity -> {} chunks -> {}", rarity, chunksSinceRarityFeature);
 							if (feature.getChunksSinceLastDimensionRarityFeature().containsKey(dimensionID)) {
 								feature.getChunksSinceLastDimensionRarityFeature().get(dimensionID).put(rarity, chunksSinceRarityFeature);
 							}
@@ -110,6 +115,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
         ///// ChestConfig Registry /////
         ListNBT chestRegistriesTag = genTag.getList("chestRegistries", 10);
         if (chestRegistriesTag != null) {
+        	Treasure.LOGGER.debug("loading chest registries...");
             chestRegistriesTag.forEach(dimTag -> {
                 String dimensionID = ((CompoundNBT) dimTag).getString(DIMENSION_ID_TAG_NAME);
                 Treasure.LOGGER.debug("loading dimension -> {}", dimensionID);
@@ -198,29 +204,29 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 			///// Chests //////
 			// for each feature
 			TreasureFeatures.FEATURES.forEach(feature -> {
+				Treasure.LOGGER.debug("saving feature -> {}", ((IForgeRegistryEntry)feature).getRegistryName().toString());
 				CompoundNBT featureTag = new CompoundNBT();
-				
 				// add the feature gen last count to the treasure compound for each dimension
 				ListNBT dimTagList = new ListNBT();
 				for (Entry<String, Integer> entry : feature.getChunksSinceLastDimensionFeature().entrySet()) {
-					Treasure.LOGGER.debug("feature dimension ID -> {}", entry.getKey());
+					Treasure.LOGGER.debug("saving feature dimension ID -> {}", entry.getKey());
 					
 					CompoundNBT dimensionTag = new CompoundNBT();
 					dimensionTag.putString(DIMENSION_ID_TAG_NAME, entry.getKey());
 					dimensionTag.putInt(CHUNKS_SINCE_LAST_FEATURE_TAG_NAME, entry.getValue());
-					Treasure.LOGGER.debug("chunks since last feature -> {}", entry.getValue());
+					Treasure.LOGGER.debug("saving chunks since last feature -> {}", entry.getValue());
 					
 					// get the rarity map
 					if (feature.getChunksSinceLastDimensionRarityFeature().containsKey(entry.getKey())) {
 						Map<Rarity, Integer> rarityMap = feature.getChunksSinceLastDimensionRarityFeature().get(entry.getKey());
-						Treasure.LOGGER.debug("rarity map size -> {}", rarityMap.size());
+						Treasure.LOGGER.debug("saving rarity map size -> {}", rarityMap.size());
 						
 						ListNBT rarityTagList = new ListNBT();
 						for (Entry<Rarity, Integer> rarityEntry : rarityMap.entrySet()) {
 							CompoundNBT rarityTag = new CompoundNBT();
 							rarityTag.putString(RARITY_TAG_NAME, rarityEntry.getKey().getValue());
 							rarityTag.putInt(CHUNKS_SINCE_LAST_RARITY_FEATURE_TAG_NAME, rarityEntry.getValue());
-							Treasure.LOGGER.debug("chunks since last rarity {} feature -> {}", rarityEntry.getKey(), rarityEntry.getValue());
+							Treasure.LOGGER.debug("saving chunks since last rarity -> {} ({}) chunks -> {}", rarityEntry.getKey(), rarityEntry.getKey().getValue(), rarityEntry.getValue());
 							rarityTagList.add(rarityTag);
 						}						
 						dimensionTag.put(RARITIES_TAG_NAME, rarityTagList);

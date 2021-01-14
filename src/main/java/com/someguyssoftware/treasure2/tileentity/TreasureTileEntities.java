@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.tileentity;
 
+import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -37,12 +38,20 @@ public class TreasureTileEntities {
 	public static TileEntityType<CauldronChestTileEntity> cauldronChestTileEntityType;
 	public static TileEntityType<SpiderChestTileEntity> spiderChestTileEntityType;
 	public static TileEntityType<VikingChestTileEntity> vikingChestTileEntityType;
+	
+	public static TileEntityType<ProximitySpawnerTileEntity> proximityTileEntityType;
 
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
 	public static class RegistrationHandler {
 
 		@SubscribeEvent
 		public static void onTileEntityTypeRegistration(final RegistryEvent.Register<TileEntityType<?>> event) {
+			  proximityTileEntityType = TileEntityType.Builder
+					  .create(() -> new ProximitySpawnerTileEntity(proximityTileEntityType), TreasureBlocks.PROXIMITY_SPAWNER)
+					  .build(null);
+				proximityTileEntityType.setRegistryName(TreasureConfig.TileEntityID.PROXIMITY_SPAWNER_TE_ID);
+				event.getRegistry().register(proximityTileEntityType);
+			  
 			// you probably don't need a datafixer --> null should be fine
 			woodChestTileEntityType = TileEntityType.Builder
 					.create(WoodChestTileEntity::new, TreasureBlocks.WOOD_CHEST)

@@ -2,7 +2,10 @@ package com.someguyssoftware.treasure2.config;
 
 import java.util.List;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import com.someguyssoftware.gottschcore.biome.BiomeTypeHolder;
+import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -84,9 +87,9 @@ public class ChestConfig implements IChestConfig {
 	 * @param builder
 	 * @param data
 	 */
-	public ChestConfig(Builder builder, Data data) {
+	public ChestConfig(Builder builder, String category, Data data) {
 		// build out properties
-		builder.comment(TreasureConfig.CATEGORY_DIV, " Common chest properties", TreasureConfig.CATEGORY_DIV).push("01-Common chest");
+		builder.comment(TreasureConfig.CATEGORY_DIV, " " + WordUtils.capitalizeFully(category) + " chest properties", TreasureConfig.CATEGORY_DIV).push(category);
 		
 		enableChest = builder
 			.comment(" Enable/Disable generating chests associated with this rarity.")
@@ -183,5 +186,13 @@ public class ChestConfig implements IChestConfig {
 	@Override
 	public List<String> getBiomeBlackList() {
 		return (List<String>) biomes.blackList.get();
+	}
+
+	@Override
+	public String toString() {
+		return "ChestConfig [enableChest=" + enableChest.get() + ", chunksPerChest=" + chunksPerChest.get() + ", genProbability="
+				+ genProbability.get() + ", minYSpawn=" + minYSpawn.get() + ", mimicProbability=" + mimicProbability.get()
+				+ ", surfaceAllowed=" + surfaceAllowed + ", subterraneanAllowed=" + subterraneanAllowed + ", biomes="
+				+ biomes + "]";
 	}
 }

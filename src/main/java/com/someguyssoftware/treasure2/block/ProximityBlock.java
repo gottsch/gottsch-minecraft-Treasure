@@ -5,12 +5,15 @@ package com.someguyssoftware.treasure2.block;
 
 import com.someguyssoftware.gottschcore.block.ModBlock;
 import com.someguyssoftware.gottschcore.tileentity.AbstractProximityTileEntity;
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.tileentity.TreasureTileEntities;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -44,12 +47,14 @@ public class ProximityBlock<E extends AbstractProximityTileEntity> extends ModBl
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader worldIn) {
 		AbstractProximityTileEntity proximityTileEntity = null;
+		Treasure.LOGGER.debug("creating proximity block tile entity...");
 		try {
-			proximityTileEntity = (AbstractProximityTileEntity) getTileEntityClass().newInstance();
+			proximityTileEntity = (AbstractProximityTileEntity) getTileEntityClass().getConstructor(TileEntityType.class).newInstance(TreasureTileEntities.proximityTileEntityType);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		Treasure.LOGGER.debug("created proximity te -> {}", proximityTileEntity);
 		return (TileEntity) proximityTileEntity;
 	}
 

@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
  * @author Mark Gottschling on Apr 26, 2018
  *
  */
-@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
+//@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.FORGE)
 public class PlayerEventHandler {
 
 	/**
@@ -28,12 +28,14 @@ public class PlayerEventHandler {
 		if (WorldInfo.isClientSide(event.getPlayer().world)) {
 			return;
 		}
-
+		Treasure.LOGGER.debug("is remote? -> {}", event.getPlayer().world.isRemote);
+Treasure.LOGGER.debug("{} tossing coin -> {}", event.getPlayer().getName().getString(), event.getEntityItem().getItem().getDisplayName());
 		Item item = event.getEntityItem().getItem().getItem();
 		if (item instanceof /*IWishable*/CoinItem) {
 			ItemStack stack = event.getEntityItem().getItem();
 			CompoundNBT nbt = new CompoundNBT();
 			nbt.putString(CoinItem.DROPPED_BY_KEY, event.getPlayer().getName().getString());
+			Treasure.LOGGER.debug("adding tag to coin stack...");
 			stack.setTag(nbt);			
 		}		
 	}

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
+import com.someguyssoftware.gottschcore.tileentity.AbstractProximityTileEntity;
 import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
@@ -73,7 +74,7 @@ public class TreasureBlocks {
 	public static final Block SPIDER_CHEST;
 	public static final Block VIKING_CHEST;
 
-    public static final ProximityBlock PROXIMITY_SPAWNER;
+    public static final ProximityBlock<? extends AbstractProximityTileEntity> PROXIMITY_SPAWNER;
     public static final Block WISHING_WELL_BLOCK;
     public static final Block DESERT_WISHING_WELL_BLOCK;
     public static final Block BLACKSTONE;

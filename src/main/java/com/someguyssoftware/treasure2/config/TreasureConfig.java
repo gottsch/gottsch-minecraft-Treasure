@@ -7,10 +7,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.someguyssoftware.gottschcore.config.AbstractConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.ChestConfig.Data;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -211,7 +213,7 @@ public class TreasureConfig extends AbstractConfig {
 		public ForgeConfigSpec.ConfigValue<Integer> surfaceStructureProbability;
 		
 		General(final ForgeConfigSpec.Builder builder) {
-			builder.comment(CATEGORY_DIV, " General properties for Treasure mod.", CATEGORY_DIV).push("03-general");
+			builder.comment(CATEGORY_DIV, " General properties for Treasure mod.", CATEGORY_DIV).push("general");
 
 			enableDefaultLootTablesCheck = builder
 					.comment(" Enable/Disable a check to ensure the default loot tables exist on the file system.", "If enabled, then you will not be able to remove any default loot tables (but they can be edited).", "Only disable if you know what you're doing.")
@@ -260,7 +262,7 @@ public class TreasureConfig extends AbstractConfig {
 			chestRegistrySize = builder
 					.comment("The number of chests that are monitored. Most recent additions replace least recent when the registry is full.",
 							"This is the set of chests used to measure distance between newly generated chests.")
-					.defineInRange("Max. size of chest registry:", 75, 5, 100);
+					.defineInRange("Maximum size of chest registry:", 75, 5, 100);
 			
 			Map<Rarity, ChestConfig.Data> surfaceConfigs = new HashMap<>();
 			Map<Rarity, ChestConfig.Data> submergedConfigs = new HashMap<>();
@@ -268,10 +270,13 @@ public class TreasureConfig extends AbstractConfig {
 			// setup surface properties
 			surfaceConfigs.put(Rarity.COMMON, new ChestConfig.Data(true, 75, 85, 50, 20.0, new String[] {}, new String[] {"ocean"}, new String[] {}, new String[] {}));
 			surfaceConfigs.put(Rarity.UNCOMMON, new ChestConfig.Data(true, 150, 75, 40, 17.5, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			surfaceConfigs.put(Rarity.SCARCE, new ChestConfig.Data(true, 300, 50, 30, 15, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			surfaceConfigs.put(Rarity.RARE, new ChestConfig.Data(true, 500, 25, 20, 0, new String[] {}, new String[] {"plains", "sunflower_plains"}, new String[] {}, new String[] {"plains"}));
+			surfaceConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 800, 15, 10, 0, new String[] {}, new String[] {"plains", "sunflower_plains"}, new String[] {}, new String[] {"plains"}));
 			
 			// TODO needs all the builder stuff
 			surfaceChests = new ChestCollection(builder,
-					"01-Surface Chests", 
+					"surface chests", 
 					new String[] {
 							CATEGORY_DIV,
 							" Chests that generate on land.", 
@@ -290,15 +295,15 @@ public class TreasureConfig extends AbstractConfig {
 //					new String[] {},
 //					new String[] {"ocean", "deep_ocean"});
 			
-			submergedChests = new ChestCollection(builder, 
-					"02-Submerged Chests", 
-					new String[] {
-							CATEGORY_DIV,
-							" Chests that generate underwater (in ocean biomes).", 
-							UNDERLINE_DIV,
-							" Note: There is a build-in check to only allow ocean biomes for submerged chests. Adding other biomes to the white lists will not change this functionality.",
-							CATEGORY_DIV,}, 
-					submergedConfigs);
+//			submergedChests = new ChestCollection(builder, 
+//					"submerged Chests", 
+//					new String[] {
+//							CATEGORY_DIV,
+//							" Chests that generate underwater (in ocean biomes).", 
+//							UNDERLINE_DIV,
+//							" Note: There is a build-in check to only allow ocean biomes for submerged chests. Adding other biomes to the white lists will not change this functionality.",
+//							CATEGORY_DIV,}, 
+//					submergedConfigs);
 
 			
 			builder.pop();
@@ -326,15 +331,15 @@ public class TreasureConfig extends AbstractConfig {
 			public ForgeConfigSpec.ConfigValue<Integer> minChunksPerChest;			
 			public ForgeConfigSpec.ConfigValue<Integer> minDistancePerChest;
 			public ForgeConfigSpec.ConfigValue<Integer> surfaceChestProbability;			
-			public ChestConfig commonChestProperties;
+//			public ChestConfig commonChestProperties;
 
 			/**
 			 * 
 			 * @param configs
 			 */
 			public ChestCollection(final ForgeConfigSpec.Builder builder, String category, String[] comments, Map<Rarity, ChestConfig.Data> configs) {
+				
 				builder.comment(comments).push(category);
-								
 				minChunksPerChest = builder
 						.comment(" The minimum number of chunks generated before another attempt to spawn a chest is made.")
 						.defineInRange("Minimum chunks per chest spawn:", 50, 25, 32000);
@@ -349,16 +354,26 @@ public class TreasureConfig extends AbstractConfig {
 						.comment(" The probability chest will appear on the surface, instead of in a pit.")
 						.defineInRange("Probability of chest spawn on the surface:", 15, 0, 100);
 				
-				commonChestProperties = new ChestConfig(builder, configs.get(Rarity.COMMON));
+//				commonChestProperties = new ChestConfig(builder, configs.get(Rarity.COMMON));
 			
 				// update the map
-				configMap.put(Rarity.COMMON, commonChestProperties);
-				
+				configMap.put(Rarity.COMMON, new ChestConfig(builder, Rarity.COMMON.getValue(), configs.get(Rarity.COMMON)));
+				configMap.put(Rarity.UNCOMMON, new ChestConfig(builder, Rarity.UNCOMMON.getValue(), configs.get(Rarity.UNCOMMON)));
+				configMap.put(Rarity.SCARCE, new ChestConfig(builder, Rarity.SCARCE.getValue(), configs.get(Rarity.SCARCE)));
+				configMap.put(Rarity.RARE, new ChestConfig(builder, Rarity.RARE.getValue(), configs.get(Rarity.RARE)));
+				configMap.put(Rarity.EPIC, new ChestConfig(builder, Rarity.EPIC.getValue(), configs.get(Rarity.EPIC)));
+
 				builder.pop();
 			}
 			
+			/*
+			 * 
+			 */
 			public void init() {
-				this.commonChestProperties.init();
+//				this.commonChestProperties.init();
+				for (IChestConfig config : configMap.values()) {
+					config.init();
+				}
 			}
 		}
 	}

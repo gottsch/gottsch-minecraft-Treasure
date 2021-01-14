@@ -155,6 +155,7 @@ public class CoinItem extends ModItem {
 			// attempt to get the player who dropped the coin
 			ItemStack coinItem = entityItem.getItem();
 			CompoundNBT nbt = coinItem.getTag();
+			LOGGER.debug("item as a tag");
 			PlayerEntity player = null;
 			if (nbt != null && nbt.contains(DROPPED_BY_KEY)) {
 				// TODO change to check by UUID
@@ -166,8 +167,12 @@ public class CoinItem extends ModItem {
 				if (player != null && LOGGER.isDebugEnabled()) {
 					LOGGER.debug("coin dropped by player -> {}", player.getName());
 				}
+				else {
+					LOGGER.debug("can't find player!");
+				}
 			}
-			
+			LOGGER.debug("player -> {}", player.getName().getString());
+
 			// select a table shell
 			LootTableShell tableShell = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
 			if (tableShell.getResourceLocation() == null) {
@@ -183,7 +188,7 @@ public class CoinItem extends ModItem {
 			LootContext lootContext = new LootContext.Builder((ServerWorld) world)
 					.withLuck((player != null) ? player.getLuck() : 0)
 					.withParameter(LootParameters.THIS_ENTITY, player)
-					.withParameter(LootParameters.POSITION, new BlockPos(coords.toPos())).build(LootParameterSets.CHEST);
+					.withParameter(LootParameters.POSITION, coords.toPos()).build(LootParameterSets.CHEST);
 
 			List<ItemStack> itemStacks = new ArrayList<>();
 			for (LootPoolShell pool : lootPoolShells) {

@@ -30,6 +30,7 @@ import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.data.TreasureData;
+import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.init.TreasureSetup;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster;
@@ -100,19 +101,9 @@ public class Treasure implements IMod {
 		// test accessing the logging properties
 		TreasureConfig.LOGGING.filename.get();
 
-		// TODO research overridding the log4j.json/xml to see if custom logging can be
-		// added
-//		try {
-			// works if file names are known
-//			FileUtils.copyInputStreamToFile(
-//			        Treasure.class.getClassLoader().getResourceAsStream("meta/treasure2/structures/basic1.json"),
-//			        Paths.get(Treasure.config.getConfigFolder(), this.getId(),"meta/treasure2/structures/basic1.json").toFile());
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		// needs to be registered here instead of @Mod.EventBusSubscriber because we need to pass in a constructor argument
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
+		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
 	}
 	
 	/**

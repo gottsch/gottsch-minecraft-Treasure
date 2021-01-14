@@ -1,40 +1,34 @@
 {
 	"version": "1.0",
 	"type": "minecraft:chest",
-	"pools": [
-		{
+	"pools": [{
 			"name": "treasure",
 			"rolls": 1,
-			"entries": [
-				{
+			"entries": [{
 					"entryName": "iron_key",
 					"type": "minecraft:item",
 					"name": "treasure2:iron_key",
 					"weight": 10,
-					"functions": [
-						{
-							"function": "minecraft:set_count",
-							"count": {
-								"min": 1,
-								"max": 2
-							}
+					"functions": [{
+						"function": "minecraft:set_count",
+						"count": {
+							"min": 1,
+							"max": 2
 						}
-					]
+					}]
 				},
 				{
 					"entryName": "gold_key",
 					"type": "minecraft:item",
 					"name": "treasure2:gold_key",
 					"weight": 20,
-					"functions": [
-						{
-							"function": "minecraft:set_count",
-							"count": {
-								"min": 1,
-								"max": 2
-							}
+					"functions": [{
+						"function": "minecraft:set_count",
+						"count": {
+							"min": 1,
+							"max": 2
 						}
-					]
+					}]
 				},
 				{
 					"entryName": "spider_key",
@@ -71,38 +65,33 @@
 					"type": "minecraft:item",
 					"name": "treasure2:silver_coin",
 					"weight": 30,
-					"functions": [
-						{
-							"function": "minecraft:set_count",
-							"count": {
-								"min": 1,
-								"max": 2
-							}
+					"functions": [{
+						"function": "minecraft:set_count",
+						"count": {
+							"min": 1,
+							"max": 2
 						}
-					]
+					}]
 				},
 				{
 					"entryName": "gold_coin",
 					"type": "minecraft:item",
 					"name": "treasure2:gold_coin",
 					"weight": 50,
-					"functions": [
-						{
-							"function": "minecraft:set_count",
-							"count": {
-								"min": 1,
-								"max": 4
-							}
+					"functions": [{
+						"function": "minecraft:set_count",
+						"count": {
+							"min": 1,
+							"max": 4
 						}
-					]
+					}]
 				}
 			]
-		}			
+		},
 		{
 			"name": "items",
 			"rolls": 4,
-			"entries": [
-				{
+			"entries": [{
 					"entryName": "ender_pearl",
 					"type": "minecraft:item",
 					"name": "minecraft:ender_pearl",
@@ -113,45 +102,39 @@
 					"type": "minecraft:item",
 					"name": "minecraft:blaze_powder",
 					"weight": 25,
-					"functions": [
-						{
-							"function": "minecraft:set_count",
-							"count": {
-								"min": 1,
-								"max": 4
-							}
+					"functions": [{
+						"function": "minecraft:set_count",
+						"count": {
+							"min": 1,
+							"max": 4
 						}
-					]
+					}]
 				},
 				{
 					"entryName": "diamond",
 					"type": "minecraft:item",
 					"name": "minecraft:diamond",
 					"weight": 35,
-					"functions": [
-						{
-							"function": "minecraft:set_count",
-							"count": {
-								"min": 2,
-								"max": 4
-							}
+					"functions": [{
+						"function": "minecraft:set_count",
+						"count": {
+							"min": 2,
+							"max": 4
 						}
-					]
+					}]
 				},
 				{
 					"entryName": "emerald",
 					"type": "minecraft:item",
 					"name": "minecraft:emerald",
 					"weight": 35,
-					"functions": [
-						{
-							"function": "minecraft:set_count",
-							"count": {
-								"min": 1,
-								"max": 2
-							}
+					"functions": [{
+						"function": "minecraft:set_count",
+						"count": {
+							"min": 1,
+							"max": 2
 						}
-					]
+					}]
 				},
 				{
 					"entryName": "sapphire",

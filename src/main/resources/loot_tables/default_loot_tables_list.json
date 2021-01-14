@@ -5,19 +5,37 @@
     "injectResources": [],
 		"chestResources": [
 			"chests/common/general_chest.json",
-			"chests/uncommon/general_chest.json"
+			"chests/uncommon/general_chest.json",
+			"chests/scarce/general_chest.json",
+			"chests/rare/general_chest.json",
+			"chests/epic/general_chest.json"
 	],
 	"specialResources": [
+			"chests/special/black_pearl_well.json",
+			"chests/special/cauldron_chest.json",
+			"chests/special/crystal_skull_chest.json",
+			"chests/special/gold_skull_chest.json",
+			"chests/special/skull_chest.json",
+			"chests/special/white_pearl_well.json",
+			"chests/special/wither_chest.json"
 	],
 
 	"chestLootTableFolderLocations": [
 		"chests/common",
-		"chests/uncommon"
+		"chests/uncommon",
+		"chests/scarce",
+		"chests/rare",
+		"chests/epic"
 	],
 	"specialLootTableFolderLocations": [
+		"chests/special"
 	],
 	"supportingLootTableFolderLocations": [
-		"pools/items"
+		"pools/armor",
+		"pools/food",
+		"pools/items",
+		"pools/potions",
+		"pools/tools"
     ],
     "injectLootTableFolderLocations": [
     ]
