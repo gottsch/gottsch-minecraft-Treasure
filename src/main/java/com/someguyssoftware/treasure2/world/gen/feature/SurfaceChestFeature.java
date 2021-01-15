@@ -124,7 +124,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 			return false;
 		}
 
-		Treasure.LOGGER.debug("in biome -> {} @ {}", biome.getRegistryName(), pos);
+//		Treasure.LOGGER.debug("in biome -> {} @ {}", biome.getRegistryName(), pos);
 
 		// increment the chunk counts
 		incrementDimensionalChestChunkCount(dimensionName);
@@ -137,7 +137,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 			//			chunksSinceLastRarityChest.put(rarity, ++i);	
 			incrementDimensionalRarityChestChunkCount(dimensionName, rarity);
 		}
-		Treasure.LOGGER.debug("chunks since dimension {} last chest -> {}, min chunks -> {}", dimensionName, chunksSinceLastDimensionChest.get(dimensionName), TreasureConfig.CHESTS.surfaceChests.minChunksPerChest.get());
+//		Treasure.LOGGER.debug("chunks since dimension {} last chest -> {}, min chunks -> {}", dimensionName, chunksSinceLastDimensionChest.get(dimensionName), TreasureConfig.CHESTS.surfaceChests.minChunksPerChest.get());
 
 		// test if min chunks was met
 		if (chunksSinceLastDimensionChest.get(dimensionName)/*chunksSinceLastChest*/ > TreasureConfig.CHESTS.surfaceChests.minChunksPerChest.get()) {
@@ -157,7 +157,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 				Treasure.LOGGER.warn("Unable to locate a chest for rarity {}.", rarity);
 				return false;
 			}
-
+			Treasure.LOGGER.debug("config for rarity -> {} = {}", rarity, chestConfig);
 			// get the chunks for dimensional rarity chest
 			int chunksPerRarity = chunksSinceLastDimensionRarityChest.get(dimensionName).get(rarity);//chunksSinceLastRarityChest.get(rarity);
 

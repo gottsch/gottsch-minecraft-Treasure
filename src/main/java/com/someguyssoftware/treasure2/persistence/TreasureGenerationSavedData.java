@@ -3,30 +3,22 @@
  */
 package com.someguyssoftware.treasure2.persistence;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Supplier;
 
-import com.google.common.collect.ListMultimap;
-import com.mojang.datafixers.types.templates.CompoundList;
+import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
-import com.someguyssoftware.treasure2.world.gen.feature.SurfaceChestFeature;
 import com.someguyssoftware.treasure2.world.gen.feature.TreasureFeatures;
 
-import net.minecraft.item.crafting.Ingredient.TagList;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.DimensionSavedDataManager;
-import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -100,12 +92,17 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 					feature.getChunksSinceLastDimensionFeature().put(dimensionID, chunksSince);
 					Treasure.LOGGER.debug("loading chunks since -> {}", chunksSince);
 					ListNBT rarityTagList = ((CompoundNBT) dimTag).getList(RARITIES_TAG_NAME, 10);
+					if (rarityTagList != null && !rarityTagList.isEmpty()) {
+						Treasure.LOGGER.debug("rarity tag list size -> {}", rarityTagList.size());
+					}
 					for (int index = 0; index < rarityTagList.size(); index++) {
-						CompoundNBT rarityTag = dimTagList.getCompound(index);
+						CompoundNBT rarityTag = rarityTagList.getCompound(index);
 						String rarityID = rarityTag.getString(RARITY_TAG_NAME);
+						Treasure.LOGGER.debug("loading rarity ID -> {}", rarityID);
 						Rarity rarity = Rarity.getByValue(rarityID);
 						if (rarity != null) {
 							int chunksSinceRarityFeature = rarityTag.getInt(CHUNKS_SINCE_LAST_RARITY_FEATURE_TAG_NAME);
+							Treasure.LOGGER.debug("loading chunks since last rarity -> {} chunks -> {}", rarity, chunksSinceRarityFeature);
 							if (feature.getChunksSinceLastDimensionRarityFeature().containsKey(dimensionID)) {
 								feature.getChunksSinceLastDimensionRarityFeature().get(dimensionID).put(rarity, chunksSinceRarityFeature);
 							}
@@ -118,15 +115,16 @@ public class TreasureGenerationSavedData extends WorldSavedData {
         ///// ChestConfig Registry /////
         ListNBT chestRegistriesTag = genTag.getList("chestRegistries", 10);
         if (chestRegistriesTag != null) {
+        	Treasure.LOGGER.debug("loading chest registries...");
             chestRegistriesTag.forEach(dimTag -> {
                 String dimensionID = ((CompoundNBT) dimTag).getString(DIMENSION_ID_TAG_NAME);
                 Treasure.LOGGER.debug("loading dimension -> {}", dimensionID);
                 // get the registry
-                ListNBT registries = dimTag.getList(CHEST_REGISTRY_TAG_NAME, 10);
+                ListNBT registries = ((CompoundNBT) dimTag).getList(CHEST_REGISTRY_TAG_NAME, 10);
                 registries.forEach(registryTag -> {
-                    String key = registryTab.getString(KEY_TAG_NAME);
-                    String rarity = registryTag.getString(RARITY_TAG_NAME);
-                    CompoundTag coords = registryTag.get(COORDS_TAG_NAME);
+                    String key = ((CompoundNBT)registryTag).getString(KEY_TAG_NAME);
+                    String rarity = ((CompoundNBT)registryTag).getString(RARITY_TAG_NAME);
+                    CompoundNBT coords = ((CompoundNBT)registryTag).getCompound(COORDS_TAG_NAME);
                     int x = coords.getInt("x");
                     int y = coords.getInt("y");
                     int z = coords.getInt("z");
@@ -166,25 +164,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 //		
 //		///// Gem Ore /////
 //		gemGen.setChunksSinceLastOre(treasureGen.getInteger("chunksSinceLastOre"));
-//		
-//		///// ChestConfig Registry /////
-//		ChestRegistry chestRegistry = ChestRegistry.getInstance();
-//		Treasure.LOGGER.debug("ChestConfig Registry size before loading -> {}", chestRegistry.getValues().size());
-//		chestRegistry.clear();
-//		// load the chest registry
-//		NBTTagList chestRegistryTagList = treasureGen.getTagList(CHEST_REGISTRY_TAG_NAME, 10);
-//		for (int i = 0; i < chestRegistryTagList.tagCount(); i++) {
-//			NBTTagCompound chunkTag = chestRegistryTagList.getCompoundTagAt(i);
-//			String key = chunkTag.getString(KEY_TAG_NAME);
-//			String rarity = chunkTag.getString(RARITY_TAG_NAME);
-//			NBTTagCompound coords = chunkTag.getCompoundTag(COORDS_TAG_NAME);
-//			int x = coords.getInteger("x");
-//			int y = coords.getInteger("y");
-//			int z = coords.getInteger("z");
-//			chestRegistry.register(key, new ChestInfo(Rarity.getByValue(rarity), new Coords(x, y, z)));
-//		}
-//		Treasure.LOGGER.debug("ChestConfig Registry size after loading -> {}", chestRegistry.getValues().size());
-//
+
 //		// Oasis Registry
 //		OasisRegistry oasisRegistry = OasisRegistry.getInstance();
 //		oasisRegistry.clear();
@@ -224,29 +204,29 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 			///// Chests //////
 			// for each feature
 			TreasureFeatures.FEATURES.forEach(feature -> {
+				Treasure.LOGGER.debug("saving feature -> {}", ((IForgeRegistryEntry)feature).getRegistryName().toString());
 				CompoundNBT featureTag = new CompoundNBT();
-				
 				// add the feature gen last count to the treasure compound for each dimension
 				ListNBT dimTagList = new ListNBT();
 				for (Entry<String, Integer> entry : feature.getChunksSinceLastDimensionFeature().entrySet()) {
-					Treasure.LOGGER.debug("feature dimension ID -> {}", entry.getKey());
+					Treasure.LOGGER.debug("saving feature dimension ID -> {}", entry.getKey());
 					
 					CompoundNBT dimensionTag = new CompoundNBT();
 					dimensionTag.putString(DIMENSION_ID_TAG_NAME, entry.getKey());
 					dimensionTag.putInt(CHUNKS_SINCE_LAST_FEATURE_TAG_NAME, entry.getValue());
-					Treasure.LOGGER.debug("chunks since last feature -> {}", entry.getValue());
+					Treasure.LOGGER.debug("saving chunks since last feature -> {}", entry.getValue());
 					
 					// get the rarity map
 					if (feature.getChunksSinceLastDimensionRarityFeature().containsKey(entry.getKey())) {
 						Map<Rarity, Integer> rarityMap = feature.getChunksSinceLastDimensionRarityFeature().get(entry.getKey());
-						Treasure.LOGGER.debug("rarity map size -> {}", rarityMap.size());
+						Treasure.LOGGER.debug("saving rarity map size -> {}", rarityMap.size());
 						
 						ListNBT rarityTagList = new ListNBT();
 						for (Entry<Rarity, Integer> rarityEntry : rarityMap.entrySet()) {
 							CompoundNBT rarityTag = new CompoundNBT();
 							rarityTag.putString(RARITY_TAG_NAME, rarityEntry.getKey().getValue());
 							rarityTag.putInt(CHUNKS_SINCE_LAST_RARITY_FEATURE_TAG_NAME, rarityEntry.getValue());
-							Treasure.LOGGER.debug("chunks since last rarity {} feature -> {}", rarityEntry.getKey(), rarityEntry.getValue());
+							Treasure.LOGGER.debug("saving chunks since last rarity -> {} ({}) chunks -> {}", rarityEntry.getKey(), rarityEntry.getKey().getValue(), rarityEntry.getValue());
 							rarityTagList.add(rarityTag);
 						}						
 						dimensionTag.put(RARITIES_TAG_NAME, rarityTagList);
@@ -339,14 +319,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 //
 //			oasisTag.setTag(DIMENSIONS_TAG_NAME, dimTagList);
 //			treasureGen.setTag(OASIS_GEN_TAG_NAME, oasisTag);
-//			
-//			///// Well ////
-//			// get the well world generator
-//			WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.WELL);
-//			
-//			// add the chest gen last count to the treasure compound
-//			treasureGen.setInteger("chunksSinceLastWell", wellGen.getChunksSinceLastWell());
-//			
+
 //			//// Wither Tree /////
 //			WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.WITHER_TREE);
 //			
@@ -357,34 +330,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 //			GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.GEM);
 //			treasureGen.setInteger("chunksSinceLastOre", gemGen.getChunksSinceLastOre());
 //			
-//			///// ChestConfig Registry /////
-//			NBTTagList chestRegistryTagList = new NBTTagList();
-//			ChestRegistry chestRegistry = ChestRegistry.getInstance();
-//			for (ChestInfo element : chestRegistry.getValues()) {
-//				NBTTagCompound entry = new NBTTagCompound();
-//				NBTTagString key = new NBTTagString(element.getCoords().toShortString());
-//				NBTTagString rarity = new NBTTagString(element.getRarity().getValue());
-//				NBTTagCompound coords = new NBTTagCompound();
-//				NBTTagInt x = new NBTTagInt(element.getCoords().getX());
-//				NBTTagInt y = new NBTTagInt(element.getCoords().getY());
-//				NBTTagInt z = new NBTTagInt(element.getCoords().getZ());
-//				
-//				coords.setTag("x", x);
-//				coords.setTag("y", y);
-//				coords.setTag("z", z);
-//				
-//				entry.setTag(KEY_TAG_NAME, key);
-//				entry.setTag(RARITY_TAG_NAME, rarity);
-//				entry.setTag(COORDS_TAG_NAME, coords);
-//				
-//				// add entry to list
-//				chestRegistryTagList.appendTag(entry);
-//			}
-//			// delete current tag
-//			treasureGen.removeTag(CHEST_REGISTRY_TAG_NAME);
-//			// add new values
-//			treasureGen.setTag(CHEST_REGISTRY_TAG_NAME, chestRegistryTagList);
-//			
+
 //			///// Oasis Registry (multi-dimensional) /////			
 //			OasisRegistry oasisRegistry = OasisRegistry.getInstance();
 //			NBTTagList oasisRegistryDimensionTagList = new NBTTagList();

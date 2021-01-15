@@ -81,6 +81,13 @@ public class BiomesConfig implements IBiomesConfig {
 //		BiomeHelper.loadBiomeList(this.whiteList.get(), this.typeHolderWhiteList);
 //		BiomeHelper.loadBiomeList(this.blackList.get(), this.typeHolderBlackList);	
 	}
+
+	@Override
+	public String toString() {
+		return "BiomesConfig [whiteList=" + whiteList.get() + ", blackList=" + blackList + ", typeWhiteList=" + typeWhiteList.get()
+				+ ", typeBlackList=" + typeBlackList.get() + ", typeHolderWhiteList=" + typeHolderWhiteList
+				+ ", typeHolderBlackList=" + typeHolderBlackList + "]";
+	}
 	
 //	@Override
 //	public List<Biome> getWhiteList() {

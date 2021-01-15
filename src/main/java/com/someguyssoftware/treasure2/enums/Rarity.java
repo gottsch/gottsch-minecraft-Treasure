@@ -36,13 +36,13 @@ public enum Rarity implements IRarity {
 			values.put(type.getValue(), type);
 		}
 	}
-
 	
 	/**
 	 * 
 	 * @param value
 	 */
 	Rarity(int code, String value) {
+		this.code = code;
 		this.value = value;
 	}
 	
