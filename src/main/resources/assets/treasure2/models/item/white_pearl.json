@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "treasure2:items/white_pearl_10"
+        "layer0": "treasure2:item/white_pearl_10"
     },
    "display": {
        "thirdperson_righthand": {

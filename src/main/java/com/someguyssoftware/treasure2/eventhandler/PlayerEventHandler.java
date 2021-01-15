@@ -3,6 +3,7 @@ package com.someguyssoftware.treasure2.eventhandler;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.item.CoinItem;
+import com.someguyssoftware.treasure2.item.PearlItem;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,7 +32,7 @@ public class PlayerEventHandler {
 		Treasure.LOGGER.debug("is remote? -> {}", event.getPlayer().world.isRemote);
 Treasure.LOGGER.debug("{} tossing coin -> {}", event.getPlayer().getName().getString(), event.getEntityItem().getItem().getDisplayName());
 		Item item = event.getEntityItem().getItem().getItem();
-		if (item instanceof /*IWishable*/CoinItem) {
+		if (item instanceof /*IWishable*/CoinItem || item instanceof PearlItem) {
 			ItemStack stack = event.getEntityItem().getItem();
 			CompoundNBT nbt = new CompoundNBT();
 			nbt.putString(CoinItem.DROPPED_BY_KEY, event.getPlayer().getName().getString());

@@ -84,7 +84,10 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String SILVER_COIN_ID = "silver_coin";
 		public static final String GOLD_COIN_ID = "gold_coin";
 		public static final String WITHER_STICK_ITEM_ID = "wither_stick_item";
-		
+		public static final String SAPPHIRE_ID = "sapphire";
+		public static final String RUBY_ID = "ruby";
+		public static final String WHITE_PEARL_ID = "white_pearl";
+		public static final String BLACK_PEARL_ID = "black_peral";		
 	}
 	
 	public static class LockID {

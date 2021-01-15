@@ -7,7 +7,6 @@ import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.block.BlockContext;
@@ -18,7 +17,6 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.IWishingWellBlock;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Coins;
@@ -34,7 +32,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -149,6 +146,7 @@ public class CoinItem extends ModItem {
 		ItemStack stack = null;
 		// handle if loot tables is null or size = 0. return an item (apple) to ensure continuing functionality
 		if (lootTables == null || lootTables.size() == 0) {
+			// TODO change to a randomized treasure key
 			stack = new ItemStack(Items.APPLE);
 		}
 		else {

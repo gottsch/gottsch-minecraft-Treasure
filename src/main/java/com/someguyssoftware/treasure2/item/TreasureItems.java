@@ -15,11 +15,13 @@ import com.someguyssoftware.treasure2.config.TreasureConfig.KeyID;
 import com.someguyssoftware.treasure2.config.TreasureConfig.LockID;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Coins;
+import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item.Properties;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -83,6 +85,12 @@ public class TreasureItems {
 	public static Item SILVER_COIN;
 	public static Item GOLD_COIN;	
 	
+	// gems
+	public static Item SAPPHIRE;
+	public static Item RUBY;
+	public static Item WHITE_PEARL;
+	public static Item BLACK_PEARL;
+		
 	// wither items
 	public static Item WITHER_STICK_ITEM;
 	public static Item WITHER_ROOT_ITEM;
@@ -262,6 +270,14 @@ public class TreasureItems {
 		SILVER_COIN = new CoinItem(Treasure.MODID, TreasureConfig.ItemID.SILVER_COIN_ID, new Item.Properties()).setCoin(Coins.SILVER);
 		GOLD_COIN = new CoinItem(Treasure.MODID, TreasureConfig.ItemID.GOLD_COIN_ID, new Item.Properties());
 		
+		// GEMS
+		SAPPHIRE = new GemItem(Treasure.MODID, TreasureConfig.ItemID.SAPPHIRE_ID, new Item.Properties());
+		RUBY = new GemItem(Treasure.MODID, TreasureConfig.ItemID.RUBY_ID, new Item.Properties());
+		
+		// PEARLS
+		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.ItemID.WHITE_PEARL_ID, new Item.Properties()).setPearl(Pearls.WHITE);
+		BLACK_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.ItemID.BLACK_PEARL_ID, new Item.Properties()).setPearl(Pearls.BLACK);
+				
 		// WITHER ITEMS
 		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_STICK_ITEM_ID, TreasureBlocks.WITHER_BRANCH, new Item.Properties());
 //		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.WITHER_ROOT_ITEM_ID);
@@ -311,6 +327,10 @@ public class TreasureItems {
 				THIEFS_LOCK_PICK,
 				SILVER_COIN,
 				GOLD_COIN,
+				RUBY,
+				SAPPHIRE,
+				WHITE_PEARL,
+				BLACK_PEARL,
 				WITHER_STICK_ITEM
 				);
 	}
