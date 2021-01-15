@@ -20,7 +20,7 @@ public class CrystalSkullChestTileEntity extends AbstractTreasureChestTileEntity
 	 * 
 	 * @param texture
 	 */
-	public GoldSkullChestTileEntity() {
+	public CrystalSkullChestTileEntity() {
 		super(TreasureTileEntities.crystalSkullChestTileEntityType);
 		setCustomName(new TranslationTextComponent("display.crystal_skull_chest.name"));
 	}

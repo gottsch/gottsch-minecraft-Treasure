@@ -61,9 +61,12 @@
 	"block.treasure2.wither_chest":"Wither Chest",
 	"block.treasure2.skull_chest":"Skull Chest",
 	"block.treasure2.gold_skull_chest":"Golden Skull Chest",
+	"block.treasure2.crystal_skull_chest":"Crystal Skull Chest",
 	"block.treasure2.cauldron_chest":"Cauldron Chest",
 	"block.treasure2.spider_chest":"Spider Chest",
 	"block.treasure2.viking_chest":"Viking Chest",
+	"block.treasure2.cardboard_box":"Cardboard Box",
+	"block.treasure2.milk_crate":"Milk Crate",
 
 	"block.treasure2.wishing_well_block":"Wishing Well Stone",
 	"block.treasure2.desert_wishing_well_block":"Desert Wishing Well Stone",
@@ -136,7 +139,10 @@
 	"display.wither_chest.name":"Wither Chest",
 	"display.skull_chest.name":"Skull Chest",
 	"display.gold_skull_chest.name":"Golden Skull Chest",
+	"display.crystal_skull_chest.name":"Crystal Skull Chest",
 	"display.cauldron_chest.name":"Cauldron Chest",
 	"display.spider_chest.name":"Spider Chest",
-	"display.viking_chest.name":"Viking Chest"
+	"display.viking_chest.name":"Viking Chest",
+	"display.cardboard_box.name":"Cardboard Box",
+	"display.milk_crate.name":"Milk Crate"
 }

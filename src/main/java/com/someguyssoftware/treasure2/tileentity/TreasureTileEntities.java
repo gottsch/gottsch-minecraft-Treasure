@@ -35,9 +35,12 @@ public class TreasureTileEntities {
 	public static TileEntityType<CompressorChestTileEntity> compressorChestTileEntityType;
 	public static TileEntityType<SkullChestTileEntity> skullChestTileEntityType;
 	public static TileEntityType<GoldSkullChestTileEntity> goldSkullChestTileEntityType;
+	public static TileEntityType<CrystalSkullChestTileEntity> crystalSkullChestTileEntityType;
 	public static TileEntityType<CauldronChestTileEntity> cauldronChestTileEntityType;
 	public static TileEntityType<SpiderChestTileEntity> spiderChestTileEntityType;
 	public static TileEntityType<VikingChestTileEntity> vikingChestTileEntityType;
+	public static TileEntityType<CardboardBoxTileEntity> cardboardBoxTileEntityType;
+	public static TileEntityType<MilkCrateTileEntity> milkCrateTileEntityType;
 	
 	public static TileEntityType<ProximitySpawnerTileEntity> proximityTileEntityType;
 
@@ -131,6 +134,12 @@ public class TreasureTileEntities {
 			goldSkullChestTileEntityType.setRegistryName(TreasureConfig.TileEntityID.GOLD_SKULL_CHEST_TE_ID);
 			event.getRegistry().register(goldSkullChestTileEntityType);
 			
+			crystalSkullChestTileEntityType = TileEntityType.Builder
+					.create(CrystalSkullChestTileEntity::new, TreasureBlocks.CRYSTAL_SKULL_CHEST)
+					.build(null);
+			crystalSkullChestTileEntityType.setRegistryName(TreasureConfig.TileEntityID.CRYSTAL_SKULL_CHEST_TE_ID);
+			event.getRegistry().register(crystalSkullChestTileEntityType);
+			
 			cauldronChestTileEntityType = TileEntityType.Builder
 					.create(CauldronChestTileEntity::new, TreasureBlocks.CAULDRON_CHEST)
 					.build(null);
@@ -150,6 +159,20 @@ public class TreasureTileEntities {
 					.build(null);
 			vikingChestTileEntityType.setRegistryName(TreasureConfig.TileEntityID.VIKING_CHEST_TE_ID);
 			event.getRegistry().register(vikingChestTileEntityType);
+			
+			// cardboard box
+			cardboardBoxTileEntityType = TileEntityType.Builder
+					.create(CardboardBoxTileEntity::new, TreasureBlocks.CARDBOARD_BOX)
+					.build(null);
+			cardboardBoxTileEntityType.setRegistryName(TreasureConfig.TileEntityID.CARDBOARD_BOX_TE_ID);
+			event.getRegistry().register(cardboardBoxTileEntityType);
+			
+			// milk crate
+			milkCrateTileEntityType = TileEntityType.Builder
+					.create(MilkCrateTileEntity::new, TreasureBlocks.MILK_CRATE)
+					.build(null);
+			milkCrateTileEntityType.setRegistryName(TreasureConfig.TileEntityID.MILK_CRATE_TE_ID);
+			event.getRegistry().register(milkCrateTileEntityType);
 		}
 	}
 }

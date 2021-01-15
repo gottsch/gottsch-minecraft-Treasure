@@ -21,6 +21,10 @@ public class SkullChestTileEntityRenderer extends AbstractChestTileEntityRendere
 		return new SkullChestTileEntityRenderer(tileEntityRendererDispatcher, new ResourceLocation(Treasure.MODID + ":textures/entity/chest/gold-skull-chest.png"));
 	}
 	
+	public static SkullChestTileEntityRenderer createCrystalSkull(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
+		return new SkullChestTileEntityRenderer(tileEntityRendererDispatcher, new ResourceLocation(Treasure.MODID + ":textures/entity/chest/crystal-skull-chest.png"));
+	}
+	
 	/**
 	 * 
 	 * @param tileEntityRendererDispatcher

@@ -18,7 +18,7 @@ import net.minecraft.util.text.TranslationTextComponent;
  * @author Mark Gottschling on Nov 29, 2020
  *
  */
-public class CardboardBoxChestTileEntity extends AbstractTreasureChestTileEntity {
+public class CardboardBoxTileEntity extends AbstractTreasureChestTileEntity {
 	/** The angle of the latch last tick */
 	public float prevInnerLidPos;
 
@@ -35,10 +35,14 @@ public class CardboardBoxChestTileEntity extends AbstractTreasureChestTileEntity
 	 * @param texture
 	 */
 	public CardboardBoxTileEntity() {
-		super();
-		setCustomName(I18n.translateToLocal("display.cardboard_box.name"));
+		super(TreasureTileEntities.crateChestTileEntityType);
+		setCustomName(new TranslationTextComponent("display.cardboard_box.name"));
 	}
 
+	public CardboardBoxTileEntity(TileEntityType<? extends CardboardBoxTileEntity> tileEntityType) {
+		super(tileEntityType);
+		setCustomName(new TranslationTextComponent("display.cardboard_box.name"));
+	}
 	/**
 	 * 
 	 * @param windowID
@@ -100,10 +104,11 @@ public class CardboardBoxChestTileEntity extends AbstractTreasureChestTileEntity
 			if (isLidOpen) {
 				// play the opening chest sound the at the beginning of opening
 				if (isInnerLidClosed) {
-					double d1 = (double) x + 0.5D;
-					double d2 = (double) z + 0.5D;
-					this.world.playSound((EntityPlayer) null, d1, (double) y + 0.5D, d2, SoundEvents.BLOCK_CHEST_OPEN,
-							SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+//					double d1 = (double) x + 0.5D;
+//					double d2 = (double) z + 0.5D;
+//					this.world.playSound((PlayerEntity) null, d1, (double) y + 0.5D, d2, SoundEvents.BLOCK_CHEST_OPEN,
+//							SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+					this.playSound(SoundEvents.BLOCK_CHEST_OPEN);
 				}
 
 				// test the inner lid
@@ -139,10 +144,11 @@ public class CardboardBoxChestTileEntity extends AbstractTreasureChestTileEntity
 			// play the closing soud
 			if (isInnerLidClosed ) {
 				if (isLidOpen) {
-					double d3 = (double) x + 0.5D;
-					double d0 = (double) z + 0.5D;
-					this.world.playSound((EntityPlayer) null, d3, (double) y + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE,
-							SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+//					double d3 = (double) x + 0.5D;
+//					double d0 = (double) z + 0.5D;
+//					this.world.playSound((EntityPlayer) null, d3, (double) y + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE,
+//							SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+					this.playSound(SoundEvents.BLOCK_CHEST_CLOSE);
 				}
 				// test the outer lid
 				if (this.lidAngle > 0.0F) {

@@ -51,7 +51,7 @@ public class TreasureConfig extends AbstractConfig {
 
 	public static final String CATEGORY_DIV = "##############################";
 	public static final String UNDERLINE_DIV = "------------------------------";
-	
+		
 	static {
 		MOD = new Mod(COMMON_BUILDER);
 		LOGGING = new Logging(COMMON_BUILDER);
@@ -175,8 +175,8 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String CAULDRON_CHEST_ID = "cauldron_chest";
 		public static final String SPIDER_CHEST_ID = "spider_chest";
         public static final String VIKING_CHEST_ID = "viking_chest";
-        public static final String CARDBOARD_BOX = "cardboard_box";
-        public static final String MILK_CRATE = "milk_crate";
+        public static final String CARDBOARD_BOX_ID = "cardboard_box";
+        public static final String MILK_CRATE_ID = "milk_crate";
     }
 
 	public static class TileEntityID {
@@ -194,6 +194,7 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
 		public static final String SKULL_CHEST_TE_ID = "skull_chest_tile_entity";
 		public static final String GOLD_SKULL_CHEST_TE_ID = "gold_skull_chest_tile_entity";
+		public static final String CRYSTAL_SKULL_CHEST_TE_ID = "crystal_skull_chest_tile_entity";
 		public static final String CAULDRON_CHEST_TE_ID = "cauldron_chest_tile_entity";
 		public static final String OYSTER_CHEST_TE_ID = "oyster_chest_tile_entity";
 		public static final String CLAM_CHEST_TE_ID = "clam_chest_tile_entity";
@@ -202,6 +203,8 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
 		public static final String GRAVESTONE_TE_ID = "gravestone_tile_entity";
 		public static final String GRAVESTONE_PROXIMITY_SPAWNER_TE_ID = "gravestone_proximity_spawner_tile_entity";
+		public static final String CARDBOARD_BOX_TE_ID = "cardboard_box_tile_entity";
+		public static final String MILK_CRATE_TE_ID = "milk_crate_tile_entity";
 	}
 
 	/*
