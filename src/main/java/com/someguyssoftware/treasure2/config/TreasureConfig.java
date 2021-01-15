@@ -158,10 +158,13 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String WITHER_CHEST_ID = "wither_chest";
 		public static final String WITHER_CHEST_TOP_ID = "wither_chest_top";
 		public static final String SKULL_CHEST_ID = "skull_chest";
-		public static final String GOLD_SKULL_CHEST_ID = "gold_skull_chest";
+        public static final String GOLD_SKULL_CHEST_ID = "gold_skull_chest";
+        public static final String CRYSTAL_SKULL_CHEST_ID = "crystal_skull_chest";
 		public static final String CAULDRON_CHEST_ID = "cauldron_chest";
 		public static final String SPIDER_CHEST_ID = "spider_chest";
-		public static final String VIKING_CHEST_ID = "viking_chest";
+        public static final String VIKING_CHEST_ID = "viking_chest";
+        public static final String CARDBOARD_BOX = "cardboard_box";
+        public static final String MILK_CRATE = "milk_crate";
     }
 
 	public static class TileEntityID {

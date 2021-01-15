@@ -71,7 +71,10 @@ public class TreasureBlocks {
 	public static final Block GOLD_SKULL_CHEST;
 	public static final Block CAULDRON_CHEST;
 	public static final Block SPIDER_CHEST;
-	public static final Block VIKING_CHEST;
+    public static final Block VIKING_CHEST;
+    public static final Block CARDBOARD_BOX;
+    public static final Block MILK_CRATE;
+    public static final Block CRYSTAL_SKULL;
 
     public static final ProximityBlock PROXIMITY_SPAWNER;
     public static final Block WISHING_WELL_BLOCK;
@@ -172,6 +175,16 @@ public class TreasureBlocks {
 		witherChestBounds[2] = witherChestBounds[0]; // N
 		witherChestBounds[3] = witherChestBounds[0]; // E
 
+        VoxelShape cardboardBoxShape = Block.makeCuboidShape(1, 0, 1, 15, 15, 15);
+        VoxelShape[] cardboardBoxBounds = new VoxelShape[] {
+            cardboardBoxShape, cardboardBoxShape, cardboardBoxShape, cardboardBoxShape
+        };
+
+        VoxelShape milkCrateShape = Block.makeeCuboidShape(2.75, 0, 2.75, 13.25, 10.25, 13.25);
+        VoxelShape milkCrateBounds = new VoxelShape[] {
+            milkCrateShape, milkCrateShape, milkCrateShape, milkCrateShape
+        };
+
 		// gravestone bounds
 		VoxelShape[] gravestoneBounds = new VoxelShape[] {
 				Block.makeCuboidShape(2, 0, 6, 14, 12, 10.8),	// S
@@ -228,6 +241,10 @@ public class TreasureBlocks {
 				GoldSkullChestTileEntity.class, TreasureChestTypes.SKULL, Rarity.RARE, Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
 				.hardnessAndResistance(3.0F)).setBounds(skullChestBounds);
 
+        CRYSTAL_SKULL_CHEST = new StandardChestBlock(Treasure.MODID, TreasureConfig.CRYSTAL_SKULL_CHEST_ID,
+				CrystalSkullChestTileEntity.class, TreasureChestTypes.SKULL, Rarity.EPIC, Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
+				.hardnessAndResistance(3.0F)).setBounds(skullChestBounds);
+
 		CAULDRON_CHEST = new StandardChestBlock(Treasure.MODID, TreasureConfig.ChestID.CAULDRON_CHEST_ID,
 				CauldronChestTileEntity.class, TreasureChestTypes.TOP_SPLIT, Rarity.EPIC, Block.Properties.create(Material.IRON, MaterialColor.IRON)
 				.hardnessAndResistance(3.0F)).setBounds(spiderChestBounds);
@@ -239,6 +256,15 @@ public class TreasureBlocks {
 		VIKING_CHEST = new StandardChestBlock(Treasure.MODID, TreasureConfig.ChestID.VIKING_CHEST_ID,
 				VikingChestTileEntity.class, TreasureChestTypes.VIKING, Rarity.UNCOMMON, Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
 				.hardnessAndResistance(3.0F)).setBounds(vikingChestBounds);
+
+        CARDBOARD_BOX = new StandardChestBlock(Treasure.MODID, TreasureConfig.CARDBOARD_BOX_ID, CardboardBoxTileEntity.class,
+                TreasureChestTypes.TOP_SPLIT, Rarity.COMMON, Block.Properties.creaete(Material.WOOD, MaterialColor.WOOD)
+                .hardnessAndResistance(2.5F)).setBounds(cardboardBoxBounds);
+
+
+		MILK_CRATE = new StandardChestBlock(Treasure.MODID, TreasureConfig.MILK_CRATE_ID, MilkCrateTileEntity.class,
+                TreasureChestTypes.MILK_CRATE, Rarity.COMMON, Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
+                .hardnessAndResistance(2.5F)).setBounds(milkCrateBounds);
 
 		// TODO WITHER CHEST
 		WITHER_CHEST = new WitherChestBlock(Treasure.MODID, TreasureConfig.ChestID.WITHER_CHEST_ID, 
@@ -316,7 +342,6 @@ public class TreasureBlocks {
 
 		// TODO PAINTINGS
 
-		// TODO PROXIMITY BLOCKS
 		// proximity blocks
 		PROXIMITY_SPAWNER = new ProximityBlock<ProximitySpawnerTileEntity>(Treasure.MODID, TreasureConfig.BlockID.PROXIMITY_SPAWNER_ID,
 				ProximitySpawnerTileEntity.class, Block.Properties.create(Material.AIR).doesNotBlockMovement().noDrops());
@@ -333,10 +358,13 @@ public class TreasureBlocks {
 		BLOCKS.add(DREAD_PIRATE_CHEST);
 		BLOCKS.add(COMPRESSOR_CHEST);
 		BLOCKS.add(SKULL_CHEST);
-		BLOCKS.add(GOLD_SKULL_CHEST);
+        BLOCKS.add(GOLD_SKULL_CHEST);
+        BLOCKS.add(CRYSTAL_SKULL_CHEST);
 		BLOCKS.add(CAULDRON_CHEST);
 		BLOCKS.add(SPIDER_CHEST);
-		BLOCKS.add(VIKING_CHEST);
+        BLOCKS.add(VIKING_CHEST);
+        BLOCKS.add(CARDBOARD_BOX);
+        BLOCKS.add(MILK_CRATE);
 //		BLOCKS.add(WITHER_CHEST); // TODO this will have to be removed later when chests are registered by rarity unless using a table that flags wither chest
         BLOCKS.add(WITHER_CHEST_TOP);
         
