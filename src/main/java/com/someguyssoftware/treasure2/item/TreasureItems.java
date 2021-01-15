@@ -9,6 +9,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig.KeyID;
 import com.someguyssoftware.treasure2.config.TreasureConfig.LockID;
@@ -81,6 +82,13 @@ public class TreasureItems {
 	// coins
 	public static Item SILVER_COIN;
 	public static Item GOLD_COIN;	
+	
+	// wither items
+	public static Item WITHER_STICK_ITEM;
+	public static Item WITHER_ROOT_ITEM;
+
+	// swords
+	public static Item SKULL_SWORD;
 		
 	// lock map
 	public static Multimap<Rarity, LockItem> locks;
@@ -254,6 +262,9 @@ public class TreasureItems {
 		SILVER_COIN = new CoinItem(Treasure.MODID, TreasureConfig.ItemID.SILVER_COIN_ID, new Item.Properties()).setCoin(Coins.SILVER);
 		GOLD_COIN = new CoinItem(Treasure.MODID, TreasureConfig.ItemID.GOLD_COIN_ID, new Item.Properties());
 		
+		// WITHER ITEMS
+		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_STICK_ITEM_ID, TreasureBlocks.WITHER_BRANCH, new Item.Properties());
+//		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.WITHER_ROOT_ITEM_ID);
 	}
 
 	/**
@@ -299,7 +310,8 @@ public class TreasureItems {
 				PILFERERS_LOCK_PICK,
 				THIEFS_LOCK_PICK,
 				SILVER_COIN,
-				GOLD_COIN
+				GOLD_COIN,
+				WITHER_STICK_ITEM
 				);
 	}
 

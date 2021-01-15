@@ -32,7 +32,7 @@ public class CardboardBoxTileEntityRenderer extends AbstractChestTileEntityRende
 		setTexture(new ResourceLocation(Treasure.MODID + ":textures/entity/chest/cardboard-box.png"));
 		setModel(new CardboardBoxModel());
 	}
-
+	
 	@Override
 	public void updateModelRotationAngles(AbstractTreasureChestTileEntity tileEntity, float partialTicks) {
 		CardboardBoxTileEntity cte = (CardboardBoxTileEntity) tileEntity;
@@ -41,6 +41,11 @@ public class CardboardBoxTileEntityRenderer extends AbstractChestTileEntityRende
 		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
 		// NOTE positive rotation here (getLid() returns lidLeft property)
 		getModel().getLid().rotateAngleZ = (lidRotation * (float)Math.PI / getAngleModifier());
+	}
+	
+	@Override
+	public float getAngleModifier() {
+		return 0.8F;
 	}
 
 	@Override

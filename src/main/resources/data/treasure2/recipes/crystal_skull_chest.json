@@ -11,14 +11,14 @@
 		"data": 0
 	},
 	"G": {
-		"item": "minecraft:gold_ingot"
+		"item": "minecraft:diamond"
 	},
 	"T": {
 		"item": "treasure2:treasure_tool"
 	}
   },
   "result": {
-    "item": "treasure2:gold_skull_chest",
+    "item": "treasure2:crystal_skull_chest",
     "count": 1
   }
 }

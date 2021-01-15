@@ -15,6 +15,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.ChestConfig.Data;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
+import net.minecraft.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -82,6 +83,7 @@ public class TreasureConfig extends AbstractConfig {
 
 		public static final String SILVER_COIN_ID = "silver_coin";
 		public static final String GOLD_COIN_ID = "gold_coin";
+		public static final String WITHER_STICK_ITEM_ID = "wither_stick_item";
 		
 	}
 	
@@ -154,6 +156,7 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String GRAVESTONE3_POLISHED_DIORITE_ID = "gravestone3_polished_diorite";
 		public static final String GRAVESTONE3_OBSIDIAN_ID = "gravestone3_obsidian";
 		public static final String GRAVESTONE3_SMOOTH_QUARTZ_ID = "gravestone3_smooth_quartz";
+		public static final String WITHER_BRANCH_ID = "wither_branch";
 	}
 
 	public static class ChestID {

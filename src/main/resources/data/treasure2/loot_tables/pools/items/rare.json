@@ -18,7 +18,7 @@
 								"max": 4
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "blaze_powder",
@@ -33,7 +33,7 @@
 								"max": 5
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "magma_cream",
@@ -48,26 +48,26 @@
 								"max": 5
 							}
 						}
-					]						
-				},		
+					]
+				},
 				{
 					"entryName": "clock",
 					"type": "item",
 					"name": "minecraft:clock",
-					"weight": 25					
+					"weight": 25
 				},
 				{
 					"entryName": "compass",
 					"type": "item",
 					"name": "minecraft:compass",
-					"weight": 25					
-				},				
+					"weight": 25
+				},
 				{
 					"entryName": "diamond_block",
 					"type": "item",
 					"name": "minecraft:diamond_block",
-					"weight": 10					
-				},				
+					"weight": 10
+				},
 				{
 					"entryName": "glowstone",
 					"type": "item",
@@ -81,7 +81,7 @@
 								"max": 5
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "ender_pearl",
@@ -96,7 +96,7 @@
 								"max": 3
 							}
 						}
-					]							
+					]
 				},
 				{
 					"entryName": "ender_eye",
@@ -111,8 +111,8 @@
 								"max": 3
 							}
 						}
-					]							
-				},			
+					]
+				},
 				{
 					"entryName": "blaze_rod",
 					"type": "item",
@@ -126,7 +126,7 @@
 								"max": 3
 							}
 						}
-					]							
+					]
 				},
 				{
 					"entryName": "ghast_tear",
@@ -141,7 +141,7 @@
 								"max": 2
 							}
 						}
-					]							
+					]
 				},
 				{
 					"entryName": "experience_bottle",
@@ -156,7 +156,7 @@
 								"max": 3
 							}
 						}
-					]							
+					]
 				},
 				{
 					"entryName": "diamond",
@@ -171,7 +171,7 @@
 								"max": 3
 							}
 						}
-					]							
+					]
 				},
 				{
 					"entryName": "prismarine_crystals",
@@ -186,8 +186,8 @@
 								"max": 3
 							}
 						}
-					]							
-				},		
+					]
+				},
 				{
 					"entryName": "prismarine_shard",
 					"type": "item",
@@ -201,8 +201,8 @@
 								"max": 3
 							}
 						}
-					]							
-				},									
+					]
+				},
 				{
 					"entryName": "sea_lantern",
 					"type": "item",
@@ -216,9 +216,9 @@
 					"weight": 15
 				},
 				{
-					"entryName": "firework_charge",
+					"entryName": "firework_star",
 					"type": "item",
-					"name": "minecraft:firework_charge",
+					"name": "minecraft:firework_star",
 					"weight": 35,
 					"functions": [
 						{
@@ -228,8 +228,8 @@
 								"max": 5
 							}
 						}
-					]							
-				}			
+					]
+				}
 			]
 		}
 	]

@@ -111,6 +111,8 @@ public class TreasureBlocks {
 //	public static final Block SKULL_CROSSBONES;
 //	public static final Block SKELETON;
     
+	public static final Block WITHER_BRANCH;
+	
 	public static List<Block> BLOCKS = new ArrayList<>(100);
 	public static final Set<BlockItem> ITEM_BLOCKS = new HashSet<>();
 	public static List<Block> GRAVESTONES = new ArrayList<>(20);
@@ -338,6 +340,7 @@ public class TreasureBlocks {
                 .hardnessAndResistance(3.0F).sound(SoundType.STONE));
 
 		// TODO WITHER BIOME BLOCKS
+        WITHER_BRANCH = new WitherBranchBlock(Treasure.MODID, TreasureConfig.BlockID.WITHER_BRANCH_ID, Block.Properties.create(Material.WOOD, MaterialColor.WOOD));
 
 		// TODO FALLING BLOCKS
 
@@ -397,6 +400,7 @@ public class TreasureBlocks {
         BLOCKS.add(WISHING_WELL_BLOCK);
         BLOCKS.add(DESERT_WISHING_WELL_BLOCK);
         BLOCKS.add(BLACKSTONE);
+//        BLOCKS.add(WITHER_BRANCH);
 //        BLOCKS.add(PROXIMITY_SPAWNER);
         
         GRAVESTONES.add(GRAVESTONE1_STONE);
@@ -442,6 +446,7 @@ public class TreasureBlocks {
 			// special case registry
 			registry.register(WITHER_CHEST);
 			registry.register(WITHER_CHEST_TOP);
+			registry.register(WITHER_BRANCH);
 			 registry.register(PROXIMITY_SPAWNER);
 		}
 
@@ -462,6 +467,7 @@ public class TreasureBlocks {
 			// TODO need this list ?
 			final Block[] nonCreativeBlocks = {
 					WITHER_CHEST_TOP,
+					WITHER_BRANCH, // -- create an item for it
 					PROXIMITY_SPAWNER // --> not added to Treasure tab, not visible in creative
 			};
 			

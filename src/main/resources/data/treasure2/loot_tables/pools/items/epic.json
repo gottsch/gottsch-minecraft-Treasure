@@ -9,20 +9,20 @@
 					"entryName": "shulker_box",
 					"type": "item",
 					"name": "minecraft:black_shulker_box",
-					"weight": 15					
+					"weight": 15
 				},
 				{
 					"entryName": "shulker_shell",
 					"type": "item",
 					"name": "minecraft:shulker_shell",
-					"weight": 20			
+					"weight": 20
 				},
 				{
 					"entryName": "dragon_breath",
 					"type": "item",
 					"name": "minecraft:dragon_breath",
-					"weight": 15				
-				},		
+					"weight": 15
+				},
 				{
 					"entryName": "elytra",
 					"type": "item",
@@ -33,8 +33,8 @@
 					"entryName": "totem_of_undying",
 					"type": "item",
 					"name": "minecraft:totem_of_undying",
-					"weight": 10				
-				},		
+					"weight": 10
+				},
 				{
 					"entryName": "experience_bottle",
 					"type": "item",
@@ -48,7 +48,7 @@
 								"max": 3
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "emerald",
@@ -63,7 +63,7 @@
 								"max": 3
 							}
 						}
-					]							
+					]
 				},
 				{
 					"entryName": "end_crystal",
@@ -78,12 +78,12 @@
 								"max": 2
 							}
 						}
-					]							
-				},			
+					]
+				},
 				{
-					"entryName": "chorus_fruit_popped",
+					"entryName": "popped_chorus_fruit",
 					"type": "item",
-					"name": "minecraft:chorus_fruit_popped",
+					"name": "minecraft:popped_chorus_fruit",
 					"weight": 25,
 					"functions": [
 						{
@@ -93,7 +93,7 @@
 								"max": 3
 							}
 						}
-					]							
+					]
 				},
 				{
 					"entryName": "skeleton_head",
@@ -105,7 +105,7 @@
                             "function": "set_data",
                             "data": 0
                         }
-                    ]						
+                    ]
 				},
 				{
 					"entryName": "zombie_head",
@@ -117,7 +117,7 @@
                             "function": "set_data",
                             "data": 2
                         }
-                    ]						
+                    ]
 				},
 				{
 					"entryName": "creeper_head",
@@ -129,8 +129,8 @@
                             "function": "set_data",
                             "data": 4
                         }
-                    ]						
-				}				
+                    ]
+				}
 			]
 		}
 	]
