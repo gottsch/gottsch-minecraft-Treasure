@@ -36,7 +36,7 @@ public class TreasureDecayRegistry implements ITreasureResourceRegistry {
 	 */
 	public synchronized static void create(IMod mod) {
 		if (decayManager  == null) {
-			decayManager = new TreasureDecayManager(mod, "decay");
+			decayManager = new TreasureDecayManager(mod, "mc1_15/decay");
 		}
 	}
 	

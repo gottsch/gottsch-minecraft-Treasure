@@ -47,7 +47,7 @@ public class TreasureTemplateRegistry {
 	 */
 	public synchronized static void create(IMod mod) {
 		if (templateManager  == null) {
-			templateManager = new TreasureTemplateManager(Treasure.instance, "/structures", DataFixesManager.getDataFixer());
+			templateManager = new TreasureTemplateManager(Treasure.instance, "mc1_15/structures", DataFixesManager.getDataFixer());
 		}
 	}
 	

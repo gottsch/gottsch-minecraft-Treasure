@@ -36,11 +36,22 @@ public class CardboardBoxTileEntityRenderer extends AbstractChestTileEntityRende
 	@Override
 	public void updateModelRotationAngles(AbstractTreasureChestTileEntity tileEntity, float partialTicks) {
 		CardboardBoxTileEntity cte = (CardboardBoxTileEntity) tileEntity;
-		float lidRotation = cte.prevLidAngle + (cte.lidAngle - cte.prevLidAngle) * partialTicks;
+//		float lidRotation = cte.prevLidAngle + (cte.lidAngle - cte.prevLidAngle) * partialTicks;
+//		lidRotation = 1.0F - lidRotation;
+//		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
+//		// NOTE positive rotation here (getLid() returns lidLeft property)
+//		getModel().getLid().rotateAngleZ = (lidRotation * (float)Math.PI / getAngleModifier());
+		
+		// update in the inner lid
+		float innerLidRotation = cte.prevInnerLidAngle + (cte.innerLidAngle - cte.prevInnerLidAngle) * partialTicks;
+		innerLidRotation = 1.0F - innerLidRotation;
+		innerLidRotation = 1.0F - innerLidRotation * innerLidRotation * innerLidRotation;
+		((CardboardBoxModel)getModel()).getInnerLid().rotateAngleX = (innerLidRotation * (float) Math.PI / getAngleModifier()); // not negated
+		
+		float lidRotation = tileEntity.prevLidAngle + (tileEntity.lidAngle - tileEntity.prevLidAngle) * partialTicks;
 		lidRotation = 1.0F - lidRotation;
 		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-		// NOTE positive rotation here (getLid() returns lidLeft property)
-		getModel().getLid().rotateAngleZ = (lidRotation * (float)Math.PI / getAngleModifier());
+		getModel().getLid().rotateAngleZ = -(lidRotation * (float) Math.PI / getAngleModifier());
 	}
 	
 	@Override

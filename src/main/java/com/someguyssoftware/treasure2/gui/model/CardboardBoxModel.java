@@ -50,6 +50,10 @@ public class CardboardBoxModel extends AbstractTreasureChestModel {
 
 	@Override
 	public void renderAll(MatrixStack matrixStack, IVertexBuilder renderBuffer, int combinedLight, int combinedOverlay, AbstractTreasureChestTileEntity te) {
+		// set the angles of the latch to same as the lib
+		rightFlap.rotateAngleZ = -leftFlap.rotateAngleZ;
+		southFlap.rotateAngleX = -northFlap.rotateAngleX;
+		
 		base.render(matrixStack, renderBuffer, combinedLight, combinedOverlay);
 		rightFlap.render(matrixStack, renderBuffer, combinedLight, combinedOverlay);
 		leftFlap.render(matrixStack, renderBuffer, combinedLight, combinedOverlay);
