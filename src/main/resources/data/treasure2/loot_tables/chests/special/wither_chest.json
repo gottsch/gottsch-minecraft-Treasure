@@ -5,6 +5,17 @@
 	"type": "minecraft:chest",
 	"pools": [
 		{
+			"name": "treasure",
+			"rolls": 1,
+			"entries": [
+                {
+                    "type": "minecraft:loot_table",
+                    "name": "treasure2:pools/treasure/scarce",
+                    "weight": 30
+                }
+			]
+		},
+		{
 			"name": "bones",
 			"rolls": 1,
 			"entries": [
@@ -123,17 +134,6 @@
                 {
                     "type": "minecraft:loot_table",
                     "name": "treasure2:pools/potions/rare",
-                    "weight": 30
-                }
-			]
-		},
-		{
-			"name": "treasure",
-			"rolls": 1,
-			"entries": [
-                {
-                    "type": "minecraft:loot_table",
-                    "name": "treasure2:pools/treasure/scarce",
                     "weight": 30
                 }
 			]

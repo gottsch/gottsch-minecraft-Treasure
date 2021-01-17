@@ -1,6 +1,6 @@
 {
 	"itemGroup.treasure2":"Treasure2!",
-	
+
 	"item.treasure2.treasure_tool":"Treasure Tool",
 	"item.treasure2.wood_key":"Wood Key",
 	"item.treasure2.stone_key":"Stone Key",
@@ -20,7 +20,7 @@
 	"item.treasure2.wither_key":"Wither Key",
 	"item.treasure2.pilferers_lock_pick":"Pilferer's Lock Pick",
 	"item.treasure2.thiefs_lock_pick":"Thief's Lock Pick",
-	
+
 	"item.treasure2.wood_lock":"Wood Lock",
 	"item.treasure2:stone_lock":"Stone Lock",
 	"item.treasure2.leaf_lock":"Leaf Lock",
@@ -33,13 +33,18 @@
 	"item.treasure2.sapphire_lock":"Sapphire Lock",
 	"item.treasure2.spider_lock":"Spider Lock",
 	"item.treasure2.wither_lock":"Wither Lock",
-	
+
 	"item.treasure2.silver_coin": "Silver Coin",
 	"item.treasure2.gold_coin": "Gold Coin",
-	
+	"item.treasure2.ruby": "Ruby",
+	"item.treasure2.sapphire": "Sapphire",
+	"item.treasure2.white_pearl": "White Pearl",
+	"item.treasure2.black_pearl": "Black Pearl",
+
 	"item.treasure2.wither_stick_item":"Wither Branch",
 	"item.treasure2.wither_root_item":"Wither Root",
-	
+	"item.treasure2.skull_sword":"Skull Sword",
+
 	"item.treasure2.painting_blocks_bricks":"Bricks by o2xygeno",
 	"item.treasure2.painting_blocks_cobblestone":"Cobblestone by o2xygeno",
 	"item.treasure2.painting_blocks_dirt":"Dirt by o2xygeno",
@@ -47,7 +52,7 @@
 	"item.treasure2.painting_blocks_sand":"Sand by o2xygeno",
 	"item.treasure2.painting_blocks_water":"Water by o2xygeno",
 	"item.treasure2.painting_blocks_wood":"Wood by o2xygeno",
-	
+
 	"block.treasure2.wood_chest":"Wood Chest",
 	"block.treasure2.crate_chest":"Crate",
 	"block.treasure2.crate_chest_moldy":"Moldy Crate",
@@ -70,6 +75,11 @@
 
 	"block.treasure2.wishing_well_block":"Wishing Well Stone",
 	"block.treasure2.desert_wishing_well_block":"Desert Wishing Well Stone",
+	"block.treasure2.blackstone":"Blackstone",
+	"block.treasure2.ruby_ore":"Ruby Ore",
+	"block.treasure2.sapphire_ore":"Sapphire Ore",
+	"block.treasure2.wither_branch":"Wither Branch",
+	"block.treasure2.wither_root":"Wither Root",
 
 	"block.treasure2.gravestone1_stone":"Stone Tombstone",
 	"block.treasure2.gravestone1_cobblestone":"Cobblestone Tombstone",
@@ -79,7 +89,7 @@
 	"block.treasure2.gravestone1_polished_diorite":"Diorite Tombstone",
 	"block.treasure2.gravestone1_obsidian":"Obsidian Tombstone",
 	"block.treasure2.gravestone1_smooth_quartz":"Quartz Tombstone",
-	
+
 	"block.treasure2.gravestone2_stone":"Stone Tombstone",
 	"block.treasure2.gravestone2_cobblestone":"Cobblestone Tombstone",
 	"block.treasure2.gravestone2_mossy_cobblestone":"Mossy Cobblestone Tombstone",
@@ -88,7 +98,7 @@
 	"block.treasure2.gravestone2_polished_diorite":"Diorite Tombstone",
 	"block.treasure2.gravestone2_obsidian":"Obsidian Tombstone",
 	"block.treasure2.gravestone2_smooth_quartz":"Quartz Tombstone",
-	
+
 	"block.treasure2.gravestone3_stone":"Stone Tombstone",
 	"block.treasure2.gravestone3_cobblestone":"Cobblestone Tombstone",
 	"block.treasure2.gravestone3_mossy_cobblestone":"Mossy Cobblestone Tombstone",
@@ -97,8 +107,7 @@
 	"block.treasure2.gravestone3_polished_diorite":"Diorite Tombstone",
 	"block.treasure2.gravestone3_obsidian":"Obsidian Tombstone",
 	"block.treasure2.gravestone3_smooth_quartz":"Quartz Tombstone",
-	"block.treasure2.blackstone":"Blackstone",
-	
+
 	"tooltip.yes":"Yes",
 	"tooltip.no":"No",
 	"tooltip.label.rarity":"Rarity: %s",
@@ -107,7 +116,7 @@
 	"tooltip.label.breakable":"Breakable: %s",
 	"tooltip.label.craftable":"Craftable: %s",
 	"tooltip.label.damageable":"Damageable: %s",
-	
+
 	"tooltip.label.specials":"Specials: %s",
 	"tooltip.label.accepts_keys":"Accepts Keys: %s",
 	"tooltip.label.coin":"Throw into Wishing Wells",
@@ -115,13 +124,19 @@
 	"tooltip.label.coin_pouch":"Holds coins, gems, pearls, and charms",
 	"tooltip.label.treasure_tool":"Required for Key/Pick recipes",
 	"tooltip.label.charmed":"Hold in hand or in coin pouch for buffs",
+	"tooltip.label.charmed.adornment":"Hold in hand, coin pouch, or hotbar for buffs",
 	"tooltip.label.charms":"Charms:",
-	
+	"tooltip.label.charmable":"To charm, add charmed items to slots",
+	"tooltip.label.charmable.slots":"Slots: [%s/%s]",
+
 	"tooltip.label.max_locks":"Max Locks: %s",
 	"tooltip.label.container_size":"Inventory Size: %s",
-	
+
+	"tooltip.ember_key.specials":"Destroys Wood Locks",
+	"tooltip.ember_lock.specials":"Destroys All Keys regardless of breakability (excluding Ember)",
 	"tooltip.metallurgists_key.specials":"Opens any lock in METALS category",
 	"tooltip.skeleton_key.specials":"Opens COMMON, UNCOMMON, SCARCE and RARE locks (excluding Wither)",
+	"tooltip.lightning_key.specials":"Opens any lock in ELEMENTAL category",
 	"tooltip.pilferers_lock_pick.specials":"Opens COMMON (%s%%) and UNCOMMON (%s%%) locks",
 	"tooltip.thiefs_lock_pick.specials":"Opens COMMON (%s%%), UNCOMMON (%s%%) and SCARCE (%s%%) locks",
 	"tooltip.jewelled_key.specials":"Opens any lock in GEMS category",

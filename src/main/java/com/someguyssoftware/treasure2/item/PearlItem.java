@@ -71,7 +71,7 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);     	
 		// TODO change label to tooltip.label.wishable
-		tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "" + TextFormatting.ITALIC + "tooltip.label.coin"));
+		tooltip.add(new TranslationTextComponent("tooltip.label.coin").applyTextStyles(TextFormatting.GOLD, TextFormatting.ITALIC));
 	}
 	
 	/**

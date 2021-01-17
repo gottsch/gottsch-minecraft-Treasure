@@ -34,12 +34,12 @@ public class WitherBranchBlock extends FacingBlock implements ITreasureBlock {
 	 */
 	public WitherBranchBlock(String modID, String name, Block.Properties properties) {
 		super(modID, name, properties.sound(SoundType.WOOD).hardnessAndResistance(3.0F));
-		setBounds(new VoxelShape[] {
-				Block.makeCuboidShape(4, 0, 0, 12, 8, 16),	// S
-				Block.makeCuboidShape(0, 0, 4, 16, 8, 12),	// W
-				Block.makeCuboidShape(4, 0, 0, 12, 8, 16),	// N
-				Block.makeCuboidShape(0, 0, 4, 16, 8, 12),	// E
-		});
+//		setBounds(new VoxelShape[] {
+//				Block.makeCuboidShape(4, 0, 0, 12, 8, 16),	// S
+//				Block.makeCuboidShape(0, 0, 4, 16, 8, 12),	// W
+//				Block.makeCuboidShape(4, 0, 0, 12, 8, 16),	// N
+//				Block.makeCuboidShape(0, 0, 4, 16, 8, 12),	// E
+//		});
 	}
 	
 	/**

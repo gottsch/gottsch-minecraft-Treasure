@@ -1,10 +1,10 @@
 {
     "variants": {
-        "facing=north": { "model": "treasure2:cauldron_chest" },
-        "facing=south": { "model": "treasure2:cauldron_chest", "y": 180, "uvlock": true },
-        "facing=west":  { "model": "treasure2:cauldron_chest", "y": 270, "uvlock": true },
-        "facing=east":  { "model": "treasure2:cauldron_chest", "y": 90, "uvlock": true },
-        "facing=up": { "model": "treasure2:cauldron_chest" },
-        "facing=down": { "model": "treasure2:cauldron_chest" }
+        "facing=north": { "model": "treasure2:block/cauldron_chest" },
+        "facing=south": { "model": "treasure2:block/cauldron_chest", "y": 180, "uvlock": true },
+        "facing=west":  { "model": "treasure2:block/cauldron_chest", "y": 270, "uvlock": true },
+        "facing=east":  { "model": "treasure2:block/cauldron_chest", "y": 90, "uvlock": true },
+        "facing=up": { "model": "treasure2:block/cauldron_chest" },
+        "facing=down": { "model": "treasure2:block/cauldron_chest" }
     }
 }

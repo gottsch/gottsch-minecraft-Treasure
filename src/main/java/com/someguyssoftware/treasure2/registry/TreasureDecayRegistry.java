@@ -54,7 +54,7 @@ public class TreasureDecayRegistry implements ITreasureResourceRegistry {
 	 * @param modID
 	 */
 	private static void buildAndExpose(String modID) {
-		decayManager.buildAndExpose("data", modID, "decay", decayResources.getResources());		
+		decayManager.buildAndExpose("data", modID, "mc1_15", "decay", decayResources.getResources());		
 	}
 	
 	/**

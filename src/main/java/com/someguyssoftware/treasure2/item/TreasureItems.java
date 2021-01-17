@@ -21,6 +21,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SwordItem;
 import net.minecraft.item.Item.Properties;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -280,7 +281,10 @@ public class TreasureItems {
 				
 		// WITHER ITEMS
 		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_STICK_ITEM_ID, TreasureBlocks.WITHER_BRANCH, new Item.Properties());
-//		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.WITHER_ROOT_ITEM_ID);
+		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_ROOT_ITEM_ID, TreasureBlocks.WITHER_ROOT, new Item.Properties());
+		
+		SKULL_SWORD = new SwordItem(TreasureItemTier.SKULL, 3, -2.4F, new Item.Properties().group(TreasureItemGroups.MOD_ITEM_GROUP))
+				.setRegistryName(Treasure.MODID, TreasureConfig.ItemID.SKULL_SWORD_ID);
 	}
 
 	/**
@@ -331,7 +335,9 @@ public class TreasureItems {
 				SAPPHIRE,
 				WHITE_PEARL,
 				BLACK_PEARL,
-				WITHER_STICK_ITEM
+				WITHER_STICK_ITEM,
+				WITHER_ROOT_ITEM,
+				SKULL_SWORD
 				);
 	}
 

@@ -1,5 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "treasure2:ruby_ore" }
+        "": { "model": "treasure2:block/ruby_ore" }
     }
 }

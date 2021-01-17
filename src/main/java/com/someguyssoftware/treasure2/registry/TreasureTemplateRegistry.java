@@ -65,7 +65,7 @@ public class TreasureTemplateRegistry {
 	 * @param modID
 	 */
 	private static void buildAndExpose(String modID) {
-		templateManager.buildAndExpose("data", modID, "structures", templateManifest.getResources());		
+		templateManager.buildAndExpose("data", modID, "mc1_15", "structures", templateManifest.getResources());		
 	}
 	
 	/**
