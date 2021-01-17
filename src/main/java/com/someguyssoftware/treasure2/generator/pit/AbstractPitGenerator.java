@@ -86,7 +86,8 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	}
 	
 	/**
-	 * 
+	 * Pits spawn underground. The spawnCoords is the location of the bottom of the pit and is the spot where the pit begins generated.
+	 * Pits generate upward towards the surface.
 	 * @param world
 	 * @param random
 	 * @param surfaceCoords
