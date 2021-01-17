@@ -23,7 +23,7 @@ public class TreasureChestTypes {
 	public static final TreasureChestType TOP_SPLIT;
 	public static final TreasureChestType LOW_RISE;
 	public static final TreasureChestType VIKING;
-
+	public static final TreasureChestType MILK_CRATE;
 		
 	static {
 		STANDARD = new TreasureChestType(3).addSlots(
@@ -45,6 +45,10 @@ public class TreasureChestTypes {
 		CRATE = new TreasureChestType(1).addSlots(
 				new LockSlot(0, Heading.NORTH, 0.5F, 0.6F, 0.05F, 0F)
 			);
+		
+		MILK_CRATE = new TreasureChestType(1).addSlots(
+				new LockSlot(0, Heading.NORTH, 0.5F, 0.412F, 0.15F, 0F)		
+				);
 		
 		STRONGBOX = new TreasureChestType(3).addSlots(
 			new LockSlot(0, Heading.NORTH, 0.5F, 0.2F, 0.20F, 0F),

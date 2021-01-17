@@ -85,13 +85,7 @@
                 {
 					"entryName": "pufferfish",
                     "type": "minecraft:item",
-                    "name": "minecraft:fish",
-                    "functions": [
-                        {
-                            "function": "minecraft:set_data",
-                            "data": 2
-                        }
-                    ],
+                    "name": "minecraft:pufferfish",
                     "weight": 20
                 },
 				{

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+	"GGT",
+	"GXG",
+	"GGG"
+  ],
+  "key": {
+	"X": {
+		"item": "minecraft:skeleton_skull",
+		"data": 0
+	},
+	"G": {
+		"item": "minecraft:diamond"
+	},
+	"T": {
+		"item": "treasure2:treasure_tool"
+	}
+  },
+  "result": {
+    "item": "treasure2:crystal_skull_chest",
+    "count": 1
+  }
+}

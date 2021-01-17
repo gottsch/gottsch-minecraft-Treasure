@@ -1,5 +1,6 @@
 package com.someguyssoftware.treasure2.worldgen;
 
+import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.world.gen.feature.SurfaceChestFeature;
 
 import net.minecraft.util.registry.Registry;
@@ -18,13 +19,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class TestOreGen {
-	// TODO where does this get called from ?
 	public static void generateOre() {
 		for (Biome biome : ForgeRegistries.BIOMES) {
 			if (biome == Biomes.PLAINS) {
-				ConfiguredPlacement customConfig = Placement.COUNT_RANGE.configure(new CountRangeConfig(20, 5, 5, 25));
-				biome.addFeature(GenerationStage.Decoration.RAW_GENERATION,
-						new SurfaceChestFeature(NoFeatureConfig::deserialize).withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+				ConfiguredPlacement customConfig = Placement.COUNT_RANGE.configure(new CountRangeConfig(3, 6, 0, 14)); // ore per vein, min y, top block, max y
+				biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES,
+						Feature.ORE
+								.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
+										TreasureBlocks.RUBY_ORE.getDefaultState(), 1)) // veins per chunk
+								.withPlacement(customConfig));
 			}
 		}
 	}

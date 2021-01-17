@@ -144,7 +144,7 @@
 				{
 					"entryName": "fish",
 					"type": "minecraft:item",
-					"name": "minecraft:fish",
+					"name": "minecraft:cod",
 					"weight": 35,
 					"functions": [
 						{
@@ -157,9 +157,9 @@
 					]
 				},
 				{
-					"entryName": "cooked_fish",
+					"entryName": "cooked_cod",
 					"type": "minecraft:item",
-					"name": "minecraft:cooked_fish",
+					"name": "minecraft:cooked_cod",
 					"weight": 30,
 					"functions": [
 						{

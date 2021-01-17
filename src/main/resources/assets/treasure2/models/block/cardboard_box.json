@@ -1,0 +1,8 @@
+{
+    "parent": "treasure2:block/standard_chest",
+    "textures": {
+        "0": "treasure2:blocks/chests/cardboard_box_north",
+        "1": "treasure2:blocks/chests/cardboard_box_east",
+        "2": "treasure2:blocks/chests/cardboard_box_up"
+    }
+}

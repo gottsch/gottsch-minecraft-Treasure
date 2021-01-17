@@ -1,6 +1,6 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "treasure2:items/skull_sword"
+        "layer0": "treasure2:item/skull_sword"
     }
 }

@@ -81,6 +81,7 @@ public class CrateChestTileEntityRenderer extends AbstractChestTileEntityRendere
 		
 		// TODO this block goes into method / use template pattern
         ////////////// render the locks //////////////////////////////////////
+		renderLocks(tileEntity, matrixStack, renderTypeBuffer, combinedLight, combinedOverlay);
 //        if (!te.getLockStates().isEmpty()) {
 //        	renderLocks(te, x, y, z);
 //        }

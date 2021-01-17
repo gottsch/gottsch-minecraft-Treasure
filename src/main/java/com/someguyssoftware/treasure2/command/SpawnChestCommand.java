@@ -57,7 +57,7 @@ public class SpawnChestCommand {
 		WITHER(TreasureBlocks.WITHER_CHEST),
 		SKULL(TreasureBlocks.SKULL_CHEST),
 		GOLD_SKULL(TreasureBlocks.GOLD_SKULL_CHEST),
-//		CRYSTAL_SKULL(TreasureBlocks.CRYSTAL_SKULL_CHEST),
+//		CRYSTAL_SKULL_CHEST(TreasureBlocks.CRYSTAL_SKULL_CHEST),
 		CAULDRON(TreasureBlocks.CAULDRON_CHEST);
 		
 		Block chest;

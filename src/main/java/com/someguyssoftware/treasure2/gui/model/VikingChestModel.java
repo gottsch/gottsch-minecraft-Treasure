@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
  * @author Mark Gottschling on Apr 19, 2020
  *
  */
-public class VikingChestModel  extends AbstractTreasureChestModel {
+public class VikingChestModel extends AbstractTreasureChestModel {
 	private final ModelRenderer mainBox;
 	private final ModelRenderer lid;
 	private final ModelRenderer front;

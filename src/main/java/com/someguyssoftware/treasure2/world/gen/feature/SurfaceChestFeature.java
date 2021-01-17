@@ -16,6 +16,7 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
@@ -33,6 +34,7 @@ import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.persistence.TreasureGenerationSavedData;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -80,11 +82,6 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	 * 
 	 */
 	public void init() {
-		// TODO all these values need to be indexed by dimension
-		// ie Map<dimName, int chunksSinceLastChest>
-		// ie Map<dimName, Map<Rarity, int chunksSinceLastRarityChest>
-		// initialize chunks since last array
-		//		chunksSinceLastChest = 0;
 		chunksSinceLastRarityChest = new HashMap<>(Rarity.values().length);
 
 		// setup temporary rarity-generators map
@@ -131,10 +128,6 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		//		chunksSinceLastChest++;
 
 		for (Rarity rarity : TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST)) {
-			// TODO redo with map.merge(x,x, Integer:sum)
-			// TODO add dimensional increment
-			//			Integer i = chunksSinceLastRarityChest.get(rarity);
-			//			chunksSinceLastRarityChest.put(rarity, ++i);	
 			incrementDimensionalRarityChestChunkCount(dimensionName, rarity);
 		}
 //		Treasure.LOGGER.debug("chunks since dimension {} last chest -> {}, min chunks -> {}", dimensionName, chunksSinceLastDimensionChest.get(dimensionName), TreasureConfig.CHESTS.surfaceChests.minChunksPerChest.get());
@@ -272,7 +265,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 				// no markers
 				hasMarkers = false;
 
-//				genResult = generateSurfaceRuins(world, random, surfaceCoords, config);
+				genResult = generateSurfaceRuins(world, random, surfaceCoords, config);
 				Treasure.LOGGER.debug("surface result -> {}", genResult.toString());
 				if (!genResult.isSuccess()) {
 					return result.fail();
@@ -358,6 +351,45 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 
 		result.setData(pitResult.getData());
 		Treasure.LOGGER.debug("Is pit generated: {}", pitResult.isSuccess());
+		return result.success();
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param spawnCoords
+	 * @param config
+	 * @return
+	 */
+	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(World world, Random random, ICoords spawnCoords,
+			IChestConfig config) {
+		return generateSurfaceRuins(world, random, spawnCoords, null, null, config);
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param spawnCoords
+	 * @param decayProcessor
+	 * @param config
+	 * @return
+	 */
+	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(World world, Random random, ICoords spawnCoords,
+			TemplateHolder holder, IDecayRuleSet decayRuleSet, IChestConfig config) {
+
+		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
+		result.getData().setSpawnCoords(spawnCoords);
+
+		SurfaceRuinGenerator generator = new SurfaceRuinGenerator();
+
+		// build the structure
+		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, random, spawnCoords, holder, decayRuleSet);
+		Treasure.LOGGER.debug("surface struct result -> {}", genResult);
+		if (!genResult.isSuccess()) return result.fail();
+
+		result.setData(genResult.getData());
 		return result.success();
 	}
 	

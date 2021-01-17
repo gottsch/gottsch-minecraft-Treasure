@@ -1,14 +1,42 @@
 {
 	"supportingResources": [
-		"pools/items/common.json"
+		"pools/armor/common.json",
+		"pools/armor/uncommon.json",
+		"pools/armor/scarce.json",
+		"pools/armor/rare.json",
+		"pools/armor/epic.json",
+		"pools/food/common.json",
+		"pools/food/uncommon.json",
+		"pools/food/scarce.json",
+		"pools/food/rare.json",
+		"pools/food/epic.json",
+		"pools/items/common.json",
+		"pools/items/uncommon.json",
+		"pools/items/scarce.json",
+		"pools/items/rare.json",
+		"pools/items/epic.json",
+		"pools/potions/common.json",
+		"pools/potions/uncommon.json",
+		"pools/potions/scarce.json",
+		"pools/potions/rare.json",
+		"pools/potions/epic.json",
+		"pools/tools/common.json",
+		"pools/tools/uncommon.json",
+		"pools/tools/scarce.json",
+		"pools/tools/rare.json",
+		"pools/treasure/common.json",
+		"pools/treasure/uncommon.json",
+		"pools/treasure/scarce.json",
+		"pools/treasure/rare.json",
+		"pools/treasure/epic.json"
     ],
     "injectResources": [],
 		"chestResources": [
-			"chests/common/general_chest.json",
-			"chests/uncommon/general_chest.json",
-			"chests/scarce/general_chest.json",
-			"chests/rare/general_chest.json",
-			"chests/epic/general_chest.json"
+		"chests/common/general_chest.json",
+		"chests/uncommon/general_chest.json",
+		"chests/scarce/general_chest.json",
+		"chests/rare/general_chest.json",
+		"chests/epic/general_chest.json"
 	],
 	"specialResources": [
 			"chests/special/black_pearl_well.json",
@@ -19,7 +47,6 @@
 			"chests/special/white_pearl_well.json",
 			"chests/special/wither_chest.json"
 	],
-
 	"chestLootTableFolderLocations": [
 		"chests/common",
 		"chests/uncommon",

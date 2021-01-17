@@ -28,9 +28,9 @@
 					]
 				},
 				{
-					"entryName": "speckled_melon",
+					"entryName": "glistering_melon_slice",
 					"type": "minecraft:item",
-					"name": "minecraft:speckled_melon",
+					"name": "minecraft:glistering_melon_slice",
 					"weight": 15
 				},
 				{

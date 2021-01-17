@@ -15,6 +15,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.ChestConfig.Data;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
+import net.minecraft.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -40,6 +41,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String MARKERS_CATEGORY = "markers";
 	public static final String KEYS_AND_LOCKS_CATEGORY = "keys and locks";
 	public static final String COINS_CATEGORY = "coins";
+	public static final String GEMS_AND_ORES_CATEGORY = "gems and ores";
 
 	public static final General GENERAL;
 	public static final Chests CHESTS;
@@ -48,10 +50,11 @@ public class TreasureConfig extends AbstractConfig {
     public static final Wells WELLS;
 	public static final KeysAndLocks KEYS_LOCKS;
 	public static final Coins COINS;
+	public static final GemsAndOres GEMS_AND_ORES;
 
 	public static final String CATEGORY_DIV = "##############################";
 	public static final String UNDERLINE_DIV = "------------------------------";
-	
+		
 	static {
 		MOD = new Mod(COMMON_BUILDER);
 		LOGGING = new Logging(COMMON_BUILDER);
@@ -62,6 +65,7 @@ public class TreasureConfig extends AbstractConfig {
         WELLS = new Wells(COMMON_BUILDER);
 		KEYS_LOCKS = new KeysAndLocks(COMMON_BUILDER);
 		COINS = new Coins(COMMON_BUILDER);
+		GEMS_AND_ORES = new GemsAndOres(COMMON_BUILDER);
 		COMMON_CONFIG = COMMON_BUILDER.build();
 
 		// load raw arrays into lists
@@ -82,7 +86,13 @@ public class TreasureConfig extends AbstractConfig {
 
 		public static final String SILVER_COIN_ID = "silver_coin";
 		public static final String GOLD_COIN_ID = "gold_coin";
-		
+		public static final String SAPPHIRE_ID = "sapphire";
+		public static final String RUBY_ID = "ruby";
+		public static final String WHITE_PEARL_ID = "white_pearl";
+		public static final String BLACK_PEARL_ID = "black_pearl";		
+		public static final String SKULL_SWORD_ID = "skull_sword";
+		public static final String WITHER_STICK_ITEM_ID = "wither_stick_item";
+		public static final String WITHER_ROOT_ITEM_ID = "wither_root_item";
 	}
 	
 	public static class LockID {
@@ -154,6 +164,11 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String GRAVESTONE3_POLISHED_DIORITE_ID = "gravestone3_polished_diorite";
 		public static final String GRAVESTONE3_OBSIDIAN_ID = "gravestone3_obsidian";
 		public static final String GRAVESTONE3_SMOOTH_QUARTZ_ID = "gravestone3_smooth_quartz";
+		public static final String WITHER_BRANCH_ID = "wither_branch";
+		public static final String WITHER_ROOT_ID = "wither_root";		
+		public static final String RUBY_ORE_ID = "ruby_ore";
+		public static final String SAPPHIRE_ORE_ID = "sapphire_ore";
+
 	}
 
 	public static class ChestID {
@@ -175,8 +190,8 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String CAULDRON_CHEST_ID = "cauldron_chest";
 		public static final String SPIDER_CHEST_ID = "spider_chest";
         public static final String VIKING_CHEST_ID = "viking_chest";
-        public static final String CARDBOARD_BOX = "cardboard_box";
-        public static final String MILK_CRATE = "milk_crate";
+        public static final String CARDBOARD_BOX_ID = "cardboard_box";
+        public static final String MILK_CRATE_ID = "milk_crate";
     }
 
 	public static class TileEntityID {
@@ -194,6 +209,7 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
 		public static final String SKULL_CHEST_TE_ID = "skull_chest_tile_entity";
 		public static final String GOLD_SKULL_CHEST_TE_ID = "gold_skull_chest_tile_entity";
+		public static final String CRYSTAL_SKULL_CHEST_TE_ID = "crystal_skull_chest_tile_entity";
 		public static final String CAULDRON_CHEST_TE_ID = "cauldron_chest_tile_entity";
 		public static final String OYSTER_CHEST_TE_ID = "oyster_chest_tile_entity";
 		public static final String CLAM_CHEST_TE_ID = "clam_chest_tile_entity";
@@ -202,6 +218,8 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
 		public static final String GRAVESTONE_TE_ID = "gravestone_tile_entity";
 		public static final String GRAVESTONE_PROXIMITY_SPAWNER_TE_ID = "gravestone_proximity_spawner_tile_entity";
+		public static final String CARDBOARD_BOX_TE_ID = "cardboard_box_tile_entity";
+		public static final String MILK_CRATE_TE_ID = "milk_crate_tile_entity";
 	}
 
 	/*
@@ -650,6 +668,77 @@ public class TreasureConfig extends AbstractConfig {
 		}
 	}
 
+	public static class GemsAndOres {
+		public ForgeConfigSpec.BooleanValue enableGemOreSpawn;
+		@Deprecated
+		public ForgeConfigSpec.ConfigValue<Integer> chunksPerGemOre;
+		public ForgeConfigSpec.ConfigValue<Double> rubyGenProbability;
+		public ForgeConfigSpec.ConfigValue<Integer> rubyOreMaxY;
+		public ForgeConfigSpec.ConfigValue<Integer> rubyOreMinY;
+		public ForgeConfigSpec.ConfigValue<Integer> rubyOreVeinSize;
+		public ForgeConfigSpec.ConfigValue<Integer> rubyOreVeinsPerChunk;
+		public ForgeConfigSpec.ConfigValue<Double> sapphireGenProbability;
+		public ForgeConfigSpec.ConfigValue<Integer> sapphireOreMaxY;
+		public ForgeConfigSpec.ConfigValue<Integer> sapphireOreMinY;
+		public ForgeConfigSpec.ConfigValue<Integer> sapphireOreVeinSize;
+		public ForgeConfigSpec.ConfigValue<Integer> sapphireOreVeinsPerChunk;
+		
+		public GemsAndOres(final ForgeConfigSpec.Builder builder)	 {
+			builder.comment(CATEGORY_DIV, " Gems and Ores properties", CATEGORY_DIV)
+			.push(GEMS_AND_ORES_CATEGORY);
+		
+			enableGemOreSpawn = builder
+					.comment(" Enable/Disable whether a gem ore will spawn.")
+					.define("Enable gem ore spawn:", true);
+						
+			chunksPerGemOre = builder
+					.comment(" The number of chunks generated before another attempt to generate a gem ore spawn is made.")
+					.defineInRange("Chunks per gem ore spawn:", 1, 1, 32000);
+			
+			rubyGenProbability = builder
+					.comment(" The probability that a ruby ore will spawn.")
+					.defineInRange("Probability of ruby ore spawn:", 70.0, 0.0, 100.0);
+			
+			rubyOreMinY= builder
+					.comment(" The minimum y-value where a ruby ore can spawn.")
+					.defineInRange("Minimum y-value for ruby ore spawn location:", 6, 1, 255);	
+			
+			rubyOreMaxY= builder
+					.comment(" The maximum y-value where a ruby ore can spawn.")
+					.defineInRange("Maximum y-value for ruby ore spawn location:", 15, 1, 255);
+			
+			rubyOreVeinSize = builder
+					.comment(" The number of ruby ore blocks in a vein.")
+					.defineInRange("Ruby ore vein size:", 1, 1, 20);
+			
+			rubyOreVeinsPerChunk = builder
+					.comment(" The number of ruby ore veins in a chunk.")
+					.defineInRange("Ruby ore veins per chunk:", 3, 1, 20);
+
+			sapphireGenProbability = builder
+					.comment(" The probability that a sapphire ore will spawn.")
+					.defineInRange("Probability of sapphire ore spawn:", 70.0, 0.0, 100.0);
+			
+			sapphireOreMinY= builder
+					.comment(" The minimum y-value where a sapphire ore can spawn.")
+					.defineInRange("Minimum y-value for sapphire ore spawn location:", 6, 1, 255);	
+			
+			sapphireOreMaxY= builder
+					.comment(" The maximum y-value where a sapphire ore can spawn.")
+					.defineInRange("Maximum y-value for sapphire ore spawn location:", 15, 1, 255);
+			
+			sapphireOreVeinSize = builder
+					.comment(" The number of sapphire ore blocks in a vein.")
+					.defineInRange("Sapphire ore vein size:", 1, 1, 20);
+			
+			sapphireOreVeinsPerChunk = builder
+					.comment(" The number of sapphire ore veins in a chunk.")
+					.defineInRange("Sapphire ore veins per chunk:", 3, 1, 20);
+			
+			builder.pop();
+		}
+	}
+	
 	@SubscribeEvent
 	public static void onLoad(final ModConfig.Loading configEvent) {
 		TreasureConfig.loadConfig(TreasureConfig.COMMON_CONFIG,

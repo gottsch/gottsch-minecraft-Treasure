@@ -17,26 +17,27 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.TreasureItemGroups;
+import com.someguyssoftware.treasure2.tileentity.CardboardBoxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CauldronChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CompressorChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.CrystalSkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.DreadPirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldSkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.MilkCrateTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SpiderChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.TreasureTileEntities;
 import com.someguyssoftware.treasure2.tileentity.VikingChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.Block.Properties;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -75,7 +76,7 @@ public class TreasureBlocks {
     public static final Block VIKING_CHEST;
     public static final Block CARDBOARD_BOX;
     public static final Block MILK_CRATE;
-    public static final Block CRYSTAL_SKULL;
+    public static final Block CRYSTAL_SKULL_CHEST;
 
     public static final ProximityBlock<? extends AbstractProximityTileEntity> PROXIMITY_SPAWNER;
     public static final Block WISHING_WELL_BLOCK;
@@ -110,6 +111,12 @@ public class TreasureBlocks {
 //	public static final Block SKULL_CROSSBONES;
 //	public static final Block SKELETON;
     
+	public static final Block WITHER_BRANCH;
+	public static final Block WITHER_ROOT;
+	
+	public static final Block RUBY_ORE;
+	public static final Block SAPPHIRE_ORE;
+	
 	public static List<Block> BLOCKS = new ArrayList<>(100);
 	public static final Set<BlockItem> ITEM_BLOCKS = new HashSet<>();
 	public static List<Block> GRAVESTONES = new ArrayList<>(20);
@@ -176,13 +183,31 @@ public class TreasureBlocks {
 		witherChestBounds[2] = witherChestBounds[0]; // N
 		witherChestBounds[3] = witherChestBounds[0]; // E
 
+		// wither branch bounds
+		VoxelShape[] witherBranchBounds = new VoxelShape[] {
+				Block.makeCuboidShape(4, 0, 0, 12, 8, 16),	// S
+				Block.makeCuboidShape(0, 0, 4, 16, 8, 12),	// W
+				Block.makeCuboidShape(4, 0, 0, 12, 8, 16),	// N
+				Block.makeCuboidShape(0, 0, 4, 16, 8, 12),	// E
+		};
+		
+		// wither root bounds
+		VoxelShape[] witherRootBounds = new VoxelShape[] {
+				Block.makeCuboidShape(3, 0, 0, 13, 4, 15),	// S
+				Block.makeCuboidShape(0, 0, 4, 15, 4, 12),	// W
+				Block.makeCuboidShape(3, 0, 0, 13, 4, 15),	// N
+				Block.makeCuboidShape(0, 0, 4, 15, 4, 12),	// E
+		};
+		
+		// cardboard box bound
         VoxelShape cardboardBoxShape = Block.makeCuboidShape(1, 0, 1, 15, 15, 15);
         VoxelShape[] cardboardBoxBounds = new VoxelShape[] {
             cardboardBoxShape, cardboardBoxShape, cardboardBoxShape, cardboardBoxShape
         };
 
-        VoxelShape milkCrateShape = Block.makeeCuboidShape(2.75, 0, 2.75, 13.25, 10.25, 13.25);
-        VoxelShape milkCrateBounds = new VoxelShape[] {
+        // milk crate bounds
+        VoxelShape milkCrateShape = Block.makeCuboidShape(2.75, 0, 2.75, 13.25, 10.25, 13.25);
+        VoxelShape[] milkCrateBounds = new VoxelShape[] {
             milkCrateShape, milkCrateShape, milkCrateShape, milkCrateShape
         };
 
@@ -242,8 +267,8 @@ public class TreasureBlocks {
 				GoldSkullChestTileEntity.class, TreasureChestTypes.SKULL, Rarity.RARE, Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
 				.hardnessAndResistance(3.0F)).setBounds(skullChestBounds);
 
-        CRYSTAL_SKULL_CHEST = new StandardChestBlock(Treasure.MODID, TreasureConfig.CRYSTAL_SKULL_CHEST_ID,
-				CrystalSkullChestTileEntity.class, TreasureChestTypes.SKULL, Rarity.EPIC, Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
+        CRYSTAL_SKULL_CHEST = new StandardChestBlock(Treasure.MODID, TreasureConfig.ChestID.CRYSTAL_SKULL_CHEST_ID,
+				CrystalSkullChestTileEntity.class, TreasureChestTypes.SKULL, Rarity.RARE, Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
 				.hardnessAndResistance(3.0F)).setBounds(skullChestBounds);
 
 		CAULDRON_CHEST = new StandardChestBlock(Treasure.MODID, TreasureConfig.ChestID.CAULDRON_CHEST_ID,
@@ -258,16 +283,15 @@ public class TreasureBlocks {
 				VikingChestTileEntity.class, TreasureChestTypes.VIKING, Rarity.UNCOMMON, Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
 				.hardnessAndResistance(3.0F)).setBounds(vikingChestBounds);
 
-        CARDBOARD_BOX = new StandardChestBlock(Treasure.MODID, TreasureConfig.CARDBOARD_BOX_ID, CardboardBoxTileEntity.class,
-                TreasureChestTypes.TOP_SPLIT, Rarity.COMMON, Block.Properties.creaete(Material.WOOD, MaterialColor.WOOD)
+        CARDBOARD_BOX = new StandardChestBlock(Treasure.MODID, TreasureConfig.ChestID.CARDBOARD_BOX_ID, CardboardBoxTileEntity.class,
+                TreasureChestTypes.TOP_SPLIT, Rarity.COMMON, Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
                 .hardnessAndResistance(2.5F)).setBounds(cardboardBoxBounds);
 
-
-		MILK_CRATE = new StandardChestBlock(Treasure.MODID, TreasureConfig.MILK_CRATE_ID, MilkCrateTileEntity.class,
+		MILK_CRATE = new StandardChestBlock(Treasure.MODID, TreasureConfig.ChestID.MILK_CRATE_ID, MilkCrateTileEntity.class,
                 TreasureChestTypes.MILK_CRATE, Rarity.COMMON, Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
                 .hardnessAndResistance(2.5F)).setBounds(milkCrateBounds);
 
-		// TODO WITHER CHEST
+		// WITHER CHEST
 		WITHER_CHEST = new WitherChestBlock(Treasure.MODID, TreasureConfig.ChestID.WITHER_CHEST_ID, 
 				WitherChestTileEntity.class,	TreasureChestTypes.ARMOIRE, Rarity.SCARCE, Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
 						.hardnessAndResistance(2.5F)).setBounds(witherChestBounds);
@@ -327,8 +351,12 @@ public class TreasureBlocks {
 		GRAVESTONE3_SMOOTH_QUARTZ = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_SMOOTH_QUARTZ_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
                 .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
 		
-		// TODO ORES
-
+		// ORES
+		RUBY_ORE = new OreBlock(Treasure.MODID, TreasureConfig.BlockID.RUBY_ORE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F, 5.0F).harvestLevel(3));
+		SAPPHIRE_ORE = new OreBlock(Treasure.MODID, TreasureConfig.BlockID.SAPPHIRE_ORE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F, 5.0F).harvestLevel(3));		
+		
 		// TODO WISHING WELL BLOCKS
         WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.BlockID.WISHING_WELL_BLOCK_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
                 .hardnessAndResistance(2.0F).sound(SoundType.STONE));
@@ -338,6 +366,10 @@ public class TreasureBlocks {
                 .hardnessAndResistance(3.0F).sound(SoundType.STONE));
 
 		// TODO WITHER BIOME BLOCKS
+        WITHER_BRANCH = new WitherBranchBlock(Treasure.MODID, TreasureConfig.BlockID.WITHER_BRANCH_ID, Block.Properties.create(Material.WOOD, MaterialColor.WOOD))
+        		.setBounds(witherBranchBounds);
+        WITHER_ROOT = new WitherRootBlock(Treasure.MODID, TreasureConfig.BlockID.WITHER_ROOT_ID, Block.Properties.create(Material.WOOD, MaterialColor.WOOD))
+        		.setBounds(witherRootBounds);
 
 		// TODO FALLING BLOCKS
 
@@ -367,7 +399,7 @@ public class TreasureBlocks {
         BLOCKS.add(CARDBOARD_BOX);
         BLOCKS.add(MILK_CRATE);
 //		BLOCKS.add(WITHER_CHEST); // TODO this will have to be removed later when chests are registered by rarity unless using a table that flags wither chest
-        BLOCKS.add(WITHER_CHEST_TOP);
+//        BLOCKS.add(WITHER_CHEST_TOP);
         
         BLOCKS.add(GRAVESTONE1_STONE);
         BLOCKS.add(GRAVESTONE1_COBBLESTONE);
@@ -393,12 +425,7 @@ public class TreasureBlocks {
 		BLOCKS.add(GRAVESTONE3_POLISHED_GRANITE);
 		BLOCKS.add(GRAVESTONE3_OBSIDIAN);
 		BLOCKS.add(GRAVESTONE3_SMOOTH_QUARTZ);
-        
-        BLOCKS.add(WISHING_WELL_BLOCK);
-        BLOCKS.add(DESERT_WISHING_WELL_BLOCK);
-        BLOCKS.add(BLACKSTONE);
-//        BLOCKS.add(PROXIMITY_SPAWNER);
-        
+          
         GRAVESTONES.add(GRAVESTONE1_STONE);
         GRAVESTONES.add(GRAVESTONE1_COBBLESTONE);
 		GRAVESTONES.add(GRAVESTONE1_MOSSY_COBBLESTONE);
@@ -423,6 +450,14 @@ public class TreasureBlocks {
 		GRAVESTONES.add(GRAVESTONE3_POLISHED_GRANITE);
 		GRAVESTONES.add(GRAVESTONE3_OBSIDIAN);
 		GRAVESTONES.add(GRAVESTONE3_SMOOTH_QUARTZ);
+		
+        BLOCKS.add(WISHING_WELL_BLOCK);
+        BLOCKS.add(DESERT_WISHING_WELL_BLOCK);
+        BLOCKS.add(BLACKSTONE);
+        BLOCKS.add(RUBY_ORE);
+        BLOCKS.add(SAPPHIRE_ORE);
+//        BLOCKS.add(WITHER_BRANCH);
+//        BLOCKS.add(PROXIMITY_SPAWNER);
 	}
 
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -441,6 +476,9 @@ public class TreasureBlocks {
 			}
 			// special case registry
 			registry.register(WITHER_CHEST);
+			registry.register(WITHER_CHEST_TOP);
+			registry.register(WITHER_BRANCH);
+			registry.register(WITHER_ROOT);
 			 registry.register(PROXIMITY_SPAWNER);
 		}
 
@@ -460,6 +498,9 @@ public class TreasureBlocks {
 			
 			// TODO need this list ?
 			final Block[] nonCreativeBlocks = {
+					WITHER_CHEST_TOP,
+					WITHER_BRANCH, // -- create an item for it
+					WITHER_ROOT,
 					PROXIMITY_SPAWNER // --> not added to Treasure tab, not visible in creative
 			};
 			

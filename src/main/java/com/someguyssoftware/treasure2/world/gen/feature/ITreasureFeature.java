@@ -13,6 +13,8 @@ import net.minecraftforge.common.BiomeDictionary;
 
 public interface ITreasureFeature {
 
+	public void init();
+	
 	public Map<String, Integer> getChunksSinceLastDimensionFeature();
 
 	public Map<String, Map<Rarity, Integer>> getChunksSinceLastDimensionRarityFeature();

@@ -1,5 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "treasure2:wither_chest" }
+        "": { "model": "treasure2:block/wither_chest" }
     }
 }

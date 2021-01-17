@@ -1,5 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "treasure2:wither_planks" }
+        "": { "model": "treasure2:block/wither_planks" }
     }
 }
