@@ -1,3 +1,8 @@
+package com.someguyssoftware.treasure2.capability;
+
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+
 public class TreasureCapabilities {
     // TODO this is where all capabilities will be
 

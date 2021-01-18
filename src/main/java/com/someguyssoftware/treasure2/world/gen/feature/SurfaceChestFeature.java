@@ -32,6 +32,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
+import com.someguyssoftware.treasure2.generator.ruins.SurfaceRuinGenerator;
 import com.someguyssoftware.treasure2.persistence.TreasureGenerationSavedData;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
@@ -362,7 +363,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	 * @param config
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(World world, Random random, ICoords spawnCoords,
+	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IWorld world, Random random, ICoords spawnCoords,
 			IChestConfig config) {
 		return generateSurfaceRuins(world, random, spawnCoords, null, null, config);
 	}
@@ -376,7 +377,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	 * @param config
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(World world, Random random, ICoords spawnCoords,
+	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IWorld world, Random random, ICoords spawnCoords,
 			TemplateHolder holder, IDecayRuleSet decayRuleSet, IChestConfig config) {
 
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
