@@ -5,7 +5,9 @@ package com.someguyssoftware.treasure2.enums;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 
@@ -13,8 +15,9 @@ import java.util.Map;
  *
  */
 public enum PitTypes implements IEnum {
-	STANDARD(0, "Simple"),
-	STRUCTURE(1, "Structure");
+	STANDARD(0, "standard"),
+	STRUCTURE(1, "structure"),
+	UNKNOWN(-1, "unknown");
 	
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();
@@ -29,6 +32,8 @@ public enum PitTypes implements IEnum {
 		}
 	}
 	
+	// TODO override valueOf();
+	
 	/**
 	 * Full constructor
 	 * @param code
@@ -39,10 +44,19 @@ public enum PitTypes implements IEnum {
 		this.value = value;
 	}
 
+	public static PitTypes get(String name) {
+		try {
+			return valueOf(name);
+		}
+		catch(Exception e) {
+			return PitTypes.UNKNOWN;
+		}
+	}
+	
 	@Override
 	public String getName() {
 		return name();
-	}
+	}	
 	
 	@Override
 	public Integer getCode() {
@@ -88,5 +102,14 @@ public enum PitTypes implements IEnum {
 	@Override
 	public Map<String, IEnum> getValues() {
 		return values;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static List<String> getNames() {
+		List<String> names = EnumSet.allOf(PitTypes.class).stream().map(x -> x.name()).collect(Collectors.toList());
+		return names;
 	}
 }

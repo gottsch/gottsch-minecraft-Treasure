@@ -3,27 +3,27 @@
  */
 package com.someguyssoftware.treasure2.command;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Pits;
-import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
-import com.someguyssoftware.treasure2.world.gen.feature.TreasureFeatures;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -33,38 +33,50 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 
 /**
+ * Notes: Rarity is not needed in this command. This command is for generating pits. If a chest is required for <i>test</i> then just a literal argument for chest
+ * should suffice and generate a random chest.  Do not want to duplicate the chest command here (unless it could be a sub-command?)
  * 
+ * Usage: t2-debug-pit <x> <y> <z> [type [name]] 
  * @author Mark Gottschling on Jan 25, 2018
  *
  */
-public class SpawnPitCommand {
-	private static final String RARITY_ARG = "rarity";
-	private static final String PIT_ARG = "pit";
+public class SpawnDebugPitCommand {
+//	private static final String RARITY_ARG = "rarity";
+	private static final String TYPE_ARG = "type";
+	private static final String NAME_ARG = "name";
 
-	
+	/*
+	 * This command builder pattern is RIDICULOUS
+	 */
 	public static void register(CommandDispatcher<CommandSource> dispatcher) {
 		dispatcher
-			.register(Commands.literal("t2-pit")
+			.register(Commands.literal("t2-debug-pit")
 					.requires(source -> {
 						return source.hasPermissionLevel(2);
 					})
 					.then(Commands.argument("pos", BlockPosArgument.blockPos())
 							.executes(source -> {
-								return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"), Rarity.COMMON.name(), "");
+								return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"), "", "");
 							})
-							.then(Commands.argument(RARITY_ARG, StringArgumentType.string())
-									.suggests(SUGGEST_RARITY).executes(source -> {
-										return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"),
-												StringArgumentType.getString(source, RARITY_ARG), "");
+							.then(Commands.literal(TYPE_ARG)
+									.then(Commands.argument(TYPE_ARG, StringArgumentType.string())
+									.suggests(SUGGEST_TYPE).executes(source -> {
+										return spawn(source.getSource(),
+												BlockPosArgument.getBlockPos(source, "pos"),
+												"",
+												StringArgumentType.getString(source, TYPE_ARG));
 									})
-									// TODO what if you want both RARITY AND PIT - i think there is a subcommand for this
-							)
-							.then(Commands.argument(PIT_ARG, StringArgumentType.string())
-									.suggests(SUGGEST_PIT).executes(source -> {
-										return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"),
-												"", StringArgumentType.getString(source, PIT_ARG));
-									})
-							)
+									.then(Commands.literal(NAME_ARG)
+											.then(Commands.argument(NAME_ARG, StringArgumentType.string())
+											.suggests(SUGGEST_PIT).executes(source -> {
+												return spawn(
+														source.getSource(),
+														BlockPosArgument.getBlockPos(source, "pos"),
+														StringArgumentType.getString(source, NAME_ARG),
+														StringArgumentType.getString(source, NAME_ARG));
+											})
+									))
+							))						
 					)
 			);
 	}
@@ -72,13 +84,36 @@ public class SpawnPitCommand {
 	/**
 	 * 
 	 */
-	private static final SuggestionProvider<CommandSource> SUGGEST_RARITY = (source, builder) -> {
+	private static final SuggestionProvider<CommandSource> SUGGEST_PIT = (source, builder) -> {
+		try {
+			Optional<String> typeArgValue = getArgumentFromCommandChain(source, TYPE_ARG);
+			if (typeArgValue.isPresent()) {
+				Treasure.LOGGER.debug("childs type arg -> {}", typeArgValue.get());
+				Optional<PitTypes> pitType = getPitType(typeArgValue.get());
+				if (pitType.isPresent()) {
+					Set<Pits> pits = TreasureData.PIT_GENS.row(pitType.get()).keySet();
+					Treasure.LOGGER.debug("pits -> {}", pits);
+					return ISuggestionProvider.suggest(pits.stream().map(x -> x.name()).collect(Collectors.toList()), builder);
+				}
+				else {
+					Treasure.LOGGER.debug("type arg is not correct/present");
+				}
+			}
+		}
+		catch(Exception e) {
+			Treasure.LOGGER.debug("exception throw -> {}", e);
+		}
 		return ISuggestionProvider.suggest(Pits.getNames().stream(), builder);
 	};
 	
-	private static final SuggestionProvider<CommandSource> SUGGEST_PIT = (source, builder) -> {
-		return ISuggestionProvider.suggest(Rarity.getNames().stream(), builder);
+//	private static final SuggestionProvider<CommandSource> SUGGEST_RARITY = (source, builder) -> {
+//		return ISuggestionProvider.suggest(Rarity.getNames().stream(), builder);
+//	};
+	
+	private static final SuggestionProvider<CommandSource> SUGGEST_TYPE = (source, builder) -> {
+		return ISuggestionProvider.suggest(PitTypes.getNames().stream(), builder);
 	};
+	
 	/**
 	 * 
 	 * @param source
@@ -86,36 +121,37 @@ public class SpawnPitCommand {
 	 * @param name
 	 * @return
 	 */
-	private static int spawn(CommandSource source, BlockPos pos, String rarityName, String pitName) {
-		Treasure.LOGGER.info("executing spawn pit, pos -> {}, name -> {}", pos, rarityName);
+	private static int spawn(CommandSource source, BlockPos pos, String pitName, String type) {
+		Treasure.LOGGER.debug("executing spawn pit, pos -> {}, name -> {}, type -> {}", pos, pitName, type);
 		
 		try {
 			ServerWorld world = source.getWorld();
 			Random random = new Random();
-			
-			Rarity rarity = null;
-			if (rarityName != null && !rarityName.isEmpty()) {
-				rarity = Rarity.getByValue(rarityName.toLowerCase());
-			}
-			if (rarity == null) {
-				rarity = Rarity.COMMON;
-			}			
-			Treasure.LOGGER.debug("Rarity:" + rarity);
 						
-			IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = null;			
+			IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = null;							
+			Map<Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenMap = null;
+			Optional<PitTypes> pitType = getPitType(type);
+			if (pitType.isPresent() && pitType.get() != PitTypes.UNKNOWN) {
+				Treasure.LOGGER.debug("pit type -> {}", pitType.get());
+				pitGenMap =TreasureData.PIT_GENS.row(pitType.get());
+			}
+			else {
+				pitGenMap =TreasureData.PIT_GENS.row(PitTypes.STANDARD);
+			}
+			
 			Pits pit = null;
 			if (pitName != null && !pitName.isEmpty()) {
 				pit = Pits.valueOf(pitName.toUpperCase());
-				// TODO if no pit type is selected, then randomly choose pit type (will need to check both if doesn't exist for one)
-				// for now just get standard pits ie no structures
-				Map<Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenMap =TreasureData.PIT_GENS.row(PitTypes.STANDARD);
+				Treasure.LOGGER.debug("pit name -> {}", pit.name());
 				pitGenerator = pitGenMap.get(pit);
 			}
-			
-			// TODO want chest?
-			// TODO want markers or structure?
-			
-			
+			else {
+				// get a random pit generator
+				List<Pits> keys = pitGenMap.keySet().stream().collect(Collectors.toList());
+				pitGenerator = pitGenMap.get(keys.get(random.nextInt(keys.size())));
+				Treasure.LOGGER.debug("random pit generator -> {}", pitGenerator.getClass().getSimpleName());
+			}
+
 			// get surface coords
 			ICoords coords = new Coords(pos);
 			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, 
@@ -123,21 +159,211 @@ public class SpawnPitCommand {
 			
 			// TODO check if coords.Y >= surface.Y. if so, error out.
 			
-//			GeneratorResult<ChestGeneratorData> result = TreasureFeatures.SURFACE_CHEST_FEATURE.generatePit(world, random, rarity, new Coords(pos), TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
 			GeneratorResult<ChestGeneratorData> result = pitGenerator.generate(world, random, surfaceCoords, coords);
-			if (result.isSuccess()) {
-				IChestGenerator generator = TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SURFACE_CHEST).next();
-				ICoords chestCoords = result.getData().getChestContext().getCoords();
-				if (chestCoords != null) {
-					GeneratorResult<ChestGeneratorData> chestResult = generator.generate(world, random, chestCoords, rarity, result.getData().getChestContext().getState());
-					Treasure.LOGGER.debug("pit chest result -> {}", chestResult);
-				}
-				Treasure.LOGGER.debug("pit result -> {}", result);
-			}			
+			Treasure.LOGGER.debug("pit result -> {}", result);		
 		}
 		catch(Exception e) {
 			Treasure.LOGGER.error("an error occurred: ", e);
 		}
 		return 1;
 	}
+	
+	/**
+	 * Follows the Command chain searching for the argument. Swallows IllegalArgumentException exceptions and returns empty Optional if not found.
+	 * @param source
+	 * @param typeArg
+	 * @return
+	 */
+	private static Optional<String> getArgumentFromCommandChain(CommandContext<CommandSource> source, String typeArg) {
+		while (source != null) {
+			try {
+					return Optional.of(StringArgumentType.getString(source, TYPE_ARG));
+			}
+			catch(IllegalArgumentException e) {
+				source = source.getChild();
+			}
+		}
+		return Optional.empty();
+	}
+
+	public static Optional<PitTypes> getPitType(String type) {
+		Optional<PitTypes> pitType = Optional.empty();
+		pitType = Optional.ofNullable(PitTypes.getByValue(type.toLowerCase()));
+		return pitType;
+	}
+	
+	/*
+	 * 
+	 * 
+							// rarity
+							.then(Commands.literal(RARITY_ARG)
+									.then(Commands.argument(RARITY_ARG, StringArgumentType.string())
+									.suggests(SUGGEST_RARITY).executes(source -> {
+										return spawn(source.getSource(), 
+												BlockPosArgument.getBlockPos(source, "pos"),
+												StringArgumentType.getString(source, RARITY_ARG),
+												"",
+												"");
+									})
+									// rarity > name
+									.then(Commands.literal(NAME_ARG)
+											.then(Commands.argument(NAME_ARG, StringArgumentType.string())
+											.suggests(SUGGEST_PIT).executes(source -> {
+												return spawn(
+														source.getSource(),
+														BlockPosArgument.getBlockPos(source, "pos"),
+														StringArgumentType.getString(source, RARITY_ARG),
+														StringArgumentType.getString(source, NAME_ARG),
+														"");
+											})
+											// rarity > name > type
+											.then(Commands.literal(TYPE_ARG)
+													.then(Commands.argument(TYPE_ARG, StringArgumentType.string())
+													.suggests(SUGGEST_TYPE).executes(source -> {
+														return spawn(source.getSource(),
+																BlockPosArgument.getBlockPos(source, "pos"),
+																StringArgumentType.getString(source, RARITY_ARG),
+																StringArgumentType.getString(source, NAME_ARG),
+																StringArgumentType.getString(source, TYPE_ARG));
+													})
+											))
+									))
+									// rarity > type
+									.then(Commands.literal(TYPE_ARG)
+											.then(Commands.argument(TYPE_ARG, StringArgumentType.string())
+											.suggests(SUGGEST_TYPE).executes(source -> {
+												return spawn(source.getSource(),
+														BlockPosArgument.getBlockPos(source, "pos"),
+														StringArgumentType.getString(source, RARITY_ARG), 
+														"",
+														StringArgumentType.getString(source, TYPE_ARG));
+											})
+											// rarity > type > name
+											.then(Commands.literal(NAME_ARG)
+													.then(Commands.argument(NAME_ARG, StringArgumentType.string())
+													.suggests(SUGGEST_PIT).executes(source -> {
+														return spawn(
+																source.getSource(),
+																BlockPosArgument.getBlockPos(source, "pos"),
+																StringArgumentType.getString(source, RARITY_ARG),
+																StringArgumentType.getString(source, NAME_ARG),
+																StringArgumentType.getString(source, TYPE_ARG));
+													})
+											))
+									))		
+							))
+							// name [NAME]
+							.then(Commands.literal(NAME_ARG)
+									.then(Commands.argument(NAME_ARG, StringArgumentType.string())
+									.suggests(SUGGEST_PIT).executes(source -> {
+										return spawn(
+												source.getSource(),
+												BlockPosArgument.getBlockPos(source, "pos"),
+												Rarity.COMMON.name(),
+												StringArgumentType.getString(source, NAME_ARG),
+												"");
+									})
+									// name > rarity
+									.then(Commands.literal(RARITY_ARG)
+											.then(Commands.argument(RARITY_ARG, StringArgumentType.string())
+											.suggests(SUGGEST_RARITY).executes(source -> {
+												return spawn(source.getSource(), 
+														BlockPosArgument.getBlockPos(source, "pos"),
+														StringArgumentType.getString(source, RARITY_ARG),
+														StringArgumentType.getString(source, NAME_ARG),
+														"");
+											})
+											// name > rarity > type
+											.then(Commands.literal(TYPE_ARG)
+													.then(Commands.argument(TYPE_ARG, StringArgumentType.string())
+													.suggests(SUGGEST_TYPE).executes(source -> {
+														return spawn(source.getSource(),
+																BlockPosArgument.getBlockPos(source, "pos"),
+																StringArgumentType.getString(source, RARITY_ARG),
+																StringArgumentType.getString(source, NAME_ARG),
+																StringArgumentType.getString(source, TYPE_ARG));
+													})
+											))	
+									))
+									// name > type
+									.then(Commands.literal(TYPE_ARG)
+											.then(Commands.argument(TYPE_ARG, StringArgumentType.string())
+											.suggests(SUGGEST_TYPE).executes(source -> {
+												return spawn(source.getSource(),
+														BlockPosArgument.getBlockPos(source, "pos"),
+														Rarity.COMMON.name(), 
+														StringArgumentType.getString(source, NAME_ARG),
+														StringArgumentType.getString(source, TYPE_ARG));
+											})
+											// name > type > rarity
+											.then(Commands.literal(RARITY_ARG)
+													.then(Commands.argument(RARITY_ARG, StringArgumentType.string())
+													.suggests(SUGGEST_RARITY).executes(source -> {
+														return spawn(source.getSource(), 
+																BlockPosArgument.getBlockPos(source, "pos"),
+																StringArgumentType.getString(source, RARITY_ARG),
+																StringArgumentType.getString(source, NAME_ARG),
+																StringArgumentType.getString(source, TYPE_ARG));
+													})
+											))
+									))	
+							))
+							// type
+							.then(Commands.literal(TYPE_ARG)
+									.then(Commands.argument(TYPE_ARG, StringArgumentType.string())
+									.suggests(SUGGEST_TYPE).executes(source -> {
+										return spawn(source.getSource(),
+												BlockPosArgument.getBlockPos(source, "pos"),
+												Rarity.COMMON.name(), 
+												"",
+												StringArgumentType.getString(source, TYPE_ARG));
+									})
+									// type > rarity
+									.then(Commands.literal(RARITY_ARG)
+											.then(Commands.argument(RARITY_ARG, StringArgumentType.string())
+											.suggests(SUGGEST_RARITY).executes(source -> {
+												return spawn(source.getSource(), 
+														BlockPosArgument.getBlockPos(source, "pos"),
+														StringArgumentType.getString(source, RARITY_ARG),
+														"",
+														StringArgumentType.getString(source, TYPE_ARG));
+											})
+											// type > rarity > name
+											.then(Commands.literal(NAME_ARG)
+													.then(Commands.argument(NAME_ARG, StringArgumentType.string())
+													.suggests(SUGGEST_PIT).executes(source -> {
+														return spawn(
+																source.getSource(),
+																BlockPosArgument.getBlockPos(source, "pos"),
+																StringArgumentType.getString(source, RARITY_ARG),
+																StringArgumentType.getString(source, NAME_ARG),
+																StringArgumentType.getString(source, TYPE_ARG));
+													})
+											))
+									))
+									// type > name
+									.then(Commands.literal(NAME_ARG)
+											.then(Commands.argument(NAME_ARG, StringArgumentType.string())
+											.suggests(SUGGEST_PIT).executes(source -> {
+												return spawn(
+														source.getSource(),
+														BlockPosArgument.getBlockPos(source, "pos"),
+														Rarity.COMMON.name(),
+														StringArgumentType.getString(source, NAME_ARG),
+														StringArgumentType.getString(source, TYPE_ARG));
+											})
+											// type > name > rarity
+											.then(Commands.literal(RARITY_ARG)
+													.then(Commands.argument(RARITY_ARG, StringArgumentType.string())
+													.suggests(SUGGEST_RARITY).executes(source -> {
+														return spawn(source.getSource(), 
+																BlockPosArgument.getBlockPos(source, "pos"),
+																StringArgumentType.getString(source, RARITY_ARG),
+																StringArgumentType.getString(source, NAME_ARG),
+																StringArgumentType.getString(source, TYPE_ARG));
+													})
+											))
+									))
+							))
+			*/
 }

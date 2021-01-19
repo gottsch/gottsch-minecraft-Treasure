@@ -37,6 +37,7 @@ import com.someguyssoftware.treasure2.generator.pit.MobTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.StructurePitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.VolcanoPitGenerator;
 import com.someguyssoftware.treasure2.generator.well.IWellGenerator;
 import com.someguyssoftware.treasure2.generator.well.WellGenerator;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
@@ -133,7 +134,7 @@ public class TreasureData {
 
 		PIT_GENS.put(PitTypes.STANDARD, Pits.BIG_BOTTOM_MOB_TRAP_PIT,  new BigBottomMobTrapPitGenerator());
 
-		PIT_GENS.put(PitTypes.STANDARD, Pits.VOLCANO_PIT,  new BigBottomMobTrapPitGenerator());
+		PIT_GENS.put(PitTypes.STANDARD, Pits.VOLCANO_PIT,  new VolcanoPitGenerator());
 
 		for (String dimension : TreasureConfig.GENERAL.dimensionsWhiteList.get()) {
 			Treasure.LOGGER.debug("white list dimension -> {}", dimension);

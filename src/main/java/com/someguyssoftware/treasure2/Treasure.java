@@ -252,7 +252,7 @@ public class Treasure implements IMod {
 //		 * FOR DEBUGGING ONLY register additional commands
 //		 */
 //		event.registerServerCommand(new SpawnChestCommand());
-//		event.registerServerCommand(new SpawnPitCommand());
+//		event.registerServerCommand(new SpawnDebugPitCommand());
 //		event.registerServerCommand(new SpawnPitOnlyCommand());
 //		event.registerServerCommand(new SpawnPitStructureOnlyCommand());
 //		event.registerServerCommand(new SpawnWellStructureCommand());

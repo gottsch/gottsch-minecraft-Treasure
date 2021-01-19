@@ -3,34 +3,6 @@
  */
 package com.someguyssoftware.treasure2.command;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Options;
-
-import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
-import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
-import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
-import com.someguyssoftware.treasure2.meta.StructureArchetype;
-import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
-
-
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
 /**
  * 
  * @author Mark Gottschling on Jan 25, 2018
