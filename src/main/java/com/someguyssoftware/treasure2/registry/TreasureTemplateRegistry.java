@@ -14,6 +14,7 @@ import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManage
 
 import net.minecraft.block.Block;
 import net.minecraft.util.datafix.DataFixesManager;
+import net.minecraft.world.server.ServerWorld;
 
 /**
  * @author Mark Gottschling on Jan 10, 2021
@@ -84,5 +85,14 @@ public class TreasureTemplateRegistry {
 	 */
 	public static Block getMarkerBlock(StructureMarkers marker) {
 		return templateManager.getMarkerMap().get(marker);
+	}
+
+	/**
+	 * 
+	 * @param world
+	 */
+	public static void initialize(ServerWorld world) {
+		templateManager.init(world);
+		
 	}
 }

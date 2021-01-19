@@ -42,6 +42,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.server.ServerWorld;
 
 /**
  * @author Mark Gottschling on Jul 29, 2019
@@ -61,6 +62,9 @@ public class TreasureMetaManager extends MetaManager {
 //		buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
 	}
 
+	public static void init(ServerWorld world) {	
+	}
+	
 	/**
 	 * 
 	 */

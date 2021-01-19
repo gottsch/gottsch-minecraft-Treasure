@@ -58,8 +58,9 @@ public class WorldEventHandler {
 		if (WorldInfo.isServerSide((World)event.getWorld()) && event.getWorld().getDimension().isSurfaceWorld()) {
 			ServerWorld world = (ServerWorld) event.getWorld();
 
-			// called once to initiate world-level properties in the LootTableMaster
+			// called once to initiate world-level properties in the registries
 			TreasureLootTableRegistry.initialize(world);
+			TreasureTemplateRegistry.initialize(world);
 			
 			// register mod's loot tables
 			TreasureLootTableRegistry.register(mod.getId());

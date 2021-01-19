@@ -108,15 +108,22 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		super(mod);
 
 		// initialize the maps
-		for (Rarity r : Rarity.values()) {
-			CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<ResourceLocation>());
-			CHEST_LOOT_TABLES_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<LootTableShell>());
-		}
+//		for (Rarity r : Rarity.values()) {
+//			CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<ResourceLocation>());
+//			CHEST_LOOT_TABLES_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<LootTableShell>());
+//		}
 	}
 
 	// TODO possibly remove or get new name
 	// TEMP
 	public void init(ServerWorld world) {
+		Treasure.LOGGER.debug("initializing ...");
+		// initialize the maps
+		for (Rarity r : Rarity.values()) {
+			CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<ResourceLocation>());
+			CHEST_LOOT_TABLES_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<LootTableShell>());
+		}
+		
 		//		Path path = Paths.get(world.getSaveHandler().getWorldDirectory().getPath(), "data", "loot_tables");
 		Path path = Paths.get(world.getSaveHandler().getWorldDirectory().getPath(), "datapacks", "treasure2");
 		setWorldDataBaseFolder(path.toFile());

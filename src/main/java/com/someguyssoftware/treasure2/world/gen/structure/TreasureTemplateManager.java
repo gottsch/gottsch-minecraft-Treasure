@@ -33,7 +33,7 @@ import com.someguyssoftware.gottschcore.meta.IMetaType;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate2;
+import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplateManager;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
@@ -54,6 +54,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -106,6 +107,18 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 //		}
 	}
 
+	/**
+	 * 
+	 */
+	public void init(ServerWorld world) {
+		// initialize table
+		for (IMetaArchetype archetype : StructureArchetype.values()) {
+			for (IMetaType type : com.someguyssoftware.treasure2.meta.StructureType.values()) {
+				templatesByArchetypeType.put(archetype, type, new ArrayList<>(5));
+			}
+		}
+	}
+	
 	/**
 	 * 
 	 */
@@ -443,7 +456,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	}
 	
 	public ICoords getOffset(Random random, TemplateHolder holder, StructureMarkers marker) {
-		ICoords offsetCoords = ((GottschTemplate2)holder.getTemplate()).findCoords(random, getMarkerMap().get(marker));
+		ICoords offsetCoords = ((GottschTemplate)holder.getTemplate()).findCoords(random, getMarkerMap().get(marker));
 		return offsetCoords;
 	}
 	

@@ -12,7 +12,7 @@ import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
-import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate2;
+import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.PlacementSettings;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
@@ -88,7 +88,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		
 		// TODO move into TemplateGenerator
 		// NOTE these values are still relative to origin (spawnCoords);
-		ICoords newEntrance = new Coords(GottschTemplate2.transformedBlockPos(placement, entranceCoords.toPos()));
+		ICoords newEntrance = new Coords(GottschTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
 		
 		/*
 		 *  adjust spawn coords to line up room entrance with pit

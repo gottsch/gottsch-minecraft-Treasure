@@ -16,6 +16,7 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.server.ServerWorld;
 
 /**
  * 
@@ -36,6 +37,9 @@ public class TreasureDecayManager extends DecayManager {
 		//		}
 	}
 
+	public static void init(ServerWorld world) {
+	}
+	
 	/**
 	 * 
 	 */

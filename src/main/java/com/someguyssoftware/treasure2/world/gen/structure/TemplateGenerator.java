@@ -9,7 +9,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
-import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate2;
+import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.PlacementSettings;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
@@ -70,7 +70,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
 
-		GottschTemplate2 template = (GottschTemplate2) templateHolder.getTemplate();
+		GottschTemplate template = (GottschTemplate) templateHolder.getTemplate();
 		Treasure.LOGGER.debug("template size -> {}", template.getSize());
 		// get the meta
 		StructureMeta meta = (StructureMeta) TreasureMetaRegistry.get(templateHolder.getMetaLocation().toString());
@@ -156,7 +156,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		BlockContext context = new BlockContext();
 
 		// get the absolute coords of chest
-		ICoords coords = new Coords(GottschTemplate2.transformedCoords(placement, contextIn.getCoords()));
+		ICoords coords = new Coords(GottschTemplate.transformedCoords(placement, contextIn.getCoords()));
 		coords = spawnCoords.add(coords);
 		context.setCoords(coords);
 

@@ -8,7 +8,7 @@ import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
-import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate2;
+import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.PlacementSettings;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
@@ -137,7 +137,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 				return result.fail();
 			}
 			
-			GottschTemplate2 template = (GottschTemplate2) holder.getTemplate();
+			GottschTemplate template = (GottschTemplate) holder.getTemplate();
 			Treasure.LOGGER.debug("selected template holder -> {} : {}", holder.getLocation(), holder.getMetaLocation());
 			if (template == null) {
 				Treasure.LOGGER.debug("could not find random template");
@@ -189,7 +189,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			placement.setRotation(rotation).setRandom(random);
 			
 			// NOTE these values are still relative to origin (spawnCoords);
-			ICoords newEntrance = new Coords(GottschTemplate2.transformedBlockPos(placement, entranceCoords.toPos()));
+			ICoords newEntrance = new Coords(GottschTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
 			Treasure.LOGGER.debug("new entrance coords -> {}", newEntrance.toShortString());
 			
 			/*
