@@ -73,7 +73,7 @@ public class SpawnDebugPitCommand {
 														source.getSource(),
 														BlockPosArgument.getBlockPos(source, "pos"),
 														StringArgumentType.getString(source, NAME_ARG),
-														StringArgumentType.getString(source, NAME_ARG));
+														StringArgumentType.getString(source, TYPE_ARG));
 											})
 									))
 							))						

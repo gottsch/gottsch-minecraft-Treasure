@@ -16,6 +16,8 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.dimension.Dimension;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
@@ -56,6 +58,13 @@ public class GemOreFeature extends Feature<OreFeatureConfig> implements ITreasur
 	public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand,
 			BlockPos pos, OreFeatureConfig config) {
 
+		String dimensionName = worldIn.getDimension().getType().getRegistryName().toString();
+
+		// ore only generates in overworld
+		if (worldIn.getDimension().getType() != DimensionType.OVERWORLD) {
+			return false;
+		}
+		
 		// increment the chunk count
 //				chunksSinceLastOre++;
 

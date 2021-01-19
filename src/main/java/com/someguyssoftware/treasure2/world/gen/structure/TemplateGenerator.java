@@ -86,7 +86,8 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 //			setNullBlock(Block.getBlockFromName(meta.getNullBlockName()));
 			setNullBlock(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(meta.getNullBlockName())));
 		}
-
+		Treasure.LOGGER.debug("Using null block -> {}", getNullBlock().getRegistryName());
+		
 		// find the offset block
 		int offset = 0;
 		ICoords offsetCoords = null;
@@ -119,18 +120,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 					decayProcessor, getNullBlock(), TreasureTemplateRegistry.getTemplateManager().getReplacementMap(), 3);
 		}
 
-		// process all markers and adding them to the result data (absolute positioned)
-		for (Entry<Block, BlockContext> entry : template.getTagBlockMap().entries()) {
-			ICoords c = new Coords(GottschTemplate2.transformedCoords(placement, entry.getValue().getCoords()));
-			c = spawnCoords.add(c);
-			result.getData().getMap().put(entry.getKey(), new BlockContext(c, entry.getValue().getState()));
-			Treasure.LOGGER.debug("old: adding to structure info absoluted transformed coords -> {} : {}",
-					entry.getKey().getRegistryName(), c.toShortString());
-		}
-
 		// process all strcture markers, positioning absolutely
-		// TEMP declaration - use the return result
-//		TemplateGeneratorData2 data2 = new TemplateGeneratorData2();
 		for (Entry<Block, BlockContext> entry : template.getTagBlockMap().entries()) {
 			BlockContext context = getAbsoluteTransformedContext(entry.getValue(), spawnCoords, placement);
 			result.getData().getMap().put(entry.getKey(), context);

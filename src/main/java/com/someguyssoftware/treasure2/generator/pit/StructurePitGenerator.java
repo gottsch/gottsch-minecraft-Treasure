@@ -178,7 +178,8 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 				Treasure.LOGGER.debug("Unable to locate entrance position.");
 				return result.fail();
 			}
-			
+			Treasure.LOGGER.debug("entrance coords -> {}", entranceCoords.toShortString());
+
 			// select a random rotation
 			Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
 			Treasure.LOGGER.debug("rotation used -> {}", rotation);
@@ -189,7 +190,8 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			
 			// NOTE these values are still relative to origin (spawnCoords);
 			ICoords newEntrance = new Coords(GottschTemplate2.transformedBlockPos(placement, entranceCoords.toPos()));
-		
+			Treasure.LOGGER.debug("new entrance coords -> {}", newEntrance.toShortString());
+			
 			/*
 			 *  adjust spawn coords to line up room entrance with pit
 			 */
@@ -200,7 +202,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			// generate the structure
 			GeneratorResult<TemplateGeneratorData> genResult = new TemplateGenerator().generate(world, random, holder, placement, roomCoords);
 			if (!genResult.isSuccess()) return result.fail();
-			
+			Treasure.LOGGER.debug("template result -> {}", genResult);
 			result.getData().setSpawnCoords(genResult.getData().getSpawnCoords());
 			
 			// interrogate info for spawners and any other special block processing (except chests that are handler by caller

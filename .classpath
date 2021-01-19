@@ -9,6 +9,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/ModCommonLibs/libs/commons-cli-1.4.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/forge-1.15.2-31.2"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/gottsch-minecraft-GottschCore"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/GottschCore"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
