@@ -1,7 +1,6 @@
-/**
- * 
- */
 package com.someguyssoftware.treasure2.command.argument;
+
+import java.util.Optional;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
@@ -10,10 +9,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.minecraft.command.CommandSource;
 
-/**
- * @author Mark
- *
- */
 public class TemplateLocationArgument implements ArgumentType<ITemplateLocationArgument> {
 
 	
@@ -21,8 +16,13 @@ public class TemplateLocationArgument implements ArgumentType<ITemplateLocationA
 		return new TemplateLocationArgument();
 	}
 	
-	public static TemplateLocation getTemplateLocation(final CommandContext<CommandSource> context, final String name) {
-		return context.getArgument(name, TemplateLocation.class);
+	public static Optional<TemplateLocation> getTemplateLocation(final CommandContext<CommandSource> context, final String name) {
+        try {
+           return Optional.ofNullable(getArgument(name, TemplateLocation.class));
+        }
+        catch(Exception e) {
+            return Optional.empty();
+        }
 	}
 	
 	@Override

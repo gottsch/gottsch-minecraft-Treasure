@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.someguyssoftware.treasure2.command.argument.TemplateLocationArgument;
+import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -36,32 +37,63 @@ public class SpawnRuinsCommand {
 							})
 							.then(Commands.argument("template", TemplateLocationArgument.templateLocation())
 									.executes(source -> {
-										return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"), TemplateLocationArgument.getTemplateLocation(source, "template"));
-									}))
+										return spawn(
+                                            source.getSource(), 
+                                            BlockPosArgument.getBlockPos(source, "pos"), 
+                                            TemplateLocationArgument.getTemplateLocation(source, "template"));
+                                    })
+                            )
+                            // .then(Commands.literal(DECAY_ARG)
+                            //     .then(Commands.argument(DECAY_ARG, StringArgumentType.string())
+                            //         .suggests(SUGGEST_TYPE).executes(source -> {
+                            //             return spawn(source.getSource(),
+                            //                     BlockPosArgument.getBlockPos(source, "pos"), TemplateLocationArgument.getTemplateLocation(source, "template"));
+                            //         })
+                            // )
+                            .then(Commands.argument("decay", DecayArgument.decay()
+                                    .execute(source -> {
+                                        return spawn(
+                                            source.getSource(), 
+                                            BlockPosArgument.getBlockPos(source, "pos"), 
+                                            Optional.empty());
+                                })
+                            )
 					)
 			);
 	}
-	
-	public static int spawn(CommandSource source, BlockPos pos, TemplateLocationArgument.TemplateLocation templateLocation) {
-		return 0;		
+    
+	public static int spawn(CommandSource source, BlockPos pos, Optional<TemplateLocation> templateLocation) {
+        String modID = Treasure.MODID;
+	    String archetype = StructureArchetype.SURFACE.getValue();
+		String name = line.getOptionValue(NAME_ARG);
+        IDecayRuleSet ruleSet = null;
+        
+        if (templateLocation.isPresent()) {
+				modID = templateLocation.getModID();
+				archetype = templateLocation.getArchetype();
+                name = templateLocation.getName();
+		}
+        
+        // get the ruleset to use from the decay manager
+        if (decayRuleset.isPresent()) {
+            String rulesetName = decayRuleset.getName();
+            if (!ruleSetName.contains(".json")) {
+                ruleSetName += ".json";
+            }
+            // build the key
+            String key = (Treasure.MODID + ":" + "mc1_15/decay/" + ruleSetName).replace("\\", "/");
+            ruleSet = TreasureDecayRegistry.get(key);
+        }
+
+
+		return 0;
 	}
-//	
-//	@Override
-//	public String getName() {
-//		return "t2-ruins";
-//	}
-//
-//	@Override
-//	public String getUsage(ICommandSender var1) {
-//		return "/t2-ruins <x> <y> <z> [-modid <mod id> -archetype <archetype> -name <name>] [-ruleset <relative filepath>] [-rarity <rarity>]: spawns ruins at location (x, y, z)";
-//	}
-//
-//    /**
-//     * Return the required permission level for this command.
-//     */
-//    public int getRequiredPermissionLevel() {
-//        return 2;
-//    }
+    
+    // TODO where does this go? In the arugment class
+    private static final SuggestionProvider<CommandSource> SUGGEST_ARCHETYPE = (source, builder) -> {
+		return ISuggestionProvider.suggest(StructureArchetype.getNames().stream(), builder);
+    };
+
 //    
 //	@Override
 //	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
