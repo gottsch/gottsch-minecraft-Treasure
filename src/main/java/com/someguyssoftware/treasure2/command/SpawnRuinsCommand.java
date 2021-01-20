@@ -3,8 +3,17 @@
  */
 package com.someguyssoftware.treasure2.command;
 
+import com.mojang.brigadier.CommandDispatcher;
+import com.someguyssoftware.treasure2.command.argument.TemplateLocationArgument;
+
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.command.arguments.BlockPosArgument;
+import net.minecraft.util.math.BlockPos;
+
 /**
- * 
+ * Usage: /t2-ruins <x> <y> <z> [-modid <mod id> -archetype <archetype> -name <name>] [-decay <relative filepath>] [-rarity <rarity>]
+ * Spawns ruins at location (x, y, z) using the optional structure name, and option decay ruleset.
  * @author Mark Gottschling on Jan 25, 2018
  *
  */
@@ -12,8 +21,30 @@ public class SpawnRuinsCommand {
 	private static final String MOD_ID_ARG = "modid";
 	private static final String ARCHETYPE_ARG = "archetype";
 	private static final String NAME_ARG = "name";
-	private static final String RULESET_ARG = "ruleset";
+	private static final String DECAY_ARG = "decay";
 	private static final String RARITY_ARG = "rarity";
+	
+	public static void register(CommandDispatcher<CommandSource> dispatcher) {
+		dispatcher
+			.register(Commands.literal("t2-ruins")
+					.requires(source -> {
+						return source.hasPermissionLevel(2);
+					})
+					.then(Commands.argument("pos", BlockPosArgument.blockPos())
+							.executes(source -> {
+								return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"), null);
+							})
+							.then(Commands.argument("template", TemplateLocationArgument.templateLocation())
+									.executes(source -> {
+										return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"), TemplateLocationArgument.getTemplateLocation(source, "template"));
+									}))
+					)
+			);
+	}
+	
+	public static int spawn(CommandSource source, BlockPos pos, TemplateLocationArgument.TemplateLocation templateLocation) {
+		return 0;		
+	}
 //	
 //	@Override
 //	public String getName() {
@@ -53,7 +84,7 @@ public class SpawnRuinsCommand {
 //			options.addOption(MOD_ID_ARG, true, "");
 //			options.addOption(ARCHETYPE_ARG, true, "");
 //			options.addOption(NAME_ARG, true, "");
-//			options.addOption(RULESET_ARG, true, "");
+//			options.addOption(DECAY_ARG, true, "");
 //			options.addOption(RARITY_ARG, true, "");
 //			
 //			// parse the command line arguments
@@ -76,8 +107,8 @@ public class SpawnRuinsCommand {
 //			
 //			// get the ruleset to use from the decay manager
 //			IDecayRuleSet ruleSet = null;
-//			if (line.hasOption(RULESET_ARG)) {
-//				String ruleSetName = line.getOptionValue(RULESET_ARG);
+//			if (line.hasOption(DECAY_ARG)) {
+//				String ruleSetName = line.getOptionValue(DECAY_ARG);
 //				if (!ruleSetName.contains(".json")) {
 //					ruleSetName += ".json";
 //				}

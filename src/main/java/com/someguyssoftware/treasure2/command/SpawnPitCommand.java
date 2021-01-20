@@ -40,7 +40,7 @@ import net.minecraft.world.server.ServerWorld;
  * @author Mark Gottschling on Jan 25, 2018
  *
  */
-public class SpawnDebugPitCommand {
+public class SpawnPitCommand {
 //	private static final String RARITY_ARG = "rarity";
 	private static final String TYPE_ARG = "type";
 	private static final String NAME_ARG = "name";
@@ -50,7 +50,7 @@ public class SpawnDebugPitCommand {
 	 */
 	public static void register(CommandDispatcher<CommandSource> dispatcher) {
 		dispatcher
-			.register(Commands.literal("t2-debug-pit")
+			.register(Commands.literal("t2-pit")
 					.requires(source -> {
 						return source.hasPermissionLevel(2);
 					})

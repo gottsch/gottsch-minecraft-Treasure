@@ -126,7 +126,6 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 
 		// increment the chunk counts
 		incrementDimensionalChestChunkCount(dimensionName);
-		//		chunksSinceLastChest++;
 
 		for (Rarity rarity : TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST)) {
 			incrementDimensionalRarityChestChunkCount(dimensionName, rarity);
