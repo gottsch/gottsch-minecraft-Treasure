@@ -163,7 +163,11 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String GRAVESTONE3_POLISHED_ANDESITE_ID = "gravestone3_polished_andesite";
 		public static final String GRAVESTONE3_POLISHED_DIORITE_ID = "gravestone3_polished_diorite";
 		public static final String GRAVESTONE3_OBSIDIAN_ID = "gravestone3_obsidian";
-		public static final String GRAVESTONE3_SMOOTH_QUARTZ_ID = "gravestone3_smooth_quartz";
+        public static final String GRAVESTONE3_SMOOTH_QUARTZ_ID = "gravestone3_smooth_quartz";
+        
+        public static final String SKULL_CROSSBONES_ID = "skull_crossbones";
+        public static final String SKELETON_ID = "skeleton";
+        
 		public static final String WITHER_BRANCH_ID = "wither_branch";
 		public static final String WITHER_ROOT_ID = "wither_root";		
 		public static final String RUBY_ORE_ID = "ruby_ore";

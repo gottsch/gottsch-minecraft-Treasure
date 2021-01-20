@@ -108,8 +108,8 @@ public class TreasureBlocks {
 	public static final Block GRAVESTONE3_POLISHED_DIORITE;
 	public static final Block GRAVESTONE3_OBSIDIAN;
 	public static final Block GRAVESTONE3_SMOOTH_QUARTZ;	
-//	public static final Block SKULL_CROSSBONES;
-//	public static final Block SKELETON;
+	public static final Block SKULL_CROSSBONES;
+	public static final Block SKELETON;
     
 	public static final Block WITHER_BRANCH;
 	public static final Block WITHER_ROOT;
@@ -217,8 +217,21 @@ public class TreasureBlocks {
 				Block.makeCuboidShape(6, 0, 2, 10.8, 12, 14),	// W
 				Block.makeCuboidShape(2, 0, 6, 14, 12, 10.8),	// N
 				Block.makeCuboidShape(6, 0, 2, 10.8, 12, 14),	// E
-		};
-		
+        };
+        
+        // skull and crossbones
+        VoxelShape[] = skullCrossbonesBounds = new VoxelShape[] {
+				Block.makeCuboidShape(1, 0, 1, 15, 6, 15),	// S
+				Block.makeCuboidShape(1, 0, 1, 15, 6, 15),	// W
+				Block.makeCuboidShape(1, 0, 1, 15, 6, 15),	// N
+				Block.makeCuboidShape(1, 0, 1, 15, 6, 15),	// E
+        }
+        
+        this.bounds[EnumFacing.SOUTH.getHorizontalIndex()] =new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// S
+		this.bounds[EnumFacing.WEST.getHorizontalIndex()] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// W
+		this.bounds[EnumFacing.NORTH.getHorizontalIndex()] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D); // N
+        this.bounds[EnumFacing.EAST.getHorizontalIndex()] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// E
+        
 		/** initialize chests */
 		WOOD_CHEST = new StandardChestBlock(Treasure.MODID, TreasureConfig.ChestID.WOOD_CHEST_ID, WoodChestTileEntity.class,
 				TreasureChestTypes.STANDARD, Rarity.COMMON, Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.5F))
@@ -350,7 +363,12 @@ public class TreasureBlocks {
                 .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
 		GRAVESTONE3_SMOOTH_QUARTZ = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_SMOOTH_QUARTZ_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
                 .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
-		
+        
+        SKULL_CROSSBONES = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.SKULL_CROSSBONES_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(skullCrossbonesBounds);
+        SKELTON = new SkeletonBlock(Treasure.MODID, TreasureConfig.BlockID.SKELETON_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+                .hardnessAndResistance(3.0F).sound(SoundType.STONE));
+                
 		// ORES
 		RUBY_ORE = new OreBlock(Treasure.MODID, TreasureConfig.BlockID.RUBY_ORE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
                 .hardnessAndResistance(3.0F, 5.0F).harvestLevel(3));
@@ -424,7 +442,8 @@ public class TreasureBlocks {
 		BLOCKS.add(GRAVESTONE3_POLISHED_DIORITE);
 		BLOCKS.add(GRAVESTONE3_POLISHED_GRANITE);
 		BLOCKS.add(GRAVESTONE3_OBSIDIAN);
-		BLOCKS.add(GRAVESTONE3_SMOOTH_QUARTZ);
+        BLOCKS.add(GRAVESTONE3_SMOOTH_QUARTZ);
+        BLOCKS.add(SKULL_CROSSBONES);
           
         GRAVESTONES.add(GRAVESTONE1_STONE);
         GRAVESTONES.add(GRAVESTONE1_COBBLESTONE);
@@ -449,7 +468,8 @@ public class TreasureBlocks {
 		GRAVESTONES.add(GRAVESTONE3_POLISHED_DIORITE);
 		GRAVESTONES.add(GRAVESTONE3_POLISHED_GRANITE);
 		GRAVESTONES.add(GRAVESTONE3_OBSIDIAN);
-		GRAVESTONES.add(GRAVESTONE3_SMOOTH_QUARTZ);
+        GRAVESTONES.add(GRAVESTONE3_SMOOTH_QUARTZ);
+        GRAVESTONES.add(SKULL_CROSSBONES);
 		
         BLOCKS.add(WISHING_WELL_BLOCK);
         BLOCKS.add(DESERT_WISHING_WELL_BLOCK);
