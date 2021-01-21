@@ -73,6 +73,7 @@ public class TreasureGuis {
 			RenderTypeLookup.setRenderLayer(TreasureBlocks.MILK_CRATE, RenderType.getCutoutMipped());
 			RenderTypeLookup.setRenderLayer(TreasureBlocks.RUBY_ORE, RenderType.getCutoutMipped());
             RenderTypeLookup.setRenderLayer(TreasureBlocks.SAPPHIRE_ORE, RenderType.getCutoutMipped());
+            RenderTypeLookup.setRenderLayer(TreasureBlocks.SKULL_CROSSBONES, RenderType.getCutoutMipped());
             RenderTypeLookup.setRenderLayer(TreasureBlocks.SKELETON, RenderType.getCutoutMipped());
 			
 			// register the custom renderer for our tile entity

@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "treasure2:skeleton",
+          "weight": 20,
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "treasure2:skeleton",
+              "properties": {
+                "part": "top"
+              }
+            }
+          ]
+        },
+        {
+           "type": "minecraft:item",
+           "name": "minecraft:bone",
+           "weight": 75
+        },
+        {
+           "type": "minecraft:item",
+           "name": "minecraft:skeleton_skull",
+           "weight": 5
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

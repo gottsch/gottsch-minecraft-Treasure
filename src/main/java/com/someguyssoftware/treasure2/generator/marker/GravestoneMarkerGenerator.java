@@ -15,8 +15,10 @@ import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureBlock;
+import com.someguyssoftware.treasure2.block.SkeletonBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
@@ -127,16 +129,15 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 
 			LOGGER.debug("marker class -> {}", marker.getClass().getSimpleName());
 			// select a random facing direction
-//			Direction[] horizontals = Direction.HORIZONTALS;
-			Direction facing = Direction.Plane.HORIZONTAL.random(random); //horizontals[random.nextInt(horizontals.length)];
+			Direction facing = Direction.Plane.HORIZONTAL.random(random);
 
 			// place the block
-//			if (marker instanceof SkeletonBlock) {
-//				LOGGER.debug("should be placing skeleton block -> {}", spawnCoords.toShortString());
-//				GenUtil.placeSkeleton(world, random, spawnCoords);
-//			} else {
+			if (marker instanceof SkeletonBlock) {
+				LOGGER.debug("should be placing skeleton block -> {}", spawnCoords.toShortString());
+				GenUtil.placeSkeleton(world, random, spawnCoords);
+			} else {
 				world.setBlockState(spawnCoords.toPos(), marker.getDefaultState().with(AbstractChestBlock.FACING, facing), 3);
-//			}
+			}
 
 			// update the tile entity if any
 //			GravestoneProximitySpawnerTileEntity tileEntity = (GravestoneProximitySpawnerTileEntity) world.getTileEntity(spawnCoords.toPos());

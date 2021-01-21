@@ -6,12 +6,15 @@ package com.someguyssoftware.treasure2.generator;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.block.BlockContext;
+import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.Heading;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
+import com.someguyssoftware.treasure2.block.SkeletonBlock;
+import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
@@ -321,48 +324,46 @@ public class GenUtil {
 //
 //		return isSuccess;
 //	}
-//
-//	/**
-//	 * 
-//	 * @param world
-//	 * @param random
-//	 * @param coords
-//	 */
-//	public static void placeSkeleton(World world, Random random, ICoords coords) {
-//		// select a random facing direction
-//		EnumFacing[] horizontals = EnumFacing.HORIZONTALS;
+
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param coords
+	 */
+	public static void placeSkeleton(IWorld world, Random random, ICoords coords) {
+		// select a random facing direction
+//		Direction[] horizontals = EnumFacing.HORIZONTALS;
 //		EnumFacing facing = horizontals[random.nextInt(horizontals.length)];
-//
-//		// ICoords coords2 = new Coords(coords.offset(facing));
-//		ICoords coords2 = new Coords(coords.toPos().offset(facing));
-//
-//		Cube cube = new Cube(world, coords);
-//		Cube cube2 = new Cube(world, coords2);
-//
-////		IBlockState state2 = world.getBlockState(coords2.toPos());
-//		boolean flag = cube.isReplaceable();
-//		boolean flag1 = cube2.isReplaceable();
-//		boolean flag2 = flag || cube.isAir();
-//		boolean flag3 = flag1 || cube2.isAir();
-//
-//		// TODO add cube.isSideSolid
-//		if (flag2 && flag3
-//				&& world.getBlockState(coords.down(1).toPos()).isSideSolid(world, coords.down(1).toPos(), EnumFacing.UP)
-//				&& world.getBlockState(coords2.down(1).toPos()).isSideSolid(world, coords2.down(1).toPos(),
-//						EnumFacing.UP)) {
-//			IBlockState skeletonState = TreasureBlocks.SKELETON.getDefaultState()
-//					.withProperty(SkeletonBlock.FACING, facing.getOpposite())
-//					.withProperty(SkeletonBlock.PART, SkeletonBlock.EnumPartType.BOTTOM);
-//
-//			world.setBlockState(coords.toPos(), skeletonState, 3);
-//			world.setBlockState(coords2.toPos(),
-//					skeletonState.withProperty(SkeletonBlock.PART, SkeletonBlock.EnumPartType.TOP), 3);
-//
-//			world.notifyNeighborsRespectDebug(coords.toPos(), cube.getState().getBlock(), false);
-//			world.notifyNeighborsRespectDebug(coords2.toPos(), cube.getState().getBlock(), false);
-//		}
-//	}
-//
+		Direction facing = Direction.Plane.HORIZONTAL.random(random);
+		ICoords coords2 = new Coords(coords.toPos().offset(facing));
+
+		BlockContext blockContext = new BlockContext(world, coords);
+		BlockContext blockContext2 = new BlockContext(world, coords2);
+
+		boolean flag = blockContext.isReplaceable();
+		boolean flag1 = blockContext2.isReplaceable();
+		boolean flag2 = flag || blockContext.isAir();
+		boolean flag3 = flag1 || blockContext2.isAir();
+
+		// TODO add cube.isSideSolid
+		if (flag2 && flag3
+				&& world.getBlockState(coords.down(1).toPos()).isSolidSide(world, coords.down(1).toPos(), Direction.UP)
+				&& world.getBlockState(coords2.down(1).toPos()).isSolidSide(world, coords2.down(1).toPos(),
+						Direction.UP)) {
+			BlockState skeletonState = TreasureBlocks.SKELETON.getDefaultState()
+					.with(SkeletonBlock.FACING, facing.getOpposite())
+					.with(SkeletonBlock.PART, SkeletonBlock.EnumPartType.BOTTOM);
+
+			world.setBlockState(coords.toPos(), skeletonState, 3);
+			world.setBlockState(coords2.toPos(),
+					skeletonState.with(SkeletonBlock.PART, SkeletonBlock.EnumPartType.TOP), 3);
+
+			world.notifyNeighbors(coords.toPos(), blockContext.getState().getBlock());
+			world.notifyNeighbors(coords2.toPos(), blockContext.getState().getBlock());
+		}
+	}
+
 //	/**
 //	 * 
 //	 * @param world

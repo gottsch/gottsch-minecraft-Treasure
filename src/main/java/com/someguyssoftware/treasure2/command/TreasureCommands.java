@@ -21,5 +21,6 @@ public class TreasureCommands {
 		SpawnChestCommand.register(event.getCommandDispatcher());
 		SpawnPitCommand.register(event.getCommandDispatcher());
 		SpawnWellCommand.register(event.getCommandDispatcher());
+		SpawnRuinsCommand.register(event.getCommandDispatcher());
 	}
 }

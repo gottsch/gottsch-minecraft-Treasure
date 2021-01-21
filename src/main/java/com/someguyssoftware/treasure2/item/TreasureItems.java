@@ -96,6 +96,9 @@ public class TreasureItems {
 	public static Item WITHER_STICK_ITEM;
 	public static Item WITHER_ROOT_ITEM;
 
+	// other
+	public static Item SKELETON;
+	
 	// swords
 	public static Item SKULL_SWORD;
 		
@@ -283,6 +286,9 @@ public class TreasureItems {
 		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_STICK_ITEM_ID, TreasureBlocks.WITHER_BRANCH, new Item.Properties());
 		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_ROOT_ITEM_ID, TreasureBlocks.WITHER_ROOT, new Item.Properties());
 		
+		// OTHER
+		SKELETON = new SkeletonItem(Treasure.MODID, TreasureConfig.ItemID.SKELETON_ITEM_ID, TreasureBlocks.SKELETON, new Item.Properties());
+		
 		SKULL_SWORD = new SwordItem(TreasureItemTier.SKULL, 3, -2.4F, new Item.Properties().group(TreasureItemGroups.MOD_ITEM_GROUP))
 				.setRegistryName(Treasure.MODID, TreasureConfig.ItemID.SKULL_SWORD_ID);
 	}
@@ -337,7 +343,8 @@ public class TreasureItems {
 				BLACK_PEARL,
 				WITHER_STICK_ITEM,
 				WITHER_ROOT_ITEM,
-				SKULL_SWORD
+				SKULL_SWORD,
+				SKELETON
 				);
 	}
 

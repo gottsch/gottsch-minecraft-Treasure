@@ -95,6 +95,10 @@ public class WorldEventHandler {
 			ResourceLocation location = new ResourceLocation(Treasure.MODID, "pools/treasure/scarce");
 			LootTable lootTable = event.getLootTableManager().getLootTableFromLocation(location);
 			LootPool pool = lootTable.getPool("treasure");
+			if (pool ==null) {
+				Treasure.LOGGER.debug("pool is null");
+			}
+			Treasure.LOGGER.debug("attempting to add pool -> {} to table -> {}", pool.getName(), event.getTable());
 			event.getTable().addPool(pool);		
 		}
 	}

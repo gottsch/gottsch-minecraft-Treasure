@@ -220,17 +220,12 @@ public class TreasureBlocks {
         };
         
         // skull and crossbones
-        VoxelShape[] = skullCrossbonesBounds = new VoxelShape[] {
+        VoxelShape[] skullCrossbonesBounds = new VoxelShape[] {
 				Block.makeCuboidShape(1, 0, 1, 15, 6, 15),	// S
 				Block.makeCuboidShape(1, 0, 1, 15, 6, 15),	// W
 				Block.makeCuboidShape(1, 0, 1, 15, 6, 15),	// N
 				Block.makeCuboidShape(1, 0, 1, 15, 6, 15),	// E
-        }
-        
-        this.bounds[EnumFacing.SOUTH.getHorizontalIndex()] =new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// S
-		this.bounds[EnumFacing.WEST.getHorizontalIndex()] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// W
-		this.bounds[EnumFacing.NORTH.getHorizontalIndex()] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D); // N
-        this.bounds[EnumFacing.EAST.getHorizontalIndex()] = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.375D, 0.9375D);	// E
+        };
         
 		/** initialize chests */
 		WOOD_CHEST = new StandardChestBlock(Treasure.MODID, TreasureConfig.ChestID.WOOD_CHEST_ID, WoodChestTileEntity.class,
@@ -366,7 +361,7 @@ public class TreasureBlocks {
         
         SKULL_CROSSBONES = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.SKULL_CROSSBONES_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
                 .hardnessAndResistance(3.0F).sound(SoundType.STONE)).setBounds(skullCrossbonesBounds);
-        SKELTON = new SkeletonBlock(Treasure.MODID, TreasureConfig.BlockID.SKELETON_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+        SKELETON = new SkeletonBlock(Treasure.MODID, TreasureConfig.BlockID.SKELETON_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
                 .hardnessAndResistance(3.0F).sound(SoundType.STONE));
                 
 		// ORES
@@ -500,6 +495,7 @@ public class TreasureBlocks {
 			registry.register(WITHER_BRANCH);
 			registry.register(WITHER_ROOT);
 			 registry.register(PROXIMITY_SPAWNER);
+			 registry.register(SKELETON);
 		}
 
 		/**
@@ -521,7 +517,8 @@ public class TreasureBlocks {
 					WITHER_CHEST_TOP,
 					WITHER_BRANCH, // -- create an item for it
 					WITHER_ROOT,
-					PROXIMITY_SPAWNER // --> not added to Treasure tab, not visible in creative
+					PROXIMITY_SPAWNER, // --> not added to Treasure tab, not visible in creative
+					SKELETON // --> create an item for it
 			};
 			
 			for (Block b : BLOCKS) {
