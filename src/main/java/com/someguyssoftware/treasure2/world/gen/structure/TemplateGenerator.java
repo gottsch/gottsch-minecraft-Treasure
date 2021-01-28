@@ -108,7 +108,8 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 
 		// update the spawn coords with the offset
 		ICoords spawnCoords = coords.add(0, offset, 0);
-
+//		Treasure.LOGGER.debug("spawn coords with offset -> {}", spawnCoords);
+		
 		// generate the structure
 		if (decayProcessor == null) {
 			Treasure.LOGGER.debug("no decay processor found.");
@@ -136,7 +137,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		// Y offset
 		spawnCoords = getTransformedSpawnCoords(spawnCoords, new Coords(transformedSize), placement).add(0, -offset, 0);
 
-		Treasure.LOGGER.debug("spawn coords after rotation -> " + spawnCoords);
+//		Treasure.LOGGER.debug("spawn coords after rotation -> " + spawnCoords);
 		// update result data
 		result.getData().setSpawnCoords(spawnCoords);
 		result.getData().setSize(new Coords(transformedSize));

@@ -38,6 +38,7 @@ import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.LogBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -113,6 +114,10 @@ public class TreasureBlocks {
     
 	public static final Block WITHER_BRANCH;
 	public static final Block WITHER_ROOT;
+	public static final Block WITHER_LOG;
+	public static final Block WITHER_BROKEN_LOG;
+	public static final Block WITHER_SOUL_LOG;
+	public static final Block WITHER_PLANKS;
 	
 	public static final Block RUBY_ORE;
 	public static final Block SAPPHIRE_ORE;
@@ -365,9 +370,9 @@ public class TreasureBlocks {
                 .hardnessAndResistance(3.0F).sound(SoundType.STONE));
                 
 		// ORES
-		RUBY_ORE = new OreBlock(Treasure.MODID, TreasureConfig.BlockID.RUBY_ORE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+		RUBY_ORE = new TreasureOreBlock(Treasure.MODID, TreasureConfig.BlockID.RUBY_ORE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
                 .hardnessAndResistance(3.0F, 5.0F).harvestLevel(3));
-		SAPPHIRE_ORE = new OreBlock(Treasure.MODID, TreasureConfig.BlockID.SAPPHIRE_ORE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
+		SAPPHIRE_ORE = new TreasureOreBlock(Treasure.MODID, TreasureConfig.BlockID.SAPPHIRE_ORE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
                 .hardnessAndResistance(3.0F, 5.0F).harvestLevel(3));		
 		
 		// TODO WISHING WELL BLOCKS
@@ -378,13 +383,21 @@ public class TreasureBlocks {
         BLACKSTONE = new WishingWellBlock(Treasure.MODID, TreasureConfig.BlockID.BLACKSTONE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
                 .hardnessAndResistance(3.0F).sound(SoundType.STONE));
 
-		// TODO WITHER BIOME BLOCKS
+		// WITHER BIOME BLOCKS
         WITHER_BRANCH = new WitherBranchBlock(Treasure.MODID, TreasureConfig.BlockID.WITHER_BRANCH_ID, Block.Properties.create(Material.WOOD, MaterialColor.WOOD))
         		.setBounds(witherBranchBounds);
         WITHER_ROOT = new WitherRootBlock(Treasure.MODID, TreasureConfig.BlockID.WITHER_ROOT_ID, Block.Properties.create(Material.WOOD, MaterialColor.WOOD))
         		.setBounds(witherRootBounds);
+        // TODO LogBlock (vanilla) and ModBlock (gottschcore) do not implement ITreasureBlock
+        WITHER_LOG = new LogBlock(MaterialColor.OBSIDIAN, Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(3.0F).sound(SoundType.WOOD))
+        		.setRegistryName(new ResourceLocation(Treasure.MODID, TreasureConfig.BlockID.WITHER_LOG_ID));
+        WITHER_BROKEN_LOG = new WitherBrokenLogBlock(Treasure.MODID, TreasureConfig.BlockID.WITHER_BROKEN_LOG_ID, Block.Properties.create(Material.WOOD, MaterialColor.WOOD));
+        WITHER_SOUL_LOG = new WitherSoulLog(Treasure.MODID, TreasureConfig.BlockID.WITHER_SOUL_LOG_ID, Block.Properties.create(Material.WOOD, MaterialColor.BROWN)
+        		.hardnessAndResistance(3.0F).sound(SoundType.WOOD));
+        WITHER_PLANKS = new TreasureBlock(Treasure.MODID, TreasureConfig.BlockID.WITHER_PLANKS_ID, Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
+        		.hardnessAndResistance(2.5F));
 
-		// TODO FALLING BLOCKS
+        // TODO FALLING BLOCKS
 
 		// TODO PAINTINGS
 
@@ -439,7 +452,16 @@ public class TreasureBlocks {
 		BLOCKS.add(GRAVESTONE3_OBSIDIAN);
         BLOCKS.add(GRAVESTONE3_SMOOTH_QUARTZ);
         BLOCKS.add(SKULL_CROSSBONES);
-          
+        BLOCKS.add(WISHING_WELL_BLOCK);
+        BLOCKS.add(DESERT_WISHING_WELL_BLOCK);
+        BLOCKS.add(BLACKSTONE);
+        BLOCKS.add(RUBY_ORE);
+        BLOCKS.add(SAPPHIRE_ORE);
+        BLOCKS.add(WITHER_BROKEN_LOG);
+        BLOCKS.add(WITHER_LOG);
+        BLOCKS.add(WITHER_SOUL_LOG);
+        BLOCKS.add(WITHER_PLANKS);
+        
         GRAVESTONES.add(GRAVESTONE1_STONE);
         GRAVESTONES.add(GRAVESTONE1_COBBLESTONE);
 		GRAVESTONES.add(GRAVESTONE1_MOSSY_COBBLESTONE);
@@ -465,14 +487,6 @@ public class TreasureBlocks {
 		GRAVESTONES.add(GRAVESTONE3_OBSIDIAN);
         GRAVESTONES.add(GRAVESTONE3_SMOOTH_QUARTZ);
         GRAVESTONES.add(SKULL_CROSSBONES);
-		
-        BLOCKS.add(WISHING_WELL_BLOCK);
-        BLOCKS.add(DESERT_WISHING_WELL_BLOCK);
-        BLOCKS.add(BLACKSTONE);
-        BLOCKS.add(RUBY_ORE);
-        BLOCKS.add(SAPPHIRE_ORE);
-//        BLOCKS.add(WITHER_BRANCH);
-//        BLOCKS.add(PROXIMITY_SPAWNER);
 	}
 
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -494,6 +508,7 @@ public class TreasureBlocks {
 			registry.register(WITHER_CHEST_TOP);
 			registry.register(WITHER_BRANCH);
 			registry.register(WITHER_ROOT);
+//			registry.register(WITHER_SOUL_LOG);
 			 registry.register(PROXIMITY_SPAWNER);
 			 registry.register(SKELETON);
 		}
@@ -516,7 +531,7 @@ public class TreasureBlocks {
 			final Block[] nonCreativeBlocks = {
 					WITHER_CHEST_TOP,
 					WITHER_BRANCH, // -- create an item for it
-					WITHER_ROOT,
+					WITHER_ROOT, // -- create an item for it
 					PROXIMITY_SPAWNER, // --> not added to Treasure tab, not visible in creative
 					SKELETON // --> create an item for it
 			};

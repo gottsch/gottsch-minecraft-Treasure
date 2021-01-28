@@ -109,18 +109,6 @@
 					]
 				},
 				{
-					"entryName": "eye_patch",
-					"type": "minecraft:item",
-					"name": "treasure2:eye_patch",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "minecraft:random_chance",
-							"chance": 0.30
-						}
-					]
-				},
-				{
 					"entryName": "sapphire",
 					"type": "minecraft:item",
 					"name": "treasure2:sapphire",
@@ -137,30 +125,6 @@
 					"type": "minecraft:item",
 					"name": "treasure2:white_pearl",
 					"weight": 8
-				},
-				{
-					"entryName": "painting_blocks_sand",
-					"type": "minecraft:item",
-					"name": "treasure2:painting_blocks_sand",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "minecraft:random_chance",
-							"chance": 0.4
-						}
-					]
-				},
-				{
-					"entryName": "painting_blocks_wood",
-					"type": "minecraft:item",
-					"name": "treasure2:painting_blocks_wood",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "minecraft:random_chance",
-							"chance": 0.4
-						}
-					]
 				}
 			]
 		}

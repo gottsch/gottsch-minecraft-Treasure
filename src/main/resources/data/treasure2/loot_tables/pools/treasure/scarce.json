@@ -116,42 +116,6 @@
 							"chance": 0.2
 						}
 					]
-				},
-				{
-					"entryName": "painting_blocks_dirt",
-					"type": "minecraft:item",
-					"name": "treasure2:painting_blocks_dirt",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "minecraft:random_chance",
-							"chance": 0.5
-						}
-					]
-				},
-				{
-					"entryName": "painting_blocks_cobblestone",
-					"type": "minecraft:item",
-					"name": "treasure2:painting_blocks_cobblestone",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "minecraft:random_chance",
-							"chance": 0.5
-						}
-					]
-				},
-				{
-					"entryName": "painting_blocks_water",
-					"type": "minecraft:item",
-					"name": "treasure2:painting_blocks_water",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "minecraft:random_chance",
-							"chance": 0.5
-						}
-					]
 				}
 			]
 		}

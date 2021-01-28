@@ -18,6 +18,9 @@ import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorMaterial;
+import net.minecraft.item.DyeableArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -98,6 +101,7 @@ public class TreasureItems {
 
 	// other
 	public static Item SKELETON;
+//	public static Item EYE_PATCH;
 	
 	// swords
 	public static Item SKULL_SWORD;
@@ -291,6 +295,9 @@ public class TreasureItems {
 		
 		SKULL_SWORD = new SwordItem(TreasureItemTier.SKULL, 3, -2.4F, new Item.Properties().group(TreasureItemGroups.MOD_ITEM_GROUP))
 				.setRegistryName(Treasure.MODID, TreasureConfig.ItemID.SKULL_SWORD_ID);
+//		EYE_PATCH = new DyeableArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.HEAD, (new Item.Properties()).group(TreasureItemGroups.MOD_ITEM_GROUP))
+//				.setRegistryName(Treasure.MODID, TreasureConfig.ItemID.EYE_PATCH_ID);
+		   
 	}
 
 	/**
@@ -345,6 +352,7 @@ public class TreasureItems {
 				WITHER_ROOT_ITEM,
 				SKULL_SWORD,
 				SKELETON
+//				EYE_PATCH
 				);
 	}
 

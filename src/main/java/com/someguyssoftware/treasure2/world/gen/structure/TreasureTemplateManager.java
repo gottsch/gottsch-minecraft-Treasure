@@ -187,7 +187,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 					// build the keys for the meta manager to look at
 					for (String ruleSetName : meta.getDecayRuleSetName()) {
 						ResourceLocation resourceLocation = new ResourceLocation(
-								getMod().getId() + ":" + TreasureDecayRegistry.getDecayManager().getBaseResourceFolder()+ "/" + modID + "/" + ruleSetName + ".json");
+								getMod().getId() + ":" + TreasureDecayRegistry.getDecayManager().getBaseResourceFolder()+ "/" + ruleSetName + ".json");
 						decayRuleSetResourceLocation.add(resourceLocation);
 						Treasure.LOGGER.debug("Using key to find decay ruleset -> {}", decayRuleSetResourceLocation.toString());
 					}

@@ -3,24 +3,43 @@
  */
 package com.someguyssoftware.treasure2.command;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
+import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.command.argument.DecayArgument;
 import com.someguyssoftware.treasure2.command.argument.TemplateLocation;
 import com.someguyssoftware.treasure2.command.argument.TemplateLocationArgument;
+import com.someguyssoftware.treasure2.enums.Pits;
+import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GeneratorResult;
+import com.someguyssoftware.treasure2.generator.ruins.IRuinGenerator;
+import com.someguyssoftware.treasure2.generator.ruins.SurfaceRuinGenerator;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
+import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.command.arguments.BlockPosArgument;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.server.ServerWorld;
 
 /**
  * Usage: /t2-ruins <x> <y> <z> [-modid <mod id> -archetype <archetype> -name <name>] [-decay <relative filepath>] [-rarity <rarity>]
@@ -43,67 +62,151 @@ public class SpawnRuinsCommand {
 					})
 					.then(Commands.argument("pos", BlockPosArgument.blockPos())
 							.executes(source -> {
-								return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"), null);
+								return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"), Treasure.MODID, StructureArchetype.SURFACE.getValue(), "", "");
 							})
-							.then(Commands.argument("template", TemplateLocationArgument.templateLocation())
-									.executes(source -> {
-										return spawn(
-                                            source.getSource(), 
-                                            BlockPosArgument.getBlockPos(source, "pos"), 
-                                            TemplateLocationArgument.getTemplateLocation(source, "template"));
-                                    })
-                            )
-                            // .then(Commands.literal(DECAY_ARG)
-                            //     .then(Commands.argument(DECAY_ARG, StringArgumentType.string())
-                            //         .suggests(SUGGEST_TYPE).executes(source -> {
-                            //             return spawn(source.getSource(),
-                            //                     BlockPosArgument.getBlockPos(source, "pos"), TemplateLocationArgument.getTemplateLocation(source, "template"));
-                            //         })
-                            // )
-                            .then(Commands.argument("decay", DecayArgument.decay())
-                                    .executes(source -> {
-                                        return spawn(
-                                            source.getSource(), 
-                                            BlockPosArgument.getBlockPos(source, "pos"), 
-                                            Optional.empty());
-                                })
-                            )
-					)
+							.then(Commands.literal("-"+MOD_ID_ARG)
+								.then(Commands.argument(MOD_ID_ARG, StringArgumentType.string())
+										.suggests(SUGGEST_MODID).executes(source -> {
+											return spawn(source.getSource(),
+													BlockPosArgument.getBlockPos(source, "pos"),
+													StringArgumentType.getString(source, MOD_ID_ARG),
+													StructureArchetype.SURFACE.getValue(),
+													"",
+													"");
+										})
+										.then(Commands.literal("-"+ARCHETYPE_ARG)
+												.then(Commands.argument(ARCHETYPE_ARG, StringArgumentType.string())
+														.suggests(SUGGEST_ARCHETYPE)
+														.executes(source -> {
+															return spawn(source.getSource(),
+																	BlockPosArgument.getBlockPos(source, "pos"),
+																	StringArgumentType.getString(source, MOD_ID_ARG),
+																	StringArgumentType.getString(source, ARCHETYPE_ARG),
+			    													"",
+			    													"");														
+														})
+														.then(Commands.literal("-"+NAME_ARG)
+																.then(Commands.argument(NAME_ARG, StringArgumentType.string())
+																		.executes(source -> {
+																			return spawn(source.getSource(),
+																					BlockPosArgument.getBlockPos(source, "pos"),
+																					StringArgumentType.getString(source, MOD_ID_ARG),
+																					StringArgumentType.getString(source, ARCHETYPE_ARG),
+							    													StringArgumentType.getString(source, NAME_ARG),
+							    													"");
+																		})
+											                             .then(Commands.literal("-"+DECAY_ARG)
+											                                     .then(Commands.argument(DECAY_ARG, StringArgumentType.string())
+											                                         .suggests(SUGGEST_DECAY).executes(source -> {
+											    											return spawn(source.getSource(),
+											    													BlockPosArgument.getBlockPos(source, "pos"),
+											    													StringArgumentType.getString(source, MOD_ID_ARG),
+											    													StringArgumentType.getString(source, ARCHETYPE_ARG),
+											    													StringArgumentType.getString(source, NAME_ARG),
+											    													StringArgumentType.getString(source, DECAY_ARG));		
+											                                         })
+											                             )
+									                            	)
+																		
+																)
+														)
+												)
+										)
+								)
+							)
+//							.then(Commands.argument("template", TemplateLocationArgument.templateLocation())
+//									.executes(source -> {
+//										return spawn(
+//                                            source.getSource(), 
+//                                            BlockPosArgument.getBlockPos(source, "pos"), 
+//                                            TemplateLocationArgument.getTemplateLocation(source, "template"));
+//                                    })
+//                            )
+                             .then(Commands.literal("-"+DECAY_ARG)
+                                 .then(Commands.argument(DECAY_ARG, StringArgumentType.string())
+                                     .suggests(SUGGEST_DECAY).executes(source -> {
+											return spawn(source.getSource(),
+													BlockPosArgument.getBlockPos(source, "pos"),
+													Treasure.MODID,
+													StructureArchetype.SURFACE.getValue(),
+													"",
+													StringArgumentType.getString(source, DECAY_ARG));		
+                                     })
+                             )
+//                            .then(Commands.argument("decay", DecayArgument.decay())
+//                                    .executes(source -> {
+//                                        return spawn(
+//                                            source.getSource(), 
+//                                            BlockPosArgument.getBlockPos(source, "pos"), 
+//                                            Optional.empty());
+//                                })
+//                            )
+					))
 			);
 	}
     
-	public static int spawn(CommandSource source, BlockPos pos, Optional<TemplateLocation> templateLocation) {
-        String modID = Treasure.MODID;
-	    String archetype = StructureArchetype.SURFACE.getValue();
-	    String name = null;
-        IDecayRuleSet ruleSet = null;
-        
-        Treasure.LOGGER.debug("template location -> {}", templateLocation);
-        if (templateLocation.isPresent()) {
-				modID = templateLocation.get().getModID();
-				archetype = templateLocation.get().getArchetype();
-                name = templateLocation.get().getName();
-		}
-        
-//        // get the ruleset to use from the decay manager
-//        if (decayRuleset.isPresent()) {
-//            String rulesetName = decayRuleset.getName();
-//            if (!ruleSetName.contains(".json")) {
-//                ruleSetName += ".json";
-//            }
-//            // build the key
-//            String key = (Treasure.MODID + ":" + "mc1_15/decay/" + ruleSetName).replace("\\", "/");
-//            ruleSet = TreasureDecayRegistry.get(key);
-//        }
-
-
-		return 0;
-	}
+	// TODO read all the loaded mods OR all the registered mods in TreasureTemplateRegistry
+    private static final SuggestionProvider<CommandSource> SUGGEST_MODID = (source, builder) -> {
+		return ISuggestionProvider.suggest(Arrays.asList("minecraft", "treasure2").stream(), builder);
+    };
     
     // TODO where does this go? In the arugment class
     private static final SuggestionProvider<CommandSource> SUGGEST_ARCHETYPE = (source, builder) -> {
 		return ISuggestionProvider.suggest(StructureArchetype.getNames().stream(), builder);
     };
+    
+    // TODO get all the names
+    private static final SuggestionProvider<CommandSource> SUGGEST_NAME = (source, builder) -> {    	
+		return ISuggestionProvider.suggest(TreasureDecayRegistry.getDecayManager().getRuleSetMap().keySet().stream(), builder);
+    };
+
+    private static final SuggestionProvider<CommandSource> SUGGEST_DECAY = (source, builder) -> {    	
+		return ISuggestionProvider.suggest(TreasureDecayRegistry.getDecayManager().getRuleSetMap().keySet().stream(), builder);
+    };
+    
+	/**
+	 * 
+	 * @param source
+	 * @param pos
+	 * @param modID
+	 * @param archetype
+	 * @param name
+	 * @param decay
+	 * @return
+	 */
+	public static int spawn(CommandSource source, BlockPos pos, String modID, String archetype, String name, String decay) {
+		ServerWorld world = source.getWorld();
+		Random random = new Random();
+		
+        modID = (modID == null || modID.isEmpty()) ? Treasure.MODID : modID;
+        archetype = (archetype == null || archetype.isEmpty()) ? StructureArchetype.SURFACE.getValue() : archetype;
+        
+        if (name == null || name.isEmpty()) {
+        	return 0;
+        }
+
+        try {
+		// TODO for now just use the surface ruins generator
+		IRuinGenerator<GeneratorResult<ChestGeneratorData>> ruinGenerator = new SurfaceRuinGenerator();
+		
+       ResourceLocation templateKey = new ResourceLocation(modID, TreasureTemplateRegistry.getTemplateManager().getBaseResourceFolder()
+			+ "/" + archetype.toLowerCase()	+ "/" + name);
+
+		TemplateHolder holder = TreasureTemplateManager.getTemplatesByResourceLocationMap().get(templateKey);
+		if (holder == null) {
+			Treasure.LOGGER.debug("Unable to locate template by key -> {}", templateKey.toString());
+		}
+        
+		// TODO check/add decay set
+		GeneratorResult<ChestGeneratorData> result = ruinGenerator.generate(world, random, new Coords(pos), holder);
+        }
+		catch(Exception e) {
+			Treasure.LOGGER.error("an error occurred: ", e);
+		}
+		return 0;
+	}
+    
+
     
 //    
 //	@Override

@@ -42,6 +42,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String KEYS_AND_LOCKS_CATEGORY = "keys and locks";
 	public static final String COINS_CATEGORY = "coins";
 	public static final String GEMS_AND_ORES_CATEGORY = "gems and ores";
+	public static final String FOG_CATEGORY = "fog";
 
 	public static final General GENERAL;
 	public static final Chests CHESTS;
@@ -51,6 +52,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final KeysAndLocks KEYS_LOCKS;
 	public static final Coins COINS;
 	public static final GemsAndOres GEMS_AND_ORES;
+	public static final Fog FOG;
 
 	public static final String CATEGORY_DIV = "##############################";
 	public static final String UNDERLINE_DIV = "------------------------------";
@@ -66,6 +68,7 @@ public class TreasureConfig extends AbstractConfig {
 		KEYS_LOCKS = new KeysAndLocks(COMMON_BUILDER);
 		COINS = new Coins(COMMON_BUILDER);
 		GEMS_AND_ORES = new GemsAndOres(COMMON_BUILDER);
+		FOG = new Fog(COMMON_BUILDER);
 		COMMON_CONFIG = COMMON_BUILDER.build();
 
 		// load raw arrays into lists
@@ -94,6 +97,7 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String WITHER_STICK_ITEM_ID = "wither_stick_item";
 		public static final String WITHER_ROOT_ITEM_ID = "wither_root_item";
 		public static final String SKELETON_ITEM_ID = "skeleton";
+		public static final String EYE_PATCH_ID = "eye_patch";
 	}
 	
 	public static class LockID {
@@ -173,6 +177,10 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String WITHER_ROOT_ID = "wither_root";		
 		public static final String RUBY_ORE_ID = "ruby_ore";
 		public static final String SAPPHIRE_ORE_ID = "sapphire_ore";
+		public static final String WITHER_BROKEN_LOG_ID = "wither_broken_log";
+		public static final String WITHER_LOG_ID = "wither_log";
+		public static final String WITHER_PLANKS_ID = "wither_planks";
+		public static final String WITHER_SOUL_LOG_ID = "wither_soul_log";
 
 	}
 
@@ -220,11 +228,12 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String CLAM_CHEST_TE_ID = "clam_chest_tile_entity";
 		public static final String SPIDER_CHEST_TE_ID = "spider_chest_tile_entity";
 		public static final String VIKING_CHEST_TE_ID = "viking_chest_tile_entity";
+		public static final String CARDBOARD_BOX_TE_ID = "cardboard_box_tile_entity";
+		public static final String MILK_CRATE_TE_ID = "milk_crate_tile_entity";
 		public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
 		public static final String GRAVESTONE_TE_ID = "gravestone_tile_entity";
 		public static final String GRAVESTONE_PROXIMITY_SPAWNER_TE_ID = "gravestone_proximity_spawner_tile_entity";
-		public static final String CARDBOARD_BOX_TE_ID = "cardboard_box_tile_entity";
-		public static final String MILK_CRATE_TE_ID = "milk_crate_tile_entity";
+		public static final String MIST_EMITTER_TE_ID = "mist_emitter_tile_entity";
 	}
 
 	/*
@@ -253,6 +262,7 @@ public class TreasureConfig extends AbstractConfig {
 					.comment(" Enable/Disable a check to ensure the default decay rulesets exist on the file system.", " If enabled, then you will not be able to remove any default decay rulesets (but they can be edited).", " Only disable if you know what you're doing.")
 					.define("Enable default decay rulesets check:", true);
 
+			// TODO this may need to move somewhere else
 			surfaceStructureProbability = builder
 					.comment("The probability that a surface structure will generate.")
 					.defineInRange("Probability of surface structure spawn:", 25, 0, 100);
@@ -313,32 +323,25 @@ public class TreasureConfig extends AbstractConfig {
 
 			// setup submerged properties
 			submergedConfigs.put(Rarity.COMMON, new ChestConfig.Data(false, 150, 85, 40, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			submergedConfigs.put(Rarity.UNCOMMON, new ChestConfig.Data(false, 300, 75, 30, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			submergedConfigs.put(Rarity.SCARCE, new ChestConfig.Data(true, 400, 50, 20, 0, new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean",
+					"lukewarm_ocean", "warm_ocean"}, new String[] {}, new String[] {"ocean", "deep_ocean"}, new String[] {}));
+			submergedConfigs.put(Rarity.RARE, new ChestConfig.Data(true, 600, 25, 5, 0, new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean",
+					"lukewarm_ocean", "warm_ocean"}, new String[] {}, new String[] {"ocean", "deep_ocean"}, new String[] {}));
+			submergedConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 1000, 15, 5, 0, new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean",
+					"lukewarm_ocean", "warm_ocean"}, new String[] {}, new String[] {"ocean", "deep_ocean"}, new String[] {}));
 			
-			// FOR submerged scarce+ chests
-//					new String[] {},
-//					new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", 
-//							"cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean"},
-//					new String[] {},
-//					new String[] {"ocean", "deep_ocean"});
-			
-//			submergedChests = new ChestCollection(builder, 
-//					"submerged Chests", 
-//					new String[] {
-//							CATEGORY_DIV,
-//							" Chests that generate underwater (in ocean biomes).", 
-//							UNDERLINE_DIV,
-//							" Note: There is a build-in check to only allow ocean biomes for submerged chests. Adding other biomes to the white lists will not change this functionality.",
-//							CATEGORY_DIV,}, 
-//					submergedConfigs);
-
+			submergedChests = new ChestCollection(builder, 
+					"submerged chests", 
+					new String[] {
+							CATEGORY_DIV,
+							" Chests that generate underwater (in ocean biomes).", 
+							UNDERLINE_DIV,
+							" Note: There is a build-in check to only allow ocean biomes for submerged chests. Adding other biomes to the white lists will not change this functionality.",
+							CATEGORY_DIV,}, 
+					submergedConfigs);
 			
 			builder.pop();
-			
-			// TODO pass in extra properties into constructor
-			// setup extra properties
-
-//			surfaceChests.scarceChestProperties.mimicProbability = 15.0;
-//			submergedChests.scarceChestProperties.mimicProbability = 0.0;
 		}
 
 		public void init() {
@@ -739,6 +742,15 @@ public class TreasureConfig extends AbstractConfig {
 			sapphireOreVeinsPerChunk = builder
 					.comment(" The number of sapphire ore veins in a chunk.")
 					.defineInRange("Sapphire ore veins per chunk:", 3, 1, 20);
+			
+			builder.pop();
+		}
+	}
+	
+	public static class Fog {
+		public Fog(final ForgeConfigSpec.Builder builder)	 {
+			builder.comment(CATEGORY_DIV, " Fog properties", CATEGORY_DIV)
+			.push(FOG_CATEGORY);
 			
 			builder.pop();
 		}

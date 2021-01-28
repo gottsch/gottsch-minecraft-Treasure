@@ -13,6 +13,7 @@ import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.GenerationStage.Decoration;
 import net.minecraft.world.gen.feature.Feature;
@@ -35,6 +36,7 @@ import net.minecraftforge.registries.IForgeRegistry;
  */
 public class TreasureFeatures {
 	public static final SurfaceChestFeature SURFACE_CHEST_FEATURE = new SurfaceChestFeature(NoFeatureConfig::deserialize);
+	public static final SubmergedChestFeature SUBMERGED_CHEST_FEATURE = new SubmergedChestFeature(NoFeatureConfig::deserialize);
 	public static final GemOreFeature GEM_ORE_FEATURE = new GemOreFeature(OreFeatureConfig::deserialize);
 	
 	// list of features used for persisting to world save
@@ -42,6 +44,7 @@ public class TreasureFeatures {
 
 	static {
 		FEATURES.add(SURFACE_CHEST_FEATURE);
+		FEATURES.add(SUBMERGED_CHEST_FEATURE);
 		// gem ore feature doesn't contain any data that needs to be persisted
 //		FEATURES.add(GEM_ORE_FEATURE);
 	}
@@ -53,8 +56,16 @@ public class TreasureFeatures {
 	public static void addFeatureToBiomes() {
 
 		for (Biome biome : ForgeRegistries.BIOMES) {
-			biome.addFeature(Decoration.RAW_GENERATION, SURFACE_CHEST_FEATURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
-
+			
+			if (biome == Biomes.OCEAN || biome == Biomes.COLD_OCEAN || biome == Biomes.DEEP_COLD_OCEAN || biome == Biomes.DEEP_FROZEN_OCEAN ||
+					biome == Biomes.DEEP_LUKEWARM_OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.DEEP_WARM_OCEAN || biome == Biomes.FROZEN_OCEAN
+					|| biome == Biomes.LUKEWARM_OCEAN || biome == Biomes.WARM_OCEAN) {
+				biome.addFeature(Decoration.RAW_GENERATION, SUBMERGED_CHEST_FEATURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			}
+			else {
+				biome.addFeature(Decoration.RAW_GENERATION, SURFACE_CHEST_FEATURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			}
+			
 			// gem ore
 			if (TreasureConfig.GEMS_AND_ORES.enableGemOreSpawn.get()) {
 				// add ruby

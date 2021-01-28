@@ -155,42 +155,6 @@
 					"type": "minecraft:item",
 					"name": "treasure2:white_pearl",
 					"weight": 8
-				},
-				{
-					"entryName": "eye_patch",
-					"type": "minecraft:item",
-					"name": "treasure2:eye_patch",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "minecraft:random_chance",
-							"chance": 0.50
-						}
-					]
-				},
-				{
-					"entryName": "painting_blocks_bricks",
-					"type": "minecraft:item",
-					"name": "treasure2:painting_blocks_bricks",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "minecraft:random_chance",
-							"chance": 0.25
-						}
-					]
-				},
-				{
-					"entryName": "painting_blocks_lava",
-					"type": "minecraft:item",
-					"name": "treasure2:painting_blocks_lava",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "minecraft:random_chance",
-							"chance": 0.25
-						}
-					]
 				}
 			]
 		}
