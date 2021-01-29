@@ -105,7 +105,7 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 
 		// 0. hard check for ocean biomes
 		// NOTE change - on feature register, only register with ocean biomes
-//		Biome biome = world.getBiome(spawnCoords.toPos());
+		Biome biome = world.getBiome(spawnCoords.toPos());
 //		if (biome != Biomes.OCEAN && biome != Biomes.DEEP_OCEAN && biome != Biomes.FROZEN_OCEAN &&
 //				!BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
 //			return false;
@@ -147,7 +147,10 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 			if (chunksPerRarity >= chestConfig.getChunksPerChest()) {
 				Treasure.LOGGER.debug("config gen prob -> {}", chestConfig.getGenProbability());
 				// 1. test if chest meets the probability criteria
-				if (!RandomHelper.checkProbability(random, chestConfig.getGenProbability())) {
+				double prob = RandomHelper.randomDouble(random, 0.0, 100.0);
+				Treasure.LOGGER.debug("probability -> {}, chest config threshold -> {}", prob, chestConfig.getGenProbability());
+				if (chestConfig.getGenProbability() < prob) {
+//				if (!RandomHelper.checkProbability(random, chestConfig.getGenProbability())) {
 					Treasure.LOGGER.debug("ChestConfig does not meet generate probability.");
 					return false;
 				}
@@ -156,10 +159,10 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 				TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList());
 				if(biomeCheck == Result.BLACK_LISTED ) {
 					if (WorldInfo.isClientSide(world.getWorld())) {
-						Treasure.LOGGER.debug("{} is not a valid biome @ {}", biome.getDisplayName().getString(), spawnCoords.toShortString());
+						Treasure.LOGGER.debug("biome {} is not a valid biome @ {}", biome.getDisplayName().getString(), spawnCoords.toShortString());
 					}
 					else {
-						Treasure.LOGGER.debug("Biome {} is not valid @ {}",rarity.getValue(), spawnCoords.toShortString());
+						Treasure.LOGGER.debug("biome {} is not valid @ {}",biome.getRegistryName(), spawnCoords.toShortString());
 					}					
 					return false;
 				}
@@ -233,8 +236,6 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 
 		ICoords chestCoords = null;
 		ICoords markerCoords = null;
-		boolean hasMarkers = true;
-		boolean isSurfaceChest = false;
 
 		// 1. collect location data points
 		ICoords surfaceCoords = WorldInfo.getOceanFloorSurfaceCoords(world, coords);

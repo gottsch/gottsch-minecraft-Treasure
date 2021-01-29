@@ -1,0 +1,19 @@
+{
+	"version": "1.0",
+	"categories": ["general"],
+	"type": "minecraft:chest",
+	"pools": [
+		{
+			"name": "test_pool",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "nether_star",
+					"type": "minecraft:item",
+					"name": "minecraft:nether_star",
+					"weight": 1
+				}
+			]
+		}
+	]
+}

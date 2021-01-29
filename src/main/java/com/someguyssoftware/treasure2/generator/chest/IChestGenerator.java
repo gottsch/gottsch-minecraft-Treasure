@@ -133,6 +133,7 @@ public interface IChestGenerator {
 	default public Optional<List<LootTableShell>> buildInjectedLootTableList(String key, Rarity rarity) {
 		return Optional.ofNullable(TreasureLootTableRegistry.getLootTableMaster().getLootTableByKeyRarity(TreasureLootTableMaster2.ManagedTableType.INJECT, key, rarity));
 	}
+	
 	/**
 	 * 
 	 * @param rarity
@@ -198,7 +199,7 @@ public interface IChestGenerator {
 		
 		// update rarity from lootTableShell		
 		Rarity effectiveRarity = TreasureLootTableRegistry.getLootTableMaster().getEffectiveRarity(lootTableShell.get(), rarity);		
-		LOGGER.debug("Generating loot from loot table for effective rarity {}", effectiveRarity);
+		LOGGER.debug("generating loot from loot table for effective rarity {}", effectiveRarity);
 		
 		// setup lists of items
 		List<ItemStack> treasureStacks = new ArrayList<>();

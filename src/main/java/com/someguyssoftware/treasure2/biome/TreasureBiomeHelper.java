@@ -91,7 +91,7 @@ public class TreasureBiomeHelper {
         if (whiteList != null && whiteList.size() > 0) {
 //        	if (whiteList.contains(biome)) {
         	for (String biomeName : whiteList) {
-	        	if (biomeName.equals(biome.getRegistryName())) {
+	        	if (biomeName.equals(biome.getRegistryName().toString())) {
 	        		return Result.WHITE_LISTED;
 	        	}
 	        }
@@ -102,7 +102,7 @@ public class TreasureBiomeHelper {
         if (blackList != null && blackList.size() > 0) {
 //        	if (blackList.contains(biome)) {
         	for (String biomeName : blackList) {
-        		if (biomeName.equals(biome.getRegistryName())) {
+        		if (biomeName.equals(biome.getRegistryName().toString())) {
         			return Result.BLACK_LISTED;
         		}
         	}

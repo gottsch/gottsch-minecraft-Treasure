@@ -30,8 +30,10 @@
 		"pools/treasure/rare.json",
 		"pools/treasure/epic.json"
     ],
-    "injectResources": [],
-		"chestResources": [
+    "injectResources": [
+    	"inject/uncommon/test.json"
+    ],
+	"chestResources": [
 		"chests/common/general_chest.json",
 		"chests/uncommon/general_chest.json",
 		"chests/scarce/general_chest.json",
@@ -65,5 +67,6 @@
 		"pools/tools"
     ],
     "injectLootTableFolderLocations": [
+    	"inject/uncommon"
     ]
 }

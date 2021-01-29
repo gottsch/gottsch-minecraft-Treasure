@@ -304,11 +304,11 @@ public class TreasureConfig extends AbstractConfig {
 			Map<Rarity, ChestConfig.Data> submergedConfigs = new HashMap<>();
 			
 			// setup surface properties
-			surfaceConfigs.put(Rarity.COMMON, new ChestConfig.Data(true, 75, 85, 50, 20.0, new String[] {}, new String[] {"ocean"}, new String[] {}, new String[] {}));
+			surfaceConfigs.put(Rarity.COMMON, new ChestConfig.Data(true, 75, 85, 50, 20.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
 			surfaceConfigs.put(Rarity.UNCOMMON, new ChestConfig.Data(true, 150, 75, 40, 17.5, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
 			surfaceConfigs.put(Rarity.SCARCE, new ChestConfig.Data(true, 300, 50, 30, 15, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-			surfaceConfigs.put(Rarity.RARE, new ChestConfig.Data(true, 500, 25, 20, 0, new String[] {}, new String[] {"plains", "sunflower_plains"}, new String[] {}, new String[] {"plains"}));
-			surfaceConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 800, 15, 10, 0, new String[] {}, new String[] {"plains", "sunflower_plains"}, new String[] {}, new String[] {"plains"}));
+			surfaceConfigs.put(Rarity.RARE, new ChestConfig.Data(true, 500, 25, 20, 0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
+			surfaceConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 800, 15, 10, 0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
 			
 			// TODO needs all the builder stuff
 			surfaceChests = new ChestCollection(builder,
@@ -322,14 +322,15 @@ public class TreasureConfig extends AbstractConfig {
 					surfaceConfigs);
 
 			// setup submerged properties
+			// NOTE: submerged feature is registered for oceans only and there no special white list needs to be setup for oceans-only by default.
 			submergedConfigs.put(Rarity.COMMON, new ChestConfig.Data(false, 150, 85, 40, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
 			submergedConfigs.put(Rarity.UNCOMMON, new ChestConfig.Data(false, 300, 75, 30, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-			submergedConfigs.put(Rarity.SCARCE, new ChestConfig.Data(true, 400, 50, 20, 0, new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean",
-					"lukewarm_ocean", "warm_ocean"}, new String[] {}, new String[] {"ocean", "deep_ocean"}, new String[] {}));
-			submergedConfigs.put(Rarity.RARE, new ChestConfig.Data(true, 600, 25, 5, 0, new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean",
-					"lukewarm_ocean", "warm_ocean"}, new String[] {}, new String[] {"ocean", "deep_ocean"}, new String[] {}));
-			submergedConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 1000, 15, 5, 0, new String[] {"ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean",
-					"lukewarm_ocean", "warm_ocean"}, new String[] {}, new String[] {"ocean", "deep_ocean"}, new String[] {}));
+			submergedConfigs.put(Rarity.SCARCE, new ChestConfig.Data(true, 400, 50, 20, 0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
+			submergedConfigs.put(Rarity.RARE, new ChestConfig.Data(true, 600, 25, 5, 0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
+			submergedConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 1000, 15, 5, 0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
 			
 			submergedChests = new ChestCollection(builder, 
 					"submerged chests", 

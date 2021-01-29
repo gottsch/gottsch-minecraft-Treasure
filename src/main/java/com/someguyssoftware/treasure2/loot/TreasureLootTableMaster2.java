@@ -241,6 +241,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 				Path path = Paths.get(resourceLocation.getPath());
 				LOGGER.debug("path to special resource loc -> {}", path.toString());
 				// create loot table
+				LOGGER.debug("loading loot table shell resource loc -> {}, {}", getWorldDataBaseFolder().getPath(), path.toString());
 				Optional<LootTableShell> lootTable = loadLootTable(getWorldDataBaseFolder(), resourceLocation);
 				if (lootTable.isPresent()) {
 					// add resource location to table
@@ -276,6 +277,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 				Rarity rarity = Rarity.valueOf(path.getName(path.getNameCount()-2).toString().toUpperCase());
 				// load loot table to get categories
 				// create loot table
+				LOGGER.debug("loading loot table shell resource loc -> {}, {}", getWorldDataBaseFolder().getPath(), path.toString());
 				Optional<LootTableShell> lootTable = loadLootTable(getWorldDataBaseFolder(), resourceLocation);
 				if (lootTable.isPresent()) {
 					// add resource location to table
@@ -296,6 +298,9 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 						INJECT_LOOT_TABLES_TABLE.get(key, rarity).add(lootTable.get());
 						LOGGER.debug("tabling inject loot table: {} {} -> {}", key, rarity, resourceLocation);
 					});
+				}
+				else {
+					LOGGER.debug("unable to load inject loot table from -> {} : {}", getWorldDataBaseFolder(), resourceLocation);
 				}
 			}
 		}

@@ -62,11 +62,11 @@ public class BiomesConfig implements IBiomesConfig {
 		
 		typeWhiteList = builder
 				.comment(" Allowabled Biome Types for generation. Must match the Type identifer(s).")
-				.defineList("White list by biome name:", Arrays.asList(data.biomeTypeWhiteList), s -> s instanceof String);
+				.defineList("White list by biome type:", Arrays.asList(data.biomeTypeWhiteList), s -> s instanceof String);
 		
 		typeBlackList = builder
 				.comment(" Disallowed Biome Types for generation. Must match the Type identifer(s).")
-				.defineList("Black list by biome name:", Arrays.asList(data.biomeTypeBlackList), s -> s instanceof String);
+				.defineList("Black list by biome type:", Arrays.asList(data.biomeTypeBlackList), s -> s instanceof String);
 		builder.pop();
 	}
 	

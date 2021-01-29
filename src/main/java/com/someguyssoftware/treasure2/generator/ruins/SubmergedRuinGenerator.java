@@ -40,6 +40,7 @@ import net.minecraft.world.IWorld;
 public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<ChestGeneratorData>> {
 
 	private static final double REQUIRED_BASE_SIZE = 50;
+	private static final double REQUIRED_WATER_SIZE = 30;
 
 	/**
 	 * 
@@ -118,6 +119,22 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 			else {
 				break;
 			}
+		}
+		// TODO check if it has % air/water
+		// TODO get the height of template, - don't get the immediate plane above spawn because we want the template "buried" a little bit - unless the template isn't very tall
+		
+		int offset = 1;
+		if (templateSize.getY() > 6) {
+			offset = 3;
+		}
+		else if (templateSize.getY() >=4) {
+			offset =2;
+		}
+
+		Treasure.LOGGER.debug("checking for {} % water using offset of -> {} at coords -> {} for dimensions -> {} x {}", REQUIRED_WATER_SIZE, offset, actualSpawnCoords.add(0, offset, 0), templateSize.getX(), templateSize.getZ());
+		if (!WorldInfo.isLiquidBase(world, actualSpawnCoords.add(0, offset, 0), templateSize.getX(), templateSize.getZ(), REQUIRED_WATER_SIZE)) {
+			Treasure.LOGGER.debug("Coords -> [{}] does not meet {} % water base requirements for size -> {} x {}", actualSpawnCoords.toShortString(), REQUIRED_WATER_SIZE, templateSize.getX(), templateSize.getZ());
+			return result.fail();
 		}
 
 		/**
