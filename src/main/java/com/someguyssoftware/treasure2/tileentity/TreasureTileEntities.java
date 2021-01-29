@@ -3,7 +3,6 @@
  */
 package com.someguyssoftware.treasure2.tileentity;
 
-import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -42,7 +41,8 @@ public class TreasureTileEntities {
 	public static TileEntityType<CardboardBoxTileEntity> cardboardBoxTileEntityType;
 	public static TileEntityType<MilkCrateTileEntity> milkCrateTileEntityType;
 
-	public static TileEntityType<ProximitySpawnerTileEntity> proximityTileEntityType;
+//	public static TileEntityType<ProximitySpawnerTileEntity> proximityTileEntityType;
+	public static TileEntityType<TreasureProximitySpawnerTileEntity> proximityTileEntityType;
 	public static TileEntityType<MistEmitterTileEntity> mistEmitterTileEntityType;
 
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -50,8 +50,11 @@ public class TreasureTileEntities {
 
 		@SubscribeEvent
 		public static void onTileEntityTypeRegistration(final RegistryEvent.Register<TileEntityType<?>> event) {
+//			proximityTileEntityType = TileEntityType.Builder
+//					.create(() -> new ProximitySpawnerTileEntity(proximityTileEntityType), TreasureBlocks.PROXIMITY_SPAWNER)
+//					.build(null);
 			proximityTileEntityType = TileEntityType.Builder
-					.create(() -> new ProximitySpawnerTileEntity(proximityTileEntityType), TreasureBlocks.PROXIMITY_SPAWNER)
+					.create(TreasureProximitySpawnerTileEntity::new, TreasureBlocks.PROXIMITY_SPAWNER)
 					.build(null);
 			proximityTileEntityType.setRegistryName(TreasureConfig.TileEntityID.PROXIMITY_SPAWNER_TE_ID);
 			event.getRegistry().register(proximityTileEntityType);

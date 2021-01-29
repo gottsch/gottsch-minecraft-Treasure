@@ -437,7 +437,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				Biome biome = ForgeRegistries.BIOMES.getValue(entry.getKey());
 				String biomeName = "";
 				if (biome != null) {
-					biomeName = WorldInfo.isClientSide() ? biome.getDisplayName().getString() : biome.getRegistryName().toString() ;
+					biomeName = WorldInfo.isClientDistribution() ? biome.getDisplayName().getString() : biome.getRegistryName().toString() ;
 				}
 				else {
 					biomeName = String.format("No biome for {}", entry.getKey());

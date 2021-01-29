@@ -151,11 +151,10 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
     	EntityType<?> r = DungeonHooks.getRandomDungeonMob(random);
     	Treasure.LOGGER.debug("spawn mob entity -> {}", r);
     	if (r != null) {
-    	te.setMobName(r.getRegistryName());
-    	te.setMobNum(new Quantity(2, 4));
-    	te.setProximity(5D);
-    	te.setSpawnRange(1.5D);
-    	Treasure.LOGGER.debug("placed proximity spawner @ {}", coords.add(-1,0,0).toShortString());
+	    	te.setMobName(r.getRegistryName());
+	    	te.setMobNum(new Quantity(2, 4));
+	    	te.setProximity(5D);
+	    	Treasure.LOGGER.debug("placed proximity spawner @ {}", coords.add(-1,0,0).toShortString());
     	}
     	world.setBlockState(coords.add(1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState(), 3);
     	te = (ProximitySpawnerTileEntity) world.getTileEntity(coords.add(1, 0, 0).toPos());
@@ -165,11 +164,10 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
     	r = DungeonHooks.getRandomDungeonMob(random);
     	Treasure.LOGGER.debug("spawn mob entity -> {}", r);
     	if (r != null) {
-    	te.setMobName(r.getRegistryName());
-    	te.setMobNum(new Quantity(2, 4));
-    	te.setProximity(5.5D);		// slightly larger proximity to fire first without entity collision
-    	te.setSpawnRange(2D);
-    	Treasure.LOGGER.debug("placed proximity spawner @ {}", coords.add(1,0,0).toShortString());
+	    	te.setMobName(r.getRegistryName());
+	    	te.setMobNum(new Quantity(2, 4));
+	    	te.setProximity(5.5D);		// slightly larger proximity to fire first without entity collision
+	    	Treasure.LOGGER.debug("placed proximity spawner @ {}", coords.add(1,0,0).toShortString());
     	}
 		return coords;
 	}

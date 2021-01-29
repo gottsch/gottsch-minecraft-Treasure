@@ -33,6 +33,7 @@ import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SpiderChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.TreasureProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.tileentity.VikingChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
@@ -79,7 +80,7 @@ public class TreasureBlocks {
     public static final Block MILK_CRATE;
     public static final Block CRYSTAL_SKULL_CHEST;
 
-    public static final ProximityBlock<? extends AbstractProximityTileEntity> PROXIMITY_SPAWNER;
+    public static final ProximityBlock PROXIMITY_SPAWNER;
     public static final Block WISHING_WELL_BLOCK;
     public static final Block DESERT_WISHING_WELL_BLOCK;
     public static final Block BLACKSTONE;
@@ -402,8 +403,10 @@ public class TreasureBlocks {
 		// TODO PAINTINGS
 
 		// proximity blocks
-		PROXIMITY_SPAWNER = new ProximityBlock<ProximitySpawnerTileEntity>(Treasure.MODID, TreasureConfig.BlockID.PROXIMITY_SPAWNER_ID,
-				ProximitySpawnerTileEntity.class, Block.Properties.create(Material.AIR).doesNotBlockMovement().noDrops());
+//		PROXIMITY_SPAWNER = new ProximityBlock<TreasureProximityTileEntity>(Treasure.MODID, TreasureConfig.BlockID.PROXIMITY_SPAWNER_ID,
+//				TreasureProximityTileEntity.class, Block.Properties.create(Material.AIR).doesNotBlockMovement().noDrops());
+        PROXIMITY_SPAWNER = new ProximityBlock(Treasure.MODID, TreasureConfig.BlockID.PROXIMITY_SPAWNER_ID,
+				Block.Properties.create(Material.AIR).doesNotBlockMovement().noDrops());
 				
 		// add blocks to the list
 		BLOCKS.add(WOOD_CHEST);

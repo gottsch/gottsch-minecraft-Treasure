@@ -10,9 +10,9 @@ import java.util.List;
 import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 
 
@@ -20,7 +20,7 @@ import net.minecraft.tileentity.TileEntityType;
  * @author Mark Gottschling on Feb 16, 2020
  *
  */
-public class MistEmitterTileEntity extends AbstractModTileEntity implements ITickable {
+public class MistEmitterTileEntity extends AbstractModTileEntity implements ITickableTileEntity {
 	public static final float DEFAULT_PROXIMITY = 5.0F;
 	private float proximity = DEFAULT_PROXIMITY;
 	private boolean active = false;
