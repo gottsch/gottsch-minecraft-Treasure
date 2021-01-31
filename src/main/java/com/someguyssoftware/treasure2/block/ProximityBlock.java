@@ -4,8 +4,6 @@
 package com.someguyssoftware.treasure2.block;
 
 import com.someguyssoftware.gottschcore.block.ModBlock;
-import com.someguyssoftware.gottschcore.tileentity.AbstractProximityTileEntity;
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.tileentity.TreasureProximitySpawnerTileEntity;
 
 import net.minecraft.block.Block;
