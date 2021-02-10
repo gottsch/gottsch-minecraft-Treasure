@@ -80,7 +80,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 
 		///// Chests //////
 		// for each feature
-		TreasureFeatures.FEATURES.forEach(feature -> {
+		TreasureFeatures.PERSISTED_FEATURES.forEach(feature -> {
 			Treasure.LOGGER.debug("loading feature -> {}", ((IForgeRegistryEntry)feature).getRegistryName().toString());
 			CompoundNBT featureTag = genTag.getCompound(((IForgeRegistryEntry)feature).getRegistryName().toString());
 			if (featureTag != null) {
@@ -94,20 +94,20 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 					ListNBT rarityTagList = ((CompoundNBT) dimTag).getList(RARITIES_TAG_NAME, 10);
 					if (rarityTagList != null && !rarityTagList.isEmpty()) {
 						Treasure.LOGGER.debug("rarity tag list size -> {}", rarityTagList.size());
-					}
-					for (int index = 0; index < rarityTagList.size(); index++) {
-						CompoundNBT rarityTag = rarityTagList.getCompound(index);
-						String rarityID = rarityTag.getString(RARITY_TAG_NAME);
-						Treasure.LOGGER.debug("loading rarity ID -> {}", rarityID);
-						Rarity rarity = Rarity.getByValue(rarityID);
-						if (rarity != null) {
-							int chunksSinceRarityFeature = rarityTag.getInt(CHUNKS_SINCE_LAST_RARITY_FEATURE_TAG_NAME);
-							Treasure.LOGGER.debug("loading chunks since last rarity -> {} chunks -> {}", rarity, chunksSinceRarityFeature);
-							if (feature.getChunksSinceLastDimensionRarityFeature().containsKey(dimensionID)) {
-								feature.getChunksSinceLastDimensionRarityFeature().get(dimensionID).put(rarity, chunksSinceRarityFeature);
+						for (int index = 0; index < rarityTagList.size(); index++) {
+							CompoundNBT rarityTag = rarityTagList.getCompound(index);
+							String rarityID = rarityTag.getString(RARITY_TAG_NAME);
+							Treasure.LOGGER.debug("loading rarity ID -> {}", rarityID);
+							Rarity rarity = Rarity.getByValue(rarityID);
+							if (rarity != null) {
+								int chunksSinceRarityFeature = rarityTag.getInt(CHUNKS_SINCE_LAST_RARITY_FEATURE_TAG_NAME);
+								Treasure.LOGGER.debug("loading chunks since last rarity -> {} chunks -> {}", rarity, chunksSinceRarityFeature);
+								if (feature.getChunksSinceLastDimensionRarityFeature().containsKey(dimensionID)) {
+									feature.getChunksSinceLastDimensionRarityFeature().get(dimensionID).put(rarity, chunksSinceRarityFeature);
+								}
 							}
 						}
-					}
+					}					
 				});
 			}
 		});
@@ -203,7 +203,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 			
 			///// Chests //////
 			// for each feature
-			TreasureFeatures.FEATURES.forEach(feature -> {
+			TreasureFeatures.PERSISTED_FEATURES.forEach(feature -> {
 				Treasure.LOGGER.debug("saving feature -> {}", ((IForgeRegistryEntry)feature).getRegistryName().toString());
 				CompoundNBT featureTag = new CompoundNBT();
 				// add the feature gen last count to the treasure compound for each dimension
@@ -217,7 +217,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 					Treasure.LOGGER.debug("saving chunks since last feature -> {}", entry.getValue());
 					
 					// get the rarity map
-					if (feature.getChunksSinceLastDimensionRarityFeature().containsKey(entry.getKey())) {
+					if (feature.getChunksSinceLastDimensionRarityFeature() != null && feature.getChunksSinceLastDimensionRarityFeature().containsKey(entry.getKey())) {
 						Map<Rarity, Integer> rarityMap = feature.getChunksSinceLastDimensionRarityFeature().get(entry.getKey());
 						Treasure.LOGGER.debug("saving rarity map size -> {}", rarityMap.size());
 						

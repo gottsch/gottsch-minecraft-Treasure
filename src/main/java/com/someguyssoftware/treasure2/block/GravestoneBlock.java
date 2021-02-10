@@ -138,15 +138,13 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 //					new Coords(pos));
 //		}
 		MistParticleData mistParticleData = new MistParticleData(new Coords(pos));
-//		mistParticle.init();
 
-//		Minecraft.getMinecraft().effectRenderer.addEffect(mistParticle);
-		try {
-			world.addParticle(mistParticleData, IGNORE_RANGE_CHECK, xPos, yPos, zPos, velocityX, velocityY, velocityZ);
-		}
-		catch(Exception e) {
-			Treasure.LOGGER.error("error with particle:", e);
-		}
+//		try {
+//			world.addParticle(mistParticleData, IGNORE_RANGE_CHECK, xPos, yPos, zPos, velocityX, velocityY, velocityZ);
+//		}
+//		catch(Exception e) {
+//			Treasure.LOGGER.error("error with particle:", e);
+//		}
 	}
 
 	/*
@@ -154,7 +152,6 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 	 */	
 	@Override
 	public int tickRate(IWorldReader worldIn) {
-		// TODO Auto-generated method stub
 		return 10;
 	}
 

@@ -30,6 +30,7 @@ import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.AirPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.BigBottomMobTrapPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.CollapsingTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.LavaSideTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.LavaTrapPitGenerator;
@@ -53,6 +54,7 @@ import net.minecraftforge.registries.ForgeRegistries;
  * @author Mark Gottschling on Aug 28, 2020
  *
  */
+// TODO rename to TreasureGenerators and move to base .generator package
 public class TreasureData {
 	// chest map by rarity and mapping flag - ** possible replacement for CHESTS_BY_RARITY **
 	public static final Table<Rarity, ChestEnvironment, Block> CHESTS_BY_RARITY_FLAGS = HashBasedTable.create();
@@ -164,6 +166,9 @@ public class TreasureData {
 
 		PIT_GENS.put(PitTypes.STANDARD, Pits.BIG_BOTTOM_MOB_TRAP_PIT,  new BigBottomMobTrapPitGenerator());
 
+		PIT_GENS.put(PitTypes.STANDARD, Pits.COLLAPSING_TRAP_PIT,  new CollapsingTrapPitGenerator());
+		PIT_GENS.put(PitTypes.STRUCTURE, Pits.COLLAPSING_TRAP_PIT, new StructurePitGenerator(new CollapsingTrapPitGenerator()));
+        
 		PIT_GENS.put(PitTypes.STANDARD, Pits.VOLCANO_PIT,  new VolcanoPitGenerator());
 
 		for (String dimension : TreasureConfig.GENERAL.dimensionsWhiteList.get()) {

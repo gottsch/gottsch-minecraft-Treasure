@@ -80,6 +80,11 @@
 	"block.treasure2.sapphire_ore":"Sapphire Ore",
 	"block.treasure2.wither_branch":"Wither Branch",
 	"block.treasure2.wither_root":"Wither Root",
+	"block.treasure2.wither_log":"Wither Log",
+	"block.treasure2.wither_planks":"Wither Planks",
+	"block.treasure2.wither_soul_log":"Wither Soul Log",
+	"block.treasure2.wither_broken_log":"Wither Broken Log",
+	"block.treasure2.spanish_moss":"Spanish Moss",
 
 	"block.treasure2.gravestone1_stone":"Stone Tombstone",
 	"block.treasure2.gravestone1_cobblestone":"Cobblestone Tombstone",
@@ -107,6 +112,9 @@
 	"block.treasure2.gravestone3_polished_diorite":"Diorite Tombstone",
 	"block.treasure2.gravestone3_obsidian":"Obsidian Tombstone",
 	"block.treasure2.gravestone3_smooth_quartz":"Quartz Tombstone",
+	
+	"block.treasure2.skeleton":"Skeleton",
+	"block.treasure2.skull_and_crossbones":"Skull and Crossbones",
 
 	"tooltip.yes":"Yes",
 	"tooltip.no":"No",

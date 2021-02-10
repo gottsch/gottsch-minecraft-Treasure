@@ -13,7 +13,7 @@ import java.util.List;
 public interface IWellsConfig {
 	
 	public void init();
-	public boolean isWellAllowed();
+	public boolean isEnabled();
 	public int getChunksPerWell();
 	public double getGenProbability();
 	

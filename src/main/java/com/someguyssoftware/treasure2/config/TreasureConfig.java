@@ -43,6 +43,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String COINS_CATEGORY = "coins";
 	public static final String GEMS_AND_ORES_CATEGORY = "gems and ores";
 	public static final String FOG_CATEGORY = "fog";
+	public static final String WITHER_TREE_CATEGORY = "wither tree";
 
 	public static final General GENERAL;
 	public static final Chests CHESTS;
@@ -53,6 +54,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final Coins COINS;
 	public static final GemsAndOres GEMS_AND_ORES;
 	public static final Fog FOG;
+	public static final WitherTree WITHER_TREE;
 
 	public static final String CATEGORY_DIV = "##############################";
 	public static final String UNDERLINE_DIV = "------------------------------";
@@ -69,6 +71,7 @@ public class TreasureConfig extends AbstractConfig {
 		COINS = new Coins(COMMON_BUILDER);
 		GEMS_AND_ORES = new GemsAndOres(COMMON_BUILDER);
 		FOG = new Fog(COMMON_BUILDER);
+		WITHER_TREE = new WitherTree(COMMON_BUILDER);
 		COMMON_CONFIG = COMMON_BUILDER.build();
 
 		// load raw arrays into lists
@@ -98,6 +101,7 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String WITHER_ROOT_ITEM_ID = "wither_root_item";
 		public static final String SKELETON_ITEM_ID = "skeleton";
 		public static final String EYE_PATCH_ID = "eye_patch";
+		public static final String SPANISH_MOSS_ITEM_ID = "spanish_moss_item";
 	}
 	
 	public static class LockID {
@@ -181,7 +185,10 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String WITHER_LOG_ID = "wither_log";
 		public static final String WITHER_PLANKS_ID = "wither_planks";
 		public static final String WITHER_SOUL_LOG_ID = "wither_soul_log";
-
+		public static final String SPANISH_MOSS_ID = "spanish_moss";
+		public static final String FALLING_GRASS_ID = "falling_grass";
+		public static final String FALLING_SAND_ID = "falling_sand";
+		public static final String FALLING_RED_SAND_ID = "falling_red_sand";
 	}
 
 	public static class ChestID {
@@ -426,6 +433,7 @@ public class TreasureConfig extends AbstractConfig {
 	}
     
 	public static class Markers {
+		// TODO rename allowed to enable
 		public ForgeConfigSpec.BooleanValue markersAllowed;
 		public ForgeConfigSpec.BooleanValue markerStructuresAllowed;
 		public ForgeConfigSpec.ConfigValue<Integer> minGravestonesPerChest;
@@ -439,11 +447,11 @@ public class TreasureConfig extends AbstractConfig {
 			.push(MARKERS_CATEGORY);
 			
 			markersAllowed = builder
-					.comment(" Enable/Disable whether chest markers (gravestones, bones)  are generated when generating treasure chests.")
+					.comment(" Enable/disable whether chest markers (gravestones, bones)  are generated when generating treasure chests.")
 					.define("Enable markers:", true);
 			
 			markerStructuresAllowed = builder
-					.comment(" Enable/Disable whether structures (buildings) are generated when generating  treasure chests.")
+					.comment(" Enable/disable whether structures (buildings) are generated when generating  treasure chests.")
 					.define("Enable structure markers:", true);
 			
 			minGravestonesPerChest = builder
@@ -451,7 +459,7 @@ public class TreasureConfig extends AbstractConfig {
 					.defineInRange("Minimum markers per chest:", 2, 1, 5);
 			
 			maxGravestonesPerChest = builder
-					.comment(" The max. number of markers (gravestones, bones) per chest.")
+					.comment(" The maximum number of markers (gravestones, bones) per chest.")
 					.defineInRange("Maximum markers per chest:", 5, 1, 10);
 			
 			markerStructureProbability = builder
@@ -459,12 +467,14 @@ public class TreasureConfig extends AbstractConfig {
 					.defineInRange("Probability that marker will be a structure:", 15, 1, 100);
 			
 			gravestoneSpawnMobAllowed = builder
-					.comment(" Enable/Disable whether gravestone markers can spawn mobs (ex. Bound Soul).")
+					.comment(" Enable/disable whether gravestone markers can spawn mobs (ex. Bound Soul).")
 					.define("Enable gravestone markers to spawn mobs:", true);
 			
 			gravestoneMobProbability = builder
 					.comment(" The probability that a gravestone will spawn a mob.", " Currently gravestones can spawn Bound Souls.")
 					.defineInRange("Probability that grave marker will spawn a mob:", 25, 1, 100);
+			
+			builder.pop();
 		}
 	}
 	
@@ -472,7 +482,7 @@ public class TreasureConfig extends AbstractConfig {
      *
      */
     public static class Wells implements IWellsConfig {
-    	public ForgeConfigSpec.BooleanValue wellAllowed;
+    	public ForgeConfigSpec.BooleanValue enableWells;
     	public ForgeConfigSpec.ConfigValue<Double> genProbability;
         public ForgeConfigSpec.ConfigValue<Integer> chunksPerWell;
         public BiomesConfig biomes; 
@@ -481,9 +491,9 @@ public class TreasureConfig extends AbstractConfig {
 			builder.comment(CATEGORY_DIV, " Well properties", CATEGORY_DIV)
 			.push(WELLS_CATEGORY);
 			
-			wellAllowed = builder
-					.comment("Toggle to allow/disallow the spawn of well.")
-					.define("Enabled wells:", true);
+			enableWells = builder
+					.comment("Enable/disable whether wells will spawn.")
+					.define("Enable wells:", true);
 			
 			chunksPerWell = builder
 					.comment("The minimum number of chunks generated before another attempt to spawn a well is made.")
@@ -493,9 +503,9 @@ public class TreasureConfig extends AbstractConfig {
 					.comment("The probability that a well will generate.")
 					.defineInRange("Generation probability:", 80.0, 0.0, 100.0);
 			
-			BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean",
-					"deep_cold_ocean", "lukewarm_ocean", "warm_ocean" },
-			new String[] {}, new String[] { "ocean", "deep_ocean" });
+			BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean", "minecraft:deep_frozen_ocean", "minecraft:cold_ocean",
+					"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },
+			new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean" });
 			biomes = new BiomesConfig(builder, biomesData);
 			
 			builder.pop();
@@ -507,8 +517,8 @@ public class TreasureConfig extends AbstractConfig {
 		}
 
 		@Override
-		public boolean isWellAllowed() {
-			return wellAllowed.get();
+		public boolean isEnabled() {
+			return enableWells.get();
 		}
 
 		@Override
@@ -697,7 +707,7 @@ public class TreasureConfig extends AbstractConfig {
 			.push(GEMS_AND_ORES_CATEGORY);
 		
 			enableGemOreSpawn = builder
-					.comment(" Enable/Disable whether a gem ore will spawn.")
+					.comment(" Enable/disable whether a gem ore will spawn.")
 					.define("Enable gem ore spawn:", true);
 						
 			chunksPerGemOre = builder
@@ -749,11 +759,74 @@ public class TreasureConfig extends AbstractConfig {
 	}
 	
 	public static class Fog {
+		public ForgeConfigSpec.BooleanValue enableFog;
 		public Fog(final ForgeConfigSpec.Builder builder)	 {
 			builder.comment(CATEGORY_DIV, " Fog properties", CATEGORY_DIV)
 			.push(FOG_CATEGORY);
 			
+			enableFog = builder
+					.comment(" Enable/disable white fog.")
+					.define("Enable fog:", true);
+			
 			builder.pop();
+		}
+	}
+	
+	public static class WitherTree {
+		public ForgeConfigSpec.BooleanValue enableWitherTree;
+		public ForgeConfigSpec.ConfigValue<Integer> chunksPerTree;
+    	public ForgeConfigSpec.ConfigValue<Double> genProbability;
+    	public ForgeConfigSpec.ConfigValue<Integer> maxTrunkSize;
+    	public ForgeConfigSpec.ConfigValue<Integer> minSupportingTrees;
+    	public ForgeConfigSpec.ConfigValue<Integer> maxSupportingTrees;
+        public BiomesConfig biomes; 
+        
+		public WitherTree(final ForgeConfigSpec.Builder builder)	 {
+			builder.comment(CATEGORY_DIV, " Wither Tree properties", CATEGORY_DIV)
+			.push(WITHER_TREE_CATEGORY);
+			
+			enableWitherTree = builder
+					.comment(" Enable/disable whether wither trees will spawn.")
+					.define("Enable wither trees:", true);
+			
+			chunksPerTree = builder
+					.comment(" The number of chunks generated before a wither tree spawn is attempted.")
+					.defineInRange("Chunks per wither tree spawn:", 200, 0, 32000);
+			
+			genProbability = builder
+					.comment(" The probability that a wither tree will spawn.")
+					.defineInRange("Probability of wither tree spawn:", 90.0, 0.0, 100.0);
+			
+			maxTrunkSize = builder
+					.comment(" The maximum height a wither tree can reach.",
+							" This is the high end of a calculated range. ex. size is randomized between minTrunkSize and maxTrunkSize.",
+							" (The minimum is predefined.)")
+					.defineInRange("Maximum trunk height (in blocks):", 13, 7, 20);
+			
+			minSupportingTrees = builder
+					.comment(" The minimum number of supporting wither trees that surround the main tree in the grove.")
+					.defineInRange("Minimum number of supporting trees:", 5, 0, 30);
+			
+			maxSupportingTrees = builder
+					.comment(" The maximum number of supporting wither trees that surround the main tree in the grove.")
+					.defineInRange("Maximum number of supporting trees:", 15, 0, 30);
+			
+			BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "minecraft:desert", "minecraft:ice_spikes", "minecraft:snowy_tundra", "minecraft:ocean", "minecraft:deep_ocean", "minecraft:deep_frozen_ocean", "minecraft:cold_ocean",
+					"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },
+			new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean" });
+			biomes = new BiomesConfig(builder, biomesData);
+			
+			builder.pop();
+		}
+		
+//		@Override
+		public List<String> getBiomeWhiteList() {
+			return (List<String>) biomes.whiteList.get();
+		}
+
+//		@Override
+		public List<String> getBiomeBlackList() {
+			return (List<String>) biomes.blackList.get();
 		}
 	}
 	

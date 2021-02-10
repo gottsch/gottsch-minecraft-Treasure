@@ -37,33 +37,48 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class TreasureFeatures {
 	public static final SurfaceChestFeature SURFACE_CHEST_FEATURE = new SurfaceChestFeature(NoFeatureConfig::deserialize);
 	public static final SubmergedChestFeature SUBMERGED_CHEST_FEATURE = new SubmergedChestFeature(NoFeatureConfig::deserialize);
+	public static final WellFeature WELL_FEATURE = new WellFeature(NoFeatureConfig::deserialize);
 	public static final GemOreFeature GEM_ORE_FEATURE = new GemOreFeature(OreFeatureConfig::deserialize);
+	public static final WitherTreeFeature WITHER_TREE_FEATURE = new WitherTreeFeature(NoFeatureConfig::deserialize);
 	
 	// list of features used for persisting to world save
-	public static final List<ITreasureFeature> FEATURES = new ArrayList<>();
+	public static final List<ITreasureFeature> PERSISTED_FEATURES = new ArrayList<>();
 
 	static {
-		FEATURES.add(SURFACE_CHEST_FEATURE);
-		FEATURES.add(SUBMERGED_CHEST_FEATURE);
-		// gem ore feature doesn't contain any data that needs to be persisted
-//		FEATURES.add(GEM_ORE_FEATURE);
+		PERSISTED_FEATURES.add(SURFACE_CHEST_FEATURE);
+		PERSISTED_FEATURES.add(SUBMERGED_CHEST_FEATURE);
+		PERSISTED_FEATURES.add(WELL_FEATURE);
+		PERSISTED_FEATURES.add(WITHER_TREE_FEATURE);
 	}
 	
 	/**
 	 * This method is called in Treasure.setup(final FMLCommonSetupEvent event) by a DeferredWorkQueue.
 	 * This method assigns the Features to all applicable biomes
 	 */
-	public static void addFeatureToBiomes() {
-
+	public static void init() {
+		
 		for (Biome biome : ForgeRegistries.BIOMES) {
+			// TODO how to check if feature is enabled? ie wither trees, or ore?
 			
+
+			// TODO make a list in BiomeHelper for all the oceans
 			if (biome == Biomes.OCEAN || biome == Biomes.COLD_OCEAN || biome == Biomes.DEEP_COLD_OCEAN || biome == Biomes.DEEP_FROZEN_OCEAN ||
 					biome == Biomes.DEEP_LUKEWARM_OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.DEEP_WARM_OCEAN || biome == Biomes.FROZEN_OCEAN
 					|| biome == Biomes.LUKEWARM_OCEAN || biome == Biomes.WARM_OCEAN) {
+
 				biome.addFeature(Decoration.RAW_GENERATION, SUBMERGED_CHEST_FEATURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
 			}
 			else {
 				biome.addFeature(Decoration.RAW_GENERATION, SURFACE_CHEST_FEATURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+				// TODO change to feature.isEnabled()
+				if (TreasureConfig.WELLS.isEnabled()) {
+					Treasure.LOGGER.debug("registering well feature with biome -> {}", biome.getRegistryName());
+					biome.addFeature(Decoration.RAW_GENERATION, WELL_FEATURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+				}
+				
+				if (WITHER_TREE_FEATURE.isEnabled()) {
+					biome.addFeature(Decoration.RAW_GENERATION, WITHER_TREE_FEATURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+				}
 			}
 			
 			// gem ore

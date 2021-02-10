@@ -52,7 +52,7 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
         try {
 			init();
 		} catch (Exception e) {
-			Treasure.LOGGER.error("Unable to instantiate SurfaceChestGenerator:", e);
+			Treasure.LOGGER.error("Unable to instantiate WellFeature:", e);
 		}
 	}
 
@@ -83,6 +83,8 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
         // increment the chunk counts
 		incrementDimensionalChunkCount(dimensionName);
         
+//		Treasure.LOGGER.debug("chunks since dimension {} last well -> {}, min chunks -> {}", dimensionName, chunksSinceLastDimensionWell.get(dimensionName), TreasureConfig.WELLS.chunksPerWell.get());
+		
         GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 
         		// test if min chunks was met

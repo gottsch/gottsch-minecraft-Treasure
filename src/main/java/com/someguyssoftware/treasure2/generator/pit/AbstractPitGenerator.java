@@ -262,12 +262,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 			Treasure.LOGGER.debug("block is not a log");
             return coords;
         }
-		
-		 // determine the direction the logs are facing - north/south (8) or east/west (4)
-//		int meta = random.nextInt() % 2 == 0 ? 8 : 4;
-//		@SuppressWarnings("deprecation")	
-//		BlockState blockState = block.getStateFromMeta(meta);
-		
+
 		// randomly select the axis the logs are facing (0 = Z, 1 = X);
 		int axis = random.nextInt(2);
 		BlockState blockState = block.getDefaultState();
@@ -277,9 +272,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 		else {
 			blockState = blockState.with(LogBlock.AXIS,  Direction.Axis.X);
 		}
-				
-//		Treasure.LOGGER.debug("block state -> {}", blockState.getBlock().getRegistryName());
-		
+
 		// core 4-square
 		GenUtil.replaceWithBlockState(world, coords, blockState);
 		GenUtil.replaceWithBlockState(world, coords.add(1, 0, 0), blockState);

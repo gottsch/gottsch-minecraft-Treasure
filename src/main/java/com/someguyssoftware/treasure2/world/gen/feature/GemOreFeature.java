@@ -40,12 +40,12 @@ public class GemOreFeature extends Feature<OreFeatureConfig> implements ITreasur
 		try {
 			init();
 		} catch (Exception e) {
-			Treasure.LOGGER.error("Unable to instantiate SurfaceChestFeature:", e);
+			Treasure.LOGGER.error("Unable to instantiate GemOreFeature:", e);
 		}
 	}
 	
 	/**
-	 * 
+	 * NOTE not needed
 	 */
 	public void init() {
 		// setup dimensional properties
@@ -197,7 +197,6 @@ public class GemOreFeature extends Feature<OreFeatureConfig> implements ITreasur
 	  
 	@Override
 	public Map<String, Integer> getChunksSinceLastDimensionFeature() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

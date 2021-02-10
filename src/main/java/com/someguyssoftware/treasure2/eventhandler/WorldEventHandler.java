@@ -71,7 +71,7 @@ public class WorldEventHandler {
 			/*
 			 * clear the current World Gens values and reload
 			 */
-			TreasureFeatures.FEATURES.forEach(feature -> {
+			TreasureFeatures.PERSISTED_FEATURES.forEach(feature -> {
 				feature.init();
 			});
 

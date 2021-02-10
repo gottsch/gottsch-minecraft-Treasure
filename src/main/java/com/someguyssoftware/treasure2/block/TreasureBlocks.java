@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
-import com.someguyssoftware.gottschcore.tileentity.AbstractProximityTileEntity;
-import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -33,20 +31,24 @@ import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.SpiderChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.TreasureProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.tileentity.VikingChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.LogBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.GrassColors;
+import net.minecraft.world.biome.BiomeColors;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -119,9 +121,14 @@ public class TreasureBlocks {
 	public static final Block WITHER_BROKEN_LOG;
 	public static final Block WITHER_SOUL_LOG;
 	public static final Block WITHER_PLANKS;
+	public static final Block SPANISH_MOSS;
 	
 	public static final Block RUBY_ORE;
 	public static final Block SAPPHIRE_ORE;
+	
+	public static final Block FALLING_GRASS;
+	public static final Block FALLING_SAND;
+	public static final Block FALLING_RED_SAND;
 	
 	public static List<Block> BLOCKS = new ArrayList<>(100);
 	public static final Set<BlockItem> ITEM_BLOCKS = new HashSet<>();
@@ -376,7 +383,7 @@ public class TreasureBlocks {
 		SAPPHIRE_ORE = new TreasureOreBlock(Treasure.MODID, TreasureConfig.BlockID.SAPPHIRE_ORE_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
                 .hardnessAndResistance(3.0F, 5.0F).harvestLevel(3));		
 		
-		// TODO WISHING WELL BLOCKS
+		// WISHING WELL BLOCKS
         WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.BlockID.WISHING_WELL_BLOCK_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
                 .hardnessAndResistance(2.0F).sound(SoundType.STONE));
         DESERT_WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.BlockID.DESERT_WISHING_WELL_BLOCK_ID, Block.Properties.create(Material.ROCK, MaterialColor.IRON)
@@ -389,22 +396,29 @@ public class TreasureBlocks {
         		.setBounds(witherBranchBounds);
         WITHER_ROOT = new WitherRootBlock(Treasure.MODID, TreasureConfig.BlockID.WITHER_ROOT_ID, Block.Properties.create(Material.WOOD, MaterialColor.WOOD))
         		.setBounds(witherRootBounds);
-        // TODO LogBlock (vanilla) and ModBlock (gottschcore) do not implement ITreasureBlock
-        WITHER_LOG = new LogBlock(MaterialColor.OBSIDIAN, Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(3.0F).sound(SoundType.WOOD))
-        		.setRegistryName(new ResourceLocation(Treasure.MODID, TreasureConfig.BlockID.WITHER_LOG_ID));
+        WITHER_LOG = new WitherLogBlock(Treasure.MODID, TreasureConfig.BlockID.WITHER_LOG_ID, Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(3.0F).sound(SoundType.WOOD));
         WITHER_BROKEN_LOG = new WitherBrokenLogBlock(Treasure.MODID, TreasureConfig.BlockID.WITHER_BROKEN_LOG_ID, Block.Properties.create(Material.WOOD, MaterialColor.WOOD));
         WITHER_SOUL_LOG = new WitherSoulLog(Treasure.MODID, TreasureConfig.BlockID.WITHER_SOUL_LOG_ID, Block.Properties.create(Material.WOOD, MaterialColor.BROWN)
         		.hardnessAndResistance(3.0F).sound(SoundType.WOOD));
         WITHER_PLANKS = new TreasureBlock(Treasure.MODID, TreasureConfig.BlockID.WITHER_PLANKS_ID, Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
         		.hardnessAndResistance(2.5F));
+        
+        SPANISH_MOSS = new SpanishMossBlock(Treasure.MODID, TreasureConfig.BlockID.SPANISH_MOSS_ID, Block.Properties.create(Material.ORGANIC, MaterialColor.WOOD));
 
         // TODO FALLING BLOCKS
-
-		// TODO PAINTINGS
-
+        FALLING_GRASS = new FallingGrassBlock(Treasure.MODID, TreasureConfig.BlockID.FALLING_GRASS_ID, Block.Properties.create(Material.EARTH, MaterialColor.WOOD)
+        		.hardnessAndResistance(0.6F).sound(SoundType.PLANT));
+        
+        FALLING_SAND = new FallingSandBlock(Treasure.MODID, TreasureConfig.BlockID.FALLING_SAND_ID, Block.Properties.create(Material.EARTH, MaterialColor.WOOD)
+        		.hardnessAndResistance(0.6F).sound(SoundType.PLANT));
+        
+        FALLING_RED_SAND= new FallingRedSandBlock(Treasure.MODID, TreasureConfig.BlockID.FALLING_RED_SAND_ID, Block.Properties.create(Material.EARTH, MaterialColor.WOOD)
+        		.hardnessAndResistance(0.6F).sound(SoundType.PLANT));
+        
+		// PAINTINGS
+        // NOTE not adding paintings
+        
 		// proximity blocks
-//		PROXIMITY_SPAWNER = new ProximityBlock<TreasureProximityTileEntity>(Treasure.MODID, TreasureConfig.BlockID.PROXIMITY_SPAWNER_ID,
-//				TreasureProximityTileEntity.class, Block.Properties.create(Material.AIR).doesNotBlockMovement().noDrops());
         PROXIMITY_SPAWNER = new ProximityBlock(Treasure.MODID, TreasureConfig.BlockID.PROXIMITY_SPAWNER_ID,
 				Block.Properties.create(Material.AIR).doesNotBlockMovement().noDrops());
 				
@@ -464,6 +478,10 @@ public class TreasureBlocks {
         BLOCKS.add(WITHER_LOG);
         BLOCKS.add(WITHER_SOUL_LOG);
         BLOCKS.add(WITHER_PLANKS);
+        BLOCKS.add(SPANISH_MOSS);
+        BLOCKS.add(FALLING_GRASS);
+        BLOCKS.add(FALLING_SAND);
+        BLOCKS.add(FALLING_RED_SAND);
         
         GRAVESTONES.add(GRAVESTONE1_STONE);
         GRAVESTONES.add(GRAVESTONE1_COBBLESTONE);
@@ -561,6 +579,21 @@ public class TreasureBlocks {
 //					"Block %s has null registry name", WITHER_CHEST);
 //			registry.register(itemBlock.setRegistryName(registryName));
 //			ITEM_BLOCKS.add(itemBlock);
+		}
+		
+		/**
+		 * Register the {@link IBlockColor} handlers.
+		 *
+		 * @param event The event
+		 */
+		@OnlyIn(Dist.CLIENT)
+		@SubscribeEvent
+		public static void registerBlockColors(ColorHandlerEvent.Block event) {
+			event.getBlockColors().register(
+					(state, reader, pos, color) -> {
+						return (reader != null && pos != null) ? BiomeColors.getGrassColor(reader, pos)  : GrassColors.get(0.5D, 1.0D);
+					},
+					TreasureBlocks.FALLING_GRASS);
 		}
 	}
 }

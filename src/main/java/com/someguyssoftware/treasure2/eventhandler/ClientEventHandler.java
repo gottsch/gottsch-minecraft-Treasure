@@ -21,5 +21,7 @@ public class ClientEventHandler {
 		Treasure.LOGGER.info("registering particle factory");
 		System.out.println("registering particle factory");
 		Minecraft.getInstance().particles.registerFactory(TreasureParticles.mistParticleType, sprite -> new MistParticleFactory(sprite));
+//		Minecraft.getInstance().particles.registerFactory(DeferredRegistration.HEART_CRYSTAL_PARTICLE.get(), new SHParticle.Factory(Color.FIREBRICK)); // ??
+
 	}
 }

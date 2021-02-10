@@ -11,7 +11,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.mojang.datafixers.Dynamic;
-import com.someguyssoftware.gottschcore.biome.BiomeHelper;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
@@ -34,12 +33,10 @@ import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.generator.ruins.SurfaceRuinGenerator;
 import com.someguyssoftware.treasure2.persistence.TreasureGenerationSavedData;
-import com.someguyssoftware.treasure2.registry.ChestRegistry;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -47,7 +44,6 @@ import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.BiomeDictionary;
 
 /**
@@ -139,7 +135,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 			int ySpawn = world.getChunk(pos).getTopBlockY(Heightmap.Type.WORLD_SURFACE, WorldInfo.CHUNK_RADIUS, WorldInfo.CHUNK_RADIUS);
 			spawnCoords = spawnCoords.withY(ySpawn);
 			Treasure.LOGGER.debug("spawns coords -> {}", spawnCoords.toShortString());
-			//			chunksSinceLastChest = 0;
+
 			chunksSinceLastDimensionChest.put(dimensionName, 0);
 
 			// determine what type to generate
@@ -280,6 +276,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 			}
 		}
 		else if (config.isSubterraneanAllowed()) {
+			// TODO use PitProvider
 			Treasure.LOGGER.debug("else generate pit");
 			genResult = generatePit(world, random, rarity, markerCoords, config);
 			Treasure.LOGGER.debug("result -> {}", genResult.toString());
