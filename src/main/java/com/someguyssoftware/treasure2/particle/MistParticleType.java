@@ -3,8 +3,6 @@
  */
 package com.someguyssoftware.treasure2.particle;
 
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleType;
 
 /**

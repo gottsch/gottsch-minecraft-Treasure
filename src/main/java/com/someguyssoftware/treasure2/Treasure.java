@@ -56,7 +56,8 @@ public class Treasure implements IMod {
 
 	public static Treasure instance;
 	private static TreasureConfig config;
-		
+	public static IEventBus MOD_EVENT_BUS;
+	
 	public Treasure() {
 		Treasure.instance = this;
 		Treasure.config = new TreasureConfig(this);
@@ -81,12 +82,15 @@ public class Treasure implements IMod {
 		// needs to be registered here instead of @Mod.EventBusSubscriber because we need to pass in a constructor argument
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
-		MinecraftForge.EVENT_BUS.register(new TreasureParticles());
+//		MinecraftForge.EVENT_BUS.register(new TreasureParticles());
+		MOD_EVENT_BUS = FMLJavaModLoadingContext.get().getModEventBus();
+		MOD_EVENT_BUS.register(TreasureParticles.class);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> Treasure::clientOnly);
 	}
 	
 	public static void clientOnly() {
-		MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
+//		MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
+		MOD_EVENT_BUS.register(ClientEventHandler.class);
 	}
 	
 	/**

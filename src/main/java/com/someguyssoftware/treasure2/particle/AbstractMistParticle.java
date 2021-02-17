@@ -97,6 +97,8 @@ public abstract class AbstractMistParticle extends SpriteTexturedParticle implem
 	 */
 	@Override
 	public void tick() {
+Treasure.LOGGER.info("mist particle ticking...");
+System.out.println("sys:mist particle ticking...");
 		doPlayerCollisions(this.world);
 
 		// save the previous location

@@ -1,5 +1,7 @@
 package com.someguyssoftware.treasure2.particle;
 
+import com.someguyssoftware.treasure2.Treasure;
+
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
@@ -27,7 +29,7 @@ public class MistParticleFactory implements IParticleFactory<MistParticleData> {
 	@Override
 	public Particle makeParticle(MistParticleData data, World world, double x, double y, double z, double xSpeed,
 			double ySpeed, double zSpeed) {
-		
+		Treasure.LOGGER.debug("making mist particle...");
 		MistParticle particle = new MistParticle(world, x, y, z, xSpeed, ySpeed, zSpeed, data.getParentEmitterCoords(), sprites);
 		particle.selectSpriteRandomly(sprites);
 		return particle;
