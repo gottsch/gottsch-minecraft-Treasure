@@ -304,7 +304,9 @@ public class Treasure extends AbstractMod {
 		TreasureBlocks.PAINTING_BLOCKS_WATER.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_WATER);
 		TreasureBlocks.PAINTING_BLOCKS_WOOD.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_WOOD);
 
-		// associate ore blocks with items
+        // associate ore blocks with items
+        TreasureBlocks.AMETHYST_ORE.setItem(TreasureItems.AMETHYST);
+        TreasureBlocks.ONYX_ORE.setItem(TreasureItems.ONYX);
 		TreasureBlocks.SAPPHIRE_ORE.setItem(TreasureItems.SAPPHIRE);
 		TreasureBlocks.RUBY_ORE.setItem(TreasureItems.RUBY);
 	}

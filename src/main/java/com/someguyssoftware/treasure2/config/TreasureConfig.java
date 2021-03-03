@@ -213,6 +213,11 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 	@Ignore public static final String WITHER_PLANKS_ID = "wither_planks";
 
+	@Ignore public static final String AMETHYST_ORE_ID = "amethyst_ore";
+    @Ignore public static final String AMETHYST_ID = "amethyst";
+    @Ignore public static final String ONYX_ORE_ID = "onyx_ore";
+    @Ignore public static final String ONYX_ID = "onyx";
+       
 	@Ignore public static final String SAPPHIRE_ORE_ID = "sapphire_ore";
 	@Ignore public static final String SAPPHIRE_ID = "sapphire";
 	@Ignore public static final String RUBY_ORE_ID = "ruby_ore";
@@ -813,7 +818,59 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@Comment({ "The number of sapphire ore veins in a chunk." })
 		@Name("11. Sapphire ore veins per chunk.")
 		@RangeInt(min = 1, max = 20)
-		public int sapphireOreVeinsPerChunk = 1;
+        public int sapphireOreVeinsPerChunk = 1;
+        
+ 	    @Comment({ "The probability that a amethyst ore will spawn." })
+		@Name("12. Probability of amethyst ore spawn.")
+		@RangeDouble(min = 0.0, max = 100.0)
+		public double amethystGenProbability = 65.0;
+
+		@Comment({ "The max. y-value where a amethyst ore can spawn." })
+		@Name("13. Max. y-value for amethyst ore spawn location:")
+		@RangeInt(min = 1, max = 255)
+		public int amethystOreMaxY = 14;
+
+		@Comment({ "The min. y-value where a amethyst ore can spawn." })
+		@Name("14. Min. y-value for amethyst ore spawn location:")
+		@RangeInt(min = 1, max = 255)
+		public int amethystOreMinY = 6;
+
+		@Comment({ "The number of amethyst ore blocks in a vein." })
+		@Name("15. Amethyst ore vein size:")
+		@RangeInt(min = 1, max = 20)
+		@RequiresMcRestart
+		public int amethystOreVeinSize = 3;
+
+		@Comment({ "The number of amethyst ore veins in a chunk." })
+		@Name("16. Amethyst ore veins per chunk.")
+		@RangeInt(min = 1, max = 20)
+        public int amethystOreVeinsPerChunk = 1;
+        
+	    @Comment({ "The probability that a onyx ore will spawn." })
+		@Name("17. Probability of onyx ore spawn.")
+		@RangeDouble(min = 0.0, max = 100.0)
+		public double onyxGenProbability = 65.0;
+
+		@Comment({ "The max. y-value where a onyx ore can spawn." })
+		@Name("18. Max. y-value for onyx ore spawn location:")
+		@RangeInt(min = 1, max = 255)
+		public int onyxOreMaxY = 14;
+
+		@Comment({ "The min. y-value where a onyx ore can spawn." })
+		@Name("19. Min. y-value for onyx ore spawn location:")
+		@RangeInt(min = 1, max = 255)
+		public int onyxOreMinY = 6;
+
+		@Comment({ "The number of onyx ore blocks in a vein." })
+		@Name("20. Onyx ore vein size:")
+		@RangeInt(min = 1, max = 20)
+		@RequiresMcRestart
+		public int onyxOreVeinSize = 3;
+
+		@Comment({ "The number of onyx ore veins in a chunk." })
+		@Name("21. Onyx ore veins per chunk.")
+		@RangeInt(min = 1, max = 20)
+		public int onyxOreVeinsPerChunk = 1;        
 	}
 
 	/*
