@@ -34,7 +34,7 @@ public class SafeTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param texture
 	 */
 	public SafeTileEntity() {
-		super(TreasureTileEntities.safeTileEntityType);
+		super(TreasureTileEntities.SAFE_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.safe.name"));
 	}
 

@@ -19,7 +19,7 @@ public class PirateChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param texture
 	 */
 	public PirateChestTileEntity() {
-		super(TreasureTileEntities.pirateChestTileEntityType);
+		super(TreasureTileEntities.PIRATE_CHEST_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.pirate_chest.name"));
 	}
 	

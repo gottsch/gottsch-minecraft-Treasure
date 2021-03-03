@@ -19,7 +19,7 @@ import net.minecraft.network.PacketBuffer;
  */
 public class StrongboxChestContainer extends AbstractChestContainer {
 	public static StrongboxChestContainer create(int windowID, PlayerInventory playerInventory, PacketBuffer extraData) {
-		return new StrongboxChestContainer(windowID, TreasureContainers.strongboxChestContainerType, playerInventory, ChestSlotCount.STRONGBOX.getSize());
+		return new StrongboxChestContainer(windowID, TreasureContainers.STRONGBOX_CHEST_CONTAINER_TYPE, playerInventory, ChestSlotCount.STRONGBOX.getSize());
 	}
 	
 	/**

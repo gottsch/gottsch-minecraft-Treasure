@@ -17,7 +17,7 @@ import net.minecraft.network.PacketBuffer;
  */
 public class WitherChestContainer extends AbstractChestContainer {
 	public static WitherChestContainer create(int windowID, PlayerInventory playerInventory, PacketBuffer extraData) {
-		return new WitherChestContainer(windowID, TreasureContainers.witherChestContainerType, playerInventory, ChestSlotCount.WITHER.getSize());
+		return new WitherChestContainer(windowID, TreasureContainers.WITHER_CHEST_CONTAINER_TYPE, playerInventory, ChestSlotCount.WITHER.getSize());
 	}
 	
 	/**

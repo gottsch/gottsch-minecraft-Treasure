@@ -35,27 +35,32 @@ import net.minecraftforge.registries.IForgeRegistry;
  *
  */
 public class TreasureFeatures {
-	public static final SurfaceChestFeature SURFACE_CHEST_FEATURE = new SurfaceChestFeature(NoFeatureConfig::deserialize);
-	public static final SubmergedChestFeature SUBMERGED_CHEST_FEATURE = new SubmergedChestFeature(NoFeatureConfig::deserialize);
-	public static final WellFeature WELL_FEATURE = new WellFeature(NoFeatureConfig::deserialize);
-	public static final GemOreFeature GEM_ORE_FEATURE = new GemOreFeature(OreFeatureConfig::deserialize);
-	public static final WitherTreeFeature WITHER_TREE_FEATURE = new WitherTreeFeature(NoFeatureConfig::deserialize);
+	public static SurfaceChestFeature SURFACE_CHEST_FEATURE;
+	public static SubmergedChestFeature SUBMERGED_CHEST_FEATURE;
+	public static WellFeature WELL_FEATURE;
+	public static GemOreFeature GEM_ORE_FEATURE;
+	public static WitherTreeFeature WITHER_TREE_FEATURE;
 	
 	// list of features used for persisting to world save
 	public static final List<ITreasureFeature> PERSISTED_FEATURES = new ArrayList<>();
-
-	static {
-		PERSISTED_FEATURES.add(SURFACE_CHEST_FEATURE);
-		PERSISTED_FEATURES.add(SUBMERGED_CHEST_FEATURE);
-		PERSISTED_FEATURES.add(WELL_FEATURE);
-		PERSISTED_FEATURES.add(WITHER_TREE_FEATURE);
-	}
 	
 	/**
 	 * This method is called in Treasure.setup(final FMLCommonSetupEvent event) by a DeferredWorkQueue.
 	 * This method assigns the Features to all applicable biomes
 	 */
 	public static void init() {
+		// initialize features
+		SURFACE_CHEST_FEATURE = new SurfaceChestFeature(NoFeatureConfig::deserialize);
+		SUBMERGED_CHEST_FEATURE = new SubmergedChestFeature(NoFeatureConfig::deserialize);
+		WELL_FEATURE = new WellFeature(NoFeatureConfig::deserialize);
+		GEM_ORE_FEATURE = new GemOreFeature(OreFeatureConfig::deserialize);
+		WITHER_TREE_FEATURE = new WitherTreeFeature(NoFeatureConfig::deserialize);
+		
+		// add features to persisted list to be accessed during world load/save
+		PERSISTED_FEATURES.add(SURFACE_CHEST_FEATURE);
+		PERSISTED_FEATURES.add(SUBMERGED_CHEST_FEATURE);
+		PERSISTED_FEATURES.add(WELL_FEATURE);
+		PERSISTED_FEATURES.add(WITHER_TREE_FEATURE);
 		
 		for (Biome biome : ForgeRegistries.BIOMES) {
 			// TODO how to check if feature is enabled? ie wither trees, or ore?
@@ -110,6 +115,7 @@ public class TreasureFeatures {
 
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
 	public static class RegistrationHandler {
+		
 		/*
 		 * Register all Features
 		 */
@@ -117,6 +123,10 @@ public class TreasureFeatures {
 		public static void registerFeatures(RegistryEvent.Register<Feature<?>> event) {
 			final IForgeRegistry<Feature<?>> registry = event.getRegistry();
 			registry.register(SURFACE_CHEST_FEATURE);
+			registry.register(SUBMERGED_CHEST_FEATURE);
+			registry.register(GEM_ORE_FEATURE);
+			registry.register(WELL_FEATURE);
+			registry.register(WITHER_TREE_FEATURE);
 		}
 	}
 }

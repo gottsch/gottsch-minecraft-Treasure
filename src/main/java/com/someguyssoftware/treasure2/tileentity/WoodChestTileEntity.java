@@ -19,7 +19,7 @@ public class WoodChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param texture
 	 */
 	public WoodChestTileEntity() {
-		super(TreasureTileEntities.woodChestTileEntityType);
+		super(TreasureTileEntities.WOOD_CHEST_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.wood_chest.name"));
 	}
 	

@@ -19,7 +19,7 @@ public class DreadPirateChestTileEntity extends AbstractTreasureChestTileEntity 
 	 * @param texture
 	 */
 	public DreadPirateChestTileEntity() {
-		super(TreasureTileEntities.dreadPirateChestTileEntityType);
+		super(TreasureTileEntities.DREAD_PIRATE_CHEST_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.dread_pirate_chest.name"));
 	}
 	

@@ -70,7 +70,7 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader worldIn) {
-		return new MistEmitterTileEntity(TreasureTileEntities.mistEmitterTileEntityType);		
+		return new MistEmitterTileEntity(TreasureTileEntities.MIST_EMITTER_TILE_ENTITY_TYPE);		
 	}
 
 	/**

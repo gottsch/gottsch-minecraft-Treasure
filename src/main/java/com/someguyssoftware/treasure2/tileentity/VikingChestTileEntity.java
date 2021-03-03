@@ -19,7 +19,7 @@ public class VikingChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param texture
 	 */
 	public VikingChestTileEntity() {
-		super(TreasureTileEntities.vikingChestTileEntityType);
+		super(TreasureTileEntities.VIKING_CHEST_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.viking_chest.name"));
 	}
 	

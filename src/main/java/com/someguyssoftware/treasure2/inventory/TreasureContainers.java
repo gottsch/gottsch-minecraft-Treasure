@@ -17,11 +17,11 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
  *
  */
 public class TreasureContainers {
-	public static ContainerType<StandardChestContainer> standardChestContainerType;
-	public static ContainerType<StrongboxChestContainer> strongboxChestContainerType;
-	public static ContainerType<SkullChestContainer> skullChestContainerType;
-	public static ContainerType<CompressorChestContainer> compressorChestContainerType;
-	public static ContainerType<WitherChestContainer> witherChestContainerType;
+	public static ContainerType<StandardChestContainer> STANDARD_CHEST_CONTAINER_TYPE;
+	public static ContainerType<StrongboxChestContainer> STRONGBOX_CHEST_CONTAINER_TYPE;
+	public static ContainerType<SkullChestContainer> SKULL_CHEST_CONTAINER_TYPE;
+	public static ContainerType<CompressorChestContainer> COMPRESSOR_CHEST_CONTAINER_TYPE;
+	public static ContainerType<WitherChestContainer> WITHER_CHEST_CONTAINER_TYPE;
 	
 	
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)	
@@ -29,25 +29,25 @@ public class TreasureContainers {
 		
 		@SubscribeEvent
 		public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event) {
-			standardChestContainerType = IForgeContainerType.create(StandardChestContainer::create);
-			standardChestContainerType.setRegistryName("standard_chest_container");
-			event.getRegistry().register(standardChestContainerType);
+			STANDARD_CHEST_CONTAINER_TYPE = IForgeContainerType.create(StandardChestContainer::create);
+			STANDARD_CHEST_CONTAINER_TYPE.setRegistryName("standard_chest_container");
+			event.getRegistry().register(STANDARD_CHEST_CONTAINER_TYPE);
 			
-			strongboxChestContainerType = IForgeContainerType.create(StrongboxChestContainer::create);
-			strongboxChestContainerType.setRegistryName("strongbox_chest_container");
-			event.getRegistry().register(strongboxChestContainerType);
+			STRONGBOX_CHEST_CONTAINER_TYPE = IForgeContainerType.create(StrongboxChestContainer::create);
+			STRONGBOX_CHEST_CONTAINER_TYPE.setRegistryName("strongbox_chest_container");
+			event.getRegistry().register(STRONGBOX_CHEST_CONTAINER_TYPE);
 			
-			skullChestContainerType = IForgeContainerType.create(SkullChestContainer::create);
-			skullChestContainerType.setRegistryName("skull_chest_container");
-			event.getRegistry().register(skullChestContainerType);
+			SKULL_CHEST_CONTAINER_TYPE = IForgeContainerType.create(SkullChestContainer::create);
+			SKULL_CHEST_CONTAINER_TYPE.setRegistryName("skull_chest_container");
+			event.getRegistry().register(SKULL_CHEST_CONTAINER_TYPE);
 			
-			compressorChestContainerType = IForgeContainerType.create(CompressorChestContainer::create);
-			compressorChestContainerType.setRegistryName("compressor_chest_container");
-			event.getRegistry().register(compressorChestContainerType);
+			COMPRESSOR_CHEST_CONTAINER_TYPE = IForgeContainerType.create(CompressorChestContainer::create);
+			COMPRESSOR_CHEST_CONTAINER_TYPE.setRegistryName("compressor_chest_container");
+			event.getRegistry().register(COMPRESSOR_CHEST_CONTAINER_TYPE);
 			
-			witherChestContainerType = IForgeContainerType.create(WitherChestContainer::create);
-			witherChestContainerType.setRegistryName("wither_chest_container");
-			event.getRegistry().register(witherChestContainerType);
+			WITHER_CHEST_CONTAINER_TYPE = IForgeContainerType.create(WitherChestContainer::create);
+			WITHER_CHEST_CONTAINER_TYPE.setRegistryName("wither_chest_container");
+			event.getRegistry().register(WITHER_CHEST_CONTAINER_TYPE);
 		}
 	}
 }

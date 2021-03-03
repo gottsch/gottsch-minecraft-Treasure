@@ -21,7 +21,7 @@ public class SkullChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param texture
 	 */
 	public SkullChestTileEntity() {
-		super(TreasureTileEntities.skullChestTileEntityType);
+		super(TreasureTileEntities.SKULL_CHEST_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.skull_chest.name"));
 	}
 	
@@ -33,7 +33,7 @@ public class SkullChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @return
 	 */
 	public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player) {
-		return new SkullChestContainer(windowID, TreasureContainers.skullChestContainerType, inventory, this);
+		return new SkullChestContainer(windowID, TreasureContainers.SKULL_CHEST_CONTAINER_TYPE, inventory, this);
 	}
 	
 	/**

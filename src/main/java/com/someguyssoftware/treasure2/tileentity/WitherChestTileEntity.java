@@ -23,7 +23,7 @@ public class WitherChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param texture
 	 */
 	public WitherChestTileEntity() {
-		super(TreasureTileEntities.witherChestTileEntityType);
+		super(TreasureTileEntities.WITHER_CHEST_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.wither_chest.name"));
 	}
 	
@@ -35,7 +35,7 @@ public class WitherChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @return
 	 */
 	public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player) {
-		return new WitherChestContainer(windowID, TreasureContainers.witherChestContainerType, inventory, this);
+		return new WitherChestContainer(windowID, TreasureContainers.WITHER_CHEST_CONTAINER_TYPE, inventory, this);
 	}
 	
 	/**

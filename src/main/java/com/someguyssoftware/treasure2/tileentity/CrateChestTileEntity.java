@@ -29,7 +29,7 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param texture
 	 */
 	public CrateChestTileEntity() {
-		super(TreasureTileEntities.crateChestTileEntityType);
+		super(TreasureTileEntities.CRATE_CHEST_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.crate_chest.name"));
 	}
 	

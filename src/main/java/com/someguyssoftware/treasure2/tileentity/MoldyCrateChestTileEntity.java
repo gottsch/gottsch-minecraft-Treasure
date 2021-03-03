@@ -11,7 +11,7 @@ public class MoldyCrateChestTileEntity extends CrateChestTileEntity {
 
 	@SuppressWarnings("deprecation")
 	public MoldyCrateChestTileEntity() {
-		super(TreasureTileEntities.moldyCrateChestTileEntityType);
+		super(TreasureTileEntities.MOLDY_CRATE_CHEST_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.crate_chest_moldy.name"));
 	}
 }

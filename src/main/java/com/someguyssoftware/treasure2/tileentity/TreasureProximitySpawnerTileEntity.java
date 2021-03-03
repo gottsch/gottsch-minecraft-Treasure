@@ -18,6 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 public class TreasureProximitySpawnerTileEntity extends ProximitySpawnerTileEntity {
 
 	public TreasureProximitySpawnerTileEntity() {
-		super(TreasureTileEntities.proximityTileEntityType);
+		super(TreasureTileEntities.PROXIMITY_TILE_ENTITY_TYPE);
 	}
 }

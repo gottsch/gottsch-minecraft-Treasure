@@ -21,7 +21,7 @@ public class CompressorChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param texture
 	 */
 	public CompressorChestTileEntity() {
-		super(TreasureTileEntities.compressorChestTileEntityType);
+		super(TreasureTileEntities.COMPRESSOR_CHEST_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.compressor_chest.name"));
 	}
 	
@@ -33,7 +33,7 @@ public class CompressorChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @return
 	 */
 	public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player) {
-		return new CompressorChestContainer(windowID, TreasureContainers.compressorChestContainerType, inventory, this);
+		return new CompressorChestContainer(windowID, TreasureContainers.COMPRESSOR_CHEST_CONTAINER_TYPE, inventory, this);
 	}
 	
 	/**

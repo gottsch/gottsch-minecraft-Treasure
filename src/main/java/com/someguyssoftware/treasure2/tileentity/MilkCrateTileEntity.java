@@ -19,7 +19,7 @@ public class MilkCrateTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param texture
 	 */
 	public MilkCrateTileEntity() {
-		super(TreasureTileEntities.milkCrateTileEntityType);
+		super(TreasureTileEntities.MILK_CRATE_TILE_ENTITYT_TYPE);
 		setCustomName(new TranslationTextComponent("display.milk_crate.name"));
 	}
 	

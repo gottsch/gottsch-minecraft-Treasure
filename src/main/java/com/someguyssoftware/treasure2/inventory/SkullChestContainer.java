@@ -16,7 +16,7 @@ import net.minecraft.network.PacketBuffer;
  */
 public class SkullChestContainer extends AbstractChestContainer {
 	public static SkullChestContainer create(int windowID, PlayerInventory playerInventory, PacketBuffer extraData) {
-		return new SkullChestContainer(windowID, TreasureContainers.skullChestContainerType, playerInventory, ChestSlotCount.SKULL.getSize());
+		return new SkullChestContainer(windowID, TreasureContainers.SKULL_CHEST_CONTAINER_TYPE, playerInventory, ChestSlotCount.SKULL.getSize());
 	}
 	
 	/**

@@ -53,8 +53,8 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(Treasure.MODID)
 public class TreasureItems {
 
-	public static final Item LOGO = new ModItem(Treasure.MODID, "treasure_tab", new Item.Properties());
-	public static final Item TREASURE_TOOL = new TreasureToolItem(Treasure.MODID, "treasure_tool", new Item.Properties());
+	public static Item LOGO;// = new ModItem(Treasure.MODID, "treasure_tab", new Item.Properties());
+	public static Item TREASURE_TOOL;// = new TreasureToolItem(Treasure.MODID, "treasure_tool", new Item.Properties());
 
 	// keys
 	public static KeyItem WOOD_KEY;
@@ -120,8 +120,20 @@ public class TreasureItems {
 	// lock map
 	public static Multimap<Rarity, LockItem> locks;
 
-	static {
-
+	/**
+	 * The actual event handler that registers the custom items.
+	 *
+	 * @param event The event this event handler handles
+	 */
+	@SubscribeEvent
+	public static void registerItems(RegistryEvent.Register<Item> event) {
+		
+		/*
+		 *  initialize items
+		 */
+		LOGO = new ModItem(Treasure.MODID, "treasure_tab", new Item.Properties());
+		TREASURE_TOOL = new TreasureToolItem(Treasure.MODID, "treasure_tool", new Item.Properties());
+		
 		// KEYS
 		WOOD_KEY = new KeyItem(Treasure.MODID, KeyID.WOOD_KEY_ID, new Item.Properties().maxDamage(TreasureConfig.KEYS_LOCKS.woodKeyMaxUses.get()))
 				.setCategory(Category.ELEMENTAL)
@@ -308,17 +320,10 @@ public class TreasureItems {
 				.setRegistryName(Treasure.MODID, TreasureConfig.ItemID.SKULL_SWORD_ID);
 //		EYE_PATCH = new DyeableArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.HEAD, (new Item.Properties()).group(TreasureItemGroups.MOD_ITEM_GROUP))
 //				.setRegistryName(Treasure.MODID, TreasureConfig.ItemID.EYE_PATCH_ID);
-	}
-
-	/**
-	 * The actual event handler that registers the custom items.
-	 *
-	 * @param event The event this event handler handles
-	 */
-	@SubscribeEvent
-	public static void registerItems(RegistryEvent.Register<Item> event) {
-		// in here you pass in all item instances you want to register.
-		// make sure you always set the registry name.
+		
+		/*
+		 * register items (make sure you always set the registry name).
+		 */
 		event.getRegistry().registerAll(
 				LOGO,
 				TREASURE_TOOL,

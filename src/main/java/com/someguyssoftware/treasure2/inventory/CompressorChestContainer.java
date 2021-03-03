@@ -15,7 +15,7 @@ import net.minecraft.network.PacketBuffer;
 public class CompressorChestContainer extends AbstractChestContainer {
 	
 	public static CompressorChestContainer create(int windowID, PlayerInventory playerInventory, PacketBuffer extraData) {
-		return new CompressorChestContainer(windowID, TreasureContainers.compressorChestContainerType, playerInventory, ChestSlotCount.COMPRESOR.getSize());
+		return new CompressorChestContainer(windowID, TreasureContainers.COMPRESSOR_CHEST_CONTAINER_TYPE, playerInventory, ChestSlotCount.COMPRESOR.getSize());
 	}
 	
 	/**

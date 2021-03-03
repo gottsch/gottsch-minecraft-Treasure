@@ -78,7 +78,7 @@ public class StandardChestContainer extends Container implements ITreasureContai
 	 * @param inventory
 	 */
 	public StandardChestContainer(int id, PlayerInventory playerInventory, IInventory inventory) {
-		super(TreasureContainers.standardChestContainerType, id);
+		super(TreasureContainers.STANDARD_CHEST_CONTAINER_TYPE, id);
 		Treasure.LOGGER.debug("standard chest container created");
 		this.contents = inventory;
 

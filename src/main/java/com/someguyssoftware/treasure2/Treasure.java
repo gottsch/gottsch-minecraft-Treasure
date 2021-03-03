@@ -84,8 +84,8 @@ public class Treasure implements IMod {
 		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
 //		MinecraftForge.EVENT_BUS.register(new TreasureParticles());
 		MOD_EVENT_BUS = FMLJavaModLoadingContext.get().getModEventBus();
-		MOD_EVENT_BUS.register(TreasureParticles.class);
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> Treasure::clientOnly);
+//		MOD_EVENT_BUS.register(TreasureParticles.class);
+//		DistExecutor.runWhenOn(Dist.CLIENT, () -> Treasure::clientOnly);
 	}
 	
 	public static void clientOnly() {

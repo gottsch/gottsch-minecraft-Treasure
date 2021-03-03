@@ -21,7 +21,7 @@ public class GoldStrongboxTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param texture
 	 */
 	public GoldStrongboxTileEntity() {
-		super(TreasureTileEntities.goldStrongboxTileEntityType);
+		super(TreasureTileEntities.GOLD_STRONGBOX_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.gold_strongbox.name"));
 	}
 	
@@ -33,7 +33,7 @@ public class GoldStrongboxTileEntity extends AbstractTreasureChestTileEntity {
 	 * @return
 	 */
 	public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player) {
-		return new StrongboxChestContainer(windowID, TreasureContainers.strongboxChestContainerType,  inventory, this);
+		return new StrongboxChestContainer(windowID, TreasureContainers.STRONGBOX_CHEST_CONTAINER_TYPE,  inventory, this);
 	}
 	
 	/**

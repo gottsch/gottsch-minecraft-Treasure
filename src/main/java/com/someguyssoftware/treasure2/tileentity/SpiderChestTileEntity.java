@@ -19,7 +19,7 @@ public class SpiderChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param texture
 	 */
 	public SpiderChestTileEntity() {
-		super(TreasureTileEntities.spiderChestTileEntityType);
+		super(TreasureTileEntities.SPIDER_CHEST_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.spider_chest.name"));
 	}
 	

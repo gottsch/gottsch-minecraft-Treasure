@@ -45,11 +45,11 @@ public class TreasureGuis {
 		// register the factory that is used on the client to generate Screen corresponding to our Container
 		@SubscribeEvent
 		public static void onClientSetupEvent(FMLClientSetupEvent event) {
-			ScreenManager.registerFactory(TreasureContainers.standardChestContainerType, StandardChestContainerScreen::new);
-			ScreenManager.registerFactory(TreasureContainers.strongboxChestContainerType, StrongboxChestContainerScreen::new);
-			ScreenManager.registerFactory(TreasureContainers.witherChestContainerType, WitherChestContainerScreen::new);
-			ScreenManager.registerFactory(TreasureContainers.skullChestContainerType, SkullChestContainerScreen::new);
-			ScreenManager.registerFactory(TreasureContainers.compressorChestContainerType, CompressorChestContainerScreen::new);
+			ScreenManager.registerFactory(TreasureContainers.STANDARD_CHEST_CONTAINER_TYPE, StandardChestContainerScreen::new);
+			ScreenManager.registerFactory(TreasureContainers.STRONGBOX_CHEST_CONTAINER_TYPE, StrongboxChestContainerScreen::new);
+			ScreenManager.registerFactory(TreasureContainers.WITHER_CHEST_CONTAINER_TYPE, WitherChestContainerScreen::new);
+			ScreenManager.registerFactory(TreasureContainers.SKULL_CHEST_CONTAINER_TYPE, SkullChestContainerScreen::new);
+			ScreenManager.registerFactory(TreasureContainers.COMPRESSOR_CHEST_CONTAINER_TYPE, CompressorChestContainerScreen::new);
 
 			// tell the renderer that the base is rendered using CUTOUT_MIPPED (to match the Block Hopper)
 			RenderTypeLookup.setRenderLayer(TreasureBlocks.WOOD_CHEST, RenderType.getCutoutMipped());
@@ -74,27 +74,28 @@ public class TreasureGuis {
 			RenderTypeLookup.setRenderLayer(TreasureBlocks.RUBY_ORE, RenderType.getCutoutMipped());
             RenderTypeLookup.setRenderLayer(TreasureBlocks.SAPPHIRE_ORE, RenderType.getCutoutMipped());
             RenderTypeLookup.setRenderLayer(TreasureBlocks.SPANISH_MOSS, RenderType.getCutoutMipped());
+            RenderTypeLookup.setRenderLayer(TreasureBlocks.SKELETON, RenderType.getCutoutMipped());
             
 			// register the custom renderer for our tile entity
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.woodChestTileEntityType, WoodChestTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.crateChestTileEntityType, CrateChestTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.moldyCrateChestTileEntityType, MoldyCrateChestTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.ironboundChestTileEntityType, IronboundChestTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.pirateChestTileEntityType, PirateChestTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.ironStrongboxTileEntityType, IronStrongboxTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.goldStrongboxTileEntityType, GoldStrongboxTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.dreadPirateChestTileEntityType, DreadPirateChestTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.witherChestTileEntityType, WitherChestTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.safeTileEntityType, SafeTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.compressorChestTileEntityType, CompressorChestTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.skullChestTileEntityType, SkullChestTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.goldSkullChestTileEntityType, SkullChestTileEntityRenderer::createGoldSkull);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.crystalSkullChestTileEntityType, SkullChestTileEntityRenderer::createCrystalSkull);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.cauldronChestTileEntityType, CauldronChestTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.spiderChestTileEntityType, SpiderChestTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.vikingChestTileEntityType, VikingChestTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.cardboardBoxTileEntityType, CardboardBoxTileEntityRenderer::new);
-			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.milkCrateTileEntityType, MilkCreateTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.WOOD_CHEST_TILE_ENTITY_TYPE, WoodChestTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.CRATE_CHEST_TILE_ENTITY_TYPE, CrateChestTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.MOLDY_CRATE_CHEST_TILE_ENTITY_TYPE, MoldyCrateChestTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.IRONBOUND_CHEST_TILE_ENTITY_TYPE, IronboundChestTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.PIRATE_CHEST_TILE_ENTITY_TYPE, PirateChestTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.IRON_STRONGBOX_TILE_ENTITY_TYPE, IronStrongboxTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.GOLD_STRONGBOX_TILE_ENTITY_TYPE, GoldStrongboxTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.DREAD_PIRATE_CHEST_TILE_ENTITY_TYPE, DreadPirateChestTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.WITHER_CHEST_TILE_ENTITY_TYPE, WitherChestTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.SAFE_TILE_ENTITY_TYPE, SafeTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.COMPRESSOR_CHEST_TILE_ENTITY_TYPE, CompressorChestTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.SKULL_CHEST_TILE_ENTITY_TYPE, SkullChestTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.GOLD_SKULL_CHEST_TILE_ENTITY_TYPE, SkullChestTileEntityRenderer::createGoldSkull);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.CRYSTAL_SKULL_CHEST_TILE_ENTITY_TYPE, SkullChestTileEntityRenderer::createCrystalSkull);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.CAULDRON_CHEST_TILE_ENTITY_TYPE, CauldronChestTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.SPIDER_CHEST_TILE_ENTITY_TYPE, SpiderChestTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.VIKING_CHEST_TILE_ENTITY_TYPE, VikingChestTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.CARDBOARD_BOX_TILE_ENTITY_TYPE, CardboardBoxTileEntityRenderer::new);
+			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.MILK_CRATE_TILE_ENTITYT_TYPE, MilkCreateTileEntityRenderer::new);
 
 		}
 	}

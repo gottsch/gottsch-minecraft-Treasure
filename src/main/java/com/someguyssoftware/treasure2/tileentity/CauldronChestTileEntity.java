@@ -19,7 +19,7 @@ public class CauldronChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param texture
 	 */
 	public CauldronChestTileEntity() {
-		super(TreasureTileEntities.cauldronChestTileEntityType);
+		super(TreasureTileEntities.CAULDRON_CHEST_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.cauldron_chest.name"));
 	}
 		

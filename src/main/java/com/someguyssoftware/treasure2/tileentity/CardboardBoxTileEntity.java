@@ -35,7 +35,7 @@ public class CardboardBoxTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param texture
 	 */
 	public CardboardBoxTileEntity() {
-		super(TreasureTileEntities.cardboardBoxTileEntityType);
+		super(TreasureTileEntities.CARDBOARD_BOX_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.cardboard_box.name"));
 	}
 

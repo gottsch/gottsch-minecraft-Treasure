@@ -19,7 +19,7 @@ public class IronboundChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param texture
 	 */
 	public IronboundChestTileEntity() {
-		super(TreasureTileEntities.ironboundChestTileEntityType);
+		super(TreasureTileEntities.IRONBOUND_CHEST_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.ironbound_chest.name"));
 	}
 	
