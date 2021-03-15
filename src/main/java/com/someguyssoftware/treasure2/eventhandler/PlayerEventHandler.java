@@ -455,7 +455,9 @@ public class PlayerEventHandler {
 		if (item instanceof IWishable) {
 			ItemStack stack = event.getEntityItem().getItem();
 			NBTTagCompound nbt = new NBTTagCompound();
-			nbt.setString(IWishable.DROPPED_BY_KEY, event.getPlayer().getName());
+			//			nbt.setString(IWishable.DROPPED_BY_KEY, event.getPlayer().getName());
+			Treasure.logger.debug("player {}'s uuid -> {}", event.getPlayer().getName(), EntityPlayer.getUUID(event.getPlayer().getGameProfile()).toString());
+			nbt.setString(IWishable.DROPPED_BY_KEY, EntityPlayer.getUUID(event.getPlayer().getGameProfile()).toString());
 			stack.setTagCompound(nbt);			
 		}		
 	}

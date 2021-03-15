@@ -61,7 +61,7 @@ minecraft {
     }
 }
 
-def gottschcore_path="../gottsch-minecraft-GottschCore/GottschCore${mc_version}/build/libs/GottschCore-mc${mc_version}-f${gottschcore_forge_version}-v${gottschcore_version}.jar"
+def gottschcore_path="../gottsch-minecraft-GottschCore/build/libs/GottschCore-mc${mc_version}-f${gottschcore_forge_version}-v${gottschcore_version}.jar"
 println gottschcore_path
 dependencies {
 	minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2854'
@@ -102,7 +102,7 @@ reobf {
 }
 
 //an array containing destination paths
-def destinations = ["${dest_folder}", "${dest_server_folder}"]
+def destinations = ["${dest_folder}", "${mods_folder}", "${dest_server_folder}"]
 println destinations[0]
 
 task deleteOldJar(type: Delete) {

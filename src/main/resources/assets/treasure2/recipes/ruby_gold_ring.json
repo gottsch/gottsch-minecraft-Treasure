@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "Treasure2",
+  "pattern": [
+	" RT",
+	" D ",
+	" G "
+  ],
+  "key": {
+    "T": {
+		"item": "treasure2:treasure_tool"
+	},
+	"R": {
+		"item": "treasure2:gold_ring"
+	},
+	"D": {
+		"item": "minecraft:glowstone_dust"
+	},
+	"G": {
+		"item": "treasure2:ruby"
+	}
+  },
+  "result": {
+    "item": "treasure2:ruby_gold_ring",
+    "count": 1
+  }
+}

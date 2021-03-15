@@ -3,7 +3,6 @@
  */
 package com.someguyssoftware.treasure2.persistence;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -16,6 +15,7 @@ import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
 import com.someguyssoftware.treasure2.generator.oasis.OasisInfo;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 import com.someguyssoftware.treasure2.registry.OasisRegistry;
+import com.someguyssoftware.treasure2.registry.WitherTreeRegistry;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.OasisWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.SubmergedChestWorldGenerator;
@@ -49,6 +49,7 @@ public class GenDataPersistence extends WorldSavedData {
 	private static final String CHUNKS_SINCE_LAST_RARITY_CHEST_TAG_NAME = "chunksSinceLastRarityChest";
 	private static final String CHEST_REGISTRY_TAG_NAME = "chestRegistry";
 	private static final String OASIS_REGISTRY_TAG_NAME = "oasisRegistry";
+	private static final String WITHER_TREE_REGISTRY_TAG_NAME ="witherTreeRegistry";
 	private static final String CHUNKS_SINCE_LAST_OASIS_TAG_NAME = "chunksSinceLastOasis";
 	private static final String COORDS_TAG_NAME = "coords";
 
@@ -57,6 +58,8 @@ public class GenDataPersistence extends WorldSavedData {
 	private static final String DIMENSIONS_TAG_NAME = "dimensions";
 	private static final String BIOME_ID_TAG_NAME = "biomeID";
 	private static final String BIOMES_TAG_NAME = "biomes";
+	
+
 	
 	
 	/**
@@ -187,7 +190,18 @@ public class GenDataPersistence extends WorldSavedData {
 				int z = coordsTag.getInteger("z");
 				oasisRegistry.register(dimensionID, key, new OasisInfo(new Coords(x, y, z), dimensionID, biomeID));
 			}
-		}	
+		}
+		
+		// Wither Tree Registry
+		WitherTreeRegistry witherTreeRegistry = WitherTreeRegistry.getInstance();
+		witherTreeRegistry.read(treasureGen);
+//		witherTreeRegistry.clear();
+//		NBTTagList witherTreeRegistryDimensionTagList = treasureGen.getTagList(WITHER_TREE_REGISTRY_TAG_NAME, 10);
+//		for (int index = 0; index < witherTreeRegistryDimensionTagList.tagCount(); index++) {
+//			NBTTagCompound dimTag = witherTreeRegistryDimensionTagList.getCompoundTagAt(index);
+//			int dimensionID = dimTag.getInteger(DIMENSION_ID_TAG_NAME);
+////			NBTTagList oasisRegistryTagList = dimTag.getTagList("registry", 10);
+//		}
 	}
 
 	/*
@@ -259,14 +273,14 @@ public class GenDataPersistence extends WorldSavedData {
 			// add the oasis gen last count to the treasure compound for each dimension
 			NBTTagList dimTagList = new NBTTagList();
 			for (Entry<Integer, Integer> entry : oasisGen.getChunksSinceLastDimensionOasis().entrySet()) {
-				Treasure.logger.debug("oasis dimension ID -> {}", entry.getKey());
+//				Treasure.logger.debug("oasis dimension ID -> {}", entry.getKey());
 				
 				NBTTagCompound dimTag = new NBTTagCompound();
 				dimTag.setInteger(DIMENSION_ID_TAG_NAME, entry.getKey());
 				dimTag.setInteger(CHUNKS_SINCE_LAST_OASIS_TAG_NAME, entry.getValue());
-				Treasure.logger.debug("chunks since last oasis -> {}", entry.getValue());
+//				Treasure.logger.debug("chunks since last oasis -> {}", entry.getValue());
 				Map<Integer, Integer> biomeMap = oasisGen.getChunksSinceLastDimensionBiomeOasis().get(entry.getKey());
-				Treasure.logger.debug("oasis biome map size -> {}", biomeMap.size());
+//				Treasure.logger.debug("oasis biome map size -> {}", biomeMap.size());
 				
 				NBTTagList biomeTagList = new NBTTagList();
 				for (Entry<Integer, Integer> biomeEntry : biomeMap.entrySet()) {
@@ -364,6 +378,42 @@ public class GenDataPersistence extends WorldSavedData {
 			treasureGen.removeTag(OASIS_REGISTRY_TAG_NAME);
 			// add new values
 			treasureGen.setTag(OASIS_REGISTRY_TAG_NAME, oasisRegistryDimensionTagList);
+			
+			///// Wither Tree Registry (multi-dimensional) /////			
+			WitherTreeRegistry witherTreeRegistry = WitherTreeRegistry.getInstance();
+			witherTreeRegistry.write(treasureGen);
+			
+//			NBTTagList witherTreeRegistryDimensionTagList = new NBTTagList();
+//			for (Integer dimensionKey : witherTreeRegistry.getDimensionKeys()) {
+//				LinkedList<WitherTreeInfo> infoList = witherTreeRegistry.getDimensionEntry(dimensionKey);
+//				NBTTagCompound dimTag = new NBTTagCompound();
+//				dimTag.setInteger(DIMENSION_ID_TAG_NAME, dimensionKey);
+//				NBTTagList witherTreeRegistryTagList = new NBTTagList();
+//				for(WitherTreeInfo info : infoList) {
+//					NBTTagCompound infoTag = new NBTTagCompound();					
+//					NBTTagInt biomeID = new NBTTagInt(info.getBiomeID());
+//					NBTTagCompound coords = new NBTTagCompound();
+//					NBTTagInt x = new NBTTagInt(info.getCoords().getX());
+//					NBTTagInt y = new NBTTagInt(info.getCoords().getY());
+//					NBTTagInt z = new NBTTagInt(info.getCoords().getZ());
+//					
+//					coords.setTag("x", x);
+//					coords.setTag("y", y);
+//					coords.setTag("z", z);
+//
+//					infoTag.setTag(BIOME_ID_TAG_NAME, biomeID);
+//					infoTag.setTag(COORDS_TAG_NAME, coords);
+//					
+//					witherTreeRegistryTagList.appendTag(infoTag);
+//				}
+//				dimTag.setTag("registry", witherTreeRegistryTagList);
+//				witherTreeRegistryDimensionTagList.appendTag(dimTag);
+//			}
+//			// delete current tag
+//			treasureGen.removeTag(WITHER_TREE_REGISTRY_TAG_NAME);
+//			// add new values
+//			treasureGen.setTag(WITHER_TREE_REGISTRY_TAG_NAME, witherTreeRegistryDimensionTagList);
+			
 		}
 		catch(Exception e) {
 			e.printStackTrace();
