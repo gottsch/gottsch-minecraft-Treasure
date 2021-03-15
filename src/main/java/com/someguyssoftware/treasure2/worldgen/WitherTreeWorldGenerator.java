@@ -33,8 +33,12 @@ import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.WitherChestGenerator;
+import com.someguyssoftware.treasure2.generator.oasis.OasisInfo;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
+import com.someguyssoftware.treasure2.registry.OasisRegistry;
+import com.someguyssoftware.treasure2.registry.WitherTreeRegistry;
+import com.someguyssoftware.treasure2.registry.WitherTreeRegistry.WitherTreeInfo;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
@@ -74,26 +78,6 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 	private static final int MIN_ROCKS = 0;
 	private static final int MIN_SCRUB = 5;
 	private static final int MAX_SCRUB = 20;
-	
-	FogBlock[] fogDensity = new FogBlock[] {
-//			TreasureBlocks.WITHER_FOG, 
-//			TreasureBlocks.WITHER_FOG,
-//			TreasureBlocks.HIGH_WITHER_FOG, 
-//			TreasureBlocks.HIGH_WITHER_FOG, 
-//			TreasureBlocks.MED_WITHER_FOG,
-//			TreasureBlocks.MED_WITHER_FOG,
-//			TreasureBlocks.LOW_WITHER_FOG
-	};
-
-	FogBlock[] poisonFogDensity = new FogBlock[] {
-//		TreasureBlocks.POISON_FOG,
-//		TreasureBlocks.POISON_FOG,
-//		TreasureBlocks.HIGH_POISON_FOG,
-//		TreasureBlocks.HIGH_POISON_FOG, 
-//		TreasureBlocks.MED_POISON_FOG,
-//		TreasureBlocks.MED_POISON_FOG,
-//		TreasureBlocks.LOW_POISON_FOG
-	};
 
 	@SuppressWarnings("unchecked")
 	static List<Direction>[] trunkMatrix = new ArrayList[4];
@@ -174,6 +158,8 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		int xSpawn = chunkX * 16 + WorldInfo.CHUNK_RADIUS;
 		int zSpawn = chunkZ * 16 + WorldInfo.CHUNK_RADIUS;
 
+		Integer dimensionID = Integer.valueOf(world.provider.getDimension());
+		
 		// 0. hard check against ocean biomes
 		ICoords coords = new Coords(xSpawn, 0, zSpawn);
 		Biome biome = world.getBiome(coords.toPos());
@@ -181,7 +167,8 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 				|| BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
 			return;
 		}
-
+		Integer biomeID = Biome.getIdForBiome(biome);
+		
 		// increment the chunk counts
 		chunksSinceLastTree++;
 
@@ -232,10 +219,14 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 				}
 
 				// 3. check against all registered chests
-				if (isRegisteredChestWithinDistance(world, coords,
-						TreasureConfig.CHESTS.surfaceChests.minDistancePerChest)) {
-					Treasure.logger
-							.debug("The distance to the nearest treasure chest is less than the minimun required.");
+				if (isRegisteredChestWithinDistance(world, coords, TreasureConfig.CHESTS.surfaceChests.minDistancePerChest)) {
+					Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
+					return;
+				}
+				
+				// 4. check against all wither trees
+				if (isRegisteredWitherTreeWithinDistance(world, coords, dimensionID, TreasureConfig.WITHER_TREE.minDistancePerWitherTree)) {
+					Treasure.logger.debug("The distance to the nearest wither tree is less than the minimun required.");
 					return;
 				}
 
@@ -250,6 +241,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 				if (result.isSuccess()) {
 					// add to registry
 					ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(Rarity.SCARCE, coords));
+    				WitherTreeRegistry.getInstance().register(dimensionID, coords, biomeID);
 				}
 			}
 			// save world data
@@ -259,7 +251,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 			}
 		}
 	}
-
+	
 	/**
 	 * 
 	 * @param world
@@ -727,6 +719,33 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param world
+	 * @param coords
+	 * @param dimensionID
+	 * @param minDistance
+	 * @return
+	 */
+	public boolean isRegisteredWitherTreeWithinDistance(World world, ICoords coords, Integer dimensionID, int minDistance) {
+		double minDistanceSq = minDistance * minDistance;
+		List<WitherTreeInfo> infos = WitherTreeRegistry.getInstance().getValues(dimensionID);
+		
+		if (infos == null || infos.size() == 0) {
+			Treasure.logger.debug("Unable to locate the Wither Tree Registry or the Registry doesn't contain any values");
+			return false;
+		}
+		
+		for (WitherTreeInfo info : infos) {
+			// calculate the distance to the poi
+			double distance = coords.getDistanceSq(info.getCoords());
+			if (distance < minDistanceSq) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * @return the chunksSinceLastTree
 	 */

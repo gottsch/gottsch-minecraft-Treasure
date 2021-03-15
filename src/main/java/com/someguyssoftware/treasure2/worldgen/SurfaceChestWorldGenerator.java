@@ -39,6 +39,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.CrystalSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
@@ -137,8 +138,9 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(EPIC).isEnableChest()) {
 			RARITIES.add(EPIC);
 			chestGenMap.put(EPIC, new RandomWeightedCollection<>());
-			chestGenMap.get(EPIC).add(85, new EpicChestGenerator());
+			chestGenMap.get(EPIC).add(70, new EpicChestGenerator());
 			chestGenMap.get(EPIC).add(15, new CauldronChestGenerator());
+			chestGenMap.get(EPIC).add(15, new CrystalSkullChestGenerator());
 		}		
 		
 		// setup pit generators map

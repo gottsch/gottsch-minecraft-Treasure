@@ -1,8 +1,7 @@
-/**
- * 
- */
 package com.someguyssoftware.treasure2.worldgen;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import com.google.common.base.Predicate;
@@ -10,11 +9,15 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
+import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator.GemGenerationContext;
+import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator.WorldGenMinable;
 
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -29,9 +32,13 @@ import net.minecraft.world.gen.feature.WorldGenerator;
  */
 public class GemOreWorldGenerator implements ITreasureWorldGenerator {
 
+    private WorldGenMinable amethystGenerator;
+    private WorldGenMinable onyxGenerator;
 	private WorldGenMinable sapphireGenerator;
 	private WorldGenMinable rubyGenerator;
 	private int chunksSinceLastOre = 1;
+
+    Map<Item, GemGenerationContext> gemContexts;
 
 	/**
 	 * 
@@ -41,9 +48,7 @@ public class GemOreWorldGenerator implements ITreasureWorldGenerator {
 			init();
 		} catch (Exception e) {
 			Treasure.logger.error("Unable to instantiate GemOreGenerator:", e);
-		}
-		sapphireGenerator = new WorldGenMinable(TreasureBlocks.SAPPHIRE_ORE.getDefaultState(), TreasureConfig.GEMS_ORES.sapphireOreVeinSize);
-		rubyGenerator = new WorldGenMinable(TreasureBlocks.RUBY_ORE.getDefaultState(), TreasureConfig.GEMS_ORES.rubyOreVeinSize);
+        }
 	}
 
 	/**
@@ -51,7 +56,41 @@ public class GemOreWorldGenerator implements ITreasureWorldGenerator {
 	 */
 	public void init() {
 		// intialize chunks since last ore spawn
-		chunksSinceLastOre = 0;
+        chunksSinceLastOre = 0;
+
+        // create generators
+        amethystGenerator = new WorldGenMinable(TreasureBlocks.AMETHYST_ORE.getDefaultState(), TreasureConfig.GEMS_ORES.amethystOreVeinSize);
+        onyxGenerator = new WorldGenMinable(TreasureBlocks.ONYX_ORE.getDefaultState(), TreasureConfig.GEMS_ORES.onyxOreVeinSize);
+		sapphireGenerator = new WorldGenMinable(TreasureBlocks.SAPPHIRE_ORE.getDefaultState(), TreasureConfig.GEMS_ORES.sapphireOreVeinSize);
+		rubyGenerator = new WorldGenMinable(TreasureBlocks.RUBY_ORE.getDefaultState(), TreasureConfig.GEMS_ORES.rubyOreVeinSize);
+        
+        // map gem contexts
+		gemContexts = new HashMap<>();
+		
+        gemContexts.put(TreasureItems.AMETHYST, new GemGenerationContext(
+            amethystGenerator, 
+            TreasureConfig.GEMS_ORES.amethystGenProbability,
+			TreasureConfig.GEMS_ORES.amethystOreVeinsPerChunk,
+			TreasureConfig.GEMS_ORES.amethystOreMaxY,
+			TreasureConfig.GEMS_ORES.amethystOreMinY));
+        gemContexts.put(TreasureItems.ONYX, new GemGenerationContext(
+            onyxGenerator,
+            TreasureConfig.GEMS_ORES.onyxGenProbability,
+			TreasureConfig.GEMS_ORES.onyxOreVeinsPerChunk,
+			TreasureConfig.GEMS_ORES.onyxOreMaxY,
+			TreasureConfig.GEMS_ORES.onyxOreMinY));
+        gemContexts.put(TreasureItems.RUBY, new GemGenerationContext(
+            rubyGenerator, 
+            TreasureConfig.GEMS_ORES.rubyGenProbability,
+			TreasureConfig.GEMS_ORES.rubyOreVeinsPerChunk,
+			TreasureConfig.GEMS_ORES.rubyOreMaxY,
+			TreasureConfig.GEMS_ORES.rubyOreMinY));
+        gemContexts.put(TreasureItems.SAPPHIRE, new GemGenerationContext(
+            sapphireGenerator,
+            TreasureConfig.GEMS_ORES.sapphireGenProbability,
+			TreasureConfig.GEMS_ORES.sapphireOreVeinsPerChunk,
+			TreasureConfig.GEMS_ORES.sapphireOreMaxY,
+			TreasureConfig.GEMS_ORES.sapphireOreMinY));
 	}
 
 	/**
@@ -63,18 +102,21 @@ public class GemOreWorldGenerator implements ITreasureWorldGenerator {
 			return;
 		}
 		if (TreasureConfig.WORLD_GEN.getGeneralProperties().getDimensionsWhiteList().contains(Integer.valueOf(world.provider.getDimension()))) {
-			generate(world, random, chunkX, chunkZ);
+            // generate(world, random, chunkX, chunkZ);
+            generate(world, random, chunkX, chunkZ, gemContexts.get(TreasureItems.RUBY), gemContexts.get(TreasureItems.SAPPHIRE));
+            generate(world, random, chunkX, chunkZ, gemContexts.get(TreasureItems.AMETHYST), gemContexts.get(TreasureItems.ONYX));
 		}
 	}
 
 	/**
-	 * 
+	 * Generates one gem ore type from a provided list.
 	 * @param world
 	 * @param random
 	 * @param chunkX
 	 * @param chunkZ
 	 */
-	private void generate(World world, Random random, int chunkX, int chunkZ) {
+	// private void generate(World world, Random random, int chunkX, int chunkZ) {
+    private void generate(World world, Random random, int chunkX, int chunkZ, GemGenerationContext... contexts) {
 		// increment the chunk count
 		chunksSinceLastOre++;
 
@@ -82,43 +124,22 @@ public class GemOreWorldGenerator implements ITreasureWorldGenerator {
 		int xSpawn = chunkX * 16;
 		int zSpawn = chunkZ * 16;
 
-		int flip = RandomHelper.randomInt(0, 1);
-		double prob = 0d;
-		int veinsPerChunk = 0;
-		int maxY, minY = 0;
-		WorldGenMinable gen = null;
-		//			String gem = "";
+        GemGenerationContext context = contexts[random.nextInt(contexts.length)];
 
-		// temp
-		if (flip == 0) {
-			// sapphire
-			prob = TreasureConfig.GEMS_ORES.sapphireGenProbability;
-			veinsPerChunk = TreasureConfig.GEMS_ORES.sapphireOreVeinsPerChunk;
-			maxY = TreasureConfig.GEMS_ORES.sapphireOreMaxY;
-			minY = TreasureConfig.GEMS_ORES.sapphireOreMinY;
-			gen = sapphireGenerator;
-			//				gem = "Sapphire";
-		} else {
-			// ruby
-			prob = TreasureConfig.GEMS_ORES.rubyGenProbability;
-			veinsPerChunk = TreasureConfig.GEMS_ORES.rubyOreVeinsPerChunk;
-			maxY = TreasureConfig.GEMS_ORES.rubyOreMaxY;
-			minY = TreasureConfig.GEMS_ORES.rubyOreMinY;
-			gen = rubyGenerator;
-			//				gem = "Ruby";
-		}
-
-		if (!RandomHelper.checkProbability(random, prob)) {
-			// Treasure.logger.debug("Gem Ore vein does not meet generate probability.");
+//        Treasure.logger.debug("gem generator -> {}", context.gen.getClass().getSimpleName());
+//        double p = RandomHelper.randomDouble(random, 0, 100);
+		if (!RandomHelper.checkProbability(random, context.prob)) {
+//        if (p > context.prob) {
+//			 Treasure.logger.debug("Gem Ore vein does not meet generate probability -> {}", p);
 			return;
 		}
 
-		for (int veinIndex = 0; veinIndex < veinsPerChunk; veinIndex++) {
+		for (int veinIndex = 0; veinIndex < context.veinsPerChunk; veinIndex++) {
 			xSpawn = xSpawn + random.nextInt(16);
-			int ySpawn = random.nextInt(maxY) + minY;
+			int ySpawn = random.nextInt(context.maxY) + context.minY;
 			zSpawn = zSpawn + random.nextInt(16);
 
-			gen.generate(world, random, new BlockPos(xSpawn, ySpawn, zSpawn));
+			context.gen.generate(world, random, new BlockPos(xSpawn, ySpawn, zSpawn));
 		}
 		// reset count
 		chunksSinceLastOre = 0;
@@ -261,5 +282,20 @@ public class GemOreWorldGenerator implements ITreasureWorldGenerator {
 				return false;
 			}
 		}
-	}
+    }
+    
+    class GemGenerationContext {
+        double prob = 0d;
+		int veinsPerChunk = 0;
+		int maxY, minY = 0;
+        WorldGenMinable gen = null;
+ 
+        public GemGenerationContext(WorldGenMinable gen, double prob, int veinsPerChunk, int minY, int maxY) {
+            this.gen = gen;
+            this.prob = prob;
+            this.veinsPerChunk = veinsPerChunk;
+            this.minY = minY;
+            this.maxY = maxY;
+        }
+    }
 }
