@@ -33,6 +33,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.CrystalSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
@@ -115,6 +116,7 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 			chestCollectionGeneratorsMap.put(EPIC, new RandomWeightedCollection<>());
 			chestCollectionGeneratorsMap.get(EPIC).add(85, new EpicChestGenerator());
 			chestCollectionGeneratorsMap.get(EPIC).add(15, new CauldronChestGenerator());
+			chestCollectionGeneratorsMap.get(EPIC).add(15, new CrystalSkullChestGenerator());
 		}		
 	}
 

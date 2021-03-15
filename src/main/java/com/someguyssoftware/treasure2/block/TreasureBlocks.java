@@ -538,6 +538,7 @@ public class TreasureBlocks {
 					PAINTING_BLOCKS_DIRT, PAINTING_BLOCKS_LAVA, PAINTING_BLOCKS_SAND, PAINTING_BLOCKS_WATER,
                     PAINTING_BLOCKS_WOOD,
                     AMETHYST_ORE,
+                    ONYX_ORE,
                     SAPPHIRE_ORE,
                     RUBY_ORE, 
 					FALLING_GRASS,

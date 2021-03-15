@@ -68,26 +68,28 @@ public class TreasureItems {
 	public static CharmedCoinItem MIRTHAS_TORCH;
 
 	// adornments
-    public static Item SILVER_RING; // (silver)
-    public static Item SILVER_SIGNET_RING;
-    public static Item SILVER_NECKLACE;
-    public static Item AMETHYST_SILVER_RING;
+    public static Item SILVER_RING;
+    public static Item SILVER_SIGNET_RING;    
+    public static Item AMETHYST_SILVER_RING;    
     public static Item ONYX_SILVER_SIGNET_RING;
-    public static Item ONYX_SILVER_AMULET;
-    public static Item SAPPHIRE_SILVER_AMULET;
-    public static Item ONYX_GOLD_RING;
+    public static Item CASTLE_RING;
+    
     public static Item GOLD_RING;
-    public static Item GOLD_NECKLACE;
+    public static Item ONYX_GOLD_RING;    
     public static Item EMERALD_GOLD_RING;
     public static Item RUBY_GOLD_RING;
     public static Item DIAMOND_GOLD_RING;
     public static Item SAPPHIRE_GOLD_RING;
     
-    public static Item CASTLE_RING;
+    public static Item SILVER_NECKLACE;
+    public static Item SAPPHIRE_SILVER_AMULET;
+    
+    public static Item GOLD_NECKLACE;
     public static Item AMETHYST_GOLD_AMULET;
     public static Item ONYX_GOLD_AMULET;
-    public static Item RUBY_GOLD_AMULET;
-    public static Item AMULET;
+    public static Item RUBY_GOLD_AMULET;    
+    public static Item SAPPHIRE_GOLD_AMULET;
+    
     public static Item GOLD_BRACELET;
     public static Item POCKET_WATCH;
     
@@ -326,6 +328,9 @@ public class TreasureItems {
         // 2x max slots. level 4
         GOLD_NECKLACE = (Item) new Adornment(Treasure.MODID, "gold_necklace", AdornmentType.AMULET).setMaxSlots(2).setLevel(4);
 
+        // 2x max slot. 2x slots. 2x charms. level 13
+        SAPPHIRE_SILVER_AMULET = (Item) new Adornment(Treasure.MODID, "sapphire_silver_amulet", AdornmentType.AMULET).setMaxSlots(2).setLevel(13);
+        
         // 3x max slot. 1x slot. 1x charm. level 10
         AMETHYST_GOLD_AMULET = (Item) new Adornment(Treasure.MODID, "amethyst_gold_amulet", AdornmentType.AMULET).setMaxSlots(3).setLevel(10);
         // 3x max slot. 1x slot. 1x charm. level 11
@@ -333,7 +338,7 @@ public class TreasureItems {
         // 4x max slot. 2x slots. 2x charms. level 12
         RUBY_GOLD_AMULET = (Item) new Adornment(Treasure.MODID, "ruby_gold_amulet", AdornmentType.AMULET).setMaxSlots(4).setLevel(12);
         // 4x max slot. 2x slots. 2x charms. level 13
-        AMULET = (Item) new Adornment(Treasure.MODID, "sapphire_amulet", AdornmentType.AMULET).setMaxSlots(4).setLevel(13);
+        SAPPHIRE_GOLD_AMULET = (Item) new Adornment(Treasure.MODID, "sapphire_amulet", AdornmentType.AMULET).setMaxSlots(4).setLevel(13);
 
         // 4x max slot. 1x slots. 1x charms. level 10
         GOLD_BRACELET = (Item) new Adornment(Treasure.MODID, "gold_bracelet", AdornmentType.BRACELET).setMaxSlots(4).setLevel(10);
@@ -721,10 +726,11 @@ public class TreasureItems {
                     BRACELET_OF_WONDER,
                     SILVER_NECKLACE,
                     GOLD_NECKLACE,
+                    SAPPHIRE_SILVER_AMULET,
                     AMETHYST_GOLD_AMULET,
                     ONYX_GOLD_AMULET,
                     RUBY_GOLD_AMULET,
-                    AMULET,
+                    SAPPHIRE_GOLD_AMULET,
                     GOLD_BRACELET,
                     POCKET_WATCH,
 					WHITE_PEARL,
@@ -778,6 +784,7 @@ public class TreasureItems {
 					PAINTING_BLOCKS_WATER,
                     PAINTING_BLOCKS_WOOD,
                     AMETHYST,
+                    ONYX,
 					SAPPHIRE,
 					RUBY,
 					SKELETON

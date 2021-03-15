@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.item.ModItem;
@@ -36,6 +37,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootPool;
 
 /**
@@ -134,8 +137,10 @@ public class CoinItem extends ModItem implements IWishable, IPouchable {
 	 * @param coords
 	 */
 	private void generateLootItem(World world, Random random, EntityItem entityItem, ICoords coords) {
+		ItemStack coinItem = entityItem.getItem();
+		NBTTagCompound nbt = coinItem.getTagCompound();
 		List<LootTableShell> lootTables = new ArrayList<>();
-
+		
 		// determine coin type
 		if (getCoin() == Coins.SILVER) {
 			lootTables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.UNCOMMON));
@@ -152,6 +157,24 @@ public class CoinItem extends ModItem implements IWishable, IPouchable {
 			stack = new ItemStack(Items.APPLE);
 		}
 		else {
+			// get the player if the coin was tossed
+			EntityPlayer player = null;
+			if (nbt != null && nbt.hasKey(DROPPED_BY_KEY)) {	
+				Treasure.logger.debug("dropped by key ->{}", nbt.getString(DROPPED_BY_KEY));
+				player = Optional.of(world.getPlayerEntityByUUID(UUID.fromString(nbt.getString(DROPPED_BY_KEY))))
+						.orElseGet(() -> {
+								Treasure.logger.debug("getting player by name");
+								return world.getPlayerEntityByName(nbt.getString(DROPPED_BY_KEY));
+							}
+						);
+
+				if (player != null && logger.isDebugEnabled()) {
+					logger.debug("coin dropped by player -> {}", player.getName());
+				}
+			}
+			// build the loot context
+			LootContext lootContext = getLootContext(world, player);
+			 
 			// select a table shell
 			LootTableShell tableShell = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
 			if (tableShell.getResourceLocation() == null) {
@@ -170,7 +193,7 @@ public class CoinItem extends ModItem implements IWishable, IPouchable {
 				LootPool lootPool = table.getPool(pool.getName());
 				
 				// geneate loot from pools
-				lootPool.generateLoot(itemStacks, random, Treasure.LOOT_TABLE_MASTER.getContext());
+				lootPool.generateLoot(itemStacks, random,  lootContext);
 			}
 			
 			// get effective rarity
@@ -183,18 +206,7 @@ public class CoinItem extends ModItem implements IWishable, IPouchable {
 			if (injectLootTableShells.isPresent()) {
 				logger.debug("coin: found injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
 				logger.debug("coin: size of injectable tables -> {}", injectLootTableShells.get().size());
-
-				// attempt to get the player who dropped the coin
-				ItemStack coinItem = entityItem.getItem();
-				NBTTagCompound nbt = coinItem.getTagCompound();
-				EntityPlayer player = null;
-				if (nbt != null && nbt.hasKey(DROPPED_BY_KEY)) {					
-					player = world.getPlayerEntityByName(nbt.getString(DROPPED_BY_KEY));
-					if (player != null && logger.isDebugEnabled()) {
-						logger.debug("coin dropped by player -> {}", player.getName());
-					}
-				}
-				itemStacks.addAll(getLootItems(world, random, injectLootTableShells.get(), getLootContext(world, player)));
+				itemStacks.addAll(getLootItems(world, random, injectLootTableShells.get(), lootContext));
 			}
 			
 			// select one item randomly

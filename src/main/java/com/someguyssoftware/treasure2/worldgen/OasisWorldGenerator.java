@@ -238,7 +238,7 @@ public class OasisWorldGenerator implements ITreasureWorldGenerator {
 		List<OasisInfo> oasisInfos = OasisRegistry.getInstance().getValues(dimensionID);
 
 		if (oasisInfos == null || oasisInfos.size() == 0) {
-			Treasure.logger.debug("Unable to locate the OasisConfig Registry or the Registry doesn't contain any values");
+			Treasure.logger.debug("Unable to locate the Oasis Registry or the Registry doesn't contain any values");
 			return false;
 		}
 		

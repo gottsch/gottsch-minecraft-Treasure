@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "group": "Treasure2",
   "pattern": [
-	" NT",
+	" RT",
 	" D ",
 	" G "
   ],
@@ -11,7 +11,7 @@
 		"item": "treasure2:treasure_tool"
 	},
 	"N": {
-		"item": "treasure2:gold_necklace"
+		"item": "treasure2:gold_ring"
 	},
 	"D": {
 		"item": "minecraft:glowstone_dust"
@@ -21,7 +21,7 @@
 	}
   },
   "result": {
-    "item": "treasure2:onyx_gold_amulet",
+    "item": "treasure2:onyx_gold_ring",
     "count": 1
   }
 }

@@ -142,10 +142,11 @@ public class TreasureModels {
         registerItemModel(TreasureItems.ANGELS_RING);
         registerItemModel(TreasureItems.SILVER_NECKLACE);
         registerItemModel(TreasureItems.GOLD_NECKLACE);
+        registerItemModel(TreasureItems.SAPPHIRE_SILVER_AMULET);
         registerItemModel(TreasureItems.AMETHYST_GOLD_AMULET);
         registerItemModel(TreasureItems.ONYX_GOLD_AMULET);
         registerItemModel(TreasureItems.RUBY_GOLD_AMULET);
-        registerItemModel(TreasureItems.AMULET);
+        registerItemModel(TreasureItems.SAPPHIRE_GOLD_AMULET);
         registerItemModel(TreasureItems.GOLD_BRACELET);
         registerItemModel(TreasureItems.POCKET_WATCH);
 
