@@ -18,8 +18,11 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BellAttachment;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -37,25 +40,16 @@ public class SpanishMossBlock extends BushBlock implements ITreasureBlock {
 	 * 
 	 */
 	public SpanishMossBlock(String modID, String name, Block.Properties properties) {
-		// NOTE it is wood so I didn't have to update GottschCore.get..SurfaceCoods() to check for PLANTS.
-		super(properties.hardnessAndResistance(0.6F).doesNotBlockMovement().sound(SoundType.PLANT));
+		super(properties.strength(0.6F).noCollission().instabreak().sound(SoundType.WET_GRASS));
 		setRegistryName(modID, name);
-		this.setDefaultState(this.stateContainer.getBaseState().with(ACTIVATED, Boolean.valueOf(false)));
-	}
-
-	/**
-	 * 
-	 */
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
-		return false;
+		this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVATED, Boolean.valueOf(false)));
 	}
 	
 	/**
 	 * 
 	 */
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(ACTIVATED);
 	}
 
@@ -75,7 +69,7 @@ public class SpanishMossBlock extends BushBlock implements ITreasureBlock {
 		//			return;
 		//		}
 
-		if (!state.get(ACTIVATED)) {
+		if (!state.getValue(ACTIVATED)) {
 			return;
 		}
 
@@ -123,12 +117,17 @@ public class SpanishMossBlock extends BushBlock implements ITreasureBlock {
 	}
 
 	@Override
-	public boolean isReplaceable(BlockState blockState, Fluid fluid) {
+	public boolean isPathfindable(BlockState blockState, IBlockReader reader, BlockPos blockPos, PathType pathType) {
+		return pathType == PathType.AIR && !this.hasCollision ? true : super.isPathfindable(blockState, reader, blockPos, pathType);
+	}
+	
+	@Override
+	public boolean canBeReplaced(BlockState state, Fluid fluid) {
 		return true;
 	}
-
+	
 	@Override
-	protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	protected boolean mayPlaceOn(BlockState p_200014_1_, IBlockReader p_200014_2_, BlockPos p_200014_3_) {
 		return true;
 	}
 }

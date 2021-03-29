@@ -2,14 +2,8 @@ package com.someguyssoftware.treasure2.block;
 
 import com.someguyssoftware.gottschcore.block.ModLogBlock;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.LogBlock;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
 
 /**
  * 
@@ -29,8 +23,8 @@ public class WitherLogBlock extends ModLogBlock implements ITreasureBlock {
 	 * @param properties
 	 */
 	public WitherLogBlock(String modID, String name,Properties properties) {
-		super(modID, name, MaterialColor.OBSIDIAN, properties);
-		this.setDefaultState(this.stateContainer.getBaseState().with(AXIS, Direction.Axis.Y));//.with(BARK, Bark.NORMAL));
+		super(modID, name, MaterialColor.WOOD, properties);
+		this.registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.Y));//.with(BARK, Bark.NORMAL));
 	}
 
 	/**

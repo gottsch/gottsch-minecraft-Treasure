@@ -24,7 +24,7 @@ public class WitherBranchBlock extends FacingBlock implements ITreasureBlock {
 	/*
 	 * An array of VoxelShape bounds for the bounding box
 	 */
-	private VoxelShape[] bounds = new VoxelShape[4];
+	private VoxelShape[] shapes = new VoxelShape[4];
 	
 	/**
 	 * 
@@ -33,13 +33,13 @@ public class WitherBranchBlock extends FacingBlock implements ITreasureBlock {
 	 * @param material
 	 */
 	public WitherBranchBlock(String modID, String name, Block.Properties properties) {
-		super(modID, name, properties.sound(SoundType.WOOD).hardnessAndResistance(3.0F));
-//		setBounds(new VoxelShape[] {
-//				Block.makeCuboidShape(4, 0, 0, 12, 8, 16),	// S
-//				Block.makeCuboidShape(0, 0, 4, 16, 8, 12),	// W
-//				Block.makeCuboidShape(4, 0, 0, 12, 8, 16),	// N
-//				Block.makeCuboidShape(0, 0, 4, 16, 8, 12),	// E
-//		});
+		super(modID, name, properties.sound(SoundType.WOOD).strength(3.0F));
+		setShapes(new VoxelShape[] {
+				Block.box(4, 0, 0, 12, 8, 16),	// S
+				Block.box(0, 0, 4, 16, 8, 12),	// W
+				Block.box(4, 0, 0, 12, 8, 16),	// N
+				Block.box(0, 0, 4, 16, 8, 12)	// E
+		});
 	}
 	
 	/**
@@ -47,37 +47,37 @@ public class WitherBranchBlock extends FacingBlock implements ITreasureBlock {
 	 */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch(state.get(FACING)) {
+		switch(state.getValue(FACING)) {
 		default:
 		case NORTH:
-			return bounds[0];
+			return shapes[0];
 		case EAST:
-			return bounds[1];
+			return shapes[1];
 		case SOUTH:
-			return bounds[2];
+			return shapes[2];
 		case WEST:
-			return bounds[3];
+			return shapes[3];
 		}
 	}
 	
 	/**
 	 * 
 	 */
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
-		return false;
-	}
+//	@Override
+//	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
+//		return false;
+//	}
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public VoxelShape[] getBounds() {
-		return bounds;
+	public VoxelShape[] getShapes() {
+		return shapes;
 	}
 
-	public WitherBranchBlock setBounds(VoxelShape[] bounds) {
-		this.bounds = bounds;
+	public WitherBranchBlock setShapes(VoxelShape[] shapes) {
+		this.shapes = shapes;
 		return this;
 	}
 

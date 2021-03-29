@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashBasedTable;
@@ -26,7 +25,6 @@ import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.AirPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.BigBottomMobTrapPitGenerator;
@@ -44,11 +42,6 @@ import com.someguyssoftware.treasure2.generator.well.WellGenerator;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * @author Mark Gottschling on Aug 28, 2020

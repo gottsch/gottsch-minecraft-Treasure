@@ -32,9 +32,9 @@ public class WitherRootBlock extends FacingBlock implements ITreasureBlock {
 	public static final BooleanProperty ACTIVATED = BooleanProperty.create("activated");
 	
 	/*
-	 * An array of VoxelShape bounds for the bounding box
+	 * An array of VoxelShape shapes for the bounding box
 	 */
-	private VoxelShape[] bounds = new VoxelShape[4];
+	private VoxelShape[] shapes = new VoxelShape[4];
 	
 	/**
 	 * 
@@ -43,15 +43,22 @@ public class WitherRootBlock extends FacingBlock implements ITreasureBlock {
 	 * @param material
 	 */
 	public WitherRootBlock(String modID, String name, Block.Properties properties) {
-		super(modID, name, properties.sound(SoundType.WOOD).hardnessAndResistance(3.0F));
-		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(ACTIVATED, Boolean.valueOf(false)));
+		super(modID, name, properties.sound(SoundType.WOOD).strength(3.0F));
+		registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(ACTIVATED, Boolean.valueOf(false)));
+		setShapes(
+			new VoxelShape[] {
+					Block.box(3, 0, 0, 13, 4, 15),	// S
+					Block.box(0, 0, 4, 15, 4, 12),	// W
+					Block.box(3, 0, 0, 13, 4, 15),	// N
+					Block.box(0, 0, 4, 15, 4, 12)	// E
+			});
 	}
 	
 	/**
 	 * 
 	 */
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(ACTIVATED, FACING);
 	}
 	
@@ -100,37 +107,37 @@ public class WitherRootBlock extends FacingBlock implements ITreasureBlock {
 	 */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch(state.get(FACING)) {
+		switch(state.getValue(FACING)) {
 		default:
 		case NORTH:
-			return bounds[0];
+			return shapes[0];
 		case EAST:
-			return bounds[1];
+			return shapes[1];
 		case SOUTH:
-			return bounds[2];
+			return shapes[2];
 		case WEST:
-			return bounds[3];
+			return shapes[3];
 		}
 	}
 	
 	/**
 	 * 
 	 */
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
-		return false;
-	}
+//	@Override
+//	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
+//		return false;
+//	}
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public VoxelShape[] getBounds() {
-		return bounds;
+	public VoxelShape[] getShapes() {
+		return shapes;
 	}
 
-	public WitherRootBlock setBounds(VoxelShape[] bounds) {
-		this.bounds = bounds;
+	public WitherRootBlock setShapes(VoxelShape[] shapes) {
+		this.shapes = shapes;
 		return this;
 	}
 

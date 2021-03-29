@@ -5,6 +5,10 @@ package com.someguyssoftware.treasure2.block;
 
 import javax.annotation.Nullable;
 
+import com.someguyssoftware.gottschcore.spatial.Coords;
+import com.someguyssoftware.gottschcore.spatial.ICoords;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -40,9 +44,9 @@ public class SkeletonBlock extends GravestoneBlock {
 	 */
 	public SkeletonBlock(String modID, String name, Block.Properties properties) {
 		super(modID, name, properties);
-		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(PART, SkeletonBlock.EnumPartType.BOTTOM));
+		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(PART, SkeletonBlock.EnumPartType.BOTTOM));
 
-		VoxelShape shape = Block.makeCuboidShape(1, 0, 0, 15, 6, 16);
+		VoxelShape shape = Block.box(1, 0, 0, 15, 6, 16);
 		setBounds(
 				new VoxelShape[] {
 						shape, 	// N
@@ -56,7 +60,7 @@ public class SkeletonBlock extends GravestoneBlock {
 	 * 
 	 */
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(PART, FACING);
 	}
 
@@ -72,13 +76,13 @@ public class SkeletonBlock extends GravestoneBlock {
 	 * Called by ItemBlocks after a block is set in the world, to allow post-place logic
 	 * ie. after the bottom/feet has been placed
 	 */
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-		if (!worldIn.isRemote) {
-			BlockPos blockPos = pos.offset(state.get(FACING).getOpposite());
-			worldIn.setBlockState(blockPos, state.with(PART, SkeletonBlock.EnumPartType.TOP), 3);
-			worldIn.notifyNeighbors(pos, Blocks.AIR);
-			state.updateNeighbors(worldIn, pos, 3);
+	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+		super.setPlacedBy(worldIn, pos, state, placer, stack);
+		if (WorldInfo.isServerSide(worldIn)) {
+			BlockPos blockPos = pos.relative(state.getValue(FACING).getOpposite());
+			worldIn.setBlock(blockPos, state.setValue(PART, SkeletonBlock.EnumPartType.TOP), 3);
+			worldIn.blockUpdated(pos, Blocks.AIR);
+			state.updateNeighbourShapes(worldIn, pos, 3);
 		}
 	}
 
@@ -87,16 +91,18 @@ public class SkeletonBlock extends GravestoneBlock {
 	 * the player's tool can actually collect this block
 	 */
 	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-		Direction facing = (Direction) state.get(FACING);
-		if (state.get(PART) == SkeletonBlock.EnumPartType.BOTTOM) {
-			BlockPos blockPos = pos.offset(facing.getOpposite());
+		Direction facing = (Direction) state.getValue(FACING);
+		if (state.getValue(PART) == SkeletonBlock.EnumPartType.BOTTOM) {
+			ICoords coords = new Coords(pos);
+			BlockPos blockPos = coords.add(facing.getOpposite(), 1).toPos();
+//			BlockPos blockPos = pos.relative(facing.getOpposite());
 
 			if (worldIn.getBlockState(blockPos).getBlock() == this) {
 				worldIn.destroyBlock(blockPos, false);
 			}
 		}
 		else {
-			BlockPos blockPos = pos.offset(facing);
+			BlockPos blockPos = pos.relative(facing);
 			if (worldIn.getBlockState(blockPos).getBlock() == this) {
 				worldIn.destroyBlock(blockPos, false);
 			}
@@ -126,6 +132,11 @@ public class SkeletonBlock extends GravestoneBlock {
 		}
 
 		public String getName() {
+			return this.name;
+		}
+
+		@Override
+		public String getSerializedName() {
 			return this.name;
 		}
 	}

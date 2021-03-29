@@ -35,7 +35,7 @@ import net.minecraftforge.fml.loading.FMLPaths;
  *
  */
 @Mod(value = Treasure.MODID)
-@ModInfo(modid = Treasure.MODID, name = Treasure.NAME, version = Treasure.VERSION, minecraftVersion = "1.15.2", forgeVersion = "31.2.0", updateJsonUrl = Treasure.UPDATE_JSON_URL)
+@ModInfo(modid = Treasure.MODID, name = Treasure.NAME, version = Treasure.VERSION, minecraftVersion = "1.16.5", forgeVersion = "36.1.0", updateJsonUrl = Treasure.UPDATE_JSON_URL)
 
 @Credits(values = { "Treasure was first developed by Mark Gottschling on Aug 27, 2014.",
 		"Treasure2 was first developed by Mark Gottschling on Jan 2018.",
@@ -52,7 +52,7 @@ public class Treasure implements IMod {
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
 	protected static final String VERSION = "1.0.0";
-	protected static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.15.2-master/update.json";
+	protected static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.16.5-master/update.json";
 
 	public static Treasure instance;
 	private static TreasureConfig config;

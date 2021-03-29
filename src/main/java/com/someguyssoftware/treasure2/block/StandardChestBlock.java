@@ -3,9 +3,12 @@
  */
 package com.someguyssoftware.treasure2.block;
 
+import java.util.function.Consumer;
+
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -30,7 +33,7 @@ public class StandardChestBlock extends AbstractChestBlock<AbstractTreasureChest
 	 */
 	public StandardChestBlock(String modID, String name, Class<? extends AbstractTreasureChestTileEntity> tileEntity,
 			TreasureChestType type, Rarity rarity) {
-		this(modID, name, tileEntity, type, rarity, Block.Properties.create(Material.WOOD));
+		this(modID, name, tileEntity, type, rarity, Block.Properties.of(Material.WOOD));
 	}
 
 	/**

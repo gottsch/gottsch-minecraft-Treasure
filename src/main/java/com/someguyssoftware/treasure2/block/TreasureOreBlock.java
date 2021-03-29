@@ -25,12 +25,12 @@ public class TreasureOreBlock extends ModBlock implements ITreasureBlock {
 	public TreasureOreBlock(String modID, String name, Block.Properties properties) {
 		super(modID, name, properties.sound(SoundType.STONE));
 	}
-    
-	/**
-	 * 
-	 */
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
-		return false;
-	}
+//    
+//	/**
+//	 * 
+//	 */
+//	@Override
+//	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
+//		return false;
+//	}
 }

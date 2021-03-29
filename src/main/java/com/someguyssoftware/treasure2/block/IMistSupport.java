@@ -31,7 +31,7 @@ public interface IMistSupport {
 	default public boolean checkTorchPrevention(World world, Random random, int x, int y, int z) {
 		int numberOfTorches = 0;
 		// if all the blocks in the immediate area are loaded
-		if (world.isAreaLoaded(new BlockPos(x - 3, y - 3, z - 3), new BlockPos(x + 3, y + 3, z + 3))) {
+		if (world.hasChunksAt(new BlockPos(x - 3, y - 3, z - 3), new BlockPos(x + 3, y + 3, z + 3))) {
 			// use a MutatableBlockPos instead of Cube\Coords or BlockPos to say the
 			// recreation of many objects
 			BlockPos.Mutable mbp = new BlockPos.Mutable();
@@ -45,7 +45,7 @@ public interface IMistSupport {
 				for (int y1 = -3; y1 <= 3; ++y1) {
 					for (int z1 = -3; z1 <= 3; ++z1) {
 						// that just checks a value.
-						BlockState inspectBlockState = world.getBlockState(mbp.setPos(x + x1, y + y1, z + z1));
+						BlockState inspectBlockState = world.getBlockState(mbp.set(x + x1, y + y1, z + z1));
 						Block inspectBlock = inspectBlockState.getBlock();
 
 						// if the block is a torch, then destroy the fog and return

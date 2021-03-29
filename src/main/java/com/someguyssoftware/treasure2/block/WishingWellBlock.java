@@ -23,7 +23,7 @@ public class WishingWellBlock extends ModBlock implements IWishingWellBlock {
 	// logger
 	public static Logger logger = LogManager.getLogger(WishingWellBlock.class);
     
-    VoxelShape shape = Block.makeCuboidShape(0, 0, 0, 16, 16, 16);
+    VoxelShape shape = Block.box(0, 0, 0, 16, 16, 16);
 
 	/**
 	 * 

@@ -82,9 +82,8 @@ public class KeyItem extends ModItem {
 	public KeyItem(String modID, String name, Item.Properties properties) {
 		super(modID, name, 
 				properties
-				.group(TreasureItemGroups.MOD_ITEM_GROUP)
-				//				.maxStackSize(1) // can't have damage AND stacksize.
-				.maxDamage(DEFAULT_MAX_USES));
+				.tab(TreasureItemGroups.MOD_ITEM_GROUP)
+				.defaultDurability(DEFAULT_MAX_USES));
 
 		setCategory(Category.ELEMENTAL);
 		setRarity(Rarity.COMMON);
@@ -106,8 +105,8 @@ public class KeyItem extends ModItem {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
 		tooltip.add(new TranslationTextComponent("tooltip.label.rarity", TextFormatting.DARK_BLUE + getRarity().toString()));
 		tooltip.add(new TranslationTextComponent("tooltip.label.category", TextFormatting.GOLD + getCategory().toString()));

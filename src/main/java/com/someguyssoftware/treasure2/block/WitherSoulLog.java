@@ -55,10 +55,10 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 	 */
 	public WitherSoulLog(String modID, String name, Block.Properties properties) {
 		super(modID, name, properties);
-		setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(APPEARANCE, Appearance.NONE));
+		registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(APPEARANCE, Appearance.NONE));
 		
 		// set the default bounds/shape (full block)
-		VoxelShape shape = Block.makeCuboidShape(0, 0, 0, 16, 16, 16);
+		VoxelShape shape = Block.box(0, 0, 0, 16, 16, 16);
 		setBounds(
 				new VoxelShape[] {
 						shape, 	// N
@@ -69,7 +69,7 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader worldIn) {
+	public TileEntity newBlockEntity(IBlockReader world) {
 		return new MistEmitterTileEntity(TreasureTileEntities.MIST_EMITTER_TILE_ENTITY_TYPE);		
 	}
 
@@ -77,16 +77,16 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 	 * 
 	 */
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(APPEARANCE, FACING);
 	}
-	
+
 	/**
 	 * 
 	 */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch(state.get(FACING)) {
+		switch(state.getValue(FACING)) {
 		default:
 		case NORTH:
 			return bounds[0];
@@ -101,18 +101,17 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 	
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockState blockState = this.getDefaultState().with(FACING,
-				context.getPlacementHorizontalFacing().getOpposite());
+		BlockState blockState = this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
 		return blockState;
 	}
 	
 	/**
 	 * 
 	 */
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
-		return false;
-	}
+//	@Override
+//	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
+//		return false;
+//	}
 	
 	/**
 	 * NOTE randomDisplayTick is on the client side only. The server is not keeping
@@ -215,6 +214,11 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 		 */
 		public int getValue() {
 			return value;
+		}
+
+		@Override
+		public String getSerializedName() {
+			return name;
 		}
 	}
 	
