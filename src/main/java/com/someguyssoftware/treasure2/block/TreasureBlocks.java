@@ -152,48 +152,48 @@ public class TreasureBlocks {
 			VoxelShape vanillaChestShape = Block.box(1, 0, 1, 15, 14, 15);
 			VoxelShape[] standardChestBounds = new VoxelShape[] {vanillaChestShape, vanillaChestShape, vanillaChestShape, vanillaChestShape};
 			
-			// banded chest bounds
+			// banded chest shapes
 			VoxelShape[] bandedBounds = new VoxelShape[4];
 			bandedBounds[0] = Block.box(1.5, 0, 2, 14, 12.5, 14);
 			bandedBounds[1] = Block.box(2, 0, 1.5, 14, 14, 12.5);
 			bandedBounds[2] = bandedBounds[0];
 			bandedBounds[3] = bandedBounds[1];
 			
-			// safe chest bounds
+			// safe chest shapes
 			VoxelShape[] safeBounds = new VoxelShape[4];
 			safeBounds[0] = Block.box(2, 0, 2, 14, 13, 14);
 			safeBounds[1] = safeBounds[0];
 			safeBounds[2] = safeBounds[0];
 			safeBounds[3] = safeBounds[0];
 
-			// strongbox bounds
+			// strongbox shapes
 			VoxelShape[] strongboxBounds = new VoxelShape[4];
 			strongboxBounds[0] = Block.box(3, 0, 4, 13, 7.5, 12); // S
 			strongboxBounds[1] = Block.box(4, 0, 3, 12, 7.5, 13); // W
 			strongboxBounds[2] = Block.box(3, 0, 4, 13, 7.5, 12); // N
 			strongboxBounds[3] = Block.box(4, 0, 3, 12, 7.5, 13); // E
 
-			// compressor chest bounds
+			// compressor chest shapes
 			VoxelShape[] compressorChestBounds = new VoxelShape[4];
 			compressorChestBounds[0] = Block.box(4.5, 0, 4.5, 11.5, 7, 11.5); // S
 			compressorChestBounds[1] = compressorChestBounds[0]; // W
 			compressorChestBounds[2] = compressorChestBounds[0]; // N
 			compressorChestBounds[3] = compressorChestBounds[0]; // E
 
-			// skull chest bounds
+			// skull chest shapes
 			VoxelShape[] skullChestBounds = new VoxelShape[4];
 			skullChestBounds[0] = Block.box(4, 0, 4, 12, 9.092, 12); // S
 			skullChestBounds[1] = skullChestBounds[0]; // W
 			skullChestBounds[2] = skullChestBounds[0]; // N
 			skullChestBounds[3] = skullChestBounds[0]; // E
 
-			// spider chest bounds
+			// spider chest shapes
 			VoxelShape spiderChestShape = Block.box(1, 0, 0, 15, 16, 16);
 			VoxelShape[] spiderChestBounds = new VoxelShape[] {
 					spiderChestShape, spiderChestShape, spiderChestShape, spiderChestShape
 					};
 
-			// viking chest bounds
+			// viking chest shapes
 			VoxelShape[] vikingChestBounds = new VoxelShape[] {
 					Block.box(1, 0, 3, 15, 15, 13), // S
 					Block.box(3, 0, 1, 13, 15, 15), // W
@@ -201,14 +201,14 @@ public class TreasureBlocks {
 					Block.box(3, 0, 1, 13, 15, 15)
 			};
 			
-			// wither chest bounds
+			// wither chest shapes
 			VoxelShape[] witherChestBounds = new VoxelShape[4];
 			witherChestBounds[0] = Block.box(1, 0, 1, 15, 16, 15);
 			witherChestBounds[1] = witherChestBounds[0]; // W
 			witherChestBounds[2] = witherChestBounds[0]; // N
 			witherChestBounds[3] = witherChestBounds[0]; // E
 
-			// wither branch bounds
+			// wither branch shapes
 //			VoxelShape[] witherBranchBounds = new VoxelShape[] {
 //					Block.box(4, 0, 0, 12, 8, 16),	// S
 //					Block.box(0, 0, 4, 16, 8, 12),	// W
@@ -216,7 +216,7 @@ public class TreasureBlocks {
 //					Block.box(0, 0, 4, 16, 8, 12),	// E
 //			};
 			
-			// wither root bounds
+			// wither root shapes
 //			VoxelShape[] witherRootBounds = new VoxelShape[] {
 //					Block.box(3, 0, 0, 13, 4, 15),	// S
 //					Block.box(0, 0, 4, 15, 4, 12),	// W
@@ -230,13 +230,13 @@ public class TreasureBlocks {
 	            cardboardBoxShape, cardboardBoxShape, cardboardBoxShape, cardboardBoxShape
 	        };
 
-	        // milk crate bounds
+	        // milk crate shapes
 	        VoxelShape milkCrateShape = Block.box(2.75, 0, 2.75, 13.25, 10.25, 13.25);
 	        VoxelShape[] milkCrateBounds = new VoxelShape[] {
 	            milkCrateShape, milkCrateShape, milkCrateShape, milkCrateShape
 	        };
 
-			// gravestone bounds
+			// gravestone shapes
 			VoxelShape[] gravestoneBounds = new VoxelShape[] {
 					Block.box(2, 0, 6, 14, 12, 10.8),	// S
 					Block.box(6, 0, 2, 10.8, 12, 14),	// W

@@ -13,6 +13,7 @@ import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -48,7 +49,7 @@ public class StandardChestBlock extends AbstractChestBlock<AbstractTreasureChest
 			TreasureChestType type, Rarity rarity, Block.Properties properties) {
 		super(modID, name, tileEntity, type, rarity, properties);
 	}
-
+	
 	/**
 	 * Handled by breakBlock()
 	 */

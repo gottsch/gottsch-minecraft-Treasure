@@ -17,9 +17,9 @@ import net.minecraft.world.IBlockReader;
  */
 public class WitherBrokenLogBlock extends FacingBlock implements ITreasureBlock {
 	/*
-	 * An array of VoxelShape bounds for the bounding box
+	 * An array of VoxelShape shapes for the bounding box
 	 */
-	VoxelShape[] bounds = new VoxelShape[4];
+	VoxelShape[] shapes = new VoxelShape[4];
 	
 	/**
 	 * 
@@ -27,14 +27,14 @@ public class WitherBrokenLogBlock extends FacingBlock implements ITreasureBlock 
 	 * @param name
 	 */
 	public WitherBrokenLogBlock(String modID, String name, Block.Properties properties) {
-		super(modID, name, properties.hardnessAndResistance(3.0F).sound(SoundType.WOOD));
+		super(modID, name, properties.strength(3.0F).sound(SoundType.WOOD));
 
-		setBounds(
+		setShapes(
 				new VoxelShape[] {
-					Block.makeCuboidShape(0, 0, 0, 1, 0.85, 1), 	// N
-					Block.makeCuboidShape(0, 0, 0, 1, 0.85, 1),  	// E
-					Block.makeCuboidShape(0, 0, 0, 1, 0.85, 1),  	// S
-					Block.makeCuboidShape(0, 0, 0, 1, 0.85, 1) 	// W)
+					Block.box(0, 0, 0, 1, 0.85, 1), 	// N
+					Block.box(0, 0, 0, 1, 0.85, 1),  	// E
+					Block.box(0, 0, 0, 1, 0.85, 1),  	// S
+					Block.box(0, 0, 0, 1, 0.85, 1) 	// W)
 				}
 			);
 	}
@@ -44,37 +44,37 @@ public class WitherBrokenLogBlock extends FacingBlock implements ITreasureBlock 
 	 */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch(state.get(FACING)) {
+		switch(state.getValue(FACING)) {
 		default:
 		case NORTH:
-			return bounds[0];
+			return shapes[0];
 		case EAST:
-			return bounds[1];
+			return shapes[1];
 		case SOUTH:
-			return bounds[2];
+			return shapes[2];
 		case WEST:
-			return bounds[3];
+			return shapes[3];
 		}
 	}
 	
 	/**
 	 * 
 	 */
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
-		return false;
-	}
+//	@Override
+//	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
+//		return false;
+//	}
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public VoxelShape[] getBounds() {
-		return bounds;
+	public VoxelShape[] getShapes() {
+		return shapes;
 	}
 
-	public WitherBrokenLogBlock setBounds(VoxelShape[] bounds) {
-		this.bounds = bounds;
+	public WitherBrokenLogBlock setShapes(VoxelShape[] shapes) {
+		this.shapes = shapes;
 		return this;
 	}
 }

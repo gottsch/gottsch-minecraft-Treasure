@@ -22,7 +22,7 @@ import net.minecraft.world.IBlockReader;
 public class WitherBranchBlock extends FacingBlock implements ITreasureBlock {
 
 	/*
-	 * An array of VoxelShape bounds for the bounding box
+	 * An array of VoxelShape shapes for the bounding box
 	 */
 	private VoxelShape[] shapes = new VoxelShape[4];
 	

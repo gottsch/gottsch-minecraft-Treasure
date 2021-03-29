@@ -17,6 +17,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -26,7 +27,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext.Builder;
 
 /**
  * Does NOT appear in any creative tab.
@@ -34,7 +34,7 @@ import net.minecraft.world.storage.loot.LootContext.Builder;
  *
  */
 public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy, ITreasureBlock {
-	protected static final VoxelShape AABB =  Block.makeCuboidShape(1, 0, 1, 15, 10, 15);
+	protected static final VoxelShape AABB =  Block.box(1, 0, 1, 15, 10, 15);
 	
 	/**
 	 * 
@@ -51,7 +51,7 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy
 	 */
 	@Override
 	public BlockPos getChestPos(BlockPos pos) {
-		return pos.down();
+		return pos.below();
 	}
 	
 	/**
@@ -74,25 +74,24 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy
 	 * 
 	 */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player,
-			Hand hand, BlockRayTraceResult hit) {
-Treasure.LOGGER.info("wither chest TOP activated");
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		Treasure.LOGGER.info("wither chest TOP activated");
 		// get the block at pos.down()
-		BlockState bottomState = world.getBlockState(pos.down());
-		return bottomState.getBlock().onBlockActivated(bottomState, world, pos.down(), player, hand, hit);
+		BlockState bottomState = world.getBlockState(pos.below());
+		return bottomState.getBlock().use(bottomState, world, pos.below(), player, hand, hit);
 	}
 	
 	/**
 	 * 
 	 */
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onPlace(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		Treasure.LOGGER.debug("Breaking Wither Chest Top block....!");
-		BlockPos downPos = pos.down();
+		BlockPos downPos = pos.below();
 		// destory placeholder above
 		Block downBlock = world.getBlockState(downPos).getBlock();
 		if (downBlock == TreasureBlocks.WITHER_CHEST) {
-			Block.replaceBlock(world.getBlockState(downPos), Blocks.AIR.getDefaultState(), world, downPos, 3);
+			Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), world, downPos, 3);
 		}
 	}
 	
@@ -127,7 +126,7 @@ Treasure.LOGGER.info("wither chest TOP activated");
 //	}
 
 	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder) {
+	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 		// if this is called somehow, return and empty list for the drops
         return Collections.emptyList();
 	}
@@ -143,16 +142,16 @@ Treasure.LOGGER.info("wither chest TOP activated");
 	/**
 	 * 
 	 */
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
-    	return false;
-    }
+//    @Override
+//    public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
+//    	return false;
+//    }
 
 	/**
 	 * Render using a TESR.
 	 */
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
+	public BlockRenderType getRenderShape(BlockState state) {
 		return BlockRenderType.INVISIBLE;
 	}
 }

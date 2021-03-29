@@ -23,7 +23,7 @@ public class DesertWishingWellBlock extends ModBlock implements IWishingWellBloc
 	// logger
 	public static Logger logger = LogManager.getLogger(DesertWishingWellBlock.class);
     
-    VoxelShape shape = Block.makeCuboidShape(0, 0, 0, 16, 16, 16);
+    VoxelShape shape = Block.box(0, 0, 0, 16, 16, 16);
 
 	/**
 	 * 

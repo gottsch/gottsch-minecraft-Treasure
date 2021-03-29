@@ -21,11 +21,11 @@ public class FallingRedSandBlock extends AbstractTreasureFallingBlock implements
 	 */
 	public FallingRedSandBlock(String modID, String name, Block.Properties properties) {
 		super(modID, name, properties);
-		setDefaultState(this.stateContainer.getBaseState().with(ACTIVATED, Boolean.valueOf(false)));
+		registerDefaultState(getStateDefinition().any().setValue(ACTIVATED, Boolean.valueOf(false)));
 	}
 	
 	@Override
-	public void onEndFalling(World worldIn, BlockPos pos, BlockState p_176502_3_, BlockState p_176502_4_) {
-		worldIn.setBlockState(pos, Blocks.RED_SAND.getDefaultState());
+	public void onEndFalling(World worldIn, BlockPos pos, BlockState state, BlockState state2) {
+		worldIn.setBlockAndUpdate(pos, Blocks.RED_SAND.defaultBlockState());
 	}
 }

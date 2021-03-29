@@ -145,18 +145,18 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public void tick() {
-		int i = this.pos.getX();
-		int j = this.pos.getY();
-		int k = this.pos.getZ();
+		int i = getBlockPos().getX();
+		int j = getBlockPos().getY();
+		int k = getBlockPos().getZ();
 		++this.ticksSinceSync;
 
 		// NOTE in 1.15.2 this block is replaced by calculatePlayersUsingSync()
-		if (WorldInfo.isServerSide(getWorld()) && this.numPlayersUsing != 0
+		if (WorldInfo.isServerSide(this.getLevel()) && this.numPlayersUsing != 0
 				&& (this.ticksSinceSync + i + j + k) % 200 == 0) {
 			this.numPlayersUsing = 0;
 			float f = 5.0F;
 
-			for (PlayerEntity player : getWorld().getEntitiesWithinAABB(PlayerEntity.class,
+			for (PlayerEntity player : getLevel().getEntitiesWithinAABB(PlayerEntity.class,
 					new AxisAlignedBB((double) ((float) i - 5.0F), (double) ((float) j - 5.0F),
 							(double) ((float) k - 5.0F), (double) ((float) (i + 1) + 5.0F),
 							(double) ((float) (j + 1) + 5.0F), (double) ((float) (k + 1) + 5.0F)))) {
@@ -173,7 +173,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		// TODO checkout the vanilla on angle update -- somehow the renderThread isn't getting updates to the TE.
 		this.prevLidAngle = this.lidAngle;
 		if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F) {
-			this.playSound(SoundEvents.BLOCK_CHEST_OPEN);
+			this.playSound(SoundEvents.CHEST_OPEN);
 		}
 
 		//				Treasure.LOGGER.info("test: numPlayers -> {}, previous angle -> {}, new angle -> {}", this.numPlayersUsing, this.prevLidAngle, this.lidAngle);
@@ -192,7 +192,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 
 			float f3 = 0.5F;
 			if (this.lidAngle < 0.5F && f2 >= 0.5F) {
-				this.playSound(SoundEvents.BLOCK_CHEST_CLOSE);
+				this.playSound(SoundEvents.CHEST_CLOSE);
 			}
 
 			if (this.lidAngle < 0.0F) {
@@ -202,19 +202,19 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	}
 
 	protected void playSound(SoundEvent soundIn) {
-		double d0 = (double)this.pos.getX() + 0.5D;
-		double d1 = (double)this.pos.getY() + 0.5D;
-		double d2 = (double)this.pos.getZ() + 0.5D;
-		this.world.playSound((PlayerEntity)null, d0, d1, d2, soundIn, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+		double d0 = (double)getBlockPos().getX() + 0.5D;
+		double d1 = (double)getBlockPos().getY() + 0.5D;
+		double d2 = (double)getBlockPos().getZ() + 0.5D;
+		this.getLevel().playSound((PlayerEntity)null, d0, d1, d2, soundIn, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
 	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public CompoundNBT write(CompoundNBT parentNBT) {
+	public CompoundNBT save(CompoundNBT parentNBT) {
 		try {
-			parentNBT = super.write(parentNBT);
+			parentNBT = super.save(parentNBT);
 
 			// TODO LockSlots don't have a Heading ???
 			// write lock states
@@ -269,7 +269,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				parentNBT.putString("CustomName", ITextComponent.Serializer.toJson(this.customName));
 			}
 			// write facing
-			parentNBT.putInt("facing", getFacing().getIndex());
+			parentNBT.putInt("facing", getFacing().get3DDataValue());
 			parentNBT.putBoolean("sealed", isSealed());
 			if (getLootTable() != null) {
 				parentNBT.putString("lootTable", getLootTable().toString());

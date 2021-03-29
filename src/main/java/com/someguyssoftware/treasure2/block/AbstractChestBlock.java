@@ -79,7 +79,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 	private Rarity rarity;
 
 	/*
-	 * An array of VoxelShape bounds for the bounding box
+	 * An array of VoxelShape shapes for the bounding box
 	 */
 	private VoxelShape[] bounds = new VoxelShape[4];
 
@@ -94,8 +94,8 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 		setChestType(type);
 		setRarity(rarity);
 
-		// set the default bounds/shape
-		VoxelShape shape = Block.makeCuboidShape(1, 0, 1, 15, 14, 15);
+		// set the default shapes/shape
+		VoxelShape shape = Block.box(1, 0, 1, 15, 14, 15);
 		setBounds(
 				new VoxelShape[] {
 						shape, 	// N
@@ -113,12 +113,12 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 		}
 
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see net.minecraft.block.ITileEntityProvider#createNewTileEntity(net.minecraft.world.World, int)
 	 */
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader worldIn) {
+	 public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		AbstractTreasureChestTileEntity chestTileEntity = null;
 		try {
 			chestTileEntity = (AbstractTreasureChestTileEntity) getTileEntityClass().newInstance();
@@ -143,7 +143,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
 
@@ -152,7 +152,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 	 */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch(state.get(FACING)) {
+		switch(state.getValue(FACING)) {
 		default:
 		case NORTH:
 			return bounds[0];
@@ -167,24 +167,24 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockState blockState = this.getDefaultState().with(FACING,
-				context.getPlacementHorizontalFacing().getOpposite());
+		BlockState blockState = this.defaultBlockState().setValue(FACING,
+				context.getHorizontalDirection().getOpposite());
 		return blockState;
 	}
 
 	/**
 	 * 
 	 */
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
-		return false;
-	}
+//	@Override
+//	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
+//		return false;
+//	}
 	
 	/**
 	 * Called just after the player places a block.
 	 */
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		Treasure.LOGGER.debug("Placing chest from item");
 
 		boolean shouldRotate = false;
@@ -194,17 +194,17 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 		Heading oldPersistedChestDirection = Heading.NORTH;
 
 		// face the block towards the player (there isn't really a front)
-		worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing().getOpposite()), 3);
-		TileEntity te = worldIn.getTileEntity(pos);
+		worldIn.setBlock(pos, state.setValue(FACING, placer.getDirection().getOpposite()), 3);
+		TileEntity te = worldIn.getBlockEntity(pos);
 		if (te != null && te instanceof AbstractTreasureChestTileEntity) {
 			// get the backing tile entity
 			tcte = (AbstractTreasureChestTileEntity) te;
 
 			// set the name of the chest
-			if (stack.hasDisplayName()) {
+			if (stack.hasCustomHoverName()) {
 				tcte.setCustomName(stack.getDisplayName());
 			}
-
+			
 			// read in nbt
 			if (stack.hasTag()) {
 				tcte.readFromItemStackNBT(stack.getTag());
@@ -220,7 +220,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 			}
 
 			// get the direction the block is facing.
-			Heading direction = Heading.fromDirection(placer.getHorizontalFacing().getOpposite());
+			Heading direction = Heading.fromDirection(placer.getDirection().getOpposite());
 
 			// rotate the lock states
 			shouldUpdate = rotateLockStates(worldIn, pos, oldPersistedChestDirection.getRotation(direction)); // old ->
@@ -233,7 +233,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 						}
 
 			// update the TCTE facing
-			tcte.setFacing(placer.getHorizontalFacing().getOpposite().getIndex());
+			tcte.setFacing(placer.getDirection().getOpposite());
 		}
 		if ((forceUpdate || shouldUpdate) && tcte != null) {
 			// update the client
@@ -245,10 +245,10 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 	 * 
 	 */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player,
+	   public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player,
 			Hand handIn, BlockRayTraceResult hit) {
 
-		AbstractTreasureChestTileEntity tileEntity = (AbstractTreasureChestTileEntity) world.getTileEntity(pos);
+		AbstractTreasureChestTileEntity tileEntity = (AbstractTreasureChestTileEntity) world.getBlockEntity(pos);
 
 		// exit if on the client
 		if (WorldInfo.isClientSide(world)) {
@@ -270,17 +270,17 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 
 
 	@Override
-	public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state) {
+	public void destroy(IWorld worldIn, BlockPos pos, BlockState state) {
 		Treasure.LOGGER.info("block destroyed by player. should happen after block is broken/replaced");
-		super.onPlayerDestroy(worldIn, pos, state);
+		super.destroy(worldIn, pos, state);
 	}
 
 
 	@Override
-	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		Treasure.LOGGER.debug("Breaking block....!");
+	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		Treasure.LOGGER.debug("Removing block....!");
 
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
 		AbstractTreasureChestTileEntity te = null;
 		if (tileEntity instanceof AbstractTreasureChestTileEntity) {
 			te = (AbstractTreasureChestTileEntity)tileEntity;
@@ -292,14 +292,14 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 				/*
 				 * spawn inventory items
 				 */
-				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) te);
+				InventoryHelper.dropContents(worldIn, pos, (IInventory) te);
 
 				/*
 				 * spawn chest item
 				 */
-				ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
+				ItemStack chestItem = new ItemStack(Item.byBlock(this), 1);
 				Treasure.LOGGER.debug("Item being created from chest -> {}", chestItem.getItem().getRegistryName());
-				InventoryHelper.spawnItemStack(worldIn, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(),
+				InventoryHelper.dropItemStack(worldIn, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(),
 						chestItem);
 
 				/*
@@ -317,7 +317,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 				 */
 
 				if (WorldInfo.isServerSide(worldIn)) {
-					ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
+					ItemStack chestItem = new ItemStack(Item.byBlock(this), 1);
 
 					// give the chest a tag compound
 					//					Treasure.LOGGER.debug("[BreakingBlock]Saving chest items:");
@@ -326,11 +326,11 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 					nbt = te.write(nbt);
 					chestItem.setTag(nbt);
 
-					InventoryHelper.spawnItemStack(worldIn, (double) pos.getX(), (double) pos.getY(),
+					InventoryHelper.dropItemStack(worldIn, (double) pos.getX(), (double) pos.getY(),
 							(double) pos.getZ(), chestItem);
 
 					// TEST log all items in item
-					//					NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+					//					NonNullList<ItemStack> items = NonNullList.<ItemStack>setValueSize(27, ItemStack.EMPTY);
 					//					ItemStackHelper.loadAllItems(chestItem.getTagCompound(), items);
 					//					for (ItemStack stack : items) {
 					//						Treasure.LOGGER.debug("[BreakingBlock] item in chest item -> {}", stack.getDisplayName());
@@ -339,14 +339,14 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 			}
 
 			// remove the tile entity
-			worldIn.removeTileEntity(pos);
+			worldIn.removeBlockEntity(pos);
 		}
 		else {
 			// default to regular block break;
 			//			super.breakBlock(worldIn, pos, state);
 			//			worldIn.destroyBlock()
 			//			super.onBlockHarvested(worldIn, pos, state, player);
-			super.onReplaced(state, worldIn, pos, newState, isMoving);
+			super.onRemove(state, worldIn, pos, newState, isMoving);
 		}
 	}
 
@@ -355,10 +355,10 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 		return;
 	}
 
-	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-		return false;
-	}
+//	@Override
+//	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+//		return false;
+//	}
 	
 	/**
 	 * The type of render function called. MODEL for mixed tesr and static model, MODELBLOCK_ANIMATED for TESR-only,
@@ -393,7 +393,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 		//		Treasure.LOGGER.debug("Rotate to:" + rotate);
 
 		AbstractTreasureChestTileEntity tcte = null;
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getBlockEntity(pos);
 		if (te != null && te instanceof AbstractTreasureChestTileEntity) {
 			// get the backing tile entity
 			tcte = (AbstractTreasureChestTileEntity) te;
@@ -434,24 +434,24 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 	}
 
 	/**
-	 * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
+	 * Returns the blockstate setValue the given rotation from the passed blockstate. If inapplicable, returns the passed
 	 * blockstate.
-	 * @deprecated call via {@link IBlockState#withRotation(Rotation)} whenever possible. Implementing/overriding is
+	 * @deprecated call via {@link IBlockState#setValueRotation(Rotation)} whenever possible. Implementing/overriding is
 	 * fine.
 	 */
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	/**
-	 * Returns the blockstate with the given mirror of the passed blockstate. If inapplicable, returns the passed
+	 * Returns the blockstate setValue the given mirror of the passed blockstate. If inapplicable, returns the passed
 	 * blockstate.
-	 * @deprecated call via {@link IBlockState#withMirror(Mirror)} whenever possible. Implementing/overriding is fine.
+	 * @deprecated call via {@link IBlockState#setValueMirror(Mirror)} whenever possible. Implementing/overriding is fine.
 	 */
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+		return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
 	}
 
 	/**

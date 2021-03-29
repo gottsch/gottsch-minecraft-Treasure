@@ -3,36 +3,17 @@
  */
 package com.someguyssoftware.treasure2.block;
 
-import java.awt.Color;
-import java.util.List;
-import java.util.Random;
-
 import com.someguyssoftware.gottschcore.block.FacingBlock;
-import com.someguyssoftware.gottschcore.random.RandomHelper;
-import com.someguyssoftware.gottschcore.spatial.Coords;
-import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.particle.AbstractMistParticle;
-import com.someguyssoftware.treasure2.particle.FlameParticleData;
-import com.someguyssoftware.treasure2.particle.MistParticleData;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * 
@@ -42,7 +23,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMistSupport {
 
 	/*
-	 * An array of VoxelShape bounds for the bounding box
+	 * An array of VoxelShape shapes for the bounding box
 	 */
 	private VoxelShape[] bounds = new VoxelShape[4];
 	
@@ -55,8 +36,8 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 	public GravestoneBlock(String modID, String name, Block.Properties properties) {
 		super(modID, name, properties);
 		
-		// set the default bounds/shape (full block)
-		VoxelShape shape = Block.makeCuboidShape(0, 0, 0, 16, 16, 16);
+		// set the default shapes/shape (full block)
+		VoxelShape shape = Block.box(0, 0, 0, 16, 16, 16);
 		setBounds(
 				new VoxelShape[] {
 						shape, 	// N
@@ -71,7 +52,7 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 	 */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch(state.get(FACING)) {
+		switch(state.getValue(FACING)) {
 		default:
 		case NORTH:
 			return bounds[0];
@@ -86,18 +67,18 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 	
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockState blockState = this.getDefaultState().with(FACING,
-				context.getPlacementHorizontalFacing().getOpposite());
+		BlockState blockState = this.defaultBlockState().setValue(FACING,
+				context.getHorizontalDirection().getOpposite());
 		return blockState;
 	}
 	
 	/**
 	 * 
 	 */
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
-		return false;
-	}
+//	@Override
+//	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
+//		return false;
+//	}
 	
 	/**
 	 * NOTE animateTick is on the client side only. The server is not keeping
@@ -300,7 +281,7 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 	 */
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	/**
@@ -310,7 +291,7 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 	 */
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+		return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
 	}
 	
 	/**

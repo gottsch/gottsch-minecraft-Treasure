@@ -72,12 +72,8 @@ public class ProximityBlock extends ModBlock {
 //		Treasure.LOGGER.debug("created proximity te -> {}", proximityTileEntity.getClass().getSimpleName());
 		return (TileEntity) proximityTileEntity;
 	}
-
+	
 	@Override
-	public boolean hasTileEntity() {
-		return true;
-	}
-	 @Override
 	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}

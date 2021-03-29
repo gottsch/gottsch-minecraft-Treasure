@@ -50,7 +50,7 @@ public class LockSlot implements ILockSlot {
 	
 		/*
 		 *  NOTE this currently only works for a 1x1 standard cube size. See Treasure1710 for making generic
-		 *  method to calculate rotation position/bounds on multicube/irregular shaped blocks.
+		 *  method to calculate rotation position/shapes on multicube/irregular shaped blocks.
 		 */
 		// switch on the rotation
 		switch(r) {

@@ -43,7 +43,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistSupport, ITileEntityProvider {
 	public static final EnumProperty<Appearance> APPEARANCE = EnumProperty.create("appearance", Appearance.class);
 	/*
-	 * An array of VoxelShape bounds for the bounding box
+	 * An array of VoxelShape shapes for the bounding box
 	 */
 	private VoxelShape[] bounds = new VoxelShape[4];
 	
@@ -57,7 +57,7 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 		super(modID, name, properties);
 		registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(APPEARANCE, Appearance.NONE));
 		
-		// set the default bounds/shape (full block)
+		// set the default shapes/shape (full block)
 		VoxelShape shape = Block.box(0, 0, 0, 16, 16, 16);
 		setBounds(
 				new VoxelShape[] {

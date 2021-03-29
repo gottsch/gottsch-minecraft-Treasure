@@ -35,7 +35,7 @@ public class SkeletonBlock extends GravestoneBlock {
 
 	// TODO move to  TreasureBlock or something that requires a Shape
 	/*
-	 * An array of VoxelShape bounds for the bounding box
+	 * An array of VoxelShape shapes for the bounding box
 	 */
 	private VoxelShape[] bounds = new VoxelShape[4];
 
@@ -67,10 +67,10 @@ public class SkeletonBlock extends GravestoneBlock {
 	/**
 	 * 
 	 */
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
-		return false;
-	}
+//	@Override
+//	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
+//		return false;
+//	}
 
 	/**
 	 * Called by ItemBlocks after a block is set in the world, to allow post-place logic
