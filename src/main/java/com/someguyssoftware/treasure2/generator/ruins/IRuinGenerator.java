@@ -25,7 +25,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.DungeonHooks;
 
@@ -53,8 +52,8 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 	default public void buildOneTimeSpawners(IWorld world, Random random, List<BlockContext> proximityContexts, Quantity quantity, double d) {
 		for (BlockContext c : proximityContexts) {
 			Treasure.LOGGER.debug("placing proximity spawner at -> {}", c.getCoords().toShortString());
-	    	world.setBlockState(c.getCoords().toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState(), 3);
-	    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c.getCoords().toPos());
+	    	world.setBlock(c.getCoords().toPos(), TreasureBlocks.PROXIMITY_SPAWNER.defaultBlockState(), 3);
+	    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getBlockEntity(c.getCoords().toPos());
 	    	EntityType<?> r = DungeonHooks.getRandomDungeonMob(random);
 	    	Treasure.LOGGER.debug("using mob -> {} for poximity spawner.", r.toString());
 	    	te.setMobName(r.getRegistryName());
@@ -65,10 +64,10 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 
 	default public void buildVanillaSpawners(IWorld world, Random random, List<BlockContext> spawnerContexts) {
 		for (BlockContext c : spawnerContexts) {
-			world.setBlockState(c.getCoords().toPos(), Blocks.SPAWNER.getDefaultState(), 3);
-			MobSpawnerTileEntity te = (MobSpawnerTileEntity) world.getTileEntity(c.getCoords().toPos());
+			world.setBlock(c.getCoords().toPos(), Blocks.SPAWNER.defaultBlockState(), 3);
+			MobSpawnerTileEntity te = (MobSpawnerTileEntity) world.getBlockEntity(c.getCoords().toPos());
 			EntityType<?> r = DungeonHooks.getRandomDungeonMob(random);
-			te.getSpawnerBaseLogic().setEntityType(r);
+			te.getSpawner().setEntityId(r);
 		}
 	}
 }

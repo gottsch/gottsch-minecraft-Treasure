@@ -6,11 +6,12 @@ package com.someguyssoftware.treasure2.world.gen.feature;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Dynamic;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
@@ -35,6 +36,7 @@ import com.someguyssoftware.treasure2.generator.ruins.SurfaceRuinGenerator;
 import com.someguyssoftware.treasure2.persistence.TreasureGenerationSavedData;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
@@ -113,10 +115,13 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 
 		// 0. hard check against ocean biomes
 		Biome biome = world.getBiome(spawnCoords.toPos());
-		if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN ||
-				BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
-			return false;
-		}
+		Optional<RegistryKey<Biome>> biomeName = world.getBiomeName(spawnCoords.toPos());
+		Treasure.LOGGER.debug("biome -> {}, biomeName -> {}", biome.getRegistryName(), biomeName.get().toString());
+		
+//		if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN ||
+//				BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
+//			return false;
+//		}
 
 //		Treasure.LOGGER.debug("in biome -> {} @ {}", biome.getRegistryName(), pos);
 

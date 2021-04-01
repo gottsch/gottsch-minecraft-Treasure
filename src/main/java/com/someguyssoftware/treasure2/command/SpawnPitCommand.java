@@ -52,17 +52,17 @@ public class SpawnPitCommand {
 		dispatcher
 			.register(Commands.literal("t2-pit")
 					.requires(source -> {
-						return source.hasPermissionLevel(2);
+						return source.hasPermission(2);
 					})
 					.then(Commands.argument("pos", BlockPosArgument.blockPos())
 							.executes(source -> {
-								return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"), "", "");
+								return spawn(source.getSource(), BlockPosArgument.getOrLoadBlockPos(source, "pos"), "", "");
 							})
 							.then(Commands.literal(TYPE_ARG)
 									.then(Commands.argument(TYPE_ARG, StringArgumentType.string())
 									.suggests(SUGGEST_TYPE).executes(source -> {
 										return spawn(source.getSource(),
-												BlockPosArgument.getBlockPos(source, "pos"),
+												BlockPosArgument.getOrLoadBlockPos(source, "pos"),
 												"",
 												StringArgumentType.getString(source, TYPE_ARG));
 									})
@@ -71,7 +71,7 @@ public class SpawnPitCommand {
 											.suggests(SUGGEST_PIT).executes(source -> {
 												return spawn(
 														source.getSource(),
-														BlockPosArgument.getBlockPos(source, "pos"),
+														BlockPosArgument.getOrLoadBlockPos(source, "pos"),
 														StringArgumentType.getString(source, NAME_ARG),
 														StringArgumentType.getString(source, TYPE_ARG));
 											})
@@ -125,7 +125,7 @@ public class SpawnPitCommand {
 		Treasure.LOGGER.debug("executing spawn pit, pos -> {}, name -> {}, type -> {}", pos, pitName, type);
 		
 		try {
-			ServerWorld world = source.getWorld();
+			ServerWorld world = source.getLevel();
 			Random random = new Random();
 						
 			IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = null;							
@@ -155,7 +155,7 @@ public class SpawnPitCommand {
 			// get surface coords
 			ICoords coords = new Coords(pos);
 			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, 
-					new Coords(coords.getX(), WorldInfo.getHeightValue(world, coords), coords.getZ()));
+					new Coords(coords.getX(), WorldInfo.getHeight(world, coords), coords.getZ()));
 			
 			// TODO check if coords.Y >= surface.Y. if so, error out.
 			

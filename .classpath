@@ -4,6 +4,6 @@
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8/"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/forge-1.16.5-36.1.0"/>
-	<classpathentry kind="lib" path="F:/Development/minecraft/mods/GottschCore-mc1.16.5-f36.1.0-v1.0.0.jar" sourcepath="/GottschCore"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/GottschCore"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>

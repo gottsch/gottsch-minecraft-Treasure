@@ -14,6 +14,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 /**
@@ -35,38 +36,43 @@ public class WitherChestBlock extends StandardChestBlock {
 	}
 
 	@Override
-	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		super.onBlockAdded(state, worldIn, pos, oldState, isMoving);
+	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+		super.onPlace(state, worldIn, pos, oldState, isMoving);
 
 		// add the placeholder block above
-		worldIn.setBlockState(pos.up(), TreasureBlocks.WITHER_CHEST_TOP.getDefaultState(), 3);
+		worldIn.setBlock(pos.above(), TreasureBlocks.WITHER_CHEST_TOP.defaultBlockState(), 3);
 	}
 	
 	/**
 	 * 
 	 */
 	 @Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		super.setPlacedBy(worldIn, pos, state, placer, stack);
+		
+		// TODO Check if the wither chest (double high) can be placed at location.
+		// need to go above and check if == air
+		// however if fails will not return boolean... therefor the check must take place in the Item
+		
 		// add the placeholder block above
-		worldIn.setBlockState(pos.up(), TreasureBlocks.WITHER_CHEST_TOP.getDefaultState(), 3);
+		worldIn.setBlock(pos.above(), TreasureBlocks.WITHER_CHEST_TOP.defaultBlockState(), 3);
 	}
 	 
 	/**
 	 * Check if the wither chest (double high) can be placed at location.
 	 */
-	 @Override
-	public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
-		// TODO Auto-generated method stub
-		return super.isReplaceable(state, useContext);
-	}
+//	 @Override
+//	public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
+//		// TODO Auto-generated method stub
+//		return super.isReplaceable(state, useContext);
+//	}
 	 
 
 	 @Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
 
 		 // TODO hopefully this prevents block from being placed if it can't
-		BlockState blockState = context.getWorld().getBlockState(context.getPos().up());
+		BlockState blockState = context.getLevel().getBlockState(context.getClickedPos().above());
 		// TODO wrap these check in BlockContext
 		if (blockState.isAir() && blockState.getMaterial().isReplaceable()) {
 			return super.getStateForPlacement(context);
@@ -75,20 +81,15 @@ public class WitherChestBlock extends StandardChestBlock {
 	}
 	
 	@Override
-//	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-
+	public void destroy(IWorld world, BlockPos pos, BlockState state) {
 		// destory placeholder above
-		BlockPos upPos = pos.up();
+		BlockPos upPos = pos.above();
 		Block topBlock = world.getBlockState(upPos).getBlock();
 		if (topBlock == TreasureBlocks.WITHER_CHEST_TOP) {
-//			topBlock.onBlockDestroyedByPlayer(world, upPos, state);
-//			world.setBlockToAir(upPos);
-			Block.replaceBlock(world.getBlockState(upPos), Blocks.AIR.getDefaultState(), world, upPos, 3);
+			Block.updateOrDestroy(world.getBlockState(upPos), Blocks.AIR.defaultBlockState(), world, upPos, 3);
 		}
 		// break as normal
-//		super.breakBlock(world, pos, state);
-		super.onReplaced(state, world, pos, newState, isMoving);
+		super.destroy(world, pos, state);
 	}
 
 }

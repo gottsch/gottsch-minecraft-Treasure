@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 /**
@@ -67,7 +68,7 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 		BlockState state = tileEntity.getBlockState();
 		Direction facing = Direction.NORTH;
 		if (hasWorld) {
-			facing = state.get(StandardChestBlock.FACING);
+			facing = state.getValue(StandardChestBlock.FACING);
 		}
 
 		// push the current transformation matrix + normals matrix
@@ -76,7 +77,7 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 		// The model is defined centred on [0,0,0], so if we drew it at the current render origin, its centre would be
 		// at the corner of the block, sunk halfway into the ground and overlapping into the adjacent blocks.
 		// We want it to hover above the centre of the hopper base, so we need to translate up and across to the desired position
-		final Vec3d TRANSLATION_OFFSET = new Vec3d(0.5, 1.5, 0.5);
+		final Vector3d TRANSLATION_OFFSET = new Vector3d(0.5, 1.5, 0.5);
 		matrixStack.translate(TRANSLATION_OFFSET.x, TRANSLATION_OFFSET.y, TRANSLATION_OFFSET.z); // translate
 		matrixStack.scale(-1, -1, 1);
 		float f = getHorizontalAngle(facing);

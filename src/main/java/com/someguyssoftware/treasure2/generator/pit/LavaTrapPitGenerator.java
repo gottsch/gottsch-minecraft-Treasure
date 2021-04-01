@@ -14,10 +14,9 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.LogBlock;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 
 
 /**
@@ -129,15 +128,15 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	private ICoords build3WideLayer(IWorld world, Random random, ICoords coords, Block block) {
-        BlockState blockState = block.getDefaultState();
+        BlockState blockState = block.defaultBlockState();
         // randomly select the axis the logs are facing (0 = Z, 1 = X);
         if (block == DEFAULT_LOG) {
             int axis = random.nextInt(2);
             if (axis == 0) {
-                blockState.with(LogBlock.AXIS, Direction.Axis.Z);
+                blockState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
             }
             else {
-                blockState.with(LogBlock.AXIS,  Direction.Axis.X);
+                blockState.setValue(RotatedPillarBlock.AXIS,  Direction.Axis.X);
             }
         }
 

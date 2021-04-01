@@ -52,12 +52,12 @@ public class SpawnChestCommand {
 		COMPRESSOR(TreasureBlocks.COMPRESSOR_CHEST),
 		SPIDER(TreasureBlocks.SPIDER_CHEST), 
 		VIKING(TreasureBlocks.VIKING_CHEST),
-//		CARDBOARD_BOX(TreasureBlocks.CARDBOARD_BOX),
-//		MILK_CRATE(TreasureBlocks.MILK_CRATE),
+		CARDBOARD_BOX(TreasureBlocks.CARDBOARD_BOX),
+		MILK_CRATE(TreasureBlocks.MILK_CRATE),
 		WITHER(TreasureBlocks.WITHER_CHEST),
 		SKULL(TreasureBlocks.SKULL_CHEST),
 		GOLD_SKULL(TreasureBlocks.GOLD_SKULL_CHEST),
-//		CRYSTAL_SKULL_CHEST(TreasureBlocks.CRYSTAL_SKULL_CHEST),
+		CRYSTAL_SKULL_CHEST(TreasureBlocks.CRYSTAL_SKULL_CHEST),
 		CAULDRON(TreasureBlocks.CAULDRON_CHEST);
 		
 		Block chest;
@@ -80,15 +80,15 @@ public class SpawnChestCommand {
 		dispatcher
 			.register(Commands.literal("t2-chest")
 					.requires(source -> {
-						return source.hasPermissionLevel(2);
+						return source.hasPermission(2);
 					})
 					.then(Commands.argument("pos", BlockPosArgument.blockPos())
 							.executes(source -> {
-								return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"), "");
+								return spawn(source.getSource(), BlockPosArgument.getOrLoadBlockPos(source, "pos"), "");
 							})
 							.then(Commands.argument("name", StringArgumentType.string())
 									.suggests(SUGGEST_CHEST).executes(source -> {
-										return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"),
+										return spawn(source.getSource(), BlockPosArgument.getOrLoadBlockPos(source, "pos"),
 												StringArgumentType.getString(source, "name"));
 									})
 							)
@@ -106,7 +106,7 @@ public class SpawnChestCommand {
 	private static int spawn(CommandSource source, BlockPos pos, String name) {
 		Treasure.LOGGER.info("executing spawn chest, pos -> {}, name -> {}", pos, name);
 		try {
-			ServerWorld world = source.getWorld();
+			ServerWorld world = source.getLevel();
 			Random random = new Random();
 			Rarity rarity = Rarity.COMMON;
 			Optional<Chests> chests = Optional.empty();
@@ -155,10 +155,10 @@ public class SpawnChestCommand {
 				chestBlock = TreasureBlocks.WOOD_CHEST;
 			}
 			if (chestBlock != null) {
-				world.setBlockState(pos, chestBlock.getDefaultState());
+				world.setBlockAndUpdate(pos, chestBlock.defaultBlockState());
 			}
 			
-			AbstractTreasureChestTileEntity tileEntity = (AbstractTreasureChestTileEntity) world.getTileEntity(pos);
+			AbstractTreasureChestTileEntity tileEntity = (AbstractTreasureChestTileEntity) world.getBlockEntity(pos);
 			if (tileEntity != null) {
 				// add the loot table
 //				if (line.hasOption(LOCKED_ARG) || line.hasOption(SEALED_ARG)) {

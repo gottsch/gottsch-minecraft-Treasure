@@ -58,7 +58,7 @@ public abstract class AbstractChestContainer extends Container implements ITreas
 	public AbstractChestContainer(int windowID, ContainerType<?> containerType, PlayerInventory playerInventory, IInventory inventory) {
 		super(containerType, windowID);
 		this.contents = inventory;
-		Treasure.LOGGER.info("inventory slot count -> {}", inventory.getSizeInventory());
+		Treasure.LOGGER.info("inventory slot count -> {}", inventory.getContainerSize());
 		
 		// open the chest (rendering)
 //        inventory.openInventory(playerInventory.player);
@@ -88,9 +88,9 @@ public abstract class AbstractChestContainer extends Container implements ITreas
 	public void buildContainer(PlayerInventory playerInventory, IInventory inventory) {
 		Treasure.LOGGER.info("in buildContainer...");
 		// ensure the  container's slot count is the same size of the backing IInventory
-		if (getContainerInventorySlotCount()  != inventory.getSizeInventory()) {
+		if (getContainerInventorySlotCount()  != inventory.getContainerSize()) {
 			Treasure.LOGGER.error("Mismatched slot count in Container(" + getContainerInventorySlotCount()
-				  + ") and TileInventory (" + inventory.getSizeInventory()+")");
+				  + ") and TileInventory (" + inventory.getContainerSize()+")");
 		}
 		        
         buildHotbar(playerInventory);
@@ -154,7 +154,7 @@ public abstract class AbstractChestContainer extends Container implements ITreas
 	public ItemStack transferStackInSlot(PlayerEntity player, int sourceSlotIndex) {
 		Slot sourceSlot = (Slot)inventorySlots.get(sourceSlotIndex);
 		if (sourceSlot == null || !sourceSlot.getHasStack()) return ItemStack.EMPTY;
-		ItemStack sourceStack = sourceSlot.getStack();
+		ItemStack sourceStack = sourceSlot.getItem();
 		ItemStack copyOfSourceStack = sourceStack.copy();
 	 
 		// Check if the slot clicked is one of the vanilla container slots

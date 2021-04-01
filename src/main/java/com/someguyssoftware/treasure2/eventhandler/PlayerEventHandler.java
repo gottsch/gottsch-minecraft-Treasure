@@ -26,10 +26,10 @@ public class PlayerEventHandler {
 	 */
 	@SubscribeEvent
 	public void onTossCoinEvent(ItemTossEvent event) {
-		if (WorldInfo.isClientSide(event.getPlayer().world)) {
+		if (WorldInfo.isClientSide(event.getPlayer().level)) {
 			return;
 		}
-		Treasure.LOGGER.debug("is remote? -> {}", event.getPlayer().world.isRemote);
+		Treasure.LOGGER.debug("is remote? -> {}", !event.getPlayer().level.isClientSide);
 Treasure.LOGGER.debug("{} tossing coin -> {}", event.getPlayer().getName().getString(), event.getEntityItem().getItem().getDisplayName());
 		Item item = event.getEntityItem().getItem().getItem();
 		if (item instanceof /*IWishable*/CoinItem || item instanceof PearlItem) {

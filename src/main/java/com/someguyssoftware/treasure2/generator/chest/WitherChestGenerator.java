@@ -122,21 +122,21 @@ public class WitherChestGenerator implements IChestGenerator {
 	 * @return
 	 */
 	@Override
-	public TileEntity placeInWorld(IWorld world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
+	public TileEntity placeInWorld(World world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
 		GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
 		// ensure that chest is of type WITHER_CHEST
 		if (world.getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST) {
 			// add top placeholder
-			world.setBlockState(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.getDefaultState(), 3);
+			world.setBlock(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.defaultBlockState(), 3);
 		}
 		// get the backing tile entity of the chest 
-		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());
+		TileEntity te = (TileEntity) world.getBlockEntity(chestCoords.toPos());
 
 		// if tile entity failed to create, remove the chest
 		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
 			// remove chest
-			world.setBlockState(chestCoords.toPos(), Blocks.AIR.getDefaultState(), 3);
+			world.setBlock(chestCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);
 			Treasure.LOGGER.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}
@@ -144,22 +144,22 @@ public class WitherChestGenerator implements IChestGenerator {
 	}
 	
 	@Override
-	public TileEntity placeInWorld(IWorld world, Random random, ICoords chestCoords, AbstractChestBlock chest, BlockState state) {
+	public TileEntity placeInWorld(World world, Random random, ICoords chestCoords, AbstractChestBlock chest, BlockState state) {
 		// replace block @ coords
 		GenUtil.replaceBlockWithChest(world, random, chestCoords, chest, state);
 		
 		// ensure that chest is of type WITHER_CHEST
 		if (world.getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST) {
 			// add top placeholder
-			world.setBlockState(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.getDefaultState(), 3); // TODO this needs to rotate to state as well.
+			world.setBlock(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.defaultBlockState(), 3); // TODO this needs to rotate to state as well.
 		}
 		// get the backing tile entity of the chest 
-		TileEntity te = (TileEntity) world.getTileEntity(chestCoords.toPos());
+		TileEntity te = (TileEntity) world.getBlockEntity(chestCoords.toPos());
 
 		// if tile entity failed to create, remove the chest
 		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
 			// remove chest
-			world.setBlockState(chestCoords.toPos(), Blocks.AIR.getDefaultState(), 3);
+			world.setBlock(chestCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);
 			Treasure.LOGGER.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}

@@ -15,8 +15,6 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.LogBlock;
-import net.minecraft.util.Direction;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
@@ -79,18 +77,18 @@ public class CollapsingTrapPitGenerator extends AbstractPitGenerator {
 					if ((x == minCoordsX || x == maxCoordsX) && (z == minCoordsZ || z == maxCoordsZ)) {
 					}
 					else {
-						GenUtil.replaceWithBlockState(world, spawnCoords, TreasureBlocks.FALLING_GRASS.getDefaultState());	
+						GenUtil.replaceWithBlockState(world, spawnCoords, TreasureBlocks.FALLING_GRASS.defaultBlockState());	
 					}
 				}
 				else if (state.getBlock() == Blocks.SAND)  {
-					GenUtil.replaceWithBlockState(world, spawnCoords, TreasureBlocks.FALLING_SAND.getDefaultState());	
+					GenUtil.replaceWithBlockState(world, spawnCoords, TreasureBlocks.FALLING_SAND.defaultBlockState());	
 				}
 				else if (state.getBlock() == Blocks.RED_SAND) {
-					GenUtil.replaceWithBlockState(world, spawnCoords, TreasureBlocks.FALLING_RED_SAND.getDefaultState());
+					GenUtil.replaceWithBlockState(world, spawnCoords, TreasureBlocks.FALLING_RED_SAND.defaultBlockState());
 				}
 				spawnCoords = spawnCoords.down(1);
 				while (spawnCoords.getY() >= coords.getY()) {
-					GenUtil.replaceWithBlockState(world, spawnCoords,  Blocks.AIR.getDefaultState());
+					GenUtil.replaceWithBlockState(world, spawnCoords,  Blocks.AIR.defaultBlockState());
 					spawnCoords = spawnCoords.down(1);
 				}
 			}

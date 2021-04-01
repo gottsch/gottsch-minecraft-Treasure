@@ -94,7 +94,7 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 		placement.setRotation(rotation).setRandom(random);
 
 		// determine the actual spawn coords
-		ICoords templateSize = new Coords(holder.getTemplate().transformedSize(placement.getRotation()));
+		ICoords templateSize = new Coords(holder.getTemplate().getSize(placement.getRotation()));
 		ICoords actualSpawnCoords = generator.getTransformedSpawnCoords(originalSpawnCoords, templateSize, placement);
 
 		// NOTE these checks don't really belong in a generator as their task is to just generate.
@@ -163,7 +163,7 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 		}
 		if (decayRuleSet != null) {
 			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
-			decayProcessor.setBackFillBlockLayer1(Blocks.GRAVEL.getDefaultState());
+			decayProcessor.setBackFillBlockLayer1(Blocks.GRAVEL.defaultBlockState());
 		}
 
 		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);

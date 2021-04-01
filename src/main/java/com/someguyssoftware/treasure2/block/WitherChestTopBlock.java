@@ -26,6 +26,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 /**
@@ -85,7 +86,7 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy
 	 * 
 	 */
 	@Override
-	public void onPlace(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void destroy(IWorld world, BlockPos pos, BlockState state) {
 		Treasure.LOGGER.debug("Breaking Wither Chest Top block....!");
 		BlockPos downPos = pos.below();
 		// destory placeholder above

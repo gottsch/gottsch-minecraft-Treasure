@@ -88,12 +88,12 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		
 		// TODO move into TemplateGenerator
 		// NOTE these values are still relative to origin (spawnCoords);
-		ICoords newEntrance = new Coords(GottschTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
+		ICoords newEntrance = new Coords(GottschTemplate.transformedVec3d(placement, entranceCoords.toVec3d()));
 		
 		/*
 		 *  adjust spawn coords to line up room entrance with pit
 		 */
-		BlockPos transformedSize = holder.getTemplate().transformedSize(rotation);
+		BlockPos transformedSize = holder.getTemplate().getSize(rotation);
 		ICoords spawnCoords = ITemplateGenerator.alignEntranceToCoords(/*spawnCoords*/coords, newEntrance, transformedSize, placement);
 				
 		// if offset is 2 or less, then determine if the solid ground percentage is valid
@@ -119,17 +119,17 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		// populate vanilla spawners
 		for (BlockContext c : spawnerContexts) {
 			ICoords c2 = spawnCoords.add(c.getCoords());
-			world.setBlockState(c2.toPos(), Blocks.SPAWNER.getDefaultState(), 3);
-			MobSpawnerTileEntity te = (MobSpawnerTileEntity) world.getTileEntity(c2.toPos());
+			world.setBlock(c2.toPos(), Blocks.SPAWNER.defaultBlockState(), 3);
+			MobSpawnerTileEntity te = (MobSpawnerTileEntity) world.getBlockEntity(c2.toPos());
 			EntityType<?> r = DungeonHooks.getRandomDungeonMob(random);
-			te.getSpawnerBaseLogic().setEntityType(r);
+			te.getSpawner().setEntityId(r);
 		}
 		
 		// populate proximity spawners
 		for (BlockContext c : proximityContexts) {
 			ICoords c2 = spawnCoords.add(c.getCoords());
-	    	world.setBlockState(c2.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState(), 3);
-	    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c2.toPos());
+	    	world.setBlock(c2.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.defaultBlockState(), 3);
+	    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getBlockEntity(c2.toPos());
 	    	EntityType<?> r = DungeonHooks.getRandomDungeonMob(random);
 	    	te.setMobName(r.getRegistryName());
 	    	te.setMobNum(new Quantity(1, 2));

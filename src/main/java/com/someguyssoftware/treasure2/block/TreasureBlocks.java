@@ -604,7 +604,7 @@ public class TreasureBlocks {
 		public static void registerBlockColors(ColorHandlerEvent.Block event) {
 			event.getBlockColors().register(
 					(state, reader, pos, color) -> {
-						return (reader != null && pos != null) ? BiomeColors.getGrassColor(reader, pos)  : GrassColors.get(0.5D, 1.0D);
+						return (reader != null && pos != null) ? BiomeColors.getAverageGrassColor(reader, pos)  : GrassColors.get(0.5D, 1.0D);
 					},
 					TreasureBlocks.FALLING_GRASS);
 		}

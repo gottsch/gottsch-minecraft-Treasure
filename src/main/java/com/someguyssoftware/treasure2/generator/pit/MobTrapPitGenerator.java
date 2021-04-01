@@ -14,6 +14,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 
 /**
  * 
@@ -141,10 +142,10 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 		nextCoords = buildLogLayer(world, random, nextCoords, block);
 
 		// spawn the mobs
-    	spawnRandomMob(world, random, spawnCoords);
-    	spawnRandomMob(world, random, spawnCoords.add(1, 0, 0));
-    	spawnRandomMob(world, random, spawnCoords.add(0, 0, 1));
-    	spawnRandomMob(world, random, spawnCoords.add(1, 0, 1));
+    	spawnRandomMob((World)world, random, spawnCoords);
+    	spawnRandomMob((World)world, random, spawnCoords.add(1, 0, 0));
+    	spawnRandomMob((World)world, random, spawnCoords.add(0, 0, 1));
+    	spawnRandomMob((World)world, random, spawnCoords.add(1, 0, 1));
     	
 		// get the next coords
 		nextCoords = nextCoords.up(1);

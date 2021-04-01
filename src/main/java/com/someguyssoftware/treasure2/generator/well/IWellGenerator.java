@@ -94,19 +94,19 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 				BlockContext blockContext = new BlockContext(world, markerCoords.add(0, -1, 0));
 				
 				if (blockContext.equalsBlock(Blocks.GRASS) || blockContext.equalsBlock(Blocks.DIRT)) {
-					blockState = FLOWERS.get(random.nextInt(FLOWERS.size())).getDefaultState();
+					blockState = FLOWERS.get(random.nextInt(FLOWERS.size())).defaultBlockState();
 				}
 				else if (blockContext.equalsBlock(Blocks.COARSE_DIRT)) {
-					blockState = Blocks.TALL_GRASS.getDefaultState();
+					blockState = Blocks.TALL_GRASS.defaultBlockState();
 				}
 				else if (blockContext.equalsBlock(Blocks.MYCELIUM) || blockContext.equalsBlock(Blocks.PODZOL)) {
-					blockState = MUSHROOMS.get(random.nextInt(MUSHROOMS.size())).getDefaultState();			
+					blockState = MUSHROOMS.get(random.nextInt(MUSHROOMS.size())).defaultBlockState();			
 				}
 				else {
-					blockState = TALL_PLANTS.get(random.nextInt(TALL_PLANTS.size())).getDefaultState();
+					blockState = TALL_PLANTS.get(random.nextInt(TALL_PLANTS.size())).defaultBlockState();
 				}				
 				// set the block state
-				world.setBlockState(circle[i].toPos(), blockState, 3);
+				world.setBlock(circle[i].toPos(), blockState, 3);
 			}
 		}
 	}

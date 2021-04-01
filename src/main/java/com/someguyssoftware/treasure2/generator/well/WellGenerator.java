@@ -71,7 +71,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		PlacementSettings placement = new PlacementSettings();
 		placement.setRotation(rotation).setRandom(random);
 		
-		ICoords templateSize = new Coords(templateHolder.getTemplate().transformedSize(rotation));
+		ICoords templateSize = new Coords(templateHolder.getTemplate().getSize(rotation));
 		ICoords actualSpawnCoords = generator.getTransformedSpawnCoords(originalSpawnCoords, templateSize, placement);
 			
 		/*
@@ -189,18 +189,18 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		markerContext = new BlockContext(world, markerCoords.add(0, -1, 0));
 		Treasure.LOGGER.debug("Marker on block: {}", markerContext.getState());
 		if (markerContext.equalsBlock(Blocks.GRASS_BLOCK) || markerContext.equalsBlock(Blocks.DIRT)) {
-			blockState = FLOWERS.get(random.nextInt(FLOWERS.size())).getDefaultState();
+			blockState = FLOWERS.get(random.nextInt(FLOWERS.size())).defaultBlockState();
 		}
 		else if (markerContext.equalsBlock(Blocks.COARSE_DIRT)) {
-			blockState = Blocks.TALL_GRASS.getDefaultState();
+			blockState = Blocks.TALL_GRASS.defaultBlockState();
 		}
 		else if (markerContext.equalsBlock(Blocks.MYCELIUM) || markerContext.equalsBlock(Blocks.PODZOL)) {
-			blockState = MUSHROOMS.get(random.nextInt(MUSHROOMS.size())).getDefaultState();			
+			blockState = MUSHROOMS.get(random.nextInt(MUSHROOMS.size())).defaultBlockState();			
 		}
 		else {
-			blockState = TALL_PLANTS.get(random.nextInt(TALL_PLANTS.size())).getDefaultState();
+			blockState = TALL_PLANTS.get(random.nextInt(TALL_PLANTS.size())).defaultBlockState();
 		}				
 		// set the block state
-		world.setBlockState(coords.toPos(), blockState, 3);
+		world.setBlock(coords.toPos(), blockState, 3);
 	}
 }

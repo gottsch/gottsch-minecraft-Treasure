@@ -5,7 +5,6 @@ package com.someguyssoftware.treasure2.generator.ruins;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.spatial.Coords;
@@ -18,9 +17,7 @@ import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.gottschcore.world.gen.structure.PlacementSettings;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
-import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
@@ -33,10 +30,8 @@ import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 
 /**
  * 
@@ -97,7 +92,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		placement.setRotation(rotation).setRandom(random);
 	
 		// determine the actual spawn coords
-		ICoords templateSize = new Coords(holder.getTemplate().transformedSize(placement.getRotation()));
+		ICoords templateSize = new Coords(holder.getTemplate().getSize(placement.getRotation()));
 		ICoords actualSpawnCoords = generator.getTransformedSpawnCoords(originalSpawnCoords, templateSize, placement);
 
 		Treasure.LOGGER.debug("original coords -> {}",originalSpawnCoords.toShortString());

@@ -17,6 +17,7 @@ import com.someguyssoftware.treasure2.chest.ChestSlotCount;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
+import com.someguyssoftware.treasure2.inventory.AbstractChestContainer;
 import com.someguyssoftware.treasure2.inventory.ITreasureContainer;
 import com.someguyssoftware.treasure2.lock.LockState;
 
@@ -25,6 +26,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.DoubleSidedInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.ChestContainer;
@@ -65,21 +67,21 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		 * 
 		 */
 		private ChestGeneratorType chestGeneratorType;
-		
+
 		public GenerationContext(Rarity rarity, ChestGeneratorType chestGeneratorType) {
 			this.lootRarity = rarity;
 			this.chestGeneratorType = chestGeneratorType;
 		}
-		
+
 		public GenerationContext(ResourceLocation lootTable, Rarity rarity, ChestGeneratorType chestGeneratorType) {
 			this.lootRarity = rarity;
 			this.chestGeneratorType = chestGeneratorType;
 		}
-		
+
 		public Rarity getLootRarity() {
 			return lootRarity;
 		}
-		
+
 		public ChestGeneratorType getChestGeneratorType() {
 			return chestGeneratorType;
 		}
@@ -89,7 +91,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		}
 
 	}
-	
+
 	/*
 	 * A list of lockStates the chest has. The list should be the size of the max
 	 * allowed for the chestType.
@@ -112,9 +114,9 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * Properties detailing how the tile entity was generated
 	 */
 	private GenerationContext generationContext;
-	
+
 	private int numberOfSlots = 27; // default size
-	
+
 	/*
 	 * Vanilla properties for controlling the lid
 	 */
@@ -137,7 +139,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	public AbstractTreasureChestTileEntity(TileEntityType<?> type) {
 		super(type);
-		setFacing(Direction.NORTH.getIndex());
+		setFacing(Direction.NORTH.get3DDataValue());
 	}
 
 	/**
@@ -145,30 +147,28 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public void tick() {
-		int i = getBlockPos().getX();
-		int j = getBlockPos().getY();
-		int k = getBlockPos().getZ();
+		int x = getBlockPos().getX();
+		int y = getBlockPos().getY();
+		int z = getBlockPos().getZ();
 		++this.ticksSinceSync;
 
 		// NOTE in 1.15.2 this block is replaced by calculatePlayersUsingSync()
 		if (WorldInfo.isServerSide(this.getLevel()) && this.numPlayersUsing != 0
-				&& (this.ticksSinceSync + i + j + k) % 200 == 0) {
+				&& (this.ticksSinceSync + x + y + z) % 200 == 0) {
 			this.numPlayersUsing = 0;
-			float f = 5.0F;
+			float radius = 5.0F;
 
-			for (PlayerEntity player : getLevel().getEntitiesWithinAABB(PlayerEntity.class,
-					new AxisAlignedBB((double) ((float) i - 5.0F), (double) ((float) j - 5.0F),
-							(double) ((float) k - 5.0F), (double) ((float) (i + 1) + 5.0F),
-							(double) ((float) (j + 1) + 5.0F), (double) ((float) (k + 1) + 5.0F)))) {
-
-				if (player.openContainer instanceof ITreasureContainer) {
-					IInventory inventory = ((ITreasureContainer) player.openContainer).getContents();
+			for(PlayerEntity player : getLevel().getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB((double)((float)x - radius), (double)((float)y - radius), (double)((float)z - radius), 
+					(double)((float)(x + 1) + radius), (double)((float)(y + 1) + radius), (double)((float)(z + 1) + radius)))) {
+				if (player.containerMenu instanceof AbstractChestContainer) {
+					IInventory inventory = ((AbstractChestContainer)player.containerMenu).getContents();
 					if (inventory == this) {
 						++this.numPlayersUsing;
 					}
 				}
 			}
 		}
+
 
 		// TODO checkout the vanilla on angle update -- somehow the renderThread isn't getting updates to the TE.
 		this.prevLidAngle = this.lidAngle;
@@ -205,7 +205,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		double d0 = (double)getBlockPos().getX() + 0.5D;
 		double d1 = (double)getBlockPos().getY() + 0.5D;
 		double d2 = (double)getBlockPos().getZ() + 0.5D;
-		this.getLevel().playSound((PlayerEntity)null, d0, d1, d2, soundIn, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+		level.playSound((PlayerEntity)null, d0, d1, d2, soundIn, SoundCategory.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
 	}
 
 	/**
@@ -693,8 +693,8 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	protected void onOpenOrClose() {
 		Block block = this.getBlockState().getBlock();
 		if (block instanceof AbstractChestBlock) {
-			this.world.addBlockEvent(this.pos, block, 1, this.numPlayersUsing);
-			this.world.notifyNeighborsOfStateChange(this.pos, block);
+			getLevel().addBlockEvent(getBlockPos(), block, 1, this.numPlayersUsing);
+			getLevel().notifyNeighborsOfStateChange(getBlockPos(), block);
 		}
 
 	}
@@ -745,7 +745,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	public void setNumberOfSlots(int numberOfSlots) {
 		this.numberOfSlots = numberOfSlots;
 	}
-	
+
 	/**
 	 * @param numberOfSlots the numberOfSlots to set
 	 */
@@ -785,7 +785,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	public float getLidAngle(float partialTicks) {
 		return this.lidAngle;
 	}
-	
+
 	@Override
 	public boolean isSealed() {
 		return sealed;
@@ -800,7 +800,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	public GenerationContext getGenerationContext() {
 		return generationContext;
 	}
-	
+
 	@Override
 	public void setGenerationContext(GenerationContext context) {
 		generationContext = context;

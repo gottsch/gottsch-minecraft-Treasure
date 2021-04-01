@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.someguyssoftware.gottschcore.spatial.ICoords;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -11,9 +12,8 @@ import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
-import net.minecraftforge.common.BiomeDictionary;
 
 public interface ITreasureFeature {
 
@@ -39,10 +39,10 @@ public interface ITreasureFeature {
 
     // TODO move to BiomeHelper
     default public boolean checkOceanBiomes(Biome biome) {
-		if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN ||
-				BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
-			return true;
-		}
+//		if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN ||
+//				BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
+//			return true;
+//		}
 		return false;
     }
     
@@ -59,7 +59,7 @@ public interface ITreasureFeature {
 		double minDistanceSq = minDistance * minDistance;
 
 		// get a list of dungeons
-		List<ChestInfo> infos = TreasureData.CHEST_REGISTRIES.get(world.getDimension().getType().getRegistryName().toString()).getValues();
+		List<ChestInfo> infos = TreasureData.CHEST_REGISTRIES.get(WorldInfo.getDimension((World)world).toString()).getValues();
 
 		if (infos == null || infos.size() == 0) {
 			Treasure.LOGGER.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");

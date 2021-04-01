@@ -29,7 +29,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Table;
 import com.someguyssoftware.gottschcore.loot.LootTableMaster2;
 import com.someguyssoftware.gottschcore.loot.LootTableShell;
@@ -37,11 +36,12 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameterSets;
+import net.minecraft.world.storage.SaveFormat;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 /**
  * Custom Loot Table (custom data) locations:
@@ -124,9 +124,13 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 			CHEST_LOOT_TABLES_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<LootTableShell>());
 		}
 		
-		//		Path path = Paths.get(world.getSaveHandler().getWorldDirectory().getPath(), "data", "loot_tables");
-		Path path = Paths.get(world.getSaveHandler().getWorldDirectory().getPath(), "datapacks", "treasure2");
-		setWorldDataBaseFolder(path.toFile());
+//		Path path = Paths.get(world.getSaveHandler().getWorldDirectory().getPath(), "datapacks", "treasure2");
+		Object save = ObfuscationReflectionHelper.getPrivateValue(MinecraftServer.class, world.getServer(), "storageSource");
+		
+		if (save instanceof SaveFormat.LevelSave) {
+			Path path = ((SaveFormat.LevelSave) save).getWorldDir().resolve("datapacks").resolve("treasure2");
+			setWorldDataBaseFolder(path.toFile());
+		}
 		// TODO create pack.mcmeta if not already exist
 		createPack();
 		//		new LootContext.Builder(world).build(LootParameterSets.GENERIC);

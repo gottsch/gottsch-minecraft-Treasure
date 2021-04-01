@@ -83,7 +83,7 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 			int zSpawn = z + (random.nextInt(gridSize) * (random.nextInt(3) - 1)); // -1|0|1
 
 			// get the "surface" y
-			int ySpawn = WorldInfo.getHeightValue(world, new Coords(xSpawn, 0, zSpawn));
+			int ySpawn = WorldInfo.getHeight(world, new Coords(xSpawn, 0, zSpawn));
 			ICoords spawnCoords = new Coords(xSpawn, ySpawn, zSpawn);
 
 			// determine if valid y
@@ -129,14 +129,14 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 
 			LOGGER.debug("marker class -> {}", marker.getClass().getSimpleName());
 			// select a random facing direction
-			Direction facing = Direction.Plane.HORIZONTAL.random(random);
+			Direction facing = Direction.Plane.HORIZONTAL.getRandomDirection(random);
 
 			// place the block
 			if (marker instanceof SkeletonBlock) {
 				LOGGER.debug("should be placing skeleton block -> {}", spawnCoords.toShortString());
 				GenUtil.placeSkeleton(world, random, spawnCoords);
 			} else {
-				world.setBlockState(spawnCoords.toPos(), marker.getDefaultState().with(AbstractChestBlock.FACING, facing), 3);
+				world.setBlock(spawnCoords.toPos(), marker.defaultBlockState().setValue(AbstractChestBlock.FACING, facing), 3);
 			}
 
 			// update the tile entity if any

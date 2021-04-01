@@ -135,7 +135,7 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 		for (int i =0; i < MAX_REPLACES; i++) {
 			// randomly select a coord from the array
 			int x = RandomHelper.randomInt(0, matrix.length-1);
-			GenUtil.replaceWithBlockState(world, matrix[x], block.getDefaultState());
+			GenUtil.replaceWithBlockState(world, matrix[x], block.defaultBlockState());
 		}		
 		return coords;
 	}

@@ -8,6 +8,7 @@ import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
@@ -17,7 +18,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.LogBlock;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -258,19 +259,19 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	public ICoords buildLogLayer(final IWorld world, final Random random, final ICoords coords, final Block block) {
 		Treasure.LOGGER.debug("building log layer from {} @ {} ", block.getRegistryName(), coords.toShortString());
 		// ensure that block is of type LOG/LOG2
-		if (!(block instanceof LogBlock)) {
+		if (!(block instanceof RotatedPillarBlock)) {
 			Treasure.LOGGER.debug("block is not a log");
             return coords;
         }
 
 		// randomly select the axis the logs are facing (0 = Z, 1 = X);
 		int axis = random.nextInt(2);
-		BlockState blockState = block.getDefaultState();
+		BlockState blockState = block.defaultBlockState();
 		if (axis == 0) {
-			blockState = blockState.with(LogBlock.AXIS, Direction.Axis.Z);
+			blockState = blockState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 		}
 		else {
-			blockState = blockState.with(LogBlock.AXIS,  Direction.Axis.X);
+			blockState = blockState.setValue(RotatedPillarBlock.AXIS,  Direction.Axis.X);
 		}
 
 		// core 4-square
@@ -306,18 +307,20 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @param spawnCoords
 	 * @param mob
 	 */
-	public void spawnMob(IWorld world, ICoords spawnCoords, String mobName) {
+	public void spawnMob(World world, ICoords spawnCoords, String mobName) {
 		MobEntity mob = null;
 		switch (mobName) {
 		case "zombie":
-			mob = new ZombieEntity(world.getWorld());
+			mob = new ZombieEntity(world);
 			break;
 		case "skeleton":
-			mob = new SkeletonEntity(EntityType.SKELETON, world.getWorld());
+			mob = new SkeletonEntity(EntityType.SKELETON, world);
 			break;
 		}
-    	mob.setLocationAndAngles((double)spawnCoords.getX() + 0.5D,  (double)spawnCoords.getY(), (double)spawnCoords.getZ() + 0.5D, 0.0F, 0.0F);
-    	world.addEntity(mob);
+    	mob.moveTo((double)spawnCoords.getX() + 0.5D,  (double)spawnCoords.getY(), (double)spawnCoords.getZ() + 0.5D, 0.0F, 0.0F);
+		if (!world.addFreshEntity(mob)) {
+			Treasure.LOGGER.debug("unable to spawn entity in world -> {}", mob.getName());
+		}
 	}
 	
 	/**
@@ -326,9 +329,10 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @param random
 	 * @param spawnCoords
 	 */
-	public void spawnRandomMob(IWorld world, Random random, ICoords spawnCoords) {
-    	world.setBlockState(spawnCoords.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState(), 3);
-    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(spawnCoords.toPos());
+	public void spawnRandomMob(World world, Random random, ICoords spawnCoords) {
+		WorldInfo.setBlock(world, spawnCoords, TreasureBlocks.PROXIMITY_SPAWNER.defaultBlockState());
+//    	world.setBlock(spawnCoords.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.defaultBlockState(), 3);
+    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getBlockEntity(spawnCoords.toPos());
     	if (te == null) {
     		Treasure.LOGGER.debug("proximity spawner TE is null @ {}", spawnCoords.toShortString());
     		return;

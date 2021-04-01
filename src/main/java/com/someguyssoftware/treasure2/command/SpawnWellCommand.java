@@ -9,19 +9,13 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.someguyssoftware.gottschcore.spatial.Coords;
-import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.data.TreasureData;
-import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.Wells;
-import com.someguyssoftware.treasure2.enums.WorldGenerators;
-import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.well.WellGenerator;
-import com.someguyssoftware.treasure2.world.gen.feature.TreasureFeatures;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -41,21 +35,21 @@ public class SpawnWellCommand {
 		dispatcher
 		.register(Commands.literal("t2-well")
 				.requires(source -> {
-					return source.hasPermissionLevel(2);
+					return source.hasPermission(2);
 				})
 				.then(Commands.argument("pos", BlockPosArgument.blockPos())
 						.executes(source -> {
-							return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"), Treasure.MODID, Wells.WISHING_WELL.getValue());
+							return spawn(source.getSource(), BlockPosArgument.getOrLoadBlockPos(source, "pos"), Treasure.MODID, Wells.WISHING_WELL.getValue());
 						})
 						.then(Commands.argument("modid", StringArgumentType.string())
 								.suggests(SUGGEST_WELL).executes(source -> {
-									return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"),
+									return spawn(source.getSource(), BlockPosArgument.getOrLoadBlockPos(source, "pos"),
 											Treasure.MODID,
 											Wells.WISHING_WELL.getValue());
 								})
 								.then(Commands.argument("name", StringArgumentType.string())
 										.suggests(SUGGEST_MODID).executes(source -> {
-											return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"),
+											return spawn(source.getSource(), BlockPosArgument.getOrLoadBlockPos(source, "pos"),
 													StringArgumentType.getString(source, "modid"),
 													StringArgumentType.getString(source, "name"));
 										})
@@ -90,7 +84,7 @@ public class SpawnWellCommand {
 		Treasure.LOGGER.info("executing spawn well, pos -> {}", pos);
 
 		try {
-			ServerWorld world = source.getWorld();
+			ServerWorld world = source.getLevel();
 			Random random = new Random();
 			
 			WellGenerator gen = (WellGenerator) TreasureData.WELL_GEN;

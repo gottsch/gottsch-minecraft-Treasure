@@ -323,7 +323,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 					//					Treasure.LOGGER.debug("[BreakingBlock]Saving chest items:");
 
 					CompoundNBT nbt = new CompoundNBT();
-					nbt = te.write(nbt);
+					nbt = te.save(nbt);
 					chestItem.setTag(nbt);
 
 					InventoryHelper.dropItemStack(worldIn, (double) pos.getX(), (double) pos.getY(),
@@ -387,6 +387,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 	 * @return
 	 */
 	public boolean  rotateLockStates(IWorld world, BlockPos pos, Rotate rotate) {
+		// TODO replace pos with ICoords
 		boolean hasRotated = false;
 		boolean shouldRotate = false;
 		if (rotate != Rotate.NO_ROTATE) shouldRotate = true;

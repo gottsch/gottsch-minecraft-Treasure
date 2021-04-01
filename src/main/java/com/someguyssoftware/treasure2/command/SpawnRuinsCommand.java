@@ -58,17 +58,17 @@ public class SpawnRuinsCommand {
 		dispatcher
 			.register(Commands.literal("t2-ruins")
 					.requires(source -> {
-						return source.hasPermissionLevel(2);
+						return source.hasPermission(2);
 					})
 					.then(Commands.argument("pos", BlockPosArgument.blockPos())
 							.executes(source -> {
-								return spawn(source.getSource(), BlockPosArgument.getBlockPos(source, "pos"), Treasure.MODID, StructureArchetype.SURFACE.getValue(), "", "");
+								return spawn(source.getSource(), BlockPosArgument.getOrLoadBlockPos(source, "pos"), Treasure.MODID, StructureArchetype.SURFACE.getValue(), "", "");
 							})
 							.then(Commands.literal("-"+MOD_ID_ARG)
 								.then(Commands.argument(MOD_ID_ARG, StringArgumentType.string())
 										.suggests(SUGGEST_MODID).executes(source -> {
 											return spawn(source.getSource(),
-													BlockPosArgument.getBlockPos(source, "pos"),
+													BlockPosArgument.getOrLoadBlockPos(source, "pos"),
 													StringArgumentType.getString(source, MOD_ID_ARG),
 													StructureArchetype.SURFACE.getValue(),
 													"",
@@ -79,7 +79,7 @@ public class SpawnRuinsCommand {
 														.suggests(SUGGEST_ARCHETYPE)
 														.executes(source -> {
 															return spawn(source.getSource(),
-																	BlockPosArgument.getBlockPos(source, "pos"),
+																	BlockPosArgument.getOrLoadBlockPos(source, "pos"),
 																	StringArgumentType.getString(source, MOD_ID_ARG),
 																	StringArgumentType.getString(source, ARCHETYPE_ARG),
 			    													"",
@@ -89,7 +89,7 @@ public class SpawnRuinsCommand {
 																.then(Commands.argument(NAME_ARG, StringArgumentType.string())
 																		.executes(source -> {
 																			return spawn(source.getSource(),
-																					BlockPosArgument.getBlockPos(source, "pos"),
+																					BlockPosArgument.getOrLoadBlockPos(source, "pos"),
 																					StringArgumentType.getString(source, MOD_ID_ARG),
 																					StringArgumentType.getString(source, ARCHETYPE_ARG),
 							    													StringArgumentType.getString(source, NAME_ARG),
@@ -99,7 +99,7 @@ public class SpawnRuinsCommand {
 											                                     .then(Commands.argument(DECAY_ARG, StringArgumentType.string())
 											                                         .suggests(SUGGEST_DECAY).executes(source -> {
 											    											return spawn(source.getSource(),
-											    													BlockPosArgument.getBlockPos(source, "pos"),
+											    													BlockPosArgument.getOrLoadBlockPos(source, "pos"),
 											    													StringArgumentType.getString(source, MOD_ID_ARG),
 											    													StringArgumentType.getString(source, ARCHETYPE_ARG),
 											    													StringArgumentType.getString(source, NAME_ARG),
@@ -126,7 +126,7 @@ public class SpawnRuinsCommand {
                                  .then(Commands.argument(DECAY_ARG, StringArgumentType.string())
                                      .suggests(SUGGEST_DECAY).executes(source -> {
 											return spawn(source.getSource(),
-													BlockPosArgument.getBlockPos(source, "pos"),
+													BlockPosArgument.getOrLoadBlockPos(source, "pos"),
 													Treasure.MODID,
 													StructureArchetype.SURFACE.getValue(),
 													"",
@@ -175,7 +175,7 @@ public class SpawnRuinsCommand {
 	 * @return
 	 */
 	public static int spawn(CommandSource source, BlockPos pos, String modID, String archetype, String name, String decay) {
-		ServerWorld world = source.getWorld();
+		ServerWorld world = source.getLevel();
 		Random random = new Random();
 		
         modID = (modID == null || modID.isEmpty()) ? Treasure.MODID : modID;

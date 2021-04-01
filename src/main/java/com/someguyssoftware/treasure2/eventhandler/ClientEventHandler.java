@@ -32,8 +32,8 @@ public class ClientEventHandler {
 		Treasure.LOGGER.info("registering particle factory");
 		System.out.println("registering particle factory");
 		Treasure.LOGGER.info("particle type -> {}", TreasureParticles.mistParticleType.getRegistryName());
-		Minecraft.getInstance().particles.registerFactory(TreasureParticles.mistParticleType, sprite -> new MistParticleFactory(sprite));
-		Minecraft.getInstance().particles.registerFactory(TreasureParticles.flameParticleType, sprite -> new FlameParticleFactory(sprite));
+		Minecraft.getInstance().particleEngine.register(TreasureParticles.mistParticleType, sprite -> new MistParticleFactory(sprite));
+		Minecraft.getInstance().particleEngine.register(TreasureParticles.flameParticleType, sprite -> new FlameParticleFactory(sprite));
 //		Minecraft.getInstance().particles.registerFactory(DeferredRegistration.HEART_CRYSTAL_PARTICLE.get(), new SHParticle.Factory(Color.FIREBRICK)); // ??
 		clientEventHandler.factories.put(Registry.PARTICLE_TYPE.getKey(TreasureParticles.mistParticleType), new MistParticleFactory(null));
 		Treasure.LOGGER.info("verifying particle factory registration -> {}", clientEventHandler.factories.get(Registry.PARTICLE_TYPE.getKey(TreasureParticles.mistParticleType)));

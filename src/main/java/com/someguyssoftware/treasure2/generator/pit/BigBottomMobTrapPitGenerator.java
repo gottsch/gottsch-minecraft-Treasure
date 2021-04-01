@@ -125,7 +125,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 		ICoords startCoords = coords.add(-2, 0, -2);
 		for (int x = startCoords.getX(); x < startCoords.getX() + 6; x++) {
 			for (int z = startCoords.getZ(); z < startCoords.getZ() + 6; z++) {
-				GenUtil.replaceWithBlockState(world, new Coords(x, coords.getY(), z), block.getDefaultState());
+				GenUtil.replaceWithBlockState(world, new Coords(x, coords.getY(), z), block.defaultBlockState());
 			}
 		}
 		return coords.add(0, 1, 0);
@@ -142,8 +142,8 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	public ICoords buildTrapLayer(final IWorld world, final Random random, final ICoords coords, final Block block) {
   	
 		// spawn random registered mobs on either side of the chest
-    	world.setBlockState(coords.add(-1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState(), 3);
-    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(coords.add(-1, 0, 0).toPos());
+    	world.setBlock(coords.add(-1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.defaultBlockState(), 3);
+    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getBlockEntity(coords.add(-1, 0, 0).toPos());
     	if (te == null) {
     		Treasure.LOGGER.debug("proximity spawner TE is null @ {}", coords.toShortString());
     		return coords;
@@ -156,8 +156,8 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	    	te.setProximity(5D);
 	    	Treasure.LOGGER.debug("placed proximity spawner @ {}", coords.add(-1,0,0).toShortString());
     	}
-    	world.setBlockState(coords.add(1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState(), 3);
-    	te = (ProximitySpawnerTileEntity) world.getTileEntity(coords.add(1, 0, 0).toPos());
+    	world.setBlock(coords.add(1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.defaultBlockState(), 3);
+    	te = (ProximitySpawnerTileEntity) world.getBlockEntity(coords.add(1, 0, 0).toPos());
     	if (te == null) {
     		Treasure.LOGGER.debug("proximity spawner TE is null @ {}", coords.toShortString());
     	}

@@ -26,17 +26,17 @@ public class WitherRootItem extends ModBlockItem {
 	 * 
 	 */
 	public WitherRootItem(String modID, String name, Block block, Item.Properties properties) {
-		super(modID, name, block, properties.group(TreasureItemGroups.MOD_ITEM_GROUP));
+		super(modID, name, block, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP));
 	}
 	
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		if (WorldInfo.isClientSide(context.getWorld())) {
+	public ActionResultType useOn(ItemUseContext context) {
+		if (WorldInfo.isClientSide(context.getLevel())) {
             return ActionResultType.PASS;
         }
-		BlockState state = TreasureBlocks.WITHER_ROOT.getDefaultState().with(WitherBranchBlock.FACING, context.getPlacementHorizontalFacing().getOpposite());
+		BlockState state = TreasureBlocks.WITHER_ROOT.defaultBlockState().setValue(WitherBranchBlock.FACING, context.getHorizontalDirection().getOpposite());
 		
- 		ItemStack heldItem = context.getPlayer().getHeldItem(context.getHand());	     		
+ 		ItemStack heldItem = context.getPlayer().getItemInHand(context.getHand());	     		
  		this.placeBlock(new BlockItemUseContext(context), state);     		
  		heldItem.shrink(1);            
         return ActionResultType.SUCCESS;
@@ -54,7 +54,7 @@ public class WitherRootItem extends ModBlockItem {
 	@Override
 	protected boolean placeBlock(BlockItemUseContext context, BlockState state) {
 		// set the block
-		context.getWorld().setBlockState(context.getPos(), state);
+		context.getLevel().setBlock(context.getClickedPos(), state, 3);
 		return true;
 	}
 }

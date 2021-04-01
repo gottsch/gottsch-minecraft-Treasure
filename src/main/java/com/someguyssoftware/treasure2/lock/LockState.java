@@ -40,7 +40,7 @@ public class LockState {
 			}
 			if (this.getLock() != null) {
 				CompoundNBT lockNBT = new CompoundNBT();
-				new ItemStack(this.getLock()).write(lockNBT);
+				new ItemStack(this.getLock()).save(lockNBT);
 				nbt.put("lockItem", lockNBT);
 			}
 		} catch (Exception e) {
@@ -68,7 +68,7 @@ public class LockState {
 		if (tag.contains("lockItem", Constants.NBT.TAG_COMPOUND)) {
 			lockNBT = tag.getCompound("lockItem");
 			if (lockNBT != null) {
-				lockStack = ItemStack.read(lockNBT);
+				lockStack = ItemStack.of(lockNBT);
 			}
 		}
 
