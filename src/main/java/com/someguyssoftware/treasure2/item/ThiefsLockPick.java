@@ -39,10 +39,9 @@ public class ThiefsLockPick extends KeyItem {
 	 * 
 	 * Specials: [text] [color=gold]
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
 		TranslationTextComponent s1 = new TranslationTextComponent("tooltip.thiefs_lock_pick.specials", 
 				getSuccessProbability(), 
@@ -50,7 +49,7 @@ public class ThiefsLockPick extends KeyItem {
 				(getSuccessProbability()/2));
 			
 		TranslationTextComponent s2 = new TranslationTextComponent("tooltip.label.specials", 
-				TextFormatting.GOLD + s1.getFormattedText());
+				TextFormatting.GOLD + s1.getString());
 		tooltip.add(s2);
 	}
 	

@@ -29,6 +29,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -115,47 +116,47 @@ public class KeyItem extends ModItem {
 		// is breakable tooltip
 		ITextComponent breakable = null;
 		if (isBreakable()) {
-			breakable = new TranslationTextComponent("tooltip.yes").applyTextStyle(TextFormatting.DARK_RED);
+			breakable = new TranslationTextComponent("tooltip.yes").withStyle(TextFormatting.DARK_RED);
 		}
 		else {
-			breakable = new TranslationTextComponent("tooltip.no").applyTextStyle(TextFormatting.GREEN);
+			breakable = new TranslationTextComponent("tooltip.no").withStyle(TextFormatting.GREEN);
 		}
 		tooltip.add(
 				new TranslationTextComponent("tooltip.label.breakable", breakable));
 
 		ITextComponent craftable = null;
 		if (isCraftable()) {
-			craftable = new TranslationTextComponent("tooltip.yes").applyTextStyle(TextFormatting.GREEN);
+			craftable = new TranslationTextComponent("tooltip.yes").withStyle(TextFormatting.GREEN);
 		}
 		else {
-			craftable = new TranslationTextComponent("tooltip.no").applyTextStyle(TextFormatting.DARK_RED);
+			craftable = new TranslationTextComponent("tooltip.no").withStyle(TextFormatting.DARK_RED);
 		}
 		tooltip.add(new TranslationTextComponent("tooltip.label.craftable", craftable));
 
 		ITextComponent damageable = null;
 		if (isDamageable()) {
-			damageable = new TranslationTextComponent("tooltip.yes").applyTextStyle(TextFormatting.DARK_RED);
+			damageable = new TranslationTextComponent("tooltip.yes").withStyle(TextFormatting.DARK_RED);
 		}
 		else {
-			damageable = new TranslationTextComponent("tooltip.no").applyTextStyle(TextFormatting.GREEN);
+			damageable = new TranslationTextComponent("tooltip.no").withStyle(TextFormatting.GREEN);
 		}
 		tooltip.add(
 				new TranslationTextComponent("tooltip.label.damageable", damageable));
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		BlockPos chestPos = context.getPos();
+	public ActionResultType useOn(ItemUseContext context) {
+		BlockPos chestPos = context.getClickedPos();
 		// determine if block at pos is a treasure chest
-		Block block = context.getWorld().getBlockState(chestPos).getBlock();
+		Block block = context.getLevel().getBlockState(chestPos).getBlock();
 		if (block instanceof ITreasureChestProxy) {
 			chestPos = ((ITreasureChestProxy)block).getChestPos(chestPos);
-			block = context.getWorld().getBlockState(chestPos).getBlock();
+			block = context.getLevel().getBlockState(chestPos).getBlock();
 		}
 
 		if (block instanceof AbstractChestBlock) {
 			// get the tile entity
-			TileEntity te = context.getWorld().getTileEntity(chestPos);
+			TileEntity te = context.getLevel().getBlockEntity(chestPos);
 			if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
 				Treasure.LOGGER.warn("Null or incorrect TileEntity");
 				return ActionResultType.FAIL;
@@ -163,7 +164,7 @@ public class KeyItem extends ModItem {
 			AbstractTreasureChestTileEntity tcte = (AbstractTreasureChestTileEntity)te;
 
 			// exit if on the client
-			if (WorldInfo.isClientSide(context.getWorld())) {			
+			if (WorldInfo.isClientSide(context.getLevel())) {			
 				return ActionResultType.FAIL;
 			}
 
@@ -173,7 +174,7 @@ public class KeyItem extends ModItem {
 			}
 
 			try {
-				ItemStack heldItem = context.getPlayer().getHeldItem(context.getHand());	
+				ItemStack heldItem = context.getPlayer().getItemInHand(context.getHand());	
 				boolean breakKey = true;
 				boolean fitsLock = false;
 				LockState lockState = null;
@@ -190,12 +191,12 @@ public class KeyItem extends ModItem {
 						// remove the lock
 						lockState.setLock(null);
 						// play noise
-						context.getWorld().playSound(context.getPlayer(), chestPos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+						context.getLevel().playSound(context.getPlayer(), chestPos, SoundEvents.LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 						// update the client
 						tcte.sendUpdates();
 						// spawn the lock
 						if (TreasureConfig.KEYS_LOCKS.enableLockDrops.get()) {
-							InventoryHelper.spawnItemStack(context.getWorld(), (double)chestPos.getX(), (double)chestPos.getY(), (double)chestPos.getZ(), new ItemStack(lock));
+							InventoryHelper.dropItemStack(context.getLevel(), (double)chestPos.getX(), (double)chestPos.getY(), (double)chestPos.getZ(), new ItemStack(lock));
 						}
 						// don't break the key
 						breakKey = false;
@@ -207,26 +208,27 @@ public class KeyItem extends ModItem {
 					if (isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks.get()) {
 						// break key;
 						heldItem.shrink(1);
-						context.getPlayer().sendMessage(new StringTextComponent("Key broke."));
-						context.getWorld().playSound(context.getPlayer(), chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+						// TODO figure out howt o send message to chat - ??
+						context.getPlayer().sendMessage(new StringTextComponent("Key broke."), Util.NIL_UUID);
+						context.getLevel().playSound(context.getPlayer(), chestPos, SoundEvents.METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 						// flag the key as broken
 						isKeyBroken = true;
 						// if the keyStack > 0, then reset the damage - don't break a brand new key and leave the used one
 						if (heldItem.getCount() > 0) {
-							heldItem.setDamage(0);
+							heldItem.setDamageValue(0);
 						}
 					}
 					else {
-						context.getPlayer().sendMessage(new StringTextComponent("Failed to unlock."));
+						context.getPlayer().sendMessage(new StringTextComponent("Failed to unlock."), Util.NIL_UUID);
 					}						
 				}
 
 				// user attempted to use key - increment the damage
 				if (isDamageable() && !isKeyBroken) {
-					heldItem.damageItem(1,  context.getPlayer(), p -> {
-						p.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+					heldItem.hurtAndBreak(1,  context.getPlayer(), p -> {
+						p.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 					});
-					if (heldItem.getDamage() == heldItem.getMaxDamage()) {
+					if (heldItem.getDamageValue() == heldItem.getMaxDamage()) {
 						heldItem.shrink(1);
 					}
 				}
@@ -236,7 +238,7 @@ public class KeyItem extends ModItem {
 			}			
 		}		
 
-		return super.onItemUse(context);
+		return super.useOn(context);
 	}
 
 	/**

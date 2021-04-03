@@ -30,16 +30,17 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameterSets;
+import net.minecraft.loot.LootParameters;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTable;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameterSets;
-import net.minecraft.world.storage.loot.LootParameters;
-import net.minecraft.world.storage.loot.LootPool;
 
 /**
  * 
@@ -58,20 +59,19 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 	 * 
 	 */
 	public PearlItem (String modID, String name, Item.Properties properties)	 {
-		super(modID, name, properties.group(TreasureItemGroups.MOD_ITEM_GROUP)
-				.maxStackSize(MAX_STACK_SIZE));
+		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP)
+				.stacksTo(MAX_STACK_SIZE));
 		this.pearl = Pearls.WHITE;
 	}
 	
 	/**
 	 * 
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);     	
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);     	
 		// TODO change label to tooltip.label.wishable
-		tooltip.add(new TranslationTextComponent("tooltip.label.coin").applyTextStyles(TextFormatting.GOLD, TextFormatting.ITALIC));
+		tooltip.add(new TranslationTextComponent("tooltip.label.coin").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
 	}
 	
 	/**
@@ -82,13 +82,13 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 		// get the item stack or number of items.
 		ItemStack entityItemStack = entityItem.getItem();
 		
-		World world = entityItem.getEntityWorld();
+		World world = entityItem.level;
 		if (WorldInfo.isClientSide(world)) {
 			return super.onEntityItemUpdate(stack, entityItem);
 		}
 		
 		// get the position
-		ICoords coords = new Coords(entityItem.getPosition());
+		ICoords coords = new Coords(entityItem.blockPosition());
 		BlockContext blockContext = new BlockContext(world, coords);
 		int numWishingWellBlocks = 0;
 		// check if in water
@@ -151,7 +151,7 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 			PlayerEntity player = null;
 			if (nbt != null && nbt.contains(DROPPED_BY_KEY)) {
 				// TODO change to check by UUID
-				for (PlayerEntity p : world.getPlayers()) {
+				for (PlayerEntity p : world.players()) {
 					if (p.getName().getString().equalsIgnoreCase(nbt.getString(DROPPED_BY_KEY))) {
 						player = p;
 					}
@@ -172,7 +172,7 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 			}
 			
 			// get the vanilla table from shell
-			net.minecraft.world.storage.loot.LootTable table = world.getServer().getLootTableManager().getLootTableFromLocation(tableShell.getResourceLocation());
+			LootTable table = world.getServer().getLootTables().get(tableShell.getResourceLocation());
 			// get a list of loot pools
 			List<LootPoolShell> lootPoolShells = tableShell.getPools();
 			
@@ -180,7 +180,7 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 			LootContext lootContext = new LootContext.Builder((ServerWorld) world)
 					.withLuck((player != null) ? player.getLuck() : 0)
 					.withParameter(LootParameters.THIS_ENTITY, player)
-					.withParameter(LootParameters.POSITION, coords.toPos()).build(LootParameterSets.CHEST);
+					.withParameter(LootParameters.ORIGIN, coords.toVec3d()).create(LootParameterSets.CHEST);
 
 			List<ItemStack> itemStacks = new ArrayList<>();
 			for (LootPoolShell pool : lootPoolShells) {
@@ -189,7 +189,7 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 				LootPool lootPool = table.getPool(pool.getName());
 				
 				// geneate loot from pools
-				lootPool.generate(itemStacks::add, lootContext);
+				lootPool.addRandomItems(itemStacks::add, lootContext);
 			}
 			
 			// get effective rarity
@@ -223,7 +223,7 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 		
 		// spawn the item 
 		if (stack != null) {
-			InventoryHelper.spawnItemStack(world, (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), stack);
+			InventoryHelper.dropItemStack(world, (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), stack);
 		}
 
 		// remove the item entity

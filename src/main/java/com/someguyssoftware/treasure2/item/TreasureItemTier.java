@@ -16,53 +16,53 @@ import net.minecraft.util.LazyValue;
  */
 public enum TreasureItemTier implements IItemTier {
 	SKULL(2, 1800, 9.0F, 4.0F, 15, () -> {
-		return Ingredient.fromItems(Items.SKELETON_SKULL);
+		return Ingredient.of(Items.SKELETON_SKULL);
 	});
 
-	private final int harvestLevel;
-	private final int maxUses;
-	private final float efficiency;
-	private final float attackDamage;
-	private final int enchantability;
-	private final LazyValue<Ingredient> repairMaterial;
+	private final int level;
+	private final int uses;
+	private final float spped;
+	private final float attackDamageBonus;
+	private final int enchantmentValue;
+	private final LazyValue<Ingredient> repairIngredient;
 
-	private TreasureItemTier(int harvestLevelIn, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<Ingredient> repairMaterialIn) {
-		this.harvestLevel = harvestLevelIn;
-		this.maxUses = maxUsesIn;
-		this.efficiency = efficiencyIn;
-		this.attackDamage = attackDamageIn;
-		this.enchantability = enchantabilityIn;
-		this.repairMaterial = new LazyValue<>(repairMaterialIn);
+	private TreasureItemTier(int harvestLevelIn, int maxUsesIn, float speedIn, float attackDamageBonusIn, int enchantmentValueIn, Supplier<Ingredient> repairIngredientIn) {
+		this.level = harvestLevelIn;
+		this.uses = maxUsesIn;
+		this.spped = speedIn;
+		this.attackDamageBonus = attackDamageBonusIn;
+		this.enchantmentValue = enchantmentValueIn;
+		this.repairIngredient = new LazyValue<>(repairIngredientIn);
 	}
 
 	@Override
-	public int getMaxUses() {
-		return maxUses;
+	public int getUses() {
+		return uses;
 	}
 
 	@Override
-	public float getEfficiency() {
-		return efficiency;
+	public float getSpeed() {
+		return spped;
 	}
 
 	@Override
-	public float getAttackDamage() {
-		return attackDamage;
+	public float getAttackDamageBonus() {
+		return attackDamageBonus;
 	}
 
 	@Override
-	public int getHarvestLevel() {
-		return harvestLevel;
+	public int getLevel() {
+		return level;
 	}
 
 	@Override
-	public int getEnchantability() {
-		return enchantability;
+	public int getEnchantmentValue() {
+		return enchantmentValue;
 	}
 
 	@Override
-	public Ingredient getRepairMaterial() {
-		return this.repairMaterial.getValue();
+	public Ingredient getRepairIngredient() {
+		return this.repairIngredient.get();
 	}
 
 }

@@ -14,7 +14,7 @@ public class GemItem extends ModItem /*implements IPouchable*/ {
 	 * 
 	 */
 	public GemItem (String modID, String name, Item.Properties properties)	 {
-		super(modID, name, properties.group(TreasureItemGroups.MOD_ITEM_GROUP));
+		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP));
 	}
 
 }

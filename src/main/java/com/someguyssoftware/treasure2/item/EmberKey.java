@@ -34,14 +34,13 @@ public class EmberKey extends KeyItem {
 	 * 
 	 * Specials: [text] [color=gold]
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	
 		tooltip.add(
 				new TranslationTextComponent("tooltip.label.specials", 
-						TextFormatting.GOLD + new TranslationTextComponent("tooltip.ember_key.specials").getFormattedText())
+						TextFormatting.GOLD + new TranslationTextComponent("tooltip.ember_key.specials").getString())
 				);			
 	}
 	

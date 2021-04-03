@@ -34,11 +34,11 @@ public class EmberLock extends LockItem {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
 		tooltip.add(new TranslationTextComponent("tooltip.label.specials",
-				TextFormatting.GOLD + new TranslationTextComponent("tooltip.ember_lock.specials").getFormattedText())
+				TextFormatting.GOLD + new TranslationTextComponent("tooltip.ember_lock.specials").getString())
 				);		
 	}
 

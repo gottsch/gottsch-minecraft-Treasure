@@ -38,12 +38,12 @@ public class LightningKey extends KeyItem {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
 		tooltip.add(
 				new TranslationTextComponent("tooltip.label.specials", 
-						TextFormatting.GOLD + new TranslationTextComponent("tooltip.lightning_key.specials").getFormattedText())
+						TextFormatting.GOLD + new TranslationTextComponent("tooltip.lightning_key.specials").getString())
 				);	
 	}
 

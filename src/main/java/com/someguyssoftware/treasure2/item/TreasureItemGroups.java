@@ -30,7 +30,7 @@ public class TreasureItemGroups {
 		}
 
 		@Override
-		public ItemStack createIcon() {
+		public ItemStack makeIcon() {
 			return iconSupplier.get();
 		}
 	}

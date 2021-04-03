@@ -26,12 +26,12 @@ public class TreasureToolItem extends ModItem {
 	 * @param name
 	 */
 	public TreasureToolItem(String modID, String name, Item.Properties properties) {
-		super(modID, name, properties.group(TreasureItemGroups.MOD_ITEM_GROUP));
+		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP));
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);	
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);	
 		tooltip.add(new TranslationTextComponent("tooltip.label.treasure_tool"));
 	}	
 	
@@ -39,7 +39,7 @@ public class TreasureToolItem extends ModItem {
 	 * 
 	 */
 	@Override
-	public boolean hasContainerItem() {
+	public boolean hasContainerItem(ItemStack stack) {
 		return true;
 	}
 }

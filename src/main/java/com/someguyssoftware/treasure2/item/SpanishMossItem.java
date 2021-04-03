@@ -21,17 +21,17 @@ public class SpanishMossItem  extends ModItem {
 	 * 
 	 */
 	public SpanishMossItem(String modID, String name, Item.Properties properties) {
-		super(modID, name, properties.group(TreasureItemGroups.MOD_ITEM_GROUP));
+		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP));
 	}
 
 	protected boolean placeBlock(BlockItemUseContext context, BlockState state) {
-		BlockPos blockPos = context.getPos();
-		if (!state.isReplaceable(context)) {
-			blockPos.offset(context.getFace());
+		BlockPos blockPos = context.getClickedPos();
+		if (!state.canBeReplaced(context)) {
+			blockPos.relative(context.getClickedFace());
 		}		
-		BlockContext blockContext = new BlockContext(context.getWorld(), blockPos);
+		BlockContext blockContext = new BlockContext(context.getLevel(), blockPos);
 		if (blockContext.isAir() || blockContext.isReplaceable()) {
-			return context.getWorld().setBlockState(context.getPos(), state, 26);
+			return context.getLevel().setBlock(context.getClickedPos(), state, 26);
 		}
 		return false;	
 	}
