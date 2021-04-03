@@ -45,13 +45,13 @@ public class IronStrongboxTileEntityRenderer extends AbstractChestTileEntityRend
 //				// convert lock to an item stack
 //				ItemStack lockStack = new ItemStack(lockState.getLock());
 //
-//				matrixStack.push();
+//				matrixStack.pushPose();
 //				matrixStack.translate(lockState.getSlot().getXOffset(), lockState.getSlot().getYOffset(), lockState.getSlot().getZOffset());
-//				matrixStack.rotate(Vector3f.YP.rotationDegrees(lockState.getSlot().getRotation()));
+//				matrixStack.mulPose(Vector3f.YP.rotationDegrees(lockState.getSlot().getRotation()));
 //// if this works, can remove this method altogether and update abstract super to use getLocksScaleModifier
 //				matrixStack.scale(getLocksScaleModifier(), getLocksScaleModifier(), getLocksScaleModifier());
 //				Minecraft.getInstance().getItemRenderer().renderItem(lockStack, ItemCameraTransforms.TransformType.NONE, combinedLight, OverlayTexture.NO_OVERLAY, matrixStack, renderBuffer);
-//				matrixStack.pop();
+//				matrixStack.popPose();
 //			}
 //			//		}
 //		});

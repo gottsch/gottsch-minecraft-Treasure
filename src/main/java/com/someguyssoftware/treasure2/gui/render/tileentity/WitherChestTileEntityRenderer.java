@@ -24,6 +24,6 @@ public class WitherChestTileEntityRenderer extends AbstractChestTileEntityRender
 		float lidRotation = tileEntity.prevLidAngle + (tileEntity.lidAngle - tileEntity.prevLidAngle) * partialTicks;
         lidRotation = 1.0F - lidRotation;
         lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-        ((WitherChestModel)getModel()).getRightFrontDoor().rotateAngleY = -(lidRotation * (float)Math.PI / 2.0F);  
+        ((WitherChestModel)getModel()).getRightFrontDoor().yRot = -(lidRotation * (float)Math.PI / 2.0F);  
 	}
 }

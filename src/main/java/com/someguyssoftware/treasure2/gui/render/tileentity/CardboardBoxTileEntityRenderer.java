@@ -13,13 +13,13 @@ import com.someguyssoftware.treasure2.tileentity.CauldronChestTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -40,18 +40,18 @@ public class CardboardBoxTileEntityRenderer extends AbstractChestTileEntityRende
 //		lidRotation = 1.0F - lidRotation;
 //		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
 //		// NOTE positive rotation here (getLid() returns lidLeft property)
-//		getModel().getLid().rotateAngleZ = (lidRotation * (float)Math.PI / getAngleModifier());
+//		getModel().getLid().zRot = (lidRotation * (float)Math.PI / getAngleModifier());
 		
 		// update in the inner lid
 		float innerLidRotation = cte.prevInnerLidAngle + (cte.innerLidAngle - cte.prevInnerLidAngle) * partialTicks;
 		innerLidRotation = 1.0F - innerLidRotation;
 		innerLidRotation = 1.0F - innerLidRotation * innerLidRotation * innerLidRotation;
-		((CardboardBoxModel)getModel()).getInnerLid().rotateAngleX = (innerLidRotation * (float) Math.PI / getAngleModifier()); // not negated
+		((CardboardBoxModel)getModel()).getInnerLid().xRot = (innerLidRotation * (float) Math.PI / getAngleModifier()); // not negated
 		
 		float lidRotation = tileEntity.prevLidAngle + (tileEntity.lidAngle - tileEntity.prevLidAngle) * partialTicks;
 		lidRotation = 1.0F - lidRotation;
 		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-		getModel().getLid().rotateAngleZ = -(lidRotation * (float) Math.PI / getAngleModifier());
+		getModel().getLid().zRot = -(lidRotation * (float) Math.PI / getAngleModifier());
 	}
 	
 	@Override
@@ -72,7 +72,7 @@ public class CardboardBoxTileEntityRenderer extends AbstractChestTileEntityRende
 				// convert lock to an item stack
 				ItemStack lockStack = new ItemStack(lockState.getLock());
 
-				matrixStack.push();
+				matrixStack.pushPose();
 
 				// NOTE when rotating the item to match the face of chest, must adjust the
 				// amount of offset to the x,z axises and
@@ -81,11 +81,11 @@ public class CardboardBoxTileEntityRenderer extends AbstractChestTileEntityRende
 				matrixStack.translate(lockState.getSlot().getXOffset(), lockState.getSlot().getYOffset(), lockState.getSlot().getZOffset());
 
 				// rotate the locks on the x axis to lay flat
-				matrixStack.rotate(Vector3f.XP.rotationDegrees(90)); // NOTE changed from Y to X axis
-				matrixStack.rotate(Vector3f.ZP.rotationDegrees(lockState.getSlot().getRotation()));  // NOTE now Z axis is the Y axis since we rotated on the X axis first.
+				matrixStack.mulPose(Vector3f.XP.rotationDegrees(90)); // NOTE changed from Y to X axis
+				matrixStack.mulPose(Vector3f.ZP.rotationDegrees(lockState.getSlot().getRotation()));  // NOTE now Z axis is the Y axis since we rotated on the X axis first.
 				matrixStack.scale(0.35F, 0.35F, 0.35F);
-				Minecraft.getInstance().getItemRenderer().renderItem(lockStack, ItemCameraTransforms.TransformType.NONE, combinedLight, OverlayTexture.NO_OVERLAY, matrixStack, renderBuffer);
-				matrixStack.pop();
+				Minecraft.getInstance().getItemRenderer().renderStatic(lockStack, ItemCameraTransforms.TransformType.NONE, combinedLight, OverlayTexture.NO_OVERLAY, matrixStack, renderBuffer);
+				matrixStack.popPose();
 
 			}
 		}

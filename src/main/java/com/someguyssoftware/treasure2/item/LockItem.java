@@ -72,7 +72,7 @@ public class LockItem extends ModItem {
 	 * @param item
 	 */
 	public LockItem(String modID, String name, Item.Properties properties) {
-		super(modID, name, properties.group(TreasureItemGroups.MOD_ITEM_GROUP));
+		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP));
 		setCategory(Category.ELEMENTAL);
 		setRarity(Rarity.COMMON);
 		setCraftable(false);
@@ -83,10 +83,9 @@ public class LockItem extends ModItem {
 	 * RARE| EPIC] [color = Dark Blue] Category: [...] [color = Gold] Craftable: [Yes |
 	 * No] [color = Green | Dark Red] Accepts Keys: [list] [color = Gold]
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
 		tooltip.add(new TranslationTextComponent("tooltip.label.rarity",
 				TextFormatting.DARK_BLUE + getRarity().toString()));
@@ -94,14 +93,13 @@ public class LockItem extends ModItem {
 
 		ITextComponent craftable = null;
 		if (isCraftable()) {
-			craftable = new TranslationTextComponent("tooltip.yes").applyTextStyle(TextFormatting.GREEN);
+			craftable = new TranslationTextComponent("tooltip.yes").withStyle(TextFormatting.GREEN);
 		} else {
-			craftable = new TranslationTextComponent("tooltip.no").applyTextStyle(TextFormatting.DARK_RED);
+			craftable = new TranslationTextComponent("tooltip.no").withStyle(TextFormatting.DARK_RED);
 		}
 		tooltip.add(new TranslationTextComponent("tooltip.label.craftable", craftable));
 
-		// TODO this probably doesn't work
-		String keyList = getKeys().stream().map(e -> e.getName().getFormattedText())
+		String keyList = getKeys().stream().map(e -> e.getName(null).getString())
 				.collect(Collectors.joining(","));
 
 		tooltip.add(new TranslationTextComponent("tooltip.label.accepts_keys", TextFormatting.GOLD + keyList));
@@ -111,30 +109,30 @@ public class LockItem extends ModItem {
 	 * 
 	 */
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
+	public ActionResultType useOn(ItemUseContext context) {
 
-		BlockPos chestPos = context.getPos();		
-		Block block = context.getWorld().getBlockState(chestPos).getBlock();
+		BlockPos chestPos = context.getClickedPos();		
+		Block block = context.getLevel().getBlockState(chestPos).getBlock();
 //		Treasure.LOGGER.info("LockItem | onItemUse | chestPos start -> {}", chestPos);
 		// if the block is a proxy of a chest (ie wither chest top block or other special block)
 		if (block instanceof ITreasureChestProxy) {
 			Treasure.LOGGER.info("LockItem | onItemUse | block is an ITreasureChestProxy");
 			chestPos = ((ITreasureChestProxy) block).getChestPos(chestPos);
-			block = context.getWorld().getBlockState(chestPos).getBlock();
+			block = context.getLevel().getBlockState(chestPos).getBlock();
 		}
 //		Treasure.LOGGER.info("LockItem | onItemUse | chestPos after proxy check -> {}", chestPos);
 		// determine if block at pos is a treasure chest
 		if (block instanceof AbstractChestBlock) {
 			// get the tile entity
-			AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) context.getWorld().getTileEntity(chestPos);
+			AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) context.getLevel().getBlockEntity(chestPos);
 //			Treasure.LOGGER.info("LockItem | onItemUse | tileEntity -> {}", te);
 			// exit if on the client
-			if (WorldInfo.isClientSide(context.getWorld())) {
+			if (WorldInfo.isClientSide(context.getLevel())) {
 				return ActionResultType.FAIL;
 			}
 
 			try {
-				ItemStack heldItem = context.getPlayer().getHeldItem(context.getHand());
+				ItemStack heldItem = context.getPlayer().getItemInHand(context.getHand());
 				// handle the lock
 				// NOTE don't use the return boolean as the locked flag here, as the chest is
 				// already locked and if the method was
@@ -144,7 +142,7 @@ public class LockItem extends ModItem {
 				Treasure.LOGGER.error("error: ", e);
 			}
 		}
-		return super.onItemUse(context);
+		return super.useOn(context);
 	}
 
 	/**

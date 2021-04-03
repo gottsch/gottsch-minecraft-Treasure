@@ -391,8 +391,8 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 */
 	@Override
-	public void read(CompoundNBT parentNBT) {
-		super.read(parentNBT);
+	public void load(BlockState state, CompoundNBT parentNBT) {
+		super.load(parentNBT);
 
 		try {
 			readLockStatesFromNBT(parentNBT);
@@ -421,21 +421,22 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	@Nullable
 	public SUpdateTileEntityPacket getUpdatePacket() {
 		//		Treasure.LOGGER.info("getUpdatePacket is writing packet");
-		return new SUpdateTileEntityPacket(this.pos, 3, this.getUpdateTag());
+		// TODO write data into the nbttag
+		return new SUpdateTileEntityPacket(this.worldPosition, /*3*/ -1, this.getUpdateTag());
 	}
 
 	@Override
 	public CompoundNBT getUpdateTag() {
 		//		Treasure.LOGGER.info("getUpdateTag is writing data");
-		return this.write(new CompoundNBT());
+		return this.save(new CompoundNBT());
 	}
 
-	@Override
+	@Override 
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
 		//		Treasure.LOGGER.info("onDataPacket is reading data");
 		//		super.onDataPacket(net, pkt);
 		//		handleUpdateTag(pkt.getNbtCompound());
-		read(pkt.getNbtCompound());
+		load(null, pkt.getTag());
 	}
 
 	/**
@@ -455,9 +456,9 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * Sync client and server states
 	 */
 	public void sendUpdates() {
-		BlockState blockState = world.getBlockState(pos);
-		world.markBlockRangeForRenderUpdate(pos, blockState, blockState);
-		world.notifyBlockUpdate(pos, blockState, blockState, 3);
+		BlockState blockState = level.getBlockState(getBlockPos());
+		level.markBlockRangeForRenderUpdate(getBlockPos(), blockState, blockState);
+		level.notifyBlockUpdate(getBlockPos(), blockState, blockState, 3);
 		//		world.scheduleBlockUpdate(pos, this.getType(), 0, 0); ??? replacement
 		markDirty();
 	}

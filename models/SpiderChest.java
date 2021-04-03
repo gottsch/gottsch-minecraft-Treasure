@@ -13,15 +13,15 @@ public class custom_model extends ModelBase {
 	private final ModelRenderer bone;
 
 	public custom_model() {
-		textureWidth = 64;
-		textureHeight = 64;
+		texWidth = 64;
+		texHeight = 64;
 
 		bone2 = new ModelRenderer(this);
-		bone2.setRotationPoint(0.0F, 12.0F, 8.0F);
+		bone2.setPos(0.0F, 12.0F, 8.0F);
 		bone2.cubeList.add(new ModelBox(bone2, 0, 22, -6.0F, -3.0F, -16.0F, 12, 3, 16, 0.01F, false));
 
 		bone = new ModelRenderer(this);
-		bone.setRotationPoint(0.0F, 24.0F, 0.0F);
+		bone.setPos(0.0F, 24.0F, 0.0F);
 		bone.cubeList.add(new ModelBox(bone, 0, 0, -6.0F, -13.0F, -8.0F, 12, 6, 16, 0.0F, false));
 		bone.cubeList.add(new ModelBox(bone, 8, 41, 6.0F, -10.0F, -7.0F, 2, 10, 2, 0.0F, false));
 		bone.cubeList.add(new ModelBox(bone, 0, 41, 6.0F, -10.0F, -3.0F, 2, 10, 2, 0.0F, false));
@@ -39,8 +39,8 @@ public class custom_model extends ModelBase {
 		bone.render(f5);
 	}
 	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-		modelRenderer.rotateAngleX = x;
-		modelRenderer.rotateAngleY = y;
-		modelRenderer.rotateAngleZ = z;
+		modelRenderer.xRot = x;
+		modelRenderer.yRot = y;
+		modelRenderer.zRot = z;
 	}
 }

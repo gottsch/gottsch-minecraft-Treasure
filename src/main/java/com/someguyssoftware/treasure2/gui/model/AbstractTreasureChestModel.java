@@ -8,7 +8,6 @@ import java.util.function.Function;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.block.ITreasureBlock;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;
@@ -26,19 +25,19 @@ public abstract class AbstractTreasureChestModel extends Model implements ITreas
 	}
 
 	@Override
-	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn,
+	public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn,
 			float red, float green, float blue, float alpha) {
 		Treasure.LOGGER.info("THIS SHOULD NEVER BE CALLED");
 	}
 	
 	@Override
 	public final RenderType getChestRenderType(ResourceLocation location) {
-		return super.getRenderType(location);
+		return super.renderType(location);
 	}
 	
 	protected void setRotation(ModelRenderer model, float x, float y, float z) {
-		model.rotateAngleX = x;
-		model.rotateAngleY = y;
-		model.rotateAngleZ = z;
+		model.xRot = x;
+		model.yRot = y;
+		model.zRot = z;
 	}
 }

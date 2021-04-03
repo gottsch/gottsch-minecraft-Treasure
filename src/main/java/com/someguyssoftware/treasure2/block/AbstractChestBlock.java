@@ -147,6 +147,16 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 		builder.add(FACING);
 	}
 
+	// TODO make interface and add to interface
+	/**
+	 * Convenience method.
+	 * @param state
+	 * @return
+	 */
+	public static Direction getFacing(BlockState state) {
+		return state.getValue(FACING);
+	}
+	
 	/**
 	 * 
 	 */

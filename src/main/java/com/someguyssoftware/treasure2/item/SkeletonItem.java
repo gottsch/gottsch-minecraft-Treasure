@@ -24,14 +24,15 @@ public class SkeletonItem extends ModBlockItem {
 	 * 
 	 */
 	public SkeletonItem(String modID, String name, Block block, Item.Properties properties) {
-		super(modID, name, block, properties.maxStackSize(MAX_STACK_SIZE).group(TreasureItemGroups.MOD_ITEM_GROUP));
+		super(modID, name, block, properties.stacksTo(MAX_STACK_SIZE).tab(TreasureItemGroups.MOD_ITEM_GROUP));
 	}
 
+	@Override
 	protected boolean placeBlock(BlockItemUseContext context, BlockState state) {
-		BlockPos blockPos = context.getPos().offset(state.get(SkeletonBlock.FACING).getOpposite());
-		BlockContext blockContext = new BlockContext(context.getWorld(), blockPos);
+		BlockPos blockPos = context.getClickedPos().relative(state.getValue(SkeletonBlock.FACING).getOpposite());
+		BlockContext blockContext = new BlockContext(context.getLevel(), blockPos);
 		if (blockContext.isAir() || blockContext.isReplaceable()) {
-			return context.getWorld().setBlockState(context.getPos(), state, 26);
+			return context.getLevel().setBlock(context.getClickedPos(), state, 26);
 		}
 		return false;
 	}

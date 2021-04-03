@@ -45,36 +45,36 @@ public class TreasureGuis {
 		// register the factory that is used on the client to generate Screen corresponding to our Container
 		@SubscribeEvent
 		public static void onClientSetupEvent(FMLClientSetupEvent event) {
-			ScreenManager.registerFactory(TreasureContainers.STANDARD_CHEST_CONTAINER_TYPE, StandardChestContainerScreen::new);
-			ScreenManager.registerFactory(TreasureContainers.STRONGBOX_CHEST_CONTAINER_TYPE, StrongboxChestContainerScreen::new);
-			ScreenManager.registerFactory(TreasureContainers.WITHER_CHEST_CONTAINER_TYPE, WitherChestContainerScreen::new);
-			ScreenManager.registerFactory(TreasureContainers.SKULL_CHEST_CONTAINER_TYPE, SkullChestContainerScreen::new);
-			ScreenManager.registerFactory(TreasureContainers.COMPRESSOR_CHEST_CONTAINER_TYPE, CompressorChestContainerScreen::new);
+			ScreenManager.register(TreasureContainers.STANDARD_CHEST_CONTAINER_TYPE, StandardChestContainerScreen::new);
+			ScreenManager.register(TreasureContainers.STRONGBOX_CHEST_CONTAINER_TYPE, StrongboxChestContainerScreen::new);
+			ScreenManager.register(TreasureContainers.WITHER_CHEST_CONTAINER_TYPE, WitherChestContainerScreen::new);
+			ScreenManager.register(TreasureContainers.SKULL_CHEST_CONTAINER_TYPE, SkullChestContainerScreen::new);
+			ScreenManager.register(TreasureContainers.COMPRESSOR_CHEST_CONTAINER_TYPE, CompressorChestContainerScreen::new);
 
 			// tell the renderer that the base is rendered using CUTOUT_MIPPED (to match the Block Hopper)
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.WOOD_CHEST, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.CRATE_CHEST, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.MOLDY_CRATE_CHEST, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.IRONBOUND_CHEST, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.PIRATE_CHEST, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.IRON_STRONGBOX, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.GOLD_STRONGBOX, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.DREAD_PIRATE_CHEST, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.WITHER_CHEST, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.SAFE, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.COMPRESSOR_CHEST, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.SKULL_CHEST, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.GOLD_SKULL_CHEST, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.CRYSTAL_SKULL_CHEST, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.CAULDRON_CHEST, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.SPIDER_CHEST, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.VIKING_CHEST, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.CARDBOARD_BOX, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.MILK_CRATE, RenderType.getCutoutMipped());
-			RenderTypeLookup.setRenderLayer(TreasureBlocks.RUBY_ORE, RenderType.getCutoutMipped());
-            RenderTypeLookup.setRenderLayer(TreasureBlocks.SAPPHIRE_ORE, RenderType.getCutoutMipped());
-            RenderTypeLookup.setRenderLayer(TreasureBlocks.SPANISH_MOSS, RenderType.getCutoutMipped());
-            RenderTypeLookup.setRenderLayer(TreasureBlocks.SKELETON, RenderType.getCutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.WOOD_CHEST, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.CRATE_CHEST, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.MOLDY_CRATE_CHEST, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.IRONBOUND_CHEST, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.PIRATE_CHEST, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.IRON_STRONGBOX, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.GOLD_STRONGBOX, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.DREAD_PIRATE_CHEST, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.WITHER_CHEST, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.SAFE, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.COMPRESSOR_CHEST, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.SKULL_CHEST, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.GOLD_SKULL_CHEST, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.CRYSTAL_SKULL_CHEST, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.CAULDRON_CHEST, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.SPIDER_CHEST, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.VIKING_CHEST, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.CARDBOARD_BOX, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.MILK_CRATE, RenderType.cutoutMipped());
+			RenderTypeLookup.setRenderLayer(TreasureBlocks.RUBY_ORE, RenderType.cutoutMipped());
+            RenderTypeLookup.setRenderLayer(TreasureBlocks.SAPPHIRE_ORE, RenderType.cutoutMipped());
+            RenderTypeLookup.setRenderLayer(TreasureBlocks.SPANISH_MOSS, RenderType.cutoutMipped());
+            RenderTypeLookup.setRenderLayer(TreasureBlocks.SKELETON, RenderType.cutoutMipped());
             
 			// register the custom renderer for our tile entity
 			ClientRegistry.bindTileEntityRenderer(TreasureTileEntities.WOOD_CHEST_TILE_ENTITY_TYPE, WoodChestTileEntityRenderer::new);

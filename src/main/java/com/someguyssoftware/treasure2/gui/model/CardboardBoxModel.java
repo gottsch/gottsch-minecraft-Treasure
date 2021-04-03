@@ -22,37 +22,37 @@ public class CardboardBoxModel extends AbstractTreasureChestModel {
 	private final ModelRenderer northFlap;
 
 	public CardboardBoxModel() {
-		super(RenderType::getEntityCutout);
+		super(RenderType::entityCutout);
 		
-		textureWidth = 128;
-		textureHeight = 128;
+		texWidth = 128;
+		texHeight = 128;
 
 		base = new ModelRenderer(this);
-		base.setRotationPoint(7.0F, 10.0F, -7.0F);
-		base.setTextureOffset(0, 0).addBox(-14.0F, 0.0F, 0.0F, 14, 14, 14, 0.0F, false);
+		base.setPos(7.0F, 10.0F, -7.0F);
+		base.texOffs(0, 0).addBox(-14.0F, 0.0F, 0.0F, 14, 14, 14, 0.0F, false);
 
 		rightFlap = new ModelRenderer(this);
-		rightFlap.setRotationPoint(7.0F, 10.0F, 0.0F);
-		rightFlap.setTextureOffset(28, 29).addBox(-7.0F, -1.0F, -7.0F, 7, 1, 14, 0.0F, false);
+		rightFlap.setPos(7.0F, 10.0F, 0.0F);
+		rightFlap.texOffs(28, 29).addBox(-7.0F, -1.0F, -7.0F, 7, 1, 14, 0.0F, false);
 
 		leftFlap = new ModelRenderer(this);
-		leftFlap.setRotationPoint(-7.0F, 10.0F, 0.0F);
-		leftFlap.setTextureOffset(0, 28).addBox(0.0F, -1.0F, -7.0F, 7, 1, 14, 0.0F, false);
+		leftFlap.setPos(-7.0F, 10.0F, 0.0F);
+		leftFlap.texOffs(0, 28).addBox(0.0F, -1.0F, -7.0F, 7, 1, 14, 0.0F, false);
 
 		southFlap = new ModelRenderer(this);
-		southFlap.setRotationPoint(0.0F, 10.0F, 7.0F);
-		southFlap.setTextureOffset(42, 7).addBox(-7.0F, -0.999F, -6.001F, 14, 1, 6, 0.0F, false);
+		southFlap.setPos(0.0F, 10.0F, 7.0F);
+		southFlap.texOffs(42, 7).addBox(-7.0F, -0.999F, -6.001F, 14, 1, 6, 0.0F, false);
 
 		northFlap = new ModelRenderer(this);
-		northFlap.setRotationPoint(0.0F, 10.0F, -7.0F);
-		northFlap.setTextureOffset(42, 0).addBox(-7.0F, -0.999F, 0.001F, 14, 1, 6, 0.0F, false);
+		northFlap.setPos(0.0F, 10.0F, -7.0F);
+		northFlap.texOffs(42, 0).addBox(-7.0F, -0.999F, 0.001F, 14, 1, 6, 0.0F, false);
 	}
 
 	@Override
 	public void renderAll(MatrixStack matrixStack, IVertexBuilder renderBuffer, int combinedLight, int combinedOverlay, AbstractTreasureChestTileEntity te) {
 		// set the angles of the latch to same as the lib
-		rightFlap.rotateAngleZ = -leftFlap.rotateAngleZ;
-		southFlap.rotateAngleX = -northFlap.rotateAngleX;
+		rightFlap.zRot = -leftFlap.zRot;
+		southFlap.xRot = -northFlap.xRot;
 		
 		base.render(matrixStack, renderBuffer, combinedLight, combinedOverlay);
 		rightFlap.render(matrixStack, renderBuffer, combinedLight, combinedOverlay);

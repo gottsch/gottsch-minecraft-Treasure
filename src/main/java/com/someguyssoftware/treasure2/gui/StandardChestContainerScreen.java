@@ -31,6 +31,7 @@ public class StandardChestContainerScreen extends ContainerScreen<StandardChestC
 		imageHeight = 167;
 	}
 
+	// TODO refactor - extract constants and create template pattern
 	/**
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 * Taken directly from ChestScreen

@@ -151,9 +151,9 @@ public abstract class AbstractChestContainer extends Container implements ITreas
 	// returns EMPTY_ITEM if the source slot is empty, or if none of the the source slot items could be moved
 	//   otherwise, returns a copy of the source stack
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity player, int sourceSlotIndex) {
-		Slot sourceSlot = (Slot)inventorySlots.get(sourceSlotIndex);
-		if (sourceSlot == null || !sourceSlot.getHasStack()) return ItemStack.EMPTY;
+	public ItemStack quickMoveStack(PlayerEntity player, int sourceSlotIndex) {
+		Slot sourceSlot = (Slot)slots.get(sourceSlotIndex);
+		if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
 		ItemStack sourceStack = sourceSlot.getItem();
 		ItemStack copyOfSourceStack = sourceStack.copy();
 	 

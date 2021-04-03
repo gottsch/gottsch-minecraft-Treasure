@@ -4,9 +4,7 @@
 package com.someguyssoftware.treasure2.gui.render.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.StandardChestBlock;
 import com.someguyssoftware.treasure2.gui.model.ITreasureChestModel;
 import com.someguyssoftware.treasure2.lock.LockState;
@@ -15,7 +13,6 @@ import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
@@ -23,8 +20,8 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 
 /**
@@ -63,7 +60,7 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 			return; // should never happen
 		}
 
-		World world = tileEntity.getWorld();
+		World world = tileEntity.getLevel();
 		boolean hasWorld = (world != null);
 		BlockState state = tileEntity.getBlockState();
 		Direction facing = Direction.NORTH;
@@ -72,7 +69,7 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 		}
 
 		// push the current transformation matrix + normals matrix
-		matrixStack.push(); 
+		matrixStack.pushPose(); 
 
 		// The model is defined centred on [0,0,0], so if we drew it at the current render origin, its centre would be
 		// at the corner of the block, sunk halfway into the ground and overlapping into the adjacent blocks.
@@ -81,7 +78,7 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 		matrixStack.translate(TRANSLATION_OFFSET.x, TRANSLATION_OFFSET.y, TRANSLATION_OFFSET.z); // translate
 		matrixStack.scale(-1, -1, 1);
 		float f = getHorizontalAngle(facing);
-		matrixStack.rotate(Vector3f.YP.rotationDegrees(-f));
+		matrixStack.mulPose(Vector3f.YP.rotationDegrees(-f));
 
 		
 		// TEST scale to half size to see if locks are rendered
@@ -93,7 +90,7 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 
 		IVertexBuilder renderBuffer = renderTypeBuffer.getBuffer(model.getChestRenderType(getTexture()));
 		model.renderAll(matrixStack, renderBuffer, combinedLight, combinedOverlay, tileEntity);
-		matrixStack.pop();		
+		matrixStack.popPose();		
 
 		//	////////////// render the locks //////////////////////////////////////
 		renderLocks(tileEntity, matrixStack, renderTypeBuffer, combinedLight, combinedOverlay);
@@ -129,7 +126,7 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 //					Treasure.LOGGER.info("Render LS:" + lockState);
 //				}
 				
-				matrixStack.push();
+				matrixStack.pushPose();
 				
 				// NOTE when rotating the item to match the face of chest, must adjust the
 				// amount of offset to the x,z axises and
@@ -137,10 +134,10 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 				// of the block
 				matrixStack.translate(lockState.getSlot().getXOffset(), lockState.getSlot().getYOffset(), lockState.getSlot().getZOffset());
 
-				matrixStack.rotate(Vector3f.YP.rotationDegrees(lockState.getSlot().getRotation()));
+				matrixStack.mulPose(Vector3f.YP.rotationDegrees(lockState.getSlot().getRotation()));
 				matrixStack.scale(getLocksScaleModifier(), getLocksScaleModifier(), getLocksScaleModifier());
-				Minecraft.getInstance().getItemRenderer().renderItem(lockStack, ItemCameraTransforms.TransformType.NONE, combinedLight, OverlayTexture.NO_OVERLAY, matrixStack, renderBuffer);
-				matrixStack.pop();
+				Minecraft.getInstance().getItemRenderer().renderStatic(lockStack, ItemCameraTransforms.TransformType.NONE, combinedLight, OverlayTexture.NO_OVERLAY, matrixStack, renderBuffer);
+				matrixStack.popPose();
 			}
 		}
 	}
@@ -154,7 +151,7 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 		float lidRotation = tileEntity.prevLidAngle + (tileEntity.lidAngle - tileEntity.prevLidAngle) * partialTicks;
 		lidRotation = 1.0F - lidRotation;
 		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-		model.getLid().rotateAngleX = -(lidRotation * (float) Math.PI / getAngleModifier());
+		model.getLid().xRot = -(lidRotation * (float) Math.PI / getAngleModifier());
 	}
 
 	/**

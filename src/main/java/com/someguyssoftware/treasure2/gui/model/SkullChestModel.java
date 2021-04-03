@@ -23,32 +23,32 @@ public class SkullChestModel extends AbstractTreasureChestModel {
 	 * 
 	 */
 	public SkullChestModel() {
-		super(RenderType::getEntityCutout);
-		textureWidth = 64;
-		textureHeight = 64;
+		super(RenderType::entityCutout);
+		texWidth = 64;
+		texHeight = 64;
 
 		top = new ModelRenderer(this, 0, 0);
 		top.addBox(-3F, -6F, -5F, 6, 1, 6);
-		top.setRotationPoint(0F, 21F, 2F);
-		top.setTextureSize(64, 64);
+		top.setPos(0F, 21F, 2F);
+		top.setTexSize(64, 64);
 		top.mirror = true;
 		setRotation(top, 0F, 0F, 0F);
 		head = new ModelRenderer(this, 0, 8);
 		head.addBox(-4F, -5F, -6F, 8, 5, 8);
-		head.setRotationPoint(0F, 21F, 2F);
-		head.setTextureSize(64, 64);
+		head.setPos(0F, 21F, 2F);
+		head.setTexSize(64, 64);
 		head.mirror = true;
 		setRotation(head, 0F, 0F, 0F);
 		jaw = new ModelRenderer(this, 0, 22);
 		jaw.addBox(-3F, 0F, -6F, 6, 1, 6);
-		jaw.setRotationPoint(0F, 21F, 2F);
-		jaw.setTextureSize(64, 64);
+		jaw.setPos(0F, 21F, 2F);
+		jaw.setTexSize(64, 64);
 		jaw.mirror = true;
 		setRotation(jaw, 0F, 0F, 0F);
 		jawBottom = new ModelRenderer(this, 0, 30);
 		jawBottom.addBox(-3F, 0F, -5F, 6, 2, 5);
-		jawBottom.setRotationPoint(0F, 22F, 1F);
-		jawBottom.setTextureSize(64, 64);
+		jawBottom.setPos(0F, 22F, 1F);
+		jawBottom.setTexSize(64, 64);
 		jawBottom.mirror = true;
 		setRotation(jawBottom, 0F, 0F, 0F);
 	}
@@ -58,8 +58,8 @@ public class SkullChestModel extends AbstractTreasureChestModel {
 	 */
 	@Override
 	public void renderAll(MatrixStack matrixStack, IVertexBuilder renderBuffer, int combinedLight, int combinedOverlay, AbstractTreasureChestTileEntity te) {
-		head.rotateAngleX = top.rotateAngleX;
-		jaw.rotateAngleX = top.rotateAngleX;
+		head.xRot = top.xRot;
+		jaw.xRot = top.xRot;
 		
 		// render all the parts
 		top.render(matrixStack, renderBuffer, combinedLight, combinedOverlay);
