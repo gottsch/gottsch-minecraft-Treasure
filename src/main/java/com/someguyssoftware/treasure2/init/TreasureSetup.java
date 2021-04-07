@@ -40,7 +40,7 @@ public class TreasureSetup implements IModSetup {
 		TreasureDecayRegistry.create(Treasure.instance);
 		
 		// add features to biomes
-		DeferredWorkQueue.runLater(TreasureFeatures::init);
+		TreasureFeatures.init();
 	}
 	
 	/**

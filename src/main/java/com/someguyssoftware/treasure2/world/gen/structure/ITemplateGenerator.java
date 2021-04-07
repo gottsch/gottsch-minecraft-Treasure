@@ -11,7 +11,9 @@ import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 
 /**
  * 
@@ -20,9 +22,9 @@ import net.minecraft.world.IWorld;
  */
 public interface ITemplateGenerator<RESULT extends IGeneratorResult<?>> {
 
-	public GeneratorResult<TemplateGeneratorData> generate(IWorld world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
 
-	public GeneratorResult<TemplateGeneratorData> generate(IWorld world, Random random, IDecayProcessor decayProcessor,
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, IDecayProcessor decayProcessor,
 			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords);
 	
 	/**
@@ -59,7 +61,5 @@ public interface ITemplateGenerator<RESULT extends IGeneratorResult<?>> {
 	
 	public Block getNullBlock();
 	public void setNullBlock(Block nullBlock);
-
-
 
 }

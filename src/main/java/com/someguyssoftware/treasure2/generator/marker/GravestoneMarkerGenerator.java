@@ -25,7 +25,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import net.minecraft.block.Block;
 import net.minecraft.block.ContainerBlock;
 import net.minecraft.util.Direction;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 
 /**
  * @author Mark Gottschling on Jan 27, 2019
@@ -48,7 +48,7 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 	 * 
 	 */
 	@Override
-	public GeneratorResult<GeneratorData> generate(IWorld world, Random random, ICoords coords) {
+	public GeneratorResult<GeneratorData> generate(World world, Random random, ICoords coords) {
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 		// check if markers are enabled
 		if (!TreasureConfig.MARKERS.markersAllowed.get()) {

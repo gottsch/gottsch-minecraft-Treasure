@@ -72,7 +72,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	 * @see net.minecraft.world.WorldSavedData#readFromNBT(net.minecraft.nbt.NBTTagCompound)
 	 */
 	@Override
-	public void read(CompoundNBT tag) {
+	public void load(CompoundNBT tag) {
 		Treasure.LOGGER.debug("loading treasure2 saved gen data...");
 
 		// treasure generation tag
@@ -193,7 +193,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	 * @see net.minecraft.world.WorldSavedData#writeToNBT(net.minecraft.nbt.NBTTagCompound)
 	 */
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
+	public CompoundNBT save(CompoundNBT tag) {
 		try {
 			// create a treasure compound			
 			CompoundNBT genTag = new CompoundNBT();
@@ -381,8 +381,8 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	 * @return
 	 */
 	public static TreasureGenerationSavedData get(IWorld world) {
-		DimensionSavedDataManager storage = ((ServerWorld)world).getSavedData();
-		TreasureGenerationSavedData data = (TreasureGenerationSavedData) storage.getOrCreate(TreasureGenerationSavedData::new, GEN_DATA_KEY);
+		DimensionSavedDataManager storage = ((ServerWorld)world).getDataStorage();
+		TreasureGenerationSavedData data = (TreasureGenerationSavedData) storage.computeIfAbsent(TreasureGenerationSavedData::new, GEN_DATA_KEY);
 		
 		if (data == null) {
 			data = new TreasureGenerationSavedData();

@@ -29,7 +29,6 @@ import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 /**
@@ -109,7 +108,7 @@ public class WitherChestGenerator implements IChestGenerator {
 	 * Don't place any markers
 	 */
 	@Override
-	public void addMarkers(IWorld world, Random random, ICoords coords, boolean isSurfaceChest) {
+	public void addMarkers(World world, Random random, ICoords coords, boolean isSurfaceChest) {
 		return;
 	}
 	

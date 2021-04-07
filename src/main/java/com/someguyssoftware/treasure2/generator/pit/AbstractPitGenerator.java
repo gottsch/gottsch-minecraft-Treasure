@@ -59,7 +59,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * 
 	 */
 	@Override
-	public boolean generateBase(IWorld world, Random random, ICoords surfaceCorods, ICoords spawnCoords) {
+	public boolean generateBase(World world, Random random, ICoords surfaceCorods, ICoords spawnCoords) {
 		Treasure.LOGGER.debug("generating base ...");
 		// at chest level
 		buildLayer(world, spawnCoords, Blocks.AIR);
@@ -71,13 +71,13 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	}
 	
 	@Override
-	public boolean generatePit(IWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public boolean generatePit(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		buildPit(world, random, spawnCoords, surfaceCoords, getBlockLayers());
 		return true;
 	}
 	
 	@Override
-	public boolean generateEntrance(IWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public boolean generateEntrance(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		Treasure.LOGGER.debug("generating entrance ...");
 		// pit enterance
 		buildLogLayer(world, random, surfaceCoords.add(0, -3, 0), DEFAULT_LOG);
@@ -96,7 +96,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @return
 	 */
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
 		result.getData().setSpawnCoords(spawnCoords);
 		result.getData().getChestContext().setCoords(spawnCoords);

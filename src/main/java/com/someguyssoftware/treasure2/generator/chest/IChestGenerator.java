@@ -50,9 +50,7 @@ import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -497,7 +495,7 @@ public interface IChestGenerator {
 	 * @param random
 	 * @param coods
 	 */
-	default public void addMarkers(IWorld world, Random random, ICoords coords, final boolean isSurfaceChest) {
+	default public void addMarkers(World world, Random random, ICoords coords, final boolean isSurfaceChest) {
 		if (!isSurfaceChest && TreasureConfig.MARKERS.markerStructuresAllowed.get() && RandomHelper
 				.checkProbability(random, TreasureConfig.MARKERS.markerStructureProbability.get())) {
 			Treasure.LOGGER.debug("generating a random structure marker -> {}", coords.toShortString());

@@ -8,9 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.function.Function;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import com.someguyssoftware.gottschcore.block.BlockContext;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.spatial.Coords;
@@ -34,24 +33,23 @@ import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.WitherChestGenerator;
 import com.someguyssoftware.treasure2.persistence.TreasureGenerationSavedData;
-import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraftforge.common.BiomeDictionary;
 
 /**
  * @author Mark Gottschling on Feb 2, 2021
@@ -107,7 +105,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	
 	private Map<String, Integer> chunksSinceLastDimensionTree = new HashMap<>();
 
-	public WitherTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactory) {
+	public WitherTreeFeature(Codec<NoFeatureConfig> configFactory) {
 		super(configFactory);
 		// NOTE ensure to set the registry name
 		this.setRegistryName(Treasure.MODID, "wither_tree");
@@ -136,13 +134,13 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	}
 	
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random,
-			BlockPos pos, NoFeatureConfig config) {
+	public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 
-		String dimensionName = world.getDimension().getType().getRegistryName().toString();
-		
+//		String dimensionName = world.getDimension().getType().getRegistryName().toString();
+		ResourceLocation dimensionName = WorldInfo.getDimension(seedReader.getLevel());
+	   		
 		// test the dimension white list
-		if (!TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(dimensionName)) {
+		if (!TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(dimensionName.toString())) {
 			return false;
 		}
 		
@@ -150,29 +148,29 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 		ICoords spawnCoords = new Coords(pos).add(WorldInfo.CHUNK_RADIUS, 0, WorldInfo.CHUNK_RADIUS);
 
 		// increment the chunk counts
-		incrementDimensionalTreeChunkCount(dimensionName);
+		incrementDimensionalTreeChunkCount(dimensionName.toString());
 		
 //		Treasure.LOGGER.debug("chunks since dimension {} last wither tree -> {}, min chunks -> {}", dimensionName, chunksSinceLastDimensionTree.get(dimensionName), TreasureConfig.WITHER_TREE.chunksPerTree.get());
 
 		// test if min chunks was met
-		if (chunksSinceLastDimensionTree.get(dimensionName) > TreasureConfig.WITHER_TREE.chunksPerTree.get()) {
+		if (chunksSinceLastDimensionTree.get(dimensionName.toString()) > TreasureConfig.WITHER_TREE.chunksPerTree.get()) {
 			// the get first surface y (could be leaves, trunk, water, etc)
-			int ySpawn = world.getChunk(pos).getTopBlockY(Heightmap.Type.WORLD_SURFACE, WorldInfo.CHUNK_RADIUS, WorldInfo.CHUNK_RADIUS);
+			int ySpawn = seedReader.getLevel().getChunk(pos).getHeight(Heightmap.Type.WORLD_SURFACE, WorldInfo.CHUNK_RADIUS, WorldInfo.CHUNK_RADIUS);
 			spawnCoords = spawnCoords.withY(ySpawn);
 			Treasure.LOGGER.debug("spawns coords -> {}", spawnCoords.toShortString());
 			
 			// 1. test if the override (global) biome is allowed
-			Biome biome = world.getBiome(spawnCoords.toPos());
+			Biome biome = seedReader.getLevel().getBiome(spawnCoords.toPos());
 			TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, TreasureConfig.WITHER_TREE.getBiomeWhiteList(),
 					TreasureConfig.WITHER_TREE.getBiomeBlackList());
 			if(biomeCheck == Result.BLACK_LISTED ) {
-				if (WorldInfo.isClientSide(world.getWorld())) {
-					Treasure.LOGGER.debug("{} is not a valid biome @ {} for wither tree", biome.getDisplayName().getString(), spawnCoords.toShortString());
+				if (WorldInfo.isClientSide(seedReader.getLevel())) {
+					Treasure.LOGGER.debug("{} is not a valid biome @ {} for wither tree", biome.getRegistryName().toString(), spawnCoords.toShortString());
 				}
 				else {
 					Treasure.LOGGER.debug("Biome {} is not valid @ {} for wither tree", spawnCoords.toShortString());
 				}
-				chunksSinceLastDimensionTree.put(dimensionName, 0);
+				chunksSinceLastDimensionTree.put(dimensionName.toString(), 0);
 				return false;
 			}
 			
@@ -183,28 +181,28 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 			}
 			
 			// 3. check against all registered chests
-			if (ITreasureFeature.isRegisteredChestWithinDistance(world, spawnCoords, TreasureConfig.CHESTS.surfaceChests.minDistancePerChest.get())) {
+			if (ITreasureFeature.isRegisteredChestWithinDistance(seedReader.getLevel(), spawnCoords, TreasureConfig.CHESTS.surfaceChests.minDistancePerChest.get())) {
 				Treasure.LOGGER.debug("The distance to the nearest treasure chest is less than the minimun required.");
 				return false;
 			}
 			
 			// reset chunks since last tree regardless of successful generation - results in a more rare, realistic and configurable generation.
-			chunksSinceLastDimensionTree.put(dimensionName, 0);
+			chunksSinceLastDimensionTree.put(dimensionName.toString(), 0);
 			
 			// generate the well
 			Treasure.LOGGER.debug("Attempting to generate a wither tree");
-			GeneratorResult<GeneratorData> result = generate(world, random, spawnCoords);
+			GeneratorResult<GeneratorData> result = generate(seedReader.getLevel(), random, spawnCoords);
 
 			if (result.isSuccess()) {
 				// add to registry
-				TreasureData.CHEST_REGISTRIES.get(dimensionName).register(spawnCoords.toShortString(), new ChestInfo(Rarity.SCARCE, spawnCoords));
+				TreasureData.CHEST_REGISTRIES.get(dimensionName.toString()).register(spawnCoords.toShortString(), new ChestInfo(Rarity.SCARCE, spawnCoords));
 			}	
 		}
 		
 		// save world data
-		TreasureGenerationSavedData savedData = TreasureGenerationSavedData.get(world.getWorld());
+		TreasureGenerationSavedData savedData = TreasureGenerationSavedData.get(seedReader.getLevel());
 		if (savedData != null) {
-			savedData.markDirty();
+			savedData.setDirty();
 		}
 		
 		return true;
@@ -217,7 +215,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param coords
 	 * @return
 	 */
-	public GeneratorResult<GeneratorData> generate(IWorld world, Random random, ICoords coords) {
+	public GeneratorResult<GeneratorData> generate(World world, Random random, ICoords coords) {
 		// result to return to the caller
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 
@@ -253,7 +251,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 		buildMainTree(world, random, surfaceCoords);
 		
 		// update size of grove
-		witherGroveBounds = witherGroveBounds.expand(CLEARING_RADIUS, 0, CLEARING_RADIUS);
+		witherGroveBounds = witherGroveBounds.expandTowards(CLEARING_RADIUS, 0, CLEARING_RADIUS);
 			
 		// determine how many extra "withered" trees to include in the area
 		int numTrees = RandomHelper.randomInt(TreasureConfig.WITHER_TREE.minSupportingTrees.get(), TreasureConfig.WITHER_TREE.maxSupportingTrees.get());
@@ -269,7 +267,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 			ICoords c = witherTreeCoords.rotate(xlen, zlen, degrees);
 
 			// get the yspawn
-			c = WorldInfo.getDryLandSurfaceCoords(world, c.withY(WorldInfo.getHeightValue(world, c)));
+			c = WorldInfo.getDryLandSurfaceCoords(world, c.withY(WorldInfo.getHeight(world, c)));
 
 			// add tree if criteria is met
 			if (c != null && c != WorldInfo.EMPTY_COORDS) {
@@ -279,9 +277,9 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 						buildTree(world, random, c);
 
 						// add tree clearing to the grove size
-						AxisAlignedBB witherTreeClearingBounds = new AxisAlignedBB(c.toPos()).expand(CLEARING_RADIUS, 0,
+						AxisAlignedBB witherTreeClearingBounds = new AxisAlignedBB(c.toPos()).expandTowards(CLEARING_RADIUS, 0,
 								CLEARING_RADIUS);
-						witherGroveBounds = witherGroveBounds.union(witherTreeClearingBounds);
+						witherGroveBounds = witherGroveBounds.minmax(witherTreeClearingBounds);
 					}
 				}
 			}
@@ -297,8 +295,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 			return result.fail();
 		}
 		WitherChestGenerator chestGen = new WitherChestGenerator();
-		GeneratorResult<ChestGeneratorData> chestResult = chestGen.generate(world, random, chestCoords, Rarity.SCARCE,
-				null);
+		GeneratorResult<ChestGeneratorData> chestResult = chestGen.generate(world, random, chestCoords, Rarity.SCARCE, null);
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}
@@ -323,7 +320,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 				if (Math.abs(xOffset) + Math.abs(zOffset) <= CLEARING_RADIUS) {
 
 					// find the first surface
-					int yHeight = WorldInfo.getHeightValue(world, coords.add(xOffset, 255, zOffset));
+					int yHeight = WorldInfo.getHeight(world, coords.add(xOffset, 255, zOffset));
 					buildCoords = WorldInfo.getDryLandSurfaceCoords(world,
 							new Coords(coords.getX() + xOffset, yHeight, coords.getZ() + zOffset));
 //					Treasure.LOGGER.debug("clearing surface coords -> {}", buildCoords.toShortString());
@@ -338,9 +335,9 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 						}
 						if (RandomHelper.checkProbability(random, DIRT_REPLACEMENT_PROBABILITY)) {
 							if (Math.abs(xOffset) < 4 && Math.abs(zOffset) < 4 && !(Math.abs(xOffset) == 3 && Math.abs(zOffset) == 3)) { // TODO magic numbers?!
-								world.setBlockState(buildCoords.add(0, -1, 0).toPos(), Blocks.PODZOL.getDefaultState(), 3);
+								world.setBlock(buildCoords.add(0, -1, 0).toPos(), Blocks.PODZOL.defaultBlockState(), 3);
 							} else {
-								world.setBlockState(buildCoords.add(0, -1, 0).toPos(), Blocks.DIRT.getDefaultState(), 3);
+								world.setBlock(buildCoords.add(0, -1, 0).toPos(), Blocks.DIRT.defaultBlockState(), 3);
 							}
 						}
 					}
@@ -350,7 +347,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 					// remove the tree
 					while (blockContext.equalsMaterial(Material.WOOD) && !(blockContext.getState().getBlock() instanceof ITreasureBlock)) {
 						// remove log
-						world.setBlockState(climbCoords.toPos(), Blocks.AIR.getDefaultState(), 3);
+						world.setBlock(climbCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);
 						// climb upwards
 						climbCoords = climbCoords.add(0, 1, 0);
 						blockContext = new BlockContext(world, climbCoords);
@@ -384,18 +381,18 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 				if (trunkIndex == 2 && y == 2) { // TODO <-- select the right index and the face facing in the right
 													// direction
 					if (!hasLifeBeenAdded) {
-						world.setBlockState(trunkCoords[trunkIndex].add(0, y, 0).toPos(),
-								TreasureBlocks.WITHER_SOUL_LOG.getDefaultState()
-										.with(WitherSoulLog.APPEARANCE, WitherSoulLog.Appearance.FACE)
-										.with(WitherSoulLog.FACING, Direction.SOUTH), 3);
+						world.setBlock(trunkCoords[trunkIndex].add(0, y, 0).toPos(),
+								TreasureBlocks.WITHER_SOUL_LOG.defaultBlockState()
+										.setValue(WitherSoulLog.APPEARANCE, WitherSoulLog.Appearance.FACE)
+										.setValue(WitherSoulLog.FACING, Direction.SOUTH), 3);
 						hasLifeBeenAdded = true;
 						continue;
 					}
 				}
 
 				// add the trunk
-				world.setBlockState(trunkCoords[trunkIndex].add(0, y, 0).toPos(),
-						TreasureBlocks.WITHER_LOG.getDefaultState(), 3);
+				world.setBlock(trunkCoords[trunkIndex].add(0, y, 0).toPos(),
+						TreasureBlocks.WITHER_LOG.defaultBlockState(), 3);
 
 				// add the decorations (branches, roots, top)
 				if (y == 0) {
@@ -431,14 +428,14 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 		for (int y = 0; y < maxSize; y++) {
 			if (y == 0) {
 				if (!hasLifeBeenAdded) {
-					world.setBlockState(coords.add(0, y, 0).toPos(), TreasureBlocks.WITHER_SOUL_LOG.getDefaultState(), 3);
+					world.setBlock(coords.add(0, y, 0).toPos(), TreasureBlocks.WITHER_SOUL_LOG.defaultBlockState(), 3);
 					hasLifeBeenAdded = true;
 					continue;
 				}
 			}
 
 			// add the trunk
-			world.setBlockState(coords.add(0, y, 0).toPos(), TreasureBlocks.WITHER_LOG.getDefaultState(), 3);
+			world.setBlock(coords.add(0, y, 0).toPos(), TreasureBlocks.WITHER_LOG.defaultBlockState(), 3);
 
 			// add the branches/roots
 			if (y == 0) {
@@ -483,19 +480,19 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 					// if able to place branch here
 					if (replaceBlockContext.isAir() || replaceBlockContext.isReplaceable()) {
 						// rotate the branch in the right direction
-						BlockState state = TreasureBlocks.WITHER_BRANCH.getDefaultState()
-								.with(WitherBranchBlock.FACING, direction);
+						BlockState state = TreasureBlocks.WITHER_BRANCH.defaultBlockState()
+								.setValue(WitherBranchBlock.FACING, direction);
 
 						// add the branch to the world
 //						world.setBlockState(c.add(0, y, 0).toPos(), state, 3);
-						WorldInfo.setBlockState(world, c.add(0, y, 0), state);
+						WorldInfo.setBlock(world, c.add(0, y, 0), state);
 						
 						// add spanish moss
 						if (RandomHelper.checkProbability(random, SPANISH_MOSS_PROBABILITY)) {
 							replaceBlockContext = new BlockContext(world, c.add(0, y - 1, 0));
 							if (replaceBlockContext.isAir() || replaceBlockContext.isReplaceable()) {
-								world.setBlockState(c.add(0, y - 1, 0).toPos(), TreasureBlocks.SPANISH_MOSS
-										.getDefaultState().with(SpanishMossBlock.ACTIVATED, true), 3);
+								world.setBlock(c.add(0, y - 1, 0).toPos(), TreasureBlocks.SPANISH_MOSS
+										.defaultBlockState().setValue(SpanishMossBlock.ACTIVATED, true), 3);
 							}
 						}
 					} else {
@@ -524,13 +521,13 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 				if (groundBlockContext.isSolid()
 						&& (replaceBlockContext.isAir() || replaceBlockContext.isReplaceable())) {
 					// rotate the branch in the right direction
-					BlockState state = TreasureBlocks.WITHER_ROOT.getDefaultState()
-							.with(WitherRootBlock.FACING, direction)
-							.with(WitherRootBlock.ACTIVATED, true);
+					BlockState state = TreasureBlocks.WITHER_ROOT.defaultBlockState()
+							.setValue(WitherRootBlock.FACING, direction)
+							.setValue(WitherRootBlock.ACTIVATED, true);
 
 					// add the branch to the world
 //					world.setBlockState(c.toPos(), state, 3);
-					WorldInfo.setBlockState(world, newCoords, state);
+					WorldInfo.setBlock(world, newCoords, state);
 //					 Treasure.logger.debug("Wither Tree building root @ " +  coords.toShortString());					
 				}
 			}
@@ -545,11 +542,11 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 */
 	private void addTop(IWorld world, Random random, ICoords coords, int y, Direction direction) {
 		if (direction != null) {
-			BlockState state = TreasureBlocks.WITHER_BROKEN_LOG.getDefaultState().with(WitherRootBlock.FACING,
+			BlockState state = TreasureBlocks.WITHER_BROKEN_LOG.defaultBlockState().setValue(WitherRootBlock.FACING,
 					direction);
 			// add the top log to the world
 //			world.setBlockState(coords.add(0, y, 0).toPos(), state, 3);
-			WorldInfo.setBlockState(world, coords.add(0, y, 0), state);
+			WorldInfo.setBlock(world, coords.add(0, y, 0), state);
 		}
 	}
 	
@@ -574,10 +571,10 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 			if (supportBlock == Blocks.DIRT || supportBlock == Blocks.SAND) {
 				// randomize between bush and stump
 				if (RandomHelper.checkProbability(random, 25)) {
-					world.setBlockState(surfaceCoords.toPos(), Blocks.OAK_LOG.getDefaultState(), 3);
+					world.setBlock(surfaceCoords.toPos(), Blocks.OAK_LOG.defaultBlockState(), 3);
 				}
 				else {
-					world.setBlockState(surfaceCoords.toPos(), Blocks.DEAD_BUSH.getDefaultState(), 3);
+					world.setBlock(surfaceCoords.toPos(), Blocks.DEAD_BUSH.defaultBlockState(), 3);
 				}
 			}
 		}
@@ -619,7 +616,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 					for (int x = 0; x < 2; x++) {
 						if (RandomHelper.checkProbability(random, 70)) {
 							ICoords spawnCoords = new Coords(rocksCoords).add(x, y, z);
-							world.setBlockState(spawnCoords.toPos(), Blocks.MOSSY_COBBLESTONE.getDefaultState(), 3);
+							world.setBlock(spawnCoords.toPos(), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3);
 						}
 					}
 				}

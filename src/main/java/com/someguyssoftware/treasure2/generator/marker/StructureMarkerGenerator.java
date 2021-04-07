@@ -32,7 +32,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.DungeonHooks;
 
@@ -49,7 +49,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 	}
 
 	@Override
-	public GeneratorResult<GeneratorData> generate(IWorld world, Random random, ICoords coords) {
+	public GeneratorResult<GeneratorData> generate(World world, Random random, ICoords coords) {
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 	
 		// get the biome ID

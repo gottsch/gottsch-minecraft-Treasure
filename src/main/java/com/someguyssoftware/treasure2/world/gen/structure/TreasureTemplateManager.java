@@ -255,8 +255,9 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 			Set<Biome> biomes = (Set<Biome>) ForgeRegistries.BIOMES.getValues();
 
 			for (Biome biome : biomes) {
-				if (!BiomeDictionary.hasType(biome, Type.END)
-						&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
+				if (biome.getBiomeCategory() != Biome.Category.THEEND && biome.getBiomeCategory() != Biome.Category.NETHER) {
+//				if (!BiomeDictionary.hasType(biome, Type.END)
+//						&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
 					if (!templatesByArchetypeTypeBiome.contains(key, biome.getRegistryName())) {
 						templatesByArchetypeTypeBiome.put(key, biome.getRegistryName(), new ArrayList<>(3));
 					}					
@@ -273,8 +274,9 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 						Treasure.LOGGER.debug("Unable to locate biome for name -> {}", biomeName);
 						continue;
 					}
-					if (biome != null && !BiomeDictionary.hasType(biome, Type.END)
-							&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
+//					if (biome != null && !BiomeDictionary.hasType(biome, Type.END)
+//							&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
+					if (biome.getBiomeCategory() != Biome.Category.THEEND && biome.getBiomeCategory() != Biome.Category.NETHER) {
 						if (!templatesByArchetypeTypeBiome.contains(key, biomeLoc)) {
 							templatesByArchetypeTypeBiome.put(key, biomeLoc, new ArrayList<>(3));
 						}
@@ -302,8 +304,9 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				// for each biome is the list
 				for (Biome biome : biomes) {
 					if (!blackListBiomeIDs.contains(biome.getRegistryName())
-							&& !BiomeDictionary.hasType(biome, Type.END)
-							&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
+							&& biome.getBiomeCategory() != Biome.Category.THEEND && biome.getBiomeCategory() != Biome.Category.NETHER) {
+//							&& !BiomeDictionary.hasType(biome, Type.END)
+//							&& !BiomeDictionary.hasType(biome, Type.NETHER)) {
 						if (!templatesByArchetypeTypeBiome.contains(key, biome.getRegistryName())) {
 							templatesByArchetypeTypeBiome.put(key, biome.getRegistryName(), new ArrayList<>(3));
 						}
@@ -375,7 +378,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 			boolean flag;
 
 			try {
-				CompoundNBT nbttagcompound = template.writeToNBT(new CompoundNBT());
+				CompoundNBT nbttagcompound = template.save(new CompoundNBT());
 				outputstream = new FileOutputStream(file2);
 				CompressedStreamTools.writeCompressed(nbttagcompound, outputstream);
 				return true;
@@ -437,7 +440,8 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				Biome biome = ForgeRegistries.BIOMES.getValue(entry.getKey());
 				String biomeName = "";
 				if (biome != null) {
-					biomeName = WorldInfo.isClientDistribution() ? biome.getDisplayName().getString() : biome.getRegistryName().toString() ;
+//					biomeName = WorldInfo.isClientDistribution() ? biome.getDisplayName().getString() : biome.getRegistryName().toString() ;
+					biomeName = biome.getRegistryName().toString();
 				}
 				else {
 					biomeName = String.format("No biome for {}", entry.getKey());

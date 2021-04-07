@@ -10,7 +10,6 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 /**
@@ -29,7 +28,7 @@ public class SimpleShortPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		Treasure.LOGGER.debug("Generating SimpleShortShaft.");
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(spawnCoords);

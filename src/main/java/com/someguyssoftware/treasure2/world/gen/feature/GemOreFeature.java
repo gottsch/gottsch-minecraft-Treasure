@@ -4,22 +4,21 @@ import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.function.Function;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.dimension.Dimension;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
@@ -32,7 +31,8 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 public class GemOreFeature extends Feature<OreFeatureConfig> implements ITreasureFeature {
 	private Map<String, Integer> chunksSinceLastDimensionOre	= new HashMap<>();
 	
-	public GemOreFeature(Function<Dynamic<?>, ? extends OreFeatureConfig> configFactory) {
+//	public GemOreFeature(Function<Dynamic<?>, ? extends OreFeatureConfig> configFactory) {
+	public GemOreFeature(Codec<OreFeatureConfig> configFactory) {
 		super(configFactory);
 		// NOTE ensure to set the registry name
 		this.setRegistryName(Treasure.MODID, "gem_ore");
@@ -54,19 +54,17 @@ public class GemOreFeature extends Feature<OreFeatureConfig> implements ITreasur
 		}
 	}
 
-	@Override
-	public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand,
-			BlockPos pos, OreFeatureConfig config) {
 
-		String dimensionName = worldIn.getDimension().getType().getRegistryName().toString();
+	@Override
+	public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random rand, BlockPos pos, OreFeatureConfig config) {
+//		String dimensionName = seedReader.getLevel().getDimension().getType().getRegistryName().toString();
+		ResourceLocation dimensionName = WorldInfo.getDimension(seedReader.getLevel());
 
 		// ore only generates in overworld
-		if (worldIn.getDimension().getType() != DimensionType.OVERWORLD) {
+		if (!WorldInfo.isSurfaceWorld(seedReader.getLevel())) {
+//		if (worldIn.getDimension().getType() != DimensionType.OVERWORLD) {
 			return false;
 		}
-		
-		// increment the chunk count
-//				chunksSinceLastOre++;
 
 		// inspect block to determine generation probability
 		double prob = 0;
@@ -101,8 +99,8 @@ public class GemOreFeature extends Feature<OreFeatureConfig> implements ITreasur
 
 	      for(int l1 = k; l1 <= k + j1; ++l1) {
 	         for(int i2 = i1; i2 <= i1 + j1; ++i2) {
-	            if (l <= worldIn.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, l1, i2)) {
-	               return this.generate(worldIn, rand, config, d0, d1, d2, d3, d4, d5, k, l, i1, j1, k1);
+	            if (l <= seedReader.getLevel().getHeight(Heightmap.Type.OCEAN_FLOOR_WG, l1, i2)) {
+	               return this.generate(seedReader.getLevel(), rand, config, d0, d1, d2, d3, d4, d5, k, l, i1, j1, k1);
 	            }
 	         }
 	      }
@@ -177,9 +175,9 @@ public class GemOreFeature extends Feature<OreFeatureConfig> implements ITreasur
 	                              int k2 = l1 - p_207803_16_ + (i2 - p_207803_17_) * p_207803_19_ + (j2 - p_207803_18_) * p_207803_19_ * p_207803_20_;
 	                              if (!bitset.get(k2)) {
 	                                 bitset.set(k2);
-	                                 blockpos$mutable.setPos(l1, i2, j2);
-	                                 if (config.target.getTargetBlockPredicate().test(worldIn.getBlockState(blockpos$mutable))) {
-	                                    worldIn.setBlockState(blockpos$mutable, config.state, 2);
+	                                 blockpos$mutable.set(l1, i2, j2);
+	                                 if (config.target.test(worldIn.getBlockState(blockpos$mutable), random)) {
+	                                    worldIn.setBlock(blockpos$mutable, config.state, 2);
 	                                    ++i;
 	                                 }
 	                              }

@@ -22,11 +22,11 @@ import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Rotation;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IServerWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
 /**
@@ -36,13 +36,13 @@ import net.minecraft.world.biome.Biome;
 public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorData>> {
 
 	@Override
-	public GeneratorResult<GeneratorData> generate(IWorld world, Random random,
+	public GeneratorResult<GeneratorData> generate(World world, Random random,
 			ICoords originalSpawnCoords, IWellsConfig config) {
 		return generate(world, random, originalSpawnCoords, null, config);
 	}
 	
 	@Override
-	public GeneratorResult<GeneratorData> generate(IWorld world, Random random,
+	public GeneratorResult<GeneratorData> generate(World world, Random random,
 			ICoords originalSpawnCoords, TemplateHolder templateHolder, IWellsConfig config) {
 		/*
 		 * Setup
@@ -101,6 +101,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		originalSpawnCoords = new Coords(originalSpawnCoords.getX(), actualSpawnCoords.getY(), originalSpawnCoords.getZ());
 		Treasure.LOGGER.debug("Well original spawn coords -> {}", originalSpawnCoords.toShortString());
 		// build well
+		IServerWorld w;
 		 GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, templateHolder,  placement, originalSpawnCoords);
 		Treasure.LOGGER.debug("Well gen  structure result -> {}", genResult.isSuccess());
 		 if (!genResult.isSuccess()) {
@@ -133,7 +134,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 	 * @param width
 	 * @param depth
 	 */
-	public void addDecorations(IWorld world, Random random, ICoords coords, int width, int depth) {
+	public void addDecorations(World world, Random random, ICoords coords, int width, int depth) {
 		ICoords startCoords = coords.add(-1, 0, -1);
 	
 		// TODO change to scan the entire size (x,z) of well footprint and detect the edges ... place flowers adjacent to edge blocks. 
@@ -172,7 +173,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 	}
 	
 	@Override
-	public void addDecoration(IWorld world, Random random, ICoords coords) {
+	public void addDecoration(World world, Random random, ICoords coords) {
 		BlockState blockState = null;
 		ICoords markerCoords = WorldInfo.getDryLandSurfaceCoords(world, coords);
 		

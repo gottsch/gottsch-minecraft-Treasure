@@ -29,7 +29,9 @@ import net.minecraft.state.EnumProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
 // TODO getMarkerBlock should be in TemplateGenerator as well (passed in)
@@ -43,7 +45,7 @@ import net.minecraftforge.registries.ForgeRegistries;
  */
 public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<TemplateGeneratorData>> {
 	// facing property of a vanilla chest
-	private static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+	private static final DirectionProperty FACING = HorizontalBlock.FACING;
 	private static final EnumProperty<Direction> CHEST_FACING = DirectionProperty.create("facing", Direction.class);
 
 	private Block nullBlock;
@@ -56,7 +58,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	}
 
 	@Override
-	public GeneratorResult<TemplateGeneratorData> generate(IWorld world, Random random, TemplateHolder templateHolder,
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, TemplateHolder templateHolder,
 			PlacementSettings placement, ICoords coords) {
 		return generate(world, random, null, templateHolder, placement, coords);
 	}
@@ -65,7 +67,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	 * 
 	 */
 	@Override
-	public GeneratorResult<TemplateGeneratorData> generate(IWorld world, Random random, IDecayProcessor decayProcessor,
+	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, IDecayProcessor decayProcessor,
 			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords) {
 
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
@@ -113,12 +115,12 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		// generate the structure
 		if (decayProcessor == null) {
 			Treasure.LOGGER.debug("no decay processor found.");
-			template.addBlocksToWorld(world, spawnCoords.toPos(), placement, 
-					getNullBlock(), TreasureTemplateRegistry.getTemplateManager().getReplacementMap(), 3);
+			template.placeInWorld(world, spawnCoords.toPos(), spawnCoords.toPos(), placement, 
+					getNullBlock(), TreasureTemplateRegistry.getTemplateManager().getReplacementMap(), random, 3);
 		} else {
 			decayProcessor.setDecayStartY(Math.abs(offset));
-			template.addBlocksToWorld(world, spawnCoords.toPos(), placement, 
-					decayProcessor, getNullBlock(), TreasureTemplateRegistry.getTemplateManager().getReplacementMap(), 3);
+			template.placeInWorld(world, spawnCoords.toPos(), spawnCoords.toPos(), placement, 
+					decayProcessor, getNullBlock(), TreasureTemplateRegistry.getTemplateManager().getReplacementMap(), random, 3);
 		}
 
 		// process all strcture markers, positioning absolutely
@@ -130,7 +132,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		}
 
 		// get the transformed size
-		BlockPos transformedSize = template.transformedSize(placement.getRotation());
+		BlockPos transformedSize = template.getSize(placement.getRotation());
 //		Treasure.LOGGER.debug("transformed size -> {}", transformedSize.toString());
 
 		// calculate the new spawn coords - that includes the rotation, and negates the
@@ -157,7 +159,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		BlockContext context = new BlockContext();
 
 		// get the absolute coords of chest
-		ICoords coords = new Coords(GottschTemplate.transformedCoords(placement, contextIn.getCoords()));
+		ICoords coords = new Coords(GottschTemplate.transform(placement, contextIn.getCoords()));
 		coords = spawnCoords.add(coords);
 		context.setCoords(coords);
 
@@ -166,8 +168,8 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		chestState = chestState.mirror(placement.getMirror());
 		chestState = chestState.rotate(placement.getRotation());
 		if (chestState.getProperties().contains(FACING)) {
-			BlockState modState = TreasureBlocks.WOOD_CHEST.getDefaultState().with(CHEST_FACING,
-					(Direction) chestState.get(FACING));
+			BlockState modState = TreasureBlocks.WOOD_CHEST.defaultBlockState().setValue(CHEST_FACING,
+					(Direction) chestState.getValue(FACING));
 			context.setState(modState);
 		} else {
 			context.setState(contextIn.getState());

@@ -7,9 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.function.Function;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
@@ -30,16 +29,16 @@ import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.ruins.SubmergedRuinGenerator;
 import com.someguyssoftware.treasure2.persistence.TreasureGenerationSavedData;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraft.world.server.ServerWorld;
 
 /**
  * 
@@ -56,7 +55,7 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 	 * 
 	 * @param configFactory
 	 */
-	public SubmergedChestFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactory) {
+	public SubmergedChestFeature(Codec<NoFeatureConfig> configFactory) {
 		super(configFactory);
 		// NOTE ensure to set the registry name
 		this.setRegistryName(Treasure.MODID, "submerged_chest");
@@ -90,13 +89,14 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 	 * NOTE equivalent to 1.12 generate()
 	 */
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random,
-			BlockPos pos, NoFeatureConfig config) {
-
-		String dimensionName = world.getDimension().getType().getRegistryName().toString();
-
+	public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+		ServerWorld world = seedReader.getLevel();
+		
+//		String dimensionName = world.getDimension().getType().getRegistryName().toString();
+		ResourceLocation dimensionName = WorldInfo.getDimension(seedReader.getLevel());
+		
 		// test the dimension white list
-		if (!TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(dimensionName)) {
+		if (!TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(dimensionName.toString())) {
 			return false;
 		}
 
@@ -114,22 +114,22 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 //		Treasure.LOGGER.debug("in biome -> {} @ {}", biome.getRegistryName(), pos);
 
 		// increment the chunk counts
-		incrementDimensionalChestChunkCount(dimensionName);
+		incrementDimensionalChestChunkCount(dimensionName.toString());
 
 		for (Rarity rarity : TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST)) {
-			incrementDimensionalRarityChestChunkCount(dimensionName, rarity);
+			incrementDimensionalRarityChestChunkCount(dimensionName.toString(), rarity);
 		}
 //		Treasure.LOGGER.debug("chunks since dimension {} last chest -> {}, min chunks -> {}", dimensionName, chunksSinceLastDimensionChest.get(dimensionName), TreasureConfig.CHESTS.surfaceChests.minChunksPerChest.get());
 
 		// test if min chunks was met
-		if (chunksSinceLastDimensionChest.get(dimensionName)/*chunksSinceLastChest*/ > TreasureConfig.CHESTS.submergedChests.minChunksPerChest.get()) {
+		if (chunksSinceLastDimensionChest.get(dimensionName.toString())/*chunksSinceLastChest*/ > TreasureConfig.CHESTS.submergedChests.minChunksPerChest.get()) {
 
 			// the get first surface y (could be leaves, trunk, water, etc)
-			int ySpawn = world.getChunk(pos).getTopBlockY(Heightmap.Type.WORLD_SURFACE, WorldInfo.CHUNK_RADIUS, WorldInfo.CHUNK_RADIUS);
+			int ySpawn = world.getChunk(pos).getHeight(Heightmap.Type.WORLD_SURFACE, WorldInfo.CHUNK_RADIUS, WorldInfo.CHUNK_RADIUS);
 			spawnCoords = spawnCoords.withY(ySpawn);
 			Treasure.LOGGER.debug("spawns coords -> {}", spawnCoords.toShortString());
 			//			chunksSinceLastChest = 0;
-			chunksSinceLastDimensionChest.put(dimensionName, 0);
+			chunksSinceLastDimensionChest.put(dimensionName.toString(), 0);
 
 			// determine what type to generate
 			Rarity rarity = (Rarity) TreasureData.RARITIES_MAP.get(WorldGenerators.SUBMERGED_CHEST).get(random.nextInt(TreasureData.RARITIES_MAP.get(WorldGenerators.SUBMERGED_CHEST).size()));
@@ -141,7 +141,7 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 			}
 			Treasure.LOGGER.debug("config for rarity -> {} = {}", rarity, chestConfig);
 			// get the chunks for dimensional rarity chest
-			int chunksPerRarity = chunksSinceLastDimensionRarityChest.get(dimensionName).get(rarity);//chunksSinceLastRarityChest.get(rarity);
+			int chunksPerRarity = chunksSinceLastDimensionRarityChest.get(dimensionName.toString()).get(rarity);//chunksSinceLastRarityChest.get(rarity);
 
 			Treasure.LOGGER.debug("chunks per rarity {} -> {}, config chunks per chest -> {}", rarity, chunksPerRarity, chestConfig.getChunksPerChest());
 			if (chunksPerRarity >= chestConfig.getChunksPerChest()) {
@@ -158,8 +158,8 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 				// 2. test if the override (global) biome is allowed
 				TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList());
 				if(biomeCheck == Result.BLACK_LISTED ) {
-					if (WorldInfo.isClientSide(world.getWorld())) {
-						Treasure.LOGGER.debug("biome {} is not a valid biome @ {}", biome.getDisplayName().getString(), spawnCoords.toShortString());
+					if (WorldInfo.isClientSide(world)) {
+						Treasure.LOGGER.debug("biome {} is not a valid biome @ {}", biome.getRegistryName().toString(), spawnCoords.toShortString());
 					}
 					else {
 						Treasure.LOGGER.debug("biome {} is not valid @ {}",biome.getRegistryName(), spawnCoords.toShortString());
@@ -187,7 +187,7 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 				}				
 
 				// reset chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
-				chunksSinceLastDimensionRarityChest.get(dimensionName).put(rarity, 0);
+				chunksSinceLastDimensionRarityChest.get(dimensionName.toString()).put(rarity, 0);
 
 				// generate the chest/pit/chambers
 				Treasure.LOGGER.debug("Attempting to generate submerged chest.");
@@ -201,16 +201,16 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 
 				if (result.isSuccess()) {
 					// add to registry
-					TreasureData.CHEST_REGISTRIES.get(dimensionName).register(spawnCoords.toShortString(), new ChestInfo(rarity, spawnCoords));
+					TreasureData.CHEST_REGISTRIES.get(dimensionName.toString()).register(spawnCoords.toShortString(), new ChestInfo(rarity, spawnCoords));
 					// reset the chunk counts
-					chunksSinceLastDimensionChest.put(dimensionName, 0);
+					chunksSinceLastDimensionChest.put(dimensionName.toString(), 0);
 				}				
 			}
 
 			// save world data
-			TreasureGenerationSavedData savedData = TreasureGenerationSavedData.get(world.getWorld());
+			TreasureGenerationSavedData savedData = TreasureGenerationSavedData.get(world);
 			if (savedData != null) {
-				savedData.markDirty();
+				savedData.setDirty();
 			}
 		}
 		return true;
@@ -226,7 +226,7 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 	 * @param iChestConfig
 	 * @return
 	 */
-	private GeneratorResult<GeneratorData> generateChest(IWorld world, Random random, ICoords coords, Rarity rarity,
+	private GeneratorResult<GeneratorData> generateChest(World world, Random random, ICoords coords, Rarity rarity,
 			IChestGenerator chestGenerator, IChestConfig config) {
 
 		// result to return to the caller
@@ -282,7 +282,7 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 	 * @param config
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generateSubmergedRuins(IWorld world, Random random, ICoords spawnCoords,
+	public GeneratorResult<ChestGeneratorData> generateSubmergedRuins(World world, Random random, ICoords spawnCoords,
 			IChestConfig config) {
 		
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
@@ -326,12 +326,12 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 	 * @param minDistance
 	 * @return
 	 */
-	public boolean isRegisteredChestWithinDistance(IWorld world, ICoords coords, int minDistance) {
+	public boolean isRegisteredChestWithinDistance(World world, ICoords coords, int minDistance) {
 
 		double minDistanceSq = minDistance * minDistance;
 
 		// get a list of dungeons
-		List<ChestInfo> infos = TreasureData.CHEST_REGISTRIES.get(world.getDimension().getType().getRegistryName().toString()).getValues();
+		List<ChestInfo> infos = TreasureData.CHEST_REGISTRIES.get(WorldInfo.getDimension(world).toString()).getValues();
 
 		if (infos == null || infos.size() == 0) {
 			Treasure.LOGGER.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");

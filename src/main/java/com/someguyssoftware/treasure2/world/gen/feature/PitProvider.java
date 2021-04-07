@@ -22,6 +22,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 
 /**
  * TODO should pit provider use non-static method - require a concrete instance ?
@@ -41,7 +42,7 @@ public class PitProvider {
 	 * @param config
 	 * @return
 	 */
-	public static GeneratorResult<ChestGeneratorData> generatePit(IWorld world, Random random, Rarity chestRarity, ICoords markerCoords, IChestConfig config) {
+	public static GeneratorResult<ChestGeneratorData> generatePit(World world, Random random, Rarity chestRarity, ICoords markerCoords, IChestConfig config) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<ChestGeneratorData>(ChestGeneratorData.class);
 		GeneratorResult<ChestGeneratorData> pitResult = new GeneratorResult<ChestGeneratorData>(ChestGeneratorData.class);
 

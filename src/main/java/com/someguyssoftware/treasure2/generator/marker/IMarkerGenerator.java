@@ -8,7 +8,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.generator.IGeneratorResult;
 
-import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 
 /**
  * @author Mark Gottschling on Jan 27, 2019
@@ -24,6 +24,6 @@ public interface IMarkerGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param config
 	 * @return
 	 */
-	public abstract RESULT generate(IWorld world, Random random, ICoords spawnCoords);
+	public abstract RESULT generate(World world, Random random, ICoords spawnCoords);
 	
 }
