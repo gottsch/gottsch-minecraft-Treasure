@@ -3,6 +3,7 @@ package com.someguyssoftware.treasure2.particle;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -19,11 +20,11 @@ public class FlameParticleFactory implements IParticleFactory<FlameParticleData>
 
   @Nullable
   @Override
-  public Particle makeParticle(FlameParticleData flameParticleData, World world, double xPos, double yPos, double zPos, double xVelocity, double yVelocity, double zVelocity) {
+  public Particle createParticle(FlameParticleData flameParticleData, ClientWorld world, double xPos, double yPos, double zPos, double xVelocity, double yVelocity, double zVelocity) {
     FlameParticle newParticle = new FlameParticle(world, xPos, yPos, zPos, xVelocity, yVelocity, zVelocity,
             flameParticleData.getTint(), flameParticleData.getDiameter(),
             sprites);
-    newParticle.selectSpriteRandomly(sprites);  // choose a random sprite from the available list (in this case there is only one)
+    newParticle.pickSprite(sprites);  // choose a random sprite from the available list (in this case there is only one)
     return newParticle;
   }
 

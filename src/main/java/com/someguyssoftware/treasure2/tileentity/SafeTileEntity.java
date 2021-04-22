@@ -1,15 +1,11 @@
 package com.someguyssoftware.treasure2.tileentity;
 
-import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.treasure2.inventory.ITreasureContainer;
 import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TranslationTextComponent;
 
 /**
@@ -48,44 +44,19 @@ public class SafeTileEntity extends AbstractTreasureChestTileEntity {
 	public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player) {
 		return new StandardChestContainer(windowID, inventory, this);
 	}
-	
+
 	/**
 	 * Like the old updateEntity(), except more generic.
 	 */
 	@Override
-	public void tick() {
-		int x = this.pos.getX();
-		int y = this.pos.getY();
-		int z = this.pos.getZ();
-		++this.ticksSinceSync;
-
-		/*
-		 * recalculating if the chest is in use by any players
-		 */
-		if (WorldInfo.isServerSide(getWorld()) && this.numPlayersUsing != 0
-				&& (this.ticksSinceSync + x + y + z) % 200 == 0) {
-			this.numPlayersUsing = 0;
-
-			for (PlayerEntity entityplayer : this.world.getEntitiesWithinAABB(PlayerEntity.class,
-					new AxisAlignedBB((double) ((float) x - 5.0F), (double) ((float) y - 5.0F),
-							(double) ((float) z - 5.0F), (double) ((float) (x + 1) + 5.0F),
-							(double) ((float) (y + 1) + 5.0F), (double) ((float) (z + 1) + 5.0F)))) {
-				if (entityplayer.openContainer instanceof ITreasureContainer) {
-					IInventory iinventory = ((ITreasureContainer) entityplayer.openContainer).getContents();
-
-					if (iinventory == this) {
-						++this.numPlayersUsing;
-					}
-				}
-			}
-		}
+	public void updateEntityState() {
 
 		// save the previous positions and angles of safe components
 		this.prevLidAngle = this.lidAngle;
 		this.prevHandleAngle = this.handleAngle;
 
 		// opening ie. players
-		if (this.numPlayersUsing > 0) {
+		if (this.openCount > 0) {
 			// test the handle
 			if (this.handleAngle > -1.0F) {
 				isHandleOpen = false;
@@ -102,11 +73,7 @@ public class SafeTileEntity extends AbstractTreasureChestTileEntity {
 			if (isHandleOpen) {
 				// play the opening chest sound the at the beginning of opening
 				if (this.lidAngle == 0.0F) {
-//					double d1 = (double) x + 0.5D;
-//					double d2 = (double) z + 0.5D;
-//					this.world.playSound((PlayerEntity) null, d1, (double) y + 0.5D, d2, SoundEvents.BLOCK_CHEST_OPEN,
-//							SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
-					this.playSound(SoundEvents.BLOCK_CHEST_OPEN);
+					this.playSound(SoundEvents.CHEST_OPEN);
 				}
 
 				// test the lid
@@ -142,12 +109,7 @@ public class SafeTileEntity extends AbstractTreasureChestTileEntity {
 
 			// play the closing sound
 			if (this.lidAngle < 0.06F && f2 >= 0.06F) {
-//				double d3 = (double) x + 0.5D;
-//				double d0 = (double) z + 0.5D;
-//
-//				this.world.playSound((PlayerEntity) null, d3, (double) y + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE,
-//						SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
-				this.playSound(SoundEvents.BLOCK_CHEST_CLOSE);
+				this.playSound(SoundEvents.CHEST_CLOSE);
 			}
 
 			if (isLidClosed) {
@@ -163,7 +125,6 @@ public class SafeTileEntity extends AbstractTreasureChestTileEntity {
 					isHandleClosed = true;
 				}
 			}
-
 		}
 	}
 

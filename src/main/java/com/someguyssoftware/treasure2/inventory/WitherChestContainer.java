@@ -41,7 +41,7 @@ public class WitherChestContainer extends AbstractChestContainer {
 		super(windowID, containerType, playerInventory, inventory);
         
 		// open the chest (rendering)
-        inventory.openInventory(playerInventory.player);
+        inventory.startOpen(playerInventory.player);
         
 		// set the dimensions
 		setHotbarYPos(198);

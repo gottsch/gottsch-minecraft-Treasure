@@ -42,7 +42,7 @@ public class StrongboxChestContainer extends AbstractChestContainer {
 		super(windowId, containerType, playerInventory, inventory);
         
 		// open the chest (rendering)
-        inventory.openInventory(playerInventory.player);
+        inventory.startOpen(playerInventory.player);
         
 		// set the dimensions
 		setContainerInventoryColumnCount(5);

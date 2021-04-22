@@ -1,20 +1,12 @@
 package com.someguyssoftware.treasure2.particle;
 
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import java.awt.Color;
 
-import java.awt.*;
+import net.minecraft.client.particle.IAnimatedSprite;
+import net.minecraft.client.particle.IParticleRenderType;
+import net.minecraft.client.particle.SpriteTexturedParticle;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.world.ClientWorld;
 
 /**
  * User: The Grey Ghost
@@ -31,7 +23,7 @@ public class FlameParticle extends SpriteTexturedParticle
    *   given diameter.
    *   We also supply sprites so that you can change the sprite texture in the tick() method (although not needed for this example)
    */
-  public FlameParticle(World world, double x, double y, double z,
+  public FlameParticle(ClientWorld world, double x, double y, double z,
                        double velocityX, double velocityY, double velocityZ,
                        Color tint, double diameter,
                        IAnimatedSprite sprites)
@@ -40,34 +32,34 @@ public class FlameParticle extends SpriteTexturedParticle
     this.sprites = sprites;
 
     setColor(tint.getRed()/255.0F, tint.getGreen()/255.0F, tint.getBlue()/255.0F);
-    setSize((float)diameter, (float)diameter);    // the size (width, height) of the collision box.
+//    setSize((float)diameter, (float)diameter);    // the size (width, height) of the collision box.
 
     final float PARTICLE_SCALE_FOR_ONE_METRE = 0.5F; //  if the particleScale is 0.5, the texture will be rendered as 1 metre high
-    particleScale = PARTICLE_SCALE_FOR_ONE_METRE * (float)diameter; // sets the rendering size of the particle for a TexturedParticle.
-
-    maxAge = 100;  // lifetime in ticks: 100 ticks = 5 seconds
+//    particleScale = PARTICLE_SCALE_FOR_ONE_METRE * (float)diameter; // sets the rendering size of the particle for a TexturedParticle.
+    this.scale(PARTICLE_SCALE_FOR_ONE_METRE * (float)diameter);
+    this.setLifetime(100);  // lifetime in ticks: 100 ticks = 5 seconds
 
     final float ALPHA_VALUE = 1.0F;
-    this.particleAlpha = ALPHA_VALUE;
+    this.setAlpha(ALPHA_VALUE);
 
     //the vanilla Particle constructor added random variation to our starting velocity.  Undo it!
-    motionX = velocityX;
-    motionY = velocityY;
-    motionZ = velocityZ;
+    xd = velocityX;
+    yd= velocityY;
+    zd = velocityZ;
 
-    this.canCollide = true;  // the move() method will check for collisions with scenery
-  }
+    this.hasPhysics = true;  // the move() method will check for collisions with scenery
+   }
 
   // ---- methods used by TexturedParticle.renderParticle() method to find out how to render your particle
   //  the base method just renders a quad, rotated to directly face the player
 
   // can be used to change the skylight+blocklight brightness of the rendered Particle.
   @Override
-  protected int getBrightnessForRender(float partialTick)
+  protected int getLightColor(float partialTick)
   {
     final int BLOCK_LIGHT = 15;  // maximum brightness
     final int SKY_LIGHT = 15;    // maximum brightness
-    final int FULL_BRIGHTNESS_VALUE = LightTexture.packLight(BLOCK_LIGHT, SKY_LIGHT);
+    final int FULL_BRIGHTNESS_VALUE = LightTexture.pack(BLOCK_LIGHT, SKY_LIGHT);
     return FULL_BRIGHTNESS_VALUE;
 
     // if you want the brightness to be the local illumination (from block light and sky light) you can just use
@@ -96,11 +88,11 @@ public class FlameParticle extends SpriteTexturedParticle
     // if you want to change the texture as the particle gets older, you can use
     // selectSpriteWithAge(sprites);
 
-    prevPosX = posX;
-    prevPosY = posY;
-    prevPosZ = posZ;
+    xo = x;
+    yo = y;
+    zo = z;
 
-    move(motionX, motionY, motionZ);  // simple linear motion.  You can change speed by changing motionX, motionY,
+    move(xd, yd, zd);  // simple linear motion.  You can change speed by changing motionX, motionY,
       // motionZ every tick.  For example - you can make the particle accelerate downwards due to gravity by
       // final double GRAVITY_ACCELERATION_PER_TICK = -0.02;
       // motionY += GRAVITY_ACCELERATION_PER_TICK;
@@ -108,15 +100,15 @@ public class FlameParticle extends SpriteTexturedParticle
 
     // collision with a block makes the ball disappear.  But does not collide with entities
     if (onGround) {  // onGround is only true if the particle collides while it is moving downwards...
-      this.setExpired();
+      this.remove();
     }
 
-    if (prevPosY == posY && motionY > 0) {  // detect a collision while moving upwards (can't move up at all)
-      this.setExpired();
+    if (yo == y && yd > 0) {  // detect a collision while moving upwards (can't move up at all)
+      this.remove();
     }
 
-    if (this.age++ >= this.maxAge) {
-      this.setExpired();
+    if (this.age++ >= this.lifetime) {
+      this.remove();
     }
   }
 

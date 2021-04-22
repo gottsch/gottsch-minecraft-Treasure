@@ -39,6 +39,7 @@ public class StandardChestContainer extends Container implements ITreasureContai
 	public static final int PLAYER_INVENTORY_YPOS = 84;
 		
 	/*
+	 * !!
 	 * TODO  this class should extend an AbstractChestContainer where all the container consts are properties that can be
 	 * set. As well as the pixel offsets etc. The init code can be put in the abstract, so only the contrete classes would set
 	 * the property values.
@@ -83,7 +84,7 @@ public class StandardChestContainer extends Container implements ITreasureContai
 		this.contents = inventory;
 
 		// open the chest (rendering)
-        inventory.openInventory(playerInventory.player);
+        inventory.startOpen(playerInventory.player);
         
 		final int SLOT_X_SPACING = 18;
 		final int SLOT_Y_SPACING = 18;
@@ -111,9 +112,9 @@ public class StandardChestContainer extends Container implements ITreasureContai
 		}
 
 		// ensure the  container's slot count is the same size of the backing IInventory
-		if (CONTAINER_INVENTORY_SLOT_COUNT  != inventory.getSizeInventory()) {
+		if (CONTAINER_INVENTORY_SLOT_COUNT  != inventory.getContainerSize()) {
 			System.err.println("Mismatched slot count in ContainerBasic(" + CONTAINER_INVENTORY_SLOT_COUNT
-												  + ") and TileInventory (" + inventory.getSizeInventory()+")");
+												  + ") and TileInventory (" + inventory.getContainerSize()+")");
 		}
 
 
@@ -141,10 +142,10 @@ public class StandardChestContainer extends Container implements ITreasureContai
 	// returns EMPTY_ITEM if the source slot is empty, or if none of the the source slot items could be moved
 	//   otherwise, returns a copy of the source stack
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity player, int sourceSlotIndex) {
-		Slot sourceSlot = (Slot)inventorySlots.get(sourceSlotIndex);
-		if (sourceSlot == null || !sourceSlot.getHasStack()) return ItemStack.EMPTY;
-		ItemStack sourceStack = sourceSlot.getStack();
+	public ItemStack quickMoveStack(PlayerEntity player, int sourceSlotIndex) {
+		Slot sourceSlot = (Slot)slots.get(sourceSlotIndex);
+		if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
+		ItemStack sourceStack = sourceSlot.getItem();
 		ItemStack copyOfSourceStack = sourceStack.copy();
 
 	 
@@ -155,16 +156,16 @@ public class StandardChestContainer extends Container implements ITreasureContai
 			 */
 			
 			// first ensure that the sourcStack is a valid item for the container
-			if (!contents.isItemValidForSlot(sourceSlotIndex, sourceStack)) {
+			if (!contents.canPlaceItem(sourceSlotIndex, sourceStack)) {
 				return ItemStack.EMPTY;
 			}
 			
-			if (!mergeItemStack(sourceStack, CONTAINER_INVENTORY_FIRST_SLOT_INDEX, CONTAINER_INVENTORY_FIRST_SLOT_INDEX + CONTAINER_INVENTORY_SLOT_COUNT, false)){
+			if (!moveItemStackTo(sourceStack, CONTAINER_INVENTORY_FIRST_SLOT_INDEX, CONTAINER_INVENTORY_FIRST_SLOT_INDEX + CONTAINER_INVENTORY_SLOT_COUNT, false)){
 				return ItemStack.EMPTY;
 			}
 		} else if (sourceSlotIndex >= CONTAINER_INVENTORY_FIRST_SLOT_INDEX && sourceSlotIndex < CONTAINER_INVENTORY_FIRST_SLOT_INDEX + CONTAINER_INVENTORY_SLOT_COUNT) {
 			// This is a TE slot so merge the stack into the players inventory
-			if (!mergeItemStack(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
+			if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
 				return ItemStack.EMPTY;
 			}
 		} else {
@@ -174,15 +175,15 @@ public class StandardChestContainer extends Container implements ITreasureContai
 
 		// If stack size == 0 (the entire stack was moved) set slot contents to null
 		if (sourceStack.getCount() == 0) {  // getStackSize
-			sourceSlot.putStack(ItemStack.EMPTY);
+			sourceSlot.set(ItemStack.EMPTY);
 		} else {
-			sourceSlot.onSlotChanged();
+			sourceSlot.setChanged();
 		}
 
 		sourceSlot.onTake(player, sourceStack);  //onPickupFromSlot()
 		return copyOfSourceStack;
 	}
-	
+
 	/*
 	 * pass the close container message to the tileEntity
 	 * @see ContainerChest
@@ -190,17 +191,17 @@ public class StandardChestContainer extends Container implements ITreasureContai
 	 * @see net.minecraft.inventory.Container#onContainerClosed(net.minecraft.entity.player.EntityPlayer)
 	 */
 	@Override
-	public void onContainerClosed(PlayerEntity playerIn) {
-		super.onContainerClosed(playerIn);
-		this.contents.closeInventory(playerIn);
+	public void removed(PlayerEntity playerIn) {
+		super.removed(playerIn);
+		this.contents.stopOpen(playerIn);
 	}
-
+	
 	/**
 	 * 
 	 */
 	@Override
-	public boolean canInteractWith(PlayerEntity player) {
-		return contents.isUsableByPlayer(player);
+	public boolean stillValid(PlayerEntity player) {
+		return contents.stillValid(player);
 	}
 
 	@Override

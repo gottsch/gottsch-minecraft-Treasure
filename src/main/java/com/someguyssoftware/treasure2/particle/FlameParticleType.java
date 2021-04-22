@@ -1,5 +1,7 @@
 package com.someguyssoftware.treasure2.particle;
 
+import com.mojang.serialization.Codec;
+
 import net.minecraft.particles.ParticleType;
 
 /**
@@ -7,8 +9,17 @@ import net.minecraft.particles.ParticleType;
  * Simple class used to describe the Particle
  */
 public class FlameParticleType extends ParticleType<FlameParticleData> {
-  private static boolean ALWAYS_SHOW_REGARDLESS_OF_DISTANCE_FROM_PLAYER = false;
-  public FlameParticleType() {
-    super(ALWAYS_SHOW_REGARDLESS_OF_DISTANCE_FROM_PLAYER, FlameParticleData.DESERIALIZER);
-  }
+	private static boolean ALWAYS_SHOW_REGARDLESS_OF_DISTANCE_FROM_PLAYER = false;
+	public FlameParticleType() {
+		super(ALWAYS_SHOW_REGARDLESS_OF_DISTANCE_FROM_PLAYER, FlameParticleData.DESERIALIZER);
+	}
+
+	// get the Codec used to
+	// a) convert a FlameParticleData to a serialised format
+	// b) construct a FlameParticleData object from the serialised format
+	@Override
+	public Codec<FlameParticleData> codec() {
+		// TODO Auto-generated method stub
+		return FlameParticleData.CODEC;
+	}
 }

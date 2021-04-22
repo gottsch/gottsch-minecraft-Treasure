@@ -1,6 +1,5 @@
 package com.someguyssoftware.treasure2.inventory;
 
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestSlotCount;
 
 import net.minecraft.entity.player.PlayerInventory;
@@ -42,7 +41,7 @@ public class SkullChestContainer extends AbstractChestContainer {
 		super(windowID, containerType, playerInventory, inventory);
         
 		// open the chest (rendering)
-        inventory.openInventory(playerInventory.player);
+        inventory.startOpen(playerInventory.player);
         
 		// set the dimensions
 		setContainerInventoryColumnCount(3);

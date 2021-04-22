@@ -24,6 +24,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.config.ModConfig.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -35,8 +36,13 @@ import net.minecraftforge.fml.loading.FMLPaths;
  *
  */
 @Mod(value = Treasure.MODID)
-@ModInfo(modid = Treasure.MODID, name = Treasure.NAME, version = Treasure.VERSION, minecraftVersion = "1.16.5", forgeVersion = "36.1.0", updateJsonUrl = Treasure.UPDATE_JSON_URL)
-
+@ModInfo(
+		modid = Treasure.MODID, 
+		name = Treasure.NAME, 
+		version = Treasure.VERSION, 
+		minecraftVersion = "1.16.5", 
+		forgeVersion = "36.1.0", 
+		updateJsonUrl = Treasure.UPDATE_JSON_URL)
 @Credits(values = { "Treasure was first developed by Mark Gottschling on Aug 27, 2014.",
 		"Treasure2 was first developed by Mark Gottschling on Jan 2018.",
 		"Credits to Mason Gottschling for ideas and debugging.",
@@ -70,8 +76,6 @@ public class Treasure implements IMod {
 		eventBus.addListener(this::setup);
 		eventBus.addListener(TreasureSetup::common);
 		eventBus.addListener(this::clientSetup);
-		eventBus.addListener(this::postSetup);
-		eventBus.addListener(this::onServerStarted);
 
 		TreasureConfig.loadConfig(TreasureConfig.COMMON_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve("treasure2-common.toml"));
@@ -132,7 +136,7 @@ public class Treasure implements IMod {
 		 Treasure.LOGGER.info("in config event");
 	 }
 	 
-	private void onServerStarted(final FMLServerStartedEvent event) {
+	private void onServerStarted(final FMLDedicatedServerSetupEvent event) {
 		Treasure.LOGGER.info("in onServerStarted");
 	}
 

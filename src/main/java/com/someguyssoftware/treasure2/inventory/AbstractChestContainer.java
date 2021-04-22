@@ -8,12 +8,10 @@ import com.someguyssoftware.treasure2.Treasure;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
 
 /**
  * @author Mark Gottschling on Feb 15, 2018
@@ -43,16 +41,7 @@ public abstract class AbstractChestContainer extends Container implements ITreas
 	private int playerInventoryYPos = 84;
 	private int containerInventoryXPos = 8;
 	private int containerInventoryYPos = 18;
-	
-	/**
-	 * Client constructor
-	 * @param windowID
-	 * @param playerInventory
-	 * @param slotCount
-	 */
-//	public AbstractChestContainer(int windowID, ContainerType<?> containerType, PlayerInventory playerInventory, int slotCount) {
-//		this(windowID, containerType, playerInventory, new Inventory(slotCount));
-//	}
+
 	
 	// NEW contstructor
 	public AbstractChestContainer(int windowID, ContainerType<?> containerType, PlayerInventory playerInventory, IInventory inventory) {
@@ -163,16 +152,16 @@ public abstract class AbstractChestContainer extends Container implements ITreas
 			 *  This is a vanilla container slot so merge the stack into the tile inventory
 			 */
 			// first ensure that the sourcStack is a valid item for the container
-			if (!contents.isItemValidForSlot(sourceSlotIndex, sourceStack)) {
+			if (!contents.canPlaceItem(sourceSlotIndex, sourceStack)) {
 				return ItemStack.EMPTY;
 			}
 			
-			if (!mergeItemStack(sourceStack, CONTAINER_INVENTORY_FIRST_SLOT_INDEX, CONTAINER_INVENTORY_FIRST_SLOT_INDEX + getContainerInventorySlotCount(), false)){
+			if (!moveItemStackTo(sourceStack, CONTAINER_INVENTORY_FIRST_SLOT_INDEX, CONTAINER_INVENTORY_FIRST_SLOT_INDEX + getContainerInventorySlotCount(), false)){
 				return ItemStack.EMPTY;
 			}
 		} else if (sourceSlotIndex >= CONTAINER_INVENTORY_FIRST_SLOT_INDEX && sourceSlotIndex < CONTAINER_INVENTORY_FIRST_SLOT_INDEX + getContainerInventorySlotCount()) {
 			// This is a TE slot so merge the stack into the players inventory
-			if (!mergeItemStack(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
+			if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
 				return ItemStack.EMPTY;
 			}
 		} else {
@@ -182,9 +171,9 @@ public abstract class AbstractChestContainer extends Container implements ITreas
 
 		// If stack size == 0 (the entire stack was moved) set slot contents to null
 		if (sourceStack.getCount() == 0) {  // getStackSize
-			sourceSlot.putStack(ItemStack.EMPTY);
+			sourceSlot.set(ItemStack.EMPTY);
 		} else {
-			sourceSlot.onSlotChanged();
+			sourceSlot.setChanged();
 		}
 
 		sourceSlot.onTake(player, sourceStack);  //onPickupFromSlot()
@@ -198,17 +187,17 @@ public abstract class AbstractChestContainer extends Container implements ITreas
 	 * @see net.minecraft.inventory.Container#onContainerClosed(net.minecraft.entity.player.EntityPlayer)
 	 */
 	@Override
-	public void onContainerClosed(PlayerEntity playerIn) {
-		super.onContainerClosed(playerIn);
-		this.contents.closeInventory(playerIn);
+	public void removed(PlayerEntity playerIn) {
+		super.removed(playerIn);
+		this.contents.stopOpen(playerIn);
 	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public boolean canInteractWith(PlayerEntity player) {
-		return contents.isUsableByPlayer(player);
+	public boolean stillValid(PlayerEntity player) {
+		return contents.stillValid(player);
 	}
 	
 	/**

@@ -8,13 +8,12 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.tileentity.MistEmitterTileEntity;
 
 import net.minecraft.client.particle.IParticleRenderType;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.SpriteTexturedParticle;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -45,6 +44,12 @@ public abstract class AbstractMistParticle extends SpriteTexturedParticle implem
 	private float transitionInScaleIncrement;
 	private float transitionOutScaleIncrement;
 
+	/*
+	 * NOTES:
+	 *  x, y, z = current position
+	 *  xo, yo, zo, = old position
+	 *  xd, yd, zd = motion (or delta)
+	 */
 	/**
 	 * 
 	 * @param worldIn
@@ -52,14 +57,14 @@ public abstract class AbstractMistParticle extends SpriteTexturedParticle implem
 	 * @param posYIn
 	 * @param posZIn
 	 */
-	protected AbstractMistParticle(World worldIn, double posXIn, double posYIn, double posZIn) {
+	protected AbstractMistParticle(ClientWorld worldIn, double posXIn, double posYIn, double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 
 		// add horizontal movement
-		this.motionX = (Math.random() * 2.0D - 1.0D) * 0.0050200D;
-		this.motionZ = (Math.random() * 2.0D - 1.0D) * 0.0050200D;
+		this.xd = (Math.random() * 2.0D - 1.0D) * 0.0050200D;
+		this.zd = (Math.random() * 2.0D - 1.0D) * 0.0050200D;
 		// turn off any initial verticle motion
-		this.motionY = 0;
+		this.yd = 0;
 
 	}
 
@@ -77,16 +82,16 @@ public abstract class AbstractMistParticle extends SpriteTexturedParticle implem
 				/ (provideMaxAge() - TRANSITION_OUT_START_AGE);
 
 		// set default properties
-		this.particleGravity = provideGravity();
+		this.gravity = provideGravity();
 
 		// set the max age
-		this.setMaxAge(provideMaxAge());
+		this.setLifetime(provideMaxAge());
 
 		// a value less than 1 turns on alpha blending. Otherwise, alpha blending is off
 		// and the particle won't be transparent.
-		this.setAlphaF(provideAlpha());
+		this.setAlpha(provideAlpha());
 
-		this.particleScale = TRANSITION_IN_START_SCALE;
+		this.scale(TRANSITION_IN_START_SCALE);
 //		this.setSize(TRANSITION_IN_START_SCALE, TRANSITION_IN_START_SCALE); // TODO redo - there IS particleScale proprety
 
 	}
@@ -99,18 +104,18 @@ public abstract class AbstractMistParticle extends SpriteTexturedParticle implem
 	public void tick() {
 Treasure.LOGGER.info("mist particle ticking...");
 System.out.println("sys:mist particle ticking...");
-		doPlayerCollisions(this.world);
+		doPlayerCollisions(this.level);
 
 		// save the previous location
-		prevPosX = posX;
-		prevPosY = posY;
-		prevPosZ = posZ;
+		xo = x;
+		yo = y;
+		zo = z;
 
 		// calculate the y motion if not on the ground
 		if (!this.onGround) {
-			this.motionY -= provideGravity(); // gravity
+			this.yd -= provideGravity(); // gravity
 		}
-		this.move(this.motionX, this.motionY, this.motionZ);
+		this.move(this.xd, this.yd, this.zd);
 
 		doTransitions();
 
@@ -118,13 +123,13 @@ System.out.println("sys:mist particle ticking...");
 		// effect.
 
 		// detect a collision while moving upwards (can't move up at all)
-		if (prevPosY == posY && motionY > 0) {
+		if (yo == y && yd > 0) {
 			// do nothing. not used for mist
 		}
 
 		// increase the age and test against max age
-		if (this.age++ >= provideMaxAge()) {
-			this.setExpired();
+		if (this.age++ >= this.lifetime) {
+			this.remove();
 		}
 	}
 
@@ -145,7 +150,8 @@ System.out.println("sys:mist particle ticking...");
 	public void transitionIn(float initialScale, int stopAge, float scaleIncrement) {
 		if (this.age < stopAge && getScale() < provideMaxScale()) {
 			// increase in size
-			this.particleScale += scaleIncrement;
+//			this.particleScale += scaleIncrement;
+			this.scale(getScale() + scaleIncrement);
 		}
 	}
 
@@ -153,7 +159,8 @@ System.out.println("sys:mist particle ticking...");
 	public void transitionOut(float finalScale, int startAge, float scaleIncrement) {
 		if (age >= startAge && getScale() > finalScale) {
 			// decrease in size
-			particleScale -= scaleIncrement;
+//			particleScale -= scaleIncrement;
+			this.scale(getScale() - scaleIncrement);
 		}
 	}
 
@@ -168,14 +175,14 @@ System.out.println("sys:mist particle ticking...");
 		}
 
 		// get the emitter tile entity
-		TileEntity emitterTileEntity = world.getTileEntity(getParentEmitterCoords().toPos());
+		TileEntity emitterTileEntity = world.getBlockEntity(getParentEmitterCoords().toPos());
 		if (emitterTileEntity == null) {
 			return;
 		}
 
 		// create an AxisAlignedBB for the particle
-		AxisAlignedBB aabb = new AxisAlignedBB(posX - 0.125D, posY, posZ - 0.125D, posX + 0.125D, posY + 0.25D,
-				posZ + 0.125D);
+		AxisAlignedBB aabb = new AxisAlignedBB(x - 0.125D, y, z - 0.125D, x + 0.125D, y + 0.25D,
+				z + 0.125D);
 
 		// for all the players in the mist emitter tile entity list
 		for (PlayerEntity player : ((MistEmitterTileEntity) emitterTileEntity).getPlayersWithinProximity()) {
@@ -216,7 +223,8 @@ System.out.println("sys:mist particle ticking...");
 	 * can be used to change the brightness of the rendered Particle.
 	 */
 	@Override
-	public int getBrightnessForRender(float partialTick) {
+//	public int getBrightnessForRender(float partialTick) {
+	public int getLightColor(float partialTick) {
 		return DEFAULT_BRIGHTNESS;
 	}
 
@@ -244,17 +252,17 @@ System.out.println("sys:mist particle ticking...");
 
 	@Override
 	public float getGravity() {
-		return this.particleGravity;
+		return this.gravity;
 	}
 
 	@Override
 	public float getScale() {
-		return this.width;
+		return this.bbWidth;
 	}
 
 	@Override
 	public float getAlpha() {
-		return this.particleAlpha;
+		return this.alpha;
 	}
 
 	@Override

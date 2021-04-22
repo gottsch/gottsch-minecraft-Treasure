@@ -215,10 +215,10 @@ public class TreasureConfig extends AbstractConfig {
     }
 
 	public static class TileEntityID {
-		public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity_type";
-		public static final String CRATE_CHEST_TE_ID = "crate_chest_tile_entity_type";
-		public static final String MOLDY_CRATE_CHEST_TE_ID = "crate_chest_moldy_tile_entity_type";
-		public static final String IRONBOUND_CHEST_TE_ID = "ironbound_chest_tile_entity_type";
+		public static final String WOOD_CHEST_TE_ID = "wood_chest_tile_entity";
+		public static final String CRATE_CHEST_TE_ID = "crate_chest_tile_entity";
+		public static final String MOLDY_CRATE_CHEST_TE_ID = "crate_chest_moldy_tile_entity";
+		public static final String IRONBOUND_CHEST_TE_ID = "ironbound_chest_tile_entity";
 		public static final String PIRATE_CHEST_TE_ID = "pirate_chest_tile_entity";
 		public static final String IRON_STRONGBOX_TE_ID = "iron_strongbox_tile_entity";
 		public static final String GOLD_STRONGBOX_TE_ID = "gold_strongbox_tile_entity";

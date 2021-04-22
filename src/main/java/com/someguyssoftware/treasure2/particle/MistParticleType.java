@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.particle;
 
+import com.mojang.serialization.Codec;
+
 import net.minecraft.particles.ParticleType;
 
 /**
@@ -15,6 +17,15 @@ public class MistParticleType extends ParticleType<MistParticleData> {
 		super(ALWAYS_SHOW, MistParticleData.DESERIALIZER);
 	}
 
+	// get the Codec used to
+	// a) convert a FlameParticleData to a serialised format
+	// b) construct a FlameParticleData object from the serialised format
+	@Override
+	public Codec<MistParticleData> codec() {
+		// TODO Auto-generated method stub
+		return MistParticleData.CODEC;
+	}
+	
 //ParticleType<MistParticleType> implements IParticleData {
 //	// good call TGG - this will help to remind what the first param is for.
 //	private static boolean ALWAYS_SHOW_REGARDLESS_OF_DISTANCE_FROM_PLAYER = false;

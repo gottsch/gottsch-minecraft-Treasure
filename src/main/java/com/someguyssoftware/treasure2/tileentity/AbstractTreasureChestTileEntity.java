@@ -49,6 +49,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
@@ -125,7 +126,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/** The angle of the lid last tick */
 	public float prevLidAngle;
 	/** The number of players currently using this chest */
-	public int numPlayersUsing;
+	public int openCount;
 	/** Server sync counter (once per 20 ticks) */
 	public int ticksSinceSync;
 
@@ -147,15 +148,47 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public void tick() {
+//		int x = getBlockPos().getX();
+//		int y = getBlockPos().getY();
+//		int z = getBlockPos().getZ();
+//		++this.ticksSinceSync;
+//
+//		// TODO make its own method (cratechest and other duplicate this code)
+//		// NOTE in 1.15.2 this block is replaced by calculatePlayersUsingSync()
+//		if (WorldInfo.isServerSide(this.getLevel()) && this.openCount != 0
+//				&& (this.ticksSinceSync + x + y + z) % 200 == 0) {
+//			this.openCount = 0;
+//			float radius = 5.0F;
+//
+//			for(PlayerEntity player : getLevel().getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB((double)((float)x - radius), (double)((float)y - radius), (double)((float)z - radius), 
+//					(double)((float)(x + 1) + radius), (double)((float)(y + 1) + radius), (double)((float)(z + 1) + radius)))) {
+//				if (player.containerMenu instanceof AbstractChestContainer) {
+//					IInventory inventory = ((AbstractChestContainer)player.containerMenu).getContents();
+//					if (inventory == this) {
+//						++this.openCount;
+//					}
+//				}
+//			}
+//		}
+		openCount = getOpenCount(++this.ticksSinceSync);
+		updateEntityState();
+	}
+
+	/**
+	 * 
+	 * @param ticksSinceSync
+	 * @return
+	 */
+	public int getOpenCount(int ticksSinceSync) {
+		int openCount = 0;
+		
 		int x = getBlockPos().getX();
 		int y = getBlockPos().getY();
 		int z = getBlockPos().getZ();
-		++this.ticksSinceSync;
 
-		// NOTE in 1.15.2 this block is replaced by calculatePlayersUsingSync()
-		if (WorldInfo.isServerSide(this.getLevel()) && this.numPlayersUsing != 0
+		if (WorldInfo.isServerSide(this.getLevel()) && this.openCount != 0
 				&& (this.ticksSinceSync + x + y + z) % 200 == 0) {
-			this.numPlayersUsing = 0;
+			this.openCount = 0;
 			float radius = 5.0F;
 
 			for(PlayerEntity player : getLevel().getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB((double)((float)x - radius), (double)((float)y - radius), (double)((float)z - radius), 
@@ -163,24 +196,29 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				if (player.containerMenu instanceof AbstractChestContainer) {
 					IInventory inventory = ((AbstractChestContainer)player.containerMenu).getContents();
 					if (inventory == this) {
-						++this.numPlayersUsing;
+						++openCount;
 					}
 				}
 			}
 		}
-
-
-		// TODO checkout the vanilla on angle update -- somehow the renderThread isn't getting updates to the TE.
+		return openCount;
+	}	
+	
+	/**
+	 * 
+	 */
+	@Override
+	public void updateEntityState() {
 		this.prevLidAngle = this.lidAngle;
-		if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F) {
+		if (this.openCount > 0 && this.lidAngle == 0.0F) {
 			this.playSound(SoundEvents.CHEST_OPEN);
 		}
 
 		//				Treasure.LOGGER.info("test: numPlayers -> {}, previous angle -> {}, new angle -> {}", this.numPlayersUsing, this.prevLidAngle, this.lidAngle);
-		if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
+		if (this.openCount == 0 && this.lidAngle > 0.0F || this.openCount > 0 && this.lidAngle < 1.0F) {
 			float f2 = this.lidAngle;
 
-			if (this.numPlayersUsing > 0) {
+			if (this.openCount > 0) {
 				this.lidAngle += 0.1F;
 			} else {
 				this.lidAngle -= 0.1F;
@@ -200,7 +238,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			}
 		}
 	}
-
+	
 	protected void playSound(SoundEvent soundIn) {
 		double d0 = (double)getBlockPos().getX() + 0.5D;
 		double d1 = (double)getBlockPos().getY() + 0.5D;
@@ -392,7 +430,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public void load(BlockState state, CompoundNBT parentNBT) {
-		super.load(parentNBT);
+		super.load(state, parentNBT);
 
 		try {
 			readLockStatesFromNBT(parentNBT);
@@ -456,11 +494,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * Sync client and server states
 	 */
 	public void sendUpdates() {
+		// TODO might be same as signalOpenCount()
 		BlockState blockState = level.getBlockState(getBlockPos());
-		level.markBlockRangeForRenderUpdate(getBlockPos(), blockState, blockState);
-		level.notifyBlockUpdate(getBlockPos(), blockState, blockState, 3);
+//		level.markBlockRangeForRenderUpdate(getBlockPos(), blockState, blockState);
+		level.sendBlockUpdated(getBlockPos(), blockState, blockState, 3);
 		//		world.scheduleBlockUpdate(pos, this.getType(), 0, 0); ??? replacement
-		markDirty();
+		setChanged();
 	}
 
 	////////// Custom property modifiers //////////////////////
@@ -539,7 +578,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			Treasure.LOGGER.debug("chest gen  -> {}", this.getGenerationContext().getChestGeneratorType().getChestGenerator().getClass().getSimpleName());
 
 			// fill the chest with loot
-			chestGenerator.fillChest(world, new Random(), this, this.getGenerationContext().getLootRarity(), playerEntity);
+			chestGenerator.fillChest(getLevel(), new Random(), this, this.getGenerationContext().getLootRarity(), playerEntity);
 
 		}
 
@@ -552,7 +591,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 */
 	@Override
-	public int getSizeInventory() {
+	public int getContainerSize() {
 		if (!hasLocks()) {
 			return getNumberOfSlots();
 		}
@@ -576,7 +615,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 */
 	@Override
-	public ItemStack getStackInSlot(int index) {
+	public ItemStack getItem(int index) {
 		if (!hasLocks()) {
 			return getItems().get(index);
 		}
@@ -587,12 +626,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 */
 	@Override
-	public ItemStack decrStackSize(int index, int count) {
+	public ItemStack removeItem(int index, int count) {
 		ItemStack itemStack = ItemStack.EMPTY;
 		if (!hasLocks()) {
-			itemStack = ItemStackHelper.getAndSplit(this.getItems(), index, count);
+			itemStack = ItemStackHelper.removeItem(this.getItems(), index, count);
 			if (!itemStack.isEmpty()) {
-				this.markDirty();
+				this.setChanged();
 			}
 		}
 		return itemStack;
@@ -602,24 +641,24 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 */
 	@Override
-	public ItemStack removeStackFromSlot(int index) {
+	public ItemStack removeItemNoUpdate(int index) {
 		if (hasLocks()) {
 			return ItemStack.EMPTY;
 		}
-		return ItemStackHelper.getAndRemove(this.getItems(), index);
+		return ItemStackHelper.removeItem(this.getItems(), index, 1);
 	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
+	public void setItem(int index, ItemStack stack) {
 		if (!hasLocks()) {
 			this.getItems().set(index, stack);
-			if (stack.getCount() > this.getInventoryStackLimit()) {
-				stack.setCount(this.getInventoryStackLimit());
+			if (stack.getCount() > this.getMaxStackSize()) {
+				stack.setCount(this.getMaxStackSize());
 			}
-			this.markDirty();
+			this.setChanged();
 		}
 	}
 
@@ -628,7 +667,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * possibly will be extended.
 	 */
 	@Override
-	public int getInventoryStackLimit() {
+	public int getMaxStackSize() {
 		return 64;
 	}
 
@@ -636,12 +675,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 */
 	@Override
-	public boolean isUsableByPlayer(PlayerEntity player) {
-		if (this.world.getTileEntity(this.pos) != this) {
+	public boolean stillValid(PlayerEntity player) {
+		if (getLevel().getBlockEntity(this.getBlockPos()) != this) {
 			return false;
 		} else {
-			boolean isUsable = player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D,
-					(double) this.pos.getZ() + 0.5D) <= 64.0D;
+			boolean isUsable = player.distanceToSqr((double) this.getBlockPos().getX() + 0.5D, (double) this.getBlockPos().getY() + 0.5D,
+					(double) this.getBlockPos().getZ() + 0.5D) <= 64.0D;
 			return isUsable;
 		}
 	}
@@ -651,12 +690,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * clientside.
 	 */
 	@Override
-	public boolean receiveClientEvent(int id, int type) {
+	public boolean triggerEvent(int id, int count) {
 		if (id == 1) {
-			this.numPlayersUsing = type;
+			this.openCount = count;
 			return true;
 		} else {
-			return super.receiveClientEvent(id, type);
+			return super.triggerEvent(id, count);
 		}
 	}
 
@@ -664,7 +703,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 */
 	@Override
-	public void openInventory(PlayerEntity player) {
+	public void startOpen(PlayerEntity player) {
 		//		Treasure.LOGGER.info("opening inventory -> {}", player.getName());
 
 		if (hasLocks()) {
@@ -672,10 +711,10 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			return;
 		}
 		if (!player.isSpectator()) {
-			if (this.numPlayersUsing < 0) {
-				this.numPlayersUsing = 0;
+			if (this.openCount < 0) {
+				this.openCount = 0;
 			}
-			++this.numPlayersUsing;
+			++this.openCount;
 			onOpenOrClose();
 		}
 	}
@@ -684,9 +723,9 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 */
 	@Override
-	public void closeInventory(PlayerEntity player) {
+	public void stopOpen(PlayerEntity player) {
 		if (!player.isSpectator()) {
-			--this.numPlayersUsing;
+			--this.openCount;
 			onOpenOrClose();
 		}
 	}
@@ -694,8 +733,8 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	protected void onOpenOrClose() {
 		Block block = this.getBlockState().getBlock();
 		if (block instanceof AbstractChestBlock) {
-			getLevel().addBlockEvent(getBlockPos(), block, 1, this.numPlayersUsing);
-			getLevel().notifyNeighborsOfStateChange(getBlockPos(), block);
+			getLevel().blockEvent(getBlockPos(), block, 1, this.openCount);
+			getLevel().updateNeighborsAt(getBlockPos(), block);
 		}
 
 	}
@@ -704,14 +743,15 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * Returns true if automation is allowed to insert the given stack (ignoring
 	 * stack size) into the given slot. For guis use Slot.isItemValid
 	 */
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return true;
-	}
+//	@Override
+//	public boolean isItemValidForSlot(int index, ItemStack stack) {
+//		return true;
+//	}
 
 	@Override
-	public void clear() {
+	public void clearContent() {
 		this.getItems().clear();
+		this.setChanged();
 	}
 
 	//////////// End of IInventory Methods ///////////////
@@ -779,12 +819,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 
 	public void setFacing(int facingIndex) {
 		//		this.facing = facing;
-		this.facing = Direction.byIndex(facingIndex);
+		this.facing = Direction.from3DDataValue(facingIndex);
 	}
 
 	@Override
-	public float getLidAngle(float partialTicks) {
-		return this.lidAngle;
+	public float getOpenNess(float partialTicks) {
+		return MathHelper.lerp(partialTicks, this.prevLidAngle, this.lidAngle);
 	}
 
 	@Override

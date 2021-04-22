@@ -1,6 +1,7 @@
 package com.someguyssoftware.treasure2.tileentity;
 
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.treasure2.inventory.AbstractChestContainer;
 import com.someguyssoftware.treasure2.inventory.ITreasureContainer;
 import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 
@@ -32,7 +33,7 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 		super(TreasureTileEntities.CRATE_CHEST_TILE_ENTITY_TYPE);
 		setCustomName(new TranslationTextComponent("display.crate_chest.name"));
 	}
-	
+
 	public CrateChestTileEntity(TileEntityType<? extends CrateChestTileEntity> tileEntityType) {
 		super(tileEntityType);
 		setCustomName(new TranslationTextComponent("display.crate_chest.name"));
@@ -48,30 +49,31 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 	public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player) {
 		return new StandardChestContainer(windowID, inventory, this);
 	}
-	
+
 	/**
 	 * Like the old updateEntity(), except more generic.
 	 */
 	@Override
 	public void tick() {
-		int i = this.pos.getX();
-		int j = this.pos.getY();
-		int k = this.pos.getZ();
+		int i = this.getBlockPos().getX();
+		int j = this.getBlockPos().getY();
+		int k = this.getBlockPos().getZ();
 		++this.ticksSinceSync;
 
-		if (WorldInfo.isServerSide(getWorld()) && this.numPlayersUsing != 0
+		if (WorldInfo.isServerSide(getLevel()) && this.openCount != 0
 				&& (this.ticksSinceSync + i + j + k) % 200 == 0) {
-			this.numPlayersUsing = 0;
+			this.openCount = 0;
 
-			for (PlayerEntity player : this.world.getEntitiesWithinAABB(PlayerEntity.class,
+			for (PlayerEntity player : this.getLevel().getEntitiesOfClass(PlayerEntity.class,
 					new AxisAlignedBB((double) ((float) i - 5.0F), (double) ((float) j - 5.0F),
 							(double) ((float) k - 5.0F), (double) ((float) (i + 1) + 5.0F),
 							(double) ((float) (j + 1) + 5.0F), (double) ((float) (k + 1) + 5.0F)))) {
-				if (player.openContainer instanceof ITreasureContainer) {
-					IInventory iinventory = ((ITreasureContainer) player.openContainer).getContents();
+				if (player.containerMenu instanceof ITreasureContainer) {
+					//					IInventory iinventory = ((ITreasureContainer) player.openContainer).getContents();
+					IInventory inventory = ((AbstractChestContainer)player.containerMenu).getContents();
 
-					if (iinventory == this) {
-						++this.numPlayersUsing;
+					if (inventory == this) {
+						++this.openCount;
 					}
 				}
 			}
@@ -79,17 +81,14 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 
 		this.prevLidAngle = this.lidAngle;
 
-		if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F) {
-//			double d1 = (double) i + 0.5D;
-//			double d2 = (double) k + 0.5D;
-
-			this.playSound(SoundEvents.BLOCK_CHEST_OPEN);
+		if (this.openCount > 0 && this.lidAngle == 0.0F) {
+			this.playSound(SoundEvents.CHEST_OPEN);
 		}
 
-		if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < .125F) {
+		if (this.openCount == 0 && this.lidAngle > 0.0F || this.openCount > 0 && this.lidAngle < .125F) {
 			float f2 = this.lidAngle;
 
-			if (this.numPlayersUsing > 0) {
+			if (this.openCount > 0) {
 				this.lidAngle += 0.0125F;
 			} else {
 				this.lidAngle -= 0.0125F;
@@ -100,13 +99,13 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 			}
 
 			if (this.lidAngle < 0.06F && f2 >= 0.06F) {
-//				double d3 = (double) i + 0.5D;
-//				double d0 = (double) k + 0.5D;
-//
-//				this.world.playSound((EntityPlayer) null, d3, (double) j + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE,
-//						SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
-				
-				this.playSound(SoundEvents.BLOCK_CHEST_CLOSE);
+				//				double d3 = (double) i + 0.5D;
+				//				double d0 = (double) k + 0.5D;
+				//
+				//				this.world.playSound((EntityPlayer) null, d3, (double) j + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE,
+				//						SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+
+				this.playSound(SoundEvents.CHEST_CLOSE);
 			}
 
 			if (this.lidAngle < 0.0F) {
@@ -115,9 +114,9 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 		}
 	}
 
-	@Override
-	public float getLidAngle(float partialTicks) {
-		return this.lidAngle;
-	}
+//	@Override
+//	public float getLidAngle(float partialTicks) {
+//		return this.lidAngle;
+//	}
 
 }

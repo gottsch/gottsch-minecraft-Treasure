@@ -6,6 +6,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -36,7 +37,7 @@ public class MistParticle extends AbstractMistParticle {
 	 * @param velocityZ
 	 * @param parentCoords
 	 */
-	public MistParticle(World world, double x, double y, double z, double velocityX, double velocityY, double velocityZ,
+	public MistParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ,
 			ICoords parentCoords, IAnimatedSprite sprites) {
 		super(world, x, y, z);// , velocityX, velocityY, velocityZ);
 		Treasure.LOGGER.debug("creating particle");
@@ -63,10 +64,10 @@ public class MistParticle extends AbstractMistParticle {
 	
 	  // can be used to change the skylight+blocklight brightness of the rendered Particle.
 	  @Override
-	public int getBrightnessForRender(float partialTick) {
+	public int getLightColor(float partialTick) {
 	    final int BLOCK_LIGHT = 15;  // maximum brightness
 	    final int SKY_LIGHT = 15;    // maximum brightness
-	    final int FULL_BRIGHTNESS_VALUE = LightTexture.packLight(BLOCK_LIGHT, SKY_LIGHT);
+	    final int FULL_BRIGHTNESS_VALUE = LightTexture.pack(BLOCK_LIGHT, SKY_LIGHT);
 	    return FULL_BRIGHTNESS_VALUE;
 
 	    // if you want the brightness to be the local illumination (from block light and sky light) you can just use

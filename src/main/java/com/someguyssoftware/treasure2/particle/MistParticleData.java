@@ -9,6 +9,8 @@ import javax.annotation.Nonnull;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
@@ -23,19 +25,38 @@ import net.minecraft.util.registry.Registry;
  *
  */
 public class MistParticleData implements IParticleData {
-	private ICoords parentEmitterCoords;
+	private ICoords sourceCoords;
 
+	public static final Codec<MistParticleData> CODEC = RecordCodecBuilder.create(
+			instance -> instance.group(
+					Codec.INT.fieldOf("x").forGetter(d -> d.getSourceCoords().getX()),
+					Codec.INT.fieldOf("y").forGetter(d -> d.getSourceCoords().getY()),
+					Codec.INT.fieldOf("z").forGetter(d -> d.getSourceCoords().getZ())
+					).apply(instance, MistParticleData::new)
+			);
+	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public MistParticleData(int x, int y, int z) {
+		Treasure.LOGGER.info("particle data creating...");
+		this.sourceCoords = new Coords(x, y, z);
+	}
+	
 	/**
 	 * 
 	 * @param parentEmitterCoords
 	 */
-	public MistParticleData(ICoords parentEmitterCoords) {
+	public MistParticleData(ICoords coords) {
 		Treasure.LOGGER.info("particle data creating...");
-		this.parentEmitterCoords = parentEmitterCoords;
+		this.sourceCoords = coords;
 	}
 	
-	public ICoords getParentEmitterCoords() {
-		return parentEmitterCoords;
+	public ICoords getSourceCoords() {
+		return sourceCoords;
 	}
 
 	@Override
@@ -44,17 +65,17 @@ public class MistParticleData implements IParticleData {
 	}
 
 	@Override
-	public void write(PacketBuffer buffer) {
-		Treasure.LOGGER.info("particle writing to buffer...{}", parentEmitterCoords.toShortString());
-		buffer.writeInt(parentEmitterCoords.getX());
-		buffer.writeInt(parentEmitterCoords.getY());
-		buffer.writeInt(parentEmitterCoords.getZ());
+	public void writeToNetwork(PacketBuffer buffer) {
+		Treasure.LOGGER.info("particle writing to buffer...{}", sourceCoords.toShortString());
+		buffer.writeInt(sourceCoords.getX());
+		buffer.writeInt(sourceCoords.getY());
+		buffer.writeInt(sourceCoords.getZ());
 	}
 
 	@Override
-	public String getParameters() {
+	public String writeToString() {
 	    return String.format(Locale.ROOT, "%s %s",
-	            this.getType().getRegistryName(), parentEmitterCoords.toShortString());
+	            this.getType().getRegistryName(), sourceCoords.toShortString());
 	}
 	
 	// The DESERIALIZER is used to construct FlameParticleData from either command line parameters or from a network packet
@@ -64,7 +85,7 @@ public class MistParticleData implements IParticleData {
 	    // parse the parameters for this particle from a /particle command
 	    @Nonnull
 	    @Override
-	    public MistParticleData deserialize(@Nonnull ParticleType<MistParticleData> type, @Nonnull StringReader reader) throws CommandSyntaxException {
+	    public MistParticleData fromCommand(@Nonnull ParticleType<MistParticleData> type, @Nonnull StringReader reader) throws CommandSyntaxException {
 	    	Treasure.LOGGER.info("particle data deserializing...");
 	      reader.expect(' ');
 	      int x = reader.readInt();
@@ -79,7 +100,7 @@ public class MistParticleData implements IParticleData {
 
 	    // read the particle information from a PacketBuffer after the client has received it from the server
 	    @Override
-	    public MistParticleData read(@Nonnull ParticleType<MistParticleData> type, PacketBuffer buf) {
+	    public MistParticleData fromNetwork(@Nonnull ParticleType<MistParticleData> type, PacketBuffer buf) {
 	    	Treasure.LOGGER.info("particle reading from buffer ...");
 	      int x = buf.readInt();
 	      int y = buf.readInt();

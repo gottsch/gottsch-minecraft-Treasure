@@ -1,16 +1,11 @@
 package com.someguyssoftware.treasure2.tileentity;
 
-import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.treasure2.inventory.ITreasureContainer;
 import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TranslationTextComponent;
 
 /**
@@ -39,7 +34,7 @@ public class CardboardBoxTileEntity extends AbstractTreasureChestTileEntity {
 		setCustomName(new TranslationTextComponent("display.cardboard_box.name"));
 	}
 
-	
+
 	/**
 	 * 
 	 * @param windowID
@@ -50,41 +45,16 @@ public class CardboardBoxTileEntity extends AbstractTreasureChestTileEntity {
 	public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player) {
 		return new StandardChestContainer(windowID, inventory, this);
 	}
-	
-	/**
-	 * Like the old updateEntity(), except more generic.
-	 */
+
 	@Override
-	public void tick() {
-		int i = this.pos.getX();
-		int j = this.pos.getY();
-		int k = this.pos.getZ();
-		++this.ticksSinceSync;
+	public void updateEntityState() {
 
-		if (WorldInfo.isServerSide(getWorld()) && this.numPlayersUsing != 0
-				&& (this.ticksSinceSync + i + j + k) % 200 == 0) {
-			this.numPlayersUsing = 0;
-
-			for (PlayerEntity player : this.world.getEntitiesWithinAABB(PlayerEntity.class,
-					new AxisAlignedBB((double) ((float) i - 5.0F), (double) ((float) j - 5.0F),
-							(double) ((float) k - 5.0F), (double) ((float) (i + 1) + 5.0F),
-							(double) ((float) (j + 1) + 5.0F), (double) ((float) (k + 1) + 5.0F)))) {
-				if (player.openContainer instanceof ITreasureContainer) {
-					IInventory iinventory = ((ITreasureContainer) player.openContainer).getContents();
-
-					if (iinventory == this) {
-						++this.numPlayersUsing;
-					}
-				}
-			}
-		}
-
-// save the previous positions and angles of box components
+		// save the previous positions and angles of box components
 		this.prevLidAngle = this.lidAngle;
 		this.prevInnerLidAngle = this.innerLidAngle;
 
 		// opening ie. players
-		if (this.numPlayersUsing > 0) {
+		if (this.openCount > 0) {
 			// test the lid
 			if (this.lidAngle < 1.0F) {
 				isLidOpen = false;
@@ -101,11 +71,7 @@ public class CardboardBoxTileEntity extends AbstractTreasureChestTileEntity {
 			if (isLidOpen) {
 				// play the opening chest sound the at the beginning of opening
 				if (isInnerLidClosed) {
-//					double d1 = (double) x + 0.5D;
-//					double d2 = (double) z + 0.5D;
-//					this.world.playSound((PlayerEntity) null, d1, (double) y + 0.5D, d2, SoundEvents.BLOCK_CHEST_OPEN,
-//							SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
-					this.playSound(SoundEvents.BLOCK_CHEST_OPEN);
+					this.playSound(SoundEvents.CHEST_OPEN);
 				}
 
 				// test the inner lid
@@ -141,11 +107,7 @@ public class CardboardBoxTileEntity extends AbstractTreasureChestTileEntity {
 			// play the closing soud
 			if (isInnerLidClosed ) {
 				if (isLidOpen) {
-//					double d3 = (double) x + 0.5D;
-//					double d0 = (double) z + 0.5D;
-//					this.world.playSound((EntityPlayer) null, d3, (double) y + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE,
-//							SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
-					this.playSound(SoundEvents.BLOCK_CHEST_CLOSE);
+					this.playSound(SoundEvents.CHEST_CLOSE);
 				}
 				// test the outer lid
 				if (this.lidAngle > 0.0F) {

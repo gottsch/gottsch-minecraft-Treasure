@@ -10,10 +10,12 @@ import java.util.List;
 import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.math.AxisAlignedBB;
 
 
 /**
@@ -41,7 +43,10 @@ public class MistEmitterTileEntity extends AbstractModTileEntity implements ITic
         }
 
     	// get all players within range
-        PlayerEntity player = null;
+		int x = getBlockPos().getX();
+		int y = getBlockPos().getY();
+		int z = getBlockPos().getZ();
+		float radius = 5.0F;
         double proximitySq = getProximity() * getProximity();
 
         // clear list
@@ -49,11 +54,10 @@ public class MistEmitterTileEntity extends AbstractModTileEntity implements ITic
         setActive(false);
         
         // for each player
-        for (int playerIndex = 0; playerIndex < getWorld().getPlayers().size(); ++playerIndex) {
-            player = (PlayerEntity)getWorld().getPlayers().get(playerIndex);
+		for(PlayerEntity player : getLevel().getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB((double)((float)x - radius), (double)((float)y - radius), (double)((float)z - radius), 
+		(double)((float)(x + 1) + radius), (double)((float)(y + 1) + radius), (double)((float)(z + 1) + radius)))) {
             // get the distance
-            double distanceSq = player.getDistanceSq((double)getPos().getX() + 0.5D, 
-            		(double)getPos().getY() + 0.5D, (double)getPos().getZ() + 0.5D);
+            double distanceSq = player.distanceToSqr(x + 0.5D, y + 0.5D, z + 0.5D);
            
             if (distanceSq < proximitySq) {
             	// add player to list
@@ -67,16 +71,16 @@ public class MistEmitterTileEntity extends AbstractModTileEntity implements ITic
 	 * 
 	 */
 	@Override
-	public void read(CompoundNBT parentNBT) {
-		super.read(parentNBT);
+	public void load(BlockState state, CompoundNBT parentNBT) {
+		super.load(state, parentNBT);
 	}
 	
 	/**
 	 * 
 	 */
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-	    super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+	    super.save(tag);
 	    return tag;
 	}
 
