@@ -2,6 +2,7 @@
 [![](https://img.shields.io/github/issues/gottsch/gottsch-minecraft-Treasure.svg?style=for-the-badge&logo=github)](https://github.com/gottsch/gottsch-minecraft-Treasure/issues)
 [![](https://img.shields.io/github/issues/gottsch/gottsch-minecraft-Treasure/enhancement.svg?style=for-the-badge&logo=github)](https://github.com/gottsch/gottsch-minecraft-Treasure/issues)
 [![](https://img.shields.io/github/issues/gottsch/gottsch-minecraft-Treasure/content%20add.svg?style=for-the-badge&logo=github)](https://github.com/gottsch/gottsch-minecraft-Treasure/issues)[![](https://img.shields.io/github/issues/gottsch/gottsch-minecraft-Treasure/bug.svg?style=for-the-badge&logo=github)](https://github.com/gottsch/gottsch-minecraft-Treasure/issues)</br>
+[![](http://cf.way2muchnoise.eu/treasure2.svg)](#)</br>
 
 # Treasure2! 
 
