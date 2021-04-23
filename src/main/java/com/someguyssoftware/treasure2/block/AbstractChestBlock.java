@@ -55,7 +55,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
  * @author Mark Gottschling on Sep 16, 2018
  *
  */
-public abstract class AbstractChestBlock<E extends TileEntity> extends ModContainerBlock implements ITreasureBlock {
+public abstract class AbstractChestBlock extends ModContainerBlock implements ITreasureBlock {
 	public static final EnumProperty<Direction> FACING = EnumProperty.create("facing", Direction.class);
 
 	/*
@@ -375,10 +375,15 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 	 * LIQUID for vanilla liquids, INVISIBLE to skip all rendering
 	 * @deprecated call via {@link IBlockState#getRenderType()} whenever possible. Implementing/overriding is fine.
 	 */
+//	@Override
+//	public BlockRenderType getRenderType(BlockState state) {
+//		return BlockRenderType.ENTITYBLOCK_ANIMATED;
+//	}
+	
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
-		return BlockRenderType.ENTITYBLOCK_ANIMATED;
-	}
+   public BlockRenderType getRenderShape(BlockState state) {
+      return BlockRenderType.ENTITYBLOCK_ANIMATED;
+   }
 
 	/**
 	 * Gets whether the provided {@link VoxelShape} is opaque
@@ -489,7 +494,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 	/**
 	 * @param tileEntity the tileEntity to set
 	 */
-	public AbstractChestBlock<E> setTileEntity(AbstractTreasureChestTileEntity tileEntity) {
+	public AbstractChestBlock setTileEntity(AbstractTreasureChestTileEntity tileEntity) {
 		this.tileEntity = tileEntity;
 		return this;
 	}
@@ -504,7 +509,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 	/**
 	 * @param chestType the chestType to set
 	 */
-	public AbstractChestBlock<E> setChestType(TreasureChestType chestType) {
+	public AbstractChestBlock setChestType(TreasureChestType chestType) {
 		this.chestType = chestType;
 		return this;
 	}
@@ -519,7 +524,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 	/**
 	 * @param rarity the rarity to set
 	 */
-	public AbstractChestBlock<E> setRarity(Rarity rarity) {
+	public AbstractChestBlock setRarity(Rarity rarity) {
 		this.rarity = rarity;
 		return this;
 	}
@@ -528,7 +533,7 @@ public abstract class AbstractChestBlock<E extends TileEntity> extends ModContai
 		return bounds;
 	}
 
-	public AbstractChestBlock<E> setBounds(VoxelShape[] bounds) {
+	public AbstractChestBlock setBounds(VoxelShape[] bounds) {
 		this.bounds = bounds;
 		return this;
 	}

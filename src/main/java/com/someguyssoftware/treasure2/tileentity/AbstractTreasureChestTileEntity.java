@@ -170,22 +170,21 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 //				}
 //			}
 //		}
-		openCount = getOpenCount(++this.ticksSinceSync);
+		updateOpenCount(++this.ticksSinceSync);
 		updateEntityState();
 	}
 
 	/**
-	 * 
+	 * NOTE initialize non-zero value of this.openCount is set in startOpen()
 	 * @param ticksSinceSync
 	 * @return
 	 */
-	public int getOpenCount(int ticksSinceSync) {
-		int openCount = 0;
-		
+	public void updateOpenCount(int ticksSinceSync) {
 		int x = getBlockPos().getX();
 		int y = getBlockPos().getY();
 		int z = getBlockPos().getZ();
-
+		
+//		Treasure.LOGGER.debug("ticking @ {}, openCount -> {} ...", ticksSinceSync, this.openCount);
 		if (WorldInfo.isServerSide(this.getLevel()) && this.openCount != 0
 				&& (this.ticksSinceSync + x + y + z) % 200 == 0) {
 			this.openCount = 0;
@@ -196,12 +195,11 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				if (player.containerMenu instanceof AbstractChestContainer) {
 					IInventory inventory = ((AbstractChestContainer)player.containerMenu).getContents();
 					if (inventory == this) {
-						++openCount;
+						++this.openCount;
 					}
 				}
 			}
 		}
-		return openCount;
 	}	
 	
 	/**
@@ -214,7 +212,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			this.playSound(SoundEvents.CHEST_OPEN);
 		}
 
-		//				Treasure.LOGGER.info("test: numPlayers -> {}, previous angle -> {}, new angle -> {}", this.numPlayersUsing, this.prevLidAngle, this.lidAngle);
 		if (this.openCount == 0 && this.lidAngle > 0.0F || this.openCount > 0 && this.lidAngle < 1.0F) {
 			float f2 = this.lidAngle;
 
@@ -251,6 +248,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public CompoundNBT save(CompoundNBT parentNBT) {
+		Treasure.LOGGER.debug("saving chest TE...");
 		try {
 			parentNBT = super.save(parentNBT);
 
@@ -704,10 +702,10 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public void startOpen(PlayerEntity player) {
-		//		Treasure.LOGGER.info("opening inventory -> {}", player.getName());
+		Treasure.LOGGER.info("opening inventory -> {}", player.getName());
 
 		if (hasLocks()) {
-			//			Treasure.LOGGER.info("has locks - don't increment num players");
+			Treasure.LOGGER.info("has locks - don't increment num players");
 			return;
 		}
 		if (!player.isSpectator()) {
@@ -732,6 +730,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 
 	protected void onOpenOrClose() {
 		Block block = this.getBlockState().getBlock();
+		Treasure.LOGGER.debug("block for tile entity -> {}, openCount -> {}", block.getClass().getSimpleName(), this.openCount);
 		if (block instanceof AbstractChestBlock) {
 			getLevel().blockEvent(getBlockPos(), block, 1, this.openCount);
 			getLevel().updateNeighborsAt(getBlockPos(), block);

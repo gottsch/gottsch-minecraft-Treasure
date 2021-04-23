@@ -37,7 +37,7 @@ public class StandardChestContainerScreen extends ContainerScreen<StandardChestC
 	 * Taken directly from ChestScreen
 	 */
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
 		final float LABEL_XPOS = 5;
 		final float FONT_Y_SPACING = 10;
 		final float CHEST_LABEL_YPOS = StandardChestContainer.CONTAINER_INVENTORY_YPOS - FONT_Y_SPACING;

@@ -76,7 +76,7 @@ public interface IChestGenerator {
 		}
 		
 		// select a chest from the rarity
-		AbstractChestBlock<?> chest = selectChest(random, rarity);
+		AbstractChestBlock chest = selectChest(random, rarity);
 		if (chest == null) {
 			LOGGER.warn("Unable to select a chest for rarity -> {}.", rarity);
 			return result.fail();
@@ -418,7 +418,7 @@ public interface IChestGenerator {
 	 * 
 	 * @param chest
 	 */
-	default public void addLocks(Random random, AbstractChestBlock<?> chest, AbstractTreasureChestTileEntity te,
+	default public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te,
 			Rarity rarity) {
 		List<LockItem> locks = new ArrayList<>();
 		locks.addAll(TreasureItems.locks.get(rarity));
@@ -433,7 +433,7 @@ public interface IChestGenerator {
 	 * @param te
 	 * @param locks
 	 */
-	default public void addLocks(Random random, AbstractChestBlock<?> chest, AbstractTreasureChestTileEntity te,
+	default public void addLocks(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity te,
 			List<LockItem> locks) {
 		int numLocks = randomizedNumberOfLocksByChestType(random, chest.getChestType());
 
@@ -513,7 +513,7 @@ public interface IChestGenerator {
 	 * @param chestCoords
 	 * @return
 	 */
-	default public TileEntity placeInWorld(World world, Random random, AbstractChestBlock<?> chest, ICoords chestCoords) {
+	default public TileEntity placeInWorld(World world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
 		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
 
@@ -550,7 +550,7 @@ public interface IChestGenerator {
 	 * @param state
 	 * @return
 	 */
-	default public TileEntity placeInWorld(World world, Random random, ICoords chestCoords, AbstractChestBlock<?> chest,
+	default public TileEntity placeInWorld(World world, Random random, ICoords chestCoords, AbstractChestBlock chest,
 			BlockState state) {
 		// replace block @ coords
 		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chestCoords, chest, state);

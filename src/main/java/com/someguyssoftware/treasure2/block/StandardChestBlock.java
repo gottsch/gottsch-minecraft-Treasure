@@ -14,7 +14,7 @@ import net.minecraft.block.material.Material;
  * @author Mark Gottschling on Jan 9, 2018
  *
  */
-public class StandardChestBlock extends AbstractChestBlock<AbstractTreasureChestTileEntity> {
+public class StandardChestBlock extends AbstractChestBlock {
 
 	/**
 	 * 

@@ -17,7 +17,6 @@ import net.minecraft.client.renderer.model.ModelRenderer;
  */
 public class StandardChestModel extends AbstractTreasureChestModel {
 
-	//fields
 	ModelRenderer base;
 	ModelRenderer lid;
     ModelRenderer padTop;

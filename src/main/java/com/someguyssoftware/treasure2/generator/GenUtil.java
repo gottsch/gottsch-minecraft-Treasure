@@ -184,7 +184,7 @@ public class GenUtil {
 
 			// get the direction the block is facing.
 			Heading heading = Heading.fromDirection(direction);
-			((AbstractChestBlock<?>) chest).rotateLockStates(world, pos, Heading.NORTH.getRotation(heading));
+			((AbstractChestBlock) chest).rotateLockStates(world, pos, Heading.NORTH.getRotation(heading));
 
 			// get the tile entity
 			TileEntity tileEntity = (TileEntity) world.getBlockEntity(pos); // TODO make wrapper in WorldInfo
