@@ -23,6 +23,7 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 /**
@@ -90,21 +91,23 @@ public class SkeletonBlock extends GravestoneBlock {
 	 * Called before the Block is set to air in the world. Called regardless of if
 	 * the player's tool can actually collect this block
 	 */
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+	@Override
+	public void destroy(IWorld world, BlockPos pos, BlockState state) {
 		Direction facing = (Direction) state.getValue(FACING);
 		if (state.getValue(PART) == SkeletonBlock.EnumPartType.BOTTOM) {
 			ICoords coords = new Coords(pos);
 			BlockPos blockPos = coords.add(facing.getOpposite(), 1).toPos();
 //			BlockPos blockPos = pos.relative(facing.getOpposite());
 
-			if (worldIn.getBlockState(blockPos).getBlock() == this) {
-				worldIn.destroyBlock(blockPos, false);
+			if (world.getBlockState(blockPos).getBlock() == this) {
+				Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), world, blockPos, 3);
 			}
 		}
 		else {
 			BlockPos blockPos = pos.relative(facing);
-			if (worldIn.getBlockState(blockPos).getBlock() == this) {
-				worldIn.destroyBlock(blockPos, false);
+			if (world.getBlockState(blockPos).getBlock() == this) {
+				Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), world, blockPos, 3);
+
 			}
 		}
 	}

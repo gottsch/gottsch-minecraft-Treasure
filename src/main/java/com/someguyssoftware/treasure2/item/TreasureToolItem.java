@@ -36,10 +36,21 @@ public class TreasureToolItem extends ModItem {
 	}	
 	
 	/**
-	 * 
+	 * Required to prevent item consumpution in recipe
 	 */
 	@Override
 	public boolean hasContainerItem(ItemStack stack) {
 		return true;
+	}
+
+	/**
+	 * Required to prevent item consumpution in recipe
+	 */
+	@Override
+	public ItemStack getContainerItem(ItemStack itemStack) {
+        if (!hasContainerItem(itemStack)) {
+            return ItemStack.EMPTY;
+        }
+        return new ItemStack(this);
 	}
 }

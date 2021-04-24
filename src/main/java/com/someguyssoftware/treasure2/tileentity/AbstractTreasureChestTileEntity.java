@@ -17,19 +17,15 @@ import com.someguyssoftware.treasure2.chest.ChestSlotCount;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
-import com.someguyssoftware.treasure2.inventory.AbstractChestContainer;
 import com.someguyssoftware.treasure2.inventory.ITreasureContainer;
 import com.someguyssoftware.treasure2.lock.LockState;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.DoubleSidedInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
@@ -37,7 +33,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.state.properties.ChestType;
 import net.minecraft.tileentity.IChestLid;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -148,28 +143,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public void tick() {
-//		int x = getBlockPos().getX();
-//		int y = getBlockPos().getY();
-//		int z = getBlockPos().getZ();
-//		++this.ticksSinceSync;
-//
-//		// TODO make its own method (cratechest and other duplicate this code)
-//		// NOTE in 1.15.2 this block is replaced by calculatePlayersUsingSync()
-//		if (WorldInfo.isServerSide(this.getLevel()) && this.openCount != 0
-//				&& (this.ticksSinceSync + x + y + z) % 200 == 0) {
-//			this.openCount = 0;
-//			float radius = 5.0F;
-//
-//			for(PlayerEntity player : getLevel().getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB((double)((float)x - radius), (double)((float)y - radius), (double)((float)z - radius), 
-//					(double)((float)(x + 1) + radius), (double)((float)(y + 1) + radius), (double)((float)(z + 1) + radius)))) {
-//				if (player.containerMenu instanceof AbstractChestContainer) {
-//					IInventory inventory = ((AbstractChestContainer)player.containerMenu).getContents();
-//					if (inventory == this) {
-//						++this.openCount;
-//					}
-//				}
-//			}
-//		}
 		updateOpenCount(++this.ticksSinceSync);
 		updateEntityState();
 	}
@@ -192,8 +165,8 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 
 			for(PlayerEntity player : getLevel().getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB((double)((float)x - radius), (double)((float)y - radius), (double)((float)z - radius), 
 					(double)((float)(x + 1) + radius), (double)((float)(y + 1) + radius), (double)((float)(z + 1) + radius)))) {
-				if (player.containerMenu instanceof AbstractChestContainer) {
-					IInventory inventory = ((AbstractChestContainer)player.containerMenu).getContents();
+				if (player.containerMenu instanceof ITreasureContainer) {
+					IInventory inventory = ((ITreasureContainer)player.containerMenu).getContents();
 					if (inventory == this) {
 						++this.openCount;
 					}

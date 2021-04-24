@@ -36,7 +36,7 @@ public class CompressorChestContainerScreen extends ContainerScreen<CompressorCh
 	 * Taken directly from ChestScreen
 	 */
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY ) {
 		final float LABEL_XPOS = 5;
 		final float FONT_Y_SPACING = 10;
 		final float CHEST_LABEL_YPOS = getMenu().getContainerInventoryYPos() - FONT_Y_SPACING;

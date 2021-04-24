@@ -7,6 +7,7 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.block.ModFallingBlock;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -29,7 +30,7 @@ public abstract class AbstractTreasureFallingBlock extends ModFallingBlock imple
 	public static final BooleanProperty ACTIVATED = BooleanProperty.create("activated");
 
 	protected static final VoxelShape BOUNDING_SHAPE = Block.box(0, 0, 0, 16, 16, 16);
-	protected static final VoxelShape COLLISION_SHAPE = Block.box(0, 0, 0, 16, 15.96, 16);
+	protected static final VoxelShape COLLISION_SHAPE = Block.box(0, 0, 0, 16, 16, 16);
 	
 	public AbstractTreasureFallingBlock(String modID, String name, Block.Properties properties) {
 		super(modID, name, properties);
@@ -60,22 +61,34 @@ public abstract class AbstractTreasureFallingBlock extends ModFallingBlock imple
 	 */
 	@Override
 	public void stepOn(World world, BlockPos pos, Entity entityIn) {
+		Treasure.LOGGER.debug("stepped on block...");
 		// only on server
 		if (!WorldInfo.isClientSide(world)) {
 			if (!(entityIn instanceof PlayerEntity)) {
 				return;
 			}
+			// TODO ACTIVATED is no longer required
 			// set to activated
-			world.setBlock(pos,defaultBlockState().setValue(ACTIVATED, Boolean.valueOf(true)), 3);
+			world.setBlock(pos, defaultBlockState().setValue(ACTIVATED, Boolean.valueOf(true)), 3);
+			Treasure.LOGGER.debug("should be activated -> {}", world.getBlockState(pos).getValue(ACTIVATED));
+			// TODO fall() isn't really required anymore either ??
+			fall(world.getBlockState(pos), (ServerWorld)world, pos);
 		}
 	}
 
-	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+	/**
+	 * 
+	 * @param state
+	 * @param worldIn
+	 * @param pos
+	 * @param rand
+	 */
+	public void fall(BlockState state, ServerWorld worldIn, BlockPos pos) {
+		Treasure.LOGGER.debug("on block fall, activated -> {}", worldIn.getBlockState(pos).getValue(ACTIVATED));
 		if (!worldIn.getBlockState(pos).getValue(ACTIVATED)) {
 			return;
 		}
-		super.tick(state, worldIn, pos, rand);
+		super.tick(state, worldIn, pos, null); // change to fall()
 	}
 	
 	/**
