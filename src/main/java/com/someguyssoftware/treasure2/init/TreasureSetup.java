@@ -38,7 +38,6 @@ public class TreasureSetup implements IModSetup {
 		TreasureMetaRegistry.create(Treasure.instance);
 		TreasureTemplateRegistry.create(Treasure.instance);
 		TreasureDecayRegistry.create(Treasure.instance);
-
 	}
 	
 	/**

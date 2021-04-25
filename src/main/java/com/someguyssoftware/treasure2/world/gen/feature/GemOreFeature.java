@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
@@ -59,9 +60,12 @@ public class GemOreFeature extends Feature<OreFeatureConfig> implements ITreasur
 	public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random rand, BlockPos pos, OreFeatureConfig config) {
 //		String dimensionName = seedReader.getLevel().getDimension().getType().getRegistryName().toString();
 		ResourceLocation dimensionName = WorldInfo.getDimension(seedReader.getLevel());
-
+		Treasure.LOGGER.debug("placing @ {} in biome category -> {}", pos.toShortString(), seedReader.getBiome(pos).getBiomeCategory().getName());
+		Treasure.LOGGER.debug("dimension -> {}, location -> {}", seedReader.getLevel().dimension().getRegistryName(), seedReader.getLevel().dimension().location());
 		// ore only generates in overworld
-		if (!WorldInfo.isSurfaceWorld(seedReader.getLevel())) {
+
+		if (!WorldInfo.isSurfaceWorld(seedReader.getLevel(), pos)) {
+			Treasure.LOGGER.debug("not a surface world...");
 //		if (worldIn.getDimension().getType() != DimensionType.OVERWORLD) {
 			return false;
 		}

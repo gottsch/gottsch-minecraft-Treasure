@@ -199,7 +199,7 @@ public class TreasureFeatures {
 		 */
 		@SubscribeEvent
 		public static void registerFeatures(RegistryEvent.Register<Feature<?>> event) {
-
+			Treasure.LOGGER.info("registering features and configs...");
 			// initialize features
 			SURFACE_CHEST_FEATURE = new SurfaceChestFeature(NoFeatureConfig.CODEC);
 			SUBMERGED_CHEST_FEATURE = new SubmergedChestFeature(NoFeatureConfig.CODEC);
@@ -219,13 +219,8 @@ public class TreasureFeatures {
 			registry.register(GEM_ORE_FEATURE);
 			registry.register(WELL_FEATURE);
 			registry.register(WITHER_TREE_FEATURE);
-		}
-
-		/*
-		 * Register the Feature Configs
-		 */
-		@SubscribeEvent
-		public void onBiomeLoading(final BiomeLoadingEvent biome) {
+			
+			// initialize configs
 			// NEW WAY
 			// init the feature configs
 			SURFACE_CHEST_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "surface_chest",
@@ -258,25 +253,36 @@ public class TreasureFeatures {
 									(TreasureConfig.GEMS_AND_ORES.sapphireOreMaxY.get()
 											- TreasureConfig.GEMS_AND_ORES.sapphireOreMinY.get()) / 2)))
 							.squared().count(TreasureConfig.GEMS_AND_ORES.rubyOreVeinsPerChunk.get()));
+		}
+	}
+	
+	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.FORGE)
+	public static class BiomeRegistrationHandler {
+		/*
+		 * Register the Features with Biomes
+		 */
+		@SubscribeEvent
+		public static void onBiomeLoading(final BiomeLoadingEvent biomeEvent) {
 
 			// TODO could change this to WorldInfo.isSurfaceWorld();
-			if (biome.getCategory() == Biome.Category.NETHER || biome.getCategory() == Biome.Category.THEEND) {
+			if (biomeEvent.getCategory() == Biome.Category.NETHER || biomeEvent.getCategory() == Biome.Category.THEEND) {
 				return;
 			}
-
-			biome.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
+//			Treasure.LOGGER.info("registering features to biome -> {}, ruby -> {}", biomeEvent.getName(), RUBY_ORE_FEATURE_CONFIG);
+			
+			biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
 					.add(() -> RUBY_ORE_FEATURE_CONFIG);
-			biome.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
+			biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
 					.add(() -> SAPPHIRE_ORE_FEATURE_CONFIG);
 
-			if (biome.getCategory() == Biome.Category.OCEAN) {
-				biome.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
+			if (biomeEvent.getCategory() == Biome.Category.OCEAN) {
+				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
 						.add(() -> SUBMERGED_CHEST_FEATURE_CONFIG);
 			} else {
-				biome.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
+				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
 						.add(() -> SURFACE_CHEST_FEATURE_CONFIG);
 				if (TreasureConfig.WELLS.isEnabled()) {
-					biome.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
+					biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
 							.add(() -> WELL_FEATURE_CONFIG);
 				}
 			}

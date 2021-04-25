@@ -67,12 +67,10 @@ public abstract class AbstractTreasureFallingBlock extends ModFallingBlock imple
 			if (!(entityIn instanceof PlayerEntity)) {
 				return;
 			}
-			// TODO ACTIVATED is no longer required
 			// set to activated
 			world.setBlock(pos, defaultBlockState().setValue(ACTIVATED, Boolean.valueOf(true)), 3);
-			Treasure.LOGGER.debug("should be activated -> {}", world.getBlockState(pos).getValue(ACTIVATED));
-			// TODO fall() isn't really required anymore either ??
-			fall(world.getBlockState(pos), (ServerWorld)world, pos);
+			// initiate fall
+			fall(world.getBlockState(pos), (ServerWorld)world, pos, null);
 		}
 	}
 
@@ -83,12 +81,12 @@ public abstract class AbstractTreasureFallingBlock extends ModFallingBlock imple
 	 * @param pos
 	 * @param rand
 	 */
-	public void fall(BlockState state, ServerWorld worldIn, BlockPos pos) {
-		Treasure.LOGGER.debug("on block fall, activated -> {}", worldIn.getBlockState(pos).getValue(ACTIVATED));
+	public void fall(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
+		// ensure the block is activated
 		if (!worldIn.getBlockState(pos).getValue(ACTIVATED)) {
 			return;
 		}
-		super.tick(state, worldIn, pos, null); // change to fall()
+		super.fall(state, worldIn, pos, null);
 	}
 	
 	/**

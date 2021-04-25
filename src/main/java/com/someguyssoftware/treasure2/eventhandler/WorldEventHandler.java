@@ -3,8 +3,6 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
-import java.awt.Dimension;
-
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;

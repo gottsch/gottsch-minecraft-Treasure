@@ -85,6 +85,9 @@
 	"block.treasure2.wither_soul_log":"Wither Soul Log",
 	"block.treasure2.wither_broken_log":"Wither Broken Log",
 	"block.treasure2.spanish_moss":"Spanish Moss",
+	"block.treasure2:falling_grass":"Grass Block",
+	"block.treasure2:falling_sand.name":"Sand Block",
+	"block.treasure2:falling_red_sand.name":"Red Sand Block",
 
 	"block.treasure2.gravestone1_stone":"Stone Tombstone",
 	"block.treasure2.gravestone1_cobblestone":"Cobblestone Tombstone",
