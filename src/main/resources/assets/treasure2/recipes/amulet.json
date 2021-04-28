@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "treasure2:adornment_recipe",
   "group": "Treasure2",
   "pattern": [
 	" NT",

@@ -115,6 +115,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 			// read in nbt
 			if (stack.hasTagCompound()) {
 				tcte.readFromItemStackNBT(stack.getTagCompound());
+				Treasure.logger.debug("onplaced isSealed ->{}", tcte.isSealed());
 				forceUpdate = true;
 
 				// get the old tcte facing direction
@@ -191,28 +192,33 @@ public class TreasureChestBlock extends AbstractChestBlock {
 		if (te != null) {
 			// unlocked!
 			if (!te.hasLocks()) {
-				/*
-				 * spawn inventory items
-				 */
-				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) te);
-
-				/*
-				 * spawn chest item
-				 */
-				ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
-				Treasure.logger.debug("Item being created from chest -> {}", chestItem.getItem().getRegistryName());
-				InventoryHelper.spawnItemStack(worldIn, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(),
-						chestItem);
-
-				/*
-				 * write the properties to the nbt
-				 */
-				if (!chestItem.hasTagCompound()) {
-					chestItem.setTagCompound(new NBTTagCompound());
+				if (WorldInfo.isServerSide(worldIn)) {
+					/*
+					 * spawn inventory items
+					 */
+					InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) te);
+	
+					/*
+					 * create chest item
+					 */
+					ItemStack chestItem = new ItemStack(Item.getItemFromBlock(this), 1);
+					
+					/*
+					 * write the properties to the nbt
+					 */
+					if (!chestItem.hasTagCompound()) {
+						chestItem.setTagCompound(new NBTTagCompound());
+					}
+					te.writeToNBT(chestItem.getTagCompound());
+					
+					/*
+					 * spawn chest item
+					 */
+					Treasure.logger.debug("Item being created from chest -> {}", chestItem.getItem().getRegistryName());
+					InventoryHelper.spawnItemStack(worldIn, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(),
+							chestItem);
 				}
-				te.writePropertiesToNBT(chestItem.getTagCompound());
 			} else {
-				Treasure.logger.debug("[BreakingBlock] ChestConfig is locked, save locks and items to NBT");
 
 				/*
 				 * spawn chest item

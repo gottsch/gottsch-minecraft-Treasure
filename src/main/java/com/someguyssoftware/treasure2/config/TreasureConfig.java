@@ -23,6 +23,7 @@ import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RangeDouble;
 import net.minecraftforge.common.config.Config.RangeInt;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
+import net.minecraftforge.common.config.Config.RequiresWorldRestart;
 import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.common.config.Configuration;
@@ -361,6 +362,100 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@RequiresMcRestart
 		public int chestRegistrySize = 25;
 
+		@RequiresMcRestart
+		@Comment({ 
+		"Note: Disabling one or more chests could remove all chests from a particular rarity group and lead to empty treasure sites.",	
+		"Enable/Disable whether a wood chest will spawn." })
+		@Name("02. Enable wood chest:")
+		public boolean enableWoodChest = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a crate will spawn." })
+		@Name("03. Enable crate:")
+		public boolean enableCrate = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a moldy crate will spawn." })
+		@Name("04. Enable moldy crate:")
+		public boolean enableMoldyCrate = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether an iron-bound chest will spawn." })
+		@Name("05. Enable iron-bound chest:")
+		public boolean enableIronboundChest = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a pirate chest will spawn." })
+		@Name("06. Enable pirate chest:")
+		public boolean enablePirateChest = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether an iron strongbox  will spawn." })
+		@Name("07. Enable iron strongbox:")
+		public boolean enableIronStrongbox = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a gold strongbox will spawn." })
+		@Name("08. Enable gold strongbox:")
+		public boolean enableGoldStrongbox = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a safe will spawn." })
+		@Name("09. Enable safe:")
+		public boolean enableSafe = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a dread pirate chest will spawn." })
+		@Name("10. Enable dread pirate chest:")
+		public boolean enableDreadPirateChest = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a compressor chest will spawn." })
+		@Name("11. Enable compressor chest:")
+		public boolean enableCompressorChest = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a spider chest will spawn." })
+		@Name("12. Enable spider chest:")
+		public boolean enableSpiderChest = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a skull chest will spawn." })
+		@Name("13. Enable skull chest:")
+		public boolean enableSkullChest = true;
+
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a gold skull chest will spawn." })
+		@Name("14. Enable gold skull chest:")
+		public boolean enableGoldSkullChest = true;
+
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a crystal skull chest will spawn." })
+		@Name("15. Enable crystal skull chest:")
+		public boolean enableCrystalSkullChest = true;
+
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a viking chest will spawn." })
+		@Name("16. Enable viking chest:")
+		public boolean enableVikingChest = true;
+
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a cauldron chest will spawn." })
+		@Name("17. Enable cauldron chest:")
+		public boolean enableCauldronChest = true;
+
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a cardboard box will spawn." })
+		@Name("18. Enable cardboard box:")
+		public boolean enableCardboardBox = true;
+
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a milk crate will spawn." })
+		@Name("19. Enable milk crate:")
+		public boolean enableMilkCrate = true;
+		
+		@Ignore public Map<String, Boolean> chestEnablementMap = new HashMap<>();
+		
 		/*
 		 * 
 		 */
@@ -418,6 +513,27 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		public void init() {
 			this.surfaceChests.init();
 			this.submergedChests.init();
+			
+			// map chest enablements
+			chestEnablementMap.clear();
+			chestEnablementMap.put(WOOD_CHEST_ID, enableWoodChest);
+			chestEnablementMap.put(CRATE_CHEST_ID, enableCrate);
+			chestEnablementMap.put(MOLDY_CRATE_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(IRONBOUND_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(PIRATE_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(IRON_STRONGBOX_ID, enableMoldyCrate);
+			chestEnablementMap.put(GOLD_STRONGBOX_ID, enableMoldyCrate);
+			chestEnablementMap.put(SAFE_ID, enableMoldyCrate);
+			chestEnablementMap.put(DREAD_PIRATE_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(COMPRESSOR_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(SPIDER_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(VIKING_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(SKULL_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(GOLD_SKULL_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(CRYSTAL_SKULL_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(CAULDRON_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(CARDBOARD_BOX_ID, enableMoldyCrate);
+			chestEnablementMap.put(MILK_CRATE_ID, enableMoldyCrate);
 		}
 
 		public class ChestCollection implements IChestCollection {

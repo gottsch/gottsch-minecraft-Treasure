@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "treasure2:adornment_recipe",
   "group": "Treasure2",
   "pattern": [
 	" NT",
@@ -21,7 +21,7 @@
 	}
   },
   "result": {
-    "item": "treasure2:sapphire_gold_amulet",
+    "item": "treasure2:sapphire_amulet",
     "count": 1
   }
 }

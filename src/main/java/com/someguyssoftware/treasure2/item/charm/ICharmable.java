@@ -80,9 +80,13 @@ public interface ICharmable {
      */
     @SuppressWarnings("deprecation")
 	default public void addSlotsInfo(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-     	ICharmableCapability cap = stack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);    	
-		tooltip.add(TextFormatting.WHITE.toString() + I18n.translateToLocalFormatted("tooltip.label.charmable.slots", 
-				String.valueOf(Math.toIntExact(Math.round(cap.getSlots()))), 
-				String.valueOf(Math.toIntExact(Math.round(((ICharmable)stack.getItem()).getMaxSlots())))));
+     	ICharmableCapability charmableCap = stack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+     	ICharmCapability charmCap = stack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
+     	
+     	tooltip.add(TextFormatting.YELLOW.toString() + I18n.translateToLocalFormatted("tooltip.label.charmable.slots", TextFormatting.GRAY.toString()));
+		tooltip.add(" " + TextFormatting.WHITE.toString() + I18n.translateToLocalFormatted("tooltip.label.charmable.slots.stats", 
+				String.valueOf(charmableCap.getSlots()),
+				String.valueOf(charmCap.getCharmInstances().size() + charmableCap.getSlots()),
+				String.valueOf(((ICharmable)stack.getItem()).getMaxSlots())));
     }
 }

@@ -505,8 +505,16 @@ public class TreasureBlocks {
 		public static void registerBlocks(final RegistryEvent.Register<Block> event) {
 			final IForgeRegistry<Block> registry = event.getRegistry();
 
-			final Block[] blocks = { WOOD_CHEST, CRATE_CHEST, MOLDY_CRATE_CHEST, IRONBOUND_CHEST, PIRATE_CHEST,
-					IRON_STRONGBOX, GOLD_STRONGBOX, SAFE, DREAD_PIRATE_CHEST,
+			final Block[] blocks = { 
+					WOOD_CHEST, 
+					CRATE_CHEST, 
+					MOLDY_CRATE_CHEST, 
+					IRONBOUND_CHEST, 
+					PIRATE_CHEST,
+					IRON_STRONGBOX, 
+					GOLD_STRONGBOX, 
+					SAFE, 
+					DREAD_PIRATE_CHEST,
 					COMPRESSOR_CHEST,
 					SPIDER_CHEST, 
 					VIKING_CHEST,
@@ -563,7 +571,14 @@ public class TreasureBlocks {
 			// map the block by rarity
 			for (Block block : blocks) {
 				if (block instanceof TreasureChestBlock) {
-					chests.put(((TreasureChestBlock) block).getRarity(), block);
+					/*
+					 * if the map DOESN'T contain a key OR the value is true, then add chest.
+					 * the first check is "doesn't" so that the default behavior is to include it.
+					 */
+					if (!TreasureConfig.CHESTS.chestEnablementMap.containsKey(block.getRegistryName().getResourcePath()) ||
+							TreasureConfig.CHESTS.chestEnablementMap.get(block.getRegistryName().getResourcePath())) {
+						chests.put(((TreasureChestBlock) block).getRarity(), block);
+					}
 				}
 			}
 		}
