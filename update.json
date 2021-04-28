@@ -1,8 +1,8 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/treasure2",
 	"promos": {
-		"1.12.2-latest": "1.15.0",
-		"1.12.2-recommended": "1.15.0"
+		"1.12.2-latest": "1.16.1",
+		"1.12.2-recommended": "1.16.1"
 	},
 	"1.12.2": {
 		"0.5.0": "alpha release",
@@ -45,6 +45,8 @@
 		"1.13.2": "Fixed duplication bug on Harvesting Charms.\nFixed some loot tables with item spelling errors.Tweaked the epic charmed loot table.",
 		"1.14.0": "Revamped Loot Table management system - uses vanilla with tweaks.\nAdded Cardboard Box, Milk Crate and Crystal Skull chests.\nRegistered treasure loot tables with vanilla dungeon chests.\nAdded -facing, -chest, -locked and -sealed arguments to SpawnChestCommand.\nAdded Enchantment glow to Charmed Coins/Gems and updated images.\nUpdated to Forge 1.12.2-14.23.5.2854.\n",
 		"1.14.1": "Fixed epic loot tables to point to the right pool tables.\n",
-		"1.15.0": "Charms & Adornments Update:\nRefactored mechanics of charms.\nAdded Charmable items.\nAdded new Charms: Absolute Shielding, Fire Resistence, Fire Immunity, Life Strike, Reflection, Drain, Ruin, Decrepit, Dirt Fill, Dirt Walk.\nAdded Adornments - rings, bracelets, and amulets.\nAdornments are slottable.\nUpdated CharmRandomly loot function.\nAdded SetCustomName and SetSlots loot functions.\n"
+		"1.15.0": "Charms & Adornments Update:\nRefactored mechanics of charms.\nAdded Charmable items.\nAdded new Charms: Absolute Shielding, Fire Resistence, Fire Immunity, Life Strike, Reflection, Drain, Ruin, Decrepit, Dirt Fill, Dirt Walk.\nAdded Adornments - rings, bracelets, and amulets.\nAdornments are slottable.\nUpdated CharmRandomly loot function.\nAdded SetCustomName and SetSlots loot functions.\n",
+		"1.16.0": "Added Amethyst and Onyx Gems and Ores.\nAdded new Adornments.\nAdded recipes to create Adornments.\nAdded Crystal Skull Chest recipe.\nFixed Cyrstal Skull Chest not generating.\nAdded Wither Chest Registry to help prevent trees generating too close together.\nUpdated Chinese language file.\nFixed apple loot entry pointing to bread in common loot table.\n",
+		"1.16.1": "Fixed Adornments losing existing charms when upgraded.\nFixed breaking unlocked and sealed chests from losing treasure.\nFixed some adornment recipes.\nAdded config options for each chest.\nRe-worded verbiage for Adornments charms."
 	}
 }

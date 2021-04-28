@@ -39,6 +39,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.CauldronChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.CrystalSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
@@ -137,8 +138,9 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(EPIC).isEnableChest()) {
 			RARITIES.add(EPIC);
 			chestGenMap.put(EPIC, new RandomWeightedCollection<>());
-			chestGenMap.get(EPIC).add(85, new EpicChestGenerator());
+			chestGenMap.get(EPIC).add(70, new EpicChestGenerator());
 			chestGenMap.get(EPIC).add(15, new CauldronChestGenerator());
+			chestGenMap.get(EPIC).add(15, new CrystalSkullChestGenerator());
 		}		
 		
 		// setup pit generators map
@@ -359,16 +361,16 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 			Treasure.logger.debug("Chest coords were not provided in result -> {}", genResult.toString());
 			return result.fail();
 		}
-
-		// add markers (above chest or shaft)
-		if (hasMarkers) {
-			chestGenerator.addMarkers(world, random, markerCoords, isSurfaceChest);
-		}		
+	
 		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestContext().getState());
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}
-        
+		// add markers (above chest or shaft)
+		if (hasMarkers) {
+			chestGenerator.addMarkers(world, random, markerCoords, isSurfaceChest);
+		}
+		
         // TODO can update tile entity GenerationContext with WorldGenerationType here
         
 		Treasure.logger.info("CHEATER! {} chest at coords: {}", chestRarity, markerCoords.toShortString());

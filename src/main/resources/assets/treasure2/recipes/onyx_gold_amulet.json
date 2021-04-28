@@ -1,0 +1,27 @@
+{
+  "type": "treasure2:adornment_recipe",
+  "group": "Treasure2",
+  "pattern": [
+	" NT",
+	" D ",
+	" G "
+  ],
+  "key": {
+    "T": {
+		"item": "treasure2:treasure_tool"
+	},
+	"N": {
+		"item": "treasure2:gold_necklace"
+	},
+	"D": {
+		"item": "minecraft:glowstone_dust"
+	},
+	"G": {
+		"item": "treasure2:onyx"
+	}
+  },
+  "result": {
+    "item": "treasure2:onyx_gold_amulet",
+    "count": 1
+  }
+}

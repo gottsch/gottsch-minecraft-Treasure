@@ -1,0 +1,27 @@
+{
+  "type": "treasure2:adornment_recipe",
+  "group": "Treasure2",
+  "pattern": [
+	" RT",
+	" D ",
+	" G "
+  ],
+  "key": {
+    "T": {
+		"item": "treasure2:treasure_tool"
+	},
+	"R": {
+		"item": "treasure2:silver_ring"
+	},
+	"D": {
+		"item": "minecraft:glowstone_dust"
+	},
+	"G": {
+		"item": "treasure2:amethyst"
+	}
+  },
+  "result": {
+    "item": "treasure2:amethyst_silver_ring",
+    "count": 1
+  }
+}

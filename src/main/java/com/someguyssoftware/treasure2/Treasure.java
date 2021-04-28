@@ -109,7 +109,7 @@ public class Treasure extends AbstractMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.15.0";
+	protected static final String VERSION = "1.16.1";
 
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/update.json";
 
@@ -304,7 +304,9 @@ public class Treasure extends AbstractMod {
 		TreasureBlocks.PAINTING_BLOCKS_WATER.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_WATER);
 		TreasureBlocks.PAINTING_BLOCKS_WOOD.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_WOOD);
 
-		// associate ore blocks with items
+        // associate ore blocks with items
+        TreasureBlocks.AMETHYST_ORE.setItem(TreasureItems.AMETHYST);
+        TreasureBlocks.ONYX_ORE.setItem(TreasureItems.ONYX);
 		TreasureBlocks.SAPPHIRE_ORE.setItem(TreasureItems.SAPPHIRE);
 		TreasureBlocks.RUBY_ORE.setItem(TreasureItems.RUBY);
 	}

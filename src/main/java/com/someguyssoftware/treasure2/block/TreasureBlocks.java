@@ -143,7 +143,9 @@ public class TreasureBlocks {
 	public static Map<FogHeight, FogBlock> witherFogMap = new HashMap<>();
 	public static Map<FogHeight, FogBlock> poisonFogMap = new HashMap<>();
 
-	// ores
+    // ores
+    public static final OreBlock AMETHYST_ORE;
+    public static final OreBlock ONYX_ORE;
 	public static final OreBlock RUBY_ORE;
 	public static final OreBlock SAPPHIRE_ORE;
 
@@ -435,7 +437,9 @@ public class TreasureBlocks {
 		gravestoneSpawners.add(GRAVESTONE2_SPAWNER_COBBLESTONE);
 		gravestoneSpawners.add(GRAVESTONE3_SPAWNER_OBSIDIAN);
 
-		// ORES/GEMS
+        // ORES/GEMS
+        AMETHYST_ORE = new OreBlock(Treasure.MODID, TreasureConfig.AMETHYST_ORE_ID, Material.ROCK);
+        ONYX_ORE = new OreBlock(Treasure.MODID, TreasureConfig.ONYX_ORE_ID, Material.ROCK);
 		SAPPHIRE_ORE = new OreBlock(Treasure.MODID, TreasureConfig.SAPPHIRE_ORE_ID, Material.ROCK);
 		RUBY_ORE = new OreBlock(Treasure.MODID, TreasureConfig.RUBY_ORE_ID, Material.ROCK);
 
@@ -501,8 +505,16 @@ public class TreasureBlocks {
 		public static void registerBlocks(final RegistryEvent.Register<Block> event) {
 			final IForgeRegistry<Block> registry = event.getRegistry();
 
-			final Block[] blocks = { WOOD_CHEST, CRATE_CHEST, MOLDY_CRATE_CHEST, IRONBOUND_CHEST, PIRATE_CHEST,
-					IRON_STRONGBOX, GOLD_STRONGBOX, SAFE, DREAD_PIRATE_CHEST,
+			final Block[] blocks = { 
+					WOOD_CHEST, 
+					CRATE_CHEST, 
+					MOLDY_CRATE_CHEST, 
+					IRONBOUND_CHEST, 
+					PIRATE_CHEST,
+					IRON_STRONGBOX, 
+					GOLD_STRONGBOX, 
+					SAFE, 
+					DREAD_PIRATE_CHEST,
 					COMPRESSOR_CHEST,
 					SPIDER_CHEST, 
 					VIKING_CHEST,
@@ -532,7 +544,11 @@ public class TreasureBlocks {
 					WITHER_LOG, WITHER_BRANCH, WITHER_ROOT, WITHER_BROKEN_LOG, WITHER_LOG_SOUL, WITHER_CHEST_TOP,
 					WITHER_PLANKS, SPANISH_MOSS, PAINTING_BLOCKS_BRICKS, PAINTING_BLOCKS_COBBLESTONE,
 					PAINTING_BLOCKS_DIRT, PAINTING_BLOCKS_LAVA, PAINTING_BLOCKS_SAND, PAINTING_BLOCKS_WATER,
-					PAINTING_BLOCKS_WOOD, SAPPHIRE_ORE, RUBY_ORE, 
+                    PAINTING_BLOCKS_WOOD,
+                    AMETHYST_ORE,
+                    ONYX_ORE,
+                    SAPPHIRE_ORE,
+                    RUBY_ORE, 
 					FALLING_GRASS,
 					FALLING_SAND,
 					FALLING_RED_SAND,
@@ -555,7 +571,14 @@ public class TreasureBlocks {
 			// map the block by rarity
 			for (Block block : blocks) {
 				if (block instanceof TreasureChestBlock) {
-					chests.put(((TreasureChestBlock) block).getRarity(), block);
+					/*
+					 * if the map DOESN'T contain a key OR the value is true, then add chest.
+					 * the first check is "doesn't" so that the default behavior is to include it.
+					 */
+					if (!TreasureConfig.CHESTS.chestEnablementMap.containsKey(block.getRegistryName().getResourcePath()) ||
+							TreasureConfig.CHESTS.chestEnablementMap.get(block.getRegistryName().getResourcePath())) {
+						chests.put(((TreasureChestBlock) block).getRarity(), block);
+					}
 				}
 			}
 		}
@@ -605,7 +628,11 @@ public class TreasureBlocks {
 					new ItemBlock(SKULL_CROSSBONES),
 					new ItemBlock(WISHING_WELL_BLOCK), new ItemBlock(DESERT_WISHING_WELL_BLOCK),
 					new ItemBlock(WITHER_LOG), new ItemBlock(WITHER_BROKEN_LOG), new ItemBlock(WITHER_LOG_SOUL),
-					new ItemBlock(WITHER_PLANKS), new ItemBlock(SAPPHIRE_ORE), new ItemBlock(RUBY_ORE),
+                    new ItemBlock(WITHER_PLANKS),
+                    new ItemBlock(AMETHYST_ORE),
+                    new ItemBlock(ONYX_ORE),
+                    new ItemBlock(SAPPHIRE_ORE),
+                    new ItemBlock(RUBY_ORE),
 					new ItemBlock(PROXIMITY_SPAWNER),
 					new ItemBlock(FALLING_GRASS),
 					new ItemBlock(FALLING_SAND),

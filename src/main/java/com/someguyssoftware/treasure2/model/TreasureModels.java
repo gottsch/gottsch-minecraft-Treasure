@@ -95,7 +95,9 @@ public class TreasureModels {
 //		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_ROOT));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_PLANKS));
 
-		// ORES/GEMS
+        // ORES/GEMS
+        registerItemModel(Item.getItemFromBlock(TreasureBlocks.AMETHYST_ORE));
+        registerItemModel(Item.getItemFromBlock(TreasureBlocks.ONYX_ORE));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SAPPHIRE_ORE));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.RUBY_ORE));
 
@@ -129,6 +131,7 @@ public class TreasureModels {
 		// ADORNMENTS
         registerItemModel(TreasureItems.SILVER_RING);
         registerItemModel(TreasureItems.SILVER_SIGNET_RING);
+        registerItemModel(TreasureItems.AMETHYST_SILVER_RING);
         registerItemModel(TreasureItems.ONYX_GOLD_RING);
 		registerItemModel(TreasureItems.GOLD_RING);
         registerItemModel(TreasureItems.RUBY_GOLD_RING);
@@ -137,9 +140,16 @@ public class TreasureModels {
         registerItemModel(TreasureItems.SAPPHIRE_GOLD_RING);
         registerItemModel(TreasureItems.CASTLE_RING);
         registerItemModel(TreasureItems.ANGELS_RING);
-        registerItemModel(TreasureItems.AMULET);
+        registerItemModel(TreasureItems.SILVER_NECKLACE);
+        registerItemModel(TreasureItems.GOLD_NECKLACE);
+        registerItemModel(TreasureItems.SAPPHIRE_SILVER_AMULET);
+        registerItemModel(TreasureItems.AMETHYST_GOLD_AMULET);
+        registerItemModel(TreasureItems.ONYX_GOLD_AMULET);
+        registerItemModel(TreasureItems.RUBY_GOLD_AMULET);
+        registerItemModel(TreasureItems.SAPPHIRE_GOLD_AMULET);
         registerItemModel(TreasureItems.GOLD_BRACELET);
-        
+        registerItemModel(TreasureItems.POCKET_WATCH);
+
         registerItemModel(TreasureItems.BRACELET_OF_WONDER);
         registerItemModel(TreasureItems.RING_OF_FORTITUDE);
         
@@ -201,23 +211,12 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.PAINTING_BLOCKS_WOOD);
 
 		// OTHER
-		registerItemModel(TreasureItems.SPANISH_MOSS);
+        registerItemModel(TreasureItems.SPANISH_MOSS);
+        registerItemModel(TreasureItems.AMETHYST);
+        registerItemModel(TreasureItems.ONYX);
 		registerItemModel(TreasureItems.SAPPHIRE);
 		registerItemModel(TreasureItems.RUBY);
 		registerItemModel(TreasureItems.TREASURE_TOOL);
-
-		// FOOD
-//		registerItemModel(TreasureItems.OYSTER_MEAT);
-//		registerItemModel(TreasureItems.OYSTER_STEW);
-//		registerItemModel(TreasureItems.CLAM_MEAT);
-//		registerItemModel(TreasureItems.CLAM_STEW);
-
-//		// variants
-//		Item gravestoneItem = Item.getItemFromBlock(TreasureBlocks.GRAVESTONE1);
-//		ModelResourceLocation itemModelResourceLocation = 
-//				   new ModelResourceLocation("treasure2:gravestone1_t1_e1", "inventory");
-//		ModelLoader.setCustomModelResourceLocation(gravestoneItem,  0, itemModelResourceLocation);
-
 	}
 
 	/**

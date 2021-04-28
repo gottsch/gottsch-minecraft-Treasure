@@ -57,7 +57,10 @@ public class CauldronChestGenerator extends EpicChestGenerator {
 	 */
 	@Override
 	public TreasureChestBlock  selectChest(final Random random, final Rarity rarity) {
-		TreasureChestBlock chest = (TreasureChestBlock) TreasureBlocks.CAULDRON_CHEST;
+		TreasureChestBlock chest = null;
+		if (isChestEnabled(TreasureBlocks.CAULDRON_CHEST)) {
+			chest = (TreasureChestBlock) TreasureBlocks.CAULDRON_CHEST;
+		}
 		return chest;
 	}
 }

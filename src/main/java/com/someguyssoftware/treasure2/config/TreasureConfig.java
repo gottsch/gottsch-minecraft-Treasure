@@ -23,6 +23,7 @@ import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RangeDouble;
 import net.minecraftforge.common.config.Config.RangeInt;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
+import net.minecraftforge.common.config.Config.RequiresWorldRestart;
 import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.common.config.Configuration;
@@ -213,6 +214,11 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 
 	@Ignore public static final String WITHER_PLANKS_ID = "wither_planks";
 
+	@Ignore public static final String AMETHYST_ORE_ID = "amethyst_ore";
+    @Ignore public static final String AMETHYST_ID = "amethyst";
+    @Ignore public static final String ONYX_ORE_ID = "onyx_ore";
+    @Ignore public static final String ONYX_ID = "onyx";
+       
 	@Ignore public static final String SAPPHIRE_ORE_ID = "sapphire_ore";
 	@Ignore public static final String SAPPHIRE_ID = "sapphire";
 	@Ignore public static final String RUBY_ORE_ID = "ruby_ore";
@@ -356,6 +362,100 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@RequiresMcRestart
 		public int chestRegistrySize = 25;
 
+		@RequiresMcRestart
+		@Comment({ 
+		"Note: Disabling one or more chests could remove all chests from a particular rarity group and lead to empty treasure sites.",	
+		"Enable/Disable whether a wood chest will spawn." })
+		@Name("02. Enable wood chest:")
+		public boolean enableWoodChest = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a crate will spawn." })
+		@Name("03. Enable crate:")
+		public boolean enableCrate = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a moldy crate will spawn." })
+		@Name("04. Enable moldy crate:")
+		public boolean enableMoldyCrate = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether an iron-bound chest will spawn." })
+		@Name("05. Enable iron-bound chest:")
+		public boolean enableIronboundChest = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a pirate chest will spawn." })
+		@Name("06. Enable pirate chest:")
+		public boolean enablePirateChest = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether an iron strongbox  will spawn." })
+		@Name("07. Enable iron strongbox:")
+		public boolean enableIronStrongbox = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a gold strongbox will spawn." })
+		@Name("08. Enable gold strongbox:")
+		public boolean enableGoldStrongbox = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a safe will spawn." })
+		@Name("09. Enable safe:")
+		public boolean enableSafe = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a dread pirate chest will spawn." })
+		@Name("10. Enable dread pirate chest:")
+		public boolean enableDreadPirateChest = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a compressor chest will spawn." })
+		@Name("11. Enable compressor chest:")
+		public boolean enableCompressorChest = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a spider chest will spawn." })
+		@Name("12. Enable spider chest:")
+		public boolean enableSpiderChest = true;
+		
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a skull chest will spawn." })
+		@Name("13. Enable skull chest:")
+		public boolean enableSkullChest = true;
+
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a gold skull chest will spawn." })
+		@Name("14. Enable gold skull chest:")
+		public boolean enableGoldSkullChest = true;
+
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a crystal skull chest will spawn." })
+		@Name("15. Enable crystal skull chest:")
+		public boolean enableCrystalSkullChest = true;
+
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a viking chest will spawn." })
+		@Name("16. Enable viking chest:")
+		public boolean enableVikingChest = true;
+
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a cauldron chest will spawn." })
+		@Name("17. Enable cauldron chest:")
+		public boolean enableCauldronChest = true;
+
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a cardboard box will spawn." })
+		@Name("18. Enable cardboard box:")
+		public boolean enableCardboardBox = true;
+
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a milk crate will spawn." })
+		@Name("19. Enable milk crate:")
+		public boolean enableMilkCrate = true;
+		
+		@Ignore public Map<String, Boolean> chestEnablementMap = new HashMap<>();
+		
 		/*
 		 * 
 		 */
@@ -413,6 +513,27 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		public void init() {
 			this.surfaceChests.init();
 			this.submergedChests.init();
+			
+			// map chest enablements
+			chestEnablementMap.clear();
+			chestEnablementMap.put(WOOD_CHEST_ID, enableWoodChest);
+			chestEnablementMap.put(CRATE_CHEST_ID, enableCrate);
+			chestEnablementMap.put(MOLDY_CRATE_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(IRONBOUND_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(PIRATE_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(IRON_STRONGBOX_ID, enableMoldyCrate);
+			chestEnablementMap.put(GOLD_STRONGBOX_ID, enableMoldyCrate);
+			chestEnablementMap.put(SAFE_ID, enableMoldyCrate);
+			chestEnablementMap.put(DREAD_PIRATE_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(COMPRESSOR_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(SPIDER_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(VIKING_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(SKULL_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(GOLD_SKULL_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(CRYSTAL_SKULL_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(CAULDRON_CHEST_ID, enableMoldyCrate);
+			chestEnablementMap.put(CARDBOARD_BOX_ID, enableMoldyCrate);
+			chestEnablementMap.put(MILK_CRATE_ID, enableMoldyCrate);
 		}
 
 		public class ChestCollection implements IChestCollection {
@@ -623,6 +744,18 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@RangeDouble(min = 0.0, max = 100.0)
 		public double witherRootItemGenProbability = 50.0;
 
+		@Comment("")
+		@Name("08. Max. size of the wither tree registry:")
+		@RangeInt(min = 10, max = 250)
+		public int witherTreeRegistrySize = 25;
+		
+		@Comment({ "The minimum distance, measured in blocks, that two wither trees can be in proximity.",
+			"Note: Only wither trees in the registry are checked against this property.",
+			"Used in conjunction with the chunks per wither tree and spawn probability.", "Ex. " })
+		@Name("09. Min. distance per wither tree spawn:")
+		@RangeInt(min = 0, max = 32000)
+		public int minDistancePerWitherTree = 500;
+		
 		// TODO add all other wither tree probabilities ie coarse dirt gen, etc.
 
 		@Name("biomes")
@@ -813,7 +946,59 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@Comment({ "The number of sapphire ore veins in a chunk." })
 		@Name("11. Sapphire ore veins per chunk.")
 		@RangeInt(min = 1, max = 20)
-		public int sapphireOreVeinsPerChunk = 1;
+        public int sapphireOreVeinsPerChunk = 1;
+        
+ 	    @Comment({ "The probability that a amethyst ore will spawn." })
+		@Name("12. Probability of amethyst ore spawn.")
+		@RangeDouble(min = 0.0, max = 100.0)
+		public double amethystGenProbability = 75.0;
+
+		@Comment({ "The max. y-value where a amethyst ore can spawn." })
+		@Name("13. Max. y-value for amethyst ore spawn location:")
+		@RangeInt(min = 1, max = 255)
+		public int amethystOreMaxY = 24;
+
+		@Comment({ "The min. y-value where a amethyst ore can spawn." })
+		@Name("14. Min. y-value for amethyst ore spawn location:")
+		@RangeInt(min = 1, max = 255)
+		public int amethystOreMinY = 8;
+
+		@Comment({ "The number of amethyst ore blocks in a vein." })
+		@Name("15. Amethyst ore vein size:")
+		@RangeInt(min = 1, max = 20)
+		@RequiresMcRestart
+		public int amethystOreVeinSize = 4;
+
+		@Comment({ "The number of amethyst ore veins in a chunk." })
+		@Name("16. Amethyst ore veins per chunk.")
+		@RangeInt(min = 1, max = 20)
+        public int amethystOreVeinsPerChunk = 1;
+        
+	    @Comment({ "The probability that a onyx ore will spawn." })
+		@Name("17. Probability of onyx ore spawn.")
+		@RangeDouble(min = 0.0, max = 100.0)
+		public double onyxGenProbability = 75.0;
+
+		@Comment({ "The max. y-value where a onyx ore can spawn." })
+		@Name("18. Max. y-value for onyx ore spawn location:")
+		@RangeInt(min = 1, max = 255)
+		public int onyxOreMaxY = 24;
+
+		@Comment({ "The min. y-value where a onyx ore can spawn." })
+		@Name("19. Min. y-value for onyx ore spawn location:")
+		@RangeInt(min = 1, max = 255)
+		public int onyxOreMinY = 8;
+
+		@Comment({ "The number of onyx ore blocks in a vein." })
+		@Name("20. Onyx ore vein size:")
+		@RangeInt(min = 1, max = 20)
+		@RequiresMcRestart
+		public int onyxOreVeinSize = 4;
+
+		@Comment({ "The number of onyx ore veins in a chunk." })
+		@Name("21. Onyx ore veins per chunk.")
+		@RangeInt(min = 1, max = 20)
+		public int onyxOreVeinsPerChunk = 1;        
 	}
 
 	/*

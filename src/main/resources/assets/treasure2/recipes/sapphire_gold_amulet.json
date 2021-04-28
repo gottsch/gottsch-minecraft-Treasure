@@ -1,0 +1,27 @@
+{
+  "type": "treasure2:adornment_recipe",
+  "group": "Treasure2",
+  "pattern": [
+	" NT",
+	" D ",
+	" S "
+  ],
+  "key": {
+    "T": {
+		"item": "treasure2:treasure_tool"
+	},
+	"N": {
+		"item": "treasure2:gold_necklace"
+	},
+	"D": {
+		"item": "minecraft:glowstone_dust"
+	},
+	"S": {
+		"item": "treasure2:sapphire"
+	}
+  },
+  "result": {
+    "item": "treasure2:sapphire_amulet",
+    "count": 1
+  }
+}

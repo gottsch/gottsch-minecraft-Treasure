@@ -64,7 +64,10 @@ public class SkullChestGenerator implements IChestGenerator {
 	 */
 	@Override
 	public TreasureChestBlock  selectChest(final Random random, final Rarity rarity) {
-		TreasureChestBlock chest = (TreasureChestBlock) TreasureBlocks.SKULL_CHEST;
+		TreasureChestBlock chest = null;
+		if (isChestEnabled(TreasureBlocks.SKULL_CHEST)) {
+			 chest = (TreasureChestBlock) TreasureBlocks.SKULL_CHEST;
+		}
 		return chest;
 	}
 
