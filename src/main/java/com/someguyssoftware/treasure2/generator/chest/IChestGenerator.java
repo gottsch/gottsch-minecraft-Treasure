@@ -22,6 +22,7 @@ import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -114,6 +115,21 @@ public interface IChestGenerator {
 		return result.success();
 	}
 
+
+	/**
+	 * 
+	 * @param chest
+	 * @return
+	 */
+	default public boolean isChestEnabled(Block chest) {
+		if(chest instanceof TreasureChestBlock &&
+				(!TreasureConfig.CHESTS.chestEnablementMap.containsKey(chest.getRegistryName().getResourcePath()) ||
+						TreasureConfig.CHESTS.chestEnablementMap.get(chest.getRegistryName().getResourcePath()))) {
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * 
 	 * @param rarity
@@ -139,6 +155,10 @@ public interface IChestGenerator {
 	 */
 	default public AbstractChestBlock selectChest(final Random random, final Rarity rarity) {
 		List<Block> chestList = (List<Block>) TreasureBlocks.chests.get(rarity);
+		if (chestList == null || chestList.isEmpty()) {
+			return null;
+		}
+		
 		AbstractChestBlock chest = (AbstractChestBlock) chestList
 				.get(RandomHelper.randomInt(random, 0, chestList.size() - 1));
 

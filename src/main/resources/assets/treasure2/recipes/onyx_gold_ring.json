@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "treasure2:adornment_recipe",
   "group": "Treasure2",
   "pattern": [
 	" RT",
@@ -10,7 +10,7 @@
     "T": {
 		"item": "treasure2:treasure_tool"
 	},
-	"N": {
+	"R": {
 		"item": "treasure2:gold_ring"
 	},
 	"D": {

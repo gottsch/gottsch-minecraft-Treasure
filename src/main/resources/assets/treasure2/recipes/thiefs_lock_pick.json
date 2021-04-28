@@ -1,19 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-	"XT",
-	"X "
+	"XXT",
+	"XX "
   ],
   "key": {
   	"T": {
 		"item": "treasure2:treasure_tool"
 	},
 	"X": {
-		"item": "minecraft:iron_ingot"
+		"item": "minecraft:iron_nugget"
 	}
   },
   "result": {
     "item": "treasure2:thiefs_lock_pick",
-    "count": 1
+    "count":1
   }
 }

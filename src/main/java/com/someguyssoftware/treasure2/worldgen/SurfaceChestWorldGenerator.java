@@ -361,16 +361,16 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 			Treasure.logger.debug("Chest coords were not provided in result -> {}", genResult.toString());
 			return result.fail();
 		}
-
-		// add markers (above chest or shaft)
-		if (hasMarkers) {
-			chestGenerator.addMarkers(world, random, markerCoords, isSurfaceChest);
-		}		
+	
 		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestContext().getState());
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}
-        
+		// add markers (above chest or shaft)
+		if (hasMarkers) {
+			chestGenerator.addMarkers(world, random, markerCoords, isSurfaceChest);
+		}
+		
         // TODO can update tile entity GenerationContext with WorldGenerationType here
         
 		Treasure.logger.info("CHEATER! {} chest at coords: {}", chestRarity, markerCoords.toShortString());
