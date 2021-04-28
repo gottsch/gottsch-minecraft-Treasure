@@ -16,12 +16,15 @@ import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+
+import net.minecraft.block.Block;
 
 /**
  * 
@@ -60,14 +63,17 @@ public class GoldSkullChestGenerator implements IChestGenerator {
 	}
 
 	/**
-	 * Always select a wither chest.
+	 * Always select a gold skull chest.
 	 */
 	@Override
 	public TreasureChestBlock  selectChest(final Random random, final Rarity rarity) {
-		TreasureChestBlock chest = (TreasureChestBlock) TreasureBlocks.GOLD_SKULL_CHEST;
+		TreasureChestBlock chest = null;
+		if (isChestEnabled(TreasureBlocks.GOLD_SKULL_CHEST)) {
+			chest = (TreasureChestBlock) TreasureBlocks.GOLD_SKULL_CHEST;
+		}
 		return chest;
 	}
-
+	
 	/**
 	 * Skull chest will have at least one lock.
 	 */

@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -260,6 +261,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			// write facing
 			//			logger.debug("Writing FACING to NBT ->{}", getFacing());
 			sourceTag.setInteger("facing", getFacing());
+
 			sourceTag.setBoolean("sealed", isSealed());
 			if (getLootTable() != null) {
 				sourceTag.setString("lootTable", getLootTable().toString());
