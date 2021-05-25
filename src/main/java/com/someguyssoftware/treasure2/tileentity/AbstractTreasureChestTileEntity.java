@@ -287,6 +287,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	public NBTTagCompound writeInventoryToNBT(NBTTagCompound parentNBT) {
 		try {
 			// write inventory
+			// TODO test using ItemStackHelper.saveAllItems(parentNBT, this.getItems(), false); and see if chest items can stack
 			ItemStackHelper.saveAllItems(parentNBT, this.getItems());
 		} catch (Exception e) {
 			logger.error("Error writing Inventory to NBT:", e);
