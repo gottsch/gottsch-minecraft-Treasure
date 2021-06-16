@@ -30,6 +30,7 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.placement.ConfiguredPlacement;
 import net.minecraft.world.gen.placement.DepthAverageConfig;
 import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.gen.placement.TopSolidRangeConfig;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -65,21 +66,9 @@ public class TreasureFeatures {
 	 * This method is called in Treasure.setup(final FMLCommonSetupEvent event) by a
 	 * DeferredWorkQueue. This method assigns the Features to all applicable biomes
 	 */
+	@Deprecated
 	public static void init() {
 
-		// // initialize features
-		// SURFACE_CHEST_FEATURE = new SurfaceChestFeature(NoFeatureConfig.CODEC);
-		// SUBMERGED_CHEST_FEATURE = new SubmergedChestFeature(NoFeatureConfig.CODEC);
-		// WELL_FEATURE = new WellFeature(NoFeatureConfig.CODEC);
-		// GEM_ORE_FEATURE = new GemOreFeature(OreFeatureConfig.CODEC);
-		// WITHER_TREE_FEATURE = new WitherTreeFeature(NoFeatureConfig.CODEC);
-		//
-		// // add features to persisted list to be accessed during world load/save
-		// PERSISTED_FEATURES.add(SURFACE_CHEST_FEATURE);
-		// PERSISTED_FEATURES.add(SUBMERGED_CHEST_FEATURE);
-		// PERSISTED_FEATURES.add(WELL_FEATURE);
-		// PERSISTED_FEATURES.add(WITHER_TREE_FEATURE);
-		//
 		// // NEW WAY
 		// // init the feature configs
 		// SURFACE_CHEST_FEATURE_CONFIG =
@@ -208,51 +197,53 @@ public class TreasureFeatures {
 			WITHER_TREE_FEATURE = new WitherTreeFeature(NoFeatureConfig.CODEC);
 
 			// add features to persisted list to be accessed during world load/save
-			PERSISTED_FEATURES.add(SURFACE_CHEST_FEATURE);
-			PERSISTED_FEATURES.add(SUBMERGED_CHEST_FEATURE);
-			PERSISTED_FEATURES.add(WELL_FEATURE);
-			PERSISTED_FEATURES.add(WITHER_TREE_FEATURE);
+//			PERSISTED_FEATURES.add(SURFACE_CHEST_FEATURE);
+//			PERSISTED_FEATURES.add(SUBMERGED_CHEST_FEATURE);
+//			PERSISTED_FEATURES.add(WELL_FEATURE);
+//			PERSISTED_FEATURES.add(WITHER_TREE_FEATURE);
 
 			final IForgeRegistry<Feature<?>> registry = event.getRegistry();
-			registry.register(SURFACE_CHEST_FEATURE);
-			registry.register(SUBMERGED_CHEST_FEATURE);
+//			registry.register(SURFACE_CHEST_FEATURE);
+//			registry.register(SUBMERGED_CHEST_FEATURE);
 			registry.register(GEM_ORE_FEATURE);
-			registry.register(WELL_FEATURE);
-			registry.register(WITHER_TREE_FEATURE);
+//			registry.register(WELL_FEATURE);
+//			registry.register(WITHER_TREE_FEATURE);
 			
 			// initialize configs
 			// NEW WAY
 			// init the feature configs
-			SURFACE_CHEST_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "surface_chest",
-					SURFACE_CHEST_FEATURE.configured(IFeatureConfig.NONE));
-			SUBMERGED_CHEST_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "submerged_chest",
-					SUBMERGED_CHEST_FEATURE.configured(IFeatureConfig.NONE));
-			WELL_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "well",
-					WELL_FEATURE.configured(IFeatureConfig.NONE));
+//			SURFACE_CHEST_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "surface_chest",
+//					SURFACE_CHEST_FEATURE.configured(IFeatureConfig.NONE));
+//			SUBMERGED_CHEST_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "submerged_chest",
+//					SUBMERGED_CHEST_FEATURE.configured(IFeatureConfig.NONE));
+//			WELL_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "well",
+//					WELL_FEATURE.configured(IFeatureConfig.NONE));
 
 			RUBY_ORE_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "ruby_ore",
 					GEM_ORE_FEATURE
 							.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
 									TreasureBlocks.RUBY_ORE.defaultBlockState(),
 									TreasureConfig.GEMS_AND_ORES.rubyOreVeinSize.get()))
-							.decorated(Placement.DEPTH_AVERAGE.configured(new DepthAverageConfig(
-									(TreasureConfig.GEMS_AND_ORES.rubyOreMinY.get()
-											+ TreasureConfig.GEMS_AND_ORES.rubyOreMaxY.get()) / 2,
-									(TreasureConfig.GEMS_AND_ORES.rubyOreMaxY.get()
-											- TreasureConfig.GEMS_AND_ORES.rubyOreMinY.get()) / 2)))
-							.squared().count(TreasureConfig.GEMS_AND_ORES.rubyOreVeinsPerChunk.get()));
+							.decorated(
+									Placement.RANGE.configured(
+											new TopSolidRangeConfig(TreasureConfig.GEMS_AND_ORES.rubyOreMinY.get(), 
+													0, 
+													TreasureConfig.GEMS_AND_ORES.rubyOreMaxY.get() - TreasureConfig.GEMS_AND_ORES.rubyOreMinY.get())))
+							.squared()
+							.count(TreasureConfig.GEMS_AND_ORES.rubyOreVeinsPerChunk.get()));
 
 			SAPPHIRE_ORE_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "sapphire_ore",
 					GEM_ORE_FEATURE
 							.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
-									TreasureBlocks.RUBY_ORE.defaultBlockState(),
+									TreasureBlocks.SAPPHIRE_ORE.defaultBlockState(),
 									TreasureConfig.GEMS_AND_ORES.sapphireOreVeinSize.get()))
-							.decorated(Placement.DEPTH_AVERAGE.configured(new DepthAverageConfig(
-									(TreasureConfig.GEMS_AND_ORES.sapphireOreMinY.get()
-											+ TreasureConfig.GEMS_AND_ORES.sapphireOreMaxY.get()) / 2,
-									(TreasureConfig.GEMS_AND_ORES.sapphireOreMaxY.get()
-											- TreasureConfig.GEMS_AND_ORES.sapphireOreMinY.get()) / 2)))
-							.squared().count(TreasureConfig.GEMS_AND_ORES.rubyOreVeinsPerChunk.get()));
+							.decorated(
+									Placement.RANGE.configured(
+											new TopSolidRangeConfig(TreasureConfig.GEMS_AND_ORES.sapphireOreMinY.get(), 
+													0, 
+													TreasureConfig.GEMS_AND_ORES.sapphireOreMaxY.get() - TreasureConfig.GEMS_AND_ORES.sapphireOreMinY.get())))
+							.squared()
+							.count(TreasureConfig.GEMS_AND_ORES.sapphireOreVeinsPerChunk.get()));
 		}
 	}
 	
@@ -265,7 +256,7 @@ public class TreasureFeatures {
 		public static void onBiomeLoading(final BiomeLoadingEvent biomeEvent) {
 
 			// TODO could change this to WorldInfo.isSurfaceWorld();
-			if (biomeEvent.getCategory() == Biome.Category.NETHER || biomeEvent.getCategory() == Biome.Category.THEEND) {
+			if (!TreasureConfig.GEMS_AND_ORES.enableGemOreSpawn.get() || biomeEvent.getCategory() == Biome.Category.NETHER || biomeEvent.getCategory() == Biome.Category.THEEND) {
 				return;
 			}
 //			Treasure.LOGGER.info("registering features to biome -> {}, ruby -> {}", biomeEvent.getName(), RUBY_ORE_FEATURE_CONFIG);
@@ -275,17 +266,18 @@ public class TreasureFeatures {
 			biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
 					.add(() -> SAPPHIRE_ORE_FEATURE_CONFIG);
 
-			if (biomeEvent.getCategory() == Biome.Category.OCEAN) {
-				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
-						.add(() -> SUBMERGED_CHEST_FEATURE_CONFIG);
-			} else {
-				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
-						.add(() -> SURFACE_CHEST_FEATURE_CONFIG);
-				if (TreasureConfig.WELLS.isEnabled()) {
-					biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
-							.add(() -> WELL_FEATURE_CONFIG);
-				}
-			}
+//			if (biomeEvent.getCategory() == Biome.Category.OCEAN) {
+//				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
+//						.add(() -> SUBMERGED_CHEST_FEATURE_CONFIG);
+//			} else {
+//				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
+//						.add(() -> SURFACE_CHEST_FEATURE_CONFIG);
+//				if (TreasureConfig.WELLS.isEnabled()) {
+//					biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
+//							.add(() -> WELL_FEATURE_CONFIG);
+//				}
+//			}
+			
 		}
 	}
 }

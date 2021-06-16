@@ -88,20 +88,20 @@ public class WorldEventHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public void lootLoad(LootTableLoadEvent event) {
-		if (event.getName().equals(LootTables.SIMPLE_DUNGEON/*"minecraft:chests/simple_dungeon"*/)) {
-			// load a loot table
-			ResourceLocation location = new ResourceLocation(Treasure.MODID, "pools/treasure/scarce");
-			LootTable lootTable = event.getLootTableManager().get(location);
-			LootPool pool = lootTable.getPool("treasure");
-			if (pool ==null) {
-				Treasure.LOGGER.debug("pool is null");
-			}
-			Treasure.LOGGER.debug("attempting to add pool -> {} to table -> {}", pool.getName(), event.getTable());
-			event.getTable().addPool(pool);		
-		}
-	}
+//	@SubscribeEvent
+//	public void lootLoad(LootTableLoadEvent event) {
+//		if (event.getName().equals(LootTables.SIMPLE_DUNGEON/*"minecraft:chests/simple_dungeon"*/)) {
+//			// load a loot table
+//			ResourceLocation location = new ResourceLocation(Treasure.MODID, "pools/treasure/scarce");
+//			LootTable lootTable = event.getLootTableManager().get(location);
+//			LootPool pool = lootTable.getPool("treasure");
+//			if (pool ==null) {
+//				Treasure.LOGGER.debug("pool is null");
+//			}
+//			Treasure.LOGGER.debug("attempting to add pool -> {} to table -> {}", pool.getName(), event.getTable());
+//			event.getTable().addPool(pool);		
+//		}
+//	}
 
 	@SubscribeEvent
 	public void onServerStopping(FMLServerStoppingEvent event) {

@@ -689,8 +689,7 @@ public class TreasureConfig extends AbstractConfig {
 
 	public static class GemsAndOres {
 		public ForgeConfigSpec.BooleanValue enableGemOreSpawn;
-		@Deprecated
-		public ForgeConfigSpec.ConfigValue<Integer> chunksPerGemOre;
+
 		public ForgeConfigSpec.ConfigValue<Double> rubyGenProbability;
 		public ForgeConfigSpec.ConfigValue<Integer> rubyOreMaxY;
 		public ForgeConfigSpec.ConfigValue<Integer> rubyOreMinY;
@@ -709,10 +708,6 @@ public class TreasureConfig extends AbstractConfig {
 			enableGemOreSpawn = builder
 					.comment(" Enable/disable whether a gem ore will spawn.")
 					.define("Enable gem ore spawn:", true);
-						
-			chunksPerGemOre = builder
-					.comment(" The number of chunks generated before another attempt to generate a gem ore spawn is made.")
-					.defineInRange("Chunks per gem ore spawn:", 1, 1, 32000);
 			
 			rubyGenProbability = builder
 					.comment(" The probability that a ruby ore will spawn.")
@@ -720,19 +715,19 @@ public class TreasureConfig extends AbstractConfig {
 			
 			rubyOreMinY= builder
 					.comment(" The minimum y-value where a ruby ore can spawn.")
-					.defineInRange("Minimum y-value for ruby ore spawn location:", 6, 1, 255);	
+					.defineInRange("Minimum y-value for ruby ore spawn location:", 8, 1, 255);	
 			
 			rubyOreMaxY= builder
 					.comment(" The maximum y-value where a ruby ore can spawn.")
-					.defineInRange("Maximum y-value for ruby ore spawn location:", 15, 1, 255);
+					.defineInRange("Maximum y-value for ruby ore spawn location:", 17, 1, 255);
 			
 			rubyOreVeinSize = builder
 					.comment(" The number of ruby ore blocks in a vein.")
-					.defineInRange("Ruby ore vein size:", 1, 1, 20);
+					.defineInRange("Ruby ore vein size:", 3, 3, 20);
 			
 			rubyOreVeinsPerChunk = builder
 					.comment(" The number of ruby ore veins in a chunk.")
-					.defineInRange("Ruby ore veins per chunk:", 3, 1, 20);
+					.defineInRange("Ruby ore veins per chunk:", 1, 1, 20);
 
 			sapphireGenProbability = builder
 					.comment(" The probability that a sapphire ore will spawn.")
@@ -740,19 +735,19 @@ public class TreasureConfig extends AbstractConfig {
 			
 			sapphireOreMinY= builder
 					.comment(" The minimum y-value where a sapphire ore can spawn.")
-					.defineInRange("Minimum y-value for sapphire ore spawn location:", 6, 1, 255);	
+					.defineInRange("Minimum y-value for sapphire ore spawn location:", 8, 1, 255);	
 			
 			sapphireOreMaxY= builder
 					.comment(" The maximum y-value where a sapphire ore can spawn.")
-					.defineInRange("Maximum y-value for sapphire ore spawn location:", 15, 1, 255);
+					.defineInRange("Maximum y-value for sapphire ore spawn location:", 17, 1, 255);
 			
 			sapphireOreVeinSize = builder
 					.comment(" The number of sapphire ore blocks in a vein.")
-					.defineInRange("Sapphire ore vein size:", 1, 1, 20);
+					.defineInRange("Sapphire ore vein size:", 3, 3, 20);
 			
 			sapphireOreVeinsPerChunk = builder
 					.comment(" The number of sapphire ore veins in a chunk.")
-					.defineInRange("Sapphire ore veins per chunk:", 3, 1, 20);
+					.defineInRange("Sapphire ore veins per chunk:", 1, 3, 20);
 			
 			builder.pop();
 		}
