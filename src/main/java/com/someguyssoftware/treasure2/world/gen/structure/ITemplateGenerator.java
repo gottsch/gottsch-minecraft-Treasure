@@ -22,9 +22,9 @@ import net.minecraft.world.World;
  */
 public interface ITemplateGenerator<RESULT extends IGeneratorResult<?>> {
 
-	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
+	public GeneratorResult<TemplateGeneratorData> generate(IServerWorld world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
 
-	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, IDecayProcessor decayProcessor,
+	public GeneratorResult<TemplateGeneratorData> generate(IServerWorld world, Random random, IDecayProcessor decayProcessor,
 			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords);
 	
 	/**

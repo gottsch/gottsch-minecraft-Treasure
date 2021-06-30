@@ -20,6 +20,8 @@ public interface IChestConfig {
 	public boolean isSurfaceAllowed();
 	public boolean isSubterraneanAllowed();
 	public int getChunksPerChest();
+	@Deprecated
+	public int getAvgChunksPerChestVariance();
 	public double getGenProbability();
 	public int getMinYSpawn();
 	public double getMimicProbability();

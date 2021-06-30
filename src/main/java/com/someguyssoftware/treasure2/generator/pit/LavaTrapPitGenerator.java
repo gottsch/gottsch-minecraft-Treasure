@@ -16,8 +16,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.util.Direction;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 
 
 /**
@@ -46,7 +46,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
 			Treasure.LOGGER.debug("Generated Lava Trap Pit at " + spawnCoords.toShortString());
@@ -63,7 +63,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ICoords buildPit(IWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
+	public ICoords buildPit(IServerWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
 		
@@ -114,7 +114,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * 
 	 */
 	@Override
-	public void buildAboveChestLayers(IWorld world, Random random, ICoords spawnCoords) {
+	public void buildAboveChestLayers(IServerWorld world, Random random, ICoords spawnCoords) {
 		build3WideLayer(world, random, spawnCoords.add(0, 1, 0), Blocks.AIR);
 		build3WideLayer(world, random, spawnCoords.add(0, 2, 0), Blocks.AIR);	
 		build3WideLayer(world, random, spawnCoords.add(0, 3, 0), Blocks.AIR);	

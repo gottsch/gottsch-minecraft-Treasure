@@ -30,8 +30,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
 // TODO getMarkerBlock should be in TemplateGenerator as well (passed in)
@@ -58,7 +56,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	}
 
 	@Override
-	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, TemplateHolder templateHolder,
+	public GeneratorResult<TemplateGeneratorData> generate(IServerWorld world, Random random, TemplateHolder templateHolder,
 			PlacementSettings placement, ICoords coords) {
 		return generate(world, random, null, templateHolder, placement, coords);
 	}
@@ -67,7 +65,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	 * 
 	 */
 	@Override
-	public GeneratorResult<TemplateGeneratorData> generate(World world, Random random, IDecayProcessor decayProcessor,
+	public GeneratorResult<TemplateGeneratorData> generate(IServerWorld world, Random random, IDecayProcessor decayProcessor,
 			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords) {
 
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);

@@ -28,7 +28,7 @@ minecraft {
     mappings channel: "${mappings_channel}", version: "${mappings_version}"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -130,7 +130,7 @@ task deleteOldJar(type: Delete) {
 		print 'deleting... '
 		println destination
         delete fileTree(destination) {
-            include "**/${mod_name}-*.jar"
+            include "**/${mod_name}-f${forge_version}*.jar"
         }
     }
 }

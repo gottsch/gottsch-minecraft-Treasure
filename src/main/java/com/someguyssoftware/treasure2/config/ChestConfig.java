@@ -1,6 +1,7 @@
 package com.someguyssoftware.treasure2.config;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -25,6 +26,8 @@ public class ChestConfig implements IChestConfig {
 	public static class Data {
 		boolean enableChest;
 		int chunksPerChest;
+		@Deprecated
+		int avgChunksPerChestVariance;
 		double genProbability;
 		int minYSpawn;
 		// TODO add depth range from spawn ie. common will be at depth of 6-20 blocks from "surface"
@@ -39,6 +42,7 @@ public class ChestConfig implements IChestConfig {
 		
 		BiomesConfig.Data biomesData;
 		
+		
 		/**
 		 * 
 		 * @param enableChest
@@ -50,9 +54,10 @@ public class ChestConfig implements IChestConfig {
 		 * @param typeWhiteList
 		 * @param typeBlackList
 		 */
-		public Data(boolean enableChest, int chunksPerChest, double genProbability, int minYSpawn, double mimicProbability, String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
+		public Data(boolean enableChest, int chunksPerChest, int chunksPerChestVariance,  double genProbability, int minYSpawn, double mimicProbability, String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
 			this.enableChest = enableChest;
 			this.chunksPerChest = chunksPerChest;
+			this.avgChunksPerChestVariance = avgChunksPerChestVariance;
 			this.genProbability = genProbability;
 			this.minYSpawn = minYSpawn;
 			this.mimicProbability = mimicProbability;
@@ -70,6 +75,7 @@ public class ChestConfig implements IChestConfig {
 //	@RequiresWorldRestart
 	public ForgeConfigSpec.ConfigValue<Boolean> enableChest;
 	public ForgeConfigSpec.ConfigValue<Integer> chunksPerChest;
+	public ForgeConfigSpec.ConfigValue<Integer> avgChunksPerChestVariance;
 	public ForgeConfigSpec.ConfigValue<Double> genProbability;
 	public ForgeConfigSpec.ConfigValue<Integer> minYSpawn;
 	public ForgeConfigSpec.ConfigValue<Double> mimicProbability;
@@ -98,7 +104,12 @@ public class ChestConfig implements IChestConfig {
 		chunksPerChest = builder
 				.comment("The number of chunks generated before the chest spawn is attempted.")
 				.defineInRange("Chunks per chest spawn:", data.chunksPerChest, 50, 32000	);
-
+		
+		avgChunksPerChestVariance = builder
+				.comment(" The average chunk variance relating to the minimum number of chunks generated before another attempt to spawn a chest is made.",
+						"Low numbers (< 5) represent low variance between each successful spawn resulting in patterns in generation. No recommended.")
+				.defineInRange("Average chunks per chest spawn variance:", data.avgChunksPerChestVariance, 1, 100);
+		
 		genProbability= builder
 				.comment("The probability that a chest will spawn.")
 				.defineInRange("Probability of chest spawn:", data.genProbability, 0.0, 100.0);
@@ -141,6 +152,12 @@ public class ChestConfig implements IChestConfig {
 		return chunksPerChest.get();
 	}
 
+	@Override
+	public int getAvgChunksPerChestVariance() {
+		return avgChunksPerChestVariance.get();
+	}
+
+	
 	@Override
 	public double getGenProbability() {
 		return genProbability.get();

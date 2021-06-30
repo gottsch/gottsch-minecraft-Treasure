@@ -32,6 +32,7 @@ import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.DungeonHooks;
@@ -64,12 +65,12 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	}
 	
 	@Override
-	public boolean generateEntrance(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public boolean generateEntrance(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		return getGenerator().generateEntrance(world, random, surfaceCoords, spawnCoords);
 	}
 	
 	@Override
-	public boolean generatePit(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public boolean generatePit(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		getGenerator().setOffsetY(0);
 		return getGenerator().generatePit(world, random, surfaceCoords, spawnCoords);
 	}
@@ -83,7 +84,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 
 		// is the chest placed in a cavern

@@ -50,25 +50,25 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 	public SurfaceRuinGenerator() {}
 	
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
 			ICoords originalSpawnCoords) {
 		return generate(world, random, originalSpawnCoords, null, null);
 	}
 	
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
 			ICoords originalSpawnCoords, IDecayRuleSet decayRuleSet) {
 		return generate(world, random, originalSpawnCoords, null, decayRuleSet);
 	}
 	
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder) {
 		return generate(world, random, originalSpawnCoords, holder, null);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder, IDecayRuleSet decayRuleSet) {		
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 
@@ -179,7 +179,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		Treasure.LOGGER.debug("using decay rule set -> {}", decayRuleSet);
 		Treasure.LOGGER.debug("decay processor -> {}", decayProcessor);
 		
-		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
+		GeneratorResult<TemplateGeneratorData> genResult = generator.generate((IServerWorld)world, random, decayProcessor, holder, placement, originalSpawnCoords);
 		 if (!genResult.isSuccess()) return result.fail();
 
 		Treasure.LOGGER.debug("surface gen result -> {}", genResult);
@@ -260,7 +260,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 	 * @param coords
 	 * @return
 	 */
-	public static ICoords getSolidSurfaceCoords(final World world, final ICoords coords) {
+	public static ICoords getSolidSurfaceCoords(final IServerWorld world, final ICoords coords) {
 		boolean isSurfaceBlock = false;
 		ICoords newCoords = coords;
 		

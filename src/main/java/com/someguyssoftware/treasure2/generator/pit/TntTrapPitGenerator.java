@@ -13,8 +13,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.IServerWorld;
 
 
 /**
@@ -42,7 +41,7 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
 			Treasure.LOGGER.debug("Generated TNT Trap Pit at " + spawnCoords.toShortString());
@@ -59,7 +58,7 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ICoords buildPit(IWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
+	public ICoords buildPit(IServerWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
 		
@@ -112,7 +111,7 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 	 * @param block
 	 * @return
 	 */
-	public ICoords buildTrapLayer(final IWorld world, final Random random, final ICoords coords, final Block block) {
+	public ICoords buildTrapLayer(final IServerWorld world, final Random random, final ICoords coords, final Block block) {
 		ICoords nextCoords = null;
 		if (block == DEFAULT_LOG) {
 			nextCoords = buildLogLayer(world, random, coords, block);

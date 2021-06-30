@@ -16,8 +16,8 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 
 
 /**
@@ -50,7 +50,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
     @Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
 			LOGGER.debug("Generated Volcano Pit at " + spawnCoords.toShortString());
@@ -67,7 +67,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ICoords buildPit(IWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
+	public ICoords buildPit(IServerWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
         
@@ -124,7 +124,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * 
 	 */
 	@Override
-	public void buildAboveChestLayers(IWorld world, Random random, ICoords spawnCoords) {
+	public void buildAboveChestLayers(IServerWorld world, Random random, ICoords spawnCoords) {
 		
 	}
 	

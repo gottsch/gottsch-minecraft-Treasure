@@ -43,6 +43,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -215,7 +216,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param coords
 	 * @return
 	 */
-	public GeneratorResult<GeneratorData> generate(World world, Random random, ICoords coords) {
+	public GeneratorResult<GeneratorData> generate(IServerWorld world, Random random, ICoords coords) {
 		// result to return to the caller
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 
@@ -295,7 +296,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 			return result.fail();
 		}
 		WitherChestGenerator chestGen = new WitherChestGenerator();
-		GeneratorResult<ChestGeneratorData> chestResult = chestGen.generate(world, random, chestCoords, Rarity.SCARCE, null);
+		GeneratorResult<ChestGeneratorData> chestResult = chestGen.generate((IServerWorld)world, random, chestCoords, Rarity.SCARCE, null);
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}
