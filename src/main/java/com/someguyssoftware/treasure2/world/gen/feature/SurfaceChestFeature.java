@@ -102,68 +102,61 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 
 	/**
 	 * NOTE equivalent to 1.12 generate()
+	 * NOTE only use seedReader.setblockState() and that only allows you to access the 3x3 chunk.
+	 *  chest/pit spawn IS doable as long as you keep it within the 3x3 chunk area, else would have to use a Structures setup
 	 */
 	@Override
 	public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
-		 // can't do this and getBlocksState()... it will dead lock. only use seedReader.getblcokstate and that only allows you to access the 3x3 chunk
-		// SO, chest/pit spawn IS doable as long as you keep it within the 3x3 chunk area, else would have to use a Structures setup
-
 		ServerWorld world = seedReader.getLevel();
 		Treasure.LOGGER.debug("in surface feature for pos @ -> {}", pos.toShortString());
-//		String dimensionName = world.getDimension().getType().getRegistryName().toString();
-		ResourceLocation dimensionName = WorldInfo.getDimension(world);
+		ResourceLocation dimension = WorldInfo.getDimension(world);
    		
-		
+		// TODO surely this check could be done somewhere else, like registering in BiomeLoadingEvent ?
 		// test the dimension white list
-		// TODO chests should have a properties for the depth range from "surface"
-		if (!TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(dimensionName.toString())) {
+		if (!TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(dimension.toString())) {
 			return false;
 		}
-		BlockPos centerOfChunk = pos.offset(WorldInfo.CHUNK_RADIUS, 0, WorldInfo.CHUNK_RADIUS);
+		
+		BlockPos centerOfChunk = pos.offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1);
 		Treasure.LOGGER.debug("center of chunk @ -> {}", centerOfChunk.toShortString());
 		
 		// spawn @ middle of chunk
-		ICoords spawnCoords = new Coords(pos).add(WorldInfo.CHUNK_RADIUS, 254, WorldInfo.CHUNK_RADIUS);
-
-		// 0. hard check against ocean biomes
-//		Biome biome = seedReader.getBiome(spawnCoords.toPos());
-//		Optional<RegistryKey<Biome>> biomeName = seedReader.getBiomeName(spawnCoords.toPos());
-//		Treasure.LOGGER.debug("biome -> {}, biomeName -> {}", biome.getRegistryName(), biomeName.get().toString());
+//		ICoords spawnCoords = new Coords(pos).add(WorldInfo.CHUNK_RADIUS, 254, WorldInfo.CHUNK_RADIUS);
 
 
 		// increment the chunk counts
-		incrementDimensionalChestChunkCount(dimensionName.toString());
+		incrementDimensionalChestChunkCount(dimension.toString());
 
 		for (Rarity rarity : TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST)) {
-			incrementDimensionalRarityChestChunkCount(dimensionName.toString(), rarity);
+			incrementDimensionalRarityChestChunkCount(dimension.toString(), rarity);
 		}
 //		Treasure.LOGGER.debug("chunks since dimension {} last chest -> {}, min chunks -> {}", dimensionName, chunksSinceLastDimensionChest.get(dimensionName), TreasureConfig.CHESTS.surfaceChests.minChunksPerChest.get());
 
-		Treasure.LOGGER.debug("made it here");
 		// test if min chunks was met
-		if (chunksSinceLastDimensionChest.get(dimensionName.toString())/*chunksSinceLastChest*/ > TreasureConfig.CHESTS.surfaceChests.minChunksPerChest.get()) {
+		if (chunksSinceLastDimensionChest.get(dimension.toString())/*chunksSinceLastChest*/ > TreasureConfig.CHESTS.surfaceChests.minChunksPerChest.get()) {
 			Treasure.LOGGER.debug("passed min chunks test");
 			// the get first surface y (could be leaves, trunk, water, etc)
 //			int ySpawn = seedReader.getChunk(pos).getHeight(Heightmap.Type.WORLD_SURFACE, pos.getX() + WorldInfo.CHUNK_RADIUS, pos.getZ() + WorldInfo.CHUNK_RADIUS);
 			int landHeight = generator.getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Type.WORLD_SURFACE_WG) + 1;
-			ICoords spawnCoords2 = new Coords(centerOfChunk.getX(), landHeight, centerOfChunk.getZ());
-			Treasure.LOGGER.debug("height @ spawnCoords2 (landHeight/surface coords) -> {}", spawnCoords2.toShortString());
-			
-Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString());
-			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(seedReader, spawnCoords);
+			ICoords spawnCoords = new Coords(centerOfChunk.getX(), landHeight, centerOfChunk.getZ());
+			Treasure.LOGGER.debug("height @ spawnCoords2 (landHeight/surface coords) -> {}", spawnCoords.toShortString());
+
+//Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString());
+//			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(seedReader, spawnCoords);
 //ICoords surfaceCoords = new Coords(pos.getX(), 100, pos.getY());
-			if (surfaceCoords == null) {
-				Treasure.LOGGER.debug("invalid surface type");
-				return false;
-			}
-			Treasure.LOGGER.debug("surface coords -> {}", surfaceCoords.toShortString());
+//ICoords surfaceCoords = new Coords(spawnCoords);
+//			if (surfaceCoords == null) {
+//				Treasure.LOGGER.debug("invalid surface type");
+//				return false;
+//			}
+//			Treasure.LOGGER.debug("surface coords -> {}", surfaceCoords.toShortString());
 			// TODO check if surface is land
 			
-			Treasure.LOGGER.debug("ySpawn -> {}", surfaceCoords.getY());
-			spawnCoords = spawnCoords.withY(surfaceCoords.getY());
+//			Treasure.LOGGER.debug("ySpawn -> {}", surfaceCoords.getY());
+//			spawnCoords = spawnCoords.withY(surfaceCoords.getY());
 			Treasure.LOGGER.debug("spawns coords -> {}", spawnCoords.toShortString());
 
-			chunksSinceLastDimensionChest.put(dimensionName.toString(), 0);
+			chunksSinceLastDimensionChest.put(dimension.toString(), 0);
 
 			// determine what type to generate
 			Rarity rarity = (Rarity) TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST).get(random.nextInt(TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST).size()));
@@ -175,7 +168,7 @@ Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString()
 			}
 			Treasure.LOGGER.debug("config for rarity -> {} = {}", rarity, chestConfig);
 			// get the chunks for dimensional rarity chest
-			int chunksPerRarity = chunksSinceLastDimensionRarityChest.get(dimensionName.toString()).get(rarity);//chunksSinceLastRarityChest.get(rarity);
+			int chunksPerRarity = chunksSinceLastDimensionRarityChest.get(dimension.toString()).get(rarity);//chunksSinceLastRarityChest.get(rarity);
 
 			Treasure.LOGGER.debug("chunks per rarity {} -> {}, config chunks per chest -> {}", rarity, chunksPerRarity, chestConfig.getChunksPerChest());
 			if (chunksPerRarity >= chestConfig.getChunksPerChest()) {
@@ -185,41 +178,28 @@ Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString()
 					Treasure.LOGGER.debug("ChestConfig does not meet generate probability.");
 					return false;
 				}
-
-				// TODO move to regsitry
+				
 				// 2. test if the override (global) biome is allowed
-//				TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList());
-//				if(biomeCheck == Result.BLACK_LISTED ) {
-//					if (WorldInfo.isClientSide(world)) {
-//						Treasure.LOGGER.debug("{} is not a valid biome @ {}", biome.getRegistryName().toString(), spawnCoords.toShortString());
-//					}
-//					else {
-//						Treasure.LOGGER.debug("Biome {} is not valid @ {}",rarity.getValue(), spawnCoords.toShortString());
-//					}					
-//					return false;
-//				}
-				//				else if (biomeCheck == Result.OK) {
-				//				    if (!BiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeTypeWhiteList(), chestConfig.getBiomeTypeBlackList())) {
-				//				    	if (Treasure.LOGGER.isDebugEnabled()) {
-				//				    		if (WorldInfo.isClientSide((World)world)) {
-				//				    			Treasure.LOGGER.debug("{} is not a valid biome type @ {}", biome.getDisplayName().getString(), spawnCoords.toShortString());
-				//				    		}
-				//				    		else {
-				//				    			Treasure.LOGGER.debug("Biome type of {} is not valid @ {}",rarity.getValue(), spawnCoords.toShortString());
-				//				    		}
-				//				    	}
-				//				    	return false;
-				//				    }
-				//				}
-
+				Biome biome = world.getBiome(spawnCoords.toPos());
+				TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList());
+				if(biomeCheck == Result.BLACK_LISTED ) {
+					if (WorldInfo.isClientSide(world)) {
+						Treasure.LOGGER.debug("{} is not a valid biome @ {}", biome.getRegistryName().toString(), spawnCoords.toShortString());
+					}
+					else {
+						Treasure.LOGGER.debug("Biome {} is not valid @ {}",rarity.getValue(), spawnCoords.toShortString());
+					}					
+					return false;
+				}
+				
 				// 3. check against all registered chests
-				if (isRegisteredChestWithinDistance(world, spawnCoords, TreasureConfig.CHESTS.surfaceChests.minDistancePerChest.get())) {
+				if (ITreasureFeature.isRegisteredChestWithinDistance(world, spawnCoords, TreasureConfig.CHESTS.surfaceChests.minDistancePerChest.get())) {
 					Treasure.LOGGER.debug("The distance to the nearest treasure chest is less than the minimun required.");
 					return false;
 				}				
 
 				// reset chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
-				chunksSinceLastDimensionRarityChest.get(dimensionName.toString()).put(rarity, 0);
+				chunksSinceLastDimensionRarityChest.get(dimension.toString()).put(rarity, 0);
 
 				// generate the chest/pit/chambers
 				Treasure.LOGGER.debug("Attempting to generate pit/chest.");
@@ -233,9 +213,9 @@ Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString()
 
 				if (result.isSuccess()) {
 					// add to registry
-					TreasureData.CHEST_REGISTRIES.get(dimensionName.toString()).register(spawnCoords.toShortString(), new ChestInfo(rarity, spawnCoords));
+					TreasureData.CHEST_REGISTRIES.get(dimension.toString()).register(spawnCoords.toShortString(), new ChestInfo(rarity, spawnCoords));
 					// reset the chunk counts
-					chunksSinceLastDimensionChest.put(dimensionName.toString(), 0);
+					chunksSinceLastDimensionChest.put(dimension.toString(), 0);
 				}				
 			}
 
@@ -248,56 +228,6 @@ Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString()
 		}
 		return false;
 	}
-
-//	public ICoords getDryLandSurfaceCoords(final IServerWorld world, final ICoords coords) {
-//		Treasure.LOGGER.debug("in getDryLandSurfaceCoords");
-//		boolean isSurfaceBlock = false;
-//		ICoords newCoords = coords;
-//
-//		while (!isSurfaceBlock) {
-//			// get the blockContext that is 1 below current position
-//			ICoords downCoords = newCoords.down(1);
-//			BlockContext blockContext = new BlockContext(world, downCoords);
-//			// exit if not valid Y coordinate
-//			if (!isValidY(blockContext.getCoords())) {
-//				return EMPTY_COORDS;
-//			}
-////			Treasure.LOGGER.debug("1");
-//			// test if the block at position is water, lava or ice
-//			if (blockContext.equalsMaterial(Material.WATER) || blockContext.equalsMaterial(Material.LAVA)
-//					|| blockContext.equalsMaterial(Material.ICE)) {
-//				return EMPTY_COORDS;
-//			}
-////			Treasure.LOGGER.debug("2");
-//			if (blockContext.equalsMaterial(Material.AIR) || blockContext.isReplaceable()
-//					|| blockContext.equalsMaterial(Material.LEAVES) || blockContext.equalsMaterial(Material.WOOD)
-//					|| blockContext.isBurning()) {
-//				newCoords = newCoords.down(1);
-//			} else {
-//				isSurfaceBlock = true;
-//			}
-////			Treasure.LOGGER.debug("3");
-//		}
-//		return newCoords;
-//	}
-	
-//	public static boolean isValidY(final ICoords coords) {
-//		return isValidY(coords.toPos());
-//	}
-//	
-//	private static boolean isValidY(final BlockPos blockPos) {
-//		if ((blockPos.getY() < MIN_HEIGHT || blockPos.getY() > MAX_HEIGHT)) {
-//			return false;
-//		}
-//		return true;
-//	}
-	
-//	private static final int MAX_HEIGHT = 256;
-//	private static final int MIN_HEIGHT = 1;
-//	public static final ICoords EMPTY_COORDS = new Coords(-1, -1, -1);
-//	public static final int INVALID_SURFACE_POS = -255;
-//	public static final int CHUNK_RADIUS = 8;
-//	public static final int CHUNK_SIZE = CHUNK_RADIUS * 2;
 	
 	/////////////////////////////////
 	/**
@@ -319,19 +249,15 @@ Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString()
 		GeneratorResult<ChestGeneratorData> genResult = new GeneratorResult<>(ChestGeneratorData.class);
 
 		ICoords chestCoords = null;
-//		ICoords markerCoords = null;
-		boolean hasMarkers = true;
 		boolean isSurfaceChest = false;
 
 		// 1. collect location data points
-		ICoords surfaceCoords = coords;//WorldInfo.getDryLandSurfaceCoords(world, coords);		
-		Treasure.LOGGER.debug("surface coords -> {}", surfaceCoords.toShortString());
+		ICoords surfaceCoords = coords;
+//		Treasure.LOGGER.debug("surface coords -> {}", surfaceCoords.toShortString());
 		if (!WorldInfo.isValidY(surfaceCoords)) {
 			Treasure.LOGGER.debug("surface coords are invalid @ {}", surfaceCoords.toShortString());
 			return result.fail();
 		}
-		// TEMP - if building a structure, markerCoords could be different than original surface coords because for rotation etc.
-//		markerCoords = surfaceCoords;
 
 		// 2. determine if above ground or below ground
 		if (config.isSurfaceAllowed() && RandomHelper.checkProbability(random, TreasureConfig.CHESTS.surfaceChests.surfaceChestProbability.get())) {
@@ -357,7 +283,6 @@ Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString()
 			chestCoords = new Coords(surfaceCoords);
 		}
 		else if (config.isSubterraneanAllowed()) {
-			// TODO use PitProvider
 			Treasure.LOGGER.debug("else generate pit");
 			genResult = generatePit(world, random, rarity, surfaceCoords, config);
 			Treasure.LOGGER.debug("result -> {}", genResult.toString());
@@ -373,16 +298,13 @@ Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString()
 			return result.fail();
 		}
 
-		// add markers (above chest or shaft)
-//		if (hasMarkers) {
-//			Treasure.LOGGER.debug("marker coords -> {}", markerCoords);
-			chestGenerator.addMarkers(world, random, surfaceCoords, isSurfaceChest);
-//		}
-
 		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(world, random, chestCoords, rarity, genResult.getData().getChestContext().getState());
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}
+		
+		// add markers (above chest or shaft)
+		chestGenerator.addMarkers(world, random, surfaceCoords, isSurfaceChest);
 		
 		Treasure.LOGGER.info("CHEATER! {} chest at coords: {}", rarity, surfaceCoords.toShortString());
 		result.setData(chestResult.getData());
@@ -409,7 +331,7 @@ Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString()
 		}
 
 		// determine spawn coords below ground
-		ICoords spawnCoords = getUndergroundSpawnPos(world, random, markerCoords, config.getMinYSpawn());
+		ICoords spawnCoords = getUndergroundSpawnPos(world, random, markerCoords, config.getMinDepth(), config.getMaxDepth());
 
 		if (spawnCoords == null || spawnCoords == WorldInfo.EMPTY_COORDS) {
 			Treasure.LOGGER.debug("Unable to spawn underground @ {}", markerCoords);
@@ -440,10 +362,10 @@ Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString()
 	 * @param config
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, Random random, ICoords spawnCoords,
-			IChestConfig config) {
-		return generateSurfaceRuins(world, random, spawnCoords, null, null, config);
-	}
+//	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, Random random, ICoords spawnCoords,
+//			IChestConfig config) {
+//		return generateSurfaceRuins(world, random, spawnCoords, null, null, config);
+//	}
 	
 	/**
 	 * 
@@ -454,44 +376,42 @@ Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString()
 	 * @param config
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, Random random, ICoords spawnCoords,
-			TemplateHolder holder, IDecayRuleSet decayRuleSet, IChestConfig config) {
-
-		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
-		result.getData().setSpawnCoords(spawnCoords);
-
-		SurfaceRuinGenerator generator = new SurfaceRuinGenerator();
-
-		// build the structure
-		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, random, spawnCoords, holder, decayRuleSet);
-		Treasure.LOGGER.debug("surface struct result -> {}", genResult);
-		if (!genResult.isSuccess()) return result.fail();
-
-		result.setData(genResult.getData());
-		return result.success();
-	}
+//	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, Random random, ICoords spawnCoords,
+//			TemplateHolder holder, IDecayRuleSet decayRuleSet, IChestConfig config) {
+//
+//		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
+//		result.getData().setSpawnCoords(spawnCoords);
+//
+//		SurfaceRuinGenerator generator = new SurfaceRuinGenerator();
+//
+//		// build the structure
+//		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, random, spawnCoords, holder, decayRuleSet);
+//		Treasure.LOGGER.debug("surface struct result -> {}", genResult);
+//		if (!genResult.isSuccess()) return result.fail();
+//
+//		result.setData(genResult.getData());
+//		return result.success();
+//	}
 	
 	/**
-	 * Land Only
+	 * 
 	 * @param world
 	 * @param random
 	 * @param pos
-	 * @param spawnYMin
+	 * @param minDepth
+	 * @param maxDepth
 	 * @return
 	 */
-	public static ICoords getUndergroundSpawnPos(IServerWorld world, Random random, ICoords pos, int spawnYMin) {
+	public static ICoords getUndergroundSpawnPos(IServerWorld world, Random random, ICoords pos, int minDepth, int maxDepth) {
 		ICoords spawnPos = null;
 
-		// spawn location under ground
-		if (pos.getY() > (spawnYMin + UNDERGROUND_OFFSET)) {
-			int ySpawn = random.nextInt(pos.getY()
-					- (spawnYMin + UNDERGROUND_OFFSET))
-					+ spawnYMin;
+		int depth = RandomHelper.randomInt(minDepth, maxDepth);
+		int ySpawn = Math.max(UNDERGROUND_OFFSET, pos.getY() - depth);
+		Treasure.LOGGER.debug("ySpawn -> {}", ySpawn);
+		spawnPos = new Coords(pos.getX(), ySpawn, pos.getZ());
+		// get floor pos (if in a cavern or tunnel etc)
+		spawnPos = WorldInfo.getDryLandSurfaceCoords(world, spawnPos);
 
-			spawnPos = new Coords(pos.getX(), ySpawn, pos.getZ());
-			// get floor pos (if in a cavern or tunnel etc)
-			spawnPos = WorldInfo.getDryLandSurfaceCoords(world, spawnPos);
-		}
 		return spawnPos;
 	}
 	
@@ -501,7 +421,8 @@ Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString()
 	 * @return
 	 */
 	public static IPitGenerator<GeneratorResult<ChestGeneratorData>> selectPitGenerator(Random random) {
-		PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.PITS.pitStructureProbability.get()) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
+//		PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.PITS.pitStructureProbability.get()) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
+		PitTypes pitType = PitTypes.STANDARD;
 		Treasure.LOGGER.debug("using pit type -> {}", pitType);
 		List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerators = TreasureData.PIT_GENS.row(pitType).values().stream()
 				.collect(Collectors.toList());
@@ -528,36 +449,6 @@ Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString()
 		chunksSinceLastDimensionChest.merge(dimensionName, 1, Integer::sum);		
 	}
 
-	// TODO move to interface or abstract
-	/**
-	 * 
-	 * @param world
-	 * @param pos
-	 * @param minDistance
-	 * @return
-	 */
-	public boolean isRegisteredChestWithinDistance(World world, ICoords coords, int minDistance) {
-
-		double minDistanceSq = minDistance * minDistance;
-
-		// get a list of dungeons
-		List<ChestInfo> infos = TreasureData.CHEST_REGISTRIES.get(WorldInfo.getDimension(world).toString()).getValues();
-
-		if (infos == null || infos.size() == 0) {
-			Treasure.LOGGER.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");
-			return false;
-		}
-
-		for (ChestInfo info : infos) {
-			// calculate the distance to the poi
-			double distance = coords.getDistanceSq(info.getCoords());
-			if (distance < minDistanceSq) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	@Override
 	public Map<String, Integer> getChunksSinceLastDimensionFeature() {
 		return this.chunksSinceLastDimensionChest;
@@ -567,5 +458,4 @@ Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString()
 	public Map<String, Map<Rarity, Integer>> getChunksSinceLastDimensionRarityFeature() {
 		return this.chunksSinceLastDimensionRarityChest;
 	}
-
 }

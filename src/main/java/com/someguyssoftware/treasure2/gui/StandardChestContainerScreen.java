@@ -31,6 +31,13 @@ public class StandardChestContainerScreen extends ContainerScreen<StandardChestC
 		imageHeight = 167;
 	}
 
+	@Override
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float p_230430_4_) {
+		this.renderBackground(matrix);
+		super.render(matrix, mouseX, mouseY, p_230430_4_);
+		this.renderTooltip(matrix, mouseX, mouseY);
+	}
+
 	// TODO refactor - extract constants and create template pattern
 	/**
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)

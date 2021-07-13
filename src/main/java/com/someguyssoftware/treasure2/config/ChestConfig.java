@@ -29,8 +29,11 @@ public class ChestConfig implements IChestConfig {
 		@Deprecated
 		int avgChunksPerChestVariance;
 		double genProbability;
+		@Deprecated
 		int minYSpawn;
 		// TODO add depth range from spawn ie. common will be at depth of 6-20 blocks from "surface"
+		int minDepth;
+		int maxDepth;
 		double mimicProbability;
 		boolean surfaceAllowed = true;
 		boolean subterraneanAllowed = true;
@@ -54,12 +57,14 @@ public class ChestConfig implements IChestConfig {
 		 * @param typeWhiteList
 		 * @param typeBlackList
 		 */
-		public Data(boolean enableChest, int chunksPerChest, int chunksPerChestVariance,  double genProbability, int minYSpawn, double mimicProbability, String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
+		public Data(boolean enableChest, int chunksPerChest, int chunksPerChestVariance,  double genProbability, int minDepth, int maxDepth, double mimicProbability, String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
 			this.enableChest = enableChest;
 			this.chunksPerChest = chunksPerChest;
 			this.avgChunksPerChestVariance = avgChunksPerChestVariance;
 			this.genProbability = genProbability;
-			this.minYSpawn = minYSpawn;
+//			this.minYSpawn = minYSpawn;
+			this.minDepth = minDepth;
+			this.maxDepth = maxDepth;
 			this.mimicProbability = mimicProbability;
 			this.biomesData = new BiomesConfig.Data(whiteList, blackList, typeWhiteList, typeBlackList);
 		}
@@ -77,7 +82,9 @@ public class ChestConfig implements IChestConfig {
 	public ForgeConfigSpec.ConfigValue<Integer> chunksPerChest;
 	public ForgeConfigSpec.ConfigValue<Integer> avgChunksPerChestVariance;
 	public ForgeConfigSpec.ConfigValue<Double> genProbability;
-	public ForgeConfigSpec.ConfigValue<Integer> minYSpawn;
+//	public ForgeConfigSpec.ConfigValue<Integer> minYSpawn;
+	public ForgeConfigSpec.ConfigValue<Integer> minDepth;
+	public ForgeConfigSpec.ConfigValue<Integer> maxDepth;
 	public ForgeConfigSpec.ConfigValue<Double> mimicProbability;
 	
 	// TODO most likely going to be removed with the use of meta files / archetype : type : biome categorizations
@@ -114,10 +121,18 @@ public class ChestConfig implements IChestConfig {
 				.comment("The probability that a chest will spawn.")
 				.defineInRange("Probability of chest spawn:", data.genProbability, 0.0, 100.0);
 
-		minYSpawn = builder
-				.comment("The minimum depth (y-axis) that a chest can generate at.")
-				.defineInRange("Minimum depth for spawn location:", data.minYSpawn, 5, 250);
+//		minYSpawn = builder
+//				.comment("The minimum depth (y-axis) that a chest can generate at.")
+//				.defineInRange("Minimum depth for spawn location:", data.minYSpawn, 5, 250);
 
+		minDepth = builder
+				.comment("The minimum blocks deep from the surface that a chest can generate at.")
+				.defineInRange("Minimum depth for spawn location:", data.minDepth, 5, 250);
+		
+		maxDepth = builder
+				.comment("The maximum blocks deep from the surface that a chest can generate at.")
+				.defineInRange("Maximum depth for spawn location:", data.maxDepth, 5, 250);
+		
 		mimicProbability = builder
 				.comment("The probability that a chest will be a mimic.")
 				.defineInRange("Mimic probability:", data.mimicProbability, 0.0, 100.0);
@@ -164,10 +179,22 @@ public class ChestConfig implements IChestConfig {
 	}
 
 	@Override
+	@Deprecated
 	public int getMinYSpawn() {
-		return minYSpawn.get();
+//		return minYSpawn.get();
+		return 5;
 	}
 
+	@Override
+	public int getMinDepth() {
+		return minDepth.get();
+	}
+	
+	@Override
+	public int getMaxDepth() {
+		return maxDepth.get();
+	}
+	
 	@Override
 	public boolean isSurfaceAllowed() {
 		return surfaceAllowed.get();
@@ -208,7 +235,7 @@ public class ChestConfig implements IChestConfig {
 	@Override
 	public String toString() {
 		return "ChestConfig [enableChest=" + enableChest.get() + ", chunksPerChest=" + chunksPerChest.get() + ", genProbability="
-				+ genProbability.get() + ", minYSpawn=" + minYSpawn.get() + ", mimicProbability=" + mimicProbability.get()
+				+ genProbability.get() + ", minDepth=" + minDepth.get() + ", mimicProbability=" + mimicProbability.get()
 				+ ", surfaceAllowed=" + surfaceAllowed + ", subterraneanAllowed=" + subterraneanAllowed + ", biomes="
 				+ biomes + "]";
 	}

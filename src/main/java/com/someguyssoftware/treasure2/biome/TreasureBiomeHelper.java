@@ -88,10 +88,13 @@ public class TreasureBiomeHelper {
 //	}
 	
 	public static Result isBiomeAllowed(Biome biome, List<String> whiteList, List<String> blackList) {
+		return isBiomeAllowed(biome.getRegistryName(), whiteList, blackList);
+	}
+	
+	public static Result isBiomeAllowed(ResourceLocation biome, List<String> whiteList, List<String> blackList) {
         if (whiteList != null && whiteList.size() > 0) {
-//        	if (whiteList.contains(biome)) {
         	for (String biomeName : whiteList) {
-	        	if (biomeName.equals(biome.getRegistryName().toString())) {
+	        	if (biomeName.equals(biome.toString())) {
 	        		return Result.WHITE_LISTED;
 	        	}
 	        }
@@ -100,9 +103,8 @@ public class TreasureBiomeHelper {
         }
         
         if (blackList != null && blackList.size() > 0) {
-//        	if (blackList.contains(biome)) {
         	for (String biomeName : blackList) {
-        		if (biomeName.equals(biome.getRegistryName().toString())) {
+        		if (biomeName.equals(biome.toString())) {
         			return Result.BLACK_LISTED;
         		}
         	}

@@ -84,7 +84,7 @@ public class PitProvider {
 	 * @param spawnYMin
 	 * @return
 	 */
-	public static ICoords getUndergroundSpawnPos(IWorld world, Random random, ICoords pos, int spawnYMin) {
+	public static ICoords getUndergroundSpawnPos(IServerWorld world, Random random, ICoords pos, int spawnYMin) {
 		ICoords spawnPos = null;
 
 		// spawn location under ground
@@ -106,7 +106,8 @@ public class PitProvider {
 	 * @return
 	 */
 	public static IPitGenerator<GeneratorResult<ChestGeneratorData>> selectPitGenerator(Random random) {
-		PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.PITS.pitStructureProbability.get()) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
+//		PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.PITS.pitStructureProbability.get()) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
+		PitTypes pitType = PitTypes.STANDARD;
 		Treasure.LOGGER.debug("using pit type -> {}", pitType);
 		List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerators = TreasureData.PIT_GENS.row(pitType).values().stream()
 				.collect(Collectors.toList());

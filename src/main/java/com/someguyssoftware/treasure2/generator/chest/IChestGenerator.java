@@ -487,26 +487,15 @@ public interface IChestGenerator {
 	 * @param coods
 	 */
 	default public void addMarkers(IServerWorld world, Random random, ICoords coords, final boolean isSurfaceChest) {
-//		if (!isSurfaceChest && TreasureConfig.MARKERS.markerStructuresAllowed.get() && RandomHelper
-//				.checkProbability(random, TreasureConfig.MARKERS.markerStructureProbability.get())) {
-//			Treasure.LOGGER.debug("generating a random structure marker -> {}", coords.toShortString());
-//			new StructureMarkerGenerator().generate(world, random, coords);
-//		} else {
-//			new GravestoneMarkerGenerator().generate(world, random, coords);
-//		}
-		new GravestoneMarkerGenerator().generate(world, random, coords);
-	}
-	
-	default public void addMarkers(ISeedReader reader, Random random, ICoords coords, final boolean isSurfaceChest) {
 		if (!isSurfaceChest && TreasureConfig.MARKERS.markerStructuresAllowed.get() && RandomHelper
 				.checkProbability(random, TreasureConfig.MARKERS.markerStructureProbability.get())) {
 			Treasure.LOGGER.debug("generating a random structure marker -> {}", coords.toShortString());
-			new StructureMarkerGenerator().generate(reader, random, coords);
+			new StructureMarkerGenerator().generate(world, random, coords);
 		} else {
-			new GravestoneMarkerGenerator().generate(reader, random, coords);
+			new GravestoneMarkerGenerator().generate(world, random, coords);
 		}
 	}
-
+	
 	/**
 	 * 
 	 * @param world

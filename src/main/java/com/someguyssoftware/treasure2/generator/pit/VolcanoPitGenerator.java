@@ -187,7 +187,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
     private void addDecorations(IWorld world, Random random, ICoords coords) {
         if (world.getBlockState(coords.toPos()).getBlock() != Blocks.AIR) {
             if (RandomHelper.checkProbability(random, 30)) {
-                world.setBlock(coords.toPos(), TreasureBlocks.BLACKSTONE.defaultBlockState(), 3);
+                world.setBlock(coords.toPos(), Blocks.BLACKSTONE.defaultBlockState(), 3);
             }
             else if (RandomHelper.checkProbability(random, 10)) {
             	world.setBlock(coords.toPos(), Blocks.LAVA.defaultBlockState(), 3);

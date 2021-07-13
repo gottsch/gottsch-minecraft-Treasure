@@ -66,7 +66,8 @@ public class TreasureConfiguredStructures {
         *
         * Requires AccessTransformer ( see resources/META-INF/accesstransformer.cfg )
         */
-        FlatGenerationSettings.STRUCTURE_FEATURES.put(TreasureStructures.SURFACE_CHEST.get(), CONFIGURED_SURFACE_CHEST);
-        FlatGenerationSettings.STRUCTURE_FEATURES.put(TreasureStructures.UNCOMMON_SURFACE_CHEST.get(), CONFIGURED_UNCOMMON_SURFACE_CHEST);
+        
+//        FlatGenerationSettings.STRUCTURE_FEATURES.put(TreasureStructures.SURFACE_CHEST.get(), CONFIGURED_SURFACE_CHEST);
+//        FlatGenerationSettings.STRUCTURE_FEATURES.put(TreasureStructures.UNCOMMON_SURFACE_CHEST.get(), CONFIGURED_UNCOMMON_SURFACE_CHEST);
     }
 }

@@ -23,6 +23,7 @@ public interface IChestConfig {
 	@Deprecated
 	public int getAvgChunksPerChestVariance();
 	public double getGenProbability();
+	@Deprecated
 	public int getMinYSpawn();
 	public double getMimicProbability();
 	
@@ -32,4 +33,7 @@ public interface IChestConfig {
 	public List<String> getBiomeBlackList();
 	public List<BiomeTypeHolder> getBiomeTypeWhiteList();
 	public List<BiomeTypeHolder> getBiomeTypeBlackList();
+
+	public int getMinDepth();
+	public int getMaxDepth();
 }
