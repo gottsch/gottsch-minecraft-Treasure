@@ -1,3 +1,22 @@
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
+ * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
 package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
@@ -13,8 +32,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.IServerWorld;
 
 /**
  * 
@@ -41,7 +59,7 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
 			Treasure.LOGGER.debug("Generated Mob Trap Pit at " + spawnCoords.toShortString());
@@ -58,7 +76,7 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ICoords buildPit(IWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
+	public ICoords buildPit(IServerWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
 		
@@ -111,7 +129,7 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 	 * @param block
 	 * @return
 	 */
-	public ICoords buildTrapLayer(final IWorld world, final Random random, final ICoords coords, final Block block) {
+	public ICoords buildTrapLayer(final IServerWorld world, final Random random, final ICoords coords, final Block block) {
 		ICoords nextCoords = null;
 		if (block == DEFAULT_LOG) {
 			nextCoords = buildLogLayer(world, random, coords, block);
@@ -142,10 +160,10 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 		nextCoords = buildLogLayer(world, random, nextCoords, block);
 
 		// spawn the mobs
-    	spawnRandomMob((World)world, random, spawnCoords);
-    	spawnRandomMob((World)world, random, spawnCoords.add(1, 0, 0));
-    	spawnRandomMob((World)world, random, spawnCoords.add(0, 0, 1));
-    	spawnRandomMob((World)world, random, spawnCoords.add(1, 0, 1));
+    	spawnRandomMob(world, random, spawnCoords);
+    	spawnRandomMob(world, random, spawnCoords.add(1, 0, 0));
+    	spawnRandomMob(world, random, spawnCoords.add(0, 0, 1));
+    	spawnRandomMob(world, random, spawnCoords.add(1, 0, 1));
     	
 		// get the next coords
 		nextCoords = nextCoords.up(1);

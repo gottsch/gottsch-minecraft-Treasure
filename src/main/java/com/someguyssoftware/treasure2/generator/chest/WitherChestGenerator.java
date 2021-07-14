@@ -29,6 +29,7 @@ import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 
 /**
@@ -108,7 +109,7 @@ public class WitherChestGenerator implements IChestGenerator {
 	 * Don't place any markers
 	 */
 	@Override
-	public void addMarkers(World world, Random random, ICoords coords, boolean isSurfaceChest) {
+	public void addMarkers(IServerWorld world, Random random, ICoords coords, boolean isSurfaceChest) {
 		return;
 	}
 	
@@ -121,7 +122,7 @@ public class WitherChestGenerator implements IChestGenerator {
 	 * @return
 	 */
 	@Override
-	public TileEntity placeInWorld(World world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
+	public TileEntity placeInWorld(IServerWorld world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
 		GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
 		// ensure that chest is of type WITHER_CHEST
@@ -143,7 +144,7 @@ public class WitherChestGenerator implements IChestGenerator {
 	}
 	
 	@Override
-	public TileEntity placeInWorld(World world, Random random, ICoords chestCoords, AbstractChestBlock chest, BlockState state) {
+	public TileEntity placeInWorld(IServerWorld world, Random random, ICoords chestCoords, AbstractChestBlock chest, BlockState state) {
 		// replace block @ coords
 		GenUtil.replaceBlockWithChest(world, random, chestCoords, chest, state);
 		

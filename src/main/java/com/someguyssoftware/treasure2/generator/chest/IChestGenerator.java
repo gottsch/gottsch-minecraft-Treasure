@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.generator.chest;
 
@@ -51,6 +67,8 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.ISeedReader;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -60,7 +78,7 @@ import net.minecraft.world.server.ServerWorld;
  */
 public interface IChestGenerator {
 
-	default public GeneratorResult<ChestGeneratorData> generate(final World world, final Random random, ICoords coords,
+	default public GeneratorResult<ChestGeneratorData> generate(final IServerWorld world, final Random random, ICoords coords,
 			final Rarity rarity, BlockState state) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(coords);
@@ -112,17 +130,6 @@ public interface IChestGenerator {
 
 		return result.success();
 	}
-
-	/**
-	 * 
-	 * @param rarity
-	 * @return
-	 */
-//	default public List<LootTable> buildLootTableList(Rarity rarity) {
-////		TODO 1.15.2
-////		return Treasure.LOOT_TABLES.getLootTableByRarity(rarity);
-//		return new ArrayList<LootTable>();
-//	}
 
 	// TODO this should be a generic call that passes in ManagedTableType
 	default public List<LootTableShell> buildLootTableList2(Rarity rarity) {
@@ -250,7 +257,7 @@ public interface IChestGenerator {
 		
 		List<ItemStack> tempStacks = lootTable.getRandomItems(lootContext);
 		tempStacks.forEach(stack -> {
-			LOGGER.debug("gen from tempStacks -> {}", stack.getDisplayName());
+			LOGGER.debug("gen from tempStacks -> {}", stack.getDisplayName().getString());
 		});
 
 		// record original item size (max number of items to pull from final list)
@@ -495,7 +502,7 @@ public interface IChestGenerator {
 	 * @param random
 	 * @param coods
 	 */
-	default public void addMarkers(World world, Random random, ICoords coords, final boolean isSurfaceChest) {
+	default public void addMarkers(IServerWorld world, Random random, ICoords coords, final boolean isSurfaceChest) {
 		if (!isSurfaceChest && TreasureConfig.MARKERS.markerStructuresAllowed.get() && RandomHelper
 				.checkProbability(random, TreasureConfig.MARKERS.markerStructureProbability.get())) {
 			Treasure.LOGGER.debug("generating a random structure marker -> {}", coords.toShortString());
@@ -504,7 +511,7 @@ public interface IChestGenerator {
 			new GravestoneMarkerGenerator().generate(world, random, coords);
 		}
 	}
-
+	
 	/**
 	 * 
 	 * @param world
@@ -513,7 +520,7 @@ public interface IChestGenerator {
 	 * @param chestCoords
 	 * @return
 	 */
-	default public TileEntity placeInWorld(World world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
+	default public TileEntity placeInWorld(IServerWorld world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
 		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
 
@@ -526,7 +533,7 @@ public interface IChestGenerator {
 			// remove the title entity (if exists)
 
 			if (te != null && (te instanceof AbstractTreasureChestTileEntity)) {
-				world.removeBlockEntity(chestCoords.toPos());
+				((ServerWorld)world).removeBlockEntity(chestCoords.toPos());
 			}
 			return null;
 		}
@@ -550,7 +557,7 @@ public interface IChestGenerator {
 	 * @param state
 	 * @return
 	 */
-	default public TileEntity placeInWorld(World world, Random random, ICoords chestCoords, AbstractChestBlock chest,
+	default public TileEntity placeInWorld(IServerWorld world, Random random, ICoords chestCoords, AbstractChestBlock chest,
 			BlockState state) {
 		// replace block @ coords
 		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chestCoords, chest, state);
@@ -563,7 +570,7 @@ public interface IChestGenerator {
 			Treasure.LOGGER.debug("Unable to place chest @ {}", chestCoords.toShortString());
 			// remove the title entity (if exists)
 			if (te != null && (te instanceof AbstractTreasureChestTileEntity)) {
-				world.removeBlockEntity(chestCoords.toPos());
+				((ServerWorld)world).removeBlockEntity(chestCoords.toPos());
 			}
 			return null;
 		}

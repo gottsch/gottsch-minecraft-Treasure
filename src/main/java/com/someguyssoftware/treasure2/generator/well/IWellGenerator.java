@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.generator.well;
 
@@ -19,7 +35,7 @@ import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.world.World;
+import net.minecraft.world.IServerWorld;
 
 /**
  * @author Mark Gottschling on Feb 18, 2018
@@ -40,7 +56,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param config
 	 * @return
 	 */
-	public abstract RESULT generate(World world, Random random, ICoords spawnCoords, IWellsConfig config);
+	public abstract RESULT generate(IServerWorld world, Random random, ICoords spawnCoords, IWellsConfig config);
 	
 	/**
 	 * 
@@ -51,7 +67,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param config
 	 * @return
 	 */
-	public abstract RESULT generate(World world, Random random, ICoords originalSpawnCoords,
+	public abstract RESULT generate(IServerWorld world, Random random, ICoords originalSpawnCoords,
 			TemplateHolder templateHolder, IWellsConfig config);
 	
 	/**
@@ -60,7 +76,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param random
 	 * @param coords
 	 */
-	public default void addDecoration(World world, Random random, ICoords coords) {
+	public default void addDecoration(IServerWorld world, Random random, ICoords coords) {
 		// coords matrix centered around the input coords
 		ICoords[] circle = new Coords[16];
 		circle[0] = coords.add(-2, 0, -2);

@@ -31,8 +31,7 @@ import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Rotation;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.IServerWorld;
 
 /**
  * @author Mark Gottschling on Aug 13, 2019
@@ -49,25 +48,25 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 	public SubmergedRuinGenerator() {}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
 			ICoords originalSpawnCoords) {
 		return generate(world, random, originalSpawnCoords, null, null);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
 			ICoords originalSpawnCoords, IDecayRuleSet decayRuleSet) {
 		return generate(world, random, originalSpawnCoords, null, decayRuleSet);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder) {
 		return generate(world, random, originalSpawnCoords, holder, null);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder, IDecayRuleSet decayRuleSet) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 

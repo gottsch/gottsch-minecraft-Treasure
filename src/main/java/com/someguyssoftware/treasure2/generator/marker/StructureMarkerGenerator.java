@@ -32,6 +32,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.DungeonHooks;
@@ -49,14 +50,14 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 	}
 
 	@Override
-	public GeneratorResult<GeneratorData> generate(World world, Random random, ICoords coords) {
+	public GeneratorResult<GeneratorData> generate(IServerWorld world, Random random, ICoords coords) {
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 	
 		// get the biome ID
 		Biome biome = world.getBiome(coords.toPos());
 		
 		// get the template from the given archetype, type and biome
-		TemplateHolder holder = TreasureTemplateRegistry.getTemplateManager().getTemplate(world, random, StructureArchetype.SURFACE, StructureType.MARKER, biome);
+		TemplateHolder holder = TreasureTemplateRegistry.getTemplateManager().getTemplate(random, StructureArchetype.SURFACE, StructureType.MARKER, biome);
 		if (holder == null) {
 			return result.fail();
 		}

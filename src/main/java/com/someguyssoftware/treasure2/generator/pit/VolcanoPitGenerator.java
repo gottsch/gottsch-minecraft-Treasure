@@ -1,3 +1,22 @@
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
+ * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
 package com.someguyssoftware.treasure2.generator.pit;
 
 import static com.someguyssoftware.treasure2.Treasure.LOGGER;
@@ -9,15 +28,14 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
-import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 
 
 /**
@@ -50,7 +68,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
     @Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
 			LOGGER.debug("Generated Volcano Pit at " + spawnCoords.toShortString());
@@ -67,7 +85,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ICoords buildPit(IWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
+	public ICoords buildPit(IServerWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
         
@@ -124,7 +142,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * 
 	 */
 	@Override
-	public void buildAboveChestLayers(IWorld world, Random random, ICoords spawnCoords) {
+	public void buildAboveChestLayers(IServerWorld world, Random random, ICoords spawnCoords) {
 		
 	}
 	
@@ -187,7 +205,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
     private void addDecorations(IWorld world, Random random, ICoords coords) {
         if (world.getBlockState(coords.toPos()).getBlock() != Blocks.AIR) {
             if (RandomHelper.checkProbability(random, 30)) {
-                world.setBlock(coords.toPos(), TreasureBlocks.BLACKSTONE.defaultBlockState(), 3);
+                world.setBlock(coords.toPos(), Blocks.BLACKSTONE.defaultBlockState(), 3);
             }
             else if (RandomHelper.checkProbability(random, 10)) {
             	world.setBlock(coords.toPos(), Blocks.LAVA.defaultBlockState(), 3);

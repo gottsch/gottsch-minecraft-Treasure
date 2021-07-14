@@ -50,25 +50,25 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 	public SurfaceRuinGenerator() {}
 	
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
 			ICoords originalSpawnCoords) {
 		return generate(world, random, originalSpawnCoords, null, null);
 	}
 	
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
 			ICoords originalSpawnCoords, IDecayRuleSet decayRuleSet) {
 		return generate(world, random, originalSpawnCoords, null, decayRuleSet);
 	}
 	
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder) {
 		return generate(world, random, originalSpawnCoords, holder, null);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(World world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder, IDecayRuleSet decayRuleSet) {		
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 
@@ -260,7 +260,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 	 * @param coords
 	 * @return
 	 */
-	public static ICoords getSolidSurfaceCoords(final World world, final ICoords coords) {
+	public static ICoords getSolidSurfaceCoords(final IServerWorld world, final ICoords coords) {
 		boolean isSurfaceBlock = false;
 		ICoords newCoords = coords;
 		

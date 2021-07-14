@@ -43,6 +43,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -215,7 +216,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param coords
 	 * @return
 	 */
-	public GeneratorResult<GeneratorData> generate(World world, Random random, ICoords coords) {
+	public GeneratorResult<GeneratorData> generate(IServerWorld world, Random random, ICoords coords) {
 		// result to return to the caller
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 
@@ -311,7 +312,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param world
 	 * @param coords
 	 */
-	private void buildClearing(IWorld world, Random random, ICoords coords) {
+	private void buildClearing(IServerWorld world, Random random, ICoords coords) {
 		ICoords buildCoords = null;
 		Treasure.LOGGER.debug("build clearing at -> {}", coords.toShortString());
 		// build clearing
@@ -550,7 +551,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 		}
 	}
 	
-	private void buildScrub(IWorld world, Random random, AxisAlignedBB witherGroveBounds) {
+	private void buildScrub(IServerWorld world, Random random, AxisAlignedBB witherGroveBounds) {
 		Treasure.LOGGER.debug("adding scrub ...");
 		int width = Math.abs((int) (witherGroveBounds.maxX - witherGroveBounds.minX));
 		int depth = Math.abs((int) (witherGroveBounds.maxZ - witherGroveBounds.minZ));
@@ -586,7 +587,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param random
 	 * @param witherGroveSize
 	 */
-	private void buildRocks(IWorld world, Random random, AxisAlignedBB witherGroveSize) {
+	private void buildRocks(IServerWorld world, Random random, AxisAlignedBB witherGroveSize) {
 //		Treasure.logger.debug("adding rocks ...");
 		int width = Math.abs((int) (witherGroveSize.maxX - witherGroveSize.minX));
 		int depth = Math.abs((int) (witherGroveSize.maxZ - witherGroveSize.minZ));

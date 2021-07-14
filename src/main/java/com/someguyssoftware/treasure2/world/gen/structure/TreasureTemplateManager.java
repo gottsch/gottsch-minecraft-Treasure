@@ -1,3 +1,22 @@
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
+ * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
 package com.someguyssoftware.treasure2.world.gen.structure;
 
 import java.io.File;
@@ -32,7 +51,6 @@ import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 import com.someguyssoftware.gottschcore.meta.IMetaType;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
-import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplateManager;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
@@ -49,12 +67,9 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
@@ -324,7 +339,37 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	 * @param biome
 	 * @return
 	 */
-	public TemplateHolder getTemplate(IWorld world, Random random, StructureArchetype archetype, StructureType type, Biome biome) {
+//	@Deprecated
+//	public TemplateHolder getTemplate(IWorld world, Random random, StructureArchetype archetype, StructureType type, Biome biome) {
+//		// get structure by archetype (subterranean) and type (room)
+//		String key =archetype.getName()	+ ":" + type.getName();
+//		
+//		List<TemplateHolder> templateHolders = getTemplatesByArchetypeTypeBiomeTable().get(key, biome.getRegistryName());
+//		if (templateHolders == null || templateHolders.isEmpty()) {
+//			Treasure.LOGGER.debug("could not find template holders for archetype:type, biome -> {} {}", key, biome.getRegistryName());
+//			return null;
+//		}
+//		
+//		TemplateHolder holder = templateHolders.get(random.nextInt(templateHolders.size()));
+//		if (holder == null) {
+//			Treasure.LOGGER.debug("could not find random template holder.");
+//			return null;
+//		}
+//
+//		Treasure.LOGGER.debug("selected template holder -> {} : {}", holder.getLocation(), holder.getMetaLocation());
+//
+//		return holder;
+//	}
+	
+	/**
+	 * 
+	 * @param random
+	 * @param archetype
+	 * @param type
+	 * @param biome
+	 * @return
+	 */
+	public TemplateHolder getTemplate(Random random, StructureArchetype archetype, StructureType type, Biome biome) {
 		// get structure by archetype (subterranean) and type (room)
 		String key =archetype.getName()	+ ":" + type.getName();
 		

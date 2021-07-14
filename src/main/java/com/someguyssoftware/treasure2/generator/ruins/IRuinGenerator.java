@@ -24,6 +24,7 @@ import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.DungeonHooks;
@@ -34,22 +35,22 @@ import net.minecraftforge.common.DungeonHooks;
  */
 public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 
-	GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords spawnCoords);	
-	GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords spawnCoords);	
+	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords originalSpawnCoords,
 			IDecayRuleSet decayRuleSet);
-	GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords originalSpawnCoords,
 			TemplateHolder holder);
-	GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords originalSpawnCoords,
 			TemplateHolder holder, IDecayRuleSet decayRuleSet);
 
-	default public TemplateHolder selectTemplate(World world, Random random, ICoords coords, StructureArchetype archetype, StructureType type) {
+	default public TemplateHolder selectTemplate(IServerWorld world, Random random, ICoords coords, StructureArchetype archetype, StructureType type) {
 		// get the biome ID
 		Biome biome = world.getBiome(coords.toPos());
-		TemplateHolder holder = TreasureTemplateRegistry.getTemplateManager().getTemplate(world, random, archetype, type, biome);
+		TemplateHolder holder = TreasureTemplateRegistry.getTemplateManager().getTemplate(random, archetype, type, biome);
 		return holder;
 	}
 
-	default public void buildOneTimeSpawners(World world, Random random, List<BlockContext> proximityContexts, Quantity quantity, double d) {
+	default public void buildOneTimeSpawners(IServerWorld world, Random random, List<BlockContext> proximityContexts, Quantity quantity, double d) {
 		for (BlockContext c : proximityContexts) {
 			Treasure.LOGGER.debug("placing proximity spawner at -> {}", c.getCoords().toShortString());
 	    	world.setBlock(c.getCoords().toPos(), TreasureBlocks.PROXIMITY_SPAWNER.defaultBlockState(), 3);
@@ -62,7 +63,7 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 		}
 	}
 
-	default public void buildVanillaSpawners(World world, Random random, List<BlockContext> spawnerContexts) {
+	default public void buildVanillaSpawners(IServerWorld world, Random random, List<BlockContext> spawnerContexts) {
 		for (BlockContext c : spawnerContexts) {
 			world.setBlock(c.getCoords().toPos(), Blocks.SPAWNER.defaultBlockState(), 3);
 			MobSpawnerTileEntity te = (MobSpawnerTileEntity) world.getBlockEntity(c.getCoords().toPos());
