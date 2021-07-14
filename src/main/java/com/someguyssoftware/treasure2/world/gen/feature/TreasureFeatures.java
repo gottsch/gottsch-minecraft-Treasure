@@ -11,10 +11,13 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
+import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 
 import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.Biome;
@@ -199,14 +202,14 @@ public class TreasureFeatures {
 			// add features to persisted list to be accessed during world load/save
 			PERSISTED_FEATURES.add(SURFACE_CHEST_FEATURE);
 //			PERSISTED_FEATURES.add(SUBMERGED_CHEST_FEATURE);
-//			PERSISTED_FEATURES.add(WELL_FEATURE);
+			PERSISTED_FEATURES.add(WELL_FEATURE);
 //			PERSISTED_FEATURES.add(WITHER_TREE_FEATURE);
 
 			final IForgeRegistry<Feature<?>> registry = event.getRegistry();
 			registry.register(SURFACE_CHEST_FEATURE);
 //			registry.register(SUBMERGED_CHEST_FEATURE);
 			registry.register(GEM_ORE_FEATURE);
-//			registry.register(WELL_FEATURE);
+			registry.register(WELL_FEATURE);
 //			registry.register(WITHER_TREE_FEATURE);
 			
 			// initialize configs
@@ -216,8 +219,8 @@ public class TreasureFeatures {
 					SURFACE_CHEST_FEATURE.configured(IFeatureConfig.NONE));
 //			SUBMERGED_CHEST_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "submerged_chest",
 //					SUBMERGED_CHEST_FEATURE.configured(IFeatureConfig.NONE));
-//			WELL_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "well",
-//					WELL_FEATURE.configured(IFeatureConfig.NONE));
+			WELL_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "well",
+					WELL_FEATURE.configured(IFeatureConfig.NONE));
 
 			RUBY_ORE_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "ruby_ore",
 					GEM_ORE_FEATURE
@@ -256,10 +259,11 @@ public class TreasureFeatures {
 		public static void onBiomeLoading(final BiomeLoadingEvent biomeEvent) {
 
 			// TODO could change this to WorldInfo.isSurfaceWorld();
-			if (!TreasureConfig.GEMS_AND_ORES.enableGemOreSpawn.get() || biomeEvent.getCategory() == Biome.Category.NETHER || biomeEvent.getCategory() == Biome.Category.THEEND) {
+			if ( biomeEvent.getCategory() == Biome.Category.NETHER || biomeEvent.getCategory() == Biome.Category.THEEND) {
 				return;
 			}
-//			Treasure.LOGGER.info("registering features to biome -> {}, ruby -> {}", biomeEvent.getName(), RUBY_ORE_FEATURE_CONFIG);
+
+			ResourceLocation biome = biomeEvent.getName();
 			
 			if (TreasureConfig.GEMS_AND_ORES.enableGemOreSpawn.get()) {
 				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
@@ -274,12 +278,15 @@ public class TreasureFeatures {
 			} else {
 				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.TOP_LAYER_MODIFICATION)
 						.add(() -> SURFACE_CHEST_FEATURE_CONFIG);
-//				if (TreasureConfig.WELLS.isEnabled()) {
-//					biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
-//							.add(() -> WELL_FEATURE_CONFIG);
-//				}
-			}
-			
+				if (TreasureConfig.WELLS.isEnabled()) {
+					// test if the biome is allowed
+					TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, TreasureConfig.WELLS.getBiomeWhiteList(), TreasureConfig.WELLS.getBiomeBlackList());
+					if(biomeCheck != Result.BLACK_LISTED ) {
+						biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.TOP_LAYER_MODIFICATION)
+								.add(() -> WELL_FEATURE_CONFIG);
+					}
+				}
+			}			
 		}
 	}
 }
