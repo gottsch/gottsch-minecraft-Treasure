@@ -32,14 +32,11 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	
 	public static final String GEN_DATA_KEY = Treasure.MODID + ":generationData";
 
-//	private static final String OASIS_GEN_TAG_NAME = "oasisGen";
 	private static final String KEY_TAG_NAME = "key";
 //	private static final String COUNT_TAG_NAME = "count";
 //	private static final String CHUNKS_SINCE_LAST_CHEST_TAG_NAME = "chunksSinceLastChest";
 //	private static final String CHUNKS_SINCE_LAST_RARITY_CHEST_TAG_NAME = "chunksSinceLastRarityChest";
 	private static final String CHEST_REGISTRY_TAG_NAME = "chestRegistry";
-//	private static final String OASIS_REGISTRY_TAG_NAME = "oasisRegistry";
-//	private static final String CHUNKS_SINCE_LAST_OASIS_TAG_NAME = "chunksSinceLastOasis";
 	private static final String COORDS_TAG_NAME = "coords";
 
 	private static final String RARITY_TAG_NAME = "rarity";
@@ -134,57 +131,13 @@ public class TreasureGenerationSavedData extends WorldSavedData {
                     
             });
         }
-
-//		
-//		/// Oasis ///
-//		NBTTagCompound oasisTag = treasureGen.getCompoundTag(OASIS_GEN_TAG_NAME);
-//		if (oasisTag != null) {
-//			NBTTagList dimTagList = oasisTag.getTagList(DIMENSIONS_TAG_NAME, 10);
-//			for (int i = 0; i < dimTagList.tagCount(); i++) {
-//				NBTTagCompound dimTag = dimTagList.getCompoundTagAt(i);
-//				int dimensionID = dimTag.getInteger(DIMENSION_ID_TAG_NAME);
-//				int chunksSince = dimTag.getInteger(CHUNKS_SINCE_LAST_OASIS_TAG_NAME);
-//				oasisGen.getChunksSinceLastDimensionOasis().put(dimensionID, chunksSince);
-//				
-//				NBTTagList biomeTagList = dimTag.getTagList(BIOMES_TAG_NAME, 10);
-//				for (int k = 0; k < biomeTagList.tagCount(); k++) {
-//					NBTTagCompound biomeTag = dimTagList.getCompoundTagAt(k);
-//					int biomeID = biomeTag.getInteger(BIOME_ID_TAG_NAME);
-//					int chunksSinceBiome = biomeTag.getInteger(CHUNKS_SINCE_LAST_OASIS_TAG_NAME);
-//					oasisGen.getChunksSinceLastDimensionBiomeOasis().get(dimensionID).put(biomeID, chunksSinceBiome);
-//				}
-//			}
-//		}
 //		
 //		///// Well /////
 //		wellGen.setChunksSinceLastWell(treasureGen.getInteger("chunksSinceLastWell"));
 //		
 //		///// Wither Tree /////
 //		witherGen.setChunksSinceLastTree(treasureGen.getInteger("chunksSinceLastTree"));
-//		
-//		///// Gem Ore /////
-//		gemGen.setChunksSinceLastOre(treasureGen.getInteger("chunksSinceLastOre"));
 
-//		// Oasis Registry
-//		OasisRegistry oasisRegistry = OasisRegistry.getInstance();
-//		oasisRegistry.clear();
-//		NBTTagList oasisRegistryDimensionTagList = treasureGen.getTagList(OASIS_REGISTRY_TAG_NAME, 10);
-//		for (int dimIndex = 0; dimIndex < oasisRegistryDimensionTagList.tagCount(); dimIndex++) {
-//			NBTTagCompound dimTag = oasisRegistryDimensionTagList.getCompoundTagAt(dimIndex);
-//			int dimensionID = dimTag.getInteger(DIMENSION_ID_TAG_NAME);
-//			// get the registry list
-//			NBTTagList oasisRegistryTagList = dimTag.getTagList("registry", 10);
-//			for (int registryIndex = 0; registryIndex < oasisRegistryTagList.tagCount(); registryIndex++) {
-//				NBTTagCompound registryTag = oasisRegistryTagList.getCompoundTagAt(registryIndex);
-//				String key = registryTag.getString(KEY_TAG_NAME);
-//				int biomeID = registryTag.getInteger(BIOME_ID_TAG_NAME);
-//				NBTTagCompound coordsTag = registryTag.getCompoundTag(COORDS_TAG_NAME);
-//				int x = coordsTag.getInteger("x");
-//				int y = coordsTag.getInteger("y");
-//				int z = coordsTag.getInteger("z");
-//				oasisRegistry.register(dimensionID, key, new OasisInfo(new Coords(x, y, z), dimensionID, biomeID));
-//			}
-//		}	
 	}
 
 	/*
@@ -201,8 +154,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 			// add main treasure tag
 			tag.put(TREASURE_GEN_TAG_NAME, genTag);
 			
-			///// Chests //////
-			// for each feature
+			///// Features //////
 			TreasureFeatures.PERSISTED_FEATURES.forEach(feature -> {
 				Treasure.LOGGER.debug("saving feature -> {}", ((IForgeRegistryEntry)feature).getRegistryName().toString());
 				CompoundNBT featureTag = new CompoundNBT();
@@ -239,16 +191,18 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 			});
 			
 			///// ChestConfig Registry /////
+			Treasure.LOGGER.debug("saving chest registry");
 			ListNBT chestRegistries = new ListNBT();
 			TreasureData.CHEST_REGISTRIES.entrySet().forEach(entry -> {
 				String dimensionName = entry.getKey();
 				ChestRegistry registry = entry.getValue();
 				CompoundNBT dimTag = new CompoundNBT();
 				dimTag.putString(DIMENSION_ID_TAG_NAME, dimensionName);
+				Treasure.LOGGER.debug("saving chest dimension ID -> {}", dimensionName);
 				ListNBT chestRegistryTagList = new ListNBT();
 				registry.getValues().forEach(chestInfo -> {
 					CompoundNBT chestInfoEntry = new CompoundNBT();
-					CompoundNBT coords = new CompoundNBT();					
+					CompoundNBT coords = new CompoundNBT();
 					coords.putInt("x", chestInfo.getCoords().getX());
 					coords.putInt("y", chestInfo.getCoords().getY());
 					coords.putInt("z", chestInfo.getCoords().getZ());
@@ -256,7 +210,9 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 					chestInfoEntry.putString(KEY_TAG_NAME, chestInfo.getCoords().toShortString());
 					chestInfoEntry.putString(RARITY_TAG_NAME, chestInfo.getRarity().getValue());
 					chestInfoEntry.put(COORDS_TAG_NAME, coords);
-					
+//					Treasure.LOGGER.debug("saving chest key -> {}", chestInfo.getCoords().toShortString());
+//					Treasure.LOGGER.debug("saving chest rarity -> {}", chestInfo.getRarity().getValue());
+//					Treasure.LOGGER.debug("saving chest coords -> {} {} {}", chestInfo.getCoords().getX(), chestInfo.getCoords().getY(), chestInfo.getCoords().getZ());
 					// add entry to list
 					chestRegistryTagList.add(chestInfoEntry);
 				});
@@ -287,86 +243,14 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 //			treasureGen.setTag(SURFACE_CHEST_GEN_TAG_NAME, surfaceTag);
 //			treasureGen.setTag(SUBMERGED_CHEST_GEN_TAG_NAME, submergedTag);
 //			
-//			///// Oasis ////
-//			// get the oasis world generators
-//			OasisWorldGenerator oasisGen = (OasisWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.OASIS);
-//			// create a new compound
-//			NBTTagCompound oasisTag = new NBTTagCompound();
-//			
-//			// add the oasis gen last count to the treasure compound for each dimension
-//			NBTTagList dimTagList = new NBTTagList();
-//			for (Entry<Integer, Integer> entry : oasisGen.getChunksSinceLastDimensionOasis().entrySet()) {
-//				Treasure.LOGGER.debug("oasis dimension ID -> {}", entry.getKey());
-//				
-//				NBTTagCompound dimTag = new NBTTagCompound();
-//				dimTag.setInteger(DIMENSION_ID_TAG_NAME, entry.getKey());
-//				dimTag.setInteger(CHUNKS_SINCE_LAST_OASIS_TAG_NAME, entry.getValue());
-//				Treasure.LOGGER.debug("chunks since last oasis -> {}", entry.getValue());
-//				Map<Integer, Integer> biomeMap = oasisGen.getChunksSinceLastDimensionBiomeOasis().get(entry.getKey());
-//				Treasure.LOGGER.debug("oasis biome map size -> {}", biomeMap.size());
-//				
-//				NBTTagList biomeTagList = new NBTTagList();
-//				for (Entry<Integer, Integer> biomeEntry : biomeMap.entrySet()) {
-//					NBTTagCompound biomeTag = new NBTTagCompound();
-//					biomeTag.setInteger(BIOME_ID_TAG_NAME, biomeEntry.getKey());
-//					biomeTag.setInteger(CHUNKS_SINCE_LAST_OASIS_TAG_NAME, biomeEntry.getValue());
-//					Treasure.LOGGER.debug("chunks since last biome {} oasis -> {}", biomeEntry.getKey(), biomeEntry.getValue());
-//					biomeTagList.appendTag(biomeTag);
-//				}
-//				dimTag.setTag(BIOMES_TAG_NAME, biomeTagList);
-//				dimTagList.appendTag(dimTag);
-//			}
-//
-//			oasisTag.setTag(DIMENSIONS_TAG_NAME, dimTagList);
-//			treasureGen.setTag(OASIS_GEN_TAG_NAME, oasisTag);
+
 
 //			//// Wither Tree /////
 //			WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.WITHER_TREE);
 //			
 //			// add the chest gen last count to the treasure compound
 //			treasureGen.setInteger("chunksSinceLastTree", witherGen.getChunksSinceLastTree());
-//			
-//			//// Gem Ore ////
-//			GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.GEM);
-//			treasureGen.setInteger("chunksSinceLastOre", gemGen.getChunksSinceLastOre());
-//			
 
-//			///// Oasis Registry (multi-dimensional) /////			
-//			OasisRegistry oasisRegistry = OasisRegistry.getInstance();
-//			NBTTagList oasisRegistryDimensionTagList = new NBTTagList();
-//			for (Integer dimensionKey : oasisRegistry.getDimensionKeys()) {
-//				ListMultimap<String, OasisInfo> dimensionMap = oasisRegistry.getDimensionEntry(dimensionKey);
-//				NBTTagCompound dimTag = new NBTTagCompound();
-//				dimTag.setInteger(DIMENSION_ID_TAG_NAME, dimensionKey);
-//				NBTTagList oasisRegistryTagList = new NBTTagList();
-//				for(Entry<String, OasisInfo> entry : dimensionMap.entries()) {
-//					OasisInfo oasisInfo = entry.getValue();
-//					NBTTagCompound oasisEntry = new NBTTagCompound();					
-//					NBTTagString key = new NBTTagString(entry.getKey());
-//					NBTTagInt biomeID = new NBTTagInt(oasisInfo.getBiomeID());
-//					NBTTagCompound coords = new NBTTagCompound();
-//					NBTTagInt x = new NBTTagInt(oasisInfo.getCoords().getX());
-//					NBTTagInt y = new NBTTagInt(oasisInfo.getCoords().getY());
-//					NBTTagInt z = new NBTTagInt(oasisInfo.getCoords().getZ());
-//					
-//					coords.setTag("x", x);
-//					coords.setTag("y", y);
-//					coords.setTag("z", z);
-//					
-//					oasisEntry.setTag(KEY_TAG_NAME, key);
-//					oasisEntry.setTag(BIOME_ID_TAG_NAME, biomeID);
-//					oasisEntry.setTag(COORDS_TAG_NAME, coords);
-					
-//					oasisRegistryTagList.appendTag(oasisEntry);
-//				}
-//				dimTag.setTag("registry", oasisRegistryTagList);
-//				oasisRegistryDimensionTagList.appendTag(dimTag);
-//			}
-//
-//			// delete current tag
-//			treasureGen.removeTag(OASIS_REGISTRY_TAG_NAME);
-//			// add new values
-//			treasureGen.setTag(OASIS_REGISTRY_TAG_NAME, oasisRegistryDimensionTagList);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

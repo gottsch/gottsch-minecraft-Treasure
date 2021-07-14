@@ -20,6 +20,7 @@
 package com.someguyssoftware.treasure2.config;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.text.WordUtils;
 

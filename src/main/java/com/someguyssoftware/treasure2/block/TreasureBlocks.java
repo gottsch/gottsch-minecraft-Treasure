@@ -85,7 +85,6 @@ public class TreasureBlocks {
     public static ProximityBlock PROXIMITY_SPAWNER;
     public static Block WISHING_WELL_BLOCK;
     public static Block DESERT_WISHING_WELL_BLOCK;
-    public static Block BLACKSTONE;
 	
 	// gravestones
 	public static Block GRAVESTONE1_STONE;
@@ -402,8 +401,6 @@ public class TreasureBlocks {
 	                .strength(2.0F).sound(SoundType.STONE));
 	        DESERT_WISHING_WELL_BLOCK = new WishingWellBlock(Treasure.MODID, TreasureConfig.BlockID.DESERT_WISHING_WELL_BLOCK_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
 	                .strength(2.0F).sound(SoundType.STONE));
-	        BLACKSTONE = new WishingWellBlock(Treasure.MODID, TreasureConfig.BlockID.BLACKSTONE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE));
 
 			// WITHER BIOME BLOCKS
 	        WITHER_BRANCH = new WitherBranchBlock(Treasure.MODID, TreasureConfig.BlockID.WITHER_BRANCH_ID, Block.Properties.of(Material.WOOD, MaterialColor.WOOD));
@@ -483,7 +480,6 @@ public class TreasureBlocks {
 	        BLOCKS.add(SKULL_CROSSBONES);
 	        BLOCKS.add(WISHING_WELL_BLOCK);
 	        BLOCKS.add(DESERT_WISHING_WELL_BLOCK);
-	        BLOCKS.add(BLACKSTONE);
 	        BLOCKS.add(RUBY_ORE);
 	        BLOCKS.add(SAPPHIRE_ORE);
 	        BLOCKS.add(WITHER_BROKEN_LOG);

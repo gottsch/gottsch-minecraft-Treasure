@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.command;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -111,7 +112,8 @@ public class SpawnPitCommand {
 //	};
 	
 	private static final SuggestionProvider<CommandSource> SUGGEST_TYPE = (source, builder) -> {
-		return ISuggestionProvider.suggest(PitTypes.getNames().stream(), builder);
+//		return ISuggestionProvider.suggest(PitTypes.getNames().stream(), builder); -- TODO remove until STRUCTURE pits are added back
+		return ISuggestionProvider.suggest(Arrays.asList(new String[] {PitTypes.STANDARD.getName()}), builder);
 	};
 	
 	/**

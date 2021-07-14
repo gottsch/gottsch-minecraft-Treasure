@@ -29,7 +29,6 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import net.minecraft.block.Blocks;
 import net.minecraft.world.IServerWorld;
 
-
 /**
  * 
  * @author Mark Gottschling

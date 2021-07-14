@@ -179,7 +179,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		Treasure.LOGGER.debug("using decay rule set -> {}", decayRuleSet);
 		Treasure.LOGGER.debug("decay processor -> {}", decayProcessor);
 		
-		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
+		GeneratorResult<TemplateGeneratorData> genResult = generator.generate((IServerWorld)world, random, decayProcessor, holder, placement, originalSpawnCoords);
 		 if (!genResult.isSuccess()) return result.fail();
 
 		Treasure.LOGGER.debug("surface gen result -> {}", genResult);

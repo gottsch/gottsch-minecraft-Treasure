@@ -73,7 +73,6 @@ public class GemOreFeature extends OreFeature {
 //			Treasure.LOGGER.debug("sapphire gem: view size -> {}", TreasureConfig.GEMS_AND_ORES.sapphireOreVeinSize.get());
 			prob = TreasureConfig.GEMS_AND_ORES.sapphireGenProbability.get();
 		}
-//		Treasure.LOGGER.debug("config probability -> {}", prob);
 		
 		// test the probability
 		if (!RandomHelper.checkProbability(rand, prob)) {

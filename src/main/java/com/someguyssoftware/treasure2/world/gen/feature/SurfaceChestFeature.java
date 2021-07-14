@@ -459,3 +459,4 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		return this.chunksSinceLastDimensionRarityChest;
 	}
 }
+
