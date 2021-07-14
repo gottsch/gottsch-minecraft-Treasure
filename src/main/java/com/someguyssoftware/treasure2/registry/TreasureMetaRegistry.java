@@ -36,7 +36,7 @@ public class TreasureMetaRegistry {
 	 */
 	public synchronized static void create(IMod mod) {
 		if (metaManager  == null) {
-			metaManager = new TreasureMetaManager(mod, "mc1_15/meta");
+			metaManager = new TreasureMetaManager(mod, "mc1_16/meta");
 		}
 	}
 	
@@ -54,7 +54,7 @@ public class TreasureMetaRegistry {
 	 * @param modID
 	 */
 	private static void buildAndExpose(String modID) {
-		metaManager.buildAndExpose("data", modID, "mc1_15", "meta", metaManifest.getResources());		
+		metaManager.buildAndExpose("data", modID, "mc1_16", "meta", metaManifest.getResources());		
 	}
 	
 	/**

@@ -55,7 +55,7 @@ public class GemOreFeature extends OreFeature {
 //		String dimensionName = seedReader.getLevel().getDimension().getType().getRegistryName().toString();
 //		ResourceLocation dimensionName = WorldInfo.getDimension(seedReader.getLevel());
 //		Treasure.LOGGER.debug("placing @ {} in biome category -> {}", pos.toShortString(), seedReader.getBiome(pos).getBiomeCategory().getName());
-		Treasure.LOGGER.debug("dimension -> {}, location -> {}", seedReader.getLevel().dimension().getRegistryName(), seedReader.getLevel().dimension().location());
+//		Treasure.LOGGER.debug("dimension -> {}, location -> {}", seedReader.getLevel().dimension().getRegistryName(), seedReader.getLevel().dimension().location());
 		// ore only generates in overworld
 
 		if (!WorldInfo.isSurfaceWorld(seedReader.getLevel(), pos)) {
@@ -66,18 +66,18 @@ public class GemOreFeature extends OreFeature {
 		// inspect block to determine generation probability
 		double prob = 0;
 		if (config.state.getBlock() == TreasureBlocks.RUBY_ORE) {
-			Treasure.LOGGER.debug("ruby gem");
+//			Treasure.LOGGER.debug("ruby gem");
 			prob = TreasureConfig.GEMS_AND_ORES.rubyGenProbability.get();
 		}
 		else {
-			Treasure.LOGGER.debug("sapphire gem: view size -> {}", TreasureConfig.GEMS_AND_ORES.sapphireOreVeinSize.get());
+//			Treasure.LOGGER.debug("sapphire gem: view size -> {}", TreasureConfig.GEMS_AND_ORES.sapphireOreVeinSize.get());
 			prob = TreasureConfig.GEMS_AND_ORES.sapphireGenProbability.get();
 		}
-		Treasure.LOGGER.debug("config probability -> {}", prob);
+//		Treasure.LOGGER.debug("config probability -> {}", prob);
 		
 		// test the probability
 		if (!RandomHelper.checkProbability(rand, prob)) {
-			Treasure.LOGGER.debug("probability NOT met");
+//			Treasure.LOGGER.debug("probability NOT met");
 			return false;
 		}
 		

@@ -48,7 +48,7 @@ public class TreasureTemplateRegistry {
 	 */
 	public synchronized static void create(IMod mod) {
 		if (templateManager  == null) {
-			templateManager = new TreasureTemplateManager(Treasure.instance, "mc1_15/structures", DataFixesManager.getDataFixer());
+			templateManager = new TreasureTemplateManager(Treasure.instance, "mc1_16/structures", DataFixesManager.getDataFixer());
 		}
 	}
 	
@@ -66,7 +66,7 @@ public class TreasureTemplateRegistry {
 	 * @param modID
 	 */
 	private static void buildAndExpose(String modID) {
-		templateManager.buildAndExpose("data", modID, "mc1_15", "structures", templateManifest.getResources());		
+		templateManager.buildAndExpose("data", modID, "mc1_16", "structures", templateManifest.getResources());		
 	}
 	
 	/**

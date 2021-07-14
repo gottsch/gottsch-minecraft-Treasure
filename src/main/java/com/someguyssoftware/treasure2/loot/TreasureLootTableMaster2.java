@@ -315,7 +315,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		resourceRelativePaths.forEach(resourceRelativePath -> {
 			Treasure.LOGGER.debug("TreasureLootTableMaster2 | buildAndExpose | processing relative resource path -> {}", resourceRelativePath);
 			// this represents the entire file path
-			Path fileSystemFilePath = Paths.get(getMod().getConfig().getConfigFolder(), getMod().getId(), "mc1_15", basePath, resourceRelativePath);
+			Path fileSystemFilePath = Paths.get(getMod().getConfig().getConfigFolder(), getMod().getId(), "mc1_16", basePath, resourceRelativePath);
 			Treasure.LOGGER.debug("TreasureLootTableMaster2 | buildAndExpose | file system path -> {}", fileSystemFilePath.toString());
 			try {
 				// check if file already exists
@@ -566,7 +566,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 * @param location
 	 */
 	protected void moveLootTables(String modID, String location) {
-		Path configFilePath = Paths.get(getMod().getConfig().getConfigFolder(), modID, "mc1_15", LOOT_TABLES_FOLDER, location).toAbsolutePath();
+		Path configFilePath = Paths.get(getMod().getConfig().getConfigFolder(), modID, "mc1_16", LOOT_TABLES_FOLDER, location).toAbsolutePath();
 //		Path worldDataFilePath = Paths.get(getWorldDataBaseFolder().toString(), modID, location).toAbsolutePath();
 		Path worldDataFilePath = Paths.get(getWorldDataBaseFolder().toString(), "data", modID, "loot_tables", location).toAbsolutePath();
 
