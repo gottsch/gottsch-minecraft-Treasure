@@ -19,6 +19,8 @@
  */
 package com.someguyssoftware.treasure2.world.gen.feature;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +34,6 @@ import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
-import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
 import com.someguyssoftware.treasure2.block.ITreasureBlock;
 import com.someguyssoftware.treasure2.block.SpanishMossBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
@@ -61,8 +61,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
@@ -89,7 +87,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	private static final int MIN_SCRUB = 5;
 	private static final int MAX_SCRUB = 20;
 	
-	private static final int MAX_GEN_RADIUS = 22;
+	private static final int MAX_GEN_RADIUS = 20;
 	
 	@SuppressWarnings("unchecked")
 	static List<Direction>[] trunkMatrix = new ArrayList[4];
@@ -154,7 +152,6 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	@Override
 	public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 
-//		String dimensionName = world.getDimension().getType().getRegistryName().toString();
 		ResourceLocation dimensionName = WorldInfo.getDimension(seedReader.getLevel());
 	   		
 		// test the dimension white list
@@ -164,35 +161,22 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 
 		// increment the chunk counts
 		incrementDimensionalTreeChunkCount(dimensionName.toString());
-		
-//		Treasure.LOGGER.debug("chunks since dimension {} last wither tree -> {}, min chunks -> {}", dimensionName, chunksSinceLastDimensionTree.get(dimensionName), TreasureConfig.WITHER_TREE.chunksPerTree.get());
 
 		// test if min chunks was met
 		if (chunksSinceLastDimensionTree.get(dimensionName.toString()) > TreasureConfig.WITHER_TREE.chunksPerTree.get()) {
 			// spawn @ middle of chunk
-//			ICoords spawnCoords = new Coords(pos).add(WorldInfo.CHUNK_RADIUS, 0, WorldInfo.CHUNK_RADIUS);
-//
-//			// the get first surface y (could be leaves, trunk, water, etc)
-//			int ySpawn = seedReader.getLevel().getChunk(pos).getHeight(Heightmap.Type.WORLD_SURFACE, WorldInfo.CHUNK_RADIUS, WorldInfo.CHUNK_RADIUS);
-//			spawnCoords = spawnCoords.withY(ySpawn);
 			BlockPos centerOfChunk = pos.offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1);
-			Treasure.LOGGER.debug("center of chunk @ -> {}", centerOfChunk.toShortString());
 			int landHeight = generator.getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Type.WORLD_SURFACE_WG) + 1;
 			ICoords spawnCoords = new Coords(centerOfChunk.getX(), landHeight, centerOfChunk.getZ());
+			Treasure.LOGGER.debug("spawns coords (center) -> {}", spawnCoords.toShortString());
 
-			Treasure.LOGGER.debug("spawns coords -> {}", spawnCoords.toShortString());
-			
-			// 1. test if the override (global) biome is allowed
-//			Biome biome = seedReader.getLevel().getBiome(spawnCoords.toPos());
-
-			
 			// 1. test if chest meets the probability criteria
 			if (!RandomHelper.checkProbability(random, TreasureConfig.WITHER_TREE.genProbability.get())) {
 				Treasure.LOGGER.debug("ChestConfig does not meet generate probability.");
 				return false;
 			}
 			
-			// 3. check against all registered chests
+			// 2. check against all registered chests
 			if (ITreasureFeature.isRegisteredChestWithinDistance(seedReader.getLevel(), spawnCoords, TreasureConfig.CHESTS.surfaceChests.minDistancePerChest.get())) {
 				Treasure.LOGGER.debug("The distance to the nearest treasure chest is less than the minimun required.");
 				return false;
@@ -203,7 +187,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 			
 			// generate the well
 			Treasure.LOGGER.debug("Attempting to generate a wither tree");
-			GeneratorResult<GeneratorData> result = generate(seedReader, random, spawnCoords);
+			GeneratorResult<GeneratorData> result = generate(seedReader, generator, random, spawnCoords);
 
 			if (result.isSuccess()) {
 				// add to registry
@@ -227,15 +211,18 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param coords
 	 * @return
 	 */
-	public GeneratorResult<GeneratorData> generate(IServerWorld world, Random random, ICoords coords) {
+	public GeneratorResult<GeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords) {
+		Instant start = Instant.now();
+		
 		// result to return to the caller
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 
 		ICoords surfaceCoords = null;
 		ICoords witherTreeCoords = null;
 		
+		// TODO check through this method if coords = surface = witherTree coords and can be reduced to 1 variable
 		// 1. determine y-coord of land for markers
-		surfaceCoords = coords; //WorldInfo.getDryLandSurfaceCoords(world, coords);
+		surfaceCoords = coords;
 		Treasure.LOGGER.debug("surface coords @ {}", surfaceCoords.toShortString());
 		if (surfaceCoords == null || surfaceCoords == WorldInfo.EMPTY_COORDS) {
 			Treasure.LOGGER.debug("returning due to surface coords == null or EMPTY_COORDS");
@@ -257,10 +244,10 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 		// ========================================
 		
 		// 2. clear the area
-		buildClearing(world, random, surfaceCoords, coords);
-		
+		buildClearing(world, generator, random, surfaceCoords, coords);
+
 		// 3. build the main wither tree
-		buildMainTree(world, random, surfaceCoords, coords);
+		buildMainTree(world, generator, random, surfaceCoords, coords);
 		
 		// update size of grove
 		witherGroveBounds = witherGroveBounds.expandTowards(CLEARING_RADIUS, 0, CLEARING_RADIUS);
@@ -278,14 +265,17 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 
 			ICoords c = witherTreeCoords.rotate(xlen, zlen, degrees);
 
+			// TODO update getDryLandSurfaceCoords to use this: maybe - requires chunkgenerator
+			int landHeight = generator.getFirstOccupiedHeight(c.getX(), c.getZ(), Heightmap.Type.WORLD_SURFACE_WG) + 1;
+			c = new Coords(c.getX(), landHeight, c.getZ());
 			// get the yspawn
-			c = WorldInfo.getDryLandSurfaceCoords(world, c.withY(WorldInfo.getHeight(world, c)));
+//			c = WorldInfo.getDryLandSurfaceCoords(world, c.withY(WorldInfo.getHeight(world, c)));
 
 			// add tree if criteria is met
 			if (c != null && c != WorldInfo.EMPTY_COORDS) {
 				if (c.getDistanceSq(witherTreeCoords) > 4) {
 					if (world.getBlockState(c.toPos()).getBlock() != TreasureBlocks.WITHER_LOG) {
-						buildClearing(world, random, c, coords);
+						buildClearing(world, generator, random, c, coords);
 						buildTree(world, random, c, coords);
 
 						// add tree clearing to the grove size
@@ -298,8 +288,8 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 		}
 		Treasure.LOGGER.debug("size of clearing -> {}", witherGroveBounds.toString());
 		
-		buildRocks(world, random, witherGroveBounds);
-		buildScrub(world, random, witherGroveBounds);
+		buildRocks(world, generator, random, witherGroveBounds);
+		buildScrub(world, generator, random, witherGroveBounds);
 		
 		// add chest
 		ICoords chestCoords = genResult.getData().getChestContext().getCoords();
@@ -315,6 +305,8 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 		Treasure.LOGGER.info("CHEATER! wither chest at coords: {}", witherTreeCoords.toShortString());
 		result.setData(chestResult.getData());
 		
+		Instant finish = Instant.now();
+		Treasure.LOGGER.debug("wither tree generate() time -> {}ms", Duration.between(start, finish).toMillis());
 		return result.success();
 	}
 	
@@ -323,32 +315,37 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param world
 	 * @param coords
 	 */
-	private void buildClearing(IServerWorld world, Random random, ICoords coords, ICoords originalSpawnCoords) {
+	private void buildClearing(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords, ICoords originalSpawnCoords) {
+		Instant start = Instant.now();
 		ICoords buildCoords = null;
 		Treasure.LOGGER.debug("build clearing at -> {}", coords.toShortString());
 		// build clearing
 		for (int xOffset = -(CLEARING_RADIUS); xOffset <= CLEARING_RADIUS; xOffset++) {
 			for (int zOffset = -(CLEARING_RADIUS); zOffset <= CLEARING_RADIUS; zOffset++) {
 				if (Math.abs(xOffset) + Math.abs(zOffset) <= CLEARING_RADIUS) {
-					// ensure the offset coords from coords (center)  are less than the max radius (24)
-//					if (Math.abs(coords.getX() + xOffset - originalSpawnCoords.getX()) > MAX_GEN_RADIUS ||
-//							Math.abs(coords.getZ() + zOffset - originalSpawnCoords.getZ()) > MAX_GEN_RADIUS) {
-//						continue;
-//					}
 					// check if trunk index is outside generation radius
 					if (!isGenerationWithinMaxRadius(coords, originalSpawnCoords)) {
+						Treasure.LOGGER.debug("outside max radius - skipping");
 						continue;
 					}
 
 					// find the first surface
 					// TODO use vanilla method of getting land height/coords .. maybe... don't want a ITreasureBlock as surface - can't unless pass in the chunkGenerator
-					int yHeight = WorldInfo.getHeight(world, coords.add(xOffset, 255, zOffset));
-					buildCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(coords.getX() + xOffset, yHeight, coords.getZ() + zOffset));
-//					Treasure.LOGGER.debug("clearing surface coords -> {}", buildCoords.toShortString());
+//					int yHeight = WorldInfo.getHeight(world, coords.add(xOffset, 255, zOffset));
+//					buildCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(coords.getX() + xOffset, yHeight, coords.getZ() + zOffset));
+//					Instant start1 = Instant.now();
+					buildCoords = coords.add(xOffset, 0, zOffset);
+					int landHeight = generator.getFirstOccupiedHeight(buildCoords.getX(), buildCoords.getZ(), Heightmap.Type.WORLD_SURFACE_WG) + 1;
+					buildCoords = buildCoords.withY(landHeight);					
+					//					Treasure.LOGGER.debug("clearing surface coords -> {}", buildCoords.toShortString());
+//					Instant finish1 = Instant.now();
+//					Treasure.LOGGER.debug( time -> {}ms", Duration.between(start1, finish1).toMillis());
+					
 					if (buildCoords == WorldInfo.EMPTY_COORDS) {
 						continue;
 					}
 
+//					Instant start2 = Instant.now();
 					// additional check that it's not a tree and within 2 y-blocks of original
 					if (Math.abs(buildCoords.getY() - coords.getY()) < VERTICAL_MAX_DIFF) {
 						BlockContext cube = new BlockContext(world, buildCoords.down(1));
@@ -363,6 +360,10 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 							}
 						}
 					}
+//					Instant finish2 = Instant.now();
+//					Treasure.LOGGER.debug("dirt replacement time -> {}ms", Duration.between(start2, finish2).toMillis());
+					
+//					Instant start3 = Instant.now();
 					// remove existing tree
 //					Treasure.LOGGER.debug("create new block context for buildCoords -> {}", buildCoords.toShortString());
 					BlockContext blockContext = new BlockContext(world, buildCoords);
@@ -374,9 +375,13 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 						climbCoords = climbCoords.add(0, 1, 0);
 						blockContext = new BlockContext(world, climbCoords);
 					}
+//					Instant finish3 = Instant.now();
+//					Treasure.LOGGER.debug("removing existing tree time -> {}ms", Duration.between(start3, finish3).toMillis());
 				}
 			}
 		}
+		Instant finish = Instant.now();
+		Treasure.LOGGER.debug("buildClearing() time -> {}ms", Duration.between(start, finish).toMillis());
 	}
 	
 	/**
@@ -399,7 +404,9 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param world
 	 * @param coords
 	 */
-	public void buildMainTree(IWorld world, Random random, ICoords coords, ICoords originalSpawnCoords) {
+	public void buildMainTree(IWorld world, ChunkGenerator generator, Random random, ICoords coords, ICoords originalSpawnCoords) {
+		Instant start = Instant.now();
+		
 		// setup an array of coords
 		ICoords[] trunkCoords = new Coords[4];
 		trunkCoords[0] = coords;
@@ -452,6 +459,8 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 				maxSize = Math.max(3, maxSize);
 			}
 		}
+		Instant finish = Instant.now();
+		Treasure.LOGGER.debug("buildMainTree time -> {}ms", Duration.between(start, finish).toMillis());
 	}
 	
 	/**
@@ -461,6 +470,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param coords
 	 */
 	public void buildTree(IWorld world, Random random, ICoords coords, ICoords originalSpawnCoords) {
+		Instant start = Instant.now();
 		// build a small wither tree ie one trunk
 
 		// determine the size of the main trunk
@@ -488,6 +498,8 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 				addBranch(world, random, coords, originalSpawnCoords, y, maxSize, supportTrunkMatrix);
 			}
 		}
+		Instant finish = Instant.now();
+		Treasure.LOGGER.debug("buildTree time -> {}ms", Duration.between(start, finish).toMillis());
 	}
 	
 	/**
@@ -499,6 +511,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 */
 	private void addBranch(IWorld world, Random random, ICoords trunkCoords, ICoords originalSpawnCoords, int y, int maxSize,
 			List<Direction> directions) {
+		Instant start = Instant.now();
 		int branchSize = 0;// (y <= (maxSize/3)) ? 3 : (y <= (maxSize * 2/3)) ? 2 : 1;
 		if (y < maxSize / 3 || y > maxSize / 4)
 			branchSize = 2;
@@ -547,6 +560,8 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 				}
 			}
 		}
+		Instant finish = Instant.now();
+		Treasure.LOGGER.debug("addBranch() time -> {}ms", Duration.between(start, finish).toMillis());
 	}
 	
 	/**
@@ -603,7 +618,8 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 		}
 	}
 	
-	private void buildScrub(IServerWorld world, Random random, AxisAlignedBB witherGroveBounds) {
+	private void buildScrub(IServerWorld world, ChunkGenerator generator, Random random, AxisAlignedBB witherGroveBounds) {
+		Instant start = Instant.now();
 		Treasure.LOGGER.debug("adding scrub ...");
 		int width = Math.abs((int) (witherGroveBounds.maxX - witherGroveBounds.minX));
 		int depth = Math.abs((int) (witherGroveBounds.maxZ - witherGroveBounds.minZ));
@@ -612,8 +628,12 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 		for (int scrubIndex = 0; scrubIndex < RandomHelper.randomInt(MIN_SCRUB, MAX_SCRUB); scrubIndex++) {
 			int xOffset = (int) (random.nextFloat() * width - (width/2));
 			int zOffset = (int) (random.nextFloat() * depth - (depth/2));
-			Treasure.LOGGER.debug("finding surface for scrub at -> {}", centerCoords.add(xOffset, 0, zOffset).withY(255).toShortString());
-			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, centerCoords.add(xOffset, 0, zOffset).withY(255));
+//			Treasure.LOGGER.debug("finding surface for scrub at -> {}", centerCoords.add(xOffset, 0, zOffset).withY(255).toShortString());
+//			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, centerCoords.add(xOffset, 0, zOffset).withY(255));
+			ICoords offsetCoords = centerCoords.add(xOffset, 0, zOffset);
+			int landHeight = generator.getFirstOccupiedHeight(offsetCoords.getX(), offsetCoords.getZ(), Heightmap.Type.WORLD_SURFACE_WG) + 1;
+			ICoords surfaceCoords = offsetCoords.withY(landHeight);	
+			
 			Treasure.LOGGER.debug("adding scrub at -> {}", surfaceCoords.toShortString());
 			if (surfaceCoords == WorldInfo.EMPTY_COORDS) {
 				Treasure.LOGGER.debug("bad surfaceCoords -> {}", surfaceCoords.toShortString());
@@ -631,6 +651,8 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 				}
 			}
 		}
+		Instant finish = Instant.now();
+		Treasure.LOGGER.debug("buildScrub time -> {}ms", Duration.between(start, finish).toMillis());
 	}
 
 	/**
@@ -639,8 +661,9 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param random
 	 * @param witherGroveSize
 	 */
-	private void buildRocks(IServerWorld world, Random random, AxisAlignedBB witherGroveSize) {
-//		Treasure.logger.debug("adding rocks ...");
+	private void buildRocks(IServerWorld world, ChunkGenerator generator, Random random, AxisAlignedBB witherGroveSize) {
+		Instant start = Instant.now();
+		Treasure.LOGGER.debug("adding rocks ...");
 		int width = Math.abs((int) (witherGroveSize.maxX - witherGroveSize.minX));
 		int depth = Math.abs((int) (witherGroveSize.maxZ - witherGroveSize.minZ));
 		ICoords centerCoords = new Coords((int)(witherGroveSize.minX + width * 0.5D), (int)witherGroveSize.minY, (int)(witherGroveSize.minZ + depth * 0.5D));
@@ -650,8 +673,11 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 			int xOffset = (int) (random.nextFloat() * width - (width/2));
 			int zOffset = (int) (random.nextFloat() * depth - (depth/2));
 			
-			ICoords rocksCoords = WorldInfo.getDryLandSurfaceCoords(world, centerCoords.add(xOffset, 0, zOffset).withY(255));
-			rocksCoords = rocksCoords.down(1);
+//			ICoords rocksCoords = WorldInfo.getDryLandSurfaceCoords(world, centerCoords.add(xOffset, 0, zOffset).withY(255));
+			ICoords offsetCoords = centerCoords.add(xOffset, 0, zOffset);
+			int landHeight = generator.getFirstOccupiedHeight(offsetCoords.getX(), offsetCoords.getZ(), Heightmap.Type.WORLD_SURFACE_WG) + 1;
+			ICoords rocksCoords = offsetCoords.withY(landHeight -1);	
+//			rocksCoords = rocksCoords.down(1);
 //Treasure.logger.debug("adding rocks at -> {}", rocksCoords.toShortString());
 			// check if current block is a tree or any treasure block
 			try {
@@ -675,6 +701,8 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 				}
 			}
 		}
+		Instant finish = Instant.now();
+		Treasure.LOGGER.debug("buildRocks time -> {}ms", Duration.between(start, finish).toMillis());
 	}
 	
 	/**

@@ -108,7 +108,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	@Override
 	public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		ServerWorld world = seedReader.getLevel();
-		Treasure.LOGGER.debug("in surface feature for pos @ -> {}", pos.toShortString());
+//		Treasure.LOGGER.debug("in surface feature for pos @ -> {}", pos.toShortString());
 		ResourceLocation dimension = WorldInfo.getDimension(world);
    		
 		// TODO surely this check could be done somewhere else, like registering in BiomeLoadingEvent ?
@@ -118,7 +118,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		}
 		
 		BlockPos centerOfChunk = pos.offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1);
-		Treasure.LOGGER.debug("center of chunk @ -> {}", centerOfChunk.toShortString());
+//		Treasure.LOGGER.debug("center of chunk @ -> {}", centerOfChunk.toShortString());
 		
 		// spawn @ middle of chunk
 //		ICoords spawnCoords = new Coords(pos).add(WorldInfo.CHUNK_RADIUS, 254, WorldInfo.CHUNK_RADIUS);
