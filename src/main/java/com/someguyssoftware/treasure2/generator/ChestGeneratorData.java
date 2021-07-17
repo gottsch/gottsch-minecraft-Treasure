@@ -48,6 +48,6 @@ public class ChestGeneratorData extends GeneratorData {
 
 	@Override
 	public String toString() {
-		return "ChestGeneratorData2 [chestContext=" + chestContext + "]";
+		return "ChestGeneratorData [chestContext=" + chestContext + "]";
 	}
 }
