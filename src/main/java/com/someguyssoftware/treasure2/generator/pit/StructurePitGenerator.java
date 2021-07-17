@@ -162,7 +162,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 				return result.fail();
 			}
 			
-			// find the offset block
+			// find the (vertical) offset block
 			int offset = 0;
 //			ICoords offsetCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.OFFSET));
 			ICoords offsetCoords = TreasureTemplateRegistry.getTemplateManager().getOffset(random, holder, StructureMarkers.OFFSET);
@@ -179,7 +179,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 				Treasure.LOGGER.debug("Structure's height is too large for available space.");
 				// generate the base pit
 				result = getGenerator().generate(world, random, surfaceCoords, spawnCoords);
-				if (result.isSuccess()/*isGenerated*/) {
+				if (result.isSuccess()) {
 					result.getData().getChestContext().setCoords(result.getData().getSpawnCoords());
 					return result;
 				}
@@ -198,6 +198,8 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			}
 			Treasure.LOGGER.debug("entrance coords -> {}", entranceCoords.toShortString());
 
+			// TODO determine if the size of the structure on x-z axis will exceed the max generation size (ie 3x3 chunk size).
+			
 			// select a random rotation
 			Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
 			Treasure.LOGGER.debug("rotation used -> {}", rotation);
@@ -224,10 +226,44 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			result.getData().setSpawnCoords(genResult.getData().getSpawnCoords());
 			
 			// interrogate info for spawners and any other special block processing (except chests that are handler by caller
+			List<BlockContext> bossChestContexts =
+					(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.BOSS_CHEST));
+			List<BlockContext> chestContexts =
+					(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.CHEST));
 			List<BlockContext> spawnerContexts =
 					(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.SPAWNER));
 			List<BlockContext> proximityContexts =
 					(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
+			
+			/*
+			 *  NOTE currently only 1 chest is allowed per structure - the rest are ignored.
+			 */
+			// check if there is a boss chest(s)
+			BlockContext chestContext = null;
+			if (bossChestContexts != null && bossChestContexts.size() > 0) {
+				if (bossChestContexts.size() > 1) {
+					chestContext = bossChestContexts.get(random.nextInt(bossChestContexts.size()));
+				}
+				else {
+					chestContext = bossChestContexts.get(0);
+				}			
+			}
+			
+			// TODO turn these checks into methods
+			// if a boss chest wasn't found, search for regular chests
+			if (chestContext == null) {
+				if (chestContexts != null && chestContexts.size() > 0) {
+					if (chestContexts.size() > 1) {
+						chestContext = chestContexts.get(random.nextInt(chestContexts.size()));
+					}
+					else {
+						chestContext = chestContexts.get(0);
+					}			
+				}			
+			}
+			
+			// update with chest context
+			result.getData().setChestContext(chestContext);
 			
 			/*
 			 *  TODO could lookup to some sort of map of structure -> spawner info
@@ -272,7 +308,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	}
 
 	/**
-	 * 
+	 * Aligns or "centers" the structure to the pit coords based on the structure's entrance coords.
 	 * @param spawnCoords
 	 * @param newEntrance
 	 * @param transformedSize

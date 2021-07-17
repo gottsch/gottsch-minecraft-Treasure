@@ -108,21 +108,14 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	@Override
 	public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		ServerWorld world = seedReader.getLevel();
-//		Treasure.LOGGER.debug("in surface feature for pos @ -> {}", pos.toShortString());
 		ResourceLocation dimension = WorldInfo.getDimension(world);
    		
-		// TODO surely this check could be done somewhere else, like registering in BiomeLoadingEvent ?
 		// test the dimension white list
 		if (!TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(dimension.toString())) {
 			return false;
 		}
 		
-		BlockPos centerOfChunk = pos.offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1);
-//		Treasure.LOGGER.debug("center of chunk @ -> {}", centerOfChunk.toShortString());
-		
-		// spawn @ middle of chunk
-//		ICoords spawnCoords = new Coords(pos).add(WorldInfo.CHUNK_RADIUS, 254, WorldInfo.CHUNK_RADIUS);
-
+//		BlockPos centerOfChunk = pos.offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1);
 
 		// increment the chunk counts
 		incrementDimensionalChestChunkCount(dimension.toString());
@@ -137,8 +130,15 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 			Treasure.LOGGER.debug("passed min chunks test");
 			// the get first surface y (could be leaves, trunk, water, etc)
 //			int ySpawn = seedReader.getChunk(pos).getHeight(Heightmap.Type.WORLD_SURFACE, pos.getX() + WorldInfo.CHUNK_RADIUS, pos.getZ() + WorldInfo.CHUNK_RADIUS);
-			int landHeight = generator.getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Type.WORLD_SURFACE_WG) + 1;
-			ICoords spawnCoords = new Coords(centerOfChunk.getX(), landHeight, centerOfChunk.getZ());
+			
+//			int landHeight = generator.getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Type.WORLD_SURFACE_WG) + 1;
+//			ICoords spawnCoords = new Coords(centerOfChunk.getX(), landHeight, centerOfChunk.getZ());
+			ICoords centerOfChunk = new Coords(pos.offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1));
+			ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, generator, centerOfChunk	);
+			if (spawnCoords == WorldInfo.EMPTY_COORDS) {
+				Treasure.LOGGER.debug("invalid surface type");
+				return false;
+			}
 			Treasure.LOGGER.debug("height @ spawnCoords2 (landHeight/surface coords) -> {}", spawnCoords.toShortString());
 
 //Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString());
@@ -345,7 +345,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		Treasure.LOGGER.debug("Using pit generator -> {}", pitGenerator.getClass().getSimpleName());
 		
 		// 3. build the pit
-		pitResult = pitGenerator.generate((IServerWorld)world, random, markerCoords, spawnCoords);
+		pitResult = pitGenerator.generate(world, random, markerCoords, spawnCoords);
 
 		if (!pitResult.isSuccess()) return result.fail();
 
@@ -421,8 +421,8 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	 * @return
 	 */
 	public static IPitGenerator<GeneratorResult<ChestGeneratorData>> selectPitGenerator(Random random) {
-//		PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.PITS.pitStructureProbability.get()) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
-		PitTypes pitType = PitTypes.STANDARD;
+		PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.PITS.pitStructureProbability.get()) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
+//		PitTypes pitType = PitTypes.STANDARD;
 		Treasure.LOGGER.debug("using pit type -> {}", pitType);
 		List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerators = TreasureData.PIT_GENS.row(pitType).values().stream()
 				.collect(Collectors.toList());

@@ -31,6 +31,13 @@ public class SkullChestContainerScreen extends ContainerScreen<SkullChestContain
 		imageHeight = 167;
 	}
 
+	@Override
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float p_230430_4_) {
+		this.renderBackground(matrix);
+		super.render(matrix, mouseX, mouseY, p_230430_4_);
+		this.renderTooltip(matrix, mouseX, mouseY);
+	}
+	
 	/**
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 * Taken directly from ChestScreen
