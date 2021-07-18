@@ -213,7 +213,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			Treasure.LOGGER.debug("new entrance coords -> {}", newEntrance.toShortString());
 			
 			/*
-			 *  adjust spawn coords to line up room entrance with pit
+			 *  adjust spawn coords to line up room entrance and the pit
 			 */
 			BlockPos transformedSize = template.getSize(rotation);
 			ICoords roomCoords = alignToPit(spawnCoords, newEntrance, transformedSize, placement);

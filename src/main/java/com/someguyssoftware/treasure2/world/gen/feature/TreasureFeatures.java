@@ -73,13 +73,13 @@ public class TreasureFeatures {
 
 			// add features to persisted list to be accessed during world load/save
 			PERSISTED_FEATURES.add(SURFACE_CHEST_FEATURE);
-//			PERSISTED_FEATURES.add(SUBMERGED_CHEST_FEATURE);
+			PERSISTED_FEATURES.add(SUBMERGED_CHEST_FEATURE);
 			PERSISTED_FEATURES.add(WELL_FEATURE);
 			PERSISTED_FEATURES.add(WITHER_TREE_FEATURE);
 
 			final IForgeRegistry<Feature<?>> registry = event.getRegistry();
 			registry.register(SURFACE_CHEST_FEATURE);
-//			registry.register(SUBMERGED_CHEST_FEATURE);
+			registry.register(SUBMERGED_CHEST_FEATURE);
 			registry.register(GEM_ORE_FEATURE);
 			registry.register(WELL_FEATURE);
 			registry.register(WITHER_TREE_FEATURE);
@@ -89,8 +89,8 @@ public class TreasureFeatures {
 			// init the feature configs
 			SURFACE_CHEST_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "surface_chest",
 					SURFACE_CHEST_FEATURE.configured(IFeatureConfig.NONE));
-//			SUBMERGED_CHEST_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "submerged_chest",
-//					SUBMERGED_CHEST_FEATURE.configured(IFeatureConfig.NONE));
+			SUBMERGED_CHEST_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "submerged_chest",
+					SUBMERGED_CHEST_FEATURE.configured(IFeatureConfig.NONE));
 			WELL_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "well",
 					WELL_FEATURE.configured(IFeatureConfig.NONE));
 			WITHER_TREE_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "wither_tree",
@@ -147,8 +147,8 @@ public class TreasureFeatures {
 			}
 			
 			if (biomeEvent.getCategory() == Biome.Category.OCEAN) {
-//				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
-//						.add(() -> SUBMERGED_CHEST_FEATURE_CONFIG);
+				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION)
+						.add(() -> SUBMERGED_CHEST_FEATURE_CONFIG);
 			} else {
 				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.TOP_LAYER_MODIFICATION)
 						.add(() -> SURFACE_CHEST_FEATURE_CONFIG);
