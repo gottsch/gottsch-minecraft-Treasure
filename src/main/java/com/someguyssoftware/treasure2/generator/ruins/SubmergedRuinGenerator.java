@@ -94,7 +94,7 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 			return result.fail();
 		}
 		
-		// find the entrance block
+		// find the 'entrance' block
 		ICoords entranceCoords = TreasureTemplateRegistry.getTemplateManager().getOffset(random, holder, StructureMarkers.ENTRANCE);
 		if (entranceCoords == null) {
 			Treasure.LOGGER.debug("Unable to locate entrance position.");
@@ -121,7 +121,6 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 		/*
 		 * we want to align the new entrance (rotated structure) to the center of the chunk ie. original spawn
 		 */
-
 		BlockPos transformedSize = template.getSize(rotation);
 		ICoords alignedSpawnCoords = align(originalSpawnCoords, newEntrance, transformedSize, placement);
 		Treasure.LOGGER.debug("aligned spawn coords -> {}", alignedSpawnCoords.toShortString());
@@ -138,7 +137,7 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 		for (int i = 0; i < 3; i++) {
 			if (!WorldInfo.isSolidBase(world, alignedSpawnCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
 				if (i == 2) {
-					Treasure.LOGGER.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", REQUIRED_BASE_SIZE, originalSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
+					Treasure.LOGGER.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", REQUIRED_BASE_SIZE, alignedSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
 					return result.fail();
 				}
 				else {

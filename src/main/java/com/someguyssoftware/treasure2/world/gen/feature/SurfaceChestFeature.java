@@ -250,6 +250,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 
 		ICoords chestCoords = null;
 		boolean isSurfaceChest = false;
+		boolean isStructure = false;
 
 		// 1. collect location data points
 		ICoords surfaceCoords = coords;
@@ -263,24 +264,25 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		if (config.isSurfaceAllowed() && RandomHelper.checkProbability(random, TreasureConfig.CHESTS.surfaceChests.surfaceChestProbability.get())) {
 			isSurfaceChest = true;
 
-//			if (RandomHelper.checkProbability(random, TreasureConfig.GENERAL.surfaceStructureProbability.get())) {
+			if (RandomHelper.checkProbability(random, TreasureConfig.GENERAL.surfaceStructureProbability.get())) {
 //				// no markers
 //				hasMarkers = false;
+				isStructure = true;
 //
-//				genResult = generateSurfaceRuins(world, random, surfaceCoords, config);
-//				Treasure.LOGGER.debug("surface result -> {}", genResult.toString());
-//				if (!genResult.isSuccess()) {
-//					return result.fail();
-//				}
-//				// set the chest coords to the surface pos
-//				chestCoords = genResult.getData().getChestContext().getCoords();
-//			}
-//			else {
-//				// set the chest coords to the surface pos
-//				chestCoords = new Coords(markerCoords);
-//				Treasure.LOGGER.debug("surface chest coords -> {}", chestCoords);
-//			}
-			chestCoords = new Coords(surfaceCoords);
+				genResult = generateSurfaceRuins(world, random, surfaceCoords, config);
+				Treasure.LOGGER.debug("surface result -> {}", genResult.toString());
+				if (!genResult.isSuccess()) {
+					return result.fail();
+				}
+				// set the chest coords to the surface pos
+				chestCoords = genResult.getData().getChestContext().getCoords();
+			}
+			else {
+				// set the chest coords to the surface pos
+				chestCoords = new Coords(surfaceCoords);
+				Treasure.LOGGER.debug("surface chest coords -> {}", chestCoords);
+			}
+//			chestCoords = new Coords(surfaceCoords);
 		}
 		else if (config.isSubterraneanAllowed()) {
 			Treasure.LOGGER.debug("else generate pit");
@@ -304,7 +306,9 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		}
 		
 		// add markers (above chest or shaft)
-		chestGenerator.addMarkers(world, random, surfaceCoords, isSurfaceChest);
+		if (!isStructure) {
+			chestGenerator.addMarkers(world, random, surfaceCoords, isSurfaceChest);
+		}
 		
 		Treasure.LOGGER.info("CHEATER! {} chest at coords: {}", rarity, surfaceCoords.toShortString());
 		result.setData(chestResult.getData());
@@ -362,10 +366,10 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	 * @param config
 	 * @return
 	 */
-//	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, Random random, ICoords spawnCoords,
-//			IChestConfig config) {
-//		return generateSurfaceRuins(world, random, spawnCoords, null, null, config);
-//	}
+	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, Random random, ICoords spawnCoords,
+			IChestConfig config) {
+		return generateSurfaceRuins(world, random, spawnCoords, null, null, config);
+	}
 	
 	/**
 	 * 
@@ -376,22 +380,22 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	 * @param config
 	 * @return
 	 */
-//	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, Random random, ICoords spawnCoords,
-//			TemplateHolder holder, IDecayRuleSet decayRuleSet, IChestConfig config) {
-//
-//		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
-//		result.getData().setSpawnCoords(spawnCoords);
-//
-//		SurfaceRuinGenerator generator = new SurfaceRuinGenerator();
-//
-//		// build the structure
-//		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, random, spawnCoords, holder, decayRuleSet);
-//		Treasure.LOGGER.debug("surface struct result -> {}", genResult);
-//		if (!genResult.isSuccess()) return result.fail();
-//
-//		result.setData(genResult.getData());
-//		return result.success();
-//	}
+	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, Random random, ICoords spawnCoords,
+			TemplateHolder holder, IDecayRuleSet decayRuleSet, IChestConfig config) {
+
+		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
+		result.getData().setSpawnCoords(spawnCoords);
+
+		SurfaceRuinGenerator generator = new SurfaceRuinGenerator();
+
+		// build the structure
+		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, random, spawnCoords, holder, decayRuleSet);
+		Treasure.LOGGER.debug("surface struct result -> {}", genResult);
+		if (!genResult.isSuccess()) return result.fail();
+
+		result.setData(genResult.getData());
+		return result.success();
+	}
 	
 	/**
 	 * 
