@@ -15,104 +15,104 @@
   	"max": 37.0
   	},
   "decayRules": {
-    "minecraft:stonebrick": {
+    "minecraft:stone_bricks": {
       "decayIterations": 6,
       "decayProbability": 30.0,
       "decayBlocks": [
-        "minecraft:stonebrick@1",
-        "minecraft:stonebrick@2",
-        "minecraft:cobblestone@0",
-        "minecraft:gravel@0",
-        "minecraft:air@0"
+        "minecraft:cracked_stone_bricks",
+        "minecraft:mossy_stone_bricks",
+        "minecraft:cobblestone",
+        "minecraft:gravel",
+        "minecraft:air"
       ]
     },
 		"minecraft:cobblestone": {
 			"decayIterations": 4,
 			"decayProbability": 30.0,
 			"decayBlocks": [
-				"minecraft:mossy_cobblestone@0",
-				"minecraft:gravel@0",
-				"minecraft:air@0"
+				"minecraft:mossy_cobblestone",
+				"minecraft:gravel",
+				"minecraft:air"
 			]
 		},
 		"minecraft:mossy_cobblestone": {
 			"decayIterations": 3,
 			"decayProbability": 25.0,
 			"decayBlocks": [
-				"minecraft:gravel@0",
-				"minecraft:air@0"
+				"minecraft:gravel",
+				"minecraft:air"
 			]
 		},    
     "minecraft:stone_brick_stairs": {
 		"decayIterations": 3,
 		"decayProbability": 25.0,
 		"decayBlocks": [
-			"minecraft:stone_stairs@0",
-			"minecraft:air@0"
+			"minecraft:mossy_stone_stairs",
+			"minecraft:air"
 		]
 	},
 		"minecraft:stone_brick_slab": {
 			"decayIterations": 4,
 			"decayProbability": 20.0,
 			"decayBlocks": [
-				"minecraft:stone_slab@0",
-				"minecraft:stone_slab@3",
-				"minecraft:air@0"
+				"minecraft:mossy_stone_brick_slab",
+				"minecraft:mossy_cobblestone_slab",
+				"minecraft:air"
 			]
 		},
 		"minecraft:stone_slab": {
 			"decayIterations": 3,
 			"decayProbability": 20.0,
 			"decayBlocks": [
-				"minecraft:stone_slab@3",
-				"minecraft:air@0"
+				"minecraft:mossy_cobblestone_slab",
+				"minecraft:air"
 			]
 		},
 		"minecraft:cobblestone_wall": {
 			"decayIterations": 3,
 			"decayProbability": 20.0,
 			"decayBlocks": [
-				"minecraft:cobblestone_wall@1",
-				"minecraft:air@0"
+				"minecraft:mossy_cobblestone_wall",
+				"minecraft:air"
 			]
 		},
-		"minecraft:smooth_granite": {
+		"minecraft:polished_granite": {
 			"decayIterations": 3,
 			"decayProbability": 20.0,
 			"decayBlocks": [
-				"minecraft:stone@1",
-				"minecraft:air@0"
+				"minecraft:granite",
+				"minecraft:air"
 			]
 		},		
-		"minecraft:smooth_diorite": {
+		"minecraft:polished_diorite": {
 			"decayIterations": 3,
 			"decayProbability": 20.0,
 			"decayBlocks": [
-				"minecraft:stone@3",
-				"minecraft:air@0"
+				"minecraft:diorite",
+				"minecraft:air"
 			]
 		},
-		"minecraft:smooth_andesite": {
+		"minecraft:polished_andesite": {
 			"decayIterations": 3,
 			"decayProbability": 20.0,
 			"decayBlocks": [
-				"minecraft:stone@5",
-				"minecraft:air@0"
+				"minecraft:andesite",
+				"minecraft:air"
 			]
 		},			
 		"minecraft:smooth_sandstone": {
 			"decayIterations": 3,
 			"decayProbability": 20.0,
 			"decayBlocks": [
-				"minecraft:sandstone@0",
-				"minecraft:air@0"
+				"minecraft:sandstone",
+				"minecraft:air"
 			]
 		},	
 		"default": {
 			"decayIterations": 2,
 			"decayProbability": 20.0,
 			"decayBlocks": [
-				"minecraft:air@0"
+				"minecraft:air"
 			]
 		}		
   }
