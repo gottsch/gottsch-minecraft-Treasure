@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Table;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
+import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.chest.ChestEnvironment;
@@ -40,6 +42,7 @@ import com.someguyssoftware.treasure2.generator.pit.VolcanoPitGenerator;
 import com.someguyssoftware.treasure2.generator.well.IWellGenerator;
 import com.someguyssoftware.treasure2.generator.well.WellGenerator;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
+import com.someguyssoftware.treasure2.registry.SimpleListRegistry;
 
 import net.minecraft.block.Block;
 
@@ -73,6 +76,10 @@ public class TreasureData {
 
 	public static final Map<String, ChestRegistry> CHEST_REGISTRIES = new HashMap<>(); 
 
+	// simple registries
+	public static final Map<String, SimpleListRegistry<ICoords>> WELL_REGISTRIES = new HashMap<>();
+	public static final Map<String, SimpleListRegistry<ICoords>> WITHER_TREE_REGISTRIES = new HashMap<>();
+	
 	public static void initialize() {
 		// TODO finish later. but use meta data to populate the table map
 		CHESTS_BY_RARITY_FLAGS.put(Rarity.COMMON, ChestEnvironment.SURFACE, TreasureBlocks.WOOD_CHEST);
@@ -167,6 +174,8 @@ public class TreasureData {
 		for (String dimension : TreasureConfig.GENERAL.dimensionsWhiteList.get()) {
 			Treasure.LOGGER.debug("white list dimension -> {}", dimension);
 			CHEST_REGISTRIES.put(dimension, new ChestRegistry());
+			WELL_REGISTRIES.put(dimension, new SimpleListRegistry<>(TreasureConfig.WELLS.registrySize.get()));
+			WITHER_TREE_REGISTRIES.put(dimension, new SimpleListRegistry<>(TreasureConfig.WITHER_TREE.registrySize.get()));
 		}
 	}
 

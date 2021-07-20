@@ -157,7 +157,6 @@ public class TreasureConfig extends AbstractConfig {
 	public static class BlockID {
         public static final String WISHING_WELL_BLOCK_ID = "wishing_well_block";
         public static final String DESERT_WISHING_WELL_BLOCK_ID = "desert_wishing_well_block";
-        public static final String BLACKSTONE_ID = "blackstone";	
 		public static final String PROXIMITY_SPAWNER_ID = "proximity_spawner";
 		
 		public static final String GRAVESTONE1_STONE_ID = "gravestone1_stone";
@@ -503,7 +502,9 @@ public class TreasureConfig extends AbstractConfig {
     	public ForgeConfigSpec.BooleanValue enableWells;
     	public ForgeConfigSpec.ConfigValue<Double> genProbability;
         public ForgeConfigSpec.ConfigValue<Integer> chunksPerWell;
-        public BiomesConfig biomes; 
+        public ForgeConfigSpec.ConfigValue<Integer> minDistancePerWell;
+        public ForgeConfigSpec.ConfigValue<Integer> registrySize;
+        public BiomesConfig biomes;		
         
         Wells(final ForgeConfigSpec.Builder builder) {
 			builder.comment(CATEGORY_DIV, " Well properties", CATEGORY_DIV)
@@ -517,9 +518,20 @@ public class TreasureConfig extends AbstractConfig {
 					.comment("The minimum number of chunks generated before another attempt to spawn a well is made.")
 					.defineInRange("Chunks per well spawn:", 400, 100, 32000);
 			
+			minDistancePerWell = builder
+					.comment(" The minimum distance, measured in blocks, that two wells can be in proximity.",
+							" Note: Only wells in the wells registry are checked against this property.",
+							" Used in conjunction with the chunks per well and spawn probability.", " Ex. TODO")
+					.defineInRange("Minimum distance per well spawn:", 3000, 100, 32000);
+			
 			genProbability = builder
 					.comment("The probability that a well will generate.")
 					.defineInRange("Generation probability:", 80.0, 0.0, 100.0);
+			
+			registrySize = builder
+					.comment("The number of wells that are monitored. Most recent additions replace oldest when the registry is full.",
+							"This is the set of wells used to measure distance between newly generated wells.")
+					.defineInRange("Maximum size of chest registry:", 25, 5, 100);
 			
 			BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean", "minecraft:deep_frozen_ocean", "minecraft:cold_ocean",
 					"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },
@@ -788,10 +800,12 @@ public class TreasureConfig extends AbstractConfig {
 	public static class WitherTree {
 		public ForgeConfigSpec.BooleanValue enableWitherTree;
 		public ForgeConfigSpec.ConfigValue<Integer> chunksPerTree;
+        public ForgeConfigSpec.ConfigValue<Integer> minDistancePerTree;        
     	public ForgeConfigSpec.ConfigValue<Double> genProbability;
     	public ForgeConfigSpec.ConfigValue<Integer> maxTrunkSize;
     	public ForgeConfigSpec.ConfigValue<Integer> minSupportingTrees;
     	public ForgeConfigSpec.ConfigValue<Integer> maxSupportingTrees;
+    	public ForgeConfigSpec.ConfigValue<Integer> registrySize;
         public BiomesConfig biomes; 
         
 		public WitherTree(final ForgeConfigSpec.Builder builder)	 {
@@ -804,7 +818,13 @@ public class TreasureConfig extends AbstractConfig {
 			
 			chunksPerTree = builder
 					.comment(" The number of chunks generated before a wither tree spawn is attempted.")
-					.defineInRange("Chunks per wither tree spawn:", 200, 0, 32000);
+					.defineInRange("Chunks per wither tree spawn:", 800, 0, 32000);
+			
+			minDistancePerTree = builder
+					.comment(" The minimum distance, measured in blocks, that two wither trees can be in proximity.",
+							" Note: Only wither trees in the wither tree registry are checked against this property.",
+							" Used in conjunction with the chunks per wither tree and spawn probability.", " Ex. TODO")
+					.defineInRange("Minimum distance per wither tree spawn:", 6000, 100, 32000);
 			
 			genProbability = builder
 					.comment(" The probability that a wither tree will spawn.")
@@ -823,6 +843,11 @@ public class TreasureConfig extends AbstractConfig {
 			maxSupportingTrees = builder
 					.comment(" The maximum number of supporting wither trees that surround the main tree in the grove.")
 					.defineInRange("Maximum number of supporting trees:", 15, 0, 30);
+			
+			registrySize = builder
+					.comment("The number of wither trees that are monitored. Most recent additions replace oldest when the registry is full.",
+							"This is the set of wither trees used to measure distance between newly generated wither trees.")
+					.defineInRange("Maximum size of chest registry:", 25, 5, 100);
 			
 			BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "minecraft:desert", "minecraft:ice_spikes", "minecraft:snowy_tundra", "minecraft:ocean", "minecraft:deep_ocean", "minecraft:deep_frozen_ocean", "minecraft:cold_ocean",
 					"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },

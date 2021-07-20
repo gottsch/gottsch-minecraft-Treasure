@@ -1,9 +1,26 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.world.gen.feature;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -23,10 +40,13 @@ import com.someguyssoftware.treasure2.enums.Wells;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.persistence.TreasureGenerationSavedData;
+import com.someguyssoftware.treasure2.registry.SimpleListRegistry;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
+import net.minecraft.world.IServerWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
@@ -128,6 +148,11 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 				return false;
 			}
 			
+			// 3. check against all registered wells
+			if (checkWellProximity(seedReader, spawnCoords, TreasureConfig.WELLS.minDistancePerWell.get())) {
+				Treasure.LOGGER.debug("The distance to the nearest well is less than the minimun required.");
+				return false;
+			}		
 			incrementDimensionalChunkCount(dimensionName.toString());
 			
 			// generate the well NOTE use the seedReader, not the level
@@ -135,6 +160,8 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 			result = TreasureData.WELL_GEN.generate(seedReader, random, spawnCoords, wellConfig); 
 			Treasure.LOGGER.debug("well world gen result -> {}", result.isSuccess());
 			if (result.isSuccess()) {
+				// add to registry
+				TreasureData.WELL_REGISTRIES.get(dimensionName.toString()).register(spawnCoords);
 				chunksSinceLastDimensionWell.put(dimensionName.toString(), 0);
 			}
 			
@@ -149,6 +176,34 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 		return false;
     }
     
+	/**
+	 * 
+	 * @param world
+	 * @param coords
+	 * @param minDistance
+	 * @return
+	 */
+	public static boolean checkWellProximity(IServerWorld world, ICoords coords, int minDistance) {
+
+		double minDistanceSq = minDistance * minDistance;
+
+		SimpleListRegistry<ICoords> wellRegistry = TreasureData.WELL_REGISTRIES.get(WorldInfo.getDimension(world.getLevel()).toString());
+		List<ICoords> wellsList = wellRegistry.getValues();
+		if (wellsList.isEmpty()) {
+			Treasure.LOGGER.debug("Unable to locate the Well Registry or the Registry doesn't contain any values");
+			return false;
+		}
+
+		for (ICoords wellCoords : wellsList) {
+			// calculate the distance to the poi
+			double distance = coords.getDistanceSq(wellCoords);
+			if (distance < minDistanceSq) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * 
 	 * @param dimensionName
