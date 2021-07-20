@@ -49,6 +49,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.WitherChestGenerator;
 import com.someguyssoftware.treasure2.persistence.TreasureGenerationSavedData;
+import com.someguyssoftware.treasure2.registry.SimpleListRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -61,6 +62,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
@@ -203,6 +205,12 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 				return false;
 			}
 
+			// 3. check against all registered wither trees
+			if (checkWitherTreeProximity(seedReader, spawnCoords, TreasureConfig.WITHER_TREE.minDistancePerTree.get())) {
+				Treasure.LOGGER.debug("The distance to the nearest well is less than the minimun required.");
+				return false;
+			}	
+			
 			// reset chunks since last tree regardless of successful generation - results in a more rare, realistic and configurable generation.
 			chunksSinceLastDimensionTree.put(dimensionName.toString(), 0);
 
@@ -211,8 +219,9 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 			GeneratorResult<GeneratorData> result = generate(seedReader, generator, random, spawnCoords);
 
 			if (result.isSuccess()) {
-				// add to registry
+				// add to registries
 				TreasureData.CHEST_REGISTRIES.get(dimensionName.toString()).register(spawnCoords.toShortString(), new ChestInfo(Rarity.SCARCE, spawnCoords));
+				TreasureData.WITHER_TREE_REGISTRIES.get(dimensionName.toString()).register(spawnCoords);
 			}	
 		}
 
@@ -740,6 +749,34 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 		Treasure.LOGGER.debug("buildRocks time -> {}ms", Duration.between(start, finish).toMillis());
 	}
 
+	/**
+	 * 
+	 * @param world
+	 * @param coords
+	 * @param minDistance
+	 * @return
+	 */
+	public static boolean checkWitherTreeProximity(IServerWorld world, ICoords coords, int minDistance) {
+
+		double minDistanceSq = minDistance * minDistance;
+
+		SimpleListRegistry<ICoords> registry = TreasureData.WITHER_TREE_REGISTRIES.get(WorldInfo.getDimension(world.getLevel()).toString());
+		List<ICoords> witherTreeList = registry.getValues();
+		if (witherTreeList.isEmpty()) {
+			Treasure.LOGGER.debug("Unable to locate the Wither Tree Registry or the Registry doesn't contain any values");
+			return false;
+		}
+
+		for (ICoords witherTreeCoords : witherTreeList) {
+			// calculate the distance to the poi
+			double distance = coords.getDistanceSq(witherTreeCoords);
+			if (distance < minDistanceSq) {
+				return true;
+			}
+		}		
+		return false;
+	}
+	
 	/**
 	 * 
 	 * @param dimensionName
