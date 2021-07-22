@@ -118,7 +118,6 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 //		ICoords actualSpawnCoords = generator.getTransformedSpawnCoords(originalSpawnCoords, templateSize, placement);
 
 		Treasure.LOGGER.debug("original coords -> {}",originalSpawnCoords.toShortString());
-//		Treasure.LOGGER.debug("actual coords -> {}", actualSpawnCoords.toShortString());
 		
 		/*
 		 * we want to align the new entrance (rotated structure) to the center of the chunk ie. original spawn

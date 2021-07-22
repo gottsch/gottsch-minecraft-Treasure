@@ -22,21 +22,13 @@ import net.minecraft.world.IBlockReader;
  *
  */
 public class ProximityBlock extends ModBlock {
-	/*
-	 *  the class of the tileEntityClass this BlockChest should use.
-	 */
-//	private Class<? extends AbstractProximityTileEntity> tileEntityClass;
 
 	/**
 	 * 
 	 * @param modID
 	 * @param name
+	 * @param properties
 	 */
-//	public ProximityBlock(String modID, String name, Class<? extends AbstractProximityTileEntity> te, Block.Properties properties) {
-//		super(modID, name, properties);
-//		setTileEntityClass(te);
-//	}
-	
 	public ProximityBlock(String modID, String name, Block.Properties properties) {
 		super(modID, name, properties);
 	}
@@ -44,21 +36,6 @@ public class ProximityBlock extends ModBlock {
 	/**
 	 * Create the proximity tile entity.
 	 */
-//	@Override
-//	public TileEntity createNewTileEntity(IBlockReader worldIn) {
-//		AbstractProximityTileEntity proximityTileEntity = null;
-//		Treasure.LOGGER.debug("creating proximity block tile entity...");
-//		try {
-////			proximityTileEntity = (AbstractProximityTileEntity) getTileEntityClass().getConstructor(TileEntityType.class).newInstance(TreasureTileEntities.proximityTileEntityType);
-//			proximityTileEntity = (AbstractProximityTileEntity) getTileEntityClass().newInstance();
-//		}
-//		catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//		Treasure.LOGGER.debug("created proximity te -> {}", proximityTileEntity.getClass().getSimpleName());
-//		return (TileEntity) proximityTileEntity;
-//	}
-
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader worldIn) {
 		TreasureProximitySpawnerTileEntity proximityTileEntity = null;
@@ -77,40 +54,25 @@ public class ProximityBlock extends ModBlock {
 	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}
-	 
-	/**
-	 * 
-	 */
-	public BlockRenderType getRenderType(BlockState state) {
-		return BlockRenderType.INVISIBLE;
-	}
 
+	@Override
+   public BlockRenderType getRenderShape(BlockState state) {
+	      return BlockRenderType.INVISIBLE;
+	   }
+	   
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos,
 			ISelectionContext context) {
 		return VoxelShapes.empty();
 	}
 
+	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return VoxelShapes.empty();
 	}
 
+	@Override
 	public boolean isAir(BlockState state) {
 		return true;
 	}
-
-//	/**
-//	 * @return the tileEntityClass
-//	 */
-//	public Class<? extends AbstractProximityTileEntity> getTileEntityClass() {
-//		return tileEntityClass;
-//	}
-//
-//	/**
-//	 * @param tileEntityClass the tileEntityClass to set
-//	 */
-//	public void setTileEntityClass(Class<? extends AbstractProximityTileEntity> tileEntityClass) {
-//		this.tileEntityClass = tileEntityClass;
-//	}
-
 }
