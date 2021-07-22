@@ -81,7 +81,7 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 	    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getBlockEntity(c.getCoords().toPos());
 	    	if (te != null) {
 	 	    	EntityType<?> r = DungeonHooks.getRandomDungeonMob(random);
-		    	Treasure.LOGGER.debug("using mob -> {} for poximity spawner.", r.toString());
+		    	Treasure.LOGGER.debug("using mob -> {} for poximity spawner.", r.getRegistryName().toString());
 		    	te.setMobName(r.getRegistryName());
 		    	te.setMobNum(new Quantity(1, 2));
 		    	te.setProximity(5D);
