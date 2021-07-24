@@ -65,6 +65,18 @@
 							"tag": "{Potion:\"minecraft:water_breathing\"}"
 						}
 					]
+				},
+				{
+					"entryName": "potion_uc6",
+					"type": "minecraft:item",
+					"name": "minecraft:potion",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{Potion:\"minecraft:slow_falling\"}"
+						}
+					]
 				}
 			]
 		}

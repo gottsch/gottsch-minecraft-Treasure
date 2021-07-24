@@ -8,6 +8,7 @@ import com.someguyssoftware.gottschcore.annotation.ModInfo;
 import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.entity.TreasureEntities;
 import com.someguyssoftware.treasure2.eventhandler.ClientEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
@@ -127,7 +128,9 @@ public class Treasure implements IMod {
 	
 	private void clientSetup(final FMLClientSetupEvent event) {
 		Treasure.LOGGER.info("in client setup event");
+		TreasureEntities.registerEntityRenderers();
 	}
+	
 	 private void postSetup(final FMLLoadCompleteEvent event) { 
 		 Treasure.LOGGER.info("in post setup event");
 	 }

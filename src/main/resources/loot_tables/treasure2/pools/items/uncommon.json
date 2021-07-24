@@ -203,7 +203,22 @@
 							}
 						}
 					]
-				}
+				},
+				{
+					"entryName": "sea_pickle",
+					"type": "minecraft:item",
+					"name": "minecraft:sea_pickle",
+					"weight": 50,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				},
 			]
 		}
 	]

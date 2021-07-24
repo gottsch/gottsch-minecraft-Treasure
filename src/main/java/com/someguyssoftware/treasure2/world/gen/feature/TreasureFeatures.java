@@ -124,6 +124,7 @@ public class TreasureFeatures {
 		}
 	}
 	
+	// TODO this doesn't need to be in the TreasureFeatures class, but could be in it's own class. Any registered against a biome goes here, ie features, entity spawns
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.FORGE)
 	public static class BiomeRegistrationHandler {
 		/*

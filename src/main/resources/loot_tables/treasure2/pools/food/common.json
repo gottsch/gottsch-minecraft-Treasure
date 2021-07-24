@@ -18,7 +18,7 @@
 								"max": 5
 							}
 						}
-					]	
+					]
 				},
 				{
 					"entryName": "wheat",
@@ -33,7 +33,7 @@
 								"max": 5
 							}
 						}
-					]	
+					]
 				},
 				{
 					"entryName": "wheat_seeds",
@@ -48,7 +48,7 @@
 								"max": 5
 							}
 						}
-					]	
+					]
 				},
 				{
 					"entryName": "brown_mushroom",
@@ -63,7 +63,7 @@
 								"max": 5
 							}
 						}
-					]	
+					]
 				},
 				{
 					"entryName": "red_mushroom",
@@ -78,7 +78,7 @@
 								"max": 5
 							}
 						}
-					]	
+					]
 				},
 				{
 					"entryName": "porkchop",
@@ -93,7 +93,7 @@
 								"max": 2
 							}
 						}
-					]	
+					]
 				},
 				{
 					"entryName": "rabbit",
@@ -108,7 +108,7 @@
 								"max": 2
 							}
 						}
-					]	
+					]
 				},
 				{
 					"entryName": "egg",
@@ -123,7 +123,7 @@
 								"max": 3
 							}
 						}
-					]	
+					]
 				},
 				{
 					"entryName": "chicken",
@@ -138,13 +138,13 @@
 								"max": 2
 							}
 						}
-					]	
+					]
 				},
 				{
-					"entryName": "fish",
+					"entryName": "cod",
 					"type": "item",
-					"name": "minecraft:fish",
-					"weight": 35,
+					"name": "minecraft:cod",
+					"weight": 12,
 					"functions": [
 						{
 							"function": "set_count",
@@ -153,13 +153,13 @@
 								"max": 5
 							}
 						}
-					]	
+					]
 				},
 				{
-					"entryName": "cooked_fish",
+					"entryName": "cooked_cod",
 					"type": "item",
-					"name": "minecraft:cooked_fish",
-					"weight": 30,
+					"name": "minecraft:cooked_cod",
+					"weight": 10,
 					"functions": [
 						{
 							"function": "set_count",
@@ -168,7 +168,52 @@
 								"max": 3
 							}
 						}
-					]	
+					]
+				},
+				{
+					"entryName": "salmon",
+					"type": "item",
+					"name": "minecraft:salmon",
+					"weight": 12,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 5
+							}
+						}
+					]
+				},
+				{
+					"entryName": "cooked_salmon",
+					"type": "item",
+					"name": "minecraft:cooked_salmon",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 3
+							}
+						}
+					]
+				},
+				{
+					"entryName": "tropical_fish",
+					"type": "item",
+					"name": "minecraft:tropical_fish",
+					"weight": 12,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 5
+							}
+						}
+					]
 				},
 				{
 					"entryName": "beef",
@@ -183,7 +228,7 @@
 								"max": 3
 							}
 						}
-					]	
+					]
 				},
 				{
 					"entryName": "pumpkin",
@@ -204,7 +249,7 @@
 								"max": 2
 							}
 						}
-					]	
+					]
 				},
 				{
 					"entryName": "melon",
@@ -225,7 +270,7 @@
 								"max": 5
 							}
 						}
-					]	
+					]
 				},
 				{
 					"entryName": "mutton",
@@ -240,7 +285,22 @@
 								"max": 5
 							}
 						}
-					]	
+					]
+				},
+				{
+					"entryName": "dried_kelp",
+					"type": "item",
+					"name": "minecraft:dried_kelp",
+					"weight": 60,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 2,
+								"max": 5
+							}
+						}
+					]
 				}
 			]
 		}

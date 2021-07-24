@@ -255,6 +255,11 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String MIST_EMITTER_TE_ID = "mist_emitter_tile_entity";
 	}
 	
+	public static class EntityID {
+		public static final String BOUND_SOUL_ID = "bound_soul";
+	}
+	
+	@Deprecated
 	public static class StructureID {
 		public static final String COMMON_SURFACE_CHEST = "common_surface_chest";
 		public static final String UNCOMMON_SURFACE_CHEST = "uncommon_surface_chest";

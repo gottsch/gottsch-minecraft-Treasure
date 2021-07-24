@@ -11,7 +11,6 @@ import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
-import com.someguyssoftware.gottschcore.world.gen.structure.DecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayProcessor;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
@@ -34,7 +33,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
 
 /**
  * 
@@ -43,8 +41,8 @@ import net.minecraft.world.World;
  */
 public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<ChestGeneratorData>> {
 	
-	private static final double REQUIRED_BASE_SIZE = 45;
-	private static final double REQUIRED_AIR_SIZE = 30;
+	private static final double REQUIRED_BASE_SIZE = 75;
+	private static final double REQUIRED_AIR_SIZE = 50;
 
 	/**
 	 * 
@@ -115,7 +113,6 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 	
 		// determine the actual spawn coords
 		ICoords templateSize = new Coords(holder.getTemplate().getSize(placement.getRotation()));
-//		ICoords actualSpawnCoords = generator.getTransformedSpawnCoords(originalSpawnCoords, templateSize, placement);
 
 		Treasure.LOGGER.debug("original coords -> {}",originalSpawnCoords.toShortString());
 		
@@ -222,8 +219,6 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 				(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.SPAWNER));
 		List<BlockContext> proximityContexts =
 				(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
-//		List<ICoords> spawnerCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
-//		List<ICoords> proximityCoords = (List<ICoords>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
 
 		/*
 		 *  NOTE currently only 1 chest is allowed per structure - the rest are ignored.
