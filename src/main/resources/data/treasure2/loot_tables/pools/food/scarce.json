@@ -1,12 +1,10 @@
 {
 	"version": "1.0",
 	"type": "minecraft:chest",
-	"pools": [
-		{
+	"pools": [{
 			"name": "scarce_food",
 			"rolls": 1,
-			"entries": [
-					{
+			"entries": [{
 					"entryName": "cake",
 					"type": "minecraft:item",
 					"name": "minecraft:cake",
@@ -17,6 +15,71 @@
 					"type": "item",
 					"name": "minecraft:pumpkin_pie",
 					"weight": 50
+				},
+				{
+					"entryName": "suspicious_stew",
+					"type": "minecraft:item",
+					"name": "minecraft:suspicious_stew",
+					"weight": 50,
+					"functions": [{
+						"function": "minecraft:set_stew_effect",
+						"effects": [{
+								"type": "minecraft:jump_boost",
+								"duration": {
+									"min": 7.0,
+									"max": 10.0
+								}
+							},
+							{
+								"type": "minecraft:saturation",
+								"duration": {
+									"min": 7.0,
+									"max": 10.0
+								}
+							},
+							{
+								"type": "minecraft:blindness",
+								"duration": {
+									"min": 5.0,
+									"max": 7.0
+								}
+							},
+							{
+								"type": "minecraft:poison",
+								"duration": {
+									"min": 10.0,
+									"max": 20.0
+								}
+							},
+							{
+								"type": "minecraft:night_vision",
+								"duration": {
+									"min": 7.0,
+									"max": 10.0
+								}
+							},
+							{
+								"type": "minecraft:weakness",
+								"duration": {
+									"min": 6.0,
+									"max": 8.0
+								}
+							}
+						]
+					}]
+				},
+				{
+					"entryName": "honey_block",
+					"type": "item",
+					"name": "minecraft:honey_block",
+					"weight": 50,
+					"functions": [{
+						"function": "minecraft:set_count",
+						"count": {
+							"min": 1,
+							"max": 2
+						}
+					}]
 				}
 			]
 		}

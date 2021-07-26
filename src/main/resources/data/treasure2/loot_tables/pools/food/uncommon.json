@@ -65,7 +65,22 @@
 							}
 						}
 					]
-				}
+				},
+				{
+					"entryName": "honey_bottle",
+					"type": "minecraft:item",
+					"name": "minecraft:honey_bottle",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				}				
 			]
 		}
 	]

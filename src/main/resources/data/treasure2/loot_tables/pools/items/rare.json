@@ -61,7 +61,7 @@
 					"type": "item",
 					"name": "minecraft:compass",
 					"weight": 25
-				},
+				},			
 				{
 					"entryName": "diamond_block",
 					"type": "item",
@@ -213,7 +213,7 @@
 					"entryName": "nether_star",
 					"type": "item",
 					"name": "minecraft:nether_star",
-					"weight": 15
+					"weight": 10
 				},
 				{
 					"entryName": "firework_star",
@@ -229,7 +229,81 @@
 							}
 						}
 					]
-				}
+				},
+				{
+					"entryName": "slow_falling_tipped_arrow",
+					"type": "minecraft:item",
+					"name": "minecraft:tipped_arrow{Potion:\"minecraft:slow_falling\"}",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 2,
+								"max": 5,
+								"type": "minecraft:uniform"
+							}
+						},
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{Potion:\"minecraft:turtle_master\"}"
+						}
+					]
+				},
+				{
+					"entryName": "nautilus_shell",
+					"type": "item",
+					"name": "minecraft:nautilus_shell",
+					"weight": 15
+				},
+				{
+					"entryName": "heart_of_the_sea",
+					"type": "item",
+					"name": "minecraft:heart_of_the_sea",
+					"weight": 15
+				},
+				{
+					"entryName": "beehive",
+					"type": "item",
+					"name": "minecraft:beehive",
+					"weight": 20
+				},
+				{
+					"entryName": "netherite_ingot",
+					"type": "item",
+					"name": "minecraft:netherite_ingot",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]	
+				},
+				{
+					"entryName": "lodestone",
+					"type": "item",
+					"name": "minecraft:lodestone",
+					"weight": 18,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				},
+				{
+					"entryName": "respawn_anchor",
+					"type": "item",
+					"name": "minecraft:respawn_anchor",
+					"weight": 15
+				}	
 			]
 		}
 	]

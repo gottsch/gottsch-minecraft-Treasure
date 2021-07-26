@@ -186,6 +186,10 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String GRAVESTONE3_OBSIDIAN_ID = "gravestone3_obsidian";
         public static final String GRAVESTONE3_SMOOTH_QUARTZ_ID = "gravestone3_smooth_quartz";
         
+        public static final String GRAVESTONE1_SPAWNER_STONE_ID = "gravestone1_spawner_stone";
+		public static final String GRAVESTONE2_SPAWNER_COBBLESTONE_ID = "gravestone2_spawner_cobblestone";
+		public static final String GRAVESTONE3_SPAWNER_OBSIDIAN_ID = "gravestone3_spawner_obsidian";
+
         public static final String SKULL_CROSSBONES_ID = "skull_and_crossbones";
         public static final String SKELETON_ID = "skeleton";
         
@@ -255,14 +259,13 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String MIST_EMITTER_TE_ID = "mist_emitter_tile_entity";
 	}
 	
+	/**
+	 * 
+	 * @author Mark Gottschling on Jul 26, 2021
+	 *
+	 */
 	public static class EntityID {
 		public static final String BOUND_SOUL_ID = "bound_soul";
-	}
-	
-	@Deprecated
-	public static class StructureID {
-		public static final String COMMON_SURFACE_CHEST = "common_surface_chest";
-		public static final String UNCOMMON_SURFACE_CHEST = "uncommon_surface_chest";
 	}
 
 	/*

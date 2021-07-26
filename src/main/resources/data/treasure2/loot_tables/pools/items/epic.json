@@ -7,37 +7,37 @@
 			"entries": [
 				{
 					"entryName": "shulker_box",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:black_shulker_box",
 					"weight": 15
 				},
 				{
 					"entryName": "shulker_shell",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:shulker_shell",
 					"weight": 20
 				},
 				{
 					"entryName": "dragon_breath",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:dragon_breath",
 					"weight": 15
 				},
 				{
 					"entryName": "elytra",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:elytra",
 					"weight": 10
 				},
 				{
 					"entryName": "totem_of_undying",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:totem_of_undying",
 					"weight": 10
 				},
 				{
 					"entryName": "experience_bottle",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:experience_bottle",
 					"weight": 50,
 					"functions": [
@@ -52,7 +52,7 @@
 				},
 				{
 					"entryName": "emerald",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:emerald",
 					"weight": 50,
 					"functions": [
@@ -67,7 +67,7 @@
 				},
 				{
 					"entryName": "end_crystal",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:end_crystal",
 					"weight": 25,
 					"functions": [
@@ -82,7 +82,7 @@
 				},
 				{
 					"entryName": "popped_chorus_fruit",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:popped_chorus_fruit",
 					"weight": 25,
 					"functions": [
@@ -97,22 +97,55 @@
 				},
 				{
 					"entryName": "skeleton_head",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:skeleton_skull",
 					"weight": 5
 				},
 				{
 					"entryName": "zombie_head",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:zombie_head",
 					"weight": 5
 				},
 				{
 					"entryName": "creeper_head",
-					"type": "item",
+					"type": "minecraft:item",
 					"name": "minecraft:creeper_head",
 					"weight": 5
-				}
+				},
+				{
+					"entryName": "conduit",
+					"type": "minecraft:item",
+					"name": "minecraft:conduit",
+					"weight": 10
+				},
+				{
+					"entryName": "netherite_ingot",
+					"type": "minecraft:item",
+					"name": "minecraft:netherite_ingot",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 5,
+								"max": 10
+							}
+						}
+					]	
+				},
+				{
+					"entryName": "music_disc_pigstep",
+					"type": "minecraft:item",
+					"name": "minecraft:conduit",
+					"weight": 1
+				},
+				{
+					"entryName": "music_disc_11",
+					"type": "minecraft:item",
+					"name": "minecraft:conduit",
+					"weight": 1
+				}				
 			]
 		}
 	]

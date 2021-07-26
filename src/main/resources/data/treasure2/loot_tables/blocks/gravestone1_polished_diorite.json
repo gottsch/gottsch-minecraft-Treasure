@@ -3,9 +3,9 @@
 	"pools": [{
 			"rolls": 1,
 			"entries": [{
-				"entryName": "cobblestone",
+				"entryName": "polished_diorite",
 				"type": "minecraft:item",
-				"name": "minecraft:cobblestone"
+				"name": "minecraft:polished_diorite"
 			}],
 			"conditions": [
 				{
@@ -19,7 +19,7 @@
 			"entries": [{
 				"entryName": "gravestone",
 				"type": "minecraft:item",
-				"name": "treasure2:gravestone1_cobblestone"
+				"name": "treasure2:gravestone1_polished_diorite"
 			}],
 			"conditions": [
 				{

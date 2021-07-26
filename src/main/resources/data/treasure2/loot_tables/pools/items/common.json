@@ -176,7 +176,37 @@
 							}
 						}
 					]
-				}
+				},
+				{
+				"entryName": "campfire",
+					"type": "minecraft:item",
+					"name": "minecraft:campfire",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				},
+				{
+				"entryName": "latern",
+					"type": "minecraft:item",
+					"name": "minecraft:latern",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 1
+							}
+						}
+					]
+				}	
 			]
 		}
 	]

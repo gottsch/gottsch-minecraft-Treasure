@@ -44,6 +44,7 @@
 	"item.treasure2.wither_stick_item":"Wither Branch",
 	"item.treasure2.wither_root_item":"Wither Root",
 	"item.treasure2.skull_sword":"Skull Sword",
+	"item.treasure2.bound_soul_spawn_egg":"Bound Soul Spawn Egg",
 
 	"item.treasure2.painting_blocks_bricks":"Bricks by o2xygeno",
 	"item.treasure2.painting_blocks_cobblestone":"Cobblestone by o2xygeno",
@@ -75,7 +76,6 @@
 
 	"block.treasure2.wishing_well_block":"Wishing Well Stone",
 	"block.treasure2.desert_wishing_well_block":"Desert Wishing Well Stone",
-	"block.treasure2.blackstone":"Blackstone",
 	"block.treasure2.ruby_ore":"Ruby Ore",
 	"block.treasure2.sapphire_ore":"Sapphire Ore",
 	"block.treasure2.wither_branch":"Wither Branch",
@@ -85,9 +85,9 @@
 	"block.treasure2.wither_soul_log":"Wither Soul Log",
 	"block.treasure2.wither_broken_log":"Wither Broken Log",
 	"block.treasure2.spanish_moss":"Spanish Moss",
-	"block.treasure2:falling_grass":"Grass Block",
-	"block.treasure2:falling_sand.name":"Sand Block",
-	"block.treasure2:falling_red_sand.name":"Red Sand Block",
+	"block.treasure2.falling_grass":"Grass Block",
+	"block.treasure2.falling_sand":"Sand Block",
+	"block.treasure2.falling_red_sand":"Red Sand Block",
 
 	"block.treasure2.gravestone1_stone":"Stone Tombstone",
 	"block.treasure2.gravestone1_cobblestone":"Cobblestone Tombstone",
@@ -115,6 +115,10 @@
 	"block.treasure2.gravestone3_polished_diorite":"Diorite Tombstone",
 	"block.treasure2.gravestone3_obsidian":"Obsidian Tombstone",
 	"block.treasure2.gravestone3_smooth_quartz":"Quartz Tombstone",
+	
+	"block.treasure2.gravestone1_spawner_stone":"Stone Tombstone Spawner",
+	"block.treasure2.gravestone2_spawner_cobblestone":"Cobblestone Tombstone Spawner",
+	"block.treasure2.gravestone3_spawner_obsidian":"Obsidian Tombstone Spawner",
 	
 	"block.treasure2.skeleton":"Skeleton",
 	"block.treasure2.skull_and_crossbones":"Skull and Crossbones",

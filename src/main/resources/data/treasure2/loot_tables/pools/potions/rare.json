@@ -113,6 +113,18 @@
 							"tag": "{Potion:\"minecraft:long_poison\"}"
 						}
 					]
+				},
+				{
+					"entryName": "potion_r10",
+					"type": "minecraft:item",
+					"name": "minecraft:potion",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{Potion:\"minecraft:long_turtle_master\"}"
+						}
+					]
 				}
 			]
 		}

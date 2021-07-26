@@ -55,7 +55,25 @@
 							"function": "minecraft:enchant_randomly"
 						}
 					]
-				}
+				},
+				{
+					"entryName": "netherite_pickaxe",
+					"type": "minecraft:item",
+					"name": "minecraft:netherite_pickaxe",
+					"weight": 15
+				},
+				{
+					"entryName": "netherite_axe",
+					"type": "minecraft:item",
+					"name": "minecraft:netherite_axe",
+					"weight": 15
+				},
+				{
+					"entryName": "netherite_shovel",
+					"type": "minecraft:item",
+					"name": "minecraft:netherite_shovel",
+					"weight": 15
+				}			
 			]
 		}
 	]

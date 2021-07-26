@@ -101,6 +101,18 @@
 							"tag": "{Potion:\"minecraft:strong_poison\"}"
 						}
 					]
+				},
+				{
+					"entryName": "potion_s9",
+					"type": "minecraft:item",
+					"name": "minecraft:potion",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{Potion:\"minecraft:turtle_master\"}"
+						}
+					]
 				}
 			]
 		}

@@ -3,14 +3,14 @@
 	"pools": [{
 			"rolls": 1,
 			"entries": [{
-				"entryName": "cobblestone",
+				"entryName": "obsidian",
 				"type": "minecraft:item",
-				"name": "minecraft:cobblestone"
+				"name": "minecraft:obsidian"
 			}],
 			"conditions": [
 				{
 					"condition": "minecraft:random_chance",
-					"chance": 0.75
+					"chance": 0.25
 				}
 			]
 		},
@@ -19,7 +19,7 @@
 			"entries": [{
 				"entryName": "gravestone",
 				"type": "minecraft:item",
-				"name": "treasure2:gravestone1_cobblestone"
+				"name": "treasure2:gravestone1_obsidian"
 			}],
 			"conditions": [
 				{

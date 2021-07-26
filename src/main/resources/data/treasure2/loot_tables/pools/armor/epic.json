@@ -127,7 +127,31 @@
 					"type": "minecraft:item",
 					"name": "minecraft:diamond_horse_armor",
 					"weight": 25
-				}
+				},
+				{
+					"entryName": "netherite_chestplate",
+					"type": "minecraft:item",
+					"name": "minecraft:netherite_chestplate",
+					"weight": 10
+				},
+				{
+					"entryName": "netherite_leggings",
+					"type": "minecraft:item",
+					"name": "minecraft:netherite_leggings",
+					"weight": 10
+				},
+				{
+					"entryName": "netherite_helmet",
+					"type": "minecraft:item",
+					"name": "minecraft:netherite_helmet",
+					"weight": 10
+				},
+				{
+					"entryName": "netherite_boots",
+					"type": "minecraft:item",
+					"name": "minecraft:netherite_boots",
+					"weight": 10
+				}			
 			]
 		}
 	]

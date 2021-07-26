@@ -19,7 +19,7 @@
 			"entries": [{
 				"entryName": "gravestone",
 				"type": "minecraft:item",
-				"name": "treasure2:gravestone1_cobblestone"
+				"name": "treasure2:gravestone2_cobblestone"
 			}],
 			"conditions": [
 				{

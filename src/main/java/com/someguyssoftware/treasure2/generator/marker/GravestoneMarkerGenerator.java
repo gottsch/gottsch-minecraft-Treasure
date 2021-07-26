@@ -21,6 +21,7 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
+import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ContainerBlock;
@@ -109,23 +110,22 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 
 			// don't place if the block underneath is of GenericBlock ChestConfig or Container
 			Block block = world.getBlockState(spawnCoords.add(0, -1, 0).toPos()).getBlock();
-			if (block instanceof ContainerBlock || block instanceof ModContainerBlock
-					|| block instanceof ITreasureBlock) {
+			if (block instanceof ITreasureBlock || block instanceof ModContainerBlock || block instanceof ContainerBlock) {
 				LOGGER.debug("Marker not placed because block underneath is a chest, container or Treasure block.");
 				continue;
 			}
 
 			Block marker = null;
 			// determine if gravestone spawns an entity
-//			if (TreasureConfig.WORLD_GEN.markerProperties.isGravestoneSpawnMobAllowed && RandomHelper
-//					.checkProbability(random, TreasureConfig.WORLD_GEN.markerProperties.gravestoneMobProbability)) {
-//				// grab a random spawner marker
-//				marker = TreasureBlocks.gravestoneSpawners.get(random.nextInt(TreasureBlocks.gravestoneSpawners.size()));
-//			}
-//			else {
+			if (TreasureConfig.MARKERS.gravestoneSpawnMobAllowed.get() && 
+					RandomHelper.checkProbability(random, TreasureConfig.MARKERS.gravestoneMobProbability.get())) {
+				// grab a random spawner marker
+				marker = TreasureBlocks.GRAVESTONE_SPAWNERS.get(random.nextInt(TreasureBlocks.GRAVESTONE_SPAWNERS.size()));
+			}
+			else {
 				// grab a random marker
 				marker = TreasureBlocks.GRAVESTONES.get(random.nextInt(TreasureBlocks.GRAVESTONES.size()));
-//			}
+			}
 
 			LOGGER.debug("marker class -> {}", marker.getClass().getSimpleName());
 			// select a random facing direction
@@ -140,10 +140,10 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 			}
 
 			// update the tile entity if any
-//			GravestoneProximitySpawnerTileEntity tileEntity = (GravestoneProximitySpawnerTileEntity) world.getTileEntity(spawnCoords.toPos());
-//			if (tileEntity != null) {
-//				tileEntity.setHasEntity(true);
-//			}
+			GravestoneProximitySpawnerTileEntity tileEntity = (GravestoneProximitySpawnerTileEntity) world.getBlockEntity(spawnCoords.toPos());
+			if (tileEntity != null) {
+				tileEntity.setHasEntity(true);
+			}
 
 			// record the first valid spawn coords
 			if (markerCoords == null) {

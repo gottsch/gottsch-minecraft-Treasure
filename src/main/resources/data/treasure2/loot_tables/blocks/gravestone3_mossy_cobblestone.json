@@ -3,9 +3,9 @@
 	"pools": [{
 			"rolls": 1,
 			"entries": [{
-				"entryName": "cobblestone",
+				"entryName": "mossy_cobblestone",
 				"type": "minecraft:item",
-				"name": "minecraft:cobblestone"
+				"name": "minecraft:mossy_cobblestone"
 			}],
 			"conditions": [
 				{
@@ -19,7 +19,7 @@
 			"entries": [{
 				"entryName": "gravestone",
 				"type": "minecraft:item",
-				"name": "treasure2:gravestone1_cobblestone"
+				"name": "treasure2:gravestone3_mossy_cobblestone"
 			}],
 			"conditions": [
 				{

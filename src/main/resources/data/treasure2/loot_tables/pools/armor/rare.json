@@ -81,7 +81,13 @@
 							"treasure": true
 						}
 					]
-				}
+				},
+				{
+					"entryName": "gold_horse_armor",
+					"type": "minecraft:item",
+					"name": "minecraft:gold_horse_armor",
+					"weight": 8
+				}				
 			]
 		}
 	]

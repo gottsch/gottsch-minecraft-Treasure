@@ -23,6 +23,7 @@ import com.someguyssoftware.treasure2.tileentity.CrystalSkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.DreadPirateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldSkullChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
+import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MilkCrateTileEntity;
@@ -83,6 +84,9 @@ public class TreasureBlocks {
     public static Block CRYSTAL_SKULL_CHEST;
 
     public static ProximityBlock PROXIMITY_SPAWNER;
+    public static GravestoneSpawnerBlock GRAVESTONE1_SPAWNER_STONE;
+    public static GravestoneSpawnerBlock GRAVESTONE2_SPAWNER_COBBLESTONE;
+    public static GravestoneSpawnerBlock GRAVESTONE3_SPAWNER_OBSIDIAN;
     public static Block WISHING_WELL_BLOCK;
     public static Block DESERT_WISHING_WELL_BLOCK;
 	
@@ -132,6 +136,7 @@ public class TreasureBlocks {
 	public static final List<Block> BLOCKS = new ArrayList<>(100);
 	public static final Set<BlockItem> ITEM_BLOCKS = new HashSet<>();
 	public static final List<Block> GRAVESTONES = new ArrayList<>(20);
+	public static final List<Block> GRAVESTONE_SPAWNERS = new ArrayList<>(5);
 
 	/**
 	 *
@@ -384,7 +389,16 @@ public class TreasureBlocks {
 	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
 			GRAVESTONE3_SMOOTH_QUARTZ = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_SMOOTH_QUARTZ_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
 	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+
+	        // gravestone spawners
+	        GRAVESTONE1_SPAWNER_STONE = (GravestoneSpawnerBlock) new GravestoneSpawnerBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE1_SPAWNER_STONE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	        GRAVESTONE2_SPAWNER_COBBLESTONE = (GravestoneSpawnerBlock) new GravestoneSpawnerBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_SPAWNER_COBBLESTONE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	        GRAVESTONE3_SPAWNER_OBSIDIAN = (GravestoneSpawnerBlock) new GravestoneSpawnerBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_SPAWNER_OBSIDIAN_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
 	        
+	        // other markers
 	        SKULL_CROSSBONES = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.SKULL_CROSSBONES_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
 	                .strength(3.0F).sound(SoundType.STONE)).setBounds(skullCrossbonesBounds);
 	        SKELETON = new SkeletonBlock(Treasure.MODID, TreasureConfig.BlockID.SKELETON_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
@@ -430,7 +444,7 @@ public class TreasureBlocks {
 			// proximity blocks
 	        PROXIMITY_SPAWNER = new ProximityBlock(Treasure.MODID, TreasureConfig.BlockID.PROXIMITY_SPAWNER_ID,
 					Block.Properties.of(Material.AIR).noCollission().noDrops());
-	        
+
 	        /*
 	         * add blocks to list
 	         */
@@ -490,6 +504,9 @@ public class TreasureBlocks {
 	        BLOCKS.add(FALLING_GRASS);
 	        BLOCKS.add(FALLING_SAND);
 	        BLOCKS.add(FALLING_RED_SAND);
+	        BLOCKS.add(GRAVESTONE1_SPAWNER_STONE);
+	        BLOCKS.add(GRAVESTONE2_SPAWNER_COBBLESTONE);
+	        BLOCKS.add(GRAVESTONE3_SPAWNER_OBSIDIAN);
 	        
 	        /*
 	         * add gravestones/markers to list
@@ -520,6 +537,10 @@ public class TreasureBlocks {
 	        GRAVESTONES.add(GRAVESTONE3_SMOOTH_QUARTZ);
 	        GRAVESTONES.add(SKULL_CROSSBONES);
 	        
+	        GRAVESTONE_SPAWNERS.add(GRAVESTONE1_SPAWNER_STONE);
+	        GRAVESTONE_SPAWNERS.add(GRAVESTONE2_SPAWNER_COBBLESTONE);
+	        GRAVESTONE_SPAWNERS.add(GRAVESTONE3_SPAWNER_OBSIDIAN);
+	        
 	        /*
 	         * register blocks
 	         */
@@ -536,11 +557,11 @@ public class TreasureBlocks {
 			// special case registry
 			registry.register(WITHER_CHEST);
 			registry.register(WITHER_CHEST_TOP);
-			registry.register(WITHER_BRANCH);
-			registry.register(WITHER_ROOT);
+			registry.register(WITHER_BRANCH);  // can be in main list
+			registry.register(WITHER_ROOT);  // can be in main list
 //			registry.register(WITHER_SOUL_LOG);
 			 registry.register(PROXIMITY_SPAWNER);
-			 registry.register(SKELETON);
+			 registry.register(SKELETON); // can be in main list
 		}
 
 		/**

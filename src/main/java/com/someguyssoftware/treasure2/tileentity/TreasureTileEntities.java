@@ -44,6 +44,7 @@ public class TreasureTileEntities {
 
 //	public static TileEntityType<ProximitySpawnerTileEntity> proximityTileEntityType;
 	public static TileEntityType<TreasureProximitySpawnerTileEntity> PROXIMITY_TILE_ENTITY_TYPE;
+	public static TileEntityType<GravestoneProximitySpawnerTileEntity> GRAVESTONE_PROXIMITY_SPAWNER_TILE_ENTITY_TYPE;
 	public static TileEntityType<MistEmitterTileEntity> MIST_EMITTER_TILE_ENTITY_TYPE;
 
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -60,6 +61,15 @@ public class TreasureTileEntities {
 			PROXIMITY_TILE_ENTITY_TYPE.setRegistryName(TreasureConfig.TileEntityID.PROXIMITY_SPAWNER_TE_ID);
 			event.getRegistry().register(PROXIMITY_TILE_ENTITY_TYPE);
 
+			GRAVESTONE_PROXIMITY_SPAWNER_TILE_ENTITY_TYPE = TileEntityType.Builder
+					.of(GravestoneProximitySpawnerTileEntity::new, 
+							TreasureBlocks.GRAVESTONE1_SPAWNER_STONE,
+							TreasureBlocks.GRAVESTONE2_SPAWNER_COBBLESTONE,
+							TreasureBlocks.GRAVESTONE3_SPAWNER_OBSIDIAN)
+					.build(null);
+			GRAVESTONE_PROXIMITY_SPAWNER_TILE_ENTITY_TYPE.setRegistryName(TreasureConfig.TileEntityID.GRAVESTONE_PROXIMITY_SPAWNER_TE_ID);
+			event.getRegistry().register(GRAVESTONE_PROXIMITY_SPAWNER_TILE_ENTITY_TYPE);
+			
 			MIST_EMITTER_TILE_ENTITY_TYPE = TileEntityType.Builder
 					.of(() -> new MistEmitterTileEntity(MIST_EMITTER_TILE_ENTITY_TYPE), TreasureBlocks.WITHER_SOUL_LOG)
 					.build(null);

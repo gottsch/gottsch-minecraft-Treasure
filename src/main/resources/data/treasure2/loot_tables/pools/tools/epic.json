@@ -42,7 +42,24 @@
 							"function": "minecraft:enchant_randomly"
 						}
 					]
-				}
+				},
+				{
+					"entryName": "trident",
+					"type": "minecraft:item",
+					"name": "minecraft:trident",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "minecraft:enchant_randomly"
+						}
+					]
+				},
+				{
+					"entryName": "netherite_sword",
+					"type": "minecraft:item",
+					"name": "minecraft:netherite_sword",
+					"weight": 10
+				}				
 			]
 		}
 	]

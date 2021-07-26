@@ -201,13 +201,13 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 
 			// 2. check against all registered chests
 			if (ITreasureFeature.isRegisteredChestWithinDistance(seedReader.getLevel(), spawnCoords, TreasureConfig.CHESTS.surfaceChests.minDistancePerChest.get())) {
-				Treasure.LOGGER.debug("The distance to the nearest treasure chest is less than the minimun required.");
+//				Treasure.LOGGER.debug("The distance to the nearest treasure chest is less than the minimun required.");
 				return false;
 			}
 
 			// 3. check against all registered wither trees
 			if (checkWitherTreeProximity(seedReader, spawnCoords, TreasureConfig.WITHER_TREE.minDistancePerTree.get())) {
-				Treasure.LOGGER.debug("The distance to the nearest well is less than the minimun required.");
+//				Treasure.LOGGER.debug("The distance to the nearest wither tree is less than the minimun required.");
 				return false;
 			}	
 			

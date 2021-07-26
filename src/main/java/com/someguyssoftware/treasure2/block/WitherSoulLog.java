@@ -3,13 +3,7 @@
  */
 package com.someguyssoftware.treasure2.block;
 
-import java.util.Random;
-
 import com.someguyssoftware.gottschcore.block.FacingBlock;
-import com.someguyssoftware.gottschcore.spatial.Coords;
-import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.tileentity.MistEmitterTileEntity;
 import com.someguyssoftware.treasure2.tileentity.TreasureTileEntities;
 
@@ -22,17 +16,10 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * 

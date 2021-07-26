@@ -79,7 +79,13 @@
 							"function": "minecraft:enchant_randomly"
 						}
 					]
-				}
+				},
+				{
+					"entryName": "leather_horse_armor",
+					"type": "minecraft:item",
+					"name": "minecraft:leather_horse_armor",
+					"weight": 8
+				}				
 			]
 		}
 	]

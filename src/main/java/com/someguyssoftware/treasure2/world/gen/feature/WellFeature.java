@@ -150,7 +150,7 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 			
 			// 3. check against all registered wells
 			if (checkWellProximity(seedReader, spawnCoords, TreasureConfig.WELLS.minDistancePerWell.get())) {
-				Treasure.LOGGER.debug("The distance to the nearest well is less than the minimun required.");
+//				Treasure.LOGGER.debug("The distance to the nearest well is less than the minimun required.");
 				return false;
 			}		
 			incrementDimensionalChunkCount(dimensionName.toString());

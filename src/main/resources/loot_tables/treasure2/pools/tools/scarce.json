@@ -61,7 +61,28 @@
 					"type": "minecraft:item",
 					"name": "minecraft:diamond_pickaxe",
 					"weight": 15
-				}
+				},
+				{
+					"entryName": "obsidian",
+					"type": "minecraft:item",
+					"name": "minecraft:obsidian",
+					"weight": 13,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]						
+				},
+				{
+					"entryName": "crying_obsidian",
+					"type": "minecraft:item",
+					"name": "minecraft:crying_obsidian",
+					"weight": 8
+				}							
 			]
 		}
 	]

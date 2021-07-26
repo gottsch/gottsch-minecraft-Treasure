@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.GravestoneBlock;
 import com.someguyssoftware.treasure2.entity.TreasureEntities;
+import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerTileEntity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -38,6 +39,7 @@ import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.MoveToBlockGoal;
+import net.minecraft.entity.ai.goal.MoveTowardsRestrictionGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.RestrictSunGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -66,7 +68,7 @@ public class BoundSoulEntity extends MonsterEntity {
 	private static final DataParameter<BlockPos> HOME_POS = EntityDataManager.defineId(BoundSoulEntity.class, DataSerializers.BLOCK_POS);
 	private static final String HOME_POS_KEY = "HomePos";
 
-//	public static final int MOB_ID = 3;
+	//	public static final int MOB_ID = 3;
 
 	/**
 	 * 
@@ -87,7 +89,7 @@ public class BoundSoulEntity extends MonsterEntity {
 	}
 
 	/**
-	 * TODO need to be able to call this method somehow
+	 * 
 	 * @param world
 	 * @param homePos
 	 */
@@ -122,10 +124,8 @@ public class BoundSoulEntity extends MonsterEntity {
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
 		this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
-		if (this.hasHome()) {
-			Treasure.LOGGER.debug("has home, add goal");
-			this.goalSelector.addGoal(5, new GoHomeGoal(this, 1.0F, getHomePos()));
-		}
+		this.goalSelector.addGoal(2, new MoveTowardsRestrictionGoal(this, 1.2D));
+
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
@@ -135,13 +135,6 @@ public class BoundSoulEntity extends MonsterEntity {
 		super.defineSynchedData();
 		this.entityData.define(HOME_POS, BlockPos.ZERO);
 	}
-
-//	@Override
-//	@Nullable
-//	public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT compound) {
-//		this.setHomePos(BlockPos.ZERO);
-//		return super.finalizeSpawn(world, difficulty, spawnReason, entityData, compound);
-//	}
 
 	/**
 	 * 
@@ -182,7 +175,6 @@ public class BoundSoulEntity extends MonsterEntity {
 						this.setItemSlot(EquipmentSlotType.HEAD, ItemStack.EMPTY);
 					}
 				}
-
 				flag = false;
 			}
 
@@ -194,13 +186,14 @@ public class BoundSoulEntity extends MonsterEntity {
 		// regeneration
 		if (hasHome()) {
 			TileEntity homeTileEntity = this.level.getBlockEntity(getHomePos());
-			if (homeTileEntity == null) { // TODO update to check instanceof gravestone
-				return;
-			}
-			if (!this.dead && this.tickCount % 20 == 0 && this.getHealth() > 0
-					&& this.getHealth() < this.getMaxHealth()) {
-	
-				this.setHealth(this.getHealth() + 1.0F);
+			if (homeTileEntity == null || !(homeTileEntity instanceof GravestoneProximitySpawnerTileEntity)) {
+				Treasure.LOGGER.debug("not a valid home"); // TEMP remove or spammed
+				setHomePos(BlockPos.ZERO);
+			} else {
+				if (!this.dead && this.tickCount % 20 == 0 && this.getHealth() > 0
+						&& this.getHealth() < this.getMaxHealth()) {
+					this.setHealth(this.getHealth() + 1.0F);
+				}
 			}
 		}
 		super.aiStep();
@@ -221,7 +214,7 @@ public class BoundSoulEntity extends MonsterEntity {
 	 * @return
 	 */
 	public boolean hasHome() {
-		if (getHomePos() != null && getHomePos() != BlockPos.ZERO) {
+		if (getHomePos() != null && !getHomePos().equals(BlockPos.ZERO)) {
 			return true;
 		}
 		return false;

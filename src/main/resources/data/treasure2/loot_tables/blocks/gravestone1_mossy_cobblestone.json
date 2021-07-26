@@ -1,15 +1,32 @@
 {
-  "type": "minecraft:block",
-  "pools": [
-    {
-      "name": "gravestone1_mossy_cobblestone",
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "treasure2:gravestone1_mossy_cobblestone"
-        }
-      ]
-    }
-  ]
+	"type": "minecraft:block",
+	"pools": [{
+			"rolls": 1,
+			"entries": [{
+				"entryName": "mossy_cobblestone",
+				"type": "minecraft:item",
+				"name": "minecraft:mossy_cobblestone"
+			}],
+			"conditions": [
+				{
+					"condition": "minecraft:random_chance",
+					"chance": 0.75
+				}
+			]
+		},
+		{
+			"rolls": 1,
+			"entries": [{
+				"entryName": "gravestone",
+				"type": "minecraft:item",
+				"name": "treasure2:gravestone1_mossy_cobblestone"
+			}],
+			"conditions": [
+				{
+					"condition": "minecraft:random_chance",
+					"chance": 0.25
+				}
+			]
+		}
+	]
 }

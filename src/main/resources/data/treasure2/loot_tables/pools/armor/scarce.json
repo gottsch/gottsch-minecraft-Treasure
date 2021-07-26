@@ -111,7 +111,19 @@
 							"function": "minecraft:enchant_randomly"
 						}
 					]
-				}
+				},
+				{
+					"entryName": "turtle_helmet",
+					"type": "minecraft:item",
+					"name": "minecraft:turtle_helmet",
+					"weight": 20
+				},
+				{
+					"entryName": "iron_horse_armor",
+					"type": "minecraft:item",
+					"name": "minecraft:iron_horse_armor",
+					"weight": 8
+				}				
 			]
 		}
 	]
