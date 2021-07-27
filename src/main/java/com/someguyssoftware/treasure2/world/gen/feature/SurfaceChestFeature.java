@@ -129,34 +129,16 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		if (chunksSinceLastDimensionChest.get(dimension.toString())/*chunksSinceLastChest*/ > TreasureConfig.CHESTS.surfaceChests.minChunksPerChest.get()) {
 			Treasure.LOGGER.debug("passed min chunks test");
 			// the get first surface y (could be leaves, trunk, water, etc)
-//			int ySpawn = seedReader.getChunk(pos).getHeight(Heightmap.Type.WORLD_SURFACE, pos.getX() + WorldInfo.CHUNK_RADIUS, pos.getZ() + WorldInfo.CHUNK_RADIUS);
-			
-//			int landHeight = generator.getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Type.WORLD_SURFACE_WG) + 1;
-//			ICoords spawnCoords = new Coords(centerOfChunk.getX(), landHeight, centerOfChunk.getZ());
 			ICoords centerOfChunk = new Coords(pos.offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1));
 			ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, generator, centerOfChunk	);
 			if (spawnCoords == WorldInfo.EMPTY_COORDS) {
 				Treasure.LOGGER.debug("invalid surface type");
 				return false;
 			}
-			Treasure.LOGGER.debug("height @ spawnCoords2 (landHeight/surface coords) -> {}", spawnCoords.toShortString());
-
-//Treasure.LOGGER.debug("checking for height @ -> {}", spawnCoords.toShortString());
-//			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(seedReader, spawnCoords);
-//ICoords surfaceCoords = new Coords(pos.getX(), 100, pos.getY());
-//ICoords surfaceCoords = new Coords(spawnCoords);
-//			if (surfaceCoords == null) {
-//				Treasure.LOGGER.debug("invalid surface type");
-//				return false;
-//			}
-//			Treasure.LOGGER.debug("surface coords -> {}", surfaceCoords.toShortString());
-			// TODO check if surface is land
-			
-//			Treasure.LOGGER.debug("ySpawn -> {}", surfaceCoords.getY());
-//			spawnCoords = spawnCoords.withY(surfaceCoords.getY());
 			Treasure.LOGGER.debug("spawns coords -> {}", spawnCoords.toShortString());
 
-			chunksSinceLastDimensionChest.put(dimension.toString(), 0);
+			// TODO this isn't right - remove
+//			chunksSinceLastDimensionChest.put(dimension.toString(), 0);
 
 			// determine what type to generate
 			Rarity rarity = (Rarity) TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST).get(random.nextInt(TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST).size()));
@@ -168,10 +150,10 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 			}
 			Treasure.LOGGER.debug("config for rarity -> {} = {}", rarity, chestConfig);
 			// get the chunks for dimensional rarity chest
-			int chunksPerRarity = chunksSinceLastDimensionRarityChest.get(dimension.toString()).get(rarity);//chunksSinceLastRarityChest.get(rarity);
+			int chunksPerRarityCount = chunksSinceLastDimensionRarityChest.get(dimension.toString()).get(rarity);
 
-			Treasure.LOGGER.debug("chunks per rarity {} -> {}, config chunks per chest -> {}", rarity, chunksPerRarity, chestConfig.getChunksPerChest());
-			if (chunksPerRarity >= chestConfig.getChunksPerChest()) {
+			Treasure.LOGGER.debug("chunks per rarity {} -> {}, config chunks per chest -> {}", rarity, chunksPerRarityCount, chestConfig.getChunksPerChest());
+			if (chunksPerRarityCount >= chestConfig.getChunksPerChest()) {
 				Treasure.LOGGER.debug("config gen prob -> {}", chestConfig.getGenProbability());
 				// 1. test if chest meets the probability criteria
 				if (!RandomHelper.checkProbability(random, chestConfig.getGenProbability())) {
@@ -198,9 +180,16 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 					return false;
 				}				
 
+				// TODO change this to decrement by 10% AND then if successful, reset to 0
 				// reset chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
-				chunksSinceLastDimensionRarityChest.get(dimension.toString()).put(rarity, 0);
+//				chunksSinceLastDimensionRarityChest.get(dimension.toString()).put(rarity, 0);
 
+				if (rarity == Rarity.COMMON || rarity == Rarity.UNCOMMON) {
+					chunksSinceLastDimensionRarityChest.get(dimension.toString()).put(rarity, 0);
+				} else {
+					chunksSinceLastDimensionRarityChest.get(dimension.toString()).put(rarity, new Double(chunksPerRarityCount - chunksPerRarityCount*0.1).intValue());
+				}
+				
 				// generate the chest/pit/chambers
 				Treasure.LOGGER.debug("Attempting to generate pit/chest.");
 				Treasure.LOGGER.debug("rarity -> {}", rarity);
@@ -216,6 +205,8 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 					TreasureData.CHEST_REGISTRIES.get(dimension.toString()).register(spawnCoords.toShortString(), new ChestInfo(rarity, spawnCoords));
 					// reset the chunk counts
 					chunksSinceLastDimensionChest.put(dimension.toString(), 0);
+					// TODO reset the chunk rarity count
+					chunksSinceLastDimensionRarityChest.get(dimension.toString()).put(rarity, 0);
 				}				
 			}
 
@@ -426,7 +417,6 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	 */
 	public static IPitGenerator<GeneratorResult<ChestGeneratorData>> selectPitGenerator(Random random) {
 		PitTypes pitType = RandomHelper.checkProbability(random, TreasureConfig.PITS.pitStructureProbability.get()) ? PitTypes.STRUCTURE : PitTypes.STANDARD;
-//		PitTypes pitType = PitTypes.STANDARD;
 		Treasure.LOGGER.debug("using pit type -> {}", pitType);
 		List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerators = TreasureData.PIT_GENS.row(pitType).values().stream()
 				.collect(Collectors.toList());

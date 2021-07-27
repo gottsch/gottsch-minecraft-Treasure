@@ -110,22 +110,16 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 	 */
 	@Override
 	public void renderLocks(AbstractTreasureChestTileEntity tileEntity, MatrixStack matrixStack, IRenderTypeBuffer renderBuffer, int combinedLight, int combinedOverlay) {
-//		 Treasure.LOGGER.debug("=====================================================================");
 		if (tileEntity.getLockStates().isEmpty()) {
 			return;
 		}
 
 		// render locks
-		//		TODO okte.getLockStates().forEach(lockState -> {});
 		for (LockState lockState : tileEntity.getLockStates()) {
 
 			if (lockState.getLock() != null) {
 				// convert lock to an item stack
 				ItemStack lockStack = new ItemStack(lockState.getLock());
-//				if (lockState.getSlot().getFace() != null) {
-//					Treasure.LOGGER.info("Render LS:" + lockState);
-//				}
-				
 				matrixStack.pushPose();
 				
 				// NOTE when rotating the item to match the face of chest, must adjust the

@@ -82,7 +82,7 @@ public class Treasure implements IMod {
 				FMLPaths.CONFIGDIR.get().resolve("treasure2-common.toml"));
 
 		// test accessing the logging properties
-		TreasureConfig.LOGGING.filename.get();
+//		TreasureConfig.LOGGING.filename.get();
 
 		// needs to be registered here instead of @Mod.EventBusSubscriber because we need to pass in a constructor argument
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
@@ -105,25 +105,6 @@ public class Treasure implements IMod {
 	 */
 	@SuppressWarnings("deprecation")
 	private void setup(final FMLCommonSetupEvent event) {
-//		TreasureData.initializeData();
-//		Treasure.lootTableMaster = new TreasureLootTableMaster2(Treasure.instance);
-//		
-//		DeferredWorkQueue.runLater(TreasureFeatures::addFeatureToBiomes);
-		
-
-//		InputStream is = Dungeons2.instance.getClass().getResourceAsStream(BUILT_IN_STYLE_SHEET_PATH);
-//		URL url = this.getClass().getResource("/meta");
-//		URL url = Treasure.class.getClassLoader().getResource("/meta");
-//		Treasure.LOGGER.info("setup resource URL -> {}", url.toString());
-//		
-//		List<IResource> r;
-//		try {
-//			r = Minecraft.getInstance().getResourceManager().getAllResources(new ResourceLocation("treasure2" ,"meta/treasure2/structures"));
-//			Treasure.LOGGER.info("testing resource manager -> {}", r.get(0).getLocation());
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 	
 	private void clientSetup(final FMLClientSetupEvent event) {
@@ -143,154 +124,6 @@ public class Treasure implements IMod {
 		Treasure.LOGGER.info("in onServerStarted");
 	}
 
-	
-//	// NOTE can't make final here as it is set during world load
-//	// loot tables management
-//	public static TreasureLootTableMaster LOOT_TABLES;
-//
-//	/*
-//	 * Treasure Creative Tab Must be initialized <b>before</b> any registry events
-//	 * so that it is available to assign to blocks and items.
-//	 */
-//	public static CreativeTabs TREASURE_TAB = new CreativeTabs(CreativeTabs.getNextID(),
-//			Treasure.MODID + ":" + TreasureConfig.TREASURE_TAB_ID) {
-//		@SideOnly(Side.CLIENT)
-//		public ItemStack getTabIconItem() {
-//			return new ItemStack(TreasureItems.TREASURE_TAB, 1);
-//		}
-//	};
-//
-//	// forge world generators
-//	public final static Map<WorldGenerators, ITreasureWorldGenerator> WORLD_GENERATORS = new HashMap<>();
-//
-//	// template manager
-//	public static TreasureTemplateManager TEMPLATE_MANAGER;
-//
-//	// meta manager // NOTE can't be final as Treasure.instance is required.
-//	public static TreasureMetaManager META_MANAGER;
-//
-//	public static TreasureDecayManager DECAY_MANAGER;
-//
-//	// TEMP home
-//	public static SimpleNetworkWrapper simpleNetworkWrapper; // used to transmit your network messages
-//
-//	private static TreasureConfig config;
-//	/**
-//	 * 
-//	 */
-//	public Treasure() {
-//		Treasure.instance = this;
-//	}
-//
-//	/**
-//	 * 
-//	 * @param event
-//	 */
-//	@Override
-//	@EventHandler
-//	public void preInt(FMLPreInitializationEvent event) {
-//		super.preInt(event);
-//
-//		// initialize/reload the config
-//		((TreasureConfig) getConfig()).init();
-//
-//		// register additional events
-//		MinecraftForge.EVENT_BUS.register(new LogoutEventHandler(getInstance()));
-//		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler(getInstance()));
-//		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
-//		MinecraftForge.EVENT_BUS.register(new MimicEventHandler(getInstance()));
-//
-//		// configure logging
-//		// create a rolling file appender
-//		Appender appender = createRollingFileAppender(Treasure.instance, Treasure.NAME + "Appender",
-//				(ILoggerConfig) getConfig());
-//		// add appender to mod logger
-//		addAppenderToLogger(appender, Treasure.NAME, (ILoggerConfig) getConfig());
-//		// add appender to the GottschCore logger
-//		addAppenderToLogger(appender, GottschCore.instance.getName(), (ILoggerConfig) getConfig());
-//
-//		// register the GUI handler
-//		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-//
-//		int PARTICLE_MESSAGE_ID = 14;
-//		simpleNetworkWrapper = NetworkRegistry.INSTANCE.newSimpleChannel("treasure2_channel");
-//		simpleNetworkWrapper.registerMessage(PoisonMistMessageHandlerOnServer.class, PoisonMistMessageToServer.class,
-//				PARTICLE_MESSAGE_ID, Side.SERVER);
-//		simpleNetworkWrapper.registerMessage(WitherMistMessageHandlerOnServer.class, WitherMistMessageToServer.class,
-//				15, Side.SERVER);
-//		simpleNetworkWrapper.registerMessage(CharmMessageHandlerOnClient.class, CharmMessageToClient.class,
-//				25, Side.CLIENT);
-//		
-//		// add capabilities
-//		CapabilityManager.INSTANCE.register(ICharmCapability.class, new CharmStorage(), CharmCapability::new);
-//		CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingStorage(), KeyRingCapability::new);
-//		
-//		// register custom loot functions
-//		LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
-//		LootFunctionManager.registerFunction(new SetCharms.Serializer());
-//	}
-//
-//	/**
-//	 * 
-//	 * @param event
-//	 */
-//	@EventHandler
-//	public void serverStarted(FMLServerStartingEvent event) {
-//		if (!getConfig().isModEnabled())
-//			return;
-//
-//		// add a show version command
-//		event.registerServerCommand(new ShowVersionCommand(this));
-//
-//		/*
-//		 * FOR DEBUGGING ONLY register additional commands
-//		 */
-//		event.registerServerCommand(new SpawnChestCommand());
-//		event.registerServerCommand(new SpawnDebugPitCommand());
-//		event.registerServerCommand(new SpawnPitOnlyCommand());
-//		event.registerServerCommand(new SpawnPitStructureOnlyCommand());
-//		event.registerServerCommand(new SpawnWellStructureCommand());
-//		event.registerServerCommand(new SpawnWitherTreeCommand());
-//		event.registerServerCommand(new SpawnRuinsCommand());
-//		event.registerServerCommand(new SpawnOasisCommand());
-//	}
-//
-//	/**
-//	 * 
-//	 */
-//	@Override
-//	@EventHandler
-//	public void init(FMLInitializationEvent event) {
-//		// don't process is mod is disabled
-//		if (!getConfig().isModEnabled())
-//			return;
-//
-//		super.init(event);
-//
-//		// register world generators
-//		WORLD_GENERATORS.put(WorldGenerators.SURFACE_CHEST, new SurfaceChestWorldGenerator());
-//		WORLD_GENERATORS.put(WorldGenerators.SUBMERGED_CHEST, new SubmergedChestWorldGenerator());
-//		WORLD_GENERATORS.put(WorldGenerators.WELL, new WellWorldGenerator());
-//		WORLD_GENERATORS.put(WorldGenerators.WITHER_TREE, new WitherTreeWorldGenerator());
-//		WORLD_GENERATORS.put(WorldGenerators.GEM, new GemOreWorldGenerator());
-//		WORLD_GENERATORS.put(WorldGenerators.OASIS, new OasisWorldGenerator());
-//
-//		int genWeight = 0;
-//		for (Entry<WorldGenerators, ITreasureWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
-//			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);
-//		}
-//
-//		// add the loot table managers
-//		LOOT_TABLES = new TreasureLootTableMaster(Treasure.instance, "", "loot_tables");		
-//		
-//		TEMPLATE_MANAGER = new TreasureTemplateManager(Treasure.instance, "/structures",
-//				FMLCommonHandler.instance().getDataFixer());
-//
-//		META_MANAGER = new TreasureMetaManager(Treasure.instance, "meta");
-//
-//		DECAY_MANAGER = new TreasureDecayManager(Treasure.instance, "decay");
-//	}
-//
 //	/**
 //	 * 
 //	 */
@@ -319,11 +152,7 @@ public class Treasure implements IMod {
 //		TreasureBlocks.PAINTING_BLOCKS_SAND.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_SAND);
 //		TreasureBlocks.PAINTING_BLOCKS_WATER.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_WATER);
 //		TreasureBlocks.PAINTING_BLOCKS_WOOD.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_WOOD);
-//
-//		// associate ore blocks with items
-//		TreasureBlocks.SAPPHIRE_ORE.setItem(TreasureItems.SAPPHIRE);
-//		TreasureBlocks.RUBY_ORE.setItem(TreasureItems.RUBY);
-//	}
+
 
 
 	@Override
@@ -341,7 +170,4 @@ public class Treasure implements IMod {
 		return Treasure.config;
 	}
 
-//	public static TreasureLootTableMaster2 getLootTableMaster() {
-//		return lootTableMaster;
-//	}
 }

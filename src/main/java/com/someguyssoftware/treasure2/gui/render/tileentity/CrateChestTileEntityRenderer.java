@@ -44,7 +44,6 @@ public class CrateChestTileEntityRenderer extends AbstractChestTileEntityRendere
 		BlockState state = tileEntity.getBlockState();
 		Direction facing = Direction.NORTH;
 		if (hasWorld) {
-//			facing = state.getValue(StandardChestBlock.FACING);
 			facing = AbstractChestBlock.getFacing(state);
 		}
 

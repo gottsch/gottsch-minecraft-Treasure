@@ -180,7 +180,11 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 		incrementDimensionalTreeChunkCount(dimensionName.toString());
 
 		// test if min chunks was met
-		if (chunksSinceLastDimensionTree.get(dimensionName.toString()) > TreasureConfig.WITHER_TREE.chunksPerTree.get()) {
+		int chunksSinceLastCount = chunksSinceLastDimensionTree.get(dimensionName.toString());
+		if (chunksSinceLastCount > TreasureConfig.WITHER_TREE.chunksPerTree.get()) {
+			// reduce count by 20% (if fails - results in a quicker retry)
+			chunksSinceLastDimensionTree.put(dimensionName.toString(), new Double(chunksSinceLastCount - chunksSinceLastCount * 0.2).intValue());
+			
 			// spawn @ middle of chunk
 			//			BlockPos centerOfChunk = pos.offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1);
 			//			int landHeight = generator.getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Type.WORLD_SURFACE_WG) + 1;
@@ -191,7 +195,6 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 				Treasure.LOGGER.debug("returning due to surface coords == null or EMPTY_COORDS");
 				return false;
 			}
-
 
 			// 1. test if chest meets the probability criteria
 			if (!RandomHelper.checkProbability(random, TreasureConfig.WITHER_TREE.genProbability.get())) {
@@ -212,8 +215,8 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 			}	
 			
 			// reset chunks since last tree regardless of successful generation - results in a more rare, realistic and configurable generation.
-			chunksSinceLastDimensionTree.put(dimensionName.toString(), 0);
-
+//			chunksSinceLastDimensionTree.put(dimensionName.toString(), 0);
+			
 			// generate the well
 			Treasure.LOGGER.debug("Attempting to generate a wither tree...");
 			GeneratorResult<GeneratorData> result = generate(seedReader, generator, random, spawnCoords);
@@ -222,6 +225,8 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 				// add to registries
 				TreasureData.CHEST_REGISTRIES.get(dimensionName.toString()).register(spawnCoords.toShortString(), new ChestInfo(Rarity.SCARCE, spawnCoords));
 				TreasureData.WITHER_TREE_REGISTRIES.get(dimensionName.toString()).register(spawnCoords);
+				// reset chunk count
+				chunksSinceLastDimensionTree.put(dimensionName.toString(), 0);
 			}	
 		}
 

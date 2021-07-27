@@ -248,6 +248,13 @@ public class TreasureBlocks {
 					Block.box(6, 0, 2, 10.8, 12, 14),	// E
 	        };
 	        
+			VoxelShape[] gravestoneBounds2 = new VoxelShape[] {
+				Block.box(2, 0, 6, 14, 22, 10.8), // S
+				Block.box(6, 0,2, 10.8, 22, 14), // W
+				Block.box(2, 0,6, 14, 22, 10.8), // N
+				Block.box(6, 0, 2, 10.8, 22, 14), // E
+			};
+			
 	        // skull and crossbones
 	        VoxelShape[] skullCrossbonesBounds = new VoxelShape[] {
 					Block.box(1, 0, 1, 15, 6, 15),	// S
@@ -358,45 +365,45 @@ public class TreasureBlocks {
 			GRAVESTONE1_SMOOTH_QUARTZ = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE1_SMOOTH_QUARTZ_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
 	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
 			GRAVESTONE2_STONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_STONE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE2_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_COBBLESTONE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE2_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_MOSSY_COBBLESTONE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE2_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_POLISHED_GRANITE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE2_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_POLISHED_ANDESITE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE2_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_POLISHED_DIORITE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE2_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_OBSIDIAN_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE2_SMOOTH_QUARTZ = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_SMOOTH_QUARTZ_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE3_STONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_STONE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE3_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_COBBLESTONE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE3_MOSSY_COBBLESTONE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_MOSSY_COBBLESTONE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE3_POLISHED_GRANITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_POLISHED_GRANITE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE3_POLISHED_ANDESITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_POLISHED_ANDESITE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE3_POLISHED_DIORITE = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_POLISHED_DIORITE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE3_OBSIDIAN = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_OBSIDIAN_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 			GRAVESTONE3_SMOOTH_QUARTZ = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_SMOOTH_QUARTZ_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 
 	        // gravestone spawners
 	        GRAVESTONE1_SPAWNER_STONE = (GravestoneSpawnerBlock) new GravestoneSpawnerBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE1_SPAWNER_STONE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
 	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
 	        GRAVESTONE2_SPAWNER_COBBLESTONE = (GravestoneSpawnerBlock) new GravestoneSpawnerBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE2_SPAWNER_COBBLESTONE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 	        GRAVESTONE3_SPAWNER_OBSIDIAN = (GravestoneSpawnerBlock) new GravestoneSpawnerBlock(Treasure.MODID, TreasureConfig.BlockID.GRAVESTONE3_SPAWNER_OBSIDIAN_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
-	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds);
+	                .strength(3.0F).sound(SoundType.STONE)).setBounds(gravestoneBounds2);
 	        
 	        // other markers
 	        SKULL_CROSSBONES = new GravestoneBlock(Treasure.MODID, TreasureConfig.BlockID.SKULL_CROSSBONES_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)

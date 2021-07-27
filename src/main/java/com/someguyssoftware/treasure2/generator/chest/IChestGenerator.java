@@ -233,18 +233,18 @@ public interface IChestGenerator {
 			// TODO add Vector/BlockPos conversions in a util
 //		}
 		
-		LOGGER.debug("loot context -> {}", lootContext);
+//		LOGGER.debug("loot context -> {}", lootContext);
 
 		for (LootPoolShell pool : lootPoolShells) {
 			LOGGER.debug("processing pool (from poolShell) -> {}", pool.getName());
 			// go get the vanilla managed pool
 			LootPool lootPool = lootTable.getPool(pool.getName());
-			LOGGER.debug("loot pool object (from lootTable) -> {}", lootPool);
+//			LOGGER.debug("loot pool object (from lootTable) -> {}", lootPool);
 			
 			if (lootPool != null) {
 				// geneate loot from pools
 				if (pool.getName().equalsIgnoreCase("treasure")) {
-					lootPool.addRandomItems(itemStacks::add, lootContext);
+					lootPool.addRandomItems(treasureStacks::add, lootContext);
 				}
 				else {
 					LOGGER.debug("generating loot from loot pool -> {}", pool.getName());
@@ -255,10 +255,10 @@ public interface IChestGenerator {
 		LOGGER.debug("size of treasure stacks -> {}", treasureStacks.size());
 		LOGGER.debug("size of item stacks -> {}", itemStacks.size());
 		
-		List<ItemStack> tempStacks = lootTable.getRandomItems(lootContext);
-		tempStacks.forEach(stack -> {
-			LOGGER.debug("gen from tempStacks -> {}", stack.getDisplayName().getString());
-		});
+//		List<ItemStack> tempStacks = lootTable.getRandomItems(lootContext);
+//		tempStacks.forEach(stack -> {
+//			LOGGER.debug("gen from tempStacks -> {}", stack.getDisplayName().getString());
+//		});
 
 		// record original item size (max number of items to pull from final list)
 		int lootItemSize = itemStacks.size();

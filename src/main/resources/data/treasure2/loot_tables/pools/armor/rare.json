@@ -83,9 +83,9 @@
 					]
 				},
 				{
-					"entryName": "gold_horse_armor",
+					"entryName": "golden_horse_armor",
 					"type": "minecraft:item",
-					"name": "minecraft:gold_horse_armor",
+					"name": "minecraft:golden_horse_armor",
 					"weight": 8
 				}				
 			]

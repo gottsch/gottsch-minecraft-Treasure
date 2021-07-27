@@ -110,7 +110,7 @@
 				{
 					"entryName": "slow_falling_tipped_arrow",
 					"type": "minecraft:item",
-					"name": "minecraft:tipped_arrow{Potion:\"minecraft:slow_falling\"}",
+					"name": "minecraft:tipped_arrow",
 					"weight": 15,
 					"functions": [
 						{

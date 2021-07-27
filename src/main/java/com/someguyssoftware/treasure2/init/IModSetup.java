@@ -11,9 +11,13 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
+
 /**
  * TODO this might need to merge with TreasureSetup if everything is going to be static
  * TODO move to GottschCore
+ *TODO pass in the config for logging properties
  * @author Mark Gottschling on Jan 5, 2021
  *
  */
@@ -35,7 +39,7 @@ public interface IModSetup {
 		final Configuration config = ctx.getConfiguration();
 
 		// create a sized-based trigger policy, using config setting for size.
-		SizeBasedTriggeringPolicy policy = SizeBasedTriggeringPolicy.createPolicy(/*modConfig.getLoggerSize()*/"1000K");
+		SizeBasedTriggeringPolicy policy = SizeBasedTriggeringPolicy.createPolicy(TreasureConfig.LOGGING.size.get());
 		// create the pattern for log statements
 		PatternLayout layout = PatternLayout.newBuilder().withPattern("%d [%t] %p %c | %F:%L | %m%n")
 				.withAlwaysWriteExceptions(true).build();
@@ -55,8 +59,9 @@ public interface IModSetup {
 		// create a appender reference
 		AppenderRef ref = AppenderRef.createAppenderRef("File", null, null);
 		AppenderRef[] refs = new AppenderRef[] {ref};
-		
-		LoggerConfig loggerConfig = LoggerConfig.createLogger(false, Level.DEBUG, modName, "true", refs, null, config, null );
+System.out.println("config logging level -> " + TreasureConfig.LOGGING.level.get());
+System.out.println("Level.toLevel() -> " + Level.toLevel(TreasureConfig.LOGGING.level.get()));
+		LoggerConfig loggerConfig = LoggerConfig.createLogger(false, /*Level.toLevel(TreasureConfig.LOGGING.level.get(), Level.INFO)*/Level.INFO, modName, "true", refs, null, config, null );
 		loggerConfig.addAppender(appender, null, null);
 		config.addLogger(modName, loggerConfig);
 		

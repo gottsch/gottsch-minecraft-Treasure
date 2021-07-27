@@ -57,11 +57,11 @@ public abstract class AbstractTreasureFallingBlock extends ModFallingBlock imple
 	}
 
 	/**
-	 * Called When an Entity Collided with the Block. Teleport and flag target.
+	 * Called When an Entity Collided with the Block.
 	 */
 	@Override
 	public void stepOn(World world, BlockPos pos, Entity entityIn) {
-		Treasure.LOGGER.debug("stepped on block...");
+//		Treasure.LOGGER.debug("stepped on block...");
 		// only on server
 		if (!WorldInfo.isClientSide(world)) {
 			if (!(entityIn instanceof PlayerEntity)) {

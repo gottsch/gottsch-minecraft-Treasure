@@ -58,7 +58,6 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 	// the number of blocks of half a chunk (radius) (a chunk is 16x16)
 	public static final int CHUNK_RADIUS = 8;
 
-	// private int chunksSinceLastWell;
     private Map<String, Integer> chunksSinceLastDimensionWell = new HashMap<>();
 
 	/**
@@ -110,17 +109,18 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 		
         GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 
-        		// test if min chunks was met
-		if (chunksSinceLastDimensionWell.get(dimensionName.toString()) > TreasureConfig.WELLS.chunksPerWell.get()) {
-//			Treasure.LOGGER.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastWell, TreasureConfig.minChunksPerWell));
+        // test if min chunks was met
+        int chunksSinceLastCount = chunksSinceLastDimensionWell.get(dimensionName.toString());
+		if (chunksSinceLastCount > TreasureConfig.WELLS.chunksPerWell.get()) {
+			Treasure.LOGGER.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastCount, TreasureConfig.WELLS.chunksPerWell.get()));
 
-//			int ySpawn = seedReader.getLevel().getChunk(pos).getHeight(Heightmap.Type.WORLD_SURFACE, WorldInfo.CHUNK_RADIUS - 1, WorldInfo.CHUNK_RADIUS - 1);
 			int landHeight = generator.getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Type.WORLD_SURFACE_WG) + 1;
-//			spawnCoords = spawnCoords.withY(ySpawn);
 			ICoords spawnCoords = new Coords(centerOfChunk.getX(), landHeight, centerOfChunk.getZ());
-
 			Treasure.LOGGER.debug("spawns coords -> {}", spawnCoords.toShortString());
 
+			// reduce count by 20% (if fails - results in a quicker retry)
+			chunksSinceLastDimensionWell.put(dimensionName.toString(), new Double(chunksSinceLastCount - chunksSinceLastCount * 0.2).intValue());
+						
 			// determine what type to generate
 			Wells well = Wells.values()[random.nextInt(Wells.values().length)];
 			IWellsConfig wellConfig = TreasureConfig.WELLS;
@@ -150,10 +150,9 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 			
 			// 3. check against all registered wells
 			if (checkWellProximity(seedReader, spawnCoords, TreasureConfig.WELLS.minDistancePerWell.get())) {
-//				Treasure.LOGGER.debug("The distance to the nearest well is less than the minimun required.");
+				Treasure.LOGGER.debug("The distance to the nearest well is less than the minimun required.");
 				return false;
 			}		
-			incrementDimensionalChunkCount(dimensionName.toString());
 			
 			// generate the well NOTE use the seedReader, not the level
 			Treasure.LOGGER.debug("Attempting to generate a well");
@@ -162,6 +161,7 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 			if (result.isSuccess()) {
 				// add to registry
 				TreasureData.WELL_REGISTRIES.get(dimensionName.toString()).register(spawnCoords);
+				// reset chunk count
 				chunksSinceLastDimensionWell.put(dimensionName.toString(), 0);
 			}
 			
@@ -198,6 +198,7 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 			// calculate the distance to the poi
 			double distance = coords.getDistanceSq(wellCoords);
 			if (distance < minDistanceSq) {
+				Treasure.LOGGER.debug("distance -> {} less than required -> {}", distance, minDistanceSq);
 				return true;
 			}
 		}

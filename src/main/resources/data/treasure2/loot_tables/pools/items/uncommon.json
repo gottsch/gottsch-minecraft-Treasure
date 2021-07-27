@@ -235,9 +235,9 @@
 					]
 				},
 				{
-				"entryName": "latern",
+				"entryName": "lantern",
 					"type": "minecraft:item",
-					"name": "minecraft:latern",
+					"name": "minecraft:lantern",
 					"weight": 25,
 					"functions": [
 						{
