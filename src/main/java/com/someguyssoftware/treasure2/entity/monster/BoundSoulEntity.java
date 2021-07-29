@@ -221,7 +221,7 @@ public class BoundSoulEntity extends MonsterEntity {
 	}
 
 	public void setHomePos(BlockPos pos) {
-		Treasure.LOGGER.debug("setting bound soul home pos -> {}", pos.toShortString());
+		Treasure.LOGGER.debug("setting bound soul home pos -> {}", pos.toString());
 		this.entityData.set(HOME_POS, pos);
 	}
 

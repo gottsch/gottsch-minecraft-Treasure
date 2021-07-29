@@ -54,7 +54,7 @@ public class GemOreFeature extends OreFeature {
 	public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random rand, BlockPos pos, OreFeatureConfig config) {
 //		String dimensionName = seedReader.getLevel().getDimension().getType().getRegistryName().toString();
 //		ResourceLocation dimensionName = WorldInfo.getDimension(seedReader.getLevel());
-//		Treasure.LOGGER.debug("placing @ {} in biome category -> {}", pos.toShortString(), seedReader.getBiome(pos).getBiomeCategory().getName());
+//		Treasure.LOGGER.debug("placing @ {} in biome category -> {}", pos.toString(), seedReader.getBiome(pos).getBiomeCategory().getName());
 //		Treasure.LOGGER.debug("dimension -> {}, location -> {}", seedReader.getLevel().dimension().getRegistryName(), seedReader.getLevel().dimension().location());
 		// ore only generates in overworld
 
