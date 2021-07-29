@@ -3,6 +3,13 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
+import static com.someguyssoftware.treasure2.Treasure.LOGGER;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.someguyssoftware.gottschcore.loot.LootPoolShell;
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
@@ -19,6 +26,7 @@ import net.minecraft.data.loot.ChestLootTables;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
+import net.minecraft.loot.TableLootEntry;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -90,16 +98,46 @@ public class WorldEventHandler {
 
 //	@SubscribeEvent
 //	public void lootLoad(LootTableLoadEvent event) {
+//
 //		if (event.getName().equals(LootTables.SIMPLE_DUNGEON/*"minecraft:chests/simple_dungeon"*/)) {
+//			Treasure.LOGGER.debug("processing loot table event for table -> {}", event.getName().toString());
 //			// load a loot table
+//			/* TODO this doesn't load because it is not mapped - only the high level chests are, not the pools
+//			 * must update to mimic INJECT tables but for ALL pool tables ie mapping and registering,
+//			 * then they will be available through the table master
+//			 */
+//
 //			ResourceLocation location = new ResourceLocation(Treasure.MODID, "pools/treasure/scarce");
+//			Optional<LootTableShell>lootTableShell = TreasureLootTableRegistry.getLootTableMaster().getLootTableByResourceLocation(location);
+//			if (lootTableShell.isPresent()) {
+//				Treasure.LOGGER.debug("using loot table shell -> {}, {}", lootTableShell.get().getCategory(), lootTableShell.get().getRarity());
+//				List<LootPoolShell> lootPoolShells = lootTableShell.get().getPools();
+//				if (lootPoolShells != null && lootPoolShells.size() > 0) {
+//					LOGGER.debug("# of pools -> {}", lootPoolShells.size());
+//				}
+//			}
+//			else {
+//				Treasure.LOGGER.debug("can't find loot table shell");
+//			}
+//			// get vanilla table
 //			LootTable lootTable = event.getLootTableManager().get(location);
-//			LootPool pool = lootTable.getPool("treasure");
-//			if (pool ==null) {
+//			Treasure.LOGGER.debug("loot table -> {}", lootTable);
+//			
+//			LootTable vanillaTable = event.getLootTableManager().get(event.getName());
+//			Treasure.LOGGER.debug("vanilla loot table -> {}", vanillaTable);
+//			LootPool pool = lootTable.getPool("scarce_treasure");
+//			if (pool == null) {
 //				Treasure.LOGGER.debug("pool is null");
 //			}
-//			Treasure.LOGGER.debug("attempting to add pool -> {} to table -> {}", pool.getName(), event.getTable());
-//			event.getTable().addPool(pool);		
+//			if (event.getTable() == null) {
+//				Treasure.LOGGER.debug("eventTable is null");
+//			}
+//			else {
+//				Treasure.LOGGER.debug("eventTable -> {}", event.getTable());
+//			}
+////			Treasure.LOGGER.debug("attempting to add pool -> {} to table -> {}", pool.getName(), event.getTable());
+////			event.getTable().addPool(pool);		
+//			vanillaTable.addPool(pool);
 //		}
 //	}
 

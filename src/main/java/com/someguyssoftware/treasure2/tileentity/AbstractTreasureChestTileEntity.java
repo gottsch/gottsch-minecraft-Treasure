@@ -53,7 +53,7 @@ import net.minecraftforge.common.util.Constants;
  * @author Mark Gottschling onDec 22, 2017
  *
  */
-public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITreasureChestTileEntity, IChestLid, ITickableTileEntity, INamedContainerProvider, INameable {
+public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITreasureChestTileEntity, ITickableTileEntity, INamedContainerProvider, INameable {
 	public class GenerationContext {
 		/*
 		 * The rarity level of the loot that the chest will contain
@@ -794,10 +794,10 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		this.facing = Direction.from3DDataValue(facingIndex);
 	}
 
-	@Override
-	public float getOpenNess(float partialTicks) {
-		return MathHelper.lerp(partialTicks, this.prevLidAngle, this.lidAngle);
-	}
+//	@Override
+//	public float getOpenNess(float partialTicks) {
+//		return MathHelper.lerp(partialTicks, this.prevLidAngle, this.lidAngle);
+//	}
 
 	@Override
 	public boolean isSealed() {

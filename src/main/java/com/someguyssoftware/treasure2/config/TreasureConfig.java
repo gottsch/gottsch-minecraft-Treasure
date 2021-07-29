@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.someguyssoftware.gottschcore.config.AbstractConfig;
+import com.someguyssoftware.gottschcore.config.AbstractConfig.Logging;
+import com.someguyssoftware.gottschcore.config.AbstractConfig.Mod;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -58,6 +60,8 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String FOG_CATEGORY = "fog";
 	public static final String WITHER_TREE_CATEGORY = "wither tree";
 
+	public static final Mod MOD;
+	public static final Logging LOGGING;
 	public static final General GENERAL;
 	public static final Chests CHESTS;
     public static final Pits PITS;
@@ -240,15 +244,15 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String GOLD_STRONGBOX_TE_ID = "gold_strongbox_tile_entity";
 		public static final String SAFE_TE_ID = "safe_tile_entity";
 		public static final String DREAD_PIRATE_CHEST_TE_ID = "dread_pirate_chest_tile_entity";
-		public static final String WHALE_BONE_PIRATE_CHEST_TE_ID = "whale_bone_pirate_chest_tile_entity";
+//		public static final String WHALE_BONE_PIRATE_CHEST_TE_ID = "whale_bone_pirate_chest_tile_entity";
 		public static final String COMPRESSOR_CHEST_TE_ID = "compressor_chest_tile_entity";
 		public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
 		public static final String SKULL_CHEST_TE_ID = "skull_chest_tile_entity";
 		public static final String GOLD_SKULL_CHEST_TE_ID = "gold_skull_chest_tile_entity";
 		public static final String CRYSTAL_SKULL_CHEST_TE_ID = "crystal_skull_chest_tile_entity";
 		public static final String CAULDRON_CHEST_TE_ID = "cauldron_chest_tile_entity";
-		public static final String OYSTER_CHEST_TE_ID = "oyster_chest_tile_entity";
-		public static final String CLAM_CHEST_TE_ID = "clam_chest_tile_entity";
+//		public static final String OYSTER_CHEST_TE_ID = "oyster_chest_tile_entity";
+//		public static final String CLAM_CHEST_TE_ID = "clam_chest_tile_entity";
 		public static final String SPIDER_CHEST_TE_ID = "spider_chest_tile_entity";
 		public static final String VIKING_CHEST_TE_ID = "viking_chest_tile_entity";
 		public static final String CARDBOARD_BOX_TE_ID = "cardboard_box_tile_entity";
@@ -530,7 +534,7 @@ public class TreasureConfig extends AbstractConfig {
 					.comment(" The minimum distance, measured in blocks, that two wells can be in proximity.",
 							" Note: Only wells in the wells registry are checked against this property.",
 							" Used in conjunction with the chunks per well and spawn probability.", " Ex. TODO")
-					.defineInRange("Minimum distance per well spawn:", 3000, 100, 32000);
+					.defineInRange("Minimum block distance per well spawn:", 400, 100, 32000);
 			
 			genProbability = builder
 					.comment("The probability that a well will generate.")
@@ -832,7 +836,7 @@ public class TreasureConfig extends AbstractConfig {
 					.comment(" The minimum distance, measured in blocks, that two wither trees can be in proximity.",
 							" Note: Only wither trees in the wither tree registry are checked against this property.",
 							" Used in conjunction with the chunks per wither tree and spawn probability.", " Ex. TODO")
-					.defineInRange("Minimum distance per wither tree spawn:", 6000, 100, 32000);
+					.defineInRange("Minimum block distance per wither tree spawn:", 800, 100, 32000);
 			
 			genProbability = builder
 					.comment(" The probability that a wither tree will spawn.")

@@ -71,15 +71,15 @@ public class Treasure implements IMod {
 		
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, TreasureConfig.COMMON_CONFIG);
 
+		TreasureConfig.loadConfig(TreasureConfig.COMMON_CONFIG,
+				FMLPaths.CONFIGDIR.get().resolve("treasure2-common.toml"));
+		
 		// Register the setup method for modloading
 		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		eventBus.addListener(this::config);
 		eventBus.addListener(this::setup);
 		eventBus.addListener(TreasureSetup::common);
 		eventBus.addListener(this::clientSetup);
-
-		TreasureConfig.loadConfig(TreasureConfig.COMMON_CONFIG,
-				FMLPaths.CONFIGDIR.get().resolve("treasure2-common.toml"));
 
 		// test accessing the logging properties
 //		TreasureConfig.LOGGING.filename.get();

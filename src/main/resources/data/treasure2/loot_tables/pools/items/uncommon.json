@@ -250,9 +250,9 @@
 					]
 				},
 				{
-				"entryName": "soul_latern",
+				"entryName": "soul_lantern",
 					"type": "minecraft:item",
-					"name": "minecraft:soul_latern",
+					"name": "minecraft:soul_lantern",
 					"weight": 15,
 					"functions": [
 						{

@@ -59,9 +59,7 @@ public interface IModSetup {
 		// create a appender reference
 		AppenderRef ref = AppenderRef.createAppenderRef("File", null, null);
 		AppenderRef[] refs = new AppenderRef[] {ref};
-System.out.println("config logging level -> " + TreasureConfig.LOGGING.level.get());
-System.out.println("Level.toLevel() -> " + Level.toLevel(TreasureConfig.LOGGING.level.get()));
-		LoggerConfig loggerConfig = LoggerConfig.createLogger(false, /*Level.toLevel(TreasureConfig.LOGGING.level.get(), Level.INFO)*/Level.INFO, modName, "true", refs, null, config, null );
+		LoggerConfig loggerConfig = LoggerConfig.createLogger(false, Level.toLevel(TreasureConfig.LOGGING.level.get(), Level.INFO), modName, "true", refs, null, config, null );
 		loggerConfig.addAppender(appender, null, null);
 		config.addLogger(modName, loggerConfig);
 		
