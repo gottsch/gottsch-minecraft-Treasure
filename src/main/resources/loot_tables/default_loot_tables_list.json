@@ -31,7 +31,7 @@
 		"pools/treasure/epic.json"
     ],
     "injectResources": [
-    	"inject/uncommon/test.json"
+    	
     ],
 	"chestResources": [
 		"chests/common/general_chest.json",

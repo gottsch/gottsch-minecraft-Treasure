@@ -83,7 +83,7 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 	
 	@Override
 	public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
-//		Treasure.LOGGER.debug("in surface feature for pos @ -> {}", pos.toShortString());
+//		Treasure.LOGGER.debug("in surface feature for pos @ -> {}", pos.toString());
 
 //    	String dimensionName = world.getDimension().getType().getRegistryName().toString();
 		ResourceLocation dimensionName = WorldInfo.getDimension(seedReader.getLevel());
