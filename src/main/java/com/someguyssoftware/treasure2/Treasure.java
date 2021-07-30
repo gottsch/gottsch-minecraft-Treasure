@@ -58,7 +58,7 @@ public class Treasure implements IMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.0.1";
+	protected static final String VERSION = "1.5";
 	protected static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.16.5-master/update.json";
 
 	public static Treasure instance;
@@ -81,9 +81,6 @@ public class Treasure implements IMod {
 		eventBus.addListener(TreasureSetup::common);
 		eventBus.addListener(this::clientSetup);
 
-		// test accessing the logging properties
-//		TreasureConfig.LOGGING.filename.get();
-
 		// needs to be registered here instead of @Mod.EventBusSubscriber because we need to pass in a constructor argument
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
@@ -94,7 +91,6 @@ public class Treasure implements IMod {
 	}
 	
 	public static void clientOnly() {
-//		MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
 		MOD_EVENT_BUS.register(ClientEventHandler.class);
 	}
 	

@@ -7,22 +7,22 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class ExampleItemCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundNBT> {
+public class DurabilityCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundNBT> {
 
     // capabilities for item
-    private final LazyOptional<IEffectiveMaxDamageCapability> holder = LazyOptional.of(EffectiveMaxDamageCapability::new);
+    private final LazyOptional<IDurabilityCapability> holder = LazyOptional.of(DurabilityCapability::new);
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		return TreasureCapabilities.EFFECTIVE_MAX_DAMAGE_CAPABILITY.orEmpty(capability, holder);
+		return TreasureCapabilities.DURABILITY_CAPABILITY.orEmpty(capability, holder);
 	}
 
 
 	@Override
 	public CompoundNBT serializeNBT() {
-		// TODO Auto-generated method stub
-		return null;
+		CompoundNBT tag = (CompoundNBT)TreasureCapabilities.DURABILITY_CAPABILITY.getStorage().writeNBT(TreasureCapabilities.DURABILITY_CAPABILITY, holder, null);
+		return tag;
 	}
 
 

@@ -19,22 +19,15 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
-
 /**
  * 
- * @author Mark Gottschling on Jul 30, 2021
+ * @author Mark Gottschling on Sep 6, 2020
  *
  */
-public class TreasureCapabilities {
+public interface IDurabilityCapability {
+    public static final int MAX_DURABILITY = 1000; 
 
-    /*
-	 * NOTE Ensure to use interfaces in @CapabilityInject, the static capability and in the instance.
-	 */
-	@CapabilityInject(IDurabilityCapability.class)
-    public static Capability<IDurabilityCapability> DURABILITY_CAPABILITY = null;
-    
-    @CapabilityInject(ICharmableCapability.class)
-    public static Capability<ICharmableCapability> CHARMABLE_CAPABILITY = null;
+	public int getDurability();
+
+	public void setDurability(int durability);
 }
