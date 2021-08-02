@@ -42,20 +42,11 @@ public class AnvilEventHandler {
 
 		@SubscribeEvent
 		public static void onAnvilUpdate(AnvilUpdateEvent event) {
-			Treasure.LOGGER.debug("in anvil update event");
 			ItemStack leftItemStack = event.getLeft();
 			ItemStack rightItemStack = event.getRight();
 
-			// add all uses/durability remaining in the right item to the left item.
-			//		if (leftItemStack.getItem() == rightItemStack.getItem() && (leftItemStack.getItem() instanceof KeyItem)) {
-			//			if (leftItemStack.hasCapability(DurabilityCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)
-			//					&& rightItemStack.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)) {
-			//				
-			//			}
-			//		}
 			if (leftItemStack.getCapability(DURABILITY_CAPABILITY).isPresent()
 					&& rightItemStack.getCapability(DURABILITY_CAPABILITY).isPresent()) {
-				Treasure.LOGGER.debug("has durability caps");
 				event.setCost(1);
 				LazyOptional<IDurabilityCapability> leftItemCap = leftItemStack.getCapability(DURABILITY_CAPABILITY);
 				LazyOptional<IDurabilityCapability> rightItemCap = rightItemStack.getCapability(DURABILITY_CAPABILITY);
@@ -70,9 +61,9 @@ public class AnvilEventHandler {
 
 				int remainingUses = leftRemainingUses + rightRemainingUses;
 				if (remainingUses > Math.max(leftDurability, rightDurability)) {
-					if (Treasure.LOGGER.isDebugEnabled()) {
-						Treasure.LOGGER.debug("output has greater uses -> {} than max durability -> {} - update durability", remainingUses, Math.max(leftDurability, rightDurability));
-					}
+//					if (Treasure.LOGGER.isDebugEnabled()) {
+//						Treasure.LOGGER.debug("output has greater uses -> {} than max durability -> {} - update durability", remainingUses, Math.max(leftDurability, rightDurability));
+//					}
 					outputItemCap.ifPresent(cap -> cap.setDurability(Math.max(leftDurability, rightDurability) + leftItemStack.getMaxDamage()));
 					outputItem.setDamageValue(leftItemStack.getDamageValue() + rightItemStack.getDamageValue());
 				}

@@ -81,7 +81,6 @@ public class Treasure implements IMod {
 		// Register the setup method for modloading
 		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		eventBus.addListener(this::config);
-		eventBus.addListener(this::setup);
 		eventBus.addListener(TreasureSetup::common);
 		eventBus.addListener(this::clientSetup);
 
@@ -89,25 +88,12 @@ public class Treasure implements IMod {
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
 //		MinecraftForge.EVENT_BUS.register(new TreasureParticles());
-//		MOD_EVENT_BUS = FMLJavaModLoadingContext.get().getModEventBus();
 //		MOD_EVENT_BUS.register(TreasureParticles.class);
 //		DistExecutor.runWhenOn(Dist.CLIENT, () -> Treasure::clientOnly);
 	}
 	
 	public static void clientOnly() {
 		MOD_EVENT_BUS.register(ClientEventHandler.class);
-	}
-
-	/**
-	 * ie. preint
-	 * 
-	 * @param event
-	 */
-	@SuppressWarnings("deprecation")
-	private void setup(final FMLCommonSetupEvent event) {
-//		Treasure.LOGGER.info("in setup event");
-
-//		CapabilityManager.INSTANCE.register(IDurabilityCapability.class, new DurabilityCapabilityStorage(), DurabilityCapability::new);
 	}
 	
 	private void clientSetup(final FMLClientSetupEvent event) {
