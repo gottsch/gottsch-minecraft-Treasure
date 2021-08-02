@@ -7,6 +7,9 @@ import com.someguyssoftware.gottschcore.annotation.Credits;
 import com.someguyssoftware.gottschcore.annotation.ModInfo;
 import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.treasure2.capability.DurabilityCapability;
+import com.someguyssoftware.treasure2.capability.DurabilityCapabilityStorage;
+import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.entity.TreasureEntities;
 import com.someguyssoftware.treasure2.eventhandler.ClientEventHandler;
@@ -17,6 +20,7 @@ import com.someguyssoftware.treasure2.particle.TreasureParticles;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -58,7 +62,7 @@ public class Treasure implements IMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.0.1";
+	protected static final String VERSION = "1.5";
 	protected static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.16.5-master/update.json";
 
 	public static Treasure instance;
@@ -73,38 +77,23 @@ public class Treasure implements IMod {
 
 		TreasureConfig.loadConfig(TreasureConfig.COMMON_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve("treasure2-common.toml"));
-		
+				
 		// Register the setup method for modloading
 		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		eventBus.addListener(this::config);
-		eventBus.addListener(this::setup);
 		eventBus.addListener(TreasureSetup::common);
 		eventBus.addListener(this::clientSetup);
-
-		// test accessing the logging properties
-//		TreasureConfig.LOGGING.filename.get();
 
 		// needs to be registered here instead of @Mod.EventBusSubscriber because we need to pass in a constructor argument
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
 //		MinecraftForge.EVENT_BUS.register(new TreasureParticles());
-		MOD_EVENT_BUS = FMLJavaModLoadingContext.get().getModEventBus();
 //		MOD_EVENT_BUS.register(TreasureParticles.class);
 //		DistExecutor.runWhenOn(Dist.CLIENT, () -> Treasure::clientOnly);
 	}
 	
 	public static void clientOnly() {
-//		MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
 		MOD_EVENT_BUS.register(ClientEventHandler.class);
-	}
-	
-	/**
-	 * ie. preint
-	 * 
-	 * @param event
-	 */
-	@SuppressWarnings("deprecation")
-	private void setup(final FMLCommonSetupEvent event) {
 	}
 	
 	private void clientSetup(final FMLClientSetupEvent event) {
