@@ -127,6 +127,7 @@
 	"tooltip.no":"No",
 	"tooltip.label.rarity":"Rarity: %s",
 	"tooltip.label.category":"Category: %s",
+	"tooltip.label.uses": "Uses Remaining: [%s/%s]",
 	"tooltip.label.max_uses":"Max Uses: %s",
 	"tooltip.label.breakable":"Breakable: %s",
 	"tooltip.label.craftable":"Craftable: %s",

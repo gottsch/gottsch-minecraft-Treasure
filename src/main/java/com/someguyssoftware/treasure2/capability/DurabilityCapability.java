@@ -19,12 +19,26 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
+import com.someguyssoftware.treasure2.Treasure;
+
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+
 /**
  * @author Mark Gottschling on Sep 6, 2020
  *
  */
 public class DurabilityCapability implements IDurabilityCapability  {
 	private int durability;
+	
+	@CapabilityInject(IDurabilityCapability.class)
+	public static Capability<IDurabilityCapability> DURABILITY_CAPABILITY = null;
+	
+	public static void register() {
+		Treasure.LOGGER.debug("register the fucking capability already!");
+        CapabilityManager.INSTANCE.register(IDurabilityCapability.class, new DurabilityCapabilityStorage(), DurabilityCapability::new);
+    }
 	
 	/**
 	 * 

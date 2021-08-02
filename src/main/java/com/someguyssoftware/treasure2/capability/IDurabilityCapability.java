@@ -19,12 +19,17 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
+import com.someguyssoftware.treasure2.util.ModUtils;
+
+import net.minecraft.util.ResourceLocation;
+
 /**
  * 
  * @author Mark Gottschling on Sep 6, 2020
  *
  */
 public interface IDurabilityCapability {
+	public ResourceLocation ID = ModUtils.asLocation("durability_capability");
     public static final int MAX_DURABILITY = 1000; 
 
 	public int getDurability();

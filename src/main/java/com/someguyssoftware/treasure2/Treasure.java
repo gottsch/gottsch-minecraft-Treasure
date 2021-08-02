@@ -7,6 +7,9 @@ import com.someguyssoftware.gottschcore.annotation.Credits;
 import com.someguyssoftware.gottschcore.annotation.ModInfo;
 import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.treasure2.capability.DurabilityCapability;
+import com.someguyssoftware.treasure2.capability.DurabilityCapabilityStorage;
+import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.entity.TreasureEntities;
 import com.someguyssoftware.treasure2.eventhandler.ClientEventHandler;
@@ -17,6 +20,7 @@ import com.someguyssoftware.treasure2.particle.TreasureParticles;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -73,7 +77,7 @@ public class Treasure implements IMod {
 
 		TreasureConfig.loadConfig(TreasureConfig.COMMON_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve("treasure2-common.toml"));
-		
+				
 		// Register the setup method for modloading
 		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		eventBus.addListener(this::config);
@@ -85,7 +89,7 @@ public class Treasure implements IMod {
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
 //		MinecraftForge.EVENT_BUS.register(new TreasureParticles());
-		MOD_EVENT_BUS = FMLJavaModLoadingContext.get().getModEventBus();
+//		MOD_EVENT_BUS = FMLJavaModLoadingContext.get().getModEventBus();
 //		MOD_EVENT_BUS.register(TreasureParticles.class);
 //		DistExecutor.runWhenOn(Dist.CLIENT, () -> Treasure::clientOnly);
 	}
@@ -93,7 +97,7 @@ public class Treasure implements IMod {
 	public static void clientOnly() {
 		MOD_EVENT_BUS.register(ClientEventHandler.class);
 	}
-	
+
 	/**
 	 * ie. preint
 	 * 
@@ -101,6 +105,9 @@ public class Treasure implements IMod {
 	 */
 	@SuppressWarnings("deprecation")
 	private void setup(final FMLCommonSetupEvent event) {
+//		Treasure.LOGGER.info("in setup event");
+
+//		CapabilityManager.INSTANCE.register(IDurabilityCapability.class, new DurabilityCapabilityStorage(), DurabilityCapability::new);
 	}
 	
 	private void clientSetup(final FMLClientSetupEvent event) {
