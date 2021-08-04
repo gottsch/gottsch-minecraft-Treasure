@@ -23,6 +23,7 @@ public class TreasureContainers {
 	public static ContainerType<CompressorChestContainer> COMPRESSOR_CHEST_CONTAINER_TYPE;
 	public static ContainerType<WitherChestContainer> WITHER_CHEST_CONTAINER_TYPE;
 	
+	public static ContainerType<KeyRingContainer> KEY_RING_CONTAINER_TYPE;
 	
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)	
 	public static class RegistrationHandler {		
@@ -48,6 +49,10 @@ public class TreasureContainers {
 			WITHER_CHEST_CONTAINER_TYPE = IForgeContainerType.create(WitherChestContainer::create);
 			WITHER_CHEST_CONTAINER_TYPE.setRegistryName("wither_chest_container");
 			event.getRegistry().register(WITHER_CHEST_CONTAINER_TYPE);
+			
+			KEY_RING_CONTAINER_TYPE = IForgeContainerType.create(KeyRingContainer::create);
+			KEY_RING_CONTAINER_TYPE.setRegistryName("key_ring_container");
+			event.getRegistry().register(KEY_RING_CONTAINER_TYPE);
 		}
 	}
 }

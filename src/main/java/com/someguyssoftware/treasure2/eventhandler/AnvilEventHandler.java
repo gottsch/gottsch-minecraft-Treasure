@@ -19,9 +19,9 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
-import static com.someguyssoftware.treasure2.capability.DurabilityCapability.DURABILITY_CAPABILITY;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY_CAPABILITY;
+
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.DurabilityCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 
 import net.minecraft.item.ItemStack;

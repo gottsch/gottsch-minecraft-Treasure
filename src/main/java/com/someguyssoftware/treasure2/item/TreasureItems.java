@@ -91,6 +91,8 @@ public class TreasureItems {
 	public static KeyItem PILFERERS_LOCK_PICK;
 	public static KeyItem THIEFS_LOCK_PICK;
 
+	public static KeyRingItem KEY_RING;
+	
 	// locks
 	public static LockItem WOOD_LOCK;
 	public static LockItem STONE_LOCK;
@@ -251,6 +253,8 @@ public class TreasureItems {
 				.setCraftable(true)
 				.setSuccessProbability(32);
 
+		KEY_RING = new KeyRingItem(Treasure.MODID, KeyID.KEY_RING_ID, new Item.Properties());
+		
 		// LOCKS
 		WOOD_LOCK = new LockItem(Treasure.MODID, LockID.WOOD_LOCK_ID, new Item.Properties(), new KeyItem[] {WOOD_KEY})
 				.setCategory(Category.ELEMENTAL)
@@ -366,6 +370,7 @@ public class TreasureItems {
 				WITHER_KEY,
 				PILFERERS_LOCK_PICK,
 				THIEFS_LOCK_PICK,
+				KEY_RING,
 				SILVER_COIN,
 				GOLD_COIN,
 				RUBY,
