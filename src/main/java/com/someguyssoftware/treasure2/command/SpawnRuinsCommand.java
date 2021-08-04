@@ -198,7 +198,7 @@ public class SpawnRuinsCommand {
 		}
         
 		// TODO check/add decay set
-		GeneratorResult<ChestGeneratorData> result = ruinGenerator.generate(world, random, new Coords(pos), holder);
+		GeneratorResult<ChestGeneratorData> result = ruinGenerator.generate(world, null, random, new Coords(pos), holder);
         }
 		catch(Exception e) {
 			Treasure.LOGGER.error("an error occurred: ", e);

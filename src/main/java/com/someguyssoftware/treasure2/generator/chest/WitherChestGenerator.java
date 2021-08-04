@@ -31,6 +31,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkGenerator;
 
 /**
  * 
@@ -109,7 +110,7 @@ public class WitherChestGenerator implements IChestGenerator {
 	 * Don't place any markers
 	 */
 	@Override
-	public void addMarkers(IServerWorld world, Random random, ICoords coords, boolean isSurfaceChest) {
+	public void addMarkers(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords, boolean isSurfaceChest) {
 		return;
 	}
 	

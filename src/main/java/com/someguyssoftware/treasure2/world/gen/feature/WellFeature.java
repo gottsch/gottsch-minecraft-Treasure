@@ -156,7 +156,7 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 			
 			// generate the well NOTE use the seedReader, not the level
 			Treasure.LOGGER.debug("Attempting to generate a well");
-			result = TreasureData.WELL_GEN.generate(seedReader, random, spawnCoords, wellConfig); 
+			result = TreasureData.WELL_GEN.generate(seedReader, generator, random, spawnCoords, wellConfig); 
 			Treasure.LOGGER.debug("well world gen result -> {}", result.isSuccess());
 			if (result.isSuccess()) {
 				// add to registry

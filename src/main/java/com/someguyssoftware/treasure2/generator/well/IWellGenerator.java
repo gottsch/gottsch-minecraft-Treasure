@@ -36,6 +36,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.gen.ChunkGenerator;
 
 /**
  * @author Mark Gottschling on Feb 18, 2018
@@ -56,7 +57,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param config
 	 * @return
 	 */
-	public abstract RESULT generate(IServerWorld world, Random random, ICoords spawnCoords, IWellsConfig config);
+	public abstract RESULT generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords spawnCoords, IWellsConfig config);
 	
 	/**
 	 * 
@@ -67,7 +68,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param config
 	 * @return
 	 */
-	public abstract RESULT generate(IServerWorld world, Random random, ICoords originalSpawnCoords,
+	public abstract RESULT generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords originalSpawnCoords,
 			TemplateHolder templateHolder, IWellsConfig config);
 	
 	/**
