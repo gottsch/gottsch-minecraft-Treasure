@@ -34,6 +34,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.gen.ChunkGenerator;
 
 /**
  * @author Mark Gottschling on Aug 13, 2019
@@ -50,25 +51,25 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 	public SubmergedRuinGenerator() {}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random,
 			ICoords originalSpawnCoords) {
-		return generate(world, random, originalSpawnCoords, null, null);
+		return generate(world, generator, random, originalSpawnCoords, null, null);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random,
 			ICoords originalSpawnCoords, IDecayRuleSet decayRuleSet) {
-		return generate(world, random, originalSpawnCoords, null, decayRuleSet);
+		return generate(world, generator, random, originalSpawnCoords, null, decayRuleSet);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder) {
-		return generate(world, random, originalSpawnCoords, holder, null);
+		return generate(world, generator, random, originalSpawnCoords, holder, null);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator chunkGenerator, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder, IDecayRuleSet decayRuleSet) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 
@@ -78,8 +79,8 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 		 * Setup
 		 */
 		// create the generator
-		TemplateGenerator generator = new TemplateGenerator();
-		generator.setNullBlock(Blocks.AIR);
+		TemplateGenerator templateGenerator = new TemplateGenerator();
+		templateGenerator.setNullBlock(Blocks.AIR);
 
 		// get the template holder from the given archetype, type and biome
 		if (holder == null) {
@@ -130,7 +131,12 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 		/**
 		 * Environment Checks
 		 */
-		alignedSpawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, alignedSpawnCoords);
+		if (chunkGenerator == null) {
+			alignedSpawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, alignedSpawnCoords);
+		}
+		else {
+			alignedSpawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, chunkGenerator, alignedSpawnCoords);
+		}
 		Treasure.LOGGER.debug("ocean floor coords -> {}", alignedSpawnCoords.toShortString());
 
 		// check if it has % land
@@ -197,7 +203,7 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 			decayProcessor.setBackFillBlockLayer1(Blocks.GRAVEL.defaultBlockState());
 		}
 
-		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
+		GeneratorResult<TemplateGeneratorData> genResult = templateGenerator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
 		if (!genResult.isSuccess()) return result.fail();
 
 		Treasure.LOGGER.debug("submerged gen result -> {}", genResult);

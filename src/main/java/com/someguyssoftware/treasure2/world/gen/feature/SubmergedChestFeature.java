@@ -169,7 +169,7 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 				Treasure.LOGGER.debug("configmap -> {}", TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
 				
 				GeneratorResult<GeneratorData> result = null;
-				result = generateChest(seedReader, random, spawnCoords, rarity, TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SUBMERGED_CHEST).next(), TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
+				result = generateChest(seedReader, generator, random, spawnCoords, rarity, TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SUBMERGED_CHEST).next(), TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
 
 				if (result.isSuccess()) {
 					// add to registry
@@ -198,7 +198,7 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 	 * @param iChestConfig
 	 * @return
 	 */
-	private GeneratorResult<GeneratorData> generateChest(IServerWorld world, Random random, ICoords coords, Rarity rarity,
+	private GeneratorResult<GeneratorData> generateChest(IServerWorld world, ChunkGenerator chunkGenerator, Random random, ICoords coords, Rarity rarity,
 			IChestGenerator chestGenerator, IChestConfig config) {
 
 		// result to return to the caller
@@ -219,7 +219,7 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 		// TEMP - if building a structure, markerCoords could be different than original surface coords because for rotation etc.
 		markerCoords = surfaceCoords;
 
-		genResult = generateSubmergedRuins(world, random, surfaceCoords, config);
+		genResult = generateSubmergedRuins(world, chunkGenerator, random, surfaceCoords, config);
 		Treasure.LOGGER.debug("submerged result -> {}", genResult.toString());
 		if (!genResult.isSuccess() || genResult.getData().getChestContext() == null) {
 			return result.fail();
@@ -254,7 +254,7 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 	 * @param config
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generateSubmergedRuins(IServerWorld world, Random random, ICoords spawnCoords,
+	public GeneratorResult<ChestGeneratorData> generateSubmergedRuins(IServerWorld world, ChunkGenerator chunkGenerator, Random random, ICoords spawnCoords,
 			IChestConfig config) {
 		
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
@@ -263,7 +263,7 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 		SubmergedRuinGenerator generator = new SubmergedRuinGenerator();
 
 		// build the structure
-		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, random, spawnCoords);
+		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, chunkGenerator, random, spawnCoords);
 		Treasure.LOGGER.debug("submerged struct result -> {}", genResult);
 		if (!genResult.isSuccess()) {
 			return result.fail();

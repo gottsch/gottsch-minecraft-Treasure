@@ -89,7 +89,7 @@ public class SpawnWellCommand {
 			
 			WellGenerator gen = (WellGenerator) TreasureData.WELL_GEN;
 			GeneratorResult<GeneratorData> result = null;
-			result = gen.generate(world, random, new Coords(pos), TreasureConfig.WELLS);
+			result = gen.generate(world, null, random, new Coords(pos), TreasureConfig.WELLS);
 
 			if (result.isSuccess()) {
 				Treasure.LOGGER.debug("Well start coords at -> {}", result.getData().getSpawnCoords().toShortString());

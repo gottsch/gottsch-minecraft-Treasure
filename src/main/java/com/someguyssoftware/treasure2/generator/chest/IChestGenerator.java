@@ -70,6 +70,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.server.ServerWorld;
 
 /**
@@ -502,13 +503,13 @@ public interface IChestGenerator {
 	 * @param random
 	 * @param coods
 	 */
-	default public void addMarkers(IServerWorld world, Random random, ICoords coords, final boolean isSurfaceChest) {
+	default public void addMarkers(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords, final boolean isSurfaceChest) {
 		if (!isSurfaceChest && TreasureConfig.MARKERS.markerStructuresAllowed.get() && RandomHelper
 				.checkProbability(random, TreasureConfig.MARKERS.markerStructureProbability.get())) {
 			Treasure.LOGGER.debug("generating a random structure marker -> {}", coords.toShortString());
 			new StructureMarkerGenerator().generate(world, random, coords);
 		} else {
-			new GravestoneMarkerGenerator().generate(world, random, coords);
+			new GravestoneMarkerGenerator().generate(world, generator, random, coords);
 		}
 	}
 	

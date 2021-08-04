@@ -148,13 +148,13 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 				Treasure.LOGGER.warn("Unable to locate a chest for rarity {}.", rarity);
 				return false;
 			}
-			Treasure.LOGGER.debug("config for rarity -> {} = {}", rarity, chestConfig);
+//			Treasure.LOGGER.debug("config for rarity -> {} = {}", rarity, chestConfig);
 			// get the chunks for dimensional rarity chest
 			int chunksPerRarityCount = chunksSinceLastDimensionRarityChest.get(dimension.toString()).get(rarity);
 
-			Treasure.LOGGER.debug("chunks per rarity {} -> {}, config chunks per chest -> {}", rarity, chunksPerRarityCount, chestConfig.getChunksPerChest());
+//			Treasure.LOGGER.debug("chunks per rarity {} -> {}, config chunks per chest -> {}", rarity, chunksPerRarityCount, chestConfig.getChunksPerChest());
 			if (chunksPerRarityCount >= chestConfig.getChunksPerChest()) {
-				Treasure.LOGGER.debug("config gen prob -> {}", chestConfig.getGenProbability());
+//				Treasure.LOGGER.debug("config gen prob -> {}", chestConfig.getGenProbability());
 				// 1. test if chest meets the probability criteria
 				if (!RandomHelper.checkProbability(random, chestConfig.getGenProbability())) {
 					Treasure.LOGGER.debug("ChestConfig does not meet generate probability.");
@@ -198,7 +198,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 				Treasure.LOGGER.debug("configmap -> {}", TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
 				
 				GeneratorResult<GeneratorData> result = null;
-				result = generateChest(seedReader, random, spawnCoords, rarity, TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SURFACE_CHEST).next(), TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
+				result = generateChest(seedReader, generator, random, spawnCoords, rarity, TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SURFACE_CHEST).next(), TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
 
 				if (result.isSuccess()) {
 					// add to registry
@@ -231,7 +231,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	 * @param iChestConfig
 	 * @return
 	 */
-	private GeneratorResult<GeneratorData> generateChest(IServerWorld world, Random random, ICoords coords, Rarity rarity,
+	private GeneratorResult<GeneratorData> generateChest(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords, Rarity rarity,
 			IChestGenerator chestGenerator, IChestConfig config) {
 
 		// result to return to the caller
@@ -260,7 +260,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 //				hasMarkers = false;
 				isStructure = true;
 //
-				genResult = generateSurfaceRuins(world, random, surfaceCoords, config);
+				genResult = generateSurfaceRuins(world, generator, random, surfaceCoords, config);
 				Treasure.LOGGER.debug("surface result -> {}", genResult.toString());
 				if (!genResult.isSuccess()) {
 					return result.fail();
@@ -298,7 +298,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		
 		// add markers (above chest or shaft)
 		if (!isStructure) {
-			chestGenerator.addMarkers(world, random, surfaceCoords, isSurfaceChest);
+			chestGenerator.addMarkers(world, generator, random, surfaceCoords, isSurfaceChest);
 		}
 		
 		Treasure.LOGGER.info("CHEATER! {} chest at coords: {}", rarity, surfaceCoords.toShortString());
@@ -357,9 +357,9 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	 * @param config
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, Random random, ICoords spawnCoords,
+	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, ChunkGenerator generator, Random random, ICoords spawnCoords,
 			IChestConfig config) {
-		return generateSurfaceRuins(world, random, spawnCoords, null, null, config);
+		return generateSurfaceRuins(world, generator, random, spawnCoords, null, null, config);
 	}
 	
 	/**
@@ -371,7 +371,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	 * @param config
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, Random random, ICoords spawnCoords,
+	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, ChunkGenerator chunkGenerator, Random random, ICoords spawnCoords,
 			TemplateHolder holder, IDecayRuleSet decayRuleSet, IChestConfig config) {
 
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
@@ -380,7 +380,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		SurfaceRuinGenerator generator = new SurfaceRuinGenerator();
 
 		// build the structure
-		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, random, spawnCoords, holder, decayRuleSet);
+		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, chunkGenerator, random, spawnCoords, holder, decayRuleSet);
 		Treasure.LOGGER.debug("surface struct result -> {}", genResult);
 		if (!genResult.isSuccess()) return result.fail();
 

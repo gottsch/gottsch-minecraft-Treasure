@@ -27,6 +27,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ContainerBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.gen.ChunkGenerator;
 
 /**
  * @author Mark Gottschling on Jan 27, 2019
@@ -48,8 +49,15 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 	/**
 	 * 
 	 */
-	@Override
 	public GeneratorResult<GeneratorData> generate(IServerWorld world, Random random, ICoords coords) {
+		return generate(world, null, random, coords);
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public GeneratorResult<GeneratorData> generate(IServerWorld world, ChunkGenerator chunkGenerator, Random random, ICoords coords) {
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 		// check if markers are enabled
 		if (!TreasureConfig.MARKERS.markersAllowed.get()) {
@@ -94,7 +102,12 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 			}
 
 			// get a valid surface location
+			if (chunkGenerator == null) {
 			spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, spawnCoords);
+			}
+			else {
+				spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, chunkGenerator, spawnCoords);
+			}
 			if (spawnCoords == null || spawnCoords == WorldInfo.EMPTY_COORDS) {
 				LOGGER.debug(String.format("Not a valid surface @ %s", coords));
 				continue;
