@@ -19,7 +19,7 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
-import static com.someguyssoftware.treasure2.capability.DurabilityCapability.DURABILITY_CAPABILITY;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY_CAPABILITY;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;

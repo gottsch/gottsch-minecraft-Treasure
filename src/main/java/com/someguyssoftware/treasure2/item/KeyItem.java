@@ -19,7 +19,8 @@
  */
 package com.someguyssoftware.treasure2.item;
 
-import static com.someguyssoftware.treasure2.capability.DurabilityCapability.DURABILITY_CAPABILITY;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY_CAPABILITY;
+
 import java.util.List;
 import java.util.Random;
 
@@ -266,14 +267,17 @@ public class KeyItem extends ModItem {
 					}
 				}
 
-				LazyOptional<IDurabilityCapability> cap = heldItemStack.getCapability(DURABILITY_CAPABILITY);
+//				LazyOptional<IDurabilityCapability> cap = heldItemStack.getCapability(DURABILITY_CAPABILITY);
+				IDurabilityCapability cap = heldItemStack.getCapability(DURABILITY_CAPABILITY).orElseThrow(IllegalStateException::new);
 				
 				// check key's breakability
 				if (breakKey) {
 					if ((isBreakable() || anyLockBreaksKey(chestTileEntity.getLockStates(), this)) && TreasureConfig.KEYS_LOCKS.enableKeyBreaks.get()) {
+						
+						// TODO make method breakAndShrink() using caps
 						int damage = heldItemStack.getDamageValue() + (getMaxDamage() - (heldItemStack.getDamageValue() % getMaxDamage()));
                         heldItemStack.setDamageValue(damage);
-                        if (heldItemStack.getDamageValue() >= cap.map(c -> c.getDurability()).orElse(getMaxDamage())) {
+                        if (heldItemStack.getDamageValue() >= cap.getDurability()) {
 							// break key;
 							heldItemStack.shrink(1);
                         }
@@ -293,12 +297,10 @@ public class KeyItem extends ModItem {
 
 				// user attempted to use key - increment the damage
 				if (isDamageable() && !isKeyBroken) {
-					heldItemStack.hurtAndBreak(1,  context.getPlayer(), p -> {
-						p.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
-					});
-					if (heldItemStack.getDamageValue() == heldItemStack.getMaxDamage()) {
-						heldItemStack.shrink(1);
-					}
+					 heldItemStack.setDamageValue(heldItemStack.getDamageValue() + 1);
+                    if (heldItemStack.getDamageValue() >= cap.getDurability()) {
+                        heldItemStack.shrink(1);
+                    }
 				}
 			}
 			catch (Exception e) {
@@ -369,7 +371,7 @@ public class KeyItem extends ModItem {
 	 * @param key
 	 * @return
 	 */
-	private boolean anyLockBreaksKey(List<LockState> lockStates, KeyItem key) {
+	public boolean anyLockBreaksKey(List<LockState> lockStates, KeyItem key) {
 		for (LockState ls : lockStates) {
 			if (ls.getLock() != null) {
 				if (ls.getLock().breaksKey(key)) {

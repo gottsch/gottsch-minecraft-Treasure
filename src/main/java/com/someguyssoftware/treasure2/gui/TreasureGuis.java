@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.gui;
 
@@ -51,6 +67,8 @@ public class TreasureGuis {
 			ScreenManager.register(TreasureContainers.SKULL_CHEST_CONTAINER_TYPE, SkullChestContainerScreen::new);
 			ScreenManager.register(TreasureContainers.COMPRESSOR_CHEST_CONTAINER_TYPE, CompressorChestContainerScreen::new);
 
+			ScreenManager.register(TreasureContainers.KEY_RING_CONTAINER_TYPE, KeyRingContainerScreen::new);
+			
 			// tell the renderer that the base is rendered using CUTOUT_MIPPED (to match the Block Hopper)
 			RenderTypeLookup.setRenderLayer(TreasureBlocks.WOOD_CHEST, RenderType.cutoutMipped());
 			RenderTypeLookup.setRenderLayer(TreasureBlocks.CRATE_CHEST, RenderType.cutoutMipped());

@@ -20,14 +20,13 @@
 package com.someguyssoftware.treasure2.init;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.DurabilityCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 /**
@@ -46,7 +45,7 @@ public class TreasureSetup implements IModSetup {
 		IModSetup.addRollingFileAppender(Treasure.instance.getName(), null);
 		
 		// register capabilities
-		DurabilityCapability.register();
+		TreasureCapabilities.register();
 		
 		// initialize all the data lists, maps, etc
 		TreasureData.initialize();
