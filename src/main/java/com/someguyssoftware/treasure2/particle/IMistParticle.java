@@ -9,13 +9,15 @@ public interface IMistParticle {
 	 */
 	void init();
 
-	float provideMaxScale();
+	float provideStartSize();
+	
+	float provideMaxSize();
 
 	int provideMaxAge();
 
-	void transitionIn(float initialScale, int stopAge, float scaleIncrement);
+	void transitionIn();
 
-	void transitionOut(float finalScale, int startAge, float scaleIncrement);
+	void transitionOut();
 
 	/**
 	 * provides a gravity value
@@ -35,13 +37,13 @@ public interface IMistParticle {
 
 	void setParentEmitterCoords(ICoords parentEmitterCoords);
 
-	float getTransitionInScaleIncrement();
+	float getTransitionInSizeIncrement();
 
-	void setTransitionInScaleIncrement(float transitionInScaleIncrement);
+	void setTransitionInSizeIncrement(float transitionInScaleIncrement);
 
-	float getTransitionOutScaleIncrement();
+	float getTransitionOutSizeIncrement();
 
-	void setTransitionOutScaleIncrement(float transitionOutScaleIncrement);
+	void setTransitionOutSizeIncrement(float transitionOutScaleIncrement);
 
 	/**
 	 * retrieve the particle's gravity

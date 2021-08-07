@@ -4,6 +4,7 @@
 package com.someguyssoftware.treasure2.particle;
 
 import com.mojang.serialization.Codec;
+import com.someguyssoftware.treasure2.particle.data.MistParticleData;
 
 import net.minecraft.particles.ParticleType;
 
@@ -23,7 +24,7 @@ public class MistParticleType extends ParticleType<MistParticleData> {
 	@Override
 	public Codec<MistParticleData> codec() {
 		// TODO Auto-generated method stub
-		return MistParticleData.CODEC;
+		return MistParticleData.codecMist();//CODEC;
 	}
 	
 //ParticleType<MistParticleType> implements IParticleData {
