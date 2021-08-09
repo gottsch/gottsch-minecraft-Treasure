@@ -25,12 +25,22 @@ public class BoundSoulMistParticle extends MistParticle {
 	 */
 	public BoundSoulMistParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY,
 			double velocityZ) {
-		super(world, x, y, z, velocityZ, velocityZ, velocityZ, null);
+		super(world, x, y, z, velocityZ, velocityZ, velocityZ);
 	}
 
 	@Override
-	public int provideMaxAge() {
+	public int getMaxAge() {
 		return 160;
+	}
+
+	@Override
+	public float getTransitionInStopAge() {
+		return 110;
+	}
+	
+	@Override
+	public float getTransitionOutStartAge() {
+		return 111;
 	}
 	
 	// TODO provide transitionInStop and transitionOutStart

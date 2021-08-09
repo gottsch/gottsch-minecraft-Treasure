@@ -19,17 +19,16 @@
  */
 package com.someguyssoftware.treasure2.particle;
 
-import com.someguyssoftware.treasure2.particle.data.MistParticleData;
-
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class MistParticleFactory implements IParticleFactory<MistParticleData> {
+public class MistParticleFactory implements IParticleFactory<BasicParticleType> {
 	/*
 	 * contains a list of textures; choose one using either
 	 * newParticle.selectSpriteRandomly(spriteSet); or newParticle.selectSpriteWithAge(spriteSet);
@@ -44,14 +43,23 @@ public class MistParticleFactory implements IParticleFactory<MistParticleData> {
 		this.spriteSet = sprite;
 	}
 	
+//	/**
+//	 * 
+//	 */
+//	@Override
+//	public Particle createParticle(MistParticleData data, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+//		MistParticle particle = new MistParticle(world, x, y, z, xSpeed, ySpeed, zSpeed, data.getSourceCoords());
+//		particle.pickSprite(spriteSet);
+//		return particle;
+//	}
+
 	/**
 	 * 
 	 */
 	@Override
-	public Particle createParticle(MistParticleData data, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-		MistParticle particle = new MistParticle(world, x, y, z, xSpeed, ySpeed, zSpeed, data.getSourceCoords());
+	public Particle createParticle(BasicParticleType data, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		MistParticle particle = new MistParticle(world, x, y, z, xSpeed, ySpeed, zSpeed);
 		particle.pickSprite(spriteSet);
 		return particle;
 	}
-
 }

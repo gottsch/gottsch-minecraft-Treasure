@@ -7,21 +7,14 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.block.FacingBlock;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
-import com.someguyssoftware.gottschcore.spatial.Coords;
-import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.particle.AbstractMistParticle;
-import com.someguyssoftware.treasure2.particle.BillowingMistParticle;
-import com.someguyssoftware.treasure2.particle.MistParticle;
-import com.someguyssoftware.treasure2.particle.data.AbstractMistParticleData;
-import com.someguyssoftware.treasure2.particle.data.BillowingMistParticleData;
-import com.someguyssoftware.treasure2.particle.data.MistParticleData;
+import com.someguyssoftware.treasure2.particle.TreasureParticles;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.util.Direction.Axis;
+import net.minecraft.particles.IParticleData;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -106,10 +99,10 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 		int y = pos.getY();
 		int z = pos.getZ();
 
-		boolean isCreateParticle = checkTorchPrevention(world, random, x, y, z);
-		if (!isCreateParticle) {
-			return;
-		}
+//		boolean isCreateParticle = checkTorchPrevention(world, random, x, y, z);
+//		if (!isCreateParticle) {
+//			return;
+//		}
 
 		// initial positions - has a spread area of up to 1.5 blocks
 		double xPos = (x + 0.5D) + (random.nextFloat() * 3.0) - 1.5D;
@@ -123,12 +116,12 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 		final boolean IGNORE_RANGE_CHECK = false; // if true, always render particle regardless of how far away the player is
 		
 		// create particle
-		AbstractMistParticleData mistParticleData = null;
+		IParticleData mistParticleData = null;
 
 		if (RandomHelper.checkProbability(random, 80)) {
-			mistParticleData = new MistParticleData( new Coords(pos));
+			mistParticleData = TreasureParticles.MIST_PARTICLE_TYPE.get();//new MistParticleData( new Coords(pos));
 		} else {
-			mistParticleData = new BillowingMistParticleData(new Coords(pos));
+			mistParticleData = TreasureParticles.BILLOWING_MIST_PARTICLE_TYPE.get();//new BillowingMistParticleData(new Coords(pos));
 		}		
 
 		try {

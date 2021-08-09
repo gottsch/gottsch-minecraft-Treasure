@@ -1,7 +1,5 @@
 package com.someguyssoftware.treasure2.particle;
 
-import com.someguyssoftware.gottschcore.spatial.ICoords;
-
 public interface IMistParticle {
 
 	/**
@@ -9,11 +7,11 @@ public interface IMistParticle {
 	 */
 	void init();
 
-	float provideStartSize();
+	float getStartSize();
 	
-	float provideMaxSize();
-
-	int provideMaxAge();
+	float getMaxSize();
+	
+	int getMaxAge();
 
 	void transitionIn();
 
@@ -24,18 +22,18 @@ public interface IMistParticle {
 	 * 
 	 * @return
 	 */
-	float provideGravity();
+	float getMistGravity();
 
 	/**
 	 * provides an alpha value.
 	 * 
 	 * @return
 	 */
-	float provideAlpha();
+	float getMistAlpha();
 
-	ICoords getParentEmitterCoords();
-
-	void setParentEmitterCoords(ICoords parentEmitterCoords);
+//	ICoords getParentEmitterCoords();
+//
+//	void setParentEmitterCoords(ICoords parentEmitterCoords);
 
 	float getTransitionInSizeIncrement();
 
@@ -46,23 +44,20 @@ public interface IMistParticle {
 	void setTransitionOutSizeIncrement(float transitionOutScaleIncrement);
 
 	/**
-	 * retrieve the particle's gravity
-	 * 
-	 * @return
-	 */
-	float getGravity();
-
-	/**
 	 * retrieve the particle's scale
 	 * 
 	 * @return
 	 */
 	float getScale();
 
+	float getEndSize();
+
 	/**
-	 * retrieve the particle's alpha
 	 * 
 	 * @return
 	 */
-	float getAlpha();
+	float getTransitionInStopAge();
+
+	float getTransitionOutStartAge();
+
 }

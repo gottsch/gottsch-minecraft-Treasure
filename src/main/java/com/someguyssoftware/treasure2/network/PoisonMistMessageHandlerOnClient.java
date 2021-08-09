@@ -17,28 +17,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.particle;
+package com.someguyssoftware.treasure2.network;
 
-import net.minecraft.client.world.ClientWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-@OnlyIn(Dist.CLIENT)
-public class MistParticle extends AbstractMistParticle {
-
-	/**
-	 * 
-	 * @param world
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param velocityX
-	 * @param velocityY
-	 * @param velocityZ
-	 * @param parentCoords
-	 */
-	public MistParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-		super(world, x, y, z);
-		init();
+/**
+ * 
+ * @author Mark Gottschling on Aug 7, 2021
+ *
+ */
+public class PoisonMistMessageHandlerOnClient {
+	public static boolean isThisProtocolAcceptedByClient(String protocolVersion) {
+		return TreasureNetworking.MESSAGE_PROTOCOL_VERSION.equals(protocolVersion);
 	}
 }

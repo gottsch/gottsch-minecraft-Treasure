@@ -19,26 +19,28 @@
  */
 package com.someguyssoftware.treasure2.particle;
 
-import net.minecraft.client.world.ClientWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import com.someguyssoftware.gottschcore.spatial.ICoords;
 
-@OnlyIn(Dist.CLIENT)
-public class MistParticle extends AbstractMistParticle {
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.IWorld;
+
+/**
+ * 
+ * @author Mark Gottschling on Aug 8, 2021
+ *
+ */
+public interface ICollidingParticle {
 
 	/**
 	 * 
 	 * @param world
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param velocityX
-	 * @param velocityY
-	 * @param velocityZ
-	 * @param parentCoords
 	 */
-	public MistParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-		super(world, x, y, z);
-		init();
-	}
+	public void doPlayerCollisions(IWorld world);
+	
+	public void inflictEffectOnPlayer(PlayerEntity player);
+	
+	public ICoords getSourceCoords();
+
+	public void setSourceCoords(ICoords parentEmitterCoords);
+
 }

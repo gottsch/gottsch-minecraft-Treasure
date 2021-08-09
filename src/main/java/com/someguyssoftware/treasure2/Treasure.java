@@ -12,6 +12,7 @@ import com.someguyssoftware.treasure2.entity.TreasureEntities;
 import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.init.TreasureSetup;
+import com.someguyssoftware.treasure2.network.TreasureNetworking;
 import com.someguyssoftware.treasure2.particle.TreasureParticles;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -75,6 +76,7 @@ public class Treasure implements IMod {
 		TreasureParticles.PARTICLE_TYPES.register(eventBus);
 		// regular register
 		eventBus.addListener(this::config);
+		eventBus.addListener(TreasureNetworking::common);
 		eventBus.addListener(TreasureSetup::common);
 		eventBus.addListener(this::clientSetup);
 

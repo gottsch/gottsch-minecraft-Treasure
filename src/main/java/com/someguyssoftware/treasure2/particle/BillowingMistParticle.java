@@ -1,14 +1,10 @@
 package com.someguyssoftware.treasure2.particle;
 
-import com.someguyssoftware.gottschcore.spatial.ICoords;
-import com.someguyssoftware.treasure2.particle.data.BillowingMistParticleData;
-
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.IWorld;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -30,8 +26,8 @@ public class BillowingMistParticle extends MistParticle {
 	 * @param parentCoords
 	 */
 	public BillowingMistParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY,
-			double velocityZ, ICoords parentCoords) {
-		super(world, x, y, z, velocityZ, velocityZ, velocityZ, parentCoords);// , velocityX, velocityY, velocityZ);
+			double velocityZ) {
+		super(world, x, y, z, velocityZ, velocityZ, velocityZ);// , velocityX, velocityY, velocityZ);
 	}
 
 	/**
@@ -59,14 +55,14 @@ public class BillowingMistParticle extends MistParticle {
 		zo = z;
 
 		// calculate the y motion if not on the ground
-		this.yd -= provideGravity(); // gravity
+		this.yd -= getMistGravity(); // gravity
 		
 		/*
 		 * if the motionY value is less than 3x the negative provided gravity value (downwards) then max it
 		 * out at 3x.
 		 */
-		if (this.yd < -provideGravity() * 3) {
-			this.yd = -provideGravity() * 3;
+		if (this.yd < -getMistGravity() * 3) {
+			this.yd = -getMistGravity() * 3;
 		}
 		this.move(this.xd, this.yd, this.zd);
 
@@ -96,22 +92,22 @@ public class BillowingMistParticle extends MistParticle {
 	}
 
 	@Override
-	public float provideGravity() {
+	public float getMistGravity() {
 		return billowingGravity;
 	}
 	
 	@Override
-	public float provideStartSize() {
-		return 0.75F;
+	public float getStartSize() {
+		return 1F;
 	}
 	
 	@Override
-	public float provideMaxSize() {
-		return 2;
+	public float getMaxSize() {
+		return 3;
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public static class Factory implements IParticleFactory<BillowingMistParticleData> {
+	public static class Factory implements IParticleFactory<BasicParticleType> {
 		/*
 		 * contains a list of textures; choose one using either
 		 * newParticle.selectSpriteRandomly(spriteSet); or newParticle.selectSpriteWithAge(spriteSet);
@@ -130,8 +126,8 @@ public class BillowingMistParticle extends MistParticle {
 		 * 
 		 */
 		@Override
-		public Particle createParticle(BillowingMistParticleData data, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			BillowingMistParticle particle = new BillowingMistParticle(world, x, y, z, xSpeed, ySpeed, zSpeed, data.getSourceCoords());
+		public Particle createParticle(BasicParticleType data, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			BillowingMistParticle particle = new BillowingMistParticle(world, x, y, z, xSpeed, ySpeed, zSpeed);
 			particle.pickSprite(spriteSet);
 			return particle;
 		}
