@@ -1,7 +1,5 @@
 package com.someguyssoftware.treasure2.particle;
 
-import com.someguyssoftware.gottschcore.spatial.ICoords;
-
 public interface IMistParticle {
 
 	/**
@@ -9,46 +7,41 @@ public interface IMistParticle {
 	 */
 	void init();
 
-	float provideMaxScale();
+	float getStartSize();
+	
+	float getMaxSize();
+	
+	int getMaxAge();
 
-	int provideMaxAge();
+	void transitionIn();
 
-	void transitionIn(float initialScale, int stopAge, float scaleIncrement);
-
-	void transitionOut(float finalScale, int startAge, float scaleIncrement);
+	void transitionOut();
 
 	/**
 	 * provides a gravity value
 	 * 
 	 * @return
 	 */
-	float provideGravity();
+	float getMistGravity();
 
 	/**
 	 * provides an alpha value.
 	 * 
 	 * @return
 	 */
-	float provideAlpha();
+	float getMistAlpha();
 
-	ICoords getParentEmitterCoords();
+//	ICoords getParentEmitterCoords();
+//
+//	void setParentEmitterCoords(ICoords parentEmitterCoords);
 
-	void setParentEmitterCoords(ICoords parentEmitterCoords);
+	float getTransitionInSizeIncrement();
 
-	float getTransitionInScaleIncrement();
+	void setTransitionInSizeIncrement(float transitionInScaleIncrement);
 
-	void setTransitionInScaleIncrement(float transitionInScaleIncrement);
+	float getTransitionOutSizeIncrement();
 
-	float getTransitionOutScaleIncrement();
-
-	void setTransitionOutScaleIncrement(float transitionOutScaleIncrement);
-
-	/**
-	 * retrieve the particle's gravity
-	 * 
-	 * @return
-	 */
-	float getGravity();
+	void setTransitionOutSizeIncrement(float transitionOutScaleIncrement);
 
 	/**
 	 * retrieve the particle's scale
@@ -57,10 +50,14 @@ public interface IMistParticle {
 	 */
 	float getScale();
 
+	float getEndSize();
+
 	/**
-	 * retrieve the particle's alpha
 	 * 
 	 * @return
 	 */
-	float getAlpha();
+	float getTransitionInStopAge();
+
+	float getTransitionOutStartAge();
+
 }

@@ -46,7 +46,7 @@ public class TreasureSetup implements IModSetup {
 		
 		// register capabilities
 		TreasureCapabilities.register();
-		
+
 		// initialize all the data lists, maps, etc
 		TreasureData.initialize();
 		

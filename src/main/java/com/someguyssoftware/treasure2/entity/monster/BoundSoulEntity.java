@@ -19,17 +19,16 @@
  */
 package com.someguyssoftware.treasure2.entity.monster;
 
-import javax.annotation.Nullable;
+import java.util.Random;
 
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.block.GravestoneBlock;
 import com.someguyssoftware.treasure2.entity.TreasureEntities;
+import com.someguyssoftware.treasure2.particle.TreasureParticles;
 import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerTileEntity;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap.MutableAttribute;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -55,10 +54,10 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * @author Mark Gottschling on Feb 23, 2020
@@ -183,6 +182,16 @@ public class BoundSoulEntity extends MonsterEntity {
 			}
 		}
 
+		/*
+		 *  create a mist particle if on client.
+		 *  this is slight change to the vanilla call EntityLiving#isServerWorld()
+		 */
+		if (WorldInfo.isClientSide(this.level)) {
+			if (!this.isNoAi()) {
+				spawnMist();
+			}
+		}
+		
 		// regeneration
 		if (hasHome()) {
 			TileEntity homeTileEntity = this.level.getBlockEntity(getHomePos());
@@ -199,6 +208,20 @@ public class BoundSoulEntity extends MonsterEntity {
 		super.aiStep();
 	}
 
+	@OnlyIn(Dist.CLIENT)
+	private void spawnMist() {
+		if (this.tickCount % 4 == 0) {
+			Random random = new Random();
+
+			float x = ((float) (this.position().x) + (random.nextFloat() * 0.5F - 0.25F));
+			float y = ((float)this.position().y) + (random.nextFloat() * 0.25F);
+			float z = 	((float)this.position().z) + (random.nextFloat() * 0.5F - 0.25F);
+			
+			// reduce the max age - don't want it too misty around entity
+			level.addParticle(TreasureParticles.BOUND_SOUL_TYPE.get(), false, x, y, z, 0, 0, 0);
+		}
+	}
+	
 	@Override
 	public void tick() {
 		super.tick();
@@ -255,36 +278,4 @@ public class BoundSoulEntity extends MonsterEntity {
 			return pos == homePos;
 		}
 	}
-
-	//	@Override
-	//	public void onLivingUpdate() {
-	//		super.onLivingUpdate();
-	//
-	//		/*
-	//		 *  create a mist particle if on client.
-	//		 *  this is slight change to the vanilla call EntityLiving#isServerWorld()
-	//		 */
-	//		if (WorldInfo.isClientSide(this.world)) {
-	//			if (!this.isAIDisabled()) {
-	//				spawnMist();
-	//			}
-	//		}
-
-	//	}
-	//
-	//	@SideOnly(Side.CLIENT)
-	//	private void spawnMist() {
-	//		if (this.ticksExisted % 4 == 0) {
-	//			Random random = new Random();
-	//			AbstractMistParticle mistParticle = new MistParticle(world,
-	//					this.getPosition().getX() + (random.nextFloat() * 0.5 - 0.25),
-	//					this.getPosition().getY() + (random.nextFloat() * 0.25),
-	//					this.getPosition().getZ() + (random.nextFloat() * 0.5 - 0.25), 0, 0, 0, null);
-	//			// reduce the max age - don't want it too misty around entity
-	//			mistParticle.setMaxAge(160);
-	//			mistParticle.init();
-	//			Minecraft.getMinecraft().effectRenderer.addEffect(mistParticle);
-	//		}
-	//	}
-
 }

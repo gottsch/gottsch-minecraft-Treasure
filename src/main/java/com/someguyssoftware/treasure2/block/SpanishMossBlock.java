@@ -7,9 +7,15 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.particle.AbstractMistParticle;
+import com.someguyssoftware.treasure2.particle.PoisonMistParticle;
+import com.someguyssoftware.treasure2.particle.SpanishMossMistParticle;
+import com.someguyssoftware.treasure2.particle.TreasureParticles;
+import com.someguyssoftware.treasure2.particle.data.CollidingParticleType;
 //import com.someguyssoftware.treasure2.particle.PoisonMistParticle;
+import com.someguyssoftware.treasure2.particle.data.ICollidingParticleType;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -18,6 +24,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.particles.IParticleData;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -44,7 +51,7 @@ public class SpanishMossBlock extends BushBlock implements ITreasureBlock {
 		setRegistryName(modID, name);
 		this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVATED, Boolean.valueOf(false)));
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -54,20 +61,17 @@ public class SpanishMossBlock extends BushBlock implements ITreasureBlock {
 	}
 
 	/**
-	 * NOTE randomDisplayTick is on the client side only. The server is not keeping
+	 * NOTE animateTick is on the client side only. The server is not keeping
 	 * track of any particles NOTE cannot control the number of ticks per
 	 * randomDisplayTick() call - it is not controlled by tickRate()
 	 */
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-		if (WorldInfo.isServerSide(world)) {
+
+		if (!TreasureConfig.FOG.enableFog.get()) {
 			return;
 		}
-
-		//		if (!TreasureConfig.FOG.enableFog.get()) {
-		//			return;
-		//		}
 
 		if (!state.getValue(ACTIVATED)) {
 			return;
@@ -82,50 +86,35 @@ public class SpanishMossBlock extends BushBlock implements ITreasureBlock {
 		int z = pos.getZ();
 
 		// initial positions - has a spread area of up to 1.5 blocks
-		double xPos = x;
-		double yPos = y;
-		double zPos = z;
+		double xPos = (x + 0.5D);
+		double yPos = y - 0.1D;
+		double zPos = (z + 0.5D);
 		// initial velocities
 		double velocityX = 0;
 		double velocityY = 0;
 		double velocityZ = 0;
 
-		//		AbstractMistParticle mistParticle = new PoisonMistParticle(world, xPos, yPos, zPos, velocityX, velocityY,
-		//				velocityZ, new Coords(pos)) {
-		//			@Override
-		//			public float provideGravity() {
-		//				return 0.0001F;
-		//			}
-		//
-		//			@Override
-		//			public float provideAlpha() {
-		//				return DEFAULT_PARTICLE_ALPHA;
-		//			}
-		//
-		//			@Override
-		//			public float provideMaxScale() {
-		//				return 10F;
-		//			}
-		//
-		//			@Override
-		//			public void doPlayerCollisions(World world) {
-		//			}
-		//		};
-		//		mistParticle.init();
-		//
-		//		Minecraft.getMinecraft().effectRenderer.addEffect(mistParticle);
+		// NOTE can override methods here as it is a factory that creates the particle
+		IParticleData particleData = TreasureParticles.SPANISH_MOSS_MIST_PARTICLE_TYPE.get();
+		
+		try {
+			world.addParticle(particleData, false, xPos, yPos, zPos, velocityX, velocityY, velocityZ);
+		}
+		catch(Exception e) {
+			Treasure.LOGGER.error("error with particle:", e);
+		}
 	}
 
 	@Override
 	public boolean isPathfindable(BlockState blockState, IBlockReader reader, BlockPos blockPos, PathType pathType) {
 		return pathType == PathType.AIR && !this.hasCollision ? true : super.isPathfindable(blockState, reader, blockPos, pathType);
 	}
-	
+
 	@Override
 	public boolean canBeReplaced(BlockState state, Fluid fluid) {
 		return true;
 	}
-	
+
 	@Override
 	protected boolean mayPlaceOn(BlockState p_200014_1_, IBlockReader p_200014_2_, BlockPos p_200014_3_) {
 		return true;

@@ -7,31 +7,23 @@ import com.someguyssoftware.gottschcore.annotation.Credits;
 import com.someguyssoftware.gottschcore.annotation.ModInfo;
 import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
-import com.someguyssoftware.treasure2.capability.DurabilityCapability;
-import com.someguyssoftware.treasure2.capability.DurabilityCapabilityStorage;
-import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.entity.TreasureEntities;
-import com.someguyssoftware.treasure2.eventhandler.ClientEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.init.TreasureSetup;
+import com.someguyssoftware.treasure2.network.TreasureNetworking;
 import com.someguyssoftware.treasure2.particle.TreasureParticles;
 
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.config.ModConfig.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 
@@ -80,7 +72,11 @@ public class Treasure implements IMod {
 				
 		// Register the setup method for modloading
 		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		// deferred register
+		TreasureParticles.PARTICLE_TYPES.register(eventBus);
+		// regular register
 		eventBus.addListener(this::config);
+		eventBus.addListener(TreasureNetworking::common);
 		eventBus.addListener(TreasureSetup::common);
 		eventBus.addListener(this::clientSetup);
 
@@ -93,7 +89,7 @@ public class Treasure implements IMod {
 	}
 	
 	public static void clientOnly() {
-		MOD_EVENT_BUS.register(ClientEventHandler.class);
+
 	}
 	
 	private void clientSetup(final FMLClientSetupEvent event) {
