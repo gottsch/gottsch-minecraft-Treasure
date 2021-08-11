@@ -46,7 +46,6 @@ public interface ITreasureFeature {
 		return false;
     }
     
-	// TODO move to interface or abstract
 	/**
 	 * 
 	 * @param world

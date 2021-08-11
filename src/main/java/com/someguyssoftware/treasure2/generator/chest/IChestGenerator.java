@@ -33,10 +33,13 @@ import com.google.common.collect.Lists;
 import com.someguyssoftware.gottschcore.loot.LootPoolShell;
 import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
+import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.data.TreasureData;
@@ -58,6 +61,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameterSets;
@@ -67,11 +71,14 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.MapData;
+import net.minecraft.world.storage.MapDecoration;
 
 /**
  * @author Mark Gottschling on Dec 4, 2019
@@ -100,7 +107,8 @@ public interface IChestGenerator {
 			LOGGER.warn("Unable to select a chest for rarity -> {}.", rarity);
 			return result.fail();
 		}
-
+		result.getData().setRegistryName(chest.getRegistryName());
+		
 		// place the chest in the world
 		TileEntity tileEntity = null;
 		if (state != null) {
@@ -277,11 +285,102 @@ public interface IChestGenerator {
 		// add the treasure items to the chest
 		fillInventory((IInventory) tileEntity, random, treasureStacks);
 		
+		// add a treasure map if there is still space
+		addTreasureMap(world, random, (IInventory)tileEntity, new Coords(tileEntity.getBlockPos()), rarity);
+		
 		// shuffle the items list
 		Collections.shuffle(itemStacks, random);
 		
 		// fill the chest with items
 		fillInventory((IInventory) tileEntity, random, itemStacks.stream().limit(lootItemSize).collect(Collectors.toList()));
+	}
+
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param tileEntity
+	 * @param chestCoords
+	 * @param rarity
+	 */
+	default public void addTreasureMap(World world, Random random, IInventory tileEntity, ICoords chestCoords, Rarity rarity) {
+		//check for open slots first
+		List<Integer> emptySlots = getEmptySlotsRandomized(tileEntity, random);
+		if (!emptySlots.isEmpty() && RandomHelper.checkProbability(random, TreasureConfig.CHESTS.treasureMapProbability.get())) { 
+			// determine what level of rarity map to generate
+			Rarity mapRarity = getBoostedRarity(rarity, getRarityBoostAmount());
+			ResourceLocation dimension = WorldInfo.getDimension(world);
+			Treasure.LOGGER.debug("get rarity chests for dimension -> {}", dimension.toString());
+			Optional<List<ChestInfo>> chestInfos = TreasureData.CHEST_REGISTRIES.get(dimension.toString()).getByRarity(mapRarity);
+			if (chestInfos.isPresent()) {
+				Treasure.LOGGER.debug("got chestInfos by rarity -> {}", mapRarity);
+				List<ChestInfo> validChestInfos = chestInfos.get().stream().filter(c -> !c.isDiscovered() && !c.isTreasureMapOf()).collect(Collectors.toList());
+				if (!validChestInfos.isEmpty()) {
+					Treasure.LOGGER.debug("got valid chestInfos; size -> {}", validChestInfos.size());
+					ChestInfo chestInfo = validChestInfos.get(random.nextInt(validChestInfos.size()));
+					Treasure.LOGGER.debug("using chestInfo -> {}", chestInfo);
+					// build a map
+					ItemStack mapStack = createMap(world, chestInfo.getCoords(), mapRarity, (byte)2);
+
+					// add map to chest
+					(tileEntity).setItem(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), mapStack);
+
+					// update the chest info in the registry that the map is referring to with this chest's coords
+					chestInfo.setTreasureMapFrom(chestCoords);
+
+					// get this chest info from the registry
+					Optional<ChestInfo> thisChestInfo = TreasureData.CHEST_REGISTRIES.get(dimension.toString()).get(rarity, chestCoords.toShortString());
+					if (thisChestInfo.isPresent()) {
+						thisChestInfo.get().setDiscovered(true);
+					}
+				}
+			}			
+		}	
+	}
+
+	/**
+	 * 
+	 * @param world
+	 * @param coords
+	 * @param rarity
+	 * @param zoom
+	 * @return
+	 */
+	default public ItemStack createMap(World world, ICoords coords, Rarity rarity, byte zoom) {
+		ItemStack itemStack = FilledMapItem.create(world, coords.getX(), coords.getZ(), zoom, true, true);
+		FilledMapItem.renderBiomePreviewMap((ServerWorld) world, itemStack);
+		MapData.addTargetDecoration(itemStack, coords.toPos(), "+", MapDecoration.Type.RED_X);
+		 itemStack.setHoverName(new TranslationTextComponent("display.treasure_map." + rarity.getValue()));
+		 return itemStack;
+	}
+
+	/**
+	 * 
+	 * @param rarity
+	 * @param amount
+	 * @return
+	 */
+	default public Rarity getBoostedRarity(Rarity rarity, int amount) {
+		return Rarity.getByCode(Math.min(rarity.getCode() + amount, Rarity.EPIC.getCode()));
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	default public int getRarityBoostAmount() {
+		int rarityBoost = 1;
+		double mapProbability = RandomHelper.randomDouble(0, 100);
+		if (mapProbability < 5.0) {
+			rarityBoost = 3;
+		}
+		else if (mapProbability < 15.0) {
+			rarityBoost = 2;
+		}
+		else if (mapProbability < 25.0) {
+			rarityBoost = 1;
+		}
+		return rarityBoost;
 	}
 
 	/**
