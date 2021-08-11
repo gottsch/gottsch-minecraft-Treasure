@@ -156,11 +156,13 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 			
 			// generate the well NOTE use the seedReader, not the level
 			Treasure.LOGGER.debug("Attempting to generate a well");
-			result = TreasureData.WELL_GEN.generate(seedReader, random, spawnCoords, wellConfig); 
+			result = TreasureData.WELL_GEN.generate(seedReader, generator, random, spawnCoords, wellConfig); 
 			Treasure.LOGGER.debug("well world gen result -> {}", result.isSuccess());
 			if (result.isSuccess()) {
 				// add to registry
+				Treasure.LOGGER.debug("getting well registry for dimension -> {}", dimensionName.toString());
 				TreasureData.WELL_REGISTRIES.get(dimensionName.toString()).register(spawnCoords);
+//				TreasureData.WELL_REGISTRIES.get(dimensionName.toString()).dump();
 				// reset chunk count
 				chunksSinceLastDimensionWell.put(dimensionName.toString(), 0);
 			}
@@ -186,7 +188,7 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 	public static boolean checkWellProximity(IServerWorld world, ICoords coords, int minDistance) {
 
 		double minDistanceSq = minDistance * minDistance;
-
+		Treasure.LOGGER.debug("checking well registry for proximity in dimension -> {}", WorldInfo.getDimension(world.getLevel()).toString());
 		SimpleListRegistry<ICoords> wellRegistry = TreasureData.WELL_REGISTRIES.get(WorldInfo.getDimension(world.getLevel()).toString());
 		List<ICoords> wellsList = wellRegistry.getValues();
 		if (wellsList.isEmpty()) {

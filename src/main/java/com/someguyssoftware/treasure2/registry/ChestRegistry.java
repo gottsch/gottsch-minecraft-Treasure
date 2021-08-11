@@ -19,16 +19,21 @@
  */
 package com.someguyssoftware.treasure2.registry;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Table;
+import com.google.common.collect.Tables;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.enums.Rarity;
 
 /**
  * 
@@ -38,72 +43,97 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 public class ChestRegistry {
 	private static final int MAX_SIZE = TreasureConfig.CHESTS.chestRegistrySize.get();
 	
-//	private static ChestRegistry instance = new ChestRegistry();
-	// TODO this does not need to be a ListMultimap, can be just a LinkedList to preserve order
-	private ListMultimap<String, ChestInfo> registry;
+	private final LinkedList<ChestInfo> backingRegistry;
+	private final Table<Rarity, String, ChestInfo> tableRegistry;
 	
 	/**
 	 * 
 	 */
 	public ChestRegistry() {
-		registry = LinkedListMultimap.create();
+		backingRegistry = new LinkedList<>();
+		tableRegistry = Tables.newCustomTable(new LinkedHashMap<>(), LinkedHashMap::new);// HashBasedTable.create();
+	}
+	
+	public boolean isRegistered(final Rarity rarity, final String key) {
+		return tableRegistry.contains(rarity, key);
+	}
+	
+	public boolean hasRarity(final Rarity rarity) {
+		return tableRegistry.containsColumn(rarity);
 	}
 	
 	/**
 	 * 
-	 * @return
-	 */
-//	public static ChestRegistry getInstance() {
-//		return instance;
-//	}
-	
-	/**
-	 * 
 	 * @param key
-	 * @return
-	 */
-	public boolean isRegistered(final String key) {
-		return registry.containsKey(key);
-	}
-	
-	/**
-	 * Registers a ChestInfo with a key.
-	 * @param key
+	 * @param rarity
 	 * @param info
 	 */
-	public synchronized void register(final String key, final ChestInfo info) {	
-		Treasure.LOGGER.debug("Registering chest using key: " + key);
-		// test the size
-		if (registry.size() >= MAX_SIZE) {
-			// remove the first element
-			String headKey = registry.keySet().iterator().next();
-			unregister(headKey);
+	public synchronized void register(final Rarity rarity, final String key, final ChestInfo info) {
+		// if bigger than max size of registry, remove the first (oldest) element
+		if (backingRegistry.size() > MAX_SIZE) {
+			unregisterFirst();
 		}
-		// register by the unique key
-		registry.put(key, info);
+		backingRegistry.add(info);
+		tableRegistry.put(rarity, key, info);
+	}
+	
+	/**
+	 * 
+	 */
+	public synchronized void unregisterFirst() {
+		ChestInfo removeChestInfo = backingRegistry.pollFirst();
+		if (removeChestInfo != null) {
+			if (tableRegistry.contains(removeChestInfo.getRarity(), removeChestInfo.getCoords().toShortString())) {
+				tableRegistry.remove(removeChestInfo.getRarity(), removeChestInfo.getCoords().toShortString());
+			}
+		}
 	}
 	
 	/**
 	 * 
 	 * @param key
+	 * @param rarity
 	 */
-	public synchronized void unregister(final String key) {
-		if (registry.containsKey(key)) {
-			registry.removeAll(key);
+	public synchronized void unregister(final Rarity rarity, final String key) {
+		if (tableRegistry.contains(rarity, key)) {
+			ChestInfo chestInfo = tableRegistry.remove(rarity, key);
+			if (chestInfo != null) {
+				backingRegistry.remove(chestInfo);
+			}
 		}
 	}
 	
 	/**
 	 * 
+	 * @param chestInfo
+	 */
+	public synchronized void unregister(ChestInfo chestInfo) {
+		backingRegistry.remove(chestInfo);
+		tableRegistry.remove(chestInfo.getRarity(), chestInfo.getCoords().toShortString());
+	}
+	
+	/**
+	 * 
+	 * @param rarity
 	 * @param key
 	 * @return
 	 */
-	public List<ChestInfo> get(String key) {
-		List<ChestInfo> info = null;
-		if (registry.containsKey(key)) {
-			info = registry.get(key);
+	public Optional<ChestInfo> get(Rarity rarity, String key) {
+		if (tableRegistry.contains(rarity, key)) {
+			return Optional.of(tableRegistry.get(rarity, key));
 		}
-		return info;
+		return Optional.empty();
+	}
+	
+	// Optional
+	public Optional<List<ChestInfo>> getByRarity(Rarity rarity) {
+		if (tableRegistry.containsRow(rarity)) {
+			Treasure.LOGGER.debug("table registry contains rarity -> {}", rarity);
+			Map<String, ChestInfo> infoMap = tableRegistry.row(rarity);			
+			Treasure.LOGGER.debug("chest infos size -> {}", infoMap.size());
+			return Optional.of(infoMap.values().stream().collect(Collectors.toList()));
+		}
+		return Optional.empty();
 	}
 	
 	/**
@@ -111,11 +141,17 @@ public class ChestRegistry {
 	 * @return
 	 */
 	public List<ChestInfo> getValues() {
-		HashSet<ChestInfo> set = Sets.newHashSet(registry.values());
-		return new ArrayList<>(set);
+		return backingRegistry;
 	}
 	
 	public void clear() {
-		registry.clear();
+		tableRegistry.clear();
 	}
+	
+//	// TEMP
+//	public void dump() {
+//		for (ChestInfo c : backingRegistry) {
+//			Treasure.LOGGER.debug("Rarity -> {}, Key -> {}, Chest -> {}", c.getRarity(), c.getCoords(), c);
+//		}
+//	}
 }

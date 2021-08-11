@@ -43,6 +43,7 @@ import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraftforge.common.DungeonHooks;
 
 /**
@@ -51,12 +52,12 @@ import net.minecraftforge.common.DungeonHooks;
  */
 public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 
-	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords spawnCoords);	
-	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords spawnCoords);	
+	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords originalSpawnCoords,
 			IDecayRuleSet decayRuleSet);
-	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords originalSpawnCoords,
 			TemplateHolder holder);
-	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords originalSpawnCoords,
 			TemplateHolder holder, IDecayRuleSet decayRuleSet);
 
 	default public TemplateHolder selectTemplate(IServerWorld world, Random random, ICoords coords, StructureArchetype archetype, StructureType type) {

@@ -99,8 +99,13 @@ public class LockItem extends ModItem {
 		}
 		tooltip.add(new TranslationTextComponent("tooltip.label.craftable", craftable));
 
-		String keyList = getKeys().stream().map(e -> e.getName(null).getString())
-				.collect(Collectors.joining(","));
+		/**
+		 * Attempting to make a safe call for some performance enchancing mixin mods
+		 */
+		String keyList = getKeys().stream().map(e -> {
+			ITextComponent txt = e.getName(null);
+			return txt == null ? "" : txt.getString();
+		}).collect(Collectors.joining(","));
 
 		tooltip.add(new TranslationTextComponent("tooltip.label.accepts_keys", TextFormatting.GOLD + keyList));
 	}

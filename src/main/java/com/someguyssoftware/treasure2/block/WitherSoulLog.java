@@ -3,7 +3,15 @@
  */
 package com.someguyssoftware.treasure2.block;
 
+import java.util.Random;
+
 import com.someguyssoftware.gottschcore.block.FacingBlock;
+import com.someguyssoftware.gottschcore.spatial.Coords;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.particle.TreasureParticles;
+import com.someguyssoftware.treasure2.particle.data.CollidingParticleType;
 import com.someguyssoftware.treasure2.tileentity.MistEmitterTileEntity;
 import com.someguyssoftware.treasure2.tileentity.TreasureTileEntities;
 
@@ -20,6 +28,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * 
@@ -91,87 +102,73 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 		BlockState blockState = this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
 		return blockState;
 	}
-	
-	/**
-	 * 
-	 */
-//	@Override
-//	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
-//		return false;
-//	}
-	
-	/**
-	 * NOTE randomDisplayTick is on the client side only. The server is not keeping
-	 * track of any particles NOTE cannot control the number of ticks per
-	 * randomDisplayTick() call - it is not controlled by tickRate()
-	 */
-//	   @OnlyIn(Dist.CLIENT)
-//	   public void animateTick(BlockState stateIn, World world, BlockPos pos, Random rand) {
-//		if (WorldInfo.isServerSide(world)) {
-//			return;
-//		}
-//
-//		if (!TreasureConfig.GENERAL.enablePoisonFog) {
-//			return;
-//		}
-//		// get the appearance property
-//		Appearance appearance = state.getValue(APPEARANCE);
-//
-//		int x = pos.getX();
-//		int y = pos.getY();
-//		int z = pos.getZ();
-//
-//		boolean isCreateParticle = checkTorchPrevention(world, random, x, y, z);
-//		if (!isCreateParticle) {
-//			return;
-//		}
-//
-//		// check appearance - if face block, then particles need to be generated on
-//		// ground and further away (since main tree is 2x2 appearance affects how
-//		// wide to spawn the mist (because the main tree is 2x2, and the soul log is
-//		// higher). (this is hard-coded knowledge - bad)
-//		double xPos = 0;
-//		double yPos = y;
-//		double zPos = 0;
-//
-//		if (appearance == Appearance.FACE) {
-//			// initial positions - has a spread area of up to 2.5 blocks radius
-//			double xOffset = (random.nextFloat() * 5.0D) - 2.5D;
-//			double zOffset = (random.nextFloat() * 5.0D) - 2.5D;
-//
-//			if (xOffset > 0D && (zOffset < 0.5D || zOffset > -1.5D)) {
-//				xOffset = Math.max(1.5D, xOffset);
-//			} else if (xOffset < 0D && (zOffset < 0.5D || zOffset > -1.5D)) {
-//				xOffset = Math.min(-0.5D, xOffset);
-//			}
-//			xPos = (x + 0.5D) + xOffset;
-//			zPos = (z + 0.5D) + zOffset;
-//
-//			// y is 2 blocks down as the face it up the trunk
-//			yPos = y - 1.875D;
-//		} else {
-//			// initial positions - has a spread area of up to 2.5 blocks
-//			xPos = (x + 0.5D) + (random.nextFloat() * 5.0D) - 2.5D;
-//			zPos = (z + 0.5D) + (random.nextFloat() * 5.0D) - 2.5D;
-//		}
-//
-//		// initial velocities
-//		double velocityX = 0;
-//		double velocityY = 0;
-//		double velocityZ = 0;
-//
-//		AbstractMistParticle mistParticle = null;
-//		if (appearance == Appearance.FACE) {
-//			mistParticle = new WitherMistParticle(world, xPos, yPos, zPos, velocityX, velocityY, velocityZ,
-//					new Coords(pos));
-//		} else {
-//			mistParticle = new PoisonMistParticle(world, xPos, yPos, zPos, velocityX, velocityY, velocityZ,
-//					new Coords(pos));
-//		}
-//		// remember to init!
-//		mistParticle.init();
-//		Minecraft.getMinecraft().effectRenderer.addEffect(mistParticle);
-//	}
+
+	   @OnlyIn(Dist.CLIENT)
+	   public void animateTick(BlockState stateIn, World world, BlockPos pos, Random random) {
+		if (WorldInfo.isServerSide(world)) {
+			return;
+		}
+
+		if (!TreasureConfig.FOG.enableFog.get()) {
+			return;
+		}
+		
+		// get the appearance property
+		Appearance appearance =stateIn.getValue(APPEARANCE);
+
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
+
+		boolean isCreatable = checkTorchPrevention(world, random, x, y, z);
+		if (!isCreatable) {
+			return;
+		}
+
+		// check appearance - if face block, then particles need to be generated on
+		// ground and further away (since main tree is 2x2 appearance affects how
+		// wide to spawn the mist (because the main tree is 2x2, and the soul log is
+		// higher). (this is hard-coded knowledge - bad)
+		double xPos = 0;
+		double yPos = y;
+		double zPos = 0;
+
+		if (appearance == Appearance.FACE) {
+			// initial positions - has a spread area of up to 2.5 blocks radius
+			double xOffset = (random.nextFloat() * 5.0D) - 2.5D;
+			double zOffset = (random.nextFloat() * 5.0D) - 2.5D;
+
+			if (xOffset > 0D && (zOffset < 0.5D || zOffset > -1.5D)) {
+				xOffset = Math.max(1.5D, xOffset);
+			} else if (xOffset < 0D && (zOffset < 0.5D || zOffset > -1.5D)) {
+				xOffset = Math.min(-0.5D, xOffset);
+			}
+			xPos = (x + 0.5D) + xOffset;
+			zPos = (z + 0.5D) + zOffset;
+
+			// y is 2 blocks down as the face it up the trunk
+			yPos = y - 1.875D;
+		} else {
+			// initial positions - has a spread area of up to 2.5 blocks
+			xPos = (x + 0.5D) + (random.nextFloat() * 5.0D) - 2.5D;
+			zPos = (z + 0.5D) + (random.nextFloat() * 5.0D) - 2.5D;
+		}
+
+		CollidingParticleType mistType = null;
+		if (appearance == Appearance.FACE) {
+			mistType = TreasureParticles.WITHER_MIST_PARTICLE_TYPE.get();		
+		} else {
+			mistType = TreasureParticles.POISON_MIST_PARTICLE_TYPE.get();			
+		}
+		
+		try {
+			mistType.setSourceCoords(new Coords(x, y, z));
+			world.addParticle(mistType, false, xPos, yPos, zPos, 0, 0, 0);
+		}
+		catch(Exception e) {
+			Treasure.LOGGER.error("error with particle:", e);
+		}
+	}
 	
 	/**
 	 * 

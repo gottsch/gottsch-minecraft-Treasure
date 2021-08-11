@@ -20,6 +20,7 @@
 	"item.treasure2.wither_key":"Wither Key",
 	"item.treasure2.pilferers_lock_pick":"Pilferer's Lock Pick",
 	"item.treasure2.thiefs_lock_pick":"Thief's Lock Pick",
+	"item.treasure2.key_ring":"Key Ring",
 
 	"item.treasure2.wood_lock":"Wood Lock",
 	"item.treasure2:stone_lock":"Stone Lock",
@@ -127,6 +128,7 @@
 	"tooltip.no":"No",
 	"tooltip.label.rarity":"Rarity: %s",
 	"tooltip.label.category":"Category: %s",
+	"tooltip.label.uses": "Uses Remaining: [%s/%s]",
 	"tooltip.label.max_uses":"Max Uses: %s",
 	"tooltip.label.breakable":"Breakable: %s",
 	"tooltip.label.craftable":"Craftable: %s",
@@ -174,5 +176,10 @@
 	"display.spider_chest.name":"Spider Chest",
 	"display.viking_chest.name":"Viking Chest",
 	"display.cardboard_box.name":"Cardboard Box",
-	"display.milk_crate.name":"Milk Crate"
+	"display.milk_crate.name":"Milk Crate",
+	
+	"display.treasure_map.uncommon":"Uncommon Treasure Map",
+	"display.treasure_map.scarce":"Scarce Treasure Map",
+	"display.treasure_map.rare":"Rare Treasure Map",
+	"display.treasure_map.epic":"Epic Treasure Map"
 }

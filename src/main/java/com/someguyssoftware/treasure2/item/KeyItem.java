@@ -1,7 +1,25 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.item;
+
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY_CAPABILITY;
 
 import java.util.List;
 import java.util.Random;
@@ -12,6 +30,8 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
+import com.someguyssoftware.treasure2.capability.DurabilityCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -25,6 +45,7 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.SoundCategory;
@@ -36,6 +57,8 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
 
 /**
  * 
@@ -81,10 +104,7 @@ public class KeyItem extends ModItem {
 	 * @param name
 	 */
 	public KeyItem(String modID, String name, Item.Properties properties) {
-		super(modID, name, 
-				properties
-				.tab(TreasureItemGroups.MOD_ITEM_GROUP)
-				.defaultDurability(DEFAULT_MAX_USES));
+		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP).defaultDurability(DEFAULT_MAX_USES));
 
 		setCategory(Category.ELEMENTAL);
 		setRarity(Rarity.COMMON);
@@ -94,11 +114,22 @@ public class KeyItem extends ModItem {
 		setSuccessProbability(90D);	
 	}
 
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+        DurabilityCapabilityProvider provider = new DurabilityCapabilityProvider();
+        LazyOptional<IDurabilityCapability> cap = provider.getCapability(DURABILITY_CAPABILITY, null);
+        cap.ifPresent(c -> {
+        	c.setDurability(getMaxDamage()	);
+        });
+		return provider;
+	}
+	
 	/**
 	 * Format:
 	 * 		Item Name (vanilla minecraft)
 	 * 		Rarity: [COMMON | UNCOMMON | SCARCE | RARE| EPIC]  [color = Gold] 
 	 * 		Category:  [...] [color = Gold]
+	 * 		Uses Remaining: [n]
 	 * 		Max Uses: [n] [color = Gold]
 	 * 		Breakable: [Yes | No] [color = Dark Red | Green]
 	 * 		Craftable: [Yes | No] [color = Green | Dark Red]
@@ -111,6 +142,11 @@ public class KeyItem extends ModItem {
 
 		tooltip.add(new TranslationTextComponent("tooltip.label.rarity", TextFormatting.DARK_BLUE + getRarity().toString()));
 		tooltip.add(new TranslationTextComponent("tooltip.label.category", TextFormatting.GOLD + getCategory().toString()));
+
+		stack.getCapability(DURABILITY_CAPABILITY).ifPresent(cap -> {
+			tooltip.add(new TranslationTextComponent("tooltip.label.uses", cap.getDurability() - stack.getDamageValue(), cap.getDurability()));
+		});
+
 		tooltip.add(new TranslationTextComponent("tooltip.label.max_uses", TextFormatting.GOLD + String.valueOf(getMaxDamage())));
 
 		// is breakable tooltip
@@ -144,6 +180,34 @@ public class KeyItem extends ModItem {
 				new TranslationTextComponent("tooltip.label.damageable", damageable));
 	}
 
+	/**
+	 * Queries the percentage of the 'Durability' bar that should be drawn.
+	 *
+	 * @param stack The current ItemStack
+	 * @return 
+	 * @return 0.0 for 100% (no damage / full bar), 1.0 for 0% (fully damaged / empty bar)
+	 */
+	@Override
+	public double getDurabilityForDisplay(ItemStack stack) {
+		return stack.getCapability(DURABILITY_CAPABILITY).map(cap -> {
+			return (double)stack.getDamageValue() / (double) cap.getDurability();
+		}).orElse((double)stack.getDamageValue() / (double)stack.getMaxDamage());
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public boolean isValidRepairItem(ItemStack itemToRepair, ItemStack resourceItem) {
+		return resourceItem.getItem() == this || super.isValidRepairItem(itemToRepair, resourceItem);
+	}
+
+	@Override
+	public boolean isRepairable(ItemStack stack) {
+		// TODO Auto-generated method stub
+		return super.isRepairable(stack);
+	}
+
 	@Override
 	public ActionResultType useOn(ItemUseContext context) {
 		BlockPos chestPos = context.getClickedPos();
@@ -156,12 +220,12 @@ public class KeyItem extends ModItem {
 
 		if (block instanceof AbstractChestBlock) {
 			// get the tile entity
-			TileEntity te = context.getLevel().getBlockEntity(chestPos);
-			if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
+			TileEntity tileEntity = context.getLevel().getBlockEntity(chestPos);
+			if (tileEntity == null || !(tileEntity instanceof AbstractTreasureChestTileEntity)) {
 				Treasure.LOGGER.warn("Null or incorrect TileEntity");
 				return ActionResultType.FAIL;
 			}
-			AbstractTreasureChestTileEntity tcte = (AbstractTreasureChestTileEntity)te;
+			AbstractTreasureChestTileEntity chestTileEntity = (AbstractTreasureChestTileEntity)tileEntity;
 
 			// exit if on the client
 			if (WorldInfo.isClientSide(context.getLevel())) {			
@@ -169,18 +233,18 @@ public class KeyItem extends ModItem {
 			}
 
 			// determine if chest is locked
-			if (!tcte.hasLocks()) {
+			if (!chestTileEntity.hasLocks()) {
 				return ActionResultType.SUCCESS;
 			}
 
 			try {
-				ItemStack heldItem = context.getPlayer().getItemInHand(context.getHand());	
+				ItemStack heldItemStack = context.getPlayer().getItemInHand(context.getHand());	
 				boolean breakKey = true;
 				boolean fitsLock = false;
 				LockState lockState = null;
 				boolean isKeyBroken = false;
 				// check if this key is one that opens a lock (only first lock that key fits is unlocked).
-				lockState = fitsFirstLock(tcte.getLockStates());
+				lockState = fitsFirstLock(chestTileEntity.getLockStates());
 				if (lockState != null) {
 					fitsLock = true;
 				}
@@ -193,7 +257,7 @@ public class KeyItem extends ModItem {
 						// play noise
 						context.getLevel().playSound(context.getPlayer(), chestPos, SoundEvents.LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 						// update the client
-						tcte.sendUpdates();
+						chestTileEntity.sendUpdates();
 						// spawn the lock
 						if (TreasureConfig.KEYS_LOCKS.enableLockDrops.get()) {
 							InventoryHelper.dropItemStack(context.getLevel(), (double)chestPos.getX(), (double)chestPos.getY(), (double)chestPos.getZ(), new ItemStack(lock));
@@ -203,20 +267,28 @@ public class KeyItem extends ModItem {
 					}
 				}
 
+//				LazyOptional<IDurabilityCapability> cap = heldItemStack.getCapability(DURABILITY_CAPABILITY);
+				IDurabilityCapability cap = heldItemStack.getCapability(DURABILITY_CAPABILITY).orElseThrow(IllegalStateException::new);
+				
 				// check key's breakability
 				if (breakKey) {
-					if (isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks.get()) {
-						// break key;
-						heldItem.shrink(1);
-						// TODO figure out howt o send message to chat - ??
+					if ((isBreakable() || anyLockBreaksKey(chestTileEntity.getLockStates(), this)) && TreasureConfig.KEYS_LOCKS.enableKeyBreaks.get()) {
+						
+						// TODO make method breakAndShrink() using caps
+						int damage = heldItemStack.getDamageValue() + (getMaxDamage() - (heldItemStack.getDamageValue() % getMaxDamage()));
+                        heldItemStack.setDamageValue(damage);
+                        if (heldItemStack.getDamageValue() >= cap.getDurability()) {
+							// break key;
+							heldItemStack.shrink(1);
+                        }
 						context.getPlayer().sendMessage(new StringTextComponent("Key broke."), Util.NIL_UUID);
 						context.getLevel().playSound(context.getPlayer(), chestPos, SoundEvents.METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 						// flag the key as broken
 						isKeyBroken = true;
 						// if the keyStack > 0, then reset the damage - don't break a brand new key and leave the used one
-						if (heldItem.getCount() > 0) {
-							heldItem.setDamageValue(0);
-						}
+//						if (heldItem.getCount() > 0) {
+//							heldItem.setDamageValue(0);
+//						}
 					}
 					else {
 						context.getPlayer().sendMessage(new StringTextComponent("Failed to unlock."), Util.NIL_UUID);
@@ -225,12 +297,10 @@ public class KeyItem extends ModItem {
 
 				// user attempted to use key - increment the damage
 				if (isDamageable() && !isKeyBroken) {
-					heldItem.hurtAndBreak(1,  context.getPlayer(), p -> {
-						p.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
-					});
-					if (heldItem.getDamageValue() == heldItem.getMaxDamage()) {
-						heldItem.shrink(1);
-					}
+					 heldItemStack.setDamageValue(heldItemStack.getDamageValue() + 1);
+                    if (heldItemStack.getDamageValue() >= cap.getDurability()) {
+                        heldItemStack.shrink(1);
+                    }
 				}
 			}
 			catch (Exception e) {
@@ -301,7 +371,7 @@ public class KeyItem extends ModItem {
 	 * @param key
 	 * @return
 	 */
-	private boolean anyLockBreaksKey(List<LockState> lockStates, KeyItem key) {
+	public boolean anyLockBreaksKey(List<LockState> lockStates, KeyItem key) {
 		for (LockState ls : lockStates) {
 			if (ls.getLock() != null) {
 				if (ls.getLock().breaksKey(key)) {
@@ -311,7 +381,7 @@ public class KeyItem extends ModItem {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @return the rarity
 	 */

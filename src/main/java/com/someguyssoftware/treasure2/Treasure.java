@@ -9,25 +9,21 @@ import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.entity.TreasureEntities;
-import com.someguyssoftware.treasure2.eventhandler.ClientEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.init.TreasureSetup;
+import com.someguyssoftware.treasure2.network.TreasureNetworking;
 import com.someguyssoftware.treasure2.particle.TreasureParticles;
 
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.config.ModConfig.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 
@@ -58,7 +54,7 @@ public class Treasure implements IMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.0.1";
+	protected static final String VERSION = "1.5.0";
 	protected static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.16.5-master/update.json";
 
 	public static Treasure instance;
@@ -73,38 +69,27 @@ public class Treasure implements IMod {
 
 		TreasureConfig.loadConfig(TreasureConfig.COMMON_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve("treasure2-common.toml"));
-		
+				
 		// Register the setup method for modloading
 		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		// deferred register
+		TreasureParticles.PARTICLE_TYPES.register(eventBus);
+		// regular register
 		eventBus.addListener(this::config);
-		eventBus.addListener(this::setup);
+		eventBus.addListener(TreasureNetworking::common);
 		eventBus.addListener(TreasureSetup::common);
 		eventBus.addListener(this::clientSetup);
-
-		// test accessing the logging properties
-//		TreasureConfig.LOGGING.filename.get();
 
 		// needs to be registered here instead of @Mod.EventBusSubscriber because we need to pass in a constructor argument
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
 //		MinecraftForge.EVENT_BUS.register(new TreasureParticles());
-		MOD_EVENT_BUS = FMLJavaModLoadingContext.get().getModEventBus();
 //		MOD_EVENT_BUS.register(TreasureParticles.class);
 //		DistExecutor.runWhenOn(Dist.CLIENT, () -> Treasure::clientOnly);
 	}
 	
 	public static void clientOnly() {
-//		MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
-		MOD_EVENT_BUS.register(ClientEventHandler.class);
-	}
-	
-	/**
-	 * ie. preint
-	 * 
-	 * @param event
-	 */
-	@SuppressWarnings("deprecation")
-	private void setup(final FMLCommonSetupEvent event) {
+
 	}
 	
 	private void clientSetup(final FMLClientSetupEvent event) {

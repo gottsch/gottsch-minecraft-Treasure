@@ -43,6 +43,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.ChunkGenerator;
 
 /**
  * @author Mark Gottschling on Aug 20, 2019
@@ -54,16 +55,16 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 	 * 
 	 */
 	@Override
-	public GeneratorResult<GeneratorData> generate(IServerWorld world, Random random,
+	public GeneratorResult<GeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random,
 			ICoords originalSpawnCoords, IWellsConfig config) {
-		return generate(world, random, originalSpawnCoords, null, config);
+		return generate(world, generator, random, originalSpawnCoords, null, config);
 	}
 	
 	/**
 	 * 
 	 */
 	@Override
-	public GeneratorResult<GeneratorData> generate(IServerWorld world, Random random,
+	public GeneratorResult<GeneratorData> generate(IServerWorld world, ChunkGenerator chunkGenerator, Random random,
 			ICoords originalSpawnCoords, TemplateHolder templateHolder, IWellsConfig config) {
 		/*
 		 * Setup
@@ -74,8 +75,8 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		Biome biome = world.getBiome(originalSpawnCoords.toPos());
 		
 		// create the generator
-		TemplateGenerator generator = new TemplateGenerator();
-		generator.setNullBlock(Blocks.BEDROCK);
+		TemplateGenerator templateGenerator = new TemplateGenerator();
+		templateGenerator.setNullBlock(Blocks.BEDROCK);
 		
 		// get the template
 		if (templateHolder == null) {
@@ -93,14 +94,19 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		placement.setRotation(rotation).setRandom(random);
 		
 		ICoords templateSize = new Coords(templateHolder.getTemplate().getSize(rotation));
-		ICoords actualSpawnCoords = generator.getTransformedSpawnCoords(originalSpawnCoords, templateSize, placement);
+		ICoords actualSpawnCoords = templateGenerator.getTransformedSpawnCoords(originalSpawnCoords, templateSize, placement);
 			
 		/*
 		 * Environment Checks
 		 */
 		// 1. determine y-coord of land surface for the actual spawn coords
 //		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(actualSpawnCoords.getX(), 255, actualSpawnCoords.getZ()));
-		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, actualSpawnCoords.withY(255));
+		if (chunkGenerator == null) {
+			actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, actualSpawnCoords.withY(255));
+		}
+		else {
+			actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, chunkGenerator, actualSpawnCoords.withY(255));
+		}
 		if (actualSpawnCoords == null || actualSpawnCoords == WorldInfo.EMPTY_COORDS) {
 			Treasure.LOGGER.debug("Returning due to marker coords == null or EMPTY_COORDS");
 			return result.fail(); 
@@ -122,7 +128,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		originalSpawnCoords = new Coords(originalSpawnCoords.getX(), actualSpawnCoords.getY(), originalSpawnCoords.getZ());
 		Treasure.LOGGER.debug("Well original spawn coords -> {}", originalSpawnCoords.toShortString());
 		// build well
-		 GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, templateHolder,  placement, originalSpawnCoords);
+		 GeneratorResult<TemplateGeneratorData> genResult = templateGenerator.generate(world, random, templateHolder,  placement, originalSpawnCoords);
 		Treasure.LOGGER.debug("Well gen  structure result -> {}", genResult.isSuccess());
 		 if (!genResult.isSuccess()) {
 			 Treasure.LOGGER.debug("failing well gen.");

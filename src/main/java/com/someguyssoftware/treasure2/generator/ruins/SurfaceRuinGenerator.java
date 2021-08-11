@@ -33,6 +33,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.gen.ChunkGenerator;
 
 /**
  * 
@@ -50,25 +51,25 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 	public SurfaceRuinGenerator() {}
 	
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random,
 			ICoords originalSpawnCoords) {
-		return generate(world, random, originalSpawnCoords, null, null);
+		return generate(world, generator, random, originalSpawnCoords, null, null);
 	}
 	
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random,
 			ICoords originalSpawnCoords, IDecayRuleSet decayRuleSet) {
-		return generate(world, random, originalSpawnCoords, null, decayRuleSet);
+		return generate(world, generator, random, originalSpawnCoords, null, decayRuleSet);
 	}
 	
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder) {
-		return generate(world, random, originalSpawnCoords, holder, null);
+		return generate(world, generator, random, originalSpawnCoords, holder, null);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator chunkGenerator, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder, IDecayRuleSet decayRuleSet) {		
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 
@@ -129,8 +130,12 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		/**
 		 * Environment Checks
 		 */
-		// TODO would be nice to have the ChunkGenerator here
-		alignedSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, alignedSpawnCoords);
+		if (chunkGenerator == null) {
+			alignedSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, alignedSpawnCoords);
+		}
+		else {
+			alignedSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, chunkGenerator, alignedSpawnCoords);
+		}
 		Treasure.LOGGER.debug("surface coords -> {}", alignedSpawnCoords.toShortString());
 		if (alignedSpawnCoords == WorldInfo.EMPTY_COORDS) {
 			return result.fail();

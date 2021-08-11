@@ -156,6 +156,7 @@ public class TreasureConfig extends AbstractConfig {
 
 		public static final String PILFERERS_LOCK_PICK_ID = "pilferers_lock_pick";
 		public static final String THIEFS_LOCK_PICK_ID = "thiefs_lock_pick";
+		public static final String KEY_RING_ID = "key_ring";
 	}
 
 	public static class BlockID {
@@ -322,6 +323,7 @@ public class TreasureConfig extends AbstractConfig {
 
 //		@RequiresMcRestart
 		public ForgeConfigSpec.ConfigValue<Integer> chestRegistrySize;
+		public ForgeConfigSpec.DoubleValue treasureMapProbability;
 		
 		/**
 		 * 
@@ -335,6 +337,10 @@ public class TreasureConfig extends AbstractConfig {
 					.comment("The number of chests that are monitored. Most recent additions replace least recent when the registry is full.",
 							"This is the set of chests used to measure distance between newly generated chests.")
 					.defineInRange("Maximum size of chest registry:", 75, 5, 100);
+			
+			treasureMapProbability = builder
+					.comment("The probability that a chest will contain a treasure map to another chest.")
+					.defineInRange("Treasure Chest Probability:", 0D, 20D, 100D);
 			
 			Map<Rarity, ChestConfig.Data> surfaceConfigs = new HashMap<>();
 			Map<Rarity, ChestConfig.Data> submergedConfigs = new HashMap<>();
@@ -408,13 +414,13 @@ public class TreasureConfig extends AbstractConfig {
 				builder.comment(comments).push(category);
 				minChunksPerChest = builder
 						.comment(" The minimum number of chunks generated before another attempt to spawn a chest is made.")
-						.defineInRange("Minimum chunks per chest spawn:", 50, 25, 32000);
+						.defineInRange("Minimum chunks per chest spawn:", 75, 25, 32000);
 				
 				minDistancePerChest = builder
 						.comment(" The minimum distance, measured in chunks (16x16), that two chests can be in proximity.",
 								" Note: Only chests in the chest registry are checked against this property.",
 								" Used in conjunction with the chunks per chest and spawn probability.", " Ex. ")
-						.defineInRange("Minimum distance per chest spawn:", 75, 0, 32000);
+						.defineInRange("Minimum distance per chest spawn:", 150, 0, 32000);
 				
 				surfaceChestProbability = builder
 						.comment(" The probability chest will appear on the surface, instead of in a pit.")

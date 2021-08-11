@@ -69,8 +69,8 @@ public class SimpleListRegistry<T> implements ISimpleListReigstry<T> {
 		
 		// test the size
 		if (registry.size() >= maxSize) {
-			// remove the last element in list (oldest). this is a stack not a queue so first or top element is the newest.
-			registry.removeLast();
+			// remove the first element in list (oldest). this is a stack not a queue so first or top element is the newest.
+			registry.pollFirst();
 		}
 		registry.add(object);
 	}
@@ -102,4 +102,11 @@ public class SimpleListRegistry<T> implements ISimpleListReigstry<T> {
 	public void clear() {
 		registry.clear();
 	}
+	
+	// TEMP
+//	public void dump() {
+//		for (T c : registry) {
+//			Treasure.LOGGER.debug("Wells Registry entry -> {}", c.toString());
+//		}
+//	}
 }

@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraftforge.common.DungeonHooks;
 
 /**
@@ -49,8 +50,15 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 	public StructureMarkerGenerator() {
 	}
 
-	@Override
+	/**
+	 * 
+	 */
 	public GeneratorResult<GeneratorData> generate(IServerWorld world, Random random, ICoords coords) {
+		return generate(world, null, random, coords);
+	}
+	
+	@Override
+	public GeneratorResult<GeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords) {
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 	
 		// get the biome ID
@@ -101,7 +109,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		if (offset >= -2) {
 			if (!WorldInfo.isSolidBase(world, spawnCoords, transformedSize.getX(), transformedSize.getZ(), 70)) {
 				Treasure.LOGGER.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", 70, spawnCoords.toShortString(), transformedSize.getX(), transformedSize.getY());
-				 GeneratorResult<GeneratorData> genResult = new GravestoneMarkerGenerator().generate(world, random, coords);
+				 GeneratorResult<GeneratorData> genResult = new GravestoneMarkerGenerator().generate(world, generator, random, coords);
 				 return genResult;
 			}
 		}
