@@ -202,7 +202,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 					TreasureData.CHEST_REGISTRIES.get(dimension.toString()).register(rarity, spawnCoords.toShortString(), chestInfo);
 					// TEMP dump the registry
 					Treasure.LOGGER.debug("Chest Registry for Dimension -> {}", dimension.toString());
-					TreasureData.CHEST_REGISTRIES.get(dimension.toString()).dump();
+//					TreasureData.CHEST_REGISTRIES.get(dimension.toString()).dump();
 					// reset the chunk counts
 					chunksSinceLastDimensionChest.put(dimension.toString(), 0);
 					// TODO reset the chunk rarity count

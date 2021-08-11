@@ -102,4 +102,11 @@ public class SimpleListRegistry<T> implements ISimpleListReigstry<T> {
 	public void clear() {
 		registry.clear();
 	}
+	
+	// TEMP
+//	public void dump() {
+//		for (T c : registry) {
+//			Treasure.LOGGER.debug("Wells Registry entry -> {}", c.toString());
+//		}
+//	}
 }

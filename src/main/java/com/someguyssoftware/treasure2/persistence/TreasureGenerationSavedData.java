@@ -213,14 +213,14 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	 */
 	private void loadRegistry(INBT dimensionNBT, Map<String, SimpleListRegistry<ICoords>> registryMap) {
         String dimensionID = ((CompoundNBT) dimensionNBT).getString(DIMENSION_ID_TAG_NAME);
-        Treasure.LOGGER.debug("loading dimension -> {}", dimensionID);
+        Treasure.LOGGER.debug("\t...loading dimension -> {}", dimensionID);
         // get the registry
         ListNBT registryList = ((CompoundNBT) dimensionNBT).getList(REGISTRY_TAG_NAME, 10);
         registryList.forEach(registryNBT -> {
             int x = ((CompoundNBT)registryNBT).getInt("x");
             int y = ((CompoundNBT)registryNBT).getInt("y");
             int z = ((CompoundNBT)registryNBT).getInt("z");
-            Treasure.LOGGER.debug("loading registry coords -> x:{} y:{} z:{}", x, y, z);
+            Treasure.LOGGER.debug("\t...loading registry coords -> x:{} y:{} z:{}", x, y, z);
             registryMap.get(dimensionID).register(new Coords(x, y, z));
         });
 	}

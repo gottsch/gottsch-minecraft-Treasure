@@ -414,13 +414,13 @@ public class TreasureConfig extends AbstractConfig {
 				builder.comment(comments).push(category);
 				minChunksPerChest = builder
 						.comment(" The minimum number of chunks generated before another attempt to spawn a chest is made.")
-						.defineInRange("Minimum chunks per chest spawn:", 50, 25, 32000);
+						.defineInRange("Minimum chunks per chest spawn:", 75, 25, 32000);
 				
 				minDistancePerChest = builder
 						.comment(" The minimum distance, measured in chunks (16x16), that two chests can be in proximity.",
 								" Note: Only chests in the chest registry are checked against this property.",
 								" Used in conjunction with the chunks per chest and spawn probability.", " Ex. ")
-						.defineInRange("Minimum distance per chest spawn:", 75, 0, 32000);
+						.defineInRange("Minimum distance per chest spawn:", 150, 0, 32000);
 				
 				surfaceChestProbability = builder
 						.comment(" The probability chest will appear on the surface, instead of in a pit.")

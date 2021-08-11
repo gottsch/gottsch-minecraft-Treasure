@@ -148,10 +148,10 @@ public class ChestRegistry {
 		tableRegistry.clear();
 	}
 	
-	// TEMP
-	public void dump() {
-		for (ChestInfo c : backingRegistry) {
-			Treasure.LOGGER.debug("Rarity -> {}, Key -> {}, Chest -> {}", c.getRarity(), c.getCoords(), c);
-		}
-	}
+//	// TEMP
+//	public void dump() {
+//		for (ChestInfo c : backingRegistry) {
+//			Treasure.LOGGER.debug("Rarity -> {}, Key -> {}, Chest -> {}", c.getRarity(), c.getCoords(), c);
+//		}
+//	}
 }
