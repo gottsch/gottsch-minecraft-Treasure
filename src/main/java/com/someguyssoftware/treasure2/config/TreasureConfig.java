@@ -323,6 +323,7 @@ public class TreasureConfig extends AbstractConfig {
 
 //		@RequiresMcRestart
 		public ForgeConfigSpec.ConfigValue<Integer> chestRegistrySize;
+		public ForgeConfigSpec.DoubleValue treasureMapProbability;
 		
 		/**
 		 * 
@@ -336,6 +337,10 @@ public class TreasureConfig extends AbstractConfig {
 					.comment("The number of chests that are monitored. Most recent additions replace least recent when the registry is full.",
 							"This is the set of chests used to measure distance between newly generated chests.")
 					.defineInRange("Maximum size of chest registry:", 75, 5, 100);
+			
+			treasureMapProbability = builder
+					.comment("The probability that a chest will contain a treasure map to another chest.")
+					.defineInRange("Treasure Chest Probability:", 0D, 20D, 100D);
 			
 			Map<Rarity, ChestConfig.Data> surfaceConfigs = new HashMap<>();
 			Map<Rarity, ChestConfig.Data> submergedConfigs = new HashMap<>();

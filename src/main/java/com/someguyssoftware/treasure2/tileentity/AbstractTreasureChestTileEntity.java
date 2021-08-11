@@ -28,6 +28,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -549,8 +550,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			Treasure.LOGGER.debug("chest gen  -> {}", this.getGenerationContext().getChestGeneratorType().getChestGenerator().getClass().getSimpleName());
 
 			// fill the chest with loot
-			chestGenerator.fillChest(getLevel(), new Random(), this, this.getGenerationContext().getLootRarity(), playerEntity);
-
+			chestGenerator.fillChest(getLevel(), new Random(), this, this.getGenerationContext().getLootRarity(), playerEntity);			
 		}
 
 		return createServerContainer(windowID, playerInventory, playerEntity);

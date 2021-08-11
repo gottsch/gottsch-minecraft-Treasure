@@ -40,6 +40,7 @@ import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.WitherBranchBlock;
 import com.someguyssoftware.treasure2.block.WitherRootBlock;
 import com.someguyssoftware.treasure2.block.WitherSoulLog;
+import com.someguyssoftware.treasure2.chest.ChestEnvironment;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.data.TreasureData;
@@ -186,9 +187,6 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 			chunksSinceLastDimensionTree.put(dimensionName.toString(), new Double(chunksSinceLastCount - chunksSinceLastCount * 0.2).intValue());
 			
 			// spawn @ middle of chunk
-			//			BlockPos centerOfChunk = pos.offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1);
-			//			int landHeight = generator.getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Type.WORLD_SURFACE_WG) + 1;
-			//			ICoords spawnCoords = new Coords(centerOfChunk.getX(), landHeight, centerOfChunk.getZ());
 			ICoords centerOfChunk = new Coords(pos.offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1));
 			ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(seedReader, generator, centerOfChunk);
 			if (spawnCoords == WorldInfo.EMPTY_COORDS) {
@@ -214,16 +212,14 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 				return false;
 			}	
 			
-			// reset chunks since last tree regardless of successful generation - results in a more rare, realistic and configurable generation.
-//			chunksSinceLastDimensionTree.put(dimensionName.toString(), 0);
-			
 			// generate the well
 			Treasure.LOGGER.debug("Attempting to generate a wither tree...");
-			GeneratorResult<GeneratorData> result = generate(seedReader, generator, random, spawnCoords);
+			GeneratorResult<ChestGeneratorData> result = generate(seedReader, generator, random, spawnCoords);
 
 			if (result.isSuccess()) {
 				// add to registries
-				TreasureData.CHEST_REGISTRIES.get(dimensionName.toString()).register(spawnCoords.toShortString(), new ChestInfo(Rarity.SCARCE, spawnCoords));
+				ChestInfo chestInfo = ChestInfo.from(result.getData());	
+				TreasureData.CHEST_REGISTRIES.get(dimensionName.toString()).register(Rarity.SCARCE, spawnCoords.toShortString(), chestInfo);
 				TreasureData.WITHER_TREE_REGISTRIES.get(dimensionName.toString()).register(spawnCoords);
 				// reset chunk count
 				chunksSinceLastDimensionTree.put(dimensionName.toString(), 0);
@@ -246,25 +242,13 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param coords
 	 * @return
 	 */
-	public GeneratorResult<GeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords) {
+	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords) {
 		Instant start = Instant.now();
 
 		// result to return to the caller
-		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
-
-		//		ICoords surfaceCoords = null;
-		//		ICoords witherTreeCoords = null;
-
-		// TODO check through this method if coords = surface = witherTree coords and can be reduced to 1 variable
-		// 1. determine y-coord of land for markers
-		//		surfaceCoords = coords;
-		//		Treasure.LOGGER.debug("surface coords @ {}",coords.toShortString());
-		//		if (coords == null || coords == WorldInfo.EMPTY_COORDS) {
-		//			Treasure.LOGGER.debug("returning due to surface coords == null or EMPTY_COORDS");
-		//			return result.fail();
-		//		}
-		//		witherTreeCoords = surfaceCoords;
-
+		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
+		result.getData().setEnvironment(ChestEnvironment.SURFACE);
+		
 		AxisAlignedBB witherGroveBounds = new AxisAlignedBB(coords.toPos());
 
 		// ============ build the pit first ==============
@@ -339,7 +323,9 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 		}
 
 		Treasure.LOGGER.info("CHEATER! wither chest at coords: {}", coords.toShortString());
-		result.setData(chestResult.getData());
+		result.getData().setChestContext(chestResult.getData().getChestContext());
+		result.getData().setRegistryName(chestResult.getData().getRegistryName());
+		result.getData().setRarity(Rarity.SCARCE);
 
 		if (Treasure.LOGGER.isDebugEnabled()) {
 			Instant finish = Instant.now();
