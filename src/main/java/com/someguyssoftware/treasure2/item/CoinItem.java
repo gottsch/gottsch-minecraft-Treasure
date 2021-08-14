@@ -7,6 +7,7 @@ import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.block.BlockContext;
@@ -30,7 +31,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameterSets;
 import net.minecraft.loot.LootParameters;
@@ -48,12 +48,9 @@ import net.minecraft.world.server.ServerWorld;
  * @author Mark Gottschling on Sep 13, 2014
  *
  */
-public class CoinItem extends ModItem {
+public class CoinItem extends ModItem implements IWishable {
 	private static final int MAX_CUSTOM_STACK_SIZE = 64;
 	public static final int MAX_STACK_SIZE = 8;
-	
-	// TODO move to IWishable when added
-	public static final String DROPPED_BY_KEY = "droppedBy";
 	
 	private Coins coin;
 	
@@ -113,8 +110,14 @@ public class CoinItem extends ModItem {
 				Random random = new Random();
 				for (int itemIndex = 0; itemIndex < entityItemStack.getCount(); itemIndex++) {
 					// generate an item for each item in the stack
-					generateLootItem(world, random, entityItem, coords);
+					Optional<ItemStack> lootStack = generateLoot(world, random, entityItem.getItem(), coords);
+					if (lootStack.isPresent()) {
+						// spawn the item 
+						InventoryHelper.dropItemStack(world, (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), stack);
+					}
 				}
+				// remove the item entity
+				entityItem.remove();
 				return true;
 			}
 		}
@@ -126,10 +129,11 @@ public class CoinItem extends ModItem {
 	 * 
 	 * @param world
 	 * @param random
-	 * @param entityItem
+	 * @param itemStack
 	 * @param coords
 	 */
-	private void generateLootItem(World world, Random random, ItemEntity entityItem, ICoords coords) {
+	@Override
+	public Optional<ItemStack> generateLoot(World world, Random random, ItemStack itemStack, ICoords coords) {
 		List<LootTableShell> lootTables = new ArrayList<>();
 
 		// determine coin type
@@ -142,15 +146,19 @@ public class CoinItem extends ModItem {
 			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE));
 		}
 		
-		ItemStack stack = null;
+		// TODO most of this seems repeated from IChestGenerator.  Make a common class/methods
+		
+		ItemStack outputStack = null;
 		// handle if loot tables is null or size = 0. return an item (apple) to ensure continuing functionality
 		if (lootTables == null || lootTables.size() == 0) {
 			// TODO change to a randomized treasure key
-			stack = new ItemStack(Items.APPLE);
+//			stack = new ItemStack(Items.APPLE);
+			List<KeyItem> keys = new ArrayList<>(TreasureItems.keys.get((getCoin() == Coins.SILVER) ? Rarity.UNCOMMON : Rarity.SCARCE));
+			outputStack = new ItemStack(keys.get(random.nextInt(keys.size())));
 		}
 		else {
 			// attempt to get the player who dropped the coin
-			ItemStack coinItem = entityItem.getItem();
+			ItemStack coinItem = itemStack;
 			CompoundNBT nbt = coinItem.getTag();
 			LOGGER.debug("item as a tag");
 			PlayerEntity player = null;
@@ -173,7 +181,7 @@ public class CoinItem extends ModItem {
 			// select a table shell
 			LootTableShell tableShell = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
 			if (tableShell.getResourceLocation() == null) {
-				return;
+				return Optional.empty();
 			}
 			
 			// get the vanilla table from shell
@@ -196,44 +204,20 @@ public class CoinItem extends ModItem {
 				// geneate loot from pools
 				lootPool.addRandomItems(itemStacks::add, lootContext);
 			}
-			
-			// TODO add back when inject loot tables are working
+
 			// get effective rarity
-//			Rarity effectiveRarity = Treasure.LOOT_TABLE_MASTER.getEffectiveRarity(tableShell, (getCoin() == Coins.SILVER) ? Rarity.UNCOMMON : Rarity.SCARCE);	
-//			LOGGER.debug("coin: using effective rarity -> {}", effectiveRarity);
-//			
-//			// get all injected loot tables
-//			LOGGER.debug("coin: searching for injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
-//			Optional<List<LootTableShell>> injectLootTableShells = buildInjectedLootTableList(tableShell.getCategory(), effectiveRarity);			
-//			if (injectLootTableShells.isPresent()) {
-//				LOGGER.debug("coin: found injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
-//				LOGGER.debug("coin: size of injectable tables -> {}", injectLootTableShells.get().size());
-//
-//				// attempt to get the player who dropped the coin
-//				ItemStack coinItem = entityItem.getItem();
-//				NBTTagCompound nbt = coinItem.getTagCompound();
-//				EntityPlayer player = null;
-//				if (nbt != null && nbt.hasKey(DROPPED_BY_KEY)) {					
-//					player = world.getPlayerEntityByName(nbt.getString(DROPPED_BY_KEY));
-//					if (player != null && LOGGER.isDebugEnabled()) {
-//						LOGGER.debug("coin dropped by player -> {}", player.getName());
-//					}
-//				}
-//				itemStacks.addAll(getLootItems(world, random, injectLootTableShells.get(), getLootContext(world, player)));
-//			}
+			Rarity effectiveRarity = TreasureLootTableRegistry.getLootTableMaster().getEffectiveRarity(tableShell, (getCoin() == Coins.SILVER) ? Rarity.UNCOMMON : Rarity.SCARCE);	
+			LOGGER.debug("coin: using effective rarity -> {}", effectiveRarity);
+			
+			// get all injected loot tables
+			injectLoot(world, random, itemStacks, tableShell.getCategory(), effectiveRarity, lootContext);
 			
 			// select one item randomly
-			stack = itemStacks.get(RandomHelper.randomInt(0, itemStacks.size()-1));
+			outputStack = itemStacks.get(RandomHelper.randomInt(0, itemStacks.size()-1));
 		}				
-		
-		// spawn the item 
-		if (stack != null) {
-			InventoryHelper.dropItemStack(world, (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), stack);
-		}
-		// remove the item entity
-		entityItem.remove();
+		return Optional.of(outputStack);
 	}
-
+	
 	/**
 	 * @return the coin
 	 */

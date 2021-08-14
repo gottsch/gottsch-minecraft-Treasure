@@ -19,6 +19,7 @@
  */
 package com.someguyssoftware.treasure2.item;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -127,7 +128,9 @@ public class TreasureItems {
 	
 	// swords
 	public static Item SKULL_SWORD;
-		
+	
+	// key map
+	public static Multimap<Rarity, KeyItem> keys;
 	// lock map
 	public static Multimap<Rarity, LockItem> locks;
 
@@ -254,6 +257,10 @@ public class TreasureItems {
 				.setSuccessProbability(32);
 
 		KEY_RING = new KeyRingItem(Treasure.MODID, KeyID.KEY_RING_ID, new Item.Properties());
+		
+		keys = ArrayListMultimap.create();
+		keys.put(WOOD_KEY.getRarity(), WOOD_KEY);
+		// TODO finish list
 		
 		// LOCKS
 		WOOD_LOCK = new LockItem(Treasure.MODID, LockID.WOOD_LOCK_ID, new Item.Properties(), new KeyItem[] {WOOD_KEY})
