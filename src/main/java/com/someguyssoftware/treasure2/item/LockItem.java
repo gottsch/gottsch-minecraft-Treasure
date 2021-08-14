@@ -103,7 +103,7 @@ public class LockItem extends ModItem {
 		 * Attempting to make a safe call for some performance enchancing mixin mods
 		 */
 		String keyList = getKeys().stream().map(e -> {
-			ITextComponent txt = e.getName(null);
+			ITextComponent txt = e.getName(new ItemStack(e));
 			return txt == null ? "" : txt.getString();
 		}).collect(Collectors.joining(","));
 
