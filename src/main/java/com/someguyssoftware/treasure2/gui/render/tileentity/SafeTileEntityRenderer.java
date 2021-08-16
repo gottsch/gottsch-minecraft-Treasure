@@ -22,14 +22,14 @@ public class SafeTileEntityRenderer extends AbstractChestTileEntityRenderer {
 	}
 
 	@Override
-	public void updateModelRotationAngles(AbstractTreasureChestTileEntity tileEntity, float partialTicks) {
+	public void updateModelLidRotation(AbstractTreasureChestTileEntity tileEntity, float partialTicks) {
 		SafeTileEntity ste = (SafeTileEntity) tileEntity;
 
 		if (ste.isLidClosed) {
 			float handleRotation = ste.prevHandleAngle + (ste.handleAngle - ste.prevHandleAngle) * partialTicks;
 			handleRotation = 1.0F - handleRotation;
 			handleRotation = 1.0F - handleRotation * handleRotation * handleRotation;
-			((SafeModel)getModel()).getHandleA1().zRot = (handleRotation * (float)Math.PI / 2.0F);
+			((SafeModel)getModel()).getHandleA1().zRot = (handleRotation * (float)Math.PI / getAngleModifier());
 		}
 		else {
 			// render handleB rotating around y-axis
@@ -37,7 +37,7 @@ public class SafeTileEntityRenderer extends AbstractChestTileEntityRenderer {
 		float lidRotation = ste.prevLidAngle + (ste.lidAngle - ste.prevLidAngle) * partialTicks;
 		lidRotation = 1.0F - lidRotation;
 		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-		getModel().getLid().yRot = (lidRotation * (float)Math.PI / 2.0F);
+		getModel().getLid().yRot = (lidRotation * (float)Math.PI / getAngleModifier());
 	}
 
 	@Override

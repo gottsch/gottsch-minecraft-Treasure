@@ -20,10 +20,10 @@ public class WitherChestTileEntityRenderer extends AbstractChestTileEntityRender
 	}
 	
 	@Override
-	public void updateModelRotationAngles(AbstractTreasureChestTileEntity tileEntity, float partialTicks) {
+	public void updateModelLidRotation(AbstractTreasureChestTileEntity tileEntity, float partialTicks) {
 		float lidRotation = tileEntity.prevLidAngle + (tileEntity.lidAngle - tileEntity.prevLidAngle) * partialTicks;
         lidRotation = 1.0F - lidRotation;
         lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-        ((WitherChestModel)getModel()).getRightFrontDoor().yRot = -(lidRotation * (float)Math.PI / 2.0F);  
+        ((WitherChestModel)getModel()).getRightFrontDoor().yRot = -(lidRotation * (float)Math.PI / getAngleModifier());  
 	}
 }

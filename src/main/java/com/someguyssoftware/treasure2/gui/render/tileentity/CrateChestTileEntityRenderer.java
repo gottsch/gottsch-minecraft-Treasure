@@ -31,62 +31,76 @@ public class CrateChestTileEntityRenderer extends AbstractChestTileEntityRendere
 	}
 
 	@Override
-	public void render(AbstractTreasureChestTileEntity tileEntity, float partialTicks, MatrixStack matrixStack,
-			IRenderTypeBuffer renderTypeBuffer, int combinedLight, int combinedOverlay) {
-
-		if (!(tileEntity instanceof AbstractTreasureChestTileEntity)) {
-			return; // should never happen
-		}
-
-		// TODO this block goes into method / use template pattern
-		World world = tileEntity.getLevel();
-		boolean hasWorld = (world != null);
-		BlockState state = tileEntity.getBlockState();
-		Direction facing = Direction.NORTH;
-		if (hasWorld) {
-			facing = AbstractChestBlock.getFacing(state);
-		}
-
-		// push the current transformation matrix + normals matrix
-		matrixStack.pushPose(); 
-
-		// TODO this block goes into method / use template pattern
-		// The model is defined centred on [0,0,0], so if we drew it at the current render origin, its centre would be
-		// at the corner of the block, sunk halfway into the ground and overlapping into the adjacent blocks.
-		// We want it to hover above the centre of the hopper base, so we need to translate up and across to the desired position
-		final Vector3d TRANSLATION_OFFSET = new Vector3d(0.5, 1.5, 0.5);
-		matrixStack.translate(TRANSLATION_OFFSET.x, TRANSLATION_OFFSET.y, TRANSLATION_OFFSET.z); // translate
-		matrixStack.scale(-1, -1, 1);
-		float f = getHorizontalAngle(facing);
-		matrixStack.mulPose(Vector3f.YP.rotationDegrees(-f));	    
-		
-		// TODO this block goes into method / use template pattern
-		//////////////// custom lid code /////////////
+	public void updateModelLidRotation(AbstractTreasureChestTileEntity tileEntity, float partialTicks) {
     	CrateChestTileEntity cte = (CrateChestTileEntity) tileEntity;
         float latchRotation = cte.prevLatchAngle + (cte.latchAngle - cte.prevLatchAngle) * partialTicks;
         latchRotation = 1.0F - latchRotation;
         latchRotation = 1.0F - latchRotation * latchRotation * latchRotation;
-        ((CrateChestModel)getModel()).getLatch1().xRot = -(latchRotation * (float)Math.PI / 2.0F);        	
+        ((CrateChestModel)getModel()).getLatch1().xRot = -(latchRotation * (float)Math.PI / getAngleModifier());        	
         
         float lidRotation = cte.prevLidAngle + (cte.lidAngle - cte.prevLidAngle) * partialTicks;
         lidRotation = 1.0F - lidRotation;
         lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-        getModel().getLid().yRot = -(lidRotation * (float)Math.PI / 2.0F);
-		
-		//////////////// end of lid code //////////////
-		
-		// TODO this block goes into method / use template pattern
-		IVertexBuilder renderBuffer = renderTypeBuffer.getBuffer(getModel().getChestRenderType(getTexture()));
-		getModel().renderAll(matrixStack, renderBuffer, combinedLight, combinedOverlay, tileEntity);
-		matrixStack.popPose();		
-		
-		// TODO this block goes into method / use template pattern
-        ////////////// render the locks //////////////////////////////////////
-		renderLocks(tileEntity, matrixStack, renderTypeBuffer, combinedLight, combinedOverlay);
-//        if (!te.getLockStates().isEmpty()) {
-//        	renderLocks(te, x, y, z);
-//        }
-        ////////////// end of render the locks //////////////////////////////////////
-		
+        getModel().getLid().yRot = -(lidRotation * (float)Math.PI / getAngleModifier());
 	}
+
+// 	@Override
+// 	public void render(AbstractTreasureChestTileEntity tileEntity, float partialTicks, MatrixStack matrixStack,
+// 			IRenderTypeBuffer renderTypeBuffer, int combinedLight, int combinedOverlay) {
+
+// 		if (!(tileEntity instanceof AbstractTreasureChestTileEntity)) {
+// 			return; // should never happen
+// 		}
+
+// 		// TODO this block goes into method / use template pattern
+// 		World world = tileEntity.getLevel();
+// 		boolean hasWorld = (world != null);
+// 		BlockState state = tileEntity.getBlockState();
+// 		Direction facing = Direction.NORTH;
+// 		if (hasWorld) {
+// 			facing = AbstractChestBlock.getFacing(state);
+// 		}
+
+// 		// push the current transformation matrix + normals matrix
+// 		matrixStack.pushPose(); 
+
+// 		// TODO this block goes into method / use template pattern
+// 		// The model is defined centred on [0,0,0], so if we drew it at the current render origin, its centre would be
+// 		// at the corner of the block, sunk halfway into the ground and overlapping into the adjacent blocks.
+// 		// We want it to hover above the centre of the hopper base, so we need to translate up and across to the desired position
+// 		final Vector3d TRANSLATION_OFFSET = new Vector3d(0.5, 1.5, 0.5);
+// 		matrixStack.translate(TRANSLATION_OFFSET.x, TRANSLATION_OFFSET.y, TRANSLATION_OFFSET.z); // translate
+// 		matrixStack.scale(-1, -1, 1);
+// 		float f = getHorizontalAngle(facing);
+// 		matrixStack.mulPose(Vector3f.YP.rotationDegrees(-f));	    
+		
+// 		// TODO this block goes into method / use template pattern
+// 		//////////////// custom lid code /////////////
+//     	CrateChestTileEntity cte = (CrateChestTileEntity) tileEntity;
+//         float latchRotation = cte.prevLatchAngle + (cte.latchAngle - cte.prevLatchAngle) * partialTicks;
+//         latchRotation = 1.0F - latchRotation;
+//         latchRotation = 1.0F - latchRotation * latchRotation * latchRotation;
+//         ((CrateChestModel)getModel()).getLatch1().xRot = -(latchRotation * (float)Math.PI / 2.0F);        	
+        
+//         float lidRotation = cte.prevLidAngle + (cte.lidAngle - cte.prevLidAngle) * partialTicks;
+//         lidRotation = 1.0F - lidRotation;
+//         lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
+//         getModel().getLid().yRot = -(lidRotation * (float)Math.PI / 2.0F);
+		
+// 		//////////////// end of lid code //////////////
+		
+// 		// TODO this block goes into method / use template pattern
+// 		IVertexBuilder renderBuffer = renderTypeBuffer.getBuffer(getModel().getChestRenderType(getTexture()));
+// 		getModel().renderAll(matrixStack, renderBuffer, combinedLight, combinedOverlay, tileEntity);
+// 		matrixStack.popPose();		
+		
+// 		// TODO this block goes into method / use template pattern
+//         ////////////// render the locks //////////////////////////////////////
+// 		renderLocks(tileEntity, matrixStack, renderTypeBuffer, combinedLight, combinedOverlay);
+// //        if (!te.getLockStates().isEmpty()) {
+// //        	renderLocks(te, x, y, z);
+// //        }
+//         ////////////// end of render the locks //////////////////////////////////////
+		
+// 	}
 }

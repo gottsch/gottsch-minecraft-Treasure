@@ -18,5 +18,4 @@ public class WoodChestTileEntityRenderer extends AbstractChestTileEntityRenderer
 		setTexture(new ResourceLocation(Treasure.MODID + ":textures/entity/chest/wood-chest.png"));
 		setModel(new StandardChestModel());
 	}
-
 }
