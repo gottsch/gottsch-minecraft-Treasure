@@ -106,7 +106,7 @@ public class TreasureConfig extends AbstractConfig {
 	}
 
 	public static class ItemID {
-
+		public static final String COPPER_COIN_ID = "copper_coin";
 		public static final String SILVER_COIN_ID = "silver_coin";
 		public static final String GOLD_COIN_ID = "gold_coin";
 		public static final String SAPPHIRE_ID = "sapphire";
@@ -118,7 +118,7 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String WITHER_ROOT_ITEM_ID = "wither_root_item";
 		public static final String SKELETON_ITEM_ID = "skeleton";
 		public static final String EYE_PATCH_ID = "eye_patch";
-		public static final String SPANISH_MOSS_ITEM_ID = "spanish_moss_item";
+		public static final String SPANISH_MOSS_ITEM_ID = "spanish_moss_item";		
 	}
 	
 	public static class LockID {

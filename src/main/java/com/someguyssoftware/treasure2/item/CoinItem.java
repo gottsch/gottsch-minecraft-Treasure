@@ -19,9 +19,13 @@ import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.block.IWishingWellBlock;
+import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
 import net.minecraft.block.Blocks;
@@ -42,6 +46,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 /**
  * 
@@ -64,13 +69,48 @@ public class CoinItem extends ModItem implements IWishable {
 		this.coin = Coins.GOLD;
 	}
 	
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+		CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
+		return provider;
+	}
+	
 	/**
 	 * 
 	 */
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);        
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		// standard coin info
 		tooltip.add(new TranslationTextComponent("tooltip.label.coin").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
+		// charmable info
+		ICharmableCapability cap = getCap(stack);
+		if (cap.isCharmed()) {
+			cap.appendHoverText(stack, worldIn, tooltip, flagIn);
+		}
+	}
+	
+	/**
+	 * Convenience method.
+	 * @param stack
+	 * @return
+	 */
+	public ICharmableCapability getCap(ItemStack stack) {
+		return stack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY, null).orElseThrow(IllegalStateException::new);
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public boolean isFoil(ItemStack stack) {
+		ICharmableCapability cap = getCap(stack);
+		if (cap.isCharmed()) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	/**
@@ -137,7 +177,10 @@ public class CoinItem extends ModItem implements IWishable {
 		List<LootTableShell> lootTables = new ArrayList<>();
 
 		// determine coin type
-		if (getCoin() == Coins.SILVER) {
+		if (getCoin() == Coins.COPPER) {
+			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.COMMON));
+		}
+		else if (getCoin() == Coins.SILVER) {
 			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.UNCOMMON));
 			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
 		}

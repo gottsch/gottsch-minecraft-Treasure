@@ -14,8 +14,9 @@ import java.util.Map;
  *
  */
 public enum Coins implements IEnum {
-	SILVER(0, "Silver Coin"),
-	GOLD(1, "Gold Coin");
+	COPPER(0, "Copper Coin"),
+	SILVER(1, "Silver Coin"),
+	GOLD(2, "Gold Coin");
 	
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();

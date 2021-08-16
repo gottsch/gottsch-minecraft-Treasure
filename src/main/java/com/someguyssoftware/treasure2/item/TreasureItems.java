@@ -27,6 +27,12 @@ import com.google.common.collect.Multimap;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.capability.CharmableCapability;
+import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
+import com.someguyssoftware.treasure2.capability.CharmableCapability.CharmInventoryType;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig.KeyID;
 import com.someguyssoftware.treasure2.config.TreasureConfig.LockID;
@@ -44,9 +50,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -109,6 +118,7 @@ public class TreasureItems {
 	public static LockItem WITHER_LOCK;
 
 	// coins
+	public static Item COPPER_COIN;
 	public static Item SILVER_COIN;
 	public static Item GOLD_COIN;	
 	
@@ -118,6 +128,9 @@ public class TreasureItems {
 	public static Item WHITE_PEARL;
 	public static Item BLACK_PEARL;
 		
+	// charmed
+	public static CoinItem TEST_COIN;
+	
 	// wither items
 	public static Item WITHER_STICK_ITEM;
 	public static Item WITHER_ROOT_ITEM;
@@ -318,6 +331,7 @@ public class TreasureItems {
 		// NOTE wither lock is a special and isn't used in the general locks list
 		
 		// COINS
+		COPPER_COIN = new CoinItem(Treasure.MODID, TreasureConfig.ItemID.COPPER_COIN_ID, new Item.Properties()).setCoin(Coins.COPPER);
 		SILVER_COIN = new CoinItem(Treasure.MODID, TreasureConfig.ItemID.SILVER_COIN_ID, new Item.Properties()).setCoin(Coins.SILVER);
 		GOLD_COIN = new CoinItem(Treasure.MODID, TreasureConfig.ItemID.GOLD_COIN_ID, new Item.Properties());
 		
@@ -328,7 +342,26 @@ public class TreasureItems {
 		// PEARLS
 		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.ItemID.WHITE_PEARL_ID, new Item.Properties()).setPearl(Pearls.WHITE);
 		BLACK_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.ItemID.BLACK_PEARL_ID, new Item.Properties()).setPearl(Pearls.BLACK);
+		
+		// CHARMS
+		TEST_COIN = new CoinItem(Treasure.MODID, "test_coin", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder().with($ -> {
+					$.finite(true, 1);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+				}).build();
 				
+				// add charms
+				cap.add(CharmInventoryType.FINITE, TreasureCharms.HEALING_1.createEntity());
+				cap.add(CharmInventoryType.IMBUE, TreasureCharms.HEALING_1.createEntity());
+				cap.add(CharmInventoryType.SOCKET, TreasureCharms.HEALING_1.createEntity());
+				stack.setHoverName(new StringTextComponent("Sal'andaar Stone's Third Eye"));
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		TEST_COIN.setCoin(Coins.COPPER);
+		
 		// WITHER ITEMS
 		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_STICK_ITEM_ID, TreasureBlocks.WITHER_BRANCH, new Item.Properties());
 		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_ROOT_ITEM_ID, TreasureBlocks.WITHER_ROOT, new Item.Properties());
@@ -378,8 +411,10 @@ public class TreasureItems {
 				PILFERERS_LOCK_PICK,
 				THIEFS_LOCK_PICK,
 				KEY_RING,
+				COPPER_COIN,
 				SILVER_COIN,
 				GOLD_COIN,
+				TEST_COIN,
 				RUBY,
 				SAPPHIRE,
 				WHITE_PEARL,

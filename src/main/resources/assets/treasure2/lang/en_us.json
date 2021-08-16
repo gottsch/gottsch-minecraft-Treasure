@@ -143,9 +143,13 @@
 	"tooltip.label.charmed":"Hold in hand or in coin pouch for buffs",
 	"tooltip.label.charmed.adornment":"Hold in hand, coin pouch, or hotbar for buffs",
 	"tooltip.label.charms":"Charms:",
-	"tooltip.label.charmable":"To charm, add charmed items to slots",
-	"tooltip.label.charmable.slots":"Slots: [%s/%s]",
-
+	"tooltip.label.charmable.slots":"Charms Capacity: %s[available/activated/max.]",
+	"tooltip.label.charmable.slots.stats":"[%s/%s/%s]",
+	"tooltip.charm.healing":"Healing %s",
+	"tooltip.label.charm.type.finite":"[FINITE]",
+	"tooltip.label.charm.type.imbue":"[IMBUED]",
+	"tooltip.label.charm.type.socket":"[SOCKETED",
+	"tooltip.charm.healing_rate": "- heals 0.5 hearts/sec",
 	"tooltip.label.max_locks":"Max Locks: %s",
 	"tooltip.label.container_size":"Inventory Size: %s",
 
