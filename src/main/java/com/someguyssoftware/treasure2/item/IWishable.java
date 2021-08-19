@@ -21,12 +21,14 @@ package com.someguyssoftware.treasure2.item;
 
 import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
+import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
@@ -76,5 +78,32 @@ public interface IWishable {
 	 */
 	default public Optional<List<LootTableShell>> buildInjectedLootTableList(String key, Rarity rarity) {
 		return Optional.ofNullable(TreasureLootTableRegistry.getLootTableMaster().getLootTableByKeyRarity(TreasureLootTableMaster2.ManagedTableType.INJECT, key, rarity));
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	default public List<LootTableShell> getLootTables() {
+		return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.COMMON);
+	}
+	
+	/**
+	 * 
+	 * @param random
+	 * @return
+	 */
+	default public ItemStack getDefaultLootKey (Random random) {
+		List<KeyItem> keys = new ArrayList<>(TreasureItems.keys.get(Rarity.COMMON));
+		return new ItemStack(keys.get(random.nextInt(keys.size())));
+	}
+	
+	/**
+	 * 
+	 * @param random
+	 * @return
+	 */
+	default public Rarity getDefaultEffectiveRarity(Random random) {
+		return Rarity.UNCOMMON;
 	}
 }

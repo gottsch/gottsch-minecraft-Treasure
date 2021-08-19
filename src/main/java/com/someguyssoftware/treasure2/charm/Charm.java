@@ -19,10 +19,14 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.util.ModUtils;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -41,13 +45,13 @@ public abstract class Charm implements ICharm {
 	private int maxDuration;
 	private Rarity rarity;
 	private int priority;
-	
+
 	/*
 	 * if multiple charms of the same type are being processed, only 1 should be updated/executed.
 	 * ex. if multiple harvesting charms are held, only one should update.
 	 */
-	private boolean allowMultipleUpdates = false;
-	
+	private boolean effectStackable = false;
+
 	/**
 	 * 
 	 * @param builder
@@ -61,7 +65,7 @@ public abstract class Charm implements ICharm {
 		this.maxPercent = builder.percent;
 		this.rarity = builder.rarity;
 		this.priority = builder.priority;
-		this.allowMultipleUpdates = builder.allowMultipleUpdates;
+		this.effectStackable = builder.effectStackable;
 	}
 
 	/**
@@ -69,14 +73,52 @@ public abstract class Charm implements ICharm {
 	 */
 	@Override
 	public ICharmEntity createEntity() {
-//		ICharmData data = new CharmData();
-//		data.setValue(this.getMaxValue());
-//		data.setPercent(this.getMaxPercent());
-//		data.setDuration(this.getMaxDuration());
+		//		ICharmData data = new CharmData();
+		//		data.setValue(this.getMaxValue());
+		//		data.setPercent(this.getMaxPercent());
+		//		data.setDuration(this.getMaxDuration());
 		ICharmEntity entity = new CharmEntity(this, this.getMaxValue(),this.getMaxDuration(), this.getMaxPercent());
 		return entity;
 	}
-	
+
+	/**
+	 * 
+	 * @param nbt
+	 * @return
+	 */
+	public static Optional<ICharm> load(CompoundNBT nbt) {
+		Optional<ICharm> charm = Optional.empty();
+		// read the name of the charm and fetch from the registry
+		try {
+			String charmName = nbt.getString("name");			
+			ResourceLocation resource = ModUtils.asLocation(charmName);
+			charm = TreasureCharmRegistry.get(resource);
+			if (!charm.isPresent()) {
+				throw new Exception(String.format("Unable to locate charm %s in registry.", resource.toString()));
+			}
+		}
+		catch(Exception e) {
+			Treasure.LOGGER.error("Unable to read state to NBT:", e);
+		}	
+		return charm;		
+	}
+
+	/**
+	 * 
+	 * @param nbt
+	 * @return
+	 */
+	@Override
+	public CompoundNBT save(CompoundNBT nbt) {
+		try {
+			nbt.putString("name", this.name.toString());
+		}
+		catch(Exception e) {
+			Treasure.LOGGER.error("Unable to write state to NBT:", e);
+		}
+		return nbt;
+	}
+
 	/**
 	 * 
 	 * @param data
@@ -84,49 +126,61 @@ public abstract class Charm implements ICharm {
 	 */
 	@SuppressWarnings("deprecation")
 	public String getLabel(ICharmEntity entity) {
-		return new TranslationTextComponent("tooltip.charm." + getType().toLowerCase(), getLevel()).getString();
+		return new TranslationTextComponent("tooltip.charm." + getType().toLowerCase(), getLevel()).getString() + " "  + getUsesGauge(entity);
 
-        /*
-         * 1. check for mod item specific label
-         * 2. check for specific type prefix (levels 1-10)
-         * 3. check for general prefix (levels 1-10)
-         * OR
-         * 4. check for specific type suffix (levels 11+)
-         * 5. check for general suffix (levels 11+)
-         * ex. tooltip.charm.shielding.prefix.level[x], else look for tooltip.charm.prefix.level[x] + tooltip.charm.[type]
-         */
-//        String tooltipKey = "tooltip.charm." + getName().toString().toLowerCase();
-//        String label = I18n.translateToLocalFormatted(tooltipKey,
-//				String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
-//				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
-//        String prefix = "";
-//        String suffix = "";
-//        String type = "";
-//        if (label.equals(tooltipKey)) {
-//            type = I18n.translateToLocalFormatted("tooltip.charm." + getType(), 
-//            		String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
-//    				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
-//            if (this.getLevel() <= 10) {
-//            	String prefixKey = "tooltip.charm." + getType() + ".prefix.level" + String.valueOf(this.getLevel());
-//                prefix = I18n.translateToLocalFormatted(prefixKey);
-//                if (prefix.equals(prefixKey)) {
-//                    prefix = I18n.translateToLocalFormatted("tooltip.charm.prefix.level" + String.valueOf(this.getLevel()));
-//                }
-//                label = prefix + " " + type;
-//            }
-//            else {
-//            	String suffixKey = "tooltip.charm." + getType() + ".suffix.level" + String.valueOf(this.getLevel());
-//                suffix = I18n.translateToLocalFormatted(suffixKey);
-//                if (suffix.equals(suffixKey)) {
-//                    suffix = I18n.translateToLocalFormatted("tooltip.charm.suffix.level" + String.valueOf(this.getLevel()));
-//                }
-//                label = type + " " + suffix;
-//            }
-//        }
-//        // TODO redo this in future.
-//        return label + " " + getUsesGauge(data) + " " + (this.isAllowMultipleUpdates() ? (TextFormatting.DARK_PURPLE + "* combinable") : "");
+		/*
+		 * 1. check for mod item specific label
+		 * 2. check for specific type prefix (levels 1-10)
+		 * 3. check for general prefix (levels 1-10)
+		 * OR
+		 * 4. check for specific type suffix (levels 11+)
+		 * 5. check for general suffix (levels 11+)
+		 * ex. tooltip.charm.shielding.prefix.level[x], else look for tooltip.charm.prefix.level[x] + tooltip.charm.[type]
+		 */
+		//        String tooltipKey = "tooltip.charm." + getName().toString().toLowerCase();
+		//        String label = I18n.translateToLocalFormatted(tooltipKey,
+		//				String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+		//				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
+		//        String prefix = "";
+		//        String suffix = "";
+		//        String type = "";
+		//        if (label.equals(tooltipKey)) {
+		//            type = I18n.translateToLocalFormatted("tooltip.charm." + getType(), 
+		//            		String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+		//    				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
+		//            if (this.getLevel() <= 10) {
+		//            	String prefixKey = "tooltip.charm." + getType() + ".prefix.level" + String.valueOf(this.getLevel());
+		//                prefix = I18n.translateToLocalFormatted(prefixKey);
+		//                if (prefix.equals(prefixKey)) {
+		//                    prefix = I18n.translateToLocalFormatted("tooltip.charm.prefix.level" + String.valueOf(this.getLevel()));
+		//                }
+		//                label = prefix + " " + type;
+		//            }
+		//            else {
+		//            	String suffixKey = "tooltip.charm." + getType() + ".suffix.level" + String.valueOf(this.getLevel());
+		//                suffix = I18n.translateToLocalFormatted(suffixKey);
+		//                if (suffix.equals(suffixKey)) {
+		//                    suffix = I18n.translateToLocalFormatted("tooltip.charm.suffix.level" + String.valueOf(this.getLevel()));
+		//                }
+		//                label = type + " " + suffix;
+		//            }
+		//        }
+		//        // TODO redo this in future.
+		//        return label + " " + getUsesGauge(data) + " " + (this.isAllowMultipleUpdates() ? (TextFormatting.DARK_PURPLE + "* combinable") : "");
 	}
-	
+
+	/**
+	 * 
+	 * @param data
+	 * @return
+	 */
+	@SuppressWarnings("deprecation")
+	public String getUsesGauge(ICharmEntity entity) {
+		return new TranslationTextComponent("tooltip.charm.uses_gauge",
+				String.valueOf(Math.toIntExact(Math.round(entity.getValue()))), 
+				String.valueOf(Math.toIntExact(Math.round(getMaxValue())))).getString();
+	}
+
 	@Override
 	public ResourceLocation getName() {
 		return name;
@@ -155,22 +209,22 @@ public abstract class Charm implements ICharm {
 	public int getMaxDuration() {
 		return maxDuration;
 	}
-	
+
 	@Override
 	public Rarity getRarity() {
 		return rarity;
 	}
-	
+
 	@Override
 	public int getPriority() {
 		return priority;
 	}
-	
+
 	@Override
-	public boolean isAllowMultipleUpdates() {
-		return allowMultipleUpdates;
+	public boolean isEffectStackable() {
+		return effectStackable;
 	}
-	
+
 	/**
 	 * 
 	 * @author Mark Gottschling on Dec 18, 2020
@@ -185,8 +239,8 @@ public abstract class Charm implements ICharm {
 		public Double percent = 0.0;
 		public Rarity rarity = Rarity.COMMON;
 		public int priority = 10;
-		public boolean allowMultipleUpdates = false;
-		
+		public boolean effectStackable = false;
+
 		/**
 		 * 
 		 * @param name
@@ -199,13 +253,13 @@ public abstract class Charm implements ICharm {
 			this.type = type;
 			this.level = level;
 		}
-		
+
 		/**
 		 * 
 		 * @return
 		 */
 		abstract public ICharm build();
-		
+
 		/**
 		 * 
 		 * @param builder
@@ -215,7 +269,7 @@ public abstract class Charm implements ICharm {
 			builder.accept(this);
 			return this;
 		}
-		
+
 		@Deprecated
 		public Builder withValue(Double value) {
 			this.value = value;
@@ -231,19 +285,19 @@ public abstract class Charm implements ICharm {
 			this.percent = percent;
 			return Charm.Builder.this;
 		}
-		
+
 		public Builder withRarity(Rarity rarity) {
 			this.rarity = rarity;
 			return Charm.Builder.this;
 		}
-		
+
 		public Builder withPriority(int priority) {
 			this.priority = priority;
 			return Charm.Builder.this;
 		}
-		
+
 		public Builder withAllowMultipleUpdates(boolean allow) {
-			this.allowMultipleUpdates = allow;
+			this.effectStackable = allow;
 			return Charm.Builder.this;
 		}
 	}
@@ -253,6 +307,6 @@ public abstract class Charm implements ICharm {
 	public String toString() {
 		return "Charm [name=" + name + ", type=" + type + ", level=" + level + ", maxValue=" + maxValue
 				+ ", maxPercent=" + maxPercent + ", maxDuration=" + maxDuration + ", rarity=" + rarity + ", priority="
-				+ priority + ", allowMultipleUpdates=" + allowMultipleUpdates + "]";
+				+ priority + ", effectStackable=" + effectStackable + "]";
 	}
 }

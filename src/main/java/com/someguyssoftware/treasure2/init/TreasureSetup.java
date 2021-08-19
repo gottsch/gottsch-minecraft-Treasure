@@ -19,14 +19,23 @@
  */
 package com.someguyssoftware.treasure2.init;
 
+import java.util.Optional;
+
+import com.google.common.util.concurrent.AtomicDouble;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.CharmableCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.data.TreasureData;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 
+import net.minecraft.item.ItemModelsProperties;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 /**
@@ -55,5 +64,19 @@ public class TreasureSetup implements IModSetup {
 		TreasureMetaRegistry.create(Treasure.instance);
 		TreasureTemplateRegistry.create(Treasure.instance);
 		TreasureDecayRegistry.create(Treasure.instance);
+	}
+	
+	public static void clientSetup(final FMLClientSetupEvent event) {
+		event.enqueueWork(() -> {
+		    ItemModelsProperties.register(TreasureItems.CHARM, 
+		      new ResourceLocation(Treasure.MODID, "model"), (stack, world, living) -> {
+		        AtomicDouble d = new AtomicDouble(0);
+		       stack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).ifPresent(cap -> {
+		    	   Optional<Integer> level = TreasureCharms.getCharmLevel(cap.getSourceItem());
+			    	d.set(cap.getBaseMaterial().getMaxCharmLevel() + (level.isPresent() ? level.get() : 0)) ;
+		        });
+		       return d.floatValue();
+		      });
+		  });
 	}
 }

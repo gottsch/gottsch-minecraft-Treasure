@@ -21,11 +21,13 @@ package com.someguyssoftware.treasure2.capability;
 
 import java.util.List;
 
-import com.someguyssoftware.treasure2.capability.CharmableCapability.CharmInventoryType;
+import com.someguyssoftware.treasure2.capability.CharmableCapability.BaseMaterial;
+import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 
@@ -44,13 +46,42 @@ public interface ICharmableCapability {
 	 * @param type
 	 * @param entity
 	 */	
-	void add(CharmInventoryType type, ICharmEntity entity);
+	void add(InventoryType type, ICharmEntity entity);
 	
 	public boolean isCharmed();
 	
 	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag);
 	
-	// an originator of a charm ie coins, gems
-//	public boolean isCharmSource();
-//	public void setCharmSource(boolean isSource);
+	public boolean isBindable();
+	public void setBindable(boolean bindable);
+	
+	public boolean isFinite();
+	public void setFinite(boolean finite);
+	public int getMaxFiniteSize();
+	
+	public boolean isImbuable();
+	public void setImbuable(boolean imbue);
+	public int getMaxImbueSize();
+	
+	public boolean isImbuing();
+	public void setImbuing(boolean imbuing);
+	
+	public boolean isSocketable();
+	public void setSocketable(boolean socketable);
+	public int getMaxSocketsSize();
+	
+	public boolean isSocketing();
+	public void setSocketing(boolean socketing);
+	void setMaxSocketsSize(int maxSocketsSize);
+	void setMaxImbueSize(int maxImbueSize);
+	void setMaxFiniteSize(int maxFiniteSize);
+	
+	BaseMaterial getBaseMaterial();
+	void setBaseMaterial(BaseMaterial baseMaterial);
+	
+	int getMaxCharmLevel();
+	void setMaxCharmLevel(int maxLevel);
+	
+	ResourceLocation getSourceItem();
+	void setSourceItem(ResourceLocation sourceItem);
 }

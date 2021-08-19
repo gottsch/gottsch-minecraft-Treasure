@@ -19,17 +19,62 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
+import java.util.Comparator;
+import java.util.Optional;
+
+import net.minecraft.nbt.CompoundNBT;
+
 /**
  * 
  * @author Mark Gottschling on Jan 16, 2021
  *
  */
 public interface ICharmEntity {
+	static String CHARM = "charm";
+	static String VALUE = "value";
+		
 	ICharm getCharm();
-
 	void setCharm(ICharm charm);
 
-	ICharmData getData();
+	double getValue();
+	void setValue(double value);
 
-	void setData(ICharmData data);
+	int getDuration();
+	void setDuration(int duration);
+
+	double getPercent();
+	void setPercent(double percent);
+	
+	/**
+	 * 
+	 * @param nbt
+	 * @return
+	 */
+	CompoundNBT save(CompoundNBT nbt);
+	
+	/**
+	 * 
+	 * @param nbt
+	 * @return
+	 */
+	public static Optional<ICharmEntity> load(CompoundNBT nbt) {
+		Optional<ICharm> charm = Charm.load((CompoundNBT) nbt.get(CHARM));
+		if (!charm.isPresent()) {
+			return Optional.empty();
+		}
+		
+		ICharmEntity entity = charm.get().createEntity();
+		if (nbt.contains(VALUE)) {
+			entity.setValue(nbt.getDouble(VALUE));
+		}
+		if (nbt.contains("duration")) {
+			entity.setDuration(nbt.getInt("duration"));
+		}
+		if (nbt.contains("percent")) {
+			entity.setPercent(nbt.getDouble("percent"));
+		}
+		return Optional.of(entity);
+	}
+	
+	void update(ICharmEntity entity);
 }

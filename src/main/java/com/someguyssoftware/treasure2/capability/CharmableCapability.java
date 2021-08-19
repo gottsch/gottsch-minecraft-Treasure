@@ -20,13 +20,20 @@
 package com.someguyssoftware.treasure2.capability;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -42,25 +49,46 @@ import net.minecraft.world.World;
  *
  */
 public class CharmableCapability implements ICharmableCapability {
-//    private LinkedList<List<ICharmEntity>> charmEntities = new LinkedList<>();
+	/*
+	 * Properties that refer to the Item that has this capability
+	 */
     @SuppressWarnings("unchecked")
 	ArrayList<ICharmEntity>[] charmEntities = (ArrayList<ICharmEntity>[])new ArrayList[3];
+    // is this item a charm source/originator ie. not an adornment or an item that is "given" a charm
     private boolean source;
+    // is this item bindable to a target item that is socketable
     private boolean bindable;
+    // can this item create sockets on a target item - REMOVE doesn't belong in Charmable -> has nothing to do with charm inventory
     private boolean socketing;
+    // does this item have sockets - accepts bindable items
     private boolean socketable;
+    // can this item imbue atarget item
     private boolean imbuing;
+    // can this item be imbued
     private boolean imbuable;
+    // does this item have "built-in" finite charms
     private boolean finite;
     
-    private int socketSize;
-    private int imbueSize;
-    private int finiteSize;
+    // the base material this item is made of
+    private BaseMaterial baseMaterial = BaseMaterial.COPPER;
+    // the item that this capability belongs to
+    private ResourceLocation sourceItem;
+    // the max level of any charm that this item can hold (in either of the 3 inventories)
+    private int maxCharmLevel;
+    
+    /*
+     * Propeties that refer to the Charm Inventory the the Item that has this capability
+     */
+    private int maxSocketsSize;
+    private int maxImbueSize;
+    private int maxFiniteSize;
+
     
 	/**
 	 * 
 	 */
 	public CharmableCapability() {
+		init();
 	}
 	
 	/**
@@ -68,17 +96,27 @@ public class CharmableCapability implements ICharmableCapability {
 	 * @param builder
 	 */
 	public CharmableCapability(Builder builder) {
-		init();
+		this();
+		this.source = builder.source;
+		this.bindable = builder.bindable;
 		this.finite = builder.finite;
-		this.finiteSize = finite ? Math.max(1, builder.finiteSize) : 0;
+		this.maxFiniteSize = finite ? Math.max(1, builder.maxFiniteSize) : 0;
+		this.imbuable = builder.imbuable;
+		this.maxImbueSize = imbuable ? Math.max(1, builder.maxImbueSize) : 0;
 		this.socketable = builder.socketable;
-		this.socketSize = socketable ? Math.max(1, builder.socketSize) : 0;
+		this.maxSocketsSize = socketable ? Math.max(1, builder.maxSocketsSize) : 0;
+		this.baseMaterial = builder.baseMaterial;
+		this.sourceItem = builder.sourceItem;
+		this.maxCharmLevel = builder.maxCharmLevel;
 	}
 		
+	/**
+	 * 
+	 */
 	protected void init() {
-		charmEntities[CharmInventoryType.FINITE.value] = new ArrayList<>(1);
-		charmEntities[CharmInventoryType.IMBUE.value] =  new ArrayList<>(1);
-		charmEntities[CharmInventoryType.SOCKET.value] = new ArrayList<>(1);
+		charmEntities[InventoryType.FINITE.value] = new ArrayList<>(1);
+		charmEntities[InventoryType.IMBUE.value] =  new ArrayList<>(1);
+		charmEntities[InventoryType.SOCKET.value] = new ArrayList<>(1);
 	}
 	
 	/**
@@ -87,8 +125,25 @@ public class CharmableCapability implements ICharmableCapability {
 	 * @param entity
 	 */
 	@Override
-	public void add(CharmInventoryType type, ICharmEntity entity) {
-		charmEntities[type.value].add(entity);
+	public void add(InventoryType type, ICharmEntity entity) {
+		// test if the level of charm item/cap is >= entity.level; else return
+		
+		// test if there is enough space to add
+//		Treasure.LOGGER.debug("adding type -> {} charm -> {}", type, entity.getCharm());
+		if (charmEntities[type.value].size() < getMaxSize(type)) {
+			charmEntities[type.value].add(entity);
+		}
+//		Treasure.LOGGER.debug("ther are {}  type -> {} charms", charmEntities[type.value].size(), type);
+	}
+	
+	/**
+	 * Convenience method
+	 * @param type
+	 * @return
+	 */
+	public int getMaxSize(InventoryType type) {
+		// check against SOCKET first as this will be the most common
+		return (type == InventoryType.SOCKET ? getMaxSocketsSize() : type == InventoryType.IMBUE ? getMaxImbueSize() : getMaxFiniteSize());
 	}
 	
 	@Override
@@ -111,25 +166,59 @@ public class CharmableCapability implements ICharmableCapability {
 		tooltip.add(new TranslationTextComponent("tooltip.label.charms").withStyle(TextFormatting.YELLOW, TextFormatting.BOLD));
 
 		// create header text for inventory type
-		appendHoverText(stack, world, tooltip, flag, CharmInventoryType.FINITE, false);
-		appendHoverText(stack, world, tooltip, flag, CharmInventoryType.IMBUE, true);
-		appendHoverText(stack, world, tooltip, flag, CharmInventoryType.SOCKET, true);
+		appendHoverText(stack, world, tooltip, flag, InventoryType.FINITE, false);
+		appendHoverText(stack, world, tooltip, flag, InventoryType.IMBUE, true);
+		appendHoverText(stack, world, tooltip, flag, InventoryType.SOCKET, true);
 	}
 	
-	private void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag, CharmInventoryType inventoryType, boolean titleFlag) {
+	/**
+	 * 
+	 * @param stack
+	 * @param world
+	 * @param tooltip
+	 * @param flag
+	 * @param inventoryType
+	 * @param titleFlag
+	 */
+	private void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag, InventoryType inventoryType, boolean titleFlag) {
 		List<ICharmEntity> entityList = getCharmEntities()[inventoryType.value];
 		if (entityList != null && !entityList.isEmpty()) {
 			// add title
 			if (titleFlag) {
-				tooltip.add(new TranslationTextComponent("tooltip.label.charm.type.finite", inventoryType.name()).withStyle(TextFormatting.DARK_GRAY));
+				TextFormatting color = inventoryType == InventoryType.SOCKET ? TextFormatting.BLUE : TextFormatting.DARK_RED;
+				tooltip.add(
+						new TranslationTextComponent("tooltip.label.charm.type." + inventoryType.name().toLowerCase()).withStyle(color)
+							.append(getCapacityHoverText(stack, world, entityList).withStyle(TextFormatting.WHITE))
+						);
 			}
 			// add charms
 			for (ICharmEntity entity : entityList) {
 				entity.getCharm().appendHoverText(stack, world, tooltip, flag, entity);
 			}
+			// add socket footer
+//			if (inventoryType == InventoryType.SOCKET || inventoryType == InventoryType.IMBUE) {
+//				appendCapacityHoverText(stack, world, tooltip, flag, entityList);
+//			}
 		}		
 	}
 
+    @SuppressWarnings("deprecation")
+	public void appendCapacityHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag, List<ICharmEntity> entities) {
+	
+//    	tooltip.add(new TranslationTextComponent("tooltip.label.charmable.slots").withStyle(TextFormatting.GRAY));
+		tooltip.add(new TranslationTextComponent("tooltip.label.charmable.slots", 
+				String.valueOf(Math.toIntExact(Math.round(entities.size()))), // used
+				String.valueOf(Math.toIntExact(Math.round(this.maxSocketsSize)))) // max
+				.withStyle(TextFormatting.WHITE)); 
+    }
+    
+    @SuppressWarnings("deprecation")
+	public TranslationTextComponent getCapacityHoverText(ItemStack stack, World world, List<ICharmEntity> entities) {	
+    	return new TranslationTextComponent("tooltip.label.charmable.slots", 
+				String.valueOf(Math.toIntExact(Math.round(entities.size()))), // used
+				String.valueOf(Math.toIntExact(Math.round(this.maxSocketsSize)))); // max				
+    }
+    
 	@Override
 	public List<ICharmEntity>[] getCharmEntities() {
 		if (charmEntities == null) {
@@ -151,52 +240,114 @@ public class CharmableCapability implements ICharmableCapability {
 		this.source = source;
 	}
 
+	@Override
 	public boolean isBindable() {
 		return bindable;
 	}
 
+	@Override
 	public void setBindable(boolean bindable) {
 		this.bindable = bindable;
 	}
 
+	@Override
 	public boolean isSocketing() {
 		return socketing;
 	}
 
+	@Override
 	public void setSocketing(boolean socketing) {
 		this.socketing = socketing;
 	}
 
+	@Override
 	public boolean isSocketable() {
 		return socketable;
 	}
 
+	@Override
 	public void setSocketable(boolean socketable) {
 		this.socketable = socketable;
 	}
 
+	@Override
 	public boolean isImbuing() {
 		return imbuing;
 	}
 
+	@Override
 	public void setImbuing(boolean imbuing) {
 		this.imbuing = imbuing;
 	}
 
+	@Override
 	public boolean isImbuable() {
 		return imbuable;
 	}
 
+	@Override
 	public void setImbuable(boolean imbuable) {
 		this.imbuable = imbuable;
 	}
 
+	@Override
 	public boolean isFinite() {
 		return finite;
 	}
 
+	@Override
 	public void setFinite(boolean finite) {
 		this.finite = finite;
+	}
+	
+	@Override
+	public int getMaxFiniteSize() {
+		return maxFiniteSize;
+	}
+	
+	@Override
+	public int getMaxSocketsSize() {
+		return maxSocketsSize;
+	}
+
+	@Override
+	public int getMaxImbueSize() {
+		return maxImbueSize;
+	}	
+
+	@Override
+	public void setMaxSocketsSize(int maxSocketsSize) {
+		this.maxSocketsSize = maxSocketsSize;
+	}
+
+	@Override
+	public void setMaxImbueSize(int maxImbueSize) {
+		this.maxImbueSize = maxImbueSize;
+	}
+
+	@Override
+	public void setMaxFiniteSize(int maxFiniteSize) {
+		this.maxFiniteSize = maxFiniteSize;
+	}
+	
+	@Override
+	public BaseMaterial getBaseMaterial() {
+		return baseMaterial;
+	}
+
+	@Override
+	public void setBaseMaterial(BaseMaterial baseMaterial) {
+		this.baseMaterial = baseMaterial;
+	}
+	
+	@Override
+	public int getMaxCharmLevel() {
+		return maxCharmLevel;
+	}
+
+	@Override
+	public void setMaxCharmLevel(int maxLevel) {
+		this.maxCharmLevel = maxLevel;
 	}
 	
 	/**
@@ -204,45 +355,115 @@ public class CharmableCapability implements ICharmableCapability {
 	 * @author Mark Gottschling on Aug 15, 2021
 	 *
 	 */
-	public enum CharmInventoryType {
+	public enum InventoryType {
 		FINITE(0),
 		IMBUE(1),
 		SOCKET(2);
 		
-		int value;
+		private static final Map<Integer, InventoryType> values = new HashMap<Integer, InventoryType>();
+		Integer value;
 		
-		CharmInventoryType(int value) {
+		// setup reverse lookup
+		static {
+			for (InventoryType x : EnumSet.allOf(InventoryType.class)) {
+				values.put(x.getValue(), x);
+			}
+		}
+		
+		InventoryType(Integer value) {
 			this.value = value;
+		}
+
+		public Integer getValue() {
+			return value;
+		}
+		
+		/**
+		 * 
+		 * @param value
+		 * @return
+		 */
+		public static InventoryType getByValue(Integer value) {
+			return (InventoryType) values.get(value);
+		}
+	}
+	
+	/**
+	 * 
+	 * @author Mark Gottschling on Aug 16, 2021
+	 *
+	 */
+	public enum BaseMaterial {
+		NONE(0, 0),
+		COPPER(1, 1),
+		SILVER(2, 2),
+		GOLD(3, 3);
+		
+		private int value;
+		private int maxCharmLevel;
+		
+		BaseMaterial(int value, int maxLevel) {
+			this.value = value;
+			this.maxCharmLevel = maxLevel;
 		}
 
 		public int getValue() {
 			return value;
 		}
+
+		public int getMaxCharmLevel() {
+			return maxCharmLevel;
+		}
 	}
 	
+	/**
+	 * 
+	 * @author Mark Gottschling on Aug 16, 2021
+	 *
+	 */
 	public static class Builder {
 	    private boolean source;
-	    private boolean bindable;
+	    public boolean bindable;
 	    private boolean socketing;
 	    public boolean socketable;
-	    private boolean imbuing;
-	    private boolean imbuable;
-	    public boolean finite;
-	    	    
-	    private int socketSize;
-	    private int imbueSize;
-	    public int finiteSize;
+	    public boolean imbuing;
+	    public boolean imbuable;
+	    public boolean finite;	    	    
 	    
-	    public Builder() {}
+	    public BaseMaterial baseMaterial = BaseMaterial.COPPER;
+	    // required property
+	    public ResourceLocation sourceItem;
+	    
+	    // calculated value
+	    private int maxCharmLevel;
+	    
+	    public int maxSocketsSize;
+	    public int maxImbueSize;
+	    public int maxFiniteSize;
+	    
+	    // required to pass the source Item here
+	    public Builder(ResourceLocation sourceItem) {
+	    	this.sourceItem = sourceItem;
+	    }
 	    
 	    public Builder with(Consumer<Builder> builder) {
 	    	builder.accept(this);
 	    	return this;
 	    }
 	    
+	    public Builder source(boolean source) {
+	    	this.source = source;
+	    	return this;
+	    }
+	    
+		public Builder bindable(boolean bindable) {
+			this.bindable = bindable;
+			return this;
+		}
+		
 	    public Builder socketable(boolean socketable, int size) {
 	    	this.socketable = socketable;
-	    	this.socketSize = size;
+	    	this.maxSocketsSize = size;
 	    	return this;
 	    }
 	    
@@ -253,13 +474,13 @@ public class CharmableCapability implements ICharmableCapability {
 	    
 	    public Builder finite(boolean finite, int size) {
 	    	this.finite = finite;
-	    	this.finiteSize = size;
+	    	this.maxFiniteSize = size;
 	    	return this;
 	    }
 	    
 	    public Builder imbue(boolean imbue, int size) {
 	    	this.imbuable = imbue;
-	    	this.imbueSize = size;
+	    	this.maxImbueSize = size;
 	    	return this;
 	    }
 	    
@@ -267,8 +488,32 @@ public class CharmableCapability implements ICharmableCapability {
 	    	this.imbuing = imbuing;
 	    	return this;
 	    }
+	    
+	    public Builder baseMaterial(BaseMaterial material) {
+	    	this.baseMaterial = material;
+	    	return this;
+	    }
+	    
+//	    public Builder sourceItem(ResourceLocation sourceItemName) {
+//	    	this.sourceItem = sourceItemName;
+//	    	return this;
+//	    }
+	    
 	    public ICharmableCapability build() {
+	    	// calculate the max charm level based on baseMaterial and the source item.
+	    	Treasure.LOGGER.debug("charm source item -> {}", sourceItem);
+	    	Optional<Integer> level = TreasureCharms.getCharmLevel(sourceItem);
+	    	this.maxCharmLevel = baseMaterial.getMaxCharmLevel() + (level.isPresent() ? level.get() : 0) ;
 	    	return new CharmableCapability(this);
 	    }
+	}
+
+	@Override
+	public ResourceLocation getSourceItem() {
+		return sourceItem;
+	}
+	@Override
+	public void setSourceItem(ResourceLocation sourceItem) {
+		this.sourceItem = sourceItem;
 	}
 }

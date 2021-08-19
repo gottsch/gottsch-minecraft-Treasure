@@ -49,6 +49,8 @@ public class TreasureFeatures {
 	public static ConfiguredFeature<?, ?> WELL_FEATURE_CONFIG;
 	public static ConfiguredFeature<?, ?> WITHER_TREE_FEATURE_CONFIG;
 	
+	public static ConfiguredFeature<?, ?> TOPAZ_ORE_FEATURE_CONFIG;
+	public static ConfiguredFeature<?, ?> ONYX_ORE_FEATURE_CONFIG;	
 	public static ConfiguredFeature<?, ?> RUBY_ORE_FEATURE_CONFIG;
 	public static ConfiguredFeature<?, ?> SAPPHIRE_ORE_FEATURE_CONFIG;
 
@@ -95,7 +97,33 @@ public class TreasureFeatures {
 					WELL_FEATURE.configured(IFeatureConfig.NONE));
 			WITHER_TREE_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "wither_tree",
 					WITHER_TREE_FEATURE.configured(IFeatureConfig.NONE));
-					
+
+			TOPAZ_ORE_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "topaz_ore",
+					GEM_ORE_FEATURE
+							.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
+									TreasureBlocks.TOPAZ_ORE.defaultBlockState(),
+									TreasureConfig.GEMS_AND_ORES.topazOreVeinSize.get()))
+							.decorated(
+									Placement.RANGE.configured(
+											new TopSolidRangeConfig(TreasureConfig.GEMS_AND_ORES.topazOreMinY.get(), 
+													0, 
+													TreasureConfig.GEMS_AND_ORES.topazOreMaxY.get() - TreasureConfig.GEMS_AND_ORES.topazOreMinY.get())))
+							.squared()
+							.count(TreasureConfig.GEMS_AND_ORES.topazOreVeinsPerChunk.get()));
+	
+			ONYX_ORE_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "onyx_ore",
+					GEM_ORE_FEATURE
+							.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
+									TreasureBlocks.ONYX_ORE.defaultBlockState(),
+									TreasureConfig.GEMS_AND_ORES.onyxOreVeinSize.get()))
+							.decorated(
+									Placement.RANGE.configured(
+											new TopSolidRangeConfig(TreasureConfig.GEMS_AND_ORES.onyxOreMinY.get(), 
+													0, 
+													TreasureConfig.GEMS_AND_ORES.onyxOreMaxY.get() - TreasureConfig.GEMS_AND_ORES.onyxOreMinY.get())))
+							.squared()
+							.count(TreasureConfig.GEMS_AND_ORES.onyxOreVeinsPerChunk.get()));			
+			
 			RUBY_ORE_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "ruby_ore",
 					GEM_ORE_FEATURE
 							.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
@@ -142,6 +170,10 @@ public class TreasureFeatures {
 			
 			if (TreasureConfig.GEMS_AND_ORES.enableGemOreSpawn.get()) {
 				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
+					.add(() -> TOPAZ_ORE_FEATURE_CONFIG);
+				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
+					.add(() -> ONYX_ORE_FEATURE_CONFIG);
+				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
 						.add(() -> RUBY_ORE_FEATURE_CONFIG);
 				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
 						.add(() -> SAPPHIRE_ORE_FEATURE_CONFIG);
@@ -153,6 +185,7 @@ public class TreasureFeatures {
 			} else {
 				biomeEvent.getGeneration().getFeatures(GenerationStage.Decoration.TOP_LAYER_MODIFICATION)
 						.add(() -> SURFACE_CHEST_FEATURE_CONFIG);
+				
 				if (TreasureConfig.WELLS.isEnabled()) {
 					// test if the biome is allowed
 					TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, TreasureConfig.WELLS.getBiomeWhiteList(), TreasureConfig.WELLS.getBiomeBlackList());

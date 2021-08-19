@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.item;
 
@@ -7,6 +23,7 @@ import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.block.BlockContext;
@@ -18,8 +35,12 @@ import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.block.IWishingWellBlock;
-import com.someguyssoftware.treasure2.enums.Pearls;
-import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
+import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.enums.Coins;
+import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
 import net.minecraft.block.Blocks;
@@ -27,9 +48,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameterSets;
 import net.minecraft.loot.LootParameters;
@@ -41,28 +60,25 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 /**
- * 
- * @author Mark Gottschling on Aug 18, 2019
+ * @author Mark Gottschling on Aug 17, 2021
  *
  */
-public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
-
-	public static final int MAX_STACK_SIZE = 8;
-	// TODO move to IWishable when added
-	public static final String DROPPED_BY_KEY = "droppedBy";
-		
-	private Pearls pearl;
+public class WealthItem extends ModItem implements IWishable {
+	// NOTE this is kind of moot as the config would already have an upper level
+	private static final int MAX_CUSTOM_STACK_SIZE = 64;
 	
 	/**
 	 * 
+	 * @param modID
+	 * @param name
+	 * @param properties
 	 */
-	@Deprecated
-	public PearlItem (String modID, String name, Item.Properties properties)	 {
-		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP)
-				.stacksTo(MAX_STACK_SIZE));
-		this.pearl = Pearls.WHITE;
+	public WealthItem(String modID, String name, Properties properties) {
+        super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP)
+        		.stacksTo(Math.min(MAX_CUSTOM_STACK_SIZE, TreasureConfig.BOOTY.wealthMaxStackSize.get())));
 	}
 	
 	/**
@@ -70,9 +86,9 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 	 */
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);     	
-		// TODO change label to tooltip.label.wishable
-		tooltip.add(new TranslationTextComponent("tooltip.label.coin").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		// standard coin info
+		tooltip.add(new TranslationTextComponent("tooltip.label.wishable").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
 	}
 	
 	/**
@@ -98,8 +114,8 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 			ICoords checkCoords = coords.add(-1, 0, -1);
 			for (int z = 0; z < 3; z++) {
 				for (int x = 0; x < 3; x++) {
-					BlockContext checkBlockContext = new BlockContext(world, checkCoords);
-					if (checkBlockContext.toBlock() instanceof IWishingWellBlock) {
+					BlockContext checkCube = new BlockContext(world, checkCoords);
+					if (checkCube.toBlock() instanceof IWishingWellBlock) {
 						numWishingWellBlocks++;
 					}					
 					if (numWishingWellBlocks >= 2) {
@@ -107,17 +123,22 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 					}
 				}
 			}
-
+			
 			if (numWishingWellBlocks >=2) {
 				Random random = new Random();
 				for (int itemIndex = 0; itemIndex < entityItemStack.getCount(); itemIndex++) {
 					// generate an item for each item in the stack
-					generateLootItem(world, random, entityItem, coords);
+					Optional<ItemStack> lootStack = generateLoot(world, random, entityItem.getItem(), coords);
+					if (lootStack.isPresent()) {
+						// spawn the item 
+						InventoryHelper.dropItemStack(world, (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), lootStack.get());
+					}
 				}
+				// remove the item entity
+				entityItem.remove();
 				return true;
 			}
 		}
-		
 		return super.onEntityItemUpdate(stack, entityItem);
 	}
 	
@@ -125,29 +146,24 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 	 * 
 	 * @param world
 	 * @param random
-	 * @param entityItem
+	 * @param itemStack
 	 * @param coords
 	 */
-	private void generateLootItem(World world, Random random, ItemEntity entityItem, ICoords coords) {
-		List<LootTableShell> lootTables = new ArrayList<>();
+	@Override
+	public Optional<ItemStack> generateLoot(World world, Random random, ItemStack itemStack, ICoords coords) {
+		List<LootTableShell> lootTables = getLootTables();
 		
-		// determine pearl type
-		if (getPearl() == Pearls.WHITE) {
-			lootTables.add(TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.WHITE_PEARL_WELL));
-		}
-		else if (getPearl() == Pearls.BLACK) {
-			lootTables.add(TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.BLACK_PEARL_WELL));
-		}
+		// TODO most of this seems repeated from IChestGenerator.  Make a common class/methods
 		
-		ItemStack stack = null;
+		ItemStack outputStack = null;
 		// handle if loot tables is null or size = 0. return an item (apple) to ensure continuing functionality
 		if (lootTables == null || lootTables.size() == 0) {
-			stack = new ItemStack(Items.DIAMOND);
+			outputStack = getDefaultLootKey(random);
 		}
 		else {
 			// attempt to get the player who dropped the coin
-			ItemStack coinItem = entityItem.getItem();
-			CompoundNBT nbt = coinItem.getTag();
+			ItemStack wealthItem = itemStack;
+			CompoundNBT nbt = wealthItem.getTag();
 			LOGGER.debug("item as a tag");
 			PlayerEntity player = null;
 			if (nbt != null && nbt.contains(DROPPED_BY_KEY)) {
@@ -164,12 +180,12 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 					LOGGER.debug("can't find player!");
 				}
 			}
-			LOGGER.debug("player -> {}", player.getName().getString());
-			// select a table
+//			LOGGER.debug("player -> {}", player.getName().getString());
+
+			// select a table shell
 			LootTableShell tableShell = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
-			LOGGER.debug("pearl: tableShell -> {}", tableShell.toString());
 			if (tableShell.getResourceLocation() == null) {
-				return;
+				return Optional.empty();
 			}
 			
 			// get the vanilla table from shell
@@ -180,68 +196,35 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 			// generate a context
 			LootContext lootContext = new LootContext.Builder((ServerWorld) world)
 					.withLuck((player != null) ? player.getLuck() : 0)
-					.withParameter(LootParameters.THIS_ENTITY, player)
-					.withParameter(LootParameters.ORIGIN, coords.toVec3d()).create(LootParameterSets.CHEST);
+					.withOptionalParameter(LootParameters.THIS_ENTITY, player)
+					.withParameter(LootParameters.ORIGIN, coords.toVec3d())
+					.create(LootParameterSets.CHEST);
 
 			List<ItemStack> itemStacks = new ArrayList<>();
 			for (LootPoolShell pool : lootPoolShells) {
-				LOGGER.debug("pearl: processing pool -> {}", pool.getName());
+				LOGGER.debug("processing pool -> {}", pool.getName());
 				// go get the vanilla managed pool
 				LootPool lootPool = table.getPool(pool.getName());
 				
 				// geneate loot from pools
 				lootPool.addRandomItems(itemStacks::add, lootContext);
 			}
-			
+
 			// get effective rarity
-//			Rarity effectiveRarity = TreasureLootTableRegistry.getLootTableMaster().getEffectiveRarity(tableShell, (getPearl() == Pearls.WHITE) ? Rarity.UNCOMMON : Rarity.SCARCE);	
-//			LOGGER.debug("pearl: using effective rarity -> {}", effectiveRarity);
-//			
-//			// get all injected loot tables
-//			LOGGER.debug("pearl: searching for injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
-//			Optional<List<LootTableShell>> injectLootTableShells = buildInjectedLootTableList(tableShell.getCategory(), effectiveRarity);			
-//			if (injectLootTableShells.isPresent()) {
-//				LOGGER.debug("pearl: found injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
-//				LOGGER.debug("pearl: size of injectable tables -> {}", injectLootTableShells.get().size());
-//
-//				// attempt to get the player who dropped the coin
-//				ItemStack coinItem = entityItem.getItem();
-//				NBTTagCompound nbt = coinItem.getTagCompound();
-//				EntityPlayer player = null;
-//				if (nbt != null && nbt.hasKey(DROPPED_BY_KEY)) {					
-//					player = world.getPlayerEntityByName(nbt.getString(DROPPED_BY_KEY));
-//					if (player != null && LOGGER.isDebugEnabled()) {
-//						LOGGER.debug("pearl dropped by player -> {}", player.getName());
-//					}
-//				}
-//				itemStacks.addAll(getLootItems(world, random, injectLootTableShells.get(), getLootContext(world, player)));
-//		}
+			Rarity effectiveRarity = TreasureLootTableRegistry.getLootTableMaster().getEffectiveRarity(tableShell, getDefaultEffectiveRarity(random));	
+			LOGGER.debug("using effective rarity -> {}", effectiveRarity);
+			
+			// get all injected loot tables
+			injectLoot(world, random, itemStacks, tableShell.getCategory(), effectiveRarity, lootContext);
+			
+			for (ItemStack stack : itemStacks) {
+				LOGGER.debug("possible loot item -> {}", stack.getItem().getRegistryName().toString());
+			}
 			
 			// select one item randomly
-			stack = itemStacks.get(RandomHelper.randomInt(0, itemStacks.size()-1));
-
+			outputStack = itemStacks.get(RandomHelper.randomInt(0, itemStacks.size()-1));
+			LOGGER.debug("loot item output stack -> {}", outputStack.getItem().getRegistryName().toString());
 		}				
-		
-		// spawn the item 
-		if (stack != null) {
-			InventoryHelper.dropItemStack(world, (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), stack);
-		}
-
-		// remove the item entity
-		entityItem.remove();
-	}
-	
-	/**
-	 * @return the pearl
-	 */
-	public Pearls getPearl() {
-		return pearl;
-	}
-	/**
-	 * @param pearl the pearl to set
-	 */
-	public PearlItem setPearl(Pearls pearl) {
-		this.pearl = pearl;
-		return this;
+		return Optional.of(outputStack);
 	}
 }

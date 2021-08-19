@@ -1,0 +1,16 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"__comment": "default",
+		"layer0": "treasure2:item/charm/gold_charm"
+	},
+	"overrides": [
+		{
+			"__comment": "copper charm",
+			"predicate": {
+				"model": 1
+			},
+			"model": "item/charm/charm_model_copper"
+		}
+	]
+}

@@ -19,12 +19,17 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
+import java.util.Comparator;
+
+import net.minecraft.nbt.CompoundNBT;
+
 public class CharmEntity implements ICharmEntity {
+
 	private ICharm charm;
 	private double value;
 	private int duration;
 	private double percent;
-
+	
 	/**
 	 * 
 	 */
@@ -45,6 +50,54 @@ public class CharmEntity implements ICharmEntity {
 	}
 	
 	@Override
+	public void update(ICharmEntity entity) {
+		this.setValue(entity.getValue());
+		this.setDuration(entity.getDuration());
+		this.setPercent(entity.getPercent());
+	}
+	
+	/**
+	 * 
+	 * @param nbt
+	 * @return
+	 */
+//	public static Optional<ICharmEntity> load(CompoundNBT nbt) {
+//		Optional<ICharm> charm = Charm.load((CompoundNBT) nbt.get(CHARM));
+//		if (!charm.isPresent()) {
+//			return Optional.empty();
+//		}
+//		
+//		ICharmEntity entity = charm.get().createEntity();
+//		if (nbt.contains(VALUE)) {
+//			entity.setValue(nbt.getDouble(VALUE));
+//		}
+//		if (nbt.contains("duration")) {
+//			entity.setDuration(nbt.getInt("duration"));
+//		}
+//		if (nbt.contains("percent")) {
+//			entity.setPercent(nbt.getDouble("percent"));
+//		}
+//		return Optional.of(entity);
+//	}
+	
+	/**
+	 * 
+	 * @param nbt
+	 * @return
+	 */
+	@Override
+	public CompoundNBT save(CompoundNBT nbt) {
+		CompoundNBT charmNbt = new CompoundNBT();
+		// save the charm
+		nbt.put(CHARM, getCharm().save(charmNbt));
+		// save the entity data
+		nbt.putDouble(VALUE, getValue());
+		nbt.putInt("duration", getDuration());
+		nbt.putDouble("percent", getPercent());
+		return nbt;
+	}
+	
+	@Override
 	public ICharm getCharm() {
 		return charm;
 	}
@@ -54,40 +107,32 @@ public class CharmEntity implements ICharmEntity {
 		this.charm = charm;
 	}
 
-	@Deprecated
 	@Override
-	public ICharmData getData() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Deprecated
-	@Override
-	public void setData(ICharmData data) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public double getValue() {
 		return value;
 	}
 
+	@Override
 	public void setValue(double value) {
 		this.value = value;
 	}
 
+	@Override
 	public int getDuration() {
 		return duration;
 	}
 
+	@Override
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
 
+	@Override
 	public double getPercent() {
 		return percent;
 	}
 
+	@Override
 	public void setPercent(double percent) {
 		this.percent = percent;
 	}
@@ -97,5 +142,4 @@ public class CharmEntity implements ICharmEntity {
 		return "CharmEntity [charm=" + charm + ", value=" + value + ", duration=" + duration + ", percent=" + percent
 				+ "]";
 	}
-
 }

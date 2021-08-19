@@ -78,14 +78,12 @@ public class Treasure implements IMod {
 		eventBus.addListener(this::config);
 		eventBus.addListener(TreasureNetworking::common);
 		eventBus.addListener(TreasureSetup::common);
+		eventBus.addListener(TreasureSetup::clientSetup);
 		eventBus.addListener(this::clientSetup);
 
 		// needs to be registered here instead of @Mod.EventBusSubscriber because we need to pass in a constructor argument
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
-		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
-//		MinecraftForge.EVENT_BUS.register(new TreasureParticles());
-//		MOD_EVENT_BUS.register(TreasureParticles.class);
-//		DistExecutor.runWhenOn(Dist.CLIENT, () -> Treasure::clientOnly);
+		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler()); // need to register here?
 	}
 	
 	public static void clientOnly() {

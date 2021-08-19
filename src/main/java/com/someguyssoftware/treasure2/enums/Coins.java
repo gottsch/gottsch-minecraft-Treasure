@@ -13,6 +13,7 @@ import java.util.Map;
  * @author Mark Gottschling on Sep 13, 2014
  *
  */
+@Deprecated
 public enum Coins implements IEnum {
 	COPPER(0, "Copper Coin"),
 	SILVER(1, "Silver Coin"),

@@ -12,6 +12,7 @@ import java.util.Map;
  * @author Mark Gottschling on Aug 18, 2019
  *
  */
+@Deprecated
 public enum Pearls implements IEnum {
 	WHITE(0, "White PearlItem"),
 	BLACK(1, "Black PearlItem");

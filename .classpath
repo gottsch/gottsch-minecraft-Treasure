@@ -2,8 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8/"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/GottschCore"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/forge-1.16.5-36.2.0"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8/"/>
+	<classpathentry kind="lib" path="/ModCommonLibs/libs/curios-forge-1.16.5-4.0.5.2.jar" sourcepath="/ModCommonLibs/libs/curios-forge-1.16.5-4.0.5.2.jar"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>

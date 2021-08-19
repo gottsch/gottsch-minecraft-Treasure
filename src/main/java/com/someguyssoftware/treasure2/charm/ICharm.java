@@ -20,6 +20,7 @@
 package com.someguyssoftware.treasure2.charm;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.spatial.ICoords;
@@ -49,17 +50,25 @@ public interface ICharm {
 	public double getMaxPercent();
 	public Rarity getRarity();
 	public int getPriority();
-	boolean isAllowMultipleUpdates();
+	boolean isEffectStackable();
 	
 	/**
 	 * 
 	 */
 	ICharmEntity createEntity();
 	
-    public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmData data);
+    public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity);
 
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity);
     
 	public CompoundNBT writeToNBT(CompoundNBT nbt);
+	
+	/**
+	 * 
+	 * @param nbt
+	 * @return
+	 */
+	CompoundNBT save(CompoundNBT nbt);
+
 
 }
