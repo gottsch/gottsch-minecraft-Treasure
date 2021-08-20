@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+     "treasure2:test_charm",
+     "treasure2:copper_charm",
+     "treasure2:silver_charm",
+     "treasure2:gold_charm",
+     "treasure2:silver_coin",
+     "treasure2:gold_coin"
+  ]
+}

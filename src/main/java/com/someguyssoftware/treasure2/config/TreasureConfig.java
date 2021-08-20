@@ -55,6 +55,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static final String PITS_CATEGORY = "pits";
 	public static final String MARKERS_CATEGORY = "markers";
 	public static final String KEYS_AND_LOCKS_CATEGORY = "keys and locks";
+	public static final String BOOTY_CATEGORY = "booty";
 	public static final String COINS_CATEGORY = "coins";
 	public static final String GEMS_AND_ORES_CATEGORY = "gems and ores";
 	public static final String FOG_CATEGORY = "fog";
@@ -68,6 +69,7 @@ public class TreasureConfig extends AbstractConfig {
     public static final Markers MARKERS;
     public static final Wells WELLS;
 	public static final KeysAndLocks KEYS_LOCKS;
+	public static final Booty BOOTY;
 	public static final Coins COINS;
 	public static final GemsAndOres GEMS_AND_ORES;
 	public static final Fog FOG;
@@ -85,6 +87,7 @@ public class TreasureConfig extends AbstractConfig {
         MARKERS = new Markers(COMMON_BUILDER);
         WELLS = new Wells(COMMON_BUILDER);
 		KEYS_LOCKS = new KeysAndLocks(COMMON_BUILDER);
+		BOOTY = new Booty(COMMON_BUILDER);
 		COINS = new Coins(COMMON_BUILDER);
 		GEMS_AND_ORES = new GemsAndOres(COMMON_BUILDER);
 		FOG = new Fog(COMMON_BUILDER);
@@ -106,7 +109,7 @@ public class TreasureConfig extends AbstractConfig {
 	}
 
 	public static class ItemID {
-
+		public static final String COPPER_COIN_ID = "copper_coin";
 		public static final String SILVER_COIN_ID = "silver_coin";
 		public static final String GOLD_COIN_ID = "gold_coin";
 		public static final String SAPPHIRE_ID = "sapphire";
@@ -118,7 +121,7 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String WITHER_ROOT_ITEM_ID = "wither_root_item";
 		public static final String SKELETON_ITEM_ID = "skeleton";
 		public static final String EYE_PATCH_ID = "eye_patch";
-		public static final String SPANISH_MOSS_ITEM_ID = "spanish_moss_item";
+		public static final String SPANISH_MOSS_ITEM_ID = "spanish_moss_item";		
 	}
 	
 	public static class LockID {
@@ -199,7 +202,9 @@ public class TreasureConfig extends AbstractConfig {
         public static final String SKELETON_ID = "skeleton";
         
 		public static final String WITHER_BRANCH_ID = "wither_branch";
-		public static final String WITHER_ROOT_ID = "wither_root";		
+		public static final String WITHER_ROOT_ID = "wither_root";
+		public static final String TOPAZ_ORE_ID = "topaz_ore";
+		public static final String ONYX_ORE_ID = "onyx_ore";
 		public static final String RUBY_ORE_ID = "ruby_ore";
 		public static final String SAPPHIRE_ORE_ID = "sapphire_ore";
 		public static final String WITHER_BROKEN_LOG_ID = "wither_broken_log";
@@ -210,6 +215,7 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String FALLING_GRASS_ID = "falling_grass";
 		public static final String FALLING_SAND_ID = "falling_sand";
 		public static final String FALLING_RED_SAND_ID = "falling_red_sand";
+		
 	}
 
 	public static class ChestID {
@@ -715,11 +721,26 @@ public class TreasureConfig extends AbstractConfig {
 		}
 	}
 	
+	public static class Booty {
+		public ForgeConfigSpec.ConfigValue<Integer> wealthMaxStackSize;
+		
+		public Booty(final ForgeConfigSpec.Builder builder)	 {
+			builder.comment(CATEGORY_DIV, " Treasure Loot and Valuables properties", CATEGORY_DIV)
+			.push(BOOTY_CATEGORY);
+			
+			wealthMaxStackSize = builder
+					.comment(" The maximum size of a wealth item stacks. ex. Coins, Gems, Pearls")
+					.defineInRange("Maximum Stack Size:", 8, 1, 64);
+			builder.pop();
+		}
+	}
+	
 	/**
 	 * 
 	 * @author Mark Gottschling on Jan 13, 2021
 	 *
 	 */
+	// TODO replace with Booty
 	public static class Coins {
 //		@RequiresMcRestart
 		public ForgeConfigSpec.ConfigValue<Integer> coinMaxStackSize;		
@@ -738,17 +759,31 @@ public class TreasureConfig extends AbstractConfig {
 	public static class GemsAndOres {
 		public ForgeConfigSpec.BooleanValue enableGemOreSpawn;
 
+		public ForgeConfigSpec.ConfigValue<Double> topazGenProbability;
+		public ForgeConfigSpec.ConfigValue<Integer> topazOreMaxY;
+		public ForgeConfigSpec.ConfigValue<Integer> topazOreMinY;
+		public ForgeConfigSpec.ConfigValue<Integer> topazOreVeinSize;
+		public ForgeConfigSpec.ConfigValue<Integer> topazOreVeinsPerChunk;
+		
+		public ForgeConfigSpec.ConfigValue<Double> onyxGenProbability;
+		public ForgeConfigSpec.ConfigValue<Integer> onyxOreMaxY;
+		public ForgeConfigSpec.ConfigValue<Integer> onyxOreMinY;
+		public ForgeConfigSpec.ConfigValue<Integer> onyxOreVeinSize;
+		public ForgeConfigSpec.ConfigValue<Integer> onyxOreVeinsPerChunk;		
+		
 		public ForgeConfigSpec.ConfigValue<Double> rubyGenProbability;
 		public ForgeConfigSpec.ConfigValue<Integer> rubyOreMaxY;
 		public ForgeConfigSpec.ConfigValue<Integer> rubyOreMinY;
 		public ForgeConfigSpec.ConfigValue<Integer> rubyOreVeinSize;
 		public ForgeConfigSpec.ConfigValue<Integer> rubyOreVeinsPerChunk;
+		
 		public ForgeConfigSpec.ConfigValue<Double> sapphireGenProbability;
 		public ForgeConfigSpec.ConfigValue<Integer> sapphireOreMaxY;
 		public ForgeConfigSpec.ConfigValue<Integer> sapphireOreMinY;
 		public ForgeConfigSpec.ConfigValue<Integer> sapphireOreVeinSize;
 		public ForgeConfigSpec.ConfigValue<Integer> sapphireOreVeinsPerChunk;
 		
+		// TODO rename to Ores
 		public GemsAndOres(final ForgeConfigSpec.Builder builder)	 {
 			builder.comment(CATEGORY_DIV, " Gems and Ores properties", CATEGORY_DIV)
 			.push(GEMS_AND_ORES_CATEGORY);
@@ -759,11 +794,11 @@ public class TreasureConfig extends AbstractConfig {
 			
 			rubyGenProbability = builder
 					.comment(" The probability that a ruby ore will spawn.")
-					.defineInRange("Probability of ruby ore spawn:", 70.0, 0.0, 100.0);
+					.defineInRange("Probability of ruby ore spawn:", 65.0, 0.0, 100.0);
 			
 			rubyOreMinY= builder
 					.comment(" The minimum y-value where a ruby ore can spawn.")
-					.defineInRange("Minimum y-value for ruby ore spawn location:", 8, 1, 255);	
+					.defineInRange("Minimum y-value for ruby ore spawn location:", 6, 1, 255);	
 			
 			rubyOreMaxY= builder
 					.comment(" The maximum y-value where a ruby ore can spawn.")
@@ -779,11 +814,11 @@ public class TreasureConfig extends AbstractConfig {
 
 			sapphireGenProbability = builder
 					.comment(" The probability that a sapphire ore will spawn.")
-					.defineInRange("Probability of sapphire ore spawn:", 70.0, 0.0, 100.0);
+					.defineInRange("Probability of sapphire ore spawn:", 65.0, 0.0, 100.0);
 			
 			sapphireOreMinY= builder
 					.comment(" The minimum y-value where a sapphire ore can spawn.")
-					.defineInRange("Minimum y-value for sapphire ore spawn location:", 8, 1, 255);	
+					.defineInRange("Minimum y-value for sapphire ore spawn location:", 6, 1, 255);	
 			
 			sapphireOreMaxY= builder
 					.comment(" The maximum y-value where a sapphire ore can spawn.")
@@ -796,6 +831,46 @@ public class TreasureConfig extends AbstractConfig {
 			sapphireOreVeinsPerChunk = builder
 					.comment(" The number of sapphire ore veins in a chunk.")
 					.defineInRange("Sapphire ore veins per chunk:", 1, 3, 20);
+			
+			topazGenProbability = builder
+					.comment(" The probability that a topaz ore will spawn.")
+					.defineInRange("Probability of topaz ore spawn:", 75.0, 0.0, 100.0);
+			
+			topazOreMinY= builder
+					.comment(" The minimum y-value where a topaz ore can spawn.")
+					.defineInRange("Minimum y-value for topaz ore spawn location:", 9, 1, 255);	
+			
+			topazOreMaxY= builder
+					.comment(" The maximum y-value where a topaz ore can spawn.")
+					.defineInRange("Maximum y-value for topaz ore spawn location:", 25, 1, 255);
+			
+			topazOreVeinSize = builder
+					.comment(" The number of topaz ore blocks in a vein.")
+					.defineInRange("Topaz ore vein size:", 3, 3, 20);
+			
+			topazOreVeinsPerChunk = builder
+					.comment(" The number of topaz ore veins in a chunk.")
+					.defineInRange("Topaz ore veins per chunk:", 1, 1, 20);
+
+			onyxGenProbability = builder
+					.comment(" The probability that a onyx ore will spawn.")
+					.defineInRange("Probability of onyx ore spawn:", 70.0, 0.0, 100.0);
+			
+			onyxOreMinY= builder
+					.comment(" The minimum y-value where a onyx ore can spawn.")
+					.defineInRange("Minimum y-value for onyx ore spawn location:", 9, 1, 255);	
+			
+			onyxOreMaxY= builder
+					.comment(" The maximum y-value where a onyx ore can spawn.")
+					.defineInRange("Maximum y-value for onyx ore spawn location:", 24, 1, 255);
+			
+			onyxOreVeinSize = builder
+					.comment(" The number of onyx ore blocks in a vein.")
+					.defineInRange("Onyx ore vein size:", 3, 3, 20);
+			
+			onyxOreVeinsPerChunk = builder
+					.comment(" The number of onyx ore veins in a chunk.")
+					.defineInRange("Onyx ore veins per chunk:", 1, 1, 20);
 			
 			builder.pop();
 		}

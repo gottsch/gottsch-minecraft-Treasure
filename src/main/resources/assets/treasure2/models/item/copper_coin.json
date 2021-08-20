@@ -1,9 +1,9 @@
 {
-    "parent": "item/handheld",
+    "parent": "builtin/generated",
     "textures": {
-        "layer0": "treasure2:item/coins/charmed_silver_coin"
+        "layer0": "treasure2:item/coins/copper_coin"
     },
-    "display": {
+   "display": {
        "thirdperson_righthand": {
             "translation": [ 0, 1, 0],
             "scale":[ 0.25, 0.25, 0.25]

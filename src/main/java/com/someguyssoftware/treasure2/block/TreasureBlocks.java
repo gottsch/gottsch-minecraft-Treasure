@@ -142,6 +142,8 @@ public class TreasureBlocks {
 	public static Block WITHER_PLANKS;
 	public static Block SPANISH_MOSS;
 	
+	public static Block TOPAZ_ORE;
+	public static Block ONYX_ORE;
 	public static Block RUBY_ORE;
 	public static Block SAPPHIRE_ORE;
 	
@@ -410,6 +412,10 @@ public class TreasureBlocks {
 	                .strength(3.0F).sound(SoundType.STONE));
 	                
 			// ORES
+			TOPAZ_ORE = new TreasureOreBlock(Treasure.MODID, TreasureConfig.BlockID.TOPAZ_ORE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
+	                .strength(3.0F, 5.0F).harvestLevel(3)); 
+			ONYX_ORE = new TreasureOreBlock(Treasure.MODID, TreasureConfig.BlockID.ONYX_ORE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
+	                .strength(3.0F, 5.0F).harvestLevel(3));
 			RUBY_ORE = new TreasureOreBlock(Treasure.MODID, TreasureConfig.BlockID.RUBY_ORE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
 	                .strength(3.0F, 5.0F).harvestLevel(3));
 			SAPPHIRE_ORE = new TreasureOreBlock(Treasure.MODID, TreasureConfig.BlockID.SAPPHIRE_ORE_ID, Block.Properties.of(Material.STONE, MaterialColor.STONE)
@@ -499,6 +505,8 @@ public class TreasureBlocks {
 	        BLOCKS.add(SKULL_CROSSBONES);
 	        BLOCKS.add(WISHING_WELL_BLOCK);
 	        BLOCKS.add(DESERT_WISHING_WELL_BLOCK);
+	        BLOCKS.add(TOPAZ_ORE);
+	        BLOCKS.add(ONYX_ORE);
 	        BLOCKS.add(RUBY_ORE);
 	        BLOCKS.add(SAPPHIRE_ORE);
 	        BLOCKS.add(WITHER_BROKEN_LOG);

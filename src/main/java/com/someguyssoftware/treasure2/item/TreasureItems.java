@@ -19,20 +19,30 @@
  */
 package com.someguyssoftware.treasure2.item;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.function.Supplier;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.someguyssoftware.gottschcore.item.ModItem;
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.capability.CharmableCapability;
+import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
+import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.charm.BaseMaterial;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig.KeyID;
 import com.someguyssoftware.treasure2.config.TreasureConfig.LockID;
 import com.someguyssoftware.treasure2.enums.Category;
-import com.someguyssoftware.treasure2.enums.Coins;
-import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.color.BlockColors;
@@ -42,10 +52,14 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -92,7 +106,7 @@ public class TreasureItems {
 	public static KeyItem THIEFS_LOCK_PICK;
 
 	public static KeyRingItem KEY_RING;
-	
+
 	// locks
 	public static LockItem WOOD_LOCK;
 	public static LockItem STONE_LOCK;
@@ -108,26 +122,35 @@ public class TreasureItems {
 	public static LockItem WITHER_LOCK;
 
 	// coins
+	public static Item COPPER_COIN;
 	public static Item SILVER_COIN;
 	public static Item GOLD_COIN;	
-	
+
 	// gems
 	public static Item SAPPHIRE;
 	public static Item RUBY;
 	public static Item WHITE_PEARL;
 	public static Item BLACK_PEARL;
-		
+
+	// charms
+	public static CharmItem COPPER_CHARM;
+	public static CharmItem SILVER_CHARM;
+	public static CharmItem GOLD_CHARM;
+	public static CharmItem TEST_CHARM;
+
 	// wither items
 	public static Item WITHER_STICK_ITEM;
 	public static Item WITHER_ROOT_ITEM;
 
 	// other
 	public static Item SKELETON;
-//	public static Item EYE_PATCH;
-	
+	//	public static Item EYE_PATCH;
+
 	// swords
 	public static Item SKULL_SWORD;
-		
+
+	// key map
+	public static Multimap<Rarity, KeyItem> keys;
 	// lock map
 	public static Multimap<Rarity, LockItem> locks;
 
@@ -138,13 +161,13 @@ public class TreasureItems {
 	 */
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
-		
+
 		/*
 		 *  initialize items
 		 */
 		LOGO = new ModItem(Treasure.MODID, "treasure_tab", new Item.Properties());
 		TREASURE_TOOL = new TreasureToolItem(Treasure.MODID, "treasure_tool", new Item.Properties());
-		
+
 		// KEYS
 		WOOD_KEY = new KeyItem(Treasure.MODID, KeyID.WOOD_KEY_ID, new Item.Properties().durability(TreasureConfig.KEYS_LOCKS.woodKeyMaxUses.get()))
 				.setCategory(Category.ELEMENTAL)
@@ -254,7 +277,11 @@ public class TreasureItems {
 				.setSuccessProbability(32);
 
 		KEY_RING = new KeyRingItem(Treasure.MODID, KeyID.KEY_RING_ID, new Item.Properties());
-		
+
+		keys = ArrayListMultimap.create();
+		keys.put(WOOD_KEY.getRarity(), WOOD_KEY);
+		// TODO finish list
+
 		// LOCKS
 		WOOD_LOCK = new LockItem(Treasure.MODID, LockID.WOOD_LOCK_ID, new Item.Properties(), new KeyItem[] {WOOD_KEY})
 				.setCategory(Category.ELEMENTAL)
@@ -309,31 +336,152 @@ public class TreasureItems {
 		locks.put(SAPPHIRE_LOCK.getRarity(), SAPPHIRE_LOCK);
 		locks.put(SPIDER_LOCK.getRarity(), SPIDER_LOCK);
 		// NOTE wither lock is a special and isn't used in the general locks list
-		
+
 		// COINS
-		SILVER_COIN = new CoinItem(Treasure.MODID, TreasureConfig.ItemID.SILVER_COIN_ID, new Item.Properties()).setCoin(Coins.SILVER);
-		GOLD_COIN = new CoinItem(Treasure.MODID, TreasureConfig.ItemID.GOLD_COIN_ID, new Item.Properties());
-		
+		COPPER_COIN = new WealthItem(Treasure.MODID, TreasureConfig.ItemID.COPPER_COIN_ID, new Item.Properties());		
+		SILVER_COIN = new WealthItem(Treasure.MODID, TreasureConfig.ItemID.SILVER_COIN_ID, new Item.Properties()) {
+			@Override
+			public List<LootTableShell> getLootTables() {
+				List<LootTableShell> lootTables = new ArrayList<>();
+				lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.UNCOMMON));
+				lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
+				return lootTables;
+			}
+			@Override
+			public ItemStack getDefaultLootKey (Random random) {
+				List<KeyItem> keys = new ArrayList<>(TreasureItems.keys.get(Rarity.UNCOMMON));
+				return new ItemStack(keys.get(random.nextInt(keys.size())));
+			}
+		};
+		GOLD_COIN = new WealthItem(Treasure.MODID, TreasureConfig.ItemID.GOLD_COIN_ID, new Item.Properties()) {
+			@Override
+			public List<LootTableShell> getLootTables() {
+				List<LootTableShell> lootTables = new ArrayList<>();
+				lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
+				lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE));
+				return lootTables;
+			}
+			@Override
+			public ItemStack getDefaultLootKey (Random random) {
+				List<KeyItem> keys = new ArrayList<>(TreasureItems.keys.get(Rarity.SCARCE));
+				return new ItemStack(keys.get(random.nextInt(keys.size())));
+			}
+		};
+
 		// GEMS
-		SAPPHIRE = new GemItem(Treasure.MODID, TreasureConfig.ItemID.SAPPHIRE_ID, new Item.Properties());
-		RUBY = new GemItem(Treasure.MODID, TreasureConfig.ItemID.RUBY_ID, new Item.Properties());
-		
+		RUBY = new WealthItem(Treasure.MODID, TreasureConfig.ItemID.RUBY_ID, new Item.Properties()) {
+			@Override
+			public List<LootTableShell> getLootTables() {
+				return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE);
+			}
+			@Override
+			public ItemStack getDefaultLootKey (Random random) {
+				List<KeyItem> keys = new ArrayList<>(TreasureItems.keys.get(Rarity.RARE));
+				return new ItemStack(keys.get(random.nextInt(keys.size())));
+			}
+		};
+		SAPPHIRE = new WealthItem(Treasure.MODID, TreasureConfig.ItemID.SAPPHIRE_ID, new Item.Properties()) {
+			@Override
+			public List<LootTableShell> getLootTables() {
+				return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.EPIC);
+			}
+			@Override
+			public ItemStack getDefaultLootKey (Random random) {
+				List<KeyItem> keys = new ArrayList<>(TreasureItems.keys.get(Rarity.EPIC));
+				return new ItemStack(keys.get(random.nextInt(keys.size())));
+			}
+		};
+
 		// PEARLS
-		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.ItemID.WHITE_PEARL_ID, new Item.Properties()).setPearl(Pearls.WHITE);
-		BLACK_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.ItemID.BLACK_PEARL_ID, new Item.Properties()).setPearl(Pearls.BLACK);
-				
+		WHITE_PEARL = new WealthItem(Treasure.MODID, TreasureConfig.ItemID.WHITE_PEARL_ID, new Item.Properties()) {
+			@Override
+			public List<LootTableShell> getLootTables() {
+				List<LootTableShell> lootTables = new ArrayList<>();
+				lootTables.add(TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.WHITE_PEARL_WELL));
+				return lootTables;
+			}
+			@Override
+			public ItemStack getDefaultLootKey (Random random) {
+				return new ItemStack(Items.DIAMOND);
+			}
+		};
+		BLACK_PEARL = new WealthItem(Treasure.MODID, TreasureConfig.ItemID.BLACK_PEARL_ID, new Item.Properties()) {
+			@Override
+			public List<LootTableShell> getLootTables() {
+				List<LootTableShell> lootTables = new ArrayList<>();
+				lootTables.add(TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.BLACK_PEARL_WELL));
+				return lootTables;
+			}
+			@Override
+			public ItemStack getDefaultLootKey (Random random) {
+				return new ItemStack(Items.EMERALD);
+			}			
+		};
+
+		// CHARMS
+		COPPER_CHARM = new CharmItem(Treasure.MODID, "copper_charm", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.finite(true, 1);
+					$.bindable(true);
+					$.source(true)
+					.baseMaterial(TreasureCharms.COPPER.getName());
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		SILVER_CHARM = new CharmItem(Treasure.MODID, "silver_charm", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.finite(true, 1);
+					$.bindable(true);
+					$.source(true)
+					.baseMaterial(TreasureCharms.SILVER.getName());
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		GOLD_CHARM = new CharmItem(Treasure.MODID, "gold_charm", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.finite(true, 1);
+					$.bindable(true);
+					$.source(true)
+					.baseMaterial(TreasureCharms.GOLD.getName());
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+
+		// TODO create a Builder for Charms
+		TEST_CHARM = new CharmItem(Treasure.MODID, "test_charm", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(SAPPHIRE.getRegistryName()).with($ -> {
+					$.finite(true, 1);
+					$.bindable(true);
+					$.source(true);
+					$.baseMaterial(TreasureCharms.COPPER.getName());
+				}).build();
+
+				// add charms
+				cap.add(InventoryType.FINITE, TreasureCharms.HEALING_6.createEntity());
+				stack.setHoverName(new StringTextComponent("Test Charm"));
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+
 		// WITHER ITEMS
 		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_STICK_ITEM_ID, TreasureBlocks.WITHER_BRANCH, new Item.Properties());
 		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_ROOT_ITEM_ID, TreasureBlocks.WITHER_ROOT, new Item.Properties());
-		
+
 		// OTHER
 		SKELETON = new SkeletonItem(Treasure.MODID, TreasureConfig.ItemID.SKELETON_ITEM_ID, TreasureBlocks.SKELETON, new Item.Properties());
-		
+
 		SKULL_SWORD = new SwordItem(TreasureItemTier.SKULL, 3, -2.4F, new Item.Properties().tab(TreasureItemGroups.MOD_ITEM_GROUP))
 				.setRegistryName(Treasure.MODID, TreasureConfig.ItemID.SKULL_SWORD_ID);
-//		EYE_PATCH = new DyeableArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.HEAD, (new Item.Properties()).group(TreasureItemGroups.MOD_ITEM_GROUP))
-//				.setRegistryName(Treasure.MODID, TreasureConfig.ItemID.EYE_PATCH_ID);
-		
+		//		EYE_PATCH = new DyeableArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.HEAD, (new Item.Properties()).group(TreasureItemGroups.MOD_ITEM_GROUP))
+		//				.setRegistryName(Treasure.MODID, TreasureConfig.ItemID.EYE_PATCH_ID);
+
 		/*
 		 * register items (make sure you always set the registry name).
 		 */
@@ -371,8 +519,13 @@ public class TreasureItems {
 				PILFERERS_LOCK_PICK,
 				THIEFS_LOCK_PICK,
 				KEY_RING,
+				COPPER_COIN,
 				SILVER_COIN,
 				GOLD_COIN,
+				COPPER_CHARM,
+				SILVER_CHARM,
+				GOLD_CHARM,
+				TEST_CHARM,
 				RUBY,
 				SAPPHIRE,
 				WHITE_PEARL,
@@ -381,7 +534,6 @@ public class TreasureItems {
 				WITHER_ROOT_ITEM,
 				SKULL_SWORD,
 				SKELETON
-//				EYE_PATCH
 				);
 	}
 
@@ -404,7 +556,7 @@ public class TreasureItems {
 
 		itemColors.register(itemBlockColourHandler, TreasureBlocks.FALLING_GRASS);
 	}
-	
+
 	/**
 	 * 
 	 * @author Mark Gottschling on Aug 12, 2020

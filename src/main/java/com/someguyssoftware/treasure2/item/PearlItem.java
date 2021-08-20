@@ -58,6 +58,7 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 	/**
 	 * 
 	 */
+	@Deprecated
 	public PearlItem (String modID, String name, Item.Properties properties)	 {
 		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP)
 				.stacksTo(MAX_STACK_SIZE));

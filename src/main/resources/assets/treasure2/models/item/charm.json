@@ -1,0 +1,37 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"__comment": "default",
+		"layer0": "treasure2:item/charm/gold_charm"
+	},
+	"overrides": [
+		{
+			"__comment": "copper charm",
+			"predicate": {
+				"model": 2
+			},
+			"model": "item/charm/charm_model_copper"
+		},
+		{
+			"__comment": "silver charm",
+			"predicate": {
+				"model": 3
+			},
+			"model": "item/charm/charm_model_silver"
+		},
+		{
+			"__comment": "gold charm",
+			"predicate": {
+				"model": 4
+			},
+			"model": "item/charm/charm_model_gold"
+		},
+		{
+			"__comment": "copper topaz charm",
+			"predicate": {
+				"model": 3
+			},
+			"model": "item/charm/charm_model_copper_topaz"
+		}		
+	]
+}
