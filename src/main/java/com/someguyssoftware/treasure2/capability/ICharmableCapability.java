@@ -21,8 +21,10 @@ package com.someguyssoftware.treasure2.capability;
 
 import java.util.List;
 
-import com.someguyssoftware.treasure2.capability.CharmableCapability.BaseMaterial;
 import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
+import com.someguyssoftware.treasure2.charm.BaseMaterial;
+import com.someguyssoftware.treasure2.charm.BaseMaterial2;
+import com.someguyssoftware.treasure2.charm.CharmableMaterial;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -48,9 +50,9 @@ public interface ICharmableCapability {
 	 */	
 	void add(InventoryType type, ICharmEntity entity);
 	
-	public boolean isCharmed();
-	
-	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag);
+	public boolean isCharmed();	
+	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag);	
+	int getMaxCharmLevel();
 	
 	public boolean isBindable();
 	public void setBindable(boolean bindable);
@@ -76,11 +78,8 @@ public interface ICharmableCapability {
 	void setMaxImbueSize(int maxImbueSize);
 	void setMaxFiniteSize(int maxFiniteSize);
 	
-	BaseMaterial getBaseMaterial();
-	void setBaseMaterial(BaseMaterial baseMaterial);
-	
-	int getMaxCharmLevel();
-	void setMaxCharmLevel(int maxLevel);
+	ResourceLocation getBaseMaterial();
+	void setBaseMaterial(ResourceLocation baseMaterial);
 	
 	ResourceLocation getSourceItem();
 	void setSourceItem(ResourceLocation sourceItem);

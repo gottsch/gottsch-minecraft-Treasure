@@ -19,6 +19,7 @@
  */
 package com.someguyssoftware.treasure2.network;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -34,9 +35,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.LogicalSidedProvider;
 import net.minecraftforge.fml.network.NetworkEvent;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 /**
  * 
@@ -44,6 +49,8 @@ import net.minecraftforge.fml.network.NetworkEvent;
  *
  */
 public class CharmMessageHandlerOnClient {
+	private static final String CURIOS_ID = "curios";
+	
 	public static boolean isThisProtocolAcceptedByClient(String protocolVersion) {
 		return TreasureNetworking.MESSAGE_PROTOCOL_VERSION.equals(protocolVersion);
 	}
@@ -91,11 +98,29 @@ public class CharmMessageHandlerOnClient {
 	        		// determine what is being held in hand
 	        		if (heldItemStack != null) {
 	        			Treasure.LOGGER.debug("holding item -> {}", heldItemStack.getItem().getRegistryName());
-	        			ICharmableCapability cap = heldItemStack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).orElse(null);
-	        			if (cap != null) {
-	        				updateCharms(heldItemStack, message, cap);
-	        			}
+//	        			ICharmableCapability cap = heldItemStack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).orElse(null);
+//	        			if (cap != null) {
+//	        				updateCharms(heldItemStack, message, cap);
+//	        			}
+	        			heldItemStack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).ifPresent(cap -> {
+	        				updateCharms(message, cap);
+	        			});
 	        		}
+	        	}
+	        	else if (CURIOS_ID.equals(message.getSlotProviderId())) {
+	    			LazyOptional<ICuriosItemHandler> handler = CuriosApi.getCuriosHelper().getCuriosHandler(player);
+	    			handler.ifPresent(itemHandler -> {
+	    				Optional<ICurioStacksHandler> stacksOptional = itemHandler.getStacksHandler(message.getSlot());
+	    				stacksOptional.ifPresent(stacksHandler -> {
+							ItemStack curiosStack = stacksHandler.getStacks().getStackInSlot(0);
+							curiosStack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).ifPresent(cap -> {
+								updateCharms(message, cap);
+							});
+	    				});
+	    			});
+	        	}
+	        	else {
+	        		// TODO do the hotbar
 	        	}
 	        	
 	        }
@@ -105,22 +130,26 @@ public class CharmMessageHandlerOnClient {
 		}
 	}
 	
-	private static void updateCharms(ItemStack heldItemStack, CharmMessageToClient message, ICharmableCapability capability) {
+	private static void updateCharms(CharmMessageToClient message, ICharmableCapability capability) {
 		// get the charm that is being sent
 //		String charmName = message.getCharmName();
 		ResourceLocation charmName = new ResourceLocation(message.getCharmName());
 		// cycle through the charm states to find the named charm
-		for(ICharmEntity entity : capability.getCharmEntities()[InventoryType.FINITE.getValue()]) {
-			if (entity.getCharm().getName().equals(charmName)) {
+		List<ICharmEntity> entityList = capability.getCharmEntities()[message.getInventoryType().getValue()];
+		if (entityList != null && !entityList.isEmpty() && entityList.size() > message.getIndex()) {
+			ICharmEntity entity = entityList.get(message.getIndex());
+//		for(ICharmEntity entity : capability.getCharmEntities()[message.getInventoryType().getValue()]) {
+			if (entity != null && entity.getCharm().getName().equals(charmName)) {
 	        	Treasure.LOGGER.debug("found charm, updating...");
 				// update vitals
 				entity.update(message.getEntity());
 				if (entity.getValue() <= 0.0) {
-					// TODO should each charm have it's own way of checking empty?
-					capability.getCharmEntities()[InventoryType.FINITE.getValue()].remove(entity);
+					// TODO should each charm have it's own way of checking empty? (instead of getValue() < 0.0)
+					capability.getCharmEntities()[message.getInventoryType().getValue()].remove(entity);
 				}
-				break;
+//				break;
 			}
 		}
+//		}
 	}
 }

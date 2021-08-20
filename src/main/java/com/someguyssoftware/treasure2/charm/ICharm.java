@@ -60,8 +60,6 @@ public interface ICharm {
     public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity);
 
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity);
-    
-	public CompoundNBT writeToNBT(CompoundNBT nbt);
 	
 	/**
 	 * 

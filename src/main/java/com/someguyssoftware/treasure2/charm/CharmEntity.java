@@ -19,10 +19,13 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
-import java.util.Comparator;
-
 import net.minecraft.nbt.CompoundNBT;
 
+/**
+ * 
+ * @author Mark Gottschling on Aug 19, 2021
+ *
+ */
 public class CharmEntity implements ICharmEntity {
 
 	private ICharm charm;
@@ -62,7 +65,7 @@ public class CharmEntity implements ICharmEntity {
 	 * @return
 	 */
 //	public static Optional<ICharmEntity> load(CompoundNBT nbt) {
-//		Optional<ICharm> charm = Charm.load((CompoundNBT) nbt.get(CHARM));
+//		Optional<ICharm> charm = Charm.load((CompoundNBT) nbt.get(COPPER_CHARM));
 //		if (!charm.isPresent()) {
 //			return Optional.empty();
 //		}

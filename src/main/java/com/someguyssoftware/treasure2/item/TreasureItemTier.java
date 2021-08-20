@@ -21,7 +21,7 @@ public enum TreasureItemTier implements IItemTier {
 
 	private final int level;
 	private final int uses;
-	private final float spped;
+	private final float speed;
 	private final float attackDamageBonus;
 	private final int enchantmentValue;
 	private final LazyValue<Ingredient> repairIngredient;
@@ -29,7 +29,7 @@ public enum TreasureItemTier implements IItemTier {
 	private TreasureItemTier(int harvestLevelIn, int maxUsesIn, float speedIn, float attackDamageBonusIn, int enchantmentValueIn, Supplier<Ingredient> repairIngredientIn) {
 		this.level = harvestLevelIn;
 		this.uses = maxUsesIn;
-		this.spped = speedIn;
+		this.speed = speedIn;
 		this.attackDamageBonus = attackDamageBonusIn;
 		this.enchantmentValue = enchantmentValueIn;
 		this.repairIngredient = new LazyValue<>(repairIngredientIn);
@@ -42,7 +42,7 @@ public enum TreasureItemTier implements IItemTier {
 
 	@Override
 	public float getSpeed() {
-		return spped;
+		return speed;
 	}
 
 	@Override

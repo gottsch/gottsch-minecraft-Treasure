@@ -7,6 +7,7 @@ import com.someguyssoftware.gottschcore.annotation.Credits;
 import com.someguyssoftware.gottschcore.annotation.ModInfo;
 import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.entity.TreasureEntities;
 import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
@@ -78,6 +79,7 @@ public class Treasure implements IMod {
 		eventBus.addListener(this::config);
 		eventBus.addListener(TreasureNetworking::common);
 		eventBus.addListener(TreasureSetup::common);
+		eventBus.addListener(TreasureCharms::setup);
 		eventBus.addListener(TreasureSetup::clientSetup);
 		eventBus.addListener(this::clientSetup);
 

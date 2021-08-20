@@ -25,6 +25,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmableCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.CharmableMaterial;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.item.TreasureItems;
@@ -32,6 +33,7 @@ import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
+import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.ResourceLocation;
@@ -52,31 +54,48 @@ public class TreasureSetup implements IModSetup {
 		Treasure.LOGGER.debug("registering in TreasureSetup");
 		// add mod specific logging
 		IModSetup.addRollingFileAppender(Treasure.instance.getName(), null);
-		
+
 		// register capabilities
 		TreasureCapabilities.register();
 
 		// initialize all the data lists, maps, etc
 		TreasureData.initialize();
-		
+
 		// start the treasure registries
 		TreasureLootTableRegistry.create(Treasure.instance);
 		TreasureMetaRegistry.create(Treasure.instance);
 		TreasureTemplateRegistry.create(Treasure.instance);
 		TreasureDecayRegistry.create(Treasure.instance);
 	}
-	
+
 	public static void clientSetup(final FMLClientSetupEvent event) {
+		Treasure.LOGGER.debug("setting up item properties dynamically...");
 		event.enqueueWork(() -> {
-		    ItemModelsProperties.register(TreasureItems.CHARM, 
-		      new ResourceLocation(Treasure.MODID, "model"), (stack, world, living) -> {
-		        AtomicDouble d = new AtomicDouble(0);
-		       stack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).ifPresent(cap -> {
-		    	   Optional<Integer> level = TreasureCharms.getCharmLevel(cap.getSourceItem());
-			    	d.set(cap.getBaseMaterial().getMaxCharmLevel() + (level.isPresent() ? level.get() : 0)) ;
-		        });
-		       return d.floatValue();
-		      });
-		  });
+			ItemModelsProperties.register(TreasureItems.COPPER_CHARM, 
+					new ResourceLocation(Treasure.MODID, "gem"), (stack, world, living) -> {
+						AtomicDouble d = new AtomicDouble(0);
+						stack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).ifPresent(cap -> {
+							Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(cap.getSourceItem());
+							if (source.isPresent()) {
+								d.set(source.get().getId());
+							}
+						});
+						return d.floatValue();
+					});
+			ItemModelsProperties.register(TreasureItems.TEST_CHARM, 
+					new ResourceLocation(Treasure.MODID, "gem"), (stack, world, living) -> {
+						AtomicDouble d = new AtomicDouble(0);
+						stack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).ifPresent(cap -> {
+							Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(cap.getSourceItem());
+							if (source.isPresent()) {
+								d.set(source.get().getMaxLevel());
+							}
+							else {
+								d.set(6);
+							}
+						});
+						return d.floatValue();
+					});
+		});
 	}
 }

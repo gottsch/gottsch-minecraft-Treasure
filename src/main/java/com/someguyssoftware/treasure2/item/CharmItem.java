@@ -22,6 +22,7 @@ package com.someguyssoftware.treasure2.item;
 import java.util.List;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
@@ -75,6 +76,7 @@ public class CharmItem extends ModItem {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
 		// TODO create new CharmItemCapProvider which includes POUCHABLE cap (not everything that is charmable is pouchable)
+		Treasure.LOGGER.debug("{} item initiating caps", stack.getItem().getRegistryName().toString());
 		CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
 		return provider;
 	}

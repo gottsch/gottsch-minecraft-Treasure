@@ -31,21 +31,18 @@ import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.capability.CharmableCapability;
+import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
-import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.BaseMaterial;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
-import com.someguyssoftware.treasure2.capability.CharmableCapability.BaseMaterial;
-import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig.KeyID;
 import com.someguyssoftware.treasure2.config.TreasureConfig.LockID;
 import com.someguyssoftware.treasure2.enums.Category;
-import com.someguyssoftware.treasure2.enums.Coins;
-import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.color.BlockColors;
@@ -136,9 +133,9 @@ public class TreasureItems {
 	public static Item BLACK_PEARL;
 
 	// charms
-	public static CharmItem CHARM;
-	public static CharmItem SAPPHIRE_CHARM;
-	//	public static CoinItem TEST_COIN;
+	public static CharmItem COPPER_CHARM;
+	public static CharmItem SILVER_CHARM;
+	public static CharmItem GOLD_CHARM;
 	public static CharmItem TEST_CHARM;
 
 	// wither items
@@ -422,11 +419,35 @@ public class TreasureItems {
 		};
 
 		// CHARMS
-		CHARM = new CharmItem(Treasure.MODID, "charm", new Item.Properties()) {
+		COPPER_CHARM = new CharmItem(Treasure.MODID, "copper_charm", new Item.Properties()) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.finite(true, 1);
+					$.bindable(true);
 					$.source(true)
-					.baseMaterial(BaseMaterial.COPPER);
+					.baseMaterial(TreasureCharms.COPPER.getName());
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		SILVER_CHARM = new CharmItem(Treasure.MODID, "silver_charm", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.finite(true, 1);
+					$.bindable(true);
+					$.source(true)
+					.baseMaterial(TreasureCharms.SILVER.getName());
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		GOLD_CHARM = new CharmItem(Treasure.MODID, "gold_charm", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.finite(true, 1);
+					$.bindable(true);
+					$.source(true)
+					.baseMaterial(TreasureCharms.GOLD.getName());
 				}).build();
 				return new CharmableCapabilityProvider(cap);
 			}
@@ -437,29 +458,14 @@ public class TreasureItems {
 			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(SAPPHIRE.getRegistryName()).with($ -> {
 					$.finite(true, 1);
-					$.source(true);
 					$.bindable(true);
+					$.source(true);
+					$.baseMaterial(TreasureCharms.COPPER.getName());
 				}).build();
 
 				// add charms
-				cap.add(InventoryType.FINITE, TreasureCharms.HEALING_1.createEntity());
-				stack.setHoverName(new StringTextComponent("Sal'andaar Stone's Brain"));
-				return new CharmableCapabilityProvider(cap);
-			}
-		};
-
-		SAPPHIRE_CHARM = new CharmItem(Treasure.MODID, "sapphire_charm", new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
-				ICharmableCapability cap = new CharmableCapability.Builder(SAPPHIRE.getRegistryName()).with($ -> {
-					$.finite(true, 1)
-					.bindable(true)
-					.source(true)
-					.baseMaterial(BaseMaterial.GOLD);
-				}).build();
-
-				// add charms
-				cap.add(InventoryType.FINITE, TreasureCharms.HEALING_15.createEntity());
-				stack.setHoverName(new StringTextComponent("Bindable Sapphire Charm"));
+				cap.add(InventoryType.FINITE, TreasureCharms.HEALING_6.createEntity());
+				stack.setHoverName(new StringTextComponent("Test Charm"));
 				return new CharmableCapabilityProvider(cap);
 			}
 		};
@@ -516,9 +522,9 @@ public class TreasureItems {
 				COPPER_COIN,
 				SILVER_COIN,
 				GOLD_COIN,
-				CHARM,
-				SAPPHIRE_CHARM,
-				//				TEST_COIN,
+				COPPER_CHARM,
+				SILVER_CHARM,
+				GOLD_CHARM,
 				TEST_CHARM,
 				RUBY,
 				SAPPHIRE,

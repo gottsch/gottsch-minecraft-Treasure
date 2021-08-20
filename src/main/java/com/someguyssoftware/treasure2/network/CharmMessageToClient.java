@@ -19,10 +19,12 @@
  */
 package com.someguyssoftware.treasure2.network;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
+import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.charm.CharmEntity;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
@@ -38,27 +40,29 @@ import net.minecraft.util.Hand;
  */
 public class CharmMessageToClient {
 	private boolean valid;
-	private String playerName;
-	private String charmName;
-	private ICharmEntity entity;	
-	private Hand hand;
-	private String slot;
-	private String slotProviderId;
-	private InventoryType inventoryType;
+	private String playerName; 								//1
+	private String charmName; 							//2
+	private ICharmEntity entity;							//3
+	private Hand hand;												//4
+	private String slot;													//5
+	private String slotProviderId;							//6
+	private InventoryType inventoryType;		//7
+	private int index;														//8
 	
 	/**
 	 * 
 	 * @param playerName
 	 */
-	public CharmMessageToClient(String playerName, ICharmEntity instance, Hand hand, String slot, String slotProviderId, InventoryType inventoryType) {
+	public CharmMessageToClient(String playerName, CharmContext context) {
 		valid = true;
 		this.playerName = playerName;
-		this.charmName = instance.getCharm().getName().toString();
-		this.entity = instance;
-		this.hand = hand;
-		this.slot = slot;
-		this.slotProviderId = slotProviderId;
-		this.inventoryType = inventoryType;
+		this.entity = context.getEntity();
+		this.charmName = context.getEntity().getCharm().getName().toString();		
+		this.hand = context.getHand();
+		this.slotProviderId = context.getSlotProviderId();
+		this.slot = Objects.toString(context.getSlot(), "");		
+		this.inventoryType = context.getType();
+		this.index = context.getIndex();
 	}
 	
 	/**
@@ -101,6 +105,7 @@ public class CharmMessageToClient {
 			if (!inventoryType.isEmpty()) {
 				message.setInventoryType(InventoryType.valueOf(inventoryType.toUpperCase()));
 			}
+			message.setIndex(buf.readInt());
 		}
 		catch(Exception e) {
 			Treasure.LOGGER.error("An error occurred attempting to read message: ", e);
@@ -128,12 +133,15 @@ public class CharmMessageToClient {
 			handAsString = hand.name();
 		}
 		buf.writeUtf(handAsString);
-		buf.writeUtf(slot);
-		buf.writeUtf(slotProviderId);
-		buf.writeUtf(inventoryType.name().toLowerCase());
+		buf.writeUtf(Objects.toString(slot, ""));
+		buf.writeUtf(Objects.toString(slotProviderId, ""));
+		String typeAsString = "";
+		if (inventoryType != null) {
+			typeAsString = inventoryType.name().toLowerCase();
+		}
+		buf.writeUtf(typeAsString);
+		buf.writeInt(index);
 	}
-	
-
 	
 	public boolean isValid() {
 		return valid;
@@ -196,5 +204,20 @@ public class CharmMessageToClient {
 
 	public void setInventoryType(InventoryType inventoryType) {
 		this.inventoryType = inventoryType;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	@Override
+	public String toString() {
+		return "CharmMessageToClient [valid=" + valid + ", playerName=" + playerName + ", charmName=" + charmName
+				+ ", entity=" + entity + ", hand=" + hand + ", slot=" + slot + ", slotProviderId=" + slotProviderId
+				+ ", inventoryType=" + inventoryType + ", index=" + index + "]";
 	}
 }

@@ -28,6 +28,9 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.charm.BaseMaterial;
+import com.someguyssoftware.treasure2.charm.BaseMaterial2;
+import com.someguyssoftware.treasure2.charm.CharmableMaterial;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 
@@ -70,9 +73,11 @@ public class CharmableCapability implements ICharmableCapability {
     private boolean finite;
     
     // the base material this item is made of
-    private BaseMaterial baseMaterial = BaseMaterial.COPPER;
+    private ResourceLocation baseMaterial;
     // the item that this capability belongs to
     private ResourceLocation sourceItem;
+    
+    @Deprecated
     // the max level of any charm that this item can hold (in either of the 3 inventories)
     private int maxCharmLevel;
     
@@ -107,7 +112,6 @@ public class CharmableCapability implements ICharmableCapability {
 		this.maxSocketsSize = socketable ? Math.max(1, builder.maxSocketsSize) : 0;
 		this.baseMaterial = builder.baseMaterial;
 		this.sourceItem = builder.sourceItem;
-		this.maxCharmLevel = builder.maxCharmLevel;
 	}
 		
 	/**
@@ -195,10 +199,6 @@ public class CharmableCapability implements ICharmableCapability {
 			for (ICharmEntity entity : entityList) {
 				entity.getCharm().appendHoverText(stack, world, tooltip, flag, entity);
 			}
-			// add socket footer
-//			if (inventoryType == InventoryType.SOCKET || inventoryType == InventoryType.IMBUE) {
-//				appendCapacityHoverText(stack, world, tooltip, flag, entityList);
-//			}
 		}		
 	}
 
@@ -331,23 +331,13 @@ public class CharmableCapability implements ICharmableCapability {
 	}
 	
 	@Override
-	public BaseMaterial getBaseMaterial() {
+	public ResourceLocation getBaseMaterial() {
 		return baseMaterial;
 	}
 
 	@Override
-	public void setBaseMaterial(BaseMaterial baseMaterial) {
+	public void setBaseMaterial(ResourceLocation baseMaterial) {
 		this.baseMaterial = baseMaterial;
-	}
-	
-	@Override
-	public int getMaxCharmLevel() {
-		return maxCharmLevel;
-	}
-
-	@Override
-	public void setMaxCharmLevel(int maxLevel) {
-		this.maxCharmLevel = maxLevel;
 	}
 	
 	/**
@@ -387,35 +377,7 @@ public class CharmableCapability implements ICharmableCapability {
 			return (InventoryType) values.get(value);
 		}
 	}
-	
-	/**
-	 * 
-	 * @author Mark Gottschling on Aug 16, 2021
-	 *
-	 */
-	public enum BaseMaterial {
-		NONE(0, 0),
-		COPPER(1, 1),
-		SILVER(2, 2),
-		GOLD(3, 3);
 		
-		private int value;
-		private int maxCharmLevel;
-		
-		BaseMaterial(int value, int maxLevel) {
-			this.value = value;
-			this.maxCharmLevel = maxLevel;
-		}
-
-		public int getValue() {
-			return value;
-		}
-
-		public int getMaxCharmLevel() {
-			return maxCharmLevel;
-		}
-	}
-	
 	/**
 	 * 
 	 * @author Mark Gottschling on Aug 16, 2021
@@ -424,18 +386,15 @@ public class CharmableCapability implements ICharmableCapability {
 	public static class Builder {
 	    private boolean source;
 	    public boolean bindable;
-	    private boolean socketing;
 	    public boolean socketable;
 	    public boolean imbuing;
 	    public boolean imbuable;
 	    public boolean finite;	    	    
+
+	    public ResourceLocation baseMaterial = TreasureCharms.COPPER.getName();
 	    
-	    public BaseMaterial baseMaterial = BaseMaterial.COPPER;
 	    // required property
 	    public ResourceLocation sourceItem;
-	    
-	    // calculated value
-	    private int maxCharmLevel;
 	    
 	    public int maxSocketsSize;
 	    public int maxImbueSize;
@@ -467,11 +426,6 @@ public class CharmableCapability implements ICharmableCapability {
 	    	return this;
 	    }
 	    
-	    public Builder socketing(boolean socketing) {
-	    	this.socketing = socketing;
-	    	return this;
-	    }
-	    
 	    public Builder finite(boolean finite, int size) {
 	    	this.finite = finite;
 	    	this.maxFiniteSize = size;
@@ -489,21 +443,16 @@ public class CharmableCapability implements ICharmableCapability {
 	    	return this;
 	    }
 	    
-	    public Builder baseMaterial(BaseMaterial material) {
+	    public Builder baseMaterial(ResourceLocation material) {
 	    	this.baseMaterial = material;
 	    	return this;
 	    }
 	    
-//	    public Builder sourceItem(ResourceLocation sourceItemName) {
-//	    	this.sourceItem = sourceItemName;
-//	    	return this;
-//	    }
-	    
 	    public ICharmableCapability build() {
 	    	// calculate the max charm level based on baseMaterial and the source item.
 	    	Treasure.LOGGER.debug("charm source item -> {}", sourceItem);
-	    	Optional<Integer> level = TreasureCharms.getCharmLevel(sourceItem);
-	    	this.maxCharmLevel = baseMaterial.getMaxCharmLevel() + (level.isPresent() ? level.get() : 0) ;
+//	    	Optional<Integer> level = TreasureCharms.getCharmLevel(sourceItem);
+//	    	this.maxCharmLevel = baseMaterial.getMaxLevel() + (level.isPresent() ? level.get() : 0) ;
 	    	return new CharmableCapability(this);
 	    }
 	}
@@ -516,4 +465,12 @@ public class CharmableCapability implements ICharmableCapability {
 	public void setSourceItem(ResourceLocation sourceItem) {
 		this.sourceItem = sourceItem;
 	}
+
+	@Override
+	public int getMaxCharmLevel() {
+		Optional<CharmableMaterial> base = TreasureCharms.getBaseMaterial(baseMaterial);
+		Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(sourceItem);
+		return (base.isPresent() ? base.get().getMaxLevel() : TreasureCharms.COPPER.getMaxLevel()) + (source.isPresent() ? source.get().getMaxLevel() : 0);
+	}
+
 }

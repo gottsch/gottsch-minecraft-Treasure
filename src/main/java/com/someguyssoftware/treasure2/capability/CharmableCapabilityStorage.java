@@ -23,9 +23,11 @@ import java.util.List;
 import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmableCapability.BaseMaterial;
 import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
+import com.someguyssoftware.treasure2.charm.BaseMaterial2;
+import com.someguyssoftware.treasure2.charm.CharmableMaterial;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.nbt.CompoundNBT;
@@ -89,9 +91,8 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 			nbt.putBoolean(SOCKETABLE, instance.isSocketable());
 			nbt.putBoolean(SOCKETING, instance.isSocketing());
 			nbt.putInt(MAX_SOCKET_SIZE, instance.getMaxSocketsSize());
-			nbt.putString(BASE_MATERIAL, instance.getBaseMaterial().name());
+			nbt.putString(BASE_MATERIAL, instance.getBaseMaterial().toString());
 			nbt.putString(SOURCE_ITEM, instance.getSourceItem().toString());
-			nbt.putInt(MAX_CHARM_LEVEL, instance.getMaxCharmLevel());
 			
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Unable to write state to NBT:", e);
@@ -156,13 +157,13 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 					instance.setFinite(tag.getBoolean(SOCKETING));
 				}	
 				if (tag.contains(BASE_MATERIAL)) {
-					instance.setBaseMaterial(BaseMaterial.valueOf(tag.getString(BASE_MATERIAL).toUpperCase()));
+//					Optional<BaseMaterial2> material = TreasureCharms.getBaseMaterial(ModUtils.asLocation(tag.getString(BASE_MATERIAL)));
+//					Optional<CharmableMaterial> material = TreasureCharms.getBaseMaterial(ModUtils.asLocation(tag.getString(BASE_MATERIAL)));
+					instance.setBaseMaterial(ModUtils.asLocation(tag.getString(BASE_MATERIAL))); //BaseMaterial.valueOf(tag.getString(BASE_MATERIAL).toUpperCase()));
 				}
+				
 				if (tag.contains(SOURCE_ITEM)) {
 					instance.setSourceItem(ModUtils.asLocation(tag.getString(SOURCE_ITEM)));
-				}
-				if (tag.contains(MAX_CHARM_LEVEL)) {
-					instance.setMaxCharmLevel(tag.getInt(MAX_CHARM_LEVEL));
 				}
 			}
 		}

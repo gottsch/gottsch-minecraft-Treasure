@@ -3,7 +3,7 @@
  */
 package com.someguyssoftware.treasure2.network;
 
-import static net.minecraftforge.fml.network.NetworkDirection.PLAY_TO_SERVER;
+import static net.minecraftforge.fml.network.NetworkDirection.*;
 
 import java.util.Optional;
 
@@ -21,6 +21,7 @@ public class TreasureNetworking {
 	public static final String MESSAGE_PROTOCOL_VERSION = "1.0";
 	public static final int POISON_MIST_MESSAGE_ID = 14;
 	public static final int WITHER_MIST_MESSAGE_ID = 15;
+	public static final int CHARM_MESSAGE_ID = 16;
 
 	public static final ResourceLocation CHANNEL_NAME = new ResourceLocation(Treasure.MODID, "treasure_channel");
 
@@ -46,6 +47,11 @@ public class TreasureNetworking {
 	           WitherMistMessageToServer::encode, WitherMistMessageToServer::decode,
 	            WitherMistMessageHandlerOnServer::onMessageReceived,
 	            Optional.of(PLAY_TO_SERVER));
+		
+		simpleChannel.registerMessage(CHARM_MESSAGE_ID, CharmMessageToClient.class,
+		           CharmMessageToClient::encode, CharmMessageToClient::decode,
+		            CharmMessageHandlerOnClient::onMessageReceived,
+		            Optional.of(PLAY_TO_CLIENT));
 	}
 	
 	/**
