@@ -1,5 +1,6 @@
 {
 	"version" : "2.0.0",
+	"since":"mc1.16.5-v1.6.0",
 	"category": "general",
 	"rarity": "common",
 	"type": "minecraft:chest",

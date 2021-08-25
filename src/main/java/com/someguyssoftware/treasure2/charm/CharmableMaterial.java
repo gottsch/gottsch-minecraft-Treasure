@@ -33,7 +33,8 @@ public class CharmableMaterial {
 	private int id;
 	private ResourceLocation name;
 	private int maxLevel;
-	private int minSpawnLevel;
+	private int minSpawnLevel = 1;
+	private double levelMultiplier = 1.0;
 	
 	/**
 	 * 
@@ -53,20 +54,31 @@ public class CharmableMaterial {
 	}
 	
 	/**
+	 * Full constructor
+	 * @param name
+	 * @param maxLevel
+	 * @param levelRange
+	 */
+	public CharmableMaterial(int id, ResourceLocation name, int maxLevel, int minSpawnLevel, double levelMultiplier) {
+		this.id = id;
+		this.name = name;
+		this.maxLevel = maxLevel;
+		this.minSpawnLevel = minSpawnLevel;
+		this.levelMultiplier = levelMultiplier;
+	}
+	
+	/**
 	 * 
 	 * @param name
 	 * @param maxLevel
 	 * @param levelRange
 	 */
 	public CharmableMaterial(int id, ResourceLocation name, int maxLevel, int minSpawnLevel) {
-		this.id = id;
-		this.name = name;
-		this.maxLevel = maxLevel;
-		this.minSpawnLevel = minSpawnLevel;
+		this(id, name, maxLevel, minSpawnLevel, 1D);
 	}
 	
 	public CharmableMaterial(int id, ResourceLocation name, int maxLevel) {
-		this(id, name, maxLevel, 1);
+		this(id, name, maxLevel, 1, 1D);
 	}
 	
 	/**
@@ -107,5 +119,13 @@ public class CharmableMaterial {
 
 	public void setMinSpawnLevel(int minSpawnLevel) {
 		this.minSpawnLevel = minSpawnLevel;
+	}
+
+	public double getLevelMultiplier() {
+		return levelMultiplier;
+	}
+
+	public void setLevelMultiplier(double levelMultiplier) {
+		this.levelMultiplier = levelMultiplier;
 	}
 }

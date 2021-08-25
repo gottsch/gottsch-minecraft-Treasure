@@ -92,7 +92,7 @@ public class TreasureSetup implements IModSetup {
 						stack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).ifPresent(cap -> {
 							Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(cap.getSourceItem());
 							if (source.isPresent()) {
-								d.set(source.get().getMaxLevel());
+								d.set(source.get().getMaxLevel()); // this is wrong
 							}
 							else {
 								d.set(6);

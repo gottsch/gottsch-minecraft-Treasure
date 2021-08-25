@@ -27,9 +27,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.charm.BaseMaterial;
-import com.someguyssoftware.treasure2.charm.BaseMaterial2;
 import com.someguyssoftware.treasure2.charm.CharmableMaterial;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
@@ -61,8 +58,7 @@ public class CharmableCapability implements ICharmableCapability {
     private boolean source;
     // is this item bindable to a target item that is socketable
     private boolean bindable;
-    // can this item create sockets on a target item - REMOVE doesn't belong in Charmable -> has nothing to do with charm inventory
-    private boolean socketing;
+
     // does this item have sockets - accepts bindable items
     private boolean socketable;
     // can this item imbue atarget item
@@ -76,10 +72,6 @@ public class CharmableCapability implements ICharmableCapability {
     private ResourceLocation baseMaterial;
     // the item that this capability belongs to
     private ResourceLocation sourceItem;
-    
-    @Deprecated
-    // the max level of any charm that this item can hold (in either of the 3 inventories)
-    private int maxCharmLevel;
     
     /*
      * Propeties that refer to the Charm Inventory the the Item that has this capability
@@ -162,6 +154,17 @@ public class CharmableCapability implements ICharmableCapability {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public int getMaxCharmLevel() {
+		Optional<CharmableMaterial> base = TreasureCharms.getBaseMaterial(baseMaterial);
+		Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(sourceItem);
+		CharmableMaterial effectiveBase = base.isPresent() ? base.get() : TreasureCharms.COPPER;
+		return effectiveBase.getMaxLevel() + (int) Math.floor(effectiveBase.getLevelMultiplier() * (source.isPresent() ? source.get().getMaxLevel() : 0));
 	}
 	
 	@Override
@@ -251,16 +254,6 @@ public class CharmableCapability implements ICharmableCapability {
 	}
 
 	@Override
-	public boolean isSocketing() {
-		return socketing;
-	}
-
-	@Override
-	public void setSocketing(boolean socketing) {
-		this.socketing = socketing;
-	}
-
-	@Override
 	public boolean isSocketable() {
 		return socketable;
 	}
@@ -338,6 +331,15 @@ public class CharmableCapability implements ICharmableCapability {
 	@Override
 	public void setBaseMaterial(ResourceLocation baseMaterial) {
 		this.baseMaterial = baseMaterial;
+	}
+	
+	@Override
+	public ResourceLocation getSourceItem() {
+		return sourceItem;
+	}
+	@Override
+	public void setSourceItem(ResourceLocation sourceItem) {
+		this.sourceItem = sourceItem;
 	}
 	
 	/**
@@ -456,21 +458,4 @@ public class CharmableCapability implements ICharmableCapability {
 	    	return new CharmableCapability(this);
 	    }
 	}
-
-	@Override
-	public ResourceLocation getSourceItem() {
-		return sourceItem;
-	}
-	@Override
-	public void setSourceItem(ResourceLocation sourceItem) {
-		this.sourceItem = sourceItem;
-	}
-
-	@Override
-	public int getMaxCharmLevel() {
-		Optional<CharmableMaterial> base = TreasureCharms.getBaseMaterial(baseMaterial);
-		Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(sourceItem);
-		return (base.isPresent() ? base.get().getMaxLevel() : TreasureCharms.COPPER.getMaxLevel()) + (source.isPresent() ? source.get().getMaxLevel() : 0);
-	}
-
 }

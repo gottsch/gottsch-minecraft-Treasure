@@ -1,5 +1,5 @@
 {
-	"version": "1.0",
+	"version": "2.0.0",
 	"category": "wither_chest",
 	"rarity": "scarce",
 	"type": "minecraft:chest",
@@ -13,6 +13,17 @@
                     "name": "treasure2:pools/treasure/scarce",
                     "weight": 30
                 }
+			]
+		},
+		{
+			"name": "charms",
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "loot_table",
+					"name": "treasure2:pools/treasure/scarce_charms",
+					"weight": 1
+				}
 			]
 		},
 		{

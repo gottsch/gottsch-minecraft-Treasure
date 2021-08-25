@@ -30,6 +30,7 @@ import net.minecraft.util.text.TranslationTextComponent;
  * @author Mark Gottschling on Aug 19, 2021
  *
  */
+@Deprecated
 public class BaseMaterial2 {
 // use a class instead of an enum so more materials can easily be added. might have special charms/adornments like platinum etc.
 	private ResourceLocation name;

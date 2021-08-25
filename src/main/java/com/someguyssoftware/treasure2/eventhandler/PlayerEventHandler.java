@@ -233,8 +233,9 @@ public class PlayerEventHandler {
 								// requires indexed for-loop
 								for (int i = 0; i < cap.getCharmEntities()[type.getValue()].size(); i++) {
 									ICharmEntity entity =  cap.getCharmEntities()[type.getValue()].get(i);
-									if (!TreasureCharms.isCharmEventRegistered(event.getClass(), entity.getCharm().getType())) {
-										Treasure.LOGGER.debug("charm type -> {} is not register for this event -> {}", entity.getCharm().getType(), event.getClass().getSimpleName());
+//									if (!TreasureCharms.isCharmEventRegistered(event.getClass(), entity.getCharm().getType())) {
+									if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
+									Treasure.LOGGER.debug("charm type -> {} is not register for this event -> {}", entity.getCharm().getType(), event.getClass().getSimpleName());
 										continue;
 									}
 									index.set(i);

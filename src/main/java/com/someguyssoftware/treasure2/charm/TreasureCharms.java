@@ -30,6 +30,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
@@ -45,9 +46,9 @@ public class TreasureCharms {
 	private static final Map<ResourceLocation, CharmableMaterial> METAL_REGISTRY = new HashMap<>();
 	private static final Map<ResourceLocation, CharmableMaterial> GEM_REGISTRY = new HashMap<>();
 	
-	public static CharmableMaterial COPPER = new CharmableMaterial(1, "copper", 2);
-	public static CharmableMaterial SILVER = new CharmableMaterial(2, "silver", 3);
-	public static CharmableMaterial GOLD = new CharmableMaterial(3, "gold", 4);
+	public static CharmableMaterial COPPER = new CharmableMaterial(1, ModUtils.asLocation("copper"), 2, 1, 0.5D);
+	public static CharmableMaterial SILVER = new CharmableMaterial(2, ModUtils.asLocation("silver"), 3, 1, 0.75D);
+	public static CharmableMaterial GOLD = new CharmableMaterial(3, ModUtils.asLocation("gold"), 4);
 
 	public static CharmableMaterial DIAMOND;
 	public static CharmableMaterial EMERALD;

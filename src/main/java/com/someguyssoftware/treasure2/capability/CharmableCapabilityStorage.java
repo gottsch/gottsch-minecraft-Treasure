@@ -92,7 +92,6 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 			nbt.putInt(MAX_IMBUE_SIZE, instance.getMaxImbueSize());
 			
 			nbt.putBoolean(SOCKETABLE, instance.isSocketable());
-			nbt.putBoolean(SOCKETING, instance.isSocketing());
 			nbt.putInt(MAX_SOCKET_SIZE, instance.getMaxSocketsSize());
 			nbt.putString(BASE_MATERIAL, instance.getBaseMaterial().toString());
 			nbt.putString(SOURCE_ITEM, instance.getSourceItem().toString());
@@ -166,9 +165,6 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 				if (tag.contains(MAX_SOCKET_SIZE)) {
 					instance.setMaxSocketsSize(tag.getInt(MAX_SOCKET_SIZE));
 				}
-				if (tag.contains(SOCKETING)) {
-					instance.setSocketing(tag.getBoolean(SOCKETING));
-				}	
 				if (tag.contains(BASE_MATERIAL)) {
 //					Optional<BaseMaterial2> material = TreasureCharms.getBaseMaterial(ModUtils.asLocation(tag.getString(BASE_MATERIAL)));
 //					Optional<CharmableMaterial> material = TreasureCharms.getBaseMaterial(ModUtils.asLocation(tag.getString(BASE_MATERIAL)));
