@@ -197,7 +197,8 @@ public class PlayerEventHandler {
 					for (int i = 0; i < cap.getCharmEntities()[type.getValue()].size(); i++) {
 						ICharmEntity entity =  cap.getCharmEntities()[type.getValue()].get(i);
 						// OR just check with the charm for allowable event
-						if (!TreasureCharms.isCharmEventRegistered(event.getClass(), entity.getCharm().getType())) {
+//						if (!TreasureCharms.isCharmEventRegistered(event.getClass(), entity.getCharm().getType())) {
+						if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
 							Treasure.LOGGER.debug("charm type -> {} is not register for this event -> {}", entity.getCharm().getType(), event.getClass().getSimpleName());
 							continue;
 						}

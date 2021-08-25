@@ -68,19 +68,23 @@ public abstract class Charm implements ICharm {
 		this.effectStackable = builder.effectStackable;
 	}
 
+	abstract public Class<?> getRegisteredEvent();
+	
+	
 	/**
 	 * 
 	 */
 	@Override
 	public ICharmEntity createEntity() {
-		//		ICharmData data = new CharmData();
-		//		data.setValue(this.getMaxValue());
-		//		data.setPercent(this.getMaxPercent());
-		//		data.setDuration(this.getMaxDuration());
 		ICharmEntity entity = new CharmEntity(this, this.getMaxValue(),this.getMaxDuration(), this.getMaxPercent());
 		return entity;
 	}
 
+	@Override
+	public boolean isCurse() {
+		return false;
+	}
+	
 	/**
 	 * 
 	 * @param nbt
@@ -262,6 +266,16 @@ public abstract class Charm implements ICharm {
 
 		/**
 		 * 
+		 * @param type
+		 * @param level
+		 * @return
+		 */
+		public static String makeName(String type, int level) {
+			return type + "_" + level;
+		}
+		
+		/**
+		 * 
 		 * @param builder
 		 * @return
 		 */
@@ -270,7 +284,6 @@ public abstract class Charm implements ICharm {
 			return this;
 		}
 
-		@Deprecated
 		public Builder withValue(Double value) {
 			this.value = value;
 			return Charm.Builder.this;

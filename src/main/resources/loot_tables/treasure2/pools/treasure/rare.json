@@ -1,10 +1,17 @@
 {
-	"version": "1.0",
+	"version": "2.0",
+	"since": "mc1.16.5-v1.6.0",
 	"pools": [
 		{
 			"name": "rare_keys",
 			"rolls": 1,
 			"entries": [
+				{
+					"entryName": "lightning_key",
+					"type": "item",
+					"name": "treasure2:lightning_key",
+					"weight": 10
+				},
 				{
 					"entryName": "metallurgists_key",
 					"type": "item",
@@ -120,6 +127,18 @@
 					]
 				},
 				{
+					"entryName": "topaz",
+					"type": "item",
+					"name": "treasure2:topaz",
+					"weight": 15
+				},
+				{
+					"entryName": "onyx",
+					"type": "item",
+					"name": "treasure2:onyx",
+					"weight": 15
+				},				
+				{
 					"entryName": "sapphire",
 					"type": "item",
 					"name": "treasure2:sapphire",
@@ -161,12 +180,6 @@
 						}
 					]
 				}
-			]
-		},
-		{
-			"name": "rare_charms",
-			"rolls": 1,
-			"entries": [
 			]
 		}
 	]

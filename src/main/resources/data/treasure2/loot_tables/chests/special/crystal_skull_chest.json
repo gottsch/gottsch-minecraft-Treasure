@@ -1,8 +1,8 @@
 {
 	"version": "1.0",
 	"category": "general",
-		"rarity": "epic",
-		"type": "minecraft:chest",
+	"rarity": "epic",
+	"type": "minecraft:chest",
 	"pools": [
 		{
 			"name": "treasure",

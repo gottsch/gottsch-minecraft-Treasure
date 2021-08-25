@@ -19,19 +19,19 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
- * @author Mark Gottschling on Aug 15, 2021
+ * 
+ * @author Mark Gottschling on Aug 23, 2021
  *
  */
-public class HealingCharm extends Charm implements IHealing {
-	public static String HEALING_TYPE = "healing";
-	private static float HEAL_RATE = 1F;
-	private static final Class<?> REGISTERED_EVENT = LivingUpdateEvent.class;
-	
-	HealingCharm(Builder builder) {
+public class FireResistenceCharm extends Charm {
+	public static final String FIRE_RESISTENCE_TYPE = "fire_resistence";
+	private static final Class<?> REGISTERED_EVENT = LivingDamageEvent.class;
+
+	FireResistenceCharm(Builder builder) {
 		super(builder);
 	}
 
@@ -41,28 +41,33 @@ public class HealingCharm extends Charm implements IHealing {
 	}
 	
 	/**
-	 * 
-	 */
-	@Override
-	public float getHealRate() {
-		return HEAL_RATE;
-	}
-
-	/**
 	 * NOTE: it is assumed that only the allowable events are calling this action.
 	 */
 	@Override
 	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-		if (world.getGameTime() % 20 == 0) {
-			if (entity.getValue() > 0 && player.getHealth() < player.getMaxHealth() && player.isAlive()) {
-				float amount = Math.min(getHealRate(), player.getMaxHealth() - player.getHealth());
-				player.setHealth(MathHelper.clamp(player.getHealth() + amount, 0.0F, player.getMaxHealth()));		
-				entity.setValue(MathHelper.clamp(entity.getValue() - amount,  0D, entity.getValue()));
-				//                    Treasure.logger.debug("new data -> {}", data);
+
+			if (((LivingDamageEvent)event).getSource().isFire() && entity.getValue() > 0 && player.isAlive()) {
+				// get the fire damage amount
+				double amount = ((LivingDamageEvent)event).getAmount();
+				// calculate the new amount
+				double newAmount = 0;
+				double amountToCharm = amount * entity.getPercent();
+				double amountToPlayer = amount - amountToCharm;
+				
+				if (entity.getValue() >= amountToCharm) {
+					entity.setValue(entity.getValue() - amountToCharm);
+					newAmount = amountToPlayer;
+				}
+				else {
+					newAmount = amount - entity.getValue();
+					entity.setValue(0);
+				}
+				((LivingDamageEvent)event).setAmount((float) newAmount);
+				
 				result = true;
 			}
-		}
+
 		return result;
 	}
 
@@ -73,18 +78,18 @@ public class HealingCharm extends Charm implements IHealing {
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.RED;       
 		tooltip.add(new TranslationTextComponent(getLabel(entity)).withStyle(color));
-		tooltip.add(new TranslationTextComponent("tooltip.charm.healing_rate").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
+		tooltip.add(new TranslationTextComponent("tooltip.charm.fire_resistence_rate", Math.toIntExact(Math.round(entity.getPercent() * 100))).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
 	}
 
 	public static class Builder extends Charm.Builder {
 
 		public Builder(Integer level) {
-			super(ModUtils.asLocation(makeName(HEALING_TYPE, level)), HEALING_TYPE, level);
+			super(ModUtils.asLocation(makeName(FIRE_RESISTENCE_TYPE, level)), FIRE_RESISTENCE_TYPE, level);
 		}
 
 		@Override
 		public ICharm build() {
-			return  new HealingCharm(this);
+			return  new FireResistenceCharm(this);
 		}
 	}
 }

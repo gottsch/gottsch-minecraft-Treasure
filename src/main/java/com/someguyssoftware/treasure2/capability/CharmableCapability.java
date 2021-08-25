@@ -44,8 +44,8 @@ import net.minecraft.world.World;
 
 /**
  * The CharmableCapability provides any item with a Charm Inventory, which is a datatype of  Map<CharmType>, List<Charm>>.
- * The Charm Inventory can support three types: FINITE, IMBUE or SOCKET.
- * FINITE - Charms that are added on Item spawn and can not be renewed. Once expired, the charm is removed and the space is decremented.
+ * The Charm Inventory can support three types: INNATE, IMBUE or SOCKET.
+ * INNATE - Charms that are added on Item spawn and can not be renewed. Once expired, the charm is removed and the space is decremented.
  * IMBUE - Charms that can be added via Books, or any IMBUING item.
  * SOCKET - Charms that can be added to sockets via Coins or Gems, or any BINDING item. 
  * @author Mark Gottschling on Apr 27, 2020
@@ -69,8 +69,8 @@ public class CharmableCapability implements ICharmableCapability {
     private boolean imbuing;
     // can this item be imbued
     private boolean imbuable;
-    // does this item have "built-in" finite charms
-    private boolean finite;
+    // does this item have "built-in" innate charms
+    private boolean innate;
     
     // the base material this item is made of
     private ResourceLocation baseMaterial;
@@ -86,7 +86,7 @@ public class CharmableCapability implements ICharmableCapability {
      */
     private int maxSocketsSize;
     private int maxImbueSize;
-    private int maxFiniteSize;
+    private int maxInnateSize;
 
     
 	/**
@@ -104,8 +104,8 @@ public class CharmableCapability implements ICharmableCapability {
 		this();
 		this.source = builder.source;
 		this.bindable = builder.bindable;
-		this.finite = builder.finite;
-		this.maxFiniteSize = finite ? Math.max(1, builder.maxFiniteSize) : 0;
+		this.innate = builder.innate;
+		this.maxInnateSize = innate ? Math.max(1, builder.maxInnateSize) : 0;
 		this.imbuable = builder.imbuable;
 		this.maxImbueSize = imbuable ? Math.max(1, builder.maxImbueSize) : 0;
 		this.socketable = builder.socketable;
@@ -118,7 +118,7 @@ public class CharmableCapability implements ICharmableCapability {
 	 * 
 	 */
 	protected void init() {
-		charmEntities[InventoryType.FINITE.value] = new ArrayList<>(1);
+		charmEntities[InventoryType.INNATE.value] = new ArrayList<>(1);
 		charmEntities[InventoryType.IMBUE.value] =  new ArrayList<>(1);
 		charmEntities[InventoryType.SOCKET.value] = new ArrayList<>(1);
 	}
@@ -147,7 +147,7 @@ public class CharmableCapability implements ICharmableCapability {
 	 */
 	public int getMaxSize(InventoryType type) {
 		// check against SOCKET first as this will be the most common
-		return (type == InventoryType.SOCKET ? getMaxSocketsSize() : type == InventoryType.IMBUE ? getMaxImbueSize() : getMaxFiniteSize());
+		return (type == InventoryType.SOCKET ? getMaxSocketsSize() : type == InventoryType.IMBUE ? getMaxImbueSize() : getMaxInnateSize());
 	}
 	
 	@Override
@@ -170,7 +170,7 @@ public class CharmableCapability implements ICharmableCapability {
 		tooltip.add(new TranslationTextComponent("tooltip.label.charms").withStyle(TextFormatting.YELLOW, TextFormatting.BOLD));
 
 		// create header text for inventory type
-		appendHoverText(stack, world, tooltip, flag, InventoryType.FINITE, false);
+		appendHoverText(stack, world, tooltip, flag, InventoryType.INNATE, false);
 		appendHoverText(stack, world, tooltip, flag, InventoryType.IMBUE, true);
 		appendHoverText(stack, world, tooltip, flag, InventoryType.SOCKET, true);
 	}
@@ -291,18 +291,18 @@ public class CharmableCapability implements ICharmableCapability {
 	}
 
 	@Override
-	public boolean isFinite() {
-		return finite;
+	public boolean isInnate() {
+		return innate;
 	}
 
 	@Override
-	public void setFinite(boolean finite) {
-		this.finite = finite;
+	public void setInnate(boolean innate) {
+		this.innate = innate;
 	}
 	
 	@Override
-	public int getMaxFiniteSize() {
-		return maxFiniteSize;
+	public int getMaxInnateSize() {
+		return maxInnateSize;
 	}
 	
 	@Override
@@ -326,8 +326,8 @@ public class CharmableCapability implements ICharmableCapability {
 	}
 
 	@Override
-	public void setMaxFiniteSize(int maxFiniteSize) {
-		this.maxFiniteSize = maxFiniteSize;
+	public void setMaxInnateSize(int maxInnateSize) {
+		this.maxInnateSize = maxInnateSize;
 	}
 	
 	@Override
@@ -346,7 +346,7 @@ public class CharmableCapability implements ICharmableCapability {
 	 *
 	 */
 	public enum InventoryType {
-		FINITE(0),
+		INNATE(0),
 		IMBUE(1),
 		SOCKET(2);
 		
@@ -389,7 +389,7 @@ public class CharmableCapability implements ICharmableCapability {
 	    public boolean socketable;
 	    public boolean imbuing;
 	    public boolean imbuable;
-	    public boolean finite;	    	    
+	    public boolean innate;	    	    
 
 	    public ResourceLocation baseMaterial = TreasureCharms.COPPER.getName();
 	    
@@ -398,7 +398,7 @@ public class CharmableCapability implements ICharmableCapability {
 	    
 	    public int maxSocketsSize;
 	    public int maxImbueSize;
-	    public int maxFiniteSize;
+	    public int maxInnateSize;
 	    
 	    // required to pass the source Item here
 	    public Builder(ResourceLocation sourceItem) {
@@ -426,9 +426,9 @@ public class CharmableCapability implements ICharmableCapability {
 	    	return this;
 	    }
 	    
-	    public Builder finite(boolean finite, int size) {
-	    	this.finite = finite;
-	    	this.maxFiniteSize = size;
+	    public Builder innate(boolean innate, int size) {
+	    	this.innate = innate;
+	    	this.maxInnateSize = size;
 	    	return this;
 	    }
 	    
@@ -450,7 +450,7 @@ public class CharmableCapability implements ICharmableCapability {
 	    
 	    public ICharmableCapability build() {
 	    	// calculate the max charm level based on baseMaterial and the source item.
-	    	Treasure.LOGGER.debug("charm source item -> {}", sourceItem);
+//	    	Treasure.LOGGER.debug("charm source item -> {}", sourceItem);
 //	    	Optional<Integer> level = TreasureCharms.getCharmLevel(sourceItem);
 //	    	this.maxCharmLevel = baseMaterial.getMaxLevel() + (level.isPresent() ? level.get() : 0) ;
 	    	return new CharmableCapability(this);

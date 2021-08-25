@@ -20,7 +20,6 @@
 package com.someguyssoftware.treasure2.charm;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.spatial.ICoords;
@@ -67,6 +66,8 @@ public interface ICharm {
 	 * @return
 	 */
 	CompoundNBT save(CompoundNBT nbt);
-
-
+	
+	public Class<?> getRegisteredEvent();
+	
+	public boolean isCurse();
 }

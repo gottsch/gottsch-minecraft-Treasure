@@ -19,6 +19,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.eventbus.api.Event;
 
@@ -26,12 +27,13 @@ import net.minecraftforge.eventbus.api.Event;
  * @author Mark Gottschling on Aug 15, 2021
  *
  */
-public class HealingCharm extends Charm implements IHealing {
-	public static String HEALING_TYPE = "healing";
-	private static float HEAL_RATE = 1F;
+public class DecayCurse extends Charm implements IDecay {
+	public static String DECAY_TYPE = "decay";
+	private static float DECAY_RATE = 2F;
+
 	private static final Class<?> REGISTERED_EVENT = LivingUpdateEvent.class;
 	
-	HealingCharm(Builder builder) {
+	DecayCurse(Builder builder) {
 		super(builder);
 	}
 
@@ -40,12 +42,17 @@ public class HealingCharm extends Charm implements IHealing {
 		return REGISTERED_EVENT;
 	}
 	
+	@Override
+	public boolean isCurse() {
+		return true;
+	}
+	
 	/**
 	 * 
 	 */
 	@Override
-	public float getHealRate() {
-		return HEAL_RATE;
+	public float getDecayRate() {
+		return DECAY_RATE;
 	}
 
 	/**
@@ -55,12 +62,13 @@ public class HealingCharm extends Charm implements IHealing {
 	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
 		boolean result = false;
 		if (world.getGameTime() % 20 == 0) {
-			if (entity.getValue() > 0 && player.getHealth() < player.getMaxHealth() && player.isAlive()) {
-				float amount = Math.min(getHealRate(), player.getMaxHealth() - player.getHealth());
-				player.setHealth(MathHelper.clamp(player.getHealth() + amount, 0.0F, player.getMaxHealth()));		
-				entity.setValue(MathHelper.clamp(entity.getValue() - amount,  0D, entity.getValue()));
-				//                    Treasure.logger.debug("new data -> {}", data);
-				result = true;
+			if (player.isAlive() && entity.getValue() > 0 && player.getHealth() > 0.0) {
+				if (world.getGameTime() % 100 == 0) {
+					player.setHealth(MathHelper.clamp(player.getHealth() - getDecayRate(), 0.0F, player.getMaxHealth()));				
+					entity.setValue(MathHelper.clamp(entity.getValue() - 1.0,  0D, entity.getValue()));
+					//				Treasure.logger.debug("new data -> {}", data);
+					result = true;
+				}				
 			}
 		}
 		return result;
@@ -71,20 +79,20 @@ public class HealingCharm extends Charm implements IHealing {
 	 */
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.RED;       
+		TextFormatting color = TextFormatting.DARK_RED;       
 		tooltip.add(new TranslationTextComponent(getLabel(entity)).withStyle(color));
-		tooltip.add(new TranslationTextComponent("tooltip.charm.healing_rate").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
+		tooltip.add(new TranslationTextComponent("tooltip.charm.decay_rate").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
 	}
 
 	public static class Builder extends Charm.Builder {
 
 		public Builder(Integer level) {
-			super(ModUtils.asLocation(makeName(HEALING_TYPE, level)), HEALING_TYPE, level);
+			super(ModUtils.asLocation(makeName(DECAY_TYPE, level)), DECAY_TYPE, level);
 		}
 
 		@Override
 		public ICharm build() {
-			return  new HealingCharm(this);
+			return  new DecayCurse(this);
 		}
 	}
 }

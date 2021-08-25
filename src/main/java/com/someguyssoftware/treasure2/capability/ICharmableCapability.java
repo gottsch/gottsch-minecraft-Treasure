@@ -57,9 +57,9 @@ public interface ICharmableCapability {
 	public boolean isBindable();
 	public void setBindable(boolean bindable);
 	
-	public boolean isFinite();
-	public void setFinite(boolean finite);
-	public int getMaxFiniteSize();
+	public boolean isInnate();
+	public void setInnate(boolean innate);
+	public int getMaxInnateSize();
 	
 	public boolean isImbuable();
 	public void setImbuable(boolean imbue);
@@ -72,11 +72,14 @@ public interface ICharmableCapability {
 	public void setSocketable(boolean socketable);
 	public int getMaxSocketsSize();
 	
+	@Deprecated
 	public boolean isSocketing();
+	@Deprecated
 	public void setSocketing(boolean socketing);
+	
 	void setMaxSocketsSize(int maxSocketsSize);
 	void setMaxImbueSize(int maxImbueSize);
-	void setMaxFiniteSize(int maxFiniteSize);
+	void setMaxInnateSize(int maxInnateSize);
 	
 	ResourceLocation getBaseMaterial();
 	void setBaseMaterial(ResourceLocation baseMaterial);

@@ -26,12 +26,12 @@ import net.minecraftforge.eventbus.api.Event;
  * @author Mark Gottschling on Aug 15, 2021
  *
  */
-public class HealingCharm extends Charm implements IHealing {
-	public static String HEALING_TYPE = "healing";
-	private static float HEAL_RATE = 1F;
+public class GreaterHealingCharm extends Charm implements IHealing {
+	public static String HEALING_TYPE = "greater_healing";
+	private static float HEAL_RATE = 2F;
 	private static final Class<?> REGISTERED_EVENT = LivingUpdateEvent.class;
 	
-	HealingCharm(Builder builder) {
+	GreaterHealingCharm(Builder builder) {
 		super(builder);
 	}
 
@@ -54,12 +54,11 @@ public class HealingCharm extends Charm implements IHealing {
 	@Override
 	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-		if (world.getGameTime() % 20 == 0) {
+		if (world.getGameTime() % 10 == 0) {
 			if (entity.getValue() > 0 && player.getHealth() < player.getMaxHealth() && player.isAlive()) {
 				float amount = Math.min(getHealRate(), player.getMaxHealth() - player.getHealth());
 				player.setHealth(MathHelper.clamp(player.getHealth() + amount, 0.0F, player.getMaxHealth()));		
 				entity.setValue(MathHelper.clamp(entity.getValue() - amount,  0D, entity.getValue()));
-				//                    Treasure.logger.debug("new data -> {}", data);
 				result = true;
 			}
 		}
@@ -73,7 +72,7 @@ public class HealingCharm extends Charm implements IHealing {
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.RED;       
 		tooltip.add(new TranslationTextComponent(getLabel(entity)).withStyle(color));
-		tooltip.add(new TranslationTextComponent("tooltip.charm.healing_rate").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
+		tooltip.add(new TranslationTextComponent("tooltip.charm.greater_healing_rate").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
 	}
 
 	public static class Builder extends Charm.Builder {
@@ -84,7 +83,7 @@ public class HealingCharm extends Charm implements IHealing {
 
 		@Override
 		public ICharm build() {
-			return  new HealingCharm(this);
+			return  new GreaterHealingCharm(this);
 		}
 	}
 }

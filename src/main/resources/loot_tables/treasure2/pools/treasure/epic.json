@@ -1,5 +1,6 @@
 {
-	"version": "1.0",
+	"version": "2.0",
+	"since": "mc1.16.5-v1.6.0",
 	"pools": [
 		{
 			"name": "epic_keys",
@@ -132,6 +133,18 @@
 					]
 				},
 				{
+					"entryName": "topaz",
+					"type": "item",
+					"name": "treasure2:topaz",
+					"weight": 15
+				},
+				{
+					"entryName": "onyx",
+					"type": "item",
+					"name": "treasure2:onyx",
+					"weight": 15
+				},					
+				{
 					"entryName": "sapphire",
 					"type": "item",
 					"name": "treasure2:sapphire",
@@ -191,13 +204,6 @@
 						}
 					]
 				}
-			]
-		},
-		{
-			"name": "epic_charms",
-			"rolls": 1,
-			"entries": [
-
 			]
 		}
 	]

@@ -19,71 +19,73 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.Lists;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
  * 
- * @author Mark Gottschling on Apr 30, 2020
+ * @author Mark Gottschling on Aug 24, 2021
  *
  */
-public class ShieldingCharm extends Charm {
-	public static String SHIELDING_TYPE = "shielding";
+public class DirtWalkCurse extends Charm {
+	public static final String DIRT_WALK_TYPE = "dirt_walk";
 
-	private static final Class<?> REGISTERED_EVENT = LivingDamageEvent.class;
+	private static final Class<?> REGISTERED_EVENT = LivingUpdateEvent.class;
 
 	/**
 	 * 
 	 * @param builder
 	 */
-	public ShieldingCharm(Builder builder) {
+	DirtWalkCurse(Builder builder) {
 		super(builder);
 	}
 
-	protected ShieldingCharm(Charm.Builder builder) {
-		super(builder);
-	}
-	
 	public Class<?> getRegisteredEvent() {
 		return REGISTERED_EVENT;
 	}
 
 	@Override
-	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity data) {
+	public boolean isCurse() {
+		return true;
+	}
+	
+	@Override
+	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-		if (data.getValue() > 0 && player.isAlive()) {
-			// get the source and amount
-			double amount = ((LivingDamageEvent)event).getAmount();
-			// calculate the new amount
-			double newAmount = 0;
-			double amountToCharm = amount * data.getPercent();
-			double amountToPlayer = amount - amountToCharm;
-			//    			Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
-			if (data.getValue() >= amountToCharm) {
-				data.setValue(data.getValue() - amountToCharm);
-				newAmount = amountToPlayer;
+		
+		// update every 10 seconds
+		if (world.getGameTime() % 200 == 0) {
+			if (player.isAlive() && entity.getValue() > 0) {
+				  // if the current position where standing isn't already dirt, change it to dirt
+                BlockState state = world.getBlockState(coords.down(1).toPos());
+				if (state.getBlock() != Blocks.DIRT) {
+                    world.setBlockAndUpdate(coords.down(1).toPos(), Blocks.DIRT.defaultBlockState());
+                    entity.setValue(MathHelper.clamp(entity.getValue() - 1.0,  0D, entity.getValue()));
+					result = true;
+				}
 			}
-			else {
-				newAmount = amount - data.getValue();
-				data.setValue(0);
-			}
-			((LivingDamageEvent)event).setAmount((float) newAmount);
-			result = true;
-		}    		
+		}
 		return result;
 	}
 
@@ -92,23 +94,22 @@ public class ShieldingCharm extends Charm {
 	 */
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.BLUE;
-		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
-		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent("tooltip.charm.shielding_rate", Math.round(entity.getPercent()*100)).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
-
+		TextFormatting color = TextFormatting.DARK_RED;
+		tooltip.add(new StringTextComponent(" ").append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
 	}
-
+    
+	/**
+	 * 
+	 */
 	public static class Builder extends Charm.Builder {
 
 		public Builder(Integer level) {
-			super(ModUtils.asLocation(makeName(SHIELDING_TYPE, level)), SHIELDING_TYPE, level);
+			super(ModUtils.asLocation(makeName(DIRT_WALK_TYPE, level)), DIRT_WALK_TYPE, level);
 		}
 
 		@Override
 		public ICharm build() {
-			return  new ShieldingCharm(this);
+			return  new DirtWalkCurse(this);
 		}
 	}
 }

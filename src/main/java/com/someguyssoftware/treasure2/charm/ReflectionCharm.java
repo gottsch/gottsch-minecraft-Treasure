@@ -23,11 +23,15 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.spatial.ICoords;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -37,12 +41,12 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
- * 
- * @author Mark Gottschling on Apr 30, 2020
+ * reflection: value = # of uses, duration = range, percent = % of damage reflected
+ * @author Mark Gottschling on Aug 23, 2021
  *
  */
-public class ShieldingCharm extends Charm {
-	public static String SHIELDING_TYPE = "shielding";
+public class ReflectionCharm extends Charm {
+	public static String REFLECTION_TYPE = "reflection";
 
 	private static final Class<?> REGISTERED_EVENT = LivingDamageEvent.class;
 
@@ -50,11 +54,11 @@ public class ShieldingCharm extends Charm {
 	 * 
 	 * @param builder
 	 */
-	public ShieldingCharm(Builder builder) {
+	public ReflectionCharm(Builder builder) {
 		super(builder);
 	}
 
-	protected ShieldingCharm(Charm.Builder builder) {
+	protected ReflectionCharm(Charm.Builder builder) {
 		super(builder);
 	}
 	
@@ -63,25 +67,28 @@ public class ShieldingCharm extends Charm {
 	}
 
 	@Override
-	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity data) {
+	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-		if (data.getValue() > 0 && player.isAlive()) {
+		if (entity.getValue() > 0 && player.isAlive()) {
+			// get player position
+			double px = player.position().x;
+			double py = player.position().y;
+			double pz = player.position().z;
+			
 			// get the source and amount
 			double amount = ((LivingDamageEvent)event).getAmount();
 			// calculate the new amount
-			double newAmount = 0;
-			double amountToCharm = amount * data.getPercent();
-			double amountToPlayer = amount - amountToCharm;
-			//    			Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
-			if (data.getValue() >= amountToCharm) {
-				data.setValue(data.getValue() - amountToCharm);
-				newAmount = amountToPlayer;
-			}
-			else {
-				newAmount = amount - data.getValue();
-				data.setValue(0);
-			}
-			((LivingDamageEvent)event).setAmount((float) newAmount);
+			double reflectedAmount = amount * entity.getPercent();
+			int range = entity.getDuration();
+			
+			List<MobEntity> mobs = world.getEntitiesOfClass(MobEntity.class, new AxisAlignedBB(px - range, py - range, pz - range, px + range, py + range, pz + range));
+			mobs.forEach(mob -> {
+				boolean flag = mob.hurt(DamageSource.playerAttack(player), (float) reflectedAmount);
+				Treasure.LOGGER.debug("reflected damage {} onto mob -> {} was successful -> {}", reflectedAmount, mob.getName(), flag);
+			});
+			
+			// get all the mob within a radius
+			entity.setValue(entity.getValue() - 1.0);
 			result = true;
 		}    		
 		return result;
@@ -96,19 +103,19 @@ public class ShieldingCharm extends Charm {
 		tooltip.add(new StringTextComponent(" ")
 				.append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
 		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent("tooltip.charm.shielding_rate", Math.round(entity.getPercent()*100)).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
+				.append(new TranslationTextComponent("tooltip.charm.reflection_rate", Math.toIntExact((long)entity.getPercent()*100), entity.getDuration()).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
 
 	}
 
 	public static class Builder extends Charm.Builder {
 
 		public Builder(Integer level) {
-			super(ModUtils.asLocation(makeName(SHIELDING_TYPE, level)), SHIELDING_TYPE, level);
+			super(ModUtils.asLocation(makeName(REFLECTION_TYPE, level)), REFLECTION_TYPE, level);
 		}
 
 		@Override
 		public ICharm build() {
-			return  new ShieldingCharm(this);
+			return  new ReflectionCharm(this);
 		}
 	}
 }

@@ -29,22 +29,10 @@ public class GemOreFeature extends OreFeature {
 		super(configFactory);
 		// NOTE ensure to set the registry name
 		this.setRegistryName(Treasure.MODID, "gem_ore");
-
-		try {
-			init();
-		} catch (Exception e) {
-			Treasure.LOGGER.error("Unable to instantiate GemOreFeature:", e);
-		}
 	}
 
 	@Override
 	public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random rand, BlockPos pos, OreFeatureConfig config) {
-		// unnecessary are OreFeature knows to ignore dimensions that don't allow ore.
-		// // ore only generates in overworld
-		// if (!WorldInfo.isSurfaceWorld(seedReader.getLevel(), pos)) {
-		// 	Treasure.LOGGER.debug("not a surface world...");
-		// 	return false;
-		// }
 
 		// inspect block to determine generation probability
 		double prob = 0;
@@ -52,16 +40,22 @@ public class GemOreFeature extends OreFeature {
 //			Treasure.LOGGER.debug("ruby gem");
 			prob = TreasureConfig.GEMS_AND_ORES.rubyGenProbability.get();
 		}
-		else {
+		else if (config.state.getBlock() == TreasureBlocks.SAPPHIRE_ORE) {
 //			Treasure.LOGGER.debug("sapphire gem: view size -> {}", TreasureConfig.GEMS_AND_ORES.sapphireOreVeinSize.get());
 			prob = TreasureConfig.GEMS_AND_ORES.sapphireGenProbability.get();
+		}
+		else if (config.state.getBlock() == TreasureBlocks.TOPAZ_ORE) {
+			prob = TreasureConfig.GEMS_AND_ORES.topazGenProbability.get();
+		}
+		else if (config.state.getBlock() == TreasureBlocks.ONYX_ORE) {
+			prob = TreasureConfig.GEMS_AND_ORES.onyxGenProbability.get();
 		}
 //		Treasure.LOGGER.debug("config probability -> {}", prob);
 // TODO add Topaz and Onyx
 		
 		// test the probability
 		if (!RandomHelper.checkProbability(rand, prob)) {
-			Treasure.LOGGER.debug("probability NOT met");
+//			Treasure.LOGGER.debug("probability NOT met");
 			return false;
 		}
 		

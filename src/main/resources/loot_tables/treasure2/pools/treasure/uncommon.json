@@ -1,5 +1,6 @@
 {
-	"version": "1.0",
+	"version": "2.0",
+	"since": "mc1.16.5-v1.6.0",
 	"pools": [
 		{
 			"name": "uncommon_keys",
@@ -80,6 +81,18 @@
 						}
 					]					
 				},
+ 				{
+					"entryName": "ember_key",
+					"type": "item",
+					"name": "treasure2:ember_key",
+					"weight": 10
+				},
+				{
+					"entryName": "leaf_key",
+					"type": "item",
+					"name": "treasure2:leaf_key",
+					"weight": 15
+				},				
 				{
 					"entryName": "gold_key",
 					"type": "item",
@@ -98,6 +111,21 @@
 			"name": "uncommon_treasure",
 			"rolls": 1,
 			"entries": [
+				{
+					"entryName": "copper_coin",
+					"type": "item",
+					"name": "treasure2:copper_coin",
+					"weight": 35,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				},
 				{
 					"entryName": "silver_coin",
 					"type": "item",
@@ -129,12 +157,6 @@
 					]
 				}
 			]
-		},
-		{
-			"name": "uncommon_charms",
-			"rolls": 1,
-			"entries": [	
-			]
-		}		
+		}	
 	]
 }

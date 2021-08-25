@@ -19,7 +19,6 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
-import java.util.Comparator;
 import java.util.Optional;
 
 import net.minecraft.nbt.CompoundNBT;
@@ -57,23 +56,36 @@ public interface ICharmEntity {
 	 * @param nbt
 	 * @return
 	 */
-	public static Optional<ICharmEntity> load(CompoundNBT nbt) {
-		Optional<ICharm> charm = Charm.load((CompoundNBT) nbt.get(CHARM));
-		if (!charm.isPresent()) {
-			return Optional.empty();
-		}
-		
-		ICharmEntity entity = charm.get().createEntity();
+//	public static Optional<ICharmEntity> load(CompoundNBT nbt) {
+//		Optional<ICharm> charm = Charm.load((CompoundNBT) nbt.get(CHARM));
+//		if (!charm.isPresent()) {
+//			return Optional.empty();
+//		}
+//		
+//		ICharmEntity entity = charm.get().createEntity();
+//		if (nbt.contains(VALUE)) {
+//			entity.setValue(nbt.getDouble(VALUE));
+//		}
+//		if (nbt.contains("duration")) {
+//			entity.setDuration(nbt.getInt("duration"));
+//		}
+//		if (nbt.contains("percent")) {
+//			entity.setPercent(nbt.getDouble("percent"));
+//		}
+//		return Optional.of(entity);
+//	}
+	
+	default public boolean load(CompoundNBT nbt) {
 		if (nbt.contains(VALUE)) {
-			entity.setValue(nbt.getDouble(VALUE));
+			setValue(nbt.getDouble(VALUE));
 		}
 		if (nbt.contains("duration")) {
-			entity.setDuration(nbt.getInt("duration"));
+			setDuration(nbt.getInt("duration"));
 		}
 		if (nbt.contains("percent")) {
-			entity.setPercent(nbt.getDouble("percent"));
+			setPercent(nbt.getDouble("percent"));
 		}
-		return Optional.of(entity);
+		return true;
 	}
 	
 	void update(ICharmEntity entity);

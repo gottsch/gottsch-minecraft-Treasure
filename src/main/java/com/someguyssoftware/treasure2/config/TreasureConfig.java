@@ -112,6 +112,8 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String COPPER_COIN_ID = "copper_coin";
 		public static final String SILVER_COIN_ID = "silver_coin";
 		public static final String GOLD_COIN_ID = "gold_coin";
+		public static final String TOPAZ_ID = "topaz";
+		public static final String ONYX_ID = "onyx"; 		
 		public static final String SAPPHIRE_ID = "sapphire";
 		public static final String RUBY_ID = "ruby";
 		public static final String WHITE_PEARL_ID = "white_pearl";
@@ -121,7 +123,8 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String WITHER_ROOT_ITEM_ID = "wither_root_item";
 		public static final String SKELETON_ITEM_ID = "skeleton";
 		public static final String EYE_PATCH_ID = "eye_patch";
-		public static final String SPANISH_MOSS_ITEM_ID = "spanish_moss_item";		
+		public static final String SPANISH_MOSS_ITEM_ID = "spanish_moss_item";
+
 	}
 	
 	public static class LockID {
@@ -294,7 +297,9 @@ public class TreasureConfig extends AbstractConfig {
 			builder.comment(CATEGORY_DIV, " General properties for Treasure mod.", CATEGORY_DIV).push("general");
 
 			enableDefaultLootTablesCheck = builder
-					.comment(" Enable/Disable a check to ensure the default loot tables exist on the file system.", "If enabled, then you will not be able to remove any default loot tables (but they can be edited).", "Only disable if you know what you're doing.")
+					.comment(" Enable/Disable a check to ensure the default loot tables exist on the file system.", "If enabled, then you will not be able to remove any default loot tables (but they can be edited).", 
+							"This option should be enabled at least for the first run of the mod to create the default settings.",
+							"Only disable if you know what you're doing.")
 					.define("Enable default loot tables check:", true);
 			
 			enableDefaultTemplatesCheck = builder

@@ -25,7 +25,9 @@ import java.util.Optional;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
 import com.someguyssoftware.treasure2.charm.BaseMaterial2;
+import com.someguyssoftware.treasure2.charm.Charm;
 import com.someguyssoftware.treasure2.charm.CharmableMaterial;
+import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.util.ModUtils;
@@ -44,8 +46,8 @@ import net.minecraftforge.common.capabilities.Capability;
 public class CharmableCapabilityStorage implements Capability.IStorage<ICharmableCapability> {
 	
 	private static final String BINDABLE = "bindable";
-	private static final String FINITE = "finite";
-	private static final String MAX_FINITE_SIZE = "maxFiniteSize";
+	private static final String INNATE = "innate";
+	private static final String MAX_INNATE_SIZE = "maxInnateSize";
 	private static final String IMBUABLE = "imbuable";
 	private static final String IMBUING = "imbuing";
 	private static final String MAX_IMBUE_SIZE = "maxImbueSize";
@@ -55,6 +57,7 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 	private static final String BASE_MATERIAL = "baseMaterial";
 	private static final String SOURCE_ITEM = "sourceItem";
 	private static final String MAX_CHARM_LEVEL = "maxCharmLevel";
+	private static final String CHARM = "charm";
 	
 	@Override
 	public INBT writeNBT(Capability<ICharmableCapability> capability, ICharmableCapability instance, Direction side) {
@@ -81,8 +84,8 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 			 */
 			nbt.putBoolean(BINDABLE, instance.isBindable());
 			
-			nbt.putBoolean(FINITE, instance.isFinite());
-			nbt.putInt(MAX_FINITE_SIZE, instance.getMaxFiniteSize());
+			nbt.putBoolean(INNATE, instance.isInnate());
+			nbt.putInt(MAX_INNATE_SIZE, instance.getMaxInnateSize());
 			
 			nbt.putBoolean(IMBUABLE, instance.isImbuable());
 			nbt.putBoolean(IMBUING, instance.isImbuing());			
@@ -114,14 +117,24 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 				if (tag.contains(type.name())) {
 					ListNBT listNbt = tag.getList(type.name(), 10);
 					listNbt.forEach(e -> {
-						// load entity
-						Optional<ICharmEntity> entity = ICharmEntity.load((CompoundNBT)e);
-						if (!entity.isPresent()) {
+						// load the charm
+						Optional<ICharm> charm = Charm.load((CompoundNBT) ((CompoundNBT)e).get(CHARM));
+						if (!charm.isPresent()) {
 							return;
 						}
+						// create an entity
+						ICharmEntity entity = charm.get().createEntity();
+						
+						// load entity
+						entity.load((CompoundNBT)e);
+//						Optional<ICharmEntity> entity = ICharmEntity.load((CompoundNBT)e);
+//						if (!entity.isPresent()) {
+//							return;
+//						}
 						
 						// add the entity to the list
-						instance.getCharmEntities()[type.getValue()].add(entity.get());
+//						instance.getCharmEntities()[type.getValue()].add(entity.get());
+						instance.getCharmEntities()[type.getValue()].add(entity);
 					});
 				}
 				
@@ -130,31 +143,31 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 					instance.setBindable(tag.getBoolean(BINDABLE));
 				}
 				
-				if (tag.contains(FINITE)) {
-					instance.setFinite(tag.getBoolean(FINITE));
+				if (tag.contains(INNATE)) {
+					instance.setInnate(tag.getBoolean(INNATE));
 				}				
-				if (tag.contains(MAX_FINITE_SIZE)) {
-					instance.setMaxFiniteSize(tag.getInt(MAX_FINITE_SIZE));
+				if (tag.contains(MAX_INNATE_SIZE)) {
+					instance.setMaxInnateSize(tag.getInt(MAX_INNATE_SIZE));
 				}
 				
 				if (tag.contains(IMBUABLE)) {
-					instance.setFinite(tag.getBoolean(IMBUABLE));
+					instance.setImbuable(tag.getBoolean(IMBUABLE));
 				}				
 				if (tag.contains(MAX_IMBUE_SIZE)) {
-					instance.setMaxFiniteSize(tag.getInt(MAX_IMBUE_SIZE));
+					instance.setMaxImbueSize(tag.getInt(MAX_IMBUE_SIZE));
 				}
 				if (tag.contains(IMBUING)) {
-					instance.setFinite(tag.getBoolean(IMBUING));
+					instance.setImbuing(tag.getBoolean(IMBUING));
 				}	
 				
 				if (tag.contains(SOCKETABLE)) {
-					instance.setFinite(tag.getBoolean(SOCKETABLE));
+					instance.setSocketable(tag.getBoolean(SOCKETABLE));
 				}				
 				if (tag.contains(MAX_SOCKET_SIZE)) {
-					instance.setMaxFiniteSize(tag.getInt(MAX_SOCKET_SIZE));
+					instance.setMaxSocketsSize(tag.getInt(MAX_SOCKET_SIZE));
 				}
 				if (tag.contains(SOCKETING)) {
-					instance.setFinite(tag.getBoolean(SOCKETING));
+					instance.setSocketing(tag.getBoolean(SOCKETING));
 				}	
 				if (tag.contains(BASE_MATERIAL)) {
 //					Optional<BaseMaterial2> material = TreasureCharms.getBaseMaterial(ModUtils.asLocation(tag.getString(BASE_MATERIAL)));

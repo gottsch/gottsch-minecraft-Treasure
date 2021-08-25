@@ -127,6 +127,8 @@ public class TreasureItems {
 	public static Item GOLD_COIN;	
 
 	// gems
+	public static Item TOPAZ;
+	public static Item ONYX;
 	public static Item SAPPHIRE;
 	public static Item RUBY;
 	public static Item WHITE_PEARL;
@@ -137,6 +139,7 @@ public class TreasureItems {
 	public static CharmItem SILVER_CHARM;
 	public static CharmItem GOLD_CHARM;
 	public static CharmItem TEST_CHARM;
+	public static CharmItem IMBUED_BOOK;
 
 	// wither items
 	public static Item WITHER_STICK_ITEM;
@@ -369,6 +372,29 @@ public class TreasureItems {
 		};
 
 		// GEMS
+		TOPAZ = new WealthItem(Treasure.MODID, TreasureConfig.ItemID.TOPAZ_ID, new Item.Properties()) {
+			@Override
+			public List<LootTableShell> getLootTables() {
+				return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE);
+			}
+			@Override
+			public ItemStack getDefaultLootKey (Random random) {
+				List<KeyItem> keys = new ArrayList<>(TreasureItems.keys.get(Rarity.SCARCE));
+				return new ItemStack(keys.get(random.nextInt(keys.size())));
+			}
+		};
+		ONYX = new WealthItem(Treasure.MODID, TreasureConfig.ItemID.ONYX_ID, new Item.Properties()) {
+			@Override
+			public List<LootTableShell> getLootTables() {
+				return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE);
+			}
+			@Override
+			public ItemStack getDefaultLootKey (Random random) {
+				List<KeyItem> keys = new ArrayList<>(TreasureItems.keys.get(Rarity.RARE));
+				return new ItemStack(keys.get(random.nextInt(keys.size())));
+			}
+		};
+		
 		RUBY = new WealthItem(Treasure.MODID, TreasureConfig.ItemID.RUBY_ID, new Item.Properties()) {
 			@Override
 			public List<LootTableShell> getLootTables() {
@@ -422,7 +448,7 @@ public class TreasureItems {
 		COPPER_CHARM = new CharmItem(Treasure.MODID, "copper_charm", new Item.Properties()) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
-					$.finite(true, 1);
+					$.innate(true, 1);
 					$.bindable(true);
 					$.source(true)
 					.baseMaterial(TreasureCharms.COPPER.getName());
@@ -433,7 +459,7 @@ public class TreasureItems {
 		SILVER_CHARM = new CharmItem(Treasure.MODID, "silver_charm", new Item.Properties()) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
-					$.finite(true, 1);
+					$.innate(true, 1);
 					$.bindable(true);
 					$.source(true)
 					.baseMaterial(TreasureCharms.SILVER.getName());
@@ -444,10 +470,20 @@ public class TreasureItems {
 		GOLD_CHARM = new CharmItem(Treasure.MODID, "gold_charm", new Item.Properties()) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
-					$.finite(true, 1);
+					$.innate(true, 1);
 					$.bindable(true);
 					$.source(true)
 					.baseMaterial(TreasureCharms.GOLD.getName());
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		IMBUED_BOOK = new CharmItem(Treasure.MODID, "imbued_book", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 1);
+					$.imbuing(true);
+					$.source(true);
 				}).build();
 				return new CharmableCapabilityProvider(cap);
 			}
@@ -457,14 +493,14 @@ public class TreasureItems {
 		TEST_CHARM = new CharmItem(Treasure.MODID, "test_charm", new Item.Properties()) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(SAPPHIRE.getRegistryName()).with($ -> {
-					$.finite(true, 1);
+					$.innate(true, 1);
 					$.bindable(true);
 					$.source(true);
 					$.baseMaterial(TreasureCharms.COPPER.getName());
 				}).build();
 
 				// add charms
-				cap.add(InventoryType.FINITE, TreasureCharms.HEALING_6.createEntity());
+				cap.add(InventoryType.INNATE, TreasureCharms.HEALING_6.createEntity());
 				stack.setHoverName(new StringTextComponent("Test Charm"));
 				return new CharmableCapabilityProvider(cap);
 			}
@@ -525,7 +561,10 @@ public class TreasureItems {
 				COPPER_CHARM,
 				SILVER_CHARM,
 				GOLD_CHARM,
+				IMBUED_BOOK,
 				TEST_CHARM,
+				TOPAZ,
+				ONYX,
 				RUBY,
 				SAPPHIRE,
 				WHITE_PEARL,

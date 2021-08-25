@@ -34,56 +34,43 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
  * 
- * @author Mark Gottschling on Apr 30, 2020
+ * @author Mark Gottschling on Aug 23, 2021
  *
  */
-public class ShieldingCharm extends Charm {
-	public static String SHIELDING_TYPE = "shielding";
+public class SatietyCharm extends Charm {
+	public static final String SATIETY_TYPE = "satiety";
+	public static final int MAX_FOOD_LEVEL = 20;
 
-	private static final Class<?> REGISTERED_EVENT = LivingDamageEvent.class;
+	private static final Class<?> REGISTERED_EVENT = LivingUpdateEvent.class;
 
 	/**
 	 * 
 	 * @param builder
 	 */
-	public ShieldingCharm(Builder builder) {
+	SatietyCharm(Builder builder) {
 		super(builder);
 	}
 
-	protected ShieldingCharm(Charm.Builder builder) {
-		super(builder);
-	}
-	
 	public Class<?> getRegisteredEvent() {
 		return REGISTERED_EVENT;
 	}
 
 	@Override
-	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity data) {
+	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-		if (data.getValue() > 0 && player.isAlive()) {
-			// get the source and amount
-			double amount = ((LivingDamageEvent)event).getAmount();
-			// calculate the new amount
-			double newAmount = 0;
-			double amountToCharm = amount * data.getPercent();
-			double amountToPlayer = amount - amountToCharm;
-			//    			Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
-			if (data.getValue() >= amountToCharm) {
-				data.setValue(data.getValue() - amountToCharm);
-				newAmount = amountToPlayer;
+
+		if (world.getGameTime() % TICKS_PER_SECOND == 0) {	
+			if (player.isAlive() && entity.getValue() > 0 && player.getFoodData().getFoodLevel() < MAX_FOOD_LEVEL) {
+				player.getFoodData().eat(1, 1);
+				entity.setValue(entity.getValue() - 1);
+				result = true;
 			}
-			else {
-				newAmount = amount - data.getValue();
-				data.setValue(0);
-			}
-			((LivingDamageEvent)event).setAmount((float) newAmount);
-			result = true;
-		}    		
+		}
 		return result;
 	}
 
@@ -96,19 +83,19 @@ public class ShieldingCharm extends Charm {
 		tooltip.add(new StringTextComponent(" ")
 				.append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
 		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent("tooltip.charm.shielding_rate", Math.round(entity.getPercent()*100)).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
+				.append(new TranslationTextComponent("tooltip.charm.satiety_rate")).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
 
 	}
 
 	public static class Builder extends Charm.Builder {
 
 		public Builder(Integer level) {
-			super(ModUtils.asLocation(makeName(SHIELDING_TYPE, level)), SHIELDING_TYPE, level);
+			super(ModUtils.asLocation(makeName(SATIETY_TYPE, level)), SATIETY_TYPE, level);
 		}
 
 		@Override
 		public ICharm build() {
-			return  new ShieldingCharm(this);
+			return  new SatietyCharm(this);
 		}
 	}
 }

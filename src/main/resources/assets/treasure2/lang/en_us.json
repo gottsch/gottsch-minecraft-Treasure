@@ -34,7 +34,7 @@
 	"item.treasure2.sapphire_lock":"Sapphire Lock",
 	"item.treasure2.spider_lock":"Spider Lock",
 	"item.treasure2.wither_lock":"Wither Lock",
-
+	"item.treasure2.copper_coin": "Copper Coin",
 	"item.treasure2.silver_coin": "Silver Coin",
 	"item.treasure2.gold_coin": "Gold Coin",
 	"item.treasure2.ruby": "Ruby",
@@ -80,6 +80,8 @@
 
 	"block.treasure2.wishing_well_block":"Wishing Well Stone",
 	"block.treasure2.desert_wishing_well_block":"Desert Wishing Well Stone",
+	"block.treasure2.topaz_ore":"Topaz Ore",
+	"block.treasure2.onyx_ore":"Onyx Ore",
 	"block.treasure2.ruby_ore":"Ruby Ore",
 	"block.treasure2.sapphire_ore":"Sapphire Ore",
 	"block.treasure2.wither_branch":"Wither Branch",
@@ -127,6 +129,8 @@
 	"block.treasure2.skeleton":"Skeleton",
 	"block.treasure2.skull_and_crossbones":"Skull and Crossbones",
 
+	"entity.bound_soul":"Bound Soul", 
+	
 	"tooltip.yes":"Yes",
 	"tooltip.no":"No",
 	"tooltip.label.rarity":"Rarity: %s",
@@ -151,7 +155,7 @@
 	"tooltip.label.charms":"Charms:",
 	"tooltip.label.charmable.slots":"Capacity: [%s/%s] [used/max]",
 	"tooltip.label.charmable.slots.stats":"[%s/%s]",	
-	"tooltip.label.charm.type.finite":"[FINITE] ",
+	"tooltip.label.charm.type.innate":"[INNATE] ",
 	"tooltip.label.charm.type.imbue":"[IMBUED] ",
 	"tooltip.label.charm.type.socket":"[SOCKETED] ",
 	"tooltip.charm.healing":"Healing %s",

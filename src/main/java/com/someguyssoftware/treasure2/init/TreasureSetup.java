@@ -29,6 +29,7 @@ import com.someguyssoftware.treasure2.charm.CharmableMaterial;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.loot.TreasureLootFunctions;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
@@ -55,6 +56,9 @@ public class TreasureSetup implements IModSetup {
 		// add mod specific logging
 		IModSetup.addRollingFileAppender(Treasure.instance.getName(), null);
 
+		// regsiter functions
+		TreasureLootFunctions.register();
+		
 		// register capabilities
 		TreasureCapabilities.register();
 
