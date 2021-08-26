@@ -1,22 +1,31 @@
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
+ * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
 package com.someguyssoftware.treasure2.gui.render.tileentity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.block.AbstractChestBlock;
-import com.someguyssoftware.treasure2.block.StandardChestBlock;
 import com.someguyssoftware.treasure2.gui.model.CrateChestModel;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -43,64 +52,4 @@ public class CrateChestTileEntityRenderer extends AbstractChestTileEntityRendere
         lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
         getModel().getLid().yRot = -(lidRotation * (float)Math.PI / getAngleModifier());
 	}
-
-// 	@Override
-// 	public void render(AbstractTreasureChestTileEntity tileEntity, float partialTicks, MatrixStack matrixStack,
-// 			IRenderTypeBuffer renderTypeBuffer, int combinedLight, int combinedOverlay) {
-
-// 		if (!(tileEntity instanceof AbstractTreasureChestTileEntity)) {
-// 			return; // should never happen
-// 		}
-
-// 		// TODO this block goes into method / use template pattern
-// 		World world = tileEntity.getLevel();
-// 		boolean hasWorld = (world != null);
-// 		BlockState state = tileEntity.getBlockState();
-// 		Direction facing = Direction.NORTH;
-// 		if (hasWorld) {
-// 			facing = AbstractChestBlock.getFacing(state);
-// 		}
-
-// 		// push the current transformation matrix + normals matrix
-// 		matrixStack.pushPose(); 
-
-// 		// TODO this block goes into method / use template pattern
-// 		// The model is defined centred on [0,0,0], so if we drew it at the current render origin, its centre would be
-// 		// at the corner of the block, sunk halfway into the ground and overlapping into the adjacent blocks.
-// 		// We want it to hover above the centre of the hopper base, so we need to translate up and across to the desired position
-// 		final Vector3d TRANSLATION_OFFSET = new Vector3d(0.5, 1.5, 0.5);
-// 		matrixStack.translate(TRANSLATION_OFFSET.x, TRANSLATION_OFFSET.y, TRANSLATION_OFFSET.z); // translate
-// 		matrixStack.scale(-1, -1, 1);
-// 		float f = getHorizontalAngle(facing);
-// 		matrixStack.mulPose(Vector3f.YP.rotationDegrees(-f));	    
-		
-// 		// TODO this block goes into method / use template pattern
-// 		//////////////// custom lid code /////////////
-//     	CrateChestTileEntity cte = (CrateChestTileEntity) tileEntity;
-//         float latchRotation = cte.prevLatchAngle + (cte.latchAngle - cte.prevLatchAngle) * partialTicks;
-//         latchRotation = 1.0F - latchRotation;
-//         latchRotation = 1.0F - latchRotation * latchRotation * latchRotation;
-//         ((CrateChestModel)getModel()).getLatch1().xRot = -(latchRotation * (float)Math.PI / 2.0F);        	
-        
-//         float lidRotation = cte.prevLidAngle + (cte.lidAngle - cte.prevLidAngle) * partialTicks;
-//         lidRotation = 1.0F - lidRotation;
-//         lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-//         getModel().getLid().yRot = -(lidRotation * (float)Math.PI / 2.0F);
-		
-// 		//////////////// end of lid code //////////////
-		
-// 		// TODO this block goes into method / use template pattern
-// 		IVertexBuilder renderBuffer = renderTypeBuffer.getBuffer(getModel().getChestRenderType(getTexture()));
-// 		getModel().renderAll(matrixStack, renderBuffer, combinedLight, combinedOverlay, tileEntity);
-// 		matrixStack.popPose();		
-		
-// 		// TODO this block goes into method / use template pattern
-//         ////////////// render the locks //////////////////////////////////////
-// 		renderLocks(tileEntity, matrixStack, renderTypeBuffer, combinedLight, combinedOverlay);
-// //        if (!te.getLockStates().isEmpty()) {
-// //        	renderLocks(te, x, y, z);
-// //        }
-//         ////////////// end of render the locks //////////////////////////////////////
-		
-// 	}
 }

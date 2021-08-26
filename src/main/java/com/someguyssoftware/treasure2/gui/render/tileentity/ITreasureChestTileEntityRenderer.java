@@ -3,6 +3,7 @@ package com.someguyssoftware.treasure2.gui.render.tileentity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.someguyssoftware.treasure2.block.StandardChestBlock;
 import com.someguyssoftware.treasure2.gui.model.ITreasureChestModel;
+import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.BlockState;
@@ -10,6 +11,8 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 
 public interface ITreasureChestTileEntityRenderer {
 
@@ -27,7 +30,7 @@ public interface ITreasureChestTileEntityRenderer {
 	}
 
 	default public void updateScale(MatrixStack matrixStack) {
-		matrixStack.scale(-1, -1, 1);
+		matrixStack.scale(1, 1, 1);
 	}
 
 	default public void updateRotation(MatrixStack matrixStack, Direction direction) {
@@ -44,7 +47,7 @@ public interface ITreasureChestTileEntityRenderer {
 		float lidRotation = tileEntity.prevLidAngle + (tileEntity.lidAngle - tileEntity.prevLidAngle) * partialTicks;
 		lidRotation = 1.0F - lidRotation;
 		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-		model.getLid().xRot = -(lidRotation * (float) Math.PI / getAngleModifier());
+		getModel().getLid().xRot = -(lidRotation * (float) Math.PI / getAngleModifier());
 	}
 
 	/**
@@ -106,12 +109,12 @@ public interface ITreasureChestTileEntityRenderer {
 	 * 
 	 * @return
 	 */
-	default public float getLocksScaleModifier() {
+	default public float getLockScaleModifier() {
 		return 0.5F;
 	}
 
 	default public void updateLockScale(MatrixStack matrixStack) {
-		matrixStack.scale(getLocksScaleModifier(), getLocksScaleModifier(), getLocksScaleModifier());
+		matrixStack.scale(getLockScaleModifier(), getLockScaleModifier(), getLockScaleModifier());
 	}
 
 	/**

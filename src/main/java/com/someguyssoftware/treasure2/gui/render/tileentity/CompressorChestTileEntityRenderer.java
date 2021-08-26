@@ -1,3 +1,22 @@
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
+ * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
 package com.someguyssoftware.treasure2.gui.render.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -28,66 +47,14 @@ public class CompressorChestTileEntityRenderer extends AbstractChestTileEntityRe
 		setModel(new CompressorChestModel());
 	}
 
-	// @Override
-	// public void render(AbstractTreasureChestTileEntity tileEntity, float partialTicks, MatrixStack matrixStack,
-	// 		IRenderTypeBuffer renderTypeBuffer, int combinedLight, int combinedOverlay) {
-
-	// 	if (!(tileEntity instanceof AbstractTreasureChestTileEntity)) {
-	// 		return; // should never happen
-	// 	}
-
-	// 	// TODO this block goes into method / use template pattern
-	// 	World world = tileEntity.getLevel();
-	// 	boolean hasWorld = (world != null);
-	// 	BlockState state = tileEntity.getBlockState();
-	// 	Direction facing = Direction.NORTH;
-	// 	if (hasWorld) {
-	// 		facing = state.getValue(StandardChestBlock.FACING);
-	// 	}
-
-	// 	// push the current transformation matrix + normals matrix
-	// 	matrixStack.pushPose(); 
-
-	// 	// TODO this block goes into method / use template pattern
-	// 	// The model is defined centred on [0,0,0], so if we drew it at the current render origin, its centre would be
-	// 	// at the corner of the block, sunk halfway into the ground and overlapping into the adjacent blocks.
-	// 	// We want it to hover above the centre of the hopper base, so we need to translate up and across to the desired position
-	// 	final Vector3d TRANSLATION_OFFSET = new Vector3d(0.5, 0.75, 0.5);
-	// 	matrixStack.translate(TRANSLATION_OFFSET.x, TRANSLATION_OFFSET.y, TRANSLATION_OFFSET.z); // translate
-	// 	matrixStack.scale(-1, -1, 1);
-	// 	float f = getHorizontalAngle(facing);
-	// 	matrixStack.mulPose(Vector3f.YP.rotationDegrees(-f));	
-
-	// 	// shrink the size of the chest by half
-	// 	matrixStack.scale(0.5F, 0.5F, 0.5F);  
-
-	// 	//////////////// custom lid code /////////////
-	// 	updateModelRotationAngles(tileEntity, partialTicks);		
-	// 	//////////////// end of lid code //////////////
-
-	// 	// TODO this block goes into method / use template pattern
-	// 	IVertexBuilder renderBuffer = renderTypeBuffer.getBuffer(getModel().getChestRenderType(getTexture()));
-	// 	getModel().renderAll(matrixStack, renderBuffer, combinedLight, combinedOverlay, tileEntity);
-	// 	matrixStack.popPose();		
-
-	// 	// TODO this block goes into method / use template pattern
-	// 	////////////// render the locks //////////////////////////////////////
-	// 	renderLocks(tileEntity, matrixStack, renderTypeBuffer, combinedLight, combinedOverlay);
-	// 	//        if (!te.getLockStates().isEmpty()) {
-	// 	//        	renderLocks(te, x, y, z);
-	// 	//        }
-	// 	////////////// end of render the locks //////////////////////////////////////
-
-	// }
-
 	@Override
-	public updateScale(MatrixStack matrixStack) {
+	public void updateScale(MatrixStack matrixStack) {
 		// shrink the size of the chest by half
 		matrixStack.scale(0.5F, 0.5F, 0.5F);
 	}
 
 	@Override
-	public updateTranslation(MatrixStack matrixStack) {
+	public void updateTranslation(MatrixStack matrixStack) {
 		final Vector3d TRANSLATION_OFFSET = new Vector3d(0.5, 0.75, 0.5);
 		matrixStack.translate(TRANSLATION_OFFSET.x, TRANSLATION_OFFSET.y, TRANSLATION_OFFSET.z);
 	}
@@ -101,7 +68,7 @@ public class CompressorChestTileEntityRenderer extends AbstractChestTileEntityRe
 	}
 
 	@Override
-	public float getLocksScaleModifier() {
+	public float getLockScaleModifier() {
 		return 0.20F;
 	}
 }
