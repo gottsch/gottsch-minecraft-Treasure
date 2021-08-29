@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.gui.render.tileentity;
 
@@ -20,8 +36,6 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 
 /**
@@ -71,21 +85,31 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 		// push the current transformation matrix + normals matrix
 		matrixStack.pushPose(); 
 
+		// initial position (centered moved up)
+		updateTranslation(matrixStack);
+
 		// The model is defined centred on [0,0,0], so if we drew it at the current render origin, its centre would be
 		// at the corner of the block, sunk halfway into the ground and overlapping into the adjacent blocks.
 		// We want it to hover above the centre of the hopper base, so we need to translate up and across to the desired position
-		final Vector3d TRANSLATION_OFFSET = new Vector3d(0.5, 1.5, 0.5);
-		matrixStack.translate(TRANSLATION_OFFSET.x, TRANSLATION_OFFSET.y, TRANSLATION_OFFSET.z); // translate
+		// final Vector3d TRANSLATION_OFFSET = new Vector3d(0.5, 1.5, 0.5);
+		// matrixStack.translate(TRANSLATION_OFFSET.x, TRANSLATION_OFFSET.y, TRANSLATION_OFFSET.z); // translate
+
+		// setup scale
 		matrixStack.scale(-1, -1, 1);
-		float f = getHorizontalAngle(facing);
-		matrixStack.mulPose(Vector3f.YP.rotationDegrees(-f));
+
+		// adjust the scale of the model
+		updateScale(matrixStack);
+		
+		updateRotation(matrixStack, facing);
+		// float f = getHorizontalAngle(facing);
+		// matrixStack.mulPose(Vector3f.YP.rotationDegrees(-f));
 
 		
 		// TEST scale to half size to see if locks are rendered
 //		matrixStack.scale(0.5F, 0.5F, 0.5F);
 		
 		// update the lid rotation
-		updateModelRotationAngles(tileEntity, partialTicks);
+		 updateModelLidRotation(tileEntity, partialTicks);
 
 
 		IVertexBuilder renderBuffer = renderTypeBuffer.getBuffer(model.getChestRenderType(getTexture()));
@@ -128,70 +152,13 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 				// of the block
 				matrixStack.translate(lockState.getSlot().getXOffset(), lockState.getSlot().getYOffset(), lockState.getSlot().getZOffset());
 
-				matrixStack.mulPose(Vector3f.YP.rotationDegrees(lockState.getSlot().getRotation()));
-				matrixStack.scale(getLocksScaleModifier(), getLocksScaleModifier(), getLocksScaleModifier());
+				updateLockRotation(matrixStack, lockState);
+				// matrixStack.mulPose(Vector3f.YP.rotationDegrees(lockState.getSlot().getRotation()));
+				updateLockScale(matrixStack);
+				// matrixStack.scale(getLocksScaleModifier(), getLocksScaleModifier(), getLocksScaleModifier());
 				Minecraft.getInstance().getItemRenderer().renderStatic(lockStack, ItemCameraTransforms.TransformType.NONE, combinedLight, OverlayTexture.NO_OVERLAY, matrixStack, renderBuffer);
 				matrixStack.popPose();
 			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param tileEntity
-	 * @param partialTicks
-	 */
-	public void updateModelRotationAngles(AbstractTreasureChestTileEntity tileEntity, float partialTicks) {
-		float lidRotation = tileEntity.prevLidAngle + (tileEntity.lidAngle - tileEntity.prevLidAngle) * partialTicks;
-		lidRotation = 1.0F - lidRotation;
-		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-		model.getLid().xRot = -(lidRotation * (float) Math.PI / getAngleModifier());
-	}
-
-	/**
-	 * Modifies the max angle that the lid can swing.
-	 * The max swing angle by default is 180 degrees. The max swing angle is divided the modifier.
-	 * Increasing the size of the modifier reduces the size of the max swing angle.
-	 * Ex:
-	 * Return 2.0 = 90 degrees
-	 * Return 3.0 = 60 degrees
-	 * Return 4.0 = 45 degrees
-	 * 
-	 * @return
-	 */
-	public float getAngleModifier() {
-		return 2.0F;
-	}
-
-	/**
-	 *  Modifies teh scale of the Lock item(s).
-	 * Ranges from 0.0F to x.xF.
-	 * Ex:
-	 * Return 1.0F = full size
-	 * Return 0.5 = half size
-	 * 
-	 * @return
-	 */
-	public float getLocksScaleModifier() {
-		return 0.5F;
-	}
-	
-	/**
-	 * Helper method since all my models face the opposite direction of vanilla models
-	 * @param meta
-	 * @return
-	 */
-	public int getHorizontalAngle(Direction facing) {
-		switch (facing) {
-		default:
-		case NORTH:
-			return 0;
-		case SOUTH:
-			return 180;
-		case WEST:
-			return 90;
-		case EAST:
-			return -90;
 		}
 	}
 
@@ -203,8 +170,7 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 	}
 
 	/**
-	 * @param texture
-	 *            the texture to set
+	 * @param texture the texture to set
 	 */
 	public void setTexture(ResourceLocation texture) {
 		this.texture = texture;
@@ -213,16 +179,16 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 	/**
 	 * @return the model
 	 */
+	@Override
 	public ITreasureChestModel getModel() {
 		return model;
 	}
 
 	/**
-	 * @param model
-	 *            the model to set
+	 * @param model the model to set
 	 */
+	@Override
 	public void setModel(ITreasureChestModel model) {
 		this.model = model;
 	}
-
 }

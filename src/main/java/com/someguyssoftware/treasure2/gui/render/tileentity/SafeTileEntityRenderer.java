@@ -1,3 +1,22 @@
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
+ * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
 package com.someguyssoftware.treasure2.gui.render.tileentity;
 
 import com.someguyssoftware.treasure2.Treasure;
@@ -22,14 +41,14 @@ public class SafeTileEntityRenderer extends AbstractChestTileEntityRenderer {
 	}
 
 	@Override
-	public void updateModelRotationAngles(AbstractTreasureChestTileEntity tileEntity, float partialTicks) {
+	public void updateModelLidRotation(AbstractTreasureChestTileEntity tileEntity, float partialTicks) {
 		SafeTileEntity ste = (SafeTileEntity) tileEntity;
 
 		if (ste.isLidClosed) {
 			float handleRotation = ste.prevHandleAngle + (ste.handleAngle - ste.prevHandleAngle) * partialTicks;
 			handleRotation = 1.0F - handleRotation;
 			handleRotation = 1.0F - handleRotation * handleRotation * handleRotation;
-			((SafeModel)getModel()).getHandleA1().zRot = (handleRotation * (float)Math.PI / 2.0F);
+			((SafeModel)getModel()).getHandleA1().zRot = (handleRotation * (float)Math.PI / getAngleModifier());
 		}
 		else {
 			// render handleB rotating around y-axis
@@ -37,11 +56,11 @@ public class SafeTileEntityRenderer extends AbstractChestTileEntityRenderer {
 		float lidRotation = ste.prevLidAngle + (ste.lidAngle - ste.prevLidAngle) * partialTicks;
 		lidRotation = 1.0F - lidRotation;
 		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-		getModel().getLid().yRot = (lidRotation * (float)Math.PI / 2.0F);
+		getModel().getLid().yRot = (lidRotation * (float)Math.PI / getAngleModifier());
 	}
 
 	@Override
-	public float getLocksScaleModifier() {
+	public float getLockScaleModifier() {
 		return 0.3F;
 	}
 }
