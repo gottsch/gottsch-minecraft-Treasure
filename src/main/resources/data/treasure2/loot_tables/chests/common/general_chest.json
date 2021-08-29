@@ -6,6 +6,7 @@
 	"type": "minecraft:chest",
 	"pools": [
 		{
+			"__comment": "do not rename. mod searches for this pool.",
 			"name": "treasure",
 			"rolls": 2,
 			"bonus_rolls": 1.0,
@@ -13,11 +14,12 @@
 				{
 					"type": "minecraft:loot_table",
 					"name": "treasure2:pools/treasure/common",
-					"weight": 30
+					"weight": 1
 				}
 			]
 		},
 		{
+			"__comment": "do not rename. mod searches for this pool.",		
 			"name": "charms",
 			"rolls": 1,
 			"entries": [

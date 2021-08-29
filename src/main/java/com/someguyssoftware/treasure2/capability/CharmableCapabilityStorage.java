@@ -45,6 +45,8 @@ import net.minecraftforge.common.capabilities.Capability;
  */
 public class CharmableCapabilityStorage implements Capability.IStorage<ICharmableCapability> {
 	
+	private static final String SOURCE = "source";
+	private static final String EXECUTING = "executing";
 	private static final String BINDABLE = "bindable";
 	private static final String INNATE = "innate";
 	private static final String MAX_INNATE_SIZE = "maxInnateSize";
@@ -82,6 +84,8 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 			/*
 			 * save charm cap properties
 			 */
+			nbt.putBoolean(SOURCE, instance.isSource());
+			nbt.putBoolean(EXECUTING, instance.isExecuting());;
 			nbt.putBoolean(BINDABLE, instance.isBindable());
 			
 			nbt.putBoolean(INNATE, instance.isInnate());
@@ -138,6 +142,13 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 				}
 				
 				// load cap properties
+				if (tag.contains(SOURCE)) {
+					instance.setSource(tag.getBoolean(SOURCE));
+				}
+				if (tag.contains(EXECUTING)) {
+					instance.setExecuting(tag.getBoolean(EXECUTING));
+				}
+				
 				if (tag.contains(BINDABLE)) {
 					instance.setBindable(tag.getBoolean(BINDABLE));
 				}

@@ -90,7 +90,7 @@
 			"name": "potions",
 			"rolls": {
 				"min": 0,
-				"max": 2
+				"max": 1
 			},
 			"entries": [
 		            {
@@ -161,7 +161,7 @@
 			"name": "scarce_potions",
 			"rolls": {
 				"min": 0,
-				"max": 2
+				"max": 1
 			},
 			"entries": [
 		            {

@@ -50,7 +50,7 @@ public class AegisCharm extends ShieldingCharm {
 		tooltip.add(new StringTextComponent(" ")
 				.append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
 		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent("tooltip.charm.aegis_rate", 100).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
+				.append(new TranslationTextComponent("tooltip.charm.rate.aegis", 100).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
 
 	}
 

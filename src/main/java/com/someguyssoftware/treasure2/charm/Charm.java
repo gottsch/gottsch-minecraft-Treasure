@@ -130,7 +130,7 @@ public abstract class Charm implements ICharm {
 	 */
 	@SuppressWarnings("deprecation")
 	public String getLabel(ICharmEntity entity) {
-		return new TranslationTextComponent("tooltip.charm." + getType().toLowerCase(), getLevel()).getString() + " "  + getUsesGauge(entity);
+		return new TranslationTextComponent("tooltip.charm.type." + getType().toLowerCase()).getString() + " " + String.valueOf(getLevel()) + " "  + getUsesGauge(entity);
 
 		/*
 		 * 1. check for mod item specific label

@@ -1,5 +1,6 @@
 {
-"version": "2.0",
+"version": "3.0",
+"since": "mc1.16.5-v1.6.0",
 "type": "minecraft:chest",
 	"pools": [
 		{
@@ -8,12 +9,12 @@
 			"entries": [
 				{
 					"entryName": "wood_key",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:wood_key",
 					"weight": 25,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 1,
 								"max": 2
@@ -23,12 +24,12 @@
 				},
 				{
 					"entryName": "stone_key",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:stone_key",
 					"weight": 25,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 1,
 								"max": 2
@@ -38,12 +39,12 @@
 				},
 				{
 					"entryName": "pilferers_lock_pick",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:pilferers_lock_pick",
 					"weight": 20,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 1,
 								"max": 2
@@ -53,13 +54,13 @@
 				},
 				{
 					"entryName": "iron_key",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:iron_key",
 					"weight": 10
 				},
 				{
 					"entryName": "thiefs_lock_pick",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:thiefs_lock_pick",
 					"weight": 10
 				}
@@ -70,13 +71,25 @@
 			"rolls": 1,
 			"entries": [
 				{
+					"entryName": "copper_coin",
+					"type": "item",
+					"name": "treasure2:copper_coin",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": 1
+						}
+					]
+				},
+				{
 					"entryName": "silver_coin",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:silver_coin",
 					"weight": 25,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 0,
 								"max": 1

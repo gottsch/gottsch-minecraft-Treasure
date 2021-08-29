@@ -57,6 +57,8 @@ import net.minecraft.loot.RandomRanges;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.util.JSONUtils;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 /**
  * This function will add charms to the INNATE inventory of an item with CharmableCapability by default.
@@ -103,7 +105,7 @@ public class CharmRandomly extends LootFunction {
 	protected ItemStack run(ItemStack stack, LootContext context) {
 		Random rand = context.getRandom();
 		Treasure.LOGGER.debug("selected item from charm pool -> {}", stack.getDisplayName());
-		stack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).ifPresent(cap -> {
+		stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
 			Treasure.LOGGER.debug("has charm cap");
 			ICharm charm = null;
 
@@ -168,31 +170,14 @@ public class CharmRandomly extends LootFunction {
 
 			if (charm != null) {				
 				Treasure.LOGGER.debug("charm is not null -> {}", charm.getName());
-				List<ICharmEntity> charmEntities = cap.getCharmEntities()[type.getValue()];
-				// ensure that the item doesn't already have the same charm or same type or exceeded the maximum charms.
-				boolean previousCharmExists = false;
-				for (ICharmEntity entity : charmEntities) {
-					if (entity.getCharm().getType().equalsIgnoreCase(charm.getType()) ||
-							entity.getCharm().getName().equals(charm.getName())) {
-						previousCharmExists = true;
-						break;
-					}
-				}
-				if (!previousCharmExists) {
+				if (!cap.contains(charm)) {
 					Treasure.LOGGER.debug("adding charm to charm instances - > {}", charm.getName().toString());
-					charmEntities.add(charm.createEntity());
+					cap.add(type, charm.createEntity());
 				}
 			}
 			
 			// cycle thru all charms in stack inventory to determine highest level charm
-			int highestLevel = 0;
-			for (int index =0; index < InventoryType.values().length; index++) {
-				for (ICharmEntity entity : cap.getCharmEntities()[index]) {
-					if (entity.getCharm().getLevel() > highestLevel) {
-						highestLevel = entity.getCharm().getLevel();
-					}
-				}
-			}
+			int highestLevel = cap.getHighestLevel().getCharm().getLevel();
 
 			/*
 			 *  select the correct gem/sourceItem
@@ -210,7 +195,7 @@ public class CharmRandomly extends LootFunction {
 					}
 				}
 			}
-		});
+			});
 		Treasure.LOGGER.debug("returning charmed item -> {}", stack.getDisplayName().getString());
 		return stack;
 	}

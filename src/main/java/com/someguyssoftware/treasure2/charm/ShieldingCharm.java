@@ -96,7 +96,7 @@ public class ShieldingCharm extends Charm {
 		tooltip.add(new StringTextComponent(" ")
 				.append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
 		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent("tooltip.charm.shielding_rate", Math.round(entity.getPercent()*100)).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
+				.append(new TranslationTextComponent("tooltip.charm.rate.shielding", Math.round(this.getMaxPercent()*100)).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
 
 	}
 

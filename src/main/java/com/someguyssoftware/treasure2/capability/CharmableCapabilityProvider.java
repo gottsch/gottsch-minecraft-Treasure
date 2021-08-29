@@ -1,6 +1,6 @@
 package com.someguyssoftware.treasure2.capability;
 
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.CHARMABLE_CAPABILITY;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.CHARMABLE;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -31,7 +31,7 @@ public class CharmableCapabilityProvider implements ICapabilityProvider, ICapabi
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		if (capability == CHARMABLE_CAPABILITY) {
+		if (capability == CHARMABLE) {
 			return  (LazyOptional<T>) LazyOptional.of(() -> instance);
 		}
 		return LazyOptional.empty();
@@ -39,12 +39,12 @@ public class CharmableCapabilityProvider implements ICapabilityProvider, ICapabi
 	
 	@Override
 	public CompoundNBT serializeNBT() {
-		CompoundNBT tag = (CompoundNBT)CHARMABLE_CAPABILITY.getStorage().writeNBT(CHARMABLE_CAPABILITY, instance, null);
+		CompoundNBT tag = (CompoundNBT)CHARMABLE.getStorage().writeNBT(CHARMABLE, instance, null);
 		return tag;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
-		CHARMABLE_CAPABILITY.getStorage().readNBT(CHARMABLE_CAPABILITY, instance, null, nbt);
+		CHARMABLE.getStorage().readNBT(CHARMABLE, instance, null, nbt);
 	}
 }

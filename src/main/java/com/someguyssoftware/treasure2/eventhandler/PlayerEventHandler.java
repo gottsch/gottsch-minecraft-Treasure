@@ -19,6 +19,8 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -92,7 +94,7 @@ public class PlayerEventHandler {
 			processCharms(event, player);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param event
@@ -110,7 +112,7 @@ public class PlayerEventHandler {
 			processCharms(event, player);
 		}		
 	}
-	
+
 	/**
 	 * 
 	 * @param event
@@ -120,37 +122,37 @@ public class PlayerEventHandler {
 		if (WorldInfo.isClientSide(event.getEntity().level)) {
 			return;
 		}
-		
+
 		if (event.getSource().getDirectEntity() instanceof PlayerEntity) {
 			// get the player
 			ServerPlayerEntity player = (ServerPlayerEntity) event.getSource().getDirectEntity();
 			processCharms(event, player);
 		}
 	}
-	
-// Maybe use BlockEvent.BreakBlock and then use Global Loot Modifiers??
-//	@SubscribeEvent
-//	public void checkCharmsInteractionWithBlock(BlockEvent.HarvestDropsEvent event) {
-//		if (WorldInfo.isClientSide(event.getWorld())) {
-//			return;
-//		}
-//
-//		if (event.getHarvester() == null) {
-//			return;
-//		}
-//
-//		// if the harvested blcok has a tile entity then don't process
-//		// NOTE this may exclude non-inventory blocks
-//		IBlockState harvestedState = event.getState();
-//		Block harvestedBlock = harvestedState.getBlock();
-//		if (harvestedBlock.hasTileEntity(harvestedState)) {
-//			return;
-//		}
-//
-//		// get the player
-//		EntityPlayerMP player = (EntityPlayerMP) event.getHarvester();
-//		processCharms(event, player);
-//	}
+
+	// Maybe use BlockEvent.BreakBlock and then use Global Loot Modifiers??
+	//	@SubscribeEvent
+	//	public void checkCharmsInteractionWithBlock(BlockEvent.HarvestDropsEvent event) {
+	//		if (WorldInfo.isClientSide(event.getWorld())) {
+	//			return;
+	//		}
+	//
+	//		if (event.getHarvester() == null) {
+	//			return;
+	//		}
+	//
+	//		// if the harvested blcok has a tile entity then don't process
+	//		// NOTE this may exclude non-inventory blocks
+	//		IBlockState harvestedState = event.getState();
+	//		Block harvestedBlock = harvestedState.getBlock();
+	//		if (harvestedBlock.hasTileEntity(harvestedState)) {
+	//			return;
+	//		}
+	//
+	//		// get the player
+	//		EntityPlayerMP player = (EntityPlayerMP) event.getHarvester();
+	//		processCharms(event, player);
+	//	}
 
 	/**
 	 * 
@@ -165,7 +167,7 @@ public class PlayerEventHandler {
 
 		// gather all charms
 		charmsToExecute = gatherCharms(event, player);
-		
+
 		// TODO filter charms ??
 
 		// sort charms
@@ -186,35 +188,38 @@ public class PlayerEventHandler {
 
 		// get the slot provider - curios (general slots) or minecraft (hotbar)
 		String slotProviderId  = ModList.get().isLoaded(CURIOS_ID) ? CURIOS_ID : "minecaft";
-
+		
 		// check each hand
 		for (Hand hand : Hand.values()) {
 			ItemStack heldStack = player.getItemInHand(hand);
-			heldStack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).ifPresent(cap -> {
-				for (InventoryType type : InventoryType.values()) {
-					AtomicInteger index = new AtomicInteger();
-					// requires indexed for-loop
-					for (int i = 0; i < cap.getCharmEntities()[type.getValue()].size(); i++) {
-						ICharmEntity entity =  cap.getCharmEntities()[type.getValue()].get(i);
-						// OR just check with the charm for allowable event
-//						if (!TreasureCharms.isCharmEventRegistered(event.getClass(), entity.getCharm().getType())) {
-						if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
-							Treasure.LOGGER.debug("charm type -> {} is not register for this event -> {}", entity.getCharm().getType(), event.getClass().getSimpleName());
-							continue;
+//			Treasure.LOGGER.debug("is executing -> {}", heldStack.getCapability(CHARMABLE).map(cap -> cap.isExecuting()).orElse(false));
+			if (heldStack.getCapability(CHARMABLE).map(cap -> cap.isExecuting()).orElse(false)) {
+				heldStack.getCapability(CHARMABLE).ifPresent(cap -> {
+					for (InventoryType type : InventoryType.values()) {
+						AtomicInteger index = new AtomicInteger();
+						// requires indexed for-loop
+						for (int i = 0; i < cap.getCharmEntities()[type.getValue()].size(); i++) {
+							ICharmEntity entity =  cap.getCharmEntities()[type.getValue()].get(i);
+							// OR just check with the charm for allowable event
+							//						if (!TreasureCharms.isCharmEventRegistered(event.getClass(), entity.getCharm().getType())) {
+							if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
+//								Treasure.LOGGER.debug("charm type -> {} is not register for this event -> {}", entity.getCharm().getType(), event.getClass().getSimpleName());
+								continue;
+							}
+							index.set(i);
+							CharmContext context  = new CharmContext.Builder().with($ -> {
+								$.hand = hand;
+								$.itemStack = heldStack;
+								$.capability = cap;
+								$.type = type;
+								$.index = index.get();
+								$.entity = entity;
+							}).build();
+							contexts.add(context);
 						}
-						index.set(i);
-						CharmContext context  = new CharmContext.Builder().with($ -> {
-							$.hand = hand;
-							$.itemStack = heldStack;
-							$.capability = cap;
-							$.type = type;
-							$.index = index.get();
-							$.entity = entity;
-						}).build();
-						contexts.add(context);
 					}
-				}
-			});
+				});
+			}
 		}
 
 		// check slots
@@ -227,15 +232,15 @@ public class PlayerEventHandler {
 					Optional<ICurioStacksHandler> stacksOptional = itemHandler.getStacksHandler(slot);
 					stacksOptional.ifPresent(stacksHandler -> {
 						ItemStack curiosStack = stacksHandler.getStacks().getStackInSlot(0);
-						curiosStack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).ifPresent(cap -> {
+						curiosStack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
 							for (InventoryType type : InventoryType.values()) {
 								AtomicInteger index = new AtomicInteger();
 								// requires indexed for-loop
 								for (int i = 0; i < cap.getCharmEntities()[type.getValue()].size(); i++) {
 									ICharmEntity entity =  cap.getCharmEntities()[type.getValue()].get(i);
-//									if (!TreasureCharms.isCharmEventRegistered(event.getClass(), entity.getCharm().getType())) {
+									//									if (!TreasureCharms.isCharmEventRegistered(event.getClass(), entity.getCharm().getType())) {
 									if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
-									Treasure.LOGGER.debug("charm type -> {} is not register for this event -> {}", entity.getCharm().getType(), event.getClass().getSimpleName());
+										//									Treasure.LOGGER.debug("charm type -> {} is not register for this event -> {}", entity.getCharm().getType(), event.getClass().getSimpleName());
 										continue;
 									}
 									index.set(i);
@@ -300,8 +305,10 @@ public class PlayerEventHandler {
 			// NOTE this leaves empty charms on non-bindables for future recharge
 			if (context.getEntity().getValue() <= 0.0 && context.getCapability().isBindable()) {
 				Treasure.LOGGER.debug("charm is empty -> remove");
+				// TODO call cap.remove() -> recalcs highestLevel
 				// locate the charm from context and remove
-				context.getCapability().getCharmEntities()[context.getType().getValue()].remove(context.getIndex());
+				//				context.getCapability().getCharmEntities()[context.getType().getValue()].remove(context.getIndex());
+				context.getCapability().remove(context.getType(), context.getIndex());
 			}
 		});
 	}
@@ -315,14 +322,14 @@ public class PlayerEventHandler {
 		if (WorldInfo.isClientSide(event.getPlayer().level)) {
 			return;
 		}
-//		Treasure.LOGGER.debug("is remote? -> {}", !event.getPlayer().level.isClientSide);
-//		Treasure.LOGGER.debug("{} tossing item -> {}", event.getPlayer().getName().getString(), event.getEntityItem().getItem().getDisplayName().getString());
+		//		Treasure.LOGGER.debug("is remote? -> {}", !event.getPlayer().level.isClientSide);
+		//		Treasure.LOGGER.debug("{} tossing item -> {}", event.getPlayer().getName().getString(), event.getEntityItem().getItem().getDisplayName().getString());
 		Item item = event.getEntityItem().getItem().getItem();
 		if (item instanceof IWishable) {
 			ItemStack stack = event.getEntityItem().getItem();
 			CompoundNBT nbt = new CompoundNBT();
 			nbt.putString(IWishable.DROPPED_BY_KEY, event.getPlayer().getName().getString());
-//			Treasure.LOGGER.debug("adding tag to wishable stack...");
+			//			Treasure.LOGGER.debug("adding tag to wishable stack...");
 			stack.setTag(nbt);			
 		}		
 	}

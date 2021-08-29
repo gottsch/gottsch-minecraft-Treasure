@@ -20,6 +20,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
+import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
@@ -72,6 +73,10 @@ public class SpawnChestCommand {
 		}
 	}
 	
+	private static final SuggestionProvider<CommandSource> SUGGEST_RARITY = (source, builder) -> {
+		return ISuggestionProvider.suggest(Rarity.getNames().stream(), builder);
+	};
+	
 	private static final SuggestionProvider<CommandSource> SUGGEST_CHEST = (source, builder) -> {
 		return ISuggestionProvider.suggest(TreasureData.CHESTS_BY_NAME.keySet().stream(), builder);
 	};
@@ -84,13 +89,19 @@ public class SpawnChestCommand {
 					})
 					.then(Commands.argument("pos", BlockPosArgument.blockPos())
 							.executes(source -> {
-								return spawn(source.getSource(), BlockPosArgument.getOrLoadBlockPos(source, "pos"), "");
+								return spawn(source.getSource(), BlockPosArgument.getOrLoadBlockPos(source, "pos"), "", Rarity.COMMON.name());
 							})
 							.then(Commands.argument("name", StringArgumentType.string())
 									.suggests(SUGGEST_CHEST).executes(source -> {
 										return spawn(source.getSource(), BlockPosArgument.getOrLoadBlockPos(source, "pos"),
-												StringArgumentType.getString(source, "name"));
+												StringArgumentType.getString(source, "name"), Rarity.COMMON.name());
 									})
+									.then(Commands.argument("rarity", StringArgumentType.string())
+											.suggests(SUGGEST_RARITY).executes(source -> {
+												return spawn(source.getSource(), BlockPosArgument.getOrLoadBlockPos(source, "pos"),
+														StringArgumentType.getString(source, "name"), StringArgumentType.getString(source, "rarity"));
+											})
+									)
 							)
 					)
 			);
@@ -103,12 +114,12 @@ public class SpawnChestCommand {
 	 * @param name
 	 * @return
 	 */
-	private static int spawn(CommandSource source, BlockPos pos, String name) {
-		Treasure.LOGGER.info("executing spawn chest, pos -> {}, name -> {}", pos, name);
+	private static int spawn(CommandSource source, BlockPos pos, String name, String rarityName) {
+		Treasure.LOGGER.info("executing spawn chest, pos -> {}, name -> {}, rarity -> {}", pos, name, rarityName);
 		try {
 			ServerWorld world = source.getLevel();
 			Random random = new Random();
-			Rarity rarity = Rarity.COMMON;
+			Rarity rarity = rarityName.isEmpty() ? Rarity.COMMON : Rarity.valueOf(rarityName.toUpperCase());
 			Optional<Chests> chests = Optional.empty();
 			
 			// get the chest world generator

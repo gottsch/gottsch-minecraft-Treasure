@@ -81,7 +81,7 @@ public class DecayCurse extends Charm implements IDecay {
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.DARK_RED;       
 		tooltip.add(new TranslationTextComponent(getLabel(entity)).withStyle(color));
-		tooltip.add(new TranslationTextComponent("tooltip.charm.decay_rate").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
+		tooltip.add(new TranslationTextComponent("tooltip.charm.rate.decay").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
 	}
 
 	public static class Builder extends Charm.Builder {

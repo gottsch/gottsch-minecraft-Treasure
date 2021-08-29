@@ -72,7 +72,7 @@ public class FireImmunityCharm extends Charm {
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.RED;       
 		tooltip.add(new TranslationTextComponent(getLabel(entity)).withStyle(color));
-		tooltip.add(new TranslationTextComponent("tooltip.charm.fire_immunity_rate").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
+		tooltip.add(new TranslationTextComponent("tooltip.charm.rate.fire_immunity").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
 	}
 
 	public static class Builder extends Charm.Builder {

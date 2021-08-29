@@ -97,7 +97,7 @@ public class CoinItem extends ModItem implements IWishable {
 	 * @return
 	 */
 	public ICharmableCapability getCap(ItemStack stack) {
-		return stack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY, null).orElseThrow(IllegalStateException::new);
+		return stack.getCapability(TreasureCapabilities.CHARMABLE, null).orElseThrow(IllegalStateException::new);
 	}
 	
 	/**

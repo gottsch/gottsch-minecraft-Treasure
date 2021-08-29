@@ -83,7 +83,7 @@ public class SatietyCharm extends Charm {
 		tooltip.add(new StringTextComponent(" ")
 				.append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
 		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent("tooltip.charm.satiety_rate")).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
+				.append(new TranslationTextComponent("tooltip.charm.rate.satiety")).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
 
 	}
 

@@ -67,9 +67,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
  *
  */
 public class WealthItem extends ModItem implements IWishable {
-	// NOTE this is kind of moot as the config would already have an upper level
-	private static final int MAX_CUSTOM_STACK_SIZE = 64;
-	
 	/**
 	 * 
 	 * @param modID
@@ -78,7 +75,7 @@ public class WealthItem extends ModItem implements IWishable {
 	 */
 	public WealthItem(String modID, String name, Properties properties) {
         super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP)
-        		.stacksTo(Math.min(MAX_CUSTOM_STACK_SIZE, TreasureConfig.BOOTY.wealthMaxStackSize.get())));
+        		.stacksTo(TreasureConfig.BOOTY.wealthMaxStackSize.get()));
 	}
 	
 	/**

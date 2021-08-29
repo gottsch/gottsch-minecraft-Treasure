@@ -105,6 +105,7 @@ public class TreasureItems {
 	public static KeyItem THIEFS_LOCK_PICK;
 
 	public static KeyRingItem KEY_RING;
+	public static PouchItem POUCH;
 
 	// locks
 	public static LockItem WOOD_LOCK;
@@ -137,8 +138,7 @@ public class TreasureItems {
 	public static CharmItem COPPER_CHARM;
 	public static CharmItem SILVER_CHARM;
 	public static CharmItem GOLD_CHARM;
-	public static CharmItem TEST_CHARM;
-	public static CharmItem IMBUED_BOOK;
+	public static CharmItem CHARM_BOOK;
 
 	// wither items
 	public static Item WITHER_STICK_ITEM;
@@ -444,67 +444,56 @@ public class TreasureItems {
 		};
 
 		// CHARMS
-		COPPER_CHARM = new CharmItem(Treasure.MODID, "copper_charm", new Item.Properties()) {
+		COPPER_CHARM = new CharmItem(Treasure.MODID, TreasureConfig.ItemID.COPPER_CHARM, new Item.Properties()) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.bindable(true);
-					$.source(true)
+					$.source(true);
+					$.executing(true)
 					.baseMaterial(TreasureCharms.COPPER.getName());
 				}).build();
 				return new CharmableCapabilityProvider(cap);
 			}
 		};
-		SILVER_CHARM = new CharmItem(Treasure.MODID, "silver_charm", new Item.Properties()) {
+		SILVER_CHARM = new CharmItem(Treasure.MODID, TreasureConfig.ItemID.SILVER_CHARM, new Item.Properties()) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.bindable(true);
-					$.source(true)
+					$.source(true);
+					$.executing(true)
 					.baseMaterial(TreasureCharms.SILVER.getName());
 				}).build();
 				return new CharmableCapabilityProvider(cap);
 			}
 		};
-		GOLD_CHARM = new CharmItem(Treasure.MODID, "gold_charm", new Item.Properties()) {
+		GOLD_CHARM = new CharmItem(Treasure.MODID, TreasureConfig.ItemID.GOLD_CHARM, new Item.Properties()) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.bindable(true);
-					$.source(true)
+					$.source(true);
+					$.executing(true)
 					.baseMaterial(TreasureCharms.GOLD.getName());
 				}).build();
 				return new CharmableCapabilityProvider(cap);
 			}
 		};
-		IMBUED_BOOK = new CharmItem(Treasure.MODID, "imbued_book", new Item.Properties()) {
+		CHARM_BOOK = new CharmBook(Treasure.MODID, TreasureConfig.ItemID.CHARM_BOOK, new Item.Properties()) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.imbuing(true);
 					$.source(true);
+					$.executing(false);
 				}).build();
 				return new CharmableCapabilityProvider(cap);
 			}
 		};
 
-		// TODO create a Builder for Charms
-		TEST_CHARM = new CharmItem(Treasure.MODID, "test_charm", new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
-				ICharmableCapability cap = new CharmableCapability.Builder(SAPPHIRE.getRegistryName()).with($ -> {
-					$.innate(true, 1);
-					$.bindable(true);
-					$.source(true);
-					$.baseMaterial(TreasureCharms.COPPER.getName());
-				}).build();
-
-				// add charms
-				cap.add(InventoryType.INNATE, TreasureCharms.HEALING_6.createEntity());
-				stack.setHoverName(new StringTextComponent("Test Charm"));
-				return new CharmableCapabilityProvider(cap);
-			}
-		};
-
+		POUCH = new PouchItem(Treasure.MODID, "pouch", new Item.Properties());
+		
 		// WITHER ITEMS
 		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_STICK_ITEM_ID, TreasureBlocks.WITHER_BRANCH, new Item.Properties());
 		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_ROOT_ITEM_ID, TreasureBlocks.WITHER_ROOT, new Item.Properties());
@@ -560,8 +549,8 @@ public class TreasureItems {
 				COPPER_CHARM,
 				SILVER_CHARM,
 				GOLD_CHARM,
-				IMBUED_BOOK,
-				TEST_CHARM,
+				CHARM_BOOK,
+				POUCH,
 				TOPAZ,
 				ONYX,
 				RUBY,

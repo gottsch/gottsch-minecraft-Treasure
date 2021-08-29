@@ -98,11 +98,11 @@ public class CharmMessageHandlerOnClient {
 	        		// determine what is being held in hand
 	        		if (heldItemStack != null) {
 	        			Treasure.LOGGER.debug("holding item -> {}", heldItemStack.getItem().getRegistryName());
-//	        			ICharmableCapability cap = heldItemStack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).orElse(null);
+//	        			ICharmableCapability cap = heldItemStack.getCapability(TreasureCapabilities.CHARMABLE).orElse(null);
 //	        			if (cap != null) {
 //	        				updateCharms(heldItemStack, message, cap);
 //	        			}
-	        			heldItemStack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).ifPresent(cap -> {
+	        			heldItemStack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
 	        				updateCharms(message, cap);
 	        			});
 	        		}
@@ -113,7 +113,7 @@ public class CharmMessageHandlerOnClient {
 	    				Optional<ICurioStacksHandler> stacksOptional = itemHandler.getStacksHandler(message.getSlot());
 	    				stacksOptional.ifPresent(stacksHandler -> {
 							ItemStack curiosStack = stacksHandler.getStacks().getStackInSlot(0);
-							curiosStack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).ifPresent(cap -> {
+							curiosStack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
 								updateCharms(message, cap);
 							});
 	    				});

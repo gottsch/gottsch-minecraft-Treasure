@@ -252,7 +252,9 @@ public interface IChestGenerator {
 			
 			if (lootPool != null) {
 				// geneate loot from pools
-				if (pool.getName().equalsIgnoreCase("treasure")) {
+				if (pool.getName().equalsIgnoreCase("treasure") ||
+						pool.getName().equalsIgnoreCase("charms")) {
+					LOGGER.debug("generating loot from treasure/charm pool -> {}", pool.getName());
 					lootPool.addRandomItems(treasureStacks::add, lootContext);
 				}
 				else {

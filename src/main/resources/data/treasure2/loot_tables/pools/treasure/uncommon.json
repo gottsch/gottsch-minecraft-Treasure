@@ -1,6 +1,6 @@
 {
-	"version": "1.0",
-	"type": "minecraft:chest",
+	"version": "2.0",
+	"since": "mc1.16.5-v1.6.0",
 	"pools": [
 		{
 			"name": "uncommon_keys",
@@ -8,42 +8,42 @@
 			"entries": [
 				{
 					"entryName": "wood_key",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:wood_key",
 					"weight": 15,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 1,
 								"max": 2
 							}
 						}
-					]
+					]			
 				},
 				{
 					"entryName": "stone_key",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:stone_key",
 					"weight": 15,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 1,
 								"max": 2
 							}
 						}
-					]
+					]					
 				},
 				{
 					"entryName": "pilferers_lock_pick",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:pilferers_lock_pick",
 					"weight": 10,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 1,
 								"max": 2
@@ -53,46 +53,58 @@
 				},
 				{
 					"entryName": "iron_key",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:iron_key",
 					"weight": 25,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 1,
 								"max": 2
 							}
 						}
-					]
+					]					
 				},
 				{
 					"entryName": "thiefs_lock_pick",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:thiefs_lock_pick",
 					"weight": 20,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 1,
 								"max": 2
 							}
 						}
-					]
+					]					
+				},
+ 				{
+					"entryName": "ember_key",
+					"type": "item",
+					"name": "treasure2:ember_key",
+					"weight": 10
 				},
 				{
+					"entryName": "leaf_key",
+					"type": "item",
+					"name": "treasure2:leaf_key",
+					"weight": 15
+				},				
+				{
 					"entryName": "gold_key",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:gold_key",
 					"weight": 10
 				},
 				{
 					"entryName": "spider_key",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:spider_key",
 					"weight": 10
-				}
+				}												
 			]
 		},
 		{
@@ -100,13 +112,28 @@
 			"rolls": 1,
 			"entries": [
 				{
+					"entryName": "copper_coin",
+					"type": "item",
+					"name": "treasure2:copper_coin",
+					"weight": 35,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				},
+				{
 					"entryName": "silver_coin",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:silver_coin",
 					"weight": 25,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 1,
 								"max": 2
@@ -116,12 +143,12 @@
 				},
 				{
 					"entryName": "gold_coin",
-					"type": "minecraft:item",
+					"type": "item",
 					"name": "treasure2:gold_coin",
 					"weight": 15,
 					"functions": [
 						{
-							"function": "minecraft:set_count",
+							"function": "set_count",
 							"count": {
 								"min": 0,
 								"max": 1
@@ -130,6 +157,6 @@
 					]
 				}
 			]
-		}
+		}	
 	]
 }

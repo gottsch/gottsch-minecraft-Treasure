@@ -72,13 +72,17 @@ public class TreasureSetup implements IModSetup {
 		TreasureDecayRegistry.create(Treasure.instance);
 	}
 
+	/**
+	 * 
+	 * @param event
+	 */
 	public static void clientSetup(final FMLClientSetupEvent event) {
 		Treasure.LOGGER.debug("setting up item properties dynamically...");
 		event.enqueueWork(() -> {
 			ItemModelsProperties.register(TreasureItems.COPPER_CHARM, 
 					new ResourceLocation(Treasure.MODID, "gem"), (stack, world, living) -> {
 						AtomicDouble d = new AtomicDouble(0);
-						stack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).ifPresent(cap -> {
+						stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
 							Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(cap.getSourceItem());
 							if (source.isPresent()) {
 								d.set(source.get().getId());
@@ -86,16 +90,24 @@ public class TreasureSetup implements IModSetup {
 						});
 						return d.floatValue();
 					});
-			ItemModelsProperties.register(TreasureItems.TEST_CHARM, 
+			ItemModelsProperties.register(TreasureItems.SILVER_CHARM, 
 					new ResourceLocation(Treasure.MODID, "gem"), (stack, world, living) -> {
 						AtomicDouble d = new AtomicDouble(0);
-						stack.getCapability(TreasureCapabilities.CHARMABLE_CAPABILITY).ifPresent(cap -> {
+						stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
 							Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(cap.getSourceItem());
 							if (source.isPresent()) {
-								d.set(source.get().getMaxLevel()); // this is wrong
+								d.set(source.get().getId());
 							}
-							else {
-								d.set(6);
+						});
+						return d.floatValue();
+					});
+			ItemModelsProperties.register(TreasureItems.GOLD_CHARM, 
+					new ResourceLocation(Treasure.MODID, "gem"), (stack, world, living) -> {
+						AtomicDouble d = new AtomicDouble(0);
+						stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
+							Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(cap.getSourceItem());
+							if (source.isPresent()) {
+								d.set(source.get().getId());
 							}
 						});
 						return d.floatValue();

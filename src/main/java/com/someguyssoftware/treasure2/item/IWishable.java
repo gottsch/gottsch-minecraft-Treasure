@@ -19,8 +19,6 @@
  */
 package com.someguyssoftware.treasure2.item;
 
-import static com.someguyssoftware.treasure2.Treasure.LOGGER;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,12 +26,10 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
-import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.world.World;

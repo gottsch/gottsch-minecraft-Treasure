@@ -54,7 +54,7 @@ public class GreaterHealingCharm extends Charm implements IHealing {
 	@Override
 	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-		if (world.getGameTime() % 10 == 0) {
+		if (world.getGameTime() % 20 == 0) {
 			if (entity.getValue() > 0 && player.getHealth() < player.getMaxHealth() && player.isAlive()) {
 				float amount = Math.min(getHealRate(), player.getMaxHealth() - player.getHealth());
 				player.setHealth(MathHelper.clamp(player.getHealth() + amount, 0.0F, player.getMaxHealth()));		
@@ -72,7 +72,7 @@ public class GreaterHealingCharm extends Charm implements IHealing {
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.RED;       
 		tooltip.add(new TranslationTextComponent(getLabel(entity)).withStyle(color));
-		tooltip.add(new TranslationTextComponent("tooltip.charm.greater_healing_rate").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
+		tooltip.add(new TranslationTextComponent("tooltip.charm.rate.greater_healing").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
 	}
 
 	public static class Builder extends Charm.Builder {
