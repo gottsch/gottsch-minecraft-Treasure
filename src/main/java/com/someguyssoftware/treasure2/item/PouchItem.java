@@ -19,15 +19,26 @@
  */
 package com.someguyssoftware.treasure2.item;
 
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.*;
+
 import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.PouchCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
+import com.someguyssoftware.treasure2.charm.Charm;
+import com.someguyssoftware.treasure2.charm.ICharm;
+import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.inventory.PouchContainer;
 import com.someguyssoftware.treasure2.inventory.PouchInventory;
 import com.someguyssoftware.treasure2.inventory.TreasureContainers;
+import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,6 +49,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -47,6 +59,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.IItemHandler;
 
 /**
  * @author Mark Gottschling on May 13, 2020
@@ -110,4 +123,35 @@ public class PouchItem extends ModItem implements INamedContainerProvider {
 	public ITextComponent getDisplayName() {
 		return new TranslationTextComponent("item.treasure2.pouch");
 	}
+
+	////////////////////////
+	/**
+	 * NOTE getShareTag() and readShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands.
+	 */
+	@Override
+	public CompoundNBT getShareTag(ItemStack stack) {
+		CompoundNBT nbt = stack.getOrCreateTag();
+		IItemHandler cap = stack.getCapability(POUCH_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
+
+		try {
+
+		} catch (Exception e) {
+			Treasure.LOGGER.error("Unable to write state to NBT:", e);
+		}
+		return nbt;
+	}
+
+	@Override
+	public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
+		super.readShareTag(stack, nbt);
+
+		if (nbt instanceof CompoundNBT) {
+			IItemHandler cap = stack.getCapability(POUCH_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
+
+			CompoundNBT tag = (CompoundNBT) nbt;
+
+		}
+	}
 }
+
+

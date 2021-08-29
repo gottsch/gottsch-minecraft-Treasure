@@ -18,6 +18,7 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.IWishingWellBlock;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
@@ -246,7 +247,14 @@ public class CoinItem extends ModItem implements IWishable {
 				LootPool lootPool = table.getPool(pool.getName());
 				
 				// geneate loot from pools
-				lootPool.addRandomItems(itemStacks::add, lootContext);
+				// TODO https://github.com/gottsch/gottsch-minecraft-Treasure/issues/242
+				// lootPool is null.
+				if (lootPool != null) {
+					lootPool.addRandomItems(itemStacks::add, lootContext);
+				}
+				else {
+					Treasure.LOGGER.warn("loot pool -> {} is null", pool.getName());
+				}
 			}
 
 			// get effective rarity

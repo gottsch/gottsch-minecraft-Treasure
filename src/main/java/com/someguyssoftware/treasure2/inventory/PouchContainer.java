@@ -19,6 +19,8 @@
  */
 package com.someguyssoftware.treasure2.inventory;
 
+import com.someguyssoftware.treasure2.item.TreasureItems;
+
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
@@ -79,7 +81,7 @@ public class PouchContainer extends AbstractChestContainer {
 	public void buildHotbar(PlayerInventory player) {
 		for (int x = 0; x < HOTBAR_SLOT_COUNT; x++) {
 			int slotNumber = x;
-			if (slotNumber == player.selected) {
+			if (slotNumber == player.selected && player.offhand.get(0).getItem() != TreasureItems.POUCH) {
 				addSlot(new NoSlot(player, slotNumber, getHotbarXPos() + getSlotXSpacing() * x, getHotbarYPos()));
 			}
 			else {
