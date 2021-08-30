@@ -128,6 +128,9 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String COPPER_CHARM = "copper_charm";
 		public static final String SILVER_CHARM = "silver_charm";
 		public static final String GOLD_CHARM = "gold_charm";
+		public static final String COPPER_RING = "copper_ring";
+		public static final String SILVER_RING = "silver_ring";
+		public static final String GOLD_RING = "gold_ring";
 	}
 	
 	public static class LockID {

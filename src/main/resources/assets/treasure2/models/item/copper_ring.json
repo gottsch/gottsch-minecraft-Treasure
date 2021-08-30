@@ -1,0 +1,65 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"__comment": "default",
+		"layer0": "treasure2:item/adornment/copper_ring"
+	},
+	"overrides": [
+		{
+			"__comment": "topaz",
+			"predicate": {
+				"treasure2:gem": 1
+			},
+			"model": "treasure2:item/adornment/copper_ring_topaz"
+		},
+		{
+			"__comment": "diamond",
+			"predicate": {
+				"treasure2:gem": 2
+			},
+			"model": "treasure2:item/adornment/copper_ring_diamond"
+		},
+						{
+			"__comment": "onyx",
+			"predicate": {
+				"treasure2:gem": 3
+			},
+			"model": "treasure2:item/adornment/copper_ring_onyx"
+		},
+		{
+			"__comment": "emerald",
+			"predicate": {
+				"treasure2:gem": 4
+			},
+			"model": "treasure2:item/adornment/copper_ring_emerald"
+		},
+		{
+			"__comment": "ruby",
+			"predicate": {
+				"treasure2:gem": 5
+			},
+			"model": "treasure2:item/adornment/copper_ring_ruby"
+		},
+		{
+			"__comment": "sapphire",
+			"predicate": {
+				"treasure2:gem": 6
+			},
+			"model": "treasure2:item/adornment/copper_ring_sapphire"
+		},
+		{
+			"__comment": "white pearl",
+			"predicate": {
+				"treasure2:gem": 7
+			},
+			"model": "treasure2:item/adornment/copper_ring_white_pearl"
+		},
+		{
+			"__comment": "black pearl",
+			"predicate": {
+				"treasure2:gem": 8
+			},
+			"model": "treasure2:item/adornment/copper_ring_black_pearl"
+		}
+	]
+}

@@ -1,5 +1,9 @@
 {
   "replace": false,
   "values": [
+  	"treasure2:copper_ring",
+  	"treasure2:silver_ring",
+  	"treasure2:gold_ring",
+  	"treasure2:angles_ring"
   ]
 }

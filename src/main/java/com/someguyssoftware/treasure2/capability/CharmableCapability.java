@@ -136,6 +136,8 @@ public class CharmableCapability implements ICharmableCapability {
 //			return;
 //		}
 
+		// TODO ensure only one of the same type can be added.
+		
 		// test if there is enough space to add
 		//		Treasure.LOGGER.debug("adding type -> {} charm -> {}", type, entity.getCharm());
 		if (charmEntities[type.value].size() < getMaxSize(type)) {

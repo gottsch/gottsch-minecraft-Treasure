@@ -55,6 +55,8 @@ import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -140,6 +142,13 @@ public class TreasureItems {
 	public static CharmItem GOLD_CHARM;
 	public static CharmItem CHARM_BOOK;
 
+	// adornments
+	public static Adornment COPPER_RING;
+	public static Adornment SILVER_RING;
+	public static Adornment GOLD_RING;
+	
+	public static Adornment ANGELS_RING;
+	
 	// wither items
 	public static Item WITHER_STICK_ITEM;
 	public static Item WITHER_ROOT_ITEM;
@@ -494,6 +503,66 @@ public class TreasureItems {
 
 		POUCH = new PouchItem(Treasure.MODID, "pouch", new Item.Properties());
 		
+		// adornments
+		COPPER_RING = new Adornment(Treasure.MODID, TreasureConfig.ItemID.COPPER_RING, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 1);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.COPPER.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		SILVER_RING = new Adornment(Treasure.MODID, TreasureConfig.ItemID.SILVER_RING, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 2);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.SILVER.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		GOLD_RING = new Adornment(Treasure.MODID, TreasureConfig.ItemID.GOLD_RING, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 3);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		ANGELS_RING = new Adornment(Treasure.MODID, "angels_ring", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(SAPPHIRE.getRegistryName()).with($ -> {
+					$.innate(true, 3);
+					$.imbuable = false;
+					$.socketable = false;
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.AEGIS_15.createEntity());
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.GREATER_HEALING_15.createEntity());
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.FIRE_IMMUNITY_15.createEntity());
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
 		// WITHER ITEMS
 		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_STICK_ITEM_ID, TreasureBlocks.WITHER_BRANCH, new Item.Properties());
 		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_ROOT_ITEM_ID, TreasureBlocks.WITHER_ROOT, new Item.Properties());
@@ -560,7 +629,11 @@ public class TreasureItems {
 				WITHER_STICK_ITEM,
 				WITHER_ROOT_ITEM,
 				SKULL_SWORD,
-				SKELETON
+				SKELETON,
+				COPPER_RING,
+				SILVER_RING,
+				GOLD_RING,
+				ANGELS_RING
 				);
 	}
 

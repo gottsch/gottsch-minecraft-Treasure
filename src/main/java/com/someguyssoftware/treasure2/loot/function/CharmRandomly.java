@@ -173,6 +173,7 @@ public class CharmRandomly extends LootFunction {
 				if (!cap.contains(charm)) {
 					Treasure.LOGGER.debug("adding charm to charm instances - > {}", charm.getName().toString());
 					cap.add(type, charm.createEntity());
+					// TODO have to enable the property corresponding to the type. ex. cap.setInnate = true if type == INNATE
 				}
 			}
 			

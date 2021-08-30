@@ -48,6 +48,10 @@
 	"item.treasure2.gold_charm": "Gold Charm",
 	"item.treasure2.charm_book": "Charm Book",
 	"item.treasure2.pouch": "Pouch",
+	"item.treasure2.copper_ring": "Copper Ring",
+	"item.treasure2.silver_ring": "Silver Ring",
+	"item.treasure2.gold_ring": "Gold Ring",
+	"item.treasure2.angels_ring": "Angel's Ring",
 
 	"item.treasure2.wither_stick_item":"Wither Branch",
 	"item.treasure2.wither_root_item":"Wither Root",
