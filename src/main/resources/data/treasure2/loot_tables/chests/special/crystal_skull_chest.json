@@ -1,8 +1,9 @@
 {
-	"version": "1.0",
+	"version": "2.0.0",
+	"since": "mc1.16.5-v1.6.0",
 	"category": "general",
-		"rarity": "epic",
-		"type": "minecraft:chest",
+	"rarity": "epic",
+	"type": "minecraft:chest",
 	"pools": [
 		{
 			"name": "treasure",
@@ -77,6 +78,17 @@
 			]
 		},
 		{
+			"name": "charms",
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "loot_table",
+					"name": "treasure2:pools/treasure/epic_charms",
+					"weight": 1
+				}
+			]
+		},		
+		{
 			"name": "items",
 			"rolls": 4,
 			"entries": [
@@ -129,6 +141,36 @@
 					"entryName": "emerald",
 					"type": "minecraft:item",
 					"name": "minecraft:emerald",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 2,
+								"max": 4
+							}
+						}
+					]
+				},
+				{
+					"entryName": "topaz",
+					"type": "item",
+					"name": "treasure2:topaz",
+					"weight": 25,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 2,
+								"max": 4
+							}
+						}
+					]					
+				},
+				{
+					"entryName": "onyx",
+					"type": "item",
+					"name": "treasure2:onyx",
 					"weight": 25,
 					"functions": [
 						{

@@ -37,11 +37,18 @@ public class TreasureCapabilities {
 	@CapabilityInject(IKeyRingCapability.class)
 	public static Capability<IKeyRingCapability> KEY_RING_CAPABILITY = null;
 	
+	@CapabilityInject(ICharmableCapability.class)
+	public static Capability<ICharmableCapability> CHARMABLE = null;
+	
+	@CapabilityInject(IItemHandler.class)
+	public static Capability<IItemHandler> POUCH_CAPABILITY = null;
+	
 	/**
 	 * 
 	 */
 	public static void register() {
         CapabilityManager.INSTANCE.register(IDurabilityCapability.class, new DurabilityCapabilityStorage(), DurabilityCapability::new);
         CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingCapabilityStorage(), KeyRingCapability::new);
-    }
+        CapabilityManager.INSTANCE.register(ICharmableCapability.class, new CharmableCapabilityStorage(), CharmableCapability::new);
+  	}
 }

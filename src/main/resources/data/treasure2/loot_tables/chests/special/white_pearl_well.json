@@ -1,5 +1,6 @@
 {
-	"version": "1.0",
+	"version": "2.0.0",
+	"since":"mc1.16.5-1.6.0",
 	"type": "minecraft:chest",
 	"pools": [
 		{
@@ -14,6 +15,17 @@
                     "name": "treasure2:pools/treasure/rare",
                     "weight": 1
                 }
+			]
+		},
+		{
+			"name": "charms",
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "loot_table",
+					"name": "treasure2:pools/treasure/rare_charms",
+					"weight": 1
+				}
 			]
 		},
 		{

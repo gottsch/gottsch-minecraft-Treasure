@@ -24,6 +24,7 @@ public class TreasureContainers {
 	public static ContainerType<WitherChestContainer> WITHER_CHEST_CONTAINER_TYPE;
 	
 	public static ContainerType<KeyRingContainer> KEY_RING_CONTAINER_TYPE;
+	public static ContainerType<PouchContainer> POUCH_CONTAINER_TYPE;
 	
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)	
 	public static class RegistrationHandler {		
@@ -53,6 +54,10 @@ public class TreasureContainers {
 			KEY_RING_CONTAINER_TYPE = IForgeContainerType.create(KeyRingContainer::create);
 			KEY_RING_CONTAINER_TYPE.setRegistryName("key_ring_container");
 			event.getRegistry().register(KEY_RING_CONTAINER_TYPE);
+			
+			POUCH_CONTAINER_TYPE = IForgeContainerType.create(PouchContainer::create);
+			POUCH_CONTAINER_TYPE.setRegistryName("pouch_container");
+			event.getRegistry().register(POUCH_CONTAINER_TYPE);
 		}
 	}
 }

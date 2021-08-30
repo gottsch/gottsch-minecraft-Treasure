@@ -68,6 +68,7 @@ public class TreasureGuis {
 			ScreenManager.register(TreasureContainers.COMPRESSOR_CHEST_CONTAINER_TYPE, CompressorChestContainerScreen::new);
 
 			ScreenManager.register(TreasureContainers.KEY_RING_CONTAINER_TYPE, KeyRingContainerScreen::new);
+			ScreenManager.register(TreasureContainers.POUCH_CONTAINER_TYPE, PouchContainerScreen::new);
 			
 			// tell the renderer that the base is rendered using CUTOUT_MIPPED (to match the Block Hopper)
 			RenderTypeLookup.setRenderLayer(TreasureBlocks.WOOD_CHEST, RenderType.cutoutMipped());

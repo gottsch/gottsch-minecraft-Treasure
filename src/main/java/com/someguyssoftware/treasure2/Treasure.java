@@ -7,6 +7,7 @@ import com.someguyssoftware.gottschcore.annotation.Credits;
 import com.someguyssoftware.gottschcore.annotation.ModInfo;
 import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.entity.TreasureEntities;
 import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
@@ -54,7 +55,8 @@ public class Treasure implements IMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.5.1";
+	protected static final String VERSION = "1.6.0";
+
 	protected static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.16.5-master/update.json";
 
 	public static Treasure instance;
@@ -78,14 +80,13 @@ public class Treasure implements IMod {
 		eventBus.addListener(this::config);
 		eventBus.addListener(TreasureNetworking::common);
 		eventBus.addListener(TreasureSetup::common);
+		eventBus.addListener(TreasureCharms::setup);
+		eventBus.addListener(TreasureSetup::clientSetup);
 		eventBus.addListener(this::clientSetup);
 
 		// needs to be registered here instead of @Mod.EventBusSubscriber because we need to pass in a constructor argument
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
-		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
-//		MinecraftForge.EVENT_BUS.register(new TreasureParticles());
-//		MOD_EVENT_BUS.register(TreasureParticles.class);
-//		DistExecutor.runWhenOn(Dist.CLIENT, () -> Treasure::clientOnly);
+		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler()); // need to register here?
 	}
 	
 	public static void clientOnly() {

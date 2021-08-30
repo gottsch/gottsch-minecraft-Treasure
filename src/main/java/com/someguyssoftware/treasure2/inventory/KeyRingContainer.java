@@ -19,6 +19,9 @@
  */
 package com.someguyssoftware.treasure2.inventory;
 
+import com.someguyssoftware.treasure2.item.KeyRingItem;
+import com.someguyssoftware.treasure2.item.TreasureItems;
+
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
@@ -75,7 +78,8 @@ public class KeyRingContainer extends AbstractChestContainer {
 	public void buildHotbar(PlayerInventory player) {
 		for (int x = 0; x < HOTBAR_SLOT_COUNT; x++) {
 			int slotNumber = x;
-			if (slotNumber == player.selected) {
+			// TODO determine if the item is in left hand			
+			if (slotNumber == player.selected && player.offhand.get(0).getItem() != TreasureItems.KEY_RING) {
 				addSlot(new NoSlot(player, slotNumber, getHotbarXPos() + getSlotXSpacing() * x, getHotbarYPos()));
 			}
 			else {

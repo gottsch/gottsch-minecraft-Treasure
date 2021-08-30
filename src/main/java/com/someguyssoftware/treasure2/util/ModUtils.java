@@ -52,10 +52,14 @@ import net.minecraft.world.server.ServerWorld;
  *
  */
 public class ModUtils {
-	public static ResourceLocation asLocation(String path) {
-		return new ResourceLocation(Treasure.MODID, path);
+	public static ResourceLocation asLocation(String name) {
+		return hasDomain(name) ? new ResourceLocation(name) : new ResourceLocation(Treasure.MODID, name);
 	}
 
+	public static boolean hasDomain(String name) {
+		return name.indexOf(":") >= 0;
+	}
+	
 	/**
 	 * 
 	 * @author Mark Gottschling on Jul 25, 2021

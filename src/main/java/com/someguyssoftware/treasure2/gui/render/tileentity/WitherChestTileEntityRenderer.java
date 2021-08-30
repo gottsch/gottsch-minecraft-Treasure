@@ -1,3 +1,22 @@
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
+ * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
 package com.someguyssoftware.treasure2.gui.render.tileentity;
 
 import com.someguyssoftware.treasure2.Treasure;
@@ -20,10 +39,10 @@ public class WitherChestTileEntityRenderer extends AbstractChestTileEntityRender
 	}
 	
 	@Override
-	public void updateModelRotationAngles(AbstractTreasureChestTileEntity tileEntity, float partialTicks) {
+	public void updateModelLidRotation(AbstractTreasureChestTileEntity tileEntity, float partialTicks) {
 		float lidRotation = tileEntity.prevLidAngle + (tileEntity.lidAngle - tileEntity.prevLidAngle) * partialTicks;
         lidRotation = 1.0F - lidRotation;
         lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-        ((WitherChestModel)getModel()).getRightFrontDoor().yRot = -(lidRotation * (float)Math.PI / 2.0F);  
+        ((WitherChestModel)getModel()).getRightFrontDoor().yRot = -(lidRotation * (float)Math.PI / getAngleModifier());  
 	}
 }

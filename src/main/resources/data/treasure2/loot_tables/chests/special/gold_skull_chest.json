@@ -1,5 +1,6 @@
 {
-	"version": "1.0",
+	"version": "2.0.0",
+	"since": "mc1.16.5-v1.6.0",
 	"type": "minecraft:chest",
 	"pools": [{
 			"name": "treasure",
@@ -89,6 +90,17 @@
 			]
 		},
 		{
+			"name": "charms",
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "loot_table",
+					"name": "treasure2:pools/treasure/rare_charms",
+					"weight": 1
+				}
+			]
+		},
+		{
 			"name": "items",
 			"rolls": 4,
 			"entries": [{
@@ -136,6 +148,24 @@
 						}
 					}]
 				},
+				{
+					"entryName": "topaz",
+					"type": "item",
+					"name": "treasure2:topaz",
+					"weight": 25
+				},
+				{
+					"entryName": "onyx",
+					"type": "item",
+					"name": "treasure2:onyx",
+					"weight": 25
+				},					
+				{
+					"entryName": "ruby",
+					"type": "minecraft:item",
+					"name": "treasure2:ruby",
+					"weight": 15
+				},			
 				{
 					"entryName": "sapphire",
 					"type": "minecraft:item",

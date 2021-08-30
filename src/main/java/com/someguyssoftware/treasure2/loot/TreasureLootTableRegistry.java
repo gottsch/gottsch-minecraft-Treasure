@@ -26,6 +26,7 @@ import com.google.gson.stream.JsonReader;
 import com.someguyssoftware.gottschcore.json.JSMin;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.server.ServerWorld;
@@ -88,9 +89,11 @@ public final class TreasureLootTableRegistry {
 	 */
 	public static void register(final String modID) {
 		if (!REGISTERED_MODS.contains(modID)) {
-			buildAndExpose(modID);
-			// copy all folders/files from config to world data
-			lootTableMaster.moveLootTables(modID, "");
+			if (TreasureConfig.GENERAL.enableDefaultLootTablesCheck.get()) {
+				buildAndExpose(modID);
+				// copy all folders/files from config to world data
+				lootTableMaster.moveLootTables(modID, "");
+			}
 			lootTableMaster.registerChests(modID, lootResources.getChestLootTableFolderLocations());
 			lootTableMaster.registerSpecials(modID, lootResources.getSpecialLootTableFolderLocations());
 			lootTableMaster.registerInjects(modID, lootResources.getInjectLootTableFolderLocations());

@@ -28,7 +28,12 @@
 		"pools/treasure/uncommon.json",
 		"pools/treasure/scarce.json",
 		"pools/treasure/rare.json",
-		"pools/treasure/epic.json"
+		"pools/treasure/epic.json",
+		"pools/treasure/common_charms.json",
+		"pools/treasure/uncommon_charms.json",
+		"pools/treasure/scarce_charms.json",
+		"pools/treasure/rare_charms.json",
+		"pools/treasure/epic_charms.json"
     ],
     "injectResources": [
     	
@@ -64,7 +69,8 @@
 		"pools/food",
 		"pools/items",
 		"pools/potions",
-		"pools/tools"
+		"pools/tools",
+		"pools/treasure"
     ],
     "injectLootTableFolderLocations": [
     	"inject/uncommon"

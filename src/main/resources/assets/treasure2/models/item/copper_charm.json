@@ -1,0 +1,65 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"__comment": "default",
+		"layer0": "treasure2:item/charm/copper_charm"
+	},
+	"overrides": [
+		{
+			"__comment": "topaz",
+			"predicate": {
+				"treasure2:gem": 1
+			},
+			"model": "treasure2:item/copper_charm_topaz"
+		},
+		{
+			"__comment": "diamond",
+			"predicate": {
+				"treasure2:gem": 2
+			},
+			"model": "treasure2:item/copper_charm_diamond"
+		},
+						{
+			"__comment": "onyx",
+			"predicate": {
+				"treasure2:gem": 3
+			},
+			"model": "treasure2:item/copper_charm_onyx"
+		},
+		{
+			"__comment": "emerald",
+			"predicate": {
+				"treasure2:gem": 4
+			},
+			"model": "treasure2:item/copper_charm_emerald"
+		},
+		{
+			"__comment": "ruby",
+			"predicate": {
+				"treasure2:gem": 5
+			},
+			"model": "treasure2:item/copper_charm_ruby"
+		},
+		{
+			"__comment": "sapphire",
+			"predicate": {
+				"treasure2:gem": 6
+			},
+			"model": "treasure2:item/copper_charm_sapphire"
+		},
+		{
+			"__comment": "white pearl",
+			"predicate": {
+				"treasure2:gem": 7
+			},
+			"model": "treasure2:item/copper_charm_white_pearl"
+		},
+		{
+			"__comment": "black pearl",
+			"predicate": {
+				"treasure2:gem": 8
+			},
+			"model": "treasure2:item/copper_charm_black_pearl"
+		}
+	]
+}
