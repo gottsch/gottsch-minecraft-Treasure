@@ -10,56 +10,56 @@
 			"predicate": {
 				"treasure2:gem": 1
 			},
-			"model": "treasure2:item/adornment/copper_ring_topaz"
+			"model": "treasure2:item/adornment/copper_topaz_ring"
 		},
 		{
 			"__comment": "diamond",
 			"predicate": {
 				"treasure2:gem": 2
 			},
-			"model": "treasure2:item/adornment/copper_ring_diamond"
+			"model": "treasure2:item/adornment/copper_diamond_ring"
 		},
 						{
 			"__comment": "onyx",
 			"predicate": {
 				"treasure2:gem": 3
 			},
-			"model": "treasure2:item/adornment/copper_ring_onyx"
+			"model": "treasure2:item/adornment/copper_onyx_ring"
 		},
 		{
 			"__comment": "emerald",
 			"predicate": {
 				"treasure2:gem": 4
 			},
-			"model": "treasure2:item/adornment/copper_ring_emerald"
+			"model": "treasure2:item/adornment/copper_emerald_ring"
 		},
 		{
 			"__comment": "ruby",
 			"predicate": {
 				"treasure2:gem": 5
 			},
-			"model": "treasure2:item/adornment/copper_ring_ruby"
+			"model": "treasure2:item/adornment/copper_ruby_ring"
 		},
 		{
 			"__comment": "sapphire",
 			"predicate": {
 				"treasure2:gem": 6
 			},
-			"model": "treasure2:item/adornment/copper_ring_sapphire"
+			"model": "treasure2:item/adornment/copper_sapphire_ring"
 		},
 		{
 			"__comment": "white pearl",
 			"predicate": {
 				"treasure2:gem": 7
 			},
-			"model": "treasure2:item/adornment/copper_ring_white_pearl"
+			"model": "treasure2:item/adornment/copper_white_pearl_ring"
 		},
 		{
 			"__comment": "black pearl",
 			"predicate": {
 				"treasure2:gem": 8
 			},
-			"model": "treasure2:item/adornment/copper_ring_black_pearl"
+			"model": "treasure2:item/adornment/copper_black_pearl_ring"
 		}
 	]
 }

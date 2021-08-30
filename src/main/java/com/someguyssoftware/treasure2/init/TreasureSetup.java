@@ -145,6 +145,17 @@ public class TreasureSetup implements IModSetup {
 						});
 						return d.floatValue();
 					});
+			ItemModelsProperties.register(TreasureItems.ANGELS_RING, 
+					new ResourceLocation(Treasure.MODID, "gem"), (stack, world, living) -> {
+						AtomicDouble d = new AtomicDouble(0);
+						stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
+							Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(cap.getSourceItem());
+							if (source.isPresent()) {
+								d.set(source.get().getId());
+							}
+						});
+						return d.floatValue();
+					});
 		});
 	}
 }

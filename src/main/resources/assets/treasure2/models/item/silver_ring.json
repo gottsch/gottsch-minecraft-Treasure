@@ -2,7 +2,7 @@
 	"parent": "item/generated",
 	"textures": {
 		"__comment": "default",
-		"layer0": "treasure2:item/adornment/gold_ring"
+		"layer0": "treasure2:item/adornment/silver_ring"
 	},
 	"overrides": [
 		{
@@ -10,56 +10,56 @@
 			"predicate": {
 				"treasure2:gem": 1
 			},
-			"model": "treasure2:item/adornment/gold_topaz_ring"
+			"model": "treasure2:item/adornment/silver_topaz_ring"
 		},
 		{
 			"__comment": "diamond",
 			"predicate": {
 				"treasure2:gem": 2
 			},
-			"model": "treasure2:item/adornment/gold_diamond_ring"
+			"model": "treasure2:item/adornment/silver_diamond_ring"
 		},
 						{
 			"__comment": "onyx",
 			"predicate": {
 				"treasure2:gem": 3
 			},
-			"model": "treasure2:item/adornment/gold_onyx_ring"
+			"model": "treasure2:item/adornment/silver_onyx_ring"
 		},
 		{
 			"__comment": "emerald",
 			"predicate": {
 				"treasure2:gem": 4
 			},
-			"model": "treasure2:item/adornment/gold_emerald_ring"
+			"model": "treasure2:item/adornment/silver_emerald_ring"
 		},
 		{
 			"__comment": "ruby",
 			"predicate": {
 				"treasure2:gem": 5
 			},
-			"model": "treasure2:item/adornment/gold_ruby_ring"
+			"model": "treasure2:item/adornment/silver_ruby_ring"
 		},
 		{
 			"__comment": "sapphire",
 			"predicate": {
 				"treasure2:gem": 6
 			},
-			"model": "treasure2:item/adornment/gold_sapphire_ring"
+			"model": "treasure2:item/adornment/silver_sapphire_ring"
 		},
 		{
 			"__comment": "white pearl",
 			"predicate": {
 				"treasure2:gem": 7
 			},
-			"model": "treasure2:item/adornment/gold_white_pearl_ring"
+			"model": "treasure2:item/adornment/silver_white_pearl_ring"
 		},
 		{
 			"__comment": "black pearl",
 			"predicate": {
 				"treasure2:gem": 8
 			},
-			"model": "treasure2:item/adornment/gold_black_pearl_ring"
+			"model": "treasure2:item/adornment/silver_black_pearl_ring"
 		}
 	]
 }
