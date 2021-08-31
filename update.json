@@ -1,14 +1,15 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.16.5-latest": "1.6.0",
-    "1.16.5-recommended": "1.6.0"
+    "1.16.5-latest": "1.6.1",
+    "1.16.5-recommended": "1.6.1"
   },
     "1.16.5": {
         "1.0.0": "Initial version release.",
         "1.0.1": "Fixed Ticking block entity on Bound Soul crash.\nFixed missing Loot Table error (for test.json).",
         "1.5.0": "Added mist - Gravestones, Bound Souls, and Wither Tree's poison and wither mist.\nAdded Key Ring.\nAdded key merging ability.\nAdded treasure maps to other Treasure chests.\nUpdated bounding boxes of gravestones.\nFixed Well and Wither Tree regitries.\nAttempt to fix LockItem.appendHoverText initialization crash with some performance mods.\nUses Forge-36.2.0",
         "1.5.1": "Fixed java.lang.NullPointerException: Initializing game at net.minecraft.item.Item.handler$zpo000$getDisplayName(Item.java:526) ~[?:?]",
-        "1.6.0": "Added Charms (except Harvesting).\nAdded Pouch Item.(standard only, Lucks, Apprentice and Master will not be added).\nUses GottschCore 1.4.0 which fixes crash bug on mob spawn by ProximitySpawner.\nPrevent crashes when coins thrown in wells has an exception.\n"
+        "1.6.0": "Added Charms (except Harvesting).\nAdded Pouch Item.(standard only, Lucks, Apprentice and Master will not be added).\nUses GottschCore 1.4.0 which fixes crash bug on mob spawn by ProximitySpawner.\nPrevent crashes when coins thrown in wells has an exception.\n",
+        "1.6.1": "Fixed Curios required crash (it is optional)."
 	}
 }
