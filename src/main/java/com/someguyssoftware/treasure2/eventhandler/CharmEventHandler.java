@@ -67,11 +67,21 @@ import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
  * @author Mark Gottschling on Apr 26, 2018
  *
  */
-@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.FORGE)
-public class PlayerEventHandler {
-	private static final String CURIOS_ID = "curios";
-	private static final List<String> CURIOS_SLOTS = Arrays.asList("necklace", "bracelet", "ring", "charm");
+//@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.FORGE)
+public class CharmEventHandler {
+//	private static final String CURIOS_ID = "curios";
+//	private static final List<String> CURIOS_SLOTS = Arrays.asList("necklace", "bracelet", "ring", "charm");
 
+	private IEquipmentCharmHandler equipmentCharmHandler;
+	
+	/**
+	 * 
+	 * @param handler
+	 */
+	public CharmEventHandler(IEquipmentCharmHandler handler) {
+		equipmentCharmHandler = handler;
+	}
+	
 	/*
 	 * Subscribing to multiple types of Living events for Charm Interactions so that instanceof doesn't have to be called everytime.
 	 */
@@ -81,7 +91,7 @@ public class PlayerEventHandler {
 	 * @param event
 	 */
 	@SubscribeEvent
-	public static void checkCharmsInteraction(LivingUpdateEvent event) {
+	public void checkCharmsInteraction(LivingUpdateEvent event) {
 		if (WorldInfo.isClientSide(event.getEntity().level)) {
 			return;
 		}
@@ -159,7 +169,7 @@ public class PlayerEventHandler {
 	 * @param event
 	 * @param player
 	 */
-	private static void processCharms(Event event, ServerPlayerEntity player) {
+	private void processCharms(Event event, ServerPlayerEntity player) {
 		/*
 		 * a list of charm contexts to execute
 		 */
@@ -183,11 +193,11 @@ public class PlayerEventHandler {
 	 * @param player
 	 * @return
 	 */
-	private static List<CharmContext> gatherCharms(Event event, ServerPlayerEntity player) {
+	private List<CharmContext> gatherCharms(Event event, ServerPlayerEntity player) {
 		final List<CharmContext> contexts = new ArrayList<>(5);
 
 		// get the slot provider - curios (general slots) or minecraft (hotbar)
-		String slotProviderId  = ModList.get().isLoaded(CURIOS_ID) ? CURIOS_ID : "minecaft";
+//		String slotProviderId  = ModList.get().isLoaded(CURIOS_ID) ? CURIOS_ID : "minecaft";
 		
 		// check each hand
 		for (Hand hand : Hand.values()) {
@@ -222,49 +232,10 @@ public class PlayerEventHandler {
 			}
 		}
 
-		// check slots
-		if (slotProviderId.equals(CURIOS_ID)) {
-			// check curio slots
-			LazyOptional<ICuriosItemHandler> handler = CuriosApi.getCuriosHelper().getCuriosHandler(player);
-			handler.ifPresent(itemHandler -> {
-				// curios type names -> head, necklace, back, bracelet, hands, ring, belt, charm, feet
-				CURIOS_SLOTS.forEach(slot -> {
-					Optional<ICurioStacksHandler> stacksOptional = itemHandler.getStacksHandler(slot);
-					stacksOptional.ifPresent(stacksHandler -> {
-						ItemStack curiosStack = stacksHandler.getStacks().getStackInSlot(0);
-						curiosStack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
-							for (InventoryType type : InventoryType.values()) {
-								AtomicInteger index = new AtomicInteger();
-								// requires indexed for-loop
-								for (int i = 0; i < cap.getCharmEntities()[type.getValue()].size(); i++) {
-									ICharmEntity entity =  cap.getCharmEntities()[type.getValue()].get(i);
-									//									if (!TreasureCharms.isCharmEventRegistered(event.getClass(), entity.getCharm().getType())) {
-									if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
-										//									Treasure.LOGGER.debug("charm type -> {} is not register for this event -> {}", entity.getCharm().getType(), event.getClass().getSimpleName());
-										continue;
-									}
-									index.set(i);
-									CharmContext curiosContext = new CharmContext.Builder().with($ -> {
-										$.slotProviderId = slotProviderId;
-										$.slot = slot;
-										$.itemStack = curiosStack;
-										$.capability = cap;
-										$.type = type;
-										$.index = index.get();
-										$.entity = entity;
-									}).build();
-									contexts.add(curiosContext);
-								}
-							}
-						});
-					});
-				});
-			});
-		}
-		else {			
-			// TODO check hotbar slots
-			// TODO only allow IAdornments from hotbar
-		}
+		// check equipment slots
+		List<CharmContext> equipmentContexts = getEquipmentCharmHandler().handleEquipmentCharms(event, player);
+		contexts.addAll(equipmentContexts);
+	
 		return contexts;
 	}
 
@@ -274,7 +245,7 @@ public class PlayerEventHandler {
 	 * @param player
 	 * @param contexts
 	 */
-	private static void executeCharms(Event event, ServerPlayerEntity player, List<CharmContext> contexts) {
+	private void executeCharms(Event event, ServerPlayerEntity player, List<CharmContext> contexts) {
 		/*
 		 * a list of charm types that are non-stackable that should not be executed more than once.
 		 */
@@ -312,7 +283,16 @@ public class PlayerEventHandler {
 			}
 		});
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private IEquipmentCharmHandler getEquipmentCharmHandler() {
+		return equipmentCharmHandler;
+	}
 
+	// TODO move to a new event handler
 	/**
 	 * 
 	 * @param event
