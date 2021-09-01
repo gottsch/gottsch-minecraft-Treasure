@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -80,8 +81,10 @@ public class DecayCurse extends Charm implements IDecay {
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.DARK_RED;       
-		tooltip.add(new TranslationTextComponent(getLabel(entity)).withStyle(color));
-		tooltip.add(new TranslationTextComponent("tooltip.charm.rate.decay").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
+		tooltip.add(new StringTextComponent(" ")
+				.append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
+		tooltip.add(new StringTextComponent(" ")
+				.append(new TranslationTextComponent("tooltip.charm.rate.decay").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
 	}
 
 	public static class Builder extends Charm.Builder {

@@ -20,6 +20,7 @@
 package com.someguyssoftware.treasure2.loot;
 
 import com.someguyssoftware.treasure2.loot.function.CharmRandomly;
+import com.someguyssoftware.treasure2.loot.function.SetSourceItem;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.loot.LootFunctionType;
@@ -33,12 +34,14 @@ import net.minecraft.util.registry.Registry;
 public class TreasureLootFunctions {
 
 	public static LootFunctionType CHARM_RANDOMLY;
+	public static LootFunctionType SET_SOURCE_ITEM;
 	
 	/**
 	 * 
 	 */
 	public static void register() {
 		CHARM_RANDOMLY = register("charm_randomly", new LootFunctionType(new CharmRandomly.Serializer())); 
+		SET_SOURCE_ITEM = register("set_source_item", new LootFunctionType(new SetSourceItem.Serializer())); 
 	}
 	
 	/**

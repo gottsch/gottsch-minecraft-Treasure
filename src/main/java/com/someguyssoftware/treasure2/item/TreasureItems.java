@@ -147,7 +147,16 @@ public class TreasureItems {
 	public static Adornment SILVER_RING;
 	public static Adornment GOLD_RING;
 	
+	public static Adornment COPPER_NECKLACE;
+	public static Adornment SILVER_NECKLACE;
+	public static Adornment GOLD_NECKLACE;
+	
+	public static Adornment COPPER_BRACELET;
+	public static Adornment SILVER_BRACELET;
+	public static Adornment GOLD_BACELET;
+	
 	public static Adornment ANGELS_RING;
+	public static Adornment RING_OF_FORTITUDE;
 	
 	// wither items
 	public static Item WITHER_STICK_ITEM;
@@ -563,6 +572,78 @@ public class TreasureItems {
 			}
 		};
 		
+		RING_OF_FORTITUDE = new Adornment(Treasure.MODID, "ring_of_fortitude", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(BLACK_PEARL.getRegistryName()).with($ -> {
+					$.innate(true, 2);
+					$.imbuable = false;
+					$.socketable = false;
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.AEGIS_15.createEntity());
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.REFLECTION_15.createEntity());
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		COPPER_NECKLACE = new Adornment(Treasure.MODID, TreasureConfig.ItemID.COPPER_NECKLACE, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 1);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.COPPER.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		SILVER_NECKLACE = new Adornment(Treasure.MODID, TreasureConfig.ItemID.SILVER_NECKLACE, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 2);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.SILVER.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		GOLD_NECKLACE = new Adornment(Treasure.MODID, TreasureConfig.ItemID.GOLD_NECKLACE, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 3);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		COPPER_BRACELET = new Adornment(Treasure.MODID, TreasureConfig.ItemID.COPPER_BRACELET, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 1);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.COPPER.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
 		// WITHER ITEMS
 		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_STICK_ITEM_ID, TreasureBlocks.WITHER_BRANCH, new Item.Properties());
 		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_ROOT_ITEM_ID, TreasureBlocks.WITHER_ROOT, new Item.Properties());
@@ -633,7 +714,11 @@ public class TreasureItems {
 				COPPER_RING,
 				SILVER_RING,
 				GOLD_RING,
-				ANGELS_RING
+				ANGELS_RING,
+				RING_OF_FORTITUDE,
+				COPPER_NECKLACE,
+				SILVER_NECKLACE,
+				GOLD_NECKLACE
 				);
 	}
 

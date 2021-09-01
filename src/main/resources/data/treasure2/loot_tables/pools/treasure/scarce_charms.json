@@ -1,5 +1,5 @@
 {
-	"version": "1.0",
+	"version": "1.5.0",
 	"pools": [
 		{
 			"name": "scarce_charms",
@@ -79,7 +79,85 @@
 								}
 						}
 					]
-				}
+				},
+			{
+				"entryName": "adornment1",
+				"type": "item",
+				"name": "treasure2:gold_ring",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.03
+				}]
+			},
+			{
+				"entryName": "adornment2",
+				"type": "item",
+				"name": "treasure2:gold_necklace",
+				"weight": 15,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.03
+				}]
+			},
+			{
+				"entryName": "adornment3",
+				"type": "item",
+				"name": "treasure2:silver_ring",
+				"weight": 15,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.03
+				}],
+				"functions": [{
+					"function": "treasure2:set_source_item",
+					"sourceItem": "treasure2:topaz" 
+				}]
+			},
+			{
+				"entryName": "adornment4",
+				"type": "item",
+				"name": "treasure2:gold_ring",
+				"weight": 10,
+				"quality": 2,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.03
+				}],
+				"functions": [{
+					"function": "treasure2:set_source_item",
+					"sourceItem": "treasure2:onyx"
+				}]
+			},
+			{
+				"entryName": "adornment5",
+				"type": "item",
+				"name": "treasure2:gold_ring",
+				"weight": 10,
+				"quality": 2,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.04
+				}],
+				"functions": [{
+					"function": "treasure2:set_sourceItem",
+					"sourceItem": "minecraft:diamond"
+				}]
+			},
+			{
+				"entryName": "adornment6",
+				"type": "item",
+				"name": "treasure2:gold_ring",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.025
+				}],
+				"functions": [{
+					"function": "treasure2:set_source_item",
+					"sourceItem": "minecraft:emerald"
+				}]
+			}		
 			]
 		}
 	]

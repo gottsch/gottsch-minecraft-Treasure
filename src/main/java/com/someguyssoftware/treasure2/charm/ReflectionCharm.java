@@ -103,8 +103,7 @@ public class ReflectionCharm extends Charm {
 		tooltip.add(new StringTextComponent(" ")
 				.append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
 		tooltip.add(new StringTextComponent(" ")
-				// TODO crud all these rates need to pull from the charm!
-				.append(new TranslationTextComponent("tooltip.charm.rate.reflection", Math.round(this.getMaxPercent()*100), entity.getDuration()).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
+				.append(new TranslationTextComponent("tooltip.charm.rate.reflection", Math.round(this.getMaxPercent()*100), this.getMaxDuration()).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
 
 	}
 
