@@ -143,6 +143,7 @@ public class CharmRandomly extends LootFunction {
 					}
 				}
 				else {
+					// TODO determine if there is a source item, get the min spawn level and add that to the Predicate
 					// if charms list is empty and levels are null, create a default list of minor charms
 					Optional<List<ICharm>> defaultCharms = TreasureCharmRegistry.getBy(c -> {
 						return c.getLevel() <= cap.getMaxCharmLevel() && !c.isCurse();

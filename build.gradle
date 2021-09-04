@@ -108,7 +108,7 @@ repositories {
     }
 }
 
-def gottschcore_path="../GottschCore/build/libs/GottschCore-mc${mc_version}-f${gottschcore_forge_version}-v${gottschcore_version}.jar"
+def gottschcore_path="../gottsch-minecraft-GottschCore/build/libs/GottschCore-mc${mc_version}-f${gottschcore_forge_version}-v${gottschcore_version}.jar"
 println gottschcore_path
 dependencies {
     // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
@@ -137,3 +137,31 @@ jar {
     }
 }
 
+// an array containing destination paths
+def destinations = ["${dest_folder}", "${mods_folder}"]
+
+task deleteOldJar(type: Delete) {
+	destinations.each { destination ->
+		print 'deleting... '
+		println destination
+        //delete fileTree(destination) {
+        //    include "**/${mod_name}-*.jar"
+        //}
+        delete "${destination}/${mod_name}-mc${mc_version}-f${forge_version}-*.jar"
+    }
+}
+    
+task copyJar() {
+	// iterate over the array with destination paths
+ 	destinations.each { destination ->
+        // for every destination define new CopySpec
+        println destination
+        copy {
+            from jar
+            into destination
+        }
+    }
+}
+
+deleteOldJar.dependsOn minecraft
+copyJar.dependsOn deleteOldJar

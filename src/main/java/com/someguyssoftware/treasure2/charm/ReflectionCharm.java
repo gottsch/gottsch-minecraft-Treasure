@@ -37,10 +37,12 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
+ * Fired on LivingHurtEvent, so the original amount of damage INTENDED (ie not actual Damage) to be
+ * inflicated on Player is reflected back on mob.
  * reflection: value = # of uses, duration = range, percent = % of damage reflected
  * @author Mark Gottschling on Aug 23, 2021
  *
@@ -48,7 +50,7 @@ import net.minecraftforge.eventbus.api.Event;
 public class ReflectionCharm extends Charm {
 	public static String REFLECTION_TYPE = "reflection";
 
-	private static final Class<?> REGISTERED_EVENT = LivingDamageEvent.class;
+	private static final Class<?> REGISTERED_EVENT = LivingHurtEvent.class;
 
 	/**
 	 * 
@@ -61,35 +63,36 @@ public class ReflectionCharm extends Charm {
 	protected ReflectionCharm(Charm.Builder builder) {
 		super(builder);
 	}
-	
+
 	public Class<?> getRegisteredEvent() {
 		return REGISTERED_EVENT;
 	}
 
 	@Override
 	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
+		Treasure.LOGGER.debug("calling reflectiion");
 		boolean result = false;
 		if (entity.getValue() > 0 && player.isAlive()) {
-			// get player position
-			double px = player.position().x;
-			double py = player.position().y;
-			double pz = player.position().z;
-			
-			// get the source and amount
-			double amount = ((LivingDamageEvent)event).getAmount();
-			// calculate the new amount
-			double reflectedAmount = amount * entity.getPercent();
-			int range = entity.getDuration();
-			
-			List<MobEntity> mobs = world.getEntitiesOfClass(MobEntity.class, new AxisAlignedBB(px - range, py - range, pz - range, px + range, py + range, pz + range));
-			mobs.forEach(mob -> {
-				boolean flag = mob.hurt(DamageSource.playerAttack(player), (float) reflectedAmount);
-				Treasure.LOGGER.debug("reflected damage {} onto mob -> {} was successful -> {}", reflectedAmount, mob.getName(), flag);
-			});
-			
-			// get all the mob within a radius
-			entity.setValue(entity.getValue() - 1.0);
-			result = true;
+			if (((LivingHurtEvent)event).getEntity() instanceof PlayerEntity) {
+				// get player position
+				double px = player.position().x;
+				double py = player.position().y;
+				double pz = player.position().z;
+
+				// get the source and amount
+				double amount = ((LivingHurtEvent)event).getAmount();
+				// calculate the new amount
+				double reflectedAmount = amount * entity.getPercent();
+				int range = entity.getDuration();
+				// get all the mob within a radius
+				List<MobEntity> mobs = world.getEntitiesOfClass(MobEntity.class, new AxisAlignedBB(px - range, py - range, pz - range, px + range, py + range, pz + range));
+				mobs.forEach(mob -> {
+					boolean flag = mob.hurt(DamageSource.playerAttack(player), (float) reflectedAmount);
+					Treasure.LOGGER.debug("reflected damage {} onto mob -> {} was successful -> {}", reflectedAmount, mob.getName(), flag);
+				});
+				entity.setValue(entity.getValue() - 1.0);
+				result = true;
+			}
 		}    		
 		return result;
 	}

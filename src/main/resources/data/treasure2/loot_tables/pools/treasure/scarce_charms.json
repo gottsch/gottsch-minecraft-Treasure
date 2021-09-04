@@ -1,164 +1,56 @@
 {
-	"version": "1.5.0",
-	"pools": [
-		{
-			"name": "scarce_charms",
-			"rolls": 1,
-			"entries": [
-				{
-					"entryName": "charm1",
-					"type": "item",
-					"name": "treasure2:copper_charm",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "random_chance",
-							"chance": 0.2
-						}
-					],
-					"functions": [
-						{
-							"function": "treasure2:charm_randomly",
-							"levels": 3
-						}
-					]
-				},
-				{
-					"entryName": "charm2",
-					"type": "item",
-					"name": "treasure2:silver_charm",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "random_chance",
-							"chance": 0.2
-						}
-					],
-					"functions": [
-						{
-							"function": "treasure2:charm_randomly",
-							"levels": 5
-						}
-					]
-				},
-				{
-					"entryName": "charm3",
-					"type": "item",
-					"name": "treasure2:gold_charm",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "random_chance",
-							"chance": 0.1
-						}
-					],
-					"functions": [
-						{
-							"function": "treasure2:charm_randomly",
-							"levels": 8
-						}
-					]
-				},
-				{
-					"entryName": "charm_book",
-					"type": "item",
-					"name": "treasure2:charm_book",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "random_chance",
-							"chance": 0.10
-						}
-					],
-					"functions": [
-						{
-							"function": "treasure2:charm_randomly",
-							"levels": {
-								"min":5,
-								"max": 8
-								}
-						}
-					]
-				},
-			{
-				"entryName": "adornment1",
-				"type": "item",
-				"name": "treasure2:gold_ring",
-				"weight": 10,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.03
-				}]
-			},
-			{
-				"entryName": "adornment2",
-				"type": "item",
-				"name": "treasure2:gold_necklace",
-				"weight": 15,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.03
-				}]
-			},
-			{
-				"entryName": "adornment3",
-				"type": "item",
-				"name": "treasure2:silver_ring",
-				"weight": 15,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.03
-				}],
-				"functions": [{
-					"function": "treasure2:set_source_item",
-					"sourceItem": "treasure2:topaz" 
-				}]
-			},
-			{
-				"entryName": "adornment4",
-				"type": "item",
-				"name": "treasure2:gold_ring",
-				"weight": 10,
-				"quality": 2,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.03
-				}],
-				"functions": [{
-					"function": "treasure2:set_source_item",
-					"sourceItem": "treasure2:onyx"
-				}]
-			},
+	"version": "1.5.9",
+	"pools": [{
+		"name": "scarce_charms",
+		"rolls": 1,
+		"entries": [
 			{
 				"entryName": "adornment5",
 				"type": "item",
-				"name": "treasure2:gold_ring",
-				"weight": 10,
-				"quality": 2,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.04
-				}],
+				"name": "minecraft:melon",
+				"weight": 1,
 				"functions": [{
-					"function": "treasure2:set_sourceItem",
-					"sourceItem": "minecraft:diamond"
+					"function": "treasure2:random_adornment",
+					"type": "ring",
+					"material": "gold"
 				}]
 			},
 			{
 				"entryName": "adornment6",
 				"type": "item",
-				"name": "treasure2:gold_ring",
-				"weight": 10,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.025
-				}],
-				"functions": [{
-					"function": "treasure2:set_source_item",
-					"sourceItem": "minecraft:emerald"
-				}]
-			}		
-			]
-		}
-	]
+				"name": "minecraft:melon",
+				"weight": 1,
+				"functions": [
+					{
+						"function": "treasure2:random_adornment",
+						"type": "necklace"
+					},
+					{
+						"function": "treasure2:charm_randomly",
+						"levels": 5
+					}			
+				]
+			},
+			{
+				"entryName": "adornment7",
+				"type": "item",
+				"name": "minecraft:stick",
+				"weight": 150,
+				"functions": [
+					{
+						"function": "treasure2:random_adornment",
+						"type": "ring",
+						"material": "silver"
+					},
+					{
+						"function": "treasure2:set_source_item",
+						"levels": { 
+							"min": 6,
+							"max": 9
+						}
+					}			
+				]
+			}	
+		]
+	}]
 }

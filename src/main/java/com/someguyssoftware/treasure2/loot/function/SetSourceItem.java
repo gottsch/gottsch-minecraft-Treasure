@@ -19,7 +19,11 @@
  */
 package com.someguyssoftware.treasure2.loot.function;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
@@ -27,6 +31,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.loot.TreasureLootFunctions;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
@@ -35,6 +40,8 @@ import net.minecraft.loot.IRandomRange;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootFunction;
 import net.minecraft.loot.LootFunctionType;
+import net.minecraft.loot.RandomRanges;
+import net.minecraft.loot.RandomValueRange;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.util.JSONUtils;
@@ -46,10 +53,17 @@ import net.minecraft.util.ResourceLocation;
  *
  */
 public class SetSourceItem extends LootFunction {
+	private static String SOURCE_ITEM = "sourceItem";
+	private static String LEVELS = "levels";
+	private static float MIN_GEM_LEVEL = 4F;
+	private static float MAX_GEM_LEVEL = 11F;
+
+	// the source item to use
 	private ResourceLocation sourceItem;
+	// a list of source item to randomly select from
 	private List<ResourceLocation> sourceItems;
+	// a range of source item levels to select from
 	private IRandomRange levels;
-	private Boolean strict;
 
 	/**
 	 * 
@@ -59,11 +73,10 @@ public class SetSourceItem extends LootFunction {
 		super(conditions);
 		this.sourceItem = sourceItem;
 	}
-	
-	protected SetSourceItem(ILootCondition[] conditions, IRandomRange levels, Boolean strict) {
+
+	protected SetSourceItem(ILootCondition[] conditions, IRandomRange levels) {
 		super(conditions);
 		this.levels = levels;
-		this.strict = strict;
 	}
 
 
@@ -74,10 +87,38 @@ public class SetSourceItem extends LootFunction {
 
 	@Override
 	protected ItemStack run(ItemStack stack, LootContext context) {
-		Treasure.LOGGER.debug("selected item from charm pool -> {}", stack.getDisplayName());
 		stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
-			Treasure.LOGGER.debug("has charm cap");
-			cap.setSourceItem(this.sourceItem);
+			if (this.sourceItem != null) {
+				cap.setSourceItem(this.sourceItem);
+			}
+			else {
+				// pick a sourceitem by level
+				List<ResourceLocation> items = new ArrayList<>(3);
+				Random random = context.getRandom();
+				AtomicInteger level = new AtomicInteger(this.levels.getInt(random));
+				AtomicBoolean isFound = new AtomicBoolean(false);
+				AtomicInteger counter = new AtomicInteger(1);
+				
+				// loop through multiple times, decrementing level until a source item is found (max 3x)
+				while (!isFound.get() && counter.getAndIncrement() < 3) {
+					// get the sourceItem from registry
+					TreasureCharms.getGemValues().forEach(gem -> {
+						if (gem.getMaxLevel() == level.get()) {
+							items.add(gem.getName());
+							isFound.set(true);
+						}
+					});
+					if (isFound.get()) {
+						break;
+					}
+					level.decrementAndGet();
+				}
+
+				if (items.size() > 0) {
+					ResourceLocation source = items.get(random.nextInt(items.size()));
+					cap.setSourceItem(source);
+				}
+			}
 		});
 		return stack;
 	}
@@ -92,6 +133,7 @@ public class SetSourceItem extends LootFunction {
 	 */
 	public static class Builder extends LootFunction.Builder<SetSourceItem.Builder> {
 		private ResourceLocation sourceItem;
+		private IRandomRange levels;
 
 		protected SetSourceItem.Builder getThis() {
 			return this;
@@ -99,6 +141,11 @@ public class SetSourceItem extends LootFunction {
 
 		public SetSourceItem.Builder withSourceItem(ResourceLocation sourceItem) {
 			this.sourceItem = sourceItem;
+			return this;
+		}
+		
+		public SetSourceItem.Builder withLevels(IRandomRange levels) {
+			this.levels = levels;
 			return this;
 		}
 
@@ -112,23 +159,32 @@ public class SetSourceItem extends LootFunction {
 
 		@Override
 		public void serialize(JsonObject json, SetSourceItem value, JsonSerializationContext context) {
-			json.add("sourceItem", new JsonPrimitive(value.sourceItem.toString()));
+			json.add(SOURCE_ITEM, new JsonPrimitive(value.sourceItem.toString()));
 		}
 
 		@Override
 		public SetSourceItem deserialize(JsonObject json, JsonDeserializationContext context,
 				ILootCondition[] conditions) {
 
+
 			ResourceLocation sourceItem = null;
-			if (json.has("sourceItem")) {
-				String typeString = JSONUtils.getAsString(json, "sourceItem");
+			if (json.has(SOURCE_ITEM)) {
+				String typeString = JSONUtils.getAsString(json, SOURCE_ITEM);
 				try {
 					sourceItem = ModUtils.asLocation(typeString);
 				}
 				catch(Exception e) {}
 			}
-			return new SetSourceItem(conditions, sourceItem);
-		}
+			if (sourceItem != null) {
+				return  new SetSourceItem(conditions, sourceItem);
+			}
 
+			IRandomRange levels = new RandomValueRange(MIN_GEM_LEVEL, MAX_GEM_LEVEL);
+			if (json.has(LEVELS)) {
+				levels = RandomRanges.deserialize(json.get(LEVELS), context);	
+			}
+
+			return new SetSourceItem(conditions, levels);
+		}
 	}
 }

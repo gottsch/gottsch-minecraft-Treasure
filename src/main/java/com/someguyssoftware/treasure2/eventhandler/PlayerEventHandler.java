@@ -50,6 +50,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -105,6 +106,8 @@ public class PlayerEventHandler {
 			return;
 		}
 
+		// NOTE mimic checkCharms...(LivingHurEvent) for checking the player entity, IFF a charm causes a mob damage.
+		
 		// do something to player every update tick:
 		if (event.getEntity() instanceof PlayerEntity) {
 			// get the player
@@ -122,10 +125,24 @@ public class PlayerEventHandler {
 		if (WorldInfo.isClientSide(event.getEntity().level)) {
 			return;
 		}
-
-		if (event.getSource().getDirectEntity() instanceof PlayerEntity) {
+		
+//		if (event.getSource().getDirectEntity() instanceof PlayerEntity) {
+		
+		ServerPlayerEntity player = null;
+		if (event.getEntity() instanceof PlayerEntity) {
+			player = (ServerPlayerEntity) event.getEntity();
+		}
+		else if (event.getSource().getEntity() instanceof PlayerEntity) {
+			player = (ServerPlayerEntity) event.getSource().getEntity();
+		}
+		
+		if (player != null) {
+			Treasure.LOGGER.debug("entity -> {}, source -> {}", event.getEntity().getName().getString(), player.getName().getString());
+//		if (event.getEntity() instanceof PlayerEntity) {
+			Treasure.LOGGER.debug("hurt damage amount -> {}", event.getAmount());
 			// get the player
-			ServerPlayerEntity player = (ServerPlayerEntity) event.getSource().getDirectEntity();
+//			ServerPlayerEntity player = (ServerPlayerEntity) event.getSource().getDirectEntity();
+//			ServerPlayerEntity player = (ServerPlayerEntity) event.getEntity();
 			processCharms(event, player);
 		}
 	}

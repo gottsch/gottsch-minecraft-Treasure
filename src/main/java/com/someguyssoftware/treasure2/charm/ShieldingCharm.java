@@ -57,7 +57,7 @@ public class ShieldingCharm extends Charm {
 	protected ShieldingCharm(Charm.Builder builder) {
 		super(builder);
 	}
-	
+
 	public Class<?> getRegisteredEvent() {
 		return REGISTERED_EVENT;
 	}
@@ -66,24 +66,26 @@ public class ShieldingCharm extends Charm {
 	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
 		boolean result = false;
 		if (entity.getValue() > 0 && player.isAlive()) {
-			// get the source and amount
-			double amount = ((LivingDamageEvent)event).getAmount();
-			// calculate the new amount
-			double newAmount = 0;
-			double amountToCharm = amount * entity.getPercent();
-			double amountToPlayer = amount - amountToCharm;
-			//    			Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
-			if (entity.getValue() >= amountToCharm) {
-				entity.setValue(entity.getValue() - amountToCharm);
-				newAmount = amountToPlayer;
-			}
-			else {
-				newAmount = amount - entity.getValue();
-				entity.setValue(0);
-			}
-			((LivingDamageEvent)event).setAmount((float) newAmount);
-			result = true;
-		}    		
+			if (((LivingDamageEvent)event).getEntity() instanceof PlayerEntity) {
+				// get the source and amount
+				double amount = ((LivingDamageEvent)event).getAmount();
+				// calculate the new amount
+				double newAmount = 0;
+				double amountToCharm = amount * entity.getPercent();
+				double amountToPlayer = amount - amountToCharm;
+				//    			Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
+				if (entity.getValue() >= amountToCharm) {
+					entity.setValue(entity.getValue() - amountToCharm);
+					newAmount = amountToPlayer;
+				}
+				else {
+					newAmount = amount - entity.getValue();
+					entity.setValue(0);
+				}
+				((LivingDamageEvent)event).setAmount((float) newAmount);
+				result = true;
+			}    		
+		}
 		return result;
 	}
 
