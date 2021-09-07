@@ -84,6 +84,9 @@ public class TreasureCharms {
 	public static final ICharm GREATER_HEALING_13 = makeGreaterHealing(13);
 	public static final ICharm GREATER_HEALING_14 = makeGreaterHealing(14);
 	public static final ICharm GREATER_HEALING_15 = makeGreaterHealing(15);
+	
+	// special levels
+	public static final ICharm GREATER_HEALING_20 = makeGreaterHealing(20);
 		
 	public static final ICharm SHIELDING_1 = makeShielding(1);
 	public static final ICharm SHIELDING_2 = makeShielding(2);
@@ -258,6 +261,17 @@ public class TreasureCharms {
 		METAL_REGISTRY.put(GOLD.getName(), GOLD);
 	}
 	
+	
+	public static class SortByLevel implements Comparator<CharmableMaterial> {
+		@Override
+		public int compare(CharmableMaterial p1, CharmableMaterial p2) {
+			return Integer.compare(p1.getMaxLevel(), p2.getMaxLevel());
+		}
+	};
+	
+	// comparator on level
+	public static Comparator<CharmableMaterial> levelComparator = new SortByLevel();
+	
 	/**
 	 * The gem/sourceItem portion of a charm capability takes in a RegistryName of an Item,
 	 * there it needs to be setup and registered in a FML event so that the Items being referenced
@@ -285,12 +299,12 @@ public class TreasureCharms {
 		GEM_REGISTRY.put(BLACK_PEARL.getName(), WHITE_PEARL);
 	}
 	
-	public static Comparator<CharmableMaterial> levelComparator = new Comparator<CharmableMaterial>() {
-		@Override
-		public int compare(CharmableMaterial p1, CharmableMaterial p2) {
-			return Integer.compare(p1.getMaxLevel(), p2.getMaxLevel());
-		}
-	};
+//	public static Comparator<CharmableMaterial> levelComparator = new Comparator<CharmableMaterial>() {
+//		@Override
+//		public int compare(CharmableMaterial p1, CharmableMaterial p2) {
+//			return Integer.compare(p1.getMaxLevel(), p2.getMaxLevel());
+//		}
+//	};
 	
 	public static List<CharmableMaterial> getGemValues() {
 		return new ArrayList<>(GEM_REGISTRY.values());

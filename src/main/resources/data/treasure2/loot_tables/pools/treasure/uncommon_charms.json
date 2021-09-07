@@ -1,5 +1,5 @@
 {
-	"version": "1.0",
+	"version": "1.5",
 	"pools": [
 		{
 			"name": "uncommon_charms",
@@ -58,7 +58,21 @@
 							"levels": 3
 						}
 					]
-				}				
+				},
+				{
+					"entryName": "adornment1",
+					"type": "minecraft:item",
+					"name": "treasure2:copper_ring",
+					"weight": 10,
+					"conditions": [{
+						"condition": "random_chance",
+						"chance": 0.03
+					}],
+					"functions": [{
+						"function": "treasure2:random_adornment",
+						"material": "copper"
+					}]
+				}			
 			]
 		}		
 	]

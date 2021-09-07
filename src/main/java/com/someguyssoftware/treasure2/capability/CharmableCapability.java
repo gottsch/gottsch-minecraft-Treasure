@@ -20,6 +20,7 @@
 package com.someguyssoftware.treasure2.capability;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,7 @@ import com.someguyssoftware.treasure2.charm.CharmableMaterial;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
+import com.someguyssoftware.treasure2.charm.TreasureCharms.SortByLevel;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -87,7 +89,16 @@ public class CharmableCapability implements ICharmableCapability {
 	private int maxImbueSize;
 	private int maxInnateSize;
 
-
+	public static class SortByLevel implements Comparator<ICharmEntity> {
+		@Override
+		public int compare(ICharmEntity e1, ICharmEntity e2) {
+			return e1.getCharm().getLevel() - e2.getCharm().getLevel();
+		}
+	};
+	
+	// comparator on charm level
+	public static Comparator<ICharmEntity> levelComparator = new SortByLevel();
+	
 	/**
 	 * 
 	 */
@@ -106,6 +117,7 @@ public class CharmableCapability implements ICharmableCapability {
 		this.bindable = builder.bindable;
 		this.innate = builder.innate;
 		this.maxInnateSize = innate ? Math.max(1, builder.maxInnateSize) : 0;
+		this.imbuing = builder.imbuing;
 		this.imbuable = builder.imbuable;
 		this.maxImbueSize = imbuable ? Math.max(1, builder.maxImbueSize) : 0;
 		this.socketable = builder.socketable;
@@ -233,7 +245,6 @@ public class CharmableCapability implements ICharmableCapability {
 
 	@Override
 	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
-//		tooltip.add(new TranslationTextComponent("tooltip.charmable.usage").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
 		tooltip.add(new TranslationTextComponent("tooltip.label.charms").withStyle(TextFormatting.YELLOW, TextFormatting.BOLD));
 
 		// create header text for inventory type
@@ -253,20 +264,24 @@ public class CharmableCapability implements ICharmableCapability {
 	 */
 	private void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag, InventoryType inventoryType, boolean titleFlag) {
 		List<ICharmEntity> entityList = getCharmEntities()[inventoryType.value];
-		if (entityList != null && !entityList.isEmpty()) {
-			// add title
-			if (titleFlag) {
-				TextFormatting color = inventoryType == InventoryType.SOCKET ? TextFormatting.BLUE : TextFormatting.DARK_RED;
-				tooltip.add(
-						new TranslationTextComponent("tooltip.label.charm.type." + inventoryType.name().toLowerCase()).withStyle(color)
-						.append(getCapacityHoverText(stack, world, entityList).withStyle(TextFormatting.WHITE))
-						);
-			}
-			// add charms
-			for (ICharmEntity entity : entityList) {
-				entity.getCharm().appendHoverText(stack, world, tooltip, flag, entity);
-			}
-		}		
+		// test if the cap has the inventory type ability
+		switch (inventoryType) {
+			case INNATE: if (!isInnate()) { return;}; break;
+			case IMBUE: if (!isImbuable()) { return;}; break;
+			case SOCKET: if (!isSocketable()) { return;}; break;
+		}
+
+		// add title
+		if (titleFlag) {
+			tooltip.add(
+					new TranslationTextComponent("tooltip.charmable.inventory." + inventoryType.name().toLowerCase()).withStyle(TextFormatting.GOLD)
+					.append(getCapacityHoverText(stack, world, entityList).withStyle(TextFormatting.WHITE))
+					);
+		}
+		// add charms
+		for (ICharmEntity entity : entityList) {
+			entity.getCharm().appendHoverText(stack, world, tooltip, flag, entity);
+		}	
 	}
 
 	@SuppressWarnings("deprecation")

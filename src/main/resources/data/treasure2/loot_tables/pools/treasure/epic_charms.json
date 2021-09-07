@@ -1,170 +1,160 @@
 {
 	"version": "1.5.0",
-	"pools": [
-		{
-			"name": "epic_charms",
-			"rolls": 1,
-			"entries": [
-				{
-					"entryName": "charm1",
-					"type": "item",
-					"name": "treasure2:gold_charm",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "random_chance",
-							"chance": 0.2
+	"pools": [{
+		"name": "epic_charms",
+		"rolls": 1,
+		"entries": [{
+				"entryName": "charm1",
+				"type": "item",
+				"name": "treasure2:gold_charm",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.2
+				}],
+				"functions": [{
+					"function": "treasure2:charm_randomly",
+					"levels": {
+						"min": 5,
+						"max": 10
+					}
+				}]
+			},
+			{
+				"entryName": "charm2",
+				"type": "item",
+				"name": "treasure2:gold_charm",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.15
+				}],
+				"functions": [{
+					"function": "treasure2:charm_randomly",
+					"levels": {
+						"min": 8,
+						"max": 13
+					}
+				}]
+			},
+			{
+				"entryName": "charm3",
+				"type": "item",
+				"name": "treasure2:gold_charm",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.10
+				}],
+				"functions": [{
+					"function": "treasure2:charm_randomly",
+					"levels": {
+						"min": 10,
+						"max": 15
+					}
+				}]
+			},
+			{
+				"entryName": "charm_book",
+				"type": "item",
+				"name": "treasure2:charm_book",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.10
+				}],
+				"functions": [{
+					"function": "treasure2:charm_randomly",
+					"levels": {
+						"min": 10,
+						"max": 15
+					}
+				}]
+			},
+			{
+				"entryName": "adornment1",
+				"type": "item",
+				"name": "treasure2:gold_ring",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.08
+				}],
+				"functions": [{
+						"function": "treasure2:random_adornment",
+						"material": "gold"
+					},
+					{
+						"function": "treasure2:charm_randomly",
+						"levels": {
+							"min": 10,
+							"max": 15
 						}
-					],
-					"functions": [
-						{
-							"function": "treasure2:charm_randomly",
-							"levels": {
-								"min":5,
-								"max": 10
-								}
+					}
+				]
+			},
+			{
+				"entryName": "adornment2",
+				"type": "item",
+				"name": "treasure2:gold_ring",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.05
+				}],
+				"functions": [{
+						"function": "treasure2:random_adornment",
+						"material": "gold"
+					},
+					{
+						"function": "treasure2:charm_randomly",
+						"levels": {
+							"min": 5,
+							"max": 9
 						}
-					]
-				},
-				{
-					"entryName": "charm2",
-					"type": "item",
-					"name": "treasure2:gold_charm",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "random_chance",
-							"chance": 0.15
+					},
+					{
+						"function": "treasure2:charm_randomly",
+						"levels": {
+							"min": 6,
+							"max": 11
 						}
-					],
-					"functions": [
-						{
-							"function": "treasure2:charm_randomly",
-							"levels": {
-								"min": 8,
-								"max": 13
-								}
-						}
-					]
-				},
-				{
-					"entryName": "charm3",
-					"type": "item",
-					"name": "treasure2:gold_charm",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "random_chance",
-							"chance": 0.10
-						}
-					],
-					"functions": [
-						{
-							"function": "treasure2:charm_randomly",
-							"levels": {
-								"min":10,
-								"max": 15
-								}
-						}
-					]
-				},
-				{
-					"entryName": "charm_book",
-					"type": "item",
-					"name": "treasure2:charm_book",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "random_chance",
-							"chance": 0.10
-						}
-					],
-					"functions": [
-						{
-							"function": "treasure2:charm_randomly",
-							"levels": {
-								"min":10,
-								"max": 15
-								}
-						}
-					]
-				},
-				{
-					"entryName": "adornment1",
-					"type": "item",
-					"name": "treasure2:gold_ring",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "random_chance",
-							"chance": 0.08
-						}
-					],
-					"functions": [
-						{
-							"function": "treasure2:charm_randomly",
-							"levels": {
-								"min":10,
-								"max": 15
-								}
-						}	
-					]			
-				},
-				{
-					"entryName": "adornment2",
-					"type": "item",
-					"name": "treasure2:gold_ring",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "random_chance",
-							"chance": 0.08
-						}
-					],
-					"functions": [
-						{
-							"function": "treasure2:charm_randomly",
-							"levels": {
-								"min":5,
-								"max": 9
-								}
-						},
-						{
-							"function": "treasure2:charm_randomly",
-							"levels": {
-								"min":6,
-								"max": 11
-								}
-						}
-					]			
-				},
-				{
-					"entryName": "ring_of_fortitude",
-					"type": "item",
-					"name": "treasure2:ring_of_fortitude",
-					"weight": 10,
-					"quality": 1,
-					"conditions": [
-						{
-							"condition": "random_chance",
-							"chance": 0.05
-						}
-					]
-				},
-				{
-					"entryName": "angels_ring",
-					"type": "item",
-					"name": "treasure2:angels_ring",
-					"weight": 10,
-					"quality": 1,
-					"conditions": [
-						{
-							"condition": "random_chance",
-							"chance": 0.03
-						}
-					]
-				}				
-			]
-		}
-	]
+					}
+				]
+			},
+			{
+				"entryName": "medics_token",
+				"type": "minecraft:item",
+				"name": "treasure2:medics_token",
+				"weight": 10,
+				"quality": 1,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.05
+				}]
+			},
+			{
+				"entryName": "ring_of_fortitude",
+				"type": "item",
+				"name": "treasure2:ring_of_fortitude",
+				"weight": 10,
+				"quality": 1,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.05
+				}]
+			},
+			{
+				"entryName": "angels_ring",
+				"type": "item",
+				"name": "treasure2:angels_ring",
+				"weight": 10,
+				"quality": 1,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.03
+				}]
+			}
+		]
+	}]
 }

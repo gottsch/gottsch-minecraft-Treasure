@@ -24,12 +24,9 @@ import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
-import com.someguyssoftware.treasure2.charm.BaseMaterial2;
 import com.someguyssoftware.treasure2.charm.Charm;
-import com.someguyssoftware.treasure2.charm.CharmableMaterial;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
-import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.nbt.CompoundNBT;

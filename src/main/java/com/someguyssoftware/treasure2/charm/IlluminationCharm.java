@@ -114,7 +114,7 @@ public class IlluminationCharm extends Charm {
 								if (block == Blocks.TORCH) {
 									//	Treasure.logger.debug("set torch to air at -> {}", lastCoords.toShortString());
 //									world.setBlockToAir(lastCoords.toPos());
-									Block.updateOrDestroy(world.getBlockState(lastCoords.toPos()), Blocks.AIR.defaultBlockState(), world, lastCoords.toPos(), 3);
+									Block.updateOrDestroy(world.getBlockState(lastCoords.toPos()), Blocks.AIR.defaultBlockState(), world, lastCoords.toPos(), 0);
 								}
 								else {
 									//	Treasure.logger.debug("torch no longer found at -> {}", currentCoords.toShortString());

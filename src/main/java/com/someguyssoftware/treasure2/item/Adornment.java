@@ -70,7 +70,6 @@ public class Adornment extends ModItem {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
-		Treasure.LOGGER.debug("{} item initiating caps", stack.getItem().getRegistryName().toString());
 		CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
 		return provider;
 	}
@@ -82,11 +81,9 @@ public class Adornment extends ModItem {
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		// charmable info
-		tooltip.add(new TranslationTextComponent("tooltip.charmable.usage").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
+		tooltip.add(new TranslationTextComponent("tooltip.charmable.usage.adornment").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
 		ICharmableCapability cap = getCap(stack);
-		if (cap.isCharmed()) {
-			cap.appendHoverText(stack, worldIn, tooltip, flagIn);
-		}
+		cap.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
 	
 	/**

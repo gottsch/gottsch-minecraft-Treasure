@@ -1,56 +1,101 @@
 {
-	"version": "1.5.9",
+	"version": "1.5",
 	"pools": [{
 		"name": "scarce_charms",
 		"rolls": 1,
-		"entries": [
-			{
-				"entryName": "adornment5",
+		"entries": [{
+				"entryName": "charm1",
 				"type": "item",
-				"name": "minecraft:melon",
-				"weight": 1,
+				"name": "treasure2:copper_charm",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.15
+				}],
 				"functions": [{
-					"function": "treasure2:random_adornment",
-					"type": "ring",
-					"material": "gold"
+					"function": "treasure2:charm_randomly",
+					"levels": 3
 				}]
 			},
 			{
-				"entryName": "adornment6",
+				"entryName": "charm2",
 				"type": "item",
-				"name": "minecraft:melon",
-				"weight": 1,
-				"functions": [
-					{
-						"function": "treasure2:random_adornment",
-						"type": "necklace"
-					},
-					{
-						"function": "treasure2:charm_randomly",
-						"levels": 5
-					}			
-				]
+				"name": "treasure2:silver_charm",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.1
+				}],
+				"functions": [{
+					"function": "treasure2:charm_randomly",
+					"levels": 5
+				}]
 			},
 			{
-				"entryName": "adornment7",
+				"entryName": "charm3",
 				"type": "item",
-				"name": "minecraft:stick",
-				"weight": 150,
-				"functions": [
-					{
-						"function": "treasure2:random_adornment",
-						"type": "ring",
-						"material": "silver"
+				"name": "treasure2:gold_charm",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.8
+				}],
+				"functions": [{
+					"function": "treasure2:charm_randomly",
+					"levels": 8
+				}]
+			},
+			{
+				"entryName": "charm_book",
+				"type": "item",
+				"name": "treasure2:charm_book",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.8
+				}],
+				"functions": [{
+					"function": "treasure2:charm_randomly",
+					"levels": {
+						"min": 5,
+						"max": 8
+					}
+				}]
+			},
+			{
+				"entryName": "adornment1",
+				"type": "minecraft:item",
+				"name": "treasure2:copper_ring",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.8
+				}],
+				"functions": [{
+					"function": "treasure2:random_adornment"
+				}]
+			},
+			{
+				"entryName": "adornment2",
+				"type": "minecraft:item",
+				"name": "treasure2:copper_ring",
+				"weight": 10,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.03
+				}],
+				"functions": [{
+						"function": "treasure2:random_adornment"
 					},
 					{
 						"function": "treasure2:set_source_item",
-						"levels": { 
-							"min": 6,
-							"max": 9
+						"levels": {
+							"min": 4,
+							"max": 6
 						}
-					}			
+					}
 				]
-			}	
+			}
 		]
 	}]
 }

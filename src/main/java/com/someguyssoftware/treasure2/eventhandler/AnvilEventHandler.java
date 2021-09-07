@@ -19,22 +19,31 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
+import static com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType.IMBUE;
+import static com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType.INNATE;
+import static com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType.SOCKET;
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.CHARMABLE;
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY_CAPABILITY;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
+import com.someguyssoftware.treasure2.capability.CharmableCapability;
 import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
-import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.item.KeyItem;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -55,8 +64,8 @@ public class AnvilEventHandler {
 			ItemStack leftItemStack = event.getLeft();
 			ItemStack rightItemStack = event.getRight();
 
-//			Treasure.LOGGER.debug("is imbuing -> {}", leftItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuing()).orElse(false));
-//			Treasure.LOGGER.debug("is imbuable -> {}", rightItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuable()).orElse(false));
+			Treasure.LOGGER.debug("is imbuing -> {}", leftItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuing()).orElse(false));
+			Treasure.LOGGER.debug("is imbuable -> {}", rightItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuable()).orElse(false));		
 			
 			// check for KeyItems and having the durability capability
 			if (leftItemStack.getItem() instanceof KeyItem && leftItemStack.getCapability(DURABILITY_CAPABILITY).isPresent()
@@ -92,6 +101,19 @@ public class AnvilEventHandler {
 				}
 				event.setOutput(outputItem);
 			}
+			
+			// add bindable (charm) to socketable (adornment)
+			else if (leftItemStack.getCapability(CHARMABLE).map(cap -> cap.isSocketable()).orElse(false) &&
+					rightItemStack.getCapability(CHARMABLE).map(cap -> cap.isBindable()).orElse(false)) {
+				event.setCost(2);
+				transferCharmToItem(event, rightItemStack, leftItemStack, SOCKET);
+			}
+			else if (leftItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuable()).orElse(false) &&
+					rightItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuing()).orElse(false)) {
+				event.setCost(2);
+				transferCharmToItem(event, rightItemStack, leftItemStack, IMBUE);
+			}
+			
 			// else check for Book -> Charm or Book -> Adornment
 //			else if (leftItemStack.getItem() instanceof CharmBook && rightItemStack.getCapability(TreasureCapabilities.CHARMABLE).isPresent()) {}
 
@@ -109,20 +131,133 @@ public class AnvilEventHandler {
 		
 		/**
 		 * 
+		 * @param event
+		 * @param source
+		 * @param dest
+		 */
+		public static void transferCharmToItem(AnvilUpdateEvent event, ItemStack source, ItemStack dest, InventoryType destInventoryType) {
+			// determine if dest is a high enough level for source's bindable level
+			source.getCapability(CHARMABLE).ifPresent(sourceCap -> {
+				dest.getCapability(CHARMABLE).ifPresent(destCap -> {
+
+					// looking for innate
+					if (sourceCap.getCharmEntities()[InventoryType.INNATE.getValue()].size() > 0) {
+						// sort the source charm entity list in descending order
+						List<ICharmEntity> innateCharms = sourceCap.getCharmEntities()[INNATE.getValue()];
+						Comparator<ICharmEntity> comparator = Collections.reverseOrder(new CharmableCapability.SortByLevel());						
+						Collections.sort(innateCharms, comparator);
+						
+						// duplicate the dest cap charm entities
+						@SuppressWarnings("unchecked")
+						ArrayList<ICharmEntity>[] outputEntities = (ArrayList<ICharmEntity>[])new ArrayList[3];
+						outputEntities[INNATE.getValue()] = new ArrayList<>(destCap.getCharmEntities()[INNATE.getValue()]);
+						outputEntities[IMBUE.getValue()] = new ArrayList<>(destCap.getCharmEntities()[IMBUE.getValue()]);
+						outputEntities[SOCKET.getValue()] = new ArrayList<>(destCap.getCharmEntities()[SOCKET.getValue()]);
+						
+						// process each charm entity
+						for (ICharmEntity entity : innateCharms) {
+							if (destCap.getMaxCharmLevel() >= entity.getCharm().getLevel()) {
+								addCharmEntity(entity, destCap,  destInventoryType, outputEntities[ destInventoryType.getValue()]);
+							}						
+						}
+						// test if resulting output charms is larger than the original (dest) ie charms were added.
+						if (outputEntities[destInventoryType.getValue()].size() > destCap.getCharmEntities()[ destInventoryType.getValue()].size()) {
+//							// copy the dest cap to the output cap
+//							ItemStack outputStack = new ItemStack(dest.getItem());
+//							// set the source item
+//							outputStack.getCapability(CHARMABLE).ifPresent(outputCap -> {
+//								outputCap.setSourceItem(destCap.getSourceItem());
+//								// add all the charms over
+//								for (int index = 0; index < 3; index++) {
+//									for (ICharmEntity e : outputEntities[index]) {
+//										outputCap.add(InventoryType.getByValue(index), e);
+//									}
+//								}
+//							});
+							ItemStack outputStack = createCharmOutputStack(dest.getItem(), destCap.getSourceItem(), outputEntities);
+							// set the hover name
+							TreasureAdornments.setHoverName(outputStack);
+							// set the output
+							event.setOutput(outputStack);
+						}
+					}
+				});
+			});
+		}
+		
+		/**
+		 * 
+		 * @param entity
+		 * @param destCap
+		 * @param type
+		 * @param outputCharms
+		 * @return
+		 */
+		private static ICharmEntity addCharmEntity(ICharmEntity entity, ICharmableCapability destCap, InventoryType type, List<ICharmEntity> outputCharms) {
+			if (outputCharms.size() < destCap.getMaxSize(type)) {	
+				outputCharms.add(entity);
+			}
+			return entity;
+		}
+
+		/**
+		 * 
+		 * @param item
+		 * @param sourceItem
+		 * @param charmEntities
+		 * @return
+		 */
+		private static ItemStack createCharmOutputStack(Item item, ResourceLocation sourceItem, List<ICharmEntity>[] charmEntities) {
+			// copy the dest cap to the output cap
+			ItemStack outputStack = new ItemStack(item);
+			// set the source item
+			outputStack.getCapability(CHARMABLE).ifPresent(outputCap -> {
+				outputCap.setSourceItem(sourceItem);
+				// add all the charms over
+				for (int index = 0; index < 3; index++) {
+					for (ICharmEntity e : charmEntities[index]) {
+						outputCap.add(InventoryType.getByValue(index), e);
+					}
+				}
+			});
+			return outputStack;
+		}
+		
+		@Deprecated
+		private static Optional<ItemStack> createCharmOutputStack(Item item, ICharmEntity entity, ICharmableCapability destinationCap, InventoryType type) {
+			ItemStack outputStack = new ItemStack(item);
+			AtomicReference<ItemStack> stackRef = new AtomicReference<>();			
+			// first check if the existing destination inventory can hold more charms
+			if (destinationCap.getCharmEntities()[type.getValue()].size() < destinationCap.getMaxSize(type)) {		
+				outputStack.getCapability(CHARMABLE).ifPresent(outputCap -> {
+					// copy existing charms from destination to output
+					outputCap.setCharmEntities(destinationCap.getCharmEntities());
+					// copy charm entity to output innate
+					outputCap.add(type, entity);
+					// reference the output
+					stackRef.set(outputStack);
+				});
+			}
+			return stackRef.get() == null ? Optional.empty() : Optional.of(stackRef.get());
+		}
+		
+		/**
+		 * 
 		 * @param left
 		 * @param right
 		 * @return 
 		 * @return
 		 */
+		@Deprecated
 		public static void doImbueItem(AnvilUpdateEvent event, ItemStack left, ItemStack right) {
 //			ItemStack outputItem = new ItemStack(right.getItem());
 			
 			// TODO determine if the right is a high enough level
-			left.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(leftCap -> {
+			left.getCapability(CHARMABLE).ifPresent(leftCap -> {
 				Treasure.LOGGER.debug("have left cap");
-				right.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(rightCap -> {
+				right.getCapability(CHARMABLE).ifPresent(rightCap -> {
 					Treasure.LOGGER.debug("have right cap");
-					ICharmEntity leftEntity = leftCap.getCharmEntities()[InventoryType.INNATE.getValue()].get(0);	
+					ICharmEntity leftEntity = leftCap.getCharmEntities()[INNATE.getValue()].get(0);	
 					if (Treasure.LOGGER.isDebugEnabled()) {
 						Treasure.LOGGER.debug("leftEntity.level -> {}, rightCap.maxLevel -> {}", leftEntity.getCharm().getLevel(), rightCap.getMaxCharmLevel());
 					}
@@ -143,12 +278,12 @@ public class AnvilEventHandler {
 //									// TODO set the output
 //								});
 //							}
-							output = createCharmOutputStack(right.getItem(), leftEntity, rightCap, InventoryType.INNATE);
+							output = createCharmOutputStack(right.getItem(), leftEntity, rightCap, INNATE);
 						}
 						else {
 							Treasure.LOGGER.debug("charm is not a source -> do imbue");
 							// check the imbue size
-							output = createCharmOutputStack(right.getItem(), leftEntity, rightCap, InventoryType.IMBUE);
+							output = createCharmOutputStack(right.getItem(), leftEntity, rightCap, IMBUE);
 						}
 						if (output.isPresent()) {
 							Treasure.LOGGER.debug("output is present");
@@ -157,22 +292,6 @@ public class AnvilEventHandler {
 					}
 				});
 			});
-		}
-		
-		private static Optional<ItemStack> createCharmOutputStack(Item item, ICharmEntity entity, ICharmableCapability rightCap, InventoryType type) {
-			ItemStack outputStack = new ItemStack(item);
-			AtomicReference<ItemStack> stackRef = new AtomicReference<>();
-			if (rightCap.getCharmEntities()[type.getValue()].size() < rightCap.getMaxSize(type)) {				
-				outputStack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(outputCap -> {
-					// copy existing charms from right to output
-					outputCap.setCharmEntities(rightCap.getCharmEntities());
-					// copy left charm to output innate
-					outputCap.add(type, entity);
-					// reference the output
-					stackRef.set(outputStack);
-				});
-			}
-			return stackRef.get() == null ? Optional.empty() : Optional.of(stackRef.get());
 		}
 	}
 }

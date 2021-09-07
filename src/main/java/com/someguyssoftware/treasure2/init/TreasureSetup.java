@@ -78,13 +78,12 @@ public class TreasureSetup implements IModSetup {
 	 * @param event
 	 */
 	public static void clientSetup(final FMLClientSetupEvent event) {
-		Treasure.LOGGER.debug("setting up item properties dynamically...");
-		
 		// create the gem property getter
 		IItemPropertyGetter gemGetter = (stack, world, living) -> {
 			AtomicDouble d = new AtomicDouble(0);
 			stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
 				Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(cap.getSourceItem());
+
 				if (source.isPresent()) {
 					d.set(source.get().getId());
 				}
@@ -126,43 +125,16 @@ public class TreasureSetup implements IModSetup {
 						});
 						return d.floatValue();
 					});
-			ItemModelsProperties.register(TreasureItems.COPPER_RING, 
-					new ResourceLocation(Treasure.MODID, "gem"), (stack, world, living) -> {
-						AtomicDouble d = new AtomicDouble(0);
-						stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
-							Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(cap.getSourceItem());
-							if (source.isPresent()) {
-								d.set(source.get().getId());
-							}
-						});
-						return d.floatValue();
-					});
-			ItemModelsProperties.register(TreasureItems.SILVER_RING, 
-					new ResourceLocation(Treasure.MODID, "gem"), (stack, world, living) -> {
-						AtomicDouble d = new AtomicDouble(0);
-						stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
-							Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(cap.getSourceItem());
-							if (source.isPresent()) {
-								d.set(source.get().getId());
-							}
-						});
-						return d.floatValue();
-					});
-			ItemModelsProperties.register(TreasureItems.GOLD_RING, 
-					new ResourceLocation(Treasure.MODID, "gem"), (stack, world, living) -> {
-						AtomicDouble d = new AtomicDouble(0);
-						stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
-							Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(cap.getSourceItem());
-							if (source.isPresent()) {
-								d.set(source.get().getId());
-							}
-						});
-						return d.floatValue();
-					});
-			
+
+			ItemModelsProperties.register(TreasureItems.COPPER_RING, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
+			ItemModelsProperties.register(TreasureItems.SILVER_RING, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
+			ItemModelsProperties.register(TreasureItems.GOLD_RING, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
 			ItemModelsProperties.register(TreasureItems.COPPER_NECKLACE, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
 			ItemModelsProperties.register(TreasureItems.SILVER_NECKLACE, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
 			ItemModelsProperties.register(TreasureItems.GOLD_NECKLACE, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
+			ItemModelsProperties.register(TreasureItems.COPPER_BRACELET, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
+			ItemModelsProperties.register(TreasureItems.SILVER_BRACELET, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
+			ItemModelsProperties.register(TreasureItems.GOLD_BRACELET, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
 		});
 	}
 }

@@ -27,10 +27,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * 
@@ -101,5 +106,30 @@ public class TreasureAdornments {
 		else {
 			return getAll();
 		}
+	}
+	
+	/**
+	 * 
+	 * @param stack
+	 */
+	public static void setHoverName(ItemStack stack) {
+		stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
+			if (cap.getSourceItem() == null) {
+				return;
+			}
+			Item sourceItem = ForgeRegistries.ITEMS.getValue(cap.getSourceItem());
+			if (!cap.isCharmed()) {					
+				stack.setHoverName(
+						((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
+						.append(new StringTextComponent(" "))
+						.append(stack.getItem().getName(stack)));
+			}
+			else {
+				stack.setHoverName(
+						((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
+						.append(new StringTextComponent(" "))
+						.append(stack.getHoverName()));
+			}
+		});
 	}
 }

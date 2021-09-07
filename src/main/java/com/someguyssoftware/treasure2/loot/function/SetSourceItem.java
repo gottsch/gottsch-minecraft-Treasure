@@ -30,11 +30,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.loot.TreasureLootFunctions;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.IRandomRange;
 import net.minecraft.loot.LootContext;
@@ -46,6 +48,10 @@ import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * 
@@ -116,7 +122,26 @@ public class SetSourceItem extends LootFunction {
 
 				if (items.size() > 0) {
 					ResourceLocation source = items.get(random.nextInt(items.size()));
+					Treasure.LOGGER.debug("adding source item -> {}", source.toString());
 					cap.setSourceItem(source);
+					// update the hover name
+					TreasureAdornments.setHoverName(stack);
+//					Item sourceItem = ForgeRegistries.ITEMS.getValue(source);
+//					if (!cap.isCharmed()) {
+//						Treasure.LOGGER.debug("not charmed, setting hover name");
+//						stack.setHoverName(
+//								((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
+//								.append(new StringTextComponent(" "))
+//								.append(stack.getItem().getName(stack)));
+//					}
+//					else {
+//						Treasure.LOGGER.debug("charmed, setting hover name");
+//						stack.setHoverName(
+//								((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
+//								.append(new StringTextComponent(" "))
+//								.append(stack.getHoverName()));
+//					}
+					Treasure.LOGGER.debug("hover name -> {}", stack.getHoverName().getString());
 				}
 			}
 		});

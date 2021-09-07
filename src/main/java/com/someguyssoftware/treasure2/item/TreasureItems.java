@@ -155,8 +155,12 @@ public class TreasureItems {
 	public static Adornment SILVER_BRACELET;
 	public static Adornment GOLD_BRACELET;
 	
-	public static Adornment ANGELS_RING;
-	public static Adornment RING_OF_FORTITUDE;
+	// special adornments
+	public static Adornment ANGELS_RING; // 3x level15 innate
+	public static Adornment RING_OF_FORTITUDE; // 2x level15 innate
+	public static Adornment MEDICS_TOKEN; // 1x level16 innate
+	public static Adornment SALANDAARS_WARD = null; // 1x level16 innate
+	public static Adornment ADEPHAGIAS_BOUNTY = null; // 1x level16 innate
 	
 	// wither items
 	public static Item WITHER_STICK_ITEM;
@@ -557,7 +561,7 @@ public class TreasureItems {
 		
 		ANGELS_RING = new Adornment(Treasure.MODID, "angels_ring", new Item.Properties()) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
-				ICharmableCapability cap = new CharmableCapability.Builder(SAPPHIRE.getRegistryName()).with($ -> {
+				ICharmableCapability cap = new CharmableCapability.Builder(WHITE_PEARL.getRegistryName()).with($ -> {
 					$.innate(true, 3);
 					$.imbuable = false;
 					$.socketable = false;
@@ -626,6 +630,21 @@ public class TreasureItems {
 					$.executing(true);
 					$.baseMaterial = TreasureCharms.GOLD.getName();
 				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		MEDICS_TOKEN = new Adornment(Treasure.MODID, "medics_token", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(SAPPHIRE.getRegistryName()).with($ -> {
+					$.innate(true, 1);
+					$.imbuable = false;
+					$.socketable = false;
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.GREATER_HEALING_20.createEntity());
 				return new CharmableCapabilityProvider(cap);
 			}
 		};
@@ -747,6 +766,7 @@ public class TreasureItems {
 				COPPER_NECKLACE,
 				SILVER_NECKLACE,
 				GOLD_NECKLACE,
+				MEDICS_TOKEN,
 				COPPER_BRACELET,
 				SILVER_BRACELET,
 				GOLD_BRACELET

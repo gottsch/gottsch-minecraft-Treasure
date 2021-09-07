@@ -10,7 +10,7 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.entity.TreasureEntities;
-import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
+import com.someguyssoftware.treasure2.eventhandler.CharmEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.init.TreasureSetup;
 import com.someguyssoftware.treasure2.network.TreasureNetworking;
@@ -86,7 +86,7 @@ public class Treasure implements IMod {
 
 		// needs to be registered here instead of @Mod.EventBusSubscriber because we need to pass in a constructor argument
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
-		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler()); // need to register here?
+		MinecraftForge.EVENT_BUS.register(new CharmEventHandler()); // need to register here?
 	}
 	
 	public static void clientOnly() {

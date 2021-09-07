@@ -53,9 +53,13 @@
 	"item.treasure2.gold_ring": "Gold Ring",
 	"item.treasure2.angels_ring": "Angel's Ring",
 	"item.treasure2.ring_of_fortitude": "Ring of Fortitude",
+	"item.treasure2.medics_token": "Medic's Token",
 	"item.treasure2.copper_necklace": "Copper Necklace",
 	"item.treasure2.silver_necklace": "Silver Necklace",
-	"item.treasure2.gold_necklace": "Gold Necklace",	
+	"item.treasure2.gold_necklace": "Gold Necklace",
+	"item.treasure2.copper_bracelet": "Copper Bracelet",
+	"item.treasure2.silver_bracelet": "Silver Bracelet",
+	"item.treasure2.gold_bracelet": "Gold Bracelet",	
 
 	"item.treasure2.wither_stick_item":"Wither Branch",
 	"item.treasure2.wither_root_item":"Wither Root",
@@ -165,8 +169,8 @@
 	"tooltip.charmable.usage":"Hold in hand or equip for buffs",
 	"tooltip.charmable.usage.adornment":"Hold in hand or equip for buffs",
 	
-	"tooltip.label.charm_book":"Keep for Adornments in version 1.7",
-	"tooltip.charmable.slots":"Capacity: [%s/%s] [used/max]",
+	"tooltip.label.charm_book":"Use to imbue charm onto charmables.",
+	"tooltip.charmable.slots":"Capacity: [%s/%s]",
 	"tooltip.charmable.slots.stats":"[%s/%s]",	
 	"tooltip.charmable.inventory.innate":"[INNATE] ",
 	"tooltip.charmable.inventory.imbue":"[IMBUED] ",
@@ -189,7 +193,7 @@
 	"tooltip.charm.type.dirt_fill": "Dirt",
 	"tooltip.charm.type.dirt_walk": "Dirt",
 	"tooltip.charm.type.ruin": "Ruin",
-	
+		
 	"tooltip.charm.prefix.level1":"Lesser",
 	"tooltip.charm.prefix.level2":"",
 	"tooltip.charm.prefix.level3":"Greater",
@@ -199,9 +203,7 @@
 	"tooltip.charm.prefix.level8":"Giant",
 	"tooltip.charm.prefix.level9":"Cyclopean",
 	"tooltip.charm.prefix.level10":"Colossal",
-	
-	"tooltip.adornment.type.ring":"Ring",
-	
+
 	"tooltip.charm.suffix.level13":"%s of the Leviathan",
 	"tooltip.charm.suffix.level14":"%s of the Demogorgon",
 	"tooltip.charm.suffix.level15":"%s of the Whale",
@@ -224,6 +226,17 @@
 	"tooltip.charm.rate.decrepit": "- you take +%s%% damage when hit",
 	"tooltip.charm.rate.ruin": "- your equipment ruins 1 damage/%s sec",
 	"tooltip.charm.uses_gauge":"[%s/%s]",
+
+	"tooltip.adornment.type.ring":"Ring",
+	"tooltip.adornment.type.necklace":"Necklace",
+	"tooltip.adornment.type.bracelet":"Bracelet",
+	
+	"tooltip.adornment.charm.prefix": "%s %s",
+	"tooltip.adornment.charm.suffix": "%s of %s",
+	
+	"tooltip.base_metal.copper": "Copper",
+	"tooltip.base_metal.silver": "Silver",
+	"tooltip.base_metal.gold": "Gold",
 
 	"tooltip.ember_key.specials":"Destroys Wood Locks",
 	"tooltip.ember_lock.specials":"Destroys All Keys regardless of breakability (excluding Ember)",
