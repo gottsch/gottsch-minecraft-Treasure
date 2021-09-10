@@ -51,15 +51,19 @@
 	"item.treasure2.copper_ring": "Copper Ring",
 	"item.treasure2.silver_ring": "Silver Ring",
 	"item.treasure2.gold_ring": "Gold Ring",
-	"item.treasure2.angels_ring": "Angel's Ring",
-	"item.treasure2.ring_of_fortitude": "Ring of Fortitude",
-	"item.treasure2.medics_token": "Medic's Token",
 	"item.treasure2.copper_necklace": "Copper Necklace",
 	"item.treasure2.silver_necklace": "Silver Necklace",
 	"item.treasure2.gold_necklace": "Gold Necklace",
 	"item.treasure2.copper_bracelet": "Copper Bracelet",
 	"item.treasure2.silver_bracelet": "Silver Bracelet",
 	"item.treasure2.gold_bracelet": "Gold Bracelet",	
+	"item.treasure2.angels_ring": "Angel's Ring",
+	"item.treasure2.ring_of_fortitude": "Ring of Fortitude",
+	"item.treasure2.medics_token": "Medic's Token",
+	"item.treasure2.salandaars_ward":"Sal'andaar's Ward",
+	"item.treasure2.adephagias_bounty":"Adephagia's Bounty",
+	"item.treasure2.mirthas_torch":"Mirtha's Torch",
+	"item.treasure2.pocket_watch": "Pocket Watch",
 
 	"item.treasure2.wither_stick_item":"Wither Branch",
 	"item.treasure2.wither_root_item":"Wither Root",
@@ -147,6 +151,9 @@
 
 	"entity.bound_soul":"Bound Soul", 
 	
+	"tooltip.indent1": " %s",
+	"tooltip.indent2": "  %s",
+	"tooltip.indent3": "   %s",
 	"tooltip.yes":"Yes",
 	"tooltip.no":"No",
 	"tooltip.label.rarity":"Rarity: %s",
@@ -172,11 +179,13 @@
 	"tooltip.label.charm_book":"Use to imbue charm onto charmables.",
 	"tooltip.charmable.slots":"Capacity: [%s/%s]",
 	"tooltip.charmable.slots.stats":"[%s/%s]",	
-	"tooltip.charmable.inventory.innate":"[INNATE] ",
-	"tooltip.charmable.inventory.imbue":"[IMBUED] ",
-	"tooltip.charmable.inventory.socket":"[SOCKETED] ",
+	"tooltip.charmable.inventory.innate":"[Innate] ",
+	"tooltip.charmable.inventory.imbue":"[Imbue] ",
+	"tooltip.charmable.inventory.socket":"[Socket] ",
 
-	"tooltip.label.charms":"Charms:",
+	"tooltip.label.charms":"Charms: Max. Level [%s]",
+	"tooltip.label.charms.no_level":"Charms:",
+
 	"tooltip.charm.type.aegis": "Aegis",
 	"tooltip.charm.type.drain": "Draining",
 	"tooltip.charm.type.fire_immunity": "Fire Immunity",
@@ -209,7 +218,7 @@
 	"tooltip.charm.suffix.level15":"%s of the Whale",
 	
 	"tooltip.charm.level": "%s %s",
-	"tooltip.charm.healing":"Healing %s",
+	
 
 	"tooltip.charm.rate.aegis": "- absorbs all damage",
 	"tooltip.charm.rate.drain": "- drains 0.5 hearts/5 sec from all in %s block radius",

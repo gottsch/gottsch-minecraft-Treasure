@@ -88,9 +88,11 @@ public interface ICharmableCapability {
 	public boolean contains(ICharm charm);
 	public List<ICharmEntity> getAllCharmEntities();
 	ICharmEntity getHighestLevel();
+	void setHighestLevel(ICharmEntity highestLevel);
 	
 	void remove(InventoryType type, int index);
 	boolean isExecuting();
 	public void setExecuting(boolean executing);
+
 
 }

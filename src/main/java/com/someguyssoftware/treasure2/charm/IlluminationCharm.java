@@ -107,22 +107,22 @@ public class IlluminationCharm extends Charm {
 						if (list.size() > (int)charmEntity.getValue()) {
 							// get difference in size
 							int diff = (int) (list.size() - charmEntity.getValue());
-							//															Treasure.logger.debug("diff -> {}", diff);
+							Treasure.LOGGER.debug("diff -> {}", diff);
 							for (int index = 0; index < diff; index++) {
 								ICoords lastCoords = list.get(list.size()-1);
 								Block block = world.getBlockState(lastCoords.toPos()).getBlock();
 								if (block == Blocks.TORCH) {
-									//	Treasure.logger.debug("set torch to air at -> {}", lastCoords.toShortString());
+										Treasure.LOGGER.debug("set torch to air at -> {}", lastCoords.toShortString());
 //									world.setBlockToAir(lastCoords.toPos());
 									Block.updateOrDestroy(world.getBlockState(lastCoords.toPos()), Blocks.AIR.defaultBlockState(), world, lastCoords.toPos(), 0);
 								}
 								else {
-									//	Treasure.logger.debug("torch no longer found at -> {}", currentCoords.toShortString());
+										Treasure.LOGGER.debug("torch no longer found at -> {}", currentCoords.toShortString());
 									// decrement value since torch was harvested
 									value -= 1;
 								}
 								list.remove(lastCoords);
-								//	Treasure.logger.debug("remove torch from list at -> {}; new size ->{}", lastCoords.toShortString(), list.size());								
+									Treasure.LOGGER.debug("remove torch from list at -> {}; new size ->{}", lastCoords.toShortString(), list.size());								
 							}	
 						}
 						isUpdated = true;
@@ -130,10 +130,10 @@ public class IlluminationCharm extends Charm {
 				}
 				if (isUpdated == true ) {
 					world.setBlockAndUpdate(currentCoords.toPos(), Blocks.TORCH.defaultBlockState());
-					//	Treasure.logger.debug("set torch at -> {}", currentCoords.toShortString());
+						Treasure.LOGGER.debug("set torch at -> {}", currentCoords.toShortString());
 					if (value < 0) value = 0;
 					entity.setValue(value);
-					//	Treasure.logger.debug("new entity -> {}", entity);
+						Treasure.LOGGER.debug("new entity -> {}", entity);
 					result = true;
 				}
 			}
@@ -147,10 +147,8 @@ public class IlluminationCharm extends Charm {
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.RED;       
-		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
-		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent("tooltip.charm.rate.illumination").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
+		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent(getLabel(entity)).withStyle(color)));
+		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent("tooltip.charm.rate.illumination").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
 	}
 
 	public static class Builder extends Charm.Builder {

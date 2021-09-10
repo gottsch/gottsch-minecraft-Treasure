@@ -1,5 +1,7 @@
 {
   "replace": false,
   "values": [
+  	"treasure2:adephagias_bounty",
+  	"treasure2:mirthas_torch"
   ]
 }

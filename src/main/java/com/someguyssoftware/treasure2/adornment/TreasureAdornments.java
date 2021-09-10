@@ -32,6 +32,7 @@ import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -114,7 +115,7 @@ public class TreasureAdornments {
 	 */
 	public static void setHoverName(ItemStack stack) {
 		stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
-			if (cap.getSourceItem() == null) {
+			if (cap.getSourceItem() == null || cap.getSourceItem().equals(Items.AIR.getRegistryName())) {
 				return;
 			}
 			Item sourceItem = ForgeRegistries.ITEMS.getValue(cap.getSourceItem());
@@ -130,6 +131,8 @@ public class TreasureAdornments {
 						.append(new StringTextComponent(" "))
 						.append(stack.getHoverName()));
 			}
+			
+			// TODO prefix/suffix with the highest charm
 		});
 	}
 }

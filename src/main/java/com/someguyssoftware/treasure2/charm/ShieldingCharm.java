@@ -95,10 +95,8 @@ public class ShieldingCharm extends Charm {
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.BLUE;
-		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
-		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent("tooltip.charm.rate.shielding", Math.round(this.getMaxPercent()*100)).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
+		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent(getLabel(entity)).withStyle(color)));
+		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent("tooltip.charm.rate.shielding", Math.round(this.getMaxPercent()*100)).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
 
 	}
 

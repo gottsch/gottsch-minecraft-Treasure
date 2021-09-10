@@ -41,6 +41,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -245,8 +246,14 @@ public class CharmableCapability implements ICharmableCapability {
 
 	@Override
 	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
-		tooltip.add(new TranslationTextComponent("tooltip.label.charms").withStyle(TextFormatting.YELLOW, TextFormatting.BOLD));
-
+//		if (!getBaseMaterial().equals(TreasureCharms.CHARM_BOOK.getName())) {
+		if (isImbuable() || isSocketable()) {
+			tooltip.add(new TranslationTextComponent("tooltip.label.charms", getMaxCharmLevel()).withStyle(TextFormatting.YELLOW));
+		}
+		else {
+			tooltip.add(new TranslationTextComponent("tooltip.label.charms.no_level", getMaxCharmLevel()).withStyle(TextFormatting.YELLOW));
+		}
+		
 		// create header text for inventory type
 		appendHoverText(stack, world, tooltip, flag, InventoryType.INNATE, false);
 		appendHoverText(stack, world, tooltip, flag, InventoryType.IMBUE, true);
@@ -274,24 +281,14 @@ public class CharmableCapability implements ICharmableCapability {
 		// add title
 		if (titleFlag) {
 			tooltip.add(
-					new TranslationTextComponent("tooltip.charmable.inventory." + inventoryType.name().toLowerCase()).withStyle(TextFormatting.GOLD)
-					.append(getCapacityHoverText(stack, world, entityList).withStyle(TextFormatting.WHITE))
+					new TranslationTextComponent("tooltip.indent1", new TranslationTextComponent("tooltip.charmable.inventory." + inventoryType.name().toLowerCase()).withStyle(TextFormatting.GOLD)
+					.append(getCapacityHoverText(stack, world, entityList).withStyle(TextFormatting.WHITE)))
 					);
 		}
 		// add charms
 		for (ICharmEntity entity : entityList) {
 			entity.getCharm().appendHoverText(stack, world, tooltip, flag, entity);
 		}	
-	}
-
-	@SuppressWarnings("deprecation")
-	public void appendCapacityHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag, List<ICharmEntity> entities) {
-
-		//    	tooltip.add(new TranslationTextComponent("tooltip.charmable.slots").withStyle(TextFormatting.GRAY));
-		tooltip.add(new TranslationTextComponent("tooltip.charmable.slots", 
-				String.valueOf(Math.toIntExact(Math.round(entities.size()))), // used
-				String.valueOf(Math.toIntExact(Math.round(this.maxSocketsSize)))) // max
-				.withStyle(TextFormatting.WHITE)); 
 	}
 
 	@SuppressWarnings("deprecation")
@@ -561,5 +558,10 @@ public class CharmableCapability implements ICharmableCapability {
 	@Override
 	public ICharmEntity getHighestLevel() {
 		return highestLevel;
+	}
+
+	@Override
+	public void setHighestLevel(ICharmEntity highestLevel) {
+		this.highestLevel = highestLevel;
 	}
 }

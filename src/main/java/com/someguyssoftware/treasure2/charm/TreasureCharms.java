@@ -49,6 +49,7 @@ public class TreasureCharms {
 	public static CharmableMaterial COPPER = new CharmableMaterial(1, ModUtils.asLocation("copper"), 2, 1, 0.5D);
 	public static CharmableMaterial SILVER = new CharmableMaterial(2, ModUtils.asLocation("silver"), 3, 1, 0.75D);
 	public static CharmableMaterial GOLD = new CharmableMaterial(3, ModUtils.asLocation("gold"), 4);
+	public static CharmableMaterial CHARM_BOOK = new CharmableMaterial(4, ModUtils.asLocation("charm_book"), 100);
 
 	public static CharmableMaterial DIAMOND;
 	public static CharmableMaterial EMERALD;
@@ -103,6 +104,7 @@ public class TreasureCharms {
 	public static final ICharm SHIELDING_13 = makeShielding(13);
 	public static final ICharm SHIELDING_14 = makeShielding(14);
 	public static final ICharm SHIELDING_15 = makeShielding(15);
+	public static final ICharm SHIELDING_20 = makeShielding(20);
 	
 	public static final ICharm AEGIS_1 = makeAegis(1);
 	public static final ICharm AEGIS_2 = makeAegis(2);
@@ -167,6 +169,7 @@ public class TreasureCharms {
 	public static final ICharm SATIETY_13 = makeSatiety(13);
 	public static final ICharm SATIETY_14 = makeSatiety(14);
 	public static final ICharm SATIETY_15 = makeSatiety(15);
+	public static final ICharm SATIETY_20 = makeSatiety(20);
 	
 	public static final ICharm LIFE_STRIKE_1 = makeLifeStrike(1);
 	public static final ICharm LIFE_STRIKE_2 = makeLifeStrike(2);
@@ -221,6 +224,7 @@ public class TreasureCharms {
 	public static final ICharm ILLUMINATION_9 = makeIllumination(9);
 	public static final ICharm ILLUMINATION_12 = makeIllumination(12);
 	public static final ICharm ILLUMINATION_15 = makeIllumination(15);
+	public static final ICharm ILLUMINATION_21 = makeIllumination(21);
 	
 	// HARVESTING
 	
@@ -296,7 +300,7 @@ public class TreasureCharms {
 		GEM_REGISTRY.put(RUBY.getName(), RUBY);
 		GEM_REGISTRY.put(SAPPHIRE.getName(), SAPPHIRE);
 		GEM_REGISTRY.put(WHITE_PEARL.getName(), WHITE_PEARL);
-		GEM_REGISTRY.put(BLACK_PEARL.getName(), WHITE_PEARL);
+		GEM_REGISTRY.put(BLACK_PEARL.getName(), BLACK_PEARL);
 	}
 	
 //	public static Comparator<CharmableMaterial> levelComparator = new Comparator<CharmableMaterial>() {
@@ -427,7 +431,7 @@ public class TreasureCharms {
 	
 	public static ICharm makeIllumination(int level) {
 		ICharm charm =  new IlluminationCharm.Builder(level).with($ -> {
-			$.value =  level < 4 ? 3D : level < 7 ? 6D : 30D;
+			$.value =  Math.max(1, (level / 3)) * 3.0;
 			$.effectStackable = false;
 			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
 		})	.build();
@@ -495,7 +499,7 @@ public class TreasureCharms {
 		}
 		return Optional.empty();
 	}
-
+	
 	/**
 	 * Accessor wrapper method to return Optional sourceItem
 	 * @param name
@@ -506,5 +510,18 @@ public class TreasureCharms {
 			return Optional.of(GEM_REGISTRY.get(sourceItem));
 		}
 		return Optional.empty();
+	}
+	
+	/**
+	 * 
+	 * @param sourceItem
+	 * @return
+	 */
+	public static boolean isSourceItemRegistered(ResourceLocation sourceItem) {
+		Optional<CharmableMaterial> material = getSourceItem(sourceItem);
+		if (material.isPresent()) {
+			return true;
+		}
+		return false;
 	}
 }

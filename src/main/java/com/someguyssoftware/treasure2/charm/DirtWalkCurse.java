@@ -91,7 +91,7 @@ public class DirtWalkCurse extends Charm {
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.DARK_RED;
-		tooltip.add(new StringTextComponent(" ").append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
+		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent(getLabel(entity)).withStyle(color)));
 	}
     
 	/**

@@ -50,6 +50,7 @@ import com.someguyssoftware.treasure2.loot.TreasureLootFunctions;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.loot.IRandomRange;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootFunction;
@@ -105,7 +106,7 @@ public class CharmRandomly extends LootFunction {
 	@Override
 	protected ItemStack run(ItemStack stack, LootContext context) {
 		Random rand = context.getRandom();
-		Treasure.LOGGER.debug("selected item from charm pool -> {}", stack.getDisplayName());
+		Treasure.LOGGER.debug("selected item from charm pool -> {}", stack.getDisplayName().getString());
 		stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
 			Treasure.LOGGER.debug("has charm cap");
 			ICharm charm = null;
@@ -185,23 +186,25 @@ public class CharmRandomly extends LootFunction {
 			/*
 			 *  select the correct gem/sourceItem
 			 */
-			if (cap.getSourceItem() == null) {
-				CharmableMaterial baseMaterial = TreasureCharms.getBaseMaterial(cap.getBaseMaterial()).get();
-				int baseMaterialLevel = baseMaterial.getMaxLevel();
-				// if the highest charm level is > the base's max level, then select a gem to increase the items total max level
-				if (highestLevel > baseMaterialLevel) {
-					List<CharmableMaterial> gems = TreasureCharms.getGemValues();
-					Collections.sort(gems, TreasureCharms.levelComparator);
-					for (CharmableMaterial gem : gems) {
-						if (baseMaterialLevel + Math.floor(baseMaterial.getLevelMultiplier() * gem.getMaxLevel()) >= highestLevel) {
-							cap.setSourceItem(gem.getName());
-							break;
+			if (cap.getSourceItem() == null || cap.getSourceItem().equals(Items.AIR.getRegistryName())) {
+				Optional<CharmableMaterial> baseMaterial = TreasureCharms.getBaseMaterial(cap.getBaseMaterial());
+				if (baseMaterial.isPresent()) { // <-- TOOD need a better check for items that take source items. ie charm books don't take different types of source items
+					int baseMaterialLevel = baseMaterial.get().getMaxLevel();
+					// if the highest charm level is > the base's max level, then select a gem to increase the items total max level
+					if (highestLevel > baseMaterialLevel) {
+						List<CharmableMaterial> gems = TreasureCharms.getGemValues();
+						Collections.sort(gems, TreasureCharms.levelComparator);
+						for (CharmableMaterial gem : gems) {
+							if (baseMaterialLevel + Math.floor(baseMaterial.get().getLevelMultiplier() * gem.getMaxLevel()) >= highestLevel) {
+								cap.setSourceItem(gem.getName());
+								break;
+							}
 						}
 					}
-				}
-				// set the hover name
-				TreasureAdornments.setHoverName(stack);
-			}			
+					// set the hover name
+					TreasureAdornments.setHoverName(stack);
+				}		
+			}
 		});
 		Treasure.LOGGER.debug("returning charmed item -> {}", stack.getDisplayName().getString());
 		return stack;
