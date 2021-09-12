@@ -32,6 +32,7 @@ import com.google.gson.JsonSerializationContext;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.capability.TreasureCharmables;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.loot.TreasureLootFunctions;
 import com.someguyssoftware.treasure2.util.ModUtils;
@@ -124,8 +125,8 @@ public class SetSourceItem extends LootFunction {
 					ResourceLocation source = items.get(random.nextInt(items.size()));
 					Treasure.LOGGER.debug("adding source item -> {}", source.toString());
 					cap.setSourceItem(source);
-					// update the hover name
-					TreasureAdornments.setHoverName(stack);
+//					TreasureAdornments.setHoverName(stack);
+					
 //					Item sourceItem = ForgeRegistries.ITEMS.getValue(source);
 //					if (!cap.isCharmed()) {
 //						Treasure.LOGGER.debug("not charmed, setting hover name");
@@ -141,9 +142,14 @@ public class SetSourceItem extends LootFunction {
 //								.append(new StringTextComponent(" "))
 //								.append(stack.getHoverName()));
 //					}
-					Treasure.LOGGER.debug("hover name -> {}", stack.getHoverName().getString());
+
 				}
 			}
+			// update the hover name
+			if (cap.isNamedByMaterial() || cap.isNamedByCharm()) {
+				TreasureCharmables.setHoverName(stack);
+			}
+			Treasure.LOGGER.debug("hover name -> {}", stack.getHoverName().getString());
 		});
 		return stack;
 	}

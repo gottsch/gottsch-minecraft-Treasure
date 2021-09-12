@@ -161,8 +161,9 @@ public class TreasureItems {
 	public static Adornment MEDICS_TOKEN; // 1x level20 innate
 	public static Adornment SALANDAARS_WARD = null; // 1x level20 innate
 	public static Adornment ADEPHAGIAS_BOUNTY; // 1x level20 innate
-	public static Adornment MIRTHAS_TORCH = null;
-	public static Adornment POCKET_WATCH = null;
+	public static Adornment MIRTHAS_TORCH;
+	public static Adornment POCKET_WATCH;
+	public static Adornment  PEASANTS_FORTUNE;
 		
 	// wither items
 	public static Item WITHER_STICK_ITEM;
@@ -474,8 +475,9 @@ public class TreasureItems {
 					$.innate(true, 1);
 					$.bindable(true);
 					$.source(true);
-					$.executing(true)
-					.baseMaterial(TreasureCharms.COPPER.getName());
+					$.executing(true);
+					$.namedByMaterial(true);
+					$.baseMaterial(TreasureCharms.COPPER.getName());
 				}).build();
 				return new CharmableCapabilityProvider(cap);
 			}
@@ -486,8 +488,9 @@ public class TreasureItems {
 					$.innate(true, 1);
 					$.bindable(true);
 					$.source(true);
-					$.executing(true)
-					.baseMaterial(TreasureCharms.SILVER.getName());
+					$.executing(true);
+					$.namedByMaterial(true);
+					$.baseMaterial(TreasureCharms.SILVER.getName());
 				}).build();
 				return new CharmableCapabilityProvider(cap);
 			}
@@ -498,8 +501,9 @@ public class TreasureItems {
 					$.innate(true, 1);
 					$.bindable(true);
 					$.source(true);
-					$.executing(true)
-					.baseMaterial(TreasureCharms.GOLD.getName());
+					$.executing(true);
+					$.namedByMaterial(true);
+					$.baseMaterial(TreasureCharms.GOLD.getName());
 				}).build();
 				return new CharmableCapabilityProvider(cap);
 			}
@@ -528,6 +532,8 @@ public class TreasureItems {
 					$.socketable(true, 1);
 					$.source(false);
 					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
 					$.baseMaterial = TreasureCharms.COPPER.getName();
 				}).build();
 				return new CharmableCapabilityProvider(cap);
@@ -542,6 +548,8 @@ public class TreasureItems {
 					$.socketable(true, 1);
 					$.source(false);
 					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
 					$.baseMaterial = TreasureCharms.SILVER.getName();
 				}).build();
 				return new CharmableCapabilityProvider(cap);
@@ -556,6 +564,8 @@ public class TreasureItems {
 					$.socketable(true, 1);
 					$.source(false);
 					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
 					$.baseMaterial = TreasureCharms.GOLD.getName();
 				}).build();
 				return new CharmableCapabilityProvider(cap);
@@ -570,6 +580,8 @@ public class TreasureItems {
 					$.socketable(true, 1);
 					$.source(false);
 					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
 					$.baseMaterial = TreasureCharms.COPPER.getName();
 				}).build();
 				return new CharmableCapabilityProvider(cap);
@@ -584,6 +596,8 @@ public class TreasureItems {
 					$.socketable(true, 1);
 					$.source(false);
 					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
 					$.baseMaterial = TreasureCharms.SILVER.getName();
 				}).build();
 				return new CharmableCapabilityProvider(cap);
@@ -598,6 +612,8 @@ public class TreasureItems {
 					$.socketable(true, 1);
 					$.source(false);
 					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
 					$.baseMaterial = TreasureCharms.GOLD.getName();
 				}).build();
 				return new CharmableCapabilityProvider(cap);
@@ -612,6 +628,8 @@ public class TreasureItems {
 					$.socketable(true, 1);
 					$.source(false);
 					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
 					$.baseMaterial = TreasureCharms.COPPER.getName();
 				}).build();
 				return new CharmableCapabilityProvider(cap);
@@ -626,6 +644,8 @@ public class TreasureItems {
 					$.socketable(true, 1);
 					$.source(false);
 					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
 					$.baseMaterial = TreasureCharms.SILVER.getName();
 				}).build();
 				return new CharmableCapabilityProvider(cap);
@@ -640,6 +660,8 @@ public class TreasureItems {
 					$.socketable(true, 1);
 					$.source(false);
 					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
 					$.baseMaterial = TreasureCharms.GOLD.getName();
 				}).build();
 				return new CharmableCapabilityProvider(cap);
@@ -754,6 +776,20 @@ public class TreasureItems {
 			}
 		};
 		
+		PEASANTS_FORTUNE = new Adornment(Treasure.MODID, "peasants_fortune", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.STONE.getRegistryName()).with($ -> { // use STONE as source Item so it can't be upgraded
+					$.innate = false;
+					$.imbuable = false;
+					$.socketable(true, 2);
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.COPPER.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
 		// WITHER ITEMS
 		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_STICK_ITEM_ID, TreasureBlocks.WITHER_BRANCH, new Item.Properties());
 		WITHER_ROOT_ITEM = new WitherRootItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_ROOT_ITEM_ID, TreasureBlocks.WITHER_ROOT, new Item.Properties());
@@ -834,6 +870,7 @@ public class TreasureItems {
 				SALANDAARS_WARD,
 				MIRTHAS_TORCH,
 				POCKET_WATCH,
+				PEASANTS_FORTUNE,
 				COPPER_BRACELET,
 				SILVER_BRACELET,
 				GOLD_BRACELET

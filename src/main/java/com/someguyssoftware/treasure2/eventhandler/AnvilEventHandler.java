@@ -38,6 +38,7 @@ import com.someguyssoftware.treasure2.capability.CharmableCapability;
 import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCharmables;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.item.Adornment;
@@ -68,6 +69,9 @@ public class AnvilEventHandler {
 			ItemStack leftItemStack = event.getLeft();
 			ItemStack rightItemStack = event.getRight();
 
+//			Treasure.LOGGER.debug("left stack imbuable -> {}", leftItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuable()).orElse(false));
+//			Treasure.LOGGER.debug("right stack imbuing -> {}", rightItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuing()).orElse(false));
+			
 			// check for KeyItems and having the durability capability
 			if (leftItemStack.getItem() instanceof KeyItem && leftItemStack.getCapability(DURABILITY_CAPABILITY).isPresent()
 					&& rightItemStack.getItem() instanceof KeyItem &&  rightItemStack.getCapability(DURABILITY_CAPABILITY).isPresent()) {
@@ -113,8 +117,9 @@ public class AnvilEventHandler {
 				}
 			}
 			// add imbuing (charm) to imbuable (ex. adornment)
-			else if (leftItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuable()).orElse(false) &&
-					rightItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuing()).orElse(false)) {
+			else if (leftItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuable()).orElse(false) && // ie adornment
+					rightItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuing()).orElse(false)) { // ie charm book
+//				Treasure.LOGGER.debug("in the imbuing process");
 				event.setCost(2);
 				Optional<ItemStack> outputItemStack = transferCharmToOutput(rightItemStack, leftItemStack, IMBUE);
 				if (outputItemStack.isPresent()) {
@@ -137,25 +142,14 @@ public class AnvilEventHandler {
 					leftItemStack.getCapability(CHARMABLE).ifPresent(leftCap -> {
 						cap.setHighestLevel(leftCap.getHighestLevel());
 						// set the hover name
-						TreasureAdornments.setHoverName(outputStack);
+						if (cap.isNamedByMaterial() || cap.isNamedByCharm()) {
+							TreasureCharmables.setHoverName(outputStack);
+						}
+//						TreasureAdornments.setHoverName(outputStack);
 					});
 				});
 				event.setOutput(outputStack);
 			}
-
-			// else check for Book -> Charm or Book -> Adornment
-			//			else if (leftItemStack.getItem() instanceof CharmBook && rightItemStack.getCapability(TreasureCapabilities.CHARMABLE).isPresent()) {}
-
-			// TODO add logging
-			// TODO reenable when add adornments
-			//			else if (leftItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuing()).orElse(false) &&
-			//					rightItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuable()).orElse(false)) {
-			//				event.setCost(1);
-			//					if (Treasure.LOGGER.isDebugEnabled()) {
-			//						Treasure.LOGGER.debug("book -> charm");
-			//					}
-			//					doImbueItem(event, leftItemStack, rightItemStack);
-			//			}
 		}
 
 		/**
@@ -169,14 +163,14 @@ public class AnvilEventHandler {
 			// determine if dest is a high enough level for source's bindable level
 			source.getCapability(CHARMABLE).ifPresent(sourceCap -> {
 				dest.getCapability(CHARMABLE).ifPresent(destCap -> {
-
+//					Treasure.LOGGER.debug("book has innate charms -> {}", sourceCap.getCharmEntities()[InventoryType.INNATE.getValue()].size() > 0);
 					// looking for innate
 					if (sourceCap.getCharmEntities()[InventoryType.INNATE.getValue()].size() > 0) {
 						// sort the source charm entity list in descending order
 						List<ICharmEntity> innateCharms = sourceCap.getCharmEntities()[INNATE.getValue()];
 						Comparator<ICharmEntity> comparator = Collections.reverseOrder(new CharmableCapability.SortByLevel());						
 						Collections.sort(innateCharms, comparator);
-
+//						Treasure.LOGGER.debug("size of innate charms -> {}", innateCharms.size());
 						// duplicate the dest cap charm entities
 						@SuppressWarnings("unchecked")
 						ArrayList<ICharmEntity>[] outputEntities = (ArrayList<ICharmEntity>[])new ArrayList[3];
@@ -190,11 +184,16 @@ public class AnvilEventHandler {
 								addCharmEntity(entity, destCap,  destInventoryType, outputEntities[ destInventoryType.getValue()]);
 							}						
 						}
+//						Treasure.LOGGER.debug("result has more charms than input -> {}", outputEntities[destInventoryType.getValue()].size() > destCap.getCharmEntities()[ destInventoryType.getValue()].size());
 						// test if resulting output charms is larger than the original (dest) ie charms were added.
 						if (outputEntities[destInventoryType.getValue()].size() > destCap.getCharmEntities()[ destInventoryType.getValue()].size()) {
 							ItemStack outputStack = createCharmableOutputStack(dest.getItem(), destCap.getSourceItem(), outputEntities);
+//							Treasure.LOGGER.debug("output stack -> {}", outputStack.getDisplayName().getString());
 							// set the hover name
-							TreasureAdornments.setHoverName(outputStack);
+							if (destCap.isNamedByMaterial() || destCap.isNamedByCharm()) {
+								TreasureCharmables.setHoverName(outputStack);
+							}
+//							TreasureAdornments.setHoverName(outputStack);
 							ref.set(Optional.of(outputStack));
 						}
 					}

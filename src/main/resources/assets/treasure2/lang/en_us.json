@@ -64,6 +64,7 @@
 	"item.treasure2.adephagias_bounty":"Adephagia's Bounty",
 	"item.treasure2.mirthas_torch":"Mirtha's Torch",
 	"item.treasure2.pocket_watch": "Pocket Watch",
+	"item.treasure2.peasants_fortune": "Peasant's Fortune",
 
 	"item.treasure2.wither_stick_item":"Wither Branch",
 	"item.treasure2.wither_root_item":"Wither Root",
@@ -203,23 +204,8 @@
 	"tooltip.charm.type.dirt_walk": "Dirt",
 	"tooltip.charm.type.ruin": "Ruin",
 		
-	"tooltip.charm.prefix.level1":"Lesser",
-	"tooltip.charm.prefix.level2":"",
-	"tooltip.charm.prefix.level3":"Greater",
-	"tooltip.charm.prefix.level4":"Grand",
-	"tooltip.charm.prefix.level5":"Huge",
-	"tooltip.charm.prefix.level6":"Massive",
-	"tooltip.charm.prefix.level8":"Giant",
-	"tooltip.charm.prefix.level9":"Cyclopean",
-	"tooltip.charm.prefix.level10":"Colossal",
-
-	"tooltip.charm.suffix.level13":"%s of the Leviathan",
-	"tooltip.charm.suffix.level14":"%s of the Demogorgon",
-	"tooltip.charm.suffix.level15":"%s of the Whale",
-	
 	"tooltip.charm.level": "%s %s",
 	
-
 	"tooltip.charm.rate.aegis": "- absorbs all damage",
 	"tooltip.charm.rate.drain": "- drains 0.5 hearts/5 sec from all in %s block radius",
 	"tooltip.charm.rate.fire_immunity": "- absorbs all fire damage",
@@ -239,9 +225,22 @@
 	"tooltip.adornment.type.ring":"Ring",
 	"tooltip.adornment.type.necklace":"Necklace",
 	"tooltip.adornment.type.bracelet":"Bracelet",
+
+	"tooltip.adornment.name.level1":"%s",
+	"tooltip.adornment.name.level2":"Good %s of %s",
+	"tooltip.adornment.name.level3":"Excellent %s of %s",
+	"tooltip.adornment.name.level4":"Grand %s 0f %s",
+	"tooltip.adornment.name.level5":"Huge %s of %s",
+	"tooltip.adornment.name.level6":"Massive %s of %s",
+	"tooltip.adornment.name.level8":"Giant %s of %s",
+	"tooltip.adornment.name.level9":"Cyclopean %s of %s",
+	"tooltip.adornment.name.level10":"Colossal %s of %s",
+	"tooltip.adornment.name.level11":"Behemoth's %s of %s",
+	"tooltip.adornment.name.level12":"Hydra's %s of %s",
+	"tooltip.adornment.name.level13":"Leviathan's %s of %s",
+	"tooltip.adornment.name.level14":"Demogorgon's %s of %s",
+	"tooltip.adornment.name.level15":"Whale's %s of %s",
 	
-	"tooltip.adornment.charm.prefix": "%s %s",
-	"tooltip.adornment.charm.suffix": "%s of %s",
 	
 	"tooltip.base_metal.copper": "Copper",
 	"tooltip.base_metal.silver": "Silver",

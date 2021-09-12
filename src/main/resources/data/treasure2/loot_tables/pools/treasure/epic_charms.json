@@ -7,7 +7,7 @@
 				"entryName": "charm1",
 				"type": "item",
 				"name": "treasure2:gold_charm",
-				"weight": 100,
+				"weight": 30,
 				"functions": [{
 					"function": "treasure2:charm_randomly",
 					"levels": 4
@@ -111,7 +111,8 @@
 						"levels": {
 							"min": 5,
 							"max": 9
-						}
+						},
+						"curseChance": 0.15
 					},
 					{
 						"function": "treasure2:charm_randomly",

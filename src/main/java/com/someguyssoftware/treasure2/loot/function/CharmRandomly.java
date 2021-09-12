@@ -41,11 +41,13 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
 import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.capability.TreasureCharmables;
 import com.someguyssoftware.treasure2.charm.CharmableMaterial;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
+import com.someguyssoftware.treasure2.item.Adornment;
 import com.someguyssoftware.treasure2.loot.TreasureLootFunctions;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
@@ -202,7 +204,12 @@ public class CharmRandomly extends LootFunction {
 						}
 					}
 					// set the hover name
-					TreasureAdornments.setHoverName(stack);
+					if (cap.isNamedByMaterial() || cap.isNamedByCharm()) {
+						TreasureCharmables.setHoverName(stack);
+					}
+//					if (stack.getItem() instanceof Adornment) { // TODO update to use tags?
+//						TreasureAdornments.setHoverName(stack);
+//					}
 				}		
 			}
 		});

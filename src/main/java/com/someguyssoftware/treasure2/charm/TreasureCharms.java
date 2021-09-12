@@ -20,22 +20,29 @@
 package com.someguyssoftware.treasure2.charm;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * 
@@ -43,9 +50,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
  *
  */
 public class TreasureCharms {
+	public static final String CHARM = "charm";
+
 	private static final Map<ResourceLocation, CharmableMaterial> METAL_REGISTRY = new HashMap<>();
 	private static final Map<ResourceLocation, CharmableMaterial> GEM_REGISTRY = new HashMap<>();
-	
+
 	public static CharmableMaterial COPPER = new CharmableMaterial(1, ModUtils.asLocation("copper"), 2, 1, 0.5D);
 	public static CharmableMaterial SILVER = new CharmableMaterial(2, ModUtils.asLocation("silver"), 3, 1, 0.75D);
 	public static CharmableMaterial GOLD = new CharmableMaterial(3, ModUtils.asLocation("gold"), 4);
@@ -59,7 +68,7 @@ public class TreasureCharms {
 	public static CharmableMaterial SAPPHIRE;
 	public static CharmableMaterial WHITE_PEARL;
 	public static CharmableMaterial BLACK_PEARL;
-	
+
 	// charms	
 	public static final ICharm HEALING_1 = makeHealing(1);
 	public static final ICharm HEALING_2 = makeHealing(2);
@@ -76,7 +85,7 @@ public class TreasureCharms {
 	public static final ICharm HEALING_13 = makeHealing(13);
 	public static final ICharm HEALING_14 = makeHealing(14);
 	public static final ICharm HEALING_15 = makeHealing(15);
-	
+
 	public static final ICharm GREATER_HEALING_8 = makeGreaterHealing(8);
 	public static final ICharm GREATER_HEALING_9 = makeGreaterHealing(9);
 	public static final ICharm GREATER_HEALING_10 = makeGreaterHealing(10);
@@ -85,10 +94,10 @@ public class TreasureCharms {
 	public static final ICharm GREATER_HEALING_13 = makeGreaterHealing(13);
 	public static final ICharm GREATER_HEALING_14 = makeGreaterHealing(14);
 	public static final ICharm GREATER_HEALING_15 = makeGreaterHealing(15);
-	
+
 	// special levels
 	public static final ICharm GREATER_HEALING_20 = makeGreaterHealing(20);
-		
+
 	public static final ICharm SHIELDING_1 = makeShielding(1);
 	public static final ICharm SHIELDING_2 = makeShielding(2);
 	public static final ICharm SHIELDING_3 = makeShielding(3);
@@ -105,7 +114,7 @@ public class TreasureCharms {
 	public static final ICharm SHIELDING_14 = makeShielding(14);
 	public static final ICharm SHIELDING_15 = makeShielding(15);
 	public static final ICharm SHIELDING_20 = makeShielding(20);
-	
+
 	public static final ICharm AEGIS_1 = makeAegis(1);
 	public static final ICharm AEGIS_2 = makeAegis(2);
 	public static final ICharm AEGIS_3 = makeAegis(3);
@@ -121,7 +130,7 @@ public class TreasureCharms {
 	public static final ICharm AEGIS_13 = makeAegis(13);
 	public static final ICharm AEGIS_14 = makeAegis(14);
 	public static final ICharm AEGIS_15 = makeAegis(15);
-	
+
 	public static final ICharm FIRE_IMMUNITY_1 = makeFireImmunity(1);
 	public static final ICharm FIRE_IMMUNITY_2 = makeFireImmunity(2);
 	public static final ICharm FIRE_IMMUNITY_3 = makeFireImmunity(3);
@@ -137,7 +146,7 @@ public class TreasureCharms {
 	public static final ICharm FIRE_IMMUNITY_13 = makeFireImmunity(13);
 	public static final ICharm FIRE_IMMUNITY_14 = makeFireImmunity(14);
 	public static final ICharm FIRE_IMMUNITY_15 = makeFireImmunity(15);
-	
+
 	public static final ICharm FIRE_RESISTENCE_1 = makeFireResistence(1);
 	public static final ICharm FIRE_RESISTENCE_2 = makeFireResistence(2);
 	public static final ICharm FIRE_RESISTENCE_3 = makeFireResistence(3);
@@ -153,7 +162,7 @@ public class TreasureCharms {
 	public static final ICharm FIRE_RESISTENCE_13 = makeFireResistence(13);
 	public static final ICharm FIRE_RESISTENCE_14 = makeFireResistence(14);
 	public static final ICharm FIRE_RESISTENCE_15 = makeFireResistence(15);
-	
+
 	public static final ICharm SATIETY_1 = makeSatiety(1);
 	public static final ICharm SATIETY_2 = makeSatiety(2);
 	public static final ICharm SATIETY_3 = makeSatiety(3);
@@ -170,7 +179,7 @@ public class TreasureCharms {
 	public static final ICharm SATIETY_14 = makeSatiety(14);
 	public static final ICharm SATIETY_15 = makeSatiety(15);
 	public static final ICharm SATIETY_20 = makeSatiety(20);
-	
+
 	public static final ICharm LIFE_STRIKE_1 = makeLifeStrike(1);
 	public static final ICharm LIFE_STRIKE_2 = makeLifeStrike(2);
 	public static final ICharm LIFE_STRIKE_3 = makeLifeStrike(3);
@@ -186,7 +195,7 @@ public class TreasureCharms {
 	public static final ICharm LIFE_STRIKE_13 = makeLifeStrike(13);
 	public static final ICharm LIFE_STRIKE_14 = makeLifeStrike(14);
 	public static final ICharm LIFE_STRIKE_15 = makeLifeStrike(15);
-	
+
 	public static final ICharm REFLECTION_1 = makeReflection(1);
 	public static final ICharm REFLECTION_2 = makeReflection(2);
 	public static final ICharm REFLECTION_3 = makeReflection(3);
@@ -218,22 +227,22 @@ public class TreasureCharms {
 	public static final ICharm DRAIN_13 = makeDrain(13);
 	public static final ICharm DRAIN_14 = makeDrain(14);
 	public static final ICharm DRAIN_15 = makeDrain(15);
-	
+
 	public static final ICharm ILLUMINATION_3 = makeIllumination(3);
 	public static final ICharm ILLUMINATION_6 = makeIllumination(6);
 	public static final ICharm ILLUMINATION_9 = makeIllumination(9);
 	public static final ICharm ILLUMINATION_12 = makeIllumination(12);
 	public static final ICharm ILLUMINATION_15 = makeIllumination(15);
 	public static final ICharm ILLUMINATION_21 = makeIllumination(21);
-	
+
 	// HARVESTING
-	
+
 	// curses
 	public static final ICharm DECAY_1 = makeDecay(1);
 	public static final ICharm DECAY_3 = makeDecay(3);
 	public static final ICharm DECAY_5 = makeDecay(5);
 	public static final ICharm DECAY_7 = makeDecay(7);
-	
+
 	public static final ICharm DECREPIT_1 = makeDecrepit(1);
 	public static final ICharm DECREPIT_2 = makeDecrepit(2);
 	public static final ICharm DECREPIT_3 = makeDecrepit(3);
@@ -242,40 +251,40 @@ public class TreasureCharms {
 	public static final ICharm DECREPIT_6 = makeDecrepit(6);
 	public static final ICharm DECREPIT_7 = makeDecrepit(7);
 	public static final ICharm DECREPIT_8 = makeDecrepit(8);
-	
+
 	public static final ICharm DIRT_FILL_2 = makeDirtFill(2);
 	public static final ICharm DIRT_FILL_4 = makeDirtFill(4);
 	public static final ICharm DIRT_FILL_6 = makeDirtFill(6);
-	
+
 	public static final ICharm DIRT_WALK_2 = makeDirtWalk(2);
 	public static final ICharm DIRT_WALK_4 = makeDirtWalk(4);
 	public static final ICharm DIRT_WALK_6 = makeDirtWalk(6);
-	
+
 	public static final ICharm RUIN_1 = makeRuin(1);
 	public static final ICharm RUIN_3 = makeRuin(3);
 	public static final ICharm RUIN_5 = makeRuin(5);
 	public static final ICharm RUIN_7 = makeRuin(7);
 	public static final ICharm RUIN_9 = makeRuin(9);
 	public static final ICharm RUIN_11 = makeRuin(11);
-	
+
 	static {
 		// register
 		METAL_REGISTRY.put(COPPER.getName(), COPPER);
 		METAL_REGISTRY.put(SILVER.getName(), SILVER);
 		METAL_REGISTRY.put(GOLD.getName(), GOLD);
 	}
-	
-	
+
+
 	public static class SortByLevel implements Comparator<CharmableMaterial> {
 		@Override
 		public int compare(CharmableMaterial p1, CharmableMaterial p2) {
 			return Integer.compare(p1.getMaxLevel(), p2.getMaxLevel());
 		}
 	};
-	
+
 	// comparator on level
 	public static Comparator<CharmableMaterial> levelComparator = new SortByLevel();
-	
+
 	/**
 	 * The gem/sourceItem portion of a charm capability takes in a RegistryName of an Item,
 	 * there it needs to be setup and registered in a FML event so that the Items being referenced
@@ -291,7 +300,7 @@ public class TreasureCharms {
 		SAPPHIRE = new CharmableMaterial(6, TreasureItems.SAPPHIRE.getRegistryName() , 11, 6);
 		WHITE_PEARL = new CharmableMaterial(7, TreasureItems.WHITE_PEARL.getRegistryName() , 9, 8);
 		BLACK_PEARL = new CharmableMaterial(8, TreasureItems.BLACK_PEARL.getRegistryName() , 11, 10);
-		
+
 		// regerister
 		GEM_REGISTRY.put(DIAMOND.getName(), DIAMOND);
 		GEM_REGISTRY.put(EMERALD.getName(), EMERALD);
@@ -302,18 +311,18 @@ public class TreasureCharms {
 		GEM_REGISTRY.put(WHITE_PEARL.getName(), WHITE_PEARL);
 		GEM_REGISTRY.put(BLACK_PEARL.getName(), BLACK_PEARL);
 	}
-	
-//	public static Comparator<CharmableMaterial> levelComparator = new Comparator<CharmableMaterial>() {
-//		@Override
-//		public int compare(CharmableMaterial p1, CharmableMaterial p2) {
-//			return Integer.compare(p1.getMaxLevel(), p2.getMaxLevel());
-//		}
-//	};
-	
+
+	//	public static Comparator<CharmableMaterial> levelComparator = new Comparator<CharmableMaterial>() {
+	//		@Override
+	//		public int compare(CharmableMaterial p1, CharmableMaterial p2) {
+	//			return Integer.compare(p1.getMaxLevel(), p2.getMaxLevel());
+	//		}
+	//	};
+
 	public static List<CharmableMaterial> getGemValues() {
 		return new ArrayList<>(GEM_REGISTRY.values());
 	}
-	
+
 	/**
 	 * Convenience method to build Healing Charm.
 	 * @param level
@@ -328,7 +337,7 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-	
+
 	public static ICharm makeGreaterHealing(int level) {
 		ICharm charm = new GreaterHealingCharm.Builder(level).with($ -> {
 			$.value = level * 20.0;
@@ -338,7 +347,7 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-	
+
 	public static ICharm makeShielding(int level) {
 		ICharm charm =  new ShieldingCharm.Builder(level).with($ -> {
 			$.value = level * 20.0;
@@ -349,29 +358,29 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-	
+
 	public static ICharm makeAegis(int level) {
 		ICharm charm = new AegisCharm.Builder(level).with($ -> {
 			$.value = level * 20.0;
 			$.effectStackable = false;
 			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
 		})	.build();
-		
+
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-	
+
 	public static ICharm makeFireImmunity(int level) {
 		ICharm charm =  new FireImmunityCharm.Builder(level).with($ -> {
 			$.value = level * 20.0;
 			$.effectStackable = false;
 			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
 		})	.build();
-		
+
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-	
+
 	public static ICharm makeFireResistence(int level) {
 		ICharm charm =  new FireResistenceCharm.Builder(level).with($ -> {
 			$.value = level * 20.0;
@@ -379,22 +388,22 @@ public class TreasureCharms {
 			$.effectStackable = true;
 			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
 		})	.build();
-		
+
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-	
+
 	public static ICharm makeSatiety(int level) {
 		ICharm charm =  new SatietyCharm.Builder(level).with($ -> {
 			$.value = level * 20.0;
 			$.effectStackable = true;
 			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
 		})	.build();
-		
+
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-	
+
 	public static ICharm makeLifeStrike(int level) {
 		ICharm charm =  new LifeStrikeCharm.Builder(level).with($ -> {
 			$.value = level * 20.0;
@@ -405,7 +414,7 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-	
+
 	public static ICharm makeReflection(int level) {
 		ICharm charm =  new ReflectionCharm.Builder(level).with($ -> {
 			$.value = level < 8 ? (level * 10.0 + 10.0) : ((level -7) * 10.0 + 10.0);
@@ -417,7 +426,7 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-	
+
 	public static ICharm makeDrain(int level) {
 		ICharm charm =  new DrainCharm.Builder(level).with($ -> {
 			$.value =  level < 8 ? (level * 10.0 + 10.0) : ((level -7) * 10.0 + 10.0);
@@ -428,7 +437,7 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-	
+
 	public static ICharm makeIllumination(int level) {
 		ICharm charm =  new IlluminationCharm.Builder(level).with($ -> {
 			$.value =  Math.max(1, (level / 3)) * 3.0;
@@ -438,7 +447,7 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-	
+
 	// curses
 	public static ICharm makeDecay(int level) {
 		ICharm curse =  new DecayCurse.Builder(level).with($ -> {
@@ -449,12 +458,12 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(curse);
 		return curse;
 	}
-	
+
 	public static ICharm makeDecrepit(int level) {
 		ICharm curse =  new DecrepitCurse.Builder(level).with($ -> {
 			$.value = level * 10.0 + 10.0;
 			$.percent = 1D + ((level + (level % 2))/20);
-//			$.duration = 20.0; set in 1.12.2 but not used.
+			//			$.duration = 20.0; set in 1.12.2 but not used.
 			$.effectStackable = true;
 			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
 		})	.build();		
@@ -471,7 +480,7 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(curse);
 		return curse;
 	}
-	
+
 	public static ICharm makeDirtWalk(int level) {
 		ICharm curse =  new DirtWalkCurse.Builder(level).with($ -> {
 			$.value = level * 25D;
@@ -481,7 +490,7 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(curse);
 		return curse;
 	}
-	
+
 	public static ICharm makeRuin(int level) {
 		ICharm charm =  new RuinCurse.Builder(level).with($ -> {
 			$.value =  level *20D;
@@ -492,14 +501,20 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-	
+
+	public static List<Item> getAll() {
+		return Stream
+				.of(ItemTags.getAllTags().getTag(ModUtils.asLocation(CHARM)).getValues())
+				.flatMap(Collection::stream).collect(Collectors.toList());
+	}
+
 	public static Optional<CharmableMaterial> getBaseMaterial(ResourceLocation name) {
 		if (name != null && METAL_REGISTRY.containsKey(name)) {
 			return Optional.of(METAL_REGISTRY.get(name));
 		}
 		return Optional.empty();
 	}
-	
+
 	/**
 	 * Accessor wrapper method to return Optional sourceItem
 	 * @param name
@@ -511,7 +526,7 @@ public class TreasureCharms {
 		}
 		return Optional.empty();
 	}
-	
+
 	/**
 	 * 
 	 * @param sourceItem
@@ -523,5 +538,22 @@ public class TreasureCharms {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * 
+	 * @param stack
+	 */
+	public static void setHoverName(ItemStack stack) {
+		stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
+			// check first if it is charmed - charmed names supercede source item names
+			if (cap.getSourceItem() != null && !cap.getSourceItem().equals(Items.AIR.getRegistryName())) {
+				Item sourceItem = ForgeRegistries.ITEMS.getValue(cap.getSourceItem());
+				stack.setHoverName(
+						((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
+						.append(new StringTextComponent(" "))
+						.append(stack.getItem().getName(stack)));
+			}
+		});
 	}
 }

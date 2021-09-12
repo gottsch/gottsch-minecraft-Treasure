@@ -48,6 +48,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
  *
  */
 public class TreasureSetup implements IModSetup {
+	private static final String GEM = "gem";
+	
 	/**
 	 * 
 	 * @param event
@@ -93,7 +95,7 @@ public class TreasureSetup implements IModSetup {
 		
 		event.enqueueWork(() -> {
 			ItemModelsProperties.register(TreasureItems.COPPER_CHARM, 
-					new ResourceLocation(Treasure.MODID, "gem"), (stack, world, living) -> {
+					new ResourceLocation(Treasure.MODID, GEM), (stack, world, living) -> {
 						AtomicDouble d = new AtomicDouble(0);
 						stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
 							Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(cap.getSourceItem());
@@ -104,7 +106,7 @@ public class TreasureSetup implements IModSetup {
 						return d.floatValue();
 					});
 			ItemModelsProperties.register(TreasureItems.SILVER_CHARM, 
-					new ResourceLocation(Treasure.MODID, "gem"), (stack, world, living) -> {
+					new ResourceLocation(Treasure.MODID, GEM), (stack, world, living) -> {
 						AtomicDouble d = new AtomicDouble(0);
 						stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
 							Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(cap.getSourceItem());
@@ -115,7 +117,7 @@ public class TreasureSetup implements IModSetup {
 						return d.floatValue();
 					});
 			ItemModelsProperties.register(TreasureItems.GOLD_CHARM, 
-					new ResourceLocation(Treasure.MODID, "gem"), (stack, world, living) -> {
+					new ResourceLocation(Treasure.MODID, GEM), (stack, world, living) -> {
 						AtomicDouble d = new AtomicDouble(0);
 						stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
 							Optional<CharmableMaterial> source = TreasureCharms.getSourceItem(cap.getSourceItem());
@@ -126,15 +128,15 @@ public class TreasureSetup implements IModSetup {
 						return d.floatValue();
 					});
 
-			ItemModelsProperties.register(TreasureItems.COPPER_RING, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
-			ItemModelsProperties.register(TreasureItems.SILVER_RING, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
-			ItemModelsProperties.register(TreasureItems.GOLD_RING, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
-			ItemModelsProperties.register(TreasureItems.COPPER_NECKLACE, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
-			ItemModelsProperties.register(TreasureItems.SILVER_NECKLACE, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
-			ItemModelsProperties.register(TreasureItems.GOLD_NECKLACE, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
-			ItemModelsProperties.register(TreasureItems.COPPER_BRACELET, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
-			ItemModelsProperties.register(TreasureItems.SILVER_BRACELET, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
-			ItemModelsProperties.register(TreasureItems.GOLD_BRACELET, new ResourceLocation(Treasure.MODID, "gem"), gemGetter);
+			ItemModelsProperties.register(TreasureItems.COPPER_RING, new ResourceLocation(Treasure.MODID, GEM), gemGetter);
+			ItemModelsProperties.register(TreasureItems.SILVER_RING, new ResourceLocation(Treasure.MODID, GEM), gemGetter);
+			ItemModelsProperties.register(TreasureItems.GOLD_RING, new ResourceLocation(Treasure.MODID, GEM), gemGetter);
+			ItemModelsProperties.register(TreasureItems.COPPER_NECKLACE, new ResourceLocation(Treasure.MODID, GEM), gemGetter);
+			ItemModelsProperties.register(TreasureItems.SILVER_NECKLACE, new ResourceLocation(Treasure.MODID, GEM), gemGetter);
+			ItemModelsProperties.register(TreasureItems.GOLD_NECKLACE, new ResourceLocation(Treasure.MODID, GEM), gemGetter);
+			ItemModelsProperties.register(TreasureItems.COPPER_BRACELET, new ResourceLocation(Treasure.MODID, GEM), gemGetter);
+			ItemModelsProperties.register(TreasureItems.SILVER_BRACELET, new ResourceLocation(Treasure.MODID, GEM), gemGetter);
+			ItemModelsProperties.register(TreasureItems.GOLD_BRACELET, new ResourceLocation(Treasure.MODID, GEM), gemGetter);
 		});
 	}
 }

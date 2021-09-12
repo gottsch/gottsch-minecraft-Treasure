@@ -1,3 +1,17 @@
+// an array containing destination paths
+def destinations = ["${dest_folder}", "${mods_folder}"]
+
+task deleteOldJar(type: Delete) {
+	destinations.each { destination ->
+		print 'deleting... '
+		println destination
+        //delete fileTree(destination) {
+        //    include "**/${mod_name}-*.jar"
+        //}
+        delete "${destination}/${mod_name}-mc${mc_version}-f${forge_version}-*.jar"
+    }
+}
+
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
@@ -137,21 +151,7 @@ jar {
     }
 }
 
-// an array containing destination paths
-def destinations = ["${dest_folder}", "${mods_folder}"]
-
-task deleteOldJar(type: Delete) {
-	destinations.each { destination ->
-		print 'deleting... '
-		println destination
-        //delete fileTree(destination) {
-        //    include "**/${mod_name}-*.jar"
-        //}
-        delete "${destination}/${mod_name}-mc${mc_version}-f${forge_version}-*.jar"
-    }
-}
-    
-task copyJar() {
+task copyJar(dependsOn: [jar]) {
 	// iterate over the array with destination paths
  	destinations.each { destination ->
         // for every destination define new CopySpec
@@ -163,5 +163,5 @@ task copyJar() {
     }
 }
 
-deleteOldJar.dependsOn minecraft
-copyJar.dependsOn deleteOldJar
+//deleteOldJar.dependsOn minecraft
+//copyJar.dependsOn deleteOldJar

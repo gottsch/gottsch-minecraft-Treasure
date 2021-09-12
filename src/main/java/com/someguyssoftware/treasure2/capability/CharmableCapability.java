@@ -82,6 +82,11 @@ public class CharmableCapability implements ICharmableCapability {
 	private ResourceLocation sourceItem;
 	// the current charm with the highest level
 	private ICharmEntity highestLevel;
+	
+	// can this item be named by its material components ex. Gold Ring, Topaz Gold Ring
+	private boolean namedByMaterial;
+	// can this item be named by its charms and levels ex. Giant Ring of Healing
+	private boolean namedByCharm;
 
 	/*
 	 * Propeties that refer to the Charm Inventory the the Item that has this capability
@@ -125,6 +130,8 @@ public class CharmableCapability implements ICharmableCapability {
 		this.maxSocketsSize = socketable ? Math.max(1, builder.maxSocketsSize) : 0;
 		this.baseMaterial = builder.baseMaterial;
 		this.sourceItem = builder.sourceItem;
+		this.namedByCharm = builder.namedByCharm;
+		this.namedByMaterial = builder.namedByMaterial;
 	}
 
 	/**
@@ -483,6 +490,8 @@ public class CharmableCapability implements ICharmableCapability {
 		public boolean imbuing;
 		public boolean imbuable;
 		public boolean innate;	    	    
+		public boolean namedByMaterial;
+		public boolean namedByCharm;
 
 		public ResourceLocation baseMaterial = TreasureCharms.COPPER.getName();
 
@@ -545,12 +554,18 @@ public class CharmableCapability implements ICharmableCapability {
 			this.baseMaterial = material;
 			return this;
 		}
+		
+		public Builder namedByMaterial(boolean isNameable) {
+			this.namedByMaterial = isNameable;
+			return this;
+		}
+		
+		public Builder namedByCharm(boolean isNameable) {
+			this.namedByCharm = isNameable;
+			return this;
+		}
 
 		public ICharmableCapability build() {
-			// calculate the max charm level based on baseMaterial and the source item.
-			//	    	Treasure.LOGGER.debug("charm source item -> {}", sourceItem);
-			//	    	Optional<Integer> level = TreasureCharms.getCharmLevel(sourceItem);
-			//	    	this.maxCharmLevel = baseMaterial.getMaxLevel() + (level.isPresent() ? level.get() : 0) ;
 			return new CharmableCapability(this);
 		}
 	}
@@ -563,5 +578,25 @@ public class CharmableCapability implements ICharmableCapability {
 	@Override
 	public void setHighestLevel(ICharmEntity highestLevel) {
 		this.highestLevel = highestLevel;
+	}
+
+	@Override
+	public boolean isNamedByMaterial() {
+		return namedByMaterial;
+	}
+
+	@Override
+	public void setNamedByMaterial(boolean namedByMaterial) {
+		this.namedByMaterial = namedByMaterial;
+	}
+
+	@Override
+	public boolean isNamedByCharm() {
+		return namedByCharm;
+	}
+
+	@Override
+	public void setNamedByCharm(boolean namedByCharm) {
+		this.namedByCharm = namedByCharm;
 	}
 }

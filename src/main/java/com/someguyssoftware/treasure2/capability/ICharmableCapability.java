@@ -93,6 +93,10 @@ public interface ICharmableCapability {
 	void remove(InventoryType type, int index);
 	boolean isExecuting();
 	public void setExecuting(boolean executing);
+	boolean isNamedByMaterial();
+	void setNamedByMaterial(boolean namedByMaterial);
+	boolean isNamedByCharm();
+	void setNamedByCharm(boolean namedByCharm);
 
 
 }

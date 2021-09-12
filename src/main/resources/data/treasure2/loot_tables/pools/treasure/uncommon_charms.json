@@ -9,7 +9,7 @@
 					"entryName": "charm1",
 					"type": "item",
 					"name": "treasure2:copper_charm",
-					"weight": 1,
+					"weight": 10,
 					"conditions": [
 						{
 							"condition": "random_chance",
@@ -27,7 +27,7 @@
 					"entryName": "charm2",
 					"type": "item",
 					"name": "treasure2:copper_charm",
-					"weight": 1,
+					"weight": 10,
 					"conditions": [
 						{
 							"condition": "random_chance",
@@ -45,7 +45,7 @@
 					"entryName": "charm3",
 					"type": "item",
 					"name": "treasure2:silver_charm",
-					"weight": 1,
+					"weight": 10,
 					"conditions": [
 						{
 							"condition": "random_chance",
@@ -66,13 +66,24 @@
 					"weight": 10,
 					"conditions": [{
 						"condition": "random_chance",
-						"chance": 0.03
+						"chance": 0.1
 					}],
 					"functions": [{
 						"function": "treasure2:random_adornment",
 						"material": "copper"
 					}]
-				}			
+				},
+				{
+				"entryName": "peasants_fortune",
+				"type": "item",
+				"name": "treasure2:peasants_fortune",
+				"weight": 10,
+				"quality": 3,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.05
+				}]
+			}	
 			]
 		}		
 	]

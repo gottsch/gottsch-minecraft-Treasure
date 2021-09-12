@@ -61,5 +61,16 @@
 			},
 			"model": "treasure2:item/adornment/copper_black_pearl_bracelet"
 		}
-	]
+	],
+	"display": {
+       "thirdperson_righthand": {
+            "scale":[ 0.25, 0.25, 0.25]
+        },
+        "firstperson_righthand": {
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "ground": {
+            "scale":[ 0.25, 0.25, 0.25]
+        }
+    }
 }

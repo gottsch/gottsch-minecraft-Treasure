@@ -195,7 +195,7 @@ public class CharmEventHandler {
 		final List<CharmContext> contexts = new ArrayList<>(5);
 
 		// get the slot provider - curios (general slots) or minecraft (hotbar)
-		String slotProviderId  = ModList.get().isLoaded(CURIOS_ID) ? CURIOS_ID : "minecaft";
+		String slotProviderId  = ModList.get().isLoaded(CURIOS_ID) ? CURIOS_ID : "minecraft";
 		
 		// check each hand
 		for (Hand hand : Hand.values()) {

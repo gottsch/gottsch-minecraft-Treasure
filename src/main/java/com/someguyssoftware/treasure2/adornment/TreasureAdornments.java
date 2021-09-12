@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
@@ -34,6 +35,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -51,19 +53,19 @@ public class TreasureAdornments {
 	public static final String COPPER = "copper";
 	public static final String SILVER = "silver";
 	public static final String GOLD = "gold";
-	
+
 	// for future - if other mods can register new types via InterModCommunication
 	private static final Set<String> TYPES = new HashSet<>();
 	private static final Set<String> MATERIALS = new HashSet<>();
 
 	// caches
 	private static final List<Item> ADORNMENTS_CACHE = new ArrayList<>();
-	
+
 	static {
 		TYPES.add(RING);
 		TYPES.add(NECKLACE);
 		TYPES.add(BRACELET);
-		
+
 		MATERIALS.add(COPPER);
 		MATERIALS.add(SILVER);
 		MATERIALS.add(GOLD);
@@ -76,11 +78,11 @@ public class TreasureAdornments {
 	public static List<Item> getAll() {
 		if (ADORNMENTS_CACHE.isEmpty()) {
 			ADORNMENTS_CACHE.addAll(Stream
-				.of(ItemTags.getAllTags().getTag(ModUtils.asLocation(RING)).getValues(),
-						ItemTags.getAllTags().getTag(ModUtils.asLocation(NECKLACE)).getValues(),
-						ItemTags.getAllTags().getTag(ModUtils.asLocation(BRACELET)).getValues())
-				.flatMap(Collection::stream).collect(Collectors.toList())
-				);
+					.of(ItemTags.getAllTags().getTag(ModUtils.asLocation(RING)).getValues(),
+							ItemTags.getAllTags().getTag(ModUtils.asLocation(NECKLACE)).getValues(),
+							ItemTags.getAllTags().getTag(ModUtils.asLocation(BRACELET)).getValues())
+					.flatMap(Collection::stream).collect(Collectors.toList())
+					);
 		}
 		return ADORNMENTS_CACHE;
 	}
@@ -99,7 +101,7 @@ public class TreasureAdornments {
 			return getAll();
 		}
 	}
-	
+
 	public static List<Item> getByMaterial(String material) {
 		if (MATERIALS.contains(material.toLowerCase())) {
 			return ItemTags.getAllTags().getTag(ModUtils.asLocation(material.toLowerCase())).getValues();
@@ -108,31 +110,38 @@ public class TreasureAdornments {
 			return getAll();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param stack
 	 */
 	public static void setHoverName(ItemStack stack) {
 		stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
-			if (cap.getSourceItem() == null || cap.getSourceItem().equals(Items.AIR.getRegistryName())) {
-				return;
+			// check first if it is charmed - charmed names supercede source item names
+			if (cap.isCharmed()) {
+				int level = cap.getHighestLevel().getCharm().getLevel();
+				Set<String> tags = stack.getItem().getTags().stream().filter(tag -> tag.getNamespace().equals(Treasure.MODID)) .map(ResourceLocation::getPath).collect(Collectors.toSet());
+				String type =tags.contains(RING) ? RING : tags.contains(NECKLACE) ? NECKLACE : tags.contains(BRACELET) ? BRACELET : stack.getItem().getName(stack).getString();
+
+				stack.setHoverName(new TranslationTextComponent("tooltip.adornment.name.level" + level, 
+						new TranslationTextComponent("tooltip.adornment.type." + type),
+						new TranslationTextComponent("tooltip.charm.type." + cap.getHighestLevel().getCharm().getType().toLowerCase()).getString()));
+			}			
+			else if (cap.getSourceItem() != null && !cap.getSourceItem().equals(Items.AIR.getRegistryName())) {
+				Item sourceItem = ForgeRegistries.ITEMS.getValue(cap.getSourceItem());
+				if (!cap.isCharmed()) {					
+					stack.setHoverName(
+							((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
+							.append(new StringTextComponent(" "))
+							.append(stack.getItem().getName(stack)));
+				}
+				else {
+					stack.setHoverName(
+							((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
+							.append(new StringTextComponent(" "))
+							.append(stack.getHoverName()));
+				}
 			}
-			Item sourceItem = ForgeRegistries.ITEMS.getValue(cap.getSourceItem());
-			if (!cap.isCharmed()) {					
-				stack.setHoverName(
-						((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
-						.append(new StringTextComponent(" "))
-						.append(stack.getItem().getName(stack)));
-			}
-			else {
-				stack.setHoverName(
-						((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
-						.append(new StringTextComponent(" "))
-						.append(stack.getHoverName()));
-			}
-			
-			// TODO prefix/suffix with the highest charm
 		});
 	}
 }

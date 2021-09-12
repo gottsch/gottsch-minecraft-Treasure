@@ -123,7 +123,8 @@
 						"levels": {
 							"min": 8,
 							"max": 13
-						}
+						},
+						"curseChance": 0.15
 					}					
 				]
 			},
