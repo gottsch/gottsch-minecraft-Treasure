@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+     "treasure2:gold_ring",
+     "treasure2:gold_necklace",
+     "treasure2:gold_bracelet"
+  ]
+}

@@ -3,8 +3,7 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/forge-1.16.5-36.2.0"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/ModCommonLibs/libs/curios-forge-1.16.5-4.0.5.2.jar" sourcepath="/ModCommonLibs/libs/curios-forge-1.16.5-4.0.5.2.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/gottsch-minecraft-GottschCore"/>
-	<classpathentry kind="output" path="bin/default"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/GottschCore"/>
+	<classpathentry kind="lib" path="/ModCommonLibs/libs/curios-forge-1.16.5-4.0.5.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

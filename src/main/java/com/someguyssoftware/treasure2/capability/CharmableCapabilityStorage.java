@@ -24,12 +24,9 @@ import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
-import com.someguyssoftware.treasure2.charm.BaseMaterial2;
 import com.someguyssoftware.treasure2.charm.Charm;
-import com.someguyssoftware.treasure2.charm.CharmableMaterial;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
-import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.nbt.CompoundNBT;
@@ -60,6 +57,8 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 	private static final String SOURCE_ITEM = "sourceItem";
 	private static final String MAX_CHARM_LEVEL = "maxCharmLevel";
 	private static final String CHARM = "charm";
+	private static final String NAMED_BY_MATERIAL = "namedByMaterial";
+	private static final String NAMED_BY_CHARM = "namedByCharm";
 	
 	@Override
 	public INBT writeNBT(Capability<ICharmableCapability> capability, ICharmableCapability instance, Direction side) {
@@ -99,7 +98,8 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 			nbt.putInt(MAX_SOCKET_SIZE, instance.getMaxSocketsSize());
 			nbt.putString(BASE_MATERIAL, instance.getBaseMaterial().toString());
 			nbt.putString(SOURCE_ITEM, instance.getSourceItem().toString());
-			
+			nbt.putBoolean(NAMED_BY_MATERIAL, instance.isNamedByMaterial());	
+			nbt.putBoolean(NAMED_BY_CHARM, instance.isNamedByCharm());	
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Unable to write state to NBT:", e);
 		}
@@ -130,13 +130,8 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 						
 						// load entity
 						entity.load((CompoundNBT)e);
-//						Optional<ICharmEntity> entity = ICharmEntity.load((CompoundNBT)e);
-//						if (!entity.isPresent()) {
-//							return;
-//						}
 						
 						// add the entity to the list
-//						instance.getCharmEntities()[type.getValue()].add(entity.get());
 						instance.getCharmEntities()[type.getValue()].add(entity);
 					});
 				}
@@ -184,6 +179,13 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 				
 				if (tag.contains(SOURCE_ITEM)) {
 					instance.setSourceItem(ModUtils.asLocation(tag.getString(SOURCE_ITEM)));
+				}
+				
+				if (tag.contains(NAMED_BY_MATERIAL)) {
+					instance.setNamedByMaterial(tag.getBoolean(NAMED_BY_MATERIAL));
+				}
+				if (tag.contains(NAMED_BY_CHARM)) {
+					instance.setNamedByCharm(tag.getBoolean(NAMED_BY_CHARM));
 				}
 			}
 		}

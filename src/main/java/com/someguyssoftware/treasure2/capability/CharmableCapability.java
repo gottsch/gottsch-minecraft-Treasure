@@ -20,6 +20,7 @@
 package com.someguyssoftware.treasure2.capability;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -34,11 +35,13 @@ import com.someguyssoftware.treasure2.charm.CharmableMaterial;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
+import com.someguyssoftware.treasure2.charm.TreasureCharms.SortByLevel;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -79,6 +82,11 @@ public class CharmableCapability implements ICharmableCapability {
 	private ResourceLocation sourceItem;
 	// the current charm with the highest level
 	private ICharmEntity highestLevel;
+	
+	// can this item be named by its material components ex. Gold Ring, Topaz Gold Ring
+	private boolean namedByMaterial;
+	// can this item be named by its charms and levels ex. Giant Ring of Healing
+	private boolean namedByCharm;
 
 	/*
 	 * Propeties that refer to the Charm Inventory the the Item that has this capability
@@ -87,7 +95,16 @@ public class CharmableCapability implements ICharmableCapability {
 	private int maxImbueSize;
 	private int maxInnateSize;
 
-
+	public static class SortByLevel implements Comparator<ICharmEntity> {
+		@Override
+		public int compare(ICharmEntity e1, ICharmEntity e2) {
+			return e1.getCharm().getLevel() - e2.getCharm().getLevel();
+		}
+	};
+	
+	// comparator on charm level
+	public static Comparator<ICharmEntity> levelComparator = new SortByLevel();
+	
 	/**
 	 * 
 	 */
@@ -106,12 +123,15 @@ public class CharmableCapability implements ICharmableCapability {
 		this.bindable = builder.bindable;
 		this.innate = builder.innate;
 		this.maxInnateSize = innate ? Math.max(1, builder.maxInnateSize) : 0;
+		this.imbuing = builder.imbuing;
 		this.imbuable = builder.imbuable;
 		this.maxImbueSize = imbuable ? Math.max(1, builder.maxImbueSize) : 0;
 		this.socketable = builder.socketable;
 		this.maxSocketsSize = socketable ? Math.max(1, builder.maxSocketsSize) : 0;
 		this.baseMaterial = builder.baseMaterial;
 		this.sourceItem = builder.sourceItem;
+		this.namedByCharm = builder.namedByCharm;
+		this.namedByMaterial = builder.namedByMaterial;
 	}
 
 	/**
@@ -136,6 +156,8 @@ public class CharmableCapability implements ICharmableCapability {
 //			return;
 //		}
 
+		// TODO ensure only one of the same type can be added.
+		
 		// test if there is enough space to add
 		//		Treasure.LOGGER.debug("adding type -> {} charm -> {}", type, entity.getCharm());
 		if (charmEntities[type.value].size() < getMaxSize(type)) {
@@ -231,9 +253,14 @@ public class CharmableCapability implements ICharmableCapability {
 
 	@Override
 	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
-//		tooltip.add(new TranslationTextComponent("tooltip.charmable.usage").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
-		tooltip.add(new TranslationTextComponent("tooltip.label.charms").withStyle(TextFormatting.YELLOW, TextFormatting.BOLD));
-
+//		if (!getBaseMaterial().equals(TreasureCharms.CHARM_BOOK.getName())) {
+		if (isImbuable() || isSocketable()) {
+			tooltip.add(new TranslationTextComponent("tooltip.label.charms", getMaxCharmLevel()).withStyle(TextFormatting.YELLOW));
+		}
+		else {
+			tooltip.add(new TranslationTextComponent("tooltip.label.charms.no_level", getMaxCharmLevel()).withStyle(TextFormatting.YELLOW));
+		}
+		
 		// create header text for inventory type
 		appendHoverText(stack, world, tooltip, flag, InventoryType.INNATE, false);
 		appendHoverText(stack, world, tooltip, flag, InventoryType.IMBUE, true);
@@ -251,30 +278,24 @@ public class CharmableCapability implements ICharmableCapability {
 	 */
 	private void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag, InventoryType inventoryType, boolean titleFlag) {
 		List<ICharmEntity> entityList = getCharmEntities()[inventoryType.value];
-		if (entityList != null && !entityList.isEmpty()) {
-			// add title
-			if (titleFlag) {
-				TextFormatting color = inventoryType == InventoryType.SOCKET ? TextFormatting.BLUE : TextFormatting.DARK_RED;
-				tooltip.add(
-						new TranslationTextComponent("tooltip.label.charm.type." + inventoryType.name().toLowerCase()).withStyle(color)
-						.append(getCapacityHoverText(stack, world, entityList).withStyle(TextFormatting.WHITE))
-						);
-			}
-			// add charms
-			for (ICharmEntity entity : entityList) {
-				entity.getCharm().appendHoverText(stack, world, tooltip, flag, entity);
-			}
-		}		
-	}
+		// test if the cap has the inventory type ability
+		switch (inventoryType) {
+			case INNATE: if (!isInnate()) { return;}; break;
+			case IMBUE: if (!isImbuable()) { return;}; break;
+			case SOCKET: if (!isSocketable()) { return;}; break;
+		}
 
-	@SuppressWarnings("deprecation")
-	public void appendCapacityHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag, List<ICharmEntity> entities) {
-
-		//    	tooltip.add(new TranslationTextComponent("tooltip.charmable.slots").withStyle(TextFormatting.GRAY));
-		tooltip.add(new TranslationTextComponent("tooltip.charmable.slots", 
-				String.valueOf(Math.toIntExact(Math.round(entities.size()))), // used
-				String.valueOf(Math.toIntExact(Math.round(this.maxSocketsSize)))) // max
-				.withStyle(TextFormatting.WHITE)); 
+		// add title
+		if (titleFlag) {
+			tooltip.add(
+					new TranslationTextComponent("tooltip.indent1", new TranslationTextComponent("tooltip.charmable.inventory." + inventoryType.name().toLowerCase()).withStyle(TextFormatting.GOLD)
+					.append(getCapacityHoverText(stack, world, entityList).withStyle(TextFormatting.WHITE)))
+					);
+		}
+		// add charms
+		for (ICharmEntity entity : entityList) {
+			entity.getCharm().appendHoverText(stack, world, tooltip, flag, entity);
+		}	
 	}
 
 	@SuppressWarnings("deprecation")
@@ -469,6 +490,8 @@ public class CharmableCapability implements ICharmableCapability {
 		public boolean imbuing;
 		public boolean imbuable;
 		public boolean innate;	    	    
+		public boolean namedByMaterial;
+		public boolean namedByCharm;
 
 		public ResourceLocation baseMaterial = TreasureCharms.COPPER.getName();
 
@@ -531,12 +554,18 @@ public class CharmableCapability implements ICharmableCapability {
 			this.baseMaterial = material;
 			return this;
 		}
+		
+		public Builder namedByMaterial(boolean isNameable) {
+			this.namedByMaterial = isNameable;
+			return this;
+		}
+		
+		public Builder namedByCharm(boolean isNameable) {
+			this.namedByCharm = isNameable;
+			return this;
+		}
 
 		public ICharmableCapability build() {
-			// calculate the max charm level based on baseMaterial and the source item.
-			//	    	Treasure.LOGGER.debug("charm source item -> {}", sourceItem);
-			//	    	Optional<Integer> level = TreasureCharms.getCharmLevel(sourceItem);
-			//	    	this.maxCharmLevel = baseMaterial.getMaxLevel() + (level.isPresent() ? level.get() : 0) ;
 			return new CharmableCapability(this);
 		}
 	}
@@ -544,5 +573,30 @@ public class CharmableCapability implements ICharmableCapability {
 	@Override
 	public ICharmEntity getHighestLevel() {
 		return highestLevel;
+	}
+
+	@Override
+	public void setHighestLevel(ICharmEntity highestLevel) {
+		this.highestLevel = highestLevel;
+	}
+
+	@Override
+	public boolean isNamedByMaterial() {
+		return namedByMaterial;
+	}
+
+	@Override
+	public void setNamedByMaterial(boolean namedByMaterial) {
+		this.namedByMaterial = namedByMaterial;
+	}
+
+	@Override
+	public boolean isNamedByCharm() {
+		return namedByCharm;
+	}
+
+	@Override
+	public void setNamedByCharm(boolean namedByCharm) {
+		this.namedByCharm = namedByCharm;
 	}
 }

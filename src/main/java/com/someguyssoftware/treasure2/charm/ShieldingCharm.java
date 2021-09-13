@@ -57,33 +57,35 @@ public class ShieldingCharm extends Charm {
 	protected ShieldingCharm(Charm.Builder builder) {
 		super(builder);
 	}
-	
+
 	public Class<?> getRegisteredEvent() {
 		return REGISTERED_EVENT;
 	}
 
 	@Override
-	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity data) {
+	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-		if (data.getValue() > 0 && player.isAlive()) {
-			// get the source and amount
-			double amount = ((LivingDamageEvent)event).getAmount();
-			// calculate the new amount
-			double newAmount = 0;
-			double amountToCharm = amount * data.getPercent();
-			double amountToPlayer = amount - amountToCharm;
-			//    			Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
-			if (data.getValue() >= amountToCharm) {
-				data.setValue(data.getValue() - amountToCharm);
-				newAmount = amountToPlayer;
-			}
-			else {
-				newAmount = amount - data.getValue();
-				data.setValue(0);
-			}
-			((LivingDamageEvent)event).setAmount((float) newAmount);
-			result = true;
-		}    		
+		if (entity.getValue() > 0 && player.isAlive()) {
+			if (((LivingDamageEvent)event).getEntity() instanceof PlayerEntity) {
+				// get the source and amount
+				double amount = ((LivingDamageEvent)event).getAmount();
+				// calculate the new amount
+				double newAmount = 0;
+				double amountToCharm = amount * entity.getPercent();
+				double amountToPlayer = amount - amountToCharm;
+				//    			Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
+				if (entity.getValue() >= amountToCharm) {
+					entity.setValue(entity.getValue() - amountToCharm);
+					newAmount = amountToPlayer;
+				}
+				else {
+					newAmount = amount - entity.getValue();
+					entity.setValue(0);
+				}
+				((LivingDamageEvent)event).setAmount((float) newAmount);
+				result = true;
+			}    		
+		}
 		return result;
 	}
 
@@ -93,10 +95,8 @@ public class ShieldingCharm extends Charm {
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.BLUE;
-		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
-		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent("tooltip.charm.rate.shielding", Math.round(this.getMaxPercent()*100)).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
+		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent(getLabel(entity)).withStyle(color)));
+		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent("tooltip.charm.rate.shielding", Math.round(this.getMaxPercent()*100)).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
 
 	}
 

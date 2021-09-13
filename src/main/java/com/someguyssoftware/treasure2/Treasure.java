@@ -13,6 +13,7 @@ import com.someguyssoftware.treasure2.entity.TreasureEntities;
 import com.someguyssoftware.treasure2.eventhandler.CharmEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.HotbarEquipmentCharmHandler;
 import com.someguyssoftware.treasure2.eventhandler.IEquipmentCharmHandler;
+
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.init.TreasureSetup;
 import com.someguyssoftware.treasure2.network.TreasureNetworking;
@@ -62,7 +63,8 @@ public class Treasure implements IMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.6.1";
+	protected static final String VERSION = "1.7.0";
+
 
 	protected static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.16.5-master/update.json";
 
@@ -111,6 +113,7 @@ public class Treasure implements IMod {
 			equipmentCharmHandler = new HotbarEquipmentCharmHandler();
 		}
 		MinecraftForge.EVENT_BUS.register(new CharmEventHandler(equipmentCharmHandler));
+
 	}
 	
 	/**
@@ -145,36 +148,6 @@ public class Treasure implements IMod {
 	private void onServerStarted(final FMLDedicatedServerSetupEvent event) {
 		Treasure.LOGGER.info("in onServerStarted");
 	}
-
-//	/**
-//	 * 
-//	 */
-//	@EventHandler
-//	public void postInit(FMLPostInitializationEvent event) {
-//		if (!getConfig().isModEnabled())
-//			return;
-//
-//		// perform any post init
-//		super.postInit(event);
-//
-//		// associate painting items to painting blocks and vice versa
-//		((PaintingItem) TreasureItems.PAINTING_BLOCKS_BRICKS).setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_BRICKS);
-//		((PaintingItem) TreasureItems.PAINTING_BLOCKS_COBBLESTONE)
-//				.setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_COBBLESTONE);
-//		((PaintingItem) TreasureItems.PAINTING_BLOCKS_DIRT).setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_DIRT);
-//		((PaintingItem) TreasureItems.PAINTING_BLOCKS_LAVA).setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_LAVA);
-//		((PaintingItem) TreasureItems.PAINTING_BLOCKS_SAND).setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_SAND);
-//		((PaintingItem) TreasureItems.PAINTING_BLOCKS_WATER).setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_WATER);
-//		((PaintingItem) TreasureItems.PAINTING_BLOCKS_WOOD).setPaintingBlock(TreasureBlocks.PAINTING_BLOCKS_WOOD);
-//
-//		TreasureBlocks.PAINTING_BLOCKS_BRICKS.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_BRICKS);
-//		TreasureBlocks.PAINTING_BLOCKS_COBBLESTONE.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_COBBLESTONE);
-//		TreasureBlocks.PAINTING_BLOCKS_DIRT.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_DIRT);
-//		TreasureBlocks.PAINTING_BLOCKS_LAVA.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_LAVA);
-//		TreasureBlocks.PAINTING_BLOCKS_SAND.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_SAND);
-//		TreasureBlocks.PAINTING_BLOCKS_WATER.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_WATER);
-//		TreasureBlocks.PAINTING_BLOCKS_WOOD.setItem((PaintingItem) TreasureItems.PAINTING_BLOCKS_WOOD);
-
 
 
 	@Override

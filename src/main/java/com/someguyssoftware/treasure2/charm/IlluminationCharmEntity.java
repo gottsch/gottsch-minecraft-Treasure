@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.someguyssoftware.gottschcore.spatial.ICoords;
+import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -65,6 +66,28 @@ public class IlluminationCharmEntity extends CharmEntity {
 			}
 		}
 		return true;
+	}
+	
+	@Override
+	public CompoundNBT save(CompoundNBT nbt) {
+		nbt = super.save(nbt);
+		try {
+			ListNBT list = new ListNBT();
+			synchronized (coordsList) {
+				for (ICoords coords : coordsList) {
+					// create a new nbt
+					CompoundNBT coordsTag = new CompoundNBT();
+					coords.writeToNBT(coordsTag);
+					list.add(coordsTag);
+				}
+			}
+			nbt.remove("illuminationCoords");
+			nbt.put("illuminationCoords", list);
+		}
+		catch(Exception e) {
+			Treasure.LOGGER.error("Unable to write state to NBT:", e);
+		}
+		return nbt;
 	}
 	
 	/**

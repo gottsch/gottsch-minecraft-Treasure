@@ -55,6 +55,8 @@ import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -140,6 +142,29 @@ public class TreasureItems {
 	public static CharmItem GOLD_CHARM;
 	public static CharmItem CHARM_BOOK;
 
+	// adornments
+	public static Adornment COPPER_RING;
+	public static Adornment SILVER_RING;
+	public static Adornment GOLD_RING;
+	
+	public static Adornment COPPER_NECKLACE;
+	public static Adornment SILVER_NECKLACE;
+	public static Adornment GOLD_NECKLACE;
+	
+	public static Adornment COPPER_BRACELET;
+	public static Adornment SILVER_BRACELET;
+	public static Adornment GOLD_BRACELET;
+	
+	// special adornments
+	public static Adornment ANGELS_RING; // 3x level15 innate
+	public static Adornment RING_OF_FORTITUDE; // 2x level15 innate
+	public static Adornment MEDICS_TOKEN; // 1x level20 innate
+	public static Adornment SALANDAARS_WARD = null; // 1x level20 innate
+	public static Adornment ADEPHAGIAS_BOUNTY; // 1x level20 innate
+	public static Adornment MIRTHAS_TORCH;
+	public static Adornment POCKET_WATCH;
+	public static Adornment  PEASANTS_FORTUNE;
+		
 	// wither items
 	public static Item WITHER_STICK_ITEM;
 	public static Item WITHER_ROOT_ITEM;
@@ -450,8 +475,9 @@ public class TreasureItems {
 					$.innate(true, 1);
 					$.bindable(true);
 					$.source(true);
-					$.executing(true)
-					.baseMaterial(TreasureCharms.COPPER.getName());
+					$.executing(true);
+					$.namedByMaterial(true);
+					$.baseMaterial(TreasureCharms.COPPER.getName());
 				}).build();
 				return new CharmableCapabilityProvider(cap);
 			}
@@ -462,8 +488,9 @@ public class TreasureItems {
 					$.innate(true, 1);
 					$.bindable(true);
 					$.source(true);
-					$.executing(true)
-					.baseMaterial(TreasureCharms.SILVER.getName());
+					$.executing(true);
+					$.namedByMaterial(true);
+					$.baseMaterial(TreasureCharms.SILVER.getName());
 				}).build();
 				return new CharmableCapabilityProvider(cap);
 			}
@@ -474,8 +501,9 @@ public class TreasureItems {
 					$.innate(true, 1);
 					$.bindable(true);
 					$.source(true);
-					$.executing(true)
-					.baseMaterial(TreasureCharms.GOLD.getName());
+					$.executing(true);
+					$.namedByMaterial(true);
+					$.baseMaterial(TreasureCharms.GOLD.getName());
 				}).build();
 				return new CharmableCapabilityProvider(cap);
 			}
@@ -487,12 +515,280 @@ public class TreasureItems {
 					$.imbuing(true);
 					$.source(true);
 					$.executing(false);
+					$.baseMaterial(TreasureCharms.CHARM_BOOK.getName());
 				}).build();
 				return new CharmableCapabilityProvider(cap);
 			}
 		};
 
 		POUCH = new PouchItem(Treasure.MODID, "pouch", new Item.Properties());
+		
+		// adornments
+		COPPER_RING = new Adornment(Treasure.MODID, TreasureConfig.ItemID.COPPER_RING, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 1);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
+					$.baseMaterial = TreasureCharms.COPPER.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		SILVER_RING = new Adornment(Treasure.MODID, TreasureConfig.ItemID.SILVER_RING, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 2);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
+					$.baseMaterial = TreasureCharms.SILVER.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		GOLD_RING = new Adornment(Treasure.MODID, TreasureConfig.ItemID.GOLD_RING, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 3);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		COPPER_NECKLACE = new Adornment(Treasure.MODID, TreasureConfig.ItemID.COPPER_NECKLACE, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 1);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
+					$.baseMaterial = TreasureCharms.COPPER.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		SILVER_NECKLACE = new Adornment(Treasure.MODID, TreasureConfig.ItemID.SILVER_NECKLACE, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 2);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
+					$.baseMaterial = TreasureCharms.SILVER.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		GOLD_NECKLACE = new Adornment(Treasure.MODID, TreasureConfig.ItemID.GOLD_NECKLACE, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 3);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+				
+		COPPER_BRACELET = new Adornment(Treasure.MODID, TreasureConfig.ItemID.COPPER_BRACELET, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 1);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
+					$.baseMaterial = TreasureCharms.COPPER.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		SILVER_BRACELET = new Adornment(Treasure.MODID, TreasureConfig.ItemID.SILVER_BRACELET, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 2);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
+					$.baseMaterial = TreasureCharms.SILVER.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		GOLD_BRACELET = new Adornment(Treasure.MODID, TreasureConfig.ItemID.GOLD_BRACELET, new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
+					$.innate(true, 3);
+					$.imbue(true, 1);
+					$.socketable(true, 1);
+					$.source(false);
+					$.executing(true);
+					$.namedByCharm(true);
+					$.namedByMaterial(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		// SPECIAL ADORNMENTS
+		ANGELS_RING = new Adornment(Treasure.MODID, "angels_ring", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(WHITE_PEARL.getRegistryName()).with($ -> {
+					$.innate(true, 3);
+					$.imbuable = false;
+					$.socketable = false;
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.AEGIS_15.createEntity());
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.GREATER_HEALING_15.createEntity());
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.FIRE_IMMUNITY_15.createEntity());
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		RING_OF_FORTITUDE = new Adornment(Treasure.MODID, "ring_of_fortitude", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(BLACK_PEARL.getRegistryName()).with($ -> {
+					$.innate(true, 2);
+					$.imbuable = false;
+					$.socketable = false;
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.AEGIS_15.createEntity());
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.REFLECTION_15.createEntity());
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		MEDICS_TOKEN = new Adornment(Treasure.MODID, "medics_token", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(SAPPHIRE.getRegistryName()).with($ -> {
+					$.innate(true, 1);
+					$.imbuable = false;
+					$.socketable = false;
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.GREATER_HEALING_20.createEntity());
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		ADEPHAGIAS_BOUNTY = new Adornment(Treasure.MODID, "adephagias_bounty", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.EMERALD.getRegistryName()).with($ -> {
+					$.innate(true, 1);
+					$.imbuable = false;
+					$.socketable = false;
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.SATIETY_20.createEntity());
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		SALANDAARS_WARD = new Adornment(Treasure.MODID, "salandaars_ward", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(RUBY.getRegistryName()).with($ -> {
+					$.innate(true, 1);
+					$.imbuable = false;
+					$.socketable = false;
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.SHIELDING_20.createEntity());
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		MIRTHAS_TORCH = new Adornment(Treasure.MODID, "mirthas_torch", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(WHITE_PEARL.getRegistryName()).with($ -> {
+					$.innate(true, 1);
+					$.imbuable = false;
+					$.socketable = false;
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				cap.getCharmEntities()[InventoryType.INNATE.getValue()].add(TreasureCharms.ILLUMINATION_21.createEntity());
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		POCKET_WATCH = new Adornment(Treasure.MODID, "pocket_watch", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(TOPAZ.getRegistryName()).with($ -> {
+					$.innate = false;
+					$.imbuable = false;
+					$.socketable(true, 2);
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.GOLD.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
+		
+		PEASANTS_FORTUNE = new Adornment(Treasure.MODID, "peasants_fortune", new Item.Properties()) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+				ICharmableCapability cap = new CharmableCapability.Builder(Items.STONE.getRegistryName()).with($ -> { // use STONE as source Item so it can't be upgraded
+					$.innate = false;
+					$.imbuable = false;
+					$.socketable(true, 2);
+					$.source(false);
+					$.executing(true);
+					$.baseMaterial = TreasureCharms.COPPER.getName();
+				}).build();
+				return new CharmableCapabilityProvider(cap);
+			}
+		};
 		
 		// WITHER ITEMS
 		WITHER_STICK_ITEM = new WitherStickItem(Treasure.MODID, TreasureConfig.ItemID.WITHER_STICK_ITEM_ID, TreasureBlocks.WITHER_BRANCH, new Item.Properties());
@@ -560,7 +856,24 @@ public class TreasureItems {
 				WITHER_STICK_ITEM,
 				WITHER_ROOT_ITEM,
 				SKULL_SWORD,
-				SKELETON
+				SKELETON,
+				COPPER_RING,
+				SILVER_RING,
+				GOLD_RING,
+				ANGELS_RING,
+				RING_OF_FORTITUDE,
+				COPPER_NECKLACE,
+				SILVER_NECKLACE,
+				GOLD_NECKLACE,
+				MEDICS_TOKEN,
+				ADEPHAGIAS_BOUNTY,
+				SALANDAARS_WARD,
+				MIRTHAS_TORCH,
+				POCKET_WATCH,
+				PEASANTS_FORTUNE,
+				COPPER_BRACELET,
+				SILVER_BRACELET,
+				GOLD_BRACELET
 				);
 	}
 
