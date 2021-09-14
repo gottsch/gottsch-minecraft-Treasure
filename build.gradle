@@ -122,7 +122,7 @@ repositories {
     }
 }
 
-def gottschcore_path="../GottschCore/build/libs/GottschCore-mc${mc_version}-f${gottschcore_forge_version}-v${gottschcore_version}.jar"
+def gottschcore_path="../gottsch-minecraft-GottschCore/build/libs/GottschCore-mc${mc_version}-f${gottschcore_forge_version}-v${gottschcore_version}.jar"
 println gottschcore_path
 dependencies {
     // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed

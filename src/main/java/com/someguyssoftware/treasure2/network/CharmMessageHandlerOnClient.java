@@ -84,6 +84,11 @@ public class CharmMessageHandlerOnClient {
 		ctx.enqueueWork(() -> processMessage(clientWorld.get(), message));
 	}
 
+	/**
+	 * 
+	 * @param worldClient
+	 * @param message
+	 */
 	private static void processMessage(ClientWorld worldClient, CharmMessageToClient message) {
 		Treasure.LOGGER.debug("received charm message -> {}", message);
 		try {
@@ -120,9 +125,16 @@ public class CharmMessageHandlerOnClient {
 	    			});
 	        	}
 	        	else {
-	        		// TODO do the hotbar
-	        	}
-	        	
+	        		Treasure.LOGGER.debug("hotbar handler");
+	        		// get the item from the hotbar
+	        		ItemStack hotbarStack = player.inventory.getItem(Integer.valueOf(message.getSlot()));
+	        		if (hotbarStack != null) {
+	        			Treasure.LOGGER.debug("hotbar item -> {}", hotbarStack.getItem().getRegistryName());
+	        			hotbarStack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
+	        				updateCharms(message, cap);
+	        			});
+	        		}
+	        	}	        	
 	        }
 		}
 		catch(Exception e) {
