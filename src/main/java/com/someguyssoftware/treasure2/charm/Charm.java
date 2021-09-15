@@ -130,47 +130,7 @@ public abstract class Charm implements ICharm {
 	 */
 	@SuppressWarnings("deprecation")
 	public String getLabel(ICharmEntity entity) {
-		return new TranslationTextComponent("tooltip.charm.type." + getType().toLowerCase()).getString() + " " + String.valueOf(getLevel()) + " "  + getUsesGauge(entity);
-
-		/*
-		 * 1. check for mod item specific label
-		 * 2. check for specific type prefix (levels 1-10)
-		 * 3. check for general prefix (levels 1-10)
-		 * OR
-		 * 4. check for specific type suffix (levels 11+)
-		 * 5. check for general suffix (levels 11+)
-		 * ex. tooltip.charm.shielding.prefix.level[x], else look for tooltip.charm.prefix.level[x] + tooltip.charm.[type]
-		 */
-		//        String tooltipKey = "tooltip.charm." + getName().toString().toLowerCase();
-		//        String label = I18n.translateToLocalFormatted(tooltipKey,
-		//				String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
-		//				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
-		//        String prefix = "";
-		//        String suffix = "";
-		//        String type = "";
-		//        if (label.equals(tooltipKey)) {
-		//            type = I18n.translateToLocalFormatted("tooltip.charm." + getType(), 
-		//            		String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
-		//    				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
-		//            if (this.getLevel() <= 10) {
-		//            	String prefixKey = "tooltip.charm." + getType() + ".prefix.level" + String.valueOf(this.getLevel());
-		//                prefix = I18n.translateToLocalFormatted(prefixKey);
-		//                if (prefix.equals(prefixKey)) {
-		//                    prefix = I18n.translateToLocalFormatted("tooltip.charm.prefix.level" + String.valueOf(this.getLevel()));
-		//                }
-		//                label = prefix + " " + type;
-		//            }
-		//            else {
-		//            	String suffixKey = "tooltip.charm." + getType() + ".suffix.level" + String.valueOf(this.getLevel());
-		//                suffix = I18n.translateToLocalFormatted(suffixKey);
-		//                if (suffix.equals(suffixKey)) {
-		//                    suffix = I18n.translateToLocalFormatted("tooltip.charm.suffix.level" + String.valueOf(this.getLevel()));
-		//                }
-		//                label = type + " " + suffix;
-		//            }
-		//        }
-		//        // TODO redo this in future.
-		//        return label + " " + getUsesGauge(data) + " " + (this.isAllowMultipleUpdates() ? (TextFormatting.DARK_PURPLE + "* combinable") : "");
+		return new TranslationTextComponent("tooltip.charm.type." + getType().toLowerCase()).getString() + " " + String.valueOf(getLevel()) + " "  + getUsesGauge(entity) + " " + (this.effectStackable ? "+" : "-");
 	}
 
 	/**

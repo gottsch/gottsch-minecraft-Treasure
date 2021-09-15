@@ -1,5 +1,10 @@
 {
   "replace": false,
   "values": [
+  	"treasure2:copper_necklace",
+  	"treasure2:silver_necklace",
+  	"treasure2:gold_necklace",
+  	"treasure2:medics_token",
+  	"treasure2:salandaars_ward"
   ]
 }

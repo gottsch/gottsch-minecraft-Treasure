@@ -48,6 +48,23 @@
 	"item.treasure2.gold_charm": "Gold Charm",
 	"item.treasure2.charm_book": "Charm Book",
 	"item.treasure2.pouch": "Pouch",
+	"item.treasure2.copper_ring": "Copper Ring",
+	"item.treasure2.silver_ring": "Silver Ring",
+	"item.treasure2.gold_ring": "Gold Ring",
+	"item.treasure2.copper_necklace": "Copper Necklace",
+	"item.treasure2.silver_necklace": "Silver Necklace",
+	"item.treasure2.gold_necklace": "Gold Necklace",
+	"item.treasure2.copper_bracelet": "Copper Bracelet",
+	"item.treasure2.silver_bracelet": "Silver Bracelet",
+	"item.treasure2.gold_bracelet": "Gold Bracelet",	
+	"item.treasure2.angels_ring": "Angel's Ring",
+	"item.treasure2.ring_of_fortitude": "Ring of Fortitude",
+	"item.treasure2.medics_token": "Medic's Token",
+	"item.treasure2.salandaars_ward":"Sal'andaar's Ward",
+	"item.treasure2.adephagias_bounty":"Adephagia's Bounty",
+	"item.treasure2.mirthas_torch":"Mirtha's Torch",
+	"item.treasure2.pocket_watch": "Pocket Watch",
+	"item.treasure2.peasants_fortune": "Peasant's Fortune",
 
 	"item.treasure2.wither_stick_item":"Wither Branch",
 	"item.treasure2.wither_root_item":"Wither Root",
@@ -135,6 +152,9 @@
 
 	"entity.bound_soul":"Bound Soul", 
 	
+	"tooltip.indent1": " %s",
+	"tooltip.indent2": "  %s",
+	"tooltip.indent3": "   %s",
 	"tooltip.yes":"Yes",
 	"tooltip.no":"No",
 	"tooltip.label.rarity":"Rarity: %s",
@@ -157,14 +177,16 @@
 	"tooltip.charmable.usage":"Hold in hand or equip for buffs",
 	"tooltip.charmable.usage.adornment":"Hold in hand or equip for buffs",
 	
-	"tooltip.label.charm_book":"Keep for Adornments in version 1.7",
-	"tooltip.charmable.slots":"Capacity: [%s/%s] [used/max]",
+	"tooltip.label.charm_book":"Use to imbue charm onto charmables.",
+	"tooltip.charmable.slots":"Capacity: [%s/%s]",
 	"tooltip.charmable.slots.stats":"[%s/%s]",	
-	"tooltip.charmable.inventory.innate":"[INNATE] ",
-	"tooltip.charmable.inventory.imbue":"[IMBUED] ",
-	"tooltip.charmable.inventory.socket":"[SOCKETED] ",
+	"tooltip.charmable.inventory.innate":"[Innate] ",
+	"tooltip.charmable.inventory.imbue":"[Imbue] ",
+	"tooltip.charmable.inventory.socket":"[Socket] ",
 
-	"tooltip.label.charms":"Charms:",
+	"tooltip.label.charms":"Charms: Max. Level [%s]",
+	"tooltip.label.charms.no_level":"Charms:",
+
 	"tooltip.charm.type.aegis": "Aegis",
 	"tooltip.charm.type.drain": "Draining",
 	"tooltip.charm.type.fire_immunity": "Fire Immunity",
@@ -181,26 +203,9 @@
 	"tooltip.charm.type.dirt_fill": "Dirt",
 	"tooltip.charm.type.dirt_walk": "Dirt",
 	"tooltip.charm.type.ruin": "Ruin",
-	
-	"tooltip.charm.prefix.level1":"Lesser",
-	"tooltip.charm.prefix.level2":"",
-	"tooltip.charm.prefix.level3":"Greater",
-	"tooltip.charm.prefix.level4":"Grand",
-	"tooltip.charm.prefix.level5":"Huge",
-	"tooltip.charm.prefix.level6":"Massive",
-	"tooltip.charm.prefix.level8":"Giant",
-	"tooltip.charm.prefix.level9":"Cyclopean",
-	"tooltip.charm.prefix.level10":"Colossal",
-	
-	"tooltip.adornment.type.ring":"Ring",
-	
-	"tooltip.charm.suffix.level13":"%s of the Leviathan",
-	"tooltip.charm.suffix.level14":"%s of the Demogorgon",
-	"tooltip.charm.suffix.level15":"%s of the Whale",
-	
+		
 	"tooltip.charm.level": "%s %s",
-	"tooltip.charm.healing":"Healing %s",
-
+	
 	"tooltip.charm.rate.aegis": "- absorbs all damage",
 	"tooltip.charm.rate.drain": "- drains 0.5 hearts/5 sec from all in %s block radius",
 	"tooltip.charm.rate.fire_immunity": "- absorbs all fire damage",
@@ -216,6 +221,30 @@
 	"tooltip.charm.rate.decrepit": "- you take +%s%% damage when hit",
 	"tooltip.charm.rate.ruin": "- your equipment ruins 1 damage/%s sec",
 	"tooltip.charm.uses_gauge":"[%s/%s]",
+
+	"tooltip.adornment.type.ring":"Ring",
+	"tooltip.adornment.type.necklace":"Necklace",
+	"tooltip.adornment.type.bracelet":"Bracelet",
+
+	"tooltip.adornment.name.level1":"%s",
+	"tooltip.adornment.name.level2":"Good %s of %s",
+	"tooltip.adornment.name.level3":"Excellent %s of %s",
+	"tooltip.adornment.name.level4":"Grand %s 0f %s",
+	"tooltip.adornment.name.level5":"Huge %s of %s",
+	"tooltip.adornment.name.level6":"Massive %s of %s",
+	"tooltip.adornment.name.level8":"Giant %s of %s",
+	"tooltip.adornment.name.level9":"Cyclopean %s of %s",
+	"tooltip.adornment.name.level10":"Colossal %s of %s",
+	"tooltip.adornment.name.level11":"Behemoth's %s of %s",
+	"tooltip.adornment.name.level12":"Hydra's %s of %s",
+	"tooltip.adornment.name.level13":"Leviathan's %s of %s",
+	"tooltip.adornment.name.level14":"Demogorgon's %s of %s",
+	"tooltip.adornment.name.level15":"Whale's %s of %s",
+	
+	
+	"tooltip.base_metal.copper": "Copper",
+	"tooltip.base_metal.silver": "Silver",
+	"tooltip.base_metal.gold": "Gold",
 
 	"tooltip.ember_key.specials":"Destroys Wood Locks",
 	"tooltip.ember_lock.specials":"Destroys All Keys regardless of breakability (excluding Ember)",

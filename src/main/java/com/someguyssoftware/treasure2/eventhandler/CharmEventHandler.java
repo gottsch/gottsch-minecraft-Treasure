@@ -19,7 +19,7 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.*;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.CHARMABLE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +37,6 @@ import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
-import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.item.IWishable;
 import com.someguyssoftware.treasure2.network.CharmMessageToClient;
 import com.someguyssoftware.treasure2.network.TreasureNetworking;
@@ -64,7 +63,8 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 /**
- * @author Mark Gottschling on Apr 26, 2018
+ * 
+ * @author Mark Gottschling on Sep 4, 2021
  *
  */
 //@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.FORGE)
@@ -115,6 +115,8 @@ public class CharmEventHandler {
 			return;
 		}
 
+		// NOTE mimic checkCharms...(LivingHurEvent) for checking the player entity, IFF a charm causes a mob damage.
+		
 		// do something to player every update tick:
 		if (event.getEntity() instanceof PlayerEntity) {
 			// get the player
@@ -133,9 +135,16 @@ public class CharmEventHandler {
 			return;
 		}
 
-		if (event.getSource().getDirectEntity() instanceof PlayerEntity) {
-			// get the player
-			ServerPlayerEntity player = (ServerPlayerEntity) event.getSource().getDirectEntity();
+		// get the player
+		ServerPlayerEntity player = null;
+		if (event.getEntity() instanceof PlayerEntity) {
+			player = (ServerPlayerEntity) event.getEntity();
+		}
+		else if (event.getSource().getEntity() instanceof PlayerEntity) {
+			player = (ServerPlayerEntity) event.getSource().getEntity();
+		}
+		
+		if (player != null) {
 			processCharms(event, player);
 		}
 	}
@@ -178,8 +187,6 @@ public class CharmEventHandler {
 		// gather all charms
 		charmsToExecute = gatherCharms(event, player);
 
-		// TODO filter charms ??
-
 		// sort charms
 		Collections.sort(charmsToExecute, CharmContext.priorityComparator);
 
@@ -195,9 +202,6 @@ public class CharmEventHandler {
 	 */
 	private List<CharmContext> gatherCharms(Event event, ServerPlayerEntity player) {
 		final List<CharmContext> contexts = new ArrayList<>(5);
-
-		// get the slot provider - curios (general slots) or minecraft (hotbar)
-//		String slotProviderId  = ModList.get().isLoaded(CURIOS_ID) ? CURIOS_ID : "minecaft";
 		
 		// check each hand
 		for (Hand hand : Hand.values()) {
@@ -245,7 +249,7 @@ public class CharmEventHandler {
 	 * @param player
 	 * @param contexts
 	 */
-	private void executeCharms(Event event, ServerPlayerEntity player, List<CharmContext> contexts) {
+	private static void executeCharms(Event event, ServerPlayerEntity player, List<CharmContext> contexts) {
 		/*
 		 * a list of charm types that are non-stackable that should not be executed more than once.
 		 */
@@ -259,7 +263,6 @@ public class CharmEventHandler {
 					return;
 				}
 				else {
-					Treasure.LOGGER.debug("adding charm to execute once list");
 					// add the charm type to the monitored list
 					executeOnceCharmTypes.add(charm.getType());
 				}
@@ -283,7 +286,7 @@ public class CharmEventHandler {
 			}
 		});
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -291,29 +294,7 @@ public class CharmEventHandler {
 	private IEquipmentCharmHandler getEquipmentCharmHandler() {
 		return equipmentCharmHandler;
 	}
-
-	// TODO move to a new event handler
-	/**
-	 * 
-	 * @param event
-	 */
-	@SubscribeEvent
-	public void onTossCoinEvent(ItemTossEvent event) {
-		if (WorldInfo.isClientSide(event.getPlayer().level)) {
-			return;
-		}
-		//		Treasure.LOGGER.debug("is remote? -> {}", !event.getPlayer().level.isClientSide);
-		//		Treasure.LOGGER.debug("{} tossing item -> {}", event.getPlayer().getName().getString(), event.getEntityItem().getItem().getDisplayName().getString());
-		Item item = event.getEntityItem().getItem().getItem();
-		if (item instanceof IWishable) {
-			ItemStack stack = event.getEntityItem().getItem();
-			CompoundNBT nbt = new CompoundNBT();
-			nbt.putString(IWishable.DROPPED_BY_KEY, event.getPlayer().getName().getString());
-			//			Treasure.LOGGER.debug("adding tag to wishable stack...");
-			stack.setTag(nbt);			
-		}		
-	}
-
+	
 	// TODO test - remove
 	//	@SubscribeEvent
 	//	public void onItemInfo(ItemTooltipEvent event) {

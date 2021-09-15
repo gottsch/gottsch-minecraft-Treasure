@@ -1,0 +1,7 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"__comment": "default",
+		"layer0": "treasure2:item/adornment/gold_black_pearl_ring"
+	}
+}

@@ -1,5 +1,5 @@
 {
-	"version": "1.0",
+	"version": "1.5.0",
 	"pools": [
 		{
 			"name": "uncommon_charms",
@@ -9,7 +9,7 @@
 					"entryName": "charm1",
 					"type": "item",
 					"name": "treasure2:copper_charm",
-					"weight": 1,
+					"weight": 10,
 					"conditions": [
 						{
 							"condition": "random_chance",
@@ -22,7 +22,18 @@
 							"levels": 1
 						}
 					]
-				}	
+				},
+			 {
+				"entryName": "peasants_fortune",
+				"type": "item",
+				"name": "treasure2:peasants_fortune",
+				"weight": 10,
+				"quality": 3,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.05
+				}]
+			}	
 			]
 		}		
 	]

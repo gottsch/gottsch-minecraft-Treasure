@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.item.Adornment;
 import com.someguyssoftware.treasure2.item.CharmItem;
 import com.someguyssoftware.treasure2.item.WealthItem;
 
@@ -34,8 +35,7 @@ public class PouchSlot extends Slot {
 	@Override
     public boolean mayPlace(ItemStack stack) {
 		Set<String> tags = stack.getItem().getTags().stream().filter(tag -> tag.getNamespace().equals(Treasure.MODID)) .map(ResourceLocation::getPath).collect(Collectors.toSet());
-    	// TODO in next releases replace CharmItem with some sort of tag
-		if (stack.getItem() instanceof WealthItem || stack.getItem() instanceof CharmItem || tags.contains("pouch")) {
+		if (stack.getItem() instanceof WealthItem || stack.getItem() instanceof Adornment || tags.contains("pouch")) {
     		return true;
     	}
     	return false;

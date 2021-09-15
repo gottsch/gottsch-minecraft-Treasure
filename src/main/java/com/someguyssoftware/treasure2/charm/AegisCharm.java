@@ -58,7 +58,7 @@ public class AegisCharm extends ShieldingCharm {
 
 		public Builder(Integer level) {
 			super(ModUtils.asLocation(makeName(AEGIS_TYPE, level)), AEGIS_TYPE, level);
-			this.percent = 100D;
+			this.percent = 1D;
 		}
 
 		@Override
