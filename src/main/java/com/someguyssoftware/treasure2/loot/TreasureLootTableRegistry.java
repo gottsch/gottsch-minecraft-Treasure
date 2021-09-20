@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.loot;
 
@@ -13,8 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.annotation.Nullable;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,10 +40,6 @@ import com.google.gson.stream.JsonReader;
 import com.someguyssoftware.gottschcore.json.JSMin;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
-
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.server.ServerWorld;
 
 /**
  * Use this registry to register all your mod's custom loot table for Treasure2.
@@ -39,7 +49,7 @@ import net.minecraft.world.server.ServerWorld;
 public final class TreasureLootTableRegistry {
 	public static final Logger LOGGER = LogManager.getLogger(Treasure.LOGGER.getName());
 
-	private static final String DEFAULT_RESOURCES_LIST_PATH = "loot_tables/default_loot_tables_list.json";	
+	private static final String DEFAULT_RESOURCES_LIST_PATH = "loot_tables/treasure2/default_loot_tables_list.json";	
 	private static final String CUSTOM_LOOT_TABLES_RESOURCE_PATH = "/loot_tables/";		
 	private static final List<String> REGISTERED_MODS = new ArrayList<>();
 	private static LootResources lootResources;
@@ -68,49 +78,24 @@ public final class TreasureLootTableRegistry {
 	 * Convenience wrapper
 	 * @param world
 	 */
-	public static void initialize(ServerWorld world) {
-		lootTableMaster.init(world);
-	}
-	
-	/**
-	 * 
-	 * @param modID
-	 */
-	private static void buildAndExpose(String modID) {
-		lootTableMaster.buildAndExpose(CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, lootResources.getChestResources());
-		lootTableMaster.buildAndExpose(CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, lootResources.getSpecialResources());
-		lootTableMaster.buildAndExpose(CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, lootResources.getSupportingResources());
-		lootTableMaster.buildAndExpose(CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, lootResources.getInjectResources());
+	public static void initialize() {
+		lootTableMaster.init();
 	}
 
 	/**
-	 * Called during WorldEvent.Load event
+	 * Called during WorldEvent.Load event for this mod only
 	 * @param modID
 	 */
-	public static void register(final String modID) {
-		if (!REGISTERED_MODS.contains(modID)) {
-			if (TreasureConfig.GENERAL.enableDefaultLootTablesCheck.get()) {
-				buildAndExpose(modID);
-				// copy all folders/files from config to world data
-				lootTableMaster.moveLootTables(modID, "");
-			}
-			lootTableMaster.registerChests(modID, lootResources.getChestLootTableFolderLocations());
-			lootTableMaster.registerSpecials(modID, lootResources.getSpecialLootTableFolderLocations());
-			lootTableMaster.registerInjects(modID, lootResources.getInjectLootTableFolderLocations());
-		}
+	public static void register() {
+		register(Treasure.MODID, lootResources);
 	}
 
-	/**
-	 * 
-	 * @param modID
-	 * @param customFolders
-	 */
-	public static void register(final String modID, final @Nullable List<String> customFolders) {
+	public static void register(final String modID, LootResources lootResources) {
 		if (!REGISTERED_MODS.contains(modID)) {
-			if (customFolders != null && !customFolders.isEmpty()) {
-				lootTableMaster.buildAndExpose(CUSTOM_LOOT_TABLES_RESOURCE_PATH, modID, customFolders);
-			}
-			register(modID);
+			REGISTERED_MODS.add(modID);
+			lootTableMaster.registerChests(modID, lootResources.getChestResources());
+			lootTableMaster.registerSpecials(modID, lootResources.getSpecialResources());
+			lootTableMaster.registerInjects(modID, lootResources.getInjectResources());
 		}
 	}
 

@@ -24,7 +24,7 @@
 			"rolls": 1,
 			"entries": [
 				{
-					"type": "loot_table",
+					"type": "minecraft:loot_table",
 					"name": "treasure2:pools/treasure/epic_charms",
 					"weight": 1
 				}
