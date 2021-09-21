@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
+import com.someguyssoftware.gottschcore.tileentity.AbstractModBlockEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 
 import net.minecraft.block.BlockState;
@@ -22,7 +22,7 @@ import net.minecraft.util.math.AxisAlignedBB;
  * @author Mark Gottschling on Feb 16, 2020
  *
  */
-public class MistEmitterTileEntity extends AbstractModTileEntity implements ITickableTileEntity {
+public class MistEmitterTileEntity extends AbstractModBlockEntity implements ITickableTileEntity {
 	public static final float DEFAULT_PROXIMITY = 5.0F;
 	private float proximity = DEFAULT_PROXIMITY;
 	private boolean active = false;

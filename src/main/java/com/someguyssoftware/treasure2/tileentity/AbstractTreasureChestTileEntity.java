@@ -9,7 +9,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
+import com.someguyssoftware.gottschcore.tileentity.AbstractModBlockEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
@@ -54,7 +54,7 @@ import net.minecraftforge.common.util.Constants;
  * @author Mark Gottschling onDec 22, 2017
  *
  */
-public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITreasureChestTileEntity, ITickableTileEntity, INamedContainerProvider, INameable {
+public abstract class AbstractTreasureChestTileEntity extends AbstractModBlockEntity implements ITreasureChestTileEntity, ITickableTileEntity, INamedContainerProvider, INameable {
 	public class GenerationContext {
 		/*
 		 * The rarity level of the loot that the chest will contain
