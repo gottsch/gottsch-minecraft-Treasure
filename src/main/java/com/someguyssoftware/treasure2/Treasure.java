@@ -103,13 +103,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 		"Credits to mn_ti for Chinese and to DarkKnightComes for Polish translation.",
 		"Credits to Mythical Sausage for tutorials on house/tower designs.",
 		"Credits to OdinsRagnarok for Spanish translation and DarvinSlav for Russian translation.",
-"Credits to sfs131010 for updated Chinese translation."})
+		"Credits to sfs131010 for updated Chinese translation.",
+		"Credits to Xemnes for updated textures for locks, keys, adornment, and chests."})
 public class Treasure extends AbstractMod {
 
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.16.1";
+	protected static final String VERSION = "1.16.2";
 
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/update.json";
 

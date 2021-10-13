@@ -189,7 +189,7 @@ public class PearlItem extends ModItem implements IWishable, IPouchable {
 				LootPool lootPool = table.getPool(pool.getName());
 				
 				// geneate loot from pools
-				lootPool.generateLoot(itemStacks, random, Treasure.LOOT_TABLE_MASTER.getContext());
+				lootPool.generateLoot(itemStacks, random, lootContext);
 			}
 			
 			// get effective rarity
