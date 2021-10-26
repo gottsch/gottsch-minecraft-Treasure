@@ -16,6 +16,8 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.inventory.AbstractChestContainer;
+import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 import com.someguyssoftware.treasure2.lock.LockState;
 
 import net.minecraft.block.state.IBlockState;
@@ -140,23 +142,29 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		int j = this.pos.getY();
 		int k = this.pos.getZ();
 		++this.ticksSinceSync;
-
+		
 		if (WorldInfo.isServerSide(getWorld()) && this.numPlayersUsing != 0
 				&& (this.ticksSinceSync + i + j + k) % 200 == 0) {
 			this.numPlayersUsing = 0;
 			float f = 5.0F;
-
-			for (EntityPlayer entityplayer : this.world.getEntitiesWithinAABB(EntityPlayer.class,
+			for (EntityPlayer player : this.world.getEntitiesWithinAABB(EntityPlayer.class,
 					new AxisAlignedBB((double) ((float) i - 5.0F), (double) ((float) j - 5.0F),
 							(double) ((float) k - 5.0F), (double) ((float) (i + 1) + 5.0F),
 							(double) ((float) (j + 1) + 5.0F), (double) ((float) (k + 1) + 5.0F)))) {
-				if (entityplayer.openContainer instanceof ContainerChest) {
-					IInventory iinventory = ((ContainerChest) entityplayer.openContainer).getLowerChestInventory();
-
-					if (iinventory == this) {
+				// TODO create interface for ChestContainer or make StandardChestContainer extend AbstractChestContainer or both
+				if (player.openContainer instanceof AbstractChestContainer) {
+					IInventory inventory = ((AbstractChestContainer) player.openContainer).getChestInventory();					
+					if (inventory == this) {
 						++this.numPlayersUsing;
 					}
-				}
+				}				
+				// TEMP fix
+				else if (player.openContainer instanceof StandardChestContainer) {
+					IInventory inventory = ((StandardChestContainer) player.openContainer).getChestInventory();
+					if (inventory == this) {
+						++this.numPlayersUsing;
+					}
+				}				
 			}
 		}
 
@@ -172,7 +180,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 
 		if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
 			float f2 = this.lidAngle;
-
+			
 			if (this.numPlayersUsing > 0) {
 				this.lidAngle += 0.1F;
 			} else {
@@ -183,12 +191,9 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				this.lidAngle = 1.0F;
 			}
 
-			float f3 = 0.5F;
-
 			if (this.lidAngle < 0.5F && f2 >= 0.5F) {
 				double d3 = (double) i + 0.5D;
 				double d0 = (double) k + 0.5D;
-
 				this.world.playSound((EntityPlayer) null, d3, (double) j + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE,
 						SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
 			}

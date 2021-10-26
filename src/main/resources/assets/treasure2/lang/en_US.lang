@@ -206,7 +206,7 @@ tooltip.label.breakable=Breakable: %s
 tooltip.label.craftable=Craftable: %s
 tooltip.label.damageable=Damageable: %s
 tooltip.label.specials=Specials: %s
-tooltip.label.accepts_keys=Accepts Keys: %s
+tooltip.label.accepts_keys=Accepts Keys:
 tooltip.label.coin=Throw into Wishing Wells
 tooltip.label.key_ring=Container for keys
 tooltip.label.coin_pouch=Holds coins, gems, pearls, and charms
@@ -370,3 +370,8 @@ display.viking_chest.name=Viking Chest
 display.cardboard_box.name=Cardboard Box
 display.milk_crate.name=Milk Crate
 display.crystal_skull_chest.name=Crystal Skull
+
+#chat messages
+chat.key_break=Your key broke whilst attempting to unlock the lock!
+chat.key_not_fit=Your key doesn't fit the lock!
+chat.key_unable_unlock=Your key failed to unlock the lock!

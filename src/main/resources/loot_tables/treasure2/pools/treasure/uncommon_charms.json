@@ -1,5 +1,5 @@
 {
-	"version": "2.1",
+	"version": "2.2",
 	"pools": [{
 		"name": "uncommon_charms",
 		"rolls": 1,
@@ -69,7 +69,7 @@
 			{
 				"entryName": "adornment_silver_necklace",
 				"type": "item",
-				"name": "treasure2:silver_silver_necklace",
+				"name": "treasure2:silver_necklace",
 				"weight": 3,
 				"quality": 3,
 				"conditions": [{

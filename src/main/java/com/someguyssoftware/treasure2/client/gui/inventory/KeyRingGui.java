@@ -25,7 +25,7 @@ import net.minecraft.util.ResourceLocation;
 public class KeyRingGui extends GuiContainer {
 
 	// This is the resource location for the background image for the GUI
-	private static final ResourceLocation texture = new ResourceLocation(Treasure.MODID, "textures/gui/container/key_ring.png");
+	private static final ResourceLocation texture = new ResourceLocation(Treasure.MODID, "textures/gui/container/key_ring2.png");
 	private static final String KEY_RING_LABEL = "Key Ring";
 
 	/**
