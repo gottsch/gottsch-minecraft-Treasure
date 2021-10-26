@@ -7,6 +7,7 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.charm.ICharm;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -20,6 +21,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * @author Mark Gottschling on Apr 27, 2020
  *
  */
+@Deprecated
 public class CharmInstance implements ICharmInstance {
 	private ICharm charm;
 	private ICharmData data;

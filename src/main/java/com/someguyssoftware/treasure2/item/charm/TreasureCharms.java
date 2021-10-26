@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.charm.Charm;
+import com.someguyssoftware.treasure2.charm.HealingCharm;
+import com.someguyssoftware.treasure2.charm.ICharm;
+import com.someguyssoftware.treasure2.charm.ShieldingCharm;
 
 import net.minecraft.util.ResourceLocation;
 

@@ -1,12 +1,14 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.item.charm;
+package com.someguyssoftware.treasure2.charm;
 
 import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.item.charm.ICharmData;
+import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,11 +30,17 @@ public interface ICharm {
 	public int getMaxDuration();
 	public double getMaxPercent();
 	boolean isAllowMultipleUpdates();
-	
-    public ICharmInstance createInstance();
-    public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmData data);
+    
+    public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity);
 
-    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data);
+    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, ICharmEntity entity);
+    
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt);
-
+	
+	/**
+	 * 
+	 */
+	ICharmEntity createEntity();
+	boolean isCurse();
+	public Class<?> getRegisteredEvent();
 }

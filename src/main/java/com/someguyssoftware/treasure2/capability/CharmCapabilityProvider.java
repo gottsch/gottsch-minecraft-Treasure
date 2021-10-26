@@ -14,6 +14,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
  * @author Mark Gottschling on Apr 27, 2020
  *
  */
+@Deprecated
 public class CharmCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<NBTTagCompound> {
 	/*
 	 * NOTE Ensure to use interfaces in @CapabilityInject, the static capability and in the instance.

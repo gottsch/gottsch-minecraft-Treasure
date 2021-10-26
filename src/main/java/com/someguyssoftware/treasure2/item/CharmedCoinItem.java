@@ -5,18 +5,14 @@ package com.someguyssoftware.treasure2.item;
 
 import java.util.List;
 
-import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.ICharmCapability;
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityProvider;
 import com.someguyssoftware.treasure2.enums.Coins;
-import com.someguyssoftware.treasure2.item.charm.ICharm;
-import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import com.someguyssoftware.treasure2.item.charm.ICharmed;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
@@ -53,7 +49,9 @@ public class CharmedCoinItem extends CoinItem implements ICharmed {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-		CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+//		CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+		Treasure.logger.debug("{} item initiating caps", stack.getItem().getRegistryName().toString());
+		CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
 		return provider;
 	}
 

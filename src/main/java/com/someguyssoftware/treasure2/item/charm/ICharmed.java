@@ -7,6 +7,9 @@ import java.util.List;
 
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
+import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -26,16 +29,16 @@ public interface ICharmed {
 	 * @param stack
 	 * @return
 	 */
-	default public List<ICharmInstance> getCharmInstances(ItemStack stack) {
-		List<ICharmInstance> charmInstances = null;
-		if (stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
-			ICharmCapability cap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-			if (cap != null) {
-				charmInstances = cap.getCharmInstances();
-			}
-		}
-		return charmInstances;
-	}
+//	default public List<ICharmInstance> getCharmInstances(ItemStack stack) {
+//		List<ICharmInstance> charmInstances = null;
+//		if (stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
+//			ICharmCapability cap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+//			if (cap != null) {
+//				charmInstances = cap.getCharmInstances();
+//			}
+//		}
+//		return charmInstances;
+//	}
     
     /**
      * 
@@ -48,14 +51,26 @@ public interface ICharmed {
 	    tooltip.add(TextFormatting.GOLD.toString() + "" + TextFormatting.ITALIC.toString() + I18n.translateToLocal("tooltip.label.charmed"));
 		tooltip.add(TextFormatting.YELLOW.toString() + "" + TextFormatting.BOLD+ I18n.translateToLocal("tooltip.label.charms"));
 		// get the capabilities
-		ICharmCapability cap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+		ICharmInventoryCapability cap = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
 		if (cap != null) {
-			List<ICharmInstance> charmInstances = cap.getCharmInstances();
-			for (ICharmInstance instance : charmInstances) {
-                instance.getCharm().addInformation(stack, world, tooltip, flag, instance.getData());
+			List<ICharmEntity> charmInstances = cap.getCharmEntities();
+			for (ICharmEntity instance : charmInstances) {
+                instance.getCharm().addInformation(stack, world, tooltip, flag, instance);
             }
         }
     }
+//    default public void addCharmedInfo2(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+//	    tooltip.add(TextFormatting.GOLD.toString() + "" + TextFormatting.ITALIC.toString() + I18n.translateToLocal("tooltip.label.charmed"));
+//		tooltip.add(TextFormatting.YELLOW.toString() + "" + TextFormatting.BOLD+ I18n.translateToLocal("tooltip.label.charms"));
+//		// get the capabilities
+//		ICharmCapability cap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+//		if (cap != null) {
+//			List<ICharmInstance> charmInstances = cap.getCharmInstances();
+//			for (ICharmInstance instance : charmInstances) {
+//                instance.getCharm().addInformation(stack, world, tooltip, flag, instance.getData());
+//            }
+//        }
+//    }
 
 	/**
 	 * 

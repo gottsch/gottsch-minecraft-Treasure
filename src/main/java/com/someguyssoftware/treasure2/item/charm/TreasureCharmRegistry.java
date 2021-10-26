@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.someguyssoftware.treasure2.charm.ICharm;
+
 import net.minecraft.util.ResourceLocation;
 
 public class TreasureCharmRegistry {

@@ -6,7 +6,7 @@ package com.someguyssoftware.treasure2.network;
 import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.item.charm.ICharm;
+import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.item.charm.ICharmData;
 import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import com.someguyssoftware.treasure2.item.charm.TreasureCharmRegistry;

@@ -9,6 +9,7 @@ import java.util.Random;
 
 import com.google.common.collect.Lists;
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.charm.Charm;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;

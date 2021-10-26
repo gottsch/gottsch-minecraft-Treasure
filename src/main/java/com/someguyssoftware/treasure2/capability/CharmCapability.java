@@ -12,6 +12,7 @@ import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
  * @author Mark Gottschling on Apr 27, 2020
  *
  */
+@Deprecated
 public class CharmCapability implements ICharmCapability {
     private List<ICharmInstance> charmInstances = new ArrayList<>(3);
     

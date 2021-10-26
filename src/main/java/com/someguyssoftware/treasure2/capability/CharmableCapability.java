@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
+@Deprecated
 public class CharmableCapability implements ICharmableCapability {
     private int slots;
     private String customName;

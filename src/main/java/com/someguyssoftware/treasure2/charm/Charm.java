@@ -1,12 +1,17 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.item.charm;
+package com.someguyssoftware.treasure2.charm;
 
 import java.util.List;
 import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.item.charm.CharmData;
+import com.someguyssoftware.treasure2.item.charm.CharmInstance;
+import com.someguyssoftware.treasure2.item.charm.ICharmData;
+import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
+import com.someguyssoftware.treasure2.item.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -29,6 +34,7 @@ public abstract class Charm implements ICharm {
 	private double maxValue;
 	private double maxPercent;
 	private int maxDuration;
+	
 	/*
 	 * if multiple charms of the same type are being processed, only 1 should be updated/executed.
 	 * ex. if multiple harvesting charms are held, only one should update.
@@ -49,17 +55,20 @@ public abstract class Charm implements ICharm {
 		this.allowMultipleUpdates = builder.allowMultipleUpdates;
 	}
 
+	abstract public Class<?> getRegisteredEvent();
+	
 	/**
 	 * 
 	 */
 	@Override
-	public ICharmInstance createInstance() {
-		ICharmData data = new CharmData();
-		data.setValue(this.getMaxValue());
-		data.setPercent(this.getMaxPercent());
-		data.setDuration(this.getMaxDuration());
-		ICharmInstance instance = new CharmInstance(this, data);
-		return instance;
+	public ICharmEntity createEntity() {
+		ICharmEntity entity = new CharmEntity(this, this.getMaxValue(),this.getMaxDuration(), this.getMaxPercent());
+		return entity;
+	}
+
+	@Override
+	public boolean isCurse() {
+		return false;
 	}
 
 	/**
@@ -68,22 +77,22 @@ public abstract class Charm implements ICharm {
 	 * @param world
 	 * @param tooltip
 	 * @param flag
-	 * @param data
+	 * @param entity
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmData data) {
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.WHITE;
-		tooltip.add("  " + color + getLabel(data));
+		tooltip.add("  " + color + getLabel(entity));
 	}
-
+	
 	/**
 	 * 
-	 * @param data
+	 * @param entity
 	 * @return
 	 */
 	@SuppressWarnings("deprecation")
-	public String getLabel(ICharmData data) {
+	public String getLabel(ICharmEntity entity) {
         /*
          * 1. check for mod item specific label
          * 2. check for specific type prefix (levels 1-10)
@@ -95,14 +104,14 @@ public abstract class Charm implements ICharm {
          */
         String tooltipKey = "tooltip.charm." + getName().toString().toLowerCase();
         String label = I18n.translateToLocalFormatted(tooltipKey,
-				String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+				String.valueOf(Math.toIntExact(Math.round(entity.getValue()))), 
 				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
         String prefix = "";
         String suffix = "";
         String type = "";
         if (label.equals(tooltipKey)) {
             type = I18n.translateToLocalFormatted("tooltip.charm." + getType(), 
-            		String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
+            		String.valueOf(Math.toIntExact(Math.round(entity.getValue()))), 
     				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
             if (this.getLevel() <= 10) {
             	String prefixKey = "tooltip.charm." + getType() + ".prefix.level" + String.valueOf(this.getLevel());
@@ -122,7 +131,7 @@ public abstract class Charm implements ICharm {
             }
         }
         // TODO redo this in future.
-        return label + " " + getUsesGauge(data) + " " + (this.isAllowMultipleUpdates() ? (TextFormatting.DARK_PURPLE + "* combinable") : "");
+        return label + " " + getUsesGauge(entity) + " " + (this.isAllowMultipleUpdates() ? (TextFormatting.DARK_PURPLE + "* combinable") : "");
 	}
 	
 	/**
@@ -131,11 +140,19 @@ public abstract class Charm implements ICharm {
 	 * @return
 	 */
 	@SuppressWarnings("deprecation")
+	@Deprecated
 	public String getUsesGauge(ICharmData data) {
 		return I18n.translateToLocalFormatted("tooltip.charm.uses_gauge",
         		String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
 				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
 	}
+	
+	public String getUsesGauge(ICharmEntity entity) {
+		return I18n.translateToLocalFormatted("tooltip.charm.uses_gauge",
+        		String.valueOf(Math.toIntExact(Math.round(entity.getValue()))), 
+				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
+	}
+	
 	
 	/**
 	 * This method reads only this Charm's properties from an NBT tag
@@ -250,6 +267,7 @@ public abstract class Charm implements ICharm {
 		public ICharm build() {
 			ICharm charm = null;
 			try {
+				// TODO remove need for reflection
 				charm = charmClass.getDeclaredConstructor(Builder.class).newInstance(Charm.Builder.this);
 				Treasure.logger.debug("building charm from -> {} to -> {}", Charm.Builder.this.toString(), charm.toString());
 			} catch (Exception e) {

@@ -4,6 +4,7 @@
 package com.someguyssoftware.treasure2.item.charm;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.charm.ICharm;
 
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -11,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * @author Mark Gottschling on Apr 27, 2020
  *
  */
+@Deprecated
 public class CharmData implements ICharmData {
 	private double value;
 	private int duration;

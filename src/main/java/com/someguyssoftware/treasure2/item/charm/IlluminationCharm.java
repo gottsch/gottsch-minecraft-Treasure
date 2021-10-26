@@ -10,6 +10,7 @@ import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.charm.Charm;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;

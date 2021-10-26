@@ -10,6 +10,7 @@ import javax.xml.ws.Holder;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.charm.Charm;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.monster.EntityMob;

@@ -6,8 +6,8 @@ package com.someguyssoftware.treasure2.capability;
 import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.item.charm.Charm;
-import com.someguyssoftware.treasure2.item.charm.ICharm;
+import com.someguyssoftware.treasure2.charm.Charm;
+import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.item.charm.ICharmData;
 import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 

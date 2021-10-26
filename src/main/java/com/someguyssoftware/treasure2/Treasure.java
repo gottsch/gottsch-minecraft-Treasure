@@ -21,17 +21,21 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.capability.CharmCapability;
+import com.someguyssoftware.treasure2.capability.CharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.CharmStorage;
 import com.someguyssoftware.treasure2.capability.CharmableCapability;
 import com.someguyssoftware.treasure2.capability.CharmableStorage;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageStorage;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
+import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.IEffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingStorage;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.command.SpawnChestCommand;
 import com.someguyssoftware.treasure2.command.SpawnOasisCommand;
@@ -103,13 +107,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 		"Credits to mn_ti for Chinese and to DarkKnightComes for Polish translation.",
 		"Credits to Mythical Sausage for tutorials on house/tower designs.",
 		"Credits to OdinsRagnarok for Spanish translation and DarvinSlav for Russian translation.",
-"Credits to sfs131010 for updated Chinese translation."})
+		"Credits to sfs131010 for updated Chinese translation."})
 public class Treasure extends AbstractMod {
 
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.16.1";
+	protected static final String VERSION = "1.17.0";
 
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/update.json";
 
@@ -202,6 +206,8 @@ public class Treasure extends AbstractMod {
 				25, Side.CLIENT);
 
 		// add capabilities
+//		CapabilityManager.INSTANCE.register(ICharmInventoryCapability.class, new CharmInventoryCapabilityStorage(), CharmInventoryCapability::new);
+		TreasureCapabilities.register();
 		CapabilityManager.INSTANCE.register(ICharmCapability.class, new CharmStorage(), CharmCapability::new);
 		CapabilityManager.INSTANCE.register(ICharmableCapability.class, new CharmableStorage(), CharmableCapability::new);
 		CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingStorage(), KeyRingCapability::new);

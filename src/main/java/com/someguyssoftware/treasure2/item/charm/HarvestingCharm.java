@@ -8,6 +8,7 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.charm.Charm;
 import com.someguyssoftware.treasure2.item.IPouch;
 
 import net.minecraft.block.Block;
