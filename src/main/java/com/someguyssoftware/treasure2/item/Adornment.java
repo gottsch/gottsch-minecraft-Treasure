@@ -7,10 +7,9 @@ import java.util.List;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.ICharmCapability;
-import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
 import com.someguyssoftware.treasure2.item.charm.ICharmable;
 
@@ -61,7 +60,7 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-		CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
+		CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
 		return provider;
 	}
 
@@ -71,11 +70,11 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 	@Override
     public String getItemStackDisplayName(ItemStack stack) {
     	String name = super.getItemStackDisplayName(stack);
-		if (stack.hasCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null)) {
-			ICharmableCapability cap = stack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-			if (cap.getCustomName() != null && !cap.getCustomName().isEmpty()) {
-				name = cap.getCustomName();
-			}
+		if (stack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
+			ICharmInventoryCapability cap = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+//			if (cap.getCustomName() != null && !cap.getCustomName().isEmpty()) {
+//				name = cap.getCustomName();
+//			}
 		}
 		return name;
     }
@@ -86,9 +85,9 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 	@Override
 	public boolean hasEffect(ItemStack stack) {
 		boolean charmed =  false;
-		if (stack.hasCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null)) {
-			ICharmCapability cap = stack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
-			if (cap.getCharmInstances() != null && cap.getCharmInstances().size() > 0) {
+		if (stack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
+			ICharmInventoryCapability cap = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+			if (cap.getCharmEntities() != null && cap.getCharmEntities().size() > 0) {
 				charmed = true;
 			}
 		}

@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityProvider;
 import com.someguyssoftware.treasure2.item.charm.ICharmed;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -35,7 +35,7 @@ public class CharmedGemItem extends GemItem implements ICharmed {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-		CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+		CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
 		return provider;
 	}
 

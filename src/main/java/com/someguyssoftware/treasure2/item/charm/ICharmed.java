@@ -5,8 +5,6 @@ package com.someguyssoftware.treasure2.item.charm;
 
 import java.util.List;
 
-import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
@@ -85,10 +83,10 @@ public interface ICharmed {
 		tooltip.add(TextFormatting.GOLD.toString() + "" + TextFormatting.ITALIC.toString() + I18n.translateToLocal("tooltip.label.charmed"));
 		tooltip.add(TextFormatting.YELLOW.toString() + "" + TextFormatting.BOLD+ I18n.translateToLocal("tooltip.label.charms"));
 		// get the capabilities
-		ICharmCapability cap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+		ICharmInventoryCapability cap = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
 		if (cap != null) {
-			List<ICharmInstance> charmInstances = cap.getCharmInstances();
-			for (ICharmInstance state : charmInstances) {
+			List<ICharmEntity> charmInstances = cap.getCharmEntities();
+			for (ICharmEntity state : charmInstances) {
 				TextFormatting color = TextFormatting.WHITE;
 //				CharmType type = state.getCharm().getCharmType();
 //				String extra = "";

@@ -21,10 +21,7 @@ package com.someguyssoftware.treasure2.item.charm;
 
 import java.util.List;
 
-import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
-import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
@@ -63,9 +60,9 @@ public interface ICharmable {
 	 * @return
 	 */
 	default public boolean isCharmed(ItemStack stack) {
-		if (stack.hasCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null)) {
-			ICharmCapability cap = stack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
-			if (cap.getCharmInstances().size() > 0) {
+		if (stack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
+			ICharmInventoryCapability cap = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+			if (cap.getCharmEntities().size() > 0) {
 				return true;
 			}
 		}
@@ -101,13 +98,12 @@ public interface ICharmable {
      */
     @SuppressWarnings("deprecation")
 	default public void addSlotsInfo(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-     	ICharmableCapability charmableCap = stack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-     	ICharmCapability charmCap = stack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
+     	ICharmInventoryCapability charmCap = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
      	
      	tooltip.add(TextFormatting.YELLOW.toString() + I18n.translateToLocalFormatted("tooltip.label.charmable.slots", TextFormatting.GRAY.toString()));
 		tooltip.add(" " + TextFormatting.WHITE.toString() + I18n.translateToLocalFormatted("tooltip.label.charmable.slots.stats", 
-				String.valueOf(charmableCap.getSlots()),
-				String.valueOf(charmCap.getCharmInstances().size() + charmableCap.getSlots()),
+				String.valueOf(charmCap.getSlots()),
+				String.valueOf(charmCap.getCharmEntities().size() + charmCap.getSlots()),
 				String.valueOf(((ICharmable)stack.getItem()).getMaxSlots())));
     }
 }
