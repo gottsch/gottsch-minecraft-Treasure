@@ -19,6 +19,7 @@ import net.minecraft.nbt.NBTTagList;
  * @author Mark Gottschling on Dec 23, 2020
  *
  */
+@Deprecated
 public class DirtFillCharmData extends CharmData {
 	private ICoords lastCoords;
 

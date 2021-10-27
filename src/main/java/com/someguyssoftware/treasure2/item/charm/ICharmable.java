@@ -28,6 +28,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Dec 19, 2020
  *
  */
+@Deprecated
 public interface ICharmable {
 	
 	/**

@@ -1,7 +1,23 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.item.charm;
+package com.someguyssoftware.treasure2.charm;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -18,27 +34,24 @@ import net.minecraft.nbt.NBTTagList;
  * @author Mark Gottschling on May 5, 2020
  *
  */
-@Deprecated
-public class IlluminationCharmData extends CharmData {
+public class IlluminationCharmEntity extends CharmEntity {
 	private List<ICoords> coordsList;
 
 	/**
 	 * 
 	 */
-	public IlluminationCharmData() {
-		super();
-		coordsList = Collections.synchronizedList(new LinkedList<>());
-	}
+//	public IlluminationCharmEntity() {
+//		super();
+//		coordsList = Collections.synchronizedList(new LinkedList<>());
+//	}
 	
 	/**
 	 * 
 	 * @param charm
 	 */
-	public IlluminationCharmData(ICharm charm) {
-		this();
-		setValue(charm.getMaxValue());
-		setDuration(charm.getMaxDuration());
-		setPercent(charm.getMaxPercent());
+	public IlluminationCharmEntity(ICharm charm, double value, int duration, double percent) {
+		super(charm, value, duration, percent);
+		setCoordsList(Collections.synchronizedList(new LinkedList<>()));
 	}
 	
 	/**
@@ -47,19 +60,19 @@ public class IlluminationCharmData extends CharmData {
 	 * @param duration
 	 * @param percent
 	 */
-	public IlluminationCharmData(double value, int duration, double percent) {
-		this();
-		setValue(value);
-		setDuration(duration);
-		setPercent(percent);
-	}
+//	public IlluminationCharmEntity(double value, int duration, double percent) {
+//		this();
+//		setValue(value);
+//		setDuration(duration);
+//		setPercent(percent);
+//	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-		super.readFromNBT(nbt);		
+	public boolean load(NBTTagCompound nbt) {
+		super.load(nbt);		
 		NBTTagList list = nbt.getTagList("illuminationCoords", 10);
 //		Treasure.logger.debug("illumination tag list size -> {}", list.tagCount());
 		for (int i = 0; i < list.tagCount(); i++) {
@@ -69,6 +82,7 @@ public class IlluminationCharmData extends CharmData {
 				getCoordsList().add(coords);
 			}
 		}
+		return true;
 	}
 	
 	/**
@@ -77,8 +91,8 @@ public class IlluminationCharmData extends CharmData {
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-		nbt = super.writeToNBT(nbt);
+	public NBTTagCompound save(NBTTagCompound nbt) {
+		nbt = super.save(nbt);
 		try {
 			NBTTagList list = new NBTTagList();
 			synchronized (coordsList) {
@@ -138,7 +152,7 @@ public class IlluminationCharmData extends CharmData {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		IlluminationCharmData other = (IlluminationCharmData) obj;
+		IlluminationCharmEntity other = (IlluminationCharmEntity) obj;
 		if (coordsList == null) {
 			if (other.coordsList != null)
 				return false;

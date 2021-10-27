@@ -11,7 +11,6 @@ import com.someguyssoftware.treasure2.item.charm.CharmData;
 import com.someguyssoftware.treasure2.item.charm.CharmInstance;
 import com.someguyssoftware.treasure2.item.charm.ICharmData;
 import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
-import com.someguyssoftware.treasure2.item.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;

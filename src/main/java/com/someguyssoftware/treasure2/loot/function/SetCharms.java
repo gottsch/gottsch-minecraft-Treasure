@@ -25,12 +25,12 @@ import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
 import com.someguyssoftware.treasure2.charm.ICharm;
+import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.item.charm.CharmLevel;
 import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import com.someguyssoftware.treasure2.item.charm.ICharmable;
 import com.someguyssoftware.treasure2.item.charm.ICharmed;
-import com.someguyssoftware.treasure2.item.charm.TreasureCharmRegistry;
-import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.item.ItemStack;

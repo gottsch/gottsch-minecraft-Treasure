@@ -7,10 +7,10 @@ import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.charm.ICharm;
+import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.item.charm.ICharmData;
 import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
-import com.someguyssoftware.treasure2.item.charm.TreasureCharmRegistry;
-import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import io.netty.buffer.ByteBuf;

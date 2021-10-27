@@ -24,5 +24,6 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/GottschCore"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>

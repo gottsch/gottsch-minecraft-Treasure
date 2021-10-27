@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.item.charm;
+package com.someguyssoftware.treasure2.charm;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,7 +9,10 @@ import java.util.Random;
 
 import com.google.common.collect.Lists;
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.treasure2.charm.Charm;
+import com.someguyssoftware.treasure2.item.charm.CharmInstance;
+import com.someguyssoftware.treasure2.item.charm.DirtFillCharmData;
+import com.someguyssoftware.treasure2.item.charm.ICharmData;
+import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
