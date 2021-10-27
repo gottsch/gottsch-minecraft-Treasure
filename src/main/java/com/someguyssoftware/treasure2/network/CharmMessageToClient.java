@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.charm.ICharm;
+import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.item.charm.ICharmData;
@@ -26,7 +27,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 public class CharmMessageToClient implements IMessage {
 	private boolean messageIsValid;
 	private String charmName;
-	private ICharmData data;
+	private ICharmEntity entity;
 	// location properties of charm(s) - who, what hand or what pouch slot
 	private String playerName;
 	private EnumHand hand;
@@ -36,11 +37,11 @@ public class CharmMessageToClient implements IMessage {
 	 * 
 	 * @param playerName
 	 */
-	public CharmMessageToClient(String playerName, ICharmInstance instance, EnumHand hand, Integer slot) {
+	public CharmMessageToClient(String playerName, ICharmEntity instance, EnumHand hand, Integer slot) {
 		messageIsValid = true;
 		this.playerName = playerName;
 		this.charmName = instance.getCharm().getName().toString();
-		this.data = instance.getData();
+		this.entity = instance;
 		this.hand = hand;
 		if (slot == null) {
 			this.slot = -1;

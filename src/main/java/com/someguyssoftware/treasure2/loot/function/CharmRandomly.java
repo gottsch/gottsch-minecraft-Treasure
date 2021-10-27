@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.loot.function;
 
@@ -24,7 +40,10 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmCapability;
+import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharm;
+import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.item.charm.CharmLevel;
@@ -78,19 +97,19 @@ public class CharmRandomly extends LootFunction {
 		ICharm charm = null;
 		Treasure.logger.debug("selected item from charm pool -> {}", stack.getDisplayName());
 		// ensure that the stack has charm capabilities
-		ICharmCapability charmCap = null;
-		if (stack.getItem() instanceof ICharmed) {
-			Treasure.logger.debug("is an ICharmed");
-			charmCap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-		}
-		else if (stack.getItem() instanceof ICharmable) {
-			Treasure.logger.debug("is an ICharmable");
-			charmCap = stack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
-		}
+		ICharmInventoryCapability charmCap = null;
+//		if (stack.getItem() instanceof ICharmed) {
+//			Treasure.logger.debug("is an ICharmed");
+			charmCap = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+//		}
+//		else if (stack.getItem() instanceof ICharmable) {
+//			Treasure.logger.debug("is an ICharmable");
+//			charmCap = stack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
+//		}
 		if (charmCap != null) {
 			Treasure.logger.debug("has charm cap");
 //			provider = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-			List<ICharmInstance> charmInstances = charmCap.getCharmInstances();
+			List<ICharmEntity> charmEntities = charmCap.getCharmEntities();
 			List<ICharm> tempCharms = new ArrayList<>();
 			
 			if (this.charms.isEmpty()) {			
@@ -139,16 +158,16 @@ public class CharmRandomly extends LootFunction {
 				Treasure.logger.debug("charm is not null -> {}", charm.getName());
 				// ensure that the item doesn't already have the same charm or same type or exceeded the maximum charms.
 				boolean hasCharm = false;
-				for (ICharmInstance instance : charmInstances) {
-					if (instance.getCharm().getType().equalsIgnoreCase(charm.getType()) ||
-							instance.getCharm().getName().equals(charm.getName())) {
+				for (ICharmEntity entity : charmEntities) {
+					if (entity.getCharm().getType().equalsIgnoreCase(charm.getType()) ||
+							entity.getCharm().getName().equals(charm.getName())) {
 								hasCharm = true;
 								break;
 							}
 				}
 				if (!hasCharm) {
 					Treasure.logger.debug("adding charm to charm instances.");
-					charmInstances.add(charm.createInstance());
+					charmEntities.add(charm.createEntity());
 				}
 			}
 		}

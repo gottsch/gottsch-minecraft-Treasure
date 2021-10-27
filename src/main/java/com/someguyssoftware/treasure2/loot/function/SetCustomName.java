@@ -26,6 +26,7 @@ import net.minecraft.world.storage.loot.functions.LootFunction;
  * @author Mark Gottschling on Dec 29, 2020
  *
  */
+@Deprecated
 public class SetCustomName extends LootFunction {
 	private final String customName;
 

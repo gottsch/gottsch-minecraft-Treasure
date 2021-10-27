@@ -21,6 +21,7 @@ import net.minecraftforge.common.capabilities.Capability;
  * @author Mark Gottschling on Apr 27, 2020
  *
  */
+@Deprecated
 public class CharmStorage implements Capability.IStorage<ICharmCapability> {
     private static final String CHARM_INSTANCES_TAG = "charmInstances";
     private static final String LEGACY_CHARM_INSTANCES_TAG = "charmStates";
@@ -85,12 +86,14 @@ public class CharmStorage implements Capability.IStorage<ICharmCapability> {
                 if (dataTag == null) {
                     dataTag = instanceTag.getCompoundTag(LEGACY_CHARM_DATA_TAG);
                 }
+                /* Removed 10/27/21
                 ICharmInstance instance = charm.get().createInstance();
                 if (dataTag != null) {
                     instance.getData().readFromNBT(dataTag);
                 }
 //				Treasure.logger.debug("attempted to read {} charm instance -> {}", charm.getCharmType(), data);
 				charmCapabilityInstance.getCharmInstances().add(instance);
+				*/
 			}
 		} else {
 			Treasure.logger.warn("Not a tag compound!");

@@ -15,6 +15,7 @@ import net.minecraftforge.common.capabilities.Capability;
  * @author Mark Gottschling on Dec 20, 2020
  *
  */
+@Deprecated
 public class CharmableStorage implements Capability.IStorage<ICharmableCapability> {
     private static final String CHARM_INSTANCES_TAG = "charmInstances";
     private static final String SLOTS_TAG = "slots";
