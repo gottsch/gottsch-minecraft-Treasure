@@ -25,9 +25,9 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.item.IPouch;
-import com.someguyssoftware.treasure2.item.charm.ICharmData;
 import com.someguyssoftware.treasure2.item.charm.ICharmable;
 import com.someguyssoftware.treasure2.item.charm.ICharmed;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -37,7 +37,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
@@ -47,6 +46,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  *
  */
 public class HarvestingCharm extends Charm {
+	public static String HARVESTING_TYPE = "harvesting";
 	private static final Class<?> REGISTERED_EVENT = BlockEvent.HarvestDropsEvent.class;
 
 	/**
@@ -111,4 +111,15 @@ public class HarvestingCharm extends Charm {
 		tooltip.add(" " + TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.harvest_rate", Math.toIntExact((long) getMaxPercent())));
 	}
 
+	public static class Builder extends Charm.Builder {
+
+		public Builder(String name, Integer level) {
+			super(ResourceLocationUtil.create(name), HARVESTING_TYPE, level);
+		}
+
+		@Override
+		public ICharm build() {
+			return  new HarvestingCharm(this);
+		}
+	}
 }

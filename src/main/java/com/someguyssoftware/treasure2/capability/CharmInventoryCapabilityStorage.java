@@ -84,7 +84,7 @@ public class CharmInventoryCapabilityStorage implements Capability.IStorage<ICha
 					 * need to the load the charm prior to CharmEntity.load() because the CharmEntity instance needs to be
 					 *  created first using the Charm, then the entity can be loaded.
 					 */
-					Optional<ICharm> charm = Charm.readFromNBT((NBTTagCompound) ((NBTTagCompound)e).getCompoundTag(ICharmEntity.CHARM));
+					Optional<ICharm> charm = Charm.load((NBTTagCompound) ((NBTTagCompound)e).getCompoundTag(ICharmEntity.CHARM));
 					if (!charm.isPresent()) {
 						return;
 					}

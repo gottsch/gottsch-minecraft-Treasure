@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.treasure2.item.charm.ICharmData;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,7 +41,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  */
 public class FullnessCharm extends Charm {
 	public static final int MAX_FOOD_LEVEL = 20;
-	public static final String SATIETY_TYPE = "satiety";
+	public static final String FULLNESS_TYPE = "fullness";
 
 	private static final Class<?> REGISTERED_EVENT = LivingUpdateEvent.class;
 
@@ -80,5 +80,17 @@ public class FullnessCharm extends Charm {
 		TextFormatting color = TextFormatting.DARK_GREEN;
 		tooltip.add("  " + color + getLabel(entity));
 		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.fullness_rate"));
+	}
+	
+	public static class Builder extends Charm.Builder {
+
+		public Builder(String name, Integer level) {
+			super(ResourceLocationUtil.create(name), FULLNESS_TYPE, level);
+		}
+
+		@Override
+		public ICharm build() {
+			return  new FullnessCharm(this);
+		}
 	}
 }

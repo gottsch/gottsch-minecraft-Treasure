@@ -67,7 +67,7 @@ public class CharmEntity implements ICharmEntity {
 	public NBTTagCompound save(NBTTagCompound nbt) {
 		NBTTagCompound charmNbt = new NBTTagCompound();
 		// save the charm
-		nbt.setTag(CHARM, getCharm().writeToNBT(charmNbt));
+		nbt.setTag(CHARM, getCharm().save(charmNbt));
 		// save the entity data
 		nbt.setDouble(VALUE, getValue());
 		nbt.setInteger("duration", getDuration());

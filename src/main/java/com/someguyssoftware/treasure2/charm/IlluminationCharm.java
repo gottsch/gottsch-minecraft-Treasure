@@ -10,10 +10,7 @@ import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.item.charm.CharmInstance;
-import com.someguyssoftware.treasure2.item.charm.ICharmData;
-import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
-import com.someguyssoftware.treasure2.item.charm.IlluminationCharmData;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -165,4 +162,15 @@ public class IlluminationCharm extends Charm {
 		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.illumination_rate"));
 	}
 
+	public static class Builder extends Charm.Builder {
+
+		public Builder(String name, Integer level) {
+			super(ResourceLocationUtil.create(name), ILLUMINATION_TYPE, level);
+		}
+
+		@Override
+		public ICharm build() {
+			return  new IlluminationCharm(this);
+		}
+	}
 }

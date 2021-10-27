@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -72,5 +73,17 @@ public class DecrepitCharm extends Charm {
 		TextFormatting color = TextFormatting.DARK_RED;
 		tooltip.add("  " + color + getLabel(entity));
 		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.decrepit_rate", Math.round((entity.getPercent()-1)*100)));
+	}
+	
+	public static class Builder extends Charm.Builder {
+
+		public Builder(String name, Integer level) {
+			super(ResourceLocationUtil.create(name), DECREPIT_TYPE, level);
+		}
+
+		@Override
+		public ICharm build() {
+			return  new DecrepitCharm(this);
+		}
 	}
 }

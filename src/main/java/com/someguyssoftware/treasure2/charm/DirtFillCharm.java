@@ -25,10 +25,7 @@ import java.util.Random;
 
 import com.google.common.collect.Lists;
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.treasure2.item.charm.CharmInstance;
-import com.someguyssoftware.treasure2.item.charm.DirtFillCharmData;
-import com.someguyssoftware.treasure2.item.charm.ICharmData;
-import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +34,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -116,5 +112,17 @@ public class DirtFillCharm extends Charm {
 		}
 		Collections.shuffle(list, rand);
 		return list;
+	}
+	
+	public static class Builder extends Charm.Builder {
+
+		public Builder(String name, Integer level) {
+			super(ResourceLocationUtil.create(name), DIRT_FILL_TYPE, level);
+		}
+
+		@Override
+		public ICharm build() {
+			return  new DirtFillCharm(this);
+		}
 	}
 }

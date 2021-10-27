@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.treasure2.item.charm.ICharmData;
-import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,7 +33,7 @@ public interface ICharm {
 
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, ICharmEntity entity);
     
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt);
+	public NBTTagCompound save(NBTTagCompound nbt);
 	
 	/**
 	 * 

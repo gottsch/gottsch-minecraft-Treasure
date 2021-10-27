@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.treasure2.item.charm.ICharmData;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,6 +36,10 @@ public class ShieldingCharm extends Charm {
 		super(builder);
 	}
 
+	protected ShieldingCharm(Charm.Builder builder) {
+		super(builder);
+	}
+	
 	@Override
 	public Class<?> getRegisteredEvent() {
 		return REGISTERED_EVENT;
@@ -77,5 +81,17 @@ public class ShieldingCharm extends Charm {
 		TextFormatting color = TextFormatting.BLUE;
 		tooltip.add("  " + color + getLabel(entity));
 		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.shielding_rate", Math.round(entity.getPercent()*100)));
+	}
+	
+	public static class Builder extends Charm.Builder {
+
+		public Builder(String name, Integer level) {
+			super(ResourceLocationUtil.create(name), SHIELDING_TYPE, level);
+		}
+
+		@Override
+		public ICharm build() {
+			return  new ShieldingCharm(this);
+		}
 	}
 }

@@ -10,6 +10,7 @@ import java.util.Random;
 import com.google.common.collect.FluentIterable;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -92,5 +93,17 @@ public class RuinCharm extends Charm {
 		TextFormatting color = TextFormatting.DARK_RED;
 		tooltip.add("  " + color + getLabel(entity));
 		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.ruin_rate", String.valueOf(Math.toIntExact(Math.round(entity.getDuration())))));
+	}
+	
+	public static class Builder extends Charm.Builder {
+
+		public Builder(String name, Integer level) {
+			super(ResourceLocationUtil.create(name), RUIN_TYPE, level);
+		}
+
+		@Override
+		public ICharm build() {
+			return  new RuinCharm(this);
+		}
 	}
 }

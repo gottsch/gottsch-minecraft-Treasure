@@ -10,6 +10,7 @@ import javax.xml.ws.Holder;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.monster.EntityMob;
@@ -99,5 +100,17 @@ public class DrainCharm extends Charm {
 		TextFormatting color = TextFormatting.RED;
 		tooltip.add("  " + color + getLabel(entity));
 		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.drain_rate", entity.getDuration()));
+	}
+	
+	public static class Builder extends Charm.Builder {
+
+		public Builder(String name, Integer level) {
+			super(ResourceLocationUtil.create(name), DRAIN_TYPE, level);
+		}
+
+		@Override
+		public ICharm build() {
+			return  new DrainCharm(this);
+		}
 	}
 }

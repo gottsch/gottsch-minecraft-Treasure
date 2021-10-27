@@ -9,14 +9,10 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
-import com.someguyssoftware.treasure2.charm.TreasureCharms;
-import com.someguyssoftware.treasure2.item.charm.ICharmData;
-import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 

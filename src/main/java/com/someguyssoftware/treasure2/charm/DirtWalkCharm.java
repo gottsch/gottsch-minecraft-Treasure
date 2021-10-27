@@ -19,23 +19,19 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import com.google.common.collect.Lists;
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.treasure2.item.charm.ICharmData;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -94,5 +90,17 @@ public class DirtWalkCharm extends Charm {
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.DARK_RED;
 		tooltip.add("  " + color + getLabel(entity));
+	}
+	
+	public static class Builder extends Charm.Builder {
+
+		public Builder(String name, Integer level) {
+			super(ResourceLocationUtil.create(name), DIRT_WALK_TYPE, level);
+		}
+
+		@Override
+		public ICharm build() {
+			return  new DirtWalkCharm(this);
+		}
 	}
 }

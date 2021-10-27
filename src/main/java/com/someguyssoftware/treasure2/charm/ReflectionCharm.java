@@ -24,7 +24,7 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.item.charm.ICharmData;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.monster.EntityMob;
@@ -104,5 +104,17 @@ public class ReflectionCharm extends Charm {
 		tooltip.add("  " + color + getLabel(entity));
 		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.reflection_rate", 
 				Math.toIntExact((long) (entity.getPercent()*100)), entity.getDuration()));
+	}
+	
+	public static class Builder extends Charm.Builder {
+
+		public Builder(String name, Integer level) {
+			super(ResourceLocationUtil.create(name), REFLECTION_TYPE, level);
+		}
+
+		@Override
+		public ICharm build() {
+			return  new ReflectionCharm(this);
+		}
 	}
 }

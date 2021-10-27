@@ -5,12 +5,9 @@ package com.someguyssoftware.treasure2.charm;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.item.charm.CharmData;
-import com.someguyssoftware.treasure2.item.charm.CharmInstance;
-import com.someguyssoftware.treasure2.item.charm.ICharmData;
-import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -38,7 +35,7 @@ public abstract class Charm implements ICharm {
 	 * if multiple charms of the same type are being processed, only 1 should be updated/executed.
 	 * ex. if multiple harvesting charms are held, only one should update.
 	 */
-	private boolean allowMultipleUpdates = false;
+	private boolean effetStackable = false;
 
 	/**
 	 * 
@@ -51,7 +48,7 @@ public abstract class Charm implements ICharm {
 		this.maxValue = builder.value;
 		this.maxDuration = builder.duration.intValue();
 		this.maxPercent = builder.percent;
-		this.allowMultipleUpdates = builder.allowMultipleUpdates;
+		this.effetStackable = builder.effectStackable;
 	}
 
 	abstract public Class<?> getRegisteredEvent();
@@ -132,20 +129,12 @@ public abstract class Charm implements ICharm {
         // TODO redo this in future.
         return label + " " + getUsesGauge(entity) + " " + (this.isAllowMultipleUpdates() ? (TextFormatting.DARK_PURPLE + "* combinable") : "");
 	}
-	
+
 	/**
 	 * 
-	 * @param data
+	 * @param entity
 	 * @return
 	 */
-	@SuppressWarnings("deprecation")
-	@Deprecated
-	public String getUsesGauge(ICharmData data) {
-		return I18n.translateToLocalFormatted("tooltip.charm.uses_gauge",
-        		String.valueOf(Math.toIntExact(Math.round(data.getValue()))), 
-				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
-	}
-	
 	public String getUsesGauge(ICharmEntity entity) {
 		return I18n.translateToLocalFormatted("tooltip.charm.uses_gauge",
         		String.valueOf(Math.toIntExact(Math.round(entity.getValue()))), 
@@ -158,7 +147,7 @@ public abstract class Charm implements ICharm {
 	 * 
 	 * @param tag
 	 */
-	public static Optional<ICharm> readFromNBT(NBTTagCompound tag) {
+	public static Optional<ICharm> load(NBTTagCompound tag) {
 		Optional<ICharm> charm = Optional.empty();
 		// read the name of the charm and fetch from the registry
 		try {
@@ -173,13 +162,7 @@ public abstract class Charm implements ICharm {
 		catch(Exception e) {
 			Treasure.logger.error("Unable to read state to NBT:", e);
 		}	
-		/*
-		 * This code would only be needed if a modifying system AFTER a Charm has been create was in effect.
-		CharmBuilder builder = new CharmBuilder(tag.getString("name"), CharmType.valueOf(typeStr), CharmLevel.valueOf(levelStr));
-		builder.valueModifier(tag.getDouble("valueModifier")).percentModifier(tag.getDouble("percentModifier"))
-		.percentModifier(tag.getDouble("durationModifier"));
-		return builder.build();
-		 */
+
 		return charm;
 	}
 
@@ -189,7 +172,7 @@ public abstract class Charm implements ICharm {
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound save(NBTTagCompound nbt) {
 		try {
 			nbt.setString("name", this.name.toString());
 		}
@@ -230,7 +213,7 @@ public abstract class Charm implements ICharm {
 	
 	@Override
 	public boolean isAllowMultipleUpdates() {
-		return allowMultipleUpdates;
+		return effetStackable;
 	}
 
 	/**
@@ -238,16 +221,14 @@ public abstract class Charm implements ICharm {
 	 * @author Mark Gottschling on Dec 18, 2020
 	 *
 	 */
-	public static class Builder {
-		private ResourceLocation name;
-		private final String type;
-		private final Integer level;
-		private Double value = 0.0;
-		private Double duration = 0.0;
-		private Double percent = 0.0;
-		private boolean allowMultipleUpdates = false;
-		
-		private Class<? extends ICharm> charmClass;
+	abstract public static class Builder {
+		public ResourceLocation name;
+		public final String type;
+		public final Integer level;
+		public Double value = 0.0;
+		public Double duration = 0.0;
+		public Double percent = 0.0;
+		public boolean effectStackable = false;
 
 		/**
 		 * 
@@ -256,26 +237,34 @@ public abstract class Charm implements ICharm {
 		 * @param level
 		 * @param charmClass
 		 */
-		public Builder(ResourceLocation name, String type, Integer level, Class<? extends ICharm> charmClass) {
+		public Builder(ResourceLocation name, String type, Integer level) {
 			this.name = name;
 			this.type = type;
 			this.level = level;
-			this.charmClass = charmClass;
 		}
 
-		public ICharm build() {
-			ICharm charm = null;
-			try {
-				// TODO remove need for reflection
-				charm = charmClass.getDeclaredConstructor(Builder.class).newInstance(Charm.Builder.this);
-				Treasure.logger.debug("building charm from -> {} to -> {}", Charm.Builder.this.toString(), charm.toString());
-			} catch (Exception e) {
-				Treasure.logger.error("Couldn't create charm", e);
-			}			
+		abstract public ICharm build();
 
-			return charm;
+		/**
+		 * 
+		 * @param type
+		 * @param level
+		 * @return
+		 */
+		public static String makeName(String type, int level) {
+			return type + "_" + level;
 		}
-
+		
+		/**
+		 * 
+		 * @param builder
+		 * @return
+		 */
+		public Builder with(Consumer<Builder> builder)  {
+			builder.accept(this);
+			return this;
+		}
+		
 		public Builder withValue(Double value) {
 			this.value = value;
 			return Charm.Builder.this;
@@ -291,23 +280,22 @@ public abstract class Charm implements ICharm {
 			return Charm.Builder.this;
 		}
 		
-		public Builder withAllowMultipleUpdates(boolean allow) {
-			this.allowMultipleUpdates = allow;
+		public Builder withEffectStackable(boolean stackable) {
+			this.effectStackable = stackable;
 			return Charm.Builder.this;
 		}
 
 		@Override
 		public String toString() {
 			return "Builder [name=" + name + ", type=" + type + ", level=" + level + ", value=" + value + ", duration="
-					+ duration + ", percent=" + percent + ", allowMultipleUpdates=" + allowMultipleUpdates
-					+ ", charmClass=" + charmClass + "]";
+					+ duration + ", percent=" + percent + ", effectStackable=" + effectStackable + "]";
 		}
 	}
 
 	@Override
 	public String toString() {
 		return "Charm [name=" + name + ", type=" + type + ", level=" + level + ", maxValue=" + maxValue
-				+ ", maxPercent=" + maxPercent + ", maxDuration=" + maxDuration + ", allowMultipleUpdates="
-				+ allowMultipleUpdates + "]";
+				+ ", maxPercent=" + maxPercent + ", maxDuration=" + maxDuration + ",effectStackable="
+				+ effetStackable + "]";
 	}
 }
