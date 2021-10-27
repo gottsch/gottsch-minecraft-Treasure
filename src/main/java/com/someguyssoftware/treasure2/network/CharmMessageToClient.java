@@ -70,19 +70,16 @@ public class CharmMessageToClient implements IMessage {
 	    	double value = buf.readDouble();
 	    	int duration = buf.readInt();
 	    	double percent = buf.readDouble();
-            // data = CharmStateFactory.createCharmVitals(TreasureCharms.REGISTRY.get(charmName));
-//            data = TreasureCharms.REGISTRY.get(charmName).createInstance().getData();
-	    	// TODO ensure charmName contains a domain
-	    	/// TODO check optional value
+
 	    	Optional<ICharm> optionalCharm = TreasureCharmRegistry.get(ResourceLocationUtil.create(charmName));
 	    	if (!optionalCharm.isPresent()) {
 	    		throw new RuntimeException(String.format("Unable to find charm %s in registry.", charmName));
 	    	}
-	    	data = optionalCharm.get().createInstance().getData();
-	    	data.setDuration(duration);
-	    	data.setPercent(percent);
-	    	data.setValue(value);
-//	    	data = new CharmVitals(value, duration, percent);
+	    	entity = optionalCharm.get().createEntity();
+	    	entity.setCharm(optionalCharm.get());
+	    	entity.setDuration(duration);
+	    	entity.setPercent(percent);
+	    	entity.setValue(value);
 	    	String handStr = ByteBufUtils.readUTF8String(buf);
 	    	if (!handStr.isEmpty()) {
 	    		this.hand = EnumHand.valueOf(handStr);
@@ -103,9 +100,9 @@ public class CharmMessageToClient implements IMessage {
 	    }
 	    ByteBufUtils.writeUTF8String(buf, playerName);
 	    ByteBufUtils.writeUTF8String(buf, charmName);
-	    buf.writeDouble(data.getValue());
-	    buf.writeInt(data.getDuration());
-	    buf.writeDouble(data.getPercent());
+	    buf.writeDouble(entity.getValue());
+	    buf.writeInt(entity.getDuration());
+	    buf.writeDouble(entity.getPercent());
 	    String handStr = "";
 	    if (hand != null) {
 	    	handStr = hand.name();
@@ -119,7 +116,7 @@ public class CharmMessageToClient implements IMessage {
 	 * @return
 	 */
 	public boolean isMessageValid() {
-		if (charmName != null && playerName != null && data != null) {
+		if (charmName != null && playerName != null && entity != null) {
 			return true;
 		}
 		return false;
@@ -133,8 +130,8 @@ public class CharmMessageToClient implements IMessage {
 		this.messageIsValid = messageIsValid;
 	}
 
-	public ICharmData getData() {
-		return data;
+	public ICharmEntity getEntity() {
+		return entity;
 	}
 	
 	public String getPlayerName() {
@@ -155,7 +152,7 @@ public class CharmMessageToClient implements IMessage {
 
 	@Override
 	public String toString() {
-		return "CharmMessageToClient [messageIsValid=" + messageIsValid + ", charmName=" + charmName + ", data="
-				+ data + ", playerName=" + playerName + ", hand=" + hand + ", slot=" + slot + "]";
+		return "CharmMessageToClient [messageIsValid=" + messageIsValid + ", charmName=" + charmName + ", entity="
+				+ entity + ", playerName=" + playerName + ", hand=" + hand + ", slot=" + slot + "]";
 	}
 }
