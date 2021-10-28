@@ -1,8 +1,8 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/treasure2",
 	"promos": {
-		"1.12.2-latest": "1.16.1",
-		"1.12.2-recommended": "1.16.1"
+		"1.12.2-latest": "1.17.0",
+		"1.12.2-recommended": "1.17.0"
 	},
 	"1.12.2": {
 		"0.5.0": "alpha release",
@@ -47,6 +47,7 @@
 		"1.14.1": "Fixed epic loot tables to point to the right pool tables.\n",
 		"1.15.0": "Charms & Adornments Update:\nRefactored mechanics of charms.\nAdded Charmable items.\nAdded new Charms: Absolute Shielding, Fire Resistence, Fire Immunity, Life Strike, Reflection, Drain, Ruin, Decrepit, Dirt Fill, Dirt Walk.\nAdded Adornments - rings, bracelets, and amulets.\nAdornments are slottable.\nUpdated CharmRandomly loot function.\nAdded SetCustomName and SetSlots loot functions.\n",
 		"1.16.0": "Added Amethyst and Onyx Gems and Ores.\nAdded new Adornments.\nAdded recipes to create Adornments.\nAdded Crystal Skull Chest recipe.\nFixed Cyrstal Skull Chest not generating.\nAdded Wither Chest Registry to help prevent trees generating too close together.\nUpdated Chinese language file.\nFixed apple loot entry pointing to bread in common loot table.\n",
-		"1.16.1": "Fixed Adornments losing existing charms when upgraded.\nFixed breaking unlocked and sealed chests from losing treasure.\nFixed some adornment recipes.\nAdded config options for each chest.\nRe-worded verbiage for Adornments charms."
+		"1.16.1": "Fixed Adornments losing existing charms when upgraded.\nFixed breaking unlocked and sealed chests from losing treasure.\nFixed some adornment recipes.\nAdded config options for each chest.\nRe-worded verbiage for Adornments charms.",
+		"1.17.1": "Charm caps refactor"
 	}
 }

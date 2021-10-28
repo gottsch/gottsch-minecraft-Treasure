@@ -5,18 +5,18 @@ package com.someguyssoftware.treasure2.item;
 
 import java.util.List;
 
-import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.ICharmCapability;
+import javax.annotation.Nullable;
+
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityStorage;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.enums.Coins;
-import com.someguyssoftware.treasure2.item.charm.ICharm;
-import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import com.someguyssoftware.treasure2.item.charm.ICharmed;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
@@ -27,6 +27,8 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 // TODO rename CharmedCoin
 public class CharmedCoinItem extends CoinItem implements ICharmed {
 
+	private static final CharmInventoryCapabilityStorage CAPABILITY_STORAGE = new CharmInventoryCapabilityStorage();
+	
 	/**
 	 * 
 	 * @param modID
@@ -53,10 +55,36 @@ public class CharmedCoinItem extends CoinItem implements ICharmed {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-		CharmCapabilityProvider provider =  new CharmCapabilityProvider();
+//		Treasure.logger.debug("{} item initiating caps", stack.getItem().getRegistryName().toString());
+		CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
 		return provider;
 	}
 
+	/**
+	 * NOTE getNBTShareTag() and readNBTShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands
+	 * or having the client update when the Anvil GUI is open.
+	 */
+	@Override
+    public NBTTagCompound getNBTShareTag(ItemStack stack) {
+		NBTTagCompound nbt = null;
+		// read cap -> write nbt
+		nbt = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
+				TreasureCapabilities.CHARM_INVENTORY,
+				stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null), null);
+		return nbt;
+	}
+	
+    @Override
+    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
+        super.readNBTShareTag(stack, nbt);
+        // read nbt -> write key item
+       CAPABILITY_STORAGE.readNBT(
+    		   TreasureCapabilities.CHARM_INVENTORY, 
+				stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null), 
+				null,
+				nbt);
+    }
+    
 	/**
 	 * 
 	 */
