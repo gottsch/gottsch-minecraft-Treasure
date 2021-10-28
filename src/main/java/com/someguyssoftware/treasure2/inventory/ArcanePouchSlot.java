@@ -4,10 +4,9 @@
 package com.someguyssoftware.treasure2.inventory;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -35,7 +34,7 @@ public class ArcanePouchSlot extends PouchSlot {
     public boolean isItemValid(ItemStack stack) {
 		boolean result = super.isItemValid(stack);
 		if (result) {
-			if (!stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
+			if (!stack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
 				Treasure.logger.debug("item is not charmed, disallowed in arcane pouch slot");
 				result = false;
 			}

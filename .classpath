@@ -18,6 +18,6 @@
 	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/forge-1.12.2-2854"/>
 	<classpathentry kind="lib" path="/ModCommonLibs/libs/commons-cli-1.4.jar"/>
-	<classpathentry kind="lib" path="F:/Development/minecraft/mods/GottschCore-mc1.12.2-f14.23.5.2854-v1.14.0.jar" sourcepath="/GottschCore"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/GottschCore"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>

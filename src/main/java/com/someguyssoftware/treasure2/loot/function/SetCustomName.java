@@ -1,23 +1,16 @@
 package com.someguyssoftware.treasure2.loot.function;
 
-import java.util.List;
 import java.util.Random;
 
 import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
-import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.ICharmableCapability;
-import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
-import com.someguyssoftware.treasure2.item.charm.ICharmable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 
@@ -26,6 +19,7 @@ import net.minecraft.world.storage.loot.functions.LootFunction;
  * @author Mark Gottschling on Dec 29, 2020
  *
  */
+@Deprecated
 public class SetCustomName extends LootFunction {
 	private final String customName;
 
@@ -44,10 +38,10 @@ public class SetCustomName extends LootFunction {
 	 */
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
 		// check for charmable capability
-		if (stack.hasCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null)) {
-			ICharmableCapability charmableCap = stack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-			charmableCap.setCustomName(this.customName);
-		}
+//		if (stack.hasCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null)) {
+//			ICharmableCapability charmableCap = stack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+//			charmableCap.setCustomName(this.customName);
+//		}
 		return stack;
 	}
 

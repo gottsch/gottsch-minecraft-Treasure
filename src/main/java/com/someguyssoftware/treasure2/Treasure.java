@@ -20,18 +20,13 @@ import com.someguyssoftware.gottschcore.mod.AbstractMod;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.capability.CharmCapability;
-import com.someguyssoftware.treasure2.capability.CharmStorage;
-import com.someguyssoftware.treasure2.capability.CharmableCapability;
-import com.someguyssoftware.treasure2.capability.CharmableStorage;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageStorage;
-import com.someguyssoftware.treasure2.capability.ICharmCapability;
-import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.IEffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingStorage;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.command.SpawnChestCommand;
 import com.someguyssoftware.treasure2.command.SpawnOasisCommand;
@@ -53,7 +48,6 @@ import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.function.CharmRandomly;
 import com.someguyssoftware.treasure2.loot.function.SetCharms;
-import com.someguyssoftware.treasure2.loot.function.SetCustomName;
 import com.someguyssoftware.treasure2.loot.function.SetSlots;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 import com.someguyssoftware.treasure2.network.CharmMessageHandlerOnClient;
@@ -105,6 +99,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 		"Credits to OdinsRagnarok for Spanish translation and DarvinSlav for Russian translation.",
 		"Credits to sfs131010 for updated Chinese translation.",
 		"Credits to Xemnes for updated textures for locks, keys, adornment, and chests."})
+
 public class Treasure extends AbstractMod {
 
 	// constants
@@ -203,8 +198,7 @@ public class Treasure extends AbstractMod {
 				25, Side.CLIENT);
 
 		// add capabilities
-		CapabilityManager.INSTANCE.register(ICharmCapability.class, new CharmStorage(), CharmCapability::new);
-		CapabilityManager.INSTANCE.register(ICharmableCapability.class, new CharmableStorage(), CharmableCapability::new);
+		TreasureCapabilities.register();
 		CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingStorage(), KeyRingCapability::new);
 		CapabilityManager.INSTANCE.register(IEffectiveMaxDamageCapability.class, new EffectiveMaxDamageStorage(), EffectiveMaxDamageCapability::new);
 
@@ -212,7 +206,6 @@ public class Treasure extends AbstractMod {
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms.Serializer());
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetSlots.Serializer());
-		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCustomName.Serializer());
 	}
 
 	/**

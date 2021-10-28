@@ -9,18 +9,16 @@ import com.someguyssoftware.gottschcore.armor.ModArmorBuilder;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.item.ModSwordBuilder;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.ICharmCapability;
-import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
-import com.someguyssoftware.treasure2.world.gen.structure.ITemplateGenerator;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -214,11 +212,11 @@ public class TreasureItems {
 
 		ANGEL_BLESSED = new CharmedGemItem(Treasure.MODID, TreasureConfig.ANGEL_BLESSED_ID) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
-				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmInstances().add(TreasureCharms.GRAND_HEALING.createInstance());
-				cap.getCharmInstances().add(TreasureCharms.POWERFUL_SHIELDING.createInstance());
-				cap.getCharmInstances().add(TreasureCharms.GORGED_FULLNESS.createInstance());
+				CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
+				ICharmInventoryCapability cap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+				cap.getCharmEntities().add(TreasureCharms.GRAND_HEALING.createEntity());
+				cap.getCharmEntities().add(TreasureCharms.POWERFUL_SHIELDING.createEntity());
+				cap.getCharmEntities().add(TreasureCharms.GORGED_FULLNESS.createEntity());
 				return provider;
 			}
 		};
@@ -227,10 +225,10 @@ public class TreasureItems {
 
 		MINERS_FRIEND = new CharmedGemItem(Treasure.MODID, TreasureConfig.MINERS_FRIEND_ID) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
-				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmInstances().add(TreasureCharms.GLORIOUS_ILLUMINATION.createInstance());
-				cap.getCharmInstances().add(TreasureCharms.GRAND_HARVESTING.createInstance());
+				CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
+				ICharmInventoryCapability cap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+				cap.getCharmEntities().add(TreasureCharms.GLORIOUS_ILLUMINATION.createEntity());
+				cap.getCharmEntities().add(TreasureCharms.GRAND_HARVESTING.createEntity());
 				return provider;
 			}
 		};
@@ -238,10 +236,10 @@ public class TreasureItems {
 
 		FOOLS_COIN = new CharmedCoinItem(Treasure.MODID, "fools_coin", Coins.SILVER) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
-				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmInstances().add(TreasureCharms.HEALING.createInstance());
-				cap.getCharmInstances().add(TreasureCharms.DECAY.createInstance());
+				CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
+				ICharmInventoryCapability cap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+				cap.getCharmEntities().add(TreasureCharms.HEALING.createEntity());
+				cap.getCharmEntities().add(TreasureCharms.DECAY.createEntity());
 				return provider;
 			}
 		};
@@ -249,9 +247,9 @@ public class TreasureItems {
 
 		MEDICS_TOKEN = new CharmedCoinItem(Treasure.MODID, "medics_token", Coins.GOLD) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
-				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmInstances().add(TreasureCharms.SALANDAARS_CONVALESCENCE.createInstance());
+				CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
+				ICharmInventoryCapability cap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+				cap.getCharmEntities().add(TreasureCharms.SALANDAARS_CONVALESCENCE.createEntity());
 				return provider;
 			}
 		};		
@@ -259,9 +257,9 @@ public class TreasureItems {
 
 		SALANDAARS_WARD = new CharmedCoinItem(Treasure.MODID, "salandaars_ward", Coins.GOLD) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
-				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmInstances().add(TreasureCharms.ARMADILLO_SHIELDING.createInstance());
+				CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
+				ICharmInventoryCapability cap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+				cap.getCharmEntities().add(TreasureCharms.ARMADILLO_SHIELDING.createEntity());
 				return provider;
 			}
 		};
@@ -269,9 +267,9 @@ public class TreasureItems {
 
 		DWARVEN_TALISMAN = new CharmedCoinItem(Treasure.MODID, "dwarven_talisman", Coins.GOLD) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
-				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmInstances().add(TreasureCharms.GLORIOUS_HARVESTING.createInstance());
+				CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
+				ICharmInventoryCapability cap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+				cap.getCharmEntities().add(TreasureCharms.GLORIOUS_HARVESTING.createEntity());
 				return provider;
 			}
 		};
@@ -279,9 +277,9 @@ public class TreasureItems {
 
 		ADEPHAGIAS_BOUNTY = new CharmedCoinItem(Treasure.MODID, "adephagias_bounty", Coins.GOLD) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
-				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmInstances().add(TreasureCharms.BURSTING_FULLNESS.createInstance());
+				CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
+				ICharmInventoryCapability cap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+				cap.getCharmEntities().add(TreasureCharms.BURSTING_FULLNESS.createEntity());
 				return provider;
 			}
 		};
@@ -289,9 +287,9 @@ public class TreasureItems {
 
 		MIRTHAS_TORCH = new CharmedCoinItem(Treasure.MODID, "mirthas_torch", Coins.GOLD) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-				CharmCapabilityProvider provider =  new CharmCapabilityProvider();
-				ICharmCapability cap = provider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-				cap.getCharmInstances().add(TreasureCharms.GLORIOUS_ILLUMINATION.createInstance());
+				CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
+				ICharmInventoryCapability cap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+				cap.getCharmEntities().add(TreasureCharms.GLORIOUS_ILLUMINATION.createEntity());
 				return provider;
 			}
 		};
@@ -354,50 +352,41 @@ public class TreasureItems {
 //				cap.getCharmInstances().add(TreasureCharms.ABSOLUTE_SHIELDING_4.createInstance());
 //				ICharmableCapability charmableCap = provider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
 //				charmableCap.setSlots(0);
-//				charmableCap.setCustomName("Ring of X");
 //				return provider;
 //			}
 //        }.setMaxSlots(2).setLevel(5);
         
         ANGELS_RING = (Item) new Adornment(Treasure.MODID, "angels_ring", AdornmentType.RING) {
             public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-                CharmableCapabilityProvider charmableProvider =  new CharmableCapabilityProvider();
-                ICharmCapability charmCap = charmableProvider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-                charmCap.getCharmInstances().add(TreasureCharms.FIRE_IMMUNITY_13.createInstance());
-                charmCap.getCharmInstances().add(TreasureCharms.ARMADILLO_SHIELDING.createInstance());
-                charmCap.getCharmInstances().add(TreasureCharms.SALANDAARS_CONVALESCENCE.createInstance());
-                
-                ICharmableCapability charmableCap = charmableProvider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-                charmableCap.setSlots(1);
-				charmableCap.setCustomName("Ring of the Angels");
-                return charmableProvider;
+                CharmInventoryCapabilityProvider charmInventoryProvider =  new CharmInventoryCapabilityProvider();
+                ICharmInventoryCapability charmCap = charmInventoryProvider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+                charmCap.getCharmEntities().add(TreasureCharms.FIRE_IMMUNITY_13.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.ARMADILLO_SHIELDING.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.SALANDAARS_CONVALESCENCE.createEntity());
+
+                charmCap.setSlots(1);
+                return charmInventoryProvider;
             }	
         }.setMaxSlots(4).setLevel(10);
 
         RING_OF_FORTITUDE = (Item) new Adornment(Treasure.MODID, "ring_of_fortitude", AdornmentType.RING) {
             public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-                CharmableCapabilityProvider charmableProvider =  new CharmableCapabilityProvider();
-                ICharmCapability charmCap = charmableProvider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-                charmCap.getCharmInstances().add(TreasureCharms.ARMADILLO_SHIELDING.createInstance());
-                charmCap.getCharmInstances().add(TreasureCharms.REFLECTION_5.createInstance());
-                
-                ICharmableCapability charmableCap = charmableProvider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-                charmableCap.setSlots(2);
-				charmableCap.setCustomName("Ring of Fortitude");
-                return charmableProvider;
+            	CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
+                ICharmInventoryCapability charmCap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+                charmCap.getCharmEntities().add(TreasureCharms.ARMADILLO_SHIELDING.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.REFLECTION_5.createEntity());
+                charmCap.setSlots(2);
+                return provider;
             }	
         }.setMaxSlots(2).setLevel(12);
 
         BRACELET_OF_WONDER = (Item) new Adornment(Treasure.MODID, "bracelet_of_wonder", AdornmentType.BRACELET) {
             public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-                CharmableCapabilityProvider charmableProvider =  new CharmableCapabilityProvider();
-                ICharmCapability charmCap = charmableProvider.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-                charmCap.getCharmInstances().add(TreasureCharms.SHIELDING_13.createInstance());
-                charmCap.getCharmInstances().add(TreasureCharms.REFLECTION_10.createInstance());
-                
-                ICharmableCapability charmableCap = charmableProvider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-                charmableCap.setSlots(4);
-				charmableCap.setCustomName("Bracelet of Wonder");
+            	CharmInventoryCapabilityProvider charmableProvider =  new CharmInventoryCapabilityProvider();
+                ICharmInventoryCapability charmCap = charmableProvider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+                charmCap.getCharmEntities().add(TreasureCharms.SHIELDING_13.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.REFLECTION_10.createEntity());
+                charmCap.setSlots(4);
                 return charmableProvider;
             }
         }.setMaxSlots(4).setLevel(10);

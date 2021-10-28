@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
@@ -7,16 +23,13 @@ import java.util.Optional;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.ICharmCapability;
-import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.item.GemItem;
 import com.someguyssoftware.treasure2.item.KeyItem;
-import com.someguyssoftware.treasure2.item.charm.ICharm;
-import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import com.someguyssoftware.treasure2.item.charm.ICharmable;
 import com.someguyssoftware.treasure2.item.charm.ICharmed;
 
@@ -114,26 +127,23 @@ public class AnvilEventHandler {
      */
     public Optional<ItemStack> addSlotsToCharmable(ItemStack leftStack, ItemStack gemStack) {
     	Treasure.logger.debug("add slots to charmable called...");
-        if (leftStack.hasCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null)) {
+        if (leftStack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
             ItemStack output = new ItemStack(leftStack.getItem());
-            ICharmCapability outputCharmCap = output.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-            ICharmableCapability outputCharmableCap = output.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-            
-        	ICharmCapability leftCharmCap = leftStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-            ICharmableCapability leftCharmableCap = leftStack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
+            ICharmInventoryCapability outputCharmCap = output.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+        	ICharmInventoryCapability leftCharmCap = leftStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
 
-            int currentCharmsSize = leftCharmCap.getCharmInstances().size();
+            int currentCharmsSize = leftCharmCap.getCharmEntities().size();
             
             // initialize output to that of the left
-            outputCharmCap.getCharmInstances().addAll(leftCharmCap.getCharmInstances());
-            outputCharmableCap.setSlots(leftCharmableCap.getSlots());
+            outputCharmCap.getCharmEntities().addAll(leftCharmCap.getCharmEntities());
+            outputCharmCap.setSlots(leftCharmCap.getSlots());
             
             // check is slots available
             ICharmable outputItem = (ICharmable)output.getItem();
-            if (outputItem.getMaxSlots() > 0 && outputCharmableCap.getSlots() < outputItem.getMaxSlots() 
-            		&& outputCharmableCap.getSlots() < (outputItem.getMaxSlots() - currentCharmsSize)) {
+            if (outputItem.getMaxSlots() > 0 && outputCharmCap.getSlots() < outputItem.getMaxSlots() 
+            		&& outputCharmCap.getSlots() < (outputItem.getMaxSlots() - currentCharmsSize)) {
                 // add a slot to the charmable stack
-                outputCharmableCap.setSlots(outputCharmableCap.getSlots() + 1);
+                outputCharmCap.setSlots(outputCharmCap.getSlots() + 1);
                 return Optional.of(output);
             }
         }
@@ -146,35 +156,27 @@ public class AnvilEventHandler {
      * @param charmedStack
      */
     public Optional<ItemStack> addCharmsToCharmable(ItemStack leftStack, ItemStack rightStack) {
-    	Treasure.logger.debug("add charms to charmable called...");
-        if (leftStack.hasCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null)) {
+        if (leftStack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
 
-            ICharmableCapability leftCharmableCap = leftStack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-            ICharmCapability leftCharmCap = leftStack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
-            Treasure.logger.debug("left charm instances -> {}", leftCharmCap.getCharmInstances().size());
-
-            ICharmCapability rightCharmCap = rightStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-            Treasure.logger.debug("right charm instances -> {}", rightCharmCap.getCharmInstances().size());
-
+            ICharmInventoryCapability leftCharmCap = leftStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+            ICharmInventoryCapability rightCharmCap = rightStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
             ItemStack output = new ItemStack(leftStack.getItem());
-            ICharmCapability outputCharmCap = output.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
-            ICharmableCapability outputCharmableCap = output.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-            Treasure.logger.debug("new output charm instances -> {}", outputCharmCap.getCharmInstances().size());
+            ICharmInventoryCapability outputCharmCap = output.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
 
             // copy left's charms to output (initialize)
-            outputCharmCap.getCharmInstances().addAll(leftCharmCap.getCharmInstances());
-            outputCharmableCap.setSlots(leftCharmableCap.getSlots());
+            outputCharmCap.getCharmEntities().addAll(leftCharmCap.getCharmEntities());
+            outputCharmCap.setSlots(leftCharmCap.getSlots());
             
             ICharmable item = (ICharmable)output.getItem();
             // check is slots available
-            if (item.getMaxSlots() > 0 && outputCharmableCap.getSlots() > 0 && rightCharmCap.getCharmInstances().size() > 0) {
+            if (item.getMaxSlots() > 0 && outputCharmCap.getSlots() > 0 && rightCharmCap.getCharmEntities().size() > 0) {
                 // copy charms from right to output
-                int freeSlots = outputCharmableCap.getSlots();
-                for (int x = 0; x < Math.min(freeSlots, rightCharmCap.getCharmInstances().size()); x++) {
-                	ICharmInstance sourceCharmInstance = rightCharmCap.getCharmInstances().get(x);
+                int freeSlots = outputCharmCap.getSlots();
+                for (int x = 0; x < Math.min(freeSlots, rightCharmCap.getCharmEntities().size()); x++) {
+                	ICharmEntity sourceCharmInstance = rightCharmCap.getCharmEntities().get(x);
                 	// check for duplicate charm types
                 	boolean hasCharm = false;
-                	for (ICharmInstance instance : outputCharmCap.getCharmInstances()) {
+                	for (ICharmEntity instance : outputCharmCap.getCharmEntities()) {
 						if (instance.getCharm().getType().equalsIgnoreCase(sourceCharmInstance.getCharm().getType()) ||
 								instance.getCharm().getName().equals(sourceCharmInstance.getCharm().getName())) {
 							Treasure.logger.debug("item already has charm -> {}", sourceCharmInstance.getCharm().getName());
@@ -183,12 +185,11 @@ public class AnvilEventHandler {
 						}
                 	};
                 	if (!hasCharm) {
-	                    outputCharmCap.getCharmInstances().add(sourceCharmInstance);
-	                    outputCharmableCap.setSlots(outputCharmableCap.getSlots()-1);
-	                    Treasure.logger.debug("add charm {} from right to output", rightCharmCap.getCharmInstances().get(x).getCharm().getName());
+	                    outputCharmCap.getCharmEntities().add(sourceCharmInstance);
+	                    outputCharmCap.setSlots(outputCharmCap.getSlots()-1);
+	                    Treasure.logger.debug("add charm {} from right to output", rightCharmCap.getCharmEntities().get(x).getCharm().getName());
                 	}
                 }
-                Treasure.logger.debug("output charm instances -> {}", outputCharmCap.getCharmInstances().size());
                 return Optional.of(output);
             }
         }

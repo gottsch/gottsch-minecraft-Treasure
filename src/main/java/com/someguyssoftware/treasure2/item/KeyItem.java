@@ -6,6 +6,8 @@ package com.someguyssoftware.treasure2.item;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import static com.someguyssoftware.treasure2.Treasure.logger;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
@@ -15,6 +17,7 @@ import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageStorage;
 import com.someguyssoftware.treasure2.capability.IEffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
@@ -43,6 +46,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 /**
@@ -83,6 +87,8 @@ public class KeyItem extends ModItem implements IKeyEffects {
 	 */
 	private double successProbability;
 	
+	private static final EffectiveMaxDamageStorage CAPABILITY_STORAGE = new EffectiveMaxDamageStorage();
+	
 	/**
 	 * 
 	 * @param modID
@@ -107,6 +113,31 @@ public class KeyItem extends ModItem implements IKeyEffects {
         IEffectiveMaxDamageCapability cap = provider.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
 		cap.setEffectiveMaxDamage(getMaxDamage());
 		return provider;
+    }
+    
+	/**
+	 * NOTE getShareTag() and readShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands
+	 * or having the client update when the Anvil GUI is open.
+	 */
+	@Override
+    public NBTTagCompound getNBTShareTag(ItemStack stack) {
+		NBTTagCompound nbt = null;
+		// read effective max damage cap -> write nbt
+		nbt = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
+				EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, 
+				stack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null), null);
+		return nbt;
+	}
+	
+    @Override
+    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
+        super.readNBTShareTag(stack, nbt);
+        // read nbt -> write key item
+        CAPABILITY_STORAGE.readNBT(
+        		EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, 
+				stack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null), 
+				null,
+				nbt);
     }
     
 	/**
