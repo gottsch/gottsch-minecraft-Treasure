@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
@@ -140,18 +156,12 @@ public class AnvilEventHandler {
      * @param charmedStack
      */
     public Optional<ItemStack> addCharmsToCharmable(ItemStack leftStack, ItemStack rightStack) {
-    	Treasure.logger.debug("add charms to charmable called...");
         if (leftStack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
 
             ICharmInventoryCapability leftCharmCap = leftStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-            Treasure.logger.debug("left charm instances -> {}", leftCharmCap.getCharmEntities().size());
-
             ICharmInventoryCapability rightCharmCap = rightStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-            Treasure.logger.debug("right charm instances -> {}", rightCharmCap.getCharmEntities().size());
-
             ItemStack output = new ItemStack(leftStack.getItem());
             ICharmInventoryCapability outputCharmCap = output.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-            Treasure.logger.debug("new output charm instances -> {}", outputCharmCap.getCharmEntities().size());
 
             // copy left's charms to output (initialize)
             outputCharmCap.getCharmEntities().addAll(leftCharmCap.getCharmEntities());
@@ -180,7 +190,6 @@ public class AnvilEventHandler {
 	                    Treasure.logger.debug("add charm {} from right to output", rightCharmCap.getCharmEntities().get(x).getCharm().getName());
                 	}
                 }
-                Treasure.logger.debug("output charm instances -> {}", outputCharmCap.getCharmEntities().size());
                 return Optional.of(output);
             }
         }

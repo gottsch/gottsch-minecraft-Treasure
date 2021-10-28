@@ -48,7 +48,6 @@ import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.function.CharmRandomly;
 import com.someguyssoftware.treasure2.loot.function.SetCharms;
-import com.someguyssoftware.treasure2.loot.function.SetCustomName;
 import com.someguyssoftware.treasure2.loot.function.SetSlots;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 import com.someguyssoftware.treasure2.network.CharmMessageHandlerOnClient;
@@ -197,10 +196,7 @@ public class Treasure extends AbstractMod {
 				25, Side.CLIENT);
 
 		// add capabilities
-//		CapabilityManager.INSTANCE.register(ICharmInventoryCapability.class, new CharmInventoryCapabilityStorage(), CharmInventoryCapability::new);
 		TreasureCapabilities.register();
-//		CapabilityManager.INSTANCE.register(ICharmCapability.class, new CharmStorage(), CharmCapability::new);
-//		CapabilityManager.INSTANCE.register(ICharmableCapability.class, new CharmableStorage(), CharmableCapability::new);
 		CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingStorage(), KeyRingCapability::new);
 		CapabilityManager.INSTANCE.register(IEffectiveMaxDamageCapability.class, new EffectiveMaxDamageStorage(), EffectiveMaxDamageCapability::new);
 
@@ -208,7 +204,6 @@ public class Treasure extends AbstractMod {
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms.Serializer());
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetSlots.Serializer());
-		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCustomName.Serializer());
 	}
 
 	/**

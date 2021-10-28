@@ -5,9 +5,13 @@ package com.someguyssoftware.treasure2.item;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityStorage;
+import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
@@ -27,11 +31,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
  */
 public class Adornment extends ModItem implements IAdornment, ICharmable, IPouchable {
 	private AdornmentType type;
-	// TODO add customName to capability
 
-	// TODO this is max slots which exists in Item class
-	// TODO need slots in a Capability that is saved to NBT
-	// ex Rings can have a max of 2 charms, but Ring of Healing or low-level rings are made with only 1 slot
 	/*
 	 * default max of slot.
 	 * maxSlots are the max number of charms an Adornment can hold.
@@ -44,6 +44,8 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 
     private int level = 1;
 
+    private static final CharmInventoryCapabilityStorage CAPABILITY_STORAGE = new CharmInventoryCapabilityStorage();
+    
 	/**
 	 * 
 	 * @param modID
@@ -72,9 +74,6 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
     	String name = super.getItemStackDisplayName(stack);
 		if (stack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
 			ICharmInventoryCapability cap = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-//			if (cap.getCustomName() != null && !cap.getCustomName().isEmpty()) {
-//				name = cap.getCustomName();
-//			}
 		}
 		return name;
     }
@@ -110,6 +109,31 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 		addSlotsInfo(stack, world, tooltip, flag);
 	}
 
+	/**
+	 * NOTE getNBTShareTag() and readNBTShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands
+	 * or having the client update when the Anvil GUI is open.
+	 */
+	@Override
+    public NBTTagCompound getNBTShareTag(ItemStack stack) {
+		NBTTagCompound nbt = null;
+		// read cap -> write nbt
+		nbt = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
+				TreasureCapabilities.CHARM_INVENTORY,
+				stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null), null);
+		return nbt;
+	}
+	
+    @Override
+    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
+        super.readNBTShareTag(stack, nbt);
+        // read nbt -> write key item
+       CAPABILITY_STORAGE.readNBT(
+    		   TreasureCapabilities.CHARM_INVENTORY, 
+				stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null), 
+				null,
+				nbt);
+    }
+    
 	public AdornmentType getType() {
 		return type;
 	}

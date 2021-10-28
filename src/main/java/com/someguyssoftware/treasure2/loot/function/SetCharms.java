@@ -42,7 +42,6 @@ import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
-import com.someguyssoftware.treasure2.item.charm.CharmLevel;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.item.ItemStack;
@@ -113,7 +112,7 @@ public class SetCharms extends LootFunction {
 				List<ICharm> tempCharms = new ArrayList<>();
 				// if charms list is empty, create a default list of minor charms
 				for (ICharm c : TreasureCharmRegistry.values()) {
-					if (c.getLevel() == CharmLevel.LEVEL1.getValue() || c.getLevel() == CharmLevel.LEVEL2.getValue()) {
+					if (c.getLevel() == 1 || c.getLevel() == 2) {
 						tempCharms.add(c);
 					}
 				}

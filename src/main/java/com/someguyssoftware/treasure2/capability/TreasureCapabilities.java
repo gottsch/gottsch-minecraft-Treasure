@@ -29,6 +29,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
  *
  */
 public class TreasureCapabilities {
+	// TODO migrate all capabilites here
 	@CapabilityInject(ICharmInventoryCapability.class)
 	public static Capability<ICharmInventoryCapability> CHARM_INVENTORY = null;
 	

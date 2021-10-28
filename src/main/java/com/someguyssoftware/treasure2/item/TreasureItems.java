@@ -352,7 +352,6 @@ public class TreasureItems {
 //				cap.getCharmInstances().add(TreasureCharms.ABSOLUTE_SHIELDING_4.createInstance());
 //				ICharmableCapability charmableCap = provider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
 //				charmableCap.setSlots(0);
-//				charmableCap.setCustomName("Ring of X");
 //				return provider;
 //			}
 //        }.setMaxSlots(2).setLevel(5);
@@ -366,7 +365,6 @@ public class TreasureItems {
                 charmCap.getCharmEntities().add(TreasureCharms.SALANDAARS_CONVALESCENCE.createEntity());
 
                 charmCap.setSlots(1);
-//				charmCap.setCustomName("Ring of the Angels");
                 return charmInventoryProvider;
             }	
         }.setMaxSlots(4).setLevel(10);
@@ -378,7 +376,6 @@ public class TreasureItems {
                 charmCap.getCharmEntities().add(TreasureCharms.ARMADILLO_SHIELDING.createEntity());
                 charmCap.getCharmEntities().add(TreasureCharms.REFLECTION_5.createEntity());
                 charmCap.setSlots(2);
-//				charmableCap.setCustomName("Ring of Fortitude");
                 return provider;
             }	
         }.setMaxSlots(2).setLevel(12);
@@ -390,7 +387,6 @@ public class TreasureItems {
                 charmCap.getCharmEntities().add(TreasureCharms.SHIELDING_13.createEntity());
                 charmCap.getCharmEntities().add(TreasureCharms.REFLECTION_10.createEntity());
                 charmCap.setSlots(4);
-//				charmableCap.setCustomName("Bracelet of Wonder");
                 return charmableProvider;
             }
         }.setMaxSlots(4).setLevel(10);

@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.charm;
 
@@ -103,20 +119,9 @@ public class TreasureCharms {
 	public static final ICharm DIRT_WALK_2;
 
 	// TODO add charms
-	// [x] RUIN
 	// [] CACTUS
-	// [x] REFLECTION x%, y# of enemies, z blocks of range
-	// [x] DRAIN drains 1 damage from each mob, z blocks of range
-	// [x] DECREPIT (curse get hit for 2x the damage)
 	// [] DIRT (mound)
-	// [x] DIRT FILL (inventory filler)
-	// [x] DIRT WALK (space below turns to dirt)
-	// [x] FIRE RESISTENCE
-	// [x] FIRE IMMUNITY
-	// [x] LIFESTRIKE
 
-	// @Deprecated
-	// public static final Map<String, ICharm> REGISTRY = new HashMap<>();
 
 	static {
 		LESSER_HEALING = new HealingCharm.Builder("lesser_healing", 1).with($ -> {

@@ -30,7 +30,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
  *
  */
 public class CharmInventoryCapabilityProvider implements ICapabilitySerializable<NBTTagCompound> {
-	// capabilities for item
+
 	private final ICharmInventoryCapability instance;
 
 	/**

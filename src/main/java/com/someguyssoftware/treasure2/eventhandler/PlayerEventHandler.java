@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
@@ -240,14 +256,12 @@ public class PlayerEventHandler {
 			context.itemStack = itemStack;
 			context.slot = focusIndex;
 			// TODO a way around instanceof check if to add a property(s) to the charmCapability - boolean charmed and/or boolean charmable.
-			//			if (itemStack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
+			// see 1.16.5 version
 			if (itemStack.getItem() instanceof ICharmed) {
 				context.capability = itemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
 				doCharms(context, player, event, nonMultipleUpdateCharms);
 			}
 			else if (itemStack.getItem() instanceof ICharmable) {
-				// TODO need to check the cap because it might not be charmed
-				//			else if (itemStack.hasCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null)) {
 				context.capability = itemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
 				doCharms(context, player, event, nonMultipleUpdateCharms);
 			}
@@ -269,7 +283,7 @@ public class PlayerEventHandler {
             ICharm charm = (ICharm)charmEntity.getCharm();
             // test the charm against the event
             if (!charm.getRegisteredEvent().equals(event.getClass())) {
-				Treasure.logger.debug("charm type -> {} is not register for this event -> {}",charm.getType(), event.getClass().getSimpleName());
+//				Treasure.logger.debug("charm type -> {} is not register for this event -> {}",charm.getType(), event.getClass().getSimpleName());
 				continue;
 			}
             
@@ -382,14 +396,10 @@ public class PlayerEventHandler {
 	 */
 	private Optional<CharmedType> getType(ItemStack stack) {
 		CharmedType type = null;
-		//		if(stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
 		if (stack.getItem() instanceof ICharmed) {
-			//			Treasure.logger.debug("has charm.charm capability");
 			type = CharmedType.CHARM;
 		}
-		//		else if (stack.hasCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null)) {
 		else if (stack.getItem() instanceof ICharmable) {
-			//			Treasure.logger.debug("has adornment.charm capability");
 			type = CharmedType.ADORNMENT;
 		}
 		else if(stack.getItem() instanceof IPouch && ((IPouch)stack.getItem()).getPouchType() == PouchType.ARCANE) {
@@ -448,17 +458,6 @@ public class PlayerEventHandler {
 		ICharmInventoryCapability capability;
 
 		CharmContext() {}
-		//		CharmContext(ItemStack stack, EnumHand hand, Integer slot, CharmedType type) {
-		//			this.itemStack = stack;
-		//			this.hand = hand;
-		//			this.slot = slot;
-		//			this.type = type;
-		//		}
-		//		// TODO hotbarSlot should probably be an array/list
-		//		CharmContext(ItemStack stack, EnumHand hand, Integer slot, Integer hotbarSlot, CharmedType type) {
-		//			this(stack, hand, slot, type);
-		//			this.hotbarSlot = hotbarSlot;
-		//		}
 	}
 
 	private enum CharmedType {

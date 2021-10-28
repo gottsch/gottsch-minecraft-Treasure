@@ -39,6 +39,7 @@ import net.minecraftforge.common.capabilities.Capability;
  */
 public class CharmInventoryCapabilityStorage implements Capability.IStorage<ICharmInventoryCapability> {
 	private static final String SLOTS_TAG = "slots";
+	private static final String CHARMS_TAG ="charms";
 
 	@Override
 	public NBTBase writeNBT(Capability<ICharmInventoryCapability> capability, ICharmInventoryCapability instance,
@@ -55,7 +56,7 @@ public class CharmInventoryCapabilityStorage implements Capability.IStorage<ICha
 				NBTTagCompound entityNbt = new NBTTagCompound();
 				listNbt.appendTag(entity.save(entityNbt));						
 			}
-			nbt.setTag("charms", listNbt);
+			nbt.setTag(CHARMS_TAG, listNbt);
 
 			/*
 			 * save charm cap properties
@@ -76,8 +77,8 @@ public class CharmInventoryCapabilityStorage implements Capability.IStorage<ICha
 			NBTTagCompound tag = (NBTTagCompound) nbt;
 
 			// load the charm entities
-			if (tag.hasKey("charms")) {
-				NBTTagList charmsTag = tag.getTagList("charms", 10);
+			if (tag.hasKey(CHARMS_TAG)) {
+				NBTTagList charmsTag = tag.getTagList(CHARMS_TAG, 10);
 				charmsTag.forEach(e -> {
 					/*
 					 * load the charm first.
