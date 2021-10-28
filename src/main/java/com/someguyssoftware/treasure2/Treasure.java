@@ -97,7 +97,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 		"Credits to mn_ti for Chinese and to DarkKnightComes for Polish translation.",
 		"Credits to Mythical Sausage for tutorials on house/tower designs.",
 		"Credits to OdinsRagnarok for Spanish translation and DarvinSlav for Russian translation.",
-		"Credits to sfs131010 for updated Chinese translation."})
+		"Credits to sfs131010 for updated Chinese translation.",
+		"Credits to Xemnes for updated textures for locks, keys, adornment, and chests."})
+
 public class Treasure extends AbstractMod {
 
 	// constants

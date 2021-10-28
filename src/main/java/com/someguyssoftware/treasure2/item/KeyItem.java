@@ -30,18 +30,22 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
@@ -50,7 +54,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
  * @author Mark Gottschling on Jan 11, 2018
  *
  */
-public class KeyItem extends ModItem {
+public class KeyItem extends ModItem implements IKeyEffects {
 	public static final int DEFAULT_MAX_USES = 25;
 	
 	/*
@@ -258,6 +262,7 @@ public class KeyItem extends ModItem {
 			
 			try {
 				ItemStack heldItemStack = player.getHeldItem(hand);	
+				// TODO rename shouldBreakKey
 				boolean breakKey = true;
 				boolean fitsLock = false;
 				LockState lockState = null;
@@ -270,11 +275,14 @@ public class KeyItem extends ModItem {
 				
 				if (fitsLock) {
 					if (unlock(lockState.getLock())) {
-						LockItem lock = lockState.getLock();
+						// TODO within this condition create method postUnlock() or unlockExecute()
+						LockItem lock = lockState.getLock();						
+
+						 doKeyUnlockEffects(worldIn, player, chestPos, chestTileEntity, lockState);						 
+
 						// remove the lock
 						lockState.setLock(null);
-						// play noise
-						worldIn.playSound(player, chestPos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+						
 						// update the client
                         chestTileEntity.sendUpdates();
                         if(!breaksLock(lock)) {
@@ -292,7 +300,8 @@ public class KeyItem extends ModItem {
                 IEffectiveMaxDamageCapability cap = heldItemStack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
 
 				// check key's breakability
-				if (breakKey) {                    
+				if (breakKey) {    
+					// TOOD within this condition make method breakKey()
 					if ((isBreakable() || anyLockBreaksKey(chestTileEntity.getLockStates(), this)) && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
 						int damage = heldItemStack.getItemDamage() + (getMaxDamage() - (heldItemStack.getItemDamage() % getMaxDamage()));
                         heldItemStack.setItemDamage(damage);
@@ -300,21 +309,25 @@ public class KeyItem extends ModItem {
                             // break key;
                             heldItemStack.shrink(1);
                         }
-                        player.sendMessage(new TextComponentString("Key broke."));
-                        worldIn.playSound(player, chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+
+                        // do effects
+                        doKeyBreakEffects(worldIn, player, chestPos, chestTileEntity);
+                        
                         // flag the key as broken
                         isKeyBroken = true;
 					}
+					else if (!fitsLock) {
+						doKeyNotFitEffects(worldIn, player, chestPos, chestTileEntity);
+					}
 					else {
-						player.sendMessage(new TextComponentString("Failed to unlock."));
+						doKeyUnableToUnlockEffects(worldIn, player, chestPos, chestTileEntity);
 					}						
 				}
 				
+				// TODO make method damageKey()
 				// user attempted to use key - increment the damage
 				if (isDamageable() && !isKeyBroken) {
-//					logger.debug("before damage -> {}", heldItemStack.getItemDamage());
                     heldItemStack.setItemDamage(heldItemStack.getItemDamage() + 1);
-//                    logger.debug("after damage -> {}", heldItemStack.getItemDamage());
                     if (heldItemStack.getItemDamage() >= cap.getEffectiveMaxDamage()) {
                         heldItemStack.shrink(1);
                     }
@@ -328,6 +341,13 @@ public class KeyItem extends ModItem {
 		return super.onItemUse(player, worldIn, chestPos, hand, facing, hitX, hitY, hitZ);
 	}
 
+	/**
+	 * 
+	 */
+	public EnumAction getItemUseAction(ItemStack stack) {
+		return EnumAction.BOW;
+	}
+	
 	/**
 	 * This method is a secondary check against a lock item.
 	 * Override this method to overrule LockItem.acceptsKey() if this is a key with special abilities.
@@ -363,7 +383,7 @@ public class KeyItem extends ModItem {
 	 * @param key
 	 * @return
 	 */
-	private boolean anyLockBreaksKey(List<LockState> lockStates, KeyItem key) {
+	public boolean anyLockBreaksKey(List<LockState> lockStates, KeyItem key) {
 		for (LockState ls : lockStates) {
 			if (ls.getLock() != null) {
 				if (ls.getLock().breaksKey(key)) {
