@@ -100,10 +100,15 @@ public class LockItem extends ModItem {
 		}
 		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.craftable", craftable));
 
-		String keyList = getKeys().stream().map(e -> I18n.translateToLocal(getUnlocalizedName() + ".name"))
-				.collect(Collectors.joining(","));
-
-		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.accepts_keys", keyList));
+//		String keyList = getKeys().stream().map(e -> I18n.translateToLocalFormatted(TextFormatting.BLUE + e.getUnlocalizedName() + ".name"))
+//				.collect(Collectors.joining(", "));
+//		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.accepts_keys", keyList));
+		
+		tooltip.add(I18n.translateToLocal("tooltip.label.accepts_keys"));
+		getKeys().forEach(key -> {
+			String formattedKey = I18n.translateToLocalFormatted(key.getUnlocalizedName() + ".name");
+			tooltip.add(I18n.translateToLocalFormatted("- " + TextFormatting.DARK_GREEN + formattedKey));
+		});
 	}
 
 	/**

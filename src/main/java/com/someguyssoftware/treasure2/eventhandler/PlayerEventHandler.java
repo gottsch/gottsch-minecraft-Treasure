@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
@@ -12,18 +28,15 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.block.FogBlock;
-import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.ICharmCapability;
+import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
 import com.someguyssoftware.treasure2.capability.PouchCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.ICharm;
+import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.enums.FogType;
 import com.someguyssoftware.treasure2.item.IPouch;
 import com.someguyssoftware.treasure2.item.PouchType;
 import com.someguyssoftware.treasure2.item.TreasureItems;
-import com.someguyssoftware.treasure2.item.charm.ICharm;
-import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
 import com.someguyssoftware.treasure2.item.charm.ICharmable;
 import com.someguyssoftware.treasure2.item.charm.ICharmed;
 import com.someguyssoftware.treasure2.item.wish.IWishable;
@@ -31,19 +44,14 @@ import com.someguyssoftware.treasure2.network.CharmMessageToClient;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -109,48 +117,6 @@ public class PlayerEventHandler {
 				}
 				event.player.inventory.addItemStackToInventory(stack);
 			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param event
-	 */
-	@SubscribeEvent
-	public void checkFogInteraction(LivingUpdateEvent event) {
-		if (WorldInfo.isClientSide(event.getEntity().getEntityWorld())) {
-			return;
-		}
-
-		// do something to player every update tick:
-		if (event.getEntity() instanceof EntityPlayer) {
-			// get the player
-			EntityPlayer player = (EntityPlayer) event.getEntity();
-			// determine the pos the player is at
-			BlockPos pos = player.getPosition();
-			// get the block at pos
-			Block block = event.getEntity().getEntityWorld().getBlockState(pos).getBlock();
-			if (block instanceof FogBlock) {
-				// check the fog type
-				if (((FogBlock) block).getFogType() == FogType.WITHER) {
-					PotionEffect potionEffect = ((EntityLivingBase) event.getEntity())
-							.getActivePotionEffect(MobEffects.WITHER);
-					// if player does not have wither effect, add it
-					if (potionEffect == null) {
-						((EntityLivingBase) event.getEntity())
-						.addPotionEffect(new PotionEffect(MobEffects.WITHER, 300, 0));
-					}
-				} else if (((FogBlock) block).getFogType() == FogType.POISON) {
-					PotionEffect potionEffect = ((EntityLivingBase) event.getEntity())
-							.getActivePotionEffect(MobEffects.POISON);
-					// if player does not have wither effect, add it
-					if (potionEffect == null) {
-						((EntityLivingBase) event.getEntity())
-						.addPotionEffect(new PotionEffect(MobEffects.POISON, 300, 0));
-					}
-				}
-			}
-
 		}
 	}
 
@@ -290,15 +256,13 @@ public class PlayerEventHandler {
 			context.itemStack = itemStack;
 			context.slot = focusIndex;
 			// TODO a way around instanceof check if to add a property(s) to the charmCapability - boolean charmed and/or boolean charmable.
-			//			if (itemStack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
+			// see 1.16.5 version
 			if (itemStack.getItem() instanceof ICharmed) {
-				context.capability = itemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+				context.capability = itemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
 				doCharms(context, player, event, nonMultipleUpdateCharms);
 			}
 			else if (itemStack.getItem() instanceof ICharmable) {
-				// TODO need to check the cap because it might not be charmed
-				//			else if (itemStack.hasCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null)) {
-				context.capability = itemStack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
+				context.capability = itemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
 				doCharms(context, player, event, nonMultipleUpdateCharms);
 			}
 		}
@@ -311,12 +275,18 @@ public class PlayerEventHandler {
 	 * @param event
 	 */
 	private void doCharms(CharmContext context, EntityPlayerMP player, Event event, final List<String> nonMultipleUpdateCharms) {
-        List<ICharmInstance> removeInstances = new ArrayList<>(3);
-		ICharmCapability capability = context.capability;
-		List<ICharmInstance> charmInstances = capability.getCharmInstances();
-		for (ICharmInstance charmInstance : charmInstances) {
+        List<ICharmEntity> removeInstances = new ArrayList<>(3);
+		ICharmInventoryCapability capability = context.capability;
+		List<ICharmEntity> charmEntities = capability.getCharmEntities();
+		for (ICharmEntity charmEntity : charmEntities) {
 			boolean isCharmUpdatable = true;
-            ICharm charm = (ICharm)charmInstance.getCharm();
+            ICharm charm = (ICharm)charmEntity.getCharm();
+            // test the charm against the event
+            if (!charm.getRegisteredEvent().equals(event.getClass())) {
+//				Treasure.logger.debug("charm type -> {} is not register for this event -> {}",charm.getType(), event.getClass().getSimpleName());
+				continue;
+			}
+            
             // Treasure.logger.debug("{} charm allows multiple updates -> {}", charm.getName(), charm.isAllowMultipleUpdates());
 			if (!charm.isAllowMultipleUpdates()) {
                 // Treasure.logger.debug("{} charm denies multiple updates", charm.getName());
@@ -333,29 +303,30 @@ public class PlayerEventHandler {
             
             // Treasure.logger.debug("is charm {} updatable -> {}", charm.getName(), isCharmUpdatable);
 			if (isCharmUpdatable && 
-					charmInstance.getCharm().update(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event, charmInstance.getData())) {
+					charmEntity.getCharm().update(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event, charmEntity)) {
 				// send state message to client
-				CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmInstance, context.hand, context.slot);
+				CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmEntity, context.hand, context.slot);
 //				Treasure.logger.debug("Message to client -> {}", message);
 				Treasure.simpleNetworkWrapper.sendTo(message, player);
             }
 
             // mark Charm if instanceof ICharmable and no uses remain
-            if (charmInstance.getData().getValue() <= 0.0 && charmInstance.getCharm() instanceof ICharmable) {
+            if (charmEntity.getValue() <= 0.0 && charmEntity.getCharm() instanceof ICharmable) {
             	Treasure.logger.debug("charm is empty, add to remove list");
-                removeInstances.add(charmInstance);
+                removeInstances.add(charmEntity);
             }
         }
         
         // remove any charms that have no uses remaining
         if (!removeInstances.isEmpty()) {
             removeInstances.forEach(instance -> {
-                charmInstances.remove(instance);
+                charmEntities.remove(instance);
                 // TODO send message to client to remove charm";
             });
         }
 	}
 
+	// TODO ugh, these are terrible. port code from 1.16.5 version
 	/**
 	 * 
 	 * @param player
@@ -379,11 +350,12 @@ public class PlayerEventHandler {
 		}
 		context.type = type.get();
 		switch(context.type) {
+		// TODO either case now uses the same capability
 		case ADORNMENT:
-			context.capability = heldStack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
+			context.capability = heldStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
 			break;
 		case CHARM:
-			context.capability = heldStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+			context.capability = heldStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
 			break;		
 		}	
 		return Optional.of(context);
@@ -408,10 +380,10 @@ public class PlayerEventHandler {
 		context.type = type.get();
 		switch(context.type) {
 		case ADORNMENT:
-			context.capability = stack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
+			context.capability = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
 			break;
 		case CHARM:
-			context.capability = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+			context.capability = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
 			break;		
 		}		
 		return Optional.of(context);
@@ -424,14 +396,10 @@ public class PlayerEventHandler {
 	 */
 	private Optional<CharmedType> getType(ItemStack stack) {
 		CharmedType type = null;
-		//		if(stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
 		if (stack.getItem() instanceof ICharmed) {
-			//			Treasure.logger.debug("has charm.charm capability");
 			type = CharmedType.CHARM;
 		}
-		//		else if (stack.hasCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null)) {
 		else if (stack.getItem() instanceof ICharmable) {
-			//			Treasure.logger.debug("has adornment.charm capability");
 			type = CharmedType.ADORNMENT;
 		}
 		else if(stack.getItem() instanceof IPouch && ((IPouch)stack.getItem()).getPouchType() == PouchType.ARCANE) {
@@ -487,20 +455,9 @@ public class PlayerEventHandler {
 		Integer hotbarSlot;
 		ItemStack itemStack;
 		CharmedType type;
-		ICharmCapability capability;
+		ICharmInventoryCapability capability;
 
 		CharmContext() {}
-		//		CharmContext(ItemStack stack, EnumHand hand, Integer slot, CharmedType type) {
-		//			this.itemStack = stack;
-		//			this.hand = hand;
-		//			this.slot = slot;
-		//			this.type = type;
-		//		}
-		//		// TODO hotbarSlot should probably be an array/list
-		//		CharmContext(ItemStack stack, EnumHand hand, Integer slot, Integer hotbarSlot, CharmedType type) {
-		//			this(stack, hand, slot, type);
-		//			this.hotbarSlot = hotbarSlot;
-		//		}
 	}
 
 	private enum CharmedType {

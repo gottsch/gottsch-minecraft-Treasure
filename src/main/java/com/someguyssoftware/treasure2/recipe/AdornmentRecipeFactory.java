@@ -5,9 +5,8 @@ package com.someguyssoftware.treasure2.recipe;
 
 import com.google.gson.JsonObject;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.ICharmCapability;
-import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.item.IAdornment;
 
 import net.minecraft.inventory.InventoryCrafting;
@@ -69,16 +68,14 @@ public class AdornmentRecipeFactory implements IRecipeFactory {
 				}
 			}
 			
-            ICharmableCapability adornmentCharmableCap = adornmentStack.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-            ICharmCapability adornmentCharmCap = adornmentStack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
-            Treasure.logger.debug("adornment charm instances -> {}", adornmentCharmCap.getCharmInstances().size());
+            ICharmInventoryCapability adornmentCharmCap = adornmentStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+            Treasure.logger.debug("adornment charm instances -> {}", adornmentCharmCap.getCharmEntities().size());
             
-            ICharmCapability outputCharmCap = output.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
-            ICharmableCapability outputCharmableCap = output.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-            Treasure.logger.debug("new output charm instances -> {}", outputCharmCap.getCharmInstances().size());
+            ICharmInventoryCapability outputCharmCap = output.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+            Treasure.logger.debug("new output charm instances -> {}", outputCharmCap.getCharmEntities().size());
             
-            outputCharmCap.getCharmInstances().addAll(adornmentCharmCap.getCharmInstances());
-            outputCharmableCap.setSlots(adornmentCharmableCap.getSlots());
+            outputCharmCap.getCharmEntities().addAll(adornmentCharmCap.getCharmEntities());
+            outputCharmCap.setSlots(adornmentCharmCap.getSlots());
             
             return output;
 		}

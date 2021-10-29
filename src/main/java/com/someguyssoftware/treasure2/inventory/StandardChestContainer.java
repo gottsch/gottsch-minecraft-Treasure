@@ -164,4 +164,18 @@ public class StandardChestContainer extends Container {
 	public boolean canInteractWith(EntityPlayer player) {
 		return inventory.isUsableByPlayer(player);
 	}
+	
+	/**
+	 * @return the inventory
+	 */
+	public IInventory getChestInventory() {
+		return inventory;
+	}
+
+	/**
+	 * @param inventory the inventory to set
+	 */
+	public void setChestInventory(IInventory inventory) {
+		this.inventory = inventory;
+	}
 }
