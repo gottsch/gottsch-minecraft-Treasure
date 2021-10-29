@@ -8,6 +8,7 @@ import com.someguyssoftware.treasure2.entity.monster.BoundSoulEntity;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelZombie;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
@@ -39,6 +40,27 @@ public class BoundSoulRenderer extends RenderBiped<BoundSoulEntity> {
         this.addLayer(layerBipedArmor);
     }
 
+    /**
+     * Thanks to Xemnes for the transparency/alpha update to the bound soul. 
+     */
+    @Override
+    public void doRender(BoundSoulEntity entity, double x, double y, double z, float entityYaw, float partialTicks) {
+        GlStateManager.pushMatrix();
+
+        GlStateManager.enableNormalize();
+        GlStateManager.enableBlend();
+
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.8F);
+
+        super.doRender(entity, x, y, z, entityYaw, partialTicks);
+
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1F);
+
+        GlStateManager.disableBlend();
+        GlStateManager.disableNormalize();
+        GlStateManager.popMatrix();
+    }
+    
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
