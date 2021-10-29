@@ -72,9 +72,6 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 	@Override
     public String getItemStackDisplayName(ItemStack stack) {
     	String name = super.getItemStackDisplayName(stack);
-		if (stack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
-			ICharmInventoryCapability cap = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-		}
 		return name;
     }
     

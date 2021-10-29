@@ -76,6 +76,9 @@ public class CharmInventoryCapabilityStorage implements Capability.IStorage<ICha
 		if (nbt instanceof NBTTagCompound) {
 			NBTTagCompound tag = (NBTTagCompound) nbt;
 
+			// clear the list
+			instance.getCharmEntities().clear();
+			
 			// load the charm entities
 			if (tag.hasKey(CHARMS_TAG)) {
 				NBTTagList charmsTag = tag.getTagList(CHARMS_TAG, 10);

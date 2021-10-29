@@ -179,7 +179,7 @@ public class AnvilEventHandler {
                 	for (ICharmEntity instance : outputCharmCap.getCharmEntities()) {
 						if (instance.getCharm().getType().equalsIgnoreCase(sourceCharmInstance.getCharm().getType()) ||
 								instance.getCharm().getName().equals(sourceCharmInstance.getCharm().getName())) {
-							Treasure.logger.debug("item already has charm -> {}", sourceCharmInstance.getCharm().getName());
+//							Treasure.logger.debug("item already has charm -> {}", sourceCharmInstance.getCharm().getName());
 							hasCharm = true;
 							break;
 						}
@@ -187,7 +187,7 @@ public class AnvilEventHandler {
                 	if (!hasCharm) {
 	                    outputCharmCap.getCharmEntities().add(sourceCharmInstance);
 	                    outputCharmCap.setSlots(outputCharmCap.getSlots()-1);
-	                    Treasure.logger.debug("add charm {} from right to output", rightCharmCap.getCharmEntities().get(x).getCharm().getName());
+//	                    Treasure.logger.debug("add charm {} from right to output", rightCharmCap.getCharmEntities().get(x).getCharm().getName());
                 	}
                 }
                 return Optional.of(output);

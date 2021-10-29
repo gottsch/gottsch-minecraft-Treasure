@@ -9,6 +9,7 @@ import com.someguyssoftware.gottschcore.armor.ModArmorBuilder;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.item.ModSwordBuilder;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.CharmInventoryCapability;
 import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
@@ -246,11 +247,10 @@ public class TreasureItems {
 		FOOLS_COIN.setCreativeTab(Treasure.TREASURE_TAB);
 
 		MEDICS_TOKEN = new CharmedCoinItem(Treasure.MODID, "medics_token", Coins.GOLD) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
-				CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
-				ICharmInventoryCapability cap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {		
+				ICharmInventoryCapability cap = new CharmInventoryCapability();
 				cap.getCharmEntities().add(TreasureCharms.SALANDAARS_CONVALESCENCE.createEntity());
-				return provider;
+				return new CharmInventoryCapabilityProvider(cap);
 			}
 		};		
 		MEDICS_TOKEN.setCreativeTab(Treasure.TREASURE_TAB);

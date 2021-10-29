@@ -55,7 +55,7 @@ public class CharmedCoinItem extends CoinItem implements ICharmed {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-//		Treasure.logger.debug("{} item initiating caps", stack.getItem().getRegistryName().toString());
+		Treasure.logger.debug("{} charmed coin initiating caps", stack.getItem().getRegistryName().toString());
 		CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
 		return provider;
 	}
