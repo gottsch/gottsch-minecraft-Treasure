@@ -27,7 +27,6 @@ import java.util.List;
  */
 public class LootResources {
     // lists
-    // TODO rename
     private List<String> supportingResources;
     private List<String> injectResources;
 	private List<String> chestResources;
@@ -36,9 +35,7 @@ public class LootResources {
 	// folders
 	private List<String> specialLootTableFolderLocations;
     private List<String> chestLootTableFolderLocations;
-    // TODO fix
     private List<String> injectLootTableFolderLocations;
-    // TODO rename
     private List<String> supportingLootTableFolderLocations;
 	
 	/**
