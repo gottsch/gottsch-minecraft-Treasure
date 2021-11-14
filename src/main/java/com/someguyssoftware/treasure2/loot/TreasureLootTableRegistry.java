@@ -99,6 +99,8 @@ public final class TreasureLootTableRegistry {
 			lootTableMaster.registerChestsFromWorldSave(modID, lootResources.getChestLootTableFolderLocations());
 			
 			lootTableMaster.registerSpecials(modID, lootResources.getSpecialResources());
+			lootTableMaster.registerSpecialsFromWorldSave(modID, lootResources.getSpecialLootTableFolderLocations());
+			
 			lootTableMaster.registerInjects(modID, lootResources.getInjectResources());
 			// TODO need a difference between registering loot tables from JAR resources and from
 			// the world save file folder.
