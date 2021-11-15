@@ -1,8 +1,8 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.16.5-latest": "1.7.1",
-    "1.16.5-recommended": "1.7.1"
+    "1.16.5-latest": "1.7.2",
+    "1.16.5-recommended": "1.7.2"
   },
     "1.16.5": {
         "1.0.0": "Initial version release.",
@@ -12,6 +12,7 @@
         "1.6.0": "Added Charms (except Harvesting).\nAdded Pouch Item.(standard only, Lucks, Apprentice and Master will not be added).\nUses GottschCore 1.4.0 which fixes crash bug on mob spawn by ProximitySpawner.\nPrevent crashes when coins thrown in wells has an exception.\n",
         "1.6.1": "Fixed Curios required crash (it is optional).",
         "1.7.0": "Added Adornments.\nChanged ReflectionCharm from LivingDamageEvent to LivingHurtEvent, so that the full amount of damage is reflected back at the mob.\nUpdate loot tables.\n",
-        "1.7.1.": "Removed exposing Loot Tables to the file system, ie loot table json files will no longer be copied to /config or worldsave/datapack directories.\nMoved /loot_tables into domain specific folder.\nFixed stone lock display name.\n"
+        "1.7.1.": "Removed exposing Loot Tables to the file system, ie loot table json files will no longer be copied to /config or worldsave/datapack directories.\nMoved /loot_tables into domain specific folder.\nFixed stone lock display name.\n",
+        "1.7.2": "Fixed CharmRandomly crash if no charm is selected.\nRe-add ability to add custom loot tables to the save game folder.\nEnable treasure2 bracelets to be placed in Curios bracelet slot."
 	}
 }

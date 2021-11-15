@@ -46,13 +46,13 @@
 		"chests/epic/general_chest"
 	],
 	"specialResources": [
-			"chests/special/black_pearl_well",
-			"chests/special/cauldron_chest",
-			"chests/special/crystal_skull_chest",
-			"chests/special/gold_skull_chest",
-			"chests/special/skull_chest",
-			"chests/special/white_pearl_well",
-			"chests/special/wither_chest"
+		"chests/special/black_pearl_well",
+		"chests/special/cauldron_chest",
+		"chests/special/crystal_skull_chest",
+		"chests/special/gold_skull_chest",
+		"chests/special/skull_chest",
+		"chests/special/white_pearl_well",
+		"chests/special/wither_chest"
 	],
 	"chestLootTableFolderLocations": [
 		"chests/common",
@@ -73,6 +73,11 @@
 		"pools/treasure"
     ],
     "injectLootTableFolderLocations": [
-    	"inject/uncommon"
+		"inject/common",
+		"inject/uncommon",
+		"inject/scarce",
+		"inject/rare",
+		"inject/epic",
+		"inject/special"
     ]
 }

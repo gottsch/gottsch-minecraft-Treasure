@@ -59,7 +59,7 @@ public class CoinItem extends ModItem implements IWishable {
 	private static final int MAX_CUSTOM_STACK_SIZE = 64;
 	public static final int MAX_STACK_SIZE = 8;
 	
-	private Coins coin;
+//	private Coins coin;
 	
 	/**
 	 * 
@@ -68,7 +68,7 @@ public class CoinItem extends ModItem implements IWishable {
         super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP)
         		.stacksTo(Math.min(MAX_CUSTOM_STACK_SIZE, TreasureConfig.COINS.coinMaxStackSize.get())));
 		// set the coin to gold by default
-		this.coin = Coins.GOLD;
+//		this.coin = Coins.GOLD;
 	}
 	
 	@Override
@@ -176,111 +176,114 @@ public class CoinItem extends ModItem implements IWishable {
 	 */
 	@Override
 	public Optional<ItemStack> generateLoot(World world, Random random, ItemStack itemStack, ICoords coords) {
-		List<LootTableShell> lootTables = new ArrayList<>();
-
-		// determine coin type
-		if (getCoin() == Coins.COPPER) {
-			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.COMMON));
-		}
-		else if (getCoin() == Coins.SILVER) {
-			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.UNCOMMON));
-			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
-		}
-		else if (getCoin() == Coins.GOLD) {					
-			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
-			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE));
-		}
-		
-		// TODO most of this seems repeated from IChestGenerator.  Make a common class/methods
-		
-		ItemStack outputStack = null;
-		// handle if loot tables is null or size = 0. return an item (apple) to ensure continuing functionality
-		if (lootTables == null || lootTables.size() == 0) {
-			// TODO change to a randomized treasure key
-//			stack = new ItemStack(Items.APPLE);
-			List<KeyItem> keys = new ArrayList<>(TreasureItems.keys.get((getCoin() == Coins.SILVER) ? Rarity.UNCOMMON : Rarity.SCARCE));
-			outputStack = new ItemStack(keys.get(random.nextInt(keys.size())));
-		}
-		else {
-			// attempt to get the player who dropped the coin
-			ItemStack coinItem = itemStack;
-			CompoundNBT nbt = coinItem.getTag();
-			LOGGER.debug("item as a tag");
-			PlayerEntity player = null;
-			if (nbt != null && nbt.contains(DROPPED_BY_KEY)) {
-				// TODO change to check by UUID
-				for (PlayerEntity p : world.players()) {
-					if (p.getName().getString().equalsIgnoreCase(nbt.getString(DROPPED_BY_KEY))) {
-						player = p;
-					}
-				}
-				if (player != null && LOGGER.isDebugEnabled()) {
-					LOGGER.debug("coin dropped by player -> {}", player.getName());
-				}
-				else {
-					LOGGER.debug("can't find player!");
-				}
-			}
-			LOGGER.debug("player -> {}", player.getName().getString());
-
-			// select a table shell
-			LootTableShell tableShell = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
-			if (tableShell.getResourceLocation() == null) {
-				return Optional.empty();
-			}
-			
-			// get the vanilla table from shell
-			LootTable table = world.getServer().getLootTables().get(tableShell.getResourceLocation());
-			// get a list of loot pools
-			List<LootPoolShell> lootPoolShells = tableShell.getPools();
-			
-			// generate a context
-			LootContext lootContext = new LootContext.Builder((ServerWorld) world)
-					.withLuck((player != null) ? player.getLuck() : 0)
-					.withParameter(LootParameters.THIS_ENTITY, player)
-					.withParameter(LootParameters.ORIGIN, coords.toVec3d()).create(LootParameterSets.CHEST);
-
-			List<ItemStack> itemStacks = new ArrayList<>();
-			for (LootPoolShell pool : lootPoolShells) {
-				LOGGER.debug("coin: processing pool -> {}", pool.getName());
-				// go get the vanilla managed pool
-				LootPool lootPool = table.getPool(pool.getName());
-				
-				// geneate loot from pools
-				// TODO https://github.com/gottsch/gottsch-minecraft-Treasure/issues/242
-				// lootPool is null.
-				if (lootPool != null) {
-					lootPool.addRandomItems(itemStacks::add, lootContext);
-				}
-				else {
-					Treasure.LOGGER.warn("loot pool -> {} is null", pool.getName());
-				}
-			}
-
-			// get effective rarity
-			Rarity effectiveRarity = TreasureLootTableRegistry.getLootTableMaster().getEffectiveRarity(tableShell, (getCoin() == Coins.SILVER) ? Rarity.UNCOMMON : Rarity.SCARCE);	
-			LOGGER.debug("coin: using effective rarity -> {}", effectiveRarity);
-			
-			// get all injected loot tables
-			injectLoot(world, random, itemStacks, tableShell.getCategory(), effectiveRarity, lootContext);
-			
-			// select one item randomly
-			outputStack = itemStacks.get(RandomHelper.randomInt(0, itemStacks.size()-1));
-		}				
-		return Optional.of(outputStack);
+		return Optional.empty();
 	}
+	
+//		List<LootTableShell> lootTables = new ArrayList<>();
+//
+//		// determine coin type
+//		if (getCoin() == Coins.COPPER) {
+//			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.COMMON));
+//		}
+//		else if (getCoin() == Coins.SILVER) {
+//			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.UNCOMMON));
+//			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
+//		}
+//		else if (getCoin() == Coins.GOLD) {					
+//			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
+//			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE));
+//		}
+//		
+//		// TODO most of this seems repeated from IChestGenerator.  Make a common class/methods
+//		
+//		ItemStack outputStack = null;
+//		// handle if loot tables is null or size = 0. return an item (apple) to ensure continuing functionality
+//		if (lootTables == null || lootTables.size() == 0) {
+//			// TODO change to a randomized treasure key
+////			stack = new ItemStack(Items.APPLE);
+//			List<KeyItem> keys = new ArrayList<>(TreasureItems.keys.get((getCoin() == Coins.SILVER) ? Rarity.UNCOMMON : Rarity.SCARCE));
+//			outputStack = new ItemStack(keys.get(random.nextInt(keys.size())));
+//		}
+//		else {
+//			// attempt to get the player who dropped the coin
+//			ItemStack coinItem = itemStack;
+//			CompoundNBT nbt = coinItem.getTag();
+//			LOGGER.debug("item as a tag");
+//			PlayerEntity player = null;
+//			if (nbt != null && nbt.contains(DROPPED_BY_KEY)) {
+//				// TODO change to check by UUID
+//				for (PlayerEntity p : world.players()) {
+//					if (p.getName().getString().equalsIgnoreCase(nbt.getString(DROPPED_BY_KEY))) {
+//						player = p;
+//					}
+//				}
+//				if (player != null && LOGGER.isDebugEnabled()) {
+//					LOGGER.debug("coin dropped by player -> {}", player.getName());
+//				}
+//				else {
+//					LOGGER.debug("can't find player!");
+//				}
+//			}
+//			LOGGER.debug("player -> {}", player.getName().getString());
+//
+//			// select a table shell
+//			LootTableShell tableShell = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
+//			if (tableShell.getResourceLocation() == null) {
+//				return Optional.empty();
+//			}
+//			
+//			// get the vanilla table from shell
+//			LootTable table = world.getServer().getLootTables().get(tableShell.getResourceLocation());
+//			// get a list of loot pools
+//			List<LootPoolShell> lootPoolShells = tableShell.getPools();
+//			
+//			// generate a context
+//			LootContext lootContext = new LootContext.Builder((ServerWorld) world)
+//					.withLuck((player != null) ? player.getLuck() : 0)
+//					.withParameter(LootParameters.THIS_ENTITY, player)
+//					.withParameter(LootParameters.ORIGIN, coords.toVec3d()).create(LootParameterSets.CHEST);
+//
+//			List<ItemStack> itemStacks = new ArrayList<>();
+//			for (LootPoolShell pool : lootPoolShells) {
+//				LOGGER.debug("coin: processing pool -> {}", pool.getName());
+//				// go get the vanilla managed pool
+//				LootPool lootPool = table.getPool(pool.getName());
+//				
+//				// geneate loot from pools
+//				// TODO https://github.com/gottsch/gottsch-minecraft-Treasure/issues/242
+//				// lootPool is null.
+//				if (lootPool != null) {
+//					lootPool.addRandomItems(itemStacks::add, lootContext);
+//				}
+//				else {
+//					Treasure.LOGGER.warn("loot pool -> {} is null", pool.getName());
+//				}
+//			}
+//
+//			// get effective rarity
+//			Rarity effectiveRarity = TreasureLootTableRegistry.getLootTableMaster().getEffectiveRarity(tableShell, (getCoin() == Coins.SILVER) ? Rarity.UNCOMMON : Rarity.SCARCE);	
+//			LOGGER.debug("coin: using effective rarity -> {}", effectiveRarity);
+//			
+//			// get all injected loot tables
+//			injectLoot(world, random, itemStacks, tableShell.getCategory(), effectiveRarity, lootContext);
+//			
+//			// select one item randomly
+//			outputStack = itemStacks.get(RandomHelper.randomInt(0, itemStacks.size()-1));
+//		}				
+//		return Optional.of(outputStack);
+//	}
 	
 	/**
 	 * @return the coin
 	 */
-	public Coins getCoin() {
-		return coin;
-	}
+//	public Coins getCoin() {
+//		return coin;
+//	}
 	/**
 	 * @param coin the coin to set
 	 */
-	public CoinItem setCoin(Coins coin) {
-		this.coin = coin;
-		return this;
-	}
+//	public CoinItem setCoin(Coins coin) {
+//		this.coin = coin;
+//		return this;
+//	}
 }

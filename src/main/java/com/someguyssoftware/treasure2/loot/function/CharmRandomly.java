@@ -173,14 +173,19 @@ public class CharmRandomly extends LootFunction {
 				Treasure.LOGGER.debug("selected charm for item -> {}", charm.getName().toString());
 			}
 
-			if (charm != null) {				
+			// short-circuit if no charm is selected
+			if (charm == null) {
+				return;
+			}
+			
+//			if (charm != null) {		
 				Treasure.LOGGER.debug("charm is not null -> {}", charm.getName());
 				if (!cap.contains(charm)) {
 					Treasure.LOGGER.debug("adding charm to charm instances - > {}", charm.getName().toString());
 					cap.add(type, charm.createEntity());
 					// TODO have to enable the property corresponding to the type. ex. cap.setInnate = true if type == INNATE
 				}
-			}
+//			}
 
 			// cycle thru all charms in cap inventory to determine highest level charm
 			int highestLevel = cap.getHighestLevel().getCharm().getLevel();

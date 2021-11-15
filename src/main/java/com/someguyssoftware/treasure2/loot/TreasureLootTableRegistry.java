@@ -41,6 +41,8 @@ import com.someguyssoftware.gottschcore.json.JSMin;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 
+import net.minecraft.world.server.ServerWorld;
+
 /**
  * Use this registry to register all your mod's custom loot table for Treasure2.
  * @author Mark Gottschling on Dec 4, 2020
@@ -50,7 +52,7 @@ public final class TreasureLootTableRegistry {
 	public static final Logger LOGGER = LogManager.getLogger(Treasure.LOGGER.getName());
 
 	private static final String DEFAULT_RESOURCES_LIST_PATH = "loot_tables/treasure2/default_loot_tables_list.json";	
-	private static final String CUSTOM_LOOT_TABLES_RESOURCE_PATH = "/loot_tables/";		
+//	private static final String CUSTOM_LOOT_TABLES_RESOURCE_PATH = "/loot_tables/";		
 	private static final List<String> REGISTERED_MODS = new ArrayList<>();
 	private static LootResources lootResources;
 
@@ -78,8 +80,8 @@ public final class TreasureLootTableRegistry {
 	 * Convenience wrapper
 	 * @param world
 	 */
-	public static void initialize() {
-		lootTableMaster.init();
+	public static void initialize(ServerWorld world) {
+		lootTableMaster.init(world);
 	}
 
 	/**
@@ -94,8 +96,16 @@ public final class TreasureLootTableRegistry {
 		if (!REGISTERED_MODS.contains(modID)) {
 			REGISTERED_MODS.add(modID);
 			lootTableMaster.registerChests(modID, lootResources.getChestResources());
+			lootTableMaster.registerChestsFromWorldSave(modID, lootResources.getChestLootTableFolderLocations());
+			
 			lootTableMaster.registerSpecials(modID, lootResources.getSpecialResources());
+			lootTableMaster.registerSpecialsFromWorldSave(modID, lootResources.getSpecialLootTableFolderLocations());
+			
 			lootTableMaster.registerInjects(modID, lootResources.getInjectResources());
+			// TODO need a difference between registering loot tables from JAR resources and from
+			// the world save file folder.
+			// NOTE we no longer expose to the config nor world save, but should load from world save
+			// so users can add/modify if they choose. these files would replace JAR resources.
 		}
 	}
 

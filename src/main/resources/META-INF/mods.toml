@@ -17,7 +17,7 @@ issueTrackerURL="https://github.com/gottsch/gottsch-minecraft-Treasure/issues" #
 modId="treasure2" #mandatory
 
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-version="1.7.1" #mandatory
+version="1.7.2" #mandatory
 
  # A display name for the mod
 displayName="Treasure2" #mandatory
@@ -38,10 +38,7 @@ credits="Authored by gottsch" #optional
 authors="gottsch" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
-description='''
-
-Base API for all my mods.
-'''
+description="Adds new chests filled with loot to be discovered."
 
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.treasure2]] #optional
@@ -61,7 +58,7 @@ Base API for all my mods.
     versionRange="[1.16.5]"
     ordering="NONE"
     side="BOTH"
-   [[dependencies.treasure2]] #optional
+ [[dependencies.treasure2]]
     # the modid of the dependency
     modId="gottschcore" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
@@ -72,4 +69,9 @@ Base API for all my mods.
     ordering="BEFORE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"
-
+[[dependencies.treasure2]]
+    modId="configured"
+    mandatory=false
+    versionRange="[1.2.0,)"
+    ordering="NONE"
+    side="CLIENT"

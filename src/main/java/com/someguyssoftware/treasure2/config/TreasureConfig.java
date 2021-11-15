@@ -266,15 +266,12 @@ public class TreasureConfig extends AbstractConfig {
 		public static final String GOLD_STRONGBOX_TE_ID = "gold_strongbox_tile_entity";
 		public static final String SAFE_TE_ID = "safe_tile_entity";
 		public static final String DREAD_PIRATE_CHEST_TE_ID = "dread_pirate_chest_tile_entity";
-//		public static final String WHALE_BONE_PIRATE_CHEST_TE_ID = "whale_bone_pirate_chest_tile_entity";
 		public static final String COMPRESSOR_CHEST_TE_ID = "compressor_chest_tile_entity";
 		public static final String WITHER_CHEST_TE_ID = "wither_chest_tile_entity";
 		public static final String SKULL_CHEST_TE_ID = "skull_chest_tile_entity";
 		public static final String GOLD_SKULL_CHEST_TE_ID = "gold_skull_chest_tile_entity";
 		public static final String CRYSTAL_SKULL_CHEST_TE_ID = "crystal_skull_chest_tile_entity";
 		public static final String CAULDRON_CHEST_TE_ID = "cauldron_chest_tile_entity";
-//		public static final String OYSTER_CHEST_TE_ID = "oyster_chest_tile_entity";
-//		public static final String CLAM_CHEST_TE_ID = "clam_chest_tile_entity";
 		public static final String SPIDER_CHEST_TE_ID = "spider_chest_tile_entity";
 		public static final String VIKING_CHEST_TE_ID = "viking_chest_tile_entity";
 		public static final String CARDBOARD_BOX_TE_ID = "cardboard_box_tile_entity";
@@ -426,7 +423,6 @@ public class TreasureConfig extends AbstractConfig {
 			public ForgeConfigSpec.ConfigValue<Integer> minChunksPerChest;
 			public ForgeConfigSpec.ConfigValue<Integer> minDistancePerChest;
 			public ForgeConfigSpec.ConfigValue<Integer> surfaceChestProbability;			
-//			public ChestConfig commonChestProperties;
 
 			/**
 			 * 
@@ -448,9 +444,7 @@ public class TreasureConfig extends AbstractConfig {
 				surfaceChestProbability = builder
 						.comment(" The probability chest will appear on the surface, instead of in a pit.")
 						.defineInRange("Probability of chest spawn on the surface:", 15, 0, 100);
-				
-//				commonChestProperties = new ChestConfig(builder, configs.get(Rarity.COMMON));
-			
+
 				// update the map
 				configMap.put(Rarity.COMMON, new ChestConfig(builder, Rarity.COMMON.getValue(), configs.get(Rarity.COMMON)));
 				configMap.put(Rarity.UNCOMMON, new ChestConfig(builder, Rarity.UNCOMMON.getValue(), configs.get(Rarity.UNCOMMON)));
@@ -657,12 +651,10 @@ public class TreasureConfig extends AbstractConfig {
 					.comment(" The maximum uses for a given thiefs lock pick.")
 					.defineInRange("Thief's lockpick max uses:", 10, 1, 32000);
 
-			//    		@RequiresMcRestart
 			woodKeyMaxUses = builder
 					.comment(" The maximum uses for a given wooden key.")
 					.defineInRange("Wood key max uses:", 20, 1, 32000);
 
-			//    		@RequiresMcRestart
 			stoneKeyMaxUses = builder
 					.comment(" The maximum uses for a given stone key.")
 					.defineInRange("Stone key max uses:", 10, 1, 32000);
@@ -679,57 +671,46 @@ public class TreasureConfig extends AbstractConfig {
 					.comment(" The maximum uses for a given lightning key.")
 					.defineInRange("Stone key max uses:", 10, 1, 32000); 
 
-			//    		@RequiresMcRestart
 			ironKeyMaxUses = builder
 					.comment(" The maximum uses for a given iron key.")
 					.defineInRange("Iron key max uses:", 10, 1, 32000);
 
-			//    		@RequiresMcRestart
 			goldKeyMaxUses = builder
 					.comment(" The maximum uses for a given gold key.")
 					.defineInRange("Gold key max uses:", 15, 1, 32000);
 
-			//    		@RequiresMcRestart
 			diamondKeyMaxUses = builder
 					.comment(" The maximum uses for a given diamond key.")
 					.defineInRange("Diamond key max uses:", 20, 1, 32000);
 
-			//    		@RequiresMcRestart
 			emeraldKeyMaxUses = builder
 					.comment(" The maximum uses for a given emerald key.")
 					.defineInRange("Emerald key max uses:", 10, 1, 32000);
 
-			//    		@RequiresMcRestart
 			rubyKeyMaxUses = builder
 					.comment(" The maximum uses for a given ruby key.")
 					.defineInRange("Ruby key max uses:", 5, 1, 32000);
 
-			//    		@RequiresMcRestart
 			sapphireKeyMaxUses = builder
 					.comment(" The maximum uses for a given sapphire key.")
 					.defineInRange("Sapphire key max uses:", 5, 1, 32000);
 
-			//    		@RequiresMcRestart
 			metallurgistsKeyMaxUses = builder
 					.comment(" The maximum uses for a given metallurgists key.")
 					.defineInRange("Metallurgists key max uses:", 25, 1, 32000);
 
-			//    		@RequiresMcRestart
 			skeletonKeyMaxUses = builder
 					.comment(" The maximum uses for a given skeleton key.")
 					.defineInRange("Skeleton key max uses:", 5, 1, 32000);
 
-			//    		@RequiresMcRestart
 			jewelledKeyMaxUses = builder
 					.comment(" The maximum uses for a given jewelled key.")
 					.defineInRange("Jewelled Key max uses:", 5, 1, 32000);
 
-			//    		@RequiresMcRestart
 			spiderKeyMaxUses = builder
 					.comment(" The maximum uses for a given spider key.")
 					.defineInRange("Spider key max uses:", 5, 1, 32000);
 
-			//    		@RequiresMcRestart
 			witherKeyMaxUses = builder
 					.comment(" The maximum uses for a given wither key.")
 					.defineInRange("Wither key max uses:", 5, 1, 32000);
@@ -759,7 +740,6 @@ public class TreasureConfig extends AbstractConfig {
 	 */
 	// TODO replace with Booty
 	public static class Coins {
-//		@RequiresMcRestart
 		public ForgeConfigSpec.ConfigValue<Integer> coinMaxStackSize;		
 
 		public Coins(final ForgeConfigSpec.Builder builder)	 {
