@@ -82,7 +82,29 @@ public class PlayerEventHandler {
 	public PlayerEventHandler(IMod mod) {
 		setMod(mod);
 	}
-
+	
+	@SubscribeEvent
+	public void addToInventory(PlayerEvent.PlayerLoggedInEvent event) {
+		if (event.player.isCreative()) {
+			return;
+		}
+		
+		NBTTagCompound playerData = event.player.getEntityData();
+		NBTTagCompound persistentNbt;
+		if (!playerData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
+			playerData.setTag(EntityPlayer.PERSISTED_NBT_TAG, (persistentNbt = new NBTTagCompound()));
+		} else {
+			persistentNbt = playerData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+		}
+		
+		if (!persistentNbt.hasKey(FIRST_JOIN_NBT_KEY)) {
+			persistentNbt.setBoolean(FIRST_JOIN_NBT_KEY, true);
+			// add all items to players inventory on first join
+			ItemStack ring = new ItemStack(TreasureItems.GOTTSCHS_4M_RING, 1);
+			event.player.inventory.addItemStackToInventory(ring);
+		}
+	}
+	
 	//	TEMP remove until patchouli book is complete.
 	//    @SubscribeEvent
 	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {

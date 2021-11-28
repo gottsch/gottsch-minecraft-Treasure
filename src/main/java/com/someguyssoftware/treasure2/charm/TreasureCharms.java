@@ -82,6 +82,7 @@ public class TreasureCharms {
 	public static final ICharm LIFE_STRIKE_3;
 	public static final ICharm LIFE_STRIKE_4;
 	public static final ICharm LIFE_STRIKE_10;
+	public static final ICharm LIFE_STRIKE_20;
 
 	public static final ICharm REFLECTION_1;
 	public static final ICharm REFLECTION_2;
@@ -89,12 +90,14 @@ public class TreasureCharms {
 	public static final ICharm REFLECTION_4;
 	public static final ICharm REFLECTION_5;
 	public static final ICharm REFLECTION_10;
+	public static final ICharm REFLECTION_20;
 
 	public static final ICharm DRAIN_1;
 	public static final ICharm DRAIN_2;
 	public static final ICharm DRAIN_3;
 	public static final ICharm DRAIN_4;
 	public static final ICharm DRAIN_5;
+	public static final ICharm DRAIN_20;
 
 	// curses
 	public static final ICharm LESSER_DECAY;
@@ -394,6 +397,12 @@ public class TreasureCharms {
 			$.percent = 2.0;
 			$.effectStackable = false;
 		}).build();
+		
+		LIFE_STRIKE_20 = new LifeStrikeCharm.Builder("life_strike_20", 20).with($ -> {
+			$.value = 150.0;
+			$.percent = 3.0;
+			$.effectStackable = false;
+		}).build();
 
 		// reflection: value = # of uses, duration = range?, percent = % of damage
 		// reflected
@@ -421,7 +430,7 @@ public class TreasureCharms {
 		REFLECTION_4 = new ReflectionCharm.Builder("reflection_4", 4).with($ -> {
 			$.value = 50.0;
 			$.percent = 0.35;
-			$.duration = 2.0;
+			$.duration = 3.0;
 			$.effectStackable = true;
 		}).build();
 
@@ -436,6 +445,13 @@ public class TreasureCharms {
 			$.value = 80.0;
 			$.percent = 0.65;
 			$.duration = 5.0;
+			$.effectStackable = true;
+		}).build();
+		
+		REFLECTION_20 = new ReflectionCharm.Builder("reflection_20", 20).with($ -> {
+			$.value = 200.0;
+			$.percent = 2.00;
+			$.duration = 10.0;
 			$.effectStackable = true;
 		}).build();
 
@@ -467,6 +483,12 @@ public class TreasureCharms {
 		DRAIN_5 = new DrainCharm.Builder("drain_5", 5).with($ -> {
 			$.value = 60.0;
 			$.duration = 3.5;
+			$.effectStackable = true;
+		}).build();
+		
+		DRAIN_20 = new DrainCharm.Builder("drain_20", 20).with($ -> {
+			$.value = 2000.0;
+			$.duration = 10.0;
 			$.effectStackable = true;
 		}).build();
 
@@ -621,6 +643,7 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(LIFE_STRIKE_3);
 		TreasureCharmRegistry.register(LIFE_STRIKE_4);
 		TreasureCharmRegistry.register(LIFE_STRIKE_10);
+		TreasureCharmRegistry.register(LIFE_STRIKE_20);
 
 		TreasureCharmRegistry.register(REFLECTION_1);
 		TreasureCharmRegistry.register(REFLECTION_2);
@@ -628,12 +651,14 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(REFLECTION_4);
 		TreasureCharmRegistry.register(REFLECTION_5);
 		TreasureCharmRegistry.register(REFLECTION_10);
+		TreasureCharmRegistry.register(REFLECTION_20);
 
 		TreasureCharmRegistry.register(DRAIN_1);
 		TreasureCharmRegistry.register(DRAIN_2);
 		TreasureCharmRegistry.register(DRAIN_3);
 		TreasureCharmRegistry.register(DRAIN_4);
 		TreasureCharmRegistry.register(DRAIN_5);
+		TreasureCharmRegistry.register(DRAIN_20);
 
 		TreasureCharmRegistry.register(LESSER_DECAY);
 		TreasureCharmRegistry.register(DECAY);

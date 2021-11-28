@@ -123,6 +123,7 @@ item.treasure2:pocket_watch.name=Pocket Watch
 item.treasure2:angels_ring.name=Ring of the Angels
 item.treasure2:bracelet_of_wonder.name=Bracelet of Wonder
 item.treasure2:ring_of_fortitude.name=Ring of Fortitude
+item.treasure2:ring_of_fortitude.name=gottsch's Ring of Ages
 
 item.treasure2:key_ring.name=Key Ring
 item.treasure2:wood_key.name=Wood Key
@@ -339,6 +340,7 @@ tooltip.charm.prefix.level10=Colossal
 tooltip.charm.suffix.level11=of the Leviathan
 tooltip.charm.suffix.level12=of the Demogorgon
 tooltip.charm.suffix.level13=of the Whale
+tooltip.charm.suffix.level20=of gottsch
 
 # charm levels (shielding)
 tooltip.charm.shielding.prefix.level1=Durable

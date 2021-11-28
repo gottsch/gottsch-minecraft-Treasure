@@ -96,6 +96,7 @@ public class TreasureItems {
     public static Item ANGELS_RING;
     public static Item BRACELET_OF_WONDER;
     public static Item RING_OF_FORTITUDE;
+    public static Item GOTTSCHS_4M_RING;
 
 	// pearls
 	public static Item WHITE_PEARL;
@@ -391,6 +392,21 @@ public class TreasureItems {
             }
         }.setMaxSlots(4).setLevel(10);
 
+        /*
+         * special 4million download ring. will auto place in your backpack on new world for 1 month (Dec 2021)
+         */
+        GOTTSCHS_4M_RING = (Item) new Adornment(Treasure.MODID, "gottschs_ring_of_ages", AdornmentType.RING) {
+            public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+            	CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
+                ICharmInventoryCapability charmCap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+                charmCap.getCharmEntities().add(TreasureCharms.DRAIN_20.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.REFLECTION_20.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.LIFE_STRIKE_20.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.WHALE_HEALING.createEntity());
+                charmCap.setSlots(2);
+                return provider;
+            }	
+        }.setMaxSlots(2).setLevel(12);
 		// PEARLS
 		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.WHITE_PEARL_ID, Pearls.WHITE);
 		BLACK_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.BLACK_PEARL_ID, Pearls.BLACK);
