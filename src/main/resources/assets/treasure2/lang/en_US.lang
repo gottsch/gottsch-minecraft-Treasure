@@ -123,7 +123,7 @@ item.treasure2:pocket_watch.name=Pocket Watch
 item.treasure2:angels_ring.name=Ring of the Angels
 item.treasure2:bracelet_of_wonder.name=Bracelet of Wonder
 item.treasure2:ring_of_fortitude.name=Ring of Fortitude
-item.treasure2:ring_of_fortitude.name=gottsch's Ring of Ages
+item.treasure2:gottschs_ring_of_moon.name=Gottsch's Ring of the Moon
 
 item.treasure2:key_ring.name=Key Ring
 item.treasure2:wood_key.name=Wood Key
@@ -178,7 +178,7 @@ item.treasure2:amethyst.name=Amethyst
 item.treasure2:onyx.name=Onyx
 item.treasure2:sapphire.name=Sapphire
 item.treasure2:ruby.name=Ruby
-item.treasure2:skeleton_item.name=Skeleton
+item.treasure2:skeleton.name=Skeleton
 item.treasure2:white_pearl.name=White Pearl
 item.treasure2:black_pearl.name=Black Pearl
 item.treasure2:oyster_meat.name=Oyster Meat
@@ -340,7 +340,8 @@ tooltip.charm.prefix.level10=Colossal
 tooltip.charm.suffix.level11=of the Leviathan
 tooltip.charm.suffix.level12=of the Demogorgon
 tooltip.charm.suffix.level13=of the Whale
-tooltip.charm.suffix.level20=of gottsch
+tooltip.charm.suffix.level20=of the Moon
+tooltip.charm.suffix.level99=of the Whale
 
 # charm levels (shielding)
 tooltip.charm.shielding.prefix.level1=Durable
@@ -348,6 +349,7 @@ tooltip.charm.shielding.prefix.level2=Stout
 tooltip.charm.shielding.prefix.level3=Hardened
 tooltip.charm.shielding.prefix.level4=Powerful
 
+tooltip.charm.gottschs_ring_of_moon.special=Limited Edition: Treasure2 4-millionth download reward.
 tooltip.painting.name=%s
 tooltip.painting.collection=Collection: %s
 tooltip.painting.issue=Issue: %s/%s

@@ -1,5 +1,5 @@
 {
-    "parent": "item/generated",
+    "parent": "treasure2:item/horizontal_left_key",
     "textures": {
         "layer0": "treasure2:items/keys/metallurgists_key"
     }

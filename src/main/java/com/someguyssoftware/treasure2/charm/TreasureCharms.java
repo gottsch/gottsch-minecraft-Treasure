@@ -32,6 +32,7 @@ public class TreasureCharms {
 	public static final ICharm GRAND_HEALING;
 	public static final ICharm SALANDAARS_CONVALESCENCE;
 	public static final ICharm WHALE_HEALING;
+	public static final ICharm HEALING_20;
 
 	public static final ICharm DURABLE_SHIELDING;
 	public static final ICharm STOUT_SHIELDING;
@@ -152,6 +153,13 @@ public class TreasureCharms {
 			$.effectStackable = true;
 		}).build();
 				
+		// these levels are all out of whack. refactor like 1.16.5 version
+		HEALING_20 = new HealingCharm.Builder("healing_20", 20).with($ -> {
+			$.value = 400.0;
+			$.effectStackable = true;
+		}).build();
+		
+		// special one-off - shouldn't be Whale as level13 = Whale
 		WHALE_HEALING = new HealingCharm.Builder("whale_healing", 99).with($ -> {
 			$.value = 500.0;
 			$.effectStackable = true;
@@ -487,7 +495,7 @@ public class TreasureCharms {
 		}).build();
 		
 		DRAIN_20 = new DrainCharm.Builder("drain_20", 20).with($ -> {
-			$.value = 2000.0;
+			$.value = 200.0;
 			$.duration = 10.0;
 			$.effectStackable = true;
 		}).build();
@@ -593,6 +601,7 @@ public class TreasureCharms {
 		TreasureCharmRegistry.register(GRAND_HEALING);
 		TreasureCharmRegistry.register(SALANDAARS_CONVALESCENCE);
 		TreasureCharmRegistry.register(WHALE_HEALING);
+		TreasureCharmRegistry.register(HEALING_20);
 
 		TreasureCharmRegistry.register(ABSOLUTE_SHIELDING_1);
 		TreasureCharmRegistry.register(ABSOLUTE_SHIELDING_2);
