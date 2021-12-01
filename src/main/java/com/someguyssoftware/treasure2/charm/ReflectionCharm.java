@@ -66,7 +66,6 @@ public class ReflectionCharm extends Charm {
 	@Override
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-
 		if (entity.getValue() > 0 && !player.isDead) {
 			if (((LivingHurtEvent)event).getEntity() instanceof EntityPlayer) {
 				// get player position
@@ -75,14 +74,13 @@ public class ReflectionCharm extends Charm {
 				double pz = player.posZ;
 
 				// get the source and amount
-				double amount = ((LivingDamageEvent)event).getAmount();
+				double amount = ((LivingHurtEvent)event).getAmount();
 				// calculate the new amount
 				double reflectedAmount = amount * entity.getPercent();
 				int range = entity.getDuration();
-
 				List<EntityMob> mobs = world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(px - range, py - range, pz - range, px + range, py + range, pz + range));
 				mobs.forEach(mob -> {
-					boolean flag = mob.attackEntityFrom(DamageSource.causePlayerDamage(player), (float) reflectedAmount);
+					boolean flag = mob.attackEntityFrom(DamageSource.GENERIC, (float) reflectedAmount);
 					Treasure.logger.debug("reflected damage {} onto mob -> {} was successful -> {}", reflectedAmount, mob.getName(), flag);
 				});
 

@@ -152,6 +152,7 @@ public class TreasureModels {
 
         registerItemModel(TreasureItems.BRACELET_OF_WONDER);
         registerItemModel(TreasureItems.RING_OF_FORTITUDE);
+        registerItemModel(TreasureItems.GOTTSCHS_RING_OF_MOON);
         
 		// PEARLS
 		registerItemModel(TreasureItems.WHITE_PEARL);

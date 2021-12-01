@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.item;
 
+import java.util.List;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.someguyssoftware.gottschcore.armor.ModArmorBuilder;
@@ -24,6 +26,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialTransparent;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -34,6 +37,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
@@ -96,6 +102,7 @@ public class TreasureItems {
     public static Item ANGELS_RING;
     public static Item BRACELET_OF_WONDER;
     public static Item RING_OF_FORTITUDE;
+    public static Item GOTTSCHS_RING_OF_MOON;
 
 	// pearls
 	public static Item WHITE_PEARL;
@@ -391,6 +398,31 @@ public class TreasureItems {
             }
         }.setMaxSlots(4).setLevel(10);
 
+        /*
+         * special 4million download ring. will auto place in your backpack on new world for 1 month (Dec 2021)
+         */
+        GOTTSCHS_RING_OF_MOON = ((Item) new Adornment(Treasure.MODID, "gottschs_ring_of_moon", AdornmentType.RING) {
+            public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+            	CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
+                ICharmInventoryCapability charmCap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+                charmCap.getCharmEntities().add(TreasureCharms.DRAIN_20.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.REFLECTION_20.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.LIFE_STRIKE_20.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.HEALING_20.createEntity());
+                charmCap.setSlots(0);
+                return provider;
+            }
+            
+        	@SuppressWarnings("deprecation")
+        	@Override
+        	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+        		tooltip.add(TextFormatting.GOLD.toString() + "" + I18n.translateToLocal("tooltip.charm.gottschs_ring_of_moon.special"));
+        		tooltip.add("");
+       			addCharmedInfo(stack, world, tooltip, flag);
+        		addSlotsInfo(stack, world, tooltip, flag);
+        	}
+        }.setMaxSlots(4).setLevel(20)).setCreativeTab(null);
+        
 		// PEARLS
 		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.WHITE_PEARL_ID, Pearls.WHITE);
 		BLACK_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.BLACK_PEARL_ID, Pearls.BLACK);
@@ -713,6 +745,7 @@ public class TreasureItems {
                     ANGELS_RING,
                     RING_OF_FORTITUDE,
                     BRACELET_OF_WONDER,
+                    GOTTSCHS_RING_OF_MOON,
                     SILVER_NECKLACE,
                     GOLD_NECKLACE,
                     SAPPHIRE_SILVER_AMULET,

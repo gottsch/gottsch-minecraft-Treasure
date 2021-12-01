@@ -19,7 +19,11 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -44,6 +48,7 @@ import com.someguyssoftware.treasure2.network.CharmMessageToClient;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -81,6 +86,38 @@ public class PlayerEventHandler {
 	 */
 	public PlayerEventHandler(IMod mod) {
 		setMod(mod);
+	}
+
+	@SubscribeEvent
+	public void addToInventory(PlayerEvent.PlayerLoggedInEvent event) {
+		// check if config is enabled
+		if (!TreasureConfig.MOD.enableSpecialRewards) {
+			return;
+		}
+
+		if (event.player.isCreative()) {
+			return;
+		}
+
+		// check if during the correct timeframe
+//		if (LocalDate.now().getMonth() != Month.DECEMBER || Year.now().getValue() != 2021) {
+//			return;			
+//		}
+
+		NBTTagCompound playerData = event.player.getEntityData();
+		NBTTagCompound persistentNbt;
+		if (!playerData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
+			playerData.setTag(EntityPlayer.PERSISTED_NBT_TAG, (persistentNbt = new NBTTagCompound()));
+		} else {
+			persistentNbt = playerData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+		}
+
+		if (!persistentNbt.hasKey(FIRST_JOIN_NBT_KEY)) {
+			persistentNbt.setBoolean(FIRST_JOIN_NBT_KEY, true);
+			// add all items to players inventory on first join
+			ItemStack ring = new ItemStack(TreasureItems.GOTTSCHS_RING_OF_MOON, 1);
+			event.player.inventory.addItemStackToInventory(ring);
+		}
 	}
 
 	//	TEMP remove until patchouli book is complete.
@@ -156,7 +193,7 @@ public class PlayerEventHandler {
 			processCharms(event, player);
 		}		
 	}
-	
+
 	/**
 	 * 
 	 * @param event
@@ -166,10 +203,18 @@ public class PlayerEventHandler {
 		if (WorldInfo.isClientSide(event.getEntity().getEntityWorld())) {
 			return;
 		}
-		
+
+		// if player is source or destination of hurt
+		EntityPlayerMP player = null;
 		if (event.getSource().getTrueSource() instanceof EntityPlayer) {
+			player = (EntityPlayerMP) event.getSource().getTrueSource();
+		}
+		else if (event.getEntityLiving() instanceof  EntityPlayer) {
+			player = (EntityPlayerMP) event.getEntityLiving();
+		}
+		
+		if (player != null) {
 			// get the player
-			EntityPlayerMP player = (EntityPlayerMP) event.getSource().getTrueSource();
 			processCharms(event, player);
 		}
 	}
@@ -204,7 +249,7 @@ public class PlayerEventHandler {
 	 */
 	private void processCharms(Event event, EntityPlayerMP player) {
 		final List<String> nonMultipleUpdateCharms = new ArrayList<>(5);
-		
+
 		// check each hand
 		Optional<CharmContext> context = null;
 		for (EnumHand hand : EnumHand.values()) {
@@ -275,55 +320,55 @@ public class PlayerEventHandler {
 	 * @param event
 	 */
 	private void doCharms(CharmContext context, EntityPlayerMP player, Event event, final List<String> nonMultipleUpdateCharms) {
-        List<ICharmEntity> removeInstances = new ArrayList<>(3);
+		List<ICharmEntity> removeInstances = new ArrayList<>(3);
 		ICharmInventoryCapability capability = context.capability;
 		List<ICharmEntity> charmEntities = capability.getCharmEntities();
 		for (ICharmEntity charmEntity : charmEntities) {
 			boolean isCharmUpdatable = true;
-            ICharm charm = (ICharm)charmEntity.getCharm();
-            // test the charm against the event
-            if (!charm.getRegisteredEvent().equals(event.getClass())) {
-//				Treasure.logger.debug("charm type -> {} is not register for this event -> {}",charm.getType(), event.getClass().getSimpleName());
+			ICharm charm = (ICharm)charmEntity.getCharm();
+			// test the charm against the event
+			if (!charm.getRegisteredEvent().equals(event.getClass())) {
+				//				Treasure.logger.debug("charm type -> {} is not register for this event -> {}",charm.getType(), event.getClass().getSimpleName());
 				continue;
 			}
-            
-            // Treasure.logger.debug("{} charm allows multiple updates -> {}", charm.getName(), charm.isAllowMultipleUpdates());
+
+			// Treasure.logger.debug("{} charm allows multiple updates -> {}", charm.getName(), charm.isAllowMultipleUpdates());
 			if (!charm.isAllowMultipleUpdates()) {
-                // Treasure.logger.debug("{} charm denies multiple updates", charm.getName());
+				// Treasure.logger.debug("{} charm denies multiple updates", charm.getName());
 				// check if in list
 				if (nonMultipleUpdateCharms.contains(charm.getType())) {
-                    // Treasure.logger.debug("blacklist contains charm type -> {}", charm.getType());
+					// Treasure.logger.debug("blacklist contains charm type -> {}", charm.getType());
 					isCharmUpdatable = false;
 				}
 			}
 			else {
-                // Treasure.logger.debug("blacklist doesn't contain charm type -> {}", charm.getType());
+				// Treasure.logger.debug("blacklist doesn't contain charm type -> {}", charm.getType());
 				nonMultipleUpdateCharms.add(charm.getType());
 			}
-            
-            // Treasure.logger.debug("is charm {} updatable -> {}", charm.getName(), isCharmUpdatable);
+
+			// Treasure.logger.debug("is charm {} updatable -> {}", charm.getName(), isCharmUpdatable);
 			if (isCharmUpdatable && 
 					charmEntity.getCharm().update(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event, charmEntity)) {
 				// send state message to client
 				CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmEntity, context.hand, context.slot);
-//				Treasure.logger.debug("Message to client -> {}", message);
+				//				Treasure.logger.debug("Message to client -> {}", message);
 				Treasure.simpleNetworkWrapper.sendTo(message, player);
-            }
+			}
 
-            // mark Charm if instanceof ICharmable and no uses remain
-            if (charmEntity.getValue() <= 0.0 && charmEntity.getCharm() instanceof ICharmable) {
-            	Treasure.logger.debug("charm is empty, add to remove list");
-                removeInstances.add(charmEntity);
-            }
-        }
-        
-        // remove any charms that have no uses remaining
-        if (!removeInstances.isEmpty()) {
-            removeInstances.forEach(instance -> {
-                charmEntities.remove(instance);
-                // TODO send message to client to remove charm";
-            });
-        }
+			// mark Charm if instanceof ICharmable and no uses remain
+			if (charmEntity.getValue() <= 0.0 && charmEntity.getCharm() instanceof ICharmable) {
+				Treasure.logger.debug("charm is empty, add to remove list");
+				removeInstances.add(charmEntity);
+			}
+		}
+
+		// remove any charms that have no uses remaining
+		if (!removeInstances.isEmpty()) {
+			removeInstances.forEach(instance -> {
+				charmEntities.remove(instance);
+				// TODO send message to client to remove charm";
+			});
+		}
 	}
 
 	// TODO ugh, these are terrible. port code from 1.16.5 version
