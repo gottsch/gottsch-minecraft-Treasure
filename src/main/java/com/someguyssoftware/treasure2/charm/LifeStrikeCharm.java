@@ -23,9 +23,11 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -63,12 +65,10 @@ public class LifeStrikeCharm extends Charm {
 	@Override
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-
-
 		if (entity.getValue() > 0 && !player.isDead) {
 			DamageSource source = ((LivingHurtEvent) event).getSource();
-
 			if (source.getTrueSource() instanceof EntityPlayer) {
+
 				if (player.getHealth() > 5.0F) {
 					// get the source and amount
 					double amount = ((LivingHurtEvent)event).getAmount();
@@ -78,6 +78,7 @@ public class LifeStrikeCharm extends Charm {
 					player.setHealth(MathHelper.clamp(player.getHealth() - LIFE_AMOUNT, 0.0F, player.getMaxHealth()));		
 					entity.setValue(MathHelper.clamp(entity.getValue() - 1,  0D, entity.getValue()));
 					result = true;
+					Treasure.logger.debug("life strike damage {} onto mob -> {}", (amount * entity.getPercent()), source.getTrueSource().getName());
 				}
 			}
 		}

@@ -46,7 +46,10 @@ public class ModConfig {
 	@Comment({"Enable/Disable a check to ensure the default decay rulesets exist on the file system.", "If enabled, then you will not be able to remove any default decay rulesets (but they can be edited).", "Only disable if you know what you're doing."})
 	@Name("09. Enable default decay rulesets check:")
 	public boolean enableDefaultDecayRuletSetsCheck = true;
-	@Comment({"Enble/Disable starting book.", "If enabled and in survival, you will begin the game with the Book of Fortunes in your inventory.", "This option requires Patchouli mod. If it is not present, the starting book will simply not appear in your inventory nor in the Treasure tab."})
+	@Comment({"Enble/Disable starting book.", "If enabled and in survival, you will begin the game with the Book of Fortunes in your inventory.", "This option requires Patchouli mod. If it is not present, the starting book will simply not appear in your inventory nor in the Treasure tab.", "Currently disabled."})
 	@Name("10. Enable starting book:")
 	public boolean enableStartingBook = true;
+	@Comment({"Enble/Disable special rewards.", "If enabled and in survival, you will begin the game with any currently available special rewards  in your inventory."})
+	@Name("11. Enable starting book:")
+	public boolean enableSpecialRewards = true;
 }
