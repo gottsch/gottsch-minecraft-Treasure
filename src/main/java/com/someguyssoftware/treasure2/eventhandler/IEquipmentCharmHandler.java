@@ -23,7 +23,7 @@ import java.util.List;
 
 import com.someguyssoftware.treasure2.charm.CharmContext;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
@@ -33,5 +33,5 @@ import net.minecraftforge.eventbus.api.Event;
  */
 public interface IEquipmentCharmHandler {
 
-	public List<CharmContext> handleEquipmentCharms(Event event, ServerPlayerEntity player);
+	public List<CharmContext> handleEquipmentCharms(Event event, ServerPlayer player);
 }

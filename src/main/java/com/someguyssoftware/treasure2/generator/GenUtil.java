@@ -16,18 +16,18 @@ import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.SkeletonBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.block.ChestBlock;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 
 /**
  * 
@@ -50,7 +50,7 @@ public class GenUtil {
 //	 * @param pos
 //	 * @return
 //	 */
-//	public static AbstractTreasureChestTileEntity getChestTileEntity(World world, ICoords coords) {
+//	public static AbstractTreasureChestTileEntity getChestTileEntity(Level world, ICoords coords) {
 //		BlockPos pos = coords.toPos();
 //
 //		// get the tile entity
@@ -77,7 +77,7 @@ public class GenUtil {
 	 * @param block
 	 * @return
 	 */
-	public static boolean replaceWithBlock(IWorld world, ICoords coords, Block block) {
+	public static boolean replaceWithBlock(ILevel world, ICoords coords, Block block) {
 		// don't change if old block is air
 		BlockContext context = new BlockContext(world, coords);
 		if (context.isAir()) {
@@ -94,7 +94,7 @@ public class GenUtil {
 	 * @param blockState
 	 * @return
 	 */
-	public static boolean replaceWithBlockState(IWorld world, ICoords coords, BlockState blockState) {
+	public static boolean replaceWithBlockState(ILevel world, ICoords coords, BlockState blockState) {
 		// don't change if old block is air
 //		Treasure.LOGGER.debug("getting block context...");
 		BlockContext context = new BlockContext(world, coords);
@@ -117,17 +117,17 @@ public class GenUtil {
 	 * @param coords
 	 * @return
 	 */
-	public static boolean replaceBlockWithChest(IWorld world, Random random, Block chest, ICoords coords) {
+	public static boolean replaceBlockWithChest(ILevel world, Random random, Block chest, ICoords coords) {
 		// get the old state
 		BlockState oldState = world.getBlockState(coords.toPos());
 
 		if (oldState.getProperties().contains(FACING)) {
-			Treasure.LOGGER.debug("World Chest marker has FACING property:" + oldState.getValue(FACING));
+			Treasure.LOGGER.debug("Level Chest marker has FACING property:" + oldState.getValue(FACING));
 			// set the new state
 			return placeChest(world, chest, coords, (Direction) oldState.getValue(FACING));
 
 		} else {
-			Treasure.LOGGER.debug("World Chest marker does NOT have a FACING property.");
+			Treasure.LOGGER.debug("Level Chest marker does NOT have a FACING property.");
 			return placeChest(world, chest, coords, Direction.from2DDataValue(random.nextInt(4)));
 		}
 	}
@@ -141,7 +141,7 @@ public class GenUtil {
 	 * @param state
 	 * @return
 	 */
-	public static boolean replaceBlockWithChest(IWorld world, Random random, ICoords coords, Block chest,
+	public static boolean replaceBlockWithChest(ILevel world, Random random, ICoords coords, Block chest,
 			BlockState state) {
 		if (state.getProperties().contains(FACING)) {
 			Treasure.LOGGER.debug("Given marker state has FACING property -> {}", state.getValue(FACING));
@@ -166,7 +166,7 @@ public class GenUtil {
 	 * @param pos
 	 * @return
 	 */
-	public static boolean placeChest(IWorld world, Block chest, ICoords coords, Direction direction) {
+	public static boolean placeChest(ILevel world, Block chest, ICoords coords, Direction direction) {
 		// TODO wrap all Direction in Heading
 		// check if spawn pos is valid
 		if (!WorldInfo.isValidY(coords)) {
@@ -211,7 +211,7 @@ public class GenUtil {
 	 * @param random
 	 * @param coords
 	 */
-	public static void placeSkeleton(IWorld world, Random random, ICoords coords) {
+	public static void placeSkeleton(ILevel world, Random random, ICoords coords) {
 		// select a random facing direction
 //		Direction[] horizontals = EnumFacing.HORIZONTALS;
 //		EnumFacing facing = horizontals[random.nextInt(horizontals.length)];
@@ -253,7 +253,7 @@ public class GenUtil {
 //	 * @param spawnYMin
 //	 * @return
 //	 */
-//	public static ICoords getUndergroundSpawnCoords(World world, Random random, ICoords surfaceCoords, int spawnYMin) {
+//	public static ICoords getUndergroundSpawnCoords(Level world, Random random, ICoords surfaceCoords, int spawnYMin) {
 //		ICoords spawnCoords = null;
 //
 //		// spawn location under ground
@@ -273,7 +273,7 @@ public class GenUtil {
 	 * @param coords
 	 * @return
 	 */
-	public static ICoords findUndergroundCeiling(IWorld world, ICoords coords) {
+	public static ICoords findUndergroundCeiling(ILevel world, ICoords coords) {
 		final int CEILING_FAIL_SAFE = 50;
 		int ceilingHeight = 1;
 

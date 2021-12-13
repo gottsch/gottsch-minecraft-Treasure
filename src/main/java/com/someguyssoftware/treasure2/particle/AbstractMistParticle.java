@@ -7,16 +7,16 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.tileentity.MistEmitterTileEntity;
+import com.someguyssoftware.treasure2.tileentity.MistEmitterBlockEntity;
 
 import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.SpriteTexturedParticle;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.IWorld;
+import net.minecraft.client.world.ClientLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -65,7 +65,7 @@ public abstract class AbstractMistParticle extends SpriteTexturedParticle implem
 	 * @param posYIn
 	 * @param posZIn
 	 */
-	protected AbstractMistParticle(ClientWorld worldIn, double posXIn, double posYIn, double posZIn) {
+	protected AbstractMistParticle(ClientLevel worldIn, double posXIn, double posYIn, double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 
 		// add horizontal movement

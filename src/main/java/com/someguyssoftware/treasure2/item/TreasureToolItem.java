@@ -7,12 +7,12 @@ import java.util.List;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
 /**
  * @author Mark Gottschling on Jul 29, 2018
@@ -30,9 +30,9 @@ public class TreasureToolItem extends ModItem {
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);	
-		tooltip.add(new TranslationTextComponent("tooltip.label.treasure_tool"));
+		tooltip.add(new TranslatableComponent("tooltip.label.treasure_tool"));
 	}	
 	
 	/**

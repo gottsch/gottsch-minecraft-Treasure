@@ -52,18 +52,18 @@ import com.someguyssoftware.treasure2.generator.chest.WitherChestGenerator;
 import com.someguyssoftware.treasure2.persistence.TreasureGenerationSavedData;
 import com.someguyssoftware.treasure2.registry.SimpleListRegistry;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.IServerLevel;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
@@ -242,14 +242,14 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param coords
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords) {
+	public GeneratorResult<ChestGeneratorData> generate(IServerLevel world, ChunkGenerator generator, Random random, ICoords coords) {
 		Instant start = Instant.now();
 
 		// result to return to the caller
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setEnvironment(ChestEnvironment.SURFACE);
 		
-		AxisAlignedBB witherGroveBounds = new AxisAlignedBB(coords.toPos());
+		AABB witherGroveBounds = new AABB(coords.toPos());
 
 		// ============ build the pit first ==============
 		// add pit
@@ -299,7 +299,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 						buildTree(world, random, c, coords);
 
 						// add tree clearing to the grove size
-						AxisAlignedBB witherTreeClearingBounds = new AxisAlignedBB(c.toPos()).expandTowards(CLEARING_RADIUS, 0,
+						AABB witherTreeClearingBounds = new AABB(c.toPos()).expandTowards(CLEARING_RADIUS, 0,
 								CLEARING_RADIUS);
 						witherGroveBounds = witherGroveBounds.minmax(witherTreeClearingBounds);
 					}
@@ -317,7 +317,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 			return result.fail();
 		}
 		WitherChestGenerator chestGen = new WitherChestGenerator();
-		GeneratorResult<ChestGeneratorData> chestResult = chestGen.generate((IServerWorld)world, random, chestCoords, Rarity.SCARCE, null);
+		GeneratorResult<ChestGeneratorData> chestResult = chestGen.generate((IServerLevel)world, random, chestCoords, Rarity.SCARCE, null);
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}
@@ -339,7 +339,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param world
 	 * @param coords
 	 */
-	private void buildClearing(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords, ICoords originalSpawnCoords) {
+	private void buildClearing(IServerLevel world, ChunkGenerator generator, Random random, ICoords coords, ICoords originalSpawnCoords) {
 		Instant start = Instant.now();
 		ICoords buildCoords = null;
 		Treasure.LOGGER.debug("build clearing at -> {}", coords.toShortString());
@@ -427,7 +427,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param world
 	 * @param coords
 	 */
-	public void buildMainTree(IWorld world, ChunkGenerator generator, Random random, ICoords coords, ICoords originalSpawnCoords) {
+	public void buildMainTree(ILevel world, ChunkGenerator generator, Random random, ICoords coords, ICoords originalSpawnCoords) {
 		Instant start = Instant.now();
 
 		// setup an array of coords
@@ -492,7 +492,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param random
 	 * @param coords
 	 */
-	public void buildTree(IWorld world, Random random, ICoords coords, ICoords originalSpawnCoords) {
+	public void buildTree(ILevel world, Random random, ICoords coords, ICoords originalSpawnCoords) {
 		Instant start = Instant.now();
 		// build a small wither tree ie one trunk
 
@@ -532,7 +532,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param maxSize
 	 * @param is
 	 */
-	private void addBranch(IWorld world, Random random, ICoords trunkCoords, ICoords originalSpawnCoords, int y, int maxSize,
+	private void addBranch(ILevel world, Random random, ICoords trunkCoords, ICoords originalSpawnCoords, int y, int maxSize,
 			List<Direction> directions) {
 		Instant start = Instant.now();
 		int branchSize = 0;// (y <= (maxSize/3)) ? 3 : (y <= (maxSize * 2/3)) ? 2 : 1;
@@ -594,7 +594,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param iCoords
 	 * @param list
 	 */
-	private void addRoot(IWorld world, Random random, ICoords coords, ICoords originalSpawnCoords, List<Direction> directions) {
+	private void addRoot(ILevel world, Random random, ICoords coords, ICoords originalSpawnCoords, List<Direction> directions) {
 		// for each direction
 		for (Direction direction : directions) {
 			if (RandomHelper.checkProbability(random, WITHER_ROOT_PROBABILITY)) {
@@ -628,7 +628,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param coords
 	 * @param topMatrix2
 	 */
-	private void addTop(IWorld world, Random random, ICoords coords, ICoords originalSpawnCoords, int y, Direction direction) {
+	private void addTop(ILevel world, Random random, ICoords coords, ICoords originalSpawnCoords, int y, Direction direction) {
 		if (direction != null) {
 			BlockState state = TreasureBlocks.WITHER_BROKEN_LOG.defaultBlockState().setValue(WitherRootBlock.FACING,
 					direction);
@@ -648,7 +648,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param random
 	 * @param witherGroveBounds
 	 */
-	private void buildScrub(IServerWorld world, ChunkGenerator generator, Random random, AxisAlignedBB witherGroveBounds) {
+	private void buildScrub(IServerLevel world, ChunkGenerator generator, Random random, AABB witherGroveBounds) {
 		Instant start = Instant.now();
 		Treasure.LOGGER.debug("adding scrub ...");
 		int width = Math.abs((int) (witherGroveBounds.maxX - witherGroveBounds.minX));
@@ -693,7 +693,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param random
 	 * @param witherGroveSize
 	 */
-	private void buildRocks(IServerWorld world, ChunkGenerator generator, Random random, AxisAlignedBB witherGroveSize) {
+	private void buildRocks(IServerLevel world, ChunkGenerator generator, Random random, AABB witherGroveSize) {
 		Instant start = Instant.now();
 		Treasure.LOGGER.debug("adding rocks ...");
 		int width = Math.abs((int) (witherGroveSize.maxX - witherGroveSize.minX));
@@ -747,7 +747,7 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements ITrea
 	 * @param minDistance
 	 * @return
 	 */
-	public static boolean checkWitherTreeProximity(IServerWorld world, ICoords coords, int minDistance) {
+	public static boolean checkWitherTreeProximity(IServerLevel world, ICoords coords, int minDistance) {
 
 		double minDistanceSq = minDistance * minDistance;
 

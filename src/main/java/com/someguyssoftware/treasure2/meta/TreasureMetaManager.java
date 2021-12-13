@@ -41,8 +41,8 @@ import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.server.ServerLevel;
 
 /**
  * @author Mark Gottschling on Jul 29, 2019
@@ -62,7 +62,7 @@ public class TreasureMetaManager extends MetaManager {
 //		buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
 	}
 
-	public static void init(ServerWorld world) {	
+	public static void init(ServerLevel world) {	
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class TreasureMetaManager extends MetaManager {
 	}
 
 	/**
-	 * Call in WorldEvent.Load() event handler. Loads and registers meta files from
+	 * Call in LevelEvent.Load() event handler. Loads and registers meta files from
 	 * the file system.
 	 * 
 	 * @param modID

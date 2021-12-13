@@ -21,8 +21,8 @@ package com.someguyssoftware.treasure2.particle;
 
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.LevelAccessor;
 
 /**
  * 
@@ -35,9 +35,9 @@ public interface ICollidingParticle {
 	 * 
 	 * @param world
 	 */
-	public void doPlayerCollisions(IWorld world);
+	public void doPlayerCollisions(ILevel world);
 	
-	public void inflictEffectOnPlayer(PlayerEntity player);
+	public void inflictEffectOnPlayer(Player player);
 	
 	public ICoords getSourceCoords();
 

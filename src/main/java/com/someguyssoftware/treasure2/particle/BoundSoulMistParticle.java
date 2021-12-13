@@ -3,10 +3,10 @@ package com.someguyssoftware.treasure2.particle;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.world.ClientLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.particles.BasicParticleType;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -23,7 +23,7 @@ public class BoundSoulMistParticle extends MistParticle {
 	 * @param velocityY
 	 * @param velocityZ
 	 */
-	public BoundSoulMistParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY,
+	public BoundSoulMistParticle(ClientLevel world, double x, double y, double z, double velocityX, double velocityY,
 			double velocityZ) {
 		super(world, x, y, z, velocityZ, velocityZ, velocityZ);
 	}
@@ -65,7 +65,7 @@ public class BoundSoulMistParticle extends MistParticle {
 		 * 
 		 */
 		@Override
-		public Particle createParticle(BasicParticleType data, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle createParticle(BasicParticleType data, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			BoundSoulMistParticle particle = new BoundSoulMistParticle(world, x, y, z, xSpeed, ySpeed, zSpeed);
 			particle.pickSprite(spriteSet);
 			return particle;

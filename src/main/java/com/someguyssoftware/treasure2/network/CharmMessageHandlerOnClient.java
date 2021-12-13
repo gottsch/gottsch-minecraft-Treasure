@@ -30,11 +30,11 @@ import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.world.ClientLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.entity.player.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.LogicalSidedProvider;
@@ -73,15 +73,15 @@ public class CharmMessageHandlerOnClient {
 		//  that the ctx handler is a client, and that Minecraft exists.
 		// Packets received on the server side must be handled differently!  See MessageHandlerOnServer
 
-		Optional<ClientWorld> clientWorld = LogicalSidedProvider.CLIENTWORLD.get(sideReceived);
-		if (!clientWorld.isPresent()) {
-			Treasure.LOGGER.warn("CharmMessageToClient context could not provide a ClientWorld.");
+		Optional<ClientLevel> clientLevel = LogicalSidedProvider.CLIENTWORLD.get(sideReceived);
+		if (!clientLevel.isPresent()) {
+			Treasure.LOGGER.warn("CharmMessageToClient context could not provide a ClientLevel.");
 			return;
 		}
 
 		// This code creates a new task which will be executed by the client during the next tick
 		//  In this case, the task is to call messageHandlerOnClient.processMessage(worldclient, message)
-		ctx.enqueueWork(() -> processMessage(clientWorld.get(), message));
+		ctx.enqueueWork(() -> processMessage(clientLevel.get(), message));
 	}
 
 	/**
@@ -89,10 +89,10 @@ public class CharmMessageHandlerOnClient {
 	 * @param worldClient
 	 * @param message
 	 */
-	private static void processMessage(ClientWorld worldClient, CharmMessageToClient message) {
+	private static void processMessage(ClientLevel worldClient, CharmMessageToClient message) {
 		Treasure.LOGGER.debug("received charm message -> {}", message);
 		try {
-			PlayerEntity player = worldClient.getPlayerByUUID(UUID.fromString(message.getPlayerName()));
+			Player player = worldClient.getPlayerByUUID(UUID.fromString(message.getPlayerName()));
 	        if (player != null) {
 	        	Treasure.LOGGER.debug("valid player -> {}", message.getPlayerName());
 	        	// check hands first

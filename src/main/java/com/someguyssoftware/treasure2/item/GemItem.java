@@ -2,7 +2,7 @@ package com.someguyssoftware.treasure2.item;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * @author Mark Gottschling on May 14, 2020

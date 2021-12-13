@@ -24,20 +24,20 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
-import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
+import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerBlockEntity;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IServerLevel;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.common.DungeonHooks;
 
 
@@ -67,7 +67,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(IServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(spawnCoords);
 		result.getData().getChestContext().setCoords(spawnCoords);
@@ -141,7 +141,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	 * @param block
 	 * @return
 	 */
-	private ICoords build6WideLayer(IWorld world, Random random, ICoords coords, Block block) {
+	private ICoords build6WideLayer(ILevel world, Random random, ICoords coords, Block block) {
 		ICoords startCoords = coords.add(-2, 0, -2);
 		for (int x = startCoords.getX(); x < startCoords.getX() + 6; x++) {
 			for (int z = startCoords.getZ(); z < startCoords.getZ() + 6; z++) {
@@ -159,7 +159,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	 * @param block
 	 * @return
 	 */
-	public ICoords buildTrapLayer(final IWorld world, final Random random, final ICoords coords, final Block block) {
+	public ICoords buildTrapLayer(final ILevel world, final Random random, final ICoords coords, final Block block) {
   	
 		// spawn random registered mobs on either side of the chest
     	world.setBlock(coords.add(-1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.defaultBlockState(), 3);

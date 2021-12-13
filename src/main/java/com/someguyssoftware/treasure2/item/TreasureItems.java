@@ -43,20 +43,20 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.item.SwordItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.nbt.CompoundTag;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -470,7 +470,7 @@ public class TreasureItems {
 
 		// CHARMS
 		COPPER_CHARM = new CharmItem(Treasure.MODID, TreasureConfig.ItemID.COPPER_CHARM, new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.bindable(true);
@@ -483,7 +483,7 @@ public class TreasureItems {
 			}
 		};
 		SILVER_CHARM = new CharmItem(Treasure.MODID, TreasureConfig.ItemID.SILVER_CHARM, new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.bindable(true);
@@ -496,7 +496,7 @@ public class TreasureItems {
 			}
 		};
 		GOLD_CHARM = new CharmItem(Treasure.MODID, TreasureConfig.ItemID.GOLD_CHARM, new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.bindable(true);
@@ -509,7 +509,7 @@ public class TreasureItems {
 			}
 		};
 		CHARM_BOOK = new CharmBook(Treasure.MODID, TreasureConfig.ItemID.CHARM_BOOK, new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.imbuing(true);
@@ -525,7 +525,7 @@ public class TreasureItems {
 		
 		// adornments
 		COPPER_RING = new Adornment(Treasure.MODID, TreasureConfig.ItemID.COPPER_RING, new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.imbue(true, 1);
@@ -541,7 +541,7 @@ public class TreasureItems {
 		};
 		
 		SILVER_RING = new Adornment(Treasure.MODID, TreasureConfig.ItemID.SILVER_RING, new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 2);
 					$.imbue(true, 1);
@@ -557,7 +557,7 @@ public class TreasureItems {
 		};
 		
 		GOLD_RING = new Adornment(Treasure.MODID, TreasureConfig.ItemID.GOLD_RING, new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 3);
 					$.imbue(true, 1);
@@ -573,7 +573,7 @@ public class TreasureItems {
 		};
 		
 		COPPER_NECKLACE = new Adornment(Treasure.MODID, TreasureConfig.ItemID.COPPER_NECKLACE, new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.imbue(true, 1);
@@ -589,7 +589,7 @@ public class TreasureItems {
 		};
 		
 		SILVER_NECKLACE = new Adornment(Treasure.MODID, TreasureConfig.ItemID.SILVER_NECKLACE, new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 2);
 					$.imbue(true, 1);
@@ -605,7 +605,7 @@ public class TreasureItems {
 		};
 		
 		GOLD_NECKLACE = new Adornment(Treasure.MODID, TreasureConfig.ItemID.GOLD_NECKLACE, new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 3);
 					$.imbue(true, 1);
@@ -621,7 +621,7 @@ public class TreasureItems {
 		};
 				
 		COPPER_BRACELET = new Adornment(Treasure.MODID, TreasureConfig.ItemID.COPPER_BRACELET, new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.imbue(true, 1);
@@ -637,7 +637,7 @@ public class TreasureItems {
 		};
 		
 		SILVER_BRACELET = new Adornment(Treasure.MODID, TreasureConfig.ItemID.SILVER_BRACELET, new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 2);
 					$.imbue(true, 1);
@@ -653,7 +653,7 @@ public class TreasureItems {
 		};
 		
 		GOLD_BRACELET = new Adornment(Treasure.MODID, TreasureConfig.ItemID.GOLD_BRACELET, new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.AIR.getRegistryName()).with($ -> {
 					$.innate(true, 3);
 					$.imbue(true, 1);
@@ -670,7 +670,7 @@ public class TreasureItems {
 		
 		// SPECIAL ADORNMENTS
 		ANGELS_RING = new Adornment(Treasure.MODID, "angels_ring", new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(WHITE_PEARL.getRegistryName()).with($ -> {
 					$.innate(true, 3);
 					$.imbuable = false;
@@ -687,7 +687,7 @@ public class TreasureItems {
 		};
 		
 		RING_OF_FORTITUDE = new Adornment(Treasure.MODID, "ring_of_fortitude", new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(BLACK_PEARL.getRegistryName()).with($ -> {
 					$.innate(true, 2);
 					$.imbuable = false;
@@ -703,7 +703,7 @@ public class TreasureItems {
 		};
 		
 		MEDICS_TOKEN = new Adornment(Treasure.MODID, "medics_token", new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(SAPPHIRE.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.imbuable = false;
@@ -718,7 +718,7 @@ public class TreasureItems {
 		};
 		
 		ADEPHAGIAS_BOUNTY = new Adornment(Treasure.MODID, "adephagias_bounty", new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.EMERALD.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.imbuable = false;
@@ -733,7 +733,7 @@ public class TreasureItems {
 		};
 		
 		SALANDAARS_WARD = new Adornment(Treasure.MODID, "salandaars_ward", new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(RUBY.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.imbuable = false;
@@ -748,7 +748,7 @@ public class TreasureItems {
 		};
 		
 		MIRTHAS_TORCH = new Adornment(Treasure.MODID, "mirthas_torch", new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(WHITE_PEARL.getRegistryName()).with($ -> {
 					$.innate(true, 1);
 					$.imbuable = false;
@@ -763,7 +763,7 @@ public class TreasureItems {
 		};
 		
 		POCKET_WATCH = new Adornment(Treasure.MODID, "pocket_watch", new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(TOPAZ.getRegistryName()).with($ -> {
 					$.innate = false;
 					$.imbuable = false;
@@ -777,7 +777,7 @@ public class TreasureItems {
 		};
 		
 		PEASANTS_FORTUNE = new Adornment(Treasure.MODID, "peasants_fortune", new Item.Properties()) {
-			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(Items.STONE.getRegistryName()).with($ -> { // use STONE as source Item so it can't be upgraded
 					$.innate = false;
 					$.imbuable = false;

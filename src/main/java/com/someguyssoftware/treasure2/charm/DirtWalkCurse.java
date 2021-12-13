@@ -25,17 +25,16 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.eventbus.api.Event;
 
@@ -67,7 +66,7 @@ public class DirtWalkCurse extends Charm {
 	}
 	
 	@Override
-	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
+	public boolean update(Level world, Random random, ICoords coords, Player player, Event event, final ICharmEntity entity) {
 		boolean result = false;
 		
 		// update every 10 seconds
@@ -77,7 +76,7 @@ public class DirtWalkCurse extends Charm {
                 BlockState state = world.getBlockState(coords.down(1).toPos());
 				if (state.getBlock() != Blocks.DIRT) {
                     world.setBlockAndUpdate(coords.down(1).toPos(), Blocks.DIRT.defaultBlockState());
-                    entity.setValue(MathHelper.clamp(entity.getValue() - 1.0,  0D, entity.getValue()));
+                    entity.setValue(Mth.clamp(entity.getValue() - 1.0,  0D, entity.getValue()));
 					result = true;
 				}
 			}
@@ -89,9 +88,9 @@ public class DirtWalkCurse extends Charm {
 	 * 
 	 */
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.DARK_RED;
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent(getLabel(entity)).withStyle(color)));
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn, ICharmEntity entity) {
+		ChatFormatting color = ChatFormatting.DARK_RED;
+		tooltip.add(new TranslatableComponent("tooltip.indent2", new TranslatableComponent(getLabel(entity)).withStyle(color)));
 	}
     
 	/**

@@ -31,10 +31,10 @@ import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryTy
 import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
+import net.minecraft.entity.player.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
@@ -46,7 +46,7 @@ public class HotbarEquipmentCharmHandler implements IEquipmentCharmHandler {
 	private static final int MAX_HOTBAR_CHARMS = 4;
 
 	@Override
-	public List<CharmContext> handleEquipmentCharms(Event event, ServerPlayerEntity player) {
+	public List<CharmContext> handleEquipmentCharms(Event event, ServerPlayer player) {
 		final List<CharmContext> contexts = new ArrayList<>(5);
 		AtomicInteger adornmentCount = new AtomicInteger(0);
 		AtomicReference<String> hotbarSlotStr = new AtomicReference<>("");

@@ -19,7 +19,7 @@
  */
 package com.someguyssoftware.treasure2.particle;
 
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.world.ClientLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -37,7 +37,7 @@ public class MistParticle extends AbstractMistParticle {
 	 * @param velocityZ
 	 * @param parentCoords
 	 */
-	public MistParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+	public MistParticle(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
 		super(world, x, y, z);
 		init();
 	}

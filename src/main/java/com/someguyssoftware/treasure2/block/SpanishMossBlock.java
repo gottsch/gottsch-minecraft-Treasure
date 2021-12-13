@@ -17,8 +17,8 @@ import com.someguyssoftware.treasure2.particle.data.CollidingParticleType;
 //import com.someguyssoftware.treasure2.particle.PoisonMistParticle;
 import com.someguyssoftware.treasure2.particle.data.ICollidingParticleType;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.block.BushBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -26,13 +26,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BellAttachment;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -56,7 +56,7 @@ public class SpanishMossBlock extends BushBlock implements ITreasureBlock {
 	 * 
 	 */
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(ACTIVATED);
 	}
 
@@ -67,7 +67,7 @@ public class SpanishMossBlock extends BushBlock implements ITreasureBlock {
 	 */
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
 
 		if (!TreasureConfig.FOG.enableFog.get()) {
 			return;
@@ -106,7 +106,7 @@ public class SpanishMossBlock extends BushBlock implements ITreasureBlock {
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState blockState, IBlockReader reader, BlockPos blockPos, PathType pathType) {
+	public boolean isPathfindable(BlockState blockState, LevelAccessor reader, BlockPos blockPos, PathType pathType) {
 		return pathType == PathType.AIR && !this.hasCollision ? true : super.isPathfindable(blockState, reader, blockPos, pathType);
 	}
 
@@ -116,7 +116,7 @@ public class SpanishMossBlock extends BushBlock implements ITreasureBlock {
 	}
 
 	@Override
-	protected boolean mayPlaceOn(BlockState p_200014_1_, IBlockReader p_200014_2_, BlockPos p_200014_3_) {
+	protected boolean mayPlaceOn(BlockState p_200014_1_, LevelAccessor p_200014_2_, BlockPos p_200014_3_) {
 		return true;
 	}
 }

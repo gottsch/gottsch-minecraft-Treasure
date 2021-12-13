@@ -11,23 +11,23 @@ import javax.annotation.Nullable;
 import com.someguyssoftware.gottschcore.block.ModBlock;
 import com.someguyssoftware.treasure2.Treasure;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.loot.LootContext;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 
 /**
  * Does NOT appear in any creative tab.
@@ -59,23 +59,23 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy
 	 * 
 	 */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, LevelAccessor worldIn, BlockPos pos, CollisionContext context) {
 		return AABB;
 	}
 	
 // DONT NEED
 //	@Override
-//	public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
+//	public void onBlockClicked(BlockState state, Level worldIn, BlockPos pos, Player player) {
 //		// TODO Auto-generated method stub
 //		Treasure.LOGGER.info("wither chest TOP clicked");		
-//		onBlockActivated(state, worldIn, pos, player, Hand.OFF_HAND, null);
+//		onBlockActivated(state, worldIn, pos, player, InteractionHand.OFF_HAND, null);
 //	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockRayTraceResult hit) {
 		Treasure.LOGGER.info("wither chest TOP activated");
 		// get the block at pos.down()
 		BlockState bottomState = world.getBlockState(pos.below());
@@ -86,7 +86,7 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy
 	 * 
 	 */
 	@Override
-	public void destroy(IWorld world, BlockPos pos, BlockState state) {
+	public void destroy(ILevel world, BlockPos pos, BlockState state) {
 		Treasure.LOGGER.debug("Breaking Wither Chest Top block....!");
 		BlockPos downPos = pos.below();
 		// destory placeholder above
@@ -100,7 +100,7 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy
 	 * 
 	 */
 //	@Override
-//	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+//	public void onBlockDestroyedByPlayer(Level worldIn, BlockPos pos, IBlockState state) {
 //		super.onBlockDestroyedByPlayer(worldIn, pos, state);
 //		BlockPos downPos = pos.down();
 //		// destory placeholder above
@@ -115,7 +115,7 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy
 	 * 
 	 */
 //	@Override
-//	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
+//	public void onBlockDestroyedByExplosion(Level worldIn, BlockPos pos, Explosion explosionIn) {
 //		super.onBlockDestroyedByExplosion(worldIn, pos, explosionIn);
 //		BlockPos downPos = pos.down();
 //		// destory placeholder above
@@ -136,7 +136,7 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy
 	    * Spawns the block's drops in the world. By the time this is called the Block has possibly been set to air via
 	    * Block.removedByPlayer
 	    */
-	   public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
+	   public void harvestBlock(Level worldIn, Player player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
 		   // do nothing - prevents spawnDrops from being called.
 	   }
 	
@@ -144,7 +144,7 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy
 	 * 
 	 */
 //    @Override
-//    public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
+//    public boolean isNormalCube(BlockState state, LevelAccessor world, BlockPos pos) {
 //    	return false;
 //    }
 

@@ -26,26 +26,26 @@ import javax.annotation.Nullable;
 
 import com.someguyssoftware.treasure2.Treasure;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.ILevelReader;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.server.ServerLevel;
 
 /**
  * @author Mark Gottschling on Jul 22, 2021
@@ -79,7 +79,7 @@ public class ModUtils {
 		 * @return
 		 */
 		@Nullable
-		public static Entity spawn(ServerWorld world, Entity entity, @Nullable ItemStack itemStack, @Nullable PlayerEntity player, BlockPos pos, SpawnReason spawnReason, boolean flag, boolean offsetFlag) {
+		public static Entity spawn(ServerLevel world, Entity entity, @Nullable ItemStack itemStack, @Nullable Player player, BlockPos pos, SpawnReason spawnReason, boolean flag, boolean offsetFlag) {
 			return spawn(world, entity, itemStack == null ? null : itemStack.getTag(), itemStack != null && itemStack.hasCustomHoverName() ? itemStack.getHoverName() : null, player, pos, spawnReason, flag, offsetFlag);
 		}
 
@@ -97,10 +97,10 @@ public class ModUtils {
 		 * @return
 		 */
 		@Nullable
-		public static Entity spawn(ServerWorld world, Entity entity,@Nullable CompoundNBT compoundNbt, @Nullable ITextComponent textComponent, @Nullable PlayerEntity player, BlockPos pos, SpawnReason spawnReason, boolean flag, boolean offsetFlag) {
+		public static Entity spawn(ServerLevel world, Entity entity,@Nullable CompoundTag compoundNbt, @Nullable TextComponent textComponent, @Nullable Player player, BlockPos pos, SpawnReason spawnReason, boolean flag, boolean offsetFlag) {
 			Entity t = create(world, entity, compoundNbt, textComponent, player, pos, spawnReason, flag, offsetFlag);
 			if (t != null) {
-				if (t instanceof net.minecraft.entity.MobEntity && net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn((net.minecraft.entity.MobEntity) t, world, pos.getX(), pos.getY(), pos.getZ(), null, spawnReason)) return null;
+				if (t instanceof net.minecraft.entity.Mob && net.minecraftforge.event.ForgeEventFactory.doSpecialSpawn((net.minecraft.entity.Mob) t, world, pos.getX(), pos.getY(), pos.getZ(), null, spawnReason)) return null;
 				world.addFreshEntityWithPassengers(t);
 			}
 			return t;
@@ -120,8 +120,8 @@ public class ModUtils {
 		 * @return
 		 */
 		@Nullable
-		public static Entity create(ServerWorld world, Entity entity, @Nullable CompoundNBT compound, @Nullable ITextComponent textComponent, 
-				@Nullable PlayerEntity player, BlockPos pos, SpawnReason spawnReason, boolean flag, boolean offfsetFlag) {
+		public static Entity create(ServerLevel world, Entity entity, @Nullable CompoundTag compound, @Nullable TextComponent textComponent, 
+				@Nullable Player player, BlockPos pos, SpawnReason spawnReason, boolean flag, boolean offfsetFlag) {
 
 			if (entity == null) {
 				return null;
@@ -134,9 +134,9 @@ public class ModUtils {
 					d0 = 0.0D;
 				}
 
-				entity.moveTo((double)pos.getX() + 0.5D, (double)pos.getY() + d0, (double)pos.getZ() + 0.5D, MathHelper.wrapDegrees(world.random.nextFloat() * 360.0F), 0.0F);
-				if (entity instanceof MobEntity) {
-					MobEntity mobentity = (MobEntity)entity;
+				entity.moveTo((double)pos.getX() + 0.5D, (double)pos.getY() + d0, (double)pos.getZ() + 0.5D, Mth.wrapDegrees(world.random.nextFloat() * 360.0F), 0.0F);
+				if (entity instanceof Mob) {
+					Mob mobentity = (Mob)entity;
 					mobentity.yHeadRot = mobentity.yRot;
 					mobentity.yBodyRot = mobentity.yRot;
 					mobentity.finalizeSpawn(world, world.getCurrentDifficultyAt(mobentity.blockPosition()), spawnReason, (ILivingEntityData)null, compound);
@@ -160,8 +160,8 @@ public class ModUtils {
 		 * @param aabb
 		 * @return
 		 */
-		protected static double getYOffset(IWorldReader world, BlockPos pos, boolean flag, AxisAlignedBB aabb) {
-			AxisAlignedBB axisalignedbb = new AxisAlignedBB(pos);
+		protected static double getYOffset(ILevelReader world, BlockPos pos, boolean flag, AABB aabb) {
+			AABB axisalignedbb = new AABB(pos);
 			if (flag) {
 				axisalignedbb = axisalignedbb.expandTowards(0.0D, -1.0D, 0.0D);
 			}
@@ -179,12 +179,12 @@ public class ModUtils {
 		 * @param entity
 		 * @param compoundNbt
 		 */
-		protected static void updateCustomEntityTag(World world, @Nullable PlayerEntity player, @Nullable Entity entity, @Nullable CompoundNBT compoundNbt) {
+		protected static void updateCustomEntityTag(Level world, @Nullable Player player, @Nullable Entity entity, @Nullable CompoundTag compoundNbt) {
 			if (compoundNbt != null && compoundNbt.contains("EntityTag", 10)) {
 				MinecraftServer minecraftserver = world.getServer();
 				if (minecraftserver != null && entity != null) {
 					if (world.isClientSide || !entity.onlyOpCanSetNbt() || player != null && minecraftserver.getPlayerList().isOp(player.getGameProfile())) {
-						CompoundNBT compoundnbt = entity.saveWithoutId(new CompoundNBT());
+						CompoundTag compoundnbt = entity.saveWithoutId(new CompoundTag());
 						UUID uuid = entity.getUUID();
 						compoundnbt.merge(compoundNbt.getCompound("EntityTag"));
 						entity.setUUID(uuid);

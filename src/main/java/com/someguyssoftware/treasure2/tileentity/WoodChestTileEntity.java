@@ -2,10 +2,10 @@ package com.someguyssoftware.treasure2.tileentity;
 
 import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * 
@@ -20,7 +20,7 @@ public class WoodChestTileEntity extends AbstractTreasureChestTileEntity {
 	 */
 	public WoodChestTileEntity() {
 		super(TreasureTileEntities.WOOD_CHEST_TILE_ENTITY_TYPE);
-		setCustomName(new TranslationTextComponent("display.wood_chest.name"));
+		setCustomName(new TranslatableComponent("display.wood_chest.name"));
 	}
 	
 	/**
@@ -30,7 +30,7 @@ public class WoodChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param player
 	 * @return
 	 */
-	public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player) {
+	public Container createServerContainer(int windowID, PlayerInventory inventory, Player player) {
 		return new StandardChestContainer(windowID, inventory, this);
 	}
 }

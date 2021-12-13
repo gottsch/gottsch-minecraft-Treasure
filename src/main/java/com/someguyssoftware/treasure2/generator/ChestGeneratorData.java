@@ -9,8 +9,8 @@ import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 import com.someguyssoftware.treasure2.chest.ChestEnvironment;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.resources.ResourceLocation;
 
 
 /**

@@ -23,9 +23,9 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.item.IWishable;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -53,7 +53,7 @@ public class PlayerEventHandler {
 		Item item = event.getEntityItem().getItem().getItem();
 		if (item instanceof IWishable) {
 			ItemStack stack = event.getEntityItem().getItem();
-			CompoundNBT nbt = new CompoundNBT();
+			CompoundTag nbt = new CompoundTag();
 			nbt.putString(IWishable.DROPPED_BY_KEY, event.getPlayer().getName().getString());
 			//			Treasure.LOGGER.debug("adding nbt tag to wishable stack...");
 			stack.setTag(nbt);			

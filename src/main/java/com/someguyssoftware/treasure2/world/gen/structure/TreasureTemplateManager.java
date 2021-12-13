@@ -61,15 +61,15 @@ import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.template.Template;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.server.ServerLevel;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
@@ -123,7 +123,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	/**
 	 * 
 	 */
-	public void init(ServerWorld world) {
+	public void init(ServerLevel world) {
 		// initialize table
 		for (IMetaArchetype archetype : StructureArchetype.values()) {
 			for (IMetaType type : com.someguyssoftware.treasure2.meta.StructureType.values()) {
@@ -340,7 +340,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	 * @return
 	 */
 //	@Deprecated
-//	public TemplateHolder getTemplate(IWorld world, Random random, StructureArchetype archetype, StructureType type, Biome biome) {
+//	public TemplateHolder getTemplate(ILevel world, Random random, StructureArchetype archetype, StructureType type, Biome biome) {
 //		// get structure by archetype (subterranean) and type (room)
 //		String key =archetype.getName()	+ ":" + type.getName();
 //		
@@ -423,7 +423,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 			boolean flag;
 
 			try {
-				CompoundNBT nbttagcompound = template.save(new CompoundNBT());
+				CompoundTag nbttagcompound = template.save(new CompoundTag());
 				outputstream = new FileOutputStream(file2);
 				CompressedStreamTools.writeCompressed(nbttagcompound, outputstream);
 				return true;

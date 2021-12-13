@@ -4,7 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;

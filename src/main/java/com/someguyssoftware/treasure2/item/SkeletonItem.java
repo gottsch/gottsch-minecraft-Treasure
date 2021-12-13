@@ -7,11 +7,11 @@ import com.someguyssoftware.gottschcore.block.BlockContext;
 import com.someguyssoftware.gottschcore.item.ModBlockItem;
 import com.someguyssoftware.treasure2.block.SkeletonBlock;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
 
 /**
  * @author Mark Gottschling on Feb 2, 2019

@@ -7,11 +7,11 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.block.TorchBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * @author Mark Gottschling on Mar 1, 2020
@@ -28,7 +28,7 @@ public interface IMistSupport {
 	 * @param z
 	 * @return
 	 */
-	default public boolean checkTorchPrevention(World world, Random random, int x, int y, int z) {
+	default public boolean checkTorchPrevention(Level world, Random random, int x, int y, int z) {
 		int numberOfTorches = 0;
 		// if all the blocks in the immediate area are loaded
 		if (world.hasChunksAt(new BlockPos(x - 3, y - 3, z - 3), new BlockPos(x + 3, y + 3, z + 3))) {

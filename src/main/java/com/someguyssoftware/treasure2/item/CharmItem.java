@@ -39,15 +39,15 @@ import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 /**
@@ -68,7 +68,7 @@ public class CharmItem extends ModItem {
 
 
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		// TODO create new CharmItemCapProvider which includes POUCHABLE cap (not everything that is charmable is pouchable)
 		Treasure.LOGGER.debug("{} item initiating caps", stack.getItem().getRegistryName().toString());
 		CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
@@ -79,10 +79,10 @@ public class CharmItem extends ModItem {
 	 * 
 	 */
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		// charmable info
-		tooltip.add(new TranslationTextComponent("tooltip.charmable.usage").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
+		tooltip.add(new TranslatableComponent("tooltip.charmable.usage").withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC));
 		ICharmableCapability cap = getCap(stack);
 		if (cap.isCharmed()) {
 			cap.appendHoverText(stack, worldIn, tooltip, flagIn);
@@ -131,8 +131,8 @@ public class CharmItem extends ModItem {
 	 * NOTE getShareTag() and readShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands.
 	 */
 	@Override
-    public CompoundNBT getShareTag(ItemStack stack) {
-        CompoundNBT nbt = stack.getOrCreateTag();
+    public CompoundTag getShareTag(ItemStack stack) {
+        CompoundTag nbt = stack.getOrCreateTag();
         ICharmableCapability cap = stack.getCapability(CHARMABLE).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
 
         // TODO is there a way to call CharmableCapabilityStorage.write() from here?  This is an exact duplicate
@@ -144,9 +144,9 @@ public class CharmItem extends ModItem {
 			for (int index = 0; index < cap.getCharmEntities().length; index++) {
 				List<ICharmEntity> entityList = cap.getCharmEntities()[index];
 				if (entityList != null && !entityList.isEmpty()) {
-					ListNBT listNbt = new ListNBT();
+					ListTag listNbt = new ListTag();
 					for (ICharmEntity entity : entityList) {
-						CompoundNBT entityNbt = new CompoundNBT();
+						CompoundTag entityNbt = new CompoundTag();
 						listNbt.add(entity.save(entityNbt));						
 					}
 					nbt.put(InventoryType.getByValue(index).name(), listNbt);
@@ -179,13 +179,13 @@ public class CharmItem extends ModItem {
     }
 
     @Override
-    public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public void readShareTag(ItemStack stack, @Nullable CompoundTag nbt) {
         super.readShareTag(stack, nbt);
 
-		if (nbt instanceof CompoundNBT) {
+		if (nbt instanceof CompoundTag) {
 			 ICharmableCapability cap = stack.getCapability(CHARMABLE).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
 
-			CompoundNBT tag = (CompoundNBT) nbt;
+			CompoundTag tag = (CompoundTag) nbt;
 			for (InventoryType type : InventoryType.values()) {
 				// clear the list
 				cap.getCharmEntities()[type.getValue()].clear();				
@@ -193,10 +193,10 @@ public class CharmItem extends ModItem {
 				 *  load the list
 				 */
 				if (tag.contains(type.name())) {
-					ListNBT listNbt = tag.getList(type.name(), 10);
+					ListTag listNbt = tag.getList(type.name(), 10);
 					listNbt.forEach(e -> {
 						// load the charm
-						Optional<ICharm> charm = Charm.load((CompoundNBT) ((CompoundNBT)e).get(CHARM));
+						Optional<ICharm> charm = Charm.load((CompoundTag) ((CompoundTag)e).get(CHARM));
 						if (!charm.isPresent()) {
 							return;
 						}
@@ -204,7 +204,7 @@ public class CharmItem extends ModItem {
 						ICharmEntity entity = charm.get().createEntity();
 						
 						// load entity
-						entity.load((CompoundNBT)e);
+						entity.load((CompoundTag)e);
 						
 						// add the entity to the list
 						cap.getCharmEntities()[type.getValue()].add(entity);

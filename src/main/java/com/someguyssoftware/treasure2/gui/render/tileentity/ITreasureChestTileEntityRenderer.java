@@ -4,13 +4,13 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.someguyssoftware.treasure2.block.StandardChestBlock;
 import com.someguyssoftware.treasure2.gui.model.ITreasureChestModel;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 

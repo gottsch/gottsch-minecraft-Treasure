@@ -2,12 +2,12 @@ package com.someguyssoftware.treasure2.tileentity;
 
 import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * 
@@ -26,12 +26,12 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 	 */
 	public CrateChestTileEntity() {
 		super(TreasureTileEntities.CRATE_CHEST_TILE_ENTITY_TYPE);
-		setCustomName(new TranslationTextComponent("display.crate_chest.name"));
+		setCustomName(new TranslatableComponent("display.crate_chest.name"));
 	}
 
 	public CrateChestTileEntity(TileEntityType<? extends CrateChestTileEntity> tileEntityType) {
 		super(tileEntityType);
-		setCustomName(new TranslationTextComponent("display.crate_chest.name"));
+		setCustomName(new TranslatableComponent("display.crate_chest.name"));
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class CrateChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param player
 	 * @return
 	 */
-	public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player) {
+	public Container createServerContainer(int windowID, PlayerInventory inventory, Player player) {
 		return new StandardChestContainer(windowID, inventory, this);
 	}
 

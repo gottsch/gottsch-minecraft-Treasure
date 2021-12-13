@@ -24,8 +24,8 @@ import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.KEY
 
 import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -38,7 +38,7 @@ import net.minecraftforge.items.ItemStackHandler;
  * @author Mark Gottschling on May 11, 2020
  *
  */
-public class KeyRingCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundNBT> {
+public class KeyRingCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundTag> {
 	private static final String INVENTORY_TAG = "inventory";
 	private static final String STATE_TAG = "state";
 	
@@ -52,12 +52,12 @@ public class KeyRingCapabilityProvider implements ICapabilityProvider, ICapabili
 	 * 
 	 */
 	@Override
-	public CompoundNBT serializeNBT() {
-		CompoundNBT parentTag = new CompoundNBT();
-		CompoundNBT inventoryTag = this.inventoryInstance.serializeNBT();
+	public CompoundTag serializeNBT() {
+		CompoundTag parentTag = new CompoundTag();
+		CompoundTag inventoryTag = this.inventoryInstance.serializeNBT();
 		parentTag.put(INVENTORY_TAG, inventoryTag);
 		
-		CompoundNBT stateTag = (CompoundNBT)KEY_RING_CAPABILITY.getStorage().writeNBT(KEY_RING_CAPABILITY, instance, null);
+		CompoundTag stateTag = (CompoundTag)KEY_RING_CAPABILITY.getStorage().writeNBT(KEY_RING_CAPABILITY, instance, null);
 		parentTag.put(STATE_TAG, stateTag);
 		return parentTag;
 	}
@@ -66,8 +66,8 @@ public class KeyRingCapabilityProvider implements ICapabilityProvider, ICapabili
 	 * 
 	 */
 	@Override
-	public void deserializeNBT(CompoundNBT nbt) {		
-		this.inventoryInstance.deserializeNBT((CompoundNBT) nbt.get(INVENTORY_TAG));
+	public void deserializeNBT(CompoundTag nbt) {		
+		this.inventoryInstance.deserializeNBT((CompoundTag) nbt.get(INVENTORY_TAG));
 		KEY_RING_CAPABILITY.getStorage().readNBT(KEY_RING_CAPABILITY, this.instance, null, nbt.getCompound(STATE_TAG));
 	}
 

@@ -25,14 +25,14 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.Event;
 
@@ -63,10 +63,10 @@ public class ShieldingCharm extends Charm {
 	}
 
 	@Override
-	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
+	public boolean update(Level world, Random random, ICoords coords, Player player, Event event, final ICharmEntity entity) {
 		boolean result = false;
 		if (entity.getValue() > 0 && player.isAlive()) {
-			if (((LivingDamageEvent)event).getEntity() instanceof PlayerEntity) {
+			if (((LivingDamageEvent)event).getEntity() instanceof Player) {
 				// get the source and amount
 				double amount = ((LivingDamageEvent)event).getAmount();
 				// calculate the new amount
@@ -93,10 +93,10 @@ public class ShieldingCharm extends Charm {
 	 * 
 	 */
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.BLUE;
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent(getLabel(entity)).withStyle(color)));
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent("tooltip.charm.rate.shielding", Math.round(this.getMaxPercent()*100)).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn, ICharmEntity entity) {
+		ChatFormatting color = ChatFormatting.BLUE;
+		tooltip.add(new TranslatableComponent("tooltip.indent2", new TranslatableComponent(getLabel(entity)).withStyle(color)));
+		tooltip.add(new TranslatableComponent("tooltip.indent2", new TranslatableComponent("tooltip.charm.rate.shielding", Math.round(this.getMaxPercent()*100)).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC)));
 
 	}
 

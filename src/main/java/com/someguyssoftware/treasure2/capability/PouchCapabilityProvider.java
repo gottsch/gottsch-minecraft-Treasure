@@ -23,8 +23,8 @@ import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.POU
 
 import com.someguyssoftware.treasure2.inventory.PouchInventory;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
@@ -36,7 +36,7 @@ import net.minecraftforge.items.ItemStackHandler;
  * @author Mark Gottschling on May 14, 2020
  *
  */
-public class PouchCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundNBT> {
+public class PouchCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundTag> {
 
     // capabilities for item
 	private final ItemStackHandler instance = new ItemStackHandler(PouchInventory.INVENTORY_SIZE);
@@ -51,13 +51,13 @@ public class PouchCapabilityProvider implements ICapabilityProvider, ICapability
 	}
 
 	@Override
-	public CompoundNBT serializeNBT() {
-		CompoundNBT tag = this.instance.serializeNBT();
+	public CompoundTag serializeNBT() {
+		CompoundTag tag = this.instance.serializeNBT();
 		return tag;
 	}
 
 	@Override
-	public void deserializeNBT(CompoundNBT nbt) {
+	public void deserializeNBT(CompoundTag nbt) {
 //		POUCH_CAPABILITY.getStorage().readNBT(POUCH_CAPABILITY, instance, null, nbt);
 		this.instance.deserializeNBT(nbt);
 	}

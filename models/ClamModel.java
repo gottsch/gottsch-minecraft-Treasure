@@ -6,7 +6,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 
 public class clam extends ModelBase {
 	private final ModelRenderer hinge;

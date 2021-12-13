@@ -21,8 +21,8 @@ package com.someguyssoftware.treasure2.capability;
 
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY_CAPABILITY;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
@@ -33,7 +33,7 @@ import net.minecraftforge.common.util.LazyOptional;
  * @author Mark Gottschling on Aug 2, 2021
  *
  */
-public class DurabilityCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundNBT> {
+public class DurabilityCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundTag> {
 
     // capabilities for item
 	private final IDurabilityCapability instance = new DurabilityCapability();
@@ -48,13 +48,13 @@ public class DurabilityCapabilityProvider implements ICapabilityProvider, ICapab
 	}
 
 	@Override
-	public CompoundNBT serializeNBT() {
-		CompoundNBT tag = (CompoundNBT)DURABILITY_CAPABILITY.getStorage().writeNBT(DURABILITY_CAPABILITY, instance, null);
+	public CompoundTag serializeNBT() {
+		CompoundTag tag = (CompoundTag)DURABILITY_CAPABILITY.getStorage().writeNBT(DURABILITY_CAPABILITY, instance, null);
 		return tag;
 	}
 
 	@Override
-	public void deserializeNBT(CompoundNBT nbt) {
+	public void deserializeNBT(CompoundTag nbt) {
 		DURABILITY_CAPABILITY.getStorage().readNBT(DURABILITY_CAPABILITY, instance, null, nbt);
 	}
 }

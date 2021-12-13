@@ -21,7 +21,7 @@ package com.someguyssoftware.treasure2.charm;
 
 import java.util.Optional;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 /**
  * 
@@ -49,15 +49,15 @@ public interface ICharmEntity {
 	 * @param nbt
 	 * @return
 	 */
-	CompoundNBT save(CompoundNBT nbt);
+	CompoundTag save(CompoundTag nbt);
 	
 	/**
 	 * 
 	 * @param nbt
 	 * @return
 	 */
-//	public static Optional<ICharmEntity> load(CompoundNBT nbt) {
-//		Optional<ICharm> charm = Charm.load((CompoundNBT) nbt.get(CHARM));
+//	public static Optional<ICharmEntity> load(CompoundTag nbt) {
+//		Optional<ICharm> charm = Charm.load((CompoundTag) nbt.get(CHARM));
 //		if (!charm.isPresent()) {
 //			return Optional.empty();
 //		}
@@ -75,7 +75,7 @@ public interface ICharmEntity {
 //		return Optional.of(entity);
 //	}
 	
-	default public boolean load(CompoundNBT nbt) {
+	default public boolean load(CompoundTag nbt) {
 		if (nbt.contains(VALUE)) {
 			setValue(nbt.getDouble(VALUE));
 		}

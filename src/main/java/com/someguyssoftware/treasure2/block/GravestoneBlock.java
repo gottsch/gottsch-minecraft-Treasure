@@ -11,17 +11,17 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.particle.TreasureParticles;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.particles.IParticleData;
-import net.minecraft.util.Mirror;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -61,7 +61,7 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 	 * 
 	 */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, LevelAccessor worldIn, BlockPos pos, CollisionContext context) {
 		switch(state.getValue(FACING)) {
 		default:
 		case NORTH:
@@ -89,7 +89,7 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 	 */
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
 
 		if (!TreasureConfig.FOG.enableFog.get()) {
 			return;

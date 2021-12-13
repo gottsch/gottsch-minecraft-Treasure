@@ -8,7 +8,7 @@ import com.google.common.collect.Multimap;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 
 /**
  * 

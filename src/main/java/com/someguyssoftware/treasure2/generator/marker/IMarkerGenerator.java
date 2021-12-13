@@ -8,7 +8,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.generator.IGeneratorResult;
 
-import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IServerLevel;
 import net.minecraft.world.gen.ChunkGenerator;
 
 /**
@@ -25,7 +25,7 @@ public interface IMarkerGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param config
 	 * @return
 	 */
-	public abstract RESULT generate(IServerWorld world, Random random, ICoords spawnCoords);
+	public abstract RESULT generate(IServerLevel world, Random random, ICoords spawnCoords);
 	
 	/**
 	 * 
@@ -35,5 +35,5 @@ public interface IMarkerGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public abstract RESULT generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords spawnCoords);
+	public abstract RESULT generate(IServerLevel world, ChunkGenerator generator, Random random, ICoords spawnCoords);
 }

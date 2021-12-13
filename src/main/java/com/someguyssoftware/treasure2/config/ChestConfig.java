@@ -93,7 +93,7 @@ public class ChestConfig implements IChestConfig {
 		}
 	}
 	
-//	@RequiresWorldRestart
+//	@RequiresLevelRestart
 	public ForgeConfigSpec.ConfigValue<Boolean> enableChest;
 	public ForgeConfigSpec.ConfigValue<Integer> chunksPerChest;
 	public ForgeConfigSpec.ConfigValue<Integer> avgChunksPerChestVariance;

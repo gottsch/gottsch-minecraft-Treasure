@@ -26,10 +26,10 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+
 
 /**
  * @author Mark Gottschling on Apr 25, 2020
@@ -90,7 +90,7 @@ public abstract class Charm implements ICharm {
 	 * @param nbt
 	 * @return
 	 */
-	public static Optional<ICharm> load(CompoundNBT nbt) {
+	public static Optional<ICharm> load(CompoundTag nbt) {
 		Optional<ICharm> charm = Optional.empty();
 		// read the name of the charm and fetch from the registry
 		try {
@@ -113,7 +113,7 @@ public abstract class Charm implements ICharm {
 	 * @return
 	 */
 	@Override
-	public CompoundNBT save(CompoundNBT nbt) {
+	public CompoundTag save(CompoundTag nbt) {
 		try {
 			nbt.putString("name", this.name.toString());
 		}
@@ -130,7 +130,7 @@ public abstract class Charm implements ICharm {
 	 */
 	@SuppressWarnings("deprecation")
 	public String getLabel(ICharmEntity entity) {
-		return new TranslationTextComponent("tooltip.charm.type." + getType().toLowerCase()).getString() + " " + String.valueOf(getLevel()) + " "  + getUsesGauge(entity) + " " + (this.effectStackable ? "+" : "-");
+		return new TranslatableComponent("tooltip.charm.type." + getType().toLowerCase()).getString() + " " + String.valueOf(getLevel()) + " "  + getUsesGauge(entity) + " " + (this.effectStackable ? "+" : "-");
 	}
 
 	/**
@@ -140,7 +140,7 @@ public abstract class Charm implements ICharm {
 	 */
 	@SuppressWarnings("deprecation")
 	public String getUsesGauge(ICharmEntity entity) {
-		return new TranslationTextComponent("tooltip.charm.uses_gauge",
+		return new TranslatableComponent("tooltip.charm.uses_gauge",
 				String.valueOf(Math.toIntExact(Math.round(entity.getValue()))), 
 				String.valueOf(Math.toIntExact(Math.round(getMaxValue())))).getString();
 	}

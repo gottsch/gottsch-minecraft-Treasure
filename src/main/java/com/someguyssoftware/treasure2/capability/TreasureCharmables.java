@@ -22,7 +22,7 @@ package com.someguyssoftware.treasure2.capability;
 import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * 

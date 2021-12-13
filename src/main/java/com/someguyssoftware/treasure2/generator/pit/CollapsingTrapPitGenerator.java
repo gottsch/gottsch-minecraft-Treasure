@@ -31,10 +31,10 @@ import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.world.IServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.IServerLevel;
 
 
 /**
@@ -58,7 +58,7 @@ public class CollapsingTrapPitGenerator extends AbstractPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(IServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
 			Treasure.LOGGER.debug("Generated Collapsing Trap Pit at " + spawnCoords.toShortString());
@@ -75,7 +75,7 @@ public class CollapsingTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ICoords buildPit(IServerWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
+	public ICoords buildPit(IServerLevel world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
 
 		// replace surface and build air shaft
 		int minCoordsX = coords.getX() - 2;

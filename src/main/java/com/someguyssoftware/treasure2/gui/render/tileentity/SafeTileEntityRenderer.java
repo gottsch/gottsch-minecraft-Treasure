@@ -22,11 +22,11 @@ package com.someguyssoftware.treasure2.gui.render.tileentity;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.gui.model.SafeModel;
 import com.someguyssoftware.treasure2.gui.model.WitherChestModel;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-import com.someguyssoftware.treasure2.tileentity.SafeTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
+import com.someguyssoftware.treasure2.tileentity.SafeBlockEntity;
 
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

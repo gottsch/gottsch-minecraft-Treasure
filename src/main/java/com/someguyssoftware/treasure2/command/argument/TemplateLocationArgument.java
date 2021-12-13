@@ -11,12 +11,12 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 
 import net.minecraft.command.CommandSource;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class TemplateLocationArgument implements ArgumentType<TemplateLocation> {
 	private static final Collection<String> EXAMPLES = ImmutableList.of("x", "y", "z");
 	
-	private static final SimpleCommandExceptionType INVALID_LOCATION_EXCEPTION = new SimpleCommandExceptionType(new TranslationTextComponent("arguments.template.location.invalid"));
+	private static final SimpleCommandExceptionType INVALID_LOCATION_EXCEPTION = new SimpleCommandExceptionType(new TranslatableComponent("arguments.template.location.invalid"));
 	
 	public static TemplateLocationArgument templateLocation() {
 		return new TemplateLocationArgument();

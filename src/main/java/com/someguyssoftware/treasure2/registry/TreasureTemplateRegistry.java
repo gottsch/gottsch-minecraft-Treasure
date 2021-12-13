@@ -12,9 +12,9 @@ import com.someguyssoftware.treasure2.world.gen.structure.DecayResources;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateManifest;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.util.datafix.DataFixesManager;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.server.ServerLevel;
 
 /**
  * @author Mark Gottschling on Jan 10, 2021
@@ -91,7 +91,7 @@ public class TreasureTemplateRegistry {
 	 * 
 	 * @param world
 	 */
-	public static void initialize(ServerWorld world) {
+	public static void initialize(ServerLevel world) {
 		templateManager.init(world);
 		
 	}

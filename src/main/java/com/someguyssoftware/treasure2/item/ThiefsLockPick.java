@@ -10,13 +10,13 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
 /**
  * 
@@ -40,16 +40,16 @@ public class ThiefsLockPick extends KeyItem {
 	 * Specials: [text] [color=gold]
 	 */
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
-		TranslationTextComponent s1 = new TranslationTextComponent("tooltip.thiefs_lock_pick.specials", 
+		TranslatableComponent s1 = new TranslatableComponent("tooltip.thiefs_lock_pick.specials", 
 				getSuccessProbability(), 
 				(this.getSuccessProbability() - (this.getSuccessProbability()/4)),
 				(getSuccessProbability()/2));
 			
-		TranslationTextComponent s2 = new TranslationTextComponent("tooltip.label.specials", 
-				TextFormatting.GOLD + s1.getString());
+		TranslatableComponent s2 = new TranslatableComponent("tooltip.label.specials", 
+				ChatFormatting.GOLD + s1.getString());
 		tooltip.add(s2);
 	}
 	

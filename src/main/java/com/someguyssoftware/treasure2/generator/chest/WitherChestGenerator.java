@@ -24,13 +24,13 @@ import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.IServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.ChunkGenerator;
 
 /**
@@ -110,7 +110,7 @@ public class WitherChestGenerator implements IChestGenerator {
 	 * Don't place any markers
 	 */
 	@Override
-	public void addMarkers(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords, boolean isSurfaceChest) {
+	public void addMarkers(IServerLevel world, ChunkGenerator generator, Random random, ICoords coords, boolean isSurfaceChest) {
 		return;
 	}
 	
@@ -123,7 +123,7 @@ public class WitherChestGenerator implements IChestGenerator {
 	 * @return
 	 */
 	@Override
-	public TileEntity placeInWorld(IServerWorld world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
+	public TileEntity placeInLevel(IServerLevel world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
 		GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
 		// ensure that chest is of type WITHER_CHEST
@@ -145,7 +145,7 @@ public class WitherChestGenerator implements IChestGenerator {
 	}
 	
 	@Override
-	public TileEntity placeInWorld(IServerWorld world, Random random, ICoords chestCoords, AbstractChestBlock chest, BlockState state) {
+	public TileEntity placeInLevel(IServerLevel world, Random random, ICoords chestCoords, AbstractChestBlock chest, BlockState state) {
 		// replace block @ coords
 		GenUtil.replaceBlockWithChest(world, random, chestCoords, chest, state);
 		

@@ -28,8 +28,8 @@ import com.someguyssoftware.treasure2.inventory.PouchContainer;
 
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 /**
  * 
  * @author Mark Gottschling on May 14, 2020
@@ -46,7 +46,7 @@ public class PouchContainerScreen extends ContainerScreen<PouchContainer> {
 	 * @param title
 	 */
 	public PouchContainerScreen(PouchContainer screenContainer, PlayerInventory playerInventory,
-			ITextComponent title) {
+			TextComponent title) {
 		super(screenContainer, playerInventory, title);
 		// Set the width and height of the gui.  Should match the size of the TEXTURE!
 		imageWidth = 177;

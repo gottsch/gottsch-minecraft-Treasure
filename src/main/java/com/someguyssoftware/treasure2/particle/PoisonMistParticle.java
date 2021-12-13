@@ -28,8 +28,8 @@ import com.someguyssoftware.treasure2.particle.data.CollidingParticleType;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.world.ClientLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraftforge.api.distmarker.Dist;
@@ -48,7 +48,7 @@ public class PoisonMistParticle extends AbstractCollidingMistParticle {
 	 * @param velocityZ
 	 * @param parentCoords
 	 */
-	public PoisonMistParticle(ClientWorld world, double x, double y, double z, ICoords coords) {
+	public PoisonMistParticle(ClientLevel world, double x, double y, double z, ICoords coords) {
 		super(world, x, y, z, coords);
 		init();
 	}
@@ -62,7 +62,7 @@ public class PoisonMistParticle extends AbstractCollidingMistParticle {
 	 * 
 	 */
 	@Override
-	public void inflictEffectOnPlayer(PlayerEntity player) {
+	public void inflictEffectOnPlayer(Player player) {
 		if (WorldInfo.isServerSide(player.level)) {
 			return;
 		}
@@ -103,7 +103,7 @@ public class PoisonMistParticle extends AbstractCollidingMistParticle {
 		 * 
 		 */
 		@Override
-		public Particle createParticle(CollidingParticleType data, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle createParticle(CollidingParticleType data, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			PoisonMistParticle particle = new PoisonMistParticle(world, x, y, z, data.getSourceCoords());
 			particle.pickSprite(spriteSet);
 			return particle;

@@ -7,7 +7,7 @@ import com.someguyssoftware.gottschcore.spatial.Heading;
 import com.someguyssoftware.gottschcore.spatial.Rotate;
 import com.someguyssoftware.treasure2.Treasure;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 /**
  * Defines a slot on a chest where a lock is placed.
@@ -144,7 +144,7 @@ public class LockSlot implements ILockSlot {
 	 * @return
 	 */
 	@Override
-	public CompoundNBT writeToNBT(CompoundNBT nbt) {
+	public CompoundTag writeToNBT(CompoundTag nbt) {
 		try {
 			nbt.putInt("index", getIndex());
 			nbt.putInt("face", getFace().getIndex());

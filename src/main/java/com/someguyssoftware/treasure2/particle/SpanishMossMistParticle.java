@@ -22,7 +22,7 @@ package com.someguyssoftware.treasure2.particle;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.world.ClientLevel;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -45,7 +45,7 @@ public class SpanishMossMistParticle extends AbstractMistParticle {
 	 * @param velocityZ
 	 * @param parentCoords
 	 */
-	public SpanishMossMistParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+	public SpanishMossMistParticle(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
 		super(world, x, y, z);
 		this.xd = (Math.random() * 2.0D - 1.0D) * 0.0090200D;
 		this.zd = (Math.random() * 2.0D - 1.0D) * 0.0090200D;
@@ -89,7 +89,7 @@ public class SpanishMossMistParticle extends AbstractMistParticle {
 		 * 
 		 */
 		@Override
-		public Particle createParticle(BasicParticleType data, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle createParticle(BasicParticleType data, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			SpanishMossMistParticle particle = new SpanishMossMistParticle(world, x, y, z, xSpeed, ySpeed, zSpeed);
 			particle.pickSprite(spriteSet);
 			return particle;

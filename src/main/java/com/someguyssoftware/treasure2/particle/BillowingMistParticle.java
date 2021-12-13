@@ -3,7 +3,7 @@ package com.someguyssoftware.treasure2.particle;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.world.ClientLevel;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -25,7 +25,7 @@ public class BillowingMistParticle extends MistParticle {
 	 * @param velocityZ
 	 * @param parentCoords
 	 */
-	public BillowingMistParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY,
+	public BillowingMistParticle(ClientLevel world, double x, double y, double z, double velocityX, double velocityY,
 			double velocityZ) {
 		super(world, x, y, z, velocityZ, velocityZ, velocityZ);// , velocityX, velocityY, velocityZ);
 	}
@@ -126,7 +126,7 @@ public class BillowingMistParticle extends MistParticle {
 		 * 
 		 */
 		@Override
-		public Particle createParticle(BasicParticleType data, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle createParticle(BasicParticleType data, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			BillowingMistParticle particle = new BillowingMistParticle(world, x, y, z, xSpeed, ySpeed, zSpeed);
 			particle.pickSprite(spriteSet);
 			return particle;

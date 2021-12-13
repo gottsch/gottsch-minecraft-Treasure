@@ -64,9 +64,9 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.loot.RandomValueRange;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtils;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.server.ServerLevel;
 import net.minecraft.world.storage.SaveFormat;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
@@ -75,7 +75,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
  * 
  * field_240767_f_ -> Impl
  * field name -> field_152367_a, class -> File
- * field name -> field_213219_c, class -> WorldSettings
+ * field name -> field_213219_c, class -> LevelSettings
  * field_71310_m, class -> LevelSave
  * field_240766_e_, class -> PlayerData
  * field_240767_f_, class -> Impl
@@ -149,7 +149,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 
 	// TODO possibly remove or get new name
 	// TEMP
-	public void init(ServerWorld world) {
+	public void init(ServerLevel world) {
 		Treasure.LOGGER.debug("initializing ...");
 		// initialize the maps
 		for (Rarity r : Rarity.values()) {
@@ -159,8 +159,8 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 
 		Object save = ObfuscationReflectionHelper.getPrivateValue(MinecraftServer.class, world.getServer(), SAVE_FORMAT_LEVEL_SAVE_SRG_NAME);
 		if (save instanceof SaveFormat.LevelSave) {
-			Path path = ((SaveFormat.LevelSave) save).getWorldDir().resolve("datapacks").resolve("treasure2");
-			setWorldDataBaseFolder(path.toFile());
+			Path path = ((SaveFormat.LevelSave) save).getLevelDir().resolve("datapacks").resolve("treasure2");
+			setLevelDataBaseFolder(path.toFile());
 		}
 		else {
 			// TODO throw error
@@ -185,7 +185,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 * 
 	 */
 	protected void createPack() {
-		Path packPath = Paths.get(getWorldDataBaseFolder().getPath(), "pack.mcmeta");
+		Path packPath = Paths.get(getLevelDataBaseFolder().getPath(), "pack.mcmeta");
 		try {
 			// check if file already exists
 			if (Files.notExists(packPath)) { 
@@ -359,15 +359,15 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 * @param modID
 	 * @param resourceFolders
 	 */
-	public void registerChestsFromWorldSave(String modID, List<String> resourceFolders) {
+	public void registerChestsFromLevelSave(String modID, List<String> resourceFolders) {
 		for (String folder : resourceFolders) {
 			// get loot table files as ResourceLocations from the file system location (using GottschCore's version)
 			List<ResourceLocation> resourceLocations = getLootTablesResourceLocations(modID, folder);
 
 			// load each ResourceLocation as LootTable and map it.
 			resourceLocations.forEach(loc -> {
-				LOGGER.debug("world save -> loading loot table shell resource loc -> {}, {}", getWorldDataBaseFolder().getPath(), loc.getPath().toString());
-				tableChest(loc, loadLootTable(getWorldDataBaseFolder(), loc));
+				LOGGER.debug("world save -> loading loot table shell resource loc -> {}, {}", getLevelDataBaseFolder().getPath(), loc.getPath().toString());
+				tableChest(loc, loadLootTable(getLevelDataBaseFolder(), loc));
 			});
 		}
 	}
@@ -421,13 +421,13 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 * @param modID
 	 * @param resourceFolders
 	 */
-	public void registerSpecialsFromWorldSave(String modID, List<String> resourceFolders) {
+	public void registerSpecialsFromLevelSave(String modID, List<String> resourceFolders) {
 		for (String folder : resourceFolders) {
 			List<ResourceLocation> resourceLocations = getLootTablesResourceLocations(modID, folder);
 
 			resourceLocations.forEach(loc -> {
-				LOGGER.debug("world save -> loading special loot table shell resource loc -> {}, {}", getWorldDataBaseFolder().getPath(), loc.getPath().toString());
-				tableSpecialChest(loc, loadLootTable(getWorldDataBaseFolder(), loc));
+				LOGGER.debug("world save -> loading special loot table shell resource loc -> {}, {}", getLevelDataBaseFolder().getPath(), loc.getPath().toString());
+				tableSpecialChest(loc, loadLootTable(getLevelDataBaseFolder(), loc));
 			});
 		}
 	}
@@ -485,13 +485,13 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 * @param modID
 	 * @param resourceFolders
 	 */
-	public void registerInjectsFromWorldSave(String modID, List<String> resourceFolders) {
+	public void registerInjectsFromLevelSave(String modID, List<String> resourceFolders) {
 		for (String folder : resourceFolders) {
 			List<ResourceLocation> resourceLocations = getLootTablesResourceLocations(modID, folder);
 
 			resourceLocations.forEach(loc -> {
-				LOGGER.debug("world save -> loading inject loot table shell resource loc -> {}, {}", getWorldDataBaseFolder().getPath(), loc.getPath().toString());
-				tableInject(loc, loadLootTable(getWorldDataBaseFolder(), loc));
+				LOGGER.debug("world save -> loading inject loot table shell resource loc -> {}, {}", getLevelDataBaseFolder().getPath(), loc.getPath().toString());
+				tableInject(loc, loadLootTable(getLevelDataBaseFolder(), loc));
 			});
 		}
 	}
@@ -547,8 +547,8 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	@Deprecated
 	protected void moveLootTables(String modID, String location) {
 		Path configFilePath = Paths.get(getMod().getConfig().getConfigFolder(), modID, "mc1_16", LOOT_TABLES_FOLDER, location).toAbsolutePath();
-		//		Path worldDataFilePath = Paths.get(getWorldDataBaseFolder().toString(), modID, location).toAbsolutePath();
-		Path worldDataFilePath = Paths.get(getWorldDataBaseFolder().toString(), "data", modID, "loot_tables", location).toAbsolutePath();
+		//		Path worldDataFilePath = Paths.get(getLevelDataBaseFolder().toString(), modID, location).toAbsolutePath();
+		Path worldDataFilePath = Paths.get(getLevelDataBaseFolder().toString(), "data", modID, "loot_tables", location).toAbsolutePath();
 
 		Set<String> fileList = new HashSet<>();
 		try {
@@ -589,7 +589,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 						}
 					}
 					else {
-						boolean isCurrent  = isWorldDataVersionCurrent(file, destinationFilePath);
+						boolean isCurrent  = isLevelDataVersionCurrent(file, destinationFilePath);
 						LOGGER.debug("is world data loot table {} current -> {}", destinationFilePath, isCurrent);
 						if (!isCurrent) {
 							Files.move(

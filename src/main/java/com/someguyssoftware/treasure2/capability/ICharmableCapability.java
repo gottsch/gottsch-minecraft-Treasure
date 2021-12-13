@@ -25,11 +25,11 @@ import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryTy
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
 
 /**
  * CharmableCapability is a capability that has an ICharmEntity inventory
@@ -50,7 +50,7 @@ public interface ICharmableCapability {
 	
 	public boolean isCharmed();
 	int getMaxCharmLevel();
-	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag);	
+	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag);	
 	
 	public boolean isSource();
 	public void setSource(boolean source);

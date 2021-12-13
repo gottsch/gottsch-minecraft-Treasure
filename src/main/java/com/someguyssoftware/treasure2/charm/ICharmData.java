@@ -19,7 +19,7 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 /**
  * @author Mark Gottschling on Apr 27, 2020
@@ -36,6 +36,6 @@ public interface ICharmData {
 	public double getPercent();
 	public void setPercent(double percent);
 	
-	public CompoundNBT writeToNBT(CompoundNBT nbt);
-	public void readFromNBT(CompoundNBT tag);
+	public CompoundTag writeToNBT(CompoundTag nbt);
+	public void readFromNBT(CompoundTag tag);
 }

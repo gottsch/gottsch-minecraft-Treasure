@@ -21,8 +21,8 @@ package com.someguyssoftware.treasure2.charm;
 
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * 
@@ -86,7 +86,7 @@ public class CharmableMaterial {
 	 * @return
 	 */
 	public String getDisplayName() {
-		return new TranslationTextComponent("charmable_component." + name.toString().replace(":", ".")).getString();
+		return new TranslatableComponent("charmable_component." + name.toString().replace(":", ".")).getString();
 	}
 
 	public int getId() {

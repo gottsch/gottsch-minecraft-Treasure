@@ -32,10 +32,10 @@ import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.IServerLevel;
+import net.minecraft.world.level.LevelAccessor;
 
 
 /**
@@ -68,7 +68,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
     @Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(IServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
 			LOGGER.debug("Generated Volcano Pit at " + spawnCoords.toShortString());
@@ -85,7 +85,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ICoords buildPit(IServerWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
+	public ICoords buildPit(IServerLevel world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
         
@@ -142,14 +142,14 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * 
 	 */
 	@Override
-	public void buildAboveChestLayers(IServerWorld world, Random random, ICoords spawnCoords) {
+	public void buildAboveChestLayers(IServerLevel world, Random random, ICoords spawnCoords) {
 		
 	}
 	
     /**
      * 
      */
-    private ICoords buildLayer(IWorld world, ICoords coords, int radius, Block block, boolean addDecorations) {
+    private ICoords buildLayer(ILevel world, ICoords coords, int radius, Block block, boolean addDecorations) {
 		int radiusSquared = radius * radius;
 		Integer[] distancesMet = new Integer[radius + 1];
 		ICoords spawnCoords = null;
@@ -202,7 +202,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
     /**
      * 
      */
-    private void addDecorations(IWorld world, Random random, ICoords coords) {
+    private void addDecorations(ILevel world, Random random, ICoords coords) {
         if (world.getBlockState(coords.toPos()).getBlock() != Blocks.AIR) {
             if (RandomHelper.checkProbability(random, 30)) {
                 world.setBlock(coords.toPos(), Blocks.BLACKSTONE.defaultBlockState(), 3);
@@ -218,7 +218,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * @param world
 	 * @param coords
 	 */
-	private void buildLavaBaseLayer(IWorld world, ICoords coords, int radius) {
+	private void buildLavaBaseLayer(ILevel world, ICoords coords, int radius) {
         LOGGER.debug("Building lava baselayer from @ {} ", coords.toShortString());
 
         // for circular chamber

@@ -30,8 +30,8 @@ import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.player.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.Event;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -48,7 +48,7 @@ public class CuriosEquipmentCharmHandler implements IEquipmentCharmHandler {
 	private static final List<String> CURIOS_SLOTS = Arrays.asList("necklace", "bracelet", "ring", "charm");
 
 	@Override
-	public List<CharmContext> handleEquipmentCharms(Event event, ServerPlayerEntity player) {
+	public List<CharmContext> handleEquipmentCharms(Event event, ServerPlayer player) {
 		List<CharmContext> contexts = new ArrayList<>();
 
 		// check curio slots

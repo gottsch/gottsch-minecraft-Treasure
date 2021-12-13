@@ -12,9 +12,9 @@ import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
+import net.minecraft.util.registry.LevelGenRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -89,16 +89,16 @@ public class TreasureFeatures {
 			// initialize configs
 			// NEW WAY
 			// init the feature configs
-			SURFACE_CHEST_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "surface_chest",
+			SURFACE_CHEST_FEATURE_CONFIG = Registry.register(LevelGenRegistries.CONFIGURED_FEATURE, "surface_chest",
 					SURFACE_CHEST_FEATURE.configured(IFeatureConfig.NONE));
-			SUBMERGED_CHEST_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "submerged_chest",
+			SUBMERGED_CHEST_FEATURE_CONFIG = Registry.register(LevelGenRegistries.CONFIGURED_FEATURE, "submerged_chest",
 					SUBMERGED_CHEST_FEATURE.configured(IFeatureConfig.NONE));
-			WELL_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "well",
+			WELL_FEATURE_CONFIG = Registry.register(LevelGenRegistries.CONFIGURED_FEATURE, "well",
 					WELL_FEATURE.configured(IFeatureConfig.NONE));
-			WITHER_TREE_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "wither_tree",
+			WITHER_TREE_FEATURE_CONFIG = Registry.register(LevelGenRegistries.CONFIGURED_FEATURE, "wither_tree",
 					WITHER_TREE_FEATURE.configured(IFeatureConfig.NONE));
 
-			TOPAZ_ORE_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "topaz_ore",
+			TOPAZ_ORE_FEATURE_CONFIG = Registry.register(LevelGenRegistries.CONFIGURED_FEATURE, "topaz_ore",
 					GEM_ORE_FEATURE
 							.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
 									TreasureBlocks.TOPAZ_ORE.defaultBlockState(),
@@ -111,7 +111,7 @@ public class TreasureFeatures {
 							.squared()
 							.count(TreasureConfig.GEMS_AND_ORES.topazOreVeinsPerChunk.get()));
 	
-			ONYX_ORE_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "onyx_ore",
+			ONYX_ORE_FEATURE_CONFIG = Registry.register(LevelGenRegistries.CONFIGURED_FEATURE, "onyx_ore",
 					GEM_ORE_FEATURE
 							.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
 									TreasureBlocks.ONYX_ORE.defaultBlockState(),
@@ -124,7 +124,7 @@ public class TreasureFeatures {
 							.squared()
 							.count(TreasureConfig.GEMS_AND_ORES.onyxOreVeinsPerChunk.get()));			
 			
-			RUBY_ORE_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "ruby_ore",
+			RUBY_ORE_FEATURE_CONFIG = Registry.register(LevelGenRegistries.CONFIGURED_FEATURE, "ruby_ore",
 					GEM_ORE_FEATURE
 							.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
 									TreasureBlocks.RUBY_ORE.defaultBlockState(),
@@ -137,7 +137,7 @@ public class TreasureFeatures {
 							.squared()
 							.count(TreasureConfig.GEMS_AND_ORES.rubyOreVeinsPerChunk.get()));
 
-			SAPPHIRE_ORE_FEATURE_CONFIG = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "sapphire_ore",
+			SAPPHIRE_ORE_FEATURE_CONFIG = Registry.register(LevelGenRegistries.CONFIGURED_FEATURE, "sapphire_ore",
 					GEM_ORE_FEATURE
 							.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
 									TreasureBlocks.SAPPHIRE_ORE.defaultBlockState(),
@@ -161,7 +161,7 @@ public class TreasureFeatures {
 		@SubscribeEvent
 		public static void onBiomeLoading(final BiomeLoadingEvent biomeEvent) {
 
-			// TODO could change this to WorldInfo.isSurfaceWorld();
+			// TODO could change this to WorldInfo.isSurfaceLevel();
 			if ( biomeEvent.getCategory() == Biome.Category.NETHER || biomeEvent.getCategory() == Biome.Category.THEEND) {
 				return;
 			}

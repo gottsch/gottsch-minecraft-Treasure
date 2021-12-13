@@ -29,10 +29,10 @@ import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 
 /**
@@ -62,7 +62,7 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 	
 	@Override
 	public INBT writeNBT(Capability<ICharmableCapability> capability, ICharmableCapability instance, Direction side) {
-		CompoundNBT nbt = new CompoundNBT();
+		CompoundTag nbt = new CompoundTag();
 		try {
 			/*
 			 * save charm cap inventories
@@ -71,9 +71,9 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 			for (int index = 0; index < instance.getCharmEntities().length; index++) {
 				List<ICharmEntity> entityList = instance.getCharmEntities()[index];
 				if (entityList != null && !entityList.isEmpty()) {
-					ListNBT listNbt = new ListNBT();
+					ListTag listNbt = new ListTag();
 					for (ICharmEntity entity : entityList) {
-						CompoundNBT entityNbt = new CompoundNBT();
+						CompoundTag entityNbt = new CompoundTag();
 						listNbt.add(entity.save(entityNbt));						
 					}
 					nbt.put(InventoryType.getByValue(index).name(), listNbt);
@@ -109,8 +109,8 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 	@Override
 	public void readNBT(Capability<ICharmableCapability> capability, ICharmableCapability instance, Direction side,
 			INBT nbt) {
-		if (nbt instanceof CompoundNBT) {
-			CompoundNBT tag = (CompoundNBT) nbt;
+		if (nbt instanceof CompoundTag) {
+			CompoundTag tag = (CompoundTag) nbt;
 			for (InventoryType type : InventoryType.values()) {
 				// clear the list
 				instance.getCharmEntities()[type.getValue()].clear();				
@@ -118,10 +118,10 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 				 *  load the list
 				 */
 				if (tag.contains(type.name())) {
-					ListNBT listNbt = tag.getList(type.name(), 10);
+					ListTag listNbt = tag.getList(type.name(), 10);
 					listNbt.forEach(e -> {
 						// load the charm
-						Optional<ICharm> charm = Charm.load((CompoundNBT) ((CompoundNBT)e).get(CHARM));
+						Optional<ICharm> charm = Charm.load((CompoundTag) ((CompoundTag)e).get(CHARM));
 						if (!charm.isPresent()) {
 							return;
 						}
@@ -129,7 +129,7 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 						ICharmEntity entity = charm.get().createEntity();
 						
 						// load entity
-						entity.load((CompoundNBT)e);
+						entity.load((CompoundTag)e);
 						
 						// add the entity to the list
 						instance.getCharmEntities()[type.getValue()].add(entity);

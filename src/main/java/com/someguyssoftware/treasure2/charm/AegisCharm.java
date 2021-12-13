@@ -23,13 +23,13 @@ import java.util.List;
 
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
 /**
  * 
@@ -45,12 +45,12 @@ public class AegisCharm extends ShieldingCharm {
 	public static String AEGIS_TYPE = "aegis";
 
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.BLUE;
-		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
-		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent("tooltip.charm.rate.aegis", 100).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn, ICharmEntity entity) {
+		ChatFormatting color = ChatFormatting.BLUE;
+		tooltip.add(new TextComponent(" ")
+				.append(new TranslatableComponent(getLabel(entity)).withStyle(color)));
+		tooltip.add(new TextComponent(" ")
+				.append(new TranslatableComponent("tooltip.charm.rate.aegis", 100).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC)));
 
 	}
 

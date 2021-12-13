@@ -32,10 +32,10 @@ import com.someguyssoftware.treasure2.config.IWellsConfig;
 import com.someguyssoftware.treasure2.generator.IGeneratorResult;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.world.IServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.IServerLevel;
 import net.minecraft.world.gen.ChunkGenerator;
 
 /**
@@ -57,7 +57,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param config
 	 * @return
 	 */
-	public abstract RESULT generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords spawnCoords, IWellsConfig config);
+	public abstract RESULT generate(IServerLevel world, ChunkGenerator generator, Random random, ICoords spawnCoords, IWellsConfig config);
 	
 	/**
 	 * 
@@ -68,7 +68,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param config
 	 * @return
 	 */
-	public abstract RESULT generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords originalSpawnCoords,
+	public abstract RESULT generate(IServerLevel world, ChunkGenerator generator, Random random, ICoords originalSpawnCoords,
 			TemplateHolder templateHolder, IWellsConfig config);
 	
 	/**
@@ -77,7 +77,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param random
 	 * @param coords
 	 */
-	public default void addDecoration(IServerWorld world, Random random, ICoords coords) {
+	public default void addDecoration(IServerLevel world, Random random, ICoords coords) {
 		// coords matrix centered around the input coords
 		ICoords[] circle = new Coords[16];
 		circle[0] = coords.add(-2, 0, -2);

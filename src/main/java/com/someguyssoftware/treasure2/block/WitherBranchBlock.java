@@ -5,14 +5,14 @@ package com.someguyssoftware.treasure2.block;
 
 import com.someguyssoftware.gottschcore.block.FacingBlock;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.LevelAccessor;
 
 /**
  * 
@@ -46,7 +46,7 @@ public class WitherBranchBlock extends FacingBlock implements ITreasureBlock {
 	 * 
 	 */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, LevelAccessor worldIn, BlockPos pos, CollisionContext context) {
 		switch(state.getValue(FACING)) {
 		default:
 		case NORTH:
@@ -64,7 +64,7 @@ public class WitherBranchBlock extends FacingBlock implements ITreasureBlock {
 	 * 
 	 */
 //	@Override
-//	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
+//	public boolean isNormalCube(BlockState state, LevelAccessor world, BlockPos pos) {
 //		return false;
 //	}
 	

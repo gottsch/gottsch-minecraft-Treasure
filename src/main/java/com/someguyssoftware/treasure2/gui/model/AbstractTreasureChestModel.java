@@ -12,7 +12,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * @author Mark Gottschling on Aug 24, 2020

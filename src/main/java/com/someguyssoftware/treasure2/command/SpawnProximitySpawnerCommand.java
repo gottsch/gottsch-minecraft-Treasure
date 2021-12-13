@@ -17,17 +17,17 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
-import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
+import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerBlockEntity;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.enums.WorldGenerators;
+import com.someguyssoftware.treasure2.enums.LevelGenerators;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
@@ -35,10 +35,10 @@ import net.minecraft.command.arguments.BlockPosArgument;
 import net.minecraft.command.arguments.EntitySummonArgument;
 import net.minecraft.command.arguments.SuggestionProviders;
 import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.server.ServerLevel;
 import net.minecraftforge.common.DungeonHooks;
 
 /**
@@ -118,7 +118,7 @@ public class SpawnProximitySpawnerCommand {
 	private static int spawn(CommandSource source, BlockPos pos, ResourceLocation name) { //String name) {
 		Treasure.LOGGER.info("executing spawn poximity spawner, pos -> {}, name -> {}", pos, name);
 		try {
-			ServerWorld world = source.getLevel();
+			ServerLevel world = source.getLevel();
 			Random random = new Random();
 
 			// TODO take into account null value for name

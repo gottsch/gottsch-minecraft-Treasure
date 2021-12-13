@@ -30,10 +30,10 @@ import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.IServerLevel;
 import net.minecraft.world.gen.ChunkGenerator;
 
 /**
@@ -51,25 +51,25 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 	public SubmergedRuinGenerator() {}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerLevel world, ChunkGenerator generator, Random random,
 			ICoords originalSpawnCoords) {
 		return generate(world, generator, random, originalSpawnCoords, null, null);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerLevel world, ChunkGenerator generator, Random random,
 			ICoords originalSpawnCoords, IDecayRuleSet decayRuleSet) {
 		return generate(world, generator, random, originalSpawnCoords, null, decayRuleSet);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerLevel world, ChunkGenerator generator, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder) {
 		return generate(world, generator, random, originalSpawnCoords, holder, null);
 	}
 
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator chunkGenerator, Random random,
+	public GeneratorResult<ChestGeneratorData> generate(IServerLevel world, ChunkGenerator chunkGenerator, Random random,
 			ICoords originalSpawnCoords, TemplateHolder holder, IDecayRuleSet decayRuleSet) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 

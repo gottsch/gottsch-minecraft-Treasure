@@ -2,13 +2,13 @@ package com.someguyssoftware.treasure2.inventory;
 
 import com.someguyssoftware.treasure2.Treasure;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
 /**
@@ -142,7 +142,7 @@ public class StandardChestContainer extends Container implements ITreasureContai
 	// returns EMPTY_ITEM if the source slot is empty, or if none of the the source slot items could be moved
 	//   otherwise, returns a copy of the source stack
 	@Override
-	public ItemStack quickMoveStack(PlayerEntity player, int sourceSlotIndex) {
+	public ItemStack quickMoveStack(Player player, int sourceSlotIndex) {
 		Slot sourceSlot = (Slot)slots.get(sourceSlotIndex);
 		if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
 		ItemStack sourceStack = sourceSlot.getItem();
@@ -191,7 +191,7 @@ public class StandardChestContainer extends Container implements ITreasureContai
 	 * @see net.minecraft.inventory.Container#onContainerClosed(net.minecraft.entity.player.EntityPlayer)
 	 */
 	@Override
-	public void removed(PlayerEntity playerIn) {
+	public void removed(Player playerIn) {
 		super.removed(playerIn);
 		this.contents.stopOpen(playerIn);
 	}
@@ -200,7 +200,7 @@ public class StandardChestContainer extends Container implements ITreasureContai
 	 * 
 	 */
 	@Override
-	public boolean stillValid(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		return contents.stillValid(player);
 	}
 

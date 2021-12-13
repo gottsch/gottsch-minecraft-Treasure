@@ -29,8 +29,8 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.command.arguments.BlockPosArgument;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.server.ServerLevel;
 
 /**
  * Notes: Rarity is not needed in this command. This command is for generating pits. If a chest is required for <i>test</i> then just a literal argument for chest
@@ -125,7 +125,7 @@ public class SpawnPitCommand {
 		Treasure.LOGGER.debug("executing spawn pit, pos -> {}, name -> {}, type -> {}", pos, pitName, type);
 		
 		try {
-			ServerWorld world = source.getLevel();
+			ServerLevel world = source.getLevel();
 			Random random = new Random();
 						
 			IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = null;							

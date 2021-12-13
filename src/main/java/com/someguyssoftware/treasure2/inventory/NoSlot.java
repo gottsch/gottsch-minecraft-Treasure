@@ -1,9 +1,9 @@
 package com.someguyssoftware.treasure2.inventory;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * 
@@ -33,7 +33,7 @@ public class NoSlot extends Slot {
 
 
 	@Override
-	public boolean mayPickup(PlayerEntity playerIn) {
+	public boolean mayPickup(Player playerIn) {
 		return false;
 	}
 }

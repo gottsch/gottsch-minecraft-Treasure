@@ -30,14 +30,14 @@ import com.someguyssoftware.treasure2.gui.render.entity.BoundSoulRenderer;
 import com.someguyssoftware.treasure2.item.TreasureItemGroups;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;

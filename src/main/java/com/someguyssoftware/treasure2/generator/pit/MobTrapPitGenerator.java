@@ -30,9 +30,9 @@ import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.world.IServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.IServerLevel;
 
 /**
  * 
@@ -59,7 +59,7 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(IServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
 			Treasure.LOGGER.debug("Generated Mob Trap Pit at " + spawnCoords.toShortString());
@@ -76,7 +76,7 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ICoords buildPit(IServerWorld world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
+	public ICoords buildPit(IServerLevel world, Random random, ICoords coords, ICoords surfaceCoords, RandomWeightedCollection<Block> col) {
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
 		
@@ -129,7 +129,7 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 	 * @param block
 	 * @return
 	 */
-	public ICoords buildTrapLayer(final IServerWorld world, final Random random, final ICoords coords, final Block block) {
+	public ICoords buildTrapLayer(final IServerLevel world, final Random random, final ICoords coords, final Block block) {
 		ICoords nextCoords = null;
 		if (block == DEFAULT_LOG) {
 			nextCoords = buildLogLayer(world, random, coords, block);

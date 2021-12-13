@@ -24,9 +24,9 @@ import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.POU
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
 /**
@@ -108,7 +108,7 @@ public class PouchInventory extends Inventory {
 	 * @see net.minecraft.inventory.IInventory#closeInventory(net.minecraft.entity.player.EntityPlayer)
 	 */
 	@Override
-	public void stopOpen(PlayerEntity player) {
+	public void stopOpen(Player player) {
 		/*
 		 *  write the locked state to the nbt
 		 */

@@ -22,18 +22,18 @@ import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.enums.WorldGenerators;
+import com.someguyssoftware.treasure2.enums.LevelGenerators;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.command.arguments.BlockPosArgument;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.server.ServerLevel;
 
 /**
  * @author Mark Gottschling on Aug 28, 2020
@@ -117,7 +117,7 @@ public class SpawnChestCommand {
 	private static int spawn(CommandSource source, BlockPos pos, String name, String rarityName) {
 		Treasure.LOGGER.info("executing spawn chest, pos -> {}, name -> {}, rarity -> {}", pos, name, rarityName);
 		try {
-			ServerWorld world = source.getLevel();
+			ServerLevel world = source.getLevel();
 			Random random = new Random();
 			Rarity rarity = rarityName.isEmpty() ? Rarity.COMMON : Rarity.valueOf(rarityName.toUpperCase());
 			Optional<Chests> chests = Optional.empty();
@@ -128,7 +128,7 @@ public class SpawnChestCommand {
 				gen = ChestGeneratorType.valueOf(chests.get().name()).getChestGenerator();
 			}
 			else {
-				RandomWeightedCollection<IChestGenerator> w = TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SURFACE_CHEST);
+				RandomWeightedCollection<IChestGenerator> w = TreasureData.CHEST_GENS.get(rarity, LevelGenerators.SURFACE_CHEST);
 				if (w == null) {
 					Treasure.LOGGER.info("weight collection is null");
 				}

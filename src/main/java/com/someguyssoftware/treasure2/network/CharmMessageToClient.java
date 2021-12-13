@@ -32,7 +32,7 @@ import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
 
 /**
  * @author Mark Gottschling on Feb 17, 2020
@@ -43,7 +43,7 @@ public class CharmMessageToClient {
 	private String playerName; 								//1
 	private String charmName; 							//2
 	private ICharmEntity entity;							//3
-	private Hand hand;												//4
+	private InteractionHand hand;												//4
 	private String slot;													//5
 	private String slotProviderId;							//6
 	private InventoryType inventoryType;		//7
@@ -97,7 +97,7 @@ public class CharmMessageToClient {
 			message.setEntity(entity);
 			String handAsString = buf.readUtf();
 			if (!handAsString.isEmpty()) {
-				message.hand = Hand.valueOf(handAsString);
+				message.hand = InteractionHand.valueOf(handAsString);
 			}
 			message.setSlot(buf.readUtf());		
 			message.setSlotProviderId(buf.readUtf());
@@ -174,7 +174,7 @@ public class CharmMessageToClient {
 		this.playerName = playerName;
 	}
 
-	public Hand getHand() {
+	public InteractionHand getHand() {
 		return hand;
 	}
 

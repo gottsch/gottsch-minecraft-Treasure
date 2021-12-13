@@ -6,10 +6,10 @@ package com.someguyssoftware.treasure2.item;
 import com.someguyssoftware.gottschcore.block.BlockContext;
 import com.someguyssoftware.gottschcore.item.ModItem;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
 
 /**
  * @author Mark Gottschling on Feb 5, 2021

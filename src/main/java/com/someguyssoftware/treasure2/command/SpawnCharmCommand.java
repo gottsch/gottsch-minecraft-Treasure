@@ -25,12 +25,12 @@ import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.enums.WorldGenerators;
+import com.someguyssoftware.treasure2.enums.LevelGenerators;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.item.CharmItem;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
@@ -39,14 +39,14 @@ import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.command.arguments.ItemArgument;
 import net.minecraft.command.arguments.ItemInput;
 import net.minecraft.command.arguments.ResourceLocationArgument;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.server.ServerLevel;
 
 /**
  * 
@@ -87,12 +87,12 @@ public class SpawnCharmCommand {
 		return ISuggestionProvider.suggest(Arrays.asList("treasure2:copper_charm", "treasure2:silver_charm", "treasure2:gold_charm").stream(), builder);
 	};
 
-	private static int giveCharm(CommandSource source, ResourceLocation charmLocation, Collection<ServerPlayerEntity> players, int p_198497_3_) throws CommandSyntaxException {
+	private static int giveCharm(CommandSource source, ResourceLocation charmLocation, Collection<ServerPlayer> players, int p_198497_3_) throws CommandSyntaxException {
 		Treasure.LOGGER.debug("spawn charm resource location -> {}", charmLocation);
 		//		ResourceLocation charmLocation = new ResourceLocation(charmItemName);
 		Item item = Registry.ITEM.getOptional(charmLocation).orElseThrow(IllegalStateException::new);
 		if (item instanceof CharmItem) {
-			for(ServerPlayerEntity player : players) {
+			for(ServerPlayer player : players) {
 				ItemStack stack = new ItemStack(item, 1);
 				// TODO get capability
 				// TODO add random charms

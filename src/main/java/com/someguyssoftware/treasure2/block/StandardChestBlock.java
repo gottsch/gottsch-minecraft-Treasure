@@ -21,9 +21,9 @@ package com.someguyssoftware.treasure2.block;
 
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.material.Material;
 
 /**
@@ -61,7 +61,7 @@ public class StandardChestBlock extends AbstractChestBlock {
 	 * 
 	 * @param tagCompound
 	 */
-//	private void dump(CompoundNBT tag, ICoords coords, String title) {
+//	private void dump(CompoundTag tag, ICoords coords, String title) {
 		//		ChestNBTPrettyPrinter printer = new ChestNBTPrettyPrinter();
 		//		SimpleDateFormat formatter = new SimpleDateFormat("yyyymmdd");
 		//

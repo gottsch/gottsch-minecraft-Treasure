@@ -25,8 +25,8 @@ import java.util.function.Consumer;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
 
 /**
  * 
@@ -34,7 +34,7 @@ import net.minecraft.util.Hand;
  *
  */
 public class CharmContext {
-	private Hand hand;
+	private InteractionHand hand;
 	private String slotProviderId;
 	private String slot;
 	private ItemStack itemStack;
@@ -73,7 +73,7 @@ public class CharmContext {
 		}
 	};
 
-	public Hand getHand() {
+	public InteractionHand getHand() {
 		return hand;
 	}
 
@@ -102,7 +102,7 @@ public class CharmContext {
 	}
 
 	public static class Builder {
-		public Hand hand;
+		public InteractionHand hand;
 		public String slotProviderId;
 		public String slot;
 		public ItemStack itemStack;

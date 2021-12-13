@@ -26,8 +26,8 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.world.IServerWorld;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.IServerLevel;
 
 
 /**
@@ -52,7 +52,7 @@ public class AirPitGenerator extends AbstractPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(IServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result =super.generate(world, random, surfaceCoords, spawnCoords); 
 		if (result.isSuccess()) {
 			Treasure.LOGGER.debug("Generated Air Pit at " + spawnCoords.toShortString());

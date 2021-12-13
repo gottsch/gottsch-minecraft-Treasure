@@ -16,20 +16,20 @@ import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
 /**
  * @author Mark Gottschling onJan 10, 2018
@@ -84,37 +84,37 @@ public class LockItem extends ModItem {
 	 * No] [color = Green | Dark Red] Accepts Keys: [list] [color = Gold]
 	 */
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
-		tooltip.add(new TranslationTextComponent("tooltip.label.rarity",
-				TextFormatting.DARK_BLUE + getRarity().toString()));
-		tooltip.add(new TranslationTextComponent("tooltip.label.category", TextFormatting.GOLD + getCategory().toString()));
+		tooltip.add(new TranslatableComponent("tooltip.label.rarity",
+				ChatFormatting.DARK_BLUE + getRarity().toString()));
+		tooltip.add(new TranslatableComponent("tooltip.label.category", ChatFormatting.GOLD + getCategory().toString()));
 
-		ITextComponent craftable = null;
+		TextComponent craftable = null;
 		if (isCraftable()) {
-			craftable = new TranslationTextComponent("tooltip.yes").withStyle(TextFormatting.GREEN);
+			craftable = new TranslatableComponent("tooltip.yes").withStyle(ChatFormatting.GREEN);
 		} else {
-			craftable = new TranslationTextComponent("tooltip.no").withStyle(TextFormatting.DARK_RED);
+			craftable = new TranslatableComponent("tooltip.no").withStyle(ChatFormatting.DARK_RED);
 		}
-		tooltip.add(new TranslationTextComponent("tooltip.label.craftable", craftable));
+		tooltip.add(new TranslatableComponent("tooltip.label.craftable", craftable));
 
 		/**
 		 * Attempting to make a safe call for some performance enchancing mixin mods
 		 */
 		String keyList = getKeys().stream().map(e -> {
-			ITextComponent txt = e.getName(new ItemStack(e));
+			TextComponent txt = e.getName(new ItemStack(e));
 			return txt == null ? "" : txt.getString();
 		}).collect(Collectors.joining(","));
 
-		tooltip.add(new TranslationTextComponent("tooltip.label.accepts_keys", TextFormatting.GOLD + keyList));
+		tooltip.add(new TranslatableComponent("tooltip.label.accepts_keys", ChatFormatting.GOLD + keyList));
 	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public ActionResultType useOn(ItemUseContext context) {
+	public InteractionResult useOn(ItemUseContext context) {
 
 		BlockPos chestPos = context.getClickedPos();		
 		Block block = context.getLevel().getBlockState(chestPos).getBlock();
@@ -133,7 +133,7 @@ public class LockItem extends ModItem {
 //			Treasure.LOGGER.info("LockItem | onItemUse | tileEntity -> {}", te);
 			// exit if on the client
 			if (WorldInfo.isClientSide(context.getLevel())) {
-				return ActionResultType.FAIL;
+				return InteractionResult.FAIL;
 			}
 
 			try {
@@ -157,7 +157,7 @@ public class LockItem extends ModItem {
 	 * @param heldItem
 	 * @return flag indicating if a lock was added
 	 */
-	private boolean handleHeldLock(AbstractTreasureChestTileEntity tileEntity, PlayerEntity player, ItemStack heldItem) {
+	private boolean handleHeldLock(AbstractTreasureChestTileEntity tileEntity, Player player, ItemStack heldItem) {
 		boolean lockedAdded = false;
 		LockItem lock = (LockItem) heldItem.getItem();
 		Treasure.LOGGER.info("LockItem | handleHeldLock | lock -> {}", lock);

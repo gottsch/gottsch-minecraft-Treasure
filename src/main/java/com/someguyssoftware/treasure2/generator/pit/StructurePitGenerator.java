@@ -25,7 +25,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
-import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
+import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerBlockEntity;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.PlacementSettings;
@@ -43,15 +43,15 @@ import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
-import net.minecraft.tileentity.MobSpawnerTileEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.tileentity.MobSpawnerBlockEntity;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.IServerLevel;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.DungeonHooks;
 
@@ -83,12 +83,12 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	}
 	
 	@Override
-	public boolean generateEntrance(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public boolean generateEntrance(IServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		return getGenerator().generateEntrance(world, random, surfaceCoords, spawnCoords);
 	}
 	
 	@Override
-	public boolean generatePit(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public boolean generatePit(IServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		getGenerator().setOffsetY(0);
 		return getGenerator().generatePit(world, random, surfaceCoords, spawnCoords);
 	}
@@ -102,7 +102,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public GeneratorResult<ChestGeneratorData> generate(IServerWorld world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public GeneratorResult<ChestGeneratorData> generate(IServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 
 		// is the chest placed in a cavern

@@ -21,8 +21,8 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.command.arguments.BlockPosArgument;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.server.ServerLevel;
 
 /**
  * 
@@ -84,7 +84,7 @@ public class SpawnWellCommand {
 		Treasure.LOGGER.info("executing spawn well, pos -> {}", pos);
 
 		try {
-			ServerWorld world = source.getLevel();
+			ServerLevel world = source.getLevel();
 			Random random = new Random();
 			
 			WellGenerator gen = (WellGenerator) TreasureData.WELL_GEN;

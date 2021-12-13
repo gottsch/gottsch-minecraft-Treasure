@@ -10,8 +10,8 @@ import com.someguyssoftware.treasure2.item.WealthItem;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * 

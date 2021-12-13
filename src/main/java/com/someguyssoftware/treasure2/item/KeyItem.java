@@ -36,30 +36,30 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.client.util.TooltipFlag;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
+
 import net.minecraft.util.text.TextComponentUtils;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.text.event.HoverEvent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -118,7 +118,7 @@ public class KeyItem extends ModItem {
 	}
 	
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
         DurabilityCapabilityProvider provider = new DurabilityCapabilityProvider();
         LazyOptional<IDurabilityCapability> cap = provider.getCapability(DURABILITY_CAPABILITY, null);
         cap.ifPresent(c -> {
@@ -140,47 +140,47 @@ public class KeyItem extends ModItem {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
-		tooltip.add(new TranslationTextComponent("tooltip.label.rarity", TextFormatting.DARK_BLUE + getRarity().toString()));
-		tooltip.add(new TranslationTextComponent("tooltip.label.category", TextFormatting.GOLD + getCategory().toString()));
+		tooltip.add(new TranslatableComponent("tooltip.label.rarity", ChatFormatting.DARK_BLUE + getRarity().toString()));
+		tooltip.add(new TranslatableComponent("tooltip.label.category", ChatFormatting.GOLD + getCategory().toString()));
 
 		stack.getCapability(DURABILITY_CAPABILITY).ifPresent(cap -> {
-			tooltip.add(new TranslationTextComponent("tooltip.label.uses", cap.getDurability() - stack.getDamageValue(), cap.getDurability()));
+			tooltip.add(new TranslatableComponent("tooltip.label.uses", cap.getDurability() - stack.getDamageValue(), cap.getDurability()));
 		});
 
-		tooltip.add(new TranslationTextComponent("tooltip.label.max_uses", TextFormatting.GOLD + String.valueOf(getMaxDamage())));
+		tooltip.add(new TranslatableComponent("tooltip.label.max_uses", ChatFormatting.GOLD + String.valueOf(getMaxDamage())));
 
 		// is breakable tooltip
-		ITextComponent breakable = null;
+		TextComponent breakable = null;
 		if (isBreakable()) {
-			breakable = new TranslationTextComponent("tooltip.yes").withStyle(TextFormatting.DARK_RED);
+			breakable = new TranslatableComponent("tooltip.yes").withStyle(ChatFormatting.DARK_RED);
 		}
 		else {
-			breakable = new TranslationTextComponent("tooltip.no").withStyle(TextFormatting.GREEN);
+			breakable = new TranslatableComponent("tooltip.no").withStyle(ChatFormatting.GREEN);
 		}
 		tooltip.add(
-				new TranslationTextComponent("tooltip.label.breakable", breakable));
+				new TranslatableComponent("tooltip.label.breakable", breakable));
 
-		ITextComponent craftable = null;
+		TextComponent craftable = null;
 		if (isCraftable()) {
-			craftable = new TranslationTextComponent("tooltip.yes").withStyle(TextFormatting.GREEN);
+			craftable = new TranslatableComponent("tooltip.yes").withStyle(ChatFormatting.GREEN);
 		}
 		else {
-			craftable = new TranslationTextComponent("tooltip.no").withStyle(TextFormatting.DARK_RED);
+			craftable = new TranslatableComponent("tooltip.no").withStyle(ChatFormatting.DARK_RED);
 		}
-		tooltip.add(new TranslationTextComponent("tooltip.label.craftable", craftable));
+		tooltip.add(new TranslatableComponent("tooltip.label.craftable", craftable));
 
-		ITextComponent damageable = null;
+		TextComponent damageable = null;
 		if (isDamageable()) {
-			damageable = new TranslationTextComponent("tooltip.yes").withStyle(TextFormatting.DARK_RED);
+			damageable = new TranslatableComponent("tooltip.yes").withStyle(ChatFormatting.DARK_RED);
 		}
 		else {
-			damageable = new TranslationTextComponent("tooltip.no").withStyle(TextFormatting.GREEN);
+			damageable = new TranslatableComponent("tooltip.no").withStyle(ChatFormatting.GREEN);
 		}
 		tooltip.add(
-				new TranslationTextComponent("tooltip.label.damageable", damageable));
+				new TranslatableComponent("tooltip.label.damageable", damageable));
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class KeyItem extends ModItem {
 	}
 
 	@Override
-	public ActionResultType useOn(ItemUseContext context) {
+	public InteractionResult useOn(ItemUseContext context) {
 		BlockPos chestPos = context.getClickedPos();
 		// determine if block at pos is a treasure chest
 		Block block = context.getLevel().getBlockState(chestPos).getBlock();
@@ -226,18 +226,18 @@ public class KeyItem extends ModItem {
 			TileEntity tileEntity = context.getLevel().getBlockEntity(chestPos);
 			if (tileEntity == null || !(tileEntity instanceof AbstractTreasureChestTileEntity)) {
 				Treasure.LOGGER.warn("Null or incorrect TileEntity");
-				return ActionResultType.FAIL;
+				return InteractionResult.FAIL;
 			}
 			AbstractTreasureChestTileEntity chestTileEntity = (AbstractTreasureChestTileEntity)tileEntity;
 
 			// exit if on the client
 			if (WorldInfo.isClientSide(context.getLevel())) {			
-				return ActionResultType.FAIL;
+				return InteractionResult.FAIL;
 			}
 
 			// determine if chest is locked
 			if (!chestTileEntity.hasLocks()) {
-				return ActionResultType.SUCCESS;
+				return InteractionResult.SUCCESS;
 			}
 
 			try {

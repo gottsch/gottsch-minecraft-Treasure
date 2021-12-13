@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.lock;
 
@@ -7,9 +23,8 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ILockSlot;
 import com.someguyssoftware.treasure2.item.LockItem;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 
 /**
  * @author Mark Gottschling onJan 10, 2018
@@ -31,15 +46,15 @@ public class LockState {
 	 * @param nbt
 	 * @return
 	 */
-	public CompoundNBT writeToNBT(CompoundNBT nbt) {
+	public CompoundTag writeToNBT(CompoundTag nbt) {
 		try {
 			if (this.getSlot() != null) {
-				CompoundNBT slotNBT = new CompoundNBT();
+				CompoundTag slotNBT = new CompoundTag();
 				slotNBT = this.getSlot().writeToNBT(slotNBT);
 				nbt.put("slot", slotNBT);
 			}
 			if (this.getLock() != null) {
-				CompoundNBT lockNBT = new CompoundNBT();
+				CompoundTag lockNBT = new CompoundTag();
 				new ItemStack(this.getLock()).save(lockNBT);
 				nbt.put("lockItem", lockNBT);
 			}
@@ -54,18 +69,18 @@ public class LockState {
 	 * 
 	 * @param tag
 	 */
-	public static LockState readFromNBT(CompoundNBT tag) {
+	public static LockState readFromNBT(CompoundTag tag) {
 		ILockSlot slot = null;
 		ItemStack lockStack = null;
 
-		CompoundNBT slotNBT = null;
-		if (tag.contains("slot", Constants.NBT.TAG_COMPOUND)) {
+		CompoundTag slotNBT = null;
+		if (tag.contains("slot")) {
 			slotNBT = tag.getCompound("slot");
 			slot = ILockSlot.readFromNBT(slotNBT);
 		}
 
-		CompoundNBT lockNBT = null;
-		if (tag.contains("lockItem", Constants.NBT.TAG_COMPOUND)) {
+		CompoundTag lockNBT = null;
+		if (tag.contains("lockItem")) {
 			lockNBT = tag.getCompound("lockItem");
 			if (lockNBT != null) {
 				lockStack = ItemStack.of(lockNBT);

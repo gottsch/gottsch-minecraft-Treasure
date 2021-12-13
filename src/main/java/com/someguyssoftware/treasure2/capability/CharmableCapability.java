@@ -37,14 +37,14 @@ import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.charm.TreasureCharms.SortByLevel;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
 /**
  * The CharmableCapability provides any item with a Charm Inventory, which is a datatype of  Map<CharmType>, List<Charm>>.
@@ -252,13 +252,13 @@ public class CharmableCapability implements ICharmableCapability {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
 //		if (!getBaseMaterial().equals(TreasureCharms.CHARM_BOOK.getName())) {
 		if (isImbuable() || isSocketable()) {
-			tooltip.add(new TranslationTextComponent("tooltip.label.charms", getMaxCharmLevel()).withStyle(TextFormatting.YELLOW));
+			tooltip.add(new TranslatableComponent("tooltip.label.charms", getMaxCharmLevel()).withStyle(ChatFormatting.YELLOW));
 		}
 		else {
-			tooltip.add(new TranslationTextComponent("tooltip.label.charms.no_level", getMaxCharmLevel()).withStyle(TextFormatting.YELLOW));
+			tooltip.add(new TranslatableComponent("tooltip.label.charms.no_level", getMaxCharmLevel()).withStyle(ChatFormatting.YELLOW));
 		}
 		
 		// create header text for inventory type
@@ -276,7 +276,7 @@ public class CharmableCapability implements ICharmableCapability {
 	 * @param inventoryType
 	 * @param titleFlag
 	 */
-	private void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag, InventoryType inventoryType, boolean titleFlag) {
+	private void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag, InventoryType inventoryType, boolean titleFlag) {
 		List<ICharmEntity> entityList = getCharmEntities()[inventoryType.value];
 		// test if the cap has the inventory type ability
 		switch (inventoryType) {
@@ -288,8 +288,8 @@ public class CharmableCapability implements ICharmableCapability {
 		// add title
 		if (titleFlag) {
 			tooltip.add(
-					new TranslationTextComponent("tooltip.indent1", new TranslationTextComponent("tooltip.charmable.inventory." + inventoryType.name().toLowerCase()).withStyle(TextFormatting.GOLD)
-					.append(getCapacityHoverText(stack, world, entityList).withStyle(TextFormatting.WHITE)))
+					new TranslatableComponent("tooltip.indent1", new TranslatableComponent("tooltip.charmable.inventory." + inventoryType.name().toLowerCase()).withStyle(ChatFormatting.GOLD)
+					.append(getCapacityHoverText(stack, world, entityList).withStyle(ChatFormatting.WHITE)))
 					);
 		}
 		// add charms
@@ -299,8 +299,8 @@ public class CharmableCapability implements ICharmableCapability {
 	}
 
 	@SuppressWarnings("deprecation")
-	public TranslationTextComponent getCapacityHoverText(ItemStack stack, World world, List<ICharmEntity> entities) {	
-		return new TranslationTextComponent("tooltip.charmable.slots", 
+	public TranslatableComponent getCapacityHoverText(ItemStack stack, Level world, List<ICharmEntity> entities) {	
+		return new TranslatableComponent("tooltip.charmable.slots", 
 				String.valueOf(Math.toIntExact(Math.round(entities.size()))), // used
 				String.valueOf(Math.toIntExact(Math.round(this.maxSocketsSize)))); // max				
 	}

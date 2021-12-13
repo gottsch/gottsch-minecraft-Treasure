@@ -9,7 +9,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
+import com.someguyssoftware.gottschcore.tileentity.AbstractModBlockEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
@@ -20,41 +20,43 @@ import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.inventory.ITreasureContainer;
 import com.someguyssoftware.treasure2.lock.LockState;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.FilledMapItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tileentity.IChestLid;
-import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.ITickableBlockEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
 import net.minecraft.util.INameable;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.util.Mth;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.util.Constants;
 /**
  * 
  * @author Mark Gottschling onDec 22, 2017
  *
  */
-public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITreasureChestTileEntity, ITickableTileEntity, INamedContainerProvider, INameable {
+public abstract class AbstractTreasureChestTileEntity extends AbstractModBlockEntity implements ITreasureChestTileEntity, ITickableTileEntity, INamedContainerProvider, INameable {
 	public class GenerationContext {
 		/*
 		 * The rarity level of the loot that the chest will contain
@@ -129,7 +131,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/** IInventory properties */
 	//	private int numberOfSlots = 27; // default size
 	private NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(getNumberOfSlots(), ItemStack.EMPTY);
-	private ITextComponent customName;
+	private TextComponent customName;
 
 	/**
 	 * 
@@ -164,7 +166,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			this.openCount = 0;
 			float radius = 5.0F;
 
-			for(PlayerEntity player : getLevel().getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB((double)((float)x - radius), (double)((float)y - radius), (double)((float)z - radius), 
+			for(Player player : getLevel().getEntitiesOfClass(Player.class, new AABB((double)((float)x - radius), (double)((float)y - radius), (double)((float)z - radius), 
 					(double)((float)(x + 1) + radius), (double)((float)(y + 1) + radius), (double)((float)(z + 1) + radius)))) {
 				if (player.containerMenu instanceof ITreasureContainer) {
 					IInventory inventory = ((ITreasureContainer)player.containerMenu).getContents();
@@ -214,14 +216,14 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		double d0 = (double)getBlockPos().getX() + 0.5D;
 		double d1 = (double)getBlockPos().getY() + 0.5D;
 		double d2 = (double)getBlockPos().getZ() + 0.5D;
-		level.playSound((PlayerEntity)null, d0, d1, d2, soundIn, SoundCategory.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
+		level.playSound((Player)null, d0, d1, d2, soundIn, SoundCategory.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
 	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public CompoundNBT save(CompoundNBT parentNBT) {
+	public CompoundTag save(CompoundTag parentNBT) {
 		Treasure.LOGGER.debug("saving chest TE...");
 		try {
 			parentNBT = super.save(parentNBT);
@@ -246,15 +248,15 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * @param parentNBT
 	 * @return
 	 */
-	public CompoundNBT writeLockStatesToNBT(CompoundNBT parentNBT) {
+	public CompoundTag writeLockStatesToNBT(CompoundTag parentNBT) {
 		try {
 			// write lock states
 			if (getLockStates() != null && !getLockStates().isEmpty()) {
-				ListNBT list = new ListNBT();
+				ListTag list = new ListTag();
 				// write custom tile entity properties
 				for (LockState state : getLockStates()) {
 					//					Treasure.LOGGER.info("Writing lock state:" + state);
-					CompoundNBT stateNBT = new CompoundNBT();
+					CompoundTag stateNBT = new CompoundTag();
 					state.writeToNBT(stateNBT);
 					list.add(stateNBT);
 				}
@@ -272,11 +274,11 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * @param parentNBT
 	 * @return
 	 */
-	public CompoundNBT writePropertiesToNBT(CompoundNBT parentNBT) {
+	public CompoundTag writePropertiesToNBT(CompoundTag parentNBT) {
 		try {
 			// write custom name
 			if (this.hasCustomName()) {
-				parentNBT.putString("CustomName", ITextComponent.Serializer.toJson(this.customName));
+				parentNBT.putString("CustomName", TextComponent.Serializer.toJson(this.customName));
 			}
 			// write facing
 			parentNBT.putInt("facing", getFacing().get3DDataValue());
@@ -285,7 +287,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				parentNBT.putString("lootTable", getLootTable().toString());
 			}
 			if (getGenerationContext() != null) {
-				CompoundNBT contextTag = new CompoundNBT();
+				CompoundTag contextTag = new CompoundTag();
 				contextTag.putString("lootRarity", getGenerationContext().getLootRarity().getValue());
 				contextTag.putString("chestGenType", getGenerationContext().getChestGeneratorType().name());
 				parentNBT.put("genContext", contextTag);
@@ -302,7 +304,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * @param parentNBT
 	 * @return
 	 */
-	public CompoundNBT writeInventoryToNBT(CompoundNBT parentNBT) {
+	public CompoundTag writeInventoryToNBT(CompoundTag parentNBT) {
 		try {
 			// write inventory
 			ItemStackHelper.saveAllItems(parentNBT, this.getItems());
@@ -316,7 +318,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 * @param parentNBT
 	 */
-	public void readInventoryFromNBT(CompoundNBT parentNBT) {
+	public void readInventoryFromNBT(CompoundTag parentNBT) {
 		try {
 			// read the inventory
 			ItemStackHelper.loadAllItems(parentNBT, this.getItems());
@@ -329,7 +331,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 * @param parentNBT
 	 */
-	public void readLockStatesFromNBT(CompoundNBT parentNBT) {
+	public void readLockStatesFromNBT(CompoundTag parentNBT) {
 		try {
 			// read the lockstates
 			if (parentNBT.contains("lockStates")) {
@@ -342,9 +344,9 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				}
 
 				List<LockState> states = new LinkedList<LockState>();
-				ListNBT list = parentNBT.getList("lockStates", Constants.NBT.TAG_COMPOUND);
+				ListTag list = parentNBT.getList("lockStates", Constants.NBT.TAG_COMPOUND);
 				for (int i = 0; i < list.size(); i++) {
-					CompoundNBT c = list.getCompound(i);
+					CompoundTag c = list.getCompound(i);
 					LockState lockState = LockState.readFromNBT(c);
 					states.add(lockState.getSlot().getIndex(), lockState);
 					//					Treasure.LOGGER.info("Read NBT lockstate:" + lockState);
@@ -361,11 +363,11 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 * @param nbt
 	 */
-	public void readPropertiesFromNBT(CompoundNBT nbt) {
+	public void readPropertiesFromNBT(CompoundTag nbt) {
 		try {
 			// read the custom name
 			if (nbt.contains("CustomName", 8)) {
-				this.customName = ITextComponent.Serializer.fromJson(nbt.getString("CustomName"));
+				this.customName = TextComponent.Serializer.fromJson(nbt.getString("CustomName"));
 			}
 			// read the facing
 			if (nbt.contains("facing")) {
@@ -380,7 +382,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				}
 			}
 			if (nbt.contains("genContext")) {
-				CompoundNBT contextTag = nbt.getCompound("genContext");
+				CompoundTag contextTag = nbt.getCompound("genContext");
 				Rarity rarity = null;
 				ChestGeneratorType genType = null;
 				if (contextTag.contains("lootRarity")) {
@@ -401,7 +403,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 */
 	@Override
-	public void load(BlockState state, CompoundNBT parentNBT) {
+	public void load(BlockState state, CompoundTag parentNBT) {
 		super.load(state, parentNBT);
 
 		try {
@@ -417,7 +419,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	/*
 	 * This method does NOT call the super's readFromNBT()
 	 */
-	public void readFromItemStackNBT(CompoundNBT nbt) {
+	public void readFromItemStackNBT(CompoundTag nbt) {
 		try {
 			readLockStatesFromNBT(nbt);
 			readInventoryFromNBT(nbt);
@@ -436,9 +438,9 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	}
 
 	@Override
-	public CompoundNBT getUpdateTag() {
+	public CompoundTag getUpdateTag() {
 		//		Treasure.LOGGER.info("getUpdateTag is writing data");
-		return this.save(new CompoundNBT());
+		return this.save(new CompoundTag());
 	}
 
 	@Override 
@@ -456,7 +458,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	// NOTE logic moved to Block.onReplaced. see BlockFurnace.onReplaced for an example.
 	//	@Override
-	//	public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newState) {
+	//	public boolean shouldRefresh(Level world, BlockPos pos, BlockState oldState, BlockState newState) {
 	//		//		Treasure.LOGGER.debug("ShouldRefresh:" + (oldState.getBlock() != newState.getBlock()));
 	//		return oldState.getBlock() != newState.getBlock();
 	//
@@ -512,19 +514,19 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * @param player
 	 * @return
 	 */
-	abstract public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player);
+	abstract public Container createServerContainer(int windowID, Inventory inventory, Player player);
 
-	protected ITextComponent getDefaultName() {
-		return new TranslationTextComponent("container.chest");
+	protected TextComponent getDefaultName() {
+		return new TranslatableComponent("container.chest");
 	}
 
 	@Override
-	public ITextComponent getName() {
+	public TextComponent getName() {
 		return this.hasCustomName() ? this.getCustomName() : this.getDefaultName();
 	}		
 
 	@Override
-	public ITextComponent getDisplayName() {
+	public TextComponent getDisplayName() {
 		return this.getName();
 	}
 
@@ -537,7 +539,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Nullable
 	@Override
-	public Container createMenu(int windowID, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+	public Container createMenu(int windowID, Inventory playerInventory, Player playerEntity) {
 		// TODO it would seem that this is the place where fillWithLoot() should be called
 		// see net.minecraft.tileentity.LockableLootTileEntity.createMenu()
 
@@ -646,7 +648,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 */
 	@Override
-	public boolean stillValid(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		if (getLevel().getBlockEntity(this.getBlockPos()) != this) {
 			return false;
 		} else {
@@ -674,7 +676,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 */
 	@Override
-	public void startOpen(PlayerEntity player) {
+	public void startOpen(Player player) {
 		Treasure.LOGGER.info("opening inventory -> {}", player.getName());
 
 		if (hasLocks()) {
@@ -694,7 +696,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * 
 	 */
 	@Override
-	public void stopOpen(PlayerEntity player) {
+	public void stopOpen(Player player) {
 		if (!player.isSpectator()) {
 			--this.openCount;
 			onOpenOrClose();
@@ -732,14 +734,14 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * @return the customName
 	 */
 	@Override
-	public ITextComponent getCustomName() {
+	public TextComponent getCustomName() {
 		return customName;
 	}
 
 	/**
 	 * @param customName the customName to set
 	 */
-	public void setCustomName(ITextComponent customName) {
+	public void setCustomName(TextComponent customName) {
 		this.customName = customName;
 	}
 
@@ -796,7 +798,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 
 //	@Override
 //	public float getOpenNess(float partialTicks) {
-//		return MathHelper.lerp(partialTicks, this.prevLidAngle, this.lidAngle);
+//		return Mth.lerp(partialTicks, this.prevLidAngle, this.lidAngle);
 //	}
 
 	@Override

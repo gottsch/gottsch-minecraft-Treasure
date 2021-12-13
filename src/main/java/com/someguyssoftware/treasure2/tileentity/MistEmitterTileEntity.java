@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
+import com.someguyssoftware.gottschcore.tileentity.AbstractModBlockEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tileentity.ITickableBlockEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.phys.AABB;
 
 
 /**
@@ -26,7 +26,7 @@ public class MistEmitterTileEntity extends AbstractModTileEntity implements ITic
 	public static final float DEFAULT_PROXIMITY = 5.0F;
 	private float proximity = DEFAULT_PROXIMITY;
 	private boolean active = false;
-	private List<PlayerEntity> playersWithinProximity;
+	private List<Player> playersWithinProximity;
 
 	/**
 	 * 
@@ -54,7 +54,7 @@ public class MistEmitterTileEntity extends AbstractModTileEntity implements ITic
         setActive(false);
         
         // for each player
-		for(PlayerEntity player : getLevel().getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB((double)((float)x - radius), (double)((float)y - radius), (double)((float)z - radius), 
+		for(Player player : getLevel().getEntitiesOfClass(Player.class, new AABB((double)((float)x - radius), (double)((float)y - radius), (double)((float)z - radius), 
 		(double)((float)(x + 1) + radius), (double)((float)(y + 1) + radius), (double)((float)(z + 1) + radius)))) {
             // get the distance
             double distanceSq = player.distanceToSqr(x + 0.5D, y + 0.5D, z + 0.5D);
@@ -71,7 +71,7 @@ public class MistEmitterTileEntity extends AbstractModTileEntity implements ITic
 	 * 
 	 */
 	@Override
-	public void load(BlockState state, CompoundNBT parentNBT) {
+	public void load(BlockState state, CompoundTag parentNBT) {
 		super.load(state, parentNBT);
 	}
 	
@@ -79,16 +79,16 @@ public class MistEmitterTileEntity extends AbstractModTileEntity implements ITic
 	 * 
 	 */
 	@Override
-	public CompoundNBT save(CompoundNBT tag) {
+	public CompoundTag save(CompoundTag tag) {
 	    super.save(tag);
 	    return tag;
 	}
 
-	public synchronized List<PlayerEntity> getPlayersWithinProximity() {
+	public synchronized List<Player> getPlayersWithinProximity() {
 		return playersWithinProximity;
 	}
 
-	private synchronized void setPlayersWithinProximity(List<PlayerEntity> playersWithinProximity) {
+	private synchronized void setPlayersWithinProximity(List<Player> playersWithinProximity) {
 		this.playersWithinProximity = playersWithinProximity;
 	}
 

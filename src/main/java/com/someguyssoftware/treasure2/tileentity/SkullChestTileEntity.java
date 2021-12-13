@@ -4,10 +4,10 @@ import com.someguyssoftware.treasure2.chest.ChestSlotCount;
 import com.someguyssoftware.treasure2.inventory.SkullChestContainer;
 import com.someguyssoftware.treasure2.inventory.TreasureContainers;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * 
@@ -22,7 +22,7 @@ public class SkullChestTileEntity extends AbstractTreasureChestTileEntity {
 	 */
 	public SkullChestTileEntity() {
 		super(TreasureTileEntities.SKULL_CHEST_TILE_ENTITY_TYPE);
-		setCustomName(new TranslationTextComponent("display.skull_chest.name"));
+		setCustomName(new TranslatableComponent("display.skull_chest.name"));
 	}
 	
 	/**
@@ -32,7 +32,7 @@ public class SkullChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param player
 	 * @return
 	 */
-	public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player) {
+	public Container createServerContainer(int windowID, PlayerInventory inventory, Player player) {
 		return new SkullChestContainer(windowID, TreasureContainers.SKULL_CHEST_CONTAINER_TYPE, inventory, this);
 	}
 	

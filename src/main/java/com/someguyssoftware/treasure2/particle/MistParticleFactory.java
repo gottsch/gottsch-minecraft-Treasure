@@ -22,7 +22,7 @@ package com.someguyssoftware.treasure2.particle;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.world.ClientLevel;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -47,7 +47,7 @@ public class MistParticleFactory implements IParticleFactory<BasicParticleType> 
 //	 * 
 //	 */
 //	@Override
-//	public Particle createParticle(MistParticleData data, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+//	public Particle createParticle(MistParticleData data, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 //		MistParticle particle = new MistParticle(world, x, y, z, xSpeed, ySpeed, zSpeed, data.getSourceCoords());
 //		particle.pickSprite(spriteSet);
 //		return particle;
@@ -57,7 +57,7 @@ public class MistParticleFactory implements IParticleFactory<BasicParticleType> 
 	 * 
 	 */
 	@Override
-	public Particle createParticle(BasicParticleType data, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+	public Particle createParticle(BasicParticleType data, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 		MistParticle particle = new MistParticle(world, x, y, z, xSpeed, ySpeed, zSpeed);
 		particle.pickSprite(spriteSet);
 		return particle;

@@ -37,15 +37,15 @@ import com.someguyssoftware.treasure2.meta.StructureMeta;
 import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IServerWorld;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.IServerLevel;
 import net.minecraftforge.registries.ForgeRegistries;
 
 // TODO getMarkerBlock should be in TemplateGenerator as well (passed in)
@@ -72,7 +72,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	}
 
 	@Override
-	public GeneratorResult<TemplateGeneratorData> generate(IServerWorld world, Random random, TemplateHolder templateHolder,
+	public GeneratorResult<TemplateGeneratorData> generate(IServerLevel world, Random random, TemplateHolder templateHolder,
 			PlacementSettings placement, ICoords coords) {
 		return generate(world, random, null, templateHolder, placement, coords);
 	}
@@ -81,7 +81,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	 * 
 	 */
 	@Override
-	public GeneratorResult<TemplateGeneratorData> generate(IServerWorld world, Random random, IDecayProcessor decayProcessor,
+	public GeneratorResult<TemplateGeneratorData> generate(IServerLevel world, Random random, IDecayProcessor decayProcessor,
 			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords) {
 
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
@@ -129,11 +129,11 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		// generate the structure
 		if (decayProcessor == null) {
 			Treasure.LOGGER.debug("no decay processor found.");
-			template.placeInWorld(world, spawnCoords.toPos(), spawnCoords.toPos(), placement, 
+			template.placeInLevel(world, spawnCoords.toPos(), spawnCoords.toPos(), placement, 
 					getNullBlock(), TreasureTemplateRegistry.getTemplateManager().getReplacementMap(), random, 3);
 		} else {
 			decayProcessor.setDecayStartY(Math.abs(offset));
-			template.placeInWorld(world, spawnCoords.toPos(), spawnCoords.toPos(), placement, 
+			template.placeInLevel(world, spawnCoords.toPos(), spawnCoords.toPos(), placement, 
 					decayProcessor, getNullBlock(), TreasureTemplateRegistry.getTemplateManager().getReplacementMap(), random, 3);
 		}
 

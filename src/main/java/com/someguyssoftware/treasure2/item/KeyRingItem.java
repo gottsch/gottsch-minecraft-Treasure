@@ -41,35 +41,35 @@ import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
 import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 import com.someguyssoftware.treasure2.inventory.TreasureContainers;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.ITreasureChestBlockEntity;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+
 import net.minecraft.util.text.TextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.IItemHandler;
@@ -92,7 +92,7 @@ public class KeyRingItem extends ModItem implements INamedContainerProvider {
 	}
 
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		KeyRingCapabilityProvider provider = new KeyRingCapabilityProvider();
 		return provider;
 	}
@@ -101,18 +101,18 @@ public class KeyRingItem extends ModItem implements INamedContainerProvider {
 	 * 
 	 */
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(new TranslationTextComponent("tooltip.label.key_ring").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
+		tooltip.add(new TranslatableComponent("tooltip.label.key_ring").withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC));
 	}
 
 	@Override
-	public ActionResultType useOn(ItemUseContext context) {
+	public InteractionResult useOn(ItemUseContext context) {
 		boolean isKeyBroken = false;
 
 		// exit if on the client
 		if (WorldInfo.isClientSide(context.getLevel())) {			
-			return ActionResultType.FAIL;
+			return InteractionResult.FAIL;
 		}
 
 		/*
@@ -126,13 +126,13 @@ public class KeyRingItem extends ModItem implements INamedContainerProvider {
 			TileEntity tileEntity = context.getLevel().getBlockEntity(context.getClickedPos());
 			if (tileEntity == null || !(tileEntity instanceof ITreasureChestTileEntity)) {
 				Treasure.LOGGER.warn("Null or incorrect TileEntity");
-				return ActionResultType.FAIL;
+				return InteractionResult.FAIL;
 			}
 			ITreasureChestTileEntity chestTileEntity = (ITreasureChestTileEntity)tileEntity;
 
 			// determine if chest is locked
 			if (!chestTileEntity.hasLocks()) {
-				return ActionResultType.SUCCESS;
+				return InteractionResult.SUCCESS;
 			}
 
 			try {
@@ -219,31 +219,31 @@ public class KeyRingItem extends ModItem implements INamedContainerProvider {
 		}
 
 		// this should prevent the onItemRightClick from happening./
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+	public ActionResult<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		// exit if on the client
 		if (WorldInfo.isClientSide(worldIn)) {			
-			return new ActionResult<ItemStack>(ActionResultType.FAIL, playerIn.getItemInHand(handIn));
+			return new ActionResult<ItemStack>(InteractionResult.FAIL, playerIn.getItemInHand(handIn));
 		}
 
 		// get the container provider
 		INamedContainerProvider namedContainerProvider = this;
 
 		// open the chest
-		NetworkHooks.openGui((ServerPlayerEntity)playerIn, namedContainerProvider, (packetBuffer)->{});
+		NetworkHooks.openGui((ServerPlayer)playerIn, namedContainerProvider, (packetBuffer)->{});
 		// NOTE: (packetBuffer)->{} is just a do-nothing because we have no extra data to send
 
-		return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getItemInHand(handIn));
+		return new ActionResult<ItemStack>(InteractionResult.SUCCESS, playerIn.getItemInHand(handIn));
 	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public boolean onDroppedByPlayer(ItemStack stack, PlayerEntity player) {		
+	public boolean onDroppedByPlayer(ItemStack stack, Player player) {		
 		// NOTE only works on 'Q' press, not mouse drag and drop
 		IKeyRingCapability cap = stack.getCapability(KEY_RING_CAPABILITY, null).orElseThrow(IllegalStateException::new);
 
@@ -259,7 +259,7 @@ public class KeyRingItem extends ModItem implements INamedContainerProvider {
 	 * 
 	 */
 	@Override
-	public Container createMenu(int windowID, PlayerInventory inventory, PlayerEntity player) {
+	public Container createMenu(int windowID, PlayerInventory inventory, Player player) {
 		// get the held item
 		ItemStack keyRingItem = player.getItemInHand(Hand.MAIN_HAND);
 		if (keyRingItem == null || !(keyRingItem.getItem() instanceof KeyRingItem)) {
@@ -275,7 +275,7 @@ public class KeyRingItem extends ModItem implements INamedContainerProvider {
 	}
 
 	@Override
-	public ITextComponent getDisplayName() {
-		return new TranslationTextComponent("item.treasure2.key_ring");
+	public TextComponent getDisplayName() {
+		return new TranslatableComponent("item.treasure2.key_ring");
 	}
 }

@@ -51,8 +51,8 @@ import com.someguyssoftware.treasure2.item.Adornment;
 import com.someguyssoftware.treasure2.loot.TreasureLootFunctions;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.loot.IRandomRange;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootFunction;
@@ -61,8 +61,8 @@ import net.minecraft.loot.RandomRanges;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * This function will add charms to the INNATE inventory of an item with CharmableCapability by default.

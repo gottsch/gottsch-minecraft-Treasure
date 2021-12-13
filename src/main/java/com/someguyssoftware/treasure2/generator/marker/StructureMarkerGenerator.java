@@ -9,7 +9,7 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
-import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
+import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerBlockEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
@@ -27,13 +27,13 @@ import com.someguyssoftware.treasure2.world.gen.structure.ITemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.entity.EntityType;
-import net.minecraft.tileentity.MobSpawnerTileEntity;
+import net.minecraft.tileentity.MobSpawnerBlockEntity;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.IServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraftforge.common.DungeonHooks;
@@ -53,12 +53,12 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 	/**
 	 * 
 	 */
-	public GeneratorResult<GeneratorData> generate(IServerWorld world, Random random, ICoords coords) {
+	public GeneratorResult<GeneratorData> generate(IServerLevel world, Random random, ICoords coords) {
 		return generate(world, null, random, coords);
 	}
 	
 	@Override
-	public GeneratorResult<GeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords) {
+	public GeneratorResult<GeneratorData> generate(IServerLevel world, ChunkGenerator generator, Random random, ICoords coords) {
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 	
 		// get the biome ID

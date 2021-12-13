@@ -26,7 +26,7 @@ import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
-import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
+import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerBlockEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -34,18 +34,18 @@ import com.someguyssoftware.treasure2.entity.TreasureEntities;
 import com.someguyssoftware.treasure2.entity.monster.BoundSoulEntity;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.server.ServerLevel;
 
 /**
  * @author Mark Gottschling on Jan 17, 2019
@@ -91,7 +91,7 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 				proximitySq = 1;
 
 			// for each player
-			for (PlayerEntity player : getLevel().players()) {
+			for (Player player : getLevel().players()) {
 				// get the distance
 				double distanceSq = player.distanceToSqr(this.getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ());
 				if (!isTriggered && !this.isDead() && (distanceSq < proximitySq)) {
@@ -113,7 +113,7 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 	 * 
 	 */
 	@Override
-	public void execute(World world, Random random, ICoords blockCoords, ICoords playerCoords) {
+	public void execute(Level world, Random random, ICoords blockCoords, ICoords playerCoords) {
 		Treasure.LOGGER.debug("executing...");
 		Treasure.LOGGER.debug("blockCoords -> {}, playerCoords -> {}", blockCoords.toShortString(), playerCoords.toShortString());
 		int mobCount = RandomHelper.randomInt(random, getMobNum().getMinInt(), getMobNum().getMaxInt());
@@ -136,7 +136,7 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 				BlockPos newPos = new BlockPos(x, y, z);
 				Treasure.LOGGER.debug("attempted location for bound soul spawn -> {} {} {}", x, y, z);
 
-		        ModUtils.SpawnHelper.spawn((ServerWorld)world, entity, null, null, newPos, SpawnReason.SPAWNER, true, false);
+		        ModUtils.SpawnHelper.spawn((ServerLevel)world, entity, null, null, newPos, SpawnReason.SPAWNER, true, false);
 			}
 		}
 		// self destruct
@@ -161,7 +161,7 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 	 * 
 	 */
 	@Override
-	public void load(BlockState state, CompoundNBT nbt) {
+	public void load(BlockState state, CompoundTag nbt) {
 		super.load(state, nbt);
 		try {
 			// read the custom name
@@ -179,7 +179,7 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 	 * 
 	 */
 	@Override
-	public CompoundNBT save(CompoundNBT nbt) {
+	public CompoundTag save(CompoundTag nbt) {
 		super.save(nbt);
 		nbt.putBoolean("hasEntity", hasEntity());
 //	    Treasure.LOGGER.debug("writing proximity spawner @ {} -> [hasEntity={}, mobName={}, spawnRange={}", this.pos, tag.getBoolean("hasEntity"), tag.getString("mobName"), tag.getDouble("spawnRange"));

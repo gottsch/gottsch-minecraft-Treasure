@@ -20,13 +20,13 @@
 package com.someguyssoftware.treasure2.block;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerTileEntity;
+import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerBlockEntity;
 import com.someguyssoftware.treasure2.tileentity.TreasureTileEntities;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.LevelAccessor;
 
 /**
  * 
@@ -46,7 +46,7 @@ public class GravestoneSpawnerBlock extends GravestoneBlock	implements ITreasure
 	}
 
 	@Override
-	public TileEntity newBlockEntity(IBlockReader world) {
+	public TileEntity newBlockEntity(LevelAccessor world) {
 		Treasure.LOGGER.debug("created spawner te");
 		GravestoneProximitySpawnerTileEntity tileEntity = new GravestoneProximitySpawnerTileEntity(TreasureTileEntities.GRAVESTONE_PROXIMITY_SPAWNER_TILE_ENTITY_TYPE);
 		return (TileEntity) tileEntity;

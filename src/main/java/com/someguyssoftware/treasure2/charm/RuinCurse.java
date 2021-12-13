@@ -28,16 +28,16 @@ import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.util.Mth;
+import net.minecraft.network.chat.Component;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.eventbus.api.Event;
 
@@ -69,7 +69,7 @@ public class RuinCurse extends Charm {
 	}
 
 	@Override
-	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
+	public boolean update(Level world, Random random, ICoords coords, Player player, Event event, final ICharmEntity entity) {
 		boolean result = false;
 		
 		// update every 10 seconds
@@ -92,7 +92,7 @@ public class RuinCurse extends Charm {
 					if (selectedItemStack.isDamageableItem()) {
 						selectedItemStack.hurt(1, random, null);
 						Treasure.LOGGER.debug("damaged item -> {}, now at damaged -> {} of {}", selectedItemStack.getDisplayName(), selectedItemStack.getDamageValue(), selectedItemStack.getMaxDamage());
-						entity.setValue(MathHelper.clamp(entity.getValue() - 1.0,  0D, entity.getValue()));
+						entity.setValue(Mth.clamp(entity.getValue() - 1.0,  0D, entity.getValue()));
 					}
 				}			
 				Treasure.LOGGER.debug("charm {} new data -> {}", this.getName(), entity);
@@ -106,10 +106,10 @@ public class RuinCurse extends Charm {
 	 * 
 	 */
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.DARK_RED;
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent(getLabel(entity)).withStyle(color)));
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent("tooltip.charm.rate.ruin").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn, ICharmEntity entity) {
+		ChatFormatting color = ChatFormatting.DARK_RED;
+		tooltip.add(new TranslatableComponent("tooltip.indent2", new TranslatableComponent(getLabel(entity)).withStyle(color)));
+		tooltip.add(new TranslatableComponent("tooltip.indent2", new TranslatableComponent("tooltip.charm.rate.ruin").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC)));
 	}
     
 	/**

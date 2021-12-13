@@ -37,8 +37,8 @@ import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.loot.TreasureLootFunctions;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.loot.IRandomRange;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootFunction;
@@ -48,10 +48,10 @@ import net.minecraft.loot.RandomValueRange;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.resources.ResourceLocation;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
@@ -131,14 +131,14 @@ public class SetSourceItem extends LootFunction {
 //					if (!cap.isCharmed()) {
 //						Treasure.LOGGER.debug("not charmed, setting hover name");
 //						stack.setHoverName(
-//								((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
+//								((TranslatableComponent)sourceItem.getName(new ItemStack(sourceItem)))
 //								.append(new StringTextComponent(" "))
 //								.append(stack.getItem().getName(stack)));
 //					}
 //					else {
 //						Treasure.LOGGER.debug("charmed, setting hover name");
 //						stack.setHoverName(
-//								((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
+//								((TranslatableComponent)sourceItem.getName(new ItemStack(sourceItem)))
 //								.append(new StringTextComponent(" "))
 //								.append(stack.getHoverName()));
 //					}

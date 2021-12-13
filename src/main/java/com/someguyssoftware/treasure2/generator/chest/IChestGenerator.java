@@ -54,29 +54,29 @@ import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.FilledMapItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameterSets;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.IServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.server.ServerLevel;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
 
@@ -86,7 +86,7 @@ import net.minecraft.world.storage.MapDecoration;
  */
 public interface IChestGenerator {
 
-	default public GeneratorResult<ChestGeneratorData> generate(final IServerWorld world, final Random random, ICoords coords,
+	default public GeneratorResult<ChestGeneratorData> generate(final IServerLevel world, final Random random, ICoords coords,
 			final Rarity rarity, BlockState state) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(coords);
@@ -112,9 +112,9 @@ public interface IChestGenerator {
 		// place the chest in the world
 		TileEntity tileEntity = null;
 		if (state != null) {
-			tileEntity = placeInWorld(world, random, coords, chest, state);
+			tileEntity = placeInLevel(world, random, coords, chest, state);
 		} else {
-			tileEntity = placeInWorld(world, random, chest, coords);
+			tileEntity = placeInLevel(world, random, chest, coords);
 		}
 
 		if (tileEntity == null) {
@@ -183,7 +183,7 @@ public interface IChestGenerator {
 	 * @param tileEntity
 	 * @param lootRarity
 	 */
-	default public void fillChest(final World world, Random random, final TileEntity tileEntity, final Rarity rarity, PlayerEntity player) {
+	default public void fillChest(final Level world, Random random, final TileEntity tileEntity, final Rarity rarity, Player player) {
 		Optional<LootTableShell> lootTableShell = null;
 		ResourceLocation lootTableResourceLocation = ((AbstractTreasureChestTileEntity)tileEntity).getLootTable();
 		Treasure.LOGGER.debug("chest has loot table property of -> {}", lootTableResourceLocation);
@@ -235,7 +235,7 @@ public interface IChestGenerator {
 //			lootContext = Treasure.getLootTableMaster().getContext(); // TODO review this
 //		}
 //		else {
-			lootContext = new LootContext.Builder((ServerWorld) world)
+			lootContext = new LootContext.Builder((ServerLevel) world)
 					.withLuck(player.getLuck())
 					.withParameter(LootParameters.THIS_ENTITY, player)
 					.withParameter(LootParameters.ORIGIN, new Vector3d(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ())).create(LootParameterSets.CHEST);
@@ -305,7 +305,7 @@ public interface IChestGenerator {
 	 * @param chestCoords
 	 * @param rarity
 	 */
-	default public void addTreasureMap(World world, Random random, IInventory tileEntity, ICoords chestCoords, Rarity rarity) {
+	default public void addTreasureMap(Level world, Random random, IInventory tileEntity, ICoords chestCoords, Rarity rarity) {
 		//check for open slots first
 		List<Integer> emptySlots = getEmptySlotsRandomized(tileEntity, random);
 		if (!emptySlots.isEmpty() && RandomHelper.checkProbability(random, TreasureConfig.CHESTS.treasureMapProbability.get())) { 
@@ -348,11 +348,11 @@ public interface IChestGenerator {
 	 * @param zoom
 	 * @return
 	 */
-	default public ItemStack createMap(World world, ICoords coords, Rarity rarity, byte zoom) {
+	default public ItemStack createMap(Level world, ICoords coords, Rarity rarity, byte zoom) {
 		ItemStack itemStack = FilledMapItem.create(world, coords.getX(), coords.getZ(), zoom, true, true);
-		FilledMapItem.renderBiomePreviewMap((ServerWorld) world, itemStack);
+		FilledMapItem.renderBiomePreviewMap((ServerLevel) world, itemStack);
 		MapData.addTargetDecoration(itemStack, coords.toPos(), "+", MapDecoration.Type.RED_X);
-		 itemStack.setHoverName(new TranslationTextComponent("display.treasure_map." + rarity.getValue()));
+		 itemStack.setHoverName(new TranslatableComponent("display.treasure_map." + rarity.getValue()));
 		 return itemStack;
 	}
 
@@ -604,7 +604,7 @@ public interface IChestGenerator {
 	 * @param random
 	 * @param coods
 	 */
-	default public void addMarkers(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords, final boolean isSurfaceChest) {
+	default public void addMarkers(IServerLevel world, ChunkGenerator generator, Random random, ICoords coords, final boolean isSurfaceChest) {
 		if (!isSurfaceChest && TreasureConfig.MARKERS.markerStructuresAllowed.get() && RandomHelper
 				.checkProbability(random, TreasureConfig.MARKERS.markerStructureProbability.get())) {
 			Treasure.LOGGER.debug("generating a random structure marker -> {}", coords.toShortString());
@@ -622,7 +622,7 @@ public interface IChestGenerator {
 	 * @param chestCoords
 	 * @return
 	 */
-	default public TileEntity placeInWorld(IServerWorld world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
+	default public TileEntity placeInLevel(IServerLevel world, Random random, AbstractChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
 		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chest, chestCoords);
 
@@ -635,7 +635,7 @@ public interface IChestGenerator {
 			// remove the title entity (if exists)
 
 			if (te != null && (te instanceof AbstractTreasureChestTileEntity)) {
-				((ServerWorld)world).removeBlockEntity(chestCoords.toPos());
+				((ServerLevel)world).removeBlockEntity(chestCoords.toPos());
 			}
 			return null;
 		}
@@ -659,7 +659,7 @@ public interface IChestGenerator {
 	 * @param state
 	 * @return
 	 */
-	default public TileEntity placeInWorld(IServerWorld world, Random random, ICoords chestCoords, AbstractChestBlock chest,
+	default public TileEntity placeInLevel(IServerLevel world, Random random, ICoords chestCoords, AbstractChestBlock chest,
 			BlockState state) {
 		// replace block @ coords
 		boolean isPlaced = GenUtil.replaceBlockWithChest(world, random, chestCoords, chest, state);
@@ -672,7 +672,7 @@ public interface IChestGenerator {
 			Treasure.LOGGER.debug("Unable to place chest @ {}", chestCoords.toShortString());
 			// remove the title entity (if exists)
 			if (te != null && (te instanceof AbstractTreasureChestTileEntity)) {
-				((ServerWorld)world).removeBlockEntity(chestCoords.toPos());
+				((ServerLevel)world).removeBlockEntity(chestCoords.toPos());
 			}
 			return null;
 		}

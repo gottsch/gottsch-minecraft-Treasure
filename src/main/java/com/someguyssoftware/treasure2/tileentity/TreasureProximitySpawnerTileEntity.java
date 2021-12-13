@@ -19,11 +19,11 @@
  */
 package com.someguyssoftware.treasure2.tileentity;
 
-import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
+import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerBlockEntity;
 import com.someguyssoftware.treasure2.Treasure;
 
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.ITickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * Wrapper on PromixitySpawnerTileEntity, providing a no-arg constructor that provides the tile entity type to the super.

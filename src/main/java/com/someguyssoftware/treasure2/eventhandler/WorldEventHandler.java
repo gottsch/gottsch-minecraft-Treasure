@@ -30,9 +30,9 @@ import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.world.gen.feature.TreasureFeatures;
 
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.server.ServerLevel;
+import net.minecraftforge.event.world.LevelEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
@@ -42,7 +42,7 @@ import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
  *
  */
 //@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
-public class WorldEventHandler {
+public class LevelEventHandler {
 
 	// reference to the mod.
 	private IMod mod;
@@ -50,20 +50,20 @@ public class WorldEventHandler {
 	/**
 	 * 
 	 */
-	public WorldEventHandler(IMod mod) {
+	public LevelEventHandler(IMod mod) {
 		setMod(mod);
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGH)
-	public void onWorldLoad(WorldEvent.Load event) {
+	public void onLevelLoad(LevelEvent.Load event) {
 
 		/*
 		 * On load of dimension 0 (overworld), initialize the loot table's context and other static loot tables
 		 */
-		if (WorldInfo.isServerSide((World)event.getWorld())) {
-			ServerWorld world = (ServerWorld) event.getWorld();
+		if (WorldInfo.isServerSide((Level)event.getLevel())) {
+			ServerLevel world = (ServerLevel) event.getLevel();
 			Treasure.LOGGER.info("In world load event for dimension {}", WorldInfo.getDimension(world).toString());
-			if (WorldInfo.isSurfaceWorld(world)) {
+			if (WorldInfo.isSurfaceLevel(world)) {
 				// called once to initiate world-level properties in the registries
 				TreasureLootTableRegistry.initialize(world);
 				TreasureTemplateRegistry.initialize(world);
@@ -75,7 +75,7 @@ public class WorldEventHandler {
 				TreasureDecayRegistry.register(getMod().getId());
 
 				/*
-				 * clear the current World Gens values and reload
+				 * clear the current Level Gens values and reload
 				 */
 				TreasureFeatures.PERSISTED_FEATURES.forEach(feature -> {
 					feature.init();

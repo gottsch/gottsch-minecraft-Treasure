@@ -37,7 +37,7 @@ import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 
-import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IServerLevel;
 
 /**
  * TODO should pit provider use non-static method - require a concrete instance ?
@@ -57,7 +57,7 @@ public class PitProvider {
 	 * @param config
 	 * @return
 	 */
-	public static GeneratorResult<ChestGeneratorData> generatePit(IServerWorld world, Random random, Rarity chestRarity, ICoords markerCoords, IChestConfig config) {
+	public static GeneratorResult<ChestGeneratorData> generatePit(IServerLevel world, Random random, Rarity chestRarity, ICoords markerCoords, IChestConfig config) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<ChestGeneratorData>(ChestGeneratorData.class);
 		GeneratorResult<ChestGeneratorData> pitResult = new GeneratorResult<ChestGeneratorData>(ChestGeneratorData.class);
 
@@ -99,7 +99,7 @@ public class PitProvider {
 	 * @param spawnYMin
 	 * @return
 	 */
-	public static ICoords getUndergroundSpawnPos(IServerWorld world, Random random, ICoords pos, int spawnYMin) {
+	public static ICoords getUndergroundSpawnPos(IServerLevel world, Random random, ICoords pos, int spawnYMin) {
 		ICoords spawnPos = null;
 
 		// spawn location under ground

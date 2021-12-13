@@ -30,9 +30,9 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.loot.LootContext;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 /**
  * @author Mark Gottschling on Aug 14, 2021
@@ -48,7 +48,7 @@ public interface IWishable {
 	 * @param entityItem
 	 * @param coords
 	 */
-	public Optional<ItemStack> generateLoot(World world, Random random, ItemStack itemStack, ICoords coords);
+	public Optional<ItemStack> generateLoot(Level world, Random random, ItemStack itemStack, ICoords coords);
 	
 	/**
 	 * 
@@ -59,7 +59,7 @@ public interface IWishable {
 	 * @param rarity
 	 * @param lootContext
 	 */
-	default public void injectLoot(World world, Random random, List<ItemStack> itemStacks, String category, Rarity rarity, LootContext lootContext) {
+	default public void injectLoot(Level world, Random random, List<ItemStack> itemStacks, String category, Rarity rarity, LootContext lootContext) {
 		Optional<List<LootTableShell>> injectLootTableShells = buildInjectedLootTableList(category, rarity);		
 		if (injectLootTableShells.isPresent()) {
 			itemStacks.addAll(TreasureLootTableRegistry.getLootTableMaster().getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext));

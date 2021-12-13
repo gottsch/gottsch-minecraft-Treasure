@@ -3,7 +3,7 @@ package com.someguyssoftware.treasure2.block;
 import com.someguyssoftware.gottschcore.block.ModLogBlock;
 
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
 
 /**
  * 

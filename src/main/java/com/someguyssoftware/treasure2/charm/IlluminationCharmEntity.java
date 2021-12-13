@@ -22,13 +22,12 @@ package com.someguyssoftware.treasure2.charm;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 
 /**
  * 
@@ -54,12 +53,12 @@ public class IlluminationCharmEntity extends CharmEntity {
 	 * 
 	 */
 	@Override
-	public boolean load(CompoundNBT nbt) {
+	public boolean load(CompoundTag nbt) {
 		super.load(nbt);		
-		ListNBT list = nbt.getList("illuminationCoords", 10);
+		ListTag list = nbt.getList("illuminationCoords", 10);
 //		Treasure.logger.debug("illumination tag list size -> {}", list.tagCount());
 		for (int i = 0; i < list.size(); i++) {
-			CompoundNBT tag = (CompoundNBT) list.get(i);
+			CompoundTag tag = (CompoundTag) list.get(i);
 			ICoords coords = ICoords.readFromNBT(tag);
 			if (coords != null) {
 				getCoordsList().add(coords);
@@ -69,14 +68,14 @@ public class IlluminationCharmEntity extends CharmEntity {
 	}
 	
 	@Override
-	public CompoundNBT save(CompoundNBT nbt) {
+	public CompoundTag save(CompoundTag nbt) {
 		nbt = super.save(nbt);
 		try {
-			ListNBT list = new ListNBT();
+			ListTag list = new ListTag();
 			synchronized (coordsList) {
 				for (ICoords coords : coordsList) {
 					// create a new nbt
-					CompoundNBT coordsTag = new CompoundNBT();
+					CompoundTag coordsTag = new CompoundTag();
 					coords.writeToNBT(coordsTag);
 					list.add(coordsTag);
 				}

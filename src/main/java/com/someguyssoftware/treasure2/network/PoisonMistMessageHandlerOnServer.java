@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 
 import com.someguyssoftware.treasure2.Treasure;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.server.MinecraftServer;
@@ -60,10 +60,10 @@ public class PoisonMistMessageHandlerOnServer {
 		}
 
 		// we know for sure that this handler is only used on the server side, so it is ok to assume
-		//  that the ctx handler is a serverhandler, and that ServerPlayerEntity exists
+		//  that the ctx handler is a serverhandler, and that ServerPlayer exists
 		// Packets received on the client side must be handled differently!  See MessageHandlerOnClient
 
-		final ServerPlayerEntity sendingPlayer = ctx.getSender();
+		final ServerPlayer sendingPlayer = ctx.getSender();
 		if (sendingPlayer == null) {
 			Treasure.LOGGER.warn("EntityPlayerMP was null when PoisonMistMessageToServer was received");
 		}
@@ -75,11 +75,11 @@ public class PoisonMistMessageHandlerOnServer {
 
 	// This message is called from the Server thread.
 	//   It spawns a random number of the given projectile at a position above the target location
-	static void processMessage(PoisonMistMessageToServer message, ServerPlayerEntity sendingPlayer) {
+	static void processMessage(PoisonMistMessageToServer message, ServerPlayer sendingPlayer) {
 
 		try {
 			MinecraftServer minecraftServer = sendingPlayer.server;
-			ServerPlayerEntity player = minecraftServer.getPlayerList().getPlayer(UUID.fromString(message.getPlayerUUID()));
+			ServerPlayer player = minecraftServer.getPlayerList().getPlayer(UUID.fromString(message.getPlayerUUID()));
 
 			if (player != null) {
 				boolean isAffected = false;

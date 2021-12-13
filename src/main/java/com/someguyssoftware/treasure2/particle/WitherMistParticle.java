@@ -29,9 +29,9 @@ import com.someguyssoftware.treasure2.particle.data.CollidingParticleType;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.client.world.ClientLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraftforge.api.distmarker.Dist;
@@ -56,7 +56,7 @@ public class WitherMistParticle extends AbstractCollidingMistParticle {
 	 * @param velocityZ
 	 * @param parentCoords
 	 */
-	public WitherMistParticle(ClientWorld world, double x, double y, double z, ICoords coords) {
+	public WitherMistParticle(ClientLevel world, double x, double y, double z, ICoords coords) {
 		super(world, x, y, z, coords);
 		init();
 	}
@@ -85,7 +85,7 @@ public class WitherMistParticle extends AbstractCollidingMistParticle {
 	 * 
 	 */
 	@Override
-	public void inflictEffectOnPlayer(PlayerEntity player) {
+	public void inflictEffectOnPlayer(Player player) {
 		if (WorldInfo.isServerSide(player.level)) {
 			return;
 		}
@@ -125,7 +125,7 @@ public class WitherMistParticle extends AbstractCollidingMistParticle {
 		 * 
 		 */
 		@Override
-		public Particle createParticle(CollidingParticleType data, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle createParticle(CollidingParticleType data, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			WitherMistParticle particle = new WitherMistParticle(world, x, y, z, data.getSourceCoords());
 			particle.pickSprite(spriteSet);
 			return particle;

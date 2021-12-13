@@ -4,10 +4,10 @@ import com.someguyssoftware.treasure2.chest.ChestSlotCount;
 import com.someguyssoftware.treasure2.inventory.TreasureContainers;
 import com.someguyssoftware.treasure2.inventory.WitherChestContainer;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * NOTE Wither ChestConfig does not have a "lid", but has doors, however, the use of the lidAngle from the super class
@@ -24,7 +24,7 @@ public class WitherChestTileEntity extends AbstractTreasureChestTileEntity {
 	 */
 	public WitherChestTileEntity() {
 		super(TreasureTileEntities.WITHER_CHEST_TILE_ENTITY_TYPE);
-		setCustomName(new TranslationTextComponent("display.wither_chest.name"));
+		setCustomName(new TranslatableComponent("display.wither_chest.name"));
 	}
 	
 	/**
@@ -34,7 +34,7 @@ public class WitherChestTileEntity extends AbstractTreasureChestTileEntity {
 	 * @param player
 	 * @return
 	 */
-	public Container createServerContainer(int windowID, PlayerInventory inventory, PlayerEntity player) {
+	public Container createServerContainer(int windowID, PlayerInventory inventory, Player player) {
 		return new WitherChestContainer(windowID, TreasureContainers.WITHER_CHEST_CONTAINER_TYPE, inventory, this);
 	}
 	

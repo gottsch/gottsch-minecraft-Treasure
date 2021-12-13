@@ -24,7 +24,7 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.measurement.Quantity;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
-import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
+import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerBlockEntity;
 import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.treasure2.Treasure;
@@ -37,11 +37,11 @@ import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.entity.EntityType;
-import net.minecraft.tileentity.MobSpawnerTileEntity;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.tileentity.MobSpawnerBlockEntity;
+import net.minecraft.world.IServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraftforge.common.DungeonHooks;
@@ -52,15 +52,15 @@ import net.minecraftforge.common.DungeonHooks;
  */
 public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 
-	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords spawnCoords);	
-	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData> generate(IServerLevel world, ChunkGenerator generator, Random random, ICoords spawnCoords);	
+	GeneratorResult<ChestGeneratorData> generate(IServerLevel world, ChunkGenerator generator, Random random, ICoords originalSpawnCoords,
 			IDecayRuleSet decayRuleSet);
-	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData> generate(IServerLevel world, ChunkGenerator generator, Random random, ICoords originalSpawnCoords,
 			TemplateHolder holder);
-	GeneratorResult<ChestGeneratorData> generate(IServerWorld world, ChunkGenerator generator, Random random, ICoords originalSpawnCoords,
+	GeneratorResult<ChestGeneratorData> generate(IServerLevel world, ChunkGenerator generator, Random random, ICoords originalSpawnCoords,
 			TemplateHolder holder, IDecayRuleSet decayRuleSet);
 
-	default public TemplateHolder selectTemplate(IServerWorld world, Random random, ICoords coords, StructureArchetype archetype, StructureType type) {
+	default public TemplateHolder selectTemplate(IServerLevel world, Random random, ICoords coords, StructureArchetype archetype, StructureType type) {
 		// get the biome ID
 		Biome biome = world.getBiome(coords.toPos());
 		TemplateHolder holder = TreasureTemplateRegistry.getTemplateManager().getTemplate(random, archetype, type, biome);
@@ -75,7 +75,7 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param quantity
 	 * @param d
 	 */
-	default public void buildOneTimeSpawners(IServerWorld world, Random random, List<BlockContext> proximityContexts, Quantity quantity, double d) {
+	default public void buildOneTimeSpawners(IServerLevel world, Random random, List<BlockContext> proximityContexts, Quantity quantity, double d) {
 		for (BlockContext c : proximityContexts) {
 			Treasure.LOGGER.debug("placing proximity spawner at -> {}", c.getCoords().toShortString());
 	    	world.setBlock(c.getCoords().toPos(), TreasureBlocks.PROXIMITY_SPAWNER.defaultBlockState(), 3);
@@ -99,7 +99,7 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param random
 	 * @param spawnerContexts
 	 */
-	default public void buildVanillaSpawners(IServerWorld world, Random random, List<BlockContext> spawnerContexts) {
+	default public void buildVanillaSpawners(IServerLevel world, Random random, List<BlockContext> spawnerContexts) {
 		for (BlockContext c : spawnerContexts) {
 			Treasure.LOGGER.debug("placing vanilla spawner at -> {}", c.getCoords().toShortString());
 			world.setBlock(c.getCoords().toPos(), Blocks.SPAWNER.defaultBlockState(), 3);

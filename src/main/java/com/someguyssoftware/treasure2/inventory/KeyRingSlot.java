@@ -23,7 +23,7 @@ import com.someguyssoftware.treasure2.item.KeyItem;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * @author Mark Gottschling on Mar 12, 2018

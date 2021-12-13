@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * 

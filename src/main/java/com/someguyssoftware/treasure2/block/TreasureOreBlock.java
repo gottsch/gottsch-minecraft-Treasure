@@ -5,11 +5,11 @@ package com.someguyssoftware.treasure2.block;
 
 import com.someguyssoftware.gottschcore.block.ModBlock;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.block.SoundType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
 
 /**
  * TODO is this really necessary? maybe because it requires isNormalCube ??
@@ -30,7 +30,7 @@ public class TreasureOreBlock extends ModBlock implements ITreasureBlock {
 //	 * 
 //	 */
 //	@Override
-//	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
+//	public boolean isNormalCube(BlockState state, LevelAccessor world, BlockPos pos) {
 //		return false;
 //	}
 }

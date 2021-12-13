@@ -25,16 +25,16 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.util.Mth;
+import net.minecraft.network.chat.Component;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.Event;
 
@@ -69,19 +69,19 @@ public class LifeStrikeCharm extends Charm implements ILifeStrike {
 	 * NOTE: it is assumed that only the allowable events are calling this action.
 	 */
 	@Override
-	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
+	public boolean update(Level world, Random random, ICoords coords, Player player, Event event, final ICharmEntity entity) {
 		boolean result = false;
 		if (entity.getValue() > 0 && player.isAlive()) {
 			DamageSource source = ((LivingHurtEvent) event).getSource();
-			if (source.getEntity() instanceof PlayerEntity) {
+			if (source.getEntity() instanceof Player) {
 				if (player.getHealth() > 5.0F) {
 					// get the source and amount
 					double amount = ((LivingHurtEvent)event).getAmount();
 					// increase damage amount
 					((LivingHurtEvent)event).setAmount((float) (Math.max(2F, amount * entity.getPercent())));
 					// reduce players health
-					player.setHealth(MathHelper.clamp(player.getHealth() - LIFE_AMOUNT, 0.0F, player.getMaxHealth()));		
-					entity.setValue(MathHelper.clamp(entity.getValue() - 1,  0D, entity.getValue()));
+					player.setHealth(Mth.clamp(player.getHealth() - LIFE_AMOUNT, 0.0F, player.getMaxHealth()));		
+					entity.setValue(Mth.clamp(entity.getValue() - 1,  0D, entity.getValue()));
 					result = true;
 				}
 			}
@@ -93,10 +93,10 @@ public class LifeStrikeCharm extends Charm implements ILifeStrike {
 	 * 
 	 */
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.RED;       
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent(getLabel(entity)).withStyle(color)));
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent("tooltip.charm.rate.life_strike", Math.round((this.getMaxPercent()-1)*100)).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn, ICharmEntity entity) {
+		ChatFormatting color = ChatFormatting.RED;       
+		tooltip.add(new TranslatableComponent("tooltip.indent2", new TranslatableComponent(getLabel(entity)).withStyle(color)));
+		tooltip.add(new TranslatableComponent("tooltip.indent2", new TranslatableComponent("tooltip.charm.rate.life_strike", Math.round((this.getMaxPercent()-1)*100)).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC)));
 	}
 
 	public static class Builder extends Charm.Builder {

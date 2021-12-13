@@ -36,10 +36,10 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.command.arguments.BlockPosArgument;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.gen.feature.template.Template;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.server.ServerLevel;
 
 /**
  * Usage: /t2-ruins <x> <y> <z> [-modid <mod id> -archetype <archetype> -name <name>] [-decay <relative filepath>] [-rarity <rarity>]
@@ -175,7 +175,7 @@ public class SpawnRuinsCommand {
 	 * @return
 	 */
 	public static int spawn(CommandSource source, BlockPos pos, String modID, String archetype, String name, String decay) {
-		ServerWorld world = source.getLevel();
+		ServerLevel world = source.getLevel();
 		Random random = new Random();
 		
         modID = (modID == null || modID.isEmpty()) ? Treasure.MODID : modID;
@@ -269,13 +269,13 @@ public class SpawnRuinsCommand {
 //				rarity = Rarity.valueOf(rarityArg.toUpperCase());			
 //			}	
 //			
-//			World world = commandSender.getEntityWorld();
+//			Level world = commandSender.getEntityLevel();
 //			Random random = new Random();
 //			ICoords coords = new Coords(x, y, z);
 //			
 //			// get the structure generator
-//			SurfaceChestWorldGenerator worldGen = 
-//					(SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.SURFACE_CHEST);
+//			SurfaceChestLevelGenerator worldGen = 
+//					(SurfaceChestLevelGenerator) Treasure.WORLD_GENERATORS.get(LevelGeneratorType.SURFACE_CHEST);
 //			
 //			// build the template key
 //			ResourceLocation templateKey = new ResourceLocation(Treasure.MODID + ":" + Treasure.TEMPLATE_MANAGER.getBaseResourceFolder()

@@ -7,7 +7,7 @@ import com.someguyssoftware.gottschcore.spatial.Heading;
 import com.someguyssoftware.gottschcore.spatial.Rotate;
 import com.someguyssoftware.treasure2.Treasure;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 /**
  * @author Mark Gottschling onJan 10, 2018
@@ -18,7 +18,7 @@ public interface ILockSlot {
 	 * 
 	 * @param parentNBT
 	 */
-	public static ILockSlot readFromNBT(CompoundNBT nbt) {
+	public static ILockSlot readFromNBT(CompoundTag nbt) {
 		int index = -1;
 		int face = -1;
 		float x = -0F;
@@ -56,7 +56,7 @@ public interface ILockSlot {
 	 * @param nbt
 	 * @return
 	 */
-	public CompoundNBT writeToNBT(CompoundNBT nbt);
+	public CompoundTag writeToNBT(CompoundTag nbt);
 
 	Heading getFace();
 	void setFace(Heading face);

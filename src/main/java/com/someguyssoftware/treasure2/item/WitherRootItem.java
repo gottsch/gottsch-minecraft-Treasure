@@ -8,13 +8,13 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.WitherBranchBlock;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.world.InteractionResult;
 
 /**
  * @author Mark Gottschling on Nov 14, 2014
@@ -30,16 +30,16 @@ public class WitherRootItem extends ModBlockItem {
 	}
 	
 	@Override
-	public ActionResultType useOn(ItemUseContext context) {
+	public InteractionResult useOn(ItemUseContext context) {
 		if (WorldInfo.isClientSide(context.getLevel())) {
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         }
 		BlockState state = TreasureBlocks.WITHER_ROOT.defaultBlockState().setValue(WitherBranchBlock.FACING, context.getHorizontalDirection().getOpposite());
 		
  		ItemStack heldItem = context.getPlayer().getItemInHand(context.getHand());	     		
  		this.placeBlock(new BlockItemUseContext(context), state);     		
  		heldItem.shrink(1);            
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
 	}
 	
 	/**

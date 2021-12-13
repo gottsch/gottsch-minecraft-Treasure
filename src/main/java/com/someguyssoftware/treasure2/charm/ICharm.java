@@ -25,13 +25,13 @@ import java.util.Random;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
@@ -56,16 +56,16 @@ public interface ICharm {
 	 */
 	ICharmEntity createEntity();
 	
-    public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity);
+    public boolean update(Level world, Random random, ICoords coords, Player player, Event event, final ICharmEntity entity);
 
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity);
-	
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn, ICharmEntity entity);
+
 	/**
 	 * 
 	 * @param nbt
 	 * @return
 	 */
-	CompoundNBT save(CompoundNBT nbt);
+	CompoundTag save(CompoundTag nbt);
 	
 	public Class<?> getRegisteredEvent();
 	

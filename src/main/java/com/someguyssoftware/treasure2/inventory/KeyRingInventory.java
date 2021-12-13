@@ -25,9 +25,9 @@ import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.KEY
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
 /**
@@ -109,7 +109,7 @@ public class KeyRingInventory extends Inventory {
 	 * @see net.minecraft.inventory.IInventory#openInventory(net.minecraft.entity.player.EntityPlayer)
 	 */
 	@Override
-	public void startOpen(PlayerEntity player) {
+	public void startOpen(Player player) {
 		/*
 		 *  clear the items. prevents duplicating keys.
 		 *  this is to prevent the player from taking the keys from the key ring inventory gui, then dropping the key ring
@@ -125,7 +125,7 @@ public class KeyRingInventory extends Inventory {
 	 * @see net.minecraft.inventory.IInventory#closeInventory(net.minecraft.entity.player.EntityPlayer)
 	 */
 	@Override
-	public void stopOpen(PlayerEntity player) {
+	public void stopOpen(Player player) {
 		/*
 		 *  write the locked state to the nbt
 		 */

@@ -25,10 +25,10 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.entity.TreasureEntities;
 import com.someguyssoftware.treasure2.particle.TreasureParticles;
-import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerTileEntity;
+import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerBlockEntity;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap.MutableAttribute;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -44,18 +44,18 @@ import net.minecraft.entity.ai.goal.RestrictSunGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.ILevelReader;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -74,7 +74,7 @@ public class BoundSoulEntity extends MonsterEntity {
 	 * @param type
 	 * @param world
 	 */
-	public BoundSoulEntity (EntityType<BoundSoulEntity> type, World world) {
+	public BoundSoulEntity (EntityType<BoundSoulEntity> type, Level world) {
 		super(type, world);
 		this.setHomePos(BlockPos.ZERO);
 	}
@@ -83,7 +83,7 @@ public class BoundSoulEntity extends MonsterEntity {
 	 * 
 	 * @param worldIn
 	 */
-	public BoundSoulEntity(World world) {
+	public BoundSoulEntity(Level world) {
 		this(TreasureEntities.BOUND_SOUL_ENTITY_TYPE, world);
 	}
 
@@ -92,13 +92,13 @@ public class BoundSoulEntity extends MonsterEntity {
 	 * @param world
 	 * @param homePos
 	 */
-	public BoundSoulEntity(World world, BlockPos homePos) {
+	public BoundSoulEntity(Level world, BlockPos homePos) {
 		this(TreasureEntities.BOUND_SOUL_ENTITY_TYPE, world);
 		this.setHomePos(homePos);
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundNBT compound) {
+	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putInt(HOME_POS_KEY + "X", this.getHomePos().getX());
 		compound.putInt(HOME_POS_KEY + "Y", this.getHomePos().getY());
@@ -106,7 +106,7 @@ public class BoundSoulEntity extends MonsterEntity {
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundNBT compound) {
+	public void readAdditionalSaveData(CompoundTag compound) {
 		int i = compound.getInt(HOME_POS_KEY + "X");
 		int j = compound.getInt(HOME_POS_KEY + "Y");
 		int k = compound.getInt(HOME_POS_KEY + "Z");
@@ -121,12 +121,12 @@ public class BoundSoulEntity extends MonsterEntity {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0F, false));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(6, new LookAtGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
 		this.goalSelector.addGoal(2, new MoveTowardsRestrictionGoal(this, 1.2D));
 
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class BoundSoulEntity extends MonsterEntity {
 	 * @return
 	 */
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		MutableAttribute attr =  MobEntity.createMobAttributes(); // first get the mob attribs and then add this mob attribs
+		MutableAttribute attr =  Mob.createMobAttributes(); // first get the mob attribs and then add this mob attribs
 
 		return attr
 				.add(Attributes.MAX_HEALTH, 22.0D)
@@ -184,7 +184,7 @@ public class BoundSoulEntity extends MonsterEntity {
 
 		/*
 		 *  create a mist particle if on client.
-		 *  this is slight change to the vanilla call EntityLiving#isServerWorld()
+		 *  this is slight change to the vanilla call EntityLiving#isServerLevel()
 		 */
 		if (WorldInfo.isClientSide(this.level)) {
 			if (!this.isNoAi()) {
@@ -274,7 +274,7 @@ public class BoundSoulEntity extends MonsterEntity {
 		}
 
 		@Override
-		protected boolean isValidTarget(IWorldReader worldReader, BlockPos pos) {
+		protected boolean isValidTarget(ILevelReader worldReader, BlockPos pos) {
 			return pos == homePos;
 		}
 	}

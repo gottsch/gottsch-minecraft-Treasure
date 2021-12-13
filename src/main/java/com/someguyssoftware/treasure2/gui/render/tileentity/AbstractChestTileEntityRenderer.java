@@ -24,19 +24,19 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.someguyssoftware.treasure2.block.StandardChestBlock;
 import com.someguyssoftware.treasure2.gui.model.ITreasureChestModel;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 /**
  * @author Mark Gottschling onJan 9, 2018
@@ -74,11 +74,11 @@ public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer
 			return; // should never happen
 		}
 
-		World world = tileEntity.getLevel();
-		boolean hasWorld = (world != null);
+		Level world = tileEntity.getLevel();
+		boolean hasLevel = (world != null);
 		BlockState state = tileEntity.getBlockState();
 		Direction facing = Direction.NORTH;
-		if (hasWorld) {
+		if (hasLevel) {
 			facing = state.getValue(StandardChestBlock.FACING);
 		}
 

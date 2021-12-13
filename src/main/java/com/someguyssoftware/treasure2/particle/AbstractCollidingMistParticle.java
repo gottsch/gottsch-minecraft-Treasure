@@ -21,13 +21,13 @@ package com.someguyssoftware.treasure2.particle;
 
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.tileentity.MistEmitterTileEntity;
+import com.someguyssoftware.treasure2.tileentity.MistEmitterBlockEntity;
 
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.IWorld;
+import net.minecraft.client.world.ClientLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.LevelAccessor;
 
 /**
  * 
@@ -45,7 +45,7 @@ public abstract class AbstractCollidingMistParticle extends AbstractMistParticle
 	 * @param posZIn
 	 * @param coords
 	 */
-	public AbstractCollidingMistParticle(ClientWorld worldIn, double posXIn, double posYIn, double posZIn, ICoords coords) {
+	public AbstractCollidingMistParticle(ClientLevel worldIn, double posXIn, double posYIn, double posZIn, ICoords coords) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		setSourceCoords(coords);
 	}
@@ -61,7 +61,7 @@ public abstract class AbstractCollidingMistParticle extends AbstractMistParticle
 	 * @param world
 	 */
 	@Override
-	public void doPlayerCollisions(IWorld world) {
+	public void doPlayerCollisions(ILevel world) {
 
 		if (getSourceCoords() == null) {
 			return;
@@ -73,12 +73,12 @@ public abstract class AbstractCollidingMistParticle extends AbstractMistParticle
 			return;
 		}
 
-		// create an AxisAlignedBB for the particle
-		AxisAlignedBB aabb = new AxisAlignedBB(x - 0.125D, y, z - 0.125D, x + 0.125D, y + 0.25D,
+		// create an AABB for the particle
+		AABB aabb = new AABB(x - 0.125D, y, z - 0.125D, x + 0.125D, y + 0.25D,
 				z + 0.125D);
 
 		// for all the players in the mist emitter tile entity list
-		for (PlayerEntity player : ((MistEmitterTileEntity) emitterTileEntity).getPlayersWithinProximity()) {
+		for (Player player : ((MistEmitterTileEntity) emitterTileEntity).getPlayersWithinProximity()) {
 			if (player.getBoundingBox().intersects(aabb)) {
 				inflictEffectOnPlayer(player);
 			}
@@ -89,7 +89,7 @@ public abstract class AbstractCollidingMistParticle extends AbstractMistParticle
 	 * 
 	 * @param player
 	 */
-	public abstract void inflictEffectOnPlayer(PlayerEntity player);
+	public abstract void inflictEffectOnPlayer(Player player);
 	
 	@Override
 	public ICoords getSourceCoords() {

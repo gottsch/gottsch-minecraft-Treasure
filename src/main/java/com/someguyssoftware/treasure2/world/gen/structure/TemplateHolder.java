@@ -6,7 +6,7 @@ package com.someguyssoftware.treasure2.world.gen.structure;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.gen.feature.template.Template;
 
 /**

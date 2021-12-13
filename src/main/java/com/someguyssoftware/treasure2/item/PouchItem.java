@@ -40,23 +40,23 @@ import com.someguyssoftware.treasure2.inventory.PouchInventory;
 import com.someguyssoftware.treasure2.inventory.TreasureContainers;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.IItemHandler;
@@ -72,7 +72,7 @@ public class PouchItem extends ModItem implements INamedContainerProvider {
 	}
 
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		PouchCapabilityProvider provider =  new PouchCapabilityProvider();
 		return provider;
 	}
@@ -81,30 +81,30 @@ public class PouchItem extends ModItem implements INamedContainerProvider {
 	 * 
 	 */
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(new TranslationTextComponent("tooltip.label.pouch").withStyle(TextFormatting.GOLD));
+		tooltip.add(new TranslatableComponent("tooltip.label.pouch").withStyle(ChatFormatting.GOLD));
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+	public ActionResult<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		// exit if on the client
 		if (WorldInfo.isClientSide(worldIn)) {			
-			return new ActionResult<ItemStack>(ActionResultType.PASS, playerIn.getItemInHand(handIn));
+			return new ActionResult<ItemStack>(InteractionResult.PASS, playerIn.getItemInHand(handIn));
 		}
 
 		// get the container provider
 		INamedContainerProvider namedContainerProvider = this;
 
 		// open the chest
-		NetworkHooks.openGui((ServerPlayerEntity)playerIn, namedContainerProvider, (packetBuffer)->{});
+		NetworkHooks.openGui((ServerPlayer)playerIn, namedContainerProvider, (packetBuffer)->{});
 		// NOTE: (packetBuffer)->{} is just a do-nothing because we have no extra data to send
 
-		return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getItemInHand(handIn));
+		return new ActionResult<ItemStack>(InteractionResult.SUCCESS, playerIn.getItemInHand(handIn));
 	}
 
 	@Override
-	public Container createMenu(int windowID, PlayerInventory inventory, PlayerEntity player) {
+	public Container createMenu(int windowID, PlayerInventory inventory, Player player) {
 		// get the held item
 		ItemStack heldItem = player.getItemInHand(Hand.MAIN_HAND);
 		if (heldItem == null || !(heldItem.getItem() instanceof PouchItem)) {
@@ -120,8 +120,8 @@ public class PouchItem extends ModItem implements INamedContainerProvider {
 	}
 
 	@Override
-	public ITextComponent getDisplayName() {
-		return new TranslationTextComponent("item.treasure2.pouch");
+	public TextComponent getDisplayName() {
+		return new TranslatableComponent("item.treasure2.pouch");
 	}
 
 	////////////////////////
@@ -129,8 +129,8 @@ public class PouchItem extends ModItem implements INamedContainerProvider {
 	 * NOTE getShareTag() and readShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands.
 	 */
 	@Override
-	public CompoundNBT getShareTag(ItemStack stack) {
-		CompoundNBT nbt = stack.getOrCreateTag();
+	public CompoundTag getShareTag(ItemStack stack) {
+		CompoundTag nbt = stack.getOrCreateTag();
 		IItemHandler cap = stack.getCapability(POUCH_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
 
 		try {
@@ -142,13 +142,13 @@ public class PouchItem extends ModItem implements INamedContainerProvider {
 	}
 
 	@Override
-	public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
+	public void readShareTag(ItemStack stack, @Nullable CompoundTag nbt) {
 		super.readShareTag(stack, nbt);
 
-		if (nbt instanceof CompoundNBT) {
+		if (nbt instanceof CompoundTag) {
 			IItemHandler cap = stack.getCapability(POUCH_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
 
-			CompoundNBT tag = (CompoundNBT) nbt;
+			CompoundTag tag = (CompoundTag) nbt;
 
 		}
 	}

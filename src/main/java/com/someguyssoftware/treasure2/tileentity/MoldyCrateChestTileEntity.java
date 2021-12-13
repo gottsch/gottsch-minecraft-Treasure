@@ -1,6 +1,6 @@
 package com.someguyssoftware.treasure2.tileentity;
 
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * 
@@ -12,6 +12,6 @@ public class MoldyCrateChestTileEntity extends CrateChestTileEntity {
 	@SuppressWarnings("deprecation")
 	public MoldyCrateChestTileEntity() {
 		super(TreasureTileEntities.MOLDY_CRATE_CHEST_TILE_ENTITY_TYPE);
-		setCustomName(new TranslationTextComponent("display.crate_chest_moldy.name"));
+		setCustomName(new TranslatableComponent("display.crate_chest_moldy.name"));
 	}
 }

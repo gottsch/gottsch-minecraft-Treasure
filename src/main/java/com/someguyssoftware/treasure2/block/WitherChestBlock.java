@@ -5,17 +5,17 @@ package com.someguyssoftware.treasure2.block;
 
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 
 /**
  * @author Mark Gottschling on Jun 19, 2018
@@ -36,7 +36,7 @@ public class WitherChestBlock extends StandardChestBlock {
 	}
 
 	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+	public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 		super.onPlace(state, worldIn, pos, oldState, isMoving);
 
 		// add the placeholder block above
@@ -47,7 +47,7 @@ public class WitherChestBlock extends StandardChestBlock {
 	 * 
 	 */
 	 @Override
-	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(worldIn, pos, state, placer, stack);
 		
 		// TODO Check if the wither chest (double high) can be placed at location.
@@ -81,7 +81,7 @@ public class WitherChestBlock extends StandardChestBlock {
 	}
 	
 	@Override
-	public void destroy(IWorld world, BlockPos pos, BlockState state) {
+	public void destroy(ILevel world, BlockPos pos, BlockState state) {
 		// destory placeholder above
 		BlockPos upPos = pos.above();
 		Block topBlock = world.getBlockState(upPos).getBlock();

@@ -28,9 +28,9 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.IGeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.IServerLevel;
 
 /**
  * 
@@ -39,9 +39,9 @@ import net.minecraft.world.IServerWorld;
  */
 public interface ITemplateGenerator<RESULT extends IGeneratorResult<?>> {
 
-	public GeneratorResult<TemplateGeneratorData> generate(IServerWorld world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
+	public GeneratorResult<TemplateGeneratorData> generate(IServerLevel world, Random random, TemplateHolder templateHolder, PlacementSettings settings, ICoords spawnCoords);
 
-	public GeneratorResult<TemplateGeneratorData> generate(IServerWorld world, Random random, IDecayProcessor decayProcessor,
+	public GeneratorResult<TemplateGeneratorData> generate(IServerLevel world, Random random, IDecayProcessor decayProcessor,
 			TemplateHolder templateHolder, PlacementSettings placement, ICoords coords);
 	
 	/**

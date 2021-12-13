@@ -34,13 +34,13 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -550,8 +550,8 @@ public class TreasureCharms {
 			if (cap.getSourceItem() != null && !cap.getSourceItem().equals(Items.AIR.getRegistryName())) {
 				Item sourceItem = ForgeRegistries.ITEMS.getValue(cap.getSourceItem());
 				stack.setHoverName(
-						((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
-						.append(new StringTextComponent(" "))
+						((TranslatableComponent)sourceItem.getName(new ItemStack(sourceItem)))
+						.append(new TextComponent(" "))
 						.append(stack.getItem().getName(stack)));
 			}
 		});

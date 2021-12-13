@@ -19,7 +19,7 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 /**
  * 
@@ -64,8 +64,8 @@ public class CharmEntity implements ICharmEntity {
 	 * @param nbt
 	 * @return
 	 */
-//	public static Optional<ICharmEntity> load(CompoundNBT nbt) {
-//		Optional<ICharm> charm = Charm.load((CompoundNBT) nbt.get(COPPER_CHARM));
+//	public static Optional<ICharmEntity> load(CompoundTag nbt) {
+//		Optional<ICharm> charm = Charm.load((CompoundTag) nbt.get(COPPER_CHARM));
 //		if (!charm.isPresent()) {
 //			return Optional.empty();
 //		}
@@ -89,8 +89,8 @@ public class CharmEntity implements ICharmEntity {
 	 * @return
 	 */
 	@Override
-	public CompoundNBT save(CompoundNBT nbt) {
-		CompoundNBT charmNbt = new CompoundNBT();
+	public CompoundTag save(CompoundTag nbt) {
+		CompoundTag charmNbt = new CompoundTag();
 		// save the charm
 		nbt.put(CHARM, getCharm().save(charmNbt));
 		// save the entity data

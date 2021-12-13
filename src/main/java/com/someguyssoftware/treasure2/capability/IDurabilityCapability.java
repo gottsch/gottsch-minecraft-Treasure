@@ -21,7 +21,7 @@ package com.someguyssoftware.treasure2.capability;
 
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * 

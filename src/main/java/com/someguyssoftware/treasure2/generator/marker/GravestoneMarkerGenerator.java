@@ -21,12 +21,12 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerTileEntity;
+import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerBlockEntity;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.ContainerBlock;
-import net.minecraft.util.Direction;
-import net.minecraft.world.IServerWorld;
+import net.minecraft.core.Direction;
+import net.minecraft.world.IServerLevel;
 import net.minecraft.world.gen.ChunkGenerator;
 
 /**
@@ -49,7 +49,7 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 	/**
 	 * 
 	 */
-	public GeneratorResult<GeneratorData> generate(IServerWorld world, Random random, ICoords coords) {
+	public GeneratorResult<GeneratorData> generate(IServerLevel world, Random random, ICoords coords) {
 		return generate(world, null, random, coords);
 	}
 	
@@ -57,7 +57,7 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 	 * 
 	 */
 	@Override
-	public GeneratorResult<GeneratorData> generate(IServerWorld world, ChunkGenerator chunkGenerator, Random random, ICoords coords) {
+	public GeneratorResult<GeneratorData> generate(IServerLevel world, ChunkGenerator chunkGenerator, Random random, ICoords coords) {
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 		// check if markers are enabled
 		if (!TreasureConfig.MARKERS.markersAllowed.get()) {

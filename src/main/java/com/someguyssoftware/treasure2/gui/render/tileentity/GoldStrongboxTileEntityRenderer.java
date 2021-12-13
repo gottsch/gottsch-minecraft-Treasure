@@ -21,10 +21,10 @@ package com.someguyssoftware.treasure2.gui.render.tileentity;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.gui.model.StandardChestModel;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestBlockEntity;
 
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * @author Mark Gottschling onJan 9, 2018

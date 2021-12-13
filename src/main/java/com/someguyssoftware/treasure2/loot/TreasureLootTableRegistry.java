@@ -41,7 +41,7 @@ import com.someguyssoftware.gottschcore.json.JSMin;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.server.ServerLevel;
 
 /**
  * Use this registry to register all your mod's custom loot table for Treasure2.
@@ -80,12 +80,12 @@ public final class TreasureLootTableRegistry {
 	 * Convenience wrapper
 	 * @param world
 	 */
-	public static void initialize(ServerWorld world) {
+	public static void initialize(ServerLevel world) {
 		lootTableMaster.init(world);
 	}
 
 	/**
-	 * Called during WorldEvent.Load event for this mod only
+	 * Called during LevelEvent.Load event for this mod only
 	 * @param modID
 	 */
 	public static void register() {
@@ -96,10 +96,10 @@ public final class TreasureLootTableRegistry {
 		if (!REGISTERED_MODS.contains(modID)) {
 			REGISTERED_MODS.add(modID);
 			lootTableMaster.registerChests(modID, lootResources.getChestResources());
-			lootTableMaster.registerChestsFromWorldSave(modID, lootResources.getChestLootTableFolderLocations());
+			lootTableMaster.registerChestsFromLevelSave(modID, lootResources.getChestLootTableFolderLocations());
 			
 			lootTableMaster.registerSpecials(modID, lootResources.getSpecialResources());
-			lootTableMaster.registerSpecialsFromWorldSave(modID, lootResources.getSpecialLootTableFolderLocations());
+			lootTableMaster.registerSpecialsFromLevelSave(modID, lootResources.getSpecialLootTableFolderLocations());
 			
 			lootTableMaster.registerInjects(modID, lootResources.getInjectResources());
 			// TODO need a difference between registering loot tables from JAR resources and from

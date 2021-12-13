@@ -11,8 +11,8 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.Biome;
 
 public interface ITreasureFeature {
@@ -53,12 +53,12 @@ public interface ITreasureFeature {
 	 * @param minDistance
 	 * @return
 	 */
-	public static boolean isRegisteredChestWithinDistance(IWorld world, ICoords coords, int minDistance) {
+	public static boolean isRegisteredChestWithinDistance(ILevel world, ICoords coords, int minDistance) {
 
 		double minDistanceSq = minDistance * minDistance;
 
 		// get a list of dungeons
-		List<ChestInfo> infos = TreasureData.CHEST_REGISTRIES.get(WorldInfo.getDimension((World)world).toString()).getValues();
+		List<ChestInfo> infos = TreasureData.CHEST_REGISTRIES.get(WorldInfo.getDimension((Level)world).toString()).getValues();
 
 		if (infos == null || infos.size() == 0) {
 			Treasure.LOGGER.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");

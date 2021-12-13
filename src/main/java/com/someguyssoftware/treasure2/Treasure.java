@@ -14,7 +14,7 @@ import com.someguyssoftware.treasure2.eventhandler.CharmEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.HotbarEquipmentCharmHandler;
 import com.someguyssoftware.treasure2.eventhandler.IEquipmentCharmHandler;
 
-import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
+import com.someguyssoftware.treasure2.eventhandler.LevelEventHandler;
 import com.someguyssoftware.treasure2.init.TreasureSetup;
 import com.someguyssoftware.treasure2.network.TreasureNetworking;
 import com.someguyssoftware.treasure2.particle.TreasureParticles;
@@ -46,8 +46,8 @@ import top.theillusivec4.curios.api.SlotTypePreset;
 		modid = Treasure.MODID, 
 		name = Treasure.NAME, 
 		version = Treasure.VERSION, 
-		minecraftVersion = "1.16.5", 
-		forgeVersion = "36.1.0", 
+		minecraftVersion = "1.18.1", 
+		forgeVersion = "39.0.0", 
 		updateJsonUrl = Treasure.UPDATE_JSON_URL)
 @Credits(values = { "Treasure was first developed by Mark Gottschling on Aug 27, 2014.",
 		"Treasure2 was first developed by Mark Gottschling on Jan 2018.",
@@ -96,7 +96,7 @@ public class Treasure implements IMod {
 
 		// needs to be registered here instead of @Mod.EventBusSubscriber because an instance of the handler
 		// is required and constructor arguments may need to be passed in
-		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
+		MinecraftForge.EVENT_BUS.register(new LevelEventHandler(getInstance()));
 		
 		IEquipmentCharmHandler equipmentCharmHandler = null;
 		if (ModList.get().isLoaded("curios")) {

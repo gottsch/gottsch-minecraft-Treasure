@@ -41,12 +41,12 @@ import com.someguyssoftware.treasure2.item.IWishable;
 import com.someguyssoftware.treasure2.network.CharmMessageToClient;
 import com.someguyssoftware.treasure2.network.TreasureNetworking;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.entity.player.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
@@ -97,10 +97,10 @@ public class CharmEventHandler {
 		}
 
 		// do something to player every update tick:
-		if (event.getEntity() instanceof PlayerEntity) {
+		if (event.getEntity() instanceof Player) {
 
 			// get the player
-			ServerPlayerEntity player = (ServerPlayerEntity) event.getEntity();
+			ServerPlayer player = (ServerPlayer) event.getEntity();
 			processCharms(event, player);
 		}
 	}
@@ -118,9 +118,9 @@ public class CharmEventHandler {
 		// NOTE mimic checkCharms...(LivingHurEvent) for checking the player entity, IFF a charm causes a mob damage.
 		
 		// do something to player every update tick:
-		if (event.getEntity() instanceof PlayerEntity) {
+		if (event.getEntity() instanceof Player) {
 			// get the player
-			ServerPlayerEntity player = (ServerPlayerEntity) event.getEntity();
+			ServerPlayer player = (ServerPlayer) event.getEntity();
 			processCharms(event, player);
 		}		
 	}
@@ -136,12 +136,12 @@ public class CharmEventHandler {
 		}
 
 		// get the player
-		ServerPlayerEntity player = null;
-		if (event.getEntity() instanceof PlayerEntity) {
-			player = (ServerPlayerEntity) event.getEntity();
+		ServerPlayer player = null;
+		if (event.getEntity() instanceof Player) {
+			player = (ServerPlayer) event.getEntity();
 		}
-		else if (event.getSource().getEntity() instanceof PlayerEntity) {
-			player = (ServerPlayerEntity) event.getSource().getEntity();
+		else if (event.getSource().getEntity() instanceof Player) {
+			player = (ServerPlayer) event.getSource().getEntity();
 		}
 		
 		if (player != null) {
@@ -152,7 +152,7 @@ public class CharmEventHandler {
 	// Maybe use BlockEvent.BreakBlock and then use Global Loot Modifiers??
 	//	@SubscribeEvent
 	//	public void checkCharmsInteractionWithBlock(BlockEvent.HarvestDropsEvent event) {
-	//		if (WorldInfo.isClientSide(event.getWorld())) {
+	//		if (WorldInfo.isClientSide(event.getLevel())) {
 	//			return;
 	//		}
 	//
@@ -178,7 +178,7 @@ public class CharmEventHandler {
 	 * @param event
 	 * @param player
 	 */
-	private void processCharms(Event event, ServerPlayerEntity player) {
+	private void processCharms(Event event, ServerPlayer player) {
 		/*
 		 * a list of charm contexts to execute
 		 */
@@ -200,11 +200,11 @@ public class CharmEventHandler {
 	 * @param player
 	 * @return
 	 */
-	private List<CharmContext> gatherCharms(Event event, ServerPlayerEntity player) {
+	private List<CharmContext> gatherCharms(Event event, ServerPlayer player) {
 		final List<CharmContext> contexts = new ArrayList<>(5);
 		
 		// check each hand
-		for (Hand hand : Hand.values()) {
+		for (Hand hand : InteractionHand.values()) {
 			ItemStack heldStack = player.getItemInHand(hand);
 //			Treasure.LOGGER.debug("is executing -> {}", heldStack.getCapability(CHARMABLE).map(cap -> cap.isExecuting()).orElse(false));
 			if (heldStack.getCapability(CHARMABLE).map(cap -> cap.isExecuting()).orElse(false)) {
@@ -249,7 +249,7 @@ public class CharmEventHandler {
 	 * @param player
 	 * @param contexts
 	 */
-	private static void executeCharms(Event event, ServerPlayerEntity player, List<CharmContext> contexts) {
+	private static void executeCharms(Event event, ServerPlayer player, List<CharmContext> contexts) {
 		/*
 		 * a list of charm types that are non-stackable that should not be executed more than once.
 		 */
@@ -299,7 +299,7 @@ public class CharmEventHandler {
 	//	@SubscribeEvent
 	//	public void onItemInfo(ItemTooltipEvent event) {
 	//		if (event.getItemStack().getItem() == Items.EMERALD) {
-	//			event.getToolTip().add(new TranslationTextComponent("tooltip.label.coin").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
+	//			event.getToolTip().add(new TranslatableComponent("tooltip.label.coin").withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC));
 	//		}
 	//	}
 }

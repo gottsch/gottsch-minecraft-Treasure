@@ -22,10 +22,7 @@ package com.someguyssoftware.treasure2.block;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.someguyssoftware.gottschcore.block.ModContainerBlock;
-import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.Heading;
 import com.someguyssoftware.gottschcore.spatial.Rotate;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
@@ -36,36 +33,33 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 
 /**
  * @author Mark Gottschling on Sep 16, 2018
@@ -129,15 +123,12 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 		}
 
 	}
-	
-	/* (non-Javadoc)
-	 * @see net.minecraft.block.ITileEntityProvider#createNewTileEntity(net.minecraft.world.World, int)
-	 */
+
 	@Override
-	 public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		AbstractTreasureChestTileEntity chestTileEntity = null;
+	public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
+		AbstractTreasureChestTileEntity chestBlockEntity = null;
 		try {
-			chestTileEntity = (AbstractTreasureChestTileEntity) getTileEntityClass().newInstance();
+			chestBlockEntity = (AbstractTreasureChestTileEntity) getTileEntityClass().newInstance();
 
 			// setup lock states
 			List<LockState> lockStates = new LinkedList<>();
@@ -148,18 +139,18 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 				// add in order of slot indexes
 				lockStates.add(lockState.getSlot().getIndex(), lockState);
 			}
-			chestTileEntity.setLockStates(lockStates);
+			chestBlockEntity.setLockStates(lockStates);
 //			Treasure.LOGGER.info("AbstractChestBlock | createNewTileEntity | lockStates -> {}", chestTileEntity.getLockStates());
 		}
 		catch(Exception e) {
 			Treasure.LOGGER.error(e);
 		}
 //		Treasure.LOGGER.info("AbstractChestBlock | createNewTileEntity | tileEntity -> {} @ {}", chestTileEntity, chestTileEntity.getPos());
-		return chestTileEntity;
+		return chestBlockEntity;
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
 
@@ -177,7 +168,7 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 	 * 
 	 */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		switch(state.getValue(FACING)) {
 		default:
 		case NORTH:
@@ -192,25 +183,17 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockState blockState = this.defaultBlockState().setValue(FACING,
 				context.getHorizontalDirection().getOpposite());
 		return blockState;
 	}
-
-	/**
-	 * 
-	 */
-//	@Override
-//	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
-//		return false;
-//	}
 	
 	/**
 	 * Called just after the player places a block.
 	 */
 	@Override
-	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		Treasure.LOGGER.debug("Placing chest from item");
 
 		boolean shouldRotate = false;
@@ -221,7 +204,7 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 
 		// face the block towards the player (there isn't really a front)
 		worldIn.setBlock(pos, state.setValue(FACING, placer.getDirection().getOpposite()), 3);
-		TileEntity te = worldIn.getBlockEntity(pos);
+		BlockEntity te = worldIn.getBlockEntity(pos);
 		if (te != null && te instanceof AbstractTreasureChestTileEntity) {
 			// get the backing tile entity
 			tcte = (AbstractTreasureChestTileEntity) te;
@@ -267,18 +250,24 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 		}
 	}
 
+	@Override
+	public InteractionResult use(BlockState p_60503_, Level p_60504_, BlockPos p_60505_, Player p_60506_,
+			InteractionHand p_60507_, BlockHitResult p_60508_) {
+		// TODO Auto-generated method stub
+		return super.use(p_60503_, p_60504_, p_60505_, p_60506_, p_60507_, p_60508_);
+	}
 	/**
 	 * 
 	 */
 	@Override
-	   public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player,
-			Hand handIn, BlockRayTraceResult hit) {
+	   public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player,
+			InteractionHand handIn, BlockRayTraceResult hit) {
 
 		AbstractTreasureChestTileEntity tileEntity = (AbstractTreasureChestTileEntity) world.getBlockEntity(pos);
 
 		// exit if on the client
 		if (WorldInfo.isClientSide(world)) {
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
 		boolean isLocked = false;
@@ -287,26 +276,25 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 			// get the container provider
 			INamedContainerProvider namedContainerProvider = this.getContainer(state, world, pos);			
 			// open the chest
-			NetworkHooks.openGui((ServerPlayerEntity)player, namedContainerProvider, (packetBuffer)->{});
+			NetworkHooks.openGui((ServerPlayer)player, namedContainerProvider, (packetBuffer)->{});
 			// NOTE: (packetBuffer)->{} is just a do-nothing because we have no extra data to send
 		}
 
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
-
 	@Override
-	public void destroy(IWorld worldIn, BlockPos pos, BlockState state) {
+	public void destroy(LevelAccessor worldIn, BlockPos pos, BlockState state) {
 		Treasure.LOGGER.info("block destroyed by player. should happen after block is broken/replaced");
 		super.destroy(worldIn, pos, state);
 	}
 
 
 	@Override
-	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		Treasure.LOGGER.debug("Removing block....!");
 
-		TileEntity tileEntity = worldIn.getBlockEntity(pos);
+		BlockEntity tileEntity = worldIn.getBlockEntity(pos);
 		AbstractTreasureChestTileEntity te = null;
 		if (tileEntity instanceof AbstractTreasureChestTileEntity) {
 			te = (AbstractTreasureChestTileEntity)tileEntity;
@@ -318,7 +306,7 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 				/*
 				 * spawn inventory items
 				 */
-				InventoryHelper.dropContents(worldIn, pos, (IInventory) te);
+				InventoryHelper.dropContents(worldIn, pos, (Inventory) te);
 
 				/*
 				 * spawn chest item
@@ -332,7 +320,7 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 				 * write the properties to the nbt
 				 */
 				if (!chestItem.hasTag()) {
-					chestItem.setTag(new CompoundNBT());
+					chestItem.setTag(new CompoundTag());
 				}
 				te.writePropertiesToNBT(chestItem.getTag());
 			} else {
@@ -348,7 +336,7 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 					// give the chest a tag compound
 					//					Treasure.LOGGER.debug("[BreakingBlock]Saving chest items:");
 
-					CompoundNBT nbt = new CompoundNBT();
+					CompoundTag nbt = new CompoundTag();
 					nbt = te.save(nbt);
 					chestItem.setTag(nbt);
 
@@ -377,12 +365,13 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 	}
 
 	// replaces getItemDropped
-	public static void spawnDrops(BlockState state, World worldIn, BlockPos pos) {
+	@Deprecated
+	public static void spawnDrops(BlockState state, Level worldIn, BlockPos pos) {
 		return;
 	}
 
 //	@Override
-//	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+//	public boolean allowsMovement(BlockState state, LevelAccessor worldIn, BlockPos pos, PathType type) {
 //		return false;
 //	}
 	
@@ -397,8 +386,8 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 //	}
 	
 	@Override
-   public BlockRenderType getRenderShape(BlockState state) {
-      return BlockRenderType.ENTITYBLOCK_ANIMATED;
+   public RenderShape getRenderShape(BlockState state) {
+      return RenderShape.ENTITYBLOCK_ANIMATED;
    }
 
 	/**
@@ -417,7 +406,7 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 	 * @param rotate
 	 * @return
 	 */
-	public boolean  rotateLockStates(IWorld world, BlockPos pos, Rotate rotate) {
+	public boolean  rotateLockStates(LevelAccessor world, BlockPos pos, Rotate rotate) {
 		// TODO replace pos with ICoords
 		boolean hasRotated = false;
 		boolean shouldRotate = false;
@@ -425,7 +414,7 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 		//		Treasure.LOGGER.debug("Rotate to:" + rotate);
 
 		AbstractTreasureChestTileEntity tcte = null;
-		TileEntity te = world.getBlockEntity(pos);
+		BlockEntity te = world.getBlockEntity(pos);
 		if (te != null && te instanceof AbstractTreasureChestTileEntity) {
 			// get the backing tile entity
 			tcte = (AbstractTreasureChestTileEntity) te;
@@ -460,10 +449,10 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 	 * @param state
 	 * @return
 	 */
-	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
+//	@Override
+//	public boolean hasTileEntity(BlockState state) {
+//		return true;
+//	}
 
 	/**
 	 * Returns the blockstate setValue the given rotation from the passed blockstate. If inapplicable, returns the passed

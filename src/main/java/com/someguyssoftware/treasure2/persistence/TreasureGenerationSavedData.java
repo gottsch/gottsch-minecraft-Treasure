@@ -34,14 +34,14 @@ import com.someguyssoftware.treasure2.registry.ChestRegistry;
 import com.someguyssoftware.treasure2.registry.SimpleListRegistry;
 import com.someguyssoftware.treasure2.world.gen.feature.TreasureFeatures;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.server.ServerLevel;
 import net.minecraft.world.storage.DimensionSavedDataManager;
-import net.minecraft.world.storage.WorldSavedData;
+import net.minecraft.world.storage.LevelSavedData;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
@@ -49,7 +49,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
  * @author Mark Gottschling on Jan 22, 2018
  *
  */
-public class TreasureGenerationSavedData extends WorldSavedData {	
+public class TreasureGenerationSavedData extends LevelSavedData {	
 	private static final String TREASURE_GEN_TAG_NAME = "treasureGenerator";
 	
 	public static final String GEN_DATA_KEY = Treasure.MODID + ":generationData";
@@ -88,34 +88,34 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	}
 
 	/* (non-Javadoc)
-	 * @see net.minecraft.world.WorldSavedData#readFromNBT(net.minecraft.nbt.NBTTagCompound)
+	 * @see net.minecraft.world.LevelSavedData#readFromNBT(net.minecraft.nbt.NBTTagCompound)
 	 */
 	@Override
-	public void load(CompoundNBT tag) {
+	public void load(CompoundTag tag) {
 		Treasure.LOGGER.debug("loading treasure2 saved gen data...");
 
 		// treasure generation tag
-		CompoundNBT genTag = tag.getCompound(TREASURE_GEN_TAG_NAME);
+		CompoundTag genTag = tag.getCompound(TREASURE_GEN_TAG_NAME);
 
 		/*
 		 * features
 		 */
 		TreasureFeatures.PERSISTED_FEATURES.forEach(feature -> {
 			Treasure.LOGGER.debug("loading feature -> {}", ((IForgeRegistryEntry)feature).getRegistryName().toString());
-			CompoundNBT featureTag = genTag.getCompound(((IForgeRegistryEntry)feature).getRegistryName().toString());
+			CompoundTag featureTag = genTag.getCompound(((IForgeRegistryEntry)feature).getRegistryName().toString());
 			if (featureTag != null) {
-				ListNBT dimTagList = featureTag.getList(DIMENSIONS_TAG_NAME, 10);
+				ListTag dimTagList = featureTag.getList(DIMENSIONS_TAG_NAME, 10);
 				dimTagList.forEach(dimTag -> {
-					String dimensionID = ((CompoundNBT) dimTag).getString(DIMENSION_ID_TAG_NAME);
+					String dimensionID = ((CompoundTag) dimTag).getString(DIMENSION_ID_TAG_NAME);
 					Treasure.LOGGER.debug("loading dimension -> {}", dimensionID);
-					int chunksSince = ((CompoundNBT) dimTag).getInt(CHUNKS_SINCE_LAST_FEATURE_TAG_NAME);
+					int chunksSince = ((CompoundTag) dimTag).getInt(CHUNKS_SINCE_LAST_FEATURE_TAG_NAME);
 					feature.getChunksSinceLastDimensionFeature().put(dimensionID, chunksSince);
 					Treasure.LOGGER.debug("loading chunks since -> {}", chunksSince);
-					ListNBT rarityTagList = ((CompoundNBT) dimTag).getList(RARITIES_TAG_NAME, 10);
+					ListTag rarityTagList = ((CompoundTag) dimTag).getList(RARITIES_TAG_NAME, 10);
 					if (rarityTagList != null && !rarityTagList.isEmpty()) {
 						Treasure.LOGGER.debug("rarity tag list size -> {}", rarityTagList.size());
 						for (int index = 0; index < rarityTagList.size(); index++) {
-							CompoundNBT rarityTag = rarityTagList.getCompound(index);
+							CompoundTag rarityTag = rarityTagList.getCompound(index);
 							String rarityID = rarityTag.getString(RARITY_TAG_NAME);
 							Treasure.LOGGER.debug("loading rarity ID -> {}", rarityID);
 							Rarity rarity = Rarity.getByValue(rarityID);
@@ -135,19 +135,19 @@ public class TreasureGenerationSavedData extends WorldSavedData {
         /*
          * chest registry
          */
-        ListNBT chestRegistriesTag = genTag.getList("chestRegistries", 10);
+        ListTag chestRegistriesTag = genTag.getList("chestRegistries", 10);
         if (chestRegistriesTag != null) {
         	Treasure.LOGGER.debug("loading chest registries...");
             chestRegistriesTag.forEach(dimTag -> {
-                String dimensionID = ((CompoundNBT) dimTag).getString(DIMENSION_ID_TAG_NAME);
+                String dimensionID = ((CompoundTag) dimTag).getString(DIMENSION_ID_TAG_NAME);
                 Treasure.LOGGER.debug("loading dimension -> {}", dimensionID);
                 // get the registry
-                ListNBT registries = ((CompoundNBT) dimTag).getList(CHEST_REGISTRY_TAG_NAME, 10);
+                ListTag registries = ((CompoundTag) dimTag).getList(CHEST_REGISTRY_TAG_NAME, 10);
                 registries.forEach(registryTag -> {
-                	CompoundNBT nbt = (CompoundNBT)registryTag;
-                    String key = ((CompoundNBT)registryTag).getString(KEY_TAG_NAME);
-                    String rarity = ((CompoundNBT)registryTag).getString(RARITY_TAG_NAME);
-                    CompoundNBT coords = ((CompoundNBT)registryTag).getCompound(COORDS_TAG_NAME);
+                	CompoundTag nbt = (CompoundTag)registryTag;
+                    String key = ((CompoundTag)registryTag).getString(KEY_TAG_NAME);
+                    String rarity = ((CompoundTag)registryTag).getString(RARITY_TAG_NAME);
+                    CompoundTag coords = ((CompoundTag)registryTag).getCompound(COORDS_TAG_NAME);
                     int x = coords.getInt("x");
                     int y = coords.getInt("y");
                     int z = coords.getInt("z");
@@ -187,7 +187,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
          * well registries
          */
         Treasure.LOGGER.debug("loading well registries...");
-        ListNBT wellRegistryList = genTag.getList(WELL_REGISTRIES_TAG_NAME, 10);
+        ListTag wellRegistryList = genTag.getList(WELL_REGISTRIES_TAG_NAME, 10);
         if (wellRegistryList != null) {
         	wellRegistryList.forEach(dimensionCompound -> {
         		loadRegistry(dimensionCompound, TreasureData.WELL_REGISTRIES);
@@ -198,7 +198,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
          * wither tree registries
          */
         Treasure.LOGGER.debug("loading wither tree registries...");
-        ListNBT witherTreeRegistryList = genTag.getList(WITHER_TREE_REGISTRIES_TAG_NAME, 10);
+        ListTag witherTreeRegistryList = genTag.getList(WITHER_TREE_REGISTRIES_TAG_NAME, 10);
         if (witherTreeRegistryList != null) {
         	witherTreeRegistryList.forEach(dimensionCompound -> {
         		loadRegistry(dimensionCompound, TreasureData.WITHER_TREE_REGISTRIES);
@@ -212,14 +212,14 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	 * @param registryMap
 	 */
 	private void loadRegistry(INBT dimensionNBT, Map<String, SimpleListRegistry<ICoords>> registryMap) {
-        String dimensionID = ((CompoundNBT) dimensionNBT).getString(DIMENSION_ID_TAG_NAME);
+        String dimensionID = ((CompoundTag) dimensionNBT).getString(DIMENSION_ID_TAG_NAME);
         Treasure.LOGGER.debug("\t...loading dimension -> {}", dimensionID);
         // get the registry
-        ListNBT registryList = ((CompoundNBT) dimensionNBT).getList(REGISTRY_TAG_NAME, 10);
+        ListTag registryList = ((CompoundTag) dimensionNBT).getList(REGISTRY_TAG_NAME, 10);
         registryList.forEach(registryNBT -> {
-            int x = ((CompoundNBT)registryNBT).getInt("x");
-            int y = ((CompoundNBT)registryNBT).getInt("y");
-            int z = ((CompoundNBT)registryNBT).getInt("z");
+            int x = ((CompoundTag)registryNBT).getInt("x");
+            int y = ((CompoundTag)registryNBT).getInt("y");
+            int z = ((CompoundTag)registryNBT).getInt("z");
             Treasure.LOGGER.debug("\t...loading registry coords -> x:{} y:{} z:{}", x, y, z);
             registryMap.get(dimensionID).register(new Coords(x, y, z));
         });
@@ -228,13 +228,13 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	/*
 	 * NOTE thrown exceptions are silently handled, so they need to be caught here instead
 	 *  (non-Javadoc)
-	 * @see net.minecraft.world.WorldSavedData#writeToNBT(net.minecraft.nbt.NBTTagCompound)
+	 * @see net.minecraft.world.LevelSavedData#writeToNBT(net.minecraft.nbt.NBTTagCompound)
 	 */
 	@Override
-	public CompoundNBT save(CompoundNBT tag) {
+	public CompoundTag save(CompoundTag tag) {
 		try {
 			// create a treasure compound			
-			CompoundNBT genTag = new CompoundNBT();
+			CompoundTag genTag = new CompoundTag();
 			
 			// add main treasure tag
 			tag.put(TREASURE_GEN_TAG_NAME, genTag);
@@ -242,13 +242,13 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 			// for each feature
 			TreasureFeatures.PERSISTED_FEATURES.forEach(feature -> {
 				Treasure.LOGGER.debug("saving feature -> {}", ((IForgeRegistryEntry)feature).getRegistryName().toString());
-				CompoundNBT featureTag = new CompoundNBT();
+				CompoundTag featureTag = new CompoundTag();
 				// add the feature gen last count to the treasure compound for each dimension
-				ListNBT dimTagList = new ListNBT();
+				ListTag dimTagList = new ListTag();
 				for (Entry<String, Integer> entry : feature.getChunksSinceLastDimensionFeature().entrySet()) {
 					Treasure.LOGGER.debug("saving feature dimension ID -> {}", entry.getKey());
 					
-					CompoundNBT dimensionTag = new CompoundNBT();
+					CompoundTag dimensionTag = new CompoundTag();
 					dimensionTag.putString(DIMENSION_ID_TAG_NAME, entry.getKey());
 					dimensionTag.putInt(CHUNKS_SINCE_LAST_FEATURE_TAG_NAME, entry.getValue());
 					Treasure.LOGGER.debug("saving chunks since last feature -> {}", entry.getValue());
@@ -258,9 +258,9 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 						Map<Rarity, Integer> rarityMap = feature.getChunksSinceLastDimensionRarityFeature().get(entry.getKey());
 						Treasure.LOGGER.debug("saving rarity map size -> {}", rarityMap.size());
 						
-						ListNBT rarityTagList = new ListNBT();
+						ListTag rarityTagList = new ListTag();
 						for (Entry<Rarity, Integer> rarityEntry : rarityMap.entrySet()) {
-							CompoundNBT rarityTag = new CompoundNBT();
+							CompoundTag rarityTag = new CompoundTag();
 							rarityTag.putString(RARITY_TAG_NAME, rarityEntry.getKey().getValue());
 							rarityTag.putInt(CHUNKS_SINCE_LAST_RARITY_FEATURE_TAG_NAME, rarityEntry.getValue());
 							Treasure.LOGGER.debug("saving chunks since last rarity -> {} ({}) chunks -> {}", rarityEntry.getKey(), rarityEntry.getKey().getValue(), rarityEntry.getValue());
@@ -278,17 +278,17 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 			/*
 			 * chest registries
 			 */
-			ListNBT chestRegistries = new ListNBT();
+			ListTag chestRegistries = new ListTag();
 			TreasureData.CHEST_REGISTRIES.entrySet().forEach(entry -> {
 				String dimensionName = entry.getKey();
 				ChestRegistry registry = entry.getValue();
-				CompoundNBT dimTag = new CompoundNBT();
+				CompoundTag dimTag = new CompoundTag();
 				dimTag.putString(DIMENSION_ID_TAG_NAME, dimensionName);
-				ListNBT chestRegistryTagList = new ListNBT();
+				ListTag chestRegistryTagList = new ListTag();
 				registry.getValues().forEach(chestInfo -> {
-					CompoundNBT chestInfoEntry = new CompoundNBT();
+					CompoundTag chestInfoEntry = new CompoundTag();
 					if (chestInfo.getCoords() != null) {
-						CompoundNBT coords = new CompoundNBT();					
+						CompoundTag coords = new CompoundTag();					
 						coords.putInt("x", chestInfo.getCoords().getX());
 						coords.putInt("y", chestInfo.getCoords().getY());
 						coords.putInt("z", chestInfo.getCoords().getZ());
@@ -308,7 +308,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 						chestInfoEntry.putString("registryName", chestInfo.getRegistryName().toString());
 					}
 					if (chestInfo.getTreasureMapFromCoords().isPresent()) {
-						CompoundNBT mappedFrom = saveCoords(chestInfo.getTreasureMapFromCoords().get());
+						CompoundTag mappedFrom = saveCoords(chestInfo.getTreasureMapFromCoords().get());
 						chestInfoEntry.put("mappedFrom", mappedFrom);
 					}
 					
@@ -326,7 +326,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 			/*
 			 * well registries
 			 */
-			ListNBT wellRegistries = new ListNBT();
+			ListTag wellRegistries = new ListTag();
 			TreasureData.WELL_REGISTRIES.entrySet().forEach(entry -> {
 				saveRegistry(wellRegistries, entry.getKey(), entry.getValue());
 			});
@@ -335,7 +335,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 			/*
 			 * wither registries
 			 */
-			ListNBT witherTreeRegistries = new ListNBT();
+			ListTag witherTreeRegistries = new ListTag();
 			TreasureData.WITHER_TREE_REGISTRIES.entrySet().forEach(entry -> {
 				saveRegistry(witherTreeRegistries, entry.getKey(), entry.getValue());
 			});
@@ -354,8 +354,8 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	 * @param coords
 	 * @return
 	 */
-	private CompoundNBT saveCoords(ICoords coords) {
-		CompoundNBT nbt = new CompoundNBT();					
+	private CompoundTag saveCoords(ICoords coords) {
+		CompoundTag nbt = new CompoundTag();					
 		nbt.putInt("x", coords.getX());
 		nbt.putInt("y", coords.getY());
 		nbt.putInt("z", coords.getZ());
@@ -368,8 +368,8 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	 * @param name
 	 * @return
 	 */
-	private ICoords loadCoords(CompoundNBT nbt, String name) {
-        CompoundNBT coords = nbt.getCompound(name);
+	private ICoords loadCoords(CompoundTag nbt, String name) {
+        CompoundTag coords = nbt.getCompound(name);
         int x = coords.getInt("x");
         int y = coords.getInt("y");
         int z = coords.getInt("z");
@@ -382,7 +382,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	 * @param name
 	 * @param nbt
 	 */
-	private void updateCompound(CompoundNBT compound, String name, INBT nbt) {
+	private void updateCompound(CompoundTag compound, String name, INBT nbt) {
 		// delete current tag
 		compound.remove(name);
 		// add new values
@@ -395,12 +395,12 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	 * @param dimension
 	 * @param registry
 	 */
-	private void saveRegistry(ListNBT registryList, String dimension, SimpleListRegistry<ICoords> registry) {
-		CompoundNBT dimensionCompound = new CompoundNBT();
+	private void saveRegistry(ListTag registryList, String dimension, SimpleListRegistry<ICoords> registry) {
+		CompoundTag dimensionCompound = new CompoundTag();
 		dimensionCompound.putString(DIMENSION_ID_TAG_NAME, dimension);
-		ListNBT coordsList = new ListNBT();
+		ListTag coordsList = new ListTag();
 		registry.getValues().forEach(coords -> {
-			CompoundNBT coordsCompound = new CompoundNBT();
+			CompoundTag coordsCompound = new CompoundTag();
 			coordsCompound.putInt("x", coords.getX());
 			coordsCompound.putInt("y", coords.getY());
 			coordsCompound.putInt("z", coords.getZ());
@@ -415,8 +415,8 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	 * @param world
 	 * @return
 	 */
-	public static TreasureGenerationSavedData get(IWorld world) {
-		DimensionSavedDataManager storage = ((ServerWorld)world).getDataStorage();
+	public static TreasureGenerationSavedData get(ILevel world) {
+		DimensionSavedDataManager storage = ((ServerLevel)world).getDataStorage();
 		TreasureGenerationSavedData data = (TreasureGenerationSavedData) storage.computeIfAbsent(TreasureGenerationSavedData::new, GEN_DATA_KEY);
 		
 		if (data == null) {

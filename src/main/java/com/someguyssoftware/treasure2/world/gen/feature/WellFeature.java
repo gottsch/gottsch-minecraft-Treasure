@@ -42,11 +42,11 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.persistence.TreasureGenerationSavedData;
 import com.someguyssoftware.treasure2.registry.SimpleListRegistry;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.IServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
@@ -185,7 +185,7 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 	 * @param minDistance
 	 * @return
 	 */
-	public static boolean checkWellProximity(IServerWorld world, ICoords coords, int minDistance) {
+	public static boolean checkWellProximity(IServerLevel world, ICoords coords, int minDistance) {
 
 		double minDistanceSq = minDistance * minDistance;
 		Treasure.LOGGER.debug("checking well registry for proximity in dimension -> {}", WorldInfo.getDimension(world.getLevel()).toString());

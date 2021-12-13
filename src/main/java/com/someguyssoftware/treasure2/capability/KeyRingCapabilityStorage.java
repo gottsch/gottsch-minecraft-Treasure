@@ -21,9 +21,9 @@ package com.someguyssoftware.treasure2.capability;
 
 import com.someguyssoftware.treasure2.Treasure;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 
 /**
@@ -35,7 +35,7 @@ public class KeyRingCapabilityStorage implements Capability.IStorage<IKeyRingCap
 	
 	@Override
 	public INBT writeNBT(Capability<IKeyRingCapability> capability, IKeyRingCapability instance, Direction side) {
-		CompoundNBT nbt = new CompoundNBT();
+		CompoundTag nbt = new CompoundTag();
 		try {
 			nbt.putBoolean(IS_OPEN_TAG, instance.isOpen());
 		} catch (Exception e) {
@@ -47,8 +47,8 @@ public class KeyRingCapabilityStorage implements Capability.IStorage<IKeyRingCap
 	@Override
 	public void readNBT(Capability<IKeyRingCapability> capability, IKeyRingCapability instance, Direction side,
 			INBT nbt) {
-		if (nbt instanceof CompoundNBT) {
-			CompoundNBT tag = (CompoundNBT) nbt;
+		if (nbt instanceof CompoundTag) {
+			CompoundTag tag = (CompoundTag) nbt;
 			if (tag.contains(IS_OPEN_TAG)) {
 				instance.setOpen(tag.getBoolean(IS_OPEN_TAG));
 			}

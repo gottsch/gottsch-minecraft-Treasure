@@ -29,24 +29,24 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameterSets;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.server.ServerLevel;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 /**
@@ -72,7 +72,7 @@ public class CoinItem extends ModItem implements IWishable {
 	}
 	
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
 		return provider;
 	}
@@ -81,10 +81,10 @@ public class CoinItem extends ModItem implements IWishable {
 	 * 
 	 */
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		// standard coin info
-		tooltip.add(new TranslationTextComponent("tooltip.label.coin").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
+		tooltip.add(new TranslatableComponent("tooltip.label.coin").withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC));
 		// charmable info
 		ICharmableCapability cap = getCap(stack);
 		if (cap.isCharmed()) {
@@ -123,7 +123,7 @@ public class CoinItem extends ModItem implements IWishable {
 		// get the item stack or number of items.
 		ItemStack entityItemStack = entityItem.getItem();
 		
-		World world = entityItem.level;
+		Level world = entityItem.level;
 		if (WorldInfo.isClientSide(world)) {
 			return super.onEntityItemUpdate(stack, entityItem);
 		}
@@ -175,7 +175,7 @@ public class CoinItem extends ModItem implements IWishable {
 	 * @param coords
 	 */
 	@Override
-	public Optional<ItemStack> generateLoot(World world, Random random, ItemStack itemStack, ICoords coords) {
+	public Optional<ItemStack> generateLoot(Level world, Random random, ItemStack itemStack, ICoords coords) {
 		return Optional.empty();
 	}
 	
@@ -207,12 +207,12 @@ public class CoinItem extends ModItem implements IWishable {
 //		else {
 //			// attempt to get the player who dropped the coin
 //			ItemStack coinItem = itemStack;
-//			CompoundNBT nbt = coinItem.getTag();
+//			CompoundTag nbt = coinItem.getTag();
 //			LOGGER.debug("item as a tag");
-//			PlayerEntity player = null;
+//			Player player = null;
 //			if (nbt != null && nbt.contains(DROPPED_BY_KEY)) {
 //				// TODO change to check by UUID
-//				for (PlayerEntity p : world.players()) {
+//				for (Player p : world.players()) {
 //					if (p.getName().getString().equalsIgnoreCase(nbt.getString(DROPPED_BY_KEY))) {
 //						player = p;
 //					}
@@ -238,7 +238,7 @@ public class CoinItem extends ModItem implements IWishable {
 //			List<LootPoolShell> lootPoolShells = tableShell.getPools();
 //			
 //			// generate a context
-//			LootContext lootContext = new LootContext.Builder((ServerWorld) world)
+//			LootContext lootContext = new LootContext.Builder((ServerLevel) world)
 //					.withLuck((player != null) ? player.getLuck() : 0)
 //					.withParameter(LootParameters.THIS_ENTITY, player)
 //					.withParameter(LootParameters.ORIGIN, coords.toVec3d()).create(LootParameterSets.CHEST);

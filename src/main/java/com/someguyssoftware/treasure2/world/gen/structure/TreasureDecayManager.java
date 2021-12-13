@@ -15,8 +15,8 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.server.ServerLevel;
 
 /**
  * 
@@ -30,14 +30,14 @@ public class TreasureDecayManager extends DecayManager {
 	public TreasureDecayManager(IMod mod, String resourceFolder) {
 		super(mod, resourceFolder);
 
-		// TODO move out to WorldLoadEvent
+		// TODO move out to LevelLoadEvent
 		// build and expose template/structure folders
 		//		if (TreasureConfig.GENERAL.enableDefaultDecayRuleSetsCheck.get()) {
 		//			buildAndExpose("data", Treasure.MODID, getBaseResourceFolder(), FOLDER_LOCATIONS);
 		//		}
 	}
 
-	public static void init(ServerWorld world) {
+	public static void init(ServerLevel world) {
 	}
 	
 	/**
@@ -48,7 +48,7 @@ public class TreasureDecayManager extends DecayManager {
 	}
 
 	/**
-	 * Call in WorldEvent.Load() event handler. Loads and registers ruleset files from
+	 * Call in LevelEvent.Load() event handler. Loads and registers ruleset files from
 	 * the file system.
 	 * 
 	 * @param modID

@@ -9,7 +9,7 @@ import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity.GenerationContext;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
 
 /**
  * @author Mark Gottschling on Dec 15, 2020

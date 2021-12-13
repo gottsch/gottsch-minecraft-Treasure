@@ -9,8 +9,8 @@ import com.someguyssoftware.treasure2.inventory.SkullChestContainer;
 
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 
 public class SkullChestContainerScreen extends ContainerScreen<SkullChestContainer> {
 
@@ -24,7 +24,7 @@ public class SkullChestContainerScreen extends ContainerScreen<SkullChestContain
 	 * @param title
 	 */
 	public SkullChestContainerScreen(SkullChestContainer screenContainer, PlayerInventory playerInventory,
-			ITextComponent title) {
+			TextComponent title) {
 		super(screenContainer, playerInventory, title);
 		// Set the width and height of the gui.  Should match the size of the texture!
 		imageWidth = 176;

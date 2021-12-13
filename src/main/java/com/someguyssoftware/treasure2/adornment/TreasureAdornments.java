@@ -31,13 +31,13 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
@@ -123,22 +123,22 @@ public class TreasureAdornments {
 				Set<String> tags = stack.getItem().getTags().stream().filter(tag -> tag.getNamespace().equals(Treasure.MODID)) .map(ResourceLocation::getPath).collect(Collectors.toSet());
 				String type =tags.contains(RING) ? RING : tags.contains(NECKLACE) ? NECKLACE : tags.contains(BRACELET) ? BRACELET : stack.getItem().getName(stack).getString();
 
-				stack.setHoverName(new TranslationTextComponent("tooltip.adornment.name.level" + level, 
-						new TranslationTextComponent("tooltip.adornment.type." + type),
-						new TranslationTextComponent("tooltip.charm.type." + cap.getHighestLevel().getCharm().getType().toLowerCase()).getString()));
+				stack.setHoverName(new TranslatableComponent("tooltip.adornment.name.level" + level, 
+						new TranslatableComponent("tooltip.adornment.type." + type),
+						new TranslatableComponent("tooltip.charm.type." + cap.getHighestLevel().getCharm().getType().toLowerCase()).getString()));
 			}			
 			else if (cap.getSourceItem() != null && !cap.getSourceItem().equals(Items.AIR.getRegistryName())) {
 				Item sourceItem = ForgeRegistries.ITEMS.getValue(cap.getSourceItem());
 				if (!cap.isCharmed()) {					
 					stack.setHoverName(
-							((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
-							.append(new StringTextComponent(" "))
+							((TranslatableComponent)sourceItem.getName(new ItemStack(sourceItem)))
+							.append(new TextComponent(" "))
 							.append(stack.getItem().getName(stack)));
 				}
 				else {
 					stack.setHoverName(
-							((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
-							.append(new StringTextComponent(" "))
+							((TranslatableComponent)sourceItem.getName(new ItemStack(sourceItem)))
+							.append(new TextComponent(" "))
 							.append(stack.getHoverName()));
 				}
 			}

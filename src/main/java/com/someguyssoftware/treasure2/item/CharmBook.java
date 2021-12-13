@@ -23,12 +23,12 @@ import java.util.List;
 
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
 /**
  * 
@@ -48,8 +48,8 @@ public class CharmBook extends CharmItem {
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new TranslationTextComponent("tooltip.label.charm_book").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+		tooltip.add(new TranslatableComponent("tooltip.label.charm_book").withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC));
 		// charmable info
 		ICharmableCapability cap = getCap(stack);
 		if (cap.isCharmed()) {
