@@ -30,6 +30,7 @@ import net.minecraftforge.common.capabilities.Capability;
  * @author Mark Gottschling on Jul 31, 2021
  *
  */
+@Deprecated
 public class DurabilityCapabilityStorage implements Capability.IStorage<IDurabilityCapability> {
 	private static final String DURABILITY_TAG = "durability";
 	

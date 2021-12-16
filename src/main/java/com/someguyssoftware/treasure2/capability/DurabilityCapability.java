@@ -19,21 +19,37 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
+import com.someguyssoftware.treasure2.Treasure;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.common.util.INBTSerializable;
+
 /**
  * @author Mark Gottschling on Sep 6, 2020
  *
  */
-public class DurabilityCapability implements IDurabilityCapability  {
-	private int durability;
+public class DurabilityCapability implements IDurabilityCapability, INBTSerializable<CompoundTag>  {
+	private static final String DURABILITY_TAG = "durability";
 	
-//	@CapabilityInject(IDurabilityCapability.class)
-//	public static Capability<IDurabilityCapability> DURABILITY_CAPABILITY = null;
+	public static Capability<IDurabilityCapability> DURABILITY_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {	});	
+	
+	private int durability;
 	
 	/**
 	 * 
 	 */
 	public DurabilityCapability() {
 		
+	}
+	
+	public static void register(final RegisterCapabilitiesEvent event) {
+		event.register(IDurabilityCapability.class);
+
+//		CapabilityContainerListenerManager.registerListenerFactory(HiddenBlockRevealerContainerListener::new);
 	}
 	
 	@Override
@@ -49,5 +65,50 @@ public class DurabilityCapability implements IDurabilityCapability  {
         else {
             this.durability = durabilityIn;
         }
+	}
+
+	/**
+	 * write data
+	 */
+	@Override
+	public CompoundTag serializeNBT() {
+		CompoundTag tag = new CompoundTag();
+		try {
+		tag.putInt(DURABILITY_TAG, getDurability());
+		} catch (Exception e) {
+			Treasure.LOGGER.error("Unable to write state to NBT:", e);
+		}
+		return tag;
+	}
+
+	@Override
+	public void deserializeNBT(CompoundTag tag) {
+		if (tag instanceof CompoundTag) {
+			if (tag.contains(DURABILITY_TAG)) {
+				setDurability(tag.getInt(DURABILITY_TAG));
+			}
+		}		
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + durability;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		DurabilityCapability other = (DurabilityCapability) obj;
+		 return durability == other.durability;
+	}
+
+	@Override
+	public String toString() {
+		return "DurabilityCapability [durability=" + durability + "]";
 	}
 }

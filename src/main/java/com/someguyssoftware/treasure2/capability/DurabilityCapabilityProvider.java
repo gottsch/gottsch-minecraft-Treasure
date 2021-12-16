@@ -19,42 +19,50 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY_CAPABILITY;
+import static com.someguyssoftware.treasure2.capability.DurabilityCapability.DURABILITY_CAPABILITY;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
 /**
- * 
+ * TODO see https://github.com/Choonster-Minecraft-Mods/TestMod3/blob/1.18.x/src/main/java/choonster/testmod3/capability/SimpleCapabilityProvider.java
+ * for generic provider
  * @author Mark Gottschling on Aug 2, 2021
  *
  */
-public class DurabilityCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundTag> {
+public class DurabilityCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<Tag> {
 
     // capabilities for item
 	private final IDurabilityCapability instance = new DurabilityCapability();
 
+	@Override
+	public <T> LazyOptional<T> getCapability(final Capability<T> capability, Direction facing) {
+		return getCapability().orEmpty(capability, LazyOptional.of(() -> instance));
+	}
+
+	/**
+	 * Get the {@link Capability} instance to provide the handler for.
+	 *
+	 * @return The Capability instance
+	 */
+	public final Capability<IDurabilityCapability> getCapability() {
+		return DURABILITY_CAPABILITY;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		if (capability == DURABILITY_CAPABILITY) {
-			return  (LazyOptional<T>) LazyOptional.of(() -> instance);
-		}
-		return LazyOptional.empty();
+	public Tag serializeNBT() {
+		return  ((INBTSerializable<Tag>)instance).serializeNBT();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public CompoundTag serializeNBT() {
-		CompoundTag tag = (CompoundTag)DURABILITY_CAPABILITY.getStorage().writeNBT(DURABILITY_CAPABILITY, instance, null);
-		return tag;
-	}
-
-	@Override
-	public void deserializeNBT(CompoundTag nbt) {
-		DURABILITY_CAPABILITY.getStorage().readNBT(DURABILITY_CAPABILITY, instance, null, nbt);
+	public void deserializeNBT(Tag tag) {
+		((INBTSerializable<Tag>)instance).deserializeNBT(tag);
 	}
 }

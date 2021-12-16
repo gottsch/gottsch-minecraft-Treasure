@@ -22,9 +22,9 @@ package com.someguyssoftware.treasure2.capability;
 import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.INBT;
-import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraft.core.Direction;
+
 
 /**
  * @author Mark Gottschling on May 12, 2020

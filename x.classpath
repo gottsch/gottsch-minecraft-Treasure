@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/GottschCore"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/forge-1.18.1-39.0.0"/>
+	<classpathentry kind="lib" path="/ModCommonLibs/libs/curios-forge-1.18-5.0.2.2-api.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
