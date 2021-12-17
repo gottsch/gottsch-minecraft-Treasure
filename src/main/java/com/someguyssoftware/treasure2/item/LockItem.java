@@ -102,12 +102,16 @@ public class LockItem extends ModItem {
 		/**
 		 * Attempting to make a safe call for some performance enchancing mixin mods
 		 */
-		String keyList = getKeys().stream().map(e -> {
-			ITextComponent txt = e.getName(new ItemStack(e));
-			return txt == null ? "" : txt.getString();
-		}).collect(Collectors.joining(","));
-
-		tooltip.add(new TranslationTextComponent("tooltip.label.accepts_keys", TextFormatting.GOLD + keyList));
+//		String keyList = getKeys().stream().map(e -> {
+//			ITextComponent txt = e.getName(new ItemStack(e));
+//			return txt == null ? "" : txt.getString();
+//		}).collect(Collectors.joining(","));
+//		tooltip.add(new TranslationTextComponent("tooltip.label.accepts_keys", TextFormatting.GOLD + keyList));
+		tooltip.add(new TranslationTextComponent("tooltip.label.accepts_keys"));
+		getKeys().forEach(key -> {
+			String formattedKey = new TranslationTextComponent(key.getRegistryName()).getContents();
+			tooltip.add(new TranslationTextComponent("- ").append(new TranslationTextComponent(formattedKey).withStyle(TextFormatting.DARK_GREEN)));
+		});
 	}
 
 	/**
