@@ -310,37 +310,37 @@ public class TreasureItems {
 		// TODO finish list
 
 		// LOCKS
-		WOOD_LOCK = new LockItem(Treasure.MODID, LockID.WOOD_LOCK_ID, new Item.Properties(), new KeyItem[] {WOOD_KEY})
+		WOOD_LOCK = new LockItem(Treasure.MODID, LockID.WOOD_LOCK_ID, new Item.Properties(), new KeyItem[] {WOOD_KEY, LIGHTNING_KEY})
 				.setCategory(Category.ELEMENTAL)
 				.setRarity(Rarity.COMMON);
 
-		STONE_LOCK = new LockItem(Treasure.MODID, LockID.STONE_LOCK_ID, new Item.Properties(), new KeyItem[] {STONE_KEY})
+		STONE_LOCK = new LockItem(Treasure.MODID, LockID.STONE_LOCK_ID, new Item.Properties(), new KeyItem[] {STONE_KEY, LIGHTNING_KEY})
 				.setCategory(Category.ELEMENTAL)
 				.setRarity(Rarity.COMMON);
 
-		EMBER_LOCK = new EmberLock(Treasure.MODID, LockID.EMBER_LOCK_ID, new Item.Properties(), new KeyItem[] {EMBER_KEY})
+		EMBER_LOCK = new EmberLock(Treasure.MODID, LockID.EMBER_LOCK_ID, new Item.Properties(), new KeyItem[] {EMBER_KEY, LIGHTNING_KEY})
 				.setCategory(Category.ELEMENTAL)
 				.setRarity(Rarity.SCARCE);
-		LEAF_LOCK = new LockItem(Treasure.MODID, LockID.LEAF_LOCK_ID, new Item.Properties(), new KeyItem[] {LEAF_KEY})
+		LEAF_LOCK = new LockItem(Treasure.MODID, LockID.LEAF_LOCK_ID, new Item.Properties(), new KeyItem[] {LEAF_KEY, LIGHTNING_KEY})
 				.setCategory(Category.ELEMENTAL)
 				.setRarity(Rarity.UNCOMMON);  
 
-		IRON_LOCK = new LockItem(Treasure.MODID, LockID.IRON_LOCK_ID, new Item.Properties(), new KeyItem[] {IRON_KEY})
+		IRON_LOCK = new LockItem(Treasure.MODID, LockID.IRON_LOCK_ID, new Item.Properties(), new KeyItem[] {IRON_KEY, METALLURGISTS_KEY})
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.UNCOMMON);
-		GOLD_LOCK = new LockItem(Treasure.MODID, LockID.GOLD_LOCK_ID, new Item.Properties(), new KeyItem[] {GOLD_KEY})
+		GOLD_LOCK = new LockItem(Treasure.MODID, LockID.GOLD_LOCK_ID, new Item.Properties(), new KeyItem[] {GOLD_KEY, METALLURGISTS_KEY})
 				.setCategory(Category.METALS)
 				.setRarity(Rarity.SCARCE);
-		DIAMOND_LOCK = new LockItem(Treasure.MODID, LockID.DIAMOND_LOCK_ID, new Item.Properties(), new KeyItem[] {DIAMOND_KEY})
+		DIAMOND_LOCK = new LockItem(Treasure.MODID, LockID.DIAMOND_LOCK_ID, new Item.Properties(), new KeyItem[] {DIAMOND_KEY, JEWELLED_KEY})
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.RARE);
-		EMERALD_LOCK = new LockItem(Treasure.MODID, LockID.EMERALD_LOCK_ID, new Item.Properties(), new KeyItem[] {EMERALD_KEY})
+		EMERALD_LOCK = new LockItem(Treasure.MODID, LockID.EMERALD_LOCK_ID, new Item.Properties(), new KeyItem[] {EMERALD_KEY, JEWELLED_KEY})
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.RARE);
-		RUBY_LOCK = new LockItem(Treasure.MODID, LockID.RUBY_LOCK_ID, new Item.Properties(), new KeyItem[] {RUBY_KEY})
+		RUBY_LOCK = new LockItem(Treasure.MODID, LockID.RUBY_LOCK_ID, new Item.Properties(), new KeyItem[] {RUBY_KEY, JEWELLED_KEY})
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC);
-		SAPPHIRE_LOCK = new LockItem(Treasure.MODID, LockID.SAPPHIRE_LOCK_ID, new Item.Properties(), new KeyItem[] {SAPPHIRE_KEY})
+		SAPPHIRE_LOCK = new LockItem(Treasure.MODID, LockID.SAPPHIRE_LOCK_ID, new Item.Properties(), new KeyItem[] {SAPPHIRE_KEY, JEWELLED_KEY})
 				.setCategory(Category.GEMS)
 				.setRarity(Rarity.EPIC);
 		SPIDER_LOCK = new LockItem(Treasure.MODID, LockID.SPIDER_LOCK_ID, new Item.Properties(), new KeyItem[] {SPIDER_KEY})

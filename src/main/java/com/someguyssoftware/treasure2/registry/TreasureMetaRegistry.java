@@ -41,6 +41,13 @@ public class TreasureMetaRegistry {
 	}
 	
 	/**
+	 * 
+	 */
+	public static void clear() {
+		metaManager.clear();
+	}
+	
+	/**
 	 * Wrapper method
 	 * @param modID
 	 */

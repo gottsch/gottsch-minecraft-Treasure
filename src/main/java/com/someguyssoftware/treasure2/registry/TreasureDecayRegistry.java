@@ -41,6 +41,13 @@ public class TreasureDecayRegistry implements ITreasureResourceRegistry {
 	}
 	
 	/**
+	 * 
+	 */
+	public static void clear() {
+		decayManager.clear();
+	}
+	
+	/**
 	 * Wrapper method
 	 * @param modID
 	 */
