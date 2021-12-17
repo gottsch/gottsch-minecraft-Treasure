@@ -16,6 +16,7 @@ import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 
@@ -47,8 +48,8 @@ public class ScarceChestGenerator implements IChestGenerator {
 	public List<LootTableShell> buildLootTableList2(final Rarity chestRarity) {
 		// get all loot tables by column key
 		List<LootTableShell> tables = new ArrayList<>();
-		tables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.UNCOMMON));
-		tables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.SCARCE));
+		tables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.UNCOMMON));
+		tables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
 		return tables;
 	}	
 	

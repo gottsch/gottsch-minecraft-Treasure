@@ -25,6 +25,7 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.wish.IWishable;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
@@ -37,7 +38,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootPool;
 
@@ -143,12 +143,12 @@ public class CoinItem extends ModItem implements IWishable, IPouchable {
 		
 		// determine coin type
 		if (getCoin() == Coins.SILVER) {
-			lootTables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.UNCOMMON));
-			lootTables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.SCARCE));
+			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.UNCOMMON));
+			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
 		}
 		else if (getCoin() == Coins.GOLD) {					
-			lootTables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.SCARCE));
-			lootTables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.RARE));
+			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
+			lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE));
 		}
 		
 		ItemStack stack = null;
@@ -197,7 +197,7 @@ public class CoinItem extends ModItem implements IWishable, IPouchable {
 			}
 			
 			// get effective rarity
-			Rarity effectiveRarity = Treasure.LOOT_TABLE_MASTER.getEffectiveRarity(tableShell, (getCoin() == Coins.SILVER) ? Rarity.UNCOMMON : Rarity.SCARCE);	
+			Rarity effectiveRarity = TreasureLootTableRegistry.getLootTableMaster().getEffectiveRarity(tableShell, (getCoin() == Coins.SILVER) ? Rarity.UNCOMMON : Rarity.SCARCE);	
 			logger.debug("coin: using effective rarity -> {}", effectiveRarity);
 			
 			// get all injected loot tables

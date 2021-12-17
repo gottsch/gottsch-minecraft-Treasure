@@ -10,6 +10,7 @@ import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -160,7 +161,7 @@ public abstract class MimicEntity extends EntityMob {
 		LootTableShell location = null;
 
 		// select the loot table by rarity
-		List<LootTableShell> tableShells = Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.SCARCE);
+		List<LootTableShell> tableShells = TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE);
 		
 		// select a random location from the list
 		if (tableShells != null && !tableShells.isEmpty()) {

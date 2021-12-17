@@ -10,10 +10,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
@@ -30,6 +32,7 @@ import com.google.gson.stream.JsonReader;
 import com.someguyssoftware.gottschcore.GottschCore;
 import com.someguyssoftware.gottschcore.enums.IRarity;
 import com.someguyssoftware.gottschcore.json.JSMin;
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.meta.IMeta;
 import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 import com.someguyssoftware.gottschcore.meta.IMetaTheme;
@@ -42,6 +45,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.RandomValueRange;
 
 /**
  * @author Mark Gottschling on Jul 29, 2019
@@ -50,6 +54,19 @@ import net.minecraft.util.ResourceLocation;
 public class TreasureMetaManager extends MetaManager {
 	private static List<String> FOLDER_LOCATIONS = ImmutableList.of("structures");
 
+	protected static final Gson GSON_INSTANCE = (new GsonBuilder())
+			.registerTypeAdapter(IMetaArchetype.class, new MetaArchetypeDeserializer())
+			.registerTypeAdapter(IMetaType.class, new MetaTypeDeserializer())
+			.registerTypeAdapter(IMetaTheme.class, new MetaThemeDeserializer())
+			.registerTypeAdapter(IRarity.class, new RarityDeserializer())
+			.registerTypeAdapter(ICoords.class, new CoordsDeserializer())
+			.create();
+
+	/**
+	 * 
+	 * @param mod
+	 * @param resourceFolder
+	 */
 	public TreasureMetaManager(IMod mod, String resourceFolder) {
 		super(mod, resourceFolder);
 
@@ -64,12 +81,73 @@ public class TreasureMetaManager extends MetaManager {
 		super.clear();
 	}
 
+	public void register(String modID, List<String> resourcePaths) {
+		List<ResourceLocation> resourceLocations = getLootTablesResourceLocations(modID, resourcePaths);
+
+		// load each ResourceLocation as LootTable and map it.
+		resourceLocations.forEach(loc -> {
+			Treasure.logger.debug("register metas -> loading meta resource loc -> {}", loc.getResourcePath().toString());
+			tableMeta(loc, loadMeta(loc));
+			// add meta to map
+			this.getMetaMap().put(id, meta);
+		});
+	}
+	
+	private void tableChest(ResourceLocation resourceLocation, Optional<LootTableShell> lootTable) {
+		if (lootTable.isPresent()) {
+			
+		}
+		else {
+			LOGGER.debug("unable to load loot table from -> {}", resourceLocation);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param modID
+	 * @param resources
+	 * @return
+	 */
+	public List<ResourceLocation> getLootTablesResourceLocations(String modID, List<String> resources) {
+		List<ResourceLocation> resourceLocations = new ArrayList<>();
+		resources.forEach(resource -> resourceLocations.add(new ResourceLocation(modID, resource)));
+		return resourceLocations;
+	}
+	
+	/**
+	 * 
+	 * @param resource
+	 * @return
+	 */
+	public Optional<StructureMeta> loadMeta(ResourceLocation resource) {
+		Optional<StructureMeta> resourceMeta = Optional.empty();
+		String relativePath = "meta/" + resource.getResourceDomain() + "/structures/" + resource.getResourcePath() + ".json";
+		try (InputStream resourceStream = Treasure.instance.getClass().getClassLoader().getResourceAsStream(relativePath);
+				Reader reader = new InputStreamReader(resourceStream, StandardCharsets.UTF_8)) {
+			resourceMeta =  Optional.of(loadMeta(reader));
+		}
+		catch(Exception e) {
+			Treasure.logger.error(String.format("Couldn't load resource meta %s ", relativePath), e);
+		}		
+		return resourceMeta;
+	}
+	
+	/**
+	 * 
+	 * @param reader
+	 * @return
+	 */
+	public StructureMeta loadMeta(Reader reader) {
+		return GSON_INSTANCE.fromJson(reader, StructureMeta.class);
+	}
+	
 	/**
 	 * Call in WorldEvent.Load() event handler. Loads and registers meta files from
 	 * the file system.
 	 * 
 	 * @param modID
 	 */
+	@Deprecated
 	public void register(String modID) {
 		for (String location : FOLDER_LOCATIONS) {
 			Treasure.logger.debug("registering meta files from location -> {}", location);
@@ -100,6 +178,7 @@ public class TreasureMetaManager extends MetaManager {
 	 * TODO move to GottschCore
 	 * reads a template from an inputstream
 	 */
+	@Deprecated
 	@Override
 	protected void readFromStream(String id, InputStream stream) throws IOException, Exception {
 		Treasure.logger.debug("reading meta file from stream.");

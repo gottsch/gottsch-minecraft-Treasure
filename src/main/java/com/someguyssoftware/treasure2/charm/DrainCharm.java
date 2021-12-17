@@ -21,8 +21,7 @@ package com.someguyssoftware.treasure2.charm;
 
 import java.util.List;
 import java.util.Random;
-
-import javax.xml.ws.Holder;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
@@ -83,7 +82,7 @@ public class DrainCharm extends Charm {
 
 				// calculate the new amount
 				int range = entity.getDuration();
-				Holder<Integer> drainedHealth = new Holder<>(0);
+				AtomicInteger drainedHealth = new AtomicInteger(0);
 				List<EntityMob> mobs = world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(px - range, py - range, pz - range, px + range, py + range, pz + range));
 				if (mobs.isEmpty()) {
 					return result;
@@ -92,12 +91,12 @@ public class DrainCharm extends Charm {
 					boolean flag = mob.attackEntityFrom(DamageSource.causePlayerDamage(player), 1.0F);
 					Treasure.logger.debug("health drained from mob -> {} was successful -> {}", mob.getName(), flag);
 					if (flag) {
-						drainedHealth.value++;
+						drainedHealth.getAndAdd(1);
 					}
 				});
 
-				if (drainedHealth.value > 0) {
-					player.setHealth(MathHelper.clamp(player.getHealth() + drainedHealth.value, 0.0F, player.getMaxHealth()));		
+				if (drainedHealth.get() > 0) {
+					player.setHealth(MathHelper.clamp(player.getHealth() + drainedHealth.get(), 0.0F, player.getMaxHealth()));		
 					entity.setValue(MathHelper.clamp(entity.getValue() - 1D,  0D, entity.getValue()));
 					result = true;
 				}                

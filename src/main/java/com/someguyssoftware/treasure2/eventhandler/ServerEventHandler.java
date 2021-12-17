@@ -29,7 +29,7 @@ public class ServerEventHandler {
 	public void onServerStopping(FMLServerStoppingEvent event) {
 		Treasure.logger.debug("Closing out of world.");
 		// clear all resource managers
-//		Treasure.LOOT_TABLE_MASTER.clear();
+//		TreasureLootTableRegistry.getLootTableMaster().clear();
 //		Treasure.LOOT_TABLES.clear();
 		// TODO implement similar registries like LOOT_TABLE_MASTER
 		Treasure.TEMPLATE_MANAGER.clear();

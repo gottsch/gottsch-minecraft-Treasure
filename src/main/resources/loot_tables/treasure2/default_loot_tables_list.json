@@ -1,0 +1,83 @@
+{
+	"supportingResources": [
+		"pools/armor/common",
+		"pools/armor/uncommon",
+		"pools/armor/scarce",
+		"pools/armor/rare",
+		"pools/armor/epic",
+		"pools/food/common",
+		"pools/food/uncommon",
+		"pools/food/scarce",
+		"pools/food/rare",
+		"pools/food/epic",
+		"pools/items/common",
+		"pools/items/uncommon",
+		"pools/items/scarce",
+		"pools/items/rare",
+		"pools/items/epic",
+		"pools/potions/common",
+		"pools/potions/uncommon",
+		"pools/potions/scarce",
+		"pools/potions/rare",
+		"pools/potions/epic",
+		"pools/tools/common",
+		"pools/tools/uncommon",
+		"pools/tools/scarce",
+		"pools/tools/rare",
+		"pools/treasure/common",
+		"pools/treasure/uncommon",
+		"pools/treasure/scarce",
+		"pools/treasure/rare",
+		"pools/treasure/epic",
+		"pools/treasure/common_charms",
+		"pools/treasure/uncommon_charms",
+		"pools/treasure/scarce_charms",
+		"pools/treasure/rare_charms",
+		"pools/treasure/epic_charms"
+    ],
+    "injectResources": [
+    	
+    ],
+	"chestResources": [
+		"chests/common/general_chest",
+		"chests/uncommon/general_chest",
+		"chests/scarce/general_chest",
+		"chests/rare/general_chest",
+		"chests/epic/general_chest"
+	],
+	"specialResources": [
+		"chests/special/black_pearl_well",
+		"chests/special/cauldron_chest",
+		"chests/special/crystal_skull_chest",
+		"chests/special/gold_skull_chest",
+		"chests/special/skull_chest",
+		"chests/special/white_pearl_well",
+		"chests/special/wither_chest"
+	],
+	"chestLootTableFolderLocations": [
+		"chests/common",
+		"chests/uncommon",
+		"chests/scarce",
+		"chests/rare",
+		"chests/epic"
+	],
+	"specialLootTableFolderLocations": [
+		"chests/special"
+	],
+	"supportingLootTableFolderLocations": [
+		"pools/armor",
+		"pools/food",
+		"pools/items",
+		"pools/potions",
+		"pools/tools",
+		"pools/treasure"
+    ],
+    "injectLootTableFolderLocations": [
+		"inject/common",
+		"inject/uncommon",
+		"inject/scarce",
+		"inject/rare",
+		"inject/epic",
+		"inject/special"
+    ]
+}

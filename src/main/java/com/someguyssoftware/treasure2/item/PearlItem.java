@@ -25,6 +25,7 @@ import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.wish.IWishable;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
@@ -140,10 +141,10 @@ public class PearlItem extends ModItem implements IWishable, IPouchable {
 		
 		// determine pearl type
 		if (getPearl() == Pearls.WHITE) {
-			lootTables.add(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.WHITE_PEARL_WELL));
+			lootTables.add(TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.WHITE_PEARL_WELL));
 		}
 		else if (getPearl() == Pearls.BLACK) {
-			lootTables.add(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.BLACK_PEARL_WELL));
+			lootTables.add(TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.BLACK_PEARL_WELL));
 		}
 		
 		ItemStack stack = null;
@@ -193,7 +194,7 @@ public class PearlItem extends ModItem implements IWishable, IPouchable {
 			}
 			
 			// get effective rarity
-			Rarity effectiveRarity = Treasure.LOOT_TABLE_MASTER.getEffectiveRarity(tableShell, (getPearl() == Pearls.WHITE) ? Rarity.UNCOMMON : Rarity.SCARCE);	
+			Rarity effectiveRarity = TreasureLootTableRegistry.getLootTableMaster().getEffectiveRarity(tableShell, (getPearl() == Pearls.WHITE) ? Rarity.UNCOMMON : Rarity.SCARCE);	
 			logger.debug("pearl: using effective rarity -> {}", effectiveRarity);
 			
 			// get all injected loot tables

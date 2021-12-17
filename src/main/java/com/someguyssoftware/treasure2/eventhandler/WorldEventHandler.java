@@ -58,10 +58,10 @@ public class WorldEventHandler {
 			WorldServer world = (WorldServer) event.getWorld();
 
 			// called once to initiate world-level properties in the LootTableMaster
-			Treasure.LOOT_TABLE_MASTER.init(world);
+			TreasureLootTableRegistry.getLootTableMaster().init(world);
 
 			// register mod's loot tables
-			TreasureLootTableRegistry.register(mod.getId());
+			TreasureLootTableRegistry.register();
 
 			// register files with their respective managers
 			Treasure.META_MANAGER.register(getMod().getId());
