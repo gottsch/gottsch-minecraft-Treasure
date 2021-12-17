@@ -144,10 +144,10 @@ public class WorldEventHandler {
 	public void onServerStopping(FMLServerStoppingEvent event) {
 		Treasure.LOGGER.debug("Closing out of world.");
 		// clear all resource managers
-		TreasureLootTableRegistry.getLootTableMaster().clear();
-		TreasureTemplateRegistry.getTemplateManager().clear();
-		TreasureMetaRegistry.getMetaManager().clear();
-		TreasureDecayRegistry.getDecayManager().clear();
+		TreasureLootTableRegistry.clear();
+		TreasureTemplateRegistry.clear();
+		TreasureMetaRegistry.clear();
+		TreasureDecayRegistry.clear();
 	}
 
 	/**

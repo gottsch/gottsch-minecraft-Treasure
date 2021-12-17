@@ -54,6 +54,13 @@ public class TreasureTemplateRegistry {
 	
 	/**
 	 * 
+	 */
+	public static void clear() {
+		templateManager.clear();
+	}
+	
+	/**
+	 * 
 	 * @param modID
 	 */
 	public static void register(final String modID) {

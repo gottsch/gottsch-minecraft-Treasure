@@ -5,6 +5,7 @@ import com.someguyssoftware.gottschcore.block.FacingBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -19,7 +20,7 @@ public class WitherBrokenLogBlock extends FacingBlock implements ITreasureBlock 
 	/*
 	 * An array of VoxelShape shapes for the bounding box
 	 */
-	VoxelShape[] shapes = new VoxelShape[4];
+	private VoxelShape[] shapes = new VoxelShape[4];
 	
 	/**
 	 * 
@@ -29,12 +30,13 @@ public class WitherBrokenLogBlock extends FacingBlock implements ITreasureBlock 
 	public WitherBrokenLogBlock(String modID, String name, Block.Properties properties) {
 		super(modID, name, properties.strength(3.0F).sound(SoundType.WOOD));
 
+		// TODO make better shape
 		setShapes(
 				new VoxelShape[] {
-					Block.box(0, 0, 0, 1, 0.85, 1), 	// N
-					Block.box(0, 0, 0, 1, 0.85, 1),  	// E
-					Block.box(0, 0, 0, 1, 0.85, 1),  	// S
-					Block.box(0, 0, 0, 1, 0.85, 1) 	// W)
+					Block.box(0, 0, 0, 16, 16, 16), 	// N
+					Block.box(0, 0, 0, 16, 16, 16),  	// E
+					Block.box(0, 0, 0, 16, 16, 16),  	// S
+					Block.box(0, 0, 0, 16, 16, 16) 	// W)
 				}
 			);
 	}

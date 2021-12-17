@@ -27,6 +27,7 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -98,16 +99,11 @@ public class LockItem extends ModItem {
 			craftable = new TranslationTextComponent("tooltip.no").withStyle(TextFormatting.DARK_RED);
 		}
 		tooltip.add(new TranslationTextComponent("tooltip.label.craftable", craftable));
-
-		/**
-		 * Attempting to make a safe call for some performance enchancing mixin mods
-		 */
-		String keyList = getKeys().stream().map(e -> {
-			ITextComponent txt = e.getName(new ItemStack(e));
-			return txt == null ? "" : txt.getString();
-		}).collect(Collectors.joining(","));
-
-		tooltip.add(new TranslationTextComponent("tooltip.label.accepts_keys", TextFormatting.GOLD + keyList));
+		tooltip.add(new TranslationTextComponent("tooltip.label.accepts_keys"));
+		getKeys().forEach(key -> {
+			tooltip.add(new StringTextComponent("- ")
+					.append(new TranslationTextComponent(key.getDescription().getString()).withStyle(TextFormatting.DARK_GREEN)));
+		});
 	}
 
 	/**

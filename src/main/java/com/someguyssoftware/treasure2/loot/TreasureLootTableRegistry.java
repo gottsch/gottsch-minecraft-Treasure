@@ -85,6 +85,19 @@ public final class TreasureLootTableRegistry {
 	}
 
 	/**
+	 * 
+	 */
+	public static void clear() {
+		/*
+		 * NOTE if clearing out TreasureLootTableRegistry, need to clear out
+		 * TreasureLootTableRegistry.REGISTERED_MODS as well, else 
+		 * loot tables will not be loaded back when joining a new world.
+		 */
+		lootTableMaster.clear();
+		REGISTERED_MODS.clear();
+	}
+	
+	/**
 	 * Called during WorldEvent.Load event for this mod only
 	 * @param modID
 	 */
