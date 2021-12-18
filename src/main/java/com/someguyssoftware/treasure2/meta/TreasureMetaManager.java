@@ -88,17 +88,16 @@ public class TreasureMetaManager extends MetaManager {
 		resourceLocations.forEach(loc -> {
 			Treasure.logger.debug("register metas -> loading meta resource loc -> {}", loc.getResourcePath().toString());
 			tableMeta(loc, loadMeta(loc));
-			// add meta to map
-			this.getMetaMap().put(id, meta);
 		});
 	}
 	
-	private void tableChest(ResourceLocation resourceLocation, Optional<LootTableShell> lootTable) {
-		if (lootTable.isPresent()) {
-			
+	private void tableMeta(ResourceLocation resourceLocation, Optional<StructureMeta> meta) {
+		if (meta.isPresent()) {
+			// add meta to map
+			this.getMetaMap().put(resourceLocation.toString(), meta.get());
 		}
 		else {
-			LOGGER.debug("unable to load loot table from -> {}", resourceLocation);
+			Treasure.logger.debug("unable to meta table from -> {}", resourceLocation);
 		}
 	}
 	
