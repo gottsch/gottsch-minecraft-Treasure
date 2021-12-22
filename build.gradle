@@ -61,13 +61,39 @@ minecraft {
     }
 }
 
+repositories {
+    maven {
+        name 'Curseforge Maven'
+        url 'https://minecraft.curseforge.com/api/maven/'
+    }
+    maven { 
+        url 'https://maven.blamejared.com' 
+    }
+     maven {
+        url "https://www.cursemaven.com"
+    }
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
+    flatDir {
+        // location for sources
+        dirs 'libs'
+    }
+}
+
 def gottschcore_path="../gottsch-minecraft-GottschCore/build/libs/GottschCore-mc${mc_version}-f${gottschcore_forge_version}-v${gottschcore_version}.jar"
+def baubles_path="../ModCommonLibs/libs/Baubles-1.12-1.5.2.jar"
 println gottschcore_path
+println baubles_path
 dependencies {
 	minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2854'
 	compile files('../ModCommonLibs/libs/commons-cli-1.4.jar')
+	implementation fg.deobf("curse.maven:gottschcore-${gottschcore_project_id}:${gottschcore_field_id}")
+	implementation fg.deobf("curse.maven:baubles-${baubles_project_id}:${baubles_field_id}")
 	//compile files(gottschcore_path)	
-	shadow files(gottschcore_path)	
+	// -->shadow files(gottschcore_path)
 }
 
 jar {
