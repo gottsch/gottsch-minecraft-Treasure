@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -46,12 +47,14 @@ public abstract class Charm implements ICharm {
 	private double maxValue;
 	private double maxPercent;
 	private int maxDuration;
+	private Rarity rarity;
+	private int priority;
 	
 	/*
 	 * if multiple charms of the same type are being processed, only 1 should be updated/executed.
 	 * ex. if multiple harvesting charms are held, only one should update.
 	 */
-	private boolean effetStackable = false;
+	private boolean effectStackable = false;
 
 	/**
 	 * 
@@ -64,7 +67,7 @@ public abstract class Charm implements ICharm {
 		this.maxValue = builder.value;
 		this.maxDuration = builder.duration.intValue();
 		this.maxPercent = builder.percent;
-		this.effetStackable = builder.effectStackable;
+		this.effectStackable = builder.effectStackable;
 	}
 
 	abstract public Class<?> getRegisteredEvent();
@@ -143,7 +146,7 @@ public abstract class Charm implements ICharm {
             }
         }
         // TODO redo this in future.
-        return label + " " + getUsesGauge(entity) + " " + (this.isAllowMultipleUpdates() ? (TextFormatting.DARK_PURPLE + "* combinable") : "");
+        return label + " " + getUsesGauge(entity) + " " + (this.isEffectStackable() ? (TextFormatting.DARK_PURPLE + "* combinable") : "");
 	}
 
 	/**
@@ -225,11 +228,21 @@ public abstract class Charm implements ICharm {
 	@Override
 	public int getMaxDuration() {
 		return maxDuration;
+	}	
+
+	@Override
+	public Rarity getRarity() {
+		return rarity;
+	}
+
+	@Override
+	public int getPriority() {
+		return priority;
 	}
 	
 	@Override
-	public boolean isAllowMultipleUpdates() {
-		return effetStackable;
+	public boolean isEffectStackable() {
+		return effectStackable;
 	}
 
 	/**
@@ -312,6 +325,6 @@ public abstract class Charm implements ICharm {
 	public String toString() {
 		return "Charm [name=" + name + ", type=" + type + ", level=" + level + ", maxValue=" + maxValue
 				+ ", maxPercent=" + maxPercent + ", maxDuration=" + maxDuration + ",effectStackable="
-				+ effetStackable + "]";
+				+ effectStackable + "]";
 	}
 }

@@ -11,10 +11,10 @@ import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityStorage;
-import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
+import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
 import com.someguyssoftware.treasure2.item.charm.ICharmable;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -62,8 +62,10 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-		CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
-		return provider;
+		// TODO will have to create a new CapabilityProvider that includes both CharmInventory and TreasureBaubleProvider
+//		CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
+		return BaublesIntegration.isEnabled() ? new BaublesIntegration.AdornmentProvider(type) : new CharmInventoryCapabilityProvider();
+//		return provider;
 	}
 
 	/**

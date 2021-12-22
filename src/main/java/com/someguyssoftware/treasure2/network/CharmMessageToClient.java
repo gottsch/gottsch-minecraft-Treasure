@@ -19,9 +19,11 @@
  */
 package com.someguyssoftware.treasure2.network;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
@@ -37,20 +39,39 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
  *
  */
 public class CharmMessageToClient implements IMessage {
-	private boolean messageIsValid;
+	private boolean valid;
+	private String playerName;
 	private String charmName;
 	private ICharmEntity entity;
 	// location properties of charm(s) - who, what hand or what pouch slot
-	private String playerName;
 	private EnumHand hand;
 	private Integer slot;
+	private String slotProviderId;
+	private boolean pouch;
+	
+	/**
+	 * 
+	 * @param uuid
+	 * @param context
+	 */
+	public CharmMessageToClient(String playerName, CharmContext context) {
+		valid = true;
+		this.playerName = playerName;
+		this.entity = context.getEntity();
+		this.charmName = context.getEntity().getCharm().getName().toString();
+		this.hand = context.getHand();
+		this.slotProviderId = context.getSlotProviderId();
+		this.slot = context.getSlot();
+		this.pouch = context.getPouch();
+	}
 	
 	/**
 	 * 
 	 * @param playerName
 	 */
+	@Deprecated
 	public CharmMessageToClient(String playerName, ICharmEntity instance, EnumHand hand, Integer slot) {
-		messageIsValid = true;
+		valid = true;
 		this.playerName = playerName;
 		this.charmName = instance.getCharm().getName().toString();
 		this.entity = instance;
@@ -67,7 +88,7 @@ public class CharmMessageToClient implements IMessage {
 	 * 
 	 */
 	public CharmMessageToClient() {
-		messageIsValid = false;
+		valid = false;
 	}
 	
     // these methods may also be of use for your code:
@@ -97,21 +118,23 @@ public class CharmMessageToClient implements IMessage {
 	    		this.hand = EnumHand.valueOf(handStr);
 	    	}
 	    	this.slot = buf.readInt();
+	    	this.slotProviderId = ByteBufUtils.readUTF8String(buf);
+	    	this.pouch = buf.readBoolean();
 	      } catch (RuntimeException e) {
 	        Treasure.logger.error("Exception while reading CharmMessageToClient: ", e);
 	        return;
 	      }
-	      messageIsValid = true;
+	      valid = true;
 		
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-	    if (!messageIsValid) {
+	    if (!valid) {
 	    	return;
 	    }
 	    ByteBufUtils.writeUTF8String(buf, playerName);
-	    ByteBufUtils.writeUTF8String(buf, charmName);
+	    ByteBufUtils.writeUTF8String(buf, charmName);	    
 	    buf.writeDouble(entity.getValue());
 	    buf.writeInt(entity.getDuration());
 	    buf.writeDouble(entity.getPercent());
@@ -121,6 +144,8 @@ public class CharmMessageToClient implements IMessage {
 	    }
 	    ByteBufUtils.writeUTF8String(buf, handStr);	    
 	    buf.writeInt(this.slot);
+	    ByteBufUtils.writeUTF8String(buf, Objects.toString(slotProviderId, ""));
+	    buf.writeBoolean(pouch);
 	}
 
 	/**
@@ -135,11 +160,11 @@ public class CharmMessageToClient implements IMessage {
 	}
 
 	public boolean isMessageIsValid() {
-		return messageIsValid;
+		return valid;
 	}
 
-	public void setMessageIsValid(boolean messageIsValid) {
-		this.messageIsValid = messageIsValid;
+	public void setValid(boolean messageIsValid) {
+		this.valid = messageIsValid;
 	}
 
 	public ICharmEntity getEntity() {
@@ -164,7 +189,48 @@ public class CharmMessageToClient implements IMessage {
 
 	@Override
 	public String toString() {
-		return "CharmMessageToClient [messageIsValid=" + messageIsValid + ", charmName=" + charmName + ", entity="
-				+ entity + ", playerName=" + playerName + ", hand=" + hand + ", slot=" + slot + "]";
+		return "CharmMessageToClient [valid=" + valid + ", playerName=" + playerName + ", charmName=" + charmName
+				+ ", entity=" + entity + ", hand=" + hand + ", slot=" + slot + ", slotProviderId=" + slotProviderId
+				+ ", pouch=" + pouch + "]";
+	}
+
+	public String getSlotProviderId() {
+		return slotProviderId;
+	}
+
+	public void setSlotProviderId(String slotProviderId) {
+		this.slotProviderId = slotProviderId;
+	}
+
+	public boolean isPouch() {
+		return pouch;
+	}
+
+	public void setPouch(boolean pouch) {
+		this.pouch = pouch;
+	}
+
+	public boolean isValid() {
+		return valid;
+	}
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+
+	public void setCharmName(String charmName) {
+		this.charmName = charmName;
+	}
+
+	public void setEntity(ICharmEntity entity) {
+		this.entity = entity;
+	}
+
+	public void setHand(EnumHand hand) {
+		this.hand = hand;
+	}
+
+	public void setSlot(Integer slot) {
+		this.slot = slot;
 	}
 }

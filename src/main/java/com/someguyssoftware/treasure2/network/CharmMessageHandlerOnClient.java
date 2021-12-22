@@ -24,6 +24,7 @@ import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
 import com.someguyssoftware.treasure2.capability.PouchCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
+import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
 import com.someguyssoftware.treasure2.item.charm.ICharmable;
 import com.someguyssoftware.treasure2.item.charm.ICharmed;
 
@@ -101,29 +102,44 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 	        				// pouch - get item from slot
 	        				if (message.getSlot() != null && message.getSlot() > -1) {
 	        					IItemHandler pouchCap = heldItemStack.getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
-	        					ItemStack charmedItemStack = pouchCap.getStackInSlot(message.getSlot());
-	        					if (heldItemStack.getItem() instanceof ICharmed) {
-	        						updateCharms(charmedItemStack, message, charmedItemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
-	        					}
-	        					else if (heldItemStack.getItem() instanceof ICharmable) {
-	        						updateCharms(charmedItemStack, message, charmedItemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
-	        					}
+	        					ItemStack pouchStack = pouchCap.getStackInSlot(message.getSlot());
+	    	        			if (pouchStack != null && pouchStack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
+	    	        				updateCharms(pouchStack, message, pouchStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
+	    	        			}
+//	        					if (heldItemStack.getItem() instanceof ICharmed) {
+//	        						updateCharms(charmedItemStack, message, charmedItemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
+//	        					}
+//	        					else if (heldItemStack.getItem() instanceof ICharmable) {
+//	        						updateCharms(charmedItemStack, message, charmedItemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
+//	        					}
 	        				}
 	        			}
-	        			else if (heldItemStack.getItem() instanceof ICharmed) {
-	        				Treasure.logger.debug("has charmED cap");
-		        			updateCharms(heldItemStack, message, heldItemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
-		        		}
-	        			else if (heldItemStack.getItem() instanceof ICharmable) {
-	        				Treasure.logger.debug("has charmABLE cap");
-		        			updateCharms(heldItemStack, message, heldItemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
-		        		}
+	        			else if (heldItemStack != null && heldItemStack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
+	        				updateCharms(heldItemStack, message, heldItemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
+	        			}
+//	        			else if (heldItemStack.getItem() instanceof ICharmed) {
+//	        				Treasure.logger.debug("has charmED cap");
+//		        			updateCharms(heldItemStack, message, heldItemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
+//		        		}
+//	        			else if (heldItemStack.getItem() instanceof ICharmable) {
+//	        				Treasure.logger.debug("has charmABLE cap");
+//		        			updateCharms(heldItemStack, message, heldItemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
+//		        		}
 	        		}
 	        	}
+	        	else if (BaublesIntegration.BAUBLES_MOD_ID.equals(message.getSlotProviderId())) {
+	        		ItemStack stack = BaublesIntegration.getStackInSlot(player, message.getSlot());
+	        		if (stack != null && stack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
+	        			updateCharms(stack, message, stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
+	        		}
+	        	}
+	        	// hotbar
 	        	else {
 	        		ItemStack stack = player.inventory.getStackInSlot(message.getSlot());
-	        		if (stack.getItem() instanceof ICharmable) {
-	        			updateCharms(stack, message, stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
+	        		if (stack != null /*&& stack.getItem() instanceof ICharmable*/) {
+	        			if (stack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
+	        				updateCharms(stack, message, stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
+	        			}
 	        		}
 	        	}	        	
 	        }

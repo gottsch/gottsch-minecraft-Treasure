@@ -69,6 +69,7 @@ public class LifeStrikeCharm extends Charm {
 			DamageSource source = ((LivingHurtEvent) event).getSource();
 			if (source.getTrueSource() instanceof EntityPlayer) {
 
+				// TODO in future this test may have to change if life_amount changes with level of charm
 				if (player.getHealth() > 5.0F) {
 					// get the source and amount
 					double amount = ((LivingHurtEvent)event).getAmount();
@@ -78,7 +79,7 @@ public class LifeStrikeCharm extends Charm {
 					player.setHealth(MathHelper.clamp(player.getHealth() - LIFE_AMOUNT, 0.0F, player.getMaxHealth()));		
 					entity.setValue(MathHelper.clamp(entity.getValue() - 1,  0D, entity.getValue()));
 					result = true;
-					Treasure.logger.debug("life strike damage {} onto mob -> {}", (amount * entity.getPercent()), source.getTrueSource().getName());
+					Treasure.logger.debug("life strike damage {} onto mob -> {} using damage type -> {}", (amount * entity.getPercent()), source.getTrueSource().getName(), source.getDamageType());
 				}
 			}
 		}
