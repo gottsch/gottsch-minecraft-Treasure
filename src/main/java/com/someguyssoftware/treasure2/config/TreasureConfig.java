@@ -306,6 +306,9 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Name("11 oasis")
 	@Comment("Oasis properties")
 	public static final Oases OASES = new Oases();
+	
+	@Name("12 Integration")
+	public static final Integration INTEGRATION = new Integration();
 
 	@Ignore
 	public static TreasureConfig instance = new TreasureConfig();
@@ -1241,6 +1244,17 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		public void setMarkerProperties(MarkerProperties markerProperties) {
 			this.markerProperties = markerProperties;
 		}
+	}
+	
+	/**
+	 * 
+	 * @author Mark Gottschling on Dec 19, 2021
+	 *
+	 */
+	public static class Integration {
+		@Comment({ "Enable/Disable Baubles integration." })
+		@Name("01. Enable Baubles Integration:")
+		public boolean enableBaubles = true;
 	}
 
 	/**
