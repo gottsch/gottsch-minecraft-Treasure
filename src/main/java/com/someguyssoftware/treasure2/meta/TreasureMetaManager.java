@@ -82,10 +82,11 @@ public class TreasureMetaManager extends MetaManager {
 	}
 
 	public void register(String modID, List<String> resourcePaths) {
-		List<ResourceLocation> resourceLocations = getLootTablesResourceLocations(modID, resourcePaths);
+		List<ResourceLocation> resourceLocations = getMetaResourceLocations(modID, resourcePaths);
 
 		// load each ResourceLocation as LootTable and map it.
 		resourceLocations.forEach(loc -> {
+			// need to test for world save version first
 			Treasure.logger.debug("register metas -> loading meta resource loc -> {}", loc.getResourcePath().toString());
 			tableMeta(loc, loadMeta(loc));
 		});
@@ -107,7 +108,7 @@ public class TreasureMetaManager extends MetaManager {
 	 * @param resources
 	 * @return
 	 */
-	public List<ResourceLocation> getLootTablesResourceLocations(String modID, List<String> resources) {
+	public List<ResourceLocation> getMetaResourceLocations(String modID, List<String> resources) {
 		List<ResourceLocation> resourceLocations = new ArrayList<>();
 		resources.forEach(resource -> resourceLocations.add(new ResourceLocation(modID, resource)));
 		return resourceLocations;

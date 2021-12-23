@@ -19,8 +19,20 @@
  */
 package com.someguyssoftware.treasure2.registry;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.Optional;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+import com.someguyssoftware.gottschcore.GottschCore;
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.meta.MetaManager;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
@@ -28,23 +40,31 @@ import com.someguyssoftware.treasure2.meta.MetaManifest;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 
+import net.minecraft.world.storage.loot.RandomValueRange;
+
 /**
  * 
  * @author Mark Gottschling on Dec 16, 2021
  *
  */
 public class TreasureMetaRegistry {
-	private static final String DEFAULT_MANIFEST_PATH = "meta/manifest.json";	
+	private static final String DEFAULT_MANIFEST_PATH = "meta/treasure2/manifest.json"; // "meta/manifest.json" as already will be in the treasure2 namespace
+	@Deprecated
 	private static final String META_VERSION_FOLDER = "mc1_12";
 	private static final String META_FOLDER = "meta";
+	@Deprecated
 	private static final String META_PATH = META_VERSION_FOLDER +"/" + META_FOLDER;
-	
 	private static TreasureMetaManager metaManager;
 	private static MetaManifest metaManifest;
-
+	private static File worldDataBaseFolder;
+	
 	static {
 		// load template manifest
 		try {
+			// TODO should look in world save for a meta manifest file first and use it? instead
+			// of searching for individual meta docs? that way you could remove metas if you wanted.
+			// ie. metas aren't required for mod to work, whereas default loot tables is required.
+			// TODO this should be exectue on register, not static
 			metaManifest = ITreasureResourceRegistry.<MetaManifest>readResourcesFromFromStream(
 					Objects.requireNonNull(Treasure.instance.getClass().getClassLoader().getResourceAsStream(DEFAULT_MANIFEST_PATH)), MetaManifest.class);
 		}
@@ -59,13 +79,23 @@ public class TreasureMetaRegistry {
 	private TreasureMetaRegistry() {}
 	
 	/**
-	 * 
+	 * TODO does this even need to exist as separate method
 	 * @param mod
 	 */
 	public synchronized static void create(IMod mod) {
 		if (metaManager  == null) {
 			metaManager = new TreasureMetaManager(mod, META_PATH);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param mod
+	 * @param folder
+	 */
+	public synchronized static void create(IMod mod, File folder) {
+		create(mod);
+		worldDataBaseFolder = folder;
 	}
 	
 	/**
@@ -79,14 +109,73 @@ public class TreasureMetaRegistry {
 		metaManager.register(modID, metaManifest.getResources());
 	}
 	
+	// 1.12.2 world save format is
+	// [save]/data/meta/[modid]/...
+	// [save]/data/loot_tables/teasure2/chests/...
+	public static void register2(final String modID) {
+		boolean worldSaveMetaLoaded = false;
+		if (getWorldDataBaseFolder() != null) {
+			// create folders if not exist
+			createMetaFolder(getWorldDataBaseFolder(), modID);
+			
+			// read from file location
+			File manifestFile = Paths.get(getWorldDataBaseFolder().getPath(), DEFAULT_MANIFEST_PATH).toFile();
+			if (manifestFile.exists()) {
+				if (manifestFile.isFile()) {
+					String json;
+					try {
+						json = com.google.common.io.Files.toString(manifestFile, StandardCharsets.UTF_8);
+						metaManifest = new GsonBuilder().create().fromJson(json, MetaManifest.class);
+						worldSaveMetaLoaded = true;
+					}
+					catch (Exception e) {
+						Treasure.logger.warn("Couldn't load meta manifest from {}", manifestFile, e);
+					}
+				}
+			}
+		}
+		
+		// load default built-in meta manifest
+		if (!worldSaveMetaLoaded) {
+			try {
+				metaManifest = ITreasureResourceRegistry.<MetaManifest>readResourcesFromFromStream(
+						Objects.requireNonNull(Treasure.instance.getClass().getClassLoader().getResourceAsStream(DEFAULT_MANIFEST_PATH)), MetaManifest.class);
+			}
+			catch(Exception e) {
+				Treasure.logger.warn("Unable to template resources");
+			}
+		}
+		
+		// load meta files
+		metaManager.register(modID, metaManifest.getResources());
+	}
+	
 	/**
 	 * 
 	 * @param modID
+	 * @param location
 	 */
-	private static void buildAndExpose(String modID) {
-		metaManager.buildAndExpose(MetaManager.ASSETS_FOLDER, modID, META_VERSION_FOLDER, META_FOLDER, metaManifest.getResources());		
+	private void createMetaFolder(File file, String modID) {
+
+		/*
+		 *  build a path to the specified location
+		 *  ie ../[WORLD SAVE]/data/meta/[MODID]/structures
+		 */
+		// TODO need world save folder here
+//		Path configPath = Paths.get(getMod().getConfig().getConfigFolder());
+		Path folder = Paths.get(file.getPath(), "data/meta", modID, "structures").toAbsolutePath();
+
+		if (Files.notExists(folder)) {
+			Treasure.logger.debug("meta folder \"{}\" will be created.", folder.toString());
+			try {
+				Files.createDirectories(folder);
+
+			} catch (IOException e) {
+				Treasure.logger.warn("Unable to create meta folder \"{}\"", folder.toString());
+			}
+		}
 	}
-	
+
 	/**
 	 * Convenience method.
 	 * @param key
@@ -98,5 +187,9 @@ public class TreasureMetaRegistry {
 	
 	public static TreasureMetaManager getMetaManager() {
 		return metaManager;
-	}	
+	}
+	
+	public static File getWorldDataBaseFolder() {
+		return worldDataBaseFolder;
+	}
 }
