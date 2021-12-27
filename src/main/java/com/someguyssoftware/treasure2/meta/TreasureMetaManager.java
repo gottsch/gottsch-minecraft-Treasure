@@ -3,102 +3,144 @@
  */
 package com.someguyssoftware.treasure2.meta;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
-import com.someguyssoftware.gottschcore.GottschCore;
 import com.someguyssoftware.gottschcore.enums.IRarity;
-import com.someguyssoftware.gottschcore.json.JSMin;
-import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.meta.IMeta;
 import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 import com.someguyssoftware.gottschcore.meta.IMetaTheme;
 import com.someguyssoftware.gottschcore.meta.IMetaType;
-import com.someguyssoftware.gottschcore.meta.MetaManager;
-import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.RandomValueRange;
+
+// TODO update GottschCore MetaManager and then re-extend it.
 
 /**
  * @author Mark Gottschling on Jul 29, 2019
  *
  */
-public class TreasureMetaManager extends MetaManager {
+public class TreasureMetaManager {
 	private static List<String> FOLDER_LOCATIONS = ImmutableList.of("structures");
 
-	protected static final Gson GSON_INSTANCE = (new GsonBuilder())
-			.registerTypeAdapter(IMetaArchetype.class, new MetaArchetypeDeserializer())
-			.registerTypeAdapter(IMetaType.class, new MetaTypeDeserializer())
-			.registerTypeAdapter(IMetaTheme.class, new MetaThemeDeserializer())
-			.registerTypeAdapter(IRarity.class, new RarityDeserializer())
-			.registerTypeAdapter(ICoords.class, new CoordsDeserializer())
-			.create();
+	protected static final Gson GSON_INSTANCE;
 
+	private File worldSaveFolder;
+	
+	/*
+	 * 
+	 */
+	private final Map<String, IMeta> metaMap = Maps.<String, IMeta>newHashMap();
+	
+	static {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		Type metaArchetype = new TypeToken<List<IMetaArchetype>>() {}.getType();
+		Type metaTheme = new TypeToken<List<IMetaTheme>>() {}.getType();
+		Type rarity = new TypeToken<List<IRarity>>() {	}.getType();
+		
+		GSON_INSTANCE = gsonBuilder.registerTypeAdapter( metaArchetype, new MetaArchetypeDeserializer())
+		.registerTypeAdapter(IMetaType.class, new MetaTypeDeserializer())
+		.registerTypeAdapter(metaTheme, new MetaThemeDeserializer())
+		.registerTypeAdapter(rarity, new RarityDeserializer())
+		.registerTypeAdapter(ICoords.class, new CoordsDeserializer())
+		.create();
+	}
+	
 	/**
 	 * 
 	 * @param mod
 	 * @param resourceFolder
 	 */
-	public TreasureMetaManager(IMod mod, String resourceFolder) {
-		super(mod, resourceFolder);
-
-		// build and expose template/structure folders
-		buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
+	public TreasureMetaManager() {
 	}
 
 	/**
 	 * 
 	 */
 	public void clear() {
-		super.clear();
+		getMetaMap().clear();
 	}
 
+	/**
+	 * 
+	 * @param world
+	 * @param modID
+	 * @param resourcePaths
+	 */
 	public void register(String modID, List<String> resourcePaths) {
+		Treasure.logger.debug("registering meta resources");
+		// create folders if not exist
+		createMetaFolder(getWorldSaveFolder(), modID);
+		Treasure.logger.debug("created meta folder");
 		List<ResourceLocation> resourceLocations = getMetaResourceLocations(modID, resourcePaths);
-
+		Treasure.logger.debug("acquired resource locations -> {}", resourceLocations);
 		// load each ResourceLocation as LootTable and map it.
 		resourceLocations.forEach(loc -> {
 			// need to test for world save version first
-			Treasure.logger.debug("register metas -> loading meta resource loc -> {}", loc.getResourcePath().toString());
+			Treasure.logger.debug("register metas -> loading meta resource loc -> {}", loc.toString());
 			tableMeta(loc, loadMeta(loc));
 		});
 	}
 	
+	/**
+	 * 
+	 * @param modID
+	 * @param location
+	 */
+	private void createMetaFolder(File worldSaveFolder, String modID) {
+
+		/*
+		 *  build a path to the specified location
+		 *  ie ../[WORLD SAVE]/data/meta/[MODID]/structures
+		 */
+		//		Path configPath = Paths.get(getMod().getConfig().getConfigFolder());
+		Path folder = Paths.get(worldSaveFolder.getPath(), "data/meta", modID, "structures").toAbsolutePath();
+
+		if (Files.notExists(folder)) {
+			Treasure.logger.debug("meta folder \"{}\" will be created.", folder.toString());
+			try {
+				Files.createDirectories(folder);
+
+			} catch (IOException e) {
+				Treasure.logger.warn("Unable to create meta folder \"{}\"", folder.toString());
+			}
+		}
+	}
+	
 	private void tableMeta(ResourceLocation resourceLocation, Optional<StructureMeta> meta) {
 		if (meta.isPresent()) {
+			Treasure.logger.debug("tabling meta: key -> {}, meta -> {}", resourceLocation.toString(), meta);
 			// add meta to map
 			this.getMetaMap().put(resourceLocation.toString(), meta.get());
 		}
 		else {
-			Treasure.logger.debug("unable to meta table from -> {}", resourceLocation);
+			Treasure.logger.debug("unable to table meta from -> {}", resourceLocation);
 		}
 	}
 	
@@ -120,8 +162,23 @@ public class TreasureMetaManager extends MetaManager {
 	 * @return
 	 */
 	public Optional<StructureMeta> loadMeta(ResourceLocation resource) {
+		// TODO attempt to load from file system
+		Optional<StructureMeta> meta = loadMetaFromWorldSave(getWorldSaveFolder(), resource);
+		if (!meta.isPresent()) {
+			return loadMetaFromJar(resource);
+		}
+		return meta;
+	}
+	
+	/**
+	 * 
+	 * @param resource
+	 * @return
+	 */
+	private Optional<StructureMeta> loadMetaFromJar(ResourceLocation resource) {		
 		Optional<StructureMeta> resourceMeta = Optional.empty();
-		String relativePath = "meta/" + resource.getResourceDomain() + "/structures/" + resource.getResourcePath() + ".json";
+		String relativePath = "meta/" + resource.getResourceDomain() + "/" + resource.getResourcePath();
+		Treasure.logger.debug("Attempting to load meta {} from jar -> {}", resource, relativePath);
 		try (InputStream resourceStream = Treasure.instance.getClass().getClassLoader().getResourceAsStream(relativePath);
 				Reader reader = new InputStreamReader(resourceStream, StandardCharsets.UTF_8)) {
 			resourceMeta =  Optional.of(loadMeta(reader));
@@ -134,6 +191,51 @@ public class TreasureMetaManager extends MetaManager {
 	
 	/**
 	 * 
+	 * @param folder
+	 * @param resource
+	 * @return
+	 */
+	private Optional<StructureMeta> loadMetaFromWorldSave(File folder, ResourceLocation resource) {
+		if (folder == null) {
+			return Optional.empty();
+		}
+		else {
+			File metaFile = Paths.get(folder.getPath(), "data", "meta", resource.getResourceDomain(), resource.getResourcePath()).toFile();
+			Treasure.logger.debug("Attempting to load meta {} from {}", resource, metaFile);
+			
+			if (metaFile.exists()) {
+				if (metaFile.isFile()) {
+					String json;
+					try {
+						json = com.google.common.io.Files.toString(metaFile, StandardCharsets.UTF_8);
+					}
+					catch (IOException e) {
+						Treasure.logger.warn("Couldn't load meta {} from {}", resource, metaFile, e);
+						return Optional.empty();
+					}
+
+					try {
+						return Optional.of(loadMeta(json));
+					}
+					catch (IllegalArgumentException | JsonParseException e) {
+						Treasure.logger.error("Couldn't load meta {} from {}", resource, metaFile, e);
+						return Optional.empty();
+					}
+				}
+				else {
+					Treasure.logger.warn("Expected to find meta {} at {} but it was a folder.", resource, metaFile);
+					return Optional.empty();
+				}
+			}
+			else {
+				Treasure.logger.warn("Expected to find meta {} at {} but it doesn't exist.", resource, metaFile);
+				return Optional.empty();
+			}
+		}
+	}
+	
+	/**
+	 * 
 	 * @param reader
 	 * @return
 	 */
@@ -142,99 +244,21 @@ public class TreasureMetaManager extends MetaManager {
 	}
 	
 	/**
-	 * Call in WorldEvent.Load() event handler. Loads and registers meta files from
-	 * the file system.
 	 * 
-	 * @param modID
+	 * @param json
+	 * @return
 	 */
-	@Deprecated
-	public void register(String modID) {
-		for (String location : FOLDER_LOCATIONS) {
-			Treasure.logger.debug("registering meta files from location -> {}", location);
-			// get loot table files as ResourceLocations from the file system location
-			List<ResourceLocation> locs = getResourceLocations(modID, location);
-
-			// load each ResourceLocation as LootTable and map it.
-			for (ResourceLocation loc : locs) {
-				Path path = Paths.get(loc.getResourcePath());
-				if (Treasure.logger.isDebugEnabled()) {
-					Treasure.logger.debug("path to meta resource loc -> {}", path.toString());
-				}
-
-				// load template
-				Treasure.logger.debug("attempted to load custom meta file  with key -> {}", loc.toString());
-				IMeta meta = load(loc);
-				// add the id to the map
-				if (meta == null) {
-					Treasure.logger.debug("Unable to locate meta file -> {}", loc.toString());
-					continue;
-				}
-				Treasure.logger.debug("loaded custom meta file  with key -> {}", loc.toString());
-			}
-		}
+	public StructureMeta loadMeta(String json) throws IllegalArgumentException, JsonParseException {
+		return GSON_INSTANCE.fromJson(json, StructureMeta.class);
 	}
-
+	
 	/**
-	 * TODO move to GottschCore
-	 * reads a template from an inputstream
+	 * Wrapper to hide the metaMap and return StructureMeta
+	 * @param location
+	 * @return
 	 */
-	@Deprecated
-	@Override
-	protected void readFromStream(String id, InputStream stream) throws IOException, Exception {
-		Treasure.logger.debug("reading meta file from stream.");
-		IMeta meta = null;
-
-		// read json sheet in and minify it
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		JSMin minifier = new JSMin(stream, out);
-		minifier.jsmin();
-
-		// out minified json into a json reader
-		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-		Reader reader = new InputStreamReader(in);
-		JsonReader jsonReader = new JsonReader(reader);
-
-		// create a gson builder
-		GsonBuilder gsonBuilder = new GsonBuilder();
-
-		/*
-		 * create types for all the properties of a StyleSheet
-		 */
-		Type metaArchetype = new TypeToken<List<IMetaArchetype>>() {
-		}.getType();
-		Type metaTheme = new TypeToken<List<IMetaTheme>>() {
-		}.getType();
-		Type rarity = new TypeToken<List<IRarity>>() {
-		}.getType();
-
-		/*
-		 * register the types with the custom deserializer
-		 */
-		gsonBuilder.registerTypeAdapter(metaArchetype, new MetaArchetypeDeserializer());
-		gsonBuilder.registerTypeAdapter(IMetaType.class, new MetaTypeDeserializer());
-		gsonBuilder.registerTypeAdapter(metaTheme, new MetaThemeDeserializer());
-		gsonBuilder.registerTypeAdapter(rarity, new RarityDeserializer());
-		gsonBuilder.registerTypeAdapter(ICoords.class, new CoordsDeserializer());
-		Gson gson = gsonBuilder.create();
-
-		// read minified json into gson and generate objects
-		try {
-			meta = gson.fromJson(jsonReader, StructureMeta.class);
-			Treasure.logger.debug("meta[{}] -> {}", id, meta);
-		} catch (JsonIOException | JsonSyntaxException e) {
-			// TODO change to custom exception
-			throw new Exception("Unable to load meta file:", e);
-		} finally {
-			// close objects
-			try {
-				jsonReader.close();
-			} catch (IOException e) {
-				GottschCore.logger.warn("Unable to close JSON Reader when reading meta file.");
-			}
-		}
-
-		// add meta to map
-		this.getMetaMap().put(id, meta);
+	public StructureMeta get(String key) {
+		return (StructureMeta) getMetaMap().get(key);
 	}
 
 	// TODO could move all these to a GsonDeserializerHelper
@@ -291,5 +315,17 @@ public class TreasureMetaManager extends MetaManager {
 				throws JsonParseException {
 			return context.deserialize(json, Coords.class);
 		}
+	}
+
+	public File getWorldSaveFolder() {
+		return worldSaveFolder;
+	}
+
+	public void setWorldSaveFolder(File worldSaveFolder) {
+		this.worldSaveFolder = worldSaveFolder;
+	}
+
+	public Map<String, IMeta> getMetaMap() {
+		return metaMap;
 	}
 }

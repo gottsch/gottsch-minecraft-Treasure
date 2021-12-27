@@ -3,7 +3,11 @@ package com.someguyssoftware.treasure2.world.gen.structure;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,6 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
@@ -38,6 +43,7 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 import com.someguyssoftware.treasure2.meta.StructureType;
+import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -47,6 +53,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.common.BiomeDictionary;
@@ -73,6 +80,8 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	 * use this map when structures are submerged instead of the default marker map
 	 */
 	private Map<StructureMarkers, Block> waterMarkerMap;
+
+	private File worldSaveFolder;
 	
 	/**
 	 * 
@@ -110,10 +119,174 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	}
 	
 	/**
+	 * 
+	 * @param modID
+	 * @param resourcePaths
+	 */
+	public void register(String modID, List<String> resourcePaths) {
+		Treasure.logger.debug("registering template resources");
+		// create folders if not exist
+		createTemplateFolder(modID);
+		Treasure.logger.debug("created meta folder");
+		
+		List<ResourceLocation> resourceLocations = getResourceLocations(modID, resourcePaths);
+		Treasure.logger.debug("acquired resource locations -> {}", resourceLocations);
+		// load each ResourceLocation as LootTable and map it.
+		resourceLocations.forEach(loc -> {
+			// need to test for world save version first
+			Treasure.logger.debug("register metas -> loading template resource loc -> {}", loc.toString());
+						
+			tableTemplate(modID, loc, load(loc, getMarkerScanList(), getReplacementMap()));
+		});
+	}
+	
+	/**
+	 * 
+	 * @param modID
+	 * @param resources
+	 * @return
+	 */
+	public List<ResourceLocation> getResourceLocations(String modID, List<String> resources) {
+		List<ResourceLocation> resourceLocations = new ArrayList<>();
+		resources.forEach(resource -> resourceLocations.add(new ResourceLocation(modID, resource)));
+		return resourceLocations;
+	}
+	
+//	/**
+//	 * 
+//	 * @param resource
+//	 * @return
+//	 */
+//	public Optional<Template> loadTemplate(ResourceLocation resource) {
+//		// TODO attempt to load from file system
+//		Optional<Template> template = loadFromWorldSave(getWorldSaveFolder(), resource);
+//		if (!template.isPresent()) {
+//			return loadFromJar(resource);
+//		}
+//		return template;
+//	}
+//	
+//	/**
+//	 * 
+//	 * @param resource
+//	 * @return
+//	 */
+//	private Optional<Template> loadTemplateFromJar(ResourceLocation resource) {		
+//		Optional<Template> resourceTemplate = Optional.empty();
+//		String relativePath = "structures/" + resource.getResourceDomain() + "/" + resource.getResourcePath();
+//		Treasure.logger.debug("Attempting to load template {} from jar -> {}", resource, relativePath);
+//		try (InputStream resourceStream = Treasure.instance.getClass().getClassLoader().getResourceAsStream(relativePath);
+//				Reader reader = new InputStreamReader(resourceStream, StandardCharsets.UTF_8)) {
+//			resourceTemplate =  Optional.of(loadTemplate(reader));
+//		}
+//		catch(Exception e) {
+//			Treasure.logger.error(String.format("Couldn't load resource meta %s ", relativePath), e);
+//		}
+//		return resourceTemplate;
+//	}
+	
+	/**
+	 * 
+	 * @param resourceLocation
+	 * @param template
+	 */
+	private void tableTemplate(String modID, ResourceLocation resourceLocation, Template template) {
+		if (template != null) {
+			Path path = Paths.get(resourceLocation.getResourcePath().toString());
+			// build the key for the meta manager to look at
+			ResourceLocation metaResourceLocation = new ResourceLocation(modID, 
+					"structures" + "/" + path.getFileName().toString().replace(".nbt", ".json"));
+			String key = metaResourceLocation.toString();
+			Treasure.logger.debug("Using key to find meta -> {}", key);
+			
+			/*
+			 *  look for IMeta in MetaManager by treasure2:structures/x.nbt
+			 */
+			StructureMeta meta = (StructureMeta) TreasureMetaRegistry.get(key);
+			if (meta == null) {
+				// there isn't a meta found for resource, skip to next template
+				Treasure.logger.info("Unable to locate meta file for resource -> {}", key);
+				return;
+			}				
+			if (meta.getArchetypes() == null || meta.getArchetypes().isEmpty() || meta.getType() == null) {
+				Treasure.logger.info("Meta file not properly configured. -> {}", key);
+				return;
+			}
+			
+			/*
+			 *  determine if the meta decayRuleSetName is populated
+			 */
+			List<ResourceLocation> decayRuleSetResourceLocation = new ArrayList<>();
+			if (meta.getDecayRuleSetName() != null && meta.getDecayRuleSetName().size() > 0) {
+				// build the keys for the meta manager to look at
+				for (String ruleSetName : meta.getDecayRuleSetName()) {
+					ResourceLocation decayResourceLocation = new ResourceLocation(modID,
+							"decay" + "/" + modID + "/" + ruleSetName + ".json");
+					decayRuleSetResourceLocation.add(decayResourceLocation);
+					Treasure.logger.debug("Using key to find decay ruleset -> {}", decayRuleSetResourceLocation.toString());
+				}
+			}
+			
+			// setup the template holder
+			TemplateHolder holder = new TemplateHolder()
+					.setMetaLocation(metaResourceLocation)
+					.setLocation(resourceLocation)
+					.setDecayRuleSetLocation(decayRuleSetResourceLocation)
+					.setTemplate(template);			
+			
+			// map by resource location
+			getTemplatesByResourceLocationMap().put(resourceLocation, holder);
+			
+			// map according to meta archetype, type
+			for (IMetaArchetype archetype : meta.getArchetypes()) {					
+				Treasure.logger.debug("Using meta to map archetype type -> {}", meta.toString());										
+				if (!templatesByArchetypeType.contains(archetype, meta.getType())) {
+					templatesByArchetypeType.put(archetype, meta.getType(), new ArrayList<>(3));
+				}
+				this.templatesByArchetypeType.get(archetype, meta.getType()).add(holder);
+				
+				Treasure.logger.debug("Registered holder -> location -> {}, meta -> {}, decay -> {}",
+						holder.getLocation(), 
+						holder.getMetaLocation(),
+						holder.getDecayRuleSetLocation());
+
+				// TODO could move the wrapping for into this method instead, then could lose the archetype that is passed in. ***!!!
+				mapToTemplatesByArchetypeBiome(metaResourceLocation, resourceLocation, decayRuleSetResourceLocation, archetype, meta.getType(), template);
+			}
+		}
+		else {
+			Treasure.logger.debug("unable to table meta from -> {}", resourceLocation);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param modID
+	 */
+	private void createTemplateFolder(String modID) {
+
+		/*
+		 *  build a path to the specified location
+		 *  ie ../[WORLD SAVE]/data/templates/[MODID]/
+		 */
+		Path folder = Paths.get(getWorldSaveFolder().getPath(), "data", "structures", modID).toAbsolutePath();
+		if (Files.notExists(folder)) {
+			Treasure.logger.debug("template folder \"{}\" will be created.", folder.toString());
+			try {
+				Files.createDirectories(folder);
+
+			} catch (IOException e) {
+				Treasure.logger.warn("Unable to create template folder \"{}\"", folder.toString());
+			}
+		}
+	}
+	
+	/**
 	 * Loads and registers the template from the file system.
 	 * 
 	 * @param modID
 	 */
+	@Deprecated
 	public void register(String modID) {
 		for (String location : FOLDER_LOCATIONS) {
 			Treasure.logger.debug("registering templates under location -> {}", location);
@@ -130,12 +303,13 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 
 				// build the key for the meta manager to look at
 				ResourceLocation metaResourceLocation = new ResourceLocation(
-						getMod().getId() + ":" + Treasure.META_MANAGER.getBaseResourceFolder()+ "/" + modID + "/structures/" + path.getFileName().toString().replace(".nbt", ".json"));
+						getMod().getId() + ":" + "meta" + "/" + modID + "/structures/" + path.getFileName().toString().replace(".nbt", ".json"));
 				String key = metaResourceLocation.toString();
 				Treasure.logger.debug("Using key to find meta -> {}", key);
 				
 				// look for IMeta in DecayManager by treasure2:structures/treasure2/surface/x.nbt
-				StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(key);
+//				StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(key);
+				StructureMeta meta = (StructureMeta) TreasureMetaRegistry.get(key);
 				if (meta == null) {
 					// there isn't a meta found for resource, skip to next template
 					Treasure.logger.info("Unable to locate meta file for resource -> {}", key);
@@ -186,7 +360,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 				getTemplatesByResourceLocationMap().put(loc, holder);
 				
 				// map according to meta archetype, type
-				for (IMetaArchetype archetype : meta.getArchetypes()) {								
+				for (IMetaArchetype archetype : meta.getArchetypes()) {					
 					Treasure.logger.debug("Using meta to map archetype type -> {}", meta.toString());										
 					if (!templatesByArchetypeType.contains(archetype, meta.getType())) {
 						templatesByArchetypeType.put(archetype, meta.getType(), new ArrayList<>(3));
@@ -223,7 +397,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		String key = archetype.getName() + ":" + type.getName();
 		
 		// find the meta for the template
-		StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(metaResourceLocation.toString());
+		StructureMeta meta = (StructureMeta) TreasureMetaRegistry.get(metaResourceLocation.toString());
 		
 		// create a holder for the template
 		TemplateHolder holder = new TemplateHolder()
@@ -453,5 +627,13 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	 */
 	public Table<String, Integer, List<TemplateHolder>> getTemplatesByArchetypeTypeBiomeTable() {
 		return templatesByArchetypeTypeBiome;
+	}
+
+	public File getWorldSaveFolder() {
+		return worldSaveFolder;
+	}
+
+	public void setWorldSaveFolder(File worldSaveFolder) {
+		this.worldSaveFolder = worldSaveFolder;
 	}
 }

@@ -83,7 +83,7 @@ public final class TreasureLootTableRegistry {
 			lootTableMaster.registerSpecialsFromWorldSave(modID, lootResources.getSpecialLootTableFolderLocations());
 			
 			lootTableMaster.registerInjects(modID, lootResources.getInjectResources());
-			lootTableMaster.registerSpecialsFromWorldSave(modID, lootResources.getInjectLootTableFolderLocations());
+			lootTableMaster.registerInjectsFromWorldSave(modID, lootResources.getInjectLootTableFolderLocations());
 		}
 	}
 	

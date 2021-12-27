@@ -19,6 +19,7 @@ import com.someguyssoftware.gottschcore.config.ILoggerConfig;
 import com.someguyssoftware.gottschcore.mod.AbstractMod;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
+import com.someguyssoftware.treasure2.api.TreasureApi;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageStorage;
@@ -57,6 +58,7 @@ import com.someguyssoftware.treasure2.network.PoisonMistMessageHandlerOnServer;
 import com.someguyssoftware.treasure2.network.PoisonMistMessageToServer;
 import com.someguyssoftware.treasure2.network.WitherMistMessageHandlerOnServer;
 import com.someguyssoftware.treasure2.network.WitherMistMessageToServer;
+import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureDecayManager;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
@@ -145,7 +147,7 @@ public class Treasure extends AbstractMod {
 	public static TreasureTemplateManager TEMPLATE_MANAGER;
 
 	// meta manager // NOTE can't be final as Treasure.instance is required.
-	public static TreasureMetaManager META_MANAGER;
+//	public static TreasureMetaManager META_MANAGER;
 
 	public static TreasureDecayManager DECAY_MANAGER;
 
@@ -176,6 +178,8 @@ public class Treasure extends AbstractMod {
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new MimicEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new AnvilEventHandler(getInstance()));
+		
+//		MinecraftForge.EVENT_BUS.register(new TreasureMetaRegistry(getInstance()));
 
 		// configure logging
 		// create a rolling file appender
@@ -208,8 +212,10 @@ public class Treasure extends AbstractMod {
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms.Serializer());
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetSlots.Serializer());
 		
-		// start the treasure registries
+		// create the treasure registries
 		TreasureLootTableRegistry.create(instance);
+		TreasureApi.registerMeta(MODID);
+		TreasureApi.registerTemplates(MODID);
 	}
 
 	/**
@@ -268,7 +274,7 @@ public class Treasure extends AbstractMod {
 		TEMPLATE_MANAGER = new TreasureTemplateManager(Treasure.instance, "/structures",
 				FMLCommonHandler.instance().getDataFixer());
 
-		META_MANAGER = new TreasureMetaManager(Treasure.instance, "meta");
+//		META_MANAGER = new TreasureMetaManager(); //Treasure.instance); //, "meta");
 
 		DECAY_MANAGER = new TreasureDecayManager(Treasure.instance, "decay");
 	}

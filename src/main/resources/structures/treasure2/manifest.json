@@ -1,0 +1,14 @@
+{
+	"resources": [
+		"submerged/dingy1.nbt",
+		"submerged/sunken-ship1.nbt",
+		"submerged/sunken-ship2.nbt",
+		"submerged/sunken-ship3.nbt"
+    ],
+	"resourceFolderLocations": [
+		"submerged",
+		"subterranean",
+		"surface",
+		"wells"
+    ]
+}

@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2.eventhandler;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
@@ -33,7 +34,8 @@ public class ServerEventHandler {
 //		Treasure.LOOT_TABLES.clear();
 		// TODO implement similar registries like LOOT_TABLE_MASTER
 		Treasure.TEMPLATE_MANAGER.clear();
-		Treasure.META_MANAGER.clear();
+//		Treasure.META_MANAGER.clear();
+		TreasureMetaRegistry.clear();
 	}
 	
 	/**

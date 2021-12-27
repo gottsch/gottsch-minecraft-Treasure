@@ -18,6 +18,7 @@ import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
+import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
@@ -70,8 +71,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		GottschTemplate template = (GottschTemplate) templateHolder.getTemplate();
 		Treasure.logger.debug("template size -> {}", template.getSize());
 		// get the meta
-		StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap()
-				.get(templateHolder.getMetaLocation().toString());
+		StructureMeta meta = (StructureMeta) TreasureMetaRegistry.get(templateHolder.getMetaLocation().toString());
 		if (meta == null) {
 			Treasure.logger.debug("Unable to locate meta data for template -> {}", templateHolder.getLocation());
 			return result.fail();

@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.meta;
+package com.someguyssoftware.treasure2.registry;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ import java.util.List;
  * @author Mark Gottschling on Dec 16, 2021
  *
  */
-public class MetaManifest {
+public class Manifest {
 	   // lists
     private List<String> resources;
 	
@@ -36,7 +36,7 @@ public class MetaManifest {
 	/**
 	 * 
 	 */
-	public MetaManifest() {}
+	public Manifest() {}
 
 	public List<String> getResources() {
 		return resources;

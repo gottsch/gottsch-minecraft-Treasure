@@ -14,6 +14,8 @@ import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.worldgen.ITreasureWorldGenerator;
 
 import net.minecraft.util.ResourceLocation;
@@ -57,15 +59,23 @@ public class WorldEventHandler {
 			//			Treasure.logger.debug("server event");
 			WorldServer world = (WorldServer) event.getWorld();
 
-			// called once to initiate world-level properties in the LootTableMaster
+			/*
+			 *  called once to initiate world-level properties in the registries.
+			 *  not to be called by modders - they only call register();
+			 */
 			TreasureLootTableRegistry.getLootTableMaster().init(world);
-
+//			TreasureMetaRegistry.create(world);
+			
 			// register mod's loot tables
 			TreasureLootTableRegistry.register();
 
 			// register files with their respective managers
-			Treasure.META_MANAGER.register(getMod().getId());
-			Treasure.TEMPLATE_MANAGER.register(getMod().getId());
+//			Treasure.META_MANAGER.register(getMod().getId());
+//	-->		TreasureMetaRegistry.register(getMod().getId());
+			TreasureMetaRegistry.onWorldLoad(event);
+//			Treasure.TEMPLATE_MANAGER.register(getMod().getId());
+			TreasureTemplateRegistry.onWorldLoad(event);
+			
 			Treasure.DECAY_MANAGER.register(getMod().getId());
 
 			/*
