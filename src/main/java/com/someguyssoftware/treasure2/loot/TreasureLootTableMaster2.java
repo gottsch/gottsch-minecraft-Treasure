@@ -49,52 +49,6 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	
 	public static final String CUSTOM_LOOT_TABLES_RESOURCE_PATH = "/loot_tables/";
 	public static final String CUSTOM_LOOT_TABLE_KEY = "CUSTOM";
-	/*
-	 * relative location of chest loot tables - in resource path or file system.
-	 * these are required folders.
-	 */
-	public static final List<String> CHEST_LOOT_TABLE_FOLDER_LOCATIONS = ImmutableList.of(
-			"chests/common",
-			"chests/uncommon",
-			"chests/scarce",
-			"chests/rare",
-			"chests/epic"
-			);
-
-	/*
-	 *  list of special loot table locations.
-	 *  this is a required folder.
-	 */
-	public static final List<String> SPECIAL_CHEST_LOOT_TABLE_FOLDER_LOCATIONS = ImmutableList.of(
-			"chests/special"
-			);
-	
-	/*
-	 *  list of inject loot table locations. items from these loot tables will be injected into the final item pool for chests
-	 *  these are required folders.
-	 */	
-	public static final List<String> INJECT_LOOT_TABLE_FOLDER_LOCATIONS = ImmutableList.of(
-			"inject/common",
-			"inject/uncommon",
-			"inject/scarce",
-			"inject/rare",
-			"inject/epic"
-			);
-
-	/*
-	 * relative location of other loot tables - in resource path or file system.
-	 * these are supporting loot tables that each contains a pool of items to pull from.
-	 * this is what treasure2 uses to organize items, it is not necessary to follow this format
-	 * in modded / added loot tables or supporting pools
-	 */
-	public static final List<String> POOL_LOOT_TABLE_FOLDER_LOCATIONS = ImmutableList.of(
-			"pools/treasure",
-			"pools/armor",
-			"pools/food",
-			"pools/items",
-			"pools/potions",
-			"pools/tools"
-			);
 
 	/*
 	 * Guava Table of loot table ResourceLocations for Chests based on LootTableManager-key and Rarity 

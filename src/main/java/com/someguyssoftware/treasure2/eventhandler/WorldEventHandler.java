@@ -3,8 +3,6 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
-
 import java.util.Map.Entry;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
@@ -24,7 +22,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootEntry;
 import net.minecraft.world.storage.loot.LootEntryTable;
 import net.minecraft.world.storage.loot.LootPool;
-import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
@@ -59,25 +56,11 @@ public class WorldEventHandler {
 		if (WorldInfo.isServerSide(event.getWorld()) && event.getWorld().provider.getDimension() == 0) {
 			//			Treasure.logger.debug("server event");
 			WorldServer world = (WorldServer) event.getWorld();
-
-			/*
-			 *  called once to initiate world-level properties in the registries.
-			 *  not to be called by modders - they only call register();
-			 */
-//			TreasureLootTableRegistry.getLootTableMaster().init(world);
-//			TreasureMetaRegistry.create(world);
 			
-			// register mod's loot tables
-//			TreasureLootTableRegistry.register();
+			// execute registry's event handler
 			TreasureLootTableRegistry.onWorldLoad(event);
-
-			// register files with their respective managers
-//			Treasure.META_MANAGER.register(getMod().getId());
-//	-->		TreasureMetaRegistry.register(getMod().getId());
 			TreasureMetaRegistry.onWorldLoad(event);
-//			Treasure.TEMPLATE_MANAGER.register(getMod().getId());
-			TreasureTemplateRegistry.onWorldLoad(event);	
-//			Treasure.DECAY_MANAGER.register(getMod().getId());
+			TreasureTemplateRegistry.onWorldLoad(event);
 			TreasureDecayRegistry.onWorldLoad(event);
 
 			/*

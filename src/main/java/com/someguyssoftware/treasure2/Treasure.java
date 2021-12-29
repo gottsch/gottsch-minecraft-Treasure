@@ -179,8 +179,6 @@ public class Treasure extends AbstractMod {
 		MinecraftForge.EVENT_BUS.register(new MimicEventHandler(getInstance()));
 		MinecraftForge.EVENT_BUS.register(new AnvilEventHandler(getInstance()));
 		
-//		MinecraftForge.EVENT_BUS.register(new TreasureMetaRegistry(getInstance()));
-
 		// configure logging
 		// create a rolling file appender
 		Appender appender = createRollingFileAppender(Treasure.instance, Treasure.NAME + "Appender",

@@ -44,24 +44,17 @@ import net.minecraftforge.event.world.WorldEvent;
  *
  */
 public class TreasureMetaRegistry {
-//	@Deprecated
-//	private static final String DEFAULT_MANIFEST_PATH = "meta/treasure2/manifest.json";
-//	@Deprecated
-//	private static final String META_VERSION_FOLDER = "mc1_12";
-	private static final String META_FOLDER = "meta";
-//	@Deprecated
-//	private static final String META_PATH = META_VERSION_FOLDER +"/" + META_FOLDER;
-	
+	private static final String META_FOLDER = "meta";	
 	private static final TreasureMetaManager META_MANAGER;
-	private static final Set<String> MODS;
-	private static final Map<String, Boolean> MODS_LOADED;
+	private static final Set<String> REGISTERED_MODS;
+	private static final Map<String, Boolean> LOADED_MODS;
 	
 	private static WorldServer world;
 
 	static {
 		META_MANAGER = new TreasureMetaManager();
-		MODS = Sets.newHashSet();
-		MODS_LOADED = Maps.newHashMap();
+		REGISTERED_MODS = Sets.newHashSet();
+		LOADED_MODS = Maps.newHashMap();
 	}
 	
 	/**
@@ -82,7 +75,7 @@ public class TreasureMetaRegistry {
 	}
 	
 	public static void register(String modID) {
-		MODS.add(modID);
+		REGISTERED_MODS.add(modID);
 	}
 
 	public static void onWorldLoad(WorldEvent.Load event) {
@@ -90,7 +83,7 @@ public class TreasureMetaRegistry {
 			Treasure.logger.debug("meta registry world load");
 			TreasureMetaRegistry.create((WorldServer) event.getWorld());
 			
-			MODS.forEach(mod -> {
+			REGISTERED_MODS.forEach(mod -> {
 				Treasure.logger.debug("registering mod -> {}", mod);
 				load(mod);
 			});
@@ -102,7 +95,7 @@ public class TreasureMetaRegistry {
 	// [save]/data/loot_tables/teasure2/chests/...
 	public static void load(String modID) {
 		// don't reload for session
-		if (MODS_LOADED.containsKey(modID)) {
+		if (LOADED_MODS.containsKey(modID)) {
 			return;
 		}
 		
@@ -128,7 +121,6 @@ public class TreasureMetaRegistry {
 		if (!worldSaveMetaLoaded) {
 			try {
 				// load default built-in meta manifest
-				//Path manifestPath = Paths.get(META_FOLDER, modID, "manifest.json");
 				manifest = ITreasureResourceRegistry.<Manifest>readResourcesFromFromStream(
 						Objects.requireNonNull(Treasure.instance.getClass().getClassLoader().getResourceAsStream(META_FOLDER + "/" + modID + "/manifest.json")), Manifest.class);
 				Treasure.logger.debug("loaded meta manifest from jar");
@@ -140,7 +132,7 @@ public class TreasureMetaRegistry {
 
 		// load meta files
 		if (manifest != null) {
-			MODS_LOADED.put(modID, true);
+			LOADED_MODS.put(modID, true);
 			META_MANAGER.register(modID, manifest.getResources());
 		}
 	}
