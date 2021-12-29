@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 
 import com.google.common.collect.Maps;
@@ -32,9 +33,15 @@ import com.google.common.collect.Sets;
 import com.google.gson.GsonBuilder;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.meta.StructureArchetype;
+import com.someguyssoftware.treasure2.meta.StructureType;
+import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -124,11 +131,11 @@ public class TreasureTemplateRegistry {
 				// load default built-in meta manifest
 				Path manifestPath = Paths.get(TEMPLATES_FOLDER, modID, "manifest.json");
 				manifest = ITreasureResourceRegistry.<Manifest>readResourcesFromFromStream(
-						Objects.requireNonNull(Treasure.instance.getClass().getClassLoader().getResourceAsStream(/*"meta/" + modID + "/manifest.json")*/manifestPath.toString())), Manifest.class);
+						Objects.requireNonNull(Treasure.instance.getClass().getClassLoader().getResourceAsStream(TEMPLATES_FOLDER + "/" +  modID + "/manifest.json")), Manifest.class);
 				Treasure.logger.debug("loaded template manifest from jar");
 			}
 			catch(Exception e) {
-				Treasure.logger.warn("Unable to template resources");
+				Treasure.logger.warn("Unable to load template resources");
 			}
 		}
 		
@@ -150,9 +157,9 @@ public class TreasureTemplateRegistry {
 	 * @param key
 	 * @return
 	 */
-//	public static StructureMeta get(String key) {
-//		return META_MANAGER.get(key);
-//	}
+	public static TemplateHolder get(World world, Random random, StructureArchetype archetype, StructureType type, Biome biome) {
+		return TEMPLATE_MANAGER.getTemplate(world, random, archetype, type, biome);
+	}
 
 	public static TreasureTemplateManager getManager() {
 		return TEMPLATE_MANAGER;

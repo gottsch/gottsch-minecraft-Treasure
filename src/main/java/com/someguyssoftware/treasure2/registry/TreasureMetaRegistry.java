@@ -128,9 +128,9 @@ public class TreasureMetaRegistry {
 		if (!worldSaveMetaLoaded) {
 			try {
 				// load default built-in meta manifest
-				Path manifestPath = Paths.get(META_FOLDER, modID, "manifest.json");
+				//Path manifestPath = Paths.get(META_FOLDER, modID, "manifest.json");
 				manifest = ITreasureResourceRegistry.<Manifest>readResourcesFromFromStream(
-						Objects.requireNonNull(Treasure.instance.getClass().getClassLoader().getResourceAsStream(/*"meta/" + modID + "/manifest.json")*/manifestPath.toString())), Manifest.class);
+						Objects.requireNonNull(Treasure.instance.getClass().getClassLoader().getResourceAsStream(META_FOLDER + "/" + modID + "/manifest.json")), Manifest.class);
 				Treasure.logger.debug("loaded meta manifest from jar");
 			}
 			catch(Exception e) {
@@ -140,6 +140,7 @@ public class TreasureMetaRegistry {
 
 		// load meta files
 		if (manifest != null) {
+			MODS_LOADED.put(modID, true);
 			META_MANAGER.register(modID, manifest.getResources());
 		}
 	}

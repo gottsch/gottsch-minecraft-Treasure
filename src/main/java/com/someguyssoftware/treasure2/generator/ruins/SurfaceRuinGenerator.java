@@ -24,6 +24,7 @@ import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 import com.someguyssoftware.treasure2.meta.StructureType;
+import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
@@ -144,7 +145,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 
 		// NOTE don't like this here and then AGAIN in TemplateGenerator
 		// get the rule set from the meta which is in the holder
-		StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(holder.getMetaLocation().toString());
+		StructureMeta meta = (StructureMeta) TreasureMetaRegistry.get(holder.getMetaLocation().toString());
 		if (meta == null) {
 			Treasure.logger.debug("Unable to locate meta data for template -> {}", holder.getLocation());
 			return result.fail();

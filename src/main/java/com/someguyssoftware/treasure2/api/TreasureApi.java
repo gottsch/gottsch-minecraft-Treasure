@@ -19,6 +19,8 @@
  */
 package com.someguyssoftware.treasure2.api;
 
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 
@@ -29,6 +31,10 @@ import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
  */
 public class TreasureApi {
 
+	public static void registerLootTables(String modID) {
+		TreasureLootTableRegistry.register(modID);
+	}
+	
 	/**
 	 * For modders who want to add meta files, register your mod here.
 	 * @param modID
@@ -42,6 +48,6 @@ public class TreasureApi {
 	}
 	
 	public static void registerDecays(String modID) {
-//		TreasureDecayRegistry.register(modID);
+		TreasureDecayRegistry.register(modID);
 	}
 }

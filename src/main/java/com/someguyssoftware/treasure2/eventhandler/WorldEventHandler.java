@@ -14,6 +14,7 @@ import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.worldgen.ITreasureWorldGenerator;
@@ -63,20 +64,21 @@ public class WorldEventHandler {
 			 *  called once to initiate world-level properties in the registries.
 			 *  not to be called by modders - they only call register();
 			 */
-			TreasureLootTableRegistry.getLootTableMaster().init(world);
+//			TreasureLootTableRegistry.getLootTableMaster().init(world);
 //			TreasureMetaRegistry.create(world);
 			
 			// register mod's loot tables
-			TreasureLootTableRegistry.register();
+//			TreasureLootTableRegistry.register();
+			TreasureLootTableRegistry.onWorldLoad(event);
 
 			// register files with their respective managers
 //			Treasure.META_MANAGER.register(getMod().getId());
 //	-->		TreasureMetaRegistry.register(getMod().getId());
 			TreasureMetaRegistry.onWorldLoad(event);
 //			Treasure.TEMPLATE_MANAGER.register(getMod().getId());
-			TreasureTemplateRegistry.onWorldLoad(event);
-			
-			Treasure.DECAY_MANAGER.register(getMod().getId());
+			TreasureTemplateRegistry.onWorldLoad(event);	
+//			Treasure.DECAY_MANAGER.register(getMod().getId());
+			TreasureDecayRegistry.onWorldLoad(event);
 
 			/*
 			 * clear the current World Gens values and reload

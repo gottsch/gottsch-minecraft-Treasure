@@ -213,9 +213,10 @@ public class Treasure extends AbstractMod {
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetSlots.Serializer());
 		
 		// create the treasure registries
-		TreasureLootTableRegistry.create(instance);
+		TreasureApi.registerLootTables(MODID);
 		TreasureApi.registerMeta(MODID);
 		TreasureApi.registerTemplates(MODID);
+		TreasureApi.registerDecays(MODID);
 	}
 
 	/**
@@ -271,12 +272,12 @@ public class Treasure extends AbstractMod {
 		// add the loot table managers
 //		LOOT_TABLE_MASTER = new TreasureLootTableMaster2(Treasure.instance);
 
-		TEMPLATE_MANAGER = new TreasureTemplateManager(Treasure.instance, "/structures",
-				FMLCommonHandler.instance().getDataFixer());
+//		TEMPLATE_MANAGER = new TreasureTemplateManager(Treasure.instance, "/structures",
+//				FMLCommonHandler.instance().getDataFixer());
 
 //		META_MANAGER = new TreasureMetaManager(); //Treasure.instance); //, "meta");
 
-		DECAY_MANAGER = new TreasureDecayManager(Treasure.instance, "decay");
+//		DECAY_MANAGER = new TreasureDecayManager(Treasure.instance, "decay");
 	}
 
 	/**

@@ -1,13 +1,11 @@
 package com.someguyssoftware.treasure2.world.gen.structure;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,7 +16,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
@@ -36,6 +33,7 @@ import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 import com.someguyssoftware.gottschcore.meta.IMetaType;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplate;
 import com.someguyssoftware.gottschcore.world.gen.structure.GottschTemplateManager;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
@@ -46,14 +44,15 @@ import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.DataFixer;
+import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.common.BiomeDictionary;
@@ -105,9 +104,9 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		}
 
 		// build and expose template/structure folders
-		if (TreasureConfig.MOD.enableDefaultTemplatesCheck) {
-			buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
-		}
+//		if (TreasureConfig.MOD.enableDefaultTemplatesCheck) {
+//			buildAndExpose(getBaseResourceFolder(), Treasure.MODID, FOLDER_LOCATIONS);
+//		}
 	}
 
 	/**
@@ -127,7 +126,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 		Treasure.logger.debug("registering template resources");
 		// create folders if not exist
 		createTemplateFolder(modID);
-		Treasure.logger.debug("created meta folder");
+		Treasure.logger.debug("created templates folder");
 		
 		List<ResourceLocation> resourceLocations = getResourceLocations(modID, resourcePaths);
 		Treasure.logger.debug("acquired resource locations -> {}", resourceLocations);
@@ -138,6 +137,83 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 						
 			tableTemplate(modID, loc, load(loc, getMarkerScanList(), getReplacementMap()));
 		});
+	}
+	
+	/**
+	 * Overridden due to a difference in source paths from GottschCore
+	 */
+	@Override
+	public boolean readTemplate(ResourceLocation location, List<Block> markerBlocks, Map<IBlockState, IBlockState> replacementBlocks) {
+		Treasure.logger.debug("template path -> {}", location);
+
+		Path path = Paths.get("structures", getMod().getId(), location.getResourcePath());
+		File file1 = path.toFile();
+		Treasure.logger.debug("template file path -> {}", file1.getAbsoluteFile());
+		if (!file1.exists()) {
+			Treasure.logger.debug("file does not exist, read from jar -> {}", file1.getAbsolutePath());
+			return readTemplateFromJar(location, markerBlocks, replacementBlocks);
+		} else {
+			Treasure.logger.debug("reading template from file system using file path -> {}", file1.getAbsolutePath());
+			InputStream inputstream = null;
+			boolean flag;
+
+			try {
+				inputstream = new FileInputStream(file1);
+				this.readTemplateFromStream(location.toString(), inputstream, markerBlocks, replacementBlocks);
+				return true;
+			} catch (Throwable var10) {
+				flag = false;
+			} finally {
+				IOUtils.closeQuietly(inputstream);
+			}
+
+			return flag;
+		}
+	}
+	
+	/**
+	 * reads a template from the minecraft jar
+	 */
+	private boolean readTemplateFromJar(ResourceLocation id, List<Block> markerBlocks, Map<IBlockState, IBlockState> replacementBlocks) {
+		String s = id.getResourceDomain();
+		String s1 = id.getResourcePath();
+		InputStream inputstream = null;
+		boolean flag;
+
+		try {
+			Treasure.logger.debug("attempting to open resource stream -> {}", id);
+			String relativePath = "structures/" + id.getResourceDomain() + "/" + id.getResourcePath();
+			Treasure.logger.debug("Attempting to load template {} from jar -> {}", id, relativePath);
+			inputstream = Treasure.instance.getClass().getClassLoader().getResourceAsStream(relativePath);
+			this.readTemplateFromStream(id.toString(), inputstream, markerBlocks, replacementBlocks);
+			return true;
+			// TODO change from Throwable
+		} catch (Throwable var10) {
+			Treasure.logger.error("error reading resource: ", var10);
+			flag = false;
+		} finally {
+			IOUtils.closeQuietly(inputstream);
+		}
+
+		return flag;
+	}
+	
+	/**
+	 * reads a template from an inputstream
+	 */
+	private void readTemplateFromStream(String id, InputStream stream, List<Block> markerBlocks, 
+			Map<IBlockState, IBlockState> replacementBlocks) throws IOException {
+		
+		NBTTagCompound nbttagcompound = CompressedStreamTools.readCompressed(stream);
+
+		if (!nbttagcompound.hasKey("DataVersion", 99)) {
+			nbttagcompound.setInteger("DataVersion", 500);
+		}
+
+		GottschTemplate template = new GottschTemplate();
+		template.read(getFixer().process(FixTypes.STRUCTURE, nbttagcompound), markerBlocks, replacementBlocks);
+		Treasure.logger.debug("adding template to map with key -> {}", id);
+		this.getTemplates().put(id, template);
 	}
 	
 	/**
@@ -343,7 +419,7 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 					// build the keys for the meta manager to look at
 					for (String ruleSetName : meta.getDecayRuleSetName()) {
 						ResourceLocation resourceLocation = new ResourceLocation(
-								getMod().getId() + ":" + Treasure.DECAY_MANAGER.getBaseResourceFolder()+ "/" + modID + "/" + ruleSetName + ".json");
+								getMod().getId(), "rulesets/" + ruleSetName + ".json");
 						decayRuleSetResourceLocation.add(resourceLocation);
 						Treasure.logger.debug("Using key to find decay ruleset -> {}", decayRuleSetResourceLocation.toString());
 					}
