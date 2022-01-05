@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -48,12 +49,14 @@ public abstract class Charm implements ICharm {
 	private double maxPercent;
 	private int maxDuration;
 	private double frequency;
+	private Rarity rarity;
+	private int priority;
 	
 	/*
 	 * if multiple charms of the same type are being processed, only 1 should be updated/executed.
 	 * ex. if multiple harvesting charms are held, only one should update.
 	 */
-	private boolean effetStackable = false;
+	private boolean effectStackable = false;
 
 	/**
 	 * 
@@ -67,7 +70,7 @@ public abstract class Charm implements ICharm {
 		this.maxDuration = builder.duration.intValue();
 		this.maxPercent = builder.percent;
 		this.frequency = builder.frequency;
-		this.effetStackable = builder.effectStackable;
+		this.effectStackable = builder.effectStackable;
 	}
 
 	abstract public Class<?> getRegisteredEvent();
@@ -229,6 +232,16 @@ public abstract class Charm implements ICharm {
 	@Override
 	public int getMaxDuration() {
 		return maxDuration;
+	}	
+
+	@Override
+	public Rarity getRarity() {
+		return rarity;
+	}
+
+	@Override
+	public int getPriority() {
+		return priority;
 	}
 
 	@Override
@@ -238,7 +251,7 @@ public abstract class Charm implements ICharm {
 
 	@Override
 	public boolean isEffectStackable() {
-		return effetStackable;
+		return effectStackable;
 	}
 
 	/**

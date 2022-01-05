@@ -24,6 +24,7 @@ import java.time.Month;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -35,6 +36,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
 import com.someguyssoftware.treasure2.capability.PouchCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -161,7 +163,7 @@ public class PlayerEventHandler {
 	 * 
 	 * @param event
 	 */
-	@SubscribeEvent
+//	@SubscribeEvent
 	public void checkCharmsInteraction(LivingUpdateEvent event) {
 		if (WorldInfo.isClientSide(event.getEntity().getEntityWorld())) {
 			return;
@@ -180,7 +182,7 @@ public class PlayerEventHandler {
 	 * 
 	 * @param event
 	 */
-	@SubscribeEvent
+//	@SubscribeEvent
 	public void checkCharmsInteractionWithDamage(LivingDamageEvent event) {
 		if (WorldInfo.isClientSide(event.getEntity().getEntityWorld())) {
 			return;
@@ -198,7 +200,7 @@ public class PlayerEventHandler {
 	 * 
 	 * @param event
 	 */
-	@SubscribeEvent
+//	@SubscribeEvent
 	public void checkCharmsInteractionWithAttack(LivingHurtEvent event) {
 		if (WorldInfo.isClientSide(event.getEntity().getEntityWorld())) {
 			return;
@@ -219,7 +221,7 @@ public class PlayerEventHandler {
 		}
 	}
 
-	@SubscribeEvent
+//	@SubscribeEvent
 	public void checkCharmsInteractionWithBlock(BlockEvent.HarvestDropsEvent event) {
 		if (WorldInfo.isClientSide(event.getWorld())) {
 			return;
@@ -241,12 +243,13 @@ public class PlayerEventHandler {
 		EntityPlayerMP player = (EntityPlayerMP) event.getHarvester();
 		processCharms(event, player);
 	}
-
+	
 	/**
 	 * 
 	 * @param event
 	 * @param player
 	 */
+	@Deprecated
 	private void processCharms(Event event, EntityPlayerMP player) {
 		final List<String> nonMultipleUpdateCharms = new ArrayList<>(5);
 
@@ -407,7 +410,7 @@ public class PlayerEventHandler {
 	}
 
 	@SuppressWarnings("incomplete-switch")
-	private Optional<CharmContext> getCharmContext(EntityPlayerMP player, int hotbarSlot) {
+	Optional<CharmContext> getCharmContext(EntityPlayerMP player, int hotbarSlot) {
 		CharmContext context = new CharmContext();
 
 		ItemStack stack = player.inventory.getStackInSlot(hotbarSlot);
@@ -439,7 +442,7 @@ public class PlayerEventHandler {
 	 * @param stack
 	 * @return
 	 */
-	private Optional<CharmedType> getType(ItemStack stack) {
+	Optional<CharmedType> getType(ItemStack stack) {
 		CharmedType type = null;
 		if (stack.getItem() instanceof ICharmed) {
 			type = CharmedType.CHARM;
@@ -494,7 +497,7 @@ public class PlayerEventHandler {
 	 * @author Mark Gottschling on Apr 30, 2020
 	 *
 	 */
-	private class CharmContext {
+	public class CharmContext {
 		EnumHand hand;
 		Integer slot;
 		Integer hotbarSlot;
@@ -505,7 +508,7 @@ public class PlayerEventHandler {
 		CharmContext() {}
 	}
 
-	private enum CharmedType {
+	public enum CharmedType {
 		CHARM,
 		FOCUS,
 		ADORNMENT

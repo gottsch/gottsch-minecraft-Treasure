@@ -31,6 +31,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.Adornment.Type;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
+import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -428,65 +429,69 @@ public class TreasureItems {
         // 3x max slot 1x slots. 1x charms. level 8
 //        POCKET_WATCH = (Item) new Adornment(Treasure.MODID, "pocket_watch", AdornmentType.POCKET).setMaxSlots(3).setLevel(8);
         
-//        ANGELS_RING = (Item) new Adornment(Treasure.MODID, "angels_ring", AdornmentType.RING) {
-//            public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+        ANGELS_RING = (Item) new Adornment(Treasure.MODID, "angels_ring", AdornmentType.RING) {
+            public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 //                CharmInventoryCapabilityProvider charmInventoryProvider =  new CharmInventoryCapabilityProvider();
-//                ICharmInventoryCapability charmCap = charmInventoryProvider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-//                charmCap.getCharmEntities().add(TreasureCharms.FIRE_IMMUNITY_13.createEntity());
-//                charmCap.getCharmEntities().add(TreasureCharms.ARMADILLO_SHIELDING.createEntity());
-//                charmCap.getCharmEntities().add(TreasureCharms.SALANDAARS_CONVALESCENCE.createEntity());
-//
-//                charmCap.setSlots(1);
-//                return charmInventoryProvider;
-//            }	
-//        }.setMaxSlots(4).setLevel(10);
+				ICapabilityProvider provider = BaublesIntegration.isEnabled() ? new BaublesIntegration.AdornmentProvider(AdornmentType.RING) : new CharmInventoryCapabilityProvider();
+                ICharmInventoryCapability charmCap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+                charmCap.getCharmEntities().add(TreasureCharms.FIRE_IMMUNITY_13.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.ARMADILLO_SHIELDING.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.SALANDAARS_CONVALESCENCE.createEntity());
 
-//        RING_OF_FORTITUDE = (Item) new Adornment(Treasure.MODID, "ring_of_fortitude", AdornmentType.RING) {
-//            public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+                charmCap.setSlots(1);
+                return provider;
+            }	
+        }.setMaxSlots(4).setLevel(10);
+
+        RING_OF_FORTITUDE = (Item) new Adornment(Treasure.MODID, "ring_of_fortitude", AdornmentType.RING) {
+            public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 //            	CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
-//                ICharmInventoryCapability charmCap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-//                charmCap.getCharmEntities().add(TreasureCharms.ARMADILLO_SHIELDING.createEntity());
-//                charmCap.getCharmEntities().add(TreasureCharms.REFLECTION_5.createEntity());
-//                charmCap.setSlots(2);
-//                return provider;
-//            }	
-//        }.setMaxSlots(2).setLevel(12);
-//
-//        BRACELET_OF_WONDER = (Item) new Adornment(Treasure.MODID, "bracelet_of_wonder", AdornmentType.BRACELET) {
-//            public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+            	ICapabilityProvider provider = BaublesIntegration.isEnabled() ? new BaublesIntegration.AdornmentProvider(AdornmentType.RING) : new CharmInventoryCapabilityProvider();
+                ICharmInventoryCapability charmCap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+                charmCap.getCharmEntities().add(TreasureCharms.ARMADILLO_SHIELDING.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.REFLECTION_5.createEntity());
+                charmCap.setSlots(2);
+                return provider;
+            }	
+        }.setMaxSlots(2).setLevel(12);
+
+        BRACELET_OF_WONDER = (Item) new Adornment(Treasure.MODID, "bracelet_of_wonder", AdornmentType.BRACELET) {
+            public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 //            	CharmInventoryCapabilityProvider charmableProvider =  new CharmInventoryCapabilityProvider();
-//                ICharmInventoryCapability charmCap = charmableProvider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-//                charmCap.getCharmEntities().add(TreasureCharms.SHIELDING_13.createEntity());
-//                charmCap.getCharmEntities().add(TreasureCharms.REFLECTION_10.createEntity());
-//                charmCap.setSlots(4);
-//                return charmableProvider;
-//            }
-//        }.setMaxSlots(4).setLevel(10);
+            	ICapabilityProvider provider = BaublesIntegration.isEnabled() ? new BaublesIntegration.AdornmentProvider(AdornmentType.BRACELET) : new CharmInventoryCapabilityProvider();
+                ICharmInventoryCapability charmCap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+                charmCap.getCharmEntities().add(TreasureCharms.SHIELDING_13.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.REFLECTION_10.createEntity());
+                charmCap.setSlots(4);
+                return provider;
+            }
+        }.setMaxSlots(4).setLevel(10);
 
         /*
          * special 4million download ring. will auto place in your backpack on new world for 1 month (Dec 2021)
          */
-//        GOTTSCHS_RING_OF_MOON = ((Item) new Adornment(Treasure.MODID, "gottschs_ring_of_moon", AdornmentType.RING) {
-//            public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
+        GOTTSCHS_RING_OF_MOON = ((Item) new Adornment(Treasure.MODID, "gottschs_ring_of_moon", AdornmentType.RING) {
+            public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
 //            	CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
-//                ICharmInventoryCapability charmCap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-//                charmCap.getCharmEntities().add(TreasureCharms.DRAIN_20.createEntity());
-//                charmCap.getCharmEntities().add(TreasureCharms.REFLECTION_20.createEntity());
-//                charmCap.getCharmEntities().add(TreasureCharms.LIFE_STRIKE_20.createEntity());
-//                charmCap.getCharmEntities().add(TreasureCharms.HEALING_20.createEntity());
-//                charmCap.setSlots(0);
-//                return provider;
-//            }
-//            
-//        	@SuppressWarnings("deprecation")
-//        	@Override
-//        	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-//        		tooltip.add(TextFormatting.GOLD.toString() + "" + I18n.translateToLocal("tooltip.charm.gottschs_ring_of_moon.special"));
-//        		tooltip.add("");
-//       			addCharmedInfo(stack, world, tooltip, flag);
-//        		addSlotsInfo(stack, world, tooltip, flag);
-//        	}
-//        }.setMaxSlots(4).setLevel(20)).setCreativeTab(null);
+            	ICapabilityProvider provider = BaublesIntegration.isEnabled() ? new BaublesIntegration.AdornmentProvider(AdornmentType.RING) : new CharmInventoryCapabilityProvider();
+                ICharmInventoryCapability charmCap = provider.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+                charmCap.getCharmEntities().add(TreasureCharms.DRAIN_20.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.REFLECTION_20.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.LIFE_STRIKE_20.createEntity());
+                charmCap.getCharmEntities().add(TreasureCharms.HEALING_20.createEntity());
+                charmCap.setSlots(0);
+                return provider;
+            }
+            
+        	@SuppressWarnings("deprecation")
+        	@Override
+        	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+        		tooltip.add(TextFormatting.GOLD.toString() + "" + I18n.translateToLocal("tooltip.charm.gottschs_ring_of_moon.special"));
+        		tooltip.add("");
+       			addCharmedInfo(stack, world, tooltip, flag);
+        		addSlotsInfo(stack, world, tooltip, flag);
+        	}
+        }.setMaxSlots(4).setLevel(20)).setCreativeTab(null);
         
 		// PEARLS
 		WHITE_PEARL = new PearlItem(Treasure.MODID, TreasureConfig.WHITE_PEARL_ID, Pearls.WHITE);

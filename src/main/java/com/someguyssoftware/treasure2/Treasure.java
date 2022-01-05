@@ -39,10 +39,14 @@ import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
 import com.someguyssoftware.treasure2.eventhandler.AnvilEventHandler;
+import com.someguyssoftware.treasure2.eventhandler.CharmEventHandler;
+import com.someguyssoftware.treasure2.eventhandler.HotbarEquipmentCharmHandler;
+import com.someguyssoftware.treasure2.eventhandler.IEquipmentCharmHandler;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.MimicEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
+import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
 import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
@@ -80,6 +84,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.handshake.FMLHandshakeMessage.ModList;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -107,7 +112,6 @@ public class Treasure extends AbstractMod {
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
 	protected static final String VERSION = "2.0.0";
-
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/update.json";
 
 	private static final String VERSION_URL = "";
@@ -207,6 +211,25 @@ public class Treasure extends AbstractMod {
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms.Serializer());
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetSlots.Serializer());
+		
+		// integrations
+		BaublesIntegration.init();
+		
+		IEquipmentCharmHandler equipmentCharmHandler = null;
+		if (BaublesIntegration.isEnabled()) {
+			logger.debug("baubles IS loaded");
+			try {
+				equipmentCharmHandler = 
+						(IEquipmentCharmHandler) Class.forName("com.someguyssoftware.treasure2.eventhandler.BaublesEquipmentCharmHandler").newInstance();
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+				logger.warn("Unable to load Baubles compatiblity class.", e);
+			}
+		}
+		if (equipmentCharmHandler == null) {
+			logger.debug("equipmentHandler is null");
+			equipmentCharmHandler = new HotbarEquipmentCharmHandler();
+		}
+		MinecraftForge.EVENT_BUS.register(new CharmEventHandler(equipmentCharmHandler));
 	}
 
 	/**

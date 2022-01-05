@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,7 +45,9 @@ public interface ICharm {
 	public int getMaxDuration();
 	public double getMaxPercent();
 	public double getFrequency();
-	boolean isEffectStackable();
+	public Rarity getRarity();
+	public int getPriority();
+	public boolean isEffectStackable();
     
 	public ICharmEntity createEntity();
 	
@@ -57,4 +60,5 @@ public interface ICharm {
 	public boolean isCurse();
 	
 	public Class<?> getRegisteredEvent();
+
 }

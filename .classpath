@@ -23,5 +23,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/forge-1.12.2-2854"/>
 	<classpathentry kind="lib" path="/ModCommonLibs/libs/commons-cli-1.4.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/GottschCore"/>
+	<classpathentry kind="lib" path="/ModCommonLibs/libs/Baubles-1.12-1.5.2.jar"/>
+
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>
