@@ -30,13 +30,22 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
  */
 public class TreasureCapabilities {
 	// TODO migrate all capabilites here
+	@Deprecated
 	@CapabilityInject(ICharmInventoryCapability.class)
 	public static Capability<ICharmInventoryCapability> CHARM_INVENTORY = null;
+	
+	@CapabilityInject(IMagicsInventoryCapability.class)
+	public static Capability<IMagicsInventoryCapability> MAGICS = null;
+	
+	@CapabilityInject(ICharmableCapability.class)
+	public static Capability<ICharmableCapability> CHARMABLE = null;
 	
 	/**
 	 * 
 	 */
 	public static void register() {
         CapabilityManager.INSTANCE.register(ICharmInventoryCapability.class, new CharmInventoryCapabilityStorage(), CharmInventoryCapability::new);
+        CapabilityManager.INSTANCE.register(IMagicsInventoryCapability.class, new MagicsInventoryCapabilityStorage(), MagicsInventoryCapability::new);
+        CapabilityManager.INSTANCE.register(ICharmableCapability.class, new CharmableCapabilityStorage(), CharmableCapability::create);
   	}
 }

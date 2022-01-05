@@ -88,37 +88,37 @@ public class PlayerEventHandler {
 		setMod(mod);
 	}
 
-	@SubscribeEvent
-	public void addToInventory(PlayerEvent.PlayerLoggedInEvent event) {
-		// check if config is enabled
-		if (!TreasureConfig.MOD.enableSpecialRewards) {
-			return;
-		}
-
-		if (event.player.isCreative()) {
-			return;
-		}
-
-		// check if during the correct timeframe
-//		if (LocalDate.now().getMonth() != Month.DECEMBER || Year.now().getValue() != 2021) {
-//			return;			
+//	@SubscribeEvent
+//	public void addToInventory(PlayerEvent.PlayerLoggedInEvent event) {
+//		// check if config is enabled
+//		if (!TreasureConfig.MOD.enableSpecialRewards) {
+//			return;
 //		}
-
-		NBTTagCompound playerData = event.player.getEntityData();
-		NBTTagCompound persistentNbt;
-		if (!playerData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
-			playerData.setTag(EntityPlayer.PERSISTED_NBT_TAG, (persistentNbt = new NBTTagCompound()));
-		} else {
-			persistentNbt = playerData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
-		}
-
-		if (!persistentNbt.hasKey(FIRST_JOIN_NBT_KEY)) {
-			persistentNbt.setBoolean(FIRST_JOIN_NBT_KEY, true);
-			// add all items to players inventory on first join
-			ItemStack ring = new ItemStack(TreasureItems.GOTTSCHS_RING_OF_MOON, 1);
-			event.player.inventory.addItemStackToInventory(ring);
-		}
-	}
+//
+//		if (event.player.isCreative()) {
+//			return;
+//		}
+//
+//		// check if during the correct timeframe
+////		if (LocalDate.now().getMonth() != Month.DECEMBER || Year.now().getValue() != 2021) {
+////			return;			
+////		}
+//
+//		NBTTagCompound playerData = event.player.getEntityData();
+//		NBTTagCompound persistentNbt;
+//		if (!playerData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
+//			playerData.setTag(EntityPlayer.PERSISTED_NBT_TAG, (persistentNbt = new NBTTagCompound()));
+//		} else {
+//			persistentNbt = playerData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+//		}
+//
+//		if (!persistentNbt.hasKey(FIRST_JOIN_NBT_KEY)) {
+//			persistentNbt.setBoolean(FIRST_JOIN_NBT_KEY, true);
+//			// add all items to players inventory on first join
+//			ItemStack ring = new ItemStack(TreasureItems.GOTTSCHS_RING_OF_MOON, 1);
+//			event.player.inventory.addItemStackToInventory(ring);
+//		}
+//	}
 
 	//	TEMP remove until patchouli book is complete.
 	//    @SubscribeEvent
@@ -333,7 +333,7 @@ public class PlayerEventHandler {
 			}
 
 			// Treasure.logger.debug("{} charm allows multiple updates -> {}", charm.getName(), charm.isAllowMultipleUpdates());
-			if (!charm.isAllowMultipleUpdates()) {
+			if (!charm.isEffectStackable()) {
 				// Treasure.logger.debug("{} charm denies multiple updates", charm.getName());
 				// check if in list
 				if (nonMultipleUpdateCharms.contains(charm.getType())) {

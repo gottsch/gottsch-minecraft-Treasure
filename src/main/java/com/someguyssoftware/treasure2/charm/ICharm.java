@@ -43,18 +43,18 @@ public interface ICharm {
 	public double getMaxValue();
 	public int getMaxDuration();
 	public double getMaxPercent();
-	boolean isAllowMultipleUpdates();
+	public double getFrequency();
+	boolean isEffectStackable();
     
+	public ICharmEntity createEntity();
+	
     public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity);
 
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, ICharmEntity entity);
     
 	public NBTTagCompound save(NBTTagCompound nbt);
 	
-	/**
-	 * 
-	 */
-	ICharmEntity createEntity();
-	boolean isCurse();
+	public boolean isCurse();
+	
 	public Class<?> getRegisteredEvent();
 }

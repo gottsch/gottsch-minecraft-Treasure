@@ -30,6 +30,7 @@ import com.someguyssoftware.treasure2.charm.ICharmEntity;
  * @author Mark Gottschling on Oct 25, 2021
  *
  */
+@Deprecated
 public class CharmInventoryCapability implements ICharmInventoryCapability {
 	private List<ICharmEntity> charmEntities = new ArrayList<>(3);
 	private int slots;

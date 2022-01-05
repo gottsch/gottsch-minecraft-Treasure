@@ -129,30 +129,34 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.MASTERS_POUCH);
 		
 		// ADORNMENTS
-        registerItemModel(TreasureItems.SILVER_RING);
-        registerItemModel(TreasureItems.SILVER_SIGNET_RING);
-        registerItemModel(TreasureItems.AMETHYST_SILVER_RING);
-        registerItemModel(TreasureItems.ONYX_GOLD_RING);
-		registerItemModel(TreasureItems.GOLD_RING);
-        registerItemModel(TreasureItems.RUBY_GOLD_RING);
-        registerItemModel(TreasureItems.EMERALD_GOLD_RING);
-        registerItemModel(TreasureItems.DIAMOND_GOLD_RING);
-        registerItemModel(TreasureItems.SAPPHIRE_GOLD_RING);
-        registerItemModel(TreasureItems.CASTLE_RING);
-        registerItemModel(TreasureItems.ANGELS_RING);
-        registerItemModel(TreasureItems.SILVER_NECKLACE);
-        registerItemModel(TreasureItems.GOLD_NECKLACE);
-        registerItemModel(TreasureItems.SAPPHIRE_SILVER_AMULET);
-        registerItemModel(TreasureItems.AMETHYST_GOLD_AMULET);
-        registerItemModel(TreasureItems.ONYX_GOLD_AMULET);
-        registerItemModel(TreasureItems.RUBY_GOLD_AMULET);
-        registerItemModel(TreasureItems.SAPPHIRE_GOLD_AMULET);
-        registerItemModel(TreasureItems.GOLD_BRACELET);
-        registerItemModel(TreasureItems.POCKET_WATCH);
-
-        registerItemModel(TreasureItems.BRACELET_OF_WONDER);
-        registerItemModel(TreasureItems.RING_OF_FORTITUDE);
-        registerItemModel(TreasureItems.GOTTSCHS_RING_OF_MOON);
+		registerItemModel(TreasureItems.COPPER_RING);
+		registerItemModel(TreasureItems.GREAT_COPPER_RING);
+		registerItemModel(TreasureItems.RUBY_COPPER_RING);
+//		registerItemModel(TreasureItems.IRON_RING);
+//        registerItemModel(TreasureItems.SILVER_RING);
+//        registerItemModel(TreasureItems.SILVER_SIGNET_RING);
+//        registerItemModel(TreasureItems.AMETHYST_SILVER_RING);
+//        registerItemModel(TreasureItems.ONYX_GOLD_RING);
+//		registerItemModel(TreasureItems.GOLD_RING);
+//        registerItemModel(TreasureItems.RUBY_GOLD_RING);
+//        registerItemModel(TreasureItems.EMERALD_GOLD_RING);
+//        registerItemModel(TreasureItems.DIAMOND_GOLD_RING);
+//        registerItemModel(TreasureItems.SAPPHIRE_GOLD_RING);
+//        registerItemModel(TreasureItems.CASTLE_RING);
+//        registerItemModel(TreasureItems.ANGELS_RING);
+//        registerItemModel(TreasureItems.SILVER_NECKLACE);
+//        registerItemModel(TreasureItems.GOLD_NECKLACE);
+//        registerItemModel(TreasureItems.SAPPHIRE_SILVER_AMULET);
+//        registerItemModel(TreasureItems.AMETHYST_GOLD_AMULET);
+//        registerItemModel(TreasureItems.ONYX_GOLD_AMULET);
+//        registerItemModel(TreasureItems.RUBY_GOLD_AMULET);
+//        registerItemModel(TreasureItems.SAPPHIRE_GOLD_AMULET);
+//        registerItemModel(TreasureItems.GOLD_BRACELET);
+//        registerItemModel(TreasureItems.POCKET_WATCH);
+//
+//        registerItemModel(TreasureItems.BRACELET_OF_WONDER);
+//        registerItemModel(TreasureItems.RING_OF_FORTITUDE);
+//        registerItemModel(TreasureItems.GOTTSCHS_RING_OF_MOON);
         
 		// PEARLS
 		registerItemModel(TreasureItems.WHITE_PEARL);

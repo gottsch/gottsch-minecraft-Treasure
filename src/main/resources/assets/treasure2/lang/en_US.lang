@@ -100,6 +100,11 @@ item.treasure2:lucky_pouch.name=Lucky Pouch
 item.treasure2:apprentices_pouch.name=Apprentice's Pouch
 item.treasure2:masters_pouch.name=Master's Pouch
 
+item.treasure2:iron_ring.name=Iron Ring
+item.treasure2:copper_ring.name=Copper Ring
+item.treasure2:great_iron_ring.name=Great Iron Ring
+item.treasure2:great_copper_ring.name=Great Copper Ring
+item.treasure2:ruby_copper_ring.name=Ruby Copper Ring
 item.treasure2:silver_ring.name=Silver Ring
 item.treasure2:silver_signet_ring.name=Silver Signet Ring
 item.treasure2:amethyst_silver_ring.name=Amethyst Ring
@@ -196,6 +201,9 @@ entity.bound_soul.name=Bound Soul
 itemGroup.treasure2:treasure_tab=Treasure2!
 
 # string resources
+tooltip.indent1= %s
+tooltip.indent2=  %s
+tooltip.indent3=   %s
 tooltip.yes=Yes
 tooltip.no=No
 tooltip.label.rarity=Rarity: %s
@@ -222,6 +230,18 @@ tooltip.label.charmable.slots.stats=[%s/%s/%s]
 
 tooltip.label.max_locks=Max Locks: %s
 tooltip.label.container_size=Inventory Size: %s
+
+tooltip.charmable.usage=Hold in hand or equip for buffs
+tooltip.charmable.usage.adornment=Hold in hand or equip for buffs
+tooltip.label.charm_book=Use to imbue charm onto charmables.
+tooltip.charmable.slots=Capacity: [%s/%s]
+tooltip.charmable.slots.stats=[%s/%s]
+tooltip.charmable.inventory.innate=[Innate] 
+tooltip.charmable.inventory.imbue=[Imbue] 
+tooltip.charmable.inventory.socket=[Socket] 
+
+tooltip.label.charms=Charms: Max. Level [%s]
+tooltip.label.charms.no_level=Charms:
 
 tooltip.ember_key.specials=Destroys Wood Locks
 tooltip.ember_lock.specials=Destroys All Keys regardless of breakability (excluding Ember & Lightning)

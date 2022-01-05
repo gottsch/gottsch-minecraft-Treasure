@@ -37,6 +37,7 @@ import net.minecraftforge.common.capabilities.Capability;
  * @author Mark Gottschling on Oct 26, 2021
  *
  */
+@Deprecated
 public class CharmInventoryCapabilityStorage implements Capability.IStorage<ICharmInventoryCapability> {
 	private static final String SLOTS_TAG = "slots";
 	private static final String CHARMS_TAG ="charms";
