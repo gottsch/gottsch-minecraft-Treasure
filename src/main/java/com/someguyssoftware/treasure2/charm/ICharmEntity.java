@@ -46,6 +46,10 @@ public interface ICharmEntity {
 
 	void setPercent(double percent);
 
+	double getFrequency();
+	
+	void setFrequency(double frequency);
+	
 	void update(ICharmEntity entity);
 
 	/**
@@ -65,6 +69,9 @@ public interface ICharmEntity {
 		if (nbt.hasKey("percent")) {
 			setPercent(nbt.getDouble("percent"));
 		}
+		if (nbt.hasKey("frequency")) {
+			setFrequency(nbt.getDouble("frequency"));
+		}		
 		return true;
 	}
 }

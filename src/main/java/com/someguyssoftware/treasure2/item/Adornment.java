@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.item;
 
@@ -9,9 +25,16 @@ import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.adornment.AdornmentSize;
+import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
+import com.someguyssoftware.treasure2.capability.AdornmentCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityStorage;
+import com.someguyssoftware.treasure2.capability.CharmableCapabilityStorage;
+import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.MagicsInventoryCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
 import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
@@ -29,47 +52,68 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
  * @author Mark Gottschling on Dec 20, 2020
  *
  */
-public class Adornment extends ModItem implements IAdornment, ICharmable, IPouchable {
-	private AdornmentType type;
-
-	/*
-	 * default max of slot.
-	 * maxSlots are the max number of charms an Adornment can hold.
-	 * // capability slots below
-	 * once a charm is added, a slot is filled and the count is decremented.
-	 * when a charm runs out of uses, it is removed from teh Adornment, but the maxSlots are not incremented.
-	 * once all maxSlots are used, the Adornment can not add any new Charms
-	 */
-	private int maxSlots = 2;
-
-    private int level = 1;
-
-    private static final CharmInventoryCapabilityStorage CAPABILITY_STORAGE = new CharmInventoryCapabilityStorage();
-    
+public class Adornment extends ModItem {
+    private static final CharmableCapabilityStorage CAPABILITY_STORAGE = new CharmableCapabilityStorage();
+	private static final MagicsInventoryCapabilityStorage MAGICS_STORAGE = new MagicsInventoryCapabilityStorage();
+	
+	private Type type;
+	private AdornmentSize size;
+	
 	/**
 	 * 
 	 * @param modID
 	 * @param name
 	 * @param type
 	 */
-	public Adornment(String modID, String name, AdornmentType type) {
+	public Adornment(String modID, String name, Type type) {
+		this(modID, name, type, TreasureAdornments.STANDARD);
+	}
+	
+	/**
+	 * 
+	 * @param modID
+	 * @param name
+	 * @param type
+	 * @param size
+	 */
+	public Adornment(String modID, String name, Type type, AdornmentSize size) {
 		super();
 		setItemName(modID, name);
+		setType(type);
+		setSize(size);
 		setMaxStackSize(1);
 		setCreativeTab(Treasure.TREASURE_TAB);
-		setType(type);
 	}
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+
+		AdornmentCapabilityProvider provider =  new AdornmentCapabilityProvider();
+		return provider;
+
 		// TODO will have to create a new CapabilityProvider that includes both CharmInventory and TreasureBaubleProvider
 //		CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
-		return BaublesIntegration.isEnabled() ? new BaublesIntegration.AdornmentProvider(type) : new CharmInventoryCapabilityProvider();
+//		return BaublesIntegration.isEnabled() ? new BaublesIntegration.AdornmentProvider(type) : new CharmInventoryCapabilityProvider();
 //		return provider;
+
 	}
 
 	/**
-	 * 
+	 * Convenience method.
+	 * @param stack
+	 * @return
+	 */
+	public ICharmableCapability getCap(ItemStack stack) {
+		if (stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+		return stack.getCapability(TreasureCapabilities.CHARMABLE, null);
+		}
+		else {
+			throw new IllegalStateException();
+		}
+	}
+	
+	/**
+	 * TODO why did I override this?
 	 */
 	@Override
     public String getItemStackDisplayName(ItemStack stack) {
@@ -82,14 +126,11 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 	 */
 	@Override
 	public boolean hasEffect(ItemStack stack) {
-		boolean charmed =  false;
-		if (stack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
-			ICharmInventoryCapability cap = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-			if (cap.getCharmEntities() != null && cap.getCharmEntities().size() > 0) {
-				charmed = true;
-			}
+		ICharmableCapability cap = getCap(stack);
+		if (cap.isCharmed()) {
+			return true;
 		}
-		return charmed;
+		return false;
 	}
 
 	/**
@@ -99,66 +140,92 @@ public class Adornment extends ModItem implements IAdornment, ICharmable, IPouch
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 		super.addInformation(stack, world, tooltip, flag);
-		if (isCharmed(stack)) {
-			addCharmedInfo(stack, world, tooltip, flag);
-		}
-		else {
-			tooltip.add(TextFormatting.GOLD.toString() + "" + TextFormatting.ITALIC.toString() + I18n.translateToLocal("tooltip.label.charmable"));
-		}
-		addSlotsInfo(stack, world, tooltip, flag);
+		tooltip.add(TextFormatting.GOLD.toString() + "" + TextFormatting.ITALIC.toString() + I18n.translateToLocal("tooltip.charmable.usage.adornment"));
+		ICharmableCapability cap = getCap(stack);
+		cap.appendHoverText(stack, world, tooltip, flag);
+//		if (isCharmed(stack)) {
+//			addCharmedInfo(stack, world, tooltip, flag);
+//		}
+//		else {
+//			tooltip.add(TextFormatting.GOLD.toString() + "" + TextFormatting.ITALIC.toString() + I18n.translateToLocal("tooltip.label.charmable"));
+//		}
+//		addSlotsInfo(stack, world, tooltip, flag);
 	}
-
+	
 	/**
 	 * NOTE getNBTShareTag() and readNBTShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands
 	 * or having the client update when the Anvil GUI is open.
 	 */
 	@Override
     public NBTTagCompound getNBTShareTag(ItemStack stack) {
-		NBTTagCompound nbt = null;
+
+		NBTTagCompound magicsTag;
 		// read cap -> write nbt
-		nbt = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
-				TreasureCapabilities.CHARM_INVENTORY,
-				stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null), null);
-		return nbt;
+		magicsTag = (NBTTagCompound) MAGICS_STORAGE.writeNBT(
+				TreasureCapabilities.MAGICS,
+				stack.getCapability(TreasureCapabilities.MAGICS, null),
+				null);
+		NBTTagCompound charmableTag;
+		charmableTag = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
+				TreasureCapabilities.CHARMABLE,
+				stack.getCapability(TreasureCapabilities.CHARMABLE, null),
+				null);
+		
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setTag("magics", magicsTag);
+		tag.setTag("charmable", charmableTag);
+		
+		return tag;
 	}
 	
     @Override
     public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
         super.readNBTShareTag(stack, nbt);
+        
         // read nbt -> write key item
-       CAPABILITY_STORAGE.readNBT(
-    		   TreasureCapabilities.CHARM_INVENTORY, 
-				stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null), 
-				null,
-				nbt);
+        if (nbt.hasKey("magics")) {
+        	NBTTagCompound tag = nbt.getCompoundTag("magics");
+	        MAGICS_STORAGE.readNBT(
+	     		   TreasureCapabilities.MAGICS, 
+	 				stack.getCapability(TreasureCapabilities.MAGICS, null), 
+	 				null,
+	 				tag);
+        }
+        if (nbt.hasKey("charmable")) {
+        	NBTTagCompound tag = nbt.getCompoundTag("charmable");
+	       CAPABILITY_STORAGE.readNBT(
+	    		   TreasureCapabilities.CHARMABLE, 
+					stack.getCapability(TreasureCapabilities.CHARMABLE, null), 
+					null,
+					tag);
+        }
     }
     
-	public AdornmentType getType() {
+	public Type getType() {
 		return type;
-	}
-
-	public void setType(AdornmentType type) {
+	};
+	
+	private void setType(Type type) {
 		this.type = type;
 	}
-
-	@Override
-	public int getMaxSlots() {
-		return maxSlots;
+	
+	public AdornmentSize getSize() {
+		return size;
 	}
 
-	public IAdornment setMaxSlots(int maxSlots) {
-		this.maxSlots = maxSlots;
-		return this;
-    }
-    
-    @Override
-    public int getLevel() {
-        return level;
-    }
-
-    @Override
-    public IAdornment setLevel(int level) {
-        this.level = level;
-        return this;
-    }
+	private void setSize(AdornmentSize size) {
+		this.size = size;
+	}
+	
+	public enum Type {
+		BRACELET,
+		EARRING,
+		NECKLACE,
+		RING;
+		
+		@Override
+		public String toString() {
+			return super.toString().toLowerCase();
+		}
+	}
 }

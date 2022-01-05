@@ -11,9 +11,15 @@ import com.someguyssoftware.gottschcore.armor.ModArmorBuilder;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.item.ModSwordBuilder;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
+import com.someguyssoftware.treasure2.capability.AdornmentCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmInventoryCapability;
 import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.CharmableCapability;
 import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.IMagicsInventoryCapability;
+import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -22,6 +28,9 @@ import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Coins;
 import com.someguyssoftware.treasure2.enums.Pearls;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.item.Adornment.Type;
+import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
 
 import net.minecraft.block.material.MapColor;
@@ -46,6 +55,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -74,36 +84,41 @@ public class TreasureItems {
 	public static CharmedCoinItem MIRTHAS_TORCH;
 
 	// adornments
-    public static Item SILVER_RING;
-    public static Item SILVER_SIGNET_RING;    
-    public static Item AMETHYST_SILVER_RING;    
-    public static Item ONYX_SILVER_SIGNET_RING;
-    public static Item CASTLE_RING;
+	public static Adornment IRON_RING;
+	public static Adornment COPPER_RING;
+	public static Adornment RUBY_COPPER_RING;
+	
+	public static Adornment GREAT_COPPER_RING;
+//    public static Item SILVER_RING;
+//    public static Item SILVER_SIGNET_RING;    
+//    public static Item AMETHYST_SILVER_RING;    
+//    public static Item ONYX_SILVER_SIGNET_RING;
+//    public static Item CASTLE_RING;
+//    
+//    public static Item GOLD_RING;
+//    public static Item ONYX_GOLD_RING;    
+//    public static Item EMERALD_GOLD_RING;
+//    public static Item RUBY_GOLD_RING;
+//    public static Item DIAMOND_GOLD_RING;
+//    public static Item SAPPHIRE_GOLD_RING;
     
-    public static Item GOLD_RING;
-    public static Item ONYX_GOLD_RING;    
-    public static Item EMERALD_GOLD_RING;
-    public static Item RUBY_GOLD_RING;
-    public static Item DIAMOND_GOLD_RING;
-    public static Item SAPPHIRE_GOLD_RING;
+//    public static Item SILVER_NECKLACE;
+//    public static Item SAPPHIRE_SILVER_AMULET;
     
-    public static Item SILVER_NECKLACE;
-    public static Item SAPPHIRE_SILVER_AMULET;
+//    public static Item GOLD_NECKLACE;
+//    public static Item AMETHYST_GOLD_AMULET;
+//    public static Item ONYX_GOLD_AMULET;
+//    public static Item RUBY_GOLD_AMULET;    
+//    public static Item SAPPHIRE_GOLD_AMULET;
     
-    public static Item GOLD_NECKLACE;
-    public static Item AMETHYST_GOLD_AMULET;
-    public static Item ONYX_GOLD_AMULET;
-    public static Item RUBY_GOLD_AMULET;    
-    public static Item SAPPHIRE_GOLD_AMULET;
-    
-    public static Item GOLD_BRACELET;
-    public static Item POCKET_WATCH;
+//    public static Item GOLD_BRACELET;
+//    public static Item POCKET_WATCH;
     
     // special adornments
-    public static Item ANGELS_RING;
-    public static Item BRACELET_OF_WONDER;
-    public static Item RING_OF_FORTITUDE;
-    public static Item GOTTSCHS_RING_OF_MOON;
+//    public static Item ANGELS_RING;
+//    public static Item BRACELET_OF_WONDER;
+//    public static Item RING_OF_FORTITUDE;
+//    public static Item GOTTSCHS_RING_OF_MOON;
 
 	// pearls
 	public static Item WHITE_PEARL;
@@ -213,6 +228,12 @@ public class TreasureItems {
 		GOLD_COIN = new CoinItem(Treasure.MODID, TreasureConfig.GOLD_COIN_ID);
 		SILVER_COIN = new CoinItem(Treasure.MODID, TreasureConfig.SILVER_COIN_ID, Coins.SILVER);
 
+		// GEMS
+        AMETHYST = new GemItem(Treasure.MODID, TreasureConfig.AMETHYST_ID);
+        ONYX = new GemItem(Treasure.MODID, TreasureConfig.ONYX_ID);
+		SAPPHIRE = new GemItem(Treasure.MODID, TreasureConfig.SAPPHIRE_ID);
+		RUBY = new GemItem(Treasure.MODID, TreasureConfig.RUBY_ID);
+		
 		// CHARMED COINS
 		CHARMED_SILVER_COIN = new CharmedCoinItem(Treasure.MODID, TreasureConfig.CHARMED_SILVER_COIN_ID, Coins.SILVER);
 		CHARMED_GOLD_COIN = new CharmedCoinItem(Treasure.MODID, TreasureConfig.CHARMED_GOLD_COIN_ID, Coins.GOLD);
@@ -304,65 +325,109 @@ public class TreasureItems {
 		MIRTHAS_TORCH.setCreativeTab(Treasure.TREASURE_TAB);
 
         // ADORNMENTS
+		COPPER_RING = new Adornment(Treasure.MODID, "copper_ring", Type.RING) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+				IMagicsInventoryCapability magicsCap = new MagicsInventoryCapability(1, 1, 1);
+				ICharmableCapability cap = new CharmableCapability.Builder(magicsCap).with($ -> {
+					$.innate = true;
+					$.imbuable = true;
+					$.socketable = true;
+					$.source = false;
+					$.executing = true;
+					$.namedByCharm = true;
+					$.namedByMaterial = true;
+					$.baseMaterial = TreasureCharmableMaterials.COPPER.getName();					
+				}).build();
+				return new AdornmentCapabilityProvider(magicsCap, cap);
+			}
+		};
+		
+		GREAT_COPPER_RING = new Adornment(Treasure.MODID, "great_copper_ring", Type.RING, TreasureAdornments.GREAT) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+				IMagicsInventoryCapability magicsCap = new MagicsInventoryCapability(1, 1, 2);
+				ICharmableCapability cap = new CharmableCapability.Builder(magicsCap).with($ -> {
+					$.innate = true;
+					$.imbuable = true;
+					$.socketable = true;
+					$.source = false;
+					$.executing = true;
+					$.namedByCharm = true;
+					$.namedByMaterial = true;
+					$.baseMaterial = TreasureCharmableMaterials.COPPER.getName();					
+				}).build();
+				return new AdornmentCapabilityProvider(magicsCap, cap);
+			}
+		};
+		
+		RUBY_COPPER_RING = new Adornment(Treasure.MODID, "ruby_copper_ring", Type.RING) {
+			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+				IMagicsInventoryCapability magicsCap = new MagicsInventoryCapability(1, 1, 1);
+				ICharmableCapability cap = new CharmableCapability.Builder(magicsCap).with($ -> {
+					$.innate = true;
+					$.imbuable = true;
+					$.socketable = true;
+					$.source = false;
+					$.executing = true;
+					$.namedByCharm = true;
+					$.namedByMaterial = true;					
+					$.baseMaterial = TreasureCharmableMaterials.COPPER.getName();
+					$.sourceItem = RUBY.getRegistryName();
+				}).build();
+				return new AdornmentCapabilityProvider(magicsCap, cap);
+			}
+		};
+
+		TreasureAdornments.register(TreasureCharmableMaterials.COPPER.getName(), Items.AIR.getRegistryName(), COPPER_RING);
+		TreasureAdornments.register(TreasureCharmableMaterials.COPPER.getName(), RUBY.getRegistryName(), RUBY_COPPER_RING);
+
+		TreasureAdornments.register(TreasureCharmableMaterials.COPPER.getName(), Items.AIR.getRegistryName(), GREAT_COPPER_RING);
         // 1x max slot. 0x slots. level 2
-        SILVER_RING = (Item) new Adornment(Treasure.MODID, "silver_ring", AdornmentType.RING).setMaxSlots(1).setLevel(3);
+//        SILVER_RING = (Item) new Adornment(Treasure.MODID, "silver_ring", AdornmentType.RING).setMaxSlots(1).setLevel(3);
         // 2x max slot. 0x slots. level 4
-        GOLD_RING = (Item) new Adornment(Treasure.MODID, "gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(4);
+//        GOLD_RING = (Item) new Adornment(Treasure.MODID, "gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(4);
 
         // 2x max slot. 0-1x slots. level 3
-        SILVER_SIGNET_RING = (Item) new Adornment(Treasure.MODID, "silver_signet_ring", AdornmentType.RING).setMaxSlots(2).setLevel(3);
+//        SILVER_SIGNET_RING = (Item) new Adornment(Treasure.MODID, "silver_signet_ring", AdornmentType.RING).setMaxSlots(2).setLevel(3);
      
         // 2x max slot. 1x slots. 1x charm. level 6
-        AMETHYST_SILVER_RING = (Item) new Adornment(Treasure.MODID, "amethyst_silver_ring", AdornmentType.RING).setMaxSlots(2).setLevel(6);
+//        AMETHYST_SILVER_RING = (Item) new Adornment(Treasure.MODID, "amethyst_silver_ring", AdornmentType.RING).setMaxSlots(2).setLevel(6);
 
         // 2x max slot. 1x slots. 1x charm. level 5
-        ONYX_GOLD_RING = (Item) new Adornment(Treasure.MODID, "onyx_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(5);
+//        ONYX_GOLD_RING = (Item) new Adornment(Treasure.MODID, "onyx_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(5);
         // 2x max slot. 1x slots. 1x charm. level 10
-        DIAMOND_GOLD_RING = (Item) new Adornment(Treasure.MODID, "diamond_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(10);
+//        DIAMOND_GOLD_RING = (Item) new Adornment(Treasure.MODID, "diamond_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(10);
         // 2x max slot. 1x slots. 1x charm. level 11
-        EMERALD_GOLD_RING = (Item) new Adornment(Treasure.MODID, "emerald_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(11);
+//        EMERALD_GOLD_RING = (Item) new Adornment(Treasure.MODID, "emerald_gold_ring", AdornmentType.RING).setMaxSlots(2).setLevel(11);
         // 3x max slot. 1x slot. 2x charm level 12
-        RUBY_GOLD_RING = (Item) new Adornment(Treasure.MODID, "ruby_gold_ring", AdornmentType.RING).setMaxSlots(3).setLevel(12);
+//        RUBY_GOLD_RING = (Item) new Adornment(Treasure.MODID, "ruby_gold_ring", AdornmentType.RING).setMaxSlots(3).setLevel(12);
         // 3x max slots. 1x slots. 2x charms. level 13
-        SAPPHIRE_GOLD_RING = (Item) new Adornment(Treasure.MODID, "sapphire_gold_ring", AdornmentType.RING).setMaxSlots(3).setLevel(13);
+//        SAPPHIRE_GOLD_RING = (Item) new Adornment(Treasure.MODID, "sapphire_gold_ring", AdornmentType.RING).setMaxSlots(3).setLevel(13);
         
         // 2x max slots. 1x slots. 1x charms. level 12
-        CASTLE_RING = (Item) new Adornment(Treasure.MODID, "castle_ring", AdornmentType.RING).setMaxSlots(2).setLevel(12);
+//        CASTLE_RING = (Item) new Adornment(Treasure.MODID, "castle_ring", AdornmentType.RING).setMaxSlots(2).setLevel(12);
 
         // 1x max slots. level 3
-        SILVER_NECKLACE = (Item) new Adornment(Treasure.MODID, "silver_necklace", AdornmentType.AMULET).setMaxSlots(1).setLevel(3);
+//        SILVER_NECKLACE = (Item) new Adornment(Treasure.MODID, "silver_necklace", AdornmentType.AMULET).setMaxSlots(1).setLevel(3);
         // 2x max slots. level 4
-        GOLD_NECKLACE = (Item) new Adornment(Treasure.MODID, "gold_necklace", AdornmentType.AMULET).setMaxSlots(2).setLevel(4);
+//        GOLD_NECKLACE = (Item) new Adornment(Treasure.MODID, "gold_necklace", AdornmentType.AMULET).setMaxSlots(2).setLevel(4);
 
         // 2x max slot. 2x slots. 2x charms. level 13
-        SAPPHIRE_SILVER_AMULET = (Item) new Adornment(Treasure.MODID, "sapphire_silver_amulet", AdornmentType.AMULET).setMaxSlots(2).setLevel(13);
+//        SAPPHIRE_SILVER_AMULET = (Item) new Adornment(Treasure.MODID, "sapphire_silver_amulet", AdornmentType.AMULET).setMaxSlots(2).setLevel(13);
         
         // 3x max slot. 1x slot. 1x charm. level 10
-        AMETHYST_GOLD_AMULET = (Item) new Adornment(Treasure.MODID, "amethyst_gold_amulet", AdornmentType.AMULET).setMaxSlots(3).setLevel(10);
+//        AMETHYST_GOLD_AMULET = (Item) new Adornment(Treasure.MODID, "amethyst_gold_amulet", AdornmentType.AMULET).setMaxSlots(3).setLevel(10);
         // 3x max slot. 1x slot. 1x charm. level 11
-        ONYX_GOLD_AMULET = (Item) new Adornment(Treasure.MODID, "onyx_gold_amulet", AdornmentType.AMULET).setMaxSlots(3).setLevel(11);
+//        ONYX_GOLD_AMULET = (Item) new Adornment(Treasure.MODID, "onyx_gold_amulet", AdornmentType.AMULET).setMaxSlots(3).setLevel(11);
         // 4x max slot. 2x slots. 2x charms. level 12
-        RUBY_GOLD_AMULET = (Item) new Adornment(Treasure.MODID, "ruby_gold_amulet", AdornmentType.AMULET).setMaxSlots(4).setLevel(12);
+//        RUBY_GOLD_AMULET = (Item) new Adornment(Treasure.MODID, "ruby_gold_amulet", AdornmentType.AMULET).setMaxSlots(4).setLevel(12);
         // 4x max slot. 2x slots. 2x charms. level 13
-        SAPPHIRE_GOLD_AMULET = (Item) new Adornment(Treasure.MODID, "sapphire_amulet", AdornmentType.AMULET).setMaxSlots(4).setLevel(13);
+//        SAPPHIRE_GOLD_AMULET = (Item) new Adornment(Treasure.MODID, "sapphire_amulet", AdornmentType.AMULET).setMaxSlots(4).setLevel(13);
 
         // 4x max slot. 1x slots. 1x charms. level 10
-        GOLD_BRACELET = (Item) new Adornment(Treasure.MODID, "gold_bracelet", AdornmentType.BRACELET).setMaxSlots(4).setLevel(10);
+//        GOLD_BRACELET = (Item) new Adornment(Treasure.MODID, "gold_bracelet", AdornmentType.BRACELET).setMaxSlots(4).setLevel(10);
 
         // 3x max slot 1x slots. 1x charms. level 8
-        POCKET_WATCH = (Item) new Adornment(Treasure.MODID, "pocket_watch", AdornmentType.POCKET).setMaxSlots(3).setLevel(8);
-
-        // TEMP DEBUGGING
-//        RUBY_GOLD_RING = (Item) new Adornment(Treasure.MODID, "ruby_gold_ring", AdornmentType.RING) {
-//			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {		
-//				CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
-//				ICharmCapability cap = provider.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);      
-//				cap.getCharmInstances().add(TreasureCharms.ABSOLUTE_SHIELDING_4.createInstance());
-//				ICharmableCapability charmableCap = provider.getCapability(CharmableCapabilityProvider.CHARMABLE_CAPABILITY, null);
-//				charmableCap.setSlots(0);
-//				return provider;
-//			}
-//        }.setMaxSlots(2).setLevel(5);
+//        POCKET_WATCH = (Item) new Adornment(Treasure.MODID, "pocket_watch", AdornmentType.POCKET).setMaxSlots(3).setLevel(8);
         
         ANGELS_RING = (Item) new Adornment(Treasure.MODID, "angels_ring", AdornmentType.RING) {
             public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {				
@@ -681,11 +746,6 @@ public class TreasureItems {
 		PAINTING_BLOCKS_LAVA = new PaintingItem(Treasure.MODID, TreasureConfig.PAINTING_BLOCKS_LAVA_ID, Rarity.EPIC)
 				.setPaintingName("Lava").setCollectionName("Blocks").setCollectionIssue("7").setCollectionSize("7").setArtist("o2xygeno");
 
-        AMETHYST = new GemItem(Treasure.MODID, TreasureConfig.AMETHYST_ID);
-        ONYX = new GemItem(Treasure.MODID, TreasureConfig.ONYX_ID);
-		SAPPHIRE = new GemItem(Treasure.MODID, TreasureConfig.SAPPHIRE_ID);
-		RUBY = new GemItem(Treasure.MODID, TreasureConfig.RUBY_ID);
-
 		SKELETON = new SkeletonItem(Treasure.MODID, TreasureConfig.SKELETON_ID);
 	}
 
@@ -729,7 +789,7 @@ public class TreasureItems {
 					CHARMED_GOLD_COIN,
                     CHARMED_RUBY,
                     CHARMED_SAPPHIRE,
-					ANGEL_BLESSED,
+//					ANGEL_BLESSED,
 					MINERS_FRIEND,
 					FOOLS_COIN,
 					MEDICS_TOKEN,
@@ -737,29 +797,32 @@ public class TreasureItems {
 					DWARVEN_TALISMAN,
 					ADEPHAGIAS_BOUNTY,
 					MIRTHAS_TORCH,
-                    SILVER_RING,
-                    SILVER_SIGNET_RING,
-                    AMETHYST_SILVER_RING,
-                    ONYX_GOLD_RING,
-					GOLD_RING,
-                    RUBY_GOLD_RING,
-                    EMERALD_GOLD_RING,
-                    DIAMOND_GOLD_RING,
-                    SAPPHIRE_GOLD_RING,
-                    CASTLE_RING,
-                    ANGELS_RING,
-                    RING_OF_FORTITUDE,
-                    BRACELET_OF_WONDER,
-                    GOTTSCHS_RING_OF_MOON,
-                    SILVER_NECKLACE,
-                    GOLD_NECKLACE,
-                    SAPPHIRE_SILVER_AMULET,
-                    AMETHYST_GOLD_AMULET,
-                    ONYX_GOLD_AMULET,
-                    RUBY_GOLD_AMULET,
-                    SAPPHIRE_GOLD_AMULET,
-                    GOLD_BRACELET,
-                    POCKET_WATCH,
+					COPPER_RING,
+					RUBY_COPPER_RING,
+					GREAT_COPPER_RING,
+//                    SILVER_RING,
+//                    SILVER_SIGNET_RING,
+//                    AMETHYST_SILVER_RING,
+//                    ONYX_GOLD_RING,
+//					GOLD_RING,
+//                    RUBY_GOLD_RING,
+//                    EMERALD_GOLD_RING,
+//                    DIAMOND_GOLD_RING,
+//                    SAPPHIRE_GOLD_RING,
+//                    CASTLE_RING,
+//                    ANGELS_RING,
+//                    RING_OF_FORTITUDE,
+//                    BRACELET_OF_WONDER,
+//                    GOTTSCHS_RING_OF_MOON,
+//                    SILVER_NECKLACE,
+//                    GOLD_NECKLACE,
+//                    SAPPHIRE_SILVER_AMULET,
+//                    AMETHYST_GOLD_AMULET,
+//                    ONYX_GOLD_AMULET,
+//                    RUBY_GOLD_AMULET,
+//                    SAPPHIRE_GOLD_AMULET,
+//                    GOLD_BRACELET,
+//                    POCKET_WATCH,
 					WHITE_PEARL,
 					BLACK_PEARL,
 					WOOD_LOCK,
@@ -830,7 +893,6 @@ public class TreasureItems {
 
 			OreDictionary.registerOre("gemSapphire", TreasureItems.SAPPHIRE);
 			OreDictionary.registerOre("gemRuby", TreasureItems.RUBY);
-
 		}
 	}
 }

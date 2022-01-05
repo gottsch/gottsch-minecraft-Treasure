@@ -29,6 +29,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
  * @author Mark Gottschling on Oct 26, 2021
  *
  */
+@Deprecated
 public class CharmInventoryCapabilityProvider implements ICapabilitySerializable<NBTTagCompound> {
 
 	private final ICharmInventoryCapability instance;

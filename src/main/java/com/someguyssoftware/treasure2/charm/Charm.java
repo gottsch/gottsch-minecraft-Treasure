@@ -44,9 +44,11 @@ public abstract class Charm implements ICharm {
 	private ResourceLocation name;
 	private String type;
 	private int level;
+	// TODO these can be renamed, removing "max";
 	private double maxValue;
 	private double maxPercent;
 	private int maxDuration;
+	private double frequency;
 	private Rarity rarity;
 	private int priority;
 	
@@ -67,6 +69,7 @@ public abstract class Charm implements ICharm {
 		this.maxValue = builder.value;
 		this.maxDuration = builder.duration.intValue();
 		this.maxPercent = builder.percent;
+		this.frequency = builder.frequency;
 		this.effectStackable = builder.effectStackable;
 	}
 
@@ -77,7 +80,7 @@ public abstract class Charm implements ICharm {
 	 */
 	@Override
 	public ICharmEntity createEntity() {
-		ICharmEntity entity = new CharmEntity(this, this.getMaxValue(),this.getMaxDuration(), this.getMaxPercent());
+		ICharmEntity entity = new CharmEntity(this, this.getMaxValue(),this.getMaxDuration(), this.getMaxPercent(), this.frequency);
 		return entity;
 	}
 
@@ -221,6 +224,7 @@ public abstract class Charm implements ICharm {
 		return maxValue;
 	}
 
+	@Override
 	public double getMaxPercent() {
 		return maxPercent;
 	}
@@ -239,7 +243,12 @@ public abstract class Charm implements ICharm {
 	public int getPriority() {
 		return priority;
 	}
-	
+
+	@Override
+	public double getFrequency() {
+		return frequency;
+	}
+
 	@Override
 	public boolean isEffectStackable() {
 		return effectStackable;
@@ -257,6 +266,7 @@ public abstract class Charm implements ICharm {
 		public Double value = 0.0;
 		public Double duration = 0.0;
 		public Double percent = 0.0;
+		public Double frequency = 0.0;
 		public boolean effectStackable = false;
 
 		/**
@@ -313,18 +323,76 @@ public abstract class Charm implements ICharm {
 			this.effectStackable = stackable;
 			return Charm.Builder.this;
 		}
+		
+		public Builder withFrequency(Double frequency) {
+			this.frequency= frequency;
+			return Charm.Builder.this;
+		}
 
 		@Override
 		public String toString() {
 			return "Builder [name=" + name + ", type=" + type + ", level=" + level + ", value=" + value + ", duration="
-					+ duration + ", percent=" + percent + ", effectStackable=" + effectStackable + "]";
+					+ duration + ", percent=" + percent	+ ", frequency=" + frequency + ", effectStackable=" + effectStackable + "]";
 		}
 	}
 
 	@Override
 	public String toString() {
 		return "Charm [name=" + name + ", type=" + type + ", level=" + level + ", maxValue=" + maxValue
-				+ ", maxPercent=" + maxPercent + ", maxDuration=" + maxDuration + ",effectStackable="
-				+ effectStackable + "]";
+				+ ", maxPercent=" + maxPercent + ", maxDuration=" + maxDuration
+				+ ", frequency=" + frequency + ", effectStackable=" + effetStackable + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (effetStackable ? 1231 : 1237);
+		result = prime * result + level;
+		result = prime * result + maxDuration;
+		long temp;
+		temp = Double.doubleToLongBits(maxPercent);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(maxValue);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(frequency);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Charm other = (Charm) obj;
+		if (effetStackable != other.effetStackable)
+			return false;
+		if (level != other.level)
+			return false;
+		if (maxDuration != other.maxDuration)
+			return false;
+		if (Double.doubleToLongBits(maxPercent) != Double.doubleToLongBits(other.maxPercent))
+			return false;
+		if (Double.doubleToLongBits(maxValue) != Double.doubleToLongBits(other.maxValue))
+			return false;
+		if (Double.doubleToLongBits(frequency) != Double.doubleToLongBits(other.frequency))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
 	}
 }

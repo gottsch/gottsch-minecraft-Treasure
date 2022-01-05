@@ -14,7 +14,7 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JDK8">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
@@ -24,5 +24,6 @@
 	<classpathentry kind="lib" path="/ModCommonLibs/libs/commons-cli-1.4.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/GottschCore"/>
 	<classpathentry kind="lib" path="/ModCommonLibs/libs/Baubles-1.12-1.5.2.jar"/>
+
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>

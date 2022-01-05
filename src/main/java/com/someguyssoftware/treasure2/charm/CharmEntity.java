@@ -31,6 +31,7 @@ public class CharmEntity implements ICharmEntity {
 	private double value;
 	private int duration;
 	private double percent;
+	private double frequency;
 	
 	/**
 	 * 
@@ -44,11 +45,12 @@ public class CharmEntity implements ICharmEntity {
 	 * @param duration
 	 * @param percent
 	 */
-	public CharmEntity(ICharm charm, double value, int duration, double percent) {
+	public CharmEntity(ICharm charm, double value, int duration, double percent, double frequency) {
 		setCharm(charm);
 		setValue(value);
 		setDuration(duration);
 		setPercent(percent);
+		setFrequency(frequency);
 	}
 	
 	@Override
@@ -56,6 +58,7 @@ public class CharmEntity implements ICharmEntity {
 		this.setValue(entity.getValue());
 		this.setDuration(entity.getDuration());
 		this.setPercent(entity.getPercent());
+		this.setFrequency(entity.getFrequency());
 	}
 	
 	/**
@@ -72,6 +75,7 @@ public class CharmEntity implements ICharmEntity {
 		nbt.setDouble(VALUE, getValue());
 		nbt.setInteger("duration", getDuration());
 		nbt.setDouble("percent", getPercent());
+		nbt.setDouble("frequency", getFrequency());
 		return nbt;
 	}
 	
@@ -113,5 +117,15 @@ public class CharmEntity implements ICharmEntity {
 	@Override
 	public void setPercent(double percent) {
 		this.percent = percent;
+	}
+
+	@Override
+	public double getFrequency() {
+		return frequency;
+	}
+
+	@Override
+	public void setFrequency(double frequency) {
+		this.frequency = frequency;
 	}
 }

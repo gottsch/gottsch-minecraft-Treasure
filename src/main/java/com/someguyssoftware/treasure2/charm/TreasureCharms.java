@@ -19,6 +19,15 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+
 /**
  * @author Mark Gottschling on Apr 25, 2020
  *
@@ -689,5 +698,24 @@ public class TreasureCharms {
 
 		TreasureCharmRegistry.register(DIRT_WALK);
 		TreasureCharmRegistry.register(DIRT_WALK_2);
+	}
+	
+	/**
+	 * This method is moot as charms will not have source items.
+	 * @param stack
+	 */
+	public static void setHoverName(ItemStack stack) {
+		if (stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+			// TODO build name based on highest level charm ex. Copper Ring of the Moon
+//			ICharmableCapability cap = stack.getCapability(TreasureCapabilities.CHARMABLE, null);
+//			// check first if it is charmed - charmed names supercede source item names
+//			if (cap.getSourceItem() != null && !cap.getSourceItem().equals(Items.AIR.getRegistryName())) {
+//				Item sourceItem = ForgeRegistries.ITEMS.getValue(cap.getSourceItem());
+//				stack.setStackDisplayName(
+//						I18n.translateToLocal(sourceItem.getUnlocalizedName(new ItemStack(sourceItem)))
+//						+ " "
+//						+ stack.getDisplayName());
+//			}
+		}
 	}
 }
