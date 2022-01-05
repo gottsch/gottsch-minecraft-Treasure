@@ -4,10 +4,8 @@
 package com.someguyssoftware.treasure2.block;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
@@ -19,7 +17,6 @@ import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.entity.monster.PirateMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
-import com.someguyssoftware.treasure2.enums.FogHeight;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.MimicChestItemBlock;
 import com.someguyssoftware.treasure2.item.TreasureChestItemBlock;
@@ -138,10 +135,6 @@ public class TreasureBlocks {
 	// wells
 	public static final Block WISHING_WELL_BLOCK;
 	public static final Block DESERT_WISHING_WELL_BLOCK;
-
-	public static Map<FogHeight, FogBlock> fogMap = new HashMap<>();;
-	public static Map<FogHeight, FogBlock> witherFogMap = new HashMap<>();
-	public static Map<FogHeight, FogBlock> poisonFogMap = new HashMap<>();
 
     // ores
     public static final OreBlock AMETHYST_ORE;
