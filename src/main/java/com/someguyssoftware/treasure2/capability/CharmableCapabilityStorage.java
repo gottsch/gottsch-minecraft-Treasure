@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability.InventoryType;
+import com.someguyssoftware.treasure2.capability.modifier.ILevelModifier;
 import com.someguyssoftware.treasure2.charm.Charm;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
@@ -53,6 +54,7 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 	private static final String MAX_CHARM_LEVEL = "maxCharmLevel";
 	private static final String NAMED_BY_MATERIAL = "namedByMaterial";
 	private static final String NAMED_BY_CHARM = "namedByCharm";
+	private static final String LEVEL_MODIFIER = "levelModifier";
 
 	@Override
 	public NBTBase writeNBT(Capability<ICharmableCapability> capability, ICharmableCapability instance, EnumFacing side) {
@@ -89,6 +91,7 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 			nbt.setString(SOURCE_ITEM, instance.getSourceItem().toString());
 			nbt.setBoolean(NAMED_BY_MATERIAL, instance.isNamedByMaterial());	
 			nbt.setBoolean(NAMED_BY_CHARM, instance.isNamedByCharm());
+			nbt.setString(LEVEL_MODIFIER, instance.getLevelModifier().getClass().getName());
 
 		} catch (Exception e) {
 			Treasure.logger.error("Unable to write state to NBT:", e);
@@ -168,6 +171,15 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 					}
 					if (tag.hasKey(NAMED_BY_CHARM)) {
 						instance.setNamedByCharm(tag.getBoolean(NAMED_BY_CHARM));
+					}
+					if (tag.hasKey(LEVEL_MODIFIER)) {
+						try {
+							ILevelModifier levelModifier = (ILevelModifier) Class.forName(tag.getString(LEVEL_MODIFIER)).newInstance();
+							instance.setLevelModifier(levelModifier);
+						}
+						catch(Exception e) {
+							Treasure.logger.warn("unable to create level modifier -> {}", tag.getString(LEVEL_MODIFIER));
+						}
 					}
 				}
 			}

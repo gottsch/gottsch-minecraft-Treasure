@@ -11,10 +11,14 @@ public class AdornmentCapabilityProvider implements ICapabilitySerializable<NBTT
 	private final ICharmableCapability charmableCap;
 	// TODO add IPouchableCapability
 	
-//	public AdornmentCapabilityProvider(IMagicsInventoryCapability magicsCap) {
 	public AdornmentCapabilityProvider() {
 		this.magicsCap = new MagicsInventoryCapability(1, 1, 1);
 		this.charmableCap = new CharmableCapability(magicsCap);
+	}
+	
+	public AdornmentCapabilityProvider(ICharmableCapability charmableCap) {
+		this.magicsCap = charmableCap.getMagicsCap();
+		this.charmableCap = charmableCap;
 	}
 	
 	public AdornmentCapabilityProvider(IMagicsInventoryCapability magicsCap, ICharmableCapability charmableCap) {

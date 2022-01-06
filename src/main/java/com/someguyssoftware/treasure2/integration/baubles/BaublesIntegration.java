@@ -31,7 +31,11 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 import com.someguyssoftware.treasure2.capability.CharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.CharmableCapability;
 import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.IMagicsInventoryCapability;
+import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
@@ -94,10 +98,12 @@ public class BaublesIntegration {
 
 		// map  Treasure2 Adornments types to Bauble types in order to equip adornments/charms		
 		TREASURE_BAUBLE_TYPE_MAP.put(AdornmentType.RING, BaubleType.RING);
-		TREASURE_BAUBLE_TYPE_MAP.put(AdornmentType.AMULET, BaubleType.AMULET);
+		TREASURE_BAUBLE_TYPE_MAP.put(AdornmentType.NECKLACE, BaubleType.AMULET);
 		TREASURE_BAUBLE_TYPE_MAP.put(AdornmentType.BRACELET, BaubleType.BODY);
 		TREASURE_BAUBLE_TYPE_MAP.put(AdornmentType.POCKET, BaubleType.BODY);
-
+		// FUTURE
+		// TREASURE_BAUBLE_TYPE_MAP.put(AdornmentType.EARRING, BaubleType.HEAD);
+		
 		// TODO how to map Charm to BaubleType.CHARM? Maybe not until the redo in v2.0
 	}
 
@@ -113,35 +119,26 @@ public class BaublesIntegration {
 	 * Return true if the given item is equipped in any bauble slot.
 	 * @param player The player whose inventory is to be checked.
 	 * @param item The item to check for.
-	 * @return True if the given item is equipped in a bauble slot, false otherwise.
+	 * @return true if the given item is equipped in a bauble slot, false otherwise.
 	 */
 	public static boolean isBaubleEquipped(EntityPlayer player, Item item) {
 		return BaublesApi.isBaubleEquipped(player, item) >= 0;
 	}
 	
 	/**
-	 * Returns a list of artefact stacks equipped of the given types. <i>This method does not check whether artefacts
-	 * have been disabled in the config! {ItemNewArtefact#getActiveArtefacts(EntityPlayer, ItemNewArtefact.AdditionalType...)}
-	 * should be used instead of this method in nearly all cases.</i>
+	 * Returns a list of adornment stacks equipped of the given types.
 	 *
 	 * @param player The player whose inventory is to be checked.
-	 * @param types  Zero or more artefact types to check for. If omitted, searches for all types.
-	 * @return A list of equipped artefact {@code ItemStacks}.
 	 */
-	// This could return all ItemStacks, but if an artefact type is given this doesn't really make sense.
 	public static List<Adornment> getEquippedAdornments(EntityPlayer player) {
-
 		List<Adornment> adornments = new ArrayList<>();
 
-
-		// TODO check each Baubles slot
-		//			for (int slot : ARTEFACT_TYPE_MAP.get(type).getValidSlots()) {
+		// check each Baubles slot
 		BAUBLES_SLOTS.forEach(slot -> {
 			ItemStack stack = BaublesApi.getBaublesHandler(player).getStackInSlot(slot);
 			if (stack.getItem() instanceof Adornment)
 				adornments.add((Adornment) stack.getItem());
 		});
-
 		return adornments;
 	}
 
@@ -182,25 +179,36 @@ public class BaublesIntegration {
 	/**
 	 * Sub-class Bauble Capability Provider to include required Adornment capabilities (CharmInventoryCapability)
 	 */
-	public static class AdornmentProvider extends BaubleProvider implements ICapabilitySerializable<NBTTagCompound> {
-		private final ICharmInventoryCapability charm;
+	public static class BaubleAdornmentCapabilityProvider extends BaubleProvider implements ICapabilitySerializable<NBTTagCompound> {
+//		private final ICharmInventoryCapability charm;
+		private final IMagicsInventoryCapability magicsCap;
+		private final ICharmableCapability charmableCap;
+		// TODO add IPouchableCapability
 		
 		/**
 		 * 
 		 * @param adornmntType
 		 */
-		public AdornmentProvider(AdornmentType adornmentType) {
+		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType) {
 			super(adornmentType);
-			charm = new CharmInventoryCapability();
+//			charm = new CharmInventoryCapability();
+			this.magicsCap = new MagicsInventoryCapability(1, 1, 1);
+			this.charmableCap = new CharmableCapability(magicsCap);
 		}
 		
 		/**
 		 * 
 		 * @param capability
 		 */
-		public AdornmentProvider(AdornmentType adornmentType, ICharmInventoryCapability capability) {
+//		public AdornmentProvider(AdornmentType adornmentType, ICharmInventoryCapability capability) {
+//			super(adornmentType);
+//			charm = capability;
+//		}
+		
+		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType, ICharmableCapability capability) {
 			super(adornmentType);
-			charm = capability;
+			this.magicsCap = capability.getMagicsCap();
+			this.charmableCap = capability;
 		}
 		
 		@Override
@@ -208,7 +216,10 @@ public class BaublesIntegration {
 			if (capability == BaublesCapabilities.CAPABILITY_ITEM_BAUBLE) {
 				return true;
 			}
-			else if (capability == TreasureCapabilities.CHARM_INVENTORY) {
+			else if (capability == TreasureCapabilities.CHARMABLE) {
+				return true;
+			}
+			else if (capability == TreasureCapabilities.MAGICS) {
 				return true;
 			}
 			return false;
@@ -220,21 +231,69 @@ public class BaublesIntegration {
 			if (capability == BaublesCapabilities.CAPABILITY_ITEM_BAUBLE) {
 				return hasCapability(capability, facing) ? (T)(IBauble)itemStack -> type : null;
 			}
-			else if (capability == TreasureCapabilities.CHARM_INVENTORY) {
-				return TreasureCapabilities.CHARM_INVENTORY.cast(this.charm);
+			else if (capability == TreasureCapabilities.CHARMABLE) {
+				return TreasureCapabilities.CHARMABLE.cast(this.charmableCap);
+			}
+			else if (capability == TreasureCapabilities.MAGICS) {
+				return TreasureCapabilities.MAGICS.cast(this.magicsCap);
 			}
 			return null;
 		}
-
+		
 		@Override
 		public NBTTagCompound serializeNBT() {
-			NBTTagCompound tag = (NBTTagCompound)TreasureCapabilities.CHARM_INVENTORY.getStorage().writeNBT(TreasureCapabilities.CHARM_INVENTORY, charm, null);
+			NBTTagCompound magicsTag = (NBTTagCompound)	TreasureCapabilities.MAGICS.getStorage().writeNBT(TreasureCapabilities.MAGICS, magicsCap, null);
+			NBTTagCompound charmableTag = (NBTTagCompound)TreasureCapabilities.CHARMABLE.getStorage().writeNBT(TreasureCapabilities.CHARMABLE, charmableCap, null);
+			NBTTagCompound tag = new NBTTagCompound();
+			tag.setTag("magics", magicsTag);
+			tag.setTag("charmable", charmableTag);
 			return tag;
 		}
 
 		@Override
 		public void deserializeNBT(NBTTagCompound nbt) {
-			TreasureCapabilities.CHARM_INVENTORY.getStorage().readNBT(TreasureCapabilities.CHARM_INVENTORY, charm, null, nbt);
+			if (nbt.hasKey("magics")) {
+				NBTTagCompound tag = nbt.getCompoundTag("magics");
+				TreasureCapabilities.MAGICS.getStorage().readNBT(TreasureCapabilities.MAGICS, magicsCap, null, tag);			
+			}
+			if (nbt.hasKey("charmable")) {
+				NBTTagCompound tag = nbt.getCompoundTag("charmable");
+				TreasureCapabilities.CHARMABLE.getStorage().readNBT(TreasureCapabilities.CHARMABLE, charmableCap, null, tag);
+			}		
 		}
+		
+//		@Override
+//		public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+//			if (capability == BaublesCapabilities.CAPABILITY_ITEM_BAUBLE) {
+//				return true;
+//			}
+//			else if (capability == TreasureCapabilities.CHARM_INVENTORY) {
+//				return true;
+//			}
+//			return false;
+//		}
+//
+//		@SuppressWarnings("unchecked")
+//		@Override
+//		public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+//			if (capability == BaublesCapabilities.CAPABILITY_ITEM_BAUBLE) {
+//				return hasCapability(capability, facing) ? (T)(IBauble)itemStack -> type : null;
+//			}
+//			else if (capability == TreasureCapabilities.CHARM_INVENTORY) {
+//				return TreasureCapabilities.CHARM_INVENTORY.cast(this.charm);
+//			}
+//			return null;
+//		}
+//
+//		@Override
+//		public NBTTagCompound serializeNBT() {
+//			NBTTagCompound tag = (NBTTagCompound)TreasureCapabilities.CHARM_INVENTORY.getStorage().writeNBT(TreasureCapabilities.CHARM_INVENTORY, charm, null);
+//			return tag;
+//		}
+//
+//		@Override
+//		public void deserializeNBT(NBTTagCompound nbt) {
+//			TreasureCapabilities.CHARM_INVENTORY.getStorage().readNBT(TreasureCapabilities.CHARM_INVENTORY, charm, null, nbt);
+//		}
 	}
 }

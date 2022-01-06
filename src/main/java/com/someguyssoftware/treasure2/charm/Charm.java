@@ -340,14 +340,14 @@ public abstract class Charm implements ICharm {
 	public String toString() {
 		return "Charm [name=" + name + ", type=" + type + ", level=" + level + ", maxValue=" + maxValue
 				+ ", maxPercent=" + maxPercent + ", maxDuration=" + maxDuration
-				+ ", frequency=" + frequency + ", effectStackable=" + effetStackable + "]";
+				+ ", frequency=" + frequency + ", effectStackable=" + effectStackable + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (effetStackable ? 1231 : 1237);
+		result = prime * result + (effectStackable ? 1231 : 1237);
 		result = prime * result + level;
 		result = prime * result + maxDuration;
 		long temp;
@@ -371,7 +371,7 @@ public abstract class Charm implements ICharm {
 		if (getClass() != obj.getClass())
 			return false;
 		Charm other = (Charm) obj;
-		if (effetStackable != other.effetStackable)
+		if (effectStackable != other.effectStackable)
 			return false;
 		if (level != other.level)
 			return false;

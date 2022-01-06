@@ -28,17 +28,12 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.adornment.AdornmentSize;
 import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
 import com.someguyssoftware.treasure2.capability.AdornmentCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.CharmInventoryCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityStorage;
-import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.MagicsInventoryCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
 import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
-import com.someguyssoftware.treasure2.item.charm.ICharmable;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -56,7 +51,7 @@ public class Adornment extends ModItem {
     private static final CharmableCapabilityStorage CAPABILITY_STORAGE = new CharmableCapabilityStorage();
 	private static final MagicsInventoryCapabilityStorage MAGICS_STORAGE = new MagicsInventoryCapabilityStorage();
 	
-	private Type type;
+	private AdornmentType type;
 	private AdornmentSize size;
 	
 	/**
@@ -65,7 +60,7 @@ public class Adornment extends ModItem {
 	 * @param name
 	 * @param type
 	 */
-	public Adornment(String modID, String name, Type type) {
+	public Adornment(String modID, String name, AdornmentType type) {
 		this(modID, name, type, TreasureAdornments.STANDARD);
 	}
 	
@@ -76,7 +71,7 @@ public class Adornment extends ModItem {
 	 * @param type
 	 * @param size
 	 */
-	public Adornment(String modID, String name, Type type, AdornmentSize size) {
+	public Adornment(String modID, String name, AdornmentType type, AdornmentSize size) {
 		super();
 		setItemName(modID, name);
 		setType(type);
@@ -88,12 +83,12 @@ public class Adornment extends ModItem {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 
-		AdornmentCapabilityProvider provider =  new AdornmentCapabilityProvider();
-		return provider;
+//		AdornmentCapabilityProvider provider =  new AdornmentCapabilityProvider();
+//		return provider;
 
 		// TODO will have to create a new CapabilityProvider that includes both CharmInventory and TreasureBaubleProvider
 //		CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
-//		return BaublesIntegration.isEnabled() ? new BaublesIntegration.AdornmentProvider(type) : new CharmInventoryCapabilityProvider();
+		return BaublesIntegration.isEnabled() ? new BaublesIntegration.BaubleAdornmentCapabilityProvider(type) : new AdornmentCapabilityProvider();
 //		return provider;
 
 	}
@@ -201,11 +196,11 @@ public class Adornment extends ModItem {
         }
     }
     
-	public Type getType() {
+	public AdornmentType getType() {
 		return type;
 	};
 	
-	private void setType(Type type) {
+	private void setType(AdornmentType type) {
 		this.type = type;
 	}
 	
@@ -215,17 +210,5 @@ public class Adornment extends ModItem {
 
 	private void setSize(AdornmentSize size) {
 		this.size = size;
-	}
-	
-	public enum Type {
-		BRACELET,
-		EARRING,
-		NECKLACE,
-		RING;
-		
-		@Override
-		public String toString() {
-			return super.toString().toLowerCase();
-		}
 	}
 }

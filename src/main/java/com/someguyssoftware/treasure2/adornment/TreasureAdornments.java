@@ -36,8 +36,8 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.enums.AdornmentType;
 import com.someguyssoftware.treasure2.item.Adornment;
-import com.someguyssoftware.treasure2.item.Adornment.Type;
 import com.someguyssoftware.treasure2.material.CharmableMaterial;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
@@ -105,7 +105,7 @@ public class TreasureAdornments {
 		MATERIALS.add(GOLD);
 	}
 
-	private static final Multimap<Type, Adornment> BY_TYPE = ArrayListMultimap.create();
+	private static final Multimap<AdornmentType, Adornment> BY_TYPE = ArrayListMultimap.create();
 	private static final Multimap<ResourceLocation, Adornment> BY_MATERIAL = ArrayListMultimap.create();
 
 	/**
@@ -115,7 +115,7 @@ public class TreasureAdornments {
 	 * @param source
 	 * @param adornment
 	 */
-	public static void register(Type type, AdornmentSize size, ResourceLocation material, ResourceLocation source, Adornment adornment) {
+	public static void register(AdornmentType type, AdornmentSize size, ResourceLocation material, ResourceLocation source, Adornment adornment) {
 		register(new Key(type, size, material, source), adornment);
 	}
 	
@@ -130,7 +130,7 @@ public class TreasureAdornments {
 		BY_MATERIAL.put(key.getMaterial(), adornment);
 	}
 	
-	public static Optional<Adornment> get(Type type, AdornmentSize size, ResourceLocation material, ResourceLocation source) {
+	public static Optional<Adornment> get(AdornmentType type, AdornmentSize size, ResourceLocation material, ResourceLocation source) {
 		return get(new Key(type, size, material, source));		
 	}
 	
@@ -146,28 +146,27 @@ public class TreasureAdornments {
 	 * @param material
 	 */
 	@Deprecated
-	public static void register(Adornment adornment, Type type, CharmableMaterial material) {
+	public static void register(Adornment adornment, AdornmentType type, CharmableMaterial material) {
 		// TODO ensure params are set
 
 		BY_TYPE.put(type, adornment);
 		BY_MATERIAL.put(material.getName(), adornment);
 	}
 
-	@Deprecated
 	public static List<Adornment> getAll() {
 		if (ADORNMENTS_CACHE.isEmpty()) {
-			ADORNMENTS_CACHE.addAll(Stream
-					.of(BY_TYPE.get(Type.BRACELET),
-							BY_TYPE.get(Type.NECKLACE),
-							BY_TYPE.get(Type.RING))
-					.flatMap(Collection::stream).collect(Collectors.toList())
-					);
+//			ADORNMENTS_CACHE.addAll(Stream
+//					.of(BY_TYPE.get(AdornmentType.BRACELET),
+//							BY_TYPE.get(AdornmentType.NECKLACE),
+//							BY_TYPE.get(AdornmentType.RING))
+//					.flatMap(Collection::stream).collect(Collectors.toList())
+//					);
+			ADORNMENTS_CACHE.addAll(REGISTRY.values());
 		}
-		Treasure.logger.debug("getAll() -> {}", ADORNMENTS_CACHE);
 		return ADORNMENTS_CACHE;
 	}
 
-	public static List<Adornment> getByType(Type type) {
+	public static List<Adornment> getByType(AdornmentType type) {
 		return  (List<Adornment>) BY_TYPE.get(type);
 	}
 
@@ -239,23 +238,23 @@ public class TreasureAdornments {
 	}
 		
 	public static class Key {
-		private Type type;
+		private AdornmentType type;
 		private AdornmentSize size;
 		private ResourceLocation material;		
 		private ResourceLocation source; // TODO rename throughout to stone
 		
-		public Key(Type type, AdornmentSize size, ResourceLocation material, ResourceLocation source) {
+		public Key(AdornmentType type, AdornmentSize size, ResourceLocation material, ResourceLocation source) {
 			this.type = type;
 			this.size = size;
 			this.material = material;
 			this.source = source;
 		}
 
-		public Type getType() {
+		public AdornmentType getType() {
 			return type;
 		}
 
-		public void setType(Type type) {
+		public void setType(AdornmentType type) {
 			this.type = type;
 		}
 

@@ -23,6 +23,7 @@ import java.util.List;
 
 import com.google.common.collect.Multimap;
 import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability.InventoryType;
+import com.someguyssoftware.treasure2.capability.modifier.ILevelModifier;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
@@ -38,6 +39,8 @@ import net.minecraft.world.World;
  *
  */
 public interface ICharmableCapability {
+	IMagicsInventoryCapability getMagicsCap();
+	
 	Multimap<InventoryType, ICharmEntity> getCharmEntities();
 	
 	boolean isCharmed();
@@ -128,4 +131,8 @@ public interface ICharmableCapability {
 	ICharmEntity getHighestLevel();
 
 	void setHighestLevel(ICharmEntity highestLevel);
+
+	ILevelModifier getLevelModifier();
+
+	void setLevelModifier(ILevelModifier levelModifier);
 }

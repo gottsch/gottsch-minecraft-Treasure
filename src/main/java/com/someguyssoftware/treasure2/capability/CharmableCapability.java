@@ -27,6 +27,8 @@ import java.util.function.Consumer;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability.InventoryType;
+import com.someguyssoftware.treasure2.capability.modifier.ILevelModifier;
+import com.someguyssoftware.treasure2.capability.modifier.NoLevelModifier;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
@@ -53,6 +55,10 @@ import net.minecraft.world.World;
  *
  */
 public class CharmableCapability implements ICharmableCapability { // TODO this could extend an AbstractMagicsSupport which implements IMagicsInventorySupport
+	
+	// TODO requies a reference back to the hosting Item because some methods (ex getMaxLevel) required additional computation that is provided from the Item ex. AdornmentSize.
+	// TODO probably need to extend this class for Adornments, in order to provide the addtional functionality.
+	
 	/*
 	 * Properties that refer to the Item that has this capability
 	 */
@@ -87,6 +93,11 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	// can this item be named by its charms and levels ex. Giant Ring of Healing
 	private boolean namedByCharm;
 	
+	/*
+	 * modifiers
+	 */
+	private ILevelModifier levelModifier;
+	
 	public static class SortByLevel implements Comparator<ICharmEntity> {
 		@Override
 		public int compare(ICharmEntity e1, ICharmEntity e2) {
@@ -97,6 +108,10 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	// comparator on charm level
 	public static Comparator<ICharmEntity> levelComparator = new SortByLevel();
 
+	/**
+	 * this method is added to allow method referencing to create capability in the registration event for capabilities.
+	 * @return
+	 */
 	public static CharmableCapability create() {
 		return new CharmableCapability(new MagicsInventoryCapability());
 	}
@@ -126,7 +141,8 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 		this.baseMaterial = builder.baseMaterial;
 		this.sourceItem = builder.sourceItem;
 		this.namedByCharm = builder.namedByCharm;
-		this.namedByMaterial = builder.namedByMaterial;		
+		this.namedByMaterial = builder.namedByMaterial;
+		this.levelModifier = builder.levelModifier;
 	}
 
 	@Override
@@ -218,7 +234,8 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 		Optional<CharmableMaterial> base = TreasureCharmableMaterials.getBaseMaterial(baseMaterial);
 		Optional<CharmableMaterial> source = TreasureCharmableMaterials.getSourceItem(sourceItem);
 		CharmableMaterial effectiveBase = base.isPresent() ? base.get() : TreasureCharmableMaterials.COPPER;
-		return effectiveBase.getMaxLevel() + (int) Math.floor(effectiveBase.getLevelMultiplier() * (source.isPresent() ? source.get().getMaxLevel() : 0));
+		return levelModifier.modifyMaxLevel(effectiveBase.getMaxLevel())
+				+ (int) Math.floor(levelModifier.modifyLevelMultiplier(effectiveBase.getLevelMultiplier()) * (source.isPresent() ? source.get().getMaxLevel() : 0));
 	}
 	
 	@Override
@@ -245,8 +262,7 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	 * @param inventoryType
 	 * @param titleFlag
 	 */
-	private void appendHoverText(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, InventoryType inventoryType, boolean titleFlag) {
-		// TODO entityList does not matter - its the size/max of the magics inventory
+	private void appendHoverText(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, InventoryType inventoryType, boolean titleFlag) {		
 		List<ICharmEntity> entityList = (List<ICharmEntity>) getCharmEntities().get(inventoryType);
 		// test if the cap has the inventory type ability
 		switch (inventoryType) {
@@ -291,6 +307,7 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 		public boolean namedByCharm;
 		public ResourceLocation baseMaterial = TreasureCharmableMaterials.COPPER.getName();
 		public ResourceLocation sourceItem = Items.AIR.getRegistryName();
+		public ILevelModifier levelModifier = new NoLevelModifier();
 		
 		// required to pass the source Item here
 		public Builder(IMagicsInventoryCapability magicsCap) {
@@ -316,11 +333,12 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 		this.charmEntities = charmEntities;
 	}
 
+	@Override
 	public IMagicsInventoryCapability getMagicsCap() {
 		return magicsCap;
 	}
 
-	public void setMagicsCap(IMagicsInventoryCapability magicsCap) {
+	protected void setMagicsCap(IMagicsInventoryCapability magicsCap) {
 		this.magicsCap = magicsCap;
 	}
 
@@ -464,5 +482,15 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	@Override
 	public int getInnateSize() {
 		return magicsCap.getInnateSize();
+	}
+
+	@Override
+	public ILevelModifier getLevelModifier() {
+		return levelModifier;
+	}
+
+	@Override
+	public void setLevelModifier(ILevelModifier levelModifier) {
+		this.levelModifier = levelModifier;
 	}
 }

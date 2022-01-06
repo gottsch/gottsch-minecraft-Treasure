@@ -129,7 +129,7 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.MASTERS_POUCH);
 		
 		// ADORNMENTS
-		registerItemModel(TreasureItems.COPPER_RING);
+//		registerItemModel(TreasureItems.COPPER_RING);
 		registerItemModel(TreasureItems.GREAT_COPPER_RING);
 		registerItemModel(TreasureItems.RUBY_COPPER_RING);
 //		registerItemModel(TreasureItems.IRON_RING);
@@ -158,6 +158,10 @@ public class TreasureModels {
 //        registerItemModel(TreasureItems.RING_OF_FORTITUDE);
 //        registerItemModel(TreasureItems.GOTTSCHS_RING_OF_MOON);
         
+		TreasureItems.ITEMS.forEach((key, value) -> {
+			registerItemModel(value);
+		});
+		
 		// PEARLS
 		registerItemModel(TreasureItems.WHITE_PEARL);
 		registerItemModel(TreasureItems.BLACK_PEARL);
