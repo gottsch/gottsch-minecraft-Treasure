@@ -166,6 +166,8 @@ public class Adornment extends ModItem {
 				stack.getCapability(TreasureCapabilities.CHARMABLE, null),
 				null);
 		
+		// TODO include durability
+		
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setTag("magics", magicsTag);
 		tag.setTag("charmable", charmableTag);

@@ -14,21 +14,14 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
  * @author Mark Gottschling on Sep 6, 2020
  *
  */
-public class EffectiveMaxDamageCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<NBTTagCompound> {
-	
-	/*
-	 * NOTE Ensure to use interfaces in @CapabilityInject, the static capability and in the instance.
-	 */
-	@CapabilityInject(IEffectiveMaxDamageCapability.class)
-	public static Capability<IEffectiveMaxDamageCapability> EFFECTIVE_MAX_DAMAGE_CAPABILITY = null;
-	private final EffectiveMaxDamageCapability instance = new EffectiveMaxDamageCapability();
-	
+public class DurabilityCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<NBTTagCompound> {
+	private final DurabilityCapability instance = new DurabilityCapability();	
 	/**
 	 * 
 	 */
 	@Override
 	public NBTTagCompound serializeNBT() {
-		NBTTagCompound tag = (NBTTagCompound)EFFECTIVE_MAX_DAMAGE_CAPABILITY.getStorage().writeNBT(EFFECTIVE_MAX_DAMAGE_CAPABILITY, instance, null);
+		NBTTagCompound tag = (NBTTagCompound)TreasureCapabilities.DURABILITY.getStorage().writeNBT(TreasureCapabilities.DURABILITY, instance, null);
 		return tag;
 	}
 
@@ -37,12 +30,12 @@ public class EffectiveMaxDamageCapabilityProvider implements ICapabilityProvider
 	 */
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {		
-		EFFECTIVE_MAX_DAMAGE_CAPABILITY.getStorage().readNBT(EFFECTIVE_MAX_DAMAGE_CAPABILITY, this.instance, null, nbt);
+		TreasureCapabilities.DURABILITY.getStorage().readNBT(TreasureCapabilities.DURABILITY, this.instance, null, nbt);
 	}
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (capability == EFFECTIVE_MAX_DAMAGE_CAPABILITY) {
+		if (capability == TreasureCapabilities.DURABILITY) {
 			return true;
 		}
 		return false;
@@ -51,8 +44,8 @@ public class EffectiveMaxDamageCapabilityProvider implements ICapabilityProvider
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		if (capability == EFFECTIVE_MAX_DAMAGE_CAPABILITY) {
-			return EFFECTIVE_MAX_DAMAGE_CAPABILITY.cast(this.instance);
+		if (capability == TreasureCapabilities.DURABILITY) {
+			return TreasureCapabilities.DURABILITY.cast(this.instance);
 		}
 		return null;
 	}

@@ -20,6 +20,7 @@
 package com.someguyssoftware.treasure2.eventhandler;
 
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.CHARMABLE;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,8 +34,8 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
 import com.someguyssoftware.treasure2.capability.CharmableCapability;
-import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
-import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.DurabilityCapability;
+import com.someguyssoftware.treasure2.capability.DurabilityCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability.InventoryType;
@@ -78,36 +79,36 @@ public class AnvilEventHandler {
 
 		// add all uses/damage remaining in the right item to the left item.
 		if (leftItemStack.getItem() == rightItemStack.getItem() && (leftItemStack.getItem() instanceof KeyItem)) {
-			if (leftItemStack.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)
-					&& rightItemStack.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)) {
+			if (leftItemStack.hasCapability(DURABILITY, null)
+					&& rightItemStack.hasCapability(DURABILITY, null)) {
 
 				event.setCost(1);
-				EffectiveMaxDamageCapability leftItemCap = (EffectiveMaxDamageCapability) leftItemStack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-				EffectiveMaxDamageCapability rightItemCap = (EffectiveMaxDamageCapability) rightItemStack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+				DurabilityCapability leftItemCap = (DurabilityCapability) leftItemStack.getCapability(DURABILITY, null);
+				DurabilityCapability rightItemCap = (DurabilityCapability) rightItemStack.getCapability(DURABILITY, null);
 
 				if (leftItemCap != null && rightItemCap != null) {
-					int leftRemainingUses = leftItemCap.getEffectiveMaxDamage() - leftItemStack.getItemDamage();
-					int rightRemainingUses = rightItemCap.getEffectiveMaxDamage() - rightItemStack.getItemDamage();
+					int leftRemainingUses = leftItemCap.getDurability() - leftItemStack.getItemDamage();
+					int rightRemainingUses = rightItemCap.getDurability() - rightItemStack.getItemDamage();
 					ItemStack outputItem = new ItemStack(leftItemStack.getItem());
 
-					EffectiveMaxDamageCapability outputItemCap = (EffectiveMaxDamageCapability) outputItem.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+					DurabilityCapability outputItemCap = (DurabilityCapability) outputItem.getCapability(DURABILITY, null);
 
 					int remainingUses = leftRemainingUses + rightRemainingUses;
-					if (remainingUses > Math.max(leftItemCap.getEffectiveMaxDamage(), rightItemCap.getEffectiveMaxDamage())) {
+					if (remainingUses > Math.max(leftItemCap.getDurability(), rightItemCap.getDurability())) {
 						//						if (logger.isDebugEnabled()) {
 						//							logger.debug("output has greater uses -> {} than emd -> {} - update emd", remainingUses, Math.max(leftItemCap.getEffectiveMaxDamage(), rightItemCap.getEffectiveMaxDamage()));
 						//						}
-						outputItemCap.setEffectiveMaxDamage(Math.max(leftItemCap.getEffectiveMaxDamage(), rightItemCap.getEffectiveMaxDamage()) + leftItemStack.getMaxDamage());
+						outputItemCap.setDurability(Math.max(leftItemCap.getDurability(), rightItemCap.getDurability()) + leftItemStack.getMaxDamage());
 						outputItem.setItemDamage(leftItemStack.getItemDamage() + rightItemStack.getItemDamage());
 					}
 					else {
-						if (remainingUses < Math.min(leftItemCap.getEffectiveMaxDamage(), rightItemCap.getEffectiveMaxDamage())) {
-							outputItemCap.setEffectiveMaxDamage(Math.min(leftItemCap.getEffectiveMaxDamage(), rightItemCap.getEffectiveMaxDamage()));
+						if (remainingUses < Math.min(leftItemCap.getDurability(), rightItemCap.getDurability())) {
+							outputItemCap.setDurability(Math.min(leftItemCap.getDurability(), rightItemCap.getDurability()));
 						}
 						else {
-							outputItemCap.setEffectiveMaxDamage(Math.max(leftItemCap.getEffectiveMaxDamage(), rightItemCap.getEffectiveMaxDamage()));
+							outputItemCap.setDurability(Math.max(leftItemCap.getDurability(), rightItemCap.getDurability()));
 						}
-						outputItem.setItemDamage(outputItemCap.getEffectiveMaxDamage() - remainingUses);
+						outputItem.setItemDamage(outputItemCap.getDurability() - remainingUses);
 					}
 					event.setOutput(outputItem);
 				}
