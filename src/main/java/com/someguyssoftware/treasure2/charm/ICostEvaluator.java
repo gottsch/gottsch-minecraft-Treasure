@@ -17,25 +17,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.capability;
+package com.someguyssoftware.treasure2.charm;
 
-import java.util.List;
+import java.util.Random;
 
-import com.someguyssoftware.treasure2.charm.ICharmEntity;
+import com.someguyssoftware.gottschcore.positional.ICoords;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
- * 
- * @author Mark Gottschling on Oct 26, 2021
+ * Calculates and applies the cost to execute the charm.
+ * @author Mark Gottschling on Jan 12, 2022
  *
  */
-public interface ICharmInventoryCapability {
-
-	List<ICharmEntity> getCharmEntities();
-
-	void setCharmEntities(List<ICharmEntity> charmEntities);
-
-	int getSlots();
-
-	void setSlots(int slots);
-
+public interface ICostEvaluator {
+	@Deprecated
+	public double apply(ICharmEntity entity, double amount);
+	public double apply(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity, double amount);
 }

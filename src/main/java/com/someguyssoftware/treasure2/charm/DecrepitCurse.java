@@ -36,11 +36,11 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
- * 
+ * They player takes an additional x amount of damage when hit.
  * @author Mark Gottschling on May 26, 2020
  *
  */
-public class DecrepitCharm extends Charm {
+public class DecrepitCurse extends Charm {
 	public static String DECREPIT_TYPE = "decrepit";
 
 	private static final Class<?> REGISTERED_EVENT = LivingDamageEvent.class;
@@ -49,7 +49,7 @@ public class DecrepitCharm extends Charm {
 	 * 
 	 * @param builder
 	 */
-	DecrepitCharm(Builder builder) {
+	DecrepitCurse(Builder builder) {
 		super(builder);
 	}
 
@@ -70,10 +70,11 @@ public class DecrepitCharm extends Charm {
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity) {
 		boolean result = false;
 
-		if (!player.isDead && entity.getValue() > 0 && player.getHealth() > 0.0) {
+		if (!player.isDead && entity.getMana() > 0 && player.getHealth() > 0.0) {
 			double amount = ((LivingDamageEvent)event).getAmount();
-			((LivingDamageEvent)event).setAmount((float) (amount * entity.getPercent()));
-			entity.setValue(MathHelper.clamp(entity.getValue() - 1.0,  0D, entity.getValue()));
+			((LivingDamageEvent)event).setAmount((float) (amount + (amount * entity.getAmount())));
+//			entity.setMana(MathHelper.clamp(entity.getMana() - 1.0,  0D, entity.getMana()));
+			applyCost(world, random, coords, player, event, entity, 1.0);
 			result = true;
 		}
 
@@ -87,19 +88,19 @@ public class DecrepitCharm extends Charm {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.DARK_RED;
-		tooltip.add("  " + color + getLabel(entity));
-		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.decrepit_rate", Math.round((entity.getPercent()-1)*100)));
+		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
+		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.decrepit", Math.round((entity.getAmount()-1)*100))));
 	}
 	
 	public static class Builder extends Charm.Builder {
 
-		public Builder(String name, Integer level) {
-			super(ResourceLocationUtil.create(name), DECREPIT_TYPE, level);
+		public Builder(Integer level) {
+			super(ResourceLocationUtil.create(makeName(DECREPIT_TYPE, level)), DECREPIT_TYPE, level);
 		}
 
 		@Override
 		public ICharm build() {
-			return  new DecrepitCharm(this);
+			return  new DecrepitCurse(this);
 		}
 	}
 }

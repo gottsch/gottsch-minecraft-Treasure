@@ -32,12 +32,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 
-public class DirtWalkCharm extends Charm {
+public class DirtWalkCurse extends Charm {
 	public static final String DIRT_WALK_TYPE = "dirt_walk";
 
 	private static final Class<?> REGISTERED_EVENT = LivingUpdateEvent.class;
@@ -47,7 +48,7 @@ public class DirtWalkCharm extends Charm {
 	 * 
 	 * @param builder
 	 */
-	DirtWalkCharm(Builder builder) {
+	DirtWalkCurse(Builder builder) {
 		super(builder);
 	}
 
@@ -69,12 +70,13 @@ public class DirtWalkCharm extends Charm {
 
 		// update every 10 seconds
 		if (world.getTotalWorldTime() % 200 == 0) {
-			if (!player.isDead && entity.getValue() > 0) {
+			if (!player.isDead && entity.getMana() > 0) {
 				// if the current position where standing isn't already dirt, change it to dirt
 				IBlockState state = world.getBlockState(coords.down(1).toPos());
 				if (state.getBlock() != Blocks.DIRT) {
 					world.setBlockState(coords.down(1).toPos(), Blocks.DIRT.getDefaultState());
-					entity.setValue(MathHelper.clamp(entity.getValue() - 1.0,  0D, entity.getValue()));
+//					entity.setMana(MathHelper.clamp(entity.getMana() - 1.0,  0D, entity.getMana()));
+					applyCost(world, random, coords, player, event, entity, 1.0);
 					result = true;
 				}
 			}
@@ -89,18 +91,18 @@ public class DirtWalkCharm extends Charm {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.DARK_RED;
-		tooltip.add("  " + color + getLabel(entity));
+		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
 	}
 	
 	public static class Builder extends Charm.Builder {
 
-		public Builder(String name, Integer level) {
-			super(ResourceLocationUtil.create(name), DIRT_WALK_TYPE, level);
+		public Builder(Integer level) {
+			super(ResourceLocationUtil.create(makeName(DIRT_WALK_TYPE, level)), DIRT_WALK_TYPE, level);
 		}
 
 		@Override
 		public ICharm build() {
-			return  new DirtWalkCharm(this);
+			return  new DirtWalkCurse(this);
 		}
 	}
 }

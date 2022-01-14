@@ -29,29 +29,30 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
  * @author Mark Gottschling on Oct 26, 2021
  *
  */
-@Deprecated
-public class CharmInventoryCapabilityProvider implements ICapabilitySerializable<NBTTagCompound> {
-
-	private final ICharmInventoryCapability instance;
+public class CharmableCapabilityProvider implements ICapabilitySerializable<NBTTagCompound> {
+	private final IMagicsInventoryCapability magicsCap;
+	private final ICharmableCapability charmableCap;
 
 	/**
 	 * 
 	 */
-	public CharmInventoryCapabilityProvider() {
-		instance = new CharmInventoryCapability();
+	public CharmableCapabilityProvider() {
+		this.magicsCap = new MagicsInventoryCapability(1, 1, 1);
+		this.charmableCap = new CharmableCapability(magicsCap);
 	}
 
 	/**
 	 * 
 	 * @param capability
 	 */
-	public CharmInventoryCapabilityProvider(ICharmInventoryCapability capability) {
-		instance = capability;
+	public CharmableCapabilityProvider(ICharmableCapability capability) {
+		this.magicsCap = capability.getMagicsCap();
+		charmableCap = capability;
 	}
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (capability == TreasureCapabilities.CHARM_INVENTORY) {
+		if (capability == TreasureCapabilities.CHARMABLE) {
 			return true;
 		}
 		return false;
@@ -59,21 +60,21 @@ public class CharmInventoryCapabilityProvider implements ICapabilitySerializable
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		if (capability == TreasureCapabilities.CHARM_INVENTORY) {
-			return TreasureCapabilities.CHARM_INVENTORY.cast(this.instance);
+		if (capability == TreasureCapabilities.CHARMABLE) {
+			return TreasureCapabilities.CHARMABLE.cast(this.charmableCap);
 		}
 		return null;
 	}
 
 	@Override
 	public NBTTagCompound serializeNBT() {
-		NBTTagCompound tag = (NBTTagCompound)TreasureCapabilities.CHARM_INVENTORY.getStorage().writeNBT(TreasureCapabilities.CHARM_INVENTORY, instance, null);
+		NBTTagCompound tag = (NBTTagCompound)TreasureCapabilities.CHARMABLE.getStorage().writeNBT(TreasureCapabilities.CHARMABLE, charmableCap, null);
 		return tag;
 	}
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
-		TreasureCapabilities.CHARM_INVENTORY.getStorage().readNBT(TreasureCapabilities.CHARM_INVENTORY, instance, null, nbt);
+		TreasureCapabilities.CHARMABLE.getStorage().readNBT(TreasureCapabilities.CHARMABLE, charmableCap, null, nbt);
 	}
 
 }

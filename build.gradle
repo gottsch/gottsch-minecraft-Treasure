@@ -90,10 +90,10 @@ println baubles_path
 dependencies {
 	minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2854'
 	compile files('../ModCommonLibs/libs/commons-cli-1.4.jar')
-	implementation fg.deobf("curse.maven:gottschcore-${gottschcore_project_id}:${gottschcore_field_id}")
+	//implementation fg.deobf("curse.maven:gottschcore-${gottschcore_project_id}:${gottschcore_field_id}") // for prod
 	implementation fg.deobf("curse.maven:baubles-${baubles_project_id}:${baubles_field_id}")
 	//compile files(gottschcore_path)	
-	// -->shadow files(gottschcore_path)
+	shadow files(gottschcore_path) // for dev
 }
 
 jar {

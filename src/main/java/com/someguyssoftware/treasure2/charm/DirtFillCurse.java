@@ -32,8 +32,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -43,7 +43,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * @author Mark Gottschling on Dec 28, 2020
  *
  */
-public class DirtFillCharm extends Charm {
+public class DirtFillCurse extends Charm {
 	public static final String DIRT_FILL_TYPE = "dirt_fill";
 
 	private static final Class<?> REGISTERED_EVENT = LivingUpdateEvent.class;
@@ -52,7 +52,7 @@ public class DirtFillCharm extends Charm {
 	 * 
 	 * @param builder
 	 */
-	DirtFillCharm(Builder builder) {
+	DirtFillCurse(Builder builder) {
 		super(builder);
 	}
 
@@ -74,12 +74,13 @@ public class DirtFillCharm extends Charm {
 
 		// update every 10 seconds
 		if (world.getTotalWorldTime() % 200 == 0) {
-			if (!player.isDead && entity.getValue() > 0) {
+			if (!player.isDead && entity.getMana() > 0) {
 				// randomly select an empty inventory slot and fill it with dirt
 				List<Integer> emptySlots = getEmptySlotsRandomized(player.inventory, random);
 				if (emptySlots != null && !emptySlots.isEmpty()) {
 					player.inventory.setInventorySlotContents(((Integer)emptySlots.get(emptySlots.size() - 1)).intValue(), new ItemStack(Blocks.DIRT, 1));		
-					entity.setValue(MathHelper.clamp(entity.getValue() - 1.0,  0D, entity.getValue()));
+//					entity.setMana(MathHelper.clamp(entity.getMana() - 1.0,  0D, entity.getMana()));
+					applyCost(world, random, coords, player, event, entity, 1.0);
 					result = true;
 				}
 			}
@@ -94,7 +95,7 @@ public class DirtFillCharm extends Charm {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.DARK_RED;
-		tooltip.add("  " + color + getLabel(entity));
+		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
 	}
 
 	/**
@@ -116,13 +117,13 @@ public class DirtFillCharm extends Charm {
 	
 	public static class Builder extends Charm.Builder {
 
-		public Builder(String name, Integer level) {
-			super(ResourceLocationUtil.create(name), DIRT_FILL_TYPE, level);
+		public Builder(Integer level) {
+			super(ResourceLocationUtil.create(makeName(DIRT_FILL_TYPE, level)), DIRT_FILL_TYPE, level);
 		}
 
 		@Override
 		public ICharm build() {
-			return  new DirtFillCharm(this);
+			return  new DirtFillCurse(this);
 		}
 	}
 }

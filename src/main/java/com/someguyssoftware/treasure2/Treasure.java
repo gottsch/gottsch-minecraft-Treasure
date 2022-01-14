@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2;
 
@@ -20,13 +36,11 @@ import com.someguyssoftware.gottschcore.mod.AbstractMod;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.capability.DurabilityCapability;
-import com.someguyssoftware.treasure2.capability.DurabilityCapabilityStorage;
-import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingStorage;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.command.SpawnChestCommand;
 import com.someguyssoftware.treasure2.command.SpawnOasisCommand;
@@ -51,8 +65,6 @@ import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.function.CharmRandomly;
-import com.someguyssoftware.treasure2.loot.function.SetCharms;
-import com.someguyssoftware.treasure2.loot.function.SetSlots;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 import com.someguyssoftware.treasure2.network.CharmMessageHandlerOnClient;
@@ -84,7 +96,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.handshake.FMLHandshakeMessage.ModList;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -139,6 +150,13 @@ public class Treasure extends AbstractMod {
 		@SideOnly(Side.CLIENT)
 		public ItemStack getTabIconItem() {
 			return new ItemStack(TreasureItems.TREASURE_TAB, 1);
+		}
+	};
+	public static CreativeTabs ADORNMENTS_TAB = new CreativeTabs(CreativeTabs.getNextID(),
+			Treasure.MODID + ":adornments_tab") {
+		@SideOnly(Side.CLIENT)
+		public ItemStack getTabIconItem() {
+			return new ItemStack(TreasureItems.ADORNMENTS_TAB, 1);
 		}
 	};
 
@@ -208,8 +226,8 @@ public class Treasure extends AbstractMod {
 		
 		// register custom loot functions
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
-		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms.Serializer());
-		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetSlots.Serializer());
+//		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms.Serializer());
+//		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetSlots.Serializer());
 		
 		// integrations
 		BaublesIntegration.init();
@@ -229,6 +247,8 @@ public class Treasure extends AbstractMod {
 			equipmentCharmHandler = new HotbarEquipmentCharmHandler();
 		}
 		MinecraftForge.EVENT_BUS.register(new CharmEventHandler(equipmentCharmHandler));
+		
+		TreasureCharms.init();
 	}
 
 	/**

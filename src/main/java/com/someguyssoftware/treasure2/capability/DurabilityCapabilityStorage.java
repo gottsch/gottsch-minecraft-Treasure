@@ -5,8 +5,6 @@ package com.someguyssoftware.treasure2.capability;
 
 import static com.someguyssoftware.treasure2.Treasure.logger;
 
-import com.someguyssoftware.treasure2.Treasure;
-
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -21,6 +19,7 @@ public class DurabilityCapabilityStorage implements Capability.IStorage<IDurabil
     private static final String EFFECTIVE_MAX_DAMAGE_TAG = "effectiveMaxDamage";
 	private static final String MAX_DURABILITY_TAG = "maxDurability";
 	private static final String DURABILITY_TAG = "durability";
+	private static final String INFINITE_TAG = "infinite";
     
 	@Override
 	public NBTBase writeNBT(Capability<IDurabilityCapability> capability, IDurabilityCapability instance, EnumFacing side) {
@@ -28,6 +27,7 @@ public class DurabilityCapabilityStorage implements Capability.IStorage<IDurabil
 		try {
 			mainTag.setInteger(DURABILITY_TAG, instance.getDurability());
 			mainTag.setInteger(MAX_DURABILITY_TAG, instance.getMaxDurability());
+			mainTag.setBoolean(INFINITE_TAG, instance.isInfinite());
 		} catch (Exception e) {
 			logger.error("Unable to write state to NBT:", e);
 		}
@@ -35,8 +35,7 @@ public class DurabilityCapabilityStorage implements Capability.IStorage<IDurabil
 	}
 
 	@Override
-	public void readNBT(Capability<IDurabilityCapability> capability, IDurabilityCapability instance, EnumFacing side,
-			NBTBase nbt) {
+	public void readNBT(Capability<IDurabilityCapability> capability, IDurabilityCapability instance, EnumFacing side, NBTBase nbt) {
 		if (nbt instanceof NBTTagCompound) {
 			NBTTagCompound tag = (NBTTagCompound) nbt;
 			
@@ -50,6 +49,10 @@ public class DurabilityCapabilityStorage implements Capability.IStorage<IDurabil
 			// legacy
 			else if (tag.hasKey(EFFECTIVE_MAX_DAMAGE_TAG)) {
 				instance.setDurability(tag.getInteger(EFFECTIVE_MAX_DAMAGE_TAG));
+			}
+			
+			if (tag.hasKey(INFINITE_TAG)) {
+				instance.setInfinite(tag.getBoolean(INFINITE_TAG));
 			}
 		}		
 	}

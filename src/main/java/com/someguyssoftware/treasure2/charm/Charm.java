@@ -19,38 +19,56 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
-import java.util.List;
+import java.text.DecimalFormat;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Consumer;
 
+import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * @author Mark Gottschling on Apr 25, 2020
  */
 public abstract class Charm implements ICharm {
 	public static final int TICKS_PER_SECOND = 20;
+	protected static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#");
+
 
 	private ResourceLocation name;
 	private String type;
+	// the level of the charm
 	private int level;
-	// TODO these can be renamed, removing "max";
-	private double maxValue;
-	private double maxPercent;
-	private int maxDuration;
-	private double frequency;
+	// the rarity of the charm
 	private Rarity rarity;
+	// the priority of the charm. lower number execute before higher numbers
 	private int priority;
+
+	// usually refers to the number of uses the charm has
+	private double mana;
+	// the length of time the charm is in effect
+	private int duration;
+	// time interval that the effect occurs at
+	private double frequency;	
+	// the effective distance of the charm ex. radius
+	private double range;
+	 // amount of time before charm can execute again
+	private double cooldown;
+	// the size of effect ex. damage, amount of healing, percent extra damage
+	private double amount;
+	
+	// calculates the actual cost given an input
+	private ICostEvaluator costEvaluator;
 	
 	/*
 	 * if multiple charms of the same type are being processed, only 1 should be updated/executed.
@@ -66,11 +84,14 @@ public abstract class Charm implements ICharm {
 		this.name = builder.name;
 		this.type = builder.type;
 		this.level = builder.level;
-		this.maxValue = builder.value;
-		this.maxDuration = builder.duration.intValue();
-		this.maxPercent = builder.percent;
+		this.mana = builder.mana;
+		this.duration = builder.duration.intValue();
 		this.frequency = builder.frequency;
+		this.amount = builder.amount;
+		this.cooldown = builder.cooldown;
+		this.range = builder.range;
 		this.effectStackable = builder.effectStackable;
+		this.costEvaluator = builder.costEvaluator;
 	}
 
 	abstract public Class<?> getRegisteredEvent();
@@ -80,7 +101,14 @@ public abstract class Charm implements ICharm {
 	 */
 	@Override
 	public ICharmEntity createEntity() {
-		ICharmEntity entity = new CharmEntity(this, this.getMaxValue(),this.getMaxDuration(), this.getMaxPercent(), this.frequency);
+		ICharmEntity entity = new CharmEntity();
+		entity.setCharm(this);
+		entity.setAmount(amount);
+		entity.setCooldown(cooldown);
+		entity.setDuration(duration);
+		entity.setFrequency(frequency);
+		entity.setMana(mana);
+		entity.setRange(range);
 		return entity;
 	}
 
@@ -89,67 +117,29 @@ public abstract class Charm implements ICharm {
 		return false;
 	}
 
-	/**
-	 * Default method. Concrete classes should override.
-	 * @param stack
-	 * @param world
-	 * @param tooltip
-	 * @param flag
-	 * @param entity
-	 */
-	@SuppressWarnings("deprecation")
-	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.WHITE;
-		tooltip.add("  " + color + getLabel(entity));
-	}
+//	/**
+//	 * Default method. Concrete classes should override.
+//	 * @param stack
+//	 * @param world
+//	 * @param tooltip
+//	 * @param flag
+//	 * @param entity
+//	 */
+//	@SuppressWarnings("deprecation")
+//	@Override
+//	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
+//		TextFormatting color = TextFormatting.WHITE;
+//		tooltip.add("  " + color + getLabel(entity));
+//	}
 	
 	/**
 	 * 
-	 * @param entity
+	 * @param data
 	 * @return
 	 */
 	@SuppressWarnings("deprecation")
 	public String getLabel(ICharmEntity entity) {
-        /*
-         * 1. check for mod item specific label
-         * 2. check for specific type prefix (levels 1-10)
-         * 3. check for general prefix (levels 1-10)
-         * OR
-         * 4. check for specific type suffix (levels 11+)
-         * 5. check for general suffix (levels 11+)
-         * ex. tooltip.charm.shielding.prefix.level[x], else look for tooltip.charm.prefix.level[x] + tooltip.charm.[type]
-         */
-        String tooltipKey = "tooltip.charm." + getName().toString().toLowerCase();
-        String label = I18n.translateToLocalFormatted(tooltipKey,
-				String.valueOf(Math.toIntExact(Math.round(entity.getValue()))), 
-				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
-        String prefix = "";
-        String suffix = "";
-        String type = "";
-        if (label.equals(tooltipKey)) {
-            type = I18n.translateToLocalFormatted("tooltip.charm." + getType(), 
-            		String.valueOf(Math.toIntExact(Math.round(entity.getValue()))), 
-    				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
-            if (this.getLevel() <= 10) {
-            	String prefixKey = "tooltip.charm." + getType() + ".prefix.level" + String.valueOf(this.getLevel());
-                prefix = I18n.translateToLocalFormatted(prefixKey);
-                if (prefix.equals(prefixKey)) {
-                    prefix = I18n.translateToLocalFormatted("tooltip.charm.prefix.level" + String.valueOf(this.getLevel()));
-                }
-                label = prefix + " " + type;
-            }
-            else {
-            	String suffixKey = "tooltip.charm." + getType() + ".suffix.level" + String.valueOf(this.getLevel());
-                suffix = I18n.translateToLocalFormatted(suffixKey);
-                if (suffix.equals(suffixKey)) {
-                    suffix = I18n.translateToLocalFormatted("tooltip.charm.suffix.level" + String.valueOf(this.getLevel()));
-                }
-                label = type + " " + suffix;
-            }
-        }
-        // TODO redo this in future.
-        return label + " " + getUsesGauge(entity) + " " + (this.isEffectStackable() ? (TextFormatting.DARK_PURPLE + "* combinable") : "");
+		return I18n.translateToLocalFormatted("tooltip.charm.type." + getType().toLowerCase()) + " " + String.valueOf(getLevel()) + " "  + getUsesGauge(entity) + " " + (this.effectStackable ? "+" : "-");
 	}
 
 	/**
@@ -160,8 +150,8 @@ public abstract class Charm implements ICharm {
 	@SuppressWarnings("deprecation")
 	public String getUsesGauge(ICharmEntity entity) {
 		return I18n.translateToLocalFormatted("tooltip.charm.uses_gauge",
-        		String.valueOf(Math.toIntExact(Math.round(entity.getValue()))), 
-				String.valueOf(Math.toIntExact(Math.round(getMaxValue()))));
+        		String.valueOf(Math.toIntExact(Math.round(entity.getMana()))), 
+				String.valueOf(Math.toIntExact(Math.round(getMana()))));
 	}
 	
 	
@@ -204,6 +194,22 @@ public abstract class Charm implements ICharm {
 		return nbt;
 	}
 
+	/**
+	 * wrapper method that checks for the existence of a ICostEvaluator else uses cost property
+	 * @param amount
+	 * @return
+	 */
+	public double applyCost(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity, double amount) {
+		if (costEvaluator != null) {
+			return this.costEvaluator.apply(world, random, coords, player, event, entity, amount);
+		}
+		else {
+			entity.setMana(MathHelper.clamp(entity.getMana() - 1.0,  0D, entity.getMana()));
+		}
+		return amount;
+	}
+	
+	
 	@Override
 	public ResourceLocation getName() {
 		return name;
@@ -220,18 +226,13 @@ public abstract class Charm implements ICharm {
 	}
 
 	@Override
-	public double getMaxValue() {
-		return maxValue;
+	public double getMana() {
+		return mana;
 	}
 
 	@Override
-	public double getMaxPercent() {
-		return maxPercent;
-	}
-
-	@Override
-	public int getMaxDuration() {
-		return maxDuration;
+	public int getDuration() {
+		return duration;
 	}	
 
 	@Override
@@ -263,11 +264,17 @@ public abstract class Charm implements ICharm {
 		public ResourceLocation name;
 		public final String type;
 		public final Integer level;
-		public Double value = 0.0;
+		public Double mana = 0.0;
 		public Double duration = 0.0;
-		public Double percent = 0.0;
 		public Double frequency = 0.0;
+		public Double amount = 1.0;
+		public Double cooldown = 0.0;
+		public Double range = 0.0;
+		public Rarity rarity = Rarity.COMMON;
+		public int priority = 10;
 		public boolean effectStackable = false;
+		
+		public ICostEvaluator costEvaluator;
 
 		/**
 		 * 
@@ -280,6 +287,7 @@ public abstract class Charm implements ICharm {
 			this.name = name;
 			this.type = type;
 			this.level = level;
+			this.costEvaluator = new CostEvaluator();
 		}
 
 		abstract public ICharm build();
@@ -304,18 +312,13 @@ public abstract class Charm implements ICharm {
 			return this;
 		}
 		
-		public Builder withValue(Double value) {
-			this.value = value;
+		public Builder withMana(Double mana) {
+			this.mana = mana;
 			return Charm.Builder.this;
 		}
 
 		public Builder withDuration(Double duration) {
 			this.duration = duration;
-			return Charm.Builder.this;
-		}
-
-		public Builder withPercent(Double percent) {
-			this.percent = percent;
 			return Charm.Builder.this;
 		}
 		
@@ -331,33 +334,159 @@ public abstract class Charm implements ICharm {
 
 		@Override
 		public String toString() {
-			return "Builder [name=" + name + ", type=" + type + ", level=" + level + ", value=" + value + ", duration="
-					+ duration + ", percent=" + percent	+ ", frequency=" + frequency + ", effectStackable=" + effectStackable + "]";
+			return "Builder [name=" + name + ", type=" + type + ", level=" + level + ", mana=" + mana + ", duration="
+					+ duration + ", frequency=" + frequency + ", amount=" + amount + ", cooldown=" + cooldown
+					+ ", range=" + range + ", rarity=" + rarity + ", priority=" + priority + ", effectStackable="
+					+ effectStackable + "]";
 		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+			result = prime * result + ((cooldown == null) ? 0 : cooldown.hashCode());
+			result = prime * result + ((costEvaluator == null) ? 0 : costEvaluator.hashCode());
+			result = prime * result + ((duration == null) ? 0 : duration.hashCode());
+			result = prime * result + (effectStackable ? 1231 : 1237);
+			result = prime * result + ((frequency == null) ? 0 : frequency.hashCode());
+			result = prime * result + ((level == null) ? 0 : level.hashCode());
+			result = prime * result + ((mana == null) ? 0 : mana.hashCode());
+			result = prime * result + ((name == null) ? 0 : name.hashCode());
+			result = prime * result + priority;
+			result = prime * result + ((range == null) ? 0 : range.hashCode());
+			result = prime * result + ((rarity == null) ? 0 : rarity.hashCode());
+			result = prime * result + ((type == null) ? 0 : type.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Builder other = (Builder) obj;
+			if (amount == null) {
+				if (other.amount != null)
+					return false;
+			} else if (!amount.equals(other.amount))
+				return false;
+			if (cooldown == null) {
+				if (other.cooldown != null)
+					return false;
+			} else if (!cooldown.equals(other.cooldown))
+				return false;
+			if (costEvaluator == null) {
+				if (other.costEvaluator != null)
+					return false;
+			} else if (!costEvaluator.equals(other.costEvaluator))
+				return false;
+			if (duration == null) {
+				if (other.duration != null)
+					return false;
+			} else if (!duration.equals(other.duration))
+				return false;
+			if (effectStackable != other.effectStackable)
+				return false;
+			if (frequency == null) {
+				if (other.frequency != null)
+					return false;
+			} else if (!frequency.equals(other.frequency))
+				return false;
+			if (level == null) {
+				if (other.level != null)
+					return false;
+			} else if (!level.equals(other.level))
+				return false;
+			if (mana == null) {
+				if (other.mana != null)
+					return false;
+			} else if (!mana.equals(other.mana))
+				return false;
+			if (name == null) {
+				if (other.name != null)
+					return false;
+			} else if (!name.equals(other.name))
+				return false;
+			if (priority != other.priority)
+				return false;
+			if (range == null) {
+				if (other.range != null)
+					return false;
+			} else if (!range.equals(other.range))
+				return false;
+			if (rarity != other.rarity)
+				return false;
+			if (type == null) {
+				if (other.type != null)
+					return false;
+			} else if (!type.equals(other.type))
+				return false;
+			return true;
+		}
+	}
+	
+	/*
+	 * Generic cost evaluator
+	 * @param amount cost requested
+	 * @return actual cost incurred
+	 */
+	public static class CostEvaluator implements ICostEvaluator {
+		@Override
+		public double apply(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity, double amount) {
+			
+			double cost = 0;
+			if (entity.getMana() >= amount) {
+				cost = amount;
+				entity.setMana(MathHelper.clamp(entity.getMana() - amount, 0D, entity.getMana()));
+			}
+			else {
+				cost = entity.getMana();
+				entity.setMana(0);
+			}
+			return cost;
+		}
+
+		@Deprecated
+		@Override
+		public double apply(ICharmEntity entity, double amount) {
+			// TODO Auto-generated method stub
+			return 0;
+		}		
 	}
 
 	@Override
 	public String toString() {
-		return "Charm [name=" + name + ", type=" + type + ", level=" + level + ", maxValue=" + maxValue
-				+ ", maxPercent=" + maxPercent + ", maxDuration=" + maxDuration
-				+ ", frequency=" + frequency + ", effectStackable=" + effectStackable + "]";
+		return "Charm [name=" + name + ", type=" + type + ", level=" + level + ", rarity=" + rarity + ", priority="
+				+ priority + ", mana=" + mana + ", duration=" + duration + ", frequency=" + frequency + ", range="
+				+ range + ", cooldown=" + cooldown + ", amount=" + amount + ", effectStackable=" + effectStackable + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (effectStackable ? 1231 : 1237);
-		result = prime * result + level;
-		result = prime * result + maxDuration;
 		long temp;
-		temp = Double.doubleToLongBits(maxPercent);
+		temp = Double.doubleToLongBits(amount);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(maxValue);
+		temp = Double.doubleToLongBits(cooldown);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((costEvaluator == null) ? 0 : costEvaluator.hashCode());
+		result = prime * result + duration;
+		result = prime * result + (effectStackable ? 1231 : 1237);
 		temp = Double.doubleToLongBits(frequency);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + level;
+		temp = Double.doubleToLongBits(mana);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + priority;
+		temp = Double.doubleToLongBits(range);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((rarity == null) ? 0 : rarity.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
@@ -371,22 +500,35 @@ public abstract class Charm implements ICharm {
 		if (getClass() != obj.getClass())
 			return false;
 		Charm other = (Charm) obj;
+		if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount))
+			return false;
+		if (Double.doubleToLongBits(cooldown) != Double.doubleToLongBits(other.cooldown))
+			return false;
+		if (costEvaluator == null) {
+			if (other.costEvaluator != null)
+				return false;
+		} else if (!costEvaluator.equals(other.costEvaluator))
+			return false;
+		if (duration != other.duration)
+			return false;
 		if (effectStackable != other.effectStackable)
+			return false;
+		if (Double.doubleToLongBits(frequency) != Double.doubleToLongBits(other.frequency))
 			return false;
 		if (level != other.level)
 			return false;
-		if (maxDuration != other.maxDuration)
-			return false;
-		if (Double.doubleToLongBits(maxPercent) != Double.doubleToLongBits(other.maxPercent))
-			return false;
-		if (Double.doubleToLongBits(maxValue) != Double.doubleToLongBits(other.maxValue))
-			return false;
-		if (Double.doubleToLongBits(frequency) != Double.doubleToLongBits(other.frequency))
+		if (Double.doubleToLongBits(mana) != Double.doubleToLongBits(other.mana))
 			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
+			return false;
+		if (priority != other.priority)
+			return false;
+		if (Double.doubleToLongBits(range) != Double.doubleToLongBits(other.range))
+			return false;
+		if (rarity != other.rarity)
 			return false;
 		if (type == null) {
 			if (other.type != null)
@@ -394,5 +536,25 @@ public abstract class Charm implements ICharm {
 		} else if (!type.equals(other.type))
 			return false;
 		return true;
+	}
+
+	@Override
+	public double getRange() {
+		return range;
+	}
+
+	@Override
+	public double getCooldown() {
+		return cooldown;
+	}
+
+	@Override
+	public double getAmount() {
+		return amount;
+	}
+
+	@Override
+	public ICostEvaluator getCostEvaluator() {
+		return costEvaluator;
 	}
 }

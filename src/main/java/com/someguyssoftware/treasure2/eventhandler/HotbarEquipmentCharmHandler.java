@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability.InventoryType;
 import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 public class HotbarEquipmentCharmHandler implements IEquipmentCharmHandler {
+	private static final int MAX_HOTBAR_CHARMS = 4;
 
 	/**
 	 * Without redoing a big chunk of functionality, temporarily pass in the event handler
@@ -29,32 +31,35 @@ public class HotbarEquipmentCharmHandler implements IEquipmentCharmHandler {
 			slot.set(hotbarSlot);
 			ItemStack inventoryStack = player.inventory.getStackInSlot(hotbarSlot);
 			if (inventoryStack != player.getHeldItemMainhand()) {
-				if (inventoryStack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
-					ICharmInventoryCapability cap = inventoryStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-					for (ICharmEntity entity : cap.getCharmEntities()) {
-						if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
-							continue;
+				if (inventoryStack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+					ICharmableCapability cap = inventoryStack.getCapability(TreasureCapabilities.CHARMABLE, null);
+					if (cap.isExecuting()) {
+						for (InventoryType type : InventoryType.values()) {
+							AtomicInteger index = new AtomicInteger();
+							for (int i = 0; i < cap.getCharmEntities().get(type).size(); i++) {
+								ICharmEntity entity = ((List<ICharmEntity>)cap.getCharmEntities().get(type)).get(i);
+								if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
+									continue;
+								}
+								index.set(i);
+								CharmContext context = new CharmContext.Builder().with($ -> {
+									$.slotProviderId = "minecraft";
+									$.slot = slot.get();
+									$.itemStack = inventoryStack;
+									$.capability = cap;
+									$.type = type;
+									$.index = index.get();
+									$.entity = entity;
+								}).build();
+								contexts.add(context);
+							}
 						}
-						CharmContext context = new CharmContext.Builder().with($ -> {
-							$.slotProviderId = "minecraft";
-							$.slot = slot.get();
-							$.itemStack = inventoryStack;
-							$.capability = cap;
-							$.entity = entity;
-						}).build();
-						contexts.add(context);
+						adornmentCount.getAndIncrement();
+						if (adornmentCount.get() >= MAX_HOTBAR_CHARMS) {
+							break;
+						}
 					}
-				}
-
-				////			if (player.inventory.getStackInSlot(hotbarSlot) != player.getHeldItemMainhand()) {
-				//				Optional<CharmContext> context = handler.getCharmContext(player, hotbarSlot);
-				//				if (context.isPresent()) {
-				//					if (context.get().type == CharmContext.Type.ADORNMENT) {
-				//						// Treasure.logger.debug("is a hotbar adornment -> {} @ slot -> {}", context.get().itemStack.getItem().getRegistryName(), context.get().slot);
-				//						// at this point, we know the item in slot x has charm capabilities
-				//						doCharms(context.get(), player, event, nonMultipleUpdateCharms);
-				//					}
-				//				}				
+				}		
 			}
 		}
 		return contexts;

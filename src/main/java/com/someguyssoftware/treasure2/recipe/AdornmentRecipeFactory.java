@@ -5,8 +5,6 @@ package com.someguyssoftware.treasure2.recipe;
 
 import com.google.gson.JsonObject;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
-import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.item.IAdornment;
 
 import net.minecraft.inventory.InventoryCrafting;
@@ -68,14 +66,14 @@ public class AdornmentRecipeFactory implements IRecipeFactory {
 				}
 			}
 			
-            ICharmInventoryCapability adornmentCharmCap = adornmentStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-            Treasure.logger.debug("adornment charm instances -> {}", adornmentCharmCap.getCharmEntities().size());
-            
-            ICharmInventoryCapability outputCharmCap = output.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-            Treasure.logger.debug("new output charm instances -> {}", outputCharmCap.getCharmEntities().size());
-            
-            outputCharmCap.getCharmEntities().addAll(adornmentCharmCap.getCharmEntities());
-            outputCharmCap.setSlots(adornmentCharmCap.getSlots());
+//            ICharmInventoryCapability adornmentCharmCap = adornmentStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+//            Treasure.logger.debug("adornment charm instances -> {}", adornmentCharmCap.getCharmEntities().size());
+//            
+//            ICharmInventoryCapability outputCharmCap = output.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+//            Treasure.logger.debug("new output charm instances -> {}", outputCharmCap.getCharmEntities().size());
+//            
+//            outputCharmCap.getCharmEntities().addAll(adornmentCharmCap.getCharmEntities());
+//            outputCharmCap.setSlots(adornmentCharmCap.getSlots());
             
             return output;
 		}

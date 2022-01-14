@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
+
+import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.util.ResourceLocation;
 
@@ -36,7 +39,8 @@ public class TreasureCharmRegistry {
      * @param charm
      */
     public static void register(ICharm charm) {
-        if (!REGISTRY.containsKey(charm.getName())) {
+    	Treasure.logger.debug("registering charm -> {}", charm.getName());
+        if (!REGISTRY.containsKey(charm.getName())) {        	
             REGISTRY.put(charm.getName(), charm);
         }
         if (!REGISTRY_BY_LEVEL.containsKey(Integer.valueOf(charm.getLevel()))) {
@@ -73,6 +77,25 @@ public class TreasureCharmRegistry {
         return Optional.empty();
     }
 
+    
+	/**
+	 * 
+	 * @param predicate
+	 * @return
+	 */
+	public static Optional<List<ICharm>> getBy(Predicate<ICharm> predicate) {
+		List<ICharm> charms = new ArrayList<>();
+		for (ICharm c : TreasureCharmRegistry.values()) {
+			if (predicate.test(c)) {
+				charms.add(c);
+			}
+		}
+		if (charms.size() == 0) {
+			return Optional.empty();
+		}
+		return Optional.of(charms);
+	}
+	
     /**
      * 
      * @return

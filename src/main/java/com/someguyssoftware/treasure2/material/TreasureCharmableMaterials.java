@@ -19,7 +19,10 @@
  */
 package com.someguyssoftware.treasure2.material;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -41,53 +44,51 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
  *
  */
 public class TreasureCharmableMaterials {
-	// TODO have Size property ("normal", "great", "lord") or have a separate material -> GREAT_IRON = new PreciousMaterial(1, ResourceLocationUtil.create("iron"), 5, 1, 0.5D);
-	
-	public static final CharmableMaterial IRON = new CharmableMaterial(1, ResourceLocationUtil.create("iron"), 2, 1, 0.25D);
-	public static final CharmableMaterial COPPER = new CharmableMaterial(2, ResourceLocationUtil.create("copper"), 4, 1, 0.5D);
-	public static final CharmableMaterial SILVER = new CharmableMaterial(3, ResourceLocationUtil.create("silver"), 6, 1, 0.75D);
-	public static final CharmableMaterial GOLD = new CharmableMaterial(4, ResourceLocationUtil.create("gold"), 8);
-	public static final CharmableMaterial BLOOD = new CharmableMaterial(5, ResourceLocationUtil.create("blood"), 10);
-	public static final CharmableMaterial BONE = new CharmableMaterial(4, ResourceLocationUtil.create("bone"), 12);
-	public static final CharmableMaterial ATIUM = new CharmableMaterial(4, ResourceLocationUtil.create("atium"), 14);
-	public static final CharmableMaterial CHARM_BOOK = new CharmableMaterial(100, ResourceLocationUtil.create("charm_book"), 100);
-	
-	public static final CharmableMaterial GREAT_IRON = new CharmableMaterial(1, ResourceLocationUtil.create("great_iron"), 5, 3, 0.5D);
-	public static final CharmableMaterial GREAT_COPPER = new CharmableMaterial(1, ResourceLocationUtil.create("great_copper"), 7, 5, 0.75D);
-	// ...
-		
-	// TEST
-	public static class AdornmentSize {
-		private int id;
-		private ResourceLocation name;
-		private double maxLevelMultiplier = 1.0;
-		private double minSpawnLevelMultiplier = 1.0;
-		private double levelMultiplier = 1.0;
-		
-		public AdornmentSize(int id, ResourceLocation name) {
-			this.id = id;
-			this.name = name;
-		}
-		
-		// use multiplier ?
-		public void setMaxLevelMultiplier(double value) {
-			this.maxLevelMultiplier = value;
-		}
-		
-		// OR getter method
-		public double getMaxLevel(double value) {
-			return value + 3;
-		}
 
-	}
+	// TODO add maxRepairs, repairs, repairable to Durability Cap ?? or repairable and maxRepairs to CharmableMaterial (ie things made of this can be repaired), repairs to Durability
+	// Charmable might even have an override for repairable? for special items that normally are repairable but don't want them to be
+	// TODO add durability factor property to CharmableMaterial to calculate the final durability of an item?
+	//  ex. IRON.factor = 20. An iron ring has (1, 1, 1) charm slots = 3 slots, and a max level of 2, so base durability = 3*2*20 = 120 durability. With a maxRepairs of 5x. So iron would last a long time.
+	/*
+	 * IRON
+	 * 	durability=75
+	 * 	maxLevel=2
+	 *	maxRepairs=5
+	 *	slots=2
+	 *	base = 2*2*75 = 300
+	 *
+	 * COPPER
+	 * 	durability=10
+	 * 	maxLevel=4
+	 * 	maxRepairs=4
+	 * 	slots=2+1
+	 * 	base=3*4*10 = 120
+	 * 
+	 * SILVER
+	 * 	durability=20
+	 * 	maxLevel=6
+	 * 	maxRepairs=3
+	 * 	slots=2+2
+	 * 	base=4*6*20 = 480
+	 * 
+	 * GOLD
+	 * 	durability=25
+	 * 	maxLevel=8
+	 * 	maxRepairs=2
+	 * 	slots=2+3
+	 * 	base=5*8*25 = 1000
+	 */
+	// can't recharge innates so maybe they should be calculated differently.
 	
-	// TEST
-	public static final AdornmentSize STANDARD = new AdornmentSize(1, ResourceLocationUtil.create("standard"));
-	public static final AdornmentSize GREAT = new AdornmentSize(1, ResourceLocationUtil.create("great"));
-	static {
-		GREAT.setMaxLevelMultiplier(2.5);
-	}
-	public static final AdornmentSize LORDS = new AdornmentSize(1, ResourceLocationUtil.create("lords"));
+	public static final CharmableMaterial IRON = new CharmableMaterial(1, ResourceLocationUtil.create("iron"), 2, 1, 0.25D, 75, 5);
+	public static final CharmableMaterial COPPER = new CharmableMaterial(2, ResourceLocationUtil.create("copper"), 4, 1, 0.5D, 10, 4);
+	public static final CharmableMaterial SILVER = new CharmableMaterial(3, ResourceLocationUtil.create("silver"), 6, 3, 0.75D, 20, 3);
+	public static final CharmableMaterial GOLD = new CharmableMaterial(4, ResourceLocationUtil.create("gold"), 8, 5, 1D, 25, 2);
+	public static final CharmableMaterial BLOOD = new CharmableMaterial(5, ResourceLocationUtil.create("blood"), 10, 6, 1D, 15, 1);
+	public static final CharmableMaterial BONE = new CharmableMaterial(6, ResourceLocationUtil.create("bone"), 12, 8, 1.15D, 50, 0);
+	public static final CharmableMaterial BLACK = new CharmableMaterial(7, ResourceLocationUtil.create("black"), 12, 10, 1.15D, 35, 2);
+	public static final CharmableMaterial ATIUM = new CharmableMaterial(8, ResourceLocationUtil.create("atium"), 14, 10, 1.25D, 100, 5);
+	public static final CharmableMaterial CHARM_BOOK = new CharmableMaterial(100, ResourceLocationUtil.create("charm_book"), 100);
 	
 	public static CharmableMaterial DIAMOND;
 	public static CharmableMaterial EMERALD;
@@ -107,9 +108,24 @@ public class TreasureCharmableMaterials {
 		METAL_REGISTRY.put(COPPER.getName(), COPPER);
 		METAL_REGISTRY.put(SILVER.getName(), SILVER);
 		METAL_REGISTRY.put(GOLD.getName(), GOLD);
+		METAL_REGISTRY.put(BLOOD.getName(), BLOOD);
+		METAL_REGISTRY.put(BONE.getName(), BONE);
+		METAL_REGISTRY.put(BLACK.getName(), BLACK);
+		METAL_REGISTRY.put(ATIUM.getName(), ATIUM);
 	}
 	
+	public static class SortByLevel implements Comparator<CharmableMaterial> {
+		@Override
+		public int compare(CharmableMaterial p1, CharmableMaterial p2) {
+			return Integer.compare(p1.getMaxLevel(), p2.getMaxLevel());
+		}
+	};
+
+	// comparator on level
+	public static Comparator<CharmableMaterial> levelComparator = new SortByLevel();
+	
 	// TODO register to event AFTER item are setup.
+	// TODO that poses as problem as this charmable material can't be used as the source
 	public static void setup() {
 		AMETHYST = new CharmableMaterial(1, TreasureItems.AMETHYST.getRegistryName(), 2, 1);
 		DIAMOND = new CharmableMaterial(2, Items.DIAMOND.getRegistryName(), 4, 3);
@@ -129,6 +145,10 @@ public class TreasureCharmableMaterials {
 		GEM_REGISTRY.put(SAPPHIRE.getName(), SAPPHIRE);
 		GEM_REGISTRY.put(WHITE_PEARL.getName(), WHITE_PEARL);
 		GEM_REGISTRY.put(BLACK_PEARL.getName(), BLACK_PEARL);
+	}
+	
+	public static List<CharmableMaterial> getGemValues() {
+		return new ArrayList<>(GEM_REGISTRY.values());
 	}
 	
 	public static Optional<CharmableMaterial> getBaseMaterial(ResourceLocation name) {

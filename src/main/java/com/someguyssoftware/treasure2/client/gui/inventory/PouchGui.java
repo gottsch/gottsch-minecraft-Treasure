@@ -71,15 +71,15 @@ public class PouchGui extends GuiContainer {
 		if (pouchItem == TreasureItems.POUCH) {
 			texture = TEXTURES[0];
 		}
-		else if (pouchItem == TreasureItems.LUCKY_POUCH) {
-			texture = TEXTURES[1];
-		}
-		else if (pouchItem == TreasureItems.APPRENTICES_POUCH) {
-			texture = TEXTURES[2];
-		}
-		else if (pouchItem == TreasureItems.MASTERS_POUCH) {
-			texture = TEXTURES[3];
-		}
+//		else if (pouchItem == TreasureItems.LUCKY_POUCH) {
+//			texture = TEXTURES[1];
+//		}
+//		else if (pouchItem == TreasureItems.APPRENTICES_POUCH) {
+//			texture = TEXTURES[2];
+//		}
+//		else if (pouchItem == TreasureItems.MASTERS_POUCH) {
+//			texture = TEXTURES[3];
+//		}
 		
 		// Bind the image texture of our custom container
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -99,15 +99,15 @@ public class PouchGui extends GuiContainer {
 		if (pouchItem == TreasureItems.POUCH) {
 			label = POUCH_LABELS[0];
 		}
-		else if (pouchItem == TreasureItems.LUCKY_POUCH) {
-			label = POUCH_LABELS[1];
-		}
-		else if (pouchItem == TreasureItems.APPRENTICES_POUCH) {
-			label = POUCH_LABELS[2];
-		}
-		else if (pouchItem == TreasureItems.MASTERS_POUCH) {
-			label = POUCH_LABELS[3];
-		}
+//		else if (pouchItem == TreasureItems.LUCKY_POUCH) {
+//			label = POUCH_LABELS[1];
+//		}
+//		else if (pouchItem == TreasureItems.APPRENTICES_POUCH) {
+//			label = POUCH_LABELS[2];
+//		}
+//		else if (pouchItem == TreasureItems.MASTERS_POUCH) {
+//			label = POUCH_LABELS[3];
+//		}
 		
 		fontRenderer.drawString(label, LABEL_XPOS, LABEL_YPOS, Color.darkGray.getRGB());
 	}

@@ -47,17 +47,21 @@ public class HealingCharm extends Charm {
 	@Override
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-		if (world.getTotalWorldTime() % 20 == 0) {
-			if (entity.getValue() > 0 && player.getHealth() < player.getMaxHealth() && !player.isDead) {
-				float amount = Math.min(1F, player.getMaxHealth() - player.getHealth());
+		if (world.getTotalWorldTime() % entity.getFrequency() == 0) {
+			if (entity.getMana() > 0 && player.getHealth() < player.getMaxHealth() && !player.isDead) {
+				// determine the actual amount of health (0.0 -> getAmount())
+				float amount = Math.min((float)getAmount(), player.getMaxHealth() - player.getHealth());
 				player.setHealth(MathHelper.clamp(player.getHealth() + amount, 0.0F, player.getMaxHealth()));		
-				entity.setValue(MathHelper.clamp(entity.getValue() - amount,  0D, entity.getValue()));
+				
+				// TODO replace with a Cost Evaluator class - this is what could be changed with Runestones/Artifacts.
+//				entity.setMana(MathHelper.clamp(entity.getMana() - amount,  0D, entity.getMana()));
+				applyCost(world, random, coords, player, event, entity, amount);
 				result = true;
 			}
 		}
 		return result;
 	}
-	
+		
 	/**
 	 * 
 	 */
@@ -65,19 +69,52 @@ public class HealingCharm extends Charm {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
         TextFormatting color = TextFormatting.RED;       
-		tooltip.add("  " + color + getLabel(entity));
-		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.healing_rate"));
+		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
+		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", 
+				I18n.translateToLocalFormatted("tooltip.charm.rate.healing", 
+						DECIMAL_FORMAT.format(getAmount()/2),
+						(int)(entity.getFrequency()/TICKS_PER_SECOND))));
 	}
 	
 	public static class Builder extends Charm.Builder {
-
-		public Builder(String name, Integer level) {
-			super(ResourceLocationUtil.create(name), HEALING_TYPE, level);
+		public Builder(Integer level) {
+			super(ResourceLocationUtil.create(makeName(HEALING_TYPE, level)), HEALING_TYPE, level);
+			this.costEvaluator = new Costinator();
 		}
 
 		@Override
 		public ICharm build() {
 			return  new HealingCharm(this);
 		}
+	}
+	
+	/**
+	 * Example custom CostEvaluator.
+	 * Accomplishes the same goal as Charm.CostEvaluator but coded differently.
+	 * @author Mark Gottschling on Jan 13, 2022
+	 *
+	 */
+	public static class Costinator implements ICostEvaluator {
+		/**
+		 * @param amount the cost amount requested
+		 * @return the actual cost incurred
+		 */
+		@Override
+		public double apply(World world, Random random, ICoords coords, EntityPlayer player, Event event, ICharmEntity entity, double amount) {
+
+			double cost = amount;
+			if (entity.getMana() < amount) {
+				cost = entity.getMana();
+			}
+			double remaining = entity.getMana() - cost;
+			entity.setMana(MathHelper.clamp(remaining,  0D, entity.getMana()));
+			return cost;
+		}
+
+		@Override
+		public double apply(ICharmEntity entity, double amount) {	
+			// TODO Auto-generated method stub
+			return 0;
+		}		
 	}
 }

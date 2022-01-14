@@ -67,22 +67,29 @@ public class FireResistenceCharm extends Charm {
 		if (!((LivingDamageEvent)event).getSource().isFireDamage()) {
 			return result;
 		}
-		if (entity.getValue() > 0 && !player.isDead) {
+		if (entity.getMana() > 0 && !player.isDead) {
 			// get the source and amount
 			double amount = ((LivingDamageEvent)event).getAmount();
 			// calculate the new amount
 			double newAmount = 0;
-			double amountToCharm = amount * entity.getPercent();
+			double amountToCharm = amount * entity.getAmount();
 			double amountToPlayer = amount - amountToCharm;
 			// Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
-			if (entity.getValue() >= amountToCharm) {
-				entity.setValue(entity.getValue() - amountToCharm);
-				newAmount = amountToPlayer;
+			double cost = applyCost(world, random, coords, player, event, entity, amountToCharm);
+			if (cost < amountToCharm) {
+				newAmount =+ (amountToCharm - cost);
 			}
 			else {
-				newAmount = amount - entity.getValue();
-				entity.setValue(0);
+				newAmount = amountToPlayer;
 			}
+			//			if (entity.getMana() >= amountToCharm) {
+//				entity.setMana(entity.getMana() - amountToCharm);
+//				newAmount = amountToPlayer;
+//			}
+//			else {
+//				newAmount = amount - entity.getMana();
+//				entity.setMana(0);
+//			}
 			((LivingDamageEvent)event).setAmount((float) newAmount);
 			result = true;
 		}    		
@@ -95,14 +102,14 @@ public class FireResistenceCharm extends Charm {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.RED;
-		tooltip.add("  " + color + getLabel(entity));
-		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.fire_resistence_rate", Math.toIntExact(Math.round(entity.getPercent() * 100))));
+		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
+		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.fire_resistence", Math.toIntExact(Math.round(entity.getAmount() * 100)))));
 	}
 	
 	public static class Builder extends Charm.Builder {
 
-		public Builder(String name, Integer level) {
-			super(ResourceLocationUtil.create(name), FIRE_RESISTENCE_TYPE, level);
+		public Builder(Integer level) {
+			super(ResourceLocationUtil.create(makeName(FIRE_RESISTENCE_TYPE, level)), FIRE_RESISTENCE_TYPE, level);
 		}
 
 		@Override

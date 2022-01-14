@@ -30,10 +30,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
-import com.someguyssoftware.treasure2.capability.CharmInventoryCapability;
 import com.someguyssoftware.treasure2.capability.CharmableCapability;
-import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.DurabilityCapability;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.IMagicsInventoryCapability;
 import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
@@ -180,9 +180,9 @@ public class BaublesIntegration {
 	 * Sub-class Bauble Capability Provider to include required Adornment capabilities (CharmInventoryCapability)
 	 */
 	public static class BaubleAdornmentCapabilityProvider extends BaubleProvider implements ICapabilitySerializable<NBTTagCompound> {
-//		private final ICharmInventoryCapability charm;
 		private final IMagicsInventoryCapability magicsCap;
 		private final ICharmableCapability charmableCap;
+		private final IDurabilityCapability durabilityCap;
 		// TODO add IPouchableCapability
 		
 		/**
@@ -194,22 +194,32 @@ public class BaublesIntegration {
 //			charm = new CharmInventoryCapability();
 			this.magicsCap = new MagicsInventoryCapability(1, 1, 1);
 			this.charmableCap = new CharmableCapability(magicsCap);
+			this.durabilityCap = new DurabilityCapability();
 		}
 		
 		/**
 		 * 
-		 * @param capability
+		 * @param charmable
 		 */
 //		public AdornmentProvider(AdornmentType adornmentType, ICharmInventoryCapability capability) {
 //			super(adornmentType);
 //			charm = capability;
 //		}
 		
-		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType, ICharmableCapability capability) {
+		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType, ICharmableCapability charmable) {
 			super(adornmentType);
-			this.magicsCap = capability.getMagicsCap();
-			this.charmableCap = capability;
+			this.magicsCap = charmable.getMagicsCap();
+			this.charmableCap = charmable;
+			this.durabilityCap = new DurabilityCapability();
 		}
+		
+		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType, ICharmableCapability charmable, IDurabilityCapability durability) {
+			super(adornmentType);
+			this.magicsCap = charmable.getMagicsCap();
+			this.charmableCap = charmable;
+			this.durabilityCap = durability;
+		}
+		
 		
 		@Override
 		public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
@@ -217,6 +227,9 @@ public class BaublesIntegration {
 				return true;
 			}
 			else if (capability == TreasureCapabilities.CHARMABLE) {
+				return true;
+			}
+			else if (capability == TreasureCapabilities.DURABILITY) {
 				return true;
 			}
 			else if (capability == TreasureCapabilities.MAGICS) {
@@ -234,6 +247,9 @@ public class BaublesIntegration {
 			else if (capability == TreasureCapabilities.CHARMABLE) {
 				return TreasureCapabilities.CHARMABLE.cast(this.charmableCap);
 			}
+			else if (capability == TreasureCapabilities.DURABILITY) {
+				return TreasureCapabilities.DURABILITY.cast(this.durabilityCap);
+			}
 			else if (capability == TreasureCapabilities.MAGICS) {
 				return TreasureCapabilities.MAGICS.cast(this.magicsCap);
 			}
@@ -244,9 +260,11 @@ public class BaublesIntegration {
 		public NBTTagCompound serializeNBT() {
 			NBTTagCompound magicsTag = (NBTTagCompound)	TreasureCapabilities.MAGICS.getStorage().writeNBT(TreasureCapabilities.MAGICS, magicsCap, null);
 			NBTTagCompound charmableTag = (NBTTagCompound)TreasureCapabilities.CHARMABLE.getStorage().writeNBT(TreasureCapabilities.CHARMABLE, charmableCap, null);
+			NBTTagCompound durabilityTag = (NBTTagCompound)TreasureCapabilities.DURABILITY.getStorage().writeNBT(TreasureCapabilities.DURABILITY, durabilityCap, null);
 			NBTTagCompound tag = new NBTTagCompound();
 			tag.setTag("magics", magicsTag);
 			tag.setTag("charmable", charmableTag);
+			tag.setTag("durability", durabilityTag);
 			return tag;
 		}
 
@@ -260,6 +278,10 @@ public class BaublesIntegration {
 				NBTTagCompound tag = nbt.getCompoundTag("charmable");
 				TreasureCapabilities.CHARMABLE.getStorage().readNBT(TreasureCapabilities.CHARMABLE, charmableCap, null, tag);
 			}		
+			if (nbt.hasKey("durability")) {
+				NBTTagCompound tag = nbt.getCompoundTag("durability");
+				TreasureCapabilities.DURABILITY.getStorage().readNBT(TreasureCapabilities.DURABILITY, durabilityCap, null, tag);
+			}
 		}
 		
 //		@Override

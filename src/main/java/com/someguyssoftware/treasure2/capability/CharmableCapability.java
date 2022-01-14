@@ -85,6 +85,9 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	private ResourceLocation baseMaterial;
 	// the item that this capability belongs to
 	private ResourceLocation sourceItem;
+	// the max charm level allowed. calculated by baseMaterial, sourceItem and level modifiers
+	private int maxLevel;
+	
 	// the current charm with the highest level
 	private ICharmEntity highestLevel;
 	
@@ -96,6 +99,7 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	/*
 	 * modifiers
 	 */
+	// modifieds maxLevel, maxLevelMultiplier
 	private ILevelModifier levelModifier;
 	
 	public static class SortByLevel implements Comparator<ICharmEntity> {
@@ -175,6 +179,26 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 		return (type == InventoryType.SOCKET ? getMagicsCap().getSocketSize() : type == InventoryType.IMBUE ? getMagicsCap().getImbueSize() : getMagicsCap().getInnateSize());		
 	}
 	
+	@Override
+	public void setCurrentSize(InventoryType type, int size) {
+		switch(type) {
+		case INNATE:
+			getMagicsCap().setInnateSize(size);
+			break;
+		case IMBUE:
+			getMagicsCap().setImbueSize(size);
+		break;
+		case SOCKET:
+			getMagicsCap().setSocketSize(size);
+			break;		
+		}
+	}
+
+	@Override
+	public void addCurrentSize(InventoryType type, int amount) {
+		setCurrentSize(type, getCurrentSize(type) + amount);
+	}
+	
 	/**
 	 * Convenience method
 	 * @param type
@@ -201,6 +225,9 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 		if (getCurrentSize(type) < getMaxSize(type)) {
 			charmEntities.get(type).add(entity);
 			
+			// update the current size
+			addCurrentSize(type, 1);
+			
 			// record highest level charm
 			if (highestLevel == null || entity.getCharm().getLevel() > highestLevel.getCharm().getLevel()) {
 				highestLevel = entity;
@@ -224,10 +251,22 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 				highestLevel = entity;
 			}
 		});
+		// decrement magics cap
+		setCurrentSize(type, getCurrentSize(type) - 1);
+	}
+	
+	@Override
+	public void clearCharms() {
+		getCharmEntities().clear();
+		for (InventoryType type : InventoryType.values()) {
+			setCurrentSize(type, 0);
+		}
 	}
 	
 	/**
-	 * 
+	 * Ex.
+	 * GOLD + Sapphire = g.base=8 + (g.modifier=1 * s.base=12) = 20
+	 * BLACK + Black Pearl = b.base=12 + (b.modifer=1.15 * bp.base=12) = 25
 	 */
 	@Override
 	public int getMaxCharmLevel() {
@@ -283,7 +322,6 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 		}	
 	}
 	
-	// TODO check this out - it is probably wrong  since it is grabbing the sockets size always (should be grabbinb imbue size if imbue?)
 	@SuppressWarnings("deprecation")
 	public String getCapacityHoverText(ItemStack stack, World world, InventoryType type) {	
 		return I18n.translateToLocalFormatted("tooltip.charmable.slots", 				

@@ -17,32 +17,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.adornment;
+package com.someguyssoftware.treasure2.charm;
 
 /**
  * 
- * @author Mark Gottschling on Jan 4, 2022
+ * @author Mark Gottschling on Aug 15, 2021
  *
  */
-public class AdornmentSize {
-	private String name;
-	
-	public AdornmentSize(String name) {
-		this.name = name;
-	}
-	
-	public double modifyMaxLevel(double level) {
-		return level;
-	}
-	public double modifyLevelMultiplier(double multiplier) {
-		return multiplier;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	@Override
-	public String toString() {
-		return "AdornmentSize [name=" + name + "]";
-	}
+public interface IHealing {
+	public float getHealRate();
 }

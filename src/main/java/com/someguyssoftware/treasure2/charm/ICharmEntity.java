@@ -27,27 +27,27 @@ import net.minecraft.nbt.NBTTagCompound;
  *
  */
 public interface ICharmEntity {
-	public static String CHARM = "charm";
-	public static String VALUE = "value";
+	public static final String CHARM = "charm";
+	@Deprecated
+	public static final String VALUE = "value";
+	public static final String MANA = "mana";
+	public static final String DURATION = "duration";
+	public static final String FREQUENCY = "frequency";
+	public static final String AMOUNT = "amount";
+	public static final String COOLDOWN = "cooldown";
+	public static final String RANGE = "range";
 	
 	ICharm getCharm();
 
 	void setCharm(ICharm charm);
 
-	double getValue();
-
-	void setValue(double value);
+	double getMana();
+	void setMana(double value);
 
 	int getDuration();
-
 	void setDuration(int duration);
 
-	double getPercent();
-
-	void setPercent(double percent);
-
-	double getFrequency();
-	
+	double getFrequency();	
 	void setFrequency(double frequency);
 	
 	void update(ICharmEntity entity);
@@ -60,18 +60,38 @@ public interface ICharmEntity {
 	NBTTagCompound save(NBTTagCompound nbt);
 
 	default public boolean load(NBTTagCompound nbt) {
-		if (nbt.hasKey(VALUE)) {
-			setValue(nbt.getDouble(VALUE));
+		if (nbt.hasKey(MANA)) {
+			setMana(nbt.getDouble(MANA));
 		}
-		if (nbt.hasKey("duration")) {
-			setDuration(nbt.getInteger("duration"));
+		// legacy
+		else if (nbt.hasKey(VALUE)) {
+			setMana(nbt.getDouble(VALUE));
 		}
-		if (nbt.hasKey("percent")) {
-			setPercent(nbt.getDouble("percent"));
+		
+		if (nbt.hasKey(DURATION)) {
+			setDuration(nbt.getInteger(DURATION));
 		}
-		if (nbt.hasKey("frequency")) {
-			setFrequency(nbt.getDouble("frequency"));
-		}		
+		if (nbt.hasKey(FREQUENCY)) {
+			setFrequency(nbt.getDouble(FREQUENCY));
+		}
+		if (nbt.hasKey(AMOUNT)) {
+			setAmount(nbt.getDouble(AMOUNT));
+		}
+		if (nbt.hasKey(COOLDOWN)) {
+			setCooldown(nbt.getDouble(COOLDOWN));
+		}
+		if (nbt.hasKey(RANGE)) {
+			setRange(nbt.getDouble(RANGE));
+		}
 		return true;
 	}
+
+	double getRange();
+	void setRange(double range);
+
+	double getCooldown();
+	void setCooldown(double cooldown);
+	
+	double getAmount();
+	void setAmount(double amount);
 }

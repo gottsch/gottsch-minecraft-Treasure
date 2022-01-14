@@ -67,15 +67,15 @@ public class PouchContainer extends AbstractChestContainer {
 	public void buildContainerInventory() {
 		int arcaneSlots = 0;
 		PouchItem pouchItem = (PouchItem) this.stack.getItem();
-		if (pouchItem == TreasureItems.LUCKY_POUCH) {
-			arcaneSlots = 1;
-		}
-		else if (pouchItem == TreasureItems.APPRENTICES_POUCH) {
-			arcaneSlots = 2;
-		}
-		else if (pouchItem == TreasureItems.MASTERS_POUCH) {
-			arcaneSlots = 3;
-		}
+//		if (pouchItem == TreasureItems.LUCKY_POUCH) {
+//			arcaneSlots = 1;
+//		}
+//		else if (pouchItem == TreasureItems.APPRENTICES_POUCH) {
+//			arcaneSlots = 2;
+//		}
+//		else if (pouchItem == TreasureItems.MASTERS_POUCH) {
+//			arcaneSlots = 3;
+//		}
 
 		for (int y = 0; y < getContainerInventoryRowCount(); y++) {
 			for (int x = 0; x < getContainerInventoryColumnCount(); x++) {

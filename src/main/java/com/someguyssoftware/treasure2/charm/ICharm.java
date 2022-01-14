@@ -41,12 +41,14 @@ public interface ICharm {
 	public ResourceLocation getName();
 	public String getType();
 	public int getLevel();
-	public double getMaxValue();
-	public int getMaxDuration();
-	public double getMaxPercent();
+	public double getMana();
+	public int getDuration();
 	public double getFrequency();
 	public Rarity getRarity();
 	public int getPriority();
+	public double getRange();
+	public double getCooldown();
+	public double getAmount();
 	public boolean isEffectStackable();
     
 	public ICharmEntity createEntity();
@@ -60,5 +62,7 @@ public interface ICharm {
 	public boolean isCurse();
 	
 	public Class<?> getRegisteredEvent();
+	
+	ICostEvaluator getCostEvaluator();
 
 }

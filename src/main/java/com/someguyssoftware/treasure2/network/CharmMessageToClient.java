@@ -23,9 +23,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability.InventoryType;
 import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
+import com.someguyssoftware.treasure2.charm.ICooldownCharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
@@ -43,11 +45,13 @@ public class CharmMessageToClient implements IMessage {
 	private String playerName;
 	private String charmName;
 	private ICharmEntity entity;
-	// location properties of charm(s) - who, what hand or what pouch slot
+	// location properties of charm(s) - who, what slot
 	private EnumHand hand;
 	private Integer slot;
 	private String slotProviderId;
-	private boolean pouch;
+	private InventoryType inventoryType;
+	private int index;
+	private int itemDamage;
 	
 	/**
 	 * 
@@ -57,33 +61,16 @@ public class CharmMessageToClient implements IMessage {
 	public CharmMessageToClient(String playerName, CharmContext context) {
 		valid = true;
 		this.playerName = playerName;
-		this.entity = context.getEntity();
 		this.charmName = context.getEntity().getCharm().getName().toString();
+		this.entity = context.getEntity();
 		this.hand = context.getHand();
 		this.slotProviderId = context.getSlotProviderId();
 		this.slot = context.getSlot();
-		this.pouch = context.getPouch();
+		this.inventoryType = context.getType();
+		this.index = context.getIndex();
+		this.itemDamage = context.getItemStack().getItemDamage();
 	}
-	
-	/**
-	 * 
-	 * @param playerName
-	 */
-	@Deprecated
-	public CharmMessageToClient(String playerName, ICharmEntity instance, EnumHand hand, Integer slot) {
-		valid = true;
-		this.playerName = playerName;
-		this.charmName = instance.getCharm().getName().toString();
-		this.entity = instance;
-		this.hand = hand;
-		if (slot == null) {
-			this.slot = -1;
-		}
-		else {
-			this.slot = slot;
-		}
-	}
-	
+		
 	/**
 	 * 
 	 */
@@ -100,26 +87,32 @@ public class CharmMessageToClient implements IMessage {
 	    try {
 	    	this.playerName = ByteBufUtils.readUTF8String(buf);
 	    	this.charmName = ByteBufUtils.readUTF8String(buf);
-	    	double value = buf.readDouble();
-	    	int duration = buf.readInt();
-	    	double percent = buf.readDouble();
-
+	    	// create the charm entity
 	    	Optional<ICharm> optionalCharm = TreasureCharmRegistry.get(ResourceLocationUtil.create(charmName));
 	    	if (!optionalCharm.isPresent()) {
 	    		throw new RuntimeException(String.format("Unable to find charm %s in registry.", charmName));
 	    	}
 	    	entity = optionalCharm.get().createEntity();
 	    	entity.setCharm(optionalCharm.get());
-	    	entity.setDuration(duration);
-	    	entity.setPercent(percent);
-	    	entity.setValue(value);
+	    	// get entity data
+	    	entity.setMana(buf.readDouble());	    	
+	    	// get class specific entity data
+	    	if (entity instanceof ICooldownCharmEntity) {
+	    		((ICooldownCharmEntity) entity).setCooldownEnd(buf.readDouble());
+	    	}
+	    	
 	    	String handStr = ByteBufUtils.readUTF8String(buf);
 	    	if (!handStr.isEmpty()) {
 	    		this.hand = EnumHand.valueOf(handStr);
 	    	}
 	    	this.slot = buf.readInt();
 	    	this.slotProviderId = ByteBufUtils.readUTF8String(buf);
-	    	this.pouch = buf.readBoolean();
+			String inventoryType = ByteBufUtils.readUTF8String(buf);
+			if (!inventoryType.isEmpty()) {
+				this.setInventoryType(InventoryType.valueOf(inventoryType.toUpperCase()));
+			}
+			this.setIndex(buf.readInt());
+			this.setItemDamage(buf.readInt());
 	      } catch (RuntimeException e) {
 	        Treasure.logger.error("Exception while reading CharmMessageToClient: ", e);
 	        return;
@@ -134,10 +127,15 @@ public class CharmMessageToClient implements IMessage {
 	    	return;
 	    }
 	    ByteBufUtils.writeUTF8String(buf, playerName);
-	    ByteBufUtils.writeUTF8String(buf, charmName);	    
-	    buf.writeDouble(entity.getValue());
-	    buf.writeInt(entity.getDuration());
-	    buf.writeDouble(entity.getPercent());
+	    ByteBufUtils.writeUTF8String(buf, charmName);
+	    
+	    // write entity data
+	    buf.writeDouble(entity.getMana());
+	    // write specific entity data
+	    if (entity instanceof ICooldownCharmEntity) {
+	    	buf.writeDouble(((ICooldownCharmEntity) entity).getCooldownEnd());
+	    }
+	    
 	    String handStr = "";
 	    if (hand != null) {
 	    	handStr = hand.name();
@@ -145,7 +143,13 @@ public class CharmMessageToClient implements IMessage {
 	    ByteBufUtils.writeUTF8String(buf, handStr);	    
 	    buf.writeInt(this.slot);
 	    ByteBufUtils.writeUTF8String(buf, Objects.toString(slotProviderId, ""));
-	    buf.writeBoolean(pouch);
+		String typeAsString = "";
+		if (inventoryType != null) {
+			typeAsString = inventoryType.name().toLowerCase();
+		}
+		ByteBufUtils.writeUTF8String(buf, typeAsString);
+		buf.writeInt(index);
+		buf.writeInt(this.itemDamage);
 	}
 
 	/**
@@ -187,27 +191,12 @@ public class CharmMessageToClient implements IMessage {
 		return charmName;
 	}
 
-	@Override
-	public String toString() {
-		return "CharmMessageToClient [valid=" + valid + ", playerName=" + playerName + ", charmName=" + charmName
-				+ ", entity=" + entity + ", hand=" + hand + ", slot=" + slot + ", slotProviderId=" + slotProviderId
-				+ ", pouch=" + pouch + "]";
-	}
-
 	public String getSlotProviderId() {
 		return slotProviderId;
 	}
 
 	public void setSlotProviderId(String slotProviderId) {
 		this.slotProviderId = slotProviderId;
-	}
-
-	public boolean isPouch() {
-		return pouch;
-	}
-
-	public void setPouch(boolean pouch) {
-		this.pouch = pouch;
 	}
 
 	public boolean isValid() {
@@ -232,5 +221,36 @@ public class CharmMessageToClient implements IMessage {
 
 	public void setSlot(Integer slot) {
 		this.slot = slot;
+	}
+	
+	public InventoryType getInventoryType() {
+		return inventoryType;
+	}
+
+	public void setInventoryType(InventoryType inventoryType) {
+		this.inventoryType = inventoryType;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+	
+	@Override
+	public String toString() {
+		return "CharmMessageToClient [valid=" + valid + ", playerName=" + playerName + ", charmName=" + charmName
+				+ ", entity=" + entity + ", hand=" + hand + ", slot=" + slot + ", slotProviderId=" + slotProviderId
+				+ ", inventoryType=" + inventoryType + ", index=" + index + ", itemDamage=" + itemDamage + "]";
+	}
+
+	public int getItemDamage() {
+		return itemDamage;
+	}
+
+	public void setItemDamage(int itemDamage) {
+		this.itemDamage = itemDamage;
 	}
 }

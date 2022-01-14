@@ -31,55 +31,66 @@ import net.minecraft.util.text.translation.I18n;
  */
 @SuppressWarnings("deprecation")
 public class CharmableMaterial {
+	public static final int DEFAULT_DURABILITY = 20;
+	public static final int DEFAULT_MAX_REPAIRS = 3;
+	
 	private int id;
 	private ResourceLocation name;
+	// the maximum base level - used in formulas to calculate final max level
 	private int maxLevel;
+	// the minimum level an item made of this material can spawn/generate with
 	private int minSpawnLevel = 1;
+	// charm level multiplier
 	private double levelMultiplier = 1.0;
+	
+	// base durability - used by Item formula to calculate its final durability
+	private int durability;
+	// the number of times something made of this material can be repaired
+	private int maxRepairs;
+
+	/**
+	 * 
+	 * @param id
+	 * @param name
+	 * @param maxLevel
+	 */
+	public CharmableMaterial(int id, ResourceLocation name, int maxLevel) {
+		this(id, name, maxLevel, 1, 1D, DEFAULT_DURABILITY, DEFAULT_MAX_REPAIRS);
+	}
 	
 	/**
 	 * 
+	 * @param id
 	 * @param name
 	 * @param maxLevel
-	 * @param levelRange
+	 * @param minSpawnLevel
 	 */
-	public CharmableMaterial(int id, String name, int maxLevel, int minSpawnLevel) {
-		this.id = id;
-		this.name = ResourceLocationUtil.create(name);
-		this.maxLevel = maxLevel;
-		this.minSpawnLevel = minSpawnLevel;
+	public CharmableMaterial(int id, ResourceLocation name, int maxLevel, int minSpawnLevel) {
+		this(id, name, maxLevel, minSpawnLevel, 1D, DEFAULT_DURABILITY, DEFAULT_MAX_REPAIRS );
 	}
-
-	public CharmableMaterial(int id, String name, int maxLevel) {
-		this(id, name, maxLevel, 1);
+	
+	public CharmableMaterial(int id, ResourceLocation name, int maxLevel, int minSpawnLevel, double levelMultiplier) {
+		this(id, name, maxLevel, minSpawnLevel, levelMultiplier, DEFAULT_DURABILITY, DEFAULT_MAX_REPAIRS );
 	}
 	
 	/**
 	 * Full constructor
+	 * @param id
 	 * @param name
 	 * @param maxLevel
-	 * @param levelRange
+	 * @param minSpawnLevel
+	 * @param levelMultiplier
+	 * @param durability
+	 * @param maxRepairs
 	 */
-	public CharmableMaterial(int id, ResourceLocation name, int maxLevel, int minSpawnLevel, double levelMultiplier) {
+	public CharmableMaterial(int id, ResourceLocation name, int maxLevel, int minSpawnLevel, double levelMultiplier, int durability, int maxRepairs) {
 		this.id = id;
 		this.name = name;
 		this.maxLevel = maxLevel;
 		this.minSpawnLevel = minSpawnLevel;
 		this.levelMultiplier = levelMultiplier;
-	}
-	
-	/**
-	 * 
-	 * @param name
-	 * @param maxLevel
-	 * @param levelRange
-	 */
-	public CharmableMaterial(int id, ResourceLocation name, int maxLevel, int minSpawnLevel) {
-		this(id, name, maxLevel, minSpawnLevel, 1D);
-	}
-	
-	public CharmableMaterial(int id, ResourceLocation name, int maxLevel) {
-		this(id, name, maxLevel, 1, 1D);
+		this.durability = durability;
+		this.maxRepairs = maxRepairs;
 	}
 	
 	/**
@@ -128,5 +139,21 @@ public class CharmableMaterial {
 
 	public void setLevelMultiplier(double levelMultiplier) {
 		this.levelMultiplier = levelMultiplier;
+	}
+
+	public int getDurability() {
+		return durability;
+	}
+
+	public void setDurability(int durability) {
+		this.durability = durability;
+	}
+
+	public int getMaxRepairs() {
+		return maxRepairs;
+	}
+
+	public void setMaxRepairs(int maxRepairs) {
+		this.maxRepairs = maxRepairs;
 	}
 }

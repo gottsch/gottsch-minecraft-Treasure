@@ -21,7 +21,9 @@ public enum Rarity implements IRarity {
 	UNCOMMON(1, "uncommon"),
 	SCARCE(2, "scarce"),
 	RARE(3, "rare"),
-	EPIC(4, "epic");//,
+	EPIC(4, "epic"),
+	LEGENDARY(5, "legendary"),
+	MYTHICAL(6, "mythical");
 //	UNIQUE;
 	
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();

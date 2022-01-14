@@ -36,11 +36,11 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
- * 
+ * The players loses x health every y seconds.
  * @author Mark Gottschling on May 4, 2020
  *
  */
-public class DecayCharm extends Charm {
+public class DecayCurse extends Charm {
 	public static String DECAY_TYPE = "decay";
 	private static float DECAY_RATE = 2F;
 	private static final Class<?> REGISTERED_EVENT = LivingUpdateEvent.class;
@@ -49,7 +49,7 @@ public class DecayCharm extends Charm {
 	 * 
 	 * @param builder
 	 */
-	DecayCharm(Builder builder) {
+	DecayCurse(Builder builder) {
 		super(builder);
 	}
 
@@ -71,10 +71,11 @@ public class DecayCharm extends Charm {
 		boolean result = false;
 		//		Treasure.logger.debug("in decay");
 		if (world.getTotalWorldTime() % 100 == 0) {
-			if (!player.isDead && entity.getValue() > 0 && player.getHealth() > 0.0) {
+			if (!player.isDead && entity.getMana() > 0 && player.getHealth() > 0.0) {
 				//			Treasure.logger.debug("player is alive and charm is good still...");
-				player.setHealth(MathHelper.clamp(player.getHealth() - 2.0F, 0.0F, player.getMaxHealth()));				
-				entity.setValue(MathHelper.clamp(entity.getValue() - 1.0,  0D, entity.getValue()));
+				player.setHealth(MathHelper.clamp(player.getHealth() - (float)getAmount(), 0.0F, player.getMaxHealth()));				
+//				entity.setMana(MathHelper.clamp(entity.getMana() - 1.0,  0D, entity.getMana()));
+				applyCost(world, random, coords, player, event, entity, getAmount());
 				//				Treasure.logger.debug("new data -> {}", data);
 				result = true;
 			}
@@ -90,19 +91,19 @@ public class DecayCharm extends Charm {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.DARK_RED;
-		tooltip.add("  " + color + getLabel(entity));
-		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.decay_rate"));
+		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
+		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.decay")));
 	}
 	
 	public static class Builder extends Charm.Builder {
 
-		public Builder(String name, Integer level) {
-			super(ResourceLocationUtil.create(name), DECAY_TYPE, level);
+		public Builder(Integer level) {
+			super(ResourceLocationUtil.create(makeName(DECAY_TYPE, level)), DECAY_TYPE, level);
 		}
 
 		@Override
 		public ICharm build() {
-			return  new DecayCharm(this);
+			return  new DecayCurse(this);
 		}
 	}
 }

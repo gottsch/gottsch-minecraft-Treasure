@@ -34,4 +34,8 @@ public interface IDurabilityCapability {
 	public int getMaxDurability();
 
 	public void setMaxDurability(int maxDurability);
+
+	public boolean isInfinite();
+
+	public void setInfinite(boolean infinite);
 }

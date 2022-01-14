@@ -37,8 +37,8 @@ public class TreasureCharmables {
 	 */
 	public static void setHoverName(ItemStack stack) {
 		if (TreasureAdornments.getAll().contains(stack.getItem())) {
-Treasure.logger.debug("building adornment name");
-			TreasureAdornments.setHoverName(stack);
+//Treasure.logger.debug("building adornment name");
+//			TreasureAdornments.setHoverName(stack);
 		}
 		// TODO CharmItems (trickets) need to be registered somewhere?
 //		else if(TreasureCharms.getAll().contains(stack.getItem())) {

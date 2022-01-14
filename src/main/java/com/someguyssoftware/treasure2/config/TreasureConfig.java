@@ -23,7 +23,6 @@ import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RangeDouble;
 import net.minecraftforge.common.config.Config.RangeInt;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
-import net.minecraftforge.common.config.Config.RequiresWorldRestart;
 import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.common.config.Configuration;
@@ -309,6 +308,9 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	
 	@Name("12 Integration")
 	public static final Integration INTEGRATION = new Integration();
+	
+	@Name("13 Boot")
+	public static final Booty BOOTY = new Booty();
 
 	@Ignore
 	public static TreasureConfig instance = new TreasureConfig();
@@ -1257,6 +1259,18 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		public boolean enableBaubles = true;
 	}
 
+	/**
+	 * 
+	 * @author Mark Gottschling on Jan 9, 2022
+	 *
+	 */
+	public static class Booty {
+		@Comment("")
+		@Name("01. Maximum Stack Size:")
+		@RangeInt(min = 1, max = 64)
+		public int wealthMaxStackSize = 8;
+	}
+	
 	/**
 	 * 
 	 * @author Mark Gottschling on Nov 18, 2019

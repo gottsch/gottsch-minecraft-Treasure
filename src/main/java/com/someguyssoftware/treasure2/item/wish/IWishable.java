@@ -25,6 +25,7 @@ import net.minecraft.world.storage.loot.LootContext;
  * @author Mark Gottschling on Apr 24, 2020
  *
  */
+@Deprecated
 public interface IWishable {
 	public static final String DROPPED_BY_KEY = "droppedBy";
 	

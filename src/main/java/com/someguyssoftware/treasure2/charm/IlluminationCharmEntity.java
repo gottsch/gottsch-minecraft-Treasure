@@ -45,16 +45,16 @@ public class IlluminationCharmEntity extends CharmEntity {
 //		coordsList = Collections.synchronizedList(new LinkedList<>());
 //	}
 	
+	public IlluminationCharmEntity() {
+		super();
+	}
+	
 	/**
 	 * 
 	 * @param charm
 	 */
-	public IlluminationCharmEntity(ICharm charm, double value, int duration, double percent) {
-		this(charm, value, duration, percent, 1.0);
-	}
-	
-	public IlluminationCharmEntity(ICharm charm, double value, int duration, double percent, double frequency) {
-		super(charm, value, duration, percent, frequency);
+	public IlluminationCharmEntity(ICharm charm) {
+		super(charm);
 		setCoordsList(Collections.synchronizedList(new LinkedList<>()));
 	}
 	

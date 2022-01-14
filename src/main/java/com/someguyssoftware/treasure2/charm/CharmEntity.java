@@ -26,40 +26,46 @@ import net.minecraft.nbt.NBTTagCompound;
  * @author Mark Gottschling on Oct 25, 2021
  *
  */
-public class CharmEntity implements ICharmEntity {
+public class CharmEntity implements ICharmEntity {	
 	private ICharm charm;
-	private double value;
-	private int duration;
-	private double percent;
-	private double frequency;
+	private double mana; // changes - needs client update
+	private int duration; // static (but is a property that could chane/require update in future
+	private double percent; // static
+	private double frequency; // static
+
+	private double range; // static
+	private double cooldown; // static
+	private double amount; // static
+	private double cost; // static
 	
 	/**
 	 * 
 	 */
 	public CharmEntity() { }
 
-	/**
-	 * 
-	 * @param charm
-	 * @param value
-	 * @param duration
-	 * @param percent
-	 */
-	public CharmEntity(ICharm charm, double value, int duration, double percent, double frequency) {
+	public CharmEntity(ICharm charm) {
 		setCharm(charm);
-		setValue(value);
-		setDuration(duration);
-		setPercent(percent);
-		setFrequency(frequency);
+		setAmount(charm.getAmount());
+		setCooldown(charm.getCooldown());
+//		setCost(cost);
+		setDuration(charm.getDuration());
+		setFrequency(charm.getFrequency());
+		setMana(charm.getMana());
+//		setPercent(percent);
+		setRange(charm.getRange());
 	}
 	
+	// TODO add a builder
+	
+	/**
+	 * Client-side. Only update those properties that need to be reflected on the client-side.
+	 */
 	@Override
 	public void update(ICharmEntity entity) {
-		this.setValue(entity.getValue());
-		this.setDuration(entity.getDuration());
-		this.setPercent(entity.getPercent());
-		this.setFrequency(entity.getFrequency());
+		this.setMana(entity.getMana());
 	}
+	
+	// TODO probably add a update(Consumer<>) just in case someone wants to update something
 	
 	/**
 	 * 
@@ -72,10 +78,12 @@ public class CharmEntity implements ICharmEntity {
 		// save the charm
 		nbt.setTag(CHARM, getCharm().save(charmNbt));
 		// save the entity data
-		nbt.setDouble(VALUE, getValue());
-		nbt.setInteger("duration", getDuration());
-		nbt.setDouble("percent", getPercent());
-		nbt.setDouble("frequency", getFrequency());
+		nbt.setDouble(MANA, getMana());
+		nbt.setInteger(DURATION, getDuration());
+		nbt.setDouble(FREQUENCY, getFrequency());
+		nbt.setDouble(AMOUNT, getAmount());
+		nbt.setDouble(COOLDOWN, getCooldown());
+		nbt.setDouble(RANGE, getRange());
 		return nbt;
 	}
 	
@@ -90,13 +98,13 @@ public class CharmEntity implements ICharmEntity {
 	}
 
 	@Override
-	public double getValue() {
-		return value;
+	public double getMana() {
+		return mana;
 	}
 
 	@Override
-	public void setValue(double value) {
-		this.value = value;
+	public void setMana(double value) {
+		this.mana = value;
 	}
 
 	@Override
@@ -110,16 +118,6 @@ public class CharmEntity implements ICharmEntity {
 	}
 
 	@Override
-	public double getPercent() {
-		return percent;
-	}
-
-	@Override
-	public void setPercent(double percent) {
-		this.percent = percent;
-	}
-
-	@Override
 	public double getFrequency() {
 		return frequency;
 	}
@@ -127,5 +125,42 @@ public class CharmEntity implements ICharmEntity {
 	@Override
 	public void setFrequency(double frequency) {
 		this.frequency = frequency;
+	}
+
+	@Override
+	public String toString() {
+		return "CharmEntity [charm=" + charm + ", mana=" + mana + ", duration=" + duration + ", percent=" + percent
+				+ ", frequency=" + frequency + ", range=" + range + ", cooldown=" + cooldown + ", amount=" + amount
+				+ ", cost=" + cost + "]";
+	}
+
+	@Override
+	public double getRange() {
+		return range;
+	}
+
+	@Override
+	public void setRange(double range) {
+		this.range = range;
+	}
+
+	@Override
+	public double getCooldown() {
+		return cooldown;
+	}
+
+	@Override
+	public void setCooldown(double cooldown) {
+		this.cooldown = cooldown;
+	}
+
+	@Override
+	public double getAmount() {
+		return amount;
+	}
+
+	@Override
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 }

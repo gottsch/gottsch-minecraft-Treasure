@@ -40,11 +40,11 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
- * 
+ * Damage's the player equipment every x seconds.
  * @author Mark Gottschling on May 26, 2020
  *
  */
-public class RuinCharm extends Charm {
+public class RuinCurse extends Charm {
 	public static final String RUIN_TYPE = "ruin";
 
 	private static final Class<?> REGISTERED_EVENT = LivingUpdateEvent.class;
@@ -53,7 +53,7 @@ public class RuinCharm extends Charm {
 	 * 
 	 * @param builder
 	 */
-	RuinCharm(Builder builder) {
+	RuinCurse(Builder builder) {
 		super(builder);
 	}
 
@@ -72,8 +72,8 @@ public class RuinCharm extends Charm {
 	@Override
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-		if (!player.isDead && entity.getValue() > 0 && player.getHealth() > 0.0) {
-			if (world.getTotalWorldTime() % (entity.getDuration() * TICKS_PER_SECOND) == 0) {
+		if (!player.isDead && entity.getMana() > 0 && player.getHealth() > 0.0) {
+			if (world.getTotalWorldTime() % entity.getFrequency() == 0) {
 				FluentIterable<ItemStack> inventoryEquipment = (FluentIterable<ItemStack>) player.getEquipmentAndArmor();
 				List<ItemStack> actualEquipment = new ArrayList<>(5);
 				inventoryEquipment.forEach(itemStack -> {
@@ -87,9 +87,10 @@ public class RuinCharm extends Charm {
 					Treasure.logger.debug("damaging item -> {}, current damage -> {} of {}", selectedItemStack.getDisplayName(), selectedItemStack.getItemDamage(), selectedItemStack.getMaxDamage());
 					// damage the item
 					if (selectedItemStack.isItemStackDamageable()) {
-						selectedItemStack.attemptDamageItem(1, random, null);
+						selectedItemStack.attemptDamageItem((int)getAmount(), random, null);
 						Treasure.logger.debug("damaged item -> {}, now at damaged -> {} of {}", selectedItemStack.getDisplayName(), selectedItemStack.getItemDamage(), selectedItemStack.getMaxDamage());
-						entity.setValue(MathHelper.clamp(entity.getValue() - 1.0,  0D, entity.getValue()));
+//						entity.setMana(MathHelper.clamp(entity.getMana() - 1.0,  0D, entity.getMana()));
+						applyCost(world, random, coords, player, event, entity, getAmount());
 					}
 				}			
 				Treasure.logger.debug("charm {} new data -> {}", this.getName(), entity);
@@ -107,19 +108,19 @@ public class RuinCharm extends Charm {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.DARK_RED;
-		tooltip.add("  " + color + getLabel(entity));
-		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.ruin_rate", String.valueOf(Math.toIntExact(Math.round(entity.getDuration())))));
+		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
+		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.ruin", String.valueOf(Math.toIntExact(Math.round(entity.getDuration()))))));
 	}
 	
 	public static class Builder extends Charm.Builder {
 
-		public Builder(String name, Integer level) {
-			super(ResourceLocationUtil.create(name), RUIN_TYPE, level);
+		public Builder(Integer level) {
+			super(ResourceLocationUtil.create(makeName(RUIN_TYPE, level)), RUIN_TYPE, level);
 		}
 
 		@Override
 		public ICharm build() {
-			return  new RuinCharm(this);
+			return  new RuinCurse(this);
 		}
 	}
 }

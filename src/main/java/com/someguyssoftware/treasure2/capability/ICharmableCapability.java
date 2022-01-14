@@ -135,4 +135,11 @@ public interface ICharmableCapability {
 	ILevelModifier getLevelModifier();
 
 	void setLevelModifier(ILevelModifier levelModifier);
+
+	void setCurrentSize(InventoryType type, int size);
+
+	void addCurrentSize(InventoryType type, int amount);
+
+	void clearCharms();
+
 }

@@ -24,14 +24,29 @@ package com.someguyssoftware.treasure2.capability;
  *
  */
 public class DurabilityCapability implements IDurabilityCapability  {
+	// the max value the durability can be set to
 	private int maxDurability = MAX_DURABILITY;
+	
+	// the durability of the capability
 	private int durability;
 	
+	// is this durability infinite (as opposed to the finite value of the durability property)
+	private boolean infinite;
 	/**
 	 * 
 	 */
 	public DurabilityCapability() {
-		
+		setDurability(MAX_DURABILITY);
+	}
+	
+	public DurabilityCapability(int durability) {
+		setDurability(durability);
+	}
+	
+	public DurabilityCapability(int durability, int max) {
+		// NOTE order is important here
+		setMaxDurability(max);
+		setDurability(durability);
 	}
 	
 	@Override
@@ -57,5 +72,15 @@ public class DurabilityCapability implements IDurabilityCapability  {
 	@Override
 	public void setMaxDurability(int maxDurability) {
 		this.maxDurability = maxDurability;
+	}
+
+	@Override
+	public boolean isInfinite() {
+		return infinite;
+	}
+
+	@Override
+	public void setInfinite(boolean infinite) {
+		this.infinite = infinite;
 	}
 }
