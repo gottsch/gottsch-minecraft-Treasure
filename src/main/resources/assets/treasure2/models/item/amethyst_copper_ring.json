@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "treasure2:items/adornments/amythest_copper_ring"
+        "layer0": "treasure2:items/adornments/amethyst_copper_ring"
     },
    "display": {
        "thirdperson_righthand": {

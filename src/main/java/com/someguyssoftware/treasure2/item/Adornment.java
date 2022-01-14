@@ -29,7 +29,10 @@ import com.someguyssoftware.treasure2.adornment.AdornmentSize;
 import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
 import com.someguyssoftware.treasure2.capability.AdornmentCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityStorage;
+import com.someguyssoftware.treasure2.capability.DurabilityCapability;
+import com.someguyssoftware.treasure2.capability.DurabilityCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.MagicsInventoryCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
@@ -48,8 +51,10 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
  *
  */
 public class Adornment extends ModItem {
-    private static final CharmableCapabilityStorage CAPABILITY_STORAGE = new CharmableCapabilityStorage();
 	private static final MagicsInventoryCapabilityStorage MAGICS_STORAGE = new MagicsInventoryCapabilityStorage();
+	private static final CharmableCapabilityStorage CAPABILITY_STORAGE = new CharmableCapabilityStorage();
+	private static final DurabilityCapabilityStorage DURABILITY_STORAGE = new DurabilityCapabilityStorage();
+	
 	
 	private AdornmentType type;
 	private AdornmentSize size;
@@ -72,25 +77,17 @@ public class Adornment extends ModItem {
 	 * @param size
 	 */
 	public Adornment(String modID, String name, AdornmentType type, AdornmentSize size) {
-		super();
-		setItemName(modID, name);
+		super(modID, name);
 		setType(type);
 		setSize(size);
 		setMaxStackSize(1);
-		setCreativeTab(Treasure.TREASURE_TAB);
+		setMaxDamage(100);
+		setCreativeTab(Treasure.ADORNMENTS_TAB);
 	}
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-
-//		AdornmentCapabilityProvider provider =  new AdornmentCapabilityProvider();
-//		return provider;
-
-		// TODO will have to create a new CapabilityProvider that includes both CharmInventory and TreasureBaubleProvider
-//		CharmInventoryCapabilityProvider provider =  new CharmInventoryCapabilityProvider();
 		return BaublesIntegration.isEnabled() ? new BaublesIntegration.BaubleAdornmentCapabilityProvider(type) : new AdornmentCapabilityProvider();
-//		return provider;
-
 	}
 
 	/**
@@ -101,6 +98,15 @@ public class Adornment extends ModItem {
 	public ICharmableCapability getCap(ItemStack stack) {
 		if (stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
 		return stack.getCapability(TreasureCapabilities.CHARMABLE, null);
+		}
+		else {
+			throw new IllegalStateException();
+		}
+	}
+	
+	public IDurabilityCapability getDurabilityCap(ItemStack stack) {
+		if (stack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
+		return stack.getCapability(TreasureCapabilities.DURABILITY, null);
 		}
 		else {
 			throw new IllegalStateException();
@@ -136,15 +142,16 @@ public class Adornment extends ModItem {
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 		super.addInformation(stack, world, tooltip, flag);
 		tooltip.add(TextFormatting.GOLD.toString() + "" + TextFormatting.ITALIC.toString() + I18n.translateToLocal("tooltip.charmable.usage.adornment"));
+		IDurabilityCapability durabilityCap = getDurabilityCap(stack);
+		if (!durabilityCap.isInfinite()) {
+			tooltip.add(TextFormatting.WHITE.toString() + I18n.translateToLocalFormatted("tooltip.label.durability", durabilityCap.getDurability() - stack.getItemDamage(), durabilityCap.getDurability()));
+		}
+		else {
+			tooltip.add(TextFormatting.WHITE.toString() + I18n.translateToLocal("tooltip.label.durability.infinite"));
+		}
+		// TODO add condition if infinite to display differently "tooltip.label.durability.infinite"
 		ICharmableCapability cap = getCap(stack);
 		cap.appendHoverText(stack, world, tooltip, flag);
-//		if (isCharmed(stack)) {
-//			addCharmedInfo(stack, world, tooltip, flag);
-//		}
-//		else {
-//			tooltip.add(TextFormatting.GOLD.toString() + "" + TextFormatting.ITALIC.toString() + I18n.translateToLocal("tooltip.label.charmable"));
-//		}
-//		addSlotsInfo(stack, world, tooltip, flag);
 	}
 	
 	/**
@@ -166,11 +173,15 @@ public class Adornment extends ModItem {
 				stack.getCapability(TreasureCapabilities.CHARMABLE, null),
 				null);
 		
-		// TODO include durability
+		NBTTagCompound durabilityTag = (NBTTagCompound) DURABILITY_STORAGE.writeNBT(
+				TreasureCapabilities.DURABILITY,
+				stack.getCapability(TreasureCapabilities.DURABILITY, null),
+				null);
 		
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setTag("magics", magicsTag);
 		tag.setTag("charmable", charmableTag);
+		tag.setTag("durability", durabilityTag);
 		
 		return tag;
 	}
@@ -196,8 +207,38 @@ public class Adornment extends ModItem {
 					null,
 					tag);
         }
+        if (nbt.hasKey("durability")) {
+        	NBTTagCompound tag = nbt.getCompoundTag("durability");
+	       DURABILITY_STORAGE.readNBT(
+	    		   TreasureCapabilities.DURABILITY, 
+					stack.getCapability(TreasureCapabilities.DURABILITY, null), 
+					null,
+					tag);
+        }
     }
     
+    /**
+     * Queries the percentage of the 'Durability' bar that should be drawn.
+     *
+     * @param stack The current ItemStack
+     * @return 0.0 for 100% (no damage / full bar), 1.0 for 0% (fully damaged / empty bar)
+     */
+	@Override
+    public double getDurabilityForDisplay(ItemStack stack) {
+        if (stack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
+            DurabilityCapability cap = (DurabilityCapability) stack.getCapability(TreasureCapabilities.DURABILITY, null);
+            if (cap.isInfinite()) {
+            	return 0D;
+            }
+            else {
+            	return (double)stack.getItemDamage() / (double) cap.getDurability();
+            }
+        }
+        else {
+        	return (double)stack.getItemDamage() / (double)stack.getMaxDamage();
+        }
+    }
+	
 	public AdornmentType getType() {
 		return type;
 	};
