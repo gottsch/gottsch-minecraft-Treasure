@@ -33,10 +33,15 @@ import com.someguyssoftware.treasure2.capability.DurabilityCapability;
 import com.someguyssoftware.treasure2.capability.DurabilityCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
+import com.someguyssoftware.treasure2.capability.IRunestonesCapability;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.MagicsInventoryCapabilityStorage;
+import com.someguyssoftware.treasure2.capability.RunestonesCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
 import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
+import com.someguyssoftware.treasure2.runestone.IRunestoneEntity;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -53,6 +58,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 public class Adornment extends ModItem {
 	private static final MagicsInventoryCapabilityStorage MAGICS_STORAGE = new MagicsInventoryCapabilityStorage();
 	private static final CharmableCapabilityStorage CAPABILITY_STORAGE = new CharmableCapabilityStorage();
+	private static final RunestonesCapabilityStorage RUNESTONES_STORAGE = new RunestonesCapabilityStorage();
 	private static final DurabilityCapabilityStorage DURABILITY_STORAGE = new DurabilityCapabilityStorage();
 	
 	
@@ -89,7 +95,7 @@ public class Adornment extends ModItem {
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 		return BaublesIntegration.isEnabled() ? new BaublesIntegration.BaubleAdornmentCapabilityProvider(type) : new AdornmentCapabilityProvider();
 	}
-
+	
 	/**
 	 * Convenience method.
 	 * @param stack
@@ -107,6 +113,15 @@ public class Adornment extends ModItem {
 	public IDurabilityCapability getDurabilityCap(ItemStack stack) {
 		if (stack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
 		return stack.getCapability(TreasureCapabilities.DURABILITY, null);
+		}
+		else {
+			throw new IllegalStateException();
+		}
+	}
+	
+	public IRunestonesCapability getRunestonesCap(ItemStack stack) {
+		if (stack.hasCapability(TreasureCapabilities.RUNESTONES, null)) {
+			return stack.getCapability(TreasureCapabilities.RUNESTONES, null);
 		}
 		else {
 			throw new IllegalStateException();
@@ -149,9 +164,14 @@ public class Adornment extends ModItem {
 		else {
 			tooltip.add(TextFormatting.WHITE.toString() + I18n.translateToLocal("tooltip.label.durability.infinite"));
 		}
-		// TODO add condition if infinite to display differently "tooltip.label.durability.infinite"
-		ICharmableCapability cap = getCap(stack);
-		cap.appendHoverText(stack, world, tooltip, flag);
+		
+		// add charmables tooltips
+		getCap(stack).appendHoverText(stack, world, tooltip, flag);
+		
+		// add runestones tooltips
+		if (getRunestonesCap(stack).hasRunestone()) {
+			getRunestonesCap(stack).appendHoverText(stack, world, tooltip, flag);
+		}
 	}
 	
 	/**
@@ -160,27 +180,32 @@ public class Adornment extends ModItem {
 	 */
 	@Override
     public NBTTagCompound getNBTShareTag(ItemStack stack) {
-
+		Treasure.logger.debug("writing share tag");
 		NBTTagCompound magicsTag;
 		// read cap -> write nbt
-		magicsTag = (NBTTagCompound) MAGICS_STORAGE.writeNBT(
-				TreasureCapabilities.MAGICS,
-				stack.getCapability(TreasureCapabilities.MAGICS, null),
-				null);
+//		magicsTag = (NBTTagCompound) MAGICS_STORAGE.writeNBT(
+//				TreasureCapabilities.MAGICS,
+//				stack.getCapability(TreasureCapabilities.MAGICS, null),
+//				null);
 		NBTTagCompound charmableTag;
 		charmableTag = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
 				TreasureCapabilities.CHARMABLE,
 				stack.getCapability(TreasureCapabilities.CHARMABLE, null),
 				null);
-		
+		NBTTagCompound runestonesTag;
+		runestonesTag = (NBTTagCompound) RUNESTONES_STORAGE.writeNBT(
+				TreasureCapabilities.RUNESTONES,
+				stack.getCapability(TreasureCapabilities.RUNESTONES, null),
+				null);		
 		NBTTagCompound durabilityTag = (NBTTagCompound) DURABILITY_STORAGE.writeNBT(
 				TreasureCapabilities.DURABILITY,
 				stack.getCapability(TreasureCapabilities.DURABILITY, null),
 				null);
 		
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setTag("magics", magicsTag);
+//		tag.setTag("magics", magicsTag);
 		tag.setTag("charmable", charmableTag);
+		tag.setTag("runestones", runestonesTag);
 		tag.setTag("durability", durabilityTag);
 		
 		return tag;
@@ -189,21 +214,29 @@ public class Adornment extends ModItem {
     @Override
     public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
         super.readNBTShareTag(stack, nbt);
-        
+        Treasure.logger.debug("reading share tag");
         // read nbt -> write key item
-        if (nbt.hasKey("magics")) {
-        	NBTTagCompound tag = nbt.getCompoundTag("magics");
-	        MAGICS_STORAGE.readNBT(
-	     		   TreasureCapabilities.MAGICS, 
-	 				stack.getCapability(TreasureCapabilities.MAGICS, null), 
-	 				null,
-	 				tag);
-        }
+//        if (nbt.hasKey("magics")) {
+//        	NBTTagCompound tag = nbt.getCompoundTag("magics");
+//	        MAGICS_STORAGE.readNBT(
+//	     		   TreasureCapabilities.MAGICS, 
+//	 				stack.getCapability(TreasureCapabilities.MAGICS, null), 
+//	 				null,
+//	 				tag);
+//        }
         if (nbt.hasKey("charmable")) {
         	NBTTagCompound tag = nbt.getCompoundTag("charmable");
 	       CAPABILITY_STORAGE.readNBT(
 	    		   TreasureCapabilities.CHARMABLE, 
 					stack.getCapability(TreasureCapabilities.CHARMABLE, null), 
+					null,
+					tag);
+        }
+        if (nbt.hasKey("runestones")) {
+        	NBTTagCompound tag = nbt.getCompoundTag("runestones");
+	       RUNESTONES_STORAGE.readNBT(
+	    		   TreasureCapabilities.RUNESTONES, 
+					stack.getCapability(TreasureCapabilities.RUNESTONES, null), 
 					null,
 					tag);
         }

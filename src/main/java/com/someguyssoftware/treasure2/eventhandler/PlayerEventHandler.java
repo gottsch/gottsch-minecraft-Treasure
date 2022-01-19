@@ -25,15 +25,21 @@ import java.util.List;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.item.IWishable;
 
+import baubles.common.items.ItemRing;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,6 +48,7 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -477,7 +484,21 @@ public class PlayerEventHandler {
 			}
 		}
 	}
-
+	
+//	@SubscribeEvent
+//	public void addCapabilityToolTip(ItemTooltipEvent event) {
+//		if (event.getEntityPlayer() != null) {
+//			// TODO need to check register - don't want to add to built-in items that already have capabilities
+//			ItemStack stack = event.getItemStack();
+//			if (stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+//				ICharmableCapability cap = stack.getCapability(TreasureCapabilities.CHARMABLE, null);
+//				cap.appendHoverText(stack, event.getEntityPlayer().world, event.getToolTip(), TooltipFlags.NORMAL);
+//			}
+//		}
+//	}
+	
+	// TODO add tooltip "wishable" to Diamond and Emerald when the Wishable strategy is created/cleaned up
+	
 	/**
 	 * @return the mod
 	 */

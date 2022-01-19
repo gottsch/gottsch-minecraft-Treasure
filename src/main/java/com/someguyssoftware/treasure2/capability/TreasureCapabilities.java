@@ -37,6 +37,9 @@ public class TreasureCapabilities {
 	@CapabilityInject(ICharmableCapability.class)
 	public static Capability<ICharmableCapability> CHARMABLE = null;
 
+	@CapabilityInject(IRunestonesCapability.class)
+	public static Capability<IRunestonesCapability> RUNESTONES = null;
+	
 	@CapabilityInject(IDurabilityCapability.class)
 	public static Capability<IDurabilityCapability> DURABILITY = null;
 		
@@ -46,6 +49,7 @@ public class TreasureCapabilities {
 	public static void register() {
         CapabilityManager.INSTANCE.register(IMagicsInventoryCapability.class, new MagicsInventoryCapabilityStorage(), MagicsInventoryCapability::new);
         CapabilityManager.INSTANCE.register(ICharmableCapability.class, new CharmableCapabilityStorage(), CharmableCapability::create);
+        CapabilityManager.INSTANCE.register(IRunestonesCapability.class, new RunestonesCapabilityStorage(), RunestonesCapability::create);
         CapabilityManager.INSTANCE.register(IDurabilityCapability.class, new DurabilityCapabilityStorage(), DurabilityCapability::new);
   	}
 }

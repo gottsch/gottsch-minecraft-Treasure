@@ -19,6 +19,10 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.charm.cost.CostEvaluator;
+import com.someguyssoftware.treasure2.charm.cost.ICostEvaluator;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -36,6 +40,7 @@ public interface ICharmEntity {
 	public static final String AMOUNT = "amount";
 	public static final String COOLDOWN = "cooldown";
 	public static final String RANGE = "range";
+	public static final String COST_EVALUATOR = "costEvaluator";
 	
 	ICharm getCharm();
 
@@ -49,6 +54,18 @@ public interface ICharmEntity {
 
 	double getFrequency();	
 	void setFrequency(double frequency);
+	
+	double getRange();
+	void setRange(double range);
+
+	double getCooldown();
+	void setCooldown(double cooldown);
+	
+	double getAmount();
+	void setAmount(double amount);
+
+	ICostEvaluator getCostEvaluator();
+	void setCostEvaluator(ICostEvaluator costEvaluator);
 	
 	void update(ICharmEntity entity);
 
@@ -83,15 +100,21 @@ public interface ICharmEntity {
 		if (nbt.hasKey(RANGE)) {
 			setRange(nbt.getDouble(RANGE));
 		}
+		if (nbt.hasKey(COST_EVALUATOR)) {
+			try {
+				String costEvalClass = nbt.getString(COST_EVALUATOR);
+				Object o = Class.forName(costEvalClass).newInstance();
+				setCostEvaluator((ICostEvaluator)o);
+			}
+			catch(Exception e) {
+				Treasure.logger.warn("unable to create cost evaluator from class string -> {}", nbt.getString(COST_EVALUATOR));
+				Treasure.logger.error(e);
+				setCostEvaluator(new CostEvaluator());
+			}
+		}
+		else {
+			setCostEvaluator(new CostEvaluator());
+		}
 		return true;
 	}
-
-	double getRange();
-	void setRange(double range);
-
-	double getCooldown();
-	void setCooldown(double cooldown);
-	
-	double getAmount();
-	void setAmount(double amount);
 }

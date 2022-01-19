@@ -17,23 +17,44 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.charm;
+package com.someguyssoftware.treasure2.capability;
 
-import java.util.Random;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.someguyssoftware.gottschcore.positional.ICoords;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.eventhandler.Event;
-
-/**
- * Calculates and applies the cost to execute the charm.
- * @author Mark Gottschling on Jan 12, 2022
- *
+/*
+ * 
  */
-public interface ICostEvaluator {
-	@Deprecated
-	public double apply(ICharmEntity entity, double amount);
-	public double apply(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity, double amount);
+public enum InventoryType {
+	INNATE(0),
+	IMBUE(1),
+	SOCKET(2);
+
+	private static final Map<Integer, InventoryType> values = new HashMap<Integer, InventoryType>();
+	Integer value;
+
+	// setup reverse lookup
+	static {
+		for (InventoryType x : EnumSet.allOf(InventoryType.class)) {
+			values.put(x.getValue(), x);
+		}
+	}
+
+	InventoryType(Integer value) {
+		this.value = value;
+	}
+
+	public Integer getValue() {
+		return value;
+	}
+
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static InventoryType getByValue(Integer value) {
+		return (InventoryType) values.get(value);
+	}
 }

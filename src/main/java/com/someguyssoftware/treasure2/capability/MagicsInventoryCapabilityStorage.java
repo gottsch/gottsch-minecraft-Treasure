@@ -31,6 +31,7 @@ import net.minecraftforge.common.capabilities.Capability;
  * @author Mark Gottschling on Jan 3, 2022
  *
  */
+@Deprecated
 public class MagicsInventoryCapabilityStorage implements Capability.IStorage<IMagicsInventoryCapability> {
 	private static final String MAX_INNATE_SIZE = "maxInnateSize";
 	private static final String MAX_IMBUE_SIZE = "maxImbueSize";

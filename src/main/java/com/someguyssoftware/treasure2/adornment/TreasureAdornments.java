@@ -71,6 +71,7 @@ public class TreasureAdornments {
 	private static final List<Adornment> ADORNMENTS_CACHE = new ArrayList<>();
 	
 	public static final Map<Key, Adornment> REGISTRY = Maps.newHashMap();
+	// TODO add non-Treasure/non-Adornment REGISTRY ie Map<Key, Item>
 
 	public static final AdornmentSize STANDARD = new AdornmentSize("standard");
 	public static final AdornmentSize GREAT = new AdornmentSize("great") {
@@ -131,7 +132,7 @@ public class TreasureAdornments {
 	}
 	
 	public static Optional<Adornment> get(AdornmentType type, AdornmentSize size, ResourceLocation material, ResourceLocation source) {
-		return get(new Key(type, size, material, source));		
+		return get(new Key(type, size, material, source));
 	}
 	
 	public static Optional<Adornment> get(Key key) {

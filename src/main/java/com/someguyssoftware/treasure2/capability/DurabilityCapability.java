@@ -19,6 +19,8 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
+import net.minecraft.item.ItemStack;
+
 /**
  * @author Mark Gottschling on Sep 6, 2020
  *
@@ -47,6 +49,17 @@ public class DurabilityCapability implements IDurabilityCapability  {
 		// NOTE order is important here
 		setMaxDurability(max);
 		setDurability(durability);
+	}
+	
+	// TODO rename copyTo()
+	@Override
+	public void transferTo(ItemStack stack) {
+		if (stack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
+			IDurabilityCapability cap = stack.getCapability(TreasureCapabilities.DURABILITY, null);
+			cap.setDurability(getDurability());
+			cap.setInfinite(isInfinite());
+			cap.setMaxDurability(getMaxDurability());
+		}
 	}
 	
 	@Override

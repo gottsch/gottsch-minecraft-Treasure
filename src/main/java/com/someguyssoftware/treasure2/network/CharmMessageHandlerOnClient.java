@@ -24,12 +24,8 @@ import java.util.UUID;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
-import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
-import com.someguyssoftware.treasure2.capability.IMagicsInventoryCapability;
-import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability;
-import com.someguyssoftware.treasure2.capability.PouchCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
-import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability.InventoryType;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
 
@@ -42,7 +38,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.items.IItemHandler;
 
 /**
  * Derived from MinecraftByExample by The Grey Ghost.

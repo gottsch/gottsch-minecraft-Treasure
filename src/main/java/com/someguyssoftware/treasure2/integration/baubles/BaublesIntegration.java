@@ -30,12 +30,15 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
+import com.someguyssoftware.treasure2.capability.AdornmentCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmableCapability;
 import com.someguyssoftware.treasure2.capability.DurabilityCapability;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.IMagicsInventoryCapability;
+import com.someguyssoftware.treasure2.capability.IRunestonesCapability;
 import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability;
+import com.someguyssoftware.treasure2.capability.RunestonesCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
@@ -180,10 +183,13 @@ public class BaublesIntegration {
 	 * Sub-class Bauble Capability Provider to include required Adornment capabilities (CharmInventoryCapability)
 	 */
 	public static class BaubleAdornmentCapabilityProvider extends BaubleProvider implements ICapabilitySerializable<NBTTagCompound> {
-		private final IMagicsInventoryCapability magicsCap;
+//		private final IMagicsInventoryCapability magicsCap;
 		private final ICharmableCapability charmableCap;
+		private final IRunestonesCapability runestonesCap;
 		private final IDurabilityCapability durabilityCap;
 		// TODO add IPouchableCapability
+		
+		private AdornmentCapabilityProvider adornmentCapabilityProvider;
 		
 		/**
 		 * 
@@ -192,9 +198,13 @@ public class BaublesIntegration {
 		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType) {
 			super(adornmentType);
 //			charm = new CharmInventoryCapability();
-			this.magicsCap = new MagicsInventoryCapability(1, 1, 1);
-			this.charmableCap = new CharmableCapability(magicsCap);
+//			this.magicsCap = new MagicsInventoryCapability(1, 1, 1);
+			this.charmableCap = new CharmableCapability(0, 0, 0);
+//			this.runestonesCap = new RunestonesCapability(magicsCap);
+			this.runestonesCap = new RunestonesCapability(0, 0, 0);
 			this.durabilityCap = new DurabilityCapability();
+			
+			this.adornmentCapabilityProvider = new AdornmentCapabilityProvider(charmableCap, runestonesCap, durabilityCap);
 		}
 		
 		/**
@@ -208,16 +218,34 @@ public class BaublesIntegration {
 		
 		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType, ICharmableCapability charmable) {
 			super(adornmentType);
-			this.magicsCap = charmable.getMagicsCap();
+//			this.magicsCap = charmable.getMagicsCap();
 			this.charmableCap = charmable;
+//			this.runestonesCap = new RunestonesCapability(magicsCap);
+			this.runestonesCap = new RunestonesCapability(0, 0, 0);
 			this.durabilityCap = new DurabilityCapability();
+			
+			this.adornmentCapabilityProvider = new AdornmentCapabilityProvider(charmableCap, runestonesCap, durabilityCap);
 		}
 		
 		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType, ICharmableCapability charmable, IDurabilityCapability durability) {
 			super(adornmentType);
-			this.magicsCap = charmable.getMagicsCap();
+//			this.magicsCap = charmable.getMagicsCap();
 			this.charmableCap = charmable;
+//			this.runestonesCap = new RunestonesCapability(magicsCap);
+			this.runestonesCap = new RunestonesCapability(0, 0, 0);
 			this.durabilityCap = durability;
+			
+			this.adornmentCapabilityProvider = new AdornmentCapabilityProvider(charmableCap, runestonesCap, durabilityCap);
+		}
+		
+		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType, ICharmableCapability charmable, IRunestonesCapability runestonesCapability, IDurabilityCapability durability) {
+			super(adornmentType);
+//			this.magicsCap = charmable.getMagicsCap();
+			this.charmableCap = charmable;
+			this.runestonesCap = runestonesCapability;
+			this.durabilityCap = durability;
+			
+			this.adornmentCapabilityProvider = new AdornmentCapabilityProvider(charmableCap, runestonesCap, durabilityCap);
 		}
 		
 		
@@ -226,13 +254,7 @@ public class BaublesIntegration {
 			if (capability == BaublesCapabilities.CAPABILITY_ITEM_BAUBLE) {
 				return true;
 			}
-			else if (capability == TreasureCapabilities.CHARMABLE) {
-				return true;
-			}
-			else if (capability == TreasureCapabilities.DURABILITY) {
-				return true;
-			}
-			else if (capability == TreasureCapabilities.MAGICS) {
+			else if (adornmentCapabilityProvider.hasCapability(capability, facing)) {
 				return true;
 			}
 			return false;
@@ -244,78 +266,19 @@ public class BaublesIntegration {
 			if (capability == BaublesCapabilities.CAPABILITY_ITEM_BAUBLE) {
 				return hasCapability(capability, facing) ? (T)(IBauble)itemStack -> type : null;
 			}
-			else if (capability == TreasureCapabilities.CHARMABLE) {
-				return TreasureCapabilities.CHARMABLE.cast(this.charmableCap);
+			else {
+				return adornmentCapabilityProvider.getCapability(capability, facing);
 			}
-			else if (capability == TreasureCapabilities.DURABILITY) {
-				return TreasureCapabilities.DURABILITY.cast(this.durabilityCap);
-			}
-			else if (capability == TreasureCapabilities.MAGICS) {
-				return TreasureCapabilities.MAGICS.cast(this.magicsCap);
-			}
-			return null;
 		}
 		
 		@Override
 		public NBTTagCompound serializeNBT() {
-			NBTTagCompound magicsTag = (NBTTagCompound)	TreasureCapabilities.MAGICS.getStorage().writeNBT(TreasureCapabilities.MAGICS, magicsCap, null);
-			NBTTagCompound charmableTag = (NBTTagCompound)TreasureCapabilities.CHARMABLE.getStorage().writeNBT(TreasureCapabilities.CHARMABLE, charmableCap, null);
-			NBTTagCompound durabilityTag = (NBTTagCompound)TreasureCapabilities.DURABILITY.getStorage().writeNBT(TreasureCapabilities.DURABILITY, durabilityCap, null);
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setTag("magics", magicsTag);
-			tag.setTag("charmable", charmableTag);
-			tag.setTag("durability", durabilityTag);
-			return tag;
+			return adornmentCapabilityProvider.serializeNBT();
 		}
 
 		@Override
 		public void deserializeNBT(NBTTagCompound nbt) {
-			if (nbt.hasKey("magics")) {
-				NBTTagCompound tag = nbt.getCompoundTag("magics");
-				TreasureCapabilities.MAGICS.getStorage().readNBT(TreasureCapabilities.MAGICS, magicsCap, null, tag);			
-			}
-			if (nbt.hasKey("charmable")) {
-				NBTTagCompound tag = nbt.getCompoundTag("charmable");
-				TreasureCapabilities.CHARMABLE.getStorage().readNBT(TreasureCapabilities.CHARMABLE, charmableCap, null, tag);
-			}		
-			if (nbt.hasKey("durability")) {
-				NBTTagCompound tag = nbt.getCompoundTag("durability");
-				TreasureCapabilities.DURABILITY.getStorage().readNBT(TreasureCapabilities.DURABILITY, durabilityCap, null, tag);
-			}
+			adornmentCapabilityProvider.deserializeNBT(nbt);
 		}
-		
-//		@Override
-//		public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-//			if (capability == BaublesCapabilities.CAPABILITY_ITEM_BAUBLE) {
-//				return true;
-//			}
-//			else if (capability == TreasureCapabilities.CHARM_INVENTORY) {
-//				return true;
-//			}
-//			return false;
-//		}
-//
-//		@SuppressWarnings("unchecked")
-//		@Override
-//		public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-//			if (capability == BaublesCapabilities.CAPABILITY_ITEM_BAUBLE) {
-//				return hasCapability(capability, facing) ? (T)(IBauble)itemStack -> type : null;
-//			}
-//			else if (capability == TreasureCapabilities.CHARM_INVENTORY) {
-//				return TreasureCapabilities.CHARM_INVENTORY.cast(this.charm);
-//			}
-//			return null;
-//		}
-//
-//		@Override
-//		public NBTTagCompound serializeNBT() {
-//			NBTTagCompound tag = (NBTTagCompound)TreasureCapabilities.CHARM_INVENTORY.getStorage().writeNBT(TreasureCapabilities.CHARM_INVENTORY, charm, null);
-//			return tag;
-//		}
-//
-//		@Override
-//		public void deserializeNBT(NBTTagCompound nbt) {
-//			TreasureCapabilities.CHARM_INVENTORY.getStorage().readNBT(TreasureCapabilities.CHARM_INVENTORY, charm, null, nbt);
-//		}
 	}
 }

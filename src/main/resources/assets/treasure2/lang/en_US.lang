@@ -98,7 +98,7 @@ item.treasure2:salandaars_ward.name=Sal'andaar's Ward
 item.treasure2:dwarven_talisman.name=Dwarven Talisman
 item.treasure2:adephagias_bounty.name=Adephagia's Bounty
 item.treasure2:mirthas_torch.name=Mirtha's Torch
-item.treasure2:peasants_bounty=Peasant's Bounty
+item.treasure2:peasants_fortune.name=Peasant's Fortune
 item.treasure2:castle_ring.name=Castle Ring
 
 # iron adornments
@@ -204,7 +204,7 @@ item.treasure2:sapphire_gold_ring.name=Gold Sapphire Ring
 item.treasure2:white_pearl_gold_ring.name=Gold White Pearl Ring
 item.treasure2:black_pearl_gold_ring.name=Gold Black Pearl Ring
 item.treasure2:great_gold_ring.name=Great Gold Ring
-item.treasure2:gold_ring.name=Gold Ring
+item.treasure2:gold_bracelet.name=Gold Bracelet
 item.treasure2:diamond_gold_bracelet.name=Gold Diamond Bracelet
 item.treasure2:emerald_gold_bracelet.name=Gold Emerald Bracelet
 item.treasure2:amethyst_gold_bracelet.name=Gold Amethyst Bracelet
@@ -299,6 +299,8 @@ item.treasure2:emerald_charm.name=Emerald Charm
 item.treasure2:ruby_charm.name=Ruby Charm
 item.treasure2:sapphire_charm.name=Sapphire Charm
 item.treasure2:charm_book.name=Charm Book
+item.treasure2:anvil_runestone.name=Runestone of the Anvil
+
 item.treasure2:treasure_tool.name=Treasure Tool
 
 #entities
@@ -333,7 +335,6 @@ tooltip.label.coin_pouch=Holds coins gems pearls and charms
 tooltip.label.treasure_tool=Required for Key/Pick recipes
 tooltip.label.charmed=Hold in hand or in coin pouch for buffs
 tooltip.label.charmed.adornment=Hold in hand coin pouch or hotbar for buffs
-tooltip.label.charms=Charms:
 tooltip.label.charmable=To charm add charmed items on an anvil
 tooltip.label.charmable.slots=Charms Capacity: %s[available/activated/max.]
 tooltip.label.charmable.slots.stats=[%s/%s/%s]
@@ -345,6 +346,7 @@ tooltip.label.durability=Durability: [%s/%s]
 tooltip.label.durability.infinite=Durability: Infinite
 tooltip.charmable.usage=Hold in hand or bind to adornment for buffs
 tooltip.charmable.usage.adornment=Hold in hand or equip for buffs
+tooltip.runestones.usage=Combine with adornment on anvil for enchancements
 tooltip.label.charm_book=Use to imbue charm onto charmables.
 tooltip.charmable.slots=Capacity: [%s/%s]
 tooltip.charmable.slots.stats=[%s/%s]
@@ -391,10 +393,21 @@ tooltip.charm.rate.ruin=- your equipment ruins 1 damage/%s sec
 tooltip.charm.uses_gauge=[%s/%s]
 tooltip.charm.cooldown.meter=%ss
 
-tooltip.adornment.type.ring:Ring
-tooltip.adornment.type.necklace:Necklace
-tooltip.adornment.type.bracelet:Bracelet
-	
+tooltip.adornment.type.ring=Ring
+tooltip.adornment.type.necklace=Necklace
+tooltip.adornment.type.bracelet=Bracelet
+
+# runestone (typically but not necessary the same as the runestone item)
+runestone.treasure2:anvil_rune.name=Runestone of the Anvil
+
+tooltip.runestones.title=Runestones:
+tooltip.runestones.effects=Effects:
+tooltip.runestones.inventory.socket=[Socket] 
+tooltip.runestones.slots=Capacity: [%s/%s]
+
+# runestone lore
+tooltip.runestone.lore.anvil_rune=Grants Infinity durability to the adornment
+
 tooltip.ember_key.specials=Destroys Wood Locks
 tooltip.ember_lock.specials=Destroys All Keys regardless of breakability (excluding Ember & Lightning)
 tooltip.metallurgists_key.specials=Opens any lock in METALS category

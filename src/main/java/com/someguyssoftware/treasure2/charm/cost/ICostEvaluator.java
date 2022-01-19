@@ -17,29 +17,22 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.capability;
+package com.someguyssoftware.treasure2.charm.cost;
 
-import net.minecraft.item.ItemStack;
+import java.util.Random;
+
+import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.charm.ICharmEntity;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
- * 
- * @author Mark Gottschling on Sep 6, 2020
+ * Calculates and applies the cost to execute the charm.
+ * @author Mark Gottschling on Jan 12, 2022
  *
  */
-public interface IDurabilityCapability {
-    public static final int MAX_DURABILITY = 1000; 
-
-	public int getDurability();
-
-	public void setDurability(int damage);
-
-	public int getMaxDurability();
-
-	public void setMaxDurability(int maxDurability);
-
-	public boolean isInfinite();
-
-	public void setInfinite(boolean infinite);
-
-	public void transferTo(ItemStack stack);
+public interface ICostEvaluator {
+	public double apply(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity, double amount);
 }

@@ -1,5 +1,6 @@
 package com.someguyssoftware.treasure2.capability;
 
+@Deprecated
 public interface IMagicsInventoryCapability {
 
 	int getMaxSocketSize();

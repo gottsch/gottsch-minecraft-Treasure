@@ -22,7 +22,6 @@ package com.someguyssoftware.treasure2.capability;
 import java.util.List;
 
 import com.google.common.collect.Multimap;
-import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability.InventoryType;
 import com.someguyssoftware.treasure2.capability.modifier.ILevelModifier;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
@@ -30,7 +29,6 @@ import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 
 /**
@@ -46,6 +44,7 @@ public interface ICharmableCapability {
 	boolean isCharmed();
 
 	public void appendHoverText(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag);
+	void appendHoverText(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, InventoryType inventoryType, boolean titleFlag);
 	
 	/**
 	 * 
@@ -142,4 +141,9 @@ public interface ICharmableCapability {
 
 	void clearCharms();
 
+	String getCapacityHoverText(ItemStack stack, World world, InventoryType type);
+
+	void transferTo(ItemStack dest, InventoryType sourceType, InventoryType destType);
+
+	void copyTo(ItemStack source);
 }

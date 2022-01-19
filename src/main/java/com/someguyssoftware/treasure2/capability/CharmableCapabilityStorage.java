@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability.InventoryType;
 import com.someguyssoftware.treasure2.capability.modifier.ILevelModifier;
 import com.someguyssoftware.treasure2.charm.Charm;
 import com.someguyssoftware.treasure2.charm.ICharm;
@@ -85,7 +84,7 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 			nbt.setBoolean(INNATE, instance.isInnate());			
 			nbt.setBoolean(IMBUABLE, instance.isImbuable());
 			nbt.setBoolean(IMBUING, instance.isImbuing());
-			
+
 			nbt.setBoolean(SOCKETABLE, instance.isSocketable());
 			nbt.setString(BASE_MATERIAL, instance.getBaseMaterial().toString());
 			nbt.setString(SOURCE_ITEM, instance.getSourceItem().toString());
@@ -104,11 +103,11 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 
 		if (nbt instanceof NBTTagCompound) {
 			NBTTagCompound tag = (NBTTagCompound) nbt;
-			
+
 			for (InventoryType type : InventoryType.values()) {
 				// clear the list
 				instance.getCharmEntities().get(type).clear();
-				
+
 				// load the charm entities
 				if (tag.hasKey(type.name())) {
 					NBTTagList listNbt = tag.getTagList(type.name(), 10);
@@ -129,60 +128,61 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 						// add the entity to the list
 						instance.getCharmEntities().get(type).add(entity);
 					});
-					
-					// load cap properties
-					if (tag.hasKey(SOURCE)) {
-						instance.setSource(tag.getBoolean(SOURCE));
-					}
-					if (tag.hasKey(EXECUTING)) {
-						instance.setExecuting(tag.getBoolean(EXECUTING));
-					}
-					
-					if (tag.hasKey(BINDABLE)) {
-						instance.setBindable(tag.getBoolean(BINDABLE));
-					}
-					
-					if (tag.hasKey(INNATE)) {
-						instance.setInnate(tag.getBoolean(INNATE));
-					}				
-					
-					if (tag.hasKey(IMBUABLE)) {
-						instance.setImbuable(tag.getBoolean(IMBUABLE));
-					}				
+				}
 
-					if (tag.hasKey(IMBUING)) {
-						instance.setImbuing(tag.getBoolean(IMBUING));
-					}	
-					
-					if (tag.hasKey(SOCKETABLE)) {
-						instance.setSocketable(tag.getBoolean(SOCKETABLE));
-					}				
+				// load cap properties
+				if (tag.hasKey(SOURCE)) {
+					instance.setSource(tag.getBoolean(SOURCE));
+				}
+				if (tag.hasKey(EXECUTING)) {
+					instance.setExecuting(tag.getBoolean(EXECUTING));
+				}
 
-					if (tag.hasKey(BASE_MATERIAL)) {
-						instance.setBaseMaterial(ResourceLocationUtil.create(tag.getString(BASE_MATERIAL)));
+				if (tag.hasKey(BINDABLE)) {
+					instance.setBindable(tag.getBoolean(BINDABLE));
+				}
+
+				if (tag.hasKey(INNATE)) {
+					instance.setInnate(tag.getBoolean(INNATE));
+				}				
+
+				if (tag.hasKey(IMBUABLE)) {
+					instance.setImbuable(tag.getBoolean(IMBUABLE));
+				}				
+
+				if (tag.hasKey(IMBUING)) {
+					instance.setImbuing(tag.getBoolean(IMBUING));
+				}	
+
+				if (tag.hasKey(SOCKETABLE)) {
+					instance.setSocketable(tag.getBoolean(SOCKETABLE));
+				}				
+
+				if (tag.hasKey(BASE_MATERIAL)) {
+					instance.setBaseMaterial(ResourceLocationUtil.create(tag.getString(BASE_MATERIAL)));
+				}
+
+				if (tag.hasKey(SOURCE_ITEM)) {
+					instance.setSourceItem(ResourceLocationUtil.create(tag.getString(SOURCE_ITEM)));
+				}
+
+				if (tag.hasKey(NAMED_BY_MATERIAL)) {
+					instance.setNamedByMaterial(tag.getBoolean(NAMED_BY_MATERIAL));
+				}
+				if (tag.hasKey(NAMED_BY_CHARM)) {
+					instance.setNamedByCharm(tag.getBoolean(NAMED_BY_CHARM));
+				}
+				if (tag.hasKey(LEVEL_MODIFIER)) {
+					try {
+						ILevelModifier levelModifier = (ILevelModifier) Class.forName(tag.getString(LEVEL_MODIFIER)).newInstance();
+						instance.setLevelModifier(levelModifier);
 					}
-					
-					if (tag.hasKey(SOURCE_ITEM)) {
-						instance.setSourceItem(ResourceLocationUtil.create(tag.getString(SOURCE_ITEM)));
-					}
-					
-					if (tag.hasKey(NAMED_BY_MATERIAL)) {
-						instance.setNamedByMaterial(tag.getBoolean(NAMED_BY_MATERIAL));
-					}
-					if (tag.hasKey(NAMED_BY_CHARM)) {
-						instance.setNamedByCharm(tag.getBoolean(NAMED_BY_CHARM));
-					}
-					if (tag.hasKey(LEVEL_MODIFIER)) {
-						try {
-							ILevelModifier levelModifier = (ILevelModifier) Class.forName(tag.getString(LEVEL_MODIFIER)).newInstance();
-							instance.setLevelModifier(levelModifier);
-						}
-						catch(Exception e) {
-							Treasure.logger.warn("unable to create level modifier -> {}", tag.getString(LEVEL_MODIFIER));
-						}
+					catch(Exception e) {
+						Treasure.logger.warn("unable to create level modifier -> {}", tag.getString(LEVEL_MODIFIER));
 					}
 				}
 			}
+
 		} else {
 			Treasure.logger.warn("Not a tag compound!");
 		}

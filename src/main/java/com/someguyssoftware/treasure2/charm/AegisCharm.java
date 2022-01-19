@@ -40,7 +40,6 @@ public class AegisCharm extends ShieldingCharm {
 	
 	AegisCharm(Builder builder) {
 		super((Charm.Builder)builder);
-		Treasure.logger.debug("builder.cooldown -> {}, charm.cooldown -> {}", builder.cooldown, getCooldown());
 	}
 
 	public static String AEGIS_TYPE = "aegis";
@@ -54,7 +53,7 @@ public class AegisCharm extends ShieldingCharm {
 		if (charmEntity.getCooldownEnd() > 0.0 && world.getTotalWorldTime() < charmEntity.getCooldownEnd()) {
 			tooltip.add(TextFormatting.GRAY + "" + TextFormatting.ITALIC
 					+ I18n.translateToLocalFormatted("tooltip.indent2", 
-							I18n.translateToLocal("tooltip.charm.rate.aegis") + " " +I18n.translateToLocalFormatted("tooltip.charm.cooldown.meter", DECIMAL_FORMAT.format(entity.getCooldown()/TICKS_PER_SECOND)))
+							I18n.translateToLocal("tooltip.charm.rate.aegis") + " " +I18n.translateToLocalFormatted("tooltip.charm.cooldown.meter", DECIMAL_FORMAT.format((charmEntity.getCooldownEnd() - world.getTotalWorldTime())/TICKS_PER_SECOND)))
 			);
 		}
 		{

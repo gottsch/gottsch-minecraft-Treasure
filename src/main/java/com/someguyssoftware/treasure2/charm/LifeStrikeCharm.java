@@ -24,6 +24,7 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.charm.cost.ICostEvaluator;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -146,12 +147,6 @@ public class LifeStrikeCharm extends Charm {
 			}
 			return cost;
 		}
-
-		@Deprecated
-		@Override
-		public double apply(ICharmEntity entity, double amount) {
-			return 0;
-		}		
 	}
 
 	public double getLifeCost() {

@@ -19,6 +19,7 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -26,12 +27,11 @@ import java.util.function.Consumer;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability.InventoryType;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.modifier.ILevelModifier;
 import com.someguyssoftware.treasure2.capability.modifier.NoLevelModifier;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
-import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.material.CharmableMaterial;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 
@@ -39,7 +39,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -54,7 +53,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Dec 30, 2021
  *
  */
-public class CharmableCapability implements ICharmableCapability { // TODO this could extend an AbstractMagicsSupport which implements IMagicsInventorySupport
+public class CharmableCapability implements ICharmableCapability { // TODO this could extend an AbstractMagicsSupport which implements IMagicsInventorySupportCapability
 	
 	// TODO requies a reference back to the hosting Item because some methods (ex getMaxLevel) required additional computation that is provided from the Item ex. AdornmentSize.
 	// TODO probably need to extend this class for Adornments, in order to provide the addtional functionality.
@@ -64,7 +63,7 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	 */
 	Multimap<InventoryType, ICharmEntity> charmEntities = ArrayListMultimap.create();
 
-	private IMagicsInventoryCapability magicsCap;
+//	private IMagicsInventoryCapability magicsCap;
 
 	// is this item a charm source/originator ie. not an adornment or an item that is imbued or socketed with a charm
 	private boolean source;
@@ -102,6 +101,11 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	// modifieds maxLevel, maxLevelMultiplier
 	private ILevelModifier levelModifier;
 	
+	// max inventory sizes
+	private int maxSocketSize;
+	private int maxImbueSize;
+	private int maxInnateSize;
+	
 	public static class SortByLevel implements Comparator<ICharmEntity> {
 		@Override
 		public int compare(ICharmEntity e1, ICharmEntity e2) {
@@ -117,15 +121,23 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	 * @return
 	 */
 	public static CharmableCapability create() {
-		return new CharmableCapability(new MagicsInventoryCapability());
+//		return new CharmableCapability(new MagicsInventoryCapability());
+		return new CharmableCapability(0, 0, 0);
+	}
+	
+	public CharmableCapability(int maxInnateSize, int maxImbueSize, int maxSocketSize) {
+		this.maxInnateSize = maxInnateSize;
+		this.maxImbueSize = maxImbueSize;
+		this.maxSocketSize = maxSocketSize;
 	}
 	
 	/**
 	 * 
 	 * @param magicsCap
 	 */
+	@Deprecated
 	public CharmableCapability(IMagicsInventoryCapability magicsCap) {
-		this.magicsCap = magicsCap;
+//		this.magicsCap = magicsCap;
 	}
 
 	/**
@@ -134,7 +146,7 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	 * @param builder
 	 */
 	public CharmableCapability(Builder builder) {
-		this.magicsCap = builder.magicsCap;
+//		this.magicsCap = builder.magicsCap;
 		this.source = builder.source;
 		this.executing = builder.executing;
 		this.bindable = builder.bindable;
@@ -147,6 +159,9 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 		this.namedByCharm = builder.namedByCharm;
 		this.namedByMaterial = builder.namedByMaterial;
 		this.levelModifier = builder.levelModifier;
+		this.maxInnateSize = builder.maxInnateSize;
+		this.maxImbueSize = builder.maxImbueSize;
+		this.maxSocketSize = builder.maxSocketSize;
 	}
 
 	@Override
@@ -174,11 +189,61 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	}
 
 	@Override
-	public int getCurrentSize(InventoryType type) {
-		// check against SOCKET first as this will be the most common
-		return (type == InventoryType.SOCKET ? getMagicsCap().getSocketSize() : type == InventoryType.IMBUE ? getMagicsCap().getImbueSize() : getMagicsCap().getInnateSize());		
+	public void copyTo(ItemStack stack) {
+
+		if (stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+			ICharmableCapability cap = stack.getCapability(TreasureCapabilities.CHARMABLE, null);
+			// copy all capability properties over (they may be altered by existing runestones
+			cap.setBaseMaterial(getBaseMaterial());
+			cap.setBindable(isBindable());
+			cap.setExecuting(isExecuting());
+			cap.setImbuable(isImbuable());
+			cap.setImbuing(isImbuing());
+			cap.setInnate(isInnate());
+			cap.setLevelModifier(getLevelModifier());
+			cap.setNamedByCharm(isNamedByCharm());
+			cap.setNamedByMaterial(isNamedByMaterial());
+			cap.setSocketable(isSocketable());
+			cap.setSource(isSource());
+			cap.setSourceItem(getSourceItem());
+			getCharmEntities().forEach((type, charm) -> {
+				cap.add(type, charm);
+			});
+		}
 	}
 	
+	@Override
+	public void transferTo(ItemStack dest, InventoryType sourceType, InventoryType destType) {
+		if (dest.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+			ICharmableCapability cap = dest.getCapability(TreasureCapabilities.CHARMABLE, null);
+//			for (InventoryType type : InventoryType.values()) {
+				List<ICharmEntity> charms = (List<ICharmEntity>) getCharmEntities().get(sourceType);
+				// sort the charms from highest to lowest so highest are copied first if room enough for them
+				// NOTE mote for charm items as they can only contain 1 charm effect
+				Comparator<ICharmEntity> comparator = Collections.reverseOrder(new CharmableCapability.SortByLevel());						
+				Collections.sort(charms, comparator);
+				// process each charm entity (only innate as charmItems can have innate)
+				for (ICharmEntity entity : charms) {
+					Treasure.logger.debug("attempting to add charm -> {}", entity.getCharm().getName().toString());
+					if (cap.getMaxCharmLevel() >= entity.getCharm().getLevel()) {
+						if (cap.getCurrentSize(destType) < cap.getMaxSize(destType)) {
+							cap.add(destType, entity);
+							Treasure.logger.debug("transferTo: type -> {} current size -> {}, max -> {}", destType, cap.getCurrentSize(destType), cap.getMaxSize(destType));
+						}
+					}						
+				}
+//			}
+		}
+	}
+	
+	@Override
+	public int getCurrentSize(InventoryType type) {
+		// check against SOCKET first as this will be the most common
+//		return (type == InventoryType.SOCKET ? getSocketSize() : type == InventoryType.IMBUE ? getImbueSize() : getInnateSize());		
+		return getCharmEntities().get(type).size();
+	}
+	
+	@Deprecated
 	@Override
 	public void setCurrentSize(InventoryType type, int size) {
 		switch(type) {
@@ -194,6 +259,7 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 		}
 	}
 
+	@Deprecated
 	@Override
 	public void addCurrentSize(InventoryType type, int amount) {
 		setCurrentSize(type, getCurrentSize(type) + amount);
@@ -207,7 +273,9 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	@Override
 	public int getMaxSize(InventoryType type) {
 		// check against SOCKET first as this will be the most common
-		return (type == InventoryType.SOCKET ? getMagicsCap().getMaxSocketSize() : type == InventoryType.IMBUE ? getMagicsCap().getMaxImbueSize() : getMagicsCap().getMaxInnateSize());
+//		return (type == InventoryType.SOCKET ? getMagicsCap().getMaxSocketSize() : type == InventoryType.IMBUE ? getMagicsCap().getMaxImbueSize() : getMagicsCap().getMaxInnateSize());
+		return (type == InventoryType.SOCKET ? getMaxSocketSize() : type == InventoryType.IMBUE ? getMaxImbueSize() : getMaxInnateSize());
+
 	}
 	
 	/**
@@ -221,13 +289,13 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 		// TODO ensure only one of the same type can be added.
 		
 		// test if there is enough space to add
-		//		Treasure.LOGGER.debug("adding type -> {} charm -> {}", type, entity.getCharm());
+				Treasure.logger.debug("adding type -> {} charm -> {}", type, entity.getCharm());
 		if (getCurrentSize(type) < getMaxSize(type)) {
 			charmEntities.get(type).add(entity);
 			
 			// update the current size
-			addCurrentSize(type, 1);
-			
+//			addCurrentSize(type, 1);
+			Treasure.logger.debug("type -> {} current size -> {}, max -> {}", type, getCurrentSize(type), getMaxSize(type));
 			// record highest level charm
 			if (highestLevel == null || entity.getCharm().getLevel() > highestLevel.getCharm().getLevel()) {
 				highestLevel = entity;
@@ -252,15 +320,16 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 			}
 		});
 		// decrement magics cap
-		setCurrentSize(type, getCurrentSize(type) - 1);
+//		setCurrentSize(type, getCurrentSize(type) - 1);
 	}
 	
 	@Override
 	public void clearCharms() {
+//		for (InventoryType type : InventoryType.values()) {
+//			setCurrentSize(type, 0);
+//		}
+		// clear the charm inventory
 		getCharmEntities().clear();
-		for (InventoryType type : InventoryType.values()) {
-			setCurrentSize(type, 0);
-		}
 	}
 	
 	/**
@@ -301,7 +370,8 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	 * @param inventoryType
 	 * @param titleFlag
 	 */
-	private void appendHoverText(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, InventoryType inventoryType, boolean titleFlag) {		
+	@Override
+	public void appendHoverText(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, InventoryType inventoryType, boolean titleFlag) {		
 		List<ICharmEntity> entityList = (List<ICharmEntity>) getCharmEntities().get(inventoryType);
 		// test if the cap has the inventory type ability
 		switch (inventoryType) {
@@ -321,7 +391,8 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 			entity.getCharm().addInformation(stack, world, tooltip, flag, entity);
 		}	
 	}
-	
+
+	@Override
 	@SuppressWarnings("deprecation")
 	public String getCapacityHoverText(ItemStack stack, World world, InventoryType type) {	
 		return I18n.translateToLocalFormatted("tooltip.charmable.slots", 				
@@ -333,7 +404,7 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	 * 
 	 */
 	public static class Builder {
-		private IMagicsInventoryCapability magicsCap;
+//		private IMagicsInventoryCapability magicsCap;
 		public boolean source;
 		public boolean executing = true;
 		public boolean bindable;
@@ -346,10 +417,21 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 		public ResourceLocation baseMaterial = TreasureCharmableMaterials.COPPER.getName();
 		public ResourceLocation sourceItem = Items.AIR.getRegistryName();
 		public ILevelModifier levelModifier = new NoLevelModifier();
+		// max inventory sizes
+		private int maxSocketSize;
+		private int maxImbueSize;
+		private int maxInnateSize;
 		
-		// required to pass the source Item here
+		public Builder(int maxInnateSize, int maxImbueSize, int maxSocketSize) {
+			this.maxInnateSize = maxInnateSize;
+			this.maxImbueSize = maxImbueSize;
+			this.maxSocketSize = maxSocketSize;
+		}
+		
+		@Deprecated
+		// required to pass the magics inventory cap here
 		public Builder(IMagicsInventoryCapability magicsCap) {
-			this.magicsCap = magicsCap;
+//			this.magicsCap = magicsCap;
 		}
 		
 		public Builder with(Consumer<Builder> builder) {
@@ -372,12 +454,15 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 	}
 
 	@Override
+	@Deprecated
 	public IMagicsInventoryCapability getMagicsCap() {
-		return magicsCap;
+//		return magicsCap;
+		return null;
 	}
 
+	@Deprecated
 	protected void setMagicsCap(IMagicsInventoryCapability magicsCap) {
-		this.magicsCap = magicsCap;
+//		this.magicsCap = magicsCap;
 	}
 
 	@Override
@@ -492,34 +577,31 @@ public class CharmableCapability implements ICharmableCapability { // TODO this 
 		this.namedByCharm = namedByCharm;
 	}
 
-	@Override
 	public int getMaxSocketSize() {
-		return magicsCap.getMaxSocketSize();
+		return maxSocketSize;
 	}
 
-	@Override
 	public int getMaxImbueSize() {
-		return magicsCap.getMaxImbueSize();
+		return maxImbueSize;
 	}
 
-	@Override
 	public int getMaxInnateSize() {
-		return magicsCap.getMaxInnateSize();
+		return maxInnateSize;
 	}
 
 	@Override
 	public int getSocketSize() {
-		return magicsCap.getSocketSize();
+		return getCharmEntities().get(InventoryType.SOCKET).size();
 	}
 
 	@Override
 	public int getImbueSize() {
-		return magicsCap.getImbueSize();
+		return getCharmEntities().get(InventoryType.IMBUE).size();
 	}
 
 	@Override
 	public int getInnateSize() {
-		return magicsCap.getInnateSize();
+		return getCharmEntities().get(InventoryType.INNATE).size();
 	}
 
 	@Override

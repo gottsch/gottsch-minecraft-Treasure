@@ -25,10 +25,12 @@ import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.CharmableCapabilityStorage;
-import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.IRunestonesCapability;
+import com.someguyssoftware.treasure2.capability.InventoryType;
+import com.someguyssoftware.treasure2.capability.RunestonesCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.RunestonesCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.runestone.IRunestone;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -39,11 +41,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 /**
- * @author Mark Gottschling on Aug 17, 2021
+ * 
+ * @author Mark Gottschling on Jan 15, 2022
  *
  */
-public class CharmItem extends ModItem {
-	private static final CharmableCapabilityStorage CAPABILITY_STORAGE = new CharmableCapabilityStorage();
+public class RunestoneItem extends ModItem {
+	private static final RunestonesCapabilityStorage CAPABILITY_STORAGE = new RunestonesCapabilityStorage();
 
 	/**
 	 * 
@@ -51,7 +54,7 @@ public class CharmItem extends ModItem {
 	 * @param name
 	 * @param properties
 	 */
-	public CharmItem(String modID, String name) {
+	public RunestoneItem(String modID, String name) {
 		super(modID, name);
 		this.setMaxStackSize(1);
 		this.setCreativeTab(Treasure.TREASURE_TAB);
@@ -60,9 +63,8 @@ public class CharmItem extends ModItem {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-		// TODO create new CharmItemCapProvider which includes POUCHABLE cap (not everything that is charmable is pouchable)
 		Treasure.logger.debug("{} item initiating caps", stack.getItem().getRegistryName().toString());
-		CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
+		RunestonesCapabilityProvider provider =  new RunestonesCapabilityProvider();
 		return provider;
 	}
 	
@@ -73,10 +75,13 @@ public class CharmItem extends ModItem {
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		// charmable info
-		tooltip.add(TextFormatting.GOLD + "" + TextFormatting.ITALIC + I18n.translateToLocal("tooltip.charmable.usage"));
-		ICharmableCapability cap = getCap(stack);
-		if (cap.isCharmed()) {
-			cap.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add(TextFormatting.GOLD + "" + TextFormatting.ITALIC + I18n.translateToLocal("tooltip.runestones.usage"));
+		IRunestonesCapability cap = getCap(stack);
+		if (cap.hasRunestone()) {
+			// add a space
+			tooltip.add( I18n.translateToLocal("tooltip.runestones.effects"));	
+			IRunestone runestone = cap.getEntities(InventoryType.INNATE).get(0).getRunestone();
+			tooltip.add(I18n.translateToLocalFormatted("tooltip.indent2", TextFormatting.LIGHT_PURPLE + "" + TextFormatting.ITALIC + runestone.getLore()));
 		}
 	}
 	
@@ -85,9 +90,9 @@ public class CharmItem extends ModItem {
 	 * @param stack
 	 * @return
 	 */
-	public ICharmableCapability getCap(ItemStack stack) {
-		if (stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
-		return stack.getCapability(TreasureCapabilities.CHARMABLE, null);
+	public IRunestonesCapability getCap(ItemStack stack) {
+		if (stack.hasCapability(TreasureCapabilities.RUNESTONES, null)) {
+		return stack.getCapability(TreasureCapabilities.RUNESTONES, null);
 		}
 		else {
 			throw new IllegalStateException();
@@ -95,12 +100,12 @@ public class CharmItem extends ModItem {
 	}
 	
 	/**
-	 * 
+	 * Has Foil
 	 */
 	@Override
 	public boolean hasEffect(ItemStack stack) {
-		ICharmableCapability cap = getCap(stack);
-		if (cap.isCharmed()) {
+		IRunestonesCapability cap = getCap(stack);
+		if (cap.hasRunestone()) {
 			return true;
 		}
 		return false;
@@ -111,23 +116,24 @@ public class CharmItem extends ModItem {
 	 */
 	@Override
     public NBTTagCompound getNBTShareTag(ItemStack stack) {
-		NBTTagCompound charmableTag;
-		charmableTag = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
-				TreasureCapabilities.CHARMABLE,
-				stack.getCapability(TreasureCapabilities.CHARMABLE, null),
+//		Treasure.logger.debug("writing share tag");
+		NBTTagCompound tag;
+		tag = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
+				TreasureCapabilities.RUNESTONES,
+				stack.getCapability(TreasureCapabilities.RUNESTONES, null),
 				null);
 		
-		return charmableTag;
+		return tag;
     }
 
     @Override
     public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
         super.readNBTShareTag(stack, nbt);
-
+//        Treasure.logger.debug("reading share tag");
         if (nbt instanceof NBTTagCompound) {
 	       CAPABILITY_STORAGE.readNBT(
-	    		   TreasureCapabilities.CHARMABLE, 
-					stack.getCapability(TreasureCapabilities.CHARMABLE, null), null, nbt);
+	    		   TreasureCapabilities.RUNESTONES, 
+					stack.getCapability(TreasureCapabilities.RUNESTONES, null), null, nbt);
         }
     }
 }

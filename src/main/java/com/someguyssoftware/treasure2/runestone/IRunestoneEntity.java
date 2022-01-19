@@ -17,29 +17,33 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.capability;
+package com.someguyssoftware.treasure2.runestone;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * 
- * @author Mark Gottschling on Sep 6, 2020
+ * @author Mark Gottschling on Jan 14, 2022
  *
  */
-public interface IDurabilityCapability {
-    public static final int MAX_DURABILITY = 1000; 
+public interface IRunestoneEntity {
 
-	public int getDurability();
+	public static final String RUNESTONE = "runestone";
 
-	public void setDurability(int damage);
+	IRunestone getRunestone();
 
-	public int getMaxDurability();
+	void setRunestone(IRunestone runestone);
 
-	public void setMaxDurability(int maxDurability);
+	/**
+	 * 
+	 * @param nbt
+	 * @return
+	 */
+	NBTTagCompound save(NBTTagCompound nbt);
+	
+	default public boolean load(NBTTagCompound nbt) {
+		// TODO fill out
+		return true;
+	}
 
-	public boolean isInfinite();
-
-	public void setInfinite(boolean infinite);
-
-	public void transferTo(ItemStack stack);
 }

@@ -28,6 +28,7 @@ import java.util.Map;
  * @author Mark Gottschling on Jan 2, 2022
  *
  */
+@Deprecated
 public class MagicsInventoryCapability implements IMagicsInventoryCapability {
 	
 	/*
@@ -61,41 +62,41 @@ public class MagicsInventoryCapability implements IMagicsInventoryCapability {
 		this.setMaxSocketSize(maxSocketSize);
 	}
 	
-	/*
-	 * 
-	 */
-	public enum InventoryType {
-		INNATE(0),
-		IMBUE(1),
-		SOCKET(2);
-
-		private static final Map<Integer, InventoryType> values = new HashMap<Integer, InventoryType>();
-		Integer value;
-
-		// setup reverse lookup
-		static {
-			for (InventoryType x : EnumSet.allOf(InventoryType.class)) {
-				values.put(x.getValue(), x);
-			}
-		}
-
-		InventoryType(Integer value) {
-			this.value = value;
-		}
-
-		public Integer getValue() {
-			return value;
-		}
-
-		/**
-		 * 
-		 * @param value
-		 * @return
-		 */
-		public static InventoryType getByValue(Integer value) {
-			return (InventoryType) values.get(value);
-		}
-	}
+//	/*
+//	 * 
+//	 */
+//	public enum InventoryType {
+//		INNATE(0),
+//		IMBUE(1),
+//		SOCKET(2);
+//
+//		private static final Map<Integer, InventoryType> values = new HashMap<Integer, InventoryType>();
+//		Integer value;
+//
+//		// setup reverse lookup
+//		static {
+//			for (InventoryType x : EnumSet.allOf(InventoryType.class)) {
+//				values.put(x.getValue(), x);
+//			}
+//		}
+//
+//		InventoryType(Integer value) {
+//			this.value = value;
+//		}
+//
+//		public Integer getValue() {
+//			return value;
+//		}
+//
+//		/**
+//		 * 
+//		 * @param value
+//		 * @return
+//		 */
+//		public static InventoryType getByValue(Integer value) {
+//			return (InventoryType) values.get(value);
+//		}
+//	}
 
 	@Override
 	public int getMaxSocketSize() {

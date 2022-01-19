@@ -26,6 +26,8 @@ import java.util.function.Consumer;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.charm.cost.CostEvaluator;
+import com.someguyssoftware.treasure2.charm.cost.ICostEvaluator;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
@@ -200,6 +202,7 @@ public abstract class Charm implements ICharm {
 	 * @return
 	 */
 	public double applyCost(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity, double amount) {
+		// TODO needs to check the entities cost evaluator - not the Charm's.
 		if (costEvaluator != null) {
 			return this.costEvaluator.apply(world, random, coords, player, event, entity, amount);
 		}
@@ -427,35 +430,6 @@ public abstract class Charm implements ICharm {
 				return false;
 			return true;
 		}
-	}
-	
-	/*
-	 * Generic cost evaluator
-	 * @param amount cost requested
-	 * @return actual cost incurred
-	 */
-	public static class CostEvaluator implements ICostEvaluator {
-		@Override
-		public double apply(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity, double amount) {
-			
-			double cost = 0;
-			if (entity.getMana() >= amount) {
-				cost = amount;
-				entity.setMana(MathHelper.clamp(entity.getMana() - amount, 0D, entity.getMana()));
-			}
-			else {
-				cost = entity.getMana();
-				entity.setMana(0);
-			}
-			return cost;
-		}
-
-		@Deprecated
-		@Override
-		public double apply(ICharmEntity entity, double amount) {
-			// TODO Auto-generated method stub
-			return 0;
-		}		
 	}
 
 	@Override

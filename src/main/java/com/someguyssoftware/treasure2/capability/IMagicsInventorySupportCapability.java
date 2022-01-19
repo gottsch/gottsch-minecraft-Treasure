@@ -19,27 +19,28 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
-import net.minecraft.item.ItemStack;
-
 /**
  * 
- * @author Mark Gottschling on Sep 6, 2020
+ * @author Mark Gottschling on Jan 17, 2022
  *
  */
-public interface IDurabilityCapability {
-    public static final int MAX_DURABILITY = 1000; 
+@Deprecated
+public interface IMagicsInventorySupportCapability {
+	
+	IMagicsInventoryCapability getMagicsCap();
+	
+	void clear();
+	
+	int getCurrentSize(InventoryType type);
 
-	public int getDurability();
+	void setCurrentSize(InventoryType type, int size);
 
-	public void setDurability(int damage);
+	void addCurrentSize(InventoryType type, int amount);
 
-	public int getMaxDurability();
+	/**
+	 * @param type
+	 * @return
+	 */
+	int getMaxSize(InventoryType type);
 
-	public void setMaxDurability(int maxDurability);
-
-	public boolean isInfinite();
-
-	public void setInfinite(boolean infinite);
-
-	public void transferTo(ItemStack stack);
 }

@@ -26,8 +26,11 @@ import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.DurabilityCapability;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
-import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability;
-import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability.InventoryType;
+import com.someguyssoftware.treasure2.capability.IRunestonesCapability;
+import com.someguyssoftware.treasure2.capability.InventoryType;
+//import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability;
+import com.someguyssoftware.treasure2.capability.RunestonesCapability;
+import com.someguyssoftware.treasure2.capability.RunestonesCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.modifier.GreatAdornmentLevelModifier;
 import com.someguyssoftware.treasure2.capability.modifier.ILevelModifier;
 import com.someguyssoftware.treasure2.capability.modifier.LordsAdornmentLevelModifier;
@@ -38,13 +41,10 @@ import com.someguyssoftware.treasure2.charm.DrainCharm;
 import com.someguyssoftware.treasure2.charm.FireImmunityCharm;
 import com.someguyssoftware.treasure2.charm.GreaterHealingCharm;
 import com.someguyssoftware.treasure2.charm.HealingCharm;
-import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.IlluminationCharm;
-import com.someguyssoftware.treasure2.charm.LifeStrikeCharm;
 import com.someguyssoftware.treasure2.charm.ReflectionCharm;
 import com.someguyssoftware.treasure2.charm.SatietyCharm;
 import com.someguyssoftware.treasure2.charm.ShieldingCharm;
-import com.someguyssoftware.treasure2.charm.ShieldingCharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
@@ -54,9 +54,12 @@ import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
 import com.someguyssoftware.treasure2.material.CharmableMaterial;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
+import com.someguyssoftware.treasure2.runestone.TreasureRunestones;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -131,9 +134,8 @@ public class TreasureItems {
 
 	// adornments
 
-	// TODO make these 3 medium tier specials - like level 12-15
-	//    public static Item SILVER_SIGNET_RING;   
-	//    public static Item ONYX_SILVER_SIGNET_RING;
+	// TODO make these medium tier specials - like level 12-15
+	//    public static Item SILVER_SIGNET_RING;
 	//    public static Item CASTLE_RING;
 	public static Adornment FOOLS_COIN;
 	public static Adornment ANGELS_RING;
@@ -162,17 +164,11 @@ public class TreasureItems {
 	public static Item BLACK_PEARL;
 	
 	// charns
-//	public static CharmItem COPPER_CHARM;
-//	public static CharmItem SILVER_CHARM;
-//	public static CharmItem GOLD_CHARM;
-//	public static CharmItem AMETHYST_CHARM;
-//	public static CharmItem ONYX_CHARM;
-//	public static CharmItem DIAMOND_CHARM;
-//	public static CharmItem EMERALD_CHARM;
-//	public static CharmItem RUBY_CHARM;
-//	public static CharmItem SAPPHIRE_CHARM;
 	public static CharmItem CHARM_BOOK;
 
+	// runestones
+	public static RunestoneItem ANVIL_RUNESTONE;
+	
 	// wither items
 	public static Item WITHER_STICK_ITEM;
 	public static Item WITHER_ROOT_ITEM;
@@ -638,7 +634,7 @@ public class TreasureItems {
 
 			CHARM_BOOK = new CharmBook(Treasure.MODID, "charm_book") {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-					ICharmableCapability cap = new CharmableCapability.Builder(new MagicsInventoryCapability(1, 0, 0)).with($ -> {
+					ICharmableCapability cap = new CharmableCapability.Builder(1, 0, 0).with($ -> {
 						$.innate = true;
 						$.imbuing = true;
 						$.source = true;
@@ -652,14 +648,14 @@ public class TreasureItems {
 					return new CharmableCapabilityProvider(cap);
 				}
 			};
-			
+
 			// POUCHES
 			POUCH = new PouchItem(Treasure.MODID, TreasureConfig.POUCH_ID);
 
 			// ADORNMENTS
 			ANGELS_RING = new Adornment(Treasure.MODID, "angels_ring", AdornmentType.RING, TreasureAdornments.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-					ICharmableCapability cap = new CharmableCapability.Builder(new MagicsInventoryCapability(3, 1, 1))
+					ICharmableCapability cap = new CharmableCapability.Builder(3, 1, 1)
 							.with($ -> {
 								$.innate = true;
 								$.imbuable = true;
@@ -686,7 +682,7 @@ public class TreasureItems {
 
 			RING_OF_FORTITUDE = new Adornment(Treasure.MODID, "ring_of_fortitude", AdornmentType.RING, TreasureAdornments.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-					ICharmableCapability cap = new CharmableCapability.Builder(new MagicsInventoryCapability(2, 1, 1)).with($ -> {
+					ICharmableCapability cap = new CharmableCapability.Builder(2, 1, 1).with($ -> {
 						$.innate = true;
 						$.imbuable = true;
 						$.socketable = true;
@@ -711,7 +707,15 @@ public class TreasureItems {
 			
 			SHADOWS_GIFT = new Adornment(Treasure.MODID, "shadows_gift", AdornmentType.RING, TreasureAdornments.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-					ICharmableCapability cap = new CharmableCapability.Builder(new MagicsInventoryCapability(3, 0, 1)).with($ -> {
+
+					/*
+					 *  add enchantment. kinda hacky
+					 */
+					if (!EnchantmentHelper.hasVanishingCurse(stack)) {
+						stack.addEnchantment(Enchantments.VANISHING_CURSE, 1);
+					}
+					
+					ICharmableCapability cap = new CharmableCapability.Builder(3, 0, 1).with($ -> {
 						$.innate = true;
 						$.imbuable = true;
 						$.socketable = true;
@@ -732,11 +736,19 @@ public class TreasureItems {
 							? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.RING, cap, durabilityCap) 
 									: new AdornmentCapabilityProvider(cap, durabilityCap);
 				}
+
+				// TODO need to assign a Rarity to Adornments so that the getItemStackDisplayName can check rarity and chang color accordingly.
+//				@Override
+//				public String getItemStackDisplayName(ItemStack stack) {
+//					return TextFormatting.BLACK + super.getItemStackDisplayName(stack);
+//				}
+
+				
 			};
 			
 			CASTLE_RING = new Adornment(Treasure.MODID, "castle_ring", AdornmentType.RING) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-					ICharmableCapability cap = new CharmableCapability.Builder(new MagicsInventoryCapability(2, 1, 1)).with($ -> {
+					ICharmableCapability cap = new CharmableCapability.Builder(2, 1, 1).with($ -> {
 						$.innate = true;
 						$.imbuable = true;
 						$.socketable = true;
@@ -761,7 +773,7 @@ public class TreasureItems {
 						
 			PEASANTS_FORTUNE = new Adornment(Treasure.MODID, "peasants_fortune", AdornmentType.RING, TreasureAdornments.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-					ICharmableCapability cap = new CharmableCapability.Builder(new MagicsInventoryCapability(0, 0, 2)).with($ -> { // use STONE as source Item so it can't be upgraded
+					ICharmableCapability cap = new CharmableCapability.Builder(0, 0, 2).with($ -> { // use STONE as source Item so it can't be upgraded
 						$.innate = false;
 						$.imbuable = false;
 						$.socketable = true;
@@ -771,16 +783,21 @@ public class TreasureItems {
 						$.sourceItem =  Item.getItemFromBlock(Blocks.STONE).getRegistryName();
 						$.levelModifier = new GreatAdornmentLevelModifier();
 					}).build();
+					
+					IRunestonesCapability runestonesCap = new RunestonesCapability.Builder(0, 0, 1).with($ -> {
+						$.socketable = true;
+					}).build();
+					
 					IDurabilityCapability durabilityCap = new DurabilityCapability(100, 100);
 					return BaublesIntegration.isEnabled()
-							? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.RING, cap, durabilityCap) 
-									: new AdornmentCapabilityProvider(cap, durabilityCap);
+							? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.RING, cap, runestonesCap, durabilityCap) 
+									: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 				}
 			};
 			
 			MEDICS_TOKEN = new Adornment(Treasure.MODID, "medics_token", AdornmentType.NECKLACE) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-					ICharmableCapability cap = new CharmableCapability.Builder(new MagicsInventoryCapability(1, 0, 0)).with($ -> {
+					ICharmableCapability cap = new CharmableCapability.Builder(1, 0, 0).with($ -> {
 						$.innate = true;
 						$.imbuable = false;
 						$.socketable = false;
@@ -799,7 +816,7 @@ public class TreasureItems {
 
 			ADEPHAGIAS_BOUNTY = new Adornment(Treasure.MODID, "adephagias_bounty", AdornmentType.BRACELET, TreasureAdornments.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-					ICharmableCapability cap = new CharmableCapability.Builder(new MagicsInventoryCapability(1, 0, 0)).with($ -> {
+					ICharmableCapability cap = new CharmableCapability.Builder(1, 0, 0).with($ -> {
 						$.innate = true;
 						$.imbuable = false;
 						$.socketable = false;
@@ -819,7 +836,7 @@ public class TreasureItems {
 			
 			SALANDAARS_WARD = new Adornment(Treasure.MODID, "salandaars_ward", AdornmentType.NECKLACE, TreasureAdornments.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-					ICharmableCapability cap = new CharmableCapability.Builder(new MagicsInventoryCapability(1, 0, 0)).with($ -> {
+					ICharmableCapability cap = new CharmableCapability.Builder(1, 0, 0).with($ -> {
 						$.innate = true;
 						$.imbuable = false;
 						$.socketable = false;
@@ -839,7 +856,7 @@ public class TreasureItems {
 			
 			MIRTHAS_TORCH = new Adornment(Treasure.MODID, "mirthas_torch", AdornmentType.BRACELET, TreasureAdornments.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-					ICharmableCapability cap = new CharmableCapability.Builder(new MagicsInventoryCapability(1, 0, 0)).with($ -> {
+					ICharmableCapability cap = new CharmableCapability.Builder(1, 0, 0).with($ -> {
 						$.innate = true;
 						$.imbuable = false;
 						$.socketable = false;
@@ -859,7 +876,7 @@ public class TreasureItems {
 			
 			POCKET_WATCH = new Adornment(Treasure.MODID, "pocket_watch", AdornmentType.POCKET, TreasureAdornments.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-					ICharmableCapability cap = new CharmableCapability.Builder(new MagicsInventoryCapability(0, 0, 2)).with($ -> {
+					ICharmableCapability cap = new CharmableCapability.Builder(0, 0, 2).with($ -> {
 						$.innate = false;
 						$.imbuable = false;
 						$.socketable = true;
@@ -876,7 +893,7 @@ public class TreasureItems {
 				}
 			};
 			
-			// create all charms
+			// CHARMS
 			List<Item> charms = new ArrayList<>();
 			charms.add(createCharm(TreasureCharmableMaterials.COPPER, Items.AIR));
 			charms.add(createCharm(TreasureCharmableMaterials.SILVER, Items.AIR));
@@ -891,6 +908,18 @@ public class TreasureItems {
 			// create all adornment item combinations
 			List<Item> adornments = new SetupItems().createAdornments();
 
+			// RUNESTONES
+			ANVIL_RUNESTONE = new RunestoneItem(Treasure.MODID, "anvil_runestone") {
+				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+					IRunestonesCapability cap = new RunestonesCapability.Builder(1, 0, 0).with($ -> {
+						$.bindable = true;
+//						$.sourceItem = AMETHYST.getRegistryName();
+					}).build();
+					cap.add(InventoryType.INNATE, TreasureRunestones.RUNE_OF_ANVIL.createEntity());	
+					return new RunestonesCapabilityProvider(cap);
+				}
+			};
+			
 			// OTHER
 			ModSwordBuilder builder = new ModSwordBuilder();
 			SKULL_SWORD = builder
@@ -1037,6 +1066,7 @@ public class TreasureItems {
 					SAPPHIRE,
 					RUBY,
 					CHARM_BOOK,
+					ANVIL_RUNESTONE,
 					SKELETON
 			};
 			registry.registerAll(items);
@@ -1197,7 +1227,7 @@ public class TreasureItems {
 					if (size == TreasureAdornments.GREAT && material == TreasureCharmableMaterials.IRON) {
 						innateSize++;
 					}
-					ICharmableCapability cap = new CharmableCapability.Builder(new MagicsInventoryCapability(innateSize, 1, 1))
+					ICharmableCapability cap = new CharmableCapability.Builder(innateSize, 1, 1)
 							.with($ -> {
 								$.innate = material == TreasureCharmableMaterials.IRON ? false : true;
 								$.imbuable = true;
@@ -1227,7 +1257,7 @@ public class TreasureItems {
 				material.getName().getResourcePath() : source.getRegistryName().getResourcePath())  + "_charm";		
 		CharmItem charm = new CharmItem(Treasure.MODID, name) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-				ICharmableCapability cap = new CharmableCapability.Builder(new MagicsInventoryCapability(1, 0, 0)).with($ -> {
+				ICharmableCapability cap = new CharmableCapability.Builder(1, 0, 0).with($ -> {
 					$.innate= true;
 					$.bindable = true;
 					$.source = true;
@@ -1237,7 +1267,7 @@ public class TreasureItems {
 					$.sourceItem =source.getRegistryName();
 				}).build();
 				// TEMP test with charm
-				cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(LifeStrikeCharm.LIFE_STRIKE_TYPE, 10))).get().createEntity());
+				cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(HealingCharm.HEALING_TYPE, 1))).get().createEntity());
 
 				return new CharmableCapabilityProvider(cap);
 			}

@@ -143,6 +143,10 @@ public class TreasureModels {
 //      registerItemModel(TreasureItems.GOTTSCHS_RING_OF_MOON);
 //      registerItemModel(TreasureItems.SILVER_SIGNET_RING);
         
+        // RUNESTONES
+        registerItemModel(TreasureItems.ANVIL_RUNESTONE);
+        
+        // GENERATED ITEMS
 		TreasureItems.ITEMS.forEach((key, value) -> {
 			registerItemModel(value);
 		});

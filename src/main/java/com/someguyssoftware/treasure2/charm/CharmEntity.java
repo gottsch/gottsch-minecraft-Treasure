@@ -19,6 +19,8 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
+import com.someguyssoftware.treasure2.charm.cost.ICostEvaluator;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -30,13 +32,14 @@ public class CharmEntity implements ICharmEntity {
 	private ICharm charm;
 	private double mana; // changes - needs client update
 	private int duration; // static (but is a property that could chane/require update in future
-	private double percent; // static
-	private double frequency; // static
+	private double frequency;
+	private double range;
+	private double cooldown;
+	private double amount;
 
-	private double range; // static
-	private double cooldown; // static
-	private double amount; // static
-	private double cost; // static
+	// NOTE this is the cost eval that can be modified by a runestone
+	// calculates the actual cost given an input
+	private ICostEvaluator costEvaluator;
 	
 	/**
 	 * 
@@ -47,12 +50,11 @@ public class CharmEntity implements ICharmEntity {
 		setCharm(charm);
 		setAmount(charm.getAmount());
 		setCooldown(charm.getCooldown());
-//		setCost(cost);
 		setDuration(charm.getDuration());
 		setFrequency(charm.getFrequency());
 		setMana(charm.getMana());
-//		setPercent(percent);
 		setRange(charm.getRange());
+		setCostEvaluator(charm.getCostEvaluator());
 	}
 	
 	// TODO add a builder
@@ -84,6 +86,9 @@ public class CharmEntity implements ICharmEntity {
 		nbt.setDouble(AMOUNT, getAmount());
 		nbt.setDouble(COOLDOWN, getCooldown());
 		nbt.setDouble(RANGE, getRange());
+		if (getCostEvaluator() != null) {
+			nbt.setString(COST_EVALUATOR, getCostEvaluator().getClass().getCanonicalName());
+		}
 		return nbt;
 	}
 	
@@ -129,9 +134,8 @@ public class CharmEntity implements ICharmEntity {
 
 	@Override
 	public String toString() {
-		return "CharmEntity [charm=" + charm + ", mana=" + mana + ", duration=" + duration + ", percent=" + percent
-				+ ", frequency=" + frequency + ", range=" + range + ", cooldown=" + cooldown + ", amount=" + amount
-				+ ", cost=" + cost + "]";
+		return "CharmEntity [charm=" + charm + ", mana=" + mana + ", duration=" + duration + ", frequency=" + frequency
+				+ ", range=" + range + ", cooldown=" + cooldown + ", amount=" + amount + "]";
 	}
 
 	@Override
@@ -162,5 +166,15 @@ public class CharmEntity implements ICharmEntity {
 	@Override
 	public void setAmount(double amount) {
 		this.amount = amount;
+	}
+
+	@Override
+	public ICostEvaluator getCostEvaluator() {
+		return costEvaluator;
+	}
+
+	@Override
+	public void setCostEvaluator(ICostEvaluator costEvaluator) {
+		this.costEvaluator = costEvaluator;
 	}
 }

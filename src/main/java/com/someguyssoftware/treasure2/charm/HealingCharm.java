@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.charm.cost.ICostEvaluator;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -52,9 +53,6 @@ public class HealingCharm extends Charm {
 				// determine the actual amount of health (0.0 -> getAmount())
 				float amount = Math.min((float)getAmount(), player.getMaxHealth() - player.getHealth());
 				player.setHealth(MathHelper.clamp(player.getHealth() + amount, 0.0F, player.getMaxHealth()));		
-				
-				// TODO replace with a Cost Evaluator class - this is what could be changed with Runestones/Artifacts.
-//				entity.setMana(MathHelper.clamp(entity.getMana() - amount,  0D, entity.getMana()));
 				applyCost(world, random, coords, player, event, entity, amount);
 				result = true;
 			}
@@ -110,11 +108,5 @@ public class HealingCharm extends Charm {
 			entity.setMana(MathHelper.clamp(remaining,  0D, entity.getMana()));
 			return cost;
 		}
-
-		@Override
-		public double apply(ICharmEntity entity, double amount) {	
-			// TODO Auto-generated method stub
-			return 0;
-		}		
 	}
 }
