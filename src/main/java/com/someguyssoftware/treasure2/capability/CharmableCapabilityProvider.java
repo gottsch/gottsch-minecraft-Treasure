@@ -30,15 +30,13 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
  *
  */
 public class CharmableCapabilityProvider implements ICapabilitySerializable<NBTTagCompound> {
-	private final IMagicsInventoryCapability magicsCap;
 	private final ICharmableCapability charmableCap;
 
 	/**
 	 * 
 	 */
 	public CharmableCapabilityProvider() {
-		this.magicsCap = new MagicsInventoryCapability(1, 1, 1);
-		this.charmableCap = new CharmableCapability(magicsCap);
+		this.charmableCap = new CharmableCapability(0, 0, 0);
 	}
 
 	/**
@@ -46,7 +44,6 @@ public class CharmableCapabilityProvider implements ICapabilitySerializable<NBTT
 	 * @param capability
 	 */
 	public CharmableCapabilityProvider(ICharmableCapability capability) {
-		this.magicsCap = capability.getMagicsCap();
 		charmableCap = capability;
 	}
 

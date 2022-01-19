@@ -30,15 +30,12 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
  *
  */
 public class RunestonesCapabilityProvider implements ICapabilitySerializable<NBTTagCompound> {
-	private final IMagicsInventoryCapability magicsCap;
 	private final IRunestonesCapability runestonesCap;
 
 	/**
 	 * 
 	 */
 	public RunestonesCapabilityProvider() {
-		this.magicsCap = new MagicsInventoryCapability(1, 0, 0);
-//		this.runstonesCap = new RunestonesCapability(magicsCap);
 		this.runestonesCap = new RunestonesCapability(0, 0, 0);
 	}
 
@@ -47,8 +44,6 @@ public class RunestonesCapabilityProvider implements ICapabilitySerializable<NBT
 	 * @param capability
 	 */
 	public RunestonesCapabilityProvider(IRunestonesCapability capability) {
-//		this.magicsCap = capability.getMagicsCap();
-		this.magicsCap = new MagicsInventoryCapability(1, 0, 0);
 		runestonesCap = capability;
 	}
 

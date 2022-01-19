@@ -34,14 +34,10 @@ import com.someguyssoftware.treasure2.capability.DurabilityCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.IRunestonesCapability;
-import com.someguyssoftware.treasure2.capability.InventoryType;
-import com.someguyssoftware.treasure2.capability.MagicsInventoryCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.RunestonesCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
-import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
 import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
-import com.someguyssoftware.treasure2.runestone.IRunestoneEntity;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -56,7 +52,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
  *
  */
 public class Adornment extends ModItem {
-	private static final MagicsInventoryCapabilityStorage MAGICS_STORAGE = new MagicsInventoryCapabilityStorage();
 	private static final CharmableCapabilityStorage CAPABILITY_STORAGE = new CharmableCapabilityStorage();
 	private static final RunestonesCapabilityStorage RUNESTONES_STORAGE = new RunestonesCapabilityStorage();
 	private static final DurabilityCapabilityStorage DURABILITY_STORAGE = new DurabilityCapabilityStorage();

@@ -27,8 +27,6 @@ public interface IRunestonesCapability /*extends IMagicsInventorySupportCapabili
 	void clear();
 	int getCurrentSize(InventoryType type);
 	int getMaxSize(InventoryType type);
-	void setCurrentSize(InventoryType type, int size);
-	void addCurrentSize(InventoryType type, int amount);
 	
 	boolean contains(IRunestone charm);
 	

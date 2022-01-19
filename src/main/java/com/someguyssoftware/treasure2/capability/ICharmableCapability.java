@@ -37,7 +37,6 @@ import net.minecraft.world.World;
  *
  */
 public interface ICharmableCapability {
-	IMagicsInventoryCapability getMagicsCap();
 	
 	Multimap<InventoryType, ICharmEntity> getCharmEntities();
 	
@@ -134,10 +133,6 @@ public interface ICharmableCapability {
 	ILevelModifier getLevelModifier();
 
 	void setLevelModifier(ILevelModifier levelModifier);
-
-	void setCurrentSize(InventoryType type, int size);
-
-	void addCurrentSize(InventoryType type, int amount);
 
 	void clearCharms();
 

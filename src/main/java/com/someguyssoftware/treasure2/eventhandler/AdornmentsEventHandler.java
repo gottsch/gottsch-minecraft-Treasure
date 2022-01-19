@@ -20,31 +20,9 @@
 package com.someguyssoftware.treasure2.eventhandler;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.AdornmentCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.CharmableCapability;
-import com.someguyssoftware.treasure2.capability.DurabilityCapability;
-import com.someguyssoftware.treasure2.capability.ICharmableCapability;
-import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
-import com.someguyssoftware.treasure2.capability.MagicsInventoryCapability;
-import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
-import com.someguyssoftware.treasure2.capability.modifier.GreatAdornmentLevelModifier;
-import com.someguyssoftware.treasure2.enums.AdornmentType;
-import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
-import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 
-import baubles.common.items.ItemRing;
-import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * 
