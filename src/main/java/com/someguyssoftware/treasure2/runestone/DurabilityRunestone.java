@@ -22,6 +22,7 @@ package com.someguyssoftware.treasure2.runestone;
 import java.util.List;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
@@ -34,29 +35,21 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 /**
- * This runestone grants an adornment with Infinity durability.
- * @author Mark Gottschling on Jan 15, 2022
+ * 
+ * @author Mark Gottschling on Jan 20, 2022
  *
  */
-public class AnvilRunestone extends Runestone {
+public class DurabilityRunestone extends Runestone {
 
-	protected AnvilRunestone(Builder builder) {
+	protected DurabilityRunestone(Builder builder) {
 		super(builder);
 	}
 
-	
 	@Override
-	public boolean isValid(ItemStack itemStack) {
-		
-		if (itemStack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
-			IDurabilityCapability cap = itemStack.getCapability(TreasureCapabilities.DURABILITY, null);
-			if (!cap.isInfinite()) {
-				return true;
-			}
-		}
-		return false;
+	public boolean isValid(ItemStack itemStack) {		
+		return itemStack.hasCapability(TreasureCapabilities.DURABILITY, null);
 	}
-	
+
 	@Override
 	public void apply(ItemStack itemStack, IRunestoneEntity entity) {
 		if (!isValid(itemStack) || entity.isApplied()) {
@@ -65,34 +58,30 @@ public class AnvilRunestone extends Runestone {
 
 		if (itemStack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
 			IDurabilityCapability cap = itemStack.getCapability(TreasureCapabilities.DURABILITY, null);
-			cap.setInfinite(true);
+			cap.setDurability((int)Math.round(cap.getDurability() * 1.25D));
+			cap.setMaxDurability((int)Math.round(cap.getMaxDurability() * 1.25D));
 			entity.setApplied(true);
 		}
 	}
 
 	@Override
 	public void undo(ItemStack itemStack, IRunestoneEntity entity) {
-		if (itemStack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
-			IDurabilityCapability cap = itemStack.getCapability(TreasureCapabilities.DURABILITY, null);
-			cap.setInfinite(false);
-			entity.setApplied(false);
-		}
+		IDurabilityCapability cap = itemStack.getCapability(TreasureCapabilities.DURABILITY, null);
+		cap.setDurability((int)Math.round(cap.getDurability() / 1.25D));
+		cap.setMaxDurability((int)Math.round(cap.getMaxDurability() / 1.25D));
+		entity.setApplied(false);
 	}
 
+	/*
+	 * 
+	 */
 	public static class Builder extends Runestone.Builder {
 		public Builder(ResourceLocation name) {
 			super(name);
 		}
 		@Override
 		public IRunestone build() {
-			return new AnvilRunestone(this);
+			return new DurabilityRunestone(this);
 		}
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, IRunestoneEntity entity) {
-        TextFormatting color = TextFormatting.LIGHT_PURPLE;       
-		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocal("runestone." + getName().toString() + ".name")));		
 	}
 }

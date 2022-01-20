@@ -87,12 +87,20 @@ public class RunestonesCapability implements IRunestonesCapability {
 
 	@Override
 	public void appendHoverText(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-		tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("tooltip.runestones.title"));
-
-		// create header text for inventory type
-		appendHoverText(stack, world, tooltip, flag, InventoryType.SOCKET, true);
+		if (hasSlots()) {
+			tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("tooltip.runestones.title"));
+	
+			// create header text for inventory type
+			appendHoverText(stack, world, tooltip, flag, InventoryType.SOCKET, true);
+		}
 	}
 
+	private boolean hasSlots() {
+		if (getMaxInnateSize() + getMaxImbueSize() + getMaxSocketSize() > 0) {
+			return true;
+		}
+		return false;
+	}
 
 	public void appendHoverText(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, InventoryType inventoryType, boolean titleFlag) {		
 		List<IRunestoneEntity> entityList = (List<IRunestoneEntity>) getEntities(inventoryType);
@@ -132,11 +140,13 @@ public class RunestonesCapability implements IRunestonesCapability {
 
 	@Override
 	public void clear() {
+		Treasure.logger.debug("clearning runestones");
 		runestoneEntities.clear();
 	}
 
 	@Override
 	public void copyTo(ItemStack stack) {
+		Treasure.logger.debug("in copyTo...");
 		if (stack.hasCapability(RUNESTONES, null)) {
 			IRunestonesCapability cap = stack.getCapability(RUNESTONES, null);
 
@@ -145,7 +155,11 @@ public class RunestonesCapability implements IRunestonesCapability {
 			cap.setSocketable(isSocketable());
 
 			runestoneEntities.forEach((type, runestone) -> {
-				cap.add(type, runestone);
+				// duplicate entity
+				Treasure.logger.debug("copyTo - source entity in-> {}", runestone);
+				IRunestoneEntity newRune = new RunestoneEntity(runestone);
+				Treasure.logger.debug("copyTo - new runestone entity -> {}", newRune);
+				cap.add(type, newRune);
 			});
 		}
 	}
@@ -158,7 +172,12 @@ public class RunestonesCapability implements IRunestonesCapability {
 			// process each charm entity (only innate as charmItems can have innate)
 			for (IRunestoneEntity entity : runestones) {
 				if (cap.getCurrentSize(destType) < cap.getMaxSize(destType)) {
-					cap.add(destType, entity);
+					// duplicate rune
+					Treasure.logger.debug("transferTo - runestone entity in-> {}", entity);
+					IRunestoneEntity newRune = new RunestoneEntity(entity);
+					Treasure.logger.debug("transferTo - new runestone entity -> {}", newRune);
+					// add rune
+					cap.add(destType, newRune);
 				}
 			}
 		}

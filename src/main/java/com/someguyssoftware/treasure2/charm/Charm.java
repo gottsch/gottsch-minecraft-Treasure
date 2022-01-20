@@ -111,9 +111,16 @@ public abstract class Charm implements ICharm {
 		entity.setFrequency(frequency);
 		entity.setMana(mana);
 		entity.setRange(range);
+		entity.setMaxMana(mana);
 		return entity;
 	}
 
+	@Override
+	public ICharmEntity createEntity(ICharmEntity entity) {
+		ICharmEntity newEntity = new CharmEntity(entity);
+		return newEntity;
+	}
+	
 	@Override
 	public boolean isCurse() {
 		return false;
@@ -153,7 +160,8 @@ public abstract class Charm implements ICharm {
 	public String getUsesGauge(ICharmEntity entity) {
 		return I18n.translateToLocalFormatted("tooltip.charm.uses_gauge",
         		String.valueOf(Math.toIntExact(Math.round(entity.getMana()))), 
-				String.valueOf(Math.toIntExact(Math.round(getMana()))));
+//				String.valueOf(Math.toIntExact(Math.round(getMana()))));
+        		String.valueOf(Math.toIntExact((long)Math.ceil(entity.getMaxMana()))));
 	}
 	
 	

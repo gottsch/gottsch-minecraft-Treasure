@@ -70,7 +70,7 @@ public class TreasureCharms {
 		ICharm charm =  new HealingCharm.Builder(level).with($ -> {
 			$.mana = level * 20.0;
 			$.amount = 1.0;
-			$.frequency = Math.max(20, 100.0 - (Math.floor((level + 1) / 5) *20)); // ie every 5 seconds, reducing by 1 second every 5th level
+			$.frequency = Math.max(40, 100.0 - (Math.floor((level + 1) / 5D) * 10D)); // ie every 5 seconds, reducing by 1 second every 5th level
 			$.effectStackable = true;
 			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
 		})	.build();		
@@ -82,7 +82,7 @@ public class TreasureCharms {
 		ICharm charm = new GreaterHealingCharm.Builder(level).with($ -> {
 			$.mana = level * 20.0;
 			$.amount = 2.0;
-			$.frequency = Math.max(20, 100.0 - (Math.floor((level + 1) / 5) *20)); // ie every 5 seconds, reducing by 1 second every 5th level
+			$.frequency = Math.max(40, 100.0 - (Math.floor((level + 1) / 5D) * 10)); // ie every 5 seconds, reducing by 0.5 second every 5th level
 			$.effectStackable = true;
 			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
 		})	.build();

@@ -19,7 +19,11 @@
  */
 package com.someguyssoftware.treasure2.runestone;
 
+import java.util.List;
+
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 
 /**
  * 
@@ -29,6 +33,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public interface IRunestoneEntity {
 
 	public static final String RUNESTONE = "runestone";
+	public static final String APPLIED = "applied";
 
 	IRunestone getRunestone();
 
@@ -42,8 +47,27 @@ public interface IRunestoneEntity {
 	NBTTagCompound save(NBTTagCompound nbt);
 	
 	default public boolean load(NBTTagCompound nbt) {
-		// TODO fill out
+		if (nbt.hasKey(APPLIED)) {
+			setApplied(nbt.getBoolean(APPLIED));
+		}
+		if (nbt.hasKey("appliedTo")) {
+			getAppliedTo().clear();
+			NBTTagList list = nbt.getTagList("appliedTo", 8);
+			list.forEach(s -> {
+				getAppliedTo().add(((NBTTagString)s).getString());
+			});
+		}
 		return true;
 	}
+
+	boolean isApplied();
+
+	void setApplied(boolean applied);
+
+	List<String> getAppliedTo();
+
+	void setAppliedTo(List<String> appliedTo);
+	
+	boolean isAppliedTo(String type);
 
 }

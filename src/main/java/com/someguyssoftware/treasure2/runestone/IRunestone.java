@@ -39,8 +39,8 @@ public interface IRunestone {
 	IRunestoneEntity createEntity();
 	
 	boolean isValid(ItemStack itemStack);
-	void apply(ItemStack itemStack);
-	void undo(ItemStack itemStack);
+	void apply(ItemStack itemStack, IRunestoneEntity entity);
+	void undo(ItemStack itemStack, IRunestoneEntity entity);
 	
 	/**
 	 * 

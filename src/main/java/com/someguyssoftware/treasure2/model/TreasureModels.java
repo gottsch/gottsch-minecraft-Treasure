@@ -140,11 +140,14 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.MIRTHAS_TORCH);
         registerItemModel(TreasureItems.POCKET_WATCH);
 
-//      registerItemModel(TreasureItems.GOTTSCHS_RING_OF_MOON);
+        registerItemModel(TreasureItems.GOTTSCHS_RING_OF_MOON);
 //      registerItemModel(TreasureItems.SILVER_SIGNET_RING);
         
         // RUNESTONES
+        registerItemModel(TreasureItems.MANA_RUNESTONE);
+        registerItemModel(TreasureItems.DURABILITY_RUNESTONE);
         registerItemModel(TreasureItems.ANVIL_RUNESTONE);
+        registerItemModel(TreasureItems.ANGELS_RUNESTONE);
         
         // GENERATED ITEMS
 		TreasureItems.ITEMS.forEach((key, value) -> {

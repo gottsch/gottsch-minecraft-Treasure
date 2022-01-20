@@ -40,6 +40,11 @@ public class LifeStrikeCharmEntity extends CharmEntity {
 		setLifeCost(charm.getLifeCost());
 	}
 	
+	public LifeStrikeCharmEntity(LifeStrikeCharmEntity entity) {
+		super(entity);
+		setLifeCost(entity.getLifeCost());
+	}
+	
 	@Override
 	public boolean load(NBTTagCompound nbt) {
 		super.load(nbt);		

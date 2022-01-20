@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.modifier.ILevelModifier;
 import com.someguyssoftware.treasure2.capability.modifier.NoLevelModifier;
 import com.someguyssoftware.treasure2.charm.ICharm;
@@ -194,8 +195,10 @@ public class CharmableCapability implements ICharmableCapability {
 			cap.setSocketable(isSocketable());
 			cap.setSource(isSource());
 			cap.setSourceItem(getSourceItem());
-			getCharmEntities().forEach((type, charm) -> {
-				cap.add(type, charm);
+			getCharmEntities().forEach((type, entity) -> {
+				// duplicate charm
+				ICharmEntity newEntity = entity.getCharm().createEntity(entity);
+				cap.add(type, newEntity);
 			});
 		}
 	}
@@ -213,7 +216,8 @@ public class CharmableCapability implements ICharmableCapability {
 			for (ICharmEntity entity : charms) {
 				if (cap.getMaxCharmLevel() >= entity.getCharm().getLevel()) {
 					if (cap.getCurrentSize(destType) < cap.getMaxSize(destType)) {
-						cap.add(destType, entity);
+						ICharmEntity newEntity = entity.getCharm().createEntity(entity);
+						cap.add(destType, newEntity);
 					}
 				}						
 			}
@@ -279,6 +283,7 @@ public class CharmableCapability implements ICharmableCapability {
 	@Override
 	public void clearCharms() {
 		// clear the charm inventory
+		Treasure.logger.debug("clearning charms");
 		getCharmEntities().clear();
 	}
 
@@ -338,6 +343,7 @@ public class CharmableCapability implements ICharmableCapability {
 		}
 		// add charms
 		for (ICharmEntity entity : entityList) {
+//			Treasure.logger.debug("entity -> {}", entity);
 			entity.getCharm().addInformation(stack, world, tooltip, flag, entity);
 		}	
 	}

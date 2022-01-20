@@ -36,6 +36,11 @@ public class ShieldingCharmEntity extends CharmEntity implements ICooldownCharmE
 		super(charm);
 	}
 	
+	public ShieldingCharmEntity(ShieldingCharmEntity entity) {
+		super(entity);
+		setCooldownEnd(entity.getCooldownEnd());
+	}
+	
 	@Override
 	public void update(ICharmEntity entity) {
 		super.update(entity);

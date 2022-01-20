@@ -300,6 +300,9 @@ item.treasure2:ruby_charm.name=Ruby Charm
 item.treasure2:sapphire_charm.name=Sapphire Charm
 item.treasure2:charm_book.name=Charm Book
 item.treasure2:anvil_runestone.name=Runestone of the Anvil
+item.treasure2:mana_runestone.name=Runestone of Mana
+item.treasure2:durability_runestone.name=Runestone of Durability
+item.treasure2:angels_runestone.name=Angel Blessed Artifact
 
 item.treasure2:treasure_tool.name=Treasure Tool
 
@@ -397,16 +400,23 @@ tooltip.adornment.type.ring=Ring
 tooltip.adornment.type.necklace=Necklace
 tooltip.adornment.type.bracelet=Bracelet
 
+// TODO rename to rune.treasure2:...
 # runestone (typically but not necessary the same as the runestone item)
-runestone.treasure2:anvil_rune.name=Runestone of the Anvil
+runestone.treasure2:anvil_rune.name=Rune of the Anvil
+runestone.treasure2:mana_rune.name=Rune of Mana
+runestone.treasure2:durability_rune.name=Rune of Durability
+runestone.treasure2:angels_rune.name=Angel Blessed Rune
 
 tooltip.runestones.title=Runestones:
-tooltip.runestones.effects=Effects:
+tooltip.runestones.effects=Rune Effects:
 tooltip.runestones.inventory.socket=[Socket] 
 tooltip.runestones.slots=Capacity: [%s/%s]
 
 # runestone lore
-tooltip.runestone.lore.anvil_rune=Grants Infinity durability to the adornment
+tooltip.runestone.lore.anvil_rune=Adds Infinite durability to the adornment.
+tooltip.runestone.lore.mana_rune=Adds 25% mana to all charms.
+tooltip.runestone.lore.durability_rune=Adds 25% durability to the adornment.
+tooltip.runestone.lore.angels_rune=Adds 2x mana to all Healing and Shielding charms.\nAdds Infinite durability.
 
 tooltip.ember_key.specials=Destroys Wood Locks
 tooltip.ember_lock.specials=Destroys All Keys regardless of breakability (excluding Ember & Lightning)

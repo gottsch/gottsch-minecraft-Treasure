@@ -73,6 +73,12 @@ public class ShieldingCharm extends Charm {
 	}
 	
 	@Override
+	public ICharmEntity createEntity(ICharmEntity entity) {
+		ICharmEntity newEntity = new ShieldingCharmEntity((ShieldingCharmEntity)entity);
+		return newEntity;
+	}
+	
+	@Override
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity) {
 		boolean result = false;
 		if (entity instanceof ShieldingCharmEntity) {

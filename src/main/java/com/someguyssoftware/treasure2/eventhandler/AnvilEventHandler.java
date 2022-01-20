@@ -30,6 +30,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
 import com.someguyssoftware.treasure2.capability.DurabilityCapability;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.IRunestonesCapability;
 import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.item.Adornment;
@@ -105,11 +106,26 @@ public class AnvilEventHandler {
 				&& leftStack.getCapability(CHARMABLE, null).isSocketable()
 				&& rightStack.getCapability(CHARMABLE, null).isBindable()) {
 			event.setCost(2);
+			leftStack.getCapability(RUNESTONES, null).getEntities(InventoryType.INNATE).forEach(entity -> {
+				Treasure.logger.debug("binding charm: sourceStack.appliedTo -> {}", entity.getAppliedTo());
+			});
 			Optional<ItemStack> outStack = transferCapabilities(rightStack, leftStack, InventoryType.INNATE, InventoryType.SOCKET);
 			if (outStack.isPresent()) {
+				if (outStack.get().hasCapability(RUNESTONES, null)) {
+					outStack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(entity -> {
+						Treasure.logger.debug("binding charm: is applied -> {}", entity.isApplied());
+						Treasure.logger.debug("binding charm: applied to -> {}", entity.getAppliedTo());
+						Treasure.logger.debug("binding charm: applying runestone -> {} to entity -> {}", entity.getRunestone(), entity);
+						entity.getRunestone().apply(outStack.get(), entity);
+						Treasure.logger.debug("binding charm: after apply: is applied -> {}", entity.isApplied());
+						Treasure.logger.debug("binding charm: after apply: applied to -> {}", entity.getAppliedTo());
+						outStack.get().getCapability(CHARMABLE, null).getCharmEntities().forEach((type2, charm) -> {
+							Treasure.logger.debug("binding charm: entity -> {}, mana -> {}, max mana -> {}", charm.getCharm().getName().toString(), charm.getMana(), charm.getMaxMana());
+						});
+					});
+				}
 				event.setOutput(outStack.get());
 			}
-
 		}
 
 		// add imbuing (charm) to imbuable (ex. adornment)
@@ -118,6 +134,11 @@ public class AnvilEventHandler {
 			event.setCost(2);
 			Optional<ItemStack> outStack = transferCapabilities(rightStack, leftStack, InventoryType.INNATE, InventoryType.IMBUE);
 			if (outStack.isPresent()) {
+				if (outStack.get().hasCapability(RUNESTONES, null)) {
+					outStack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.IMBUE).forEach(entity -> {
+						entity.getRunestone().apply(outStack.get(), entity);
+					});
+				}
 				event.setOutput(outStack.get());
 			}
 		}
@@ -126,12 +147,27 @@ public class AnvilEventHandler {
 				&& leftStack.getCapability(RUNESTONES, null).isSocketable()
 				&& rightStack.getCapability(RUNESTONES, null).isBindable()) {
 			event.setCost(2);
+			rightStack.getCapability(RUNESTONES, null).getEntities(InventoryType.INNATE).forEach(entity -> {
+				Treasure.logger.debug("rightStack.appliedTo -> {}", entity.getAppliedTo());
+			});
 			Optional<ItemStack> stack = transferCapabilities(rightStack, leftStack, InventoryType.INNATE, InventoryType.SOCKET);
 			if (stack.isPresent()) {
 				stack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(entity -> {
-					if(entity.getRunestone().isValid(stack.get())) {
-						entity.getRunestone().apply(stack.get());
-					}
+					Treasure.logger.debug("is applied -> {}", entity.isApplied());
+					Treasure.logger.debug("applied to -> {}", entity.getAppliedTo());
+//					if(entity.getRunestone().isValid(stack.get()) && !entity.isApplied()) {
+						Treasure.logger.debug("applying runestone -> {} to entity -> {}", entity.getRunestone(), entity);
+						entity.getRunestone().apply(stack.get(), entity);
+						stack.get().getCapability(CHARMABLE, null).getCharmEntities().forEach((type, charm) -> {
+							Treasure.logger.debug("entity -> {}, mana -> {}, max mana -> {}", charm.getCharm().getName().toString(), charm.getMana(), charm.getMaxMana());
+						});
+						stack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(stone -> {
+							Treasure.logger.debug("output runestone -> {}", stone);
+						});
+//					}
+//					else {
+//						Treasure.logger.debug("runestone not applied.");
+//					}
 				});
 				event.setOutput(stack.get());
 			}
@@ -197,9 +233,16 @@ public class AnvilEventHandler {
 
 		if (dest.hasCapability(RUNESTONES, null)) {
 			stack.getCapability(RUNESTONES, null).clear();
+			Treasure.logger.debug("before copyTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
 			dest.getCapability(RUNESTONES, null).copyTo(stack);
-			if (source.hasCapability(RUNESTONES, null)) {
-				source.getCapability(RUNESTONES, null).transferTo(stack, sourceType, destType);
+			Treasure.logger.debug("after copyTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
+			if (source.hasCapability(RUNESTONES, null)) { // this is the rune
+				Treasure.logger.debug("source(runestone)'s runes ->");
+				source.getCapability(RUNESTONES, null).getEntities(InventoryType.INNATE).forEach(entity -> {
+					Treasure.logger.debug("source entity -> {}", entity);
+				});
+				source.getCapability(RUNESTONES, null).transferTo(stack, sourceType, destType); // transfer from rune to output
+				Treasure.logger.debug("after transferTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
 				if (stack.getCapability(RUNESTONES, null).getCurrentSize(destType) > dest.getCapability(RUNESTONES, null).getCurrentSize(destType)) {
 					runeSizeChanged = true;
 				}

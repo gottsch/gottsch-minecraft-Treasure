@@ -41,6 +41,9 @@ public class CharmEntity implements ICharmEntity {
 	// calculates the actual cost given an input
 	private ICostEvaluator costEvaluator;
 	
+	// TESTing for Runestones
+	private double maxMana;
+	
 	/**
 	 * 
 	 */
@@ -55,6 +58,26 @@ public class CharmEntity implements ICharmEntity {
 		setMana(charm.getMana());
 		setRange(charm.getRange());
 		setCostEvaluator(charm.getCostEvaluator());
+		
+		setMaxMana(charm.getMana());
+	}
+	
+	/**
+	 * Copy constructor
+	 * @param entity
+	 */
+	public CharmEntity(ICharmEntity entity) {
+		setCharm(entity.getCharm());
+		setAmount(entity.getAmount());
+		setCooldown(entity.getCooldown());
+		setDuration(entity.getDuration());
+		setFrequency(entity.getFrequency());
+		setMana(entity.getMana());
+		setRange(entity.getRange());
+		// TODO create a new costevaluator instance
+		setCostEvaluator(entity.getCostEvaluator());
+		
+		setMaxMana(entity.getMaxMana());
 	}
 	
 	// TODO add a builder
@@ -89,6 +112,7 @@ public class CharmEntity implements ICharmEntity {
 		if (getCostEvaluator() != null) {
 			nbt.setString(COST_EVALUATOR, getCostEvaluator().getClass().getCanonicalName());
 		}
+		nbt.setDouble("maxMana", getMaxMana());
 		return nbt;
 	}
 	
@@ -135,7 +159,8 @@ public class CharmEntity implements ICharmEntity {
 	@Override
 	public String toString() {
 		return "CharmEntity [charm=" + charm + ", mana=" + mana + ", duration=" + duration + ", frequency=" + frequency
-				+ ", range=" + range + ", cooldown=" + cooldown + ", amount=" + amount + "]";
+				+ ", range=" + range + ", cooldown=" + cooldown + ", amount=" + amount + ", costEvaluator="
+				+ costEvaluator + ", maxMana=" + maxMana + "]";
 	}
 
 	@Override
@@ -176,5 +201,15 @@ public class CharmEntity implements ICharmEntity {
 	@Override
 	public void setCostEvaluator(ICostEvaluator costEvaluator) {
 		this.costEvaluator = costEvaluator;
+	}
+
+	@Override
+	public double getMaxMana() {
+		return maxMana;
+	}
+
+	@Override
+	public void setMaxMana(double maxMana) {
+		this.maxMana = maxMana;
 	}
 }

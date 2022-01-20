@@ -164,7 +164,7 @@ public class Adornment extends ModItem {
 		getCap(stack).appendHoverText(stack, world, tooltip, flag);
 		
 		// add runestones tooltips
-		if (getRunestonesCap(stack).hasRunestone()) {
+		if (stack.hasCapability(TreasureCapabilities.RUNESTONES, null)) {
 			getRunestonesCap(stack).appendHoverText(stack, world, tooltip, flag);
 		}
 	}
@@ -176,12 +176,7 @@ public class Adornment extends ModItem {
 	@Override
     public NBTTagCompound getNBTShareTag(ItemStack stack) {
 		Treasure.logger.debug("writing share tag");
-		NBTTagCompound magicsTag;
 		// read cap -> write nbt
-//		magicsTag = (NBTTagCompound) MAGICS_STORAGE.writeNBT(
-//				TreasureCapabilities.MAGICS,
-//				stack.getCapability(TreasureCapabilities.MAGICS, null),
-//				null);
 		NBTTagCompound charmableTag;
 		charmableTag = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
 				TreasureCapabilities.CHARMABLE,
@@ -198,7 +193,6 @@ public class Adornment extends ModItem {
 				null);
 		
 		NBTTagCompound tag = new NBTTagCompound();
-//		tag.setTag("magics", magicsTag);
 		tag.setTag("charmable", charmableTag);
 		tag.setTag("runestones", runestonesTag);
 		tag.setTag("durability", durabilityTag);
@@ -211,14 +205,6 @@ public class Adornment extends ModItem {
         super.readNBTShareTag(stack, nbt);
         Treasure.logger.debug("reading share tag");
         // read nbt -> write key item
-//        if (nbt.hasKey("magics")) {
-//        	NBTTagCompound tag = nbt.getCompoundTag("magics");
-//	        MAGICS_STORAGE.readNBT(
-//	     		   TreasureCapabilities.MAGICS, 
-//	 				stack.getCapability(TreasureCapabilities.MAGICS, null), 
-//	 				null,
-//	 				tag);
-//        }
         if (nbt.hasKey("charmable")) {
         	NBTTagCompound tag = nbt.getCompoundTag("charmable");
 	       CAPABILITY_STORAGE.readNBT(
@@ -266,6 +252,20 @@ public class Adornment extends ModItem {
         	return (double)stack.getItemDamage() / (double)stack.getMaxDamage();
         }
     }
+	
+	@Override
+	public boolean isRepairable() {
+		return false;
+	}
+	
+	/**
+	 * Adornments are not repairable using vanilla methods.
+	 */
+	@Override
+	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+		// TODO add to anvil event to repair adornments
+		return false;
+	}
 	
 	public AdornmentType getType() {
 		return type;

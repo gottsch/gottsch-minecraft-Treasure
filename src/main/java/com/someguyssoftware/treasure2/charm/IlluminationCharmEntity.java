@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.charm.ICharm;
@@ -56,6 +57,15 @@ public class IlluminationCharmEntity extends CharmEntity {
 	public IlluminationCharmEntity(ICharm charm) {
 		super(charm);
 		setCoordsList(Collections.synchronizedList(new LinkedList<>()));
+	}
+	
+	public IlluminationCharmEntity(IlluminationCharmEntity entity) {
+		super(entity);
+		setCoordsList(Collections.synchronizedList(new LinkedList<>()));
+		entity.getCoordsList().forEach(coords -> {
+			ICoords newCoords = new Coords(coords);
+			getCoordsList().add(newCoords);
+		});
 	}
 	
 	/**

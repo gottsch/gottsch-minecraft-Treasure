@@ -79,7 +79,7 @@ public class RunestoneItem extends ModItem {
 		IRunestonesCapability cap = getCap(stack);
 		if (cap.hasRunestone()) {
 			// add a space
-			tooltip.add( I18n.translateToLocal("tooltip.runestones.effects"));	
+			tooltip.add( TextFormatting.DARK_PURPLE + I18n.translateToLocal("tooltip.runestones.effects"));	
 			IRunestone runestone = cap.getEntities(InventoryType.INNATE).get(0).getRunestone();
 			tooltip.add(I18n.translateToLocalFormatted("tooltip.indent2", TextFormatting.LIGHT_PURPLE + "" + TextFormatting.ITALIC + runestone.getLore()));
 		}

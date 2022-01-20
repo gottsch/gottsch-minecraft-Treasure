@@ -67,6 +67,10 @@ public interface ICharmEntity {
 	ICostEvaluator getCostEvaluator();
 	void setCostEvaluator(ICostEvaluator costEvaluator);
 	
+	// TESTING
+	double getMaxMana();
+	void setMaxMana(double maxMana);
+	
 	void update(ICharmEntity entity);
 
 	/**
@@ -114,6 +118,10 @@ public interface ICharmEntity {
 		}
 		else {
 			setCostEvaluator(new CostEvaluator());
+		}
+		
+		if (nbt.hasKey("maxMana")) {
+			setMaxMana(nbt.getDouble("maxMana"));
 		}
 		return true;
 	}

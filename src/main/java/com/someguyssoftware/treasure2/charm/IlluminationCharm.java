@@ -66,29 +66,16 @@ public class IlluminationCharm extends Charm {
 	public ICharmEntity createEntity() {
 //		ICharmEntity entity = new IlluminationCharmEntity(this, this.getMana(),this.getDuration(), this.getPercent());
 		ICharmEntity entity = new IlluminationCharmEntity(this);
-//		entity.setCharm(this);
-//		entity.setAmount(getAmount());
-//		entity.setCooldown(getCooldown());
-//		entity.setCost(getCost());
-//		entity.setDuration(getDuration());
-//		entity.setFrequency(getFrequency());
-//		entity.setMana(getMana());
-//		entity.setPercent(getPercent());
-//		entity.setRange(getRange());
+
 		return entity;
 	}
 
-	//	@Override
-	//	public ICharmInstance createInstance() {
-	//		//		Treasure.logger.debug("creating new illumination charm instance");
-	//		IlluminationCharmData data = new IlluminationCharmData();
-	//		data.setValue(this.getMaxValue());
-	//		data.setPercent(this.getMaxPercent());
-	//		data.setDuration(this.getMaxDuration());
-	//		ICharmInstance instance = new CharmInstance(this, data);
-	//		return instance;
-	//	}
-
+	@Override
+	public ICharmEntity createEntity(ICharmEntity entity) {
+		ICharmEntity newEntity = new IlluminationCharmEntity((IlluminationCharmEntity)entity);
+		return newEntity;
+	}
+	
 	/**
 	 * NOTE: it is assumed that only the allowable events are calling this action.
 	 */

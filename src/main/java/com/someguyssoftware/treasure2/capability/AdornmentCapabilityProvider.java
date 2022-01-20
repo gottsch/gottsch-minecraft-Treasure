@@ -7,45 +7,31 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 public class AdornmentCapabilityProvider implements ICapabilitySerializable<NBTTagCompound> {
 
-//	private final IMagicsInventoryCapability magicsCap;
 	private final ICharmableCapability charmableCap;
 	private final IDurabilityCapability durabilityCap;
 	private final IRunestonesCapability runestonesCap;
 	// TODO add IPouchableCapability
 	
 	public AdornmentCapabilityProvider() {
-//		this.magicsCap = new MagicsInventoryCapability(1, 1, 1);
 		this.charmableCap = new CharmableCapability(0, 0, 0);
 		this.durabilityCap = new DurabilityCapability(100, 100);
-//		this.runestonesCap = new RunestonesCapability(magicsCap);
 		this.runestonesCap = new RunestonesCapability(0, 0, 0);
 	}
 	
 	@Deprecated
 	public AdornmentCapabilityProvider(ICharmableCapability charmableCap) {
-//		this.magicsCap = charmableCap.getMagicsCap();
 		this.charmableCap = charmableCap;
 		this.durabilityCap = new DurabilityCapability(100, 100);
-//		this.runestonesCap = new RunestonesCapability(magicsCap);
 		this.runestonesCap = new RunestonesCapability(0, 0, 0);
 	}
-	
-//	public AdornmentCapabilityProvider(IMagicsInventoryCapability magicsCap, ICharmableCapability charmableCap) {
-//		this.magicsCap = magicsCap;
-//		this.charmableCap = charmableCap;
-//		this.durabilityCap = new DurabilityCapability();
-//	}
 
 	public AdornmentCapabilityProvider(ICharmableCapability charmableCap, IDurabilityCapability durabilityCap) {
-//		this.magicsCap = charmableCap.getMagicsCap();
 		this.charmableCap = charmableCap;
 		this.durabilityCap = durabilityCap;
-//		this.runestonesCap = new RunestonesCapability(magicsCap);
 		this.runestonesCap = new RunestonesCapability(0, 0, 0);
 	}
 	
 	public AdornmentCapabilityProvider(ICharmableCapability charmableCap, IRunestonesCapability runestonesCap, IDurabilityCapability durabilityCap) {
-//		this.magicsCap = charmableCap.getMagicsCap();
 		this.charmableCap = charmableCap;
 		this.runestonesCap = runestonesCap;
 		this.durabilityCap = durabilityCap;

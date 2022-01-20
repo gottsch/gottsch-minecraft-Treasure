@@ -19,9 +19,12 @@
  */
 package com.someguyssoftware.treasure2.runestone;
 
-import org.apache.commons.lang3.ObjectUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 
 /**
  * TODO this is probably an unneeded class, as nothing is changing.
@@ -32,7 +35,13 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public class RunestoneEntity implements IRunestoneEntity {
 	private IRunestone runestone;
-
+	private boolean applied;
+	
+	private List<String> appliedTo;
+	
+	/**
+	 * 
+	 */
 	public RunestoneEntity() {}
 	
 	/**
@@ -41,7 +50,15 @@ public class RunestoneEntity implements IRunestoneEntity {
 	 */
 	public RunestoneEntity(IRunestoneEntity entity) {
 		this.setRunestone(entity.getRunestone());
+		this.setApplied(entity.isApplied());
+		entity.getAppliedTo().forEach(type -> {
+			this.getAppliedTo().add(type);
+		});
 		// TODO complete
+	}
+	
+	public boolean isAppliedTo(String type) {
+		return getAppliedTo().contains(type);
 	}
 	
 	/**
@@ -55,7 +72,14 @@ public class RunestoneEntity implements IRunestoneEntity {
 		// save the charm
 		nbt.setTag("runestone", getRunestone().save(runestoneNbt));
 		// save the entity data
-
+		nbt.setBoolean(APPLIED, isApplied());
+		NBTTagList list = new NBTTagList();
+		getAppliedTo().forEach(type -> {
+			NBTTagString s = new NBTTagString(type);
+			list.appendTag(s);
+		});
+		nbt.setTag("appliedTo", list);
+		
 		return nbt;
 	}
 	
@@ -71,7 +95,30 @@ public class RunestoneEntity implements IRunestoneEntity {
 
 	@Override
 	public String toString() {
-		return "RunestoneEntity [runestone=" + runestone + "]";
+		return "RunestoneEntity [runestone=" + runestone + ", applied=" + applied + ", appliedTo=" + appliedTo + "]";
+	}
+
+	@Override
+	public boolean isApplied() {
+		return applied;
+	}
+
+	@Override
+	public void setApplied(boolean applied) {
+		this.applied = applied;
+	}
+
+	@Override
+	public List<String> getAppliedTo() {
+		if (appliedTo == null) {
+			appliedTo = new ArrayList<>();
+		}
+		return appliedTo;
+	}
+
+	@Override
+	public void setAppliedTo(List<String> appliedTo) {
+		this.appliedTo = appliedTo;
 	}
 	
 }

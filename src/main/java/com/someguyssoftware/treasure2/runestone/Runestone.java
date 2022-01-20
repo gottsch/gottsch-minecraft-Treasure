@@ -19,6 +19,7 @@
  */
 package com.someguyssoftware.treasure2.runestone;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -28,13 +29,21 @@ import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
 
 /**
- * As of today, Jan 14, this class doesn't really require a builder. However the details
+ * NOTE:  As of today, Jan 14, this class doesn't really require a builder. However the details
  * aren't really fleshed out and this way makes it more expandable in the future.
+ * NOTE:  Runestones are a one-time application, ie. the effects are applied to the charm entity, adornment, etc
+ * at one point in time and not re-calculated (ex for display purposes). Typically their effects are applied
+ * on the Anvil event. If you want add attach a Runestone to an adornment in initCapabilities() or something similar
+ * you will have to call the Runestone.apply(ItemStack) in order to see the effects.
  * @author Mark Gottschling on Jan 14, 2022
  *
  */
@@ -61,6 +70,12 @@ public abstract class Runestone implements IRunestone {
 		return entity;
 	}
 	
+	//?
+	public IRunestoneEntity createEntity(IRunestoneEntity entity) {
+		IRunestoneEntity newEntity = new RunestoneEntity(entity);
+		return entity;
+	}
+	
 	/**
 	 * Determines whether this Runestone is valid for the given ItemStack
 	 */
@@ -72,13 +87,20 @@ public abstract class Runestone implements IRunestone {
 	 * @param itemStack
 	 */
 	@Override
-	abstract public void apply(ItemStack itemStack);
+	abstract public void apply(ItemStack itemStack, IRunestoneEntity entity);
 	
 	/**
 	 * Undoes the Runestone's ability/modification from the ItemStack 
 	 * @param itemStack
 	 */
-	abstract public void undo(ItemStack itemStack);
+	abstract public void undo(ItemStack itemStack, IRunestoneEntity entity);
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, IRunestoneEntity entity) {
+        TextFormatting color = TextFormatting.LIGHT_PURPLE;       
+		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocal("runestone." + getName().toString() + ".name")));		
+	}
 	
 	public static Optional<IRunestone> load(NBTTagCompound tag) {
 		Optional<IRunestone> runestone = Optional.empty();
@@ -86,7 +108,7 @@ public abstract class Runestone implements IRunestone {
 		try {
 			String name = tag.getString("name");			
 			ResourceLocation resource = ResourceLocationUtil.create(name);
-			runestone = TreasureRunestones.get(resource);
+			runestone = TreasureRunes.get(resource);
 			if (!runestone.isPresent()) {
 				throw new Exception(String.format("Unable to locate charm %s in registry.", resource.toString()));
 			}

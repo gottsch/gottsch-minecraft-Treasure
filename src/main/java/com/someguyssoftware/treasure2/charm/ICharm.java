@@ -53,6 +53,7 @@ public interface ICharm {
 	public boolean isEffectStackable();
     
 	public ICharmEntity createEntity();
+	public ICharmEntity createEntity(ICharmEntity entity);
 	
     public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity);
 
@@ -64,6 +65,6 @@ public interface ICharm {
 	
 	public Class<?> getRegisteredEvent();
 	
-	ICostEvaluator getCostEvaluator();
+	ICostEvaluator getCostEvaluator();	
 
 }

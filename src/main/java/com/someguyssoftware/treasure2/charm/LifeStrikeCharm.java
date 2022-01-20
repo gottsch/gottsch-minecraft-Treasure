@@ -69,6 +69,12 @@ public class LifeStrikeCharm extends Charm {
 		return entity;
 	}
 	
+	@Override
+	public ICharmEntity createEntity(ICharmEntity entity) {
+		ICharmEntity newEntity = new LifeStrikeCharmEntity((LifeStrikeCharmEntity)entity);
+		return newEntity;
+	}
+	
 	/**
 	 * NOTE: it is assumed that only the allowable events are calling this action.
 	 */
