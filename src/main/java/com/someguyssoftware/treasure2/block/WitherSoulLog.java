@@ -12,23 +12,23 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.particle.TreasureParticles;
 import com.someguyssoftware.treasure2.particle.data.CollidingParticleType;
-import com.someguyssoftware.treasure2.tileentity.MistEmitterBlockEntity;
+import com.someguyssoftware.treasure2.tileentity.MistEmitterTileEntity;
 import com.someguyssoftware.treasure2.tileentity.TreasureTileEntities;
 
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -83,7 +83,7 @@ protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 	 * 
 	 */
 	@Override
-	public VoxelShape getShape(BlockState state, LevelAccessor worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		switch(state.getValue(FACING)) {
 		default:
 		case NORTH:
@@ -98,7 +98,7 @@ protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 	}
 	
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockState blockState = this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
 		return blockState;
 	}
@@ -175,7 +175,7 @@ protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 	 * @author Mark Gottschling on Jun 7, 2018
 	 *
 	 */
-	public static enum Appearance implements IStringSerializable {
+	public static enum Appearance implements StringRepresentable {
 		NONE("none", 0), FACE("face", 1);
 
 		private final String name;

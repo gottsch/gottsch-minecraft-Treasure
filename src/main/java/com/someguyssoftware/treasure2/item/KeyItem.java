@@ -42,6 +42,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.client.util.TooltipFlag;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.ItemUseContext;

@@ -13,14 +13,14 @@ import com.someguyssoftware.treasure2.particle.TreasureParticles;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.particles.IParticleData;
 import net.minecraft.world.level.block.Mirror;
-import net.minecraft.util.Rotation;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -61,7 +61,7 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 	 * 
 	 */
 	@Override
-	public VoxelShape getShape(BlockState state, LevelAccessor worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		switch(state.getValue(FACING)) {
 		default:
 		case NORTH:
@@ -74,9 +74,9 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 			return bounds[3];
 		}
 	}
-	
+
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockState blockState = this.defaultBlockState().setValue(FACING,
 				context.getHorizontalDirection().getOpposite());
 		return blockState;
@@ -91,45 +91,45 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
 
-		if (!TreasureConfig.FOG.enableFog.get()) {
-			return;
-		}
-
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-
-//		boolean isCreateParticle = checkTorchPrevention(world, random, x, y, z);
-//		if (!isCreateParticle) {
+//		if (!TreasureConfig.FOG.enableFog.get()) {
 //			return;
 //		}
-
-		// initial positions - has a spread area of up to 1.5 blocks
-		double xPos = (x + 0.5D) + (random.nextFloat() * 3.0) - 1.5D;
-		double yPos = y + 0.1D; // + state.getBlockSupportShape(world, pos).max(Axis.Y); // + 1.0;
-		double zPos = (z + 0.5D) + (random.nextFloat() * 3.0) - 1.5D;
-		// initial velocities
-		double velocityX = 0;
-		double velocityY = 0;
-		double velocityZ = 0;
-		
-		final boolean IGNORE_RANGE_CHECK = false; // if true, always render particle regardless of how far away the player is
-		
-		// create particle
-		IParticleData mistParticleData = null;
-
-		if (RandomHelper.checkProbability(random, 80)) {
-			mistParticleData = TreasureParticles.MIST_PARTICLE_TYPE.get();//new MistParticleData( new Coords(pos));
-		} else {
-			mistParticleData = TreasureParticles.BILLOWING_MIST_PARTICLE_TYPE.get();//new BillowingMistParticleData(new Coords(pos));
-		}		
-
-		try {
-			world.addParticle(mistParticleData, IGNORE_RANGE_CHECK, xPos, yPos, zPos, velocityX, velocityY, velocityZ);
-		}
-		catch(Exception e) {
-			Treasure.LOGGER.error("error with particle:", e);
-		}
+//
+//		int x = pos.getX();
+//		int y = pos.getY();
+//		int z = pos.getZ();
+//
+////		boolean isCreateParticle = checkTorchPrevention(world, random, x, y, z);
+////		if (!isCreateParticle) {
+////			return;
+////		}
+//
+//		// initial positions - has a spread area of up to 1.5 blocks
+//		double xPos = (x + 0.5D) + (random.nextFloat() * 3.0) - 1.5D;
+//		double yPos = y + 0.1D; // + state.getBlockSupportShape(world, pos).max(Axis.Y); // + 1.0;
+//		double zPos = (z + 0.5D) + (random.nextFloat() * 3.0) - 1.5D;
+//		// initial velocities
+//		double velocityX = 0;
+//		double velocityY = 0;
+//		double velocityZ = 0;
+//		
+//		final boolean IGNORE_RANGE_CHECK = false; // if true, always render particle regardless of how far away the player is
+//		
+//		// create particle
+//		IParticleData mistParticleData = null;
+//
+//		if (RandomHelper.checkProbability(random, 80)) {
+//			mistParticleData = TreasureParticles.MIST_PARTICLE_TYPE.get();//new MistParticleData( new Coords(pos));
+//		} else {
+//			mistParticleData = TreasureParticles.BILLOWING_MIST_PARTICLE_TYPE.get();//new BillowingMistParticleData(new Coords(pos));
+//		}		
+//
+//		try {
+//			world.addParticle(mistParticleData, IGNORE_RANGE_CHECK, xPos, yPos, zPos, velocityX, velocityY, velocityZ);
+//		}
+//		catch(Exception e) {
+//			Treasure.LOGGER.error("error with particle:", e);
+//		}
 	}
 	
 	/**

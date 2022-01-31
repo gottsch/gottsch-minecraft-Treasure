@@ -9,22 +9,20 @@ import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.core.Direction;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.core.Direction;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * @author Mark Gottschling on Feb 2, 2019
@@ -61,17 +59,9 @@ public class SkeletonBlock extends GravestoneBlock {
 	 * 
 	 */
 	@Override
-protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(PART, FACING);
 	}
-
-	/**
-	 * 
-	 */
-//	@Override
-//	public boolean isNormalCube(BlockState state, LevelAccessor world, BlockPos pos) {
-//		return false;
-//	}
 
 	/**
 	 * Called by ItemBlocks after a block is set in the world, to allow post-place logic
@@ -92,12 +82,12 @@ protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 	 * the player's tool can actually collect this block
 	 */
 	@Override
-	public void destroy(ILevel world, BlockPos pos, BlockState state) {
+	public void destroy(LevelAccessor world, BlockPos pos, BlockState state) {
 		Direction facing = (Direction) state.getValue(FACING);
 		if (state.getValue(PART) == SkeletonBlock.EnumPartType.BOTTOM) {
 			ICoords coords = new Coords(pos);
 			BlockPos blockPos = coords.add(facing.getOpposite(), 1).toPos();
-//			BlockPos blockPos = pos.relative(facing.getOpposite());
+			//			BlockPos blockPos = pos.relative(facing.getOpposite());
 
 			if (world.getBlockState(blockPos).getBlock() == this) {
 				Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), world, blockPos, 3);
@@ -121,7 +111,7 @@ protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 	 * @author Mark Gottschling on Feb 2, 2019
 	 *
 	 */
-	public static enum EnumPartType implements IStringSerializable {
+	public static enum EnumPartType implements StringRepresentable {
 		TOP("top"), BOTTOM("bottom");
 
 		private final String name;
