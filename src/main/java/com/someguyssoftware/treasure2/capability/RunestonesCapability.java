@@ -140,7 +140,7 @@ public class RunestonesCapability implements IRunestonesCapability {
 
 	@Override
 	public void clear() {
-		Treasure.logger.debug("clearning runestones");
+//		Treasure.logger.debug("clearning runestones");
 		runestoneEntities.clear();
 	}
 

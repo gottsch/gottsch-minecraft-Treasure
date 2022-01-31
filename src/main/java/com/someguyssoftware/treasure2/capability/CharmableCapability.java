@@ -177,6 +177,9 @@ public class CharmableCapability implements ICharmableCapability {
 		return false;
 	}
 
+	/**
+	 * Duplicate the capability into a destination capability.
+	 */
 	@Override
 	public void copyTo(ItemStack stack) {
 
@@ -195,6 +198,7 @@ public class CharmableCapability implements ICharmableCapability {
 			cap.setSocketable(isSocketable());
 			cap.setSource(isSource());
 			cap.setSourceItem(getSourceItem());
+			cap.setMaxSocketSize(getMaxSocketSize());
 			getCharmEntities().forEach((type, entity) -> {
 				// duplicate charm
 				ICharmEntity newEntity = entity.getCharm().createEntity(entity);
@@ -203,6 +207,9 @@ public class CharmableCapability implements ICharmableCapability {
 		}
 	}
 
+	/**
+	 * Transfer the charms from a source capability to a destination capability.
+	 */
 	@Override
 	public void transferTo(ItemStack dest, InventoryType sourceType, InventoryType destType) {
 		if (dest.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
@@ -304,10 +311,10 @@ public class CharmableCapability implements ICharmableCapability {
 	@Override
 	public void appendHoverText(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 		if (isImbuable() || isSocketable()) {
-			tooltip.add(TextFormatting.YELLOW + I18n.translateToLocalFormatted("tooltip.label.charms", getMaxCharmLevel()));
+			tooltip.add(TextFormatting.DARK_AQUA + I18n.translateToLocalFormatted("tooltip.label.charms", getMaxCharmLevel()));
 		}
 		else {
-			tooltip.add(TextFormatting.YELLOW + I18n.translateToLocalFormatted("tooltip.label.charms.no_level", getMaxCharmLevel()));
+			tooltip.add(TextFormatting.DARK_AQUA + I18n.translateToLocalFormatted("tooltip.label.charms.no_level", getMaxCharmLevel()));
 		}
 
 		// create header text for inventory type
@@ -356,6 +363,11 @@ public class CharmableCapability implements ICharmableCapability {
 				String.valueOf(Math.toIntExact(Math.round(getMaxSize(type))))); // max				
 	}
 
+	@Override
+	public void addMaxSocketSize(int increment) {
+		this.maxSocketSize = getMaxSocketSize() + increment;
+	}
+	
 	/*
 	 * 
 	 */
@@ -514,6 +526,10 @@ public class CharmableCapability implements ICharmableCapability {
 		this.namedByCharm = namedByCharm;
 	}
 
+	public void setMaxSocketSize(int size) {
+		this.maxSocketSize = size;
+	}
+	
 	public int getMaxSocketSize() {
 		return maxSocketSize;
 	}

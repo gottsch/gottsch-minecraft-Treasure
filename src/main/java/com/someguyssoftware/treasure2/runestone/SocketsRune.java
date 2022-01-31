@@ -19,29 +19,22 @@
  */
 package com.someguyssoftware.treasure2.runestone;
 
-import java.util.List;
-
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
-import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.World;
 
 /**
  * 
- * @author Mark Gottschling on Jan 19, 2022
+ * @author Mark Gottschling on Jan 26, 2022
  *
  */
-public class ManaRunestone extends Runestone {
+public class SocketsRune extends Runestone {
 
-	protected ManaRunestone(Builder builder) {
+	protected SocketsRune(Builder builder) {
 		super(builder);
 	}
 
@@ -52,42 +45,22 @@ public class ManaRunestone extends Runestone {
 
 	@Override
 	public void apply(ItemStack itemStack, IRunestoneEntity entity) {
-		if (!isValid(itemStack)) {
+		if (!isValid(itemStack) || entity.isApplied()) {
 			return;
 		}
 
-		ICharmableCapability cap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
-		// for each charm, increase the mana
-		cap.getCharmEntities().forEach((key, value) -> {
-			if (!entity.isAppliedTo(value.getCharm().getType()) && !getInvalids().contains(value.getCharm().getType())) {
-//				Treasure.logger.debug("before apply: entity -> {}, mana -> {}, max mana -> {}", value.getCharm().getName().toString(), value.getMana(), value.getMaxMana());
-//				value.setMana(Math.floor(value.getMana() * 1.25D));
-//				value.setMaxMana(Math.floor(value.getMaxMana() * 1.25D));
-				apply(value);
-//				Treasure.logger.debug("after apply: entity -> {}, mana -> {}, max mana -> {}", value.getCharm().getName().toString(), value.getMana(), value.getMaxMana());
-				entity.getAppliedTo().add(value.getCharm().getType());
-				entity.setApplied(true);
-			}
-		});		
-	}
-
-	public void apply(ICharmEntity entity) {
-		// add 25% to the current mana
-		entity.setMana(entity.getMana() * 1.25D);
-		entity.setMaxMana(entity.getMaxMana() * 1.25D);
+		if (itemStack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+			ICharmableCapability cap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
+			Treasure.logger.debug("adding socket to item -> {}, size -> {}", itemStack.getDisplayName(), cap.getMaxSocketSize());
+			cap.addMaxSocketSize(1);
+			entity.setApplied(true);
+		}
 	}
 
 	@Override
 	public void undo(ItemStack itemStack, IRunestoneEntity entity) {
 		ICharmableCapability cap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
-		// for each charm, decrease the mana
-		cap.getCharmEntities().forEach((key, value) -> {
-			if (entity.isAppliedTo(value.getCharm().getType())) {
-				value.setMana(value.getMana() / 1.25);
-				value.setMaxMana(value.getMaxMana() / 1.25);
-				entity.getAppliedTo().remove(value.getCharm().getType());
-			}
-		});
+		cap.addMaxSocketSize(-1);
 		entity.setApplied(false);
 	}
 
@@ -100,7 +73,7 @@ public class ManaRunestone extends Runestone {
 		}
 		@Override
 		public IRunestone build() {
-			return new ManaRunestone(this);
+			return new SocketsRune(this);
 		}
 	}
 }

@@ -1,16 +1,28 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.client.gui;
 
 import static com.someguyssoftware.treasure2.Treasure.logger;
 
 import java.util.Random;
-import java.util.function.Supplier;
 
-import com.someguyssoftware.gottschcore.loot.LootContext;
-import com.someguyssoftware.gottschcore.loot.LootTable;
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.gui.inventory.CompressorChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.KeyRingGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.MolluscChestGui;
@@ -30,12 +42,10 @@ import com.someguyssoftware.treasure2.inventory.SkullChestContainer;
 import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 import com.someguyssoftware.treasure2.inventory.StrongboxChestContainer;
 import com.someguyssoftware.treasure2.inventory.WitherChestContainer;
-import com.someguyssoftware.treasure2.item.IPouch;
 import com.someguyssoftware.treasure2.item.KeyRingItem;
 import com.someguyssoftware.treasure2.item.PouchItem;
 import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -43,8 +53,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.storage.loot.LootPool;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 /**
@@ -130,9 +138,9 @@ public class GuiHandler implements IGuiHandler {
 		case POUCH_GUIID:
 			// get the held item
 			ItemStack pouchStack = player.getHeldItemMainhand();
-			if (pouchStack == null || !(pouchStack.getItem() instanceof IPouch)) {
+			if (pouchStack == null || !(pouchStack.getItem() instanceof PouchItem)) {
 				pouchStack = player.getHeldItemOffhand();
-				if (pouchStack == null || !(pouchStack.getItem() instanceof IPouch))
+				if (pouchStack == null || !(pouchStack.getItem() instanceof PouchItem))
 					return null;
 			}
 

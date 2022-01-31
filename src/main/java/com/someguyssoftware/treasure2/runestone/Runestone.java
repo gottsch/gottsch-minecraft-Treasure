@@ -19,6 +19,7 @@
  */
 package com.someguyssoftware.treasure2.runestone;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -54,11 +55,15 @@ public abstract class Runestone implements IRunestone {
 	// the rarity of the charm
 	private Rarity rarity;
 	
+	// invalid charm list
+	private List<String> invalids;
+	
 	protected Runestone(Builder builder) {
 		this.name = builder.name;
 		this.type = builder.type;
 		this.lore = builder.lore;
 		this.rarity = builder.rarity;
+		this.invalids = builder.invalids;
 	}
 	
 	// TODO necessary? - only if saving state values - like for undo()
@@ -144,6 +149,7 @@ public abstract class Runestone implements IRunestone {
 		private String type;
 		public String lore;
 		public  Rarity rarity;
+		private List<String> invalids;
 		
 		public Builder(ResourceLocation name) {
 			this.name = name;
@@ -159,7 +165,14 @@ public abstract class Runestone implements IRunestone {
 			return this;
 		}
 		
-		abstract public IRunestone build();	
+		abstract public IRunestone build();
+
+		public List<String> getInvalids() {
+			if (invalids == null) {
+				invalids = new ArrayList<>();
+			}
+			return invalids;
+		}	
 	}
 
 	@Override
@@ -190,5 +203,12 @@ public abstract class Runestone implements IRunestone {
 	@Override
 	public String toString() {
 		return "Runestone [name=" + name + ", type=" + type + ", lore=" + lore + ", rarity=" + rarity + "]";
+	}
+
+	public List<String> getInvalids() {
+		if (invalids == null) {
+			invalids = new ArrayList<>();
+		}
+		return invalids;
 	}
 }

@@ -114,6 +114,7 @@ public interface ICharmableCapability {
 	int getMaxCharmLevel();
 	
 	// wrapper methods
+	void setMaxSocketSize(int size);
 	int getMaxSocketSize();
 
 	int getMaxImbueSize();
@@ -121,6 +122,7 @@ public interface ICharmableCapability {
 	int getMaxInnateSize();
 
 	int getSocketSize();
+	void addMaxSocketSize(int increment);
 
 	int getImbueSize();
 

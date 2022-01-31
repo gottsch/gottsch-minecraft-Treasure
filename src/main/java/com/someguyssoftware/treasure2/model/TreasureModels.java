@@ -146,8 +146,12 @@ public class TreasureModels {
         // RUNESTONES
         registerItemModel(TreasureItems.MANA_RUNESTONE);
         registerItemModel(TreasureItems.DURABILITY_RUNESTONE);
+        registerItemModel(TreasureItems.QUALITY_RUNESTONE);
+        registerItemModel(TreasureItems.EQUIP_MANA_RUNESTONE);
         registerItemModel(TreasureItems.ANVIL_RUNESTONE);
         registerItemModel(TreasureItems.ANGELS_RUNESTONE);
+        registerItemModel(TreasureItems.PERSISTENCE_RUNESTONE);
+        registerItemModel(TreasureItems.SOCKETS_RUNESTONE);
         
         // GENERATED ITEMS
 		TreasureItems.ITEMS.forEach((key, value) -> {

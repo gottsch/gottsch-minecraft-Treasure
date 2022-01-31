@@ -169,8 +169,12 @@ public class TreasureItems {
 	// runestones
 	public static RunestoneItem MANA_RUNESTONE;
 	public static RunestoneItem DURABILITY_RUNESTONE;
+	public static RunestoneItem QUALITY_RUNESTONE;
+	public static RunestoneItem EQUIP_MANA_RUNESTONE;
 	public static RunestoneItem ANVIL_RUNESTONE;
 	public static RunestoneItem ANGELS_RUNESTONE;
+	public static RunestoneItem PERSISTENCE_RUNESTONE;
+	public static RunestoneItem SOCKETS_RUNESTONE;
 	
 	// wither items
 	public static Item WITHER_STICK_ITEM;
@@ -632,7 +636,7 @@ public class TreasureItems {
 						$.sourceItem = Items.AIR.getRegistryName();
 					}).build();
 					// TEMP test with charm
-					cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(HealingCharm.HEALING_TYPE, 1))).get().createEntity());
+					cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(HealingCharm.TYPE, 1))).get().createEntity());
 
 					return new CharmableCapabilityProvider(cap);
 				}
@@ -804,7 +808,7 @@ public class TreasureItems {
 						$.sourceItem =  SAPPHIRE.getRegistryName();
 						$.levelModifier = new NoLevelModifier();
 					}).build();
-					cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(HealingCharm.HEALING_TYPE, 20))).get().createEntity());
+					cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(HealingCharm.TYPE, 20))).get().createEntity());
 					cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(DrainCharm.DRAIN_TYPE, 20))).get().createEntity());
 					cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(ReflectionCharm.REFLECTION_TYPE, 20))).get().createEntity());
 					cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(LifeStrikeCharm.LIFE_STRIKE_TYPE, 20))).get().createEntity());
@@ -969,6 +973,26 @@ public class TreasureItems {
 				}
 			};
 			
+			QUALITY_RUNESTONE = new RunestoneItem(Treasure.MODID, "quality_runestone") {
+				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+					IRunestonesCapability cap = new RunestonesCapability.Builder(1, 0, 0).with($ -> {
+						$.bindable = true;
+					}).build();
+					cap.add(InventoryType.INNATE, TreasureRunes.RUNE_OF_QUALITY.createEntity());	
+					return new RunestonesCapabilityProvider(cap);
+				}
+			};
+			
+			EQUIP_MANA_RUNESTONE = new RunestoneItem(Treasure.MODID, "equip_mana_runestone") {
+				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+					IRunestonesCapability cap = new RunestonesCapability.Builder(1, 0, 0).with($ -> {
+						$.bindable = true;
+					}).build();
+					cap.add(InventoryType.INNATE, TreasureRunes.RUNE_OF_EQUIP_AS_MANA.createEntity());	
+					return new RunestonesCapabilityProvider(cap);
+				}
+			};
+			
 			ANVIL_RUNESTONE = new RunestoneItem(Treasure.MODID, "anvil_runestone") {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 					IRunestonesCapability cap = new RunestonesCapability.Builder(1, 0, 0).with($ -> {
@@ -986,6 +1010,26 @@ public class TreasureItems {
 						$.bindable = true;
 					}).build();
 					cap.add(InventoryType.INNATE, TreasureRunes.RUNE_OF_ANGELS.createEntity());	
+					return new RunestonesCapabilityProvider(cap);
+				}		
+			};
+			
+			PERSISTENCE_RUNESTONE = new RunestoneItem(Treasure.MODID, "persistence_runestone") {
+				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+					IRunestonesCapability cap = new RunestonesCapability.Builder(1, 0, 0).with($ -> {
+						$.bindable = true;
+					}).build();
+					cap.add(InventoryType.INNATE, TreasureRunes.RUNE_OF_PERSISTENCE.createEntity());	
+					return new RunestonesCapabilityProvider(cap);
+				}		
+			};
+			
+			SOCKETS_RUNESTONE = new RunestoneItem(Treasure.MODID, "sockets_runestone") {
+				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+					IRunestonesCapability cap = new RunestonesCapability.Builder(1, 0, 0).with($ -> {
+						$.bindable = true;
+					}).build();
+					cap.add(InventoryType.INNATE, TreasureRunes.RUNE_OF_SOCKETS.createEntity());	
 					return new RunestonesCapabilityProvider(cap);
 				}		
 			};
@@ -1138,8 +1182,12 @@ public class TreasureItems {
 					CHARM_BOOK,
 					MANA_RUNESTONE,
 					DURABILITY_RUNESTONE,
+					QUALITY_RUNESTONE,
+					EQUIP_MANA_RUNESTONE,
 					ANVIL_RUNESTONE,
 					ANGELS_RUNESTONE,
+					PERSISTENCE_RUNESTONE,
+					SOCKETS_RUNESTONE,
 					SKELETON
 			};
 			registry.registerAll(items);
@@ -1347,7 +1395,7 @@ public class TreasureItems {
 					$.sourceItem =source.getRegistryName();
 				}).build();
 				// TEMP test with charm
-				cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(HealingCharm.HEALING_TYPE, 1))).get().createEntity());
+				cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(HealingCharm.TYPE, 1))).get().createEntity());
 
 				return new CharmableCapabilityProvider(cap);
 			}

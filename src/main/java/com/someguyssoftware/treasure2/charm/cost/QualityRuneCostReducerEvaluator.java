@@ -23,23 +23,24 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
+import com.someguyssoftware.treasure2.runestone.QualityRunestone;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
- * Calculates and applies the cost to execute the charm.
- * @author Mark Gottschling on Jan 12, 2022
+ * 
+ * @author Mark Gottschling on Jan 21, 2022
  *
  */
-public interface ICostEvaluator {
-	public double apply(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity, double amount);
-
-	default public NBTTagCompound save(NBTTagCompound nbt) {
-		return nbt;
+public class QualityRuneCostReducerEvaluator implements ICostEvaluator {
+	private ICostEvaluator evaluator;
+	public QualityRuneCostReducerEvaluator() {
+		evaluator = new CostEvaluator();
 	}
-
-	default public void load(NBTTagCompound tag) {}
+	
+	public double apply(World world, Random random, ICoords coords, EntityPlayer player, Event event, ICharmEntity entity, double cost) {
+		return evaluator.apply(world, random, coords, player, event, entity, Math.max(1D, cost / QualityRunestone.MULTIPLIER));
+	};
 }

@@ -27,6 +27,7 @@ import java.util.Optional;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.charm.IlluminationCharm;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
@@ -48,9 +49,11 @@ public class TreasureRunes {
 	public static final IRunestone RUNE_OF_QUALITY;
 	public static final IRunestone RUNE_OF_ANGELS;
 	public static final IRunestone RUNE_OF_ANVIL;				// lvl 3 durability
+	public static final IRunestone RUNE_OF_EQUIP_AS_MANA;
+	public static final IRunestone RUNE_OF_PERSISTENCE;
+	public static final IRunestone RUNE_OF_SOCKETS;
 
 	// RUNE_OF_EVERLASTING -adornment &  charms are infinite but curse of vanishing is added - MYTHICAL
-	// RUNE_OF_METAL_LIFE - uses equipment durability instead of mana
 	// RUNE_OF_REPAIR - grants repairability
 	// RUNE_OF_SUSTAIN - add # repairs
 	
@@ -61,6 +64,7 @@ public class TreasureRunes {
 				.with($ -> {
 					$.lore = I18n.translateToLocal("tooltip.runestone.lore.mana_rune");
 					$.rarity = Rarity.SCARCE;
+					$.getInvalids().add(IlluminationCharm.ILLUMINATION_TYPE);
 				}).build();
 		register(RUNE_OF_MANA);
 		
@@ -71,12 +75,20 @@ public class TreasureRunes {
 				}).build();
 		register(RUNE_OF_DURABILITY);
 		
-		RUNE_OF_QUALITY = new ManaRunestone.Builder(ResourceLocationUtil.create("quality_rune"))
+		RUNE_OF_QUALITY = new QualityRunestone.Builder(ResourceLocationUtil.create("quality_rune"))
 				.with($ -> {
 					$.lore = I18n.translateToLocal("tooltip.runestone.lore.quality_rune");
 					$.rarity = Rarity.RARE;
+					$.getInvalids().add(IlluminationCharm.ILLUMINATION_TYPE);
 				}).build();
 		register(RUNE_OF_QUALITY);
+		
+		RUNE_OF_EQUIP_AS_MANA = new EquipmentManaRunestone.Builder(ResourceLocationUtil.create("equip_mana_rune"))
+				.with($ -> {
+					$.lore = I18n.translateToLocal("tooltip.runestone.lore.equip_mana_rune");
+					$.rarity = Rarity.RARE;
+				}).build();
+		register(RUNE_OF_EQUIP_AS_MANA);
 		
 		RUNE_OF_ANVIL = new AnvilRunestone.Builder(ResourceLocationUtil.create("anvil_rune"))
 				.with($ -> {
@@ -91,6 +103,20 @@ public class TreasureRunes {
 					$.rarity = Rarity.LEGENDARY;
 				}).build();
 		register(RUNE_OF_ANGELS);
+		
+		RUNE_OF_PERSISTENCE = new PersistenceRune.Builder(ResourceLocationUtil.create("persistence_rune"))
+				.with($ -> {
+					$.lore = I18n.translateToLocal("tooltip.runestone.lore.persistence_rune");
+					$.rarity = Rarity.EPIC;
+				}).build();
+		register(RUNE_OF_PERSISTENCE);
+		
+		RUNE_OF_SOCKETS = new SocketsRune.Builder(ResourceLocationUtil.create("sockets_rune"))
+				.with($ -> {
+					$.lore = I18n.translateToLocal("tooltip.runestone.lore.sockets_rune");
+					$.rarity = Rarity.RARE;
+				}).build();
+		register(RUNE_OF_SOCKETS);
 	}
 
 	/**

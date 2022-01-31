@@ -22,6 +22,7 @@ package com.someguyssoftware.treasure2.capability;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.items.IItemHandler;
 
 /**
  * 
@@ -40,6 +41,9 @@ public class TreasureCapabilities {
 	@CapabilityInject(IDurabilityCapability.class)
 	public static Capability<IDurabilityCapability> DURABILITY = null;
 		
+	@CapabilityInject(IItemHandler.class)
+	public static Capability<IItemHandler> POUCH = null;
+	
 	/**
 	 * 
 	 */

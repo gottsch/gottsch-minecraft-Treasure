@@ -56,7 +56,7 @@ public class AegisCharm extends ShieldingCharm {
 							I18n.translateToLocal("tooltip.charm.rate.aegis") + " " +I18n.translateToLocalFormatted("tooltip.charm.cooldown.meter", DECIMAL_FORMAT.format((charmEntity.getCooldownEnd() - world.getTotalWorldTime())/TICKS_PER_SECOND)))
 			);
 		}
-		{
+		else {
 		tooltip.add(TextFormatting.GRAY + "" + TextFormatting.ITALIC 
 				+ I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocal("tooltip.charm.rate.aegis")));
 		}

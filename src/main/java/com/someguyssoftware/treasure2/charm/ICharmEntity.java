@@ -104,14 +104,24 @@ public interface ICharmEntity {
 		if (nbt.hasKey(RANGE)) {
 			setRange(nbt.getDouble(RANGE));
 		}
-		if (nbt.hasKey(COST_EVALUATOR)) {
+		if (nbt.hasKey(COST_EVALUATOR) && nbt.getCompoundTag(COST_EVALUATOR).hasKey("costClass")) {
 			try {
-				String costEvalClass = nbt.getString(COST_EVALUATOR);
-				Object o = Class.forName(costEvalClass).newInstance();
-				setCostEvaluator((ICostEvaluator)o);
+				NBTTagCompound tag = nbt.getCompoundTag(COST_EVALUATOR);
+//				if (tag.hasKey("class")) {
+					String costEvalClass = tag.getString("costClass");
+//					Treasure.logger.warn("using parent cost eval class -> {}", costEvalClass);
+					Object o = Class.forName(costEvalClass).newInstance();
+					((ICostEvaluator)o).load(tag);
+					setCostEvaluator((ICostEvaluator)o);
+//				}
+				
+//				String costEvalClass = nbt.getString(COST_EVALUATOR);
+//				Object o = Class.forName(costEvalClass).newInstance();
+//				((ICostEvaluator)o).load(nbt);
+//				setCostEvaluator((ICostEvaluator)o);
 			}
 			catch(Exception e) {
-				Treasure.logger.warn("unable to create cost evaluator from class string -> {}", nbt.getString(COST_EVALUATOR));
+				Treasure.logger.warn("unable to create cost evaluator from class string -> {}", nbt.getCompoundTag(COST_EVALUATOR).getString("costClass"));
 				Treasure.logger.error(e);
 				setCostEvaluator(new CostEvaluator());
 			}

@@ -54,6 +54,8 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 	private static final String NAMED_BY_MATERIAL = "namedByMaterial";
 	private static final String NAMED_BY_CHARM = "namedByCharm";
 	private static final String LEVEL_MODIFIER = "levelModifier";
+	
+	private static final String MAX_SOCKET_SIZE = "maxSocketSize";
 
 	@Override
 	public NBTBase writeNBT(Capability<ICharmableCapability> capability, ICharmableCapability instance, EnumFacing side) {
@@ -91,6 +93,7 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 			nbt.setBoolean(NAMED_BY_MATERIAL, instance.isNamedByMaterial());	
 			nbt.setBoolean(NAMED_BY_CHARM, instance.isNamedByCharm());
 			nbt.setString(LEVEL_MODIFIER, instance.getLevelModifier().getClass().getName());
+			nbt.setInteger(MAX_SOCKET_SIZE, instance.getMaxSocketSize());
 
 		} catch (Exception e) {
 			Treasure.logger.error("Unable to write state to NBT:", e);
@@ -180,6 +183,9 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 					catch(Exception e) {
 						Treasure.logger.warn("unable to create level modifier -> {}", tag.getString(LEVEL_MODIFIER));
 					}
+				}
+				if (tag.hasKey(MAX_SOCKET_SIZE)) {
+					instance.setMaxSocketSize(tag.getInteger(MAX_SOCKET_SIZE));
 				}
 			}
 

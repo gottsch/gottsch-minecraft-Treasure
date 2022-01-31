@@ -20,6 +20,7 @@
 package com.someguyssoftware.treasure2.charm;
 
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -31,10 +32,13 @@ import com.someguyssoftware.treasure2.charm.cost.ICostEvaluator;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -43,9 +47,11 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * @author Mark Gottschling on Apr 25, 2020
  */
 public abstract class Charm implements ICharm {
-	public static final int TICKS_PER_SECOND = 20;
+	
 	protected static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#");
-
+	public static final int TICKS_PER_SECOND = 20;
+	public static final TextFormatting CHARM_COLOR = TextFormatting.AQUA;
+	public static final TextFormatting CHARM_DESC_COLOR = TextFormatting.GRAY;
 
 	private ResourceLocation name;
 	private String type;
@@ -125,21 +131,17 @@ public abstract class Charm implements ICharm {
 	public boolean isCurse() {
 		return false;
 	}
-
-//	/**
-//	 * Default method. Concrete classes should override.
-//	 * @param stack
-//	 * @param world
-//	 * @param tooltip
-//	 * @param flag
-//	 * @param entity
-//	 */
-//	@SuppressWarnings("deprecation")
-//	@Override
-//	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
-//		TextFormatting color = TextFormatting.WHITE;
-//		tooltip.add("  " + color + getLabel(entity));
-//	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
+		tooltip.add(getLabel(entity));
+//		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent3", 
+//				I18n.translateToLocalFormatted("tooltip.charm.rate.healing", 
+//						DECIMAL_FORMAT.format(getAmount()/2),
+//						(int)(entity.getFrequency()/TICKS_PER_SECOND))));
+		tooltip.add(getDesc(entity));
+	}
 	
 	/**
 	 * 
@@ -148,9 +150,20 @@ public abstract class Charm implements ICharm {
 	 */
 	@SuppressWarnings("deprecation")
 	public String getLabel(ICharmEntity entity) {
-		return I18n.translateToLocalFormatted("tooltip.charm.type." + getType().toLowerCase()) + " " + String.valueOf(getLevel()) + " "  + getUsesGauge(entity) + " " + (this.effectStackable ? "+" : "-");
+		return getCharmLabelColor() + "" + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.type." + getType().toLowerCase()) + " " + String.valueOf(getLevel()) + " "  + getUsesGauge(entity) + " " + (this.effectStackable ? "+" : "-"));
 	}
 
+	public String getDesc(ICharmEntity entity) {
+		return getCharmDescColor() +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent4", getCharmDesc(entity));
+	}
+	
+	/**
+	 * Implemented by concrete Charm.
+	 * @param entity
+	 * @return
+	 */
+	public String getCharmDesc(ICharmEntity entity) { return "";};
+	
 	/**
 	 * 
 	 * @param entity
@@ -211,10 +224,12 @@ public abstract class Charm implements ICharm {
 	 */
 	public double applyCost(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity, double amount) {
 		// TODO needs to check the entities cost evaluator - not the Charm's.
-		if (costEvaluator != null) {
-			return this.costEvaluator.apply(world, random, coords, player, event, entity, amount);
+		if (entity.getCostEvaluator() != null) {
+//			Treasure.logger.debug("entity -> {} has a cost eval -> {}", entity.getClass().getSimpleName(), entity.getCostEvaluator().getClass().getSimpleName());
+			return entity.getCostEvaluator().apply(world, random, coords, player, event, entity, amount);
 		}
 		else {
+			Treasure.logger.debug("Charm does not have a cost eval.");
 			entity.setMana(MathHelper.clamp(entity.getMana() - 1.0,  0D, entity.getMana()));
 		}
 		return amount;
@@ -538,5 +553,13 @@ public abstract class Charm implements ICharm {
 	@Override
 	public ICostEvaluator getCostEvaluator() {
 		return costEvaluator;
+	}
+
+	public static TextFormatting getCharmLabelColor() {
+		return CHARM_COLOR;
+	}
+	
+	public static TextFormatting getCharmDescColor() {
+		return CHARM_DESC_COLOR;
 	}
 }

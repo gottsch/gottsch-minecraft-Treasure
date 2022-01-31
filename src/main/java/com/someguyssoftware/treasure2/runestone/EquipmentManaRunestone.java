@@ -19,6 +19,7 @@
  */
 package com.someguyssoftware.treasure2.runestone;
 
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
@@ -26,25 +27,30 @@ import com.someguyssoftware.treasure2.charm.AegisCharm;
 import com.someguyssoftware.treasure2.charm.GreaterHealingCharm;
 import com.someguyssoftware.treasure2.charm.HealingCharm;
 import com.someguyssoftware.treasure2.charm.ShieldingCharm;
+import com.someguyssoftware.treasure2.charm.cost.EquipmentCostEvaluator;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 /**
  * 
- * @author Mark Gottschling on Jan 19, 2022
+ * @author Mark Gottschling on Jan 21, 2022
  *
  */
-public class AngelsRunestone extends Runestone {
 
-	protected AngelsRunestone(Builder builder) {
+// TODO this class simply replaces the cost evaluator on charms.
+// could be a more generic runestone class that takes a ICostEvaluator in the constructor.
+// that would mean Rune would need to be more like Charm with a createEntity(IRunestoneEntity) method.
+public class EquipmentManaRunestone extends Runestone {
+
+	protected EquipmentManaRunestone(Builder builder) {
 		super(builder);
 	}
 
 	@Override
 	public boolean isValid(ItemStack itemStack) {		
-		// check the charms
-		if (itemStack.hasCapability(TreasureCapabilities.DURABILITY, null) && itemStack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+		// has charmable
+		if (itemStack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
 			return true;
 		}
 		return false;
@@ -55,56 +61,35 @@ public class AngelsRunestone extends Runestone {
 		if (!isValid(itemStack)) {
 			return;
 		}
-		
-		IDurabilityCapability durabilityCap = itemStack.getCapability(TreasureCapabilities.DURABILITY, null);
-		durabilityCap.setInfinite(true);
-		
 		ICharmableCapability charmableCap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
 		charmableCap.getCharmEntities().forEach((type, charmEntity) -> {
-			if (charmEntity.getCharm().getType().equals(HealingCharm.TYPE)
-					|| charmEntity.getCharm().getType().equals(GreaterHealingCharm.HEALING_TYPE)
-					|| charmEntity.getCharm().getType().equals(ShieldingCharm.SHIELDING_TYPE)
-					|| charmEntity.getCharm().getType().equals(AegisCharm.AEGIS_TYPE)) {
-				if (!runestoneEntity.isAppliedTo(charmEntity.getCharm().getType())) {
-					charmEntity.setMana(Math.floor(charmEntity.getMana() * 2.0D));
-					charmEntity.setMaxMana(Math.floor(charmEntity.getMaxMana() * 2.0D));
-					runestoneEntity.getAppliedTo().add(charmEntity.getCharm().getType());
-				}
-			}
+			charmEntity.setCostEvaluator(new EquipmentCostEvaluator(charmEntity.getCostEvaluator()));
+			Treasure.logger.debug("setting entity -> {} to use cost eval -> {} with child eval -> {}", charmEntity.getCharm().getName().toString(), charmEntity.getCostEvaluator().getClass().getSimpleName(),
+					((EquipmentCostEvaluator)charmEntity.getCostEvaluator()).getEvaluator().getClass().getSimpleName());
 		});
 		runestoneEntity.setApplied(true);
 	}
 
 	@Override
 	public void undo(ItemStack itemStack, IRunestoneEntity runestoneEntity) {
-		if (itemStack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
-			IDurabilityCapability cap = itemStack.getCapability(TreasureCapabilities.DURABILITY, null);
-			cap.setInfinite(false);
-		}
 
 		ICharmableCapability charmableCap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
 		charmableCap.getCharmEntities().forEach((type, charmEntity) -> {
-			if (charmEntity.getCharm().getType().equals(HealingCharm.TYPE)
-					|| charmEntity.getCharm().getType().equals(GreaterHealingCharm.HEALING_TYPE)
-					|| charmEntity.getCharm().getType().equals(ShieldingCharm.SHIELDING_TYPE)
-					|| charmEntity.getCharm().getType().equals(AegisCharm.AEGIS_TYPE)) {
-				if (runestoneEntity.isAppliedTo(charmEntity.getCharm().getType())) {
-					charmEntity.setMana(Math.floor(charmEntity.getMana() / 2.0D));
-					charmEntity.setMaxMana(Math.floor(charmEntity.getMaxMana() / 2.0D));
-					runestoneEntity.getAppliedTo().remove(charmEntity.getCharm().getType());
-				}
+			if (charmEntity.getCostEvaluator() instanceof EquipmentCostEvaluator) {
+				charmEntity.setCostEvaluator(((EquipmentCostEvaluator)charmEntity.getCostEvaluator()).getEvaluator());
 			}
 		});
 		runestoneEntity.setApplied(false);
 	}
 
+	// TODO extend to take a ICostEvaluator as a required param
 	public static class Builder extends Runestone.Builder {
 		public Builder(ResourceLocation name) {
 			super(name);
 		}
 		@Override
 		public IRunestone build() {
-			return new AngelsRunestone(this);
+			return new EquipmentManaRunestone(this);
 		}
 	}
 }

@@ -19,6 +19,9 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
+import java.util.Map;
+
+import com.google.common.collect.Maps;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 //import com.someguyssoftware.treasure2.charm.HealingCharm.Builder;
@@ -31,6 +34,7 @@ import net.minecraft.item.ItemStack;
  *
  */
 public class TreasureCharms {
+	private static final Map<Integer, Rarity> LEVEL_RARITY = Maps.newHashMap();
 	
 	static {
 		Treasure.logger.debug("creating charms...");
@@ -51,7 +55,16 @@ public class TreasureCharms {
 			TreasureCharmRegistry.register(makeDirtFill(level));
 			TreasureCharmRegistry.register(makeDirtWalk(level));
 			TreasureCharmRegistry.register(makeRuin(level));
+			TreasureCharmRegistry.register(makeCheatDeath(level));
 			// TODO harvesting			
+			
+			LEVEL_RARITY.put(level, level <= 4 ? Rarity.COMMON 
+					: level <= 8 ? Rarity.UNCOMMON
+							: level <= 12 ? Rarity.SCARCE 
+									: level <=16 ? Rarity.RARE
+										: level <= 20 ? Rarity .EPIC
+											: level <=24 ? Rarity.LEGENDARY
+												: Rarity.MYTHICAL);
 		}
 	}
 	
@@ -72,7 +85,7 @@ public class TreasureCharms {
 			$.amount = 1.0;
 			$.frequency = Math.max(40, 100.0 - (Math.floor((level + 1) / 5D) * 10D)); // ie every 5 seconds, reducing by 1 second every 5th level
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();		
 		TreasureCharmRegistry.register(charm);
 		return charm;
@@ -84,7 +97,7 @@ public class TreasureCharms {
 			$.amount = 2.0;
 			$.frequency = Math.max(40, 100.0 - (Math.floor((level + 1) / 5D) * 10)); // ie every 5 seconds, reducing by 0.5 second every 5th level
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
@@ -97,7 +110,7 @@ public class TreasureCharms {
 			$.cooldown = 0.0;
 			$.effectStackable = true;
 			$.priority = 2;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
@@ -109,7 +122,7 @@ public class TreasureCharms {
 			$.cooldown = Math.max(20, 100.0 - (Math.floor((level + 1) / 5) *10)); // ie every 5 seconds, reducing by 0.5 second every 5th level
 			$.effectStackable = false;
 			$.priority = 2;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();
 
 		TreasureCharmRegistry.register(charm);
@@ -122,7 +135,7 @@ public class TreasureCharms {
 			$.amount = level < 6 ? 0.3 : level < 11 ? 0.5 : 0.8;
 			$.effectStackable = true;
 			$.priority = 1;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();
 
 		TreasureCharmRegistry.register(charm);
@@ -134,7 +147,7 @@ public class TreasureCharms {
 			$.mana = level * 20.0;
 			$.effectStackable = false;
 			$.priority = 1;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();
 
 		TreasureCharmRegistry.register(charm);
@@ -147,7 +160,7 @@ public class TreasureCharms {
 			$.amount = 1.0;
 			$.frequency = Math.max(20, 100.0 - (Math.floor((level + 1) / 5) *20)); // ie every 5 seconds, reducing by 1 second every 5th level
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();
 
 		TreasureCharmRegistry.register(charm);
@@ -161,7 +174,7 @@ public class TreasureCharms {
 			$.amount = level < 4 ? 0.2 : level < 7 ? 0.4 : level < 10 ? 0.6 :  level < 13 ? 0.8 : 1.0;
 //			$.percent = level < 4 ? 1.2 : level < 7 ? 1.4 : level < 10 ? 1.6 :  level < 13 ? 1.8 : 2.0;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		});
 		ICharm charm = builder.withLifeCost(2.0).build();		
 		TreasureCharmRegistry.register(charm);
@@ -172,10 +185,9 @@ public class TreasureCharms {
 		ICharm charm =  new ReflectionCharm.Builder(level).with($ -> {
 			$.mana = level < 8 ? (level * 10.0 + 10.0) : ((level -7) * 10.0 + 10.0);
 			$.amount = level < 3 ? 0.2 : level < 5 ? 0.35 : level < 7 ? 0.50 :  level <9 ? 0.65 : level < 11 ? 0.8 : level < 13 ? 0.95 : 1.1;
-//			$.percent = level < 3 ? 0.2 : level < 5 ? 0.35 : level < 7 ? 0.50 :  level <9 ? 0.65 : level < 11 ? 0.8 : level < 13 ? 0.95 : 1.1;
 			$.range = level < 4 ? 2D : level < 7 ? 3D : level < 10 ? 4D : level < 13 ? 5D : 6D;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
@@ -187,7 +199,7 @@ public class TreasureCharms {
 			$.frequency = Math.max(20, 100.0 - (Math.floor((level + 1) / 5) *20)); // ie every 5 seconds, reducing by 1 second every 5th level
 			$.range = level < 4 ? 2D : level < 7 ? 3D : level < 10 ? 4D : level < 13 ? 5D : 6D;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
@@ -197,7 +209,7 @@ public class TreasureCharms {
 		ICharm charm =  new IlluminationCharm.Builder(level).with($ -> {
 			$.mana =  Math.max(1, (level / 3)) * 3.0;
 			$.effectStackable = false;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
@@ -208,7 +220,7 @@ public class TreasureCharms {
 		ICharm curse =  new DecayCurse.Builder(level).with($ -> {
 			$.mana = level * 20.0;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();		
 		TreasureCharmRegistry.register(curse);
 		return curse;
@@ -219,7 +231,7 @@ public class TreasureCharms {
 			$.mana = level * 10.0 + 10.0;
 			$.amount = (double) ((level + (level % 2))/20);
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();		
 		TreasureCharmRegistry.register(curse);
 		return curse;
@@ -229,7 +241,7 @@ public class TreasureCharms {
 		ICharm curse =  new DirtFillCurse.Builder(level).with($ -> {
 			$.mana = level * 25D;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();		
 		TreasureCharmRegistry.register(curse);
 		return curse;
@@ -239,7 +251,7 @@ public class TreasureCharms {
 		ICharm curse =  new DirtWalkCurse.Builder(level).with($ -> {
 			$.mana = level * 25D;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();		
 		TreasureCharmRegistry.register(curse);
 		return curse;
@@ -251,7 +263,19 @@ public class TreasureCharms {
 			// in ticks (20 = 1 sec)
 			$.frequency =	Math.max(200, 400.0 - (Math.floor((level + 1) / 5) *40)); // level < 4 ? 20D : level < 7 ? 17D : level < 10 ? 15D : level < 13 ? 13D : 10D;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
+		})	.build();
+		TreasureCharmRegistry.register(charm);
+		return charm;
+	}
+	
+	public static ICharm makeCheatDeath(int level) {
+		ICharm charm =  new CheatDeathCharm.Builder(level).with($ -> {
+			$.mana =  (double) level;
+			$.amount = 5.0 + Math.floor(level / 5D);
+			$.effectStackable = false;
+			$.rarity = LEVEL_RARITY.get(level);
+			// $.rechargeable = 0;
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;

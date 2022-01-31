@@ -19,9 +19,12 @@
  */
 package com.someguyssoftware.treasure2.item;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
@@ -81,7 +84,10 @@ public class RunestoneItem extends ModItem {
 			// add a space
 			tooltip.add( TextFormatting.DARK_PURPLE + I18n.translateToLocal("tooltip.runestones.effects"));	
 			IRunestone runestone = cap.getEntities(InventoryType.INNATE).get(0).getRunestone();
-			tooltip.add(I18n.translateToLocalFormatted("tooltip.indent2", TextFormatting.LIGHT_PURPLE + "" + TextFormatting.ITALIC + runestone.getLore()));
+			// lore may be multiple lines, so separate on \n and add to tooltip
+			for (String s : StringEscapeUtils.unescapeJava(runestone.getLore()).split("\\R")) {
+				tooltip.add(I18n.translateToLocalFormatted("tooltip.indent2", TextFormatting.LIGHT_PURPLE + "" + TextFormatting.ITALIC + s));
+			}
 		}
 	}
 	

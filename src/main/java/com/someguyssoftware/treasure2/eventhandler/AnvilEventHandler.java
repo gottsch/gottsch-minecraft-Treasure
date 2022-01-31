@@ -159,7 +159,7 @@ public class AnvilEventHandler {
 						Treasure.logger.debug("applying runestone -> {} to entity -> {}", entity.getRunestone(), entity);
 						entity.getRunestone().apply(stack.get(), entity);
 						stack.get().getCapability(CHARMABLE, null).getCharmEntities().forEach((type, charm) -> {
-							Treasure.logger.debug("entity -> {}, mana -> {}, max mana -> {}", charm.getCharm().getName().toString(), charm.getMana(), charm.getMaxMana());
+							Treasure.logger.debug("entity -> {}, mana -> {}, max mana -> {}, costEval -> {}", charm.getCharm().getName().toString(), charm.getMana(), charm.getMaxMana(), charm.getCostEvaluator().getClass().getSimpleName());
 						});
 						stack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(stone -> {
 							Treasure.logger.debug("output runestone -> {}", stone);

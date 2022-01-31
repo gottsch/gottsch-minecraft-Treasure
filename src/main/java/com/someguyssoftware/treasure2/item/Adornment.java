@@ -175,7 +175,7 @@ public class Adornment extends ModItem {
 	 */
 	@Override
     public NBTTagCompound getNBTShareTag(ItemStack stack) {
-		Treasure.logger.debug("writing share tag");
+//		Treasure.logger.debug("writing share tag");
 		// read cap -> write nbt
 		NBTTagCompound charmableTag;
 		charmableTag = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(

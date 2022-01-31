@@ -19,6 +19,7 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.charm.cost.ICostEvaluator;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -74,7 +75,6 @@ public class CharmEntity implements ICharmEntity {
 		setFrequency(entity.getFrequency());
 		setMana(entity.getMana());
 		setRange(entity.getRange());
-		// TODO create a new costevaluator instance
 		setCostEvaluator(entity.getCostEvaluator());
 		
 		setMaxMana(entity.getMaxMana());
@@ -110,7 +110,11 @@ public class CharmEntity implements ICharmEntity {
 		nbt.setDouble(COOLDOWN, getCooldown());
 		nbt.setDouble(RANGE, getRange());
 		if (getCostEvaluator() != null) {
-			nbt.setString(COST_EVALUATOR, getCostEvaluator().getClass().getCanonicalName());
+//			Treasure.logger.debug("saving cost eval -> {}", getCostEvaluator().getClass().getSimpleName());
+//			nbt.setString(COST_EVALUATOR, getCostEvaluator().getClass().getCanonicalName());
+			NBTTagCompound ceNbt = new NBTTagCompound();
+			getCostEvaluator().save(ceNbt);
+			nbt.setTag(COST_EVALUATOR, ceNbt);
 		}
 		nbt.setDouble("maxMana", getMaxMana());
 		return nbt;

@@ -39,7 +39,6 @@ public class TreasureCharmRegistry {
      * @param charm
      */
     public static void register(ICharm charm) {
-    	Treasure.logger.debug("registering charm -> {}", charm.getName());
         if (!REGISTRY.containsKey(charm.getName())) {        	
             REGISTRY.put(charm.getName(), charm);
         }

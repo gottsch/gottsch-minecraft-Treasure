@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.charm.cost.ICostEvaluator;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
@@ -25,7 +26,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  *
  */
 public class HealingCharm extends Charm {
-	public static String HEALING_TYPE = "healing";
+	public static String TYPE = "healing";
 	private static float HEAL_RATE = 1F;
 	private static final Class<?> REGISTERED_EVENT = LivingUpdateEvent.class;
 	
@@ -49,6 +50,7 @@ public class HealingCharm extends Charm {
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity) {
 		boolean result = false;
 		if (world.getTotalWorldTime() % entity.getFrequency() == 0) {
+			Treasure.logger.debug("healing entity is using cost eval -> {}", getCostEvaluator().getClass().getSimpleName());
 			if (entity.getMana() > 0 && player.getHealth() < player.getMaxHealth() && !player.isDead) {
 				// determine the actual amount of health (0.0 -> getAmount())
 				float amount = Math.min((float)getAmount(), player.getMaxHealth() - player.getHealth());
@@ -63,20 +65,26 @@ public class HealingCharm extends Charm {
 	/**
 	 * 
 	 */
+//	@SuppressWarnings("deprecation")
+//	@Override
+//	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
+////        TextFormatting color = TextFormatting.RED;       
+//		tooltip.add(getLabel(entity));
+//		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent3", 
+//				I18n.translateToLocalFormatted("tooltip.charm.rate.healing", 
+//						DECIMAL_FORMAT.format(getAmount()/2),
+//						(int)(entity.getFrequency()/TICKS_PER_SECOND))));
+//	}
+	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
-        TextFormatting color = TextFormatting.RED;       
-		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
-		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", 
-				I18n.translateToLocalFormatted("tooltip.charm.rate.healing", 
-						DECIMAL_FORMAT.format(getAmount()/2),
-						(int)(entity.getFrequency()/TICKS_PER_SECOND))));
+	public String getCharmDesc(ICharmEntity entity) {
+		return I18n.translateToLocalFormatted("tooltip.charm.rate.healing", DECIMAL_FORMAT.format(getAmount()/2), (int)(entity.getFrequency()/TICKS_PER_SECOND));
 	}
 	
 	public static class Builder extends Charm.Builder {
 		public Builder(Integer level) {
-			super(ResourceLocationUtil.create(makeName(HEALING_TYPE, level)), HEALING_TYPE, level);
+			super(ResourceLocationUtil.create(makeName(TYPE, level)), TYPE, level);
 			this.costEvaluator = new Costinator();
 		}
 
