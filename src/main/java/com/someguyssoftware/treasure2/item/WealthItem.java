@@ -67,7 +67,7 @@ public class WealthItem extends ModItem implements IWishable {
 	public WealthItem(String modID, String name) {
         super();
         this.setItemName(modID, name);
-		this.setMaxStackSize(TreasureConfig.BOOTY.wealthMaxStackSize);
+		this.setMaxStackSize(TreasureConfig.WEALTH.wealthMaxStackSize);
         this.setCreativeTab(Treasure.TREASURE_TAB);
 	}
 	

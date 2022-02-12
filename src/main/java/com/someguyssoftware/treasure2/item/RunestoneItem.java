@@ -110,10 +110,10 @@ public class RunestoneItem extends ModItem {
 	 */
 	@Override
 	public boolean hasEffect(ItemStack stack) {
-		IRunestonesCapability cap = getCap(stack);
-		if (cap.hasRunestone()) {
-			return true;
-		}
+//		IRunestonesCapability cap = getCap(stack);
+//		if (cap.hasRunestone()) {
+//			return true;
+//		}
 		return false;
 	}
 	

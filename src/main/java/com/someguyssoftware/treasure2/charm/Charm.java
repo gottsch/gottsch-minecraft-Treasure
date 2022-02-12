@@ -74,6 +74,10 @@ public abstract class Charm implements ICharm {
 	private double cooldown;
 	// the size of effect ex. damage, amount of healing, percent extra damage
 	private double amount;
+	// the exclusivity of the charm. can be the only charm worn/executed
+	private boolean exclusive;
+	// the number of times the charm can be recharged
+	private int recharges;
 	
 	// calculates the actual cost given an input
 	private ICostEvaluator costEvaluator;
@@ -118,6 +122,9 @@ public abstract class Charm implements ICharm {
 		entity.setMana(mana);
 		entity.setRange(range);
 		entity.setMaxMana(mana);
+		entity.setExclusive(exclusive);
+		entity.setRecharges(recharges);
+		entity.setMaxRecharges(recharges);
 		return entity;
 	}
 
@@ -280,6 +287,16 @@ public abstract class Charm implements ICharm {
 	public boolean isEffectStackable() {
 		return effectStackable;
 	}
+	
+	@Override
+	public boolean isExclusive() {
+		return exclusive;
+	}
+
+	@Override
+	public int getRecharges() {
+		return recharges;
+	}
 
 	/**
 	 * 
@@ -299,6 +316,8 @@ public abstract class Charm implements ICharm {
 		public Rarity rarity = Rarity.COMMON;
 		public int priority = 10;
 		public boolean effectStackable = false;
+		public boolean exclusive = false;
+		public int recharges = 0;
 		
 		public ICostEvaluator costEvaluator;
 
@@ -363,7 +382,7 @@ public abstract class Charm implements ICharm {
 			return "Builder [name=" + name + ", type=" + type + ", level=" + level + ", mana=" + mana + ", duration="
 					+ duration + ", frequency=" + frequency + ", amount=" + amount + ", cooldown=" + cooldown
 					+ ", range=" + range + ", rarity=" + rarity + ", priority=" + priority + ", effectStackable="
-					+ effectStackable + "]";
+					+ effectStackable + ", exclusive=" + exclusive + ", recharges=" + recharges + "]";
 		}
 
 		@Override

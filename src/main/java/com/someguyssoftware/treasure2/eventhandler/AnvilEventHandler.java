@@ -30,6 +30,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
 import com.someguyssoftware.treasure2.capability.DurabilityCapability;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.IRunestonesCapability;
 import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
@@ -193,6 +194,32 @@ public class AnvilEventHandler {
 				}
 			}
 		}
+		/*
+		 * repair adornment
+		 * for the right side, any adornment of any durability can be used as the material item.
+		 * it will be destroyed along with all charms and runes in the repair process.
+		 * the output will be generated with full durability.
+		 * remember: durability also incorporates itemDamage. durability == maxDurability
+		 */
+		else if (leftStack.getItem() instanceof Adornment && rightStack.getItem() instanceof Adornment) {
+			event.setCost(1);
+			event.setMaterialCost(1);
+			Treasure.logger.debug("both are adornments");
+			IDurabilityCapability leftcap = leftStack.getCapability(DURABILITY, null);
+			Treasure.logger.debug("leftStack current durability-> {}, max -> {}", leftcap.getDurability() - leftStack.getItemDamage(), leftcap.getMaxDurability());
+			// create a new stack with full health/item damage.
+			ItemStack outputStack = copyStack(leftStack, new ItemStack(leftStack.getItem()));
+			IDurabilityCapability cap = outputStack.getCapability(DURABILITY, null);
+			if (cap.getRepairs() > 0 && outputStack.getItemDamage() > 0) {
+				// reset to full health (no item damage)
+				outputStack.setItemDamage(0);
+				// update repairs
+				cap.setRepairs(cap.getRepairs() - 1);
+				event.setOutput(outputStack);
+				Treasure.logger.debug("repairs -> {}, max repairs -> {}", cap.getRepairs(), cap.getMaxRepairs());
+				Treasure.logger.debug("current durability-> {}, max -> {}", cap.getDurability() - outputStack.getItemDamage(), cap.getMaxDurability());
+			}
+		}
 	}
 
 	/**
@@ -212,7 +239,7 @@ public class AnvilEventHandler {
 		 * transfer existing state of dest to stack plus any relevant state from source to stack
 		 */
 		if (dest.hasCapability(DURABILITY, null)) {
-			dest.getCapability(DURABILITY, null).transferTo(stack);
+			dest.getCapability(DURABILITY, null).copyTo(stack);
 		}
 
 		// transfer
@@ -254,6 +281,8 @@ public class AnvilEventHandler {
 		return Optional.empty();
 	}
 
+	@Deprecated
+	// use TreasureAdornments version
 	private static Optional<Adornment> getAdornment(ItemStack baseStack, ItemStack stoneStack) {
 		if (baseStack.hasCapability(TreasureCapabilities.CHARMABLE, null) && baseStack.getItem() instanceof Adornment) {
 			ICharmableCapability cap = baseStack.getCapability(TreasureCapabilities.CHARMABLE, null);
@@ -270,13 +299,20 @@ public class AnvilEventHandler {
 	 * @param charmEntities
 	 * @return
 	 */
+	@Deprecated
+	// use TreasureAdornments version
 	private static ItemStack copyStack(final ItemStack source, final ItemStack dest) {
-		ItemStack resultStack = dest.copy();
+		ItemStack resultStack = dest.copy(); // <-- is this necessary?
 		// save the source item
 		ResourceLocation sourceItem = resultStack.getCapability(CHARMABLE, null).getSourceItem();
 
+		// copy item damage
+		resultStack.setItemDamage(source.getItemDamage());
+		
+		// copy the capabilities
 		if (resultStack.hasCapability(DURABILITY, null)) {
-			source.getCapability(DURABILITY, null).transferTo(resultStack);
+			Treasure.logger.debug("calling durability copyTo()");
+			source.getCapability(DURABILITY, null).copyTo(resultStack);
 		}
 
 		if (dest.hasCapability(CHARMABLE, null)) {

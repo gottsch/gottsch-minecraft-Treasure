@@ -37,13 +37,17 @@ public class CharmEntity implements ICharmEntity {
 	private double range;
 	private double cooldown;
 	private double amount;
-
+	private boolean exclusive;
+	
 	// NOTE this is the cost eval that can be modified by a runestone
 	// calculates the actual cost given an input
 	private ICostEvaluator costEvaluator;
 	
 	// TESTing for Runestones
 	private double maxMana;
+	
+	private int recharges;
+	private int maxRecharges;
 	
 	/**
 	 * 
@@ -61,6 +65,9 @@ public class CharmEntity implements ICharmEntity {
 		setCostEvaluator(charm.getCostEvaluator());
 		
 		setMaxMana(charm.getMana());
+		setExclusive(charm.isExclusive());
+		setRecharges(charm.getRecharges());
+		setMaxRecharges(charm.getRecharges());
 	}
 	
 	/**
@@ -78,6 +85,9 @@ public class CharmEntity implements ICharmEntity {
 		setCostEvaluator(entity.getCostEvaluator());
 		
 		setMaxMana(entity.getMaxMana());
+		setExclusive(entity.isExclusive());
+		setRecharges(entity.getRecharges());
+		setMaxRecharges(entity.getRecharges());
 	}
 	
 	// TODO add a builder
@@ -117,6 +127,11 @@ public class CharmEntity implements ICharmEntity {
 			nbt.setTag(COST_EVALUATOR, ceNbt);
 		}
 		nbt.setDouble("maxMana", getMaxMana());
+		
+		nbt.setBoolean(EXCLUSIVE, isExclusive());
+		nbt.setInteger(RECHARGES, getRecharges());
+		nbt.setInteger(MAX_RECHARGES, getMaxRecharges());
+		
 		return nbt;
 	}
 	
@@ -215,5 +230,35 @@ public class CharmEntity implements ICharmEntity {
 	@Override
 	public void setMaxMana(double maxMana) {
 		this.maxMana = maxMana;
+	}
+
+	@Override
+	public boolean isExclusive() {
+		return exclusive;
+	}
+
+	@Override
+	public void setExclusive(boolean exclusive) {
+		this.exclusive = exclusive;
+	}
+
+	@Override
+	public int getRecharges() {
+		return recharges;
+	}
+
+	@Override
+	public void setRecharges(int recharges) {
+		this.recharges = recharges;
+	}
+
+	@Override
+	public int getMaxRecharges() {
+		return maxRecharges;
+	}
+
+	@Override
+	public void setMaxRecharges(int maxRecharges) {
+		this.maxRecharges = maxRecharges;
 	}
 }

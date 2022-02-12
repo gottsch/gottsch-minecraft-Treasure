@@ -28,6 +28,8 @@ public class DurabilityCapabilityStorage implements Capability.IStorage<IDurabil
 			mainTag.setInteger(DURABILITY_TAG, instance.getDurability());
 			mainTag.setInteger(MAX_DURABILITY_TAG, instance.getMaxDurability());
 			mainTag.setBoolean(INFINITE_TAG, instance.isInfinite());
+			mainTag.setInteger("repairs", instance.getRepairs());
+			mainTag.setInteger("maxRepairs", instance.getMaxRepairs());
 		} catch (Exception e) {
 			logger.error("Unable to write state to NBT:", e);
 		}
@@ -53,6 +55,13 @@ public class DurabilityCapabilityStorage implements Capability.IStorage<IDurabil
 			
 			if (tag.hasKey(INFINITE_TAG)) {
 				instance.setInfinite(tag.getBoolean(INFINITE_TAG));
+			}
+			
+			if (tag.hasKey("repairs")) {
+				instance.setRepairs(tag.getInteger("repairs"));
+			}
+			if (tag.hasKey("maxRepairs")) {
+				instance.setMaxRepairs(tag.getInteger("maxRepairs"));
 			}
 		}		
 	}

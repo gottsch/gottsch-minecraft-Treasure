@@ -19,7 +19,16 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
+import java.util.List;
+
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.material.CharmableMaterial;
+
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
 
 /**
  * @author Mark Gottschling on Sep 6, 2020
@@ -27,13 +36,20 @@ import net.minecraft.item.ItemStack;
  */
 public class DurabilityCapability implements IDurabilityCapability  {
 	// the max value the durability can be set to
-	private int maxDurability = MAX_DURABILITY;
+	private int maxDurability = MAX_DURABILITY; // this is kinda useless and confusing
 	
 	// the durability of the capability
 	private int durability;
 	
 	// is this durability infinite (as opposed to the finite value of the durability property)
 	private boolean infinite;
+	
+	// the max number of repairs
+	private int maxRepairs;
+	
+	// the remaining repairs available
+	private int repairs;
+	
 	/**
 	 * 
 	 */
@@ -51,14 +67,39 @@ public class DurabilityCapability implements IDurabilityCapability  {
 		setDurability(durability);
 	}
 	
-	// TODO rename copyTo()
+	// if given a material, setup default maxRepairs
+	// note: material is not saved as part of the durability
+	public DurabilityCapability(int durability, int max, CharmableMaterial material) {
+		this(durability, max);
+		this.setRepairs(material.getMaxRepairs());
+		this.setMaxRepairs(material.getMaxRepairs());
+	}
+	
 	@Override
-	public void transferTo(ItemStack stack) {
+	public void copyTo(ItemStack stack) {
 		if (stack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
 			IDurabilityCapability cap = stack.getCapability(TreasureCapabilities.DURABILITY, null);
 			cap.setDurability(getDurability());
 			cap.setInfinite(isInfinite());
 			cap.setMaxDurability(getMaxDurability());
+			cap.setRepairs(getRepairs());
+			cap.setMaxRepairs(getMaxRepairs());
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public void appendHoverText(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+		if (!isInfinite()) {
+			String text = TextFormatting.WHITE.toString() 
+					+ I18n.translateToLocalFormatted("tooltip.durability.amount", getDurability() - stack.getItemDamage(), getDurability());
+			if (getMaxRepairs() > 0) {
+				text += " " + I18n.translateToLocalFormatted("tooltip.durability.repairs", getRepairs(), getMaxRepairs());
+			}
+			tooltip.add(text);
+		}
+		else {
+			tooltip.add(TextFormatting.WHITE.toString() + I18n.translateToLocal("tooltip.durability.amount.infinite"));
 		}
 	}
 	
@@ -95,5 +136,31 @@ public class DurabilityCapability implements IDurabilityCapability  {
 	@Override
 	public void setInfinite(boolean infinite) {
 		this.infinite = infinite;
+	}
+
+	@Override
+	public int getMaxRepairs() {
+		return maxRepairs;
+	}
+
+	@Override
+	public void setMaxRepairs(int maxRepairs) {
+		this.maxRepairs = maxRepairs;
+	}
+
+	@Override
+	public int getRepairs() {
+		return repairs;
+	}
+
+	@Override
+	public void setRepairs(int repairs) {
+		this.repairs = repairs;
+	}
+
+	@Override
+	public String toString() {
+		return "DurabilityCapability [maxDurability=" + maxDurability + ", durability=" + durability + ", infinite="
+				+ infinite + ", maxRepairs=" + maxRepairs + ", repairs=" + repairs + "]";
 	}
 }

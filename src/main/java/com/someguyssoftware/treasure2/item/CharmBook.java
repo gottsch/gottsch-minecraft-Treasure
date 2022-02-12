@@ -53,7 +53,7 @@ public class CharmBook extends CharmItem {
 	
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TextFormatting.GOLD + "" + TextFormatting.ITALIC + I18n.translateToLocal("tooltip.label.charm_book"));
+		tooltip.add(TextFormatting.GOLD + "" + TextFormatting.ITALIC + I18n.translateToLocal("tooltip.charm_book.usage"));
 		// charmable info
 		ICharmableCapability cap = getCap(stack);
 		if (cap.isCharmed()) {

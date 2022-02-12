@@ -20,9 +20,15 @@
 package com.someguyssoftware.treasure2.eventhandler;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.PouchableCapabilityProvider;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.item.RunestoneItem;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * 
@@ -34,9 +40,16 @@ public final class AdornmentsEventHandler {
 	private static final ResourceLocation ADORNMENT_ID = new ResourceLocation(Treasure.MODID, "adornment");
 
 	// TEMP testing attaching caps to foreign mod item
-//	@SubscribeEvent
-//	public static void attachCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
-//		final ItemStack stack = event.getObject();
+	@SubscribeEvent
+	public static void attachCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
+
+		final ItemStack stack = event.getObject();
+		if (stack != null && (stack.getItem() instanceof RunestoneItem
+				|| TreasureConfig.WEALTH.pouchables.contains(stack.getItem().getRegistryName()))) {
+//			Treasure.logger.debug("adding pouchable cap to item -> {}", stack.getDisplayName());
+			event.addCapability(new ResourceLocation(Treasure.MODID, "pouchable"), new PouchableCapabilityProvider());
+		}
+		
 //		if (stack != null && stack.getItem() == Items.WOODEN_HOE) {
 //			// TODO if registered item instead of instanceof
 //			
@@ -58,7 +71,7 @@ public final class AdornmentsEventHandler {
 //							: new AdornmentCapabilityProvider(cap, durabilityCap);				
 //			event.addCapability(ADORNMENT_ID, provider);
 //		}
-//	}
+	}
 
 
 }

@@ -43,7 +43,6 @@ import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.command.SpawnChestCommand;
-import com.someguyssoftware.treasure2.command.SpawnOasisCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitStructureOnlyCommand;
@@ -77,7 +76,6 @@ import com.someguyssoftware.treasure2.world.gen.structure.TreasureDecayManager;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.ITreasureWorldGenerator;
-import com.someguyssoftware.treasure2.worldgen.OasisWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.SubmergedChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
@@ -273,7 +271,6 @@ public class Treasure extends AbstractMod {
 		event.registerServerCommand(new SpawnWellStructureCommand());
 		event.registerServerCommand(new SpawnWitherTreeCommand());
 		event.registerServerCommand(new SpawnRuinsCommand());
-		event.registerServerCommand(new SpawnOasisCommand());
 	}
 
 	/**
@@ -294,7 +291,6 @@ public class Treasure extends AbstractMod {
 		WORLD_GENERATORS.put(WorldGeneratorType.WELL, new WellWorldGenerator());
 		WORLD_GENERATORS.put(WorldGeneratorType.WITHER_TREE, new WitherTreeWorldGenerator());
 		WORLD_GENERATORS.put(WorldGeneratorType.GEM, new GemOreWorldGenerator());
-		WORLD_GENERATORS.put(WorldGeneratorType.OASIS, new OasisWorldGenerator());
 
 		int genWeight = 0;
 		for (Entry<WorldGeneratorType, ITreasureWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {

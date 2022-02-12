@@ -19,6 +19,10 @@
  */
 package com.someguyssoftware.treasure2.adornment;
 
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.CHARMABLE;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.RUNESTONES;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -200,6 +204,57 @@ public class TreasureAdornments {
 	
 	public static List<Adornment> getByMaterial(CharmableMaterial material) {
 		return getByMaterial(material.getName());
+	}
+	
+	/**
+	 * 
+	 * @param baseStack
+	 * @param stoneStack
+	 * @return
+	 */
+	public static Optional<Adornment> getAdornment(ItemStack baseStack, ItemStack stoneStack) {
+		if (baseStack.hasCapability(TreasureCapabilities.CHARMABLE, null) && baseStack.getItem() instanceof Adornment) {
+			ICharmableCapability cap = baseStack.getCapability(TreasureCapabilities.CHARMABLE, null);
+			Adornment sourceAdornment = (Adornment) baseStack.getItem();
+			return get(sourceAdornment.getType(), sourceAdornment.getSize(), cap.getBaseMaterial(), stoneStack.getItem().getRegistryName());
+		}
+		return Optional.empty();
+	}
+	
+	/**
+	 * 
+	 * @param source
+	 * @param dest
+	 * @return
+	 */
+	public static ItemStack copyStack(final ItemStack source, final ItemStack dest) {
+		ItemStack resultStack = dest.copy(); // <-- is this necessary?
+		// save the source item
+		ResourceLocation sourceItem = resultStack.getCapability(CHARMABLE, null).getSourceItem();
+
+		// copy item damage
+		resultStack.setItemDamage(source.getItemDamage());
+		
+		// copy the capabilities
+		if (resultStack.hasCapability(DURABILITY, null)) {
+			Treasure.logger.debug("calling durability copyTo()");
+			source.getCapability(DURABILITY, null).copyTo(resultStack);
+		}
+
+		if (dest.hasCapability(CHARMABLE, null)) {
+			resultStack.getCapability(CHARMABLE, null).clearCharms();			
+			source.getCapability(CHARMABLE, null).copyTo(resultStack);
+		}
+
+		if (dest.hasCapability(RUNESTONES, null)) {
+			resultStack.getCapability(RUNESTONES, null).clear();			
+			source.getCapability(RUNESTONES, null).copyTo(resultStack);
+		}
+
+		// reset the source item
+		resultStack.getCapability(CHARMABLE, null).setSourceItem(sourceItem);
+
+		return resultStack;
 	}
 	
 	/**

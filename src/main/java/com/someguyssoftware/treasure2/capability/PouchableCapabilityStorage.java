@@ -19,41 +19,24 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
-import java.util.List;
-
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 
 /**
- * 
- * @author Mark Gottschling on Sep 6, 2020
+ * Do nothing storage
+ * @author Mark Gottschling
  *
  */
-public interface IDurabilityCapability {
-    public static final int MAX_DURABILITY = 1000; 
+public class PouchableCapabilityStorage implements Capability.IStorage<IPouchableCapability> {
+    
+	@Override
+	public NBTBase writeNBT(Capability<IPouchableCapability> capability, IPouchableCapability instance, EnumFacing side) {
+		return new NBTTagCompound();
+	}
 
-	public int getDurability();
-
-	public void setDurability(int damage);
-
-	public int getMaxDurability();
-
-	public void setMaxDurability(int maxDurability);
-
-	public boolean isInfinite();
-
-	public void setInfinite(boolean infinite);
-
-	public void copyTo(ItemStack stack);
-
-	public int getMaxRepairs();
-
-	public void setMaxRepairs(int maxRepairs);
-
-	public int getRepairs();
-
-	public void setRepairs(int repairs);
-
-	public void appendHoverText(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag);
+	@Override
+	public void readNBT(Capability<IPouchableCapability> capability, IPouchableCapability instance, EnumFacing side, NBTBase nbt) {
+		}
 }

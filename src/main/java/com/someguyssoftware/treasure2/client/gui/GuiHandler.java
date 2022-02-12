@@ -23,7 +23,10 @@ import static com.someguyssoftware.treasure2.Treasure.logger;
 
 import java.util.Random;
 
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.client.gui.inventory.CharmingBenchGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.CompressorChestGui;
+import com.someguyssoftware.treasure2.client.gui.inventory.JewelerBenchGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.KeyRingGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.MolluscChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.PouchGui;
@@ -32,7 +35,9 @@ import com.someguyssoftware.treasure2.client.gui.inventory.StandardChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.StrongboxChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.WitherChestGui;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
+import com.someguyssoftware.treasure2.inventory.CharmingBenchContainer;
 import com.someguyssoftware.treasure2.inventory.CompressorChestContainer;
+import com.someguyssoftware.treasure2.inventory.JewelerBenchContainer;
 import com.someguyssoftware.treasure2.inventory.KeyRingContainer;
 import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
 import com.someguyssoftware.treasure2.inventory.MolluscChestContainer;
@@ -70,8 +75,9 @@ public class GuiHandler implements IGuiHandler {
 	public static final int SKULL_CHEST_GUIID = 5;
 	public static final int ARMOIRE_GUID = 6;
 	public static final int WITHER_CHEST_GUIID = 7;
-	public static final int MOLLUSCS_CHEST_GUIID = 8;
 	public static final int POUCH_GUIID = 50;
+	public static final int JEWELER_BENCH = 51;
+	public static final int CHARMING_BENCH = 52;
 
 	/*
 	 * (non-Javadoc)
@@ -118,9 +124,6 @@ public class GuiHandler implements IGuiHandler {
 		case WITHER_CHEST_GUIID:
 			container = new WitherChestContainer(player.inventory, (IInventory) tileEntity);
 			break;
-		case MOLLUSCS_CHEST_GUIID:
-			container = new MolluscChestContainer(player.inventory, (IInventory) tileEntity);
-			break;
 		case KEY_RING_GUIID:
 			// get the held item
 			ItemStack keyRingItem = player.getHeldItemMainhand();
@@ -149,6 +152,14 @@ public class GuiHandler implements IGuiHandler {
 			// open the container
 			container = new PouchContainer(player.inventory, pouchInventory, pouchStack);			
             break;
+		case JEWELER_BENCH:
+			Treasure.logger.debug("creating jeweler bench container server-side");
+			container = new JewelerBenchContainer(player.inventory, world, new BlockPos(x, y, z), player);
+			break;
+		case CHARMING_BENCH:
+			Treasure.logger.debug("creating charming bench container server-side");
+			container = new CharmingBenchContainer(player.inventory, world, new BlockPos(x, y, z), player);
+			break;
 		default:
 
 		}
@@ -185,9 +196,6 @@ public class GuiHandler implements IGuiHandler {
 		case WITHER_CHEST_GUIID:
 			if ((chestTileEntity = getChestTileEntity(tileEntity)) == null) return null;
 			return new WitherChestGui(player.inventory, chestTileEntity);
-		case MOLLUSCS_CHEST_GUIID:
-			if ((chestTileEntity = getChestTileEntity(tileEntity)) == null) return null;
-			return new MolluscChestGui(player.inventory, chestTileEntity);
 		case KEY_RING_GUIID:
 			// get the held item
 			ItemStack keyRingItem = player.getHeldItemMainhand();
@@ -217,6 +225,16 @@ public class GuiHandler implements IGuiHandler {
 			// open the container
 			return new PouchGui(player.inventory, pouchInventory, pouchStack);	
 
+		case JEWELER_BENCH:
+			return new JewelerBenchGui(player.inventory, world);
+		case CHARMING_BENCH:
+			Treasure.logger.debug("creating charming bench container client-side");
+			try {
+				return new CharmingBenchGui(player.inventory, world);
+			}
+			catch(Exception e) {
+				Treasure.logger.error("charming bench error:", e);
+			}
 		default:
 			return null;
 		}

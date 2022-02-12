@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.block;
 
@@ -11,6 +27,7 @@ import java.util.Set;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.someguyssoftware.gottschcore.block.ModBlock;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
@@ -168,6 +185,10 @@ public class TreasureBlocks {
 
 	public static final ProximityBlock PROXIMITY_SPAWNER;
 
+	// work benches
+	public static final Block JEWELER_BENCH;
+	public static final Block CHARMING_BENCH;
+	
 	// initialize blocks
 	static {
 		// standard chest bounds
@@ -478,6 +499,11 @@ public class TreasureBlocks {
 		PROXIMITY_SPAWNER = new ProximityBlock(Treasure.MODID, TreasureConfig.PROXIMITY_SPAWNER_ID,
 				ProximitySpawnerTileEntity.class);
 
+		// TODO need to create a generic parent block that sets the creative tab
+		// benches
+		JEWELER_BENCH = new JewelerBenchBlock(Treasure.MODID, "jeweler_bench", Material.WOOD).setCreativeTab(Treasure.TREASURE_TAB);;
+		CHARMING_BENCH = new CharmingBenchBlock(Treasure.MODID, "charming_bench", Material.WOOD).setCreativeTab(Treasure.TREASURE_TAB);;
+		
 	}
 
 	/**
@@ -545,7 +571,9 @@ public class TreasureBlocks {
 					FALLING_GRASS,
 					FALLING_SAND,
 					FALLING_RED_SAND,
-					BLACKSTONE
+					BLACKSTONE,
+					JEWELER_BENCH,
+					CHARMING_BENCH
 			};
 
 			registry.registerAll(blocks);
@@ -630,7 +658,9 @@ public class TreasureBlocks {
 					new ItemBlock(FALLING_GRASS),
 					new ItemBlock(FALLING_SAND),
 					new ItemBlock(FALLING_RED_SAND),
-					new ItemBlock(BLACKSTONE)
+					new ItemBlock(BLACKSTONE),
+					new ItemBlock(JEWELER_BENCH),
+					new ItemBlock(CHARMING_BENCH)
 			};
 
 			for (final ItemBlock item : items) {

@@ -51,7 +51,9 @@ public interface ICharm {
 	public double getCooldown();
 	public double getAmount();
 	public boolean isEffectStackable();
-    
+	public boolean isExclusive();
+	public int getRecharges();	
+	
 	public ICharmEntity createEntity();
 	public ICharmEntity createEntity(ICharmEntity entity);
 	
@@ -65,6 +67,5 @@ public interface ICharm {
 	
 	public Class<?> getRegisteredEvent();
 	
-	ICostEvaluator getCostEvaluator();	
-
+	ICostEvaluator getCostEvaluator();
 }

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "treasure2:blocks/jeweler_bench_front",
+    "north": "treasure2:blocks/jeweler_bench_front",
+    "south": "treasure2:blocks/jeweler_bench_side",
+    "east": "treasure2:blocks/jeweler_bench_side",
+    "west": "treasure2:blocks/jeweler_bench_front",
+    "up": "blocks/stone",
+    "down": "blocks/planks_oak"
+  }
+}

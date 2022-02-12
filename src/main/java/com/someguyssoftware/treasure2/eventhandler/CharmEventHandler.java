@@ -275,25 +275,21 @@ public class CharmEventHandler {
 			}
 
 			// remove if innate and empty
-			if (context.getType() ==InventoryType.INNATE
-					&& context.getEntity().getMana() <= 0.0 && context.getCapability().isSocketable()) {
-								Treasure.logger.debug("charm is empty -> remove");
-								// TODO call cap.remove() -> recalcs highestLevel
-								// locate the charm from context and remove
-								context.getCapability().remove(context.getType(), context.getIndex());
-			}
-			
-			// remove if uses are empty and the capability is bindable ie. charm, not adornment
-			// NOTE this leaves empty charms on non-bindables for future recharge
-			// TODO re-enable in next versions when charms are upgraded/refactored.
-//						if (context.getEntity().getValue() <= 0.0 && context.getCapability().isBindable()) {
-			//				Treasure.logger.debug("charm is empty -> remove");
-			//				// TODO call cap.remove() -> recalcs highestLevel
-			//				// locate the charm from context and remove
-			//				//				context.getCapability().getCharmEntities()[context.getType().getValue()].remove(context.getIndex());
-			//				context.getCapability().remove(context.getType(), context.getIndex());
-//						}
+//			if (context.getType() ==InventoryType.INNATE
+//					&& context.getEntity().getMana() <= 0.0 && context.getCapability().isBindable()) {
+//				Treasure.logger.debug("charm is empty -> remove");
+//				// TODO call cap.remove() -> recalcs highestLevel
+//				// locate the charm from context and remove
+//				context.getCapability().remove(context.getType(), context.getIndex());
+//			}
 
+			// remove if mana AND recharges are empty and the capability is bindable ie. charm, not adornment
+			if (context.getCapability().isBindable() 
+					&& context.getEntity().getRecharges() <= 0
+					&& context.getEntity().getMana() <= 0.0 ) {
+				Treasure.logger.debug("charm is empty without any recharges -> remove");
+				context.getCapability().remove(context.getType(), context.getIndex());
+			}
 		});
 	}
 

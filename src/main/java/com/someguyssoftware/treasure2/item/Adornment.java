@@ -152,13 +152,9 @@ public class Adornment extends ModItem {
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 		super.addInformation(stack, world, tooltip, flag);
 		tooltip.add(TextFormatting.GOLD.toString() + "" + TextFormatting.ITALIC.toString() + I18n.translateToLocal("tooltip.charmable.usage.adornment"));
-		IDurabilityCapability durabilityCap = getDurabilityCap(stack);
-		if (!durabilityCap.isInfinite()) {
-			tooltip.add(TextFormatting.WHITE.toString() + I18n.translateToLocalFormatted("tooltip.label.durability", durabilityCap.getDurability() - stack.getItemDamage(), durabilityCap.getDurability()));
-		}
-		else {
-			tooltip.add(TextFormatting.WHITE.toString() + I18n.translateToLocal("tooltip.label.durability.infinite"));
-		}
+
+		// add the durability tooltips
+		getDurabilityCap(stack).appendHoverText(stack, world, tooltip, flag);
 		
 		// add charmables tooltips
 		getCap(stack).appendHoverText(stack, world, tooltip, flag);

@@ -35,12 +35,17 @@ public interface ICharmEntity {
 	@Deprecated
 	public static final String VALUE = "value";
 	public static final String MANA = "mana";
+	public static final String MAX_MANA = "maxMana";
 	public static final String DURATION = "duration";
 	public static final String FREQUENCY = "frequency";
 	public static final String AMOUNT = "amount";
 	public static final String COOLDOWN = "cooldown";
 	public static final String RANGE = "range";
 	public static final String COST_EVALUATOR = "costEvaluator";
+	
+	public static final String EXCLUSIVE = "exclusive";
+	public static final String RECHARGES = "recharges";
+	public static final String MAX_RECHARGES = "maxRecharges";
 	
 	ICharm getCharm();
 
@@ -133,6 +138,29 @@ public interface ICharmEntity {
 		if (nbt.hasKey("maxMana")) {
 			setMaxMana(nbt.getDouble("maxMana"));
 		}
+		
+		if (nbt.hasKey(EXCLUSIVE)) {
+			setExclusive(nbt.getBoolean(EXCLUSIVE));
+		}
+		
+		if (nbt.hasKey(RECHARGES)) {
+			setRecharges(nbt.getInteger(RECHARGES));
+		}
+		if (nbt.hasKey(MAX_RECHARGES)) {
+			setMaxRecharges(nbt.getInteger(MAX_RECHARGES));
+		}
 		return true;
 	}
+
+	boolean isExclusive();
+
+	void setExclusive(boolean exclusive);
+
+	int getRecharges();
+
+	void setRecharges(int recharges);
+
+	int getMaxRecharges();
+
+	void setMaxRecharges(int maxRecharges);
 }

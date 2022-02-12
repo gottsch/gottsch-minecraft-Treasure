@@ -306,6 +306,7 @@ item.treasure2:quality_runestone.name=Runestone of Quality
 item.treasure2:equip_mana_runestone.name=Runestone of Equipment Mana
 item.treasure2:angels_runestone.name=Angel Blessed Artifact
 item.treasure2:persistence_runestone.name=Runestone of Persistence
+item.treasure2:sockets_runestone.name=Runestone of Capacity
 
 item.treasure2:treasure_tool.name=Treasure Tool
 
@@ -345,12 +346,13 @@ tooltip.label.charmable=To charm add charmed items on an anvil
 tooltip.label.max_locks=Max Locks: %s
 tooltip.label.container_size=Inventory Size: %s
 
-tooltip.label.durability=Durability: [%s/%s]
-tooltip.label.durability.infinite=Durability: Infinite
+tooltip.durability.amount=Durability: [%s/%s]
+tooltip.durability.amount.infinite=Durability: Infinite
+tooltip.durability.repairs=R[%s/%s]
 tooltip.charmable.usage=Hold in hand or bind to adornment for buffs
 tooltip.charmable.usage.adornment=Hold in hand or equip for buffs
 tooltip.runestones.usage=Combine with adornment on anvil for enchancements
-tooltip.label.charm_book=Use to imbue charm onto charmables.
+tooltip.charm_book.usage=Use to imbue charm onto charmables.
 tooltip.charmable.slots=Capacity: [%s/%s]
 tooltip.charmable.slots.stats=[%s/%s]
 tooltip.charmable.inventory.innate=[Innate] 
@@ -488,6 +490,8 @@ display.viking_chest.name=Viking Chest
 display.cardboard_box.name=Cardboard Box
 display.milk_crate.name=Milk Crate
 display.crystal_skull_chest.name=Crystal Skull
+display.jeweler_bench.name=Jeweler's Bench
+display.jeweler_bench.cost=Cost: %s
 
 #chat messages
 chat.key_break=Your key broke whilst attempting to unlock the lock!

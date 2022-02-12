@@ -136,7 +136,6 @@ public class TreasureItems {
 
 	// TODO make these medium tier specials - like level 12-15
 	//    public static Item SILVER_SIGNET_RING;
-	//    public static Item CASTLE_RING;
 	public static Adornment FOOLS_COIN;
 	public static Adornment ANGELS_RING;
 	public static Adornment RING_OF_FORTITUDE;
@@ -666,6 +665,8 @@ public class TreasureItems {
 					cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(FireImmunityCharm.FIRE_IMMUNITY_TYPE, 15))).get().createEntity());
 
 					IDurabilityCapability durabilityCap = new DurabilityCapability(1000, 1000);
+					durabilityCap.setMaxRepairs(1);
+					durabilityCap.setRepairs(1);
 					
 					IRunestonesCapability runestonesCap = new RunestonesCapability.Builder(0, 0, 1).with($ -> {
 						$.socketable = true;
@@ -728,7 +729,7 @@ public class TreasureItems {
 					}).build();
 					cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(DrainCharm.DRAIN_TYPE, 25))).get().createEntity());
 			
-					IDurabilityCapability durabilityCap = new DurabilityCapability();
+					IDurabilityCapability durabilityCap = new DurabilityCapability(500, 500, TreasureCharmableMaterials.BLACK);
 					durabilityCap.setInfinite(true);
 					IRunestonesCapability runestonesCap = new RunestonesCapability.Builder(0, 0, 1).with($ -> {
 						$.socketable = true;
@@ -756,7 +757,7 @@ public class TreasureItems {
 					cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(ShieldingCharm.SHIELDING_TYPE, 10))).get().createEntity());
 					cap.getCharmEntities().get(InventoryType.INNATE).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(ReflectionCharm.REFLECTION_TYPE, 10))).get().createEntity());
 					
-					IDurabilityCapability durabilityCap = new DurabilityCapability(1000, 1000);
+					IDurabilityCapability durabilityCap = new DurabilityCapability(1000, 1000, TreasureCharmableMaterials.SILVER);
 					IRunestonesCapability runestonesCap = new RunestonesCapability.Builder(0, 0, 1).with($ -> {
 						$.socketable = true;
 					}).build();
@@ -783,7 +784,7 @@ public class TreasureItems {
 						$.socketable = true;
 					}).build();
 					
-					IDurabilityCapability durabilityCap = new DurabilityCapability(100, 100);
+					IDurabilityCapability durabilityCap = new DurabilityCapability(100, 100, TreasureCharmableMaterials.IRON);
 					return BaublesIntegration.isEnabled()
 							? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.RING, cap, runestonesCap, durabilityCap) 
 									: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
@@ -927,7 +928,7 @@ public class TreasureItems {
 						$.sourceItem = AMETHYST.getRegistryName();
 						$.levelModifier = new GreatAdornmentLevelModifier();
 					}).build();
-					IDurabilityCapability durabilityCap = new DurabilityCapability(500, 500);
+					IDurabilityCapability durabilityCap = new DurabilityCapability(500, 500, TreasureCharmableMaterials.GOLD);
 					IRunestonesCapability runestonesCap = new RunestonesCapability.Builder(0, 0, 2).with($ -> {
 						$.socketable = true;
 					}).build();
@@ -1370,6 +1371,8 @@ public class TreasureItems {
 					}
 					int durability = (innateSize + 2) * material.getMaxLevel() * material.getDurability();
 					IDurabilityCapability durabilityCap = new DurabilityCapability(durability, durability);
+					durabilityCap.setMaxRepairs(material.getMaxRepairs());
+					durabilityCap.setRepairs(durabilityCap.getMaxRepairs());
 
 					return BaublesIntegration.isEnabled()
 							? new BaublesIntegration.BaubleAdornmentCapabilityProvider(type, cap, runestonesCap, durabilityCap) 

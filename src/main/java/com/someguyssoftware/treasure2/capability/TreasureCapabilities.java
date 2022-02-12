@@ -44,6 +44,9 @@ public class TreasureCapabilities {
 	@CapabilityInject(IItemHandler.class)
 	public static Capability<IItemHandler> POUCH = null;
 	
+	@CapabilityInject(IPouchableCapability.class)
+	public static Capability<IPouchableCapability> POUCHABLE = null;
+	
 	/**
 	 * 
 	 */
@@ -51,5 +54,6 @@ public class TreasureCapabilities {
         CapabilityManager.INSTANCE.register(ICharmableCapability.class, new CharmableCapabilityStorage(), CharmableCapability::create);
         CapabilityManager.INSTANCE.register(IRunestonesCapability.class, new RunestonesCapabilityStorage(), RunestonesCapability::create);
         CapabilityManager.INSTANCE.register(IDurabilityCapability.class, new DurabilityCapabilityStorage(), DurabilityCapability::new);
+        CapabilityManager.INSTANCE.register(IPouchableCapability.class, new PouchableCapabilityStorage(), PouchableCapability::new);
   	}
 }

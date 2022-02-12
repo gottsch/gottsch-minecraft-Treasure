@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.biome.BiomeTypeHolder;
 import com.someguyssoftware.gottschcore.config.IConfig;
@@ -15,6 +16,7 @@ import com.someguyssoftware.gottschcore.config.ILoggerConfig;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
@@ -286,31 +288,25 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Comment({ "Keys and Locks properties" })
 	public static final KeysAndLocks KEYS_LOCKS = new KeysAndLocks();
 
-	@Name("07b coins and valuables")
+	@Name("08 coins and valuables")
 	@Comment({ "Coins and Valuables properties" })
-	public static final Coins COINS = new Coins();
+	public static final Wealth WEALTH = new Wealth();
 
-	@Name("08 gems and ores")
+	@Name("09 gems and ores")
 	@Comment({ "Gems and Ores properties" })
 	public static final GemsAndOres GEMS_ORES = new GemsAndOres();
 
-	@Name("09 world generation")
+	@Name("10 world generation")
 	@Comment("World generation properties")
 	public static final WorldGen WORLD_GEN = new WorldGen();
 
-	@Name("10 foreign mods")
+	@Name("11 foreign mods")
 	@Comment({"Foreign mod properties", "@Deprecated - As of v1.14.0, these properties are no longer used."})
 	public static final ForeignModEnablements FOREIGN_MODS = new ForeignModEnablements();
-
-	@Name("11 oasis")
-	@Comment("Oasis properties")
-	public static final Oases OASES = new Oases();
 	
-	@Name("12 Integration")
+	@Name("12 integration")
+	@Comment({ "Mod Integration properties" })
 	public static final Integration INTEGRATION = new Integration();
-	
-	@Name("13 Boot")
-	public static final Booty BOOTY = new Booty();
 
 	@Ignore
 	public static TreasureConfig instance = new TreasureConfig();
@@ -330,7 +326,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		TreasureConfig.WELL.init();
 		TreasureConfig.WITHER_TREE.init();
 		TreasureConfig.WORLD_GEN.init();
-		TreasureConfig.OASES.init();
+		TreasureConfig.WEALTH.init();
 	}
 
 	/*
@@ -340,6 +336,9 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@Comment({ "Add mod's MODID to this list to enable custom loot tables for a mod.", "@Deprecated - As of v1.14.0, this property is no longer used."})
 		@Name("01. Foreign mod IDs for custom loot tables:")
 		public String[] enableForeignModIDs = new String[] { "mocreatures", "sgs_metals" };
+		
+		// TODO remove
+		@Deprecated
 		@Comment({ "A list of mods that have prebuilt loot tables available.",
 		"Note: used for informational purposes only.", "@Deprecated - As of v1.14.0, this property is no longer used." })
 		@Name("02. Pre-build loot tables for foreign mod IDs:")
@@ -838,48 +837,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	/*
 	 * 
 	 */
-	public static class Oases {
-		@Comment({"The minimum number of chunks generated before another attempt to spawn any type of oasis is made.",
-		"Ex. Both desert oasis and floating oasis have met their respective thresholds to spawn, but minChunksPerOasis was recently reset and hasn't met its threshold, therefor preventing a new oasis to spawn."})
-		@Name("01. Min. chunks per oasis spawn:")
-		@RangeInt(min = 0, max = 32000)
-		public int minChunksPerOasis = 100;
-
-		@Comment({ "The minimum distance, measured in blocks, that two oasis can be in proximity.",
-			"Note: Only oases in the oasis registry are checked against this property.",
-			"Used in conjunction with the chunks per oasis and spawn probability.", "Ex. " })
-		@Name("02. Min. distance per oasis spawn:")
-		@RangeInt(min = 0, max = 32000)
-		public int minDistancePerOasis = 500;
-
-		@Comment({
-			"The number of oases that are monitored. Most recent additions replace least recent when the registry is full.",
-		"This is the set of oases used to measure distance between newly generated oases." })
-		@Name("03. Max. size of oasis registry:")
-		@RangeInt(min = 5, max = 100)
-		@RequiresMcRestart
-		public int oasisRegistrySize = 25;
-
-		@Name("01 Desert oasis")
-		public OasisConfig desertOasisProperties = new OasisConfig(
-				true, 1000, 80, 
-				new String[] {"desert", "desert_hills", "desert_lakes", "badlands", 
-				"badlands_plateau"}, 
-				new String[] {},
-				new String[] {"mesa", "dry"},
-				new String[] { });
-
-		/**
-		 * 
-		 */
-		public void init() {
-			this.desertOasisProperties.init();
-		}
-	}
-
-	/*
-	 * 
-	 */
+	@Deprecated
 	public static class Coins {
 		@Comment("The maximum size of a coin item stack.")
 		@Name("01. Max Stack Size:")
@@ -1264,11 +1222,22 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	 * @author Mark Gottschling on Jan 9, 2022
 	 *
 	 */
-	public static class Booty {
-		@Comment("")
+	public static class Wealth {
+		@Comment("The maximum size of a wealth item stack. This includes items like coins, gems, pearls.")
 		@Name("01. Maximum Stack Size:")
 		@RangeInt(min = 1, max = 64)
 		public int wealthMaxStackSize = 8;
+		
+		@Comment({ "Add items ID to this list to enable it to be placed in a pouch."})
+		@Name("02. Pouchable Items:")
+		public String[] rawPouchables = new String[] { "minecraft:diamond", "minecraft:emerald"  };
+		
+		@Ignore
+		public List<ResourceLocation> pouchables = new ArrayList<>(3);
+		
+		public void init() {
+			pouchables = Arrays.asList(rawPouchables).stream().map(p -> new ResourceLocation(p)).collect(Collectors.toList());
+		}
 	}
 	
 	/**
