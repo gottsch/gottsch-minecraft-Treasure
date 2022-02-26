@@ -35,6 +35,8 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.entity.monster.PirateMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.item.CharmingTableItemBlock;
+import com.someguyssoftware.treasure2.item.JewelerBenchItemBlock;
 import com.someguyssoftware.treasure2.item.MimicChestItemBlock;
 import com.someguyssoftware.treasure2.item.TreasureChestItemBlock;
 import com.someguyssoftware.treasure2.tileentity.CardboardBoxTileEntity;
@@ -187,7 +189,7 @@ public class TreasureBlocks {
 
 	// work benches
 	public static final Block JEWELER_BENCH;
-	public static final Block CHARMING_BENCH;
+	public static final Block CHARMING_TABLE;
 	
 	// initialize blocks
 	static {
@@ -502,7 +504,7 @@ public class TreasureBlocks {
 		// TODO need to create a generic parent block that sets the creative tab
 		// benches
 		JEWELER_BENCH = new JewelerBenchBlock(Treasure.MODID, "jeweler_bench", Material.WOOD).setCreativeTab(Treasure.TREASURE_TAB);;
-		CHARMING_BENCH = new CharmingBenchBlock(Treasure.MODID, "charming_bench", Material.WOOD).setCreativeTab(Treasure.TREASURE_TAB);;
+		CHARMING_TABLE = new CharmingTableBlock(Treasure.MODID, "charming_table", Material.WOOD).setCreativeTab(Treasure.TREASURE_TAB);;
 		
 	}
 
@@ -573,7 +575,7 @@ public class TreasureBlocks {
 					FALLING_RED_SAND,
 					BLACKSTONE,
 					JEWELER_BENCH,
-					CHARMING_BENCH
+					CHARMING_TABLE
 			};
 
 			registry.registerAll(blocks);
@@ -659,8 +661,8 @@ public class TreasureBlocks {
 					new ItemBlock(FALLING_SAND),
 					new ItemBlock(FALLING_RED_SAND),
 					new ItemBlock(BLACKSTONE),
-					new ItemBlock(JEWELER_BENCH),
-					new ItemBlock(CHARMING_BENCH)
+					new JewelerBenchItemBlock(JEWELER_BENCH),
+					new CharmingTableItemBlock(CHARMING_TABLE)
 			};
 
 			for (final ItemBlock item : items) {

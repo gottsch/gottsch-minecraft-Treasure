@@ -108,7 +108,7 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FALLING_RED_SAND));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.BLACKSTONE));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.JEWELER_BENCH));
-		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CHARMING_BENCH));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CHARMING_TABLE));
 		
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);

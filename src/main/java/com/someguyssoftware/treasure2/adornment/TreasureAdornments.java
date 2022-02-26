@@ -39,6 +39,7 @@ import com.google.common.collect.Multimap;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
 import com.someguyssoftware.treasure2.item.Adornment;
@@ -255,6 +256,65 @@ public class TreasureAdornments {
 		resultStack.getCapability(CHARMABLE, null).setSourceItem(sourceItem);
 
 		return resultStack;
+	}
+	
+	/**
+	 * 
+	 * @param source
+	 * @param dest
+	 * @param destInventoryType
+	 * @return
+	 */
+	public static Optional<ItemStack> transferCapabilities(ItemStack source, ItemStack dest, InventoryType sourceType, InventoryType destType) {
+		Treasure.logger.debug("transfering caps...");
+
+		// create a new dest item stack
+		ItemStack stack = new ItemStack(dest.getItem());
+
+		/*
+		 * transfer existing state of dest to stack plus any relevant state from source to stack
+		 */
+		if (dest.hasCapability(DURABILITY, null)) {
+			dest.getCapability(DURABILITY, null).copyTo(stack);
+		}
+
+		// transfer
+		boolean charmSizeChanged = false;
+		boolean runeSizeChanged = false;
+
+		if (dest.hasCapability(CHARMABLE, null)) {
+			stack.getCapability(CHARMABLE, null).clearCharms();			
+			dest.getCapability(CHARMABLE, null).copyTo(stack);
+			if (source.hasCapability(CHARMABLE, null)) {
+				source.getCapability(CHARMABLE, null).transferTo(stack, sourceType, destType);
+				// check if size has changed. indicates at least 1 charm was transfered. if not, return empty
+				if (stack.getCapability(CHARMABLE, null).getCurrentSize(destType) > dest.getCapability(CHARMABLE, null).getCurrentSize(destType)) {
+					charmSizeChanged = true;
+				}
+			}
+		}
+
+		if (dest.hasCapability(RUNESTONES, null)) {
+			stack.getCapability(RUNESTONES, null).clear();
+			Treasure.logger.debug("before copyTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
+			dest.getCapability(RUNESTONES, null).copyTo(stack);
+			Treasure.logger.debug("after copyTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
+			if (source.hasCapability(RUNESTONES, null)) { // this is the rune
+				Treasure.logger.debug("source(runestone)'s runes ->");
+				source.getCapability(RUNESTONES, null).getEntities(InventoryType.INNATE).forEach(entity -> {
+					Treasure.logger.debug("source entity -> {}", entity);
+				});
+				source.getCapability(RUNESTONES, null).transferTo(stack, sourceType, destType); // transfer from rune to output
+				Treasure.logger.debug("after transferTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
+				if (stack.getCapability(RUNESTONES, null).getCurrentSize(destType) > dest.getCapability(RUNESTONES, null).getCurrentSize(destType)) {
+					runeSizeChanged = true;
+				}
+			}
+		}
+		if (charmSizeChanged | runeSizeChanged) {
+			return Optional.of(stack);
+		}
+		return Optional.empty();
 	}
 	
 	/**

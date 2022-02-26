@@ -78,6 +78,8 @@ tile.treasure2:falling_grass.name=Grass Block
 tile.treasure2:falling_sand.name=Sand Block
 tile.treasure2:falling_red_sand.name=Red Sand Block
 tile.treasure2:blackstone.name=Blackstone
+tile.treasure2:jeweler_bench.name=Jeweler's Bench
+tile.treasure2:charming_table.name=Charming Table
 
 #items
 item.treasure2:copper_coin.name=Copper Coin
@@ -470,6 +472,12 @@ tooltip.painting.collection=Collection: %s
 tooltip.painting.issue=Issue: %s/%s
 tooltip.painting.artist=by %s
 
+tooltip.jeweler_bench.usage=Used to modify adornments.
+tooltip.jeweler_bench.usage1=Place adornment and gem in first row to upgrade the adornment.
+tooltip.jeweler_bench.usage2=Place adornment in second row to destroy gem and keep adornment.
+tooltip.jeweler_bench.usage3=Place adornment in third row to destroy adornment and  keep gem.
+tooltip.jeweler_bench.note=You may lose charms if the adornments' new max level is less than the current charms. 
+
 #gui
 display.wood_chest.name=Wood Chest
 display.crate_chest.name=Crate
@@ -492,6 +500,10 @@ display.milk_crate.name=Milk Crate
 display.crystal_skull_chest.name=Crystal Skull
 display.jeweler_bench.name=Jeweler's Bench
 display.jeweler_bench.cost=Cost: %s
+display.charming_table.name=Charming Table
+display.charming_table.charms=Socket Charms
+display.charming_table.runes=Runes
+
 
 #chat messages
 chat.key_break=Your key broke whilst attempting to unlock the lock!

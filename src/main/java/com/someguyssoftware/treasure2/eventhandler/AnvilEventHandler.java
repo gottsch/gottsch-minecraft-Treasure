@@ -229,6 +229,7 @@ public class AnvilEventHandler {
 	 * @param destInventoryType
 	 * @return
 	 */
+	@Deprecated
 	public static Optional<ItemStack> transferCapabilities(ItemStack source, ItemStack dest, InventoryType sourceType, InventoryType destType) {
 		Treasure.logger.debug("transfering caps...");
 

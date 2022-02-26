@@ -111,7 +111,7 @@ public class JewelerBenchGui extends GuiContainer implements IContainerListener 
 			String s = I18n.translateToLocalFormatted("display.jeweler_bench.cost", this.bench.maximumCost);
 			int k = this.xSize - 8 - this.fontRenderer.getStringWidth(s);
 			fontRenderer.drawString(s, k+1, 75, Color.GRAY.getRGB());
-			fontRenderer.drawString(s, k, 74, TextFormatting.GOLD.getColorIndex());
+			fontRenderer.drawString(s, k, 74, Color.GREEN.getRGB());
 		}
 	}
 

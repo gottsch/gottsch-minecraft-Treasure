@@ -19,6 +19,7 @@
  */
 package com.someguyssoftware.treasure2.block;
 
+import com.someguyssoftware.gottschcore.block.CardinalDirectionFacadeBlock;
 import com.someguyssoftware.gottschcore.block.ModBlock;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
@@ -36,7 +37,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Feb 2, 2022
  *
  */
-public class JewelerBenchBlock extends ModBlock {
+public class JewelerBenchBlock extends CardinalDirectionFacadeBlock implements ITreasureBlock {
 
 	/**
 	 * 
@@ -47,16 +48,26 @@ public class JewelerBenchBlock extends ModBlock {
 	public JewelerBenchBlock(String modID, String name, Material material) {
 		super(modID, name, material);
 	}
-	
+
 	/**
 	 * 
 	 */
 	@Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		// exit if on the client
-        if (!worldIn.isRemote) {
+		if (!worldIn.isRemote) {
 			playerIn.openGui(Treasure.instance, GuiHandler.JEWELER_BENCH, worldIn, pos.getX(), pos.getY(), pos.getZ());
-        }
+		}
 		return true;
-    }
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 }

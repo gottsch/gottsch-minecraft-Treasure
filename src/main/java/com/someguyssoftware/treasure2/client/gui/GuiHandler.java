@@ -24,7 +24,7 @@ import static com.someguyssoftware.treasure2.Treasure.logger;
 import java.util.Random;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.client.gui.inventory.CharmingBenchGui;
+import com.someguyssoftware.treasure2.client.gui.inventory.CharmingTableGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.CompressorChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.JewelerBenchGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.KeyRingGui;
@@ -35,7 +35,7 @@ import com.someguyssoftware.treasure2.client.gui.inventory.StandardChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.StrongboxChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.WitherChestGui;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
-import com.someguyssoftware.treasure2.inventory.CharmingBenchContainer;
+import com.someguyssoftware.treasure2.inventory.CharmingTableContainer;
 import com.someguyssoftware.treasure2.inventory.CompressorChestContainer;
 import com.someguyssoftware.treasure2.inventory.JewelerBenchContainer;
 import com.someguyssoftware.treasure2.inventory.KeyRingContainer;
@@ -158,7 +158,7 @@ public class GuiHandler implements IGuiHandler {
 			break;
 		case CHARMING_BENCH:
 			Treasure.logger.debug("creating charming bench container server-side");
-			container = new CharmingBenchContainer(player.inventory, world, new BlockPos(x, y, z), player);
+			container = new CharmingTableContainer(player.inventory, world, new BlockPos(x, y, z), player);
 			break;
 		default:
 
@@ -230,7 +230,7 @@ public class GuiHandler implements IGuiHandler {
 		case CHARMING_BENCH:
 			Treasure.logger.debug("creating charming bench container client-side");
 			try {
-				return new CharmingBenchGui(player.inventory, world);
+				return new CharmingTableGui(player.inventory, world);
 			}
 			catch(Exception e) {
 				Treasure.logger.error("charming bench error:", e);

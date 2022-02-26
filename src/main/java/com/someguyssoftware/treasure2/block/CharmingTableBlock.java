@@ -36,7 +36,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Feb 2, 2022
  *
  */
-public class CharmingBenchBlock extends ModBlock {
+public class CharmingTableBlock extends ModBlock {
 
 	/**
 	 * 
@@ -44,7 +44,7 @@ public class CharmingBenchBlock extends ModBlock {
 	 * @param name
 	 * @param material
 	 */
-	public CharmingBenchBlock(String modID, String name, Material material) {
+	public CharmingTableBlock(String modID, String name, Material material) {
 		super(modID, name, material);
 	}
 	
@@ -60,4 +60,14 @@ public class CharmingBenchBlock extends ModBlock {
         }
 		return true;
     }
+	
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 }

@@ -22,7 +22,7 @@ package com.someguyssoftware.treasure2.client.gui.inventory;
 import java.awt.Color;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.inventory.CharmingBenchContainer;
+import com.someguyssoftware.treasure2.inventory.CharmingTableContainer;
 import com.someguyssoftware.treasure2.inventory.JewelerBenchContainer;
 import com.someguyssoftware.treasure2.inventory.KeyRingContainer;
 import com.someguyssoftware.treasure2.inventory.PouchContainer;
@@ -51,17 +51,19 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Feb 10, 2022
  *
  */
-public class CharmingBenchGui extends GuiContainer implements IContainerListener {
+public class CharmingTableGui extends GuiContainer implements IContainerListener {
 
 	// This is the resource location for the background images for the GUI
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(Treasure.MODID,
-			"textures/gui/container/charming_bench.png");
+			"textures/gui/container/charming_table.png");
 
 	@SuppressWarnings("deprecation")
-	public static final String LABEL = TextFormatting.BLACK + "" + I18n.translateToLocal("display.charming_bench.name");
+	public static final String LABEL = TextFormatting.BLACK + "" + I18n.translateToLocal("display.charming_table.name");
+	public static final String CHARMS_LABEL = TextFormatting.BLACK + "" + I18n.translateToLocal("display.charming_table.charms");
+	public static final String RUNES_LABEL = TextFormatting.BLACK + "" + I18n.translateToLocal("display.charming_table.runes");
 
-	private final CharmingBenchContainer bench;
+	private final CharmingTableContainer bench;
 	private final InventoryPlayer playerInventory;
 
 	/**
@@ -69,14 +71,14 @@ public class CharmingBenchGui extends GuiContainer implements IContainerListener
 	 * @param inventory
 	 * @param inventory
 	 */
-	public CharmingBenchGui(InventoryPlayer inventory, World world) {
-		super(new CharmingBenchContainer(inventory, world, Minecraft.getMinecraft().player));
+	public CharmingTableGui(InventoryPlayer inventory, World world) {
+		super(new CharmingTableContainer(inventory, world, Minecraft.getMinecraft().player));
 		this.playerInventory = inventory;
-		this.bench = (CharmingBenchContainer) this.inventorySlots;
+		this.bench = (CharmingTableContainer) this.inventorySlots;
 
 		// Set the width and height of the gui. Should match the size of the texture!
 		xSize = 177;
-		ySize = 200;
+		ySize = 256;
 	}
 
 	/*
@@ -104,15 +106,23 @@ public class CharmingBenchGui extends GuiContainer implements IContainerListener
 		final int LABEL_YPOS = 5;
 
 		fontRenderer.drawString(LABEL, LABEL_XPOS, LABEL_YPOS, Color.GRAY.getRGB());
-
+		fontRenderer.drawString(CHARMS_LABEL, LABEL_XPOS, 38, Color.GRAY.getRGB());
+		fontRenderer.drawString(RUNES_LABEL, LABEL_XPOS, 129, Color.GRAY.getRGB());
+		
 		// add cost line
-		if (this.bench.maximumCost > 0 && (this.bench.getSlot(4).getHasStack() || this.bench.getSlot(5).getHasStack()
-				|| this.bench.getSlot(6).getHasStack())) {
-			String s = I18n.translateToLocalFormatted("display.charming_bench.cost", this.bench.maximumCost);
-			int k = this.xSize - 8 - this.fontRenderer.getStringWidth(s);
-			fontRenderer.drawString(s, k+1, 75, Color.GRAY.getRGB());
-			fontRenderer.drawString(s, k, 74, TextFormatting.GOLD.getColorIndex());
-		}
+		
+//		try {
+//			if (this.bench.maximumCost > 0 && (this.bench.getSlot(4).getHasStack() || this.bench.getSlot(5).getHasStack()
+//					|| this.bench.getSlot(6).getHasStack())) {
+//				String s = I18n.translateToLocalFormatted("display.charming_bench.cost", this.bench.maximumCost);
+//				int k = this.xSize - 8 - this.fontRenderer.getStringWidth(s);
+//				fontRenderer.drawString(s, k+1, 75, Color.GRAY.getRGB());
+//				fontRenderer.drawString(s, k, 74, TextFormatting.GOLD.getColorIndex());
+//			}
+//		}
+//		catch(Exception e) {
+//			Treasure.logger.error("error in gui:", e);
+//		}
 	}
 
 	/**
@@ -133,15 +143,6 @@ public class CharmingBenchGui extends GuiContainer implements IContainerListener
 
 	@Override
 	public void sendSlotContents(Container containerToSend, int slotIndex, ItemStack stack) {
-		// TODO updates the name field on the gui screen (for custom name)
-//		if (slotIndex == 0) {
-//			this.nameField.setText(stack.isEmpty() ? "" : stack.getDisplayName());
-//			this.nameField.setEnabled(!stack.isEmpty());
-//
-//			if (!stack.isEmpty()) {
-//				this.renameItem();
-//			}
-//		}
 	}
 
 	@Override
