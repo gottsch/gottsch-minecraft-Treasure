@@ -32,11 +32,19 @@ import net.minecraft.world.storage.loot.functions.LootFunction;
  *
  */
 public class RandomAdornment extends LootFunction {
+	private static final String LOCATION = new ResourceLocation("treasure2:random_adornment");
+	private static final String LEVELS = "levels";
+	private static final String MATERIALS = "materials";
 
 	// the type of adornment - ring, necklace, bracelet, earrings, pocket watch
-	private String adornmentType;
+	//private String adornmentType;
+
+	private RandomValueRange levels;
+
 	// the base material of the adornment to be selected
-	private String material;
+	//private String material;
+	private Optional<List<CharmableMaterial>> materials;
+
 
 	/**
 	 * 
@@ -46,13 +54,118 @@ public class RandomAdornment extends LootFunction {
 	public RandomAdornment(LootCondition[] conditions) {
 		super(conditions);
 	}
-	
+
+	public RandomAdornment(LootCondition[] conditions, RandomValueRange levels, Optional<List<CharmableMaterial>> materials) {
+		super(conditions);
+		this.levels = levels;
+		this.materials = materials;
+	}
+
 	@Override
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
-		// TODO Auto-generated method stub
-		return null;
+		Random random = new Random();
+
+		// select random level
+		int level = this.levels == null ? 1 : this.levels.generateInt(rand);
+
+		// select material
+		CharmableMaterial material = null;
+		if (this.materials == null || !this.materials.isPresent()) {
+			material = TreasureCharmableMaterials.getBaseMaterial(stack.getCapability(TreasureCapabilities.CHARMABLE, null).getMaterial());
+		}
+		else {
+			material = this.materials.get().get(random.nextInt(materials.get().size()));
+		}
+
+		// update level if level exceeds max of material
+		if (level > material.getMaxLevel()) {
+			level = material.getMaxLevel();
+		}
+
+		// TODO select all adornments that meet the level and material criteria - this includes all material + gem combos.
+		// ex at this point: level = 3, material = silver, so all silver rings, necklaces, bracelets where level <= 3 (or should be == 3 ?)
+		List<Adornment> adornmentsByMaterial = TreasureAdornments.getByMaterial(material.get());
+		List<Adornment> adornments = 
+			adornments = adornmentsByMaterial.stream()
+			.filter(a -> {
+				ItemStack itemStack = new ItemStack(a);
+				if (a.getCapability(TreasureCapabilities.CHARMABLE, null).getMaxCharmLevel() == level) {
+					return true;
+				}
+				return false;
+			}).collect(Collectors.toList());
+
+		// create a new adornment item
+		ItemStack adornment;
+		if (adornments == null || adornments.isEmpty()) {
+			adornment = stack;
+		}
+		else {
+			adornment = new ItemStack(adornments.get(random.nextInt(adornments.size())));
+		}
+
+		return adornment;
 	}
 	
+	public static class Serializer extends LootFunction.Serializer<RandomAdornment> {
+		public Serializer() {
+			super(LOCATION, RandomAdornment.class);
+		}
+
+		/**
+		 * 
+		 */
+		public void serialize(JsonObject json, RandomAdornment value, JsonSerializationContext context) {
+			json.add(LEVELS, context.serialize(value.levels));
+
+			// serialize the materials
+			if (value.materials.isPresent()) {
+				final JsonArray jsonArray = new JsonArray();
+				value.materials.get().forEach(material -> {
+					jsonArray.add(new JsonPrimitive(material.getName().toString()));
+				});
+				json.add(MATERIALS, jsonArray);
+				// json.add(MATERIAL, new JsonPrimitive(value.material.getName().toString()));
+			}
+		}
+
+		/**
+		 * 
+		 */
+		public CharmRandomly deserialize(JsonObject json, JsonDeserializationContext deserializationContext,
+				LootCondition[] conditionsIn) {
+			
+			RandomValueRange levels = null;
+			if (json.has(LEVELS)) {
+				 levels = JsonUtils.deserializeClass(json, LEVELS, deserializationContext, RandomValueRange.class);	
+			}
+			// TODO potential create new RandomValueRange(1)
+
+			Optional<List<CharmableMaterial>> materials = Optional.empty();
+			if (json.has(MATERIALS)) {
+				// String materialName = JsonUtils.getString(json, MATERIAL);
+				// material = TreasureCharmableMaterials.getBaseMaterial(new ResourceLocation(materialName));
+				for (JsonElement element : JsonUtils.getJsonArray(json, MATERIALS)) {
+					String materialName = JsonUtils.getString(element, "material");
+					Optional<CharmableMaterial> material = TreasureCharmableMaterials.getBaseMaterial(new ResourceLocation(materialName));
+					if (material.isPresent()) {
+						if (!materials.isPresent()) {
+							materials = Optional.of(new ArrayList<CharmableMaterial>());
+						}
+						materials.get().add(material);
+					}
+					else {
+						Treasure.logger.warn("Unknown material '{}'", materialName);
+					}
+				}
+			}
+
+			// NOTE no default value for material as it is an optional value
+
+			return new RandomCharm(conditionsIn, levels, materials);
+		}
+	}
+
 //	/**
 //	 * 
 //	 * @param conditions

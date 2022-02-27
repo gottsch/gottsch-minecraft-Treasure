@@ -221,6 +221,7 @@ public class TreasureItems {
 
 	// items cache
 	public static final Map<ResourceLocation, Item> ITEMS = new HashMap<>();
+	// TODO make a CHARM_ITEMS and ADORNMENT_ITEMS cache instead
 
 	static {
 //		MINERS_FRIEND = new CharmedGemItem(Treasure.MODID, TreasureConfig.MINERS_FRIEND_ID) {

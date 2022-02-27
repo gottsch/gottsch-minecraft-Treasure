@@ -30,6 +30,15 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import net.minecraft.item.ItemStack;
 
 /**
+ * Rarities:
+ * Common = 1-4
+ * Uncommon = 5-8
+ * Scarce = 9-12
+ * Rare = 13-16
+ * Epic = 17-20
+ * Legandary = 21-24
+ * Mythical = 25+
+ *
  * @author Mark Gottschling on Apr 25, 2020
  *
  */

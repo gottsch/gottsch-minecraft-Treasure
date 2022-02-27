@@ -1,123 +1,85 @@
 {
-	"version": "2.2",
+	"version": "3.0",
 	"pools": [{
 		"name": "uncommon_charms",
 		"rolls": 1,
 		"entries": [{
-				"entryName": "charm1",
+				"entryName": "charm0",
 				"type": "item",
-				"name": "treasure2:charmed_silver_coin",
+				"name": "treasure2:copper_charm",
 				"weight": 30,
 				"conditions": [{
 					"condition": "random_chance",
 					"chance": 0.2
 				}],
 				"functions": [{
-					"function": "treasure2:charm_randomly",
-					"charms": [
-						"lesser_healing",
-						"durable_shielding"
-					]
+					"function": "treasure2:random_charm",
+					"rarity": "common",
+					"defaultCharm": "treasure2:healing_1"
 				}]
 			},
 			{
-				"entryName": "charm2",
+				"entryName": "charm1",
 				"type": "item",
-				"name": "treasure2:charmed_silver_coin",
+				"name": "treasure2:silver_charm",
 				"weight": 30,
 				"conditions": [{
 					"condition": "random_chance",
 					"chance": 0.15
 				}],
 				"functions": [{
-					"function": "treasure2:charm_randomly",
-					"levels": 1
+					"function": "treasure2:random_charm",
+					"rarity": "uncommon",
+					"defaultCharm": "treasure2:healing_3"
 				}]
 			},
 			{
-				"entryName": "charm3",
+				"entryName": "charm2",
 				"type": "item",
 				"name": "treasure2:charmed_silver_coin",
-				"weight": 30,
+				"weight": 20,
 				"conditions": [{
 					"condition": "random_chance",
 					"chance": 0.1
 				}],
 				"functions": [{
-					"function": "treasure2:charm_randomly",
-					"levels": 2
-				}]
-			},
-			{
-				"entryName": "adornment1",
-				"type": "item",
-				"name": "treasure2:silver_ring",
-				"weight": 3,
-				"quality": 3,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.3
-				}],
-				"functions": [{
-					"function": "treasure2:set_slots",
-					"slots": {
-						"min": 0,
-						"max": 0
+					"function": "treasure2:random_charm",
+					"levels": {
+						"min": 9,
+						"max": 10
 					}
 				}]
 			},
 			{
-				"entryName": "adornment_silver_necklace",
+				"entryName": "adornment0",
 				"type": "item",
-				"name": "treasure2:silver_necklace",
-				"weight": 3,
-				"quality": 3,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.3
-				}],
-				"functions": [{
-					"function": "treasure2:set_slots",
-					"slots": {
-						"min": 0,
-						"max": 0
-					}
-				}]
-			},
-			{
-				"entryName": "adornment2",
-				"type": "item",
-				"name": "treasure2:gold_ring",
-				"weight": 3,
-				"quality": 3,
+				"name": "treasure2:iron_ring",
+				"weight": 10,
 				"conditions": [{
 					"condition": "random_chance",
 					"chance": 0.2
 				}],
 				"functions": [{
-					"function": "treasure2:set_slots",
-					"slots": {
-						"min": 1,
-						"max": 2
-					}
+					"function": "treasure2:random_adornment",
+					"levels": {
+						"min": 2,
+						"max": 6
+					},
+					"materials": [
+						"treasure2:iron",
+						"treasure2:copper"
+					]
 				}]
 			},
 			{
-				"entryName": "adornment3",
+				"entryName": "peasants_fortune",
 				"type": "item",
-				"name": "treasure2:silver_ring",
-				"weight": 3,
+				"name": "treasure2:peasants_fortune",
+				"weight": 10,
 				"quality": 3,
 				"conditions": [{
 					"condition": "random_chance",
-					"chance": 0.2
-				}],
-				"functions": [{
-					"function": "treasure2:set_slots",
-					"slots": {
-						"min": 1,
-						"max": 1
-					}
+					"chance": 0.1
 				}]
 			}
 		]

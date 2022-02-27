@@ -1,5 +1,6 @@
 {
-	"version": "2.1",
+	"version": "3.0",
+	"since": "mc1.12.2-v2.0.0",
 	"pools": [
 		{
 			"name": "rare_keys",

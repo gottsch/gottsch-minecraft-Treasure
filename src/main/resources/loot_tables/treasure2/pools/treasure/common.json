@@ -1,5 +1,6 @@
 {
-	"version": "2.0",
+	"version": "3.0",
+	"since": "mc1.12.2-v2.0.0",
 	"pools": [{
 			"name": "common_keys",
 			"rolls": 1,
@@ -60,6 +61,19 @@
 			"name": "common_treasure",
 			"rolls": 1,
 			"entries": [{
+				"entryName": "copper_coin",
+				"type": "item",
+				"name": "treasure2:silver_coin",
+				"weight": 35,
+				"functions": [{
+					"function": "set_count",
+					"count": {
+						"min": 1,
+						"max": 2
+					}
+				}]
+			},
+			{
 				"entryName": "silver_coin",
 				"type": "item",
 				"name": "treasure2:silver_coin",
@@ -72,45 +86,6 @@
 					}
 				}]
 			}]
-		},
-		{
-			"name": "common_charms",
-			"rolls": 1,
-			"entries": [{
-					"entryName": "charm1",
-					"type": "item",
-					"name": "treasure2:charmed_silver_coin",
-					"weight": 10,
-					"conditions": [{
-						"condition": "random_chance",
-						"chance": 0.2
-					}],
-					"functions": [{
-						"function": "treasure2:charm_randomly",
-						"charms": [
-							"lesser_healing",
-							"durable_shielding"
-						]
-					}]
-				},
-				{
-					"entryName": "adornment1",
-					"type": "item",
-					"name": "treasure2:silver_ring",
-					"weight": 1,
-					"conditions": [{
-						"condition": "random_chance",
-						"chance": 0.1
-					}],
-					"functions": [{
-						"function": "treasure2:set_slots",
-						"slots": {
-							"min": 0,
-							"max": 0
-						}
-					}]
-				}
-			]
 		}
 	]
 }

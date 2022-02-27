@@ -33,6 +33,7 @@ import net.minecraft.util.ResourceLocation;
 public class TreasureCharmRegistry {
     private static final Map<ResourceLocation, ICharm> REGISTRY = new HashMap<>();
     private static final Map<Integer, List<ICharm>> REGISTRY_BY_LEVEL = new HashMap<>();
+    private static final Map<Rarity, List<ICharm>> REGISTRY_BY_RARITY = new HashMap<>();
 
     /**
      * 
@@ -49,6 +50,14 @@ public class TreasureCharmRegistry {
         }
         else {
         	REGISTRY_BY_LEVEL.get(Integer.valueOf(charm.getLevel())).add(charm);
+        }
+        if (!REGISTRY_BY_RARITY.containsKey(charm.getRarity())) {
+            List<ICharm> charmList = new ArrayList<>();
+            charmList.add(charm);
+            REGISTRY_BY_RARITY.put(charm.getRarity(), charmList);
+        }
+        else {
+            REGISTRY_BY_RARITY.get(charm.getRarity()).add(charm);
         }
     }
 
@@ -76,7 +85,17 @@ public class TreasureCharmRegistry {
         return Optional.empty();
     }
 
-    
+    /**
+     * @param rarity
+     * @return
+     */
+    public static Optional<List<ICharm>> get(Rarity rarity) {
+        if (REGISTRY_BY_RARITY.containsKey(rarity)) {
+            return Optional.of(REGISTRY_BY_RARITY.get(rarity));
+        }
+        return Optional.empty();
+    }
+
 	/**
 	 * 
 	 * @param predicate
