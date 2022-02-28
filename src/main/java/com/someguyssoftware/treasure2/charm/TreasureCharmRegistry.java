@@ -27,6 +27,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.util.ResourceLocation;
 

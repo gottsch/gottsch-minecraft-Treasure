@@ -19,10 +19,30 @@
  */
 package com.someguyssoftware.treasure2.loot.function;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.item.Adornment;
+import com.someguyssoftware.treasure2.material.CharmableMaterial;
+import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.JsonUtils;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 
@@ -32,7 +52,7 @@ import net.minecraft.world.storage.loot.functions.LootFunction;
  *
  */
 public class RandomAdornment extends LootFunction {
-	private static final String LOCATION = new ResourceLocation("treasure2:random_adornment");
+	private static final ResourceLocation LOCATION = new ResourceLocation("treasure2:random_adornment");
 	private static final String LEVELS = "levels";
 	private static final String MATERIALS = "materials";
 
@@ -71,7 +91,7 @@ public class RandomAdornment extends LootFunction {
 		// select material
 		CharmableMaterial material = null;
 		if (this.materials == null || !this.materials.isPresent()) {
-			material = TreasureCharmableMaterials.getBaseMaterial(stack.getCapability(TreasureCapabilities.CHARMABLE, null).getMaterial());
+			material = TreasureCharmableMaterials.getBaseMaterial(stack.getCapability(TreasureCapabilities.CHARMABLE, null).getBaseMaterial()).get();
 		}
 		else {
 			material = this.materials.get().get(random.nextInt(materials.get().size()));
@@ -82,14 +102,14 @@ public class RandomAdornment extends LootFunction {
 			level = material.getMaxLevel();
 		}
 
+		final int lambdaLevel = level;
 		// TODO select all adornments that meet the level and material criteria - this includes all material + gem combos.
 		// ex at this point: level = 3, material = silver, so all silver rings, necklaces, bracelets where level <= 3 (or should be == 3 ?)
-		List<Adornment> adornmentsByMaterial = TreasureAdornments.getByMaterial(material.get());
-		List<Adornment> adornments = 
-			adornments = adornmentsByMaterial.stream()
+		List<Adornment> adornmentsByMaterial = TreasureAdornments.getByMaterial(material);
+		List<Adornment> 	adornments = adornmentsByMaterial.stream()
 			.filter(a -> {
 				ItemStack itemStack = new ItemStack(a);
-				if (a.getCapability(TreasureCapabilities.CHARMABLE, null).getMaxCharmLevel() == level) {
+				if (itemStack.getCapability(TreasureCapabilities.CHARMABLE, null).getMaxCharmLevel() == lambdaLevel) {
 					return true;
 				}
 				return false;
@@ -107,6 +127,11 @@ public class RandomAdornment extends LootFunction {
 		return adornment;
 	}
 	
+	/**
+	 * 
+	 * @author Mark Gottschling on Feb 27, 2022
+	 *
+	 */
 	public static class Serializer extends LootFunction.Serializer<RandomAdornment> {
 		public Serializer() {
 			super(LOCATION, RandomAdornment.class);
@@ -132,7 +157,7 @@ public class RandomAdornment extends LootFunction {
 		/**
 		 * 
 		 */
-		public CharmRandomly deserialize(JsonObject json, JsonDeserializationContext deserializationContext,
+		public RandomAdornment deserialize(JsonObject json, JsonDeserializationContext deserializationContext,
 				LootCondition[] conditionsIn) {
 			
 			RandomValueRange levels = null;
@@ -152,7 +177,7 @@ public class RandomAdornment extends LootFunction {
 						if (!materials.isPresent()) {
 							materials = Optional.of(new ArrayList<CharmableMaterial>());
 						}
-						materials.get().add(material);
+						materials.get().add(material.get());
 					}
 					else {
 						Treasure.logger.warn("Unknown material '{}'", materialName);
@@ -162,138 +187,7 @@ public class RandomAdornment extends LootFunction {
 
 			// NOTE no default value for material as it is an optional value
 
-			return new RandomCharm(conditionsIn, levels, materials);
+			return new RandomAdornment(conditionsIn, levels, materials);
 		}
 	}
-
-//	/**
-//	 * 
-//	 * @param conditions
-//	 */
-//	protected RandomAdornment(ILootCondition[] conditions) {
-//		super(conditions);
-//	}
-//
-//	@Override
-//	public LootFunctionType getType() {
-//		return TreasureLootFunctions.RANDOM_ADORNMENT;
-//	}
-//
-//	@Override
-//	protected ItemStack run(ItemStack stack, LootContext context) {
-//		Random random = new Random();
-//
-//		List<Item> adornments;
-//		if (adornmentType != null) {
-//			adornments = TreasureAdornments.getByType(adornmentType);
-//			if (material != null) {
-//				// filter
-//				adornments = adornments.stream()
-//						.filter(a -> {
-//							Set<String> tags = a.getTags().stream().filter(tag -> tag.getNamespace().equals(Treasure.MODID)) .map(ResourceLocation::getPath).collect(Collectors.toSet());
-//							if (tags.contains(material)) {
-//								return true;
-//							}
-//							return false;
-//						}).collect(Collectors.toList());
-//			}
-//		}
-//		else if (material != null) {
-//			adornments = TreasureAdornments.getByMaterial(material);
-//			if (adornmentType != null) {
-//				// filter
-//				adornments = adornments.stream()
-//						.filter(a -> {
-//							Set<String> tags = a.getTags().stream().filter(tag -> tag.getNamespace().equals(Treasure.MODID)) .map(ResourceLocation::getPath).collect(Collectors.toSet());
-//							if (tags.contains(adornmentType)) {
-//								return true;
-//							}
-//							return false;
-//						}).collect(Collectors.toList());
-//			}
-//		}
-//		else {
-//			adornments = TreasureAdornments.getAll();
-//		}
-//
-//		// create a new adornment item
-//		ItemStack adornment;
-//		if (adornments == null || adornments.isEmpty()) {
-//			adornment = stack;
-//		}
-//		else {
-//			adornment = new ItemStack(adornments.get(random.nextInt(adornments.size())));
-//		}
-//
-//		return adornment;
-//	}
-//
-//	public static RandomAdornment.Builder builder() {
-//		return new RandomAdornment.Builder();
-//	}
-//
-//	/**
-//	 * 
-//	 *
-//	 */
-//	public static class Builder extends LootFunction.Builder<RandomAdornment.Builder> {
-//		private Optional<String> type = Optional.empty();
-//
-//		protected RandomAdornment.Builder getThis() {
-//			return this;
-//		}
-//
-//		public RandomAdornment.Builder withType(String type) {
-//			this.type = Optional.of(type);
-//			return this;
-//		}
-//
-//		@Override
-//		public ILootFunction build() {
-//			RandomAdornment ra = new RandomAdornment(this.getConditions());
-//			if (type.isPresent()) {
-//				ra.adornmentType = type.get();
-//			}
-//			return ra;
-//		}
-//	}
-//
-//	public static class Serializer extends LootFunction.Serializer<RandomAdornment> {
-//
-//		@Override
-//		public void serialize(JsonObject json, RandomAdornment value, JsonSerializationContext context) {
-//			json.add("type", new JsonPrimitive(value.adornmentType));
-//			json.add("material", new JsonPrimitive(value.material.toString()));
-//		}
-//
-//		@Override
-//		public RandomAdornment deserialize(JsonObject json, JsonDeserializationContext context,
-//				ILootCondition[] conditions) {
-//
-//			Optional<String> type;
-//			if (json.has("type")) {
-//				type = Optional.of(JSONUtils.getAsString(json, "type").toLowerCase());
-//			}
-//			else {
-//				type =  Optional.empty();
-//			}
-//
-//			Optional<String> material;
-//			if (json.has("material")) {
-//				material =  Optional.of(JSONUtils.getAsString(json, "material").toLowerCase());
-//			}
-//			else {
-//				material = Optional.empty();
-//			}
-//
-//			RandomAdornment ra = new RandomAdornment(conditions);
-//			if (type.isPresent()) {
-//				ra.adornmentType = type.get();
-//			}
-//			if (material.isPresent()) {
-//				ra.material = material.get();
-//			}			
-//			return ra;
-//		}
-//	}
 }

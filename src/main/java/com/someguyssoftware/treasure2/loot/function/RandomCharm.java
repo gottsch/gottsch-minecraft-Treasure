@@ -19,10 +19,33 @@
  */
 package com.someguyssoftware.treasure2.loot.function;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.InventoryType;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.Charm;
+import com.someguyssoftware.treasure2.charm.HealingCharm;
+import com.someguyssoftware.treasure2.charm.ICharm;
+import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
+import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.item.CharmItem;
+import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
+
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.JsonUtils;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 
@@ -32,7 +55,7 @@ import net.minecraft.world.storage.loot.functions.LootFunction;
  *
  */
 public class RandomCharm extends LootFunction {
-	private static final String LOCATION = new ResourceLocation("treasure2:random_charm");
+	private static final ResourceLocation LOCATION = new ResourceLocation("treasure2:random_charm");
 	private static final String LEVELS = "levels";
 	private static final String RARITY = "rarity";
 	private static final String RARITIES = "rarities";
@@ -50,7 +73,7 @@ public class RandomCharm extends LootFunction {
 	 * @param levels
 	 * @param defaultCharm
 	 */
-	public CharmRandomly(LootCondition[] conditions, RandomValueRange levels, Rarity rarity, ICharm defaultCharm) {
+	public RandomCharm(LootCondition[] conditions, RandomValueRange levels, Rarity rarity, ICharm defaultCharm) {
 		super(conditions);
 		this.levels = levels;
 		this.rarity = rarity;
@@ -71,7 +94,7 @@ public class RandomCharm extends LootFunction {
 		// TODO if rarities property, select a random rarity
 
 		if (rarity != null) {
-			Optional<List<ICharm>> charms = TreasureCharmRegistry.get(rarity);
+			charms = TreasureCharmRegistry.get(rarity);
 			if (charms.isPresent()) {
 				Random random = new Random();
 				charm = charms.get().get(random.nextInt(charms.get().size()));
@@ -84,7 +107,7 @@ public class RandomCharm extends LootFunction {
 		}
 		else {
 			// select a charm by level
-			Optional<List<ICharm>> charms = TreasureCharmRegistry.get(level);
+			charms = TreasureCharmRegistry.get(level);
 			if (charms.isPresent()) {
 				Random random = new Random();
 				charm = charms.get().get(random.nextInt(charms.get().size()));
@@ -98,7 +121,7 @@ public class RandomCharm extends LootFunction {
 		// TODO for now, cycle through all ITEMS cache
 		ItemStack charmStack = null;
 		// TODO need to order charm items by max level
-		for (Item item : TreasureItems.ITEMS.getValues()) {
+		for (Item item : TreasureItems.ITEMS.values()) {
 			if (item instanceof CharmItem) {
 				ItemStack itemStack = new ItemStack(item);
 				// get the capability
@@ -150,7 +173,7 @@ public class RandomCharm extends LootFunction {
 		/**
 		 * 
 		 */
-		public CharmRandomly deserialize(JsonObject json, JsonDeserializationContext deserializationContext,
+		public RandomCharm deserialize(JsonObject json, JsonDeserializationContext deserializationContext,
 				LootCondition[] conditionsIn) {
 			
 			RandomValueRange levels = null;
@@ -163,10 +186,10 @@ public class RandomCharm extends LootFunction {
 			if (json.has(RARITY)) {
 				String rarityString = JsonUtils.getString(json, RARITY);
 				try {
-					rarity = Rarity.valueOf(typeString.toUpperCase());
+					rarity = Rarity.valueOf(rarityString.toUpperCase());
 				}
 				catch(Exception e) {
-					Treasure.logger.error("Unable to convert rarity {} to Rarity", typeString);
+					Treasure.logger.error("Unable to convert rarity {} to Rarity", rarityString);
 				}
 			}
 
