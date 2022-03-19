@@ -25,8 +25,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.charm.ICharm;
-import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
@@ -78,7 +76,7 @@ public abstract class Runestone implements IRunestone {
 	//?
 	public IRunestoneEntity createEntity(IRunestoneEntity entity) {
 		IRunestoneEntity newEntity = new RunestoneEntity(entity);
-		return entity;
+		return newEntity;
 	}
 	
 	/**

@@ -36,6 +36,8 @@ public interface IRunestonesCapability /*extends IMagicsInventorySupportCapabili
 	 */
 	void add(InventoryType type, IRunestoneEntity entity);
 
+	boolean remove(InventoryType type, IRunestoneEntity entity);
+	
 	List<IRunestoneEntity> getEntities(InventoryType type);
 
 	/**
@@ -46,5 +48,5 @@ public interface IRunestonesCapability /*extends IMagicsInventorySupportCapabili
 
 	void copyTo(ItemStack stack);
 	
-	void transferTo(ItemStack stack, InventoryType sourceType, InventoryType destType);
+	void transferTo(ItemStack stack, InventoryType sourceType, InventoryType destType);	
 }

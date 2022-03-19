@@ -59,7 +59,4 @@ public interface IRunestone {
 	void setLore(String lore);
 	
 	void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, IRunestoneEntity entity);
-
-
-
 }

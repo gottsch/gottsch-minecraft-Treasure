@@ -29,8 +29,10 @@ import com.google.common.collect.Multimap;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.charm.IlluminationCharm;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 
@@ -42,23 +44,25 @@ import net.minecraft.util.text.translation.I18n;
 public class TreasureRunes {
 	private static final Map<ResourceLocation, IRunestone> REGISTRY = new HashMap<>();
 	private static final Multimap<Rarity, IRunestone> RARITY_REGISTRY = ArrayListMultimap.create();
+	private static final Map<IRunestone, Item> ITEM_REGISTRY = new HashMap<>();
 
 	// RUNE_OF_DAMAGE x2 - SCARCE
-	public static final IRunestone RUNE_OF_MANA;
-	public static final IRunestone RUNE_OF_DURABILITY; //	lvl 1 durability
-	public static final IRunestone RUNE_OF_QUALITY;
-	public static final IRunestone RUNE_OF_ANGELS;
-	public static final IRunestone RUNE_OF_ANVIL;				// lvl 3 durability
-	public static final IRunestone RUNE_OF_EQUIP_AS_MANA;
-	public static final IRunestone RUNE_OF_PERSISTENCE;
-	public static final IRunestone RUNE_OF_SOCKETS;
+	public static IRunestone RUNE_OF_MANA;
+	public static IRunestone RUNE_OF_DURABILITY; //	lvl 1 durability
+	public static IRunestone RUNE_OF_QUALITY;
+	public static IRunestone RUNE_OF_ANGELS;
+	public static IRunestone RUNE_OF_ANVIL;				// lvl 3 durability
+	public static IRunestone RUNE_OF_EQUIP_AS_MANA;
+	public static IRunestone RUNE_OF_PERSISTENCE;
+	public static  IRunestone RUNE_OF_SOCKETS;
 
 	// RUNE_OF_EVERLASTING -adornment &  charms are infinite but curse of vanishing is added - MYTHICAL
 	// RUNE_OF_REPAIR - grants repairability
 	// RUNE_OF_SUSTAIN - add # repairs
 	
 
-
+	// NOTE cannot be static as they rely on Items being created and registered first.
+	
 	static {
 		RUNE_OF_MANA = new ManaRunestone.Builder(ResourceLocationUtil.create("mana_rune"))
 				.with($ -> {
@@ -150,5 +154,16 @@ public class TreasureRunes {
 	 */
 	public static List<IRunestone> values() {
 		return (List<IRunestone>) REGISTRY.values();
+	}
+	
+	public static void register(IRunestone runestone, Item item) {
+		Treasure.logger.debug("registering runestone -> {} to item -> {}", runestone.getName(), item.getRegistryName());
+		if (!ITEM_REGISTRY.containsKey(runestone)) {        	
+			ITEM_REGISTRY.put(runestone, item);
+		}
+	}
+	
+	public static Optional<Item> getItem(IRunestone runestone) {
+		return Optional.ofNullable(ITEM_REGISTRY.get(runestone));
 	}
 }

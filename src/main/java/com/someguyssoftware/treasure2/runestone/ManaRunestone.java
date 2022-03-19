@@ -19,20 +19,12 @@
  */
 package com.someguyssoftware.treasure2.runestone;
 
-import java.util.List;
-
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
-import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.World;
 
 /**
  * 

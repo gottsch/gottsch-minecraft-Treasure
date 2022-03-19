@@ -413,6 +413,7 @@ runestone.treasure2:quality_rune.name=Rune of Quality
 runestone.treasure2:equip_mana_rune.name=Rune of Equipment Mana
 runestone.treasure2:angels_rune.name=Angel Blessed Rune
 runestone.treasure2:persistence_rune.name=Rune of Persistence
+runestone.treasure2:sockets_rune.name=Rune of Capacity
 
 tooltip.runestones.title=Runestones:
 tooltip.runestones.effects=Rune Effects:
@@ -427,7 +428,7 @@ tooltip.runestone.lore.quality_rune=Adds 25% effect (damange, healing, etc) to a
 tooltip.runestone.lore.equip_mana_rune=Reduces random armor/equipment durability at 2x cost instead of mana.
 tooltip.runestone.lore.angels_rune=Adds 2x mana to all Healing and Shielding charms.\nAdds Infinite durability.
 tooltip.runestone.lore.persistence_rune=Removes Curse of Vanishing from adornment.
-tooltip.runestone.lore.sockets_rune=Adds an extra socket to the adornment.
+tooltip.runestone.lore.sockets_rune=Adds an extra charm socket slot to the adornment.
 
 tooltip.ember_key.specials=Destroys Wood Locks
 tooltip.ember_lock.specials=Destroys All Keys regardless of breakability (excluding Ember & Lightning)

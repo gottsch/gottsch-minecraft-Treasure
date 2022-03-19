@@ -964,6 +964,7 @@ public class TreasureItems {
 					return new RunestonesCapabilityProvider(cap);
 				}
 			};
+			TreasureRunes.register(TreasureRunes.RUNE_OF_MANA, MANA_RUNESTONE);
 			
 			DURABILITY_RUNESTONE = new RunestoneItem(Treasure.MODID, "durability_runestone") {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
@@ -974,6 +975,7 @@ public class TreasureItems {
 					return new RunestonesCapabilityProvider(cap);
 				}
 			};
+			TreasureRunes.register(TreasureRunes.RUNE_OF_DURABILITY, DURABILITY_RUNESTONE);
 			
 			QUALITY_RUNESTONE = new RunestoneItem(Treasure.MODID, "quality_runestone") {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
@@ -984,6 +986,7 @@ public class TreasureItems {
 					return new RunestonesCapabilityProvider(cap);
 				}
 			};
+			TreasureRunes.register(TreasureRunes.RUNE_OF_QUALITY, QUALITY_RUNESTONE);
 			
 			EQUIP_MANA_RUNESTONE = new RunestoneItem(Treasure.MODID, "equip_mana_runestone") {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
@@ -994,6 +997,7 @@ public class TreasureItems {
 					return new RunestonesCapabilityProvider(cap);
 				}
 			};
+			TreasureRunes.register(TreasureRunes.RUNE_OF_EQUIP_AS_MANA, EQUIP_MANA_RUNESTONE);
 			
 			ANVIL_RUNESTONE = new RunestoneItem(Treasure.MODID, "anvil_runestone") {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
@@ -1005,6 +1009,7 @@ public class TreasureItems {
 					return new RunestonesCapabilityProvider(cap);
 				}
 			};
+			TreasureRunes.register(TreasureRunes.RUNE_OF_ANVIL, ANVIL_RUNESTONE);
 			
 			ANGELS_RUNESTONE = new RunestoneItem(Treasure.MODID, "angels_runestone") {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
@@ -1015,6 +1020,7 @@ public class TreasureItems {
 					return new RunestonesCapabilityProvider(cap);
 				}		
 			};
+			TreasureRunes.register(TreasureRunes.RUNE_OF_ANGELS, ANGELS_RUNESTONE);
 			
 			PERSISTENCE_RUNESTONE = new RunestoneItem(Treasure.MODID, "persistence_runestone") {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
@@ -1025,6 +1031,7 @@ public class TreasureItems {
 					return new RunestonesCapabilityProvider(cap);
 				}		
 			};
+			TreasureRunes.register(TreasureRunes.RUNE_OF_PERSISTENCE, PERSISTENCE_RUNESTONE);
 			
 			SOCKETS_RUNESTONE = new RunestoneItem(Treasure.MODID, "sockets_runestone") {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
@@ -1035,6 +1042,7 @@ public class TreasureItems {
 					return new RunestonesCapabilityProvider(cap);
 				}		
 			};
+			TreasureRunes.register(TreasureRunes.RUNE_OF_SOCKETS, SOCKETS_RUNESTONE);
 			
 			// OTHER
 			ModSwordBuilder builder = new ModSwordBuilder();

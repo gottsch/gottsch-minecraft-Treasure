@@ -237,6 +237,16 @@ public class RunestonesCapability implements IRunestonesCapability {
 			runestoneEntities.get(type).add(entity);
 		}
 	}
+	
+	@Override
+	public boolean remove(InventoryType type, IRunestoneEntity entity) {
+		if (runestoneEntities.get(type).size() > 0) {
+			// NOTE this only works if adornments are allowed to only have a single runestone of a specific type
+			return runestoneEntities.get(type).removeIf(r -> r.getRunestone().getName().equals(entity.getRunestone().getName()));
+		}
+		return false;
+	}
+	
 
 	public static class Builder {
 		public boolean bindable;

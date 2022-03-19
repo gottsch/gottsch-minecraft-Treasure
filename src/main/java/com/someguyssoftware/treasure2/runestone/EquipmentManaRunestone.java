@@ -21,12 +21,7 @@ package com.someguyssoftware.treasure2.runestone;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
-import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
-import com.someguyssoftware.treasure2.charm.AegisCharm;
-import com.someguyssoftware.treasure2.charm.GreaterHealingCharm;
-import com.someguyssoftware.treasure2.charm.HealingCharm;
-import com.someguyssoftware.treasure2.charm.ShieldingCharm;
 import com.someguyssoftware.treasure2.charm.cost.EquipmentCostEvaluator;
 
 import net.minecraft.item.ItemStack;

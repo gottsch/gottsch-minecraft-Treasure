@@ -99,7 +99,7 @@ public class AngelsRunestone extends Runestone {
 	}
 
 	public static class Builder extends Runestone.Builder {
-		public Builder(ResourceLocation name) {
+		public Builder(ResourceLocation name	) {
 			super(name);
 		}
 		@Override

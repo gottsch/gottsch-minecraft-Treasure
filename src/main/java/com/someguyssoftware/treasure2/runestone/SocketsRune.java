@@ -21,7 +21,6 @@ package com.someguyssoftware.treasure2.runestone;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
-import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 
 import net.minecraft.item.ItemStack;

@@ -1,6 +1,6 @@
 {
     "parent": "treasure2:item/adornment",
     "textures": {
-        "layer0": "treasure2:items/runestones/runestone1"
+        "layer0": "treasure2:items/runestones/runestone5"
     }
 }

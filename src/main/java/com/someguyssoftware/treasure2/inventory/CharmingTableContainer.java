@@ -33,6 +33,7 @@ import com.someguyssoftware.treasure2.adornment.AdornmentSize;
 import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.IRunestonesCapability;
 import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.CharmEntity;
@@ -43,7 +44,10 @@ import com.someguyssoftware.treasure2.item.Adornment;
 import com.someguyssoftware.treasure2.item.CharmItem;
 import com.someguyssoftware.treasure2.item.RunestoneItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.item.TreasureToolItem;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
+import com.someguyssoftware.treasure2.runestone.IRunestoneEntity;
+import com.someguyssoftware.treasure2.runestone.TreasureRunes;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,6 +60,7 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -93,10 +98,15 @@ public class CharmingTableContainer extends Container {
 	private IInventory inputSlots;
 	private IInventory outputSlot;
 
-	private IInventory charmInputSlots;
+	private IInventory charmInputSlots1;
+	private IInventory charmInputSlots2;
 	private IInventory[] charmOutputSlots;
 
-	private IInventory runeInputSlots;
+	/*
+	 * NOTE separated rune input slots into 2 inventories since the first is read-only and doesn't update the matrix on change.
+	 */
+	private IInventory runeInputSlot1;
+	private IInventory runeInputSlot2;
 	private IInventory runeOutputSlot;
 
 	private BlockPos selfPosition; // ?
@@ -131,17 +141,17 @@ public class CharmingTableContainer extends Container {
 		this.selfPosition = pos;
 		this.world = world;
 
-		// add inventory slots
+		// add player slots (0-8)
+		for (int xIndex = 0; xIndex < 9; ++xIndex) {
+			this.addSlotToContainer(new Slot(playerInventory, xIndex, 8 + xIndex * 18, 232));
+		}
+
+		// add inventory slots (9-26)
 		for (int yIndex = 0; yIndex < 3; ++yIndex) {
 			for (int xIndex = 0; xIndex < 9; ++xIndex) {
 				this.addSlotToContainer(
 						new Slot(playerInventory, xIndex + yIndex * 9 + 9, 8 + xIndex * 18, 174 + yIndex * 18));
 			}
-		}
-
-		// add player slots
-		for (int xIndex = 0; xIndex < 9; ++xIndex) {
-			this.addSlotToContainer(new Slot(playerInventory, xIndex, 8 + xIndex * 18, 232));
 		}
 	}
 
@@ -172,12 +182,12 @@ public class CharmingTableContainer extends Container {
 		this.addSlotToContainer(new Slot(this.inputSlots, 1, 76, 18) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
-				return (stack.getItem() instanceof CharmItem);
+				return (stack.getItem() instanceof CharmItem || stack.getItem() instanceof RunestoneItem);
 			}
 		});
 
 		// adornment + charm output slot
-		this.addSlotToContainer(new Slot(this.outputSlot, 2, 134, 18) {
+		this.addSlotToContainer(new Slot(this.outputSlot, 2, 134, 18) { //2
 			// make the slot read-only
 			@Override
 			public boolean isItemValid(ItemStack stack) {
@@ -202,7 +212,8 @@ public class CharmingTableContainer extends Container {
 	 * 
 	 */
 	private void setupCharmSlots() {
-		this.charmInputSlots = new InventoryBasic("Charm", true, 8) {
+		this.charmInputSlots1 = new InventoryBasic("Charm", true, 4);
+		this.charmInputSlots2 = new InventoryBasic("Charm2", true, 4) {
 			@Override
 			public void markDirty() {
 				super.markDirty();
@@ -212,20 +223,23 @@ public class CharmingTableContainer extends Container {
 
 		// current charm/runestone input slots - read only
 		for (int i = 0; i < 4; i++) {
-			this.addSlotToContainer(new Slot(this.charmInputSlots, 3 + i, 27, 51 + (i * 18)) {
+			this.addSlotToContainer(new Slot(this.charmInputSlots1, i, 27, 51 + (i * 19)) {
 				@Override
 				public boolean isItemValid(ItemStack stack) {
 					return false;
 				}
+				@Override
+				public boolean canTakeStack(EntityPlayer player) {
+					return false;
+				}
 			});
 		}
-		// charm modifier input slot
+		// charm modifier (remove) input slot
 		for (int i = 0; i < 4; i++) {
-			this.addSlotToContainer(new Slot(this.charmInputSlots, 7 + i, 76, 51 + (i * 18)) {
+			this.addSlotToContainer(new Slot(this.charmInputSlots2, i, 76, 51 + (i * 19)) {
 				@Override
 				public boolean isItemValid(ItemStack stack) {
-					return (stack.getItem() instanceof CharmItem
-							|| stack.getItem() == TreasureItems.TREASURE_TOOL
+					return (stack.getItem() == TreasureItems.TREASURE_TOOL
 							|| 	TreasureCharmableMaterials.isSourceItemRegistered(stack.getItem().getRegistryName()));
 				}
 			});
@@ -234,7 +248,7 @@ public class CharmingTableContainer extends Container {
 		this.charmOutputSlots = new InventoryCraftResult[4];
 		for (int i = 0; i < 4; i++) {
 			this.charmOutputSlots[i] = new InventoryCraftResult();
-			this.addSlotToContainer(new Slot(this.charmOutputSlots[i], 11 + i, 134, 51 + (i * 18)) {
+			this.addSlotToContainer(new Slot(this.charmOutputSlots[i], 0, 134, 51 + (i * 19)) {
 				@Override
 				public boolean isItemValid(ItemStack stack) {
 					return false;
@@ -249,17 +263,22 @@ public class CharmingTableContainer extends Container {
 
 				@Override
 				public ItemStack onTake(EntityPlayer player, ItemStack stack) {
+					CharmingTableContainer.this.charmInputSlots2.setInventorySlotContents(this.slotNumber, ItemStack.EMPTY);
 					return myOnTake(player, stack);
 				}
 			});
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void setupRuneSlots() {
 		this.runeOutputSlot = new InventoryCraftResult();
 
 		// initialize slots
-		this.runeInputSlots = new InventoryBasic("Rune", true, 2) {
+		this.runeInputSlot1 = new InventoryBasic("Rune", true, 1);
+		this.runeInputSlot2 = new InventoryBasic("Rune2", true, 1) {
 			@Override
 			public void markDirty() {
 				super.markDirty();
@@ -268,23 +287,28 @@ public class CharmingTableContainer extends Container {
 		};
 
 		// rune input slot
-		this.addSlotToContainer(new Slot(this.runeInputSlots, 15, 27, 18) {
+		this.addSlotToContainer(new Slot(this.runeInputSlot1, 0, 27, 142) { //15
 			@Override
 			public boolean isItemValid(ItemStack stack) {
+				return false;
+			}
+			@Override
+			public boolean canTakeStack(EntityPlayer player) {
 				return false;
 			}
 		});
 
 		// rune modifier (ie add/remove)
-		this.addSlotToContainer(new Slot(this.runeInputSlots, 16, 27, 18) {
+		this.addSlotToContainer(new Slot(this.runeInputSlot2, 0, 76, 142) { //16
 			@Override
 			public boolean isItemValid(ItemStack stack) {
-				return (stack.getItem() instanceof RunestoneItem || stack.getItem() == TreasureItems.TREASURE_TOOL);
+				return stack.getItem() == TreasureItems.TREASURE_TOOL
+						|| 	TreasureCharmableMaterials.isSourceItemRegistered(stack.getItem().getRegistryName());
 			}
 		});
 
 		// rune output
-		this.addSlotToContainer(new Slot(this.runeOutputSlot, 17, 134, 18) {
+		this.addSlotToContainer(new Slot(this.runeOutputSlot, 0, 134, 142) { //17
 			// make the slot read-only
 			@Override
 			public boolean isItemValid(ItemStack stack) {
@@ -300,6 +324,8 @@ public class CharmingTableContainer extends Container {
 
 			@Override
 			public ItemStack onTake(EntityPlayer player, ItemStack stack) {
+				// clear the runestone secondary input
+				CharmingTableContainer.this.runeInputSlot2.clear();
 				return myOnTake(player, stack);
 			}
 		});
@@ -323,15 +349,16 @@ public class CharmingTableContainer extends Container {
 	}
 
 	/**
-	 * 
+	 * NOTE don't clear the charm, runestone secondary inputs en masse.
 	 */
 	protected void clearAllSlots() {
 		CharmingTableContainer.this.inputSlots.clear();
-		CharmingTableContainer.this.charmInputSlots.clear();
-		CharmingTableContainer.this.runeInputSlots.clear();
+		CharmingTableContainer.this.charmInputSlots1.clear();
+		CharmingTableContainer.this.runeInputSlot1.clear();
 		CharmingTableContainer.this.outputSlot.clear();
 		for (int i = 0; i < CharmingTableContainer.this.charmOutputSlots.length; i++) {
-			CharmingTableContainer.this.inputSlots.setInventorySlotContents(i, ItemStack.EMPTY);
+			Treasure.logger.debug("clearing charm input slots[{}]...", i);
+			CharmingTableContainer.this.charmOutputSlots[i].clear();
 		}
 		CharmingTableContainer.this.runeOutputSlot.clear();
 	}
@@ -347,7 +374,7 @@ public class CharmingTableContainer extends Container {
 	@Override
 	public void onCraftMatrixChanged(IInventory inventory) {
 		super.onCraftMatrixChanged(inventory);
-		if (inventory == this.inputSlots || inventory == this.charmInputSlots || inventory == this.runeInputSlots) {
+		if (inventory == this.inputSlots || inventory == this.charmInputSlots1 || inventory == this.runeInputSlot2) {
 			this.updateOutput();
 		}
 	}
@@ -362,6 +389,14 @@ public class CharmingTableContainer extends Container {
 		ItemStack itemStack = this.inputSlots.getStackInSlot(0);
 		if (itemStack.isEmpty()) {
 			this.outputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
+			// clear charms
+			for (int i = 0; i < 4; i++) {
+				this.charmInputSlots1.setInventorySlotContents(i, ItemStack.EMPTY);
+				this.charmOutputSlots[i].setInventorySlotContents(0, ItemStack.EMPTY);
+			}
+			// clear runestone
+			this.runeInputSlot1.setInventorySlotContents(0, ItemStack.EMPTY);
+			this.runeOutputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
 		}
 		else {
 			/*
@@ -369,31 +404,70 @@ public class CharmingTableContainer extends Container {
 			 */
 			this.maximumCost = 1;
 
+			// get the inputs
+			ItemStack itemStack2 = this.inputSlots.getStackInSlot(1);
+			if (itemStack2.isEmpty()) {
+				this.outputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
+			}
+
 			// populate the charms and runestone if any
 			ICharmableCapability charmableCap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
 			if (charmableCap != null) {
-				// less than 5 socket charms can fit into container gui
-				if (charmableCap.getCharmEntities().get(InventoryType.SOCKET).size() <= 4) {
-					int index = 0;
-					ResourceLocation resource = new ResourceLocation(Treasure.MODID, "gold_charm");
-					for (ICharmEntity charm : charmableCap.getCharmEntities().get(InventoryType.SOCKET)) {
-						this.charmOutputSlots[index].setInventorySlotContents(0,  new ItemStack(TreasureItems.ITEMS.get(resource)));
+				if (charmableCap.getCharmEntities().get(InventoryType.SOCKET).size() > 0) {
+					// less than 5 socket charms can fit into container gui
+					if (charmableCap.getCharmEntities().get(InventoryType.SOCKET).size() <= 4) {
+						int index = 0;
+						ResourceLocation resource = new ResourceLocation(Treasure.MODID, "gold_charm");
+						for (ICharmEntity charm : charmableCap.getCharmEntities().get(InventoryType.SOCKET)) {
+							// TODO calculate the correct charm to use
+							this.charmInputSlots1.setInventorySlotContents(index,  new ItemStack(TreasureItems.ITEMS.get(resource)));
+							index++;
+						}
 					}
-				}
-				else {
-					// TODO select 4 charms with the least charge
+					else {
+						// TODO select 4 charms with the least charge
+					}
 				}
 			}
 
-			// get the inputs
-			ItemStack itemStack2 = this.inputSlots.getStackInSlot(1);
+			// populate the runestones
+			IRunestonesCapability runestoneCap = itemStack.getCapability(RUNESTONES, null);
+			if (runestoneCap != null) {
+				Treasure.logger.debug("populating runestone has cap");
+				if (runestoneCap.getEntities(InventoryType.SOCKET).size() > 0) {
+					Treasure.logger.debug("populating runestone has runestone");
+					Optional<Item> item = TreasureRunes.getItem(runestoneCap.getEntities(InventoryType.SOCKET).get(0).getRunestone());
+					// NOTE if item isn't found, something went wrong
+					if (item.isPresent()) {
+						Treasure.logger.debug("populating runestone has item -> {}", item.get().getRegistryName());
+						this.runeInputSlot1.setInventorySlotContents(0, new ItemStack(item.get()));
+					}
+				}
+			}
+
+			for (int i = 0; i < 4; i++) {
+				if (this.charmInputSlots1.getStackInSlot(i).isEmpty() ||
+						this.charmInputSlots2.getStackInSlot(i).isEmpty()) {
+					this.charmOutputSlots[i].setInventorySlotContents(0, ItemStack.EMPTY);
+				}
+			}
+			
+			ItemStack runeStack = this.runeInputSlot1.getStackInSlot(0);
+			if (runeStack.isEmpty()) {
+				this.runeOutputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
+			}
+			Treasure.logger.debug("rune slot1 -> {}", runeStack.getDisplayName());
+			ItemStack runeStack2 = this.runeInputSlot2.getStackInSlot(0);
+			if (runeStack2.isEmpty()) {
+				this.runeOutputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
+			}
+			Treasure.logger.debug("rune slot2 -> {}", runeStack2.getDisplayName());
 
 			// add gem check
 			if (itemStack.hasCapability(CHARMABLE, null) && itemStack2.hasCapability(CHARMABLE, null)
 					&& itemStack.getCapability(CHARMABLE, null).isSocketable()
 					&& itemStack2.getCapability(CHARMABLE, null).isBindable()) {
 
-				//Treasure.logger.debug("left is adornment and right is gem!");
 				ICharmableCapability cap = itemStack.getCapability(CHARMABLE, null);
 				// check that there is room to add charms
 				if (cap.getCharmEntities().get(InventoryType.SOCKET).size() < cap.getMaxSocketSize()) {
@@ -402,61 +476,71 @@ public class CharmingTableContainer extends Container {
 					if (outStack.isPresent()) {
 						if (outStack.get().hasCapability(RUNESTONES, null)) {
 							outStack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(entity -> {
-								Treasure.logger.debug("binding charm: is applied -> {}", entity.isApplied());
-								Treasure.logger.debug("binding charm: applied to -> {}", entity.getAppliedTo());
-								Treasure.logger.debug("binding charm: applying runestone -> {} to entity -> {}", entity.getRunestone(), entity);
 								entity.getRunestone().apply(outStack.get(), entity);
-								Treasure.logger.debug("binding charm: after apply: is applied -> {}", entity.isApplied());
-								Treasure.logger.debug("binding charm: after apply: applied to -> {}", entity.getAppliedTo());
-								outStack.get().getCapability(CHARMABLE, null).getCharmEntities().forEach((type2, charm) -> {
-									Treasure.logger.debug("binding charm: entity -> {}, mana -> {}, max mana -> {}", charm.getCharm().getName().toString(), charm.getMana(), charm.getMaxMana());
-								});
 							});
 						}
 						this.outputSlot.setInventorySlotContents(0, outStack.get());    					
 					}
 				}            
 			}
+			// add runestone check
+			else if (itemStack.hasCapability(RUNESTONES, null) && itemStack2.hasCapability(RUNESTONES, null)
+					&& itemStack.getCapability(RUNESTONES, null).isSocketable()
+					&& itemStack2.getCapability(RUNESTONES, null).isBindable()) {
+
+				Treasure.logger.debug("adding runestone check");
+				IRunestonesCapability cap = itemStack.getCapability(RUNESTONES, null);
+				// check that there is room to add charms
+				if (cap.getEntities(InventoryType.SOCKET).size() < cap.getMaxSize(InventoryType.SOCKET)) {
+					Optional<ItemStack> stack = TreasureAdornments.transferCapabilities(itemStack2, itemStack, InventoryType.INNATE, InventoryType.SOCKET);
+					if (stack.isPresent()) {
+						stack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(entity -> {
+							entity.getRunestone().apply(stack.get(), entity);
+						});
+						this.outputSlot.setInventorySlotContents(0, stack.get());    	
+					}
+				}
+			}
+			// remove charm check
+			else if (!this.charmInputSlots1.isEmpty() && !this.charmInputSlots2.isEmpty()) {
+				// now check if the inputs line up
+				for (int i = 0; i < 4; i++) {
+					if (!this.charmInputSlots1.getStackInSlot(i).isEmpty() &&
+							!this.charmInputSlots2.getStackInSlot(i).isEmpty()) {
+						// make a copy of the adornment stack
+						ItemStack stack = itemStack.copy();
+						ItemStack newStack = TreasureAdornments.copyStack(itemStack, stack);
+						ICharmableCapability cap = newStack.getCapability(CHARMABLE, null);
+						// remove the charm
+						cap.remove(InventoryType.SOCKET, i);
+						// apply any runes
+						if (newStack.hasCapability(RUNESTONES, null)) {
+							newStack.getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(entity -> {
+								entity.getRunestone().apply(newStack, entity);
+							});
+						}
+						this.charmOutputSlots[i].setInventorySlotContents(0, newStack);
+					}
+				}
+			}
+			// remove runestone check
+			else if (runeStack != ItemStack.EMPTY && (runeStack2.getItem() == TreasureItems.TREASURE_TOOL)) {
+				// make a copy of the adornment stack
+				ItemStack stack = itemStack.copy();
+				stack = TreasureAdornments.copyStack(itemStack, stack);
+				IRunestonesCapability cap = stack.getCapability(RUNESTONES, null);
+				if (cap != null) {
+					// get the rune entity
+					IRunestoneEntity entity = runeStack.getCapability(RUNESTONES, null).getEntities(InventoryType.INNATE).get(0);
+					// remove the entity from adornment
+					if (cap.remove(InventoryType.SOCKET, entity)) {
+						// undo the effects
+						entity.getRunestone().undo(stack, entity);
+					}
+				}				
+				this.runeOutputSlot.setInventorySlotContents(0, stack);
+			}
 		}
-
-		//        ItemStack removeGemItemStack = this.inputSlots.getStackInSlot(2);
-		//        if (removeGemItemStack.isEmpty()) {
-		//            this.removeGemOutputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
-		//        }
-		//        // is the input an adornment with a gem/source
-		//        else if ((removeGemItemStack.getItem() instanceof Adornment) 
-		//				&&	removeGemItemStack.hasCapability(CHARMABLE, null)
-		//				&&	TreasureCharmableMaterials.isSourceItemRegistered(
-		//						removeGemItemStack.getCapability(CHARMABLE, null).getSourceItem())) {
-		//        	
-		//        	this.maximumCost = 1;
-		//        	// get the original base adornment (no gem)
-		//        	Adornment adornment = (Adornment)removeGemItemStack.getItem();
-		//        	Optional<Adornment> baseAdornment = TreasureAdornments.get(
-		//        			adornment.getType(), 
-		//        			adornment.getSize(), 
-		//        			removeGemItemStack.getCapability(CHARMABLE, null).getBaseMaterial(),
-		//        			Items.AIR.getRegistryName());
-		//        	if (baseAdornment.isPresent()) {
-		//        		this.removeGemOutputSlot.setInventorySlotContents(0, new ItemStack(baseAdornment.get()));
-		//        	}
-		//        }
-
-		//        ItemStack removeAdornmentItemStack = this.inputSlots.getStackInSlot(3);
-		//        if (removeAdornmentItemStack.isEmpty()) {
-		//            this.removeAdornmentOutputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
-		//        }
-		//        // is the input an adornment with a gem/source
-		//        else if ((removeAdornmentItemStack.getItem() instanceof Adornment) 
-		//				&&	removeAdornmentItemStack.hasCapability(CHARMABLE, null)
-		//				&&	TreasureCharmableMaterials.isSourceItemRegistered(
-		//						removeAdornmentItemStack.getCapability(CHARMABLE, null).getSourceItem())) {
-		//        	this.maximumCost = 1;
-		//        	// get the original gem
-		//        	Item gem = ForgeRegistries.ITEMS.getValue(removeAdornmentItemStack.getCapability(CHARMABLE, null).getSourceItem());
-		//        	// update the output
-		//        	this.removeAdornmentOutputSlot.setInventorySlotContents(0, new ItemStack(gem));
-		//        }
 	}
 
 	@Override
@@ -465,7 +549,8 @@ public class CharmingTableContainer extends Container {
 
 		if (!WorldInfo.isClientSide(world)) {
 			this.clearContainer(player, this.world, this.inputSlots);
-			// TODO clear all the inventories
+			// clear all the inventories
+			clearAllSlots();
 		}
 	}
 
@@ -479,42 +564,42 @@ public class CharmingTableContainer extends Container {
 		}
 	}
 
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
-		ItemStack itemstack = ItemStack.EMPTY;
-		Slot slot = this.inventorySlots.get(index);
-
-		if (slot != null && slot.getHasStack()) {
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
-
-			if (index == 2) {
-				if (!this.mergeItemStack(itemstack1, 3, 39, true)) {
-					return ItemStack.EMPTY;
-				}
-
-				slot.onSlotChange(itemstack1, itemstack);
-			} else if (index != 0 && index != 1) {
-				if (index >= 3 && index < 39 && !this.mergeItemStack(itemstack1, 0, 2, false)) {
-					return ItemStack.EMPTY;
-				}
-			} else if (!this.mergeItemStack(itemstack1, 3, 39, false)) {
-				return ItemStack.EMPTY;
-			}
-
-			if (itemstack1.isEmpty()) {
-				slot.putStack(ItemStack.EMPTY);
-			} else {
-				slot.onSlotChanged();
-			}
-
-			if (itemstack1.getCount() == itemstack.getCount()) {
-				return ItemStack.EMPTY;
-			}
-
-			slot.onTake(playerIn, itemstack1);
-		}
-
-		return itemstack;
-	}
+	//	@Override
+	//	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+	//		ItemStack itemstack = ItemStack.EMPTY;
+	//		Slot slot = this.inventorySlots.get(index);
+	//
+	//		if (slot != null && slot.getHasStack()) {
+	//			ItemStack itemstack1 = slot.getStack();
+	//			itemstack = itemstack1.copy();
+	//
+	//			if (index == 2) {
+	//				if (!this.mergeItemStack(itemstack1, 3, 39, true)) {
+	//					return ItemStack.EMPTY;
+	//				}
+	//
+	//				slot.onSlotChange(itemstack1, itemstack);
+	//			} else if (index != 0 && index != 1) {
+	//				if (index >= 3 && index < 39 && !this.mergeItemStack(itemstack1, 0, 2, false)) {
+	//					return ItemStack.EMPTY;
+	//				}
+	//			} else if (!this.mergeItemStack(itemstack1, 3, 39, false)) {
+	//				return ItemStack.EMPTY;
+	//			}
+	//
+	//			if (itemstack1.isEmpty()) {
+	//				slot.putStack(ItemStack.EMPTY);
+	//			} else {
+	//				slot.onSlotChanged();
+	//			}
+	//
+	//			if (itemstack1.getCount() == itemstack.getCount()) {
+	//				return ItemStack.EMPTY;
+	//			}
+	//
+	//			slot.onTake(playerIn, itemstack1);
+	//		}
+	//
+	//		return itemstack;
+	//	}
 }
