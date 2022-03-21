@@ -101,11 +101,6 @@ public class PlayerEventHandler {
 			return;
 		}
 
-		// check if during the correct timeframe
-//		if (LocalDate.now().getMonth() != Month.DECEMBER || Year.now().getValue() != 2021) {
-//			return;			
-//		}
-
 		NBTTagCompound playerData = event.player.getEntityData();
 		NBTTagCompound persistentNbt;
 		if (!playerData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
@@ -114,7 +109,11 @@ public class PlayerEventHandler {
 			persistentNbt = playerData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
 		}
 
-		if (!persistentNbt.hasKey(FIRST_JOIN_NBT_KEY)) {
+		// check if during the correct timeframe for Gottsch's Ring of the Moon
+		if (LocalDate.now().getMonth() != Month.DECEMBER || Year.now().getValue() != 2021) {
+			return;			
+		}
+		else if (!persistentNbt.hasKey(FIRST_JOIN_NBT_KEY)) {
 			persistentNbt.setBoolean(FIRST_JOIN_NBT_KEY, true);
 			// add all items to players inventory on first join
 			ItemStack ring = new ItemStack(TreasureItems.GOTTSCHS_RING_OF_MOON, 1);
