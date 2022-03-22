@@ -1,7 +1,7 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "treasure2:items/coins/charmed_gold_coin"
+        "layer0": "treasure2:items/coins/crop_coin"
     },
     "display": {
        "thirdperson_righthand": {

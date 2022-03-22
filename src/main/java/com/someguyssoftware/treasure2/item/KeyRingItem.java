@@ -23,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -43,7 +44,7 @@ import net.minecraftforge.items.IItemHandler;
  * @author Mark Gottschling on Mar 9, 2018
  *
  */
-public class KeyRingItem extends ModItem {
+public class KeyRingItem extends ModItem implements IKeyEffects {
 
 	/*
 	 * The GUIID;
@@ -138,22 +139,27 @@ public class KeyRingItem extends ModItem {
 						KeyItem key = (KeyItem) keyStack.getItem();
 						Treasure.logger.debug("Using key from keyring: {}", key.getUnlocalizedName());
 						boolean breakKey = true;
+						boolean fitsLock = false;
 						//	boolean fitsLock = false;
 						LockState lockState = null;
 
 						// check if this key is one that opens a lock (only first lock that key fits is unlocked).
 						lockState = key.fitsFirstLock(tcte.getLockStates());
-
+						if (lockState != null) {
+							fitsLock = true;
+						}
 						Treasure.logger.debug("key fits lock: {}", lockState);
 
 						// TODO move to a method in KeyItem
-						if (lockState != null) {
+						if (fitsLock) {
 							if (key.unlock(lockState.getLock())) {
 								LockItem lock = lockState.getLock();
+								
+								doKeyUnlockEffects(worldIn, player, pos, tcte, lockState);	
+								
 								// remove the lock
 								lockState.setLock(null);
-								// play noise
-								worldIn.playSound(player, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+
 								// update the client
 								tcte.sendUpdates();
 								// spawn the lock
@@ -164,26 +170,37 @@ public class KeyRingItem extends ModItem {
 								breakKey = false;
 							}
 
-
+							// TODO include effective max damage capability code here
+							
 							// TODO move to a method in KeyItem
 							if (breakKey) {
-								if (key.isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
+//								if (key.isBreakable()  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
+								if ((key.isBreakable() || key.anyLockBreaksKey(tcte.getLockStates(), key)) && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
+
+									// TODO update with newer capability code
 									// break key;
 									keyStack.shrink(1);
-									player.sendMessage(new TextComponentString("Key broke."));
-									worldIn.playSound(player, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+									
 									// the key is broken, do not attempt to damage it.
 									isKeyBroken = true;
 									// if the keyStack > 0, then reset the damage - don't break a brand new key and leave the used one
 									if (keyStack.getCount() > 0) {
 										keyStack.setItemDamage(0);
 									}
+									
+									// do effects
+			                        key.doKeyBreakEffects(worldIn, player, pos, tcte);
+								}
+								else if (!fitsLock) {
+									doKeyNotFitEffects(worldIn, player, pos, tcte);
 								}
 								else {
-									player.sendMessage(new TextComponentString("Failed to unlock."));
+									doKeyUnableToUnlockEffects(worldIn, player, pos, tcte);
 								}						
 							}
+							
 							if (key.isDamageable() && !isKeyBroken) {
+								// TODO update with newer capability code
 								keyStack.damageItem(1, player);
 							}
 							else {
@@ -205,6 +222,13 @@ public class KeyRingItem extends ModItem {
 		return EnumActionResult.PASS;
 	}
 
+	/**
+	 * 
+	 */
+	public EnumAction getItemUseAction(ItemStack stack) {
+		return EnumAction.BOW;
+	}
+	
 	/**
 	 * 
 	 */

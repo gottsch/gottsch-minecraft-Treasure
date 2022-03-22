@@ -1,13 +1,11 @@
 {
-    "parent": "item/generated",
+    "parent": "builtin/generated",
     "textures": {
         "layer0": "treasure2:items/adornments/sapphire_gold_ring"
     },
-    "display": {
+   "display": {
        "thirdperson_righthand": {
-            "scale":[ 0.25, 0.25, 0.25]
-        },
-        "thirdperson_lefthand": {
+            "translation": [ 0, 1, 0],
             "scale":[ 0.25, 0.25, 0.25]
         },
         "firstperson_righthand": {

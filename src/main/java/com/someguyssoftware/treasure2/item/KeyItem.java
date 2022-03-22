@@ -6,6 +6,8 @@ package com.someguyssoftware.treasure2.item;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import static com.someguyssoftware.treasure2.Treasure.logger;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
@@ -13,9 +15,11 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
-import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
-import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.IEffectiveMaxDamageCapability;
+import com.someguyssoftware.treasure2.capability.DurabilityCapability;
+import com.someguyssoftware.treasure2.capability.DurabilityCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.DurabilityCapabilityStorage;
+import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -27,18 +31,23 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 /**
@@ -46,7 +55,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
  * @author Mark Gottschling on Jan 11, 2018
  *
  */
-public class KeyItem extends ModItem {
+public class KeyItem extends ModItem implements IKeyEffects {
 	public static final int DEFAULT_MAX_USES = 25;
 	
 	/*
@@ -79,6 +88,8 @@ public class KeyItem extends ModItem {
 	 */
 	private double successProbability;
 	
+	private static final DurabilityCapabilityStorage CAPABILITY_STORAGE = new DurabilityCapabilityStorage();
+	
 	/**
 	 * 
 	 * @param modID
@@ -99,10 +110,35 @@ public class KeyItem extends ModItem {
 
     @Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-        EffectiveMaxDamageCapabilityProvider provider = new EffectiveMaxDamageCapabilityProvider();
-        IEffectiveMaxDamageCapability cap = provider.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-		cap.setEffectiveMaxDamage(getMaxDamage());
+        DurabilityCapabilityProvider provider = new DurabilityCapabilityProvider();
+        IDurabilityCapability cap = provider.getCapability(TreasureCapabilities.DURABILITY, null);
+		cap.setDurability(getMaxDamage());
 		return provider;
+    }
+    
+	/**
+	 * NOTE getShareTag() and readShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands
+	 * or having the client update when the Anvil GUI is open.
+	 */
+	@Override
+    public NBTTagCompound getNBTShareTag(ItemStack stack) {
+		NBTTagCompound nbt = null;
+		// read effective max damage cap -> write nbt
+		nbt = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
+				TreasureCapabilities.DURABILITY, 
+				stack.getCapability(TreasureCapabilities.DURABILITY, null), null);
+		return nbt;
+	}
+	
+    @Override
+    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
+        super.readNBTShareTag(stack, nbt);
+        // read nbt -> write key item
+        CAPABILITY_STORAGE.readNBT(
+        		TreasureCapabilities.DURABILITY, 
+				stack.getCapability(TreasureCapabilities.DURABILITY, null), 
+				null,
+				nbt);
     }
     
 	/**
@@ -123,9 +159,9 @@ public class KeyItem extends ModItem {
 		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.rarity", TextFormatting.DARK_BLUE + getRarity().toString()));
         tooltip.add(I18n.translateToLocalFormatted("tooltip.label.category", getCategory()));
 		
-        if (stack.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)) {
-            EffectiveMaxDamageCapability cap = (EffectiveMaxDamageCapability) stack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-            tooltip.add(I18n.translateToLocalFormatted("tooltip.label.uses", cap.getEffectiveMaxDamage() - stack.getItemDamage(), cap.getEffectiveMaxDamage()));
+        if (stack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
+            DurabilityCapability cap = (DurabilityCapability) stack.getCapability(TreasureCapabilities.DURABILITY, null);
+            tooltip.add(I18n.translateToLocalFormatted("tooltip.label.uses", cap.getDurability() - stack.getItemDamage(), cap.getDurability()));
 //            tooltip.add(I18n.translateToLocalFormatted("tooltip.label.effective_max_uses", cap.getEffectiveMaxDamage()));
 //    		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.remaining_uses", cap.getEffectiveMaxDamage() - stack.getItemDamage()));
         }
@@ -171,9 +207,9 @@ public class KeyItem extends ModItem {
      */
 	@Override
     public double getDurabilityForDisplay(ItemStack stack) {
-        if (stack.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)) {
-            EffectiveMaxDamageCapability cap = (EffectiveMaxDamageCapability) stack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-            return (double)stack.getItemDamage() / (double) cap.getEffectiveMaxDamage();
+        if (stack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
+            DurabilityCapability cap = (DurabilityCapability) stack.getCapability(TreasureCapabilities.DURABILITY, null);
+            return (double)stack.getItemDamage() / (double) cap.getDurability();
         }
         else {
         	return (double)stack.getItemDamage() / (double)stack.getMaxDamage();
@@ -227,6 +263,7 @@ public class KeyItem extends ModItem {
 			
 			try {
 				ItemStack heldItemStack = player.getHeldItem(hand);	
+				// TODO rename shouldBreakKey
 				boolean breakKey = true;
 				boolean fitsLock = false;
 				LockState lockState = null;
@@ -239,11 +276,14 @@ public class KeyItem extends ModItem {
 				
 				if (fitsLock) {
 					if (unlock(lockState.getLock())) {
-						LockItem lock = lockState.getLock();
+						// TODO within this condition create method postUnlock() or unlockExecute()
+						LockItem lock = lockState.getLock();						
+
+						 doKeyUnlockEffects(worldIn, player, chestPos, chestTileEntity, lockState);						 
+
 						// remove the lock
 						lockState.setLock(null);
-						// play noise
-						worldIn.playSound(player, chestPos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+						
 						// update the client
                         chestTileEntity.sendUpdates();
                         if(!breaksLock(lock)) {
@@ -258,33 +298,38 @@ public class KeyItem extends ModItem {
 				}
                 
                 // get capability
-                IEffectiveMaxDamageCapability cap = heldItemStack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+                IDurabilityCapability cap = heldItemStack.getCapability(TreasureCapabilities.DURABILITY, null);
 
 				// check key's breakability
-				if (breakKey) {                    
+				if (breakKey) {    
+					// TOOD within this condition make method breakKey()
 					if ((isBreakable() || anyLockBreaksKey(chestTileEntity.getLockStates(), this)) && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
 						int damage = heldItemStack.getItemDamage() + (getMaxDamage() - (heldItemStack.getItemDamage() % getMaxDamage()));
                         heldItemStack.setItemDamage(damage);
-                        if (heldItemStack.getItemDamage() >= cap.getEffectiveMaxDamage()) {
+                        if (heldItemStack.getItemDamage() >= cap.getDurability()) {
                             // break key;
                             heldItemStack.shrink(1);
                         }
-                        player.sendMessage(new TextComponentString("Key broke."));
-                        worldIn.playSound(player, chestPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+
+                        // do effects
+                        doKeyBreakEffects(worldIn, player, chestPos, chestTileEntity);
+                        
                         // flag the key as broken
                         isKeyBroken = true;
 					}
+					else if (!fitsLock) {
+						doKeyNotFitEffects(worldIn, player, chestPos, chestTileEntity);
+					}
 					else {
-						player.sendMessage(new TextComponentString("Failed to unlock."));
+						doKeyUnableToUnlockEffects(worldIn, player, chestPos, chestTileEntity);
 					}						
 				}
 				
+				// TODO make method damageKey()
 				// user attempted to use key - increment the damage
 				if (isDamageable() && !isKeyBroken) {
-//					logger.debug("before damage -> {}", heldItemStack.getItemDamage());
                     heldItemStack.setItemDamage(heldItemStack.getItemDamage() + 1);
-//                    logger.debug("after damage -> {}", heldItemStack.getItemDamage());
-                    if (heldItemStack.getItemDamage() >= cap.getEffectiveMaxDamage()) {
+                    if (heldItemStack.getItemDamage() >= cap.getDurability()) {
                         heldItemStack.shrink(1);
                     }
 				}
@@ -297,6 +342,13 @@ public class KeyItem extends ModItem {
 		return super.onItemUse(player, worldIn, chestPos, hand, facing, hitX, hitY, hitZ);
 	}
 
+	/**
+	 * 
+	 */
+	public EnumAction getItemUseAction(ItemStack stack) {
+		return EnumAction.BOW;
+	}
+	
 	/**
 	 * This method is a secondary check against a lock item.
 	 * Override this method to overrule LockItem.acceptsKey() if this is a key with special abilities.
@@ -332,7 +384,7 @@ public class KeyItem extends ModItem {
 	 * @param key
 	 * @return
 	 */
-	private boolean anyLockBreaksKey(List<LockState> lockStates, KeyItem key) {
+	public boolean anyLockBreaksKey(List<LockState> lockStates, KeyItem key) {
 		for (LockState ls : lockStates) {
 			if (ls.getLock() != null) {
 				if (ls.getLock().breaksKey(key)) {

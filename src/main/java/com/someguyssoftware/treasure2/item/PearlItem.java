@@ -45,7 +45,8 @@ import net.minecraft.world.storage.loot.LootPool;
  * @author Mark Gottschling on Aug 18, 2019
  *
  */
-public class PearlItem extends ModItem implements IWishable, IPouchable {
+@Deprecated
+public class PearlItem extends ModItem implements IWishable {
 
 	public static final int MAX_STACK_SIZE = 8;
 	private Pearls pearl;
@@ -189,7 +190,7 @@ public class PearlItem extends ModItem implements IWishable, IPouchable {
 				LootPool lootPool = table.getPool(pool.getName());
 				
 				// geneate loot from pools
-				lootPool.generateLoot(itemStacks, random, Treasure.LOOT_TABLE_MASTER.getContext());
+				lootPool.generateLoot(itemStacks, random, lootContext);
 			}
 			
 			// get effective rarity

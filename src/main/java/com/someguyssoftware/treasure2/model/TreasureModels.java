@@ -28,6 +28,7 @@ public class TreasureModels {
 	public static void registerModels(ModelRegistryEvent event) {
 		// TAB
 		registerItemModel(TreasureItems.TREASURE_TAB);
+		registerItemModel(TreasureItems.ADORNMENTS_TAB);
 		// There isn't a block model json for chests so you won't be able to get the
 		// item from block.
 		// CHESTS
@@ -95,68 +96,70 @@ public class TreasureModels {
 //		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_ROOT));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WITHER_PLANKS));
 
-        // ORES/GEMS
+        // ORES
         registerItemModel(Item.getItemFromBlock(TreasureBlocks.AMETHYST_ORE));
         registerItemModel(Item.getItemFromBlock(TreasureBlocks.ONYX_ORE));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.SAPPHIRE_ORE));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.RUBY_ORE));
-
+				
 		// OTHER
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FALLING_GRASS));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FALLING_SAND));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.FALLING_RED_SAND));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.BLACKSTONE));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.JEWELER_BENCH));
+		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CHARMING_TABLE));
 		
 		// COINS
 		registerItemModel(TreasureItems.GOLD_COIN);
 		registerItemModel(TreasureItems.SILVER_COIN);
-		registerItemModel(TreasureItems.CHARMED_SILVER_COIN);
-		registerItemModel(TreasureItems.CHARMED_GOLD_COIN);
-        registerItemModel(TreasureItems.CHARMED_RUBY);
-        registerItemModel(TreasureItems.CHARMED_SAPPHIRE);
-		registerItemModel(TreasureItems.ANGEL_BLESSED);
-		registerItemModel(TreasureItems.FOOLS_COIN);
-		registerItemModel(TreasureItems.MEDICS_TOKEN);
-		registerItemModel(TreasureItems.MINERS_FRIEND);
-		registerItemModel(TreasureItems.SALANDAARS_WARD);
-		registerItemModel(TreasureItems.DWARVEN_TALISMAN);
-		registerItemModel(TreasureItems.ADEPHAGIAS_BOUNTY);
-		registerItemModel(TreasureItems.MIRTHAS_TORCH);
+		registerItemModel(TreasureItems.COPPER_COIN);
 		
-		registerItemModel(TreasureItems.POUCH);
-		registerItemModel(TreasureItems.LUCKY_POUCH);
-		registerItemModel(TreasureItems.APPRENTICES_POUCH);
-		registerItemModel(TreasureItems.MASTERS_POUCH);
-		
-		// ADORNMENTS
-        registerItemModel(TreasureItems.SILVER_RING);
-        registerItemModel(TreasureItems.SILVER_SIGNET_RING);
-        registerItemModel(TreasureItems.AMETHYST_SILVER_RING);
-        registerItemModel(TreasureItems.ONYX_GOLD_RING);
-		registerItemModel(TreasureItems.GOLD_RING);
-        registerItemModel(TreasureItems.RUBY_GOLD_RING);
-        registerItemModel(TreasureItems.EMERALD_GOLD_RING);
-        registerItemModel(TreasureItems.DIAMOND_GOLD_RING);
-        registerItemModel(TreasureItems.SAPPHIRE_GOLD_RING);
-        registerItemModel(TreasureItems.CASTLE_RING);
-        registerItemModel(TreasureItems.ANGELS_RING);
-        registerItemModel(TreasureItems.SILVER_NECKLACE);
-        registerItemModel(TreasureItems.GOLD_NECKLACE);
-        registerItemModel(TreasureItems.SAPPHIRE_SILVER_AMULET);
-        registerItemModel(TreasureItems.AMETHYST_GOLD_AMULET);
-        registerItemModel(TreasureItems.ONYX_GOLD_AMULET);
-        registerItemModel(TreasureItems.RUBY_GOLD_AMULET);
-        registerItemModel(TreasureItems.SAPPHIRE_GOLD_AMULET);
-        registerItemModel(TreasureItems.GOLD_BRACELET);
-        registerItemModel(TreasureItems.POCKET_WATCH);
-
-        registerItemModel(TreasureItems.BRACELET_OF_WONDER);
-        registerItemModel(TreasureItems.RING_OF_FORTITUDE);
-        
-		// PEARLS
+		// GEMS
+        registerItemModel(TreasureItems.SPANISH_MOSS);
+        registerItemModel(TreasureItems.AMETHYST);
+        registerItemModel(TreasureItems.ONYX);
+		registerItemModel(TreasureItems.SAPPHIRE);
+		registerItemModel(TreasureItems.RUBY);
 		registerItemModel(TreasureItems.WHITE_PEARL);
 		registerItemModel(TreasureItems.BLACK_PEARL);
 		
+//		registerItemModel(TreasureItems.MINERS_FRIEND);		
+//		registerItemModel(TreasureItems.DWARVEN_TALISMAN);
+				
+		// POUCHES
+		registerItemModel(TreasureItems.POUCH);
+		
+		// ADORNMENTS
+        registerItemModel(TreasureItems.ANGELS_RING);
+        registerItemModel(TreasureItems.RING_OF_FORTITUDE);
+        registerItemModel(TreasureItems.PEASANTS_FORTUNE);        
+        registerItemModel(TreasureItems.CASTLE_RING);
+        registerItemModel(TreasureItems.SHADOWS_GIFT);
+        registerItemModel(TreasureItems.MEDICS_TOKEN);
+        registerItemModel(TreasureItems.SALANDAARS_WARD);
+        registerItemModel(TreasureItems.ADEPHAGIAS_BOUNTY);
+		registerItemModel(TreasureItems.MIRTHAS_TORCH);
+        registerItemModel(TreasureItems.POCKET_WATCH);
+
+        registerItemModel(TreasureItems.GOTTSCHS_RING_OF_MOON);
+//      registerItemModel(TreasureItems.SILVER_SIGNET_RING);
+        
+        // RUNESTONES
+        registerItemModel(TreasureItems.MANA_RUNESTONE);
+        registerItemModel(TreasureItems.DURABILITY_RUNESTONE);
+        registerItemModel(TreasureItems.QUALITY_RUNESTONE);
+        registerItemModel(TreasureItems.EQUIP_MANA_RUNESTONE);
+        registerItemModel(TreasureItems.ANVIL_RUNESTONE);
+        registerItemModel(TreasureItems.ANGELS_RUNESTONE);
+        registerItemModel(TreasureItems.PERSISTENCE_RUNESTONE);
+        registerItemModel(TreasureItems.SOCKETS_RUNESTONE);
+        
+        // GENERATED ITEMS
+		TreasureItems.ITEMS.forEach((key, value) -> {
+			registerItemModel(value);
+		});
+				
 		// LOCKS
 		registerItemModel(TreasureItems.WOOD_LOCK);
 		registerItemModel(TreasureItems.STONE_LOCK);
@@ -211,11 +214,7 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.PAINTING_BLOCKS_WOOD);
 
 		// OTHER
-        registerItemModel(TreasureItems.SPANISH_MOSS);
-        registerItemModel(TreasureItems.AMETHYST);
-        registerItemModel(TreasureItems.ONYX);
-		registerItemModel(TreasureItems.SAPPHIRE);
-		registerItemModel(TreasureItems.RUBY);
+		registerItemModel(TreasureItems.CHARM_BOOK);
 		registerItemModel(TreasureItems.TREASURE_TOOL);
 	}
 

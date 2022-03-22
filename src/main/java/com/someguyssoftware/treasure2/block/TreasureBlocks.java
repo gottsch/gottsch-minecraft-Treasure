@@ -1,26 +1,42 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.block;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.someguyssoftware.gottschcore.block.ModBlock;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.TreasureChestTypes;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.entity.monster.PirateMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
-import com.someguyssoftware.treasure2.enums.FogHeight;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.item.CharmingTableItemBlock;
+import com.someguyssoftware.treasure2.item.JewelerBenchItemBlock;
 import com.someguyssoftware.treasure2.item.MimicChestItemBlock;
 import com.someguyssoftware.treasure2.item.TreasureChestItemBlock;
 import com.someguyssoftware.treasure2.tileentity.CardboardBoxTileEntity;
@@ -139,10 +155,6 @@ public class TreasureBlocks {
 	public static final Block WISHING_WELL_BLOCK;
 	public static final Block DESERT_WISHING_WELL_BLOCK;
 
-	public static Map<FogHeight, FogBlock> fogMap = new HashMap<>();;
-	public static Map<FogHeight, FogBlock> witherFogMap = new HashMap<>();
-	public static Map<FogHeight, FogBlock> poisonFogMap = new HashMap<>();
-
     // ores
     public static final OreBlock AMETHYST_ORE;
     public static final OreBlock ONYX_ORE;
@@ -175,6 +187,10 @@ public class TreasureBlocks {
 
 	public static final ProximityBlock PROXIMITY_SPAWNER;
 
+	// work benches
+	public static final Block JEWELER_BENCH;
+	public static final Block CHARMING_TABLE;
+	
 	// initialize blocks
 	static {
 		// standard chest bounds
@@ -485,6 +501,11 @@ public class TreasureBlocks {
 		PROXIMITY_SPAWNER = new ProximityBlock(Treasure.MODID, TreasureConfig.PROXIMITY_SPAWNER_ID,
 				ProximitySpawnerTileEntity.class);
 
+		// TODO need to create a generic parent block that sets the creative tab
+		// benches
+		JEWELER_BENCH = new JewelerBenchBlock(Treasure.MODID, "jeweler_bench", Material.WOOD).setCreativeTab(Treasure.TREASURE_TAB);;
+		CHARMING_TABLE = new CharmingTableBlock(Treasure.MODID, "charming_table", Material.WOOD).setCreativeTab(Treasure.TREASURE_TAB);;
+		
 	}
 
 	/**
@@ -552,7 +573,9 @@ public class TreasureBlocks {
 					FALLING_GRASS,
 					FALLING_SAND,
 					FALLING_RED_SAND,
-					BLACKSTONE
+					BLACKSTONE,
+					JEWELER_BENCH,
+					CHARMING_TABLE
 			};
 
 			registry.registerAll(blocks);
@@ -637,7 +660,9 @@ public class TreasureBlocks {
 					new ItemBlock(FALLING_GRASS),
 					new ItemBlock(FALLING_SAND),
 					new ItemBlock(FALLING_RED_SAND),
-					new ItemBlock(BLACKSTONE)
+					new ItemBlock(BLACKSTONE),
+					new JewelerBenchItemBlock(JEWELER_BENCH),
+					new CharmingTableItemBlock(CHARMING_TABLE)
 			};
 
 			for (final ItemBlock item : items) {

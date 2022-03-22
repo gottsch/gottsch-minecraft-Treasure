@@ -1,0 +1,28 @@
+{
+	"version": "3.0",
+	"since": "mc1.12.2-v2.0.0",
+	"pools": [{
+		"name": "legendary_charms",
+		"rolls": 1,
+		"entries": [{
+				"entryName": "charm0",
+				"type": "item",
+				"name": "treasure2:white_pearl_charm",
+				"weight": 100,
+				"functions": [{
+					"function": "treasure2:random_charm",
+					"rarity": "legendary",
+					"defaultCharm": "treasure2:healing_21"
+				}]
+			},
+
+			{
+				"entryName": "shadows_gift",
+				"type": "item",
+				"name": "treasure2:shadows_gift",
+				"weight": 8
+			}
+
+		]
+	}]
+}

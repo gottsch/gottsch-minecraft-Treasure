@@ -1,7 +1,7 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "treasure2:items/charmed_ruby"
+        "layer0": "treasure2:items/angel_blessed"
     },
     "display": {
        "thirdperson_righthand": {

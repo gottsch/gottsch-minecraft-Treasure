@@ -1,35 +1,55 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.capability;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-public class CharmableCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<NBTTagCompound> {
-	/*
-	 * NOTE Ensure to use interfaces in @CapabilityInject, the static capability and in the instance.
-	 */
-	@CapabilityInject(ICharmableCapability.class)
-    public static Capability<ICharmableCapability> CHARMABLE_CAPABILITY = null;
-    private final ICharmableCapability charmableCapability = new CharmableCapability();
-    @CapabilityInject(ICharmCapability.class)
-    public static Capability<ICharmCapability> CHARM_CAPABILITY = null;	
-	private final ICharmCapability charmCapability = new CharmCapability();
-	
+/**
+ * 
+ * @author Mark Gottschling on Oct 26, 2021
+ *
+ */
+public class CharmableCapabilityProvider implements ICapabilitySerializable<NBTTagCompound> {
+	private final ICharmableCapability charmableCap;
+
 	/**
 	 * 
 	 */
+	public CharmableCapabilityProvider() {
+		this.charmableCap = new CharmableCapability(0, 0, 0);
+	}
+
+	/**
+	 * 
+	 * @param capability
+	 */
+	public CharmableCapabilityProvider(ICharmableCapability capability) {
+		charmableCap = capability;
+	}
+
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (capability == CHARMABLE_CAPABILITY) {
-			return true;
-		}
-        if (capability == CHARM_CAPABILITY) {
+		if (capability == TreasureCapabilities.CHARMABLE) {
 			return true;
 		}
 		return false;
@@ -37,33 +57,21 @@ public class CharmableCapabilityProvider implements ICapabilityProvider, ICapabi
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		if (capability == CHARMABLE_CAPABILITY) {
-			return CHARMABLE_CAPABILITY.cast(this.charmableCapability);
-		}
-        if (capability == CHARM_CAPABILITY) {
-			return CHARM_CAPABILITY.cast(this.charmCapability);
+		if (capability == TreasureCapabilities.CHARMABLE) {
+			return TreasureCapabilities.CHARMABLE.cast(this.charmableCap);
 		}
 		return null;
 	}
 
 	@Override
 	public NBTTagCompound serializeNBT() {
-		NBTTagCompound parentTag = new NBTTagCompound();
-		NBTTagCompound charmTag =  (NBTTagCompound) CHARM_CAPABILITY.getStorage().writeNBT(CHARM_CAPABILITY, this.charmCapability, null);
-		NBTTagCompound adornmentTag = (NBTTagCompound) CHARMABLE_CAPABILITY.getStorage().writeNBT(CHARMABLE_CAPABILITY, charmableCapability, null);
-		parentTag.setTag("charm", charmTag);
-		parentTag.setTag("adornment", adornmentTag);
-		return parentTag;
+		NBTTagCompound tag = (NBTTagCompound)TreasureCapabilities.CHARMABLE.getStorage().writeNBT(TreasureCapabilities.CHARMABLE, charmableCap, null);
+		return tag;
 	}
 
 	@Override
-	public void deserializeNBT(NBTTagCompound tag) {
-		// TODO test for the child tags
-		if (tag.hasKey("charm")) {
-			CHARM_CAPABILITY.getStorage().readNBT(CHARM_CAPABILITY, this.charmCapability, null, tag.getTag("charm"));	
-		}
-		if (tag.hasKey("adornment")) {
-			CHARMABLE_CAPABILITY.getStorage().readNBT(CHARMABLE_CAPABILITY, charmableCapability, null, tag.getTag("adornment"));
-		}		
+	public void deserializeNBT(NBTTagCompound nbt) {
+		TreasureCapabilities.CHARMABLE.getStorage().readNBT(TreasureCapabilities.CHARMABLE, charmableCap, null, nbt);
 	}
+
 }

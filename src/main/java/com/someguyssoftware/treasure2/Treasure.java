@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2;
 
@@ -20,21 +36,13 @@ import com.someguyssoftware.gottschcore.mod.AbstractMod;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.capability.CharmCapability;
-import com.someguyssoftware.treasure2.capability.CharmStorage;
-import com.someguyssoftware.treasure2.capability.CharmableCapability;
-import com.someguyssoftware.treasure2.capability.CharmableStorage;
-import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
-import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageStorage;
-import com.someguyssoftware.treasure2.capability.ICharmCapability;
-import com.someguyssoftware.treasure2.capability.ICharmableCapability;
-import com.someguyssoftware.treasure2.capability.IEffectiveMaxDamageCapability;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingStorage;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 import com.someguyssoftware.treasure2.command.SpawnChestCommand;
-import com.someguyssoftware.treasure2.command.SpawnOasisCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitStructureOnlyCommand;
@@ -44,17 +52,19 @@ import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
 import com.someguyssoftware.treasure2.eventhandler.AnvilEventHandler;
+import com.someguyssoftware.treasure2.eventhandler.CharmEventHandler;
+import com.someguyssoftware.treasure2.eventhandler.HotbarEquipmentCharmHandler;
+import com.someguyssoftware.treasure2.eventhandler.IEquipmentCharmHandler;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.MimicEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
+import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
 import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.function.CharmRandomly;
-import com.someguyssoftware.treasure2.loot.function.SetCharms;
-import com.someguyssoftware.treasure2.loot.function.SetCustomName;
-import com.someguyssoftware.treasure2.loot.function.SetSlots;
+import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 import com.someguyssoftware.treasure2.network.CharmMessageHandlerOnClient;
 import com.someguyssoftware.treasure2.network.CharmMessageToClient;
@@ -62,11 +72,11 @@ import com.someguyssoftware.treasure2.network.PoisonMistMessageHandlerOnServer;
 import com.someguyssoftware.treasure2.network.PoisonMistMessageToServer;
 import com.someguyssoftware.treasure2.network.WitherMistMessageHandlerOnServer;
 import com.someguyssoftware.treasure2.network.WitherMistMessageToServer;
+import com.someguyssoftware.treasure2.runestone.TreasureRunes;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureDecayManager;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.ITreasureWorldGenerator;
-import com.someguyssoftware.treasure2.worldgen.OasisWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.SubmergedChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
@@ -103,13 +113,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 		"Credits to mn_ti for Chinese and to DarkKnightComes for Polish translation.",
 		"Credits to Mythical Sausage for tutorials on house/tower designs.",
 		"Credits to OdinsRagnarok for Spanish translation and DarvinSlav for Russian translation.",
-"Credits to sfs131010 for updated Chinese translation."})
+		"Credits to sfs131010 for updated Chinese translation.",
+		"Credits to Xemnes for updated textures for locks, keys, adornments, gems, ores."})
+
 public class Treasure extends AbstractMod {
 
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.16.1";
+	protected static final String VERSION = "2.0.0";
 
 	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/update.json";
 
@@ -138,6 +150,13 @@ public class Treasure extends AbstractMod {
 		@SideOnly(Side.CLIENT)
 		public ItemStack getTabIconItem() {
 			return new ItemStack(TreasureItems.TREASURE_TAB, 1);
+		}
+	};
+	public static CreativeTabs ADORNMENTS_TAB = new CreativeTabs(CreativeTabs.getNextID(),
+			Treasure.MODID + ":adornments_tab") {
+		@SideOnly(Side.CLIENT)
+		public ItemStack getTabIconItem() {
+			return new ItemStack(TreasureItems.ADORNMENTS_TAB, 1);
 		}
 	};
 
@@ -202,16 +221,34 @@ public class Treasure extends AbstractMod {
 				25, Side.CLIENT);
 
 		// add capabilities
-		CapabilityManager.INSTANCE.register(ICharmCapability.class, new CharmStorage(), CharmCapability::new);
-		CapabilityManager.INSTANCE.register(ICharmableCapability.class, new CharmableStorage(), CharmableCapability::new);
+		TreasureCapabilities.register();
 		CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingStorage(), KeyRingCapability::new);
-		CapabilityManager.INSTANCE.register(IEffectiveMaxDamageCapability.class, new EffectiveMaxDamageStorage(), EffectiveMaxDamageCapability::new);
-
+		
 		// register custom loot functions
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
-		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms.Serializer());
-		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetSlots.Serializer());
-		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCustomName.Serializer());
+//		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms.Serializer());
+//		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetSlots.Serializer());
+		
+		// integrations
+		BaublesIntegration.init();
+		
+		IEquipmentCharmHandler equipmentCharmHandler = null;
+		if (BaublesIntegration.isEnabled()) {
+			logger.debug("baubles IS loaded");
+			try {
+				equipmentCharmHandler = 
+						(IEquipmentCharmHandler) Class.forName("com.someguyssoftware.treasure2.eventhandler.BaublesEquipmentCharmHandler").newInstance();
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+				logger.warn("Unable to load Baubles compatiblity class.", e);
+			}
+		}
+		if (equipmentCharmHandler == null) {
+			logger.debug("equipmentHandler is null");
+			equipmentCharmHandler = new HotbarEquipmentCharmHandler();
+		}
+		MinecraftForge.EVENT_BUS.register(new CharmEventHandler(equipmentCharmHandler));
+		
+		TreasureCharms.init();
 	}
 
 	/**
@@ -236,7 +273,6 @@ public class Treasure extends AbstractMod {
 		event.registerServerCommand(new SpawnWellStructureCommand());
 		event.registerServerCommand(new SpawnWitherTreeCommand());
 		event.registerServerCommand(new SpawnRuinsCommand());
-		event.registerServerCommand(new SpawnOasisCommand());
 	}
 
 	/**
@@ -257,7 +293,6 @@ public class Treasure extends AbstractMod {
 		WORLD_GENERATORS.put(WorldGeneratorType.WELL, new WellWorldGenerator());
 		WORLD_GENERATORS.put(WorldGeneratorType.WITHER_TREE, new WitherTreeWorldGenerator());
 		WORLD_GENERATORS.put(WorldGeneratorType.GEM, new GemOreWorldGenerator());
-		WORLD_GENERATORS.put(WorldGeneratorType.OASIS, new OasisWorldGenerator());
 
 		int genWeight = 0;
 		for (Entry<WorldGeneratorType, ITreasureWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
@@ -309,6 +344,9 @@ public class Treasure extends AbstractMod {
         TreasureBlocks.ONYX_ORE.setItem(TreasureItems.ONYX);
 		TreasureBlocks.SAPPHIRE_ORE.setItem(TreasureItems.SAPPHIRE);
 		TreasureBlocks.RUBY_ORE.setItem(TreasureItems.RUBY);
+		
+		// register charmable materials
+		TreasureCharmableMaterials.setup();
 	}
 
 	/*

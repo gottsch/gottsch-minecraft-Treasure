@@ -13,6 +13,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Apr 24, 2020
  *
  */
+@Deprecated
 @FunctionalInterface
 public interface IWishProviderFunction {
 	IWishProvider getProvider(World world, ICoords coords, List<IWishProvider> providers);

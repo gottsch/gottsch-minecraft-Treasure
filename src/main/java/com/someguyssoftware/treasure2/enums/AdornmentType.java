@@ -17,9 +17,10 @@ import java.util.stream.Collectors;
  */
 public enum AdornmentType implements IEnum {
 	RING(0, "ring"),
-    AMULET(1, "amulet"),
+    NECKLACE(1, "necklace"),
     BRACELET(2, "bracelet"),
-    POCKET(3, "pocket");
+    POCKET(3, "pocket"),
+    EARRING(4, "earring");
 	
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();
@@ -102,5 +103,10 @@ public enum AdornmentType implements IEnum {
 	public static List<String> getNames() {
 		List<String> names = EnumSet.allOf(AdornmentType.class).stream().map(x -> x.name()).collect(Collectors.toList());
 		return names;
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString().toLowerCase();
 	}
 }

@@ -1,16 +1,33 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.network;
 
+import java.util.List;
+import java.util.UUID;
+
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.ICharmCapability;
-import com.someguyssoftware.treasure2.capability.PouchCapabilityProvider;
-import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
-import com.someguyssoftware.treasure2.item.charm.ICharmable;
-import com.someguyssoftware.treasure2.item.charm.ICharmed;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.InventoryType;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.ICharmEntity;
+import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -21,7 +38,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.items.IItemHandler;
 
 /**
  * Derived from MinecraftByExample by The Grey Ghost.
@@ -29,6 +45,7 @@ import net.minecraftforge.items.IItemHandler;
  *
  */
 public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessageToClient, IMessage> {
+	
 	  /**
 	   * Called when a message is received of the appropriate type.
 	   * CALLED BY THE NETWORK THREAD, NOT THE CLIENT THREAD
@@ -69,51 +86,42 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 	  void processMessage(WorldClient worldClient, CharmMessageToClient message) {
 		  Treasure.logger.debug("received charm message -> {}", message);
 		  try {
-	        EntityPlayer player = worldClient.getPlayerEntityByName(message.getPlayerName());
-
+//	        EntityPlayer player = worldClient.getPlayerEntityByName(message.getPlayerName());
+	        EntityPlayer player = worldClient.getPlayerEntityByUUID(UUID.fromString(message.getPlayerName()));
+	        
 	        if (player != null) {
 //	        	Treasure.logger.debug("valid player -> {}", message.getPlayerName());
 	        	// check hands first
 	        	if (message.getHand() != null) {
-		        	Treasure.logger.debug("valid hand -> {}", message.getHand());
+//		        	Treasure.logger.debug("valid hand -> {}", message.getHand());
 	        		// get the item for the hand
 	        		ItemStack heldItemStack = player.getHeldItem(message.getHand());
 	        		// determine what is being held in hand
 	        		if (heldItemStack != null) {
-	        			Treasure.logger.debug("holding item -> {}", heldItemStack.getItem().getRegistryName());
-	        			if (heldItemStack.hasCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null)) {
-	        				Treasure.logger.debug("has pouch cap");
-	        				// pouch - get item from slot
-	        				if (message.getSlot() != null && message.getSlot() > -1) {
-	        					IItemHandler pouchCap = heldItemStack.getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
-	        					ItemStack charmedItemStack = pouchCap.getStackInSlot(message.getSlot());
-//	        					if(charmedItemStack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
-	        					if (heldItemStack.getItem() instanceof ICharmed) {
-	        						updateCharms(charmedItemStack, message, charmedItemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null));
-	        					}
-	        					else if (heldItemStack.getItem() instanceof ICharmable) {
-//	        					else if (charmedItemStack.hasCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null)) {
-	        						updateCharms(charmedItemStack, message, charmedItemStack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null));
-	        					}
-	        				}
+//	        			Treasure.logger.debug("holding item -> {}", heldItemStack.getItem().getRegistryName());
+	        			if (heldItemStack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+	        				updateCharms(heldItemStack, message, heldItemStack.getCapability(TreasureCapabilities.CHARMABLE, null));
 	        			}
-//		        		else if (heldItemStack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
-	        			else if (heldItemStack.getItem() instanceof ICharmed) {
-	        				Treasure.logger.debug("has charmED cap");
-		        			updateCharms(heldItemStack, message, heldItemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null));
-		        		}
-//		        		else if (heldItemStack.hasCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null)) {
-	        			else if (heldItemStack.getItem() instanceof ICharmable) {
-	        				Treasure.logger.debug("has charmABLE cap");
-		        			updateCharms(heldItemStack, message, heldItemStack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null));
-		        		}
 	        		}
 	        	}
+	        	else if (BaublesIntegration.BAUBLES_MOD_ID.equals(message.getSlotProviderId())) {
+//	        		Treasure.logger.debug("it is a baubles slot provider");
+	        		ItemStack stack = BaublesIntegration.getStackInSlot(player, message.getSlot());
+	        		
+//	        		if (stack != null) Treasure.logger.debug("item in baubles slot -> {} -> {}", message.getSlot(), stack.getItem().getRegistryName());
+	        		
+	        		if (stack != null && stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+//		        		Treasure.logger.debug("baubles item has charmable cap");
+	        			updateCharms(stack, message, stack.getCapability(TreasureCapabilities.CHARMABLE, null));
+	        		}
+	        	}
+	        	// hotbar
 	        	else {
 	        		ItemStack stack = player.inventory.getStackInSlot(message.getSlot());
-//	        		if (stack.hasCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null)) {
-	        		if (stack.getItem() instanceof ICharmable) {
-	        			updateCharms(stack, message, stack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null));
+	        		if (stack != null /*&& stack.getItem() instanceof ICharmable*/) {
+	        			if (stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+	        				updateCharms(stack, message, stack.getCapability(TreasureCapabilities.CHARMABLE, null));
+	        			}
 	        		}
 	        	}	        	
 	        }
@@ -125,39 +133,35 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 
 	  /**
 	   * 
-	   * @param heldItemStack
+	   * @param itemStack
 	   * @param message
+	   * @param capability
 	   */
-	  @Deprecated
-	private void updateCharms(ItemStack heldItemStack, CharmMessageToClient message) {
-		ICharmCapability heldItemCaps = heldItemStack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+	private void updateCharms(ItemStack itemStack, CharmMessageToClient message, ICharmableCapability capability) {
 		// get the charm that is being sent
-		String charmName = message.getCharmName();
-		// cycle through the charm states to find the named charm
-		for(ICharmInstance instance : heldItemCaps.getCharmInstances()) {
-			if (instance.getCharm().getName().equals(charmName)) {
-//	        	Treasure.logger.debug("found charm, updating vitals to -> {}", message.getData());
-				// update vitals
-				instance.setData(message.getData());
-			}
-		}
-	}
-	
-	private void updateCharms(ItemStack heldItemStack, CharmMessageToClient message, ICharmCapability capability) {
-		// get the charm that is being sent
-//		String charmName = message.getCharmName();
 		ResourceLocation charmName = new ResourceLocation(message.getCharmName());
 		// cycle through the charm states to find the named charm
-		for(ICharmInstance instance : capability.getCharmInstances()) {
-			if (instance.getCharm().getName().equals(charmName)) {
-//	        	Treasure.logger.debug("found charm, updating vitals to -> {}", message.getData());
-				// update vitals
-				instance.setData(message.getData());
-				if (instance.getData().getValue() <= 0.0) {
-					// TODO should each charm have it's own way of checking empty?
-					capability.getCharmInstances().remove(instance);
+		List<ICharmEntity> entityList = (List<ICharmEntity>) capability.getCharmEntities().get(message.getInventoryType());
+		if (entityList != null && !entityList.isEmpty() && entityList.size() > message.getIndex()) {
+			ICharmEntity entity = entityList.get(message.getIndex());
+//    		Treasure.logger.debug("looking for charm -> {} at index -> {}", entity, message.getIndex());
+			if (entity != null && entity.getCharm().getName().equals(charmName)) {
+//	        	Treasure.logger.debug("found charm, updating...");
+				// update entity properties
+				entity.update(message.getEntity());
+				
+				// NOTE yes, remove innate charms from Adornments - they can't be recharged
+				if (message.getInventoryType() == InventoryType.INNATE && entity.getMana() <= 0.0) {
+					capability.remove(message.getInventoryType(), message.getIndex());
 				}
-				break;
+				// TODO probably need to remove imbue as well
+				
+
+				// update Durability 
+				if (itemStack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
+					itemStack.setItemDamage(message.getItemDamage());
+				}
+//				break;
 			}
 		}
 	}

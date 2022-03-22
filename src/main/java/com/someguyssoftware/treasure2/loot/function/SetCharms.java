@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.loot.function;
 
@@ -21,16 +37,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.ICharmCapability;
-import com.someguyssoftware.treasure2.item.charm.CharmLevel;
-import com.someguyssoftware.treasure2.item.charm.ICharm;
-import com.someguyssoftware.treasure2.item.charm.ICharmInstance;
-import com.someguyssoftware.treasure2.item.charm.ICharmable;
-import com.someguyssoftware.treasure2.item.charm.ICharmed;
-import com.someguyssoftware.treasure2.item.charm.TreasureCharmRegistry;
-import com.someguyssoftware.treasure2.item.charm.TreasureCharms;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.ICharm;
+import com.someguyssoftware.treasure2.charm.ICharmEntity;
+import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.item.ItemStack;
@@ -45,6 +56,7 @@ import net.minecraft.world.storage.loot.functions.LootFunction;
  * @author Mark Gottschling on May 2, 2020
  *
  */
+@Deprecated
 public class SetCharms extends LootFunction {
 	private List<ICharm> charms;
 
@@ -62,26 +74,29 @@ public class SetCharms extends LootFunction {
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
 
         // ensure that the stack has charm capabilities
-        ICharmCapability charmCap = null;
-		if (stack.getItem() instanceof ICharmed) {
-			charmCap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-		}
-		else if (stack.getItem() instanceof ICharmable) {
-			charmCap = stack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
+        ICharmableCapability charmCap = null;
+//		if (stack.getItem() instanceof ICharmed) {
+//			charmCap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
+//		}
+//		else if (stack.getItem() instanceof ICharmable) {
+//			charmCap = stack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
+//        }
+        if (stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+        	charmCap = stack.getCapability(TreasureCapabilities.CHARMABLE, null);
         }
         
         if (charmCap != null) {
 		// if (stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
 		// 	ICharmCapability provider = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-			List<ICharmInstance> charmInstances = charmCap.getCharmInstances();
+			List<ICharmEntity> charmEntities = (List<ICharmEntity>) charmCap.getCharmEntities().values();
 
 			if (!this.charms.isEmpty()) {
 				for (ICharm charm : charms) {
 					// ensure that the item doesn't already have the same charm or same type or exceeded the maximum charms.
 					boolean hasCharm = false;
-					for (ICharmInstance instance : charmInstances) {
-						if (instance.getCharm().getType().equalsIgnoreCase(charm.getType()) ||
-								instance.getCharm().getName().equals(charm.getName())) {
+					for (ICharmEntity entity : charmEntities) {
+						if (entity.getCharm().getType().equalsIgnoreCase(charm.getType()) ||
+								entity.getCharm().getName().equals(charm.getName())) {
 							Treasure.logger.debug("item already has charm -> {}", charm.getName());
 							hasCharm = true;
 							break;
@@ -89,7 +104,7 @@ public class SetCharms extends LootFunction {
 					}
 					if (!hasCharm) {
 						Treasure.logger.debug("giving item charm -> {}", charm.getName());
-						charmInstances.add(charm.createInstance());
+						charmEntities.add(charm.createEntity());
 					}
 				}
 			}
@@ -98,7 +113,7 @@ public class SetCharms extends LootFunction {
 				List<ICharm> tempCharms = new ArrayList<>();
 				// if charms list is empty, create a default list of minor charms
 				for (ICharm c : TreasureCharmRegistry.values()) {
-					if (c.getLevel() == CharmLevel.LEVEL1.getValue() || c.getLevel() == CharmLevel.LEVEL2.getValue()) {
+					if (c.getLevel() == 1 || c.getLevel() == 2) {
 						tempCharms.add(c);
 					}
 				}
@@ -106,7 +121,7 @@ public class SetCharms extends LootFunction {
 					// select a charm randomly					
 					ICharm charm = tempCharms.get(rand.nextInt(tempCharms.size()));
 					Treasure.logger.debug("giving item a random charm -> {}", charm.getName());
-					charmInstances.add(charm.createInstance());
+					charmEntities.add(charm.createEntity());
 				}
 			}
 		}
