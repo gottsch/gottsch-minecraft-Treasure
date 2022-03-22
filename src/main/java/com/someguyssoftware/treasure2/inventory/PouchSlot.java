@@ -3,8 +3,10 @@
  */
 package com.someguyssoftware.treasure2.inventory;
 
-import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.item.IPouchable;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.item.Adornment;
+import com.someguyssoftware.treasure2.item.CharmItem;
+import com.someguyssoftware.treasure2.item.WealthItem;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -32,9 +34,17 @@ public class PouchSlot extends Slot {
      * Check if the stack is allowed to be placed in this slot.
      */
     public boolean isItemValid(ItemStack stack) {
-    	if (stack.getItem() instanceof IPouchable) {
+    	if (stack.getItem() instanceof WealthItem
+    			|| stack.getItem() instanceof CharmItem
+    			|| stack.getItem() instanceof Adornment 
+    			|| stack.hasCapability(TreasureCapabilities.POUCHABLE, null)) {
     		return true;
     	}
     	return false;
+    }
+    
+    @Override
+    public int getItemStackLimit(ItemStack stack) {
+    	return 64; //TreasureConfig.BOOTY.wealthMaxStackSize.get();
     }
 }

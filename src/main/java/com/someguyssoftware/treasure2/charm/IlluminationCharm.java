@@ -64,21 +64,18 @@ public class IlluminationCharm extends Charm {
 
 	@Override
 	public ICharmEntity createEntity() {
-		ICharmEntity entity = new IlluminationCharmEntity(this, this.getMaxValue(),this.getMaxDuration(), this.getMaxPercent());
+//		ICharmEntity entity = new IlluminationCharmEntity(this, this.getMana(),this.getDuration(), this.getPercent());
+		ICharmEntity entity = new IlluminationCharmEntity(this);
+
 		return entity;
 	}
 
-	//	@Override
-	//	public ICharmInstance createInstance() {
-	//		//		Treasure.logger.debug("creating new illumination charm instance");
-	//		IlluminationCharmData data = new IlluminationCharmData();
-	//		data.setValue(this.getMaxValue());
-	//		data.setPercent(this.getMaxPercent());
-	//		data.setDuration(this.getMaxDuration());
-	//		ICharmInstance instance = new CharmInstance(this, data);
-	//		return instance;
-	//	}
-
+	@Override
+	public ICharmEntity createEntity(ICharmEntity entity) {
+		ICharmEntity newEntity = new IlluminationCharmEntity((IlluminationCharmEntity)entity);
+		return newEntity;
+	}
+	
 	/**
 	 * NOTE: it is assumed that only the allowable events are calling this action.
 	 */
@@ -87,7 +84,7 @@ public class IlluminationCharm extends Charm {
 		boolean result = false;
 
 		if (world.getTotalWorldTime() % 100 == 0) {
-			if ( !player.isDead && entity.getValue() > 0) {
+			if ( !player.isDead && entity.getMana() > 0) {
 				ICoords currentCoords = new Coords((int)Math.floor(player.posX), (int)Math.floor(player.posY), (int)Math.floor(player.posZ));
 
 				/*
@@ -113,7 +110,7 @@ public class IlluminationCharm extends Charm {
 				// cast as linked list
 				List<ICoords> list = (List<ICoords>)charmData.getCoordsList();
 				Treasure.logger.debug("charm coords list size -> {}", list.size());
-				double value = entity.getValue();
+				double value = entity.getMana();
 
 				boolean isUpdated = false;
 				// check if the coordsList is empty or not
@@ -129,9 +126,9 @@ public class IlluminationCharm extends Charm {
 						// add current coords to coords list
 						list.add(0, currentCoords);
 						// check if coords list is greater than max (data.value)
-						if (list.size() > (int)charmData.getValue()) {
+						if (list.size() > (int)charmData.getMana()) {
 							// get difference in size
-							int diff = (int) (list.size() - charmData.getValue());
+							int diff = (int) (list.size() - charmData.getMana());
 							//															Treasure.logger.debug("diff -> {}", diff);
 							for (int index = 0; index < diff; index++) {
 								ICoords lastCoords = list.get(list.size()-1);
@@ -158,7 +155,7 @@ public class IlluminationCharm extends Charm {
 					if (value < 0) {
 						value = 0;
 					}
-					entity.setValue(value);
+					entity.setMana(value);
 					//	Treasure.logger.debug("new data -> {}", data);
 					result = true;
 				}
@@ -174,14 +171,14 @@ public class IlluminationCharm extends Charm {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.WHITE;
-		tooltip.add("  " + color + getLabel(entity));
-		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.illumination_rate"));
+		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
+		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.illumination")));
 	}
 
 	public static class Builder extends Charm.Builder {
 
-		public Builder(String name, Integer level) {
-			super(ResourceLocationUtil.create(name), ILLUMINATION_TYPE, level);
+		public Builder(Integer level) {
+			super(ResourceLocationUtil.create(makeName(ILLUMINATION_TYPE, level)), ILLUMINATION_TYPE, level);
 		}
 
 		@Override

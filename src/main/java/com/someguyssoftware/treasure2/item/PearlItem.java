@@ -45,7 +45,8 @@ import net.minecraft.world.storage.loot.LootPool;
  * @author Mark Gottschling on Aug 18, 2019
  *
  */
-public class PearlItem extends ModItem implements IWishable, IPouchable {
+@Deprecated
+public class PearlItem extends ModItem implements IWishable {
 
 	public static final int MAX_STACK_SIZE = 8;
 	private Pearls pearl;

@@ -23,7 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
@@ -45,20 +46,29 @@ public class BaublesEquipmentCharmHandler implements IEquipmentCharmHandler {
 				slot.set(baublesSlot);
 				ItemStack itemStack = BaublesIntegration.getStackInSlot(player, baublesSlot);
 				if (itemStack != ItemStack.EMPTY && itemStack.getItem() instanceof Adornment) {
-					if (itemStack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
-						ICharmInventoryCapability cap = itemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-						for (ICharmEntity entity : cap.getCharmEntities()) {
-							if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
-								continue;
+					if (itemStack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+						ICharmableCapability cap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
+						if (cap.isExecuting()) {
+							for (InventoryType type : InventoryType.values()) {
+								AtomicInteger index = new AtomicInteger();
+								for (int i = 0; i < cap.getCharmEntities().get(type).size(); i++) {
+									ICharmEntity entity = ((List<ICharmEntity>)cap.getCharmEntities().get(type)).get(i);
+									if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
+										continue;
+									}
+									index.set(i);
+									CharmContext context = new CharmContext.Builder().with($ -> {
+										$.slotProviderId = BaublesIntegration.BAUBLES_MOD_ID;
+										$.slot = slot.get();
+										$.itemStack = itemStack;
+										$.capability = cap;
+										$.type = type;
+										$.index = index.get();
+										$.entity = entity;
+									}).build();
+									contexts.add(context);
+								}
 							}
-							CharmContext context = new CharmContext.Builder().with($ -> {
-								$.slotProviderId = BaublesIntegration.BAUBLES_MOD_ID;
-								$.slot = slot.get();
-								$.itemStack = itemStack;
-								$.capability = cap;
-								$.entity = entity;
-							}).build();
-							contexts.add(context);
 						}
 					}
 				}

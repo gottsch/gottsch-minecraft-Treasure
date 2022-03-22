@@ -30,9 +30,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
-import com.someguyssoftware.treasure2.capability.CharmInventoryCapability;
-import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
-import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.capability.AdornmentCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.CharmableCapability;
+import com.someguyssoftware.treasure2.capability.DurabilityCapability;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
+import com.someguyssoftware.treasure2.capability.IRunestonesCapability;
+import com.someguyssoftware.treasure2.capability.RunestonesCapability;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
 import com.someguyssoftware.treasure2.item.Adornment;
@@ -94,10 +98,12 @@ public class BaublesIntegration {
 
 		// map  Treasure2 Adornments types to Bauble types in order to equip adornments/charms		
 		TREASURE_BAUBLE_TYPE_MAP.put(AdornmentType.RING, BaubleType.RING);
-		TREASURE_BAUBLE_TYPE_MAP.put(AdornmentType.AMULET, BaubleType.AMULET);
+		TREASURE_BAUBLE_TYPE_MAP.put(AdornmentType.NECKLACE, BaubleType.AMULET);
 		TREASURE_BAUBLE_TYPE_MAP.put(AdornmentType.BRACELET, BaubleType.BODY);
 		TREASURE_BAUBLE_TYPE_MAP.put(AdornmentType.POCKET, BaubleType.BODY);
-
+		// FUTURE
+		// TREASURE_BAUBLE_TYPE_MAP.put(AdornmentType.EARRING, BaubleType.HEAD);
+		
 		// TODO how to map Charm to BaubleType.CHARM? Maybe not until the redo in v2.0
 	}
 
@@ -113,35 +119,26 @@ public class BaublesIntegration {
 	 * Return true if the given item is equipped in any bauble slot.
 	 * @param player The player whose inventory is to be checked.
 	 * @param item The item to check for.
-	 * @return True if the given item is equipped in a bauble slot, false otherwise.
+	 * @return true if the given item is equipped in a bauble slot, false otherwise.
 	 */
 	public static boolean isBaubleEquipped(EntityPlayer player, Item item) {
 		return BaublesApi.isBaubleEquipped(player, item) >= 0;
 	}
 	
 	/**
-	 * Returns a list of artefact stacks equipped of the given types. <i>This method does not check whether artefacts
-	 * have been disabled in the config! {ItemNewArtefact#getActiveArtefacts(EntityPlayer, ItemNewArtefact.AdditionalType...)}
-	 * should be used instead of this method in nearly all cases.</i>
+	 * Returns a list of adornment stacks equipped of the given types.
 	 *
 	 * @param player The player whose inventory is to be checked.
-	 * @param types  Zero or more artefact types to check for. If omitted, searches for all types.
-	 * @return A list of equipped artefact {@code ItemStacks}.
 	 */
-	// This could return all ItemStacks, but if an artefact type is given this doesn't really make sense.
 	public static List<Adornment> getEquippedAdornments(EntityPlayer player) {
-
 		List<Adornment> adornments = new ArrayList<>();
 
-
-		// TODO check each Baubles slot
-		//			for (int slot : ARTEFACT_TYPE_MAP.get(type).getValidSlots()) {
+		// check each Baubles slot
 		BAUBLES_SLOTS.forEach(slot -> {
 			ItemStack stack = BaublesApi.getBaublesHandler(player).getStackInSlot(slot);
 			if (stack.getItem() instanceof Adornment)
 				adornments.add((Adornment) stack.getItem());
 		});
-
 		return adornments;
 	}
 
@@ -182,33 +179,79 @@ public class BaublesIntegration {
 	/**
 	 * Sub-class Bauble Capability Provider to include required Adornment capabilities (CharmInventoryCapability)
 	 */
-	public static class AdornmentProvider extends BaubleProvider implements ICapabilitySerializable<NBTTagCompound> {
-		private final ICharmInventoryCapability charm;
+	public static class BaubleAdornmentCapabilityProvider extends BaubleProvider implements ICapabilitySerializable<NBTTagCompound> {
+//		private final IMagicsInventoryCapability magicsCap;
+		private final ICharmableCapability charmableCap;
+		private final IRunestonesCapability runestonesCap;
+		private final IDurabilityCapability durabilityCap;
+		// TODO add IPouchableCapability
+		
+		private AdornmentCapabilityProvider adornmentCapabilityProvider;
 		
 		/**
 		 * 
 		 * @param adornmntType
 		 */
-		public AdornmentProvider(AdornmentType adornmentType) {
+		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType) {
 			super(adornmentType);
-			charm = new CharmInventoryCapability();
+//			charm = new CharmInventoryCapability();
+//			this.magicsCap = new MagicsInventoryCapability(1, 1, 1);
+			this.charmableCap = new CharmableCapability(0, 0, 0);
+//			this.runestonesCap = new RunestonesCapability(magicsCap);
+			this.runestonesCap = new RunestonesCapability(0, 0, 0);
+			this.durabilityCap = new DurabilityCapability();
+			
+			this.adornmentCapabilityProvider = new AdornmentCapabilityProvider(charmableCap, runestonesCap, durabilityCap);
 		}
 		
 		/**
 		 * 
-		 * @param capability
+		 * @param charmable
 		 */
-		public AdornmentProvider(AdornmentType adornmentType, ICharmInventoryCapability capability) {
+//		public AdornmentProvider(AdornmentType adornmentType, ICharmInventoryCapability capability) {
+//			super(adornmentType);
+//			charm = capability;
+//		}
+		
+		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType, ICharmableCapability charmable) {
 			super(adornmentType);
-			charm = capability;
+//			this.magicsCap = charmable.getMagicsCap();
+			this.charmableCap = charmable;
+//			this.runestonesCap = new RunestonesCapability(magicsCap);
+			this.runestonesCap = new RunestonesCapability(0, 0, 0);
+			this.durabilityCap = new DurabilityCapability();
+			
+			this.adornmentCapabilityProvider = new AdornmentCapabilityProvider(charmableCap, runestonesCap, durabilityCap);
 		}
+		
+		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType, ICharmableCapability charmable, IDurabilityCapability durability) {
+			super(adornmentType);
+//			this.magicsCap = charmable.getMagicsCap();
+			this.charmableCap = charmable;
+//			this.runestonesCap = new RunestonesCapability(magicsCap);
+			this.runestonesCap = new RunestonesCapability(0, 0, 0);
+			this.durabilityCap = durability;
+			
+			this.adornmentCapabilityProvider = new AdornmentCapabilityProvider(charmableCap, runestonesCap, durabilityCap);
+		}
+		
+		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType, ICharmableCapability charmable, IRunestonesCapability runestonesCapability, IDurabilityCapability durability) {
+			super(adornmentType);
+//			this.magicsCap = charmable.getMagicsCap();
+			this.charmableCap = charmable;
+			this.runestonesCap = runestonesCapability;
+			this.durabilityCap = durability;
+			
+			this.adornmentCapabilityProvider = new AdornmentCapabilityProvider(charmableCap, runestonesCap, durabilityCap);
+		}
+		
 		
 		@Override
 		public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 			if (capability == BaublesCapabilities.CAPABILITY_ITEM_BAUBLE) {
 				return true;
 			}
-			else if (capability == TreasureCapabilities.CHARM_INVENTORY) {
+			else if (adornmentCapabilityProvider.hasCapability(capability, facing)) {
 				return true;
 			}
 			return false;
@@ -220,21 +263,19 @@ public class BaublesIntegration {
 			if (capability == BaublesCapabilities.CAPABILITY_ITEM_BAUBLE) {
 				return hasCapability(capability, facing) ? (T)(IBauble)itemStack -> type : null;
 			}
-			else if (capability == TreasureCapabilities.CHARM_INVENTORY) {
-				return TreasureCapabilities.CHARM_INVENTORY.cast(this.charm);
+			else {
+				return adornmentCapabilityProvider.getCapability(capability, facing);
 			}
-			return null;
 		}
-
+		
 		@Override
 		public NBTTagCompound serializeNBT() {
-			NBTTagCompound tag = (NBTTagCompound)TreasureCapabilities.CHARM_INVENTORY.getStorage().writeNBT(TreasureCapabilities.CHARM_INVENTORY, charm, null);
-			return tag;
+			return adornmentCapabilityProvider.serializeNBT();
 		}
 
 		@Override
 		public void deserializeNBT(NBTTagCompound nbt) {
-			TreasureCapabilities.CHARM_INVENTORY.getStorage().readNBT(TreasureCapabilities.CHARM_INVENTORY, charm, null, nbt);
+			adornmentCapabilityProvider.deserializeNBT(nbt);
 		}
 	}
 }

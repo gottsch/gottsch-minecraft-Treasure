@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.client.gui.inventory;
 
@@ -32,19 +48,10 @@ public class PouchGui extends GuiContainer {
 
 	// This is the resource location for the background images for the GUI
 
-	public static final ResourceLocation[] TEXTURES = {
-			new ResourceLocation(Treasure.MODID, "textures/gui/container/pouch.png"),
-			new ResourceLocation(Treasure.MODID, "textures/gui/container/lucky_pouch.png"),
-			new ResourceLocation(Treasure.MODID, "textures/gui/container/apprentices_pouch.png"),
-			new ResourceLocation(Treasure.MODID, "textures/gui/container/masters_pouch.png")
-	};
+	public static final ResourceLocation TEXTURE = new ResourceLocation(Treasure.MODID, "textures/gui/container/pouch.png");
+	
 	@SuppressWarnings("deprecation")
-	public static final String[] POUCH_LABELS = {
-			TextFormatting.BLACK + "" + I18n.translateToLocal("item.treasure2:pouch.name"),
-			TextFormatting.BLACK + "" + I18n.translateToLocal("item.treasure2:lucky_pouch.name"),
-			TextFormatting.BLACK + "" + I18n.translateToLocal("item.treasure2:apprentices_pouch.name"),
-			TextFormatting.BLACK + "" + I18n.translateToLocal("item.treasure2:masters_pouch.name")
-	};
+	public static final String POUCH_LABEL = 	TextFormatting.BLACK + "" + I18n.translateToLocal("item.treasure2:pouch.name");
 
 	private PouchItem pouchItem;
 	
@@ -67,22 +74,9 @@ public class PouchGui extends GuiContainer {
 	 */
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		ResourceLocation texture = null;
-		if (pouchItem == TreasureItems.POUCH) {
-			texture = TEXTURES[0];
-		}
-		else if (pouchItem == TreasureItems.LUCKY_POUCH) {
-			texture = TEXTURES[1];
-		}
-		else if (pouchItem == TreasureItems.APPRENTICES_POUCH) {
-			texture = TEXTURES[2];
-		}
-		else if (pouchItem == TreasureItems.MASTERS_POUCH) {
-			texture = TEXTURES[3];
-		}
 		
 		// Bind the image texture of our custom container
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE);
 		// Draw the image
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
@@ -95,21 +89,7 @@ public class PouchGui extends GuiContainer {
 		final int LABEL_XPOS = 5;
 		final int LABEL_YPOS = 5;
 		
-		String label = "";
-		if (pouchItem == TreasureItems.POUCH) {
-			label = POUCH_LABELS[0];
-		}
-		else if (pouchItem == TreasureItems.LUCKY_POUCH) {
-			label = POUCH_LABELS[1];
-		}
-		else if (pouchItem == TreasureItems.APPRENTICES_POUCH) {
-			label = POUCH_LABELS[2];
-		}
-		else if (pouchItem == TreasureItems.MASTERS_POUCH) {
-			label = POUCH_LABELS[3];
-		}
-		
-		fontRenderer.drawString(label, LABEL_XPOS, LABEL_YPOS, Color.darkGray.getRGB());
+		fontRenderer.drawString(POUCH_LABEL, LABEL_XPOS, LABEL_YPOS, Color.darkGray.getRGB());
 	}
 	
 	/**

@@ -15,8 +15,8 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Apr 24, 2020
  *
  */
+@Deprecated
 public interface IWishProvider {
-
 
 	public ItemStack provideWish(World world, Random random, EntityItem entityItem, ICoords coords);
 

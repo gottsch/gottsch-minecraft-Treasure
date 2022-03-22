@@ -7,7 +7,8 @@ import com.someguyssoftware.treasure2.Treasure;
  * @author Mark Gottschling on May 14, 2020
  *
  */
-public class GemItem extends ModItem implements IPouchable {
+@Deprecated
+public class GemItem extends ModItem {
 	
 	/**
 	 * 

@@ -1,0 +1,46 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+	" GT",
+	" C ",
+	"  "
+  ],
+  "key": {
+    "T": {
+		"item": "treasure2:treasure_tool"
+	},
+	"C": {
+		"item": "minecraft:crafting_table"
+	},
+	"G": [
+		{
+			"item": "treasure2:ruby"
+		},
+		{
+		"item": "treasure2:sapphire"
+		},
+		{
+			"item": "treasure2:amethyst"
+		},
+		{
+			"item": "treasure2:onyx"
+		},
+		{
+			"item": "treasure2:white_pearl"
+		},
+		{
+			"item": "treasure2:black_pearl"
+		},
+		{
+			"item": "minecraft:diamond"
+		},
+		{
+			"item": "minecraft:emerald"
+		}		
+	]
+  },
+  "result": {
+    "item": "treasure2:jeweler_bench",
+    "count": 1
+  }
+}

@@ -35,7 +35,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
@@ -66,7 +65,7 @@ public class ReflectionCharm extends Charm {
 	@Override
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-		if (entity.getValue() > 0 && !player.isDead) {
+		if (entity.getMana() > 0 && !player.isDead) {
 			if (((LivingHurtEvent)event).getEntity() instanceof EntityPlayer) {
 				// get player position
 				double px = player.posX;
@@ -76,8 +75,8 @@ public class ReflectionCharm extends Charm {
 				// get the source and amount
 				double amount = ((LivingHurtEvent)event).getAmount();
 				// calculate the new amount
-				double reflectedAmount = amount * entity.getPercent();
-				int range = entity.getDuration();
+				double reflectedAmount = amount * entity.getAmount();
+				double range = entity.getRange();
 				List<EntityMob> mobs = world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(px - range, py - range, pz - range, px + range, py + range, pz + range));
 				mobs.forEach(mob -> {
 					boolean flag = mob.attackEntityFrom(DamageSource.GENERIC, (float) reflectedAmount);
@@ -85,7 +84,8 @@ public class ReflectionCharm extends Charm {
 				});
 
 				// get all the mob within a radius
-				entity.setValue(entity.getValue() - 1.0);
+//				entity.setMana(entity.getMana() - 1.0);
+				applyCost(world, random, coords, player, event, entity, reflectedAmount);
 				result = true;
 			}    		
 		}
@@ -99,15 +99,15 @@ public class ReflectionCharm extends Charm {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.BLUE;
-		tooltip.add("  " + color + getLabel(entity));
-		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.reflection_rate", 
-				Math.toIntExact((long) (entity.getPercent()*100)), entity.getDuration()));
+		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
+		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.reflection", 
+				Math.toIntExact((long) (entity.getAmount()*100)), entity.getRange())));
 	}
 	
 	public static class Builder extends Charm.Builder {
 
-		public Builder(String name, Integer level) {
-			super(ResourceLocationUtil.create(name), REFLECTION_TYPE, level);
+		public Builder(Integer level) {
+			super(ResourceLocationUtil.create(makeName(REFLECTION_TYPE, level)), REFLECTION_TYPE, level);
 		}
 
 		@Override

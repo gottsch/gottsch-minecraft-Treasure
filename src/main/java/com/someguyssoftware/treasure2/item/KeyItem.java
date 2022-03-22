@@ -15,10 +15,11 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
-import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapability;
-import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.EffectiveMaxDamageStorage;
-import com.someguyssoftware.treasure2.capability.IEffectiveMaxDamageCapability;
+import com.someguyssoftware.treasure2.capability.DurabilityCapability;
+import com.someguyssoftware.treasure2.capability.DurabilityCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.DurabilityCapabilityStorage;
+import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -87,7 +88,7 @@ public class KeyItem extends ModItem implements IKeyEffects {
 	 */
 	private double successProbability;
 	
-	private static final EffectiveMaxDamageStorage CAPABILITY_STORAGE = new EffectiveMaxDamageStorage();
+	private static final DurabilityCapabilityStorage CAPABILITY_STORAGE = new DurabilityCapabilityStorage();
 	
 	/**
 	 * 
@@ -109,9 +110,9 @@ public class KeyItem extends ModItem implements IKeyEffects {
 
     @Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-        EffectiveMaxDamageCapabilityProvider provider = new EffectiveMaxDamageCapabilityProvider();
-        IEffectiveMaxDamageCapability cap = provider.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-		cap.setEffectiveMaxDamage(getMaxDamage());
+        DurabilityCapabilityProvider provider = new DurabilityCapabilityProvider();
+        IDurabilityCapability cap = provider.getCapability(TreasureCapabilities.DURABILITY, null);
+		cap.setDurability(getMaxDamage());
 		return provider;
     }
     
@@ -124,8 +125,8 @@ public class KeyItem extends ModItem implements IKeyEffects {
 		NBTTagCompound nbt = null;
 		// read effective max damage cap -> write nbt
 		nbt = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
-				EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, 
-				stack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null), null);
+				TreasureCapabilities.DURABILITY, 
+				stack.getCapability(TreasureCapabilities.DURABILITY, null), null);
 		return nbt;
 	}
 	
@@ -134,8 +135,8 @@ public class KeyItem extends ModItem implements IKeyEffects {
         super.readNBTShareTag(stack, nbt);
         // read nbt -> write key item
         CAPABILITY_STORAGE.readNBT(
-        		EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, 
-				stack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null), 
+        		TreasureCapabilities.DURABILITY, 
+				stack.getCapability(TreasureCapabilities.DURABILITY, null), 
 				null,
 				nbt);
     }
@@ -158,9 +159,9 @@ public class KeyItem extends ModItem implements IKeyEffects {
 		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.rarity", TextFormatting.DARK_BLUE + getRarity().toString()));
         tooltip.add(I18n.translateToLocalFormatted("tooltip.label.category", getCategory()));
 		
-        if (stack.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)) {
-            EffectiveMaxDamageCapability cap = (EffectiveMaxDamageCapability) stack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-            tooltip.add(I18n.translateToLocalFormatted("tooltip.label.uses", cap.getEffectiveMaxDamage() - stack.getItemDamage(), cap.getEffectiveMaxDamage()));
+        if (stack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
+            DurabilityCapability cap = (DurabilityCapability) stack.getCapability(TreasureCapabilities.DURABILITY, null);
+            tooltip.add(I18n.translateToLocalFormatted("tooltip.label.uses", cap.getDurability() - stack.getItemDamage(), cap.getDurability()));
 //            tooltip.add(I18n.translateToLocalFormatted("tooltip.label.effective_max_uses", cap.getEffectiveMaxDamage()));
 //    		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.remaining_uses", cap.getEffectiveMaxDamage() - stack.getItemDamage()));
         }
@@ -206,9 +207,9 @@ public class KeyItem extends ModItem implements IKeyEffects {
      */
 	@Override
     public double getDurabilityForDisplay(ItemStack stack) {
-        if (stack.hasCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null)) {
-            EffectiveMaxDamageCapability cap = (EffectiveMaxDamageCapability) stack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
-            return (double)stack.getItemDamage() / (double) cap.getEffectiveMaxDamage();
+        if (stack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
+            DurabilityCapability cap = (DurabilityCapability) stack.getCapability(TreasureCapabilities.DURABILITY, null);
+            return (double)stack.getItemDamage() / (double) cap.getDurability();
         }
         else {
         	return (double)stack.getItemDamage() / (double)stack.getMaxDamage();
@@ -297,7 +298,7 @@ public class KeyItem extends ModItem implements IKeyEffects {
 				}
                 
                 // get capability
-                IEffectiveMaxDamageCapability cap = heldItemStack.getCapability(EffectiveMaxDamageCapabilityProvider.EFFECTIVE_MAX_DAMAGE_CAPABILITY, null);
+                IDurabilityCapability cap = heldItemStack.getCapability(TreasureCapabilities.DURABILITY, null);
 
 				// check key's breakability
 				if (breakKey) {    
@@ -305,7 +306,7 @@ public class KeyItem extends ModItem implements IKeyEffects {
 					if ((isBreakable() || anyLockBreaksKey(chestTileEntity.getLockStates(), this)) && TreasureConfig.KEYS_LOCKS.enableKeyBreaks) {
 						int damage = heldItemStack.getItemDamage() + (getMaxDamage() - (heldItemStack.getItemDamage() % getMaxDamage()));
                         heldItemStack.setItemDamage(damage);
-                        if (heldItemStack.getItemDamage() >= cap.getEffectiveMaxDamage()) {
+                        if (heldItemStack.getItemDamage() >= cap.getDurability()) {
                             // break key;
                             heldItemStack.shrink(1);
                         }
@@ -328,7 +329,7 @@ public class KeyItem extends ModItem implements IKeyEffects {
 				// user attempted to use key - increment the damage
 				if (isDamageable() && !isKeyBroken) {
                     heldItemStack.setItemDamage(heldItemStack.getItemDamage() + 1);
-                    if (heldItemStack.getItemDamage() >= cap.getEffectiveMaxDamage()) {
+                    if (heldItemStack.getItemDamage() >= cap.getDurability()) {
                         heldItemStack.shrink(1);
                     }
 				}

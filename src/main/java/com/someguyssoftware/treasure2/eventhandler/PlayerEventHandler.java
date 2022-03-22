@@ -19,55 +19,42 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.Year;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
-import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
-import com.someguyssoftware.treasure2.capability.PouchCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.CharmContext;
-import com.someguyssoftware.treasure2.charm.ICharm;
-import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.item.IPouch;
-import com.someguyssoftware.treasure2.item.PouchType;
-import com.someguyssoftware.treasure2.item.TreasureItems;
-import com.someguyssoftware.treasure2.item.charm.ICharmable;
-import com.someguyssoftware.treasure2.item.charm.ICharmed;
-import com.someguyssoftware.treasure2.item.wish.IWishable;
-import com.someguyssoftware.treasure2.network.CharmMessageToClient;
+import com.someguyssoftware.treasure2.item.IWishable;
 
+import baubles.common.items.ItemRing;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import net.minecraftforge.items.IItemHandler;
 
 /**
  * @author Mark Gottschling on Apr 26, 2018
@@ -252,33 +239,33 @@ public class PlayerEventHandler {
 	private void processCharms(Event event, EntityPlayerMP player) {
 		final List<String> nonMultipleUpdateCharms = new ArrayList<>(5);
 
-		// check each hand
-		Optional<CharmContext> context = null;
-		for (EnumHand hand : EnumHand.values()) {
-			context = getCharmContext(player, hand);
-			if (context.isPresent()) {
-				if (context.get().type == CharmedType.CHARM || context.get().type == CharmedType.ADORNMENT) {
-					doCharms(context.get(), player, event, nonMultipleUpdateCharms);
-				}
-				else {
-					doPouch(context.get(), player, event, nonMultipleUpdateCharms);
-				}
-			}
-		}
-
-		// check hotbar - get the context at each slot
-		for (int hotbarSlot = 0; hotbarSlot < 9; hotbarSlot++) {
-			if (player.inventory.getStackInSlot(hotbarSlot) != player.getHeldItemMainhand()) {
-				context = getCharmContext(player, hotbarSlot);
-				if (context.isPresent()) {
-					if (context.get().type == CharmedType.ADORNMENT) {
-						// Treasure.logger.debug("is a hotbar adornment -> {} @ slot -> {}", context.get().itemStack.getItem().getRegistryName(), context.get().slot);
-						// at this point, we know the item in slot x has charm capabilities
-						doCharms(context.get(), player, event, nonMultipleUpdateCharms);
-					}
-				}
-			}
-		}
+//		// check each hand
+//		Optional<CharmContext> context = null;
+//		for (EnumHand hand : EnumHand.values()) {
+//			context = getCharmContext(player, hand);
+//			if (context.isPresent()) {
+//				if (context.get().type == CharmedType.CHARM || context.get().type == CharmedType.ADORNMENT) {
+//					doCharms(context.get(), player, event, nonMultipleUpdateCharms);
+//				}
+//				else {
+////					doPouch(context.get(), player, event, nonMultipleUpdateCharms);
+//				}
+//			}
+//		}
+//
+//		// check hotbar - get the context at each slot
+//		for (int hotbarSlot = 0; hotbarSlot < 9; hotbarSlot++) {
+//			if (player.inventory.getStackInSlot(hotbarSlot) != player.getHeldItemMainhand()) {
+//				context = getCharmContext(player, hotbarSlot);
+//				if (context.isPresent()) {
+//					if (context.get().type == CharmedType.ADORNMENT) {
+//						// Treasure.logger.debug("is a hotbar adornment -> {} @ slot -> {}", context.get().itemStack.getItem().getRegistryName(), context.get().slot);
+//						// at this point, we know the item in slot x has charm capabilities
+//						doCharms(context.get(), player, event, nonMultipleUpdateCharms);
+//					}
+//				}
+//			}
+//		}
 
 		// TODO future integration check Baubles equiped
 
@@ -290,29 +277,30 @@ public class PlayerEventHandler {
 	 * @param player
 	 * @param event
 	 */
+	@Deprecated
 	public void doPouch(CharmContext context, EntityPlayerMP player, Event event, final List<String> nonMultipleUpdateCharms) {
-		// get the capability of the pouch
-		IItemHandler cap = context.itemStack.getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
-		// TODO this slots bit could be better. Maybe pouch item should have number of slots property
-		// scan the first 3 slots of pouch (this only works for pouches... what if in future there are other focuses ?
-		int slots = context.itemStack.getItem() == TreasureItems.LUCKY_POUCH ? 1 : 
-			context.itemStack.getItem() == TreasureItems.APPRENTICES_POUCH ? 2 : 3;
-		for (int focusIndex = 0; focusIndex < slots; focusIndex++) {
-			ItemStack itemStack = cap.getStackInSlot(focusIndex);
-			// update the context to the specific charm
-			context.itemStack = itemStack;
-			context.slot = focusIndex;
-			// TODO a way around instanceof check if to add a property(s) to the charmCapability - boolean charmed and/or boolean charmable.
-			// see 1.16.5 version
-			if (itemStack.getItem() instanceof ICharmed) {
-				context.capability = itemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-				doCharms(context, player, event, nonMultipleUpdateCharms);
-			}
-			else if (itemStack.getItem() instanceof ICharmable) {
-				context.capability = itemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-				doCharms(context, player, event, nonMultipleUpdateCharms);
-			}
-		}
+//		// get the capability of the pouch
+//		IItemHandler cap = context.itemStack.getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
+//		// TODO this slots bit could be better. Maybe pouch item should have number of slots property
+//		// scan the first 3 slots of pouch (this only works for pouches... what if in future there are other focuses ?
+//		int slots = context.itemStack.getItem() == TreasureItems.LUCKY_POUCH ? 1 : 
+//			context.itemStack.getItem() == TreasureItems.APPRENTICES_POUCH ? 2 : 3;
+//		for (int focusIndex = 0; focusIndex < slots; focusIndex++) {
+//			ItemStack itemStack = cap.getStackInSlot(focusIndex);
+//			// update the context to the specific charm
+//			context.itemStack = itemStack;
+//			context.slot = focusIndex;
+//			// TODO a way around instanceof check if to add a property(s) to the charmCapability - boolean charmed and/or boolean charmable.
+//			// see 1.16.5 version
+//			if (itemStack.getItem() instanceof ICharmed) {
+//				context.capability = itemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+//				doCharms(context, player, event, nonMultipleUpdateCharms);
+//			}
+//			else if (itemStack.getItem() instanceof ICharmable) {
+//				context.capability = itemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+//				doCharms(context, player, event, nonMultipleUpdateCharms);
+//			}
+//		}
 	}
 
 	/**
@@ -322,139 +310,139 @@ public class PlayerEventHandler {
 	 * @param event
 	 */
 	private void doCharms(CharmContext context, EntityPlayerMP player, Event event, final List<String> nonMultipleUpdateCharms) {
-		List<ICharmEntity> removeInstances = new ArrayList<>(3);
-		ICharmInventoryCapability capability = context.capability;
-		List<ICharmEntity> charmEntities = capability.getCharmEntities();
-		for (ICharmEntity charmEntity : charmEntities) {
-			boolean isCharmUpdatable = true;
-			ICharm charm = (ICharm)charmEntity.getCharm();
-			// test the charm against the event
-			if (!charm.getRegisteredEvent().equals(event.getClass())) {
-				//				Treasure.logger.debug("charm type -> {} is not register for this event -> {}",charm.getType(), event.getClass().getSimpleName());
-				continue;
-			}
-
-			// Treasure.logger.debug("{} charm allows multiple updates -> {}", charm.getName(), charm.isAllowMultipleUpdates());
-			if (!charm.isEffectStackable()) {
-				// Treasure.logger.debug("{} charm denies multiple updates", charm.getName());
-				// check if in list
-				if (nonMultipleUpdateCharms.contains(charm.getType())) {
-					// Treasure.logger.debug("blacklist contains charm type -> {}", charm.getType());
-					isCharmUpdatable = false;
-				}
-			}
-			else {
-				// Treasure.logger.debug("blacklist doesn't contain charm type -> {}", charm.getType());
-				nonMultipleUpdateCharms.add(charm.getType());
-			}
-
-			// Treasure.logger.debug("is charm {} updatable -> {}", charm.getName(), isCharmUpdatable);
-			if (isCharmUpdatable && 
-					charmEntity.getCharm().update(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event, charmEntity)) {
-				// send state message to client
-				CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmEntity, context.hand, context.slot);
-				//				Treasure.logger.debug("Message to client -> {}", message);
-				Treasure.simpleNetworkWrapper.sendTo(message, player);
-			}
-
-			// mark Charm if instanceof ICharmable and no uses remain
-			if (charmEntity.getValue() <= 0.0 && charmEntity.getCharm() instanceof ICharmable) {
-				Treasure.logger.debug("charm is empty, add to remove list");
-				removeInstances.add(charmEntity);
-			}
-		}
-
-		// remove any charms that have no uses remaining
-		if (!removeInstances.isEmpty()) {
-			removeInstances.forEach(instance -> {
-				charmEntities.remove(instance);
-				// TODO send message to client to remove charm";
-			});
-		}
+//		List<ICharmEntity> removeInstances = new ArrayList<>(3);
+//		ICharmInventoryCapability capability = context.capability;
+//		List<ICharmEntity> charmEntities = capability.getCharmEntities();
+//		for (ICharmEntity charmEntity : charmEntities) {
+//			boolean isCharmUpdatable = true;
+//			ICharm charm = (ICharm)charmEntity.getCharm();
+//			// test the charm against the event
+//			if (!charm.getRegisteredEvent().equals(event.getClass())) {
+//				//				Treasure.logger.debug("charm type -> {} is not register for this event -> {}",charm.getType(), event.getClass().getSimpleName());
+//				continue;
+//			}
+//
+//			// Treasure.logger.debug("{} charm allows multiple updates -> {}", charm.getName(), charm.isAllowMultipleUpdates());
+//			if (!charm.isEffectStackable()) {
+//				// Treasure.logger.debug("{} charm denies multiple updates", charm.getName());
+//				// check if in list
+//				if (nonMultipleUpdateCharms.contains(charm.getType())) {
+//					// Treasure.logger.debug("blacklist contains charm type -> {}", charm.getType());
+//					isCharmUpdatable = false;
+//				}
+//			}
+//			else {
+//				// Treasure.logger.debug("blacklist doesn't contain charm type -> {}", charm.getType());
+//				nonMultipleUpdateCharms.add(charm.getType());
+//			}
+//
+//			// Treasure.logger.debug("is charm {} updatable -> {}", charm.getName(), isCharmUpdatable);
+//			if (isCharmUpdatable && 
+//					charmEntity.getCharm().update(player.world, new Random(), new Coords((int)player.posX, (int)player.posY, (int)player.posZ), player, event, charmEntity)) {
+//				// send state message to client
+//	-->			CharmMessageToClient message = new CharmMessageToClient(player.getName(), charmEntity, context.hand, context.slot);
+//				//				Treasure.logger.debug("Message to client -> {}", message);
+//				Treasure.simpleNetworkWrapper.sendTo(message, player);
+//			}
+//
+//			// mark Charm if instanceof ICharmable and no uses remain
+//			if (charmEntity.getValue() <= 0.0 && charmEntity.getCharm() instanceof ICharmable) {
+//				Treasure.logger.debug("charm is empty, add to remove list");
+//				removeInstances.add(charmEntity);
+//			}
+//		}
+//
+//		// remove any charms that have no uses remaining
+//		if (!removeInstances.isEmpty()) {
+//			removeInstances.forEach(instance -> {
+//				charmEntities.remove(instance);
+//				// TODO send message to client to remove charm";
+//			});
+//		}
 	}
 
-	// TODO ugh, these are terrible. port code from 1.16.5 version
-	/**
-	 * 
-	 * @param player
-	 * @param hand
-	 * @return
-	 */
-	private Optional<CharmContext> getCharmContext(EntityPlayerMP player, EnumHand hand) {
-		CharmContext context = new CharmContext();
-
-		ItemStack heldStack = player.getHeldItem(hand);		
-		context.hand = hand;
-		context.itemStack = heldStack;
-
-		if (heldStack.isEmpty()) {
-			return Optional.empty();
-		}
-
-		Optional<CharmedType> type = getType(heldStack);
-		if (!type.isPresent()) {
-			return Optional.empty();
-		}
-		context.type = type.get();
-		switch(context.type) {
-		// TODO either case now uses the same capability
-		case ADORNMENT:
-			context.capability = heldStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-			break;
-		case CHARM:
-			context.capability = heldStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-			break;		
-		}	
-		return Optional.of(context);
-	}
-
-	@SuppressWarnings("incomplete-switch")
-	Optional<CharmContext> getCharmContext(EntityPlayerMP player, int hotbarSlot) {
-		CharmContext context = new CharmContext();
-
-		ItemStack stack = player.inventory.getStackInSlot(hotbarSlot);
-		if (stack.isEmpty()) {
-			return Optional.empty();
-		}
-		Optional<CharmedType> type = getType(stack);
-		if (!type.isPresent()) {
-			return Optional.empty();
-		}
-
-		context.hotbarSlot = hotbarSlot;
-		context.slot = hotbarSlot;
-		context.itemStack = stack;
-		context.type = type.get();
-		switch(context.type) {
-		case ADORNMENT:
-			context.capability = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-			break;
-		case CHARM:
-			context.capability = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
-			break;		
-		}		
-		return Optional.of(context);
-	}
-
-	/**
-	 * 
-	 * @param stack
-	 * @return
-	 */
-	Optional<CharmedType> getType(ItemStack stack) {
-		CharmedType type = null;
-		if (stack.getItem() instanceof ICharmed) {
-			type = CharmedType.CHARM;
-		}
-		else if (stack.getItem() instanceof ICharmable) {
-			type = CharmedType.ADORNMENT;
-		}
-		else if(stack.getItem() instanceof IPouch && ((IPouch)stack.getItem()).getPouchType() == PouchType.ARCANE) {
-			type = CharmedType.FOCUS;
-		}
-
-		return Optional.ofNullable(type);
-	}
+//	// TODO ugh, these are terrible. port code from 1.16.5 version
+//	/**
+//	 * 
+//	 * @param player
+//	 * @param hand
+//	 * @return
+//	 */
+//	private Optional<CharmContext> getCharmContext(EntityPlayerMP player, EnumHand hand) {
+//		CharmContext context = new CharmContext();
+//
+//		ItemStack heldStack = player.getHeldItem(hand);		
+//		context.hand = hand;
+//		context.itemStack = heldStack;
+//
+//		if (heldStack.isEmpty()) {
+//			return Optional.empty();
+//		}
+//
+//		Optional<CharmedType> type = getType(heldStack);
+//		if (!type.isPresent()) {
+//			return Optional.empty();
+//		}
+//		context.type = type.get();
+//		switch(context.type) {
+//		// TODO either case now uses the same capability
+//		case ADORNMENT:
+//			context.capability = heldStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+//			break;
+//		case CHARM:
+//			context.capability = heldStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+//			break;		
+//		}	
+//		return Optional.of(context);
+//	}
+//
+//	@SuppressWarnings("incomplete-switch")
+//	Optional<CharmContext> getCharmContext(EntityPlayerMP player, int hotbarSlot) {
+//		CharmContext context = new CharmContext();
+//
+//		ItemStack stack = player.inventory.getStackInSlot(hotbarSlot);
+//		if (stack.isEmpty()) {
+//			return Optional.empty();
+//		}
+//		Optional<CharmedType> type = getType(stack);
+//		if (!type.isPresent()) {
+//			return Optional.empty();
+//		}
+//
+//		context.hotbarSlot = hotbarSlot;
+//		context.slot = hotbarSlot;
+//		context.itemStack = stack;
+//		context.type = type.get();
+//		switch(context.type) {
+//		case ADORNMENT:
+//			context.capability = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+//			break;
+//		case CHARM:
+//			context.capability = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+//			break;		
+//		}		
+//		return Optional.of(context);
+//	}
+//
+//	/**
+//	 * 
+//	 * @param stack
+//	 * @return
+//	 */
+//	Optional<CharmedType> getType(ItemStack stack) {
+//		CharmedType type = null;
+//		if (stack.getItem() instanceof ICharmed) {
+//			type = CharmedType.CHARM;
+//		}
+//		else if (stack.getItem() instanceof ICharmable) {
+//			type = CharmedType.ADORNMENT;
+//		}
+//		else if(stack.getItem() instanceof IPouch && ((IPouch)stack.getItem()).getPouchType() == PouchType.ARCANE) {
+//			type = CharmedType.FOCUS;
+//		}
+//
+//		return Optional.ofNullable(type);
+//	}
 
 	/**
 	 * 
@@ -465,18 +453,51 @@ public class PlayerEventHandler {
 		if (WorldInfo.isClientSide(event.getPlayer().world)) {
 			return;
 		}
-
+		Treasure.logger.debug("{} tossing item -> {}", event.getPlayer().getName(), event.getEntityItem().getItem().getDisplayName());
 		Item item = event.getEntityItem().getItem().getItem();
 		if (item instanceof IWishable) {
 			ItemStack stack = event.getEntityItem().getItem();
 			NBTTagCompound nbt = new NBTTagCompound();
-			//			nbt.setString(IWishable.DROPPED_BY_KEY, event.getPlayer().getName());
-			Treasure.logger.debug("player {}'s uuid -> {}", event.getPlayer().getName(), EntityPlayer.getUUID(event.getPlayer().getGameProfile()).toString());
 			nbt.setString(IWishable.DROPPED_BY_KEY, EntityPlayer.getUUID(event.getPlayer().getGameProfile()).toString());
 			stack.setTagCompound(nbt);			
 		}		
 	}
-
+	
+	@SubscribeEvent
+	public void onItemCollisionEvent(GetCollisionBoxesEvent event) {
+		if (WorldInfo.isClientSide(event.getWorld())) {
+			return;
+		}
+		if (event.getEntity() != null &&  event.getEntity().isInWater() && (event.getEntity() instanceof EntityItem)) {
+			EntityItem entity = (EntityItem) event.getEntity();
+			if (entity.getItem().getItem() instanceof IWishable) {
+				Treasure.logger.debug("wishable item colliding -> {} aabb -> {}", event.getEntity(), event.getAabb());
+				IWishable wishable = (IWishable) entity.getItem().getItem();
+				
+				// get the item
+				Item wealth = entity.getItem().getItem();
+				// execute the item's update one last time (since we are intercepting before the call is made)
+				wealth.onEntityItemUpdate(entity);
+				// destroy item
+				entity.setDead();
+			}
+		}
+	}
+	
+//	@SubscribeEvent
+//	public void addCapabilityToolTip(ItemTooltipEvent event) {
+//		if (event.getEntityPlayer() != null) {
+//			// TODO need to check register - don't want to add to built-in items that already have capabilities
+//			ItemStack stack = event.getItemStack();
+//			if (stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+//				ICharmableCapability cap = stack.getCapability(TreasureCapabilities.CHARMABLE, null);
+//				cap.appendHoverText(stack, event.getEntityPlayer().world, event.getToolTip(), TooltipFlags.NORMAL);
+//			}
+//		}
+//	}
+	
+	// TODO add tooltip "wishable" to Diamond and Emerald when the Wishable strategy is created/cleaned up
+	
 	/**
 	 * @return the mod
 	 */
@@ -489,22 +510,6 @@ public class PlayerEventHandler {
 	 */
 	public void setMod(IMod mod) {
 		this.mod = mod;
-	}
-
-	/**
-	 * 
-	 * @author Mark Gottschling on Apr 30, 2020
-	 *
-	 */
-	public class CharmContext {
-		EnumHand hand;
-		Integer slot;
-		Integer hotbarSlot;
-		ItemStack itemStack;
-		CharmedType type;
-		ICharmInventoryCapability capability;
-
-		CharmContext() {}
 	}
 
 	public enum CharmedType {

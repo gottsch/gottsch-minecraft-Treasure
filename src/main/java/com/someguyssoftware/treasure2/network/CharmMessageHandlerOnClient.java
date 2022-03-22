@@ -19,14 +19,15 @@
  */
 package com.someguyssoftware.treasure2.network;
 
+import java.util.List;
+import java.util.UUID;
+
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
-import com.someguyssoftware.treasure2.capability.PouchCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
-import com.someguyssoftware.treasure2.item.charm.ICharmable;
-import com.someguyssoftware.treasure2.item.charm.ICharmed;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -37,7 +38,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.items.IItemHandler;
 
 /**
  * Derived from MinecraftByExample by The Grey Ghost.
@@ -45,6 +45,7 @@ import net.minecraftforge.items.IItemHandler;
  *
  */
 public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessageToClient, IMessage> {
+	
 	  /**
 	   * Called when a message is received of the appropriate type.
 	   * CALLED BY THE NETWORK THREAD, NOT THE CLIENT THREAD
@@ -85,60 +86,41 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 	  void processMessage(WorldClient worldClient, CharmMessageToClient message) {
 		  Treasure.logger.debug("received charm message -> {}", message);
 		  try {
-	        EntityPlayer player = worldClient.getPlayerEntityByName(message.getPlayerName());
-
+//	        EntityPlayer player = worldClient.getPlayerEntityByName(message.getPlayerName());
+	        EntityPlayer player = worldClient.getPlayerEntityByUUID(UUID.fromString(message.getPlayerName()));
+	        
 	        if (player != null) {
 //	        	Treasure.logger.debug("valid player -> {}", message.getPlayerName());
 	        	// check hands first
 	        	if (message.getHand() != null) {
-		        	Treasure.logger.debug("valid hand -> {}", message.getHand());
+//		        	Treasure.logger.debug("valid hand -> {}", message.getHand());
 	        		// get the item for the hand
 	        		ItemStack heldItemStack = player.getHeldItem(message.getHand());
 	        		// determine what is being held in hand
 	        		if (heldItemStack != null) {
-	        			Treasure.logger.debug("holding item -> {}", heldItemStack.getItem().getRegistryName());
-	        			if (heldItemStack.hasCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null)) {
-	        				Treasure.logger.debug("has pouch cap");
-	        				// pouch - get item from slot
-	        				if (message.getSlot() != null && message.getSlot() > -1) {
-	        					IItemHandler pouchCap = heldItemStack.getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
-	        					ItemStack pouchStack = pouchCap.getStackInSlot(message.getSlot());
-	    	        			if (pouchStack != null && pouchStack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
-	    	        				updateCharms(pouchStack, message, pouchStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
-	    	        			}
-//	        					if (heldItemStack.getItem() instanceof ICharmed) {
-//	        						updateCharms(charmedItemStack, message, charmedItemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
-//	        					}
-//	        					else if (heldItemStack.getItem() instanceof ICharmable) {
-//	        						updateCharms(charmedItemStack, message, charmedItemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
-//	        					}
-	        				}
+//	        			Treasure.logger.debug("holding item -> {}", heldItemStack.getItem().getRegistryName());
+	        			if (heldItemStack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+	        				updateCharms(heldItemStack, message, heldItemStack.getCapability(TreasureCapabilities.CHARMABLE, null));
 	        			}
-	        			else if (heldItemStack != null && heldItemStack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
-	        				updateCharms(heldItemStack, message, heldItemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
-	        			}
-//	        			else if (heldItemStack.getItem() instanceof ICharmed) {
-//	        				Treasure.logger.debug("has charmED cap");
-//		        			updateCharms(heldItemStack, message, heldItemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
-//		        		}
-//	        			else if (heldItemStack.getItem() instanceof ICharmable) {
-//	        				Treasure.logger.debug("has charmABLE cap");
-//		        			updateCharms(heldItemStack, message, heldItemStack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
-//		        		}
 	        		}
 	        	}
 	        	else if (BaublesIntegration.BAUBLES_MOD_ID.equals(message.getSlotProviderId())) {
+//	        		Treasure.logger.debug("it is a baubles slot provider");
 	        		ItemStack stack = BaublesIntegration.getStackInSlot(player, message.getSlot());
-	        		if (stack != null && stack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
-	        			updateCharms(stack, message, stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
+	        		
+//	        		if (stack != null) Treasure.logger.debug("item in baubles slot -> {} -> {}", message.getSlot(), stack.getItem().getRegistryName());
+	        		
+	        		if (stack != null && stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+//		        		Treasure.logger.debug("baubles item has charmable cap");
+	        			updateCharms(stack, message, stack.getCapability(TreasureCapabilities.CHARMABLE, null));
 	        		}
 	        	}
 	        	// hotbar
 	        	else {
 	        		ItemStack stack = player.inventory.getStackInSlot(message.getSlot());
 	        		if (stack != null /*&& stack.getItem() instanceof ICharmable*/) {
-	        			if (stack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
-	        				updateCharms(stack, message, stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null));
+	        			if (stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+	        				updateCharms(stack, message, stack.getCapability(TreasureCapabilities.CHARMABLE, null));
 	        			}
 	        		}
 	        	}	        	
@@ -151,22 +133,35 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 
 	  /**
 	   * 
-	   * @param heldItemStack
+	   * @param itemStack
 	   * @param message
 	   * @param capability
 	   */
-	private void updateCharms(ItemStack heldItemStack, CharmMessageToClient message, ICharmInventoryCapability capability) {
+	private void updateCharms(ItemStack itemStack, CharmMessageToClient message, ICharmableCapability capability) {
 		// get the charm that is being sent
 		ResourceLocation charmName = new ResourceLocation(message.getCharmName());
 		// cycle through the charm states to find the named charm
-		for(ICharmEntity entity : capability.getCharmEntities()) {
-			if (entity.getCharm().getName().equals(charmName)) {
+		List<ICharmEntity> entityList = (List<ICharmEntity>) capability.getCharmEntities().get(message.getInventoryType());
+		if (entityList != null && !entityList.isEmpty() && entityList.size() > message.getIndex()) {
+			ICharmEntity entity = entityList.get(message.getIndex());
+//    		Treasure.logger.debug("looking for charm -> {} at index -> {}", entity, message.getIndex());
+			if (entity != null && entity.getCharm().getName().equals(charmName)) {
+//	        	Treasure.logger.debug("found charm, updating...");
+				// update entity properties
 				entity.update(message.getEntity());
-				if (entity.getValue() <= 0.0) {
-					// TODO should each charm have it's own way of checking empty?
-					capability.getCharmEntities().remove(entity);
+				
+				// NOTE yes, remove innate charms from Adornments - they can't be recharged
+				if (message.getInventoryType() == InventoryType.INNATE && entity.getMana() <= 0.0) {
+					capability.remove(message.getInventoryType(), message.getIndex());
 				}
-				break;
+				// TODO probably need to remove imbue as well
+				
+
+				// update Durability 
+				if (itemStack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
+					itemStack.setItemDamage(message.getItemDamage());
+				}
+//				break;
 			}
 		}
 	}
