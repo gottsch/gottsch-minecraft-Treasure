@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.charm.cost.ICostEvaluator;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -41,24 +42,30 @@ public interface ICharm {
 	public ResourceLocation getName();
 	public String getType();
 	public int getLevel();
-	public double getMaxValue();
-	public int getMaxDuration();
-	public double getMaxPercent();
+	public double getMana();
+	public int getDuration();
+	public double getFrequency();
 	public Rarity getRarity();
 	public int getPriority();
+	public double getRange();
+	public double getCooldown();
+	public double getAmount();
 	public boolean isEffectStackable();
-    
+	public boolean isExclusive();
+	public int getRecharges();	
+	
+	public ICharmEntity createEntity();
+	public ICharmEntity createEntity(ICharmEntity entity);
+	
     public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity);
 
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, ICharmEntity entity);
     
 	public NBTTagCompound save(NBTTagCompound nbt);
 	
-	/**
-	 * 
-	 */
-	ICharmEntity createEntity();
-	boolean isCurse();
+	public boolean isCurse();
+	
 	public Class<?> getRegisteredEvent();
-
+	
+	ICostEvaluator getCostEvaluator();
 }

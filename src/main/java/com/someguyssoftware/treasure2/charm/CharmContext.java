@@ -22,7 +22,8 @@ package com.someguyssoftware.treasure2.charm;
 import java.util.Comparator;
 import java.util.function.Consumer;
 
-import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -34,13 +35,11 @@ import net.minecraft.util.EnumHand;
  */
 public class CharmContext {
 	private EnumHand hand;
-	private boolean pouch;
 	private String slotProviderId;
 	private Integer slot;
-//	private Integer hotbarSlot;
 	private ItemStack itemStack;
-	private ICharmInventoryCapability capability;
-	private Type type;
+	private ICharmableCapability capability;
+	private InventoryType type;
 	private int index;
 	private ICharmEntity entity;
 	
@@ -50,7 +49,6 @@ public class CharmContext {
 	 */
 	CharmContext(Builder builder) {
 		this.hand = builder.hand;
-		this.pouch = builder.pouch;
 		this.slotProviderId = builder.slotProviderId;
 		this.slot = builder.slot;
 		this.itemStack = builder.itemStack;
@@ -58,7 +56,6 @@ public class CharmContext {
 		this.type = builder.type;
 		this.index = builder.index;
 		this.entity = builder.entity;
-//		this.hotbarSlot = builder.hotbarSlot;
 	}
 	
 	public static Comparator<CharmContext> priorityComparator = new Comparator<CharmContext>() {
@@ -79,24 +76,13 @@ public class CharmContext {
 	/*
 	 * 
 	 */
-	public enum Type {
-		CHARM,
-		FOCUS,
-		ADORNMENT
-	}
-	
-	/*
-	 * 
-	 */
 	public static class Builder {
 		public EnumHand hand;
-		public boolean pouch;
 		public String slotProviderId;
 		public Integer slot;
-//		public Integer hotbarSlot;
 		public ItemStack itemStack;
-		public ICharmInventoryCapability capability;
-		public Type type;
+		public ICharmableCapability capability;
+		public InventoryType type;
 		public int index;
 		public ICharmEntity entity;
 		
@@ -113,10 +99,6 @@ public class CharmContext {
 	public EnumHand getHand() {
 		return hand;
 	}
-
-	public boolean getPouch() {
-		return pouch;
-	}
 	
 	public String getSlotProviderId() {
 		return slotProviderId;
@@ -130,11 +112,11 @@ public class CharmContext {
 		return itemStack;
 	}
 
-	public ICharmInventoryCapability getCapability() {
+	public ICharmableCapability getCapability() {
 		return capability;
 	}
 
-	public Type getType() {
+	public InventoryType getType() {
 		return type;
 	}
 
@@ -145,11 +127,13 @@ public class CharmContext {
 	public ICharmEntity getEntity() {
 		return entity;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "CharmContext [hand=" + hand + ", pouch=" + pouch + ", slotProviderId=" + slotProviderId + ", slot=" + slot
+		return "CharmContext [hand=" + hand + ", slotProviderId=" + slotProviderId + ", slot=" + slot
 				+ ", itemStack=" + itemStack == null ? "N/A" : itemStack.getDisplayName()
-						+ "type=" + type + "]";
+				+ ", capability=" + capability + ", type=" + type + ", index=" + index + ", entity="
+				+ entity + "]";
 	}
+
 }

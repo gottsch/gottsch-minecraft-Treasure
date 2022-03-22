@@ -80,37 +80,6 @@ public class WitherLogSoulBlock extends CardinalDirectionFacadeBlock
 	}
 
 	/**
-	 * 
-	 */
-	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		// check the 4x4x4 area and set all fog blocks to CHECK_DECAY = true
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-
-		// if all the blocks in the immediate area are loaded
-		if (worldIn.isAreaLoaded(new BlockPos(x - 5, y - 5, z - 5), new BlockPos(x + 5, y + 5, z + 5))) {
-			// use a MutatableBlockPos instead of Cube\Coords or BlockPos to say the
-			// recreation of many objects
-			BlockPos.MutableBlockPos mbp = new BlockPos.MutableBlockPos();
-
-			for (int x1 = -5; x1 <= 5; ++x1) {
-				for (int y1 = -5; y1 <= 5; ++y1) {
-					for (int z1 = -5; z1 <= 5; ++z1) {
-						// that just checks a value.
-						IBlockState inspectBlockState = worldIn.getBlockState(mbp.setPos(x + x1, y + y1, z + z1));
-						if (inspectBlockState.getMaterial() == TreasureItems.FOG) {
-							worldIn.setBlockState(mbp, inspectBlockState.withProperty(FogBlock.CHECK_DECAY, true));
-						}
-					}
-				}
-			}
-		}
-		super.breakBlock(worldIn, pos, state);
-	}
-
-	/**
 	 * NOTE randomDisplayTick is on the client side only. The server is not keeping
 	 * track of any particles NOTE cannot control the number of ticks per
 	 * randomDisplayTick() call - it is not controlled by tickRate()

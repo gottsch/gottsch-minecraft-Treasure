@@ -17,6 +17,10 @@ public class ResourceLocationUtil {
 		return hasDomain(name) ? new ResourceLocation(name) : new ResourceLocation(Treasure.MODID, name);
 	}
 	
+	public static ResourceLocation create(String domain, String name) {
+		return new ResourceLocation(domain, name);
+	}
+	
 	public static boolean hasDomain(String name) {
 		return name.indexOf(":") >= 0;
 	}

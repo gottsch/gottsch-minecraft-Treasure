@@ -37,7 +37,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.ICharmInventoryCapability;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
@@ -56,6 +56,7 @@ import net.minecraft.world.storage.loot.functions.LootFunction;
  * @author Mark Gottschling on May 2, 2020
  *
  */
+@Deprecated
 public class SetCharms extends LootFunction {
 	private List<ICharm> charms;
 
@@ -73,21 +74,21 @@ public class SetCharms extends LootFunction {
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
 
         // ensure that the stack has charm capabilities
-        ICharmInventoryCapability charmCap = null;
+        ICharmableCapability charmCap = null;
 //		if (stack.getItem() instanceof ICharmed) {
 //			charmCap = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
 //		}
 //		else if (stack.getItem() instanceof ICharmable) {
 //			charmCap = stack.getCapability(CharmableCapabilityProvider.CHARM_CAPABILITY, null);
 //        }
-        if (stack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
-        	charmCap = stack.getCapability(TreasureCapabilities.CHARM_INVENTORY, null);
+        if (stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+        	charmCap = stack.getCapability(TreasureCapabilities.CHARMABLE, null);
         }
         
         if (charmCap != null) {
 		// if (stack.hasCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null)) {
 		// 	ICharmCapability provider = stack.getCapability(CharmCapabilityProvider.CHARM_CAPABILITY, null);
-			List<ICharmEntity> charmEntities = charmCap.getCharmEntities();
+			List<ICharmEntity> charmEntities = (List<ICharmEntity>) charmCap.getCharmEntities().values();
 
 			if (!this.charms.isEmpty()) {
 				for (ICharm charm : charms) {

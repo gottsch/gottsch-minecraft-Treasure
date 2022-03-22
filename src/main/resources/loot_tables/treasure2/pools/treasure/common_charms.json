@@ -1,0 +1,84 @@
+{
+	"version": "3.0",
+	"pools": [
+		{
+			"name": "common_charms",
+			"rolls": 1,
+			"entries": [
+			{
+				"entryName": "charm0",
+				"type": "item",
+				"name": "treasure2:copper_charm",
+				"weight": 20,
+				"conditions": [{
+				"condition": "random_chance",
+				"chance": 0.1
+				}],	
+				"functions": [
+					{
+						"function": "treasure2:random_charm",
+						"rarity": "common",
+						"defaultCharm": "treasure2:healing_1"
+					}
+				]
+				},
+				{
+					"entryName": "charm1",
+					"type": "item",
+					"name": "treasure2:silver_charm",
+					"weight": 20,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.1
+						}
+					],
+					"functions": [
+						{
+							"function": "treasure2:random_charm",
+							"levels": {
+								"min": 3,
+								"max": 6
+							},
+							"defaultCharm": "treasure2:healing_3"
+						}
+					]
+				},				
+				{
+					"entryName": "peasants_fortune",
+					"type": "item",
+					"name": "treasure2:peasants_fortune",
+					"weight": 10,
+					"quality": 3,
+					"conditions": [
+						{
+							"condition": "random_chance",
+							"chance": 0.05
+						}
+					]
+				},
+				{
+					"entryName": "adornment0",
+					"type": "item",
+					"name": "treasure2:iron_ring",
+					"weight": 10,
+					"conditions": [{
+						"condition": "random_chance",
+						"chance": 0.1
+					}],
+					"functions": [{
+						"function": "treasure2:random_adornment",
+						"levels": {
+							"min": 2,
+							"max": 5
+						},
+						"materials": [
+							"treasure2:iron",
+							"treasure2:copper"
+						]
+					}]
+				}
+			]
+		}
+	]
+}

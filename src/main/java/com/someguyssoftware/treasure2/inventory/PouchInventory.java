@@ -7,6 +7,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.PouchCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -41,8 +42,8 @@ public class PouchInventory implements IInventory {
         // save a ref to the item stack
 		this.itemStack = stack;
 		
-		if (stack.hasCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null)) {
-			IItemHandler cap = stack.getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
+		if (stack.hasCapability(TreasureCapabilities.POUCH, null)) {
+			IItemHandler cap = stack.getCapability(TreasureCapabilities.POUCH, null);
 			readInventory(cap);
 		}
 	}
@@ -224,8 +225,8 @@ public class PouchInventory implements IInventory {
 		/*
 		 *  write the locked state to the nbt
 		 */
-		if (getItemStack().hasCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null)) {
-			IItemHandler itemHandler = getItemStack().getCapability(PouchCapabilityProvider.INVENTORY_CAPABILITY, null);
+		if (getItemStack().hasCapability(TreasureCapabilities.POUCH, null)) {
+			IItemHandler itemHandler = getItemStack().getCapability(TreasureCapabilities.POUCH, null);
 			// persist 
 			writeInventory(itemHandler);
 		}

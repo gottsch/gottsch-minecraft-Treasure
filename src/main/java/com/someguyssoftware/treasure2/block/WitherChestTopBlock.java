@@ -110,36 +110,6 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy
 		}
 	}
 	
-	/**
-	 * 
-	 */
-//	@Override
-//	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
-//		super.onBlockDestroyedByPlayer(worldIn, pos, state);
-//		BlockPos downPos = pos.down();
-//		// destory placeholder above
-//		Block downBlock = worldIn.getBlockState(downPos).getBlock();
-//		if (downBlock == TreasureBlocks.WITHER_CHEST) {
-//			downBlock.onBlockDestroyedByPlayer(worldIn, downPos, state);
-//			worldIn.setBlockToAir(downPos);
-//		}
-//	}
-	
-	/**
-	 * 
-	 */
-//	@Override
-//	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
-//		super.onBlockDestroyedByExplosion(worldIn, pos, explosionIn);
-//		BlockPos downPos = pos.down();
-//		// destory placeholder above
-//		Block downBlock = worldIn.getBlockState(downPos).getBlock();
-//		if (downBlock == TreasureBlocks.WITHER_CHEST) {
-//			downBlock.onBlockDestroyedByExplosion(worldIn, downPos, explosionIn);
-//			worldIn.setBlockToAir(downPos);
-//		}
-//	}
-	
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return null;
@@ -170,12 +140,4 @@ public class WitherChestTopBlock extends ModBlock implements ITreasureChestProxy
 	public EnumBlockRenderType getRenderType(IBlockState iBlockState) {
 		return EnumBlockRenderType.INVISIBLE;
 	}
-	
-//    public boolean canCollideCheck(IBlockState state, boolean hitIfLiquid) {
-//        return false;
-//    }
-//    
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-//        return BlockFaceShape.UNDEFINED;
-//    }
 }

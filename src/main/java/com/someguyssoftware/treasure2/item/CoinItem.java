@@ -46,7 +46,8 @@ import net.minecraft.world.storage.loot.LootPool;
  * @author Mark Gottschling on Sep 13, 2014
  *
  */
-public class CoinItem extends ModItem implements IWishable, IPouchable {
+@Deprecated
+public class CoinItem extends ModItem implements IWishable {
 	private static final int MAX_CUSTOM_STACK_SIZE = 64;
 	public static final int MAX_STACK_SIZE = 8;
 		
@@ -58,7 +59,7 @@ public class CoinItem extends ModItem implements IWishable, IPouchable {
 	public CoinItem (String modID, String name)	 {
 		super();
 		this.setItemName(modID, name);
-		this.setMaxStackSize(Math.min(MAX_CUSTOM_STACK_SIZE, TreasureConfig.COINS.maxStackSize));
+//		this.setMaxStackSize(Math.min(MAX_CUSTOM_STACK_SIZE, TreasureConfig.WEALTH.maxStackSize));
 		this.setCreativeTab(Treasure.TREASURE_TAB);
 		// set the coin to gold by default
 		this.coin = Coins.GOLD;

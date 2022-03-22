@@ -15,6 +15,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Apr 24, 2020
  *
  */
+@Deprecated
 public class WishingWell implements IWishProvider {
 
 	@Override

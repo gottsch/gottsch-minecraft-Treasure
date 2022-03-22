@@ -1,9 +1,11 @@
 {
-	"version" : "2.0",
+	"version" : "3.0",
+	"since":"mc1.12.2-v2.0.0",
 	"category": "general",
 	"rarity": "common",
 	"pools": [
 		{
+			"__comment": "do not rename nor remove. mod searches for this pool.",					
 			"name": "treasure",
 			"rolls": 2,
 			"bonus_rolls": 1.0,
@@ -11,10 +13,22 @@
 				{
 					"type": "loot_table",
 					"name": "treasure2:pools/treasure/common",
-					"weight": 30
+					"weight": 1
 				}
 			]
 		},
+		{
+			"__comment": "do not rename nor remove. mod searches for this pool.",		
+			"name": "charms",
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "loot_table",
+					"name": "treasure2:pools/treasure/common_charms",
+					"weight": 1
+				}
+			]
+		},		
 		{
 			"name": "items",
 			"rolls": {

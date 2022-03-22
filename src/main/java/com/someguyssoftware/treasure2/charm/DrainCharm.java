@@ -21,9 +21,11 @@ package com.someguyssoftware.treasure2.charm;
 
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.ws.Holder;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
@@ -74,31 +76,33 @@ public class DrainCharm extends Charm {
 	@Override
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-		if (world.getTotalWorldTime() % (TICKS_PER_SECOND * 5) == 0) {
-			if (entity.getValue() > 0 && player.getHealth() < player.getMaxHealth() && !player.isDead) {
+
+		if (world.getTotalWorldTime() % entity.getFrequency() == 0) {
+			if (entity.getMana() > 0 && player.getHealth() < player.getMaxHealth() && !player.isDead) {
 				// get player position
 				double px = player.posX;
 				double py = player.posY;
 				double pz = player.posZ;
 
 				// calculate the new amount
-				int range = entity.getDuration();
-				Holder<Integer> drainedHealth = new Holder<>(0);
+				double range = entity.getRange();
+				AtomicDouble drainedHealth = new AtomicDouble(0);
 				List<EntityMob> mobs = world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(px - range, py - range, pz - range, px + range, py + range, pz + range));
 				if (mobs.isEmpty()) {
 					return result;
 				}
 				mobs.forEach(mob -> {
-					boolean flag = mob.attackEntityFrom(DamageSource.GENERIC, 1.0F);
+					boolean flag = mob.attackEntityFrom(DamageSource.GENERIC, (float)getAmount());
 					Treasure.logger.debug("health drained from mob -> {} was successful -> {}", mob.getName(), flag);
 					if (flag) {
-						drainedHealth.value++;
+						drainedHealth.addAndGet(getAmount());
 					}
 				});
 
-				if (drainedHealth.value > 0) {
-					player.setHealth(MathHelper.clamp(player.getHealth() + drainedHealth.value, 0.0F, player.getMaxHealth()));		
-					entity.setValue(MathHelper.clamp(entity.getValue() - 1D,  0D, entity.getValue()));
+				if (drainedHealth.get() > 0.0) {
+					player.setHealth(MathHelper.clamp(player.getHealth() + (float)drainedHealth.get(), 0.0F, player.getMaxHealth()));		
+					//					entity.setMana(MathHelper.clamp(entity.getMana() - 1D,  0D, entity.getMana()));
+					applyCost(world, random, coords, player, event, entity, 1.0);
 					result = true;
 				}                
 			}
@@ -114,14 +118,14 @@ public class DrainCharm extends Charm {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.RED;
-		tooltip.add("  " + color + getLabel(entity));
-		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.drain_rate", entity.getDuration()));
+		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
+		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.drain", entity.getDuration())));
 	}
 	
 	public static class Builder extends Charm.Builder {
 
-		public Builder(String name, Integer level) {
-			super(ResourceLocationUtil.create(name), DRAIN_TYPE, level);
+		public Builder(Integer level) {
+			super(ResourceLocationUtil.create(makeName(DRAIN_TYPE, level)), DRAIN_TYPE, level);
 		}
 
 		@Override

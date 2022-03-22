@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
  * @author Mark Gottschling on May 18, 2020
  *
  */
+@Deprecated
 public class ArcanePouchSlot extends PouchSlot {
 
 	/**
@@ -34,7 +35,7 @@ public class ArcanePouchSlot extends PouchSlot {
     public boolean isItemValid(ItemStack stack) {
 		boolean result = super.isItemValid(stack);
 		if (result) {
-			if (!stack.hasCapability(TreasureCapabilities.CHARM_INVENTORY, null)) {
+			if (!stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
 				Treasure.logger.debug("item is not charmed, disallowed in arcane pouch slot");
 				result = false;
 			}

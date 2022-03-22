@@ -22,6 +22,7 @@ package com.someguyssoftware.treasure2.capability;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.items.IItemHandler;
 
 /**
  * 
@@ -30,13 +31,29 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
  */
 public class TreasureCapabilities {
 	// TODO migrate all capabilites here
-	@CapabilityInject(ICharmInventoryCapability.class)
-	public static Capability<ICharmInventoryCapability> CHARM_INVENTORY = null;
+
+	@CapabilityInject(ICharmableCapability.class)
+	public static Capability<ICharmableCapability> CHARMABLE = null;
+
+	@CapabilityInject(IRunestonesCapability.class)
+	public static Capability<IRunestonesCapability> RUNESTONES = null;
+	
+	@CapabilityInject(IDurabilityCapability.class)
+	public static Capability<IDurabilityCapability> DURABILITY = null;
+		
+	@CapabilityInject(IItemHandler.class)
+	public static Capability<IItemHandler> POUCH = null;
+	
+	@CapabilityInject(IPouchableCapability.class)
+	public static Capability<IPouchableCapability> POUCHABLE = null;
 	
 	/**
 	 * 
 	 */
 	public static void register() {
-        CapabilityManager.INSTANCE.register(ICharmInventoryCapability.class, new CharmInventoryCapabilityStorage(), CharmInventoryCapability::new);
+        CapabilityManager.INSTANCE.register(ICharmableCapability.class, new CharmableCapabilityStorage(), CharmableCapability::create);
+        CapabilityManager.INSTANCE.register(IRunestonesCapability.class, new RunestonesCapabilityStorage(), RunestonesCapability::create);
+        CapabilityManager.INSTANCE.register(IDurabilityCapability.class, new DurabilityCapabilityStorage(), DurabilityCapability::new);
+        CapabilityManager.INSTANCE.register(IPouchableCapability.class, new PouchableCapabilityStorage(), PouchableCapability::new);
   	}
 }

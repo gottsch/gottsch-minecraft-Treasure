@@ -66,17 +66,24 @@ public class FireImmunityCharm extends Charm {
 		if (!((LivingDamageEvent)event).getSource().isFireDamage()) {
 			return result;
 		}
-		if (entity.getValue() > 0 && !player.isDead) {
+		double newAmount = 0F;
+		if (entity.getMana() > 0 && !player.isDead) {
 			// get the fire damage amount
 			double amount = ((LivingDamageEvent)event).getAmount();
 
-			if (entity.getValue() >= amount) {
-				entity.setValue(entity.getValue() - amount);
+//			if (entity.getMana() >= amount) {
+//				entity.setMana(entity.getMana() - amount);
+//				event.setCanceled(true); // don't want to continue to other charms and incur durability cost
+//			}
+//			else {
+//				newAmount = (((LivingDamageEvent)event).getAmount() - (float)entity.getMana());
+//				entity.setMana(0);
+//			}
+			double cost = applyCost(world, random, coords, player, event, entity, amount);
+			if (cost < amount) {
+				newAmount =+ (amount - cost);
 			}
-			else {
-				entity.setValue(0);
-			}
-			((LivingDamageEvent)event).setAmount(0F);
+			((LivingDamageEvent)event).setAmount((float) newAmount);
 			result = true;
 		}    		
 		return result;
@@ -89,13 +96,13 @@ public class FireImmunityCharm extends Charm {
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.RED;
 		tooltip.add("  " + color + getLabel(entity));
-		tooltip.add(" " + TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.fire_immunity_rate"));
+		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.fire_immunity")));
 	}
 	
 	public static class Builder extends Charm.Builder {
 
-		public Builder(String name, Integer level) {
-			super(ResourceLocationUtil.create(name), FIRE_IMMUNITY_TYPE, level);
+		public Builder(Integer level) {
+			super(ResourceLocationUtil.create(makeName(FIRE_IMMUNITY_TYPE, level)), FIRE_IMMUNITY_TYPE, level);
 		}
 
 		@Override

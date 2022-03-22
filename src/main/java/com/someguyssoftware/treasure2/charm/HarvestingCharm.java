@@ -24,9 +24,6 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.item.IPouch;
-import com.someguyssoftware.treasure2.item.charm.ICharmable;
-import com.someguyssoftware.treasure2.item.charm.ICharmed;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.block.Block;
@@ -69,7 +66,7 @@ public class HarvestingCharm extends Charm {
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity) {
 		boolean result = false;
 
-		if (entity.getValue() > 0 && !player.isDead) {           
+		if (entity.getMana() > 0 && !player.isDead) {           
 			// process all the drops
 			for (ItemStack stack : ((BlockEvent.HarvestDropsEvent)event).getDrops()) {
 
@@ -81,20 +78,22 @@ public class HarvestingCharm extends Charm {
 						continue;
 					}
 				} else {
-					if (stack.getItem() instanceof ICharmed || stack.getItem() instanceof ICharmable || stack.getItem() instanceof IPouch) {
-						Treasure.logger.debug("skipped item because it is a charm or pouch.");
-						continue;
-					}
+					// TODO update to check for capabilities
+//					if (stack.getItem() instanceof ICharmed || stack.getItem() instanceof ICharmable || stack.getItem() instanceof IPouch) {
+//						Treasure.logger.debug("skipped item because it is a charm or pouch.");
+//						continue;
+//					}
 				}
 
 				//					Treasure.logger.debug("current stack size is -> {}", stack.getCount());
-				int size = (int)(stack.getCount() * entity.getPercent());
+				int size = (int)(stack.getCount() * entity.getAmount());
 				stack.setCount(size);
 				//					Treasure.logger.debug("resulting stack size is -> {}", stack.getCount());
 			}
 			// all items drop
 			((BlockEvent.HarvestDropsEvent)event).setDropChance(1.0F);
-			entity.setValue(entity.getValue() - 1);
+//			entity.setMana(entity.getMana() - 1);
+			applyCost(world, random, coords, player, event, entity, getAmount());
 			result = true;
 		}
 		return result;
@@ -107,14 +106,14 @@ public class HarvestingCharm extends Charm {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
 		TextFormatting color = TextFormatting.GREEN;
-		tooltip.add("  " + color + getLabel(entity));
-		tooltip.add(" " + TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.charm.harvest_rate", Math.toIntExact((long) getMaxPercent())));
+		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
+		tooltip.add(TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.harvest", Math.toIntExact((long) getAmount()))));
 	}
 
 	public static class Builder extends Charm.Builder {
 
-		public Builder(String name, Integer level) {
-			super(ResourceLocationUtil.create(name), HARVESTING_TYPE, level);
+		public Builder(Integer level) {
+			super(ResourceLocationUtil.create(makeName(HARVESTING_TYPE, level)), HARVESTING_TYPE, level);
 		}
 
 		@Override

@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.generator.marker;
 
+import static com.someguyssoftware.treasure2.Treasure.logger;
+
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.block.AbstractModContainerBlock;
@@ -11,7 +13,6 @@ import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
-import static com.someguyssoftware.treasure2.Treasure.logger;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureBlock;
 import com.someguyssoftware.treasure2.block.SkeletonBlock;
@@ -20,7 +21,6 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
-import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerTileEntity;
 
 import net.minecraft.block.Block;
@@ -97,8 +97,8 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 
 			// don't place if the spawnCoords isn't AIR or FOG or REPLACEABLE
 			Cube cube = new Cube(world, spawnCoords);
-			if (!cube.isAir() && !cube.isReplaceable() && !cube.equalsMaterial(TreasureItems.FOG)) {
-				logger.debug("Marker not placed because block  @ [{}] is not Air, Replaceable nor Fog.",
+			if (!cube.isAir() && !cube.isReplaceable()) {
+				logger.debug("Marker not placed because block  @ [{}] is not Air, Replaceable.",
 						spawnCoords.toShortString());
 				continue;
 			}

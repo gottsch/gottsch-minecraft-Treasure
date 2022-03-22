@@ -1,5 +1,21 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.item;
 
@@ -28,9 +44,8 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
  * @author Mark Gottschling on May 13, 2020
  *
  */
-public class PouchItem extends ModItem implements IPouch {
+public class PouchItem extends ModItem {
 	public static int GUIID = 50;
-	private PouchType pouchType;
 	
 	/**
 	 * 
@@ -41,18 +56,6 @@ public class PouchItem extends ModItem implements IPouch {
 		setItemName(modID, name);
 		setCreativeTab(Treasure.TREASURE_TAB);
 		setMaxStackSize(1);
-		setPouchType(PouchType.STANDARD);
-	}
-	
-	/**
-	 * 
-	 * @param modID
-	 * @param name
-	 * @param type
-	 */
-	public PouchItem(String modID, String name, PouchType type) {
-		this(modID, name);
-		setPouchType(type);
 	}
 	
 	@Override
@@ -69,7 +72,7 @@ public class PouchItem extends ModItem implements IPouch {
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 
-		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.coin_pouch", TextFormatting.GOLD));
+		tooltip.add(I18n.translateToLocalFormatted("tooltip.label.pouch", TextFormatting.GOLD));
 	}
 	
 	/**
@@ -86,15 +89,5 @@ public class PouchItem extends ModItem implements IPouch {
 		BlockPos pos = playerIn.getPosition();
 		playerIn.openGui(Treasure.instance, GUIID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return super.onItemRightClick(worldIn, playerIn, handIn);
-	}
-
-	@Override
-	public PouchType getPouchType() {
-		return pouchType;
-	}
-
-	public PouchItem setPouchType(PouchType pouchType) {
-		this.pouchType = pouchType;
-		return this;
 	}
 }
