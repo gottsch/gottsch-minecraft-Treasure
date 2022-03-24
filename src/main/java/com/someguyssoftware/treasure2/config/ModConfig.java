@@ -50,6 +50,6 @@ public class ModConfig {
 	@Name("10. Enable starting book:")
 	public boolean enableStartingBook = true;
 	@Comment({"Enble/Disable special rewards.", "If enabled and in survival, you will begin the game with any currently available special rewards  in your inventory."})
-	@Name("11. Enable starting book:")
+	@Name("11. Enable special rewards:")
 	public boolean enableSpecialRewards = true;
 }
