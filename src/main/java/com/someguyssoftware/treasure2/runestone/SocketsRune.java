@@ -39,7 +39,7 @@ public class SocketsRune extends Runestone {
 
 	@Override
 	public boolean isValid(ItemStack itemStack) {		
-		return itemStack.hasCapability(TreasureCapabilities.CHARMABLE, null);
+		return itemStack.hasCapability(TreasureCapabilities.CHARMABLE, null) && itemStack.getCapability(TreasureCapabilities.CHARMABLE, null).isSocketable();
 	}
 
 	@Override
@@ -59,7 +59,9 @@ public class SocketsRune extends Runestone {
 	@Override
 	public void undo(ItemStack itemStack, IRunestoneEntity entity) {
 		ICharmableCapability cap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
-		cap.addMaxSocketSize(-1);
+		if (cap.getMaxSocketSize() > 0) {
+			cap.addMaxSocketSize(-1);
+		}
 		entity.setApplied(false);
 	}
 
