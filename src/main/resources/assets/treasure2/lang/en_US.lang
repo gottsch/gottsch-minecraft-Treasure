@@ -477,7 +477,13 @@ tooltip.jeweler_bench.usage=Used to modify adornments.
 tooltip.jeweler_bench.usage1=Place adornment and gem in first row to upgrade the adornment.
 tooltip.jeweler_bench.usage2=Place adornment in second row to destroy gem and keep adornment.
 tooltip.jeweler_bench.usage3=Place adornment in third row to destroy adornment and  keep gem.
-tooltip.jeweler_bench.note=You may lose charms if the adornments' new max level is less than the current charms. 
+tooltip.jeweler_bench.note=You may lose charms if the adornments' new max level is less than the current charms.
+
+tooltip.charming_table.usage=Used to modify charms and runes on adornments.
+tooltip.charming_table.usage1=Place adornment and charm/runestone in first row to add to the adornment.
+tooltip.charming_table.usage2=Place treasure tool in any row with charm/rune to remove charm/runes from adornment.
+tooltip.charming_table.usage3=Place valid gem/item in any charm row to recharge gem if allowable.
+tooltip.charming_table.note=You may lose charms if certain runes are removed (ex. Rune of Charm Capacity).
 
 #gui
 display.wood_chest.name=Wood Chest

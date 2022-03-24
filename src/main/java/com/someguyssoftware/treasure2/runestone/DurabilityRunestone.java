@@ -19,6 +19,7 @@
  */
 package com.someguyssoftware.treasure2.runestone;
 
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 
@@ -43,14 +44,18 @@ public class DurabilityRunestone extends Runestone {
 
 	@Override
 	public void apply(ItemStack itemStack, IRunestoneEntity entity) {
+		Treasure.logger.debug("applying durability...");
 		if (!isValid(itemStack) || entity.isApplied()) {
 			return;
 		}
-
+		Treasure.logger.debug("passed validity check...");
 		if (itemStack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
 			IDurabilityCapability cap = itemStack.getCapability(TreasureCapabilities.DURABILITY, null);
-			cap.setDurability((int)Math.round(cap.getDurability() * 1.25D));
+			Treasure.logger.debug("old durability -> {}", cap.getDurability());
+			// NOTE: need to set the max durability first, else the new durability will be cutoff at the current max durability
 			cap.setMaxDurability((int)Math.round(cap.getMaxDurability() * 1.25D));
+			cap.setDurability((int)Math.round(cap.getDurability() * 1.25D));			
+			Treasure.logger.debug("new durability -> {}", cap.getDurability());
 			entity.setApplied(true);
 		}
 	}

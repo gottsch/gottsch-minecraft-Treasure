@@ -24,6 +24,7 @@ import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DUR
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.RUNESTONES;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
@@ -153,24 +154,33 @@ public class AnvilEventHandler {
 			});
 			Optional<ItemStack> stack = transferCapabilities(rightStack, leftStack, InventoryType.INNATE, InventoryType.SOCKET);
 			if (stack.isPresent()) {
+				AtomicBoolean isStackValid = new AtomicBoolean(true);
 				stack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(entity -> {
 					Treasure.logger.debug("is applied -> {}", entity.isApplied());
 					Treasure.logger.debug("applied to -> {}", entity.getAppliedTo());
-//					if(entity.getRunestone().isValid(stack.get()) && !entity.isApplied()) {
-						Treasure.logger.debug("applying runestone -> {} to entity -> {}", entity.getRunestone(), entity);
-						entity.getRunestone().apply(stack.get(), entity);
-						stack.get().getCapability(CHARMABLE, null).getCharmEntities().forEach((type, charm) -> {
-							Treasure.logger.debug("entity -> {}, mana -> {}, max mana -> {}, costEval -> {}", charm.getCharm().getName().toString(), charm.getMana(), charm.getMaxMana(), charm.getCostEvaluator().getClass().getSimpleName());
-						});
-						stack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(stone -> {
-							Treasure.logger.debug("output runestone -> {}", stone);
-						});
-//					}
-//					else {
-//						Treasure.logger.debug("runestone not applied.");
-//					}
+					//					if(entity.getRunestone().isValid(stack.get()) && !entity.isApplied()) {
+					Treasure.logger.debug("applying runestone -> {} to entity -> {}", entity.getRunestone(), entity);
+					Treasure.logger.debug("applying cap...");
+					
+					if (!entity.getRunestone().isValid(stack.get())) {
+						isStackValid.set(false);
+						return;
+					}
+					entity.getRunestone().apply(stack.get(), entity);
+					stack.get().getCapability(CHARMABLE, null).getCharmEntities().forEach((type, charm) -> {
+						Treasure.logger.debug("entity -> {}, mana -> {}, max mana -> {}, costEval -> {}", charm.getCharm().getName().toString(), charm.getMana(), charm.getMaxMana(), charm.getCostEvaluator().getClass().getSimpleName());
+					});
+					stack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(stone -> {
+						Treasure.logger.debug("output runestone -> {}", stone);
+					});
+					//					}
+					//					else {
+					//						Treasure.logger.debug("runestone not applied.");
+					//					}
 				});
-				event.setOutput(stack.get());
+				if (isStackValid.get()) {
+					event.setOutput(stack.get());
+				}
 			}
 		}		
 		// add gem to adornment
@@ -309,7 +319,7 @@ public class AnvilEventHandler {
 
 		// copy item damage
 		resultStack.setItemDamage(source.getItemDamage());
-		
+
 		// copy the capabilities
 		if (resultStack.hasCapability(DURABILITY, null)) {
 			Treasure.logger.debug("calling durability copyTo()");

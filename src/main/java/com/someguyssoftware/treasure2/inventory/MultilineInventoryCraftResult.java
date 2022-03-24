@@ -17,30 +17,29 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.item;
+package com.someguyssoftware.treasure2.inventory;
 
-import com.someguyssoftware.treasure2.adornment.AdornmentSize;
-import com.someguyssoftware.treasure2.enums.AdornmentType;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.inventory.InventoryCraftResult;
 
 /**
- * 
- * @author Mark Gottschling on Jan 20, 2022
+ * A simple wrapper to add the "line" property.
+ * @author Mark Gottschling on Mar 23, 2022
  *
  */
-public class NamedAdornment extends Adornment {
-
-	public NamedAdornment(String modID, String name, AdornmentType type) {
-		super(modID, name, type);
+public class MultilineInventoryCraftResult extends InventoryCraftResult {
+	// the line index in a multiline output grid ie array of InventoryCraftResults, where index corresponds to the row
+	private int line;
+	
+	public MultilineInventoryCraftResult(int line) {
+		super();
+		setLine(line);
 	}
-	public NamedAdornment(String modID, String name, AdornmentType type, AdornmentSize size) {
-		super(modID, name, type, size);
+
+	public int getLine() {
+		return line;
 	}
 
-	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-		return TextFormatting.YELLOW + "" + super.getItemStackDisplayName(stack);
+	public void setLine(int line) {
+		this.line = line;
 	}
 }

@@ -143,4 +143,6 @@ public interface ICharmableCapability {
 	void transferTo(ItemStack dest, InventoryType sourceType, InventoryType destType);
 
 	void copyTo(ItemStack source);
+
+	boolean hasCharmType(ItemStack source, ItemStack dest, InventoryType sourceType, InventoryType destType);
 }

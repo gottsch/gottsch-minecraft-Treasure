@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -230,6 +231,28 @@ public class CharmableCapability implements ICharmableCapability {
 			}
 		}
 	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public boolean hasCharmType(ItemStack source, ItemStack dest, InventoryType sourceType, InventoryType destType) {
+		if (source.hasCapability(TreasureCapabilities.CHARMABLE, null) && dest.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
+			ICharmableCapability sourceCap = source.getCapability(TreasureCapabilities.CHARMABLE, null);
+			ICharmableCapability destCap = dest.getCapability(TreasureCapabilities.CHARMABLE, null);
+
+			// faster and simpler than lambdas
+			for (ICharmEntity sourceEntity : sourceCap.getCharmEntities().get(sourceType)) {
+				for (ICharmEntity destEntity : destCap.getCharmEntities().get(destType)) {
+					if (destEntity.getCharm().getType().equals(sourceEntity.getCharm().getType())) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
 
 	@Override
 	public int getCurrentSize(InventoryType type) {
@@ -566,4 +589,6 @@ public class CharmableCapability implements ICharmableCapability {
 	public void setLevelModifier(ILevelModifier levelModifier) {
 		this.levelModifier = levelModifier;
 	}
+
+
 }
