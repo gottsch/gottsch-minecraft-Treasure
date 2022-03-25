@@ -72,7 +72,7 @@ import com.someguyssoftware.treasure2.network.PoisonMistMessageHandlerOnServer;
 import com.someguyssoftware.treasure2.network.PoisonMistMessageToServer;
 import com.someguyssoftware.treasure2.network.WitherMistMessageHandlerOnServer;
 import com.someguyssoftware.treasure2.network.WitherMistMessageToServer;
-import com.someguyssoftware.treasure2.runestone.TreasureRunes;
+import com.someguyssoftware.treasure2.rune.TreasureRunes;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureDecayManager;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;

@@ -8,9 +8,9 @@ import static com.someguyssoftware.treasure2.Treasure.logger;
 import java.util.List;
 import java.util.Optional;
 
-import com.someguyssoftware.treasure2.runestone.IRunestone;
-import com.someguyssoftware.treasure2.runestone.IRunestoneEntity;
-import com.someguyssoftware.treasure2.runestone.Runestone;
+import com.someguyssoftware.treasure2.rune.IRune;
+import com.someguyssoftware.treasure2.rune.IRuneEntity;
+import com.someguyssoftware.treasure2.rune.Rune;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,10 +36,10 @@ public class RunestonesCapabilityStorage implements Capability.IStorage<IRunesto
 			 */
 				for (InventoryType type : InventoryType.values()) {
 //		Treasure.logger.debug("saving runestones -> {}", instance.getEntities(type).size());
-				List<IRunestoneEntity> entityList = (List<IRunestoneEntity>) instance.getEntities(type);
+				List<IRuneEntity> entityList = (List<IRuneEntity>) instance.getEntities(type);
 				if (entityList != null && !entityList.isEmpty()) {
 					NBTTagList listNbt = new NBTTagList();
-					for (IRunestoneEntity entity : entityList) {
+					for (IRuneEntity entity : entityList) {
 						NBTTagCompound entityNbt = new NBTTagCompound();
 						listNbt.appendTag(entity.save(entityNbt));						
 					}
@@ -74,13 +74,13 @@ public class RunestonesCapabilityStorage implements Capability.IStorage<IRunesto
 						 * need to the load the runestone prior to RunestoneEntity.load() because the RunestoneEntity instance needs to be
 						 *  created first using the Runestone, then the entity can be loaded.
 						 */
-						Optional<IRunestone> runestone = Runestone.load((NBTTagCompound) ((NBTTagCompound)e).getCompoundTag(IRunestoneEntity.RUNESTONE));
+						Optional<IRune> runestone = Rune.load((NBTTagCompound) ((NBTTagCompound)e).getCompoundTag(IRuneEntity.RUNESTONE));
 						if (!runestone.isPresent()) {
 							return;
 						}
 //						Treasure.logger.debug("runestone -> {}", runestone.get());
 						// create an entity
-						IRunestoneEntity entity = runestone.get().createEntity();
+						IRuneEntity entity = runestone.get().createEntity();
 //						Treasure.logger.debug("created entity -> {}", entity);
 						// load entity
 						entity.load((NBTTagCompound)e);

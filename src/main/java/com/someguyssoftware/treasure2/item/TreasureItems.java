@@ -54,7 +54,7 @@ import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
 import com.someguyssoftware.treasure2.material.CharmableMaterial;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
-import com.someguyssoftware.treasure2.runestone.TreasureRunes;
+import com.someguyssoftware.treasure2.rune.TreasureRunes;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.enchantment.EnchantmentHelper;

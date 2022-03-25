@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.runestone;
+package com.someguyssoftware.treasure2.rune;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Jan 14, 2022
  *
  */
-public abstract class Runestone implements IRunestone {
+public abstract class Rune implements IRune {
 	private ResourceLocation name;
 	private String type;
 	private String lore;
@@ -56,7 +56,7 @@ public abstract class Runestone implements IRunestone {
 	// invalid charm list
 	private List<String> invalids;
 	
-	protected Runestone(Builder builder) {
+	protected Rune(Builder builder) {
 		this.name = builder.name;
 		this.type = builder.type;
 		this.lore = builder.lore;
@@ -66,16 +66,16 @@ public abstract class Runestone implements IRunestone {
 	
 	// TODO necessary? - only if saving state values - like for undo()
 	@Override
-	public IRunestoneEntity createEntity() {
-		IRunestoneEntity entity = new RunestoneEntity();
+	public IRuneEntity createEntity() {
+		IRuneEntity entity = new RuneEntity();
 		entity.setRunestone(this);
 		
 		return entity;
 	}
 	
 	//?
-	public IRunestoneEntity createEntity(IRunestoneEntity entity) {
-		IRunestoneEntity newEntity = new RunestoneEntity(entity);
+	public IRuneEntity createEntity(IRuneEntity entity) {
+		IRuneEntity newEntity = new RuneEntity(entity);
 		return newEntity;
 	}
 	
@@ -90,23 +90,23 @@ public abstract class Runestone implements IRunestone {
 	 * @param itemStack
 	 */
 	@Override
-	abstract public void apply(ItemStack itemStack, IRunestoneEntity entity);
+	abstract public void apply(ItemStack itemStack, IRuneEntity entity);
 	
 	/**
 	 * Undoes the Runestone's ability/modification from the ItemStack 
 	 * @param itemStack
 	 */
-	abstract public void undo(ItemStack itemStack, IRunestoneEntity entity);
+	abstract public void undo(ItemStack itemStack, IRuneEntity entity);
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, IRunestoneEntity entity) {
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, IRuneEntity entity) {
         TextFormatting color = TextFormatting.LIGHT_PURPLE;       
 		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocal("runestone." + getName().toString() + ".name")));		
 	}
 	
-	public static Optional<IRunestone> load(NBTTagCompound tag) {
-		Optional<IRunestone> runestone = Optional.empty();
+	public static Optional<IRune> load(NBTTagCompound tag) {
+		Optional<IRune> runestone = Optional.empty();
 		// read the name of the runestone and fetch from the registry
 		try {
 			String name = tag.getString("name");			
@@ -163,7 +163,7 @@ public abstract class Runestone implements IRunestone {
 			return this;
 		}
 		
-		abstract public IRunestone build();
+		abstract public IRune build();
 
 		public List<String> getInvalids() {
 			if (invalids == null) {

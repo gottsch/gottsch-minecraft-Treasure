@@ -75,6 +75,7 @@ public abstract class Charm implements ICharm {
 	// the size of effect ex. damage, amount of healing, percent extra damage
 	private double amount;
 	// the exclusivity of the charm. can be the only charm worn/executed
+	@Deprecated
 	private boolean exclusive;
 	// the number of times the charm can be recharged
 	private int recharges;
@@ -104,6 +105,8 @@ public abstract class Charm implements ICharm {
 		this.range = builder.range;
 		this.effectStackable = builder.effectStackable;
 		this.costEvaluator = builder.costEvaluator;
+		this.rarity = builder.rarity;
+		this.recharges = builder.recharges;
 	}
 
 	abstract public Class<?> getRegisteredEvent();
@@ -120,8 +123,8 @@ public abstract class Charm implements ICharm {
 		entity.setDuration(duration);
 		entity.setFrequency(frequency);
 		entity.setMana(mana);
-		entity.setRange(range);
 		entity.setMaxMana(mana);
+		entity.setRange(range);
 		entity.setExclusive(exclusive);
 		entity.setRecharges(recharges);
 		entity.setMaxRecharges(recharges);
@@ -143,10 +146,6 @@ public abstract class Charm implements ICharm {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
 		tooltip.add(getLabel(entity));
-//		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent3", 
-//				I18n.translateToLocalFormatted("tooltip.charm.rate.healing", 
-//						DECIMAL_FORMAT.format(getAmount()/2),
-//						(int)(entity.getFrequency()/TICKS_PER_SECOND))));
 		tooltip.add(getDesc(entity));
 	}
 	
@@ -157,7 +156,16 @@ public abstract class Charm implements ICharm {
 	 */
 	@SuppressWarnings("deprecation")
 	public String getLabel(ICharmEntity entity) {
-		return getCharmLabelColor() + "" + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.type." + getType().toLowerCase()) + " " + String.valueOf(getLevel()) + " "  + getUsesGauge(entity) + " " + (this.effectStackable ? "+" : "-"));
+		return getCharmLabelColor() + "" + I18n.translateToLocalFormatted("tooltip.indent2", 
+				I18n.translateToLocalFormatted("tooltip.charm.type." + getType().toLowerCase()) 
+				+ " " + String.valueOf(getLevel()) 
+				+ " "  + getUsesGauge(entity)
+				+ (entity.getRecharges() > 0 ? " " + getRecharges(entity) : "")
+				+ " " + (this.effectStackable ? "+" : "-"));
+	}
+
+	public String getRecharges(ICharmEntity entity) {
+		return I18n.translateToLocalFormatted("tooltip.charm.recharges", entity.getRecharges(), entity.getMaxRecharges());
 	}
 
 	public String getDesc(ICharmEntity entity) {
@@ -475,13 +483,6 @@ public abstract class Charm implements ICharm {
 	}
 
 	@Override
-	public String toString() {
-		return "Charm [name=" + name + ", type=" + type + ", level=" + level + ", rarity=" + rarity + ", priority="
-				+ priority + ", mana=" + mana + ", duration=" + duration + ", frequency=" + frequency + ", range="
-				+ range + ", cooldown=" + cooldown + ", amount=" + amount + ", effectStackable=" + effectStackable + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -574,11 +575,22 @@ public abstract class Charm implements ICharm {
 		return costEvaluator;
 	}
 
-	public static TextFormatting getCharmLabelColor() {
+	@Override
+	public TextFormatting getCharmLabelColor() {
 		return CHARM_COLOR;
 	}
 	
-	public static TextFormatting getCharmDescColor() {
+	@Override
+	public TextFormatting getCharmDescColor() {
 		return CHARM_DESC_COLOR;
 	}
+
+	@Override
+	public String toString() {
+		return "Charm [name=" + name + ", type=" + type + ", level=" + level + ", rarity=" + rarity + ", priority="
+				+ priority + ", mana=" + mana + ", duration=" + duration + ", frequency=" + frequency + ", range="
+				+ range + ", cooldown=" + cooldown + ", amount=" + amount + ", exclusive=" + exclusive + ", recharges="
+				+ recharges + ", effectStackable=" + effectStackable + "]";
+	}
+
 }

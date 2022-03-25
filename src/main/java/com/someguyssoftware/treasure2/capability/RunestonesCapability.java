@@ -27,9 +27,9 @@ import java.util.function.Consumer;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.runestone.IRunestone;
-import com.someguyssoftware.treasure2.runestone.IRunestoneEntity;
-import com.someguyssoftware.treasure2.runestone.RunestoneEntity;
+import com.someguyssoftware.treasure2.rune.IRune;
+import com.someguyssoftware.treasure2.rune.IRuneEntity;
+import com.someguyssoftware.treasure2.rune.RuneEntity;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -46,7 +46,7 @@ public class RunestonesCapability implements IRunestonesCapability {
 	/*
 	 * Properties that refer to the Item that has this capability
 	 */
-	Multimap<InventoryType, IRunestoneEntity> runestoneEntities = ArrayListMultimap.create();
+	Multimap<InventoryType, IRuneEntity> runestoneEntities = ArrayListMultimap.create();
 
 	// is this item bindable to a target item that is socketable
 	private boolean bindable;
@@ -103,7 +103,7 @@ public class RunestonesCapability implements IRunestonesCapability {
 	}
 
 	public void appendHoverText(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, InventoryType inventoryType, boolean titleFlag) {		
-		List<IRunestoneEntity> entityList = (List<IRunestoneEntity>) getEntities(inventoryType);
+		List<IRuneEntity> entityList = (List<IRuneEntity>) getEntities(inventoryType);
 		// test if the cap has the inventory type ability
 		switch (inventoryType) {
 		case SOCKET: if (!isSocketable()) { return;}; break;
@@ -118,7 +118,7 @@ public class RunestonesCapability implements IRunestonesCapability {
 			+ TextFormatting.WHITE + getCapacityHoverText(stack, world, inventoryType));
 		}
 		// add runestones
-		for (IRunestoneEntity entity : entityList) {
+		for (IRuneEntity entity : entityList) {
 			entity.getRunestone().addInformation(stack, world, tooltip, flag, entity);
 		}	
 	}
@@ -157,7 +157,7 @@ public class RunestonesCapability implements IRunestonesCapability {
 			runestoneEntities.forEach((type, runestone) -> {
 				// duplicate entity
 				Treasure.logger.debug("copyTo - source entity in-> {}", runestone);
-				IRunestoneEntity newRune = new RunestoneEntity(runestone);
+				IRuneEntity newRune = new RuneEntity(runestone);
 				Treasure.logger.debug("copyTo - new runestone entity -> {}", newRune);
 				cap.add(type, newRune);
 			});
@@ -168,13 +168,13 @@ public class RunestonesCapability implements IRunestonesCapability {
 	public void transferTo(ItemStack dest, InventoryType sourceType, InventoryType destType) {
 		if (dest.hasCapability(RUNESTONES, null)) {
 			IRunestonesCapability cap = dest.getCapability(RUNESTONES, null);
-			List<IRunestoneEntity> runestones = (List<IRunestoneEntity>) getEntities(sourceType);
+			List<IRuneEntity> runestones = (List<IRuneEntity>) getEntities(sourceType);
 			// process each charm entity (only innate as charmItems can have innate)
-			for (IRunestoneEntity entity : runestones) {
+			for (IRuneEntity entity : runestones) {
 				if (cap.getCurrentSize(destType) < cap.getMaxSize(destType)) {
 					// duplicate rune
 					Treasure.logger.debug("transferTo - runestone entity in-> {}", entity);
-					IRunestoneEntity newRune = new RunestoneEntity(entity);
+					IRuneEntity newRune = new RuneEntity(entity);
 					Treasure.logger.debug("transferTo - new runestone entity -> {}", newRune);
 					// add rune
 					cap.add(destType, newRune);
@@ -184,14 +184,14 @@ public class RunestonesCapability implements IRunestonesCapability {
 	}
 
 	@Override
-	public boolean contains(IRunestone runestone) {
+	public boolean contains(IRune runestone) {
 		// TODO
 		return false;
 	}
 
 	@Override
-	public List<IRunestoneEntity> getEntities(InventoryType type) {
-		return (List<IRunestoneEntity>) runestoneEntities.get(type);
+	public List<IRuneEntity> getEntities(InventoryType type) {
+		return (List<IRuneEntity>) runestoneEntities.get(type);
 	}
 
 	/**
@@ -199,10 +199,10 @@ public class RunestonesCapability implements IRunestonesCapability {
 	 * @return
 	 */
 	@Override
-	public Multimap<InventoryType, IRunestoneEntity> getEntitiesCopy() {
-		Multimap<InventoryType, IRunestoneEntity> map = ArrayListMultimap.create();
+	public Multimap<InventoryType, IRuneEntity> getEntitiesCopy() {
+		Multimap<InventoryType, IRuneEntity> map = ArrayListMultimap.create();
 		runestoneEntities.forEach((key, value) -> {
-			IRunestoneEntity entity = new RunestoneEntity(value);
+			IRuneEntity entity = new RuneEntity(value);
 			map.put(key, entity);
 		});
 		return map;
@@ -229,7 +229,7 @@ public class RunestonesCapability implements IRunestonesCapability {
 	 * @param entity
 	 */
 	@Override
-	public void add(InventoryType type, IRunestoneEntity entity) {
+	public void add(InventoryType type, IRuneEntity entity) {
 
 		// TODO ensure only one of the same type can be added.
 		// test if there is enough space to add
@@ -239,7 +239,7 @@ public class RunestonesCapability implements IRunestonesCapability {
 	}
 	
 	@Override
-	public boolean remove(InventoryType type, IRunestoneEntity entity) {
+	public boolean remove(InventoryType type, IRuneEntity entity) {
 		if (runestoneEntities.get(type).size() > 0) {
 			// NOTE this only works if adornments are allowed to only have a single runestone of a specific type
 			return runestoneEntities.get(type).removeIf(r -> r.getRunestone().getName().equals(entity.getRunestone().getName()));

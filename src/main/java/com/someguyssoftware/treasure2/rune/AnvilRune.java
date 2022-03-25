@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.runestone;
+package com.someguyssoftware.treasure2.rune;
 
 import java.util.List;
 
@@ -36,9 +36,9 @@ import net.minecraft.world.World;
  * @author Mark Gottschling on Jan 15, 2022
  *
  */
-public class AnvilRunestone extends Runestone {
+public class AnvilRune extends Rune {
 
-	protected AnvilRunestone(Builder builder) {
+	protected AnvilRune(Builder builder) {
 		super(builder);
 	}
 
@@ -56,7 +56,7 @@ public class AnvilRunestone extends Runestone {
 	}
 	
 	@Override
-	public void apply(ItemStack itemStack, IRunestoneEntity entity) {
+	public void apply(ItemStack itemStack, IRuneEntity entity) {
 		if (!isValid(itemStack) || entity.isApplied()) {
 			return;
 		}
@@ -69,7 +69,7 @@ public class AnvilRunestone extends Runestone {
 	}
 
 	@Override
-	public void undo(ItemStack itemStack, IRunestoneEntity entity) {
+	public void undo(ItemStack itemStack, IRuneEntity entity) {
 		if (itemStack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
 			IDurabilityCapability cap = itemStack.getCapability(TreasureCapabilities.DURABILITY, null);
 			cap.setInfinite(false);
@@ -77,19 +77,19 @@ public class AnvilRunestone extends Runestone {
 		}
 	}
 
-	public static class Builder extends Runestone.Builder {
+	public static class Builder extends Rune.Builder {
 		public Builder(ResourceLocation name) {
 			super(name);
 		}
 		@Override
-		public IRunestone build() {
-			return new AnvilRunestone(this);
+		public IRune build() {
+			return new AnvilRune(this);
 		}
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, IRunestoneEntity entity) {
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, IRuneEntity entity) {
         TextFormatting color = TextFormatting.LIGHT_PURPLE;       
 		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocal("runestone." + getName().toString() + ".name")));		
 	}

@@ -271,13 +271,18 @@ public class TreasureAdornments {
 		// create a new dest item stack
 		ItemStack stack = new ItemStack(dest.getItem());
 
+		// copy item damage
+		stack.setItemDamage(dest.getItemDamage());
+		
 		/*
 		 * transfer existing state of dest to stack plus any relevant state from source to stack
 		 */
 		if (dest.hasCapability(DURABILITY, null)) {
 			dest.getCapability(DURABILITY, null).copyTo(stack);
 		}
-
+		
+		Treasure.logger.debug("new stack damage -> {}", stack.getItemDamage());
+		
 		// transfer
 		boolean charmSizeChanged = false;
 		boolean runeSizeChanged = false;

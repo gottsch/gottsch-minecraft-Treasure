@@ -351,6 +351,7 @@ tooltip.label.container_size=Inventory Size: %s
 tooltip.durability.amount=Durability: [%s/%s]
 tooltip.durability.amount.infinite=Durability: Infinite
 tooltip.durability.repairs=R[%s/%s]
+tooltip.charm.recharges=R[%s/%s]
 tooltip.charmable.usage=Hold in hand or bind to adornment for buffs
 tooltip.charmable.usage.adornment=Hold in hand or equip for buffs
 tooltip.runestones.usage=Combine with adornment on anvil for enchancements
@@ -508,9 +509,9 @@ display.crystal_skull_chest.name=Crystal Skull
 display.jeweler_bench.name=Jeweler's Bench
 display.jeweler_bench.cost=Cost: %s
 display.charming_table.name=Charming Table
-display.charming_table.charms=Socket Charms
-display.charming_table.runes=Runes
-
+display.charming_table.charms=Modifiable Charms:
+display.charming_table.runes=Modifiable Runes:
+display.charming_table.cost=Cost: %s
 
 #chat messages
 chat.key_break=Your key broke whilst attempting to unlock the lock!

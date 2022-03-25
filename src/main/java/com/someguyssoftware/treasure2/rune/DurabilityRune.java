@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.runestone;
+package com.someguyssoftware.treasure2.rune;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
@@ -31,9 +31,9 @@ import net.minecraft.util.ResourceLocation;
  * @author Mark Gottschling on Jan 20, 2022
  *
  */
-public class DurabilityRunestone extends Runestone {
+public class DurabilityRune extends Rune {
 
-	protected DurabilityRunestone(Builder builder) {
+	protected DurabilityRune(Builder builder) {
 		super(builder);
 	}
 
@@ -43,7 +43,7 @@ public class DurabilityRunestone extends Runestone {
 	}
 
 	@Override
-	public void apply(ItemStack itemStack, IRunestoneEntity entity) {
+	public void apply(ItemStack itemStack, IRuneEntity entity) {
 		Treasure.logger.debug("applying durability...");
 		if (!isValid(itemStack) || entity.isApplied()) {
 			return;
@@ -61,7 +61,7 @@ public class DurabilityRunestone extends Runestone {
 	}
 
 	@Override
-	public void undo(ItemStack itemStack, IRunestoneEntity entity) {
+	public void undo(ItemStack itemStack, IRuneEntity entity) {
 		IDurabilityCapability cap = itemStack.getCapability(TreasureCapabilities.DURABILITY, null);
 		cap.setDurability((int)Math.round(cap.getDurability() / 1.25D));
 		cap.setMaxDurability((int)Math.round(cap.getMaxDurability() / 1.25D));
@@ -71,13 +71,13 @@ public class DurabilityRunestone extends Runestone {
 	/*
 	 * 
 	 */
-	public static class Builder extends Runestone.Builder {
+	public static class Builder extends Rune.Builder {
 		public Builder(ResourceLocation name) {
 			super(name);
 		}
 		@Override
-		public IRunestone build() {
-			return new DurabilityRunestone(this);
+		public IRune build() {
+			return new DurabilityRune(this);
 		}
 	}
 }

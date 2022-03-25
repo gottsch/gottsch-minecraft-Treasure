@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.runestone;
+package com.someguyssoftware.treasure2.rune;
 
 import com.someguyssoftware.treasure2.Treasure;
 
@@ -34,7 +34,7 @@ import net.minecraft.util.ResourceLocation;
  * @author Mark Gottschling on Jan 23, 2022
  *
  */
-public class PersistenceRune extends Runestone {
+public class PersistenceRune extends Rune {
 
 	protected PersistenceRune(Builder builder) {
 		super(builder);
@@ -46,7 +46,7 @@ public class PersistenceRune extends Runestone {
 	}
 
 	@Override
-	public void apply(ItemStack itemStack, IRunestoneEntity entity) {
+	public void apply(ItemStack itemStack, IRuneEntity entity) {
 		Treasure.logger.debug("applying persistence rune, isvalid -> {}, isapplied -> {}", isValid(itemStack), entity.isApplied());
 		if (!isValid(itemStack) || entity.isApplied()) {
 			return;
@@ -69,19 +69,19 @@ public class PersistenceRune extends Runestone {
 	}
 
 	@Override
-	public void undo(ItemStack itemStack, IRunestoneEntity entity) {
+	public void undo(ItemStack itemStack, IRuneEntity entity) {
 		itemStack.addEnchantment(Enchantments.VANISHING_CURSE, 1);
 	}
 
 	/*
 	 * 
 	 */
-	public static class Builder extends Runestone.Builder {
+	public static class Builder extends Rune.Builder {
 		public Builder(ResourceLocation name) {
 			super(name);
 		}
 		@Override
-		public IRunestone build() {
+		public IRune build() {
 			return new PersistenceRune(this);
 		}
 	}

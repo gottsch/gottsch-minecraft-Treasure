@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.runestone;
+package com.someguyssoftware.treasure2.rune;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +33,8 @@ import net.minecraft.nbt.NBTTagString;
  * @author Mark Gottschling on Jan 14, 2022
  *
  */
-public class RunestoneEntity implements IRunestoneEntity {
-	private IRunestone runestone;
+public class RuneEntity implements IRuneEntity {
+	private IRune runestone;
 	private boolean applied;
 	
 	private List<String> appliedTo;
@@ -42,13 +42,13 @@ public class RunestoneEntity implements IRunestoneEntity {
 	/**
 	 * 
 	 */
-	public RunestoneEntity() {}
+	public RuneEntity() {}
 	
 	/**
 	 * Copy constructor
 	 * @param value
 	 */
-	public RunestoneEntity(IRunestoneEntity entity) {
+	public RuneEntity(IRuneEntity entity) {
 		this.setRunestone(entity.getRunestone());
 		this.setApplied(entity.isApplied());
 		entity.getAppliedTo().forEach(type -> {
@@ -84,12 +84,12 @@ public class RunestoneEntity implements IRunestoneEntity {
 	}
 	
 	@Override
-	public IRunestone getRunestone() {
+	public IRune getRunestone() {
 		return runestone;
 	}
 	
 	@Override
-	public void setRunestone(IRunestone runestone) {
+	public void setRunestone(IRune runestone) {
 		this.runestone = runestone;
 	}
 

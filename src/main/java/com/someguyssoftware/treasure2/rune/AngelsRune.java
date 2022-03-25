@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.runestone;
+package com.someguyssoftware.treasure2.rune;
 
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
@@ -35,9 +35,9 @@ import net.minecraft.util.ResourceLocation;
  * @author Mark Gottschling on Jan 19, 2022
  *
  */
-public class AngelsRunestone extends Runestone {
+public class AngelsRune extends Rune {
 
-	protected AngelsRunestone(Builder builder) {
+	protected AngelsRune(Builder builder) {
 		super(builder);
 	}
 
@@ -51,7 +51,7 @@ public class AngelsRunestone extends Runestone {
 	}
 
 	@Override
-	public void apply(ItemStack itemStack, IRunestoneEntity runestoneEntity) {
+	public void apply(ItemStack itemStack, IRuneEntity runestoneEntity) {
 		if (!isValid(itemStack)) {
 			return;
 		}
@@ -76,7 +76,7 @@ public class AngelsRunestone extends Runestone {
 	}
 
 	@Override
-	public void undo(ItemStack itemStack, IRunestoneEntity runestoneEntity) {
+	public void undo(ItemStack itemStack, IRuneEntity runestoneEntity) {
 		if (itemStack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
 			IDurabilityCapability cap = itemStack.getCapability(TreasureCapabilities.DURABILITY, null);
 			cap.setInfinite(false);
@@ -98,13 +98,13 @@ public class AngelsRunestone extends Runestone {
 		runestoneEntity.setApplied(false);
 	}
 
-	public static class Builder extends Runestone.Builder {
+	public static class Builder extends Rune.Builder {
 		public Builder(ResourceLocation name	) {
 			super(name);
 		}
 		@Override
-		public IRunestone build() {
-			return new AngelsRunestone(this);
+		public IRune build() {
+			return new AngelsRune(this);
 		}
 	}
 }

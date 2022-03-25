@@ -41,7 +41,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  */
 public class SatietyCharm extends Charm {
 	public static final int MAX_FOOD_LEVEL = 20;
-	public static final String SATIETY_TYPE = "fullness";
+	public static final String SATIETY_TYPE = "satiety";
 
 	private static final Class<?> REGISTERED_EVENT = LivingUpdateEvent.class;
 
@@ -71,16 +71,11 @@ public class SatietyCharm extends Charm {
 		}
 		return result;
 	}
-
-	/**
-	 * 
-	 */
+	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.DARK_GREEN;
-		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
-		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.satiety", (int)(entity.getFrequency()/TICKS_PER_SECOND))));
+	public String getCharmDesc(ICharmEntity entity) {
+		return I18n.translateToLocalFormatted("tooltip.charm.rate.satiety", (int)(entity.getFrequency()/TICKS_PER_SECOND));
 	}
 	
 	public static class Builder extends Charm.Builder {

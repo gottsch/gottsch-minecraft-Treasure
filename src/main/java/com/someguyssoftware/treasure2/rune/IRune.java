@@ -17,57 +17,46 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.runestone;
+package com.someguyssoftware.treasure2.rune;
 
 import java.util.List;
 
+import com.someguyssoftware.treasure2.enums.Rarity;
+
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 /**
  * 
  * @author Mark Gottschling on Jan 14, 2022
  *
  */
-public interface IRunestoneEntity {
-
-	public static final String RUNESTONE = "runestone";
-	public static final String APPLIED = "applied";
-
-	IRunestone getRunestone();
-
-	void setRunestone(IRunestone runestone);
-
+public interface IRune {
+	
+	IRuneEntity createEntity();
+	
+	boolean isValid(ItemStack itemStack);
+	void apply(ItemStack itemStack, IRuneEntity entity);
+	void undo(ItemStack itemStack, IRuneEntity entity);
+	
 	/**
 	 * 
-	 * @param nbt
+	 * @param tag
 	 * @return
 	 */
 	NBTTagCompound save(NBTTagCompound nbt);
+
+	ResourceLocation getName();
+
+	String getType();
+
+	Rarity getRarity();
 	
-	default public boolean load(NBTTagCompound nbt) {
-		if (nbt.hasKey(APPLIED)) {
-			setApplied(nbt.getBoolean(APPLIED));
-		}
-		if (nbt.hasKey("appliedTo")) {
-			getAppliedTo().clear();
-			NBTTagList list = nbt.getTagList("appliedTo", 8);
-			list.forEach(s -> {
-				getAppliedTo().add(((NBTTagString)s).getString());
-			});
-		}
-		return true;
-	}
-
-	boolean isApplied();
-
-	void setApplied(boolean applied);
-
-	List<String> getAppliedTo();
-
-	void setAppliedTo(List<String> appliedTo);
+	String getLore();
+	void setLore(String lore);
 	
-	boolean isAppliedTo(String type);
-
+	void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, IRuneEntity entity);
 }

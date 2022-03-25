@@ -79,11 +79,12 @@ public class DurabilityCapability implements IDurabilityCapability  {
 	public void copyTo(ItemStack stack) {
 		if (stack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
 			IDurabilityCapability cap = stack.getCapability(TreasureCapabilities.DURABILITY, null);
-			cap.setDurability(getDurability());
-			cap.setInfinite(isInfinite());
+			// NOTE set max first
 			cap.setMaxDurability(getMaxDurability());
-			cap.setRepairs(getRepairs());
+			cap.setDurability(getDurability());
+			cap.setInfinite(isInfinite());			
 			cap.setMaxRepairs(getMaxRepairs());
+			cap.setRepairs(getRepairs());			
 		}
 	}
 	

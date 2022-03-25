@@ -96,20 +96,19 @@ public class RuinCurse extends Charm {
 				Treasure.logger.debug("charm {} new data -> {}", this.getName(), entity);
 				result = true;
 			}
-
 		}
 		return result;
 	}
-
-	/**
-	 * 
-	 */
+	
+	@Override
+	public TextFormatting getCharmLabelColor() {
+		return TextFormatting.DARK_RED;
+	}
+	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.DARK_RED;
-		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
-		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.ruin", String.valueOf(Math.toIntExact(Math.round(entity.getDuration()))))));
+	public String getCharmDesc(ICharmEntity entity) {
+		return I18n.translateToLocalFormatted("tooltip.charm.rate.ruin", String.valueOf(Math.toIntExact(Math.round(entity.getDuration()))));
 	}
 	
 	public static class Builder extends Charm.Builder {

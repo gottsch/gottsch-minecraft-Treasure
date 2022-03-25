@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.runestone;
+package com.someguyssoftware.treasure2.rune;
 
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
@@ -31,10 +31,10 @@ import net.minecraft.util.ResourceLocation;
  * @author Mark Gottschling on Jan 20, 2022
  *
  */
-public class QualityRunestone extends Runestone {
+public class QualityRune extends Rune {
 	public static final double MULTIPLIER = 1.25D;
 	
-	protected QualityRunestone(Builder builder) {
+	protected QualityRune(Builder builder) {
 		super(builder);
 	}
 
@@ -44,7 +44,7 @@ public class QualityRunestone extends Runestone {
 	}
 
 	@Override
-	public void apply(ItemStack itemStack, IRunestoneEntity entity) {
+	public void apply(ItemStack itemStack, IRuneEntity entity) {
 		if (!isValid(itemStack)) {
 			return;
 		}
@@ -66,7 +66,7 @@ public class QualityRunestone extends Runestone {
 	}
 
 	@Override
-	public void undo(ItemStack itemStack, IRunestoneEntity entity) {
+	public void undo(ItemStack itemStack, IRuneEntity entity) {
 		ICharmableCapability cap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
 		// for each charm, decrease the mana
 		cap.getCharmEntities().forEach((key, value) -> {
@@ -81,13 +81,13 @@ public class QualityRunestone extends Runestone {
 	/*
 	 * 
 	 */
-	public static class Builder extends Runestone.Builder {
+	public static class Builder extends Rune.Builder {
 		public Builder(ResourceLocation name) {
 			super(name);
 		}
 		@Override
-		public IRunestone build() {
-			return new QualityRunestone(this);
+		public IRune build() {
+			return new QualityRune(this);
 		}
 	}
 }
