@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.charm.cost.CostEvaluator;
 import com.someguyssoftware.treasure2.charm.cost.ICostEvaluator;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -144,8 +145,9 @@ public abstract class Charm implements ICharm {
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
-		tooltip.add(getLabel(entity));
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity, InventoryType type) {
+		boolean showRecharges = type == InventoryType.SOCKET ? true : false;
+		tooltip.add(getLabel(entity, showRecharges));
 		tooltip.add(getDesc(entity));
 	}
 	
@@ -155,12 +157,12 @@ public abstract class Charm implements ICharm {
 	 * @return
 	 */
 	@SuppressWarnings("deprecation")
-	public String getLabel(ICharmEntity entity) {
+	public String getLabel(ICharmEntity entity, boolean showRecharges) {
 		return getCharmLabelColor() + "" + I18n.translateToLocalFormatted("tooltip.indent2", 
 				I18n.translateToLocalFormatted("tooltip.charm.type." + getType().toLowerCase()) 
 				+ " " + String.valueOf(getLevel()) 
 				+ " "  + getUsesGauge(entity)
-				+ (entity.getRecharges() > 0 ? " " + getRecharges(entity) : "")
+				+ (showRecharges && entity.getRecharges() > 0 ? " " + getRecharges(entity) : "")
 				+ " " + (this.effectStackable ? "+" : "-"));
 	}
 

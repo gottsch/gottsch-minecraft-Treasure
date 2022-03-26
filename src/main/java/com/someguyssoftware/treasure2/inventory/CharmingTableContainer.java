@@ -20,7 +20,6 @@
 package com.someguyssoftware.treasure2.inventory;
 
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.CHARMABLE;
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY;
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.RUNESTONES;
 
 import java.util.List;
@@ -36,7 +35,6 @@ import com.someguyssoftware.treasure2.capability.IRunestonesCapability;
 import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
-import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.item.Adornment;
 import com.someguyssoftware.treasure2.item.CharmItem;
@@ -524,11 +522,9 @@ public class CharmingTableContainer extends Container {
 				IRunestonesCapability runestoneCap = itemStack.getCapability(RUNESTONES, null);
 				if (runestoneCap != null) {
 					if (runestoneCap.getEntities(InventoryType.SOCKET).size() > 0) {
-//						Treasure.logger.debug("populating runestone has runestone");
 						Optional<Item> item = TreasureRunes.getItem(runestoneCap.getEntities(InventoryType.SOCKET).get(0).getRunestone());
 						// NOTE if item isn't found, something went wrong
 						if (item.isPresent()) {
-//							Treasure.logger.debug("populating runestone has item -> {}", item.get().getRegistryName());
 							this.runeInputSlot1.setInventorySlotContents(0, new ItemStack(item.get()));
 						}
 					}
@@ -547,12 +543,10 @@ public class CharmingTableContainer extends Container {
 			if (runeStack.isEmpty()) {
 				this.runeOutputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
 			}
-			//			Treasure.logger.debug("rune slot1 -> {}", runeStack.getDisplayName());
 			ItemStack runeStack2 = this.runeInputSlot2.getStackInSlot(0);
 			if (runeStack2.isEmpty()) {
 				this.runeOutputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
 			}
-			//			Treasure.logger.debug("rune slot2 -> {}", runeStack2.getDisplayName());
 
 			/*
 			 *  add charm check
@@ -571,8 +565,6 @@ public class CharmingTableContainer extends Container {
 				// check that there is room to add charms
 				if (cap.getCharmEntities().get(InventoryType.SOCKET).size() < cap.getMaxSocketSize()) {
 					// build the output item, add the charm to the adornment
-					Treasure.logger.debug("source itemStack durability -> {}", itemStack.getCapability(DURABILITY, null).getDurability());
-					Treasure.logger.debug("source itemStack damage -> {}", itemStack.getItemDamage());
 					Optional<ItemStack> outStack = TreasureAdornments.transferCapabilities(itemStack2, itemStack, InventoryType.INNATE, InventoryType.SOCKET);
 					if (outStack.isPresent()) {
 						if (outStack.get().hasCapability(RUNESTONES, null)) {
@@ -584,6 +576,32 @@ public class CharmingTableContainer extends Container {
 					}
 				}            
 			}
+			/*
+			 * add charm book (imbuing) check
+			 */
+			if (itemStack.hasCapability(CHARMABLE, null) && itemStack2.hasCapability(CHARMABLE, null)
+					&& itemStack.getCapability(CHARMABLE, null).isImbuable()
+					&& itemStack2.getCapability(CHARMABLE, null).isImbuing()) {
+				ICharmableCapability cap = itemStack.getCapability(CHARMABLE, null);
+
+				// check that they charm type doesn't already exist on the adornment
+				if (cap.hasCharmType(itemStack2, itemStack, InventoryType.INNATE, InventoryType.IMBUE)) {
+					return;
+				}
+				// check that there is room to add charms
+				if (cap.getCharmEntities().get(InventoryType.IMBUE).size() < cap.getMaxImbueSize()) {
+					// build the output item, add the charm book to the adornment
+					Optional<ItemStack> outStack = TreasureAdornments.transferCapabilities(itemStack2, itemStack, InventoryType.INNATE, InventoryType.IMBUE);
+					if (outStack.isPresent()) {
+						if (outStack.get().hasCapability(RUNESTONES, null)) {
+							outStack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(entity -> {
+								entity.getRunestone().apply(outStack.get(), entity);
+							});
+						}
+						this.outputSlot.setInventorySlotContents(0, outStack.get());    					
+					}
+				}  
+			}
 			
 			/*
 			 *  add runestone check. uses the assumption that runestones only contain 1 rune entity
@@ -592,7 +610,6 @@ public class CharmingTableContainer extends Container {
 					&& itemStack.getCapability(RUNESTONES, null).isSocketable()
 					&& itemStack2.getCapability(RUNESTONES, null).isBindable()) {
 
-				Treasure.logger.debug("adding runestone check");
 				IRunestonesCapability cap = itemStack.getCapability(RUNESTONES, null);
 				// check that there is room to add charms
 				if (cap.getEntities(InventoryType.SOCKET).size() < cap.getMaxSize(InventoryType.SOCKET)) {
@@ -600,21 +617,11 @@ public class CharmingTableContainer extends Container {
 					if (stack.isPresent()) {
 						AtomicBoolean isStackValid = new AtomicBoolean(true);
 						stack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(entity -> {
-							Treasure.logger.debug("is applied -> {}", entity.isApplied());
-							Treasure.logger.debug("applied to -> {}", entity.getAppliedTo());
-							Treasure.logger.debug("applying runestone -> {} to entity -> {}", entity.getRunestone(), entity);
 							if (!entity.getRunestone().isValid(stack.get())) {
 								isStackValid.set(false);
 								return;
 							}
-							Treasure.logger.debug("applying cap...");
 							entity.getRunestone().apply(stack.get(), entity);
-							stack.get().getCapability(CHARMABLE, null).getCharmEntities().forEach((type, charm) -> {
-								Treasure.logger.debug("entity -> {}, mana -> {}, max mana -> {}, costEval -> {}", charm.getCharm().getName().toString(), charm.getMana(), charm.getMaxMana(), charm.getCostEvaluator().getClass().getSimpleName());
-							});
-							stack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(stone -> {
-								Treasure.logger.debug("output runestone -> {}", stone);
-							});
 						});
 						if (isStackValid.get()) {
 							this.outputSlot.setInventorySlotContents(0, stack.get());

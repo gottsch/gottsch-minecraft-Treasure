@@ -42,6 +42,7 @@ import com.someguyssoftware.treasure2.capability.KeyRingStorage;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
+import com.someguyssoftware.treasure2.command.SpawnCharmCommand;
 import com.someguyssoftware.treasure2.command.SpawnChestCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
@@ -273,6 +274,7 @@ public class Treasure extends AbstractMod {
 		event.registerServerCommand(new SpawnWellStructureCommand());
 		event.registerServerCommand(new SpawnWitherTreeCommand());
 		event.registerServerCommand(new SpawnRuinsCommand());
+		event.registerServerCommand(new SpawnCharmCommand());
 	}
 
 	/**

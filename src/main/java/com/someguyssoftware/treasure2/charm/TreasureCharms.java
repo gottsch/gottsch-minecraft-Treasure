@@ -20,8 +20,6 @@
 package com.someguyssoftware.treasure2.charm;
 
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.CHARMABLE;
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY;
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.RUNESTONES;
 
 import java.util.Map;
 

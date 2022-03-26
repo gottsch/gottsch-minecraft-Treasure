@@ -40,6 +40,7 @@ import com.someguyssoftware.treasure2.enums.AdornmentType;
 import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
 
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
@@ -162,6 +163,10 @@ public class Adornment extends ModItem {
 		// add runestones tooltips
 		if (stack.hasCapability(TreasureCapabilities.RUNESTONES, null)) {
 			getRunestonesCap(stack).appendHoverText(stack, world, tooltip, flag);
+		}
+		
+		if (getCap(stack).getSourceItem() == Items.AIR.getRegistryName() || getCap(stack).getSourceItem() == null) {
+			tooltip.add(TextFormatting.WHITE.toString() + "" + TextFormatting.ITALIC.toString() + I18n.translateToLocal("tooltip.adornment.upgradable"));
 		}
 	}
 	

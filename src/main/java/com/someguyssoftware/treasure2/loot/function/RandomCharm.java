@@ -85,7 +85,7 @@ public class RandomCharm extends LootFunction {
 		
 		// default charm
 		ICharm defaultCharm = TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(HealingCharm.TYPE, 1))).get();
-		ICharm charm = defaultCharm;
+		ICharm charm = this.defaultCharm == null ? defaultCharm : this.defaultCharm;
 		Optional<List<ICharm>> charms = Optional.empty();
 
 		// select random level

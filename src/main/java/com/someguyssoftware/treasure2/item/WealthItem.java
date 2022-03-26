@@ -77,7 +77,7 @@ public class WealthItem extends ModItem implements IWishable {
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		// standard coin info
+		// standard info
 		tooltip.add(TextFormatting.GOLD + "" + TextFormatting.ITALIC + I18n.translateToLocal("tooltip.label.wishable"));
 	}
 	

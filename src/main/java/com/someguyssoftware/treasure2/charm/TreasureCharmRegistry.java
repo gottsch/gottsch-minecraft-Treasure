@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.util.ResourceLocation;
@@ -41,7 +40,7 @@ public class TreasureCharmRegistry {
      * @param charm
      */
     public static void register(ICharm charm) {
-        if (!REGISTRY.containsKey(charm.getName())) {        	
+        if (!REGISTRY.containsKey(charm.getName())) {
             REGISTRY.put(charm.getName(), charm);
         }
         if (!REGISTRY_BY_LEVEL.containsKey(Integer.valueOf(charm.getLevel()))) {

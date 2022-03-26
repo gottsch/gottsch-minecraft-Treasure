@@ -313,7 +313,7 @@ public class CharmableCapability implements ICharmableCapability {
 	@Override
 	public void clearCharms() {
 		// clear the charm inventory
-		Treasure.logger.debug("clearning charms");
+		Treasure.logger.debug("clearing charms");
 		getCharmEntities().clear();
 	}
 
@@ -374,7 +374,7 @@ public class CharmableCapability implements ICharmableCapability {
 		// add charms
 		for (ICharmEntity entity : entityList) {
 //			Treasure.logger.debug("entity -> {}", entity);
-			entity.getCharm().addInformation(stack, world, tooltip, flag, entity);
+			entity.getCharm().addInformation(stack, world, tooltip, flag, entity, inventoryType);
 		}	
 	}
 
