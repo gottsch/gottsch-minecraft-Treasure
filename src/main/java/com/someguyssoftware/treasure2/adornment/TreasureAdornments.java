@@ -41,8 +41,12 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.someguyssoftware.treasure2.charm.ICharm;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
+import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.Adornment;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.material.CharmableMaterial;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
@@ -176,6 +180,22 @@ public class TreasureAdornments {
 		return  (List<Adornment>) BY_TYPE.get(type);
 	}
 
+// REMOVE
+//    /**
+//     * @param rarity
+//     * @return
+//     */
+//    public static Optional<List<Adornment>> get(Rarity rarity) {
+//    	List<Adornment> adornments = new ArrayList<>();
+//        TreasureItems.ADORNMENT_ITEMS.values().forEach(adornment -> {
+//        	Rarity adornmentRarity = TreasureCharms.LEVEL_RARITY.get(adornment.getCapability(TreasureCapabilities.CHARMABLE, null).getMaxCharmLevel());
+//        	if (rarity == adornmentRarity) {
+//        		adornments.add((Adornment)adornment.getItem());
+//        	}
+//        });
+//        return adornments.isEmpty() ? Optional.empty() : Optional.of(adornments);
+//    }
+    
 	/**
 	 * 
 	 * @param type

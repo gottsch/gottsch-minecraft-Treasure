@@ -244,6 +244,7 @@ public class TreasureItems {
 	// items caches
 	public static final Map<ResourceLocation, Item> ITEMS = new HashMap<>();
 	public static final Map<ResourceLocation, CharmItem> CHARM_ITEMS = new HashMap<>();
+	// item stacks caches
 	public static final Map<ResourceLocation, Adornment> ADORNMENT_ITEMS = new HashMap<>();
 
 	static {
@@ -1246,7 +1247,8 @@ public class TreasureItems {
 
 			// add adornments
 			adornments.forEach(a -> {
-				ITEMS.put(a.getRegistryName(), a);				
+				ITEMS.put(a.getRegistryName(), a);
+				ADORNMENT_ITEMS.put(a.getRegistryName(), (Adornment) a);
 				registry.register(a);
 			});
 
@@ -1336,8 +1338,9 @@ public class TreasureItems {
 				});
 			});
 
-			// some one-offs (great rings)
-			AdornmentType type = AdornmentType.RING;
+			// some one-offs (great rings no gems)
+//			AdornmentType type = AdornmentType.RING;
+			List<AdornmentType> types = Arrays.asList(AdornmentType.NECKLACE, AdornmentType.RING);
 			AdornmentSize size = TreasureAdornments.GREAT;
 			List<CharmableMaterial> materials2 = Arrays.asList(
 					TreasureCharmableMaterials.IRON, 
@@ -1352,11 +1355,35 @@ public class TreasureItems {
 
 			ResourceLocation source = Items.AIR.getRegistryName();
 			materials2.forEach(material -> {
-				Adornment a = createAdornment(type, material, size, source);
-				a.setCreativeTab(Treasure.ADORNMENTS_TAB);
-				Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
-				adornments.add(a);
-				TreasureAdornments.register(material.getName(), source, a);
+				types.forEach(type -> {
+					Adornment a = createAdornment(type, material, size, source);
+					a.setCreativeTab(Treasure.ADORNMENTS_TAB);
+					Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
+					adornments.add(a);
+					TreasureAdornments.register(material.getName(), source, a);					
+				});
+			});
+			
+			// some one-offs (great rings with gems)
+			materials2 = Arrays.asList(
+					TreasureCharmableMaterials.IRON,
+					TreasureCharmableMaterials.COPPER,
+					TreasureCharmableMaterials.SILVER, 
+					TreasureCharmableMaterials.GOLD,
+					TreasureCharmableMaterials.BLOOD,
+					TreasureCharmableMaterials.BLACK
+					);
+
+			materials2.forEach(material -> {
+				sources.forEach(s -> {
+					types.forEach(type -> {
+						Adornment a = createAdornment(type, material, size, s);
+						a.setCreativeTab(Treasure.ADORNMENTS_TAB);
+						Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
+						adornments.add(a);
+						TreasureAdornments.register(material.getName(), s, a);						
+					});
+				});
 			});
 
 			return adornments;

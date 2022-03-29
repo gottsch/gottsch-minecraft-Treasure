@@ -46,7 +46,8 @@ import net.minecraft.util.ResourceLocation;
  *
  */
 public class TreasureCharms {
-	private static final Map<Integer, Rarity> LEVEL_RARITY = Maps.newHashMap();
+	// TODO move somewhere more generic
+	public static final Map<Integer, Rarity> LEVEL_RARITY = Maps.newHashMap();
 	
 	static {
 		Treasure.logger.debug("creating charms...");

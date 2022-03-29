@@ -65,6 +65,9 @@ import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.function.CharmRandomly;
+import com.someguyssoftware.treasure2.loot.function.RandomAdornment;
+import com.someguyssoftware.treasure2.loot.function.RandomCharm;
+import com.someguyssoftware.treasure2.loot.function.RandomRunestone;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 import com.someguyssoftware.treasure2.network.CharmMessageHandlerOnClient;
@@ -226,6 +229,9 @@ public class Treasure extends AbstractMod {
 		CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingStorage(), KeyRingCapability::new);
 		
 		// register custom loot functions
+		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new RandomAdornment.Serializer());
+		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new RandomCharm.Serializer());
+		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new RandomRunestone.Serializer());
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
 //		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms.Serializer());
 //		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetSlots.Serializer());
@@ -274,7 +280,7 @@ public class Treasure extends AbstractMod {
 		event.registerServerCommand(new SpawnWellStructureCommand());
 		event.registerServerCommand(new SpawnWitherTreeCommand());
 		event.registerServerCommand(new SpawnRuinsCommand());
-		event.registerServerCommand(new SpawnCharmCommand());
+		event.registerServerCommand(new SpawnCharmCommand());		
 	}
 
 	/**

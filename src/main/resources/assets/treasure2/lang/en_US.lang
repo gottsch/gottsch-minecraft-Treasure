@@ -113,7 +113,17 @@ item.treasure2:ruby_iron_ring.name=Iron Ruby Ring
 item.treasure2:sapphire_iron_ring.name=Iron Sapphire Ring
 item.treasure2:white_pearl_iron_ring.name=Iron White Pearl Ring
 item.treasure2:black_pearl_iron_ring.name=Iron Black Pearl Ring
+
 item.treasure2:great_iron_ring.name=Great Iron Ring
+item.treasure2:great_diamond_iron_ring.name=Great Iron Diamond Ring
+item.treasure2:great_emerald_iron_ring.name=Great Iron Emerald Ring
+item.treasure2:great_amethyst_iron_ring.name=Great Amethyst Iron Ring
+item.treasure2:great_onyx_iron_ring.name=Great Onyx Iron Ring
+item.treasure2:great_ruby_iron_ring.name=Great Iron Ruby Ring
+item.treasure2:great_sapphire_iron_ring.name=Great Iron Sapphire Ring
+item.treasure2:great_white_pearl_iron_ring.name=Great Iron White Pearl Ring
+item.treasure2:great_black_pearl_iron_ring.name=Great Iron Black Pearl Ring
+
 item.treasure2:iron_bracelet.name=Iron Bracelet
 item.treasure2:diamond_iron_bracelet.name=Iron Diamond Bracelet
 item.treasure2:emerald_iron_bracelet.name=Iron Emerald Bracelet
@@ -174,6 +184,7 @@ item.treasure2:sapphire_silver_ring.name=Silver Sapphire Ring
 item.treasure2:white_pearl_silver_ring.name=Silver White Pearl Ring
 item.treasure2:black_pearl_silver_ring.name=Silver Black Pearl Ring
 item.treasure2:great_silver_ring.name=Great Silver Ring
+
 item.treasure2:silver_bracelet.name=Silver Bracelet
 item.treasure2:diamond_silver_bracelet.name=Silver Diamond Bracelet
 item.treasure2:emerald_silver_bracelet.name=Silver Emerald Bracelet
@@ -206,6 +217,15 @@ item.treasure2:sapphire_gold_ring.name=Gold Sapphire Ring
 item.treasure2:white_pearl_gold_ring.name=Gold White Pearl Ring
 item.treasure2:black_pearl_gold_ring.name=Gold Black Pearl Ring
 item.treasure2:great_gold_ring.name=Great Gold Ring
+item.treasure2:great_diamond_gold_ring.name=Great Gold Diamond Ring
+item.treasure2:great_emerald_gold_ring.name=Great Gold Emerald Ring
+item.treasure2:great_amethyst_gold_ring.name=Great Amethyst Gold Ring
+item.treasure2:great_onyx_gold_ring.name=Great Onyx Gold Ring
+item.treasure2:great_ruby_gold_ring.name=Great Gold Ruby Ring
+item.treasure2:great_sapphire_gold_ring.name=Great Gold Sapphire Ring
+item.treasure2:great_white_pearl_gold_ring.name=Great Gold White Pearl Ring
+item.treasure2:great_black_pearl_gold_ring.name=Great Gold Black Pearl Ring
+
 item.treasure2:gold_bracelet.name=Gold Bracelet
 item.treasure2:diamond_gold_bracelet.name=Gold Diamond Bracelet
 item.treasure2:emerald_gold_bracelet.name=Gold Emerald Bracelet

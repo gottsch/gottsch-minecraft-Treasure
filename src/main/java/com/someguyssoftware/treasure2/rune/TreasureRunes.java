@@ -166,4 +166,8 @@ public class TreasureRunes {
 	public static Optional<Item> getItem(IRune runestone) {
 		return Optional.ofNullable(ITEM_REGISTRY.get(runestone));
 	}
+	
+	public static List<Item> itemValues() {
+		return (List<Item>) ITEM_REGISTRY.values();
+	}
 }

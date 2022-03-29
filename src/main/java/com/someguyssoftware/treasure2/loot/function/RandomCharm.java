@@ -60,12 +60,13 @@ public class RandomCharm extends LootFunction {
 	private static final String RARITY = "rarity";
 	private static final String RARITIES = "rarities";
 	private static final String DEFAULT_CHARM = "defaultCharm";
+	private static final String IS_BOOK = "isBook";
 
-	// TODO need to register charmItems by level in TreasureItems.
 	private RandomValueRange levels;
 	private Rarity rarity;
 	// private List<Rarity> rarities;
 	private ICharm defaultCharm;
+	private boolean isBook;
 
 	/**
 	 * 
@@ -73,11 +74,12 @@ public class RandomCharm extends LootFunction {
 	 * @param levels
 	 * @param defaultCharm
 	 */
-	public RandomCharm(LootCondition[] conditions, RandomValueRange levels, Rarity rarity, ICharm defaultCharm) {
+	public RandomCharm(LootCondition[] conditions, RandomValueRange levels, Rarity rarity, ICharm defaultCharm, boolean isBook) {
 		super(conditions);
 		this.levels = levels;
 		this.rarity = rarity;
 		this.defaultCharm = defaultCharm;
+		this.isBook = isBook;
 	}
 
 	@Override
@@ -117,33 +119,42 @@ public class RandomCharm extends LootFunction {
 			}
 		}
 
-		// select first charm item that meets the minimum level == level
-		// TODO for now, cycle through all ITEMS cache
-		ItemStack charmStack = null;
-		// TODO need to order charm items by max level
-		for (Item item : TreasureItems.ITEMS.values()) {
-			if (item instanceof CharmItem) {
-				ItemStack itemStack = new ItemStack(item);
-				// get the capability
-				ICharmableCapability cap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
-				if (cap != null) {
-					if (cap.getMaxCharmLevel() == level) {
-						charmStack = itemStack;
-						break;
-					}
-				}
-			}
-		}
 
-		if (charmStack == null) {
-			// TODO default to level 1 item ie silver_charm
-			// charmItem = TreasureItems.ITEMS.get(new ResourceLocation("treasure2:silver_charm"));
-			charmStack = stack;
-			charm = defaultCharm;
+		// select first charm item that meets the minimum level == level
+		ItemStack charmStack = null;
+		if (this.isBook) {
+			charmStack = new ItemStack(TreasureItems.CHARM_BOOK);
 		}
+		else {
+			Item charmItem = TreasureItems.getCharmItemByLevel(level);
+			charmStack = new ItemStack(charmItem);
+		}
+		
+		// TODO need to order charm items by max level
+//		for (Item item : TreasureItems.ITEMS.values()) {
+//			if (item instanceof CharmItem) {
+//				ItemStack itemStack = new ItemStack(item);
+//				// get the capability
+//				ICharmableCapability cap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
+//				if (cap != null) {
+//					if (cap.getMaxCharmLevel() == level) {
+//						charmStack = itemStack;
+//						break;
+//					}
+//				}
+//			}
+//		}
+
+//		if (charmStack == null) {
+//			// TODO default to level 1 item ie silver_charm
+//			// charmItem = TreasureItems.ITEMS.get(new ResourceLocation("treasure2:silver_charm"));
+//			charmStack = stack;
+//			charm = defaultCharm;
+//		}
 
 		// add charm to charmStack
 		ICharmableCapability cap = charmStack.getCapability(TreasureCapabilities.CHARMABLE, null);
+		cap.clearCharms();
 		cap.getCharmEntities().get(InventoryType.INNATE).add(charm.createEntity());
 
 		return charmStack;
@@ -159,15 +170,16 @@ public class RandomCharm extends LootFunction {
 		 * 
 		 */
 		public void serialize(JsonObject json, RandomCharm value, JsonSerializationContext context) {
-			if (json.has(LEVELS)) {
+			if (value.levels != null) {
 				json.add(LEVELS, context.serialize(value.levels));
 			}
-			if (json.has(RARITY)) {
-				json.add(RARITY, new JsonPrimitive(value.rarity.name())); // TODO toString() ?
+			if (value.rarity != null) {
+				json.add(RARITY, new JsonPrimitive(value.rarity.name()));
 			}
-			if (json.has(DEFAULT_CHARM)) {
+			if (value.defaultCharm != null) {
 				json.add(DEFAULT_CHARM, new JsonPrimitive(value.defaultCharm.getName().toString()));
 			}
+			json.add(IS_BOOK, new JsonPrimitive(value.isBook));
 		}
 
 		/**
@@ -204,7 +216,11 @@ public class RandomCharm extends LootFunction {
 				charm = TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(HealingCharm.TYPE, 1)));
 			}
 			
-			return new RandomCharm(conditionsIn, levels, rarity, charm.get());
+			boolean isBook = false;
+			if (json.has(IS_BOOK)) {
+				isBook = JsonUtils.getBoolean(json, IS_BOOK);
+			}
+			return new RandomCharm(conditionsIn, levels, rarity, charm.get(), isBook);
 		}
 	}
 }
