@@ -50,6 +50,14 @@ public class AngelsRune extends Rune {
 		return false;
 	}
 
+	/**
+	 * Applies the Rune's ability/modification to a Capability.
+	 * Used only during Item.initCapability().
+	 */
+	public void initCapabilityApply(ICharmableCapability charmCap, IDurabilityCapability durabilityCap, IRuneEntity entity) {
+		process(charmCap, durabilityCap, entity);
+	}
+	
 	@Override
 	public void apply(ItemStack itemStack, IRuneEntity runestoneEntity) {
 		if (!isValid(itemStack)) {
@@ -60,6 +68,29 @@ public class AngelsRune extends Rune {
 		durabilityCap.setInfinite(true);
 		
 		ICharmableCapability charmableCap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
+//		charmableCap.getCharmEntities().forEach((type, charmEntity) -> {
+//			if (charmEntity.getCharm().getType().equals(HealingCharm.TYPE)
+//					|| charmEntity.getCharm().getType().equals(GreaterHealingCharm.HEALING_TYPE)
+//					|| charmEntity.getCharm().getType().equals(ShieldingCharm.SHIELDING_TYPE)
+//					|| charmEntity.getCharm().getType().equals(AegisCharm.AEGIS_TYPE)) {
+//				if (!runestoneEntity.isAppliedTo(charmEntity.getCharm().getType())) {
+//					charmEntity.setMana(Math.floor(charmEntity.getMana() * 2.0D));
+//					charmEntity.setMaxMana(Math.floor(charmEntity.getMaxMana() * 2.0D));
+//					runestoneEntity.getAppliedTo().add(charmEntity.getCharm().getType());
+//				}
+//			}
+//		});
+//		runestoneEntity.setApplied(true);
+		process(charmableCap, durabilityCap, runestoneEntity);
+	}
+
+	/**
+	 * 
+	 * @param charmableCap
+	 * @param durabilityCap
+	 * @param runestoneEntity
+	 */
+	protected void process(ICharmableCapability charmableCap, IDurabilityCapability durabilityCap, IRuneEntity runestoneEntity) {
 		charmableCap.getCharmEntities().forEach((type, charmEntity) -> {
 			if (charmEntity.getCharm().getType().equals(HealingCharm.TYPE)
 					|| charmEntity.getCharm().getType().equals(GreaterHealingCharm.HEALING_TYPE)
@@ -74,7 +105,7 @@ public class AngelsRune extends Rune {
 		});
 		runestoneEntity.setApplied(true);
 	}
-
+	
 	@Override
 	public void undo(ItemStack itemStack, IRuneEntity runestoneEntity) {
 		if (itemStack.hasCapability(TreasureCapabilities.DURABILITY, null)) {

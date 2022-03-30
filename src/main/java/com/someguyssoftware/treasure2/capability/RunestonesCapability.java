@@ -69,7 +69,6 @@ public class RunestonesCapability implements IRunestonesCapability {
 	 * @param builder
 	 */
 	public RunestonesCapability(Builder builder) {
-		//		this.magicsCap = builder.magicsCap;
 		this.bindable = builder.bindable;
 		this.socketable = builder.socketable;
 		this.maxInnateSize = builder.maxInnateSize;
@@ -91,6 +90,7 @@ public class RunestonesCapability implements IRunestonesCapability {
 			tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("tooltip.runestones.title"));
 	
 			// create header text for inventory type
+			appendHoverText(stack, world, tooltip, flag, InventoryType.INNATE, false);
 			appendHoverText(stack, world, tooltip, flag, InventoryType.SOCKET, true);
 		}
 	}
@@ -106,6 +106,7 @@ public class RunestonesCapability implements IRunestonesCapability {
 		List<IRuneEntity> entityList = (List<IRuneEntity>) getEntities(inventoryType);
 		// test if the cap has the inventory type ability
 		switch (inventoryType) {
+		case INNATE: break;
 		case SOCKET: if (!isSocketable()) { return;}; break;
 		default:
 			return;
@@ -230,7 +231,6 @@ public class RunestonesCapability implements IRunestonesCapability {
 	 */
 	@Override
 	public void add(InventoryType type, IRuneEntity entity) {
-
 		// TODO ensure only one of the same type can be added.
 		// test if there is enough space to add
 		if (getCurrentSize(type) < getMaxSize(type)) {

@@ -5,6 +5,8 @@ package com.someguyssoftware.treasure2.worldgen;
 
 import static com.someguyssoftware.treasure2.enums.Rarity.COMMON;
 import static com.someguyssoftware.treasure2.enums.Rarity.EPIC;
+import static com.someguyssoftware.treasure2.enums.Rarity.LEGENDARY;
+import static com.someguyssoftware.treasure2.enums.Rarity.MYTHICAL;
 import static com.someguyssoftware.treasure2.enums.Rarity.RARE;
 import static com.someguyssoftware.treasure2.enums.Rarity.SCARCE;
 import static com.someguyssoftware.treasure2.enums.Rarity.UNCOMMON;
@@ -37,6 +39,8 @@ import com.someguyssoftware.treasure2.generator.chest.CrystalSkullChestGenerator
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.LegendaryChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.MythicalChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.RareChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
@@ -117,7 +121,17 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 			chestCollectionGeneratorsMap.get(EPIC).add(85, new EpicChestGenerator());
 			chestCollectionGeneratorsMap.get(EPIC).add(15, new CauldronChestGenerator());
 			chestCollectionGeneratorsMap.get(EPIC).add(15, new CrystalSkullChestGenerator());
-		}		
+		}
+		if (TreasureConfig.CHESTS.submergedChests.configMap.get(LEGENDARY).isEnableChest()) {
+			RARITIES.add(LEGENDARY);
+			chestCollectionGeneratorsMap.put(LEGENDARY, new RandomWeightedCollection<>());
+			chestCollectionGeneratorsMap.get(LEGENDARY).add(1, new LegendaryChestGenerator()); 
+		}
+		if (TreasureConfig.CHESTS.submergedChests.configMap.get(MYTHICAL).isEnableChest()) {
+			RARITIES.add(MYTHICAL);
+			chestCollectionGeneratorsMap.put(MYTHICAL, new RandomWeightedCollection<>());
+			chestCollectionGeneratorsMap.get(MYTHICAL).add(1, new MythicalChestGenerator()); 
+		}
 	}
 
 	/**

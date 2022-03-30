@@ -108,7 +108,7 @@ public class RuinCurse extends Charm {
 	@SuppressWarnings("deprecation")
 	@Override
 	public String getCharmDesc(ICharmEntity entity) {
-		return I18n.translateToLocalFormatted("tooltip.charm.rate.ruin", String.valueOf(Math.toIntExact(Math.round(entity.getDuration()))));
+		return I18n.translateToLocalFormatted("tooltip.charm.rate.ruin", DECIMAL_FORMAT.format(getAmount()/2), DECIMAL_FORMAT.format(entity.getFrequency()/TICKS_PER_SECOND));
 	}
 	
 	public static class Builder extends Charm.Builder {

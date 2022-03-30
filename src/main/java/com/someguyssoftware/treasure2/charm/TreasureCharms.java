@@ -260,6 +260,9 @@ public class TreasureCharms {
 	public static ICharm makeDecay(int level) {
 		ICharm curse =  new DecayCurse.Builder(level).with($ -> {
 			$.mana = level * 20.0;
+			$.amount = 1.0;
+			// in ticks (20 = 1 sec)
+			$.frequency = Math.max(40, 100.0 - (Math.floor((level + 1) / 5D) * 10)); // ie every 5 seconds, reducing by 0.5 second every 5th level
 			$.effectStackable = true;
 			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();		
@@ -301,8 +304,9 @@ public class TreasureCharms {
 	public static ICharm makeRuin(int level) {
 		ICharm charm =  new RuinCurse.Builder(level).with($ -> {
 			$.mana =  level * 20D;
+			$.amount = 1.0;
 			// in ticks (20 = 1 sec)
-			$.frequency =	Math.max(200, 400.0 - (Math.floor((level + 1) / 5) *40)); // level < 4 ? 20D : level < 7 ? 17D : level < 10 ? 15D : level < 13 ? 13D : 10D;
+			$.frequency = Math.max(40, 100.0 - (Math.floor((level + 1) / 5D) * 10)); // ie every 5 seconds, reducing by 0.5 second every 5th level
 			$.effectStackable = true;
 			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();

@@ -31,8 +31,8 @@
 		},
 		{
 			"name": "mythical_runestones",
-			"rolls": 1,		
-		 		"entries": [{
+			"rolls": 1,
+			"entries": [{
 				"entryName": "runestone0",
 				"type": "item",
 				"name": "treasure2:mana_runestone",
@@ -41,62 +41,6 @@
 					"function": "treasure2:random_runestone"
 				}]
 			}]
-		},
-		{
-			"name": "legendary_charms",
-			"rolls": 2,
-			"entries": [{
-				"entryName": "charm0",
-				"type": "item",
-				"name": "treasure2:sapphire_charm",
-				"weight": 1,
-				"chance": 0.8,
-				"functions": [{
-					"function": "treasure2:random_charm",
-					"rarity": "legendary",
-					"defaultCharm": "treasure2:healing_21"
-				}]
-			}]
-		},
-		{
-			"name": "mythical_adornments",
-			"rolls": 1,
-			"entries": [{
-					"entryName": "adornment0",
-					"type": "item",
-					"name": "treasure2:great_black_ring",
-					"weight": 1,
-					"functions": [{
-							"function": "treasure2:random_adornment",
-							"rarity": "mythical",
-							"materials": ["gold", "blood", "black"],
-							"hasGem": true
-						},
-						{
-							"function": "treasure2:random_charm",
-							"rarity": "mythical",
-							"defaultCharm": "treasure2:healing_25"
-						},
-						{
-							"function": "treasure2:random_charm",
-							"rarity": "mythical",
-							"defaultCharm": "treasure2:healing_25"
-						}
-					]
-				},
-				{
-					"entryName": "shadows_gift",
-					"type": "item",
-					"name": "treasure2:shadows_gift",
-					"weight": 1
-				},
-				{
-					"entryName": "... add other mythical named adornments ...",
-					"type": "item",
-					"name": "treasure2:shadows_gift",
-					"weight": 1
-				}
-			]
 		}
 	]
 }

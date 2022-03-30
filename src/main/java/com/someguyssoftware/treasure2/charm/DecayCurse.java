@@ -67,7 +67,8 @@ public class DecayCurse extends Charm {
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity) {
 		boolean result = false;
 		//		Treasure.logger.debug("in decay");
-		if (world.getTotalWorldTime() % 100 == 0) {
+//		if (world.getTotalWorldTime() % 100 == 0) {
+		if (world.getTotalWorldTime() % entity.getFrequency() == 0) {
 			if (!player.isDead && entity.getMana() > 0 && player.getHealth() > 0.0) {
 				//			Treasure.logger.debug("player is alive and charm is good still...");
 				player.setHealth(MathHelper.clamp(player.getHealth() - (float)getAmount(), 0.0F, player.getMaxHealth()));				
@@ -89,7 +90,7 @@ public class DecayCurse extends Charm {
 	@SuppressWarnings("deprecation")
 	@Override
 	public String getCharmDesc(ICharmEntity entity) {
-		return I18n.translateToLocalFormatted("tooltip.charm.rate.decay");
+		return I18n.translateToLocalFormatted("tooltip.charm.rate.decay", DECIMAL_FORMAT.format(getAmount()/2), DECIMAL_FORMAT.format(entity.getFrequency()/TICKS_PER_SECOND));
 	}
 	
 	public static class Builder extends Charm.Builder {

@@ -1,0 +1,45 @@
+{
+	"version": "3.0",
+	"since": "mc1.12.2-v2.0.0",
+	"pools": [{
+		"name": "epic_adornments",
+		"rolls": 1,
+		"entries": [{
+				"entryName": "adornment_epic0",
+				"type": "item",
+				"name": "treasure2:great_gold_ring",
+				"weight": 5,
+				"functions": [{
+					"function": "treasure2:random_adornment",
+					"rarity": "epic",
+					"materials": ["silver", "gold"],
+					"hasGem": true
+				}]
+			},
+			{
+				"entryName": "medics_token",
+				"type": "item",
+				"name": "treasure2:medics_token",
+				"weight": 1
+			},
+			{
+				"entryName": "adephagias_bounty",
+				"type": "item",
+				"name": "treasure2:adephagias_bounty",
+				"weight": 1
+			},
+			{
+				"entryName": "salandaars_ward",
+				"type": "item",
+				"name": "treasure2:salandaars_ward",
+				"weight": 1
+			},
+			{
+				"entryName": "mirthas_torch",
+				"type": "item",
+				"name": "treasure2:mirthas_torch",
+				"weight": 1
+			}
+		]
+	}]
+}

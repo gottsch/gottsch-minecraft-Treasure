@@ -48,6 +48,7 @@ public class TreasureRunes {
 
 	// RUNE_OF_DAMAGE x2 - SCARCE
 	public static IRune RUNE_OF_MANA;
+	public static IRune RUNE_OF_GREATER_MANA;
 	public static IRune RUNE_OF_DURABILITY; //	lvl 1 durability
 	public static IRune RUNE_OF_QUALITY;
 	public static IRune RUNE_OF_ANGELS;
@@ -71,6 +72,14 @@ public class TreasureRunes {
 					$.getInvalids().add(IlluminationCharm.ILLUMINATION_TYPE);
 				}).build();
 		register(RUNE_OF_MANA);
+		
+		RUNE_OF_GREATER_MANA = new GreaterManaRune.Builder(ResourceLocationUtil.create("greater_mana_rune"))
+				.with($ -> {
+					$.lore = I18n.translateToLocal("tooltip.runestone.lore.greater_mana_rune");
+					$.rarity = Rarity.RARE;
+					$.getInvalids().add(IlluminationCharm.ILLUMINATION_TYPE);
+				}).build();
+		register(RUNE_OF_GREATER_MANA);
 		
 		RUNE_OF_DURABILITY = new DurabilityRune.Builder(ResourceLocationUtil.create("durability_rune"))
 				.with($ -> {

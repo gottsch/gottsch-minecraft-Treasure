@@ -91,7 +91,7 @@ public abstract class Rune implements IRune {
 	 */
 	@Override
 	abstract public void apply(ItemStack itemStack, IRuneEntity entity);
-	
+		
 	/**
 	 * Undoes the Runestone's ability/modification from the ItemStack 
 	 * @param itemStack

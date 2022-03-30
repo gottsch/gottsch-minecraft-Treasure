@@ -37,11 +37,36 @@ public class ManaRune extends Rune {
 		super(builder);
 	}
 
+	/**
+	 * Required so sub-classes can call super with a compatible Builder
+	 * @param builder
+	 */
+	protected ManaRune(Rune.Builder builder) {
+		super(builder);
+	}
+	
 	@Override
 	public boolean isValid(ItemStack itemStack) {		
 		return itemStack.hasCapability(TreasureCapabilities.CHARMABLE, null);
+		// TODO check against invalids
 	}
 
+	/**
+	 * Applies the Rune's ability/modification to a Capability.
+	 * Used only during Item.initCapability().
+	 */
+	public void initCapabilityApply(ICharmableCapability capability, IRuneEntity entity) {
+			// for each charm, increase the mana
+//			cap.getCharmEntities().forEach((key, value) -> {
+//				if (!entity.isAppliedTo(value.getCharm().getType()) && !getInvalids().contains(value.getCharm().getType())) {
+//					apply(value);
+//					entity.getAppliedTo().add(value.getCharm().getType());
+//					entity.setApplied(true);
+//				}
+//			});
+		process(capability, entity);
+	}
+	
 	@Override
 	public void apply(ItemStack itemStack, IRuneEntity entity) {
 		if (!isValid(itemStack)) {
@@ -50,20 +75,27 @@ public class ManaRune extends Rune {
 
 		ICharmableCapability cap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
 		// for each charm, increase the mana
+//		cap.getCharmEntities().forEach((key, value) -> {
+//			if (!entity.isAppliedTo(value.getCharm().getType()) && !getInvalids().contains(value.getCharm().getType())) {
+//				apply(value);
+//				entity.getAppliedTo().add(value.getCharm().getType());
+//				entity.setApplied(true);
+//			}
+//		});
+		process(cap, entity);
+	}
+	
+	protected void process(ICharmableCapability cap, IRuneEntity entity) {
 		cap.getCharmEntities().forEach((key, value) -> {
 			if (!entity.isAppliedTo(value.getCharm().getType()) && !getInvalids().contains(value.getCharm().getType())) {
-//				Treasure.logger.debug("before apply: entity -> {}, mana -> {}, max mana -> {}", value.getCharm().getName().toString(), value.getMana(), value.getMaxMana());
-//				value.setMana(Math.floor(value.getMana() * 1.25D));
-//				value.setMaxMana(Math.floor(value.getMaxMana() * 1.25D));
 				apply(value);
-//				Treasure.logger.debug("after apply: entity -> {}, mana -> {}, max mana -> {}", value.getCharm().getName().toString(), value.getMana(), value.getMaxMana());
 				entity.getAppliedTo().add(value.getCharm().getType());
 				entity.setApplied(true);
 			}
-		});		
+		});	
 	}
-
-	public void apply(ICharmEntity entity) {
+	
+	protected void apply(ICharmEntity entity) {
 		// add 25% to the current mana
 		entity.setMana(entity.getMana() * 1.25D);
 		entity.setMaxMana(entity.getMaxMana() * 1.25D);

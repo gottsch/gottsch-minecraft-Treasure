@@ -1,0 +1,40 @@
+{
+	"version": "3.0",
+	"since": "mc1.12.2-v2.0.0",
+	"pools": [{
+			"name": "legendary_adornments",
+			"rolls": 1,
+			"entries": [{
+					"entryName": "adornment0",
+					"type": "item",
+					"name": "treasure2:great_blood_ring",
+					"weight": 3,
+					"functions": [{
+							"function": "treasure2:random_adornment",
+							"rarity": "legendary",
+							"materials": ["silver", "gold", "blood", "black"],
+							"hasGem": true
+						},
+						{
+							"function": "treasure2:random_charm",
+							"rarity": "mythical",
+							"defaultCharm": "treasure2:healing_24"
+						}
+					]
+				},
+				{
+					"entryName": "bracelet_of_wonder",
+					"type": "item",
+					"name": "treasure2:bracelet_of_wonder",
+					"weight": 1
+				},
+				{
+					"entryName": "gottschs_ring_of_moon",
+					"type": "item",
+					"name": "treasure2:gottschs_ring_of_moon",
+					"weight": 1
+				}
+			]
+		}	
+	]
+}

@@ -480,14 +480,18 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 					new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" }));
 			configs.put(Rarity.EPIC, new ChestConfig(true, 800, 15, 10, new String[] {},
 					new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" }));
-
+			configs.put(Rarity.LEGENDARY, new ChestConfig(true, 1500, 15, 10, new String[] {},
+					new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" }));
+			configs.put(Rarity.MYTHICAL, new ChestConfig(true, 2800, 15, 10, new String[] {},
+					new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" }));
+			
 			surfaceChests = new ChestCollection(configs);
 
 			// setup submerged properties
 			configs.clear();
 			configs.put(Rarity.COMMON, new ChestConfig(false, 150, 85, 40, new String[] {}, new String[] {},
 					new String[] {}, new String[] {}));
-			configs.put(Rarity.UNCOMMON, new ChestConfig(false, 3000, 75, 30, new String[] {}, new String[] {},
+			configs.put(Rarity.UNCOMMON, new ChestConfig(false, 300, 75, 30, new String[] {}, new String[] {},
 					new String[] {}, new String[] {}));
 			configs.put(Rarity.SCARCE,
 					new ChestConfig(true, 400, 50, 20,
@@ -501,6 +505,16 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 							new String[] {}, new String[] { "ocean", "deep_ocean" }, new String[] {}));
 			configs.put(Rarity.EPIC,
 					new ChestConfig(true, 1000, 15, 5,
+							new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean",
+									"lukewarm_ocean", "warm_ocean" },
+							new String[] {}, new String[] { "ocean", "deep_ocean" }, new String[] {}));
+			configs.put(Rarity.LEGENDARY,
+					new ChestConfig(true, 1700, 25, 5,
+							new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean",
+									"lukewarm_ocean", "warm_ocean" },
+							new String[] {}, new String[] { "ocean", "deep_ocean" }, new String[] {}));
+			configs.put(Rarity.MYTHICAL,
+					new ChestConfig(true, 3000, 15, 5,
 							new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean",
 									"lukewarm_ocean", "warm_ocean" },
 							new String[] {}, new String[] { "ocean", "deep_ocean" }, new String[] {}));
@@ -588,6 +602,14 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			public ChestConfig epicChestProperties = new ChestConfig(true, 800, 15, 10, new String[] {},
 					new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" });
 
+			@Name("06 Legendary chest")
+			public ChestConfig legendaryChestProperties = new ChestConfig(true, 1500, 15, 10, new String[] {},
+					new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" });
+			
+			@Name("07 Mythical chest")
+			public ChestConfig mythicalChestProperties = new ChestConfig(true, 2800, 15, 10, new String[] {},
+					new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" });
+			
 			/**
 			 * 
 			 */
@@ -597,6 +619,9 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 				configMap.put(Rarity.SCARCE, scarceChestProperties);
 				configMap.put(Rarity.RARE, rareChestProperties);
 				configMap.put(Rarity.EPIC, epicChestProperties);
+				configMap.put(Rarity.LEGENDARY, legendaryChestProperties);
+				configMap.put(Rarity.MYTHICAL, mythicalChestProperties);
+				
 			}
 
 			public ChestCollection(Map<Rarity, ChestConfig> configs) {
@@ -605,6 +630,8 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 				scarceChestProperties = configs.get(Rarity.SCARCE);
 				rareChestProperties = configs.get(Rarity.RARE);
 				epicChestProperties = configs.get(Rarity.EPIC);
+				legendaryChestProperties = configs.get(Rarity.LEGENDARY);
+				mythicalChestProperties = configs.get(Rarity.MYTHICAL);
 
 				// update the map
 				configMap.put(Rarity.COMMON, commonChestProperties);
@@ -612,6 +639,8 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 				configMap.put(Rarity.SCARCE, scarceChestProperties);
 				configMap.put(Rarity.RARE, rareChestProperties);
 				configMap.put(Rarity.EPIC, epicChestProperties);
+				configMap.put(Rarity.LEGENDARY, legendaryChestProperties);
+				configMap.put(Rarity.MYTHICAL, mythicalChestProperties);
 			}
 
 			/**

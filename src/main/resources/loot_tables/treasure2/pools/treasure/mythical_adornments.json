@@ -1,0 +1,45 @@
+{
+	"version": "3.0",
+	"since": "mc1.12.2-v2.0.0",
+	"pools": [{
+			"name": "mythical_adornments",
+			"rolls": 1,
+			"entries": [{
+					"entryName": "adornment0",
+					"type": "item",
+					"name": "treasure2:great_black_ring",
+					"weight": 3,
+					"functions": [{
+							"function": "treasure2:random_adornment",
+							"rarity": "mythical",
+							"materials": ["gold", "blood", "black"],
+							"hasGem": true
+						},
+						{
+							"function": "treasure2:random_charm",
+							"rarity": "mythical",
+							"defaultCharm": "treasure2:healing_25"
+						},
+						{
+							"function": "treasure2:random_charm",
+							"rarity": "mythical",
+							"defaultCharm": "treasure2:healing_25"
+						}
+					]
+				},
+				{
+					"entryName": "shadows_gift",
+					"type": "item",
+					"name": "treasure2:shadows_gift",
+					"weight": 1
+				},
+				{
+					"entryName": "ring_of_life_death",
+					"type": "item",
+					"name": "treasure2:ring_of_life_death",
+					"weight": 1
+				}
+			]
+		}
+	]
+}

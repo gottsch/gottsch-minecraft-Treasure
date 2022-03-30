@@ -5,6 +5,8 @@ package com.someguyssoftware.treasure2.worldgen;
 
 import static com.someguyssoftware.treasure2.enums.Rarity.COMMON;
 import static com.someguyssoftware.treasure2.enums.Rarity.EPIC;
+import static com.someguyssoftware.treasure2.enums.Rarity.LEGENDARY;
+import static com.someguyssoftware.treasure2.enums.Rarity.MYTHICAL;
 import static com.someguyssoftware.treasure2.enums.Rarity.RARE;
 import static com.someguyssoftware.treasure2.enums.Rarity.SCARCE;
 import static com.someguyssoftware.treasure2.enums.Rarity.UNCOMMON;
@@ -43,6 +45,8 @@ import com.someguyssoftware.treasure2.generator.chest.CrystalSkullChestGenerator
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.LegendaryChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.MythicalChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.RareChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
@@ -141,7 +145,17 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 			chestGenMap.get(EPIC).add(70, new EpicChestGenerator());
 			chestGenMap.get(EPIC).add(15, new CauldronChestGenerator());
 			chestGenMap.get(EPIC).add(15, new CrystalSkullChestGenerator());
-		}		
+		}
+		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(LEGENDARY).isEnableChest()) {
+			RARITIES.add(LEGENDARY);
+			chestGenMap.put(LEGENDARY, new RandomWeightedCollection<>());
+			chestGenMap.get(LEGENDARY).add(1, new LegendaryChestGenerator());
+		}	
+		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(MYTHICAL).isEnableChest()) {
+			RARITIES.add(MYTHICAL);
+			chestGenMap.put(MYTHICAL, new RandomWeightedCollection<>());
+			chestGenMap.get(MYTHICAL).add(1, new MythicalChestGenerator());
+		}	
 		
 		// setup pit generators map
 		pitGens.put(PitTypes.STANDARD, Pits.SIMPLE_PIT, new SimplePitGenerator());

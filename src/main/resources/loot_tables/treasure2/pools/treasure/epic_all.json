@@ -1,0 +1,35 @@
+{
+	"version": "3.0",
+	"since": "mc1.12.2-v2.0.0",
+	"pools": [{
+			"name": "epic_treasure",
+			"rolls": {
+				"min": 2,
+				"max": 3
+			},
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/epic_treasure",
+				"weight": 1
+			}]
+		},
+		{
+			"name": "epic_charms",
+			"rolls": 1,
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/epic_charms",
+				"weight": 1
+			}]
+		},
+		{
+			"name": "epic_adornments",
+			"rolls": 1,
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/epic_adornments",
+				"weight": 1
+			}]
+		}
+	]
+}
