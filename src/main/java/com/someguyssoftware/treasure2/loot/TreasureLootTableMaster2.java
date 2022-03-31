@@ -61,7 +61,9 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 			"chests/uncommon",
 			"chests/scarce",
 			"chests/rare",
-			"chests/epic"
+			"chests/epic",
+			"chests/legendary",
+			"chests/mythical"
 			);
 
 	/*
@@ -81,7 +83,9 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 			"inject/uncommon",
 			"inject/scarce",
 			"inject/rare",
-			"inject/epic"
+			"inject/epic",
+			"inject/legendary",
+			"inject/mythical"
 			);
 
 	/*

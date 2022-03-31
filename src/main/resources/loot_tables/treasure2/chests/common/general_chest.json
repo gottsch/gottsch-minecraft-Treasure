@@ -7,28 +7,15 @@
 		{
 			"__comment": "do not rename nor remove. mod searches for this pool.",					
 			"name": "treasure",
-			"rolls": 2,
-			"bonus_rolls": 1.0,
-			"entries": [
-				{
-					"type": "loot_table",
-					"name": "treasure2:pools/treasure/common",
-					"weight": 1
-				}
-			]
-		},
-		{
-			"__comment": "do not rename nor remove. mod searches for this pool.",		
-			"name": "charms",
 			"rolls": 1,
 			"entries": [
 				{
 					"type": "loot_table",
-					"name": "treasure2:pools/treasure/common_charms",
+					"name": "treasure2:pools/treasure/common_all",
 					"weight": 1
 				}
 			]
-		},		
+		},	
 		{
 			"name": "items",
 			"rolls": {

@@ -16,14 +16,12 @@
 							"hasGem": true
 						},
 						{
-							"function": "treasure2:random_charm",
-							"rarity": "mythical",
-							"defaultCharm": "treasure2:healing_25"
+							"function": "treasure2:charm_randomly",
+							"rarity": "mythical"
 						},
 						{
-							"function": "treasure2:random_charm",
-							"rarity": "mythical",
-							"defaultCharm": "treasure2:healing_25"
+							"function": "treasure2:charm_randomly",
+							"rarity": "mythical"
 						}
 					]
 				},

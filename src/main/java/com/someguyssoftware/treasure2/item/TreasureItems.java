@@ -1084,7 +1084,9 @@ public class TreasureItems {
 			charms.add(createCharm(TreasureCharmableMaterials.GOLD, Items.EMERALD));
 			charms.add(createCharm(TreasureCharmableMaterials.GOLD, RUBY));
 			charms.add(createCharm(TreasureCharmableMaterials.GOLD, SAPPHIRE));
-
+			charms.add(createCharm(TreasureCharmableMaterials.LEGENDARY, Items.AIR));
+			charms.add(createCharm(TreasureCharmableMaterials.MYTHICAL, Items.AIR));
+			
 			// RUNESTONES
 			MANA_RUNESTONE = new RunestoneItem(Treasure.MODID, "mana_runestone") {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
@@ -1563,7 +1565,8 @@ public class TreasureItems {
 
 	private static CharmItem createCharm(CharmableMaterial material, Item source) {
 		String name = (source == Items.AIR ? 
-				material.getName().getResourcePath() : source.getRegistryName().getResourcePath())  + "_charm";		
+				material.getName().getResourcePath() : source.getRegistryName().getResourcePath())  + "_charm";
+		Treasure.logger.debug("creating charmItem -> {}", name);
 		CharmItem charm = new CharmItem(Treasure.MODID, name) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(1, 0, 0).with($ -> {
@@ -1594,10 +1597,12 @@ public class TreasureItems {
 		List<CharmItem> charms = new ArrayList<>(CHARM_ITEMS.values());
 		Collections.sort(charms, charmLevelComparator);
 		for (Item item : charms) {
-			ItemStack itemStack = new ItemStack(item);
+			Treasure.logger.debug("charm item -> {}", ((CharmItem)item).getRegistryName());
+			ItemStack itemStack = new ItemStack(item);			
 			// get the capability
 			ICharmableCapability cap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
 			if (cap != null) {
+				Treasure.logger.debug("name -> {}, charm level -> {}, level -> {}", itemStack.getDisplayName(), cap.getMaxCharmLevel(), level);
 				if (cap.getMaxCharmLevel() >= level) {
 					resultItem = (CharmItem)item;
 					break;

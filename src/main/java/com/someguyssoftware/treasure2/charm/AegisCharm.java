@@ -50,10 +50,10 @@ public class AegisCharm extends ShieldingCharm {
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flagIn, ICharmEntity entity, InventoryType type) {
 		ShieldingCharmEntity charmEntity = (ShieldingCharmEntity)entity;
 		TextFormatting color = TextFormatting.BLUE;
-		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity, type == InventoryType.SOCKET ? true : false)));
+		tooltip.add(getLabel(entity, type == InventoryType.SOCKET ? true : false));
 		if (charmEntity.getCooldownEnd() > 0.0 && world.getTotalWorldTime() < charmEntity.getCooldownEnd()) {
 			tooltip.add(TextFormatting.GRAY + "" + TextFormatting.ITALIC
-					+ I18n.translateToLocalFormatted("tooltip.indent2", 
+					+ I18n.translateToLocalFormatted("tooltip.indent4", 
 							I18n.translateToLocal("tooltip.charm.rate.aegis") + " " +I18n.translateToLocalFormatted("tooltip.charm.cooldown.meter", DECIMAL_FORMAT.format((charmEntity.getCooldownEnd() - world.getTotalWorldTime())/TICKS_PER_SECOND)))
 			);
 		}

@@ -1,14 +1,12 @@
 {
 	"version": "3.0",
+	"since":"mc1.12.2-v2.0.0",	
 	"category": "general",
 	"rarity": "mythical",
 	"pools": [
 		{
 			"name": "treasure",
-			"rolls": {
-				"min": 2,
-				"max": 3
-			},
+			"rolls": 1,
 			"entries": [
                 {
                     "type": "loot_table",

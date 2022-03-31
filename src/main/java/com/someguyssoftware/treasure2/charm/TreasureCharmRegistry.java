@@ -119,6 +119,6 @@ public class TreasureCharmRegistry {
      * @return
      */
     public static List<ICharm> values() {
-    	return (List<ICharm>) REGISTRY.values();
+    	return new ArrayList<ICharm>(REGISTRY.values());
     }
 }

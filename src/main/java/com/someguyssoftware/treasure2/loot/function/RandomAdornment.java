@@ -41,6 +41,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.Adornment;
 import com.someguyssoftware.treasure2.material.CharmableMaterial;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
+import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -105,7 +106,7 @@ public class RandomAdornment extends LootFunction {
 	@Override
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
 		Random random = new Random();
-
+		Treasure.logger.debug("incoming adornment -> {}", stack.getDisplayName());
 		// select material
 		CharmableMaterial material = null;
 		if (this.materials == null || !this.materials.isPresent()) {
@@ -115,6 +116,7 @@ public class RandomAdornment extends LootFunction {
 		else {
 			material = this.materials.get().get(random.nextInt(materials.get().size()));
 		}
+		Treasure.logger.debug("selected material -> {}", material.getName());
 		
 		// select random level
 		int level = this.levels == null ? 1 : this.levels.generateInt(rand);
@@ -123,10 +125,17 @@ public class RandomAdornment extends LootFunction {
 			level = material.getMaxLevel();
 		}
 		
-		if (rarity != null && rarity.getCode() > TreasureCharms.LEVEL_RARITY.get(material.getMaxLevel()).getCode()) {
-			rarity = TreasureCharms.LEVEL_RARITY.get(material.getMaxLevel());
-		}
-
+		Treasure.logger.debug("rarity -> {}, code -> {}", rarity, rarity.getCode());
+		Treasure.logger.debug("material -> {}, maxLevel -> {}", material.getName(), material.getMaxLevel());
+		Treasure.logger.debug("material rarity -> {}", TreasureCharms.LEVEL_RARITY.get(material.getMaxLevel()));
+		
+		// TODO this check isn't calculating the max charm level of an adornment with material ie not checking GREAT + GEM
+//		if (rarity != null && rarity.getCode() > TreasureCharms.LEVEL_RARITY.get(material.getMaxLevel()).getCode()) {
+//			rarity = TreasureCharms.LEVEL_RARITY.get(material.getMaxLevel());
+//		}
+		Treasure.logger.debug("updated rarity -> {}, code -> {}", rarity, rarity.getCode());
+		
+		Treasure.logger.debug("hasGem -> {}", hasGem);
 		// TODO add "hasGem" property to indicate gem/no-gem adornments
 		/*
 		 *  TODO adornments skip levels in their definition, so it is possible that lambdaLevel != a.level and not return any adornments.
@@ -142,6 +151,7 @@ public class RandomAdornment extends LootFunction {
 				ItemStack itemStack = new ItemStack(a);
 				boolean hasSource = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null).getSourceItem() != Items.AIR.getRegistryName();
 				if (!hasGem && !hasSource) {
+					Treasure.logger.debug("filter: keeping adornment -> {}", itemStack.getDisplayName());
 					return true;
 				}
 				else if (hasGem && hasSource) {
@@ -164,12 +174,14 @@ public class RandomAdornment extends LootFunction {
 		// create a new adornment item
 		ItemStack adornment;
 		if (adornments == null || adornments.isEmpty()) {
+			Treasure.logger.debug("no adornments match criteria, using incoming adornment -> {}", stack.getDisplayName());
 			adornment = stack;
 		}
 		else {
 			adornment = new ItemStack(adornments.get(random.nextInt(adornments.size())));
 		}
 
+		Treasure.logger.debug("selected adornment -> {}", adornment.getDisplayName());
 		return adornment;
 	}
 	
@@ -222,7 +234,7 @@ public class RandomAdornment extends LootFunction {
 				// material = TreasureCharmableMaterials.getBaseMaterial(new ResourceLocation(materialName));
 				for (JsonElement element : JsonUtils.getJsonArray(json, MATERIALS)) {
 					String materialName = JsonUtils.getString(element, "material");
-					Optional<CharmableMaterial> material = TreasureCharmableMaterials.getBaseMaterial(new ResourceLocation(materialName));
+					Optional<CharmableMaterial> material = TreasureCharmableMaterials.getBaseMaterial(ResourceLocationUtil.create(materialName));
 					if (material.isPresent()) {
 						if (!materials.isPresent()) {
 							materials = Optional.of(new ArrayList<CharmableMaterial>());

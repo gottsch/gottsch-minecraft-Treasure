@@ -12,13 +12,12 @@
 					"functions": [{
 							"function": "treasure2:random_adornment",
 							"rarity": "legendary",
-							"materials": ["silver", "gold", "blood", "black"],
+							"materials": ["treasure2:silver", "treasure2:gold", "treasure2:blood", "treasure2:black"],
 							"hasGem": true
 						},
 						{
-							"function": "treasure2:random_charm",
-							"rarity": "mythical",
-							"defaultCharm": "treasure2:healing_24"
+							"function": "treasure2:charm_randomly",
+							"rarity": "legendary"
 						}
 					]
 				},

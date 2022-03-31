@@ -80,11 +80,13 @@ public class RandomCharm extends LootFunction {
 		this.rarity = rarity;
 		this.defaultCharm = defaultCharm;
 		this.isBook = isBook;
+		Treasure.logger.debug("rarity in constructor -> {}", rarity);
 	}
 
 	@Override
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
 		
+		Treasure.logger.debug("incoming stack -> {}", stack.getDisplayName());
 		// default charm
 		ICharm defaultCharm = TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(HealingCharm.TYPE, 1))).get();
 		ICharm charm = this.defaultCharm == null ? defaultCharm : this.defaultCharm;
@@ -92,16 +94,22 @@ public class RandomCharm extends LootFunction {
 
 		// select random level
 		int level = this.levels == null ? 1 : this.levels.generateInt(rand);
-
+		Treasure.logger.debug("selected level -> {}", level);
 		// TODO if rarities property, select a random rarity
 
+		Treasure.logger.debug("rarity -> {}", rarity);
 		if (rarity != null) {
-			charms = TreasureCharmRegistry.get(rarity);
+			// get all the charms by rarity exluding curses
+			charms = TreasureCharmRegistry.getBy(c -> {
+				return  c.getRarity() == rarity && !c.isCurse();
+			});
+//			charms = TreasureCharmRegistry.get(rarity);
 			if (charms.isPresent()) {
 				Random random = new Random();
 				charm = charms.get().get(random.nextInt(charms.get().size()));
 				// override level with that of the selected rarity charm
 				level = charm.getLevel();
+				Treasure.logger.debug("selected charm -> {}, level -> {}", charm.getName(), charm.getLevel());
 			}
 			else {
 				charm = defaultCharm;
@@ -119,6 +127,7 @@ public class RandomCharm extends LootFunction {
 			}
 		}
 
+		Treasure.logger.debug("selected charm -> {}", charm.getName());
 
 		// select first charm item that meets the minimum level == level
 		ItemStack charmStack = null;
@@ -130,6 +139,7 @@ public class RandomCharm extends LootFunction {
 			charmStack = new ItemStack(charmItem);
 		}
 		
+		Treasure.logger.debug("selected stack -> {}", charmStack.getDisplayName());
 		// TODO need to order charm items by max level
 //		for (Item item : TreasureItems.ITEMS.values()) {
 //			if (item instanceof CharmItem) {

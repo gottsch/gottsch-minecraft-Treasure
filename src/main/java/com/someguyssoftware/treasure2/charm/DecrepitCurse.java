@@ -68,9 +68,10 @@ public class DecrepitCurse extends Charm {
 
 		if (!player.isDead && entity.getMana() > 0 && player.getHealth() > 0.0) {
 			double amount = ((LivingDamageEvent)event).getAmount();
-			((LivingDamageEvent)event).setAmount((float) (amount + (amount * entity.getAmount())));
+			double newAmount =  amount + (amount * entity.getAmount());
+			((LivingDamageEvent)event).setAmount((float)newAmount);
 //			entity.setMana(MathHelper.clamp(entity.getMana() - 1.0,  0D, entity.getMana()));
-			applyCost(world, random, coords, player, event, entity, 1.0);
+			applyCost(world, random, coords, player, event, entity, newAmount);
 			result = true;
 		}
 		return result;
@@ -84,7 +85,7 @@ public class DecrepitCurse extends Charm {
 	@SuppressWarnings("deprecation")
 	@Override
 	public String getCharmDesc(ICharmEntity entity) {
-		return I18n.translateToLocalFormatted("tooltip.charm.rate.decrepit", Math.round((entity.getAmount()-1)*100));
+		return I18n.translateToLocalFormatted("tooltip.charm.rate.decrepit", Math.round((entity.getAmount())*100));
 	}
 	
 	public static class Builder extends Charm.Builder {

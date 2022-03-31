@@ -19,6 +19,7 @@
  */
 package com.someguyssoftware.treasure2.rune;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -177,6 +178,7 @@ public class TreasureRunes {
 	}
 	
 	public static List<Item> itemValues() {
-		return (List<Item>) ITEM_REGISTRY.values();
+		return new ArrayList<>(ITEM_REGISTRY.values());		
+//		return (List<Item>) ITEM_REGISTRY.values();
 	}
 }

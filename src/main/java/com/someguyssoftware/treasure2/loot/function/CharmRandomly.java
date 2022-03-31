@@ -47,6 +47,7 @@ import com.someguyssoftware.treasure2.charm.HealingCharm;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
+import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.material.CharmableMaterial;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
@@ -110,7 +111,7 @@ public class CharmRandomly extends LootFunction {
 
 	@Override
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
-		Treasure.logger.debug("selected item from charm pool -> {}", stack.getDisplayName());
+		Treasure.logger.debug("incoming stack -> {}", stack.getDisplayName());
 		// ensure that the stack has charm capabilities
 		if (!stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
 			return stack;
@@ -133,7 +134,10 @@ public class CharmRandomly extends LootFunction {
 		if (this.charms.isEmpty()) {
 			// check the rarity property
 			if (rarity != null) {
-				// TODO how to ensure that rarity isn't higher than rarity of adornment
+				// ensure that rarity isn't higher than rarity of adornment
+				if (TreasureCharms.LEVEL_RARITY.get(charmCap.getMaxCharmLevel()).getCode() > rarity.getCode()) {
+					rarity = TreasureCharms.LEVEL_RARITY.get(charmCap.getMaxCharmLevel());
+				}				
 				charmList = TreasureCharmRegistry.get(rarity);
 				if (charmList.isPresent()) {
 					tempCharms.addAll(charmList.get());

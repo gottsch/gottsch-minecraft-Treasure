@@ -5,25 +5,11 @@
 	"pools": [
 			{
 			"name": "treasure",
-			"rolls": {
-				"min": 2,
-				"max": 3
-			},
-			"entries": [
-                {
-                    "type": "loot_table",
-                    "name": "treasure2:pools/treasure/epic",
-                    "weight": 1
-                }
-			]
-		},
-		{
-			"name": "charms",
 			"rolls": 1,
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:pools/treasure/epic_charms",
+                    "name": "treasure2:pools/treasure/epic_all",
                     "weight": 1
                 }
 			]

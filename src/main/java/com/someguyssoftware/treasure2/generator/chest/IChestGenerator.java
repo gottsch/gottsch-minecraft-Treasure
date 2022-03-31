@@ -251,6 +251,7 @@ public interface IChestGenerator {
 			
 			// geneate loot from pools
 			if (pool.getName().equalsIgnoreCase("treasure") || pool.getName().equalsIgnoreCase("charms")) {
+				logger.debug("processing 'treasure|charm' pool -> {}", pool.getName());
 				lootPool.generateLoot(treasureStacks, random, lootContext);
 			}
 			else {

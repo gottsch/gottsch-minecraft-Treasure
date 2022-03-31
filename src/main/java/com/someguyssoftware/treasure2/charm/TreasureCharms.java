@@ -26,7 +26,6 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
-//import com.someguyssoftware.treasure2.charm.HealingCharm.Builder;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.item.ItemStack;
@@ -156,6 +155,7 @@ public class TreasureCharms {
 		ICharm charm =  new FireResistenceCharm.Builder(level).with($ -> {
 			$.mana = level * 20.0;
 			$.amount = level < 6 ? 0.3 : level < 11 ? 0.5 : 0.8;
+			$.amount = level <= 4 ? 0.2 : level <=8  ? 0.4 : level <= 12 ? 0.6 :  0.8;
 			$.effectStackable = true;
 			$.priority = 1;
 			$.rarity = LEVEL_RARITY.get(level);
@@ -273,7 +273,8 @@ public class TreasureCharms {
 	public static ICharm makeDecrepit(int level) {
 		ICharm curse =  new DecrepitCurse.Builder(level).with($ -> {
 			$.mana = level * 10.0 + 10.0;
-			$.amount = (double) ((level + (level % 2))/20);
+//			$.amount = (double) ((level + (level % 2))/20);
+			$.amount = level <= 4 ? 0.2 : level <=8  ? 0.3 : level <= 12 ? 0.4 :  0.5;
 			$.effectStackable = true;
 			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();		

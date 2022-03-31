@@ -39,7 +39,7 @@
 					"entryName": "experience_bottle",
 					"type": "item",
 					"name": "minecraft:experience_bottle",
-					"weight": 50,
+					"weight": 30,
 					"functions": [
 						{
 							"function": "set_count",
@@ -69,16 +69,7 @@
 					"entryName": "end_crystal",
 					"type": "item",
 					"name": "minecraft:end_crystal",
-					"weight": 25,
-					"functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 1,
-								"max": 2
-							}
-						}
-					]							
+					"weight": 10						
 				},			
 				{
 					"entryName": "chorus_fruit_popped",
@@ -90,7 +81,7 @@
 							"function": "set_count",
 							"count": {
 								"min": 1,
-								"max": 3
+								"max": 2
 							}
 						}
 					]							

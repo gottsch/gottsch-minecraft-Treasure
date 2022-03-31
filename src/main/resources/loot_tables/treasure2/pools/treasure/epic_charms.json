@@ -1,31 +1,50 @@
 {
 	"version": "3.0",
+	"since": "mc1.12.2-v2.0.0",
 	"pools": [{
-		"name": "epic_charms",
-		"rolls": 1,
-		"entries": [{
-				"entryName": "charm0",
+			"name": "epic_charms",
+			"rolls": 1,
+			"entries": [{
+					"entryName": "charm0",
+					"type": "item",
+					"name": "treasure2:ruby_charm",
+					"weight": 3,
+					"functions": [{
+						"function": "treasure2:random_charm",
+						"rarity": "epic",
+						"defaultCharm": "treasure2:healing_17"
+					}]
+				},
+				{
+					"entryName": "charm1",
+					"type": "item",
+					"name": "treasure2:charm_book",
+					"weight": 1,
+					"functions": [{
+						"function": "treasure2:random_charm",
+						"isBook": true,
+						"rarity": "epic",
+						"defaultCharm": "treasure2:healing_17"
+					}]
+				}
+			]
+		},
+		{
+			"name": "epic_runestones",
+			"rolls": 1,
+			"entries": [{
+				"entryName": "runestone0",
 				"type": "item",
-				"name": "treasure2:white_pearl_charm",
-				"weight": 3,
-				"functions": [{
-					"function": "treasure2:random_charm",
-					"rarity": "epic",
-					"defaultCharm": "treasure2:healing_17"
-				}]
-			},
-			{
-				"entryName": "charm1",
-				"type": "item",
-				"name": "treasure2:charm_book",
+				"name": "treasure2:mana_runestone",
 				"weight": 1,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.5
+				}],
 				"functions": [{
-					"function": "treasure2:random_charm",
-					"isBook": true,
-					"rarity": "epic",
-					"defaultCharm": "treasure2:healing_17"
+					"function": "treasure2:random_runestone"
 				}]
-			}
-		]
-	}]
+			}]
+		}
+	]
 }
