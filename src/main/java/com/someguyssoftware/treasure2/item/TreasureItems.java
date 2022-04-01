@@ -40,7 +40,7 @@ import com.someguyssoftware.gottschcore.item.ModSwordBuilder;
 import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.adornment.AdornmentSize;
-import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
+import com.someguyssoftware.treasure2.adornment.TreasureAdornmentRegistry;
 import com.someguyssoftware.treasure2.capability.AdornmentCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmableCapability;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
@@ -682,7 +682,7 @@ public class TreasureItems {
 			// create all adornment item combinations
 			List<Item> adornments = new SetupItems().createAdornments();
 			
-			ANGELS_RING = new NamedAdornment(Treasure.MODID, "angels_ring", AdornmentType.RING, TreasureAdornments.GREAT) {
+			ANGELS_RING = new NamedAdornment(Treasure.MODID, "angels_ring", AdornmentType.RING, TreasureAdornmentRegistry.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 					ICharmableCapability cap = new CharmableCapability.Builder(3, 1, 1)
 							.with($ -> {
@@ -718,7 +718,7 @@ public class TreasureItems {
 				}
 			};
 
-			RING_OF_FORTITUDE = new NamedAdornment(Treasure.MODID, "ring_of_fortitude", AdornmentType.RING, TreasureAdornments.GREAT) {
+			RING_OF_FORTITUDE = new NamedAdornment(Treasure.MODID, "ring_of_fortitude", AdornmentType.RING, TreasureAdornmentRegistry.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 					ICharmableCapability cap = new CharmableCapability.Builder(2, 1, 1).with($ -> {
 						$.innate = true;
@@ -747,7 +747,7 @@ public class TreasureItems {
 			};
 
 			// (mythical)
-			SHADOWS_GIFT = new NamedAdornment(Treasure.MODID, "shadows_gift", AdornmentType.RING, TreasureAdornments.GREAT) {
+			SHADOWS_GIFT = new NamedAdornment(Treasure.MODID, "shadows_gift", AdornmentType.RING, TreasureAdornmentRegistry.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 
 					/*
@@ -783,7 +783,7 @@ public class TreasureItems {
 			};
 			
 			// (mythical)
-			RING_OF_LIFE_DEATH = new NamedAdornment(Treasure.MODID, "ring_of_life_death", AdornmentType.RING, TreasureAdornments.GREAT) {
+			RING_OF_LIFE_DEATH = new NamedAdornment(Treasure.MODID, "ring_of_life_death", AdornmentType.RING, TreasureAdornmentRegistry.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 
 					/*
@@ -847,7 +847,7 @@ public class TreasureItems {
 				}
 			};
 
-			PEASANTS_FORTUNE = new NamedAdornment(Treasure.MODID, "peasants_fortune", AdornmentType.RING, TreasureAdornments.GREAT) {
+			PEASANTS_FORTUNE = new NamedAdornment(Treasure.MODID, "peasants_fortune", AdornmentType.RING, TreasureAdornmentRegistry.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 					ICharmableCapability cap = new CharmableCapability.Builder(0, 0, 2).with($ -> { // use STONE as source Item so it can't be upgraded
 						$.innate = false;
@@ -875,7 +875,7 @@ public class TreasureItems {
 			 * special 4million download ring. will auto place in your backpack on new world for 1 month (Dec 2021).
 			 * (legendary)
 			 */
-			GOTTSCHS_RING_OF_MOON = new NamedAdornment(Treasure.MODID, "gottschs_ring_of_moon", AdornmentType.RING, TreasureAdornments.GREAT) {
+			GOTTSCHS_RING_OF_MOON = new NamedAdornment(Treasure.MODID, "gottschs_ring_of_moon", AdornmentType.RING, TreasureAdornmentRegistry.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 					if (!EnchantmentHelper.hasVanishingCurse(stack)) {
 						stack.addEnchantment(Enchantments.VANISHING_CURSE, 1);
@@ -909,7 +909,7 @@ public class TreasureItems {
 			};
 			
 			// (legendary)
-			BRACELET_OF_WONDER = new NamedAdornment(Treasure.MODID, "bracelet_of_wonder", AdornmentType.BRACELET, TreasureAdornments.GREAT) {
+			BRACELET_OF_WONDER = new NamedAdornment(Treasure.MODID, "bracelet_of_wonder", AdornmentType.BRACELET, TreasureAdornmentRegistry.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 					if (!EnchantmentHelper.hasVanishingCurse(stack)) {
 						stack.addEnchantment(Enchantments.VANISHING_CURSE, 1);
@@ -941,7 +941,7 @@ public class TreasureItems {
 			};
 
 			// (epic)
-			MEDICS_TOKEN = new NamedAdornment(Treasure.MODID, "medics_token", AdornmentType.NECKLACE, TreasureAdornments.GREAT) {
+			MEDICS_TOKEN = new NamedAdornment(Treasure.MODID, "medics_token", AdornmentType.NECKLACE, TreasureAdornmentRegistry.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 					ICharmableCapability cap = new CharmableCapability.Builder(1, 0, 0).with($ -> {
 						$.innate = true;
@@ -970,7 +970,7 @@ public class TreasureItems {
 			};
 
 			// (epic)
-			ADEPHAGIAS_BOUNTY = new NamedAdornment(Treasure.MODID, "adephagias_bounty", AdornmentType.BRACELET, TreasureAdornments.GREAT) {
+			ADEPHAGIAS_BOUNTY = new NamedAdornment(Treasure.MODID, "adephagias_bounty", AdornmentType.BRACELET, TreasureAdornmentRegistry.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 					ICharmableCapability cap = new CharmableCapability.Builder(1, 0, 0).with($ -> {
 						$.innate = true;
@@ -999,7 +999,7 @@ public class TreasureItems {
 			};
 
 			// (epic)
-			SALANDAARS_WARD = new NamedAdornment(Treasure.MODID, "salandaars_ward", AdornmentType.NECKLACE, TreasureAdornments.GREAT) {
+			SALANDAARS_WARD = new NamedAdornment(Treasure.MODID, "salandaars_ward", AdornmentType.NECKLACE, TreasureAdornmentRegistry.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 					ICharmableCapability cap = new CharmableCapability.Builder(1, 0, 0).with($ -> {
 						$.innate = true;
@@ -1027,7 +1027,7 @@ public class TreasureItems {
 			};
 
 			// (epic)
-			MIRTHAS_TORCH = new NamedAdornment(Treasure.MODID, "mirthas_torch", AdornmentType.BRACELET, TreasureAdornments.GREAT) {
+			MIRTHAS_TORCH = new NamedAdornment(Treasure.MODID, "mirthas_torch", AdornmentType.BRACELET, TreasureAdornmentRegistry.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 					ICharmableCapability cap = new CharmableCapability.Builder(1, 0, 0).with($ -> {
 						$.innate = true;
@@ -1048,7 +1048,7 @@ public class TreasureItems {
 				}
 			};
 
-			POCKET_WATCH = new NamedAdornment(Treasure.MODID, "pocket_watch", AdornmentType.POCKET, TreasureAdornments.GREAT) {
+			POCKET_WATCH = new NamedAdornment(Treasure.MODID, "pocket_watch", AdornmentType.POCKET, TreasureAdornmentRegistry.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 					ICharmableCapability cap = new CharmableCapability.Builder(0, 0, 2).with($ -> {
 						$.innate = false;
@@ -1071,7 +1071,7 @@ public class TreasureItems {
 				}
 			};
 			adornments.add(POCKET_WATCH);
-			TreasureAdornments.register(TreasureCharmableMaterials.GOLD.getName(), AMETHYST.getRegistryName(), POCKET_WATCH);
+			TreasureAdornmentRegistry.register(TreasureCharmableMaterials.GOLD.getName(), AMETHYST.getRegistryName(), POCKET_WATCH);
 
 			// CHARMS
 			List<Item> charms = new ArrayList<>();
@@ -1396,7 +1396,7 @@ public class TreasureItems {
 	 */
 	public static class SetupItems {
 		List<AdornmentType> types = Arrays.asList(AdornmentType.BRACELET, AdornmentType.NECKLACE, AdornmentType.RING);
-		List<AdornmentSize> sizes = Arrays.asList(TreasureAdornments.STANDARD);
+		List<AdornmentSize> sizes = Arrays.asList(TreasureAdornmentRegistry.STANDARD);
 		List<CharmableMaterial> materials = Arrays.asList(
 				TreasureCharmableMaterials.IRON, 
 				TreasureCharmableMaterials.COPPER, 
@@ -1422,9 +1422,9 @@ public class TreasureItems {
 			materialInnates.put(TreasureCharmableMaterials.SILVER, 2);
 			materialInnates.put(TreasureCharmableMaterials.GOLD, 3);
 
-			levelModifiers.put(TreasureAdornments.STANDARD, new NoLevelModifier());
-			levelModifiers.put(TreasureAdornments.GREAT, new GreatAdornmentLevelModifier());
-			levelModifiers.put(TreasureAdornments.LORDS, new LordsAdornmentLevelModifier());	
+			levelModifiers.put(TreasureAdornmentRegistry.STANDARD, new NoLevelModifier());
+			levelModifiers.put(TreasureAdornmentRegistry.GREAT, new GreatAdornmentLevelModifier());
+			levelModifiers.put(TreasureAdornmentRegistry.LORDS, new LordsAdornmentLevelModifier());	
 		}
 
 		/**
@@ -1442,7 +1442,7 @@ public class TreasureItems {
 						a.setCreativeTab(Treasure.ADORNMENTS_TAB);
 						Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
 						adornments.add(a);
-						TreasureAdornments.register(material.getName(), Items.AIR.getRegistryName(), a);
+						TreasureAdornmentRegistry.register(material.getName(), Items.AIR.getRegistryName(), a);
 					});
 				});
 			});
@@ -1456,14 +1456,14 @@ public class TreasureItems {
 							a.setCreativeTab(Treasure.ADORNMENTS_TAB);
 							Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
 							adornments.add(a);
-							TreasureAdornments.register(material.getName(), source, a);
+							TreasureAdornmentRegistry.register(material.getName(), source, a);
 						});
 					});
 				});
 			});
 
 			// some one-offs (great rings no gems)
-			AdornmentSize size = TreasureAdornments.GREAT;
+			AdornmentSize size = TreasureAdornmentRegistry.GREAT;
 			List<CharmableMaterial> materials2 = Arrays.asList(
 					TreasureCharmableMaterials.IRON, 
 					TreasureCharmableMaterials.COPPER, 
@@ -1482,7 +1482,7 @@ public class TreasureItems {
 					a.setCreativeTab(Treasure.ADORNMENTS_TAB);
 					Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
 					adornments.add(a);
-					TreasureAdornments.register(material.getName(), source, a);					
+					TreasureAdornmentRegistry.register(material.getName(), source, a);					
 				});
 			});
 			
@@ -1503,7 +1503,7 @@ public class TreasureItems {
 						a.setCreativeTab(Treasure.ADORNMENTS_TAB);
 						Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
 						adornments.add(a);
-						TreasureAdornments.register(material.getName(), s, a);						
+						TreasureAdornmentRegistry.register(material.getName(), s, a);						
 					});
 				});
 			});
@@ -1521,12 +1521,12 @@ public class TreasureItems {
 		 * @return
 		 */
 		private Adornment createAdornment(AdornmentType type, CharmableMaterial material,	AdornmentSize size, ResourceLocation source) {
-			String name = (size == TreasureAdornments.STANDARD ? "" : size.getName() + "_") + (source == Items.AIR.getRegistryName() ? "" :  source.getResourcePath() + "_") + material.getName().getResourcePath() + "_" + type.toString();
+			String name = (size == TreasureAdornmentRegistry.STANDARD ? "" : size.getName() + "_") + (source == Items.AIR.getRegistryName() ? "" :  source.getResourcePath() + "_") + material.getName().getResourcePath() + "_" + type.toString();
 			Adornment a = new Adornment(Treasure.MODID, name, type, size) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 					// calculate the innate size
 					int innateSize = materialInnates.get(material);
-					if (size == TreasureAdornments.GREAT && material == TreasureCharmableMaterials.IRON) {
+					if (size == TreasureAdornmentRegistry.GREAT && material == TreasureCharmableMaterials.IRON) {
 						innateSize++;
 					}
 					ICharmableCapability cap = new CharmableCapability.Builder(innateSize, 1, 1)

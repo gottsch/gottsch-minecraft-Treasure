@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
+import com.someguyssoftware.treasure2.adornment.TreasureAdornmentRegistry;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.IRunestonesCapability;
@@ -565,7 +565,7 @@ public class CharmingTableContainer extends Container {
 				// check that there is room to add charms
 				if (cap.getCharmEntities().get(InventoryType.SOCKET).size() < cap.getMaxSocketSize()) {
 					// build the output item, add the charm to the adornment
-					Optional<ItemStack> outStack = TreasureAdornments.transferCapabilities(itemStack2, itemStack, InventoryType.INNATE, InventoryType.SOCKET);
+					Optional<ItemStack> outStack = TreasureAdornmentRegistry.transferCapabilities(itemStack2, itemStack, InventoryType.INNATE, InventoryType.SOCKET);
 					if (outStack.isPresent()) {
 						if (outStack.get().hasCapability(RUNESTONES, null)) {
 							outStack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(entity -> {
@@ -591,7 +591,7 @@ public class CharmingTableContainer extends Container {
 				// check that there is room to add charms
 				if (cap.getCharmEntities().get(InventoryType.IMBUE).size() < cap.getMaxImbueSize()) {
 					// build the output item, add the charm book to the adornment
-					Optional<ItemStack> outStack = TreasureAdornments.transferCapabilities(itemStack2, itemStack, InventoryType.INNATE, InventoryType.IMBUE);
+					Optional<ItemStack> outStack = TreasureAdornmentRegistry.transferCapabilities(itemStack2, itemStack, InventoryType.INNATE, InventoryType.IMBUE);
 					if (outStack.isPresent()) {
 						if (outStack.get().hasCapability(RUNESTONES, null)) {
 							outStack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(entity -> {
@@ -613,7 +613,7 @@ public class CharmingTableContainer extends Container {
 				IRunestonesCapability cap = itemStack.getCapability(RUNESTONES, null);
 				// check that there is room to add charms
 				if (cap.getEntities(InventoryType.SOCKET).size() < cap.getMaxSize(InventoryType.SOCKET)) {
-					Optional<ItemStack> stack = TreasureAdornments.transferCapabilities(itemStack2, itemStack, InventoryType.INNATE, InventoryType.SOCKET);
+					Optional<ItemStack> stack = TreasureAdornmentRegistry.transferCapabilities(itemStack2, itemStack, InventoryType.INNATE, InventoryType.SOCKET);
 					if (stack.isPresent()) {
 						AtomicBoolean isStackValid = new AtomicBoolean(true);
 						stack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(entity -> {
@@ -661,7 +661,7 @@ public class CharmingTableContainer extends Container {
 							&& TreasureCharmableMaterials.isSourceItemRegistered(this.charmInputSlots2.getStackInSlot(i).getItem().getRegistryName())) {
 
 						// make a copy of the adornment stack
-						ItemStack stack = TreasureAdornments.copyStack(itemStack, itemStack);
+						ItemStack stack = TreasureAdornmentRegistry.copyStack(itemStack, itemStack);
 						ICharmableCapability cap = stack.getCapability(CHARMABLE, null);
 						
 						// get the charm
@@ -679,7 +679,7 @@ public class CharmingTableContainer extends Container {
 
 						// make a copy of the adornment stack
 						ItemStack stack = itemStack.copy();
-						ItemStack newStack = TreasureAdornments.copyStack(itemStack, stack);
+						ItemStack newStack = TreasureAdornmentRegistry.copyStack(itemStack, stack);
 						ICharmableCapability cap = newStack.getCapability(CHARMABLE, null);
 						// remove the charm
 						cap.remove(InventoryType.SOCKET, i);
@@ -697,7 +697,7 @@ public class CharmingTableContainer extends Container {
 			else if (runeStack != ItemStack.EMPTY && (runeStack2.getItem() == TreasureItems.TREASURE_TOOL)) {
 				// make a copy of the adornment stack
 				ItemStack stack = itemStack.copy();
-				stack = TreasureAdornments.copyStack(itemStack, stack);
+				stack = TreasureAdornmentRegistry.copyStack(itemStack, stack);
 				IRunestonesCapability cap = stack.getCapability(RUNESTONES, null);
 				if (cap != null) {
 					// get the rune entity

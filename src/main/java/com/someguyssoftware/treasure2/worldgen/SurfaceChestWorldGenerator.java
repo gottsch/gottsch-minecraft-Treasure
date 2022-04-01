@@ -451,8 +451,9 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		}
 
 		// determine spawn coords below ground
-		ICoords spawnCoords = getUndergroundSpawnPos(world, random, markerCoords, config.getMinYSpawn());
-
+//		ICoords spawnCoords = getUndergroundSpawnPos(world, random, markerCoords, config.getMinYSpawn());
+		ICoords spawnCoords = getUndergroundSpawnPos(world, random, markerCoords, config.getMinDepth(), config.getMaxDepth());
+		
 		if (spawnCoords == null || spawnCoords == WorldInfo.EMPTY_COORDS) {
 			Treasure.logger.debug("Unable to spawn underground @ {}", markerCoords);
 			return result.fail();
@@ -497,6 +498,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 	 * @param spawnYMin
 	 * @return
 	 */
+	@Deprecated
 	public static ICoords getUndergroundSpawnPos(World world, Random random, ICoords pos, int spawnYMin) {
 		ICoords spawnPos = null;
 
@@ -510,6 +512,28 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 			// get floor pos (if in a cavern or tunnel etc)
 			spawnPos = WorldInfo.getDryLandSurfaceCoords(world, spawnPos);
 		}
+		return spawnPos;
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param pos
+	 * @param minDepth
+	 * @param maxDepth
+	 * @return
+	 */
+	public static ICoords getUndergroundSpawnPos(World world, Random random, ICoords pos, int minDepth, int maxDepth) {
+		ICoords spawnPos = null;
+
+		int depth = RandomHelper.randomInt(minDepth, maxDepth);
+		int ySpawn = Math.max(UNDERGROUND_OFFSET, pos.getY() - depth);
+		Treasure.logger.debug("ySpawn -> {}", ySpawn);
+		spawnPos = new Coords(pos.getX(), ySpawn, pos.getZ());
+		// get floor pos (if in a cavern or tunnel etc)
+		spawnPos = WorldInfo.getDryLandSurfaceCoords(world, spawnPos);
+
 		return spawnPos;
 	}
 	/**

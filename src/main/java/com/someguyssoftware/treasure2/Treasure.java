@@ -232,8 +232,6 @@ public class Treasure extends AbstractMod {
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new RandomCharm.Serializer());
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new RandomRunestone.Serializer());
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
-//		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms.Serializer());
-//		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetSlots.Serializer());
 		
 		// integrations
 		BaublesIntegration.init();

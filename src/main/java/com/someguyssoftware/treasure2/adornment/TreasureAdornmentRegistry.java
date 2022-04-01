@@ -58,30 +58,14 @@ import net.minecraft.util.ResourceLocation;
  * @author Mark Gottschling on Sep 3, 2021
  *
  */
-public class TreasureAdornments {
-	// NOTE Tag system doesn't exist in 1.12.2 so need registries/maps
-	// TODO setup ISimpleMapRegistry
-	@Deprecated
-	public static final String RING = "ring";
-	public static final String NECKLACE = "necklace";
-	public static final String BRACELET = "bracelet";
-	@Deprecated
-	public static final String COPPER = "copper";
-	public static final String SILVER = "silver";
-	public static final String GOLD = "gold";
-
-	// for future - if other mods can register new types via InterModCommunication
-	@Deprecated
-	private static final Set<String> TYPES = new HashSet<>();
-	@Deprecated
-	private static final Set<String> MATERIALS = new HashSet<>();
-
+public class TreasureAdornmentRegistry {
 	// caches - needed?
 	private static final List<Adornment> ADORNMENTS_CACHE = new ArrayList<>();
 	
 	public static final Map<Key, Adornment> REGISTRY = Maps.newHashMap();
-	// TODO add non-Treasure/non-Adornment REGISTRY ie Map<Key, Item>
-
+	private static final Multimap<AdornmentType, Adornment> BY_TYPE = ArrayListMultimap.create();
+	private static final Multimap<ResourceLocation, Adornment> BY_MATERIAL = ArrayListMultimap.create();
+	
 	public static final AdornmentSize STANDARD = new AdornmentSize("standard");
 	public static final AdornmentSize GREAT = new AdornmentSize("great") {
 		@Override
@@ -103,20 +87,6 @@ public class TreasureAdornments {
 			return multi + 0.5D;
 		}	
 	};
-	
-	// @deprecated
-	static {
-		TYPES.add(RING);
-		TYPES.add(NECKLACE);
-		TYPES.add(BRACELET);
-
-		MATERIALS.add(COPPER);
-		MATERIALS.add(SILVER);
-		MATERIALS.add(GOLD);
-	}
-
-	private static final Multimap<AdornmentType, Adornment> BY_TYPE = ArrayListMultimap.create();
-	private static final Multimap<ResourceLocation, Adornment> BY_MATERIAL = ArrayListMultimap.create();
 
 	/**
 	 * 
@@ -148,29 +118,9 @@ public class TreasureAdornments {
 		Adornment adornment = REGISTRY.get(key);
 		return adornment == null ? Optional.empty() : Optional.of(adornment);
 	}
-	
-	/**
-	 * 
-	 * @param adornment
-	 * @param type
-	 * @param material
-	 */
-	@Deprecated
-	public static void register(Adornment adornment, AdornmentType type, CharmableMaterial material) {
-		// TODO ensure params are set
-
-		BY_TYPE.put(type, adornment);
-		BY_MATERIAL.put(material.getName(), adornment);
-	}
 
 	public static List<Adornment> getAll() {
 		if (ADORNMENTS_CACHE.isEmpty()) {
-//			ADORNMENTS_CACHE.addAll(Stream
-//					.of(BY_TYPE.get(AdornmentType.BRACELET),
-//							BY_TYPE.get(AdornmentType.NECKLACE),
-//							BY_TYPE.get(AdornmentType.RING))
-//					.flatMap(Collection::stream).collect(Collectors.toList())
-//					);
 			ADORNMENTS_CACHE.addAll(REGISTRY.values());
 		}
 		return ADORNMENTS_CACHE;
@@ -179,36 +129,6 @@ public class TreasureAdornments {
 	public static List<Adornment> getByType(AdornmentType type) {
 		return  (List<Adornment>) BY_TYPE.get(type);
 	}
-
-// REMOVE
-//    /**
-//     * @param rarity
-//     * @return
-//     */
-//    public static Optional<List<Adornment>> get(Rarity rarity) {
-//    	List<Adornment> adornments = new ArrayList<>();
-//        TreasureItems.ADORNMENT_ITEMS.values().forEach(adornment -> {
-//        	Rarity adornmentRarity = TreasureCharms.LEVEL_RARITY.get(adornment.getCapability(TreasureCapabilities.CHARMABLE, null).getMaxCharmLevel());
-//        	if (rarity == adornmentRarity) {
-//        		adornments.add((Adornment)adornment.getItem());
-//        	}
-//        });
-//        return adornments.isEmpty() ? Optional.empty() : Optional.of(adornments);
-//    }
-    
-	/**
-	 * 
-	 * @param type
-	 * @return
-	 */
-//	public static List<Adornment> getByType(String type) {
-//		try {
-//			return (List<Adornment>) BY_TYPE.get(Type.valueOf(type.toUpperCase()));
-//		}
-//		catch(Exception e) {
-//			return getAll();
-//		}
-//	}
 	
 	public static List<Adornment> getByMaterial(String material) {
 		try {
@@ -340,42 +260,6 @@ public class TreasureAdornments {
 			return Optional.of(stack);
 		}
 		return Optional.empty();
-	}
-	
-	/**
-	 * 
-	 * @param stack
-	 */
-	public static void setHoverName(ItemStack stack) {
-		if (stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
-			ICharmableCapability cap = stack.getCapability(TreasureCapabilities.CHARMABLE, null);
-			// check first if it is charmed - charmed names supercede source item names
-			if (cap.isCharmed()) {
-				// 			int level = cap.getHighestLevel().getCharm().getLevel();
-				// 			Set<String> tags = stack.getItem().getTags().stream().filter(tag -> tag.getNamespace().equals(Treasure.MODID)) .map(ResourceLocation::getPath).collect(Collectors.toSet());
-				// 			String type =tags.contains(RING) ? RING : tags.contains(NECKLACE) ? NECKLACE : tags.contains(BRACELET) ? BRACELET : stack.getItem().getName(stack).getString();
-
-				// 			stack.setHoverName(new TranslationTextComponent("tooltip.adornment.name.level" + level, 
-				// 					new TranslationTextComponent("tooltip.adornment.type." + type),
-				// 					new TranslationTextComponent("tooltip.charm.type." + cap.getHighestLevel().getCharm().getType().toLowerCase()).getString()));
-				// 		}			
-				// 		else if (cap.getSourceItem() != null && !cap.getSourceItem().equals(Items.AIR.getRegistryName())) {
-				// 			Item sourceItem = ForgeRegistries.ITEMS.getValue(cap.getSourceItem());
-				// 			if (!cap.isCharmed()) {					
-				// 				stack.setHoverName(
-				// 						((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
-				// 						.append(new StringTextComponent(" "))
-				// 						.append(stack.getItem().getName(stack)));
-				// 			}
-				// 			else {
-				// 				stack.setHoverName(
-				// 						((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
-				// 						.append(new StringTextComponent(" "))
-				// 						.append(stack.getHoverName()));
-				// 			}
-				// 		}
-			}
-		}
 	}
 		
 	public static class Key {

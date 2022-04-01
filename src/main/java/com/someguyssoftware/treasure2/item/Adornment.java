@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.adornment.AdornmentSize;
-import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
+import com.someguyssoftware.treasure2.adornment.TreasureAdornmentRegistry;
 import com.someguyssoftware.treasure2.capability.AdornmentCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.DurabilityCapability;
@@ -68,7 +68,7 @@ public class Adornment extends ModItem {
 	 * @param type
 	 */
 	public Adornment(String modID, String name, AdornmentType type) {
-		this(modID, name, type, TreasureAdornments.STANDARD);
+		this(modID, name, type, TreasureAdornmentRegistry.STANDARD);
 	}
 	
 	/**

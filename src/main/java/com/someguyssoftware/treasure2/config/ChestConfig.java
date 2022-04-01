@@ -30,10 +30,21 @@ public class ChestConfig implements IChestConfig {
 	@RangeDouble(min = 0.0, max = 100.0)
 	public double genProbability = 50.0;
 
-	@Comment({"The minimum depth (y-axis) that a chest can generate at."})
+	@Deprecated
+	@Comment({"Deprecated. The minimum depth (y-axis) that a chest can generate at."})
 	@Name("03. Min. y-value for spawn location:")
 	@RangeInt(min = 5, max = 250)
 	public int minYSpawn = 25;
+	
+	@Comment({"The minimum blocks deep from the surface that a chest can generate at."})
+	@Name("03a. Minimum depth for spawn location:")
+	@RangeInt(min = 5, max = 250)
+	public int minDepth;
+	
+	@Comment({"The maximum blocks deep from the surface that a chest can generate at."})
+	@Name("03b. Maximum depth for spawn location:")
+	@RangeInt(min = 5, max = 250)
+	public int maxDepth;
 
 	@Comment({"The probability that a chest will be a mimic.", "NOTE: only common Wooden ChestConfig have mimics avaiable."})
 	@Name("04. Mimic probability:")
@@ -59,12 +70,35 @@ public class ChestConfig implements IChestConfig {
 	/*
 	 * 
 	 */
+	@Deprecated
 	public ChestConfig(boolean isAllowed, int chunksPer, double probability, int minYSpawn,
 			String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
 		this.enableChest = isAllowed;
 		this.chunksPerChest = chunksPer;
 		this.genProbability = probability;
 		this.minYSpawn = minYSpawn;
+		this.biomes = new BiomesConfig(whiteList, blackList, typeWhiteList, typeBlackList);
+	}
+	
+	/**
+	 * 
+	 * @param isAllowed
+	 * @param chunksPer
+	 * @param probability
+	 * @param minDepth
+	 * @param maxDepth
+	 * @param whiteList
+	 * @param blackList
+	 * @param typeWhiteList
+	 * @param typeBlackList
+	 */
+	public ChestConfig(boolean isAllowed, int chunksPer, double probability, int minDepth, int maxDepth,
+			String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
+		this.enableChest = isAllowed;
+		this.chunksPerChest = chunksPer;
+		this.genProbability = probability;
+		this.minDepth = minDepth;
+		this.maxDepth = maxDepth;
 		this.biomes = new BiomesConfig(whiteList, blackList, typeWhiteList, typeBlackList);
 	}
 
@@ -128,6 +162,16 @@ public class ChestConfig implements IChestConfig {
 	@Override
 	public List<Biome> getBiomeBlackList() {
 		return biomes.getBlackList();
+	}
+
+	@Override
+	public int getMinDepth() {
+		return minDepth;
+	}
+
+	@Override
+	public int getMaxDepth() {
+		return maxDepth;
 	}
 }
 

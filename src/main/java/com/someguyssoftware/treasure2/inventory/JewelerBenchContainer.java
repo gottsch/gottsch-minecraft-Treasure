@@ -28,7 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.adornment.AdornmentSize;
-import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
+import com.someguyssoftware.treasure2.adornment.TreasureAdornmentRegistry;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.enums.AdornmentType;
@@ -277,10 +277,10 @@ public class JewelerBenchContainer extends Container {
     				this.materialCost = 1;
 
     				// build the output item, duplicating the left stack (adornment) with the right stack as the source item
-    				Optional<Adornment> adornment = TreasureAdornments.getAdornment(itemStack, itemStack2);
+    				Optional<Adornment> adornment = TreasureAdornmentRegistry.getAdornment(itemStack, itemStack2);
     				Treasure.logger.debug("adornment -> {}", adornment.get().getRegistryName());
     				if (adornment.isPresent()) {
-    					ItemStack outputStack = TreasureAdornments.copyStack(itemStack, new ItemStack(adornment.get()));
+    					ItemStack outputStack = TreasureAdornmentRegistry.copyStack(itemStack, new ItemStack(adornment.get()));
     					ICharmableCapability outputCap = outputStack.getCapability(CHARMABLE, null);
     					outputCap.setHighestLevel(cap.getHighestLevel());
     					// update the output slot
@@ -303,7 +303,7 @@ public class JewelerBenchContainer extends Container {
         	this.maximumCost = 1;
         	// get the original base adornment (no gem)
         	Adornment adornment = (Adornment)removeGemItemStack.getItem();
-        	Optional<Adornment> baseAdornment = TreasureAdornments.get(
+        	Optional<Adornment> baseAdornment = TreasureAdornmentRegistry.get(
         			adornment.getType(), 
         			adornment.getSize(), 
         			removeGemItemStack.getCapability(CHARMABLE, null).getBaseMaterial(),

@@ -32,7 +32,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
+import com.someguyssoftware.treasure2.adornment.TreasureAdornmentRegistry;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
@@ -144,7 +144,7 @@ public class RandomAdornment extends LootFunction {
 		 */
 
 		final int lambdaLevel = level;
-		List<Adornment> adornmentsByMaterial = TreasureAdornments.getByMaterial(material);
+		List<Adornment> adornmentsByMaterial = TreasureAdornmentRegistry.getByMaterial(material);
 		List<Adornment> 	adornments = adornmentsByMaterial.stream()
 			// filter for source items (gem/stone)
 			.filter(a -> {
