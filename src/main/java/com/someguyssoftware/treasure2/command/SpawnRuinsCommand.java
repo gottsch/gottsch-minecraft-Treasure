@@ -26,6 +26,8 @@ import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
+import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 
@@ -116,7 +118,7 @@ public class SpawnRuinsCommand extends CommandBase {
 				}
 				// build the key
 				String key = (Treasure.MODID + ":" + "decay/" + ruleSetName).replace("\\", "/");
-				ruleSet = Treasure.DECAY_MANAGER.getRuleSetMap().get(key);
+				ruleSet = TreasureDecayRegistry.getManager().getRuleSetMap().get(key);
 			}
 			
 			Rarity rarity = null;
@@ -134,10 +136,10 @@ public class SpawnRuinsCommand extends CommandBase {
 					(SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.SURFACE_CHEST);
 			
 			// build the template key
-			ResourceLocation templateKey = new ResourceLocation(Treasure.MODID + ":" + Treasure.TEMPLATE_MANAGER.getBaseResourceFolder()
+			ResourceLocation templateKey = new ResourceLocation(Treasure.MODID + ":" + TreasureTemplateRegistry.getManager().getBaseResourceFolder()
 							+ "/" + modID + "/" + archetype	+ "/" + name);
 			
-			TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplatesByResourceLocationMap().get(templateKey);
+			TemplateHolder holder = TreasureTemplateRegistry.getManager().getTemplatesByResourceLocationMap().get(templateKey);
 			if (holder == null) {
 				Treasure.logger.debug("Unable to locate template by key -> {}", templateKey.toString());
 			}

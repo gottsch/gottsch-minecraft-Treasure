@@ -21,6 +21,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 /**
@@ -51,12 +52,12 @@ public class CrystalSkullChestGenerator implements IChestGenerator {
 	 */
 	@Override
 	public Optional<LootTableShell> selectLootTable2(Random random, final Rarity chestRarity) {
-		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.CRYSTAL_SKULL_CHEST));
+		return Optional.ofNullable(TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.CRYSTAL_SKULL_CHEST));
 	}
 
 	@Override
 	public Optional<LootTableShell> selectLootTable2(Supplier<Random> factory, final Rarity rarity) {
-		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.CRYSTAL_SKULL_CHEST));
+		return Optional.ofNullable(TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.CRYSTAL_SKULL_CHEST));
 	}
 
 	/**

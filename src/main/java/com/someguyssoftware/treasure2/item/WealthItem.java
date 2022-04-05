@@ -39,6 +39,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.IWishingWellBlock;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
@@ -197,7 +198,7 @@ public class WealthItem extends ModItem implements IWishable {
 			}
 
 			// get effective rarity
-			Rarity effectiveRarity = /*TreasureLootTableRegistry.getLootTableMaster()*/Treasure.LOOT_TABLE_MASTER.getEffectiveRarity(tableShell, getDefaultEffectiveRarity(random));	
+			Rarity effectiveRarity = /*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getEffectiveRarity(tableShell, getDefaultEffectiveRarity(random));	
 			logger.debug("using effective rarity -> {}", effectiveRarity);
 			
 			// get all injected loot tables

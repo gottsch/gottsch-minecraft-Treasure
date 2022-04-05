@@ -24,6 +24,8 @@ import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 import com.someguyssoftware.treasure2.meta.StructureType;
+import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
@@ -144,21 +146,23 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 
 		// NOTE don't like this here and then AGAIN in TemplateGenerator
 		// get the rule set from the meta which is in the holder
-		StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(holder.getMetaLocation().toString());
+		StructureMeta meta = (StructureMeta) TreasureMetaRegistry.getMetaManager().getMetaMap().get(holder.getMetaLocation().toString());
 		if (meta == null) {
 			Treasure.logger.debug("Unable to locate meta data for template -> {}", holder.getLocation());
 			return result.fail();
 		}
+		Treasure.logger.debug("meta -> {}", meta);
 		
 		// setup the decay ruleset and processor
 		IDecayProcessor decayProcessor = null;
 		if (decayRuleSet == null && holder.getDecayRuleSetLocation() != null && holder.getDecayRuleSetLocation().size() > 0) {
 			// create a decay processor
-			decayRuleSet = Treasure.DECAY_MANAGER.getRuleSetMap().get(holder.getDecayRuleSetLocation().get(random.nextInt(holder.getDecayRuleSetLocation().size())).toString());
-			Treasure.logger.debug("decayRuleSet -> {}", decayRuleSet.getName());
+			Treasure.logger.debug("decayRuleSet location -> {}", holder.getDecayRuleSetLocation().get(0));
+			decayRuleSet = TreasureDecayRegistry.getManager().getRuleSetMap().get(holder.getDecayRuleSetLocation().get(random.nextInt(holder.getDecayRuleSetLocation().size())).toString());
 			// if decayRuleSet is null the processor should be null
 		}
 		if (decayRuleSet != null) {
+			Treasure.logger.debug("decayRuleSet -> {}", decayRuleSet.getName());
 			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
 		}
 		

@@ -17,6 +17,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
@@ -59,7 +60,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		
 		// get the template
 		if (templateHolder == null) {
-			templateHolder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, StructureArchetype.SURFACE, StructureType.WELL, biome);
+			templateHolder = TreasureTemplateRegistry.getManager().getTemplate(world, random, StructureArchetype.SURFACE, StructureType.WELL, biome);
 		}
 		if (templateHolder == null) return result.fail();
 				

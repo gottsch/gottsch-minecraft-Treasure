@@ -36,6 +36,7 @@ import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
@@ -141,11 +142,11 @@ public interface IChestGenerator {
 	
 	// TODO this should be a generic call that passes in ManagedTableType
 	default public List<LootTableShell> buildLootTableList2(Rarity rarity) {
-		return Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(TreasureLootTableMaster2.ManagedTableType.CHEST, rarity);
+		return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(TreasureLootTableMaster2.ManagedTableType.CHEST, rarity);
 	}
 
 	default public Optional<List<LootTableShell>> buildInjectedLootTableList(String key, Rarity rarity) {
-		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getLootTableByKeyRarity(TreasureLootTableMaster2.ManagedTableType.INJECT, key, rarity));
+		return Optional.ofNullable(TreasureLootTableRegistry.getLootTableMaster().getLootTableByKeyRarity(TreasureLootTableMaster2.ManagedTableType.INJECT, key, rarity));
 	}
 	
 	/**
@@ -195,7 +196,7 @@ public interface IChestGenerator {
 			lootTableShell = selectLootTable2(random, rarity);
 		}
 		else {
-			lootTableShell = Treasure.LOOT_TABLE_MASTER.getLootTableByResourceLocation(lootTableResourceLocation);
+			lootTableShell = TreasureLootTableRegistry.getLootTableMaster().getLootTableByResourceLocation(lootTableResourceLocation);
 		}	
 		// is valid loot table shell
 		if (lootTableShell.isPresent()) {
@@ -216,7 +217,7 @@ public interface IChestGenerator {
 		Treasure.logger.debug("selected loot table -> {} from resource -> {}", lootTable, lootTableResourceLocation);
 		
 		// update rarity from lootTableShell		
-		Rarity effectiveRarity = Treasure.LOOT_TABLE_MASTER.getEffectiveRarity(lootTableShell.get(), rarity);		
+		Rarity effectiveRarity = TreasureLootTableRegistry.getLootTableMaster().getEffectiveRarity(lootTableShell.get(), rarity);		
 		logger.debug("Generating loot from loot table for effective rarity {}", effectiveRarity);
 		
 		// setup lists of items
@@ -235,7 +236,7 @@ public interface IChestGenerator {
 		// setup context
 		LootContext lootContext = null;
 		if (player == null) {
-			lootContext = Treasure.LOOT_TABLE_MASTER.getContext();
+			lootContext = TreasureLootTableRegistry.getLootTableMaster().getContext();
 		}
 		else {
 			lootContext = new LootContext.Builder((WorldServer) world)
@@ -271,7 +272,7 @@ public interface IChestGenerator {
 		if (injectLootTableShells.isPresent()) {
 			logger.debug("found injectable tables for category ->{}, rarity -> {}", lootTableShell.get().getCategory(), effectiveRarity);
 			logger.debug("size of injectable tables -> {}", injectLootTableShells.get().size());
-			itemStacks.addAll(Treasure.LOOT_TABLE_MASTER.getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext));
+			itemStacks.addAll(TreasureLootTableRegistry.getLootTableMaster().getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext));
 		}
 		
 		// add the treasure items to the chest
@@ -302,11 +303,11 @@ public interface IChestGenerator {
 			}
 
 			if (itemstack.isEmpty()) {
-				logger.debug("add item -> {} to slot -> {}", itemstack.getDisplayName(), emptySlots.get(emptySlots.size()-1));
+//				logger.debug("add item -> {} to slot -> {}", itemstack.getDisplayName(), emptySlots.get(emptySlots.size()-1));
 				inventory.setInventorySlotContents(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), ItemStack.EMPTY);
 			} 
 			else {
-				logger.debug("add item -> {} to slot -> {}", itemstack.getDisplayName(), emptySlots.get(emptySlots.size()-1));
+//				logger.debug("add item -> {} to slot -> {}", itemstack.getDisplayName(), emptySlots.get(emptySlots.size()-1));
 				inventory.setInventorySlotContents(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), itemstack);
 			}
 		}

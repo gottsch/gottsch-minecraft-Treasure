@@ -18,6 +18,7 @@ import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.well.WellGenerator;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.command.CommandBase;
@@ -86,10 +87,10 @@ public class SpawnWellStructureCommand extends CommandBase {
 			
 			if (modID != null && name != null) {
 				// build the template key
-				ResourceLocation templateKey = new ResourceLocation(Treasure.MODID + ":" + Treasure.TEMPLATE_MANAGER.getBaseResourceFolder()
+				ResourceLocation templateKey = new ResourceLocation(Treasure.MODID + ":" + TreasureTemplateRegistry.getManager().getBaseResourceFolder()
 								+ "/" + modID + "/wells/" + name);
 				
-				TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplatesByResourceLocationMap().get(templateKey);
+				TemplateHolder holder = TreasureTemplateRegistry.getManager().getTemplatesByResourceLocationMap().get(templateKey);
 				if (holder == null) {
 					Treasure.logger.debug("Unable to locate well template by key -> {}", templateKey.toString());
 					return;

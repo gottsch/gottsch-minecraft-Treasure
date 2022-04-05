@@ -21,6 +21,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.ITemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
@@ -56,7 +57,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		Biome biome = world.getBiome(coords.toPos());
 		
 		// get the template from the given archetype, type and biome
-		TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, StructureArchetype.SURFACE, StructureType.MARKER, biome);
+		TemplateHolder holder = TreasureTemplateRegistry.getManager().getTemplate(world, random, StructureArchetype.SURFACE, StructureType.MARKER, biome);
 		if (holder == null) return result.fail();
 
 		// TODO could move offset to TemplateGenerator : getOffset() which checks both the offsetblock and the meta

@@ -18,6 +18,7 @@ import com.someguyssoftware.treasure2.block.SkeletonBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
@@ -49,7 +50,7 @@ public class GenUtil {
 	 * @return
 	 */
 	public static Block getMarkerBlock(StructureMarkers marker) {
-		return Treasure.TEMPLATE_MANAGER.getMarkerMap().get(marker);
+		return TreasureTemplateRegistry.getManager().getMarkerMap().get(marker);
 	}
 
 	/**

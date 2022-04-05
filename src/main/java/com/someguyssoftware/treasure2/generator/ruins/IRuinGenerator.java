@@ -17,6 +17,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.IGeneratorResult;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
@@ -44,7 +45,7 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 	default public TemplateHolder selectTemplate(World world, Random random, ICoords coords, StructureArchetype archetype, StructureType type) {
 		// get the biome ID
 		Biome biome = world.getBiome(coords.toPos());
-		TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, archetype, type, biome);
+		TemplateHolder holder = TreasureTemplateRegistry.getManager().getTemplate(world, random, archetype, type, biome);
 		return holder;
 	}
 

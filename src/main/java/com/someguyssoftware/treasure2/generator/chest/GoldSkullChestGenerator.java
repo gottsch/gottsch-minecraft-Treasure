@@ -16,15 +16,13 @@ import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
-
-import net.minecraft.block.Block;
 
 /**
  * 
@@ -54,12 +52,12 @@ public class GoldSkullChestGenerator implements IChestGenerator {
 	 */
 	@Override
 	public Optional<LootTableShell> selectLootTable2(Random random, final Rarity chestRarity) {
-		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST));
+		return Optional.ofNullable(TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST));
 	}
 
 	@Override
 	public Optional<LootTableShell> selectLootTable2(Supplier<Random> factory, final Rarity rarity) {
-		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST));
+		return Optional.ofNullable(TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST));
 	}
 
 	/**

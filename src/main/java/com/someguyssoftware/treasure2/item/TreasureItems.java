@@ -19,8 +19,6 @@
  */
 package com.someguyssoftware.treasure2.item;
 
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.RUNESTONES;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,7 +56,6 @@ import com.someguyssoftware.treasure2.capability.modifier.LordsAdornmentLevelMod
 import com.someguyssoftware.treasure2.capability.modifier.NoLevelModifier;
 import com.someguyssoftware.treasure2.charm.AegisCharm;
 import com.someguyssoftware.treasure2.charm.Charm;
-import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.charm.CheatDeathCharm;
 import com.someguyssoftware.treasure2.charm.DrainCharm;
 import com.someguyssoftware.treasure2.charm.FireImmunityCharm;
@@ -78,12 +75,12 @@ import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.material.CharmableMaterial;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 import com.someguyssoftware.treasure2.rune.AngelsRune;
 import com.someguyssoftware.treasure2.rune.GreaterManaRune;
 import com.someguyssoftware.treasure2.rune.IRuneEntity;
-import com.someguyssoftware.treasure2.rune.ManaRune;
 import com.someguyssoftware.treasure2.rune.TreasureRunes;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
@@ -563,8 +560,8 @@ public class TreasureItems {
 				@Override
 				public List<LootTableShell> getLootTables() {
 					List<LootTableShell> lootTables = new ArrayList<>();
-					lootTables.addAll(/*TreasureLootTableRegistry.getLootTableMaster()*/Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.UNCOMMON));
-					lootTables.addAll(/*TreasureLootTableRegistry.getLootTableMaster()*/Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.SCARCE));
+					lootTables.addAll(/*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.UNCOMMON));
+					lootTables.addAll(/*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
 					return lootTables;
 				}
 				@Override
@@ -577,8 +574,8 @@ public class TreasureItems {
 				@Override
 				public List<LootTableShell> getLootTables() {
 					List<LootTableShell> lootTables = new ArrayList<>();
-					lootTables.addAll(/*TreasureLootTableRegistry.getLootTableMaster()*/Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.SCARCE));
-					lootTables.addAll(/*TreasureLootTableRegistry.getLootTableMaster()*/Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.RARE));
+					lootTables.addAll(/*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
+					lootTables.addAll(/*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE));
 					return lootTables;
 				}
 				@Override
@@ -592,7 +589,7 @@ public class TreasureItems {
 			AMETHYST = new GemItem(Treasure.MODID, TreasureConfig.AMETHYST_ID) {
 				@Override
 				public List<LootTableShell> getLootTables() {
-					return /*TreasureLootTableRegistry.getLootTableMaster()*/Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.SCARCE);
+					return /*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE);
 				}
 				@Override
 				public ItemStack getDefaultLootKey (Random random) {
@@ -603,7 +600,7 @@ public class TreasureItems {
 			ONYX = new GemItem(Treasure.MODID, TreasureConfig.ONYX_ID) {
 				@Override
 				public List<LootTableShell> getLootTables() {
-					return /*TreasureLootTableRegistry.getLootTableMaster()*/Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.RARE);
+					return /*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE);
 				}
 				@Override
 				public ItemStack getDefaultLootKey (Random random) {
@@ -614,7 +611,7 @@ public class TreasureItems {
 			RUBY = new GemItem(Treasure.MODID, TreasureConfig.RUBY_ID) {
 				@Override
 				public List<LootTableShell> getLootTables() {
-					return /*TreasureLootTableRegistry.getLootTableMaster()*/Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.RARE);
+					return /*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE);
 				}
 				@Override
 				public ItemStack getDefaultLootKey (Random random) {
@@ -625,7 +622,7 @@ public class TreasureItems {
 			SAPPHIRE = new GemItem(Treasure.MODID, TreasureConfig.SAPPHIRE_ID) {
 				@Override
 				public List<LootTableShell> getLootTables() {
-					return /*TreasureLootTableRegistry.getLootTableMaster()*/Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.EPIC);
+					return /*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.EPIC);
 				}
 				@Override
 				public ItemStack getDefaultLootKey (Random random) {
@@ -637,7 +634,7 @@ public class TreasureItems {
 				@Override
 				public List<LootTableShell> getLootTables() {
 					List<LootTableShell> lootTables = new ArrayList<>();
-					lootTables.add(/*TreasureLootTableRegistry.getLootTableMaster()*/Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.WHITE_PEARL_WELL));
+					lootTables.add(/*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.WHITE_PEARL_WELL));
 					return lootTables;
 				}
 				@Override
@@ -649,7 +646,7 @@ public class TreasureItems {
 				@Override
 				public List<LootTableShell> getLootTables() {
 					List<LootTableShell> lootTables = new ArrayList<>();
-					lootTables.add(/*TreasureLootTableRegistry.getLootTableMaster()*/Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.BLACK_PEARL_WELL));
+					lootTables.add(/*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.BLACK_PEARL_WELL));
 					return lootTables;
 				}
 				@Override
@@ -1440,7 +1437,7 @@ public class TreasureItems {
 					materials.forEach(material -> {
 						Adornment a = createAdornment(type, material, size, Items.AIR.getRegistryName());
 						a.setCreativeTab(Treasure.ADORNMENTS_TAB);
-						Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
+//						Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
 						adornments.add(a);
 						TreasureAdornmentRegistry.register(material.getName(), Items.AIR.getRegistryName(), a);
 					});
@@ -1454,7 +1451,7 @@ public class TreasureItems {
 						sources.forEach(source -> {
 							Adornment a = createAdornment(type, material, size, source);
 							a.setCreativeTab(Treasure.ADORNMENTS_TAB);
-							Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
+//							Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
 							adornments.add(a);
 							TreasureAdornmentRegistry.register(material.getName(), source, a);
 						});
@@ -1501,7 +1498,7 @@ public class TreasureItems {
 					types.forEach(type -> {
 						Adornment a = createAdornment(type, material, size, s);
 						a.setCreativeTab(Treasure.ADORNMENTS_TAB);
-						Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
+//						Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
 						adornments.add(a);
 						TreasureAdornmentRegistry.register(material.getName(), s, a);						
 					});

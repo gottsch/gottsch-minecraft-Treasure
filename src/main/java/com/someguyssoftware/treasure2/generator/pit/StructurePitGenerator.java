@@ -17,6 +17,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
@@ -120,9 +121,9 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			// get the biome
 			Biome biome = world.getBiome(spawnCoords.toPos());
 			Integer biomeID = Biome.getIdForBiome(biome);
-			List<TemplateHolder> templateHolders = Treasure.TEMPLATE_MANAGER.getTemplatesByArchetypeTypeBiomeTable().get(key, biomeID);
+			List<TemplateHolder> templateHolders = TreasureTemplateRegistry.getManager().getTemplatesByArchetypeTypeBiomeTable().get(key, biomeID);
 			if (templateHolders == null || templateHolders.isEmpty()) {
-				Treasure.logger.debug("could not find template holders for archetype:type, biome -> {} [{}]:[]", key, biomeID, biome.toString());
+				Treasure.logger.debug("could not find template holders for archetype:type, biome -> {} [{}]:{}", key, biomeID, biome.toString());
 				return result.fail();
 			}
 			

@@ -100,7 +100,7 @@ public class TreasureAdornmentRegistry {
 	}
 	
 	public static void register(ResourceLocation material, ResourceLocation source, Adornment adornment) {
-		Treasure.logger.debug("registering adornment -> {} with key -> {}", adornment.getRegistryName(), new Key(adornment.getType(), adornment.getSize(), material, source));
+//		Treasure.logger.debug("registering adornment -> {} with key -> {}", adornment.getRegistryName(), new Key(adornment.getType(), adornment.getSize(), material, source));
 		register(new Key(adornment.getType(), adornment.getSize(), material, source), adornment);
 	}
 	
