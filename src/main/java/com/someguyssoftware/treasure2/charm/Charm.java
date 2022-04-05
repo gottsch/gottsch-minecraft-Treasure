@@ -212,7 +212,7 @@ public abstract class Charm implements ICharm {
 			}
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Unable to read state to NBT:", e);
+			Treasure.LOGGER.error("Unable to read state to NBT:", e);
 		}	
 
 		return charm;
@@ -229,7 +229,7 @@ public abstract class Charm implements ICharm {
 			nbt.setString("name", this.name.toString());
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Unable to write state to NBT:", e);
+			Treasure.LOGGER.error("Unable to write state to NBT:", e);
 		}
 		return nbt;
 	}
@@ -246,7 +246,7 @@ public abstract class Charm implements ICharm {
 			return entity.getCostEvaluator().apply(world, random, coords, player, event, entity, amount);
 		}
 		else {
-			Treasure.logger.debug("Charm does not have a cost eval.");
+			Treasure.LOGGER.debug("Charm does not have a cost eval.");
 			entity.setMana(MathHelper.clamp(entity.getMana() - 1.0,  0D, entity.getMana()));
 		}
 		return amount;

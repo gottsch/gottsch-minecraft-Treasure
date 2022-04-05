@@ -75,17 +75,17 @@ public class TreasureDecayManager {
 	 * @param resourcePaths
 	 */
 	public void register(String modID, List<String> resourcePaths) {
-		Treasure.logger.debug("registering decay resources");
+		Treasure.LOGGER.debug("registering decay resources");
 		// create folders if not exist
 		createDecayFolder(modID);
-		Treasure.logger.debug("created decay folder");
+		Treasure.LOGGER.debug("created decay folder");
 		
 		List<ResourceLocation> resourceLocations = getResourceLocations(modID, resourcePaths);
-		Treasure.logger.debug("acquired resource locations -> {}", resourceLocations);
+		Treasure.LOGGER.debug("acquired resource locations -> {}", resourceLocations);
 		// load each ResourceLocation as ruleset and map it.
 		resourceLocations.forEach(loc -> {
 			// need to test for world save version first
-			Treasure.logger.debug("register decay -> loading decay resource loc -> {}", loc.toString());						
+			Treasure.LOGGER.debug("register decay -> loading decay resource loc -> {}", loc.toString());						
 			tableDecay(loc, load(loc));
 		});
 	}
@@ -104,12 +104,12 @@ public class TreasureDecayManager {
 		Path folder = Paths.get(getWorldSaveFolder().getPath(), "data/decay", modID, "rulesets").toAbsolutePath();
 
 		if (Files.notExists(folder)) {
-			Treasure.logger.debug("decay folder \"{}\" will be created.", folder.toString());
+			Treasure.LOGGER.debug("decay folder \"{}\" will be created.", folder.toString());
 			try {
 				Files.createDirectories(folder);
 
 			} catch (IOException e) {
-				Treasure.logger.warn("Unable to create decay folder \"{}\"", folder.toString());
+				Treasure.LOGGER.warn("Unable to create decay folder \"{}\"", folder.toString());
 			}
 		}
 	}
@@ -148,13 +148,13 @@ public class TreasureDecayManager {
 	private Optional<IDecayRuleSet> loadFromJar(ResourceLocation resource) {		
 		Optional<IDecayRuleSet> resourceMeta = Optional.empty();
 		String relativePath = "decay/" + resource.getResourceDomain() + "/" + resource.getResourcePath();
-		Treasure.logger.debug("Attempting to load decay {} from jar -> {}", resource, relativePath);
+		Treasure.LOGGER.debug("Attempting to load decay {} from jar -> {}", resource, relativePath);
 		try (InputStream resourceStream = Treasure.instance.getClass().getClassLoader().getResourceAsStream(relativePath);
 				Reader reader = new InputStreamReader(resourceStream, StandardCharsets.UTF_8)) {
 			resourceMeta =  Optional.of(load(reader));
 		}
 		catch(Exception e) {
-			Treasure.logger.error(String.format("Couldn't load resource meta %s ", relativePath), e);
+			Treasure.LOGGER.error(String.format("Couldn't load resource meta %s ", relativePath), e);
 		}		
 		return resourceMeta;
 	}
@@ -171,7 +171,7 @@ public class TreasureDecayManager {
 		}
 		else {
 			File metaFile = Paths.get(folder.getPath(), "data", "decay", resource.getResourceDomain(), resource.getResourcePath()).toFile();
-			Treasure.logger.debug("Attempting to load decay {} from {}", resource, metaFile);
+			Treasure.LOGGER.debug("Attempting to load decay {} from {}", resource, metaFile);
 			
 			if (metaFile.exists()) {
 				if (metaFile.isFile()) {
@@ -180,7 +180,7 @@ public class TreasureDecayManager {
 						json = com.google.common.io.Files.toString(metaFile, StandardCharsets.UTF_8);
 					}
 					catch (IOException e) {
-						Treasure.logger.warn("Couldn't load decay {} from {}", resource, metaFile, e);
+						Treasure.LOGGER.warn("Couldn't load decay {} from {}", resource, metaFile, e);
 						return Optional.empty();
 					}
 
@@ -188,17 +188,17 @@ public class TreasureDecayManager {
 						return Optional.of(load(json));
 					}
 					catch (IllegalArgumentException | JsonParseException e) {
-						Treasure.logger.error("Couldn't load meta {} from {}", resource, metaFile, e);
+						Treasure.LOGGER.error("Couldn't load meta {} from {}", resource, metaFile, e);
 						return Optional.empty();
 					}
 				}
 				else {
-					Treasure.logger.warn("Expected to find meta {} at {} but it was a folder.", resource, metaFile);
+					Treasure.LOGGER.warn("Expected to find meta {} at {} but it was a folder.", resource, metaFile);
 					return Optional.empty();
 				}
 			}
 			else {
-				Treasure.logger.warn("Expected to find meta {} at {} but it doesn't exist.", resource, metaFile);
+				Treasure.LOGGER.warn("Expected to find meta {} at {} but it doesn't exist.", resource, metaFile);
 				return Optional.empty();
 			}
 		}
@@ -224,12 +224,12 @@ public class TreasureDecayManager {
 	
 	private void tableDecay(ResourceLocation resourceLocation, Optional<IDecayRuleSet> decay) {
 		if (decay.isPresent()) {
-			Treasure.logger.debug("tabling meta: key -> {}, meta -> {}", resourceLocation.toString(), decay);
+			Treasure.LOGGER.debug("tabling meta: key -> {}, meta -> {}", resourceLocation.toString(), decay);
 			// add meta to map
 			this.getRuleSetMap().put(resourceLocation.toString(), decay.get());
 		}
 		else {
-			Treasure.logger.debug("unable to table meta from -> {}", resourceLocation);
+			Treasure.LOGGER.debug("unable to table meta from -> {}", resourceLocation);
 		}
 	}
 	

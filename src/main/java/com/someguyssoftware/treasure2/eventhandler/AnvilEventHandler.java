@@ -109,20 +109,20 @@ public class AnvilEventHandler {
 				&& rightStack.getCapability(CHARMABLE, null).isBindable()) {
 			event.setCost(2);
 			leftStack.getCapability(RUNESTONES, null).getEntities(InventoryType.INNATE).forEach(entity -> {
-				Treasure.logger.debug("binding charm: sourceStack.appliedTo -> {}", entity.getAppliedTo());
+				Treasure.LOGGER.debug("binding charm: sourceStack.appliedTo -> {}", entity.getAppliedTo());
 			});
 			Optional<ItemStack> outStack = transferCapabilities(rightStack, leftStack, InventoryType.INNATE, InventoryType.SOCKET);
 			if (outStack.isPresent()) {
 				if (outStack.get().hasCapability(RUNESTONES, null)) {
 					outStack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(entity -> {
-						Treasure.logger.debug("binding charm: is applied -> {}", entity.isApplied());
-						Treasure.logger.debug("binding charm: applied to -> {}", entity.getAppliedTo());
-						Treasure.logger.debug("binding charm: applying runestone -> {} to entity -> {}", entity.getRunestone(), entity);
+						Treasure.LOGGER.debug("binding charm: is applied -> {}", entity.isApplied());
+						Treasure.LOGGER.debug("binding charm: applied to -> {}", entity.getAppliedTo());
+						Treasure.LOGGER.debug("binding charm: applying runestone -> {} to entity -> {}", entity.getRunestone(), entity);
 						entity.getRunestone().apply(outStack.get(), entity);
-						Treasure.logger.debug("binding charm: after apply: is applied -> {}", entity.isApplied());
-						Treasure.logger.debug("binding charm: after apply: applied to -> {}", entity.getAppliedTo());
+						Treasure.LOGGER.debug("binding charm: after apply: is applied -> {}", entity.isApplied());
+						Treasure.LOGGER.debug("binding charm: after apply: applied to -> {}", entity.getAppliedTo());
 						outStack.get().getCapability(CHARMABLE, null).getCharmEntities().forEach((type2, charm) -> {
-							Treasure.logger.debug("binding charm: entity -> {}, mana -> {}, max mana -> {}", charm.getCharm().getName().toString(), charm.getMana(), charm.getMaxMana());
+							Treasure.LOGGER.debug("binding charm: entity -> {}, mana -> {}, max mana -> {}", charm.getCharm().getName().toString(), charm.getMana(), charm.getMaxMana());
 						});
 					});
 				}
@@ -150,17 +150,17 @@ public class AnvilEventHandler {
 				&& rightStack.getCapability(RUNESTONES, null).isBindable()) {
 			event.setCost(2);
 			rightStack.getCapability(RUNESTONES, null).getEntities(InventoryType.INNATE).forEach(entity -> {
-				Treasure.logger.debug("rightStack.appliedTo -> {}", entity.getAppliedTo());
+				Treasure.LOGGER.debug("rightStack.appliedTo -> {}", entity.getAppliedTo());
 			});
 			Optional<ItemStack> stack = transferCapabilities(rightStack, leftStack, InventoryType.INNATE, InventoryType.SOCKET);
 			if (stack.isPresent()) {
 				AtomicBoolean isStackValid = new AtomicBoolean(true);
 				stack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(entity -> {
-					Treasure.logger.debug("is applied -> {}", entity.isApplied());
-					Treasure.logger.debug("applied to -> {}", entity.getAppliedTo());
+					Treasure.LOGGER.debug("is applied -> {}", entity.isApplied());
+					Treasure.LOGGER.debug("applied to -> {}", entity.getAppliedTo());
 					//					if(entity.getRunestone().isValid(stack.get()) && !entity.isApplied()) {
-					Treasure.logger.debug("applying runestone -> {} to entity -> {}", entity.getRunestone(), entity);
-					Treasure.logger.debug("applying cap...");
+					Treasure.LOGGER.debug("applying runestone -> {} to entity -> {}", entity.getRunestone(), entity);
+					Treasure.LOGGER.debug("applying cap...");
 					
 					if (!entity.getRunestone().isValid(stack.get())) {
 						isStackValid.set(false);
@@ -168,10 +168,10 @@ public class AnvilEventHandler {
 					}
 					entity.getRunestone().apply(stack.get(), entity);
 					stack.get().getCapability(CHARMABLE, null).getCharmEntities().forEach((type, charm) -> {
-						Treasure.logger.debug("entity -> {}, mana -> {}, max mana -> {}, costEval -> {}", charm.getCharm().getName().toString(), charm.getMana(), charm.getMaxMana(), charm.getCostEvaluator().getClass().getSimpleName());
+						Treasure.LOGGER.debug("entity -> {}, mana -> {}, max mana -> {}, costEval -> {}", charm.getCharm().getName().toString(), charm.getMana(), charm.getMaxMana(), charm.getCostEvaluator().getClass().getSimpleName());
 					});
 					stack.get().getCapability(RUNESTONES, null).getEntities(InventoryType.SOCKET).forEach(stone -> {
-						Treasure.logger.debug("output runestone -> {}", stone);
+						Treasure.LOGGER.debug("output runestone -> {}", stone);
 					});
 					//					}
 					//					else {
@@ -195,7 +195,7 @@ public class AnvilEventHandler {
 
 				// build the output item, duplicating the left stack (adornment) with the right stack as the source item
 				Optional<Adornment> adornment = getAdornment(leftStack, rightStack);
-				Treasure.logger.debug("adornment -> {}", adornment.get().getRegistryName());
+				Treasure.LOGGER.debug("adornment -> {}", adornment.get().getRegistryName());
 				if (adornment.isPresent()) {
 					ItemStack outputStack = copyStack(leftStack, new ItemStack(adornment.get()));
 					ICharmableCapability outputCap = outputStack.getCapability(CHARMABLE, null);
@@ -214,9 +214,9 @@ public class AnvilEventHandler {
 		else if (leftStack.getItem() instanceof Adornment && rightStack.getItem() instanceof Adornment) {
 			event.setCost(1);
 			event.setMaterialCost(1);
-			Treasure.logger.debug("both are adornments");
+			Treasure.LOGGER.debug("both are adornments");
 			IDurabilityCapability leftcap = leftStack.getCapability(DURABILITY, null);
-			Treasure.logger.debug("leftStack current durability-> {}, max -> {}", leftcap.getDurability() - leftStack.getItemDamage(), leftcap.getMaxDurability());
+			Treasure.LOGGER.debug("leftStack current durability-> {}, max -> {}", leftcap.getDurability() - leftStack.getItemDamage(), leftcap.getMaxDurability());
 			// create a new stack with full health/item damage.
 			ItemStack outputStack = copyStack(leftStack, new ItemStack(leftStack.getItem()));
 			IDurabilityCapability cap = outputStack.getCapability(DURABILITY, null);
@@ -226,8 +226,8 @@ public class AnvilEventHandler {
 				// update repairs
 				cap.setRepairs(cap.getRepairs() - 1);
 				event.setOutput(outputStack);
-				Treasure.logger.debug("repairs -> {}, max repairs -> {}", cap.getRepairs(), cap.getMaxRepairs());
-				Treasure.logger.debug("current durability-> {}, max -> {}", cap.getDurability() - outputStack.getItemDamage(), cap.getMaxDurability());
+				Treasure.LOGGER.debug("repairs -> {}, max repairs -> {}", cap.getRepairs(), cap.getMaxRepairs());
+				Treasure.LOGGER.debug("current durability-> {}, max -> {}", cap.getDurability() - outputStack.getItemDamage(), cap.getMaxDurability());
 			}
 		}
 	}
@@ -241,7 +241,7 @@ public class AnvilEventHandler {
 	 */
 	@Deprecated
 	public static Optional<ItemStack> transferCapabilities(ItemStack source, ItemStack dest, InventoryType sourceType, InventoryType destType) {
-		Treasure.logger.debug("transfering caps...");
+		Treasure.LOGGER.debug("transfering caps...");
 
 		// create a new dest item stack
 		ItemStack stack = new ItemStack(dest.getItem());
@@ -271,16 +271,16 @@ public class AnvilEventHandler {
 
 		if (dest.hasCapability(RUNESTONES, null)) {
 			stack.getCapability(RUNESTONES, null).clear();
-			Treasure.logger.debug("before copyTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
+			Treasure.LOGGER.debug("before copyTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
 			dest.getCapability(RUNESTONES, null).copyTo(stack);
-			Treasure.logger.debug("after copyTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
+			Treasure.LOGGER.debug("after copyTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
 			if (source.hasCapability(RUNESTONES, null)) { // this is the rune
-				Treasure.logger.debug("source(runestone)'s runes ->");
+				Treasure.LOGGER.debug("source(runestone)'s runes ->");
 				source.getCapability(RUNESTONES, null).getEntities(InventoryType.INNATE).forEach(entity -> {
-					Treasure.logger.debug("source entity -> {}", entity);
+					Treasure.LOGGER.debug("source entity -> {}", entity);
 				});
 				source.getCapability(RUNESTONES, null).transferTo(stack, sourceType, destType); // transfer from rune to output
-				Treasure.logger.debug("after transferTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
+				Treasure.LOGGER.debug("after transferTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
 				if (stack.getCapability(RUNESTONES, null).getCurrentSize(destType) > dest.getCapability(RUNESTONES, null).getCurrentSize(destType)) {
 					runeSizeChanged = true;
 				}
@@ -322,7 +322,7 @@ public class AnvilEventHandler {
 
 		// copy the capabilities
 		if (resultStack.hasCapability(DURABILITY, null)) {
-			Treasure.logger.debug("calling durability copyTo()");
+			Treasure.LOGGER.debug("calling durability copyTo()");
 			source.getCapability(DURABILITY, null).copyTo(resultStack);
 		}
 

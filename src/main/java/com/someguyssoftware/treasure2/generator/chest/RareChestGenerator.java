@@ -56,7 +56,7 @@ public class RareChestGenerator implements IChestGenerator {
 	@Override
 	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
-		Treasure.logger.debug("# of locks to use: {})", numLocks);
+		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);
 		
 		return numLocks;
 	}

@@ -53,7 +53,7 @@ public class WellWorldGenerator implements ITreasureWorldGenerator {
 		try {
 			init();
 		} catch (Exception e) {
-			Treasure.logger.error("Unable to instantiate SurfaceChestGenerator:", e);
+			Treasure.LOGGER.error("Unable to instantiate SurfaceChestGenerator:", e);
 		}
 	}
 
@@ -121,7 +121,7 @@ public class WellWorldGenerator implements ITreasureWorldGenerator {
 			Wells well = Wells.values()[random.nextInt(Wells.values().length)];
 			IWellConfig wellConfig = TreasureConfig.WELL;
 			if (wellConfig == null) {
-				Treasure.logger.warn("Unable to locate a config for well {}.", well);
+				Treasure.LOGGER.warn("Unable to locate a config for well {}.", well);
 				return;
 			}
 
@@ -136,12 +136,12 @@ public class WellWorldGenerator implements ITreasureWorldGenerator {
 				}
 				else if (biomeCheck == Result.OK) {
 					if (!BiomeHelper.isBiomeAllowed(biome, wellConfig.getBiomeTypeWhiteList(), wellConfig.getBiomeTypeBlackList())) {
-						if (Treasure.logger.isDebugEnabled()) {
+						if (Treasure.LOGGER.isDebugEnabled()) {
 				    		if (WorldInfo.isClientSide(world)) {
-				    			Treasure.logger.debug("{} is not a valid biome @ {} for Well", biome.getBiomeName(), coords.toShortString());
+				    			Treasure.LOGGER.debug("{} is not a valid biome @ {} for Well", biome.getBiomeName(), coords.toShortString());
 				    		}
 				    		else {
-				    			Treasure.logger.debug("Biome is not valid @ {} for Well", coords.toShortString());
+				    			Treasure.LOGGER.debug("Biome is not valid @ {} for Well", coords.toShortString());
 				    		}
 						}
 						chunksSinceLastWell = 0;
@@ -152,7 +152,7 @@ public class WellWorldGenerator implements ITreasureWorldGenerator {
 				// 2. test if well meets the probability criteria
 //				Treasure.logger.debug("{} well probability: {}", well, wellConfig.getGenProbability());
 				if (!RandomHelper.checkProbability(random, wellConfig.getGenProbability())) {
-					Treasure.logger.debug("Well does not meet generate probability.");
+					Treasure.LOGGER.debug("Well does not meet generate probability.");
 					return;
 				}
 
@@ -160,10 +160,10 @@ public class WellWorldGenerator implements ITreasureWorldGenerator {
 				chunksSinceLastWell++;    	    	
 
 				// generate the well
-				Treasure.logger.debug("Attempting to generate a well");
+				Treasure.LOGGER.debug("Attempting to generate a well");
 //				isGenerated = generators.get(well)
 				result = generator.generate(world, random, coords, wellConfig); 
-				Treasure.logger.debug("well world gen result -> {}", result.isSuccess());
+				Treasure.LOGGER.debug("well world gen result -> {}", result.isSuccess());
 				if (result.isSuccess()) {
 					// add to registry
 					//				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
@@ -213,7 +213,7 @@ public class WellWorldGenerator implements ITreasureWorldGenerator {
 		List<ChestInfo> infos = ChestRegistry.getInstance().getValues();
 
 		if (infos == null || infos.size() == 0) {
-			Treasure.logger.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");
+			Treasure.LOGGER.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");
 			return false;
 		}
 

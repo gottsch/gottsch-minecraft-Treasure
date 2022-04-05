@@ -157,7 +157,7 @@ public abstract class AbstractMistParticle extends Particle implements IMistPart
 	 */
 	public void doPlayerCollisions(World world) {
 		if (getParentEmitterCoords() == null) {
-			Treasure.logger.debug("emitter coords is null");
+			Treasure.LOGGER.debug("emitter coords is null");
 			return;
 		}
 

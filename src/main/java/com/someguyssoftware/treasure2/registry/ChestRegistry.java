@@ -58,7 +58,7 @@ public class ChestRegistry {
 	 * @param info
 	 */
 	public synchronized void register(final String key, final ChestInfo info) {	
-		Treasure.logger.debug("Registering chest using key: " + key);
+		Treasure.LOGGER.debug("Registering chest using key: " + key);
 		// test the size
 		if (registry.size() >= MAX_SIZE) {
 			// remove the first element

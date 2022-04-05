@@ -51,11 +51,11 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 
 	default public void buildOneTimeSpawners(World world, Random random, List<BlockContext> proximityContexts, Quantity quantity, double d) {
 		for (BlockContext c : proximityContexts) {
-			Treasure.logger.debug("placing proximity spawner at -> {}", c.getCoords().toShortString());
+			Treasure.LOGGER.debug("placing proximity spawner at -> {}", c.getCoords().toShortString());
 	    	world.setBlockState(c.getCoords().toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
 	    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c.getCoords().toPos());
 	    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
-	    	Treasure.logger.debug("using mob -> {} for poximity spawner.", r.toString());
+	    	Treasure.LOGGER.debug("using mob -> {} for poximity spawner.", r.toString());
 	    	te.setMobName(r);
 	    	te.setMobNum(new Quantity(1, 2));
 	    	te.setProximity(5D);

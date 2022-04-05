@@ -19,7 +19,7 @@
  */
 package com.someguyssoftware.treasure2.item;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
+import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,16 +173,16 @@ public class PearlItem extends ModItem implements IWishable {
 			// get the player if the coin was tossed
 			EntityPlayer player = null;
 			if (nbt != null && nbt.hasKey(DROPPED_BY_KEY)) {	
-				Treasure.logger.debug("dropped by key ->{}", nbt.getString(DROPPED_BY_KEY));
+				Treasure.LOGGER.debug("dropped by key ->{}", nbt.getString(DROPPED_BY_KEY));
 				player = Optional.of(world.getPlayerEntityByUUID(UUID.fromString(nbt.getString(DROPPED_BY_KEY))))
 						.orElseGet(() -> {
-								Treasure.logger.debug("getting player by name");
+								Treasure.LOGGER.debug("getting player by name");
 								return world.getPlayerEntityByName(nbt.getString(DROPPED_BY_KEY));
 							}
 						);
 
-				if (player != null && logger.isDebugEnabled()) {
-					logger.debug("coin dropped by player -> {}", player.getName());
+				if (player != null && LOGGER.isDebugEnabled()) {
+					LOGGER.debug("coin dropped by player -> {}", player.getName());
 				}
 			}
 			// build the loot context
@@ -190,7 +190,7 @@ public class PearlItem extends ModItem implements IWishable {
 			
 			// select a table
 			LootTableShell tableShell = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
-			logger.debug("pearl: tableShell -> {}", tableShell.toString());
+			LOGGER.debug("pearl: tableShell -> {}", tableShell.toString());
 			if (tableShell.getResourceLocation() == null) {
 				return;
 			}
@@ -202,7 +202,7 @@ public class PearlItem extends ModItem implements IWishable {
 				
 			List<ItemStack> itemStacks = new ArrayList<>();
 			for (LootPoolShell pool : lootPoolShells) {
-				logger.debug("pearl: processing pool -> {}", pool.getName());
+				LOGGER.debug("pearl: processing pool -> {}", pool.getName());
 				// go get the vanilla managed pool
 				LootPool lootPool = table.getPool(pool.getName());
 				
@@ -212,14 +212,14 @@ public class PearlItem extends ModItem implements IWishable {
 			
 			// get effective rarity
 			Rarity effectiveRarity = TreasureLootTableRegistry.getLootTableMaster().getEffectiveRarity(tableShell, (getPearl() == Pearls.WHITE) ? Rarity.UNCOMMON : Rarity.SCARCE);	
-			logger.debug("pearl: using effective rarity -> {}", effectiveRarity);
+			LOGGER.debug("pearl: using effective rarity -> {}", effectiveRarity);
 			
 			// get all injected loot tables
-			logger.debug("pearl: searching for injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
+			LOGGER.debug("pearl: searching for injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
 			Optional<List<LootTableShell>> injectLootTableShells = buildInjectedLootTableList(tableShell.getCategory(), effectiveRarity);			
 			if (injectLootTableShells.isPresent()) {
-				logger.debug("pearl: found injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
-				logger.debug("pearl: size of injectable tables -> {}", injectLootTableShells.get().size());
+				LOGGER.debug("pearl: found injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
+				LOGGER.debug("pearl: size of injectable tables -> {}", injectLootTableShells.get().size());
 
 				// attempt to get the player who dropped the coin
 //				ItemStack coinItem = entityItem.getItem();

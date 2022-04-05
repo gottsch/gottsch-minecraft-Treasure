@@ -134,7 +134,7 @@ public class Treasure extends AbstractMod {
 	private static BuildVersion latestVersion;
 
 	// logger
-	public static Logger logger = LogManager.getLogger(Treasure.NAME);
+	public static final Logger LOGGER = LogManager.getLogger(Treasure.NAME);
 
 	@Instance(value = Treasure.MODID)
 	public static Treasure instance;
@@ -231,16 +231,16 @@ public class Treasure extends AbstractMod {
 		
 		IEquipmentCharmHandler equipmentCharmHandler = null;
 		if (BaublesIntegration.isEnabled()) {
-			logger.debug("baubles IS loaded");
+			LOGGER.debug("baubles IS loaded");
 			try {
 				equipmentCharmHandler = 
 						(IEquipmentCharmHandler) Class.forName("com.someguyssoftware.treasure2.eventhandler.BaublesEquipmentCharmHandler").newInstance();
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-				logger.warn("Unable to load Baubles compatiblity class.", e);
+				LOGGER.warn("Unable to load Baubles compatiblity class.", e);
 			}
 		}
 		if (equipmentCharmHandler == null) {
-			logger.debug("equipmentHandler is null");
+			LOGGER.debug("equipmentHandler is null");
 			equipmentCharmHandler = new HotbarEquipmentCharmHandler();
 		}
 		MinecraftForge.EVENT_BUS.register(new CharmEventHandler(equipmentCharmHandler));

@@ -84,16 +84,16 @@ public class RuinCurse extends Charm {
 				if (actualEquipment != null && actualEquipment.size() > 0) {
 					// randomly pick an item
 					ItemStack selectedItemStack  = actualEquipment.get(random.nextInt(actualEquipment.size()));
-					Treasure.logger.debug("damaging item -> {}, current damage -> {} of {}", selectedItemStack.getDisplayName(), selectedItemStack.getItemDamage(), selectedItemStack.getMaxDamage());
+					Treasure.LOGGER.debug("damaging item -> {}, current damage -> {} of {}", selectedItemStack.getDisplayName(), selectedItemStack.getItemDamage(), selectedItemStack.getMaxDamage());
 					// damage the item
 					if (selectedItemStack.isItemStackDamageable()) {
 						selectedItemStack.attemptDamageItem((int)getAmount(), random, null);
-						Treasure.logger.debug("damaged item -> {}, now at damaged -> {} of {}", selectedItemStack.getDisplayName(), selectedItemStack.getItemDamage(), selectedItemStack.getMaxDamage());
+						Treasure.LOGGER.debug("damaged item -> {}, now at damaged -> {} of {}", selectedItemStack.getDisplayName(), selectedItemStack.getItemDamage(), selectedItemStack.getMaxDamage());
 //						entity.setMana(MathHelper.clamp(entity.getMana() - 1.0,  0D, entity.getMana()));
 						applyCost(world, random, coords, player, event, entity, getAmount());
 					}
 				}			
-				Treasure.logger.debug("charm {} new data -> {}", this.getName(), entity);
+				Treasure.LOGGER.debug("charm {} new data -> {}", this.getName(), entity);
 				result = true;
 			}
 		}

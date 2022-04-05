@@ -86,18 +86,18 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
 
 		GottschTemplate template = (GottschTemplate) templateHolder.getTemplate();
-		Treasure.logger.debug("template size -> {}", template.getSize());
+		Treasure.LOGGER.debug("template size -> {}", template.getSize());
 		// get the meta
 		StructureMeta meta = (StructureMeta) TreasureMetaRegistry.get(templateHolder.getMetaLocation().toString());
 		if (meta == null) {
-			Treasure.logger.debug("Unable to locate meta data for template -> {}", templateHolder.getLocation());
+			Treasure.LOGGER.debug("Unable to locate meta data for template -> {}", templateHolder.getLocation());
 			return result.fail();
 		}
-		Treasure.logger.debug("meta -> {}", meta);
+		Treasure.LOGGER.debug("meta -> {}", meta);
 
 		// if the meta provides a null block, use it
 		if (meta.getNullBlockName() != null && !meta.getNullBlockName().equals("")) {
-			Treasure.logger.debug("setting the null block to -> {}", meta.getNullBlockName());
+			Treasure.LOGGER.debug("setting the null block to -> {}", meta.getNullBlockName());
 			setNullBlock(Block.getBlockFromName(meta.getNullBlockName()));
 		}
 
@@ -110,7 +110,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 			// an offset derived from a template will always be positive and thus is negated
 			// later to correct the positioning.
 			offsetCoords = new Coords(0, -meta.getOffset().getY(), 0);
-			Treasure.logger.debug("Using meta offset coords -> {}", offsetCoords);
+			Treasure.LOGGER.debug("Using meta offset coords -> {}", offsetCoords);
 		} else {
 			offsetCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.OFFSET));
 		}
@@ -124,7 +124,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 
 		// generate the structure
 		if (decayProcessor == null) {
-			Treasure.logger.debug("no decay processor found.");
+			Treasure.LOGGER.debug("no decay processor found.");
 			template.addBlocksToWorld(world, spawnCoords.toPos(), placement, getNullBlock(),
 					TreasureTemplateRegistry.getManager().getReplacementMap(), 3);
 		} else {
@@ -173,7 +173,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		for (Entry<Block, BlockContext> entry : template.getTagBlockMap().entries()) {
 			BlockContext context = getAbsoluteTransformedContext(entry.getValue(), spawnCoords, placement);
 			result.getData().getMap().put(entry.getKey(), context);
-			Treasure.logger.debug("new: adding to structure info absoluted transformed coords -> {} : {}",
+			Treasure.LOGGER.debug("new: adding to structure info absoluted transformed coords -> {} : {}",
 					entry.getKey().getLocalizedName(), context.getCoords().toShortString());
 		}
 
@@ -185,7 +185,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		// Y offset
 		spawnCoords = getTransformedSpawnCoords(spawnCoords, new Coords(transformedSize), placement).add(0, -offset, 0);
 
-		Treasure.logger.debug("spawn coords after rotation -> " + spawnCoords);
+		Treasure.LOGGER.debug("spawn coords after rotation -> " + spawnCoords);
 		// update result data
 		result.getData().setSpawnCoords(spawnCoords);
 		result.getData().setSize(new Coords(transformedSize));

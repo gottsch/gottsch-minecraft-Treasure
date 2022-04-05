@@ -144,10 +144,10 @@ public abstract class MimicEntity extends EntityMob {
 		ResourceLocation lootTableResourceLocation = selectLootTableResourceLocation(new Random(), Rarity.SCARCE);
 
 		if (lootTableResourceLocation == null) {
-			Treasure.logger.warn("Unable to select a lootTable resource location.");
+			Treasure.LOGGER.warn("Unable to select a lootTable resource location.");
 			return null;
 		}
-		Treasure.logger.debug("Selected loot table resource location -> {}", lootTableResourceLocation.toString());
+		Treasure.LOGGER.debug("Selected loot table resource location -> {}", lootTableResourceLocation.toString());
 		return lootTableResourceLocation;
 	}
 	
@@ -176,7 +176,7 @@ public abstract class MimicEntity extends EntityMob {
 				index = RandomHelper.randomInt(random, 0, tableShells.size()-1);
 				location = tableShells.get(index);
 			}
-			Treasure.logger.debug("Selected resource location index --> {}", index);
+			Treasure.LOGGER.debug("Selected resource location index --> {}", index);
 		}
 		return location.getResourceLocation();
 	}	

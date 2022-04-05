@@ -97,10 +97,10 @@ public class SpanishMossItem extends ModItem {
 	 */
 	public void placeBlock(World world, BlockPos pos, Block block, EntityPlayer player, ItemStack itemStack) {
     	// set the block
- 		Treasure.logger.debug("Placing spanish moss into world.");
+ 		Treasure.LOGGER.debug("Placing spanish moss into world.");
     	world.setBlockState(pos, block.getDefaultState());    		      	
     	
-    	Treasure.logger.debug("Calling onBlockPlacedby.");
+    	Treasure.LOGGER.debug("Calling onBlockPlacedby.");
     	block.onBlockPlacedBy(world, pos, block.getDefaultState(), player, itemStack);
 	}
 }

@@ -44,18 +44,18 @@ public class DurabilityRune extends Rune {
 
 	@Override
 	public void apply(ItemStack itemStack, IRuneEntity entity) {
-		Treasure.logger.debug("applying durability...");
+		Treasure.LOGGER.debug("applying durability...");
 		if (!isValid(itemStack) || entity.isApplied()) {
 			return;
 		}
-		Treasure.logger.debug("passed validity check...");
+		Treasure.LOGGER.debug("passed validity check...");
 		if (itemStack.hasCapability(TreasureCapabilities.DURABILITY, null)) {
 			IDurabilityCapability cap = itemStack.getCapability(TreasureCapabilities.DURABILITY, null);
-			Treasure.logger.debug("old durability -> {}", cap.getDurability());
+			Treasure.LOGGER.debug("old durability -> {}", cap.getDurability());
 			// NOTE: need to set the max durability first, else the new durability will be cutoff at the current max durability
 			cap.setMaxDurability((int)Math.round(cap.getMaxDurability() * 1.25D));
 			cap.setDurability((int)Math.round(cap.getDurability() * 1.25D));			
-			Treasure.logger.debug("new durability -> {}", cap.getDurability());
+			Treasure.LOGGER.debug("new durability -> {}", cap.getDurability());
 			entity.setApplied(true);
 		}
 	}

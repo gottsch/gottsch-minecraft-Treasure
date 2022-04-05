@@ -98,18 +98,18 @@ public class IlluminationCharm extends Charm {
 				// check that the block underneath is solid
 				cube = new Cube(world, currentCoords.down(1));
 				if (!cube.isSolid()) {
-					Treasure.logger.debug("not solid at -> {}", currentCoords.down(1));
+					Treasure.LOGGER.debug("not solid at -> {}", currentCoords.down(1));
 					return false;
 				}
 				if (!(entity instanceof IlluminationCharmEntity)) {
-					Treasure.logger.debug("data are not instance of IlluminationCharmEntity -> {}.{}", this.getClass().getSimpleName(), entity.getClass().getSimpleName());
+					Treasure.LOGGER.debug("data are not instance of IlluminationCharmEntity -> {}.{}", this.getClass().getSimpleName(), entity.getClass().getSimpleName());
 					return false;
 				}
 
 				IlluminationCharmEntity charmData = (IlluminationCharmEntity)entity;
 				// cast as linked list
 				List<ICoords> list = (List<ICoords>)charmData.getCoordsList();
-				Treasure.logger.debug("charm coords list size -> {}", list.size());
+				Treasure.LOGGER.debug("charm coords list size -> {}", list.size());
 				double value = entity.getMana();
 
 				boolean isUpdated = false;

@@ -61,7 +61,7 @@ public class CharmItem extends ModItem {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 		// TODO create new CharmItemCapProvider which includes POUCHABLE cap (not everything that is charmable is pouchable)
-		Treasure.logger.debug("{} item initiating caps", stack.getItem().getRegistryName().toString());
+		Treasure.LOGGER.debug("{} item initiating caps", stack.getItem().getRegistryName().toString());
 		CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
 		return provider;
 	}

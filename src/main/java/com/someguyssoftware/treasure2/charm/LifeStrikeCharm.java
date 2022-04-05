@@ -94,7 +94,7 @@ public class LifeStrikeCharm extends Charm {
 
 					applyCost(world, random, coords, player, event, entity, Math.max(1.0, Math.min(5.0, lifeStrikeAmount - sourceAmount)));
 					result = true;
-					Treasure.logger.debug("life strike damage {} onto mob -> {} using damage type -> {}", (sourceAmount * entity.getAmount()), source.getTrueSource().getName(), source.getDamageType());
+					Treasure.LOGGER.debug("life strike damage {} onto mob -> {} using damage type -> {}", (sourceAmount * entity.getAmount()), source.getTrueSource().getName(), source.getDamageType());
 				}
 			}
 		}

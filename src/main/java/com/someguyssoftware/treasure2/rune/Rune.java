@@ -117,7 +117,7 @@ public abstract class Rune implements IRune {
 			}
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Unable to read state to NBT:", e);
+			Treasure.LOGGER.error("Unable to read state to NBT:", e);
 		}	
 
 		return runestone;
@@ -134,7 +134,7 @@ public abstract class Rune implements IRune {
 			nbt.setString("name", this.name.toString());
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Unable to write state to NBT:", e);
+			Treasure.LOGGER.error("Unable to write state to NBT:", e);
 		}
 		return nbt;
 	}

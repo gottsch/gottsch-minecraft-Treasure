@@ -178,7 +178,7 @@ public class TreasureAdornmentRegistry {
 		
 		// copy the capabilities
 		if (resultStack.hasCapability(DURABILITY, null)) {
-			Treasure.logger.debug("calling durability copyTo()");
+			Treasure.LOGGER.debug("calling durability copyTo()");
 			source.getCapability(DURABILITY, null).copyTo(resultStack);
 		}
 
@@ -206,7 +206,7 @@ public class TreasureAdornmentRegistry {
 	 * @return
 	 */
 	public static Optional<ItemStack> transferCapabilities(ItemStack source, ItemStack dest, InventoryType sourceType, InventoryType destType) {
-		Treasure.logger.debug("transfering caps...");
+		Treasure.LOGGER.debug("transfering caps...");
 
 		// create a new dest item stack
 		ItemStack stack = new ItemStack(dest.getItem());
@@ -221,7 +221,7 @@ public class TreasureAdornmentRegistry {
 			dest.getCapability(DURABILITY, null).copyTo(stack);
 		}
 		
-		Treasure.logger.debug("new stack damage -> {}", stack.getItemDamage());
+		Treasure.LOGGER.debug("new stack damage -> {}", stack.getItemDamage());
 		
 		// transfer
 		boolean charmSizeChanged = false;
@@ -241,16 +241,16 @@ public class TreasureAdornmentRegistry {
 
 		if (dest.hasCapability(RUNESTONES, null)) {
 			stack.getCapability(RUNESTONES, null).clear();
-			Treasure.logger.debug("before copyTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
+			Treasure.LOGGER.debug("before copyTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
 			dest.getCapability(RUNESTONES, null).copyTo(stack);
-			Treasure.logger.debug("after copyTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
+			Treasure.LOGGER.debug("after copyTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
 			if (source.hasCapability(RUNESTONES, null)) { // this is the rune
-				Treasure.logger.debug("source(runestone)'s runes ->");
+				Treasure.LOGGER.debug("source(runestone)'s runes ->");
 				source.getCapability(RUNESTONES, null).getEntities(InventoryType.INNATE).forEach(entity -> {
-					Treasure.logger.debug("source entity -> {}", entity);
+					Treasure.LOGGER.debug("source entity -> {}", entity);
 				});
 				source.getCapability(RUNESTONES, null).transferTo(stack, sourceType, destType); // transfer from rune to output
-				Treasure.logger.debug("after transferTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
+				Treasure.LOGGER.debug("after transferTo, runes size -> {}", stack.getCapability(RUNESTONES, null).getEntitiesCopy().size());
 				if (stack.getCapability(RUNESTONES, null).getCurrentSize(destType) > dest.getCapability(RUNESTONES, null).getCurrentSize(destType)) {
 					runeSizeChanged = true;
 				}

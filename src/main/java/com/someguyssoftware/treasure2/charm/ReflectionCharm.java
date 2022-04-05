@@ -80,7 +80,7 @@ public class ReflectionCharm extends Charm {
 				List<EntityMob> mobs = world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(px - range, py - range, pz - range, px + range, py + range, pz + range));
 				mobs.forEach(mob -> {
 					boolean flag = mob.attackEntityFrom(DamageSource.GENERIC, (float) reflectedAmount);
-					Treasure.logger.debug("reflected damage {} onto mob -> {} was successful -> {}", reflectedAmount, mob.getName(), flag);
+					Treasure.LOGGER.debug("reflected damage {} onto mob -> {} was successful -> {}", reflectedAmount, mob.getName(), flag);
 				});
 
 				// get all the mob within a radius

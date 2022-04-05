@@ -81,14 +81,14 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 //		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(actualSpawnCoords.getX(), 255, actualSpawnCoords.getZ()));
 		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, actualSpawnCoords.withY(255));
 		if (actualSpawnCoords == null || actualSpawnCoords == WorldInfo.EMPTY_COORDS) {
-			Treasure.logger.debug("Returning due to marker coords == null or EMPTY_COORDS");
+			Treasure.LOGGER.debug("Returning due to marker coords == null or EMPTY_COORDS");
 			return result.fail(); 
 		}
-		Treasure.logger.debug("actual spawn coords after dry land surface check -> {}", actualSpawnCoords);
+		Treasure.LOGGER.debug("actual spawn coords after dry land surface check -> {}", actualSpawnCoords);
 		
 		// 2. check if it has 50% land
 		if (!WorldInfo.isSolidBase(world, actualSpawnCoords, 3, 3, 50)) {
-			Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", actualSpawnCoords.toShortString(), 3, 3);
+			Treasure.LOGGER.debug("Coords [{}] does not meet solid base requires for {} x {}", actualSpawnCoords.toShortString(), 3, 3);
 			return result.fail();
 		}	
 		
@@ -102,9 +102,9 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		
 		// build well
 		 GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, templateHolder,  placement, originalSpawnCoords);
-		Treasure.logger.debug("Well gen  structure result -> {}", genResult.isSuccess());
+		Treasure.LOGGER.debug("Well gen  structure result -> {}", genResult.isSuccess());
 		 if (!genResult.isSuccess()) {
-			 Treasure.logger.debug("failing well gen.");
+			 Treasure.LOGGER.debug("failing well gen.");
 			return result.fail();
 		}
 		
@@ -120,7 +120,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		// add the structure data to the result
 		result.setData(genResult.getData());
 
-		Treasure.logger.info("CHEATER! Wishing Well at coords: {}", result.getData().getSpawnCoords().toShortString());
+		Treasure.LOGGER.info("CHEATER! Wishing Well at coords: {}", result.getData().getSpawnCoords().toShortString());
 		
 		return result.success();
 	}
@@ -177,12 +177,12 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		ICoords markerCoords = WorldInfo.getDryLandSurfaceCoords(world, coords);
 		
 		if (markerCoords == null || markerCoords == WorldInfo.EMPTY_COORDS) {
-			Treasure.logger.debug("Returning due to marker coords == null or EMPTY_COORDS");
+			Treasure.LOGGER.debug("Returning due to marker coords == null or EMPTY_COORDS");
 			return;
 		}
 		Cube markerCube = new Cube(world, markerCoords);
 		if (!markerCube.isAir() && !markerCube.isReplaceable()) {
-			Treasure.logger.debug("Returning due to marker coords is not air nor replaceable.");
+			Treasure.LOGGER.debug("Returning due to marker coords is not air nor replaceable.");
 			return;
 		}
 		

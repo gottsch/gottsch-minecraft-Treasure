@@ -49,7 +49,7 @@ public class TreasureCharms {
 	public static final Map<Integer, Rarity> LEVEL_RARITY = Maps.newHashMap();
 	
 	static {
-		Treasure.logger.debug("creating charms...");
+		Treasure.LOGGER.debug("creating charms...");
 		for (int level = 1; level <= 25; level++) {
 			LEVEL_RARITY.put(Integer.valueOf(level), level <= 4 ? Rarity.COMMON 
 					: level <= 8 ? Rarity.UNCOMMON

@@ -48,7 +48,7 @@ public class SpawnWellStructureCommand extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
-		Treasure.logger.debug("Starting to build Treasure! well ...");		
+		Treasure.LOGGER.debug("Starting to build Treasure! well ...");		
 		World world = commandSender.getEntityWorld();
 		Random random = new Random();
 		
@@ -92,7 +92,7 @@ public class SpawnWellStructureCommand extends CommandBase {
 				
 				TemplateHolder holder = TreasureTemplateRegistry.getManager().getTemplatesByResourceLocationMap().get(templateKey);
 				if (holder == null) {
-					Treasure.logger.debug("Unable to locate well template by key -> {}", templateKey.toString());
+					Treasure.LOGGER.debug("Unable to locate well template by key -> {}", templateKey.toString());
 					return;
 				}
 	   			result = gen.generate(world, random, coords, holder, TreasureConfig.WELL);
@@ -100,10 +100,10 @@ public class SpawnWellStructureCommand extends CommandBase {
 			else {
 	   			result = gen.generate(world, random, coords, TreasureConfig.WELL);   		  
 			}		
-			Treasure.logger.debug("Well start coords at -> {}", result.getData().getSpawnCoords().toShortString());
+			Treasure.LOGGER.debug("Well start coords at -> {}", result.getData().getSpawnCoords().toShortString());
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Error generating Treasure! well:", e);
+			Treasure.LOGGER.error("Error generating Treasure! well:", e);
 		}
 	}
 }

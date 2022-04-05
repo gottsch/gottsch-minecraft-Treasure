@@ -19,7 +19,7 @@
  */
 package com.someguyssoftware.treasure2.item;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
+import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,16 +176,16 @@ public class CoinItem extends ModItem implements IWishable {
 			// get the player if the coin was tossed
 			EntityPlayer player = null;
 			if (nbt != null && nbt.hasKey(DROPPED_BY_KEY)) {	
-				Treasure.logger.debug("dropped by key ->{}", nbt.getString(DROPPED_BY_KEY));
+				Treasure.LOGGER.debug("dropped by key ->{}", nbt.getString(DROPPED_BY_KEY));
 				player = Optional.of(world.getPlayerEntityByUUID(UUID.fromString(nbt.getString(DROPPED_BY_KEY))))
 						.orElseGet(() -> {
-								Treasure.logger.debug("getting player by name");
+								Treasure.LOGGER.debug("getting player by name");
 								return world.getPlayerEntityByName(nbt.getString(DROPPED_BY_KEY));
 							}
 						);
 
-				if (player != null && logger.isDebugEnabled()) {
-					logger.debug("coin dropped by player -> {}", player.getName());
+				if (player != null && LOGGER.isDebugEnabled()) {
+					LOGGER.debug("coin dropped by player -> {}", player.getName());
 				}
 			}
 			// build the loot context
@@ -204,7 +204,7 @@ public class CoinItem extends ModItem implements IWishable {
 			
 			List<ItemStack> itemStacks = new ArrayList<>();
 			for (LootPoolShell pool : lootPoolShells) {
-				logger.debug("coin: processing pool -> {}", pool.getName());
+				LOGGER.debug("coin: processing pool -> {}", pool.getName());
 				// go get the vanilla managed pool
 				LootPool lootPool = table.getPool(pool.getName());
 				
@@ -214,14 +214,14 @@ public class CoinItem extends ModItem implements IWishable {
 			
 			// get effective rarity
 			Rarity effectiveRarity = TreasureLootTableRegistry.getLootTableMaster().getEffectiveRarity(tableShell, (getCoin() == Coins.SILVER) ? Rarity.UNCOMMON : Rarity.SCARCE);	
-			logger.debug("coin: using effective rarity -> {}", effectiveRarity);
+			LOGGER.debug("coin: using effective rarity -> {}", effectiveRarity);
 			
 			// get all injected loot tables
-			logger.debug("coin: searching for injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
+			LOGGER.debug("coin: searching for injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
 			Optional<List<LootTableShell>> injectLootTableShells = buildInjectedLootTableList(tableShell.getCategory(), effectiveRarity);			
 			if (injectLootTableShells.isPresent()) {
-				logger.debug("coin: found injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
-				logger.debug("coin: size of injectable tables -> {}", injectLootTableShells.get().size());
+				LOGGER.debug("coin: found injectable tables for category ->{}, rarity -> {}", tableShell.getCategory(), effectiveRarity);
+				LOGGER.debug("coin: size of injectable tables -> {}", injectLootTableShells.get().size());
 				itemStacks.addAll(getLootItems(world, random, injectLootTableShells.get(), lootContext));
 			}
 			

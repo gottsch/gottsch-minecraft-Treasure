@@ -93,7 +93,7 @@ public class DrainCharm extends Charm {
 				}
 				mobs.forEach(mob -> {
 					boolean flag = mob.attackEntityFrom(DamageSource.GENERIC, (float)getAmount());
-					Treasure.logger.debug("health drained from mob -> {} was successful -> {}", mob.getName(), flag);
+					Treasure.LOGGER.debug("health drained from mob -> {} was successful -> {}", mob.getName(), flag);
 					if (flag) {
 						drainedHealth.addAndGet(getAmount());
 					}

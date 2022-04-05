@@ -138,7 +138,7 @@ public class TreasureRunes {
 	 * @param runestone
 	 */
 	public static void register(IRune runestone) {
-		Treasure.logger.debug("registering runestone -> {}", runestone.getName());
+		Treasure.LOGGER.debug("registering runestone -> {}", runestone.getName());
 		if (!REGISTRY.containsKey(runestone.getName())) {        	
 			REGISTRY.put(runestone.getName(), runestone);
 		}
@@ -167,7 +167,7 @@ public class TreasureRunes {
 	}
 	
 	public static void register(IRune runestone, Item item) {
-		Treasure.logger.debug("registering runestone -> {} to item -> {}", runestone.getName(), item.getRegistryName());
+		Treasure.LOGGER.debug("registering runestone -> {} to item -> {}", runestone.getName(), item.getRegistryName());
 		if (!ITEM_REGISTRY.containsKey(runestone)) {        	
 			ITEM_REGISTRY.put(runestone, item);
 		}

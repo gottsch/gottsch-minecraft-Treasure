@@ -278,7 +278,7 @@ public class JewelerBenchContainer extends Container {
 
     				// build the output item, duplicating the left stack (adornment) with the right stack as the source item
     				Optional<Adornment> adornment = TreasureAdornmentRegistry.getAdornment(itemStack, itemStack2);
-    				Treasure.logger.debug("adornment -> {}", adornment.get().getRegistryName());
+    				Treasure.LOGGER.debug("adornment -> {}", adornment.get().getRegistryName());
     				if (adornment.isPresent()) {
     					ItemStack outputStack = TreasureAdornmentRegistry.copyStack(itemStack, new ItemStack(adornment.get()));
     					ICharmableCapability outputCap = outputStack.getCapability(CHARMABLE, null);

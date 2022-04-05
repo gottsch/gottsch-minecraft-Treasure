@@ -79,11 +79,11 @@ public class TreasureMetaRegistry {
 
 	public static void onWorldLoad(WorldEvent.Load event) {
 		if (WorldInfo.isServerSide(event.getWorld()) && event.getWorld().provider.getDimension() == 0) {
-			Treasure.logger.debug("meta registry world load");
+			Treasure.LOGGER.debug("meta registry world load");
 			TreasureMetaRegistry.create((WorldServer) event.getWorld());
 			
 			REGISTERED_MODS.forEach(mod -> {
-				Treasure.logger.debug("registering mod -> {}", mod);
+				Treasure.LOGGER.debug("registering mod -> {}", mod);
 				load(mod);
 			});
 		}
@@ -109,10 +109,10 @@ public class TreasureMetaRegistry {
 					json = com.google.common.io.Files.toString(manifestFile, StandardCharsets.UTF_8);
 					manifest = new GsonBuilder().create().fromJson(json, Manifest.class);
 					worldSaveMetaLoaded = true;
-					Treasure.logger.debug("loaded meta manifest from file system");
+					Treasure.LOGGER.debug("loaded meta manifest from file system");
 				}
 				catch (Exception e) {
-					Treasure.logger.warn("Couldn't load meta manifest from {}", manifestFile, e);
+					Treasure.LOGGER.warn("Couldn't load meta manifest from {}", manifestFile, e);
 				}
 			}
 		}
@@ -122,10 +122,10 @@ public class TreasureMetaRegistry {
 				// load default built-in meta manifest
 				manifest = ITreasureResourceRegistry.<Manifest>readResourcesFromFromStream(
 						Objects.requireNonNull(Treasure.instance.getClass().getClassLoader().getResourceAsStream(META_FOLDER + "/" + modID + "/manifest.json")), Manifest.class);
-				Treasure.logger.debug("loaded meta manifest from jar");
+				Treasure.LOGGER.debug("loaded meta manifest from jar");
 			}
 			catch(Exception e) {
-				Treasure.logger.warn("Unable to template resources");
+				Treasure.LOGGER.warn("Unable to template resources");
 			}
 		}
 

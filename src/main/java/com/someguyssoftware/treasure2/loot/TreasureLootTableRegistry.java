@@ -32,7 +32,7 @@ import net.minecraftforge.event.world.WorldEvent;
 public final class TreasureLootTableRegistry {
 	//	private static final List<String> registeredMods = new ArrayList<>();
 
-	public static final Logger logger = LogManager.getLogger(Treasure.logger.getName());
+	public static final Logger logger = LogManager.getLogger(Treasure.LOGGER.getName());
 
 	private static final String LOOT_TABLES_FOLDER = "loot_tables";
 	private static final List<String> REGISTERED_MODS;
@@ -83,11 +83,11 @@ public final class TreasureLootTableRegistry {
 	 */
 	public static void onWorldLoad(WorldEvent.Load event) {
 		if (WorldInfo.isServerSide(event.getWorld()) && event.getWorld().provider.getDimension() == 0) {
-			Treasure.logger.debug("loot table registry world load");
+			Treasure.LOGGER.debug("loot table registry world load");
 			TreasureLootTableRegistry.create((WorldServer) event.getWorld());
 
 			REGISTERED_MODS.forEach(mod -> {
-				Treasure.logger.debug("registering mod -> {}", mod);
+				Treasure.LOGGER.debug("registering mod -> {}", mod);
 				load(mod);
 			});
 		}
@@ -110,10 +110,10 @@ public final class TreasureLootTableRegistry {
 					json = com.google.common.io.Files.toString(lootResourcesFile, StandardCharsets.UTF_8);
 					lootResources = new GsonBuilder().create().fromJson(json, LootResources.class);
 					worldSaveMetaLoaded = true;
-					Treasure.logger.debug("loaded {} loot resources from file system", getResourceFolder());
+					Treasure.LOGGER.debug("loaded {} loot resources from file system", getResourceFolder());
 				}
 				catch (Exception e) {
-					Treasure.logger.warn("Couldn't load {} loot resources from {}", getResourceFolder(), lootResourcesFile, e);
+					Treasure.LOGGER.warn("Couldn't load {} loot resources from {}", getResourceFolder(), lootResourcesFile, e);
 				}
 			}
 		}
@@ -123,16 +123,16 @@ public final class TreasureLootTableRegistry {
 				// load default built-in loot resources
 				lootResources = ITreasureResourceRegistry.<LootResources>readResourcesFromFromStream(
 						Objects.requireNonNull(Treasure.instance.getClass().getClassLoader().getResourceAsStream(LOOT_TABLES_FOLDER + "/" +  modID + "/loot_tables_list.json")), LootResources.class);
-				Treasure.logger.debug("loaded loot resources from jar");
+				Treasure.LOGGER.debug("loaded loot resources from jar");
 			}
 			catch(Exception e) {
-				Treasure.logger.warn("Unable to loot resources");
+				Treasure.LOGGER.warn("Unable to loot resources");
 			}
 		}
 
 		// load loot files
 		if (lootResources != null) {
-			Treasure.logger.warn("adding mod to loaded mods list");
+			Treasure.LOGGER.warn("adding mod to loaded mods list");
 			LOADED_MODS.put(modID, true);
 			register(modID, lootResources);
 		}

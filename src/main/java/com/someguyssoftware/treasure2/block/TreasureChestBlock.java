@@ -91,7 +91,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) {
-		Treasure.logger.debug("Placing chest from item");
+		Treasure.LOGGER.debug("Placing chest from item");
 
 		boolean shouldRotate = false;
 		boolean shouldUpdate = false;
@@ -115,14 +115,14 @@ public class TreasureChestBlock extends AbstractChestBlock {
 			// read in nbt
 			if (stack.hasTagCompound()) {
 				tcte.readFromItemStackNBT(stack.getTagCompound());
-				Treasure.logger.debug("onplaced isSealed ->{}", tcte.isSealed());
+				Treasure.LOGGER.debug("onplaced isSealed ->{}", tcte.isSealed());
 				forceUpdate = true;
 
 				// get the old tcte facing direction
 				oldPersistedChestDirection = Direction.fromFacing(EnumFacing.getFront(tcte.getFacing()));
 
 				// dump stack NBT
-				if (Treasure.logger.isDebugEnabled() && WorldInfo.isServerSide(worldIn)) {
+				if (Treasure.LOGGER.isDebugEnabled() && WorldInfo.isServerSide(worldIn)) {
 					dump(stack.getTagCompound(), new Coords(pos), "STACK ITEM -> CHEST NBT");
 				}
 			}
@@ -181,7 +181,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 	 */
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		Treasure.logger.debug("Breaking block....!");
+		Treasure.LOGGER.debug("Breaking block....!");
 		
 		TileEntity tileEntity = worldIn.getTileEntity(pos);
 		AbstractTreasureChestTileEntity te = null;
@@ -214,7 +214,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 					/*
 					 * spawn chest item
 					 */
-					Treasure.logger.debug("Item being created from chest -> {}", chestItem.getItem().getRegistryName());
+					Treasure.LOGGER.debug("Item being created from chest -> {}", chestItem.getItem().getRegistryName());
 					InventoryHelper.spawnItemStack(worldIn, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(),
 							chestItem);
 				}
@@ -278,11 +278,11 @@ public class TreasureChestBlock extends AbstractChestBlock {
 		try {
 			Files.createDirectories(path);
 		} catch (IOException e) {
-			Treasure.logger.error("Couldn't create directories for dump files:", e);
+			Treasure.LOGGER.error("Couldn't create directories for dump files:", e);
 			return;
 		}
 		String s = printer.print(tag, Paths.get(path.toString(), filename), title);
-		Treasure.logger.debug(s);
+		Treasure.LOGGER.debug(s);
 	}
 
 	/**

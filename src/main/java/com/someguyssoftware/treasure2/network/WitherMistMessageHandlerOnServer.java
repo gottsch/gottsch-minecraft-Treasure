@@ -28,11 +28,11 @@ public class WitherMistMessageHandlerOnServer implements IMessageHandler<WitherM
 	@Override
 	public IMessage onMessage(WitherMistMessageToServer message, MessageContext ctx) {
 		if (ctx.side != Side.SERVER) {
-			Treasure.logger.error("WitherMistMessageToServer received on wrong side -> {}", ctx.side);
+			Treasure.LOGGER.error("WitherMistMessageToServer received on wrong side -> {}", ctx.side);
 		      return null;
 		    }
 		    if (!message.isMessageValid()) {
-		    	Treasure.logger.warn("WitherMistMessageToServer was invalid -> {}", message.toString());
+		    	Treasure.LOGGER.warn("WitherMistMessageToServer was invalid -> {}", message.toString());
 		      return null;
 		    }
 		    
@@ -42,7 +42,7 @@ public class WitherMistMessageHandlerOnServer implements IMessageHandler<WitherM
 
 		    final EntityPlayerMP sendingPlayer = ctx.getServerHandler().player;
 		    if (sendingPlayer == null) {
-		      Treasure.logger.warn("EntityPlayerMP was null when WitherMistMessageToServer was received.");
+		      Treasure.LOGGER.warn("EntityPlayerMP was null when WitherMistMessageToServer was received.");
 		      return null;
 		    }
 		    
@@ -73,12 +73,12 @@ public class WitherMistMessageHandlerOnServer implements IMessageHandler<WitherM
 		    	// if player does not have Wither effect, add it
 		    	if (potionEffect == null) {
 		    		player.addPotionEffect(new PotionEffect(MobEffects.WITHER, 300, 0));
-		    		Treasure.logger.debug("Wither potion effect is null, should be adding....");
+		    		Treasure.LOGGER.debug("Wither potion effect is null, should be adding....");
 		    	}	
 	        }
 		  }
 		  catch(Exception e) {
-			  Treasure.logger.error("Unexpected error ->", e);
+			  Treasure.LOGGER.error("Unexpected error ->", e);
 		  }
 	  }
 }

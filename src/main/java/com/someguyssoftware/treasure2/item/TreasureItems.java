@@ -1477,7 +1477,7 @@ public class TreasureItems {
 				types.forEach(type -> {
 					Adornment a = createAdornment(type, material, size, source);
 					a.setCreativeTab(Treasure.ADORNMENTS_TAB);
-					Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
+					Treasure.LOGGER.debug("adding adornment item -> {}", a.getRegistryName());
 					adornments.add(a);
 					TreasureAdornmentRegistry.register(material.getName(), source, a);					
 				});
@@ -1563,7 +1563,7 @@ public class TreasureItems {
 	private static CharmItem createCharm(CharmableMaterial material, Item source) {
 		String name = (source == Items.AIR ? 
 				material.getName().getResourcePath() : source.getRegistryName().getResourcePath())  + "_charm";
-		Treasure.logger.debug("creating charmItem -> {}", name);
+		Treasure.LOGGER.debug("creating charmItem -> {}", name);
 		CharmItem charm = new CharmItem(Treasure.MODID, name) {
 			public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 				ICharmableCapability cap = new CharmableCapability.Builder(1, 0, 0).with($ -> {
@@ -1594,12 +1594,12 @@ public class TreasureItems {
 		List<CharmItem> charms = new ArrayList<>(CHARM_ITEMS.values());
 		Collections.sort(charms, charmLevelComparator);
 		for (Item item : charms) {
-			Treasure.logger.debug("charm item -> {}", ((CharmItem)item).getRegistryName());
+			Treasure.LOGGER.debug("charm item -> {}", ((CharmItem)item).getRegistryName());
 			ItemStack itemStack = new ItemStack(item);			
 			// get the capability
 			ICharmableCapability cap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
 			if (cap != null) {
-				Treasure.logger.debug("name -> {}, charm level -> {}, level -> {}", itemStack.getDisplayName(), cap.getMaxCharmLevel(), level);
+				Treasure.LOGGER.debug("name -> {}, charm level -> {}, level -> {}", itemStack.getDisplayName(), cap.getMaxCharmLevel(), level);
 				if (cap.getMaxCharmLevel() >= level) {
 					resultItem = (CharmItem)item;
 					break;

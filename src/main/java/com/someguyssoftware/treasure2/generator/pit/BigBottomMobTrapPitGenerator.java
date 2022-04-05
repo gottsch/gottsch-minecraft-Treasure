@@ -60,15 +60,15 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 		
 		// if there is air above the origin, then in cavern. (pos in isAir() doesn't matter)
 		if (blockState == null || blockState.getMaterial() == Material.AIR) {
-			Treasure.logger.debug("Spawn coords is in cavern.");
+			Treasure.LOGGER.debug("Spawn coords is in cavern.");
 			inCavern = true;
 		}
 		
 		if (inCavern) {
-			Treasure.logger.debug("Shaft is in cavern... finding ceiling.");
+			Treasure.LOGGER.debug("Shaft is in cavern... finding ceiling.");
 			spawnCoords = GenUtil.findUndergroundCeiling(world, spawnCoords.add(0, 1, 0));
 			if (spawnCoords == null) {
-				Treasure.logger.warn("Exiting: Unable to locate cavern ceiling.");
+				Treasure.LOGGER.warn("Exiting: Unable to locate cavern ceiling.");
 				return result.fail();
 			}
 			// update chest coords
@@ -78,11 +78,11 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	
 		// generate shaft
 		int yDist = (surfaceCoords.getY() - spawnCoords.getY()) - 2;
-		Treasure.logger.debug("Distance to ySurface =" + yDist);
+		Treasure.LOGGER.debug("Distance to ySurface =" + yDist);
 	
 		ICoords nextCoords = null;
 		if (yDist > 6) {			
-			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
+			Treasure.LOGGER.debug("Generating shaft @ " + spawnCoords.toShortString());
 			// at chest level
 			nextCoords = build6WideLayer(world, random, spawnCoords, Blocks.AIR);
 			
@@ -109,7 +109,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 			// simple short pit
 			result = new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
 		}		
-		Treasure.logger.debug("Generated Big Bottom Mob Trap Pit at " + spawnCoords.toShortString());
+		Treasure.LOGGER.debug("Generated Big Bottom Mob Trap Pit at " + spawnCoords.toShortString());
 		return result.success();
 	}	
 
@@ -149,7 +149,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
     	te.setMobNum(new Quantity(2, 4));
     	te.setProximity(5D);
     	te.setSpawnRange(1.5D);
-    	Treasure.logger.debug("placed proximity spawner @ {}", coords.add(-1,0,0).toShortString());
+    	Treasure.LOGGER.debug("placed proximity spawner @ {}", coords.add(-1,0,0).toShortString());
     	
     	world.setBlockState(coords.add(1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
     	te = (ProximitySpawnerTileEntity) world.getTileEntity(coords.add(1, 0, 0).toPos());
@@ -158,7 +158,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
     	te.setMobNum(new Quantity(2, 4));
     	te.setProximity(5.5D);		// slightly larger proximity to fire first without entity collision
     	te.setSpawnRange(2D);
-    	Treasure.logger.debug("placed proximity spawner @ {}", coords.add(1,0,0).toShortString());
+    	Treasure.LOGGER.debug("placed proximity spawner @ {}", coords.add(1,0,0).toShortString());
     	
 		return coords;
 	}

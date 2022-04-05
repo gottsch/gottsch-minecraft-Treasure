@@ -89,11 +89,11 @@ public class TreasureTemplateRegistry {
 	 */
 	public static void onWorldLoad(WorldEvent.Load event) {
 		if (WorldInfo.isServerSide(event.getWorld()) && event.getWorld().provider.getDimension() == 0) {
-			Treasure.logger.debug("template registry world load");
+			Treasure.LOGGER.debug("template registry world load");
 			TreasureTemplateRegistry.create((WorldServer) event.getWorld());
 			
 			MODS.forEach(mod -> {
-				Treasure.logger.debug("registering mod -> {}", mod);
+				Treasure.LOGGER.debug("registering mod -> {}", mod);
 				load(mod);
 			});
 		}
@@ -116,10 +116,10 @@ public class TreasureTemplateRegistry {
 					json = com.google.common.io.Files.toString(manifestFile, StandardCharsets.UTF_8);
 					manifest = new GsonBuilder().create().fromJson(json, Manifest.class);
 					worldSaveMetaLoaded = true;
-					Treasure.logger.debug("loaded template manifest from file system");
+					Treasure.LOGGER.debug("loaded template manifest from file system");
 				}
 				catch (Exception e) {
-					Treasure.logger.warn("Couldn't load template manifest from {}", manifestFile, e);
+					Treasure.LOGGER.warn("Couldn't load template manifest from {}", manifestFile, e);
 				}
 			}
 		}
@@ -130,10 +130,10 @@ public class TreasureTemplateRegistry {
 				Path manifestPath = Paths.get(TEMPLATES_FOLDER, modID, "manifest.json");
 				manifest = ITreasureResourceRegistry.<Manifest>readResourcesFromFromStream(
 						Objects.requireNonNull(Treasure.instance.getClass().getClassLoader().getResourceAsStream(TEMPLATES_FOLDER + "/" +  modID + "/manifest.json")), Manifest.class);
-				Treasure.logger.debug("loaded template manifest from jar");
+				Treasure.LOGGER.debug("loaded template manifest from jar");
 			}
 			catch(Exception e) {
-				Treasure.logger.warn("Unable to load template resources");
+				Treasure.LOGGER.warn("Unable to load template resources");
 			}
 		}
 		

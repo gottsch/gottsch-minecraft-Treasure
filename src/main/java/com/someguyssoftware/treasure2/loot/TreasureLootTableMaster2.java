@@ -58,7 +58,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		INJECT
 	}
 
-	public static Logger LOGGER = LogManager.getLogger(Treasure.logger.getName());
+	public static Logger LOGGER = LogManager.getLogger(Treasure.LOGGER.getName());
 
 	public static final String CUSTOM_LOOT_TABLES_RESOURCE_PATH = "/loot_tables/";
 	public static final String CUSTOM_LOOT_TABLE_KEY = "CUSTOM";
@@ -116,7 +116,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	@Override
 	public void clear() {
 		super.clear();
-		Treasure.logger.debug("clearing all resource tables");
+		Treasure.LOGGER.debug("clearing all resource tables");
 		CHEST_LOOT_TABLES_TABLE.clear();
 		CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.clear();
 		CHEST_LOOT_TABLES_MAP.clear();
@@ -172,7 +172,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 * @param lootTable
 	 */
 	private void tableChest(ResourceLocation resourceLocation, Optional<LootTableShell> lootTable) {
-		Treasure.logger.debug("is loot table present -> {}", lootTable.isPresent());
+		Treasure.LOGGER.debug("is loot table present -> {}", lootTable.isPresent());
 		if (lootTable.isPresent()) {
 			// add resource location to table
 			lootTable.get().setResourceLocation(resourceLocation); // TODO update GottschCore.loadLootTable to set this value
@@ -190,8 +190,8 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 			CHEST_LOOT_TABLES_TABLE.get(CUSTOM_LOOT_TABLE_KEY, key).add(lootTable.get());
 			LOGGER.debug("tabling loot table: {} {} -> {}", CUSTOM_LOOT_TABLE_KEY, key, resourceLocation);
 			CHEST_LOOT_TABLES_MAP.put(resourceLocation, lootTable.get());
-			Treasure.logger.debug("tables table size -> {}", CHEST_LOOT_TABLES_TABLE.get(CUSTOM_LOOT_TABLE_KEY, key).size());
-			Treasure.logger.debug("tables map @ {} -> {}", resourceLocation, CHEST_LOOT_TABLES_MAP.get(resourceLocation));
+			Treasure.LOGGER.debug("tables table size -> {}", CHEST_LOOT_TABLES_TABLE.get(CUSTOM_LOOT_TABLE_KEY, key).size());
+			Treasure.LOGGER.debug("tables map @ {} -> {}", resourceLocation, CHEST_LOOT_TABLES_MAP.get(resourceLocation));
 		}
 		else {
 			LOGGER.debug("unable to load loot table from -> {}", resourceLocation);
@@ -340,13 +340,13 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		// NOTE for some reason, using Paths.toString isn't working with 1.12.2? Doesn't make sense 
 		// Path resourceFilePath = Paths.get("data", resource.getResourceDomain(), "loot_tables", resource.getResourcePath() + ".json");
 		String relativePath = "assets/" + resource.getResourceDomain() + "/loot_tables/" + resource.getResourcePath() + ".json";
-		Treasure.logger.debug("loot table relative path -> {}", relativePath);
+		Treasure.LOGGER.debug("loot table relative path -> {}", relativePath);
 		try (InputStream resourceStream = Treasure.instance.getClass().getClassLoader().getResourceAsStream(relativePath);
 				Reader reader = new InputStreamReader(resourceStream, StandardCharsets.UTF_8)) {
 			resourceLootTable =  Optional.of(loadLootTable(reader));
 		}
 		catch(Exception e) {
-			Treasure.logger.error(String.format("Couldn't load resource loot table %s ", relativePath), e);
+			Treasure.LOGGER.error(String.format("Couldn't load resource loot table %s ", relativePath), e);
 		}		
 		return resourceLootTable;
 	}
@@ -370,10 +370,10 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		// get all loot tables by column key
 		List<LootTableShell> tables = new ArrayList<>();
 		Map<String, List<LootTableShell>> mapOfLootTables = CHEST_LOOT_TABLES_TABLE.column(rarity);
-		Treasure.logger.debug("searching for {} {} -> {}", CUSTOM_LOOT_TABLE_KEY, rarity, CHEST_LOOT_TABLES_TABLE.get(CUSTOM_LOOT_TABLE_KEY, rarity));
+		Treasure.LOGGER.debug("searching for {} {} -> {}", CUSTOM_LOOT_TABLE_KEY, rarity, CHEST_LOOT_TABLES_TABLE.get(CUSTOM_LOOT_TABLE_KEY, rarity));
 		// convert to a single list
 		for(Entry<String, List<LootTableShell>> n : mapOfLootTables.entrySet()) {
-			Treasure.logger.debug("Adding table shell entry to loot table list -> {} {}: size {}", rarity, n.getKey(), n.getValue().size());
+			Treasure.LOGGER.debug("Adding table shell entry to loot table list -> {} {}: size {}", rarity, n.getKey(), n.getValue().size());
 			tables.addAll(n.getValue());
 		}
 		return tables;
@@ -396,14 +396,14 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 * @return
 	 */
 	public List<LootTableShell> getLootTableByRarity(ManagedTableType tableType, Rarity rarity) {
-		Treasure.logger.debug("managed table type -> {}", tableType);
+		Treasure.LOGGER.debug("managed table type -> {}", tableType);
 		Table<String, Rarity, List<LootTableShell>> table = (tableType == ManagedTableType.CHEST) ? CHEST_LOOT_TABLES_TABLE : INJECT_LOOT_TABLES_TABLE;
 		// get all loot tables by column key
 		List<LootTableShell> tables = new ArrayList<>();
 		Map<String, List<LootTableShell>> mapOfLootTables = table.column(rarity);
 		// convert to a single list
 		for(Entry<String, List<LootTableShell>> n : mapOfLootTables.entrySet()) {
-			Treasure.logger.debug("Adding table shell entry to loot table list -> {} {}: size {}", rarity, n.getKey(), n.getValue().size());
+			Treasure.LOGGER.debug("Adding table shell entry to loot table list -> {} {}: size {}", rarity, n.getKey(), n.getValue().size());
 			tables.addAll(n.getValue());
 		}
 		return tables;
@@ -445,7 +445,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 * @return
 	 */
 	public LootTableShell getSpecialLootTable(SpecialLootTables table) {
-		Treasure.logger.debug("searching for special loot table --> {}", table);
+		Treasure.LOGGER.debug("searching for special loot table --> {}", table);
 		
 		LootTableShell lootTable = SPECIAL_LOOT_TABLES_MAP.get(table);
 		return lootTable;

@@ -78,7 +78,7 @@ public class SpawnCharmCommand extends CommandBase {
 	
 	@Override
 	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
-		Treasure.logger.debug("Starting to build Treasure! charm ...");		
+		Treasure.LOGGER.debug("Starting to build Treasure! charm ...");		
 		World world = commandSender.getEntityWorld();
 		Random random = new Random();
 		
@@ -121,7 +121,7 @@ public class SpawnCharmCommand extends CommandBase {
 					charmStack.get());
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Error generating Treasure! well:", e);
+			Treasure.LOGGER.error("Error generating Treasure! well:", e);
 		}
 	}
 	

@@ -147,7 +147,7 @@ public class RunestonesCapability implements IRunestonesCapability {
 
 	@Override
 	public void copyTo(ItemStack stack) {
-		Treasure.logger.debug("in copyTo...");
+		Treasure.LOGGER.debug("in copyTo...");
 		if (stack.hasCapability(RUNESTONES, null)) {
 			IRunestonesCapability cap = stack.getCapability(RUNESTONES, null);
 
@@ -157,9 +157,9 @@ public class RunestonesCapability implements IRunestonesCapability {
 
 			runestoneEntities.forEach((type, runestone) -> {
 				// duplicate entity
-				Treasure.logger.debug("copyTo - source entity in-> {}", runestone);
+				Treasure.LOGGER.debug("copyTo - source entity in-> {}", runestone);
 				IRuneEntity newRune = new RuneEntity(runestone);
-				Treasure.logger.debug("copyTo - new runestone entity -> {}", newRune);
+				Treasure.LOGGER.debug("copyTo - new runestone entity -> {}", newRune);
 				cap.add(type, newRune);
 			});
 		}
@@ -174,9 +174,9 @@ public class RunestonesCapability implements IRunestonesCapability {
 			for (IRuneEntity entity : runestones) {
 				if (cap.getCurrentSize(destType) < cap.getMaxSize(destType)) {
 					// duplicate rune
-					Treasure.logger.debug("transferTo - runestone entity in-> {}", entity);
+					Treasure.LOGGER.debug("transferTo - runestone entity in-> {}", entity);
 					IRuneEntity newRune = new RuneEntity(entity);
-					Treasure.logger.debug("transferTo - new runestone entity -> {}", newRune);
+					Treasure.LOGGER.debug("transferTo - new runestone entity -> {}", newRune);
 					// add rune
 					cap.add(destType, newRune);
 				}

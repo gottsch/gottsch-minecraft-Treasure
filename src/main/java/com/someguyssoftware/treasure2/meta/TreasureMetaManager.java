@@ -84,16 +84,16 @@ public class TreasureMetaManager {
 	}
 
 	public void register(String modID, List<String> resourcePaths) {
-		Treasure.logger.debug("registering meta resources");
+		Treasure.LOGGER.debug("registering meta resources");
 		// create folders if not exist
 		createMetaFolder(getWorldSaveFolder(), modID);
-		Treasure.logger.debug("created meta folder");
+		Treasure.LOGGER.debug("created meta folder");
 		List<ResourceLocation> resourceLocations = getMetaResourceLocations(modID, resourcePaths);
-		Treasure.logger.debug("acquired resource locations -> {}", resourceLocations);
+		Treasure.LOGGER.debug("acquired resource locations -> {}", resourceLocations);
 		// load each ResourceLocation as Meta and map it.
 		resourceLocations.forEach(loc -> {
 			// need to test for world save version first
-			Treasure.logger.debug("register metas -> loading meta resource loc -> {}", loc.toString());
+			Treasure.LOGGER.debug("register metas -> loading meta resource loc -> {}", loc.toString());
 			tableMeta(loc, loadMeta(loc));
 		});
 	}
@@ -101,23 +101,23 @@ public class TreasureMetaManager {
 	private void createMetaFolder(File worldSaveFolder, String modID) {
 		Path folder = Paths.get(worldSaveFolder.getPath(), "data/meta", modID, "structures").toAbsolutePath();
 		if (Files.notExists(folder)) {
-			Treasure.logger.debug("meta folder \"{}\" will be created.", folder.toString());
+			Treasure.LOGGER.debug("meta folder \"{}\" will be created.", folder.toString());
 			try {
 				Files.createDirectories(folder);
 			} catch (IOException e) {
-				Treasure.logger.warn("Unable to create meta folder \"{}\"", folder.toString());
+				Treasure.LOGGER.warn("Unable to create meta folder \"{}\"", folder.toString());
 			}
 		}
 	}
 	
 	private void tableMeta(ResourceLocation resourceLocation, Optional<StructureMeta> meta) {
 		if (meta.isPresent()) {
-			Treasure.logger.debug("tabling meta: key -> {}, meta -> {}", resourceLocation.toString(), meta);
+			Treasure.LOGGER.debug("tabling meta: key -> {}, meta -> {}", resourceLocation.toString(), meta);
 			// add meta to map
 			this.getMetaMap().put(resourceLocation.toString(), meta.get());
 		}
 		else {
-			Treasure.logger.debug("unable to table meta from -> {}", resourceLocation);
+			Treasure.LOGGER.debug("unable to table meta from -> {}", resourceLocation);
 		}
 	}
 
@@ -155,14 +155,14 @@ public class TreasureMetaManager {
 	private Optional<StructureMeta> loadMetaFromJar(ResourceLocation resource) {		
 		Optional<StructureMeta> resourceMeta = Optional.empty();
 		String relativePath = "meta/" + resource.getResourceDomain() + "/" + resource.getResourcePath();
-		Treasure.logger.debug("attempting to load meta {} from jar -> {}", resource, relativePath);
+		Treasure.LOGGER.debug("attempting to load meta {} from jar -> {}", resource, relativePath);
 		
 		try (InputStream resourceStream = Treasure.instance.getClass().getClassLoader().getResourceAsStream(relativePath);
 				Reader reader = new InputStreamReader(resourceStream, StandardCharsets.UTF_8)) {
 			resourceMeta =  Optional.of(loadMeta(reader));
 		}
 		catch(Exception e) {
-			Treasure.logger.error(String.format("couldn't load resource meta %s ", relativePath), e);
+			Treasure.LOGGER.error(String.format("couldn't load resource meta %s ", relativePath), e);
 		}		
 		return resourceMeta;
 	}
@@ -179,7 +179,7 @@ public class TreasureMetaManager {
 		}
 		else {
 			File metaFile = Paths.get(folder.getPath(), "data", "meta", resource.getResourceDomain(), resource.getResourcePath()).toFile();
-			Treasure.logger.debug("attempting to load meta {} from {}", resource, metaFile);
+			Treasure.LOGGER.debug("attempting to load meta {} from {}", resource, metaFile);
 
 			if (metaFile.exists()) {
 				if (metaFile.isFile()) {
@@ -188,24 +188,24 @@ public class TreasureMetaManager {
 						json = com.google.common.io.Files.toString(metaFile, StandardCharsets.UTF_8);
 					}
 					catch (IOException e) {
-						Treasure.logger.warn("couldn't load meta {} from {}", resource, metaFile, e);
+						Treasure.LOGGER.warn("couldn't load meta {} from {}", resource, metaFile, e);
 						return Optional.empty();
 					}
 					try {
 						return Optional.of(loadMeta(json));
 					}
 					catch (IllegalArgumentException | JsonParseException e) {
-						Treasure.logger.error("couldn't load meta {} from {}", resource, metaFile, e);
+						Treasure.LOGGER.error("couldn't load meta {} from {}", resource, metaFile, e);
 						return Optional.empty();
 					}
 				}
 				else {
-					Treasure.logger.warn("expected to find meta {} at {} but it was a folder.", resource, metaFile);
+					Treasure.LOGGER.warn("expected to find meta {} at {} but it was a folder.", resource, metaFile);
 					return Optional.empty();
 				}
 			}
 			else {
-				Treasure.logger.warn("expected to find meta {} at {} but it doesn't exist.", resource, metaFile);
+				Treasure.LOGGER.warn("expected to find meta {} at {} but it doesn't exist.", resource, metaFile);
 				return Optional.empty();
 			}
 		}

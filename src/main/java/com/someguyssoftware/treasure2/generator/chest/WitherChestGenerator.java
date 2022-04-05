@@ -80,7 +80,7 @@ public class WitherChestGenerator implements IChestGenerator {
 	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
-		Treasure.logger.debug("# of locks to use: {})", numLocks);
+		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);
 		
 		return numLocks;
 	}
@@ -135,7 +135,7 @@ public class WitherChestGenerator implements IChestGenerator {
 		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
 			// remove chest
 			world.setBlockToAir(chestCoords.toPos());
-			Treasure.logger.debug("Unable to create TileEntityChest, removing BlockChest");
+			Treasure.LOGGER.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}
 		return te;
@@ -158,7 +158,7 @@ public class WitherChestGenerator implements IChestGenerator {
 		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
 			// remove chest
 			world.setBlockToAir(chestCoords.toPos());
-			Treasure.logger.debug("Unable to create TileEntityChest, removing BlockChest");
+			Treasure.LOGGER.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}
 		return te;

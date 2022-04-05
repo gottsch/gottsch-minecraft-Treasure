@@ -48,7 +48,7 @@ public class WorldEventHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void onWorldLoad(WorldEvent.Load event) {
-		Treasure.logger.debug("In world load event for dimension {}", event.getWorld().provider.getDimension());
+		Treasure.LOGGER.debug("In world load event for dimension {}", event.getWorld().provider.getDimension());
 
 		/*
 		 * On load of dimension 0 (overworld), initialize the loot table's context and other static loot tables
@@ -84,12 +84,12 @@ public class WorldEventHandler {
 			/*
 			 * un-load the chest registry
 			 */
-			Treasure.logger.debug("Chest registry size BEFORE cleaning -> {}", ChestRegistry.getInstance().getValues().size());
+			Treasure.LOGGER.debug("Chest registry size BEFORE cleaning -> {}", ChestRegistry.getInstance().getValues().size());
 			ChestRegistry.getInstance().clear();	
-			Treasure.logger.debug("Chest registry size AFTER cleaning -> {}", ChestRegistry.getInstance().getValues().size());
+			Treasure.LOGGER.debug("Chest registry size AFTER cleaning -> {}", ChestRegistry.getInstance().getValues().size());
 
 			GenDataPersistence.get(world);			
-			Treasure.logger.debug("Chest registry size after world event load -> {}", ChestRegistry.getInstance().getValues().size());
+			Treasure.LOGGER.debug("Chest registry size after world event load -> {}", ChestRegistry.getInstance().getValues().size());
 		}	
 	}
 

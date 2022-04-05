@@ -47,7 +47,7 @@ public interface ITreasureResourceRegistry {
 	 * @throws Exception
 	 */
 	public static <T> T readResourcesFromFromStream(InputStream inputStream, Class<T> resourceClass) throws IOException, Exception {
-		Treasure.logger.info("reading resources file from stream.");
+		Treasure.LOGGER.info("reading resources file from stream.");
 		T resources = null;
 
 		// read json sheet in and minify it
@@ -68,7 +68,7 @@ public interface ITreasureResourceRegistry {
 		// read minified json into gson and generate objects
 		try {
 			resources = gson.fromJson(jsonReader, resourceClass);
-			Treasure.logger.info("resources -> {}", resources);
+			Treasure.LOGGER.info("resources -> {}", resources);
 		} catch (JsonIOException | JsonSyntaxException e) {
 			// TODO change to custom exception
 			throw new Exception("Unable to read master loot resources file:", e);
@@ -77,7 +77,7 @@ public interface ITreasureResourceRegistry {
 			try {
 				jsonReader.close();
 			} catch (IOException e) {
-				Treasure.logger.warn("Unable to close JSON Reader when reading meta file.");
+				Treasure.LOGGER.warn("Unable to close JSON Reader when reading meta file.");
 			}
 		}
 		return (T) resources;

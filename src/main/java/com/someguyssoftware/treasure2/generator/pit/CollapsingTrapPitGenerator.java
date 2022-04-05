@@ -44,7 +44,7 @@ public class CollapsingTrapPitGenerator extends AbstractPitGenerator {
 	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
-			Treasure.logger.debug("Generated Collapsing Trap Pit at " + spawnCoords.toShortString());
+			Treasure.LOGGER.debug("Generated Collapsing Trap Pit at " + spawnCoords.toShortString());
 		}
 		return result;
 	}

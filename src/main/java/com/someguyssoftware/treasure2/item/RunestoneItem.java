@@ -66,7 +66,7 @@ public class RunestoneItem extends ModItem {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-		Treasure.logger.debug("{} item initiating caps", stack.getItem().getRegistryName().toString());
+		Treasure.LOGGER.debug("{} item initiating caps", stack.getItem().getRegistryName().toString());
 		RunestonesCapabilityProvider provider =  new RunestonesCapabilityProvider();
 		return provider;
 	}

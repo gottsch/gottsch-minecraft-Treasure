@@ -86,7 +86,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 
 		// select a random rotation
 		Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
-		Treasure.logger.debug("rotation used -> {}", rotation);
+		Treasure.LOGGER.debug("rotation used -> {}", rotation);
 		
 		// setup placement
 		PlacementSettings placement = new PlacementSettings();
@@ -96,8 +96,8 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		ICoords templateSize = new Coords(holder.getTemplate().transformedSize(placement.getRotation()));
 		ICoords actualSpawnCoords = generator.getTransformedSpawnCoords(originalSpawnCoords, templateSize, placement);
 
-		Treasure.logger.debug("original coords -> {}",originalSpawnCoords.toShortString());
-		Treasure.logger.debug("actual coords -> {}", actualSpawnCoords.toShortString());
+		Treasure.LOGGER.debug("original coords -> {}",originalSpawnCoords.toShortString());
+		Treasure.LOGGER.debug("actual coords -> {}", actualSpawnCoords.toShortString());
 		
 		// NOTE these checks don't really belong in a generator as their task is to just generate.
 		// however, the template is unknown outside this call and thus the rotate, placement, size and actual coords would be unknown.
@@ -105,34 +105,34 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		 * Environment Checks
 		 */
 		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, actualSpawnCoords);
-		Treasure.logger.debug("surface coords -> {}", actualSpawnCoords.toShortString());
+		Treasure.LOGGER.debug("surface coords -> {}", actualSpawnCoords.toShortString());
 		if (actualSpawnCoords == WorldInfo.EMPTY_COORDS) {
 			return result.fail();
 		}
 		
 		// check if it has % land base
 		for (int i = 0; i < 3; i++) {
-			Treasure.logger.debug("finding solid base index -> {} at coords -> {}", i, actualSpawnCoords.toShortString());
+			Treasure.LOGGER.debug("finding solid base index -> {} at coords -> {}", i, actualSpawnCoords.toShortString());
 			if (!WorldInfo.isSolidBase(world, actualSpawnCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
 				if (i == 2) {
-					Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", originalSpawnCoords.toShortString(), REQUIRED_BASE_SIZE, templateSize.getX(), templateSize.getZ());
+					Treasure.LOGGER.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", originalSpawnCoords.toShortString(), REQUIRED_BASE_SIZE, templateSize.getX(), templateSize.getZ());
 					return result.fail();
 				}
 				else {
 					actualSpawnCoords = actualSpawnCoords.add(0, -1, 0);
-					Treasure.logger.debug("move actual spawn coords down for solid base check -> {}", actualSpawnCoords.toShortString());
+					Treasure.LOGGER.debug("move actual spawn coords down for solid base check -> {}", actualSpawnCoords.toShortString());
 				}
 			}
 			else {
 				break;
 			}
 		}
-		Treasure.logger.debug("using solid base coords -> {}", actualSpawnCoords.toShortString());
+		Treasure.LOGGER.debug("using solid base coords -> {}", actualSpawnCoords.toShortString());
 		
 		// check if the plane above the actual spawn coords is % air
-		Treasure.logger.debug("checking for {} % air at coords -> {} for dimensions -> {} x {}", REQUIRED_AIR_SIZE, actualSpawnCoords.add(0, 1, 0), templateSize.getX(), templateSize.getZ());
+		Treasure.LOGGER.debug("checking for {} % air at coords -> {} for dimensions -> {} x {}", REQUIRED_AIR_SIZE, actualSpawnCoords.add(0, 1, 0), templateSize.getX(), templateSize.getZ());
 		if (!WorldInfo.isAirBase(world, actualSpawnCoords.add(0, 1, 0), templateSize.getX(), templateSize.getZ(), REQUIRED_AIR_SIZE)) {
-			Treasure.logger.debug("Coords -> [{}] does not meet {} % air base requirements for size -> {} x {}", originalSpawnCoords.toShortString(), REQUIRED_AIR_SIZE, templateSize.getX(), templateSize.getZ());
+			Treasure.LOGGER.debug("Coords -> [{}] does not meet {} % air base requirements for size -> {} x {}", originalSpawnCoords.toShortString(), REQUIRED_AIR_SIZE, templateSize.getX(), templateSize.getZ());
 			return result.fail();
 		}
 		
@@ -148,28 +148,28 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		// get the rule set from the meta which is in the holder
 		StructureMeta meta = (StructureMeta) TreasureMetaRegistry.getMetaManager().getMetaMap().get(holder.getMetaLocation().toString());
 		if (meta == null) {
-			Treasure.logger.debug("Unable to locate meta data for template -> {}", holder.getLocation());
+			Treasure.LOGGER.debug("Unable to locate meta data for template -> {}", holder.getLocation());
 			return result.fail();
 		}
-		Treasure.logger.debug("meta -> {}", meta);
+		Treasure.LOGGER.debug("meta -> {}", meta);
 		
 		// setup the decay ruleset and processor
 		IDecayProcessor decayProcessor = null;
 		if (decayRuleSet == null && holder.getDecayRuleSetLocation() != null && holder.getDecayRuleSetLocation().size() > 0) {
 			// create a decay processor
-			Treasure.logger.debug("decayRuleSet location -> {}", holder.getDecayRuleSetLocation().get(0));
+			Treasure.LOGGER.debug("decayRuleSet location -> {}", holder.getDecayRuleSetLocation().get(0));
 			decayRuleSet = TreasureDecayRegistry.getManager().getRuleSetMap().get(holder.getDecayRuleSetLocation().get(random.nextInt(holder.getDecayRuleSetLocation().size())).toString());
 			// if decayRuleSet is null the processor should be null
 		}
 		if (decayRuleSet != null) {
-			Treasure.logger.debug("decayRuleSet -> {}", decayRuleSet.getName());
+			Treasure.LOGGER.debug("decayRuleSet -> {}", decayRuleSet.getName());
 			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
 		}
 		
 		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
 		 if (!genResult.isSuccess()) return result.fail();
 
-		Treasure.logger.debug("surface gen result -> {}", genResult);
+		Treasure.LOGGER.debug("surface gen result -> {}", genResult);
 
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 		List<BlockContext> bossChestContexts =
@@ -222,9 +222,9 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		}
 		
 		if (proximityContexts != null)
-			Treasure.logger.debug("Proximity spawners size -> {}", proximityContexts.size());
+			Treasure.LOGGER.debug("Proximity spawners size -> {}", proximityContexts.size());
 		else
-			Treasure.logger.debug("No proximity spawners found.");
+			Treasure.LOGGER.debug("No proximity spawners found.");
 		
 		// populate vanilla spawners
 		buildVanillaSpawners(world, random, spawnerContexts);

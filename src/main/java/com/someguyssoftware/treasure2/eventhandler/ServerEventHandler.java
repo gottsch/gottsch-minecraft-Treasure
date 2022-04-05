@@ -43,7 +43,7 @@ public class ServerEventHandler {
 	
 	@SubscribeEvent
 	public void onServerStopping(FMLServerStoppingEvent event) {
-		Treasure.logger.debug("Closing out of world.");
+		Treasure.LOGGER.debug("Closing out of world.");
 		// clear all resource managers
 //		Treasure.LOOT_TABLE_MASTER.clear();
 //		Treasure.LOOT_TABLES.clear();

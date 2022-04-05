@@ -69,7 +69,7 @@ public class SpawnRuinsCommand extends CommandBase {
     
 	@Override
 	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
-		Treasure.logger.debug("Starting to build Treasure! ruins ...");
+		Treasure.LOGGER.debug("Starting to build Treasure! ruins ...");
 		
 		try {
 			// extract the coords args
@@ -141,7 +141,7 @@ public class SpawnRuinsCommand extends CommandBase {
 			
 			TemplateHolder holder = TreasureTemplateRegistry.getManager().getTemplatesByResourceLocationMap().get(templateKey);
 			if (holder == null) {
-				Treasure.logger.debug("Unable to locate template by key -> {}", templateKey.toString());
+				Treasure.LOGGER.debug("Unable to locate template by key -> {}", templateKey.toString());
 			}
 				
 			// select a chest
@@ -152,11 +152,11 @@ public class SpawnRuinsCommand extends CommandBase {
 			
 			// generate
 			GeneratorResult<ChestGeneratorData> result = worldGen.generateSurfaceRuins(world, random,coords, holder, ruleSet, null);
-			Treasure.logger.debug("result from t2-ruins -> {}", result);
+			Treasure.LOGGER.debug("result from t2-ruins -> {}", result);
 			if (result.isSuccess() && result.getData().getChestContext().getCoords() != null) {
 				IChestGenerator chestGen = worldGen.getChestGenMap().get(rarity).next();
 				ICoords chestCoords = result.getData().getChestContext().getCoords();
-				Treasure.logger.debug("chestCoords -> {}", chestCoords);
+				Treasure.LOGGER.debug("chestCoords -> {}", chestCoords);
 				// move the chest coords to the first dry land beneath it.
 //				chestCoords = WorldInfo.getDryLandSurfaceCoords(world, chestCoords);
 				if (chestCoords == WorldInfo.EMPTY_COORDS) chestCoords = null;
@@ -167,7 +167,7 @@ public class SpawnRuinsCommand extends CommandBase {
 			}
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Error generating Treasure! ruins:", e);
+			Treasure.LOGGER.error("Error generating Treasure! ruins:", e);
 		}
 	}
 	

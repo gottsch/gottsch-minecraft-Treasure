@@ -57,7 +57,7 @@ public class CharmingTableBlock extends ModBlock {
 	 */
 	@Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		Treasure.logger.debug("trying to activate charming bench.");
+		Treasure.LOGGER.debug("trying to activate charming bench.");
 		// exit if on the client
         if (!worldIn.isRemote) {
 			playerIn.openGui(Treasure.instance, GuiHandler.CHARMING_BENCH, worldIn, pos.getX(), pos.getY(), pos.getZ());
