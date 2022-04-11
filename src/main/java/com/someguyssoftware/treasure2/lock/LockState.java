@@ -44,7 +44,7 @@ public class LockState {
 				nbt.setTag("lockItem", lockNBT);
 			}
 		} catch (Exception e) {
-			Treasure.logger.error("Unable to write state to NBT:", e);
+			Treasure.LOGGER.error("Unable to write state to NBT:", e);
 		}
 		return nbt;
 	}

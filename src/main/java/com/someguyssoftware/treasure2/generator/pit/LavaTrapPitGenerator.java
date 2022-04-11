@@ -46,7 +46,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
-			Treasure.logger.debug("Generated Lava Trap Pit at " + spawnCoords.toShortString());
+			Treasure.LOGGER.debug("Generated Lava Trap Pit at " + spawnCoords.toShortString());
 		}
 		return result;
 	}
@@ -153,7 +153,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @param coords
 	 */
 	private void buildLavaBaseLayer(World world, ICoords coords) {
-		Treasure.logger.debug("Building lava baselayer from @ {} ", coords.toShortString());
+		Treasure.LOGGER.debug("Building lava baselayer from @ {} ", coords.toShortString());
 		GenUtil.replaceWithBlock(world, coords.add(1, 0, 0), Blocks.LAVA);
 		GenUtil.replaceWithBlock(world, coords.add(-1, 0, 0), Blocks.LAVA);
 		GenUtil.replaceWithBlock(world, coords.add(0, 0, 1), Blocks.LAVA);

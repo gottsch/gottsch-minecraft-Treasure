@@ -23,6 +23,7 @@ import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.state.IBlockState;
@@ -57,12 +58,12 @@ public class WitherChestGenerator implements IChestGenerator {
 	 */
 	@Override
 	public Optional<LootTableShell> selectLootTable2(Random random, final Rarity chestRarity) {
-		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.WITHER_CHEST));
+		return Optional.ofNullable(TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.WITHER_CHEST));
 	}
 
 	@Override
 	public Optional<LootTableShell> selectLootTable2(Supplier<Random> factory, final Rarity rarity) {
-		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.WITHER_CHEST));
+		return Optional.ofNullable(TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.WITHER_CHEST));
 	}
 	/**
 	 * Always select a wither chest.
@@ -79,7 +80,7 @@ public class WitherChestGenerator implements IChestGenerator {
 	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
-		Treasure.logger.debug("# of locks to use: {})", numLocks);
+		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);
 		
 		return numLocks;
 	}
@@ -134,7 +135,7 @@ public class WitherChestGenerator implements IChestGenerator {
 		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
 			// remove chest
 			world.setBlockToAir(chestCoords.toPos());
-			Treasure.logger.debug("Unable to create TileEntityChest, removing BlockChest");
+			Treasure.LOGGER.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}
 		return te;
@@ -157,7 +158,7 @@ public class WitherChestGenerator implements IChestGenerator {
 		if (te == null || !(te instanceof AbstractTreasureChestTileEntity)) {
 			// remove chest
 			world.setBlockToAir(chestCoords.toPos());
-			Treasure.logger.debug("Unable to create TileEntityChest, removing BlockChest");
+			Treasure.LOGGER.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}
 		return te;

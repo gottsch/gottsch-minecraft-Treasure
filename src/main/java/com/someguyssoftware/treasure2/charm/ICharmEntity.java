@@ -126,8 +126,8 @@ public interface ICharmEntity {
 //				setCostEvaluator((ICostEvaluator)o);
 			}
 			catch(Exception e) {
-				Treasure.logger.warn("unable to create cost evaluator from class string -> {}", nbt.getCompoundTag(COST_EVALUATOR).getString("costClass"));
-				Treasure.logger.error(e);
+				Treasure.LOGGER.warn("unable to create cost evaluator from class string -> {}", nbt.getCompoundTag(COST_EVALUATOR).getString("costClass"));
+				Treasure.LOGGER.error(e);
 				setCostEvaluator(new CostEvaluator());
 			}
 		}

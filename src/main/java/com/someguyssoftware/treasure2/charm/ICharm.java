@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.charm.cost.ICostEvaluator;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
@@ -31,6 +32,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
@@ -59,7 +61,7 @@ public interface ICharm {
 	
     public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity);
 
-    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, ICharmEntity entity);
+    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, ICharmEntity entity, InventoryType type);
     
 	public NBTTagCompound save(NBTTagCompound nbt);
 	
@@ -68,4 +70,6 @@ public interface ICharm {
 	public Class<?> getRegisteredEvent();
 	
 	ICostEvaluator getCostEvaluator();
+	TextFormatting getCharmLabelColor();
+	TextFormatting getCharmDescColor();
 }

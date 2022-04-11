@@ -114,7 +114,7 @@ public class CharmMessageToClient implements IMessage {
 			this.setIndex(buf.readInt());
 			this.setItemDamage(buf.readInt());
 	      } catch (RuntimeException e) {
-	        Treasure.logger.error("Exception while reading CharmMessageToClient: ", e);
+	        Treasure.LOGGER.error("Exception while reading CharmMessageToClient: ", e);
 	        return;
 	      }
 	      valid = true;

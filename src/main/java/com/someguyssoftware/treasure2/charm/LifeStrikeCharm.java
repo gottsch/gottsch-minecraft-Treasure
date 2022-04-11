@@ -94,22 +94,17 @@ public class LifeStrikeCharm extends Charm {
 
 					applyCost(world, random, coords, player, event, entity, Math.max(1.0, Math.min(5.0, lifeStrikeAmount - sourceAmount)));
 					result = true;
-					Treasure.logger.debug("life strike damage {} onto mob -> {} using damage type -> {}", (sourceAmount * entity.getAmount()), source.getTrueSource().getName(), source.getDamageType());
+					Treasure.LOGGER.debug("life strike damage {} onto mob -> {} using damage type -> {}", (sourceAmount * entity.getAmount()), source.getTrueSource().getName(), source.getDamageType());
 				}
 			}
 		}
 		return result;
 	}
-
-	/**
-	 * 
-	 */
+	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.WHITE;       
-		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
-		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.life_strike", Math.round((entity.getAmount())*100))));
+	public String getCharmDesc(ICharmEntity entity) {
+		return I18n.translateToLocalFormatted("tooltip.charm.rate.life_strike", Math.round((entity.getAmount())*100));
 	}
 	
 	public static class Builder extends Charm.Builder {

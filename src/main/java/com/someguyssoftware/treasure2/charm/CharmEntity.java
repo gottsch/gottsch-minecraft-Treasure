@@ -19,7 +19,6 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.charm.cost.ICostEvaluator;
 
 import net.minecraft.nbt.NBTTagCompound;

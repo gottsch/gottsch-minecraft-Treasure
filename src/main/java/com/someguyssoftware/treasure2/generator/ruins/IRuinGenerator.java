@@ -17,6 +17,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.IGeneratorResult;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
@@ -44,17 +45,17 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 	default public TemplateHolder selectTemplate(World world, Random random, ICoords coords, StructureArchetype archetype, StructureType type) {
 		// get the biome ID
 		Biome biome = world.getBiome(coords.toPos());
-		TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, archetype, type, biome);
+		TemplateHolder holder = TreasureTemplateRegistry.getManager().getTemplate(world, random, archetype, type, biome);
 		return holder;
 	}
 
 	default public void buildOneTimeSpawners(World world, Random random, List<BlockContext> proximityContexts, Quantity quantity, double d) {
 		for (BlockContext c : proximityContexts) {
-			Treasure.logger.debug("placing proximity spawner at -> {}", c.getCoords().toShortString());
+			Treasure.LOGGER.debug("placing proximity spawner at -> {}", c.getCoords().toShortString());
 	    	world.setBlockState(c.getCoords().toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
 	    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c.getCoords().toPos());
 	    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
-	    	Treasure.logger.debug("using mob -> {} for poximity spawner.", r.toString());
+	    	Treasure.LOGGER.debug("using mob -> {} for poximity spawner.", r.toString());
 	    	te.setMobName(r);
 	    	te.setMobNum(new Quantity(1, 2));
 	    	te.setProximity(5D);

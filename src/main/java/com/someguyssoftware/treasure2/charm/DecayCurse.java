@@ -19,15 +19,12 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
-import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -70,7 +67,8 @@ public class DecayCurse extends Charm {
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity) {
 		boolean result = false;
 		//		Treasure.logger.debug("in decay");
-		if (world.getTotalWorldTime() % 100 == 0) {
+//		if (world.getTotalWorldTime() % 100 == 0) {
+		if (world.getTotalWorldTime() % entity.getFrequency() == 0) {
 			if (!player.isDead && entity.getMana() > 0 && player.getHealth() > 0.0) {
 				//			Treasure.logger.debug("player is alive and charm is good still...");
 				player.setHealth(MathHelper.clamp(player.getHealth() - (float)getAmount(), 0.0F, player.getMaxHealth()));				
@@ -83,16 +81,16 @@ public class DecayCurse extends Charm {
 		}
 		return result;
 	}
-
-	/**
-	 * 
-	 */
+	
+	@Override
+	public TextFormatting getCharmLabelColor() {
+		return TextFormatting.DARK_RED;
+	}
+	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.DARK_RED;
-		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
-		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.decay")));
+	public String getCharmDesc(ICharmEntity entity) {
+		return I18n.translateToLocalFormatted("tooltip.charm.rate.decay", DECIMAL_FORMAT.format(getAmount()/2), DECIMAL_FORMAT.format(entity.getFrequency()/TICKS_PER_SECOND));
 	}
 	
 	public static class Builder extends Charm.Builder {

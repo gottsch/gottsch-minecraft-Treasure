@@ -50,7 +50,7 @@ public class SkeletonItem extends ModItem {
 			return EnumActionResult.SUCCESS;
 		} 
 		else if (facingIn != EnumFacing.UP) {
-			Treasure.logger.debug("Skeleton item: facing up... fail.");
+			Treasure.LOGGER.debug("Skeleton item: facing up... fail.");
 			return EnumActionResult.FAIL;
 		} 
 		else {
@@ -71,7 +71,7 @@ public class SkeletonItem extends ModItem {
 				boolean flag1 = state2.getBlock().isReplaceable(worldIn, pos);
 				boolean flag2 = flag || worldIn.isAirBlock(posIn) || worldIn.getBlockState(posIn).getBlock().isReplaceable(worldIn, posIn);
 				boolean flag3 = flag1 || worldIn.isAirBlock(pos);
-				Treasure.logger.debug("flag ->{}, flag1 ->{}, flag2 -> {}, flag3 ->{}",flag, flag1, flag2, flag3);
+				Treasure.LOGGER.debug("flag ->{}, flag1 ->{}, flag2 -> {}, flag3 ->{}",flag, flag1, flag2, flag3);
 				if (flag2 && flag3 && worldIn.getBlockState(posIn.down()).isSideSolid(worldIn, posIn.down(), EnumFacing.UP) && 
 						worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP)) { 
 					IBlockState skeletonState = TreasureBlocks.SKELETON.getDefaultState().withProperty(SkeletonBlock.FACING, facing.getOpposite())

@@ -1,0 +1,6 @@
+{
+    "parent": "treasure2:item/adornment",
+    "textures": {
+        "layer0": "treasure2:items/adornments/great_white_pearl_blood_ring"
+    }
+}

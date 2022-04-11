@@ -53,7 +53,12 @@ public class CharmingTableItemBlock extends ItemBlock {
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		// TODO	
-
+		// chest info		
+		tooltip.add(TextFormatting.GOLD + "" + TextFormatting.ITALIC + I18n.translateToLocal("tooltip.charming_table.usage"));
+		tooltip.add(I18n.translateToLocalFormatted("tooltip.indent1", TextFormatting.YELLOW + I18n.translateToLocal("tooltip.charming_table.usage1")));
+		tooltip.add(I18n.translateToLocalFormatted("tooltip.indent1", TextFormatting.YELLOW + I18n.translateToLocal("tooltip.charming_table.usage2")));
+		tooltip.add(I18n.translateToLocalFormatted("tooltip.indent1", TextFormatting.YELLOW + I18n.translateToLocal("tooltip.charming_table.usage3")));
+		tooltip.add(I18n.translateToLocalFormatted("tooltip.indent1", TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocal("tooltip.charming_table.note")));
+		// TODO add more instructions on how to use
 	}	
 }

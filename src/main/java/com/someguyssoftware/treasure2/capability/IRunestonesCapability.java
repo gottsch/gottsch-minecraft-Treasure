@@ -3,8 +3,8 @@ package com.someguyssoftware.treasure2.capability;
 import java.util.List;
 
 import com.google.common.collect.Multimap;
-import com.someguyssoftware.treasure2.runestone.IRunestone;
-import com.someguyssoftware.treasure2.runestone.IRunestoneEntity;
+import com.someguyssoftware.treasure2.rune.IRune;
+import com.someguyssoftware.treasure2.rune.IRuneEntity;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -28,23 +28,23 @@ public interface IRunestonesCapability /*extends IMagicsInventorySupportCapabili
 	int getCurrentSize(InventoryType type);
 	int getMaxSize(InventoryType type);
 	
-	boolean contains(IRunestone charm);
+	boolean contains(IRune charm);
 	
 	/**
 	 * @param type
 	 * @param entity
 	 */
-	void add(InventoryType type, IRunestoneEntity entity);
+	void add(InventoryType type, IRuneEntity entity);
 
-	boolean remove(InventoryType type, IRunestoneEntity entity);
+	boolean remove(InventoryType type, IRuneEntity entity);
 	
-	List<IRunestoneEntity> getEntities(InventoryType type);
+	List<IRuneEntity> getEntities(InventoryType type);
 
 	/**
 	 * Copy of all runestone entities. Not attached to underlying map.
 	 * @return
 	 */
-	Multimap<InventoryType, IRunestoneEntity> getEntitiesCopy();
+	Multimap<InventoryType, IRuneEntity> getEntitiesCopy();
 
 	void copyTo(ItemStack stack);
 	

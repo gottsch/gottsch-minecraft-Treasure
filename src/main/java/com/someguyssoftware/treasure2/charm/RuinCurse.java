@@ -84,32 +84,31 @@ public class RuinCurse extends Charm {
 				if (actualEquipment != null && actualEquipment.size() > 0) {
 					// randomly pick an item
 					ItemStack selectedItemStack  = actualEquipment.get(random.nextInt(actualEquipment.size()));
-					Treasure.logger.debug("damaging item -> {}, current damage -> {} of {}", selectedItemStack.getDisplayName(), selectedItemStack.getItemDamage(), selectedItemStack.getMaxDamage());
+					Treasure.LOGGER.debug("damaging item -> {}, current damage -> {} of {}", selectedItemStack.getDisplayName(), selectedItemStack.getItemDamage(), selectedItemStack.getMaxDamage());
 					// damage the item
 					if (selectedItemStack.isItemStackDamageable()) {
 						selectedItemStack.attemptDamageItem((int)getAmount(), random, null);
-						Treasure.logger.debug("damaged item -> {}, now at damaged -> {} of {}", selectedItemStack.getDisplayName(), selectedItemStack.getItemDamage(), selectedItemStack.getMaxDamage());
+						Treasure.LOGGER.debug("damaged item -> {}, now at damaged -> {} of {}", selectedItemStack.getDisplayName(), selectedItemStack.getItemDamage(), selectedItemStack.getMaxDamage());
 //						entity.setMana(MathHelper.clamp(entity.getMana() - 1.0,  0D, entity.getMana()));
 						applyCost(world, random, coords, player, event, entity, getAmount());
 					}
 				}			
-				Treasure.logger.debug("charm {} new data -> {}", this.getName(), entity);
+				Treasure.LOGGER.debug("charm {} new data -> {}", this.getName(), entity);
 				result = true;
 			}
-
 		}
 		return result;
 	}
-
-	/**
-	 * 
-	 */
+	
+	@Override
+	public TextFormatting getCharmLabelColor() {
+		return TextFormatting.DARK_RED;
+	}
+	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.DARK_RED;
-		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
-		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.ruin", String.valueOf(Math.toIntExact(Math.round(entity.getDuration()))))));
+	public String getCharmDesc(ICharmEntity entity) {
+		return I18n.translateToLocalFormatted("tooltip.charm.rate.ruin", DECIMAL_FORMAT.format(getAmount()/2), DECIMAL_FORMAT.format(entity.getFrequency()/TICKS_PER_SECOND));
 	}
 	
 	public static class Builder extends Charm.Builder {

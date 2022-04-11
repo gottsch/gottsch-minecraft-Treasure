@@ -52,14 +52,14 @@ public class EquipmentCostEvaluator extends CostEvaluator {
 	}
 	
 	public EquipmentCostEvaluator(ICostEvaluator evaluator) {
-		Treasure.logger.debug("receiving child evaluator of -> {}", evaluator.getClass().getSimpleName());
+		Treasure.LOGGER.debug("receiving child evaluator of -> {}", evaluator.getClass().getSimpleName());
 		this.evaluator = evaluator;
 	}
 	
 	@Override
 	public double apply(World world, Random random, ICoords coords, EntityPlayer player, Event event,
 			ICharmEntity entity, double amount) {
-		Treasure.logger.debug("executing...");
+		Treasure.LOGGER.debug("executing...");
 		double newAmount = amount * 2;
 		boolean isDamaged = true;
 		
@@ -77,8 +77,8 @@ public class EquipmentCostEvaluator extends CostEvaluator {
 		if (!list.isEmpty()) {
 			// randomly select a piece of equipment
 			ItemStack selectedStack = list.get(random.nextInt(list.size()));
-			Treasure.logger.debug("selected equip -> {}", selectedStack.getDisplayName());
-			Treasure.logger.debug("going to apply damage -> {} to equip current damage -> {}", newAmount, selectedStack.getItemDamage());
+			Treasure.LOGGER.debug("selected equip -> {}", selectedStack.getDisplayName());
+			Treasure.LOGGER.debug("going to apply damage -> {} to equip current damage -> {}", newAmount, selectedStack.getItemDamage());
 			// damage the item
 			// TODO only return true if the item is broken/destroyed... need to test is newDamage > oldDamage
 			int oldDamage = selectedStack.getItemDamage();
@@ -86,12 +86,12 @@ public class EquipmentCostEvaluator extends CostEvaluator {
 			if (selectedStack.getItemDamage() > oldDamage) {
 				isDamaged = true;
 			}
-			Treasure.logger.debug("damaged -> {}, equip damaged after -> {}", isDamaged, selectedStack.getItemDamage());
+			Treasure.LOGGER.debug("damaged -> {}, equip damaged after -> {}", isDamaged, selectedStack.getItemDamage());
 		}
 
 		// if not damaged, process against default evaluator
 		if (!isDamaged) {
-			Treasure.logger.debug("no damage done, use mana using cost eval ->{}", evaluator.getClass().getSimpleName());
+			Treasure.LOGGER.debug("no damage done, use mana using cost eval ->{}", evaluator.getClass().getSimpleName());
 			// execute the orignal evaluator
 			newAmount = entity.getCharm().getCostEvaluator().apply(world, random, coords, player, event, entity, amount);
 		}		
@@ -108,7 +108,7 @@ public class EquipmentCostEvaluator extends CostEvaluator {
 			nbt.setTag("evaluator", tag);
 		}
 		catch(Exception e) {
-			Treasure.logger.error("error saving EquipmentCostEvaluator -> ", e);
+			Treasure.LOGGER.error("error saving EquipmentCostEvaluator -> ", e);
 		}
 		return nbt;
 	}
@@ -130,8 +130,8 @@ public class EquipmentCostEvaluator extends CostEvaluator {
 
 			}
 			catch(Exception e) {
-				Treasure.logger.warn("unable to create cost evaluator from class string:");
-				Treasure.logger.error(e);
+				Treasure.LOGGER.warn("unable to create cost evaluator from class string:");
+				Treasure.LOGGER.error(e);
 				this.evaluator = new CostEvaluator();
 			}
 		}
@@ -140,7 +140,7 @@ public class EquipmentCostEvaluator extends CostEvaluator {
 		}
 		}
 		catch(Exception e) {
-			Treasure.logger.error("error loading EquipmentCostEvaluator -> ", e);
+			Treasure.LOGGER.error("error loading EquipmentCostEvaluator -> ", e);
 		}
 	}
 

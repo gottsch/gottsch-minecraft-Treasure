@@ -86,13 +86,13 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 	 */
 	@Override
 	public void execute(World world, Random random, Coords blockCoords, Coords playerCoords) {
-		Treasure.logger.debug("executing");
+		Treasure.LOGGER.debug("executing");
 		int mobCount = RandomHelper.randomInt(random, getMobNum().getMinInt(), getMobNum().getMaxInt());
 
 		for (int i = 0; i < mobCount; i++) {
 			BoundSoulEntity entity = (BoundSoulEntity) EntityList.createEntityByIDFromName(getMobName(), world);
 			if (entity == null) {
-				Treasure.logger.debug("unable to create entity -> {}", getMobName());
+				Treasure.LOGGER.debug("unable to create entity -> {}", getMobName());
 				selfDestruct();
 				return;
 			}
@@ -105,15 +105,15 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 				double z = (double) blockCoords.getZ() + (world.rand.nextDouble() * getSpawnRange())
 						- getSpawnRange() / 2 + 0.5D;
 				entity.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
-				Treasure.logger.debug("attempted location for bound soul spawn -> {} {} {}", x, y, z);
+				Treasure.LOGGER.debug("attempted location for bound soul spawn -> {} {} {}", x, y, z);
 
 				EntityLiving entityLiving = (EntityLiving) entity;
 				for (int tries = 0; tries < 3; tries++) {
 					if (!entityLiving.isNotColliding()) {
-						Treasure.logger.debug("collision - no spawn");
+						Treasure.LOGGER.debug("collision - no spawn");
 					}
 					if (entityLiving.getCanSpawnHere() && entityLiving.isNotColliding()) {
-						Treasure.logger.debug("spawned bound soul");
+						Treasure.LOGGER.debug("spawned bound soul");
 						entityLiving.rotationYawHead = entityLiving.rotationYaw;
 						entityLiving.renderYawOffset = entityLiving.rotationYaw;
 						entityLiving.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entityLiving)),
@@ -135,7 +135,7 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 	 * 
 	 */
 	private void selfDestruct() {
-		Treasure.logger.debug("self destructing.");
+		Treasure.LOGGER.debug("self destructing.");
 		this.setDead(true);
 	}
 
@@ -153,7 +153,7 @@ public class GravestoneProximitySpawnerTileEntity extends ProximitySpawnerTileEn
 			}
 //		    Treasure.logger.debug("reading proximity spawner @ {} -> [hasEntity={}, mobName={}, mobName={}", this.pos, parentNBT.getBoolean("hasEntity"), parentNBT.getString("mobName"), this.getMobName());
 		} catch (Exception e) {
-			Treasure.logger.error("Error reading AbstractProximity properties from NBT:", e);
+			Treasure.LOGGER.error("Error reading AbstractProximity properties from NBT:", e);
 		}
 	}
 

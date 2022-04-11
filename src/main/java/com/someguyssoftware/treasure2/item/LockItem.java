@@ -143,7 +143,7 @@ public class LockItem extends ModItem {
 				// unsuccessful it could state the chest is unlocked.
 				handleHeldLock(tileEntity, player, heldItem);
 			} catch (Exception e) {
-				Treasure.logger.error("error: ", e);
+				Treasure.LOGGER.error("error: ", e);
 			}
 		}
 		return super.onItemUse(player, worldIn, chestPos, hand, facing, hitX, hitY, hitZ);

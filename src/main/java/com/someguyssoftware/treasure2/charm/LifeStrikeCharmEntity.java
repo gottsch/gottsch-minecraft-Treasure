@@ -61,7 +61,7 @@ public class LifeStrikeCharmEntity extends CharmEntity {
 			nbt.setDouble("lifeCost", getLifeCost());
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Unable to write state to NBT:", e);
+			Treasure.LOGGER.error("Unable to write state to NBT:", e);
 		}
 		return nbt;
 	}

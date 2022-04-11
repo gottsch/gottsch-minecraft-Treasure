@@ -19,27 +19,25 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.ICharmableCapability;
-import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.item.IWishable;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 
-import baubles.common.items.ItemRing;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -48,7 +46,6 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -453,7 +450,7 @@ public class PlayerEventHandler {
 		if (WorldInfo.isClientSide(event.getPlayer().world)) {
 			return;
 		}
-		Treasure.logger.debug("{} tossing item -> {}", event.getPlayer().getName(), event.getEntityItem().getItem().getDisplayName());
+		Treasure.LOGGER.debug("{} tossing item -> {}", event.getPlayer().getName(), event.getEntityItem().getItem().getDisplayName());
 		Item item = event.getEntityItem().getItem().getItem();
 		if (item instanceof IWishable) {
 			ItemStack stack = event.getEntityItem().getItem();
@@ -471,7 +468,7 @@ public class PlayerEventHandler {
 		if (event.getEntity() != null &&  event.getEntity().isInWater() && (event.getEntity() instanceof EntityItem)) {
 			EntityItem entity = (EntityItem) event.getEntity();
 			if (entity.getItem().getItem() instanceof IWishable) {
-				Treasure.logger.debug("wishable item colliding -> {} aabb -> {}", event.getEntity(), event.getAabb());
+				Treasure.LOGGER.debug("wishable item colliding -> {} aabb -> {}", event.getEntity(), event.getAabb());
 				IWishable wishable = (IWishable) entity.getItem().getItem();
 				
 				// get the item

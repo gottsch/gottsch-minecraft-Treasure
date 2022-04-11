@@ -110,19 +110,17 @@ public class CharmingTableGui extends GuiContainer implements IContainerListener
 		fontRenderer.drawString(RUNES_LABEL, LABEL_XPOS, 129, Color.GRAY.getRGB());
 		
 		// add cost line
-		
-//		try {
-//			if (this.bench.maximumCost > 0 && (this.bench.getSlot(4).getHasStack() || this.bench.getSlot(5).getHasStack()
-//					|| this.bench.getSlot(6).getHasStack())) {
-//				String s = I18n.translateToLocalFormatted("display.charming_bench.cost", this.bench.maximumCost);
-//				int k = this.xSize - 8 - this.fontRenderer.getStringWidth(s);
-//				fontRenderer.drawString(s, k+1, 75, Color.GRAY.getRGB());
-//				fontRenderer.drawString(s, k, 74, TextFormatting.GOLD.getColorIndex());
-//			}
-//		}
-//		catch(Exception e) {
-//			Treasure.logger.error("error in gui:", e);
-//		}
+		if (this.bench.maximumCost > 0 && (this.bench.getSlot(2).getHasStack())
+				|| this.bench.getSlot(11).getHasStack()
+				|| this.bench.getSlot(12).getHasStack()
+				|| this.bench.getSlot(13).getHasStack()
+				|| this.bench.getSlot(14).getHasStack()
+				|| this.bench.getSlot(17).getHasStack()) {
+			String s = I18n.translateToLocalFormatted("display.charming_table.cost", this.bench.maximumCost);
+			int k = this.xSize - 8 - this.fontRenderer.getStringWidth(s);
+			fontRenderer.drawString(s, k+1, 162, Color.GRAY.getRGB());
+			fontRenderer.drawString(s, k, 161, Color.GREEN.getRGB());
+		}
 	}
 
 	/**

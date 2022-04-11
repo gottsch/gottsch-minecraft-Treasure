@@ -23,7 +23,7 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
-import com.someguyssoftware.treasure2.runestone.QualityRunestone;
+import com.someguyssoftware.treasure2.rune.QualityRune;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -41,6 +41,6 @@ public class QualityRuneCostReducerEvaluator implements ICostEvaluator {
 	}
 	
 	public double apply(World world, Random random, ICoords coords, EntityPlayer player, Event event, ICharmEntity entity, double cost) {
-		return evaluator.apply(world, random, coords, player, event, entity, Math.max(1D, cost / QualityRunestone.MULTIPLIER));
+		return evaluator.apply(world, random, coords, player, event, entity, Math.max(1D, cost / QualityRune.MULTIPLIER));
 	};
 }

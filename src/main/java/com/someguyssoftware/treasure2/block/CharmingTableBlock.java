@@ -23,6 +23,7 @@ import com.someguyssoftware.gottschcore.block.ModBlock;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,6 +47,9 @@ public class CharmingTableBlock extends ModBlock {
 	 */
 	public CharmingTableBlock(String modID, String name, Material material) {
 		super(modID, name, material);
+		setSoundType(SoundType.STONE);
+		setCreativeTab(Treasure.TREASURE_TAB);
+		setHardness(3.0F);
 	}
 	
 	/**
@@ -53,7 +57,7 @@ public class CharmingTableBlock extends ModBlock {
 	 */
 	@Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		Treasure.logger.debug("trying to activate charming bench.");
+		Treasure.LOGGER.debug("trying to activate charming bench.");
 		// exit if on the client
         if (!worldIn.isRemote) {
 			playerIn.openGui(Treasure.instance, GuiHandler.CHARMING_BENCH, worldIn, pos.getX(), pos.getY(), pos.getZ());

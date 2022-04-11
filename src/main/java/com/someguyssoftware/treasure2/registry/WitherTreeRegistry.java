@@ -64,7 +64,7 @@ public class WitherTreeRegistry {
 	 * @param info
 	 */
 	private synchronized void register(final Integer dimensionID, final WitherTreeInfo info) {
-		Treasure.logger.debug("Registering wither tree in dimension -> {}, info -> {}", dimensionID, info);
+		Treasure.LOGGER.debug("Registering wither tree in dimension -> {}, info -> {}", dimensionID, info);
 		// get the registry for the dimension
 		if (!registry.containsKey(dimensionID)) {
 			registry.put(dimensionID, new LinkedList<>());

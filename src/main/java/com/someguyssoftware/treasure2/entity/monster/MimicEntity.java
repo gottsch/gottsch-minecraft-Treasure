@@ -10,6 +10,7 @@ import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -143,10 +144,10 @@ public abstract class MimicEntity extends EntityMob {
 		ResourceLocation lootTableResourceLocation = selectLootTableResourceLocation(new Random(), Rarity.SCARCE);
 
 		if (lootTableResourceLocation == null) {
-			Treasure.logger.warn("Unable to select a lootTable resource location.");
+			Treasure.LOGGER.warn("Unable to select a lootTable resource location.");
 			return null;
 		}
-		Treasure.logger.debug("Selected loot table resource location -> {}", lootTableResourceLocation.toString());
+		Treasure.LOGGER.debug("Selected loot table resource location -> {}", lootTableResourceLocation.toString());
 		return lootTableResourceLocation;
 	}
 	
@@ -160,7 +161,7 @@ public abstract class MimicEntity extends EntityMob {
 		LootTableShell location = null;
 
 		// select the loot table by rarity
-		List<LootTableShell> tableShells = Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.SCARCE);
+		List<LootTableShell> tableShells = TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE);
 		
 		// select a random location from the list
 		if (tableShells != null && !tableShells.isEmpty()) {
@@ -175,7 +176,7 @@ public abstract class MimicEntity extends EntityMob {
 				index = RandomHelper.randomInt(random, 0, tableShells.size()-1);
 				location = tableShells.get(index);
 			}
-			Treasure.logger.debug("Selected resource location index --> {}", index);
+			Treasure.LOGGER.debug("Selected resource location index --> {}", index);
 		}
 		return location.getResourceLocation();
 	}	

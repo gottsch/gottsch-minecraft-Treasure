@@ -21,6 +21,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.ITemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
@@ -56,7 +57,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		Biome biome = world.getBiome(coords.toPos());
 		
 		// get the template from the given archetype, type and biome
-		TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplate(world, random, StructureArchetype.SURFACE, StructureType.MARKER, biome);
+		TemplateHolder holder = TreasureTemplateRegistry.getManager().getTemplate(world, random, StructureArchetype.SURFACE, StructureType.MARKER, biome);
 		if (holder == null) return result.fail();
 
 		// TODO could move offset to TemplateGenerator : getOffset() which checks both the offsetblock and the meta
@@ -70,13 +71,13 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		// find entrance
 		ICoords entranceCoords =((GottschTemplate)holder. getTemplate()).findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
 		if (entranceCoords == null) {
-			Treasure.logger.debug("Unable to locate entrance position.");
+			Treasure.LOGGER.debug("Unable to locate entrance position.");
 			return result.fail();
 		}
 
 		// select a rotation
 		Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
-		Treasure.logger.debug("above ground rotation used -> {}", rotation);
+		Treasure.LOGGER.debug("above ground rotation used -> {}", rotation);
 				
 		// setup placement
 		PlacementSettings placement = new PlacementSettings();
@@ -95,7 +96,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		// if offset is 2 or less, then determine if the solid ground percentage is valid
 		if (offset >= -2) {
 			if (!WorldInfo.isSolidBase(world, spawnCoords, transformedSize.getX(), transformedSize.getZ(), 70)) {
-				Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", 70, spawnCoords.toShortString(), transformedSize.getX(), transformedSize.getY());
+				Treasure.LOGGER.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", 70, spawnCoords.toShortString(), transformedSize.getX(), transformedSize.getY());
 				 GeneratorResult<GeneratorData> genResult = new GravestoneMarkerGenerator().generate(world, random, coords);
 				 return genResult;
 			}

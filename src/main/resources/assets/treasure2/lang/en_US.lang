@@ -94,6 +94,7 @@ item.treasure2:bracelet_of_wonder.name=Bracelet of Wonder
 item.treasure2:ring_of_fortitude.name=Ring of Fortitude
 item.treasure2:gottschs_ring_of_moon.name=Gottsch's Ring of the Moon
 item.treasure2:shadows_gift.name=The Shadow's Gift
+item.treasure2:ring_of_life_death.name=Ring of Life and Death
 item.treasure2:miners_friend.name=Miner's Friend
 item.treasure2:medics_token.name=Medic's Token
 item.treasure2:salandaars_ward.name=Sal'andaar's Ward
@@ -102,6 +103,7 @@ item.treasure2:adephagias_bounty.name=Adephagia's Bounty
 item.treasure2:mirthas_torch.name=Mirtha's Torch
 item.treasure2:peasants_fortune.name=Peasant's Fortune
 item.treasure2:castle_ring.name=Castle Ring
+item.treasure2:pocket_watch.name=Pocket Watch
 
 # iron adornments
 item.treasure2:iron_ring.name=Iron Ring
@@ -113,7 +115,17 @@ item.treasure2:ruby_iron_ring.name=Iron Ruby Ring
 item.treasure2:sapphire_iron_ring.name=Iron Sapphire Ring
 item.treasure2:white_pearl_iron_ring.name=Iron White Pearl Ring
 item.treasure2:black_pearl_iron_ring.name=Iron Black Pearl Ring
+
 item.treasure2:great_iron_ring.name=Great Iron Ring
+item.treasure2:great_diamond_iron_ring.name=Great Iron Diamond Ring
+item.treasure2:great_emerald_iron_ring.name=Great Iron Emerald Ring
+item.treasure2:great_amethyst_iron_ring.name=Great Amethyst Iron Ring
+item.treasure2:great_onyx_iron_ring.name=Great Onyx Iron Ring
+item.treasure2:great_ruby_iron_ring.name=Great Iron Ruby Ring
+item.treasure2:great_sapphire_iron_ring.name=Great Iron Sapphire Ring
+item.treasure2:great_white_pearl_iron_ring.name=Great Iron White Pearl Ring
+item.treasure2:great_black_pearl_iron_ring.name=Great Iron Black Pearl Ring
+
 item.treasure2:iron_bracelet.name=Iron Bracelet
 item.treasure2:diamond_iron_bracelet.name=Iron Diamond Bracelet
 item.treasure2:emerald_iron_bracelet.name=Iron Emerald Bracelet
@@ -123,6 +135,17 @@ item.treasure2:ruby_iron_bracelet.name=Iron Ruby Bracelet
 item.treasure2:sapphire_iron_bracelet.name=Iron Sapphire Bracelet
 item.treasure2:white_pearl_iron_bracelet.name=Iron White Pearl Bracelet
 item.treasure2:black_pearl_iron_bracelet.name=Iron Black Pearl Bracelet
+
+item.treasure2:great_iron_bracelet.name=Great Iron Bracelet
+item.treasure2:great_diamond_iron_bracelet.name=Great Iron Diamond Bracelet
+item.treasure2:great_emerald_iron_bracelet.name=Great Iron Emerald Bracelet
+item.treasure2:great_amethyst_iron_bracelet.name=Great Iron Amethyst Bracelet
+item.treasure2:great_onyx_iron_bracelet.name=Great Iron Onyx Bracelet
+item.treasure2:great_ruby_iron_bracelet.name=Great Iron Ruby Bracelet
+item.treasure2:great_sapphire_iron_bracelet.name=Great Iron Sapphire Bracelet
+item.treasure2:great_white_pearl_iron_bracelet.name=Great Iron White Pearl Bracelet
+item.treasure2:great_black_pearl_iron_bracelet.name=Great Iron Black Pearl Bracelet
+
 item.treasure2:iron_necklace.name=Iron Necklace
 item.treasure2:diamond_iron_necklace.name=Iron Diamond Necklace
 item.treasure2:emerald_iron_necklace.name=Iron Emerald Necklace
@@ -132,6 +155,16 @@ item.treasure2:ruby_iron_necklace.name=Iron Ruby Necklace
 item.treasure2:sapphire_iron_necklace.name=Iron Sapphire Necklace
 item.treasure2:white_pearl_iron_necklace.name=Iron White Pearl Necklace
 item.treasure2:black_pearl_iron_necklace.name=Iron Black Pearl Necklace
+
+item.treasure2:great_iron_necklace.name=Great Iron Necklace
+item.treasure2:great_diamond_iron_necklace.name=Great Iron Diamond Necklace
+item.treasure2:great_emerald_iron_necklace.name=Great Iron Emerald Necklace
+item.treasure2:great_amethyst_iron_necklace.name=Great Iron Amethyst Necklace
+item.treasure2:great_onyx_iron_necklace.name=Great Iron Onyx Necklace
+item.treasure2:great_ruby_iron_necklace.name=Great Iron Ruby Necklace
+item.treasure2:great_sapphire_iron_necklace.name=Great Iron Sapphire Necklace
+item.treasure2:great_white_pearl_iron_necklace.name=Great Iron White Pearl Necklace
+item.treasure2:great_black_pearl_iron_necklace.name=Great Iron Black Pearl Necklace
 
 # copper adornments
 item.treasure2:copper_ring.name=Copper Ring
@@ -143,7 +176,17 @@ item.treasure2:ruby_copper_ring.name=Copper Ruby Ring
 item.treasure2:sapphire_copper_ring.name=Copper Sapphire Ring
 item.treasure2:white_pearl_copper_ring.name=Copper White Pearl Ring
 item.treasure2:black_pearl_copper_ring.name=Copper Black Pearl Ring
+
 item.treasure2:great_copper_ring.name=Great Copper Ring
+item.treasure2:great_diamond_copper_ring.name=Great Copper Diamond Ring
+item.treasure2:great_emerald_copper_ring.name=Great Copper Emerald Ring
+item.treasure2:great_amethyst_copper_ring.name=Great Copper Amethyst Ring
+item.treasure2:great_onyx_copper_ring.name=Great Copper Onyx Ring
+item.treasure2:great_ruby_copper_ring.name=Great Copper Ruby Ring
+item.treasure2:great_sapphire_copper_ring.name=Great Copper Sapphire Ring
+item.treasure2:great_white_pearl_copper_ring.name=Great Copper White Pearl Ring
+item.treasure2:great_black_pearl_copper_ring.name=Great Copper Black Pearl Ring
+
 item.treasure2:copper_bracelet.name=Copper Bracelet
 item.treasure2:diamond_copper_bracelet.name=Copper Diamond Bracelet
 item.treasure2:emerald_copper_bracelet.name=Copper Emerald Bracelet
@@ -153,6 +196,17 @@ item.treasure2:ruby_copper_bracelet.name=Copper Ruby Bracelet
 item.treasure2:sapphire_copper_bracelet.name=Copper Sapphire Bracelet
 item.treasure2:white_pearl_copper_bracelet.name=Copper White Pearl Bracelet
 item.treasure2:black_pearl_copper_bracelet.name=Copper Black Pearl Bracelet
+
+item.treasure2:great_copper_bracelet.name=Great Copper Bracelet
+item.treasure2:great_diamond_copper_bracelet.name=Great Copper Diamond Bracelet
+item.treasure2:great_emerald_copper_bracelet.name=Great Copper Emerald Bracelet
+item.treasure2:great_amethyst_copper_bracelet.name=Great Copper Amethyst Bracelet
+item.treasure2:great_onyx_copper_bracelet.name=Great Copper Onyx Bracelet
+item.treasure2:great_ruby_copper_bracelet.name=Great Copper Ruby Bracelet
+item.treasure2:great_sapphire_copper_bracelet.name=Great Copper Sapphire Bracelet
+item.treasure2:great_white_pearl_copper_bracelet.name=Great Copper White Pearl Bracelet
+item.treasure2:great_black_pearl_copper_bracelet.name=Great Copper Black Pearl Bracelet
+
 item.treasure2:copper_necklace.name=Copper Necklace
 item.treasure2:diamond_copper_necklace.name=Copper Diamond Necklace
 item.treasure2:emerald_copper_necklace.name=Copper Emerald Necklace
@@ -162,6 +216,16 @@ item.treasure2:ruby_copper_necklace.name=Copper Ruby Necklace
 item.treasure2:sapphire_copper_necklace.name=Copper Sapphire Necklace
 item.treasure2:white_pearl_copper_necklace.name=Copper White Pearl Necklace
 item.treasure2:black_pearl_copper_necklace.name=Copper Black Pearl Necklace
+
+item.treasure2:great_copper_necklace.name=Great Copper Necklace
+item.treasure2:great_diamond_copper_necklace.name=Great Copper Diamond Necklace
+item.treasure2:great_emerald_copper_necklace.name=Great Copper Emerald Necklace
+item.treasure2:great_amethyst_copper_necklace.name=Great Copper Amethyst Necklace
+item.treasure2:great_onyx_copper_necklace.name=Great Copper Onyx Necklace
+item.treasure2:great_ruby_copper_necklace.name=Great Copper Ruby Necklace
+item.treasure2:great_sapphire_copper_necklace.name=Great Copper Sapphire Necklace
+item.treasure2:great_white_pearl_copper_necklace.name=Great Copper White Pearl Necklace
+item.treasure2:great_black_pearl_copper_necklace.name=Great Copper Black Pearl Necklace
 
 # silver
 item.treasure2:silver_ring.name=Silver Ring
@@ -173,7 +237,17 @@ item.treasure2:ruby_silver_ring.name=Silver Ruby Ring
 item.treasure2:sapphire_silver_ring.name=Silver Sapphire Ring
 item.treasure2:white_pearl_silver_ring.name=Silver White Pearl Ring
 item.treasure2:black_pearl_silver_ring.name=Silver Black Pearl Ring
+
 item.treasure2:great_silver_ring.name=Great Silver Ring
+item.treasure2:great_diamond_silver_ring.name=Great Silver Diamond Ring
+item.treasure2:great_emerald_silver_ring.name=Great Silver Emerald Ring
+item.treasure2:great_amethyst_silver_ring.name=Great Silver Amethyst Ring
+item.treasure2:great_onyx_silver_ring.name=Great Silver Onyx Ring
+item.treasure2:great_ruby_silver_ring.name=Great Silver Ruby Ring
+item.treasure2:great_sapphire_silver_ring.name=Great Silver Sapphire Ring
+item.treasure2:great_white_pearl_silver_ring.name=Great Silver White Pearl Ring
+item.treasure2:great_black_pearl_silver_ring.name=Great Silver Black Pearl Ring
+
 item.treasure2:silver_bracelet.name=Silver Bracelet
 item.treasure2:diamond_silver_bracelet.name=Silver Diamond Bracelet
 item.treasure2:emerald_silver_bracelet.name=Silver Emerald Bracelet
@@ -183,6 +257,17 @@ item.treasure2:ruby_silver_bracelet.name=Silver Ruby Bracelet
 item.treasure2:sapphire_silver_bracelet.name=Silver Sapphire Bracelet
 item.treasure2:white_pearl_silver_bracelet.name=Silver White Pearl Bracelet
 item.treasure2:black_pearl_silver_bracelet.name=Silver Black Pearl Bracelet
+
+item.treasure2:great_silver_bracelet.name=Great Silver Bracelet
+item.treasure2:great_diamond_silver_bracelet.name=Great Silver Diamond Bracelet
+item.treasure2:great_emerald_silver_bracelet.name=Great Silver Emerald Bracelet
+item.treasure2:great_amethyst_silver_bracelet.name=Great Silver Amethyst Bracelet
+item.treasure2:great_onyx_silver_bracelet.name=Great Silver Onyx Bracelet
+item.treasure2:great_ruby_silver_bracelet.name=Great Silver Ruby Bracelet
+item.treasure2:great_sapphire_silver_bracelet.name=Great Silver Sapphire Bracelet
+item.treasure2:great_white_pearl_silver_bracelet.name=Great Silver White Pearl Bracelet
+item.treasure2:great_black_pearl_silver_bracelet.name=Great Silver Black Pearl Bracelet
+
 item.treasure2:silver_necklace.name=Silver Necklace
 item.treasure2:diamond_silver_necklace.name=Silver Diamond Necklace
 item.treasure2:emerald_silver_necklace.name=Silver Emerald Necklace
@@ -192,6 +277,16 @@ item.treasure2:ruby_silver_necklace.name=Silver Ruby Necklace
 item.treasure2:sapphire_silver_necklace.name=Silver Sapphire Necklace
 item.treasure2:white_pearl_silver_necklace.name=Silver White Pearl Necklace
 item.treasure2:black_pearl_silver_necklace.name=Silver Black Pearl Necklace
+
+item.treasure2:great_silver_necklace.name=Great Silver Necklace
+item.treasure2:great_diamond_silver_necklace.name=Great Silver Diamond Necklace
+item.treasure2:great_emerald_silver_necklace.name=Great Silver Emerald Necklace
+item.treasure2:great_amethyst_silver_necklace.name=Great Silver Amethyst Necklace
+item.treasure2:great_onyx_silver_necklace.name=Great Silver Onyx Necklace
+item.treasure2:great_ruby_silver_necklace.name=Great Silver Ruby Necklace
+item.treasure2:great_sapphire_silver_necklace.name=Great Silver Sapphire Necklace
+item.treasure2:great_white_pearl_silver_necklace.name=Great Silver White Pearl Necklace
+item.treasure2:great_black_pearl_silver_necklace.name=Great Silver Black Pearl Necklace
 
 item.treasure2:silver_signet_ring.name=Silver Signet Ring
 
@@ -205,7 +300,17 @@ item.treasure2:ruby_gold_ring.name=Gold Ruby Ring
 item.treasure2:sapphire_gold_ring.name=Gold Sapphire Ring
 item.treasure2:white_pearl_gold_ring.name=Gold White Pearl Ring
 item.treasure2:black_pearl_gold_ring.name=Gold Black Pearl Ring
+
 item.treasure2:great_gold_ring.name=Great Gold Ring
+item.treasure2:great_diamond_gold_ring.name=Great Gold Diamond Ring
+item.treasure2:great_emerald_gold_ring.name=Great Gold Emerald Ring
+item.treasure2:great_amethyst_gold_ring.name=Great Amethyst Gold Ring
+item.treasure2:great_onyx_gold_ring.name=Great Onyx Gold Ring
+item.treasure2:great_ruby_gold_ring.name=Great Gold Ruby Ring
+item.treasure2:great_sapphire_gold_ring.name=Great Gold Sapphire Ring
+item.treasure2:great_white_pearl_gold_ring.name=Great Gold White Pearl Ring
+item.treasure2:great_black_pearl_gold_ring.name=Great Gold Black Pearl Ring
+
 item.treasure2:gold_bracelet.name=Gold Bracelet
 item.treasure2:diamond_gold_bracelet.name=Gold Diamond Bracelet
 item.treasure2:emerald_gold_bracelet.name=Gold Emerald Bracelet
@@ -215,6 +320,17 @@ item.treasure2:ruby_gold_bracelet.name=Gold Ruby Bracelet
 item.treasure2:sapphire_gold_bracelet.name=Gold Sapphire Bracelet
 item.treasure2:white_pearl_gold_bracelet.name=Gold White Pearl Bracelet
 item.treasure2:black_pearl_gold_bracelet.name=Gold Black Pearl Bracelet
+
+item.treasure2:great_gold_bracelet.name=Great Gold Bracelet
+item.treasure2:great_diamond_gold_bracelet.name=Great Gold Diamond Bracelet
+item.treasure2:great_emerald_gold_bracelet.name=Great Gold Emerald Bracelet
+item.treasure2:great_amethyst_gold_bracelet.name=Great Gold Amethyst Bracelet
+item.treasure2:great_onyx_gold_bracelet.name=Great Gold Onyx Bracelet
+item.treasure2:great_ruby_gold_bracelet.name=Great Gold Ruby Bracelet
+item.treasure2:great_sapphire_gold_bracelet.name=Great Gold Sapphire Bracelet
+item.treasure2:great_white_pearl_gold_bracelet.name=Great Gold White Pearl Bracelet
+item.treasure2:great_black_pearl_gold_bracelet.name=Great Gold Black Pearl Bracelet
+
 item.treasure2:gold_necklace.name=Gold Necklace
 item.treasure2:diamond_gold_necklace.name=Gold Diamond Necklace
 item.treasure2:emerald_gold_necklace.name=Gold Emerald Necklace
@@ -225,11 +341,77 @@ item.treasure2:sapphire_gold_necklace.name=Gold Sapphire Necklace
 item.treasure2:white_pearl_gold_necklace.name=Gold White Pearl Necklace
 item.treasure2:black_pearl_gold_necklace.name=Gold Black Pearl Necklace
 
+item.treasure2:great_gold_necklace.name=Great Gold Necklace
+item.treasure2:great_diamond_gold_necklace.name=Great Gold Diamond Necklace
+item.treasure2:great_emerald_gold_necklace.name=Great Gold Emerald Necklace
+item.treasure2:great_amethyst_gold_necklace.name=Great Gold Amethyst Necklace
+item.treasure2:great_onyx_gold_necklace.name=Great Gold Onyx Necklace
+item.treasure2:great_ruby_gold_necklace.name=Great Gold Ruby Necklace
+item.treasure2:great_sapphire_gold_necklace.name=Great Gold Sapphire Necklace
+item.treasure2:great_white_pearl_gold_necklace.name=Great Gold White Pearl Necklace
+item.treasure2:great_black_pearl_gold_necklace.name=Great Gold Black Pearl Necklace
+
 # blood
 item.treasure2:great_blood_ring.name=Great Blood Ring
+item.treasure2:great_diamond_blood_ring.name=Great Blood Diamond Ring
+item.treasure2:great_emerald_blood_ring.name=Great Blood Emerald Ring
+item.treasure2:great_amethyst_blood_ring.name=Great Blood Amethyst Ring
+item.treasure2:great_onyx_blood_ring.name=Great Blood Onyx Ring
+item.treasure2:great_ruby_blood_ring.name=Great Blood Ruby Ring
+item.treasure2:great_sapphire_blood_ring.name=Great Blood Sapphire Ring
+item.treasure2:great_white_pearl_blood_ring.name=Great Blood White Pearl Ring
+item.treasure2:great_black_pearl_blood_ring.name=Great Blood Black Pearl Ring
+
+item.treasure2:great_blood_necklace.name=Great Blood Necklace
+item.treasure2:great_diamond_blood_necklace.name=Great Blood Diamond Necklace
+item.treasure2:great_emerald_blood_necklace.name=Great Blood Emerald Necklace
+item.treasure2:great_amethyst_blood_necklace.name=Great Blood Amethyst Necklace
+item.treasure2:great_onyx_blood_necklace.name=Great Blood Onyx Necklace
+item.treasure2:great_ruby_blood_necklace.name=Great Blood Ruby Necklace
+item.treasure2:great_sapphire_blood_necklace.name=Great Blood Sapphire Necklace
+item.treasure2:great_white_pearl_blood_necklace.name=Great Blood White Pearl Necklace
+item.treasure2:great_black_pearl_blood_necklace.name=Great Blood Black Pearl Necklace
+
+item.treasure2:great_blood_bracelet.name=Great Blood Bracelet
+item.treasure2:great_diamond_blood_bracelet.name=Great Blood Diamond Bracelet
+item.treasure2:great_emerald_blood_bracelet.name=Great Blood Emerald Bracelet
+item.treasure2:great_amethyst_blood_bracelet.name=Great Blood Amethyst Bracelet
+item.treasure2:great_onyx_blood_bracelet.name=Great Blood Onyx Bracelet
+item.treasure2:great_ruby_blood_bracelet.name=Great Blood Ruby Bracelet
+item.treasure2:great_sapphire_blood_bracelet.name=Great Blood Sapphire Bracelet
+item.treasure2:great_white_pearl_blood_bracelet.name=Great Blood White Pearl Bracelet
+item.treasure2:great_black_pearl_blood_bracelet.name=Great Blood Black Pearl Bracelet
 
 # black
 item.treasure2:great_black_ring.name=Great Shadow Ring
+item.treasure2:great_diamond_black_ring.name=Great Shadow Diamond Ring
+item.treasure2:great_emerald_black_ring.name=Great Shadow Emerald Ring
+item.treasure2:great_amethyst_black_ring.name=Great Shadow Amethyst Ring
+item.treasure2:great_onyx_black_ring.name=Great Shadow Onyx Ring
+item.treasure2:great_ruby_black_ring.name=Great Shadow Ruby Ring
+item.treasure2:great_sapphire_black_ring.name=Great Shadow Sapphire Ring
+item.treasure2:great_white_pearl_black_ring.name=Great Shadow White Pearl Ring
+item.treasure2:great_black_pearl_black_ring.name=Great Shadow Black Pearl Ring
+
+item.treasure2:great_black_necklace.name=Great Shadow Necklace
+item.treasure2:great_diamond_black_necklace.name=Great Shadow Diamond Necklace
+item.treasure2:great_emerald_black_necklace.name=Great Shadow Emerald Necklace
+item.treasure2:great_amethyst_black_necklace.name=Great Shadow Amethyst Necklace
+item.treasure2:great_onyx_black_necklace.name=Great Shadow Onyx Necklace
+item.treasure2:great_ruby_black_necklace.name=Great Shadow Ruby Necklace
+item.treasure2:great_sapphire_black_necklace.name=Great Shadow Sapphire Necklace
+item.treasure2:great_white_pearl_black_necklace.name=Great Shadow White Pearl Necklace
+item.treasure2:great_black_pearl_black_necklace.name=Great Shadow Black Pearl Necklace
+
+item.treasure2:great_black_bracelet.name=Great Shadow Bracelet
+item.treasure2:great_diamond_black_bracelet.name=Great Shadow Diamond Bracelet
+item.treasure2:great_emerald_black_bracelet.name=Great Shadow Emerald Bracelet
+item.treasure2:great_amethyst_black_bracelet.name=Great Shadow Amethyst Bracelet
+item.treasure2:great_onyx_black_bracelet.name=Great Shadow Onyx Bracelet
+item.treasure2:great_ruby_black_bracelet.name=Great Shadow Ruby Bracelet
+item.treasure2:great_sapphire_black_bracelet.name=Great Shadow Sapphire Bracelet
+item.treasure2:great_white_pearl_black_bracelet.name=Great Shadow White Pearl Bracelet
+item.treasure2:great_black_pearl_black_bracelet.name=Great Shadow Black Pearl Bracelet
 
 # pouch
 item.treasure2:pouch.name=Coin Pouch
@@ -300,9 +482,12 @@ item.treasure2:diamond_charm.name=Diamond Charm
 item.treasure2:emerald_charm.name=Emerald Charm
 item.treasure2:ruby_charm.name=Ruby Charm
 item.treasure2:sapphire_charm.name=Sapphire Charm
+item.treasure2:legendary_charm.name=Legendary Charm
+item.treasure2:mythical_charm.name=Mythical Charm
 item.treasure2:charm_book.name=Charm Book
 item.treasure2:anvil_runestone.name=Runestone of the Anvil
 item.treasure2:mana_runestone.name=Runestone of Mana
+item.treasure2:greater_mana_runestone.name=Runestone of Greater Mana
 item.treasure2:durability_runestone.name=Runestone of Durability
 item.treasure2:quality_runestone.name=Runestone of Quality
 item.treasure2:equip_mana_runestone.name=Runestone of Equipment Mana
@@ -340,6 +525,7 @@ tooltip.label.damageable=Damageable: %s
 tooltip.label.specials=Specials: %s
 tooltip.label.accepts_keys=Accepts Keys:
 tooltip.label.wishable=Throw into Wishing Wells
+tooltip.label.gem=Throw into Wishing Wells, use to recharge Charms, or use to upgrade Adornments
 tooltip.label.key_ring=Container for keys
 tooltip.label.pouch=Holds small valuables - coins, gems, charms, etc.
 tooltip.label.treasure_tool=Required for Key/Pick recipes
@@ -351,6 +537,7 @@ tooltip.label.container_size=Inventory Size: %s
 tooltip.durability.amount=Durability: [%s/%s]
 tooltip.durability.amount.infinite=Durability: Infinite
 tooltip.durability.repairs=R[%s/%s]
+tooltip.charm.recharges=R[%s/%s]
 tooltip.charmable.usage=Hold in hand or bind to adornment for buffs
 tooltip.charmable.usage.adornment=Hold in hand or equip for buffs
 tooltip.runestones.usage=Combine with adornment on anvil for enchancements
@@ -365,6 +552,7 @@ tooltip.label.charms=Charms: Max. Level [%s]
 tooltip.label.charms.no_level=Charms:
 
 tooltip.charm.type.aegis=Aegis
+tooltip.charm.type.cheat_death=Cheat Death
 tooltip.charm.type.drain=Draining
 tooltip.charm.type.fire_immunity=Fire Immunity
 tooltip.charm.type.fire_resistence=Fire Resistence
@@ -384,6 +572,7 @@ tooltip.charm.type.ruin=Ruin
 tooltip.charm.level=%s %s
 	
 tooltip.charm.rate.aegis=absorbs all damage
+tooltip.charm.rate.cheat_death=prevents death from fatal damage
 tooltip.charm.rate.drain=drains 0.5 hearts/5 sec from all in %s block radius
 tooltip.charm.rate.fire_resistence=absorbs %s%% of fire damage
 tooltip.charm.rate.fire_immunity=absorbs all fire damage
@@ -394,20 +583,22 @@ tooltip.charm.rate.life_strike=inflicts +%s%% damage for 1 heart health
 tooltip.charm.rate.reflection=reflects %s%% damage to all in %s block radius
 tooltip.charm.rate.satiety=restores 0.5 hunger/%s sec
 tooltip.charm.rate.shielding=absorbs %s%% of damage
-tooltip.charm.rate.decay=your health decays 1 heart/5 sec
+tooltip.charm.rate.decay=your health decays %s heart/%s sec
 tooltip.charm.rate.decrepit=you take +%s%% damage when hit
-tooltip.charm.rate.ruin=your equipment ruins 1 damage/%s sec
+tooltip.charm.rate.ruin=your equipment ruins %s damage/%s sec
 tooltip.charm.uses_gauge=[%s/%s]
 tooltip.charm.cooldown.meter=%ss
 
 tooltip.adornment.type.ring=Ring
 tooltip.adornment.type.necklace=Necklace
 tooltip.adornment.type.bracelet=Bracelet
+tooltip.adornment.upgradable=(Upgradable)
 
 // TODO rename to rune.treasure2:...
 # runestone (typically but not necessary the same as the runestone item)
 runestone.treasure2:anvil_rune.name=Rune of the Anvil
 runestone.treasure2:mana_rune.name=Rune of Mana
+runestone.treasure2:greater_mana_rune.name=Rune of Greater Mana
 runestone.treasure2:durability_rune.name=Rune of Durability
 runestone.treasure2:quality_rune.name=Rune of Quality
 runestone.treasure2:equip_mana_rune.name=Rune of Equipment Mana
@@ -423,6 +614,7 @@ tooltip.runestones.slots=Capacity: [%s/%s]
 # runestone lore
 tooltip.runestone.lore.anvil_rune=Adds Infinite durability to the adornment.
 tooltip.runestone.lore.mana_rune=Adds 25% mana to all charms.
+tooltip.runestone.lore.greater_mana_rune=Adds 50% mana to all charms.
 tooltip.runestone.lore.durability_rune=Adds 25% durability to the adornment.
 tooltip.runestone.lore.quality_rune=Adds 25% effect (damange, healing, etc) to all charms.
 tooltip.runestone.lore.equip_mana_rune=Reduces random armor/equipment durability at 2x cost instead of mana.
@@ -438,8 +630,6 @@ tooltip.lightning_key.specials=Opens any lock in ELEMENTAL category
 tooltip.pilferers_lock_pick.specials=Opens COMMON (%s%%) and UNCOMMON (%s%%) locks
 tooltip.thiefs_lock_pick.specials=Opens COMMON (%s%%) UNCOMMON (%s%%) and SCARCE (%s%%) locks
 tooltip.jewelled_key.specials=Opens any lock in GEMS category
-
-
 
 # charm uses gauge
 tooltip.charm.uses_gauge=[%s/%s]
@@ -477,7 +667,13 @@ tooltip.jeweler_bench.usage=Used to modify adornments.
 tooltip.jeweler_bench.usage1=Place adornment and gem in first row to upgrade the adornment.
 tooltip.jeweler_bench.usage2=Place adornment in second row to destroy gem and keep adornment.
 tooltip.jeweler_bench.usage3=Place adornment in third row to destroy adornment and  keep gem.
-tooltip.jeweler_bench.note=You may lose charms if the adornments' new max level is less than the current charms. 
+tooltip.jeweler_bench.note=You may lose charms if the adornments' new max level is less than the current charms.
+
+tooltip.charming_table.usage=Used to modify charms and runes on adornments.
+tooltip.charming_table.usage1=Place adornment and charm/runestone in first row to add to the adornment.
+tooltip.charming_table.usage2=Place treasure tool in any row with charm/rune to remove charm/runes from adornment.
+tooltip.charming_table.usage3=Place valid gem/item in any charm row to recharge gem if allowable.
+tooltip.charming_table.note=You may lose charms if certain runes are removed (ex. Rune of Charm Capacity).
 
 #gui
 display.wood_chest.name=Wood Chest
@@ -502,9 +698,9 @@ display.crystal_skull_chest.name=Crystal Skull
 display.jeweler_bench.name=Jeweler's Bench
 display.jeweler_bench.cost=Cost: %s
 display.charming_table.name=Charming Table
-display.charming_table.charms=Socket Charms
-display.charming_table.runes=Runes
-
+display.charming_table.charms=Modifiable Charms:
+display.charming_table.runes=Modifiable Runes:
+display.charming_table.cost=Cost: %s
 
 #chat messages
 chat.key_break=Your key broke whilst attempting to unlock the lock!

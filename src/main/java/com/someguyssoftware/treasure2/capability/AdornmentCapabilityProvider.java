@@ -48,9 +48,6 @@ public class AdornmentCapabilityProvider implements ICapabilitySerializable<NBTT
 		else if (capability == TreasureCapabilities.DURABILITY) {
 			return true;
 		}
-//		else if (capability == TreasureCapabilities.MAGICS) {
-//			return true;
-//		}
 		return false;
 	}
 
@@ -65,20 +62,15 @@ public class AdornmentCapabilityProvider implements ICapabilitySerializable<NBTT
 		else if (capability == TreasureCapabilities.DURABILITY) {
 			return TreasureCapabilities.DURABILITY.cast(this.durabilityCap);
 		}
-//		else if (capability == TreasureCapabilities.MAGICS) {
-//			return TreasureCapabilities.MAGICS.cast(this.magicsCap);
-//		}
 		return null;
 	}
 	
 	@Override
 	public NBTTagCompound serializeNBT() {
-//		NBTTagCompound magicsTag = (NBTTagCompound)	TreasureCapabilities.MAGICS.getStorage().writeNBT(TreasureCapabilities.MAGICS, magicsCap, null);
 		NBTTagCompound charmableTag = (NBTTagCompound)TreasureCapabilities.CHARMABLE.getStorage().writeNBT(TreasureCapabilities.CHARMABLE, charmableCap, null);
 		NBTTagCompound runestonesTag = (NBTTagCompound)TreasureCapabilities.RUNESTONES.getStorage().writeNBT(TreasureCapabilities.RUNESTONES, runestonesCap, null);
 		NBTTagCompound durabilityTag = (NBTTagCompound)TreasureCapabilities.DURABILITY.getStorage().writeNBT(TreasureCapabilities.DURABILITY, durabilityCap, null);
 		NBTTagCompound tag = new NBTTagCompound();
-//		tag.setTag("magics", magicsTag);
 		tag.setTag("charmable", charmableTag);
 		tag.setTag("runestones", runestonesTag);
 		tag.setTag("durability", durabilityTag);
@@ -87,10 +79,6 @@ public class AdornmentCapabilityProvider implements ICapabilitySerializable<NBTT
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
-//		if (nbt.hasKey("magics")) {
-//			NBTTagCompound tag = nbt.getCompoundTag("magics");
-//			TreasureCapabilities.MAGICS.getStorage().readNBT(TreasureCapabilities.MAGICS, magicsCap, null, tag);			
-//		}
 		if (nbt.hasKey("charmable")) {
 			NBTTagCompound tag = nbt.getCompoundTag("charmable");
 			TreasureCapabilities.CHARMABLE.getStorage().readNBT(TreasureCapabilities.CHARMABLE, charmableCap, null, tag);
