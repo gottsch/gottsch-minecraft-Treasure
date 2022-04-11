@@ -205,6 +205,10 @@ public class Adornment extends ModItem {
     public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
         super.readNBTShareTag(stack, nbt);
         Treasure.LOGGER.debug("reading share tag");
+        if (nbt == null) {
+        	Treasure.LOGGER.debug("nbt is null - how?");
+        	return;
+        }
         // read nbt -> write key item
         if (nbt.hasKey("charmable")) {
         	NBTTagCompound tag = nbt.getCompoundTag("charmable");
