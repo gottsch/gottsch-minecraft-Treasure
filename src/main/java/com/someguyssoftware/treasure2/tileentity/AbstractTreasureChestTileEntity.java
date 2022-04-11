@@ -3,7 +3,7 @@
  */
 package com.someguyssoftware.treasure2.tileentity;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
+import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -221,7 +221,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			// write custom name
 			writePropertiesToNBT(parentNBT);
 		} catch (Exception e) {
-			logger.error("Error writing to NBT:", e);
+			LOGGER.error("Error writing to NBT:", e);
 		}
 		return parentNBT;
 	}
@@ -246,7 +246,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				parentNBT.setTag("lockStates", list);
 			}
 		} catch (Exception e) {
-			logger.error("Error writing LockStates to NBT:", e);
+			LOGGER.error("Error writing LockStates to NBT:", e);
 		}
 		return parentNBT;
 	}
@@ -278,7 +278,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				sourceTag.setTag("genContext", contextTag);
 			}
 		} catch (Exception e) {
-			logger.error("Error writing Properties to NBT:", e);
+			LOGGER.error("Error writing Properties to NBT:", e);
 		}
 		return sourceTag;
 	}
@@ -295,7 +295,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			// TODO test using ItemStackHelper.saveAllItems(parentNBT, this.getItems(), false); and see if chest items can stack
 			ItemStackHelper.saveAllItems(parentNBT, this.getItems());
 		} catch (Exception e) {
-			logger.error("Error writing Inventory to NBT:", e);
+			LOGGER.error("Error writing Inventory to NBT:", e);
 		}
 		return parentNBT;
 	}
@@ -309,7 +309,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			// read the inventory
 			ItemStackHelper.loadAllItems(parentNBT, this.getItems());
 		} catch (Exception e) {
-			logger.error("Error reading Properties from NBT:", e);
+			LOGGER.error("Error reading Properties from NBT:", e);
 		}
 	}
 
@@ -340,7 +340,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				setLockStates(states);
 			}
 		} catch (Exception e) {
-			logger.error("Error reading Lock States from NBT:", e);
+			LOGGER.error("Error reading Lock States from NBT:", e);
 		}
 	}
 
@@ -381,7 +381,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				this.setGenerationContext(genContext);
 			}
 		} catch (Exception e) {
-			logger.error("Error reading Properties from NBT:", e);
+			LOGGER.error("Error reading Properties from NBT:", e);
 		}
 	}
 
@@ -397,7 +397,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			readInventoryFromNBT(parentNBT);
 			readPropertiesFromNBT(parentNBT);
 		} catch (Exception e) {
-			logger.error("Error reading to NBT:", e);
+			LOGGER.error("Error reading to NBT:", e);
 		}
 	}
 
@@ -410,7 +410,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			readInventoryFromNBT(nbt);
 			readPropertiesFromNBT(nbt);
 		} catch (Exception e) {
-			logger.error("Error reading to NBT:", e);
+			LOGGER.error("Error reading to NBT:", e);
 		}
 	}
 

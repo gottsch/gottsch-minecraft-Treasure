@@ -34,7 +34,7 @@ public class SpawnWitherTreeCommand extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
-		Treasure.logger.debug("Starting to build Treasure! wither tree ...");
+		Treasure.LOGGER.debug("Starting to build Treasure! wither tree ...");
 		
 		try {
 			int x, y, z = 0;
@@ -48,7 +48,7 @@ public class SpawnWitherTreeCommand extends CommandBase {
 			gen.generate(world, random, new Coords(x, y, z), TreasureConfig.WITHER_TREE);
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Error generating Treasure! well:", e);
+			Treasure.LOGGER.error("Error generating Treasure! well:", e);
 		}
 	}
 }

@@ -19,7 +19,7 @@
  */
 package com.someguyssoftware.treasure2.item;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
+import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +39,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.IWishingWellBlock;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
@@ -154,20 +155,20 @@ public class WealthItem extends ModItem implements IWishable {
 			// attempt to get the player who dropped the coin
 			ItemStack wealthItem = itemStack;
 			NBTTagCompound nbt = wealthItem.getTagCompound();
-			logger.debug("item as a tag");
+			LOGGER.debug("item as a tag");
 			EntityPlayer player = null;
 			if (nbt != null && nbt.hasKey(DROPPED_BY_KEY)) {
 				player = Optional.of(world.getPlayerEntityByUUID(UUID.fromString(nbt.getString(DROPPED_BY_KEY))))
 						.orElseGet(() -> {
-								Treasure.logger.debug("getting player by name");
+								Treasure.LOGGER.debug("getting player by name");
 								return world.getPlayerEntityByName(nbt.getString(DROPPED_BY_KEY));
 							}
 						);
-				if (player != null && logger.isDebugEnabled()) {
-					logger.debug("wealth item dropped by player -> {}", player.getName());
+				if (player != null && LOGGER.isDebugEnabled()) {
+					LOGGER.debug("wealth item dropped by player -> {}", player.getName());
 				}
 				else {
-					logger.debug("can't find player!");
+					LOGGER.debug("can't find player!");
 				}
 			}
 //			logger.debug("player -> {}", player.getName().getString());
@@ -188,7 +189,7 @@ public class WealthItem extends ModItem implements IWishable {
 
 			List<ItemStack> itemStacks = new ArrayList<>();
 			for (LootPoolShell pool : lootPoolShells) {
-				logger.debug("processing pool -> {}", pool.getName());
+				LOGGER.debug("processing pool -> {}", pool.getName());
 				// go get the vanilla managed pool
 				LootPool lootPool = table.getPool(pool.getName());
 				
@@ -197,19 +198,19 @@ public class WealthItem extends ModItem implements IWishable {
 			}
 
 			// get effective rarity
-			Rarity effectiveRarity = /*TreasureLootTableRegistry.getLootTableMaster()*/Treasure.LOOT_TABLE_MASTER.getEffectiveRarity(tableShell, getDefaultEffectiveRarity(random));	
-			logger.debug("using effective rarity -> {}", effectiveRarity);
+			Rarity effectiveRarity = /*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getEffectiveRarity(tableShell, getDefaultEffectiveRarity(random));	
+			LOGGER.debug("using effective rarity -> {}", effectiveRarity);
 			
 			// get all injected loot tables
 			injectLoot(world, random, itemStacks, tableShell.getCategory(), effectiveRarity, lootContext);
 			
 			for (ItemStack stack : itemStacks) {
-				logger.debug("possible loot item -> {}", stack.getItem().getRegistryName().toString());
+				LOGGER.debug("possible loot item -> {}", stack.getItem().getRegistryName().toString());
 			}
 			
 			// select one item randomly
 			outputStack = itemStacks.get(RandomHelper.randomInt(0, itemStacks.size()-1));
-			logger.debug("loot item output stack -> {}", outputStack.getItem().getRegistryName().toString());
+			LOGGER.debug("loot item output stack -> {}", outputStack.getItem().getRegistryName().toString());
 		}				
 		return Optional.of(outputStack);
 	}

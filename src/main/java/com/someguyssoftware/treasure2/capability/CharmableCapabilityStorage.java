@@ -96,7 +96,7 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 			nbt.setInteger(MAX_SOCKET_SIZE, instance.getMaxSocketSize());
 
 		} catch (Exception e) {
-			Treasure.logger.error("Unable to write state to NBT:", e);
+			Treasure.LOGGER.error("Unable to write state to NBT:", e);
 		}
 		return nbt;
 	}
@@ -181,7 +181,7 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 						instance.setLevelModifier(levelModifier);
 					}
 					catch(Exception e) {
-						Treasure.logger.warn("unable to create level modifier -> {}", tag.getString(LEVEL_MODIFIER));
+						Treasure.LOGGER.warn("unable to create level modifier -> {}", tag.getString(LEVEL_MODIFIER));
 					}
 				}
 				if (tag.hasKey(MAX_SOCKET_SIZE)) {
@@ -190,7 +190,7 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 			}
 
 		} else {
-			Treasure.logger.warn("Not a tag compound!");
+			Treasure.LOGGER.warn("Not a tag compound!");
 		}
 	}
 }

@@ -51,7 +51,7 @@ public class SocketsRune extends Rune {
 
 		if (itemStack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
 			ICharmableCapability cap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
-			Treasure.logger.debug("adding socket to item -> {}, size -> {}", itemStack.getDisplayName(), cap.getMaxSocketSize());
+			Treasure.LOGGER.debug("adding socket to item -> {}, size -> {}", itemStack.getDisplayName(), cap.getMaxSocketSize());
 			cap.addMaxSocketSize(1);
 			entity.setApplied(true);
 		}

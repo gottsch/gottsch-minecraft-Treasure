@@ -9,9 +9,9 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.wish.IWishProvider;
 import com.someguyssoftware.treasure2.wish.IWishProviderFunction;
 
@@ -35,7 +35,7 @@ public interface IWishable {
 	 * @return
 	 */
 	default public Optional<List<LootTableShell>> buildInjectedLootTableList(String key, Rarity rarity) {
-		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getLootTableByKeyRarity(TreasureLootTableMaster2.ManagedTableType.INJECT, key, rarity));
+		return Optional.ofNullable(TreasureLootTableRegistry.getLootTableMaster().getLootTableByKeyRarity(TreasureLootTableMaster2.ManagedTableType.INJECT, key, rarity));
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public interface IWishable {
 	 * @return
 	 */
 	default public List<ItemStack> getLootItems(World world, Random random, List<LootTableShell> list, LootContext lootContext) {
-		return Treasure.LOOT_TABLE_MASTER.getInjectedLootItems(world, random, list, lootContext);
+		return TreasureLootTableRegistry.getLootTableMaster().getInjectedLootItems(world, random, list, lootContext);
 	}
 	
 	/**
@@ -55,7 +55,7 @@ public interface IWishable {
 	 * @return
 	 */
 	default public LootContext getLootContext() {
-		return Treasure.LOOT_TABLE_MASTER.getContext();
+		return TreasureLootTableRegistry.getLootTableMaster().getContext();
 	}
 	
 	/**

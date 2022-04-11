@@ -88,7 +88,7 @@ public abstract class AbstractChestBlock extends AbstractModContainerBlock imple
 			setTileEntity((ITreasureChestTileEntity)getTileEntityClass().newInstance());
 		}
 		catch(Exception e) {
-			Treasure.logger.warn("Unable to create reference ITreasureChestTileEntity object.");
+			Treasure.LOGGER.warn("Unable to create reference ITreasureChestTileEntity object.");
 		}
 
 	}
@@ -204,7 +204,7 @@ public abstract class AbstractChestBlock extends AbstractModContainerBlock imple
 			}
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Error updating lock states: ", e);
+			Treasure.LOGGER.error("Error updating lock states: ", e);
 		}
 		return hasRotated;
 	}

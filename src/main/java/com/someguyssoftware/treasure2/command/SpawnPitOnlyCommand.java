@@ -54,7 +54,7 @@ public class SpawnPitOnlyCommand extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
-		Treasure.logger.debug("Starting to build Treasure! pit only ...");
+		Treasure.LOGGER.debug("Starting to build Treasure! pit only ...");
 		World world = commandSender.getEntityWorld();
 		Random random = new Random();
 		
@@ -96,7 +96,7 @@ public class SpawnPitOnlyCommand extends CommandBase {
 			GravestoneMarkerGenerator markerGen = new GravestoneMarkerGenerator();
 			markerGen.generate(world, random, surfaceCoords);
 		} catch (Exception e) {
-			Treasure.logger.error("Error generating Treasure! pit:", e);
+			Treasure.LOGGER.error("Error generating Treasure! pit:", e);
 			e.printStackTrace();
 		}
 	}

@@ -49,7 +49,7 @@ public abstract class AbstractProximityTileEntity extends AbstractModTileEntity 
 			}
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Error reading AbstractProximity properties from NBT:",  e);
+			Treasure.LOGGER.error("Error reading AbstractProximity properties from NBT:",  e);
 		}
 	}
 	

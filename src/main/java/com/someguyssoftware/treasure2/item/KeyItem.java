@@ -8,7 +8,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
+import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
@@ -246,7 +246,7 @@ public class KeyItem extends ModItem implements IKeyEffects {
 			// get the tile entity
 			TileEntity tileEntity = worldIn.getTileEntity(chestPos);
 			if (tileEntity == null || !(tileEntity instanceof AbstractTreasureChestTileEntity)) {
-				logger.warn("Null or incorrect TileEntity");
+				LOGGER.warn("Null or incorrect TileEntity");
 				return EnumActionResult.FAIL;
 			}
 			AbstractTreasureChestTileEntity chestTileEntity = (AbstractTreasureChestTileEntity)tileEntity;
@@ -335,7 +335,7 @@ public class KeyItem extends ModItem implements IKeyEffects {
 				}
 			}
 			catch (Exception e) {
-				logger.error("error: ", e);
+				LOGGER.error("error: ", e);
 			}			
 		}		
 		
@@ -402,9 +402,9 @@ public class KeyItem extends ModItem implements IKeyEffects {
 	 */
 	public boolean unlock(LockItem lockItem) {	
 		if (lockItem.acceptsKey(this) || fitsLock(lockItem)) {
-			logger.debug("Lock -> {} accepts key -> {}", lockItem.getRegistryName(), this.getRegistryName());
+			LOGGER.debug("Lock -> {} accepts key -> {}", lockItem.getRegistryName(), this.getRegistryName());
 			if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability())) {
-				logger.debug("Unlock attempt met probability");
+				LOGGER.debug("Unlock attempt met probability");
 				return true;
 			}
 		}

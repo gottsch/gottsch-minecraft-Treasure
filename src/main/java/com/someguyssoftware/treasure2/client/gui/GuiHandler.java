@@ -19,7 +19,7 @@
  */
 package com.someguyssoftware.treasure2.client.gui;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
+import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
 import java.util.Random;
 
@@ -93,13 +93,13 @@ public class GuiHandler implements IGuiHandler {
 
 		if (tileEntity instanceof ITreasureChestTileEntity) {
 			ITreasureChestTileEntity chestTileEntity = (ITreasureChestTileEntity) tileEntity;
-			logger.debug("is chest sealed -> {}", chestTileEntity.isSealed());
+			LOGGER.debug("is chest sealed -> {}", chestTileEntity.isSealed());
 			if (chestTileEntity.isSealed()) {
 				chestTileEntity.setSealed(false);
-                logger.debug("chest gen type -> {}", chestTileEntity.getGenerationContext().getChestGeneratorType()); 
+                LOGGER.debug("chest gen type -> {}", chestTileEntity.getGenerationContext().getChestGeneratorType()); 
                 // construct the chest generator used to create the tile entity
                 IChestGenerator chestGenerator = chestTileEntity.getGenerationContext().getChestGeneratorType().getChestGenerator();
-                logger.debug("chest gen  -> {}", chestTileEntity.getGenerationContext().getChestGeneratorType().getChestGenerator().getClass().getSimpleName());
+                LOGGER.debug("chest gen  -> {}", chestTileEntity.getGenerationContext().getChestGeneratorType().getChestGenerator().getClass().getSimpleName());
                 
                 // fill the chest with loot
                 chestGenerator.fillChest(world, new Random(), tileEntity, chestTileEntity.getGenerationContext().getLootRarity(), player);
@@ -153,11 +153,11 @@ public class GuiHandler implements IGuiHandler {
 			container = new PouchContainer(player.inventory, pouchInventory, pouchStack);			
             break;
 		case JEWELER_BENCH:
-			Treasure.logger.debug("creating jeweler bench container server-side");
+			Treasure.LOGGER.debug("creating jeweler bench container server-side");
 			container = new JewelerBenchContainer(player.inventory, world, new BlockPos(x, y, z), player);
 			break;
 		case CHARMING_BENCH:
-			Treasure.logger.debug("creating charming bench container server-side");
+			Treasure.LOGGER.debug("creating charming bench container server-side");
 			container = new CharmingTableContainer(player.inventory, world, new BlockPos(x, y, z), player);
 			break;
 		default:
@@ -228,12 +228,12 @@ public class GuiHandler implements IGuiHandler {
 		case JEWELER_BENCH:
 			return new JewelerBenchGui(player.inventory, world);
 		case CHARMING_BENCH:
-			Treasure.logger.debug("creating charming bench container client-side");
+			Treasure.LOGGER.debug("creating charming bench container client-side");
 			try {
 				return new CharmingTableGui(player.inventory, world);
 			}
 			catch(Exception e) {
-				Treasure.logger.error("charming bench error:", e);
+				Treasure.LOGGER.error("charming bench error:", e);
 			}
 		default:
 			return null;
@@ -243,7 +243,7 @@ public class GuiHandler implements IGuiHandler {
 	private ITreasureChestTileEntity getChestTileEntity(TileEntity tileEntity) {        
       ITreasureChestTileEntity chestTileEntity = (tileEntity instanceof ITreasureChestTileEntity) ? (ITreasureChestTileEntity) tileEntity : null;
       if (chestTileEntity == null) {
-          logger.warn("Umm, GUI handler error - wrong tile entity.");
+          LOGGER.warn("Umm, GUI handler error - wrong tile entity.");
           return null;
       }
       return chestTileEntity;

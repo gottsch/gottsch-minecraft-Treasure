@@ -3,7 +3,7 @@
  */
 package com.someguyssoftware.treasure2.generator.marker;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
+import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
 import java.util.Random;
 
@@ -84,21 +84,21 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 
 			// determine if valid y
 			if (!WorldInfo.isValidY(spawnCoords)) {
-				logger.debug(String.format("[%d] is not a valid y value.", spawnCoords.getY()));
+				LOGGER.debug(String.format("[%d] is not a valid y value.", spawnCoords.getY()));
 				continue;
 			}
 
 			// get a valid surface location
 			spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, spawnCoords);
 			if (spawnCoords == null) {
-				logger.debug(String.format("Not a valid surface @ %s", coords));
+				LOGGER.debug(String.format("Not a valid surface @ %s", coords));
 				continue;
 			}
 
 			// don't place if the spawnCoords isn't AIR or FOG or REPLACEABLE
 			Cube cube = new Cube(world, spawnCoords);
 			if (!cube.isAir() && !cube.isReplaceable()) {
-				logger.debug("Marker not placed because block  @ [{}] is not Air, Replaceable.",
+				LOGGER.debug("Marker not placed because block  @ [{}] is not Air, Replaceable.",
 						spawnCoords.toShortString());
 				continue;
 			}
@@ -107,7 +107,7 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 			Block block = world.getBlockState(spawnCoords.add(0, -1, 0).toPos()).getBlock();
 			if (block instanceof BlockContainer || block instanceof AbstractModContainerBlock
 					|| block instanceof ITreasureBlock) {
-				logger
+				LOGGER
 						.debug("Marker not placed because block underneath is a chest, container or Treasure block.");
 				continue;
 			}
@@ -124,14 +124,14 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 				marker = TreasureBlocks.gravestones.get(random.nextInt(TreasureBlocks.gravestones.size()));
 			}
 
-			logger.debug("marker class -> {}", marker.getClass().getSimpleName());
+			LOGGER.debug("marker class -> {}", marker.getClass().getSimpleName());
 			// select a random facing direction
 			EnumFacing[] horizontals = EnumFacing.HORIZONTALS;
 			EnumFacing facing = horizontals[random.nextInt(horizontals.length)];
 
 			// place the block
 			if (marker instanceof SkeletonBlock) {
-				logger.debug("should be placing skeleton block -> {}", spawnCoords.toShortString());
+				LOGGER.debug("should be placing skeleton block -> {}", spawnCoords.toShortString());
 				GenUtil.placeSkeleton(world, random, spawnCoords);
 			} else {
 				world.setBlockState(spawnCoords.toPos(), marker.getDefaultState().withProperty(AbstractChestBlock.FACING, facing));

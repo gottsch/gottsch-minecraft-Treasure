@@ -23,6 +23,8 @@ import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
 import com.someguyssoftware.treasure2.meta.StructureType;
+import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
+import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
@@ -84,7 +86,7 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 
 		// select a random rotation
 		Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
-		Treasure.logger.debug("rotation used -> {}", rotation);
+		Treasure.LOGGER.debug("rotation used -> {}", rotation);
 
 		// setup placement
 		PlacementSettings placement = new PlacementSettings();
@@ -100,13 +102,13 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 		 * Environment Checks
 		 */
 		actualSpawnCoords = WorldInfo.getOceanFloorSurfaceCoords(world, actualSpawnCoords);
-		Treasure.logger.debug("ocean floor coords -> {}", actualSpawnCoords.toShortString());
+		Treasure.LOGGER.debug("ocean floor coords -> {}", actualSpawnCoords.toShortString());
 
 		// check if it has % land
 		for (int i = 0; i < 3; i++) {
 			if (!WorldInfo.isSolidBase(world, actualSpawnCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
 				if (i == 2) {
-					Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", REQUIRED_BASE_SIZE, originalSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
+					Treasure.LOGGER.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", REQUIRED_BASE_SIZE, originalSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
 					return result.fail();
 				}
 				else {
@@ -128,9 +130,9 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 
 		// NOTE don't like this here and then AGAIN in TemplateGenerator
 		// get the rule set from the meta which is in the holder
-		StructureMeta meta = (StructureMeta) Treasure.META_MANAGER.getMetaMap().get(holder.getMetaLocation().toString());
+		StructureMeta meta = (StructureMeta) TreasureMetaRegistry.getMetaManager().getMetaMap().get(holder.getMetaLocation().toString());
 		if (meta == null) {
-			Treasure.logger.debug("Unable to locate meta data for template -> {}", holder.getLocation());
+			Treasure.LOGGER.debug("Unable to locate meta data for template -> {}", holder.getLocation());
 			return result.fail();
 		}
 
@@ -138,8 +140,8 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 		IDecayProcessor decayProcessor = null;
 		if (decayRuleSet == null && holder.getDecayRuleSetLocation() != null && holder.getDecayRuleSetLocation().size() > 0) {
 			// create a decay processor with a random rule set
-			decayRuleSet = Treasure.DECAY_MANAGER.getRuleSetMap().get(holder.getDecayRuleSetLocation().get(random.nextInt(holder.getDecayRuleSetLocation().size())).toString());
-			Treasure.logger.debug("decayRuleSet -> {}", decayRuleSet.getName());
+			decayRuleSet = TreasureDecayRegistry.getManager().getRuleSetMap().get(holder.getDecayRuleSetLocation().get(random.nextInt(holder.getDecayRuleSetLocation().size())).toString());
+			Treasure.LOGGER.debug("decayRuleSet -> {}", decayRuleSet.getName());
 			// if decayRuleSet is null the processor should be null
 		}
 		if (decayRuleSet != null) {
@@ -150,7 +152,7 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
 		if (!genResult.isSuccess()) return result.fail();
 
-		Treasure.logger.debug("submerged gen result -> {}", genResult);
+		Treasure.LOGGER.debug("submerged gen result -> {}", genResult);
 
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 		List<BlockContext> bossChestContexts =

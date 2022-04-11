@@ -88,7 +88,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 				// check if the block is dry land
 				ICoords markerCoords = WorldInfo.getDryLandSurfaceCoords(world, circle[i]);
 				if (markerCoords == null || markerCoords == WorldInfo.EMPTY_COORDS) {
-					Treasure.logger.debug("Returning due to marker coords == null or EMPTY_COORDS");
+					Treasure.LOGGER.debug("Returning due to marker coords == null or EMPTY_COORDS");
 					continue; 
 				}
 				Cube markerCube = new Cube(world, markerCoords.add(0, -1, 0));

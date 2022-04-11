@@ -3,7 +3,7 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
+import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,7 +50,7 @@ public class RunestonesCapabilityStorage implements Capability.IStorage<IRunesto
 			mainTag.setBoolean(BINDABLE_TAG, instance.isBindable());
 			mainTag.setBoolean(SOCKETABLE_TAG, instance.isSocketable());
 		} catch (Exception e) {
-			logger.error("Unable to write state to NBT:", e);
+			LOGGER.error("Unable to write state to NBT:", e);
 		}
 		return mainTag;
 	}
@@ -100,7 +100,7 @@ public class RunestonesCapabilityStorage implements Capability.IStorage<IRunesto
 				instance.setSocketable(tag.getBoolean(SOCKETABLE_TAG));
 			}
 		} catch (Exception e) {
-			logger.error("Unable to write state to NBT:", e);
+			LOGGER.error("Unable to write state to NBT:", e);
 		}
 		}		
 	}

@@ -52,7 +52,7 @@ public class SpawnPitCommand extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
-		Treasure.logger.debug("Starting to build Treasure! pit ...");
+		Treasure.LOGGER.debug("Starting to build Treasure! pit ...");
 		
 		try {
 			int x, y, z = 0;
@@ -78,7 +78,7 @@ public class SpawnPitCommand extends CommandBase {
 				rarity = Rarity.valueOf(rarityArg.toUpperCase());
 			}
 			
-			Treasure.logger.debug("Rarity:" + rarity + "; " + rarity.ordinal());
+			Treasure.LOGGER.debug("Rarity:" + rarity + "; " + rarity.ordinal());
 			World world = commandSender.getEntityWorld();
 
 			Random random = new Random();
@@ -93,7 +93,7 @@ public class SpawnPitCommand extends CommandBase {
 			}			
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Error generating Treasure! chest:", e);
+			Treasure.LOGGER.error("Error generating Treasure! chest:", e);
 		}
 	}
 	

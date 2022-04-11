@@ -41,19 +41,14 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
-import com.someguyssoftware.treasure2.capability.TreasureCharmables;
 import com.someguyssoftware.treasure2.charm.Charm;
 import com.someguyssoftware.treasure2.charm.HealingCharm;
 import com.someguyssoftware.treasure2.charm.ICharm;
-import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.material.CharmableMaterial;
-import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
@@ -111,12 +106,12 @@ public class CharmRandomly extends LootFunction {
 
 	@Override
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
-		Treasure.logger.debug("incoming stack -> {}", stack.getDisplayName());
+		Treasure.LOGGER.debug("incoming stack -> {}", stack.getDisplayName());
 		// ensure that the stack has charm capabilities
 		if (!stack.hasCapability(TreasureCapabilities.CHARMABLE, null)) {
 			return stack;
 		}
-		Treasure.logger.debug("has charm cap");
+		Treasure.LOGGER.debug("has charm cap");
 
 		// default charm
 		ICharm defaultCharm = TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(HealingCharm.TYPE, 1))).get();
@@ -151,7 +146,7 @@ public class CharmRandomly extends LootFunction {
 				int lambdaLevel = level;
 				// TODO if level > cap's max level, then use the max level
 				double curseProb = this.curseChance != null ? this.levels.generateInt(rand) : 0D;
-				Treasure.logger.debug("curse chance -> {}", curseProb);
+				Treasure.LOGGER.debug("curse chance -> {}", curseProb);
 
 				// get all the charms from level
 				Optional<List<ICharm>> levelCharms;
@@ -185,17 +180,17 @@ public class CharmRandomly extends LootFunction {
 					tempCharms.addAll(defaultCharms.get());
 				}
 			}
-			Treasure.logger.debug("temp charms size -> {}", tempCharms.size());
+			Treasure.LOGGER.debug("temp charms size -> {}", tempCharms.size());
 			if (!tempCharms.isEmpty()) {
 				// select a charm randomly
 				charm = tempCharms.get(rand.nextInt(tempCharms.size()));
-				Treasure.logger.debug("selected charm for item -> {}", charm.getName().toString());
+				Treasure.LOGGER.debug("selected charm for item -> {}", charm.getName().toString());
 			}
 		}
 		// explicitly listed charms to use. levels, curseChance are ignored
 		else {
 			charm = charms.get(rand.nextInt(charms.size()));
-			Treasure.logger.debug("selected charm for item -> {}", charm.getName().toString());
+			Treasure.LOGGER.debug("selected charm for item -> {}", charm.getName().toString());
 		}
 
 		// short-circuit if a charm is not selected
@@ -203,13 +198,13 @@ public class CharmRandomly extends LootFunction {
 			return stack;
 		}
 
-		Treasure.logger.debug("charm is not null -> {}", charm.getName());
+		Treasure.LOGGER.debug("charm is not null -> {}", charm.getName());
 		if (!charmCap.contains(charm)) {
-			Treasure.logger.debug("adding charm to charm instances - > {}", charm.getName().toString());
+			Treasure.LOGGER.debug("adding charm to charm instances - > {}", charm.getName().toString());
 			charmCap.add(type, charm.createEntity());
 		}
 
-		Treasure.logger.debug("returning charmed item -> {}", stack.getDisplayName());
+		Treasure.LOGGER.debug("returning charmed item -> {}", stack.getDisplayName());
 		return stack;
 	}
 
@@ -266,7 +261,7 @@ public class CharmRandomly extends LootFunction {
 					rarity = Rarity.valueOf(rarityString.toUpperCase());
 				}
 				catch(Exception e) {
-					Treasure.logger.error("Unable to convert rarity {} to Rarity", rarityString);
+					Treasure.LOGGER.error("Unable to convert rarity {} to Rarity", rarityString);
 				}
 			}
 
@@ -281,7 +276,7 @@ public class CharmRandomly extends LootFunction {
 					Optional<ICharm> charm = TreasureCharmRegistry.get(ResourceLocationUtil.create(charmName));
 
 					if (!charm.isPresent()) {
-						Treasure.logger.warn("Unknown charm '{}'", charmName);
+						Treasure.LOGGER.warn("Unknown charm '{}'", charmName);
 					}
 
 					// add to the map to prevent duplicates of same charm
@@ -300,7 +295,7 @@ public class CharmRandomly extends LootFunction {
 					type = InventoryType.valueOf(typeString.toUpperCase());
 				}
 				catch(Exception e) {
-					Treasure.logger.error("Unable to convert type {} to InventoryType", typeString);
+					Treasure.LOGGER.error("Unable to convert type {} to InventoryType", typeString);
 				}
 			}
 

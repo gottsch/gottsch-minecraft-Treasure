@@ -313,7 +313,7 @@ public class CharmableCapability implements ICharmableCapability {
 	@Override
 	public void clearCharms() {
 		// clear the charm inventory
-		Treasure.logger.debug("clearing charms");
+		Treasure.LOGGER.debug("clearing charms");
 		getCharmEntities().clear();
 	}
 

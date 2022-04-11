@@ -74,7 +74,7 @@ public class GenDataPersistence extends WorldSavedData {
 	 */
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
-		Treasure.logger.debug("Loading Treasure! saved gen data...");
+		Treasure.LOGGER.debug("Loading Treasure! saved gen data...");
 
 		// get the world generators
 		SurfaceChestWorldGenerator surfaceChestGen = (SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.SURFACE_CHEST);
@@ -126,7 +126,7 @@ public class GenDataPersistence extends WorldSavedData {
 		
 		///// ChestConfig Registry /////
 		ChestRegistry chestRegistry = ChestRegistry.getInstance();
-		Treasure.logger.debug("ChestConfig Registry size before loading -> {}", chestRegistry.getValues().size());
+		Treasure.LOGGER.debug("ChestConfig Registry size before loading -> {}", chestRegistry.getValues().size());
 		chestRegistry.clear();
 		// load the chest registry
 		NBTTagList chestRegistryTagList = treasureGen.getTagList(CHEST_REGISTRY_TAG_NAME, 10);
@@ -140,7 +140,7 @@ public class GenDataPersistence extends WorldSavedData {
 			int z = coords.getInteger("z");
 			chestRegistry.register(key, new ChestInfo(Rarity.getByValue(rarity), new Coords(x, y, z)));
 		}
-		Treasure.logger.debug("ChestConfig Registry size after loading -> {}", chestRegistry.getValues().size());
+		Treasure.LOGGER.debug("ChestConfig Registry size after loading -> {}", chestRegistry.getValues().size());
 		
 		// Wither Tree Registry
 		WitherTreeRegistry witherTreeRegistry = WitherTreeRegistry.getInstance();
@@ -298,7 +298,7 @@ public class GenDataPersistence extends WorldSavedData {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			Treasure.logger.error("An exception occurred:", e);
+			Treasure.LOGGER.error("An exception occurred:", e);
 		}
 		
 		return tag;

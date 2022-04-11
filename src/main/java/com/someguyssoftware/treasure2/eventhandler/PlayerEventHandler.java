@@ -450,7 +450,7 @@ public class PlayerEventHandler {
 		if (WorldInfo.isClientSide(event.getPlayer().world)) {
 			return;
 		}
-		Treasure.logger.debug("{} tossing item -> {}", event.getPlayer().getName(), event.getEntityItem().getItem().getDisplayName());
+		Treasure.LOGGER.debug("{} tossing item -> {}", event.getPlayer().getName(), event.getEntityItem().getItem().getDisplayName());
 		Item item = event.getEntityItem().getItem().getItem();
 		if (item instanceof IWishable) {
 			ItemStack stack = event.getEntityItem().getItem();
@@ -468,7 +468,7 @@ public class PlayerEventHandler {
 		if (event.getEntity() != null &&  event.getEntity().isInWater() && (event.getEntity() instanceof EntityItem)) {
 			EntityItem entity = (EntityItem) event.getEntity();
 			if (entity.getItem().getItem() instanceof IWishable) {
-				Treasure.logger.debug("wishable item colliding -> {} aabb -> {}", event.getEntity(), event.getAabb());
+				Treasure.LOGGER.debug("wishable item colliding -> {} aabb -> {}", event.getEntity(), event.getAabb());
 				IWishable wishable = (IWishable) entity.getItem().getItem();
 				
 				// get the item

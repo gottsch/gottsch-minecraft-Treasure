@@ -70,16 +70,16 @@ public class PilferersLockPick extends KeyItem {
 	@Override
 	public boolean unlock(LockItem lockItem) {
 		if (lockItem.acceptsKey(this) || fitsLock(lockItem)) {
-			Treasure.logger.debug("Lock accepts key");
+			Treasure.LOGGER.debug("Lock accepts key");
 			if (lockItem.getRarity() == Rarity.COMMON) {
 				if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability())) {
-					Treasure.logger.debug("Unlock attempt met probability");
+					Treasure.LOGGER.debug("Unlock attempt met probability");
 					return true;
 				}
 			}
 			else if (lockItem.getRarity() == Rarity.UNCOMMON) {
 				if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability()/2)) {
-					Treasure.logger.debug("Unlock attempt met probability");
+					Treasure.LOGGER.debug("Unlock attempt met probability");
 					return true;
 				}				
 			}

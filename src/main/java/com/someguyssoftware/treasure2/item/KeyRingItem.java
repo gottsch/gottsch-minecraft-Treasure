@@ -100,7 +100,7 @@ public class KeyRingItem extends ModItem implements IKeyEffects {
 			// get the tile entity
 			TileEntity te = worldIn.getTileEntity(pos);
 			if (te == null || !(te instanceof ITreasureChestTileEntity)) {
-				Treasure.logger.warn("Null or incorrect TileEntity");
+				Treasure.LOGGER.warn("Null or incorrect TileEntity");
 				return EnumActionResult.FAIL;
 			}
 			ITreasureChestTileEntity tcte = (ITreasureChestTileEntity)te;
@@ -137,7 +137,7 @@ public class KeyRingItem extends ModItem implements IKeyEffects {
 					ItemStack keyStack = cap.getStackInSlot(i);
 					if (keyStack != null && keyStack.getItem() != Items.AIR)  {		
 						KeyItem key = (KeyItem) keyStack.getItem();
-						Treasure.logger.debug("Using key from keyring: {}", key.getUnlocalizedName());
+						Treasure.LOGGER.debug("Using key from keyring: {}", key.getUnlocalizedName());
 						boolean breakKey = true;
 						boolean fitsLock = false;
 						//	boolean fitsLock = false;
@@ -148,7 +148,7 @@ public class KeyRingItem extends ModItem implements IKeyEffects {
 						if (lockState != null) {
 							fitsLock = true;
 						}
-						Treasure.logger.debug("key fits lock: {}", lockState);
+						Treasure.LOGGER.debug("key fits lock: {}", lockState);
 
 						// TODO move to a method in KeyItem
 						if (fitsLock) {
@@ -204,7 +204,7 @@ public class KeyRingItem extends ModItem implements IKeyEffects {
 								keyStack.damageItem(1, player);
 							}
 							else {
-								Treasure.logger.debug("Key in keyring is NOT damageable.");
+								Treasure.LOGGER.debug("Key in keyring is NOT damageable.");
 							}			
 							
 							// key unlocked a lock, end loop (ie only unlock 1 lock at a time
@@ -214,7 +214,7 @@ public class KeyRingItem extends ModItem implements IKeyEffects {
 				}				
 			}
 			catch (Exception e) {
-				Treasure.logger.error("error: ", e);
+				Treasure.LOGGER.error("error: ", e);
 			}
 
 		}

@@ -125,7 +125,7 @@ public class CharmingTableContainer extends Container {
 			setupRuneSlots();
 		}
 		catch(Exception e) {
-			Treasure.logger.debug("error:", e);
+			Treasure.LOGGER.debug("error:", e);
 		}
 
 		this.selfPosition = pos;
@@ -261,7 +261,7 @@ public class CharmingTableContainer extends Container {
 
 				@Override
 				public ItemStack onTake(EntityPlayer player, ItemStack stack) {
-					Treasure.logger.debug("attempting to take itemstack from slot # -> {}", this.getSlotIndex());
+					Treasure.LOGGER.debug("attempting to take itemstack from slot # -> {}", this.getSlotIndex());
 					if (!player.capabilities.isCreativeMode) {
 						player.addExperienceLevel(-CharmingTableContainer.this.maximumCost);
 					}
@@ -389,8 +389,8 @@ public class CharmingTableContainer extends Container {
 	 * @param index
 	 */
 	protected void clearSlotsWhenCharmOutputTaken(int index) {
-		Treasure.logger.debug("clearing charm on output taken, index -> {}", index);
-		Treasure.logger.debug("material cost -> {}", this.materialCost);
+		Treasure.LOGGER.debug("clearing charm on output taken, index -> {}", index);
+		Treasure.LOGGER.debug("material cost -> {}", this.materialCost);
 		CharmingTableContainer.this.inputSlots.setInventorySlotContents(0, ItemStack.EMPTY);
 		CharmingTableContainer.this.outputSlot.clear();
 

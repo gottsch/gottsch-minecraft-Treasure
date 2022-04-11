@@ -53,7 +53,7 @@ public class SpawnPitStructureOnlyCommand extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
-		Treasure.logger.debug("Starting to build Treasure! pit structure only...");
+		Treasure.LOGGER.debug("Starting to build Treasure! pit structure only...");
 		World world = commandSender.getEntityWorld();
 		Random random = new Random();
 		
@@ -83,22 +83,22 @@ public class SpawnPitStructureOnlyCommand extends CommandBase {
 			else {
 				pit = Pits.values()[random.nextInt(Pits.values().length)];
 			}
-			Treasure.logger.debug("pit -> {}", pit);
+			Treasure.LOGGER.debug("pit -> {}", pit);
 			
 			ICoords spawnCoords = new Coords(x, y, z);
 			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(x, WorldInfo.getHeightValue(world, spawnCoords), z));
 
-			Treasure.logger.debug("spawn coords -> {}", spawnCoords.toShortString());
-			Treasure.logger.debug("surface coords -> {}", surfaceCoords.toShortString());
+			Treasure.LOGGER.debug("spawn coords -> {}", spawnCoords.toShortString());
+			Treasure.LOGGER.debug("surface coords -> {}", surfaceCoords.toShortString());
 			// select a pit generator
 			Map<Pits, IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenMap = SurfaceChestWorldGenerator.pitGens.row(PitTypes.STRUCTURE);
-			Treasure.logger.debug("pitGenMap.size -> {}", pitGenMap.size());
+			Treasure.LOGGER.debug("pitGenMap.size -> {}", pitGenMap.size());
 			IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = pitGenMap.get(pit);
-			Treasure.logger.debug("pitGen -> {}", pitGenerator);
+			Treasure.LOGGER.debug("pitGen -> {}", pitGenerator);
 			pitGenerator.generate(world, random, surfaceCoords , spawnCoords);
 		}		
 		catch(Exception e) {
-			Treasure.logger.error("Error generating Treasure! pit structure:", e);
+			Treasure.LOGGER.error("Error generating Treasure! pit structure:", e);
 		}
 	}
 	

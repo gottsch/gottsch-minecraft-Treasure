@@ -76,7 +76,7 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 		try {
 			init();
 		} catch (Exception e) {
-			Treasure.logger.error("Unable to instantiate SurfaceChestGenerator:", e);
+			Treasure.LOGGER.error("Unable to instantiate SurfaceChestGenerator:", e);
 		}
 	}
 	
@@ -194,14 +194,14 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
             Rarity rarity = (Rarity) RARITIES.get(random.nextInt(RARITIES.size()));
 			IChestConfig chestConfig = TreasureConfig.CHESTS.submergedChests.configMap.get(rarity); //Configs.chestConfigs.get(rarity);
 			if (chestConfig == null) {
-				Treasure.logger.warn("Unable to locate a chest for rarity {}.", rarity);
+				Treasure.LOGGER.warn("Unable to locate a chest for rarity {}.", rarity);
 				return;
 			}
 			
     		if (chunksSinceLastRarityChest.get(rarity) >= chestConfig.getChunksPerChest()) {
 				// 1. test if chest meets the probability criteria
 				if (!RandomHelper.checkProbability(random, chestConfig.getGenProbability())) {
-					Treasure.logger.debug("Submerged chest does not meet generate probability.");
+					Treasure.LOGGER.debug("Submerged chest does not meet generate probability.");
 					return;
 				}
 				
@@ -209,21 +209,21 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 				TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList());
 				if(biomeCheck == Result.BLACK_LISTED ) {
 		    		if (WorldInfo.isClientSide(world)) {
-		    			Treasure.logger.debug("{} is not a valid biome @ {}", biome.getBiomeName(), coords.toShortString());
+		    			Treasure.LOGGER.debug("{} is not a valid biome @ {}", biome.getBiomeName(), coords.toShortString());
 		    		}
 		    		else {
-		    			Treasure.logger.debug("Biome {} is not valid @ {}",rarity.getValue(), coords.toShortString());
+		    			Treasure.LOGGER.debug("Biome {} is not valid @ {}",rarity.getValue(), coords.toShortString());
 		    		}					
 					return;
 				}
 				else if (biomeCheck == Result.OK) {
 				    if (!BiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeTypeWhiteList(), chestConfig.getBiomeTypeBlackList())) {
-				    	if (Treasure.logger.isDebugEnabled()) {
+				    	if (Treasure.LOGGER.isDebugEnabled()) {
 				    		if (WorldInfo.isClientSide(world)) {
-				    			Treasure.logger.debug("{} is not a valid biome type @ {}", biome.getBiomeName(), coords.toShortString());
+				    			Treasure.LOGGER.debug("{} is not a valid biome type @ {}", biome.getBiomeName(), coords.toShortString());
 				    		}
 				    		else {
-				    			Treasure.logger.debug("Biome type of {} is not valid @ {}",rarity.getValue(), coords.toShortString());
+				    			Treasure.LOGGER.debug("Biome type of {} is not valid @ {}",rarity.getValue(), coords.toShortString());
 				    		}
 				    	}
 				    	return;
@@ -232,7 +232,7 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 			    
      			// 3. check against all registered chests
      			if (isRegisteredChestWithinDistance(world, coords, TreasureConfig.CHESTS.submergedChests.minDistancePerChest)) {
-   					Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
+   					Treasure.LOGGER.debug("The distance to the nearest treasure chest is less than the minimun required.");
      				return;
      			}
      			     			
@@ -240,7 +240,7 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
     			chunksSinceLastRarityChest.put(rarity, 0);
  			
     			// generate the chest/pit/chambers
-				Treasure.logger.debug("Attempting to generate pit/chest.");
+				Treasure.LOGGER.debug("Attempting to generate pit/chest.");
 				GeneratorResult<GeneratorData> result = null;
 				result = generate(world, random, coords, rarity, chestCollectionGeneratorsMap.get(rarity).next(), TreasureConfig.CHESTS.submergedChests.configMap.get(rarity));
 				
@@ -270,16 +270,16 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 
 		// 1. collect location data points
 		ICoords surfaceCoords = WorldInfo.getOceanFloorSurfaceCoords(world, coords);
-		Treasure.logger.debug("ocean floor surface coords -> {}", surfaceCoords.toShortString());
+		Treasure.LOGGER.debug("ocean floor surface coords -> {}", surfaceCoords.toShortString());
 		if (!WorldInfo.isValidY(surfaceCoords)) {
-			Treasure.logger.debug("ocean floor surface coords are invalid @ {}", surfaceCoords.toShortString());
+			Treasure.LOGGER.debug("ocean floor surface coords are invalid @ {}", surfaceCoords.toShortString());
 			return result.fail();
 		}
 		// TEMP - if building a structure, markerCoords could be different than original surface coords because for rotation etc.
 		markerCoords = surfaceCoords;
 
 		genResult = generateSubmergedRuins(world, random, /*spawnCoords*/ surfaceCoords, config);
-		Treasure.logger.debug("submerged result -> {}", genResult.toString());
+		Treasure.LOGGER.debug("submerged result -> {}", genResult.toString());
 		if (!genResult.isSuccess()) {
 			return result.fail();
 		}
@@ -293,14 +293,14 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 		if (markerCoords == null) {
 			markerCoords = surfaceCoords;
 		}
-		Treasure.logger.debug("submerged spawn coords -> {}", markerCoords.toShortString());
+		Treasure.LOGGER.debug("submerged spawn coords -> {}", markerCoords.toShortString());
 
 		GeneratorResult<ChestGeneratorData> chestResult = chestSelector.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestContext().getState());
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}
 		
-		Treasure.logger.info("CHEATER! {} chest at coords: {}", chestRarity, markerCoords.toShortString());
+		Treasure.LOGGER.info("CHEATER! {} chest at coords: {}", chestRarity, markerCoords.toShortString());
 		result.setData(chestResult.getData());
 		return result.success();
 	}
@@ -322,7 +322,7 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 
 		// build the structure
 		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, random, spawnCoords);
-		Treasure.logger.debug("submerged struct result -> {}", genResult);
+		Treasure.LOGGER.debug("submerged struct result -> {}", genResult);
 		if (!genResult.isSuccess()) return result.fail();
 
 		result.setData(genResult.getData());
@@ -364,7 +364,7 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 		List<ChestInfo> infos = ChestRegistry.getInstance().getValues();
 
 		if (infos == null || infos.size() == 0) {
-			Treasure.logger.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");
+			Treasure.LOGGER.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");
 			return false;
 		}
 		

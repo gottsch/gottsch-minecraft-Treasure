@@ -47,11 +47,11 @@ public class PersistenceRune extends Rune {
 
 	@Override
 	public void apply(ItemStack itemStack, IRuneEntity entity) {
-		Treasure.logger.debug("applying persistence rune, isvalid -> {}, isapplied -> {}", isValid(itemStack), entity.isApplied());
+		Treasure.LOGGER.debug("applying persistence rune, isvalid -> {}, isapplied -> {}", isValid(itemStack), entity.isApplied());
 		if (!isValid(itemStack) || entity.isApplied()) {
 			return;
 		}
-		Treasure.logger.debug("do we get here?");
+		Treasure.LOGGER.debug("do we get here?");
         NBTTagList enchantmentTagList = itemStack.getEnchantmentTagList();
         int indexOfVanishing = -1;
         for (int i = 0; i < enchantmentTagList.tagCount(); ++i) {

@@ -74,7 +74,7 @@ public class HarvestingCharm extends Charm {
 				Block block = Block.getBlockFromItem(stack.getItem());
 				if (block != Blocks.AIR) {
 					if (block.hasTileEntity(block.getDefaultState())) {
-						Treasure.logger.debug("skipped item because it has a tile entity.");
+						Treasure.LOGGER.debug("skipped item because it has a tile entity.");
 						continue;
 					}
 				} else {

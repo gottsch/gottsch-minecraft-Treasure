@@ -111,7 +111,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		try {
 			init();
 		} catch (Exception e) {
-			Treasure.logger.error("Unable to instantiate SurfaceChestGenerator:", e);
+			Treasure.LOGGER.error("Unable to instantiate SurfaceChestGenerator:", e);
 		}
 	}
 
@@ -174,7 +174,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 			// determine what type to generate
 			IWitherTreeConfig treeConfig = TreasureConfig.WITHER_TREE;
 			if (treeConfig == null) {
-				Treasure.logger.warn("Unable to locate a config for wither tree {}.", treeConfig);
+				Treasure.LOGGER.warn("Unable to locate a config for wither tree {}.", treeConfig);
 				return;
 			}
 
@@ -189,12 +189,12 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 				} else if (biomeCheck == Result.OK) {
 					if (!BiomeHelper.isBiomeAllowed(biome, treeConfig.getBiomeTypeWhiteList(),
 							treeConfig.getBiomeTypeBlackList())) {
-						if (Treasure.logger.isDebugEnabled()) {
+						if (Treasure.LOGGER.isDebugEnabled()) {
 							if (WorldInfo.isClientSide(world)) {
-								Treasure.logger.debug("{} is not a valid biome @ {} for Wither Tree",
+								Treasure.LOGGER.debug("{} is not a valid biome @ {} for Wither Tree",
 										biome.getBiomeName(), coords.toShortString());
 							} else {
-								Treasure.logger.debug("Biome is not valid @ {} for Wither Tree",
+								Treasure.LOGGER.debug("Biome is not valid @ {} for Wither Tree",
 										coords.toShortString());
 							}
 						}
@@ -206,19 +206,19 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 				// 2. test if well meets the probability criteria
 //				Treasure.logger.debug("wither tree probability: {}", treeConfig.getGenProbability());
 				if (!RandomHelper.checkProbability(random, treeConfig.getGenProbability())) {
-					Treasure.logger.debug("Wither does not meet generate probability.");
+					Treasure.LOGGER.debug("Wither does not meet generate probability.");
 					return;
 				}
 
 				// 3. check against all registered chests
 				if (isRegisteredChestWithinDistance(world, coords, TreasureConfig.CHESTS.surfaceChests.minDistancePerChest)) {
-					Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
+					Treasure.LOGGER.debug("The distance to the nearest treasure chest is less than the minimun required.");
 					return;
 				}
 				
 				// 4. check against all wither trees
 				if (isRegisteredWitherTreeWithinDistance(world, coords, dimensionID, TreasureConfig.WITHER_TREE.minDistancePerWitherTree)) {
-					Treasure.logger.debug("The distance to the nearest wither tree is less than the minimun required.");
+					Treasure.LOGGER.debug("The distance to the nearest wither tree is less than the minimun required.");
 					return;
 				}
 
@@ -227,7 +227,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 				chunksSinceLastTree = 0;
 
 				// generate the well
-				Treasure.logger.debug("Attempting to generate a wither tree");
+				Treasure.LOGGER.debug("Attempting to generate a wither tree");
 				GeneratorResult<GeneratorData> result = generate(world, random, coords, treeConfig);
 
 				if (result.isSuccess()) {
@@ -262,9 +262,9 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 
 		// 1. determine y-coord of land for markers
 		surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, coords);
-		Treasure.logger.debug("Surface Coords @ {}", surfaceCoords.toShortString());
+		Treasure.LOGGER.debug("Surface Coords @ {}", surfaceCoords.toShortString());
 		if (surfaceCoords == null || surfaceCoords == WorldInfo.EMPTY_COORDS) {
-			Treasure.logger.debug("Returning due to surface coords == null or EMPTY_COORDS");
+			Treasure.LOGGER.debug("Returning due to surface coords == null or EMPTY_COORDS");
 			return result.fail();
 		}
 		witherTreeCoords = surfaceCoords;
@@ -276,10 +276,10 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		// TODO don't like that using static call to SurfaceChestWorldGenerator. Looks
 		// like more refactoring in the future.
 		// add pit
-		Treasure.logger.debug("generate pit");
+		Treasure.LOGGER.debug("generate pit");
 		GeneratorResult<ChestGeneratorData> genResult = SurfaceChestWorldGenerator.generatePit(world, random,
 				Rarity.SCARCE, witherTreeCoords, TreasureConfig.CHESTS.surfaceChests.scarceChestProperties);
-		Treasure.logger.debug("result -> {}", genResult.toString());
+		Treasure.LOGGER.debug("result -> {}", genResult.toString());
 		if (!genResult.isSuccess()) {
 			return result.fail();
 		}
@@ -333,7 +333,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 				}
 			}
 		}
-		Treasure.logger.debug("size of clearing -> {}", witherGroveSize.toString());
+		Treasure.LOGGER.debug("size of clearing -> {}", witherGroveSize.toString());
 
 		buildRocks(world, random, witherGroveSize);
 
@@ -351,7 +351,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 			return result.fail();
 		}
 
-		Treasure.logger.info("CHEATER! wither chest at coords: {}", witherTreeCoords.toShortString());
+		Treasure.LOGGER.info("CHEATER! wither chest at coords: {}", witherTreeCoords.toShortString());
 		result.setData(chestResult.getData());
 		return result.success();
 	}
@@ -696,7 +696,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		List<ChestInfo> infos = ChestRegistry.getInstance().getValues();
 
 		if (infos == null || infos.size() == 0) {
-			Treasure.logger
+			Treasure.LOGGER
 					.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");
 			return false;
 		}
@@ -724,7 +724,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		List<WitherTreeInfo> infos = WitherTreeRegistry.getInstance().getValues(dimensionID);
 		
 		if (infos == null || infos.size() == 0) {
-			Treasure.logger.debug("Unable to locate the Wither Tree Registry or the Registry doesn't contain any values");
+			Treasure.LOGGER.debug("Unable to locate the Wither Tree Registry or the Registry doesn't contain any values");
 			return false;
 		}
 		

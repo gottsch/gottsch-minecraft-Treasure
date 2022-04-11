@@ -287,7 +287,7 @@ public class CharmEventHandler {
 			if (context.getCapability().isBindable() 
 					&& context.getEntity().getRecharges() <= 0
 					&& context.getEntity().getMana() <= 0.0 ) {
-				Treasure.logger.debug("charm is empty without any recharges -> remove");
+				Treasure.LOGGER.debug("charm is empty without any recharges -> remove");
 				context.getCapability().remove(context.getType(), context.getIndex());
 			}
 		});
