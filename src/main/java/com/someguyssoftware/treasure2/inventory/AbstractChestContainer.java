@@ -61,7 +61,7 @@ public abstract class AbstractChestContainer extends Container {
 	public void buildContainer(InventoryPlayer player, IInventory inventory) {
 		// ensure the  container's slot count is the same size of the backing IInventory
 		if (getContainerInventorySlotCount()  != inventory.getSizeInventory()) {
-			Treasure.logger.error("Mismatched slot count in Container(" + getContainerInventorySlotCount()
+			Treasure.LOGGER.error("Mismatched slot count in Container(" + getContainerInventorySlotCount()
 				  + ") and TileInventory (" + inventory.getSizeInventory()+")");
 		}
 		        
@@ -148,7 +148,7 @@ public abstract class AbstractChestContainer extends Container {
 				return ItemStack.EMPTY;
 			}
 		} else {
-			Treasure.logger.warn("Invalid slotIndex:" + sourceSlotIndex);
+			Treasure.LOGGER.warn("Invalid slotIndex:" + sourceSlotIndex);
 			return ItemStack.EMPTY;
 		}
 

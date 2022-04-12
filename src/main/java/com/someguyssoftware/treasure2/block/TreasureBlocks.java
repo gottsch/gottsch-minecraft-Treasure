@@ -604,6 +604,10 @@ public class TreasureBlocks {
 					}
 				}
 			}
+			
+			// register chest for LEGENDARY and MYTHICAL using same as EPIC
+			chests.put(Rarity.LEGENDARY, DREAD_PIRATE_CHEST);
+			chests.put(Rarity.MYTHICAL, COMPRESSOR_CHEST);
 		}
 
 		/**

@@ -28,11 +28,11 @@ public class PoisonMistMessageHandlerOnServer implements IMessageHandler<PoisonM
 	@Override
 	public IMessage onMessage(PoisonMistMessageToServer message, MessageContext ctx) {
 		if (ctx.side != Side.SERVER) {
-			Treasure.logger.error("PoisonMistMessageToServer received on wrong side -> {}", ctx.side);
+			Treasure.LOGGER.error("PoisonMistMessageToServer received on wrong side -> {}", ctx.side);
 		      return null;
 		    }
 		    if (!message.isMessageValid()) {
-		    	Treasure.logger.warn("PoisonMistMessageToServer was invalid -> {}", message.toString());
+		    	Treasure.LOGGER.warn("PoisonMistMessageToServer was invalid -> {}", message.toString());
 		      return null;
 		    }
 		    
@@ -42,7 +42,7 @@ public class PoisonMistMessageHandlerOnServer implements IMessageHandler<PoisonM
 
 		    final EntityPlayerMP sendingPlayer = ctx.getServerHandler().player;
 		    if (sendingPlayer == null) {
-		      Treasure.logger.warn("EntityPlayerMP was null when PoisonMistMessageToServer was received.");
+		      Treasure.LOGGER.warn("EntityPlayerMP was null when PoisonMistMessageToServer was received.");
 		      return null;
 		    }
 		    
@@ -73,12 +73,12 @@ public class PoisonMistMessageHandlerOnServer implements IMessageHandler<PoisonM
 		    	// if player does not have poison effect, add it
 		    	if (potionEffect == null) {
 		    		player.addPotionEffect(new PotionEffect(MobEffects.POISON, 300, 0));
-		    		Treasure.logger.debug("poison potion effect is null, should be adding....");
+		    		Treasure.LOGGER.debug("poison potion effect is null, should be adding....");
 		    	}	
 	        }
 		  }
 		  catch(Exception e) {
-			  Treasure.logger.error("Unexpected error ->", e);
+			  Treasure.LOGGER.error("Unexpected error ->", e);
 		  }
 	  }
 }

@@ -50,7 +50,6 @@ public class HealingCharm extends Charm {
 	public boolean update(World world, Random random, ICoords coords, EntityPlayer player, Event event, final ICharmEntity entity) {
 		boolean result = false;
 		if (world.getTotalWorldTime() % entity.getFrequency() == 0) {
-			Treasure.logger.debug("healing entity is using cost eval -> {}", getCostEvaluator().getClass().getSimpleName());
 			if (entity.getMana() > 0 && player.getHealth() < player.getMaxHealth() && !player.isDead) {
 				// determine the actual amount of health (0.0 -> getAmount())
 				float amount = Math.min((float)getAmount(), player.getMaxHealth() - player.getHealth());
@@ -61,20 +60,6 @@ public class HealingCharm extends Charm {
 		}
 		return result;
 	}
-		
-	/**
-	 * 
-	 */
-//	@SuppressWarnings("deprecation")
-//	@Override
-//	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
-////        TextFormatting color = TextFormatting.RED;       
-//		tooltip.add(getLabel(entity));
-//		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent3", 
-//				I18n.translateToLocalFormatted("tooltip.charm.rate.healing", 
-//						DECIMAL_FORMAT.format(getAmount()/2),
-//						(int)(entity.getFrequency()/TICKS_PER_SECOND))));
-//	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -90,7 +75,7 @@ public class HealingCharm extends Charm {
 
 		@Override
 		public ICharm build() {
-			return  new HealingCharm(this);
+			return new HealingCharm(this);
 		}
 	}
 	

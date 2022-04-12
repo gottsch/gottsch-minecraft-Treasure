@@ -80,7 +80,7 @@ public class ReflectionCharm extends Charm {
 				List<EntityMob> mobs = world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(px - range, py - range, pz - range, px + range, py + range, pz + range));
 				mobs.forEach(mob -> {
 					boolean flag = mob.attackEntityFrom(DamageSource.GENERIC, (float) reflectedAmount);
-					Treasure.logger.debug("reflected damage {} onto mob -> {} was successful -> {}", reflectedAmount, mob.getName(), flag);
+					Treasure.LOGGER.debug("reflected damage {} onto mob -> {} was successful -> {}", reflectedAmount, mob.getName(), flag);
 				});
 
 				// get all the mob within a radius
@@ -91,17 +91,11 @@ public class ReflectionCharm extends Charm {
 		}
 		return result;
 	}
-
-	/**
-	 * 
-	 */
+	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.BLUE;
-		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
-		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.reflection", 
-				Math.toIntExact((long) (entity.getAmount()*100)), entity.getRange())));
+	public String getCharmDesc(ICharmEntity entity) {
+		return  I18n.translateToLocalFormatted("tooltip.charm.rate.reflection", Math.toIntExact((long) (entity.getAmount()*100)), entity.getRange());
 	}
 	
 	public static class Builder extends Charm.Builder {

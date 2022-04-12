@@ -135,7 +135,9 @@ public class TreasureModels {
         registerItemModel(TreasureItems.RING_OF_FORTITUDE);
         registerItemModel(TreasureItems.PEASANTS_FORTUNE);        
         registerItemModel(TreasureItems.CASTLE_RING);
+        registerItemModel(TreasureItems.BRACELET_OF_WONDER); 
         registerItemModel(TreasureItems.SHADOWS_GIFT);
+        registerItemModel(TreasureItems.RING_OF_LIFE_DEATH); 
         registerItemModel(TreasureItems.MEDICS_TOKEN);
         registerItemModel(TreasureItems.SALANDAARS_WARD);
         registerItemModel(TreasureItems.ADEPHAGIAS_BOUNTY);
@@ -147,6 +149,7 @@ public class TreasureModels {
         
         // RUNESTONES
         registerItemModel(TreasureItems.MANA_RUNESTONE);
+        registerItemModel(TreasureItems.GREATER_MANA_RUNESTONE);
         registerItemModel(TreasureItems.DURABILITY_RUNESTONE);
         registerItemModel(TreasureItems.QUALITY_RUNESTONE);
         registerItemModel(TreasureItems.EQUIP_MANA_RUNESTONE);

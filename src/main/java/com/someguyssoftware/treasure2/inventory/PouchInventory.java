@@ -60,7 +60,7 @@ public class PouchInventory implements IInventory {
 			}
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Error reading items from IItemHandler:",  e);
+			Treasure.LOGGER.error("Error reading items from IItemHandler:",  e);
 		}
 	}
 	
@@ -84,7 +84,7 @@ public class PouchInventory implements IInventory {
 			}
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Error writing Inventory to IItemHandler:",  e);
+			Treasure.LOGGER.error("Error writing Inventory to IItemHandler:",  e);
 		}
 	}
 	

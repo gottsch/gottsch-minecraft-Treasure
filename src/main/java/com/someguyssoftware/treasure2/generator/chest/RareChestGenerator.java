@@ -16,6 +16,7 @@ import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 
@@ -44,8 +45,8 @@ public class RareChestGenerator implements IChestGenerator {
 	public List<LootTableShell> buildLootTableList2(final Rarity chestRarity) {
 		// get all loot tables by column key
 		List<LootTableShell> tables = new ArrayList<>();
-		tables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.SCARCE));
-		tables.addAll(Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.RARE));
+		tables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
+		tables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE));
 		return tables;
 	}	
 	
@@ -55,7 +56,7 @@ public class RareChestGenerator implements IChestGenerator {
 	@Override
 	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
-		Treasure.logger.debug("# of locks to use: {})", numLocks);
+		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);
 		
 		return numLocks;
 	}

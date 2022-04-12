@@ -3,7 +3,7 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
+import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,7 +31,7 @@ public class DurabilityCapabilityStorage implements Capability.IStorage<IDurabil
 			mainTag.setInteger("repairs", instance.getRepairs());
 			mainTag.setInteger("maxRepairs", instance.getMaxRepairs());
 		} catch (Exception e) {
-			logger.error("Unable to write state to NBT:", e);
+			LOGGER.error("Unable to write state to NBT:", e);
 		}
 		return mainTag;
 	}

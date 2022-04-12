@@ -88,14 +88,9 @@ public class DirtFillCurse extends Charm {
 		return result;
 	}
 
-	/**
-	 * 
-	 */
-	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.DARK_RED;
-		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
+	public TextFormatting getCharmLabelColor() {
+		return TextFormatting.DARK_RED;
 	}
 
 	/**

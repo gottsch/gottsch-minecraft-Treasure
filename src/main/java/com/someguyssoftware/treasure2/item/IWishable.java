@@ -26,9 +26,9 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -64,7 +64,7 @@ public interface IWishable {
 	default public void injectLoot(World world, Random random, List<ItemStack> itemStacks, String category, Rarity rarity, LootContext lootContext) {
 		Optional<List<LootTableShell>> injectLootTableShells = buildInjectedLootTableList(category, rarity);		
 		if (injectLootTableShells.isPresent()) {
-			itemStacks.addAll(/*TreasureLootTableRegistry.getLootTableMaster()*/Treasure.LOOT_TABLE_MASTER.getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext));
+			itemStacks.addAll(/*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext));
 		}
 	}
 	
@@ -75,7 +75,7 @@ public interface IWishable {
 	 * @return
 	 */
 	default public Optional<List<LootTableShell>> buildInjectedLootTableList(String key, Rarity rarity) {
-		return Optional.ofNullable(/*TreasureLootTableRegistry.getLootTableMaster()*/Treasure.LOOT_TABLE_MASTER.getLootTableByKeyRarity(TreasureLootTableMaster2.ManagedTableType.INJECT, key, rarity));
+		return Optional.ofNullable(/*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getLootTableByKeyRarity(TreasureLootTableMaster2.ManagedTableType.INJECT, key, rarity));
 	}
 
 	/**
@@ -83,7 +83,7 @@ public interface IWishable {
 	 * @return
 	 */
 	default public List<LootTableShell> getLootTables() {
-		return Treasure.LOOT_TABLE_MASTER.getLootTableByRarity(Rarity.COMMON);
+		return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.COMMON);
 	}
 	
 	/**
@@ -111,7 +111,7 @@ public interface IWishable {
 	 */
 	@Deprecated
 	default public LootContext getLootContext() {
-		return Treasure.LOOT_TABLE_MASTER.getContext();
+		return TreasureLootTableRegistry.getLootTableMaster().getContext();
 	}
 	
 	/**

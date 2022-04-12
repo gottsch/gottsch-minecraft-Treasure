@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.adornment.AdornmentSize;
-import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
+import com.someguyssoftware.treasure2.adornment.TreasureAdornmentRegistry;
 import com.someguyssoftware.treasure2.capability.AdornmentCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.DurabilityCapability;
@@ -40,6 +40,7 @@ import com.someguyssoftware.treasure2.enums.AdornmentType;
 import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
 
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
@@ -67,7 +68,7 @@ public class Adornment extends ModItem {
 	 * @param type
 	 */
 	public Adornment(String modID, String name, AdornmentType type) {
-		this(modID, name, type, TreasureAdornments.STANDARD);
+		this(modID, name, type, TreasureAdornmentRegistry.STANDARD);
 	}
 	
 	/**
@@ -163,6 +164,10 @@ public class Adornment extends ModItem {
 		if (stack.hasCapability(TreasureCapabilities.RUNESTONES, null)) {
 			getRunestonesCap(stack).appendHoverText(stack, world, tooltip, flag);
 		}
+		
+		if (getCap(stack).getSourceItem() == Items.AIR.getRegistryName() || getCap(stack).getSourceItem() == null) {
+			tooltip.add(TextFormatting.WHITE.toString() + "" + TextFormatting.ITALIC.toString() + I18n.translateToLocal("tooltip.adornment.upgradable"));
+		}
 	}
 	
 	/**
@@ -199,7 +204,11 @@ public class Adornment extends ModItem {
     @Override
     public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
         super.readNBTShareTag(stack, nbt);
-        Treasure.logger.debug("reading share tag");
+        Treasure.LOGGER.debug("reading share tag");
+        if (nbt == null) {
+        	Treasure.LOGGER.debug("nbt is null - how?");
+        	return;
+        }
         // read nbt -> write key item
         if (nbt.hasKey("charmable")) {
         	NBTTagCompound tag = nbt.getCompoundTag("charmable");

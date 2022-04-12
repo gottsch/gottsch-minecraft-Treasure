@@ -47,7 +47,7 @@ public class GemOreWorldGenerator implements ITreasureWorldGenerator {
 		try {
 			init();
 		} catch (Exception e) {
-			Treasure.logger.error("Unable to instantiate GemOreGenerator:", e);
+			Treasure.LOGGER.error("Unable to instantiate GemOreGenerator:", e);
         }
 	}
 

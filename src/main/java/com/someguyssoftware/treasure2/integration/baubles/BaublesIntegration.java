@@ -180,7 +180,6 @@ public class BaublesIntegration {
 	 * Sub-class Bauble Capability Provider to include required Adornment capabilities (CharmInventoryCapability)
 	 */
 	public static class BaubleAdornmentCapabilityProvider extends BaubleProvider implements ICapabilitySerializable<NBTTagCompound> {
-//		private final IMagicsInventoryCapability magicsCap;
 		private final ICharmableCapability charmableCap;
 		private final IRunestonesCapability runestonesCap;
 		private final IDurabilityCapability durabilityCap;
@@ -194,30 +193,16 @@ public class BaublesIntegration {
 		 */
 		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType) {
 			super(adornmentType);
-//			charm = new CharmInventoryCapability();
-//			this.magicsCap = new MagicsInventoryCapability(1, 1, 1);
 			this.charmableCap = new CharmableCapability(0, 0, 0);
-//			this.runestonesCap = new RunestonesCapability(magicsCap);
 			this.runestonesCap = new RunestonesCapability(0, 0, 0);
 			this.durabilityCap = new DurabilityCapability();
 			
 			this.adornmentCapabilityProvider = new AdornmentCapabilityProvider(charmableCap, runestonesCap, durabilityCap);
 		}
 		
-		/**
-		 * 
-		 * @param charmable
-		 */
-//		public AdornmentProvider(AdornmentType adornmentType, ICharmInventoryCapability capability) {
-//			super(adornmentType);
-//			charm = capability;
-//		}
-		
 		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType, ICharmableCapability charmable) {
 			super(adornmentType);
-//			this.magicsCap = charmable.getMagicsCap();
 			this.charmableCap = charmable;
-//			this.runestonesCap = new RunestonesCapability(magicsCap);
 			this.runestonesCap = new RunestonesCapability(0, 0, 0);
 			this.durabilityCap = new DurabilityCapability();
 			
@@ -226,9 +211,7 @@ public class BaublesIntegration {
 		
 		public BaubleAdornmentCapabilityProvider(AdornmentType adornmentType, ICharmableCapability charmable, IDurabilityCapability durability) {
 			super(adornmentType);
-//			this.magicsCap = charmable.getMagicsCap();
 			this.charmableCap = charmable;
-//			this.runestonesCap = new RunestonesCapability(magicsCap);
 			this.runestonesCap = new RunestonesCapability(0, 0, 0);
 			this.durabilityCap = durability;
 			

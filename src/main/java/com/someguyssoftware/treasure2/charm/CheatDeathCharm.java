@@ -92,15 +92,11 @@ public class CheatDeathCharm extends Charm {
 		}
 		return result;
 	}
-
-	/**
-	 * 
-	 */
+	
+	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.BLUE;
-		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
-		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.cheat_death", Math.round(entity.getAmount()))));
+	public String getCharmDesc(ICharmEntity entity) {
+		return I18n.translateToLocalFormatted("tooltip.charm.rate.cheat_death", Math.round(entity.getAmount()));
 	}
 
 	/*

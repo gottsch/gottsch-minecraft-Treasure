@@ -93,7 +93,7 @@ public class DrainCharm extends Charm {
 				}
 				mobs.forEach(mob -> {
 					boolean flag = mob.attackEntityFrom(DamageSource.GENERIC, (float)getAmount());
-					Treasure.logger.debug("health drained from mob -> {} was successful -> {}", mob.getName(), flag);
+					Treasure.LOGGER.debug("health drained from mob -> {} was successful -> {}", mob.getName(), flag);
 					if (flag) {
 						drainedHealth.addAndGet(getAmount());
 					}
@@ -110,18 +110,16 @@ public class DrainCharm extends Charm {
 		}
 		return result;
 	}
-
-	/**
-	 * 
-	 */
+	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.RED;
-		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
-		tooltip.add(TextFormatting.GRAY +  "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.drain", entity.getDuration())));
+	public String getCharmDesc(ICharmEntity entity) {
+		return I18n.translateToLocalFormatted("tooltip.charm.rate.drain", entity.getRange());
 	}
 	
+	/*
+	 * 
+	 */
 	public static class Builder extends Charm.Builder {
 
 		public Builder(Integer level) {

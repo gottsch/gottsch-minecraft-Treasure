@@ -121,7 +121,7 @@ public class IlluminationCharmEntity extends CharmEntity {
 			nbt.setTag("illuminationCoords", list);
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Unable to write state to NBT:", e);
+			Treasure.LOGGER.error("Unable to write state to NBT:", e);
 		}
 		return nbt;
 	}

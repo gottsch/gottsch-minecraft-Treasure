@@ -54,11 +54,11 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 	@Override
 	public IMessage onMessage(CharmMessageToClient message, MessageContext ctx) {
 		if (ctx.side != Side.CLIENT) {
-			Treasure.logger.error("CharmedItemMessageToClient received on wrong side -> {}", ctx.side);
+			Treasure.LOGGER.error("CharmedItemMessageToClient received on wrong side -> {}", ctx.side);
 		      return null;
 		    }
 		    if (!message.isMessageValid()) {
-		    	Treasure.logger.warn("CharmedItemMessageToClient was invalid -> {}", message.toString());
+		    	Treasure.LOGGER.warn("CharmedItemMessageToClient was invalid -> {}", message.toString());
 		      return null;
 		    }
 		    
@@ -84,7 +84,7 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 	   *  This message is called from the Server thread.
 	   */
 	  void processMessage(WorldClient worldClient, CharmMessageToClient message) {
-		  Treasure.logger.debug("received charm message -> {}", message);
+		  Treasure.LOGGER.debug("received charm message -> {}", message);
 		  try {
 //	        EntityPlayer player = worldClient.getPlayerEntityByName(message.getPlayerName());
 	        EntityPlayer player = worldClient.getPlayerEntityByUUID(UUID.fromString(message.getPlayerName()));
@@ -127,7 +127,7 @@ public class CharmMessageHandlerOnClient implements IMessageHandler<CharmMessage
 	        }
 		  }
 		  catch(Exception e) {
-			  Treasure.logger.error("Unexpected error ->", e);
+			  Treasure.LOGGER.error("Unexpected error ->", e);
 		  }
 	  }
 

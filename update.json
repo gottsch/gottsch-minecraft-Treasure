@@ -1,8 +1,8 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/treasure2",
 	"promos": {
-		"1.12.2-latest": "1.18.1",
-		"1.12.2-recommended": "1.18.1"
+		"1.12.2-latest": "2.0.0",
+		"1.12.2-recommended": "2.0.0"
 	},
 	"1.12.2": {
 		"0.5.0": "alpha release",
@@ -51,6 +51,7 @@
 		"1.17.0": "Fixed missing Charms bug!\nItem Texture updates by Xemnes - Keys, Locks, Coins, Gems, Pouches, etc.\nFix Lock's tooltip to display the proper key.\nFixed server crash on Pearl thrown in well.\nUpdated keys to Accepted Keys list on Locks.\nRefactored code for Charms on back-end.\n",
 		"1.17.1": "Added 4 million downloads reward ring.\nFixed LivingHurtEvent checks and related charms (Reflection, LifeStrike).\nAdjust key placements in 3rd person.",
 		"1.18.0": "Baubles integration.\nFixed Drain + LifeStrike charms combo.\nUpdated to Forge 1.12.2-14.23.5.2859.\n",
-		"1.18.1": "Fixed Rewards spawn timeframe check (ie Ring of the Moon).\nRenamed config property for enabling rewards spawn."
+		"1.18.1": "Fixed Rewards spawn timeframe check (ie Ring of the Moon).\nRenamed config property for enabling rewards spawn.",
+		"2.0.0": "New Charms/Runes/Adornments system.\nAdded 300+ adornments.\nAdded 9 runes.\nCharms now range in levels 1-25+.\nAdded Cheat Death charm.\nAdded Legendary and Mythical rarities.\nAdded Legendary, Mythical loot tables.\nRemoved exposing resources files (loot tables, meta, structure) to the file system.\nRefactored how deep treasure pits go - no longer based on offset from bottom, but on rarity of loot."
 	}
 }

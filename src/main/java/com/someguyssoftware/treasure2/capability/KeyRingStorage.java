@@ -25,7 +25,7 @@ public class KeyRingStorage implements Capability.IStorage<IKeyRingCapability> {
 			mainTag.setBoolean(IS_OPEN_TAG, instance.isOpen());
 			mainTag.setBoolean(USED_ON_CHEST_TAG, instance.isUsedOnChest());
 		} catch (Exception e) {
-			Treasure.logger.error("Unable to write state to NBT:", e);
+			Treasure.LOGGER.error("Unable to write state to NBT:", e);
 		}
 		return mainTag;
 	}

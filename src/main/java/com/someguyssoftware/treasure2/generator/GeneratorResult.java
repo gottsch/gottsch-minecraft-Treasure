@@ -35,7 +35,7 @@ public class GeneratorResult<DATA extends IGeneratorData> implements IGeneratorR
 				data = dataClass.newInstance();
 				this.data = data;
 			} catch (InstantiationException | IllegalAccessException e) {
-				Treasure.logger.error(e);
+				Treasure.LOGGER.error(e);
 			}
 		}
 		return data;

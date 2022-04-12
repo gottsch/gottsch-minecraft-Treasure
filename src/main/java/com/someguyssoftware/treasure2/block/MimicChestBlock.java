@@ -72,7 +72,7 @@ public class MimicChestBlock extends AbstractChestBlock {
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) {
-		Treasure.logger.debug("Placing mimic from item");
+		Treasure.LOGGER.debug("Placing mimic from item");
 
 		boolean shouldUpdate = false;
 		boolean forceUpdate = false;
@@ -143,7 +143,7 @@ public class MimicChestBlock extends AbstractChestBlock {
 		try {
 			mimic = getMimicClass().getConstructor(World.class).newInstance(worldIn);
 		} catch (Exception e) {
-			Treasure.logger.error("Error creating mimic:", e);
+			Treasure.LOGGER.error("Error creating mimic:", e);
 		}
 
 		if (mimic != null) {

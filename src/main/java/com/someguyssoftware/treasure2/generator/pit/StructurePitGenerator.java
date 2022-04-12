@@ -17,6 +17,7 @@ import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
 import com.someguyssoftware.treasure2.meta.StructureType;
+import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
@@ -57,7 +58,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	public StructurePitGenerator(IPitGenerator<GeneratorResult<ChestGeneratorData>> generator) {
 		this();
 		setGenerator(generator);
-		Treasure.logger.debug("using parent generator -> {}", generator.getClass().getSimpleName());
+		Treasure.LOGGER.debug("using parent generator -> {}", generator.getClass().getSimpleName());
 	}
 	
 	@Override
@@ -91,15 +92,15 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 		
 		// if there is air above the origin, then in cavern. (pos in isAir() doesn't matter)
 		if (blockState == null || blockState.getMaterial() == Material.AIR) {
-			Treasure.logger.debug("Spawn coords is in cavern.");
+			Treasure.LOGGER.debug("Spawn coords is in cavern.");
 			inCavern = true;
 		}
 		
 		if (inCavern) {
-			Treasure.logger.debug("Shaft is in cavern... finding ceiling.");
+			Treasure.LOGGER.debug("Shaft is in cavern... finding ceiling.");
 			spawnCoords = GenUtil.findUndergroundCeiling(world, spawnCoords.add(0, 1, 0));
 			if (spawnCoords == null) {
-				Treasure.logger.warn("Exiting: Unable to locate cavern ceiling.");
+				Treasure.LOGGER.warn("Exiting: Unable to locate cavern ceiling.");
 				return result.fail();
 			}
 			// update the chest coords in the result
@@ -108,10 +109,10 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	
 		// get distance to surface
 		int yDist = (surfaceCoords.getY() - spawnCoords.getY()) - 2;
-		Treasure.logger.debug("Distance to ySurface =" + yDist);
+		Treasure.LOGGER.debug("Distance to ySurface =" + yDist);
 		
 		if (yDist > 6) {
-			Treasure.logger.debug("generating structure room at -> {}", spawnCoords.toShortString());
+			Treasure.LOGGER.debug("generating structure room at -> {}", spawnCoords.toShortString());
 			
 			// get structure by archetype (subterranean) and type (room)
 			String key = StructureArchetype.SUBTERRANEAN.getName()
@@ -120,22 +121,22 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			// get the biome
 			Biome biome = world.getBiome(spawnCoords.toPos());
 			Integer biomeID = Biome.getIdForBiome(biome);
-			List<TemplateHolder> templateHolders = Treasure.TEMPLATE_MANAGER.getTemplatesByArchetypeTypeBiomeTable().get(key, biomeID);
+			List<TemplateHolder> templateHolders = TreasureTemplateRegistry.getManager().getTemplatesByArchetypeTypeBiomeTable().get(key, biomeID);
 			if (templateHolders == null || templateHolders.isEmpty()) {
-				Treasure.logger.debug("could not find template holders for archetype:type, biome -> {} [{}]:[]", key, biomeID, biome.toString());
+				Treasure.LOGGER.debug("could not find template holders for archetype:type, biome -> {} [{}]:{}", key, biomeID, biome.toString());
 				return result.fail();
 			}
 			
 			TemplateHolder holder = templateHolders.get(random.nextInt(templateHolders.size()));
 			if (holder == null) {
-				Treasure.logger.debug("could not find random template holder.");
+				Treasure.LOGGER.debug("could not find random template holder.");
 				return result.fail();
 			}
 			
 			GottschTemplate template = (GottschTemplate) holder.getTemplate();
-			Treasure.logger.debug("selected template holder -> {} : {}", holder.getLocation(), holder.getMetaLocation());
+			Treasure.LOGGER.debug("selected template holder -> {} : {}", holder.getLocation(), holder.getMetaLocation());
 			if (template == null) {
-				Treasure.logger.debug("could not find random template");
+				Treasure.LOGGER.debug("could not find random template");
 				return result.fail();
 			}
 			
@@ -148,11 +149,11 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			
 			// check if the yDist is big enough to accodate a room
 			BlockPos size = template.getSize();
-			Treasure.logger.debug("template size -> {}, offset -> {}", size, offset);
+			Treasure.LOGGER.debug("template size -> {}, offset -> {}", size, offset);
 			
 			// if size of room is greater the distance to the surface minus 3, then fail 
 			if (size.getY() + offset + 3 >= yDist) {
-				Treasure.logger.debug("Structure's height is too large for available space.");
+				Treasure.LOGGER.debug("Structure's height is too large for available space.");
 				// generate the base pit
 				result = getGenerator().generate(world, random, surfaceCoords, spawnCoords);
 				if (result.isSuccess()/*isGenerated*/) {
@@ -160,7 +161,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 					return result;
 				}
 				else {
-					Treasure.logger.debug("Unable to generate base pit.");
+					Treasure.LOGGER.debug("Unable to generate base pit.");
 					return result.fail();
 				}
 			}
@@ -168,13 +169,13 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			// find the entrance block
 			ICoords entranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
 			if (entranceCoords == null) {
-				Treasure.logger.debug("Unable to locate entrance position.");
+				Treasure.LOGGER.debug("Unable to locate entrance position.");
 				return result.fail();
 			}
 			
 			// select a random rotation
 			Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
-			Treasure.logger.debug("rotation used -> {}", rotation);
+			Treasure.LOGGER.debug("rotation used -> {}", rotation);
 			
 			// setup placement
 			PlacementSettings placement = new PlacementSettings();
@@ -188,7 +189,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			 */
 			BlockPos transformedSize = template.transformedSize(rotation);
 			ICoords roomCoords = alignToPit(spawnCoords, newEntrance, transformedSize, placement);
-			Treasure.logger.debug("aligned room coords -> {}", roomCoords.toShortString());
+			Treasure.LOGGER.debug("aligned room coords -> {}", roomCoords.toShortString());
 			
 			// generate the structure
 			GeneratorResult<TemplateGeneratorData> genResult = new TemplateGenerator().generate(world, random, holder, placement, roomCoords);
@@ -242,7 +243,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			// simple short pit
 			result = new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
 		}		
-		Treasure.logger.debug("Generated Structure Pit at " + spawnCoords.toShortString());
+		Treasure.LOGGER.debug("Generated Structure Pit at " + spawnCoords.toShortString());
 		return result.success();
 	}
 

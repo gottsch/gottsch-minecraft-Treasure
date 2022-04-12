@@ -2,7 +2,7 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
+import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
@@ -53,7 +53,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	public GeneratorResult<ChestGeneratorData> generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = super.generate(world, random, surfaceCoords, spawnCoords);
 		if (result.isSuccess()) {
-			logger.debug("Generated Volcano Pit at " + spawnCoords.toShortString());
+			LOGGER.debug("Generated Volcano Pit at " + spawnCoords.toShortString());
 		}
 		return result;
 	}
@@ -201,7 +201,7 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * @param coords
 	 */
 	private void buildLavaBaseLayer(World world, ICoords coords, int radius) {
-        logger.debug("Building lava baselayer from @ {} ", coords.toShortString());
+        LOGGER.debug("Building lava baselayer from @ {} ", coords.toShortString());
 
         // for circular chamber
         buildLayer(world, coords, radius, Blocks.LAVA, false);

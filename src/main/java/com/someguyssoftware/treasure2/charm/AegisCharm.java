@@ -22,6 +22,7 @@ package com.someguyssoftware.treasure2.charm;
 import java.util.List;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.util.ResourceLocationUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -46,13 +47,13 @@ public class AegisCharm extends ShieldingCharm {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flagIn, ICharmEntity entity, InventoryType type) {
 		ShieldingCharmEntity charmEntity = (ShieldingCharmEntity)entity;
 		TextFormatting color = TextFormatting.BLUE;
-		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
+		tooltip.add(getLabel(entity, type == InventoryType.SOCKET ? true : false));
 		if (charmEntity.getCooldownEnd() > 0.0 && world.getTotalWorldTime() < charmEntity.getCooldownEnd()) {
 			tooltip.add(TextFormatting.GRAY + "" + TextFormatting.ITALIC
-					+ I18n.translateToLocalFormatted("tooltip.indent2", 
+					+ I18n.translateToLocalFormatted("tooltip.indent4", 
 							I18n.translateToLocal("tooltip.charm.rate.aegis") + " " +I18n.translateToLocalFormatted("tooltip.charm.cooldown.meter", DECIMAL_FORMAT.format((charmEntity.getCooldownEnd() - world.getTotalWorldTime())/TICKS_PER_SECOND)))
 			);
 		}
@@ -61,7 +62,7 @@ public class AegisCharm extends ShieldingCharm {
 				+ I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocal("tooltip.charm.rate.aegis")));
 		}
 	}
-
+	
 	public static class Builder extends Charm.Builder {
 
 		public Builder(Integer level) {

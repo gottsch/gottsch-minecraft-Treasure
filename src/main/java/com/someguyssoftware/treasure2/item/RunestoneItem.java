@@ -33,7 +33,7 @@ import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.RunestonesCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.RunestonesCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
-import com.someguyssoftware.treasure2.runestone.IRunestone;
+import com.someguyssoftware.treasure2.rune.IRune;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -66,7 +66,7 @@ public class RunestoneItem extends ModItem {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-		Treasure.logger.debug("{} item initiating caps", stack.getItem().getRegistryName().toString());
+		Treasure.LOGGER.debug("{} item initiating caps", stack.getItem().getRegistryName().toString());
 		RunestonesCapabilityProvider provider =  new RunestonesCapabilityProvider();
 		return provider;
 	}
@@ -83,7 +83,7 @@ public class RunestoneItem extends ModItem {
 		if (cap.hasRunestone()) {
 			// add a space
 			tooltip.add( TextFormatting.DARK_PURPLE + I18n.translateToLocal("tooltip.runestones.effects"));	
-			IRunestone runestone = cap.getEntities(InventoryType.INNATE).get(0).getRunestone();
+			IRune runestone = cap.getEntities(InventoryType.INNATE).get(0).getRunestone();
 			// lore may be multiple lines, so separate on \n and add to tooltip
 			for (String s : StringEscapeUtils.unescapeJava(runestone.getLore()).split("\\R")) {
 				tooltip.add(I18n.translateToLocalFormatted("tooltip.indent2", TextFormatting.LIGHT_PURPLE + "" + TextFormatting.ITALIC + s));

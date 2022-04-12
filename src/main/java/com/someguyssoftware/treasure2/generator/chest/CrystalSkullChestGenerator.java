@@ -21,6 +21,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
+import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 /**
@@ -51,12 +52,12 @@ public class CrystalSkullChestGenerator implements IChestGenerator {
 	 */
 	@Override
 	public Optional<LootTableShell> selectLootTable2(Random random, final Rarity chestRarity) {
-		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.CRYSTAL_SKULL_CHEST));
+		return Optional.ofNullable(TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.CRYSTAL_SKULL_CHEST));
 	}
 
 	@Override
 	public Optional<LootTableShell> selectLootTable2(Supplier<Random> factory, final Rarity rarity) {
-		return Optional.ofNullable(Treasure.LOOT_TABLE_MASTER.getSpecialLootTable(SpecialLootTables.CRYSTAL_SKULL_CHEST));
+		return Optional.ofNullable(TreasureLootTableRegistry.getLootTableMaster().getSpecialLootTable(SpecialLootTables.CRYSTAL_SKULL_CHEST));
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class CrystalSkullChestGenerator implements IChestGenerator {
 	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
-		Treasure.logger.debug("# of locks to use: {})", numLocks);
+		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);
 
 		return numLocks;
 	}

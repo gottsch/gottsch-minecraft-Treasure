@@ -80,16 +80,12 @@ public class GreaterHealingCharm extends Charm implements IHealing {
 		return result;
 	}
 
-	/**
-	 * 
-	 */
+	@SuppressWarnings("deprecation")
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.RED;       
-		tooltip.add(color + "" + I18n.translateToLocalFormatted("tooltip.indent2", getLabel(entity)));
-		tooltip.add(TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.translateToLocalFormatted("tooltip.indent2", I18n.translateToLocalFormatted("tooltip.charm.rate.greater_healing", (int)(entity.getFrequency()/TICKS_PER_SECOND))));
+	public String getCharmDesc(ICharmEntity entity) {
+		return I18n.translateToLocalFormatted("tooltip.charm.rate.greater_healing", (int)(entity.getFrequency()/TICKS_PER_SECOND));
 	}
-
+	
 	public static class Builder extends Charm.Builder {
 
 		public Builder(Integer level) {

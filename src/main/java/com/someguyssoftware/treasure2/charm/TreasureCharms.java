@@ -19,15 +19,17 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.CHARMABLE;
+
 import java.util.Map;
 
 import com.google.common.collect.Maps;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
-//import com.someguyssoftware.treasure2.charm.HealingCharm.Builder;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * Rarities:
@@ -43,11 +45,20 @@ import net.minecraft.item.ItemStack;
  *
  */
 public class TreasureCharms {
-	private static final Map<Integer, Rarity> LEVEL_RARITY = Maps.newHashMap();
+	// TODO move somewhere more generic
+	public static final Map<Integer, Rarity> LEVEL_RARITY = Maps.newHashMap();
 	
 	static {
-		Treasure.logger.debug("creating charms...");
+		Treasure.LOGGER.debug("creating charms...");
 		for (int level = 1; level <= 25; level++) {
+			LEVEL_RARITY.put(Integer.valueOf(level), level <= 4 ? Rarity.COMMON 
+					: level <= 8 ? Rarity.UNCOMMON
+							: level <= 12 ? Rarity.SCARCE 
+									: level <=16 ? Rarity.RARE
+										: level <= 20 ? Rarity .EPIC
+											: level <=24 ? Rarity.LEGENDARY
+												: Rarity.MYTHICAL);
+			
 			TreasureCharmRegistry.register(makeHealing(level));
 			TreasureCharmRegistry.register(makeGreaterHealing(level));
 			TreasureCharmRegistry.register(makeShielding(level));
@@ -67,17 +78,15 @@ public class TreasureCharms {
 			TreasureCharmRegistry.register(makeCheatDeath(level));
 			// TODO harvesting			
 			
-			LEVEL_RARITY.put(level, level <= 4 ? Rarity.COMMON 
-					: level <= 8 ? Rarity.UNCOMMON
-							: level <= 12 ? Rarity.SCARCE 
-									: level <=16 ? Rarity.RARE
-										: level <= 20 ? Rarity .EPIC
-											: level <=24 ? Rarity.LEGENDARY
-												: Rarity.MYTHICAL);
 		}
 	}
 	
 	public static void init() {}
+	
+	private static int getRecharges(Rarity rarity) {
+		// TODO COMMON & UNCOMMON = 1 are TEMP
+		return rarity == Rarity.SCARCE || rarity == Rarity.RARE ? 1 : rarity == Rarity.EPIC || rarity == Rarity.LEGENDARY ? 2 : rarity == Rarity.MYTHICAL ? 3 : 1;
+	}
 	
 	// TODO add charms
 	// [] CACTUS
@@ -95,7 +104,8 @@ public class TreasureCharms {
 			$.frequency = Math.max(40, 100.0 - (Math.floor((level + 1) / 5D) * 10D)); // ie every 5 seconds, reducing by 1 second every 5th level
 			$.effectStackable = true;
 			$.rarity = LEVEL_RARITY.get(level);
-		})	.build();		
+			$.recharges = getRecharges($.rarity);
+		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
@@ -107,6 +117,7 @@ public class TreasureCharms {
 			$.frequency = Math.max(40, 100.0 - (Math.floor((level + 1) / 5D) * 10)); // ie every 5 seconds, reducing by 0.5 second every 5th level
 			$.effectStackable = true;
 			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
@@ -120,6 +131,7 @@ public class TreasureCharms {
 			$.effectStackable = true;
 			$.priority = 2;
 			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
@@ -132,6 +144,7 @@ public class TreasureCharms {
 			$.effectStackable = false;
 			$.priority = 2;
 			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 
 		TreasureCharmRegistry.register(charm);
@@ -142,9 +155,11 @@ public class TreasureCharms {
 		ICharm charm =  new FireResistenceCharm.Builder(level).with($ -> {
 			$.mana = level * 20.0;
 			$.amount = level < 6 ? 0.3 : level < 11 ? 0.5 : 0.8;
+			$.amount = level <= 4 ? 0.2 : level <=8  ? 0.4 : level <= 12 ? 0.6 :  0.8;
 			$.effectStackable = true;
 			$.priority = 1;
 			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 
 		TreasureCharmRegistry.register(charm);
@@ -157,6 +172,7 @@ public class TreasureCharms {
 			$.effectStackable = false;
 			$.priority = 1;
 			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 
 		TreasureCharmRegistry.register(charm);
@@ -170,6 +186,7 @@ public class TreasureCharms {
 			$.frequency = Math.max(20, 100.0 - (Math.floor((level + 1) / 5) *20)); // ie every 5 seconds, reducing by 1 second every 5th level
 			$.effectStackable = true;
 			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 
 		TreasureCharmRegistry.register(charm);
@@ -184,6 +201,7 @@ public class TreasureCharms {
 //			$.percent = level < 4 ? 1.2 : level < 7 ? 1.4 : level < 10 ? 1.6 :  level < 13 ? 1.8 : 2.0;
 			$.effectStackable = true;
 			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		});
 		ICharm charm = builder.withLifeCost(2.0).build();		
 		TreasureCharmRegistry.register(charm);
@@ -197,6 +215,7 @@ public class TreasureCharms {
 			$.range = level < 4 ? 2D : level < 7 ? 3D : level < 10 ? 4D : level < 13 ? 5D : 6D;
 			$.effectStackable = true;
 			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
@@ -209,6 +228,7 @@ public class TreasureCharms {
 			$.range = level < 4 ? 2D : level < 7 ? 3D : level < 10 ? 4D : level < 13 ? 5D : 6D;
 			$.effectStackable = true;
 			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
@@ -224,10 +244,25 @@ public class TreasureCharms {
 		return charm;
 	}
 
+	public static ICharm makeCheatDeath(int level) {
+		ICharm charm =  new CheatDeathCharm.Builder(level).with($ -> {
+			$.mana =  (double) level;
+			$.amount = 5.0 + Math.floor(level / 5D);
+			$.effectStackable = false;
+			$.rarity = LEVEL_RARITY.get(level);			
+			$.recharges = 0;
+		})	.build();
+		TreasureCharmRegistry.register(charm);
+		return charm;
+	}
+	
 	// curses
 	public static ICharm makeDecay(int level) {
 		ICharm curse =  new DecayCurse.Builder(level).with($ -> {
 			$.mana = level * 20.0;
+			$.amount = 1.0;
+			// in ticks (20 = 1 sec)
+			$.frequency = Math.max(40, 100.0 - (Math.floor((level + 1) / 5D) * 10)); // ie every 5 seconds, reducing by 0.5 second every 5th level
 			$.effectStackable = true;
 			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();		
@@ -238,7 +273,8 @@ public class TreasureCharms {
 	public static ICharm makeDecrepit(int level) {
 		ICharm curse =  new DecrepitCurse.Builder(level).with($ -> {
 			$.mana = level * 10.0 + 10.0;
-			$.amount = (double) ((level + (level % 2))/20);
+//			$.amount = (double) ((level + (level % 2))/20);
+			$.amount = level <= 4 ? 0.2 : level <=8  ? 0.3 : level <= 12 ? 0.4 :  0.5;
 			$.effectStackable = true;
 			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();		
@@ -269,8 +305,9 @@ public class TreasureCharms {
 	public static ICharm makeRuin(int level) {
 		ICharm charm =  new RuinCurse.Builder(level).with($ -> {
 			$.mana =  level * 20D;
+			$.amount = 1.0;
 			// in ticks (20 = 1 sec)
-			$.frequency =	Math.max(200, 400.0 - (Math.floor((level + 1) / 5) *40)); // level < 4 ? 20D : level < 7 ? 17D : level < 10 ? 15D : level < 13 ? 13D : 10D;
+			$.frequency = Math.max(40, 100.0 - (Math.floor((level + 1) / 5D) * 10)); // ie every 5 seconds, reducing by 0.5 second every 5th level
 			$.effectStackable = true;
 			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();
@@ -278,16 +315,26 @@ public class TreasureCharms {
 		return charm;
 	}
 	
-	public static ICharm makeCheatDeath(int level) {
-		ICharm charm =  new CheatDeathCharm.Builder(level).with($ -> {
-			$.mana =  (double) level;
-			$.amount = 5.0 + Math.floor(level / 5D);
-			$.effectStackable = false;
-			$.rarity = LEVEL_RARITY.get(level);
-			// $.rechargeable = 0;
-		})	.build();
-		TreasureCharmRegistry.register(charm);
-		return charm;
+	/**
+	 * 
+	 * @param source
+	 * @param dest
+	 * @return
+	 */
+	public static ItemStack copyStack(final ItemStack source, final ItemStack dest) {
+		ItemStack resultStack = dest.copy(); // <-- is this necessary?
+		// save the source item
+		ResourceLocation sourceItem = resultStack.getCapability(CHARMABLE, null).getSourceItem();
+
+		if (dest.hasCapability(CHARMABLE, null)) {
+			resultStack.getCapability(CHARMABLE, null).clearCharms();			
+			source.getCapability(CHARMABLE, null).copyTo(resultStack);
+		}
+
+		// reset the source item
+		resultStack.getCapability(CHARMABLE, null).setSourceItem(sourceItem);
+
+		return resultStack;
 	}
 	
 	/**

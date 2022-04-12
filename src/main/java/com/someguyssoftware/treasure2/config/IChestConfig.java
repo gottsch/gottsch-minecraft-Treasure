@@ -21,6 +21,7 @@ public interface IChestConfig {
 	public boolean isSubterraneanAllowed();
 	public int getChunksPerChest();
 	public double getGenProbability();
+	@Deprecated
 	public int getMinYSpawn();
 	public double getMimicProbability();
 	
@@ -28,4 +29,7 @@ public interface IChestConfig {
 	public List<Biome> getBiomeBlackList();
 	public List<BiomeTypeHolder> getBiomeTypeWhiteList();
 	public List<BiomeTypeHolder> getBiomeTypeBlackList();
+
+	int getMinDepth();
+	int getMaxDepth();
 }

@@ -84,7 +84,7 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 			
 		}
 		catch(Exception e) {
-			Treasure.logger.error("Error reading ProximitySpanwer properties from NBT:",  e);
+			Treasure.LOGGER.error("Error reading ProximitySpanwer properties from NBT:",  e);
 		}
 	}
 	
@@ -134,11 +134,11 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
             // get the distance
             double distanceSq = player.getDistanceSq(this.getPos().add(0.5D, 0.5D, 0.5D));
             if (this.getMobName().getResourcePath().equals("bound_soul")) {
-            Treasure.logger.debug("PTE for mob -> {} @ -> {}, proximity -> {}, distance -> {}, triggered -> {}, dead -> {}, result -> {}", this.getMobName(),
+            Treasure.LOGGER.debug("PTE for mob -> {} @ -> {}, proximity -> {}, distance -> {}, triggered -> {}, dead -> {}, result -> {}", this.getMobName(),
             		this.pos, proximitySq, distanceSq, isTriggered, this.isDead(), (!isTriggered && !this.isDead() && (distanceSq < proximitySq)) ? "met" : "not met");
             }
             if (!isTriggered && !this.isDead() && (distanceSq < proximitySq)) {
-            	Treasure.logger.debug("PTE proximity was met.");
+            	Treasure.LOGGER.debug("PTE proximity was met.");
             	isTriggered = true;
             	// exectute action
             	execute(this.getWorld(), new Random(), new Coords(this.getPos()), new Coords(player.getPosition()));
@@ -162,7 +162,7 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
     	for (int i = 0; i < mobCount; i++) {
             Entity entity = EntityList.createEntityByIDFromName(getMobName(), world);
             if (entity == null) {
-            	Treasure.logger.debug("unable to create entity -> {}", getMobName());
+            	Treasure.LOGGER.debug("unable to create entity -> {}", getMobName());
             	selfDestruct();
             	return;
             }
@@ -172,7 +172,7 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
             double z = (double)blockCoords.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * getSpawnRange() + 0.5D;
             entity.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
 
-            Treasure.logger.debug("entity instanceof EntityLiving -> {}", (entity instanceof EntityLiving));
+            Treasure.LOGGER.debug("entity instanceof EntityLiving -> {}", (entity instanceof EntityLiving));
             if (entity instanceof EntityLiving) {
             	EntityLiving entityLiving = (EntityLiving)entity;
             	if (entityLiving.getCanSpawnHere() && entityLiving.isNotColliding()) {                

@@ -88,7 +88,13 @@ public class TreasureCharmableMaterials {
 	public static final CharmableMaterial BONE = new CharmableMaterial(6, ResourceLocationUtil.create("bone"), 12, 8, 1.15D, 50, 0);
 	public static final CharmableMaterial BLACK = new CharmableMaterial(7, ResourceLocationUtil.create("black"), 12, 10, 1.15D, 35, 2);
 	public static final CharmableMaterial ATIUM = new CharmableMaterial(8, ResourceLocationUtil.create("atium"), 14, 10, 1.25D, 100, 5);
+	
 	public static final CharmableMaterial CHARM_BOOK = new CharmableMaterial(100, ResourceLocationUtil.create("charm_book"), 100);
+	
+	// special for high-end charm construction
+	public static final CharmableMaterial LEGENDARY = new CharmableMaterial(9, ResourceLocationUtil.create("legendary"), 24);
+	public static final CharmableMaterial MYTHICAL = new CharmableMaterial(10, ResourceLocationUtil.create("mythical"), 28);
+	
 	
 	public static CharmableMaterial DIAMOND;
 	public static CharmableMaterial EMERALD;
@@ -112,6 +118,9 @@ public class TreasureCharmableMaterials {
 		METAL_REGISTRY.put(BONE.getName(), BONE);
 		METAL_REGISTRY.put(BLACK.getName(), BLACK);
 		METAL_REGISTRY.put(ATIUM.getName(), ATIUM);
+		
+		METAL_REGISTRY.put(LEGENDARY.getName(), LEGENDARY);
+		METAL_REGISTRY.put(MYTHICAL.getName(), MYTHICAL);
 	}
 	
 	public static class SortByLevel implements Comparator<CharmableMaterial> {

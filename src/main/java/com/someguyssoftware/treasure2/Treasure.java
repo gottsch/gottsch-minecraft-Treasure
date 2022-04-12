@@ -35,6 +35,7 @@ import com.someguyssoftware.gottschcore.config.ILoggerConfig;
 import com.someguyssoftware.gottschcore.mod.AbstractMod;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
+import com.someguyssoftware.treasure2.api.TreasureApi;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapability;
@@ -42,6 +43,7 @@ import com.someguyssoftware.treasure2.capability.KeyRingStorage;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
+import com.someguyssoftware.treasure2.command.SpawnCharmCommand;
 import com.someguyssoftware.treasure2.command.SpawnChestCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitCommand;
 import com.someguyssoftware.treasure2.command.SpawnPitOnlyCommand;
@@ -62,8 +64,10 @@ import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.integration.baubles.BaublesIntegration;
 import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
-import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.function.CharmRandomly;
+import com.someguyssoftware.treasure2.loot.function.RandomAdornment;
+import com.someguyssoftware.treasure2.loot.function.RandomCharm;
+import com.someguyssoftware.treasure2.loot.function.RandomRunestone;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 import com.someguyssoftware.treasure2.meta.TreasureMetaManager;
 import com.someguyssoftware.treasure2.network.CharmMessageHandlerOnClient;
@@ -72,7 +76,6 @@ import com.someguyssoftware.treasure2.network.PoisonMistMessageHandlerOnServer;
 import com.someguyssoftware.treasure2.network.PoisonMistMessageToServer;
 import com.someguyssoftware.treasure2.network.WitherMistMessageHandlerOnServer;
 import com.someguyssoftware.treasure2.network.WitherMistMessageToServer;
-import com.someguyssoftware.treasure2.runestone.TreasureRunes;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureDecayManager;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
@@ -86,7 +89,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -132,14 +134,10 @@ public class Treasure extends AbstractMod {
 	private static BuildVersion latestVersion;
 
 	// logger
-	public static Logger logger = LogManager.getLogger(Treasure.NAME);
+	public static final Logger LOGGER = LogManager.getLogger(Treasure.NAME);
 
 	@Instance(value = Treasure.MODID)
 	public static Treasure instance;
-
-	// NOTE can't make final here as it is set during world load
-	// loot tables management
-	public static TreasureLootTableMaster2 LOOT_TABLE_MASTER;
 
 	/*
 	 * Treasure Creative Tab Must be initialized <b>before</b> any registry events
@@ -162,14 +160,6 @@ public class Treasure extends AbstractMod {
 
 	// forge world generators
 	public final static Map<WorldGeneratorType, ITreasureWorldGenerator> WORLD_GENERATORS = new HashMap<>();
-
-	// template manager
-	public static TreasureTemplateManager TEMPLATE_MANAGER;
-
-	// meta manager // NOTE can't be final as Treasure.instance is required.
-	public static TreasureMetaManager META_MANAGER;
-
-	public static TreasureDecayManager DECAY_MANAGER;
 
 	// TEMP home
 	public static SimpleNetworkWrapper simpleNetworkWrapper; // used to transmit your network messages
@@ -225,25 +215,32 @@ public class Treasure extends AbstractMod {
 		CapabilityManager.INSTANCE.register(IKeyRingCapability.class, new KeyRingStorage(), KeyRingCapability::new);
 		
 		// register custom loot functions
+		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new RandomAdornment.Serializer());
+		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new RandomCharm.Serializer());
+		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new RandomRunestone.Serializer());
 		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new CharmRandomly.Serializer());
-//		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetCharms.Serializer());
-//		net.minecraft.world.storage.loot.functions.LootFunctionManager.registerFunction(new SetSlots.Serializer());
 		
+		// create the treasure registries
+		TreasureApi.registerLootTables(MODID);
+		TreasureApi.registerMeta(MODID);
+		TreasureApi.registerTemplates(MODID);
+		TreasureApi.registerDecays(MODID);
+				
 		// integrations
 		BaublesIntegration.init();
 		
 		IEquipmentCharmHandler equipmentCharmHandler = null;
 		if (BaublesIntegration.isEnabled()) {
-			logger.debug("baubles IS loaded");
+			LOGGER.debug("baubles IS loaded");
 			try {
 				equipmentCharmHandler = 
 						(IEquipmentCharmHandler) Class.forName("com.someguyssoftware.treasure2.eventhandler.BaublesEquipmentCharmHandler").newInstance();
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-				logger.warn("Unable to load Baubles compatiblity class.", e);
+				LOGGER.warn("Unable to load Baubles compatiblity class.", e);
 			}
 		}
 		if (equipmentCharmHandler == null) {
-			logger.debug("equipmentHandler is null");
+			LOGGER.debug("equipmentHandler is null");
 			equipmentCharmHandler = new HotbarEquipmentCharmHandler();
 		}
 		MinecraftForge.EVENT_BUS.register(new CharmEventHandler(equipmentCharmHandler));
@@ -273,6 +270,7 @@ public class Treasure extends AbstractMod {
 		event.registerServerCommand(new SpawnWellStructureCommand());
 		event.registerServerCommand(new SpawnWitherTreeCommand());
 		event.registerServerCommand(new SpawnRuinsCommand());
+		event.registerServerCommand(new SpawnCharmCommand());		
 	}
 
 	/**
@@ -298,16 +296,6 @@ public class Treasure extends AbstractMod {
 		for (Entry<WorldGeneratorType, ITreasureWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
 			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);
 		}
-
-		// add the loot table managers
-		LOOT_TABLE_MASTER = new TreasureLootTableMaster2(Treasure.instance);
-
-		TEMPLATE_MANAGER = new TreasureTemplateManager(Treasure.instance, "/structures",
-				FMLCommonHandler.instance().getDataFixer());
-
-		META_MANAGER = new TreasureMetaManager(Treasure.instance, "meta");
-
-		DECAY_MANAGER = new TreasureDecayManager(Treasure.instance, "decay");
 	}
 
 	/**

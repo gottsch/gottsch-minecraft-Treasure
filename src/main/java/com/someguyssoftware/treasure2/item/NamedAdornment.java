@@ -41,6 +41,6 @@ public class NamedAdornment extends Adornment {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		return TextFormatting.AQUA + "" + super.getItemStackDisplayName(stack);
+		return TextFormatting.YELLOW + "" + super.getItemStackDisplayName(stack);
 	}
 }

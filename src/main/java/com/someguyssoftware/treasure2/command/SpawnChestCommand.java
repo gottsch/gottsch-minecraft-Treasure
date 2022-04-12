@@ -3,7 +3,7 @@
  */
 package com.someguyssoftware.treasure2.command;
 
-import static com.someguyssoftware.treasure2.Treasure.logger;
+import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 
 
@@ -110,7 +110,7 @@ public class SpawnChestCommand extends CommandBase {
 	
 	@Override
 	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
-		Treasure.logger.debug("Starting to spawn Treasure! chest ...");
+		Treasure.LOGGER.debug("Starting to spawn Treasure! chest ...");
 		try {
 
 			int x, y, z = 0;
@@ -142,11 +142,11 @@ public class SpawnChestCommand extends CommandBase {
 					rarity = Rarity.valueOf(rarityArg.toUpperCase());
 				}
 				catch(Exception e) {
-					logger.warn("unable to set rarity to -> {}, defaulting to {}", rarityArg, rarity);
+					LOGGER.warn("unable to set rarity to -> {}, defaulting to {}", rarityArg, rarity);
 				}
 			}
-			if (logger.isDebugEnabled()) {
-				logger.debug("rarity -> {}", rarity);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("rarity -> {}", rarity);
 			}
 			
 			// get the direction enum
@@ -157,11 +157,11 @@ public class SpawnChestCommand extends CommandBase {
                 	direction = Direction.valueOf(directionArg.toUpperCase());
                 }
                 catch(Exception e) {
-                	logger.warn("unable to set direction to -> {}, defaulting to NORTH", directionArg);
+                	LOGGER.warn("unable to set direction to -> {}, defaulting to NORTH", directionArg);
                 }
             }
-            if (logger.isDebugEnabled()) {
-            	logger.debug("facing -> {}", direction);
+            if (LOGGER.isDebugEnabled()) {
+            	LOGGER.debug("facing -> {}", direction);
             }
             
 			// get the direction enum
@@ -173,11 +173,11 @@ public class SpawnChestCommand extends CommandBase {
                 	chests = Optional.of(Chests.valueOf(chestArg.toUpperCase()));
                 }
                 catch(Exception e) {
-                	logger.warn("unable to set chest to -> {}, defaulting based on rarity", chestArg);
+                	LOGGER.warn("unable to set chest to -> {}, defaulting based on rarity", chestArg);
                 }
             }
-            if (logger.isDebugEnabled() && chests.isPresent()) {
-            	logger.debug("chest -> {}", chests.get());
+            if (LOGGER.isDebugEnabled() && chests.isPresent()) {
+            	LOGGER.debug("chest -> {}", chests.get());
             }
 
             // TODO get the loottable property
@@ -218,7 +218,7 @@ public class SpawnChestCommand extends CommandBase {
 				lootTableResourceLocation = lootTableShell.get().getResourceLocation();
 			}
 			if (lootTableResourceLocation == null) {
-				logger.debug("Unable to select a LootTable for rarity -> {}", rarity);
+				LOGGER.debug("Unable to select a LootTable for rarity -> {}", rarity);
 				return;
 			}
 			
@@ -246,7 +246,7 @@ public class SpawnChestCommand extends CommandBase {
 			}
 			
 		} catch (Exception e) {
-			Treasure.logger.error("Error generating Treasure! chest: ", e);
+			Treasure.LOGGER.error("Error generating Treasure! chest: ", e);
 		}
 	}
 
@@ -302,7 +302,7 @@ public class SpawnChestCommand extends CommandBase {
 				value = Integer.parseInt(coordStr.substring(1));
 			}
 			catch (Exception e) {
-				Treasure.logger.error("Error with " + coordName + " coordinate: ", e);
+				Treasure.LOGGER.error("Error with " + coordName + " coordinate: ", e);
 				value = 0;
 			}
 			origin = getOriginValue (commandSender, coordName);
@@ -313,7 +313,7 @@ public class SpawnChestCommand extends CommandBase {
 				value = Integer.parseInt(coordStr);
 			}
 			catch (Exception e) {
-				Treasure.logger.error("Error with " + coordName + " coordinate: ", e);
+				Treasure.LOGGER.error("Error with " + coordName + " coordinate: ", e);
 				value = 0;
 			}
 		}

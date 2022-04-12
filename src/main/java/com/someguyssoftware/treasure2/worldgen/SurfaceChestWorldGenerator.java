@@ -5,6 +5,8 @@ package com.someguyssoftware.treasure2.worldgen;
 
 import static com.someguyssoftware.treasure2.enums.Rarity.COMMON;
 import static com.someguyssoftware.treasure2.enums.Rarity.EPIC;
+import static com.someguyssoftware.treasure2.enums.Rarity.LEGENDARY;
+import static com.someguyssoftware.treasure2.enums.Rarity.MYTHICAL;
 import static com.someguyssoftware.treasure2.enums.Rarity.RARE;
 import static com.someguyssoftware.treasure2.enums.Rarity.SCARCE;
 import static com.someguyssoftware.treasure2.enums.Rarity.UNCOMMON;
@@ -43,6 +45,8 @@ import com.someguyssoftware.treasure2.generator.chest.CrystalSkullChestGenerator
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.LegendaryChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.MythicalChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.RareChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
@@ -96,7 +100,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		try {
 			init();
 		} catch (Exception e) {
-			Treasure.logger.error("Unable to instantiate SurfaceChestGenerator:", e);
+			Treasure.LOGGER.error("Unable to instantiate SurfaceChestGenerator:", e);
 		}
 	}
 	
@@ -141,7 +145,17 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 			chestGenMap.get(EPIC).add(70, new EpicChestGenerator());
 			chestGenMap.get(EPIC).add(15, new CauldronChestGenerator());
 			chestGenMap.get(EPIC).add(15, new CrystalSkullChestGenerator());
-		}		
+		}
+		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(LEGENDARY).isEnableChest()) {
+			RARITIES.add(LEGENDARY);
+			chestGenMap.put(LEGENDARY, new RandomWeightedCollection<>());
+			chestGenMap.get(LEGENDARY).add(1, new LegendaryChestGenerator());
+		}	
+		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(MYTHICAL).isEnableChest()) {
+			RARITIES.add(MYTHICAL);
+			chestGenMap.put(MYTHICAL, new RandomWeightedCollection<>());
+			chestGenMap.get(MYTHICAL).add(1, new MythicalChestGenerator());
+		}	
 		
 		// setup pit generators map
 		pitGens.put(PitTypes.STANDARD, Pits.SIMPLE_PIT, new SimplePitGenerator());
@@ -224,7 +238,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
             Rarity rarity = (Rarity) RARITIES.get(random.nextInt(RARITIES.size()));
 			IChestConfig chestConfig = TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity);
 			if (chestConfig == null) {
-				Treasure.logger.warn("Unable to locate a chest for rarity {}.", rarity);
+				Treasure.LOGGER.warn("Unable to locate a chest for rarity {}.", rarity);
 				return;
 			}
 //			Treasure.logger.debug("Chunks since last {} chest: {}", rarity,  chunksSinceLastRarityChest.get(rarity) );
@@ -241,21 +255,21 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 				TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList());
 				if(biomeCheck == Result.BLACK_LISTED ) {
 		    		if (WorldInfo.isClientSide(world)) {
-		    			Treasure.logger.debug("{} is not a valid biome @ {}", biome.getBiomeName(), coords.toShortString());
+		    			Treasure.LOGGER.debug("{} is not a valid biome @ {}", biome.getBiomeName(), coords.toShortString());
 		    		}
 		    		else {
-		    			Treasure.logger.debug("Biome {} is not valid @ {}",rarity.getValue(), coords.toShortString());
+		    			Treasure.LOGGER.debug("Biome {} is not valid @ {}",rarity.getValue(), coords.toShortString());
 		    		}					
 					return;
 				}
 				else if (biomeCheck == Result.OK) {
 				    if (!BiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeTypeWhiteList(), chestConfig.getBiomeTypeBlackList())) {
-				    	if (Treasure.logger.isDebugEnabled()) {
+				    	if (Treasure.LOGGER.isDebugEnabled()) {
 				    		if (WorldInfo.isClientSide(world)) {
-				    			Treasure.logger.debug("{} is not a valid biome type @ {}", biome.getBiomeName(), coords.toShortString());
+				    			Treasure.LOGGER.debug("{} is not a valid biome type @ {}", biome.getBiomeName(), coords.toShortString());
 				    		}
 				    		else {
-				    			Treasure.logger.debug("Biome type of {} is not valid @ {}",rarity.getValue(), coords.toShortString());
+				    			Treasure.LOGGER.debug("Biome type of {} is not valid @ {}",rarity.getValue(), coords.toShortString());
 				    		}
 				    	}
 				    	return;
@@ -272,7 +286,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
     			chunksSinceLastRarityChest.put(rarity, 0);
  			
     			// generate the chest/pit/chambers
-				Treasure.logger.debug("Attempting to generate pit/chest.");
+				Treasure.LOGGER.debug("Attempting to generate pit/chest.");
 				GeneratorResult<GeneratorData> result = null;
 				result = generate(world, random, coords, rarity, chestGenMap.get(rarity).next(), TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
 				
@@ -317,9 +331,9 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 
 		// 1. collect location data points
 		ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, coords);
-		Treasure.logger.debug("surface coords -> {}", surfaceCoords.toShortString());
+		Treasure.LOGGER.debug("surface coords -> {}", surfaceCoords.toShortString());
 		if (!WorldInfo.isValidY(surfaceCoords)) {
-			Treasure.logger.debug("surface coords are invalid @ {}", surfaceCoords.toShortString());
+			Treasure.LOGGER.debug("surface coords are invalid @ {}", surfaceCoords.toShortString());
 			return result.fail();
 		}
 		// TEMP - if building a structure, markerCoords could be different than original surface coords because for rotation etc.
@@ -334,7 +348,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 				hasMarkers = false;
 				
 				genResult = generateSurfaceRuins(world, random, surfaceCoords, config);
-				Treasure.logger.debug("surface result -> {}", genResult.toString());
+				Treasure.LOGGER.debug("surface result -> {}", genResult.toString());
 				if (!genResult.isSuccess()) {
 					return result.fail();
 				}
@@ -347,9 +361,9 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 			}
 		}
 		else if (config.isSubterraneanAllowed()) {
-			Treasure.logger.debug("else generate pit");
+			Treasure.LOGGER.debug("else generate pit");
 			genResult = generatePit(world, random, chestRarity, markerCoords, config);
-			Treasure.logger.debug("result -> {}", genResult.toString());
+			Treasure.LOGGER.debug("result -> {}", genResult.toString());
 			if (!genResult.isSuccess()) {
 				return result.fail();
 			}
@@ -358,7 +372,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 				
 		// if chest isn't generated, then fail
 		if (chestCoords == null) {
-			Treasure.logger.debug("Chest coords were not provided in result -> {}", genResult.toString());
+			Treasure.LOGGER.debug("Chest coords were not provided in result -> {}", genResult.toString());
 			return result.fail();
 		}
 	
@@ -373,7 +387,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		
         // TODO can update tile entity GenerationContext with WorldGenerationType here
         
-		Treasure.logger.info("CHEATER! {} chest at coords: {}", chestRarity, markerCoords.toShortString());
+		Treasure.LOGGER.info("CHEATER! {} chest at coords: {}", chestRarity, markerCoords.toShortString());
 		result.setData(chestResult.getData());
 		return result.success();
 	}
@@ -410,7 +424,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 
 		// build the structure
 		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, random, spawnCoords, holder, decayRuleSet);
-		Treasure.logger.debug("surface struct result -> {}", genResult);
+		Treasure.LOGGER.debug("surface struct result -> {}", genResult);
 		if (!genResult.isSuccess()) return result.fail();
 
 		result.setData(genResult.getData());
@@ -432,23 +446,24 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 
 		// 2.5. check if it has 50% land
 		if (!WorldInfo.isSolidBase(world, markerCoords, 2, 2, 50)) {
-			Treasure.logger.debug("Coords [{}] does not meet solid base requires for {} x {}", markerCoords.toShortString(), 3, 3);
+			Treasure.LOGGER.debug("Coords [{}] does not meet solid base requires for {} x {}", markerCoords.toShortString(), 3, 3);
 			return result.fail();
 		}
 
 		// determine spawn coords below ground
-		ICoords spawnCoords = getUndergroundSpawnPos(world, random, markerCoords, config.getMinYSpawn());
-
+//		ICoords spawnCoords = getUndergroundSpawnPos(world, random, markerCoords, config.getMinYSpawn());
+		ICoords spawnCoords = getUndergroundSpawnPos(world, random, markerCoords, config.getMinDepth(), config.getMaxDepth());
+		
 		if (spawnCoords == null || spawnCoords == WorldInfo.EMPTY_COORDS) {
-			Treasure.logger.debug("Unable to spawn underground @ {}", markerCoords);
+			Treasure.LOGGER.debug("Unable to spawn underground @ {}", markerCoords);
 			return result.fail();
 		}
-		Treasure.logger.debug("Below ground @ {}", spawnCoords.toShortString());
+		Treasure.LOGGER.debug("Below ground @ {}", spawnCoords.toShortString());
 		result.getData().setSpawnCoords(markerCoords);
 
 		// select a pit generator
 		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = selectPitGenerator(random);
-		Treasure.logger.debug("Using pit generator -> {}", pitGenerator.getClass().getSimpleName());
+		Treasure.LOGGER.debug("Using pit generator -> {}", pitGenerator.getClass().getSimpleName());
 		
 		// 3. build the pit
 		pitResult = pitGenerator.generate(world, random, markerCoords, spawnCoords);
@@ -456,7 +471,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		if (!pitResult.isSuccess()) return result.fail();
 
 		result.setData(pitResult.getData());
-		Treasure.logger.debug("Is pit generated: {}", pitResult.isSuccess());
+		Treasure.LOGGER.debug("Is pit generated: {}", pitResult.isSuccess());
 		return result.success();
 	}
 
@@ -470,7 +485,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerators = pitGens.row(pitType).values().stream()
 				.collect(Collectors.toList());
 		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));
-		Treasure.logger.debug("Using PitType: {}, Gen: {}", pitType, pitGenerator.getClass().getSimpleName());
+		Treasure.LOGGER.debug("Using PitType: {}, Gen: {}", pitType, pitGenerator.getClass().getSimpleName());
 
 		return pitGenerator;
 	}
@@ -483,6 +498,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 	 * @param spawnYMin
 	 * @return
 	 */
+	@Deprecated
 	public static ICoords getUndergroundSpawnPos(World world, Random random, ICoords pos, int spawnYMin) {
 		ICoords spawnPos = null;
 
@@ -496,6 +512,28 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 			// get floor pos (if in a cavern or tunnel etc)
 			spawnPos = WorldInfo.getDryLandSurfaceCoords(world, spawnPos);
 		}
+		return spawnPos;
+	}
+	
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param pos
+	 * @param minDepth
+	 * @param maxDepth
+	 * @return
+	 */
+	public static ICoords getUndergroundSpawnPos(World world, Random random, ICoords pos, int minDepth, int maxDepth) {
+		ICoords spawnPos = null;
+
+		int depth = RandomHelper.randomInt(minDepth, maxDepth);
+		int ySpawn = Math.max(UNDERGROUND_OFFSET, pos.getY() - depth);
+		Treasure.LOGGER.debug("ySpawn -> {}", ySpawn);
+		spawnPos = new Coords(pos.getX(), ySpawn, pos.getZ());
+		// get floor pos (if in a cavern or tunnel etc)
+		spawnPos = WorldInfo.getDryLandSurfaceCoords(world, spawnPos);
+
 		return spawnPos;
 	}
 	/**
@@ -534,7 +572,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 		List<ChestInfo> infos = ChestRegistry.getInstance().getValues();
 
 		if (infos == null || infos.size() == 0) {
-			Treasure.logger.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");
+			Treasure.LOGGER.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");
 			return false;
 		}
 		

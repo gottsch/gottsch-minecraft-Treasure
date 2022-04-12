@@ -101,15 +101,15 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 		
 		// if there is air above the origin, then in cavern. (pos in isAir() doesn't matter)
 		if (blockState == null || blockState.getMaterial() == Material.AIR) {
-			Treasure.logger.debug("Spawn coords is in cavern.");
+			Treasure.LOGGER.debug("Spawn coords is in cavern.");
 			inCavern = true;
 		}
 
 		if (inCavern) {
-			Treasure.logger.debug("Shaft is in cavern... finding ceiling.");
+			Treasure.LOGGER.debug("Shaft is in cavern... finding ceiling.");
 			spawnCoords = GenUtil.findUndergroundCeiling(world, spawnCoords.add(0, 1, 0));
 			if (spawnCoords == null) {
-				Treasure.logger.warn("Exiting: Unable to locate cavern ceiling.");
+				Treasure.LOGGER.warn("Exiting: Unable to locate cavern ceiling.");
 				return result.fail();
 			}
 			result.getData().setSpawnCoords(spawnCoords);
@@ -119,10 +119,10 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	
 		// generate shaft
 		int yDist = (surfaceCoords.getY() - spawnCoords.getY()) - 2;
-		Treasure.logger.debug("Distance to ySurface =" + yDist);
+		Treasure.LOGGER.debug("Distance to ySurface =" + yDist);
 	
 		if (yDist > getMinSurfaceToSpawnDistance()) {			
-			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
+			Treasure.LOGGER.debug("Generating shaft @ " + spawnCoords.toShortString());
 
 			generateBase(world, random, surfaceCoords, spawnCoords);
 			
@@ -211,12 +211,12 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 		int newIndex = index;
 		if (!coords.equals(expectedCoords)) {
 			// find the difference in y int and add to yIndex;
-			Treasure.logger.debug("Next coords does not equal expected coords. next: {}; expected: {}", coords.toShortString(), expectedCoords.toShortString());
+			Treasure.LOGGER.debug("Next coords does not equal expected coords. next: {}; expected: {}", coords.toShortString(), expectedCoords.toShortString());
 			// NOTE the difference should = 1, there remove 1 from the diff to find unexpected difference
 			int diff = coords.getY() - expectedCoords.getY() - 1;
 			if (diff > 0) {
 				newIndex = coords.getY();
-				Treasure.logger.debug("Difference of: {}. Updating yIndex to {}", diff, newIndex);
+				Treasure.LOGGER.debug("Difference of: {}. Updating yIndex to {}", diff, newIndex);
 			}
 		}
 		return newIndex;
