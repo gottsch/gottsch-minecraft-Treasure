@@ -559,9 +559,10 @@ public class TreasureItems {
 			SILVER_COIN = new WealthItem(Treasure.MODID, TreasureConfig.SILVER_COIN_ID) {
 				@Override
 				public List<LootTableShell> getLootTables() {
+					Treasure.LOGGER.debug("getting silver loot tables");
 					List<LootTableShell> lootTables = new ArrayList<>();
-					lootTables.addAll(/*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.UNCOMMON));
-					lootTables.addAll(/*TreasureLootTableRegistry.getLootTableMaster()*/TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
+					lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.UNCOMMON));
+					lootTables.addAll(TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE));
 					return lootTables;
 				}
 				@Override

@@ -116,11 +116,13 @@ public class WealthItem extends ModItem implements IWishable {
 			}
 			
 			if (numWishingWellBlocks >=2) {
+				Treasure.LOGGER.debug("in a wishing well");
 				Random random = new Random();
 				for (int itemIndex = 0; itemIndex < entityItemStack.getCount(); itemIndex++) {
 					// generate an item for each item in the stack
 					Optional<ItemStack> lootStack = generateLoot(world, random, entityItem.getItem(), coords);
 					if (lootStack.isPresent()) {
+						Treasure.LOGGER.debug("loot stack is present");
 						// spawn the item 
 						InventoryHelper.spawnItemStack(world, (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), lootStack.get());
 					}
