@@ -56,12 +56,6 @@ public class WorldEventHandler {
 		if (WorldInfo.isServerSide(event.getWorld()) && event.getWorld().provider.getDimension() == 0) {
 			//			Treasure.logger.debug("server event");
 			WorldServer world = (WorldServer) event.getWorld();
-
-			// called once to initiate world-level properties in the LootTableMaster
-//			Treasure.LOOT_TABLE_MASTER.init(world);
-
-			// register mod's loot tables
-//			TreasureLootTableRegistry.register(mod.getId());
 			
 			// execute registry's event handler
 			TreasureLootTableRegistry.onWorldLoad(event);

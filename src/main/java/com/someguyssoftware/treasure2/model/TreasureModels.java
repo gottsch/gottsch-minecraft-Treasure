@@ -145,6 +145,7 @@ public class TreasureModels {
         registerItemModel(TreasureItems.POCKET_WATCH);
 
         registerItemModel(TreasureItems.GOTTSCHS_RING_OF_MOON);
+        registerItemModel(TreasureItems.GOTTSCHS_AMULET_OF_HEAVENS);
 //      registerItemModel(TreasureItems.SILVER_SIGNET_RING);
         
         // RUNESTONES
@@ -157,6 +158,7 @@ public class TreasureModels {
         registerItemModel(TreasureItems.ANGELS_RUNESTONE);
         registerItemModel(TreasureItems.PERSISTENCE_RUNESTONE);
         registerItemModel(TreasureItems.SOCKETS_RUNESTONE);
+        registerItemModel(TreasureItems.DOUBLE_CHARGE_RUNESTONE);
         
         // GENERATED ITEMS
 		TreasureItems.ITEMS.forEach((key, value) -> {

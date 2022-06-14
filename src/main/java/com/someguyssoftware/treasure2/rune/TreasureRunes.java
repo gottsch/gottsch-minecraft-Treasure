@@ -56,11 +56,13 @@ public class TreasureRunes {
 	public static IRune RUNE_OF_ANVIL;				// lvl 3 durability
 	public static IRune RUNE_OF_EQUIP_AS_MANA;
 	public static IRune RUNE_OF_PERSISTENCE;
-	public static  IRune RUNE_OF_SOCKETS;
+	public static IRune RUNE_OF_SOCKETS;
+	public static IRune RUNE_OF_DOUBLE_CHARGE;
 
 	// RUNE_OF_EVERLASTING -adornment &  charms are infinite but curse of vanishing is added - MYTHICAL
 	// RUNE_OF_REPAIR - grants repairability
 	// RUNE_OF_SUSTAIN - add # repairs
+	// RUNE_OF_DOUBLE_CHARGE - doubles the max recharges of charm(s).
 	
 
 	// NOTE cannot be static as they rely on Items being created and registered first.
@@ -131,6 +133,13 @@ public class TreasureRunes {
 					$.rarity = Rarity.RARE;
 				}).build();
 		register(RUNE_OF_SOCKETS);
+		
+		RUNE_OF_DOUBLE_CHARGE = new DoubleChargeRune.Builder(ResourceLocationUtil.create("double_charge_rune"))
+				.with($ -> {
+					$.lore = I18n.translateToLocal("tooltip.runestone.lore.double_charge_rune");
+					$.rarity = Rarity.MYTHICAL;
+				}).build();
+		register(RUNE_OF_DOUBLE_CHARGE);
 	}
 
 	/**

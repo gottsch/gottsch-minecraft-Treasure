@@ -79,6 +79,7 @@ import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.material.CharmableMaterial;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 import com.someguyssoftware.treasure2.rune.AngelsRune;
+import com.someguyssoftware.treasure2.rune.DoubleChargeRune;
 import com.someguyssoftware.treasure2.rune.GreaterManaRune;
 import com.someguyssoftware.treasure2.rune.IRuneEntity;
 import com.someguyssoftware.treasure2.rune.TreasureRunes;
@@ -168,6 +169,7 @@ public class TreasureItems {
 	public static Adornment RING_OF_FORTITUDE;
 	public static Adornment PEASANTS_FORTUNE;
 	public static Adornment GOTTSCHS_RING_OF_MOON;
+	public static Adornment GOTTSCHS_AMULET_OF_HEAVENS;
 	public static Adornment CASTLE_RING;
 	public static Adornment SHADOWS_GIFT;
 	public static Adornment BRACELET_OF_WONDER;
@@ -204,6 +206,7 @@ public class TreasureItems {
 	public static RunestoneItem ANGELS_RUNESTONE;
 	public static RunestoneItem PERSISTENCE_RUNESTONE;
 	public static RunestoneItem SOCKETS_RUNESTONE;
+	public static RunestoneItem DOUBLE_CHARGE_RUNESTONE;
 
 	// wither items
 	public static Item WITHER_STICK_ITEM;
@@ -906,6 +909,47 @@ public class TreasureItems {
 				}
 			};
 			
+			/*
+			 * special 5 million download ring. will auto place in your backpack on new world for 1 month (June 15-July 15 2021).
+			 * (legendary)
+			 */
+			GOTTSCHS_AMULET_OF_HEAVENS = new NamedAdornment(Treasure.MODID, "gottschs_amulet_of_heavens", AdornmentType.NECKLACE, TreasureAdornmentRegistry.GREAT) {
+				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+					if (!EnchantmentHelper.hasVanishingCurse(stack)) {
+						stack.addEnchantment(Enchantments.VANISHING_CURSE, 1);
+					}
+					ICharmableCapability cap = new CharmableCapability.Builder(0, 0, 1).with($ -> {
+						$.innate = true;
+						$.imbuable = false;
+						$.socketable = true;
+						$.source = false;
+						$.executing = true;
+						$.baseMaterial = TreasureCharmableMaterials.GOLD.getName();
+						$.sourceItem =  SAPPHIRE.getRegistryName();
+						$.levelModifier = new GreatAdornmentLevelModifier();
+					}).build();
+
+					cap.getCharmEntities().get(InventoryType.SOCKET).add(TreasureCharmRegistry.get(ResourceLocationUtil.create(Charm.Builder.makeName(GreaterHealingCharm.HEALING_TYPE, 25))).get().createEntity());
+					
+					IDurabilityCapability durabilityCap = new DurabilityCapability();
+					durabilityCap.setInfinite(true);
+
+					IRunestonesCapability runestonesCap = new RunestonesCapability.Builder(2, 0, 0).with($ -> {
+						$.socketable = false;
+					}).build();					
+					IRuneEntity runeEntity = TreasureRunes.RUNE_OF_DOUBLE_CHARGE.createEntity();	
+					runestonesCap.add(InventoryType.INNATE, runeEntity);
+					((DoubleChargeRune)runeEntity.getRunestone()).initCapabilityApply(cap, runeEntity);
+					runeEntity = TreasureRunes.RUNE_OF_ANGELS.createEntity();
+					runestonesCap.add(InventoryType.INNATE, runeEntity);
+					((AngelsRune)runeEntity.getRunestone()).initCapabilityApply(cap, durabilityCap, runeEntity);
+					
+					return BaublesIntegration.isEnabled()
+							? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.NECKLACE, cap, runestonesCap, durabilityCap) 
+									: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
+				}
+			};
+			
 			// (legendary)
 			BRACELET_OF_WONDER = new NamedAdornment(Treasure.MODID, "bracelet_of_wonder", AdornmentType.BRACELET, TreasureAdornmentRegistry.GREAT) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
@@ -1185,6 +1229,17 @@ public class TreasureItems {
 				}		
 			};
 			TreasureRunes.register(TreasureRunes.RUNE_OF_SOCKETS, SOCKETS_RUNESTONE);
+			
+			DOUBLE_CHARGE_RUNESTONE = new RunestoneItem(Treasure.MODID, "double_charge_runestone") {
+				public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+					IRunestonesCapability cap = new RunestonesCapability.Builder(1, 0, 0).with($ -> {
+						$.bindable = true;
+					}).build();
+					cap.add(InventoryType.INNATE, TreasureRunes.RUNE_OF_DOUBLE_CHARGE.createEntity());	
+					return new RunestonesCapabilityProvider(cap);
+				}		
+			};
+			TreasureRunes.register(TreasureRunes.RUNE_OF_DOUBLE_CHARGE, DOUBLE_CHARGE_RUNESTONE);
 
 			// OTHER
 			ModSwordBuilder builder = new ModSwordBuilder();
@@ -1273,6 +1328,7 @@ public class TreasureItems {
 					RING_OF_FORTITUDE,
 					BRACELET_OF_WONDER,
 					GOTTSCHS_RING_OF_MOON,
+					GOTTSCHS_AMULET_OF_HEAVENS,
 					SHADOWS_GIFT,
 					RING_OF_LIFE_DEATH,
 					CASTLE_RING,
@@ -1342,6 +1398,7 @@ public class TreasureItems {
 					ANGELS_RUNESTONE,
 					PERSISTENCE_RUNESTONE,
 					SOCKETS_RUNESTONE,
+					DOUBLE_CHARGE_RUNESTONE,
 					SKELETON
 			};
 			registry.registerAll(items);
