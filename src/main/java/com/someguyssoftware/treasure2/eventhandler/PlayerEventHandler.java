@@ -94,6 +94,7 @@ public class PlayerEventHandler {
 		}
 
 		// check if during the correct timeframe for Gottsch's Ring of the Moon
+		/*
 		if (LocalDate.now().getMonth() != Month.DECEMBER || Year.now().getValue() != 2021) {
 			return;			
 		}
@@ -103,10 +104,23 @@ public class PlayerEventHandler {
 			ItemStack ring = new ItemStack(TreasureItems.GOTTSCHS_RING_OF_MOON, 1);
 			event.player.inventory.addItemStackToInventory(ring);
 		}
+		*/
+		
+		// check if during the correct timeframe for Gottsch's Ring of the Moon
+		if (Year.now().getValue() == 2022
+				&& ((LocalDate.now().getMonth() == Month.JUNE && LocalDate.now().getDayOfMonth() > 10)
+						|| (LocalDate.now().getMonth() == Month.JULY && LocalDate.now().getDayOfMonth() < 15))) {
+			if (!persistentNbt.hasKey(FIRST_JOIN_NBT_KEY + "_5m_reward")) {
+				persistentNbt.setBoolean(FIRST_JOIN_NBT_KEY + "_5m_reward", true);
+				// add all items to players inventory on first join
+				ItemStack ring = new ItemStack(TreasureItems.GOTTSCHS_AMULET_OF_HEAVENS, 1);
+				event.player.inventory.addItemStackToInventory(ring);
+			}
+		}
 	}
 
-	//	TEMP remove until patchouli book is complete.
-	//    @SubscribeEvent
+	// TEMP remove until patchouli book is complete.
+	// @SubscribeEvent
 	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
 		// check if config is enabled
 		if (!TreasureConfig.MOD.enableStartingBook) {
@@ -151,18 +165,21 @@ public class PlayerEventHandler {
 		if (WorldInfo.isClientSide(event.getPlayer().world)) {
 			return;
 		}
-		Treasure.LOGGER.debug("{} tossing item -> {}", event.getPlayer().getName(), event.getEntityItem().getItem().getDisplayName());
+		Treasure.LOGGER.debug("{} tossing item -> {}", event.getPlayer().getName(),
+				event.getEntityItem().getItem().getDisplayName());
 		Item item = event.getEntityItem().getItem().getItem();
 		if (item instanceof IWishable) {
 			ItemStack stack = event.getEntityItem().getItem();
 			NBTTagCompound nbt = new NBTTagCompound();
-			nbt.setString(IWishable.DROPPED_BY_KEY, EntityPlayer.getUUID(event.getPlayer().getGameProfile()).toString());
-			stack.setTagCompound(nbt);			
-		}		
+			nbt.setString(IWishable.DROPPED_BY_KEY,
+					EntityPlayer.getUUID(event.getPlayer().getGameProfile()).toString());
+			stack.setTagCompound(nbt);
+		}
 	}
-	
-	// TODO add tooltip "wishable" to Diamond and Emerald when the Wishable strategy is created/cleaned up
-	
+
+	// TODO add tooltip "wishable" to Diamond and Emerald when the Wishable strategy
+	// is created/cleaned up
+
 	/**
 	 * @return the mod
 	 */
@@ -178,8 +195,6 @@ public class PlayerEventHandler {
 	}
 
 	public enum CharmedType {
-		CHARM,
-		FOCUS,
-		ADORNMENT
+		CHARM, FOCUS, ADORNMENT
 	}
 }

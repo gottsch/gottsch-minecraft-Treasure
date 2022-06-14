@@ -227,13 +227,13 @@ public class JewelerBenchContainer extends Container {
 		for (int yIndex = 0; yIndex < 3; ++yIndex) {
 			for (int xIndex = 0; xIndex < 9; ++xIndex) {
 				this.addSlotToContainer(
-						new Slot(playerInventory, xIndex + yIndex * 9 + 9, 8 + xIndex * 18, 84 + yIndex * 18));
+						new Slot(playerInventory, xIndex + yIndex * 9 + 9, 7 + xIndex * 18, 84 + yIndex * 18));
 			}
 		}
 
 		// add player slots
 		for (int xIndex = 0; xIndex < 9; ++xIndex) {
-			this.addSlotToContainer(new Slot(playerInventory, xIndex, 8 + xIndex * 18, 142));
+			this.addSlotToContainer(new Slot(playerInventory, xIndex, 7 + xIndex * 18, 142));
 		}
 	}
 	
@@ -268,7 +268,10 @@ public class JewelerBenchContainer extends Container {
             ItemStack itemStack2 = this.inputSlots.getStackInSlot(1);
             
             // add gem check
-            if ((itemStack.getItem() instanceof Adornment) 
+            if (itemStack2.isEmpty()) {
+            	this.outputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
+            }
+            else if ((itemStack.getItem() instanceof Adornment) 
     				&&	itemStack.hasCapability(CHARMABLE, null)
     				&&	TreasureCharmableMaterials.isSourceItemRegistered(itemStack2.getItem().getRegistryName())) {
     			//Treasure.logger.debug("left is adornment and right is gem!");

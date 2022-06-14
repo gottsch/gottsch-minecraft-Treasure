@@ -93,6 +93,7 @@ item.treasure2:angels_ring.name=Ring of the Angels
 item.treasure2:bracelet_of_wonder.name=Bracelet of Wonder
 item.treasure2:ring_of_fortitude.name=Ring of Fortitude
 item.treasure2:gottschs_ring_of_moon.name=Gottsch's Ring of the Moon
+item.treasure2:gottschs_amulet_of_heavens.name=Gottsch's Amulet of the Heavens
 item.treasure2:shadows_gift.name=The Shadow's Gift
 item.treasure2:ring_of_life_death.name=Ring of Life and Death
 item.treasure2:miners_friend.name=Miner's Friend
@@ -494,6 +495,7 @@ item.treasure2:equip_mana_runestone.name=Runestone of Equipment Mana
 item.treasure2:angels_runestone.name=Angel Blessed Artifact
 item.treasure2:persistence_runestone.name=Runestone of Persistence
 item.treasure2:sockets_runestone.name=Runestone of Capacity
+item.treasure2:double_charge_runestone.name=Runestone of Double Charge
 
 item.treasure2:treasure_tool.name=Treasure Tool
 
@@ -605,6 +607,7 @@ runestone.treasure2:equip_mana_rune.name=Rune of Equipment Mana
 runestone.treasure2:angels_rune.name=Angel Blessed Rune
 runestone.treasure2:persistence_rune.name=Rune of Persistence
 runestone.treasure2:sockets_rune.name=Rune of Capacity
+runestone.treasure2:double_charge_rune.name=Rune of Double Charge
 
 tooltip.runestones.title=Runestones:
 tooltip.runestones.effects=Rune Effects:
@@ -621,6 +624,7 @@ tooltip.runestone.lore.equip_mana_rune=Reduces random armor/equipment durability
 tooltip.runestone.lore.angels_rune=Adds 2x mana to all Healing and Shielding charms.\nAdds Infinite durability.
 tooltip.runestone.lore.persistence_rune=Removes Curse of Vanishing from adornment.
 tooltip.runestone.lore.sockets_rune=Adds an extra charm socket slot to the adornment.
+tooltip.runestone.lore.double_charge_rune=Doubles the recharges of all charms.
 
 tooltip.ember_key.specials=Destroys Wood Locks
 tooltip.ember_lock.specials=Destroys All Keys regardless of breakability (excluding Ember & Lightning)
@@ -658,6 +662,7 @@ tooltip.charm.shielding.prefix.level3=Hardened
 tooltip.charm.shielding.prefix.level4=Powerful
 
 tooltip.charm.gottschs_ring_of_moon.special=Limited Edition: Treasure2 4-millionth download reward.
+tooltip.charm.gottschs_amulet_of_heavens.special=Limited Edition: Treasure2 5-millionth download reward.
 tooltip.painting.name=%s
 tooltip.painting.collection=Collection: %s
 tooltip.painting.issue=Issue: %s/%s
