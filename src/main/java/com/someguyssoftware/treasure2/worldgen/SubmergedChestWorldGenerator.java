@@ -139,6 +139,7 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 	 */
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+		if (RARITIES.size() < 1) return;
 		if (TreasureConfig.WORLD_GEN.getGeneralProperties().getDimensionsWhiteList().contains(Integer.valueOf(world.provider.getDimension()))) {
 			generate(world, random, chunkX, chunkZ);
 		}
