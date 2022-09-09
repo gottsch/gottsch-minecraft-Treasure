@@ -1,4 +1,4 @@
-/*
+/* 
  * This file is part of  Treasure2.
  * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
@@ -19,31 +19,28 @@
  */
 package com.someguyssoftware.treasure2.item;
 
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.*;
-
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.Nullable;
-
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
+import com.someguyssoftware.treasure2.adornment.AdornmentSize;
+import com.someguyssoftware.treasure2.adornment.TreasureAdornmentRegistry;
+import com.someguyssoftware.treasure2.capability.AdornmentCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityStorage;
+import com.someguyssoftware.treasure2.capability.DurabilityCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
+import com.someguyssoftware.treasure2.capability.IRunestonesCapability;
+import com.someguyssoftware.treasure2.capability.RunestonesCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
-import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
-import com.someguyssoftware.treasure2.charm.Charm;
-import com.someguyssoftware.treasure2.charm.ICharm;
-import com.someguyssoftware.treasure2.charm.ICharmEntity;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.util.ModUtils;
+import com.someguyssoftware.treasure2.enums.AdornmentType;
 
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -51,206 +48,235 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 /**
- * 
- * @author Mark Gottschling on Aug 29, 2021
+ * @author Mark Gottschling on Dec 20, 2020
  *
  */
 public class Adornment extends ModItem {
+	private static final CharmableCapabilityStorage CAPABILITY_STORAGE = new CharmableCapabilityStorage();
+	private static final RunestonesCapabilityStorage RUNESTONES_STORAGE = new RunestonesCapabilityStorage();
+	private static final DurabilityCapabilityStorage DURABILITY_STORAGE = new DurabilityCapabilityStorage();
+
+
+	private AdornmentType type;
+	private AdornmentSize size;
+
+	public Adornment(AdornmentType type, Item.Properties properties) {
+		this(type, TreasureAdornmentRegistry.STANDARD, properties);
+	}
+
+	public Adornment(AdornmentType type, AdornmentSize size, Item.Properties properties) {
+		super(properties.tab(TreasureItemGroups.ADORNMENTS_TAB).stacksTo(1));
+		setType(type);
+		setSize(size);
+	}
 
 	/**
 	 * 
 	 * @param modID
 	 * @param name
-	 * @param properties
+	 * @param type
 	 */
-	public Adornment(String modID, String name, Properties properties) {
-		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP).stacksTo(1));
+	@Deprecated
+	public Adornment(String modID, String name, AdornmentType type, Item.Properties properties) {
+		this(modID, name, type, TreasureAdornmentRegistry.STANDARD, properties);
 	}
-
+	/**
+	 * 
+	 * @param modID
+	 * @param name
+	 * @param type
+	 * @param size
+	 */
+	@Deprecated
+	public Adornment(String modID, String name, AdornmentType type, AdornmentSize size, Item.Properties properties) {
+		super(modID, name, properties.tab(TreasureItemGroups.ADORNMENTS_TAB).stacksTo(1));
+		setType(type);
+		setSize(size);
+	}
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
-		CharmableCapabilityProvider provider =  new CharmableCapabilityProvider();
-		return provider;
+		//		return BaublesIntegration.isEnabled() ? new BaublesIntegration.BaubleAdornmentCapabilityProvider(type) : new AdornmentCapabilityProvider();
+		return new AdornmentCapabilityProvider();
 	}
-	
-	/**
-	 * 
-	 */
-	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		// charmable info
-		tooltip.add(new TranslationTextComponent("tooltip.charmable.usage.adornment").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
-		ICharmableCapability cap = getCap(stack);
-		cap.appendHoverText(stack, worldIn, tooltip, flagIn);
-	}
-	
+
 	/**
 	 * Convenience method.
 	 * @param stack
 	 * @return
 	 */
-	public ICharmableCapability getCap(ItemStack stack) {
-		return stack.getCapability(TreasureCapabilities.CHARMABLE, null).orElseThrow(IllegalStateException::new);
+	public Optional<ICharmableCapability> getCap(ItemStack stack) {
+		return stack.getCapability(TreasureCapabilities.CHARMABLE).resolve();
 	}
-	
+
+	public Optional<IDurabilityCapability> getDurabilityCap(ItemStack stack) {
+		return stack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).resolve();
+	}
+
+	public Optional<IRunestonesCapability> getRunestonesCap(ItemStack stack) {
+		return stack.getCapability(TreasureCapabilities.RUNESTONES).resolve();
+	}
+
 	/**
 	 * 
 	 */
 	@Override
 	public boolean isFoil(ItemStack stack) {
-		ICharmableCapability cap = getCap(stack);
-		if (cap.isCharmed()) {
+		Optional<ICharmableCapability> cap = getCap(stack);
+		if (cap.isPresent() && cap.get().isCharmed()) {
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
-	
-	// ///////////////////////////////////////////////////////////
-	private static final String SOURCE = "source";
-	private static final String EXECUTING = "executing";
-	private static final String BINDABLE = "bindable";
-	private static final String INNATE = "innate";
-	private static final String MAX_INNATE_SIZE = "maxInnateSize";
-	private static final String IMBUABLE = "imbuable";
-	private static final String IMBUING = "imbuing";
-	private static final String MAX_IMBUE_SIZE = "maxImbueSize";
-	private static final String SOCKETABLE = "socketable";
-	private static final String MAX_SOCKET_SIZE = "maxSocketSize";
-	private static final String BASE_MATERIAL = "baseMaterial";
-	private static final String SOURCE_ITEM = "sourceItem";
-	private static final String CHARM = "charm";
-	
+
 	/**
-	 * NOTE getShareTag() and readShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands.
+	 * 
+	 */
+	@SuppressWarnings("deprecation")
+	@Override
+	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+		super.appendHoverText(stack, world, tooltip, flag);
+		tooltip.add(new TranslationTextComponent("tooltip.charmable.usage.adornment").withStyle(TextFormatting.GOLD).withStyle(TextFormatting.ITALIC));
+
+		// add the durability tooltips
+		stack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+			cap.appendHoverText(stack, world, tooltip, flag);
+		});
+
+		// add charmables tooltips
+		stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
+			cap.appendHoverText(stack, world, tooltip, flag);
+		});		
+
+		// add runestones tooltips
+		stack.getCapability(TreasureCapabilities.RUNESTONES).ifPresent(cap -> {
+			cap.appendHoverText(stack, world, tooltip, flag);
+		});
+
+		stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
+			if (cap.getSourceItem() == Items.AIR.getRegistryName() || cap.getSourceItem() == null) {
+				tooltip.add(new TranslationTextComponent("tooltip.adornment.upgradable").withStyle(TextFormatting.WHITE).withStyle(TextFormatting.ITALIC));
+			}
+		});
+	}
+
+	/**
+	 * NOTE getNBTShareTag() and readNBTShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands
+	 * or having the client update when the Anvil GUI is open.
 	 */
 	@Override
-    public CompoundNBT getShareTag(ItemStack stack) {
-        CompoundNBT nbt = stack.getOrCreateTag();
-        ICharmableCapability cap = stack.getCapability(CHARMABLE).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
+	public CompoundNBT getShareTag(ItemStack stack) {
+		//		Treasure.logger.debug("writing share tag");
+		// read cap -> write nbt
+		CompoundNBT charmableTag;
+		charmableTag = (CompoundNBT) CAPABILITY_STORAGE.writeNBT(
+				TreasureCapabilities.CHARMABLE,
+				getCap(stack).get(),
+				null);
+		CompoundNBT runestonesTag;
+		runestonesTag = (CompoundNBT) RUNESTONES_STORAGE.writeNBT(
+				TreasureCapabilities.RUNESTONES,
+				getRunestonesCap(stack).get(),
+				null);		
+		CompoundNBT durabilityTag = (CompoundNBT) DURABILITY_STORAGE.writeNBT(
+				TreasureCapabilities.DURABILITY_CAPABILITY,
+				getDurabilityCap(stack).get(),
+				null);
 
-        // TODO is there a way to call CharmableCapabilityStorage.write() from here?  This is an exact duplicate
-		try {
-			/*
-			 * save charm cap inventories
-			 */
-			// create a new list nbt for each inventory type
-			for (int index = 0; index < cap.getCharmEntities().length; index++) {
-				List<ICharmEntity> entityList = cap.getCharmEntities()[index];
-				if (entityList != null && !entityList.isEmpty()) {
-					ListNBT listNbt = new ListNBT();
-					for (ICharmEntity entity : entityList) {
-						CompoundNBT entityNbt = new CompoundNBT();
-						listNbt.add(entity.save(entityNbt));						
-					}
-					nbt.put(InventoryType.getByValue(index).name(), listNbt);
-				}
-			}
-			
-			/*
-			 * save charm cap properties
-			 */
-			nbt.putBoolean(SOURCE, cap.isSource());
-			nbt.putBoolean(EXECUTING, cap.isExecuting());;
-			nbt.putBoolean(BINDABLE, cap.isBindable());
-			
-			nbt.putBoolean(INNATE, cap.isInnate());
-			nbt.putInt(MAX_INNATE_SIZE, cap.getMaxInnateSize());
-			
-			nbt.putBoolean(IMBUABLE, cap.isImbuable());
-			nbt.putBoolean(IMBUING, cap.isImbuing());			
-			nbt.putInt(MAX_IMBUE_SIZE, cap.getMaxImbueSize());
-			
-			nbt.putBoolean(SOCKETABLE, cap.isSocketable());
-			nbt.putInt(MAX_SOCKET_SIZE, cap.getMaxSocketsSize());
-			nbt.putString(BASE_MATERIAL, cap.getBaseMaterial().toString());
-			nbt.putString(SOURCE_ITEM, cap.getSourceItem().toString());
-			
-		} catch (Exception e) {
-			Treasure.LOGGER.error("Unable to write state to NBT:", e);
+		CompoundNBT tag = new CompoundNBT();
+		tag.put("charmable", charmableTag);
+		tag.put("runestones", runestonesTag);
+		tag.put("durability", durabilityTag);
+
+		return tag;
+	}
+
+	@Override
+	public void readShareTag(ItemStack stack, CompoundNBT nbt) {
+		super.readShareTag(stack, nbt);
+		Treasure.LOGGER.debug("reading share tag");
+		if (nbt == null) {
+			Treasure.LOGGER.debug("nbt is null - how?");
+			return;
 		}
-		return nbt;
-    }
+		// read nbt -> write key item
+		if (nbt.contains("charmable")) {
+			CompoundNBT tag = nbt.getCompound("charmable");
+			CAPABILITY_STORAGE.readNBT(
+					TreasureCapabilities.CHARMABLE, 
+					getCap(stack).get(), 
+					null,
+					tag);
+		}
+		if (nbt.contains("runestones")) {
+			CompoundNBT tag = nbt.getCompound("runestones");
+			RUNESTONES_STORAGE.readNBT(
+					TreasureCapabilities.RUNESTONES, 
+					getRunestonesCap(stack).get(), 
+					null,
+					tag);
+		}
+		if (nbt.contains("durability")) {
+			CompoundNBT tag = nbt.getCompound("durability");
+			DURABILITY_STORAGE.readNBT(
+					TreasureCapabilities.DURABILITY_CAPABILITY, 
+					getDurabilityCap(stack).get(), 
+					null,
+					tag);
+		}
+	}
 
-    @Override
-    public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
-        super.readShareTag(stack, nbt);
-
-		if (nbt instanceof CompoundNBT) {
-			 ICharmableCapability cap = stack.getCapability(CHARMABLE).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
-
-			CompoundNBT tag = (CompoundNBT) nbt;
-			for (InventoryType type : InventoryType.values()) {
-				// clear the list
-				cap.getCharmEntities()[type.getValue()].clear();				
-				/*
-				 *  load the list
-				 */
-				if (tag.contains(type.name())) {
-					ListNBT listNbt = tag.getList(type.name(), 10);
-					listNbt.forEach(e -> {
-						// load the charm
-						Optional<ICharm> charm = Charm.load((CompoundNBT) ((CompoundNBT)e).get(CHARM));
-						if (!charm.isPresent()) {
-							return;
-						}
-						// create an entity
-						ICharmEntity entity = charm.get().createEntity();
-						
-						// load entity
-						entity.load((CompoundNBT)e);
-						
-						// add the entity to the list
-						cap.getCharmEntities()[type.getValue()].add(entity);
-					});
-				}
-				
-				// load cap properties
-				if (tag.contains(SOURCE)) {
-					cap.setSource(tag.getBoolean(SOURCE));
-				}
-				if (tag.contains(EXECUTING)) {
-					cap.setExecuting(tag.getBoolean(EXECUTING));
-				}
-				
-				if (tag.contains(BINDABLE)) {
-					cap.setBindable(tag.getBoolean(BINDABLE));
-				}
-				
-				if (tag.contains(INNATE)) {
-					cap.setInnate(tag.getBoolean(INNATE));
-				}				
-				if (tag.contains(MAX_INNATE_SIZE)) {
-					cap.setMaxInnateSize(tag.getInt(MAX_INNATE_SIZE));
-				}
-				
-				if (tag.contains(IMBUABLE)) {
-					cap.setImbuable(tag.getBoolean(IMBUABLE));
-				}				
-				if (tag.contains(MAX_IMBUE_SIZE)) {
-					cap.setMaxImbueSize(tag.getInt(MAX_IMBUE_SIZE));
-				}
-				if (tag.contains(IMBUING)) {
-					cap.setImbuing(tag.getBoolean(IMBUING));
-				}	
-				
-				if (tag.contains(SOCKETABLE)) {
-					cap.setSocketable(tag.getBoolean(SOCKETABLE));
-				}				
-				if (tag.contains(MAX_SOCKET_SIZE)) {
-					cap.setMaxSocketsSize(tag.getInt(MAX_SOCKET_SIZE));
-				}
-				if (tag.contains(BASE_MATERIAL)) {
-					cap.setBaseMaterial(ModUtils.asLocation(tag.getString(BASE_MATERIAL)));
-				}
-				
-				if (tag.contains(SOURCE_ITEM)) {
-					cap.setSourceItem(ModUtils.asLocation(tag.getString(SOURCE_ITEM)));
-				}
+	/**
+	 * Queries the percentage of the 'Durability' bar that should be drawn.
+	 *
+	 * @param stack The current ItemStack
+	 * @return 0.0 for 100% (no damage / full bar), 1.0 for 0% (fully damaged / empty bar)
+	 */
+	@Override
+	public double getDurabilityForDisplay(ItemStack stack) {
+		if (stack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).isPresent()) {
+			IDurabilityCapability cap = getDurabilityCap(stack).get();
+			if (cap.isInfinite()) {
+				return 0D;
+			}
+			else {
+				return (double)stack.getDamageValue() / (double) cap.getDurability();
 			}
 		}
-    }
+		else {
+			return (double)stack.getDamageValue() / (double)stack.getMaxDamage();
+		}
+	}
+
+	/**
+	 * Adornments are not repairable using vanilla methods.
+	 */	
+	@Override
+	public boolean isRepairable(ItemStack stack) {
+		return false;
+	}
+
+	/**
+	 * Adornments are not repairable using vanilla methods.
+	 */
+	@Override
+	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
+		return false;
+	}
+
+	public AdornmentType getType() {
+		return type;
+	};
+
+	private void setType(AdornmentType type) {
+		this.type = type;
+	}
+
+	public AdornmentSize getSize() {
+		return size;
+	}
+
+	private void setSize(AdornmentSize size) {
+		this.size = size;
+	}
 }

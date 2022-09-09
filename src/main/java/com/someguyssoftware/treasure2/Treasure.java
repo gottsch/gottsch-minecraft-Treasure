@@ -13,11 +13,12 @@ import com.someguyssoftware.treasure2.entity.TreasureEntities;
 import com.someguyssoftware.treasure2.eventhandler.CharmEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.HotbarEquipmentCharmHandler;
 import com.someguyssoftware.treasure2.eventhandler.IEquipmentCharmHandler;
-
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.init.TreasureSetup;
+import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.network.TreasureNetworking;
 import com.someguyssoftware.treasure2.particle.TreasureParticles;
+import com.someguyssoftware.treasure2.rune.TreasureRunes;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -47,7 +48,7 @@ import top.theillusivec4.curios.api.SlotTypePreset;
 		name = Treasure.NAME, 
 		version = Treasure.VERSION, 
 		minecraftVersion = "1.16.5", 
-		forgeVersion = "36.2.0", 
+		forgeVersion = "36.2.34", 
 		updateJsonUrl = Treasure.UPDATE_JSON_URL)
 @Credits(values = { "Treasure was first developed by Mark Gottschling on Aug 27, 2014.",
 		"Treasure2 was first developed by Mark Gottschling on Jan 2018.",
@@ -63,7 +64,7 @@ public class Treasure implements IMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.7.3";
+	protected static final String VERSION = "2.1.0";
 
 
 	protected static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.16.5-master/update.json";
@@ -72,10 +73,18 @@ public class Treasure implements IMod {
 	private static TreasureConfig config;
 	public static IEventBus MOD_EVENT_BUS;
 	
+
+	/**
+	 * 
+	 */
 	public Treasure() {
 		Treasure.instance = this;
 		Treasure.config = new TreasureConfig(this);
-		
+		// force load of static blocks
+		TreasureCharms.init();
+		TreasureRunes.init();
+		// register the deferred registries
+		TreasureItems.register();
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, TreasureConfig.COMMON_CONFIG);
 
 		TreasureConfig.loadConfig(TreasureConfig.COMMON_CONFIG,
@@ -89,8 +98,8 @@ public class Treasure implements IMod {
 		eventBus.addListener(this::config);
 		eventBus.addListener(TreasureNetworking::common);
 		eventBus.addListener(TreasureSetup::common);
-		eventBus.addListener(TreasureCharms::setup);
-		eventBus.addListener(TreasureSetup::clientSetup);
+//		eventBus.addListener(TreasureCharms::setup);
+//		eventBus.addListener(TreasureSetup::clientSetup);
 		eventBus.addListener(this::clientSetup);
 		eventBus.addListener(this::interModComms);
 

@@ -23,11 +23,16 @@ import net.minecraft.world.World;
  */
 public class SkeletonKey extends KeyItem {
 
+	public SkeletonKey(Item.Properties properties) {
+		super(properties);
+	}
+	
 	/**
 	 * 
 	 * @param modID
 	 * @param name
 	 */
+	@Deprecated
 	public SkeletonKey(String modID, String name, Item.Properties properties) {
 		super(modID, name, properties);
 	}

@@ -62,7 +62,7 @@ public class WitherMistMessageHandlerOnServer {
 
 		final ServerPlayerEntity sendingPlayer = ctx.getSender();
 		if (sendingPlayer == null) {
-			Treasure.LOGGER.warn("EntityPlayerMP was null when WitherMistMessageToServer was received");
+			Treasure.LOGGER.warn("PlayerEntityMP was null when WitherMistMessageToServer was received");
 		}
 
 		// This code creates a new task which will be executed by the server during the next tick,

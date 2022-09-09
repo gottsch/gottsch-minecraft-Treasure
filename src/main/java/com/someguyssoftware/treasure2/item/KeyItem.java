@@ -103,12 +103,26 @@ public class KeyItem extends ModItem {
 
 	/**
 	 * 
+	 * @param properties
+	 */
+	public KeyItem(Item.Properties properties) {
+		super(properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP).defaultDurability(DEFAULT_MAX_USES));
+		setCategory(Category.ELEMENTAL);
+		setRarity(Rarity.COMMON);
+		setBreakable(true);
+		setDamageable(true);
+		setCraftable(false);
+		setSuccessProbability(90D);	
+	}
+	
+	/**
+	 * 
 	 * @param modID
 	 * @param name
 	 */
+	@Deprecated
 	public KeyItem(String modID, String name, Item.Properties properties) {
-		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP).defaultDurability(DEFAULT_MAX_USES));
-
+		super(modID, name, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP).defaultDurability(DEFAULT_MAX_USES));
 		setCategory(Category.ELEMENTAL);
 		setRarity(Rarity.COMMON);
 		setBreakable(true);

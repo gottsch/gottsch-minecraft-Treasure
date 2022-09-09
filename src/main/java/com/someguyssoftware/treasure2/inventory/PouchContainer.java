@@ -81,7 +81,7 @@ public class PouchContainer extends AbstractChestContainer {
 	public void buildHotbar(PlayerInventory player) {
 		for (int x = 0; x < HOTBAR_SLOT_COUNT; x++) {
 			int slotNumber = x;
-			if (slotNumber == player.selected && player.offhand.get(0).getItem() != TreasureItems.POUCH) {
+			if (slotNumber == player.selected && player.offhand.get(0).getItem() != TreasureItems.POUCH.get()) {
 				addSlot(new NoSlot(player, slotNumber, getHotbarXPos() + getSlotXSpacing() * x, getHotbarYPos()));
 			}
 			else {

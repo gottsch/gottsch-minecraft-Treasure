@@ -105,7 +105,7 @@ public class PouchInventory extends Inventory {
 	}
 
 	/* (non-Javadoc)
-	 * @see net.minecraft.inventory.IInventory#closeInventory(net.minecraft.entity.player.EntityPlayer)
+	 * @see net.minecraft.inventory.IInventory#closeInventory(net.minecraft.entity.player.PlayerEntity)
 	 */
 	@Override
 	public void stopOpen(PlayerEntity player) {

@@ -19,26 +19,22 @@
  */
 package com.someguyssoftware.treasure2.item;
 
-import java.util.List;
-
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY_CAPABILITY;
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.KEY_RING_CAPABILITY;
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.KEY_RING_INVENTORY_CAPABILITY;
+
+import java.util.List;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
-import com.someguyssoftware.treasure2.block.ITreasureBlock;
-import com.someguyssoftware.treasure2.block.TreasureBlock;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.inventory.KeyRingContainer;
 import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
-import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 import com.someguyssoftware.treasure2.inventory.TreasureContainers;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
@@ -66,7 +62,6 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -82,12 +77,22 @@ public class KeyRingItem extends ModItem implements INamedContainerProvider {
 
 	/**
 	 * 
+	 * @param properties
+	 */
+	public KeyRingItem(Properties properties) {
+		super(properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP)
+				.stacksTo(1));
+	}
+	
+	/**
+	 * 
 	 * @param modID
 	 * @param name
 	 * @param properties
 	 */
+	@Deprecated
 	public KeyRingItem(String modID, String name, Properties properties) {
-		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP)
+		super(modID, name, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP)
 				.stacksTo(1));
 	}
 

@@ -19,7 +19,6 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
-import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.spatial.ICoords;
@@ -27,27 +26,18 @@ import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.eventbus.api.Event;
 
-/**
- * 
- * @author Mark Gottschling on Aug 24, 2021
- *
- */
+
 public class DirtWalkCurse extends Charm {
 	public static final String DIRT_WALK_TYPE = "dirt_walk";
 
 	private static final Class<?> REGISTERED_EVENT = LivingUpdateEvent.class;
+
 
 	/**
 	 * 
@@ -65,19 +55,23 @@ public class DirtWalkCurse extends Charm {
 	public boolean isCurse() {
 		return true;
 	}
-	
+
+	/**
+	 * 
+	 */
 	@Override
 	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-		
+
 		// update every 10 seconds
 		if (world.getGameTime() % 200 == 0) {
-			if (player.isAlive() && entity.getValue() > 0) {
-				  // if the current position where standing isn't already dirt, change it to dirt
-                BlockState state = world.getBlockState(coords.down(1).toPos());
+			if (player.isAlive() && entity.getMana() > 0) {
+				// if the current position where standing isn't already dirt, change it to dirt
+				BlockState state = world.getBlockState(coords.down(1).toPos());
 				if (state.getBlock() != Blocks.DIRT) {
-                    world.setBlockAndUpdate(coords.down(1).toPos(), Blocks.DIRT.defaultBlockState());
-                    entity.setValue(MathHelper.clamp(entity.getValue() - 1.0,  0D, entity.getValue()));
+					world.setBlockAndUpdate(coords.down(1).toPos(), Blocks.DIRT.defaultBlockState());
+//					entity.setMana(MathHelper.clamp(entity.getMana() - 1.0,  0D, entity.getMana()));
+					applyCost(world, random, coords, player, event, entity, 1.0);
 					result = true;
 				}
 			}
@@ -85,18 +79,11 @@ public class DirtWalkCurse extends Charm {
 		return result;
 	}
 
-	/**
-	 * 
-	 */
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.DARK_RED;
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent(getLabel(entity)).withStyle(color)));
+	public TextFormatting getCharmLabelColor() {
+		return TextFormatting.DARK_RED;
 	}
-    
-	/**
-	 * 
-	 */
+	
 	public static class Builder extends Charm.Builder {
 
 		public Builder(Integer level) {

@@ -23,11 +23,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.charm.CharmContext;
-import com.someguyssoftware.treasure2.charm.CharmEntity;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
+import com.someguyssoftware.treasure2.charm.ICooldownCharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
@@ -48,6 +48,7 @@ public class CharmMessageToClient {
 	private String slotProviderId;							//6
 	private InventoryType inventoryType;		//7
 	private int index;														//8
+	private int itemDamage;
 	
 	/**
 	 * 
@@ -56,13 +57,15 @@ public class CharmMessageToClient {
 	public CharmMessageToClient(String playerName, CharmContext context) {
 		valid = true;
 		this.playerName = playerName;
-		this.entity = context.getEntity();
 		this.charmName = context.getEntity().getCharm().getName().toString();		
+		this.entity = context.getEntity();
 		this.hand = context.getHand();
 		this.slotProviderId = context.getSlotProviderId();
 		this.slot = Objects.toString(context.getSlot(), "");		
 		this.inventoryType = context.getType();
 		this.index = context.getIndex();
+		this.itemDamage = context.getItemStack().getDamageValue();
+
 	}
 	
 	/**
@@ -82,18 +85,18 @@ public class CharmMessageToClient {
 		try {
 			message.setPlayerName(buf.readUtf());
 			message.setCharmName(buf.readUtf());
-			double value = buf.readDouble();
-			int duration = buf.readInt();
-			double percent = buf.readDouble();
+
 			Optional<ICharm> optionalCharm = TreasureCharmRegistry.get(ModUtils.asLocation(message.getCharmName()));
 			if (!optionalCharm.isPresent()) {
 				throw new RuntimeException(String.format("Unable to find charm %s in registry.", message.getCharmName()));
 			}
-			ICharmEntity entity = new CharmEntity();
+			ICharmEntity entity = optionalCharm.get().createEntity();
 			entity.setCharm(optionalCharm.get());
-			entity.setDuration(duration);
-			entity.setPercent(percent);
-			entity.setValue(value);
+			entity.setMana(buf.readDouble());
+	    	// get class specific entity data
+	    	if (entity instanceof ICooldownCharmEntity) {
+	    		((ICooldownCharmEntity) entity).setCooldownEnd(buf.readDouble());
+	    	}
 			message.setEntity(entity);
 			String handAsString = buf.readUtf();
 			if (!handAsString.isEmpty()) {
@@ -106,6 +109,7 @@ public class CharmMessageToClient {
 				message.setInventoryType(InventoryType.valueOf(inventoryType.toUpperCase()));
 			}
 			message.setIndex(buf.readInt());
+			message.setItemDamage(buf.readInt());
 		}
 		catch(Exception e) {
 			Treasure.LOGGER.error("An error occurred attempting to read message: ", e);
@@ -125,9 +129,12 @@ public class CharmMessageToClient {
 		}
 		buf.writeUtf(getPlayerName());
 		buf.writeUtf(getCharmName());
-		buf.writeDouble(entity.getValue());
-		buf.writeInt(entity.getDuration());
-		buf.writeDouble(entity.getPercent());
+		buf.writeDouble(entity.getMana());
+	    // write specific entity data
+	    if (entity instanceof ICooldownCharmEntity) {
+	    	buf.writeDouble(((ICooldownCharmEntity) entity).getCooldownEnd());
+	    }
+	    
 		String handAsString = "";
 		if (hand != null) {
 			handAsString = hand.name();
@@ -141,6 +148,7 @@ public class CharmMessageToClient {
 		}
 		buf.writeUtf(typeAsString);
 		buf.writeInt(index);
+		buf.writeInt(this.itemDamage);
 	}
 	
 	public boolean isValid() {
@@ -214,6 +222,14 @@ public class CharmMessageToClient {
 		this.index = index;
 	}
 
+	public int getItemDamage() {
+		return itemDamage;
+	}
+
+	public void setItemDamage(int itemDamage) {
+		this.itemDamage = itemDamage;
+	}
+	
 	@Override
 	public String toString() {
 		return "CharmMessageToClient [valid=" + valid + ", playerName=" + playerName + ", charmName=" + charmName

@@ -23,7 +23,7 @@ import java.util.Comparator;
 import java.util.function.Consumer;
 
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
-import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;

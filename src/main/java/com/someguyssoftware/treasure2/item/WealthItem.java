@@ -69,12 +69,21 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 public class WealthItem extends ModItem implements IWishable {
 	/**
 	 * 
+	 * @param properties
+	 */
+	public WealthItem(Properties properties) {
+        super(properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP).stacksTo(TreasureConfig.BOOTY.wealthMaxStackSize.get()));
+	}
+	
+	/**
+	 * 
 	 * @param modID
 	 * @param name
 	 * @param properties
 	 */
+	@Deprecated
 	public WealthItem(String modID, String name, Properties properties) {
-        super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP)
+        super(modID, name, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP)
         		.stacksTo(TreasureConfig.BOOTY.wealthMaxStackSize.get()));
 	}
 	

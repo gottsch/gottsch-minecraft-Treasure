@@ -21,50 +21,60 @@ package com.someguyssoftware.treasure2.charm;
 
 import java.util.List;
 
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-/**
- * 
- * @author Mark Gottschling on Aug 23, 2021
- *
+/*
+ *  TODO look at Illumination charm/entity. could add cooldown property
+ * could make all charms more generic, each extending and only adding what they need.
+ * the only common property would be "value" which is the number of "uses"
  */
-public class AegisCharm extends ShieldingCharm {
 
+public class AegisCharm extends ShieldingCharm {
+	
 	AegisCharm(Builder builder) {
-		super(builder);
+		super((Charm.Builder)builder);
 	}
 
 	public static String AEGIS_TYPE = "aegis";
 
+	@SuppressWarnings("deprecation")
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.BLUE;
-		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent(getLabel(entity)).withStyle(color)));
-		tooltip.add(new StringTextComponent(" ")
-				.append(new TranslationTextComponent("tooltip.charm.rate.aegis", 100).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
-
+	public void addInformation(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity, InventoryType type) {
+		ShieldingCharmEntity charmEntity = (ShieldingCharmEntity)entity;
+		
+		tooltip.add(getLabel(entity, type == InventoryType.SOCKET ? true : false));
+		if (charmEntity.getCooldownEnd() > 0.0 && world.getGameTime() < charmEntity.getCooldownEnd()) {
+			tooltip.add(
+					new TranslationTextComponent("tooltip.indent4", 
+							new TranslationTextComponent("tooltip.charm.rate.aegis")
+							.append(" ")
+							.append(new TranslationTextComponent("tooltip.charm.cooldown.meter", DECIMAL_FORMAT.format((charmEntity.getCooldownEnd() - world.getGameTime())/TICKS_PER_SECOND))
+					).withStyle(TextFormatting.GRAY).withStyle(TextFormatting.ITALIC)
+			));
+		}
+		else {
+			tooltip.add(new TranslationTextComponent("tooltip.indent2", 
+					new TranslationTextComponent("tooltip.charm.rate.aegis")).withStyle(TextFormatting.GRAY).withStyle(TextFormatting.ITALIC));
+		}
 	}
-
+	
 	public static class Builder extends Charm.Builder {
 
 		public Builder(Integer level) {
 			super(ModUtils.asLocation(makeName(AEGIS_TYPE, level)), AEGIS_TYPE, level);
-			this.percent = 1D;
 		}
-
+		
 		@Override
 		public ICharm build() {
-			return  new AegisCharm(this);
+			return new AegisCharm(this);
 		}
 	}
-
 }

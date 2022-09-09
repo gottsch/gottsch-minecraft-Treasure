@@ -22,8 +22,8 @@ package com.someguyssoftware.treasure2.charm;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
+import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 
@@ -31,8 +31,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 
 /**
- * 
- * @author Mark Gottschling on Aug 24, 2021
+ * @author Mark Gottschling on May 5, 2020
  *
  */
 public class IlluminationCharmEntity extends CharmEntity {
@@ -40,16 +39,47 @@ public class IlluminationCharmEntity extends CharmEntity {
 
 	/**
 	 * 
+	 */
+//	public IlluminationCharmEntity() {
+//		super();
+//		coordsList = Collections.synchronizedList(new LinkedList<>());
+//	}
+	
+	public IlluminationCharmEntity() {
+		super();
+	}
+	
+	/**
+	 * 
 	 * @param charm
+	 */
+	public IlluminationCharmEntity(ICharm charm) {
+		super(charm);
+		setCoordsList(Collections.synchronizedList(new LinkedList<>()));
+	}
+	
+	public IlluminationCharmEntity(IlluminationCharmEntity entity) {
+		super(entity);
+		setCoordsList(Collections.synchronizedList(new LinkedList<>()));
+		entity.getCoordsList().forEach(coords -> {
+			ICoords newCoords = new Coords(coords);
+			getCoordsList().add(newCoords);
+		});
+	}
+	
+	/**
+	 * 
 	 * @param value
 	 * @param duration
 	 * @param percent
 	 */
-	public IlluminationCharmEntity(ICharm charm, double value, int duration, double percent) {
-		super(charm, value, duration, percent);
-		setCoordsList(Collections.synchronizedList(new LinkedList<>()));
-	}	
-	
+//	public IlluminationCharmEntity(double value, int duration, double percent) {
+//		this();
+//		setValue(value);
+//		setDuration(duration);
+//		setPercent(percent);
+//	}
+
 	/**
 	 * 
 	 */
@@ -59,7 +89,7 @@ public class IlluminationCharmEntity extends CharmEntity {
 		ListNBT list = nbt.getList("illuminationCoords", 10);
 //		Treasure.logger.debug("illumination tag list size -> {}", list.tagCount());
 		for (int i = 0; i < list.size(); i++) {
-			CompoundNBT tag = (CompoundNBT) list.get(i);
+			CompoundNBT tag = list.getCompound(i);
 			ICoords coords = ICoords.readFromNBT(tag);
 			if (coords != null) {
 				getCoordsList().add(coords);
@@ -68,6 +98,11 @@ public class IlluminationCharmEntity extends CharmEntity {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @param tag
+	 * @return
+	 */
 	@Override
 	public CompoundNBT save(CompoundNBT nbt) {
 		nbt = super.save(nbt);
@@ -89,7 +124,7 @@ public class IlluminationCharmEntity extends CharmEntity {
 		}
 		return nbt;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -111,7 +146,7 @@ public class IlluminationCharmEntity extends CharmEntity {
 
 	@Override
 	public String toString() {
-		return "IlluminationCharmEntity [" + /*coordsList=" + coordsList + ",*/ " toString()=" + super.toString() + "]";
+		return "IlluminationCharmData [" + /*coordsList=" + coordsList + ",*/ " toString()=" + super.toString() + "]";
 	}
 
 	@Override
@@ -138,4 +173,5 @@ public class IlluminationCharmEntity extends CharmEntity {
 			return false;
 		return true;
 	}
+
 }

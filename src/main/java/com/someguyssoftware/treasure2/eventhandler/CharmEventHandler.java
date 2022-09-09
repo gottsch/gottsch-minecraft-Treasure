@@ -19,48 +19,36 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.CHARMABLE;
-
+import java.nio.channels.IllegalSelectorException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
+import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
-import com.someguyssoftware.treasure2.item.IWishable;
 import com.someguyssoftware.treasure2.network.CharmMessageToClient;
 import com.someguyssoftware.treasure2.network.TreasureNetworking;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.network.PacketDistributor;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
-import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 /**
  * 
@@ -169,7 +157,7 @@ public class CharmEventHandler {
 	//		}
 	//
 	//		// get the player
-	//		EntityPlayerMP player = (EntityPlayerMP) event.getHarvester();
+	//		PlayerEntityMP player = (PlayerEntityMP) event.getHarvester();
 	//		processCharms(event, player);
 	//	}
 
@@ -206,34 +194,37 @@ public class CharmEventHandler {
 		// check each hand
 		for (Hand hand : Hand.values()) {
 			ItemStack heldStack = player.getItemInHand(hand);
-//			Treasure.LOGGER.debug("is executing -> {}", heldStack.getCapability(CHARMABLE).map(cap -> cap.isExecuting()).orElse(false));
-			if (heldStack.getCapability(CHARMABLE).map(cap -> cap.isExecuting()).orElse(false)) {
-				heldStack.getCapability(CHARMABLE).ifPresent(cap -> {
-					for (InventoryType type : InventoryType.values()) {
-						AtomicInteger index = new AtomicInteger();
-						// requires indexed for-loop
-						for (int i = 0; i < cap.getCharmEntities()[type.getValue()].size(); i++) {
-							ICharmEntity entity =  cap.getCharmEntities()[type.getValue()].get(i);
-							// OR just check with the charm for allowable event
-							//						if (!TreasureCharms.isCharmEventRegistered(event.getClass(), entity.getCharm().getType())) {
-							if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
-//								Treasure.LOGGER.debug("charm type -> {} is not register for this event -> {}", entity.getCharm().getType(), event.getClass().getSimpleName());
-								continue;
-							}
-							index.set(i);
-							CharmContext context  = new CharmContext.Builder().with($ -> {
-								$.hand = hand;
-								$.itemStack = heldStack;
-								$.capability = cap;
-								$.type = type;
-								$.index = index.get();
-								$.entity = entity;
-							}).build();
-							contexts.add(context);
-						}
-					}
-				});
+			if (heldStack.getCapability(TreasureCapabilities.CHARMABLE).isPresent()) {
+				contexts.addAll(getCharmsFromStack(event, hand, "", heldStack, false));
 			}
+//			Treasure.LOGGER.debug("is executing -> {}", heldStack.getCapability(CHARMABLE).map(cap -> cap.isExecuting()).orElse(false));
+//			if (heldStack.getCapability(CHARMABLE).map(cap -> cap.isExecuting()).orElse(false)) {
+//				heldStack.getCapability(CHARMABLE).ifPresent(cap -> {
+//					for (InventoryType type : InventoryType.values()) {
+//						AtomicInteger index = new AtomicInteger();
+//						// requires indexed for-loop
+//						for (int i = 0; i < cap.getCharmEntities()[type.getValue()].size(); i++) {
+//							ICharmEntity entity =  cap.getCharmEntities()[type.getValue()].get(i);
+//							// OR just check with the charm for allowable event
+//							//						if (!TreasureCharms.isCharmEventRegistered(event.getClass(), entity.getCharm().getType())) {
+//							if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
+////								Treasure.LOGGER.debug("charm type -> {} is not register for this event -> {}", entity.getCharm().getType(), event.getClass().getSimpleName());
+//								continue;
+//							}
+//							index.set(i);
+//							CharmContext context  = new CharmContext.Builder().with($ -> {
+//								$.hand = hand;
+//								$.itemStack = heldStack;
+//								$.capability = cap;
+//								$.type = type;
+//								$.index = index.get();
+//								$.entity = entity;
+//							}).build();
+//							contexts.add(context);
+//						}
+//					}
+//				});
+//			}
 		}
 
 		// check equipment slots
@@ -243,6 +234,43 @@ public class CharmEventHandler {
 		return contexts;
 	}
 
+	/**
+	 * 
+	 * @param event
+	 * @param hand
+	 * @param itemStack
+	 * @param isPouch
+	 * @return
+	 */
+	private List<CharmContext> getCharmsFromStack(Event event, Hand hand, String slot, ItemStack itemStack, boolean isPouch) {
+		final List<CharmContext> contexts = new ArrayList<>(5);
+		ICharmableCapability cap = itemStack.getCapability(TreasureCapabilities.CHARMABLE).map(c -> c).orElseThrow(() -> new IllegalSelectorException());
+		if (cap.isExecuting()) {
+			for (InventoryType type : InventoryType.values()) {
+				AtomicInteger index = new AtomicInteger();
+				for (int i = 0; i < cap.getCharmEntities().get(type).size(); i++) {
+					ICharmEntity entity = ((List<ICharmEntity>)cap.getCharmEntities().get(type)).get(i);
+					if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
+						continue;
+					}
+					index.set(i);
+					CharmContext context = new CharmContext.Builder().with($ -> {
+						$.hand = hand;
+						$.slot = slot;
+						$.slotProviderId = isPouch ? "treasure2" : "minecraft";
+						$.itemStack = itemStack;
+						$.capability = cap;
+						$.type = type;
+						$.index = index.get();
+						$.entity = entity;						
+					}).build();
+					contexts.add(context);
+				}
+			}
+		}
+		return contexts;
+	}
+	
 	/**
 	 * 
 	 * @param event
@@ -270,6 +298,9 @@ public class CharmEventHandler {
 
 			// if charm is executable and executes successfully
 			if (context.getEntity().getCharm().update(player.level, new Random(), new Coords(player.position()), player, event, context.getEntity())) {
+				// TODO handle the durability of the adornment
+				processUsage(player.level, player, event, context);
+				
 				// send state message to client
 				CharmMessageToClient message = new CharmMessageToClient(player.getStringUUID(), context);
 				TreasureNetworking.simpleChannel.send(PacketDistributor.PLAYER.with(() -> player), message);
@@ -277,16 +308,40 @@ public class CharmEventHandler {
 
 			// remove if uses are empty and the capability is bindable ie. charm, not adornment
 			// NOTE this leaves empty charms on non-bindables for future recharge
-			if (context.getEntity().getValue() <= 0.0 && context.getCapability().isBindable()) {
-				Treasure.LOGGER.debug("charm is empty -> remove");
-				// TODO call cap.remove() -> recalcs highestLevel
-				// locate the charm from context and remove
-				//				context.getCapability().getCharmEntities()[context.getType().getValue()].remove(context.getIndex());
+//			if (context.getEntity().getValue() <= 0.0 && context.getCapability().isBindable()) {
+//				Treasure.LOGGER.debug("charm is empty -> remove");
+//				// TODO call cap.remove() -> recalcs highestLevel
+//				// locate the charm from context and remove
+//				//				context.getCapability().getCharmEntities()[context.getType().getValue()].remove(context.getIndex());
+//				context.getCapability().remove(context.getType(), context.getIndex());
+//			}
+			
+			// remove if mana AND recharges are empty and the capability is bindable ie. charm, not adornment
+			if (context.getCapability().isBindable() 
+					&& context.getEntity().getRecharges() <= 0
+					&& context.getEntity().getMana() <= 0.0 ) {
+				Treasure.LOGGER.debug("charm is empty without any recharges -> remove");
 				context.getCapability().remove(context.getType(), context.getIndex());
 			}
 		});
 	}
 
+	private static void processUsage(World world, PlayerEntity player, Event event, CharmContext context) {
+		// TODO call capability.getDecrementor.apply() or something like that.
+		ItemStack stack = context.getItemStack();
+		// get capability
+		stack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+			if (cap.isInfinite()) {
+				return;
+			}
+			stack.setDamageValue(stack.getDamageValue() + 1);
+			if (stack.getDamageValue() >= cap.getDurability()) {
+				// break key;
+				stack.shrink(1);
+			}
+		});
+	}
+	
 	/**
 	 * 
 	 * @return

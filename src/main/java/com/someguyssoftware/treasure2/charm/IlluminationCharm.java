@@ -1,10 +1,24 @@
-/**
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2021, Mark Gottschling (gottsch)
  * 
+ * All rights reserved.
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package com.someguyssoftware.treasure2.charm;
 
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -16,27 +30,24 @@ import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
- * @author Mark Gottschling on Aug 15, 2021
+ * Adds light level to a blocks as the player moves every y seconds for a simutaneous maximum x blocks.
+ * Ex. level 1, would a light level to a single block every 5 seconds for a max. of 3 block simutaneously lit.
+ * After another 5 seconds, the first block would unlight and the newest block would light.
+ * @author Mark Gottschling on May 4, 2020
  *
  */
 public class IlluminationCharm extends Charm {
 	public static String ILLUMINATION_TYPE = "illumination";
 	private static final Class<?> REGISTERED_EVENT = LivingUpdateEvent.class;
-	
+
 	/**
 	 * 
 	 * @param builder
@@ -44,15 +55,23 @@ public class IlluminationCharm extends Charm {
 	IlluminationCharm(Builder builder) {
 		super(builder);
 	}
-	
+
 	public Class<?> getRegisteredEvent() {
 		return REGISTERED_EVENT;
 	}
-	
+
 	@Override
 	public ICharmEntity createEntity() {
-		ICharmEntity entity = new IlluminationCharmEntity(this, this.getMaxValue(),this.getMaxDuration(), this.getMaxPercent());
+//		ICharmEntity entity = new IlluminationCharmEntity(this, this.getMana(),this.getDuration(), this.getPercent());
+		ICharmEntity entity = new IlluminationCharmEntity(this);
+
 		return entity;
+	}
+
+	@Override
+	public ICharmEntity createEntity(ICharmEntity entity) {
+		ICharmEntity newEntity = new IlluminationCharmEntity((IlluminationCharmEntity)entity);
+		return newEntity;
 	}
 	
 	/**
@@ -61,9 +80,10 @@ public class IlluminationCharm extends Charm {
 	@Override
 	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
 		boolean result = false;
+
 		if (world.getGameTime() % 100 == 0) {
-			if (entity.getValue() > 0 && player.isAlive()) {
-				ICoords currentCoords = new Coords((int)Math.floor(player.position().x), (int)Math.floor(player.position().y), (int)Math.floor(player.position().z));
+			if ( player.isAlive() && entity.getMana() > 0) {
+				ICoords currentCoords = new Coords((int)Math.floor(player.getX()), (int)Math.floor(player.getY()), (int)Math.floor(player.getZ()));
 
 				/*
 				 * validation checks
@@ -80,15 +100,15 @@ public class IlluminationCharm extends Charm {
 					return false;
 				}
 				if (!(entity instanceof IlluminationCharmEntity)) {
-					Treasure.LOGGER.debug("entity are not instance of IlluminationCharmData -> {}.{}", this.getClass().getSimpleName(), entity.getClass().getSimpleName());
+					Treasure.LOGGER.debug("data are not instance of IlluminationCharmEntity -> {}.{}", this.getClass().getSimpleName(), entity.getClass().getSimpleName());
 					return false;
 				}
 
-				IlluminationCharmEntity charmEntity = (IlluminationCharmEntity)entity;
+				IlluminationCharmEntity charmData = (IlluminationCharmEntity)entity;
 				// cast as linked list
-				List<ICoords> list = (List<ICoords>)charmEntity.getCoordsList();
+				List<ICoords> list = (List<ICoords>)charmData.getCoordsList();
 				Treasure.LOGGER.debug("charm coords list size -> {}", list.size());
-				double value = entity.getValue();
+				double value = entity.getMana();
 
 				boolean isUpdated = false;
 				// check if the coordsList is empty or not
@@ -98,31 +118,30 @@ public class IlluminationCharm extends Charm {
 					isUpdated = true;
 				}
 				else {
-					// determine if new position is different than last position - ie first element in entity.coordsList
+					// determine if new position is different than last position - ie first element in data.coordsList
 					ICoords firstCoords = list.get(0);
 					if (!currentCoords.equals(firstCoords) && firstCoords.getDistanceSq(currentCoords) >= 25) {
 						// add current coords to coords list
 						list.add(0, currentCoords);
-						// check if coords list is greater than max (entity.value)
-						if (list.size() > (int)charmEntity.getValue()) {
+						// check if coords list is greater than max (data.value)
+						if (list.size() > (int)charmData.getMana()) {
 							// get difference in size
-							int diff = (int) (list.size() - charmEntity.getValue());
-							Treasure.LOGGER.debug("diff -> {}", diff);
+							int diff = (int) (list.size() - charmData.getMana());
+							//															Treasure.logger.debug("diff -> {}", diff);
 							for (int index = 0; index < diff; index++) {
 								ICoords lastCoords = list.get(list.size()-1);
 								Block block = world.getBlockState(lastCoords.toPos()).getBlock();
 								if (block == Blocks.TORCH) {
-										Treasure.LOGGER.debug("set torch to air at -> {}", lastCoords.toShortString());
-//									world.setBlockToAir(lastCoords.toPos());
-									Block.updateOrDestroy(world.getBlockState(lastCoords.toPos()), Blocks.AIR.defaultBlockState(), world, lastCoords.toPos(), 0);
+									//	Treasure.logger.debug("set torch to air at -> {}", lastCoords.toShortString());
+									world.setBlockAndUpdate(lastCoords.toPos(), Blocks.AIR.defaultBlockState());
 								}
 								else {
-										Treasure.LOGGER.debug("torch no longer found at -> {}", currentCoords.toShortString());
+									//	Treasure.logger.debug("torch no longer found at -> {}", currentCoords.toShortString());
 									// decrement value since torch was harvested
 									value -= 1;
 								}
 								list.remove(lastCoords);
-									Treasure.LOGGER.debug("remove torch from list at -> {}; new size ->{}", lastCoords.toShortString(), list.size());								
+								//	Treasure.logger.debug("remove torch from list at -> {}; new size ->{}", lastCoords.toShortString(), list.size());								
 							}	
 						}
 						isUpdated = true;
@@ -130,10 +149,12 @@ public class IlluminationCharm extends Charm {
 				}
 				if (isUpdated == true ) {
 					world.setBlockAndUpdate(currentCoords.toPos(), Blocks.TORCH.defaultBlockState());
-						Treasure.LOGGER.debug("set torch at -> {}", currentCoords.toShortString());
-					if (value < 0) value = 0;
-					entity.setValue(value);
-						Treasure.LOGGER.debug("new entity -> {}", entity);
+					//	Treasure.logger.debug("set torch at -> {}", currentCoords.toShortString());
+					if (value < 0) {
+						value = 0;
+					}
+					entity.setMana(value);
+					//	Treasure.logger.debug("new data -> {}", data);
 					result = true;
 				}
 			}
@@ -141,16 +162,11 @@ public class IlluminationCharm extends Charm {
 		return result;
 	}
 
-	/**
-	 * 
-	 */
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.RED;       
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent(getLabel(entity)).withStyle(color)));
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent("tooltip.charm.rate.illumination").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
+	public ITextComponent getCharmDesc(ICharmEntity entity) {
+		return new TranslationTextComponent("tooltip.charm.rate.illumination");
 	}
-
+	
 	public static class Builder extends Charm.Builder {
 
 		public Builder(Integer level) {

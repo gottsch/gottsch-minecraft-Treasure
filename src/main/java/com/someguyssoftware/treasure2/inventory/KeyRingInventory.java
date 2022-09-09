@@ -106,7 +106,7 @@ public class KeyRingInventory extends Inventory {
 	}
 
 	/* (non-Javadoc)
-	 * @see net.minecraft.inventory.IInventory#openInventory(net.minecraft.entity.player.EntityPlayer)
+	 * @see net.minecraft.inventory.IInventory#openInventory(net.minecraft.entity.player.PlayerEntity)
 	 */
 	@Override
 	public void startOpen(PlayerEntity player) {
@@ -122,7 +122,7 @@ public class KeyRingInventory extends Inventory {
 	}
 
 	/* (non-Javadoc)
-	 * @see net.minecraft.inventory.IInventory#closeInventory(net.minecraft.entity.player.EntityPlayer)
+	 * @see net.minecraft.inventory.IInventory#closeInventory(net.minecraft.entity.player.PlayerEntity)
 	 */
 	@Override
 	public void stopOpen(PlayerEntity player) {

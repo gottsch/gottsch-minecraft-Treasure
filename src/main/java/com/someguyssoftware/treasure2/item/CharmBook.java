@@ -39,12 +39,21 @@ public class CharmBook extends CharmItem {
 
 	/**
 	 * 
+	 * @param properties
+	 */
+	public CharmBook(Properties properties) {
+		super(properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP).stacksTo(1));
+	}
+	
+	/**
+	 * 
 	 * @param modID
 	 * @param name
 	 * @param properties
 	 */
+	@Deprecated
 	public CharmBook(String modID, String name, Properties properties) {
-		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP).stacksTo(1));
+		super(modID, name, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP).stacksTo(1));
 	}
 	
 	@Override

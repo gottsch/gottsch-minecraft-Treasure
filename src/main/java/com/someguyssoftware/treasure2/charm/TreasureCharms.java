@@ -19,310 +19,79 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.CHARMABLE;
+
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
+import com.google.common.collect.Maps;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.item.TreasureItems;
-import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 
 /**
- * 
- * @author Mark Gottschling on Aug 15, 2021
+ * Rarities:
+ * Common = 1-4
+ * Uncommon = 5-8
+ * Scarce = 9-12
+ * Rare = 13-16
+ * Epic = 17-20
+ * Legandary = 21-24
+ * Mythical = 25+
+ *
+ * @author Mark Gottschling on Apr 25, 2020
  *
  */
 public class TreasureCharms {
-	public static final String CHARM = "charm";
-
-	private static final Map<ResourceLocation, CharmableMaterial> METAL_REGISTRY = new HashMap<>();
-	private static final Map<ResourceLocation, CharmableMaterial> GEM_REGISTRY = new HashMap<>();
-
-	public static CharmableMaterial COPPER = new CharmableMaterial(1, ModUtils.asLocation("copper"), 2, 1, 0.5D);
-	public static CharmableMaterial SILVER = new CharmableMaterial(2, ModUtils.asLocation("silver"), 3, 1, 0.75D);
-	public static CharmableMaterial GOLD = new CharmableMaterial(3, ModUtils.asLocation("gold"), 4);
-	public static CharmableMaterial CHARM_BOOK = new CharmableMaterial(4, ModUtils.asLocation("charm_book"), 100);
-
-	public static CharmableMaterial DIAMOND;
-	public static CharmableMaterial EMERALD;
-	public static CharmableMaterial TOPAZ;
-	public static CharmableMaterial ONYX;
-	public static CharmableMaterial RUBY;
-	public static CharmableMaterial SAPPHIRE;
-	public static CharmableMaterial WHITE_PEARL;
-	public static CharmableMaterial BLACK_PEARL;
-
-	// charms	
-	public static final ICharm HEALING_1 = makeHealing(1);
-	public static final ICharm HEALING_2 = makeHealing(2);
-	public static final ICharm HEALING_3 = makeHealing(3);
-	public static final ICharm HEALING_4 = makeHealing(4);
-	public static final ICharm HEALING_5 = makeHealing(5);
-	public static final ICharm HEALING_6 = makeHealing(6);
-	public static final ICharm HEALING_7 = makeHealing(7);
-	public static final ICharm HEALING_8 = makeHealing(8);
-	public static final ICharm HEALING_9 = makeHealing(9);
-	public static final ICharm HEALING_10 = makeHealing(10);
-	public static final ICharm HEALING_11 = makeHealing(11);
-	public static final ICharm HEALING_12 = makeHealing(12);
-	public static final ICharm HEALING_13 = makeHealing(13);
-	public static final ICharm HEALING_14 = makeHealing(14);
-	public static final ICharm HEALING_15 = makeHealing(15);
-
-	public static final ICharm GREATER_HEALING_8 = makeGreaterHealing(8);
-	public static final ICharm GREATER_HEALING_9 = makeGreaterHealing(9);
-	public static final ICharm GREATER_HEALING_10 = makeGreaterHealing(10);
-	public static final ICharm GREATER_HEALING_11 = makeGreaterHealing(11);
-	public static final ICharm GREATER_HEALING_12 = makeGreaterHealing(12);
-	public static final ICharm GREATER_HEALING_13 = makeGreaterHealing(13);
-	public static final ICharm GREATER_HEALING_14 = makeGreaterHealing(14);
-	public static final ICharm GREATER_HEALING_15 = makeGreaterHealing(15);
-
-	// special levels
-	public static final ICharm GREATER_HEALING_20 = makeGreaterHealing(20);
-
-	public static final ICharm SHIELDING_1 = makeShielding(1);
-	public static final ICharm SHIELDING_2 = makeShielding(2);
-	public static final ICharm SHIELDING_3 = makeShielding(3);
-	public static final ICharm SHIELDING_4 = makeShielding(4);
-	public static final ICharm SHIELDING_5 = makeShielding(5);
-	public static final ICharm SHIELDING_6 = makeShielding(6);
-	public static final ICharm SHIELDING_7 = makeShielding(7);
-	public static final ICharm SHIELDING_8 = makeShielding(8);
-	public static final ICharm SHIELDING_9 = makeShielding(9);
-	public static final ICharm SHIELDING_10 = makeShielding(10);
-	public static final ICharm SHIELDING_11 = makeShielding(11);
-	public static final ICharm SHIELDING_12 = makeShielding(12);
-	public static final ICharm SHIELDING_13 = makeShielding(13);
-	public static final ICharm SHIELDING_14 = makeShielding(14);
-	public static final ICharm SHIELDING_15 = makeShielding(15);
-	public static final ICharm SHIELDING_20 = makeShielding(20);
-
-	public static final ICharm AEGIS_1 = makeAegis(1);
-	public static final ICharm AEGIS_2 = makeAegis(2);
-	public static final ICharm AEGIS_3 = makeAegis(3);
-	public static final ICharm AEGIS_4 = makeAegis(4);
-	public static final ICharm AEGIS_5 = makeAegis(5);
-	public static final ICharm AEGIS_6 = makeAegis(6);
-	public static final ICharm AEGIS_7 = makeAegis(7);
-	public static final ICharm AEGIS_8 = makeAegis(8);
-	public static final ICharm AEGIS_9 = makeAegis(9);
-	public static final ICharm AEGIS_10 = makeAegis(10);
-	public static final ICharm AEGIS_11 = makeAegis(11);
-	public static final ICharm AEGIS_12 = makeAegis(12);
-	public static final ICharm AEGIS_13 = makeAegis(13);
-	public static final ICharm AEGIS_14 = makeAegis(14);
-	public static final ICharm AEGIS_15 = makeAegis(15);
-
-	public static final ICharm FIRE_IMMUNITY_1 = makeFireImmunity(1);
-	public static final ICharm FIRE_IMMUNITY_2 = makeFireImmunity(2);
-	public static final ICharm FIRE_IMMUNITY_3 = makeFireImmunity(3);
-	public static final ICharm FIRE_IMMUNITY_4 = makeFireImmunity(4);
-	public static final ICharm FIRE_IMMUNITY_5 = makeFireImmunity(5);
-	public static final ICharm FIRE_IMMUNITY_6 = makeFireImmunity(6);
-	public static final ICharm FIRE_IMMUNITY_7 = makeFireImmunity(7);
-	public static final ICharm FIRE_IMMUNITY_8 = makeFireImmunity(8);
-	public static final ICharm FIRE_IMMUNITY_9 = makeFireImmunity(9);
-	public static final ICharm FIRE_IMMUNITY_10 = makeFireImmunity(10);
-	public static final ICharm FIRE_IMMUNITY_11 = makeFireImmunity(11);
-	public static final ICharm FIRE_IMMUNITY_12 = makeFireImmunity(12);
-	public static final ICharm FIRE_IMMUNITY_13 = makeFireImmunity(13);
-	public static final ICharm FIRE_IMMUNITY_14 = makeFireImmunity(14);
-	public static final ICharm FIRE_IMMUNITY_15 = makeFireImmunity(15);
-
-	public static final ICharm FIRE_RESISTENCE_1 = makeFireResistence(1);
-	public static final ICharm FIRE_RESISTENCE_2 = makeFireResistence(2);
-	public static final ICharm FIRE_RESISTENCE_3 = makeFireResistence(3);
-	public static final ICharm FIRE_RESISTENCE_4 = makeFireResistence(4);
-	public static final ICharm FIRE_RESISTENCE_5 = makeFireResistence(5);
-	public static final ICharm FIRE_RESISTENCE_6 = makeFireResistence(6);
-	public static final ICharm FIRE_RESISTENCE_7 = makeFireResistence(7);
-	public static final ICharm FIRE_RESISTENCE_8 = makeFireResistence(8);
-	public static final ICharm FIRE_RESISTENCE_9 = makeFireResistence(9);
-	public static final ICharm FIRE_RESISTENCE_10 = makeFireResistence(10);
-	public static final ICharm FIRE_RESISTENCE_11 = makeFireResistence(11);
-	public static final ICharm FIRE_RESISTENCE_12 = makeFireResistence(12);
-	public static final ICharm FIRE_RESISTENCE_13 = makeFireResistence(13);
-	public static final ICharm FIRE_RESISTENCE_14 = makeFireResistence(14);
-	public static final ICharm FIRE_RESISTENCE_15 = makeFireResistence(15);
-
-	public static final ICharm SATIETY_1 = makeSatiety(1);
-	public static final ICharm SATIETY_2 = makeSatiety(2);
-	public static final ICharm SATIETY_3 = makeSatiety(3);
-	public static final ICharm SATIETY_4 = makeSatiety(4);
-	public static final ICharm SATIETY_5 = makeSatiety(5);
-	public static final ICharm SATIETY_6 = makeSatiety(6);
-	public static final ICharm SATIETY_7 = makeSatiety(7);
-	public static final ICharm SATIETY_8 = makeSatiety(8);
-	public static final ICharm SATIETY_9 = makeSatiety(9);
-	public static final ICharm SATIETY_10 = makeSatiety(10);
-	public static final ICharm SATIETY_11 = makeSatiety(11);
-	public static final ICharm SATIETY_12 = makeSatiety(12);
-	public static final ICharm SATIETY_13 = makeSatiety(13);
-	public static final ICharm SATIETY_14 = makeSatiety(14);
-	public static final ICharm SATIETY_15 = makeSatiety(15);
-	public static final ICharm SATIETY_20 = makeSatiety(20);
-
-	public static final ICharm LIFE_STRIKE_1 = makeLifeStrike(1);
-	public static final ICharm LIFE_STRIKE_2 = makeLifeStrike(2);
-	public static final ICharm LIFE_STRIKE_3 = makeLifeStrike(3);
-	public static final ICharm LIFE_STRIKE_4 = makeLifeStrike(4);
-	public static final ICharm LIFE_STRIKE_5 = makeLifeStrike(5);
-	public static final ICharm LIFE_STRIKE_6 = makeLifeStrike(6);
-	public static final ICharm LIFE_STRIKE_7 = makeLifeStrike(7);
-	public static final ICharm LIFE_STRIKE_8 = makeLifeStrike(8);
-	public static final ICharm LIFE_STRIKE_9 = makeLifeStrike(9);
-	public static final ICharm LIFE_STRIKE_10 = makeLifeStrike(10);
-	public static final ICharm LIFE_STRIKE_11 = makeLifeStrike(11);
-	public static final ICharm LIFE_STRIKE_12 = makeLifeStrike(12);
-	public static final ICharm LIFE_STRIKE_13 = makeLifeStrike(13);
-	public static final ICharm LIFE_STRIKE_14 = makeLifeStrike(14);
-	public static final ICharm LIFE_STRIKE_15 = makeLifeStrike(15);
-
-	public static final ICharm REFLECTION_1 = makeReflection(1);
-	public static final ICharm REFLECTION_2 = makeReflection(2);
-	public static final ICharm REFLECTION_3 = makeReflection(3);
-	public static final ICharm REFLECTION_4 = makeReflection(4);
-	public static final ICharm REFLECTION_5 = makeReflection(5);
-	public static final ICharm REFLECTION_6 = makeReflection(6);
-	public static final ICharm REFLECTION_7 = makeReflection(7);
-	public static final ICharm REFLECTION_8 = makeReflection(8);
-	public static final ICharm REFLECTION_9 = makeReflection(9);
-	public static final ICharm REFLECTION_10 = makeReflection(10);
-	public static final ICharm REFLECTION_11 = makeReflection(11);
-	public static final ICharm REFLECTION_12 = makeReflection(12);
-	public static final ICharm REFLECTION_13 = makeReflection(13);
-	public static final ICharm REFLECTION_14 = makeReflection(14);
-	public static final ICharm REFLECTION_15 = makeReflection(15);
-
-	public static final ICharm DRAIN_1 = makeDrain(1);
-	public static final ICharm DRAIN_2 = makeDrain(2);
-	public static final ICharm DRAIN_3 = makeDrain(3);
-	public static final ICharm DRAIN_4 = makeDrain(4);
-	public static final ICharm DRAIN_5 = makeDrain(5);
-	public static final ICharm DRAIN_6 = makeDrain(6);
-	public static final ICharm DRAIN_7 = makeDrain(7);
-	public static final ICharm DRAIN_8 = makeDrain(8);
-	public static final ICharm DRAIN_9 = makeDrain(9);
-	public static final ICharm DRAIN_10 = makeDrain(10);
-	public static final ICharm DRAIN_11 = makeDrain(11);
-	public static final ICharm DRAIN_12 = makeDrain(12);
-	public static final ICharm DRAIN_13 = makeDrain(13);
-	public static final ICharm DRAIN_14 = makeDrain(14);
-	public static final ICharm DRAIN_15 = makeDrain(15);
-
-	public static final ICharm ILLUMINATION_3 = makeIllumination(3);
-	public static final ICharm ILLUMINATION_6 = makeIllumination(6);
-	public static final ICharm ILLUMINATION_9 = makeIllumination(9);
-	public static final ICharm ILLUMINATION_12 = makeIllumination(12);
-	public static final ICharm ILLUMINATION_15 = makeIllumination(15);
-	public static final ICharm ILLUMINATION_21 = makeIllumination(21);
-
-	// HARVESTING
-
-	// curses
-	public static final ICharm DECAY_1 = makeDecay(1);
-	public static final ICharm DECAY_3 = makeDecay(3);
-	public static final ICharm DECAY_5 = makeDecay(5);
-	public static final ICharm DECAY_7 = makeDecay(7);
-
-	public static final ICharm DECREPIT_1 = makeDecrepit(1);
-	public static final ICharm DECREPIT_2 = makeDecrepit(2);
-	public static final ICharm DECREPIT_3 = makeDecrepit(3);
-	public static final ICharm DECREPIT_4 = makeDecrepit(4);
-	public static final ICharm DECREPIT_5 = makeDecrepit(5);
-	public static final ICharm DECREPIT_6 = makeDecrepit(6);
-	public static final ICharm DECREPIT_7 = makeDecrepit(7);
-	public static final ICharm DECREPIT_8 = makeDecrepit(8);
-
-	public static final ICharm DIRT_FILL_2 = makeDirtFill(2);
-	public static final ICharm DIRT_FILL_4 = makeDirtFill(4);
-	public static final ICharm DIRT_FILL_6 = makeDirtFill(6);
-
-	public static final ICharm DIRT_WALK_2 = makeDirtWalk(2);
-	public static final ICharm DIRT_WALK_4 = makeDirtWalk(4);
-	public static final ICharm DIRT_WALK_6 = makeDirtWalk(6);
-
-	public static final ICharm RUIN_1 = makeRuin(1);
-	public static final ICharm RUIN_3 = makeRuin(3);
-	public static final ICharm RUIN_5 = makeRuin(5);
-	public static final ICharm RUIN_7 = makeRuin(7);
-	public static final ICharm RUIN_9 = makeRuin(9);
-	public static final ICharm RUIN_11 = makeRuin(11);
-
+	// TODO move somewhere more generic
+	public static final Map<Integer, Rarity> LEVEL_RARITY = Maps.newHashMap();
+	
 	static {
-		// register
-		METAL_REGISTRY.put(COPPER.getName(), COPPER);
-		METAL_REGISTRY.put(SILVER.getName(), SILVER);
-		METAL_REGISTRY.put(GOLD.getName(), GOLD);
-	}
-
-
-	public static class SortByLevel implements Comparator<CharmableMaterial> {
-		@Override
-		public int compare(CharmableMaterial p1, CharmableMaterial p2) {
-			return Integer.compare(p1.getMaxLevel(), p2.getMaxLevel());
+		Treasure.LOGGER.debug("creating charms...");
+		for (int level = 1; level <= 25; level++) {
+			LEVEL_RARITY.put(Integer.valueOf(level), level <= 4 ? Rarity.COMMON 
+					: level <= 8 ? Rarity.UNCOMMON
+							: level <= 12 ? Rarity.SCARCE 
+									: level <=16 ? Rarity.RARE
+										: level <= 20 ? Rarity .EPIC
+											: level <=24 ? Rarity.LEGENDARY
+												: Rarity.MYTHICAL);
+			
+			TreasureCharmRegistry.register(makeHealing(level));
+			TreasureCharmRegistry.register(makeGreaterHealing(level));
+			TreasureCharmRegistry.register(makeShielding(level));
+			TreasureCharmRegistry.register(makeAegis(level));
+			TreasureCharmRegistry.register(makeFireResistence(level));
+			TreasureCharmRegistry.register(makeFireImmunity(level));
+			TreasureCharmRegistry.register(makeSatiety(level));
+			TreasureCharmRegistry.register(makeLifeStrike(level));
+			TreasureCharmRegistry.register(makeReflection(level));
+			TreasureCharmRegistry.register(makeDrain(level));
+			TreasureCharmRegistry.register(makeIllumination(level));
+			TreasureCharmRegistry.register(makeDecay(level));
+			TreasureCharmRegistry.register(makeDecrepit(level));
+			TreasureCharmRegistry.register(makeDirtFill(level));
+			TreasureCharmRegistry.register(makeDirtWalk(level));
+			TreasureCharmRegistry.register(makeRuin(level));
+			TreasureCharmRegistry.register(makeCheatDeath(level));
+			// TODO harvesting			
+			
 		}
-	};
-
-	// comparator on level
-	public static Comparator<CharmableMaterial> levelComparator = new SortByLevel();
-
-	/**
-	 * The gem/sourceItem portion of a charm capability takes in a RegistryName of an Item,
-	 * there it needs to be setup and registered in a FML event so that the Items being referenced
-	 * are already create and registered.
-	 * @param event
-	 */
-	public static void setup(FMLCommonSetupEvent event) {
-		TOPAZ = new CharmableMaterial(1, TreasureItems.TOPAZ.getRegistryName(), 4, 1);
-		DIAMOND = new CharmableMaterial(2, Items.DIAMOND.getRegistryName(), 5, 3);
-		ONYX = new CharmableMaterial(3, TreasureItems.ONYX.getRegistryName(), 6, 3);
-		EMERALD = new CharmableMaterial(4, Items.EMERALD.getRegistryName(), 7, 3);
-		RUBY = new CharmableMaterial(5, TreasureItems.RUBY.getRegistryName(), 9, 4);
-		SAPPHIRE = new CharmableMaterial(6, TreasureItems.SAPPHIRE.getRegistryName() , 11, 6);
-		WHITE_PEARL = new CharmableMaterial(7, TreasureItems.WHITE_PEARL.getRegistryName() , 9, 8);
-		BLACK_PEARL = new CharmableMaterial(8, TreasureItems.BLACK_PEARL.getRegistryName() , 11, 10);
-
-		// regerister
-		GEM_REGISTRY.put(DIAMOND.getName(), DIAMOND);
-		GEM_REGISTRY.put(EMERALD.getName(), EMERALD);
-		GEM_REGISTRY.put(TOPAZ.getName(), TOPAZ);
-		GEM_REGISTRY.put(ONYX.getName(), ONYX);
-		GEM_REGISTRY.put(RUBY.getName(), RUBY);
-		GEM_REGISTRY.put(SAPPHIRE.getName(), SAPPHIRE);
-		GEM_REGISTRY.put(WHITE_PEARL.getName(), WHITE_PEARL);
-		GEM_REGISTRY.put(BLACK_PEARL.getName(), BLACK_PEARL);
 	}
-
-	//	public static Comparator<CharmableMaterial> levelComparator = new Comparator<CharmableMaterial>() {
-	//		@Override
-	//		public int compare(CharmableMaterial p1, CharmableMaterial p2) {
-	//			return Integer.compare(p1.getMaxLevel(), p2.getMaxLevel());
-	//		}
-	//	};
-
-	public static List<CharmableMaterial> getGemValues() {
-		return new ArrayList<>(GEM_REGISTRY.values());
+	
+	// TODO move static {} block into init as static block is not loaded until this class is referenced and thus might not be init when items are being created.
+	public static void init() {}
+	
+	private static int getRecharges(Rarity rarity) {
+		// TODO COMMON & UNCOMMON = 1 are TEMP
+		return rarity == Rarity.SCARCE || rarity == Rarity.RARE ? 1 : rarity == Rarity.EPIC || rarity == Rarity.LEGENDARY ? 2 : rarity == Rarity.MYTHICAL ? 3 : 1;
 	}
-
+	
+	// TODO add charms
+	// [] CACTUS
+	// [] DIRT (mound)
+	
 	/**
 	 * Convenience method to build Healing Charm.
 	 * @param level
@@ -330,98 +99,123 @@ public class TreasureCharms {
 	 */
 	public static ICharm makeHealing(int level) {
 		ICharm charm =  new HealingCharm.Builder(level).with($ -> {
-			$.value = level * 20.0;
+			$.mana = level * 20.0;
+			$.amount = 1.0;
+			$.frequency = Math.max(40, 100.0 - (Math.floor((level + 1) / 5D) * 10D)); // ie every 5 seconds, reducing by 1 second every 5th level
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
-		})	.build();		
+			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
+		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-
+	
 	public static ICharm makeGreaterHealing(int level) {
 		ICharm charm = new GreaterHealingCharm.Builder(level).with($ -> {
-			$.value = level * 20.0;
+			$.mana = level * 20.0;
+			$.amount = 2.0;
+			$.frequency = Math.max(40, 100.0 - (Math.floor((level + 1) / 5D) * 10)); // ie every 5 seconds, reducing by 0.5 second every 5th level
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-
+	
 	public static ICharm makeShielding(int level) {
 		ICharm charm =  new ShieldingCharm.Builder(level).with($ -> {
-			$.value = level * 20.0;
-			$.percent = level < 4 ? 0.5 : level < 7 ? 0.6 : level < 10 ? 0.7 :  0.8;
+			$.mana = level * 20.0;
+			$.amount = level < 4 ? 0.5 : level < 7 ? 0.6 : level < 10 ? 0.7 :  0.8;
+			$.cooldown = 0.0;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.priority = 2;
+			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-
+	
 	public static ICharm makeAegis(int level) {
 		ICharm charm = new AegisCharm.Builder(level).with($ -> {
-			$.value = level * 20.0;
+			$.mana = level * 20.0;
+			$.cooldown = Math.max(20, 100.0 - (Math.floor((level + 1) / 5) *10)); // ie every 5 seconds, reducing by 0.5 second every 5th level
 			$.effectStackable = false;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.priority = 2;
+			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-
-	public static ICharm makeFireImmunity(int level) {
-		ICharm charm =  new FireImmunityCharm.Builder(level).with($ -> {
-			$.value = level * 20.0;
-			$.effectStackable = false;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
-		})	.build();
-
-		TreasureCharmRegistry.register(charm);
-		return charm;
-	}
-
+	
 	public static ICharm makeFireResistence(int level) {
 		ICharm charm =  new FireResistenceCharm.Builder(level).with($ -> {
-			$.value = level * 20.0;
-			$.percent = level < 6 ? 0.3 : level < 11 ? 0.5 : 0.8;
+			$.mana = level * 20.0;
+			$.amount = level < 6 ? 0.3 : level < 11 ? 0.5 : 0.8;
+			$.amount = level <= 4 ? 0.2 : level <=8  ? 0.4 : level <= 12 ? 0.6 :  0.8;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.priority = 1;
+			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
+	
+	public static ICharm makeFireImmunity(int level) {
+		ICharm charm =  new FireImmunityCharm.Builder(level).with($ -> {
+			$.mana = level * 20.0;
+			$.effectStackable = false;
+			$.priority = 1;
+			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
+		})	.build();
 
+		TreasureCharmRegistry.register(charm);
+		return charm;
+	}
+	
 	public static ICharm makeSatiety(int level) {
 		ICharm charm =  new SatietyCharm.Builder(level).with($ -> {
-			$.value = level * 20.0;
+			$.mana = level * 20.0;
+			$.amount = 1.0;
+			$.frequency = Math.max(20, 100.0 - (Math.floor((level + 1) / 5) *20)); // ie every 5 seconds, reducing by 1 second every 5th level
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-
+	
+	// TODO probably should have a cooldown
 	public static ICharm makeLifeStrike(int level) {
-		ICharm charm =  new LifeStrikeCharm.Builder(level).with($ -> {
-			$.value = level * 20.0;
-			$.percent = level < 4 ? 1.2 : level < 7 ? 1.4 : level < 10 ? 1.6 :  level < 13 ? 1.8 : 2.0;
+		LifeStrikeCharm.Builder builder = (LifeStrikeCharm.Builder) new LifeStrikeCharm.Builder(level).with($ -> {
+			$.mana = level * 20.0;
+			$.amount = level < 4 ? 0.2 : level < 7 ? 0.4 : level < 10 ? 0.6 :  level < 13 ? 0.8 : 1.0;
+//			$.percent = level < 4 ? 1.2 : level < 7 ? 1.4 : level < 10 ? 1.6 :  level < 13 ? 1.8 : 2.0;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
-		})	.build();
+			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
+		});
+		ICharm charm = builder.withLifeCost(2.0).build();		
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
 
 	public static ICharm makeReflection(int level) {
 		ICharm charm =  new ReflectionCharm.Builder(level).with($ -> {
-			$.value = level < 8 ? (level * 10.0 + 10.0) : ((level -7) * 10.0 + 10.0);
-			$.percent = level < 3 ? 0.2 : level < 5 ? 0.35 : level < 7 ? 0.50 :  level <9 ? 0.65 : level < 11 ? 0.8 : level < 13 ? 0.95 : 1.1;
-			$.duration = level < 4 ? 2D : level < 7 ? 3D : level < 10 ? 4D : level < 13 ? 5D : 6D;
+			$.mana = level < 8 ? (level * 10.0 + 10.0) : ((level -7) * 10.0 + 10.0);
+			$.amount = level < 3 ? 0.2 : level < 5 ? 0.35 : level < 7 ? 0.50 :  level <9 ? 0.65 : level < 11 ? 0.8 : level < 13 ? 0.95 : 1.1;
+			$.range = level < 4 ? 2D : level < 7 ? 3D : level < 10 ? 4D : level < 13 ? 5D : 6D;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
@@ -429,10 +223,12 @@ public class TreasureCharms {
 
 	public static ICharm makeDrain(int level) {
 		ICharm charm =  new DrainCharm.Builder(level).with($ -> {
-			$.value =  level < 8 ? (level * 10.0 + 10.0) : ((level -7) * 10.0 + 10.0);
-			$.duration = level < 4 ? 2D : level < 7 ? 3D : level < 10 ? 4D : level < 13 ? 5D : 6D;
+			$.mana =  level < 8 ? (level * 10.0 + 10.0) : ((level -7) * 10.0 + 10.0);
+			$.frequency = Math.max(20, 100.0 - (Math.floor((level + 1) / 5) *20)); // ie every 5 seconds, reducing by 1 second every 5th level
+			$.range = level < 4 ? 2D : level < 7 ? 3D : level < 10 ? 4D : level < 13 ? 5D : 6D;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
@@ -440,20 +236,35 @@ public class TreasureCharms {
 
 	public static ICharm makeIllumination(int level) {
 		ICharm charm =  new IlluminationCharm.Builder(level).with($ -> {
-			$.value =  Math.max(1, (level / 3)) * 3.0;
+			$.mana =  Math.max(1, (level / 3)) * 3.0;
 			$.effectStackable = false;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
 
+	public static ICharm makeCheatDeath(int level) {
+		ICharm charm =  new CheatDeathCharm.Builder(level).with($ -> {
+			$.mana =  (double) level;
+			$.amount = 5.0 + Math.floor(level / 5D);
+			$.effectStackable = false;
+			$.rarity = LEVEL_RARITY.get(level);			
+			$.recharges = 0;
+		})	.build();
+		TreasureCharmRegistry.register(charm);
+		return charm;
+	}
+	
 	// curses
 	public static ICharm makeDecay(int level) {
 		ICharm curse =  new DecayCurse.Builder(level).with($ -> {
-			$.value = level * 20.0;
+			$.mana = level * 20.0;
+			$.amount = 1.0;
+			// in ticks (20 = 1 sec)
+			$.frequency = Math.max(40, 100.0 - (Math.floor((level + 1) / 5D) * 10)); // ie every 5 seconds, reducing by 0.5 second every 5th level
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();		
 		TreasureCharmRegistry.register(curse);
 		return curse;
@@ -461,11 +272,11 @@ public class TreasureCharms {
 
 	public static ICharm makeDecrepit(int level) {
 		ICharm curse =  new DecrepitCurse.Builder(level).with($ -> {
-			$.value = level * 10.0 + 10.0;
-			$.percent = 1D + ((level + (level % 2))/20);
-			//			$.duration = 20.0; set in 1.12.2 but not used.
+			$.mana = level * 10.0 + 10.0;
+//			$.amount = (double) ((level + (level % 2))/20);
+			$.amount = level <= 4 ? 0.2 : level <=8  ? 0.3 : level <= 12 ? 0.4 :  0.5;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();		
 		TreasureCharmRegistry.register(curse);
 		return curse;
@@ -473,9 +284,9 @@ public class TreasureCharms {
 
 	public static ICharm makeDirtFill(int level) {
 		ICharm curse =  new DirtFillCurse.Builder(level).with($ -> {
-			$.value = level * 25D;
+			$.mana = level * 25D;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();		
 		TreasureCharmRegistry.register(curse);
 		return curse;
@@ -483,9 +294,9 @@ public class TreasureCharms {
 
 	public static ICharm makeDirtWalk(int level) {
 		ICharm curse =  new DirtWalkCurse.Builder(level).with($ -> {
-			$.value = level * 25D;
+			$.mana = level * 25D;
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();		
 		TreasureCharmRegistry.register(curse);
 		return curse;
@@ -493,67 +304,56 @@ public class TreasureCharms {
 
 	public static ICharm makeRuin(int level) {
 		ICharm charm =  new RuinCurse.Builder(level).with($ -> {
-			$.value =  level *20D;
-			$.duration = level < 4 ? 20D : level < 7 ? 17D : level < 10 ? 15D : level < 13 ? 13D : 10D;
+			$.mana =  level * 20D;
+			$.amount = 1.0;
+			// in ticks (20 = 1 sec)
+			$.frequency = Math.max(40, 100.0 - (Math.floor((level + 1) / 5D) * 10)); // ie every 5 seconds, reducing by 0.5 second every 5th level
 			$.effectStackable = true;
-			$.rarity = level < 4 ? Rarity.COMMON : level < 7 ? Rarity.UNCOMMON : level < 10 ? Rarity.SCARCE : level < 13 ? Rarity.RARE : Rarity .EPIC;
+			$.rarity = LEVEL_RARITY.get(level);
 		})	.build();
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
-
-	public static List<Item> getAll() {
-		return Stream
-				.of(ItemTags.getAllTags().getTag(ModUtils.asLocation(CHARM)).getValues())
-				.flatMap(Collection::stream).collect(Collectors.toList());
-	}
-
-	public static Optional<CharmableMaterial> getBaseMaterial(ResourceLocation name) {
-		if (name != null && METAL_REGISTRY.containsKey(name)) {
-			return Optional.of(METAL_REGISTRY.get(name));
-		}
-		return Optional.empty();
-	}
-
-	/**
-	 * Accessor wrapper method to return Optional sourceItem
-	 * @param name
-	 * @return
-	 */
-	public static Optional<CharmableMaterial> getSourceItem(ResourceLocation sourceItem) {
-		if (sourceItem != null && GEM_REGISTRY.containsKey(sourceItem)) {
-			return Optional.of(GEM_REGISTRY.get(sourceItem));
-		}
-		return Optional.empty();
-	}
-
+	
 	/**
 	 * 
-	 * @param sourceItem
+	 * @param source
+	 * @param dest
 	 * @return
 	 */
-	public static boolean isSourceItemRegistered(ResourceLocation sourceItem) {
-		Optional<CharmableMaterial> material = getSourceItem(sourceItem);
-		if (material.isPresent()) {
-			return true;
-		}
-		return false;
-	}
+	public static ItemStack copyStack(final ItemStack source, final ItemStack dest) {
+		ItemStack resultStack = dest.copy(); // <-- is this necessary?
+		// save the source item
+		ResourceLocation sourceItem = resultStack.getCapability(CHARMABLE, null).map(cap -> cap.getSourceItem()).orElse(null);
 
+		source.getCapability(CHARMABLE).ifPresent(sourceCap -> {
+			resultStack.getCapability(CHARMABLE).ifPresent(cap -> {
+				cap.clearCharms();
+			});
+			sourceCap.copyTo(resultStack);
+		});
+
+		
+		
+//		if (dest.hasCapability(CHARMABLE, null)) {
+//			resultStack.getCapability(CHARMABLE, null).clearCharms();			
+//			source.getCapability(CHARMABLE, null).copyTo(resultStack);
+//		}
+
+		// reset the source item
+		resultStack.getCapability(CHARMABLE, null).ifPresent(cap -> {
+			cap.setSourceItem(sourceItem);
+		});
+
+		return resultStack;
+	}
+	
 	/**
-	 * 
+	 * This method is moot as charms will not have source items.
 	 * @param stack
 	 */
+	@Deprecated
 	public static void setHoverName(ItemStack stack) {
-		stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
-			// check first if it is charmed - charmed names supercede source item names
-			if (cap.getSourceItem() != null && !cap.getSourceItem().equals(Items.AIR.getRegistryName())) {
-				Item sourceItem = ForgeRegistries.ITEMS.getValue(cap.getSourceItem());
-				stack.setHoverName(
-						((TranslationTextComponent)sourceItem.getName(new ItemStack(sourceItem)))
-						.append(new StringTextComponent(" "))
-						.append(stack.getItem().getName(stack)));
-			}
-		});
+
 	}
 }

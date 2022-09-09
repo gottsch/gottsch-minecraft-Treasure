@@ -45,6 +45,8 @@ import net.minecraftforge.registries.ForgeRegistries;
  * @author Mark Gottschling on Sep 3, 2021
  *
  */
+// TODO remove
+@Deprecated
 public class TreasureAdornments {
 	public static final String RING = "ring";
 	public static final String NECKLACE = "necklace";

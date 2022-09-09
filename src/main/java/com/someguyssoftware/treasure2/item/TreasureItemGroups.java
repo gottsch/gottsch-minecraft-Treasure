@@ -16,10 +16,15 @@ import net.minecraft.item.ItemStack;
  *
  */
 public class TreasureItemGroups {
-	public static final ItemGroup MOD_ITEM_GROUP = new ModItemGroup(
-			Treasure.MODID,	() -> new ItemStack(TreasureItems.LOGO));
+	public static final ItemGroup TREASURE_ITEM_GROUP = new ModItemGroup(
+			Treasure.MODID,	() -> new ItemStack(TreasureItems.TREASURE_TAB.get()));
 	
-	
+	public static final ItemGroup ADORNMENTS_TAB = new ModItemGroup(
+			Treasure.MODID,	() -> new ItemStack(TreasureItems.ADORNMENTS_TAB.get()));
+    
+	/**
+	 *
+	 */
 	public static class ModItemGroup extends ItemGroup {
 		
 		private final Supplier<ItemStack> iconSupplier;

@@ -25,14 +25,13 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.LazyOptional;
@@ -108,7 +107,7 @@ public class CharmMessageHandlerOnClient {
 //	        				updateCharms(heldItemStack, message, cap);
 //	        			}
 	        			heldItemStack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
-	        				updateCharms(message, cap);
+	        				updateCharms(heldItemStack, message, cap);
 	        			});
 	        		}
 	        	}
@@ -119,7 +118,7 @@ public class CharmMessageHandlerOnClient {
 	    				stacksOptional.ifPresent(stacksHandler -> {
 							ItemStack curiosStack = stacksHandler.getStacks().getStackInSlot(0);
 							curiosStack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
-								updateCharms(message, cap);
+								updateCharms(curiosStack, message, cap);
 							});
 	    				});
 	    			});
@@ -131,7 +130,7 @@ public class CharmMessageHandlerOnClient {
 	        		if (hotbarStack != null) {
 	        			Treasure.LOGGER.debug("hotbar item -> {}", hotbarStack.getItem().getRegistryName());
 	        			hotbarStack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
-	        				updateCharms(message, cap);
+	        				updateCharms(hotbarStack, message, cap);
 	        			});
 	        		}
 	        	}	        	
@@ -142,26 +141,32 @@ public class CharmMessageHandlerOnClient {
 		}
 	}
 	
-	private static void updateCharms(CharmMessageToClient message, ICharmableCapability capability) {
+	private static void updateCharms(ItemStack itemStack, CharmMessageToClient message, ICharmableCapability capability) {
 		// get the charm that is being sent
-//		String charmName = message.getCharmName();
 		ResourceLocation charmName = new ResourceLocation(message.getCharmName());
 		// cycle through the charm states to find the named charm
-		List<ICharmEntity> entityList = capability.getCharmEntities()[message.getInventoryType().getValue()];
+		List<ICharmEntity> entityList = (List<ICharmEntity>) capability.getCharmEntities().get(message.getInventoryType());
 		if (entityList != null && !entityList.isEmpty() && entityList.size() > message.getIndex()) {
 			ICharmEntity entity = entityList.get(message.getIndex());
-//		for(ICharmEntity entity : capability.getCharmEntities()[message.getInventoryType().getValue()]) {
+//    		Treasure.logger.debug("looking for charm -> {} at index -> {}", entity, message.getIndex());
 			if (entity != null && entity.getCharm().getName().equals(charmName)) {
-	        	Treasure.LOGGER.debug("found charm, updating...");
-				// update vitals
+//	        	Treasure.logger.debug("found charm, updating...");
+				// update entity properties
 				entity.update(message.getEntity());
-				if (entity.getValue() <= 0.0) {
-					// TODO should each charm have it's own way of checking empty? (instead of getValue() < 0.0)
-					capability.getCharmEntities()[message.getInventoryType().getValue()].remove(entity);
+				
+				// NOTE yes, remove innate charms from Adornments - they can't be recharged
+				if (message.getInventoryType() == InventoryType.INNATE && entity.getMana() <= 0.0) {
+					capability.remove(message.getInventoryType(), message.getIndex());
 				}
+				// TODO probably need to remove imbue as well
+				
+
+				// update Durability 
+				itemStack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+					itemStack.setDamageValue(message.getItemDamage());
+				});
 //				break;
 			}
 		}
-//		}
 	}
 }

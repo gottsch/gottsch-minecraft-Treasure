@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
+    "parent": "treasure2:item/horizontal_left_key",
     "textures": {
-        "layer0": "treasure2:items/keys/sapphire_key"
+        "layer0": "treasure2:item/keys/sapphire_key"
     }
 }

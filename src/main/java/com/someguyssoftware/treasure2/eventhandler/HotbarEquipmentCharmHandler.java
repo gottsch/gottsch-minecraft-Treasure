@@ -26,13 +26,11 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.eventbus.api.Event;
@@ -60,15 +58,15 @@ public class HotbarEquipmentCharmHandler implements IEquipmentCharmHandler {
 						for (InventoryType type : InventoryType.values()) {
 							AtomicInteger index = new AtomicInteger();
 							// requires indexed for-loop
-							for (int i = 0; i < cap.getCharmEntities()[type.getValue()].size(); i++) {
-								ICharmEntity entity =  cap.getCharmEntities()[type.getValue()].get(i);
+							for (int i = 0; i < cap.getCharmEntities().get(type).size(); i++) {
+								ICharmEntity entity =  ((List<ICharmEntity>)cap.getCharmEntities().get(type)).get(i);
 								if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
 									continue;
 								}
 								index.set(i);
 								CharmContext context  = new CharmContext.Builder().with($ -> {
 									$.slotProviderId = "minecraft";
-									$.slot =String.valueOf(hotbarSlotStr.get());
+									$.slot =hotbarSlotStr.get();
 									$.itemStack = inventoryStack;
 									$.capability = cap;
 									$.type = type;
