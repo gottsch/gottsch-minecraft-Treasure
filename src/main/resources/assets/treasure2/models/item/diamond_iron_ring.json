@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "treasure2:item/adornments/great_diamond_iron_ring"
+        "layer0": "treasure2:item/adornments/diamond_iron_ring"
     },
    "display": {
        "thirdperson_righthand": {

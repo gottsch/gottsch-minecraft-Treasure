@@ -587,9 +587,6 @@ public class TreasureItems {
 				((AngelsRune)runeEntity.getRunestone()).initCapabilityApply(cap, durabilityCap, runeEntity);
 
 				return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
-				//			return BaublesIntegration.isEnabled()
-				//					? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.RING, cap, runestonesCap, durabilityCap) 
-				//							: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 			}
 		});
 
@@ -617,9 +614,6 @@ public class TreasureItems {
 				}).build();
 
 				return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
-				//				return BaublesIntegration.isEnabled()
-				//						? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.RING, cap, runestonesCap, durabilityCap) 
-				//								: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 			}
 		});
 
@@ -654,9 +648,6 @@ public class TreasureItems {
 					$.socketable = true;
 				}).build();
 				return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
-				//							return BaublesIntegration.isEnabled()
-				//									? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.RING, cap, runestonesCap, durabilityCap) 
-				//											: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 			}
 		});
 
@@ -692,9 +683,6 @@ public class TreasureItems {
 					$.socketable = true;
 				}).build();
 				return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
-				//							return BaublesIntegration.isEnabled()
-				//									? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.RING, cap, runestonesCap, durabilityCap) 
-				//											: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 			}
 		});
 
@@ -720,9 +708,6 @@ public class TreasureItems {
 					$.socketable = true;
 				}).build();
 				return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
-				//							return BaublesIntegration.isEnabled()
-				//									? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.RING, cap, runestonesCap, durabilityCap) 
-				//											: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 			}
 		});
 
@@ -745,9 +730,6 @@ public class TreasureItems {
 
 				IDurabilityCapability durabilityCap = new DurabilityCapability(500, 500, TreasureCharmableMaterials.IRON);
 				return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
-				//							return BaublesIntegration.isEnabled()
-				//									? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.RING, cap, runestonesCap, durabilityCap) 
-				//											: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 			}
 		});
 
@@ -782,9 +764,6 @@ public class TreasureItems {
 					$.socketable = true;
 				}).build();							
 				return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
-				//							return BaublesIntegration.isEnabled()
-				//									? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.RING, cap, runestonesCap, durabilityCap) 
-				//											: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 			}
 		});
 
@@ -823,9 +802,6 @@ public class TreasureItems {
 				runestonesCap.add(InventoryType.INNATE, runeEntity);
 				((AngelsRune)runeEntity.getRunestone()).initCapabilityApply(cap, durabilityCap, runeEntity);
 				return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
-				//							return BaublesIntegration.isEnabled()
-				//									? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.NECKLACE, cap, runestonesCap, durabilityCap) 
-				//											: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 			}
 		});
 
@@ -855,9 +831,6 @@ public class TreasureItems {
 					$.socketable = true;
 				}).build();							
 				return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
-				//							return BaublesIntegration.isEnabled()
-				//									? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.BRACELET, cap, runestonesCap, durabilityCap) 
-				//											: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 			}
 		});
 
@@ -884,9 +857,6 @@ public class TreasureItems {
 				runestonesCap.add(InventoryType.INNATE, runeEntity);
 				((GreaterManaRune)runeEntity.getRunestone()).initCapabilityApply(cap, runeEntity);
 				return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
-				//							return BaublesIntegration.isEnabled()
-				//									? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.NECKLACE, cap, runestonesCap, durabilityCap) 
-				//											: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 			}
 		});
 
@@ -913,9 +883,6 @@ public class TreasureItems {
 				runestonesCap.add(InventoryType.INNATE, runeEntity);
 				((GreaterManaRune)runeEntity.getRunestone()).initCapabilityApply(cap, runeEntity);
 				return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
-				//							return BaublesIntegration.isEnabled()
-				//									? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.BRACELET, cap, runestonesCap, durabilityCap) 
-				//											: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 			}
 		});
 
@@ -942,9 +909,6 @@ public class TreasureItems {
 				runestonesCap.add(InventoryType.INNATE, runeEntity);
 				((GreaterManaRune)runeEntity.getRunestone()).initCapabilityApply(cap, runeEntity);
 				return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
-				//							return BaublesIntegration.isEnabled()
-				//									? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.NECKLACE, cap, runestonesCap, durabilityCap) 
-				//											: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 			}
 		});
 
@@ -965,9 +929,6 @@ public class TreasureItems {
 				IDurabilityCapability durabilityCap = new DurabilityCapability();
 				durabilityCap.setInfinite(true);
 				return new AdornmentCapabilityProvider(cap, durabilityCap);
-				//							return BaublesIntegration.isEnabled()
-				//									? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.BRACELET, cap, durabilityCap) 
-				//											: new AdornmentCapabilityProvider(cap, durabilityCap);
 			}
 		});
 
@@ -988,9 +949,6 @@ public class TreasureItems {
 					$.socketable = true;
 				}).build();
 				return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
-				//							return BaublesIntegration.isEnabled()
-				//									? new BaublesIntegration.BaubleAdornmentCapabilityProvider(AdornmentType.POCKET, cap, runestonesCap, durabilityCap) 
-				//											: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 			}
 		});
 	}
@@ -1264,9 +1222,6 @@ public class TreasureItems {
 					durabilityCap.setRepairs(durabilityCap.getMaxRepairs());
 
 					return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
-					//					return BaublesIntegration.isEnabled()
-					//							? new BaublesIntegration.BaubleAdornmentCapabilityProvider(type, cap, runestonesCap, durabilityCap) 
-					//									: new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 				}
 			};
 			// register the adornment

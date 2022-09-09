@@ -197,34 +197,6 @@ public class CharmEventHandler {
 			if (heldStack.getCapability(TreasureCapabilities.CHARMABLE).isPresent()) {
 				contexts.addAll(getCharmsFromStack(event, hand, "", heldStack, false));
 			}
-//			Treasure.LOGGER.debug("is executing -> {}", heldStack.getCapability(CHARMABLE).map(cap -> cap.isExecuting()).orElse(false));
-//			if (heldStack.getCapability(CHARMABLE).map(cap -> cap.isExecuting()).orElse(false)) {
-//				heldStack.getCapability(CHARMABLE).ifPresent(cap -> {
-//					for (InventoryType type : InventoryType.values()) {
-//						AtomicInteger index = new AtomicInteger();
-//						// requires indexed for-loop
-//						for (int i = 0; i < cap.getCharmEntities()[type.getValue()].size(); i++) {
-//							ICharmEntity entity =  cap.getCharmEntities()[type.getValue()].get(i);
-//							// OR just check with the charm for allowable event
-//							//						if (!TreasureCharms.isCharmEventRegistered(event.getClass(), entity.getCharm().getType())) {
-//							if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
-////								Treasure.LOGGER.debug("charm type -> {} is not register for this event -> {}", entity.getCharm().getType(), event.getClass().getSimpleName());
-//								continue;
-//							}
-//							index.set(i);
-//							CharmContext context  = new CharmContext.Builder().with($ -> {
-//								$.hand = hand;
-//								$.itemStack = heldStack;
-//								$.capability = cap;
-//								$.type = type;
-//								$.index = index.get();
-//								$.entity = entity;
-//							}).build();
-//							contexts.add(context);
-//						}
-//					}
-//				});
-//			}
 		}
 
 		// check equipment slots

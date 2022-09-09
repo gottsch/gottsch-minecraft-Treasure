@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "treasure2:pocket_watch",
+    "treasure2:sapphire_charm",
+    "treasure2:legendary_charm",
+    "treasure2:onyx_charm",
+    "treasure2:silver_charm",
+    "treasure2:diamond_charm",
+    "treasure2:topaz_charm",
+    "treasure2:ruby_charm",
+    "treasure2:gold_charm",
+    "treasure2:copper_charm",
+    "treasure2:emerald_charm",
+    "treasure2:mythical_charm"
+  ]
+}

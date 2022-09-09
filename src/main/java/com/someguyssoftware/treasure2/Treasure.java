@@ -107,6 +107,7 @@ public class Treasure implements IMod {
 		// is required and constructor arguments may need to be passed in
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
 		
+		// TODO wrapped in a method
 		IEquipmentCharmHandler equipmentCharmHandler = null;
 		if (ModList.get().isLoaded("curios")) {
 			LOGGER.debug("curios IS loaded");
