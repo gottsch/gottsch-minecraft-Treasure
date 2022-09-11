@@ -1,0 +1,76 @@
+# Treasure2 v1.18.2 Config
+# ========================
+# rarities = common, uncommon, scarce, rare, epic, legendary, mythical
+[[chest]]
+	treasureMapProbability=20.0
+	
+[[chest.gen]]
+	key="terrain"
+	registrySize=1000
+	minChunkDistance=100
+	probably=80.0
+	surfaceProbability=15.0
+	rarities=["common", "uncommon", "scarce", "rare", "epic", "legendary", "mythical"]
+
+[[chest.gen]]
+	key="oceanic"
+	registrySize=500
+	minChunkDistance=300
+	probably=70.0
+	rarities=["scarce", "rare", "epic", "legendary", "mythical"]
+
+[[chest.rarities]]
+	rarity="common"
+	weight=85
+	minDepth=6
+	maxDepth=15
+	
+[[chest.rarities]]
+	rarity="uncommon"
+	weight=75
+	minDepth=20
+	maxDepth=35
+
+[[chest.rarities]]
+	rarity="scarce"
+
+[[chest.rarities]]
+	rarity="rare"
+	weight=25
+	biomeWhitelist = []
+	biomeBlacklist = ["minecraft:plains", "minecraft:sunflower_plains"]
+	biomeTypeWhitelist = []
+	biomeTypeBlacklist = ["minecraft:plains"]
+
+[[chest.rarities]]
+	rarity="epic"
+	
+[[chest.rarities]]
+	rarity="legendary"
+	
+[[chest.rarities]]
+	rarity="mythical"
+	
+[[chest.chests]]
+	name="wood"
+	enabled=true
+	rarity="common"
+	biomeWhitelist = []
+	biomeBlacklist = []
+	biomeTypeWhitelist = []
+	biomeTypeBlacklist = []
+
+[[chest.chests]]
+	name="crate"
+	enabled=true
+	rarity="uncommon"
+
+[[chest.chests]]
+	name="moldy_crate"
+	enabled=true
+	rarity="uncommon"
+	
+[[chest.chests]]
+	name="ironbound"
+	enabled=true
+	rarity="scarce"
