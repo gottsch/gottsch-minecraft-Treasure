@@ -20,10 +20,12 @@
 package com.someguyssoftware.treasure2.init;
 
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.api.TreasureApi;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.loot.TreasureLootFunctions;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
+import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
@@ -53,14 +55,16 @@ public class TreasureSetup implements IModSetup {
 		// register capabilities
 		TreasureCapabilities.register();
 
+		TreasureCharmableMaterials.setup();
+		
 		// initialize all the data lists, maps, etc
 		TreasureData.initialize();
 
 		// start the treasure registries
-		TreasureLootTableRegistry.create(Treasure.instance);
-		TreasureMetaRegistry.create(Treasure.instance);
-		TreasureTemplateRegistry.create(Treasure.instance);
-		TreasureDecayRegistry.create(Treasure.instance);
+		TreasureApi.registerLootTables(Treasure.MODID);
+		TreasureApi.registerMeta(Treasure.MODID);
+		TreasureApi.registerTemplates(Treasure.MODID);
+//		TreasureDecayRegistry.create(Treasure.instance);
 	}
 
 	/**

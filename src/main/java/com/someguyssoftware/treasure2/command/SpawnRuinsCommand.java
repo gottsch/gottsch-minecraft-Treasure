@@ -51,7 +51,7 @@ public class SpawnRuinsCommand {
 	private static final String MOD_ID_ARG = "modid";
 	private static final String ARCHETYPE_ARG = "archetype";
 	private static final String NAME_ARG = "name";
-	private static final String DECAY_ARG = "decay";
+//	private static final String DECAY_ARG = "decay";
 	private static final String RARITY_ARG = "rarity";
 	
 	public static void register(CommandDispatcher<CommandSource> dispatcher) {
@@ -95,18 +95,18 @@ public class SpawnRuinsCommand {
 							    													StringArgumentType.getString(source, NAME_ARG),
 							    													"");
 																		})
-											                             .then(Commands.literal("-"+DECAY_ARG)
-											                                     .then(Commands.argument(DECAY_ARG, StringArgumentType.string())
-											                                         .suggests(SUGGEST_DECAY).executes(source -> {
-											    											return spawn(source.getSource(),
-											    													BlockPosArgument.getOrLoadBlockPos(source, "pos"),
-											    													StringArgumentType.getString(source, MOD_ID_ARG),
-											    													StringArgumentType.getString(source, ARCHETYPE_ARG),
-											    													StringArgumentType.getString(source, NAME_ARG),
-											    													StringArgumentType.getString(source, DECAY_ARG));		
-											                                         })
-											                             )
-									                            	)
+//											                             .then(Commands.literal("-"+DECAY_ARG)
+//											                                     .then(Commands.argument(DECAY_ARG, StringArgumentType.string())
+//											                                         .suggests(SUGGEST_DECAY).executes(source -> {
+//											    											return spawn(source.getSource(),
+//											    													BlockPosArgument.getOrLoadBlockPos(source, "pos"),
+//											    													StringArgumentType.getString(source, MOD_ID_ARG),
+//											    													StringArgumentType.getString(source, ARCHETYPE_ARG),
+//											    													StringArgumentType.getString(source, NAME_ARG),
+//											    													StringArgumentType.getString(source, DECAY_ARG));		
+//											                                         })
+//											                             )
+//									                            	)
 																		
 																)
 														)
@@ -122,17 +122,17 @@ public class SpawnRuinsCommand {
 //                                            TemplateLocationArgument.getTemplateLocation(source, "template"));
 //                                    })
 //                            )
-                             .then(Commands.literal("-"+DECAY_ARG)
-                                 .then(Commands.argument(DECAY_ARG, StringArgumentType.string())
-                                     .suggests(SUGGEST_DECAY).executes(source -> {
-											return spawn(source.getSource(),
-													BlockPosArgument.getOrLoadBlockPos(source, "pos"),
-													Treasure.MODID,
-													StructureArchetype.SURFACE.getValue(),
-													"",
-													StringArgumentType.getString(source, DECAY_ARG));		
-                                     })
-                             )
+//                             .then(Commands.literal("-"+DECAY_ARG)
+//                                 .then(Commands.argument(DECAY_ARG, StringArgumentType.string())
+//                                     .suggests(SUGGEST_DECAY).executes(source -> {
+//											return spawn(source.getSource(),
+//													BlockPosArgument.getOrLoadBlockPos(source, "pos"),
+//													Treasure.MODID,
+//													StructureArchetype.SURFACE.getValue(),
+//													"",
+//													StringArgumentType.getString(source, DECAY_ARG));		
+//                                     })
+//                             )
 //                            .then(Commands.argument("decay", DecayArgument.decay())
 //                                    .executes(source -> {
 //                                        return spawn(
@@ -141,7 +141,8 @@ public class SpawnRuinsCommand {
 //                                            Optional.empty());
 //                                })
 //                            )
-					))
+//					)
+                             )
 			);
 	}
     
@@ -189,10 +190,9 @@ public class SpawnRuinsCommand {
 		// TODO for now just use the surface ruins generator
 		IRuinGenerator<GeneratorResult<ChestGeneratorData>> ruinGenerator = new SurfaceRuinGenerator();
 		
-       ResourceLocation templateKey = new ResourceLocation(modID, TreasureTemplateRegistry.getTemplateManager().getBaseResourceFolder()
-			+ "/" + archetype.toLowerCase()	+ "/" + name);
+       ResourceLocation templateKey = new ResourceLocation(modID, archetype.toLowerCase()	+ "/" + name);
 
-		TemplateHolder holder = TreasureTemplateManager.getTemplatesByResourceLocationMap().get(templateKey);
+		TemplateHolder holder = TreasureTemplateRegistry.getManager().getTemplatesByResourceLocationMap().get(templateKey);
 		if (holder == null) {
 			Treasure.LOGGER.debug("Unable to locate template by key -> {}", templateKey.toString());
 		}

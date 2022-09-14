@@ -108,6 +108,7 @@ public class Treasure implements IMod {
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
 		
 		// TODO wrapped in a method
+		// TODO add config section "Integration" to enable/disable curios integration and check here
 		IEquipmentCharmHandler equipmentCharmHandler = null;
 		if (ModList.get().isLoaded("curios")) {
 			LOGGER.debug("curios IS loaded");

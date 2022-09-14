@@ -41,7 +41,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraftforge.common.DungeonHooks;
@@ -63,7 +62,7 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 	default public TemplateHolder selectTemplate(IServerWorld world, Random random, ICoords coords, StructureArchetype archetype, StructureType type) {
 		// get the biome ID
 		Biome biome = world.getBiome(coords.toPos());
-		TemplateHolder holder = TreasureTemplateRegistry.getTemplateManager().getTemplate(random, archetype, type, biome);
+		TemplateHolder holder = TreasureTemplateRegistry.getManager().getTemplate(random, archetype, type, biome);
 		return holder;
 	}
 

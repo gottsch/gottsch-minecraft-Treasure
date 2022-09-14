@@ -31,6 +31,7 @@ import com.someguyssoftware.gottschcore.world.gen.structure.PlacementSettings;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureMeta;
@@ -68,7 +69,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	// markersblocks, and replacement blocks
 	public TemplateGenerator() {
 		// use the default null block
-		setNullBlock(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.NULL));
+		setNullBlock(GenUtil.getMarkerBlock(StructureMarkers.NULL));
 	}
 
 	@Override
@@ -115,7 +116,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 			offsetCoords = new Coords(0, -meta.getOffset().getY(), 0);
 			Treasure.LOGGER.debug("Using meta offset coords -> {}", offsetCoords);
 		} else {
-			offsetCoords = template.findCoords(random, TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.OFFSET));
+			offsetCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.OFFSET));
 		}
 
 		if (offsetCoords != null) {
@@ -130,11 +131,11 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		if (decayProcessor == null) {
 			Treasure.LOGGER.debug("no decay processor found.");
 			template.placeInWorld(world, spawnCoords.toPos(), spawnCoords.toPos(), placement, 
-					getNullBlock(), TreasureTemplateRegistry.getTemplateManager().getReplacementMap(), random, 3);
+					getNullBlock(), TreasureTemplateRegistry.getManager().getReplacementMap(), random, 3);
 		} else {
 			decayProcessor.setDecayStartY(Math.abs(offset));
 			template.placeInWorld(world, spawnCoords.toPos(), spawnCoords.toPos(), placement, 
-					decayProcessor, getNullBlock(), TreasureTemplateRegistry.getTemplateManager().getReplacementMap(), random, 3);
+					decayProcessor, getNullBlock(), TreasureTemplateRegistry.getManager().getReplacementMap(), random, 3);
 		}
 
 		// process all strcture markers, positioning absolutely
@@ -231,7 +232,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	@Override
 	public Block getNullBlock() {
 		if (nullBlock == null) {
-			nullBlock = TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.NULL);
+			nullBlock = GenUtil.getMarkerBlock(StructureMarkers.NULL);
 		}
 		return nullBlock;
 	}

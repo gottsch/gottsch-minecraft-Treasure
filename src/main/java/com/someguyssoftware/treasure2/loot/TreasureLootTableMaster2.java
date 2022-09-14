@@ -19,6 +19,7 @@
  */
 package com.someguyssoftware.treasure2.loot;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,11 +40,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
@@ -54,11 +52,10 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import com.someguyssoftware.gottschcore.loot.LootTableMaster2;
 import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.mod.IMod;
-import com.someguyssoftware.gottschcore.version.BuildVersion;
-import com.someguyssoftware.gottschcore.version.VersionChecker;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
@@ -139,6 +136,8 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 */
 	private final Table<String, Rarity, List<LootTableShell>> INJECT_LOOT_TABLES_TABLE = HashBasedTable.create();
 
+	private File worldSaveFolder;
+	
 	/**
 	 * 
 	 * @param mod
@@ -161,6 +160,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		if (save instanceof SaveFormat.LevelSave) {
 			Path path = ((SaveFormat.LevelSave) save).getWorldDir().resolve("datapacks").resolve("treasure2");
 			setWorldDataBaseFolder(path.toFile());
+			setWorldSaveFolder(path.toFile());
 		}
 		else {
 			// TODO throw error
@@ -192,7 +192,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 				// TODO in future copy file from resources
 				FileUtils.write(packPath.toFile(), "{\r\n" + 
 						"  \"pack\": {\r\n" + 
-						"    \"pack_format\": 5,\r\n" + 
+						"    \"pack_format\": 6,\r\n" + 
 						"    \"description\": \"treasure2\"\r\n" + 
 						"  }\r\n" + 
 						"}", Charset.defaultCharset());
@@ -200,122 +200,6 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Unable to create pack.mcmeta:", e);
 		}
-	}
-
-	/**
-	 * TODO move this to GottschCore as this will be the defacto way to do it in 1.15+
-	 * NOTE this doesn't check the versions of the resource file vs the file system file - just checks for the existance on the file system.
-	 * @param modID
-	 * @param resourceRelativePaths
-	 */
-	@Deprecated
-	public void buildAndExpose(String basePath, String modID, List<String> resourceRelativePaths) {
-		resourceRelativePaths.forEach(resourceRelativePath -> {
-			Treasure.LOGGER.debug("TreasureLootTableMaster2 | buildAndExpose | processing relative resource path -> {}", resourceRelativePath);
-			// this represents the entire file path
-			Path fileSystemFilePath = Paths.get(getMod().getConfig().getConfigFolder(), getMod().getId(), "mc1_16", basePath, resourceRelativePath);
-			Treasure.LOGGER.debug("TreasureLootTableMaster2 | buildAndExpose | file system path -> {}", fileSystemFilePath.toString());
-			try {
-				Path resourcePath = Paths.get("data", modID, basePath, resourceRelativePath);
-				Treasure.LOGGER.debug("TreasureLootTableMaster2 | buildAndExpose | full resource path -> {}", resourcePath.toString());
-
-				// TODO don't like the FileUtils.copyInputStreamToFile is duplicated in both conditions.
-				// TODO don't like that resourcePath is gotten 2x as a stream - once in isFilesystemVersionCurrent and again after that.
-
-				// check if file already exists
-				if (Files.notExists(fileSystemFilePath)) { 
-					FileUtils.copyInputStreamToFile(Objects.requireNonNull(Treasure.class.getClassLoader().getResourceAsStream(resourcePath.toString())),
-							fileSystemFilePath.toFile());
-					// TODO add a flag if a file was copied over - save it in the manager
-				}
-				// NOTE remember, i couldn't load the json as a resource because it had some bizarre file path and wouldn't let me load.
-				else {
-					boolean isCurrent = false;
-					try {
-						isCurrent = isFileSystemVersionCurrent(resourcePath, fileSystemFilePath);
-					}
-					catch(Exception e) {
-						Treasure.LOGGER.warn(e.getMessage(), e);
-						return;
-					}
-					Treasure.LOGGER.error("is file system (config) loot table current -> {}", isCurrent);
-					if (!isCurrent) {
-						// make a backup of the file system file
-						FileUtils.copyFile(fileSystemFilePath.toFile(), Paths.get(fileSystemFilePath.toString() + ".bak").toFile());
-						// copy the resource to the file system
-						FileUtils.copyInputStreamToFile(Objects.requireNonNull(Treasure.class.getClassLoader().getResourceAsStream(resourcePath.toString())),
-								fileSystemFilePath.toFile());
-					}
-				}
-			} catch (Exception e) {
-				Treasure.LOGGER.error("Copying loot table resources error:", e);
-			}
-		});
-	}
-
-	/**
-	 * TODO Replace the version in GottschCore with this one.
-	 */
-	@Deprecated
-	@Override
-	protected boolean isFileSystemVersionCurrent(Path resourceFilePath, Path fileSystemFilePath) throws Exception {
-		boolean result = true;
-		Treasure.LOGGER.debug("Verifying the most current version for the loot table -> {} ...", fileSystemFilePath.getFileName());
-
-		// file system loot table - can't load as a resource at this location
-		String configJson;
-		try {
-			configJson = com.google.common.io.Files.toString(fileSystemFilePath.toFile(), StandardCharsets.UTF_8);
-		}
-		catch (IOException e) {
-			LOGGER.warn("Couldn't load config loot table from {}", fileSystemFilePath.toString(), e);
-			return false;
-		}
-		LootTableShell fileSystemLootTable = loadLootTable(configJson);
-
-		// jar resource loot table
-		LootTableShell resourceLootTable =  null;
-		try {
-			InputStream resourceStream = Treasure.class.getClassLoader().getResourceAsStream(resourceFilePath.toString());
-			Reader reader = new InputStreamReader(resourceStream, StandardCharsets.UTF_8);
-			resourceLootTable =  loadLootTable(reader);
-		}
-		catch(Exception e) {
-			throw new Exception(String.format("Couldn't load resource loot table %s ", resourceFilePath), e);
-		}		
-		Treasure.LOGGER.debug("TreasureLootTableMaster2 | buildAndExpose | resource version -> {}", resourceLootTable.getVersion());
-		Treasure.LOGGER.debug("\n\t...file system loot table -> {}\n\t...version -> {}\n\t...resource loot table -> {}\n\t...version -> {}",
-				fileSystemFilePath.toString(),
-				fileSystemLootTable.getVersion(),
-				resourceFilePath.toString(),
-				resourceLootTable.getVersion());
-
-		// compare versions
-		if (resourceLootTable != null && fileSystemLootTable != null) {
-			BuildVersion resourceVersion = new BuildVersion(resourceLootTable.getVersion());
-			BuildVersion fsVersion = new BuildVersion(fileSystemLootTable.getVersion());			
-			result = VersionChecker.checkVersionUsingForge(resourceVersion, fsVersion);
-		}
-		return result;
-
-	}
-
-	/**
-	 * 
-	 * @param resource
-	 * @return
-	 */
-	public Optional<LootTableShell> loadLootTable(ResourceLocation resource) {
-		Optional<LootTableShell> resourceLootTable = Optional.empty();
-		Path resourceFilePath = Paths.get("data", resource.getNamespace(), "loot_tables", resource.getPath() + ".json");
-		try (InputStream resourceStream = Treasure.class.getClassLoader().getResourceAsStream(resourceFilePath.toString());
-				Reader reader = new InputStreamReader(resourceStream, StandardCharsets.UTF_8)) {
-			resourceLootTable =  Optional.of(loadLootTable(reader));
-		}
-		catch(Exception e) {
-			Treasure.LOGGER.error(String.format("Couldn't load resource loot table %s ", resourceFilePath), e);
-		}		
-		return resourceLootTable;
 	}
 
 	/**
@@ -353,7 +237,85 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 			tableChest(loc, loadLootTable(loc));
 		});
 	}
+	
+	/**
+	 * 
+	 * @param resource
+	 * @return
+	 */
+	public Optional<LootTableShell> loadLootTable(ResourceLocation resource) {
+		// attempt to load from file system
+		Optional<LootTableShell> shell = loadLootTableFromWorldSave(getWorldSaveFolder(), resource);
+		if (!shell.isPresent()) {
+			return loadLootTableFromJar(resource);
+		}
+		return shell;
+	}
 
+	/**
+	 * 
+	 * @param folder
+	 * @param resource
+	 * @return
+	 */
+	private Optional<LootTableShell> loadLootTableFromWorldSave(File folder, ResourceLocation resource) {
+		if (folder == null) {
+			return Optional.empty();
+		}
+		else {
+			File lootTableFile = Paths.get(folder.getPath(), "data", resource.getNamespace(), "loot_tables", resource.getPath()).toFile();
+			Treasure.LOGGER.debug("attempting to load loot table {} from {}", resource, lootTableFile);
+
+			if (lootTableFile.exists()) {
+				if (lootTableFile.isFile()) {
+					String json;
+					try {
+						json = com.google.common.io.Files.toString(lootTableFile, StandardCharsets.UTF_8);
+					}
+					catch (IOException e) {
+						Treasure.LOGGER.warn("couldn't load loot table {} from {}", resource, lootTableFile, e);
+						return Optional.empty();
+					}
+					try {
+						return Optional.of(loadLootTable(json));
+					}
+					catch (IllegalArgumentException | JsonParseException e) {
+						Treasure.LOGGER.error("couldn't load loot table {} from {}", resource, lootTableFile, e);
+						return Optional.empty();
+					}
+				}
+				else {
+					Treasure.LOGGER.warn("expected to find loot table {} at {} but it was a folder.", resource, lootTableFile);
+					return Optional.empty();
+				}
+			}
+			else {
+				Treasure.LOGGER.warn("expected to find loot table {} at {} but it doesn't exist.", resource, lootTableFile);
+				return Optional.empty();
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param resource
+	 * @return
+	 */
+	public Optional<LootTableShell> loadLootTableFromJar(ResourceLocation resource) {
+		Optional<LootTableShell> resourceLootTable = Optional.empty();
+		Path resourceFilePath = Paths.get("data", resource.getNamespace(), "loot_tables", resource.getPath() + ".json");
+		Treasure.LOGGER.debug("attempting to load loot table {} from jar -> {}", resource, resourceFilePath);
+		
+		try (InputStream resourceStream = Treasure.class.getClassLoader().getResourceAsStream(resourceFilePath.toString());
+				Reader reader = new InputStreamReader(resourceStream, StandardCharsets.UTF_8)) {
+			resourceLootTable =  Optional.of(loadLootTable(reader));
+		}
+		catch(Exception e) {
+			Treasure.LOGGER.error(String.format("Couldn't load resource loot table %s ", resourceFilePath), e);
+		}		
+		return resourceLootTable;
+	}
+	
 	/**
 	 * 
 	 * @param modID
@@ -504,7 +466,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	private void tableInject(ResourceLocation resourceLocation, Optional<LootTableShell> lootTable) {
 		if (lootTable.isPresent()) {
 			// add resource location to table
-			lootTable.get().setResourceLocation(resourceLocation); // TODO update GottschCore.loadLootTable to set this value
+			lootTable.get().setResourceLocation(resourceLocation);
 			Path path = Paths.get(resourceLocation.getPath());
 
 			Rarity rarity = Rarity.valueOf(path.getName(path.getNameCount()-2).toString().toUpperCase());
@@ -669,22 +631,6 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		return tables;
 	}
 
-	//	/**
-	//	 * 
-	//	 * @param rarity
-	//	 * @return
-	//	 */
-	//	public List<ResourceLocation> getLootTableResourceByRarity(Rarity rarity) {
-	//		// get all loot tables by column key
-	//		List<ResourceLocation> tables = new ArrayList<>();
-	//		Map<String, List<ResourceLocation>> mapOfLootTableResourceLocations = CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.column(rarity);
-	//		// convert to a single list
-	//		for(Entry<String, List<ResourceLocation>> n : mapOfLootTableResourceLocations.entrySet()) {
-	//			tables.addAll(n.getValue());
-	//		}
-	//		return tables;		
-	//	}
-
 	/**
 	 * 
 	 * @param tableEnum
@@ -707,6 +653,14 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		return !StringUtils.isNullOrEmpty(lootTableShell.getRarity()) ? Rarity.getByValue(lootTableShell.getRarity().toLowerCase()) : defaultRarity;
 	}
 
+	public File getWorldSaveFolder() {
+		return worldSaveFolder;
+	}
+
+	public void setWorldSaveFolder(File worldSaveFolder) {
+		this.worldSaveFolder = worldSaveFolder;
+	}
+	
 	/*
 	 * Enum of special loot tables (not necessarily chests)
 	 */

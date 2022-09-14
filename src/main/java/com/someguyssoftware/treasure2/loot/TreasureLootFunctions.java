@@ -22,6 +22,7 @@ package com.someguyssoftware.treasure2.loot;
 import com.someguyssoftware.treasure2.loot.function.CharmRandomly;
 import com.someguyssoftware.treasure2.loot.function.RandomAdornment;
 import com.someguyssoftware.treasure2.loot.function.RandomCharm;
+import com.someguyssoftware.treasure2.loot.function.RandomRunestone;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.loot.LootFunctionType;
@@ -37,7 +38,7 @@ public class TreasureLootFunctions {
 	public static LootFunctionType CHARM_RANDOMLY;
 	public static LootFunctionType RANDOM_ADORNMENT;
 	public static LootFunctionType RANDOM_CHARM;
-	
+	public static LootFunctionType RANDOM_RUNESTONE;
 	/**
 	 * 
 	 */
@@ -45,6 +46,8 @@ public class TreasureLootFunctions {
 		CHARM_RANDOMLY = register("charm_randomly", new LootFunctionType(new CharmRandomly.Serializer())); 
 		RANDOM_ADORNMENT = register("random_adornment", new LootFunctionType(new RandomAdornment.Serializer()));
 		RANDOM_CHARM = register("random_charm", new LootFunctionType(new RandomCharm.Serializer()));
+		RANDOM_RUNESTONE = register("random_runestone", new LootFunctionType(new RandomRunestone.Serializer()));
+
 	}
 	
 	/**

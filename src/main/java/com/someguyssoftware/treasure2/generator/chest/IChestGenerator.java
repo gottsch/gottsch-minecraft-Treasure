@@ -140,6 +140,20 @@ public interface IChestGenerator {
 		return result.success();
 	}
 
+	/**
+	 * 
+	 * @param chest
+	 * @return
+	 */
+//	default public boolean isChestEnabled(Block chest) {
+//		if(chest instanceof TreasureChestBlock &&
+//				(!TreasureConfig.CHESTS.chestEnablementMap.containsKey(chest.getRegistryName().getResourcePath()) ||
+//						TreasureConfig.CHESTS.chestEnablementMap.get(chest.getRegistryName().getResourcePath()))) {
+//			return true;
+//		}
+//		return false;
+//	}
+	
 	// TODO this should be a generic call that passes in ManagedTableType
 	default public List<LootTableShell> buildLootTableList2(Rarity rarity) {
 		return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(TreasureLootTableMaster2.ManagedTableType.CHEST, rarity);
@@ -231,16 +245,11 @@ public interface IChestGenerator {
 		
 		// setup context
 		LootContext lootContext = null;
-//		if (player == null) {
-//			lootContext = Treasure.getLootTableMaster().getContext(); // TODO review this
-//		}
-//		else {
-			lootContext = new LootContext.Builder((ServerWorld) world)
-					.withLuck(player.getLuck())
-					.withParameter(LootParameters.THIS_ENTITY, player)
-					.withParameter(LootParameters.ORIGIN, new Vector3d(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ())).create(LootParameterSets.CHEST);
-			// TODO add Vector/BlockPos conversions in a util
-//		}
+		lootContext = new LootContext.Builder((ServerWorld) world)
+				.withLuck(player.getLuck())
+				.withParameter(LootParameters.THIS_ENTITY, player)
+				.withParameter(LootParameters.ORIGIN, new Vector3d(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ())).create(LootParameterSets.CHEST);
+
 		
 //		LOGGER.debug("loot context -> {}", lootContext);
 

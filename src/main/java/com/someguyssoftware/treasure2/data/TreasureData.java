@@ -5,7 +5,6 @@ package com.someguyssoftware.treasure2.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +27,8 @@ import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.LegendaryChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.MythicalChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.AirPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.BigBottomMobTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.CollapsingTrapPitGenerator;
@@ -114,6 +115,16 @@ public class TreasureData {
 			CHEST_GENS.get(Rarity.EPIC, WorldGenerators.SURFACE_CHEST).add(30, ChestGeneratorType.CRYSTAL_SKULL.getChestGenerator());
 			CHEST_GENS.get(Rarity.EPIC, WorldGenerators.SURFACE_CHEST).add(30, ChestGeneratorType.CAULDRON.getChestGenerator());
 		}
+		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(Rarity.LEGENDARY).isEnableChest()) {
+			addRarityToMap(WorldGenerators.SURFACE_CHEST, Rarity.LEGENDARY);
+			CHEST_GENS.put(Rarity.LEGENDARY, WorldGenerators.SURFACE_CHEST, new RandomWeightedCollection<>());
+			CHEST_GENS.get(Rarity.LEGENDARY, WorldGenerators.SURFACE_CHEST).add(1, new LegendaryChestGenerator());
+		}	
+		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(Rarity.MYTHICAL).isEnableChest()) {
+			addRarityToMap(WorldGenerators.SURFACE_CHEST, Rarity.MYTHICAL);
+			CHEST_GENS.put(Rarity.MYTHICAL, WorldGenerators.SURFACE_CHEST, new RandomWeightedCollection<>());
+			CHEST_GENS.get(Rarity.MYTHICAL, WorldGenerators.SURFACE_CHEST).add(1, new MythicalChestGenerator());
+		}	
 		
 		// submerged chests
 		if (TreasureConfig.CHESTS.submergedChests.configMap.get(Rarity.COMMON).isEnableChest()) {
@@ -145,6 +156,16 @@ public class TreasureData {
 			CHEST_GENS.get(Rarity.EPIC, WorldGenerators.SUBMERGED_CHEST).add(30, ChestGeneratorType.CRYSTAL_SKULL.getChestGenerator());
 			CHEST_GENS.get(Rarity.EPIC, WorldGenerators.SUBMERGED_CHEST).add(30, ChestGeneratorType.CAULDRON.getChestGenerator());
 		}
+		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(Rarity.LEGENDARY).isEnableChest()) {
+			addRarityToMap(WorldGenerators.SUBMERGED_CHEST, Rarity.LEGENDARY);
+			CHEST_GENS.put(Rarity.LEGENDARY, WorldGenerators.SUBMERGED_CHEST, new RandomWeightedCollection<>());
+			CHEST_GENS.get(Rarity.LEGENDARY, WorldGenerators.SUBMERGED_CHEST).add(1, new LegendaryChestGenerator());
+		}	
+		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(Rarity.MYTHICAL).isEnableChest()) {
+			addRarityToMap(WorldGenerators.SUBMERGED_CHEST, Rarity.MYTHICAL);
+			CHEST_GENS.put(Rarity.MYTHICAL, WorldGenerators.SUBMERGED_CHEST, new RandomWeightedCollection<>());
+			CHEST_GENS.get(Rarity.MYTHICAL, WorldGenerators.SUBMERGED_CHEST).add(1, new MythicalChestGenerator());
+		}	
 		
 		// setup pit generators
 		PIT_GENS.put(PitTypes.STANDARD, Pits.SIMPLE_PIT, new SimplePitGenerator());

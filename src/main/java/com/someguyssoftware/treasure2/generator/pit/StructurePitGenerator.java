@@ -41,7 +41,6 @@ import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
-import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -142,8 +141,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			// get the biome
 			Biome biome = world.getBiome(spawnCoords.toPos());
 			ResourceLocation biomeID = biome.getRegistryName();
-			TreasureTemplateRegistry.getTemplateManager();
-			List<TemplateHolder> templateHolders = TreasureTemplateManager.getTemplatesByArchetypeTypeBiomeTable().get(key, biomeID);
+			List<TemplateHolder> templateHolders = TreasureTemplateRegistry.getManager().getTemplatesByArchetypeTypeBiomeTable().get(key, biomeID);
 			if (templateHolders == null || templateHolders.isEmpty()) {
 				Treasure.LOGGER.debug("could not find template holders for archetype:type, biome -> {} [{}]:[]", key, biomeID, biome.toString());
 				return result.fail();
@@ -165,7 +163,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			// find the (vertical) offset block
 			int offset = 0;
 //			ICoords offsetCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.OFFSET));
-			ICoords offsetCoords = TreasureTemplateRegistry.getTemplateManager().getOffset(random, holder, StructureMarkers.OFFSET);
+			ICoords offsetCoords = TreasureTemplateRegistry.getManager().getOffset(random, holder, StructureMarkers.OFFSET);
 			if (offsetCoords != null) {
 				offset = -offsetCoords.getY();
 			}
@@ -191,7 +189,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	
 			// find the entrance block
 //			ICoords entranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
-			ICoords entranceCoords = TreasureTemplateRegistry.getTemplateManager().getOffset(random, holder, StructureMarkers.ENTRANCE);
+			ICoords entranceCoords = TreasureTemplateRegistry.getManager().getOffset(random, holder, StructureMarkers.ENTRANCE);
 			if (entranceCoords == null) {
 				Treasure.LOGGER.debug("Unable to locate entrance position.");
 				return result.fail();
@@ -227,13 +225,13 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			
 			// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 			List<BlockContext> bossChestContexts =
-					(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.BOSS_CHEST));
+					(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.BOSS_CHEST));
 			List<BlockContext> chestContexts =
-					(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.CHEST));
+					(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 			List<BlockContext> spawnerContexts =
-					(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.SPAWNER));
+					(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
 			List<BlockContext> proximityContexts =
-					(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
+					(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
 			
 			/*
 			 *  NOTE currently only 1 chest is allowed per structure - the rest are ignored.

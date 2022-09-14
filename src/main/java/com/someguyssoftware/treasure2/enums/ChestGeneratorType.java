@@ -14,6 +14,8 @@ import com.someguyssoftware.treasure2.generator.chest.CrystalSkullChestGenerator
 import com.someguyssoftware.treasure2.generator.chest.EpicChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.GoldSkullChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.LegendaryChestGenerator;
+import com.someguyssoftware.treasure2.generator.chest.MythicalChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.RareChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.ScarceChestGenerator;
 import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
@@ -30,6 +32,8 @@ public enum ChestGeneratorType {
 	SCARCE(ScarceChestGenerator::new),
 	RARE(RareChestGenerator::new),
 	EPIC(EpicChestGenerator::new),
+	LEGENDARY(LegendaryChestGenerator::new),
+	MYTHICAL(MythicalChestGenerator::new),
 	WITHER(WitherChestGenerator::new),
 	SKULL(SkullChestGenerator::new),
 	GOLD_SKULL(GoldSkullChestGenerator::new),

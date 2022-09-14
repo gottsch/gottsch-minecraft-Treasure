@@ -26,6 +26,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
 
@@ -60,6 +61,7 @@ import com.someguyssoftware.treasure2.charm.DrainCharm;
 import com.someguyssoftware.treasure2.charm.FireImmunityCharm;
 import com.someguyssoftware.treasure2.charm.GreaterHealingCharm;
 import com.someguyssoftware.treasure2.charm.HealingCharm;
+import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.IlluminationCharm;
 import com.someguyssoftware.treasure2.charm.LifeStrikeCharm;
 import com.someguyssoftware.treasure2.charm.ReflectionCharm;
@@ -91,7 +93,10 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.DyeableArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -532,8 +537,8 @@ public class TreasureItems {
 	public static final RegistryObject<SwordItem> SKULL_SWORD = ITEMS.register(TreasureConfig.ItemID.SKULL_SWORD_ID, 
 			() -> new SwordItem(TreasureItemTier.SKULL, 3, -2.4F, new Item.Properties().tab(TreasureItemGroups.TREASURE_ITEM_GROUP)));
 	
-	//	public static Item EYE_PATCH = new DyeableArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.HEAD, (new Item.Properties()).group(TreasureItemGroups.TREASURE_ITEM_GROUP))
-	//				.setRegistryName(Treasure.MODID, TreasureConfig.ItemID.EYE_PATCH_ID);
+	public static final RegistryObject<Item> EYE_PATCH = ITEMS.register(TreasureConfig.ItemID.EYE_PATCH_ID, 
+			() ->  new DyeableArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.HEAD, (new Item.Properties()).tab(TreasureItemGroups.TREASURE_ITEM_GROUP)));
 
 	//	public static RegistryObject<SpanishMossItem> SPANISH_MOSS = ITEMS.register("spanish_moss", () -> new SpanishMossItem(new Item.Properties()));
 
@@ -551,7 +556,7 @@ public class TreasureItems {
 	/*
 	 *  items caches
 	 */
-	//	public static final Map<ResourceLocation, Item> ITEMS = new HashMap<>();
+	public static final Map<ResourceLocation, Item> ALL_ITEMS = new HashMap<>();
 	public static final Map<ResourceLocation, CharmItem> CHARM_ITEMS = new HashMap<>();
 	public static final Map<ResourceLocation, Adornment> ADORNMENT_ITEMS = new HashMap<>();
 
@@ -1039,14 +1044,14 @@ public class TreasureItems {
 
 		// add charms
 		charms.forEach(charm -> {
-//			ITEMS.put(charm.getRegistryName(), charm);
+			ALL_ITEMS.put(charm.getRegistryName(), charm);
 			CHARM_ITEMS.put(charm.getRegistryName(), (CharmItem) charm);
 			event.getRegistry().register(charm);
 		});
 
 		// add adornments
 		adornments.forEach(a -> {
-			//			ITEMS.put(a.getRegistryName(), a); // NOTE this ITEMS was a local cache
+			ALL_ITEMS.put(a.getRegistryName(), a); // NOTE this ITEMS was a local cache
 			ADORNMENT_ITEMS.put(a.getRegistryName(), (Adornment) a);
 			event.getRegistry().register(a);
 		});
@@ -1293,7 +1298,7 @@ public class TreasureItems {
 			// get the capability
 			ICharmableCapability cap = itemStack.getCapability(TreasureCapabilities.CHARMABLE).map(c -> c).orElseThrow(() -> new IllegalStateException());
 			if (cap != null) {
-				Treasure.LOGGER.debug("name -> {}, charm level -> {}, level -> {}", itemStack.getDisplayName(), cap.getMaxCharmLevel(), level);
+				Treasure.LOGGER.debug("name -> {}, charm level -> {}, level -> {}", itemStack.getDisplayName().getString(), cap.getMaxCharmLevel(), level);
 				if (cap.getMaxCharmLevel() >= level) {
 					resultItem = (CharmItem)item;
 					break;
@@ -1303,6 +1308,39 @@ public class TreasureItems {
 		return resultItem;
 	}
 
+	/**
+	 * 
+	 * @param name
+	 * @param level
+	 * @return
+	 */
+	public static Optional<ItemStack> getCharm(String charmName, int level, int itemType) {
+		Item charmItem = null;
+		if (itemType == 1) {
+			charmItem = TreasureItems.CHARM_BOOK.get();
+		}
+		else {
+			charmItem = getCharmItemByLevel(level);
+		}
+		
+		// get the charm
+		Optional<ICharm> charm = TreasureCharmRegistry.get(ModUtils.asLocation(Charm.Builder.makeName(charmName, level)));
+		if (!charm.isPresent()) {
+			return Optional.empty();
+		}
+
+		/*
+		 *  add charm to charmItem
+		 *  note: an itemStack is being created, call the initCapabilities() method. ensure to remove any charms
+		 */
+		ItemStack charmStack = new ItemStack(charmItem);
+		charmStack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
+			cap.clearCharms();
+			cap.add(InventoryType.INNATE, charm.get().createEntity());
+		});
+		return Optional.of(charmStack);
+	}
+	
 	public static Comparator<CharmItem> charmLevelComparator = new Comparator<CharmItem>() {
 		@Override
 		public int compare(CharmItem p1, CharmItem p2) {

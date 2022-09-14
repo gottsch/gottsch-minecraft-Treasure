@@ -371,6 +371,8 @@ public class TreasureConfig extends AbstractConfig {
 			surfaceConfigs.put(Rarity.SCARCE, new ChestConfig.Data(true, 300, 10, 50, 20, 35, 15.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
 			surfaceConfigs.put(Rarity.RARE, new ChestConfig.Data(true, 500, 10, 25, 30, 45, 0.0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
 			surfaceConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 800, 10, 15, 40, 55, 0.0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
+			surfaceConfigs.put(Rarity.LEGENDARY, new ChestConfig.Data(true, 1500, 10, 15, 50, 65, 0.0, new String[] {}, new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" }));
+			surfaceConfigs.put(Rarity.MYTHICAL, new ChestConfig.Data(true, 2800, 10, 15, 60, 75, 0.0, new String[] {}, new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" }));
 			
 			// TODO needs all the builder stuff
 			surfaceChests = new ChestCollection(builder,
@@ -393,7 +395,11 @@ public class TreasureConfig extends AbstractConfig {
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
 			submergedConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 1000, 10, 15, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
-			
+			submergedConfigs.put(Rarity.LEGENDARY,	new ChestConfig.Data(true, 1700, 10, 25, 5, 5, 0.0,	new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean" }, 
+					new String[] {}, new String[] { "ocean", "deep_ocean" }, new String[] {}));
+			submergedConfigs.put(Rarity.MYTHICAL, 	new ChestConfig.Data(true, 3000, 10, 15, 5, 5, 0.0, new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean" }, 
+					new String[] {}, new String[] { "ocean", "deep_ocean" }, new String[] {}));
+
 			submergedChests = new ChestCollection(builder, 
 					"submerged chests", 
 					new String[] {
@@ -451,6 +457,8 @@ public class TreasureConfig extends AbstractConfig {
 				configMap.put(Rarity.SCARCE, new ChestConfig(builder, Rarity.SCARCE.getValue(), configs.get(Rarity.SCARCE)));
 				configMap.put(Rarity.RARE, new ChestConfig(builder, Rarity.RARE.getValue(), configs.get(Rarity.RARE)));
 				configMap.put(Rarity.EPIC, new ChestConfig(builder, Rarity.EPIC.getValue(), configs.get(Rarity.EPIC)));
+				configMap.put(Rarity.LEGENDARY, new ChestConfig(builder, Rarity.LEGENDARY.getValue(), configs.get(Rarity.LEGENDARY)));
+				configMap.put(Rarity.MYTHICAL, new ChestConfig(builder, Rarity.MYTHICAL.getValue(), configs.get(Rarity.MYTHICAL)));
 
 				builder.pop();
 			}

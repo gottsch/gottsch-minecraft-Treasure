@@ -44,7 +44,7 @@ public class DataGenerators {
             generator.addProvider(new TreasureItemTagsProvider(generator, blockTags, event.getExistingFileHelper()));
         }
         if (event.includeClient()) {
-//            generator.addProvider(new BlockStates(generator, event.getExistingFileHelper()));
+            generator.addProvider(new BlockStates(generator, event.getExistingFileHelper()));
             generator.addProvider(new ItemModelsProvider(generator, event.getExistingFileHelper()));
 //            generator.addProvider(new LanguageGen(generator, "en_us"));
         }

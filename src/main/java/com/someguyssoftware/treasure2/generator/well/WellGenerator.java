@@ -81,7 +81,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		// get the template
 		if (templateHolder == null) {
 			Treasure.LOGGER.debug("find well template by archetype -> {}, type -> {}, biome -> {}", StructureArchetype.SURFACE, StructureType.WELL, biome.getRegistryName());
-			templateHolder = TreasureTemplateRegistry.getTemplateManager().getTemplate(random, StructureArchetype.SURFACE, StructureType.WELL, biome);
+			templateHolder = TreasureTemplateRegistry.getManager().getTemplate(random, StructureArchetype.SURFACE, StructureType.WELL, biome);
 		}
 		Treasure.LOGGER.debug("templateHolder -> {}", templateHolder);
 		if (templateHolder == null) return result.fail();

@@ -1,8 +1,6 @@
 {
 	"parent": "block/block",
 	"textures": {
-	    "0": "treasure2:blocks/wither_log",
-        "1": "treasure2:blocks/wither_log_top",
 		"particle": "#0"
 	},
     "elements": [
