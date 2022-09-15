@@ -15,6 +15,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 /**
  * @author Mark Gottschling on Mar 9, 2018
@@ -66,6 +67,14 @@ public class KeyRingInventory implements IInventory {
 	 * @param handler
 	 */
 	public void writeInventoryToHandler(IItemHandler handler) {
+		/* 
+		 * NOTE must clear the ItemStackHandler first because it retains it's inventory, the
+		 * when insertItem is called, it actually appends, not replaces, items into it's inventory
+		 * causing doubling of items.
+		 */
+		// clear the item handler capability			
+		((ItemStackHandler)handler).setSize(INVENTORY_SIZE);
+		// copy all the items over
 		try {
 			for (int i = 0; i < items.size(); i++) {
 				handler.insertItem(i, items.get(i), false);
