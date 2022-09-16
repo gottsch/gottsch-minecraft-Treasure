@@ -90,8 +90,7 @@ public class TreasureMetaRegistry {
 	}
 
 	// 1.16.5 world save format is
-	// [save]/data/[treasure2]/meta/[modid]?...
-	// [save]/data/loot_tables/teasure2/chests/...
+	// [save]/datapacks/treasure2/data/[modid]/meta/[path]
 	public static void load(String modID) {
 		// don't reload for session
 		if (LOADED_MODS.containsKey(modID)) {

@@ -38,7 +38,7 @@ public class DurabilityRune extends Rune {
 
 	@Override
 	public boolean isValid(ItemStack itemStack) {		
-		return itemStack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).isPresent();
+		return itemStack.getCapability(TreasureCapabilities.DURABILITY).isPresent();
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class DurabilityRune extends Rune {
 			return;
 		}
 		Treasure.LOGGER.debug("passed validity check...");
-		itemStack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+		itemStack.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
 			Treasure.LOGGER.debug("old durability -> {}", cap.getDurability());
 			// NOTE: need to set the max durability first, else the new durability will be cutoff at the current max durability
 			cap.setMaxDurability((int)Math.round(cap.getMaxDurability() * 1.25D));
@@ -60,7 +60,7 @@ public class DurabilityRune extends Rune {
 
 	@Override
 	public void undo(ItemStack itemStack, IRuneEntity entity) {
-		itemStack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+		itemStack.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
 			cap.setDurability((int)Math.round(cap.getDurability() / 1.25D));
 			cap.setMaxDurability((int)Math.round(cap.getMaxDurability() / 1.25D));
 			entity.setApplied(false);

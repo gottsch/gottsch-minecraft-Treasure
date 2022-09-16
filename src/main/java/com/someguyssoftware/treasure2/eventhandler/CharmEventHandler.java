@@ -55,10 +55,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
  * @author Mark Gottschling on Sep 4, 2021
  *
  */
-//@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.FORGE)
 public class CharmEventHandler {
-//	private static final String CURIOS_ID = "curios";
-//	private static final List<String> CURIOS_SLOTS = Arrays.asList("necklace", "bracelet", "ring", "charm");
 
 	private IEquipmentCharmHandler equipmentCharmHandler;
 	
@@ -302,7 +299,7 @@ public class CharmEventHandler {
 		// TODO call capability.getDecrementor.apply() or something like that.
 		ItemStack stack = context.getItemStack();
 		// get capability
-		stack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+		stack.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
 			if (cap.isInfinite()) {
 				return;
 			}

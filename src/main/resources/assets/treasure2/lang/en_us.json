@@ -74,9 +74,9 @@
 	"block.treasure2.falling_grass":"Grass Block",
 	"block.treasure2.falling_sand":"Sand Block",
 	"block.treasure2.falling_red_sand":"Red Sand Block",
-	"block.treasure2.blackstone.name":"Blackstone",
-	"block.treasure2.jeweler_bench.name":"Jeweler's Bench",
-	"block.treasure2.charming_table.name":"Charming Table",
+	"block.treasure2.blackstone":"Blackstone",
+	"block.treasure2.jeweler_bench":"Jeweler's Bench",
+	"block.treasure2.charming_table":"Charming Table",
 	
 	"item.treasure2.copper_coin": "Copper Coin",
 	"item.treasure2.silver_coin": "Silver Coin",
@@ -469,6 +469,7 @@
 
 	"item.treasure2.wither_stick_item":"Wither Branch",
 	"item.treasure2.wither_root_item":"Wither Root",
+	"item.treasure2.eye_patch":"Eye Patch",
 	"item.treasure2.skull_sword":"Skull Sword",
 	"item.treasure2.bound_soul_spawn_egg":"Bound Soul Spawn Egg",
 
@@ -632,5 +633,9 @@
 	"display.treasure_map.uncommon":"Uncommon Treasure Map",
 	"display.treasure_map.scarce":"Scarce Treasure Map",
 	"display.treasure_map.rare":"Rare Treasure Map",
-	"display.treasure_map.epic":"Epic Treasure Map"
+	"display.treasure_map.epic":"Epic Treasure Map",
+
+	"chat.key_break":"Your key broke whilst attempting to unlock the lock!",
+	"chat.key_not_fit":"Your key doesn't fit the lock!",
+	"chat.key_unable_unlock":"Your key failed to unlock the lock!"
 }

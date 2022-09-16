@@ -72,7 +72,7 @@ public class WealthItem extends ModItem implements IWishable {
 	 * @param properties
 	 */
 	public WealthItem(Properties properties) {
-        super(properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP).stacksTo(TreasureConfig.BOOTY.wealthMaxStackSize.get()));
+        super(properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP).stacksTo(TreasureConfig.WEALTH.wealthMaxStackSize.get()));
 	}
 	
 	/**
@@ -84,7 +84,7 @@ public class WealthItem extends ModItem implements IWishable {
 	@Deprecated
 	public WealthItem(String modID, String name, Properties properties) {
         super(modID, name, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP)
-        		.stacksTo(TreasureConfig.BOOTY.wealthMaxStackSize.get()));
+        		.stacksTo(TreasureConfig.WEALTH.wealthMaxStackSize.get()));
 	}
 	
 	/**
@@ -200,11 +200,7 @@ public class WealthItem extends ModItem implements IWishable {
 			List<LootPoolShell> lootPoolShells = tableShell.getPools();
 			
 			// generate a context
-			LootContext lootContext = new LootContext.Builder((ServerWorld) world)
-					.withLuck((player != null) ? player.getLuck() : 0)
-					.withOptionalParameter(LootParameters.THIS_ENTITY, player)
-					.withParameter(LootParameters.ORIGIN, coords.toVec3d())
-					.create(LootParameterSets.CHEST);
+			LootContext lootContext = getLootContext(world, player, coords);
 
 			List<ItemStack> itemStacks = new ArrayList<>();
 			for (LootPoolShell pool : lootPoolShells) {

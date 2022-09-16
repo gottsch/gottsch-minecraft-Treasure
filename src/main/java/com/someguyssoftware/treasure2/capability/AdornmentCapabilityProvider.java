@@ -49,7 +49,7 @@ public class AdornmentCapabilityProvider implements ICapabilitySerializable<Comp
 			else if (capability == TreasureCapabilities.RUNESTONES) {
 				return (LazyOptional<T>) LazyOptional.of(() -> this.runestonesCap);
 			}
-			else if (capability == TreasureCapabilities.DURABILITY_CAPABILITY) {
+			else if (capability == TreasureCapabilities.DURABILITY) {
 				return (LazyOptional<T>) LazyOptional.of(() -> this.durabilityCap);
 			}
 		}
@@ -60,7 +60,7 @@ public class AdornmentCapabilityProvider implements ICapabilitySerializable<Comp
 	public CompoundNBT serializeNBT() {
 		CompoundNBT charmableTag = (CompoundNBT)TreasureCapabilities.CHARMABLE.getStorage().writeNBT(TreasureCapabilities.CHARMABLE, charmableCap, null);
 		CompoundNBT runestonesTag = (CompoundNBT)TreasureCapabilities.RUNESTONES.getStorage().writeNBT(TreasureCapabilities.RUNESTONES, runestonesCap, null);
-		CompoundNBT durabilityTag = (CompoundNBT)TreasureCapabilities.DURABILITY_CAPABILITY.getStorage().writeNBT(TreasureCapabilities.DURABILITY_CAPABILITY, durabilityCap, null);
+		CompoundNBT durabilityTag = (CompoundNBT)TreasureCapabilities.DURABILITY.getStorage().writeNBT(TreasureCapabilities.DURABILITY, durabilityCap, null);
 		CompoundNBT tag = new CompoundNBT();
 		tag.put("charmable", charmableTag);
 		tag.put("runestones", runestonesTag);
@@ -80,7 +80,7 @@ public class AdornmentCapabilityProvider implements ICapabilitySerializable<Comp
 		}
 		if (nbt.contains("durability")) {
 			CompoundNBT tag = nbt.getCompound("durability");
-			TreasureCapabilities.DURABILITY_CAPABILITY.getStorage().readNBT(TreasureCapabilities.DURABILITY_CAPABILITY, durabilityCap, null, tag);
+			TreasureCapabilities.DURABILITY.getStorage().readNBT(TreasureCapabilities.DURABILITY, durabilityCap, null, tag);
 		}
 	}
 }

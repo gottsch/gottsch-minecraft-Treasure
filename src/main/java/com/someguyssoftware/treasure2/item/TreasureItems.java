@@ -78,6 +78,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2.SpecialLootTables;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.material.CharmableMaterial;
+import com.someguyssoftware.treasure2.material.TreasureArmorMaterial;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 import com.someguyssoftware.treasure2.rune.AngelsRune;
 import com.someguyssoftware.treasure2.rune.DoubleChargeRune;
@@ -538,7 +539,7 @@ public class TreasureItems {
 			() -> new SwordItem(TreasureItemTier.SKULL, 3, -2.4F, new Item.Properties().tab(TreasureItemGroups.TREASURE_ITEM_GROUP)));
 	
 	public static final RegistryObject<Item> EYE_PATCH = ITEMS.register(TreasureConfig.ItemID.EYE_PATCH_ID, 
-			() ->  new DyeableArmorItem(ArmorMaterial.LEATHER, EquipmentSlotType.HEAD, (new Item.Properties()).tab(TreasureItemGroups.TREASURE_ITEM_GROUP)));
+			() ->  new DyeableArmorItem(TreasureArmorMaterial.PATCH, EquipmentSlotType.HEAD, (new Item.Properties()).tab(TreasureItemGroups.TREASURE_ITEM_GROUP)));
 
 	//	public static RegistryObject<SpanishMossItem> SPANISH_MOSS = ITEMS.register("spanish_moss", () -> new SpanishMossItem(new Item.Properties()));
 
@@ -1002,20 +1003,6 @@ public class TreasureItems {
 		TreasureAdornmentRegistry.register(TreasureCharmableMaterials.GOLD.getName(), TOPAZ.get().getRegistryName(), POCKET_WATCH.get());
 		List<Item> adornments;
 		adornments = new SetupItems().createAdornments();
-//		adornments.add(ANGELS_RING.get());
-//		adornments.add(RING_OF_FORTITUDE.get());
-//		adornments.add(SHADOWS_GIFT.get());
-//		adornments.add(RING_OF_LIFE_DEATH.get());
-//		adornments.add(CASTLE_RING.get());
-//		adornments.add(PEASANTS_FORTUNE.get());
-//		adornments.add(GOTTSCHS_RING_OF_MOON.get());
-//		adornments.add(GOTTSCHS_AMULET_OF_HEAVENS.get());
-//		adornments.add(BRACELET_OF_WONDER.get());
-//		adornments.add(MEDICS_TOKEN.get());
-//		adornments.add(ADEPHAGIAS_BOUNTY.get());
-//		adornments.add(SALANDAARS_WARD.get());
-//		adornments.add(MIRTHAS_TORCH.get());		
-//		adornments.add(POCKET_WATCH.get());
 		
 		List<Item> charms = new ArrayList<>();
 		charms.add(createCharm(TreasureCharmableMaterials.COPPER, Items.AIR));

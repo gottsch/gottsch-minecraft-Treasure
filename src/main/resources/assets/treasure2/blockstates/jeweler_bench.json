@@ -1,11 +1,10 @@
 {
     "variants": {
-		"": { "model": "treasure2:jeweler_bench" },
-        "facing=north": { "model": "treasure2:jeweler_bench" },
-        "facing=south": { "model": "treasure2:jeweler_bench", "y": 180, "uvlock": true },
-        "facing=west":  { "model": "treasure2:jeweler_bench", "y": 270, "uvlock": true },
-        "facing=east":  { "model": "treasure2:jeweler_bench", "y": 90, "uvlock": true },
-        "facing=up": { "model": "treasure2:jeweler_bench" },
-        "facing=down": { "model": "treasure2:jeweler_bench" }
+        "facing=north": { "model": "treasure2:block/jeweler_bench" },
+        "facing=south": { "model": "treasure2:block/jeweler_bench", "y": 180, "uvlock": true },
+        "facing=west":  { "model": "treasure2:block/jeweler_bench", "y": 270, "uvlock": true },
+        "facing=east":  { "model": "treasure2:block/jeweler_bench", "y": 90, "uvlock": true },
+        "facing=up": { "model": "treasure2:block/jeweler_bench" },
+        "facing=down": { "model": "treasure2:block/jeweler_bench" }
     }
 }

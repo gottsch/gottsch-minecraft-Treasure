@@ -44,7 +44,7 @@ public class AngelsRune extends Rune {
 	@Override
 	public boolean isValid(ItemStack itemStack) {		
 		// check the charms
-		if (itemStack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).isPresent()
+		if (itemStack.getCapability(TreasureCapabilities.DURABILITY).isPresent()
 				&& itemStack.getCapability(TreasureCapabilities.CHARMABLE).isPresent()) {
 			return true;
 		}
@@ -65,7 +65,7 @@ public class AngelsRune extends Rune {
 			return;
 		}
 
-		itemStack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+		itemStack.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
 			cap.setInfinite(true);
 		});
 
@@ -99,7 +99,7 @@ public class AngelsRune extends Rune {
 
 	@Override
 	public void undo(ItemStack itemStack, IRuneEntity runestoneEntity) {
-		itemStack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+		itemStack.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
 			cap.setInfinite(false);
 		});
 

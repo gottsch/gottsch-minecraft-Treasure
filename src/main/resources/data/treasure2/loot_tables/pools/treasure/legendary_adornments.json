@@ -32,6 +32,12 @@
 					"type": "item",
 					"name": "treasure2:gottschs_ring_of_moon",
 					"weight": 1
+				},
+								{
+					"entryName": "gottschs_amulet_of_heavens",
+					"type": "item",
+					"name": "treasure2:gottschs_amulet_of_heavens",
+					"weight": 1
 				}
 			]
 		}	

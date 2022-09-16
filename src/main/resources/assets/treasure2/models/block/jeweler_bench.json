@@ -1,14 +1,14 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "block/cube",
+	"parent": "block/block",
 	"textures": {
 		"0": "treasure2:blocks/jeweler_bench_top2",
 		"1": "treasure2:blocks/jeweler_bench_front2",
 		"2": "treasure2:blocks/jeweler_bench_misc",
 		"3": "treasure2:blocks/jeweler_bench_side2",
-		"4": "blocks/planks_oak",
+		"4": "block/oak_planks",
 		"5": "treasure2:blocks/jeweler_bench_planks_oak",
-		"particle": "blocks/planks_oak"
+		"particle": "block/oak_planks"
 	},
 	"elements": [
 		{

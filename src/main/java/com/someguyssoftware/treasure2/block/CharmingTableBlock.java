@@ -39,8 +39,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -75,6 +77,11 @@ public class CharmingTableBlock extends ModBlock {
 				});
 	}
 
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		return getBounds()[0];
+	}
+	
 	/**
 	 * 
 	 */
@@ -84,10 +91,8 @@ public class CharmingTableBlock extends ModBlock {
 		// exit if on the client
 		if (!worldIn.isClientSide) {
 			// get the container provider
-			//			INamedContainerProvider namedContainerProvider = this.getContainer(state, worldIn, pos);			
 			INamedContainerProvider namedContainerProvider = state.getMenuProvider(worldIn, pos);	
 
-			//			playerIn.openGui(Treasure.instance, GuiHandler.CHARMING_BENCH, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			NetworkHooks.openGui((ServerPlayerEntity)player, namedContainerProvider, (packetBuffer)->{});
 			return ActionResultType.CONSUME;
 		}

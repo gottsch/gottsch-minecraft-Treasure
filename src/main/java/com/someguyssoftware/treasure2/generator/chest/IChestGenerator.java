@@ -169,9 +169,13 @@ public interface IChestGenerator {
 	 * @return
 	 */
 	default public AbstractChestBlock selectChest(final Random random, final Rarity rarity) {
-		List<Block> chestList = (List<Block>) TreasureData.CHESTS_BY_RARITY.get(rarity); //TreasureBlocks.chests.get(rarity);
-		AbstractChestBlock chest = (AbstractChestBlock) chestList.get(RandomHelper.randomInt(random, 0, chestList.size() - 1));
-
+		Treasure.LOGGER.debug("attempting to get chest list for rarity -> {}", rarity);
+		List<Block> chestList = (List<Block>) TreasureData.CHESTS_BY_RARITY.get(rarity);
+		Treasure.LOGGER.debug("size of chests lists -> {}", chestList.size());
+		AbstractChestBlock chest = null;
+		if (!chestList.isEmpty()) {
+			chest = (AbstractChestBlock) chestList.get(RandomHelper.randomInt(random, 0, chestList.size() - 1));
+		}
 		// TODO should have a map of available mimics mapped by chest. for now, since
 		// only one mimic, just test for it determine if should be mimic get the config
 //		TODO 1.15.2
@@ -473,7 +477,7 @@ public interface IChestGenerator {
 				index = RandomHelper.randomInt(random, 0, tables.size() - 1);
 				lootTableShell = tables.get(index);
 			}
-			LOGGER.debug("Selected loot table shell index --> {}", index);
+			LOGGER.debug("Selected loot table shell index --> {}, shell -> {}", index, lootTableShell.getCategories());
 		}
 		return Optional.ofNullable(lootTableShell);
 	}

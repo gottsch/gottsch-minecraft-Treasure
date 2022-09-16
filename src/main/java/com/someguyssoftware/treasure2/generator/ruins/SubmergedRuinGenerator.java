@@ -191,16 +191,16 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 
 		// setup the decay ruleset and processor
 		IDecayProcessor decayProcessor = null;
-		if (decayRuleSet == null && holder.getDecayRuleSetLocation() != null && holder.getDecayRuleSetLocation().size() > 0) {
-			// create a decay processor with a random rule set
-			decayRuleSet = TreasureDecayRegistry.getDecayManager().getRuleSetMap().get(holder.getDecayRuleSetLocation().get(random.nextInt(holder.getDecayRuleSetLocation().size())).toString());
-			Treasure.LOGGER.debug("decayRuleSet -> {}", decayRuleSet.getName());
-			// if decayRuleSet is null the processor should be null
-		}
-		if (decayRuleSet != null) {
-			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
-			decayProcessor.setBackFillBlockLayer1(Blocks.GRAVEL.defaultBlockState());
-		}
+//		if (decayRuleSet == null && holder.getDecayRuleSetLocation() != null && holder.getDecayRuleSetLocation().size() > 0) {
+//			// create a decay processor with a random rule set
+//			decayRuleSet = TreasureDecayRegistry.getDecayManager().getRuleSetMap().get(holder.getDecayRuleSetLocation().get(random.nextInt(holder.getDecayRuleSetLocation().size())).toString());
+//			Treasure.LOGGER.debug("decayRuleSet -> {}", decayRuleSet.getName());
+//			// if decayRuleSet is null the processor should be null
+//		}
+//		if (decayRuleSet != null) {
+//			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
+//			decayProcessor.setBackFillBlockLayer1(Blocks.GRAVEL.defaultBlockState());
+//		}
 
 		GeneratorResult<TemplateGeneratorData> genResult = templateGenerator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
 		if (!genResult.isSuccess()) return result.fail();

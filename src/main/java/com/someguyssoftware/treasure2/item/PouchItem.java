@@ -19,7 +19,7 @@
  */
 package com.someguyssoftware.treasure2.item;
 
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.POUCH_CAPABILITY;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.POUCH;
 
 import java.util.List;
 
@@ -28,7 +28,9 @@ import javax.annotation.Nullable;
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.capability.CharmableCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.PouchCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.inventory.PouchContainer;
 import com.someguyssoftware.treasure2.inventory.PouchInventory;
 import com.someguyssoftware.treasure2.inventory.TreasureContainers;
@@ -38,6 +40,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
@@ -52,13 +55,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 /**
  * @author Mark Gottschling on May 13, 2020
  *
  */
 public class PouchItem extends ModItem implements INamedContainerProvider {
-
 	/**
 	 * 
 	 * @param properties
@@ -132,10 +135,9 @@ public class PouchItem extends ModItem implements INamedContainerProvider {
 	@Override
 	public CompoundNBT getShareTag(ItemStack stack) {
 		CompoundNBT nbt = stack.getOrCreateTag();
-		IItemHandler cap = stack.getCapability(POUCH_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
-
+		ItemStackHandler cap = (ItemStackHandler) stack.getCapability(POUCH).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
 		try {
-
+			nbt = cap.serializeNBT();
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Unable to write state to NBT:", e);
 		}
@@ -147,10 +149,8 @@ public class PouchItem extends ModItem implements INamedContainerProvider {
 		super.readShareTag(stack, nbt);
 
 		if (nbt instanceof CompoundNBT) {
-			IItemHandler cap = stack.getCapability(POUCH_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
-
-			CompoundNBT tag = (CompoundNBT) nbt;
-
+			ItemStackHandler cap = (ItemStackHandler) stack.getCapability(POUCH).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
+			cap.deserializeNBT((CompoundNBT) nbt);
 		}
 	}
 }

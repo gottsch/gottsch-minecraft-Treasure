@@ -345,20 +345,6 @@ public abstract class AbstractChestContainer extends Container implements ITreas
 		this.containerInventoryYPos = containerInventoryYPos;
 	}
 
-	/**
-	 * @return the inventory
-	 */
-//	public IInventory getChestInventory() {
-//		return contents;
-//	}
-//
-//	/**
-//	 * @param inventory the inventory to set
-//	 */
-//	public void setChestInventory(IInventory inventory) {
-//		this.contents = inventory;
-//	}
-
 	public IInventory getContents() {
 		return contents;
 	}

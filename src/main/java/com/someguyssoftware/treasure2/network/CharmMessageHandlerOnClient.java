@@ -162,7 +162,7 @@ public class CharmMessageHandlerOnClient {
 				
 
 				// update Durability 
-				itemStack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+				itemStack.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
 					itemStack.setDamageValue(message.getItemDamage());
 				});
 //				break;

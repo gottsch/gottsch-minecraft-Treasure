@@ -1,5 +1,5 @@
 {
-    "parent": "treasure2:block/wither_log_normal",
+    "parent": "treasure2:block/wither_log",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

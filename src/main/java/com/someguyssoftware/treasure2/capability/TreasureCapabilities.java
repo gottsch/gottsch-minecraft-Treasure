@@ -36,20 +36,16 @@ public class TreasureCapabilities {
 	public static Capability<IRunestonesCapability> RUNESTONES = null;
 	
 	@CapabilityInject(IDurabilityCapability.class)
-	public static Capability<IDurabilityCapability> DURABILITY_CAPABILITY = null;
+	public static Capability<IDurabilityCapability> DURABILITY = null;
 	
-	// TODO research compared to 1.12.2
-	@Deprecated
 	@CapabilityInject(IItemHandler.class)
 	public static Capability<IItemHandler> KEY_RING_INVENTORY_CAPABILITY = null;	
-	@Deprecated
+
 	@CapabilityInject(IKeyRingCapability.class)
 	public static Capability<IKeyRingCapability> KEY_RING_CAPABILITY = null;
 	
-	// TODO rename to POUCH
 	@CapabilityInject(IItemHandler.class)
-	public static Capability<IItemHandler> POUCH_CAPABILITY = null;
-	// TODO add pouchable
+	public static Capability<IItemHandler> POUCH = null;
 	
 	/**
 	 * 

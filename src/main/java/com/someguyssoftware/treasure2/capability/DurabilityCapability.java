@@ -78,7 +78,7 @@ public class DurabilityCapability implements IDurabilityCapability  {
 	
 	@Override
 	public void copyTo(ItemStack stack) {
-		stack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+		stack.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
 			// note: set max first
 			cap.setMaxDurability(getMaxDurability());
 			cap.setDurability(getDurability());

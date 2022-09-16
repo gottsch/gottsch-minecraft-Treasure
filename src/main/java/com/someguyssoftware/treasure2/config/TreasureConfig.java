@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.someguyssoftware.gottschcore.config.AbstractConfig;
-import com.someguyssoftware.gottschcore.config.AbstractConfig.Logging;
-import com.someguyssoftware.gottschcore.config.AbstractConfig.Mod;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -64,12 +62,13 @@ public class TreasureConfig extends AbstractConfig {
 	public static final Mod MOD;
 	public static final Logging LOGGING;
 	public static final General GENERAL;
+	public static final Integration INTEGRATION;
 	public static final Chests CHESTS;
     public static final Pits PITS;
     public static final Markers MARKERS;
     public static final Wells WELLS;
 	public static final KeysAndLocks KEYS_LOCKS;
-	public static final Booty BOOTY;
+	public static final Wealth WEALTH;
 	public static final Coins COINS;
 	public static final GemsAndOres GEMS_AND_ORES;
 	public static final Fog FOG;
@@ -82,12 +81,13 @@ public class TreasureConfig extends AbstractConfig {
 		MOD = new Mod(COMMON_BUILDER);
 		LOGGING = new Logging(COMMON_BUILDER);
 		GENERAL = new General(COMMON_BUILDER);
+		INTEGRATION = new Integration(COMMON_BUILDER);
 		CHESTS = new Chests(COMMON_BUILDER);
         PITS = new Pits(COMMON_BUILDER);
         MARKERS = new Markers(COMMON_BUILDER);
         WELLS = new Wells(COMMON_BUILDER);
 		KEYS_LOCKS = new KeysAndLocks(COMMON_BUILDER);
-		BOOTY = new Booty(COMMON_BUILDER);
+		WEALTH = new Wealth(COMMON_BUILDER);
 		COINS = new Coins(COMMON_BUILDER);
 		GEMS_AND_ORES = new GemsAndOres(COMMON_BUILDER);
 		FOG = new Fog(COMMON_BUILDER);
@@ -334,6 +334,24 @@ public class TreasureConfig extends AbstractConfig {
 		}
 	}
 
+	/*
+	 * 
+	 */
+	public static class Integration {
+		public ForgeConfigSpec.BooleanValue  enableCurios;
+		
+		Integration(final ForgeConfigSpec.Builder builder) {
+			builder.comment(CATEGORY_DIV, " Integration properties", CATEGORY_DIV)
+			.push("integration");
+			
+			enableCurios = builder
+					.comment("Enable/Disable Curios integration.", "Enabled by default, but Curios must be installed as well.")
+					.define("Enable Curios Integration:", true);
+			
+			builder.pop();
+		}
+	}
+	
 	/*
 	 * 
 	 */
@@ -727,10 +745,10 @@ public class TreasureConfig extends AbstractConfig {
 		}
 	}
 	
-	public static class Booty {
+	public static class Wealth {
 		public ForgeConfigSpec.ConfigValue<Integer> wealthMaxStackSize;
 		
-		public Booty(final ForgeConfigSpec.Builder builder)	 {
+		public Wealth(final ForgeConfigSpec.Builder builder)	 {
 			builder.comment(CATEGORY_DIV, " Treasure Loot and Valuables properties", CATEGORY_DIV)
 			.push(BOOTY_CATEGORY);
 			

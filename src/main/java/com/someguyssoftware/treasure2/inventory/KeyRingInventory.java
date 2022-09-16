@@ -29,6 +29,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 /**
  * @author Mark Gottschling on Mar 9, 2018
@@ -76,6 +77,14 @@ public class KeyRingInventory extends Inventory {
 	 */
 	public void writeInventoryToHandler(IItemHandler handler) {
 		try {
+			/* 
+			 * NOTE must clear the ItemStackHandler first because it retains it's inventory, the
+			 * when insertItem is called, it actually appends, not replaces, items into it's inventory
+			 * causing doubling of items.
+			 */
+			// clear the item handler capability			
+			((ItemStackHandler)handler).setSize(INVENTORY_SIZE);
+			// copy all the items over
 			for (int i = 0; i < INVENTORY_SIZE; i++) {
 				handler.insertItem(i, getItem(i), false);
 			}

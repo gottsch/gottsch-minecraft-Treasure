@@ -157,8 +157,8 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	@Override
 	public boolean readTemplate(ResourceLocation location, List<Block> markerBlocks, Map<BlockState, BlockState> replacementBlocks) {
 		Treasure.LOGGER.debug("template path -> {}", location);
-		// TODO this is the file system path
-		Path path = Paths.get("datapacks", location.getNamespace(), "structures", location.getPath());
+		// this is the file system path
+		Path path = Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data",  location.getNamespace(), "structures", location.getPath());
 		File file1 = path.toFile();
 		Treasure.LOGGER.debug("template file path -> {}", file1.getAbsoluteFile());
 		if (!file1.exists()) {

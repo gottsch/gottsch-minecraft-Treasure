@@ -110,7 +110,7 @@ public class Adornment extends ModItem {
 	}
 
 	public Optional<IDurabilityCapability> getDurabilityCap(ItemStack stack) {
-		return stack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).resolve();
+		return stack.getCapability(TreasureCapabilities.DURABILITY).resolve();
 	}
 
 	public Optional<IRunestonesCapability> getRunestonesCap(ItemStack stack) {
@@ -139,7 +139,7 @@ public class Adornment extends ModItem {
 		tooltip.add(new TranslationTextComponent("tooltip.charmable.usage.adornment").withStyle(TextFormatting.GOLD).withStyle(TextFormatting.ITALIC));
 
 		// add the durability tooltips
-		stack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+		stack.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
 			cap.appendHoverText(stack, world, tooltip, flag);
 		});
 
@@ -179,7 +179,7 @@ public class Adornment extends ModItem {
 				getRunestonesCap(stack).get(),
 				null);		
 		CompoundNBT durabilityTag = (CompoundNBT) DURABILITY_STORAGE.writeNBT(
-				TreasureCapabilities.DURABILITY_CAPABILITY,
+				TreasureCapabilities.DURABILITY,
 				getDurabilityCap(stack).get(),
 				null);
 
@@ -219,7 +219,7 @@ public class Adornment extends ModItem {
 		if (nbt.contains("durability")) {
 			CompoundNBT tag = nbt.getCompound("durability");
 			DURABILITY_STORAGE.readNBT(
-					TreasureCapabilities.DURABILITY_CAPABILITY, 
+					TreasureCapabilities.DURABILITY, 
 					getDurabilityCap(stack).get(), 
 					null,
 					tag);
@@ -234,7 +234,7 @@ public class Adornment extends ModItem {
 	 */
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		if (stack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).isPresent()) {
+		if (stack.getCapability(TreasureCapabilities.DURABILITY).isPresent()) {
 			IDurabilityCapability cap = getDurabilityCap(stack).get();
 			if (cap.isInfinite()) {
 				return 0D;

@@ -23,7 +23,7 @@ import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity
  * @author Mark Gottschling on Mar 30, 2022
  *
  */
-public class LegendaryChestGenerator implements IChestGenerator {
+public class LegendaryChestGenerator extends EpicChestGenerator {
 	
 	/**
 	 * 
@@ -40,17 +40,6 @@ public class LegendaryChestGenerator implements IChestGenerator {
 	}
 	
 	/**
-	 * Legendary will have at least one lock.
-	 */
-	public int randomizedNumberOfLocksByChestType(Random random, TreasureChestType type) {
-		// determine the number of locks to add
-		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
-		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);
-		
-		return numLocks;
-	}
-	
-	/**
 	 * Select Locks from Epic.
 	 * @param chest
 	 */
@@ -61,5 +50,13 @@ public class LegendaryChestGenerator implements IChestGenerator {
 		locks.addAll(TreasureItems.locks.get(Rarity.EPIC));		
 		addLocks(random, chest, te, locks);
 		locks.clear();
-	}	
+	}
+	
+	/**
+	 * Always select a epic chest.
+	 */
+	@Override
+	public AbstractChestBlock  selectChest(final Random random, final Rarity rarity) {
+		return super.selectChest(random, Rarity.EPIC);
+	}
 }

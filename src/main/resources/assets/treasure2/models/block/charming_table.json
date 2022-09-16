@@ -1,6 +1,6 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "block/cube",
+	"parent": "block/block",
 	"textures": {
 		"0": "treasure2:blocks/charming_table_side",
 		"1": "treasure2:blocks/charming_table_bottom",

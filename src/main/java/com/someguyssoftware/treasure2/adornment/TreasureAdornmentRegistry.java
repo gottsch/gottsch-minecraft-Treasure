@@ -168,9 +168,9 @@ public class TreasureAdornmentRegistry {
 		resultStack.setDamageValue(source.getDamageValue());
 		
 		// copy the capabilities
-		if (resultStack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).isPresent()) {
+		if (resultStack.getCapability(TreasureCapabilities.DURABILITY).isPresent()) {
 			Treasure.LOGGER.debug("calling durability copyTo()");
-			source.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+			source.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
 				cap.copyTo(resultStack);
 			});
 		}
@@ -221,7 +221,7 @@ public class TreasureAdornmentRegistry {
 		/*
 		 * transfer existing state of dest to stack plus any relevant state from source to stack
 		 */
-		dest.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY, null).ifPresent(cap -> {
+		dest.getCapability(TreasureCapabilities.DURABILITY, null).ifPresent(cap -> {
 			cap.copyTo(stack);
 		});
 		

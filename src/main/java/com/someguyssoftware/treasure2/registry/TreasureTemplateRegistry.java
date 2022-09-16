@@ -50,7 +50,6 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
  *
  */
 public class TreasureTemplateRegistry {
-	private static final String DEFAULT_MANIFEST_PATH = "structures/manifest.json";	
 	private static final String TEMPLATES_FOLDER = "structures";
 	
 	private static final String SAVE_FORMAT_LEVEL_SAVE_SRG_NAME = "field_71310_m";
@@ -124,7 +123,7 @@ public class TreasureTemplateRegistry {
 		Manifest manifest = null;
 		boolean worldSaveMetaLoaded = false;
 		// read from file location
-		File manifestFile = Paths.get(TEMPLATE_MANAGER.getWorldSaveFolder().getPath(), "data", "structures", modID, "manifest.json").toFile();
+		File manifestFile = Paths.get(TEMPLATE_MANAGER.getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", modID, "structures", "manifest.json").toFile();
 		if (manifestFile.exists()) {
 			if (manifestFile.isFile()) {
 				String json;
@@ -143,9 +142,9 @@ public class TreasureTemplateRegistry {
 		if (!worldSaveMetaLoaded) {
 			try {
 				// load default built-in meta manifest
-				Path manifestPath = Paths.get(TEMPLATES_FOLDER, modID, "manifest.json");
+//				Path manifestPath = Paths.get("data", modID, TEMPLATES_FOLDER, "manifest.json");
 				manifest = ITreasureResourceRegistry.<Manifest>readResourcesFromFromStream(
-						Objects.requireNonNull(Treasure.instance.getClass().getClassLoader().getResourceAsStream(TEMPLATES_FOLDER + "/" +  modID + "/manifest.json")), Manifest.class);
+						Objects.requireNonNull(Treasure.instance.getClass().getClassLoader().getResourceAsStream("data/" + modID + "/" + TEMPLATES_FOLDER + "/manifest.json")), Manifest.class);
 				Treasure.LOGGER.debug("loaded template manifest from jar");
 			}
 			catch(Exception e) {

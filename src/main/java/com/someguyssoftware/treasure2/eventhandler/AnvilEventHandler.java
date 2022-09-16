@@ -20,7 +20,7 @@
 package com.someguyssoftware.treasure2.eventhandler;
 
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.CHARMABLE;
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY_CAPABILITY;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY;
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.RUNESTONES;
 
 import java.util.List;
@@ -64,12 +64,12 @@ public class AnvilEventHandler {
 			ItemStack rightStack = event.getRight();
 
 			// check for KeyItems and having the durability capability
-			if (leftStack.getItem() instanceof KeyItem && leftStack.getCapability(DURABILITY_CAPABILITY).isPresent()
-					&& rightStack.getItem() instanceof KeyItem &&  rightStack.getCapability(DURABILITY_CAPABILITY).isPresent()) {
+			if (leftStack.getItem() instanceof KeyItem && leftStack.getCapability(DURABILITY).isPresent()
+					&& rightStack.getItem() instanceof KeyItem &&  rightStack.getCapability(DURABILITY).isPresent()) {
 
 				event.setCost(1);
-				LazyOptional<IDurabilityCapability> leftItemCap = leftStack.getCapability(DURABILITY_CAPABILITY);
-				LazyOptional<IDurabilityCapability> rightItemCap = rightStack.getCapability(DURABILITY_CAPABILITY);
+				LazyOptional<IDurabilityCapability> leftItemCap = leftStack.getCapability(DURABILITY);
+				LazyOptional<IDurabilityCapability> rightItemCap = rightStack.getCapability(DURABILITY);
 				int leftDurability = leftItemCap.map(c -> c.getDurability()).orElse(leftStack.getMaxDamage());
 				int rightDurability = rightItemCap.map(c -> c.getDurability()).orElse(rightStack.getMaxDamage());
 
@@ -77,7 +77,7 @@ public class AnvilEventHandler {
 				int rightRemainingUses = rightDurability - rightStack.getDamageValue();
 
 				ItemStack outputItem = new ItemStack(leftStack.getItem());
-				LazyOptional<IDurabilityCapability> outputItemCap = outputItem.getCapability(DURABILITY_CAPABILITY);
+				LazyOptional<IDurabilityCapability> outputItemCap = outputItem.getCapability(DURABILITY);
 
 				int remainingUses = leftRemainingUses + rightRemainingUses;
 				if (remainingUses > Math.max(leftDurability, rightDurability)) {
@@ -192,7 +192,7 @@ public class AnvilEventHandler {
 			/*
 			 * transfer existing state of dest to stack plus any relevant state from source to stack
 			 */
-			dest.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+			dest.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
 				cap.copyTo(stack);
 			});
 
@@ -311,7 +311,7 @@ public class AnvilEventHandler {
 		resultStack.setDamageValue(source.getDamageValue());
 
 		// copy the capabilities
-		source.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+		source.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
 			Treasure.LOGGER.debug("calling durability copyTo()");
 			cap.copyTo(resultStack);
 		});

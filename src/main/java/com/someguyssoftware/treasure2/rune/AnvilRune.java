@@ -44,7 +44,7 @@ public class AnvilRune extends Rune {
 	
 	@Override
 	public boolean isValid(ItemStack itemStack) {		
-		if (!itemStack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).map(cap -> cap.isInfinite()).orElse(true)) {
+		if (!itemStack.getCapability(TreasureCapabilities.DURABILITY).map(cap -> cap.isInfinite()).orElse(true)) {
 			return true;
 		}
 		return false;
@@ -56,7 +56,7 @@ public class AnvilRune extends Rune {
 			return;
 		}
 
-		itemStack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+		itemStack.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
 			cap.setInfinite(true);
 			entity.setApplied(true);
 		});
@@ -64,7 +64,7 @@ public class AnvilRune extends Rune {
 
 	@Override
 	public void undo(ItemStack itemStack, IRuneEntity entity) {
-		itemStack.getCapability(TreasureCapabilities.DURABILITY_CAPABILITY).ifPresent(cap -> {
+		itemStack.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
 			cap.setInfinite(false);
 			entity.setApplied(false);
 		});

@@ -188,28 +188,28 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		
 		// setup the decay ruleset and processor
 		IDecayProcessor decayProcessor = null;
-		Treasure.LOGGER.debug("decay rule set -> {}", decayRuleSet);
-		Treasure.LOGGER.debug("decay rule set location -> {}", holder.getDecayRuleSetLocation());
-		if (decayRuleSet == null && holder.getDecayRuleSetLocation() != null && holder.getDecayRuleSetLocation().size() > 0) {
-			Treasure.LOGGER.debug("TreasureDecayManager.map -> {}", TreasureDecayRegistry.getDecayManager().getRuleSetMap());
-			// create a decay processor
-			// TODO TemplateHolder contains ResourceLocations to the decay rule sets, however the DecayManager is a map keyed by the name only.
-			// maybe add a convenience method in holder to return just the name ie minus the extension.
-			decayRuleSet = TreasureDecayRegistry.getDecayManager().getRuleSetMap().get(holder.getDecayRuleSetLocation().get(random.nextInt(holder.getDecayRuleSetLocation().size())).toString().replace(".json", ""));
-			
-//			List<String> keys = TreasureDecayRegistry.getDecayManager().getRuleSetMap().keySet().stream().collect(Collectors.toList());
-//			Treasure.LOGGER.debug("ruleset keys -> {}", keys);
-//			decayRuleSet = TreasureDecayRegistry.get(keys.get(random.nextInt(keys.size())));
-			if (Treasure.LOGGER.isDebugEnabled() && decayRuleSet != null) {
-				Treasure.LOGGER.debug("randomly selected decayRuleSet -> {}", decayRuleSet.getName());
-			}
-		}
-		if (decayRuleSet != null) {
-			// TEMP 7/18/21 - remove the decay processor until it is working
-//			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
-		}
-		Treasure.LOGGER.debug("using decay rule set -> {}", decayRuleSet);
-		Treasure.LOGGER.debug("decay processor -> {}", decayProcessor);
+//		Treasure.LOGGER.debug("decay rule set -> {}", decayRuleSet);
+//		Treasure.LOGGER.debug("decay rule set location -> {}", holder.getDecayRuleSetLocation());
+//		if (decayRuleSet == null && holder.getDecayRuleSetLocation() != null && holder.getDecayRuleSetLocation().size() > 0) {
+//			Treasure.LOGGER.debug("TreasureDecayManager.map -> {}", TreasureDecayRegistry.getDecayManager().getRuleSetMap());
+//			// create a decay processor
+//			// TODO TemplateHolder contains ResourceLocations to the decay rule sets, however the DecayManager is a map keyed by the name only.
+//			// maybe add a convenience method in holder to return just the name ie minus the extension.
+//			decayRuleSet = TreasureDecayRegistry.getDecayManager().getRuleSetMap().get(holder.getDecayRuleSetLocation().get(random.nextInt(holder.getDecayRuleSetLocation().size())).toString().replace(".json", ""));
+//			
+////			List<String> keys = TreasureDecayRegistry.getDecayManager().getRuleSetMap().keySet().stream().collect(Collectors.toList());
+////			Treasure.LOGGER.debug("ruleset keys -> {}", keys);
+////			decayRuleSet = TreasureDecayRegistry.get(keys.get(random.nextInt(keys.size())));
+//			if (Treasure.LOGGER.isDebugEnabled() && decayRuleSet != null) {
+//				Treasure.LOGGER.debug("randomly selected decayRuleSet -> {}", decayRuleSet.getName());
+//			}
+//		}
+//		if (decayRuleSet != null) {
+//			// TEMP 7/18/21 - remove the decay processor until it is working
+////			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
+//		}
+//		Treasure.LOGGER.debug("using decay rule set -> {}", decayRuleSet);
+//		Treasure.LOGGER.debug("decay processor -> {}", decayProcessor);
 		
 		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
 		 if (!genResult.isSuccess()) return result.fail();

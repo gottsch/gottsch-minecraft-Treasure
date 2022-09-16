@@ -1,0 +1,17 @@
+{
+    "variants": {
+        "appearance=none,facing=north": { "model": "treasure2:block/wither_log" },
+        "appearance=none,facing=south": { "model": "treasure2:block/wither_log", "y": 180, "uvlock": true },
+        "appearance=none,facing=west":  { "model": "treasure2:block/wither_log", "y": 270, "uvlock": true },
+        "appearance=none,facing=east":  { "model": "treasure2:block/wither_log", "y": 90, "uvlock": true },
+        "appearance=none,facing=up": { "model": "treasure2:block/wither_log" },
+        "appearance=none,facing=down": { "model": "treasure2:block/wither_log" },
+
+        "appearance=face,facing=north": { "model": "treasure2:block/wither_soul_log" },
+        "appearance=face,facing=south": { "model": "treasure2:block/wither_soul_log", "y": 180, "uvlock": true },
+        "appearance=face,facing=west":  { "model": "treasure2:block/wither_soul_log", "y": 270, "uvlock": true },
+        "appearance=face,facing=east":  { "model": "treasure2:block/wither_soul_log", "y": 90, "uvlock": true },
+        "appearance=face,facing=up": { "model": "treasure2:block/wither_soul_log" },
+        "appearance=face,facing=down": { "model": "treasure2:block/wither_soul_log" }
+    }
+}

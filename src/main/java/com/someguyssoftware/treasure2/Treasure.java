@@ -106,24 +106,6 @@ public class Treasure implements IMod {
 		// needs to be registered here instead of @Mod.EventBusSubscriber because an instance of the handler
 		// is required and constructor arguments may need to be passed in
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
-		
-		// TODO wrapped in a method
-		// TODO add config section "Integration" to enable/disable curios integration and check here
-		IEquipmentCharmHandler equipmentCharmHandler = null;
-		if (ModList.get().isLoaded("curios")) {
-			LOGGER.debug("curios IS loaded");
-			try {
-				equipmentCharmHandler = 
-						(IEquipmentCharmHandler) Class.forName("com.someguyssoftware.treasure2.eventhandler.CuriosEquipmentCharmHandler").newInstance();
-			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-				LOGGER.warn("Unable to load Curios compatiblity class.");
-			}
-		}
-		if (equipmentCharmHandler == null) {
-			LOGGER.debug("equipmentHandler is null");
-			equipmentCharmHandler = new HotbarEquipmentCharmHandler();
-		}
-		MinecraftForge.EVENT_BUS.register(new CharmEventHandler(equipmentCharmHandler));
 
 	}
 	

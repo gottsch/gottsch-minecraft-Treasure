@@ -23,12 +23,9 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.api.TreasureApi;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.data.TreasureData;
+import com.someguyssoftware.treasure2.integration.TreasureIntegrations;
 import com.someguyssoftware.treasure2.loot.TreasureLootFunctions;
-import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
-import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
-import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
-import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -65,8 +62,12 @@ public class TreasureSetup implements IModSetup {
 		TreasureApi.registerMeta(Treasure.MODID);
 		TreasureApi.registerTemplates(Treasure.MODID);
 //		TreasureDecayRegistry.create(Treasure.instance);
+		
+		// integrations
+		TreasureIntegrations.registerCuriosIntegration();
 	}
 
+	
 	/**
 	 * 
 	 * @param event
