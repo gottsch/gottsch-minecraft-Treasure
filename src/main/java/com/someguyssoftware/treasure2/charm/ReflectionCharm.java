@@ -26,15 +26,11 @@ import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -44,7 +40,7 @@ import net.minecraftforge.eventbus.api.Event;
  * Fired on LivingHurtEvent, so the original amount of damage INTENDED (ie not actual Damage) to be
  * inflicated on Player is reflected back on mob.
  * reflection: value = # of uses, duration = range, percent = % of damage reflected
- * @author Mark Gottschling on Aug 23, 2021
+ * @author Mark Gottschling on Apr 30, 2020
  *
  */
 public class ReflectionCharm extends Charm {
@@ -56,11 +52,7 @@ public class ReflectionCharm extends Charm {
 	 * 
 	 * @param builder
 	 */
-	public ReflectionCharm(Builder builder) {
-		super(builder);
-	}
-
-	protected ReflectionCharm(Charm.Builder builder) {
+	ReflectionCharm(Builder builder) {
 		super(builder);
 	}
 
@@ -70,44 +62,39 @@ public class ReflectionCharm extends Charm {
 
 	@Override
 	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
-		Treasure.LOGGER.debug("calling reflectiion");
 		boolean result = false;
-		if (entity.getValue() > 0 && player.isAlive()) {
+		if (entity.getMana() > 0 && player.isAlive()) {
 			if (((LivingHurtEvent)event).getEntity() instanceof PlayerEntity) {
 				// get player position
-				double px = player.position().x;
-				double py = player.position().y;
-				double pz = player.position().z;
+				double px = player.getX();
+				double py = player.getY();
+				double pz = player.getZ();
 
 				// get the source and amount
 				double amount = ((LivingHurtEvent)event).getAmount();
 				// calculate the new amount
-				double reflectedAmount = amount * entity.getPercent();
-				int range = entity.getDuration();
-				// get all the mob within a radius
+				double reflectedAmount = amount * entity.getAmount();
+				double range = entity.getRange();
 				List<MobEntity> mobs = world.getEntitiesOfClass(MobEntity.class, new AxisAlignedBB(px - range, py - range, pz - range, px + range, py + range, pz + range));
 				mobs.forEach(mob -> {
-					boolean flag = mob.hurt(DamageSource.playerAttack(player), (float) reflectedAmount);
+					boolean flag = mob.hurt(DamageSource.GENERIC, (float) reflectedAmount);
 					Treasure.LOGGER.debug("reflected damage {} onto mob -> {} was successful -> {}", reflectedAmount, mob.getName(), flag);
 				});
-				entity.setValue(entity.getValue() - 1.0);
+
+				// get all the mob within a radius
+//				entity.setMana(entity.getMana() - 1.0);
+				applyCost(world, random, coords, player, event, entity, reflectedAmount);
 				result = true;
-			}
-		}    		
+			}    		
+		}
 		return result;
 	}
-
-	/**
-	 * 
-	 */
+	
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.BLUE;
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent(getLabel(entity)).withStyle(color)));
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent("tooltip.charm.rate.reflection", Math.round(this.getMaxPercent()*100), this.getMaxDuration()).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
-
+	public ITextComponent getCharmDesc(ICharmEntity entity) {
+		return  new TranslationTextComponent("tooltip.charm.rate.reflection", Math.toIntExact((long) (entity.getAmount()*100)), entity.getRange());
 	}
-
+	
 	public static class Builder extends Charm.Builder {
 
 		public Builder(Integer level) {

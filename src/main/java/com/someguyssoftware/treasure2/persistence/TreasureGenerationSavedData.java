@@ -88,7 +88,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	}
 
 	/* (non-Javadoc)
-	 * @see net.minecraft.world.WorldSavedData#readFromNBT(net.minecraft.nbt.NBTTagCompound)
+	 * @see net.minecraft.world.WorldSavedData#readFromNBT(net.minecraft.nbt.CompoundNBT)
 	 */
 	@Override
 	public void load(CompoundNBT tag) {
@@ -228,7 +228,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	/*
 	 * NOTE thrown exceptions are silently handled, so they need to be caught here instead
 	 *  (non-Javadoc)
-	 * @see net.minecraft.world.WorldSavedData#writeToNBT(net.minecraft.nbt.NBTTagCompound)
+	 * @see net.minecraft.world.WorldSavedData#writeToNBT(net.minecraft.nbt.CompoundNBT)
 	 */
 	@Override
 	public CompoundNBT save(CompoundNBT tag) {

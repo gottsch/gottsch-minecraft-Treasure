@@ -102,7 +102,7 @@ public class TreasureEntities {
 		 */
 		private static Item spawnEgg(EntityType<?> type, int color1, int color2) {
 			ResourceLocation eggId = new ResourceLocation(type.getRegistryName().getNamespace(), type.getRegistryName().getPath() + "_spawn_egg");
-			return new SpawnEggItem(type, color1, color2, new Item.Properties().tab(TreasureItemGroups.MOD_ITEM_GROUP)).setRegistryName(eggId);
+			return new SpawnEggItem(type, color1, color2, new Item.Properties().tab(TreasureItemGroups.TREASURE_ITEM_GROUP)).setRegistryName(eggId);
 		}
 		
 		@SubscribeEvent

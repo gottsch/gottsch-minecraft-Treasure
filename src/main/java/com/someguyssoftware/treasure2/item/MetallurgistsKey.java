@@ -22,11 +22,16 @@ import net.minecraft.world.World;
  */
 public class MetallurgistsKey extends KeyItem {
 
+	public MetallurgistsKey(Item.Properties properties) {
+		super(properties);
+	}
+	
 	/**
 	 * 
 	 * @param modID
 	 * @param name
 	 */
+	@Deprecated
 	public MetallurgistsKey(String modID, String name, Item.Properties properties) {
 		super(modID, name, properties);
 	}

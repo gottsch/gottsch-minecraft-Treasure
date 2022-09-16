@@ -22,9 +22,18 @@ public class EmberKey extends KeyItem {
 
 	/**
 	 * 
+	 * @param properties
+	 */
+	public EmberKey(Item.Properties properties) {
+		super(properties);
+	}
+	
+	/**
+	 * 
 	 * @param modID
 	 * @param name
 	 */
+	@Deprecated
 	public EmberKey(String modID, String name, Item.Properties properties) {
 		super(modID, name, properties);
 	}
@@ -49,7 +58,7 @@ public class EmberKey extends KeyItem {
 	 */
 	@Override
 	public boolean fitsLock(LockItem lockItem) {
-        if (lockItem == TreasureItems.EMBER_LOCK || lockItem == TreasureItems.WOOD_LOCK) {
+        if (lockItem == TreasureItems.EMBER_LOCK.get() || lockItem == TreasureItems.WOOD_LOCK.get()) {
             return true;
         }
 		return false;
@@ -57,7 +66,7 @@ public class EmberKey extends KeyItem {
 
     @Override
     public boolean breaksLock(LockItem lockItem) {
-        if (lockItem == TreasureItems.WOOD_LOCK) { 
+        if (lockItem == TreasureItems.WOOD_LOCK.get()) { 
             return true;
         }
         return false;

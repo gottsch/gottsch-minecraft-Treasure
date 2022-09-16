@@ -30,9 +30,13 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameterSets;
+import net.minecraft.loot.LootParameters;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 /**
  * @author Mark Gottschling on Aug 14, 2021
@@ -40,7 +44,7 @@ import net.minecraft.world.World;
  */
 public interface IWishable {
 	public static final String DROPPED_BY_KEY = "droppedBy";
-	
+
 	/**
 	 * 
 	 * @param world
@@ -49,7 +53,7 @@ public interface IWishable {
 	 * @param coords
 	 */
 	public Optional<ItemStack> generateLoot(World world, Random random, ItemStack itemStack, ICoords coords);
-	
+
 	/**
 	 * 
 	 * @param world
@@ -65,7 +69,7 @@ public interface IWishable {
 			itemStacks.addAll(TreasureLootTableRegistry.getLootTableMaster().getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext));
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param key
@@ -83,7 +87,7 @@ public interface IWishable {
 	default public List<LootTableShell> getLootTables() {
 		return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.COMMON);
 	}
-	
+
 	/**
 	 * 
 	 * @param random
@@ -93,7 +97,7 @@ public interface IWishable {
 		List<KeyItem> keys = new ArrayList<>(TreasureItems.keys.get(Rarity.COMMON));
 		return new ItemStack(keys.get(random.nextInt(keys.size())));
 	}
-	
+
 	/**
 	 * 
 	 * @param random
@@ -101,5 +105,19 @@ public interface IWishable {
 	 */
 	default public Rarity getDefaultEffectiveRarity(Random random) {
 		return Rarity.UNCOMMON;
+	}
+
+	/**
+	 * 
+	 * @param world
+	 * @param player
+	 * @return
+	 */
+	default public LootContext getLootContext(World world, PlayerEntity player, ICoords coords) {
+		return new LootContext.Builder((ServerWorld) world)
+				.withLuck((player != null) ? player.getLuck() : 0)
+				.withOptionalParameter(LootParameters.THIS_ENTITY, player)
+				.withParameter(LootParameters.ORIGIN, coords.toVec3d())
+				.create(LootParameterSets.CHEST);
 	}
 }

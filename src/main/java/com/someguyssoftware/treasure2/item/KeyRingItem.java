@@ -19,26 +19,28 @@
  */
 package com.someguyssoftware.treasure2.item;
 
-import java.util.List;
-
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY_CAPABILITY;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY;
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.KEY_RING_CAPABILITY;
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.KEY_RING_INVENTORY_CAPABILITY;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.POUCH;
+
+import java.util.List;
+
+import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
-import com.someguyssoftware.treasure2.block.ITreasureBlock;
-import com.someguyssoftware.treasure2.block.TreasureBlock;
+import com.someguyssoftware.treasure2.capability.CharmableCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapabilityProvider;
+import com.someguyssoftware.treasure2.capability.KeyRingCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.inventory.KeyRingContainer;
 import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
-import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 import com.someguyssoftware.treasure2.inventory.TreasureContainers;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
@@ -60,34 +62,41 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 /**
  * @author Mark Gottschling on Mar 9, 2018
  *
  */
-public class KeyRingItem extends ModItem implements INamedContainerProvider {
-
+public class KeyRingItem extends ModItem implements IKeyEffects, INamedContainerProvider {
+	private static final KeyRingCapabilityStorage CAPABILITY_STORAGE = new KeyRingCapabilityStorage();
+	
+	/**
+	 * 
+	 * @param properties
+	 */
+	public KeyRingItem(Properties properties) {
+		super(properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP)
+				.stacksTo(1));
+	}
+	
 	/**
 	 * 
 	 * @param modID
 	 * @param name
 	 * @param properties
 	 */
+	@Deprecated
 	public KeyRingItem(String modID, String name, Properties properties) {
-		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP)
+		super(modID, name, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP)
 				.stacksTo(1));
 	}
 
@@ -146,22 +155,26 @@ public class KeyRingItem extends ModItem implements INamedContainerProvider {
 						KeyItem key = (KeyItem) keyStack.getItem();
 						Treasure.LOGGER.debug("Using key from keyring: {}", key.getRegistryName());
 						boolean breakKey = true;
-						//	boolean fitsLock = false;
+						boolean fitsLock = false;
 						LockState lockState = null;
 
 						// check if this key is one that opens a lock (only first lock that key fits is unlocked).
 						lockState = key.fitsFirstLock(chestTileEntity.getLockStates());
-
+						if (lockState != null) {
+							fitsLock = true;
+						}
 						Treasure.LOGGER.debug("key fits lock: {}", lockState);
 
 						// TODO move to a method in KeyItem
-						if (lockState != null) {
+						if (fitsLock) {
 							if (key.unlock(lockState.getLock())) {
 								LockItem lock = lockState.getLock();
+								
+								doKeyUnlockEffects(context.getLevel(), context.getPlayer(), context.getClickedPos(), chestTileEntity, lockState);
+								
 								// remove the lock
 								lockState.setLock(null);
-								// play noise
-								context.getLevel().playSound(context.getPlayer(), context.getClickedPos(), SoundEvents.LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+								
 								// update the client
 								chestTileEntity.sendUpdates();
 								// spawn the lock
@@ -173,24 +186,26 @@ public class KeyRingItem extends ModItem implements INamedContainerProvider {
 								breakKey = false;
 							}
 
-							IDurabilityCapability cap = keyStack.getCapability(DURABILITY_CAPABILITY).orElseThrow(IllegalStateException::new);
+							IDurabilityCapability cap = keyStack.getCapability(DURABILITY).orElseThrow(IllegalStateException::new);
 							// TODO move to a method in KeyItem
 							if (breakKey) {
 								if ((key.isBreakable() ||  key.anyLockBreaksKey(chestTileEntity.getLockStates(), key))  && TreasureConfig.KEYS_LOCKS.enableKeyBreaks.get()) {
-									// TODO see KeyItem for cap usage
 									int damage = keyStack.getDamageValue() + (getMaxDamage() - (keyStack.getDamageValue() % getMaxDamage()));
 									keyStack.setDamageValue(damage);
 									if (keyStack.getDamageValue() >= cap.getDurability()) {
 										// break key;
 										keyStack.shrink(1);
 									}									
-									context.getPlayer().sendMessage(new StringTextComponent("Key broke."), Util.NIL_UUID);
-									context.getLevel().playSound(context.getPlayer(), context.getClickedPos(), SoundEvents.METAL_BREAK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 									// the key is broken, do not attempt to damage it.
 									isKeyBroken = true;
+									
+			                        key.doKeyBreakEffects(context.getLevel(), context.getPlayer(), context.getClickedPos(), chestTileEntity);
+								}
+								else if (!fitsLock) {
+									doKeyNotFitEffects(context.getLevel(), context.getPlayer(), context.getClickedPos(), chestTileEntity);
 								}
 								else {
-									context.getPlayer().sendMessage(new StringTextComponent("Failed to unlock."), Util.NIL_UUID);
+									doKeyUnableToUnlockEffects(context.getLevel(), context.getPlayer(), context.getClickedPos(), chestTileEntity);
 								}						
 							}
 							if (key.isDamageable() && !isKeyBroken) {
@@ -277,5 +292,54 @@ public class KeyRingItem extends ModItem implements INamedContainerProvider {
 	@Override
 	public ITextComponent getDisplayName() {
 		return new TranslationTextComponent("item.treasure2.key_ring");
+	}
+	
+	////////////////////////
+	/**
+	 * NOTE getShareTag() and readShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands.
+	 */
+	@Override
+	public CompoundNBT getShareTag(ItemStack stack) {
+		
+		CompoundNBT keyRingTag;
+		keyRingTag = (CompoundNBT) CAPABILITY_STORAGE.writeNBT(
+				TreasureCapabilities.KEY_RING_CAPABILITY,
+				stack.getCapability(TreasureCapabilities.KEY_RING_CAPABILITY).orElse(null),
+				null);
+		
+		CompoundNBT inventoryTag = null;
+		ItemStackHandler cap = (ItemStackHandler) stack.getCapability(POUCH).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
+		try {
+			inventoryTag = cap.serializeNBT();
+		} catch (Exception e) {
+			Treasure.LOGGER.error("Unable to write state to NBT:", e);
+		}
+		
+		CompoundNBT tag = new CompoundNBT();
+		tag.put("keyRing", keyRingTag);
+		tag.put("inventory", inventoryTag);
+		return tag;
+	}
+
+	@Override
+	public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
+		super.readShareTag(stack, nbt);
+
+		if (nbt instanceof CompoundNBT) {
+			
+			if (nbt.contains("keyRing")) {
+				CompoundNBT tag = nbt.getCompound("keyRing");
+				CAPABILITY_STORAGE.readNBT(
+						TreasureCapabilities.KEY_RING_CAPABILITY, 
+						stack.getCapability(TreasureCapabilities.KEY_RING_CAPABILITY).orElse(null),
+						null,
+						tag);
+			}
+			
+			if (nbt.contains("inventory")) {
+				ItemStackHandler cap = (ItemStackHandler) stack.getCapability(POUCH).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
+				cap.deserializeNBT((CompoundNBT) nbt.getCompound("inventory"));
+			}
+		}
 	}
 }

@@ -24,9 +24,19 @@ public class WitherStickItem extends ModBlockItem {
 	
 	/**
 	 * 
+	 * @param block
+	 * @param properties
 	 */
+	public WitherStickItem(Block block, Item.Properties properties) {
+		super(block, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
+	}
+	
+	/**
+	 * 
+	 */
+	@Deprecated
 	public WitherStickItem(String modID, String name, Block block, Item.Properties properties) {
-		super(modID, name, block, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP));
+		super(modID, name, block, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
 	}
 	
 	@Override

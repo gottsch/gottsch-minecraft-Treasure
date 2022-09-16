@@ -65,7 +65,7 @@ public class CoinItem extends ModItem implements IWishable {
 	 * 
 	 */
 	public CoinItem (String modID, String name, Item.Properties properties)	 {
-        super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP)
+        super(modID, name, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP)
         		.stacksTo(Math.min(MAX_CUSTOM_STACK_SIZE, TreasureConfig.COINS.coinMaxStackSize.get())));
 		// set the coin to gold by default
 //		this.coin = Coins.GOLD;

@@ -19,7 +19,7 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.POUCH_CAPABILITY;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.POUCH;
 
 import com.someguyssoftware.treasure2.inventory.PouchInventory;
 
@@ -44,7 +44,7 @@ public class PouchCapabilityProvider implements ICapabilityProvider, ICapability
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		if (capability ==POUCH_CAPABILITY) {
+		if (capability ==POUCH) {
 			return  (LazyOptional<T>) LazyOptional.of(() -> instance);
 		}
 		return LazyOptional.empty();

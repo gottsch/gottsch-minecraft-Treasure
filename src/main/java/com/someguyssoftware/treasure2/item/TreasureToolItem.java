@@ -20,13 +20,18 @@ import net.minecraft.world.World;
  */
 public class TreasureToolItem extends ModItem {
 
+	public TreasureToolItem(Item.Properties properties) {
+		super(properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
+	}
+	
 	/**
 	 * 
 	 * @param modID
 	 * @param name
 	 */
+	@Deprecated
 	public TreasureToolItem(String modID, String name, Item.Properties properties) {
-		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP));
+		super(modID, name, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
 	}
 	
 	@Override

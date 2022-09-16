@@ -24,9 +24,19 @@ public class WitherRootItem extends ModBlockItem {
 	
 	/**
 	 * 
+	 * @param block
+	 * @param properties
 	 */
+	public WitherRootItem(Block block, Item.Properties properties) {
+		super(block, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
+	}
+	
+	/**
+	 * 
+	 */
+	@Deprecated
 	public WitherRootItem(String modID, String name, Block block, Item.Properties properties) {
-		super(modID, name, block, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP));
+		super(modID, name, block, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
 	}
 	
 	@Override

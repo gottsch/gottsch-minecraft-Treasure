@@ -24,9 +24,18 @@ public class LightningKey extends KeyItem {
 
 	/**
 	 * 
+	 * @param properties
+	 */
+	public LightningKey(Item.Properties properties) {
+		super(properties);
+	}
+	
+	/**
+	 * 
 	 * @param modID
 	 * @param name
 	 */
+	@Deprecated
 	public LightningKey(String modID, String name, Item.Properties properties) {
 		super(modID, name, properties);
 	}

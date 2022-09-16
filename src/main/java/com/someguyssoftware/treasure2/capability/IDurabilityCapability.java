@@ -19,9 +19,12 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
-import com.someguyssoftware.treasure2.util.ModUtils;
+import java.util.List;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.World;
 
 /**
  * 
@@ -29,10 +32,29 @@ import net.minecraft.util.ResourceLocation;
  *
  */
 public interface IDurabilityCapability {
-	public ResourceLocation ID = ModUtils.asLocation("durability_capability");
     public static final int MAX_DURABILITY = 1000; 
 
 	public int getDurability();
 
-	public void setDurability(int durability);
+	public void setDurability(int damage);
+
+	public int getMaxDurability();
+
+	public void setMaxDurability(int maxDurability);
+
+	public boolean isInfinite();
+
+	public void setInfinite(boolean infinite);
+
+	public void copyTo(ItemStack stack);
+
+	public int getMaxRepairs();
+
+	public void setMaxRepairs(int maxRepairs);
+
+	public int getRepairs();
+
+	public void setRepairs(int repairs);
+
+	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag);
 }

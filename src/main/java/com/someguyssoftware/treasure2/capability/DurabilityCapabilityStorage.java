@@ -31,28 +31,50 @@ import net.minecraftforge.common.capabilities.Capability;
  *
  */
 public class DurabilityCapabilityStorage implements Capability.IStorage<IDurabilityCapability> {
+	private static final String MAX_DURABILITY_TAG = "maxDurability";
 	private static final String DURABILITY_TAG = "durability";
+	private static final String INFINITE_TAG = "infinite";
 	
 	@Override
 	public INBT writeNBT(Capability<IDurabilityCapability> capability, IDurabilityCapability instance, Direction side) {
-		CompoundNBT nbt = new CompoundNBT();
+		CompoundNBT mainTag = new CompoundNBT();
 		try {
-		nbt.putInt(DURABILITY_TAG, instance.getDurability());
+			mainTag.putInt(DURABILITY_TAG, instance.getDurability());
+			mainTag.putInt(MAX_DURABILITY_TAG, instance.getMaxDurability());
+			mainTag.putBoolean(INFINITE_TAG, instance.isInfinite());
+			mainTag.putInt("repairs", instance.getRepairs());
+			mainTag.putInt("maxRepairs", instance.getMaxRepairs());
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Unable to write state to NBT:", e);
 		}
-		return nbt;
+		return mainTag;
 	}
 
 	@Override
 	public void readNBT(Capability<IDurabilityCapability> capability, IDurabilityCapability instance, Direction side,
 			INBT nbt) {
+
 		if (nbt instanceof CompoundNBT) {
 			CompoundNBT tag = (CompoundNBT) nbt;
+			
+			if (tag.contains(MAX_DURABILITY_TAG)) {
+				instance.setMaxDurability(tag.getInt(MAX_DURABILITY_TAG));
+			}
+			
 			if (tag.contains(DURABILITY_TAG)) {
 				instance.setDurability(tag.getInt(DURABILITY_TAG));
 			}
-		}
+			
+			if (tag.contains(INFINITE_TAG)) {
+				instance.setInfinite(tag.getBoolean(INFINITE_TAG));
+			}
+			
+			if (tag.contains("repairs")) {
+				instance.setRepairs(tag.getInt("repairs"));
+			}
+			if (tag.contains("maxRepairs")) {
+				instance.setMaxRepairs(tag.getInt("maxRepairs"));
+			}
+		}		
 	}
-
 }

@@ -1,33 +1,19 @@
 {
-	"version": "2.0.1",
-	"since": "mc1.16.5-v.1.7.0",
+	"version": "3.0",
+	"since": "mc1.16.5-v.2.1.0",
 	"category": "general",
 	"rarity": "epic",
 	"type": "minecraft:chest",
 	"pools": [
 		{
 			"name": "treasure",
-			"rolls": {
-				"min": 2,
-				"max": 3
-			},
+			"rolls": 1,
 			"entries": [
                 {
                     "type": "minecraft:loot_table",
-                    "name": "treasure2:pools/treasure/epic",
+                    "name": "treasure2:pools/treasure/epic_all",
                     "weight": 1
                 }
-			]
-		},
-		{
-			"name": "charms",
-			"rolls": 1,
-			"entries": [
-				{
-					"type": "minecraft:loot_table",
-					"name": "treasure2:pools/treasure/epic_charms",
-					"weight": 1
-				}
 			]
 		},
 		{
@@ -150,6 +136,20 @@
 	            {
                     "type": "minecraft:loot_table",
                     "name": "treasure2:pools/tools/rare",
+                    "weight": 1
+                }
+			]
+		},
+		{
+			"name": "rare_potions",
+			"rolls": {
+				"min": 0,
+				"max": 2
+			},
+			"entries": [
+		            {
+                    "type": "loot_table",
+                    "name": "treasure2:pools/potions/rare",
                     "weight": 1
                 }
 			]

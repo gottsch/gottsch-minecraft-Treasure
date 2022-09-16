@@ -19,37 +19,32 @@
  */
 package com.someguyssoftware.treasure2.item;
 
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.*;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.POUCH;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.ICharmableCapability;
+import com.someguyssoftware.treasure2.capability.CharmableCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.PouchCapabilityProvider;
-import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
-import com.someguyssoftware.treasure2.charm.Charm;
-import com.someguyssoftware.treasure2.charm.ICharm;
-import com.someguyssoftware.treasure2.charm.ICharmEntity;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.inventory.PouchContainer;
 import com.someguyssoftware.treasure2.inventory.PouchInventory;
 import com.someguyssoftware.treasure2.inventory.TreasureContainers;
-import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -60,15 +55,24 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 /**
  * @author Mark Gottschling on May 13, 2020
  *
  */
 public class PouchItem extends ModItem implements INamedContainerProvider {
-
+	/**
+	 * 
+	 * @param properties
+	 */
+	public PouchItem(Properties properties) {
+		super(properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP).stacksTo(1));
+	}
+	
+	@Deprecated
 	public PouchItem(String modID, String name, Properties properties) {
-		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP).stacksTo(1));
+		super(modID, name, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP).stacksTo(1));
 	}
 
 	@Override
@@ -131,10 +135,9 @@ public class PouchItem extends ModItem implements INamedContainerProvider {
 	@Override
 	public CompoundNBT getShareTag(ItemStack stack) {
 		CompoundNBT nbt = stack.getOrCreateTag();
-		IItemHandler cap = stack.getCapability(POUCH_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
-
+		ItemStackHandler cap = (ItemStackHandler) stack.getCapability(POUCH).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
 		try {
-
+			nbt = cap.serializeNBT();
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Unable to write state to NBT:", e);
 		}
@@ -146,10 +149,8 @@ public class PouchItem extends ModItem implements INamedContainerProvider {
 		super.readShareTag(stack, nbt);
 
 		if (nbt instanceof CompoundNBT) {
-			IItemHandler cap = stack.getCapability(POUCH_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
-
-			CompoundNBT tag = (CompoundNBT) nbt;
-
+			ItemStackHandler cap = (ItemStackHandler) stack.getCapability(POUCH).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
+			cap.deserializeNBT((CompoundNBT) nbt);
 		}
 	}
 }

@@ -15,13 +15,23 @@ import net.minecraft.util.math.BlockPos;
  * @author Mark Gottschling on Feb 5, 2021
  *
  */
+@Deprecated
 public class SpanishMossItem  extends ModItem {
 
 	/**
 	 * 
+	 * @param properties
 	 */
+	public SpanishMossItem(Item.Properties properties) {
+		super(properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
+	}
+	
+	/**
+	 * 
+	 */
+	@Deprecated
 	public SpanishMossItem(String modID, String name, Item.Properties properties) {
-		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP));
+		super(modID, name, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
 	}
 
 	protected boolean placeBlock(BlockItemUseContext context, BlockState state) {

@@ -62,17 +62,18 @@ public class WorldEventHandler {
 		 */
 		if (WorldInfo.isServerSide((World)event.getWorld())) {
 			ServerWorld world = (ServerWorld) event.getWorld();
+			
 			Treasure.LOGGER.info("In world load event for dimension {}", WorldInfo.getDimension(world).toString());
 			if (WorldInfo.isSurfaceWorld(world)) {
 				// called once to initiate world-level properties in the registries
-				TreasureLootTableRegistry.initialize(world);
-				TreasureTemplateRegistry.initialize(world);
+//				TreasureLootTableRegistry.initialize(world);
+//				TreasureTemplateRegistry.initialize(world);
 
 				// register mod's loot tables
-				TreasureLootTableRegistry.register();
-				TreasureMetaRegistry.register(getMod().getId());
-				TreasureTemplateRegistry.register(getMod().getId());
-				TreasureDecayRegistry.register(getMod().getId());
+				TreasureLootTableRegistry.onWorldLoad(event);
+				TreasureMetaRegistry.onWorldLoad(event);
+				TreasureTemplateRegistry.onWorldLoad(event);
+//				TreasureDecayRegistry.register(getMod().getId());
 
 				/*
 				 * clear the current World Gens values and reload
@@ -142,12 +143,12 @@ public class WorldEventHandler {
 
 	@SubscribeEvent
 	public void onServerStopping(FMLServerStoppingEvent event) {
-		Treasure.LOGGER.debug("Closing out of world.");
+//		Treasure.LOGGER.debug("Closing out of world.");
 		// clear all resource managers
-		TreasureLootTableRegistry.clear();
-		TreasureTemplateRegistry.clear();
-		TreasureMetaRegistry.clear();
-		TreasureDecayRegistry.clear();
+//		TreasureLootTableRegistry.clear();
+////		TreasureTemplateRegistry.clear();
+//		TreasureMetaRegistry.clear();
+//		TreasureDecayRegistry.clear();
 	}
 
 	/**

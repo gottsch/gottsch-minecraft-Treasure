@@ -19,10 +19,20 @@ public class EmberLock extends LockItem {
 
 	/**
 	 * 
+	 * @param properties
+	 * @param keys
+	 */
+	public EmberLock(Item.Properties properties, KeyItem[] keys) {
+		super(properties, keys);
+	}
+	
+	/**
+	 * 
 	 * @param modID
 	 * @param name
 	 * @param keys
 	 */
+	@Deprecated
 	public EmberLock(String modID, String name, Item.Properties properties, KeyItem[] keys) {
 		super(modID, name, properties, keys);
 	}
@@ -44,7 +54,7 @@ public class EmberLock extends LockItem {
 
 	@Override
 	public boolean breaksKey(KeyItem key) {
-		if (key != TreasureItems.EMBER_KEY && key != TreasureItems.LIGHTNING_KEY) {
+		if (key != TreasureItems.EMBER_KEY.get() && key != TreasureItems.LIGHTNING_KEY.get()) {
 			return true;
 		}
 		return false;

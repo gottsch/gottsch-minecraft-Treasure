@@ -1,94 +1,74 @@
 {
-	"version": "1.0",
-	"type": "minecraft:chest",
-	"pools": [
-		{
-			"name": "rare_armor",
-			"rolls": 1,
-			"entries": [
-				{
-					"entryName": "diamond_chestplate",
-					"type": "minecraft:item",
-					"name": "minecraft:diamond_chestplate",
-					"weight": 10
-				},
-				{
-					"entryName": "diamond_leggings",
-					"type": "minecraft:item",
-					"name": "minecraft:diamond_leggings",
-					"weight": 10
-				},
-				{
-					"entryName": "diamond_helmet",
-					"type": "minecraft:item",
-					"name": "minecraft:diamond_helmet",
-					"weight": 10
-				},
-				{
-					"entryName": "diamond_boots",
-					"type": "minecraft:item",
-					"name": "minecraft:diamond_boots",
-					"weight": 10
-				},
-				{
-					"entryName": "iron_chestplate",
-					"type": "minecraft:item",
-					"name": "minecraft:iron_chestplate",
-					"weight": 15,
-					"functions": [
-						{
-							"function": "minecraft:enchant_with_levels",
-							"levels": 30,
-							"treasure": true
-						}
-					]
-				},
-				{
-					"entryName": "iron_leggings",
-					"type": "minecraft:item",
-					"name": "minecraft:iron_leggings",
-					"weight": 15,
-					"functions": [
-						{
-							"function": "minecraft:enchant_with_levels",
-							"levels": 30,
-							"treasure": true
-						}
-					]
-				},
-				{
-					"entryName": "iron_helmet",
-					"type": "minecraft:item",
-					"name": "minecraft:iron_helmet",
-					"weight": 20,
-					"functions": [
-						{
-							"function": "minecraft:enchant_with_levels",
-							"levels": 30,
-							"treasure": true
-						}
-					]
-				},
-				{
-					"entryName": "iron_boots",
-					"type": "minecraft:item",
-					"name": "minecraft:iron_boots",
-					"weight": 20,
-					"functions": [
-						{
-							"function": "minecraft:enchant_with_levels",
-							"levels": 30,
-							"treasure": true
-						}
-					]
-				},
-				{
-					"entryName": "golden_horse_armor",
-					"type": "minecraft:item",
-					"name": "minecraft:golden_horse_armor",
-					"weight": 8
-				}				
-			]
-		}
-	]
+  "version" : "1.0",
+  "type" : "minecraft:chest",
+  "pools" : [ {
+    "name" : "rare_armor",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "diamond_chestplate",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_chestplate",
+      "weight" : 10
+    }, {
+      "entryName" : "diamond_leggings",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_leggings",
+      "weight" : 10
+    }, {
+      "entryName" : "diamond_helmet",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_helmet",
+      "weight" : 10
+    }, {
+      "entryName" : "diamond_boots",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_boots",
+      "weight" : 10
+    }, {
+      "entryName" : "iron_chestplate",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_chestplate",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      } ]
+    }, {
+      "entryName" : "iron_leggings",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_leggings",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      } ]
+    }, {
+      "entryName" : "iron_helmet",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_helmet",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      } ]
+    }, {
+      "entryName" : "iron_boots",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_boots",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      } ]
+    }, {
+      "entryName" : "golden_horse_armor",
+      "type" : "minecraft:item",
+      "name" : "minecraft:golden_horse_armor",
+      "weight" : 8
+    } ]
+  } ]
 }

@@ -27,9 +27,18 @@ public class PilferersLockPick extends KeyItem {
 
 	/**
 	 * 
+	 * @param properties
+	 */
+	public PilferersLockPick(Item.Properties properties) {
+		super(properties);
+	}
+	
+	/**
+	 * 
 	 * @param modID
 	 * @param name
 	 */
+	@Deprecated
 	public PilferersLockPick(String modID, String name, Item.Properties properties) {
 		super(modID, name, properties);
 	}

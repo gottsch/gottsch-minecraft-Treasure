@@ -19,18 +19,13 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
-import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
@@ -50,57 +45,85 @@ public class ShieldingCharm extends Charm {
 	 * 
 	 * @param builder
 	 */
-	public ShieldingCharm(Builder builder) {
+	ShieldingCharm(Builder builder) {
 		super(builder);
 	}
-
+	
+	/**
+	 * Required so sub-classes can call super with a compatible Builder
+	 * @param builder
+	 */
 	protected ShieldingCharm(Charm.Builder builder) {
 		super(builder);
 	}
 
+	@Override
 	public Class<?> getRegisteredEvent() {
 		return REGISTERED_EVENT;
 	}
 
 	@Override
+	public ICharmEntity createEntity() {
+		ICharmEntity entity = new ShieldingCharmEntity(this);
+		return entity;
+	}
+	
+	@Override
+	public ICharmEntity createEntity(ICharmEntity entity) {
+		ICharmEntity newEntity = new ShieldingCharmEntity((ShieldingCharmEntity)entity);
+		return newEntity;
+	}
+	
+	@Override
 	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-		if (entity.getValue() > 0 && player.isAlive()) {
-			if (((LivingDamageEvent)event).getEntity() instanceof PlayerEntity) {
-				// get the source and amount
-				double amount = ((LivingDamageEvent)event).getAmount();
-				// calculate the new amount
-				double newAmount = 0;
-				double amountToCharm = amount * entity.getPercent();
-				double amountToPlayer = amount - amountToCharm;
-				//    			Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
-				if (entity.getValue() >= amountToCharm) {
-					entity.setValue(entity.getValue() - amountToCharm);
-					newAmount = amountToPlayer;
+		if (entity instanceof ShieldingCharmEntity) {
+			ICooldownCharmEntity charmEntity = (ICooldownCharmEntity)entity;
+			// check if supports cooldown or if world time has exceeded the entity cooldown end time
+			if(entity.getCooldown() <= 0.0 || (world.getGameTime() > charmEntity.getCooldownEnd())) {
+				if (entity.getMana() > 0 && player.isAlive()) {
+					if (((LivingDamageEvent)event).getEntity() instanceof PlayerEntity) {
+						// get the source and amount
+						double amount = ((LivingDamageEvent)event).getAmount();
+						if (amount > 0D) {
+							// calculate the new amount					
+							double amountToCharm = amount * entity.getAmount();
+							double amountToPlayer = amount - amountToCharm;			
+							double newAmount = amountToPlayer;
+//							Treasure.logger.debug("amount to charm -> {} amount to player -> {}", amountToCharm, amountToPlayer);
+							// cost eval
+							double cost = applyCost(world, random, coords, player, event, entity, amountToCharm);
+//							Treasure.logger.debug("cost (mana) incurred to charm -> {}", cost);
+							if (cost < amountToCharm) {
+								newAmount =+ (amountToCharm - cost);
+							}
+//							Treasure.logger.debug("new amount to player -> {}", amountToPlayer);
+							// update the newAcount with what comes back from cost eval
+							((LivingDamageEvent)event).setAmount((float) newAmount);
+
+							// set cool down end time if cooldown is activated
+							if (entity.getCooldown() > 0.0) {
+								((ICooldownCharmEntity) entity).setCooldownEnd(Long.valueOf(world.getGameTime()).doubleValue() + entity.getCooldown());
+							}
+							result = true;
+						}
+					}
 				}
-				else {
-					newAmount = amount - entity.getValue();
-					entity.setValue(0);
-				}
-				((LivingDamageEvent)event).setAmount((float) newAmount);
-				result = true;
-			}    		
+			}
 		}
 		return result;
 	}
 
-	/**
+	@SuppressWarnings("deprecation")
+	@Override
+	public ITextComponent getCharmDesc(ICharmEntity entity) {
+		return new TranslationTextComponent("tooltip.charm.rate.shielding", Math.round(entity.getAmount()*100), (int)(entity.getCooldown()/TICKS_PER_SECOND));
+	}
+	
+	/*
 	 * 
 	 */
-	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.BLUE;
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent(getLabel(entity)).withStyle(color)));
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent("tooltip.charm.rate.shielding", Math.round(this.getMaxPercent()*100)).withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
-
-	}
-
-	public static class Builder extends Charm.Builder {
+	public static class Builder extends Charm.Builder {		
 
 		public Builder(Integer level) {
 			super(ModUtils.asLocation(makeName(SHIELDING_TYPE, level)), SHIELDING_TYPE, level);

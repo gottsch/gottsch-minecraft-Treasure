@@ -19,7 +19,7 @@
  */
 package com.someguyssoftware.treasure2.capability;
 
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY_CAPABILITY;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -41,7 +41,7 @@ public class DurabilityCapabilityProvider implements ICapabilityProvider, ICapab
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		if (capability == DURABILITY_CAPABILITY) {
+		if (capability == DURABILITY) {
 			return  (LazyOptional<T>) LazyOptional.of(() -> instance);
 		}
 		return LazyOptional.empty();
@@ -49,12 +49,12 @@ public class DurabilityCapabilityProvider implements ICapabilityProvider, ICapab
 
 	@Override
 	public CompoundNBT serializeNBT() {
-		CompoundNBT tag = (CompoundNBT)DURABILITY_CAPABILITY.getStorage().writeNBT(DURABILITY_CAPABILITY, instance, null);
+		CompoundNBT tag = (CompoundNBT)DURABILITY.getStorage().writeNBT(DURABILITY, instance, null);
 		return tag;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
-		DURABILITY_CAPABILITY.getStorage().readNBT(DURABILITY_CAPABILITY, instance, null, nbt);
+		DURABILITY.getStorage().readNBT(DURABILITY, instance, null, nbt);
 	}
 }

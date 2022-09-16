@@ -1,7 +1,6 @@
 {
-    "parent": "item/handheld",
+    "parent": "treasure2:item/adornment",
     "textures": {
-		"__comment": "default",
-		"layer0": "treasure2:item/adornment/gold_ruby_necklace"
-	}
+        "layer0": "treasure2:item/adornments/salandaars_ward"
+    }
 }

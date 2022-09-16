@@ -19,13 +19,12 @@ import com.someguyssoftware.gottschcore.world.gen.structure.PlacementSettings;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
-import com.someguyssoftware.treasure2.meta.StructureMeta;
 import com.someguyssoftware.treasure2.meta.StructureType;
 import com.someguyssoftware.treasure2.registry.TreasureDecayRegistry;
-import com.someguyssoftware.treasure2.registry.TreasureMetaRegistry;
 import com.someguyssoftware.treasure2.registry.TreasureTemplateRegistry;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
@@ -96,7 +95,7 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 		}
 		
 		// find the 'entrance' block
-		ICoords entranceCoords = TreasureTemplateRegistry.getTemplateManager().getOffset(random, holder, StructureMarkers.ENTRANCE);
+		ICoords entranceCoords = TreasureTemplateRegistry.getManager().getOffset(random, holder, StructureMarkers.ENTRANCE);
 		if (entranceCoords == null) {
 			Treasure.LOGGER.debug("Unable to locate entrance position.");
 			return result.fail();
@@ -192,16 +191,16 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 
 		// setup the decay ruleset and processor
 		IDecayProcessor decayProcessor = null;
-		if (decayRuleSet == null && holder.getDecayRuleSetLocation() != null && holder.getDecayRuleSetLocation().size() > 0) {
-			// create a decay processor with a random rule set
-			decayRuleSet = TreasureDecayRegistry.getDecayManager().getRuleSetMap().get(holder.getDecayRuleSetLocation().get(random.nextInt(holder.getDecayRuleSetLocation().size())).toString());
-			Treasure.LOGGER.debug("decayRuleSet -> {}", decayRuleSet.getName());
-			// if decayRuleSet is null the processor should be null
-		}
-		if (decayRuleSet != null) {
-			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
-			decayProcessor.setBackFillBlockLayer1(Blocks.GRAVEL.defaultBlockState());
-		}
+//		if (decayRuleSet == null && holder.getDecayRuleSetLocation() != null && holder.getDecayRuleSetLocation().size() > 0) {
+//			// create a decay processor with a random rule set
+//			decayRuleSet = TreasureDecayRegistry.getDecayManager().getRuleSetMap().get(holder.getDecayRuleSetLocation().get(random.nextInt(holder.getDecayRuleSetLocation().size())).toString());
+//			Treasure.LOGGER.debug("decayRuleSet -> {}", decayRuleSet.getName());
+//			// if decayRuleSet is null the processor should be null
+//		}
+//		if (decayRuleSet != null) {
+//			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
+//			decayProcessor.setBackFillBlockLayer1(Blocks.GRAVEL.defaultBlockState());
+//		}
 
 		GeneratorResult<TemplateGeneratorData> genResult = templateGenerator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
 		if (!genResult.isSuccess()) return result.fail();
@@ -210,13 +209,13 @@ public class SubmergedRuinGenerator implements IRuinGenerator<GeneratorResult<Ch
 
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 		List<BlockContext> bossChestContexts =
-				(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.BOSS_CHEST));
+				(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.BOSS_CHEST));
 		List<BlockContext> chestContexts =
-				(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.CHEST));
+				(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 		List<BlockContext> spawnerContexts =
-				(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.SPAWNER));
+				(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
 		List<BlockContext> proximityContexts =
-				(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
+				(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
 
 		/*
 		 *  NOTE currently only 1 chest is allowed per structure - the rest are ignored.

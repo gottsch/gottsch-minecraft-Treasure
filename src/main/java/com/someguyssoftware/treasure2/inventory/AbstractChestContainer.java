@@ -184,7 +184,7 @@ public abstract class AbstractChestContainer extends Container implements ITreas
 	 * pass the close container message to the tileEntity
 	 * @see ContainerChest
 	 * @see TileEntityChest
-	 * @see net.minecraft.inventory.Container#onContainerClosed(net.minecraft.entity.player.EntityPlayer)
+	 * @see net.minecraft.inventory.Container#onContainerClosed(net.minecraft.entity.player.PlayerEntity)
 	 */
 	@Override
 	public void removed(PlayerEntity playerIn) {
@@ -344,20 +344,6 @@ public abstract class AbstractChestContainer extends Container implements ITreas
 	public void setContainerInventoryYPos(int containerInventoryYPos) {
 		this.containerInventoryYPos = containerInventoryYPos;
 	}
-
-	/**
-	 * @return the inventory
-	 */
-//	public IInventory getChestInventory() {
-//		return contents;
-//	}
-//
-//	/**
-//	 * @param inventory the inventory to set
-//	 */
-//	public void setChestInventory(IInventory inventory) {
-//		this.contents = inventory;
-//	}
 
 	public IInventory getContents() {
 		return contents;

@@ -60,7 +60,7 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 	 */
 	@Deprecated
 	public PearlItem (String modID, String name, Item.Properties properties)	 {
-		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP)
+		super(modID, name, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP)
 				.stacksTo(MAX_STACK_SIZE));
 		this.pearl = Pearls.WHITE;
 	}
@@ -206,8 +206,8 @@ public class PearlItem extends ModItem /*implements IWishable, IPouchable*/ {
 //
 //				// attempt to get the player who dropped the coin
 //				ItemStack coinItem = entityItem.getItem();
-//				NBTTagCompound nbt = coinItem.getTagCompound();
-//				EntityPlayer player = null;
+//				CompoundNBT nbt = coinItem.getTagCompound();
+//				PlayerEntity player = null;
 //				if (nbt != null && nbt.hasKey(DROPPED_BY_KEY)) {					
 //					player = world.getPlayerEntityByName(nbt.getString(DROPPED_BY_KEY));
 //					if (player != null && LOGGER.isDebugEnabled()) {
