@@ -79,7 +79,7 @@ public class KeyRingContainer extends AbstractChestContainer {
 		for (int x = 0; x < HOTBAR_SLOT_COUNT; x++) {
 			int slotNumber = x;
 			// TODO determine if the item is in left hand			
-			if (slotNumber == player.selected && player.offhand.get(0).getItem() != TreasureItems.KEY_RING) {
+			if (slotNumber == player.selected && player.offhand.get(0).getItem() != TreasureItems.KEY_RING.get()) {
 				addSlot(new NoSlot(player, slotNumber, getHotbarXPos() + getSlotXSpacing() * x, getHotbarYPos()));
 			}
 			else {

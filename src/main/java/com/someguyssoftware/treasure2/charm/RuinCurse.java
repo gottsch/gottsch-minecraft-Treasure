@@ -28,13 +28,10 @@ import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -42,8 +39,8 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
- * 
- * @author Mark Gottschling on Aug 24, 2021
+ * Damage's the player equipment every x seconds.
+ * @author Mark Gottschling on May 26, 2020
  *
  */
 public class RuinCurse extends Charm {
@@ -62,22 +59,21 @@ public class RuinCurse extends Charm {
 	public Class<?> getRegisteredEvent() {
 		return REGISTERED_EVENT;
 	}
-	
+
 	@Override
 	public boolean isCurse() {
 		return true;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
 		boolean result = false;
-		
-		// update every 10 seconds
-		if (player.isAlive() && entity.getValue() > 0 && player.getHealth() > 0.0) {
-			if (world.getGameTime() % (entity.getDuration() * TICKS_PER_SECOND) == 0) {
-				FluentIterable<ItemStack> inventoryEquipment = (FluentIterable<ItemStack>) player.getArmorSlots();
-				inventoryEquipment.append(player.getHandSlots());
-				
+		if (player.isAlive() && entity.getMana() > 0 && player.getHealth() > 0.0) {
+			if (world.getGameTime() % entity.getFrequency() == 0) {
+				FluentIterable<ItemStack> inventoryEquipment = (FluentIterable<ItemStack>) player.getAllSlots();
 				List<ItemStack> actualEquipment = new ArrayList<>(5);
 				inventoryEquipment.forEach(itemStack -> {
 					if (itemStack.getItem() != Items.AIR) {
@@ -90,9 +86,10 @@ public class RuinCurse extends Charm {
 					Treasure.LOGGER.debug("damaging item -> {}, current damage -> {} of {}", selectedItemStack.getDisplayName(), selectedItemStack.getDamageValue(), selectedItemStack.getMaxDamage());
 					// damage the item
 					if (selectedItemStack.isDamageableItem()) {
-						selectedItemStack.hurt(1, random, null);
+						selectedItemStack.hurt((int)getAmount(), random, null);
 						Treasure.LOGGER.debug("damaged item -> {}, now at damaged -> {} of {}", selectedItemStack.getDisplayName(), selectedItemStack.getDamageValue(), selectedItemStack.getMaxDamage());
-						entity.setValue(MathHelper.clamp(entity.getValue() - 1.0,  0D, entity.getValue()));
+//						entity.setMana(MathHelper.clamp(entity.getMana() - 1.0,  0D, entity.getMana()));
+						applyCost(world, random, coords, player, event, entity, getAmount());
 					}
 				}			
 				Treasure.LOGGER.debug("charm {} new data -> {}", this.getName(), entity);
@@ -101,20 +98,17 @@ public class RuinCurse extends Charm {
 		}
 		return result;
 	}
-
-	/**
-	 * 
-	 */
+	
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, ICharmEntity entity) {
-		TextFormatting color = TextFormatting.DARK_RED;
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent(getLabel(entity)).withStyle(color)));
-		tooltip.add(new TranslationTextComponent("tooltip.indent2", new TranslationTextComponent("tooltip.charm.rate.ruin").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC)));
+	public TextFormatting getCharmLabelColor() {
+		return TextFormatting.DARK_RED;
 	}
-    
-	/**
-	 * 
-	 */
+	
+	@Override
+	public ITextComponent getCharmDesc(ICharmEntity entity) {
+		return new TranslationTextComponent("tooltip.charm.rate.ruin", DECIMAL_FORMAT.format(getAmount()/2), DECIMAL_FORMAT.format(entity.getFrequency()/TICKS_PER_SECOND));
+	}
+	
 	public static class Builder extends Charm.Builder {
 
 		public Builder(Integer level) {

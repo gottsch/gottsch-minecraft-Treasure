@@ -22,9 +22,19 @@ public class SkeletonItem extends ModBlockItem {
 
 	/**
 	 * 
+	 * @param block
+	 * @param properties
 	 */
+	public SkeletonItem(Block block, Item.Properties properties) {
+		super(block, properties.stacksTo(MAX_STACK_SIZE).tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
+	}
+	
+	/**
+	 * 
+	 */
+	@Deprecated
 	public SkeletonItem(String modID, String name, Block block, Item.Properties properties) {
-		super(modID, name, block, properties.stacksTo(MAX_STACK_SIZE).tab(TreasureItemGroups.MOD_ITEM_GROUP));
+		super(modID, name, block, properties.stacksTo(MAX_STACK_SIZE).tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
 	}
 
 	@Override

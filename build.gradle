@@ -1,28 +1,16 @@
-// an array containing destination paths
-def destinations = ["${dest_folder}", "${mods_folder}"]
-
-task deleteOldJar(type: Delete) {
-	destinations.each { destination ->
-		print 'deleting... '
-		println destination
-        //delete fileTree(destination) {
-        //    include "**/${mod_name}-*.jar"
-        //}
-        delete "${destination}/${mod_name}-mc${mc_version}-f${forge_version}-*.jar"
-    }
-}
-
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        jcenter()
+        maven { url = 'https://maven.minecraftforge.net' }
+ //       maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+  //      classpath 'org.parchmentmc:librarian:1.+'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
+//apply plugin: 'org.parchmentmc.librarian.forgegradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
@@ -40,6 +28,7 @@ minecraft {
     // Use non-default mappings at your own risk. they may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
     mappings channel: "${mappings_channel}", version: "${mappings_version}"
+    //	mappings channel: 'parchment', version: '2021.08.15-1.17.1'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -118,6 +107,13 @@ repositories {
     //     dir 'libs'
     // }
     maven {
+        url "${project.projectDir}/../maven"
+    }
+    maven {
+        name = "CurseMaven"
+        url = "https://www.cursemaven.com"
+    }
+    maven {
         url = "https://maven.theillusivec4.top/"
     }
 }
@@ -128,12 +124,13 @@ dependencies {
     // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.34'
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2:api")
-    //compile files('../../ModCommonLibs/libs/commons-cli-1.4.jar')
-	compile files(gottschcore_path)	
-	//shadow files(gottschcore_path)
+	//compileOnly fg.deobf("curse.maven:gottschcore-272450:3556719")
+	// local published gottschcore
+	compileOnly fg.deobf("someguyssoftware.gottschcore:GottschCore:mc1.16.5-f36.2.34-v1.7.0")
+
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -141,27 +138,32 @@ jar {
     manifest {
         attributes([
             "Specification-Title": "${archivesBaseName}",
-            "Specification-Vendor": "Some Guys Software",
+            "Specification-Vendor": "gottsch",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": "${archivesBaseName}-${version}",
             "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"Some Guys Software",
+            "Implementation-Vendor" :"gottsch",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
 
-task copyJar(dependsOn: [jar]) {
-	// iterate over the array with destination paths
- 	destinations.each { destination ->
-        // for every destination define new CopySpec
-        println destination
-        copy {
-            from jar
-            into destination
+// Example configuration to allow publishing using the maven-publish task
+// This is the preferred method to reobfuscate your jar file
+jar.finalizedBy('reobfJar') 
+// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
+//publish.dependsOn('reobfJar')
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            name="localMaven"
+            url "file:///${project.projectDir}/../maven"
         }
     }
 }
-
-//deleteOldJar.dependsOn minecraft
-//copyJar.dependsOn deleteOldJar

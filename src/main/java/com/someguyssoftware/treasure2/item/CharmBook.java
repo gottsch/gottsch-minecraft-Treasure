@@ -39,17 +39,26 @@ public class CharmBook extends CharmItem {
 
 	/**
 	 * 
+	 * @param properties
+	 */
+	public CharmBook(Properties properties) {
+		super(properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP).stacksTo(1));
+	}
+	
+	/**
+	 * 
 	 * @param modID
 	 * @param name
 	 * @param properties
 	 */
+	@Deprecated
 	public CharmBook(String modID, String name, Properties properties) {
-		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP).stacksTo(1));
+		super(modID, name, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP).stacksTo(1));
 	}
 	
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new TranslationTextComponent("tooltip.label.charm_book").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
+		tooltip.add(new TranslationTextComponent("tooltip.label.charm_book_usage").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
 		// charmable info
 		ICharmableCapability cap = getCap(stack);
 		if (cap.isCharmed()) {

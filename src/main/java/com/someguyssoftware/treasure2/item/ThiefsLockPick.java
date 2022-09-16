@@ -27,9 +27,18 @@ public class ThiefsLockPick extends KeyItem {
 
 	/**
 	 * 
+	 * @param properties
+	 */
+	public ThiefsLockPick(Item.Properties properties) {
+		super(properties);
+	}
+
+	/**
+	 * 
 	 * @param modID
 	 * @param name
 	 */
+	@Deprecated
 	public ThiefsLockPick(String modID, String name, Item.Properties properties) {
 		super(modID, name, properties);
 	}

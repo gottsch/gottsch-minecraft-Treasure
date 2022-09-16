@@ -1,0 +1,87 @@
+{
+	"version": "3.0",
+	"since": "mc1.16.5-v2.1.0",
+	"pools": [{
+			"name": "mythical_treasure",
+			"rolls": {
+				"min": 2,
+				"max": 3
+			},
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/epic_treasure",
+				"weight": 1
+			}]
+		},
+		{
+			"name": "mythical_charms",
+			"rolls": 1,
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/mythical_charms",
+				"weight": 1
+			}]
+		},
+		{
+			"name": "legendary_charms",
+			"rolls": 1,
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/legendary_charms",
+				"weight": 1,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.4
+				}]
+			}]
+		},
+		{
+			"name": "epic_charms",
+			"rolls": 1,
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/epic_charms",
+				"weight": 1,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.2
+				}]
+			}]
+		},
+		{
+			"name": "mythical_adornments",
+			"rolls": 1,
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/mythical_adornments",
+				"weight": 1
+			}]
+		},
+		{
+			"name": "legendary_adornments",
+			"rolls": 1,
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/legendary_adornments",
+				"weight": 1,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.4
+				}]
+			}]
+		},
+		{
+			"name": "epic_adornments",
+			"rolls": 1,
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/epic_adornments",
+				"weight": 1,
+				"conditions": [{
+					"condition": "random_chance",
+					"chance": 0.2
+				}]
+			}]
+		}
+	]
+}

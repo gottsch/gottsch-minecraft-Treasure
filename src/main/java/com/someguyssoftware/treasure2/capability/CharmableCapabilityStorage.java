@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
+import com.someguyssoftware.treasure2.capability.modifier.ILevelModifier;
 import com.someguyssoftware.treasure2.charm.Charm;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
@@ -45,20 +45,18 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 	private static final String SOURCE = "source";
 	private static final String EXECUTING = "executing";
 	private static final String BINDABLE = "bindable";
-	private static final String INNATE = "innate";
-	private static final String MAX_INNATE_SIZE = "maxInnateSize";
+	private static final String INNATE = "innate";	
 	private static final String IMBUABLE = "imbuable";
-	private static final String IMBUING = "imbuing";
-	private static final String MAX_IMBUE_SIZE = "maxImbueSize";
-	private static final String SOCKETABLE = "socketable";
-	private static final String SOCKETING = "socketing";
-	private static final String MAX_SOCKET_SIZE = "maxSocketSize";
+	private static final String IMBUING = "imbuing";	
+	private static final String SOCKETABLE = "socketable";	
 	private static final String BASE_MATERIAL = "baseMaterial";
 	private static final String SOURCE_ITEM = "sourceItem";
 	private static final String MAX_CHARM_LEVEL = "maxCharmLevel";
-	private static final String CHARM = "charm";
 	private static final String NAMED_BY_MATERIAL = "namedByMaterial";
 	private static final String NAMED_BY_CHARM = "namedByCharm";
+	private static final String LEVEL_MODIFIER = "levelModifier";
+	
+	private static final String MAX_SOCKET_SIZE = "maxSocketSize";
 	
 	@Override
 	public INBT writeNBT(Capability<ICharmableCapability> capability, ICharmableCapability instance, Direction side) {
@@ -68,15 +66,15 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 			 * save charm cap inventories
 			 */
 			// create a new list nbt for each inventory type
-			for (int index = 0; index < instance.getCharmEntities().length; index++) {
-				List<ICharmEntity> entityList = instance.getCharmEntities()[index];
+			for (InventoryType type : InventoryType.values()) {
+				List<ICharmEntity> entityList = (List<ICharmEntity>) instance.getCharmEntities().get(type);
 				if (entityList != null && !entityList.isEmpty()) {
 					ListNBT listNbt = new ListNBT();
 					for (ICharmEntity entity : entityList) {
 						CompoundNBT entityNbt = new CompoundNBT();
 						listNbt.add(entity.save(entityNbt));						
 					}
-					nbt.put(InventoryType.getByValue(index).name(), listNbt);
+					nbt.put(type.name(), listNbt);
 				}
 			}
 			
@@ -85,21 +83,18 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 			 */
 			nbt.putBoolean(SOURCE, instance.isSource());
 			nbt.putBoolean(EXECUTING, instance.isExecuting());;
-			nbt.putBoolean(BINDABLE, instance.isBindable());
-			
-			nbt.putBoolean(INNATE, instance.isInnate());
-			nbt.putInt(MAX_INNATE_SIZE, instance.getMaxInnateSize());
-			
+			nbt.putBoolean(BINDABLE, instance.isBindable());			
+			nbt.putBoolean(INNATE, instance.isInnate());			
 			nbt.putBoolean(IMBUABLE, instance.isImbuable());
-			nbt.putBoolean(IMBUING, instance.isImbuing());			
-			nbt.putInt(MAX_IMBUE_SIZE, instance.getMaxImbueSize());
-			
+			nbt.putBoolean(IMBUING, instance.isImbuing());
+
 			nbt.putBoolean(SOCKETABLE, instance.isSocketable());
-			nbt.putInt(MAX_SOCKET_SIZE, instance.getMaxSocketsSize());
 			nbt.putString(BASE_MATERIAL, instance.getBaseMaterial().toString());
 			nbt.putString(SOURCE_ITEM, instance.getSourceItem().toString());
 			nbt.putBoolean(NAMED_BY_MATERIAL, instance.isNamedByMaterial());	
-			nbt.putBoolean(NAMED_BY_CHARM, instance.isNamedByCharm());	
+			nbt.putBoolean(NAMED_BY_CHARM, instance.isNamedByCharm());
+			nbt.putString(LEVEL_MODIFIER, instance.getLevelModifier().getClass().getName());
+			nbt.putInt(MAX_SOCKET_SIZE, instance.getMaxSocketSize());
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Unable to write state to NBT:", e);
 		}
@@ -113,26 +108,27 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 			CompoundNBT tag = (CompoundNBT) nbt;
 			for (InventoryType type : InventoryType.values()) {
 				// clear the list
-				instance.getCharmEntities()[type.getValue()].clear();				
-				/*
-				 *  load the list
-				 */
+				instance.getCharmEntities().get(type).clear();
+				
+				// load the charm entities
 				if (tag.contains(type.name())) {
 					ListNBT listNbt = tag.getList(type.name(), 10);
 					listNbt.forEach(e -> {
-						// load the charm
-						Optional<ICharm> charm = Charm.load((CompoundNBT) ((CompoundNBT)e).get(CHARM));
+						/*
+						 * load the charm first.
+						 * need to the load the charm prior to CharmEntity.load() because the CharmEntity instance needs to be
+						 *  created first using the Charm, then the entity can be loaded.
+						 */
+						Optional<ICharm> charm = Charm.load((CompoundNBT) ((CompoundNBT)e).getCompound(ICharmEntity.CHARM));
 						if (!charm.isPresent()) {
 							return;
 						}
 						// create an entity
 						ICharmEntity entity = charm.get().createEntity();
-						
 						// load entity
 						entity.load((CompoundNBT)e);
-						
 						// add the entity to the list
-						instance.getCharmEntities()[type.getValue()].add(entity);
+						instance.getCharmEntities().get(type).add(entity);
 					});
 				}
 				
@@ -151,16 +147,11 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 				if (tag.contains(INNATE)) {
 					instance.setInnate(tag.getBoolean(INNATE));
 				}				
-				if (tag.contains(MAX_INNATE_SIZE)) {
-					instance.setMaxInnateSize(tag.getInt(MAX_INNATE_SIZE));
-				}
 				
 				if (tag.contains(IMBUABLE)) {
 					instance.setImbuable(tag.getBoolean(IMBUABLE));
 				}				
-				if (tag.contains(MAX_IMBUE_SIZE)) {
-					instance.setMaxImbueSize(tag.getInt(MAX_IMBUE_SIZE));
-				}
+
 				if (tag.contains(IMBUING)) {
 					instance.setImbuing(tag.getBoolean(IMBUING));
 				}	
@@ -168,14 +159,6 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 				if (tag.contains(SOCKETABLE)) {
 					instance.setSocketable(tag.getBoolean(SOCKETABLE));
 				}				
-				if (tag.contains(MAX_SOCKET_SIZE)) {
-					instance.setMaxSocketsSize(tag.getInt(MAX_SOCKET_SIZE));
-				}
-				if (tag.contains(BASE_MATERIAL)) {
-//					Optional<BaseMaterial2> material = TreasureCharms.getBaseMaterial(ModUtils.asLocation(tag.getString(BASE_MATERIAL)));
-//					Optional<CharmableMaterial> material = TreasureCharms.getBaseMaterial(ModUtils.asLocation(tag.getString(BASE_MATERIAL)));
-					instance.setBaseMaterial(ModUtils.asLocation(tag.getString(BASE_MATERIAL))); //BaseMaterial.valueOf(tag.getString(BASE_MATERIAL).toUpperCase()));
-				}
 				
 				if (tag.contains(SOURCE_ITEM)) {
 					instance.setSourceItem(ModUtils.asLocation(tag.getString(SOURCE_ITEM)));
@@ -186,6 +169,19 @@ public class CharmableCapabilityStorage implements Capability.IStorage<ICharmabl
 				}
 				if (tag.contains(NAMED_BY_CHARM)) {
 					instance.setNamedByCharm(tag.getBoolean(NAMED_BY_CHARM));
+				}
+				
+				if (tag.contains(LEVEL_MODIFIER)) {
+					try {
+						ILevelModifier levelModifier = (ILevelModifier) Class.forName(tag.getString(LEVEL_MODIFIER)).newInstance();
+						instance.setLevelModifier(levelModifier);
+					}
+					catch(Exception e) {
+						Treasure.LOGGER.warn("unable to create level modifier -> {}", tag.getString(LEVEL_MODIFIER));
+					}
+				}
+				if (tag.contains(MAX_SOCKET_SIZE)) {
+					instance.setMaxSocketSize(tag.getInt(MAX_SOCKET_SIZE));
 				}
 			}
 		}

@@ -100,7 +100,7 @@ public class WitherChestGenerator implements IChestGenerator {
 		// determine the number of locks to add (must have at least 1 lock)
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());
 		for (int i = 0; i < numLocks; i++) {
-			LockItem lock = TreasureItems.WITHER_LOCK;
+			LockItem lock = TreasureItems.WITHER_LOCK.get();
 			// add the lock to the chest
 			lockStates.get(i).setLock(lock);
 		}

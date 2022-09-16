@@ -19,69 +19,88 @@
  */
 package com.someguyssoftware.treasure2.charm;
 
+import com.someguyssoftware.treasure2.charm.cost.ICostEvaluator;
+
 import net.minecraft.nbt.CompoundNBT;
+
 
 /**
  * 
- * @author Mark Gottschling on Aug 19, 2021
+ * @author Mark Gottschling on Oct 25, 2021
  *
  */
-public class CharmEntity implements ICharmEntity {
-
+public class CharmEntity implements ICharmEntity {	
 	private ICharm charm;
-	private double value;
-	private int duration;
-	private double percent;
+	private double mana; // changes - needs client update
+	private int duration; // static (but is a property that could chane/require update in future
+	private double frequency;
+	private double range;
+	private double cooldown;
+	private double amount;
+	private boolean exclusive;
+	
+	// NOTE this is the cost eval that can be modified by a runestone
+	// calculates the actual cost given an input
+	private ICostEvaluator costEvaluator;
+	
+	// TESTing for Runestones
+	private double maxMana;
+	
+	private int recharges;
+	private int maxRecharges;
 	
 	/**
 	 * 
 	 */
 	public CharmEntity() { }
-	
-	/**
-	 * 
-	 * @param charm
-	 * @param value
-	 * @param duration
-	 * @param percent
-	 */
-	public CharmEntity(ICharm charm, double value, int duration, double percent) {
+
+	public CharmEntity(ICharm charm) {
 		setCharm(charm);
-		setValue(value);
-		setDuration(duration);
-		setPercent(percent);
+		setAmount(charm.getAmount());
+		setCooldown(charm.getCooldown());
+		setDuration(charm.getDuration());
+		setFrequency(charm.getFrequency());
+		setMana(charm.getMana());
+		setRange(charm.getRange());
+		setCostEvaluator(charm.getCostEvaluator());
+		
+		setMaxMana(charm.getMana());
+		setExclusive(charm.isExclusive());
+		setRecharges(charm.getRecharges());
+		setMaxRecharges(charm.getRecharges());
 	}
 	
+	/**
+	 * Copy constructor
+	 * @param entity
+	 */
+	public CharmEntity(ICharmEntity entity) {
+		setCharm(entity.getCharm());
+		setAmount(entity.getAmount());
+		setCooldown(entity.getCooldown());
+		setDuration(entity.getDuration());
+		setFrequency(entity.getFrequency());
+		setMana(entity.getMana());
+		setRange(entity.getRange());
+		setCostEvaluator(entity.getCostEvaluator());
+		
+		setMaxMana(entity.getMaxMana());
+		setExclusive(entity.isExclusive());
+		setRecharges(entity.getRecharges());
+		setMaxRecharges(entity.getRecharges());
+	}
+	
+	// TODO add a builder
+	
+	/**
+	 * Client-side. Only update those properties that need to be reflected on the client-side.
+	 */
 	@Override
 	public void update(ICharmEntity entity) {
-		this.setValue(entity.getValue());
-		this.setDuration(entity.getDuration());
-		this.setPercent(entity.getPercent());
+		this.setMana(entity.getMana());
 	}
 	
-	/**
-	 * 
-	 * @param nbt
-	 * @return
-	 */
-//	public static Optional<ICharmEntity> load(CompoundNBT nbt) {
-//		Optional<ICharm> charm = Charm.load((CompoundNBT) nbt.get(COPPER_CHARM));
-//		if (!charm.isPresent()) {
-//			return Optional.empty();
-//		}
-//		
-//		ICharmEntity entity = charm.get().createEntity();
-//		if (nbt.contains(VALUE)) {
-//			entity.setValue(nbt.getDouble(VALUE));
-//		}
-//		if (nbt.contains("duration")) {
-//			entity.setDuration(nbt.getInt("duration"));
-//		}
-//		if (nbt.contains("percent")) {
-//			entity.setPercent(nbt.getDouble("percent"));
-//		}
-//		return Optional.of(entity);
-//	}
+	// TODO probably add a update(Consumer<>) just in case someone wants to update something
 	
 	/**
 	 * 
@@ -94,9 +113,23 @@ public class CharmEntity implements ICharmEntity {
 		// save the charm
 		nbt.put(CHARM, getCharm().save(charmNbt));
 		// save the entity data
-		nbt.putDouble(VALUE, getValue());
-		nbt.putInt("duration", getDuration());
-		nbt.putDouble("percent", getPercent());
+		nbt.putDouble(MANA, getMana());
+		nbt.putInt(DURATION, getDuration());
+		nbt.putDouble(FREQUENCY, getFrequency());
+		nbt.putDouble(AMOUNT, getAmount());
+		nbt.putDouble(COOLDOWN, getCooldown());
+		nbt.putDouble(RANGE, getRange());
+		if (getCostEvaluator() != null) {
+			CompoundNBT ceNbt = new CompoundNBT();
+			getCostEvaluator().save(ceNbt);
+			nbt.put(COST_EVALUATOR, ceNbt);
+		}
+		nbt.putDouble("maxMana", getMaxMana());
+		
+		nbt.putBoolean(EXCLUSIVE, isExclusive());
+		nbt.putInt(RECHARGES, getRecharges());
+		nbt.putInt(MAX_RECHARGES, getMaxRecharges());
+		
 		return nbt;
 	}
 	
@@ -111,13 +144,13 @@ public class CharmEntity implements ICharmEntity {
 	}
 
 	@Override
-	public double getValue() {
-		return value;
+	public double getMana() {
+		return mana;
 	}
 
 	@Override
-	public void setValue(double value) {
-		this.value = value;
+	public void setMana(double value) {
+		this.mana = value;
 	}
 
 	@Override
@@ -131,18 +164,99 @@ public class CharmEntity implements ICharmEntity {
 	}
 
 	@Override
-	public double getPercent() {
-		return percent;
+	public double getFrequency() {
+		return frequency;
 	}
 
 	@Override
-	public void setPercent(double percent) {
-		this.percent = percent;
+	public void setFrequency(double frequency) {
+		this.frequency = frequency;
 	}
 
 	@Override
 	public String toString() {
-		return "CharmEntity [charm=" + charm + ", value=" + value + ", duration=" + duration + ", percent=" + percent
-				+ "]";
+		return "CharmEntity [charm=" + charm + ", mana=" + mana + ", duration=" + duration + ", frequency=" + frequency
+				+ ", range=" + range + ", cooldown=" + cooldown + ", amount=" + amount + ", costEvaluator="
+				+ costEvaluator + ", maxMana=" + maxMana + "]";
+	}
+
+	@Override
+	public double getRange() {
+		return range;
+	}
+
+	@Override
+	public void setRange(double range) {
+		this.range = range;
+	}
+
+	@Override
+	public double getCooldown() {
+		return cooldown;
+	}
+
+	@Override
+	public void setCooldown(double cooldown) {
+		this.cooldown = cooldown;
+	}
+
+	@Override
+	public double getAmount() {
+		return amount;
+	}
+
+	@Override
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	@Override
+	public ICostEvaluator getCostEvaluator() {
+		return costEvaluator;
+	}
+
+	@Override
+	public void setCostEvaluator(ICostEvaluator costEvaluator) {
+		this.costEvaluator = costEvaluator;
+	}
+
+	@Override
+	public double getMaxMana() {
+		return maxMana;
+	}
+
+	@Override
+	public void setMaxMana(double maxMana) {
+		this.maxMana = maxMana;
+	}
+
+	@Override
+	public boolean isExclusive() {
+		return exclusive;
+	}
+
+	@Override
+	public void setExclusive(boolean exclusive) {
+		this.exclusive = exclusive;
+	}
+
+	@Override
+	public int getRecharges() {
+		return recharges;
+	}
+
+	@Override
+	public void setRecharges(int recharges) {
+		this.recharges = recharges;
+	}
+
+	@Override
+	public int getMaxRecharges() {
+		return maxRecharges;
+	}
+
+	@Override
+	public void setMaxRecharges(int maxRecharges) {
+		this.maxRecharges = maxRecharges;
 	}
 }

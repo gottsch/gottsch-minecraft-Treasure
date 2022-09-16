@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.CharmContext;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
@@ -63,11 +63,10 @@ public class CuriosEquipmentCharmHandler implements IEquipmentCharmHandler {
 						for (InventoryType type : InventoryType.values()) {
 							AtomicInteger index = new AtomicInteger();
 							// requires indexed for-loop
-							for (int i = 0; i < cap.getCharmEntities()[type.getValue()].size(); i++) {
-								ICharmEntity entity =  cap.getCharmEntities()[type.getValue()].get(i);
-								//									if (!TreasureCharms.isCharmEventRegistered(event.getClass(), entity.getCharm().getType())) {
+							for (int i = 0; i < cap.getCharmEntities().get(type).size(); i++) {
+								ICharmEntity entity =  ((List<ICharmEntity>)cap.getCharmEntities().get(type)).get(i);
 								if (!entity.getCharm().getRegisteredEvent().equals(event.getClass())) {
-									//									Treasure.LOGGER.debug("charm type -> {} is not register for this event -> {}", entity.getCharm().getType(), event.getClass().getSimpleName());
+									//	Treasure.LOGGER.debug("charm type -> {} is not register for this event -> {}", entity.getCharm().getType(), event.getClass().getSimpleName());
 									continue;
 								}
 								index.set(i);

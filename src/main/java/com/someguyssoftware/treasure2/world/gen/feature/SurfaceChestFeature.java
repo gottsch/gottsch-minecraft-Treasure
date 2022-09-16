@@ -136,12 +136,12 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 //				Treasure.LOGGER.debug("invalid surface type");
 				return false;
 			}
-			Treasure.LOGGER.debug("spawns coords -> {}", spawnCoords.toShortString());
+//			Treasure.LOGGER.debug("spawns coords -> {}", spawnCoords.toShortString());
 
 
 			// determine what type to generate
 			Rarity rarity = (Rarity) TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST).get(random.nextInt(TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST).size()));
-			Treasure.LOGGER.debug("rarity -> {}", rarity);
+//			Treasure.LOGGER.debug("rarity -> {}", rarity);
 			IChestConfig chestConfig = TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity);
 			if (chestConfig == null) {
 				Treasure.LOGGER.warn("Unable to locate a chest for rarity {}.", rarity);
@@ -156,7 +156,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 //				Treasure.LOGGER.debug("config gen prob -> {}", chestConfig.getGenProbability());
 				// 1. test if chest meets the probability criteria
 				if (!RandomHelper.checkProbability(random, chestConfig.getGenProbability())) {
-					Treasure.LOGGER.debug("ChestConfig does not meet generate probability.");
+//					Treasure.LOGGER.debug("ChestConfig does not meet generate probability.");
 					return false;
 				}
 				

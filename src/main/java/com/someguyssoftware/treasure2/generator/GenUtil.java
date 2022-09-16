@@ -37,6 +37,16 @@ import net.minecraft.world.World;
 public class GenUtil {
 	public static final EnumProperty<Direction> FACING = EnumProperty.create("facing", Direction.class);
 	
+	/**
+	 * convenience method
+	 * 
+	 * @param offset
+	 * @return
+	 */
+	public static Block getMarkerBlock(StructureMarkers marker) {
+		return TreasureTemplateRegistry.getManager().getMarkerMap().get(marker);
+	}
+	
 //	TODO 1.15.2
 //	protected static final int UNDERGROUND_OFFSET = 5;
 //	protected static final int VERTICAL_MAX_DIFF = 2;

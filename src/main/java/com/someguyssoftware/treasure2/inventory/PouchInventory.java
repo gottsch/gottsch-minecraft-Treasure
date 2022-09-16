@@ -19,7 +19,7 @@
  */
 package com.someguyssoftware.treasure2.inventory;
 
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.POUCH_CAPABILITY;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.POUCH;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -28,6 +28,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 /**
  * @author Mark Gottschling on Mar 9, 2018
@@ -49,7 +50,7 @@ public class PouchInventory extends Inventory {
 		super(INVENTORY_SIZE);
 		// save a ref to the item stack
 		this.itemStack = stack;		
-		IItemHandler itemHandler = stack.getCapability(POUCH_CAPABILITY, null).orElseThrow(IllegalStateException::new);
+		IItemHandler itemHandler = stack.getCapability(POUCH, null).orElseThrow(IllegalStateException::new);
 		readInventoryFromHandler(itemHandler);
 	}
 
@@ -75,6 +76,13 @@ public class PouchInventory extends Inventory {
 	 */
 	public void writeInventoryToHandler(IItemHandler handler) {
 		try {
+			/* 
+			 * NOTE must clear the ItemStackHandler first because it retains it's inventory, 
+			 * when insertItem is called, it actually appends, not replaces, items into it's inventory
+			 * causing doubling of items.
+			 */
+			// clear the item handler capability			
+			((ItemStackHandler)handler).setSize(PouchInventory.INVENTORY_SIZE);
 			for (int i = 0; i < INVENTORY_SIZE; i++) {
 				handler.insertItem(i, getItem(i), false);
 			}
@@ -101,18 +109,18 @@ public class PouchInventory extends Inventory {
 	 */
 	@Override
 	public int getMaxStackSize() {
-		return TreasureConfig.BOOTY.wealthMaxStackSize.get();
+		return TreasureConfig.WEALTH.wealthMaxStackSize.get();
 	}
 
 	/* (non-Javadoc)
-	 * @see net.minecraft.inventory.IInventory#closeInventory(net.minecraft.entity.player.EntityPlayer)
+	 * @see net.minecraft.inventory.IInventory#closeInventory(net.minecraft.entity.player.PlayerEntity)
 	 */
 	@Override
 	public void stopOpen(PlayerEntity player) {
 		/*
 		 *  write the locked state to the nbt
 		 */
-		IItemHandler itemHandler = getItemStack().getCapability(POUCH_CAPABILITY, null).orElseThrow(IllegalStateException::new);
+		IItemHandler itemHandler = getItemStack().getCapability(POUCH, null).orElseThrow(IllegalStateException::new);
 		writeInventoryToHandler(itemHandler);
 	}
 

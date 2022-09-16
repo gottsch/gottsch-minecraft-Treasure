@@ -1,0 +1,55 @@
+{
+	"version": "3.0",
+	"since": "mc1.16.5-v2.1.0",
+	"pools": [{
+			"name": "uncommon_treasure",
+			"rolls": {
+				"min": 2,
+				"max": 3
+			},
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/uncommon_treasure",
+				"weight": 1
+			}]
+		},
+		{
+			"name": "scarce_charms",
+			"rolls": 1,
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/scarce_charms",
+				"weight": 1,
+				"chance": 0.2
+			}]
+		},
+		{
+			"name": "uncommon_charms",
+			"rolls": 1,
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/uncommon_charms",
+				"weight": 1
+			}]
+		},
+		{
+			"name": "uncommon_adornments",
+			"rolls": 1,
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/uncommon_adornments",
+				"weight": 1
+			}]
+		},
+		{
+			"name": "common_charms",
+			"rolls": 1,
+			"entries": [{
+				"type": "loot_table",
+				"name": "treasure2:pools/treasure/common_charms",
+				"weight": 1,
+				"chance": 0.4
+			}]
+		}
+	]
+}

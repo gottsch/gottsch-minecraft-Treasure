@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.someguyssoftware.gottschcore.config.AbstractConfig;
-import com.someguyssoftware.gottschcore.config.AbstractConfig.Logging;
-import com.someguyssoftware.gottschcore.config.AbstractConfig.Mod;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
@@ -64,12 +62,13 @@ public class TreasureConfig extends AbstractConfig {
 	public static final Mod MOD;
 	public static final Logging LOGGING;
 	public static final General GENERAL;
+	public static final Integration INTEGRATION;
 	public static final Chests CHESTS;
     public static final Pits PITS;
     public static final Markers MARKERS;
     public static final Wells WELLS;
 	public static final KeysAndLocks KEYS_LOCKS;
-	public static final Booty BOOTY;
+	public static final Wealth WEALTH;
 	public static final Coins COINS;
 	public static final GemsAndOres GEMS_AND_ORES;
 	public static final Fog FOG;
@@ -82,12 +81,13 @@ public class TreasureConfig extends AbstractConfig {
 		MOD = new Mod(COMMON_BUILDER);
 		LOGGING = new Logging(COMMON_BUILDER);
 		GENERAL = new General(COMMON_BUILDER);
+		INTEGRATION = new Integration(COMMON_BUILDER);
 		CHESTS = new Chests(COMMON_BUILDER);
         PITS = new Pits(COMMON_BUILDER);
         MARKERS = new Markers(COMMON_BUILDER);
         WELLS = new Wells(COMMON_BUILDER);
 		KEYS_LOCKS = new KeysAndLocks(COMMON_BUILDER);
-		BOOTY = new Booty(COMMON_BUILDER);
+		WEALTH = new Wealth(COMMON_BUILDER);
 		COINS = new Coins(COMMON_BUILDER);
 		GEMS_AND_ORES = new GemsAndOres(COMMON_BUILDER);
 		FOG = new Fog(COMMON_BUILDER);
@@ -337,6 +337,24 @@ public class TreasureConfig extends AbstractConfig {
 	/*
 	 * 
 	 */
+	public static class Integration {
+		public ForgeConfigSpec.BooleanValue  enableCurios;
+		
+		Integration(final ForgeConfigSpec.Builder builder) {
+			builder.comment(CATEGORY_DIV, " Integration properties", CATEGORY_DIV)
+			.push("integration");
+			
+			enableCurios = builder
+					.comment("Enable/Disable Curios integration.", "Enabled by default, but Curios must be installed as well.")
+					.define("Enable Curios Integration:", true);
+			
+			builder.pop();
+		}
+	}
+	
+	/*
+	 * 
+	 */
 	public static class Chests {
 		public ChestCollection surfaceChests;
 		public ChestCollection submergedChests;
@@ -371,6 +389,8 @@ public class TreasureConfig extends AbstractConfig {
 			surfaceConfigs.put(Rarity.SCARCE, new ChestConfig.Data(true, 300, 10, 50, 20, 35, 15.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
 			surfaceConfigs.put(Rarity.RARE, new ChestConfig.Data(true, 500, 10, 25, 30, 45, 0.0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
 			surfaceConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 800, 10, 15, 40, 55, 0.0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
+			surfaceConfigs.put(Rarity.LEGENDARY, new ChestConfig.Data(true, 1500, 10, 15, 50, 65, 0.0, new String[] {}, new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" }));
+			surfaceConfigs.put(Rarity.MYTHICAL, new ChestConfig.Data(true, 2800, 10, 15, 60, 75, 0.0, new String[] {}, new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" }));
 			
 			// TODO needs all the builder stuff
 			surfaceChests = new ChestCollection(builder,
@@ -393,7 +413,11 @@ public class TreasureConfig extends AbstractConfig {
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
 			submergedConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 1000, 10, 15, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
-			
+			submergedConfigs.put(Rarity.LEGENDARY,	new ChestConfig.Data(true, 1700, 10, 25, 5, 5, 0.0,	new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean" }, 
+					new String[] {}, new String[] { "ocean", "deep_ocean" }, new String[] {}));
+			submergedConfigs.put(Rarity.MYTHICAL, 	new ChestConfig.Data(true, 3000, 10, 15, 5, 5, 0.0, new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean" }, 
+					new String[] {}, new String[] { "ocean", "deep_ocean" }, new String[] {}));
+
 			submergedChests = new ChestCollection(builder, 
 					"submerged chests", 
 					new String[] {
@@ -451,6 +475,8 @@ public class TreasureConfig extends AbstractConfig {
 				configMap.put(Rarity.SCARCE, new ChestConfig(builder, Rarity.SCARCE.getValue(), configs.get(Rarity.SCARCE)));
 				configMap.put(Rarity.RARE, new ChestConfig(builder, Rarity.RARE.getValue(), configs.get(Rarity.RARE)));
 				configMap.put(Rarity.EPIC, new ChestConfig(builder, Rarity.EPIC.getValue(), configs.get(Rarity.EPIC)));
+				configMap.put(Rarity.LEGENDARY, new ChestConfig(builder, Rarity.LEGENDARY.getValue(), configs.get(Rarity.LEGENDARY)));
+				configMap.put(Rarity.MYTHICAL, new ChestConfig(builder, Rarity.MYTHICAL.getValue(), configs.get(Rarity.MYTHICAL)));
 
 				builder.pop();
 			}
@@ -719,10 +745,10 @@ public class TreasureConfig extends AbstractConfig {
 		}
 	}
 	
-	public static class Booty {
+	public static class Wealth {
 		public ForgeConfigSpec.ConfigValue<Integer> wealthMaxStackSize;
 		
-		public Booty(final ForgeConfigSpec.Builder builder)	 {
+		public Wealth(final ForgeConfigSpec.Builder builder)	 {
 			builder.comment(CATEGORY_DIV, " Treasure Loot and Valuables properties", CATEGORY_DIV)
 			.push(BOOTY_CATEGORY);
 			

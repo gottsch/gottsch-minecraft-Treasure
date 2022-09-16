@@ -1,8 +1,8 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.16.5-latest": "1.7.3",
-    "1.16.5-recommended": "1.7.3"
+    "1.16.5-latest": "2.1.1",
+    "1.16.5-recommended": "2.1.1"
   },
     "1.16.5": {
         "1.0.0": "Initial version release.",
@@ -14,6 +14,7 @@
         "1.7.0": "Added Adornments.\nChanged ReflectionCharm from LivingDamageEvent to LivingHurtEvent, so that the full amount of damage is reflected back at the mob.\nUpdate loot tables.\n",
         "1.7.1.": "Removed exposing Loot Tables to the file system, ie loot table json files will no longer be copied to /config or worldsave/datapack directories.\nMoved /loot_tables into domain specific folder.\nFixed stone lock display name.\n",
         "1.7.2": "Fixed CharmRandomly crash if no charm is selected.\nRe-add ability to add custom loot tables to the save game folder.\nEnable treasure2 bracelets to be placed in Curios bracelet slot.",
-        "1.7.3": "Fixed No Chest Gen on Reload issues.\nFixed Wither Tree Top (broken log) not having a bounding box.\nFixed Locks not displaying accepted key(s) properly."
+        "1.7.3": "Fixed No Chest Gen on Reload issues.\nFixed Wither Tree Top (broken log) not having a bounding box.\nFixed Locks not displaying accepted key(s) properly.",
+        "2.1.1": "Bring to parity with 1.12.2-v2\nNew Charms/Runes/Adornments system.\nAdded 300+ adornments.\nAdded 9 runes.\nCharms now range in levels 1-25+.\nAdded Cheat Death charm.\nAdded Legendary and Mythical rarities.\nAdded Legendary, Mythical loot tables.\nRemoved exposing resources files (loot tables, meta, structure) to the file system.\nRefactored how deep treasure pits go - no longer based on offset from bottom, but on rarity of loot.\nUpdated requirement for GottschCore 1.15.0.\nFixed the no loot from wishing wells bug.\nAdded 5 million downloads reward ring.\nFixed Jewelers Table bug.\nFixed [1.12.2] Key duplication with the Key Ring. #290.\n"
 	}
 }

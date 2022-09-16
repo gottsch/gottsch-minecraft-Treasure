@@ -18,6 +18,7 @@ import com.someguyssoftware.gottschcore.world.gen.structure.PlacementSettings;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
+import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
 import com.someguyssoftware.treasure2.meta.StructureArchetype;
@@ -93,7 +94,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		}
 		
 		// find the 'entrance' block
-		ICoords entranceCoords = TreasureTemplateRegistry.getTemplateManager().getOffset(random, holder, StructureMarkers.ENTRANCE);
+		ICoords entranceCoords = TreasureTemplateRegistry.getManager().getOffset(random, holder, StructureMarkers.ENTRANCE);
 		if (entranceCoords == null) {
 			Treasure.LOGGER.debug("Unable to locate entrance position.");
 			return result.fail();
@@ -187,28 +188,28 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		
 		// setup the decay ruleset and processor
 		IDecayProcessor decayProcessor = null;
-		Treasure.LOGGER.debug("decay rule set -> {}", decayRuleSet);
-		Treasure.LOGGER.debug("decay rule set location -> {}", holder.getDecayRuleSetLocation());
-		if (decayRuleSet == null && holder.getDecayRuleSetLocation() != null && holder.getDecayRuleSetLocation().size() > 0) {
-			Treasure.LOGGER.debug("TreasureDecayManager.map -> {}", TreasureDecayRegistry.getDecayManager().getRuleSetMap());
-			// create a decay processor
-			// TODO TemplateHolder contains ResourceLocations to the decay rule sets, however the DecayManager is a map keyed by the name only.
-			// maybe add a convenience method in holder to return just the name ie minus the extension.
-			decayRuleSet = TreasureDecayRegistry.getDecayManager().getRuleSetMap().get(holder.getDecayRuleSetLocation().get(random.nextInt(holder.getDecayRuleSetLocation().size())).toString().replace(".json", ""));
-			
-//			List<String> keys = TreasureDecayRegistry.getDecayManager().getRuleSetMap().keySet().stream().collect(Collectors.toList());
-//			Treasure.LOGGER.debug("ruleset keys -> {}", keys);
-//			decayRuleSet = TreasureDecayRegistry.get(keys.get(random.nextInt(keys.size())));
-			if (Treasure.LOGGER.isDebugEnabled() && decayRuleSet != null) {
-				Treasure.LOGGER.debug("randomly selected decayRuleSet -> {}", decayRuleSet.getName());
-			}
-		}
-		if (decayRuleSet != null) {
-			// TEMP 7/18/21 - remove the decay processor until it is working
-//			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
-		}
-		Treasure.LOGGER.debug("using decay rule set -> {}", decayRuleSet);
-		Treasure.LOGGER.debug("decay processor -> {}", decayProcessor);
+//		Treasure.LOGGER.debug("decay rule set -> {}", decayRuleSet);
+//		Treasure.LOGGER.debug("decay rule set location -> {}", holder.getDecayRuleSetLocation());
+//		if (decayRuleSet == null && holder.getDecayRuleSetLocation() != null && holder.getDecayRuleSetLocation().size() > 0) {
+//			Treasure.LOGGER.debug("TreasureDecayManager.map -> {}", TreasureDecayRegistry.getDecayManager().getRuleSetMap());
+//			// create a decay processor
+//			// TODO TemplateHolder contains ResourceLocations to the decay rule sets, however the DecayManager is a map keyed by the name only.
+//			// maybe add a convenience method in holder to return just the name ie minus the extension.
+//			decayRuleSet = TreasureDecayRegistry.getDecayManager().getRuleSetMap().get(holder.getDecayRuleSetLocation().get(random.nextInt(holder.getDecayRuleSetLocation().size())).toString().replace(".json", ""));
+//			
+////			List<String> keys = TreasureDecayRegistry.getDecayManager().getRuleSetMap().keySet().stream().collect(Collectors.toList());
+////			Treasure.LOGGER.debug("ruleset keys -> {}", keys);
+////			decayRuleSet = TreasureDecayRegistry.get(keys.get(random.nextInt(keys.size())));
+//			if (Treasure.LOGGER.isDebugEnabled() && decayRuleSet != null) {
+//				Treasure.LOGGER.debug("randomly selected decayRuleSet -> {}", decayRuleSet.getName());
+//			}
+//		}
+//		if (decayRuleSet != null) {
+//			// TEMP 7/18/21 - remove the decay processor until it is working
+////			decayProcessor = new DecayProcessor(Treasure.instance.getInstance(), decayRuleSet);
+//		}
+//		Treasure.LOGGER.debug("using decay rule set -> {}", decayRuleSet);
+//		Treasure.LOGGER.debug("decay processor -> {}", decayProcessor);
 		
 		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(world, random, decayProcessor, holder, placement, originalSpawnCoords);
 		 if (!genResult.isSuccess()) return result.fail();
@@ -217,13 +218,13 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 		List<BlockContext> bossChestContexts =
-					(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.BOSS_CHEST));
+					(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.BOSS_CHEST));
 		List<BlockContext> chestContexts =
-				(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.CHEST));
+				(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 		List<BlockContext> spawnerContexts =
-				(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.SPAWNER));
+				(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
 		List<BlockContext> proximityContexts =
-				(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
+				(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
 
 		/*
 		 *  NOTE currently only 1 chest is allowed per structure - the rest are ignored.

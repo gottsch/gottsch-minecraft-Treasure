@@ -1,40 +1,38 @@
 {
-	"version": "1.5.0",
-	"pools": [
-		{
-			"name": "uncommon_charms",
-			"rolls": 1,
-			"entries": [
-				{
-					"entryName": "charm1",
-					"type": "item",
-					"name": "treasure2:copper_charm",
-					"weight": 10,
-					"conditions": [
-						{
-							"condition": "random_chance",
-							"chance": 0.1
-						}
-					],					
-					"functions": [
-						{
-							"function": "treasure2:charm_randomly",
-							"levels": 1
-						}
-					]
-				},
-			 {
-				"entryName": "peasants_fortune",
-				"type": "item",
-				"name": "treasure2:peasants_fortune",
-				"weight": 10,
-				"quality": 3,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.05
-				}]
-			}	
-			]
-		}		
-	]
+  "version" : "3.0",
+  "since" : "mc1.16.5-v2.1.0",
+  "pools" : [ {
+    "name" : "common_charms",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "charm0",
+      "type" : "item",
+      "name" : "treasure2:copper_charm",
+      "weight" : 5,
+      "conditions" : [ {
+        "condition" : "random_chance",
+        "chance" : 0.1
+      } ],
+      "functions" : [ {
+        "function" : "treasure2:random_charm",
+        "rarity" : "common",
+        "defaultCharm" : "treasure2:healing_1"
+      } ]
+    }, {
+      "entryName" : "charm1",
+      "type" : "item",
+      "name" : "treasure2:charm_book",
+      "weight" : 1,
+      "conditions" : [ {
+        "condition" : "random_chance",
+        "chance" : 0.1
+      } ],
+      "functions" : [ {
+        "function" : "treasure2:random_charm",
+        "isBook" : true,
+        "rarity" : "common",
+        "defaultCharm" : "treasure2:healing_1"
+      } ]
+    } ]
+  } ]
 }

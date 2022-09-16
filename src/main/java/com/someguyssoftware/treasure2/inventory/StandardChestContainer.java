@@ -188,7 +188,7 @@ public class StandardChestContainer extends Container implements ITreasureContai
 	 * pass the close container message to the tileEntity
 	 * @see ContainerChest
 	 * @see TileEntityChest
-	 * @see net.minecraft.inventory.Container#onContainerClosed(net.minecraft.entity.player.EntityPlayer)
+	 * @see net.minecraft.inventory.Container#onContainerClosed(net.minecraft.entity.player.PlayerEntity)
 	 */
 	@Override
 	public void removed(PlayerEntity playerIn) {

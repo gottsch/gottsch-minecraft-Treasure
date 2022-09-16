@@ -140,6 +140,20 @@ public interface IChestGenerator {
 		return result.success();
 	}
 
+	/**
+	 * 
+	 * @param chest
+	 * @return
+	 */
+//	default public boolean isChestEnabled(Block chest) {
+//		if(chest instanceof TreasureChestBlock &&
+//				(!TreasureConfig.CHESTS.chestEnablementMap.containsKey(chest.getRegistryName().getResourcePath()) ||
+//						TreasureConfig.CHESTS.chestEnablementMap.get(chest.getRegistryName().getResourcePath()))) {
+//			return true;
+//		}
+//		return false;
+//	}
+	
 	// TODO this should be a generic call that passes in ManagedTableType
 	default public List<LootTableShell> buildLootTableList2(Rarity rarity) {
 		return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(TreasureLootTableMaster2.ManagedTableType.CHEST, rarity);
@@ -155,9 +169,13 @@ public interface IChestGenerator {
 	 * @return
 	 */
 	default public AbstractChestBlock selectChest(final Random random, final Rarity rarity) {
-		List<Block> chestList = (List<Block>) TreasureData.CHESTS_BY_RARITY.get(rarity); //TreasureBlocks.chests.get(rarity);
-		AbstractChestBlock chest = (AbstractChestBlock) chestList.get(RandomHelper.randomInt(random, 0, chestList.size() - 1));
-
+		Treasure.LOGGER.debug("attempting to get chest list for rarity -> {}", rarity);
+		List<Block> chestList = (List<Block>) TreasureData.CHESTS_BY_RARITY.get(rarity);
+		Treasure.LOGGER.debug("size of chests lists -> {}", chestList.size());
+		AbstractChestBlock chest = null;
+		if (!chestList.isEmpty()) {
+			chest = (AbstractChestBlock) chestList.get(RandomHelper.randomInt(random, 0, chestList.size() - 1));
+		}
 		// TODO should have a map of available mimics mapped by chest. for now, since
 		// only one mimic, just test for it determine if should be mimic get the config
 //		TODO 1.15.2
@@ -231,16 +249,11 @@ public interface IChestGenerator {
 		
 		// setup context
 		LootContext lootContext = null;
-//		if (player == null) {
-//			lootContext = Treasure.getLootTableMaster().getContext(); // TODO review this
-//		}
-//		else {
-			lootContext = new LootContext.Builder((ServerWorld) world)
-					.withLuck(player.getLuck())
-					.withParameter(LootParameters.THIS_ENTITY, player)
-					.withParameter(LootParameters.ORIGIN, new Vector3d(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ())).create(LootParameterSets.CHEST);
-			// TODO add Vector/BlockPos conversions in a util
-//		}
+		lootContext = new LootContext.Builder((ServerWorld) world)
+				.withLuck(player.getLuck())
+				.withParameter(LootParameters.THIS_ENTITY, player)
+				.withParameter(LootParameters.ORIGIN, new Vector3d(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ())).create(LootParameterSets.CHEST);
+
 		
 //		LOGGER.debug("loot context -> {}", lootContext);
 
@@ -464,7 +477,7 @@ public interface IChestGenerator {
 				index = RandomHelper.randomInt(random, 0, tables.size() - 1);
 				lootTableShell = tables.get(index);
 			}
-			LOGGER.debug("Selected loot table shell index --> {}", index);
+			LOGGER.debug("Selected loot table shell index --> {}, shell -> {}", index, lootTableShell.getCategories());
 		}
 		return Optional.ofNullable(lootTableShell);
 	}

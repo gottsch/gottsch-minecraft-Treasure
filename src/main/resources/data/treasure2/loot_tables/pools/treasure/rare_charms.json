@@ -1,188 +1,50 @@
 {
-	"version": "1.5",
+	"version": "3.0",
+	"since": "mc1.16.5-v2.1.0",
 	"pools": [{
-		"name": "rare_charms",
-		"rolls": 1,
-		"entries": [{
-				"entryName": "charm1",
+			"name": "rare_charms",
+			"rolls": 1,
+			"entries": [{
+					"entryName": "charm0",
+					"type": "item",
+					"name": "treasure2:ruby_charm",
+					"weight": 3,
+					"functions": [{
+						"function": "treasure2:random_charm",
+						"rarity": "rare",
+						"defaultCharm": "treasure2:healing_13"
+					}]
+				},
+				{
+					"entryName": "charm1",
+					"type": "item",
+					"name": "treasure2:charm_book",
+					"weight": 1,
+					"functions": [{
+						"function": "treasure2:random_charm",
+						"isBook": true,
+						"rarity": "rare",
+						"defaultCharm": "treasure2:healing_13"
+					}]
+				}
+			]
+		},
+		{
+			"name": "rare_runestones",
+			"rolls": 1,
+			"entries": [{
+				"entryName": "runestone0",
 				"type": "item",
-				"name": "treasure2:silver_charm",
-				"weight": 20,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.25
-				}],
-				"functions": [{
-					"function": "treasure2:charm_randomly",
-					"levels": 5
-				}]
-			},
-			{
-				"entryName": "charm2",
-				"type": "item",
-				"name": "treasure2:gold_charm",
-				"weight": 30,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.5
-				}],
-				"functions": [{
-					"function": "treasure2:charm_randomly",
-					"levels": 8
-				}]
-			},
-			{
-				"entryName": "charm3",
-				"type": "item",
-				"name": "treasure2:gold_charm",
-				"weight": 30,
-				"quality": 1,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.20
-				}],
-				"functions": [{
-					"function": "treasure2:charm_randomly",
-					"levels": 10
-				}]
-			},
-			{
-				"entryName": "charm_book",
-				"type": "item",
-				"name": "treasure2:charm_book",
-				"weight": 10,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.10
-				}],
-				"functions": [{
-					"function": "treasure2:charm_randomly",
-					"levels": {
-						"min": 8,
-						"max": 11
-					}
-				}]
-			},
-			{
-				"entryName": "adornment1",
-				"type": "minecraft:item",
-				"name": "treasure2:copper_ring",
-				"weight": 30,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.5
-				}],
-				"functions": [{
-					"function": "treasure2:random_adornment",
-					"material": "gold"
-				}]
-			},
-			{
-				"entryName": "adornment2",
-				"type": "minecraft:item",
-				"name": "treasure2:copper_ring",
-				"weight": 30,
+				"name": "treasure2:mana_runestone",
+				"weight": 1,
 				"conditions": [{
 					"condition": "random_chance",
 					"chance": 0.4
 				}],
 				"functions": [{
-						"function": "treasure2:random_adornment"
-					},
-					{
-						"function": "treasure2:set_source_item",
-						"levels": {
-							"min": 6,
-							"max": 8
-						}
-					}
-				]
-			},
-			{
-				"entryName": "adornment3",
-				"type": "minecraft:item",
-				"name": "treasure2:copper_ring",
-				"weight": 24,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.3
-				}],
-				"functions": [{
-						"function": "treasure2:random_adornment",
-						"material": "gold"
-					},
-					{
-						"function": "treasure2:set_source_item",
-						"levels": {
-							"min": 6,
-							"max": 11
-						}
-					},
-					{
-						"function": "treasure2:charm_randomly",
-						"levels": {
-							"min": 8,
-							"max": 13
-						},
-						"curseChance": 0.15
-					}					
-				]
-			},
-			{
-				"entryName": "pocket_watch",
-				"type": "minecraft:item",
-				"name": "treasure2:pocket_watch",
-				"weight": 20,
-				"quality": 2,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.3
+					"function": "treasure2:random_runestone"
 				}]
-			},
-			{
-				"entryName": "medics_token",
-				"type": "minecraft:item",
-				"name": "treasure2:medics_token",
-				"weight": 10,
-				"quality": 1,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.3
-				}]
-			},
-			{
-				"entryName": "adephagias_bounty",
-				"type": "minecraft:item",
-				"name": "treasure2:adephagias_bounty",
-				"weight": 10,
-				"quality": 1,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.3
-				}]
-			},
-			{
-				"entryName": "salandaars_ward",
-				"type": "minecraft:item",
-				"name": "treasure2:salandaars_ward",
-				"weight": 10,
-				"quality": 1,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.3
-				}]
-			},
-			{
-				"entryName": "mirthas_torch",
-				"type": "minecraft:item",
-				"name": "treasure2:adephagias_bounty",
-				"weight": 10,
-				"quality": 1,
-				"conditions": [{
-					"condition": "random_chance",
-					"chance": 0.3
-				}]
-			}			
-		]
-	}]
+			}]
+		}
+	]
 }

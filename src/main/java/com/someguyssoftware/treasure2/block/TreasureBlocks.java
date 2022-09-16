@@ -151,6 +151,9 @@ public class TreasureBlocks {
 	public static Block FALLING_SAND;
 	public static Block FALLING_RED_SAND;
 	
+	public static Block CHARMING_TABLE;
+	public static Block JEWELER_BENCH;
+	
 	public static final List<Block> BLOCKS = new ArrayList<>(100);
 	public static final Set<BlockItem> ITEM_BLOCKS = new HashSet<>();
 	public static final List<Block> GRAVESTONES = new ArrayList<>(20);
@@ -456,6 +459,9 @@ public class TreasureBlocks {
 	        PROXIMITY_SPAWNER = new ProximityBlock(Treasure.MODID, TreasureConfig.BlockID.PROXIMITY_SPAWNER_ID,
 					Block.Properties.of(Material.AIR).noCollission().noDrops());
 
+	        CHARMING_TABLE = new CharmingTableBlock(Treasure.MODID, "charming_table", Block.Properties.of(Material.WOOD));
+	        JEWELER_BENCH = new JewelerBenchBlock(Treasure.MODID, "jeweler_bench", Block.Properties.of(Material.WOOD));
+	        
 	        /*
 	         * add blocks to list
 	         */
@@ -520,6 +526,8 @@ public class TreasureBlocks {
 	        BLOCKS.add(GRAVESTONE1_SPAWNER_STONE);
 	        BLOCKS.add(GRAVESTONE2_SPAWNER_COBBLESTONE);
 	        BLOCKS.add(GRAVESTONE3_SPAWNER_OBSIDIAN);
+	        BLOCKS.add(CHARMING_TABLE);
+	        BLOCKS.add(JEWELER_BENCH);
 	        
 	        /*
 	         * add gravestones/markers to list
@@ -601,7 +609,7 @@ public class TreasureBlocks {
 			};
 			
 			for (Block b : BLOCKS) {
-				BlockItem itemBlock = new BlockItem(b, new Item.Properties().tab(TreasureItemGroups.MOD_ITEM_GROUP));
+				BlockItem itemBlock = new BlockItem(b, new Item.Properties().tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
 				final ResourceLocation registryName = Preconditions.checkNotNull(b.getRegistryName(),
 						"Block %s has null registry name", b);
 				registry.register(itemBlock.setRegistryName(registryName));
@@ -609,7 +617,7 @@ public class TreasureBlocks {
 			}
 			
 			for (Block b : specialtyBlocks) {
-				BlockItem itemBlock = new BlockItem(b, new Item.Properties().tab(TreasureItemGroups.MOD_ITEM_GROUP));
+				BlockItem itemBlock = new BlockItem(b, new Item.Properties().tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
 				final ResourceLocation registryName = Preconditions.checkNotNull(b.getRegistryName(),
 						"Block %s has null registry name", b);
 				registry.register(itemBlock.setRegistryName(registryName));
@@ -617,7 +625,7 @@ public class TreasureBlocks {
 			}
 			
 			// special case registry
-//			BlockItem itemBlock = new BlockItem(WITHER_CHEST, new Item.Properties().group(TreasureItemGroups.MOD_ITEM_GROUP));
+//			BlockItem itemBlock = new BlockItem(WITHER_CHEST, new Item.Properties().group(TreasureItemGroups.TREASURE_ITEM_GROUP));
 //			final ResourceLocation registryName = Preconditions.checkNotNull(WITHER_CHEST.getRegistryName(),
 //					"Block %s has null registry name", WITHER_CHEST);
 //			registry.register(itemBlock.setRegistryName(registryName));

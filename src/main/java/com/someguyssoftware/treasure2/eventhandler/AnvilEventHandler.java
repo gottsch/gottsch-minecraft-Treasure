@@ -19,31 +19,25 @@
  */
 package com.someguyssoftware.treasure2.eventhandler;
 
-import static com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType.IMBUE;
-import static com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType.INNATE;
-import static com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType.SOCKET;
 import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.CHARMABLE;
-import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY_CAPABILITY;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.DURABILITY;
+import static com.someguyssoftware.treasure2.capability.TreasureCapabilities.RUNESTONES;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
-import com.someguyssoftware.treasure2.capability.CharmableCapability;
-import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
+import com.someguyssoftware.treasure2.adornment.TreasureAdornmentRegistry;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
-import com.someguyssoftware.treasure2.capability.TreasureCharmables;
+import com.someguyssoftware.treasure2.capability.InventoryType;
+import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
-import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.item.Adornment;
 import com.someguyssoftware.treasure2.item.KeyItem;
-import com.someguyssoftware.treasure2.item.WealthItem;
+import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -66,34 +60,32 @@ public class AnvilEventHandler {
 
 		@SubscribeEvent
 		public static void onAnvilUpdate(AnvilUpdateEvent event) {
-			ItemStack leftItemStack = event.getLeft();
-			ItemStack rightItemStack = event.getRight();
+			ItemStack leftStack = event.getLeft();
+			ItemStack rightStack = event.getRight();
 
-//			Treasure.LOGGER.debug("left stack imbuable -> {}", leftItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuable()).orElse(false));
-//			Treasure.LOGGER.debug("right stack imbuing -> {}", rightItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuing()).orElse(false));
-			
 			// check for KeyItems and having the durability capability
-			if (leftItemStack.getItem() instanceof KeyItem && leftItemStack.getCapability(DURABILITY_CAPABILITY).isPresent()
-					&& rightItemStack.getItem() instanceof KeyItem &&  rightItemStack.getCapability(DURABILITY_CAPABILITY).isPresent()) {
+			if (leftStack.getItem() instanceof KeyItem && leftStack.getCapability(DURABILITY).isPresent()
+					&& rightStack.getItem() instanceof KeyItem &&  rightStack.getCapability(DURABILITY).isPresent()) {
+
 				event.setCost(1);
-				LazyOptional<IDurabilityCapability> leftItemCap = leftItemStack.getCapability(DURABILITY_CAPABILITY);
-				LazyOptional<IDurabilityCapability> rightItemCap = rightItemStack.getCapability(DURABILITY_CAPABILITY);
-				int leftDurability = leftItemCap.map(c -> c.getDurability()).orElse(leftItemStack.getMaxDamage());
-				int rightDurability = rightItemCap.map(c -> c.getDurability()).orElse(rightItemStack.getMaxDamage());
+				LazyOptional<IDurabilityCapability> leftItemCap = leftStack.getCapability(DURABILITY);
+				LazyOptional<IDurabilityCapability> rightItemCap = rightStack.getCapability(DURABILITY);
+				int leftDurability = leftItemCap.map(c -> c.getDurability()).orElse(leftStack.getMaxDamage());
+				int rightDurability = rightItemCap.map(c -> c.getDurability()).orElse(rightStack.getMaxDamage());
 
-				int leftRemainingUses = leftDurability - leftItemStack.getDamageValue();
-				int rightRemainingUses = rightDurability - rightItemStack.getDamageValue();
+				int leftRemainingUses = leftDurability - leftStack.getDamageValue();
+				int rightRemainingUses = rightDurability - rightStack.getDamageValue();
 
-				ItemStack outputItem = new ItemStack(leftItemStack.getItem());
-				LazyOptional<IDurabilityCapability> outputItemCap = outputItem.getCapability(DURABILITY_CAPABILITY);
+				ItemStack outputItem = new ItemStack(leftStack.getItem());
+				LazyOptional<IDurabilityCapability> outputItemCap = outputItem.getCapability(DURABILITY);
 
 				int remainingUses = leftRemainingUses + rightRemainingUses;
 				if (remainingUses > Math.max(leftDurability, rightDurability)) {
 					//					if (Treasure.LOGGER.isDebugEnabled()) {
 					//						Treasure.LOGGER.debug("output has greater uses -> {} than max durability -> {} - update durability", remainingUses, Math.max(leftDurability, rightDurability));
 					//					}
-					outputItemCap.ifPresent(cap -> cap.setDurability(Math.max(leftDurability, rightDurability) + leftItemStack.getMaxDamage()));
-					outputItem.setDamageValue(leftItemStack.getDamageValue() + rightItemStack.getDamageValue());
+					outputItemCap.ifPresent(cap -> cap.setDurability(Math.max(leftDurability, rightDurability) + leftStack.getMaxDamage()));
+					outputItem.setDamageValue(leftStack.getDamageValue() + rightStack.getDamageValue());
 				}
 				else {
 					if (remainingUses < Math.min(leftDurability,  rightDurability)) {
@@ -102,104 +94,150 @@ public class AnvilEventHandler {
 					else {
 						outputItemCap.ifPresent(cap -> cap.setDurability(Math.max(leftDurability, rightDurability)));
 					}
-					outputItem.setDamageValue(outputItemCap.map(c -> c.getDurability()).orElse(leftItemStack.getMaxDamage()) - remainingUses);
+					outputItem.setDamageValue(outputItemCap.map(c -> c.getDurability()).orElse(leftStack.getMaxDamage()) - remainingUses);
 				}
 				event.setOutput(outputItem);
 			}
 
 			// add bindable (charm) to socketable (ex. adornment)
-			else if (leftItemStack.getCapability(CHARMABLE).map(cap -> cap.isSocketable()).orElse(false) &&
-					rightItemStack.getCapability(CHARMABLE).map(cap -> cap.isBindable()).orElse(false)) {
+			else if (leftStack.getCapability(CHARMABLE).map(cap -> cap.isSocketable()).orElse(false) &&
+					rightStack.getCapability(CHARMABLE).map(cap -> cap.isBindable()).orElse(false)) {
 				event.setCost(2);
-				Optional<ItemStack> outputItemStack = transferCharmToOutput(rightItemStack, leftItemStack, SOCKET);
-				if (outputItemStack.isPresent()) {
-					event.setOutput(outputItemStack.get());
+
+				// NOTE this block is just logging
+				leftStack.getCapability(RUNESTONES).ifPresent(cap -> {
+					cap.getEntities(InventoryType.INNATE).forEach(entity -> {
+						Treasure.LOGGER.debug("binding charm: sourceStack.appliedTo -> {}", entity.getAppliedTo());
+					});
+				});
+
+				AtomicReference<Optional<ItemStack>> atomicOutStack = new AtomicReference<>(Optional.empty());
+				// check that they charm type doesn't already exist on the adornment
+				leftStack.getCapability(CHARMABLE).ifPresent(cap -> {
+					if (cap.hasCharmType(rightStack, leftStack, InventoryType.INNATE, InventoryType.SOCKET)) {
+						return;
+					}
+					// check that there is room to add charms
+					if (cap.getCharmEntities().get(InventoryType.SOCKET).size() < cap.getMaxSocketSize()) {
+						// build the output item, add the charm to the adornment
+						Optional<ItemStack> outStack = TreasureAdornmentRegistry.transferCapabilities(rightStack, leftStack, InventoryType.INNATE, InventoryType.SOCKET);
+						if (outStack.isPresent()) {
+							outStack.get().getCapability(RUNESTONES).ifPresent(outCap -> {
+								//								if (outStack.get().hasCapability(RUNESTONES, null)) {
+								outCap.getEntities(InventoryType.SOCKET).forEach(entity -> {
+									entity.getRunestone().apply(outStack.get(), entity);
+								});
+								//								}
+							});
+							atomicOutStack.set(outStack);
+						}
+					}
+				});
+
+				if (atomicOutStack.get().isPresent()) {
+					event.setOutput(atomicOutStack.get().get());
 				}
 			}
+
+			// OLD pre-v2.0 way
+			//				Optional<ItemStack> outputItemStack = transferCharmToOutput(rightItemStack, leftItemStack, SOCKET);
+			//				if (outputItemStack.isPresent()) {
+			//					event.setOutput(outputItemStack.get());
+			//				}
+			//		}
+			
 			// add imbuing (charm) to imbuable (ex. adornment)
-			else if (leftItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuable()).orElse(false) && // ie adornment
-					rightItemStack.getCapability(CHARMABLE).map(cap -> cap.isImbuing()).orElse(false)) { // ie charm book
-//				Treasure.LOGGER.debug("in the imbuing process");
+			else if (leftStack.getCapability(CHARMABLE).map(cap -> cap.isImbuable()).orElse(false) && // ie adornment
+					rightStack.getCapability(CHARMABLE).map(cap -> cap.isImbuing()).orElse(false)) { // ie charm book
+				//				Treasure.LOGGER.debug("in the imbuing process");
 				event.setCost(2);
-				Optional<ItemStack> outputItemStack = transferCharmToOutput(rightItemStack, leftItemStack, IMBUE);
+				// TODO use the above method (binding) to transfer from book to adornment
+				Optional<ItemStack> outputItemStack = transferCapabilities(rightStack, leftStack, InventoryType.INNATE, InventoryType.IMBUE);
 				if (outputItemStack.isPresent()) {
 					event.setOutput(outputItemStack.get());
 				}
 			}
 			// add gem to adornment
-			else if ((leftItemStack.getItem() instanceof Adornment) &&
-					leftItemStack.getCapability(CHARMABLE).map(cap -> cap.getSourceItem().equals(Items.AIR.getRegistryName())).orElse(false) &&
-					TreasureCharms.isSourceItemRegistered(rightItemStack.getItem().getRegistryName())) {
+			else if ((leftStack.getItem() instanceof Adornment) &&
+					leftStack.getCapability(CHARMABLE).isPresent() &&
+					TreasureCharmableMaterials.isSourceItemRegistered(rightStack.getItem().getRegistryName())) {
 
-				event.setCost(1);
-				// build the output item, duplicating the left stack (adornment) with the right stack as the source item
-				ItemStack outputStack = createCharmableOutputStack(leftItemStack.getItem(), 
-						rightItemStack.getItem().getRegistryName(), 
-						leftItemStack.getCapability(CHARMABLE).map(cap -> cap.getCharmEntities()).orElse( (ArrayList<ICharmEntity>[])new ArrayList[3]));
-				
-				// set some extra properties
-				outputStack.getCapability(CHARMABLE).ifPresent(cap -> {
-					leftItemStack.getCapability(CHARMABLE).ifPresent(leftCap -> {
-						cap.setHighestLevel(leftCap.getHighestLevel());
-						// set the hover name
-						if (cap.isNamedByMaterial() || cap.isNamedByCharm()) {
-							TreasureCharmables.setHoverName(outputStack);
-						}
-//						TreasureAdornments.setHoverName(outputStack);
-					});
-				});
-				event.setOutput(outputStack);
-			}
-		}
+				leftStack.getCapability(CHARMABLE).ifPresent(cap -> {
+					if (cap.getSourceItem().equals(Items.AIR.getRegistryName())) {
+						event.setCost(1);
+						event.setMaterialCost(1);
 
-		/**
-		 * 
-		 * @param event
-		 * @param source
-		 * @param dest
-		 */
-		public static Optional<ItemStack> transferCharmToOutput(ItemStack source, ItemStack dest, InventoryType destInventoryType) {
-			AtomicReference<Optional<ItemStack>> ref = new AtomicReference<>(Optional.empty());
-			// determine if dest is a high enough level for source's bindable level
-			source.getCapability(CHARMABLE).ifPresent(sourceCap -> {
-				dest.getCapability(CHARMABLE).ifPresent(destCap -> {
-//					Treasure.LOGGER.debug("book has innate charms -> {}", sourceCap.getCharmEntities()[InventoryType.INNATE.getValue()].size() > 0);
-					// looking for innate
-					if (sourceCap.getCharmEntities()[InventoryType.INNATE.getValue()].size() > 0) {
-						// sort the source charm entity list in descending order
-						List<ICharmEntity> innateCharms = sourceCap.getCharmEntities()[INNATE.getValue()];
-						Comparator<ICharmEntity> comparator = Collections.reverseOrder(new CharmableCapability.SortByLevel());						
-						Collections.sort(innateCharms, comparator);
-//						Treasure.LOGGER.debug("size of innate charms -> {}", innateCharms.size());
-						// duplicate the dest cap charm entities
-						@SuppressWarnings("unchecked")
-						ArrayList<ICharmEntity>[] outputEntities = (ArrayList<ICharmEntity>[])new ArrayList[3];
-						outputEntities[INNATE.getValue()] = new ArrayList<>(destCap.getCharmEntities()[INNATE.getValue()]);
-						outputEntities[IMBUE.getValue()] = new ArrayList<>(destCap.getCharmEntities()[IMBUE.getValue()]);
-						outputEntities[SOCKET.getValue()] = new ArrayList<>(destCap.getCharmEntities()[SOCKET.getValue()]);
-
-						// process each charm entity
-						for (ICharmEntity entity : innateCharms) {
-							if (destCap.getMaxCharmLevel() >= entity.getCharm().getLevel()) {
-								addCharmEntity(entity, destCap,  destInventoryType, outputEntities[ destInventoryType.getValue()]);
-							}						
-						}
-//						Treasure.LOGGER.debug("result has more charms than input -> {}", outputEntities[destInventoryType.getValue()].size() > destCap.getCharmEntities()[ destInventoryType.getValue()].size());
-						// test if resulting output charms is larger than the original (dest) ie charms were added.
-						if (outputEntities[destInventoryType.getValue()].size() > destCap.getCharmEntities()[ destInventoryType.getValue()].size()) {
-							ItemStack outputStack = createCharmableOutputStack(dest.getItem(), destCap.getSourceItem(), outputEntities);
-//							Treasure.LOGGER.debug("output stack -> {}", outputStack.getDisplayName().getString());
-							// set the hover name
-							if (destCap.isNamedByMaterial() || destCap.isNamedByCharm()) {
-								TreasureCharmables.setHoverName(outputStack);
-							}
-//							TreasureAdornments.setHoverName(outputStack);
-							ref.set(Optional.of(outputStack));
+						// build the output item, duplicating the left stack (adornment) with the right stack as the source item
+						Optional<Adornment> adornment = getAdornment(leftStack, rightStack);
+						Treasure.LOGGER.debug("adornment -> {}", adornment.get().getRegistryName());
+						if (adornment.isPresent()) {
+							ItemStack outputStack = copyStack(leftStack, new ItemStack(adornment.get()));
+							outputStack.getCapability(CHARMABLE).ifPresent(outputCap -> {
+								outputCap.setHighestLevel(cap.getHighestLevel());
+							});
+							event.setOutput(outputStack);
 						}
 					}
 				});
+			}
+		}
+
+		@Deprecated
+		public static Optional<ItemStack> transferCapabilities(ItemStack source, ItemStack dest, InventoryType sourceType, InventoryType destType) {
+			Treasure.LOGGER.debug("transfering caps...");
+
+			// create a new dest item stack
+			ItemStack stack = new ItemStack(dest.getItem());
+
+			/*
+			 * transfer existing state of dest to stack plus any relevant state from source to stack
+			 */
+			dest.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
+				cap.copyTo(stack);
 			});
-			return ref.get();
+
+			// transfer
+			AtomicBoolean charmSizeChanged = new AtomicBoolean(false);
+			AtomicBoolean runeSizeChanged = new AtomicBoolean(false);
+
+			stack.getCapability(CHARMABLE).ifPresent(stackCap -> {
+				stackCap.clearCharms();			
+				dest.getCapability(CHARMABLE).ifPresent(destCap -> {
+					destCap.copyTo(stack);
+					source.getCapability(CHARMABLE).ifPresent(sourceCap -> {
+						sourceCap.transferTo(stack, sourceType, destType);
+						// check if size has changed. indicates at least 1 charm was transfered. if not, return empty
+						if (stackCap.getCurrentSize(destType) > destCap.getCurrentSize(destType)) {
+							charmSizeChanged.set(true);
+						}
+					});
+				});
+			});
+
+			dest.getCapability(RUNESTONES).ifPresent(destCap -> {
+				stack.getCapability(RUNESTONES).ifPresent(stackCap -> {
+					stackCap.clear();
+					Treasure.LOGGER.debug("before copyTo, runes size -> {}", stackCap.getEntitiesCopy().size());
+					destCap.copyTo(stack);
+					Treasure.LOGGER.debug("after copyTo, runes size -> {}", stackCap.getEntitiesCopy().size());
+					source.getCapability(RUNESTONES).ifPresent(sourceCap -> { // this is the rune
+						Treasure.LOGGER.debug("source(runestone)'s runes ->");
+						sourceCap.getEntities(InventoryType.INNATE).forEach(entity -> {
+							Treasure.LOGGER.debug("source entity -> {}", entity);
+						});
+						sourceCap.transferTo(stack, sourceType, destType); // transfer from rune to output
+						Treasure.LOGGER.debug("after transferTo, runes size -> {}", stackCap.getEntitiesCopy().size());
+						if (stackCap.getCurrentSize(destType) > destCap.getCurrentSize(destType)) {
+							runeSizeChanged.set(true);
+						}
+					});					
+				});
+			});
+			
+			if (charmSizeChanged.get() | runeSizeChanged.get()) {
+				return Optional.of(stack);
+			}
+			return Optional.empty();
 		}
 
 		/**
@@ -239,76 +277,65 @@ public class AnvilEventHandler {
 			});
 			return outputStack;
 		}
-
-		@Deprecated
-		private static Optional<ItemStack> createCharmOutputStack(Item item, ICharmEntity entity, ICharmableCapability destinationCap, InventoryType type) {
-			ItemStack outputStack = new ItemStack(item);
-			AtomicReference<ItemStack> stackRef = new AtomicReference<>();			
-			// first check if the existing destination inventory can hold more charms
-			if (destinationCap.getCharmEntities()[type.getValue()].size() < destinationCap.getMaxSize(type)) {		
-				outputStack.getCapability(CHARMABLE).ifPresent(outputCap -> {
-					// copy existing charms from destination to output
-					outputCap.setCharmEntities(destinationCap.getCharmEntities());
-					// copy charm entity to output innate
-					outputCap.add(type, entity);
-					// reference the output
-					stackRef.set(outputStack);
-				});
-			}
-			return stackRef.get() == null ? Optional.empty() : Optional.of(stackRef.get());
-		}
-
-		/**
-		 * 
-		 * @param left
-		 * @param right
-		 * @return 
-		 * @return
-		 */
-		@Deprecated
-		public static void doImbueItem(AnvilUpdateEvent event, ItemStack left, ItemStack right) {
-			//			ItemStack outputItem = new ItemStack(right.getItem());
-
-			// TODO determine if the right is a high enough level
-			left.getCapability(CHARMABLE).ifPresent(leftCap -> {
-				Treasure.LOGGER.debug("have left cap");
-				right.getCapability(CHARMABLE).ifPresent(rightCap -> {
-					Treasure.LOGGER.debug("have right cap");
-					ICharmEntity leftEntity = leftCap.getCharmEntities()[INNATE.getValue()].get(0);	
-					if (Treasure.LOGGER.isDebugEnabled()) {
-						Treasure.LOGGER.debug("leftEntity.level -> {}, rightCap.maxLevel -> {}", leftEntity.getCharm().getLevel(), rightCap.getMaxCharmLevel());
-					}
-					if (rightCap.getMaxCharmLevel() >= leftEntity.getCharm().getLevel()) {
-						Treasure.LOGGER.debug("charm can take imbuing");
-
-						Optional<ItemStack> output;
-						if (rightCap.isSource()) {
-							Treasure.LOGGER.debug("charm is a source -> do innate");
-							// TODO create method.  all the same steps, just different inventories
-							// check the innate size
-							//							if (rightCap.getCharmEntities()[InventoryType.INNATE.getValue()].size() < rightCap.getMaxInnateSize()) {								
-							//								outputItem.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(outputCap -> {
-							//									// copy existing charms from right to output
-							//									outputCap.setCharmEntities(rightCap.getCharmEntities());
-							//									// copy left charm to output innate
-							//									outputCap.add(InventoryType.INNATE, leftEntity);
-							//									// TODO set the output
-							//								});
-							//							}
-							output = createCharmOutputStack(right.getItem(), leftEntity, rightCap, INNATE);
-						}
-						else {
-							Treasure.LOGGER.debug("charm is not a source -> do imbue");
-							// check the imbue size
-							output = createCharmOutputStack(right.getItem(), leftEntity, rightCap, IMBUE);
-						}
-						if (output.isPresent()) {
-							Treasure.LOGGER.debug("output is present");
-							event.setOutput(output.get());
-						}
-					}
-				});
+	}
+	
+	@Deprecated
+	// use TreasureAdornments version
+	private static Optional<Adornment> getAdornment(ItemStack baseStack, ItemStack stoneStack) {
+		AtomicReference<Optional<Adornment>> ref = new AtomicReference<>(Optional.empty());
+		if (baseStack.getCapability(TreasureCapabilities.CHARMABLE).isPresent() && baseStack.getItem() instanceof Adornment) {
+			baseStack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
+				Adornment sourceAdornment = (Adornment) baseStack.getItem();
+				Optional<Adornment> adornment = TreasureAdornmentRegistry.get(sourceAdornment.getType(), sourceAdornment.getSize(), cap.getBaseMaterial(), stoneStack.getItem().getRegistryName());
+				ref.set(adornment);
 			});
 		}
+		return ref.get();
+	}
+	
+	/**
+	 * 
+	 * @param dest
+	 * @param sourceItem
+	 * @param charmEntities
+	 * @return
+	 */
+	@Deprecated
+	// use TreasureAdornments version
+	private static ItemStack copyStack(final ItemStack source, final ItemStack dest) {
+		ItemStack resultStack = dest.copy(); // <-- is this necessary?
+		// save the source item
+		ResourceLocation sourceItem = resultStack.getCapability(CHARMABLE).map(c -> c.getSourceItem()).orElse(null);
+
+		// copy item damage
+		resultStack.setDamageValue(source.getDamageValue());
+
+		// copy the capabilities
+		source.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
+			Treasure.LOGGER.debug("calling durability copyTo()");
+			cap.copyTo(resultStack);
+		});
+
+		resultStack.getCapability(CHARMABLE).ifPresent(resultCap -> {
+			resultCap.clearCharms();			
+			source.getCapability(CHARMABLE).ifPresent(sourceCap -> {
+				sourceCap.copyTo(resultStack);
+			});			
+		});
+
+
+		resultStack.getCapability(RUNESTONES).ifPresent(resultCap -> {
+			resultCap.clear();			
+			source.getCapability(RUNESTONES).ifPresent(sourceCap -> {
+				sourceCap.copyTo(resultStack);
+			});
+		});	
+
+		// reset the source item
+		resultStack.getCapability(CHARMABLE).ifPresent(cap -> {
+			cap.setSourceItem(sourceItem);
+		}); 
+		
+		return resultStack;
 	}
 }

@@ -22,11 +22,16 @@ import net.minecraft.world.World;
  */
 public class JewelledKey extends KeyItem {
 
+	public JewelledKey(Item.Properties properties) {
+		super(properties);
+	}
+	
 	/**
 	 * 
 	 * @param modID
 	 * @param name
 	 */
+	@Deprecated
 	public JewelledKey(String modID, String name, Item.Properties properties) {
 		super(modID, name, properties);
 	}

@@ -21,7 +21,8 @@ package com.someguyssoftware.treasure2.capability;
 
 import java.util.List;
 
-import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
+import com.google.common.collect.Multimap;
+import com.someguyssoftware.treasure2.capability.modifier.ILevelModifier;
 import com.someguyssoftware.treasure2.charm.ICharm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 
@@ -35,23 +36,49 @@ import net.minecraft.world.World;
  * CharmableCapability is a capability that has an ICharmEntity inventory
  * 
  * @author Mark Gottschling on Apr 27, 2020
+ * @version 2.0
+ * @since Aug 31, 2022
  *
  */
 public interface ICharmableCapability {
-	public List<ICharmEntity>[] getCharmEntities();
-	public void setCharmEntities(List<ICharmEntity>[] entities);
 	
+	Multimap<InventoryType, ICharmEntity> getCharmEntities();
+	
+	boolean isCharmed();
+
+	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag);
+	void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag, InventoryType inventoryType, boolean titleFlag);
+	
+	/**
+	 * 
+	 * @param charm
+	 * @return
+	 */
+	boolean contains(ICharm charm);
+
 	/**
 	 * Convenience method.
 	 * @param type
 	 * @param entity
-	 */	
+	 */
 	void add(InventoryType type, ICharmEntity entity);
+
+	/**
+	 * 
+	 * @param type
+	 * @param index
+	 */
+	void remove(InventoryType type, int index);
 	
-	public boolean isCharmed();
-	int getMaxCharmLevel();
-	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag);	
-	
+	/**
+	 * Convenience method
+	 * @param type
+	 * @return
+	 */
+	int getMaxSize(InventoryType type);
+
+	int getCurrentSize(InventoryType type);
+
 	public boolean isSource();
 	public void setSource(boolean source);
 	
@@ -60,24 +87,18 @@ public interface ICharmableCapability {
 	
 	public boolean isInnate();
 	public void setInnate(boolean innate);
-	public int getMaxInnateSize();
 	
 	public boolean isImbuable();
 	public void setImbuable(boolean imbue);
-	public int getMaxImbueSize();
 	
 	public boolean isImbuing();
 	public void setImbuing(boolean imbuing);
 	
 	public boolean isSocketable();
 	public void setSocketable(boolean socketable);
-	public int getMaxSocketsSize();
-	
-	public int getMaxSize(InventoryType type);
-	
-	void setMaxSocketsSize(int maxSocketsSize);
-	void setMaxImbueSize(int maxImbueSize);
-	void setMaxInnateSize(int maxInnateSize);
+
+	boolean isExecuting();
+	public void setExecuting(boolean executing);
 	
 	ResourceLocation getBaseMaterial();
 	void setBaseMaterial(ResourceLocation baseMaterial);
@@ -85,18 +106,48 @@ public interface ICharmableCapability {
 	ResourceLocation getSourceItem();
 	void setSourceItem(ResourceLocation sourceItem);
 	
-	public boolean contains(ICharm charm);
-	public List<ICharmEntity> getAllCharmEntities();
-	ICharmEntity getHighestLevel();
-	void setHighestLevel(ICharmEntity highestLevel);
-	
-	void remove(InventoryType type, int index);
-	boolean isExecuting();
-	public void setExecuting(boolean executing);
 	boolean isNamedByMaterial();
 	void setNamedByMaterial(boolean namedByMaterial);
+	
 	boolean isNamedByCharm();
 	void setNamedByCharm(boolean namedByCharm);
 
+	/**
+	 * 
+	 */
+	int getMaxCharmLevel();
+	
+	// wrapper methods
+	void setMaxSocketSize(int size);
+	int getMaxSocketSize();
+
+	int getMaxImbueSize();
+
+	int getMaxInnateSize();
+
+	int getSocketSize();
+	void addMaxSocketSize(int increment);
+
+	int getImbueSize();
+
+	int getInnateSize();
+
+	ICharmEntity getHighestLevel();
+
+	void setHighestLevel(ICharmEntity highestLevel);
+
+	ILevelModifier getLevelModifier();
+
+	void setLevelModifier(ILevelModifier levelModifier);
+
+	void clearCharms();
+
+	ITextComponent getCapacityHoverText(ItemStack stack, World world, InventoryType type);
+
+	void transferTo(ItemStack dest, InventoryType sourceType, InventoryType destType);
+
+	void copyTo(ItemStack source);
+
+	boolean hasCharmType(ItemStack source, ItemStack dest, InventoryType sourceType, InventoryType destType);
 
 }

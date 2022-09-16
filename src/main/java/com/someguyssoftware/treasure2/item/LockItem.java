@@ -60,9 +60,31 @@ public class LockItem extends ModItem {
 
 	/**
 	 * 
+	 * @param properties
+	 * @param keys
+	 */
+	public LockItem(Item.Properties properties, KeyItem[] keys) {
+		this(properties);
+		getKeys().addAll(Arrays.asList(keys));
+	}
+	
+	/**
+	 * 
+	 * @param properties
+	 */
+	public LockItem(Item.Properties properties) {
+		super(properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
+		setCategory(Category.ELEMENTAL);
+		setRarity(Rarity.COMMON);
+		setCraftable(false);
+	}
+	
+	/**
+	 * 
 	 * @param item
 	 * @param keys
 	 */
+	@Deprecated
 	public LockItem(String modID, String name, Item.Properties properties, KeyItem[] keys) {
 		this(modID, name, properties);
 		getKeys().addAll(Arrays.asList(keys));
@@ -72,8 +94,9 @@ public class LockItem extends ModItem {
 	 * 
 	 * @param item
 	 */
+	@Deprecated
 	public LockItem(String modID, String name, Item.Properties properties) {
-		super(modID, name, properties.tab(TreasureItemGroups.MOD_ITEM_GROUP));
+		super(modID, name, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
 		setCategory(Category.ELEMENTAL);
 		setRarity(Rarity.COMMON);
 		setCraftable(false);

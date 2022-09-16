@@ -17,6 +17,7 @@ import com.someguyssoftware.gottschcore.world.gen.structure.PlacementSettings;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.TemplateGeneratorData;
@@ -33,7 +34,6 @@ import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraftforge.common.DungeonHooks;
@@ -65,7 +65,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		Biome biome = world.getBiome(coords.toPos());
 		
 		// get the template from the given archetype, type and biome
-		TemplateHolder holder = TreasureTemplateRegistry.getTemplateManager().getTemplate(random, StructureArchetype.SURFACE, StructureType.MARKER, biome);
+		TemplateHolder holder = TreasureTemplateRegistry.getManager().getTemplate(random, StructureArchetype.SURFACE, StructureType.MARKER, biome);
 		if (holder == null) {
 			return result.fail();
 		}
@@ -74,14 +74,14 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		// get the offset
 		int offset = 0;
 //		ICoords offsetCoords = ((GottschTemplate2)holder.getTemplate()).findCoords(random, TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.OFFSET));
-		ICoords offsetCoords = TreasureTemplateRegistry.getTemplateManager().getOffset(random, holder, StructureMarkers.OFFSET);
+		ICoords offsetCoords = TreasureTemplateRegistry.getManager().getOffset(random, holder, StructureMarkers.OFFSET);
 		if (offsetCoords != null) {
 			offset = -offsetCoords.getY();
 		}
 		
 		// find entrance
 //		ICoords entranceCoords =((GottschTemplate2)holder. getTemplate()).findCoords(random, TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.ENTRANCE));
-		ICoords entranceCoords =TreasureTemplateRegistry.getTemplateManager().getOffset(random, holder, StructureMarkers.ENTRANCE);
+		ICoords entranceCoords =TreasureTemplateRegistry.getManager().getOffset(random, holder, StructureMarkers.ENTRANCE);
 		if (entranceCoords == null) {
 			Treasure.LOGGER.debug("Unable to locate entrance position.");
 			return result.fail();
@@ -120,9 +120,9 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 		List<BlockContext> spawnerContexts =
-				(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.SPAWNER));
+				(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
 		List<BlockContext> proximityContexts =
-				(List<BlockContext>) genResult.getData().getMap().get(TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
+				(List<BlockContext>) genResult.getData().getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
 		
 		// TODO exact same as SubmergedRuinGenerator... need to put them in an abstract/interface common to all structure generators
 		// populate vanilla spawners

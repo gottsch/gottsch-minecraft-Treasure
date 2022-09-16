@@ -38,21 +38,18 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.adornment.TreasureAdornments;
-import com.someguyssoftware.treasure2.capability.CharmableCapability.InventoryType;
+import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
-import com.someguyssoftware.treasure2.capability.TreasureCharmables;
-import com.someguyssoftware.treasure2.charm.CharmableMaterial;
+import com.someguyssoftware.treasure2.charm.Charm;
+import com.someguyssoftware.treasure2.charm.HealingCharm;
 import com.someguyssoftware.treasure2.charm.ICharm;
-import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
-import com.someguyssoftware.treasure2.item.Adornment;
+import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootFunctions;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.loot.IRandomRange;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootFunction;
@@ -61,41 +58,49 @@ import net.minecraft.loot.RandomRanges;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 /**
- * This function will add charms to the INNATE inventory of an item with CharmableCapability by default.
- * @author Mark Gottschling on Aug 20, 2021
+ * Levels and Rarity/Rarites are mutally exclusive, with Rarity/Rarities having override priority.
+ * @author Mark Gottschling on May 1, 2020
+ * @param <ICharmType>
  *
  */
 public class CharmRandomly extends LootFunction {
 	private static final String CHARM = "charm";
 	private static final String LEVELS = "levels";
+	private static final String RARITY = "rarity";
+	private static final String RARITIES = "rarities";
 	private static final String CURSE_CHANCE = "curseChance";
-
 
 	private List<ICharm> charms;
 	private IRandomRange levels;
-	private List<String> gems;
+	private Rarity rarity;
 	private InventoryType type;
 	private IRandomRange curseChance;
 
 	/**
 	 * 
 	 * @param conditions
+	 * @param charms
 	 */
-	protected CharmRandomly(ILootCondition[] conditions, @Nullable List<ICharm> charms, IRandomRange range, InventoryType type) {
-		super(conditions);
-		this.charms = charms == null ? Collections.emptyList() : charms;
-		this.levels = range;
-		this.type = type;
-	}
-
-	protected CharmRandomly(ILootCondition[] conditions, @Nullable List<ICharm> charms, IRandomRange levels, InventoryType type, IRandomRange curseChance) {
+	public CharmRandomly(ILootCondition[] conditions, @Nullable List<ICharm> charms, IRandomRange levels, InventoryType type) {
 		super(conditions);
 		this.charms = charms == null ? Collections.emptyList() : charms;
 		this.levels = levels;
+		this.type = type;
+	}
+
+	/**
+	 * 
+	 * @param conditions
+	 * @param charms
+	 * @param range
+	 */
+	public CharmRandomly(ILootCondition[] conditions, @Nullable List<ICharm> charms, IRandomRange levels, Rarity rarity, InventoryType type, IRandomRange curseChance) {
+		super(conditions);
+		this.charms = charms == null ? Collections.emptyList() : charms;
+		this.levels = levels;
+		this.rarity = rarity;
 		this.type = type;
 		this.curseChance = curseChance;
 	}
@@ -104,41 +109,68 @@ public class CharmRandomly extends LootFunction {
 	public LootFunctionType getType() {
 		return TreasureLootFunctions.CHARM_RANDOMLY;
 	}
-
+	
 	@Override
 	protected ItemStack run(ItemStack stack, LootContext context) {
 		Random rand = context.getRandom();
-		Treasure.LOGGER.debug("selected item from charm pool -> {}", stack.getDisplayName().getString());
-		stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
-			Treasure.LOGGER.debug("has charm cap");
-			ICharm charm = null;
+		Treasure.LOGGER.debug("incoming stack -> {}", stack.getDisplayName().toString());
+		// ensure that the stack has charm capabilities
+		if (!stack.getCapability(TreasureCapabilities.CHARMABLE).isPresent()) {
+			return stack;
+		}
+		Treasure.LOGGER.debug("has charm cap");
 
+		stack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(charmCap -> {
+			// default charm
+			ICharm defaultCharm = TreasureCharmRegistry.get(ModUtils.asLocation(Charm.Builder.makeName(HealingCharm.TYPE, 1))).get();
+			ICharm charm = defaultCharm;
+			
+			List<ICharm> tempCharms = new ArrayList<>();
+			int defaultLevel = charmCap.getMaxCharmLevel();
+
+			Optional<List<ICharm>> charmList = Optional.empty();
+			// select random level
+			int level = this.levels == null ? defaultLevel : this.levels.getInt(rand);
+
+			// explicity charms list is empty
 			if (this.charms.isEmpty()) {
-				List<ICharm> tempCharms = new ArrayList<>();			
-
+				// check the rarity property
+				if (rarity != null) {
+					// ensure that rarity isn't higher than rarity of adornment
+					if (TreasureCharms.LEVEL_RARITY.get(charmCap.getMaxCharmLevel()).getCode() > rarity.getCode()) {
+						rarity = TreasureCharms.LEVEL_RARITY.get(charmCap.getMaxCharmLevel());
+					}				
+					charmList = TreasureCharmRegistry.get(rarity);
+					if (charmList.isPresent()) {
+						tempCharms.addAll(charmList.get());
+					}
+					else {
+						charm = defaultCharm;
+					}
+				}
 				// check the levels property
-				if(levels != null) {
-					int level = this.levels.getInt(rand);
+				else if(levels != null) {
+					int lambdaLevel = level;
 					// TODO if level > cap's max level, then use the max level
-
-					double curseProb = this.curseChance != null ? this.levels.getInt(rand) : 0.0;
+					double curseProb = this.curseChance != null ? this.levels.getInt(rand) : 0D;
 					Treasure.LOGGER.debug("curse chance -> {}", curseProb);
+
+					// get all the charms from level
 					Optional<List<ICharm>> levelCharms;
 					if (curseProb > 0.0) {
 						levelCharms = TreasureCharmRegistry.getBy(c -> {
 							if (c.isCurse()) {
-								return c.getLevel() == level && RandomHelper.checkProbability(rand, curseProb);
+								return c.getLevel() == lambdaLevel && RandomHelper.checkProbability(rand, curseProb);
 							}
 							else {
-								return c.getLevel() == level;
+								return c.getLevel() == lambdaLevel;
 							}
 						});
 					}
 					else {
 						// get all the charms from level
-						//						levelCharms = TreasureCharmRegistry.get(level);
 						levelCharms = TreasureCharmRegistry.getBy(c -> {
-							return  c.getLevel() == level && !c.isCurse();
+							return  c.getLevel() == lambdaLevel && !c.isCurse();
 						});
 					}
 
@@ -147,10 +179,9 @@ public class CharmRandomly extends LootFunction {
 					}
 				}
 				else {
-					// TODO determine if there is a source item, get the min spawn level and add that to the Predicate
 					// if charms list is empty and levels are null, create a default list of minor charms
 					Optional<List<ICharm>> defaultCharms = TreasureCharmRegistry.getBy(c -> {
-						return c.getLevel() <= cap.getMaxCharmLevel() && !c.isCurse();
+						return c.getLevel() <= charmCap.getMaxCharmLevel() && !c.isCurse();
 					});
 					if (defaultCharms.isPresent()) {
 						tempCharms.addAll(defaultCharms.get());
@@ -158,10 +189,6 @@ public class CharmRandomly extends LootFunction {
 				}
 				Treasure.LOGGER.debug("temp charms size -> {}", tempCharms.size());
 				if (!tempCharms.isEmpty()) {
-					// TEMP dump all charms
-					for (ICharm c : tempCharms) {
-						Treasure.LOGGER.debug("temp charm -> {}", c.getName().toString());
-					}
 					// select a charm randomly
 					charm = tempCharms.get(rand.nextInt(tempCharms.size()));
 					Treasure.LOGGER.debug("selected charm for item -> {}", charm.getName().toString());
@@ -173,59 +200,33 @@ public class CharmRandomly extends LootFunction {
 				Treasure.LOGGER.debug("selected charm for item -> {}", charm.getName().toString());
 			}
 
-			// short-circuit if no charm is selected
+			// short-circuit if a charm is not selected
 			if (charm == null) {
 				return;
 			}
-			
-//			if (charm != null) {		
-				Treasure.LOGGER.debug("charm is not null -> {}", charm.getName());
-				if (!cap.contains(charm)) {
-					Treasure.LOGGER.debug("adding charm to charm instances - > {}", charm.getName().toString());
-					cap.add(type, charm.createEntity());
-					// TODO have to enable the property corresponding to the type. ex. cap.setInnate = true if type == INNATE
-				}
-//			}
 
-			// cycle thru all charms in cap inventory to determine highest level charm
-			int highestLevel = cap.getHighestLevel().getCharm().getLevel();
-
-			/*
-			 *  select the correct gem/sourceItem
-			 */
-			if (cap.getSourceItem() == null || cap.getSourceItem().equals(Items.AIR.getRegistryName())) {
-				Optional<CharmableMaterial> baseMaterial = TreasureCharms.getBaseMaterial(cap.getBaseMaterial());
-				if (baseMaterial.isPresent()) { // <-- TOOD need a better check for items that take source items. ie charm books don't take different types of source items
-					int baseMaterialLevel = baseMaterial.get().getMaxLevel();
-					// if the highest charm level is > the base's max level, then select a gem to increase the items total max level
-					if (highestLevel > baseMaterialLevel) {
-						List<CharmableMaterial> gems = TreasureCharms.getGemValues();
-						Collections.sort(gems, TreasureCharms.levelComparator);
-						for (CharmableMaterial gem : gems) {
-							if (baseMaterialLevel + Math.floor(baseMaterial.get().getLevelMultiplier() * gem.getMaxLevel()) >= highestLevel) {
-								cap.setSourceItem(gem.getName());
-								break;
-							}
-						}
-					}
-					// set the hover name
-					if (cap.isNamedByMaterial() || cap.isNamedByCharm()) {
-						TreasureCharmables.setHoverName(stack);
-					}
-//					if (stack.getItem() instanceof Adornment) { // TODO update to use tags?
-//						TreasureAdornments.setHoverName(stack);
-//					}
-				}		
+			Treasure.LOGGER.debug("charm is not null -> {}", charm.getName());
+			if (!charmCap.contains(charm)) {
+				Treasure.LOGGER.debug("adding charm to charm instances - > {}", charm.getName().toString());
+				charmCap.add(type, charm.createEntity());
 			}
 		});
-		Treasure.LOGGER.debug("returning charmed item -> {}", stack.getDisplayName().getString());
+
+
+		Treasure.LOGGER.debug("returning charmed item -> {}", stack.getDisplayName().toString());
 		return stack;
 	}
 
+	/*
+	 * 
+	 */
 	public static CharmRandomly.Builder builder() {
 		return new CharmRandomly.Builder();
 	}
-
+	
+	/*
+	 * 
+	 */
 	public static class Builder extends LootFunction.Builder<CharmRandomly.Builder> {
 		List<ICharm> charms;
 		IRandomRange range;
@@ -247,9 +248,17 @@ public class CharmRandomly extends LootFunction {
 			return new CharmRandomly(this.getConditions(), charms, range, InventoryType.INNATE);
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @author Mark Gottschling on May 1, 2020
+	 *
+	 */
 	public static class Serializer extends LootFunction.Serializer<CharmRandomly> {
 
+		/**
+		 * 
+		 */
 		@Override
 		public void serialize(JsonObject json, CharmRandomly value, JsonSerializationContext context) {
 			if (!value.charms.isEmpty()) {
@@ -259,39 +268,52 @@ public class CharmRandomly extends LootFunction {
 				}
 				json.add("charms", jsonArray);
 			}
-			if (!value.gems.isEmpty()) {
-				JsonArray jsonArray = new JsonArray();
-				for (String gem : value.gems) {
-					jsonArray.add(new JsonPrimitive(gem));
-				}
-				json.add("gems", jsonArray);
+
+			if (value.levels != null) {
+				json.add(LEVELS, context.serialize(value.levels));
 			}
-			json.add("levels", RandomRanges.serialize(value.levels, context));
-			json.add(CURSE_CHANCE, RandomRanges.serialize(value.curseChance, context));
+			if (value.rarity != null) {
+				json.add(RARITY, new JsonPrimitive(value.rarity.name())); // TODO toString() ?
+			}
+			if (value.curseChance != null) {
+				json.add(CURSE_CHANCE, context.serialize(value.curseChance));
+			}
 		}
 
-		@Override
-		public CharmRandomly deserialize(JsonObject json, JsonDeserializationContext context,
-				ILootCondition[] conditions) {
-
+		/**
+		 * 
+		 */
+		public CharmRandomly deserialize(JsonObject json, JsonDeserializationContext deserializationContext,
+				ILootCondition[] conditionsIn) {
 			Map<String, ICharm> charmsByType = new HashMap<>(10);
 			List<ICharm> list = Lists.<ICharm>newArrayList();
 
-			IRandomRange range = null;
-			if (json.has("levels")) {
-				range = RandomRanges.deserialize(json.get("levels"), context);	
+			IRandomRange levels = null;
+			if (json.has(LEVELS)) {
+				levels = RandomRanges.deserialize(json.get("levels"), deserializationContext);
+			}
+
+			Rarity rarity = null;
+			if (json.has(RARITY)) {
+				String rarityString = JSONUtils.getAsString(json, RARITY);
+				try {
+					rarity = Rarity.valueOf(rarityString.toUpperCase());
+				}
+				catch(Exception e) {
+					Treasure.LOGGER.error("Unable to convert rarity {} to Rarity", rarityString);
+				}
 			}
 
 			IRandomRange curseChance = null;
 			if (json.has(CURSE_CHANCE)) {
-				range = RandomRanges.deserialize(json.get(CURSE_CHANCE), context);	
+				curseChance = RandomRanges.deserialize(json.get(CURSE_CHANCE), deserializationContext);
 			}
 
 			if (json.has("charms")) {
 				for (JsonElement element : JSONUtils.getAsJsonArray(json, "charms")) {
 					String charmName = JSONUtils.convertToString(element, "charm");
-
 					Optional<ICharm> charm = TreasureCharmRegistry.get(ModUtils.asLocation(charmName));
+
 					if (!charm.isPresent()) {
 						Treasure.LOGGER.warn("Unknown charm '{}'", charmName);
 					}
@@ -304,7 +326,6 @@ public class CharmRandomly extends LootFunction {
 					}
 				}
 			}
-			// TODO get gems
 
 			InventoryType type = InventoryType.INNATE;
 			if (json.has("type")) {
@@ -312,10 +333,12 @@ public class CharmRandomly extends LootFunction {
 				try {
 					type = InventoryType.valueOf(typeString.toUpperCase());
 				}
-				catch(Exception e) {}
+				catch(Exception e) {
+					Treasure.LOGGER.error("Unable to convert type {} to InventoryType", typeString);
+				}
 			}
-			return new CharmRandomly(conditions, list, range, type, curseChance);
-		}
 
+			return new CharmRandomly(conditionsIn, list, levels, rarity, type, curseChance);
+		}
 	}
 }

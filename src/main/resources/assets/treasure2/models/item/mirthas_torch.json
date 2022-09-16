@@ -1,7 +1,6 @@
 {
-    "parent": "item/handheld",
+    "parent": "treasure2:item/adornment",
     "textures": {
-		"__comment": "default",
-		"layer0": "treasure2:item/adornment/gold_white_pearl_bracelet"
+        "layer0": "treasure2:item/adornments/mirthas_torch"
     }
 }
