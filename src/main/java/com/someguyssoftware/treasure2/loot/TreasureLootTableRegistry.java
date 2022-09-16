@@ -50,7 +50,6 @@ public final class TreasureLootTableRegistry {
 	private static final String LOOT_TABLES_FOLDER = "loot_tables";
 	private static final List<String> REGISTERED_MODS;
 	private static final Map<String, Boolean> LOADED_MODS;
-	private static final String SAVE_FORMAT_LEVEL_SAVE_SRG_NAME = "field_71310_m";
 
 	private static LootResources lootResources;
 	private static TreasureLootTableMaster2 lootTableMaster;

@@ -46,21 +46,23 @@ import com.someguyssoftware.gottschcore.meta.IMeta;
 import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 import com.someguyssoftware.gottschcore.meta.IMetaTheme;
 import com.someguyssoftware.gottschcore.meta.IMetaType;
-import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.SaveFormat;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 /**
  * @author Mark Gottschling on Jul 29, 2019
  *
  */
 public class TreasureMetaManager {
-	
+	private static final String SAVE_FORMAT_LEVEL_SAVE_SRG_NAME = "field_71310_m";
 	protected static final Gson GSON_INSTANCE;
 	private File worldSaveFolder;
 	private final Map<String, IMeta> metaMap = Maps.<String, IMeta>newHashMap();
@@ -82,7 +84,16 @@ public class TreasureMetaManager {
 	public TreasureMetaManager() {
 	}
 
-	public static void init(ServerWorld world) {	
+	/**
+	 * 
+	 * @param world
+	 */
+	public void init(ServerWorld world) {	
+		Object save = ObfuscationReflectionHelper.getPrivateValue(MinecraftServer.class, world.getServer(), SAVE_FORMAT_LEVEL_SAVE_SRG_NAME);
+		if (save instanceof SaveFormat.LevelSave) {
+			Path path = ((SaveFormat.LevelSave) save).getWorldDir();
+			setWorldSaveFolder(path.toFile());
+		}
 	}
 	
 	/**

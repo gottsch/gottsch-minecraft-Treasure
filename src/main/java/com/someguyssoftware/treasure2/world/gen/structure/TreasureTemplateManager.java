@@ -74,6 +74,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.DefaultTypeReferences;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.SaveFormat;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
@@ -83,7 +86,8 @@ import net.minecraftforge.registries.ForgeRegistries;
  *
  */
 public class TreasureTemplateManager extends GottschTemplateManager {
-
+	private static final String SAVE_FORMAT_LEVEL_SAVE_SRG_NAME = "field_71310_m";
+	
 	private final Map<ResourceLocation, TemplateHolder> templatesByResourceLocation = new HashMap<>();
 	
 	private final Table<IMetaArchetype, IMetaType, List<TemplateHolder>> templatesByArchetypeType = HashBasedTable.create();
@@ -120,7 +124,15 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 			}
 		}
 	}
-
+	
+	public void init(ServerWorld world) {
+		Object save = ObfuscationReflectionHelper.getPrivateValue(MinecraftServer.class, world.getServer(), SAVE_FORMAT_LEVEL_SAVE_SRG_NAME);
+		if (save instanceof SaveFormat.LevelSave) {
+			Path path = ((SaveFormat.LevelSave) save).getWorldDir();
+			setWorldSaveFolder(path.toFile());
+		}
+	}
+	
 	/**
 	 * 
 	 */
@@ -232,21 +244,27 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 	 * @param modID
 	 */
 	private void createTemplateFolder(String modID) {
-
+		List<Path> folders = Arrays.asList(
+				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "submerged"),
+				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "subterranean"),
+				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "surface"),
+				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "wells")
+				);
 		/*
 		 *  build a path to the specified location
 		 *  ie ../[WORLD SAVE]/datapacks/[MODID]/templates
 		 */
-		Path folder = Paths.get(getWorldSaveFolder().getPath(), "data", "structures", modID).toAbsolutePath();
-		if (Files.notExists(folder)) {
-			Treasure.LOGGER.debug("template folder \"{}\" will be created.", folder.toString());
-			try {
-				Files.createDirectories(folder);
+		folders.forEach(folder -> {
+			if (Files.notExists(folder)) {
+				Treasure.LOGGER.debug("template folder \"{}\" will be created.", folder.toString());
+				try {
+					Files.createDirectories(folder);
 
-			} catch (IOException e) {
-				Treasure.LOGGER.warn("Unable to create template folder \"{}\"", folder.toString());
+				} catch (IOException e) {
+					Treasure.LOGGER.warn("Unable to create template folder \"{}\"", folder.toString());
+				}
 			}
-		}
+		});
 	}
 	
 	/**

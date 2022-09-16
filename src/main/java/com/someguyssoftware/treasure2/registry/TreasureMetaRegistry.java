@@ -65,12 +65,7 @@ public class TreasureMetaRegistry {
 	 */
 	public static void create(ServerWorld world) {
 		TreasureMetaRegistry.world = world;
-		Object save = ObfuscationReflectionHelper.getPrivateValue(MinecraftServer.class, world.getServer(), SAVE_FORMAT_LEVEL_SAVE_SRG_NAME);
-		if (save instanceof SaveFormat.LevelSave) {
-			Path path = ((SaveFormat.LevelSave) save).getWorldDir();
-			META_MANAGER.setWorldSaveFolder(path.toFile());
-		}
-		
+		META_MANAGER.init(world);
 	}
 	
 	public static void register(String modID) {

@@ -167,6 +167,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		}
 		// create pack.mcmeta if not already exist
 		createPack();
+		createDataPacksFolder();
 	}
 
 	/**
@@ -199,6 +200,18 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 			}
 		} catch (Exception e) {
 			Treasure.LOGGER.error("Unable to create pack.mcmeta:", e);
+		}
+	}
+	
+	protected void createDataPacksFolder() {
+		Path packPath = Paths.get(getWorldSaveFolder().getPath(), "data", Treasure.MODID, "loot_tables");
+		try {
+			// check if file already exists
+			if (Files.notExists(packPath)) { 
+				Files.createDirectories(packPath);
+			}
+		} catch (Exception e) {
+			Treasure.LOGGER.error("Unable to create meta datapacks folder: ", e);
 		}
 	}
 

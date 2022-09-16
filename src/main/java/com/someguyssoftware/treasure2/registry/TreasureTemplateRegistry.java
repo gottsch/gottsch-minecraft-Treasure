@@ -52,7 +52,6 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 public class TreasureTemplateRegistry {
 	private static final String TEMPLATES_FOLDER = "structures";
 	
-	private static final String SAVE_FORMAT_LEVEL_SAVE_SRG_NAME = "field_71310_m";
 	private static final TreasureTemplateManager TEMPLATE_MANAGER;
 	private static final Set<String> MODS;
 	private static final Map<String, Boolean> MODS_LOADED;
@@ -76,11 +75,7 @@ public class TreasureTemplateRegistry {
 	 */
 	public static void create(ServerWorld world) {
 		TreasureTemplateRegistry.world = world;
-		Object save = ObfuscationReflectionHelper.getPrivateValue(MinecraftServer.class, world.getServer(), SAVE_FORMAT_LEVEL_SAVE_SRG_NAME);
-		if (save instanceof SaveFormat.LevelSave) {
-			Path path = ((SaveFormat.LevelSave) save).getWorldDir();
-		TEMPLATE_MANAGER.setWorldSaveFolder(path.toFile());
-		}
+		TEMPLATE_MANAGER.init(world);
 	}
 	
 	/**
