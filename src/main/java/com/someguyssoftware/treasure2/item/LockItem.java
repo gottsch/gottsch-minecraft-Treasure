@@ -36,7 +36,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling onJan 10, 2018
  *
  */
-public class LockItem extends ModItem {
+public class LockItem extends ModItem implements ILockEffects {
 
 	/*
 	 * The category that the lock belongs to
@@ -186,13 +186,12 @@ public class LockItem extends ModItem {
 			Treasure.LOGGER.info("handleHeldLock | lockState -> {}", lockState);
 			if (lockState != null && lockState.getLock() == null) {
 				lockState.setLock(lock);
+
+				doLockedEffects(tileEntity.getWorld(), player, tileEntity.getPos(), tileEntity, lockState);						 
+
 				tileEntity.sendUpdates(); // TODO won't send until implement read/write nbt
 				// decrement item in hand
 				heldItem.shrink(1);
-//				if (heldItem.getCount() <=0 && !player.capabilities.isCreativeMode) {
-//					IInventory inventory = player.inventory;
-//					inventory.setInventorySlotContents(player.inventory.currentItem, null);
-//				}
 				lockedAdded = true;
 				break;
 			}

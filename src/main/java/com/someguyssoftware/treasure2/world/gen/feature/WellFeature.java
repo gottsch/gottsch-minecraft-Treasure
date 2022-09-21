@@ -58,27 +58,12 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 	// the number of blocks of half a chunk (radius) (a chunk is 16x16)
 	public static final int CHUNK_RADIUS = 8;
 
-    private Map<String, Integer> chunksSinceLastDimensionWell = new HashMap<>();
-
 	/**
 	 * 
 	 */
 	public WellFeature(Codec< NoFeatureConfig> configFactory) {
         super(configFactory);
         this.setRegistryName(Treasure.MODID, "wells");
-
-        try {
-			init();
-		} catch (Exception e) {
-			Treasure.LOGGER.error("Unable to instantiate WellFeature:", e);
-		}
-	}
-
-	public void init() {
-        // setup dimensional properties
-		for (String dimension : TreasureConfig.GENERAL.dimensionsWhiteList.get()) {
-			chunksSinceLastDimensionWell.put(dimension, 0);
-		}
 	}
 	
 	@Override
@@ -88,39 +73,26 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 //    	String dimensionName = world.getDimension().getType().getRegistryName().toString();
 		ResourceLocation dimensionName = WorldInfo.getDimension(seedReader.getLevel());
    	
-        if (!checkDimensionWhiteList(dimensionName.toString())) {
-            return false;
-        }
+		// test the dimension white list
+		if (!meetsDimensionCriteria(dimensionName)) { 
+			return false;
+		}
 
     	BlockPos centerOfChunk = pos.offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1);
 //		Treasure.LOGGER.debug("center of chunk @ -> {}", centerOfChunk.toShortString());
 	
-		// spawn @ middle of chunk
-//		ICoords spawnCoords = new Coords(pos).add(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1);
-//		Biome biome = seedReader.getLevel().getBiome(spawnCoords.toPos());
-//        if (checkOceanBiomes(biome)) {
-//            return false;
-//        }
-
-        // increment the chunk counts
-		incrementDimensionalChunkCount(dimensionName.toString());
-        
-//		Treasure.LOGGER.debug("chunks since dimension {} last well -> {}, min chunks -> {}", dimensionName, chunksSinceLastDimensionWell.get(dimensionName), TreasureConfig.WELLS.chunksPerWell.get());
-		
         GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
-
-        // test if min chunks was met
-        int chunksSinceLastCount = chunksSinceLastDimensionWell.get(dimensionName.toString());
-		if (chunksSinceLastCount > TreasureConfig.WELLS.chunksPerWell.get()) {
-			Treasure.LOGGER.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastCount, TreasureConfig.WELLS.chunksPerWell.get()));
 
 			int landHeight = generator.getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Type.WORLD_SURFACE_WG) + 1;
 			ICoords spawnCoords = new Coords(centerOfChunk.getX(), landHeight, centerOfChunk.getZ());
 			Treasure.LOGGER.debug("spawns coords -> {}", spawnCoords.toShortString());
 
-			// reduce count by 20% (if fails - results in a quicker retry)
-			chunksSinceLastDimensionWell.put(dimensionName.toString(), new Double(chunksSinceLastCount - chunksSinceLastCount * 0.2).intValue());
-						
+		// TODO why not getDryLandSurfaceCoords -> check if same as above 
+		// ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, generator, new Coords(pos.offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
+		if (spawnCoords == WorldInfo.EMPTY_COORDS) {
+			return false;
+		}
+
 			// determine what type to generate
 			Wells well = Wells.values()[random.nextInt(Wells.values().length)];
 			IWellsConfig wellConfig = TreasureConfig.WELLS;
@@ -129,31 +101,46 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 				return false;
 			}
 			
-			// 1. test if chest meets the probability criteria
-			if (!RandomHelper.checkProbability(random, wellConfig.getGenProbability())) {
-				Treasure.LOGGER.debug("Well does not meet generate probability.");
-				return false;
-			}
+			// // 1. test if chest meets the probability criteria
+			// if (!RandomHelper.checkProbability(random, wellConfig.getGenProbability())) {
+			// 	Treasure.LOGGER.debug("Well does not meet generate probability.");
+			// 	return false;
+			// }
 
 			// 2. test if the override (global) biome is allowed
-			Biome biome = seedReader.getLevel().getBiome(spawnCoords.toPos());
-			TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, wellConfig.getBiomeWhiteList(), wellConfig.getBiomeBlackList());
-			if(biomeCheck == Result.BLACK_LISTED ) {
-				if (WorldInfo.isClientSide(seedReader.getLevel())) {
-					Treasure.LOGGER.debug("{} is not a valid biome @ {}", biome.getRegistryName().toString(), spawnCoords.toShortString());
-				}
-				else {
-					Treasure.LOGGER.debug("Biome is not valid @ {} for Well", spawnCoords.toShortString());
-				}					
-				return false;
-			}
-			
+			// Biome biome = seedReader.getLevel().getBiome(spawnCoords.toPos());
+			// TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, wellConfig.getBiomeWhiteList(), wellConfig.getBiomeBlackList());
+			// if(biomeCheck == Result.BLACK_LISTED ) {
+			// 	if (WorldInfo.isClientSide(seedReader.getLevel())) {
+			// 		Treasure.LOGGER.debug("{} is not a valid biome @ {}", biome.getRegistryName().toString(), spawnCoords.toShortString());
+			// 	}
+			// 	else {
+			// 		Treasure.LOGGER.debug("Biome is not valid @ {} for Well", spawnCoords.toShortString());
+			// 	}					
+			// 	return false;
+			// }
+
+		// 2. test if the override (global) biome is allowed
+		if (!meetsBiomeCriteria(world, spawnCoords, wellConfig)) {
+			return false;
+		}
+
+
 			// 3. check against all registered wells
 			if (checkWellProximity(seedReader, spawnCoords, TreasureConfig.WELLS.minDistancePerWell.get())) {
 				Treasure.LOGGER.debug("The distance to the nearest well is less than the minimun required.");
 				return false;
 			}		
 			
+			
+		// 4. check if meets the probability criteria
+		if (!meetsProbabilityCriteria(random)) {
+			// TODO place a placeholder well in the registry
+			// TODO chestInfo will require a type [WELL | NONE]
+			return false;
+		}
+		
+
 			// generate the well NOTE use the seedReader, not the level
 			Treasure.LOGGER.debug("Attempting to generate a well");
 			result = TreasureData.WELL_GEN.generate(seedReader, generator, random, spawnCoords, wellConfig); 
@@ -163,8 +150,6 @@ public class WellFeature extends Feature<NoFeatureConfig> implements ITreasureFe
 				Treasure.LOGGER.debug("getting well registry for dimension -> {}", dimensionName.toString());
 				TreasureData.WELL_REGISTRIES.get(dimensionName.toString()).register(spawnCoords);
 //				TreasureData.WELL_REGISTRIES.get(dimensionName.toString()).dump();
-				// reset chunk count
-				chunksSinceLastDimensionWell.put(dimensionName.toString(), 0);
 			}
 			
 			// save world data

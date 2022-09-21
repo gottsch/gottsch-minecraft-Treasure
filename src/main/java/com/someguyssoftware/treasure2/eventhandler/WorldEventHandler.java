@@ -44,7 +44,10 @@ import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 //@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class WorldEventHandler {
 
+	private boolean isLoaded = false;
+
 	// reference to the mod.
+	@Deprecated
 	private IMod mod;
 
 	/**
@@ -64,10 +67,10 @@ public class WorldEventHandler {
 			ServerWorld world = (ServerWorld) event.getWorld();
 			
 			Treasure.LOGGER.info("In world load event for dimension {}", WorldInfo.getDimension(world).toString());
-			if (WorldInfo.isSurfaceWorld(world)) {
-				// called once to initiate world-level properties in the registries
-//				TreasureLootTableRegistry.initialize(world);
-//				TreasureTemplateRegistry.initialize(world);
+			
+			// TODO instead of checking for minecraft:overworld, check for the first whitelist dimension
+			if (!isLoaded && TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(dimension.toString())) {
+			// if (WorldInfo.isSurfaceWorld(world)) {
 
 				// register mod's loot tables
 				TreasureLootTableRegistry.onWorldLoad(event);
@@ -82,6 +85,10 @@ public class WorldEventHandler {
 					feature.init();
 				});
 
+				// clear CHEST REGISTRIES
+				TreasureData.CHEST_REGISTRIES2.entrySet().forEach(entry -> {
+					entry.getValue().clear();
+				});
 				/*
 				 * un-load the chest registry
 				 */
@@ -92,54 +99,11 @@ public class WorldEventHandler {
 				});		
 				TreasureGenerationSavedData.get(world);
 				//			Treasure.logger.debug("Chest registry size after world event load -> {}", ChestRegistry.getInstance().getValues().size());
+
+				isLoaded = true;
 			}	
 		}
 	}
-
-//	@SubscribeEvent
-//	public void lootLoad(LootTableLoadEvent event) {
-//
-//		if (event.getName().equals(LootTables.SIMPLE_DUNGEON/*"minecraft:chests/simple_dungeon"*/)) {
-//			Treasure.LOGGER.debug("processing loot table event for table -> {}", event.getName().toString());
-//			// load a loot table
-//			/* TODO this doesn't load because it is not mapped - only the high level chests are, not the pools
-//			 * must update to mimic INJECT tables but for ALL pool tables ie mapping and registering,
-//			 * then they will be available through the table master
-//			 */
-//
-//			ResourceLocation location = new ResourceLocation(Treasure.MODID, "pools/treasure/scarce");
-//			Optional<LootTableShell>lootTableShell = TreasureLootTableRegistry.getLootTableMaster().getLootTableByResourceLocation(location);
-//			if (lootTableShell.isPresent()) {
-//				Treasure.LOGGER.debug("using loot table shell -> {}, {}", lootTableShell.get().getCategory(), lootTableShell.get().getRarity());
-//				List<LootPoolShell> lootPoolShells = lootTableShell.get().getPools();
-//				if (lootPoolShells != null && lootPoolShells.size() > 0) {
-//					LOGGER.debug("# of pools -> {}", lootPoolShells.size());
-//				}
-//			}
-//			else {
-//				Treasure.LOGGER.debug("can't find loot table shell");
-//			}
-//			// get vanilla table
-//			LootTable lootTable = event.getLootTableManager().get(location);
-//			Treasure.LOGGER.debug("loot table -> {}", lootTable);
-//			
-//			LootTable vanillaTable = event.getLootTableManager().get(event.getName());
-//			Treasure.LOGGER.debug("vanilla loot table -> {}", vanillaTable);
-//			LootPool pool = lootTable.getPool("scarce_treasure");
-//			if (pool == null) {
-//				Treasure.LOGGER.debug("pool is null");
-//			}
-//			if (event.getTable() == null) {
-//				Treasure.LOGGER.debug("eventTable is null");
-//			}
-//			else {
-//				Treasure.LOGGER.debug("eventTable -> {}", event.getTable());
-//			}
-////			Treasure.LOGGER.debug("attempting to add pool -> {} to table -> {}", pool.getName(), event.getTable());
-////			event.getTable().addPool(pool);		
-//			vanillaTable.addPool(pool);
-//		}
-//	}
 
 	@SubscribeEvent
 	public void onServerStopping(FMLServerStoppingEvent event) {

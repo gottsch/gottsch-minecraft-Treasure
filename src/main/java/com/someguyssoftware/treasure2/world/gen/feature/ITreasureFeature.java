@@ -31,6 +31,56 @@ public interface ITreasureFeature {
 
 	public Map<String, Map<Rarity, Integer>> getChunksSinceLastDimensionRarityFeature();
 	
+	/**
+	 * 
+	 * @param dimension
+	 * @return
+	 */
+	default public boolean meetsDimensionCriteria(ResourceLocation dimension) {
+		// test the dimension white list
+		return TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(dimension.toString());
+	}
+
+	/**
+	 * 
+	 * @param world
+	 * @param spawnCoords
+	 * @param chestConfig
+	 * @return
+	 */
+	default public boolean meetsBiomeCriteria(ServerWorld world, ICoords spawnCoords, IChestConfig chestConfig) {
+		Biome biome = world.getBiome(spawnCoords.toPos());
+		TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList());
+		if(biomeCheck == Result.BLACK_LISTED ) {
+			if (WorldInfo.isClientSide(world)) {
+				Treasure.LOGGER.debug("Biome {} is not a valid biome @ {}", biome.getRegistryName().toString(), spawnCoords.toShortString());
+			}
+			else {
+				// TODO test if this crashes with the getRegistryName because in 1.12 this was a client side only
+				Treasure.LOGGER.debug("Biome {} is not valid @ {}",biome.getRegistryName().toString(), spawnCoords.toShortString());
+			}					
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 
+	 * @param world
+	 * @param dimension
+	 * @param spawnCoords
+	 * @return
+	 */
+	default public boolean meetsProximityCriteria(ServerWorld world, ResourceLocation dimension, ICoords spawnCoords) {
+		if (ITreasureFeature.isRegisteredChestWithinDistance(world, dimension, "surface", spawnCoords, 
+				TreasureConfig.CHESTS.surfaceChestGen.minBlockDistance.get())) {
+			Treasure.LOGGER.debug("The distance to the nearest treasure chest is less than the minimun required.");
+			return false;
+		}	
+		return true;
+	}
+
+	// TODO this is legecay - check if it is used
     default public boolean checkDimensionWhiteList(String dimensionName) {
         // test the dimension white list
         if (!TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(dimensionName)) {
