@@ -3,6 +3,7 @@ package com.someguyssoftware.treasure2.world.gen.feature;
 import java.util.List;
 import java.util.Map;
 
+import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
@@ -10,10 +11,11 @@ import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 
 public interface ITreasureFeature {
 
@@ -36,16 +38,40 @@ public interface ITreasureFeature {
         }
         return true;
     }
-
-    // TODO move to BiomeHelper
-    default public boolean checkOceanBiomes(Biome biome) {
-//		if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN ||
-//				BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
-//			return true;
-//		}
+ 
+    /**
+     * 
+     * @param world
+     * @param dimension
+     * @param key
+     * @param coords
+     * @param minDistance
+     * @return
+     */
+    public static boolean isRegisteredChestWithinDistance(IWorld world, ResourceLocation dimension, String key, ICoords coords, int minDistance) {
+    	
+    Map<String, ChestRegistry> registries = TreasureData.CHEST_REGISTRIES2.get(dimension.toString());
+	if (registries == null || registries.size() == 0) {
+		Treasure.LOGGER.debug("Unable to locate the ChestRegistry or the Registry doesn't contain any values");
 		return false;
-    }
-    
+	}
+	ChestRegistry registry = registries.get(key);
+	if (registry == null) {
+		Treasure.LOGGER.debug("Unable to locate the ChestRegistry or the Registry doesn't contain any values");
+		return false;
+	}
+	
+	// generate a box with coords as center and minDistance as radius
+	ICoords startBox = new Coords(coords.getX() - minDistance, 0, coords.getZ() - minDistance);
+	ICoords endBox = new Coords(coords.getX() + minDistance, 0, coords.getZ() + minDistance);
+	
+	// find if box overlaps anything in the registry
+	if (registry.withinArea(startBox, endBox)) {
+		return true;
+	}
+	
+	return false;
+}
 	/**
 	 * 
 	 * @param world
@@ -53,6 +79,7 @@ public interface ITreasureFeature {
 	 * @param minDistance
 	 * @return
 	 */
+    @Deprecated
 	public static boolean isRegisteredChestWithinDistance(IWorld world, ICoords coords, int minDistance) {
 
 		double minDistanceSq = minDistance * minDistance;

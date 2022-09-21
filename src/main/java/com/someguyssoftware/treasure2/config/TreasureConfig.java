@@ -352,14 +352,48 @@ public class TreasureConfig extends AbstractConfig {
 		}
 	}
 	
+	public static class ChestGen {
+		public ConfigValue<Integer> registrySize;
+		public ConfigValue<Double> probability;
+		public ConfigValue<Integer> minBlockDistance;
+		
+		public ChestGen(final ForgeConfigSpec.Builder builder, String category, int registrySize, double prob, int distance) {
+			builder.comment(CATEGORY_DIV, " Chest Generation properties", CATEGORY_DIV)
+			.push(category);
+			
+			this.registrySize = builder
+					.comment(" The number of chests that are monitored. Most recent additions replace least recent when the registry is full.",
+							" This is the set of chests used to measure distance between newly generated chests.",
+							" A high count is better than a low count, especially in a multiplayer world.")
+					.defineInRange("Maximum size of chest registry:", registrySize, 50, 5000);
+			
+			this.probability = builder
+					.comment(" The probability that a chest will generate at selected spawn location.",
+							" Including a non-100 value increases the randomization of chest placement.")
+					.defineInRange("Probability:", prob, 0.0, 100.0);
+			
+			this.minBlockDistance = builder
+					.comment(" The minimum distance, measured in blocks, that two chests can be in proximity (ie radius).",
+							" Note: Only chests in the chest registry are checked against this property.",
+							" Default = 256 blocks, or 16 chunks.")
+					.defineInRange("Minimum distance per chest spawn:", distance, 80, 32768);
+			builder.pop();
+		}
+		
+	}
+	
 	/*
 	 * 
 	 */
 	public static class Chests {
+		public ChestGen surfaceChestGen;
+		public ChestGen submergedChestGen;
+		
 		public ChestCollection surfaceChests;
 		public ChestCollection submergedChests;
 
 //		@RequiresMcRestart
+		@Deprecated
 		public ForgeConfigSpec.ConfigValue<Integer> chestRegistrySize;
 		public ForgeConfigSpec.DoubleValue treasureMapProbability;
 		
@@ -379,6 +413,9 @@ public class TreasureConfig extends AbstractConfig {
 			treasureMapProbability = builder
 					.comment("The probability that a chest will contain a treasure map to another chest.")
 					.defineInRange("Treasure Chest Probability:", 0D, 20D, 100D);
+			
+			surfaceChestGen = new ChestGen(builder, "surface chest Gen", 1000, 80.0, 256);
+			submergedChestGen = new ChestGen(builder, "submerged chest gen", 500, 70.0, 320);
 			
 			Map<Rarity, ChestConfig.Data> surfaceConfigs = new HashMap<>();
 			Map<Rarity, ChestConfig.Data> submergedConfigs = new HashMap<>();

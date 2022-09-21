@@ -26,10 +26,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.LinkedListMultimap;
-import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Table;
 import com.google.common.collect.Tables;
+import com.someguyssoftware.gottschcore.bst.CoordsInterval;
+import com.someguyssoftware.gottschcore.bst.CoordsIntervalTree;
+import com.someguyssoftware.gottschcore.bst.IInterval;
+import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -41,17 +43,40 @@ import com.someguyssoftware.treasure2.enums.Rarity;
  *
  */
 public class ChestRegistry {
+	@Deprecated
 	private static final int MAX_SIZE = TreasureConfig.CHESTS.chestRegistrySize.get();
 	
-	private final LinkedList<ChestInfo> backingRegistry;
-	private final Table<Rarity, String, ChestInfo> tableRegistry;
+	/*
+	 * a Interval BST registry to determine the proximity of chests.
+	 */
+	private final CoordsIntervalTree<ChestInfo> distanceRegistry;
+	/*
+	 * a Linked List registry to maintain descending age of insertion of chests
+	 */
+	private final LinkedList<ChestInfo> ageRegistry;
+	/*
+	 * a Table registry for rarity/key lookups
+	 */
+	private final Table<Rarity, String, ChestInfo> tableRegistry;	
+	
+	private int registrySize;
 	
 	/**
 	 * 
 	 */
 	public ChestRegistry() {
-		backingRegistry = new LinkedList<>();
-		tableRegistry = Tables.newCustomTable(new LinkedHashMap<>(), LinkedHashMap::new);// HashBasedTable.create();
+		distanceRegistry = new CoordsIntervalTree<>();
+		ageRegistry = new LinkedList<>();
+		tableRegistry = Tables.newCustomTable(new LinkedHashMap<>(), LinkedHashMap::new);
+	}
+	
+	/**
+	 * 
+	 * @param size
+	 */
+	public ChestRegistry(int size) {
+		this();
+		this.registrySize = size;
 	}
 	
 	public boolean isRegistered(final Rarity rarity, final String key) {
@@ -70,10 +95,11 @@ public class ChestRegistry {
 	 */
 	public synchronized void register(final Rarity rarity, final String key, final ChestInfo info) {
 		// if bigger than max size of registry, remove the first (oldest) element
-		if (backingRegistry.size() > MAX_SIZE) {
+		if (ageRegistry.size() > getRegistrySize()) {
 			unregisterFirst();
 		}
-		backingRegistry.add(info);
+		distanceRegistry.insert(new CoordsInterval<>(info.getCoords(), info.getCoords(), info));
+		ageRegistry.add(info);
 		tableRegistry.put(rarity, key, info);
 	}
 	
@@ -81,11 +107,12 @@ public class ChestRegistry {
 	 * 
 	 */
 	public synchronized void unregisterFirst() {
-		ChestInfo removeChestInfo = backingRegistry.pollFirst();
+		ChestInfo removeChestInfo = ageRegistry.pollFirst();
 		if (removeChestInfo != null) {
 			if (tableRegistry.contains(removeChestInfo.getRarity(), removeChestInfo.getCoords().toShortString())) {
 				tableRegistry.remove(removeChestInfo.getRarity(), removeChestInfo.getCoords().toShortString());
 			}
+			distanceRegistry.delete(new CoordsInterval<>(removeChestInfo.getCoords(), removeChestInfo.getCoords(), null));
 		}
 	}
 	
@@ -98,7 +125,8 @@ public class ChestRegistry {
 		if (tableRegistry.contains(rarity, key)) {
 			ChestInfo chestInfo = tableRegistry.remove(rarity, key);
 			if (chestInfo != null) {
-				backingRegistry.remove(chestInfo);
+				ageRegistry.remove(chestInfo);
+				distanceRegistry.delete(new CoordsInterval<>(chestInfo.getCoords(), chestInfo.getCoords(), null));
 			}
 		}
 	}
@@ -108,8 +136,9 @@ public class ChestRegistry {
 	 * @param chestInfo
 	 */
 	public synchronized void unregister(ChestInfo chestInfo) {
-		backingRegistry.remove(chestInfo);
+		ageRegistry.remove(chestInfo);
 		tableRegistry.remove(chestInfo.getRarity(), chestInfo.getCoords().toShortString());
+		distanceRegistry.delete(new CoordsInterval<>(chestInfo.getCoords(), chestInfo.getCoords(), null));
 	}
 	
 	/**
@@ -137,15 +166,35 @@ public class ChestRegistry {
 	}
 	
 	/**
+	 * 
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public boolean withinArea(ICoords start, ICoords end) {
+		List<IInterval<ChestInfo>> overlaps = distanceRegistry.getOverlapping(distanceRegistry.getRoot(), new CoordsInterval<>(start, end));
+		if (overlaps.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
 	 * This will not update parent collection.
 	 * @return
 	 */
 	public List<ChestInfo> getValues() {
-		return backingRegistry;
+		return ageRegistry;
 	}
 	
 	public void clear() {
+		ageRegistry.clear();
 		tableRegistry.clear();
+		distanceRegistry.clear();
+	}
+
+	public int getRegistrySize() {
+		return registrySize;
 	}
 	
 //	// TEMP

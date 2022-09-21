@@ -26,22 +26,16 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
@@ -229,7 +223,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 * @param modID
 	 * @param resources
 	 * @return
-	 */
+	 */	
 	public List<ResourceLocation> getLootTablesResourceLocations(String modID, List<String> resources) {
 		List<ResourceLocation> resourceLocations = new ArrayList<>();
 		resources.forEach(resource -> resourceLocations.add(new ResourceLocation(modID, resource)));
@@ -255,7 +249,7 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 	 * 
 	 * @param resource
 	 * @return
-	 */
+	 */	
 	public Optional<LootTableShell> loadLootTable(ResourceLocation resource) {
 		// attempt to load from file system
 		Optional<LootTableShell> shell = loadLootTableFromWorldSave(getWorldSaveFolder(), resource);
@@ -328,24 +322,6 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		}		
 		return resourceLootTable;
 	}
-	
-	/**
-	 * 
-	 * @param modID
-	 * @param resourceFolders
-	 */
-	public void registerChestsFromWorldSave(String modID, List<String> resourceFolders) {
-		for (String folder : resourceFolders) {
-			// get loot table files as ResourceLocations from the file system location (using GottschCore's version)
-			List<ResourceLocation> resourceLocations = getLootTablesResourceLocations(modID, folder);
-
-			// load each ResourceLocation as LootTable and map it.
-			resourceLocations.forEach(loc -> {
-				LOGGER.debug("world save -> loading loot table shell resource loc -> {}, {}", getWorldDataBaseFolder().getPath(), loc.getPath().toString());
-				tableChest(loc, loadLootTable(getWorldDataBaseFolder(), loc));
-			});
-		}
-	}
 
 	/**
 	 * 
@@ -389,22 +365,6 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 			LOGGER.debug("register chests -> loading special loot table shell resource loc -> {}", loc.getPath().toString());
 			tableSpecialChest(loc, loadLootTable(loc));
 		});
-	}
-
-	/**
-	 * 
-	 * @param modID
-	 * @param resourceFolders
-	 */
-	public void registerSpecialsFromWorldSave(String modID, List<String> resourceFolders) {
-		for (String folder : resourceFolders) {
-			List<ResourceLocation> resourceLocations = getLootTablesResourceLocations(modID, folder);
-
-			resourceLocations.forEach(loc -> {
-				LOGGER.debug("world save -> loading special loot table shell resource loc -> {}, {}", getWorldDataBaseFolder().getPath(), loc.getPath().toString());
-				tableSpecialChest(loc, loadLootTable(getWorldDataBaseFolder(), loc));
-			});
-		}
 	}
 
 	/**
@@ -457,22 +417,6 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 
 	/**
 	 * 
-	 * @param modID
-	 * @param resourceFolders
-	 */
-	public void registerInjectsFromWorldSave(String modID, List<String> resourceFolders) {
-		for (String folder : resourceFolders) {
-			List<ResourceLocation> resourceLocations = getLootTablesResourceLocations(modID, folder);
-
-			resourceLocations.forEach(loc -> {
-				LOGGER.debug("world save -> loading inject loot table shell resource loc -> {}, {}", getWorldDataBaseFolder().getPath(), loc.getPath().toString());
-				tableInject(loc, loadLootTable(getWorldDataBaseFolder(), loc));
-			});
-		}
-	}
-
-	/**
-	 * 
 	 * @param resourceLocation
 	 * @param lootTable
 	 */
@@ -514,74 +458,6 @@ public class TreasureLootTableMaster2 extends LootTableMaster2 {
 		}
 	}
 
-	/**
-	 * 
-	 * @param modID
-	 * @param location
-	 */
-	@Deprecated
-	protected void moveLootTables(String modID, String location) {
-		Path configFilePath = Paths.get(getMod().getConfig().getConfigFolder(), modID, "mc1_16", LOOT_TABLES_FOLDER, location).toAbsolutePath();
-		//		Path worldDataFilePath = Paths.get(getWorldDataBaseFolder().toString(), modID, location).toAbsolutePath();
-		Path worldDataFilePath = Paths.get(getWorldDataBaseFolder().toString(), "data", modID, "loot_tables", location).toAbsolutePath();
-
-		Set<String> fileList = new HashSet<>();
-		try {
-			Files.walkFileTree(configFilePath, new SimpleFileVisitor<Path>() {
-				@Override
-				public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-					// grab everything after loot_tables
-					String destinationStr = dir.toString();			        	
-					String partial = destinationStr.substring(destinationStr.indexOf(LOOT_TABLES_FOLDER) + LOOT_TABLES_FOLDER.length());
-					Path destinationFilePath = Paths.get(worldDataFilePath.toString(), partial);
-					LOGGER.debug("destination folder to be tested/created -> {}", destinationFilePath.toString());
-					if (Files.notExists(destinationFilePath)) {
-						try {
-							Files.createDirectories(destinationFilePath);
-						} catch (IOException e) {
-							LOGGER.warn("Unable to create world data loot tables folder \"{}\"", destinationFilePath.toString());
-						}
-					}					
-					return super.preVisitDirectory(dir, attrs);
-				}
-
-				@Override
-				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
-						throws IOException {
-					LOGGER.debug("walking file -> {}", file.toString());
-					fileList.add(file.getFileName().toString());
-					String destinationStr = file.toString();			        	
-					String partial = destinationStr.substring(destinationStr.indexOf(LOOT_TABLES_FOLDER) + LOOT_TABLES_FOLDER.length());
-					Path destinationFilePath = Paths.get(worldDataFilePath.toString(), partial);
-					LOGGER.debug("new destination -> {}", destinationFilePath.toString());
-					if (Files.notExists(destinationFilePath)) {
-						// copy from resource/classpath to file path
-						try {
-							Files.copy(file, destinationFilePath, StandardCopyOption.REPLACE_EXISTING);
-						}
-						catch(IOException e ) {
-							LOGGER.error(String.format("could not copy file %s to %s", file.toString(), destinationFilePath.toString()), e);
-						}
-					}
-					else {
-						boolean isCurrent  = isWorldDataVersionCurrent(file, destinationFilePath);
-						LOGGER.debug("is world data loot table {} current -> {}", destinationFilePath, isCurrent);
-						if (!isCurrent) {
-							Files.move(
-									destinationFilePath, 
-									Paths.get(destinationFilePath.getFileName().toString() + ".bak").toAbsolutePath(), 
-									StandardCopyOption.REPLACE_EXISTING);
-							Files.copy(file, destinationFilePath);
-						}
-					}
-					return FileVisitResult.CONTINUE;
-				}
-			});
-		} catch (IOException e) {
-			LOGGER.error(String.format("an errored while file walking the location -> %s:", configFilePath), e);
-			return;
-		}
-	}
 
 	/**
 	 * 

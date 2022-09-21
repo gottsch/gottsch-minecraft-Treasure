@@ -54,7 +54,7 @@ import net.minecraft.block.Block;
 // TODO rename to TreasureGenerators and move to base .generator package
 public class TreasureData {
 	// chest map by rarity and mapping flag - ** possible replacement for CHESTS_BY_RARITY **
-	public static final Table<Rarity, ChestEnvironment, Block> CHESTS_BY_RARITY_FLAGS = HashBasedTable.create();
+//	public static final Table<Rarity, ChestEnvironment, Block> CHESTS_BY_RARITY_FLAGS = HashBasedTable.create();
 
 	// chest map by rarity
 	public static final Multimap<Rarity, Block> CHESTS_BY_RARITY= ArrayListMultimap.create();
@@ -75,7 +75,9 @@ public class TreasureData {
 
 	public static final Map<WorldGenerators, List<Rarity>> RARITIES_MAP = new HashMap<>();
 
-	public static final Map<String, ChestRegistry> CHEST_REGISTRIES = new HashMap<>(); 
+	public static final Map<String, ChestRegistry> CHEST_REGISTRIES = new HashMap<>();
+	
+	public static final Map<String, Map<String, ChestRegistry>> CHEST_REGISTRIES2 = new HashMap<>();
 
 	// simple registries
 	public static final Map<String, SimpleListRegistry<ICoords>> WELL_REGISTRIES = new HashMap<>();
@@ -83,7 +85,7 @@ public class TreasureData {
 	
 	public static void initialize() {
 		// TODO finish later. but use meta data to populate the table map
-		CHESTS_BY_RARITY_FLAGS.put(Rarity.COMMON, ChestEnvironment.SURFACE, TreasureBlocks.WOOD_CHEST);
+//		CHESTS_BY_RARITY_FLAGS.put(Rarity.COMMON, ChestEnvironment.SURFACE, TreasureBlocks.WOOD_CHEST);
 
 		// setup chest collection generator maps
 		if (TreasureConfig.CHESTS.surfaceChests.configMap.get(Rarity.COMMON).isEnableChest()) {
@@ -194,7 +196,15 @@ public class TreasureData {
 
 		for (String dimension : TreasureConfig.GENERAL.dimensionsWhiteList.get()) {
 			Treasure.LOGGER.debug("white list dimension -> {}", dimension);
+			// old
 			CHEST_REGISTRIES.put(dimension, new ChestRegistry());
+			
+			// new
+			Map<String, ChestRegistry> chestRegistryMap = new HashMap<>();
+			chestRegistryMap.put("surface", new ChestRegistry(TreasureConfig.CHESTS.surfaceChestGen.registrySize.get()));
+			chestRegistryMap.put("submerged", new ChestRegistry(TreasureConfig.CHESTS.submergedChestGen.registrySize.get()));
+			CHEST_REGISTRIES2.put(dimension, chestRegistryMap);
+			
 			WELL_REGISTRIES.put(dimension, new SimpleListRegistry<>(TreasureConfig.WELLS.registrySize.get()));
 			WITHER_TREE_REGISTRIES.put(dimension, new SimpleListRegistry<>(TreasureConfig.WITHER_TREE.registrySize.get()));
 		}
