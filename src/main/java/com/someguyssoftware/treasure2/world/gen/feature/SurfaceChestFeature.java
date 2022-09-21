@@ -19,6 +19,7 @@ import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
 import com.someguyssoftware.treasure2.chest.ChestEnvironment;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
+import com.someguyssoftware.treasure2.chest.ChestInfo.GenType;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.data.TreasureData;
@@ -107,8 +108,9 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 
 		// 4. check if meets the probability criteria
 		if (!meetsProbabilityCriteria(random)) {
-			// TODO place a placeholder chest in the registry
-			// TODO chestInfo will require a type [CHEST | NONE]
+			// place a placeholder chest in the registry
+			ChestInfo chestInfo = new ChestInfo(rarity, spawnCoords, GenType.NONE);
+			TreasureData.CHEST_REGISTRIES2.get(dimension.toString()).get("surface").register(rarity, spawnCoords, chestInfo);
 			return false;
 		}
 		

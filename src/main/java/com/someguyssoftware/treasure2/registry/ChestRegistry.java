@@ -93,14 +93,14 @@ public class ChestRegistry {
 	 * @param rarity
 	 * @param info
 	 */
-	public synchronized void register(final Rarity rarity, final String key, final ChestInfo info) {
+	public synchronized void register(final Rarity rarity, final ICoords key, final ChestInfo info) {
 		// if bigger than max size of registry, remove the first (oldest) element
 		if (ageRegistry.size() > getRegistrySize()) {
 			unregisterFirst();
 		}
-		distanceRegistry.insert(new CoordsInterval<>(info.getCoords(), info.getCoords(), info));
+		distanceRegistry.insert(new CoordsInterval<>(key, key, info));
 		ageRegistry.add(info);
-		tableRegistry.put(rarity, key, info);
+		tableRegistry.put(rarity, key.toShortString(), info);
 	}
 	
 	/**
@@ -122,6 +122,7 @@ public class ChestRegistry {
 	 * @param rarity
 	 */
 	public synchronized void unregister(final Rarity rarity, final String key) {
+		// TODO redo this is wrong because a placeholder will not have any ChestInfo
 		if (tableRegistry.contains(rarity, key)) {
 			ChestInfo chestInfo = tableRegistry.remove(rarity, key);
 			if (chestInfo != null) {
