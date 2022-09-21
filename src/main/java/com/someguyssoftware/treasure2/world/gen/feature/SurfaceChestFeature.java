@@ -3,21 +3,16 @@
  */
 package com.someguyssoftware.treasure2.world.gen.feature;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.mojang.serialization.Codec;
-import com.someguyssoftware.gottschcore.GottschCore;
-import com.someguyssoftware.gottschcore.block.BlockContext;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.gottschcore.world.WorldInfo.SURFACE;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
@@ -31,7 +26,6 @@ import com.someguyssoftware.treasure2.enums.PitTypes;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
-import com.someguyssoftware.treasure2.generator.GeneratorData;
 import com.someguyssoftware.treasure2.generator.GeneratorResult;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
@@ -39,17 +33,12 @@ import com.someguyssoftware.treasure2.generator.ruins.SurfaceRuinGenerator;
 import com.someguyssoftware.treasure2.persistence.TreasureGenerationSavedData;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.server.ServerWorld;
@@ -118,8 +107,11 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 
 		// 4. check if meets the probability criteria
 		if (!meetsProbabilityCriteria(random)) {
+			// TODO place a placeholder chest in the registry
+			// TODO chestInfo will require a type [CHEST | NONE]
 			return false;
 		}
+		
 		// generate the chest/pit/chambers
 		Treasure.LOGGER.debug("Attempting to generate pit/chest.");
 		Treasure.LOGGER.debug("rarity -> {}", rarity);
@@ -137,8 +129,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 			// TODO update the correct registry
 			// TODO update the sliding weight collection
 
-		}				
-
+		}
 
 		// save world data
 		TreasureGenerationSavedData savedData = TreasureGenerationSavedData.get(world);
