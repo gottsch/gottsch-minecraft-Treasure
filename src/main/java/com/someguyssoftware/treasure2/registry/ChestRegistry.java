@@ -34,7 +34,6 @@ import com.someguyssoftware.gottschcore.bst.IInterval;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 /**
@@ -43,9 +42,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
  *
  */
 public class ChestRegistry {
-	@Deprecated
-	private static final int MAX_SIZE = TreasureConfig.CHESTS.chestRegistrySize.get();
-	
+
 	/*
 	 * a Interval BST registry to determine the proximity of chests.
 	 */
@@ -98,7 +95,7 @@ public class ChestRegistry {
 		if (ageRegistry.size() > getRegistrySize()) {
 			unregisterFirst();
 		}
-		distanceRegistry.insert(new CoordsInterval<>(key, key, info));
+		distanceRegistry.insert(new CoordsInterval<>(key.withY(0), key.add(1, -key.getY(), 1), info));
 		ageRegistry.add(info);
 		tableRegistry.put(rarity, key.toShortString(), info);
 	}
@@ -121,13 +118,12 @@ public class ChestRegistry {
 	 * @param key
 	 * @param rarity
 	 */
-	public synchronized void unregister(final Rarity rarity, final String key) {
-		// TODO redo this is wrong because a placeholder will not have any ChestInfo
-		if (tableRegistry.contains(rarity, key)) {
-			ChestInfo chestInfo = tableRegistry.remove(rarity, key);
+	public synchronized void unregister(final Rarity rarity, final ICoords key) {		
+		if (tableRegistry.contains(rarity, key.toShortString())) {
+			ChestInfo chestInfo = tableRegistry.remove(rarity, key.toShortString());
 			if (chestInfo != null) {
 				ageRegistry.remove(chestInfo);
-				distanceRegistry.delete(new CoordsInterval<>(chestInfo.getCoords(), chestInfo.getCoords(), null));
+				distanceRegistry.delete(new CoordsInterval<>(key, key, null));
 			}
 		}
 	}
@@ -165,7 +161,7 @@ public class ChestRegistry {
 		}
 		return Optional.empty();
 	}
-	
+
 	/**
 	 * 
 	 * @param start

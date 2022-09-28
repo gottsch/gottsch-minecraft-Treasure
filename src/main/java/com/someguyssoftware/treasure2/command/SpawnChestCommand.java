@@ -15,7 +15,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.someguyssoftware.gottschcore.loot.LootTableShell;
-import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
+import com.someguyssoftware.gottschcore.random.WeightedCollection;
 import com.someguyssoftware.gottschcore.spatial.Heading;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
@@ -169,7 +169,7 @@ public class SpawnChestCommand {
 				gen = ChestGeneratorType.valueOf(chests.get().name()).getChestGenerator();
 			}
 			else {
-				RandomWeightedCollection<IChestGenerator> w = TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SURFACE_CHEST);
+				WeightedCollection<Number, IChestGenerator> w = TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SURFACE_CHEST);
 				if (w == null) {
 					Treasure.LOGGER.debug("weight collection is null");
 				}

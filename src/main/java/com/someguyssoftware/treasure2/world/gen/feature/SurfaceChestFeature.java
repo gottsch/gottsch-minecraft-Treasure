@@ -4,7 +4,6 @@
 package com.someguyssoftware.treasure2.world.gen.feature;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -15,8 +14,6 @@ import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
-import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
 import com.someguyssoftware.treasure2.chest.ChestEnvironment;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.chest.ChestInfo.GenType;
@@ -32,13 +29,14 @@ import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.generator.ruins.SurfaceRuinGenerator;
 import com.someguyssoftware.treasure2.persistence.TreasureGenerationSavedData;
+import com.someguyssoftware.treasure2.registry.ChestRegistry;
+import com.someguyssoftware.treasure2.registry.RegistryType;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -49,12 +47,14 @@ import net.minecraft.world.server.ServerWorld;
  * @author Mark Gottschling on Jan 4, 2021
  *
  */
-public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITreasureFeature {
+public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements IChestFeature {
 	/*
 	 * The minimum depth from surface for a chest spawn
 	 */
 	protected static int UNDERGROUND_OFFSET = 5;
 
+	private int waitChunksCount = 0;
+	
 	/**
 	 * 
 	 * @param configFactory
@@ -62,8 +62,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	public SurfaceChestFeature(Codec<NoFeatureConfig> configFactory) {
 		super(configFactory);
 		// NOTE ensure to set the registry name
-		// TODO shouldn't this be registered elsewhere?
-//		this.setRegistryName(Treasure.MODID, "surface_chest");
+		this.setRegistryName(Treasure.MODID, "surface_chest");
 	}
 
 	/**
@@ -75,21 +74,25 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 	public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		ServerWorld world = seedReader.getLevel();
 		ResourceLocation dimension = WorldInfo.getDimension(world);
-
+		ChestRegistry registry = TreasureData.CHEST_REGISTRIES2.get(dimension.toString()).get(RegistryType.SURFACE);
+		
 		if (!meetsDimensionCriteria(dimension)) { 
 			return false;
 		}
 
+		if (!meetsWorldAgeCriteria(world, registry)) {
+			return false;
+		}
+		
 		// the get first surface y (could be leaves, trunk, water, etc)
 		ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, generator, new Coords(pos.offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
 		if (spawnCoords == WorldInfo.EMPTY_COORDS) {
 			return false;
 		}
 
-		// TODO update this to pull from a WeightedCollection of rarities, then select then chest generator by rarity.
 		// determine what type to generate
-		Rarity rarity = (Rarity) TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST).get(random.nextInt(TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST).size()));
-		//			Treasure.LOGGER.debug("rarity -> {}", rarity);
+		Rarity rarity = (Rarity) TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST).next();
+//		Treasure.LOGGER.debug("rarity -> {}", rarity);
 		IChestConfig chestConfig = TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity);
 		if (chestConfig == null) {
 			Treasure.LOGGER.warn("Unable to locate a chest for rarity {}.", rarity);
@@ -97,12 +100,12 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		}
 
 		// 2. test if the override (global) biome is allowed
-		if (!meetsBiomeCriteria(world, spawnCoords, chestConfig)) {
+		if (!meetsBiomeCriteria(world, spawnCoords, chestConfig.getBiomeWhitelist(), chestConfig.getBiomeBlacklist())) {
 			return false;
 		}
 
 		// 3. check against all registered chests
-		if (!meetsProximityCriteria(world, dimension, spawnCoords)) {
+		if (!meetsProximityCriteria(world, dimension, RegistryType.SURFACE, spawnCoords)) {
 			return false;
 		}			
 
@@ -110,7 +113,7 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		if (!meetsProbabilityCriteria(random)) {
 			// place a placeholder chest in the registry
 			ChestInfo chestInfo = new ChestInfo(rarity, spawnCoords, GenType.NONE);
-			TreasureData.CHEST_REGISTRIES2.get(dimension.toString()).get("surface").register(rarity, spawnCoords, chestInfo);
+			registry.register(rarity, spawnCoords, chestInfo);
 			return false;
 		}
 		
@@ -127,10 +130,15 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		if (result.isSuccess()) {
 			// add to registry
 			ChestInfo chestInfo = ChestInfo.from(result.getData());					
-			TreasureData.CHEST_REGISTRIES.get(dimension.toString()).register(rarity, spawnCoords.toShortString(), chestInfo);
-			// TODO update the correct registry
-			// TODO update the sliding weight collection
+			registry.register(rarity, spawnCoords, chestInfo);
 
+			// update the adjusted weight collection
+			TreasureData.RARITIES_MAP.put(WorldGenerators.SURFACE_CHEST, 
+					TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST).adjustExcept(1, rarity));
+			List<String> rarityMapDump = TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST).dump();
+			rarityMapDump.forEach(s -> {
+				Treasure.LOGGER.info(s);
+			});
 		}
 
 		// save world data
@@ -140,6 +148,22 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		}
 		return true;
 
+	}
+
+	/**
+	 * 
+	 * @param world
+	 * @param registry
+	 * @return
+	 */
+	private boolean meetsWorldAgeCriteria(ServerWorld world, ChestRegistry registry) {
+		// wait count check		
+		if (registry.getValues().isEmpty() && waitChunksCount < TreasureConfig.CHESTS.surfaceChestGen.waitChunks.get()) {
+			Treasure.LOGGER.debug("World is too young");
+			this.waitChunksCount++;
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -154,40 +178,6 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		}
 		return true;
 	}
-
-	/**
-	 * 
-	 * @param world
-	 * @param spawnCoords
-	 * @param chestConfig
-	 * @return
-	 */
-	private boolean meetsBiomeCriteria(ServerWorld world, ICoords spawnCoords, IChestConfig chestConfig) {
-		Biome biome = world.getBiome(spawnCoords.toPos());
-		TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome, chestConfig.getBiomeWhiteList(), chestConfig.getBiomeBlackList());
-		if(biomeCheck == Result.BLACK_LISTED ) {
-			if (WorldInfo.isClientSide(world)) {
-				Treasure.LOGGER.debug("Biome {} is not a valid biome @ {}", biome.getRegistryName().toString(), spawnCoords.toShortString());
-			}
-			else {
-				// TODO test if this crashes with the getRegistryName because in 1.12 this was a client side only
-				Treasure.LOGGER.debug("Biome {} is not valid @ {}",biome.getRegistryName().toString(), spawnCoords.toShortString());
-			}					
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * 
-	 * @param dimension
-	 * @return
-	 */
-	private boolean meetsDimensionCriteria(ResourceLocation dimension) {
-		// test the dimension white list
-		return TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(dimension.toString());
-	}
-
 
 
 	/////////////////////////////////
@@ -401,25 +391,5 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ITr
 		Treasure.LOGGER.debug("Using PitType: {}, Gen: {}", pitType, pitGenerator.getClass().getSimpleName());
 
 		return pitGenerator;
-	}
-
-
-	////////////// TODO remove from ITreasureFeature - at least the chunks methods
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Map<String, Integer> getChunksSinceLastDimensionFeature() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<String, Map<Rarity, Integer>> getChunksSinceLastDimensionRarityFeature() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

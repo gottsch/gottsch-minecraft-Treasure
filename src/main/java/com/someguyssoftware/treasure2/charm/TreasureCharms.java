@@ -62,7 +62,7 @@ public class TreasureCharms {
 			TreasureCharmRegistry.register(makeGreaterHealing(level));
 			TreasureCharmRegistry.register(makeShielding(level));
 			TreasureCharmRegistry.register(makeAegis(level));
-			TreasureCharmRegistry.register(makeFireResistence(level));
+			TreasureCharmRegistry.register(makeFireResistance(level));
 			TreasureCharmRegistry.register(makeFireImmunity(level));
 			TreasureCharmRegistry.register(makeSatiety(level));
 			TreasureCharmRegistry.register(makeLifeStrike(level));
@@ -75,6 +75,10 @@ public class TreasureCharms {
 			TreasureCharmRegistry.register(makeDirtWalk(level));
 			TreasureCharmRegistry.register(makeRuin(level));
 			TreasureCharmRegistry.register(makeCheatDeath(level));
+			TreasureCharmRegistry.register(makePoisonResistance(level));
+			TreasureCharmRegistry.register(makePoisonImmunity(level));
+			TreasureCharmRegistry.register(makeWitherResistance(level));
+			TreasureCharmRegistry.register(makeWitherImmunity(level));
 			// TODO harvesting			
 			
 		}
@@ -151,10 +155,9 @@ public class TreasureCharms {
 		return charm;
 	}
 	
-	public static ICharm makeFireResistence(int level) {
-		ICharm charm =  new FireResistenceCharm.Builder(level).with($ -> {
+	public static ICharm makeFireResistance(int level) {
+		ICharm charm =  new FireResistanceCharm.Builder(level).with($ -> {
 			$.mana = level * 20.0;
-			$.amount = level < 6 ? 0.3 : level < 11 ? 0.5 : 0.8;
 			$.amount = level <= 4 ? 0.2 : level <=8  ? 0.4 : level <= 12 ? 0.6 :  0.8;
 			$.effectStackable = true;
 			$.priority = 1;
@@ -252,6 +255,60 @@ public class TreasureCharms {
 			$.rarity = LEVEL_RARITY.get(level);			
 			$.recharges = 0;
 		})	.build();
+		TreasureCharmRegistry.register(charm);
+		return charm;
+	}
+	
+	public static ICharm makePoisonResistance(int level) {
+		ICharm charm =  new PoisonResistanceCharm.Builder(level).with($ -> {
+			$.mana = level * 20.0;
+			$.amount = level <= 4 ? 0.2 : level <=8  ? 0.4 : level <= 12 ? 0.6 :  0.8;
+			$.effectStackable = true;
+			$.priority = 1;
+			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
+		})	.build();
+
+		TreasureCharmRegistry.register(charm);
+		return charm;
+	}
+	
+	public static ICharm makePoisonImmunity(int level) {
+		ICharm charm =  new PoisonImmunityCharm.Builder(level).with($ -> {
+			$.mana = level * 20.0;
+			$.effectStackable = false;
+			$.priority = 1;
+			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
+		})	.build();
+
+		TreasureCharmRegistry.register(charm);
+		return charm;
+	}
+	
+	public static ICharm makeWitherResistance(int level) {
+		ICharm charm =  new WitherResistanceCharm.Builder(level).with($ -> {
+			$.mana = level * 20.0;
+			$.amount = level <= 4 ? 0.2 : level <=8  ? 0.4 : level <= 12 ? 0.6 :  0.8;
+			$.effectStackable = true;
+			$.priority = 1;
+			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
+		})	.build();
+
+		TreasureCharmRegistry.register(charm);
+		return charm;
+	}
+	
+	public static ICharm makeWitherImmunity(int level) {
+		ICharm charm =  new WitherImmunityCharm.Builder(level).with($ -> {
+			$.mana = level * 20.0;
+			$.effectStackable = false;
+			$.priority = 1;
+			$.rarity = LEVEL_RARITY.get(level);
+			$.recharges = getRecharges($.rarity);
+		})	.build();
+
 		TreasureCharmRegistry.register(charm);
 		return charm;
 	}
