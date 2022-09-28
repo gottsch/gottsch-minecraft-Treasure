@@ -88,8 +88,7 @@ public class TreasureCharms {
 	public static void init() {}
 	
 	private static int getRecharges(Rarity rarity) {
-		// TODO COMMON & UNCOMMON = 1 are TEMP
-		return rarity == Rarity.SCARCE || rarity == Rarity.RARE ? 1 : rarity == Rarity.EPIC || rarity == Rarity.LEGENDARY ? 2 : rarity == Rarity.MYTHICAL ? 3 : 1;
+		return rarity == Rarity.SCARCE || rarity == Rarity.RARE ? 1 : rarity == Rarity.EPIC || rarity == Rarity.LEGENDARY ? 2 : rarity == Rarity.MYTHICAL ? 3 : 0;
 	}
 	
 	// TODO add charms
@@ -330,7 +329,6 @@ public class TreasureCharms {
 	public static ICharm makeDecrepit(int level) {
 		ICharm curse =  new DecrepitCurse.Builder(level).with($ -> {
 			$.mana = level * 10.0 + 10.0;
-//			$.amount = (double) ((level + (level % 2))/20);
 			$.amount = level <= 4 ? 0.2 : level <=8  ? 0.3 : level <= 12 ? 0.4 :  0.5;
 			$.effectStackable = true;
 			$.rarity = LEVEL_RARITY.get(level);
@@ -389,13 +387,6 @@ public class TreasureCharms {
 			});
 			sourceCap.copyTo(resultStack);
 		});
-
-		
-		
-//		if (dest.hasCapability(CHARMABLE, null)) {
-//			resultStack.getCapability(CHARMABLE, null).clearCharms();			
-//			source.getCapability(CHARMABLE, null).copyTo(resultStack);
-//		}
 
 		// reset the source item
 		resultStack.getCapability(CHARMABLE, null).ifPresent(cap -> {
