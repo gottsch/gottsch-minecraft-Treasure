@@ -62,27 +62,26 @@ public class PoisonResistanceCharm extends Charm {
 		boolean result = false;
 
 		// exit if not fire damage
-		if (!((LivingDamageEvent)event).getSource().isMagic() && player.hasEffect(Effects.POISON)) {
-			return result;
+		if (((LivingDamageEvent)event).getSource().isMagic() && player.hasEffect(Effects.POISON)) {
+			if (entity.getMana() > 0 && player.isAlive()) {
+				// get the source and amount
+				double amount = ((LivingDamageEvent)event).getAmount();
+				// calculate the new amount
+				double newAmount = 0;
+				double amountToCharm = amount * entity.getAmount();
+				double amountToPlayer = amount - amountToCharm;
+				// Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
+				double cost = applyCost(world, random, coords, player, event, entity, amountToCharm);
+				if (cost < amountToCharm) {
+					newAmount =+ (amountToCharm - cost);
+				}
+				else {
+					newAmount = amountToPlayer;
+				}
+				((LivingDamageEvent)event).setAmount((float) newAmount);
+				result = true;
+			}    
 		}
-		if (entity.getMana() > 0 && player.isAlive()) {
-			// get the source and amount
-			double amount = ((LivingDamageEvent)event).getAmount();
-			// calculate the new amount
-			double newAmount = 0;
-			double amountToCharm = amount * entity.getAmount();
-			double amountToPlayer = amount - amountToCharm;
-			// Treasure.logger.debug("amount to charm -> {}); amount to player -> {}", amountToCharm, amountToPlayer);
-			double cost = applyCost(world, random, coords, player, event, entity, amountToCharm);
-			if (cost < amountToCharm) {
-				newAmount =+ (amountToCharm - cost);
-			}
-			else {
-				newAmount = amountToPlayer;
-			}
-			((LivingDamageEvent)event).setAmount((float) newAmount);
-			result = true;
-		}    		
 		return result;
 	}
 
@@ -90,7 +89,7 @@ public class PoisonResistanceCharm extends Charm {
 	public ITextComponent getCharmDesc(ICharmEntity entity) {
 		return new TranslationTextComponent("tooltip.charm.rate.poison_resistance", Math.toIntExact(Math.round(entity.getAmount() * 100)));
 	}
-	
+
 	public static class Builder extends Charm.Builder {
 
 		public Builder(Integer level) {

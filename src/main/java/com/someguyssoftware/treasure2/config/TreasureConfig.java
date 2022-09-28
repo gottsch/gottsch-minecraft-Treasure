@@ -485,7 +485,7 @@ public class TreasureConfig extends AbstractConfig {
 				
 				surfaceChestProbability = builder
 						.comment(" The probability chest will appear on the surface, instead of in a pit.")
-						.defineInRange("Probability of chest spawn on the surface:", 15, 0, 100);
+						.defineInRange("Probability of chest spawn on the surface:", 20, 0, 100);
 
 				// update the map
 				configMap.put(Rarity.COMMON, new ChestConfig(builder, Rarity.COMMON.getValue(), configs.get(Rarity.COMMON)));

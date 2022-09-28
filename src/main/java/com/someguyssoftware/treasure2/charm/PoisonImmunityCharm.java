@@ -61,20 +61,19 @@ public class PoisonImmunityCharm extends Charm {
 	public boolean update(World world, Random random, ICoords coords, PlayerEntity player, Event event, final ICharmEntity entity) {
 		boolean result = false;
 		// exit if not fire damage
-		if (!((LivingDamageEvent)event).getSource().isMagic() && player.hasEffect(Effects.POISON)) {
-			return result;
+		if (((LivingDamageEvent)event).getSource().isMagic() && player.hasEffect(Effects.POISON)) {
+			double newAmount = 0F;
+			if (entity.getMana() > 0 && player.isAlive()) {
+				// get the fire damage amount
+				double amount = ((LivingDamageEvent)event).getAmount();
+				double cost = applyCost(world, random, coords, player, event, entity, amount);
+				if (cost < amount) {
+					newAmount =+ (amount - cost);
+				}
+				((LivingDamageEvent)event).setAmount((float) newAmount);
+				result = true;
+			}    		
 		}
-		double newAmount = 0F;
-		if (entity.getMana() > 0 && player.isAlive()) {
-			// get the fire damage amount
-			double amount = ((LivingDamageEvent)event).getAmount();
-			double cost = applyCost(world, random, coords, player, event, entity, amount);
-			if (cost < amount) {
-				newAmount =+ (amount - cost);
-			}
-			((LivingDamageEvent)event).setAmount((float) newAmount);
-			result = true;
-		}    		
 		return result;
 	}
 
