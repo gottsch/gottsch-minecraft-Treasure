@@ -18,7 +18,12 @@
 				"type": "loot_table",
 				"name": "treasure2:pools/treasure/uncommon_charms",
 				"weight": 1,
-				"chance": 0.1
+				"conditions": [
+					{
+						"condition": "random_chance",
+						"chance": 0.1
+					}
+				]
 			}]
 		},
 		{

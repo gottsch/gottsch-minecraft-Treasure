@@ -140,7 +140,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		ICoords transformedSize = genResult.getData().getSize();
 		Treasure.LOGGER.debug("Well transformed size -> {}", transformedSize.toShortString());
 		// add flowers around well
-		addDecorations(world, random, genResult.getData().getSpawnCoords(), transformedSize.getX(), transformedSize.getZ());
+		addDecorations(world, chunkGenerator, random, genResult.getData().getSpawnCoords(), transformedSize.getX(), transformedSize.getZ());
 		 
 		// TODO add chest if any
 				
@@ -160,7 +160,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 	 * @param width
 	 * @param depth
 	 */
-	public void addDecorations(IServerWorld world, Random random, ICoords coords, int width, int depth) {
+	public void addDecorations(IServerWorld world, ChunkGenerator chunkGenerator, Random random, ICoords coords, int width, int depth) {
 		ICoords startCoords = coords.add(-1, 0, -1);
 	
 		// TODO change to scan the entire size (x,z) of well footprint and detect the edges ... place flowers adjacent to edge blocks. 
@@ -169,7 +169,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		for (int widthIndex = 0; widthIndex <= width + 1; widthIndex++) {
 			if (RandomHelper.randomInt(0, 1) == 0) {
 //				ICoords decoCoords = startCoords.add(widthIndex, 0, 0);
-				addDecoration(world, random, startCoords.add(widthIndex, 0, 0));
+				addDecoration(world, chunkGenerator, random, startCoords.add(widthIndex, 0, 0));
 			}
 		}
 		
@@ -177,7 +177,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		startCoords = coords.add(-1, 0, depth);
 		for (int widthIndex = 0; widthIndex <= width + 1; widthIndex++) {
 			if (RandomHelper.randomInt(0,  1) == 0) {
-				addDecoration(world, random, startCoords.add(widthIndex, 0, 0));
+				addDecoration(world, chunkGenerator, random, startCoords.add(widthIndex, 0, 0));
 			}
 		}
 		
@@ -185,7 +185,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		startCoords = coords.add(-1, 0, 0);
 		for (int depthIndex = 0; depthIndex < depth-1; depthIndex++) {
 			if (RandomHelper.randomInt(0,  1) == 0) {
-				addDecoration(world, random, startCoords.add(0, 0, depthIndex));
+				addDecoration(world, chunkGenerator, random, startCoords.add(0, 0, depthIndex));
 			}
 		}
 		
@@ -193,13 +193,13 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		startCoords = coords.add(width, 0, 0);
 		for (int depthIndex = 0; depthIndex < depth-1; depthIndex++) {
 			if (RandomHelper.randomInt(0,  1) == 0) {
-				addDecoration(world, random, startCoords.add(0, 0, depthIndex));
+				addDecoration(world, chunkGenerator, random, startCoords.add(0, 0, depthIndex));
 			}
 		}
 	}
 	
 	@Override
-	public void addDecoration(IServerWorld world, Random random, ICoords coords) {
+	public void addDecoration(IServerWorld world, ChunkGenerator chunkGenerator, Random random, ICoords coords) {
 		BlockState blockState = null;
 		ICoords markerCoords = WorldInfo.getDryLandSurfaceCoords(world, coords);
 		

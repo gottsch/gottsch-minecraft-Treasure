@@ -1,77 +1,72 @@
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2022 Mark Gottschling (gottsch)
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
 package com.someguyssoftware.treasure2.world.gen.feature;
 
 import java.util.List;
-import java.util.Map;
 
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.chest.ChestInfo;
+import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper;
+import com.someguyssoftware.treasure2.biome.TreasureBiomeHelper.Result;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.data.TreasureData;
-import com.someguyssoftware.treasure2.enums.Rarity;
 
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.server.ServerWorld;
 
+/**
+ * 
+ * @author Mark Gottschling
+ *
+ */
 public interface ITreasureFeature {
 
-    /**
-     * 
-     * @return
-     */
-//	public boolean isEnabled();
-	
-	public void init();
-	
-	public Map<String, Integer> getChunksSinceLastDimensionFeature();
+	/**
+	 * 
+	 * @param dimension
+	 * @return
+	 */
+	default public boolean meetsDimensionCriteria(ResourceLocation dimension) {
+		// test the dimension white list
+		return TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(dimension.toString());
+	}
 
-	public Map<String, Map<Rarity, Integer>> getChunksSinceLastDimensionRarityFeature();
-	
-    default public boolean checkDimensionWhiteList(String dimensionName) {
-        // test the dimension white list
-        if (!TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(dimensionName)) {
-            return false;
-        }
-        return true;
-    }
-
-    // TODO move to BiomeHelper
-    default public boolean checkOceanBiomes(Biome biome) {
-//		if (biome == Biomes.OCEAN || biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN ||
-//				BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
-//			return true;
-//		}
-		return false;
-    }
-    
 	/**
 	 * 
 	 * @param world
-	 * @param pos
-	 * @param minDistance
+	 * @param spawnCoords
+	 * @param chestConfig
 	 * @return
 	 */
-	public static boolean isRegisteredChestWithinDistance(IWorld world, ICoords coords, int minDistance) {
-
-		double minDistanceSq = minDistance * minDistance;
-
-		// get a list of dungeons
-		List<ChestInfo> infos = TreasureData.CHEST_REGISTRIES.get(WorldInfo.getDimension((World)world).toString()).getValues();
-
-		if (infos == null || infos.size() == 0) {
-			Treasure.LOGGER.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");
+	default public boolean meetsBiomeCriteria(ServerWorld world, ICoords spawnCoords, List<String> whitelist, List<String> blacklist) {
+		Biome biome = world.getBiome(spawnCoords.toPos());
+		TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome,whitelist, blacklist);
+		if(biomeCheck == Result.BLACK_LISTED ) {
+			if (WorldInfo.isClientSide(world)) {
+				Treasure.LOGGER.debug("Biome {} is not a valid biome @ {}", biome.getRegistryName().toString(), spawnCoords.toShortString());
+			}
+			else {
+				// TODO test if this crashes with the getRegistryName because in 1.12 this was a client side only
+				Treasure.LOGGER.debug("Biome {} is not valid @ {}",biome.getRegistryName().toString(), spawnCoords.toShortString());
+			}					
 			return false;
 		}
-
-		for (ChestInfo info : infos) {
-			// calculate the distance to the poi
-			double distance = coords.getDistanceSq(info.getCoords());
-			if (distance < minDistanceSq) {
-				return true;
-			}
-		}
-		return false;
+		return true;
 	}
 }

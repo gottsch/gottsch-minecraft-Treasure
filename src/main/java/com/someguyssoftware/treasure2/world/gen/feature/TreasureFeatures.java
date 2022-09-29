@@ -55,7 +55,7 @@ public class TreasureFeatures {
 	public static ConfiguredFeature<?, ?> SAPPHIRE_ORE_FEATURE_CONFIG;
 
 	// list of features used for persisting to world save
-	public static final List<ITreasureFeature> PERSISTED_FEATURES = new ArrayList<>();
+//	public static final List<ITreasureFeature> PERSISTED_FEATURES = new ArrayList<>();
 
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
 	public static class RegistrationHandler {
@@ -74,10 +74,10 @@ public class TreasureFeatures {
 			WITHER_TREE_FEATURE = new WitherTreeFeature(NoFeatureConfig.CODEC);
 
 			// add features to persisted list to be accessed during world load/save
-			PERSISTED_FEATURES.add(SURFACE_CHEST_FEATURE);
-			PERSISTED_FEATURES.add(SUBMERGED_CHEST_FEATURE);
-			PERSISTED_FEATURES.add(WELL_FEATURE);
-			PERSISTED_FEATURES.add(WITHER_TREE_FEATURE);
+//			PERSISTED_FEATURES.add(SURFACE_CHEST_FEATURE);
+//			PERSISTED_FEATURES.add(SUBMERGED_CHEST_FEATURE);
+//			PERSISTED_FEATURES.add(WELL_FEATURE);
+//			PERSISTED_FEATURES.add(WITHER_TREE_FEATURE);
 
 			final IForgeRegistry<Feature<?>> registry = event.getRegistry();
 			registry.register(SURFACE_CHEST_FEATURE);

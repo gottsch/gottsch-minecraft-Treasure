@@ -33,18 +33,13 @@ public interface IChestConfig {
 	public boolean isEnableChest();
 	public boolean isSurfaceAllowed();
 	public boolean isSubterraneanAllowed();
-	public int getChunksPerChest();
-	@Deprecated
-	public int getAvgChunksPerChestVariance();
-	public double getGenProbability();
+	public int getWeight();
 	@Deprecated
 	public int getMinYSpawn();
 	public double getMimicProbability();
-	
-//	public List<Biome> getBiomeWhiteList();
-//	public List<Biome> getBiomeBlackList();
-	public List<String> getBiomeWhiteList();
-	public List<String> getBiomeBlackList();
+
+	public List<String> getBiomeWhitelist();
+	public List<String> getBiomeBlacklist();
 	public List<BiomeTypeHolder> getBiomeTypeWhiteList();
 	public List<BiomeTypeHolder> getBiomeTypeBlackList();
 

@@ -3,10 +3,10 @@
  */
 package com.someguyssoftware.treasure2.chest;
 
+import java.util.Comparator;
 import java.util.Optional;
 
 import com.someguyssoftware.gottschcore.spatial.ICoords;
-import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 
@@ -25,15 +25,45 @@ public class ChestInfo {
 	private boolean structure;
 	private boolean pit;
 	private boolean discovered;
+	private GenType genType;
 
-	
-//	private Optional<ICoords> mappedToCoords = Optional.empty();
 	private Optional<ICoords> mappedFromCoords = Optional.empty();
+	
+	public static Comparator<ChestInfo> posComparator = new Comparator<ChestInfo>() {
+		@Override
+		public int compare(ChestInfo p1, ChestInfo p2) {
+			// use p1 < p2 because the sort should be ascending
+			if (p1.getCoords().getX()
+					> p2.getCoords().getX()) {
+				// greater than
+				return 1;
+			}
+			else if (p1.getCoords().getX() == p2.getCoords().getX()) {
+				if (p1.getCoords().getZ() > p2.getCoords().getZ()) {
+					return 1;
+				}
+				else {
+					return -1;
+				}
+			}
+			else {
+				// less than
+				return -1;
+			}
+		}
+	};
+	
+	public enum GenType {
+		CHEST,
+		NONE;
+	}
 	
 	/**
 	 * 
 	 */
-	public ChestInfo() {	}
+	public ChestInfo() {
+		this.genType = GenType.CHEST;
+	}
 
 	/**
 	 * 
@@ -41,8 +71,19 @@ public class ChestInfo {
 	 * @param coords
 	 */
 	public ChestInfo(Rarity rarity, ICoords coords) {
+		this (rarity, coords, GenType.CHEST);
+	}
+	
+	/**
+	 * 
+	 * @param rarity
+	 * @param coords
+	 * @param type
+	 */
+	public ChestInfo(Rarity rarity, ICoords coords, GenType type) {
 		setRarity(rarity);
 		setCoords(coords);
+		setGenType(type);
 	}
 	
 	/**
@@ -59,25 +100,6 @@ public class ChestInfo {
 		info.setStructure(data.isStructure());
 		return info;
 	}
-	
-	/**
-	 * does this treasure chest contain a map item to another chest.
-	 * @return
-	 */
-//	public boolean containsTreasureMapTo() {
-//		if (mappedToCoords.isPresent()) {
-//			return true;
-//		}
-//		return false;
-//	}
-//	
-//	public Optional<ICoords> getTreasureMapToCoords() {
-//		return this.mappedToCoords;
-//	}
-//	
-//	public void setTreasureMapTo(ICoords coords) {
-//		this.mappedToCoords = Optional.ofNullable(coords);
-//	}
 	
 	/**
 	 * is there a map item referencing this chest.
@@ -166,14 +188,6 @@ public class ChestInfo {
 		this.registryName = registryName;
 	}
 
-//	public Optional<ICoords> getMappedToCoords() {
-//		return mappedToCoords;
-//	}
-//
-//	public void setMappedToCoords(Optional<ICoords> mappedToCoords) {
-//		this.mappedToCoords = mappedToCoords;
-//	}
-
 	public boolean isMarkers() {
 		return markers;
 	}
@@ -191,5 +205,13 @@ public class ChestInfo {
 		return "ChestInfo [coords=" + coords + ", rarity=" + rarity + ", environment=" + environment + ", registryName="
 				+ registryName + ", markers=" + markers + ", structure=" + structure + ", pit=" + pit + ", discovered="
 				+ discovered + ", mappedFromCoords=" + mappedFromCoords + "]";
+	}
+
+	public GenType getGenType() {
+		return genType;
+	}
+
+	public void setGenType(GenType genType) {
+		this.genType = genType;
 	}
 }
