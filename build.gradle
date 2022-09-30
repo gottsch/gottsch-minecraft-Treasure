@@ -129,7 +129,7 @@ dependencies {
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2:api")
 	//compileOnly fg.deobf("curse.maven:gottschcore-272450:3556719")
 	// local published gottschcore
-	compileOnly fg.deobf("someguyssoftware.gottschcore:GottschCore:mc1.16.5-f36.2.34-v1.7.0")
+	compileOnly fg.deobf("someguyssoftware.gottschcore:GottschCore:mc1.16.5-f36.2.34-v1.8.0")
 
 }
 

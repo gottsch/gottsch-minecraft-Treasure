@@ -36,15 +36,15 @@ import net.minecraftforge.eventbus.api.Event;
  * @author Mark Gottschling on Dec 27, 2020
  *
  */
-public class FireResistenceCharm extends Charm {
-	public static final String FIRE_RESISTENCE_TYPE = "fire_resistence";
+public class FireResistanceCharm extends Charm {
+	public static final String FIRE_RESISTENCE_TYPE = "fire_resistance";
 	private static final Class<?> REGISTERED_EVENT = LivingDamageEvent.class;
 
 	/**
 	 * 
 	 * @param builder
 	 */
-	FireResistenceCharm(Builder builder) {
+	FireResistanceCharm(Builder builder) {
 		super(builder);
 	}
 
@@ -87,7 +87,7 @@ public class FireResistenceCharm extends Charm {
 
 	@Override
 	public ITextComponent getCharmDesc(ICharmEntity entity) {
-		return new TranslationTextComponent("tooltip.charm.rate.fire_resistence", Math.toIntExact(Math.round(entity.getAmount() * 100)));
+		return new TranslationTextComponent("tooltip.charm.rate.fire_resistance", Math.toIntExact(Math.round(entity.getAmount() * 100)));
 	}
 	
 	public static class Builder extends Charm.Builder {
@@ -98,7 +98,7 @@ public class FireResistenceCharm extends Charm {
 
 		@Override
 		public ICharm build() {
-			return  new FireResistenceCharm(this);
+			return  new FireResistanceCharm(this);
 		}
 	}
 }

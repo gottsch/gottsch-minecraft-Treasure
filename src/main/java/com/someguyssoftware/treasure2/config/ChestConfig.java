@@ -19,6 +19,7 @@
  */
 package com.someguyssoftware.treasure2.config;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -41,18 +42,12 @@ public class ChestConfig implements IChestConfig {
 	 */
 	public static class Data {
 		boolean enableChest;
-		int chunksPerChest;
-		@Deprecated
-		int avgChunksPerChestVariance;
-		double genProbability;
-		@Deprecated
-		int minYSpawn;
-		// TODO add depth range from spawn ie. common will be at depth of 6-20 blocks from "surface"
 		int minDepth;
 		int maxDepth;
 		double mimicProbability;
 		boolean surfaceAllowed = true;
 		boolean subterraneanAllowed = true;
+		int weight;
 		
 		String[] whiteList;
 		String[] blackList;
@@ -73,12 +68,9 @@ public class ChestConfig implements IChestConfig {
 		 * @param typeWhiteList
 		 * @param typeBlackList
 		 */
-		public Data(boolean enableChest, int chunksPerChest, int chunksPerChestVariance,  double genProbability, int minDepth, int maxDepth, double mimicProbability, String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
+		public Data(boolean enableChest, int weight, int minDepth, int maxDepth, double mimicProbability, String[] whiteList, String[] blackList, String[] typeWhiteList, String[] typeBlackList) {
 			this.enableChest = enableChest;
-			this.chunksPerChest = chunksPerChest;
-			this.avgChunksPerChestVariance = avgChunksPerChestVariance;
-			this.genProbability = genProbability;
-//			this.minYSpawn = minYSpawn;
+			this.weight = weight;
 			this.minDepth = minDepth;
 			this.maxDepth = maxDepth;
 			this.mimicProbability = mimicProbability;
@@ -87,18 +79,18 @@ public class ChestConfig implements IChestConfig {
 
 		@Override
 		public String toString() {
-			return "Data [enableChest=" + enableChest + ", chunksPerChest=" + chunksPerChest + ", genProbability="
-					+ genProbability + ", minYSpawn=" + minYSpawn + ", mimicProbability=" + mimicProbability
-					+ ", surfaceAllowed=" + surfaceAllowed + ", subterraneanAllowed=" + subterraneanAllowed + "]";
+			return "Data [enableChest=" + enableChest + ", minDepth=" + minDepth + ", maxDepth=" + maxDepth
+					+ ", mimicProbability=" + mimicProbability + ", surfaceAllowed=" + surfaceAllowed
+					+ ", subterraneanAllowed=" + subterraneanAllowed + ", weight=" + weight + ", whiteList="
+					+ Arrays.toString(whiteList) + ", blackList=" + Arrays.toString(blackList) + ", typeWhiteList="
+					+ Arrays.toString(typeWhiteList) + ", typeBlackList=" + Arrays.toString(typeBlackList)
+					+ ", biomesData=" + biomesData + "]";
 		}
 	}
 	
 //	@RequiresWorldRestart
 	public ForgeConfigSpec.ConfigValue<Boolean> enableChest;
-	public ForgeConfigSpec.ConfigValue<Integer> chunksPerChest;
-	public ForgeConfigSpec.ConfigValue<Integer> avgChunksPerChestVariance;
-	public ForgeConfigSpec.ConfigValue<Double> genProbability;
-//	public ForgeConfigSpec.ConfigValue<Integer> minYSpawn;
+	public ForgeConfigSpec.ConfigValue<Integer> weight;
 	public ForgeConfigSpec.ConfigValue<Integer> minDepth;
 	public ForgeConfigSpec.ConfigValue<Integer> maxDepth;
 	public ForgeConfigSpec.ConfigValue<Double> mimicProbability;
@@ -124,22 +116,9 @@ public class ChestConfig implements IChestConfig {
 			.comment(" Enable/Disable generating chests associated with this rarity.")
 			.define("Enable chests for rarity:", data.enableChest);
 		
-		chunksPerChest = builder
-				.comment("The number of chunks generated before the chest spawn is attempted.")
-				.defineInRange("Chunks per chest spawn:", data.chunksPerChest, 50, 32000	);
-		
-		avgChunksPerChestVariance = builder
-				.comment(" The average chunk variance relating to the minimum number of chunks generated before another attempt to spawn a chest is made.",
-						"Low numbers (< 5) represent low variance between each successful spawn resulting in patterns in generation. No recommended.")
-				.defineInRange("Average chunks per chest spawn variance:", data.avgChunksPerChestVariance, 1, 100);
-		
-		genProbability= builder
-				.comment("The probability that a chest will spawn.")
-				.defineInRange("Probability of chest spawn:", data.genProbability, 0.0, 100.0);
-
-//		minYSpawn = builder
-//				.comment("The minimum depth (y-axis) that a chest can generate at.")
-//				.defineInRange("Minimum depth for spawn location:", data.minYSpawn, 5, 250);
+		weight = builder
+				.comment("The weight for this rarity to spawn a chest.", "Higher number relative to other weight means this has a high chance to be selected.")
+				.defineInRange("Weight of rarity:", data.weight, 0, 32000);
 
 		minDepth = builder
 				.comment("The minimum blocks deep from the surface that a chest can generate at.")
@@ -176,22 +155,6 @@ public class ChestConfig implements IChestConfig {
 	@Override
 	public boolean isEnableChest() {
 		return enableChest.get();
-	}
-
-	@Override
-	public int getChunksPerChest() {
-		return chunksPerChest.get();
-	}
-
-	@Override
-	public int getAvgChunksPerChestVariance() {
-		return avgChunksPerChestVariance.get();
-	}
-
-	
-	@Override
-	public double getGenProbability() {
-		return genProbability.get();
 	}
 
 	@Override
@@ -239,20 +202,25 @@ public class ChestConfig implements IChestConfig {
 	}
 
 	@Override
-	public List<String> getBiomeWhiteList() {
+	public List<String> getBiomeWhitelist() {
 		return (List<String>) biomes.whiteList.get();
 	}
 
 	@Override
-	public List<String> getBiomeBlackList() {
+	public List<String> getBiomeBlacklist() {
 		return (List<String>) biomes.blackList.get();
 	}
 
 	@Override
 	public String toString() {
-		return "ChestConfig [enableChest=" + enableChest.get() + ", chunksPerChest=" + chunksPerChest.get() + ", genProbability="
-				+ genProbability.get() + ", minDepth=" + minDepth.get() + ", mimicProbability=" + mimicProbability.get()
-				+ ", surfaceAllowed=" + surfaceAllowed + ", subterraneanAllowed=" + subterraneanAllowed + ", biomes="
-				+ biomes + "]";
+		return "ChestConfig [enableChest=" + enableChest + ", weight=" + weight + ", minDepth=" + minDepth
+				+ ", maxDepth=" + maxDepth + ", mimicProbability=" + mimicProbability + ", surfaceAllowed="
+				+ surfaceAllowed + ", subterraneanAllowed=" + subterraneanAllowed + ", biomes=" + biomes + "]";
 	}
+
+	@Override
+	public int getWeight() {
+		return weight.get();
+	}
+
 }

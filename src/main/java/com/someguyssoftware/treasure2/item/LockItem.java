@@ -13,6 +13,7 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
+import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
@@ -21,6 +22,7 @@ import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -36,7 +38,7 @@ import net.minecraft.world.World;
  * @author Mark Gottschling onJan 10, 2018
  *
  */
-public class LockItem extends ModItem {
+public class LockItem extends ModItem implements ILockEffects {
 
 	/*
 	 * The category that the lock belongs to
@@ -186,13 +188,12 @@ public class LockItem extends ModItem {
 			Treasure.LOGGER.info("handleHeldLock | lockState -> {}", lockState);
 			if (lockState != null && lockState.getLock() == null) {
 				lockState.setLock(lock);
+
+				doLockedEffects(tileEntity.getLevel(), player, tileEntity.getBlockPos(), tileEntity, lockState);						 
+
 				tileEntity.sendUpdates(); // TODO won't send until implement read/write nbt
 				// decrement item in hand
 				heldItem.shrink(1);
-//				if (heldItem.getCount() <=0 && !player.capabilities.isCreativeMode) {
-//					IInventory inventory = player.inventory;
-//					inventory.setInventorySlotContents(player.inventory.currentItem, null);
-//				}
 				lockedAdded = true;
 				break;
 			}
@@ -200,6 +201,31 @@ public class LockItem extends ModItem {
 		return lockedAdded;
 	}
 
+	public void doUnlock(World level, PlayerEntity player, BlockPos chestPos,
+			AbstractTreasureChestTileEntity chestTileEntity, LockState lockState) {
+		
+		doUnlockedEffects(level, player, chestPos, chestTileEntity, lockState);
+		 
+		// remove the lock
+		lockState.setLock(null);		
+	}
+	
+	/**
+	 * 
+	 * @param level
+	 * @param pos
+	 */
+	public void dropLock(World level, BlockPos pos) {
+		if (TreasureConfig.KEYS_LOCKS.enableLockDrops.get()) {
+			InventoryHelper.dropItemStack(
+					level, 
+					pos.getX(), 
+					pos.getY(), 
+					pos.getZ(), 
+					new ItemStack(this));
+		}
+	}
+	
 	/**
 	 * 
 	 * @param keyItem

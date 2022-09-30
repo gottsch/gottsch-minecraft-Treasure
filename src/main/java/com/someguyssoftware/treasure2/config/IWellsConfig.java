@@ -14,11 +14,8 @@ public interface IWellsConfig {
 	
 	public void init();
 	public boolean isEnabled();
-	public int getChunksPerWell();
 	public double getGenProbability();
 	
 	public List<String> getBiomeWhiteList();
 	public List<String> getBiomeBlackList();
-//	public List<BiomeTypeHolder> getBiomeTypeWhiteList();
-//	public List<BiomeTypeHolder> getBiomeTypeBlackList();
 }

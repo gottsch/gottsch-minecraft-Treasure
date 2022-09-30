@@ -16,6 +16,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public interface IKeyEffects {
 
+	// TODO this is actually a lock effect
 	/**
 	 * 
 	 * @param worldIn

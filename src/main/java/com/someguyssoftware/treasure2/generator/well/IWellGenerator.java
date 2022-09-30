@@ -77,7 +77,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param random
 	 * @param coords
 	 */
-	public default void addDecoration(IServerWorld world, Random random, ICoords coords) {
+	public default void addDecoration(IServerWorld world, ChunkGenerator chunkGenerator, Random random, ICoords coords) {
 		// coords matrix centered around the input coords
 		ICoords[] circle = new Coords[16];
 		circle[0] = coords.add(-2, 0, -2);
@@ -103,7 +103,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 		for (int i = 0; i < 16; i++) {
 			if (random.nextInt(2) == 0) {
 				// check if the block is dry land
-				ICoords markerCoords = WorldInfo.getDryLandSurfaceCoords(world, circle[i]);
+				ICoords markerCoords = WorldInfo.getDryLandSurfaceCoords(world, chunkGenerator, circle[i]);
 				if (markerCoords == null || markerCoords == WorldInfo.EMPTY_COORDS) {
 					Treasure.LOGGER.debug("Returning due to marker coords == null or EMPTY_COORDS");
 					continue; 

@@ -26,23 +26,17 @@ import java.util.Map;
 
 import com.someguyssoftware.gottschcore.config.AbstractConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.config.ModConfig.Reloading;
-import net.minecraftforge.fml.loading.FMLPaths;
 
 /**
  * 
  * @author Mark Gottschling on Aug 11, 2020
  *
  */
-@EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
+//@EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class TreasureConfig extends AbstractConfig {
 	protected static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
 	protected static final ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
@@ -352,15 +346,52 @@ public class TreasureConfig extends AbstractConfig {
 		}
 	}
 	
+	public static class ChestGen {
+		public ConfigValue<Integer> registrySize;
+		public ConfigValue<Double> probability;
+		public ConfigValue<Integer> minBlockDistance;
+		public ConfigValue<Integer>	waitChunks;
+		
+		public ChestGen(final ForgeConfigSpec.Builder builder, String category, int registrySize, double prob, int distance, int wait) {
+			builder.comment(CATEGORY_DIV, " Chest Generation properties", CATEGORY_DIV)
+			.push(category);
+			
+			this.registrySize = builder
+					.comment(" The number of chests that are monitored. Most recent additions replace least recent when the registry is full.",
+							" This is the set of chests used to measure distance between newly generated chests.",
+							" A high count is better than a low count, especially in a multiplayer world.")
+					.defineInRange("Maximum size of chest registry:", registrySize, 50, 5000);
+			
+			this.probability = builder
+					.comment(" The probability that a chest will generate at selected spawn location.",
+							" Including a non-100 value increases the randomization of chest placement.")
+					.defineInRange("Probability:", prob, 0.0, 100.0);
+			
+			this.minBlockDistance = builder
+					.comment(" The minimum distance, measured in blocks, that two chests can be in proximity (ie radius).",
+							" Note: Only chests in the chest registry are checked against this property.",
+							" Default = 256 blocks, or 16 chunks.")
+					.defineInRange("Minimum distance per chest spawn:", distance, 80, 32768);
+			
+			this.waitChunks = builder
+					.comment(" The number of chunks that are generated in a new world before a chests start to spawn.")
+					.defineInRange("Wait for first chunks:", wait, 10, 32000);
+			
+			builder.pop();
+		}
+		
+	}
+	
 	/*
 	 * 
 	 */
 	public static class Chests {
+		public ChestGen surfaceChestGen;
+		public ChestGen submergedChestGen;
+		
 		public ChestCollection surfaceChests;
 		public ChestCollection submergedChests;
 
-//		@RequiresMcRestart
-		public ForgeConfigSpec.ConfigValue<Integer> chestRegistrySize;
 		public ForgeConfigSpec.DoubleValue treasureMapProbability;
 		
 		/**
@@ -370,27 +401,25 @@ public class TreasureConfig extends AbstractConfig {
 		Chests(final ForgeConfigSpec.Builder builder) {
 			builder.comment(CATEGORY_DIV, " Chest properties", CATEGORY_DIV)
 			.push(CHESTS_CATEGORY);
-
-			chestRegistrySize = builder
-					.comment("The number of chests that are monitored. Most recent additions replace least recent when the registry is full.",
-							"This is the set of chests used to measure distance between newly generated chests.")
-					.defineInRange("Maximum size of chest registry:", 75, 5, 100);
 			
 			treasureMapProbability = builder
 					.comment("The probability that a chest will contain a treasure map to another chest.")
 					.defineInRange("Treasure Chest Probability:", 0D, 20D, 100D);
 			
+			surfaceChestGen = new ChestGen(builder, "surface chest Gen", 1000, 80.0, 192, 25);
+			submergedChestGen = new ChestGen(builder, "submerged chest gen", 500, 70.0, 560, 100);
+			
 			Map<Rarity, ChestConfig.Data> surfaceConfigs = new HashMap<>();
 			Map<Rarity, ChestConfig.Data> submergedConfigs = new HashMap<>();
 			
 			// setup surface properties
-			surfaceConfigs.put(Rarity.COMMON, new ChestConfig.Data(true, 75, 10, 85, 6, 15, 20.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-			surfaceConfigs.put(Rarity.UNCOMMON, new ChestConfig.Data(true, 150, 10, 75, 10, 25, 17.5, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-			surfaceConfigs.put(Rarity.SCARCE, new ChestConfig.Data(true, 300, 10, 50, 20, 35, 15.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-			surfaceConfigs.put(Rarity.RARE, new ChestConfig.Data(true, 500, 10, 25, 30, 45, 0.0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
-			surfaceConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 800, 10, 15, 40, 55, 0.0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
-			surfaceConfigs.put(Rarity.LEGENDARY, new ChestConfig.Data(true, 1500, 10, 15, 50, 65, 0.0, new String[] {}, new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" }));
-			surfaceConfigs.put(Rarity.MYTHICAL, new ChestConfig.Data(true, 2800, 10, 15, 60, 75, 0.0, new String[] {}, new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" }));
+			surfaceConfigs.put(Rarity.COMMON, new ChestConfig.Data(true, 100, 6, 15, 20.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			surfaceConfigs.put(Rarity.UNCOMMON, new ChestConfig.Data(true, 70, 10, 25, 17.5, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			surfaceConfigs.put(Rarity.SCARCE, new ChestConfig.Data(true, 40, 20, 35, 15.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			surfaceConfigs.put(Rarity.RARE, new ChestConfig.Data(true, 20, 30, 45, 0.0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
+			surfaceConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 10, 40, 55, 0.0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
+			surfaceConfigs.put(Rarity.LEGENDARY, new ChestConfig.Data(true, 5, 50, 65, 0.0, new String[] {}, new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" }));
+			surfaceConfigs.put(Rarity.MYTHICAL, new ChestConfig.Data(true, 2, 60, 75, 0.0, new String[] {}, new String[] { "plains", "sunflower_plains" }, new String[] {}, new String[] { "plains" }));
 			
 			// TODO needs all the builder stuff
 			surfaceChests = new ChestCollection(builder,
@@ -405,17 +434,17 @@ public class TreasureConfig extends AbstractConfig {
 
 			// setup submerged properties
 			// NOTE: submerged feature is registered for oceans only and there no special white list needs to be setup for oceans-only by default.
-			submergedConfigs.put(Rarity.COMMON, new ChestConfig.Data(false, 150, 10, 85, 5, 5, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-			submergedConfigs.put(Rarity.UNCOMMON, new ChestConfig.Data(false, 300, 10, 75, 5, 5, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-			submergedConfigs.put(Rarity.SCARCE, new ChestConfig.Data(true, 400, 10, 50, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+			submergedConfigs.put(Rarity.COMMON, new ChestConfig.Data(false,  76, 5, 5, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			submergedConfigs.put(Rarity.UNCOMMON, new ChestConfig.Data(false, 56, 5, 5, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			submergedConfigs.put(Rarity.SCARCE, new ChestConfig.Data(true, 36, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
-			submergedConfigs.put(Rarity.RARE, new ChestConfig.Data(true, 600, 10, 25, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+			submergedConfigs.put(Rarity.RARE, new ChestConfig.Data(true,16, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
-			submergedConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 1000, 10, 15, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+			submergedConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 9, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
-			submergedConfigs.put(Rarity.LEGENDARY,	new ChestConfig.Data(true, 1700, 10, 25, 5, 5, 0.0,	new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean" }, 
+			submergedConfigs.put(Rarity.LEGENDARY,	new ChestConfig.Data(true, 5, 5, 5, 0.0,	new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean" }, 
 					new String[] {}, new String[] { "ocean", "deep_ocean" }, new String[] {}));
-			submergedConfigs.put(Rarity.MYTHICAL, 	new ChestConfig.Data(true, 3000, 10, 15, 5, 5, 0.0, new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean" }, 
+			submergedConfigs.put(Rarity.MYTHICAL, 	new ChestConfig.Data(true, 2, 5, 5, 0.0, new String[] { "ocean", "deep_ocean", "deep_frozen_ocean", "cold_ocean", "deep_cold_ocean", "lukewarm_ocean", "warm_ocean" }, 
 					new String[] {}, new String[] { "ocean", "deep_ocean" }, new String[] {}));
 
 			submergedChests = new ChestCollection(builder, 
@@ -444,8 +473,6 @@ public class TreasureConfig extends AbstractConfig {
 			 */
 			public Map<Rarity, IChestConfig> configMap = new HashMap<>();
 
-			public ForgeConfigSpec.ConfigValue<Integer> minChunksPerChest;
-			public ForgeConfigSpec.ConfigValue<Integer> minDistancePerChest;
 			public ForgeConfigSpec.ConfigValue<Integer> surfaceChestProbability;			
 
 			/**
@@ -455,19 +482,10 @@ public class TreasureConfig extends AbstractConfig {
 			public ChestCollection(final ForgeConfigSpec.Builder builder, String category, String[] comments, Map<Rarity, ChestConfig.Data> configs) {
 				
 				builder.comment(comments).push(category);
-				minChunksPerChest = builder
-						.comment(" The minimum number of chunks generated before another attempt to spawn a chest is made.")
-						.defineInRange("Minimum chunks per chest spawn:", 75, 25, 32000);
-				
-				minDistancePerChest = builder
-						.comment(" The minimum distance, measured in chunks (16x16), that two chests can be in proximity.",
-								" Note: Only chests in the chest registry are checked against this property.",
-								" Used in conjunction with the chunks per chest and spawn probability.", " Ex. ")
-						.defineInRange("Minimum distance per chest spawn:", 150, 0, 32000);
 				
 				surfaceChestProbability = builder
 						.comment(" The probability chest will appear on the surface, instead of in a pit.")
-						.defineInRange("Probability of chest spawn on the surface:", 15, 0, 100);
+						.defineInRange("Probability of chest spawn on the surface:", 20, 0, 100);
 
 				// update the map
 				configMap.put(Rarity.COMMON, new ChestConfig(builder, Rarity.COMMON.getValue(), configs.get(Rarity.COMMON)));
@@ -562,9 +580,9 @@ public class TreasureConfig extends AbstractConfig {
     public static class Wells implements IWellsConfig {
     	public ForgeConfigSpec.BooleanValue enableWells;
     	public ForgeConfigSpec.ConfigValue<Double> genProbability;
-        public ForgeConfigSpec.ConfigValue<Integer> chunksPerWell;
         public ForgeConfigSpec.ConfigValue<Integer> minDistancePerWell;
         public ForgeConfigSpec.ConfigValue<Integer> registrySize;
+        public ForgeConfigSpec.ConfigValue<Integer> waitChunks;
         public BiomesConfig biomes;		
         
         Wells(final ForgeConfigSpec.Builder builder) {
@@ -575,24 +593,24 @@ public class TreasureConfig extends AbstractConfig {
 					.comment("Enable/disable whether wells will spawn.")
 					.define("Enable wells:", true);
 			
-			chunksPerWell = builder
-					.comment("The minimum number of chunks generated before another attempt to spawn a well is made.")
-					.defineInRange("Chunks per well spawn:", 400, 100, 32000);
-			
 			minDistancePerWell = builder
 					.comment(" The minimum distance, measured in blocks, that two wells can be in proximity.",
 							" Note: Only wells in the wells registry are checked against this property.",
 							" Used in conjunction with the chunks per well and spawn probability.", " Ex. TODO")
-					.defineInRange("Minimum block distance per well spawn:", 400, 100, 32000);
+					.defineInRange("Minimum block distance per well spawn:", 600, 100, 32000);
 			
 			genProbability = builder
 					.comment("The probability that a well will generate.")
-					.defineInRange("Generation probability:", 80.0, 0.0, 100.0);
+					.defineInRange("Generation probability:", 50.0, 0.0, 100.0);
+			
+			waitChunks = builder
+					.comment(" The number of chunks that are generated in a new world before wells start to spawn.")
+					.defineInRange("Wait for first chunks:", 100, 10, 32000);
 			
 			registrySize = builder
 					.comment("The number of wells that are monitored. Most recent additions replace oldest when the registry is full.",
 							"This is the set of wells used to measure distance between newly generated wells.")
-					.defineInRange("Maximum size of chest registry:", 25, 5, 100);
+					.defineInRange("Maximum size of chest registry:", 100, 5, 1000);
 			
 			BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean", "minecraft:deep_frozen_ocean", "minecraft:cold_ocean",
 					"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },
@@ -610,11 +628,6 @@ public class TreasureConfig extends AbstractConfig {
 		@Override
 		public boolean isEnabled() {
 			return enableWells.get();
-		}
-
-		@Override
-		public int getChunksPerWell() {
-			return chunksPerWell.get();
 		}
 
 		@Override
@@ -915,14 +928,14 @@ public class TreasureConfig extends AbstractConfig {
 	
 	public static class WitherTree {
 		public ForgeConfigSpec.BooleanValue enableWitherTree;
-		public ForgeConfigSpec.ConfigValue<Integer> chunksPerTree;
         public ForgeConfigSpec.ConfigValue<Integer> minDistancePerTree;        
     	public ForgeConfigSpec.ConfigValue<Double> genProbability;
     	public ForgeConfigSpec.ConfigValue<Integer> maxTrunkSize;
     	public ForgeConfigSpec.ConfigValue<Integer> minSupportingTrees;
     	public ForgeConfigSpec.ConfigValue<Integer> maxSupportingTrees;
     	public ForgeConfigSpec.ConfigValue<Integer> registrySize;
-        public BiomesConfig biomes; 
+        public BiomesConfig biomes;
+		    	public ForgeConfigSpec.ConfigValue<Integer> waitChunks; 
         
 		public WitherTree(final ForgeConfigSpec.Builder builder)	 {
 			builder.comment(CATEGORY_DIV, " Wither Tree properties", CATEGORY_DIV)
@@ -932,19 +945,15 @@ public class TreasureConfig extends AbstractConfig {
 					.comment(" Enable/disable whether wither trees will spawn.")
 					.define("Enable wither trees:", true);
 			
-			chunksPerTree = builder
-					.comment(" The number of chunks generated before a wither tree spawn is attempted.")
-					.defineInRange("Chunks per wither tree spawn:", 800, 0, 32000);
-			
 			minDistancePerTree = builder
 					.comment(" The minimum distance, measured in blocks, that two wither trees can be in proximity.",
 							" Note: Only wither trees in the wither tree registry are checked against this property.",
 							" Used in conjunction with the chunks per wither tree and spawn probability.", " Ex. TODO")
-					.defineInRange("Minimum block distance per wither tree spawn:", 800, 100, 32000);
+					.defineInRange("Minimum block distance per wither tree spawn:", 1000, 100, 32000);
 			
 			genProbability = builder
 					.comment(" The probability that a wither tree will spawn.")
-					.defineInRange("Probability of wither tree spawn:", 90.0, 0.0, 100.0);
+					.defineInRange("Probability of wither tree spawn:", 70.0, 0.0, 100.0);
 			
 			maxTrunkSize = builder
 					.comment(" The maximum height a wither tree can reach.",
@@ -963,7 +972,11 @@ public class TreasureConfig extends AbstractConfig {
 			registrySize = builder
 					.comment("The number of wither trees that are monitored. Most recent additions replace oldest when the registry is full.",
 							"This is the set of wither trees used to measure distance between newly generated wither trees.")
-					.defineInRange("Maximum size of chest registry:", 25, 5, 100);
+					.defineInRange("Maximum size of chest registry:", 100, 5, 1000);
+			
+			waitChunks = builder
+					.comment(" The number of chunks that are generated in a new world before wither trees start to spawn.")
+					.defineInRange("Wait for first chunks:", 608, 10, 32000);
 			
 			BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "minecraft:desert", "minecraft:ice_spikes", "minecraft:snowy_tundra", "minecraft:ocean", "minecraft:deep_ocean", "minecraft:deep_frozen_ocean", "minecraft:cold_ocean",
 					"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },
@@ -982,16 +995,6 @@ public class TreasureConfig extends AbstractConfig {
 		public List<String> getBiomeBlackList() {
 			return (List<String>) biomes.blackList.get();
 		}
-	}
-	
-	@SubscribeEvent
-	public static void onLoad(final ModConfig.Loading configEvent) {
-		TreasureConfig.loadConfig(TreasureConfig.COMMON_CONFIG,
-				FMLPaths.CONFIGDIR.get().resolve(mod.getId() + "-common.toml"));
-	}
-
-	@SubscribeEvent
-	public static void onReload(final Reloading configEvent) {
 	}
 
 	@Override

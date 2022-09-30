@@ -20,19 +20,21 @@
 package com.someguyssoftware.treasure2.persistence;
 
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.someguyssoftware.gottschcore.spatial.Coords;
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestEnvironment;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
+import com.someguyssoftware.treasure2.chest.ChestInfo.GenType;
 import com.someguyssoftware.treasure2.data.TreasureData;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.registry.ChestRegistry;
+import com.someguyssoftware.treasure2.enums.WorldGenerators;
+import com.someguyssoftware.treasure2.random.LevelWeightedCollection;
+import com.someguyssoftware.treasure2.registry.RegistryType;
 import com.someguyssoftware.treasure2.registry.SimpleListRegistry;
-import com.someguyssoftware.treasure2.world.gen.feature.TreasureFeatures;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -42,7 +44,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.DimensionSavedDataManager;
 import net.minecraft.world.storage.WorldSavedData;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
  * 
@@ -67,10 +68,7 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 	private static final String DIMENSIONS_TAG_NAME = "dimensions";
 	private static final String BIOME_ID_TAG_NAME = "biomeID";
 	private static final String BIOMES_TAG_NAME = "biomes";
-	
-	// New tags names
-	private static final String CHUNKS_SINCE_LAST_FEATURE_TAG_NAME = "chunksSinceLastFeature";
-	private static final String CHUNKS_SINCE_LAST_RARITY_FEATURE_TAG_NAME = "chunksSinceLastRarityFeature";
+
 	
 	/**
 	 * Empty constructor
@@ -96,90 +94,55 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 
 		// treasure generation tag
 		CompoundNBT genTag = tag.getCompound(TREASURE_GEN_TAG_NAME);
-
+		
 		/*
-		 * features
+		 * rarities map
 		 */
-		TreasureFeatures.PERSISTED_FEATURES.forEach(feature -> {
-			Treasure.LOGGER.debug("loading feature -> {}", ((IForgeRegistryEntry)feature).getRegistryName().toString());
-			CompoundNBT featureTag = genTag.getCompound(((IForgeRegistryEntry)feature).getRegistryName().toString());
-			if (featureTag != null) {
-				ListNBT dimTagList = featureTag.getList(DIMENSIONS_TAG_NAME, 10);
-				dimTagList.forEach(dimTag -> {
-					String dimensionID = ((CompoundNBT) dimTag).getString(DIMENSION_ID_TAG_NAME);
-					Treasure.LOGGER.debug("loading dimension -> {}", dimensionID);
-					int chunksSince = ((CompoundNBT) dimTag).getInt(CHUNKS_SINCE_LAST_FEATURE_TAG_NAME);
-					feature.getChunksSinceLastDimensionFeature().put(dimensionID, chunksSince);
-					Treasure.LOGGER.debug("loading chunks since -> {}", chunksSince);
-					ListNBT rarityTagList = ((CompoundNBT) dimTag).getList(RARITIES_TAG_NAME, 10);
-					if (rarityTagList != null && !rarityTagList.isEmpty()) {
-						Treasure.LOGGER.debug("rarity tag list size -> {}", rarityTagList.size());
-						for (int index = 0; index < rarityTagList.size(); index++) {
-							CompoundNBT rarityTag = rarityTagList.getCompound(index);
-							String rarityID = rarityTag.getString(RARITY_TAG_NAME);
-							Treasure.LOGGER.debug("loading rarity ID -> {}", rarityID);
-							Rarity rarity = Rarity.getByValue(rarityID);
-							if (rarity != null) {
-								int chunksSinceRarityFeature = rarityTag.getInt(CHUNKS_SINCE_LAST_RARITY_FEATURE_TAG_NAME);
-								Treasure.LOGGER.debug("loading chunks since last rarity -> {} chunks -> {}", rarity, chunksSinceRarityFeature);
-								if (feature.getChunksSinceLastDimensionRarityFeature().containsKey(dimensionID)) {
-									feature.getChunksSinceLastDimensionRarityFeature().get(dimensionID).put(rarity, chunksSinceRarityFeature);
-								}
-							}
-						}
-					}					
-				});
-			}
-		});
+		ListNBT rarityMapNbt = genTag.getList("rarityMap", 10);
+		if (rarityMapNbt != null) {
+			rarityMapNbt.forEach(entryNbt -> {
+				String key = ((CompoundNBT)entryNbt).getString("key");
+				ListNBT valueNbt = ((CompoundNBT)entryNbt).getList("value", 10);
+				if (valueNbt != null) {
+					LevelWeightedCollection<Rarity> collection = new LevelWeightedCollection<Rarity>();
+					valueNbt.forEach(rarityNbt -> {
+						String rarity = ((CompoundNBT)rarityNbt).getString("rarity");
+						int left = ((CompoundNBT)rarityNbt).getInt("left");
+						int right = ((CompoundNBT)rarityNbt).getInt("right");
+						collection.add(Pair.of(left, right), Rarity.valueOf(rarity));
+					});	
+					// replace the default rarities map
+					TreasureData.RARITIES_MAP.put(WorldGenerators.valueOf(key), collection);
+				}
+			});
+		}
 		
         /*
          * chest registry
          */
-        ListNBT chestRegistriesTag = genTag.getList("chestRegistries", 10);
-        if (chestRegistriesTag != null) {
-        	Treasure.LOGGER.debug("loading chest registries...");
-            chestRegistriesTag.forEach(dimTag -> {
-                String dimensionID = ((CompoundNBT) dimTag).getString(DIMENSION_ID_TAG_NAME);
+        ListNBT registriesNbt = genTag.getList("chestRegistries", 10);
+        if (registriesNbt != null) {
+        	Treasure.LOGGER.debug("loading chest registries...");  	
+            registriesNbt.forEach(registryNbt -> {
+                String dimensionID = ((CompoundNBT) registryNbt).getString(DIMENSION_ID_TAG_NAME);
                 Treasure.LOGGER.debug("loading dimension -> {}", dimensionID);
-                // get the registry
-                ListNBT registries = ((CompoundNBT) dimTag).getList(CHEST_REGISTRY_TAG_NAME, 10);
-                registries.forEach(registryTag -> {
-                	CompoundNBT nbt = (CompoundNBT)registryTag;
-                    String key = ((CompoundNBT)registryTag).getString(KEY_TAG_NAME);
-                    String rarity = ((CompoundNBT)registryTag).getString(RARITY_TAG_NAME);
-                    CompoundNBT coords = ((CompoundNBT)registryTag).getCompound(COORDS_TAG_NAME);
-                    int x = coords.getInt("x");
-                    int y = coords.getInt("y");
-                    int z = coords.getInt("z");
-                    Treasure.LOGGER.debug("loading chest registry entry -> k:{} r:{} x:{} y:{} z:{}", key, rarity, x, y, z);
-                    
-                    ChestInfo info = new ChestInfo(Rarity.getByValue(rarity), new Coords(x, y, z));
-                    
-                    if (nbt.contains("markers")) {
-                    	info.setMarkers(nbt.getBoolean("markers"));
-                    }
-                    if (nbt.contains("structure")) {
-                    	info.setStructure(nbt.getBoolean("structure"));
-                    }
-                    if (nbt.contains("pit")) {
-                    	info.setPit(nbt.getBoolean("pit"));
-                    }
-                    if (nbt.contains("discovered")) {
-                    	info.setDiscovered(nbt.getBoolean("discovered"));
-                    }
-                    if (nbt.contains("environment")) {
-                    	info.setEnvironment(ChestEnvironment.valueOf(nbt.getString("environment")));
-                    }
-                    if (nbt.contains("registryName")) {
-                    	info.setRegistryName(new ResourceLocation(nbt.getString("registryName")));
-                    }
-                    if (nbt.contains("mappedFrom")) {
-                    	info.setTreasureMapFrom(loadCoords(nbt, "mappedFrom"));
-                    }
-                 
-                    TreasureData.CHEST_REGISTRIES.get(dimensionID).register(Rarity.getByValue(rarity), key, info);
-                });
-                    
+
+                // check for legacy tags and load those
+                if (((CompoundNBT)registryNbt).contains(CHEST_REGISTRY_TAG_NAME)) {
+                	loadChests(registryNbt, dimensionID, null);
+                	// delete tag after load
+                	((CompoundNBT)registryNbt).remove(CHEST_REGISTRY_TAG_NAME);
+                }
+                else {
+                    ListNBT keysNbt = ((CompoundNBT) registryNbt).getList("keys", 10);
+                    keysNbt.forEach(keyNbt -> {
+                    	String key = ((CompoundNBT)keyNbt).getString("name");
+                    	Treasure.LOGGER.debug("loading chest registry for -> {}", key);
+                    	if (((CompoundNBT)keyNbt).contains(CHEST_REGISTRY_TAG_NAME)) {
+                    		loadChests(keyNbt, dimensionID, RegistryType.valueOf(key));
+                    	}
+                    });
+                }                 
             });
         }
         
@@ -203,6 +166,56 @@ public class TreasureGenerationSavedData extends WorldSavedData {
         	witherTreeRegistryList.forEach(dimensionCompound -> {
         		loadRegistry(dimensionCompound, TreasureData.WITHER_TREE_REGISTRIES);
         	});
+        }
+	}
+
+	private void loadChests(INBT registryNbt, String dimensionID, RegistryType registryType/*, List<ChestInfo> chestInfos*/) {
+		ListNBT chestInfosNbt = ((CompoundNBT) registryNbt).getList(CHEST_REGISTRY_TAG_NAME, 10);
+		for (INBT registryTag : chestInfosNbt) {
+        	CompoundNBT nbt = (CompoundNBT)registryTag;
+            String key = ((CompoundNBT)registryTag).getString(KEY_TAG_NAME);
+            String rarity = ((CompoundNBT)registryTag).getString(RARITY_TAG_NAME);
+            CompoundNBT coords = ((CompoundNBT)registryTag).getCompound(COORDS_TAG_NAME);
+            int x = coords.getInt("x");
+            int y = coords.getInt("y");
+            int z = coords.getInt("z");
+            Treasure.LOGGER.debug("loading chest registry entry -> k:{} r:{} x:{} y:{} z:{}", key, rarity, x, y, z);
+            
+            ChestInfo info = new ChestInfo(Rarity.getByValue(rarity), new Coords(x, y, z));
+            
+            if (nbt.contains("markers")) {
+            	info.setMarkers(nbt.getBoolean("markers"));
+            }
+            if (nbt.contains("structure")) {
+            	info.setStructure(nbt.getBoolean("structure"));
+            }
+            if (nbt.contains("pit")) {
+            	info.setPit(nbt.getBoolean("pit"));
+            }
+            if (nbt.contains("discovered")) {
+            	info.setDiscovered(nbt.getBoolean("discovered"));
+            }
+            if (nbt.contains("environment")) {
+            	info.setEnvironment(ChestEnvironment.valueOf(nbt.getString("environment")));
+            }
+            if (nbt.contains("registryName")) {
+            	info.setRegistryName(new ResourceLocation(nbt.getString("registryName")));
+            }
+            if (nbt.contains("mappedFrom")) {
+            	info.setTreasureMapFrom(loadCoords(nbt, "mappedFrom"));
+            }
+            if (nbt.contains("genType")) {
+            	info.setGenType(GenType.valueOf(nbt.getString("genType")));
+            }            
+            
+            if (registryType == null) {
+            	registryType = info.getEnvironment() == ChestEnvironment.SUBMERGED ? RegistryType.SUBMERGED : RegistryType.SURFACE;
+            }
+            Treasure.LOGGER.debug("registryType -> {}", registryType);
+            Treasure.LOGGER.debug("chest registries -> {}", TreasureData.CHEST_REGISTRIES2);
+            Treasure.LOGGER.debug("chest registries[{}] -> {}", dimensionID, TreasureData.CHEST_REGISTRIES2.get(dimensionID));
+            Treasure.LOGGER.debug("chest registries[{}][{}] -> {}", dimensionID, registryType, TreasureData.CHEST_REGISTRIES2.get(dimensionID).get(registryType));
+            TreasureData.CHEST_REGISTRIES2.get(dimensionID).get(registryType).register(info.getRarity(), info.getCoords(), info);
         }
 	}
 
@@ -237,91 +250,91 @@ public class TreasureGenerationSavedData extends WorldSavedData {
 			CompoundNBT genTag = new CompoundNBT();
 			
 			// add main treasure tag
-			tag.put(TREASURE_GEN_TAG_NAME, genTag);
+			tag.put(TREASURE_GEN_TAG_NAME, genTag);	
 			
-			// for each feature
-			TreasureFeatures.PERSISTED_FEATURES.forEach(feature -> {
-				Treasure.LOGGER.debug("saving feature -> {}", ((IForgeRegistryEntry)feature).getRegistryName().toString());
-				CompoundNBT featureTag = new CompoundNBT();
-				// add the feature gen last count to the treasure compound for each dimension
-				ListNBT dimTagList = new ListNBT();
-				for (Entry<String, Integer> entry : feature.getChunksSinceLastDimensionFeature().entrySet()) {
-					Treasure.LOGGER.debug("saving feature dimension ID -> {}", entry.getKey());
-					
-					CompoundNBT dimensionTag = new CompoundNBT();
-					dimensionTag.putString(DIMENSION_ID_TAG_NAME, entry.getKey());
-					dimensionTag.putInt(CHUNKS_SINCE_LAST_FEATURE_TAG_NAME, entry.getValue());
-					Treasure.LOGGER.debug("saving chunks since last feature -> {}", entry.getValue());
-					
-					// get the rarity map
-					if (feature.getChunksSinceLastDimensionRarityFeature() != null && feature.getChunksSinceLastDimensionRarityFeature().containsKey(entry.getKey())) {
-						Map<Rarity, Integer> rarityMap = feature.getChunksSinceLastDimensionRarityFeature().get(entry.getKey());
-						Treasure.LOGGER.debug("saving rarity map size -> {}", rarityMap.size());
-						
-						ListNBT rarityTagList = new ListNBT();
-						for (Entry<Rarity, Integer> rarityEntry : rarityMap.entrySet()) {
-							CompoundNBT rarityTag = new CompoundNBT();
-							rarityTag.putString(RARITY_TAG_NAME, rarityEntry.getKey().getValue());
-							rarityTag.putInt(CHUNKS_SINCE_LAST_RARITY_FEATURE_TAG_NAME, rarityEntry.getValue());
-							Treasure.LOGGER.debug("saving chunks since last rarity -> {} ({}) chunks -> {}", rarityEntry.getKey(), rarityEntry.getKey().getValue(), rarityEntry.getValue());
-							rarityTagList.add(rarityTag);
-						}						
-						dimensionTag.put(RARITIES_TAG_NAME, rarityTagList);
-					}
-					dimTagList.add(dimensionTag);
-				}
-				
-				featureTag.put(DIMENSIONS_TAG_NAME, dimTagList);
-				genTag.put(((IForgeRegistryEntry)feature).getRegistryName().toString(), featureTag);
+			/*
+			 * rarities map
+			 */
+			ListNBT rarityMapNbt = new ListNBT();
+			TreasureData.RARITIES_MAP.forEach((worldGen, collection) -> {
+				CompoundNBT entryNbt = new CompoundNBT();
+				entryNbt.putString("key", worldGen.name());
+				ListNBT raritiesNbt = new ListNBT();
+				collection.getOriginal().forEach((rarity, pair) -> {
+					CompoundNBT rarityNbt = new CompoundNBT();
+					rarityNbt.putString("rarity", rarity.name());
+					rarityNbt.putInt("left", pair.getLeft());
+					rarityNbt.putInt("right", pair.getRight());
+					raritiesNbt.add(rarityNbt);
+				});
+				entryNbt.put("value", raritiesNbt);
+				rarityMapNbt.add(entryNbt);
 			});
+			// delete current tag
+			genTag.remove("rarityMap");
+			// add new values
+			genTag.put("rarityMap", rarityMapNbt);
 			
 			/*
 			 * chest registries
 			 */
-			ListNBT chestRegistries = new ListNBT();
-			TreasureData.CHEST_REGISTRIES.entrySet().forEach(entry -> {
-				String dimensionName = entry.getKey();
-				ChestRegistry registry = entry.getValue();
-				CompoundNBT dimTag = new CompoundNBT();
-				dimTag.putString(DIMENSION_ID_TAG_NAME, dimensionName);
-				ListNBT chestRegistryTagList = new ListNBT();
-				registry.getValues().forEach(chestInfo -> {
-					CompoundNBT chestInfoEntry = new CompoundNBT();
-					if (chestInfo.getCoords() != null) {
-						CompoundNBT coords = new CompoundNBT();					
-						coords.putInt("x", chestInfo.getCoords().getX());
-						coords.putInt("y", chestInfo.getCoords().getY());
-						coords.putInt("z", chestInfo.getCoords().getZ());
-						chestInfoEntry.put(COORDS_TAG_NAME, coords);
-						chestInfoEntry.putString(KEY_TAG_NAME, chestInfo.getCoords().toShortString());
-					}
-					chestInfoEntry.putString(RARITY_TAG_NAME, chestInfo.getRarity().getValue());
-					chestInfoEntry.putBoolean("markers", chestInfo.hasMarkers());
-					chestInfoEntry.putBoolean("structure", chestInfo.isStructure());
-					chestInfoEntry.putBoolean("pit", chestInfo.isPit());
-					chestInfoEntry.putBoolean("discovered", chestInfo.isDiscovered());
-					
-					if (chestInfo.getEnvironment() != null) {
-						chestInfoEntry.putString("environment", chestInfo.getEnvironment().name());
-					}
-					if (chestInfo.getRegistryName() != null) {
-						chestInfoEntry.putString("registryName", chestInfo.getRegistryName().toString());
-					}
-					if (chestInfo.getTreasureMapFromCoords().isPresent()) {
-						CompoundNBT mappedFrom = saveCoords(chestInfo.getTreasureMapFromCoords().get());
-						chestInfoEntry.put("mappedFrom", mappedFrom);
-					}
-					
-					// add entry to list
-					chestRegistryTagList.add(chestInfoEntry);
+			ListNBT registriesNbt = new ListNBT();
+			TreasureData.CHEST_REGISTRIES2.forEach((dimension, map) -> {
+				CompoundNBT registryNbt = new CompoundNBT();
+				registryNbt.putString(DIMENSION_ID_TAG_NAME, dimension);
+				ListNBT keysNbt = new ListNBT();
+				map.forEach((key, registry) -> {
+					CompoundNBT keyNbt = new CompoundNBT();
+					keyNbt.putString("name", key.name());
+					ListNBT chestInfosNbt = new ListNBT();
+					registry.getValues().forEach(chestInfo -> {
+						CompoundNBT chestInfoEntry = new CompoundNBT();
+						////////
+						if (chestInfo.getCoords() != null) {
+							CompoundNBT coords = new CompoundNBT();					
+							coords.putInt("x", chestInfo.getCoords().getX());
+							coords.putInt("y", chestInfo.getCoords().getY());
+							coords.putInt("z", chestInfo.getCoords().getZ());
+							chestInfoEntry.put(COORDS_TAG_NAME, coords);
+							chestInfoEntry.putString(KEY_TAG_NAME, chestInfo.getCoords().toShortString());
+						}
+						chestInfoEntry.putString(RARITY_TAG_NAME, chestInfo.getRarity().getValue());
+						chestInfoEntry.putBoolean("markers", chestInfo.hasMarkers());
+						chestInfoEntry.putBoolean("structure", chestInfo.isStructure());
+						chestInfoEntry.putBoolean("pit", chestInfo.isPit());
+						chestInfoEntry.putBoolean("discovered", chestInfo.isDiscovered());
+						
+						if (chestInfo.getEnvironment() != null) {
+							chestInfoEntry.putString("environment", chestInfo.getEnvironment().name());
+						}
+						if (chestInfo.getRegistryName() != null) {
+							chestInfoEntry.putString("registryName", chestInfo.getRegistryName().toString());
+						}
+						if (chestInfo.getTreasureMapFromCoords().isPresent()) {
+							CompoundNBT mappedFrom = saveCoords(chestInfo.getTreasureMapFromCoords().get());
+							chestInfoEntry.put("mappedFrom", mappedFrom);
+						}
+						if (chestInfo.getGenType() != null) {
+							chestInfoEntry.putString("genType", chestInfo.getGenType().name());
+						}
+						else {
+							chestInfoEntry.putString("genType", GenType.CHEST.name());
+						}
+						
+						// add entry to list
+						chestInfosNbt.add(chestInfoEntry);						
+						////////
+					});
+					keyNbt.put(CHEST_REGISTRY_TAG_NAME, chestInfosNbt);
+					keysNbt.add(keyNbt);
 				});
-				dimTag.put(CHEST_REGISTRY_TAG_NAME, chestRegistryTagList);
-				chestRegistries.add(dimTag);
-			});
+				registryNbt.put("keys", keysNbt);
+				registriesNbt.add(registryNbt);
+			});			
 			// delete current tag
 			genTag.remove("chestRegistries");
 			// add new values
-			genTag.put("chestRegistries", chestRegistries);
+			genTag.put("chestRegistries", registriesNbt);
 
 			/*
 			 * well registries

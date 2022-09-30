@@ -286,21 +286,12 @@ public class KeyItem extends ModItem implements IKeyEffects {
 
 				if (fitsLock) {
 					if (unlock(lockState.getLock())) {
-						LockItem lock = lockState.getLock();
-						
-						 doKeyUnlockEffects(context.getLevel(), context.getPlayer(), chestPos, chestTileEntity, lockState);						 
-
-						// remove the lock
-						lockState.setLock(null);
+						// unlock the lock
+						doUnlock(context, chestTileEntity, lockState);
 						
 						// update the client
 						chestTileEntity.sendUpdates();
-						if (!breaksLock(lock)) {
-							// spawn the lock
-							if (TreasureConfig.KEYS_LOCKS.enableLockDrops.get()) {
-								InventoryHelper.dropItemStack(context.getLevel(), (double)chestPos.getX(), (double)chestPos.getY(), (double)chestPos.getZ(), new ItemStack(lock));
-							}
-						}
+						
 						// don't break the key
 						breakKey = false;
 					}
@@ -350,6 +341,22 @@ public class KeyItem extends ModItem implements IKeyEffects {
 		return super.useOn(context);
 	}
 	
+	/**
+	 * 
+	 * @param context
+	 * @param chestTileEntity
+	 * @param lockState
+	 */
+	public void doUnlock(ItemUseContext context, AbstractTreasureChestTileEntity chestTileEntity,	LockState lockState) {
+		LockItem lock = lockState.getLock();		
+		 lock.doUnlock(context.getLevel(), context.getPlayer(), context.getClickedPos(), chestTileEntity, lockState);
+				
+		if (!breaksLock(lock)) {
+			// spawn the lock
+			lock.dropLock(context.getLevel(), context.getClickedPos());
+		}		
+	}
+
 	/**
 	 * This method is a secondary check against a lock item.
 	 * Override this method to overrule LockItem.acceptsKey() if this is a key with special abilities.

@@ -23,9 +23,12 @@ import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -40,6 +43,7 @@ import com.someguyssoftware.gottschcore.world.gen.structure.BlockContext;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
+import com.someguyssoftware.treasure2.chest.ChestInfo.GenType;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.data.TreasureData;
@@ -54,6 +58,7 @@ import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableMaster2;
 import com.someguyssoftware.treasure2.loot.TreasureLootTableRegistry;
+import com.someguyssoftware.treasure2.registry.RegistryType;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
@@ -261,7 +266,6 @@ public interface IChestGenerator {
 			LOGGER.debug("processing pool (from poolShell) -> {}", pool.getName());
 			// go get the vanilla managed pool
 			LootPool lootPool = lootTable.getPool(pool.getName());
-//			LOGGER.debug("loot pool object (from lootTable) -> {}", lootPool);
 			
 			if (lootPool != null) {
 				// geneate loot from pools
@@ -285,6 +289,7 @@ public interface IChestGenerator {
 //		});
 
 		// record original item size (max number of items to pull from final list)
+		int treasureLootItemSize = treasureStacks.size();
 		int lootItemSize = itemStacks.size();
 		
 		// TODO move to separate method
@@ -294,22 +299,80 @@ public interface IChestGenerator {
 		if (injectLootTableShells.isPresent()) {
 			LOGGER.debug("found injectable tables for category ->{}, rarity -> {}", lootTableShell.get().getCategory(), effectiveRarity);
 			LOGGER.debug("size of injectable tables -> {}", injectLootTableShells.get().size());
-			itemStacks.addAll(TreasureLootTableRegistry.getLootTableMaster().getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext));
+			
+			// seperate the inject tables into 2 groups of pools
+//			List<LootPoolShell> treasureLootPoolShells = new ArrayList<>();
+//			List<LootPoolShell> otherLootPoolShells = new ArrayList<>();
+//			injectLootTableShells.get().forEach(tableShell -> {
+//				treasureLootPoolShells.addAll(tableShell.getPools().stream()
+//						.filter(pool -> pool.getName().equalsIgnoreCase("treasure") || pool.getName().equalsIgnoreCase("charms"))
+//						.collect(Collectors.toList()));
+//				otherLootPoolShells.addAll(tableShell.getPools().stream()
+//						.filter(pool -> !pool.getName().equalsIgnoreCase("treasure") && !pool.getName().equalsIgnoreCase("charms"))
+//						.collect(Collectors.toList()));				
+//			});
+			
+//			injectLootTableShells.get().forEach(shell -> {
+//				getInjectedLootItems2(world, random, shell, lootContext);
+//			});
+			
+			// add predicate
+			treasureStacks.addAll(getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext, p -> {
+				return p.getName().equalsIgnoreCase("treasure") || p.getName().equalsIgnoreCase("charms");
+			}));
+			itemStacks.addAll(getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext, p -> {
+				return !p.getName().equalsIgnoreCase("treasure") && !p.getName().equalsIgnoreCase("charms");
+			}));
+//			itemStacks.addAll(TreasureLootTableRegistry.getLootTableMaster().getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext));
 		}
 		
 		// add the treasure items to the chest
-		fillInventory((IInventory) tileEntity, random, treasureStacks);
+		Collections.shuffle(treasureStacks, random);
+		fillInventory((IInventory) tileEntity, random, treasureStacks.stream().limit(treasureLootItemSize).collect(Collectors.toList()));
 		
 		// add a treasure map if there is still space
 		addTreasureMap(world, random, (IInventory)tileEntity, new Coords(tileEntity.getBlockPos()), rarity);
 		
 		// shuffle the items list
-		Collections.shuffle(itemStacks, random);
-		
+		Collections.shuffle(itemStacks, random);		
 		// fill the chest with items
 		fillInventory((IInventory) tileEntity, random, itemStacks.stream().limit(lootItemSize).collect(Collectors.toList()));
 	}
+	
+	//////////////////
+	// TODO add predicate to signature and use it instead of "treasure" filter
+	default public List<ItemStack> getInjectedLootItems(World world, Random random, List<LootTableShell> lootTableShells,
+			LootContext lootContext, Predicate<LootPoolShell> predicate) {
 
+		List<ItemStack> itemStacks = new ArrayList<>();		
+
+		for (LootTableShell injectLootTableShell : lootTableShells) {			
+			LOGGER.debug("injectable resource -> {}", injectLootTableShell.getResourceLocation());
+
+			// get the vanilla managed loot table
+			LootTable injectLootTable = world.getServer().getLootTables().get(injectLootTableShell.getResourceLocation());
+						
+			if (injectLootTable != null) {
+				// filter the pool
+				List<LootPoolShell> lootPoolShells = injectLootTableShell.getPools().stream()
+						.filter(pool -> predicate.test(pool) )
+						.collect(Collectors.toList());
+				
+				lootPoolShells.forEach(poolShell -> {
+					// get the vanilla managed loot pool
+					LootPool lootPool = injectLootTable.getPool(poolShell.getName());					
+					if (lootPool != null) {
+						// add loot from tables to itemStacks
+						lootPool.addRandomItems(itemStacks::add, lootContext);
+					}
+				});
+				LOGGER.debug("size of item stacks after inject -> {}", itemStacks.size());
+			}
+		}
+		return itemStacks;
+	}
+	/////////////////
+	
 	/**
 	 * 
 	 * @param world
@@ -326,10 +389,13 @@ public interface IChestGenerator {
 			Rarity mapRarity = getBoostedRarity(rarity, getRarityBoostAmount());
 			ResourceLocation dimension = WorldInfo.getDimension(world);
 			Treasure.LOGGER.debug("get rarity chests for dimension -> {}", dimension.toString());
-			Optional<List<ChestInfo>> chestInfos = TreasureData.CHEST_REGISTRIES.get(dimension.toString()).getByRarity(mapRarity);
+			// TODO how to merge surface and submerged
+			Optional<List<ChestInfo>> chestInfos = TreasureData.CHEST_REGISTRIES2.get(dimension.toString()).get(RegistryType.SURFACE).getByRarity(mapRarity);
 			if (chestInfos.isPresent()) {
 				Treasure.LOGGER.debug("got chestInfos by rarity -> {}", mapRarity);
-				List<ChestInfo> validChestInfos = chestInfos.get().stream().filter(c -> !c.isDiscovered() && !c.isTreasureMapOf()).collect(Collectors.toList());
+				List<ChestInfo> validChestInfos = chestInfos.get().stream()
+						.filter(c -> c.getGenType() != GenType.NONE && !c.isDiscovered() && !c.isTreasureMapOf())
+						.collect(Collectors.toList());
 				if (!validChestInfos.isEmpty()) {
 					Treasure.LOGGER.debug("got valid chestInfos; size -> {}", validChestInfos.size());
 					ChestInfo chestInfo = validChestInfos.get(random.nextInt(validChestInfos.size()));
@@ -344,7 +410,7 @@ public interface IChestGenerator {
 					chestInfo.setTreasureMapFrom(chestCoords);
 
 					// get this chest info from the registry
-					Optional<ChestInfo> thisChestInfo = TreasureData.CHEST_REGISTRIES.get(dimension.toString()).get(rarity, chestCoords.toShortString());
+					Optional<ChestInfo> thisChestInfo = TreasureData.CHEST_REGISTRIES2.get(dimension.toString()).get("submerged").get(rarity, chestCoords.toShortString());
 					if (thisChestInfo.isPresent()) {
 						thisChestInfo.get().setDiscovered(true);
 					}

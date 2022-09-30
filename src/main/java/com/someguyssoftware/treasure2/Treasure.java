@@ -10,9 +10,6 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.charm.TreasureCharms;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.entity.TreasureEntities;
-import com.someguyssoftware.treasure2.eventhandler.CharmEventHandler;
-import com.someguyssoftware.treasure2.eventhandler.HotbarEquipmentCharmHandler;
-import com.someguyssoftware.treasure2.eventhandler.IEquipmentCharmHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.init.TreasureSetup;
 import com.someguyssoftware.treasure2.item.TreasureItems;
@@ -23,7 +20,6 @@ import com.someguyssoftware.treasure2.rune.TreasureRunes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -64,15 +60,14 @@ public class Treasure implements IMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "2.1.1";
+	protected static final String VERSION = "2.2.0";
 
 
 	protected static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.16.5-master/update.json";
 
 	public static Treasure instance;
-	private static TreasureConfig config;
-	public static IEventBus MOD_EVENT_BUS;
 	
+	private static TreasureConfig config;
 
 	/**
 	 * 
@@ -86,27 +81,18 @@ public class Treasure implements IMod {
 		// register the deferred registries
 		TreasureItems.register();
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, TreasureConfig.COMMON_CONFIG);
-
-		TreasureConfig.loadConfig(TreasureConfig.COMMON_CONFIG,
-				FMLPaths.CONFIGDIR.get().resolve("treasure2-common.toml"));
 				
 		// Register the setup method for modloading
 		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		// deferred register
 		TreasureParticles.PARTICLE_TYPES.register(eventBus);
 		// regular register
-		eventBus.addListener(this::config);
 		eventBus.addListener(TreasureNetworking::common);
 		eventBus.addListener(TreasureSetup::common);
-//		eventBus.addListener(TreasureCharms::setup);
-//		eventBus.addListener(TreasureSetup::clientSetup);
 		eventBus.addListener(this::clientSetup);
 		eventBus.addListener(this::interModComms);
 
-		// needs to be registered here instead of @Mod.EventBusSubscriber because an instance of the handler
-		// is required and constructor arguments may need to be passed in
-		MinecraftForge.EVENT_BUS.register(new WorldEventHandler(getInstance()));
-
+		MinecraftForge.EVENT_BUS.register(new WorldEventHandler());
 	}
 	
 	/**
@@ -129,19 +115,6 @@ public class Treasure implements IMod {
 		Treasure.LOGGER.info("in client setup event");
 		TreasureEntities.registerEntityRenderers();
 	}
-	
-	 private void postSetup(final FMLLoadCompleteEvent event) { 
-		 Treasure.LOGGER.info("in post setup event");
-	 }
-	 
-	 private void config(final ModConfigEvent evt) {
-		 Treasure.LOGGER.info("in config event");
-	 }
-	 
-	private void onServerStarted(final FMLDedicatedServerSetupEvent event) {
-		Treasure.LOGGER.info("in onServerStarted");
-	}
-
 
 	@Override
 	public IMod getInstance() {
@@ -157,5 +130,4 @@ public class Treasure implements IMod {
 	public IConfig getConfig() {
 		return Treasure.config;
 	}
-
 }

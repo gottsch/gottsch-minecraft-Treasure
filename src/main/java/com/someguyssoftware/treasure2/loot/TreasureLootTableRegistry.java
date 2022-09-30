@@ -146,13 +146,8 @@ public final class TreasureLootTableRegistry {
 	}
 
 	public static void register(final String modID, LootResources lootResources) {
-		lootTableMaster.registerChests(modID, lootResources.getChestResources());
-		lootTableMaster.registerChestsFromWorldSave(modID, lootResources.getChestLootTableFolderLocations());
-		
-		lootTableMaster.registerSpecials(modID, lootResources.getSpecialResources());
-		lootTableMaster.registerSpecialsFromWorldSave(modID, lootResources.getSpecialLootTableFolderLocations());
-		
-		lootTableMaster.registerInjects(modID, lootResources.getInjectResources());
+		lootTableMaster.registerChests(modID, lootResources.getChestResources());		
+		lootTableMaster.registerSpecials(modID, lootResources.getSpecialResources());		
 		lootTableMaster.registerInjects(modID, lootResources.getInjectResources());
 	}
 

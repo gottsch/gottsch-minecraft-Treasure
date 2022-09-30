@@ -5,8 +5,10 @@ package com.someguyssoftware.treasure2.command;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -14,6 +16,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.charm.TreasureCharmRegistry;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 
@@ -62,10 +65,8 @@ public class SpawnCharmCommand {
 	}
 
 	private static final SuggestionProvider<CommandSource> SUGGEST_CHARM = (source, builder) -> {
-		// TODO make some sort of registry list of all charm types
-		List<String> charms = Arrays.asList("aegis", "cheat_death", "decay", "decrepit", "dirt_fill", "dirt_walk", "drain", 
-				"fire_immunity", "fire_resistence", "greater_healing", "healing", "illumination", "life_strike", "reflection",
-				"ruin", "satiety", "shielding");
+		List<String> charms = TreasureCharmRegistry.values().stream().map(c -> c.getType()).collect(Collectors.toList());
+		Collections.sort(charms);
 		return ISuggestionProvider.suggest(charms.stream(), builder);
 	};
 

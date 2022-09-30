@@ -58,7 +58,7 @@ public class CharmBook extends CharmItem {
 	
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new TranslationTextComponent("tooltip.label.charm_book_usage").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
+		tooltip.add(new TranslationTextComponent("tooltip.charm_book.usage").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
 		// charmable info
 		ICharmableCapability cap = getCap(stack);
 		if (cap.isCharmed()) {
