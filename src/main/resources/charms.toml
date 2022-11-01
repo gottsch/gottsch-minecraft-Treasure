@@ -1,0 +1,58 @@
+# Treasure2 v1.18.2 Charms Config
+# =============================
+
+[[charm]]
+# most existing charms use formulas based on level or rarity
+# how to represent in toml ???
+# ex. mana=exp("$level * 20")
+# or just have multipliers/modifiers or everything, and the user doesn't really know
+# the formula behind it
+# the name key in the lang files
+nameKey="tooltip.charm.healing.name"
+# the type of charm these settings are applied to
+type="healing"
+mana.base=0.0
+mana.modifier=20.0
+# amount = the quantity of effect the charm does/has
+# amount can refer to different thing depending on the charm
+# ex. for healing, this is the amount of player health healed
+# ex. for illumination, this is the number of torches the charm has
+amount.base=1.0
+amount.modifier=1.5
+# cost in mana for every execution of the charm
+cost.base=2.0
+cost.modifier=1.1
+# in ticks; 20 = 1 sec
+# NOTE replaces frequency, as they are basically the same thing
+cooldown.base=60
+cooldown.modifier=1.15
+
+range.base=0.0
+range.modifier=0.0
+# filter - restricts the rarities of the charm
+# ex. rarity.base = "epic", means only epic+ charms are created and accessed in loot tables
+# TODO review plausibility of this
+rarity.base="common"
+
+# number of recharges are based on the rarity, using a simple increment
+recharges.base=0
+recharges.modifier=1.0
+# OR should have a detailed rarity property list ?
+recharges.common=0
+recharges.uncommon=0
+recharges.scarce=1
+recharges.rare=1
+recharges.epic=2
+recharges.legendary=2
+recharges.mythical=3
+
+# order in which charms are executed
+priority=1
+# can like-type charm effects be executed multiple times per execution cycle
+# ie. multiple adornments each have a healing charm, then each can be executed
+effectStackable=true
+
+
+
+
+

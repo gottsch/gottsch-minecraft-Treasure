@@ -1,4 +1,4 @@
-package com.someguyssoftware.treasure2;
+package mod.gottsch.forge.treasure2;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,33 +7,10 @@ import com.someguyssoftware.gottschcore.annotation.Credits;
 import com.someguyssoftware.gottschcore.annotation.ModInfo;
 import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
-import com.someguyssoftware.treasure2.charm.TreasureCharms;
-import com.someguyssoftware.treasure2.config.TreasureConfig;
-import com.someguyssoftware.treasure2.entity.TreasureEntities;
-import com.someguyssoftware.treasure2.eventhandler.CharmEventHandler;
-import com.someguyssoftware.treasure2.eventhandler.HotbarEquipmentCharmHandler;
-import com.someguyssoftware.treasure2.eventhandler.IEquipmentCharmHandler;
-import com.someguyssoftware.treasure2.eventhandler.LevelEventHandler;
-import com.someguyssoftware.treasure2.init.TreasureSetup;
-import com.someguyssoftware.treasure2.network.TreasureNetworking;
-import com.someguyssoftware.treasure2.particle.TreasureParticles;
 
-import net.minecraftforge.common.MinecraftForge;
+import mod.gottsch.forge.treasure2.core.config.TreasureConfig;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLPaths;
-import top.theillusivec4.curios.api.SlotTypeMessage;
-import top.theillusivec4.curios.api.SlotTypePreset;
 
 /**
  * 
@@ -45,8 +22,8 @@ import top.theillusivec4.curios.api.SlotTypePreset;
 		modid = Treasure.MODID, 
 		name = Treasure.NAME, 
 		version = Treasure.VERSION, 
-		minecraftVersion = "1.18.1", 
-		forgeVersion = "39.0.0", 
+		minecraftVersion = "1.18.2", 
+		forgeVersion = "40.1.0", 
 		updateJsonUrl = Treasure.UPDATE_JSON_URL)
 @Credits(values = { "Treasure was first developed by Mark Gottschling on Aug 27, 2014.",
 		"Treasure2 was first developed by Mark Gottschling on Jan 2018.",
@@ -62,10 +39,8 @@ public class Treasure implements IMod {
 	// constants
 	public static final String MODID = "treasure2";
 	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "1.7.2";
-
-
-	protected static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.16.5-master/update.json";
+	protected static final String VERSION = "2.1.0";
+	protected static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.18.2-master/update.json";
 
 	public static Treasure instance;
 	private static TreasureConfig config;
@@ -73,82 +48,23 @@ public class Treasure implements IMod {
 	
 	public Treasure() {
 		Treasure.instance = this;
-		Treasure.config = new TreasureConfig(this);
+//		Treasure.config = new TreasureConfig(this);
 		
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, TreasureConfig.COMMON_CONFIG);
-
-		TreasureConfig.loadConfig(TreasureConfig.COMMON_CONFIG,
-				FMLPaths.CONFIGDIR.get().resolve("treasure2-common.toml"));
-				
-		// Register the setup method for modloading
-		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		// deferred register
-		TreasureParticles.PARTICLE_TYPES.register(eventBus);
-		// regular register
-		eventBus.addListener(this::config);
-		eventBus.addListener(TreasureNetworking::common);
-		eventBus.addListener(TreasureSetup::common);
-		eventBus.addListener(TreasureCharms::setup);
-		eventBus.addListener(TreasureSetup::clientSetup);
-		eventBus.addListener(this::clientSetup);
-		eventBus.addListener(this::interModComms);
-
-		// needs to be registered here instead of @Mod.EventBusSubscriber because an instance of the handler
-		// is required and constructor arguments may need to be passed in
-		MinecraftForge.EVENT_BUS.register(new LevelEventHandler(getInstance()));
-		
-		IEquipmentCharmHandler equipmentCharmHandler = null;
-		if (ModList.get().isLoaded("curios")) {
-			LOGGER.debug("curios IS loaded");
-			try {
-				equipmentCharmHandler = 
-						(IEquipmentCharmHandler) Class.forName("com.someguyssoftware.treasure2.eventhandler.CuriosEquipmentCharmHandler").newInstance();
-			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-				LOGGER.warn("Unable to load Curios compatiblity class.");
-			}
-		}
-		if (equipmentCharmHandler == null) {
-			LOGGER.debug("equipmentHandler is null");
-			equipmentCharmHandler = new HotbarEquipmentCharmHandler();
-		}
-		MinecraftForge.EVENT_BUS.register(new CharmEventHandler(equipmentCharmHandler));
-
+	
 	}
 	
 	/**
 	 * 
 	 * @param event
 	 */
-    private void interModComms(InterModEnqueueEvent event) {
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CHARM.getMessageBuilder().build());
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.NECKLACE.getMessageBuilder().build());
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.RING.getMessageBuilder().build());
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.BRACELET.getMessageBuilder().build());
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.BELT.getMessageBuilder().build());
-    }
+//    private void interModComms(InterModEnqueueEvent event) {
+//        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CHARM.getMessageBuilder().build());
+//        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.NECKLACE.getMessageBuilder().build());
+//        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.RING.getMessageBuilder().build());
+//        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.BRACELET.getMessageBuilder().build());
+//        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.BELT.getMessageBuilder().build());
+//    }
     
-	public static void clientOnly() {
-
-	}
-	
-	private void clientSetup(final FMLClientSetupEvent event) {
-		Treasure.LOGGER.info("in client setup event");
-		TreasureEntities.registerEntityRenderers();
-	}
-	
-	 private void postSetup(final FMLLoadCompleteEvent event) { 
-		 Treasure.LOGGER.info("in post setup event");
-	 }
-	 
-	 private void config(final ModConfigEvent evt) {
-		 Treasure.LOGGER.info("in config event");
-	 }
-	 
-	private void onServerStarted(final FMLDedicatedServerSetupEvent event) {
-		Treasure.LOGGER.info("in onServerStarted");
-	}
-
-
 	@Override
 	public IMod getInstance() {
 		return Treasure.instance;

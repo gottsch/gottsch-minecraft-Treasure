@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.config;
+package mod.gottsch.forge.treasure2.core.config;
 
 import java.util.List;
 

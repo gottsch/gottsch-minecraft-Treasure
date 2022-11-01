@@ -1,13 +1,7 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.config;
-
-import java.util.List;
-
-import com.someguyssoftware.gottschcore.biome.BiomeTypeHolder;
-
-import net.minecraft.world.biome.Biome;
+package mod.gottsch.forge.treasure2.core.config;
 
 /**
  * @author Mark Gottschling on Jan 23, 2018

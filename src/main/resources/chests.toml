@@ -1,5 +1,5 @@
-# Treasure2 v1.18.2 Config
-# ========================
+# Treasure2 v1.18.2 Chests Config
+# ===========================
 # rarities = common, uncommon, scarce, rare, epic, legendary, mythical
 [[chest]]
 	treasureMapProbability=20.0

@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package com.someguyssoftware.treasure2.config;
+package mod.gottsch.forge.treasure2.core.config;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,19 +25,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.someguyssoftware.gottschcore.config.AbstractConfig;
-import com.someguyssoftware.gottschcore.config.AbstractConfig.Logging;
-import com.someguyssoftware.gottschcore.config.AbstractConfig.Mod;
 import com.someguyssoftware.gottschcore.mod.IMod;
-import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.enums.Rarity;
 
+import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.config.ModConfig.Reloading;
-import net.minecraftforge.fml.loading.FMLPaths;
 
 /**
  * 
@@ -958,25 +952,6 @@ public class TreasureConfig extends AbstractConfig {
 		}
 	}
 	
-	@SubscribeEvent
-	public static void onLoad(final ModConfig.Loading configEvent) {
-		TreasureConfig.loadConfig(TreasureConfig.COMMON_CONFIG,
-				FMLPaths.CONFIGDIR.get().resolve(mod.getId() + "-common.toml"));
-	}
-
-	@SubscribeEvent
-	public static void onReload(final Reloading configEvent) {
-	}
-
-	@Override
-	public boolean isEnableVersionChecker() {
-		return TreasureConfig.MOD.enableVersionChecker.get();
-	}
-
-	@Override
-	public void setEnableVersionChecker(boolean enableVersionChecker) {
-		TreasureConfig.MOD.enableVersionChecker.set(enableVersionChecker);
-	}
 
 	@Override
 	public boolean isLatestVersionReminder() {
