@@ -33,7 +33,8 @@ import net.minecraftforge.common.ForgeConfigSpec.Builder;
  * @author Mark Gottschling on Jan 7, 2021
  *
  */
-public class ChestConfig implements IChestConfig {
+@Deprecated
+public class ChestConfigOLD implements IChestConfig {
 	/**
 	 * 
 	 * @author Mark Gottschling on Jan 7, 2021
@@ -116,7 +117,7 @@ public class ChestConfig implements IChestConfig {
 	 * @param builder
 	 * @param data
 	 */
-	public ChestConfig(Builder builder, String category, Data data) {
+	public ChestConfigOLD(Builder builder, String category, Data data) {
 		// build out properties
 		builder.comment(TreasureConfig.CATEGORY_DIV, " " + WordUtils.capitalizeFully(category) + " chest properties", TreasureConfig.CATEGORY_DIV).push(category);
 		

@@ -1,16 +1,34 @@
 package mod.gottsch.forge.treasure2;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.someguyssoftware.gottschcore.annotation.Credits;
-import com.someguyssoftware.gottschcore.annotation.ModInfo;
-import com.someguyssoftware.gottschcore.config.IConfig;
-import com.someguyssoftware.gottschcore.mod.IMod;
+import com.electronwill.nightconfig.core.CommentedConfig;
 
-import mod.gottsch.forge.treasure2.core.config.TreasureConfig;
+import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
+import mod.gottsch.forge.treasure2.core.block.entity.TreasureBlockEntities;
+import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
+import mod.gottsch.forge.treasure2.core.item.TreasureItems;
+import mod.gottsch.forge.treasure2.core.setup.ClientSetup;
+import mod.gottsch.forge.treasure2.core.setup.CommonSetup;
+import mod.gottsch.forge.treasure2.core.setup.Registration;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.IConfigSpec;
+import net.minecraftforge.fml.config.ModConfig.Type;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 /**
  * 
@@ -18,39 +36,60 @@ import net.minecraftforge.fml.common.Mod;
  *
  */
 @Mod(value = Treasure.MODID)
-@ModInfo(
-		modid = Treasure.MODID, 
-		name = Treasure.NAME, 
-		version = Treasure.VERSION, 
-		minecraftVersion = "1.18.2", 
-		forgeVersion = "40.1.0", 
-		updateJsonUrl = Treasure.UPDATE_JSON_URL)
-@Credits(values = { "Treasure was first developed by Mark Gottschling on Aug 27, 2014.",
-		"Treasure2 was first developed by Mark Gottschling on Jan 2018.",
-		"Credits to Mason Gottschling for ideas and debugging.",
-		"Credits to CuddleBeak for some Keys and Locks textures.",
-		"Credits to mn_ti for Chinese and to DarkKnightComes for Polish translation.",
-		"Credits to Mythical Sausage for tutorials on house/tower designs.",
-		"Credits to OdinsRagnarok for Spanish translation and DarvinSlav for Russian translation." })
-public class Treasure implements IMod {
+public class Treasure {
 	// logger
-	public static Logger LOGGER = LogManager.getLogger(Treasure.NAME);
+	public static Logger LOGGER = LogManager.getLogger(Treasure.MODID);
 
 	// constants
 	public static final String MODID = "treasure2";
-	protected static final String NAME = "Treasure2";
-	protected static final String VERSION = "2.1.0";
-	protected static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.18.2-master/update.json";
 
-	public static Treasure instance;
-	private static TreasureConfig config;
-	public static IEventBus MOD_EVENT_BUS;
+	private static final String CHESTS_CONFIG_VERSION = "1.18.2-v1";
 	
+	public static Treasure instance;
+
+	/**
+	 * 
+	 */
 	public Treasure() {
 		Treasure.instance = this;
-//		Treasure.config = new TreasureConfig(this);
+		Config.register();
+		// create the default config
+		createServerConfig(Config.CHESTS_CONFIG_SPEC, "chests", CHESTS_CONFIG_VERSION);
 		
+		// register the deferred registries
+		TreasureBlocks.register();
+		TreasureItems.register();
+		TreasureBlockEntities.register();
+		TreasureContainers.register();
+		
+		// register the setup method for mod loading
+		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		// register 'ModSetup::init' to be called at mod setup time (server and client)
+		modEventBus.addListener(CommonSetup::init);
+		modEventBus.addListener(this::config);
+
+        // register 'ClientSetup::init' to be called at mod setup time (client only)
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> modEventBus.addListener(ClientSetup::init)); 	
+
+	}
 	
+	/*
+	 * 
+	 */
+	private static void createServerConfig(ForgeConfigSpec spec, String suffix, String version) {
+		String fileName = "treasure2-" + suffix + "-" + version + ".toml";
+		ModLoadingContext.get().registerConfig(Type.SERVER, spec, fileName);
+		File defaults = new File(FMLPaths.GAMEDIR.get() + "/defaultconfigs/" + fileName);
+
+		if (!defaults.exists()) {
+			try {
+				FileUtils.copyInputStreamToFile(
+						Objects.requireNonNull(Treasure.class.getClassLoader().getResourceAsStream(fileName)),
+						defaults);
+			} catch (IOException e) {
+				LOGGER.error("Error creating default config for " + fileName);
+			}
+		}
 	}
 	
 	/**
@@ -64,20 +103,24 @@ public class Treasure implements IMod {
 //        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.BRACELET.getMessageBuilder().build());
 //        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.BELT.getMessageBuilder().build());
 //    }
-    
-	@Override
-	public IMod getInstance() {
-		return Treasure.instance;
-	}
 
-	@Override
-	public String getId() {
-		return Treasure.MODID;
-	}
+	/**
+	 * On a config event.
+	 * @param event
+	 */
+	private void config(final ModConfigEvent event) {
+		if (event.getConfig().getModId().equals(MODID)) {
+			if (event.getConfig().getType() == Type.SERVER) {
+				IConfigSpec<?> spec = event.getConfig().getSpec();
+				// get the toml config data
+				CommentedConfig commentedConfig = event.getConfig().getConfigData();
 
-	@Override
-	public IConfig getConfig() {
-		return Treasure.config;
+				if (spec == Config.CHESTS_CONFIG_SPEC) {
+					// transform/copy the toml into the config
+					Config.transform(commentedConfig);
+//					EchelonManager.build();					
+				} 
+			}
+		}
 	}
-
 }

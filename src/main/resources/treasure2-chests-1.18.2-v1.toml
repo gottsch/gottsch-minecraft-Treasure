@@ -1,76 +1,224 @@
-# Treasure2 v1.18.2 Chests Config
-# ===========================
+#####
 # rarities = common, uncommon, scarce, rare, epic, legendary, mythical
-[[chest]]
+#####
+[[chestConfigs]]
+	# List of allowed namespaced dimension IDs for generation. ie. dimension whitelist. 
+	# Treasure2 was designed for 'normal' overworld-type dimensions. 
+	# This setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed. 
+	# ex. minecraft:overworld
+	dimensions=["minecraft:overworld"]
+	# The probability that a chest will contain a treasure map to another chest.
 	treasureMapProbability=20.0
 	
-[[chest.gen]]
-	key="terrain"
-	registrySize=1000
-	minChunkDistance=100
-	probably=80.0
-	surfaceProbability=15.0
-	rarities=["common", "uncommon", "scarce", "rare", "epic", "legendary", "mythical"]
-
-[[chest.gen]]
-	key="oceanic"
-	registrySize=500
-	minChunkDistance=300
-	probably=70.0
-	rarities=["scarce", "rare", "epic", "legendary", "mythical"]
-
-[[chest.rarities]]
-	rarity="common"
-	weight=85
-	minDepth=6
-	maxDepth=15
+	[[chestConfigs.generators]]
+		key="terrestrial"
+		registrySize=1000
+		probably=80.0
+		minBlockDistance=192
+		waitChunks=25	
+		surfaceProbability=15.0
+		structureProbability=25.0
+		[[chestConfigs.generators.rarities]]
+			rarity="common"
+			weight=100
+			minDepth=6
+			maxDepth=15
+			mimicProbability=20.0
+		[[chestConfigs.generators.rarities]]
+			rarity="uncommon"
+			weight=70
+			minDepth=10
+			maxDepth=25	
+		[[chestConfigs.generators.rarities]]
+			rarity="scarce"
+			weight=40
+			minDepth=20
+			maxDepth=35
+		[[chestConfigs.generators.rarities]]
+			rarity="rare"
+			weight=20
+			minDepth=30
+			maxDepth=45
+			biomeWhitelist = []
+			biomeBlacklist = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeWhitelist = []
+			biomeTypeBlacklist = ["minecraft:plains"]	
+		[[chestConfigs.generators.rarities]]
+			rarity="epic"
+			weight=10
+			minDepth=40
+			maxDepth=55
+			biomeBlacklist = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeBlacklist = ["minecraft:plains"]
+		[[chestConfigs.generators.rarities]]
+			rarity="legendary"
+			weight=5
+			minDepth=50
+			maxDepth=65
+			biomeBlacklist = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeBlacklist = ["minecraft:plains"]
+		[[chestConfigs.generators.rarities]]
+			rarity="mythical"
+			weight=2
+			minDepth=60
+			maxDepth=75
+			biomeBlacklist = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeBlacklist = ["minecraft:plains"]
 	
-[[chest.rarities]]
-	rarity="uncommon"
-	weight=75
-	minDepth=20
-	maxDepth=35
-
-[[chest.rarities]]
-	rarity="scarce"
-
-[[chest.rarities]]
-	rarity="rare"
-	weight=25
-	biomeWhitelist = []
-	biomeBlacklist = ["minecraft:plains", "minecraft:sunflower_plains"]
-	biomeTypeWhitelist = []
-	biomeTypeBlacklist = ["minecraft:plains"]
-
-[[chest.rarities]]
-	rarity="epic"
+	[[chestConfigs.generators]]
+		key="aquatic"
+		registrySize=500
+		probably=70.0
+		minChunkDistance=560
+		waitChunks=100	
+		# These 2 probabilities are moot as all aquatic chests will be in a "structure"
+		# on the ocean floor "surface".
+		surfaceProbability=0.0
+		structureProbability=100.0
+			[[chestConfigs.generators.rarities]]
+			rarity="scarce"
+			weight=36
+			biomeWhitelist = [
+				"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+				"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", 
+				"minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"
+			]
+			biomeTypeWhitelist = ["ocean", "deep_ocean"]
+		[[chestConfigs.generators.rarities]]
+			rarity="rare"
+			weight=16
+			biomeWhitelist = [
+				"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+				"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", 
+				"minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"
+			]
+			biomeTypeWhitelist = ["ocean", "deep_ocean"]	
+		[[chestConfigs.generators.rarities]]
+			rarity="epic"
+			weight=9
+			biomeWhitelist = [
+				"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+				"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", 
+				"minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"
+			]
+			biomeTypeWhitelist = ["ocean", "deep_ocean"]
+		[[chestConfigs.generators.rarities]]
+			rarity="legendary"
+			weight=5
+			biomeWhitelist = [
+				"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+				"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", 
+				"minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"
+			]
+			biomeTypeWhitelist = ["ocean", "deep_ocean"]
+		[[chestConfigs.generators.rarities]]
+			rarity="mythical"
+			weight=2
+			biomeWhitelist = [
+				"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+				"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", 
+				"minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"
+			]
+			biomeTypeWhitelist = ["ocean", "deep_ocean"]
+		
+	[[chestConfigs.chests]]
+		name="treasure2:wood_chest"
+		enabled=true
+		rarity="common"
+		biomeWhitelist = []
+		biomeBlacklist = []
+		biomeTypeWhitelist = []
+		biomeTypeBlacklist = []
 	
-[[chest.rarities]]
-	rarity="legendary"
+	[[chestConfigs.chests]]
+		name="treasure2:crate_chest"
+		enabled=true
+		rarity="uncommon"
 	
-[[chest.rarities]]
-	rarity="mythical"
+	[[chestConfigs.chests]]
+		name="treasure2:moldy_crate_chest"
+		enabled=true
+		rarity="uncommon"
+		
+	[[chestConfigs.chests]]
+		name="treasure2:ironbound_chest"
+		enabled=true
+		rarity="scarce"
 	
-[[chest.chests]]
-	name="wood"
-	enabled=true
-	rarity="common"
-	biomeWhitelist = []
-	biomeBlacklist = []
-	biomeTypeWhitelist = []
-	biomeTypeBlacklist = []
-
-[[chest.chests]]
-	name="crate"
-	enabled=true
-	rarity="uncommon"
-
-[[chest.chests]]
-	name="moldy_crate"
-	enabled=true
-	rarity="uncommon"
+	[[chestConfigs.chests]]
+		name="treasure2:pirate_chest"
+		enabled=true
+		rarity="scarce"
 	
-[[chest.chests]]
-	name="ironbound"
-	enabled=true
-	rarity="scarce"
+	[[chestConfigs.chests]]
+		name="treasure2:safe"
+		enabled=true
+		rarity="rare"
+	
+	[[chestConfigs.chests]]
+		name="treasure2:iron_strongbox"
+		enabled=true
+		rarity="scarce"
+	
+	[[chestConfigs.chests]]
+		name="treasure2:gold_strongbox"
+		enabled=true
+		rarity="rare"
+	
+	[[chestConfigs.chests]]
+		name="treasure2:dread_pirate_chest"
+		enabled=true
+		rarity="epic"
+	
+	[[chestConfigs.chests]]
+		name="treasure2:compressor_chest"
+		enabled=true
+		rarity="epic"
+	
+	[[chestConfigs.chests]]
+		name="treasure2:skull_chest"
+		enabled=true
+		rarity="scarce"
+	
+	[[chestConfigs.chests]]
+		name="treasure2:gold_skull_chest"
+		enabled=true
+		rarity="rare"
+	
+	[[chestConfigs.chests]]
+		name="treasure2:crystal_skull_chest"
+		enabled=true
+		rarity="rare"
+	
+	[[chestConfigs.chests]]
+		name="treasure2:cauldron_chest"
+		enabled=true
+		rarity="epic"
+	
+	[[chestConfigs.chests]]
+		name="treasure2:spider_chest"
+		enabled=true
+		rarity="rare"
+	
+	[[chestConfigs.chests]]
+		name="treasure2:viking_chest"
+		enabled=true
+		rarity="uncommon"
+	
+	[[chestConfigs.chests]]
+		name="treasure2:cardboard_box"
+		enabled=true
+		rarity="common"
+	
+	[[chestConfigs.chests]]
+		name="treasure2:milk_crate"
+		enabled=true
+		rarity="common"
+	
+	# Wither chest is a special chest and depends whether the Wither Tree is enabled.
+	# These chests only generate with Wither Trees.
+	# The rarity property for the Wither Chest only determines its loot table.
+	[[chestConfigs.chests]]
+		name="treasure2:wither_chest"
+		enabled=true
+		rarity="scarce"

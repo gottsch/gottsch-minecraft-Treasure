@@ -10,6 +10,7 @@ import java.util.List;
  * @author Mark Gottschling on Feb 16, 2018
  *
  */
+@Deprecated
 public interface IWellsConfig {
 	
 	public void init();

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "treasure2:ember_lock",
+    "treasure2:gold_lock",
+    "treasure2:spider_lock"
+  ]
+}

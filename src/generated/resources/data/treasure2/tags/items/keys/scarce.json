@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "treasure2:ember_key",
+    "treasure2:lightning_key",
+    "treasure2:gold_key",
+    "treasure2:spider_key"
+  ]
+}

@@ -38,6 +38,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
  * @author Mark Gottschling on Aug 11, 2020
  *
  */
+@Deprecated
 @EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class TreasureConfig extends AbstractConfig {
 	protected static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
@@ -356,15 +357,15 @@ public class TreasureConfig extends AbstractConfig {
 					.comment("The probability that a chest will contain a treasure map to another chest.")
 					.defineInRange("Treasure Chest Probability:", 0D, 20D, 100D);
 			
-			Map<Rarity, ChestConfig.Data> surfaceConfigs = new HashMap<>();
-			Map<Rarity, ChestConfig.Data> submergedConfigs = new HashMap<>();
+			Map<Rarity, ChestConfigOLD.Data> surfaceConfigs = new HashMap<>();
+			Map<Rarity, ChestConfigOLD.Data> submergedConfigs = new HashMap<>();
 			
 			// setup surface properties
-			surfaceConfigs.put(Rarity.COMMON, new ChestConfig.Data(true, 75, 10, 85, 6, 15, 20.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-			surfaceConfigs.put(Rarity.UNCOMMON, new ChestConfig.Data(true, 150, 10, 75, 10, 25, 17.5, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-			surfaceConfigs.put(Rarity.SCARCE, new ChestConfig.Data(true, 300, 10, 50, 20, 35, 15.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-			surfaceConfigs.put(Rarity.RARE, new ChestConfig.Data(true, 500, 10, 25, 30, 45, 0.0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
-			surfaceConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 800, 10, 15, 40, 55, 0.0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
+			surfaceConfigs.put(Rarity.COMMON, new ChestConfigOLD.Data(true, 75, 10, 85, 6, 15, 20.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			surfaceConfigs.put(Rarity.UNCOMMON, new ChestConfigOLD.Data(true, 150, 10, 75, 10, 25, 17.5, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			surfaceConfigs.put(Rarity.SCARCE, new ChestConfigOLD.Data(true, 300, 10, 50, 20, 35, 15.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			surfaceConfigs.put(Rarity.RARE, new ChestConfigOLD.Data(true, 500, 10, 25, 30, 45, 0.0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
+			surfaceConfigs.put(Rarity.EPIC, new ChestConfigOLD.Data(true, 800, 10, 15, 40, 55, 0.0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
 			
 			// TODO needs all the builder stuff
 			surfaceChests = new ChestCollection(builder,
@@ -379,13 +380,13 @@ public class TreasureConfig extends AbstractConfig {
 
 			// setup submerged properties
 			// NOTE: submerged feature is registered for oceans only and there no special white list needs to be setup for oceans-only by default.
-			submergedConfigs.put(Rarity.COMMON, new ChestConfig.Data(false, 150, 10, 85, 5, 5, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-			submergedConfigs.put(Rarity.UNCOMMON, new ChestConfig.Data(false, 300, 10, 75, 5, 5, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-			submergedConfigs.put(Rarity.SCARCE, new ChestConfig.Data(true, 400, 10, 50, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+			submergedConfigs.put(Rarity.COMMON, new ChestConfigOLD.Data(false, 150, 10, 85, 5, 5, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			submergedConfigs.put(Rarity.UNCOMMON, new ChestConfigOLD.Data(false, 300, 10, 75, 5, 5, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+			submergedConfigs.put(Rarity.SCARCE, new ChestConfigOLD.Data(true, 400, 10, 50, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
-			submergedConfigs.put(Rarity.RARE, new ChestConfig.Data(true, 600, 10, 25, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+			submergedConfigs.put(Rarity.RARE, new ChestConfigOLD.Data(true, 600, 10, 25, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
-			submergedConfigs.put(Rarity.EPIC, new ChestConfig.Data(true, 1000, 10, 15, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+			submergedConfigs.put(Rarity.EPIC, new ChestConfigOLD.Data(true, 1000, 10, 15, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
 			
 			submergedChests = new ChestCollection(builder, 
@@ -422,7 +423,7 @@ public class TreasureConfig extends AbstractConfig {
 			 * 
 			 * @param configs
 			 */
-			public ChestCollection(final ForgeConfigSpec.Builder builder, String category, String[] comments, Map<Rarity, ChestConfig.Data> configs) {
+			public ChestCollection(final ForgeConfigSpec.Builder builder, String category, String[] comments, Map<Rarity, ChestConfigOLD.Data> configs) {
 				
 				builder.comment(comments).push(category);
 				minChunksPerChest = builder
@@ -440,11 +441,11 @@ public class TreasureConfig extends AbstractConfig {
 						.defineInRange("Probability of chest spawn on the surface:", 15, 0, 100);
 
 				// update the map
-				configMap.put(Rarity.COMMON, new ChestConfig(builder, Rarity.COMMON.getValue(), configs.get(Rarity.COMMON)));
-				configMap.put(Rarity.UNCOMMON, new ChestConfig(builder, Rarity.UNCOMMON.getValue(), configs.get(Rarity.UNCOMMON)));
-				configMap.put(Rarity.SCARCE, new ChestConfig(builder, Rarity.SCARCE.getValue(), configs.get(Rarity.SCARCE)));
-				configMap.put(Rarity.RARE, new ChestConfig(builder, Rarity.RARE.getValue(), configs.get(Rarity.RARE)));
-				configMap.put(Rarity.EPIC, new ChestConfig(builder, Rarity.EPIC.getValue(), configs.get(Rarity.EPIC)));
+				configMap.put(Rarity.COMMON, new ChestConfigOLD(builder, Rarity.COMMON.getValue(), configs.get(Rarity.COMMON)));
+				configMap.put(Rarity.UNCOMMON, new ChestConfigOLD(builder, Rarity.UNCOMMON.getValue(), configs.get(Rarity.UNCOMMON)));
+				configMap.put(Rarity.SCARCE, new ChestConfigOLD(builder, Rarity.SCARCE.getValue(), configs.get(Rarity.SCARCE)));
+				configMap.put(Rarity.RARE, new ChestConfigOLD(builder, Rarity.RARE.getValue(), configs.get(Rarity.RARE)));
+				configMap.put(Rarity.EPIC, new ChestConfigOLD(builder, Rarity.EPIC.getValue(), configs.get(Rarity.EPIC)));
 
 				builder.pop();
 			}
@@ -732,7 +733,6 @@ public class TreasureConfig extends AbstractConfig {
 	 * @author Mark Gottschling on Jan 13, 2021
 	 *
 	 */
-	// TODO replace with Booty
 	public static class Coins {
 		public ForgeConfigSpec.ConfigValue<Integer> coinMaxStackSize;		
 

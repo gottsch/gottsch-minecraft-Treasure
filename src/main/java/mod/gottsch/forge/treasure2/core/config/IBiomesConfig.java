@@ -7,6 +7,7 @@ package mod.gottsch.forge.treasure2.core.config;
  * @author Mark Gottschling on Jan 23, 2018
  *
  */
+@Deprecated
 public interface IBiomesConfig {
 
 //	List<Biome>  getWhiteList();

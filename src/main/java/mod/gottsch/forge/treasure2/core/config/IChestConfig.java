@@ -27,6 +27,7 @@ import com.someguyssoftware.gottschcore.biome.BiomeTypeHolder;
  * @author Mark Gottschling on Jan 23, 2018
  *
  */
+@Deprecated
 public interface IChestConfig {
 	public void init();
 	

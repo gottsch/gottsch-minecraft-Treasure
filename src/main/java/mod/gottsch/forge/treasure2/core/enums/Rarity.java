@@ -23,14 +23,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.someguyssoftware.gottschcore.enums.IEnum;
-import com.someguyssoftware.gottschcore.enums.IRarity;
+import mod.gottsch.forge.gottschcore.enums.IRarity;
+import mod.gottsch.forge.gottschcore.enums.IEnum;
 
 /**
  * @author Mark Gottschling onJan 11, 2018
  *
  */
 public enum Rarity implements IRarity {
+	// NOTE NONE was only added to return as a value if no rarity was set
+	// yet, ex. when the mod is first loading and rarities aren't loaded yet, but
+	// methods like Item.appendHoverText will fail if the Item.getRarity() returns null.
+	// NONE is NOT registered in the RarityRegistry.
+	NONE(-1, "none"),
 	COMMON(0, "common"),
 	UNCOMMON(1, "uncommon"),
 	SCARCE(2, "scarce"),

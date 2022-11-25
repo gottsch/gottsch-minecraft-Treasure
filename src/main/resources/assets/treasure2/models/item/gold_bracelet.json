@@ -1,65 +1,29 @@
 {
-	"parent": "item/generated",
-	"textures": {
-		"__comment": "default",
-		"layer0": "treasure2:item/adornment/gold_bracelet"
-	},
-	"overrides": [
-		{
-			"__comment": "topaz",
-			"predicate": {
-				"treasure2:gem": 1
-			},
-			"model": "treasure2:item/adornment/gold_topaz_bracelet"
-		},
-		{
-			"__comment": "diamond",
-			"predicate": {
-				"treasure2:gem": 2
-			},
-			"model": "treasure2:item/adornment/gold_diamond_bracelet"
-		},
-						{
-			"__comment": "onyx",
-			"predicate": {
-				"treasure2:gem": 3
-			},
-			"model": "treasure2:item/adornment/gold_onyx_bracelet"
-		},
-		{
-			"__comment": "emerald",
-			"predicate": {
-				"treasure2:gem": 4
-			},
-			"model": "treasure2:item/adornment/gold_emerald_bracelet"
-		},
-		{
-			"__comment": "ruby",
-			"predicate": {
-				"treasure2:gem": 5
-			},
-			"model": "treasure2:item/adornment/gold_ruby_bracelet"
-		},
-		{
-			"__comment": "sapphire",
-			"predicate": {
-				"treasure2:gem": 6
-			},
-			"model": "treasure2:item/adornment/gold_sapphire_bracelet"
-		},
-		{
-			"__comment": "white pearl",
-			"predicate": {
-				"treasure2:gem": 7
-			},
-			"model": "treasure2:item/adornment/gold_white_pearl_bracelet"
-		},
-		{
-			"__comment": "black pearl",
-			"predicate": {
-				"treasure2:gem": 8
-			},
-			"model": "treasure2:item/adornment/gold_black_pearl_bracelet"
-		}
-	]
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "treasure2:item/adornments/gold_bracelet"
+    },
+    "display": {
+       "thirdperson_righthand": {
+            "scale":[ 0.25, 0.25, 0.25]
+        },
+        "thirdperson_lefthand": {
+            "scale":[ 0.25, 0.25, 0.25]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, -90, 25 ],
+            "translation": [ 1.13, 3.2, 1.13],
+            "scale": [ 0.25, 0.25, 0.25 ]
+        },
+        "firstperson_lefthand": {
+          "rotation": [ 0, 90, -25 ],
+          "translation": [ 1.13, 3.2, 1.13],
+            "scale":[ 0.25, 0.25, 0.25]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 1, 0],
+            "scale":[ 0.25, 0.25, 0.25]
+        }
+    }
 }

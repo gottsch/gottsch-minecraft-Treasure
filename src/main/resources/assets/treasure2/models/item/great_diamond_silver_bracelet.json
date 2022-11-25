@@ -1,0 +1,6 @@
+{
+    "parent": "treasure2:item/adornment",
+    "textures": {
+        "layer0": "treasure2:item/adornments/great_diamond_silver_bracelet"
+    }
+}

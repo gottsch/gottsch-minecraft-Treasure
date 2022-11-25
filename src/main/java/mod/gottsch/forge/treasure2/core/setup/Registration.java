@@ -25,6 +25,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -42,17 +44,38 @@ public class Registration {
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Treasure.MODID);
 	public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Treasure.MODID);
 
-	private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Treasure.MODID);
-    private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, Treasure.MODID);
+	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Treasure.MODID);
+    public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, Treasure.MODID);
 	
     // item properties convenience property
 	public static final Item.Properties ITEM_PROPERTIES = new Item.Properties().tab(CreativeModeTab.TAB_MISC);
 
+
+	
+	// TODO just call this method, unless one of the TreasureX.register() methods actually does more
+	// processing than just being a proxy
+	public static void init() {
+//		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+//		BLOCKS.register(eventBus);
+//		ITEMS.register(eventBus);	
+//		BLOCK_ENTITIES.register(eventBus);
+//		CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+	}
+	
 	public static void registerBlocks() {
-		
+		BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
 	}
 	
 	public static void registerItems() {
-		
+		ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
 	}
+
+	public static void registerBlockEntities() {
+		BLOCK_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+	}
+
+	public static void registerContainers() {
+		CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+	}
+
 }
