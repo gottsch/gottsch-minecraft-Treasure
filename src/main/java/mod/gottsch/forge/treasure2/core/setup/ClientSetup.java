@@ -21,16 +21,22 @@ import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.client.model.blockentity.StandardChestModel;
 import mod.gottsch.forge.treasure2.client.renderer.blockentity.WoodChestRenderer;
 import mod.gottsch.forge.treasure2.client.screen.KeyRingScreen;
+import mod.gottsch.forge.treasure2.client.screen.PouchScreen;
 import mod.gottsch.forge.treasure2.client.screen.StandardChestScreen;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureBlockEntities;
 import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
+import mod.gottsch.forge.treasure2.core.particle.SpanishMossParticle;
+import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -53,8 +59,10 @@ public class ClientSetup {
         	// attach our container(s) to the screen(s)
             MenuScreens.register(TreasureContainers.STANDARD_CHEST_CONTAINER.get(), StandardChestScreen::new);           
             MenuScreens.register(TreasureContainers.KEY_RING_CONTAINER.get(), KeyRingScreen::new);           
-            
+            MenuScreens.register(TreasureContainers.POUCH_CONTAINER.get(), PouchScreen::new);           
+
             ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.WOOD_CHEST.get(), RenderType.cutoutMipped());
+            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SPANISH_MOSS.get(), RenderType.cutout());
         });
     }
     /**
@@ -85,5 +93,14 @@ public class ClientSetup {
 	@SubscribeEvent()
 	public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		event.registerLayerDefinition(StandardChestModel.LAYER_LOCATION, StandardChestModel::createBodyLayer);
+	}
+	
+	
+	@SubscribeEvent
+	public static void registerParticleProviders(ParticleFactoryRegisterEvent event) {
+		ParticleEngine particleEngine = Minecraft.getInstance().particleEngine;
+		
+		particleEngine.register(TreasureParticles.SPANISH_MOSS_PARTICLE.get(), 
+				SpanishMossParticle.Provider::new);
 	}
 }

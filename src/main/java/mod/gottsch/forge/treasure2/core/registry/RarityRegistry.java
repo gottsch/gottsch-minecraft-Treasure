@@ -20,6 +20,7 @@ package mod.gottsch.forge.treasure2.core.registry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -40,6 +41,12 @@ public class RarityRegistry {
 	// L = key, M = lock, R = chest
 	private static final Map<IRarity, Triple<TagKey<Item>, TagKey<Item>, TagKey<Block>>> TAGS_REGISTRY = Maps.newHashMap();
 
+	/*
+	 * other registries
+	 */
+	// wishable registry
+	private static final Map<IRarity, TagKey<Item>> WISHABLE_TAGS_REGISTRY = Maps.newHashMap();
+	
 	private RarityRegistry() {}
 	
 //	public static void register(IRarity rarity) {
@@ -82,6 +89,12 @@ public class RarityRegistry {
 	public static void registerChests(IRarity rarity, TagKey<Block> chestTag) {
 		
 	}
+	
+	public static void registerWishable(IRarity rarity, TagKey<Item> wishableTag) {
+		registerRarity(rarity);
+		registerWishableTag(rarity, wishableTag);
+	}
+	
 	private static void registerRarity(IRarity rarity) {
 		if (!REGISTRY.containsKey(rarity.getName())) {
 			REGISTRY.put(rarity.getName(), rarity);
@@ -93,11 +106,25 @@ public class RarityRegistry {
 			TAGS_REGISTRY.put(rarity, tagTuple);
 		}
 	}
+	
+	private static void registerWishableTag(IRarity rarity, TagKey<Item> wishableTag) {
+		if (!WISHABLE_TAGS_REGISTRY.containsKey(rarity)) {
+			WISHABLE_TAGS_REGISTRY.put(rarity, wishableTag);
+		}
+	}
 
 	public static void unregister(IRarity rarity) {
 		if (REGISTRY.containsKey(rarity.getName())) {
 			REGISTRY.remove(rarity.getName());
 		}
+	}
+	
+	public static Optional<IRarity> getRarity(String name) {
+		IRarity rarity = REGISTRY.get(name);
+		if (name == null || rarity == null) {
+			return Optional.empty();
+		}
+		return Optional.of(rarity);
 	}
 	
 	public static List<IRarity> getValues() {
@@ -133,4 +160,10 @@ public class RarityRegistry {
 		return null;
 	}
 
+	public static TagKey<Item> getWishableTag(IRarity rarity) {
+		if (WISHABLE_TAGS_REGISTRY.containsKey(rarity)) {
+			return WISHABLE_TAGS_REGISTRY.get(rarity);
+		}
+		return null;
+	}
 }

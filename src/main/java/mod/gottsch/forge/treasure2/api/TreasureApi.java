@@ -25,6 +25,8 @@ import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.registry.RarityRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
+import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -76,6 +78,11 @@ public class TreasureApi {
 		RarityRegistry.registerKeyLockChests(rarity, keyTag, lockTag, chestTag);
 	}
 	
+	public static void registerWishableTag(IRarity rarity, TagKey<Item> tag) {
+		RarityRegistry.registerWishable(rarity, tag);
+	}
+	
+	// these registerXXX() methods simply register the object by its resource name
 	public static void registerKey(RegistryObject<KeyItem> key) {
 		KeyLockRegistry.registerKey(key);
 	}
@@ -91,5 +98,13 @@ public class TreasureApi {
 
 	public static void registerChest(RegistryObject<Block> chest) {
 		ChestRegistry.register(chest);
+	}
+	
+	public static void registerWishable(RegistryObject<Item> wishable) {
+		WishableRegistry.register(wishable);
+	}
+	
+	public static void registerLootTables(String modID) {
+		TreasureLootTableRegistry.register(modID);
 	}
 }

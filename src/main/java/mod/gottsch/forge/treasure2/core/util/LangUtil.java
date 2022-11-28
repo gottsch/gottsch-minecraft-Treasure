@@ -44,11 +44,12 @@ public class LangUtil {
 	 * @param tooltip
 	 * @param consumer
 	 */
-	public static void appendAdvancedHoverText(List<Component> tooltip, Consumer<List<Component>> consumer) {
+	public static void appendAdvancedHoverText(String modid, List<Component> tooltip, Consumer<List<Component>> consumer) {
 		if (!Screen.hasShiftDown()) {
 			tooltip.add(new TextComponent(NEWLINE));
 			// TODO how do make this call to tooltip generic for any mod because it would require the modid
-			tooltip.add(new TranslatableComponent(tooltip("hold_shift")).withStyle(ChatFormatting.GRAY));
+			tooltip.add(new TranslatableComponent(tooltip(modid, "hold_shift")).withStyle(ChatFormatting.GRAY));
+			tooltip.add(new TextComponent(LangUtil.NEWLINE));
 		}
 		else {
 			consumer.accept(tooltip);
@@ -63,11 +64,10 @@ public class LangUtil {
     			+ StringUtils.stripStart(suffix.trim(), ".");
     }
     
-    /**
-     * 
-     * @param suffix
-     * @return
-     */
+    public static String item(String modid, String suffix) {
+    	return name(modid, "item", suffix);
+    }
+    
     public static String tooltip(String modid, String suffix) {
     	return name(modid, "tooltip", suffix);
     }
@@ -81,11 +81,12 @@ public class LangUtil {
 	}
 	
 	/**
-	 * TODO this is Treasure's extended method
-	 * @param prefix
-	 * @param suffix
-	 * @return
+	 * TODO this is Treasure's extended methods
 	 */
+	public static void appendAdvancedHoverText(List<Component> tooltip, Consumer<List<Component>> consumer) {
+		LangUtil.appendAdvancedHoverText(Treasure.MODID, tooltip, consumer);
+	}
+	
     public static String name(String prefix, String suffix) {
     	return name(Treasure.MODID, prefix, suffix);
     }
@@ -95,6 +96,10 @@ public class LangUtil {
      * @param suffix
      * @return
      */
+    public static String item(String suffix) {
+    	return name(Treasure.MODID, "item", suffix);
+    }
+    
     public static String tooltip(String suffix) {
     	return name(Treasure.MODID, "tooltip", suffix);
     }

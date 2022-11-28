@@ -33,7 +33,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
@@ -42,7 +41,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
  * @author Mark Gottschling on Jun 19, 2022
  *
  */
-public abstract class AbstractChestContainerMenu extends AbstractContainerMenu implements ITreasureContainer {
+public abstract class AbstractTreasureContainerMenu extends AbstractContainerMenu implements ITreasureContainer {
 	// the backing block entity
 	private AbstractTreasureChestBlockEntity blockEntity;
 	// the player opening the vault
@@ -78,14 +77,14 @@ public abstract class AbstractChestContainerMenu extends AbstractContainerMenu i
 	private int menuInventoryYPos = 18;
 
 	/**
-	 * 
+	 * Constructor for blocks/chests that have a backing BlockEntity.
 	 * @param menuType
 	 * @param containerId
 	 * @param pos
 	 * @param playerInventory
 	 * @param player
 	 */
-	public AbstractChestContainerMenu(int containerId, MenuType<?> type, BlockPos pos, Inventory playerInventory, Player player) {
+	public AbstractTreasureContainerMenu(int containerId, MenuType<?> type, BlockPos pos, Inventory playerInventory, Player player) {
 		super(type, containerId);
 
 		this.playerEntity =  player;
@@ -104,14 +103,14 @@ public abstract class AbstractChestContainerMenu extends AbstractContainerMenu i
 	}
 	
 	/**
-	 * 
+	 * Constructor for items/other when an inventory is passed in.
 	 * @param containerId
 	 * @param type
 	 * @param pos
 	 * @param playerInventory
 	 * @param itemHandler
 	 */
-	public AbstractChestContainerMenu(int containerId, MenuType<?> type, Inventory playerInventory, IItemHandler itemHandler) {
+	public AbstractTreasureContainerMenu(int containerId, MenuType<?> type, Inventory playerInventory, IItemHandler itemHandler) {
 		super(type, containerId);
 		
 		this.playerInventory = playerInventory;
@@ -224,9 +223,12 @@ public abstract class AbstractChestContainerMenu extends AbstractContainerMenu i
 	@Override
 	public boolean stillValid(Player player) {
 		// is player within distance
-		BlockPos pos = this.blockEntity.getBlockPos();
-		boolean withinDistance = player.distanceToSqr((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D) <= 64.0D;
-		return withinDistance && (blockEntity instanceof ITreasureChestBlockEntity);
+		if (blockEntity != null) {
+			BlockPos pos = this.blockEntity.getBlockPos();
+			boolean withinDistance = player.distanceToSqr((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D) <= 64.0D;
+			return withinDistance && (blockEntity instanceof ITreasureChestBlockEntity);
+		}
+		return true;
 	}
 
 	@Override

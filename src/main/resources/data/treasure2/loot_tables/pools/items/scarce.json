@@ -1,186 +1,148 @@
 {
-	"version": "1.0",
-	"pools": [
-		{
-			"name": "scarce_items",
-			"rolls": 1,
-			"entries": [
-				{
-					"entryName": "arrow",
-					"type": "item",
-					"name": "minecraft:arrow",
-					"weight": 50,
-					"functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 10,
-								"max": 20
-							}
-						}
-					]						
-				},			
-				{
-					"entryName": "tnt",
-					"type": "item",
-					"name": "minecraft:tnt",
-					"weight": 35,
-					"functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 1,
-								"max": 2
-							}
-						}
-					]						
-				},
-				{
-					"entryName": "blaze_powder",
-					"type": "item",
-					"name": "minecraft:blaze_powder",
-					"weight": 25,
-					"functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 1,
-								"max": 4
-							}
-						}
-					]						
-				},
-				{
-					"entryName": "diamond",
-					"type": "item",
-					"name": "minecraft:diamond",
-					"weight": 15,
-					"functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 1,
-								"max": 2
-							}
-						}
-					]						
-				},				
-				{
-					"entryName": "iron_ingot",
-					"type": "item",
-					"name": "minecraft:iron_ingot",
-					"weight": 20,
-					"functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 8,
-								"max": 12
-							}
-						}
-					]						
-				},
-				{
-					"entryName": "iron_block",
-					"type": "item",
-					"name": "minecraft:iron_block",
-					"weight": 15,
-					"functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 1,
-								"max": 2
-							}
-						}
-					]							
-				},
-				{
-					"entryName": "ender_pearl",
-					"type": "item",
-					"name": "minecraft:ender_pearl",
-					"weight": 15				
-				},
-				{
-					"entryName": "gunpowder",
-					"type": "item",
-					"name": "minecraft:gunpowder",
-					"weight": 20
-				},
-				{
-					"entryName": "slow_falling_tipped_arrow",
-					"type": "minecraft:item",
-					"name": "minecraft:tipped_arrow",
-					"weight": 15,
-					"functions": [
-						{
-							"function": "minecraft:set_count",
-							"count": {
-								"min": 2,
-								"max": 5,
-								"type": "minecraft:uniform"
-							}
-						},
-						{
-							"function": "minecraft:set_nbt",
-							"tag": "{Potion:\"minecraft:slow_falling\"}"
-						}
-					]
-				},
-				{
-					"entryName": "bell",
-					"type": "item",
-					"name": "minecraft:bell",
-					"weight": 15				
-				},
-				{
-					"entryName": "crossbow",
-					"type": "minecraft:item",
-					"name": "minecraft:crossbow",
-					"weight": 15,
-					"functions": [
-						{
-							"function": "minecraft:enchant_randomly"
-						}
-					]					
-				},
-				{
-					"entryName": "honeycomb",
-					"type": "item",
-					"name": "minecraft:bell",
-					"weight": 15				
-				},
-				{
-					"entryName": "netherite_scrap",
-					"type": "minecraft:item",
-					"name": "minecraft:netherite_scrap",
-					"weight": 15,
-					"functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 3,
-								"max": 6
-							}
-						}
-					]	
-				},				
-				{
-					"entryName": "ancient_debris",
-					"type": "minecraft:item",
-					"name": "minecraft:ancient_debris",
-					"weight": 20,
-					"functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 1,
-								"max": 2
-							}
-						}
-					]	
-				}	
-			]
-		}
-	]
+  "version" : "1.0",
+  "pools" : [ {
+    "name" : "scarce_items",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "arrow",
+      "type" : "item",
+      "name" : "minecraft:arrow",
+      "weight" : 50,
+      "functions" : [ {
+        "function" : "set_count",
+        "count" : {
+          "min" : 10,
+          "max" : 20
+        }
+      } ]
+    }, {
+      "entryName" : "tnt",
+      "type" : "item",
+      "name" : "minecraft:tnt",
+      "weight" : 35,
+      "functions" : [ {
+        "function" : "set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "blaze_powder",
+      "type" : "item",
+      "name" : "minecraft:blaze_powder",
+      "weight" : 25,
+      "functions" : [ {
+        "function" : "set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 4
+        }
+      } ]
+    }, {
+      "entryName" : "diamond",
+      "type" : "item",
+      "name" : "minecraft:diamond",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "iron_ingot",
+      "type" : "item",
+      "name" : "minecraft:iron_ingot",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "set_count",
+        "count" : {
+          "min" : 8,
+          "max" : 12
+        }
+      } ]
+    }, {
+      "entryName" : "iron_block",
+      "type" : "item",
+      "name" : "minecraft:iron_block",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "ender_pearl",
+      "type" : "item",
+      "name" : "minecraft:ender_pearl",
+      "weight" : 15
+    }, {
+      "entryName" : "gunpowder",
+      "type" : "item",
+      "name" : "minecraft:gunpowder",
+      "weight" : 20
+    }, {
+      "entryName" : "slow_falling_tipped_arrow",
+      "type" : "minecraft:item",
+      "name" : "minecraft:tipped_arrow",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 2,
+          "max" : 5,
+          "type" : "minecraft:uniform"
+        }
+      }, {
+        "function" : "minecraft:set_nbt",
+        "tag" : "{Potion:\"minecraft:slow_falling\"}"
+      } ]
+    }, {
+      "entryName" : "bell",
+      "type" : "item",
+      "name" : "minecraft:bell",
+      "weight" : 15
+    }, {
+      "entryName" : "crossbow",
+      "type" : "minecraft:item",
+      "name" : "minecraft:crossbow",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "honeycomb",
+      "type" : "item",
+      "name" : "minecraft:bell",
+      "weight" : 15
+    }, {
+      "entryName" : "netherite_scrap",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_scrap",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "set_count",
+        "count" : {
+          "min" : 3,
+          "max" : 6
+        }
+      } ]
+    }, {
+      "entryName" : "ancient_debris",
+      "type" : "minecraft:item",
+      "name" : "minecraft:ancient_debris",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    } ]
+  } ]
 }

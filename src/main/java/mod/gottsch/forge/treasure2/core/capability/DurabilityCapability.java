@@ -35,17 +35,25 @@ public class DurabilityCapability implements ICapabilitySerializable<CompoundTag
 	public static final ResourceLocation ID = new ResourceLocation(Treasure.MODID, "durability");
 	
 	// reference of handler/data for easy access
-	private final DurabilityHandler handler = new DurabilityHandler();
+	private final IDurabilityHandler handler;
 	// holder of the handler/data
-	private final LazyOptional<IDurabilityHandler> optional = LazyOptional.of(() -> handler);
+//	private final LazyOptional<IDurabilityHandler> optional = LazyOptional.of(() -> handler);
+
+	public DurabilityCapability() {
+		handler  = new DurabilityHandler();
+	}
+	public DurabilityCapability(IDurabilityHandler handler) {
+		this.handler = handler;
+	}
 
 	/**
 	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == TreasureCapabilities.DURABILITY) {
-			return optional.cast();
+			return (LazyOptional<T>) LazyOptional.of(() -> handler);
 		}
 		return LazyOptional.empty();
 	}

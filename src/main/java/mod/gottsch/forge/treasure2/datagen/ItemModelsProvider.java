@@ -90,6 +90,8 @@ public class ItemModelsProvider extends ItemModelProvider {
 		singleTexture(TreasureItems.WITHER_KEY.get().getRegistryName().getPath(),
 				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/wither_key"));
 		
+		singleTexture(TreasureItems.ONE_KEY.get().getRegistryName().getPath(),
+				modLoc("item/vertical_left_key"), "layer0", modLoc("item/key/one_key"));
 		
 		singleTexture(TreasureItems.SKELETON_KEY.get().getRegistryName().getPath(),
 				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/skeleton_key"));
@@ -113,6 +115,12 @@ public class ItemModelsProvider extends ItemModelProvider {
 		singleTexture(TreasureItems.EMBER_LOCK.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/lock/ember_lock"));
 		
+		singleTexture(TreasureItems.IRON_LOCK.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/lock/iron_lock"));
+		
+		singleTexture(TreasureItems.GOLD_LOCK.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/lock/gold_lock"));
+		
 		singleTexture(TreasureItems.DIAMOND_LOCK.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/lock/diamond_lock"));
 		
@@ -135,10 +143,49 @@ public class ItemModelsProvider extends ItemModelProvider {
 		singleTexture(TreasureItems.KEY_RING.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/key/key_ring"));
 		
+		// wealth
+		singleTexture(TreasureItems.COPPER_COIN.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/coin/copper_coin"));
+		singleTexture(TreasureItems.SILVER_COIN.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/coin/silver_coin"));
+		singleTexture(TreasureItems.GOLD_COIN.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/coin/gold_coin"));
+		
+		singleTexture(TreasureItems.TOPAZ.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/gem/topaz"));
+		singleTexture(TreasureItems.ONYX.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/gem/onyx"));
+		singleTexture(TreasureItems.RUBY.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/gem/ruby"));
+		singleTexture(TreasureItems.SAPPHIRE.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/gem/sapphire"));
+		singleTexture(TreasureItems.WHITE_PEARL.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/gem/white_pearl"));
+		singleTexture(TreasureItems.BLACK_PEARL.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/gem/black_pearl"));
+		
+		singleTexture(TreasureItems.POUCH.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/pouch"));
+		// other
+		singleTexture(TreasureItems.TREASURE_TOOL.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/treasure_tool"));
 		// block items
 		withExistingParent(TreasureItems.WOOD_CHEST_ITEM.get().getRegistryName().getPath(), modLoc("block/wood_chest"));
     	
-
+		withExistingParent(TreasureItems.SPANISH_MOSS_ITEM.get().getRegistryName().getPath(), modLoc("block/spanish_moss"));
+		
+		withExistingParent(TreasureItems.TOPAZ_ORE_ITEM.get().getRegistryName().getPath(), modLoc("block/topaz_ore"));
+		withExistingParent(TreasureItems.ONYX_ORE_ITEM.get().getRegistryName().getPath(), modLoc("block/onyx_ore"));
+		withExistingParent(TreasureItems.RUBY_ORE_ITEM.get().getRegistryName().getPath(), modLoc("block/ruby_ore"));
+		withExistingParent(TreasureItems.SAPPHIRE_ORE_ITEM.get().getRegistryName().getPath(), modLoc("block/sapphire_ore"));
+		
+		withExistingParent(TreasureItems.DEEPSLATE_TOPAZ_ORE_ITEM.get().getRegistryName().getPath(), modLoc("block/deepslate_topaz_ore"));
+		withExistingParent(TreasureItems.DEEPSLATE_ONYX_ORE_ITEM.get().getRegistryName().getPath(), modLoc("block/deepslate_onyx_ore"));
+		withExistingParent(TreasureItems.DEEPSLATE_RUBY_ORE_ITEM.get().getRegistryName().getPath(), modLoc("block/deepslate_ruby_ore"));
+		withExistingParent(TreasureItems.DEEPSLATE_SAPPHIRE_ORE_ITEM.get().getRegistryName().getPath(), modLoc("block/deepslate_sapphire_ore"));
+		
+		withExistingParent(TreasureItems.WISHING_WELL_ITEM.get().getRegistryName().getPath(), modLoc("block/wishing_well_block"));
+		withExistingParent(TreasureItems.DESERT_WISHING_WELL_ITEM.get().getRegistryName().getPath(), modLoc("block/desert_wishing_well_block"));
 		// topaz rings
 		//        singleTexture(TreasureItems.ADORNMENT_ITEMS.get(modLoc("topaz_iron_ring")).getRegistryName().getPath(),        		
 		//        		mcLoc("treasure2:item/adornment"), "layer0", modLoc("item/adornments/topaz_iron_ring"));

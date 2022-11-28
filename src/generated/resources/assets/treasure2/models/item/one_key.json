@@ -1,0 +1,6 @@
+{
+  "parent": "treasure2:item/vertical_left_key",
+  "textures": {
+    "layer0": "treasure2:item/key/one_key"
+  }
+}

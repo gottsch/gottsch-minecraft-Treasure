@@ -64,7 +64,7 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.SKELETON_KEY.get(), "Skeleton Key");        
         add(TreasureItems.PILFERERS_LOCK_PICK.get(), "Pilferer's Lock Pick");
         add(TreasureItems.THIEFS_LOCK_PICK.get(), "Thief's Lock Pick");
-        
+        add(TreasureItems.ONE_KEY.get(), "The One Key");
         // locks
         add(TreasureItems.WOOD_LOCK.get(), "Wood Lock");
         add(TreasureItems.STONE_LOCK.get(), "Stone Lock");
@@ -84,8 +84,38 @@ public class LanguageGen extends LanguageProvider {
         // key ring
         add(TreasureItems.KEY_RING.get(), "Key Ring");     
         
+        // coins
+        add(TreasureItems.COPPER_COIN.get(), "Copper Coin");
+        add(TreasureItems.SILVER_COIN.get(), "Silver Coin");
+        add(TreasureItems.GOLD_COIN.get(), "Gold Coin");
+        
+        add(TreasureItems.TOPAZ.get(), "Topaz");
+        add(TreasureItems.ONYX.get(), "Onyx");
+        add(TreasureItems.RUBY.get(), "Ruby");
+        add(TreasureItems.SAPPHIRE.get(), "Sapphire");
+        add(TreasureItems.WHITE_PEARL.get(), "White Pearl");
+        add(TreasureItems.BLACK_PEARL.get(), "Black Pearl");
+        
+        // other
+        add(TreasureItems.TREASURE_TOOL.get(), "Treasure Tool");
+        add(TreasureItems.POUCH.get(), "Pouch");
+        add(TreasureBlocks.SPANISH_MOSS.get(), "Spanish Moss");
+        add(TreasureBlocks.WISHING_WELL.get(), "Wishing Well Stone");
+        add(TreasureBlocks.DESERT_WISHING_WELL.get(), "Desert Wishing Well Stone");
+        
         // chests
         add(TreasureBlocks.WOOD_CHEST.get(), "Wood Chest");
+        
+        // ore
+        add(TreasureBlocks.TOPAZ_ORE.get(), "Topaz Ore");
+        add(TreasureBlocks.ONYX_ORE.get(), "Onyx Ore");
+        add(TreasureBlocks.RUBY_ORE.get(), "Ruby Ore");
+        add(TreasureBlocks.SAPPHIRE_ORE.get(), "Sapphire Ore");
+        
+        add(TreasureBlocks.DEEPSLATE_TOPAZ_ORE.get(), "Deepslate Topaz Ore");
+        add(TreasureBlocks.DEEPSLATE_ONYX_ORE.get(), "Deepslate Onyx Ore");
+        add(TreasureBlocks.DEEPSLATE_RUBY_ORE.get(), "Deepslate Ruby Ore");
+        add(TreasureBlocks.DEEPSLATE_SAPPHIRE_ORE.get(), "Deepslate Sapphire Ore");
         
         /*
          *  Util.tooltips
@@ -93,8 +123,11 @@ public class LanguageGen extends LanguageProvider {
         // general
         add(LangUtil.tooltip("boolean.yes"), "Yes");
         add(LangUtil.tooltip("boolean.no"), "No");
-        add(LangUtil.tooltip("hold_shift"), "Hold [SHIFT] to expand.");
-
+        add(LangUtil.tooltip("hold_shift"), "Hold [SHIFT] to expand");
+        add(LangUtil.tooltip("treasure_tool"), "Required for most Treasure2 recipes");
+        add(LangUtil.tooltip("pouch"), "Holds small valuables - coins, gems, charms, etc.");
+        add(LangUtil.tooltip("wishable"), "Can be thrown into Wishing Wells for loot");
+        
         // keys and locks
         add(LangUtil.tooltip("key_lock.rarity"), "Rarity: %s");
         add(LangUtil.tooltip("key_lock.category"), "Category: %s");
@@ -111,6 +144,8 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.tooltip("key_lock.jewelled_key.specials"), "Opens any lock in GEMS category");
         add(LangUtil.tooltip("key_lock.pilferers_lock_pick.specials"), "Opens COMMON (%s%%) and UNCOMMON (%s%%) locks");
         add(LangUtil.tooltip("key_lock.thiefs_lock_pick.specials"), "Opens COMMON (%s%%), UNCOMMON (%s%%) and SCARCE (%s%%) locks");
+        add(LangUtil.tooltip("key_lock.one_key.specials"), "Opens ALL locks");
+        add(LangUtil.tooltip("key_lock.one_key.lore"), "One Key to rule them all.");
         add(LangUtil.tooltip("key_lock.key_ring"), "Container for keys");
         
         // chests
@@ -119,9 +154,13 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.tooltip("chest.container_size"), "Inventory Size: %s");
         
         // capabilities
-        add(LangUtil.tooltip("durability.infinite_uses"), "Uses Remaining: Infinite");
-        add(LangUtil.tooltip("durability.uses"), "Uses Remaining: [%s/%s]");
-        add(LangUtil.tooltip("durability.max_uses"), "Max Uses: %s");
+//        add(LangUtil.tooltip("durability.infinite_uses"), "Uses Remaining: Infinite");
+//        add(LangUtil.tooltip("durability.uses"), "Uses Remaining: [%s/%s]");
+//        add(LangUtil.tooltip("durability.max_uses"), "Max Uses: %s");
+        add(LangUtil.tooltip("cap.durability.amount"), "Durability: [%s/%s]");
+        add(LangUtil.tooltip("cap.durability.amount.infinite"), "Durability: Infinite");
+        add(LangUtil.tooltip("cap.durability.repairs"), "R[%s/%s]");
+        add(LangUtil.tooltip("cap.spell.recharges"), "R[%s/%s]");
         
         /*
          * screens

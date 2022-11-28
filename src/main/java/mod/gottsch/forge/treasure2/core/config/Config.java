@@ -18,6 +18,7 @@
 package mod.gottsch.forge.treasure2.core.config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -119,6 +120,7 @@ public class Config extends AbstractConfig {
 	
 	public static class ClientGui {
 		public BooleanValue enableCustomChestInventoryGui;
+		public ForgeConfigSpec.BooleanValue enableFog;
 		
 		ClientGui(final ForgeConfigSpec.Builder builder) {
 			builder.comment(CATEGORY_DIV, " GUI properties", CATEGORY_DIV)
@@ -127,6 +129,10 @@ public class Config extends AbstractConfig {
 			enableCustomChestInventoryGui = builder
 					.comment(" Enable/Disable whether to use Treasure2's custom guis for chest inventory screens.")
 					.define("enableCustomChestInventoryGui", true);
+						
+			enableFog = builder
+					.comment(" Enable/disable white fog.")
+					.define("Enable fog:", true);
 			
 			builder.pop();
 		}
@@ -138,11 +144,32 @@ public class Config extends AbstractConfig {
 		public KeysAndLocks keysAndLocks;
 		public Wealth wealth;
 		public Effects effects;
+		public Integration integration;
 
 		public ServerConfig(ForgeConfigSpec.Builder builder) {
 			keysAndLocks = new KeysAndLocks(builder);	
 			wealth = new Wealth(builder);
 			effects = new Effects(builder);
+		}
+		
+		/*
+		 * 
+		 */
+		public static class Integration {
+			public ConfigValue<List<? extends String>> dimensionsWhiteList;
+			
+			public Integration(final ForgeConfigSpec.Builder builder)	 {
+				builder.comment(CATEGORY_DIV, " Integration properties", CATEGORY_DIV)
+				.push("integration");
+				
+				dimensionsWhiteList = builder
+						.comment(" Permitted Dimensions for Treasure2 execution.", 
+								" Treasure2 was designed for 'normal' overworld-type dimensions.", 
+								" This setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed.", 
+								" ex. minecraft:overworld")
+						.defineList("Dimension White List:", Arrays.asList(new String []{"minecraft:overworld"}), s -> s instanceof String);
+				builder.pop();
+			}
 		}
 		
 		/*
@@ -281,6 +308,7 @@ public class Config extends AbstractConfig {
 		public static class Effects {
 			public BooleanValue enableUndiscoveredEffects;
 
+			
 			public Effects(final ForgeConfigSpec.Builder builder)	 {
 				builder.comment(CATEGORY_DIV, " Effects and GUI Elements", CATEGORY_DIV)
 				.push("effects");
@@ -288,6 +316,7 @@ public class Config extends AbstractConfig {
 				enableUndiscoveredEffects = builder
 						.comment(" Enable/disable whether 'undiscovered' chests (ie spawned and not found) will display effects such as light source, particles, or glow.")
 						.define("enableUndiscoveredEffects", true);
+		
 				builder.pop();
 			}
 		}

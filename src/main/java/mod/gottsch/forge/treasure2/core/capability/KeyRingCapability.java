@@ -33,7 +33,7 @@ import net.minecraftforge.items.ItemStackHandler;
  *
  */
 public class KeyRingCapability implements ICapabilitySerializable<CompoundTag> {
-	public static final ResourceLocation ID = new ResourceLocation(Treasure.MODID, "keyring");
+	public static final ResourceLocation ID = new ResourceLocation(Treasure.MODID, "key_ring");
 	public static final int INVENTORY_SIZE = 14;
 	
 	private static final String INVENTORY_TAG = "inventory";

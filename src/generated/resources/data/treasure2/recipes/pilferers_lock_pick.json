@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "treasure2",
+  "pattern": [
+    "xt",
+    "x "
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:iron_nugget"
+    },
+    "t": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "treasure2:pilferers_lock_pick"
+  }
+}

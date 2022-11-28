@@ -18,7 +18,7 @@
 package mod.gottsch.forge.treasure2.core.inventory;
 
 import mod.gottsch.forge.treasure2.core.capability.KeyRingCapability;
-import mod.gottsch.forge.treasure2.core.capability.TreasureCapabilities;
+import mod.gottsch.forge.treasure2.core.capability.PouchCapability;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -34,12 +34,15 @@ public class TreasureContainers {
 	// containers
 	public static final RegistryObject<MenuType<StandardChestContainerMenu>> STANDARD_CHEST_CONTAINER;
 	public static final RegistryObject<MenuType<KeyRingContainerMenu>> KEY_RING_CONTAINER;
+	public static final RegistryObject<MenuType<PouchContainerMenu>> POUCH_CONTAINER;
 		
 	static {
 		STANDARD_CHEST_CONTAINER = Registration.CONTAINERS.register("standard_chest_container",
 	            () -> IForgeMenuType.create((windowId, inventory, data) -> new StandardChestContainerMenu(windowId, data.readBlockPos(), inventory, inventory.player)));			
 		KEY_RING_CONTAINER = Registration.CONTAINERS.register("key_ring_container",
 	            () -> IForgeMenuType.create((windowId, inventory, data) -> new KeyRingContainerMenu(windowId, inventory, new ItemStackHandler(KeyRingCapability.INVENTORY_SIZE))));			
+		POUCH_CONTAINER = Registration.CONTAINERS.register("pouch_container",
+	            () -> IForgeMenuType.create((windowId, inventory, data) -> new PouchContainerMenu(windowId, inventory, new ItemStackHandler(PouchCapability.INVENTORY_SIZE))));			
 
 	}
 	

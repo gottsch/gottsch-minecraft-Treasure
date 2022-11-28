@@ -77,5 +77,8 @@ public class Registration {
 	public static void registerContainers() {
 		CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
 	}
-
+	
+	public static void registerParticles() {
+		PARTICLES.register(FMLJavaModLoadingContext.get().getModEventBus());
+	}
 }

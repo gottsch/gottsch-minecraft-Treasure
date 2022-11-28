@@ -1,6 +1,6 @@
 {
-	"version" : "2.0.0",
-	"since":"mc1.16.5-v1.6.0",
+	"version" : "3.0.0",
+	"since":"mc1.16.5-v2.1.0",
 	"category": "general",
 	"rarity": "common",
 	"type": "minecraft:chest",
@@ -8,28 +8,16 @@
 		{
 			"__comment": "do not rename. mod searches for this pool.",
 			"name": "treasure",
-			"rolls": 2,
+			"rolls": 1,
 			"bonus_rolls": 1.0,
 			"entries": [
 				{
 					"type": "minecraft:loot_table",
-					"name": "treasure2:pools/treasure/common",
+					"name": "treasure2:pools/treasure/common_all",
 					"weight": 1
 				}
 			]
 		},
-		{
-			"__comment": "do not rename. mod searches for this pool.",		
-			"name": "charms",
-			"rolls": 1,
-			"entries": [
-				{
-					"type": "loot_table",
-					"name": "treasure2:pools/treasure/common_charms",
-					"weight": 1
-				}
-			]
-		},		
 		{
 			"name": "items",
 			"rolls": {

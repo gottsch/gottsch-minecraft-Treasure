@@ -34,37 +34,28 @@ import net.minecraft.world.entity.player.Inventory;
  */
 public class KeyRingScreen extends AbstractChestScreen<KeyRingContainerMenu> {
 	// This is the resource location for the background image for the GUI
-		private static final ResourceLocation texture = new ResourceLocation(Treasure.MODID, "textures/gui/container/key_ring2.png");
+		private static final ResourceLocation TEXTURE = new ResourceLocation(Treasure.MODID, "textures/gui/container/key_ring2.png");
 		
 	/**
 	 * 
-	 * @param screenContainer
+	 * @param menu
 	 * @param playerInventory
 	 * @param title
 	 */
-	public KeyRingScreen(KeyRingContainerMenu screenContainer, Inventory playerInventory,
+	public KeyRingScreen(KeyRingContainerMenu menu, Inventory playerInventory,
 			Component title) {
-		super(screenContainer, playerInventory, title);
+		super(menu, playerInventory, title);
 		// Set the width and height of the gui.  Should match the size of the texture!
 		imageWidth = 176;
 		imageHeight = 182;
 		this.inventoryLabelY = this.imageHeight - 93;
-		setBgTexture(texture);
+		setBgTexture(TEXTURE);
 	}
 
     @Override
     protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-    	// vanilla
+    	// force vanilla
 		super.renderLabels(matrixStack, mouseX, mouseY);
-    }
-    
-	@Override
-	public int getCustomColor() {
-		return 0;
-	}
+    } 
 
-	@Override
-	public int getCustomShadowColor() {
-		return 0;
-	}
 }

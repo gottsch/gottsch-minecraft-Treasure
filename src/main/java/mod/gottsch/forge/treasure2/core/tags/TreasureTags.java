@@ -24,6 +24,7 @@ import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.registry.RarityRegistry;
+import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.resources.ResourceLocation;
@@ -49,31 +50,36 @@ public class TreasureTags {
 	
 	public static class Items {
 		// keys
-		public static final TagKey<Item> COMMON_KEYS = mod(Treasure.MODID, "keys/common");
-		public static final TagKey<Item> UNCOMMON_KEYS = mod(Treasure.MODID, "keys/uncommon");
-		public static final TagKey<Item> SCARCE_KEYS = mod(Treasure.MODID, "keys/scarce");
-		public static final TagKey<Item> RARE_KEYS = mod(Treasure.MODID, "keys/rare");
-		public static final TagKey<Item> EPIC_KEYS = mod(Treasure.MODID, "keys/epic");
-		public static final TagKey<Item> LEGENDARY_KEYS = mod(Treasure.MODID, "keys/legendary");
-		public static final TagKey<Item> MYTHICAL_KEYS = mod(Treasure.MODID, "keys/mythical");
+		public static final TagKey<Item> COMMON_KEY = mod(Treasure.MODID, "key/common");
+		public static final TagKey<Item> UNCOMMON_KEY = mod(Treasure.MODID, "key/uncommon");
+		public static final TagKey<Item> SCARCE_KEY = mod(Treasure.MODID, "key/scarce");
+		public static final TagKey<Item> RARE_KEY = mod(Treasure.MODID, "key/rare");
+		public static final TagKey<Item> EPIC_KEY = mod(Treasure.MODID, "key/epic");
+		public static final TagKey<Item> LEGENDARY_KEYS = mod(Treasure.MODID, "key/legendary");
+		public static final TagKey<Item> MYTHICAL_KEY = mod(Treasure.MODID, "key/mythical");
 		
 		// locks
-		public static final TagKey<Item> COMMON_LOCKS = mod(Treasure.MODID, "locks/common");
-		public static final TagKey<Item> UNCOMMON_LOCKS = mod(Treasure.MODID, "locks/uncommon");
-		public static final TagKey<Item> SCARCE_LOCKS = mod(Treasure.MODID, "locks/scarce");
-		public static final TagKey<Item> RARE_LOCKS = mod(Treasure.MODID, "locks/rare");
-		public static final TagKey<Item> EPIC_LOCKS = mod(Treasure.MODID, "locks/epic");
-		public static final TagKey<Item> LEGENDARY_LOCKS = mod(Treasure.MODID, "locks/legendary");
-		public static final TagKey<Item> MYTHICAL_LOCKS = mod(Treasure.MODID, "locks/mythical");
+		public static final TagKey<Item> COMMON_LOCKS = mod(Treasure.MODID, "lock/common");
+		public static final TagKey<Item> UNCOMMON_LOCKS = mod(Treasure.MODID, "lock/uncommon");
+		public static final TagKey<Item> SCARCE_LOCKS = mod(Treasure.MODID, "lock/scarce");
+		public static final TagKey<Item> RARE_LOCKS = mod(Treasure.MODID, "lock/rare");
+		public static final TagKey<Item> EPIC_LOCKS = mod(Treasure.MODID, "lock/epic");
+		public static final TagKey<Item> LEGENDARY_LOCKS = mod(Treasure.MODID, "lock/legendary");
+		public static final TagKey<Item> MYTHICAL_LOCKS = mod(Treasure.MODID, "lock/mythical");
 
 		// wishables
-		public static final TagKey<Item> COMMON_WISHABLES = mod(Treasure.MODID, "wishables/common");
-		public static final TagKey<Item> UNCOMMON_WISHABLES = mod(Treasure.MODID, "wishables/uncommon");
-		public static final TagKey<Item> SCARCE_WISHABLES = mod(Treasure.MODID, "wishables/scarce");
-		public static final TagKey<Item> RARE_WISHABLES = mod(Treasure.MODID, "wishables/rare");
-		public static final TagKey<Item> EPIC_WISHABLES = mod(Treasure.MODID, "wishables/epic");
-		public static final TagKey<Item> LEGENDARY_WISHABLES = mod(Treasure.MODID, "wishables/legendary");
-		public static final TagKey<Item> MYTHICAL_WISHABLES = mod(Treasure.MODID, "wishables/mythical");
+		// future: items belonging to _custom do not implement IWishable and can be any item from any mod
+		// they require checks in WorldEntityEvent
+//		public static final TagKey<Item> CUSTOM_WISHABLE = mod(Treasure.MODID, "wishable/_custom");
+		
+		public static final TagKey<Item> COMMON_WISHABLE = mod(Treasure.MODID, "wishable/common");
+		public static final TagKey<Item> UNCOMMON_WISHABLE = mod(Treasure.MODID, "wishable/uncommon");
+		public static final TagKey<Item> SCARCE_WISHABLE = mod(Treasure.MODID, "wishable/scarce");
+		public static final TagKey<Item> RARE_WISHABLE = mod(Treasure.MODID, "wishable/rare");
+		public static final TagKey<Item> EPIC_WISHABLE = mod(Treasure.MODID, "wishable/epic");
+		public static final TagKey<Item> LEGENDARY_WISHABLE = mod(Treasure.MODID, "wishable/legendary");
+		public static final TagKey<Item> MYTHICAL_WISHABLE = mod(Treasure.MODID, "wishable/mythical");
+//		public static final TagKey<Item> SPECIAL_WISHABLE = mod(Treasure.MODID, "wishable/_special");
 
 		
 		// other
@@ -143,12 +149,30 @@ public class TreasureTags {
 			for (IRarity rarity : RarityRegistry.getValues()) {
 				TagKey<Block> tag = RarityRegistry.getChestTag(rarity);
 				if (tag != null && holder.is(tag)) {
-					// register the lock in the key-lock registry by rarity
 					ChestRegistry.registerByRarity(rarity, chest);
 					Treasure.LOGGER.info("registering chest -> {} by rarity -> {}", chest.get().getRegistryName(), rarity);
 					break;
 				}
 			}			
+		});
+		
+		WishableRegistry.getAll().forEach(wishable -> {
+			Holder.Reference<Item> holder = wishable.get().builtInRegistryHolder();
+			
+			for (IRarity rarity : RarityRegistry.getValues()) {
+				TagKey<Item> tag = RarityRegistry.getWishableTag(rarity);
+				if (tag != null && holder.is(tag)) {
+					// register the wishable in the wishable registry by rarity
+					WishableRegistry.registerByRarity(rarity, wishable);
+					Treasure.LOGGER.info("registering wishable -> {} by rarity -> {}", wishable.get().getRegistryName(), rarity);
+					break;
+				}
+			}
+			// special tag
+//			TagKey<Item> specialTag = TreasureTags.Items.SPECIAL_WISHABLE;
+//			if (specialTag != null && holder.is(specialTag)) {
+//				// ???
+//			}
 		});
 	}
 }

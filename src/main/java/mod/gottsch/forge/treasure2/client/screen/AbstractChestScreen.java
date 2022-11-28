@@ -22,7 +22,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.Config;
-import mod.gottsch.forge.treasure2.core.inventory.AbstractChestContainerMenu;
+import mod.gottsch.forge.treasure2.core.inventory.AbstractTreasureContainerMenu;
 import mod.gottsch.forge.treasure2.core.inventory.StandardChestContainerMenu;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -35,7 +35,7 @@ import net.minecraft.world.entity.player.Inventory;
  * @author Mark Gottschling on Nov 20, 2022
  *
  */
-public abstract class AbstractChestScreen<T extends AbstractChestContainerMenu> extends AbstractContainerScreen<T> {
+public abstract class AbstractChestScreen<T extends AbstractTreasureContainerMenu> extends AbstractContainerScreen<T> {
 	private static final ResourceLocation VANILLA_BG_TEXTURE = new ResourceLocation(Treasure.MODID, "textures/gui/container/treasure_chest.png");
 	
 	private ResourceLocation bgTexture;
@@ -110,8 +110,12 @@ public abstract class AbstractChestScreen<T extends AbstractChestContainerMenu> 
 	 * NOTE getCustomXXX methods are only called if Config.CLIENT.gui.enableCustomChestInventoryGui is enabled.
 	 */
 	
-	abstract public int getCustomColor();
-	
-	abstract public int getCustomShadowColor();
+	public int getCustomColor() {
+		return 0;
+	}
+
+	public int getCustomShadowColor() {
+		return 0;
+	}
 	
 }

@@ -28,7 +28,7 @@ import net.minecraftforge.items.SlotItemHandler;
  * @author Mark Gottschling on Mar 9, 2018
  *
  */
-public class KeyRingContainerMenu extends AbstractChestContainerMenu implements ITreasureContainer {
+public class KeyRingContainerMenu extends AbstractTreasureContainerMenu implements ITreasureContainer {
 	class Point {
 		public int x;
 		public int  y;

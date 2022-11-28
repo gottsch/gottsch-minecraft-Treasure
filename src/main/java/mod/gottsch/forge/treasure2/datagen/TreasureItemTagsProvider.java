@@ -39,27 +39,29 @@ public class TreasureItemTagsProvider extends ItemTagsProvider {
 	@Override
 	protected void addTags() {     
 		// keys rarity
-		tag(TreasureTags.Items.COMMON_KEYS).add(TreasureItems.WOOD_KEY.get());
-		tag(TreasureTags.Items.COMMON_KEYS).add(TreasureItems.STONE_KEY.get());
-		tag(TreasureTags.Items.UNCOMMON_KEYS).add(TreasureItems.LEAF_KEY.get());
-		tag(TreasureTags.Items.SCARCE_KEYS).add(TreasureItems.EMBER_KEY.get());
-		tag(TreasureTags.Items.SCARCE_KEYS).add(TreasureItems.LIGHTNING_KEY.get());
-		tag(TreasureTags.Items.UNCOMMON_KEYS).add(TreasureItems.IRON_KEY.get());
-		tag(TreasureTags.Items.SCARCE_KEYS).add(TreasureItems.GOLD_KEY.get());
-		tag(TreasureTags.Items.RARE_KEYS).add(TreasureItems.METALLURGISTS_KEY.get());
-		tag(TreasureTags.Items.RARE_KEYS).add(TreasureItems.DIAMOND_KEY.get());
-		tag(TreasureTags.Items.RARE_KEYS).add(TreasureItems.EMERALD_KEY.get());
-		tag(TreasureTags.Items.EPIC_KEYS).add(TreasureItems.RUBY_KEY.get());
-		tag(TreasureTags.Items.EPIC_KEYS).add(TreasureItems.SAPPHIRE_KEY.get());
-		tag(TreasureTags.Items.EPIC_KEYS).add(TreasureItems.JEWELLED_KEY.get());
+		tag(TreasureTags.Items.COMMON_KEY).add(TreasureItems.WOOD_KEY.get());
+		tag(TreasureTags.Items.COMMON_KEY).add(TreasureItems.STONE_KEY.get());
+		tag(TreasureTags.Items.UNCOMMON_KEY).add(TreasureItems.LEAF_KEY.get());
+		tag(TreasureTags.Items.SCARCE_KEY).add(TreasureItems.EMBER_KEY.get());
+		tag(TreasureTags.Items.SCARCE_KEY).add(TreasureItems.LIGHTNING_KEY.get());
+		tag(TreasureTags.Items.UNCOMMON_KEY).add(TreasureItems.IRON_KEY.get());
+		tag(TreasureTags.Items.SCARCE_KEY).add(TreasureItems.GOLD_KEY.get());
+		tag(TreasureTags.Items.RARE_KEY).add(TreasureItems.METALLURGISTS_KEY.get());
+		tag(TreasureTags.Items.RARE_KEY).add(TreasureItems.DIAMOND_KEY.get());
+		tag(TreasureTags.Items.RARE_KEY).add(TreasureItems.EMERALD_KEY.get());
+		tag(TreasureTags.Items.EPIC_KEY).add(TreasureItems.RUBY_KEY.get());
+		tag(TreasureTags.Items.EPIC_KEY).add(TreasureItems.SAPPHIRE_KEY.get());
+		tag(TreasureTags.Items.EPIC_KEY).add(TreasureItems.JEWELLED_KEY.get());
 		
-		tag(TreasureTags.Items.RARE_KEYS).add(TreasureItems.SKELETON_KEY.get());
+		tag(TreasureTags.Items.RARE_KEY).add(TreasureItems.SKELETON_KEY.get());
 		
-		tag(TreasureTags.Items.SCARCE_KEYS).add(TreasureItems.SPIDER_KEY.get());
-		tag(TreasureTags.Items.RARE_KEYS).add(TreasureItems.WITHER_KEY.get());
+		tag(TreasureTags.Items.SCARCE_KEY).add(TreasureItems.SPIDER_KEY.get());
+		tag(TreasureTags.Items.RARE_KEY).add(TreasureItems.WITHER_KEY.get());
 		
-		tag(TreasureTags.Items.COMMON_KEYS).add(TreasureItems.PILFERERS_LOCK_PICK.get());
-		tag(TreasureTags.Items.UNCOMMON_KEYS).add(TreasureItems.THIEFS_LOCK_PICK.get());
+		tag(TreasureTags.Items.COMMON_KEY).add(TreasureItems.PILFERERS_LOCK_PICK.get());
+		tag(TreasureTags.Items.UNCOMMON_KEY).add(TreasureItems.THIEFS_LOCK_PICK.get());
+		
+		tag(TreasureTags.Items.MYTHICAL_KEY).add(TreasureItems.ONE_KEY.get());
 		
 		// locks rarity
 		tag(TreasureTags.Items.COMMON_LOCKS).add(TreasureItems.WOOD_LOCK.get());
@@ -75,6 +77,31 @@ public class TreasureItemTagsProvider extends ItemTagsProvider {
 		tag(TreasureTags.Items.EPIC_LOCKS).add(TreasureItems.SAPPHIRE_LOCK.get());
 		
 		tag(TreasureTags.Items.SCARCE_LOCKS).add(TreasureItems.SPIDER_LOCK.get());
+		
+		// wishables rarity
+		tag(TreasureTags.Items.COMMON_WISHABLE).add(TreasureItems.COPPER_COIN.get());
+		tag(TreasureTags.Items.UNCOMMON_WISHABLE).add(TreasureItems.SILVER_COIN.get());
+		tag(TreasureTags.Items.SCARCE_WISHABLE).add(TreasureItems.SILVER_COIN.get());
+		tag(TreasureTags.Items.SCARCE_WISHABLE).add(TreasureItems.GOLD_COIN.get());
+		tag(TreasureTags.Items.RARE_WISHABLE).add(TreasureItems.GOLD_COIN.get());
+		tag(TreasureTags.Items.SCARCE_WISHABLE).add(TreasureItems.TOPAZ.get());
+		tag(TreasureTags.Items.RARE_WISHABLE).add(TreasureItems.ONYX.get());
+		tag(TreasureTags.Items.RARE_WISHABLE).add(TreasureItems.RUBY.get());
+		tag(TreasureTags.Items.EPIC_WISHABLE).add(TreasureItems.SAPPHIRE.get());
+		// NOTE white_pearl and black_pearl are not mapped via tags because they use
+		// custom, non-rarity based loot tables
+		
+		// pouchables
+		tag(TreasureTags.Items.POUCH).add(TreasureItems.COPPER_COIN.get());
+		tag(TreasureTags.Items.POUCH).add(TreasureItems.SILVER_COIN.get());
+		tag(TreasureTags.Items.POUCH).add(TreasureItems.GOLD_COIN.get());
+		tag(TreasureTags.Items.POUCH).add(TreasureItems.TOPAZ.get());
+		tag(TreasureTags.Items.POUCH).add(TreasureItems.ONYX.get());
+		tag(TreasureTags.Items.POUCH).add(TreasureItems.RUBY.get());
+		tag(TreasureTags.Items.POUCH).add(TreasureItems.SAPPHIRE.get());
+		tag(TreasureTags.Items.POUCH).add(TreasureItems.WHITE_PEARL.get());
+		tag(TreasureTags.Items.POUCH).add(TreasureItems.BLACK_PEARL.get());
+		
 		// NOTE wither lock is a special and isn't used in the general locks list
 		// tag(TreasureTags.Items.SCARCE_LOCKS).add(TreasureItems.WITHER_LOCK.get());
 		

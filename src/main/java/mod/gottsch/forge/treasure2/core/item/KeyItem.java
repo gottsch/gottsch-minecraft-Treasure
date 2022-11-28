@@ -56,6 +56,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -118,22 +120,6 @@ public class KeyItem extends Item implements IKeyEffects {
 		setSuccessProbability(90D);	
 	}
 
-	/**
-	 * 
-	 * @param modID
-	 * @param name
-	 */
-	//	@Deprecated
-	//	public KeyItem(String modID, String name, Item.Properties properties) {
-	//		super(modID, name, properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP).defaultDurability(DEFAULT_MAX_USES));
-	//		setCategory(Category.ELEMENTAL);
-	//		setRarity(Rarity.COMMON);
-	//		setBreakable(true);
-	//		setDamageable(true);
-	//		setCraftable(false);
-	//		setSuccessProbability(90D);	
-	//	}
-
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		DurabilityCapability provider = new DurabilityCapability();
@@ -180,26 +166,24 @@ public class KeyItem extends Item implements IKeyEffects {
 	 * 		Craftable: [Yes | No] [color = Green | Dark Red]
 	 * 	 	Damageable: [Yes | No] [color = Dark Red | Green]
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, worldIn, tooltip, flag);
 
 		if (stack.getCapability(DURABILITY).isPresent()) {
 			stack.getCapability(DURABILITY).ifPresent(cap -> {
 				if (cap.isInfinite()) {
-					tooltip.add(new TranslatableComponent(LangUtil.tooltip("durability.infinite_uses"), cap.getDurability() - stack.getDamageValue(), cap.getDurability()));					
+					tooltip.add(new TranslatableComponent(LangUtil.tooltip("cap.durability.amount.infinite"), cap.getDurability() - stack.getDamageValue(), cap.getDurability()));					
 				}
 				else {
-					tooltip.add(new TranslatableComponent(LangUtil.tooltip("durability.uses"), cap.getDurability() - stack.getDamageValue(), cap.getDurability()));
+					tooltip.add(new TranslatableComponent(LangUtil.tooltip("cap.durability.amount"), cap.getDurability() - stack.getDamageValue(), cap.getDurability()));
 				}
 			});
 		}
 		else {
-			tooltip.add(new TranslatableComponent(LangUtil.tooltip("durability.max_uses"), ChatFormatting.GOLD + String.valueOf(getMaxDamage())));
+			tooltip.add(new TranslatableComponent(LangUtil.tooltip("durability.amount"), stack.getMaxDamage() - stack.getDamageValue(), stack.getMaxDamage()));
 		}
 		
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.rarity"), ChatFormatting.DARK_BLUE + getRarity().toString()));
+		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.rarity"), ChatFormatting.BLUE + getRarity().toString()));
 		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.category"), ChatFormatting.GOLD + getCategory().toString()));
 
 		LangUtil.appendAdvancedHoverText(tooltip, tt -> {
@@ -223,20 +207,19 @@ public class KeyItem extends Item implements IKeyEffects {
 				craftable = new TranslatableComponent(LangUtil.tooltip("boolean.no")).withStyle(ChatFormatting.DARK_RED);
 			}
 			tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.craftable"), craftable));
-
-//			MutableComponent damageable = null;
-//			if (isDamageable(stack)) {
-//				damageable = new TranslatableComponent(LangUtil.tooltip("boolean.yes")).withStyle(ChatFormatting.DARK_RED);
-//			}
-//			else {
-//				damageable = new TranslatableComponent(LangUtil.tooltip("boolean.no")).withStyle(ChatFormatting.GREEN);
-//			}
-//			tooltip.add(
-//					new TranslatableComponent(LangUtil.tooltip("key_lock.damageable"), damageable));
-			
+		
 			appendHoverSpecials(stack, worldIn, tooltip, flag);
 			appendHoverExtras(stack, worldIn, tooltip, flag);
 		});
+		// NOTE adding curse here makes it unremovable.
+		// TODO adding curse AFTER the HOLD lambda only adds it once to the tooltip.
+		// if added BEFORE, like in initCapabilities(), it is added twice to the tooltip
+		// TEMP fix for double Curses displayed
+		appendCurse(stack, tooltip);
+	}
+
+	public void appendCurse(ItemStack stack, List<Component> tooltip) {
+
 	}
 
 	public  void appendHoverSpecials(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {

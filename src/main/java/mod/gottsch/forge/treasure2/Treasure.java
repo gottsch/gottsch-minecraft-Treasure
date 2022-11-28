@@ -15,6 +15,7 @@ import mod.gottsch.forge.treasure2.core.block.entity.TreasureBlockEntities;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
+import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
 import mod.gottsch.forge.treasure2.core.setup.ClientSetup;
 import mod.gottsch.forge.treasure2.core.setup.CommonSetup;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
@@ -61,6 +62,7 @@ public class Treasure {
 		TreasureItems.register();
 		TreasureBlockEntities.register();
 		TreasureContainers.register();
+		TreasureParticles.register();
 		
 		// register the setup method for mod loading
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

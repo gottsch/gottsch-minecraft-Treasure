@@ -220,9 +220,8 @@ public class KeyRingItem extends Item implements MenuProvider {
 			return InteractionResultHolder.fail(player.getItemInHand(hand));
 		}
 
-		// open the chest
+		// open the key ring
 		NetworkHooks.openGui((ServerPlayer)player, this, player.blockPosition());
-		// NOTE: (packetBuffer)->{} is just a do-nothing because we have no extra data to send
 
 		return InteractionResultHolder.pass(player.getItemInHand(hand));
 	}

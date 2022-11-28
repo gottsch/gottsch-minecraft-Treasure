@@ -17,29 +17,15 @@
  */
 package mod.gottsch.forge.treasure2.core.setup;
 
-import java.nio.file.Paths;
-
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Appender;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.appender.RollingFileAppender;
-import org.apache.logging.log4j.core.appender.rolling.SizeBasedTriggeringPolicy;
-import org.apache.logging.log4j.core.config.AppenderRef;
-import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.LoggerConfig;
-import org.apache.logging.log4j.core.layout.PatternLayout;
-
-import mod.gottsch.forge.gottschcore.config.IConfig;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
+import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
+import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.KeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.config.Config;
 /**
  * 
  * @author Mark Gottschling on Nov 10, 2022
@@ -52,23 +38,23 @@ public class CommonSetup {
 		
 		// register each rarity and rarity tags.
 		TreasureApi.registerRarity(Rarity.COMMON, 
-				TreasureTags.Items.COMMON_KEYS, 
+				TreasureTags.Items.COMMON_KEY, 
 				TreasureTags.Items.COMMON_LOCKS,
 				TreasureTags.Blocks.COMMON_CHESTS);
 		TreasureApi.registerRarity(Rarity.UNCOMMON, 
-				TreasureTags.Items.UNCOMMON_KEYS, 
+				TreasureTags.Items.UNCOMMON_KEY, 
 				TreasureTags.Items.UNCOMMON_LOCKS,
 				TreasureTags.Blocks.UNCOMMON_CHESTS);
 		TreasureApi.registerRarity(Rarity.SCARCE, 
-				TreasureTags.Items.SCARCE_KEYS, 
+				TreasureTags.Items.SCARCE_KEY, 
 				TreasureTags.Items.SCARCE_LOCKS,
 				TreasureTags.Blocks.SCARCE_CHESTS);
 		TreasureApi.registerRarity(Rarity.RARE, 
-				TreasureTags.Items.RARE_KEYS, 
+				TreasureTags.Items.RARE_KEY, 
 				TreasureTags.Items.RARE_LOCKS,
 				TreasureTags.Blocks.RARE_CHESTS);
 		TreasureApi.registerRarity(Rarity.EPIC, 
-				TreasureTags.Items.EPIC_KEYS, 
+				TreasureTags.Items.EPIC_KEY, 
 				TreasureTags.Items.EPIC_LOCKS,
 				TreasureTags.Blocks.EPIC_CHESTS);
 		TreasureApi.registerRarity(Rarity.LEGENDARY, 
@@ -76,9 +62,18 @@ public class CommonSetup {
 				TreasureTags.Items.LEGENDARY_LOCKS,
 				TreasureTags.Blocks.LEGENDARY_CHESTS);
 		TreasureApi.registerRarity(Rarity.MYTHICAL, 
-				TreasureTags.Items.MYTHICAL_KEYS, 
+				TreasureTags.Items.MYTHICAL_KEY, 
 				TreasureTags.Items.MYTHICAL_LOCKS,
 				TreasureTags.Blocks.MYTHICAL_CHESTS);
+		
+		// regsiter wishable tags
+		TreasureApi.registerWishableTag(Rarity.COMMON, TreasureTags.Items.COMMON_WISHABLE);
+		TreasureApi.registerWishableTag(Rarity.UNCOMMON, TreasureTags.Items.UNCOMMON_WISHABLE);
+		TreasureApi.registerWishableTag(Rarity.SCARCE, TreasureTags.Items.SCARCE_WISHABLE);
+		TreasureApi.registerWishableTag(Rarity.RARE, TreasureTags.Items.RARE_WISHABLE);
+		TreasureApi.registerWishableTag(Rarity.EPIC, TreasureTags.Items.EPIC_WISHABLE);
+		TreasureApi.registerWishableTag(Rarity.LEGENDARY, TreasureTags.Items.LEGENDARY_WISHABLE);
+		TreasureApi.registerWishableTag(Rarity.MYTHICAL, TreasureTags.Items.MYTHICAL_WISHABLE);
 		
 		// register the key/lock categories
 		TreasureApi.registerKeyLockCategory(KeyLockCategory.ELEMENTAL);
@@ -112,6 +107,7 @@ public class CommonSetup {
 		TreasureApi.registerKey(TreasureItems.PILFERERS_LOCK_PICK);
 		TreasureApi.registerKey(TreasureItems.THIEFS_LOCK_PICK);
 		
+		TreasureApi.registerKey(TreasureItems.ONE_KEY);
 		// register all the locks
 		TreasureApi.registerLock(TreasureItems.WOOD_LOCK);
 		TreasureApi.registerLock(TreasureItems.STONE_LOCK);
@@ -130,52 +126,19 @@ public class CommonSetup {
 		
 		// register all the chests
 		TreasureApi.registerChest(TreasureBlocks.WOOD_CHEST);
-	}
-	
-	// TODO remove
-	/**
-	 * 
-	 * @param mod
-	 */
-	@Deprecated
-	public static void addRollingFileAppender(String modid, IConfig config) {
-
-		String appenderName = modid + "Appender";
-		String logsFolder = config.getLogsFolder();
-		if (!logsFolder.endsWith("/")) {
-			logsFolder += "/";
-		}
-
-		final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
-		final Configuration configuration = ctx.getConfiguration();
-
-		// create a sized-based trigger policy, using config setting for size.
-		SizeBasedTriggeringPolicy policy = SizeBasedTriggeringPolicy.createPolicy(config.getLogSize());
-		// create the pattern for log statements
-		PatternLayout layout = PatternLayout.newBuilder().withPattern("%d [%t] %p %c | %F:%L | %m%n")
-				.withAlwaysWriteExceptions(true).build();
-
-		// create a rolling file appender
-		Appender appender = RollingFileAppender.newBuilder()
-				.withFileName(Paths.get(logsFolder, modid + ".log").toString())
-				.withFilePattern(Paths.get(logsFolder, modid + "-%d{yyyy-MM-dd-HH_mm_ss}.log").toString())
-				.withAppend(true).setName(appenderName).withBufferedIo(true).withImmediateFlush(true)
-				.withPolicy(policy)
-				.setLayout(layout)
-				.setIgnoreExceptions(true).withAdvertise(false).setConfiguration(configuration).build();
-
-		appender.start();
-		configuration.addAppender(appender);
 		
-		// create a appender reference
-		AppenderRef ref = AppenderRef.createAppenderRef("File", null, null);
-		AppenderRef[] refs = new AppenderRef[] {ref};
+		// register all the wishable items
+		TreasureApi.registerWishable(TreasureItems.COPPER_COIN);
+		TreasureApi.registerWishable(TreasureItems.SILVER_COIN);
+		TreasureApi.registerWishable(TreasureItems.GOLD_COIN);
+		TreasureApi.registerWishable(TreasureItems.TOPAZ);
+		TreasureApi.registerWishable(TreasureItems.ONYX);
+		TreasureApi.registerWishable(TreasureItems.RUBY);
+		TreasureApi.registerWishable(TreasureItems.SAPPHIRE);
+		TreasureApi.registerWishable(TreasureItems.WHITE_PEARL);
+		TreasureApi.registerWishable(TreasureItems.BLACK_PEARL);
 		
-		LoggerConfig loggerConfig = LoggerConfig.createLogger(false, Level.toLevel(config.getLoggingLevel(), Level.INFO), modid, "true", refs, null, configuration, null );
-		loggerConfig.addAppender(appender, null, null);
-		configuration.addLogger(modid, loggerConfig);
-		
-		// update logger with new appenders
-		ctx.updateLoggers();
+		// register loot tables
+		TreasureApi.registerLootTables(Treasure.MODID);
 	}
 }

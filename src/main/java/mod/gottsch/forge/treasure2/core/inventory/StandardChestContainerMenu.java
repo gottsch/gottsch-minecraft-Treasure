@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 
-public class StandardChestContainerMenu extends AbstractChestContainerMenu {
+public class StandardChestContainerMenu extends AbstractTreasureContainerMenu {
 
 	/**
 	 * 

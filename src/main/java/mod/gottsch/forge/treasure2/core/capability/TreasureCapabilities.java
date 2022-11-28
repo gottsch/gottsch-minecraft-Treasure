@@ -39,6 +39,7 @@ public class TreasureCapabilities {
 	public static Capability<IDurabilityHandler> DURABILITY = CapabilityManager.get(new CapabilityToken<>() {	});
 	public static Capability<IKeyRingHandler> KEY_RING = CapabilityManager.get(new CapabilityToken<>() {	});
 	public static Capability<IItemHandler> KEY_RING_INV = CapabilityManager.get(new CapabilityToken<>() {	});
+	public static Capability<IItemHandler> POUCH = CapabilityManager.get(new CapabilityToken<>() {	});
 	
 	/**
 	 * 

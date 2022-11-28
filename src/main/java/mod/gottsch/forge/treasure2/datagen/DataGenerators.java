@@ -19,7 +19,7 @@ public class DataGenerators {
     public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
         if (event.includeServer()) {
-//            generator.addProvider(new TutRecipes(generator));
+            generator.addProvider(new Recipes(generator));
 //            generator.addProvider(new TutLootTables(generator));
         	TreasureBlockTagsProvider blockTags = new TreasureBlockTagsProvider(generator, event.getExistingFileHelper());
             generator.addProvider(blockTags);
