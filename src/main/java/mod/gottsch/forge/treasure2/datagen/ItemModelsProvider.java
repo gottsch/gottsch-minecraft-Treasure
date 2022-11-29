@@ -18,8 +18,8 @@
 package mod.gottsch.forge.treasure2.datagen;
 
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
-import mod.gottsch.forge.treasure2.core.setup.Registration;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -169,6 +169,9 @@ public class ItemModelsProvider extends ItemModelProvider {
 		// other
 		singleTexture(TreasureItems.TREASURE_TOOL.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/treasure_tool"));
+		singleTexture(TreasureItems.SKELETON_ITEM.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/skeleton_item"));
+		
 		// block items
 		withExistingParent(TreasureItems.WOOD_CHEST_ITEM.get().getRegistryName().getPath(), modLoc("block/wood_chest"));
     	
@@ -186,6 +189,18 @@ public class ItemModelsProvider extends ItemModelProvider {
 		
 		withExistingParent(TreasureItems.WISHING_WELL_ITEM.get().getRegistryName().getPath(), modLoc("block/wishing_well_block"));
 		withExistingParent(TreasureItems.DESERT_WISHING_WELL_ITEM.get().getRegistryName().getPath(), modLoc("block/desert_wishing_well_block"));
+		
+		TreasureBlocks.GRAVESTONES.forEach(g -> {
+			withExistingParent(g.get().getRegistryName().getPath(), modLoc("block/" + g.get().getRegistryName().getPath()));
+		});
+		
+		TreasureBlocks.GRAVESTONE_SPAWNERS.forEach(g -> {
+			withExistingParent(g.get().getRegistryName().getPath(), modLoc("block/" + g.get().getRegistryName().getPath()));
+		});
+		
+		// eggs
+		withExistingParent(TreasureItems.BOUND_SOUL_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
+		
 		// topaz rings
 		//        singleTexture(TreasureItems.ADORNMENT_ITEMS.get(modLoc("topaz_iron_ring")).getRegistryName().getPath(),        		
 		//        		mcLoc("treasure2:item/adornment"), "layer0", modLoc("item/adornments/topaz_iron_ring"));

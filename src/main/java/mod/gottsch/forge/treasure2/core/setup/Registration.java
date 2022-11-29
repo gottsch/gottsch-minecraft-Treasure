@@ -81,4 +81,8 @@ public class Registration {
 	public static void registerParticles() {
 		PARTICLES.register(FMLJavaModLoadingContext.get().getModEventBus());
 	}
+
+	public static void registerEntities() {
+		ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+	}
 }

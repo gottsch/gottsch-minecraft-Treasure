@@ -19,12 +19,15 @@ package mod.gottsch.forge.treasure2.core.setup;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.client.model.blockentity.StandardChestModel;
+import mod.gottsch.forge.treasure2.client.model.entity.BoundSoulModel;
 import mod.gottsch.forge.treasure2.client.renderer.blockentity.WoodChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.entity.BoundSoulRenderer;
 import mod.gottsch.forge.treasure2.client.screen.KeyRingScreen;
 import mod.gottsch.forge.treasure2.client.screen.PouchScreen;
 import mod.gottsch.forge.treasure2.client.screen.StandardChestScreen;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureBlockEntities;
+import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
 import mod.gottsch.forge.treasure2.core.particle.SpanishMossParticle;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
@@ -63,6 +66,7 @@ public class ClientSetup {
 
             ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.WOOD_CHEST.get(), RenderType.cutoutMipped());
             ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SPANISH_MOSS.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SKELETON.get(), RenderType.cutout());
         });
     }
     /**
@@ -84,6 +88,7 @@ public class ClientSetup {
 	@SubscribeEvent
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerBlockEntityRenderer(TreasureBlockEntities.WOOD_CHEST_BLOCK_ENTITY_TYPE.get(), WoodChestRenderer::new);
+		event.registerEntityRenderer(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), BoundSoulRenderer::new);
 	}
 	
 	/**
@@ -93,6 +98,7 @@ public class ClientSetup {
 	@SubscribeEvent()
 	public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		event.registerLayerDefinition(StandardChestModel.LAYER_LOCATION, StandardChestModel::createBodyLayer);
+		event.registerLayerDefinition(BoundSoulModel.LAYER_LOCATION, BoundSoulModel::createBodyLayer);
 	}
 	
 	

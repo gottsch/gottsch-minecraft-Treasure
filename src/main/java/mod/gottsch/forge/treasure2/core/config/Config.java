@@ -145,11 +145,14 @@ public class Config extends AbstractConfig {
 		public Wealth wealth;
 		public Effects effects;
 		public Integration integration;
+		public Markers markers;
 
 		public ServerConfig(ForgeConfigSpec.Builder builder) {
 			keysAndLocks = new KeysAndLocks(builder);	
 			wealth = new Wealth(builder);
 			effects = new Effects(builder);
+			integration = new Integration(builder);
+			markers = new Markers(builder);
 		}
 		
 		/*
@@ -298,6 +301,54 @@ public class Config extends AbstractConfig {
 				wealthMaxStackSize = builder
 						.comment(" The maximum size of a wealth item stacks. ex. Coins, Gems, Pearls")
 						.defineInRange("wealthMaxStackSize", 8, 1, 64);
+				builder.pop();
+			}
+		}
+		
+		/*
+		 * 
+		 */
+		public static class Markers {
+			public ForgeConfigSpec.BooleanValue enableMarkers;
+			public ForgeConfigSpec.BooleanValue enableMarkerStructures;
+			public ForgeConfigSpec.ConfigValue<Integer> minGravestonesPerChest;
+			public ForgeConfigSpec.ConfigValue<Integer> maxGravestonesPerChest;
+			public ForgeConfigSpec.ConfigValue<Integer> markerStructureProbability;
+			public ForgeConfigSpec.BooleanValue enableGravestoneSpawner;
+			public ForgeConfigSpec.ConfigValue<Integer> gravestoneSpawnerProbability;
+			
+			public Markers(final ForgeConfigSpec.Builder builder)	 {
+				builder.comment(CATEGORY_DIV, " Gravestones and Markers properties", CATEGORY_DIV)
+				.push("treasure markers");
+				
+				enableMarkers = builder
+						.comment(" Enable/disable whether chest markers (gravestones, bones)  are generated when generating treasure chests.")
+						.define("Enable markers:", true);
+				
+				enableMarkerStructures = builder
+						.comment(" Enable/disable whether structures (buildings) are generated when generating  treasure chests.")
+						.define("Enable structure markers:", true);
+				
+				minGravestonesPerChest = builder
+						.comment(" The minimum number of markers (gravestones, bones) per chest.")
+						.defineInRange("Minimum markers per chest:", 2, 1, 5);
+				
+				maxGravestonesPerChest = builder
+						.comment(" The maximum number of markers (gravestones, bones) per chest.")
+						.defineInRange("Maximum markers per chest:", 5, 1, 10);
+				
+				markerStructureProbability = builder
+						.comment(" The probability that a marker will be a structure.")
+						.defineInRange("Probability that marker will be a structure:", 15, 1, 100);
+				
+				enableGravestoneSpawner = builder
+						.comment(" Enable/disable whether gravestone markers can spawn mobs (ex. Bound Soul).")
+						.define("Enable gravestone markers to spawn mobs:", true);
+				
+				gravestoneSpawnerProbability = builder
+						.comment(" The probability that a gravestone will spawn a mob.", " Currently gravestones can spawn Bound Souls.")
+						.defineInRange("Probability that grave marker will spawn a mob:", 25, 1, 100);
+								
 				builder.pop();
 			}
 		}

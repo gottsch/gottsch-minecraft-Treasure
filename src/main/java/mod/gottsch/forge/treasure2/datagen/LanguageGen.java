@@ -117,6 +117,35 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.DEEPSLATE_RUBY_ORE.get(), "Deepslate Ruby Ore");
         add(TreasureBlocks.DEEPSLATE_SAPPHIRE_ORE.get(), "Deepslate Sapphire Ore");
         
+        // gravestones
+        add(TreasureBlocks.GRAVESTONE1_STONE.get(), "Stone Gravestone");
+        add(TreasureBlocks.GRAVESTONE1_COBBLESTONE.get(), "Cobblestone Gravestone");
+        add(TreasureBlocks.GRAVESTONE1_MOSSY_COBBLESTONE.get(), "Mossy Cobblestone Gravestone");
+        add(TreasureBlocks.GRAVESTONE1_POLISHED_GRANITE.get(), "Granite Gravestone");
+        add(TreasureBlocks.GRAVESTONE1_OBSIDIAN.get(), "Obsidian Gravestone");
+        add(TreasureBlocks.GRAVESTONE1_SMOOTH_QUARTZ.get(), "Quartz Gravestone");
+        add(TreasureBlocks.GRAVESTONE2_STONE.get(), "Stone Gravestone");
+        add(TreasureBlocks.GRAVESTONE2_COBBLESTONE.get(), "Cobblestone Gravestone");
+        add(TreasureBlocks.GRAVESTONE2_MOSSY_COBBLESTONE.get(), "Mossy Cobblestone Gravestone");
+        add(TreasureBlocks.GRAVESTONE2_POLISHED_GRANITE.get(), "Granite Gravestone");
+        add(TreasureBlocks.GRAVESTONE2_OBSIDIAN.get(), "Obsidian Gravestone");
+        add(TreasureBlocks.GRAVESTONE2_SMOOTH_QUARTZ.get(), "Quartz Gravestone");
+        add(TreasureBlocks.GRAVESTONE3_STONE.get(), "Stone Gravestone");
+        add(TreasureBlocks.GRAVESTONE3_COBBLESTONE.get(), "Cobblestone Gravestone");
+        add(TreasureBlocks.GRAVESTONE3_MOSSY_COBBLESTONE.get(), "Mossy Cobblestone Gravestone");
+        add(TreasureBlocks.GRAVESTONE3_POLISHED_GRANITE.get(), "Granite Gravestone");
+        add(TreasureBlocks.GRAVESTONE3_OBSIDIAN.get(), "Obsidian Gravestone");
+        add(TreasureBlocks.GRAVESTONE3_SMOOTH_QUARTZ.get(), "Quartz Gravestone");
+        add(TreasureBlocks.SKULL_CROSSBONES.get(), "Skull and Crossbones");
+        add(TreasureBlocks.SKELETON.get(), "Skeleton");
+        
+        add(TreasureBlocks.GRAVESTONE1_SPAWNER_STONE.get(), "Stone Gravestone Spawner");
+        add(TreasureBlocks.GRAVESTONE2_SPAWNER_COBBLESTONE.get(), "Cobblestone Gravestone Spawner");
+        add(TreasureBlocks.GRAVESTONE3_SPAWNER_OBSIDIAN.get(), "Obsidian Gravestone Spawner");
+        
+        // eggs
+        add(TreasureItems.BOUND_SOUL_EGG.get(), "Bound Soul Spawn Egg");
+        
         /*
          *  Util.tooltips
          */
@@ -154,9 +183,6 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.tooltip("chest.container_size"), "Inventory Size: %s");
         
         // capabilities
-//        add(LangUtil.tooltip("durability.infinite_uses"), "Uses Remaining: Infinite");
-//        add(LangUtil.tooltip("durability.uses"), "Uses Remaining: [%s/%s]");
-//        add(LangUtil.tooltip("durability.max_uses"), "Max Uses: %s");
         add(LangUtil.tooltip("cap.durability.amount"), "Durability: [%s/%s]");
         add(LangUtil.tooltip("cap.durability.amount.infinite"), "Durability: Infinite");
         add(LangUtil.tooltip("cap.durability.repairs"), "R[%s/%s]");

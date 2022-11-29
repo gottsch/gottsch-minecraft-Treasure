@@ -9,6 +9,7 @@ import mod.gottsch.forge.treasure2.core.capability.DurabilityCapability;
 import mod.gottsch.forge.treasure2.core.capability.DurabilityHandler;
 import mod.gottsch.forge.treasure2.core.capability.IDurabilityHandler;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
@@ -25,6 +26,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
@@ -331,6 +333,18 @@ public class TreasureItems {
 
 	public static final RegistryObject<Item> WISHING_WELL_ITEM = fromBlock(TreasureBlocks.WISHING_WELL, TREASURE_PROPS_SUPPLIER);
 	public static final RegistryObject<Item> DESERT_WISHING_WELL_ITEM = fromBlock(TreasureBlocks.DESERT_WISHING_WELL, TREASURE_PROPS_SUPPLIER);
+	
+	public static final RegistryObject<Item> SKELETON_ITEM = Registration.ITEMS.register("skeleton", () -> new SkeletonItem(TreasureBlocks.SKELETON.get(), TREASURE_PROPS_SUPPLIER.get()));
+
+	// eggs
+	public static final RegistryObject<Item> BOUND_SOUL_EGG = Registration.ITEMS.register("bound_soul", () -> new ForgeSpawnEggItem(TreasureEntities.BOUND_SOUL_ENTITY_TYPE, 0x000000, 0x2b2b2b, TREASURE_PROPS_SUPPLIER.get()));
+	
+	static {
+		// register all the gravestone items w/o keeping a static reference
+		TreasureBlocks.GRAVESTONES.forEach(g -> {
+			fromBlock(g, TREASURE_PROPS_SUPPLIER);
+		});
+	}
 	
 	/**
 	 * 

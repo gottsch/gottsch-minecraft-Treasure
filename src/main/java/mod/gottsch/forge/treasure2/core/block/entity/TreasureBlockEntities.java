@@ -29,9 +29,12 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class TreasureBlockEntities {
 	public static final RegistryObject<BlockEntityType<WoodChestBlockEntity>> WOOD_CHEST_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<GravestoneProximitySpawnerBlockEntity>> GRAVESTONE_PROXIMITY_SPAWNER_ENTITY_TYPE;
 
 	static {
 		WOOD_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("wood_chest_block_entity", () -> BlockEntityType.Builder.of(WoodChestBlockEntity::new, TreasureBlocks.WOOD_CHEST.get()).build(null));
+		GRAVESTONE_PROXIMITY_SPAWNER_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("gravestone_proximity_spawner", 
+				() -> BlockEntityType.Builder.of(GravestoneProximitySpawnerBlockEntity::new, TreasureBlocks.GRAVESTONE1_SPAWNER_STONE.get()).build(null));
 	}
 	
 	public static void register() {

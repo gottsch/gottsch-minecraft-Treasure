@@ -13,6 +13,7 @@ import com.electronwill.nightconfig.core.CommentedConfig;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureBlockEntities;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
@@ -63,6 +64,7 @@ public class Treasure {
 		TreasureBlockEntities.register();
 		TreasureContainers.register();
 		TreasureParticles.register();
+		TreasureEntities.register();
 		
 		// register the setup method for mod loading
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

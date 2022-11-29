@@ -17,6 +17,8 @@
  */
 package mod.gottsch.forge.treasure2.core.block;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
@@ -26,7 +28,6 @@ import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.lock.LockLayouts;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
@@ -71,12 +72,98 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> SAPPHIRE_ORE = Registration.BLOCKS.register("sapphire_ore", () -> new Block(ORE_PROPS.get()));
 	public static final RegistryObject<Block> DEEPSLATE_SAPPHIRE_ORE = Registration.BLOCKS.register("deepslate_sapphire_ore", () -> new Block(DEEPSLATE_ORE_PROPS.get()));
 	
+	// gravestones
+	public static final RegistryObject<Block> GRAVESTONE1_STONE = Registration.BLOCKS.register("gravestone1_stone", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone1()));
+	public static final RegistryObject<Block> GRAVESTONE1_COBBLESTONE = Registration.BLOCKS.register("gravestone1_cobblestone", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone1()));
+	public static final RegistryObject<Block> GRAVESTONE1_MOSSY_COBBLESTONE = Registration.BLOCKS.register("gravestone1_mossy_cobblestone", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone1()));
+	public static final RegistryObject<Block> GRAVESTONE1_POLISHED_GRANITE = Registration.BLOCKS.register("gravestone1_polished_granite", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone1()));
+	public static final RegistryObject<Block> GRAVESTONE1_OBSIDIAN = Registration.BLOCKS.register("gravestone1_obsidian", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone1()));
+	public static final RegistryObject<Block> GRAVESTONE1_SMOOTH_QUARTZ = Registration.BLOCKS.register("gravestone1_smooth_quartz", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone1()));
+	
+	public static final RegistryObject<Block> GRAVESTONE2_STONE = Registration.BLOCKS.register("gravestone2_stone", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone2()));
+	public static final RegistryObject<Block> GRAVESTONE2_COBBLESTONE = Registration.BLOCKS.register("gravestone2_cobblestone", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone2()));
+	public static final RegistryObject<Block> GRAVESTONE2_MOSSY_COBBLESTONE = Registration.BLOCKS.register("gravestone2_mossy_cobblestone", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone2()));
+	public static final RegistryObject<Block> GRAVESTONE2_POLISHED_GRANITE = Registration.BLOCKS.register("gravestone2_polished_granite", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone2()));
+	public static final RegistryObject<Block> GRAVESTONE2_OBSIDIAN = Registration.BLOCKS.register("gravestone2_obsidian", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone2()));
+	public static final RegistryObject<Block> GRAVESTONE2_SMOOTH_QUARTZ = Registration.BLOCKS.register("gravestone2_smooth_quartz", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone2()));
+	
+	public static final RegistryObject<Block> GRAVESTONE3_STONE = Registration.BLOCKS.register("gravestone3_stone", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone3()));
+	public static final RegistryObject<Block> GRAVESTONE3_COBBLESTONE = Registration.BLOCKS.register("gravestone3_cobblestone", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone3()));
+	public static final RegistryObject<Block> GRAVESTONE3_MOSSY_COBBLESTONE = Registration.BLOCKS.register("gravestone3_mossy_cobblestone", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone3()));
+	public static final RegistryObject<Block> GRAVESTONE3_POLISHED_GRANITE = Registration.BLOCKS.register("gravestone3_polished_granite", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone3()));
+	public static final RegistryObject<Block> GRAVESTONE3_OBSIDIAN = Registration.BLOCKS.register("gravestone3_obsidian", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone3()));
+	public static final RegistryObject<Block> GRAVESTONE3_SMOOTH_QUARTZ = Registration.BLOCKS.register("gravestone3_smooth_quartz", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone3()));
+	
+	public static final RegistryObject<Block> SKULL_CROSSBONES = Registration.BLOCKS.register("skull_and_crossbones", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildSkullCrossbones()));
+	
+	public static final RegistryObject<Block> SKELETON = Registration.BLOCKS.register("skeleton", () -> new SkeletonBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE).strength(3.0F).sound(SoundType.STONE)));
+	
+	// gravestone spawners
+	public static final RegistryObject<Block> GRAVESTONE1_SPAWNER_STONE = Registration.BLOCKS.register("gravestone1_spawner_stone", () -> new GravestoneSpawnerBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone3()));
+	public static final RegistryObject<Block> GRAVESTONE2_SPAWNER_COBBLESTONE = Registration.BLOCKS.register("gravestone2_spawner_cobblestone", () -> new GravestoneSpawnerBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone2()));
+	public static final RegistryObject<Block> GRAVESTONE3_SPAWNER_OBSIDIAN = Registration.BLOCKS.register("gravestone3_spawner_obsidian", () -> new GravestoneSpawnerBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+            .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone3()));
+
+	
 	// other
 	public static final RegistryObject<Block> SPANISH_MOSS = Registration.BLOCKS.register("spanish_moss", () -> new SpanishMossBlock(Properties.of(Material.WOOD, MaterialColor.WOOD)));
 	public static final RegistryObject<Block> WISHING_WELL = Registration.BLOCKS.register("wishing_well_block", () -> new WishingWellBlock(
 			Properties.of(Material.STONE, MaterialColor.STONE).strength(2.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> DESERT_WISHING_WELL = Registration.BLOCKS.register("desert_wishing_well_block", () -> new WishingWellBlock(
 			Properties.of(Material.STONE, MaterialColor.STONE).strength(2.0F).sound(SoundType.STONE)));
+	
+	// collections
+	public static final List<RegistryObject<Block>> GRAVESTONES = new ArrayList<>(100);
+	public static final List<RegistryObject<Block>> GRAVESTONE_SPAWNERS = new ArrayList<>(3);
+	
+	static {
+		GRAVESTONES.add(GRAVESTONE1_STONE);
+		GRAVESTONES.add(GRAVESTONE1_COBBLESTONE);
+		GRAVESTONES.add(GRAVESTONE1_MOSSY_COBBLESTONE);
+		GRAVESTONES.add(GRAVESTONE1_POLISHED_GRANITE);
+		GRAVESTONES.add(GRAVESTONE1_OBSIDIAN);
+		GRAVESTONES.add(GRAVESTONE1_SMOOTH_QUARTZ);
+		
+		GRAVESTONES.add(GRAVESTONE2_STONE);
+		GRAVESTONES.add(GRAVESTONE2_COBBLESTONE);
+		GRAVESTONES.add(GRAVESTONE2_MOSSY_COBBLESTONE);
+		GRAVESTONES.add(GRAVESTONE2_POLISHED_GRANITE);
+		GRAVESTONES.add(GRAVESTONE2_OBSIDIAN);
+		GRAVESTONES.add(GRAVESTONE2_SMOOTH_QUARTZ);
+		
+		GRAVESTONES.add(GRAVESTONE3_STONE);
+		GRAVESTONES.add(GRAVESTONE3_COBBLESTONE);
+		GRAVESTONES.add(GRAVESTONE3_MOSSY_COBBLESTONE);
+		GRAVESTONES.add(GRAVESTONE3_POLISHED_GRANITE);
+		GRAVESTONES.add(GRAVESTONE3_OBSIDIAN);
+		GRAVESTONES.add(GRAVESTONE3_SMOOTH_QUARTZ);
+		GRAVESTONES.add(SKULL_CROSSBONES);
+		
+		GRAVESTONE_SPAWNERS.add(GRAVESTONE1_SPAWNER_STONE);
+		GRAVESTONE_SPAWNERS.add(GRAVESTONE2_SPAWNER_COBBLESTONE);
+		GRAVESTONE_SPAWNERS.add(GRAVESTONE3_SPAWNER_OBSIDIAN);
+	}
 	
 	/**
 	 * 

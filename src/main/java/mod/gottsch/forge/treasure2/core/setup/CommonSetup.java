@@ -21,18 +21,31 @@ import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
+import mod.gottsch.forge.treasure2.core.entity.monster.BoundSoul;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.KeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
+import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+
 /**
  * 
  * @author Mark Gottschling on Nov 10, 2022
  *
  */
+@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonSetup {
 	
+	/**
+	 * 
+	 * @param event
+	 */
 	public static void init(final FMLCommonSetupEvent event) {
 		Config.instance.addRollingFileAppender(Treasure.MODID);
 		
@@ -140,5 +153,15 @@ public class CommonSetup {
 		
 		// register loot tables
 		TreasureApi.registerLootTables(Treasure.MODID);
+	}
+	
+	@SubscribeEvent
+	public static void onAttributeCreate(EntityAttributeCreationEvent event) {
+		event.put(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), BoundSoul.createAttributes().build());
+	}
+	
+	@SubscribeEvent
+	public static void registerEntitySpawn(RegistryEvent.Register<EntityType<?>> event) {
+//		SpawnPlacements.register(TreasureEntities.SHADOW_ENTITY_TYPE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkSpawnRules);
 	}
 }
