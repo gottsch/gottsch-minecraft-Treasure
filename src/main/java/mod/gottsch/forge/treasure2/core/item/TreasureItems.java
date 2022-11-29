@@ -344,6 +344,11 @@ public class TreasureItems {
 		TreasureBlocks.GRAVESTONES.forEach(g -> {
 			fromBlock(g, TREASURE_PROPS_SUPPLIER);
 		});
+		
+		// register all the gravestone spawner items w/o keeping a static reference
+		TreasureBlocks.GRAVESTONE_SPAWNERS.forEach(g -> {
+			fromBlock(g, TREASURE_PROPS_SUPPLIER);
+		});
 	}
 	
 	/**

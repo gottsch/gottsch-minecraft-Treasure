@@ -61,11 +61,12 @@ public class ModUtil {
 		 * @param level
 		 * @param random
 		 * @param entityType
+		 * @param mob
 		 * @param coords
 		 * @return
 		 */
-		public static Entity spawn(ServerLevel level, Random random, EntityType<?> entityType, ICoords coords) {
-			Entity mob = null;
+		public static Entity spawn(ServerLevel level, Random random, EntityType<?> entityType, Entity mob, ICoords coords) {
+
 			for (int i = 0; i < 20; i++) { // 20 tries
 				int spawnX = coords.getX() + Mth.nextInt(random, 1, 2) * Mth.nextInt(random, -1, 1);
 				int spawnY = coords.getY() + Mth.nextInt(random, 1, 2) * Mth.nextInt(random, -1, 1);
@@ -76,7 +77,7 @@ public class ModUtil {
 				if (!WorldInfo.isClientSide(level)) {
 					SpawnPlacements.Type placement = SpawnPlacements.getPlacementType(entityType);
 					if (NaturalSpawner.isSpawnPositionOk(placement, level, spawnCoords.toPos(), entityType)) {
-						mob = entityType.create(level);
+//						mob = entityType.create(level);
 						mob.setPos((double)spawnX, (double)spawnY, (double)spawnZ);
 						level.addFreshEntityWithPassengers(mob);
 						isSpawned = true;

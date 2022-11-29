@@ -22,6 +22,8 @@ package mod.gottsch.forge.treasure2.core.block.entity;
 import java.util.Objects;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import mod.gottsch.forge.gottschcore.block.entity.ProximitySpawnerBlockEntity;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.size.Quantity;
@@ -29,11 +31,16 @@ import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
+import mod.gottsch.forge.treasure2.core.entity.monster.BoundSoul;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Zombie;
@@ -64,7 +71,6 @@ public class GravestoneProximitySpawnerBlockEntity extends ProximitySpawnerBlock
 		Treasure.LOGGER.debug("Created Gravestone tile entity");
 	}
 
-	// TODO register a server tick
 	/**
 	 * NOTE this was not working when calling the super.update()
 	 */
@@ -112,12 +118,14 @@ public class GravestoneProximitySpawnerBlockEntity extends ProximitySpawnerBlock
 		int mobCount = RandomHelper.randomInt(random, getMobNum().getMinInt(), getMobNum().getMaxInt());
 
 		for (int i = 0; i < mobCount; i++) {
-//			BoundSoulEntity entity = new BoundSoulEntity(world, blockCoords.toPos());
-			Zombie entity = new Zombie(world);
-			if (entity instanceof LivingEntity) {
-				entity.restrictTo(blockCoords.toPos(), 16);
+			// create the mob entity
+			BoundSoul mob = (BoundSoul)TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get().create(level);
+
+			if (mob != null) {
+				// set specific properties of the mob entity
+				mob.restrictTo(blockCoords.toPos(), 16);
 				Treasure.LOGGER.debug("attempted location for bound soul spawn -> {}", blockCoords.toShortString());
-		        ModUtil.SpawnEntityHelper.spawn((ServerLevel)world, random, entity.getType(), blockCoords);
+		        ModUtil.SpawnEntityHelper.spawn((ServerLevel)world, random, TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), mob, blockCoords);
 			}
 		}
 		// self destruct
@@ -163,6 +171,35 @@ public class GravestoneProximitySpawnerBlockEntity extends ProximitySpawnerBlock
 		nbt.putBoolean("hasEntity", hasEntity());
 	}
 
+	/**
+	 * Sync client and server states
+	 */
+	@Override
+	public CompoundTag getUpdateTag() {
+		CompoundTag tag = super.getUpdateTag();
+		saveAdditional(tag);
+		return tag;
+	}
+
+	@Override
+	public void handleUpdateTag(CompoundTag tag) {
+		if (tag != null) {
+			load(tag);
+		}
+	}
+
+	@Nullable
+	@Override
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		return ClientboundBlockEntityDataPacket.create(this);
+	}
+
+	@Override
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+		CompoundTag tag = pkt.getTag();
+		handleUpdateTag(tag);
+	}
+	
 	public boolean hasEntity() {
 		return this.hasEntity;
 	}

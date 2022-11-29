@@ -23,7 +23,6 @@ import javax.annotation.Nullable;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.entity.GravestoneProximitySpawnerBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -60,15 +59,13 @@ public class GravestoneSpawnerBlock extends GravestoneBlock	implements EntityBlo
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		if (level.isClientSide()) {
-			return null;
-		}
-		else {
+		if (!level.isClientSide()) {
 			return (lvl, pos, blockState, t) -> {
 				if (t instanceof GravestoneProximitySpawnerBlockEntity entity) { // test and cast
 					entity.tickServer();
 				}
 			};
 		}
+		return null;
 	}
 }

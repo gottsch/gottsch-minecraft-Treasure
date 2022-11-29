@@ -27,6 +27,7 @@ import com.electronwill.nightconfig.core.CommentedConfig;
 import com.electronwill.nightconfig.core.conversion.ObjectConverter;
 
 import mod.gottsch.forge.gottschcore.config.AbstractConfig;
+import mod.gottsch.forge.gottschcore.config.AbstractConfig.Logging;
 import mod.gottsch.forge.treasure2.Treasure;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
@@ -105,6 +106,21 @@ public class Config extends AbstractConfig {
 		public CommonConfig(ForgeConfigSpec.Builder builder) {
 			logging = new Logging(builder);
 		}
+	}
+	
+	@Override
+	public String getLogsFolder() {
+		return CommonConfig.logging.folder.get();
+	}
+	
+	@Override
+	public String getLogSize() {
+		return CommonConfig.logging.size.get();
+	}
+	
+	@Override
+	public String getLoggingLevel() {
+		return CommonConfig.logging.level.get();
 	}
 	
 	/*
