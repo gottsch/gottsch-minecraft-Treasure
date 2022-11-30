@@ -29,8 +29,12 @@ import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureBlockEntities;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
+import mod.gottsch.forge.treasure2.core.particle.BillowingMistParticle;
+import mod.gottsch.forge.treasure2.core.particle.MistParticle;
+import mod.gottsch.forge.treasure2.core.particle.PoisonMistParticle;
 import mod.gottsch.forge.treasure2.core.particle.SpanishMossParticle;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
+import mod.gottsch.forge.treasure2.core.particle.WitherMistParticle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.particle.ParticleEngine;
@@ -108,5 +112,17 @@ public class ClientSetup {
 		
 		particleEngine.register(TreasureParticles.SPANISH_MOSS_PARTICLE.get(), 
 				SpanishMossParticle.Provider::new);
+		
+		particleEngine.register(TreasureParticles.MIST_PARTICLE.get(), 
+				MistParticle.Provider::new);
+		
+		particleEngine.register(TreasureParticles.BILLOWING_MIST_PARTICLE.get(), 
+				BillowingMistParticle.Provider::new);
+		
+		particleEngine.register(TreasureParticles.POISON_MIST_PARTICLE.get(), 
+				PoisonMistParticle.Provider::new);
+		
+		particleEngine.register(TreasureParticles.WITHER_MIST_PARTICLE.get(), 
+				WitherMistParticle.Provider::new);
 	}
 }

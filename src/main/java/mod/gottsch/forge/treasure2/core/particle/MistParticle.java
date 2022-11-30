@@ -1,6 +1,8 @@
 /*
  * This file is part of  Treasure2.
  * Copyright (c) 2021 Mark Gottschling (gottsch)
+ * 
+ * All rights reserved.
  *
  * Treasure2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -20,48 +22,42 @@ package mod.gottsch.forge.treasure2.core.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * 
- * @author Mark Gottschling on Aug 8, 2021
+ * @author Mark Gottschling on 2021
  *
  */
-public class SpanishMossParticle extends AbstractMistParticle {
+@OnlyIn(Dist.CLIENT)
+public class MistParticle extends AbstractMistParticle {
 
-	protected SpanishMossParticle(ClientLevel level, double x, double y, double z,	SpriteSet spriteSet, double xd, double yd, double zd) {
+	/**
+	 * 
+	 * @param level
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param velocityX
+	 * @param velocityY
+	 * @param velocityZ
+	 * @param parentCoords
+	 */
+	public MistParticle(ClientLevel level, double x, double y, double z, SpriteSet spriteSet, double velocityX, double velocityY, double velocityZ) {
 		super(level, x, y, z);
 		this.pickSprite(spriteSet);
 		init();
 	}
 	
-	@Override
-	public float getMistGravity() {
-		return 0.0001F;
-	}
-
-	@Override
-	public float getMistAlpha() {
-		return DEFAULT_PARTICLE_ALPHA;
-	}
-
-	@Override
-	public float getMaxSize() {
-		return 2.5F;
-	}
-	
-	@Override
-	public float getStartSize() {
-		return 1F;
-	}
-
 	@OnlyIn(Dist.CLIENT)
 	public static class Provider implements ParticleProvider<SimpleParticleType> {
+		/*
+		 * contains a list of textures; choose one using either
+		 * particle.pickSprite(spriteSet); or newParticle.selectSpriteWithAge(spriteSet);
+		 */
 		private final SpriteSet spriteSet;
 		
 		/**
@@ -71,13 +67,13 @@ public class SpanishMossParticle extends AbstractMistParticle {
 		public Provider(SpriteSet sprite) {
 			this.spriteSet = sprite;
 		}
-		
+
 		/**
 		 * 
 		 */
 		@Override
-		public Particle createParticle(SimpleParticleType data, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			SpanishMossParticle particle = new SpanishMossParticle(world, x, y, z, this.spriteSet, xSpeed, ySpeed, zSpeed);
+		public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			MistParticle particle = new MistParticle(level, x, y, z, spriteSet, xSpeed, ySpeed, zSpeed);
 			return particle;
 		}
 	}

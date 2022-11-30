@@ -24,6 +24,7 @@ import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -128,20 +129,20 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 		final boolean IGNORE_RANGE_CHECK = false; // if true, always render particle regardless of how far away the player is
 		
 		// create particle
-		SimpleParticleType mistParticleData = null;
+		SimpleParticleType mistParticle = null;
 
-//		if (RandomHelper.checkProbability(random, 80)) {
-//			mistParticleData = TreasureParticles.MIST_PARTICLE_TYPE.get();
-//		} else {
-//			mistParticleData = TreasureParticles.BILLOWING_MIST_PARTICLE_TYPE.get();
-//		}		
-//
-//		try {
-//			world.addParticle(mistParticleData, IGNORE_RANGE_CHECK, xPos, yPos, zPos, velocityX, velocityY, velocityZ);
-//		}
-//		catch(Exception e) {
-//			Treasure.LOGGER.error("error with particle:", e);
-//		}
+		if (RandomHelper.checkProbability(random, 80)) {
+			mistParticle = TreasureParticles.MIST_PARTICLE.get();
+		} else {
+			mistParticle = TreasureParticles.BILLOWING_MIST_PARTICLE.get();
+		}		
+
+		try {
+			((ClientLevel)world).addParticle(mistParticle, IGNORE_RANGE_CHECK, xPos, yPos, zPos, velocityX, velocityY, velocityZ);
+		}
+		catch(Exception e) {
+			Treasure.LOGGER.error("error with particle:", e);
+		}
 	}
 	
 	/**

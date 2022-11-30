@@ -26,6 +26,7 @@ import mod.gottsch.forge.treasure2.core.entity.monster.BoundSoul;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.KeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
+import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -156,6 +157,9 @@ public class CommonSetup {
 		
 		// register loot tables
 		TreasureApi.registerLootTables(Treasure.MODID);
+		
+		// register network
+		TreasureNetworking.register();
 	}
 	
 	@SubscribeEvent
