@@ -98,7 +98,7 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 	 * 
 	 * @param properties
 	 */
-	public AbstractTreasureChestBlock(Class<? extends AbstractTreasureChestBlockEntity> be, LockLayout lockLayout, IRarity rarity, Properties properties) {
+	public AbstractTreasureChestBlock(Class<? extends AbstractTreasureChestBlockEntity> be, LockLayout lockLayout, Properties properties) {
 		super(properties);
 		this.blockEntityClass = be;
 		this.lockLayout = lockLayout;

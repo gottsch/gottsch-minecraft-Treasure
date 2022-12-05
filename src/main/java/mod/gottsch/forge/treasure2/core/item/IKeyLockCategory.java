@@ -17,11 +17,13 @@
  */
 package mod.gottsch.forge.treasure2.core.item;
 
+import mod.gottsch.forge.gottschcore.enums.IEnum;
+
 /**
  * 
  * @author Mark Gottschling on Nov 11, 2022
  *
  */
-public interface IKeyLockCategory {
+public interface IKeyLockCategory extends IEnum {
 	// enables extensibility
 }

@@ -29,10 +29,48 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class TreasureBlockEntities {
 	public static final RegistryObject<BlockEntityType<WoodChestBlockEntity>> WOOD_CHEST_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<CrateChestBlockEntity>> CRATE_CHEST_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<MoldyCrateChestBlockEntity>> MOLDY_CRATE_CHEST_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<IronboundChestBlockEntity>> IRONBOUND_CHEST_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<PirateChestBlockEntity>> PIRATE_CHEST_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<SafeBlockEntity>> SAFE_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<IronStrongboxBlockEntity>> IRON_STRONGBOX_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<GoldStrongboxBlockEntity>> GOLD_STRONGBOX_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<DreadPirateChestBlockEntity>> DREAD_PIRATE_CHEST_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<CompressorChestBlockEntity>> COMPRESSOR_CHEST_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<SkullChestBlockEntity>> SKULL_CHEST_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<GoldSkullChestBlockEntity>> GOLD_SKULL_CHEST_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<CrystalSkullChestBlockEntity>> CRYSTAL_SKULL_CHEST_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<CauldronChestBlockEntity>> CAULDRON_CHEST_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<SpiderChestBlockEntity>> SPIDER_CHEST_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<VikingChestBlockEntity>> VIKING_CHEST_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<CardboardBoxBlockEntity>> CARDBOARD_BOX_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<MilkCrateBlockEntity>> MILK_CRATE_BLOCK_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<WitherChestBlockEntity>> WITHER_CHEST_BLOCK_ENTITY_TYPE;	
+	
 	public static final RegistryObject<BlockEntityType<GravestoneProximitySpawnerBlockEntity>> GRAVESTONE_PROXIMITY_SPAWNER_ENTITY_TYPE;
 
 	static {
 		WOOD_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("wood_chest_block_entity", () -> BlockEntityType.Builder.of(WoodChestBlockEntity::new, TreasureBlocks.WOOD_CHEST.get()).build(null));
+		CRATE_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("crate_chest_block_entity", () -> BlockEntityType.Builder.of(CrateChestBlockEntity::new, TreasureBlocks.CRATE_CHEST.get()).build(null));
+		MOLDY_CRATE_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("moldy_crate_chest_block_entity", () -> BlockEntityType.Builder.of(MoldyCrateChestBlockEntity::new, TreasureBlocks.MOLDY_CRATE_CHEST.get()).build(null));
+		IRONBOUND_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("ironbound_chest_block_entity", () -> BlockEntityType.Builder.of(IronboundChestBlockEntity::new, TreasureBlocks.IRONBOUND_CHEST.get()).build(null));
+		PIRATE_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("pirate_chest_block_entity", () -> BlockEntityType.Builder.of(PirateChestBlockEntity::new, TreasureBlocks.PIRATE_CHEST.get()).build(null));
+		SAFE_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("safe_block_entity", () -> BlockEntityType.Builder.of(SafeBlockEntity::new, TreasureBlocks.SAFE.get()).build(null));
+		IRON_STRONGBOX_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("iron_strongbox_block_entity", () -> BlockEntityType.Builder.of(IronStrongboxBlockEntity::new, TreasureBlocks.IRON_STRONGBOX.get()).build(null));
+		GOLD_STRONGBOX_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("gold_strongbox_block_entity", () -> BlockEntityType.Builder.of(GoldStrongboxBlockEntity::new, TreasureBlocks.GOLD_STRONGBOX.get()).build(null));
+		DREAD_PIRATE_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("dread_pirate_chest_block_entity", () -> BlockEntityType.Builder.of(DreadPirateChestBlockEntity::new, TreasureBlocks.PIRATE_CHEST.get()).build(null));
+		COMPRESSOR_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("compressor_chest_block_entity", () -> BlockEntityType.Builder.of(CompressorChestBlockEntity::new, TreasureBlocks.COMPRESSOR_CHEST.get()).build(null));
+		SKULL_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("skull_chest_block_entity", () -> BlockEntityType.Builder.of(SkullChestBlockEntity::new, TreasureBlocks.SKULL_CHEST.get()).build(null));
+		GOLD_SKULL_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("gold_skull_chest_block_entity", () -> BlockEntityType.Builder.of(GoldSkullChestBlockEntity::new, TreasureBlocks.GOLD_SKULL_CHEST.get()).build(null));
+		CRYSTAL_SKULL_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("crystal_skull_chest_block_entity", () -> BlockEntityType.Builder.of(CrystalSkullChestBlockEntity::new, TreasureBlocks.CRYSTAL_SKULL_CHEST.get()).build(null));
+		CAULDRON_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("cauldron_chest_block_entity", () -> BlockEntityType.Builder.of(CauldronChestBlockEntity::new, TreasureBlocks.CAULDRON_CHEST.get()).build(null));
+		SPIDER_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("spider_chest_block_entity", () -> BlockEntityType.Builder.of(SpiderChestBlockEntity::new, TreasureBlocks.SPIDER_CHEST.get()).build(null));
+		VIKING_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("viking_chest_block_entity", () -> BlockEntityType.Builder.of(VikingChestBlockEntity::new, TreasureBlocks.VIKING_CHEST.get()).build(null));
+		CARDBOARD_BOX_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("cardboard_box_block_entity", () -> BlockEntityType.Builder.of(CardboardBoxBlockEntity::new, TreasureBlocks.CARDBOARD_BOX.get()).build(null));
+		MILK_CRATE_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("milk_crate_block_entity", () -> BlockEntityType.Builder.of(MilkCrateBlockEntity::new, TreasureBlocks.MILK_CRATE.get()).build(null));
+		WITHER_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("wither_chest_block_entity", () -> BlockEntityType.Builder.of(WitherChestBlockEntity::new, TreasureBlocks.WITHER_CHEST.get()).build(null));
+		
 		GRAVESTONE_PROXIMITY_SPAWNER_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("gravestone_proximity_spawner", 
 				() -> BlockEntityType.Builder.of(GravestoneProximitySpawnerBlockEntity::new, 
 						TreasureBlocks.GRAVESTONE1_SPAWNER_STONE.get(),

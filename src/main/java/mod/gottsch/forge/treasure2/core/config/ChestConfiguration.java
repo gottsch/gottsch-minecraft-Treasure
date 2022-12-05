@@ -31,6 +31,21 @@ public class ChestConfiguration {
 	private Double treasureMapProbability;
 	private List<Generator> generators;
 	private List<Chest> chests;
+
+	/**
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public Generator getGenerator(String key) {
+		// cycle through all the generators (it's a small list)
+		for (Generator generator : generators) {
+			if (generator.key.equalsIgnoreCase(key)) {
+				return generator;
+			}
+		}
+		return null;
+	}
 	
 	/*
 	 * 

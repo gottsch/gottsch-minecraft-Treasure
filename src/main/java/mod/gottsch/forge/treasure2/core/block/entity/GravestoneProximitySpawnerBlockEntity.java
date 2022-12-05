@@ -76,7 +76,7 @@ public class GravestoneProximitySpawnerBlockEntity extends ProximitySpawnerBlock
 	 */
 	public void tickServer() {
 		boolean hasEntity = hasEntity();
-		if (hasEntity && Config.SERVER.markers.enableGravestoneSpawner.get()) {
+		if (hasEntity && Config.SERVER.markers.enableSpawner.get()) {
 
 			// this is copied fromt he abstract
 			if (this.level.isClientSide()) {

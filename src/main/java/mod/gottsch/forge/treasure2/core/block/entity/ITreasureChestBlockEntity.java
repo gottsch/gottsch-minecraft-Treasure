@@ -19,9 +19,11 @@ package mod.gottsch.forge.treasure2.core.block.entity;
 
 import java.util.List;
 
+import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 
 /**
@@ -41,7 +43,13 @@ public interface ITreasureChestBlockEntity { //extends Inventory {
     public boolean isSealed();
     public void setSealed(boolean sealed);
 
-    // TODO these are part of AbstractTreasureChestTileEntity - circular dependence - BAD
+	ResourceLocation getLootTable();
+	void setLootTable(ResourceLocation lootTable);
+	
+	GenerationContext getGenerationContext();
+	void setGenerationContext(GenerationContext generationContext);
+	
+    // TODO these are part of AbstractTreasureChestBlockEntity - circular dependence - BAD
 //    public GenerationContext getGenerationContext();
 //    public void setGenerationContext(GenerationContext context);
     
@@ -55,5 +63,8 @@ public interface ITreasureChestBlockEntity { //extends Inventory {
 	
 	boolean isLocked();
 	Component getDefaultName();
+
+	
+
 
 }

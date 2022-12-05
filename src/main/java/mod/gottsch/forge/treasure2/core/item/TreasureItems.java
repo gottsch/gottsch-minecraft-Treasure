@@ -3,13 +3,16 @@ package mod.gottsch.forge.treasure2.core.item;
 import java.util.List;
 import java.util.function.Supplier;
 
+import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.capability.DurabilityCapability;
 import mod.gottsch.forge.treasure2.core.capability.DurabilityHandler;
 import mod.gottsch.forge.treasure2.core.capability.IDurabilityHandler;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
+import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
@@ -292,8 +295,12 @@ public class TreasureItems {
 	public static RegistryObject<LockItem> SPIDER_LOCK = Registration.ITEMS.register("spider_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {SPIDER_KEY.get()})
 			.setCategory(KeyLockCategory.MOB));
 
-	public static RegistryObject<LockItem> WITHER_LOCK = Registration.ITEMS.register("wither_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {WITHER_KEY.get()})
-			.setCategory(KeyLockCategory.WITHER));
+	public static RegistryObject<LockItem> WITHER_LOCK = Registration.ITEMS.register("wither_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {WITHER_KEY.get()}) {
+		@Override
+		public IRarity getRarity() {
+			return Rarity.SCARCE;
+		};
+	}.setCategory(KeyLockCategory.WITHER));
 
 	// keyring
 	public static RegistryObject<KeyRingItem> KEY_RING = Registration.ITEMS.register("key_ring", () -> new KeyRingItem(TREASURE_PROPS_SUPPLIER.get()));

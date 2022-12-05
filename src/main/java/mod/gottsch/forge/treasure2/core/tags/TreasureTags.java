@@ -19,11 +19,12 @@ package mod.gottsch.forge.treasure2.core.tags;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
-import mod.gottsch.forge.treasure2.core.registry.RarityRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TagRegistry;
 import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
@@ -118,8 +119,8 @@ public class TreasureTags {
 			// so, it is being accessed directly here instead of creating a new ItemStack first.
 			Holder.Reference<Item> holder = key.get().builtInRegistryHolder();
 			
-			for (IRarity rarity : RarityRegistry.getValues()) {
-				TagKey<Item> tag = RarityRegistry.getKeyTag(rarity);
+			for (IRarity rarity : TreasureApi.getRarities()) {	
+				TagKey<Item> tag = TreasureApi.getKeyTag(rarity);// RarityRegistry.getKeyTag(rarity);
 				if (tag != null && holder.is(tag)) {
 					// register the key in the key-lock registry by rarity
 					KeyLockRegistry.registerKeyByRarity(rarity, key);
@@ -132,8 +133,9 @@ public class TreasureTags {
 		KeyLockRegistry.getLocks().forEach(lock -> {
 			Holder.Reference<Item> holder = lock.get().builtInRegistryHolder();
 			
-			for (IRarity rarity : RarityRegistry.getValues()) {
-				TagKey<Item> tag = RarityRegistry.getLockTag(rarity);
+			for (IRarity rarity : TreasureApi.getRarities()) {			
+//			for (IRarity rarity : RarityRegistry.getValues()) {
+				TagKey<Item> tag = TagRegistry.getLockTag(rarity);
 				if (tag != null && holder.is(tag)) {
 					// register the lock in the key-lock registry by rarity
 					KeyLockRegistry.registerLockByRarity(rarity, lock);
@@ -146,8 +148,9 @@ public class TreasureTags {
 		ChestRegistry.getAll().forEach(chest -> {
 			Holder.Reference<Block> holder = chest.get().builtInRegistryHolder();
 			
-			for (IRarity rarity : RarityRegistry.getValues()) {
-				TagKey<Block> tag = RarityRegistry.getChestTag(rarity);
+			for (IRarity rarity : TreasureApi.getRarities()) {	
+//			for (IRarity rarity : RarityRegistry.getValues()) {
+				TagKey<Block> tag = TagRegistry.getChestTag(rarity);
 				if (tag != null && holder.is(tag)) {
 					ChestRegistry.registerByRarity(rarity, chest);
 					Treasure.LOGGER.info("registering chest -> {} by rarity -> {}", chest.get().getRegistryName(), rarity);
@@ -159,8 +162,9 @@ public class TreasureTags {
 		WishableRegistry.getAll().forEach(wishable -> {
 			Holder.Reference<Item> holder = wishable.get().builtInRegistryHolder();
 			
-			for (IRarity rarity : RarityRegistry.getValues()) {
-				TagKey<Item> tag = RarityRegistry.getWishableTag(rarity);
+			for (IRarity rarity : TreasureApi.getRarities()) {	
+//			for (IRarity rarity : RarityRegistry.getValues()) {
+				TagKey<Item> tag = TagRegistry.getWishableTag(rarity);
 				if (tag != null && holder.is(tag)) {
 					// register the wishable in the wishable registry by rarity
 					WishableRegistry.registerByRarity(rarity, wishable);

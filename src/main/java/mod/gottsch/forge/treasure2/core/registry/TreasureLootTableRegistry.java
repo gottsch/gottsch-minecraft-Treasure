@@ -49,12 +49,16 @@ import com.google.common.collect.Table;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
-import com.someguyssoftware.gottschcore.loot.LootTableShell;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
+import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import mod.gottsch.forge.treasure2.core.loot.ISpecialLootTables;
+import mod.gottsch.forge.treasure2.core.loot.SpecialLootTables;
+import mod.gottsch.forge.treasure2.core.registry.manifest.LootResourceManifest;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -76,9 +80,6 @@ public final class TreasureLootTableRegistry {
 	private static final List<String> REGISTERED_MODS;
 	private static final Map<String, Boolean> LOADED_MODS;
 
-//	private static final Gson GSON_INSTANCE = (new GsonBuilder())
-//			.registerTypeAdapter(IntRange.class, new IntRange.Serializer()).create();
-	
 	private static final Gson GSON_INSTANCE = Deserializers.createLootTableSerializer().create();
 
 	public static final String CUSTOM_LOOT_TABLE_KEY = "CUSTOM";
@@ -94,8 +95,7 @@ public final class TreasureLootTableRegistry {
 	private static LootResourceManifest lootResources;
 //	private static TreasureLootTableMaster2 lootTableMaster;
 	private static ServerLevel world;
-	
-	/////// from LTM2
+
 	/*
 	 * Guava Table of LootTableShell for Chests based on LootTableManager-key and Rarity
 	 */
@@ -109,7 +109,7 @@ public final class TreasureLootTableRegistry {
 	/*
 	 * 
 	 */
-	private final static Map<SpecialLootTables, LootTableShell> SPECIAL_LOOT_TABLES_MAP = new HashMap<>();
+	private final static Map<ISpecialLootTables, LootTableShell> SPECIAL_LOOT_TABLES_MAP = new HashMap<>();
 
 	/*
 	 * 
@@ -139,11 +139,9 @@ public final class TreasureLootTableRegistry {
 	 */
 	public static void create(ServerLevel world) {
 		TreasureLootTableRegistry.world = world;
-		
-		// TODO move TLTM2.init() code into here
-//		lootTableMaster.init(world);
+
 		// initialize the maps
-		for (IRarity r : RarityRegistry.getValues()) {
+		for (IRarity r : TreasureApi.getRarities()) {
 			CHEST_LOOT_TABLES_TABLE.put(CUSTOM_LOOT_TABLE_KEY, r, new ArrayList<LootTableShell>());
 		}
 		
@@ -452,6 +450,7 @@ public final class TreasureLootTableRegistry {
 			Path path = Paths.get(resourceLocation.getPath());
 
 			// get the key
+			// TODO look at the enum registry
 			SpecialLootTables specialLootTables = SpecialLootTables.valueOf(com.google.common.io.Files.getNameWithoutExtension(path.getName(path.getNameCount()-1).toString().toUpperCase()));
 			LOGGER.debug("special loot tables enum -> {}", specialLootTables);
 
@@ -560,7 +559,7 @@ public final class TreasureLootTableRegistry {
 	 * @param rarity
 	 * @return
 	 */
-	public static List<LootTableShell> getLootTableByRarity(ManagedTableType tableType, Rarity rarity) {
+	public static List<LootTableShell> getLootTableByRarity(ManagedTableType tableType, IRarity rarity) {
 		Treasure.LOGGER.debug("managed table type -> {}", tableType);
 		Table<String, IRarity, List<LootTableShell>> table = (tableType == ManagedTableType.CHEST) ? CHEST_LOOT_TABLES_TABLE : INJECT_LOOT_TABLES_TABLE;
 		// get all loot tables by column key
@@ -581,7 +580,7 @@ public final class TreasureLootTableRegistry {
 	 * @param rarity
 	 * @return
 	 */
-	public static List<LootTableShell> getLootTableByKeyRarity(ManagedTableType tableType, String key, Rarity rarity) {
+	public static List<LootTableShell> getLootTableByKeyRarity(ManagedTableType tableType, String key, IRarity rarity) {
 		Table<String, IRarity, List<LootTableShell>> table = (tableType == ManagedTableType.CHEST) ? CHEST_LOOT_TABLES_TABLE : INJECT_LOOT_TABLES_TABLE;
 		// get all loot tables by column key
 		List<LootTableShell> tables = table.get(key, rarity);
@@ -593,11 +592,11 @@ public final class TreasureLootTableRegistry {
 	 * @param tableEnum
 	 * @return
 	 */
-	public static Optional<LootTableShell> getSpecialLootTable(SpecialLootTables table) {
+	public static Optional<LootTableShell> getSpecialLootTable(ISpecialLootTables table) {
 		Treasure.LOGGER.debug("searching for special loot table --> {}", table);
 
 		LootTableShell lootTable = SPECIAL_LOOT_TABLES_MAP.get(table);
-		return lootTable == null ? Optional.empty() : Optional.of(lootTable);
+		return Optional.ofNullable(lootTable);
 	}
 	
 	/**
@@ -606,8 +605,8 @@ public final class TreasureLootTableRegistry {
 	 * @param defaultRarity
 	 * @return
 	 */
-	public IRarity getEffectiveRarity(LootTableShell lootTableShell, IRarity defaultRarity) {
-		Optional<IRarity> rarity = RarityRegistry.getRarity(lootTableShell.getRarity().toUpperCase());
+	public static IRarity getEffectiveRarity(LootTableShell lootTableShell, IRarity defaultRarity) {
+		Optional<IRarity> rarity = TreasureApi.getRarity(lootTableShell.getRarity().toUpperCase());
 		return rarity.isPresent() ? rarity.get() : defaultRarity;
 	}
 	
@@ -627,33 +626,33 @@ public final class TreasureLootTableRegistry {
 		TreasureLootTableRegistry.worldSaveFolder = worldSaveFolder;
 	}
 	
-	/*
-	 * Enum of special loot tables (not necessarily chests)
-	 */
-	public interface ISpecialLootTables {}
-	
-	// TODO these enum values need to be registered somewhere and any references to
-	// this enum should reference the registry instead.
-	public enum SpecialLootTables implements ISpecialLootTables {
-		WITHER_CHEST,
-		SKULL_CHEST,
-		GOLD_SKULL_CHEST,
-		CRYSTAL_SKULL_CHEST,
-		CAULDRON_CHEST,
-		SILVER_WELL,
-		GOLD_WELL,
-		WHITE_PEARL_WELL,
-		BLACK_PEARL_WELL;
-
-		/**
-		 * 
-		 * @return
-		 */
-		public static List<String> getNames() {
-			List<String> names = EnumSet.allOf(SpecialLootTables.class).stream().map(x -> x.name()).collect(Collectors.toList());
-			return names;
-		}		
-	}
+//	/*
+//	 * Enum of special loot tables (not necessarily chests)
+//	 */
+//	public interface ISpecialLootTables {}
+//	
+//	// TODO these enum values need to be registered somewhere and any references to
+//	// this enum should reference the registry instead.
+//	public enum SpecialLootTables implements ISpecialLootTables {
+//		WITHER_CHEST,
+//		SKULL_CHEST,
+//		GOLD_SKULL_CHEST,
+//		CRYSTAL_SKULL_CHEST,
+//		CAULDRON_CHEST,
+//		SILVER_WELL,
+//		GOLD_WELL,
+//		WHITE_PEARL_WELL,
+//		BLACK_PEARL_WELL;
+//
+//		/**
+//		 * 
+//		 * @return
+//		 */
+//		public static List<String> getNames() {
+//			List<String> names = EnumSet.allOf(SpecialLootTables.class).stream().map(x -> x.name()).collect(Collectors.toList());
+//			return names;
+//		}		
+//	}
 	
 	public static enum ManagedTableType {
 		CHEST,

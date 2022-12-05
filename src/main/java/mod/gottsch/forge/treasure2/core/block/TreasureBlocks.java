@@ -22,9 +22,26 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
+import mod.gottsch.forge.treasure2.core.block.entity.CardboardBoxBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.CauldronChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.CompressorChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.CrateChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.CrystalSkullChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.DreadPirateChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.GoldSkullChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.GoldStrongboxBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.IronStrongboxBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.IronboundChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.MilkCrateBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.MoldyCrateChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.PirateChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.SafeBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.SkullChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.SpiderChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.VikingChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.WitherChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.WoodChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.config.Config;
-import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.lock.LockLayouts;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import net.minecraft.world.level.block.Block;
@@ -53,7 +70,64 @@ public class TreasureBlocks {
 	
 	// chests
 	public static final RegistryObject<Block> WOOD_CHEST = Registration.BLOCKS.register("wood_chest", () -> new StandardChestBlock(WoodChestBlockEntity.class,
-			LockLayouts.STANDARD, Rarity.COMMON, Properties.of(Material.METAL, MaterialColor.WOOD).strength(2.5F).lightLevel(light)));
+			LockLayouts.STANDARD, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> CRATE_CHEST = Registration.BLOCKS.register("crate_chest", () -> new StandardChestBlock(CrateChestBlockEntity.class,
+			LockLayouts.CRATE, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> MOLDY_CRATE_CHEST = Registration.BLOCKS.register("moldy_crate_chest", () -> new StandardChestBlock(MoldyCrateChestBlockEntity.class,
+			LockLayouts.CRATE, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.0F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> IRONBOUND_CHEST = Registration.BLOCKS.register("ironbound_chest", () -> new StandardChestBlock(IronboundChestBlockEntity.class,
+			LockLayouts.STANDARD, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> PIRATE_CHEST = Registration.BLOCKS.register("pirate_chest", () -> new StandardChestBlock(PirateChestBlockEntity.class,
+			LockLayouts.STANDARD, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> SAFE = Registration.BLOCKS.register("safe", () -> new StandardChestBlock(SafeBlockEntity.class,
+			LockLayouts.SAFE, Properties.of(Material.METAL, MaterialColor.METAL).strength(4.0F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> IRON_STRONGBOX = Registration.BLOCKS.register("iron_strongbox", () -> new StandardChestBlock(IronStrongboxBlockEntity.class,
+			LockLayouts.STRONGBOX, Properties.of(Material.METAL, MaterialColor.METAL).strength(4.0F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> GOLD_STRONGBOX = Registration.BLOCKS.register("gold_strongbox", () -> new StandardChestBlock(GoldStrongboxBlockEntity.class,
+			LockLayouts.STRONGBOX, Properties.of(Material.METAL, MaterialColor.METAL).strength(4.0F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> DREAD_PIRATE_CHEST = Registration.BLOCKS.register("dread_pirate_chest", () -> new StandardChestBlock(DreadPirateChestBlockEntity.class,
+			LockLayouts.STANDARD, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(4.0F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> COMPRESSOR_CHEST = Registration.BLOCKS.register("compressor_chest", () -> new StandardChestBlock(CompressorChestBlockEntity.class,
+			LockLayouts.COMPRESSOR, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(3.0F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> SKULL_CHEST = Registration.BLOCKS.register("skull_chest", () -> new StandardChestBlock(SkullChestBlockEntity.class,
+			LockLayouts.SKULL, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(3.0F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> GOLD_SKULL_CHEST = Registration.BLOCKS.register("gold_skull_chest", () -> new StandardChestBlock(GoldSkullChestBlockEntity.class,
+			LockLayouts.SKULL, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(3.0F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> CRYSTAL_SKULL_CHEST = Registration.BLOCKS.register("crystal_skull_chest", () -> new StandardChestBlock(CrystalSkullChestBlockEntity.class,
+			LockLayouts.SKULL, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(3.0F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> CAULDRON_CHEST = Registration.BLOCKS.register("cauldron_chest", () -> new StandardChestBlock(CauldronChestBlockEntity.class,
+			LockLayouts.TOP_SPLIT, Properties.of(Material.METAL, MaterialColor.METAL).strength(3.0F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> SPIDER_CHEST = Registration.BLOCKS.register("spider_chest", () -> new StandardChestBlock(SpiderChestBlockEntity.class,
+			LockLayouts.SINGLE_STANDARD, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(3.0F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> VIKING_CHEST = Registration.BLOCKS.register("viking_chest", () -> new StandardChestBlock(VikingChestBlockEntity.class,
+			LockLayouts.VIKING, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(3.0F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> CARDBOARD_BOX = Registration.BLOCKS.register("cardboard_box", () -> new StandardChestBlock(CardboardBoxBlockEntity.class,
+			LockLayouts.TOP_SPLIT, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> MILK_CRATE = Registration.BLOCKS.register("milk_crate", () -> new StandardChestBlock(MilkCrateBlockEntity.class,
+			LockLayouts.MILK_CRATE, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> WITHER_CHEST = Registration.BLOCKS.register("wither_chest", () -> new WitherChestBlock(WitherChestBlockEntity.class,
+			LockLayouts.ARMOIRE, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5F).lightLevel(light)));
+	
+	public static final RegistryObject<Block> WITHER_CHEST_TOP = Registration.BLOCKS.register("wither_chest_top", () -> new WitherChestTopBlock(WoodChestBlockEntity.class,
+			Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5F)));
 	
 	// ore
 	public static final Supplier<Properties> ORE_PROPS = () -> Properties.of(Material.STONE, MaterialColor.STONE).strength(3.0F, 5.0F);

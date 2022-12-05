@@ -84,4 +84,8 @@ public class ChestRegistry {
 	public static IRarity getRarity(AbstractTreasureChestBlock chest) {
 		return getRarity(chest.getRegistryName());
 	}
+	
+	public static List<RegistryObject<Block>> getChest(IRarity rarity) {
+		return (List<RegistryObject<Block>>) CHESTS_BY_RARITY.get(rarity);
+	}
 }

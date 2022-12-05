@@ -24,7 +24,6 @@ public class WoodChestBlockEntity extends AbstractTreasureChestBlockEntity {
 	 */
 	public WoodChestBlockEntity(BlockPos pos, BlockState state) {
 		super(TreasureBlockEntities.WOOD_CHEST_BLOCK_ENTITY_TYPE.get(), pos, state);
-//		setCustomName(new TranslatableComponent("display.wood_chest.name"));
 	}
 
     @Override

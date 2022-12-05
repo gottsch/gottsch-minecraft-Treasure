@@ -28,6 +28,7 @@ import mod.gottsch.forge.treasure2.core.item.IKeyLockCategory;
  * @author Mark Gottschling on Nov 12, 2022
  *
  */
+// why is this deprecated? you might want a new category is a addon mod
 @Deprecated
 public class KeyLockCategoryRegistry {
 	private static final Map<String, IKeyLockCategory> REGISTRY = Maps.newHashMap();

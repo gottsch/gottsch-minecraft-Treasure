@@ -50,23 +50,24 @@ public class BiomesConfig implements IBiomesConfig {
 	 * @param builder
 	 */
 	public BiomesConfig(Builder builder, Data data)	 {
-		builder.comment(TreasureConfig.CATEGORY_DIV, " Biome white and black list properties", TreasureConfig.CATEGORY_DIV).push("biomes");
+		builder.comment(Config.CATEGORY_DIV, " Biome white and black list properties", Config.CATEGORY_DIV)
+		.push("biomes");
 		
 		whiteList = builder
 				.comment(" Allowed Biomes for generation. Must match the Biome Registry Name(s). ex. minecraft:plains")
-				.defineList("White list by biome name:", Arrays.asList(data.biomeWhiteList), s -> s instanceof String);
+				.defineList("whitelist", Arrays.asList(data.biomeWhiteList), s -> s instanceof String);
 		
 		blackList = builder
 				.comment(" Disallowed Biomes for generation. Must match the Biome Registry Name(s). ex. minecraft:plains")
-				.defineList("Black list by biome name:", Arrays.asList(data.biomeBlackList), s -> s instanceof String);
+				.defineList("blacklist", Arrays.asList(data.biomeBlackList), s -> s instanceof String);
 		
 		typeWhiteList = builder
 				.comment(" Allowabled Biome Types for generation. Must match the Type identifer(s).")
-				.defineList("White list by biome type:", Arrays.asList(data.biomeTypeWhiteList), s -> s instanceof String);
+				.defineList("whitelistType", Arrays.asList(data.biomeTypeWhiteList), s -> s instanceof String);
 		
 		typeBlackList = builder
 				.comment(" Disallowed Biome Types for generation. Must match the Type identifer(s).")
-				.defineList("Black list by biome type:", Arrays.asList(data.biomeTypeBlackList), s -> s instanceof String);
+				.defineList("blacklistType", Arrays.asList(data.biomeTypeBlackList), s -> s instanceof String);
 		builder.pop();
 	}
 	

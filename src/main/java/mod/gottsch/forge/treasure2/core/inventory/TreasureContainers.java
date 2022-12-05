@@ -33,12 +33,27 @@ import net.minecraftforge.registries.RegistryObject;
 public class TreasureContainers {
 	// containers
 	public static final RegistryObject<MenuType<StandardChestContainerMenu>> STANDARD_CHEST_CONTAINER;
+	public static final RegistryObject<MenuType<SkullChestContainerMenu>> SKULL_CHEST_CONTAINER;
+	public static final RegistryObject<MenuType<StrongboxContainerMenu>> STRONGBOX_CONTAINER;
+	public static final RegistryObject<MenuType<CompressorChestContainerMenu>> COMPRESSOR_CHEST_CONTAINER;
+	public static final RegistryObject<MenuType<WitherChestContainerMenu>> WITHER_CHEST_CONTAINER;
+		
 	public static final RegistryObject<MenuType<KeyRingContainerMenu>> KEY_RING_CONTAINER;
 	public static final RegistryObject<MenuType<PouchContainerMenu>> POUCH_CONTAINER;
 		
 	static {
 		STANDARD_CHEST_CONTAINER = Registration.CONTAINERS.register("standard_chest_container",
 	            () -> IForgeMenuType.create((windowId, inventory, data) -> new StandardChestContainerMenu(windowId, data.readBlockPos(), inventory, inventory.player)));			
+		SKULL_CHEST_CONTAINER = Registration.CONTAINERS.register("skull_chest_container",
+	            () -> IForgeMenuType.create((windowId, inventory, data) -> new SkullChestContainerMenu(windowId, data.readBlockPos(), inventory, inventory.player)));			
+		STRONGBOX_CONTAINER = Registration.CONTAINERS.register("strongbox_container",
+	            () -> IForgeMenuType.create((windowId, inventory, data) -> new StrongboxContainerMenu(windowId, data.readBlockPos(), inventory, inventory.player)));			
+		COMPRESSOR_CHEST_CONTAINER = Registration.CONTAINERS.register("compressor_chest_container",
+	            () -> IForgeMenuType.create((windowId, inventory, data) -> new CompressorChestContainerMenu(windowId, data.readBlockPos(), inventory, inventory.player)));			
+		WITHER_CHEST_CONTAINER = Registration.CONTAINERS.register("wither_chest_container",
+	            () -> IForgeMenuType.create((windowId, inventory, data) -> new WitherChestContainerMenu(windowId, data.readBlockPos(), inventory, inventory.player)));			
+
+		
 		KEY_RING_CONTAINER = Registration.CONTAINERS.register("key_ring_container",
 	            () -> IForgeMenuType.create((windowId, inventory, data) -> new KeyRingContainerMenu(windowId, inventory, new ItemStackHandler(KeyRingCapability.INVENTORY_SIZE))));			
 		POUCH_CONTAINER = Registration.CONTAINERS.register("pouch_container",

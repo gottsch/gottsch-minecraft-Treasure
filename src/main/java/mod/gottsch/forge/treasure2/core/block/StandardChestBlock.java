@@ -19,7 +19,6 @@
  */
 package mod.gottsch.forge.treasure2.core.block;
 
-import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import net.minecraft.world.level.material.Material;
@@ -37,9 +36,8 @@ public class StandardChestBlock extends AbstractTreasureChestBlock {
 	 * @param blockEntityClass
 	 * @param type
 	 */
-	public StandardChestBlock(Class<? extends AbstractTreasureChestBlockEntity> blockEntityClass,
-			LockLayout type, IRarity rarity) {
-		this(blockEntityClass, type, rarity, Properties.of(Material.WOOD));
+	public StandardChestBlock(Class<? extends AbstractTreasureChestBlockEntity> blockEntityClass, LockLayout type) {
+		this(blockEntityClass, type, Properties.of(Material.WOOD));
 	}
 
 	/**
@@ -50,9 +48,8 @@ public class StandardChestBlock extends AbstractTreasureChestBlock {
 	 * @param blockEntityClass
 	 * @param type
 	 */
-	public StandardChestBlock(Class<? extends AbstractTreasureChestBlockEntity> blockEntityClass,
-			LockLayout type, IRarity rarity, Properties properties) {
-		super(blockEntityClass, type, rarity, properties);
+	public StandardChestBlock(Class<? extends AbstractTreasureChestBlockEntity> blockEntityClass, LockLayout type, Properties properties) {
+		super(blockEntityClass, type, properties);
 	}
 
 	/**

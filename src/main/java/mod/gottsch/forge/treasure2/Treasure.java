@@ -17,6 +17,7 @@ import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
+import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
 import mod.gottsch.forge.treasure2.core.setup.ClientSetup;
 import mod.gottsch.forge.treasure2.core.setup.CommonSetup;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
@@ -122,7 +123,9 @@ public class Treasure {
 				if (spec == Config.CHESTS_CONFIG_SPEC) {
 					// transform/copy the toml into the config
 					Config.transform(commentedConfig);
-//					EchelonManager.build();					
+	
+					// init generated chest registry
+					DimensionalGeneratedRegistry.initialize();
 				} 
 			}
 		}

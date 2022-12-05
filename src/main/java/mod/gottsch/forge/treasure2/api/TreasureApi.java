@@ -17,15 +17,28 @@
  */
 package mod.gottsch.forge.treasure2.api;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import mod.gottsch.forge.gottschcore.enums.IEnum;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.generator.IGeneratorType;
+import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.item.IKeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.KeyItem;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
+import mod.gottsch.forge.treasure2.core.loot.ISpecialLootTables;
+import mod.gottsch.forge.treasure2.core.registry.ChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
+import mod.gottsch.forge.treasure2.core.registry.EnumRegistry;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
-import mod.gottsch.forge.treasure2.core.registry.RarityRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TagRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TreasureMetaRegistry;
+import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import net.minecraft.tags.TagKey;
@@ -39,18 +52,133 @@ import net.minecraftforge.registries.RegistryObject;
  *
  */
 public class TreasureApi {
+	public static final String RARITY = "rarity";
+	public static final String KEY_LOCK_CATEGORY = "keyLockCategory";
+	public static final String GENERATOR_TYPE = "generatorType";
+	public static final String CHEST_GENERATOR_TYPE = "chestGeneratorType";
+	public static final String SPECIAL_LOOT_TABLE = "specialLootTable";
 	
 	/**
 	 * 
 	 * @param rarity
 	 */
 	public static void registerRarity(IRarity rarity) {
+		EnumRegistry.register(RARITY, rarity);
+	}
+	
+	/**
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public static Optional<IRarity> getRarity(String key) {
+		IEnum ienum = EnumRegistry.get(RARITY, key);
+		if (ienum == null) {
+			return Optional.empty();
+		}
+		else {
+			return Optional.of((IRarity) ienum);
+		}
+	}
+	
+	public static List<IRarity> getRarities() {
+		List<IEnum> enums = EnumRegistry.getValues(RARITY);
+		return enums.stream().map(e -> (IRarity)e).collect(Collectors.toList());
+	}
+	
+	/**
+	 * 
+	 * @param category
+	 */
+	public static void registerKeyLockCategory(IKeyLockCategory category) {
+		EnumRegistry.register(KEY_LOCK_CATEGORY, category);
+		// TODO remove
+//		KeyLockRegistry.registerCategory(category);
+	}
+	
+	/**
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public static Optional<IKeyLockCategory> getKeyLockCategory(String key) {
+		IEnum ienum = EnumRegistry.get(KEY_LOCK_CATEGORY, key);
+		if (ienum == null) {
+			return Optional.empty();
+		}
+		else {
+			return Optional.of((IKeyLockCategory) ienum);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param type
+	 */
+	public static void registerGeneratorType(IGeneratorType type) {
+		EnumRegistry.register(GENERATOR_TYPE, type);
+	}
+	
+	/**
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public static Optional<IGeneratorType> getGeneratorType(String key) {
+		IEnum ienum = EnumRegistry.get(GENERATOR_TYPE, key);
+		if (ienum == null) {
+			return Optional.empty();
+		}
+		else {
+			return Optional.of((IGeneratorType) ienum);
+		}
+	}
+	
+	public static void registerChestGeneratorType(IChestGeneratorType type) {
+		EnumRegistry.register(CHEST_GENERATOR_TYPE, type);
+	}
+	
+	public static Optional<IChestGeneratorType> getChestGeneratorType(String key) {
+		IEnum ienum = EnumRegistry.get(CHEST_GENERATOR_TYPE, key);
+		if (ienum == null) {
+			return Optional.empty();
+		}
+		else {
+			return Optional.of((IChestGeneratorType) ienum);
+		}
+	}
+	
+	public static void registerSpecialLootTable(ISpecialLootTables table) {
+		EnumRegistry.register(SPECIAL_LOOT_TABLE, table);
+	}
+	
+	public static Optional<ISpecialLootTables> getSpecialLootTable(String key) {
+		IEnum ienum = EnumRegistry.get(SPECIAL_LOOT_TABLE, key);
+		if (ienum == null) {
+			return Optional.empty();
+		}
+		else {
+			return Optional.of((ISpecialLootTables) ienum);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param rarity
+	 */
+	public static void registerRarityTags(IRarity rarity) {
+		// check if the rarity is registered
+		if (!EnumRegistry.isRegistered(RARITY, rarity)) {
+			Treasure.LOGGER.warn("rarity {} is not registered. unable to complete tag registration.", rarity);
+			return;
+		}
+		
 		// create tags
 		TagKey<Item> keyTag = TreasureTags.Items.mod(Treasure.MODID, "keys/" + rarity.getValue());
 		TagKey<Item> lockTag = TreasureTags.Items.mod(Treasure.MODID, "locks/" + rarity.getValue());
 		TagKey<Block> chestTag = TreasureTags.Blocks.mod(Treasure.MODID, "chests/" + rarity.getValue());
-
-		RarityRegistry.registerKeyLockChests(rarity, keyTag, lockTag, chestTag);
+		
+		TagRegistry.registerKeyLockChests(rarity, keyTag, lockTag, chestTag);
 	}
 	
 	/**
@@ -59,8 +187,14 @@ public class TreasureApi {
 	 * @param keyTag
 	 * @param lockTag
 	 */
-	public static void registerRarity(IRarity rarity, TagKey<Item> keyTag, TagKey<Item> lockTag) {
-		RarityRegistry.registerKeyLocks(rarity, keyTag, lockTag);
+	public static void registerRarityTags(IRarity rarity, TagKey<Item> keyTag, TagKey<Item> lockTag) {
+		// check if the rarity is registered
+		if (!EnumRegistry.isRegistered(RARITY, rarity)) {
+			Treasure.LOGGER.warn("rarity {} is not registered. unable to complete tag registration.", rarity);
+			return;
+		}
+		
+		TagRegistry.registerKeyLocks(rarity, keyTag, lockTag);
 	}
 	
 //	public static void registerRarity(IRarity rarity, TagKey<Block> tag) {
@@ -74,12 +208,22 @@ public class TreasureApi {
 	 * @param lockTag
 	 * @param chestTag
 	 */
-	public static void registerRarity(IRarity rarity, TagKey<Item> keyTag, TagKey<Item> lockTag, TagKey<Block> chestTag) {
-		RarityRegistry.registerKeyLockChests(rarity, keyTag, lockTag, chestTag);
+	public static void registerRarityTags(IRarity rarity, TagKey<Item> keyTag, TagKey<Item> lockTag, TagKey<Block> chestTag) {
+		// check if the rarity is registered
+		if (!EnumRegistry.isRegistered(RARITY, rarity)) {
+			Treasure.LOGGER.warn("rarity {} is not registered. unable to complete tag registration.", rarity);
+			return;
+		}
+		TagRegistry.registerKeyLockChests(rarity, keyTag, lockTag, chestTag);
 	}
 	
 	public static void registerWishableTag(IRarity rarity, TagKey<Item> tag) {
-		RarityRegistry.registerWishable(rarity, tag);
+		TagRegistry.registerWishable(rarity, tag);
+	}
+	
+	// TODO does the api need to expose this?
+	public static TagKey<Item> getKeyTag(IRarity rarity) {
+		return TagRegistry.getKeyTag(rarity);
 	}
 	
 	// these registerXXX() methods simply register the object by its resource name
@@ -89,11 +233,8 @@ public class TreasureApi {
 
 	public static void registerLock(RegistryObject<LockItem> lock) {
 		KeyLockRegistry.registerLock(lock);		
-	}
-	
-	public static void registerKeyLockCategory(IKeyLockCategory category) {
-		KeyLockRegistry.registerCategory(category);
-	}
+	}	
+
 	// TODO add method for Locks accepting keys
 
 	public static void registerChest(RegistryObject<Block> chest) {
@@ -106,5 +247,21 @@ public class TreasureApi {
 	
 	public static void registerLootTables(String modID) {
 		TreasureLootTableRegistry.register(modID);
+	}
+	
+	public static void registerMeta(String modID) {
+		TreasureMetaRegistry.register(modID);
+	}
+
+	public static void registerChestGenerator(IChestGeneratorType type, IChestGenerator generator) {
+		ChestGeneratorRegistry.registerGeneator(type, generator);
+	}
+	
+	public static void registerWeightedChestGenerator(IRarity rarity, IGeneratorType type, IChestGenerator generator, Number weight) {
+		WeightedChestGeneratorRegistry.registerGenerator(rarity, type, generator, weight);
+	}
+	
+	public List<LockItem> getLocks(IRarity rarity) {
+		return KeyLockRegistry.getLocks(rarity).stream().map(lock -> lock.get()).collect(Collectors.toList());
 	}
 }

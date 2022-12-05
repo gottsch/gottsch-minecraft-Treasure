@@ -24,9 +24,11 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.core.BlockPos;
@@ -94,11 +96,10 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	 */
 	private boolean sealed;
 
-//	/*
-//	 * A flag to indicate if the chest is undiscovered.
-//	 * This flag controls some chest effects (light source, particles, glow)
-//	 */
-//	private boolean undiscovered;
+	/*
+	 * Properties detailing how the tile entity was generated
+	 */
+	private GenerationContext generationContext;
 
 	/*
 	 * The loot table assigned to this block entity
@@ -306,6 +307,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			if (getLootTable() != null) {
 				tag.putString(LOOT_TABLE_TAG, getLootTable().toString());
 			}
+			// TODO enable
 			//			if (getGenerationContext() != null) {
 			//				CompoundNBT contextTag = new CompoundNBT();
 			//				contextTag.putString("lootRarity", getGenerationContext().getLootRarity().getValue());
@@ -406,7 +408,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			//				if (contextTag.contains("chestGenType")) {
 			//					genType = ChestGeneratorType.valueOf(contextTag.getString("chestGenType"));
 			//				}
-			//				AbstractTreasureChestTileEntity.GenerationContext genContext = this.new GenerationContext(rarity, genType);
+			//				AbstractTreasureChestBlockEntity.GenerationContext genContext = this.new GenerationContext(rarity, genType);
 			//				this.setGenerationContext(genContext);
 			//			}	
 		} catch (Exception e) {
@@ -533,21 +535,61 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 		this.sealed = sealed;
 	}
 
+	@Override
 	public ResourceLocation getLootTable() {
 		return lootTable;
 	}
 
+	@Override
 	public void setLootTable(ResourceLocation lootTable) {
 		this.lootTable = lootTable;
 	}
+	
 
-//	@Override
-//	public boolean isUndiscovered() {
-//		return undiscovered;
-//	}
-//
-//	@Override
-//	public void setUndiscovered(boolean undiscovered) {
-//		this.undiscovered = undiscovered;
-//	}
+	@Override
+	public GenerationContext getGenerationContext() {
+		return generationContext;
+	}
+
+	@Override
+	public void setGenerationContext(GenerationContext generationContext) {
+		this.generationContext = generationContext;
+	}
+	
+	/*
+	 * 
+	 */
+	public class GenerationContext {
+		/*
+		 * The rarity level of the loot that the chest will contain
+		 */
+		private IRarity lootRarity;
+
+		private IChestGeneratorType chestGeneratorType;
+
+		public GenerationContext(IRarity rarity, IChestGeneratorType chestGeneratorType) {
+			this.lootRarity = rarity;
+			this.chestGeneratorType = chestGeneratorType;
+		}
+
+		public GenerationContext(ResourceLocation lootTable, IRarity rarity, IChestGeneratorType chestGeneratorType) {
+			// TODO move the loot table to this class
+			AbstractTreasureChestBlockEntity.this.lootTable = lootTable;
+			this.lootRarity = rarity;
+			this.chestGeneratorType = chestGeneratorType;
+		}
+
+		public IRarity getLootRarity() {
+			return lootRarity;
+		}
+
+		public IChestGeneratorType getChestGeneratorType() {
+			return chestGeneratorType;
+		}
+
+		public ResourceLocation getLootTable() {
+			return AbstractTreasureChestBlockEntity.this.lootTable;
+		}
+
+	}
 }

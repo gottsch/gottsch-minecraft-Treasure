@@ -9,8 +9,9 @@
 	dimensions=["minecraft:overworld"]
 	# The probability that a chest will contain a treasure map to another chest.
 	treasureMapProbability=20.0
-	
+
 	[[chestConfigs.generators]]
+		#key options for Treasure2 generators are terrestrial, aquatic, well, wither.
 		key="terrestrial"
 		registrySize=1000
 		probably=80.0

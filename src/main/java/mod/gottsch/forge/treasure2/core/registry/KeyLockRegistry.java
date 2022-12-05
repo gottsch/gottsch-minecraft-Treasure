@@ -53,7 +53,7 @@ public class KeyLockRegistry {
 	private static final Map<ResourceLocation, RegistryObject<LockItem>> LOCKS_BY_NAME;
 	private static final Map<ResourceLocation, MutableObject<IRarity>> LOCK_RARITY_BY_NAME;
 
-	private static final Map<String, IKeyLockCategory> CATEGORY_REGISTRY;
+//	private static final Map<String, IKeyLockCategory> CATEGORY_REGISTRY;
 	
 	static {
 		KEYS_BY_RARITY = ArrayListMultimap.create();
@@ -64,7 +64,7 @@ public class KeyLockRegistry {
 		LOCKS_BY_NAME = Maps.newHashMap();
 		LOCK_RARITY_BY_NAME = Maps.newHashMap();
 		
-		CATEGORY_REGISTRY = Maps.newHashMap();
+//		CATEGORY_REGISTRY = Maps.newHashMap();
 	}
 
 	private KeyLockRegistry() {
@@ -117,6 +117,10 @@ public class KeyLockRegistry {
 	public static List<RegistryObject<LockItem>> getLocks() {
 		return new ArrayList<>(LOCKS_BY_NAME.values());
 	}
+	
+	public static List<RegistryObject<LockItem>> getLocks(IRarity rarity) {
+		return new ArrayList<>(LOCKS_BY_RARITY.get(rarity));
+	}
 
 	public static void clearKeysByRarity() {
 		KEYS_BY_RARITY.clear();		
@@ -153,19 +157,19 @@ public class KeyLockRegistry {
 		return getRarityByLock(lock.getRegistryName());
 	}
 
-	public static void registerCategory(IKeyLockCategory category) {
-		if (!CATEGORY_REGISTRY.containsKey(category.toString())) {
-			CATEGORY_REGISTRY.put(category.toString(), category);
-		}
-	}
+//	public static void registerCategory(IKeyLockCategory category) {
+//		if (!CATEGORY_REGISTRY.containsKey(category.toString())) {
+//			CATEGORY_REGISTRY.put(category.toString(), category);
+//		}
+//	}
 	
 	// TODO research
 	// might not make this available - what happens if you unregister AFTER
 	// keys/locks have been associated with a unregister category?
 	// - they all get set to NONE?
-	public static void unregister(IKeyLockCategory category) {
-		if (CATEGORY_REGISTRY.containsKey(category.toString())) {
-			CATEGORY_REGISTRY.remove(category.toString());
-		}
-	}
+//	public static void unregister(IKeyLockCategory category) {
+//		if (CATEGORY_REGISTRY.containsKey(category.toString())) {
+//			CATEGORY_REGISTRY.remove(category.toString());
+//		}
+//	}
 }

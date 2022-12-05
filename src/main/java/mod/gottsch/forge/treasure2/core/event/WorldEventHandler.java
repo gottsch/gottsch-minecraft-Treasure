@@ -4,6 +4,8 @@ import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TreasureMetaRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureOreGeneration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -36,6 +38,8 @@ public class WorldEventHandler {
 			if (!isLoaded && Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString())) {
 				// register mod's loot tables
 				TreasureLootTableRegistry.onWorldLoad(event);
+				TreasureMetaRegistry.onWorldLoad(event);
+//				TreasureTemplateRegistry.onWorldLoad(event);
 			}
 			
 			isLoaded = true;

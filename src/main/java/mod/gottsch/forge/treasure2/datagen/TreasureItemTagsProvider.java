@@ -77,6 +77,8 @@ public class TreasureItemTagsProvider extends ItemTagsProvider {
 		tag(TreasureTags.Items.EPIC_LOCKS).add(TreasureItems.SAPPHIRE_LOCK.get());
 		
 		tag(TreasureTags.Items.SCARCE_LOCKS).add(TreasureItems.SPIDER_LOCK.get());
+		// NOTE wither lock is not tagged as this group is used when selecting locks for chests,
+		// and wither is a special lock.
 		
 		// wishables rarity
 		tag(TreasureTags.Items.COMMON_WISHABLE).add(TreasureItems.COPPER_COIN.get());

@@ -20,15 +20,18 @@ package mod.gottsch.forge.treasure2.core.config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.electronwill.nightconfig.core.CommentedConfig;
 import com.electronwill.nightconfig.core.conversion.ObjectConverter;
+import com.google.common.collect.Maps;
 
 import mod.gottsch.forge.gottschcore.config.AbstractConfig;
-import mod.gottsch.forge.gottschcore.config.AbstractConfig.Logging;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
@@ -162,13 +165,21 @@ public class Config extends AbstractConfig {
 		public Effects effects;
 		public Integration integration;
 		public Markers markers;
+		public WitherTree witherTree;
+		public Wells wells;
 
+		/**
+		 * 
+		 * @param builder
+		 */
 		public ServerConfig(ForgeConfigSpec.Builder builder) {
 			keysAndLocks = new KeysAndLocks(builder);	
 			wealth = new Wealth(builder);
 			effects = new Effects(builder);
 			integration = new Integration(builder);
 			markers = new Markers(builder);
+			witherTree = new WitherTree(builder);
+			wells = new Wells(builder);
 		}
 		
 		/*
@@ -327,44 +338,142 @@ public class Config extends AbstractConfig {
 		public static class Markers {
 			public ForgeConfigSpec.BooleanValue enableMarkers;
 			public ForgeConfigSpec.BooleanValue enableMarkerStructures;
-			public ForgeConfigSpec.ConfigValue<Integer> minGravestonesPerChest;
-			public ForgeConfigSpec.ConfigValue<Integer> maxGravestonesPerChest;
-			public ForgeConfigSpec.ConfigValue<Integer> markerStructureProbability;
-			public ForgeConfigSpec.BooleanValue enableGravestoneSpawner;
-			public ForgeConfigSpec.ConfigValue<Integer> gravestoneSpawnerProbability;
+			public ForgeConfigSpec.ConfigValue<Integer> minMarkersPerChest;
+			public ForgeConfigSpec.ConfigValue<Integer> maxMarkersPerChest;
+			public ForgeConfigSpec.ConfigValue<Integer> structureProbability;
+			public ForgeConfigSpec.BooleanValue enableSpawner;
+			public ForgeConfigSpec.ConfigValue<Integer> spawnerProbability;
 			
 			public Markers(final ForgeConfigSpec.Builder builder)	 {
 				builder.comment(CATEGORY_DIV, " Gravestones and Markers properties", CATEGORY_DIV)
-				.push("treasure markers");
+				.push("markers");
 				
 				enableMarkers = builder
 						.comment(" Enable/disable whether chest markers (gravestones, bones)  are generated when generating treasure chests.")
-						.define("Enable markers:", true);
+						.define("enableMarkers", true);
 				
 				enableMarkerStructures = builder
 						.comment(" Enable/disable whether structures (buildings) are generated when generating  treasure chests.")
-						.define("Enable structure markers:", true);
+						.define("enableMarkerStructures", true);
 				
-				minGravestonesPerChest = builder
+				minMarkersPerChest = builder
 						.comment(" The minimum number of markers (gravestones, bones) per chest.")
-						.defineInRange("Minimum markers per chest:", 2, 1, 5);
+						.defineInRange("minMarkersPerChest", 2, 1, 5);
 				
-				maxGravestonesPerChest = builder
+				maxMarkersPerChest = builder
 						.comment(" The maximum number of markers (gravestones, bones) per chest.")
-						.defineInRange("Maximum markers per chest:", 5, 1, 10);
+						.defineInRange("maxMarkersPerChest", 5, 1, 10);
 				
-				markerStructureProbability = builder
+				structureProbability = builder
 						.comment(" The probability that a marker will be a structure.")
-						.defineInRange("Probability that marker will be a structure:", 15, 1, 100);
+						.defineInRange("structureProbability", 15, 1, 100);
 				
-				enableGravestoneSpawner = builder
+				enableSpawner = builder
 						.comment(" Enable/disable whether gravestone markers can spawn mobs (ex. Bound Soul).")
-						.define("Enable gravestone markers to spawn mobs:", true);
+						.define("enableSpawner", true);
 				
-				gravestoneSpawnerProbability = builder
+				spawnerProbability = builder
 						.comment(" The probability that a gravestone will spawn a mob.", " Currently gravestones can spawn Bound Souls.")
-						.defineInRange("Probability that grave marker will spawn a mob:", 25, 1, 100);
+						.defineInRange("spawnerProbability", 25, 1, 100);
 								
+				builder.pop();
+			}
+		}
+		
+		/*
+		 * 
+		 */
+		public static class WitherTree {
+			public BooleanValue enableWitherTree;
+			public ConfigValue<Integer> registrySize;
+			public ConfigValue<Double> probability;
+			public ConfigValue<Integer> minBlockDistance;
+			public ConfigValue<Integer>	waitChunks;
+			
+			public WitherTree(final ForgeConfigSpec.Builder builder)	 {
+				builder.comment(CATEGORY_DIV, " Wither Tree properties", CATEGORY_DIV)
+				.push("witherTrees");
+				
+				enableWitherTree = builder
+						.comment(" Enable/disable whether wither trees will spawn.")
+						.define("enableWitherTree", true);
+				
+				registrySize = builder
+						.comment(" The number of wither tree spawns that are monitored.",
+								" Most recent additions replace least recent when the registry is full.",
+								" This is the set of wither tree spawns used to measure distance between newly generated spawns.",
+								" In general, a high number is better than a low number, especially in a multiplayer world.",
+								" However, wither tree spawns have a default low probability/great distance, so the number can be",
+								" a lower than that of chests, which spawn much more frequently.")
+						.defineInRange("registrySize", 50, 25, 1000);
+				
+				this.probability = builder
+						.comment(" The probability that a wither tree will generate at selected spawn location.",
+								" Including a non-100 value increases the randomization of wither tree spawn placement.")
+						.defineInRange("probability", 70.0, 0.0, 100.0);
+				
+				this.minBlockDistance = builder
+						.comment(" The minimum distance, measured in blocks, that two wither tree spawns can be in proximity (ie radius).",
+								" Note: Only wither trees in the registry are checked against this property.",
+								" Default = 1000 blocks.")
+						.defineInRange("minBlockDistance", 1000, 100, 32000);
+				
+				this.waitChunks = builder
+						.comment(" The number of chunks that are generated in a new world before wither trees start to spawn.")
+						.defineInRange("waitChunks", 500, 10, 32000);
+				
+				builder.pop();
+			}
+		}
+		
+		/*
+		 * 
+		 */
+		public static class Wells {
+			public BooleanValue enableWells;
+			public ConfigValue<Integer> registrySize;
+			public ConfigValue<Double> probability;
+			public ConfigValue<Integer> minBlockDistance;
+			public ConfigValue<Integer>	waitChunks;
+			public BiomesConfig biomes;
+			
+			public Wells(final ForgeConfigSpec.Builder builder)	 {
+				builder.comment(CATEGORY_DIV, " Wells properties", CATEGORY_DIV)
+				.push("wells");
+				
+				enableWells = builder
+						.comment(" Enable/disable whether wells will spawn.")
+						.define("enableWells", true);
+				
+				registrySize = builder
+						.comment(" The number of wells spawns that are monitored.",
+								" Most recent additions replace least recent when the registry is full.",
+								" This is the set of wells used to measure distance between newly generated wells.",
+								" In general, a high number is better than a low number, especially in a multiplayer world.",
+								" However, wells have a default low probability/great distance, so the number can be",
+								" a lower than that of chests, which spawn much more frequently.")
+						.defineInRange("registrySize", 50, 25, 1000);
+				
+				this.probability = builder
+						.comment(" The probability that a well will generate at selected spawn location.",
+								" Including a non-100 value increases the randomization of well placement.")
+						.defineInRange("probability", 50.0, 0.0, 100.0);
+				
+				this.minBlockDistance = builder
+						.comment(" The minimum distance, measured in blocks, that two wells can be in proximity (ie radius).",
+								" Note: Only wells in the registry are checked against this property.",
+								" Default = 600 blocks, or 16 chunks.")
+						.defineInRange("minBlockDistance", 600, 100, 32000);
+				
+				this.waitChunks = builder
+						.comment(" The number of chunks that are generated in a new world before wells start to spawn.")
+						.defineInRange("waitChunks", 100, 10, 32000);
+				
+				BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean", "minecraft:deep_frozen_ocean", "minecraft:cold_ocean",
+						"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },
+				new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean" });
+				biomes = new BiomesConfig(builder, biomesData);
+				
 				builder.pop();
 			}
 		}
@@ -395,10 +504,13 @@ public class Config extends AbstractConfig {
 	public static final ForgeConfigSpec CHESTS_CONFIG_SPEC;
 		
 	// TODO make this a map and part of the transform() method loads into a map
+	// TODO either this is a multimap based on dimension or a singular ChestConfiguration
+	// and the generators etc need to be mapped - not in a list.
 	/*
 	 * exposed chest configurations
 	 */
 	public static List<ChestConfiguration> chestConfigs;
+	public static Map<ResourceLocation, ChestConfiguration> chestConfigMap;
 	
 	static {
 		final Pair<ChestConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder()
@@ -426,6 +538,14 @@ public class Config extends AbstractConfig {
 		ChestConfigsHolder holder = new ObjectConverter().toObject(configData, ChestConfigsHolder::new);
 		// get the list from the holder and set the config property
 		chestConfigs = holder.chestConfigs;
+		
+		// create the chest config map
+		chestConfigMap = Maps.newHashMap();
+		chestConfigs.forEach(config -> {
+			config.getDimensions().forEach(dimension -> {
+				chestConfigMap.put(ModUtil.asLocation(dimension), config);
+			});
+		});
 	}
 	
 	/**

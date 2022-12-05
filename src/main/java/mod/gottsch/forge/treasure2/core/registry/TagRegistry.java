@@ -36,8 +36,9 @@ import net.minecraft.world.level.block.Block;
  * @author Mark Gottschling on Nov 10, 2022
  *
  */
-public class RarityRegistry {
-	private static final Map<String, IRarity> REGISTRY = Maps.newHashMap();
+// TODO rename TagRegistry
+public class TagRegistry {
+//	private static final Map<String, IRarity> REGISTRY = Maps.newHashMap();
 	// L = key, M = lock, R = chest
 	private static final Map<IRarity, Triple<TagKey<Item>, TagKey<Item>, TagKey<Block>>> TAGS_REGISTRY = Maps.newHashMap();
 
@@ -47,7 +48,7 @@ public class RarityRegistry {
 	// wishable registry
 	private static final Map<IRarity, TagKey<Item>> WISHABLE_TAGS_REGISTRY = Maps.newHashMap();
 	
-	private RarityRegistry() {}
+	private TagRegistry() {}
 	
 //	public static void register(IRarity rarity) {
 //		registerRarity(rarity);
@@ -62,7 +63,7 @@ public class RarityRegistry {
 	 * @param lockTag
 	 */
 	public static void registerKeyLocks(IRarity rarity, TagKey<Item> keyTag, TagKey<Item> lockTag) {
-		registerRarity(rarity);
+//		registerRarity(rarity);
 		registerTags(rarity, Triple.of(keyTag, lockTag, null));
 	}
 	
@@ -74,7 +75,7 @@ public class RarityRegistry {
 	 * @param chestTag
 	 */
 	public static void registerKeyLockChests(IRarity rarity, TagKey<Item> keyTag, TagKey<Item> lockTag, TagKey<Block> chestTag) {
-		registerRarity(rarity);
+//		registerRarity(rarity);
 		registerTags(rarity, Triple.of(keyTag, lockTag, chestTag));
 	}
 	
@@ -91,15 +92,15 @@ public class RarityRegistry {
 	}
 	
 	public static void registerWishable(IRarity rarity, TagKey<Item> wishableTag) {
-		registerRarity(rarity);
+//		registerRarity(rarity);
 		registerWishableTag(rarity, wishableTag);
 	}
 	
-	private static void registerRarity(IRarity rarity) {
-		if (!REGISTRY.containsKey(rarity.getName())) {
-			REGISTRY.put(rarity.getName(), rarity);
-		}
-	}
+//	private static void registerRarity(IRarity rarity) {
+//		if (!REGISTRY.containsKey(rarity.getName())) {
+//			REGISTRY.put(rarity.getName(), rarity);
+//		}
+//	}
 		
 	private static void registerTags(IRarity rarity, Triple<TagKey<Item>, TagKey<Item>, TagKey<Block>> tagTuple) {
 		if (!TAGS_REGISTRY.containsKey(rarity)) {
@@ -113,27 +114,27 @@ public class RarityRegistry {
 		}
 	}
 
-	public static void unregister(IRarity rarity) {
-		if (REGISTRY.containsKey(rarity.getName())) {
-			REGISTRY.remove(rarity.getName());
-		}
-	}
+//	public static void unregister(IRarity rarity) {
+//		if (REGISTRY.containsKey(rarity.getName())) {
+//			REGISTRY.remove(rarity.getName());
+//		}
+//	}
 	
-	public static Optional<IRarity> getRarity(String name) {
-		IRarity rarity = REGISTRY.get(name);
-		if (name == null || rarity == null) {
-			return Optional.empty();
-		}
-		return Optional.of(rarity);
-	}
+//	public static Optional<IRarity> getRarity(String name) {
+//		IRarity rarity = REGISTRY.get(name);
+//		if (name == null || rarity == null) {
+//			return Optional.empty();
+//		}
+//		return Optional.of(rarity);
+//	}
 	
-	public static List<IRarity> getValues() {
-		return new ArrayList<>(REGISTRY.values());
-	}
+//	public static List<IRarity> getValues() {
+//		return new ArrayList<>(REGISTRY.values());
+//	}
 	
-	public int size() {
-		return REGISTRY.size();
-	}
+//	public int size() {
+//		return REGISTRY.size();
+//	}
 
 	public static TagKey<Item> getKeyTag(IRarity rarity) {
 		if (TAGS_REGISTRY.containsKey(rarity)) {
