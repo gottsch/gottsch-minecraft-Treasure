@@ -35,10 +35,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 // NOTE @OnlyIn extremely important! add to all Renderers
 @OnlyIn(Dist.CLIENT)
+// TODO StandardChestRenderer<T extends AbstractChestBlockEntity> extends AbstractChestBlockEntityRenderer<T>
 public class WoodChestRenderer extends AbstractChestBlockEntityRenderer {//implements BlockEntityRenderer<WoodChestBlockEntity>/*extends AbstractChestTileEntityRenderer*/ {
 	/*
 	 * NOTE when defining a resource location for the Atlas, you don't need to specify the /textures/ parent folder nor, the .png extension
 	 */
+	// TODO move out to a common class, ex TreasureAtlasTextures
 	public static final ResourceLocation WOOD_CHEST_RENDERER_ATLAS_TEXTURE = new ResourceLocation(Treasure.MODID, "entity/chest/wood_chest");
 
 
@@ -48,6 +50,8 @@ public class WoodChestRenderer extends AbstractChestBlockEntityRenderer {//imple
 	 */
 	public WoodChestRenderer(BlockEntityRendererProvider.Context context) {
 		setModel(new StandardChestModel(context.bakeLayer(StandardChestModel.LAYER_LOCATION)));
+		// TODO context.getBlockEntityRenderDispatcher().get block entity??
+		// TODO or switch on T
 		setMaterial(new Material(TextureAtlas.LOCATION_BLOCKS, WOOD_CHEST_RENDERER_ATLAS_TEXTURE));
 	}
 }
