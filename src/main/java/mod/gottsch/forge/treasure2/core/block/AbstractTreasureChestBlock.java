@@ -71,7 +71,7 @@ import net.minecraftforge.network.NetworkHooks;
  */
 public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITreasureChestBlock {
 
-	private static final VoxelShape CHEST = Block.box(1, 1, 2, 15, 14, 15);
+	private static final VoxelShape CHEST = Block.box(1, 0, 1, 15, 14, 15);
 
 
 	/*
@@ -430,7 +430,7 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 	}
 
 	@Override
-	public ITreasureChestBlock setBounds(VoxelShape[] bounds) {
+	public AbstractTreasureChestBlock setBounds(VoxelShape[] bounds) {
 		this.bounds = bounds;
 		return this;
 	}

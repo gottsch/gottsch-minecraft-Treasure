@@ -105,6 +105,24 @@ public class LanguageGen extends LanguageProvider {
         
         // chests
         add(TreasureBlocks.WOOD_CHEST.get(), "Wood Chest");
+        add(TreasureBlocks.CRATE_CHEST.get(), "Crate");
+        add(TreasureBlocks.MOLDY_CRATE_CHEST.get(), "Moldy Crate");
+        add(TreasureBlocks.IRONBOUND_CHEST.get(), "Ironbound Chest");
+        add(TreasureBlocks.SAFE.get(), "Safe Chest");
+        add(TreasureBlocks.PIRATE_CHEST.get(), "Pirate Chest");
+        add(TreasureBlocks.IRON_STRONGBOX.get(), "Iron Strongbox");
+        add(TreasureBlocks.GOLD_STRONGBOX.get(), "Gold Strongbox");
+        add(TreasureBlocks.DREAD_PIRATE_CHEST.get(), "Dread Pirate Chest");
+        add(TreasureBlocks.COMPRESSOR_CHEST.get(), "Compressor Chest");
+        add(TreasureBlocks.SKULL_CHEST.get(), "Skull Chest");
+        add(TreasureBlocks.GOLD_SKULL_CHEST.get(), "Gold Skull Chest");
+        add(TreasureBlocks.CRYSTAL_SKULL_CHEST.get(), "Crystal Chest");
+        add(TreasureBlocks.CAULDRON_CHEST.get(), "Cauldron Chest");
+        add(TreasureBlocks.SPIDER_CHEST.get(), "Spider Chest");
+        add(TreasureBlocks.VIKING_CHEST.get(), "Viking Chest");
+        add(TreasureBlocks.CARDBOARD_BOX.get(), "Cardboard Box");
+        add(TreasureBlocks.MILK_CRATE.get(), "Milk Crate");
+        add(TreasureBlocks.WITHER_CHEST.get(), "Wither Chest");
         
         // ore
         add(TreasureBlocks.TOPAZ_ORE.get(), "Topaz Ore");
@@ -193,6 +211,9 @@ public class LanguageGen extends LanguageProvider {
          */
         // chests
         add(LangUtil.screen("wood_chest.name"), "Wood Chest");
+        add(LangUtil.screen("pirate_chest.name"), "Pirate Chest");
+        add(LangUtil.screen("dread_pirate_chest.name"), "Dread Pirate Chest");
+        add(LangUtil.screen("viking_chest.name"), "Viking Chest");
         
         /*
          *  chat

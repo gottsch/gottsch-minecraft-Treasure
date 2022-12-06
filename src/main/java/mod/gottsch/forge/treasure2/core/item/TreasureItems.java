@@ -323,7 +323,7 @@ public class TreasureItems {
 	public static RegistryObject<Item> TREASURE_TOOL = Registration.ITEMS.register("treasure_tool", () -> new Item(TREASURE_PROPS_SUPPLIER.get()));
 
 	// block items
-	public static final RegistryObject<Item> WOOD_CHEST_ITEM = fromChestBlock(TreasureBlocks.WOOD_CHEST, TREASURE_PROPS_SUPPLIER);
+//	public static final RegistryObject<Item> WOOD_CHEST_ITEM = fromChestBlock(TreasureBlocks.WOOD_CHEST, TREASURE_PROPS_SUPPLIER);
 	public static final RegistryObject<Item> SPANISH_MOSS_ITEM = fromBlock(TreasureBlocks.SPANISH_MOSS, TREASURE_PROPS_SUPPLIER);
 	
 	public static final RegistryObject<Item> TOPAZ_ORE_ITEM = fromBlock(TreasureBlocks.TOPAZ_ORE, TREASURE_PROPS_SUPPLIER);
@@ -347,6 +347,11 @@ public class TreasureItems {
 	public static final RegistryObject<Item> BOUND_SOUL_EGG = Registration.ITEMS.register("bound_soul", () -> new ForgeSpawnEggItem(TreasureEntities.BOUND_SOUL_ENTITY_TYPE, 0x000000, 0x2b2b2b, TREASURE_PROPS_SUPPLIER.get()));
 	
 	static {
+		// register all the chests
+		TreasureBlocks.CHESTS.forEach(g -> {
+			fromChestBlock(g, TREASURE_PROPS_SUPPLIER);
+		});
+		
 		// register all the gravestone items w/o keeping a static reference
 		TreasureBlocks.GRAVESTONES.forEach(g -> {
 			fromBlock(g, TREASURE_PROPS_SUPPLIER);

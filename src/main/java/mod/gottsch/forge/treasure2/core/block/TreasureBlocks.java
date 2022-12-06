@@ -75,7 +75,7 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> CRATE_CHEST = Registration.BLOCKS.register("crate_chest", () -> new StandardChestBlock(CrateChestBlockEntity.class,
 			LockLayouts.CRATE, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5F).lightLevel(light)));
 	
-	public static final RegistryObject<Block> MOLDY_CRATE_CHEST = Registration.BLOCKS.register("moldy_crate_chest", () -> new StandardChestBlock(MoldyCrateChestBlockEntity.class,
+	public static final RegistryObject<Block> MOLDY_CRATE_CHEST = Registration.BLOCKS.register("crate_chest_moldy", () -> new StandardChestBlock(MoldyCrateChestBlockEntity.class,
 			LockLayouts.CRATE, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.0F).lightLevel(light)));
 	
 	public static final RegistryObject<Block> IRONBOUND_CHEST = Registration.BLOCKS.register("ironbound_chest", () -> new StandardChestBlock(IronboundChestBlockEntity.class,
@@ -115,7 +115,7 @@ public class TreasureBlocks {
 			LockLayouts.SINGLE_STANDARD, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(3.0F).lightLevel(light)));
 	
 	public static final RegistryObject<Block> VIKING_CHEST = Registration.BLOCKS.register("viking_chest", () -> new StandardChestBlock(VikingChestBlockEntity.class,
-			LockLayouts.VIKING, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(3.0F).lightLevel(light)));
+			LockLayouts.VIKING, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(3.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildVikingChest()));
 	
 	public static final RegistryObject<Block> CARDBOARD_BOX = Registration.BLOCKS.register("cardboard_box", () -> new StandardChestBlock(CardboardBoxBlockEntity.class,
 			LockLayouts.TOP_SPLIT, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5F).lightLevel(light)));
@@ -126,8 +126,7 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> WITHER_CHEST = Registration.BLOCKS.register("wither_chest", () -> new WitherChestBlock(WitherChestBlockEntity.class,
 			LockLayouts.ARMOIRE, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5F).lightLevel(light)));
 	
-	public static final RegistryObject<Block> WITHER_CHEST_TOP = Registration.BLOCKS.register("wither_chest_top", () -> new WitherChestTopBlock(WoodChestBlockEntity.class,
-			Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5F)));
+	public static final RegistryObject<Block> WITHER_CHEST_TOP = Registration.BLOCKS.register("wither_chest_top", () -> new WitherChestTopBlock(Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5F)));
 	
 	// ore
 	public static final Supplier<Properties> ORE_PROPS = () -> Properties.of(Material.STONE, MaterialColor.STONE).strength(3.0F, 5.0F);
@@ -208,10 +207,31 @@ public class TreasureBlocks {
 			Properties.of(Material.STONE, MaterialColor.STONE).strength(2.0F).sound(SoundType.STONE)));
 	
 	// collections
-	public static final List<RegistryObject<Block>> GRAVESTONES = new ArrayList<>(100);
+	public static final List<RegistryObject<Block>> CHESTS = new ArrayList<>(25);
+	public static final List<RegistryObject<Block>> GRAVESTONES = new ArrayList<>(25);
 	public static final List<RegistryObject<Block>> GRAVESTONE_SPAWNERS = new ArrayList<>(3);
 	
 	static {
+		CHESTS.add(WOOD_CHEST);
+		CHESTS.add(CRATE_CHEST);
+		CHESTS.add(MOLDY_CRATE_CHEST);
+		CHESTS.add(IRONBOUND_CHEST);
+		CHESTS.add(PIRATE_CHEST);
+		CHESTS.add(SAFE);
+		CHESTS.add(IRON_STRONGBOX);
+		CHESTS.add(GOLD_STRONGBOX);
+		CHESTS.add(DREAD_PIRATE_CHEST);
+		CHESTS.add(COMPRESSOR_CHEST);
+		CHESTS.add(SKULL_CHEST);
+		CHESTS.add(GOLD_SKULL_CHEST);
+		CHESTS.add(CRYSTAL_SKULL_CHEST);
+		CHESTS.add(CAULDRON_CHEST);
+		CHESTS.add(SPIDER_CHEST);
+		CHESTS.add(VIKING_CHEST);
+		CHESTS.add(CARDBOARD_BOX);
+		CHESTS.add(MILK_CRATE);
+		CHESTS.add(WITHER_CHEST);		
+		
 		GRAVESTONES.add(GRAVESTONE1_STONE);
 		GRAVESTONES.add(GRAVESTONE1_COBBLESTONE);
 		GRAVESTONES.add(GRAVESTONE1_MOSSY_COBBLESTONE);

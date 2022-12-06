@@ -173,7 +173,7 @@ public class ItemModelsProvider extends ItemModelProvider {
 				mcLoc("item/generated"), "layer0", modLoc("item/skeleton_item"));
 		
 		// block items
-		withExistingParent(TreasureItems.WOOD_CHEST_ITEM.get().getRegistryName().getPath(), modLoc("block/wood_chest"));
+//		withExistingParent(TreasureItems.WOOD_CHEST_ITEM.get().getRegistryName().getPath(), modLoc("block/wood_chest"));
     	
 		withExistingParent(TreasureItems.SPANISH_MOSS_ITEM.get().getRegistryName().getPath(), modLoc("block/spanish_moss"));
 		
@@ -189,6 +189,10 @@ public class ItemModelsProvider extends ItemModelProvider {
 		
 		withExistingParent(TreasureItems.WISHING_WELL_ITEM.get().getRegistryName().getPath(), modLoc("block/wishing_well_block"));
 		withExistingParent(TreasureItems.DESERT_WISHING_WELL_ITEM.get().getRegistryName().getPath(), modLoc("block/desert_wishing_well_block"));
+		
+		TreasureBlocks.CHESTS.forEach(g -> {
+			withExistingParent(g.get().getRegistryName().getPath(), modLoc("block/" + g.get().getRegistryName().getPath()));
+		});
 		
 		TreasureBlocks.GRAVESTONES.forEach(g -> {
 			withExistingParent(g.get().getRegistryName().getPath(), modLoc("block/" + g.get().getRegistryName().getPath()));

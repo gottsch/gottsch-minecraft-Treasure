@@ -18,8 +18,13 @@
 package mod.gottsch.forge.treasure2.core.setup;
 
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.client.model.blockentity.DreadPirateChestModel;
 import mod.gottsch.forge.treasure2.client.model.blockentity.StandardChestModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.VikingChestModel;
 import mod.gottsch.forge.treasure2.client.model.entity.BoundSoulModel;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.DreadPirateChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.PirateChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.VikingChestRenderer;
 import mod.gottsch.forge.treasure2.client.renderer.blockentity.WoodChestRenderer;
 import mod.gottsch.forge.treasure2.client.renderer.entity.BoundSoulRenderer;
 import mod.gottsch.forge.treasure2.client.screen.KeyRingScreen;
@@ -68,7 +73,13 @@ public class ClientSetup {
             MenuScreens.register(TreasureContainers.KEY_RING_CONTAINER.get(), KeyRingScreen::new);           
             MenuScreens.register(TreasureContainers.POUCH_CONTAINER.get(), PouchScreen::new);           
 
-            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.WOOD_CHEST.get(), RenderType.cutoutMipped());
+//            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.WOOD_CHEST.get(), RenderType.cutoutMipped());
+            
+            TreasureBlocks.CHESTS.forEach(chest -> {
+            	ItemBlockRenderTypes.setRenderLayer(chest.get(), RenderType.cutoutMipped());
+            });
+//            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.VIKING_CHEST.get(), RenderType.cutoutMipped());
+            
             ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SPANISH_MOSS.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SKELETON.get(), RenderType.cutout());
         });
@@ -83,6 +94,9 @@ public class ClientSetup {
             return;
         }
         event.addSprite(WoodChestRenderer.WOOD_CHEST_RENDERER_ATLAS_TEXTURE);
+        event.addSprite(PirateChestRenderer.PIRATE_CHEST_RENDERER_ATLAS_TEXTURE);
+        event.addSprite(DreadPirateChestRenderer.DREAD_PIRATE_CHEST_RENDERER_ATLAS_TEXTURE);
+        event.addSprite(VikingChestRenderer.VIKING_CHEST_RENDERER_ATLAS_TEXTURE);
     }
     
 	/**
@@ -92,6 +106,12 @@ public class ClientSetup {
 	@SubscribeEvent
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerBlockEntityRenderer(TreasureBlockEntities.WOOD_CHEST_BLOCK_ENTITY_TYPE.get(), WoodChestRenderer::new);
+		event.registerBlockEntityRenderer(TreasureBlockEntities.PIRATE_CHEST_BLOCK_ENTITY_TYPE.get(), PirateChestRenderer::new);
+		event.registerBlockEntityRenderer(TreasureBlockEntities.DREAD_PIRATE_CHEST_BLOCK_ENTITY_TYPE.get(), DreadPirateChestRenderer::new);
+		event.registerBlockEntityRenderer(TreasureBlockEntities.VIKING_CHEST_BLOCK_ENTITY_TYPE.get(), VikingChestRenderer::new);
+		
+		
+		
 		event.registerEntityRenderer(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), BoundSoulRenderer::new);
 	}
 	
@@ -102,6 +122,8 @@ public class ClientSetup {
 	@SubscribeEvent()
 	public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		event.registerLayerDefinition(StandardChestModel.LAYER_LOCATION, StandardChestModel::createBodyLayer);
+		event.registerLayerDefinition(DreadPirateChestModel.LAYER_LOCATION, DreadPirateChestModel::createBodyLayer);
+		event.registerLayerDefinition(VikingChestModel.LAYER_LOCATION, VikingChestModel::createBodyLayer);
 		event.registerLayerDefinition(BoundSoulModel.LAYER_LOCATION, BoundSoulModel::createBodyLayer);
 	}
 	

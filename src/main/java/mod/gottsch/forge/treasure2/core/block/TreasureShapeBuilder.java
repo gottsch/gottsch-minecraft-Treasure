@@ -126,6 +126,22 @@ public class TreasureShapeBuilder {
 				east,	// E
 	    };
 	}
+
+	public static VoxelShape[] buildVikingChest() {
+		VoxelShape northSouth = Shapes.or(
+				Block.box(1, 3, 3, 15, 15, 13),
+				Block.box(1, 0, 3, 3, 4, 13),
+				Block.box(13, 0, 3, 15, 4, 13));
+		
+		VoxelShape eastWest = Block.box(3, 0, 1, 13, 15, 15);
+		
+		return new VoxelShape[] {
+				northSouth,
+				eastWest,
+				northSouth,
+				eastWest
+		};
+	}
 	
 	/*
 	 * rotate VoxelShape a full 90 around an axis
