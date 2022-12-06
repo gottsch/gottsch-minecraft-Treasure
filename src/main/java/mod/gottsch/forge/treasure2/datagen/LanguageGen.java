@@ -211,8 +211,19 @@ public class LanguageGen extends LanguageProvider {
          */
         // chests
         add(LangUtil.screen("wood_chest.name"), "Wood Chest");
+        add(LangUtil.screen("crate_chest.name"), "Wood Chest");
+        add(LangUtil.screen("moldy_crate_chest.name"), "Moldy Crate");
+        add(LangUtil.screen("ironbound_chest.name"), "Wood Chest");
         add(LangUtil.screen("pirate_chest.name"), "Pirate Chest");
+        add(LangUtil.screen("safe.name"), "Wood Chest");
+        add(LangUtil.screen("iron_strongbox.name"), "Wood Chest");
+        add(LangUtil.screen("gold_strongbox.name"), "Wood Chest");
         add(LangUtil.screen("dread_pirate_chest.name"), "Dread Pirate Chest");
+        add(LangUtil.screen("compressor_chest.name"), "Wood Chest");
+        add(LangUtil.screen("skull_chest.name"), "Wood Chest");
+        add(LangUtil.screen("gold_skull_chest.name"), "Wood Chest");
+        add(LangUtil.screen("crystal_chest.name"), "Wood Chest");
+        add(LangUtil.screen("cauldron_chest.name"), "Wood Chest");
         add(LangUtil.screen("viking_chest.name"), "Viking Chest");
         
         /*
