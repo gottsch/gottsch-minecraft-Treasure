@@ -64,12 +64,12 @@ public interface ITreasureChestBlockEntityRenderer {
 	 * @param blockEntity
 	 * @param partialTicks
 	 */
-	default public void  updateModelLidRotation(AbstractTreasureChestBlockEntity blockEntity, float partialTicks) {
-		float lidRotation = blockEntity.prevLidAngle + (blockEntity.lidAngle - blockEntity.prevLidAngle) * partialTicks;
-		lidRotation = 1.0F - lidRotation;
-		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-		getModel().getLid().xRot = -(lidRotation * (float) Math.PI / getAngleModifier());
-	}
+//	default public void  updateModelLidRotation(AbstractTreasureChestBlockEntity blockEntity, float partialTicks) {
+//		float lidRotation = blockEntity.prevLidAngle + (blockEntity.lidAngle - blockEntity.prevLidAngle) * partialTicks;
+//		lidRotation = 1.0F - lidRotation;
+//		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
+//		getModel().getLid().xRot = -(lidRotation * (float) Math.PI / getAngleModifier());
+//	}
 
 	/**
 	 * 
@@ -117,12 +117,12 @@ public interface ITreasureChestBlockEntityRenderer {
 	 * 
 	 * @return
 	 */
-	default public float getAngleModifier() {
-		return 2.0F;
-	}
+//	default public float getAngleModifier() {
+//		return 2.0F;
+//	}
 	
 	/**
-	 * Modifies teh scale of the Lock item(s).
+	 * Modifies the scale of the Lock item(s).
 	 * Ranges from 0.0F to x.xF.
 	 * Ex:
 	 * Return 1.0F = full size

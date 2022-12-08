@@ -38,20 +38,20 @@ public class TreasureShapeBuilder {
 				Block.box(2D, 0D, 6D, 14D, 10D, 10D),
 				Block.box(4D, 10D, 6D, 12D, 12D, 10D)
 				);
-		
+
 		VoxelShape eastWest = Shapes.or(
 				Block.box(6D, 0D, 2D, 10D, 10D, 14D),
 				Block.box(6D, 10D, 4D, 10D, 12D, 12D)
 				);
-		
+
 		return new VoxelShape[] {
 				northSouth,	// S
 				eastWest,	// W
 				northSouth,	// N
 				eastWest,	// E
-	    };
+		};
 	}
-	
+
 	public static VoxelShape[] buildGravestone2() {
 		VoxelShape northSouth = Shapes.or(
 				Block.box(2D, 0D, 5D, 14D, 2D, 11D),	// base
@@ -66,15 +66,15 @@ public class TreasureShapeBuilder {
 				Block.box(7D, 14D, 5D, 9D, 15D, 11D),	// star1
 				Block.box(7D, 15D, 4D, 9D, 16D, 12D)	// star1
 				);
-		
+
 		return new VoxelShape[] {
 				northSouth,	// S
 				eastWest,	// W
 				northSouth,	// N
 				eastWest,	// E
-	    };
+		};
 	}
-	
+
 	public static VoxelShape[] buildGravestone3() {
 		VoxelShape northSouth = Shapes.or(
 				Block.box(2D, 0D, 5D, 14D, 2D, 11D),	// base
@@ -89,31 +89,31 @@ public class TreasureShapeBuilder {
 				Block.box(7D, 9D, 7D, 9D, 15D, 9D),	// main2
 				Block.box(7D, 15D, 5D, 9D, 16D, 11D)	// star1
 				);
-		
+
 		return new VoxelShape[] {
 				northSouth,	// S
 				eastWest,	// W
 				northSouth,	// N
 				eastWest,	// E
-	    };
+		};
 	}
-	
+
 	public static VoxelShape[] buildSkullCrossbones() {
 		VoxelShape north = Shapes.or(
 				Block.box(5D, 0D, 1D, 11D, 5D, 6D), // head
 				Block.box(1D, 0D, 7D, 15D, 1D, 14D) // bones
 				);
-		
+
 		VoxelShape south = Shapes.or(				
 				Block.box(5D, 0D, 10D, 11D, 5D, 15D), // head
 				Block.box(1D, 0D, 2D, 15D, 1D, 9D) // bones
 				);
-		
+
 		VoxelShape east = Shapes.or(
 				Block.box(10D, 0D, 5D, 15D, 5D, 11D), // head
 				Block.box(2D, 0D, 1D, 9D, 1D, 15D) // bones
 				);
-		
+
 		VoxelShape west = Shapes.or(
 				Block.box(1D, 0D, 5D, 6D, 5D, 11D), // head
 				Block.box(7D, 0D, 1D, 15D, 1D, 14D) // bones
@@ -124,7 +124,7 @@ public class TreasureShapeBuilder {
 				west,	// W
 				north,	// N
 				east,	// E
-	    };
+		};
 	}
 
 	public static VoxelShape[] buildVikingChest() {
@@ -132,8 +132,11 @@ public class TreasureShapeBuilder {
 				Block.box(1, 3, 3, 15, 15, 13),
 				Block.box(1, 0, 3, 3, 4, 13),
 				Block.box(13, 0, 3, 15, 4, 13));
-		
-		VoxelShape eastWest = Block.box(3, 0, 1, 13, 15, 15);
+
+		VoxelShape eastWest = Shapes.or(
+				Block.box(3, 3, 1, 13, 15, 15),
+				Block.box(3, 0, 1, 13, 15, 15),
+				Block.box(3, 0, 13, 13, 4, 15));
 		
 		return new VoxelShape[] {
 				northSouth,
@@ -142,20 +145,27 @@ public class TreasureShapeBuilder {
 				eastWest
 		};
 	}
-	
+
+	public static VoxelShape[] buildFullBlock() {
+		VoxelShape block = Block.box(0, 0, 0, 16, 16, 16);
+		return new VoxelShape[] {
+				 block,  block,  block,  block
+		};
+	}
+
 	/*
 	 * rotate VoxelShape a full 90 around an axis
 	 */
-//	public static VoxelShape rotateShape(Direction from, Direction to, VoxelShape shape) {
-//		VoxelShape[] buffer = new VoxelShape[]{ shape, VoxelShapes.empty() };
-//
-//		int times = (to.getHorizontalIndex() - from.getHorizontalIndex() + 4) % 4;
-//		for (int i = 0; i < times; i++) {
-//			buffer[0].forEachBox((minX, minY, minZ, maxX, maxY, maxZ) -> buffer[1] = VoxelShapes.or(buffer[1], VoxelShapes.create(1-maxZ, minY, minX, 1-minZ, maxY, maxX)));
-//			buffer[0] = buffer[1];
-//			buffer[1] = VoxelShapes.empty();
-//		}
-//
-//		return buffer[0];
-//	}
+	//	public static VoxelShape rotateShape(Direction from, Direction to, VoxelShape shape) {
+	//		VoxelShape[] buffer = new VoxelShape[]{ shape, VoxelShapes.empty() };
+	//
+	//		int times = (to.getHorizontalIndex() - from.getHorizontalIndex() + 4) % 4;
+	//		for (int i = 0; i < times; i++) {
+	//			buffer[0].forEachBox((minX, minY, minZ, maxX, maxY, maxZ) -> buffer[1] = VoxelShapes.or(buffer[1], VoxelShapes.create(1-maxZ, minY, minX, 1-minZ, maxY, maxX)));
+	//			buffer[0] = buffer[1];
+	//			buffer[1] = VoxelShapes.empty();
+	//		}
+	//
+	//		return buffer[0];
+	//	}
 }

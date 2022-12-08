@@ -33,6 +33,7 @@ public abstract class AbstractTreasureChestModel extends Model implements ITreas
 		return super.renderType;
 	}
 	
+	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer renderBuffer, int combinedLight, int combinedOverlay,
 			float f, float g, float h, float i) {
 		// do nothing

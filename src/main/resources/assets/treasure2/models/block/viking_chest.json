@@ -2,8 +2,8 @@
 	"parent": "block/block",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "treasure2:block/chests/viking_chest",
-		"particle": "treasure2:block/chests/viking_chest"
+		"0": "treasure2:block/chest/viking_chest",
+		"particle": "treasure2:block/chest/viking_chest"
 	},
 	"elements": [
 		{

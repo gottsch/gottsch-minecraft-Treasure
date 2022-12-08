@@ -102,15 +102,8 @@ public abstract class AbstractChestBlockEntityRenderer implements BlockEntityRen
 		// float f = getHorizontalAngle(facing);
 		// PoseStack.mulPose(Vector3f.YP.rotationDegrees(-f));
 
-		
-		// TEST scale to half size to see if locks are rendered
-//		PoseStack.scale(0.5F, 0.5F, 0.5F);
-		
 		// update the lid rotation
-		 updateModelLidRotation(blockEntity, partialTicks);
-
-		// update the lid rotation - animation
-//		this.model.setupAnim(blockEntity, partialTicks);
+		 getModel().updateModelLidRotation(blockEntity, partialTicks);
 			
 		VertexConsumer renderBuffer = material.buffer(bufferSource, RenderType::entitySolid);		
 		model.renderToBuffer(poseStack, renderBuffer, combinedLight, combinedOverlay, 1.0F, 1.0F, 1.0F, 1.0F, blockEntity);

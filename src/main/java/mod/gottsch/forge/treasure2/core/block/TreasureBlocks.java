@@ -109,7 +109,7 @@ public class TreasureBlocks {
 			LockLayouts.SKULL, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(3.0F).lightLevel(light)));
 	
 	public static final RegistryObject<Block> CAULDRON_CHEST = Registration.BLOCKS.register("cauldron_chest", () -> new StandardChestBlock(CauldronChestBlockEntity.class,
-			LockLayouts.TOP_SPLIT, Properties.of(Material.METAL, MaterialColor.METAL).strength(3.0F).lightLevel(light)));
+			LockLayouts.TOP_SPLIT, Properties.of(Material.METAL, MaterialColor.METAL).strength(3.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildFullBlock()));
 	
 	public static final RegistryObject<Block> SPIDER_CHEST = Registration.BLOCKS.register("spider_chest", () -> new StandardChestBlock(SpiderChestBlockEntity.class,
 			LockLayouts.SINGLE_STANDARD, Properties.of(Material.WOOD, MaterialColor.WOOD).strength(3.0F).lightLevel(light)));

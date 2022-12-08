@@ -211,21 +211,25 @@ public class LanguageGen extends LanguageProvider {
          */
         // chests
         add(LangUtil.screen("wood_chest.name"), "Wood Chest");
-        add(LangUtil.screen("crate_chest.name"), "Wood Chest");
+        add(LangUtil.screen("crate_chest.name"), "Crate");
         add(LangUtil.screen("moldy_crate_chest.name"), "Moldy Crate");
-        add(LangUtil.screen("ironbound_chest.name"), "Wood Chest");
+        add(LangUtil.screen("ironbound_chest.name"), "Ironbound Chest");
         add(LangUtil.screen("pirate_chest.name"), "Pirate Chest");
-        add(LangUtil.screen("safe.name"), "Wood Chest");
-        add(LangUtil.screen("iron_strongbox.name"), "Wood Chest");
-        add(LangUtil.screen("gold_strongbox.name"), "Wood Chest");
+        add(LangUtil.screen("safe.name"), "Safe");
+        add(LangUtil.screen("iron_strongbox.name"), "Iron Strongbox");
+        add(LangUtil.screen("gold_strongbox.name"), "Gold Strongbox");
         add(LangUtil.screen("dread_pirate_chest.name"), "Dread Pirate Chest");
-        add(LangUtil.screen("compressor_chest.name"), "Wood Chest");
-        add(LangUtil.screen("skull_chest.name"), "Wood Chest");
-        add(LangUtil.screen("gold_skull_chest.name"), "Wood Chest");
-        add(LangUtil.screen("crystal_chest.name"), "Wood Chest");
-        add(LangUtil.screen("cauldron_chest.name"), "Wood Chest");
+        add(LangUtil.screen("compressor_chest.name"), "Compressor Chest");
+        add(LangUtil.screen("skull_chest.name"), "Skull Chest");
+        add(LangUtil.screen("gold_skull_chest.name"), "Gold Skull Chest");
+        add(LangUtil.screen("crystal_chest.name"), "Crystal Skull Chest");
+        add(LangUtil.screen("cauldron_chest.name"), "Cauldron Chest");
         add(LangUtil.screen("viking_chest.name"), "Viking Chest");
-        
+        add(LangUtil.screen("spider_chest.name"), "Spider Chest");
+        add(LangUtil.screen("cardboard_box.name"), "Cardboard Box");
+        add(LangUtil.screen("milk_crate.name"), "Milk Crate");
+        add(LangUtil.screen("wither_chest.name"), "Wither Chest");
+
         /*
          *  chat
          */

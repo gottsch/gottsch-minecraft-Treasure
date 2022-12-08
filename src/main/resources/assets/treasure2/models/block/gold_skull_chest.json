@@ -1,9 +1,95 @@
 {
-    "parent": "treasure2:block/skull_chest",
+	"parent": "block/block",
+	"texture_size": [64, 64],
 	"textures": {
-		"1": "treasure2:blocks/chests/gold_skull_eyes",
-		"2": "treasure2:blocks/chests/gold_skull_mouth_front",
-		"3": "treasure2:blocks/chests/gold_skull_texture",
-		"particle": "treasure2:blocks/chests/gold_skull_texture"
-	}
+		"1": "treasure2:block/chest/gold_skull_chest",
+		"particle": "treasure2:block/chest/gold_skull_chest"
+	},
+	"elements": [
+		{
+			"name": "top",
+			"from": [5, 8, 5],
+			"to": [11, 9, 11],
+			"faces": {
+				"north": {"uv": [3, 1.5, 1.5, 1.75], "texture": "#1"},
+				"east": {"uv": [4.5, 1.5, 3, 1.75], "texture": "#1"},
+				"south": {"uv": [6, 1.5, 4.5, 1.75], "texture": "#1"},
+				"west": {"uv": [1.5, 1.5, 0, 1.75], "texture": "#1"},
+				"up": {"uv": [1.5, 1.5, 3, 0], "texture": "#1"},
+				"down": {"uv": [3, 0, 4.5, 1.5], "texture": "#1"}
+			}
+		},
+		{
+			"name": "head",
+			"from": [4, 3, 4],
+			"to": [12, 8, 12],
+			"faces": {
+				"north": {"uv": [4, 4, 2, 5.25], "texture": "#1"},
+				"east": {"uv": [6, 4, 4, 5.25], "texture": "#1"},
+				"south": {"uv": [8, 4, 6, 5.25], "texture": "#1"},
+				"west": {"uv": [2, 4, 0, 5.25], "texture": "#1"},
+				"up": {"uv": [2, 4, 4, 2], "texture": "#1"},
+				"down": {"uv": [4, 2, 6, 4], "texture": "#1"}
+			}
+		},
+		{
+			"name": "jawBottom",
+			"from": [5, 0, 4],
+			"to": [11, 2, 9],
+			"faces": {
+				"north": {"uv": [2.75, 8.75, 1.25, 9.25], "texture": "#1"},
+				"east": {"uv": [4, 8.75, 2.75, 9.25], "texture": "#1"},
+				"south": {"uv": [5.5, 8.75, 4, 9.25], "texture": "#1"},
+				"west": {"uv": [1.25, 8.75, 0, 9.25], "texture": "#1"},
+				"up": {"uv": [1.25, 8.75, 2.75, 7.5], "texture": "#1"},
+				"down": {"uv": [2.75, 7.5, 4.25, 8.75], "texture": "#1"}
+			}
+		},
+		{
+			"name": "jaw",
+			"from": [5, 2, 4],
+			"to": [11, 3, 10],
+			"faces": {
+				"north": {"uv": [3, 7, 1.5, 7.25], "texture": "#1"},
+				"east": {"uv": [4.5, 7, 3, 7.25], "texture": "#1"},
+				"south": {"uv": [6, 7, 4.5, 7.25], "texture": "#1"},
+				"west": {"uv": [1.5, 7, 0, 7.25], "texture": "#1"},
+				"up": {"uv": [1.5, 7, 3, 5.5], "texture": "#1"},
+				"down": {"uv": [3, 5.5, 4.5, 7], "texture": "#1"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "lid",
+			"origin": [0, 3, 2],
+			"color": 0,
+			"children": [0]
+		},
+		{
+			"name": "main",
+			"origin": [0, 3, 2],
+			"color": 0,
+			"children": [
+				{
+					"name": "head",
+					"origin": [0, 3, 2],
+					"color": 0,
+					"children": [1]
+				},
+				{
+					"name": "jawBottom",
+					"origin": [0, 2, 1],
+					"color": 0,
+					"children": [2]
+				},
+				{
+					"name": "jaw",
+					"origin": [0, 3, 2],
+					"color": 0,
+					"children": [3]
+				}
+			]
+		}
+	]
 }

@@ -34,6 +34,17 @@ import net.minecraft.resources.ResourceLocation;
 public interface ITreasureChestModel {
 	public ModelPart getLid();
 	
+	default public void  updateModelLidRotation(AbstractTreasureChestBlockEntity blockEntity, float partialTicks) {
+		float lidRotation = blockEntity.prevLidAngle + (blockEntity.lidAngle - blockEntity.prevLidAngle) * partialTicks;
+		lidRotation = 1.0F - lidRotation;
+		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
+		getLid().xRot = -(lidRotation * (float) Math.PI / getAngleModifier());
+	}
+	
+	default public float getAngleModifier() {
+		return 2.0F;
+	}
+	
 	/**
 	 * wrapper for vanilla Model.getRenderType()
 	 * @param locationIn
