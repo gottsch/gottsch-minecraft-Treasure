@@ -17,10 +17,16 @@
  */
 package mod.gottsch.forge.treasure2.core.registry.support;
 
+import java.util.Optional;
+
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.treasure2.api.TreasureApi;
+import mod.gottsch.forge.treasure2.core.enums.IRegionPlacement;
 import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -29,13 +35,15 @@ import net.minecraft.resources.ResourceLocation;
  *
  */
 public class ChestGenContext extends GeneratedContext {
+	private static final String LEGACY_NAME = "registryName";
+	
 	public enum GenType {
 		CHEST,
 		NONE;
 	}
 	
 	private ResourceLocation name;
-	private RegionPlacement placement;
+	private IRegionPlacement placement;
 	private GenType genType;
 	private boolean discovered;
 	private ICoords chartedFrom;
@@ -54,6 +62,63 @@ public class ChestGenContext extends GeneratedContext {
 		this.genType = genType;
 	}
 
+	/**
+	 * 
+	 */
+	public CompoundTag save() {		
+		CompoundTag tag = super.save();
+		if (getName() != null) {
+			tag.putString("name", getName().toString());
+		}
+		tag.putBoolean("discovered",isDiscovered());
+
+		if (getPlacement() != null) {
+			tag.putString("placement", getPlacement().getValue());
+		}
+		if (isCharted()) {
+			CompoundTag chartedFromTag = getChartedFrom().save(new CompoundTag());
+			tag.put("chartedFrom", chartedFromTag);
+		}
+		if (getGenType() != null) {
+			tag.putString("genType", getGenType().name());
+		}
+		else {
+			tag.putString("genType", GenType.CHEST.name());
+		}
+		return tag;
+	}
+	
+	/**
+	 * 
+	 */
+	public void load(CompoundTag tag) {
+		super.load(tag);
+		if (tag.contains("name")) {
+			this.name = ModUtil.asLocation(tag.getString("name"));
+		}
+		else if (tag.contains(LEGACY_NAME)) {
+			this.name = ModUtil.asLocation(tag.getString(LEGACY_NAME));
+		}
+		if (tag.contains("discovered")) {
+			this.discovered = tag.getBoolean("discovered");
+		}
+		if (tag.contains("placement")) {
+			Optional<IRegionPlacement> placement = TreasureApi.getRegionPlacement(tag.getString("placement"));
+			if (placement.isPresent()) {
+				this.placement = placement.get();
+			}
+			else {
+				this.placement = RegionPlacement.SURFACE; // TODO change to NONE
+			}
+		}
+		if (tag.contains("chartedFrom")) {
+			this.chartedFrom = Coords.EMPTY.load(tag.getCompound("chartedFrom"));
+		}
+		if (tag.contains("genType")) {
+			this.genType = GenType.valueOf(tag.getString("genType").toUpperCase());
+		}
+	}
+	
 	public ResourceLocation getName() {
 		return name;
 	}
@@ -62,11 +127,11 @@ public class ChestGenContext extends GeneratedContext {
 		this.name = name;
 	}
 
-	public RegionPlacement getPlacement() {
+	public IRegionPlacement getPlacement() {
 		return placement;
 	}
 
-	public void setPlacement(RegionPlacement placement) {
+	public void setPlacement(IRegionPlacement placement) {
 		this.placement = placement;
 	}
 

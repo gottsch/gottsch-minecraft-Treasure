@@ -222,7 +222,7 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.screen("compressor_chest.name"), "Compressor Chest");
         add(LangUtil.screen("skull_chest.name"), "Skull Chest");
         add(LangUtil.screen("gold_skull_chest.name"), "Gold Skull Chest");
-        add(LangUtil.screen("crystal_chest.name"), "Crystal Skull Chest");
+        add(LangUtil.screen("crystal_skull_chest.name"), "Crystal Skull Chest");
         add(LangUtil.screen("cauldron_chest.name"), "Cauldron Chest");
         add(LangUtil.screen("viking_chest.name"), "Viking Chest");
         add(LangUtil.screen("spider_chest.name"), "Spider Chest");

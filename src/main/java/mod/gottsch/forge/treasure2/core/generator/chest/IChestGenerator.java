@@ -162,6 +162,9 @@ public interface IChestGenerator {
 	 * @param rarity
 	 * @return
 	 */
+	// TODO how to prevent special chests from ending up in the rarity tag lists?
+	// TODO move to the ChestRegistry ?
+	@Deprecated
 	default public AbstractTreasureChestBlock selectChest(final Random random, final IRarity rarity) {
 		Treasure.LOGGER.debug("attempting to get chest list for rarity -> {}", rarity);
 		List<RegistryObject<Block>> chestList = (List<RegistryObject<Block>>) ChestRegistry.getChest(rarity);

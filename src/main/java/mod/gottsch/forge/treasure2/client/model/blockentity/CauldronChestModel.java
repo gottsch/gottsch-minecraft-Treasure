@@ -91,6 +91,7 @@ public class CauldronChestModel extends AbstractTreasureChestModel {
 		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
 		// NOTE positive rotation here (getLid() returns lidLeft property)
 		getLid().zRot = (lidRotation * (float)Math.PI / getAngleModifier());
+		getRightLid().zRot = -getLid().zRot;
 	}
 	
 	@Override

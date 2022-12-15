@@ -17,9 +17,12 @@
  */
 package mod.gottsch.forge.treasure2.core.inventory;
 
+import mod.gottsch.forge.treasure2.core.block.entity.SkullChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.chest.ISkullChestType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * 
@@ -27,6 +30,7 @@ import net.minecraft.world.entity.player.Player;
  *
  */
 public class SkullChestContainerMenu extends AbstractTreasureContainerMenu {
+	private ISkullChestType skullType;
 	
 	/**
 	 * @param containerId
@@ -34,10 +38,16 @@ public class SkullChestContainerMenu extends AbstractTreasureContainerMenu {
 	 * @param playerInventory
 	 * @param slotCount
 	 */
-	public SkullChestContainerMenu(int containerId, BlockPos pos, Inventory playerInventory, Player player) {
+	public SkullChestContainerMenu(int containerId, BlockPos pos, 
+			Inventory playerInventory, Player player) {
 		super(containerId,TreasureContainers.SKULL_CHEST_CONTAINER.get(), pos, playerInventory, player);
 
-        
+		// determine the chest by the pos
+		BlockEntity blockEntity = player.level.getBlockEntity(pos);
+		if (blockEntity instanceof SkullChestBlockEntity) {
+			this.skullType = ((SkullChestBlockEntity)blockEntity).getSkullType();
+		}
+			
 		// set the dimensions
 		setMenuInventoryColumnCount(3);
         setMenuInventoryRowCount(3);
@@ -46,6 +56,10 @@ public class SkullChestContainerMenu extends AbstractTreasureContainerMenu {
 		
 		// build the container
 		buildContainer();
+	}
+
+	public ISkullChestType getSkullType() {
+		return skullType;
 	}
 
 }

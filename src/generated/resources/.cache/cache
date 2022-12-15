@@ -1,4 +1,4 @@
-5c348c8842df04b0efac612b490afe9fc7641897 assets/treasure2/lang/en_us.json
+b20c854017eeb31e595657bdee159b745561a079 assets/treasure2/lang/en_us.json
 ec0affa9af25bb3155f1ffb36624aaf0fa4ef025 assets/treasure2/models/item/adornments_tab.json
 8be0b1ec5bf90f3dcb3da00251632ae969418191 assets/treasure2/models/item/black_pearl.json
 98167609bf3898587f7565736a6fc24a7966cacd assets/treasure2/models/item/bound_soul.json
@@ -114,7 +114,11 @@ a181e992ba616b7b96e40ff83532c235c17bc557 data/treasure2/advancements/recipes/tre
 72aa607e95cca139db0c061c85c995e073e90683 data/treasure2/recipes/spider_key.json
 8d698d5124537edde11b73038f85a095a07d5acc data/treasure2/recipes/thiefs_lock_pick.json
 843398680eb7e33742b8109a2ccb6b179cee5221 data/treasure2/recipes/treasure_tool.json
-afa2f1703e71fe99c4529fb649a32104c2d79baf data/treasure2/tags/blocks/chests/common.json
+b11339ebb9f27341edffee56fb02ecdf779c0b88 data/treasure2/tags/blocks/chests/common.json
+d9ab4df05355bf3aaf3c60a1267462839a1cddde data/treasure2/tags/blocks/chests/epic.json
+ce5fcbffc6fb28b850736aeb6e4a05f15e42fdc3 data/treasure2/tags/blocks/chests/rare.json
+b21edb532a3131cf9c45ef00823aa5b3d12e001a data/treasure2/tags/blocks/chests/scarce.json
+fd962b06ec50a36e6a7c6607a4283286718ffd72 data/treasure2/tags/blocks/chests/uncommon.json
 274261f9576c66a93ecd8718e308c0819560bff2 data/treasure2/tags/items/key/common.json
 2db969e0bc376f23065f438363d17f7e9fd6ac2c data/treasure2/tags/items/key/epic.json
 ca84421bec3a95a73cfceea7a575992669557f0f data/treasure2/tags/items/key/mythical.json

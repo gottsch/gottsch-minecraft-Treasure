@@ -34,7 +34,7 @@ import net.minecraft.world.entity.player.Inventory;
  */
 public class KeyRingScreen extends AbstractChestScreen<KeyRingContainerMenu> {
 	// This is the resource location for the background image for the GUI
-		private static final ResourceLocation TEXTURE = new ResourceLocation(Treasure.MODID, "textures/gui/container/key_ring2.png");
+		private static final ResourceLocation TEXTURE = new ResourceLocation(Treasure.MODID, "textures/gui/screen/key_ring2.png");
 		
 	/**
 	 * 
@@ -42,8 +42,7 @@ public class KeyRingScreen extends AbstractChestScreen<KeyRingContainerMenu> {
 	 * @param playerInventory
 	 * @param title
 	 */
-	public KeyRingScreen(KeyRingContainerMenu menu, Inventory playerInventory,
-			Component title) {
+	public KeyRingScreen(KeyRingContainerMenu menu, Inventory playerInventory, Component title) {
 		super(menu, playerInventory, title);
 		// Set the width and height of the gui.  Should match the size of the texture!
 		imageWidth = 176;

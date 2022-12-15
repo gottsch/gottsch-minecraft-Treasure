@@ -35,7 +35,7 @@ import net.minecraft.world.entity.player.Inventory;
  */
 public class StandardChestScreen extends AbstractChestScreen<StandardChestContainerMenu> {
 	// the resource locations for the background images of the GUI
-	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(Treasure.MODID, "textures/gui/container/wood_chest.png");
+	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(Treasure.MODID, "textures/gui/screen/wood_chest.png");
 	private static final Color CHEST_LIGHT_BROWN = new Color(188, 168, 142);//161, 142, 116);
 	private static final Color CHEST_DARK_BROWN = new Color(38, 30, 14);
 
@@ -53,6 +53,7 @@ public class StandardChestScreen extends AbstractChestScreen<StandardChestContai
 			this.imageHeight = 176;
 			this.titleLabelY =+8;
 			this.inventoryLabelY = this.imageHeight - 102;
+			// TODO lookup a registry based on name to get the BG
 			setBgTexture(BG_TEXTURE);
 		}
 	}

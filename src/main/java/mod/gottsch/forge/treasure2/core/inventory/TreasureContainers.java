@@ -19,6 +19,7 @@ package mod.gottsch.forge.treasure2.core.inventory;
 
 import mod.gottsch.forge.treasure2.core.capability.KeyRingCapability;
 import mod.gottsch.forge.treasure2.core.capability.PouchCapability;
+import mod.gottsch.forge.treasure2.core.chest.SkullChestType;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;

@@ -78,7 +78,8 @@ public class WitherChestModel extends AbstractTreasureChestModel {
 		float lidRotation = tileEntity.prevLidAngle + (tileEntity.lidAngle - tileEntity.prevLidAngle) * partialTicks;
         lidRotation = 1.0F - lidRotation;
         lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-        getLid().yRot = -(lidRotation * (float)Math.PI / getAngleModifier());  
+        getLid().yRot = -(lidRotation * (float)Math.PI / getAngleModifier());
+        getLid2().yRot = -getLid().yRot;
 	}
 	
 	@Override
@@ -93,4 +94,7 @@ public class WitherChestModel extends AbstractTreasureChestModel {
 		return this.westDoor;
 	}
 
+	public ModelPart getLid2() {
+		return this.eastDoor;
+	}
 }

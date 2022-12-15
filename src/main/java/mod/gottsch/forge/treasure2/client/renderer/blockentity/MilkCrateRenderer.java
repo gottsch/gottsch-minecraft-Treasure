@@ -49,13 +49,13 @@ public class MilkCrateRenderer extends AbstractChestBlockEntityRenderer {
 
 	@Override
 	public void updateScale(PoseStack matrixStack) {
-		// shrink the size of the chest by half
+		// shrink the size of the chest 3/4 size
 		matrixStack.scale(0.75F, 0.75F, 0.75F);
 	}
 
 	@Override
 	public void updateTranslation(PoseStack matrixStack) {
-		final Vector3d TRANSLATION_OFFSET = new Vector3d(0.5, 1.15625F, 0.5);
+		final Vector3d TRANSLATION_OFFSET = new Vector3d(0.5, 1.125F, 0.5);
 		matrixStack.translate(TRANSLATION_OFFSET.x, TRANSLATION_OFFSET.y, TRANSLATION_OFFSET.z);
 	}
 }

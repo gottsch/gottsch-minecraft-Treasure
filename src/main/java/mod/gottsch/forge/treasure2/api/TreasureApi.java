@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 import mod.gottsch.forge.gottschcore.enums.IEnum;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.enums.IRegionPlacement;
+import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
@@ -56,6 +58,7 @@ public class TreasureApi {
 	public static final String KEY_LOCK_CATEGORY = "keyLockCategory";
 	public static final String GENERATOR_TYPE = "generatorType";
 	public static final String CHEST_GENERATOR_TYPE = "chestGeneratorType";
+	public static final String REGION_PLACEMENT = "regionPlacement";
 	public static final String SPECIAL_LOOT_TABLE = "specialLootTable";
 	
 	/**
@@ -145,6 +148,20 @@ public class TreasureApi {
 		}
 		else {
 			return Optional.of((IChestGeneratorType) ienum);
+		}
+	}	
+
+	public static void registerRegionPlacement(IRegionPlacement placement) {
+		EnumRegistry.register(REGION_PLACEMENT, placement);
+	}
+	
+	public static Optional<IRegionPlacement> getRegionPlacement(String key) {
+		IEnum ienum = EnumRegistry.get(REGION_PLACEMENT, key);
+		if (ienum == null) {
+			return Optional.empty();
+		}
+		else {
+			return Optional.of((IRegionPlacement) ienum);
 		}
 	}
 	
@@ -253,15 +270,26 @@ public class TreasureApi {
 		TreasureMetaRegistry.register(modID);
 	}
 
+	/*
+	 * Registers the chest generator object.
+	 */
 	public static void registerChestGenerator(IChestGeneratorType type, IChestGenerator generator) {
 		ChestGeneratorRegistry.registerGeneator(type, generator);
 	}
 	
+	/*
+	 * Maps the chest generator object by rarity and type.
+	 */
+	@Deprecated
 	public static void registerWeightedChestGenerator(IRarity rarity, IGeneratorType type, IChestGenerator generator, Number weight) {
 		WeightedChestGeneratorRegistry.registerGenerator(rarity, type, generator, weight);
+	}
+	public static void registerWeightedChestGenerator(IRarity rarity, IGeneratorType type, IChestGeneratorType chestGenType, Number weight) {
+		WeightedChestGeneratorRegistry.registerGenerator(rarity, type, chestGenType, weight);
 	}
 	
 	public List<LockItem> getLocks(IRarity rarity) {
 		return KeyLockRegistry.getLocks(rarity).stream().map(lock -> lock.get()).collect(Collectors.toList());
 	}
+
 }

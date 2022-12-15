@@ -125,6 +125,7 @@ public class Treasure {
 					Config.transform(commentedConfig);
 	
 					// init generated chest registry
+					LOGGER.debug("reading in chests config...");
 					DimensionalGeneratedRegistry.initialize();
 				} 
 			}

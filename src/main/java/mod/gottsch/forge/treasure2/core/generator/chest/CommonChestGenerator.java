@@ -39,6 +39,8 @@ import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
  *
  */
 public class CommonChestGenerator implements IChestGenerator {
+	// TODO probably would be better to have ChestGeneratorType as a property of the generator.
+	// no hard-coding and self-registering
 	
 	/**
 	 * 

@@ -18,14 +18,18 @@
 package mod.gottsch.forge.treasure2.core.block.entity;
 
 import mod.gottsch.forge.treasure2.core.chest.ChestInventorySize;
+import mod.gottsch.forge.treasure2.core.chest.ISkullChestType;
+import mod.gottsch.forge.treasure2.core.chest.SkullChestType;
 import mod.gottsch.forge.treasure2.core.inventory.SkullChestContainerMenu;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -35,19 +39,39 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class SkullChestBlockEntity extends AbstractTreasureChestBlockEntity {
 	
-	/**
-	 * 
-	 * @param texture
-	 */
+	private ISkullChestType skullType;
+	
 	public SkullChestBlockEntity(BlockPos pos, BlockState state) {
 		super(TreasureBlockEntities.SKULL_CHEST_BLOCK_ENTITY_TYPE.get(), pos, state);
-		setCustomName(new TranslatableComponent("display.skull_chest.name"));
+		skullType = SkullChestType.SKULL;
+	}
+
+	public SkullChestBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
 	}
 	
     @Override
     public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
     	return new SkullChestContainerMenu(windowId, this.worldPosition, playerInventory, playerEntity);
     }
+
+	@Override
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
+		tag.putString("skullType", getSkullType().getName());
+	}
+	
+	@Override
+	public void load(CompoundTag tag) {
+		super.load(tag);
+		if (tag.contains("skullType")) {
+			// NOTE if wanted to make this extensible, you would need a registry for the enum
+			setSkullType(SkullChestType.valueOf(tag.getString("skullType")));
+		}
+		else {
+			setSkullType(SkullChestType.SKULL);
+		}
+	}
 	
     @Override
 	public Component getDefaultName() {
@@ -60,5 +84,13 @@ public class SkullChestBlockEntity extends AbstractTreasureChestBlockEntity {
 	@Override
 	public int getInventorySize() {
 		return ChestInventorySize.SKULL.getSize();
+	}
+
+	public ISkullChestType getSkullType() {
+		return skullType;
+	}
+
+	public void setSkullType(ISkullChestType skullType) {
+		this.skullType = skullType;
 	}
 }

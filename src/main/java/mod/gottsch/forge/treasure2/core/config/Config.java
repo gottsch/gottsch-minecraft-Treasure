@@ -151,7 +151,7 @@ public class Config extends AbstractConfig {
 						
 			enableFog = builder
 					.comment(" Enable/disable white fog.")
-					.define("Enable fog:", true);
+					.define("enableFog", true);
 			
 			builder.pop();
 		}
@@ -389,6 +389,7 @@ public class Config extends AbstractConfig {
 			public ConfigValue<Double> probability;
 			public ConfigValue<Integer> minBlockDistance;
 			public ConfigValue<Integer>	waitChunks;
+			public BiomesConfig biomes;
 			
 			public WitherTree(final ForgeConfigSpec.Builder builder)	 {
 				builder.comment(CATEGORY_DIV, " Wither Tree properties", CATEGORY_DIV)
@@ -421,6 +422,11 @@ public class Config extends AbstractConfig {
 				this.waitChunks = builder
 						.comment(" The number of chunks that are generated in a new world before wither trees start to spawn.")
 						.defineInRange("waitChunks", 500, 10, 32000);
+				
+				BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean", "minecraft:deep_frozen_ocean", "minecraft:cold_ocean",
+						"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },
+				new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean" });
+				biomes = new BiomesConfig(builder, biomesData);
 				
 				builder.pop();
 			}

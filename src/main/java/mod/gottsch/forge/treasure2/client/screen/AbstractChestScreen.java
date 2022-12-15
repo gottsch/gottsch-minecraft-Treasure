@@ -36,7 +36,7 @@ import net.minecraft.world.entity.player.Inventory;
  *
  */
 public abstract class AbstractChestScreen<T extends AbstractTreasureContainerMenu> extends AbstractContainerScreen<T> {
-	private static final ResourceLocation VANILLA_BG_TEXTURE = new ResourceLocation(Treasure.MODID, "textures/gui/container/treasure_chest.png");
+	private static final ResourceLocation VANILLA_BG_TEXTURE = new ResourceLocation(Treasure.MODID, "textures/gui/screen/treasure_chest.png");
 	
 	private ResourceLocation bgTexture;
 	private Inventory inventory;
@@ -56,6 +56,7 @@ public abstract class AbstractChestScreen<T extends AbstractTreasureContainerMen
 		imageWidth = 176;
 		imageHeight = 167;
 		
+		// TODO research - this might be custom label position because of the shadow
 		this.inventoryLabelY +=1;
 	}
 	

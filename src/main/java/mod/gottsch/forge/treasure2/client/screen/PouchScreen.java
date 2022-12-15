@@ -34,7 +34,7 @@ import net.minecraft.world.entity.player.Inventory;
  */
 public class PouchScreen extends AbstractChestScreen<PouchContainerMenu> {
 	// This is the resource location for the background image for the GUI
-		private static final ResourceLocation TEXTURE = new ResourceLocation(Treasure.MODID, "textures/gui/container/pouch.png");
+		private static final ResourceLocation TEXTURE = new ResourceLocation(Treasure.MODID, "textures/gui/screen/pouch.png");
 		
 	/**
 	 * 

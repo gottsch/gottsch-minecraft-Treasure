@@ -50,16 +50,11 @@ public class SkullChestModel extends AbstractTreasureChestModel {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition lid = partdefinition.addOrReplaceChild("lid", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3.0F, -6.0F, -5.0F, 6.0F, 1.0F, 6.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 21.0F, 2.0F));
-
+		PartDefinition lid = partdefinition.addOrReplaceChild("lid", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3.0F, -7.0F, -5.0F, 6.0F, 1.0F, 6.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 22.0F, 2.0F));
+		PartDefinition head = lid.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 8).mirror().addBox(-4.0F, -5.0F, -6.0F, 8.0F, 5.0F, 8.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, -1.0F, 0.0F));
+		PartDefinition jaw = lid.addOrReplaceChild("jaw", CubeListBuilder.create().texOffs(0, 22).mirror().addBox(-3.0F, 0.0F, -6.0F, 6.0F, 1.0F, 6.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, -1.0F, 0.0F));
 		PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(), PartPose.offset(0.0F, 21.0F, 2.0F));
-
-		PartDefinition head = main.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 8).mirror().addBox(-4.0F, -5.0F, -6.0F, 8.0F, 5.0F, 8.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
-
 		PartDefinition jawBottom = main.addOrReplaceChild("jawBottom", CubeListBuilder.create().texOffs(0, 30).mirror().addBox(-3.0F, 0.0F, -5.0F, 6.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 1.0F, -1.0F));
-
-		PartDefinition jaw = main.addOrReplaceChild("jaw", CubeListBuilder.create().texOffs(0, 22).mirror().addBox(-3.0F, 0.0F, -6.0F, 6.0F, 1.0F, 6.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
-
 		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 

@@ -50,9 +50,13 @@ import mod.gottsch.forge.treasure2.client.renderer.blockentity.VikingChestRender
 import mod.gottsch.forge.treasure2.client.renderer.blockentity.WitherChestRenderer;
 import mod.gottsch.forge.treasure2.client.renderer.blockentity.WoodChestRenderer;
 import mod.gottsch.forge.treasure2.client.renderer.entity.BoundSoulRenderer;
+import mod.gottsch.forge.treasure2.client.screen.CompressorChestScreen;
 import mod.gottsch.forge.treasure2.client.screen.KeyRingScreen;
 import mod.gottsch.forge.treasure2.client.screen.PouchScreen;
+import mod.gottsch.forge.treasure2.client.screen.SkullChestScreen;
 import mod.gottsch.forge.treasure2.client.screen.StandardChestScreen;
+import mod.gottsch.forge.treasure2.client.screen.StrongboxScreen;
+import mod.gottsch.forge.treasure2.client.screen.WitherChestScreen;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureBlockEntities;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
@@ -91,8 +95,13 @@ public class ClientSetup {
 	 */
     public static void init(final FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+        	// TODO might need a screen for every chest if there is a different colored gui to use.
         	// attach our container(s) to the screen(s)
             MenuScreens.register(TreasureContainers.STANDARD_CHEST_CONTAINER.get(), StandardChestScreen::new);           
+            MenuScreens.register(TreasureContainers.STRONGBOX_CONTAINER.get(), StrongboxScreen::new);
+            MenuScreens.register(TreasureContainers.SKULL_CHEST_CONTAINER.get(), SkullChestScreen::new);
+            MenuScreens.register(TreasureContainers.COMPRESSOR_CHEST_CONTAINER.get(), CompressorChestScreen::new);
+            MenuScreens.register(TreasureContainers.WITHER_CHEST_CONTAINER.get(), WitherChestScreen::new); 
             MenuScreens.register(TreasureContainers.KEY_RING_CONTAINER.get(), KeyRingScreen::new);           
             MenuScreens.register(TreasureContainers.POUCH_CONTAINER.get(), PouchScreen::new);           
 

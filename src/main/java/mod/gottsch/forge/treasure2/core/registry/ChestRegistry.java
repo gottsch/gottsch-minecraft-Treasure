@@ -17,15 +17,15 @@
  */
 package mod.gottsch.forge.treasure2.core.registry;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
+import mod.gottsch.forge.gottschcore.random.RandomHelper;
+import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -87,5 +87,22 @@ public class ChestRegistry {
 	
 	public static List<RegistryObject<Block>> getChest(IRarity rarity) {
 		return (List<RegistryObject<Block>>) CHESTS_BY_RARITY.get(rarity);
+	}
+	
+	/**
+	 * Select a chest randomly within a particular rarity
+	 * @param random
+	 * @param rarity
+	 * @return
+	 */
+	public static Optional<RegistryObject<Block>> selectChest(final Random random, final IRarity rarity) {
+		Treasure.LOGGER.debug("attempting to get chest list for rarity -> {}", rarity);
+		List<RegistryObject<Block>> chestList = getChest(rarity);
+		Treasure.LOGGER.debug("size of chests lists -> {}", chestList.size());
+		RegistryObject<Block> chest = null;
+		if (!chestList.isEmpty()) {
+			chest = chestList.get(RandomHelper.randomInt(random, 0, chestList.size() - 1));
+		}
+		return Optional.ofNullable(chest);
 	}
 }

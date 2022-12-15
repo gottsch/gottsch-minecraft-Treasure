@@ -17,8 +17,14 @@
  */
 package mod.gottsch.forge.treasure2.core.registry.support;
 
+import java.util.Optional;
+
 import mod.gottsch.forge.gottschcore.enums.IRarity;
+import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.treasure2.api.TreasureApi;
+import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import net.minecraft.nbt.CompoundTag;
 
 /*
  * 
@@ -31,6 +37,29 @@ public class GeneratedContext {
 	public GeneratedContext(IRarity rarity, ICoords coords) {
 		this.rarity = rarity;
 		this.coords = coords;
+	}
+	
+	public CompoundTag save() {
+		CompoundTag tag = new CompoundTag();
+		tag.put("coords", coords.save(new CompoundTag()));
+		tag.putString("rarity", rarity.getValue());		
+		return tag;
+	}
+	
+	public void load(CompoundTag tag) {
+		if (tag.contains("coords")) {
+			CompoundTag coordsTag = tag.getCompound("coords");
+			this.coords = Coords.EMPTY.load(coordsTag);
+		}
+		if (tag.contains("rarity")) {
+			Optional<IRarity> rarity = TreasureApi.getRarity(tag.getString("rarity"));
+			if (rarity.isPresent()) {
+				this.rarity = rarity.get();
+			}
+			else {
+				this.rarity = Rarity.NONE;
+			}
+		}
 	}
 	
 	public ICoords getCoords() {

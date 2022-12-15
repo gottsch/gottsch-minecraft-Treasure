@@ -28,7 +28,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  *
  */
 public class TreasureShapeBuilder {
-
+	// NOTE bounds order is NESW
+	
 	/**
 	 * 
 	 * @return
@@ -45,10 +46,10 @@ public class TreasureShapeBuilder {
 				);
 
 		return new VoxelShape[] {
-				northSouth,	// S
-				eastWest,	// W
-				northSouth,	// N
-				eastWest,	// E
+				northSouth,	
+				eastWest,
+				northSouth,
+				eastWest,
 		};
 	}
 
@@ -68,10 +69,10 @@ public class TreasureShapeBuilder {
 				);
 
 		return new VoxelShape[] {
-				northSouth,	// S
-				eastWest,	// W
-				northSouth,	// N
-				eastWest,	// E
+				northSouth,
+				eastWest,
+				northSouth,
+				eastWest,
 		};
 	}
 
@@ -91,10 +92,10 @@ public class TreasureShapeBuilder {
 				);
 
 		return new VoxelShape[] {
-				northSouth,	// S
-				eastWest,	// W
-				northSouth,	// N
-				eastWest,	// E
+				northSouth,
+				eastWest,
+				northSouth,
+				eastWest,
 		};
 	}
 
@@ -135,7 +136,7 @@ public class TreasureShapeBuilder {
 
 		VoxelShape eastWest = Shapes.or(
 				Block.box(3, 3, 1, 13, 15, 15),
-				Block.box(3, 0, 1, 13, 15, 15),
+				Block.box(3, 0, 1, 13, 4, 3),
 				Block.box(3, 0, 13, 13, 4, 15));
 		
 		return new VoxelShape[] {
@@ -152,20 +153,97 @@ public class TreasureShapeBuilder {
 				 block,  block,  block,  block
 		};
 	}
-
-	/*
-	 * rotate VoxelShape a full 90 around an axis
-	 */
-	//	public static VoxelShape rotateShape(Direction from, Direction to, VoxelShape shape) {
-	//		VoxelShape[] buffer = new VoxelShape[]{ shape, VoxelShapes.empty() };
-	//
-	//		int times = (to.getHorizontalIndex() - from.getHorizontalIndex() + 4) % 4;
-	//		for (int i = 0; i < times; i++) {
-	//			buffer[0].forEachBox((minX, minY, minZ, maxX, maxY, maxZ) -> buffer[1] = VoxelShapes.or(buffer[1], VoxelShapes.create(1-maxZ, minY, minX, 1-minZ, maxY, maxX)));
-	//			buffer[0] = buffer[1];
-	//			buffer[1] = VoxelShapes.empty();
-	//		}
-	//
-	//		return buffer[0];
-	//	}
+	
+	public static VoxelShape[] buildCauldronChest() {
+		VoxelShape shape = Shapes.or(
+				// top
+				Block.box(0, 3, 0, 16, 16, 16),
+				// front row
+				Block.box(0, 0, 0, 4, 3, 2),
+				Block.box(12, 0, 0, 16, 3, 2),
+				Block.box(0, 0, 2, 2, 3, 4),
+				Block.box(14, 0, 2, 16, 3, 4),
+				// back row
+				Block.box(0, 0, 14, 4, 3, 16),
+				Block.box(12, 0, 14, 16, 3, 16),
+				Block.box(0, 0, 12, 2, 3, 14),
+				Block.box(14, 0, 12, 16, 3, 14)
+				);		
+		return new VoxelShape[] { shape, shape, shape, shape };
+	}
+	
+	public static VoxelShape[] buildStrongbox() {
+		VoxelShape shape = Block.box(3, 0.5, 4, 13, 7.5, 12);
+		VoxelShape shape2 = Block.box(4, 0.5, 3, 12, 7.5, 13);
+		return new VoxelShape[] { shape, shape2, shape, shape2 };
+	}
+	
+	public static VoxelShape[] buildSafe() {
+		VoxelShape shape = Block.box(2, 1, 2, 14, 13, 14);		
+		return new VoxelShape[] { shape, shape, shape, shape };
+	}
+	
+	public static VoxelShape[] buildSkull() {
+		VoxelShape n = Shapes.or(
+				Block.box(5, 0, 4, 11, 2, 9),
+				Block.box(5, 2, 4, 11, 3, 10),
+				Block.box(4, 3, 4, 12, 8, 12),
+				Block.box(5, 8, 5, 11, 9, 11)				
+				);
+		VoxelShape e = Shapes.or(
+				Block.box(7, 0, 5, 12, 2, 11),
+				Block.box(6, 2, 5, 12, 3, 11),
+				Block.box(4, 3, 4, 12, 8, 12),
+				Block.box(5, 8, 5, 11, 9, 11)	
+				);		
+		VoxelShape s = Shapes.or(
+				Block.box(5, 0, 7, 11, 2, 12),
+				Block.box(5, 2, 6, 11, 3, 12),
+				Block.box(4, 3, 4, 12, 8, 12),
+				Block.box(5, 8, 5, 11, 9, 11)	
+				);
+		VoxelShape w = Shapes.or(
+				Block.box(4, 0, 5, 9, 2, 11),
+				Block.box(4, 2, 5, 10, 3, 11),
+				Block.box(4, 3, 4, 12, 8, 12),
+				Block.box(5, 8, 5, 11, 9, 11)				
+				);
+		return new VoxelShape[] { n, e, s , w };
+	}
+	
+	public static VoxelShape[] buildMilkCrate() {
+		VoxelShape shape = Block.box(2.75, 0, 2.75, 13.25, 9.75, 13.25);
+		return new VoxelShape[] { shape, shape, shape, shape };
+	}
+	
+	public static VoxelShape[] buildSpiderChest() {
+		VoxelShape n = Shapes.or(
+				Block.box(2, 7, 6, 14, 16, 16), // body
+				Block.box(4, 7, 0, 12, 15, 6) // head
+				);
+		
+		VoxelShape e = Shapes.or(
+				Block.box(0, 7, 2, 10, 16, 14), // body
+				Block.box(10, 7, 4, 16, 15, 12) // head
+				);
+		
+		VoxelShape s = Shapes.or(
+				Block.box(2, 7, 0, 14, 16, 10), // body
+				Block.box(4, 7, 10, 12, 15, 16) // head
+				);
+		
+		VoxelShape w = Shapes.or(
+				Block.box(6, 7, 2, 16, 16, 14), // body
+				Block.box(0, 7, 4, 6, 15, 12) // head
+				);
+		
+		return new VoxelShape[] { n, e, s, w };
+	}
+	
+	public static VoxelShape[] buildCompressorChest() {
+		VoxelShape block = Block.box(4.5, 0, 4.5, 11.5, 7, 11.5);
+		return new VoxelShape[] {
+				 block,  block,  block,  block
+		};
+	}
 }

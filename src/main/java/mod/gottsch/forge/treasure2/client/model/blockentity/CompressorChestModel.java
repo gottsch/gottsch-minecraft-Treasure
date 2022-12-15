@@ -45,10 +45,6 @@ public class CompressorChestModel extends AbstractTreasureChestModel {
 	private final ModelPart lid2;
 	private final ModelPart lid3;
 	private final ModelPart lid4;
-	private final ModelPart latch1;
-	private final ModelPart latch2;
-	private final ModelPart latch3;
-	private final ModelPart latch4;
 
 	/**
 	 * 
@@ -61,63 +57,27 @@ public class CompressorChestModel extends AbstractTreasureChestModel {
 		this.lid2 = lid.getChild("lid2");
 		this.lid3 = lid.getChild("lid3");
 		this.lid4 = lid.getChild("lid4");
-		this.latch1 = lid.getChild("latch1");
-		this.latch2 = lid.getChild("latch2");
-		this.latch3 = lid.getChild("latch3");
-		this.latch4 = lid.getChild("latch4");
 	}
 
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
-
 		PartDefinition base = partdefinition.addOrReplaceChild("base", CubeListBuilder.create().texOffs(0, 0).addBox(-7.0F, 0.0F, -14.0F, 14.0F, 10.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 14.0F, 7.0F));
-
 		PartDefinition hinge1 = base.addOrReplaceChild("hinge1", CubeListBuilder.create().texOffs(0, 7).addBox(-2.0F, 0.0F, 0.0F, 5.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(3.0F, 0.5F, -14.5F));
-
 		PartDefinition hinge2 = base.addOrReplaceChild("hinge2", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, 0.0F, -3.0F, 1.0F, 1.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(-7.5F, 0.5F, -10.0F));
 		PartDefinition hinge3 = base.addOrReplaceChild("hinge3", CubeListBuilder.create().texOffs(0, 7).addBox(-2.0F, 0.0F, 0.0F, 5.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(-4.0F, 0.5F, -0.5F));
 		PartDefinition hinge4 = base.addOrReplaceChild("hinge4", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, 0.0F, -3.0F, 1.0F, 1.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(6.5F, 0.5F, -3.0F));
 		PartDefinition lid = partdefinition.addOrReplaceChild("lid", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 		PartDefinition lid1 = lid.addOrReplaceChild("lid1", CubeListBuilder.create().texOffs(29, 38).addBox(-4.0F, -5.0F, 0.0F, 7.0F, 5.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(4.0F, -9.0F, -7.0F));
+		PartDefinition latch1 = lid1.addOrReplaceChild("latch1", CubeListBuilder.create().texOffs(43, 0).addBox(5.0F, -2.0F, 2.0F, 1.0F, 4.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(-2.0F, 0.0F, 0.0F));
 		PartDefinition lid2 = lid.addOrReplaceChild("lid2", CubeListBuilder.create().texOffs(0, 38).addBox(0.0F, -5.0F, -4.0F, 7.0F, 5.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(-7.0F, -9.0F, -3.0F));
+		PartDefinition latch2 = lid2.addOrReplaceChild("latch2", CubeListBuilder.create().texOffs(22, 25).addBox(2.0F, -2.0F, -5.0F, 3.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 		PartDefinition lid3 = lid.addOrReplaceChild("lid3", CubeListBuilder.create().texOffs(29, 25).addBox(-4.0F, -5.0F, -7.0F, 7.0F, 5.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, -9.0F, 7.0F));
+		PartDefinition latch3 = lid3.addOrReplaceChild("latch3", CubeListBuilder.create().texOffs(43, 0).addBox(-5.0F, -2.0F, -5.0F, 1.0F, 4.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 		PartDefinition lid4 = lid.addOrReplaceChild("lid4", CubeListBuilder.create().texOffs(0, 25).addBox(-7.0F, -5.0F, -3.0F, 7.0F, 5.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(7.0F, -9.0F, 3.0F));
-		PartDefinition latch1 = lid.addOrReplaceChild("latch1", CubeListBuilder.create().texOffs(43, 0).addBox(5.0F, -2.0F, 2.0F, 1.0F, 4.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, -9.0F, -7.0F));
-		PartDefinition latch2 = lid.addOrReplaceChild("latch2", CubeListBuilder.create().texOffs(22, 25).addBox(2.0F, -2.0F, -5.0F, 3.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(-7.0F, -9.0F, -3.0F));
-		PartDefinition latch3 = lid.addOrReplaceChild("latch3", CubeListBuilder.create().texOffs(43, 0).addBox(-5.0F, -2.0F, -5.0F, 1.0F, 4.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, -9.0F, 7.0F));
-		PartDefinition latch4 = lid.addOrReplaceChild("latch4", CubeListBuilder.create().texOffs(22, 25).addBox(-5.0F, -2.0F, 5.0F, 3.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(7.0F, -9.0F, 2.0F));
+		PartDefinition latch4 = lid4.addOrReplaceChild("latch4", CubeListBuilder.create().texOffs(22, 25).addBox(-5.0F, -2.0F, 5.0F, 3.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -1.0F));
 
 		return LayerDefinition.create(meshdefinition, 64, 64);
-	}
-
-	/**
-	 * 
-	 */
-	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha, AbstractTreasureChestBlockEntity blockEntity) {
-		float originalAngle = lid1.xRot;
-
-		// reverse the angle direction
-		lid1.xRot = -(lid1.xRot);
-		latch1.xRot = lid1.xRot;
-		lid2.zRot = originalAngle;
-		latch2.zRot = lid2.zRot;
-		lid3.xRot = originalAngle;
-		latch3.xRot = lid3.xRot;
-		lid4.zRot = lid1.xRot;
-		latch4.zRot = lid4.zRot;
-
-		base.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		lid1.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		lid2.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		lid3.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		lid4.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-
-		latch1.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		latch2.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		latch3.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		latch4.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override
@@ -125,7 +85,28 @@ public class CompressorChestModel extends AbstractTreasureChestModel {
 		float lidRotation = tileEntity.prevLidAngle + (tileEntity.lidAngle - tileEntity.prevLidAngle) * partialTicks;
 		lidRotation = 1.0F - lidRotation;
 		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-		getLid().xRot = -(lidRotation * (float)Math.PI / 2.0F);  
+		getLid().xRot = (lidRotation * (float)Math.PI / 2.0F);  
+		getLid2().zRot = -getLid().xRot;
+		getLid3().xRot = -getLid().xRot;
+		getLid4().zRot = getLid().xRot;
+	}
+		
+	/**
+	 * 
+	 */
+	@Override
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha, AbstractTreasureChestBlockEntity blockEntity) {
+//		float originalAngle = lid1.xRot;
+
+		// reverse the angle direction
+//		lid1.xRot = -(lid1.xRot);
+//		lid2.zRot = originalAngle;
+//		lid3.xRot = originalAngle;
+//		lid4.zRot = lid1.xRot;
+
+
+		base.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		lid.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	/**
@@ -136,4 +117,15 @@ public class CompressorChestModel extends AbstractTreasureChestModel {
 		return lid1;
 	}
 
+	public ModelPart getLid2() {
+		return lid2;
+	}
+	
+	public ModelPart getLid3() {
+		return lid3;
+	}
+	
+	public ModelPart getLid4() {
+		return lid4;
+	}
 }

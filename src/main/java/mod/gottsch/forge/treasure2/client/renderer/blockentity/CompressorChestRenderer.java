@@ -45,15 +45,15 @@ public class CompressorChestRenderer extends AbstractChestBlockEntityRenderer {
 	}
 
 	@Override
-	public void updateScale(PoseStack matrixStack) {
+	public void updateScale(PoseStack poseStack) {
 		// shrink the size of the chest by half
-		matrixStack.scale(0.5F, 0.5F, 0.5F);
+		poseStack.scale(0.5F, 0.5F, 0.5F);
 	}
 
 	@Override
-	public void updateTranslation(PoseStack matrixStack) {
+	public void updateTranslation(PoseStack poseStack) {
 		final Vector3d TRANSLATION_OFFSET = new Vector3d(0.5, 0.75, 0.5);
-		matrixStack.translate(TRANSLATION_OFFSET.x, TRANSLATION_OFFSET.y, TRANSLATION_OFFSET.z);
+		poseStack.translate(TRANSLATION_OFFSET.x, TRANSLATION_OFFSET.y, TRANSLATION_OFFSET.z);
 	}
 
 	@Override

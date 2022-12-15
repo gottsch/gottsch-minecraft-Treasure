@@ -50,7 +50,7 @@ public class GoldStrongboxBlockEntity extends AbstractTreasureChestBlockEntity {
 	
     @Override
 	public Component getDefaultName() {
-		return new TranslatableComponent(LangUtil.screen("gold_strongbox_chest.name"));
+		return new TranslatableComponent(LangUtil.screen("gold_strongbox.name"));
 	}
     
 	@Override

@@ -20,6 +20,9 @@
 package mod.gottsch.forge.treasure2.core.config;
 
 import java.util.List;
+import java.util.Optional;
+
+import mod.gottsch.forge.gottschcore.enums.IRarity;
 
 /**
  * 
@@ -59,6 +62,10 @@ public class ChestConfiguration {
 		private Double surfaceProbability;
 		private Double structureProbability;
 		private List<ChestRarity> rarities;
+		
+		public Optional<ChestRarity> getRarity(IRarity rarity) {
+			return rarities.stream().filter(r -> r.getRarity().equalsIgnoreCase(rarity.getName())).findFirst();
+		}
 		
 		public String getKey() {
 			return key;

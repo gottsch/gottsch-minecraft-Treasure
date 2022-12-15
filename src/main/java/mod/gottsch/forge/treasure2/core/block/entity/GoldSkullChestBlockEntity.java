@@ -17,7 +17,7 @@
  */
 package mod.gottsch.forge.treasure2.core.block.entity;
 
-import mod.gottsch.forge.treasure2.core.chest.ChestInventorySize;
+import mod.gottsch.forge.treasure2.core.chest.SkullChestType;
 import mod.gottsch.forge.treasure2.core.inventory.SkullChestContainerMenu;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.core.BlockPos;
@@ -33,7 +33,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * @author Mark Gottschling on Mar 17, 2018
  *
  */
-public class GoldSkullChestBlockEntity extends AbstractTreasureChestBlockEntity {
+public class GoldSkullChestBlockEntity extends SkullChestBlockEntity {
 	
 	/**
 	 * 
@@ -41,6 +41,7 @@ public class GoldSkullChestBlockEntity extends AbstractTreasureChestBlockEntity 
 	 */
 	public GoldSkullChestBlockEntity(BlockPos pos, BlockState state) {
 		super(TreasureBlockEntities.GOLD_SKULL_CHEST_BLOCK_ENTITY_TYPE.get(), pos, state);
+		setSkullType(SkullChestType.GOLD_SKULL);
 	}
 	
     @Override
@@ -52,9 +53,5 @@ public class GoldSkullChestBlockEntity extends AbstractTreasureChestBlockEntity 
 	public Component getDefaultName() {
 		return new TranslatableComponent(LangUtil.screen("gold_skull_chest.name"));
 	}
-    
-	@Override
-	public int getInventorySize() {
-		return ChestInventorySize.SKULL.getSize();
-	}
+
 }

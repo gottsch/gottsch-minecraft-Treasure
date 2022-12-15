@@ -52,8 +52,7 @@ public enum GeneratorType implements IGeneratorType {
 
 	@Override
 	public String getValue() {
-		// TODO Auto-generated method stub
-		return null;
+		return name();
 	}
 
 	@Override

@@ -152,7 +152,7 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 	 * @param state
 	 * @return
 	 */
-	private AbstractTreasureChestBlockEntity newInstanceBlockEntity(BlockPos pos, BlockState state) {
+	protected AbstractTreasureChestBlockEntity newInstanceBlockEntity(BlockPos pos, BlockState state) {
 		/*
 		 *  construct a new instance of the block entity.
 		 *  ensure to use BlockPos.class and not pos.getClass() for the Class<?> type variable

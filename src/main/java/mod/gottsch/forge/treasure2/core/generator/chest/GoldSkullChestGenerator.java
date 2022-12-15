@@ -46,12 +46,12 @@ import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
  * @author Mark Gottschling on Dec 4, 2019
  *
  */
-public class GoldChestGenerator implements IChestGenerator {
+public class GoldSkullChestGenerator implements IChestGenerator {
 	
 	/**
 	 * 
 	 */
-	public GoldChestGenerator() {}
+	public GoldSkullChestGenerator() {}
 
 	/**
 	 * 
