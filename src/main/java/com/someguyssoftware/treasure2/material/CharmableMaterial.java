@@ -19,11 +19,13 @@
  */
 package com.someguyssoftware.treasure2.material;
 
+import java.util.function.Predicate;
+
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
 /**
- * AKA CharmableMaterial in 1.16.5+
  * @author Mark Gottschling on Jan 3, 2022
  *
  */
@@ -46,6 +48,11 @@ public class CharmableMaterial {
 	// the number of times something made of this material can be repaired
 	private int maxRepairs;
 
+	private Predicate<ItemStack> canAffix = p -> true;
+	private Predicate<ItemStack> acceptsAffixer = p -> true;
+		
+	// TODO this really could use a builder
+	
 	/**
 	 * 
 	 * @param id
@@ -99,6 +106,22 @@ public class CharmableMaterial {
 		return new TranslationTextComponent("precious_material." + name.toString().replace(":", ".")).toString();
 	}
 
+	public boolean canAffix(ItemStack itemStack) {
+		return canAffix.test(itemStack);
+	}
+	
+	public void setCanAffix(Predicate<ItemStack> p) {
+		this.canAffix = p;
+	}
+	
+	public boolean acceptsAffixer(ItemStack itemStack) {
+		return acceptsAffixer.test(itemStack);
+	}
+	
+	public void setAcceptsAffixer(Predicate<ItemStack> p) {
+		this.acceptsAffixer = p;
+	}
+	
 	public int getId() {
 		return id;
 	}

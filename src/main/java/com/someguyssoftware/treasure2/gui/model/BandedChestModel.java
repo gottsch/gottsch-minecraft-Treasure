@@ -6,6 +6,7 @@ import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * 
@@ -194,5 +195,4 @@ public class BandedChestModel extends AbstractTreasureChestModel {
 	public void setLid(ModelRenderer lid) {
 		this.lid = lid;
 	}
-
 }

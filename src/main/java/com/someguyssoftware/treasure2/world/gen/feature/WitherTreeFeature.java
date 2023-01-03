@@ -221,7 +221,6 @@ public class WitherTreeFeature extends Feature<NoFeatureConfig> implements IChes
 
 	private boolean meetsWorldAgeCriteria(ServerWorld world, SimpleListRegistry<ICoords> registry) {
 		if (registry.getValues().isEmpty() && waitChunksCount < TreasureConfig.WITHER_TREE.waitChunks.get()) {
-			Treasure.LOGGER.debug("World is too young");
 			waitChunksCount++;
 			return false;
 		}

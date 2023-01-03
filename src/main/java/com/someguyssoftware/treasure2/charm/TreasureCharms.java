@@ -87,7 +87,7 @@ public class TreasureCharms {
 	// TODO move static {} block into init as static block is not loaded until this class is referenced and thus might not be init when items are being created.
 	public static void init() {}
 	
-	private static int getRecharges(Rarity rarity) {
+	public static int getRecharges(Rarity rarity) {
 		return rarity == Rarity.SCARCE || rarity == Rarity.RARE ? 1 : rarity == Rarity.EPIC || rarity == Rarity.LEGENDARY ? 2 : rarity == Rarity.MYTHICAL ? 3 : 0;
 	}
 	

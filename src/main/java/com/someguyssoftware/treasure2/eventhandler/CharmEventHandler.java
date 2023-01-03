@@ -323,7 +323,7 @@ public class CharmEventHandler {
 	//	@SubscribeEvent
 	//	public void onItemInfo(ItemTooltipEvent event) {
 	//		if (event.getItemStack().getItem() == Items.EMERALD) {
-	//			event.getToolTip().add(new TranslationTextComponent("tooltip.label.coin").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
+	//			event.getToolTip().add(new TranslationTextComponent("tooltip.label.gem").withStyle(TextFormatting.GOLD, TextFormatting.ITALIC));
 	//		}
 	//	}
 }

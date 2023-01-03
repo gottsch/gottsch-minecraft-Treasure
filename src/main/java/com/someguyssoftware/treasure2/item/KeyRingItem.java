@@ -32,7 +32,6 @@ import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
-import com.someguyssoftware.treasure2.capability.CharmableCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.IDurabilityCapability;
 import com.someguyssoftware.treasure2.capability.IKeyRingCapability;
 import com.someguyssoftware.treasure2.capability.KeyRingCapabilityProvider;
@@ -43,6 +42,7 @@ import com.someguyssoftware.treasure2.inventory.KeyRingContainer;
 import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
 import com.someguyssoftware.treasure2.inventory.TreasureContainers;
 import com.someguyssoftware.treasure2.lock.LockState;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 
 import net.minecraft.block.Block;
@@ -51,7 +51,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
@@ -62,7 +61,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -168,20 +166,15 @@ public class KeyRingItem extends ModItem implements IKeyEffects, INamedContainer
 						// TODO move to a method in KeyItem
 						if (fitsLock) {
 							if (key.unlock(lockState.getLock())) {
-								LockItem lock = lockState.getLock();
+//								LockItem lock = lockState.getLock();								
+//								doKeyUnlockEffects(context.getLevel(), context.getPlayer(), context.getClickedPos(), chestTileEntity, lockState);
 								
-								doKeyUnlockEffects(context.getLevel(), context.getPlayer(), context.getClickedPos(), chestTileEntity, lockState);
-								
-								// remove the lock
-								lockState.setLock(null);
+								// unlock the lock
+								doUnlock(context, (AbstractTreasureChestTileEntity)chestTileEntity, key, lockState);
 								
 								// update the client
 								chestTileEntity.sendUpdates();
-								// spawn the lock
-								if (TreasureConfig.KEYS_LOCKS.enableLockDrops.get()) {
-									BlockPos pos = context.getClickedPos();
-									InventoryHelper.dropItemStack(context.getLevel(), (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(lock));
-								}
+
 								// don't break the key
 								breakKey = false;
 							}
@@ -254,6 +247,22 @@ public class KeyRingItem extends ModItem implements IKeyEffects, INamedContainer
 		return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getItemInHand(handIn));
 	}
 
+	/**
+	 * 
+	 * @param context
+	 * @param chestTileEntity
+	 * @param lockState
+	 */
+	public void doUnlock(ItemUseContext context, AbstractTreasureChestTileEntity chestTileEntity,	KeyItem key, LockState lockState) {
+		LockItem lock = lockState.getLock();		
+		 lock.doUnlock(context.getLevel(), context.getPlayer(), context.getClickedPos(), chestTileEntity, lockState);
+				
+		if (!key.breaksLock(lock)) {
+			// spawn the lock
+			lock.dropLock(context.getLevel(), context.getClickedPos());
+		}		
+	}
+	
 	/**
 	 * 
 	 */

@@ -75,7 +75,7 @@ public class LockItem extends ModItem implements ILockEffects {
 	 * @param properties
 	 */
 	public LockItem(Item.Properties properties) {
-		super(properties.tab(TreasureItemGroups.TREASURE_ITEM_GROUP));
+		super(properties);
 		setCategory(Category.ELEMENTAL);
 		setRarity(Rarity.COMMON);
 		setCraftable(false);
@@ -178,7 +178,7 @@ public class LockItem extends ModItem implements ILockEffects {
 	 * @param heldItem
 	 * @return flag indicating if a lock was added
 	 */
-	private boolean handleHeldLock(AbstractTreasureChestTileEntity tileEntity, PlayerEntity player, ItemStack heldItem) {
+	public boolean handleHeldLock(AbstractTreasureChestTileEntity tileEntity, PlayerEntity player, ItemStack heldItem) {
 		boolean lockedAdded = false;
 		LockItem lock = (LockItem) heldItem.getItem();
 		Treasure.LOGGER.info("LockItem | handleHeldLock | lock -> {}", lock);

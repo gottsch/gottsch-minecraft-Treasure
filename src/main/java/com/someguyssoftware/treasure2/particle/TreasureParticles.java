@@ -31,7 +31,7 @@ public class TreasureParticles {
 	public static final RegistryObject<BasicParticleType> MIST_PARTICLE_TYPE = PARTICLE_TYPES.register("mist_particle_type", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> BILLOWING_MIST_PARTICLE_TYPE = PARTICLE_TYPES.register("billowing_mist_particle_type", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> BOUND_SOUL_TYPE = PARTICLE_TYPES.register("bound_soul_mist_particle_type", () -> new BasicParticleType(false));
-	public static final RegistryObject<BasicParticleType> SPANISH_MOSS_MIST_PARTICLE_TYPE = PARTICLE_TYPES.register("spanish_moss_mist_particle_type", () -> new BasicParticleType(false));
+	public static final RegistryObject<BasicParticleType> SPANISH_MOSS_MIST_PARTICLE_TYPE = PARTICLE_TYPES.register("spanish_moss_particle", () -> new BasicParticleType(false));
 	public static final RegistryObject<CollidingParticleType> POISON_MIST_PARTICLE_TYPE = PARTICLE_TYPES.register("poison_mist_particle_type", () -> new CollidingParticleType(null, CollidingParticleType.DESERIALIZER));
 	public static final RegistryObject<CollidingParticleType> WITHER_MIST_PARTICLE_TYPE = PARTICLE_TYPES.register("wither_mist_particle_type", () -> new CollidingParticleType(null, CollidingParticleType.DESERIALIZER));
 	

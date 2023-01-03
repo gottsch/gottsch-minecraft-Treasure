@@ -149,12 +149,12 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 				lockStates.add(lockState.getSlot().getIndex(), lockState);
 			}
 			chestTileEntity.setLockStates(lockStates);
-//			Treasure.LOGGER.info("AbstractChestBlock | createNewTileEntity | lockStates -> {}", chestTileEntity.getLockStates());
+			Treasure.LOGGER.info("AbstractChestBlock | createNewTileEntity | lockStates -> {}", chestTileEntity.getLockStates());
 		}
 		catch(Exception e) {
 			Treasure.LOGGER.error(e);
 		}
-//		Treasure.LOGGER.info("AbstractChestBlock | createNewTileEntity | tileEntity -> {} @ {}", chestTileEntity, chestTileEntity.getPos());
+		Treasure.LOGGER.info("AbstractChestBlock | createNewTileEntity | tileEntity -> {} @ {}", chestTileEntity, chestTileEntity.getBlockPos());
 		return chestTileEntity;
 	}
 
@@ -281,9 +281,8 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 			return ActionResultType.SUCCESS;
 		}
 
-		boolean isLocked = false;
 		// determine if chest is locked
-		if (!tileEntity.hasLocks()) {
+		if (!tileEntity.isLocked()) {
 			// get the container provider
 			INamedContainerProvider namedContainerProvider = this.getContainer(state, world, pos);			
 			// open the chest
@@ -314,7 +313,7 @@ public abstract class AbstractChestBlock extends ModContainerBlock implements IT
 
 		if (te != null) {
 			// unlocked!
-			if (!te.hasLocks()) {
+			if (!te.isLocked()) {
 				/*
 				 * spawn inventory items
 				 */

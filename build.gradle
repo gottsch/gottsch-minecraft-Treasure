@@ -127,6 +127,10 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.34'
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2:api")
+    compileOnly fg.deobf("curse.maven:twilightforest-227639:3575220")
+    //compileOnly fg.deobf("curse.maven:the-bumblezone-forge-362479:3537997")
+    //compileOnly fg.deobf("curse.maven:placebo-283644:3750838")
+    //compileOnly fg.deobf("curse.maven:apotheosis-313970:3779410")
 	//compileOnly fg.deobf("curse.maven:gottschcore-272450:3556719")
 	// local published gottschcore
 	compileOnly fg.deobf("someguyssoftware.gottschcore:GottschCore:mc1.16.5-f36.2.34-v1.8.0")

@@ -30,14 +30,14 @@ public abstract class AbstractTreasureChestModel extends Model implements ITreas
 		Treasure.LOGGER.info("THIS SHOULD NEVER BE CALLED");
 	}
 	
-	@Override
-	public final RenderType getChestRenderType(ResourceLocation location) {
-		return super.renderType(location);
-	}
-	
 	protected void setRotation(ModelRenderer model, float x, float y, float z) {
 		model.xRot = x;
 		model.yRot = y;
 		model.zRot = z;
+	}
+	
+	@Override
+	public RenderType getChestRenderType(ResourceLocation location) {
+		return this.renderType.apply(location);
 	}
 }

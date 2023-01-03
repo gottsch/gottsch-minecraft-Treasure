@@ -501,6 +501,7 @@
 	"tooltip.label.accepts_keys":"Accepts Keys:",
 	"tooltip.label.wishable":"Throw into Wishing Wells",
 	"tooltip.label.coin":"Throw into Wishing Wells",
+	"tooltip.label.gem":"Throw into Wishing Wells, use to recharge Charms, or use to upgrade Adornments",
 	"tooltip.label.key_ring":"Container for keys",
 	"tooltip.label.pouch":"Holds small valuables - coins, gems, charms, etc.",
 	"tooltip.label.treasure_tool":"Required for Key/Pick recipes",

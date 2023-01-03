@@ -30,6 +30,8 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
@@ -248,47 +250,47 @@ public class TreasureItems {
 			.setSuccessProbability(48));
 
 	// FUTURE
-	public static RegistryObject<KeyItem> BONE_KEY;
 	public static RegistryObject<KeyItem> DRAGON_KEY;
 	public static RegistryObject<KeyItem> MASTER_KEY;
 
 	public static RegistryObject<KeyRingItem> KEY_RING = ITEMS.register(KeyID.KEY_RING_ID, () -> new KeyRingItem(new Item.Properties()));
 
 	// locks
-	public static RegistryObject<LockItem> WOOD_LOCK = ITEMS.register(LockID.WOOD_LOCK_ID, () -> new LockItem(new Item.Properties(), new KeyItem[] {WOOD_KEY.get(), LIGHTNING_KEY.get()})
+	public static final Supplier<Item.Properties> LOCK_ITEM_PROPERTIES = () -> new Item.Properties().tab(TreasureItemGroups.TREASURE_ITEM_GROUP);
+	public static RegistryObject<LockItem> WOOD_LOCK = ITEMS.register(LockID.WOOD_LOCK_ID, () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {WOOD_KEY.get(), LIGHTNING_KEY.get()})
 			.setCategory(Category.ELEMENTAL)
 			.setRarity(Rarity.COMMON));
-	public static RegistryObject<LockItem> STONE_LOCK = ITEMS.register(LockID.STONE_LOCK_ID, () -> new LockItem(new Item.Properties(), new KeyItem[] {STONE_KEY.get(), LIGHTNING_KEY.get()})
+	public static RegistryObject<LockItem> STONE_LOCK = ITEMS.register(LockID.STONE_LOCK_ID, () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {STONE_KEY.get(), LIGHTNING_KEY.get()})
 			.setCategory(Category.ELEMENTAL)
 			.setRarity(Rarity.COMMON));
-	public static RegistryObject<LockItem> EMBER_LOCK = ITEMS.register(LockID.EMBER_LOCK_ID, () -> new EmberLock(new Item.Properties(), new KeyItem[] {EMBER_KEY.get(), LIGHTNING_KEY.get()})
+	public static RegistryObject<LockItem> EMBER_LOCK = ITEMS.register(LockID.EMBER_LOCK_ID, () -> new EmberLock(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {EMBER_KEY.get(), LIGHTNING_KEY.get()})
 			.setCategory(Category.ELEMENTAL)
 			.setRarity(Rarity.SCARCE));
-	public static RegistryObject<LockItem> LEAF_LOCK = ITEMS.register(LockID.LEAF_LOCK_ID, () -> new LockItem(new Item.Properties(), new KeyItem[] {LEAF_KEY.get(), LIGHTNING_KEY.get()})
+	public static RegistryObject<LockItem> LEAF_LOCK = ITEMS.register(LockID.LEAF_LOCK_ID, () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {LEAF_KEY.get(), LIGHTNING_KEY.get()})
 			.setCategory(Category.ELEMENTAL)
 			.setRarity(Rarity.UNCOMMON));  
-	public static RegistryObject<LockItem> IRON_LOCK = ITEMS.register(LockID.IRON_LOCK_ID, () -> new LockItem(new Item.Properties(), new KeyItem[] {IRON_KEY.get(), METALLURGISTS_KEY.get()})
+	public static RegistryObject<LockItem> IRON_LOCK = ITEMS.register(LockID.IRON_LOCK_ID, () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {IRON_KEY.get(), METALLURGISTS_KEY.get()})
 			.setCategory(Category.METALS)
 			.setRarity(Rarity.UNCOMMON));
-	public static RegistryObject<LockItem> GOLD_LOCK = ITEMS.register(LockID.GOLD_LOCK_ID, () -> new LockItem(new Item.Properties(), new KeyItem[] {GOLD_KEY.get(), METALLURGISTS_KEY.get()})
+	public static RegistryObject<LockItem> GOLD_LOCK = ITEMS.register(LockID.GOLD_LOCK_ID, () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {GOLD_KEY.get(), METALLURGISTS_KEY.get()})
 			.setCategory(Category.METALS)
 			.setRarity(Rarity.SCARCE));
-	public static RegistryObject<LockItem> DIAMOND_LOCK = ITEMS.register(LockID.DIAMOND_LOCK_ID, () -> new LockItem(new Item.Properties(), new KeyItem[] {DIAMOND_KEY.get(), JEWELLED_KEY.get()})
+	public static RegistryObject<LockItem> DIAMOND_LOCK = ITEMS.register(LockID.DIAMOND_LOCK_ID, () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {DIAMOND_KEY.get(), JEWELLED_KEY.get()})
 			.setCategory(Category.GEMS)
 			.setRarity(Rarity.RARE));
-	public static RegistryObject<LockItem> EMERALD_LOCK = ITEMS.register(LockID.EMERALD_LOCK_ID, () -> new LockItem(new Item.Properties(), new KeyItem[] {EMERALD_KEY.get(), JEWELLED_KEY.get()})
+	public static RegistryObject<LockItem> EMERALD_LOCK = ITEMS.register(LockID.EMERALD_LOCK_ID, () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {EMERALD_KEY.get(), JEWELLED_KEY.get()})
 			.setCategory(Category.GEMS)
 			.setRarity(Rarity.RARE));
-	public static RegistryObject<LockItem> RUBY_LOCK = ITEMS.register(LockID.RUBY_LOCK_ID, () -> new LockItem(new Item.Properties(), new KeyItem[] {RUBY_KEY.get(), JEWELLED_KEY.get()})
+	public static RegistryObject<LockItem> RUBY_LOCK = ITEMS.register(LockID.RUBY_LOCK_ID, () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {RUBY_KEY.get(), JEWELLED_KEY.get()})
 			.setCategory(Category.GEMS)
 			.setRarity(Rarity.EPIC));
-	public static RegistryObject<LockItem> SAPPHIRE_LOCK = ITEMS.register(LockID.SAPPHIRE_LOCK_ID, () -> new LockItem(new Item.Properties(), new KeyItem[] {SAPPHIRE_KEY.get(), JEWELLED_KEY.get()})
+	public static RegistryObject<LockItem> SAPPHIRE_LOCK = ITEMS.register(LockID.SAPPHIRE_LOCK_ID, () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {SAPPHIRE_KEY.get(), JEWELLED_KEY.get()})
 			.setCategory(Category.GEMS)
 			.setRarity(Rarity.EPIC));
-	public static RegistryObject<LockItem> SPIDER_LOCK = ITEMS.register(LockID.SPIDER_LOCK_ID, () -> new LockItem(new Item.Properties(), new KeyItem[] {SPIDER_KEY.get()})
+	public static RegistryObject<LockItem> SPIDER_LOCK = ITEMS.register(LockID.SPIDER_LOCK_ID, () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {SPIDER_KEY.get()})
 			.setCategory(Category.MOB)
 			.setRarity(Rarity.SCARCE));
-	public static RegistryObject<LockItem> WITHER_LOCK = ITEMS.register(LockID.WITHER_LOCK_ID, () -> new LockItem(new Item.Properties(), new KeyItem[] {WITHER_KEY.get()})
+	public static RegistryObject<LockItem> WITHER_LOCK = ITEMS.register(LockID.WITHER_LOCK_ID, () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {WITHER_KEY.get()})
 			.setCategory(Category.WITHER)
 			.setRarity(Rarity.SCARCE));
 
@@ -324,7 +326,7 @@ public class TreasureItems {
 	});
 	
 	// gems
-	public static RegistryObject<Item> TOPAZ = ITEMS.register(TreasureConfig.ItemID.TOPAZ_ID, () -> new WealthItem(new Item.Properties()) {
+	public static RegistryObject<Item> TOPAZ = ITEMS.register(TreasureConfig.ItemID.TOPAZ_ID, () -> new GemItem(new Item.Properties()) {
 		@Override
 		public List<LootTableShell> getLootTables() {
 			return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.SCARCE);
@@ -335,7 +337,7 @@ public class TreasureItems {
 			return new ItemStack(keys.get(random.nextInt(keys.size())));
 		}
 	});
-	public static RegistryObject<Item> ONYX = ITEMS.register(TreasureConfig.ItemID.ONYX_ID, () -> new WealthItem(new Item.Properties()) {
+	public static RegistryObject<Item> ONYX = ITEMS.register(TreasureConfig.ItemID.ONYX_ID, () -> new GemItem(new Item.Properties()) {
 		@Override
 		public List<LootTableShell> getLootTables() {
 			return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE);
@@ -346,7 +348,7 @@ public class TreasureItems {
 			return new ItemStack(keys.get(random.nextInt(keys.size())));
 		}
 	});
-	public static RegistryObject<Item> RUBY = ITEMS.register(TreasureConfig.ItemID.RUBY_ID, () -> new WealthItem(new Item.Properties()) {
+	public static RegistryObject<Item> RUBY = ITEMS.register(TreasureConfig.ItemID.RUBY_ID, () -> new GemItem(new Item.Properties()) {
 		@Override
 		public List<LootTableShell> getLootTables() {
 			return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.RARE);
@@ -357,7 +359,7 @@ public class TreasureItems {
 			return new ItemStack(keys.get(random.nextInt(keys.size())));
 		}
 	});
-	public static RegistryObject<Item> SAPPHIRE = ITEMS.register(TreasureConfig.ItemID.SAPPHIRE_ID, () -> new WealthItem(new Item.Properties()) {
+	public static RegistryObject<Item> SAPPHIRE = ITEMS.register(TreasureConfig.ItemID.SAPPHIRE_ID, () -> new GemItem(new Item.Properties()) {
 		@Override
 		public List<LootTableShell> getLootTables() {
 			return TreasureLootTableRegistry.getLootTableMaster().getLootTableByRarity(Rarity.EPIC);
@@ -368,7 +370,7 @@ public class TreasureItems {
 			return new ItemStack(keys.get(random.nextInt(keys.size())));
 		}
 	});
-	public static RegistryObject<Item> WHITE_PEARL = ITEMS.register(TreasureConfig.ItemID.WHITE_PEARL_ID, () -> new WealthItem(new Item.Properties()) {
+	public static RegistryObject<Item> WHITE_PEARL = ITEMS.register(TreasureConfig.ItemID.WHITE_PEARL_ID, () -> new GemItem(new Item.Properties()) {
 		@Override
 		public List<LootTableShell> getLootTables() {
 			List<LootTableShell> lootTables = new ArrayList<>();
@@ -380,7 +382,7 @@ public class TreasureItems {
 			return new ItemStack(Items.DIAMOND);
 		}
 	});
-	public static RegistryObject<Item> BLACK_PEARL = ITEMS.register(TreasureConfig.ItemID.BLACK_PEARL_ID, () -> new WealthItem(new Item.Properties()) {
+	public static RegistryObject<Item> BLACK_PEARL = ITEMS.register(TreasureConfig.ItemID.BLACK_PEARL_ID, () -> new GemItem(new Item.Properties()) {
 		@Override
 		public List<LootTableShell> getLootTables() {
 			List<LootTableShell> lootTables = new ArrayList<>();
@@ -550,9 +552,9 @@ public class TreasureItems {
 	// TODO potions
 
 	// key map
-	public static Multimap<Rarity, KeyItem> keys;
+	public static Multimap<Rarity, KeyItem> keys = ArrayListMultimap.create();
 	// lock map
-	public static Multimap<Rarity, LockItem> locks;
+	public static Multimap<Rarity, LockItem> locks = ArrayListMultimap.create();
 
 	/*
 	 *  items caches
@@ -966,8 +968,6 @@ public class TreasureItems {
 	 */
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
-
-		keys = ArrayListMultimap.create();
 		keys.put(WOOD_KEY.get().getRarity(), WOOD_KEY.get());
 		keys.put(STONE_KEY.get().getRarity(), STONE_KEY.get());
 		keys.put(EMBER_KEY.get().getRarity(), EMBER_KEY.get());
@@ -985,7 +985,6 @@ public class TreasureItems {
 		keys.put(SPIDER_KEY.get().getRarity(), SPIDER_KEY.get());
 		keys.put(WITHER_KEY.get().getRarity(), WITHER_KEY.get());
 
-		locks = ArrayListMultimap.create();
 		locks.put(WOOD_LOCK.get().getRarity(), WOOD_LOCK.get());
 		locks.put(STONE_LOCK.get().getRarity(), STONE_LOCK.get());
 		locks.put(EMBER_LOCK.get().getRarity(), EMBER_LOCK.get());
@@ -1001,8 +1000,13 @@ public class TreasureItems {
 
 		// ADORNMENTS		
 		TreasureAdornmentRegistry.register(TreasureCharmableMaterials.GOLD.getName(), TOPAZ.get().getRegistryName(), POCKET_WATCH.get());
+		
 		List<Item> adornments;
-		adornments = new SetupItems().createAdornments();
+		AdornmentItemsBuilder builder = new AdornmentItemsBuilder(Treasure.MODID);
+		adornments = builder.useBaseDefaults().build();
+		adornments.addAll(builder.useSourceDefaults().build());
+		adornments.addAll(builder.clear().useGreatDefaults().build());
+		adornments.addAll(builder.useSourceDefaults().build());
 		
 		List<Item> charms = new ArrayList<>();
 		charms.add(createCharm(TreasureCharmableMaterials.COPPER, Items.AIR));
@@ -1052,67 +1056,163 @@ public class TreasureItems {
 		ITEMS.register(eventBus);		
 	}
 
+	// TODO move charms code in here
+	public static class CharmItemsBuilder {
+		
+	}
+	
 	/*
 	 * 
 	 */
-	public static class SetupItems {
-		List<AdornmentType> types = Arrays.asList(AdornmentType.BRACELET, AdornmentType.NECKLACE, AdornmentType.RING);
-		List<AdornmentSize> sizes = Arrays.asList(TreasureAdornmentRegistry.STANDARD);
-		List<CharmableMaterial> materials = Arrays.asList(
-				TreasureCharmableMaterials.IRON, 
+	public static class AdornmentItemsBuilder {
+		protected List<AdornmentType> types = new ArrayList<>();
+		protected List<AdornmentSize> sizes = new ArrayList<>();
+		protected List<CharmableMaterial> materials = new ArrayList<>();
+		protected List<ResourceLocation> sources = new ArrayList<>();
+
+		protected Map<CharmableMaterial, Integer> materialInnates = Maps.newHashMap();		
+		protected Map<AdornmentSize, ILevelModifier> levelModifiers = Maps.newHashMap();
+
+		protected String modid;
+		
+		/**
+		 * 
+		 */
+		public AdornmentItemsBuilder(String modid) {
+			this.modid = modid;
+		}
+
+		public AdornmentItemsBuilder clear() {
+			types.clear();
+			sizes.clear();
+			materials.clear();
+			sources.clear();
+			materialInnates.clear();
+			levelModifiers.clear();
+			return this;
+		}
+		
+		/*
+		 * convenience setup
+		 */
+		public AdornmentItemsBuilder useBaseDefaults() {
+			types(AdornmentType.BRACELET, AdornmentType.NECKLACE, AdornmentType.RING);
+			sizes(TreasureAdornmentRegistry.STANDARD);
+			materials(TreasureCharmableMaterials.IRON, 
 				TreasureCharmableMaterials.COPPER, 
 				TreasureCharmableMaterials.SILVER, 
 				TreasureCharmableMaterials.GOLD);
-
-		List<ResourceLocation> sources = Arrays.asList(
-				Items.DIAMOND.getRegistryName(),
-				Items.EMERALD.getRegistryName(),
-				TreasureItems.ONYX.get().getRegistryName(),
-				TreasureItems.TOPAZ.get().getRegistryName(),
-				
-				TreasureItems.RUBY.get().getRegistryName(),
-				TreasureItems.SAPPHIRE.get().getRegistryName(),
-				TreasureItems.WHITE_PEARL.get().getRegistryName(),
-				TreasureItems.BLACK_PEARL.get().getRegistryName());
-
-		Map<CharmableMaterial, Integer> materialInnates = Maps.newHashMap();		
-		Map<AdornmentSize, ILevelModifier> levelModifiers = Maps.newHashMap();
-
-		public SetupItems() {
-			materialInnates.put(TreasureCharmableMaterials.IRON, 0);
-			materialInnates.put(TreasureCharmableMaterials.COPPER, 1);
-			materialInnates.put(TreasureCharmableMaterials.SILVER, 2);
-			materialInnates.put(TreasureCharmableMaterials.GOLD, 3);
-
-			levelModifiers.put(TreasureAdornmentRegistry.STANDARD, new NoLevelModifier());
-			levelModifiers.put(TreasureAdornmentRegistry.GREAT, new GreatAdornmentLevelModifier());
-			levelModifiers.put(TreasureAdornmentRegistry.LORDS, new LordsAdornmentLevelModifier());	
+			mapInnate(TreasureCharmableMaterials.IRON, 0);
+			mapInnate(TreasureCharmableMaterials.COPPER, 1);
+			mapInnate(TreasureCharmableMaterials.SILVER, 2);
+			mapInnate(TreasureCharmableMaterials.GOLD, 3);
+			mapLevelModifier(TreasureAdornmentRegistry.STANDARD, new NoLevelModifier());
+			mapLevelModifier(TreasureAdornmentRegistry.GREAT, new GreatAdornmentLevelModifier());
+			mapLevelModifier(TreasureAdornmentRegistry.LORDS, new LordsAdornmentLevelModifier());
+			return this;
 		}
-
+		
+		/*
+		 * Sources have to be newly constructed resource locations,
+		 * because the items are deferred and aren't registered yet.
+		 * (Only the vanilla minecraft items are registered at this point)
+		 */
+		public AdornmentItemsBuilder useSourceDefaults() {
+			sources(
+					Items.DIAMOND.getRegistryName(),
+					Items.EMERALD.getRegistryName(),
+					new ResourceLocation(Treasure.MODID, "topaz"),
+					new ResourceLocation(Treasure.MODID, "onyx"),
+					new ResourceLocation(Treasure.MODID, "ruby"),
+					new ResourceLocation(Treasure.MODID, "sapphire"),
+					new ResourceLocation(Treasure.MODID, "white_pearl"),
+					new ResourceLocation(Treasure.MODID, TreasureConfig.ItemID.BLACK_PEARL_ID)
+					);
+			return this;
+		}
+		
+		public AdornmentItemsBuilder useGreatDefaults() {
+			types(AdornmentType.BRACELET, AdornmentType.NECKLACE, AdornmentType.RING);
+			sizes(TreasureAdornmentRegistry.GREAT);
+			materials(
+					TreasureCharmableMaterials.IRON, 
+					TreasureCharmableMaterials.COPPER, 
+					TreasureCharmableMaterials.SILVER, 
+					TreasureCharmableMaterials.GOLD,
+					TreasureCharmableMaterials.BLOOD,
+					TreasureCharmableMaterials.BLACK
+					);
+			mapInnate(TreasureCharmableMaterials.IRON, 0);
+			mapInnate(TreasureCharmableMaterials.COPPER, 1);
+			mapInnate(TreasureCharmableMaterials.SILVER, 2);
+			mapInnate(TreasureCharmableMaterials.GOLD, 3);
+			mapInnate(TreasureCharmableMaterials.BLOOD, 2);
+			mapInnate(TreasureCharmableMaterials.BLACK, 3);
+			mapLevelModifier(TreasureAdornmentRegistry.STANDARD, new NoLevelModifier());
+			mapLevelModifier(TreasureAdornmentRegistry.GREAT, new GreatAdornmentLevelModifier());
+			mapLevelModifier(TreasureAdornmentRegistry.LORDS, new LordsAdornmentLevelModifier());
+			
+			return this;
+		}
+		
+		public AdornmentItemsBuilder types(AdornmentType... types) {
+			getTypes().addAll(Arrays.asList(types));
+			return this;
+		}
+		
+		public AdornmentItemsBuilder sizes(AdornmentSize... sizes) {
+			getSizes().addAll(Arrays.asList(sizes));
+			return this;
+		}
+		
+		public AdornmentItemsBuilder materials(CharmableMaterial... materials) {
+			getMaterials().addAll(Arrays.asList(materials));
+			return this;
+		}
+		
+		public AdornmentItemsBuilder sources(ResourceLocation... sources) {
+			getSources().addAll(Arrays.asList(sources));
+			return this;
+		}
+		
+		public AdornmentItemsBuilder mapInnate(CharmableMaterial material, int num) {
+			getMaterialInnates().put(material, num);
+			return this;
+		}
+		
+		public AdornmentItemsBuilder mapLevelModifier(AdornmentSize size, ILevelModifier modifier) {
+			getLevelModifiers().put(size, modifier);
+			return this;
+		}
+		
 		/**
-		 * 
+		 * Legacy method.
+		 * For use in Treasure2 1.16.5 in the current setup, where the adornments
+		 * are created in the RegistryEvent and registered directly with the registry.
+		 * ie. NOT DeferredRegistry
+		 * This allows previously deferred items to be registered and used within
+		 * the adornment creation.
 		 * @return
 		 */
-		public List<Item> createAdornments() {
+		public List<Item> build() {
 			List<Item> adornments = new ArrayList<>();
-
-			// create base adornments
+			
+			if (types.isEmpty()) return adornments;
+			if (sizes.isEmpty()) return adornments;
+			
+			List<ResourceLocation> tempSources = new ArrayList<>();
+			if (sources.isEmpty()) {
+				tempSources.add(Items.AIR.getRegistryName());
+			}
+			else {
+				tempSources.addAll(sources);
+			}
+			
+			// create the adornment
 			types.forEach(type -> {
 				sizes.forEach(size -> {
 					materials.forEach(material -> {
-						Adornment a = createAdornment(type, material, size, Items.AIR.getRegistryName());
-						Treasure.LOGGER.debug("adding adornment item -> {}", a.getRegistryName());
-						adornments.add(a);
-						TreasureAdornmentRegistry.register(material.getName(), Items.AIR.getRegistryName(), a);
-					});
-				});
-			});
-
-			// create adornments with gems
-			types.forEach(type -> {
-				sizes.forEach(size -> {
-					materials.forEach(material -> {
-						sources.forEach(source -> {
+						tempSources.forEach(source -> {
 							Adornment a = createAdornment(type, material, size, source);
 							Treasure.LOGGER.debug("adding adornment item -> {}", a.getRegistryName());
 							adornments.add(a);
@@ -1121,56 +1221,60 @@ public class TreasureItems {
 					});
 				});
 			});
-
-			// some one-offs (great rings no gems)
-			AdornmentSize size = TreasureAdornmentRegistry.GREAT;
-			List<CharmableMaterial> materials2 = Arrays.asList(
-					TreasureCharmableMaterials.IRON, 
-					TreasureCharmableMaterials.COPPER, 
-					TreasureCharmableMaterials.SILVER, 
-					TreasureCharmableMaterials.GOLD,
-					TreasureCharmableMaterials.BLOOD,
-					TreasureCharmableMaterials.BLACK
-					);
-			materialInnates.put(TreasureCharmableMaterials.BLOOD, 2);
-			materialInnates.put(TreasureCharmableMaterials.BLACK, 3);
-
-			ResourceLocation source = Items.AIR.getRegistryName();
-			materials2.forEach(material -> {
-				types.forEach(type -> {
-					Adornment a = createAdornment(type, material, size, source);
-					Treasure.LOGGER.debug("adding adornment item -> {}", a.getRegistryName());
-					adornments.add(a);
-					TreasureAdornmentRegistry.register(material.getName(), source, a);					
-				});
-			});
-
-			// some one-offs (great rings with gems)
-			materials2 = Arrays.asList(
-					TreasureCharmableMaterials.IRON,
-					TreasureCharmableMaterials.COPPER,
-					TreasureCharmableMaterials.SILVER, 
-					TreasureCharmableMaterials.GOLD,
-					TreasureCharmableMaterials.BLOOD,
-					TreasureCharmableMaterials.BLACK
-					);
-
-			materials2.forEach(material -> {
-				sources.forEach(s -> {
-					types.forEach(type -> {
-						Adornment a = createAdornment(type, material, size, s);
-						//						Treasure.logger.debug("adding adornment item -> {}", a.getRegistryName());
-						adornments.add(a);
-						TreasureAdornmentRegistry.register(material.getName(), s, a);						
+			return adornments;
+		}		
+	
+		/**
+		 * Deferred build.
+		 * This method returns a list of String/Supplier Pairs.
+		 * This method can be used in a static call of a class to construct RegistryObjects
+		 * The String in the Pair is used as the name (without the namespace)
+		 * NOTE adornments are deferred and thus are not registered in
+		 * TreasureAdornmentRegistry yet. That would have to happen in a post init like event.
+		 * @return
+		 */
+		public List<Pair<String, Supplier<Adornment>>> deferredBuild() {
+			List<Pair<String, Supplier<Adornment>>> adornments = new ArrayList<>();
+			
+			if (types.isEmpty()) return adornments;
+			if (sizes.isEmpty()) return adornments;
+			
+			List<ResourceLocation> tempSources = new ArrayList<>();
+			if (sources.isEmpty()) {
+				tempSources.add(Items.AIR.getRegistryName());
+			}
+			else {
+				tempSources.addAll(sources);
+			}
+			
+			// create the adornment
+			types.forEach(type -> {
+				sizes.forEach(size -> {
+					materials.forEach(material -> {
+						tempSources.forEach(source -> {
+							// build the name
+							String name = (size == TreasureAdornmentRegistry.STANDARD ? "" : size.getName() + "_") + (source == Items.AIR.getRegistryName() ? "" :  source.getPath() + "_") + material.getName().getPath() + "_" + type.toString();
+							// build the adornment supplier
+							Supplier<Adornment> a = deferredCreateAdornment(type, material, size, source);
+							Treasure.LOGGER.debug("adding deferred adornment item -> {}", name);
+							
+							// build a pair
+							Pair<String, Supplier<Adornment>> pair = Pair.of(name, a);
+							adornments.add(pair);
+						});
 					});
 				});
 			});
-
 			return adornments;
 		}
 
 		/**
-		 * 
+		 * Legacy method.
+		 * For use in Treasure2 1.16.5 in the current setup, where the adornments
+		 * are created in the RegistryEvent and registered directly with the registry.
+		 * ie. NOT DeferredRegistry
+		 * This allows previously deferred items to be registered and used within
+		 * the adornment creation.
 		 * @param name
 		 * @param type
 		 * @param material
@@ -1178,10 +1282,10 @@ public class TreasureItems {
 		 * @param source
 		 * @return
 		 */
-		private Adornment createAdornment(AdornmentType type, CharmableMaterial material,	AdornmentSize size, ResourceLocation source) {
+		public Adornment createAdornment(AdornmentType type, CharmableMaterial material,	AdornmentSize size, ResourceLocation source) {
 			String name = (size == TreasureAdornmentRegistry.STANDARD ? "" : size.getName() + "_") + (source == Items.AIR.getRegistryName() ? "" :  source.getPath() + "_") + material.getName().getPath() + "_" + type.toString();
 			@SuppressWarnings("deprecation")
-			Adornment a = new Adornment(Treasure.MODID, name, type, size, new Item.Properties().tab(TreasureItemGroups.ADORNMENTS_TAB)) {
+			Adornment a = new Adornment(modid, name, type, size, new Item.Properties().tab(TreasureItemGroups.ADORNMENTS_TAB)) {
 				public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
 					// calculate the innate size
 					int innateSize = materialInnates.get(material);
@@ -1216,10 +1320,81 @@ public class TreasureItems {
 					return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
 				}
 			};
-			// register the adornment
-//			ITEMS.register(name, () -> a);
 			// return the adornment
 			return a;
+		}
+		
+		public Supplier<Adornment> deferredCreateAdornment(AdornmentType type, CharmableMaterial material,	AdornmentSize size, ResourceLocation source) {
+			return () -> new Adornment(type, size, new Item.Properties().tab(TreasureItemGroups.ADORNMENTS_TAB)) {
+				@Override
+				public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+					try {
+					// calculate the innate size
+					int innateSize = materialInnates.get(material);
+					if (size == TreasureAdornmentRegistry.GREAT && material == TreasureCharmableMaterials.IRON) {
+						innateSize++;
+					}
+					ICharmableCapability cap = new CharmableCapability.Builder(innateSize, 1, 1)
+							.with($ -> {
+								$.innate = material == TreasureCharmableMaterials.IRON ? false : true;
+								$.imbuable = (material == TreasureCharmableMaterials.IRON || material == TreasureCharmableMaterials.COPPER) ? false : true;
+								$.socketable = true;
+								$.source = false;
+								$.executing = true;
+								$.namedByCharm = true;
+								$.namedByMaterial = true;
+								$.baseMaterial = material.getName();
+								$.levelModifier = levelModifiers.get(size);
+								$.sourceItem = source;
+							}).build();
+
+					IRunestonesCapability runestonesCap = new RunestonesCapability(0, 0, 0);
+					if (cap.getMaxCharmLevel() >= 8) {
+						runestonesCap = new RunestonesCapability.Builder(0, 0, 1).with($ -> {
+							$.socketable = true;
+						}).build();
+					}
+					int durability = (innateSize + 2) * material.getMaxLevel() * material.getDurability();
+					IDurabilityCapability durabilityCap = new DurabilityCapability(durability, durability);
+					durabilityCap.setMaxRepairs(material.getMaxRepairs());
+					durabilityCap.setRepairs(durabilityCap.getMaxRepairs());
+					
+					return new AdornmentCapabilityProvider(cap, runestonesCap, durabilityCap);
+					}
+					catch(Exception e) {
+						Treasure.LOGGER.error("failed in initCaps", e);
+					}
+					return null;
+				}
+			};
+		}
+		
+		public List<AdornmentType> getTypes() {
+			return types;
+		}
+
+		public List<AdornmentSize> getSizes() {
+			return sizes;
+		}
+
+		public List<CharmableMaterial> getMaterials() {
+			return materials;
+		}
+
+		public List<ResourceLocation> getSources() {
+			return sources;
+		}
+
+		public Map<CharmableMaterial, Integer> getMaterialInnates() {
+			return materialInnates;
+		}
+
+		public Map<AdornmentSize, ILevelModifier> getLevelModifiers() {
+			return levelModifiers;
+		}
+
+		public String getModid() {
+			return modid;
 		}
 	}
 

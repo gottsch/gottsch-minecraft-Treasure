@@ -390,6 +390,9 @@ public interface IChestGenerator {
 			ResourceLocation dimension = WorldInfo.getDimension(world);
 			Treasure.LOGGER.debug("get rarity chests for dimension -> {}", dimension.toString());
 			// TODO how to merge surface and submerged
+			if (!TreasureData.CHEST_REGISTRIES2.containsKey(dimension.toString())) {
+				return;
+			}
 			Optional<List<ChestInfo>> chestInfos = TreasureData.CHEST_REGISTRIES2.get(dimension.toString()).get(RegistryType.SURFACE).getByRarity(mapRarity);
 			if (chestInfos.isPresent()) {
 				Treasure.LOGGER.debug("got chestInfos by rarity -> {}", mapRarity);
@@ -410,7 +413,7 @@ public interface IChestGenerator {
 					chestInfo.setTreasureMapFrom(chestCoords);
 
 					// get this chest info from the registry
-					Optional<ChestInfo> thisChestInfo = TreasureData.CHEST_REGISTRIES2.get(dimension.toString()).get("submerged").get(rarity, chestCoords.toShortString());
+					Optional<ChestInfo> thisChestInfo = TreasureData.CHEST_REGISTRIES2.get(dimension.toString()).get(RegistryType.SURFACE).get(rarity, chestCoords.toShortString());
 					if (thisChestInfo.isPresent()) {
 						thisChestInfo.get().setDiscovered(true);
 					}
