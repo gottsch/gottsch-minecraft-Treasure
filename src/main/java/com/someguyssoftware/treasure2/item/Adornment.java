@@ -96,7 +96,6 @@ public class Adornment extends ModItem {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
-		//		return BaublesIntegration.isEnabled() ? new BaublesIntegration.BaubleAdornmentCapabilityProvider(type) : new AdornmentCapabilityProvider();
 		return new AdornmentCapabilityProvider();
 	}
 

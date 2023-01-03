@@ -37,6 +37,7 @@ import com.someguyssoftware.treasure2.capability.TreasureCapabilities;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.item.Adornment;
 import com.someguyssoftware.treasure2.item.KeyItem;
+import com.someguyssoftware.treasure2.material.CharmableMaterial;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 
 import net.minecraft.item.Item;
@@ -164,18 +165,26 @@ public class AnvilEventHandler {
 
 				leftStack.getCapability(CHARMABLE).ifPresent(cap -> {
 					if (cap.getSourceItem().equals(Items.AIR.getRegistryName())) {
-						event.setCost(1);
-						event.setMaterialCost(1);
+						
+	        			// get the base and source materials
+	        			Optional<CharmableMaterial> baseMaterial = TreasureCharmableMaterials.getBaseMaterial(cap.getBaseMaterial());
+	        			Optional<CharmableMaterial> sourceMaterial = TreasureCharmableMaterials.getSourceItem(rightStack.getItem().getRegistryName());
 
-						// build the output item, duplicating the left stack (adornment) with the right stack as the source item
-						Optional<Adornment> adornment = getAdornment(leftStack, rightStack);
-						Treasure.LOGGER.debug("adornment -> {}", adornment.get().getRegistryName());
-						if (adornment.isPresent()) {
-							ItemStack outputStack = copyStack(leftStack, new ItemStack(adornment.get()));
-							outputStack.getCapability(CHARMABLE).ifPresent(outputCap -> {
-								outputCap.setHighestLevel(cap.getHighestLevel());
-							});
-							event.setOutput(outputStack);
+	        			if (baseMaterial.get().acceptsAffixer(rightStack) && sourceMaterial.get().canAffix(leftStack)) {
+	            			
+							event.setCost(1);
+							event.setMaterialCost(1);
+	
+							// build the output item, duplicating the left stack (adornment) with the right stack as the source item
+							Optional<Adornment> adornment = getAdornment(leftStack, rightStack);
+							Treasure.LOGGER.debug("adornment -> {}", adornment.get().getRegistryName());
+							if (adornment.isPresent()) {
+								ItemStack outputStack = copyStack(leftStack, new ItemStack(adornment.get()));
+								outputStack.getCapability(CHARMABLE).ifPresent(outputCap -> {
+									outputCap.setHighestLevel(cap.getHighestLevel());
+								});
+								event.setOutput(outputStack);
+						}
 						}
 					}
 				});

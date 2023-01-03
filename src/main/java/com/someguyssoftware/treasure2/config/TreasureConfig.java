@@ -323,7 +323,7 @@ public class TreasureConfig extends AbstractConfig {
 							" Treasure2 was designed for 'normal' overworld-type dimensions.", 
 							" This setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed.", 
 							" ex. minecraft:overworld")
-					.defineList("Dimension White List:", Arrays.asList(new String []{"minecraft:overworld"}), s -> s instanceof String);
+					.defineList("Dimension White List:", Arrays.asList(new String []{"minecraft:overworld", "twilightforest:twilightforest", "twilightforest:skylight_forest"}), s -> s instanceof String);
 			builder.pop();
 		}
 	}

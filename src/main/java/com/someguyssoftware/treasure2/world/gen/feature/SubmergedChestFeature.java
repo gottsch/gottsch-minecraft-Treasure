@@ -60,13 +60,13 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 	public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		ServerWorld world = seedReader.getLevel();
 		ResourceLocation dimensionName = WorldInfo.getDimension(world);
-		ChestRegistry registry = TreasureData.CHEST_REGISTRIES2.get(dimensionName.toString()).get(RegistryType.SUBMERGED);
-		
+
 		// test the dimension white list
 		if (!meetsDimensionCriteria(dimensionName)) { 
 			return false;
 		}
-
+		ChestRegistry registry = TreasureData.CHEST_REGISTRIES2.get(dimensionName.toString()).get(RegistryType.SUBMERGED);
+		
 		if (!meetsWorldAgeCriteria(world, registry)) {
 			return false;
 		}
@@ -123,10 +123,10 @@ public class SubmergedChestFeature extends Feature<NoFeatureConfig> implements I
 			// update the adjusted weight collection
 			TreasureData.RARITIES_MAP.put(WorldGenerators.SUBMERGED_CHEST, 
 					TreasureData.RARITIES_MAP.get(WorldGenerators.SUBMERGED_CHEST).adjustExcept(1, rarity));
-			List<String> rarityMapDump = TreasureData.RARITIES_MAP.get(WorldGenerators.SUBMERGED_CHEST).dump();
-			rarityMapDump.forEach(s -> {
-				Treasure.LOGGER.info(s);
-			});
+//			List<String> rarityMapDump = TreasureData.RARITIES_MAP.get(WorldGenerators.SUBMERGED_CHEST).dump();
+//			rarityMapDump.forEach(s -> {
+//				Treasure.LOGGER.info(s);
+//			});
 		}				
 
 		// save world data

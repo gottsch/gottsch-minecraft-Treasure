@@ -74,11 +74,11 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ICh
 	public boolean place(ISeedReader seedReader, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		ServerWorld world = seedReader.getLevel();
 		ResourceLocation dimension = WorldInfo.getDimension(world);
-		ChestRegistry registry = TreasureData.CHEST_REGISTRIES2.get(dimension.toString()).get(RegistryType.SURFACE);
 		
 		if (!meetsDimensionCriteria(dimension)) { 
 			return false;
 		}
+		ChestRegistry registry = TreasureData.CHEST_REGISTRIES2.get(dimension.toString()).get(RegistryType.SURFACE);
 
 		if (!meetsWorldAgeCriteria(world, registry)) {
 			return false;
@@ -135,10 +135,10 @@ public class SurfaceChestFeature extends Feature<NoFeatureConfig> implements ICh
 			// update the adjusted weight collection
 			TreasureData.RARITIES_MAP.put(WorldGenerators.SURFACE_CHEST, 
 					TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST).adjustExcept(1, rarity));
-			List<String> rarityMapDump = TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST).dump();
-			rarityMapDump.forEach(s -> {
-				Treasure.LOGGER.info(s);
-			});
+//			List<String> rarityMapDump = TreasureData.RARITIES_MAP.get(WorldGenerators.SURFACE_CHEST).dump();
+//			rarityMapDump.forEach(s -> {
+//				Treasure.LOGGER.info(s);
+//			});
 		}
 
 		// save world data

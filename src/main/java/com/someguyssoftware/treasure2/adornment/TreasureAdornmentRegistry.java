@@ -90,11 +90,12 @@ public class TreasureAdornmentRegistry {
 	}
 	
 	public static void register(ResourceLocation material, ResourceLocation source, Adornment adornment) {
-//		Treasure.logger.debug("registering adornment -> {} with key -> {}", adornment.getRegistryName(), new Key(adornment.getType(), adornment.getSize(), material, source));
+		Treasure.LOGGER.debug("registering adornment -> {} with key -> {}", adornment.getRegistryName(), new Key(adornment.getType(), adornment.getSize(), material, source));
 		register(new Key(adornment.getType(), adornment.getSize(), material, source), adornment);
 	}
 	
 	public static void register(Key key, Adornment adornment) {
+		Treasure.LOGGER.debug("registering adornment -> {} with key -> {}", adornment.getRegistryName(), key);
 		REGISTRY.put(key, adornment);
 		BY_TYPE.put(key.getType(), adornment);
 		BY_MATERIAL.put(key.getMaterial(), adornment);
@@ -105,6 +106,8 @@ public class TreasureAdornmentRegistry {
 	}
 	
 	public static Optional<Adornment> get(Key key) {
+		Treasure.LOGGER.debug("getting adornment with key -> {}", key);
+		
 		Adornment adornment = REGISTRY.get(key);
 		return adornment == null ? Optional.empty() : Optional.of(adornment);
 	}
@@ -140,15 +143,15 @@ public class TreasureAdornmentRegistry {
 	/**
 	 * 
 	 * @param baseStack
-	 * @param stoneStack
+	 * @param sourceItemStack
 	 * @return
 	 */
-	public static Optional<Adornment> getAdornment(ItemStack baseStack, ItemStack stoneStack) {
+	public static Optional<Adornment> getAdornment(ItemStack baseStack, ItemStack sourceItemStack) {
 		if (baseStack.getCapability(TreasureCapabilities.CHARMABLE).isPresent() 
 				&& baseStack.getItem() instanceof Adornment) {
 			ICharmableCapability cap = baseStack.getCapability(TreasureCapabilities.CHARMABLE).map(c -> c).orElseThrow(() -> new IllegalStateException());
 			Adornment sourceAdornment = (Adornment) baseStack.getItem();
-			return get(sourceAdornment.getType(), sourceAdornment.getSize(), cap.getBaseMaterial(), stoneStack.getItem().getRegistryName());
+			return get(sourceAdornment.getType(), sourceAdornment.getSize(), cap.getBaseMaterial(), sourceItemStack.getItem().getRegistryName());
 		}
 		return Optional.empty();
 	}

@@ -39,7 +39,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 /**
- * @author Mark Gottschling onJan 9, 2018
+ * @author Mark Gottschling on Jan 9, 2018
  *
  */
 public abstract class AbstractChestTileEntityRenderer extends TileEntityRenderer<AbstractTreasureChestTileEntity> implements ITreasureChestTileEntityRenderer {

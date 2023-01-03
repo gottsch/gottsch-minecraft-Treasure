@@ -29,6 +29,7 @@ import com.someguyssoftware.treasure2.adornment.TreasureAdornmentRegistry;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
 import com.someguyssoftware.treasure2.item.Adornment;
+import com.someguyssoftware.treasure2.material.CharmableMaterial;
 import com.someguyssoftware.treasure2.material.TreasureCharmableMaterials;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -280,22 +281,32 @@ public class JewelerBenchContainer extends Container {
             else if ((itemStack.getItem() instanceof Adornment) 
     				&&	itemStack.getCapability(CHARMABLE).isPresent()
     				&&	TreasureCharmableMaterials.isSourceItemRegistered(itemStack2.getItem().getRegistryName())) {
-    			//Treasure.logger.debug("left is adornment and right is gem!");
-    			ICharmableCapability cap = itemStack.getCapability(CHARMABLE).map(c -> c).orElse(null);
+//    			Treasure.LOGGER.debug("left is adornment and right is gem/source item!");
+    			
+    			ICharmableCapability cap = itemStack.getCapability(CHARMABLE).resolve().orElse(null);
     			if (cap != null && cap.getSourceItem().equals(Items.AIR.getRegistryName())) {
-    				this.materialCost = 1;
 
-    				// build the output item, duplicating the left stack (adornment) with the right stack as the source item
-    				Optional<Adornment> adornment = TreasureAdornmentRegistry.getAdornment(itemStack, itemStack2);
-    				Treasure.LOGGER.debug("adornment -> {}", adornment.get().getRegistryName());
-    				if (adornment.isPresent()) {
-    					ItemStack outputStack = TreasureAdornmentRegistry.copyStack(itemStack, new ItemStack(adornment.get()));
-    					outputStack.getCapability(CHARMABLE).ifPresent(outputCap -> {
-    						outputCap.setHighestLevel(cap.getHighestLevel());
-    					});    					
-    					// update the output slot
-    					this.outputSlot.setItem(0, outputStack);
-    				}
+        			// get the base and source materials
+        			Optional<CharmableMaterial> baseMaterial = TreasureCharmableMaterials.getBaseMaterial(cap.getBaseMaterial());
+        			Optional<CharmableMaterial> sourceMaterial = TreasureCharmableMaterials.getSourceItem(itemStack2.getItem().getRegistryName());
+
+        			if (baseMaterial.get().acceptsAffixer(itemStack2) && sourceMaterial.get().canAffix(itemStack)) {
+        				this.materialCost = 1;
+
+        				// build the output item, duplicating the left stack (adornment) with the right stack as the source item
+        				Optional<Adornment> adornment = TreasureAdornmentRegistry.getAdornment(itemStack, itemStack2);
+        				if (adornment.isPresent()) {
+        					ItemStack outputStack = TreasureAdornmentRegistry.copyStack(itemStack, new ItemStack(adornment.get()));
+        					outputStack.getCapability(CHARMABLE).ifPresent(outputCap -> {
+        						outputCap.setHighestLevel(cap.getHighestLevel());
+        					});    					
+        					// update the output slot
+        					this.outputSlot.setItem(0, outputStack);
+        				}
+        				else {
+        					Treasure.LOGGER.debug("couldn't find adornment in the registry for base -> {} and source -> {}", baseMaterial.get().getName(), sourceMaterial.get().getName());
+        				}
+        			}  				
     			}
     		}            
         }

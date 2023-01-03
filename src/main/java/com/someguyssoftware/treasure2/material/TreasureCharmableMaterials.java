@@ -26,9 +26,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 
@@ -111,7 +113,7 @@ public class TreasureCharmableMaterials {
 		METAL_REGISTRY.put(BLOOD.getName(), BLOOD);
 		METAL_REGISTRY.put(BONE.getName(), BONE);
 		METAL_REGISTRY.put(BLACK.getName(), BLACK);
-		METAL_REGISTRY.put(ATIUM.getName(), ATIUM);
+//		METAL_REGISTRY.put(ATIUM.getName(), ATIUM);
 		
 		METAL_REGISTRY.put(LEGENDARY.getName(), LEGENDARY);
 		METAL_REGISTRY.put(MYTHICAL.getName(), MYTHICAL);
@@ -148,6 +150,26 @@ public class TreasureCharmableMaterials {
 		GEM_REGISTRY.put(SAPPHIRE.getName(), SAPPHIRE);
 		GEM_REGISTRY.put(WHITE_PEARL.getName(), WHITE_PEARL);
 		GEM_REGISTRY.put(BLACK_PEARL.getName(), BLACK_PEARL);
+	}
+	
+	/**
+	 * TODO part of api
+	 * @param key
+	 * @param material
+	 * @return
+	 */
+	public static boolean registerSourceItem(ResourceLocation key, CharmableMaterial material) {
+		try {
+			if (key == null || material == null) {
+				return false;
+			}
+			GEM_REGISTRY.put(key, material);
+		}
+		catch(Exception e) {
+			Treasure.LOGGER.warn("Unable to register gem ->{} with material -> {}", key, material.getName());
+			return false;
+		}
+		return true;
 	}
 	
 	public static List<CharmableMaterial> getGemValues() {

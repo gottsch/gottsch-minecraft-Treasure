@@ -18,7 +18,9 @@ import net.minecraft.util.Direction;
 public interface ITreasureChestTileEntity extends IInventory {
     public List<LockState> getLockStates();
     public void setLockStates(List<LockState> lockStates);
+    // TODO can be removed as a required method
 	boolean hasLocks();
+	
 	
     public Direction getFacing();
     public void setFacing(int facing);

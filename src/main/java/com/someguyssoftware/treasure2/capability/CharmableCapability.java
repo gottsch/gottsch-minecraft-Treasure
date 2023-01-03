@@ -323,6 +323,9 @@ public class CharmableCapability implements ICharmableCapability {
 	public int getMaxCharmLevel() {
 		Optional<CharmableMaterial> base = TreasureCharmableMaterials.getBaseMaterial(baseMaterial);
 		Optional<CharmableMaterial> source = TreasureCharmableMaterials.getSourceItem(sourceItem);
+//		if (source.isPresent()) {
+//			Treasure.LOGGER.debug("source is present -> {} with max level -> {}", source.get().getName(), source.get().getMaxLevel());
+//		}
 		CharmableMaterial effectiveBase = base.isPresent() ? base.get() : TreasureCharmableMaterials.COPPER;
 		return levelModifier.modifyMaxLevel(effectiveBase.getMaxLevel())
 				+ (int) Math.floor(levelModifier.modifyLevelMultiplier(effectiveBase.getLevelMultiplier()) * (source.isPresent() ? source.get().getMaxLevel() : 0));

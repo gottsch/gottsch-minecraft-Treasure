@@ -537,10 +537,13 @@ public class CharmingTableContainer extends Container {
 				// populate the runestones
 				IRunestonesCapability runestoneCap = itemStack.getCapability(RUNESTONES).map(cap -> cap).orElse(null);
 				if (runestoneCap != null) {
+					Treasure.LOGGER.debug("has runestone cap, socket size -> {}", runestoneCap.getEntities(InventoryType.SOCKET).size());
 					if (runestoneCap.getEntities(InventoryType.SOCKET).size() > 0) {
+						Treasure.LOGGER.debug("has runestone -> {}", runestoneCap.getEntities(InventoryType.SOCKET).get(0).getRunestone());
 						Optional<Item> item = TreasureRunes.getItem(runestoneCap.getEntities(InventoryType.SOCKET).get(0).getRunestone());
 						// NOTE if item isn't found, something went wrong
 						if (item.isPresent()) {
+							Treasure.LOGGER.debug("has runestone item -> {}", item.get().getRegistryName());
 							this.runeInputSlot1.setItem(0, new ItemStack(item.get()));
 						}
 					}

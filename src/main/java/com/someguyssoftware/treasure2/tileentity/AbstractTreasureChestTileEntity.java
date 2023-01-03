@@ -28,13 +28,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.IChestLid;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
@@ -45,7 +43,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
@@ -504,6 +501,10 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 		}
 		return false;
 	}
+	
+	public boolean isLocked() {
+		return hasLocks();
+	}
 
 	/**
 	 * Creates the server container. Wrapped by vanilla createMenu().
@@ -563,7 +564,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public int getContainerSize() {
-		if (!hasLocks()) {
+		if (!isLocked()) {
 			return getNumberOfSlots();
 		}
 		return 0;
@@ -587,7 +588,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public ItemStack getItem(int index) {
-		if (!hasLocks()) {
+		if (!isLocked()) {
 			return getItems().get(index);
 		}
 		return ItemStack.EMPTY;
@@ -599,7 +600,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	@Override
 	public ItemStack removeItem(int index, int count) {
 		ItemStack itemStack = ItemStack.EMPTY;
-		if (!hasLocks()) {
+		if (!isLocked()) {
 			itemStack = ItemStackHelper.removeItem(this.getItems(), index, count);
 			if (!itemStack.isEmpty()) {
 				this.setChanged();
@@ -613,7 +614,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
-		if (hasLocks()) {
+		if (isLocked()) {
 			return ItemStack.EMPTY;
 		}
 		return ItemStackHelper.removeItem(this.getItems(), index, 1);
@@ -624,7 +625,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 */
 	@Override
 	public void setItem(int index, ItemStack stack) {
-		if (!hasLocks()) {
+		if (!isLocked()) {
 			this.getItems().set(index, stack);
 			if (stack.getCount() > this.getMaxStackSize()) {
 				stack.setCount(this.getMaxStackSize());
@@ -677,7 +678,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	public void startOpen(PlayerEntity player) {
 		Treasure.LOGGER.info("opening inventory -> {}", player.getName());
 
-		if (hasLocks()) {
+		if (isLocked()) {
 			Treasure.LOGGER.info("has locks - don't increment num players");
 			return;
 		}
