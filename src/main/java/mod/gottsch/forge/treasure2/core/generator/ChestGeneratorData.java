@@ -19,6 +19,7 @@ package mod.gottsch.forge.treasure2.core.generator;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.treasure2.core.enums.IRegionPlacement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -34,6 +35,13 @@ public class ChestGeneratorData extends GeneratorData {
 	private IRarity rarity;
 	private ResourceLocation registryName;
 	private BlockState state;
+	private IRegionPlacement placement;
+	
+	/*
+	 * the actual coords of the chest.
+	 * could be different from GeneratorData.spawnCoords.
+	 */
+	private ICoords coords;
 	
 	/**
 	 * 
@@ -86,8 +94,9 @@ public class ChestGeneratorData extends GeneratorData {
 
 	@Override
 	public String toString() {
-		return "ChestGeneratorData [markers=" + markers + ", structure=" + structure
-				+ ", pit=" + pit + ", rarity=" + rarity + "]";
+		return "ChestGeneratorData [markers=" + markers + ", structure=" + structure + ", pit=" + pit + ", rarity="
+				+ rarity + ", registryName=" + registryName + ", state=" + state + ", placement=" + placement
+				+ ", coords=" + coords + "]";
 	}
 
 	public ResourceLocation getRegistryName() {
@@ -104,5 +113,21 @@ public class ChestGeneratorData extends GeneratorData {
 
 	public void setState(BlockState state) {
 		this.state = state;
+	}
+
+	public ICoords getCoords() {
+		return coords;
+	}
+
+	public void setCoords(ICoords coords) {
+		this.coords = coords;
+	}
+
+	public IRegionPlacement getPlacement() {
+		return placement;
+	}
+
+	public void setPlacement(IRegionPlacement placement) {
+		this.placement = placement;
 	}
 }

@@ -28,10 +28,12 @@ import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.entity.monster.BoundSoul;
+import mod.gottsch.forge.treasure2.core.enums.PitType;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.*;
+import mod.gottsch.forge.treasure2.core.generator.pit.*;
 import mod.gottsch.forge.treasure2.core.item.KeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.loot.SpecialLootTables;
@@ -228,6 +230,17 @@ public class CommonSetup {
 		TreasureApi.registerChestGenerator(CAULDRON, new CauldronChestGenerator());
 		TreasureApi.registerChestGenerator(CRYSTAL_SKULL, new CrystalSkullChestGenerator());
 
+		// register pit generators
+		TreasureApi.registerPitGenerator(PitType.STANDARD, new SimplePitGenerator());
+		TreasureApi.registerPitGenerator(PitType.STANDARD, new AirPitGenerator());
+		TreasureApi.registerPitGenerator(PitType.STANDARD, new BigBottomMobTrapPitGenerator());
+		TreasureApi.registerPitGenerator(PitType.STANDARD, new CollapsingTrapPitGenerator());
+		TreasureApi.registerPitGenerator(PitType.STANDARD, new LavaSideTrapPitGenerator());
+		TreasureApi.registerPitGenerator(PitType.STANDARD, new LavaTrapPitGenerator());
+		TreasureApi.registerPitGenerator(PitType.STANDARD, new MobTrapPitGenerator());
+		TreasureApi.registerPitGenerator(PitType.STANDARD, new TntTrapPitGenerator());
+		TreasureApi.registerPitGenerator(PitType.STANDARD, new VolcanoPitGenerator());
+		
 		// TODO using a nonstandard map, removes the need for a weighted chest generator. just need Rarity+GenType -> Generator
 		// TreasureApi.registerNonStandardChestGenerator(TERRESTRIAL, TreasureBlocks.SKULL_CHEST, SKULL);
 		

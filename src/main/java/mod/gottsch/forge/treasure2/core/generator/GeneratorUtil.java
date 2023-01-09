@@ -223,7 +223,9 @@ public class GeneratorUtil {
 	 * @param coords
 	 * @return
 	 */
-	public static ICoords findUndergroundCeiling(Level world, ICoords coords) {
+	public static ICoords findSubterraneanCeiling(Level world, ICoords coords) {
+		// TODO a better solution would take in the ChunkGenerator and find the
+		// surface height. if coords exceeds the surface height, then fail.
 		final int CEILING_FAIL_SAFE = 50;
 		int ceilingHeight = 1;
 

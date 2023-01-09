@@ -6,9 +6,13 @@ import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureMetaRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
+import mod.gottsch.forge.treasure2.core.world.feature.TreasureConfiguredFeatures;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureOreGeneration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome.BiomeCategory;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraftforge.common.BiomeManager.BiomeType;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -53,5 +57,9 @@ public class WorldEventHandler {
 		 * generation must occur in the correct order according to GenerationStep.Decoration
 		 */
 		TreasureOreGeneration.generateOres(event);
+		
+		if (event.getCategory() != BiomeCategory.OCEAN) {
+			event.getGeneration().addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TreasureConfiguredFeatures.TERRESTRIAL_CHEST_PLACED.getHolder().get());
+		}
 	}
 }

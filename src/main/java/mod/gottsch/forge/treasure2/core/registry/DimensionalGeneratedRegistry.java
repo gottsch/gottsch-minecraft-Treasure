@@ -251,8 +251,9 @@ public class DimensionalGeneratedRegistry {
 	 * @param genType
 	 * @return
 	 */
-	public static GeneratedRegistry<?> getChestGeneratedRegistry(ResourceLocation dimension, IGeneratorType genType) {
-		return getGeneratedRegistry(CHEST_REGISTRY, dimension, genType);
+	@SuppressWarnings("unchecked")
+	public static GeneratedRegistry<ChestGenContext> getChestGeneratedRegistry(ResourceLocation dimension, IGeneratorType genType) {
+		return (GeneratedRegistry<ChestGenContext>) getGeneratedRegistry(CHEST_REGISTRY, dimension, genType);
 	}
 	
 	/**

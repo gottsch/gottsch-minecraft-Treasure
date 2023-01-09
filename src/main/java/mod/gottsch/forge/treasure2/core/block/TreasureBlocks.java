@@ -22,25 +22,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
-import mod.gottsch.forge.treasure2.core.block.entity.CardboardBoxBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.CauldronChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.CompressorChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.CrateChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.CrystalSkullChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.DreadPirateChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.GoldSkullChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.GoldStrongboxBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.IronStrongboxBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.IronboundChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.MilkCrateBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.MoldyCrateChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.PirateChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.SafeBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.SkullChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.SpiderChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.VikingChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.WitherChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.WoodChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.*;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.lock.LockLayouts;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
@@ -144,7 +126,7 @@ public class TreasureBlocks {
 	
 	public static final RegistryObject<Block> SAPPHIRE_ORE = Registration.BLOCKS.register("sapphire_ore", () -> new Block(ORE_PROPS.get()));
 	public static final RegistryObject<Block> DEEPSLATE_SAPPHIRE_ORE = Registration.BLOCKS.register("deepslate_sapphire_ore", () -> new Block(DEEPSLATE_ORE_PROPS.get()));
-	
+
 	// gravestones
 	public static final RegistryObject<Block> GRAVESTONE1_STONE = Registration.BLOCKS.register("gravestone1_stone", () -> new GravestoneBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
             .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone1()));
@@ -190,6 +172,8 @@ public class TreasureBlocks {
 	
 	public static final RegistryObject<Block> SKELETON = Registration.BLOCKS.register("skeleton", () -> new SkeletonBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE).strength(3.0F).sound(SoundType.STONE)));
 	
+	// proximity spawners
+	public static final RegistryObject<Block> PROXIMITY_SPAWNER = Registration.BLOCKS.register("proximity_spawner", () -> new ProximityBlock(Block.Properties.of(Material.AIR).noCollission().noDrops()));
 	// gravestone spawners
 	public static final RegistryObject<Block> GRAVESTONE1_SPAWNER_STONE = Registration.BLOCKS.register("gravestone1_spawner_stone", () -> new GravestoneSpawnerBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
             .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone1()));
@@ -198,6 +182,13 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> GRAVESTONE3_SPAWNER_OBSIDIAN = Registration.BLOCKS.register("gravestone3_spawner_obsidian", () -> new GravestoneSpawnerBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
             .strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone3()));
 
+	// falling blocks
+	public static final RegistryObject<Block> FALLING_GRASS = Registration.BLOCKS.register("falling_grass", () -> new FallingGrassBlock(Properties.of(Material.DIRT, MaterialColor.WOOD)
+			.strength(0.6F).sound(SoundType.GRASS)));
+	public static final RegistryObject<Block> FALLING_SAND = Registration.BLOCKS.register("falling_sand", () -> new FallingSandBlock(Properties.of(Material.SAND, MaterialColor.WOOD)
+			.strength(0.6F).sound(SoundType.SAND)));
+	public static final RegistryObject<Block> FALLING_RED_SAND = Registration.BLOCKS.register("falling_red_sand", () -> new FallingRedSandBlock(Properties.of(Material.SAND, MaterialColor.WOOD)
+			.strength(0.6F).sound(SoundType.SAND)));
 	
 	// other
 	public static final RegistryObject<Block> SPANISH_MOSS = Registration.BLOCKS.register("spanish_moss", () -> new SpanishMossBlock(Properties.of(Material.WOOD, MaterialColor.WOOD)));
@@ -205,6 +196,7 @@ public class TreasureBlocks {
 			Properties.of(Material.STONE, MaterialColor.STONE).strength(2.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> DESERT_WISHING_WELL = Registration.BLOCKS.register("desert_wishing_well_block", () -> new WishingWellBlock(
 			Properties.of(Material.STONE, MaterialColor.STONE).strength(2.0F).sound(SoundType.STONE)));
+	
 	
 	// collections
 	public static final List<RegistryObject<Block>> CHESTS = new ArrayList<>(25);

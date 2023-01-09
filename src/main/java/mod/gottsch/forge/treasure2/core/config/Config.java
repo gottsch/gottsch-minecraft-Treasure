@@ -167,6 +167,7 @@ public class Config extends AbstractConfig {
 		public Markers markers;
 		public WitherTree witherTree;
 		public Wells wells;
+		public Pits pits;
 
 		/**
 		 * 
@@ -180,6 +181,7 @@ public class Config extends AbstractConfig {
 			markers = new Markers(builder);
 			witherTree = new WitherTree(builder);
 			wells = new Wells(builder);
+			pits = new Pits(builder);
 		}
 		
 		/*
@@ -480,6 +482,23 @@ public class Config extends AbstractConfig {
 				new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean" });
 				biomes = new BiomesConfig(builder, biomesData);
 				
+				builder.pop();
+			}
+		}
+		
+		/*
+		 * 
+		 */
+		public static class Pits {
+			public ConfigValue<Integer> structureProbability;
+			
+			public Pits(final ForgeConfigSpec.Builder builder)	 {
+				builder.comment(CATEGORY_DIV, " Pit properties", CATEGORY_DIV)
+				.push("pits");
+				
+				structureProbability = builder
+						.comment("The probability that a pit will contain a structure (treasure room(s), cavern etc.)")
+						.defineInRange("structureProbability", 25, 0, 100);
 				builder.pop();
 			}
 		}

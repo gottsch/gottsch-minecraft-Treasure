@@ -21,6 +21,7 @@ import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
 import mod.gottsch.forge.treasure2.core.setup.ClientSetup;
 import mod.gottsch.forge.treasure2.core.setup.CommonSetup;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
+import mod.gottsch.forge.treasure2.core.world.feature.TreasureConfiguredFeatures;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -66,6 +67,7 @@ public class Treasure {
 		TreasureContainers.register();
 		TreasureParticles.register();
 		TreasureEntities.register();
+		TreasureConfiguredFeatures.register();
 		
 		// register the setup method for mod loading
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

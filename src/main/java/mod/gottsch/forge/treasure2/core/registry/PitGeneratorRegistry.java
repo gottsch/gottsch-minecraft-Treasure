@@ -19,38 +19,40 @@ package mod.gottsch.forge.treasure2.core.registry;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
-import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
+import mod.gottsch.forge.treasure2.core.enums.IPitType;
+import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
+import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
+import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
 
 /**
  * 
- * @author Mark Gottschling on Dec 2, 2022
+ * @author Mark Gottschling on Jan 4, 2023
  *
  */
-public class ChestGeneratorRegistry {
-	private static final Map<IChestGeneratorType, IChestGenerator> REGISTRY = Maps.newHashMap();
+public class PitGeneratorRegistry {
+	private static final Multimap<IPitType, IPitGenerator<GeneratorResult<ChestGeneratorData>>> REGISTRY = ArrayListMultimap.create();
 	
-	private ChestGeneratorRegistry() {}
+	private PitGeneratorRegistry() { }
 	
-	public static void registerGeneator(IChestGeneratorType type, IChestGenerator generator) {
-		if (!REGISTRY.containsKey(type) && type != null) {
+	public static void register(IPitType type, IPitGenerator<GeneratorResult<ChestGeneratorData>> generator) {
+		if (type != null && !REGISTRY.containsKey(type)) {
 			REGISTRY.put(type, generator);
 		}
 	}
 	
-	public static Optional<IChestGenerator> get(IChestGeneratorType type) {
+	public static List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> get(IPitType type) {
 		if (REGISTRY.containsKey(type)) {
-			return Optional.of(REGISTRY.get(type));
+			return new ArrayList<>(REGISTRY.get(type));
 		}
-		return Optional.empty();
+		return new ArrayList<>();
 	}
 	
-	public static List<IChestGenerator> getValues() {
+	public static List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> getValues() {
 		return new ArrayList<>(REGISTRY.values());
 	}
 }

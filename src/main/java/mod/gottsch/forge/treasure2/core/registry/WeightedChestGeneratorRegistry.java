@@ -34,6 +34,7 @@ import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorType;
+import mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.random.LevelWeightedCollection;
@@ -207,6 +208,14 @@ public class WeightedChestGeneratorRegistry {
 			}
 		}
 		return Rarity.NONE;
+	}
+	
+	public static IChestGenerator getNextGenerator(IRarity rarity, IGeneratorType type) {
+		if (REGISTRY.contains(rarity, type)) {
+			WeightedCollection<Number, IChestGenerator> collection = REGISTRY.get(rarity, type);
+			return collection.next();
+		}
+		return null;
 	}
 	
 	/**

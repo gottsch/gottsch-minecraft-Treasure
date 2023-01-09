@@ -48,4 +48,7 @@ public class TreasurePlacedFeatures {
 	public static final Holder<PlacedFeature> SAPPHIRE_ORE_PLACED = PlacementUtils.register("sapphire_ore_placed", 
 			TreasureConfiguredFeatures.SAPPHIRE_ORE, TreasureOrePlacement.commonOrePlacement(1, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(14), 
 					VerticalAnchor.aboveBottom(70))));
+	
+//	public static final Holder<PlacedFeature> TERRESTRIAL_CHEST_PLACED = PlacementUtils.register("terrestrial_chest_placed", 
+//			TreasureConfiguredFeatures.TERRESTRIAL_CHEST);
 }

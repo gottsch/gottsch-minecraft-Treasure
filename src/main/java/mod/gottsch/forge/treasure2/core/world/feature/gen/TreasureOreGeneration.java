@@ -40,5 +40,6 @@ public class TreasureOreGeneration {
 		base.add(TreasurePlacedFeatures.ONYX_ORE_PLACED);
 		base.add(TreasurePlacedFeatures.RUBY_ORE_PLACED);
 		base.add(TreasurePlacedFeatures.SAPPHIRE_ORE_PLACED);
+		
 	}
 }

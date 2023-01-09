@@ -15,8 +15,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package mod.gottsch.forge.treasure2.core.world.feature;
+package mod.gottsch.forge.treasure2.core.enums;
 
-public class TreasureNoConfigFeatures {
+import mod.gottsch.forge.gottschcore.enums.IEnum;
+
+/**
+ * 
+ * @author Mark Gottschling on Nov 29, 2022
+ *
+ */
+public interface IPitType extends IEnum {
 
 }

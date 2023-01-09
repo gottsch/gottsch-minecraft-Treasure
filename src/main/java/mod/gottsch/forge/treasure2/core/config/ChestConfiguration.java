@@ -121,7 +121,7 @@ public class ChestConfiguration {
 	 * 
 	 */
 	public static class ChestRarity {
-		private String rarity="mythical";
+		private String rarity;
 		private Integer weight;
 		private Integer minDepth;
 		private Integer maxDepth;

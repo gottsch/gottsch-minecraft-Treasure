@@ -24,24 +24,20 @@ import java.util.stream.Collectors;
 import mod.gottsch.forge.gottschcore.enums.IEnum;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.enums.IPitType;
 import mod.gottsch.forge.treasure2.core.enums.IRegionPlacement;
 import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
+import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
+import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
+import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
 import mod.gottsch.forge.treasure2.core.item.IKeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.KeyItem;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.loot.ISpecialLootTables;
-import mod.gottsch.forge.treasure2.core.registry.ChestGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
-import mod.gottsch.forge.treasure2.core.registry.EnumRegistry;
-import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
-import mod.gottsch.forge.treasure2.core.registry.TagRegistry;
-import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
-import mod.gottsch.forge.treasure2.core.registry.TreasureMetaRegistry;
-import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
+import mod.gottsch.forge.treasure2.core.registry.*;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -275,6 +271,10 @@ public class TreasureApi {
 	 */
 	public static void registerChestGenerator(IChestGeneratorType type, IChestGenerator generator) {
 		ChestGeneratorRegistry.registerGeneator(type, generator);
+	}
+	
+	public static void registerPitGenerator(IPitType type, IPitGenerator<GeneratorResult<ChestGeneratorData>> generator) {
+		PitGeneratorRegistry.register(type, generator);
 	}
 	
 	/*

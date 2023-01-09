@@ -48,6 +48,7 @@ public class TreasureBlockEntities {
 	public static final RegistryObject<BlockEntityType<MilkCrateBlockEntity>> MILK_CRATE_BLOCK_ENTITY_TYPE;
 	public static final RegistryObject<BlockEntityType<WitherChestBlockEntity>> WITHER_CHEST_BLOCK_ENTITY_TYPE;	
 	
+	public static final RegistryObject<BlockEntityType<TreasureProximitySpawnerBlockEntity>> TREASURE_PROXIMITY_SPAWNER_ENTITY_TYPE;
 	public static final RegistryObject<BlockEntityType<GravestoneProximitySpawnerBlockEntity>> GRAVESTONE_PROXIMITY_SPAWNER_ENTITY_TYPE;
 
 	static {
@@ -70,6 +71,11 @@ public class TreasureBlockEntities {
 		CARDBOARD_BOX_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("cardboard_box_block_entity", () -> BlockEntityType.Builder.of(CardboardBoxBlockEntity::new, TreasureBlocks.CARDBOARD_BOX.get()).build(null));
 		MILK_CRATE_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("milk_crate_block_entity", () -> BlockEntityType.Builder.of(MilkCrateBlockEntity::new, TreasureBlocks.MILK_CRATE.get()).build(null));
 		WITHER_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("wither_chest_block_entity", () -> BlockEntityType.Builder.of(WitherChestBlockEntity::new, TreasureBlocks.WITHER_CHEST.get()).build(null));
+		
+		TREASURE_PROXIMITY_SPAWNER_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("treasure_proximity_spawner", 
+				() -> BlockEntityType.Builder.of(TreasureProximitySpawnerBlockEntity::new, 
+						TreasureBlocks.PROXIMITY_SPAWNER.get()
+					).build(null));
 		
 		GRAVESTONE_PROXIMITY_SPAWNER_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("gravestone_proximity_spawner", 
 				() -> BlockEntityType.Builder.of(GravestoneProximitySpawnerBlockEntity::new, 
