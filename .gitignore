@@ -12,3 +12,4 @@ gradle.log
 !*.json
 !*.gradlew
 !/models/
+!*.launch
