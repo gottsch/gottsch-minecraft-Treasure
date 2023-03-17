@@ -20,13 +20,12 @@
 package mod.gottsch.forge.treasure2.core.generator.pit;
 
 import java.util.Optional;
-import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -47,7 +46,7 @@ public class SimpleShortPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(ServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords) {
 		Treasure.LOGGER.debug("generating SimpleShortPit.");
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(spawnCoords);
@@ -57,24 +56,24 @@ public class SimpleShortPitGenerator extends AbstractPitGenerator {
 		// check each position if already not air and generate
 
 		checkCoords = spawnCoords.add(0, 1, 0);
-		BlockState blockState = world.getBlockState(checkCoords.toPos());
+		BlockState blockState = context.level().getBlockState(checkCoords.toPos());
 		if (blockState.getMaterial() != Material.AIR) {
-			buildLogLayer(world, random, checkCoords, DEFAULT_LOG);
+			buildLogLayer(context, checkCoords, DEFAULT_LOG);
 		}
 		
 		checkCoords = spawnCoords.add(0, 2, 0);
 		if (blockState.getMaterial() != Material.AIR) {
-			buildLayer(world, checkCoords, Blocks.SAND);
+			buildLayer(context, checkCoords, Blocks.SAND);
 		}
 		
 		checkCoords = surfaceCoords.add(0, -2, 0);
 		if (blockState.getMaterial() != Material.AIR) {
-			buildLayer(world, checkCoords, Blocks.SAND);
+			buildLayer(context, checkCoords, Blocks.SAND);
 		}
 		
 		checkCoords = surfaceCoords.add(0, -3, 0);
 		if (blockState.getMaterial() != Material.AIR) {
-			buildLogLayer(world, random, checkCoords, DEFAULT_LOG);
+			buildLogLayer(context, checkCoords, DEFAULT_LOG);
 		}
 		
 		Treasure.LOGGER.debug("generated SimpleShortPit at -> {}", spawnCoords.toShortString());

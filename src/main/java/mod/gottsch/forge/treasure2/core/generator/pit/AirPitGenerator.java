@@ -20,13 +20,12 @@
 package mod.gottsch.forge.treasure2.core.generator.pit;
 
 import java.util.Optional;
-import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 
 /**
@@ -51,8 +50,9 @@ public class AirPitGenerator extends AbstractPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(ServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		Optional<GeneratorResult<ChestGeneratorData>> result =super.generate(world, random, surfaceCoords, spawnCoords); 
+	@Override
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords) {
+		Optional<GeneratorResult<ChestGeneratorData>> result =super.generate(context, surfaceCoords, spawnCoords); 
 		if (result.isPresent()) {
 			Treasure.LOGGER.debug("generated Air Pit at " + spawnCoords.toShortString());
 		}

@@ -20,35 +20,33 @@
 package mod.gottsch.forge.treasure2.core.generator.pit;
 
 import java.util.Optional;
-import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorResult;
-import net.minecraft.server.level.ServerLevel;
 
+/**
+ * 
+ * @author Mark Gottschling 2021
+ *
+ * @param <RESULT>
+ */
 public interface IPitGenerator<RESULT extends IGeneratorResult<?>> {
 
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param surfaceCoords
-	 * @param spawnCoords
-	 * @return
-	 */
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(ServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords);
 	
-	public boolean generateBase(ServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
+	public boolean generateBase(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords);
 
-	public boolean generatePit(ServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
+	public boolean generatePit(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords);
 	
-	public boolean generateEntrance(ServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
+	public boolean generateEntrance(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords);
 
 	public int getOffsetY();
 	
 	public void setOffsetY(int i);
 
 	int getMinSurfaceToSpawnDistance();
+
 }

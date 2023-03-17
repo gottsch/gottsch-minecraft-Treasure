@@ -27,12 +27,11 @@ import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.random.WeightedCollection;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -59,17 +58,9 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 		getBlockLayers().add(10, DEFAULT_LOG);
 	}
 	
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param surfaceCoords
-	 * @param spawnCoords
-	 * @return
-	 */
     @Override
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(ServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		Optional<GeneratorResult<ChestGeneratorData>> result = super.generate(world, random, surfaceCoords, spawnCoords);
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords) {
+		Optional<GeneratorResult<ChestGeneratorData>> result = super.generate(context, surfaceCoords, spawnCoords);
 		if (result.isPresent()) {
 			Treasure.LOGGER.debug("generated VolcanoPit at -> {}", spawnCoords.toShortString());
 		}
@@ -85,37 +76,37 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ICoords buildPit(ServerLevel world, Random random, ICoords coords, ICoords surfaceCoords, WeightedCollection<Integer, Block> col) {
+	public ICoords buildPit(IWorldGenContext context, ICoords coords, ICoords surfaceCoords, WeightedCollection<Integer, Block> col) {
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
         
         // determine size of volcano
-		int radius = RandomHelper.randomInt(random, MIN_VOLCANO_RADIUS, MAX_VOLCANO_RADIUS); // min of 4, so diameter = 9 (4*2 + 1 (center)), area = 9x9
+		int radius = RandomHelper.randomInt(context.random(), MIN_VOLCANO_RADIUS, MAX_VOLCANO_RADIUS); // min of 4, so diameter = 9 (4*2 + 1 (center)), area = 9x9
         
 		// select 2/3 point of pit length - topmost coords of volcano chamber / bottom of pit shaft
 		int shaftStartY = coords.getY() + ((surfaceCoords.getY() - coords.getY()) / 3 * 2);
 
 		// build lava around base
-		buildLavaBaseLayer(world, coords.down(1), radius);
+		buildLavaBaseLayer(context, coords.down(1), radius);
 
         nextCoords = coords;
         while (nextCoords.getY() < (shaftStartY - 4)) {
-            nextCoords = buildLayer(world, nextCoords, radius, Blocks.AIR, true);
+            nextCoords = buildLayer(context, nextCoords, radius, Blocks.AIR, true);
         }
 
         // taper in until 2/3 point is reached
         while (nextCoords.getY() < shaftStartY && radius > 1) {
-            nextCoords = buildLayer(world, nextCoords, radius--, Blocks.AIR, false);
+            nextCoords = buildLayer(context, nextCoords, radius--, Blocks.AIR, false);
         }
 
         // build one layer of logs
-        nextCoords = buildLogLayer(world, random, nextCoords, DEFAULT_LOG);
+        nextCoords = buildLogLayer(context, nextCoords, DEFAULT_LOG);
         
         // build shaft
 		for (int yIndex = nextCoords.getY() + 1; yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
 			// if the block to be replaced is air block then skip to the next pos
-			BlockContext context = new BlockContext(world, new Coords(coords.getX(), yIndex, coords.getZ()));
-			if (context.isAir()) {
+			BlockContext blockContext = new BlockContext(context.level(), new Coords(coords.getX(), yIndex, coords.getZ()));
+			if (blockContext.isAir()) {
 				continue;
 			}
 
@@ -123,14 +114,14 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 			Block block = col.next();
 			if (block == DEFAULT_LOG) {
 				// special log build layer
-				nextCoords = buildLogLayer(world, random, context.getCoords(), block); // could have difference classes and implement buildLayer differently
+				nextCoords = buildLogLayer(context, blockContext.getCoords(), block); // could have difference classes and implement buildLayer differently
 			}
 			else {
-				nextCoords = buildLayer(world, context.getCoords(), block);
+				nextCoords = buildLayer(context, blockContext.getCoords(), block);
 			}
 
 			// get the expected coords
-			expectedCoords = context.getCoords().add(0, 1, 0);
+			expectedCoords = blockContext.getCoords().add(0, 1, 0);
 			
 			// check if the return coords is different than the anticipated coords and resolve
 			yIndex = autoCorrectIndex(yIndex, nextCoords, expectedCoords);
@@ -142,14 +133,14 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * 
 	 */
 	@Override
-	public void buildAboveChestLayers(ServerLevel world, Random random, ICoords spawnCoords) {
+	public void buildAboveChestLayers(IWorldGenContext context, ICoords spawnCoords) {
 		
 	}
 	
     /**
      * 
      */
-    private ICoords buildLayer(Level world, ICoords coords, int radius, Block block, boolean addDecorations) {
+    private ICoords buildLayer(IWorldGenContext context, ICoords coords, int radius, Block block, boolean addDecorations) {
 		int radiusSquared = radius * radius;
 		Integer[] distancesMet = new Integer[radius + 1];
 		ICoords spawnCoords = null;
@@ -171,25 +162,25 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 
 				if (isDistanceMet) {
 					Random random = new Random();
-                    GeneratorUtil.replaceWithBlock(world, spawnCoords, block);
+                    GeneratorUtil.replaceWithBlock(context.level(), spawnCoords, block);
                     
                     if (addDecorations) {
 	                    if (xOffset < 0) {
 	                        ICoords replaceCoords = spawnCoords.west(1);
-	                        addDecorations(world, random, replaceCoords);
+	                        addDecorations(context, replaceCoords);
 	                    }
 	                    else if (xOffset > 0) {
 	                        ICoords replaceCoords = spawnCoords.east(1);
-	                        addDecorations(world, random, replaceCoords);
+	                        addDecorations(context, replaceCoords);
 	                    }
 	
 	                    if (zOffset < 0) {
 	                        ICoords replaceCoords = spawnCoords.north(1);
-	                        addDecorations(world, random, replaceCoords);
+	                        addDecorations(context, replaceCoords);
 	                    }
 	                    else if (zOffset > 0) {
 	                        ICoords replaceCoords = spawnCoords.south(1);
-	                        addDecorations(world, random, replaceCoords);
+	                        addDecorations(context, replaceCoords);
 	                    }
                     }
                 }
@@ -202,13 +193,13 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
     /**
      * 
      */
-    private void addDecorations(Level world, Random random, ICoords coords) {
-        if (world.getBlockState(coords.toPos()).getBlock() != Blocks.AIR) {
-            if (RandomHelper.checkProbability(random, 30)) {
-                world.setBlock(coords.toPos(), Blocks.BLACKSTONE.defaultBlockState(), 3);
+    private void addDecorations(IWorldGenContext context, ICoords coords) {
+        if (context.level().getBlockState(coords.toPos()).getBlock() != Blocks.AIR) {
+            if (RandomHelper.checkProbability(context.random(), 30)) {
+                context.level().setBlock(coords.toPos(), Blocks.BLACKSTONE.defaultBlockState(), 3);
             }
-            else if (RandomHelper.checkProbability(random, 10)) {
-            	world.setBlock(coords.toPos(), Blocks.LAVA.defaultBlockState(), 3);
+            else if (RandomHelper.checkProbability(context.random(), 10)) {
+            	context.level().setBlock(coords.toPos(), Blocks.LAVA.defaultBlockState(), 3);
             }
         }
     }
@@ -218,14 +209,14 @@ public class VolcanoPitGenerator extends AbstractPitGenerator {
 	 * @param world
 	 * @param coords
 	 */
-	private void buildLavaBaseLayer(Level world, ICoords coords, int radius) {
+	private void buildLavaBaseLayer(IWorldGenContext context, ICoords coords, int radius) {
         Treasure.LOGGER.debug("building lava baselayer from @ {} ", coords.toShortString());
 
         // for circular chamber
-        buildLayer(world, coords, radius, Blocks.LAVA, false);
+        buildLayer(context, coords, radius, Blocks.LAVA, false);
 
         // add the chest
-        GeneratorUtil.replaceWithBlock(world, coords, Blocks.STONE);	
+        GeneratorUtil.replaceWithBlock(context.level(), coords, Blocks.STONE);	
 	}
 	
 	@Override

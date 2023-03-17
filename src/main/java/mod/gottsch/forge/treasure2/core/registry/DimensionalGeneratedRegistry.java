@@ -56,6 +56,7 @@ public class DimensionalGeneratedRegistry {
 	//	private static final String DIMENSION_ID_TAG_NAME = "dimensionID";
 
 	public static final Map<ResourceLocation, Map<IGeneratorType, GeneratedRegistry<? extends GeneratedContext>>> CHEST_REGISTRY = new HashMap<>();
+	// TODO rework these - dont' need t be map of maps - actually all three of these could be rolled into 1 map of map
 	public static final Map<ResourceLocation, Map<IGeneratorType, GeneratedRegistry<? extends GeneratedContext>>> WELL_REGISTRY = new HashMap<>();
 	public static final Map<ResourceLocation, Map<IGeneratorType, GeneratedRegistry<? extends GeneratedContext>>> WITHER_REGISTRY = new HashMap<>();
 
@@ -81,17 +82,18 @@ public class DimensionalGeneratedRegistry {
 			//			for (ChestConfiguration chestConfig : Config.chestConfigs) {
 			if (chestConfig != null) {
 				if (chestConfig.getDimensions().contains(dimension.toString())) {
+					// create a new map for generatorType->generatedChestRegistry
+					Map<IGeneratorType, GeneratedRegistry<? extends GeneratedContext>> chestRegistryMap = new HashMap<>();
+					// add generator map to byDimension map
+					CHEST_REGISTRY.put(dimension, chestRegistryMap);
+					
 					// for each generator
 					chestConfig.getGenerators().forEach(generator -> {
 						// match the generator to the enum
 						Optional<IGeneratorType> type = TreasureApi.getGeneratorType(generator.getKey().toUpperCase());
 						if (type.isPresent()) {
-							// create a new map for generatorType->generatedChestRegistry
-							Map<IGeneratorType, GeneratedRegistry<? extends GeneratedContext>> chestRegistryMap = new HashMap<>();
 							// create a new generated chest registry with size set from config
 							chestRegistryMap.put(type.get(), new GeneratedRegistry<>(generator.getRegistrySize()));
-							// add generator map to byDimension map
-							CHEST_REGISTRY.put(dimension, chestRegistryMap);
 						}
 					});
 				}

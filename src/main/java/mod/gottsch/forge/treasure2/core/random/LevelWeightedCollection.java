@@ -17,12 +17,15 @@
  */
 package mod.gottsch.forge.treasure2.core.random;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import mod.gottsch.forge.gottschcore.random.WeightedCollection;
-import net.minecraft.nbt.CompoundTag;
 
 
 /**
@@ -107,14 +110,6 @@ public class LevelWeightedCollection<T> {
 		});
 		// update original
 		return col;
-	}
-
-	public CompoundTag save() {
-		return null;
-	}
-	
-	public void load(CompoundTag list) {
-		
 	}
 	
 	/**

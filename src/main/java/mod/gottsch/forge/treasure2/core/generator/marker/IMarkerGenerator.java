@@ -17,12 +17,9 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.marker;
 
-import java.util.Random;
-
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorResult;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 
 /**
  * @author Mark Gottschling on Jan 27, 2019
@@ -38,15 +35,6 @@ public interface IMarkerGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param config
 	 * @return
 	 */
-	public abstract RESULT generate(ServerLevel world, Random random, ICoords spawnCoords);
-	
-	/**
-	 * 
-	 * @param world
-	 * @param generator
-	 * @param random
-	 * @param spawnCoords
-	 * @return
-	 */
-	public abstract RESULT generate(ServerLevel world, ChunkGenerator generator, Random random, ICoords spawnCoords);
+	public abstract RESULT generate(IWorldGenContext context, ICoords spawnCoords);
+
 }

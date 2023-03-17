@@ -3,6 +3,7 @@ package mod.gottsch.forge.treasure2.core.event;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureMetaRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
@@ -44,6 +45,8 @@ public class WorldEventHandler {
 				TreasureLootTableRegistry.onWorldLoad(event);
 				TreasureMetaRegistry.onWorldLoad(event);
 //				TreasureTemplateRegistry.onWorldLoad(event);
+				
+				TreasureSavedData.get((Level)event.getWorld());
 			}
 			
 			isLoaded = true;
@@ -57,9 +60,13 @@ public class WorldEventHandler {
 		 * generation must occur in the correct order according to GenerationStep.Decoration
 		 */
 		TreasureOreGeneration.generateOres(event);
-		
+
 		if (event.getCategory() != BiomeCategory.OCEAN) {
+			// generate surface/terrestrial chests
 			event.getGeneration().addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TreasureConfiguredFeatures.TERRESTRIAL_CHEST_PLACED.getHolder().get());
+		}
+		else {
+			// TOOD generate submerged/aquatic chests
 		}
 	}
 }

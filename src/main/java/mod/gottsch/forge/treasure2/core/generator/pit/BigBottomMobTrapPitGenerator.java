@@ -20,20 +20,18 @@
 package mod.gottsch.forge.treasure2.core.generator.pit;
 
 import java.util.Optional;
-import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.block.entity.ProximitySpawnerBlockEntity;
 import mod.gottsch.forge.gottschcore.size.Quantity;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -64,7 +62,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(ServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(spawnCoords);
 		result.getData().setCoords(spawnCoords);
@@ -73,7 +71,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 		boolean inCavern = false;
 		
 		// check above if there is a free space - chest may have spawned in underground cavern, ravine, dungeon etc
-		BlockState blockState = world.getBlockState(spawnCoords.add(0, 1, 0).toPos());
+		BlockState blockState = context.level().getBlockState(spawnCoords.add(0, 1, 0).toPos());
 		
 		// if there is air above the origin, then in cavern. (pos in isAir() doesn't matter)
 		if (blockState == null || blockState.getMaterial() == Material.AIR) {
@@ -83,7 +81,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 		
 		if (inCavern) {
 			Treasure.LOGGER.debug("finding cavern ceiling.");
-			spawnCoords = GeneratorUtil.findSubterraneanCeiling(world, spawnCoords.add(0, 1, 0));
+			spawnCoords = GeneratorUtil.findSubterraneanCeiling(context.level(), spawnCoords.add(0, 1, 0));
 			if (spawnCoords == null) {
 				Treasure.LOGGER.warn("unable to locate cavern ceiling.");
 				return Optional.empty();
@@ -101,30 +99,30 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 		if (yDist > 6) {			
 			Treasure.LOGGER.debug("Generating shaft @ " + spawnCoords.toShortString());
 			// at chest level
-			nextCoords = build6WideLayer(world, random, spawnCoords, Blocks.AIR);
+			nextCoords = build6WideLayer(context, spawnCoords, Blocks.AIR);
 			
 			// above the chest
-			nextCoords = build6WideLayer(world, random, nextCoords, Blocks.AIR);
-			nextCoords = build6WideLayer(world, random, nextCoords, Blocks.AIR);
-			nextCoords = buildLogLayer(world, random, nextCoords, DEFAULT_LOG);
-			nextCoords = buildLayer(world, nextCoords, Blocks.SAND);
+			nextCoords = build6WideLayer(context, nextCoords, Blocks.AIR);
+			nextCoords = build6WideLayer(context, nextCoords, Blocks.AIR);
+			nextCoords = buildLogLayer(context, nextCoords, DEFAULT_LOG);
+			nextCoords = buildLayer(context, nextCoords, Blocks.SAND);
 			
 			// shaft enterance
-			buildLogLayer(world, random, surfaceCoords.add(0, -3, 0), DEFAULT_LOG);
-			buildLayer(world, surfaceCoords.add(0, -4, 0), Blocks.SAND);
-			buildLogLayer(world, random, surfaceCoords.add(0, -5, 0), DEFAULT_LOG);
+			buildLogLayer(context, surfaceCoords.add(0, -3, 0), DEFAULT_LOG);
+			buildLayer(context, surfaceCoords.add(0, -4, 0), Blocks.SAND);
+			buildLogLayer(context, surfaceCoords.add(0, -5, 0), DEFAULT_LOG);
 
 			// build the trap
-			buildTrapLayer(world, random, spawnCoords, null);
+			buildTrapLayer(context, spawnCoords, null);
 			
 			// build the pit
 			// NOTE must add nextCoords by Y_OFFSET, because the AbstractPitGen.buildPit() starts with the Y_OFFSET, which is above the standard chest area.
-			buildPit(world, random, nextCoords.down(OFFSET_Y), surfaceCoords, getBlockLayers());
+			buildPit(context, nextCoords.down(OFFSET_Y), surfaceCoords, getBlockLayers());
 		}			
 		// shaft is only 2-6 blocks long - can only support small covering
 		else if (yDist >= 2) {
 			// simple short pit
-			return new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
+			return new SimpleShortPitGenerator().generate(context, surfaceCoords, spawnCoords);
 		}		
 		Treasure.LOGGER.debug("generated BigBottomMobTrap Pit at -> {}", spawnCoords.toShortString());
 		return Optional.ofNullable(result);
@@ -138,11 +136,11 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	 * @param block
 	 * @return
 	 */
-	private ICoords build6WideLayer(Level world, Random random, ICoords coords, Block block) {
+	private ICoords build6WideLayer(IWorldGenContext context, ICoords coords, Block block) {
 		ICoords startCoords = coords.add(-2, 0, -2);
 		for (int x = startCoords.getX(); x < startCoords.getX() + 6; x++) {
 			for (int z = startCoords.getZ(); z < startCoords.getZ() + 6; z++) {
-				GeneratorUtil.replaceWithBlockState(world, new Coords(x, coords.getY(), z), block.defaultBlockState());
+				GeneratorUtil.replaceWithBlockState(context.level(), new Coords(x, coords.getY(), z), block.defaultBlockState());
 			}
 		}
 		return coords.add(0, 1, 0);
@@ -156,16 +154,16 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	 * @param block
 	 * @return
 	 */
-	public ICoords buildTrapLayer(final Level world, final Random random, final ICoords coords, final Block block) {
+	public ICoords buildTrapLayer(IWorldGenContext context, final ICoords coords, final Block block) {
   	
 		// spawn random registered mobs on either side of the chest
-    	world.setBlock(coords.add(-1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState(), 3);
-    	ProximitySpawnerBlockEntity te = (ProximitySpawnerBlockEntity) world.getBlockEntity(coords.add(-1, 0, 0).toPos());
+    	context.level().setBlock(coords.add(-1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState(), 3);
+    	ProximitySpawnerBlockEntity te = (ProximitySpawnerBlockEntity) context.level().getBlockEntity(coords.add(-1, 0, 0).toPos());
     	if (te == null) {
     		Treasure.LOGGER.debug("proximity spawner TE is null @ {}", coords.toShortString());
     		return coords;
     	}
-    	EntityType<?> r = DungeonHooks.getRandomDungeonMob(random);
+    	EntityType<?> r = DungeonHooks.getRandomDungeonMob(context.random());
     	Treasure.LOGGER.debug("spawn mob entity -> {}", r);
     	if (r != null) {
 	    	te.setMobName(r.getRegistryName());
@@ -173,12 +171,12 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	    	te.setProximity(5D);
 	    	Treasure.LOGGER.debug("placed proximity spawner @ {}", coords.add(-1,0,0).toShortString());
     	}
-    	world.setBlock(coords.add(1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState(), 3);
-    	te = (ProximitySpawnerBlockEntity) world.getBlockEntity(coords.add(1, 0, 0).toPos());
+    	context.level().setBlock(coords.add(1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState(), 3);
+    	te = (ProximitySpawnerBlockEntity) context.level().getBlockEntity(coords.add(1, 0, 0).toPos());
     	if (te == null) {
     		Treasure.LOGGER.debug("proximity spawner TE is null @ {}", coords.toShortString());
     	}
-    	r = DungeonHooks.getRandomDungeonMob(random);
+    	r = DungeonHooks.getRandomDungeonMob(context.random());
     	Treasure.LOGGER.debug("spawn mob entity -> {}", r);
     	if (r != null) {
 	    	te.setMobName(r.getRegistryName());

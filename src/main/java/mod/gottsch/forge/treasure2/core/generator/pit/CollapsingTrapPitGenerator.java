@@ -20,18 +20,17 @@
 package mod.gottsch.forge.treasure2.core.generator.pit;
 
 import java.util.Optional;
-import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.random.WeightedCollection;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -59,14 +58,14 @@ public class CollapsingTrapPitGenerator extends AbstractPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(ServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		Optional<GeneratorResult<ChestGeneratorData>> result = super.generate(world, random, surfaceCoords, spawnCoords);
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords) {
+		Optional<GeneratorResult<ChestGeneratorData>> result = super.generate(context, surfaceCoords, spawnCoords);
 		if (result.isPresent()) {
 			Treasure.LOGGER.debug("generated CollapsingTrapPit at -> {}", spawnCoords.toShortString());
 		}
 		return result;
 	}
-
+	
 	/**
 	 * 
 	 * @param world
@@ -76,8 +75,8 @@ public class CollapsingTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ICoords buildPit(ServerLevel world, Random random, ICoords coords, ICoords surfaceCoords, WeightedCollection<Integer, Block> col) {
-		ChunkGenerator chunkGenerator = world.getChunkSource().getGenerator();
+	public ICoords buildPit(IWorldGenContext context, ICoords coords, ICoords surfaceCoords, WeightedCollection<Integer, Block> col) {
+		ChunkGenerator chunkGenerator = context.chunkGenerator();
 		
 		// replace surface and build air shaft
 		int minCoordsX = coords.getX() - 2;
@@ -87,28 +86,28 @@ public class CollapsingTrapPitGenerator extends AbstractPitGenerator {
 
 		for (int x = minCoordsX; x <= maxCoordsX; x++) {
 			for (int z = minCoordsZ; z <= maxCoordsZ; z++ ) {
-				ICoords spawnCoords = WorldInfo.getSurfaceCoords(world, chunkGenerator, new Coords(x, 0, z));
+				ICoords spawnCoords = WorldInfo.getSurfaceCoords(context.level(), chunkGenerator, new Coords(x, 0, z));
 				spawnCoords = spawnCoords.down(1);
 
 				// skip the corners
 
-				BlockState state = world.getBlockState(spawnCoords.toPos());
+				BlockState state = context.level().getBlockState(spawnCoords.toPos());
 				if (state.getBlock() == Blocks.GRASS_BLOCK) {	
 					if ((x == minCoordsX || x == maxCoordsX) && (z == minCoordsZ || z == maxCoordsZ)) {
 					}
 					else {
-						GeneratorUtil.replaceWithBlockState(world, spawnCoords, TreasureBlocks.FALLING_GRASS.get().defaultBlockState());	
+						GeneratorUtil.replaceWithBlockState(context.level(), spawnCoords, TreasureBlocks.FALLING_GRASS.get().defaultBlockState());	
 					}
 				}
 				else if (state.getBlock() == Blocks.SAND)  {
-					GeneratorUtil.replaceWithBlockState(world, spawnCoords, TreasureBlocks.FALLING_SAND.get().defaultBlockState());	
+					GeneratorUtil.replaceWithBlockState(context.level(), spawnCoords, TreasureBlocks.FALLING_SAND.get().defaultBlockState());	
 				}
 				else if (state.getBlock() == Blocks.RED_SAND) {
-					GeneratorUtil.replaceWithBlockState(world, spawnCoords, TreasureBlocks.FALLING_RED_SAND.get().defaultBlockState());
+					GeneratorUtil.replaceWithBlockState(context.level(), spawnCoords, TreasureBlocks.FALLING_RED_SAND.get().defaultBlockState());
 				}
 				spawnCoords = spawnCoords.down(1);
 				while (spawnCoords.getY() >= coords.getY()) {
-					GeneratorUtil.replaceWithBlockState(world, spawnCoords,  Blocks.AIR.defaultBlockState());
+					GeneratorUtil.replaceWithBlockState(context.level(), spawnCoords,  Blocks.AIR.defaultBlockState());
 					spawnCoords = spawnCoords.down(1);
 				}
 			}

@@ -17,12 +17,11 @@
  */
 package mod.gottsch.forge.treasure2.core.generator;
 
-import java.util.Random;
-
 import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.Heading;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
@@ -31,7 +30,7 @@ import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
@@ -67,7 +66,7 @@ public class GeneratorUtil {
 	 * @param block
 	 * @return
 	 */
-	public static boolean replaceWithBlock(Level world, ICoords coords, Block block) {
+	public static boolean replaceWithBlock(ServerLevelAccessor world, ICoords coords, Block block) {
 		// don't change if old block is air
 		BlockContext context = new BlockContext(world, coords);
 		if (context.isAir()) {
@@ -84,7 +83,7 @@ public class GeneratorUtil {
 	 * @param blockState
 	 * @return
 	 */
-	public static boolean replaceWithBlockState(Level world, ICoords coords, BlockState blockState) {
+	public static boolean replaceWithBlockState(ServerLevelAccessor world, ICoords coords, BlockState blockState) {
 		// don't change if old block is air
 		BlockContext context = new BlockContext(world, coords);
 		if (context.isAir()) {
@@ -102,16 +101,16 @@ public class GeneratorUtil {
 	 * @param coords
 	 * @return
 	 */
-	public static boolean replaceBlockWithChest(Level world, Random random, Block chest, ICoords coords) {
+	public static boolean replaceBlockWithChest(IWorldGenContext context, Block chest, ICoords coords) {
 		// get the old state
-		BlockState oldState = world.getBlockState(coords.toPos());
+		BlockState oldState = context.level().getBlockState(coords.toPos());
 
 		if (oldState.getProperties().contains(FACING)) {
 			// set the new state
-			return placeChest(world, chest, coords, (Direction) oldState.getValue(FACING));
+			return placeChest(context.level(), chest, coords, (Direction) oldState.getValue(FACING));
 
 		} else {
-			return placeChest(world, chest, coords, Direction.from2DDataValue(random.nextInt(4)));
+			return placeChest(context.level(), chest, coords, Direction.from2DDataValue(context.random().nextInt(4)));
 		}
 	}
 
@@ -124,19 +123,19 @@ public class GeneratorUtil {
 	 * @param state
 	 * @return
 	 */
-	public static boolean replaceBlockWithChest(Level world, Random random, ICoords coords, 
+	public static boolean replaceBlockWithChest(IWorldGenContext context, ICoords coords, 
 			Block chest,	BlockState state) {
 		if (state.getProperties().contains(FACING)) {
-			return placeChest(world, chest, coords, (Direction) state.getValue(FACING));
+			return placeChest(context.level(), chest, coords, (Direction) state.getValue(FACING));
 		}
 
 		if (state.getBlock() == Blocks.CHEST) {
 			Direction direction = (Direction) state.getValue(ChestBlock.FACING);
-			return placeChest(world, chest, coords, direction);
+			return placeChest(context.level(), chest, coords, direction);
 		}
 
 		// else do generic
-		return replaceBlockWithChest(world, random, chest, coords);
+		return replaceBlockWithChest(context, chest, coords);
 	}
 
 	/**
@@ -146,7 +145,7 @@ public class GeneratorUtil {
 	 * @param pos
 	 * @return
 	 */
-	public static boolean placeChest(Level world, Block chest, ICoords coords, Direction direction) {
+	public static boolean placeChest(ServerLevelAccessor world, Block chest, ICoords coords, Direction direction) {
 		// check if spawn pos is valid
 		if (!WorldInfo.isHeightValid(coords)) {
 			Treasure.LOGGER.debug("cannot place chest due to invalid height -> {}", coords.toShortString());
@@ -188,13 +187,13 @@ public class GeneratorUtil {
 	 * @param random
 	 * @param coords
 	 */
-	public static void placeSkeleton(Level world, Random random, ICoords coords) {
+	public static void placeSkeleton(IWorldGenContext context, ICoords coords) {
 		// select a random facing direction
-		Direction facing = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+		Direction facing = Direction.Plane.HORIZONTAL.getRandomDirection(context.random());
 		ICoords coords2 = new Coords(coords.toPos().relative(facing));
 
-		BlockContext blockContext = new BlockContext(world, coords);
-		BlockContext blockContext2 = new BlockContext(world, coords2);
+		BlockContext blockContext = new BlockContext(context.level(), coords);
+		BlockContext blockContext2 = new BlockContext(context.level(), coords2);
 
 		boolean flag = blockContext.isReplaceable();
 		boolean flag1 = blockContext2.isReplaceable();
@@ -202,18 +201,18 @@ public class GeneratorUtil {
 		boolean flag3 = flag1 || blockContext2.isAir();
 
 		if (flag2 && flag3
-				&& world.getBlockState(coords.down(1).toPos()).isSolidRender(world, coords.down(1).toPos())
-				&& world.getBlockState(coords2.down(1).toPos()).isSolidRender(world, coords2.down(1).toPos())) {
+				&& context.level().getBlockState(coords.down(1).toPos()).isSolidRender(context.level(), coords.down(1).toPos())
+				&& context.level().getBlockState(coords2.down(1).toPos()).isSolidRender(context.level(), coords2.down(1).toPos())) {
 			BlockState skeletonState = TreasureBlocks.SKELETON.get().defaultBlockState()
 					.setValue(SkeletonBlock.FACING, facing.getOpposite())
 					.setValue(SkeletonBlock.PART, SkeletonBlock.EnumPartType.BOTTOM);
 
-			world.setBlock(coords.toPos(), skeletonState, 3);
-			world.setBlock(coords2.toPos(),
+			context.level().setBlock(coords.toPos(), skeletonState, 3);
+			context.level().setBlock(coords2.toPos(),
 					skeletonState.setValue(SkeletonBlock.PART, SkeletonBlock.EnumPartType.TOP), 3);
 
-			world.blockUpdated(coords.toPos(), blockContext.getState().getBlock());
-			world.blockUpdated(coords2.toPos(), blockContext.getState().getBlock());
+			context.level().blockUpdated(coords.toPos(), blockContext.getState().getBlock());
+			context.level().blockUpdated(coords2.toPos(), blockContext.getState().getBlock());
 		}
 	}
 
@@ -223,7 +222,7 @@ public class GeneratorUtil {
 	 * @param coords
 	 * @return
 	 */
-	public static ICoords findSubterraneanCeiling(Level world, ICoords coords) {
+	public static ICoords findSubterraneanCeiling(ServerLevelAccessor world, ICoords coords) {
 		// TODO a better solution would take in the ChunkGenerator and find the
 		// surface height. if coords exceeds the surface height, then fail.
 		final int CEILING_FAIL_SAFE = 50;

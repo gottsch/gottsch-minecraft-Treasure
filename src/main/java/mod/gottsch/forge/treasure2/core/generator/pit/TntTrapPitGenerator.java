@@ -20,17 +20,16 @@
 package mod.gottsch.forge.treasure2.core.generator.pit;
 
 import java.util.Optional;
-import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.random.WeightedCollection;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -48,32 +47,17 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 		super();
 	}
 	
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param surfaceCoords
-	 * @param spawnCoords
-	 * @return
-	 */
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(ServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		Optional<GeneratorResult<ChestGeneratorData>> result = super.generate(world, random, surfaceCoords, spawnCoords);
+	@Override
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords) {
+		Optional<GeneratorResult<ChestGeneratorData>> result = super.generate(context, surfaceCoords, spawnCoords);
 		if (result.isPresent()) {
 			Treasure.LOGGER.debug("generated TntTrapPit at -> {}", spawnCoords.toShortString());
 		}
 		return result;
 	}
 	
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param spawnCoords
-	 * @param surfaceCoords
-	 * @return
-	 */
 	@Override
-	public ICoords buildPit(ServerLevel world, Random random, ICoords coords, ICoords surfaceCoords, WeightedCollection<Integer, Block> col) {
+	public ICoords buildPit(IWorldGenContext context, ICoords coords, ICoords surfaceCoords, WeightedCollection<Integer, Block> col) {
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
 		
@@ -87,29 +71,29 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 		for (int yIndex = coords.getY() + OFFSET_Y; yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
 			
 			// if the block to be replaced is air block then skip to the next pos
-			BlockContext context = new BlockContext(world, new Coords(coords.getX(), yIndex, coords.getZ()));
-			if (context.isAir()) {
+			BlockContext blockContext = new BlockContext(context.level(), new Coords(coords.getX(), yIndex, coords.getZ()));
+			if (blockContext.isAir()) {
 				continue;
 			}
 
 			// check for midpoint and that there is enough room to build the trap
 			if (yIndex == midCoords.getY() && deltaY > 4) {
 				// build trap layer
-				nextCoords = buildTrapLayer(world, random, context.getCoords(), DEFAULT_LOG); // could have difference classes and implement buildLayer differently
+				nextCoords = buildTrapLayer(context, blockContext.getCoords(), DEFAULT_LOG); // could have difference classes and implement buildLayer differently
 			}
 			else {
 				// get the next type of block layer to build
 				Block block = col.next();
 				if (block == DEFAULT_LOG) {
 					// special log build layer
-					nextCoords = buildLogLayer(world, random, context.getCoords(), block); // could have difference classes and implement buildLayer differently
+					nextCoords = buildLogLayer(context, blockContext.getCoords(), block); // could have difference classes and implement buildLayer differently
 				}
 				else {
-					nextCoords = buildLayer(world, context.getCoords(), block);
+					nextCoords = buildLayer(context, blockContext.getCoords(), block);
 				}
 			}
 			// get the expected coords
-			expectedCoords = context.getCoords().add(0, 1, 0);
+			expectedCoords = blockContext.getCoords().add(0, 1, 0);
 			
 			// check if the return coords is different than the anticipated coords and resolve
 			yIndex = autoCorrectIndex(yIndex, nextCoords, expectedCoords);
@@ -126,34 +110,34 @@ public class TntTrapPitGenerator extends AbstractPitGenerator {
 	 * @param block
 	 * @return
 	 */
-	public ICoords buildTrapLayer(final ServerLevel world, final Random random, final ICoords coords, final Block block) {
+	public ICoords buildTrapLayer(IWorldGenContext context, final ICoords coords, final Block block) {
 		ICoords nextCoords = null;
 		if (block == DEFAULT_LOG) {
-			nextCoords = buildLogLayer(world, random, coords, block);
+			nextCoords = buildLogLayer(context, coords, block);
 		}
 		else {
-			nextCoords = buildLayer(world, coords, block);
+			nextCoords = buildLayer(context, coords, block);
 		}
 
 		// ensure that the difference is only 1 between nextCoords and coords
 //		if (nextCoords.delta(coords).getY() > 1) return nextCoords;
 
 //		Block redstone = Blocks.REDSTONE_WIRE;
-		GeneratorUtil.replaceWithBlock(world, nextCoords.add(0, 0, 0), Blocks.TNT);
-		GeneratorUtil.replaceWithBlock(world, nextCoords.add(1, 0, 0), Blocks.TNT);
-		GeneratorUtil.replaceWithBlock(world, nextCoords.add(0, 0, 1), Blocks.TNT);
-		GeneratorUtil.replaceWithBlock(world, nextCoords.add(1, 0, 1), Blocks.TNT);
+		GeneratorUtil.replaceWithBlock(context.level(), nextCoords.add(0, 0, 0), Blocks.TNT);
+		GeneratorUtil.replaceWithBlock(context.level(), nextCoords.add(1, 0, 0), Blocks.TNT);
+		GeneratorUtil.replaceWithBlock(context.level(), nextCoords.add(0, 0, 1), Blocks.TNT);
+		GeneratorUtil.replaceWithBlock(context.level(), nextCoords.add(1, 0, 1), Blocks.TNT);
 		
 		nextCoords = nextCoords.up(1);
 		
 		// add aother  log layer
-		nextCoords = buildLogLayer(world, random, nextCoords, block);
+		nextCoords = buildLogLayer(context, nextCoords, block);
 		// core 4-square pressure plate (above log)
 		Block plate = Blocks.OAK_PRESSURE_PLATE;
-		GeneratorUtil.replaceWithBlock(world, nextCoords, plate);
-		GeneratorUtil.replaceWithBlock(world, nextCoords.add(1, 0, 0), plate);
-		GeneratorUtil.replaceWithBlock(world, nextCoords.add(0, 0, 1), plate);
-		GeneratorUtil.replaceWithBlock(world, nextCoords.add(1, 0, 1), plate);
+		GeneratorUtil.replaceWithBlock(context.level(), nextCoords, plate);
+		GeneratorUtil.replaceWithBlock(context.level(), nextCoords.add(1, 0, 0), plate);
+		GeneratorUtil.replaceWithBlock(context.level(), nextCoords.add(0, 0, 1), plate);
+		GeneratorUtil.replaceWithBlock(context.level(), nextCoords.add(1, 0, 1), plate);
 						
 		// get the next coords
 		nextCoords = nextCoords.up(1);

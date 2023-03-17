@@ -20,19 +20,17 @@
 package mod.gottsch.forge.treasure2.core.generator.pit;
 
 import java.util.Optional;
-import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.random.WeightedCollection;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -53,17 +51,11 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 		getBlockLayers().add(10, DEFAULT_LOG);
 	}
 	
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param surfaceCoords
-	 * @param spawnCoords
-	 * @return
-	 */
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(ServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+
+	@Override
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords) {
 		Treasure.LOGGER.debug("generating pit...");
-		Optional<GeneratorResult<ChestGeneratorData>> result = super.generate(world, random, surfaceCoords, spawnCoords); 
+		Optional<GeneratorResult<ChestGeneratorData>> result = super.generate(context, surfaceCoords, spawnCoords); 
 		if (result.isPresent()) {
 			Treasure.LOGGER.debug("generated LaveSideTrapPit at -> {}", spawnCoords.toShortString());
 		}
@@ -79,7 +71,7 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ICoords buildPit(ServerLevel world, Random random, ICoords coords, ICoords surfaceCoords, WeightedCollection<Integer, Block> col) {
+	public ICoords buildPit(IWorldGenContext context, ICoords coords, ICoords surfaceCoords, WeightedCollection<Integer, Block> col) {
 		Treasure.LOGGER.debug("generating pit ...");
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
@@ -88,8 +80,8 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 		for (int yIndex = coords.getY() + OFFSET_Y; yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
 			
 			// if the block to be replaced is air block then skip to the next pos
-		    BlockContext context = new BlockContext(world, new Coords(coords.getX(), yIndex, coords.getZ()));
-			if (context.isAir()) {
+		    BlockContext blockContext = new BlockContext(context.level(), new Coords(coords.getX(), yIndex, coords.getZ()));
+			if (blockContext.isAir()) {
 				Treasure.LOGGER.debug("block is air...");
 				continue;
 			}
@@ -98,23 +90,23 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 			Block block = col.next();
 			if (block == DEFAULT_LOG) {
 				// special log build layer
-				nextCoords = buildLogLayer(world, random, context.getCoords(), block); // could have difference classes and implement buildLayer differently
+				nextCoords = buildLogLayer(context, blockContext.getCoords(), block); // could have difference classes and implement buildLayer differently
 			}
 			else {
-				nextCoords = buildLayer(world, context.getCoords(), block);
+				nextCoords = buildLayer(context, blockContext.getCoords(), block);
 			}
 	
 			// select random - 30% chance of lava layer
-			boolean isLava = RandomHelper.checkProbability(random, 30);
+			boolean isLava = RandomHelper.checkProbability(context.random(), 30);
 			
 			// check for midpoint and that there is enough room to build the trap
 			if (isLava) {
 				// build trap layer
-				buildTrapLayer(world, random, context.getCoords(), Blocks.LAVA); // could have difference classes and implement buildLayer differently
+				buildTrapLayer(context, blockContext.getCoords(), Blocks.LAVA); // could have difference classes and implement buildLayer differently
 			}
 			
 			// get the expected coords
-			expectedCoords = context.getCoords().add(0, 1, 0);
+			expectedCoords = blockContext.getCoords().add(0, 1, 0);
 			
 			// check if the return coords is different than the anticipated coords and resolve
 			yIndex = autoCorrectIndex(yIndex, nextCoords, expectedCoords);
@@ -130,7 +122,7 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 	 * @param block
 	 * @return
 	 */
-	public ICoords buildTrapLayer(final Level world, final Random random, final ICoords coords, final Block block) {
+	public ICoords buildTrapLayer(IWorldGenContext context, final ICoords coords, final Block block) {
 		final int MAX_REPLACES = 5;
 		
 		ICoords[] matrix = {
@@ -154,7 +146,7 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 		for (int i =0; i < MAX_REPLACES; i++) {
 			// randomly select a coord from the array
 			int x = RandomHelper.randomInt(0, matrix.length-1);
-			GeneratorUtil.replaceWithBlockState(world, matrix[x], block.defaultBlockState());
+			GeneratorUtil.replaceWithBlockState(context.level(), matrix[x], block.defaultBlockState());
 		}		
 		return coords;
 	}

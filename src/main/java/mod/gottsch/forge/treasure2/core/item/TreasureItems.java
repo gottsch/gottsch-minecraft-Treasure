@@ -371,7 +371,7 @@ public class TreasureItems {
 		Registration.registerItems();
 	}
 
-	// conveniance method: take a RegistryObject<Block> and make a corresponding RegistryObject<Item> from it
+	// convenience method: take a RegistryObject<Block> and make a corresponding RegistryObject<Item> from it
 	public static <B extends Block> RegistryObject<Item> fromBlock(RegistryObject<B> block, Supplier<Item.Properties> itemProperties) {
 		return Registration.ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), itemProperties.get()));
 	}

@@ -23,10 +23,13 @@ import java.util.Random;
 
 import com.mojang.serialization.Codec;
 
+import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
+import mod.gottsch.forge.gottschcore.world.WorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
@@ -50,6 +53,10 @@ import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext;
 import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext.GenType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -84,14 +91,15 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 	 */
 	@Override
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-		ServerLevel world = context.level().getLevel();
-		ResourceLocation dimension = WorldInfo.getDimension(world);
+		WorldGenLevel genLevel = context.level();
+		ResourceLocation dimension = WorldInfo.getDimension(genLevel.getLevel());
 		
 		// test the dimension
 		if (!meetsDimensionCriteria(dimension)) { 
 			return false;
 		}
 		
+		// TODO the registry is null at this point
 		// get the chest registry
 		GeneratedRegistry<ChestGenContext> registry = DimensionalGeneratedRegistry.getChestGeneratedRegistry(dimension, GeneratorType.TERRESTRIAL);
 		if (registry == null) {
@@ -109,19 +117,19 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		}
 
 		// test the world age
-		if (!meetsWorldAgeCriteria(world, registry, generatorConfig)) {
+		if (!meetsWorldAgeCriteria(genLevel, registry, generatorConfig)) {
 			return false;
 		}
 		
 		// the get first surface y (could be leaves, trunk, water, etc)
-		ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, context.chunkGenerator(), new Coords(context.origin().offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
+		ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(genLevel, context.chunkGenerator(), new Coords(context.origin().offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
 		if (spawnCoords == Coords.EMPTY) {
 			return false;
 		}
 
 		// determine what type to generate
 		IRarity rarity = (IRarity) WeightedChestGeneratorRegistry.getNextRarity(dimension, GeneratorType.TERRESTRIAL);
-		Treasure.LOGGER.debug("rarity -> {}", rarity);
+//		Treasure.LOGGER.debug("rarity -> {}", rarity);
 		if (rarity == Rarity.NONE) {
 			Treasure.LOGGER.warn("unable to obtain the next rarity for generator - >{}", GeneratorType.TERRESTRIAL);
 			return false;
@@ -132,12 +140,13 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 			return false;
 		}
 		// test if the override (global) biome is allowed
-		if (!meetsBiomeCriteria(world, spawnCoords, rarityConfig.get().getBiomeWhitelist(), rarityConfig.get().getBiomeBlacklist())) {
+		
+		if (!meetsBiomeCriteria(genLevel.getLevel(), spawnCoords, rarityConfig.get().getBiomeWhitelist(), rarityConfig.get().getBiomeBlacklist())) {
 			return false;
 		}
 
 		// check against all registered chests
-		if (!meetsProximityCriteria(world, dimension, GeneratorType.TERRESTRIAL, spawnCoords, generatorConfig.getMinBlockDistance())) {
+		if (!meetsProximityCriteria(genLevel, dimension, GeneratorType.TERRESTRIAL, spawnCoords, generatorConfig.getMinBlockDistance())) {
 			return false;
 		}			
 
@@ -156,7 +165,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 //		Treasure.LOGGER.debug("gen -> {}", TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SURFACE_CHEST).next().getClass().getSimpleName());
 //		Treasure.LOGGER.debug("configmap -> {}", TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
 
-		Optional<GeneratorResult<ChestGeneratorData>> result = generateChest(world, context.chunkGenerator(), context.random(), 
+		Optional<GeneratorResult<ChestGeneratorData>> result = generateChest(new WorldGenContext(context), 
 				spawnCoords, rarity, WeightedChestGeneratorRegistry.getNextGenerator(rarity, GeneratorType.TERRESTRIAL), 
 				generatorConfig, rarityConfig.get());
 
@@ -167,6 +176,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 					result.get().getData().getSpawnCoords());	
 			chestGenContext.setName(result.get().getData().getRegistryName());
 			chestGenContext.setPlacement(RegionPlacement.SURFACE);
+			// TODO coords are not set here, they are all null
 			registry.register(rarity, spawnCoords, chestGenContext);
 
 			// update the adjusted weight collection
@@ -179,7 +189,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		}
 
 		// save world data
-		TreasureSavedData savedData = TreasureSavedData.get(world);
+		TreasureSavedData savedData = TreasureSavedData.get(genLevel.getLevel());
 		if (savedData != null) {
 			savedData.setDirty();
 		}
@@ -193,7 +203,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 	 * @param registry
 	 * @return
 	 */
-	private boolean meetsWorldAgeCriteria(ServerLevel world, GeneratedRegistry<ChestGenContext> registry, Generator generatorConfig) {
+	private boolean meetsWorldAgeCriteria(ServerLevelAccessor world, GeneratedRegistry<ChestGenContext> registry, Generator generatorConfig) {
 		// wait count check		
 		if (registry.getValues().isEmpty() && waitChunksCount < generatorConfig.getWaitChunks()) {
 			Treasure.LOGGER.debug("World is too young");
@@ -228,10 +238,9 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 	 * @param iChestConfig
 	 * @return
 	 */
-	private Optional<GeneratorResult<ChestGeneratorData>> generateChest(ServerLevel world, ChunkGenerator chunkGenerator,
-			Random random, ICoords coords, IRarity rarity, IChestGenerator chestGenerator,
-			ChestConfiguration.Generator generatorConfig,
-			ChestConfiguration.ChestRarity config) {
+	private Optional<GeneratorResult<ChestGeneratorData>> generateChest(
+			IWorldGenContext context, ICoords coords, IRarity rarity, IChestGenerator chestGenerator,
+			ChestConfiguration.Generator generatorConfig, ChestConfiguration.ChestRarity config) {
 //	private GeneratorResult<ChestGeneratorData> generateChest(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords, Rarity rarity,
 //			IChestGenerator chestGenerator, IChestConfig config) {
 
@@ -254,10 +263,10 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		}
 
 		// 2. determine if above ground or below ground
-		if (RandomHelper.checkProbability(random, generatorConfig.getSurfaceProbability())) { // TreasureConfig.CHESTS.surfaceChests.surfaceChestProbability.get()) {) {
+		if (RandomHelper.checkProbability(context.random(), generatorConfig.getSurfaceProbability())) { // TreasureConfig.CHESTS.surfaceChests.surfaceChestProbability.get()) {) {
 			isSurfaceChest = true;
 
-			if (RandomHelper.checkProbability(random, generatorConfig.getStructureProbability())) {
+			if (RandomHelper.checkProbability(context.random(), generatorConfig.getStructureProbability())) {
 				isStructure = true;
 
 //				environmentGenerationResult = generateSurfaceRuins(world, generator, random, surfaceCoords, config);
@@ -272,6 +281,9 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 //				chestCoords = environmentGenerationResult.getData().getChestContext().getCoords();
 			}
 			else {
+				// update the environment state with a random direction
+				// TODO I don't like this
+				
 				// set the chest coords to the same as the surface pos
 				chestCoords = new Coords(surfaceCoords);
 				Treasure.LOGGER.debug("surface chest coords -> {}", chestCoords);
@@ -280,7 +292,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		}
 		else {
 			Treasure.LOGGER.debug("else generate pit");
-			environmentGenerationResult = generatePit(world, random, rarity, surfaceCoords, config);
+			environmentGenerationResult = generatePit(context, rarity, surfaceCoords, config);
 			if (environmentGenerationResult.isEmpty()) {
 				return Optional.empty();
 			}
@@ -295,15 +307,23 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 			Treasure.LOGGER.debug("chest coords were not provided in result -> {}", environmentGenerationResult.toString());
 			return Optional.empty();
 		}
+		
+		BlockState chestState = null;
+		if (environmentGenerationResult.isPresent()) {
+			chestState = environmentGenerationResult.get().getData().getState();
+		}
 
-		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(world, random, chestCoords, rarity, environmentGenerationResult.get().getData().getState());
+		// TODO update world
+		// TODO at this point if surface check, there isn't any environment gen result except default
+		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(context, chestCoords, rarity, chestState);
 		if (!chestResult.isSuccess()) {
 			return Optional.empty();
 		}
 
 		// add markers (above chest or shaft)
 		if (!isStructure) {
-			chestGenerator.addMarkers(world, chunkGenerator, random, surfaceCoords, isSurfaceChest);
+			// TODO update world
+			chestGenerator.addMarkers(context, surfaceCoords, isSurfaceChest);
 			generationResult.getData().setMarkers(true);
 		}
 
@@ -323,16 +343,16 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 	 * @param config
 	 * @return
 	 */
-	public Optional<GeneratorResult<ChestGeneratorData>> generatePit(ServerLevel world, Random random, IRarity chestRarity, ICoords markerCoords, ChestConfiguration.ChestRarity config) {
+	public Optional<GeneratorResult<ChestGeneratorData>> generatePit(IWorldGenContext context, IRarity chestRarity, ICoords markerCoords, ChestConfiguration.ChestRarity config) {
 
 		// check if it has 50% land
-		if (!WorldInfo.isSolidBase(world, markerCoords, 2, 2, 50)) {
-			Treasure.LOGGER.debug("coords -> {} does not meet solid base requires for {} x {}", markerCoords.toShortString(), 3, 3);
+		if (!WorldInfo.isSolidBase(context.level(), markerCoords, 2, 2, 50)) {
+			Treasure.LOGGER.debug("coords -> {} does not meet solid base requires for {} x {}", markerCoords.toShortString(), 2, 2);
 			return Optional.empty();
 		}
 
 		// determine spawn coords below ground
-		Optional<ICoords> spawnCoords = getUndergroundSpawnPos(world, random, markerCoords, config.getMinDepth(), config.getMaxDepth());
+		Optional<ICoords> spawnCoords = getUndergroundSpawnPos(context.level(), context.random(), markerCoords, config.getMinDepth(), config.getMaxDepth());
 
 		if (spawnCoords.isEmpty()) {
 			Treasure.LOGGER.debug("unable to spawn underground @ {}", markerCoords);
@@ -342,11 +362,11 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 
 
 		// select a pit generator
-		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = selectPitGenerator(random);
+		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = selectPitGenerator(context.random());
 		Treasure.LOGGER.debug("Using pit generator -> {}", pitGenerator.getClass().getSimpleName());
 
 		// 3. build the pit
-		Optional<GeneratorResult<ChestGeneratorData>> pitResult = pitGenerator.generate(world, random, markerCoords, spawnCoords.get());
+		Optional<GeneratorResult<ChestGeneratorData>> pitResult = pitGenerator.generate(context, markerCoords, spawnCoords.get());
 
 		if (pitResult.isEmpty()) {
 			return Optional.empty();
@@ -406,7 +426,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 	 * @param maxDepth
 	 * @return
 	 */
-	public static Optional<ICoords> getUndergroundSpawnPos(ServerLevel world, Random random, ICoords startingCoords, int minDepth, int maxDepth) {
+	public static Optional<ICoords> getUndergroundSpawnPos(ServerLevelAccessor world, Random random, ICoords startingCoords, int minDepth, int maxDepth) {
 		int depth = RandomHelper.randomInt(minDepth, maxDepth);
 		int ySpawn = Math.max(UNDERGROUND_OFFSET, startingCoords.getY() - depth);
 		Treasure.LOGGER.debug("ySpawn -> {}", ySpawn);
@@ -430,5 +450,47 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		Treasure.LOGGER.debug("Using PitType: {}, Gen: {}", pitType, pitGenerator.getClass().getSimpleName());
 
 		return pitGenerator;
+	}
+	
+	public static boolean isSolidBase(WorldGenLevel world, final ICoords coords, final int width, final int depth,
+			final double percentRequired) {
+		double percent = getSolidBasePercent(world, coords.down(1), width, depth);
+
+		if (percent < percentRequired) {
+			return false;
+		}
+		return true;
+	}
+	
+	public static double getSolidBasePercent(WorldGenLevel world, final ICoords coords, final int width,
+			final int depth) {
+		int platformSize = 0;
+
+
+		
+		// process all z, x in base y (-1) to count the number of allowable blocks in
+		// the Level platform
+		for (int z = 0; z < depth; z++) {
+			for (int x = 0; x < width; x++) {
+				// get the blockContext
+//				if (world.hasChunk(coords.getX(), coords.getZ())) {
+				BlockContext blockContext = new BlockContext(world, coords.add(x, 0, z));
+//				boolean b = world.hasChunk(coords.getX(), coords.getZ());
+//				System.out.print(b);
+//				// test the blockContext
+//				BlockState bs;
+//				if ((bs = world.getBlockState(coords.add(x, 0, z).toPos())) != null) {
+//					System.out.print("not null");
+//				}
+				if (blockContext.hasState() && blockContext.isSolid() && !blockContext.isReplaceable()) {
+					platformSize++;
+				}
+//				}
+			}
+		}
+
+		double base = depth * width;
+		double percent = ((platformSize) / base) * 100.0D;
+		return percent;
 	}
 }

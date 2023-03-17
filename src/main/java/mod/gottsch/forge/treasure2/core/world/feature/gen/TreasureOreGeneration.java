@@ -19,7 +19,7 @@ package mod.gottsch.forge.treasure2.core.world.feature.gen;
 
 import java.util.List;
 
-import mod.gottsch.forge.treasure2.core.world.feature.TreasurePlacedFeatures;
+import mod.gottsch.forge.treasure2.core.world.feature.TreasureConfiguredFeatures;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -36,10 +36,10 @@ public class TreasureOreGeneration {
 		List<Holder<PlacedFeature>> base = 
 				event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES);
 		
-		base.add(TreasurePlacedFeatures.TOPAZ_ORE_PLACED);
-		base.add(TreasurePlacedFeatures.ONYX_ORE_PLACED);
-		base.add(TreasurePlacedFeatures.RUBY_ORE_PLACED);
-		base.add(TreasurePlacedFeatures.SAPPHIRE_ORE_PLACED);
+		base.add(TreasureConfiguredFeatures.TOPAZ_ORE_PLACED.getHolder().get());
+		base.add(TreasureConfiguredFeatures.ONYX_ORE_PLACED.getHolder().get());
+		base.add(TreasureConfiguredFeatures.RUBY_ORE_PLACED.getHolder().get());
+		base.add(TreasureConfiguredFeatures.SAPPHIRE_ORE_PLACED.getHolder().get());
 		
 	}
 }

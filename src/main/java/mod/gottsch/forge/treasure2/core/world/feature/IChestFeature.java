@@ -28,6 +28,7 @@ import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 
 /**
  * 
@@ -43,7 +44,7 @@ public interface IChestFeature extends ITreasureFeature {
 	 * @param spawnCoords
 	 * @return
 	 */
-	default public boolean meetsProximityCriteria(ServerLevel world, ResourceLocation dimension, GeneratorType key, ICoords spawnCoords, int minDistance) {
+	default public boolean meetsProximityCriteria(ServerLevelAccessor world, ResourceLocation dimension, GeneratorType key, ICoords spawnCoords, int minDistance) {
 		if (isRegisteredChestWithinDistance(world, dimension, key, spawnCoords, minDistance)) {
 			Treasure.LOGGER.trace("The distance to the nearest treasure chest is less than the minimun required.");
 			return false;
@@ -60,7 +61,7 @@ public interface IChestFeature extends ITreasureFeature {
 	 * @param minDistance
 	 * @return
 	 */
-	public static boolean isRegisteredChestWithinDistance(Level world, ResourceLocation dimension, GeneratorType key, ICoords coords, int minDistance) {
+	public static boolean isRegisteredChestWithinDistance(ServerLevelAccessor world, ResourceLocation dimension, GeneratorType key, ICoords coords, int minDistance) {
 		GeneratedRegistry<? extends GeneratedContext> registry = DimensionalGeneratedRegistry.getChestGeneratedRegistry(dimension, key);
 		if (registry == null || registry.getValues().isEmpty()) {
 			Treasure.LOGGER.debug("unable to locate the GeneratedRegistry or the registry doesn't contain any values");

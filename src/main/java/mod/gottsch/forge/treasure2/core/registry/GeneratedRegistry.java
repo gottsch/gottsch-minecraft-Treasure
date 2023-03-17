@@ -42,6 +42,7 @@ import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
  * @author Mark Gottschling on Jan 22, 2018
  *
  */
+// TODO rename to GeneratedCache
 public class GeneratedRegistry<T extends GeneratedContext> {
 	
 	/*

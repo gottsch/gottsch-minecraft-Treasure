@@ -38,6 +38,7 @@ import mod.gottsch.forge.treasure2.core.item.KeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.loot.SpecialLootTables;
 import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
+import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -196,6 +197,24 @@ public class CommonSetup {
 
 		// register all the chests
 		TreasureApi.registerChest(TreasureBlocks.WOOD_CHEST);
+		TreasureApi.registerChest(TreasureBlocks.CRATE_CHEST);
+		TreasureApi.registerChest(TreasureBlocks.MOLDY_CRATE_CHEST);
+		TreasureApi.registerChest(TreasureBlocks.IRONBOUND_CHEST);
+		TreasureApi.registerChest(TreasureBlocks.PIRATE_CHEST);
+		TreasureApi.registerChest(TreasureBlocks.SAFE);
+		TreasureApi.registerChest(TreasureBlocks.IRON_STRONGBOX);
+		TreasureApi.registerChest(TreasureBlocks.GOLD_STRONGBOX);
+		TreasureApi.registerChest(TreasureBlocks.DREAD_PIRATE_CHEST);
+		TreasureApi.registerChest(TreasureBlocks.COMPRESSOR_CHEST);
+		TreasureApi.registerChest(TreasureBlocks.SKULL_CHEST);
+		TreasureApi.registerChest(TreasureBlocks.GOLD_SKULL_CHEST);
+		TreasureApi.registerChest(TreasureBlocks.CRYSTAL_SKULL_CHEST);
+		TreasureApi.registerChest(TreasureBlocks.CAULDRON_CHEST);
+		TreasureApi.registerChest(TreasureBlocks.SPIDER_CHEST);
+		TreasureApi.registerChest(TreasureBlocks.VIKING_CHEST);
+		TreasureApi.registerChest(TreasureBlocks.CARDBOARD_BOX);
+		TreasureApi.registerChest(TreasureBlocks.MILK_CRATE);
+		TreasureApi.registerChest(TreasureBlocks.WITHER_CHEST);
 
 		// register all the wishable items
 		TreasureApi.registerWishable(TreasureItems.COPPER_COIN);

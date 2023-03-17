@@ -20,19 +20,17 @@
 package mod.gottsch.forge.treasure2.core.generator.pit;
 
 import java.util.Optional;
-import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.random.WeightedCollection;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -64,8 +62,9 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(ServerLevel world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
-		Optional<GeneratorResult<ChestGeneratorData>> result = super.generate(world, random, surfaceCoords, spawnCoords);
+	@Override
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords) {
+		Optional<GeneratorResult<ChestGeneratorData>> result = super.generate(context, surfaceCoords, spawnCoords);
 		if (result.isPresent()) {
 			Treasure.LOGGER.debug("generated LavaTrapPit at -> {}", spawnCoords.toShortString());
 		}
@@ -81,7 +80,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	@Override
-	public ICoords buildPit(ServerLevel world, Random random, ICoords coords, ICoords surfaceCoords, WeightedCollection<Integer, Block> col) {
+	public ICoords buildPit(IWorldGenContext context, ICoords coords, ICoords surfaceCoords, WeightedCollection<Integer, Block> col) {
 		ICoords nextCoords = null;
 		ICoords expectedCoords = null;
 		
@@ -89,22 +88,22 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 		int midY = (surfaceCoords.getY() + coords.getY())/2;
 		
 		// build lava around base
-		buildLavaBaseLayer(world, coords.down(1));
+		buildLavaBaseLayer(context, coords.down(1));
 		
 		// build @ chest layer (overwrites what abstract pit gen does
-		build3WideLayer(world, random, coords, Blocks.AIR);
+		build3WideLayer(context, coords, Blocks.AIR);
 		
 		// fill shaft will air to mid-point
 		for (int yIndex = coords.getY() + OFFSET_Y; yIndex <= midY; yIndex++) {
-			nextCoords = build3WideLayer(world, random, new Coords(coords.getX(), yIndex, coords.getZ()), Blocks.AIR);
+			nextCoords = build3WideLayer(context, new Coords(coords.getX(), yIndex, coords.getZ()), Blocks.AIR);
 		}		
-		nextCoords = build3WideLayer(world, random, new Coords(coords.getX(), midY+1, coords.getZ()), DEFAULT_LOG);
+		nextCoords = build3WideLayer(context, new Coords(coords.getX(), midY+1, coords.getZ()), DEFAULT_LOG);
 		
 		for (int yIndex = nextCoords.getY(); yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
 			
 			// if the block to be replaced is air block then skip to the next pos
-			BlockContext context = new BlockContext(world, new Coords(coords.getX(), yIndex, coords.getZ()));
-			if (context.isAir()) {
+			BlockContext blockContext = new BlockContext(context.level(), new Coords(coords.getX(), yIndex, coords.getZ()));
+			if (blockContext.isAir()) {
 				continue;
 			}
 
@@ -112,14 +111,14 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 			Block block = col.next();
 			if (block == DEFAULT_LOG) {
 				// special log build layer
-				nextCoords = buildLogLayer(world, random, context.getCoords(), block); // could have difference classes and implement buildLayer differently
+				nextCoords = buildLogLayer(context, blockContext.getCoords(), block); // could have difference classes and implement buildLayer differently
 			}
 			else {
-				nextCoords = buildLayer(world, context.getCoords(), block);
+				nextCoords = buildLayer(context, blockContext.getCoords(), block);
 			}
 
 			// get the expected coords
-			expectedCoords = context.getCoords().add(0, 1, 0);
+			expectedCoords = blockContext.getCoords().add(0, 1, 0);
 			
 			// check if the return coords is different than the anticipated coords and resolve
 			yIndex = autoCorrectIndex(yIndex, nextCoords, expectedCoords);
@@ -132,11 +131,11 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * 
 	 */
 	@Override
-	public void buildAboveChestLayers(ServerLevel world, Random random, ICoords spawnCoords) {
-		build3WideLayer(world, random, spawnCoords.add(0, 1, 0), Blocks.AIR);
-		build3WideLayer(world, random, spawnCoords.add(0, 2, 0), Blocks.AIR);	
-		build3WideLayer(world, random, spawnCoords.add(0, 3, 0), Blocks.AIR);	
-		build3WideLayer(world, random, spawnCoords.add(0, 4, 0), Blocks.AIR);	
+	public void buildAboveChestLayers(IWorldGenContext context, ICoords spawnCoords) {
+		build3WideLayer(context, spawnCoords.add(0, 1, 0), Blocks.AIR);
+		build3WideLayer(context, spawnCoords.add(0, 2, 0), Blocks.AIR);	
+		build3WideLayer(context, spawnCoords.add(0, 3, 0), Blocks.AIR);	
+		build3WideLayer(context, spawnCoords.add(0, 4, 0), Blocks.AIR);	
 	}
 	
 	/**
@@ -146,11 +145,11 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @param block
 	 * @return
 	 */
-	private ICoords build3WideLayer(Level world, Random random, ICoords coords, Block block) {
+	private ICoords build3WideLayer(IWorldGenContext context, ICoords coords, Block block) {
         BlockState blockState = block.defaultBlockState();
         // randomly select the axis the logs are facing (0 = Z, 1 = X);
         if (block == DEFAULT_LOG) {
-            int axis = random.nextInt(2);
+            int axis = context.random().nextInt(2);
             if (axis == 0) {
                 blockState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
             }
@@ -159,15 +158,15 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
             }
         }
 
-		GeneratorUtil.replaceWithBlockState(world, coords, blockState);
-		GeneratorUtil.replaceWithBlockState(world, coords.add(1, 0, 0), blockState);
-		GeneratorUtil.replaceWithBlockState(world, coords.add(-1, 0, 0), blockState);
-		GeneratorUtil.replaceWithBlockState(world, coords.add(0, 0, 1), blockState);
-		GeneratorUtil.replaceWithBlockState(world, coords.add(0, 0, -1), blockState);
-		GeneratorUtil.replaceWithBlockState(world, coords.add(-1, 0, 1), blockState);
-		GeneratorUtil.replaceWithBlockState(world, coords.add(1, 0, 1), blockState);
-		GeneratorUtil.replaceWithBlockState(world, coords.add(-1, 0, -1), blockState);
-		GeneratorUtil.replaceWithBlockState(world, coords.add(1, 0, -1), blockState);	
+		GeneratorUtil.replaceWithBlockState(context.level(), coords, blockState);
+		GeneratorUtil.replaceWithBlockState(context.level(), coords.add(1, 0, 0), blockState);
+		GeneratorUtil.replaceWithBlockState(context.level(), coords.add(-1, 0, 0), blockState);
+		GeneratorUtil.replaceWithBlockState(context.level(), coords.add(0, 0, 1), blockState);
+		GeneratorUtil.replaceWithBlockState(context.level(), coords.add(0, 0, -1), blockState);
+		GeneratorUtil.replaceWithBlockState(context.level(), coords.add(-1, 0, 1), blockState);
+		GeneratorUtil.replaceWithBlockState(context.level(), coords.add(1, 0, 1), blockState);
+		GeneratorUtil.replaceWithBlockState(context.level(), coords.add(-1, 0, -1), blockState);
+		GeneratorUtil.replaceWithBlockState(context.level(), coords.add(1, 0, -1), blockState);	
 		
 		return coords.add(0, 1, 0);
 	}
@@ -177,15 +176,15 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @param world
 	 * @param coords
 	 */
-	private void buildLavaBaseLayer(Level world, ICoords coords) {
+	private void buildLavaBaseLayer(IWorldGenContext context, ICoords coords) {
 		Treasure.LOGGER.debug("Building lava baselayer from @ {} ", coords.toShortString());
-		GeneratorUtil.replaceWithBlock(world, coords.add(1, 0, 0), Blocks.LAVA);
-		GeneratorUtil.replaceWithBlock(world, coords.add(-1, 0, 0), Blocks.LAVA);
-		GeneratorUtil.replaceWithBlock(world, coords.add(0, 0, 1), Blocks.LAVA);
-		GeneratorUtil.replaceWithBlock(world, coords.add(0, 0, -1), Blocks.LAVA);
-		GeneratorUtil.replaceWithBlock(world, coords.add(-1, 0, 1), Blocks.LAVA);
-		GeneratorUtil.replaceWithBlock(world, coords.add(1, 0, 1), Blocks.LAVA);
-		GeneratorUtil.replaceWithBlock(world, coords.add(-1, 0, -1), Blocks.LAVA);
-		GeneratorUtil.replaceWithBlock(world, coords.add(1, 0, -1), Blocks.LAVA);		
+		GeneratorUtil.replaceWithBlock(context.level(), coords.add(1, 0, 0), Blocks.LAVA);
+		GeneratorUtil.replaceWithBlock(context.level(), coords.add(-1, 0, 0), Blocks.LAVA);
+		GeneratorUtil.replaceWithBlock(context.level(), coords.add(0, 0, 1), Blocks.LAVA);
+		GeneratorUtil.replaceWithBlock(context.level(), coords.add(0, 0, -1), Blocks.LAVA);
+		GeneratorUtil.replaceWithBlock(context.level(), coords.add(-1, 0, 1), Blocks.LAVA);
+		GeneratorUtil.replaceWithBlock(context.level(), coords.add(1, 0, 1), Blocks.LAVA);
+		GeneratorUtil.replaceWithBlock(context.level(), coords.add(-1, 0, -1), Blocks.LAVA);
+		GeneratorUtil.replaceWithBlock(context.level(), coords.add(1, 0, -1), Blocks.LAVA);		
 	}
 }

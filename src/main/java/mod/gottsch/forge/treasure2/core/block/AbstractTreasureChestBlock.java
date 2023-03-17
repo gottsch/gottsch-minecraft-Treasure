@@ -51,6 +51,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.CommonLevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -338,7 +339,7 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 	 * @param rotate
 	 * @return
 	 */
-	public boolean  rotateLockStates(Level level, ICoords coords, Rotate rotate) {
+	public boolean  rotateLockStates(CommonLevelAccessor level, ICoords coords, Rotate rotate) {
 		boolean hasRotated = false;
 		boolean shouldRotate = false;
 		if (rotate != Rotate.NO_ROTATE) {

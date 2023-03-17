@@ -36,6 +36,7 @@ import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
@@ -66,6 +67,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -91,14 +93,14 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public interface IChestGenerator {
 
-	default public GeneratorResult<ChestGeneratorData> generate(final ServerLevel level, final Random random, ICoords coords,
+	default public GeneratorResult<ChestGeneratorData> generate(IWorldGenContext context, ICoords coords,
 			final IRarity rarity, BlockState state) {
 
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(coords);
 
 		// select a loot table
-		Optional<LootTableShell> lootTableShell = selectLootTable(random, rarity);
+		Optional<LootTableShell> lootTableShell = selectLootTable(context.random(), rarity);
 		ResourceLocation lootTableResourceLocation = null;
 		if (lootTableShell.isPresent()) {
 			lootTableResourceLocation = lootTableShell.get().getResourceLocation();
@@ -109,7 +111,7 @@ public interface IChestGenerator {
 		}
 
 		// select a chest from the rarity
-		AbstractTreasureChestBlock chest = selectChest(random, rarity);
+		AbstractTreasureChestBlock chest = selectChest(context.random(), rarity);
 		if (chest == null) {
 			Treasure.LOGGER.warn("unable to select a chest for rarity -> {}.", rarity);
 			return result.fail();
@@ -119,9 +121,9 @@ public interface IChestGenerator {
 		// place the chest in the world
 		BlockEntity blockEntity = null;
 		if (state != null) {
-			blockEntity = placeInWorld(level, random, coords, chest, state);
+			blockEntity = placeInWorld(context, coords, chest, state);
 		} else {
-			blockEntity = placeInWorld(level, random, chest, coords);
+			blockEntity = placeInWorld(context, chest, coords);
 		}
 
 		if (blockEntity == null) {
@@ -139,7 +141,7 @@ public interface IChestGenerator {
 		addGenerationContext((ITreasureChestBlockEntity) blockEntity, rarity);
 
 		// add locks
-		addLocks(random, chest, (ITreasureChestBlockEntity) blockEntity, rarity);
+		addLocks(context.random(), chest, (ITreasureChestBlockEntity) blockEntity, rarity);
 
 		// update result
 		result.getData().setSpawnCoords(coords);
@@ -164,6 +166,7 @@ public interface IChestGenerator {
 	 */
 	// TODO how to prevent special chests from ending up in the rarity tag lists?
 	// TODO move to the ChestRegistry ?
+	// why did I deprecate this?? - should use ChestRegistry
 	@Deprecated
 	default public AbstractTreasureChestBlock selectChest(final Random random, final IRarity rarity) {
 		Treasure.LOGGER.debug("attempting to get chest list for rarity -> {}", rarity);
@@ -635,13 +638,14 @@ public interface IChestGenerator {
 	 * @param random
 	 * @param coods
 	 */
-	default public void addMarkers(ServerLevel world, ChunkGenerator generator, Random random, ICoords coords, final boolean isSurfaceChest) {
+	default public void addMarkers(IWorldGenContext context, ICoords coords, final boolean isSurfaceChest) {
 		if (!isSurfaceChest && Config.SERVER.markers.enableMarkerStructures.get() 
-				&& RandomHelper.checkProbability(random, Config.SERVER.markers.structureProbability.get())) {
+				&& RandomHelper.checkProbability(context.random(), Config.SERVER.markers.structureProbability.get())) {
 			Treasure.LOGGER.debug("generating a random structure marker -> {}", coords.toShortString());
 			//			new StructureMarkerGenerator().generate(world, random, coords);
+			new GravestoneMarkerGenerator().generate(context, coords);
 		} else {
-			new GravestoneMarkerGenerator().generate(world, generator, random, coords);
+			new GravestoneMarkerGenerator().generate(context, coords);
 		}
 	}
 
@@ -653,20 +657,21 @@ public interface IChestGenerator {
 	 * @param chestCoords
 	 * @return
 	 */
-	default public BlockEntity placeInWorld(ServerLevel level, Random random, AbstractTreasureChestBlock chest, ICoords chestCoords) {
+	default public BlockEntity placeInWorld(IWorldGenContext context, AbstractTreasureChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
-		boolean isPlaced = GeneratorUtil.replaceBlockWithChest(level, random, chest, chestCoords);
+		boolean isPlaced = GeneratorUtil.replaceBlockWithChest(context, chest, chestCoords);
 
 		// get the backing tile entity of the chest
-		BlockEntity blockEntity = (BlockEntity) level.getBlockEntity(chestCoords.toPos());
+		BlockEntity blockEntity = (BlockEntity) context.level().getBlockEntity(chestCoords.toPos());
 
 		// check to ensure the chest has been generated
-		if (!isPlaced || !(level.getBlockState(chestCoords.toPos()).getBlock() instanceof AbstractTreasureChestBlock)) {
+		if (!isPlaced || !(context.level().getBlockState(chestCoords.toPos()).getBlock() instanceof AbstractTreasureChestBlock)) {
 			Treasure.LOGGER.debug("Unable to place chest @ {}", chestCoords.toShortString());
 			// remove the title entity (if exists)
 
+			// if a block entity exists, then this is on a server level
 			if (blockEntity != null && (blockEntity instanceof AbstractTreasureChestBlockEntity)) {
-				((ServerLevel)level).removeBlockEntity(chestCoords.toPos());
+				((ServerLevel)context.level()).removeBlockEntity(chestCoords.toPos());
 			}
 			return null;
 		}
@@ -674,7 +679,7 @@ public interface IChestGenerator {
 		// if tile entity failed to create, remove the chest
 		if (blockEntity == null || !(blockEntity instanceof AbstractTreasureChestBlockEntity)) {
 			// remove chest
-			level.setBlock(chestCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);
+			context.level().setBlock(chestCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);
 			Treasure.LOGGER.debug("Unable to create BlockEntityChest, removing BlockChest");
 			return null;
 		}
@@ -690,21 +695,21 @@ public interface IChestGenerator {
 	 * @param state
 	 * @return
 	 */
-	default public BlockEntity placeInWorld(ServerLevel level, Random random, ICoords chestCoords,
+	default public BlockEntity placeInWorld(IWorldGenContext context, ICoords chestCoords,
 			AbstractTreasureChestBlock chest, BlockState state) {
 		
 		// replace block @ coords
-		boolean isPlaced = GeneratorUtil.replaceBlockWithChest(level, random, chestCoords, chest, state);
+		boolean isPlaced = GeneratorUtil.replaceBlockWithChest(context, chestCoords, chest, state);
 		Treasure.LOGGER.debug("isPlaced -> {}", isPlaced);
 		// get the backing tile entity of the chest
-		BlockEntity blockEntity = (BlockEntity) level.getBlockEntity(chestCoords.toPos());
+		BlockEntity blockEntity = (BlockEntity) context.level().getBlockEntity(chestCoords.toPos());
 
 		// check to ensure the chest has been generated
-		if (!isPlaced || !(level.getBlockState(chestCoords.toPos()).getBlock() instanceof AbstractTreasureChestBlock)) {
+		if (!isPlaced || !(context.level().getBlockState(chestCoords.toPos()).getBlock() instanceof AbstractTreasureChestBlock)) {
 			Treasure.LOGGER.debug("Unable to place chest @ {}", chestCoords.toShortString());
 			// remove the title entity (if exists)
 			if (blockEntity != null && (blockEntity instanceof AbstractTreasureChestBlockEntity)) {
-				((ServerLevel)level).removeBlockEntity(chestCoords.toPos());
+				((ServerLevel)context.level()).removeBlockEntity(chestCoords.toPos());
 			}
 			return null;
 		}
@@ -712,7 +717,7 @@ public interface IChestGenerator {
 		// if tile entity failed to create, remove the chest
 		if (blockEntity == null || !(blockEntity instanceof AbstractTreasureChestBlockEntity)) {
 			// remove chest
-			level.setBlock(chestCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);
+			context.level().setBlock(chestCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);
 			Treasure.LOGGER.debug("Unable to create BlockEntityChest, removing BlockChest");
 			return null;
 		}

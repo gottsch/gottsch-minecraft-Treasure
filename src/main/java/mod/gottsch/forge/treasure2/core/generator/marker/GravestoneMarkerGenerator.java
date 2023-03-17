@@ -17,14 +17,11 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.marker;
 
-import java.util.Random;
-
-import com.someguyssoftware.gottschcore.block.ModContainerBlock;
-
 import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
@@ -37,10 +34,8 @@ import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
@@ -63,15 +58,8 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 	/**
 	 * 
 	 */
-	public GeneratorResult<GeneratorData> generate(ServerLevel world, Random random, ICoords coords) {
-		return generate(world, null, random, coords);
-	}
-	
-	/**
-	 * 
-	 */
 	@Override
-	public GeneratorResult<GeneratorData> generate(ServerLevel world, ChunkGenerator chunkGenerator, Random random, ICoords coords) {
+	public GeneratorResult<GeneratorData> generate(IWorldGenContext context, ICoords coords) {
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 		// check if markers are enabled
 		if (!Config.SERVER.markers.enableMarkers.get()) {
@@ -102,20 +90,20 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 		for (int i = 0; i < numberOfMarkers; i++) {
 
 			// generator random x, z
-			int xSpawn = x + (random.nextInt(gridSize) * (random.nextInt(3) - 1)); // -1|0|1
-			int zSpawn = z + (random.nextInt(gridSize) * (random.nextInt(3) - 1)); // -1|0|1
+			int xSpawn = x + (context.random().nextInt(gridSize) * (context.random().nextInt(3) - 1)); // -1|0|1
+			int zSpawn = z + (context.random().nextInt(gridSize) * (context.random().nextInt(3) - 1)); // -1|0|1
 
 			ICoords spawnCoords = new Coords(xSpawn, 0, zSpawn);
 
 			// get a valid surface location
-			spawnCoords = WorldInfo.getDryLandSurfaceCoords(world, chunkGenerator, spawnCoords);
+			spawnCoords = WorldInfo.getDryLandSurfaceCoordsWG(context, null, spawnCoords);
 			if (spawnCoords == null || spawnCoords == Coords.EMPTY) {
 				Treasure.LOGGER.debug("not a valid surface -> {}", coords);
 				continue;
 			}
 
 			// don't place if the spawnCoords isn't AIR or REPLACEABLE
-			BlockContext cube = new BlockContext(world, spawnCoords);
+			BlockContext cube = new BlockContext(context.level(), spawnCoords);
 			if (!cube.isAir() && !cube.isReplaceable()) {
 				Treasure.LOGGER.debug("marker not placed because block [{}] is not Air nor Replaceable.",
 						spawnCoords.toShortString());
@@ -123,8 +111,8 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 			}
 
 			// don't place if the block underneath is of GenericBlock ChestConfig or Container
-			Block block = world.getBlockState(spawnCoords.add(0, -1, 0).toPos()).getBlock();
-			if (block instanceof ITreasureBlock || block instanceof ModContainerBlock || block instanceof MenuProvider) {
+			Block block = context.level().getBlockState(spawnCoords.add(0, -1, 0).toPos()).getBlock();
+			if (block instanceof ITreasureBlock || block instanceof MenuProvider) {
 				Treasure.LOGGER.debug("marker not placed because block underneath is a chest, container or Treasure block.");
 				continue;
 			}
@@ -132,29 +120,29 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 			RegistryObject<Block> marker = null;
 			// determine if gravestone spawns an entity
 			if (Config.SERVER.markers.enableSpawner.get() && 
-					RandomHelper.checkProbability(random, Config.SERVER.markers.spawnerProbability.get())) {
+					RandomHelper.checkProbability(context.random(), Config.SERVER.markers.spawnerProbability.get())) {
 				// grab a random spawner marker
-				marker = TreasureBlocks.GRAVESTONE_SPAWNERS.get(random.nextInt(TreasureBlocks.GRAVESTONE_SPAWNERS.size()));
+				marker = TreasureBlocks.GRAVESTONE_SPAWNERS.get(context.random().nextInt(TreasureBlocks.GRAVESTONE_SPAWNERS.size()));
 			}
 			else {
 				// grab a random marker
-				marker = TreasureBlocks.GRAVESTONES.get(random.nextInt(TreasureBlocks.GRAVESTONES.size()));
+				marker = TreasureBlocks.GRAVESTONES.get(context.random().nextInt(TreasureBlocks.GRAVESTONES.size()));
 			}
 
 			Treasure.LOGGER.debug("marker class -> {}", marker.getClass().getSimpleName());
 			// select a random facing direction
-			Direction facing = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+			Direction facing = Direction.Plane.HORIZONTAL.getRandomDirection(context.random());
 
 			// place the block
 			if (marker.get() instanceof SkeletonBlock) {
 				Treasure.LOGGER.debug("should be placing skeleton block -> {}", spawnCoords.toShortString());
-				GeneratorUtil.placeSkeleton(world, random, spawnCoords);
+				GeneratorUtil.placeSkeleton(context, spawnCoords);
 			} else {
-				world.setBlock(spawnCoords.toPos(), marker.get().defaultBlockState().setValue(AbstractTreasureChestBlock.FACING, facing), 3);
+				context.level().setBlock(spawnCoords.toPos(), marker.get().defaultBlockState().setValue(AbstractTreasureChestBlock.FACING, facing), 3);
 			}
 
 			// update the tile entity if any
-			GravestoneProximitySpawnerBlockEntity tileEntity = (GravestoneProximitySpawnerBlockEntity) world.getBlockEntity(spawnCoords.toPos());
+			GravestoneProximitySpawnerBlockEntity tileEntity = (GravestoneProximitySpawnerBlockEntity) context.level().getBlockEntity(spawnCoords.toPos());
 			if (tileEntity != null) {
 				tileEntity.setHasEntity(true);
 			}

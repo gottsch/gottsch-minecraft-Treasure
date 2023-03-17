@@ -26,6 +26,7 @@ import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.StandardChestBlock;
@@ -40,11 +41,9 @@ import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
 import mod.gottsch.forge.treasure2.core.loot.SpecialLootTables;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 
 /**
  * 
@@ -126,7 +125,7 @@ public class WitherChestGenerator implements IChestGenerator {
 	 * Don't place any markers
 	 */
 	@Override
-	public void addMarkers(ServerLevel world, ChunkGenerator generator, Random random, ICoords coords, boolean isSurfaceChest) {
+	public void addMarkers(IWorldGenContext context, ICoords coords, boolean isSurfaceChest) {
 		return;
 	}
 	
@@ -139,21 +138,21 @@ public class WitherChestGenerator implements IChestGenerator {
 	 * @return
 	 */
 	@Override
-	public BlockEntity placeInWorld(ServerLevel world, Random random, AbstractTreasureChestBlock chest, ICoords chestCoords) {
+	public BlockEntity placeInWorld(IWorldGenContext context, AbstractTreasureChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
-		GeneratorUtil.replaceBlockWithChest(world, random, chest, chestCoords);
+		GeneratorUtil.replaceBlockWithChest(context, chest, chestCoords);
 		// ensure that chest is of type WITHER_CHEST
-		if (world.getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST.get()) {
+		if (context.level().getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST.get()) {
 			// add top placeholder
-			world.setBlock(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.get().defaultBlockState(), 3);
+			context.level().setBlock(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.get().defaultBlockState(), 3);
 		}
 		// get the backing tile entity of the chest 
-		BlockEntity te = (BlockEntity) world.getBlockEntity(chestCoords.toPos());
+		BlockEntity te = (BlockEntity) context.level().getBlockEntity(chestCoords.toPos());
 
 		// if tile entity failed to create, remove the chest
 		if (te == null || !(te instanceof AbstractTreasureChestBlockEntity)) {
 			// remove chest
-			world.setBlock(chestCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);
+			context.level().setBlock(chestCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);
 			Treasure.LOGGER.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}
@@ -161,22 +160,22 @@ public class WitherChestGenerator implements IChestGenerator {
 	}
 	
 	@Override
-	public BlockEntity placeInWorld(ServerLevel world, Random random, ICoords chestCoords, AbstractTreasureChestBlock chest, BlockState state) {
+	public BlockEntity placeInWorld(IWorldGenContext context, ICoords chestCoords, AbstractTreasureChestBlock chest, BlockState state) {
 		// replace block @ coords
-		GeneratorUtil.replaceBlockWithChest(world, random, chestCoords, chest, state);
+		GeneratorUtil.replaceBlockWithChest(context, chestCoords, chest, state);
 		
 		// ensure that chest is of type WITHER_CHEST
-		if (world.getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST.get()) {
+		if (context.level().getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST.get()) {
 			// add top placeholder
-			world.setBlock(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.get().defaultBlockState(), 3); // TODO this needs to rotate to state as well.
+			context.level().setBlock(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.get().defaultBlockState(), 3); // TODO this needs to rotate to state as well.
 		}
 		// get the backing tile entity of the chest 
-		BlockEntity te = (BlockEntity) world.getBlockEntity(chestCoords.toPos());
+		BlockEntity te = (BlockEntity) context.level().getBlockEntity(chestCoords.toPos());
 
 		// if tile entity failed to create, remove the chest
 		if (te == null || !(te instanceof AbstractTreasureChestBlockEntity)) {
 			// remove chest
-			world.setBlock(chestCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);
+			context.level().setBlock(chestCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);
 			Treasure.LOGGER.debug("Unable to create TileEntityChest, removing BlockChest");
 			return null;
 		}

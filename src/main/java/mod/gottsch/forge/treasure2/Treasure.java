@@ -18,6 +18,7 @@ import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
 import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
+import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.setup.ClientSetup;
 import mod.gottsch.forge.treasure2.core.setup.CommonSetup;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
@@ -129,6 +130,7 @@ public class Treasure {
 					// init generated chest registry
 					LOGGER.debug("reading in chests config...");
 					DimensionalGeneratedRegistry.initialize();
+					WeightedChestGeneratorRegistry.intialize();
 				} 
 			}
 		}
