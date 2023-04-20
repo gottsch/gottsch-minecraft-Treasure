@@ -69,6 +69,10 @@ public class ChestRegistry {
 		return new ArrayList<>(CHESTS_BY_NAME.values());
 	}
 	
+	public static List<ResourceLocation> getNames() {
+		return new ArrayList<>(CHESTS_BY_NAME.keySet());
+	}
+	
 	public static void clearByRarity() {
 		CHESTS_BY_RARITY.clear();		
 		CHEST_RARITY_BY_NAME.clear();
@@ -87,6 +91,10 @@ public class ChestRegistry {
 	
 	public static List<RegistryObject<Block>> getChest(IRarity rarity) {
 		return (List<RegistryObject<Block>>) CHESTS_BY_RARITY.get(rarity);
+	}
+	
+	public static Optional<RegistryObject<Block>> getChest(ResourceLocation name) {
+		return Optional.ofNullable(CHESTS_BY_NAME.get(name));
 	}
 	
 	/**
