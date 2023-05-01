@@ -45,7 +45,7 @@ public class GoldSkullChestBlockEntity extends SkullChestBlockEntity {
 	}
 	
     @Override
-    public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
+    public AbstractContainerMenu createChestContainerMenu(int windowId, Inventory playerInventory, Player playerEntity) {
     	return new SkullChestContainerMenu(windowId, this.worldPosition, playerInventory, playerEntity);
     }
 	

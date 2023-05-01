@@ -20,6 +20,7 @@ package mod.gottsch.forge.treasure2.core.block.entity;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -28,8 +29,13 @@ import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType;
+import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
+import mod.gottsch.forge.treasure2.core.inventory.StandardChestContainerMenu;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
+import mod.gottsch.forge.treasure2.core.registry.ChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -49,6 +55,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.Nameable;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -72,6 +81,10 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	private static final String SEALED_TAG = "sealed";
 
 	private static final String LOOT_TABLE_TAG = "lootTable";
+	
+	private static final String GENERATION_CONTEXT_TAG = "generationContext";
+	private static final String LOOT_RARITY_TAG = "lootRarity";
+	private static final String CHEST_GENERATOR_TYPE_TAG = "chestGeneratorType";
 
 
 	/*
@@ -140,6 +153,40 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 
 	/**
 	 * 
+	 */
+    @Override
+    public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
+		Treasure.LOGGER.debug("is chest sealed -> {}", this.isSealed());
+		if (this.isSealed()) {
+			this.setSealed(false);
+			Treasure.LOGGER.debug("chest gen type -> {}", this.getGenerationContext().getChestGeneratorType()); 
+			IChestGeneratorType chestGeneratorType = this.getGenerationContext().getChestGeneratorType();
+			Optional<IChestGenerator> chestGenerator = ChestGeneratorRegistry.get(chestGeneratorType);
+			if (chestGenerator.isPresent()) {
+				Treasure.LOGGER.debug("chest gen  -> {}", chestGenerator.get().getClass().getSimpleName());
+				// fill the chest with loot
+				chestGenerator.get().fillChest(getLevel(), new Random(), this, this.getGenerationContext().getLootRarity(), playerEntity);
+			}
+			else {
+				Treasure.LOGGER.warn("treasure chest at -> {} does not reference a valid generator -> {}", this.worldPosition, chestGenerator.get().getClass().getSimpleName());
+			}
+		}
+    	return createChestContainerMenu(windowId, playerInventory, playerEntity);
+    }
+    
+    /**
+     * 
+     * @param windowId
+     * @param playerInventory
+     * @param playerEntity
+     * @return
+     */
+    public AbstractContainerMenu createChestContainerMenu(int windowId, Inventory playerInventory, Player playerEntity) {
+    	return new StandardChestContainerMenu(windowId, this.worldPosition, playerInventory, playerEntity);
+    }
+    
+	/**
+	 * 
 	 * @return
 	 */
 	private ItemStackHandler createHandler() {
@@ -154,6 +201,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 
 			@Override
 			public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+				// TODO add check for locked property and return false is enabled
 				//                return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
 				return true;
 			}
@@ -239,6 +287,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			// TODO move this to IChestEffects
 			// TODO server spawn particles
 			// TODO use gold and silver coins as particles to move upwards and spin
+			// TODO use long particles to simulate beams of light eminating from the chest.. see Ars mod?
 			((ServerLevel) getLevel()).sendParticles(ParticleTypes.SMOKE, 
 					getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), 20, 0.0D, 0.0D, 0.0D, 0.5D);
 		}
@@ -307,13 +356,13 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			if (getLootTable() != null) {
 				tag.putString(LOOT_TABLE_TAG, getLootTable().toString());
 			}
-			// TODO enable
-			//			if (getGenerationContext() != null) {
-			//				CompoundNBT contextTag = new CompoundNBT();
-			//				contextTag.putString("lootRarity", getGenerationContext().getLootRarity().getValue());
-			//				contextTag.putString("chestGenType", getGenerationContext().getChestGeneratorType().name());
-			//				parentNBT.put("genContext", contextTag);
-			//			}
+
+			if (getGenerationContext() != null) {
+				CompoundTag contextTag = new CompoundTag();
+				contextTag.putString(LOOT_RARITY_TAG, getGenerationContext().getLootRarity().getValue());
+				contextTag.putString(CHEST_GENERATOR_TYPE_TAG, getGenerationContext().getChestGeneratorType().getName());
+				tag.put(GENERATION_CONTEXT_TAG, contextTag);
+			}
 		} catch (Exception e) {
 			Treasure.LOGGER.error("error writing Properties to nbt:", e);
 		}
@@ -398,19 +447,19 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 					this.setLootTable(new ResourceLocation(nbt.getString(LOOT_TABLE_TAG)));
 				}
 			}
-			//			if (nbt.contains("genContext")) {
-			//				CompoundNBT contextTag = nbt.getCompound("genContext");
-			//				Rarity rarity = null;
-			//				ChestGeneratorType genType = null;
-			//				if (contextTag.contains("lootRarity")) {
-			//					rarity = Rarity.getByValue(contextTag.getString("lootRarity"));
-			//				}
-			//				if (contextTag.contains("chestGenType")) {
-			//					genType = ChestGeneratorType.valueOf(contextTag.getString("chestGenType"));
-			//				}
-			//				AbstractTreasureChestBlockEntity.GenerationContext genContext = this.new GenerationContext(rarity, genType);
-			//				this.setGenerationContext(genContext);
-			//			}	
+			if (nbt.contains(GENERATION_CONTEXT_TAG)) {
+				CompoundTag contextTag = nbt.getCompound(GENERATION_CONTEXT_TAG);
+				Rarity rarity = null;
+				IChestGeneratorType genType = null;
+				if (contextTag.contains(LOOT_RARITY_TAG)) {
+					rarity = Rarity.getByValue(contextTag.getString(LOOT_RARITY_TAG));
+				}
+				if (contextTag.contains(CHEST_GENERATOR_TYPE_TAG)) {
+					genType = ChestGeneratorType.valueOf(contextTag.getString(CHEST_GENERATOR_TYPE_TAG).toUpperCase());
+				}
+				AbstractTreasureChestBlockEntity.GenerationContext generationContext = this.new GenerationContext(rarity, genType);
+				this.setGenerationContext(generationContext);
+			}	
 		} catch (Exception e) {
 			Treasure.LOGGER.error("error reading Properties from nbt:", e);
 		}

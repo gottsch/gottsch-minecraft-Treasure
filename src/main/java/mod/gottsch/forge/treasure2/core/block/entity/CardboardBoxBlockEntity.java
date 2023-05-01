@@ -54,11 +54,6 @@ public class CardboardBoxBlockEntity extends AbstractTreasureChestBlockEntity {
 	public CardboardBoxBlockEntity(BlockPos pos, BlockState state) {
 		super(TreasureBlockEntities.CARDBOARD_BOX_BLOCK_ENTITY_TYPE.get(), pos, state);
 	}
-
-    @Override
-    public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
-    	return new StandardChestContainerMenu(windowId, this.worldPosition, playerInventory, playerEntity);
-    }
 	
     @Override
 	public Component getDefaultName() {

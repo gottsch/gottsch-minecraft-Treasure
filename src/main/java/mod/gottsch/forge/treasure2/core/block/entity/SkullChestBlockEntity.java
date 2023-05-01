@@ -21,6 +21,7 @@ import mod.gottsch.forge.treasure2.core.chest.ChestInventorySize;
 import mod.gottsch.forge.treasure2.core.chest.ISkullChestType;
 import mod.gottsch.forge.treasure2.core.chest.SkullChestType;
 import mod.gottsch.forge.treasure2.core.inventory.SkullChestContainerMenu;
+import mod.gottsch.forge.treasure2.core.inventory.StandardChestContainerMenu;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -51,7 +52,7 @@ public class SkullChestBlockEntity extends AbstractTreasureChestBlockEntity {
 	}
 	
     @Override
-    public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
+    public AbstractContainerMenu createChestContainerMenu(int windowId, Inventory playerInventory, Player playerEntity) {
     	return new SkullChestContainerMenu(windowId, this.worldPosition, playerInventory, playerEntity);
     }
 

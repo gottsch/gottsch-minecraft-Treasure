@@ -38,12 +38,14 @@ import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
  * @author Mark Gottschling on Dec 4, 2019
  *
  */
-public class RareChestGenerator implements IChestGenerator {
+public class RareChestGenerator extends AbstractChestGenerator {
 	
 	/**
 	 * 
 	 */
-	public RareChestGenerator() {}
+	public RareChestGenerator(IChestGeneratorType type) {
+		super(type);
+	}
 
 	/**
 	 * 

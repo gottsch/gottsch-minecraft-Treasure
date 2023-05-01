@@ -40,12 +40,18 @@ public class RarityLevelWeightedCollection extends LevelWeightedCollection<IRari
 		super(random);
 	}
 	
+	/**
+	 * Convenience casting
+	 */
 	public RarityLevelWeightedCollection add(Integer weight, IRarity item) {
-		return this.add(weight, item);
+		return (RarityLevelWeightedCollection) super.add(weight, item);
 	}
 	
+	/**
+	 * Convenience casting
+	 */
 	public RarityLevelWeightedCollection add(Pair<Integer, Integer> weightPair, IRarity item) {
-		return this.add(weightPair, item);
+		return (RarityLevelWeightedCollection) super.add(weightPair, item);
 	}
 	
 	public CompoundTag save() {

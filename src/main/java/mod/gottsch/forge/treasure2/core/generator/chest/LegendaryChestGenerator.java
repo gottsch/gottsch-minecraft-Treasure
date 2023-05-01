@@ -41,7 +41,9 @@ public class LegendaryChestGenerator extends EpicChestGenerator {
 	/**
 	 * 
 	 */
-	public LegendaryChestGenerator() {}
+	public LegendaryChestGenerator(IChestGeneratorType type) {
+		super(type);
+	}
 
 	/**
 	 * 

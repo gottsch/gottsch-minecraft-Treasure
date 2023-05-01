@@ -42,7 +42,9 @@ public class CauldronChestGenerator extends EpicChestGenerator {
 	/**
 	 * 
 	 */
-	public CauldronChestGenerator() {}
+	public CauldronChestGenerator(IChestGeneratorType type) {
+		super(type);
+	}
 
 	/**
 	 * 

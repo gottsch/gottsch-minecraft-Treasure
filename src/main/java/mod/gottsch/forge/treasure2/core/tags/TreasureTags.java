@@ -93,7 +93,7 @@ public class TreasureTags {
 	
 	public static class Blocks {
 		// chests
-		public static final TagKey<Block> COMMON_CHESTS = mod(Treasure.MODID, "chests/common");
+		public static final TagKey<Block> COMMON_CHESTS = mod(Treasure.MODID, "chests/rarity/core/common");
 		public static final TagKey<Block> UNCOMMON_CHESTS = mod(Treasure.MODID, "chests/uncommon");
 		public static final TagKey<Block> SCARCE_CHESTS = mod(Treasure.MODID, "chests/scarce");
 		public static final TagKey<Block> RARE_CHESTS = mod(Treasure.MODID, "chests/rare");
@@ -145,6 +145,9 @@ public class TreasureTags {
 			}			
 		});
 		
+		/*
+		 * process tags to and register chest according to rarity
+		 */
 		ChestRegistry.getAll().forEach(chest -> {
 			Holder.Reference<Block> holder = chest.get().builtInRegistryHolder();
 			

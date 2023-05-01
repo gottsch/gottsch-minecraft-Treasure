@@ -166,6 +166,7 @@ public class ChestGenContext extends GeneratedContext {
 	@Override
 	public String toString() {
 		return "ChestGenContext [name=" + name + ", placement=" + placement + ", genType=" + genType + ", discovered="
-				+ discovered + ", chartedFrom=" + chartedFrom + "]";
+				+ discovered + ", chartedFrom=" + chartedFrom + ", getCoords()=" + getCoords() + ", getRarity()="
+				+ getRarity() + "]";
 	}
 }

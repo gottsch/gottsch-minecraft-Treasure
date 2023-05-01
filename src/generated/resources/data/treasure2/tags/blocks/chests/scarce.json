@@ -2,7 +2,6 @@
   "replace": false,
   "values": [
     "treasure2:pirate_chest",
-    "treasure2:iron_strongbox",
-    "treasure2:skull_chest"
+    "treasure2:iron_strongbox"
   ]
 }

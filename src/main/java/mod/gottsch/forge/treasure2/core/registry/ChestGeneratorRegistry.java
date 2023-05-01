@@ -24,11 +24,12 @@ import java.util.Optional;
 
 import com.google.common.collect.Maps;
 
+import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 
 /**
- * 
+ * Allows the replacement of generator mappings.
  * @author Mark Gottschling on Dec 2, 2022
  *
  */
@@ -37,9 +38,19 @@ public class ChestGeneratorRegistry {
 	
 	private ChestGeneratorRegistry() {}
 	
+	@Deprecated
 	public static void registerGeneator(IChestGeneratorType type, IChestGenerator generator) {
-		if (!REGISTRY.containsKey(type) && type != null) {
-			REGISTRY.put(type, generator);
+		if (/*!REGISTRY.containsKey(type) && */type != null) {
+			IChestGenerator originalGenerator = REGISTRY.put(type, generator);
+		}
+	}
+	
+	public static void registerGeneator(IChestGenerator generator) {
+		if (generator.getChestGeneratorType() != null /*&& !REGISTRY.containsKey(generator.getChestGeneratorType())*/) {
+			IChestGenerator originalGenerator = REGISTRY.put(generator.getChestGeneratorType(), generator);
+			if (originalGenerator != null) {
+				Treasure.LOGGER.debug("Replaced generator -> {} with -> {} for type -> {}", originalGenerator.getClass().getSimpleName(), generator.getClass().getSimpleName(), generator.getChestGeneratorType().getName());
+			}
 		}
 	}
 	

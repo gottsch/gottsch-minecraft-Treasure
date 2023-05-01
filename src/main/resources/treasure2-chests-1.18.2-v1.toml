@@ -14,7 +14,7 @@
 		#key options for Treasure2 generators are terrestrial, aquatic, well, wither.
 		key="terrestrial"
 		registrySize=1000
-		probably=80.0
+		probability=80.0
 		minBlockDistance=192
 		waitChunks=25	
 		surfaceProbability=15.0
@@ -69,7 +69,7 @@
 	[[chestConfigs.generators]]
 		key="aquatic"
 		registrySize=500
-		probably=70.0
+		probability=70.0
 		minChunkDistance=560
 		waitChunks=100	
 		# These 2 probabilities are moot as all aquatic chests will be in a "structure"

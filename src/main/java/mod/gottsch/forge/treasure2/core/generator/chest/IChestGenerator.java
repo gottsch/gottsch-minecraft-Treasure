@@ -93,6 +93,16 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public interface IChestGenerator {
 
+	public IChestGeneratorType getChestGeneratorType();
+	
+	/**
+	 * 
+	 * @param context
+	 * @param coords
+	 * @param rarity
+	 * @param state
+	 * @return
+	 */
 	default public GeneratorResult<ChestGeneratorData> generate(IWorldGenContext context, ICoords coords,
 			final IRarity rarity, BlockState state) {
 
@@ -127,7 +137,7 @@ public interface IChestGenerator {
 		}
 
 		if (blockEntity == null) {
-			Treasure.LOGGER.debug("Unable to locate tile entity for chest -> {}", coords);
+			Treasure.LOGGER.debug("Unable to locate block entity for chest -> {}", coords);
 			return result.fail();
 		}
 
@@ -137,7 +147,7 @@ public interface IChestGenerator {
 		// seal the chest
 		addSeal((ITreasureChestBlockEntity) blockEntity);
 
-		// update the backing tile entity's generation contxt
+		// update the backing block entity's generation contxt
 		addGenerationContext((ITreasureChestBlockEntity) blockEntity, rarity);
 
 		// add locks
@@ -167,7 +177,7 @@ public interface IChestGenerator {
 	// TODO how to prevent special chests from ending up in the rarity tag lists?
 	// TODO move to the ChestRegistry ?
 	// why did I deprecate this?? - should use ChestRegistry
-	@Deprecated
+	// 5/1/2023 correct, because Skull chest is a scarce chest which is fine. it's chestGenerator provides the correct loot table
 	default public AbstractTreasureChestBlock selectChest(final Random random, final IRarity rarity) {
 		Treasure.LOGGER.debug("attempting to get chest list for rarity -> {}", rarity);
 		List<RegistryObject<Block>> chestList = (List<RegistryObject<Block>>) ChestRegistry.getChest(rarity);
@@ -532,7 +542,7 @@ public interface IChestGenerator {
 
 	/**
 	 * 
-	 * @param tileEntity
+	 * @param blockEntity
 	 * @param rarity
 	 */
 	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity);
@@ -548,10 +558,10 @@ public interface IChestGenerator {
 
 	/**
 	 * 
-	 * @param tileEntity
+	 * @param blockEntity
 	 */
-	default public void addSeal(ITreasureChestBlockEntity tileEntity) {
-		tileEntity.setSealed(true);
+	default public void addSeal(ITreasureChestBlockEntity blockEntity) {
+		blockEntity.setSealed(true);
 	}
 
 	/**
@@ -661,7 +671,7 @@ public interface IChestGenerator {
 		// replace block @ coords
 		boolean isPlaced = GeneratorUtil.replaceBlockWithChest(context, chest, chestCoords);
 
-		// get the backing tile entity of the chest
+		// get the backing block entity of the chest
 		BlockEntity blockEntity = (BlockEntity) context.level().getBlockEntity(chestCoords.toPos());
 
 		// check to ensure the chest has been generated
@@ -676,7 +686,7 @@ public interface IChestGenerator {
 			return null;
 		}
 
-		// if tile entity failed to create, remove the chest
+		// if block entity failed to create, remove the chest
 		if (blockEntity == null || !(blockEntity instanceof AbstractTreasureChestBlockEntity)) {
 			// remove chest
 			context.level().setBlock(chestCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);
@@ -701,7 +711,7 @@ public interface IChestGenerator {
 		// replace block @ coords
 		boolean isPlaced = GeneratorUtil.replaceBlockWithChest(context, chestCoords, chest, state);
 		Treasure.LOGGER.debug("isPlaced -> {}", isPlaced);
-		// get the backing tile entity of the chest
+		// get the backing block entity of the chest
 		BlockEntity blockEntity = (BlockEntity) context.level().getBlockEntity(chestCoords.toPos());
 
 		// check to ensure the chest has been generated
@@ -714,7 +724,7 @@ public interface IChestGenerator {
 			return null;
 		}
 
-		// if tile entity failed to create, remove the chest
+		// if block entity failed to create, remove the chest
 		if (blockEntity == null || !(blockEntity instanceof AbstractTreasureChestBlockEntity)) {
 			// remove chest
 			context.level().setBlock(chestCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);

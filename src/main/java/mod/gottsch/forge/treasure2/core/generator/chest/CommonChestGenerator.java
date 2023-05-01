@@ -38,14 +38,14 @@ import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
  * @author Mark Gottschling on Jan 24, 2018
  *
  */
-public class CommonChestGenerator implements IChestGenerator {
-	// TODO probably would be better to have ChestGeneratorType as a property of the generator.
-	// no hard-coding and self-registering
+public class CommonChestGenerator extends AbstractChestGenerator {
 	
 	/**
 	 * 
 	 */
-	public CommonChestGenerator() {}
+	public CommonChestGenerator(IChestGeneratorType type) {
+		super(type);
+	}
 
 	/**
 	 * 
@@ -53,7 +53,7 @@ public class CommonChestGenerator implements IChestGenerator {
 	@Override
 	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
 		GenerationContext generationContext = 
-				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.COMMON);
+				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, getChestGeneratorType());
 		blockEntity.setGenerationContext(generationContext);
 	}
 	
@@ -86,4 +86,5 @@ public class CommonChestGenerator implements IChestGenerator {
 		addLocks(random, chest, chestBlockEntity, locks);
 		locks.clear();
 	}
+
 }

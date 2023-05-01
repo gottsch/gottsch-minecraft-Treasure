@@ -57,6 +57,7 @@ public class ChestGeneratorData extends GeneratorData {
 	public ChestGeneratorData(ICoords chestCoords, BlockState chestState) {
 		super();
 		this.setSpawnCoords(chestCoords);
+		this.setCoords(chestCoords);
 		this.setState(chestState);
 	}
 

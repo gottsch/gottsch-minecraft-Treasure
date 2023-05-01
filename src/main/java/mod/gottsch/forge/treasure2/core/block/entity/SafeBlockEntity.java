@@ -53,11 +53,6 @@ public class SafeBlockEntity extends AbstractTreasureChestBlockEntity {
 	public SafeBlockEntity(BlockPos pos, BlockState state) {
 		super(TreasureBlockEntities.SAFE_BLOCK_ENTITY_TYPE.get(), pos, state);
 	}
-
-    @Override
-    public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
-    	return new StandardChestContainerMenu(windowId, this.worldPosition, playerInventory, playerEntity);
-    }
 	
     @Override
 	public Component getDefaultName() {

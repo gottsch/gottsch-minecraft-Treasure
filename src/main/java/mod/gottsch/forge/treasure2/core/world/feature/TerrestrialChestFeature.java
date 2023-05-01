@@ -93,7 +93,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
 		WorldGenLevel genLevel = context.level();
 		ResourceLocation dimension = WorldInfo.getDimension(genLevel.getLevel());
-		
+		Treasure.LOGGER.debug("dimension -> {}", dimension.toString());
 		// test the dimension
 		if (!meetsDimensionCriteria(dimension)) { 
 			return false;
@@ -103,13 +103,16 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		// get the chest registry
 		GeneratedRegistry<ChestGenContext> registry = DimensionalGeneratedRegistry.getChestGeneratedRegistry(dimension, GeneratorType.TERRESTRIAL);
 		if (registry == null) {
+			Treasure.LOGGER.debug("GeneratedRegistry is null for dimension & TERRESTRIAL. This shouldn't be. Should be initialized.");
 			return false;
 		}
 		// get the generator config
 		ChestConfiguration config = Config.chestConfigMap.get(dimension);
 		if (config == null) {
+			Treasure.LOGGER.debug("ChestConfiguration is null. This shouldn't be.");
 			return false;
 		}
+
 		Generator generatorConfig = config.getGenerator(GeneratorType.TERRESTRIAL.getName());
 		if (generatorConfig == null) {
 			Treasure.LOGGER.warn("unable to locate a config for generator type -> {}.", GeneratorType.TERRESTRIAL.getName());
@@ -170,12 +173,14 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 				generatorConfig, rarityConfig.get());
 
 		if (result.isPresent()) {
+			Treasure.LOGGER.debug("chest gen result -> {}", result.get());
 			// add to registry
 			ChestGenContext chestGenContext = new ChestGenContext(
 					result.get().getData().getRarity(),
 					result.get().getData().getSpawnCoords());	
 			chestGenContext.setName(result.get().getData().getRegistryName());
 			chestGenContext.setPlacement(RegionPlacement.SURFACE);
+			Treasure.LOGGER.debug("chestGenContext -> {}", chestGenContext);
 			// TODO coords are not set here, they are all null
 			registry.register(rarity, spawnCoords, chestGenContext);
 

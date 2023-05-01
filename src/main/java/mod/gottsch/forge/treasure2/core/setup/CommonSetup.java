@@ -230,24 +230,23 @@ public class CommonSetup {
 		// register loot tables
 		TreasureApi.registerLootTables(Treasure.MODID);
 
-		// TODO in order for chest context to know what generator to use, we need a registry (map)
-		// of name to generator object. so having the ChestGeneratorType is not a bad idea, unless the 
-		// generator has a dependency of the type (like vanilla types - bad, high coupling).
-		// don't use factory/supplier as we don't need to create a new object every time a chest is called.
-
-		// register chest generators
-		TreasureApi.registerChestGenerator(COMMON, new CommonChestGenerator());
-		TreasureApi.registerChestGenerator(UNCOMMON, new UncommonChestGenerator());
-		TreasureApi.registerChestGenerator(SCARCE, new ScarceChestGenerator());
-		TreasureApi.registerChestGenerator(RARE, new RareChestGenerator());
-		TreasureApi.registerChestGenerator(EPIC, new EpicChestGenerator());
-		TreasureApi.registerChestGenerator(LEGENDARY, new LegendaryChestGenerator());
-		TreasureApi.registerChestGenerator(MYTHICAL, new MythicalChestGenerator());
-		TreasureApi.registerChestGenerator(SKULL, new SkullChestGenerator());
-		TreasureApi.registerChestGenerator(GOLD_SKULL, new GoldSkullChestGenerator());
-		TreasureApi.registerChestGenerator(ChestGeneratorType.WITHER, new WitherChestGenerator());
-		TreasureApi.registerChestGenerator(CAULDRON, new CauldronChestGenerator());
-		TreasureApi.registerChestGenerator(CRYSTAL_SKULL, new CrystalSkullChestGenerator());
+		/*
+		 *  in order for chest context to know what generator to use, we need a registry (map)
+		 *  of generator type to generator object.
+		 */
+		// register chest generators that can be used within the mod
+		TreasureApi.registerChestGenerator(new CommonChestGenerator(COMMON));
+		TreasureApi.registerChestGenerator(new UncommonChestGenerator(UNCOMMON));
+		TreasureApi.registerChestGenerator(new ScarceChestGenerator(SCARCE));
+		TreasureApi.registerChestGenerator(new RareChestGenerator(RARE));
+		TreasureApi.registerChestGenerator(new EpicChestGenerator(EPIC));
+		TreasureApi.registerChestGenerator(new LegendaryChestGenerator(LEGENDARY));
+		TreasureApi.registerChestGenerator(new MythicalChestGenerator(MYTHICAL));
+		TreasureApi.registerChestGenerator(new SkullChestGenerator(SKULL));
+		TreasureApi.registerChestGenerator(new GoldSkullChestGenerator(GOLD_SKULL));
+		TreasureApi.registerChestGenerator(new WitherChestGenerator(ChestGeneratorType.WITHER));
+		TreasureApi.registerChestGenerator(new CauldronChestGenerator(CAULDRON));
+		TreasureApi.registerChestGenerator(new CrystalSkullChestGenerator(CRYSTAL_SKULL));
 
 		// register pit generators
 		TreasureApi.registerPitGenerator(PitType.STANDARD, new SimplePitGenerator());
@@ -269,6 +268,7 @@ public class CommonSetup {
 		// TODO what is the point of dimensions here if you can't register a different generator based on dimesion.
 		// NOTE until the chest/gen rarity issue is refactored from ground up, this is the way to go without making things
 		// crazy complicated.
+		// link the rarity, generator type and chest generator type
 		TreasureApi.registerWeightedChestGenerator(Rarity.COMMON, TERRESTRIAL, COMMON, 1);
 		TreasureApi.registerWeightedChestGenerator(Rarity.UNCOMMON, TERRESTRIAL, UNCOMMON, 1);
 		TreasureApi.registerWeightedChestGenerator(Rarity.SCARCE, TERRESTRIAL, SCARCE, 85);

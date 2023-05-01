@@ -45,11 +45,6 @@ public class VikingChestBlockEntity extends AbstractTreasureChestBlockEntity {
 	}
 	
     @Override
-    public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
-    	return new StandardChestContainerMenu(windowId, this.worldPosition, playerInventory, playerEntity);
-    }
-	
-    @Override
 	public Component getDefaultName() {
 		return new TranslatableComponent(LangUtil.screen("viking_chest.name"));
 	}

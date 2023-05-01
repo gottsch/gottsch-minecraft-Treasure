@@ -1,9 +1,7 @@
 {
   "replace": false,
   "values": [
-    "treasure2:crystal_skull_chest",
     "treasure2:dread_pirate_chest",
-    "treasure2:compressor_chest",
-    "treasure2:cauldron_chest"
+    "treasure2:compressor_chest"
   ]
 }

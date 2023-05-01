@@ -6,18 +6,15 @@ package mod.gottsch.forge.treasure2.core.command;
 import java.util.Optional;
 import java.util.Random;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 
+import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.Heading;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
-import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
@@ -28,11 +25,11 @@ import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.AbstractChestBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -41,6 +38,9 @@ import net.minecraftforge.registries.RegistryObject;
  *
  */
 public class SpawnChestCommand {
+	
+	private static final String NAME = "name";
+	
 //	private enum Chests {
 //		WOOD(TreasureBlocks.WOOD_CHEST.get()),
 //		CRATE(TreasureBlocks.CRATE_CHEST.get()),
@@ -100,42 +100,44 @@ public class SpawnChestCommand {
 						.executes(source -> {
 							return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"), "", Rarity.COMMON.name());
 						})
-						.then(Commands.argument("name", StringArgumentType.string())
-								.suggests(SUGGEST_CHEST).executes(source -> {
+						.then(Commands.argument(NAME, ResourceLocationArgument.id())
+								.suggests(SUGGEST_CHEST)
+								.executes(source -> {
 									return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
-											StringArgumentType.getString(source, "name"), Rarity.COMMON.name());
+											ResourceLocationArgument.getId(source, NAME).toString(), Rarity.COMMON.name());
 								})
 								.then(Commands.argument("rarity", StringArgumentType.string())
-										.suggests(SUGGEST_RARITY).executes(source -> {
+										.suggests(SUGGEST_RARITY)
+										.executes(source -> {
 											return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
-													StringArgumentType.getString(source, "name"), StringArgumentType.getString(source, "rarity"));
+													ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"));
 										})
 										.then(Commands.argument("direction", StringArgumentType.string())
 												.suggests(SUGGEST_DIRECTION).executes(source -> {
 													return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"), 
-															StringArgumentType.getString(source, "name"), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), false, false);							
+															ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), false, false);							
 												})
 												.then(Commands.literal("locked")
 														.executes(source -> {
 															return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
-																	StringArgumentType.getString(source, "name"), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), true, false);
+																	ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), true, false);
 														})
 														.then(Commands.literal("sealed")
 																.executes(source -> {
 																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
-																			StringArgumentType.getString(source, "name"), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), true, true);
+																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), true, true);
 																})
 																)
 														)
 												.then(Commands.literal("sealed")
 														.executes(source -> {
 															return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
-																	StringArgumentType.getString(source, "name"), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), false, true);
+																	ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), false, true);
 														})
 														.then(Commands.literal("locked")
 																.executes(source -> {
 																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
-																			StringArgumentType.getString(source, "name"), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), true, true);
+																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), true, true);
 																})
 																)
 														)
@@ -163,12 +165,15 @@ public class SpawnChestCommand {
 		try {
 			ServerLevel world = source.getLevel();
 			Random random = new Random();
+			// TODO fetch from the registry
 			Rarity rarity = rarityName.isEmpty() ? Rarity.COMMON : Rarity.valueOf(rarityName.toUpperCase());
 			Heading heading = directionName.isEmpty() ? Heading.SOUTH : Heading.valueOf(directionName);
 			ResourceLocation chestLocation = ModUtil.asLocation(chestName);
 			Optional<RegistryObject<Block>> optionalChest = ChestRegistry.getChest(chestLocation);
 			AbstractTreasureChestBlock chest;
 			
+			// TODO provide Genertor by name in command (no weighted option)
+			// TODO provide GeneratorType option in command
 			IChestGenerator generator = WeightedChestGeneratorRegistry.getNextGenerator(rarity, GeneratorType.TERRESTRIAL);
 			if (optionalChest.isEmpty()) {
 				chest = generator.selectChest(random, rarity);
@@ -178,7 +183,7 @@ public class SpawnChestCommand {
 			
 			// select a  chest if it hasn't been provided
 			
-			Treasure.LOGGER.debug("gen -> {}", generator);
+			Treasure.LOGGER.debug("generator -> {}", generator);
 
 			// select loot table
 			Optional<LootTableShell> lootTableShell = generator.selectLootTable(random, rarity);
@@ -193,28 +198,22 @@ public class SpawnChestCommand {
 				return 0;
 			}
 
-			AbstractTreasureChestBlock chestBlock = null;
-			if (!StringUtils.isEmpty(name)) {
-				chestBlock = (AbstractChestBlock) TreasureData.CHESTS_BY_NAME.get(name);
-			}
-			else {
-				chestBlock = (AbstractTreasureChestBlock) TreasureBlocks.WOOD_CHEST.get();
-			}
+			AbstractTreasureChestBlock chestBlock = chest;
 			if (chestBlock != null) {
-				world.setBlockAndUpdate(pos, chestBlock.defaultBlockState().setValue(AbstractChestBlock.FACING, heading.getDirection()));
+				world.setBlockAndUpdate(pos, chestBlock.defaultBlockState().setValue(AbstractTreasureChestBlock.FACING, heading.getDirection()));
 			}
 
 			AbstractTreasureChestBlockEntity tileEntity = (AbstractTreasureChestBlockEntity) world.getBlockEntity(pos);
 			if (tileEntity != null) {
 				if (locked || sealed) {
-					gen.addLootTable(tileEntity, lootTableResourceLocation);
-					gen.addSeal(tileEntity);
+					generator.addLootTable(tileEntity, lootTableResourceLocation);
+					generator.addSeal(tileEntity);
 				}
 
-				gen.addGenerationContext(tileEntity, rarity);
+				generator.addGenerationContext(tileEntity, rarity);
 
 				if (locked) {
-					gen.addLocks(random, chestBlock, (AbstractTreasureChestBlockEntity) tileEntity, rarity);
+					generator.addLocks(random, chestBlock, (AbstractTreasureChestBlockEntity) tileEntity, rarity);
 					(chestBlock).rotateLockStates(world, new Coords(pos), Heading.NORTH.getRotation(heading));
 					(tileEntity).sendUpdates();
 				}

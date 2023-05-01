@@ -269,8 +269,16 @@ public class TreasureApi {
 	/*
 	 * Registers the chest generator object.
 	 */
+	@Deprecated
 	public static void registerChestGenerator(IChestGeneratorType type, IChestGenerator generator) {
 		ChestGeneratorRegistry.registerGeneator(type, generator);
+	}
+	
+	/*
+	 * Registers the chest generator object.
+	 */
+	public static void registerChestGenerator(IChestGenerator generator) {
+		ChestGeneratorRegistry.registerGeneator(generator);
 	}
 	
 	public static void registerPitGenerator(IPitType type, IPitGenerator<GeneratorResult<ChestGeneratorData>> generator) {

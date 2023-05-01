@@ -50,12 +50,14 @@ import net.minecraft.world.level.block.state.BlockState;
  * @author Mark Gottschling on Dec 4, 2019
  *
  */
-public class WitherChestGenerator implements IChestGenerator {
+public class WitherChestGenerator extends AbstractChestGenerator {
 	
 	/**
 	 * 
 	 */
-	public WitherChestGenerator() {}
+	public WitherChestGenerator(IChestGeneratorType type) {
+		super(type);
+	}
 
 	/**
 	 * 

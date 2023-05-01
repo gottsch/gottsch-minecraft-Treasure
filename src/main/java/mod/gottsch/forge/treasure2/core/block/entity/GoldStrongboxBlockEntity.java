@@ -44,7 +44,7 @@ public class GoldStrongboxBlockEntity extends AbstractTreasureChestBlockEntity {
 	}
 	
     @Override
-    public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
+    public AbstractContainerMenu createChestContainerMenu(int windowId, Inventory playerInventory, Player playerEntity) {
     	return new StrongboxContainerMenu(windowId, this.worldPosition, playerInventory, playerEntity);
     }
 	

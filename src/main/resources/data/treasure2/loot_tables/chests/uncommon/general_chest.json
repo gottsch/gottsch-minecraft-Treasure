@@ -1,18 +1,10 @@
 {
   "version" : "3.0",
-  "since" : "mc1.12.2-v2.0.0",
+  "since" : "mc1.18.2-v2.5.0",
   "category" : "general",
   "rarity" : "uncommon",
   "type" : "minecraft:chest",
   "pools" : [ {
-    "name" : "treasure",
-    "rolls" : 2,
-    "entries" : [ {
-      "type" : "minecraft:loot_table",
-      "name" : "treasure2:pools/treasure/uncommon_all",
-      "weight" : 1
-    } ]
-  }, {
     "name" : "items",
     "rolls" : {
       "min" : 2,

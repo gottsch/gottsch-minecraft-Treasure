@@ -64,7 +64,4 @@ public interface ITreasureChestBlockEntity { //extends Inventory {
 	boolean isLocked();
 	Component getDefaultName();
 
-	
-
-
 }

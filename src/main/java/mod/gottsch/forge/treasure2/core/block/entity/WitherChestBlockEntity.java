@@ -46,7 +46,7 @@ public class WitherChestBlockEntity extends AbstractTreasureChestBlockEntity {
 	}
 	
     @Override
-    public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
+    public AbstractContainerMenu createChestContainerMenu(int windowId, Inventory playerInventory, Player playerEntity) {
     	return new WitherChestContainerMenu(windowId, this.worldPosition, playerInventory, playerEntity);
     }
 	
