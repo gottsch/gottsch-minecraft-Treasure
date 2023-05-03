@@ -26,8 +26,10 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.someguyssoftware.gottschcore.spatial.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.charm.Charm;
 import com.someguyssoftware.treasure2.charm.ICharmEntity;
 import com.someguyssoftware.treasure2.item.Adornment;
+import com.someguyssoftware.treasure2.item.CharmItem;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -57,42 +59,40 @@ public class EquipmentCostEvaluator extends CostEvaluator {
 	public double apply(World world, Random random, ICoords coords, PlayerEntity player, Event event,
 			ICharmEntity entity, double amount) {
 		Treasure.LOGGER.debug("executing...");
-		double newAmount = amount * 2;
-		boolean isDamaged = true;
-		
+//		boolean isEquipmentDamaged = false;
+//		double returnAmount = 0;
 		// search for equipment
-		List<ItemStack> list = new ArrayList<>();
-		AtomicReference<ItemStack> itemHolder = new AtomicReference<>();
+		List<ItemStack> equipmentList = new ArrayList<>();
 		player.getAllSlots().iterator().forEachRemaining(itemStack -> {
-//			if (itemHolder.get() == null) {
-				if (itemStack.isDamageableItem() && !(itemStack.getItem() instanceof Adornment) /* TODO and not charm */) {
-//					itemHolder.set(itemStack);
-					list.add(itemStack);
+				if (itemStack.isDamageableItem() && !(itemStack.getItem() instanceof Adornment) && !(itemStack.getItem() instanceof CharmItem)) {
+					equipmentList.add(itemStack);
 				}
-//			}
 		});
-		if (!list.isEmpty()) {
+		if (!equipmentList.isEmpty()) {
+			double newAmount = amount * 2;
 			// randomly select a piece of equipment
-			ItemStack selectedStack = list.get(random.nextInt(list.size()));
+			ItemStack selectedStack = equipmentList.get(random.nextInt(equipmentList.size()));
 			Treasure.LOGGER.debug("selected equip -> {}", selectedStack.getDisplayName());
 			Treasure.LOGGER.debug("going to apply damage -> {} to equip current damage -> {}", newAmount, selectedStack.getDamageValue());
 			// damage the item
-			// TODO only return true if the item is broken/destroyed... need to test is newDamage > oldDamage
+			// only return true if the item is damaged/destroyed... need to test is newDamage > oldDamage
 			int oldDamage = selectedStack.getDamageValue();
-			selectedStack.hurt(oldDamage, random, null);
+			selectedStack.hurt((int)newAmount, random, null);
 			if (selectedStack.getDamageValue() > oldDamage) {
-				isDamaged = true;
+//				isEquipmentDamaged = true;
+				Treasure.LOGGER.debug("equip damaged after -> {}", selectedStack.getDamageValue());
+				return 0;
 			}
-			Treasure.LOGGER.debug("damaged -> {}, equip damaged after -> {}", isDamaged, selectedStack.getDamageValue());
 		}
 
 		// if not damaged, process against default evaluator
-		if (!isDamaged) {
-			Treasure.LOGGER.debug("no damage done, use mana using cost eval ->{}", evaluator.getClass().getSimpleName());
-			// execute the orignal evaluator
-			newAmount = entity.getCharm().getCostEvaluator().apply(world, random, coords, player, event, entity, amount);
-		}		
-		return newAmount;
+		return entity.getCharm().getCostEvaluator().apply(world, random, coords, player, event, entity, amount);
+//		if (!isEquipmentDamaged) {
+//			Treasure.LOGGER.debug("no equipment damage done, use mana using cost eval ->{}", evaluator.getClass().getSimpleName());
+//			// execute the orignal evaluator
+//			returnAmount = entity.getCharm().getCostEvaluator().apply(world, random, coords, player, event, entity, amount);
+//		}		
+//		return returnAmount;
 	}
 	
 	@Override

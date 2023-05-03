@@ -270,20 +270,12 @@ public class CharmEventHandler {
 				// TODO handle the durability of the adornment
 				processUsage(player.level, player, event, context);
 				
+				// TODO would be nice if ALL charms processed during event could sent 1 bundled message instead of individual messages
+				
 				// send state message to client
 				CharmMessageToClient message = new CharmMessageToClient(player.getStringUUID(), context);
 				TreasureNetworking.simpleChannel.send(PacketDistributor.PLAYER.with(() -> player), message);
 			}
-
-			// remove if uses are empty and the capability is bindable ie. charm, not adornment
-			// NOTE this leaves empty charms on non-bindables for future recharge
-//			if (context.getEntity().getValue() <= 0.0 && context.getCapability().isBindable()) {
-//				Treasure.LOGGER.debug("charm is empty -> remove");
-//				// TODO call cap.remove() -> recalcs highestLevel
-//				// locate the charm from context and remove
-//				//				context.getCapability().getCharmEntities()[context.getType().getValue()].remove(context.getIndex());
-//				context.getCapability().remove(context.getType(), context.getIndex());
-//			}
 			
 			// remove if mana AND recharges are empty and the capability is bindable ie. charm, not adornment
 			if (context.getCapability().isBindable() 
@@ -303,9 +295,9 @@ public class CharmEventHandler {
 			if (cap.isInfinite()) {
 				return;
 			}
+			// remove/destroy item stack if damage is greater than durability
 			stack.setDamageValue(stack.getDamageValue() + 1);
 			if (stack.getDamageValue() >= cap.getDurability()) {
-				// break key;
 				stack.shrink(1);
 			}
 		});
