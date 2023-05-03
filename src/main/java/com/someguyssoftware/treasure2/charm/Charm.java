@@ -129,6 +129,7 @@ public abstract class Charm implements ICharm {
 		entity.setMana(mana);
 		entity.setMaxMana(mana);
 		entity.setRange(range);
+		entity.setCostEvaluator(costEvaluator);
 		entity.setExclusive(exclusive);
 		entity.setRecharges(recharges);
 		entity.setMaxRecharges(recharges);

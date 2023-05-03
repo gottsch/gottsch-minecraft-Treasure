@@ -96,7 +96,7 @@ public class CharmMessageHandlerOnClient {
 	        	Treasure.LOGGER.debug("valid player -> {}", message.getPlayerName());
 	        	// check hands first
 	        	if (message.getHand() != null) {
-		        	Treasure.LOGGER.debug("valid hand -> {}", message.getHand());
+		        	Treasure.LOGGER.debug("hand handler - valid hand -> {}", message.getHand());
 		        	// get the item for the hand
 	        		ItemStack heldItemStack = player.getItemInHand(message.getHand());
 	        		// determine what is being held in hand
@@ -112,11 +112,13 @@ public class CharmMessageHandlerOnClient {
 	        		}
 	        	}
 	        	else if (CURIOS_ID.equals(message.getSlotProviderId())) {
+	        		Treasure.LOGGER.debug("curios handler - updating slot charm...");
 	    			LazyOptional<ICuriosItemHandler> handler = CuriosApi.getCuriosHelper().getCuriosHandler(player);
 	    			handler.ifPresent(itemHandler -> {
 	    				Optional<ICurioStacksHandler> stacksOptional = itemHandler.getStacksHandler(message.getSlot());
 	    				stacksOptional.ifPresent(stacksHandler -> {
-							ItemStack curiosStack = stacksHandler.getStacks().getStackInSlot(0);
+	    					Treasure.LOGGER.debug("# of slots in curios handler -> {}", stacksHandler.getStacks().getSlots());
+							ItemStack curiosStack = stacksHandler.getStacks().getStackInSlot(0);							
 							curiosStack.getCapability(TreasureCapabilities.CHARMABLE).ifPresent(cap -> {
 								updateCharms(curiosStack, message, cap);
 							});
@@ -148,9 +150,9 @@ public class CharmMessageHandlerOnClient {
 		List<ICharmEntity> entityList = (List<ICharmEntity>) capability.getCharmEntities().get(message.getInventoryType());
 		if (entityList != null && !entityList.isEmpty() && entityList.size() > message.getIndex()) {
 			ICharmEntity entity = entityList.get(message.getIndex());
-//    		Treasure.logger.debug("looking for charm -> {} at index -> {}", entity, message.getIndex());
+    		Treasure.LOGGER.debug("looking for charm -> {} at index -> {}", entity, message.getIndex());
 			if (entity != null && entity.getCharm().getName().equals(charmName)) {
-//	        	Treasure.logger.debug("found charm, updating...");
+	        	Treasure.LOGGER.debug("found charm, updating...");
 				// update entity properties
 				entity.update(message.getEntity());
 				
@@ -163,6 +165,7 @@ public class CharmMessageHandlerOnClient {
 
 				// update Durability 
 				itemStack.getCapability(TreasureCapabilities.DURABILITY).ifPresent(cap -> {
+					Treasure.LOGGER.debug("updating durability damage from {} -> to -> {}", itemStack.getDamageValue(), message.getItemDamage());
 					itemStack.setDamageValue(message.getItemDamage());
 				});
 //				break;

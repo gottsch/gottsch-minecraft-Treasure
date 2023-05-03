@@ -234,6 +234,6 @@ public class CharmMessageToClient {
 	public String toString() {
 		return "CharmMessageToClient [valid=" + valid + ", playerName=" + playerName + ", charmName=" + charmName
 				+ ", entity=" + entity + ", hand=" + hand + ", slot=" + slot + ", slotProviderId=" + slotProviderId
-				+ ", inventoryType=" + inventoryType + ", index=" + index + "]";
+				+ ", inventoryType=" + inventoryType + ", index=" + index + ", itemDamage=" + itemDamage + "]";
 	}
 }

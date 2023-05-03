@@ -211,8 +211,8 @@ public class TreasureTemplateManager extends GottschTemplateManager {
 			this.readTemplateFromStream(id.toString(), inputstream, markerBlocks, replacementBlocks);
 			return true;
 			// TODO change from Throwable
-		} catch (Throwable var10) {
-			Treasure.LOGGER.error("error reading resource: ", var10);
+		} catch (Throwable e) {
+			Treasure.LOGGER.error("error reading resource: ", e);
 			flag = false;
 		} finally {
 			IOUtils.closeQuietly(inputstream);

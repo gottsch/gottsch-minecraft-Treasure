@@ -22,6 +22,7 @@ package com.someguyssoftware.treasure2.charm;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.spatial.ICoords;
+import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.util.ModUtils;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -90,10 +91,10 @@ public class ShieldingCharm extends Charm {
 							double amountToCharm = amount * entity.getAmount();
 							double amountToPlayer = amount - amountToCharm;			
 							double newAmount = amountToPlayer;
-//							Treasure.logger.debug("amount to charm -> {} amount to player -> {}", amountToCharm, amountToPlayer);
+							Treasure.LOGGER.debug("amount to charm -> {} amount to player -> {}", amountToCharm, amountToPlayer);
 							// cost eval
 							double cost = applyCost(world, random, coords, player, event, entity, amountToCharm);
-//							Treasure.logger.debug("cost (mana) incurred to charm -> {}", cost);
+							Treasure.LOGGER.debug("cost (mana) incurred to charm -> {}", cost);
 							if (cost < amountToCharm) {
 								newAmount =+ (amountToCharm - cost);
 							}
