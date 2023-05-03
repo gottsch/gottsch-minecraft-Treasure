@@ -1,8 +1,8 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.16.5-latest": "2.2.0",
-    "1.16.5-recommended": "2.2.0"
+    "1.16.5-latest": "2.5.0",
+    "1.16.5-recommended": "2.5.0"
   },
     "1.16.5": {
         "1.0.0": "Initial version release.",
@@ -17,6 +17,8 @@
         "1.7.3": "Fixed No Chest Gen on Reload issues.\nFixed Wither Tree Top (broken log) not having a bounding box.\nFixed Locks not displaying accepted key(s) properly.",
         "2.1.1": "Bring to parity with 1.12.2-v2\nNew Charms/Runes/Adornments system.\nAdded 300+ adornments.\nAdded 9 runes.\nCharms now range in levels 1-25+.\nAdded Cheat Death charm.\nAdded Legendary and Mythical rarities.\nAdded Legendary, Mythical loot tables.\nRemoved exposing resources files (loot tables, meta, structure) to the file system.\nRefactored how deep treasure pits go - no longer based on offset from bottom, but on rarity of loot.\nUpdated requirement for GottschCore 1.15.0.\nFixed the no loot from wishing wells bug.\nAdded 5 million downloads reward ring.\nFixed Jewelers Table bug.\nFixed [1.12.2] Key duplication with the Key Ring. #290.\n",
         "2.2.0": "Refactor chest/well/wither tree spawn calculation and registration.\nAdd Poison/Wither resistance and immunity charms.\nUpdate Key and Lock items for future expansions.\nAdd injectable loot tables for treasure loot pools.\nFix duplicate load of loot table resources.\nFix file system subfolder creation in datapacks folder.\nFix Pouch duplication bug.\nFix Keyring duplication bug.\n",
-        "2.3.0": "Updates to be more extensible.\nFix whitelisted dimensions server crash bug."
+        "2.3.0": "Updates to be more extensible.\nFix whitelisted dimensions server crash bug.",
+        "2.4.0": "Added Chinese language file by Kasualix.",
+        "2.5.0": "Fixed missing setCostEvaluator() in Charm.createEntity().\nFixed EquipmentCostEvaluator not using default if nothing is equipped.\nFixed EquipmentCostEvaluator calculations."
 	}
 }

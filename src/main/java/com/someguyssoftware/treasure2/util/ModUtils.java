@@ -19,6 +19,7 @@
  */
 package com.someguyssoftware.treasure2.util;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -26,6 +27,9 @@ import javax.annotation.Nullable;
 
 import com.someguyssoftware.treasure2.Treasure;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
@@ -34,7 +38,11 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.state.Property;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.StateHolder;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -42,6 +50,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -59,7 +68,60 @@ public class ModUtils {
 	public static boolean hasDomain(String name) {
 		return name.indexOf(":") >= 0;
 	}
-	
+
+	// TODO move to GottschCore
+	/**
+	 * Vanilla NBTUtil method with some extra checks.
+	 * @param nbt
+	 * @return
+	 */
+	public static BlockState readBlockState(CompoundNBT nbt) {
+		if (!nbt.contains("Name", 8)) {
+			return Blocks.AIR.defaultBlockState();
+		} else {
+			String name = nbt.getString("Name");
+			if (name.equalsIgnoreCase("minecraft:%%FILTER_ME%%")) {
+				return Blocks.AIR.defaultBlockState();
+			}
+			Block block = Registry.BLOCK.get(new ResourceLocation(name));
+			BlockState blockstate = block.defaultBlockState();
+			if (nbt.contains("Properties", 10)) {
+				CompoundNBT compoundnbt = nbt.getCompound("Properties");
+				StateContainer<Block, BlockState> statecontainer = block.getStateDefinition();
+
+				for(String s : compoundnbt.getAllKeys()) {
+					Property<?> property = statecontainer.getProperty(s);
+					if (property != null) {
+						blockstate = setValueHelper(blockstate, property, s, compoundnbt, nbt);
+					}
+				}
+			}
+			return blockstate;
+		}
+	}
+
+	// TODO move to GottschCore
+	/**
+	 * Vanilla method from NBTUtil.
+	 * @param <S>
+	 * @param <T>
+	 * @param p_193590_0_
+	 * @param p_193590_1_
+	 * @param p_193590_2_
+	 * @param p_193590_3_
+	 * @param p_193590_4_
+	 * @return
+	 */
+	private static <S extends StateHolder<?, S>, T extends Comparable<T>> S setValueHelper(S p_193590_0_, Property<T> p_193590_1_, String p_193590_2_, CompoundNBT p_193590_3_, CompoundNBT p_193590_4_) {
+		Optional<T> optional = p_193590_1_.getValue(p_193590_3_.getString(p_193590_2_));
+		if (optional.isPresent()) {
+			return p_193590_0_.setValue(p_193590_1_, optional.get());
+		} else {
+			Treasure.LOGGER.warn("Unable to read property: {} with value: {} for blockstate: {}", p_193590_2_, p_193590_3_.getString(p_193590_2_), p_193590_4_.toString());
+			return p_193590_0_;
+		}
+	}
+
 	/**
 	 * 
 	 * @author Mark Gottschling on Jul 25, 2021
