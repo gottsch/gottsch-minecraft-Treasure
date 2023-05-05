@@ -40,7 +40,7 @@ public class PitGeneratorRegistry {
 	private PitGeneratorRegistry() { }
 	
 	public static void register(IPitType type, IPitGenerator<GeneratorResult<ChestGeneratorData>> generator) {
-		if (type != null && !REGISTRY.containsKey(type)) {
+		if (type != null) {
 			REGISTRY.put(type, generator);
 		}
 	}

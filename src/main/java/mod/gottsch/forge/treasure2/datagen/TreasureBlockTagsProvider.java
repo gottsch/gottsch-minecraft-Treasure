@@ -51,14 +51,16 @@ public class TreasureBlockTagsProvider extends BlockTagsProvider {
     	tag(TreasureTags.Blocks.UNCOMMON_CHESTS).add(TreasureBlocks.VIKING_CHEST.get());
     	tag(TreasureTags.Blocks.SCARCE_CHESTS).add(TreasureBlocks.PIRATE_CHEST.get());
     	tag(TreasureTags.Blocks.SCARCE_CHESTS).add(TreasureBlocks.IRON_STRONGBOX.get());
-    	tag(TreasureTags.Blocks.SCARCE_CHESTS).add(TreasureBlocks.SKULL_CHEST.get());
+//    	tag(TreasureTags.Blocks.SCARCE_CHESTS).add(TreasureBlocks.SKULL_CHEST.get());
     	tag(TreasureTags.Blocks.RARE_CHESTS).add(TreasureBlocks.GOLD_STRONGBOX.get());
     	tag(TreasureTags.Blocks.RARE_CHESTS).add(TreasureBlocks.SAFE.get());
-    	tag(TreasureTags.Blocks.RARE_CHESTS).add(TreasureBlocks.GOLD_SKULL_CHEST.get());    	
+//    	tag(TreasureTags.Blocks.RARE_CHESTS).add(TreasureBlocks.GOLD_SKULL_CHEST.get());    	
     	tag(TreasureTags.Blocks.RARE_CHESTS).add(TreasureBlocks.SPIDER_CHEST.get());    	
-    	tag(TreasureTags.Blocks.EPIC_CHESTS).add(TreasureBlocks.CRYSTAL_SKULL_CHEST.get());
+//    	tag(TreasureTags.Blocks.EPIC_CHESTS).add(TreasureBlocks.CRYSTAL_SKULL_CHEST.get());
     	tag(TreasureTags.Blocks.EPIC_CHESTS).add(TreasureBlocks.DREAD_PIRATE_CHEST.get());
     	tag(TreasureTags.Blocks.EPIC_CHESTS).add(TreasureBlocks.COMPRESSOR_CHEST.get());
-    	tag(TreasureTags.Blocks.EPIC_CHESTS).add(TreasureBlocks.CAULDRON_CHEST.get());    	
+//    	tag(TreasureTags.Blocks.EPIC_CHESTS).add(TreasureBlocks.CAULDRON_CHEST.get());    	
+    	
+    	tag(TreasureTags.Blocks.SKULL_CHESTS).add(TreasureBlocks.SKULL_CHEST.get());
     }
 }

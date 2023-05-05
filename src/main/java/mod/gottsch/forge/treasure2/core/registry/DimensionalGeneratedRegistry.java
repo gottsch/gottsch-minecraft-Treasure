@@ -232,11 +232,13 @@ public class DimensionalGeneratedRegistry {
 									// extract the data
 									GeneratedContext context = supplier.get();
 									context.load(registryCompound.getCompound("data"));
-									ResourceLocation dimension = ModUtil.asLocation(dimensionName);
-									
-									GeneratedRegistry<GeneratedContext> generatedRegistry = (GeneratedRegistry<GeneratedContext>) getGeneratedRegistry(registry, dimension, generatorType.get());
-									if (generatedRegistry != null) {
-										generatedRegistry.register(context.getRarity(), context.getCoords(), context);
+									Treasure.LOGGER.debug("context -> {}", context);
+									if (context.getRarity() != null && context.getCoords() != null) {										
+										ResourceLocation dimension = ModUtil.asLocation(dimensionName);										
+										GeneratedRegistry<GeneratedContext> generatedRegistry = (GeneratedRegistry<GeneratedContext>) getGeneratedRegistry(registry, dimension, generatorType.get());
+										if (generatedRegistry != null) {
+											generatedRegistry.register(context.getRarity(), context.getCoords(), context);
+										}
 									}
 								}
 							}

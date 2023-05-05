@@ -119,7 +119,7 @@ public class SkeletonBlock extends GravestoneBlock {
 	 * @author Mark Gottschling on Feb 2, 2019
 	 *
 	 */
-	public static enum EnumPartType implements StringRepresentable{
+	public static enum EnumPartType implements StringRepresentable {
 		TOP("top"), BOTTOM("bottom");
 
 		private final String name;

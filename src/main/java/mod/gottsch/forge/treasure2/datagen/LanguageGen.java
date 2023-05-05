@@ -123,6 +123,11 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.CARDBOARD_BOX.get(), "Cardboard Box");
         add(TreasureBlocks.MILK_CRATE.get(), "Milk Crate");
         add(TreasureBlocks.WITHER_CHEST.get(), "Wither Chest");
+        add(TreasureBlocks.WITHER_BRANCH.get(), "Wither Branch");
+        add(TreasureBlocks.WITHER_ROOT.get(), "Wither Root");
+        add(TreasureBlocks.WITHER_LOG.get(), "Wither Log");
+        add(TreasureBlocks.WITHER_BROKEN_LOG.get(), "Wither Broken Log");
+        add(TreasureBlocks.WITHER_SOUL_LOG.get(), "Wither Soul Log");
         
         // ore
         add(TreasureBlocks.TOPAZ_ORE.get(), "Topaz Ore");
@@ -160,6 +165,9 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.GRAVESTONE1_SPAWNER_STONE.get(), "Stone Gravestone Spawner");
         add(TreasureBlocks.GRAVESTONE2_SPAWNER_COBBLESTONE.get(), "Cobblestone Gravestone Spawner");
         add(TreasureBlocks.GRAVESTONE3_SPAWNER_OBSIDIAN.get(), "Obsidian Gravestone Spawner");
+        
+        add(TreasureItems.WITHER_STICK_ITEM.get(), "Wither Branch");
+        add(TreasureItems.WITHER_ROOT_ITEM.get(), "Wither Root");
         
         // eggs
         add(TreasureItems.BOUND_SOUL_EGG.get(), "Bound Soul Spawn Egg");

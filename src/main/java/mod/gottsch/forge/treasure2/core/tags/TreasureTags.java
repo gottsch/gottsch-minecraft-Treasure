@@ -94,12 +94,17 @@ public class TreasureTags {
 	public static class Blocks {
 		// chests
 		public static final TagKey<Block> COMMON_CHESTS = mod(Treasure.MODID, "chests/rarity/core/common");
-		public static final TagKey<Block> UNCOMMON_CHESTS = mod(Treasure.MODID, "chests/uncommon");
-		public static final TagKey<Block> SCARCE_CHESTS = mod(Treasure.MODID, "chests/scarce");
-		public static final TagKey<Block> RARE_CHESTS = mod(Treasure.MODID, "chests/rare");
-		public static final TagKey<Block> EPIC_CHESTS = mod(Treasure.MODID, "chests/epic");
-		public static final TagKey<Block> LEGENDARY_CHESTS = mod(Treasure.MODID, "chests/legendary");
-		public static final TagKey<Block> MYTHICAL_CHESTS = mod(Treasure.MODID, "chests/mythical");
+		public static final TagKey<Block> UNCOMMON_CHESTS = mod(Treasure.MODID, "chests/rarity/core/uncommon");
+		public static final TagKey<Block> SCARCE_CHESTS = mod(Treasure.MODID, "chests/rarity/core/scarce");
+		public static final TagKey<Block> RARE_CHESTS = mod(Treasure.MODID, "chests/rarity/core/rare");
+		public static final TagKey<Block> EPIC_CHESTS = mod(Treasure.MODID, "chests/rarity/core/epic");
+		public static final TagKey<Block> LEGENDARY_CHESTS = mod(Treasure.MODID, "chests/rarity/core/legendary");
+		public static final TagKey<Block> MYTHICAL_CHESTS = mod(Treasure.MODID, "chests/rarity/core/mythical");
+		
+		// speciality chests
+		public static final TagKey<Block> SKULL_CHESTS = mod(Treasure.MODID, "chests/rarity/special/skull");
+		public static final TagKey<Block> GOLD_SKULL_CHESTS = mod(Treasure.MODID, "chests/rarity/special/gold_skull");
+		public static final TagKey<Block> WITHER_CHESTS = mod(Treasure.MODID, "chests/rarity/special/wither");
 		
 		public static TagKey<Block> mod(String domain, String path) {
 			return BlockTags.create(new ResourceLocation(domain, path));

@@ -73,6 +73,7 @@ public class CommonSetup {
 		TreasureApi.registerRarity(Rarity.EPIC);
 		TreasureApi.registerRarity(Rarity.LEGENDARY);
 		TreasureApi.registerRarity(Rarity.MYTHICAL);
+		TreasureApi.registerRarity(Rarity.SKULL);
 
 		// register the key/lock categories
 		TreasureApi.registerKeyLockCategory(KeyLockCategory.ELEMENTAL);
@@ -144,6 +145,8 @@ public class CommonSetup {
 				TreasureTags.Items.MYTHICAL_LOCKS,
 				TreasureTags.Blocks.MYTHICAL_CHESTS);
 
+		TreasureApi.registerRarityTags(Rarity.SKULL, TreasureTags.Blocks.SKULL_CHESTS);
+		
 		// regsiter wishable tags
 		TreasureApi.registerWishableTag(Rarity.COMMON, TreasureTags.Items.COMMON_WISHABLE);
 		TreasureApi.registerWishableTag(Rarity.UNCOMMON, TreasureTags.Items.UNCOMMON_WISHABLE);
@@ -247,7 +250,7 @@ public class CommonSetup {
 		TreasureApi.registerChestGenerator(new WitherChestGenerator(ChestGeneratorType.WITHER));
 		TreasureApi.registerChestGenerator(new CauldronChestGenerator(CAULDRON));
 		TreasureApi.registerChestGenerator(new CrystalSkullChestGenerator(CRYSTAL_SKULL));
-
+		
 		// register pit generators
 		TreasureApi.registerPitGenerator(PitType.STANDARD, new SimplePitGenerator());
 		TreasureApi.registerPitGenerator(PitType.STANDARD, new AirPitGenerator());
@@ -259,6 +262,13 @@ public class CommonSetup {
 		TreasureApi.registerPitGenerator(PitType.STANDARD, new TntTrapPitGenerator());
 		TreasureApi.registerPitGenerator(PitType.STANDARD, new VolcanoPitGenerator());
 		
+		// TEMP use normal generators for structures pits
+		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new SimplePitGenerator());
+		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new AirPitGenerator());
+		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new LavaSideTrapPitGenerator());
+		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new LavaTrapPitGenerator());
+		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new TntTrapPitGenerator());
+		
 		// TODO using a nonstandard map, removes the need for a weighted chest generator. just need Rarity+GenType -> Generator
 		// TreasureApi.registerNonStandardChestGenerator(TERRESTRIAL, TreasureBlocks.SKULL_CHEST, SKULL);
 		
@@ -269,6 +279,7 @@ public class CommonSetup {
 		// NOTE until the chest/gen rarity issue is refactored from ground up, this is the way to go without making things
 		// crazy complicated.
 		// link the rarity, generator type and chest generator type
+		/*
 		TreasureApi.registerWeightedChestGenerator(Rarity.COMMON, TERRESTRIAL, COMMON, 1);
 		TreasureApi.registerWeightedChestGenerator(Rarity.UNCOMMON, TERRESTRIAL, UNCOMMON, 1);
 		TreasureApi.registerWeightedChestGenerator(Rarity.SCARCE, TERRESTRIAL, SCARCE, 85);
@@ -292,7 +303,32 @@ public class CommonSetup {
 		TreasureApi.registerWeightedChestGenerator(Rarity.EPIC, AQUATIC, CAULDRON, 30);
 		TreasureApi.registerWeightedChestGenerator(Rarity.LEGENDARY, AQUATIC, LEGENDARY, 1);
 		TreasureApi.registerWeightedChestGenerator(Rarity.MYTHICAL, AQUATIC, MYTHICAL, 1);
+		*/
 		
+		// TODO register chest generator by RARITY and TYPE
+		// chest context probably should take in the GeneratorType (Terrestrial / Aquatic) as well and use this registry
+		// TOOD can this and ChestGenerator be merged into one registry ???
+		// a 1-1 registry of rarity+type -> chest generator
+		TreasureApi.registerTypeChestGenerator(Rarity.COMMON, TERRESTRIAL, COMMON);
+		TreasureApi.registerTypeChestGenerator(Rarity.UNCOMMON, TERRESTRIAL, UNCOMMON);
+		TreasureApi.registerTypeChestGenerator(Rarity.SCARCE, TERRESTRIAL, SCARCE);
+		TreasureApi.registerTypeChestGenerator(Rarity.SKULL, TERRESTRIAL, SKULL);
+		TreasureApi.registerTypeChestGenerator(Rarity.RARE, TERRESTRIAL, RARE);
+//		TreasureApi.registerTypeChestGenerator(Rarity.RARE, TERRESTRIAL, GOLD_SKULL);
+		TreasureApi.registerTypeChestGenerator(Rarity.EPIC, TERRESTRIAL, EPIC);
+//		TreasureApi.registerTypeChestGenerator(Rarity.EPIC, TERRESTRIAL, CRYSTAL_SKULL);
+//		TreasureApi.registerTypeChestGenerator(Rarity.EPIC, TERRESTRIAL, CAULDRON);
+		TreasureApi.registerTypeChestGenerator(Rarity.LEGENDARY, TERRESTRIAL, LEGENDARY);
+		TreasureApi.registerTypeChestGenerator(Rarity.MYTHICAL, TERRESTRIAL, MYTHICAL);
+		
+		TreasureApi.registerTypeChestGenerator(Rarity.COMMON, AQUATIC, COMMON);
+		TreasureApi.registerTypeChestGenerator(Rarity.UNCOMMON, AQUATIC, UNCOMMON);
+		TreasureApi.registerTypeChestGenerator(Rarity.SCARCE, AQUATIC, SCARCE);
+		TreasureApi.registerTypeChestGenerator(Rarity.SKULL, AQUATIC, SKULL);
+		TreasureApi.registerTypeChestGenerator(Rarity.RARE, AQUATIC, RARE);
+		TreasureApi.registerTypeChestGenerator(Rarity.EPIC, AQUATIC, EPIC);
+		TreasureApi.registerTypeChestGenerator(Rarity.LEGENDARY, AQUATIC, LEGENDARY);
+		TreasureApi.registerTypeChestGenerator(Rarity.MYTHICAL, AQUATIC, MYTHICAL);
 		// register network
 		TreasureNetworking.register();
 	}

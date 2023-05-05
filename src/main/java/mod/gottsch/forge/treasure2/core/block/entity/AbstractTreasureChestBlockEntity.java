@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
@@ -449,15 +450,18 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			}
 			if (nbt.contains(GENERATION_CONTEXT_TAG)) {
 				CompoundTag contextTag = nbt.getCompound(GENERATION_CONTEXT_TAG);
-				Rarity rarity = null;
+				Optional<IRarity> rarity = null;
 				IChestGeneratorType genType = null;
 				if (contextTag.contains(LOOT_RARITY_TAG)) {
-					rarity = Rarity.getByValue(contextTag.getString(LOOT_RARITY_TAG));
+					// TODO should NOT use Rarity.getByValue but look at Registry
+//					rarity = Rarity.getByValue(contextTag.getString(LOOT_RARITY_TAG));
+					rarity = TreasureApi.getRarity(contextTag.getString(LOOT_RARITY_TAG));
 				}
 				if (contextTag.contains(CHEST_GENERATOR_TYPE_TAG)) {
 					genType = ChestGeneratorType.valueOf(contextTag.getString(CHEST_GENERATOR_TYPE_TAG).toUpperCase());
 				}
-				AbstractTreasureChestBlockEntity.GenerationContext generationContext = this.new GenerationContext(rarity, genType);
+				
+				AbstractTreasureChestBlockEntity.GenerationContext generationContext = this.new GenerationContext(rarity.orElse(Rarity.NONE), genType);
 				this.setGenerationContext(generationContext);
 			}	
 		} catch (Exception e) {
