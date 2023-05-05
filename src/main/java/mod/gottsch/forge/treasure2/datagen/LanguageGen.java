@@ -166,8 +166,8 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.GRAVESTONE2_SPAWNER_COBBLESTONE.get(), "Cobblestone Gravestone Spawner");
         add(TreasureBlocks.GRAVESTONE3_SPAWNER_OBSIDIAN.get(), "Obsidian Gravestone Spawner");
         
-        add(TreasureItems.WITHER_STICK_ITEM.get(), "Wither Branch");
-        add(TreasureItems.WITHER_ROOT_ITEM.get(), "Wither Root");
+//        add(TreasureItems.WITHER_STICK_ITEM.get(), "Wither Branch");
+//        add(TreasureItems.WITHER_ROOT_ITEM.get(), "Wither Root");
         
         // eggs
         add(TreasureItems.BOUND_SOUL_EGG.get(), "Bound Soul Spawn Egg");

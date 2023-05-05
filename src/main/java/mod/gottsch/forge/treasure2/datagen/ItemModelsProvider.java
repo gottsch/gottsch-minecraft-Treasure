@@ -171,6 +171,10 @@ public class ItemModelsProvider extends ItemModelProvider {
 				mcLoc("item/generated"), "layer0", modLoc("item/treasure_tool"));
 		singleTexture(TreasureItems.SKELETON_ITEM.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/skeleton_item"));
+		// NOTE only gen once - has to be updated with the correct rotation
+		// TODO change the mcLoc to a different parent based on handheld
+//		singleTexture(TreasureItems.SHADOW_MACHETE.get().getRegistryName().getPath(),
+//				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/shadow_machete"));	
 		
 		// block items
 //		withExistingParent(TreasureItems.WOOD_CHEST_ITEM.get().getRegistryName().getPath(), modLoc("block/wood_chest"));

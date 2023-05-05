@@ -20,6 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -355,12 +356,33 @@ public class TreasureItems {
 	public static final RegistryObject<Item> BOUND_SOUL_EGG = Registration.ITEMS.register("bound_soul", () -> new ForgeSpawnEggItem(TreasureEntities.BOUND_SOUL_ENTITY_TYPE, 0x000000, 0x2b2b2b, TREASURE_PROPS_SUPPLIER.get()));
 	
 	// tiers
+	public static final ForgeTier COPPER = new ForgeTier(2, 200, 5.0F, 4.0F, 15, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.of(Items.COPPER_INGOT));
+	public static final ForgeTier STEEL = new ForgeTier(2, 600, 6.5F, 2.25F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.IRON_INGOT));
+	public static final ForgeTier BONE = new ForgeTier(2, 200, 6.25F, 2F, 16, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.BONE));
 	public static final ForgeTier SKULL = new ForgeTier(2, 1800, 9.0F, 4.0F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.SKELETON_SKULL));
+	public static final ForgeTier SHADOW = new ForgeTier(2, 1800, 9.0F, 4.0F, 15, BlockTags.NEEDS_DIAMOND_TOOL, () -> Ingredient.of(Items.NETHERITE_INGOT));
 
+	// TEMP References
+//	   WOOD(0, 59, 2.0F, 0.0F, 15, 
+//	   STONE(1, 131, 4.0F, 1.0F, 5, 
+//	   IRON(2, 250, 6.0F, 2.0F, 14, 
+//	   DIAMOND(3, 1561, 8.0F, 3.0F, 10, 
+//	   GOLD(0, 32, 12.0F, 0.0F, 22, 
+//	   NETHERITE(4, 2031, 9.0F, 4.0F, 15, 
+			   
+//	STONE_SWORD = new SwordItem(Tiers.STONE, 3, -2.4F, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT)));
+//	IRON_SWORD = new SwordItem(Tiers.IRON, 3, -2.4F, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT)));
+	   
+	
 	// swords
 	public static final RegistryObject<Item> SKULL_SWORD = Registration.ITEMS.register("skull_sword", 
 			() -> new SwordItem(SKULL, 3, -2.4F, TREASURE_ITEM_PROPERTIES));
 
+	public static final RegistryObject<Item> SHADOW_MACHETE = Registration.ITEMS.register("shadow_machete", 
+			() -> new SwordItem(SKULL, 3, -2.4F, TREASURE_ITEM_PROPERTIES));
+	
+	// TODO make new non-repairable sword items
+	
 	static {
 		// register all the chests
 		TreasureBlocks.CHESTS.forEach(g -> {

@@ -1,4 +1,4 @@
-b20c854017eeb31e595657bdee159b745561a079 assets/treasure2/lang/en_us.json
+215976f060a53535d80d6a08e1505f0011c50f73 assets/treasure2/lang/en_us.json
 ec0affa9af25bb3155f1ffb36624aaf0fa4ef025 assets/treasure2/models/item/adornments_tab.json
 8be0b1ec5bf90f3dcb3da00251632ae969418191 assets/treasure2/models/item/black_pearl.json
 98167609bf3898587f7565736a6fc24a7966cacd assets/treasure2/models/item/bound_soul.json
@@ -73,6 +73,7 @@ a363a42a13b84e190437cfaa7439209954362b44 assets/treasure2/models/item/pouch.json
 dc1a1d07bf872cb5f070d5e9291334de40d2863f assets/treasure2/models/item/sapphire_key.json
 2374b9ee4680af36734c6d1691d63b95753b7384 assets/treasure2/models/item/sapphire_lock.json
 ed558c5bbb52c31b0ddce797a0e73914b845bd19 assets/treasure2/models/item/sapphire_ore.json
+34b3d9287d8fdf346f5ca03a7ad845ecd0794023 assets/treasure2/models/item/shadow_machete.json
 91193176b38a2c08f8168215b7ac4730924a3aba assets/treasure2/models/item/silver_coin.json
 454183e208759ab6541d059fe713f5faedd91cd6 assets/treasure2/models/item/skeleton.json
 bb0571e700f5bd031a35f2751bb748f9bf360bd2 assets/treasure2/models/item/skeleton_key.json
