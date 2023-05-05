@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+     "treasure2:chipped_bronze_short_sword",
+     "treasure2:chipped_iron_short_sword",
+     "treasure2:bronze_short_sword",
+     "treasure2:iron_short_sword"
+  ]
+}
