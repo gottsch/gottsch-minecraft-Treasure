@@ -19,6 +19,7 @@ package mod.gottsch.forge.treasure2.core.item;
 
 import java.util.List;
 
+import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -42,7 +43,7 @@ public class TreasureToolItem extends Item {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);	
 		tooltip.add(new TranslatableComponent(LangUtil.tooltip("treasure_tool")));
 	}	
-	
+
 	/**
 	 * Required to prevent item consumpution in recipe
 	 */
@@ -56,9 +57,10 @@ public class TreasureToolItem extends Item {
 	 */
 	@Override
 	public ItemStack getContainerItem(ItemStack itemStack) {
+		super.getContainerItem(itemStack);
         if (!hasContainerItem(itemStack)) {
             return ItemStack.EMPTY;
         }
-        return new ItemStack(this);
+        return itemStack.copy();
 	}
 }

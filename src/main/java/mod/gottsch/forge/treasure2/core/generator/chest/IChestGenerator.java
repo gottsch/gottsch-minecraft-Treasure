@@ -107,6 +107,7 @@ public interface IChestGenerator {
 			final IRarity rarity, BlockState state) {
 
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
+		result.getData().setCoords(coords);
 		result.getData().setSpawnCoords(coords);
 
 		// select a loot table

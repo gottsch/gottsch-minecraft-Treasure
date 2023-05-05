@@ -42,7 +42,9 @@ public enum Rarity implements IRarity {
 	RARE(3, "rare"),
 	EPIC(4, "epic"),
 	LEGENDARY(5, "legendary"),
-	MYTHICAL(6, "mythical");
+	MYTHICAL(6, "mythical"),
+	
+	SKULL(101, "skull");
 	
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();
@@ -92,6 +94,7 @@ public enum Rarity implements IRarity {
 		this.value = value;
 	}
 	
+	// TODO should return IRarity
 	/**
 	 * 
 	 * @param code

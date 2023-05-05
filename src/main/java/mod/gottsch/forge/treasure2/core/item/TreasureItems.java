@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.capability.DurabilityCapability;
 import mod.gottsch.forge.treasure2.core.capability.DurabilityHandler;
@@ -20,11 +19,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -64,6 +59,9 @@ public class TreasureItems {
 	// tab items
 	public static final RegistryObject<Item> TREASURE_TAB = Registration.ITEMS.register("treasure_tab", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> ADORNMENTS_TAB = Registration.ITEMS.register("adornments_tab", () -> new Item(new Item.Properties()));
+
+	// treasure tool
+	public static RegistryObject<Item> TREASURE_TOOL = Registration.ITEMS.register("treasure_tool", () -> new TreasureToolItem(TREASURE_PROPS_SUPPLIER.get()));
 
 	// keys
 	public static RegistryObject<KeyItem> WOOD_KEY = Registration.ITEMS.register("wood_key", () -> new KeyItem(new Item.Properties()
@@ -187,7 +185,8 @@ public class TreasureItems {
 			.setCraftable(false));
 
 	public static RegistryObject<KeyItem> PILFERERS_LOCK_PICK = Registration.ITEMS.register("pilferers_lock_pick", 
-			() -> new PilferersLockPick(new Item.Properties().durability(Config.SERVER.keysAndLocks.pilferersLockPickMaxUses.get())
+			() -> new PilferersLockPick(new Item.Properties()
+					.durability(Config.SERVER.keysAndLocks.pilferersLockPickMaxUses.get())
 					.tab(TREASURE_ITEM_GROUP))
 			.setCategory(KeyLockCategory.ELEMENTAL)
 			.setBreakable(true)
@@ -196,7 +195,8 @@ public class TreasureItems {
 			);
 
 	public static RegistryObject<KeyItem> THIEFS_LOCK_PICK = Registration.ITEMS.register("thiefs_lock_pick", 
-			() -> new ThiefsLockPick(new Item.Properties().durability(Config.SERVER.keysAndLocks.thiefsLockPickMaxUses.get())
+			() -> new ThiefsLockPick(new Item.Properties()
+					.durability(Config.SERVER.keysAndLocks.thiefsLockPickMaxUses.get())
 					.tab(TREASURE_ITEM_GROUP))
 			.setCategory(KeyLockCategory.ELEMENTAL)
 			.setBreakable(true)
@@ -228,8 +228,10 @@ public class TreasureItems {
 				
 				@Override
 				public  void appendHoverSpecials(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+					tooltip.add(
 					new TranslatableComponent(LangUtil.tooltip("key_lock.specials"), 
-							ChatFormatting.GOLD + new TranslatableComponent(LangUtil.tooltip("key_lock.one_key.specials")).getString());
+							ChatFormatting.GOLD + new TranslatableComponent(LangUtil.tooltip("key_lock.one_key.specials")).getString())
+					);
 				}
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -318,12 +320,11 @@ public class TreasureItems {
 	
 	// pouch
 	public static RegistryObject<PouchItem> POUCH = Registration.ITEMS.register("pouch", () -> new PouchItem(TREASURE_PROPS_SUPPLIER.get()));
-		
-	// other
-	public static RegistryObject<Item> TREASURE_TOOL = Registration.ITEMS.register("treasure_tool", () -> new Item(TREASURE_PROPS_SUPPLIER.get()));
-
+	
 	// block items
-//	public static final RegistryObject<Item> WOOD_CHEST_ITEM = fromChestBlock(TreasureBlocks.WOOD_CHEST, TREASURE_PROPS_SUPPLIER);
+	public static RegistryObject<WitherStickItem> WITHER_STICK_ITEM = Registration.ITEMS.register("wither_stick_item", () -> new WitherStickItem(TreasureBlocks.WITHER_BRANCH.get(), TREASURE_PROPS_SUPPLIER.get()));
+	public static RegistryObject<WitherRootItem> WITHER_ROOT_ITEM = Registration.ITEMS.register("wither_root_item", () -> new WitherRootItem(TreasureBlocks.WITHER_ROOT.get(), TREASURE_PROPS_SUPPLIER.get()));
+
 	public static final RegistryObject<Item> SPANISH_MOSS_ITEM = fromBlock(TreasureBlocks.SPANISH_MOSS, TREASURE_PROPS_SUPPLIER);
 	
 	public static final RegistryObject<Item> TOPAZ_ORE_ITEM = fromBlock(TreasureBlocks.TOPAZ_ORE, TREASURE_PROPS_SUPPLIER);

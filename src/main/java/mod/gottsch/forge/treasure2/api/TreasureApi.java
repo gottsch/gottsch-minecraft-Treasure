@@ -26,10 +26,13 @@ import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.enums.IPitType;
 import mod.gottsch.forge.treasure2.core.enums.IRegionPlacement;
+import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
+import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorType;
+import mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
@@ -230,6 +233,16 @@ public class TreasureApi {
 		TagRegistry.registerKeyLockChests(rarity, keyTag, lockTag, chestTag);
 	}
 	
+
+	public static void registerRarityTags(Rarity rarity, TagKey<Block>chestTag) {
+		// check if the rarity is registered
+		if (!EnumRegistry.isRegistered(RARITY, rarity)) {
+			Treasure.LOGGER.warn("rarity {} is not registered. unable to complete tag registration.", rarity);
+			return;
+		}
+		TagRegistry.registerChests(rarity, chestTag);
+	}
+	
 	public static void registerWishableTag(IRarity rarity, TagKey<Item> tag) {
 		TagRegistry.registerWishable(rarity, tag);
 	}
@@ -272,6 +285,16 @@ public class TreasureApi {
 	@Deprecated
 	public static void registerChestGenerator(IChestGeneratorType type, IChestGenerator generator) {
 		ChestGeneratorRegistry.registerGeneator(type, generator);
+	}
+	
+	/**
+	 * Registers the chest generator by rarity and generatorType.
+	 * @param rarity
+	 * @param generatorType
+	 * @param chestGeneratorType
+	 */
+	public static void registerTypeChestGenerator(IRarity rarity, IGeneratorType generatorType,	IChestGeneratorType chestGeneratorType) {
+		RarityLevelWeightedChestGeneratorRegistry.registerGenerator(rarity, generatorType, chestGeneratorType);		
 	}
 	
 	/*

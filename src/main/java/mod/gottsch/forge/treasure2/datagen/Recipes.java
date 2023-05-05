@@ -51,7 +51,6 @@ public class Recipes extends RecipeProvider {
 	        .define('i', Items.IRON_INGOT)
 	        .define('s', Items.STICK)
 	        .define('x', Items.STONE)
-	        .group("treasure2")
 	        .unlockedBy("has_stick", InventoryChangeTrigger.TriggerInstance.hasItems(Items.STICK))
 	        .save(recipe);	   
 	        
@@ -60,8 +59,7 @@ public class Recipes extends RecipeProvider {
 	        .pattern("xt")
 	        .pattern("x ")
 	        .define('x', Items.IRON_NUGGET)
-	        .define('t', Items.STICK)
-	        .group("treasure2")
+	        .define('t', TreasureItems.TREASURE_TOOL.get())
 	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
 	        .save(recipe);
 	        
@@ -71,7 +69,6 @@ public class Recipes extends RecipeProvider {
 	        .pattern("x ")
 	        .define('x', Items.IRON_INGOT)
 	        .define('t', TreasureItems.TREASURE_TOOL.get())
-	        .group("treasure2")
 	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
 	        .save(recipe);
 	        
@@ -84,7 +81,6 @@ public class Recipes extends RecipeProvider {
 	        .define('k', Ingredient.of(TreasureItems.WOOD_KEY.get(), 
 	        		TreasureItems.STONE_KEY.get(),
 	        		TreasureItems.IRON_KEY.get()))
-	        .group("treasure2")
 	        .unlockedBy("has_iron", InventoryChangeTrigger.TriggerInstance.hasItems(Items.IRON_INGOT))
 	        .save(recipe);
 	        
@@ -98,7 +94,6 @@ public class Recipes extends RecipeProvider {
 	        		TreasureItems.SILVER_COIN.get(),
 	        		TreasureItems.GOLD_COIN.get()))
 	        .define('x', Items.LEATHER)
-	        .group("treasure2")
 	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
 	        .save(recipe);
 	        
@@ -111,7 +106,6 @@ public class Recipes extends RecipeProvider {
 	        .define('k', TreasureItems.IRON_KEY.get())
 	        .define('d', Items.GLOWSTONE_DUST)
 	        .define('e', Items.SPIDER_EYE)
-	        .group("treasure2")
 	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
 	        .save(recipe);
 	        
@@ -124,7 +118,6 @@ public class Recipes extends RecipeProvider {
 	        .define('k', TreasureItems.GOLD_KEY.get())
 	        .define('d', Items.GLOWSTONE_DUST)
 	        .define('r', TreasureItems.RUBY.get())
-	        .group("treasure2")
 	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
 	        .save(recipe);
 	        
@@ -137,7 +130,6 @@ public class Recipes extends RecipeProvider {
 	        .define('k', TreasureItems.GOLD_KEY.get())
 	        .define('d', Items.GLOWSTONE_DUST)
 	        .define('s', TreasureItems.SAPPHIRE.get())
-	        .group("treasure2")
 	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
 	        .save(recipe);
 		}

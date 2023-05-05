@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
+import mod.gottsch.forge.treasure2.Treasure;
 
 /**
  * 
@@ -64,7 +65,12 @@ public class ChestConfiguration {
 		private List<ChestRarity> rarities;
 		
 		public Optional<ChestRarity> getRarity(IRarity rarity) {
-			return rarities.stream().filter(r -> r.getRarity().equalsIgnoreCase(rarity.getName())).findFirst();
+			try {
+				return rarities.stream().filter(r -> r.getRarity().equalsIgnoreCase(rarity.getName())).findFirst();
+			} catch(Exception e) {
+				Treasure.LOGGER.error("A registered Rarity was not configured properly in the treasure2-chests-x.toml file.", e);
+				throw e;
+			}
 		}
 		
 		public String getKey() {

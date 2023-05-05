@@ -21,6 +21,7 @@ package mod.gottsch.forge.treasure2.core.persistence;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
+import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -77,7 +78,7 @@ public class TreasureSavedData extends SavedData {
 		 * chest generator registry
 		 */
 		if (tag.contains(CHEST_GEN_REGISTRY_NAME)) {
-			WeightedChestGeneratorRegistry.load(tag.getList(CHEST_GEN_REGISTRY_NAME, Tag.TAG_COMPOUND));
+			RarityLevelWeightedChestGeneratorRegistry.load(tag.getList(CHEST_GEN_REGISTRY_NAME, Tag.TAG_COMPOUND));
 		}
 		
         /*
@@ -98,7 +99,7 @@ public class TreasureSavedData extends SavedData {
 	@Override
 	public CompoundTag save(CompoundTag tag) {
 		try {
-			updateCompound(tag, CHEST_GEN_REGISTRY_NAME, WeightedChestGeneratorRegistry.save());
+			updateCompound(tag, CHEST_GEN_REGISTRY_NAME, RarityLevelWeightedChestGeneratorRegistry.save());
 
 			// update tag
 			updateCompound(tag, DIM_GEN_REGISTRY_NAME, DimensionalGeneratedRegistry.save());

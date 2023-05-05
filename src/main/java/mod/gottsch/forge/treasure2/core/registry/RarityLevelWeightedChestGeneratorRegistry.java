@@ -52,48 +52,41 @@ import net.minecraft.world.level.block.Block;
  * @author Mark Gottschling on Nov 10, 2022
  *
  */
-@Deprecated
-public class WeightedChestGeneratorRegistry {
-	// this replaces the old ChestGeneratorType enum -> ChestGenerator nonsense that mojang likes to use.
+public class RarityLevelWeightedChestGeneratorRegistry {
 
-	// chest weighted collection of generators by rarity and type
-	// NOTE: most generators will only have 1 entry but some specials have multiple ex SCARCE
-	public static final Table<IRarity, IGeneratorType, WeightedCollection<Number, IChestGenerator>> REGISTRY = HashBasedTable.create();
+	private static final String GENERATORS_TAG = "generators";
+	
+	// collection of chest generators by rarity and type
+	public static final Table<IRarity, IGeneratorType, IChestGenerator> REGISTRY = HashBasedTable.create();
 	public static final Map<ResourceLocation, Map<IGeneratorType, RarityLevelWeightedCollection>> RARITY_SELECTOR = new HashMap<>();
 
-	// NEW way
-	public static final Multimap<Block, IChestGenerator> NON_STANDARD_REVERSE = ArrayListMultimap.create();
 	
 	/**
 	 * 
 	 */
-	private WeightedChestGeneratorRegistry() {	}
+	private RarityLevelWeightedChestGeneratorRegistry() {	}
+
 	
-	@Deprecated
-	public static void registerGenerator(IRarity rarity, IGeneratorType type, IChestGenerator generator, Number weight) {
-		if (!REGISTRY.contains(rarity, type)) {
-			REGISTRY.put(rarity, type, new WeightedCollection<>());
-		}
-		REGISTRY.get(rarity, type).add(weight, generator);
-	}
-	
-	public static void registerGenerator(IRarity rarity, IGeneratorType type, IChestGeneratorType chestGenType, Number weight) {
+	public static void registerGenerator(IRarity rarity, IGeneratorType type, IChestGeneratorType chestGenType) {
 		// first check if chestGenType is registered
 		Optional<IChestGenerator> generator = ChestGeneratorRegistry.get(chestGenType);
 		if (!generator.isPresent()) {
 			return;
 		}
-		
-		if (!REGISTRY.contains(rarity, type)) {
-			REGISTRY.put(rarity, type, new WeightedCollection<>());
-		}
-		REGISTRY.get(rarity, type).add(weight, generator.get());
+
+		REGISTRY.put(rarity, type, generator.get());
+	}
+	
+	public static void clear() {
+		RARITY_SELECTOR.clear();
 	}
 	
 	/**
 	 * load/register chest generators from config
 	 */
 	public static void intialize() {
+		// clear just the rarity selector. the registry is initialized during setup.
+		RARITY_SELECTOR.clear();
 		Map<IGeneratorType, RarityLevelWeightedCollection> map = null;
 		RarityLevelWeightedCollection collection = null;
 		
@@ -160,7 +153,7 @@ public class WeightedChestGeneratorRegistry {
 				generatorTag.put("collection", levelWeightedCollection.save());
 				generators.add(generatorTag);
 			});
-			dimensionTag.put("generators", generators);
+			dimensionTag.put(GENERATORS_TAG, generators);
 			dimensionsTag.add(dimensionTag);
 		});
 		return dimensionsTag;
@@ -175,8 +168,8 @@ public class WeightedChestGeneratorRegistry {
 			CompoundTag dimensionCompound = (CompoundTag)dimensionTag;
 			if (dimensionCompound.contains("dimension")) {
 				ResourceLocation dimension = ModUtil.asLocation(dimensionCompound.getString("dimension"));
-				if (RARITY_SELECTOR.containsKey(dimension) && dimensionCompound.contains("generators")) {
-					ListTag generatorsTag = dimensionCompound.getList("generators", Tag.TAG_COMPOUND);
+				if (RARITY_SELECTOR.containsKey(dimension) && dimensionCompound.contains(GENERATORS_TAG)) {
+					ListTag generatorsTag = dimensionCompound.getList(GENERATORS_TAG, Tag.TAG_COMPOUND);
 					generatorsTag.forEach(generatorTag -> {
 						CompoundTag generatorCompound = (CompoundTag)generatorTag;
 						if (generatorCompound.contains("type")) {
@@ -212,10 +205,16 @@ public class WeightedChestGeneratorRegistry {
 		return Rarity.NONE;
 	}
 	
+	/**
+	 * 
+	 * @param rarity
+	 * @param type
+	 * @return
+	 */
 	public static IChestGenerator getNextGenerator(IRarity rarity, IGeneratorType type) {
 		if (REGISTRY.contains(rarity, type)) {
-			WeightedCollection<Number, IChestGenerator> collection = REGISTRY.get(rarity, type);
-			return collection.next();
+			IChestGenerator generator = REGISTRY.get(rarity, type);
+			return generator;
 		}
 		return null;
 	}
@@ -231,7 +230,7 @@ public class WeightedChestGeneratorRegistry {
 		if (RARITY_SELECTOR.containsKey(location)) {
 			Map<IGeneratorType, RarityLevelWeightedCollection> map = RARITY_SELECTOR.get(location);
 			if (map.containsKey(type)) {
-				map.put(type, map.get(type).add(weight, rarity));
+				map.put(type, new RarityLevelWeightedCollection(map.get(type).adjustExcept(weight, rarity)));
 			}
 		}
 	}

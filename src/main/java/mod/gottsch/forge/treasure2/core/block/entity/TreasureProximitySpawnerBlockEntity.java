@@ -19,8 +19,7 @@
  */
 package mod.gottsch.forge.treasure2.core.block.entity;
 
-import com.someguyssoftware.gottschcore.tileentity.ProximitySpawnerTileEntity;
-
+import mod.gottsch.forge.gottschcore.block.entity.ProximitySpawnerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -31,7 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * @author Mark Gottschling on Jan 29, 2021
  *
  */
-public class TreasureProximitySpawnerBlockEntity extends ProximitySpawnerTileEntity {
+public class TreasureProximitySpawnerBlockEntity extends ProximitySpawnerBlockEntity {
 
 	public TreasureProximitySpawnerBlockEntity(BlockPos pos, BlockState state) {
 		super(TreasureBlockEntities.TREASURE_PROXIMITY_SPAWNER_ENTITY_TYPE.get(), pos, state);

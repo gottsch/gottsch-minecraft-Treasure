@@ -88,7 +88,7 @@ public class TagRegistry {
 	}
 	
 	public static void registerChests(IRarity rarity, TagKey<Block> chestTag) {
-		
+		registerTags(rarity, Triple.of(null, null, chestTag));
 	}
 	
 	public static void registerWishable(IRarity rarity, TagKey<Item> wishableTag) {
