@@ -103,6 +103,11 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.WISHING_WELL.get(), "Wishing Well Stone");
         add(TreasureBlocks.DESERT_WISHING_WELL.get(), "Desert Wishing Well Stone");
         
+        // swords
+        add(TreasureItems.SKULL_SWORD.get(), "Skull Sword");
+        add(TreasureItems.BLACK_SWORD.get(), "The Black Sword");
+        add(TreasureItems.SHADOW_MACHETE.get(), "Shadow Machete");
+        
         // chests
         add(TreasureBlocks.WOOD_CHEST.get(), "Wood Chest");
         add(TreasureBlocks.CRATE_CHEST.get(), "Crate");

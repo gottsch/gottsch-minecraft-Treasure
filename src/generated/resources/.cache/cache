@@ -1,4 +1,4 @@
-215976f060a53535d80d6a08e1505f0011c50f73 assets/treasure2/lang/en_us.json
+39bab88fbe388ce8a15c5cb97a6cb5516a827e80 assets/treasure2/lang/en_us.json
 ec0affa9af25bb3155f1ffb36624aaf0fa4ef025 assets/treasure2/models/item/adornments_tab.json
 8be0b1ec5bf90f3dcb3da00251632ae969418191 assets/treasure2/models/item/black_pearl.json
 98167609bf3898587f7565736a6fc24a7966cacd assets/treasure2/models/item/bound_soul.json
@@ -6,6 +6,7 @@ ec0affa9af25bb3155f1ffb36624aaf0fa4ef025 assets/treasure2/models/item/adornments
 777bdbb3dff6aa569b70ee5a57badc0c839b3509 assets/treasure2/models/item/cauldron_chest.json
 2fec2a6b3b6366ee9f6e3aaf10c15a5716aed49b assets/treasure2/models/item/compressor_chest.json
 f90471654a10ae7918b0ebcb26f54b3eb4132682 assets/treasure2/models/item/copper_coin.json
+378d1dce78c7d5e9610cf37626acdfa297f4cffd assets/treasure2/models/item/copper_short_sword.json
 b6ee03c50f84077f621d35f79d8d14e28704d927 assets/treasure2/models/item/crate_chest.json
 7fd9fc5ed7fb981028c35d3ce676b32c7a8de856 assets/treasure2/models/item/crate_chest_moldy.json
 8eebb224b802835fc4d3293fa210937f6d10be02 assets/treasure2/models/item/crystal_skull_chest.json
@@ -73,7 +74,6 @@ a363a42a13b84e190437cfaa7439209954362b44 assets/treasure2/models/item/pouch.json
 dc1a1d07bf872cb5f070d5e9291334de40d2863f assets/treasure2/models/item/sapphire_key.json
 2374b9ee4680af36734c6d1691d63b95753b7384 assets/treasure2/models/item/sapphire_lock.json
 ed558c5bbb52c31b0ddce797a0e73914b845bd19 assets/treasure2/models/item/sapphire_ore.json
-34b3d9287d8fdf346f5ca03a7ad845ecd0794023 assets/treasure2/models/item/shadow_machete.json
 91193176b38a2c08f8168215b7ac4730924a3aba assets/treasure2/models/item/silver_coin.json
 454183e208759ab6541d059fe713f5faedd91cd6 assets/treasure2/models/item/skeleton.json
 bb0571e700f5bd031a35f2751bb748f9bf360bd2 assets/treasure2/models/item/skeleton_key.json

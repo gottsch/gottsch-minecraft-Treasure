@@ -12,6 +12,7 @@ import mod.gottsch.forge.treasure2.core.capability.IDurabilityHandler;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import mod.gottsch.forge.treasure2.core.item.weapon.Sword;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
@@ -356,12 +357,17 @@ public class TreasureItems {
 	public static final RegistryObject<Item> BOUND_SOUL_EGG = Registration.ITEMS.register("bound_soul", () -> new ForgeSpawnEggItem(TreasureEntities.BOUND_SOUL_ENTITY_TYPE, 0x000000, 0x2b2b2b, TREASURE_PROPS_SUPPLIER.get()));
 	
 	// tiers
-	public static final ForgeTier COPPER = new ForgeTier(2, 200, 5.0F, 4.0F, 15, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.of(Items.COPPER_INGOT));
+	public static final ForgeTier COPPER = new ForgeTier(1, 200, 5.0F, 4.0F, 15, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.of(Items.COPPER_INGOT));
 	public static final ForgeTier STEEL = new ForgeTier(2, 600, 6.5F, 2.25F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.IRON_INGOT));
 	public static final ForgeTier BONE = new ForgeTier(2, 200, 6.25F, 2F, 16, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.BONE));
-	public static final ForgeTier SKULL = new ForgeTier(2, 1800, 9.0F, 4.0F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.SKELETON_SKULL));
-	public static final ForgeTier SHADOW = new ForgeTier(2, 1800, 9.0F, 4.0F, 15, BlockTags.NEEDS_DIAMOND_TOOL, () -> Ingredient.of(Items.NETHERITE_INGOT));
+	public static final ForgeTier SHADOW = new ForgeTier(3, 1800, 9.0F, 4.0F, 15, BlockTags.NEEDS_DIAMOND_TOOL, () -> Ingredient.of(Items.NETHERITE_INGOT));
 
+	// special tiers
+	public static final ForgeTier SKULL = new ForgeTier(3, 1800, 9.0F, 4.0F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.SKELETON_SKULL));
+	public static final ForgeTier EPIC = new ForgeTier(4, 1800, 9.5F, 4.0F, 18, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.DIAMOND));
+	public static final ForgeTier LEGENDARY = new ForgeTier(5, 2200, 10.0F, 5.0F, 20, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.DIAMOND));
+	public static final ForgeTier MYTHICAL = new ForgeTier(6, 2400, 11.0F, 5.0F, 22, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.DIAMOND));
+	
 	// TEMP References
 //	   WOOD(0, 59, 2.0F, 0.0F, 15, 
 //	   STONE(1, 131, 4.0F, 1.0F, 5, 
@@ -372,16 +378,43 @@ public class TreasureItems {
 			   
 //	STONE_SWORD = new SwordItem(Tiers.STONE, 3, -2.4F, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT)));
 //	IRON_SWORD = new SwordItem(Tiers.IRON, 3, -2.4F, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT)));
-	   
+//	DIAMOND = SwordItem(Tiers.DIAMOND, 3, -2.4F
 	
-	// swords
+	/*
+	 *  swords
+	 */
+	// short swords
+	public static final RegistryObject<Item> COPPER_SHORT_SWORD = Registration.ITEMS.register("copper_short_sword", 
+			() -> new Sword(COPPER, 2.5f, -2.0F, TREASURE_ITEM_PROPERTIES));
+	
+	public static final RegistryObject<Item> CHIPPED_COPPER_SHORT_SWORD = Registration.ITEMS.register("chipped_copper_short_sword", 
+			() -> new Sword(COPPER, 2.4f, -2.0F, TREASURE_ITEM_PROPERTIES));
+	
+	public static final RegistryObject<Item> IRON_SHORT_SWORD = Registration.ITEMS.register("iron_short_sword", 
+			() -> new Sword(Tiers.IRON, 2.5f, -2.0F, TREASURE_ITEM_PROPERTIES));
+	
+	public static final RegistryObject<Item> IRON_COPPER_SHORT_SWORD = Registration.ITEMS.register("chipped_iron_short_sword", 
+			() -> new Sword(Tiers.IRON, 2.4f, -2.0F, TREASURE_ITEM_PROPERTIES));
+	
+	// long swords
 	public static final RegistryObject<Item> SKULL_SWORD = Registration.ITEMS.register("skull_sword", 
 			() -> new SwordItem(SKULL, 3, -2.4F, TREASURE_ITEM_PROPERTIES));
-
-	public static final RegistryObject<Item> SHADOW_MACHETE = Registration.ITEMS.register("shadow_machete", 
-			() -> new SwordItem(SKULL, 3, -2.4F, TREASURE_ITEM_PROPERTIES));
 	
-	// TODO make new non-repairable sword items
+	
+	public static final RegistryObject<Item> BLACK_SWORD = Registration.ITEMS.register("black_sword", 
+			() -> new SwordItem(MYTHICAL, 3, -2.4F, TREASURE_ITEM_PROPERTIES));
+	
+	// katanas
+	
+	// machetes
+	public static final RegistryObject<Item> SHADOW_MACHETE = Registration.ITEMS.register("shadow_machete", 
+			() -> new Sword(SHADOW, 2.7F, -2.6F, TREASURE_ITEM_PROPERTIES));
+	
+	// flachions
+	public static final RegistryObject<Item> STEEL_FALCHION = Registration.ITEMS.register("steel_falchion", 
+			() -> new Sword(STEEL, 2.8F, -2.4F, TREASURE_ITEM_PROPERTIES));
+	
+	// TODO make new non-repairable sword items (the rarity swords are non-repairable)
 	
 	static {
 		// register all the chests
