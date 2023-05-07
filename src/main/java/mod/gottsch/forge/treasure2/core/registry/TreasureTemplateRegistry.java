@@ -23,13 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
@@ -37,11 +31,12 @@ import com.google.common.collect.Sets;
 import com.google.common.collect.Table;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.someguyssoftware.gottschcore.GottschCore;
 import com.someguyssoftware.gottschcore.meta.IMetaArchetype;
 import com.someguyssoftware.gottschcore.meta.IMetaType;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 
-
+import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.enums.IRegionPlacement;
@@ -57,6 +52,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
@@ -76,6 +73,22 @@ public class TreasureTemplateRegistry {
 		
 	private final Table<IRegionPlacement, IStructureType, List<TemplateHolder>> templatesByArchetypeType = HashBasedTable.create();
 	private final Table<String, ResourceLocation, List<TemplateHolder>> templatesByArchetypeTypeBiome = HashBasedTable.create();
+	
+	/*
+	 * standard list of marker blocks to scan for 
+	 */
+	private static List<Block> markerScanList;
+
+	/*
+	 * 
+	 */
+	private Map<StructureMarkers, Block> markerMap;
+	
+	/*
+	 * standard list of replacements blocks.
+	 * NOTE needs to be <IBlockState, IBlockState> (for v1.12.x anyway)
+	 */
+	private static Map<BlockState, BlockState> replacementMap;
 	
 	/*
 	 * use this map when structures are submerged instead of the default marker map
@@ -223,10 +236,47 @@ public class TreasureTemplateRegistry {
 			// need to test for world save version first
 			Treasure.LOGGER.debug("loading template resource loc -> {}", loc.toString());
 						
-//			tableTemplate(modID, loc, load(loc, getMarkerScanList(), getReplacementMap()));
+			tableTemplate(modID, loc, loadTemplate(loc, getMarkerScanList(), getReplacementMap()));
 		});
 	}
 	
+	/**
+	 * Load template file from classpath or file system
+	 * @param server
+	 * @param templatePath
+	 * @return
+	 */
+	public static StructureTemplate loadTemplate(ResourceLocation templatePath, List<Block> markerBlocks, Map<BlockState, BlockState> replacementBlocks) {
+		String key = templatePath.toString();
+		
+		if (this.getTemplates().containsKey(key)) {
+			GottschCore.LOGGER.debug("read template from master map using key -> {}", key);
+			return this.templates.get(key);
+		}
+
+		this.readTemplate(templatePath, markerBlocks, replacementBlocks);
+		if (this.templates.get(key) != null) {
+			GottschCore.LOGGER.debug("Loaded template from -> {}", key);
+		}
+		else {
+			GottschCore.LOGGER.debug("Unable to read template from -> {}", key);
+		}
+		return this.templates.containsKey(key) ? (StructureTemplate) this.templates.get(key) : null;
+	}
+	
+	/**
+	 * 
+	 * @param resource
+	 * @return
+	 */	
+	protected static Optional<LootTableShell> loadLootTable(ResourceLocation resource) {
+		// attempt to load from file system
+		Optional<LootTableShell> shell = loadLootTableFromWorldSave(getWorldSaveFolder(), resource);
+		if (!shell.isPresent()) {
+			return loadLootTableFromJar(resource);
+		}
+		return shell;
+	}
 	/**
 	 * 
 	 * @param modID
@@ -282,5 +332,29 @@ public class TreasureTemplateRegistry {
 
 	public static void setWorldSaveFolder(File worldSaveFolder) {
 		TreasureTemplateRegistry.worldSaveFolder = worldSaveFolder;
+	}
+	
+	public static List<Block> getMarkerScanList() {
+		return markerScanList;
+	}
+
+	public void setMarkerScanList(List<Block> scanList) {
+		this.markerScanList = scanList;
+	}
+
+	public Map<StructureMarkers, Block> getMarkerMap() {
+		return markerMap;
+	}
+
+	public void setMarkerMap(Map<StructureMarkers, Block> markerMap) {
+		this.markerMap = markerMap;
+	}
+	
+	public static Map<BlockState, BlockState> getReplacementMap() {
+		return replacementMap;
+	}
+
+	public void setReplacementMap(Map<BlockState, BlockState> replacementMap) {
+		this.replacementMap = replacementMap;
 	}
 }
