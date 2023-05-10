@@ -13,6 +13,7 @@ import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.weapon.Sword;
+import mod.gottsch.forge.treasure2.core.item.weapon._Sword;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
@@ -21,8 +22,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -357,16 +365,17 @@ public class TreasureItems {
 	public static final RegistryObject<Item> BOUND_SOUL_EGG = Registration.ITEMS.register("bound_soul", () -> new ForgeSpawnEggItem(TreasureEntities.BOUND_SOUL_ENTITY_TYPE, 0x000000, 0x2b2b2b, TREASURE_PROPS_SUPPLIER.get()));
 	
 	// tiers
-	public static final ForgeTier COPPER = new ForgeTier(1, 200, 5.0F, 4.0F, 15, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.of(Items.COPPER_INGOT));
-	public static final ForgeTier STEEL = new ForgeTier(2, 600, 6.5F, 2.25F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.IRON_INGOT));
+	public static final ForgeTier COPPER = new ForgeTier(1, 200, 5.0F, 1.0F, 10, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.of(Items.COPPER_INGOT));
+	public static final ForgeTier STEEL = new ForgeTier(2, 600, 6.5F, 2.5F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.IRON_INGOT));
 	public static final ForgeTier BONE = new ForgeTier(2, 200, 6.25F, 2F, 16, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.BONE));
-	public static final ForgeTier SHADOW = new ForgeTier(3, 1800, 9.0F, 4.0F, 15, BlockTags.NEEDS_DIAMOND_TOOL, () -> Ingredient.of(Items.NETHERITE_INGOT));
+	public static final ForgeTier SHADOW = new ForgeTier(3, 1600, 9.0F, 4.0F, 15, BlockTags.NEEDS_DIAMOND_TOOL, () -> Ingredient.of(Items.NETHERITE_INGOT));
 
 	// special tiers
 	public static final ForgeTier SKULL = new ForgeTier(3, 1800, 9.0F, 4.0F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.SKELETON_SKULL));
-	public static final ForgeTier EPIC = new ForgeTier(4, 1800, 9.5F, 4.0F, 18, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.DIAMOND));
+	public static final ForgeTier RARE = new ForgeTier(4, 1700, 9.5F, 3.0F, 18, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.DIAMOND));
+	public static final ForgeTier EPIC = new ForgeTier(4, 1800, 9.5F, 4.5F, 18, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.DIAMOND));
 	public static final ForgeTier LEGENDARY = new ForgeTier(5, 2200, 10.0F, 5.0F, 20, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.DIAMOND));
-	public static final ForgeTier MYTHICAL = new ForgeTier(6, 2400, 11.0F, 5.0F, 22, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.DIAMOND));
+	public static final ForgeTier MYTHICAL = new ForgeTier(6, 2400, 11.0F, 6.0F, 22, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.NETHERITE_INGOT));
 	
 	// TEMP References
 //	   WOOD(0, 59, 2.0F, 0.0F, 15, 
@@ -379,6 +388,12 @@ public class TreasureItems {
 //	STONE_SWORD = new SwordItem(Tiers.STONE, 3, -2.4F, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT)));
 //	IRON_SWORD = new SwordItem(Tiers.IRON, 3, -2.4F, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT)));
 //	DIAMOND = SwordItem(Tiers.DIAMOND, 3, -2.4F
+	
+//	WOODEN_AXE = new AxeItem(Tiers.WOOD, 6.0F, -3.2F
+//	STONE_AXE = new AxeItem(Tiers.STONE, 7.0F, -3.2F
+//	IRON_AXE = new AxeItem(Tiers.IRON, 6.0F, -3.1F
+//	DIAMOND_AXE = new AxeItem(Tiers.DIAMOND, 5.0F, -3.0F
+//	NETHERITE_AXE = new AxeItem(Tiers.NETHERITE, 5.0F, -3.0F
 	
 	/*
 	 *  swords
@@ -393,16 +408,82 @@ public class TreasureItems {
 	public static final RegistryObject<Item> IRON_SHORT_SWORD = Registration.ITEMS.register("iron_short_sword", 
 			() -> new Sword(Tiers.IRON, 2.5f, -2.0F, TREASURE_ITEM_PROPERTIES));
 	
-	public static final RegistryObject<Item> IRON_COPPER_SHORT_SWORD = Registration.ITEMS.register("chipped_iron_short_sword", 
+	public static final RegistryObject<Item> CHIPPED_IRON_SHORT_SWORD = Registration.ITEMS.register("chipped_iron_short_sword", 
 			() -> new Sword(Tiers.IRON, 2.4f, -2.0F, TREASURE_ITEM_PROPERTIES));
 	
-	// long swords
+	// longswords
 	public static final RegistryObject<Item> SKULL_SWORD = Registration.ITEMS.register("skull_sword", 
 			() -> new SwordItem(SKULL, 3, -2.4F, TREASURE_ITEM_PROPERTIES));
 	
 	
 	public static final RegistryObject<Item> BLACK_SWORD = Registration.ITEMS.register("black_sword", 
-			() -> new SwordItem(MYTHICAL, 3, -2.4F, TREASURE_ITEM_PROPERTIES));
+			() -> new Sword(MYTHICAL, 3, -2.4F, TREASURE_ITEM_PROPERTIES) {
+		@Override
+		public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+			tooltip.add(new TextComponent(LangUtil.NEWLINE));
+			tooltip.add(new TextComponent(LangUtil.INDENT4)
+					.append(new TranslatableComponent(LangUtil.tooltip("weapons.black_sword.lore"))
+					.append(new TextComponent(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
+			tooltip.add(new TextComponent(LangUtil.NEWLINE));
+				}
+		@Override
+		public boolean isUnique() {
+			return true;
+		}
+		@Override
+		public boolean isValidRepairItem(ItemStack itemStack, ItemStack repairStack) {
+			return false;
+		}
+	});
+	
+	public static final RegistryObject<Item> SWORD_OMENS = Registration.ITEMS.register("sword_of_omens", 
+			() -> new Sword(MYTHICAL, 3, -2.4F, TREASURE_ITEM_PROPERTIES) {
+		@Override
+		public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+			tooltip.add(new TextComponent(LangUtil.NEWLINE));
+			tooltip.add(new TextComponent(LangUtil.INDENT4)
+					.append(new TranslatableComponent(LangUtil.tooltip("weapons.sword_of_omens.lore"))
+					.append(new TextComponent(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
+			tooltip.add(new TextComponent(LangUtil.NEWLINE));
+				}
+		@Override
+		public boolean isUnique() {
+			return true;
+		}
+		@Override
+		public boolean isValidRepairItem(ItemStack itemStack, ItemStack repairStack) {
+			return false;
+		}
+	});
+	
+	// scythes
+	public static final RegistryObject<Item> ORCUS = Registration.ITEMS.register("orcus", 
+			() -> new Sword(LEGENDARY, 3, -2.4F, TREASURE_ITEM_PROPERTIES) {
+		@Override
+		public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+			tooltip.add(new TextComponent(LangUtil.NEWLINE));
+			// lore may be multiple lines, so separate on ~ and add to tooltip
+			TranslatableComponent lore = new TranslatableComponent(LangUtil.tooltip("weapons.orcus.lore"));
+			for (String s : lore.getString().split("~")) {	
+				tooltip.add(new TextComponent(LangUtil.INDENT4)
+						.append(new TranslatableComponent(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
+			}
+//			tooltip.add(new TextComponent(LangUtil.INDENT4)
+//					.append(new TranslatableComponent(LangUtil.tooltip("weapons.orcus.lore"))
+//					.withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
+			tooltip.add(new TextComponent(LangUtil.NEWLINE));
+			
+
+				}
+		@Override
+		public boolean isUnique() {
+			return true;
+		}
+		@Override
+		public boolean isValidRepairItem(ItemStack itemStack, ItemStack repairStack) {
+			return false;
+		}
+	});
 	
 	// katanas
 	

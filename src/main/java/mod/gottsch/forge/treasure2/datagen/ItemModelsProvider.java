@@ -172,13 +172,43 @@ public class ItemModelsProvider extends ItemModelProvider {
 		singleTexture(TreasureItems.SKELETON_ITEM.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/skeleton_item"));
 		
+		// short swords
 		singleTexture(TreasureItems.COPPER_SHORT_SWORD.get().getRegistryName().getPath(),
-				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/copper_short_sword"));	
-				
+				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/copper_short_sword"));
+		
+		singleTexture(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get().getRegistryName().getPath(),
+				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/chipped_copper_short_sword"));	
+		
+		singleTexture(TreasureItems.IRON_SHORT_SWORD.get().getRegistryName().getPath(),
+				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/iron_short_sword"));
+		
+		singleTexture(TreasureItems.CHIPPED_IRON_SHORT_SWORD.get().getRegistryName().getPath(),
+				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/chipped_iron_short_sword"));	
+		
+		// longswords
+		// add skull sword here
+		singleTexture(TreasureItems.SKULL_SWORD.get().getRegistryName().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/skull_sword2"));
+		
+		singleTexture(TreasureItems.BLACK_SWORD.get().getRegistryName().getPath(),
+				modLoc("item/large_sword"), "layer0", modLoc("item/weapon/the_black_sword_x32"));
+		
+		singleTexture(TreasureItems.SWORD_OMENS.get().getRegistryName().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/sword_of_omens"));
+		
+		// machetes
 		// NOTE only gen once - has to be updated with the correct rotation
 		// TODO change the mcLoc to a different parent based on handheld
-//		singleTexture(TreasureItems.SHADOW_MACHETE.get().getRegistryName().getPath(),
-//				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/shadow_machete"));	
+		singleTexture(TreasureItems.SHADOW_MACHETE.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/shadow_machete"));	
+		
+		// falchions
+		singleTexture(TreasureItems.STEEL_FALCHION.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/steel_falchion"));
+		
+		// scythes
+		singleTexture(TreasureItems.ORCUS.get().getRegistryName().getPath(),
+				modLoc("item/scythe"), "layer0", modLoc("item/weapon/orcus_x32"));
 		
 		// block items
 //		withExistingParent(TreasureItems.WOOD_CHEST_ITEM.get().getRegistryName().getPath(), modLoc("block/wood_chest"));

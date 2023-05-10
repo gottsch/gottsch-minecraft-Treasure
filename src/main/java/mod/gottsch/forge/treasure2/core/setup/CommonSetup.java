@@ -31,6 +31,8 @@ import mod.gottsch.forge.treasure2.core.entity.monster.BoundSoul;
 import mod.gottsch.forge.treasure2.core.enums.PitType;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
+import mod.gottsch.forge.treasure2.core.enums.SpecialRarity;
+import mod.gottsch.forge.treasure2.core.enums.WishableExtraRarity;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.*;
 import mod.gottsch.forge.treasure2.core.generator.pit.*;
@@ -65,6 +67,13 @@ public class CommonSetup {
 	public static void init(final FMLCommonSetupEvent event) {
 		Config.instance.addRollingFileAppender(Treasure.MODID);
 
+		/**
+		 * Most resources in Treasure2 are tied to Rarity. Register rarites
+		 * to enable them in other features. The registry in conjunction with
+		 * the IRarity interface allows enxtensibility with addon mods.
+		 * Always perform a check agaisnt the registry to determine if
+		 * the rarity is allowed.
+		 */
 		// register rarities
 		TreasureApi.registerRarity(Rarity.COMMON);
 		TreasureApi.registerRarity(Rarity.UNCOMMON);
@@ -74,7 +83,13 @@ public class CommonSetup {
 		TreasureApi.registerRarity(Rarity.LEGENDARY);
 		TreasureApi.registerRarity(Rarity.MYTHICAL);
 		TreasureApi.registerRarity(Rarity.SKULL);
-
+		TreasureApi.registerRarity(SpecialRarity.GOLD_SKULL);
+		TreasureApi.registerRarity(SpecialRarity.CRYSTAL_SKULL);
+		TreasureApi.registerRarity(SpecialRarity.CAULDRON);
+		TreasureApi.registerRarity(SpecialRarity.WITHER);
+		TreasureApi.registerRarity(WishableExtraRarity.WHITE_PEARL);
+		TreasureApi.registerRarity(WishableExtraRarity.BLACK_PEARL);
+		
 		// register the key/lock categories
 		TreasureApi.registerKeyLockCategory(KeyLockCategory.ELEMENTAL);
 		TreasureApi.registerKeyLockCategory(KeyLockCategory.METALS);
@@ -82,12 +97,15 @@ public class CommonSetup {
 		TreasureApi.registerKeyLockCategory(KeyLockCategory.MOB);
 		TreasureApi.registerKeyLockCategory(KeyLockCategory.WITHER);
 
+		// TODO rename to FeatureGeneratorType
 		// register the generator types
 		TreasureApi.registerGeneratorType(TERRESTRIAL);
 		TreasureApi.registerGeneratorType(AQUATIC);
 		TreasureApi.registerGeneratorType(WELL);
+		// deprecated
 		TreasureApi.registerGeneratorType(GeneratorType.WITHER);
 
+		// DEPRECATED - can use IRarity instead
 		// register the chest generator types
 		TreasureApi.registerChestGeneratorType(COMMON);
 		TreasureApi.registerChestGeneratorType(UNCOMMON);
@@ -105,6 +123,7 @@ public class CommonSetup {
 		// register the region placements
 		TreasureApi.registerRegionPlacement(RegionPlacement.SUBMERGED);
 
+		// TODO these can be removed when LootTableManager is refactored
 		TreasureApi.registerSpecialLootTable(SpecialLootTables.BLACK_PEARL_WELL);
 		TreasureApi.registerSpecialLootTable(SpecialLootTables.CAULDRON_CHEST);
 		TreasureApi.registerSpecialLootTable(SpecialLootTables.CRYSTAL_SKULL_CHEST);
@@ -155,6 +174,7 @@ public class CommonSetup {
 		TreasureApi.registerWishableTag(Rarity.EPIC, TreasureTags.Items.EPIC_WISHABLE);
 		TreasureApi.registerWishableTag(Rarity.LEGENDARY, TreasureTags.Items.LEGENDARY_WISHABLE);
 		TreasureApi.registerWishableTag(Rarity.MYTHICAL, TreasureTags.Items.MYTHICAL_WISHABLE);
+		// TODO add WHITE, BLACK_PEARL
 
 		// register all the keys
 		TreasureApi.registerKey(TreasureItems.WOOD_KEY);
@@ -230,9 +250,12 @@ public class CommonSetup {
 		TreasureApi.registerWishable(TreasureItems.WHITE_PEARL);
 		TreasureApi.registerWishable(TreasureItems.BLACK_PEARL);
 
+		// DEPRECATED
 		// register loot tables
 		TreasureApi.registerLootTables(Treasure.MODID);
 
+		// TODO replace ChestGeneratorType with IRarity
+		// TODO this is probably moot - mergable with TypeChestGenerator
 		/*
 		 *  in order for chest context to know what generator to use, we need a registry (map)
 		 *  of generator type to generator object.
@@ -309,6 +332,9 @@ public class CommonSetup {
 		// chest context probably should take in the GeneratorType (Terrestrial / Aquatic) as well and use this registry
 		// TOOD can this and ChestGenerator be merged into one registry ???
 		// a 1-1 registry of rarity+type -> chest generator
+		// TODO merge with ChestGeneratorRegistry
+		// TODO rename to registerFeatureRarityChestGenerator
+		// TODO in the registry make a new class Key<IGeneratorType, IRarity> that is used as the key
 		TreasureApi.registerTypeChestGenerator(Rarity.COMMON, TERRESTRIAL, COMMON);
 		TreasureApi.registerTypeChestGenerator(Rarity.UNCOMMON, TERRESTRIAL, UNCOMMON);
 		TreasureApi.registerTypeChestGenerator(Rarity.SCARCE, TERRESTRIAL, SCARCE);

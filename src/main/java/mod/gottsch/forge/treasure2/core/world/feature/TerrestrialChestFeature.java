@@ -122,6 +122,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 			return false;
 		}
 		
+		// TODO add a check against a tag that lists all the build on materials (dirt, stone, cobblestone etc), or a blacklist (bricks, planks, wool, etc)
 		// the get first surface y (could be leaves, trunk, water, etc)
 		ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(genLevel, context.chunkGenerator(), new Coords(context.origin().offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
 		if (spawnCoords == Coords.EMPTY) {
@@ -169,6 +170,13 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 
 		// TODO the registry is null at this point even though it initializes and loads
 		IChestGenerator chestGenerator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity, GeneratorType.TERRESTRIAL);
+		/*
+		 * TODO abstrat out generateChest and all related methods to their own class(es) -> FeatureGenerator(s)..
+		 * have a registry that links rarity to feature generator. ex TERRESTRIAL + COMMON = StandardFeatureGenerator,
+		 * TERRESTRIAL + WITHER = WitherFeatureGenerator.
+		 * Could even determine first if going to build underground or on top first, then PitFeatureGenerator or StructureFeatureGenerator. 
+		 * This would simplify the classes AND allow wither not to be a separate top-level feature and would obey all other chest rules.
+		 */
  		Optional<GeneratorResult<ChestGeneratorData>> result = generateChest(new WorldGenContext(context), 
 				spawnCoords, rarity, chestGenerator, generatorConfig, rarityConfig.get());
 

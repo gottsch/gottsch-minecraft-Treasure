@@ -84,7 +84,7 @@ public class WealthItem extends Item { //implements IWishable {
 			return super.onEntityItemUpdate(stack, entityItem);
 		}
 		
-		// TODO check if member or wishing tag
+		// TODO check if member/registered or wishing tag
 		
 		// get the position
 		ICoords coords = new Coords(entityItem.blockPosition());
@@ -106,6 +106,7 @@ public class WealthItem extends Item { //implements IWishable {
 				}
 			}
 			
+			// TODO reenable
 //			if (numWishingWellBlocks >=2) {
 //				Random random = new Random();
 //				for (int itemIndex = 0; itemIndex < entityItemStack.getCount(); itemIndex++) {

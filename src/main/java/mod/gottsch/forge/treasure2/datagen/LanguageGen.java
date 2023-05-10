@@ -104,9 +104,19 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.DESERT_WISHING_WELL.get(), "Desert Wishing Well Stone");
         
         // swords
+        add(TreasureItems.COPPER_SHORT_SWORD.get(), "Copper Short Sword");
+        add(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get(), "Chipped Copper Short Sword");
+        add(TreasureItems.IRON_SHORT_SWORD.get(), "Iron Short Sword");
+        add(TreasureItems.CHIPPED_IRON_SHORT_SWORD.get(), "Chipped Iron Short Sword");
+        
         add(TreasureItems.SKULL_SWORD.get(), "Skull Sword");
         add(TreasureItems.BLACK_SWORD.get(), "The Black Sword");
+        add(TreasureItems.SWORD_OMENS.get(), "The Sword of Omens");
+        add(TreasureItems.ORCUS.get(), "Orcus");
+        
         add(TreasureItems.SHADOW_MACHETE.get(), "Shadow Machete");
+        
+        add(TreasureItems.STEEL_FALCHION.get(), "Steel Falchion");
         
         // chests
         add(TreasureBlocks.WOOD_CHEST.get(), "Wood Chest");
@@ -218,6 +228,15 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.tooltip("cap.durability.amount.infinite"), "Durability: Infinite");
         add(LangUtil.tooltip("cap.durability.repairs"), "R[%s/%s]");
         add(LangUtil.tooltip("cap.spell.recharges"), "R[%s/%s]");
+        
+        // weapons
+        add(LangUtil.tooltip("weapons.black_sword.lore"), "Sword of the Avatar. Host of the daemon Arcadion.");
+        add(LangUtil.tooltip("weapons.sword_of_omens.lore"), "'Thunder... Thunder... Thunder... ThunderCats HO!'");
+        add(LangUtil.tooltip("weapons.orcus.lore"), "'Fair lady, throw those costly robes aside,~"
+        		+ "No longer may you glory in your pride.~"
+        		+ "Take leave of all sour vain delight~"
+        		+ "I'm come to summon you away this night'.~"
+        		+ "    -The Grim Reaper");
         
         /*
          * screens

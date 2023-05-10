@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome.BiomeCategory;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.common.BiomeManager.BiomeType;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -68,5 +69,13 @@ public class WorldEventHandler {
 		else {
 			// TOOD generate submerged/aquatic chests
 		}
+	}
+	
+	public static void onLootTableLoading(final LootTableLoadEvent event) {
+		// NOTES
+		/*
+		 * only can retrieve the resource name, not the file path nor where it originated from (jar or file system). would have to look in both places
+		 * still in order to load properly. Could test to see if the same resource is loaded twice ie loaded from jar then overwritten by file system ?
+		 */
 	}
 }
