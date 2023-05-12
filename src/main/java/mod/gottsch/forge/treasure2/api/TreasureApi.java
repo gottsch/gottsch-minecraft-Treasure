@@ -24,15 +24,13 @@ import java.util.stream.Collectors;
 import mod.gottsch.forge.gottschcore.enums.IEnum;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.enums.ILootTableType;
 import mod.gottsch.forge.treasure2.core.enums.IPitType;
 import mod.gottsch.forge.treasure2.core.enums.IRegionPlacement;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
-import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
-import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorType;
-import mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
@@ -40,8 +38,22 @@ import mod.gottsch.forge.treasure2.core.item.IKeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.KeyItem;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.loot.ISpecialLootTables;
-import mod.gottsch.forge.treasure2.core.registry.*;
+import mod.gottsch.forge.treasure2.core.registry.ChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
+import mod.gottsch.forge.treasure2.core.registry.EnumRegistry;
+import mod.gottsch.forge.treasure2.core.registry.FeatureGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
+import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TagRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TreasureMetaRegistry;
+import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
+import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenerator;
+import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -58,7 +70,11 @@ public class TreasureApi {
 	public static final String GENERATOR_TYPE = "generatorType";
 	public static final String CHEST_GENERATOR_TYPE = "chestGeneratorType";
 	public static final String REGION_PLACEMENT = "regionPlacement";
+	@Deprecated
 	public static final String SPECIAL_LOOT_TABLE = "specialLootTable";
+	
+	public static final String LOOT_TABLE_TYPE = "lootTableType";
+	public static final String FEATURE_TYPE = "featureType";
 	
 	/**
 	 * 
@@ -161,6 +177,35 @@ public class TreasureApi {
 		}
 		else {
 			return Optional.of((IRegionPlacement) ienum);
+		}
+	}
+	
+	public static void registerLootTableType(ILootTableType type) {
+		EnumRegistry.register(LOOT_TABLE_TYPE, type);		
+	}
+	
+	public static Optional<ILootTableType> getLootTableType(String key) {
+		IEnum ienum = EnumRegistry.get(LOOT_TABLE_TYPE, key);
+		if (ienum == null) {
+			return Optional.empty();
+		}
+		else {
+			return Optional.of((ILootTableType) ienum);
+		}
+	}	
+	
+
+	public static void registerFeatureType(IFeatureType type) {
+		EnumRegistry.register(FEATURE_TYPE, type);
+	}
+	
+	public static Optional<IFeatureType> getFeatureType(String key) {
+		IEnum ienum = EnumRegistry.get(FEATURE_TYPE, key);
+		if (ienum == null) {
+			return Optional.empty();
+		}
+		else {
+			return Optional.of((IFeatureType) ienum);
 		}
 	}
 	
@@ -325,4 +370,7 @@ public class TreasureApi {
 		return KeyLockRegistry.getLocks(rarity).stream().map(lock -> lock.get()).collect(Collectors.toList());
 	}
 
+	public static void registerFeatureGeneator(IFeatureType type, IFeatureGenerator featureGenerator, Number weight) {
+		FeatureGeneratorRegistry.registerGenerator(type, featureGenerator, weight);
+	}
 }

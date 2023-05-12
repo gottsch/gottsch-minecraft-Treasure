@@ -28,6 +28,7 @@ import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.enums.ILootTableType;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
@@ -64,7 +65,7 @@ public class RareChestGenerator extends AbstractChestGenerator {
 	 * @return
 	 */
 	@Override
-	public List<LootTableShell> buildLootTableList(String key, final IRarity chestRarity) {
+	public List<LootTableShell> buildLootTableList(ILootTableType key, final IRarity chestRarity) {
 		// get all loot tables by column key
 		List<LootTableShell> tables = new ArrayList<>();
 		tables.addAll(TreasureLootTableRegistry.getLootTableByRarity(key, Rarity.SCARCE));

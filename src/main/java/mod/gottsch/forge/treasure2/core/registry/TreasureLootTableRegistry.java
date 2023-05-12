@@ -58,6 +58,8 @@ import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
+import mod.gottsch.forge.treasure2.core.enums.ILootTableType;
+import mod.gottsch.forge.treasure2.core.enums.LootTableType;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -80,14 +82,14 @@ public final class TreasureLootTableRegistry {
 	public static final String DATAPACKS_LOOT_TABLES_ROOT = "data/treasure2/loot_tables/";
 	
 	// TODO make into ienum and register
-	public static final String CHESTS = "chests";
-	public static final String WISHABLES = "wishables";
-	public static final String INJECTS = "injects";
+//	public static final String CHESTS = "chests";
+//	public static final String WISHABLES = "wishables";
+//	public static final String INJECTS = "injects";
+//
+	public static final List<ILootTableType> LOOT_TABLES_GROUPS = Arrays.asList(LootTableType.CHESTS, LootTableType.WISHABLES, LootTableType.INJECTS);
 
-	public static final List<String> LOOT_TABLES_GROUPS = Arrays.asList(CHESTS, WISHABLES, INJECTS);
-
-	@Deprecated
-	private static final String LOOT_TABLES_FOLDER = "loot_tables";
+//	@Deprecated
+//	private static final String LOOT_TABLES_FOLDER = "loot_tables";
 
 	/*
 	 * Properties to control the loading on mods.
@@ -99,8 +101,8 @@ public final class TreasureLootTableRegistry {
 	// the gson serializer for loot tables
 	private static final Gson GSON_INSTANCE = Deserializers.createLootTableSerializer().create();
 
-	@Deprecated
-	public static final String CUSTOM_LOOT_TABLE_KEY = "CUSTOM";
+//	@Deprecated
+//	public static final String CUSTOM_LOOT_TABLE_KEY = "CUSTOM";
 
 	/*
 		MC 1.18.2: net/minecraft/server/MinecraftServer.storageSource
@@ -127,7 +129,7 @@ public final class TreasureLootTableRegistry {
 	/*
 	 * Master Guava Table of LootTables by Top-Level(Type) ex chests | wishables | injects, IRarity, List<LootTableShell>
 	 */
-	private final static Table<String, IRarity, List<LootTableShell>> MASTER_TABLE = HashBasedTable.create();
+	private final static Table<ILootTableType, IRarity, List<LootTableShell>> MASTER_TABLE = HashBasedTable.create();
 
 	/*
 	 * Master Map of LootTables by ResourceLocation
@@ -140,7 +142,7 @@ public final class TreasureLootTableRegistry {
 	/*
 	 * Master Guava Table of LootTables by Top-Level(Type) ex chests | wishables | injects, IRarity, List<LootTableShell>
 	 */
-	private final static Table<String, IRarity, List<LootTableShell>> DATAPACK_TABLE = HashBasedTable.create();
+	private final static Table<ILootTableType, IRarity, List<LootTableShell>> DATAPACK_TABLE = HashBasedTable.create();
 
 	/*
 	 * Master Map of LootTables by ResourceLocation
@@ -278,7 +280,7 @@ public final class TreasureLootTableRegistry {
 	 * @param path
 	 * @param shell
 	 */
-	public static void registerLootTable(String key, Path path, Optional<LootTableShell> shell) {
+	public static void registerLootTable(ILootTableType key, Path path, Optional<LootTableShell> shell) {
 		if (shell.isPresent()) {
 			// determine rarity TODO maybe should go the other way. path.getName(4)
 			Optional<IRarity> rarity = TreasureApi.getRarity(path.getName(path.getNameCount()-2).toString().toUpperCase());
@@ -307,7 +309,7 @@ public final class TreasureLootTableRegistry {
 	 * @param path
 	 * @param shell
 	 */
-	public static void registerDatapacksLootTable(String key, Path path, Optional<LootTableShell> shell) {
+	public static void registerDatapacksLootTable(ILootTableType key, Path path, Optional<LootTableShell> shell) {
 		if (shell.isPresent()) {
 			// determine rarity TODO maybe should go the other way. path.getName(4)
 			Optional<IRarity> rarity = TreasureApi.getRarity(path.getName(path.getNameCount()-2).toString().toUpperCase());
@@ -443,7 +445,7 @@ public final class TreasureLootTableRegistry {
 		LOOT_TABLES_GROUPS.forEach(category -> {
 			List<Path> lootTablePaths;
 			// build the path
-			Path folderPath = Paths.get(worldSaveFolderPathName, DATAPACKS_LOOT_TABLES_ROOT, category);
+			Path folderPath = Paths.get(worldSaveFolderPathName, DATAPACKS_LOOT_TABLES_ROOT, category.getValue());
 			try {
 				lootTablePaths = ModUtil.getPathsFromFlatDatapacks(folderPath);
 
@@ -565,7 +567,7 @@ public final class TreasureLootTableRegistry {
 	 * @param rarity
 	 * @return
 	 */
-	public static List<LootTableShell> getLootTableByRarity(String key, IRarity rarity) {
+	public static List<LootTableShell> getLootTableByRarity(ILootTableType key, IRarity rarity) {
 		Treasure.LOGGER.debug("table type -> {}", key);
 		
 		// get all the tables from the datapacks
@@ -591,7 +593,7 @@ public final class TreasureLootTableRegistry {
 	 * @param location
 	 * @return
 	 */
-	public static Optional<LootTableShell> getLootTableByResourceLocation(String key, ResourceLocation location) {
+	public static Optional<LootTableShell> getLootTableByResourceLocation(ILootTableType key, ResourceLocation location) {
 		LootTableShell lootTableShell = DATAPACK_MAP.get(location);
 		if (lootTableShell == null) {
 			lootTableShell = MASTER_MAP.get(location);
@@ -674,10 +676,10 @@ public final class TreasureLootTableRegistry {
 //		}
 //	}
 
-	@Deprecated
-	private static String getResourceFolder() {
-		return LOOT_TABLES_FOLDER;
-	}
+//	@Deprecated
+//	private static String getResourceFolder() {
+//		return LOOT_TABLES_FOLDER;
+//	}
 
 //	@Deprecated
 //	protected static void register(final String modID, LootResourceManifest lootResources) {
@@ -1010,11 +1012,11 @@ public final class TreasureLootTableRegistry {
 //		return Optional.ofNullable(lootTable);
 //	}
 
-	@Deprecated
-	public static enum ManagedTableType {
-		CHEST,
-		INJECT
-	}
+//	@Deprecated
+//	public static enum ManagedTableType {
+//		CHEST,
+//		INJECT
+//	}
 
 	/**
 	 * 

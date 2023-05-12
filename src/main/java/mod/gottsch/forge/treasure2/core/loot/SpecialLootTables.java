@@ -29,6 +29,7 @@ import mod.gottsch.forge.gottschcore.enums.IEnum;
  * @author Mark Gottschling on Dec 4, 2020
  *
  */
+@Deprecated
 public enum SpecialLootTables  implements ISpecialLootTables {
 	WITHER_CHEST,
 	SKULL_CHEST,

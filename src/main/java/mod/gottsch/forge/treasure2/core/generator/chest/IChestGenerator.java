@@ -44,6 +44,8 @@ import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockE
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.enums.ILootTableType;
+import mod.gottsch.forge.treasure2.core.enums.LootTableType;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
@@ -171,7 +173,7 @@ public interface IChestGenerator {
 		LootTableShell lootTableShell = null;
 
 		// select the loot table by rarity
-		List<LootTableShell> tables = buildLootTableList(TreasureLootTableRegistry.CHESTS, rarity);
+		List<LootTableShell> tables = buildLootTableList(LootTableType.CHESTS, rarity);
 		if (tables !=null) { 
 			Treasure.LOGGER.debug("tables size -> {}", tables.size());
 		}
@@ -200,7 +202,7 @@ public interface IChestGenerator {
 		LootTableShell lootTableShell = null;
 
 		// select the loot table by rarity
-		List<LootTableShell> tables = buildLootTableList(TreasureLootTableRegistry.CHESTS, rarity);
+		List<LootTableShell> tables = buildLootTableList(LootTableType.CHESTS, rarity);
 		if (tables !=null) {
 			Treasure.LOGGER.debug("tables size -> {}", tables.size());
 		}
@@ -225,8 +227,8 @@ public interface IChestGenerator {
 	 * @param rarity
 	 * @return
 	 */
-	default public List<LootTableShell> buildLootTableList(String key, IRarity rarity) {
-		return TreasureLootTableRegistry.getLootTableByRarity(TreasureLootTableRegistry.CHESTS, rarity);
+	default public List<LootTableShell> buildLootTableList(ILootTableType key, IRarity rarity) {
+		return TreasureLootTableRegistry.getLootTableByRarity(LootTableType.CHESTS, rarity);
 	}
 
 	/**
@@ -271,7 +273,7 @@ public interface IChestGenerator {
 			lootTableShell = selectLootTable(random, rarity);
 		}
 		else {
-			lootTableShell = TreasureLootTableRegistry.getLootTableByResourceLocation(TreasureLootTableRegistry.CHESTS, lootTableResourceLocation);
+			lootTableShell = TreasureLootTableRegistry.getLootTableByResourceLocation(LootTableType.CHESTS, lootTableResourceLocation);
 		}
 		
 		// is valid loot table shell
@@ -352,11 +354,11 @@ public interface IChestGenerator {
 		// fetch all injected loot tables by rarity
 		// NOTE removed the category. trying to keep it as straight forward as possible
 		Treasure.LOGGER.debug("searching for injectable tables for category ->{}, rarity -> {}", lootTableShell.get().getCategory(), effectiveRarity);
-		List<LootTableShell> injectLootTableShells = buildLootTableList(TreasureLootTableRegistry.INJECTS, effectiveRarity);
+		List<LootTableShell> injectLootTableShells = buildLootTableList(LootTableType.INJECTS, effectiveRarity);
 		// NOTE injects are special case because they have 2 top-levels ex inject/chests, inject/wishables, so the list has to be filtered
 		injectLootTableShells = injectLootTableShells
 				.stream()
-				.filter(s -> s.getResourceLocation().getPath().contains(TreasureLootTableRegistry.CHESTS))
+				.filter(s -> s.getResourceLocation().getPath().contains(LootTableType.CHESTS.getValue()))
 				.toList();
 		
 		if (!injectLootTableShells.isEmpty()) {

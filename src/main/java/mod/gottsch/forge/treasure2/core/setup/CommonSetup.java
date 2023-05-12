@@ -33,6 +33,7 @@ import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.entity.monster.BoundSoul;
+import mod.gottsch.forge.treasure2.core.enums.LootTableType;
 import mod.gottsch.forge.treasure2.core.enums.PitType;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
@@ -48,6 +49,8 @@ import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
 import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
+import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureFeatureGenerators;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -103,13 +106,7 @@ public class CommonSetup {
 		TreasureApi.registerKeyLockCategory(KeyLockCategory.MOB);
 		TreasureApi.registerKeyLockCategory(KeyLockCategory.WITHER);
 
-		// TODO rename to FeatureGeneratorType
-		// register the generator types
-		TreasureApi.registerGeneratorType(TERRESTRIAL);
-		TreasureApi.registerGeneratorType(AQUATIC);
-		TreasureApi.registerGeneratorType(WELL);
-		// deprecated
-		TreasureApi.registerGeneratorType(GeneratorType.WITHER);
+
 
 		// DEPRECATED - can use IRarity instead
 		// register the chest generator types
@@ -126,19 +123,53 @@ public class CommonSetup {
 		TreasureApi.registerChestGeneratorType(CRYSTAL_SKULL);
 		TreasureApi.registerChestGeneratorType(CAULDRON);
 		
+		// register the loot table types
+		TreasureApi.registerLootTableType(LootTableType.CHESTS);
+		TreasureApi.registerLootTableType(LootTableType.WISHABLES);
+		TreasureApi.registerLootTableType(LootTableType.INJECTS);
+		
+		// TODO rename to FeatureGeneratorType - figure out if/how these play together with FeatureType
+		// register the generator types
+		TreasureApi.registerGeneratorType(TERRESTRIAL);
+		TreasureApi.registerGeneratorType(AQUATIC);
+		TreasureApi.registerGeneratorType(WELL);
+		// deprecated
+		TreasureApi.registerGeneratorType(GeneratorType.WITHER);
+		
+		/* 
+		 * register the feature types.
+		 * this is used so that modders can register additional
+		 * feature generators to a feature.
+		 */
+		TreasureApi.registerFeatureType(FeatureType.TERRESTRIAL);
+		TreasureApi.registerFeatureType(FeatureType.AQUATIC);
+		
+		/*
+		 *  register the feature generators.
+		 *  a feature generator is a bridge or proxy between the feature object
+		 *  and the generators that add changes to the world.  this allows
+		 *  modders to insert addtional feature generators.
+		 */
+		TreasureApi.registerFeatureGeneator(FeatureType.TERRESTRIAL,TreasureFeatureGenerators.SIMPLE_SURFACE_FEATURE_GENERATOR, 10);
+		TreasureApi.registerFeatureGeneator(FeatureType.TERRESTRIAL, TreasureFeatureGenerators.PIT_FEATURE_GENERATOR, 65);
+		TreasureApi.registerFeatureGeneator(FeatureType.TERRESTRIAL, TreasureFeatureGenerators.SURFACE_STRUCTURE_FEATURE_GENERATOR, 25);
+		
+		// TODO aquatic feature generators
+		
 		// register the region placements
+		TreasureApi.registerRegionPlacement(RegionPlacement.SURFACE);
 		TreasureApi.registerRegionPlacement(RegionPlacement.SUBMERGED);
 
 		// TODO these can be removed when LootTableManager is refactored
-		TreasureApi.registerSpecialLootTable(SpecialLootTables.BLACK_PEARL_WELL);
-		TreasureApi.registerSpecialLootTable(SpecialLootTables.CAULDRON_CHEST);
-		TreasureApi.registerSpecialLootTable(SpecialLootTables.CRYSTAL_SKULL_CHEST);
-		TreasureApi.registerSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST);
-		TreasureApi.registerSpecialLootTable(SpecialLootTables.GOLD_WELL);
-		TreasureApi.registerSpecialLootTable(SpecialLootTables.SILVER_WELL);
-		TreasureApi.registerSpecialLootTable(SpecialLootTables.SKULL_CHEST);
-		TreasureApi.registerSpecialLootTable(SpecialLootTables.WHITE_PEARL_WELL);
-		TreasureApi.registerSpecialLootTable(SpecialLootTables.WITHER_CHEST);
+//		TreasureApi.registerSpecialLootTable(SpecialLootTables.BLACK_PEARL_WELL);
+//		TreasureApi.registerSpecialLootTable(SpecialLootTables.CAULDRON_CHEST);
+//		TreasureApi.registerSpecialLootTable(SpecialLootTables.CRYSTAL_SKULL_CHEST);
+//		TreasureApi.registerSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST);
+//		TreasureApi.registerSpecialLootTable(SpecialLootTables.GOLD_WELL);
+//		TreasureApi.registerSpecialLootTable(SpecialLootTables.SILVER_WELL);
+//		TreasureApi.registerSpecialLootTable(SpecialLootTables.SKULL_CHEST);
+//		TreasureApi.registerSpecialLootTable(SpecialLootTables.WHITE_PEARL_WELL);
+//		TreasureApi.registerSpecialLootTable(SpecialLootTables.WITHER_CHEST);
 
 		// register rarity tags.
 		TreasureApi.registerRarityTags(Rarity.COMMON, 
@@ -279,6 +310,7 @@ public class CommonSetup {
 		TreasureApi.registerChestGenerator(new CauldronChestGenerator(CAULDRON));
 		TreasureApi.registerChestGenerator(new CrystalSkullChestGenerator(CRYSTAL_SKULL));
 		
+		// TODO this type of registration creates multiple instances of every generator used. refactor
 		// register pit generators
 		TreasureApi.registerPitGenerator(PitType.STANDARD, new SimplePitGenerator());
 		TreasureApi.registerPitGenerator(PitType.STANDARD, new AirPitGenerator());
