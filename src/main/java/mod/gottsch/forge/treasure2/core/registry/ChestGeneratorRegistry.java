@@ -38,12 +38,12 @@ public class ChestGeneratorRegistry {
 	
 	private ChestGeneratorRegistry() {}
 	
-	@Deprecated
-	public static void registerGeneator(IChestGeneratorType type, IChestGenerator generator) {
-		if (/*!REGISTRY.containsKey(type) && */type != null) {
-			IChestGenerator originalGenerator = REGISTRY.put(type, generator);
-		}
-	}
+//	@Deprecated
+//	public static void registerGeneator(IChestGeneratorType type, IChestGenerator generator) {
+//		if (/*!REGISTRY.containsKey(type) && */type != null) {
+//			REGISTRY.put(type, generator);
+//		}
+//	}
 	
 	public static void registerGeneator(IChestGenerator generator) {
 		if (generator.getChestGeneratorType() != null /*&& !REGISTRY.containsKey(generator.getChestGeneratorType())*/) {

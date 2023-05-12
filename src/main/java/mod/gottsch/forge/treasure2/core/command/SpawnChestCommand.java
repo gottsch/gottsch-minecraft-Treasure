@@ -20,6 +20,7 @@ import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
+import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.commands.CommandSourceStack;
@@ -174,7 +175,7 @@ public class SpawnChestCommand {
 			
 			// TODO provide Genertor by name in command (no weighted option)
 			// TODO provide GeneratorType option in command
-			IChestGenerator generator = WeightedChestGeneratorRegistry.getNextGenerator(rarity, GeneratorType.TERRESTRIAL);
+			IChestGenerator generator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity, GeneratorType.TERRESTRIAL);
 			if (optionalChest.isEmpty()) {
 				chest = generator.selectChest(random, rarity);
 			} else {

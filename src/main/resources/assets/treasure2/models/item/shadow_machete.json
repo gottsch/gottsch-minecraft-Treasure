@@ -1,6 +1,0 @@
-{
-  "parent": "treasure2:item/machete",
-  "textures": {
-    "layer0": "treasure2:item/weapon/shadow_machete"
-  }
-}

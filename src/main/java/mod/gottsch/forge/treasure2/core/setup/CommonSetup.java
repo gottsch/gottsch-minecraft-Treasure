@@ -22,6 +22,11 @@ import static mod.gottsch.forge.treasure2.core.generator.GeneratorType.TERRESTRI
 import static mod.gottsch.forge.treasure2.core.generator.GeneratorType.WELL;
 import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType.*;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.util.List;
+
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
@@ -42,6 +47,7 @@ import mod.gottsch.forge.treasure2.core.loot.SpecialLootTables;
 import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
 import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -66,9 +72,9 @@ public class CommonSetup {
 	 */
 	public static void init(final FMLCommonSetupEvent event) {
 		Config.instance.addRollingFileAppender(Treasure.MODID);
-
+		Treasure.LOGGER.debug("file appender created");
 		/**
-		 * Most resources in Treasure2 are tied to Rarity. Register rarites
+		 * Most resources in Treasure2 are associated with a Rarity. Register rarites
 		 * to enable them in other features. The registry in conjunction with
 		 * the IRarity interface allows enxtensibility with addon mods.
 		 * Always perform a check agaisnt the registry to determine if
@@ -250,7 +256,6 @@ public class CommonSetup {
 		TreasureApi.registerWishable(TreasureItems.WHITE_PEARL);
 		TreasureApi.registerWishable(TreasureItems.BLACK_PEARL);
 
-		// DEPRECATED
 		// register loot tables
 		TreasureApi.registerLootTables(Treasure.MODID);
 

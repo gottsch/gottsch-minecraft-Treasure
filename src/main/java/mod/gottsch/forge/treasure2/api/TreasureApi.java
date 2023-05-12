@@ -164,10 +164,12 @@ public class TreasureApi {
 		}
 	}
 	
+	@Deprecated
 	public static void registerSpecialLootTable(ISpecialLootTables table) {
 		EnumRegistry.register(SPECIAL_LOOT_TABLE, table);
 	}
 	
+	@Deprecated
 	public static Optional<ISpecialLootTables> getSpecialLootTable(String key) {
 		IEnum ienum = EnumRegistry.get(SPECIAL_LOOT_TABLE, key);
 		if (ienum == null) {
@@ -282,10 +284,10 @@ public class TreasureApi {
 	/*
 	 * Registers the chest generator object.
 	 */
-	@Deprecated
-	public static void registerChestGenerator(IChestGeneratorType type, IChestGenerator generator) {
-		ChestGeneratorRegistry.registerGeneator(type, generator);
-	}
+//	@Deprecated
+//	public static void registerChestGenerator(IChestGeneratorType type, IChestGenerator generator) {
+//		ChestGeneratorRegistry.registerGeneator(type, generator);
+//	}
 	
 	/**
 	 * Registers the chest generator by rarity and generatorType.
