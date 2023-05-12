@@ -64,11 +64,11 @@ public class RareChestGenerator extends AbstractChestGenerator {
 	 * @return
 	 */
 	@Override
-	public List<LootTableShell> buildLootTableList(final IRarity chestRarity) {
+	public List<LootTableShell> buildLootTableList(String key, final IRarity chestRarity) {
 		// get all loot tables by column key
 		List<LootTableShell> tables = new ArrayList<>();
-		tables.addAll(TreasureLootTableRegistry.getLootTableByRarity(Rarity.SCARCE));
-		tables.addAll(TreasureLootTableRegistry.getLootTableByRarity(Rarity.RARE));
+		tables.addAll(TreasureLootTableRegistry.getLootTableByRarity(key, Rarity.SCARCE));
+		tables.addAll(TreasureLootTableRegistry.getLootTableByRarity(key, Rarity.RARE));
 		return tables;
 	}	
 	

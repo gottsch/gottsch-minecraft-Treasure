@@ -21,11 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.google.common.collect.Maps;
 
+import mod.gottsch.forge.gottschcore.enums.IEnum;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -166,5 +169,10 @@ public class TagRegistry {
 			return WISHABLE_TAGS_REGISTRY.get(rarity);
 		}
 		return null;
+	}
+	
+	public static List<IRarity> getWishableKeys() {
+		Set<IRarity> keys = WISHABLE_TAGS_REGISTRY.keySet();
+		return new ArrayList<>(keys);
 	}
 }

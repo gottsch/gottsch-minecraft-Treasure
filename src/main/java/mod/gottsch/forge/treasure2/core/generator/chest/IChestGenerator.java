@@ -67,12 +67,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -92,11 +90,13 @@ import net.minecraftforge.registries.RegistryObject;
  *
  */
 public interface IChestGenerator {
-
+	public static final String TREASURE_POOL = "treasure";
+	public static final String CHARMS_POOL = "charms";
+	
 	public IChestGeneratorType getChestGeneratorType();
 	
 	/**
-	 * 
+	 * TODO should pass RandomSource and not use a new Random
 	 * @param context
 	 * @param coords
 	 * @param rarity
@@ -161,13 +161,72 @@ public interface IChestGenerator {
 		return result.success();
 	}
 
-	// TODO this should be a generic call that passes in ManagedTableType
-	default public List<LootTableShell> buildLootTableList(IRarity rarity) {
-		return TreasureLootTableRegistry.getLootTableByRarity(TreasureLootTableRegistry.ManagedTableType.CHEST, rarity);
+	/**
+	 * 
+	 * @param random
+	 * @param rarity
+	 * @return
+	 */
+	default public Optional<LootTableShell> selectLootTable(Random random, final IRarity rarity) {
+		LootTableShell lootTableShell = null;
+
+		// select the loot table by rarity
+		List<LootTableShell> tables = buildLootTableList(TreasureLootTableRegistry.CHESTS, rarity);
+		if (tables !=null) { 
+			Treasure.LOGGER.debug("tables size -> {}", tables.size());
+		}
+
+		// select a random table from the list
+		if (tables != null && !tables.isEmpty()) {
+			int index = 0;
+			if (tables.size() == 1) {
+				lootTableShell = tables.get(0);
+			} else {
+				index = RandomHelper.randomInt(random, 0, tables.size() - 1);
+				lootTableShell = tables.get(index);
+			}
+			Treasure.LOGGER.debug("Selected loot table shell index --> {}, shell -> {}", index, lootTableShell.getCategories());
+		}
+		return Optional.ofNullable(lootTableShell);
 	}
 
-	default public Optional<List<LootTableShell>> buildInjectedLootTableList(String key, IRarity rarity) {
-		return Optional.ofNullable(TreasureLootTableRegistry.getLootTableByKeyRarity(TreasureLootTableRegistry.ManagedTableType.INJECT, key, rarity));
+	/**
+	 * 
+	 * @param factory
+	 * @param rarity
+	 * @return
+	 */
+	default public Optional<LootTableShell> selectLootTable(Supplier<Random> factory, IRarity rarity) {
+		LootTableShell lootTableShell = null;
+
+		// select the loot table by rarity
+		List<LootTableShell> tables = buildLootTableList(TreasureLootTableRegistry.CHESTS, rarity);
+		if (tables !=null) {
+			Treasure.LOGGER.debug("tables size -> {}", tables.size());
+		}
+
+		// select a random table from the list
+		if (tables != null && !tables.isEmpty()) {
+			int index = 0;
+			if (tables.size() == 1) {
+				lootTableShell = tables.get(0);
+			} else {
+				index = RandomHelper.randomInt(factory.get(), 0, tables.size() - 1);
+				lootTableShell = tables.get(index);
+			}
+			Treasure.LOGGER.debug("Selected loot table shell index --> {}", index);
+		}
+		return Optional.ofNullable(lootTableShell);	
+	}
+	
+	/**
+	 * 
+	 * @param key
+	 * @param rarity
+	 * @return
+	 */
+	default public List<LootTableShell> buildLootTableList(String key, IRarity rarity) {
+		return TreasureLootTableRegistry.getLootTableByRarity(TreasureLootTableRegistry.CHESTS, rarity);
 	}
 
 	/**
@@ -207,12 +266,14 @@ public interface IChestGenerator {
 		}
 		AbstractTreasureChestBlockEntity chestBlockEntity = (AbstractTreasureChestBlockEntity)blockEntity;
 
+		// if a chest didn't have its loot table set then pick one randomly
 		if (lootTableResourceLocation == null) {
 			lootTableShell = selectLootTable(random, rarity);
 		}
 		else {
-			lootTableShell = TreasureLootTableRegistry.getLootTableByResourceLocation(lootTableResourceLocation);
-		}	
+			lootTableShell = TreasureLootTableRegistry.getLootTableByResourceLocation(TreasureLootTableRegistry.CHESTS, lootTableResourceLocation);
+		}
+		
 		// is valid loot table shell
 		if (lootTableShell.isPresent()) {
 			Treasure.LOGGER.debug("using loot table shell -> {}, {}", lootTableShell.get().getCategory(), lootTableShell.get().getRarity());
@@ -269,8 +330,8 @@ public interface IChestGenerator {
 
 			if (lootPool != null) {
 				// geneate loot from pools
-				if (pool.getName().equalsIgnoreCase("treasure") ||
-						pool.getName().equalsIgnoreCase("charms")) {
+				if (pool.getName().equalsIgnoreCase(TREASURE_POOL) ||
+						pool.getName().equalsIgnoreCase(CHARMS_POOL)) {
 					Treasure.LOGGER.debug("generating loot from treasure/charm pool -> {}", pool.getName());
 					lootPool.addRandomItems(treasureStacks::add, lootContext);
 				}
@@ -288,19 +349,26 @@ public interface IChestGenerator {
 		int lootItemSize = itemStacks.size();
 
 		// TODO move to separate method
-		// fetch all injected loot tables by category/rarity
+		// fetch all injected loot tables by rarity
+		// NOTE removed the category. trying to keep it as straight forward as possible
 		Treasure.LOGGER.debug("searching for injectable tables for category ->{}, rarity -> {}", lootTableShell.get().getCategory(), effectiveRarity);
-		Optional<List<LootTableShell>> injectLootTableShells = buildInjectedLootTableList(lootTableShell.get().getCategory(), effectiveRarity);
-		if (injectLootTableShells.isPresent()) {
+		List<LootTableShell> injectLootTableShells = buildLootTableList(TreasureLootTableRegistry.INJECTS, effectiveRarity);
+		// NOTE injects are special case because they have 2 top-levels ex inject/chests, inject/wishables, so the list has to be filtered
+		injectLootTableShells = injectLootTableShells
+				.stream()
+				.filter(s -> s.getResourceLocation().getPath().contains(TreasureLootTableRegistry.CHESTS))
+				.toList();
+		
+		if (!injectLootTableShells.isEmpty()) {
 			Treasure.LOGGER.debug("found injectable tables for category ->{}, rarity -> {}", lootTableShell.get().getCategory(), effectiveRarity);
-			Treasure.LOGGER.debug("size of injectable tables -> {}", injectLootTableShells.get().size());
+			Treasure.LOGGER.debug("size of injectable tables -> {}", injectLootTableShells.size());
 
 			// add predicate
-			treasureStacks.addAll(getInjectedLootItems(level, random, injectLootTableShells.get(), lootContext, p -> {
-				return p.getName().equalsIgnoreCase("treasure") || p.getName().equalsIgnoreCase("charms");
+			treasureStacks.addAll(getInjectedLootItems(level, random, injectLootTableShells, lootContext, p -> {
+				return p.getName().equalsIgnoreCase(TREASURE_POOL) || p.getName().equalsIgnoreCase(CHARMS_POOL);
 			}));
-			itemStacks.addAll(getInjectedLootItems(level, random, injectLootTableShells.get(), lootContext, p -> {
-				return !p.getName().equalsIgnoreCase("treasure") && !p.getName().equalsIgnoreCase("charms");
+			itemStacks.addAll(getInjectedLootItems(level, random, injectLootTableShells, lootContext, p -> {
+				return !p.getName().equalsIgnoreCase(TREASURE_POOL) && !p.getName().equalsIgnoreCase(CHARMS_POOL);
 			}));
 			//			itemStacks.addAll(TreasureLootTableRegistry.getLootTableMaster().getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext));
 		}
@@ -481,64 +549,6 @@ public interface IChestGenerator {
 				inventory.setStackInSlot(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), itemstack);
 			}
 		}
-	}
-
-	/**
-	 * 
-	 * @param random
-	 * @param rarity
-	 * @return
-	 */
-	default public Optional<LootTableShell> selectLootTable(Random random, final IRarity rarity) {
-		LootTableShell lootTableShell = null;
-
-		// select the loot table by rarity
-		List<LootTableShell> tables = buildLootTableList(rarity);
-		if (tables !=null) { 
-			Treasure.LOGGER.debug("tables size -> {}", tables.size());
-		}
-
-		// select a random table from the list
-		if (tables != null && !tables.isEmpty()) {
-			int index = 0;
-			if (tables.size() == 1) {
-				lootTableShell = tables.get(0);
-			} else {
-				index = RandomHelper.randomInt(random, 0, tables.size() - 1);
-				lootTableShell = tables.get(index);
-			}
-			Treasure.LOGGER.debug("Selected loot table shell index --> {}, shell -> {}", index, lootTableShell.getCategories());
-		}
-		return Optional.ofNullable(lootTableShell);
-	}
-
-	/**
-	 * 
-	 * @param factory
-	 * @param rarity
-	 * @return
-	 */
-	default public Optional<LootTableShell> selectLootTable(Supplier<Random> factory, IRarity rarity) {
-		LootTableShell lootTableShell = null;
-
-		// select the loot table by rarity
-		List<LootTableShell> tables = buildLootTableList(rarity);
-		if (tables !=null) {
-			Treasure.LOGGER.debug("tables size -> {}", tables.size());
-		}
-
-		// select a random table from the list
-		if (tables != null && !tables.isEmpty()) {
-			int index = 0;
-			if (tables.size() == 1) {
-				lootTableShell = tables.get(0);
-			} else {
-				index = RandomHelper.randomInt(factory.get(), 0, tables.size() - 1);
-				lootTableShell = tables.get(index);
-			}
-			Treasure.LOGGER.debug("Selected loot table shell index --> {}", index);
-		}
-		return Optional.ofNullable(lootTableShell);	
 	}
 
 	/**

@@ -36,13 +36,13 @@ public class Sword extends SwordItem {
 		// override the attack damage
 		
 		// TODO will have to use reflection to get access to the original attributeModifiers and rebuild
-		if (damageModifier != getDamage()) {
-			float remainderAttackDamage = (damageModifier - getDamage())+ tier.getAttackDamageBonus();
-	
-			getDefaultAttributeModifiers(EquipmentSlot.MAINHAND)
-				.get(Attributes.ATTACK_DAMAGE)
-				.add(new AttributeModifier(EXTRA_ATTACK_DAMAGE_UUID, "Extra Weapon modifier", (double)remainderAttackDamage, AttributeModifier.Operation.ADDITION));
-		}
+//		if (damageModifier != getDamage()) {
+//			float remainderAttackDamage = (damageModifier - getDamage())+ tier.getAttackDamageBonus();
+//	
+//			getDefaultAttributeModifiers(EquipmentSlot.MAINHAND)
+//				.get(Attributes.ATTACK_DAMAGE)
+//				.add(new AttributeModifier(EXTRA_ATTACK_DAMAGE_UUID, "Extra Weapon modifier", (double)remainderAttackDamage, AttributeModifier.Operation.ADDITION));
+//		}
 	}
 
 	@Override

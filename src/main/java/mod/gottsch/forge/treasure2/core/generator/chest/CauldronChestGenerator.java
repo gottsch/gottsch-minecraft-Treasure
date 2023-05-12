@@ -17,20 +17,15 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.chest;
 
-import java.util.Optional;
 import java.util.Random;
-import java.util.function.Supplier;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
-import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.StandardChestBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.loot.SpecialLootTables;
-import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
 
 /**
  * 
@@ -61,15 +56,15 @@ public class CauldronChestGenerator extends EpicChestGenerator {
 	 * @param chestRarity
 	 * @return
 	 */
-	@Override
-	public Optional<LootTableShell> selectLootTable(Random random, final IRarity chestRarity) {
-		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.CAULDRON_CHEST);
-	}
-
-	@Override
-	public Optional<LootTableShell> selectLootTable(Supplier<Random> factory, final IRarity rarity) {
-		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.CAULDRON_CHEST);
-	}
+//	@Override
+//	public Optional<LootTableShell> selectLootTable(Random random, final IRarity chestRarity) {
+//		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.CAULDRON_CHEST);
+//	}
+//
+//	@Override
+//	public Optional<LootTableShell> selectLootTable(Supplier<Random> factory, final IRarity rarity) {
+//		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.CAULDRON_CHEST);
+//	}
 	
 	/**
 	 * Always select a epic chest.

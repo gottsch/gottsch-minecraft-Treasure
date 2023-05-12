@@ -236,7 +236,7 @@ public class TreasureTemplateRegistry {
 			// need to test for world save version first
 			Treasure.LOGGER.debug("loading template resource loc -> {}", loc.toString());
 						
-			tableTemplate(modID, loc, loadTemplate(loc, getMarkerScanList(), getReplacementMap()));
+//			tableTemplate(modID, loc, loadTemplate(loc, getMarkerScanList(), getReplacementMap()));
 		});
 	}
 	
@@ -246,37 +246,38 @@ public class TreasureTemplateRegistry {
 	 * @param templatePath
 	 * @return
 	 */
-	public static StructureTemplate loadTemplate(ResourceLocation templatePath, List<Block> markerBlocks, Map<BlockState, BlockState> replacementBlocks) {
-		String key = templatePath.toString();
-		
-		if (this.getTemplates().containsKey(key)) {
-			GottschCore.LOGGER.debug("read template from master map using key -> {}", key);
-			return this.templates.get(key);
-		}
-
-		this.readTemplate(templatePath, markerBlocks, replacementBlocks);
-		if (this.templates.get(key) != null) {
-			GottschCore.LOGGER.debug("Loaded template from -> {}", key);
-		}
-		else {
-			GottschCore.LOGGER.debug("Unable to read template from -> {}", key);
-		}
-		return this.templates.containsKey(key) ? (StructureTemplate) this.templates.get(key) : null;
-	}
+//	public static StructureTemplate loadTemplate(ResourceLocation templatePath, List<Block> markerBlocks, Map<BlockState, BlockState> replacementBlocks) {
+//		String key = templatePath.toString();
+//		
+//		if (this.getTemplates().containsKey(key)) {
+//			GottschCore.LOGGER.debug("read template from master map using key -> {}", key);
+//			return this.templates.get(key);
+//		}
+//
+//		this.readTemplate(templatePath, markerBlocks, replacementBlocks);
+//		if (this.templates.get(key) != null) {
+//			GottschCore.LOGGER.debug("Loaded template from -> {}", key);
+//		}
+//		else {
+//			GottschCore.LOGGER.debug("Unable to read template from -> {}", key);
+//		}
+//		return this.templates.containsKey(key) ? (StructureTemplate) this.templates.get(key) : null;
+//	}
 	
 	/**
 	 * 
 	 * @param resource
 	 * @return
 	 */	
-	protected static Optional<LootTableShell> loadLootTable(ResourceLocation resource) {
-		// attempt to load from file system
-		Optional<LootTableShell> shell = loadLootTableFromWorldSave(getWorldSaveFolder(), resource);
-		if (!shell.isPresent()) {
-			return loadLootTableFromJar(resource);
-		}
-		return shell;
-	}
+//	protected static Optional<LootTableShell> loadLootTable(ResourceLocation resource) {
+//		// attempt to load from file system
+//		Optional<LootTableShell> shell = loadLootTableFromWorldSave(getWorldSaveFolder(), resource);
+//		if (!shell.isPresent()) {
+//			return loadLootTableFromJar(resource);
+//		}
+//		return shell;
+//	}
+	
 	/**
 	 * 
 	 * @param modID

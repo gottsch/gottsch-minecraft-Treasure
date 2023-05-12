@@ -1,5 +1,7 @@
 package mod.gottsch.forge.treasure2.core.event;
 
+import java.nio.file.Path;
+
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.Config;
@@ -69,13 +71,5 @@ public class WorldEventHandler {
 		else {
 			// TOOD generate submerged/aquatic chests
 		}
-	}
-	
-	public static void onLootTableLoading(final LootTableLoadEvent event) {
-		// NOTES
-		/*
-		 * only can retrieve the resource name, not the file path nor where it originated from (jar or file system). would have to look in both places
-		 * still in order to load properly. Could test to see if the same resource is loaded twice ie loaded from jar then overwritten by file system ?
-		 */
 	}
 }

@@ -17,8 +17,20 @@
  */
 package mod.gottsch.forge.treasure2.core.util;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
@@ -48,14 +60,77 @@ public class ModUtil {
 	public static boolean hasDomain(String name) {
 		return name.indexOf(":") >= 0;
 	}
-	
+
+	// Get all paths from a folder that inside the JAR file
+	public static  List<Path> getPathsFromResourceJAR(Path jarPath, String folder)
+			throws URISyntaxException, IOException {
+
+		List<Path> result;
+
+		/*
+		 * This block of code would be used if the jar file was unknown and it had to be discovered.
+		 * 
+        // get path of the current running JAR
+        String jarPathOriginal = Treasure.class.getProtectionDomain()
+                .getCodeSource()
+                .getLocation()
+                .toURI()
+                .getPath();
+        Treasure.LOGGER.debug("JAR Path Original -> {}", jarPathOriginal);
+
+        // file walks JAR
+        URI uri = URI.create("jar:file:" + jarPath);
+		 */
+
+		try (FileSystem fs = FileSystems.newFileSystem(jarPath, Collections.emptyMap())) {
+			result = Files.walk(fs.getPath(folder))
+					.filter(Files::isRegularFile)
+					.collect(Collectors.toList());
+		}
+		return result;
+	}
+
+	/**
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	public static InputStream getFileFromResourceAsStream(String fileName) {
+
+		// The class loader that loaded the class
+		ClassLoader classLoader = Treasure.class.getClassLoader();
+		InputStream inputStream = classLoader.getResourceAsStream(fileName);
+
+		// the stream holding the file content
+		if (inputStream == null) {
+			throw new IllegalArgumentException("file not found! " + fileName);
+		} else {
+			return inputStream;
+		}
+	}
+
+	/**
+	 * 
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 */
+	public static List<Path> getPathsFromFlatDatapacks(Path path) throws IOException {
+		List<Path> result;
+		try (Stream<Path> walk = Files.walk(path)) {
+			result = walk.filter(Files::isRegularFile)
+					.collect(Collectors.toList());
+		}
+		return result;
+	}
+
 	/**
 	 * 
 	 * @author Mark Gottschling on Jul 25, 2021
 	 *
 	 */
 	public static class SpawnEntityHelper {
-		
+
 		/**
 		 * 
 		 * @param level
@@ -77,7 +152,7 @@ public class ModUtil {
 				if (!WorldInfo.isClientSide(level)) {
 					SpawnPlacements.Type placement = SpawnPlacements.getPlacementType(entityType);
 					if (NaturalSpawner.isSpawnPositionOk(placement, level, spawnCoords.toPos(), entityType)) {
-//						mob = entityType.create(level);
+						//						mob = entityType.create(level);
 						mob.setPos((double)spawnX, (double)spawnY, (double)spawnZ);
 						level.addFreshEntityWithPassengers(mob);
 						isSpawned = true;
