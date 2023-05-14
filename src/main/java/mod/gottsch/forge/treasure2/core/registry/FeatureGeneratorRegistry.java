@@ -41,8 +41,8 @@ import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.random.RarityLevelWeightedCollection;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
-import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenerator;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
+import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -56,38 +56,25 @@ import net.minecraft.world.level.block.Block;
  */
 public class FeatureGeneratorRegistry {
 
-	public static final Map<IFeatureType, WeightedCollection<Number, IFeatureGenerator>> REGISTRY = new HashMap<>();
-
+	private static final Map<IFeatureType, IFeatureGenerator> MAP = new HashMap<>();
 
 	/**
 	 * 
 	 */
 	private FeatureGeneratorRegistry() {	}
 
-
-	public static void registerGenerator(IFeatureType type, IFeatureGenerator featureGenerator, Number weight) {
+	
+	public static void registerGenerator(IFeatureType type, IFeatureGenerator featureGenerator) {
 		// first check if featureType is registered
 		if (!EnumRegistry.isRegistered("featureType", type)) {
 			Treasure.LOGGER.warn("featureType {} is not registered. unable to complete feature generator registration.", type);
 			return;
 		}
-
-		if (!REGISTRY.containsKey(type)) {
-			REGISTRY.put(type, new WeightedCollection<>());
-		}
-		REGISTRY.get(type).add(weight, featureGenerator);
+		MAP.put(type, featureGenerator);
 	}	
 
-	/**
-	 * 
-	 * @param location
-	 * @param type
-	 * @return
-	 */
-	public static Optional<IFeatureGenerator> getNextGenerator(ResourceLocation location, IFeatureType type) {
-		if (REGISTRY.containsKey(type)) {
-			return Optional.of(REGISTRY.get(type).next());
-		}
-		return Optional.empty();
+	public IFeatureGenerator get(IFeatureType type) {
+		// TODO make more robust
+		return MAP.get(type);
 	}
 }

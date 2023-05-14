@@ -26,11 +26,11 @@ import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
 import mod.gottsch.forge.treasure2.core.config.Config;
-import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
-import mod.gottsch.forge.treasure2.core.generator.IGeneratorType;
 import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
+import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -50,15 +50,16 @@ public class DimensionalGeneratedRegistry {
 	private static final String DIMENSION_NAME = "dimension";
 	private static final String CHEST_REGISTRY_NAME = "chestRegistry";
 	private static final String WELL_REGISTRIES_NAME = "wellRegistries";
+	@Deprecated
 	private static final String WITHER_TREE_REGISTRIES_NAME = "witherTreeRegistries";
 
 	// legacy
 	//	private static final String DIMENSION_ID_TAG_NAME = "dimensionID";
 
-	public static final Map<ResourceLocation, Map<IGeneratorType, GeneratedRegistry<? extends GeneratedContext>>> CHEST_REGISTRY = new HashMap<>();
+	public static final Map<ResourceLocation, Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>>> CHEST_REGISTRY = new HashMap<>();
 	// TODO rework these - dont' need t be map of maps - actually all three of these could be rolled into 1 map of map
-	public static final Map<ResourceLocation, Map<IGeneratorType, GeneratedRegistry<? extends GeneratedContext>>> WELL_REGISTRY = new HashMap<>();
-	public static final Map<ResourceLocation, Map<IGeneratorType, GeneratedRegistry<? extends GeneratedContext>>> WITHER_REGISTRY = new HashMap<>();
+	public static final Map<ResourceLocation, Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>>> WELL_REGISTRY = new HashMap<>();
+	public static final Map<ResourceLocation, Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>>> WITHER_REGISTRY = new HashMap<>();
 
 	/**
 	 * 
@@ -83,14 +84,14 @@ public class DimensionalGeneratedRegistry {
 			if (chestConfig != null) {
 				if (chestConfig.getDimensions().contains(dimension.toString())) {
 					// create a new map for generatorType->generatedChestRegistry
-					Map<IGeneratorType, GeneratedRegistry<? extends GeneratedContext>> chestRegistryMap = new HashMap<>();
+					Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>> chestRegistryMap = new HashMap<>();
 					// add generator map to byDimension map
 					CHEST_REGISTRY.put(dimension, chestRegistryMap);
 					
 					// for each generator
 					chestConfig.getGenerators().forEach(generator -> {
 						// match the generator to the enum
-						Optional<IGeneratorType> type = TreasureApi.getGeneratorType(generator.getKey().toUpperCase());
+						Optional<IFeatureType> type = TreasureApi.getFeatureType(generator.getKey().toUpperCase());
 						if (type.isPresent()) {
 							// create a new generated chest registry with size set from config
 							chestRegistryMap.put(type.get(), new GeneratedRegistry<>(generator.getRegistrySize()));
@@ -102,18 +103,18 @@ public class DimensionalGeneratedRegistry {
 			/*
 			 * setup wither tree registry
 			 */
-			if (Config.SERVER.witherTree.enableWitherTree.get()) {
-				Map<IGeneratorType, GeneratedRegistry<? extends GeneratedContext>> witherRegistryMap = new HashMap<>();
-				witherRegistryMap.put(GeneratorType.WITHER, new GeneratedRegistry<>(Config.SERVER.witherTree.registrySize.get()));
-				WITHER_REGISTRY.put(dimension, witherRegistryMap);
-			}
+//			if (Config.SERVER.witherTree.enableWitherTree.get()) {
+//				Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>> witherRegistryMap = new HashMap<>();
+//				witherRegistryMap.put(FeatureType.WITHER, new GeneratedRegistry<>(Config.SERVER.witherTree.registrySize.get()));
+//				WITHER_REGISTRY.put(dimension, witherRegistryMap);
+//			}
 
 			/*
 			 * setup well registry
 			 */
 			if (Config.SERVER.wells.enableWells.get()) {
-				Map<IGeneratorType, GeneratedRegistry<? extends GeneratedContext>> wellsRegistryMap = new HashMap<>();
-				wellsRegistryMap.put(GeneratorType.WELL, new GeneratedRegistry<>(Config.SERVER.wells.registrySize.get()));
+				Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>> wellsRegistryMap = new HashMap<>();
+				wellsRegistryMap.put(FeatureType.WELL, new GeneratedRegistry<>(Config.SERVER.wells.registrySize.get()));
 				WELL_REGISTRY.put(dimension, wellsRegistryMap);
 			}
 		}
@@ -160,7 +161,7 @@ public class DimensionalGeneratedRegistry {
 	 * @param registry
 	 * @return
 	 */
-	public static Tag saveRegistry(Map<ResourceLocation, Map<IGeneratorType, GeneratedRegistry<? extends GeneratedContext>>> registry) {
+	public static Tag saveRegistry(Map<ResourceLocation, Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>>> registry) {
 		ListTag dimensionalRegistriesTag = new ListTag();
 		registry.forEach((dimension, map) -> {
 			CompoundTag dimensionRegistryTag = new CompoundTag();
@@ -209,7 +210,7 @@ public class DimensionalGeneratedRegistry {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> void loadRegistry(ListTag dimensinoalRegistriesTag, 
-			Map<ResourceLocation, Map<IGeneratorType, GeneratedRegistry<?>>> registry, Supplier<? extends GeneratedContext> supplier) {
+			Map<ResourceLocation, Map<IFeatureType, GeneratedRegistry<?>>> registry, Supplier<? extends GeneratedContext> supplier) {
 		if (dimensinoalRegistriesTag != null) {
 			Treasure.LOGGER.debug("loading chest registries...");  	
 			dimensinoalRegistriesTag.forEach(dimensionalRegistryTag -> {
@@ -224,7 +225,7 @@ public class DimensionalGeneratedRegistry {
 							if (registryCompound.contains("name")) {
 								// extract the name
 								String name = registryCompound.getString("name");
-								Optional<IGeneratorType> generatorType = TreasureApi.getGeneratorType(name);
+								Optional<IFeatureType> generatorType = TreasureApi.getFeatureType(name);
 								if (!generatorType.isPresent()) {
 									return;
 								}
@@ -256,7 +257,7 @@ public class DimensionalGeneratedRegistry {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static GeneratedRegistry<ChestGenContext> getChestGeneratedRegistry(ResourceLocation dimension, IGeneratorType genType) {
+	public static GeneratedRegistry<ChestGenContext> getChestGeneratedRegistry(ResourceLocation dimension, IFeatureType genType) {
 		return (GeneratedRegistry<ChestGenContext>) getGeneratedRegistry(CHEST_REGISTRY, dimension, genType);
 	}
 	
@@ -267,8 +268,8 @@ public class DimensionalGeneratedRegistry {
 	 * @param genType
 	 * @return
 	 */
-	public static GeneratedRegistry<? extends GeneratedContext> getGeneratedRegistry(Map<ResourceLocation, Map<IGeneratorType, GeneratedRegistry<?>>> registry, ResourceLocation dimension, IGeneratorType genType) {
-		Map<IGeneratorType, GeneratedRegistry<? extends GeneratedContext>> registryMap = registry.get(dimension);
+	public static GeneratedRegistry<? extends GeneratedContext> getGeneratedRegistry(Map<ResourceLocation, Map<IFeatureType, GeneratedRegistry<?>>> registry, ResourceLocation dimension, IFeatureType genType) {
+		Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>> registryMap = registry.get(dimension);
 		GeneratedRegistry<? extends GeneratedContext> genRegistry = null;
 		if (registryMap != null) {
 			genRegistry =  (GeneratedRegistry<? extends GeneratedContext>) registryMap.get(genType);

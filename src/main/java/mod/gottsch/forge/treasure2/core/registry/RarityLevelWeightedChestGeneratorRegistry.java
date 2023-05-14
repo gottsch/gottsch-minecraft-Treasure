@@ -21,14 +21,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.Table;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
-import mod.gottsch.forge.gottschcore.random.WeightedCollection;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
@@ -36,16 +33,15 @@ import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.Generator;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
-import mod.gottsch.forge.treasure2.core.generator.IGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.random.RarityLevelWeightedCollection;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
+import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
 
 /**
  * This registry is manually populated ie. not via config file.
@@ -57,8 +53,8 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 	private static final String GENERATORS_TAG = "generators";
 	
 	// collection of chest generators by rarity and type
-	public static final Table<IRarity, IGeneratorType, IChestGenerator> REGISTRY = HashBasedTable.create();
-	public static final Map<ResourceLocation, Map<IGeneratorType, RarityLevelWeightedCollection>> RARITY_SELECTOR = new HashMap<>();
+	public static final Table<IRarity, IFeatureType, IChestGenerator> REGISTRY = HashBasedTable.create();
+	public static final Map<ResourceLocation, Map<IFeatureType, RarityLevelWeightedCollection>> RARITY_SELECTOR = new HashMap<>();
 
 	
 	/**
@@ -67,7 +63,7 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 	private RarityLevelWeightedChestGeneratorRegistry() {	}
 
 	
-	public static void registerGenerator(IRarity rarity, IGeneratorType type, IChestGeneratorType chestGenType) {
+	public static void registerGenerator(IRarity rarity, IFeatureType type, IChestGeneratorType chestGenType) {
 		// first check if chestGenType is registered
 		Optional<IChestGenerator> generator = ChestGeneratorRegistry.get(chestGenType);
 		if (!generator.isPresent()) {
@@ -87,7 +83,7 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 	public static void intialize() {
 		// clear just the rarity selector. the registry is initialized during setup.
 		RARITY_SELECTOR.clear();
-		Map<IGeneratorType, RarityLevelWeightedCollection> map = null;
+		Map<IFeatureType, RarityLevelWeightedCollection> map = null;
 		RarityLevelWeightedCollection collection = null;
 		
 		// for each allowable dimension for the mod
@@ -109,7 +105,7 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 				// for each generator
 				for (Generator generator : chestConfig.getGenerators()) {
 					// match the generator to the enum
-					Optional<IGeneratorType> type = TreasureApi.getGeneratorType(generator.getKey().toUpperCase());
+					Optional<IFeatureType> type = TreasureApi.getFeatureType(generator.getKey().toUpperCase());
 					if (type.isPresent()) {
 						// get the weighted collection from the map
 						if (map.containsKey(type.get())) {
@@ -173,7 +169,7 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 					generatorsTag.forEach(generatorTag -> {
 						CompoundTag generatorCompound = (CompoundTag)generatorTag;
 						if (generatorCompound.contains("type")) {
-							Optional<IGeneratorType> type = TreasureApi.getGeneratorType(generatorCompound.getString("type"));
+							Optional<IFeatureType> type = TreasureApi.getFeatureType(generatorCompound.getString("type"));
 							if (type.isPresent()) {
 								if (generatorCompound.contains("collection")) {
 									RarityLevelWeightedCollection collection = new RarityLevelWeightedCollection();
@@ -195,9 +191,9 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 	 * @param type
 	 * @return
 	 */
-	public static IRarity getNextRarity(ResourceLocation location, IGeneratorType type) {
+	public static IRarity getNextRarity(ResourceLocation location, IFeatureType type) {
 		if (RARITY_SELECTOR.containsKey(location)) {
-			Map<IGeneratorType, RarityLevelWeightedCollection> map = RARITY_SELECTOR.get(location);
+			Map<IFeatureType, RarityLevelWeightedCollection> map = RARITY_SELECTOR.get(location);
 			if (map.containsKey(type)) {
 				return map.get(type).next();
 			}
@@ -211,7 +207,7 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 	 * @param type
 	 * @return
 	 */
-	public static IChestGenerator getNextGenerator(IRarity rarity, IGeneratorType type) {
+	public static IChestGenerator getNextGenerator(IRarity rarity, IFeatureType type) {
 		if (REGISTRY.contains(rarity, type)) {
 			IChestGenerator generator = REGISTRY.get(rarity, type);
 			return generator;
@@ -226,9 +222,9 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 	 * @param weight
 	 * @param rarity
 	 */
-	public static void adjustAllWeightsExcept(ResourceLocation location, IGeneratorType type, int weight, IRarity rarity) {
+	public static void adjustAllWeightsExcept(ResourceLocation location, IFeatureType type, int weight, IRarity rarity) {
 		if (RARITY_SELECTOR.containsKey(location)) {
-			Map<IGeneratorType, RarityLevelWeightedCollection> map = RARITY_SELECTOR.get(location);
+			Map<IFeatureType, RarityLevelWeightedCollection> map = RARITY_SELECTOR.get(location);
 			if (map.containsKey(type)) {
 				map.put(type, new RarityLevelWeightedCollection(map.get(type).adjustExcept(weight, rarity)));
 			}

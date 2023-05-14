@@ -31,7 +31,7 @@ import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
  * @author Mark Gottschling May 12, 2023
  *
  */
-public class SurfaceStructureFeatureGenerator implements IFeatureGenerator {
+public class WitherFeatureGenerator implements IFeatureGenerator {
 
 	@Override
 	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext worldGenContext, ICoords spawnCoords,

@@ -1,5 +1,5 @@
 /*
-*.launch
+/*.launch
 gradle.log
 !/src/
 !.gitignore

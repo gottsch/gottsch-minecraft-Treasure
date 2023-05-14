@@ -19,11 +19,7 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.chest;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -49,19 +45,15 @@ import mod.gottsch.forge.treasure2.core.enums.LootTableType;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
-import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
 import mod.gottsch.forge.treasure2.core.generator.marker.GravestoneMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
-import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
-import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
-import mod.gottsch.forge.treasure2.core.registry.GeneratedRegistry;
-import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
-import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
+import mod.gottsch.forge.treasure2.core.registry.*;
 import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext;
 import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext.GenType;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -446,7 +438,7 @@ public interface IChestGenerator {
 			IRarity mapRarity = getBoostedRarity(rarity, getRarityBoostAmount());
 			Treasure.LOGGER.debug("get rarity chests for dimension -> {}", dimension.toString());
 			// TODO how to merge surface and submerged
-			GeneratedRegistry<ChestGenContext> generatedRegistry = DimensionalGeneratedRegistry.getChestGeneratedRegistry(dimension, GeneratorType.TERRESTRIAL);
+			GeneratedRegistry<ChestGenContext> generatedRegistry = DimensionalGeneratedRegistry.getChestGeneratedRegistry(dimension, FeatureType.TERRESTRIAL);
 			Optional<List<ChestGenContext>> chestGenContexts = Optional.empty();
 			if (generatedRegistry != null) {
 				chestGenContexts = generatedRegistry.getByIRarity(mapRarity);

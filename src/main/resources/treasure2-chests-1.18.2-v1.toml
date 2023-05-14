@@ -1,4 +1,5 @@
 #####
+# TODO rename
 # rarities = common, uncommon, scarce, rare, epic, legendary, mythical
 #####
 [[chestConfigs]]
@@ -19,6 +20,15 @@
 		waitChunks=25	
 		surfaceProbability=15.0
 		structureProbability=25.0
+		[[chestConfigs.generators.featureGenerators]]
+			key="simpleSurface"
+			weight=10
+		[[chestConfigs.generators.featureGenerators]]
+			key="pit"
+			weight=65
+		[[chestConfigs.generators.featureGenerators]]
+			key="surfaceStructure"
+			weight=25
 		[[chestConfigs.generators.rarities]]
 			rarity="common"
 			weight=100
@@ -72,7 +82,31 @@
 			weight=6
 			minDepth=20
 			maxDepth=35
-	
+		[[chestConfigs.generators.rarities]]
+			# 'skull' rarity is a special rarity for Skull related resources ex. Skull Chest, skull_loot_table, etc.
+			# it is configured the same as 'scarce' rarity except that is occurs less frequently.
+			rarity="gold_skull"
+			weight=6
+			minDepth=20
+			maxDepth=35
+		[[chestConfigs.generators.rarities]]
+			# 'skull' rarity is a special rarity for Skull related resources ex. Skull Chest, skull_loot_table, etc.
+			# it is configured the same as 'scarce' rarity except that is occurs less frequently.
+			rarity="crystal_skull"
+			weight=6
+			minDepth=20
+			maxDepth=35
+		[[chestConfigs.generators.rarities]]
+			rarity="cauldron"
+			weight=6
+			minDepth=20
+			maxDepth=35
+		[[chestConfigs.generators.rarities]]
+			rarity="wither"
+			weight=6
+			minDepth=20
+			maxDepth=35
+
 	[[chestConfigs.generators]]
 		key="aquatic"
 		registrySize=500
@@ -138,6 +172,7 @@
 			]
 			biomeTypeWhitelist = ["ocean", "deep_ocean"]
 		
+	# deprecated
 	[[chestConfigs.chests]]
 		name="treasure2:wood_chest"
 		enabled=true

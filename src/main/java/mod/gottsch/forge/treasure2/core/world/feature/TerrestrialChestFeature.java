@@ -46,12 +46,12 @@ import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
 import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
 import mod.gottsch.forge.treasure2.core.random.RarityLevelWeightedCollection;
-import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
-import mod.gottsch.forge.treasure2.core.registry.GeneratedRegistry;
-import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.*;
 import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext;
 import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext.GenType;
+import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
+import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGeneratorResult;
+import mod.gottsch.forge.treasure2.core.world.feature.gen.selector.IFeatureGeneratorSelector;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
@@ -97,9 +97,8 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 			return false;
 		}
 		
-		// TODO the registry is null at this point
 		// get the chest registry
-		GeneratedRegistry<ChestGenContext> registry = DimensionalGeneratedRegistry.getChestGeneratedRegistry(dimension, GeneratorType.TERRESTRIAL);
+		GeneratedRegistry<ChestGenContext> registry = DimensionalGeneratedRegistry.getChestGeneratedRegistry(dimension, FeatureType.TERRESTRIAL);
 		if (registry == null) {
 			Treasure.LOGGER.debug("GeneratedRegistry is null for dimension & TERRESTRIAL. This shouldn't be. Should be initialized.");
 			return false;
@@ -111,9 +110,9 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 			return false;
 		}
 
-		Generator generatorConfig = config.getGenerator(GeneratorType.TERRESTRIAL.getName());
+		Generator generatorConfig = config.getGenerator(FeatureType.TERRESTRIAL.getName());
 		if (generatorConfig == null) {
-			Treasure.LOGGER.warn("unable to locate a config for generator type -> {}.", GeneratorType.TERRESTRIAL.getName());
+			Treasure.LOGGER.warn("unable to locate a config for feature type -> {}.", FeatureType.TERRESTRIAL.getName());
 			return false;
 		}
 
@@ -123,6 +122,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		}
 		
 		// TODO add a check against a tag that lists all the build on materials (dirt, stone, cobblestone etc), or a blacklist (bricks, planks, wool, etc)
+		
 		// the get first surface y (could be leaves, trunk, water, etc)
 		ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(genLevel, context.chunkGenerator(), new Coords(context.origin().offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
 		if (spawnCoords == Coords.EMPTY) {
@@ -131,10 +131,12 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 
 		// determine what type to generate
 //		IRarity rarity = (IRarity) WeightedChestGeneratorRegistry.getNextRarity(dimension, GeneratorType.TERRESTRIAL);
-		IRarity rarity = (IRarity) RarityLevelWeightedChestGeneratorRegistry.getNextRarity(dimension, GeneratorType.TERRESTRIAL);
+		// TODO refactor to use FeatureType
+		// TODO if Wither rarity type is selected (if exists in the weight chest gen) then could use a rarity + featureType register instead of the weighted registry.
+		IRarity rarity = (IRarity) RarityLevelWeightedChestGeneratorRegistry.getNextRarity(dimension, FeatureType.TERRESTRIAL);
 //		Treasure.LOGGER.debug("rarity -> {}", rarity);
 		if (rarity == Rarity.NONE) {
-			Treasure.LOGGER.warn("unable to obtain the next rarity for generator - >{}", GeneratorType.TERRESTRIAL);
+			Treasure.LOGGER.warn("unable to obtain the next rarity for generator - >{}", FeatureType.TERRESTRIAL);
 			return false;
 		}
 		Optional<ChestRarity> rarityConfig = generatorConfig.getRarity(rarity);
@@ -144,12 +146,13 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		}
 		// test if the override (global) biome is allowed
 		
+		// TODO might have feature generator specific biome and proximity criteria checks. ie Wither
 		if (!meetsBiomeCriteria(genLevel.getLevel(), spawnCoords, rarityConfig.get().getBiomeWhitelist(), rarityConfig.get().getBiomeBlacklist())) {
 			return false;
 		}
 
 		// check against all registered chests
-		if (!meetsProximityCriteria(genLevel, dimension, GeneratorType.TERRESTRIAL, spawnCoords, generatorConfig.getMinBlockDistance())) {
+		if (!meetsProximityCriteria(genLevel, dimension, FeatureType.TERRESTRIAL, spawnCoords, generatorConfig.getMinBlockDistance())) {
 			return false;
 		}			
 
@@ -161,6 +164,19 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 			return false;
 		}
 		
+		// select the feature generator
+		Optional<IFeatureGeneratorSelector> generatorSelector = FeatureGeneratorSelectorRegistry.getSelector(FeatureType.TERRESTRIAL, rarity);
+		if (!generatorSelector.isPresent()) {
+			Treasure.LOGGER.warn("unable to obtain a generator selector for rarity - >{}", rarity);
+			return false;
+		}
+		
+		// select the generator
+		IFeatureGenerator featureGenerator = generatorSelector.get().select();
+		
+		// call generate
+		 Optional<GeneratorResult<ChestGeneratorData>> result = featureGenerator.generate(new WorldGenContext(context), spawnCoords, rarity, rarityConfig.get());
+		
 		// generate the chest/pit/chambers
 //		Treasure.LOGGER.debug("Attempting to generate pit/chest.");
 //		Treasure.LOGGER.debug("rarity -> {}", rarity);
@@ -168,17 +184,12 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 //		Treasure.LOGGER.debug("gen -> {}", TreasureData.CHEST_GENS.get(rarity, WorldGenerators.SURFACE_CHEST).next().getClass().getSimpleName());
 //		Treasure.LOGGER.debug("configmap -> {}", TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
 
-		// TODO the registry is null at this point even though it initializes and loads
-		IChestGenerator chestGenerator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity, GeneratorType.TERRESTRIAL);
-		/*
-		 * TODO abstrat out generateChest and all related methods to their own class(es) -> FeatureGenerator(s)..
-		 * have a registry that links rarity to feature generator. ex TERRESTRIAL + COMMON = StandardFeatureGenerator,
-		 * TERRESTRIAL + WITHER = WitherFeatureGenerator.
-		 * Could even determine first if going to build underground or on top first, then PitFeatureGenerator or StructureFeatureGenerator. 
-		 * This would simplify the classes AND allow wither not to be a separate top-level feature and would obey all other chest rules.
-		 */
- 		Optional<GeneratorResult<ChestGeneratorData>> result = generateChest(new WorldGenContext(context), 
-				spawnCoords, rarity, chestGenerator, generatorConfig, rarityConfig.get());
+		// TODO move to each individual generator
+//		IChestGenerator chestGenerator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity,FeatureType.TERRESTRIAL);
+
+		
+// 		Optional<GeneratorResult<ChestGeneratorData>> result = generateChest(new WorldGenContext(context), 
+//				spawnCoords, rarity, chestGenerator, generatorConfig, rarityConfig.get());
 
 		if (result.isPresent()) {
 			Treasure.LOGGER.debug("chest gen result -> {}", result.get());
@@ -194,9 +205,9 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 
 			// update the adjusted weight collection
 			
-			RarityLevelWeightedChestGeneratorRegistry.adjustAllWeightsExcept(dimension, GeneratorType.TERRESTRIAL, 1, rarity);
-			Map<IGeneratorType, RarityLevelWeightedCollection> map = RarityLevelWeightedChestGeneratorRegistry.RARITY_SELECTOR.get(dimension);
-			RarityLevelWeightedCollection dumpCol = map.get(GeneratorType.TERRESTRIAL);
+			RarityLevelWeightedChestGeneratorRegistry.adjustAllWeightsExcept(dimension, FeatureType.TERRESTRIAL, 1, rarity);
+			Map<IFeatureType, RarityLevelWeightedCollection> map = RarityLevelWeightedChestGeneratorRegistry.RARITY_SELECTOR.get(dimension);
+			RarityLevelWeightedCollection dumpCol = map.get(FeatureType.TERRESTRIAL);
 			List<String> dump = dumpCol.dump();
 			Treasure.LOGGER.debug("weighted collection dump -> {}", dump);
 		}

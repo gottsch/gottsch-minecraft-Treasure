@@ -334,9 +334,9 @@ public final class TreasureLootTableRegistry {
 				// add the shell
 				list.add(shell.get());
 
-				Treasure.LOGGER.debug("registering in table -> {} {} : {}", key, rarity.get(), resourceLocation.toString());
+				Treasure.LOGGER.debug("registering datapack in table -> {} {} : {}", key, rarity.get(), resourceLocation.toString());
 				DATAPACK_MAP.put(resourceLocation, shell.get());
-				Treasure.LOGGER.debug("registering in map -> {}", resourceLocation.toString());
+				Treasure.LOGGER.debug("registering datapack in map -> {}", resourceLocation.toString());
 			}
 		}
 	}
@@ -485,7 +485,7 @@ public final class TreasureLootTableRegistry {
 								List<Path> lootTablePaths;
 								try {
 									// get all the paths in folder
-									lootTablePaths = ModUtil.getPathsFromResourceJAR(jarPath, JAR_LOOT_TABLES_ROOT + category);
+									lootTablePaths = ModUtil.getPathsFromResourceJAR(jarPath, JAR_LOOT_TABLES_ROOT + category.getValue());
 
 									for (Path path : lootTablePaths) {
 										Treasure.LOGGER.debug("loot table path -> {}", path);
@@ -496,7 +496,7 @@ public final class TreasureLootTableRegistry {
 									}
 								} catch (Exception e) {
 									// minimal message
-									Treasure.LOGGER.warn("warning: " , e.getMessage());
+									Treasure.LOGGER.warn("warning: unable to load datapack -> {}", jarPath + "/" + JAR_LOOT_TABLES_ROOT + category.getValue());
 								}
 							});
 						}
@@ -505,7 +505,7 @@ public final class TreasureLootTableRegistry {
 				}
 			}
 		} catch(Exception e) {
-			// TODO
+			Treasure.LOGGER.error("error: unable to load datapack:", e);
 		}
 	}
 
@@ -570,15 +570,19 @@ public final class TreasureLootTableRegistry {
 	public static List<LootTableShell> getLootTableByRarity(ILootTableType key, IRarity rarity) {
 		Treasure.LOGGER.debug("table type -> {}", key);
 		
+		// TODO datapacks is not loading properly in test even when there is a datapack
 		// get all the tables from the datapacks
 		List<LootTableShell> datapackTables = DATAPACK_TABLE.get(key, rarity);
+		if (datapackTables == null) {
+			return new ArrayList<>();
+		}
 		
 		// get all loot tables by column key
 		List<LootTableShell> tables = MASTER_TABLE.get(key, rarity);
 		
 		List<LootTableShell> result = new ArrayList<>();
-		// TOOD compare datapack tables to master tables. if datapack table name == master table name, use the datapack table.
-		if (!datapackTables.isEmpty()) {
+		// compare datapack tables to master tables. if datapack table name == master table name, use the datapack table.
+		if (!tables.isEmpty() && !datapackTables.isEmpty()) {
 			result = tables.stream().filter(t -> !datapackTables.stream().anyMatch(t2 -> t.getResourceLocation().equals(t2.getResourceLocation())))
             .collect(Collectors.toList());
 		}

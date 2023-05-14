@@ -26,6 +26,7 @@ import mod.gottsch.forge.gottschcore.enums.IEnum;
  * @author Mark Gottschling on Nov 30, 2022
  *
  */
+@Deprecated
 public enum GeneratorType implements IGeneratorType {
 	NONE,
 	TERRESTRIAL,

@@ -1,6 +1,6 @@
 /*
  * This file is part of  Treasure2.
- * Copyright (c) 2023 Mark Gottschling (gottsch)
+ * Copyright (c) 2022 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,13 +15,17 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package mod.gottsch.forge.treasure2.core.world.feature;
+package mod.gottsch.forge.treasure2.core.world.feature.gen.selector;
+
+import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
 
 /**
  * 
- * @author Mark Gottschling May 12, 2023
+ * @author Mark Gottschling on May 12, 2023
  *
  */
-public interface IFeatureGenerator {
+public interface IFeatureGeneratorSelector {
 
+	public IFeatureGenerator select();
+	
 }

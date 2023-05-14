@@ -30,12 +30,12 @@ import mod.gottsch.forge.treasure2.Treasure;
  * @author Mark Gottschling on Nov 8, 2022
  *
  */
-public class ChestConfiguration {
+public class ChestConfiguration {	
 	private List<String > dimensions;
 	private Double treasureMapProbability;
 	private List<Generator> generators;
 	private List<Chest> chests;
-
+	
 	/**
 	 * 
 	 * @param key
@@ -50,7 +50,7 @@ public class ChestConfiguration {
 		}
 		return null;
 	}
-	
+		
 	/*
 	 * 
 	 */
@@ -62,7 +62,23 @@ public class ChestConfiguration {
 		private Integer waitChunks;
 		private Double surfaceProbability;
 		private Double structureProbability;
+		private List<FeatureGenerator> featureGenerators;
 		private List<ChestRarity> rarities;
+		
+		/**
+		 * 
+		 * @param key
+		 * @return
+		 */
+		public Optional<FeatureGenerator> getFeatureGenerator(String key) {
+			// cycle through all the generators (it's a small list)
+			for (FeatureGenerator generator : featureGenerators) {
+				if (generator.key.equalsIgnoreCase(key)) {
+					return Optional.of(generator);
+				}
+			}
+			return Optional.empty();
+		}
 		
 		public Optional<ChestRarity> getRarity(IRarity rarity) {
 			try {
@@ -120,6 +136,39 @@ public class ChestConfiguration {
 		}
 		public void setRarities(List<ChestRarity> rarities) {
 			this.rarities = rarities;
+		}
+
+		public List<FeatureGenerator> getFeatureGenerators() {
+			return featureGenerators;
+		}
+
+		public void setFeatureGenerators(List<FeatureGenerator> featureGenerators) {
+			this.featureGenerators = featureGenerators;
+		}
+	}
+	
+	/*
+	 * 
+	 */
+	public static class FeatureGenerator {
+		public static final String SIMPLE_SURFACE = "simpleSurface";
+		public static final String PIT = "pit";
+		public static final String SURFACE_STRUCTURE = "surfaceStructure";
+		
+		private String key;
+		private Integer weight;
+		
+		public String getKey() {
+			return key;
+		}
+		public void setKey(String key) {
+			this.key = key;
+		}
+		public Integer getWeight() {
+			return weight;
+		}
+		public void setWeight(Integer weight) {
+			this.weight = weight;
 		}
 	}
 	

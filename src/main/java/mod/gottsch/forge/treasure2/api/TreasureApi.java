@@ -38,22 +38,12 @@ import mod.gottsch.forge.treasure2.core.item.IKeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.KeyItem;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.loot.ISpecialLootTables;
-import mod.gottsch.forge.treasure2.core.registry.ChestGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
-import mod.gottsch.forge.treasure2.core.registry.EnumRegistry;
-import mod.gottsch.forge.treasure2.core.registry.FeatureGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
-import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.TagRegistry;
-import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
-import mod.gottsch.forge.treasure2.core.registry.TreasureMetaRegistry;
-import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
+import mod.gottsch.forge.treasure2.core.registry.*;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
-import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenerator;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
+import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
+import mod.gottsch.forge.treasure2.core.world.feature.gen.selector.IFeatureGeneratorSelector;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -337,11 +327,11 @@ public class TreasureApi {
 	/**
 	 * Registers the chest generator by rarity and generatorType.
 	 * @param rarity
-	 * @param generatorType
+	 * @param featureType
 	 * @param chestGeneratorType
 	 */
-	public static void registerTypeChestGenerator(IRarity rarity, IGeneratorType generatorType,	IChestGeneratorType chestGeneratorType) {
-		RarityLevelWeightedChestGeneratorRegistry.registerGenerator(rarity, generatorType, chestGeneratorType);		
+	public static void registerChestFeatureGenerator(IRarity rarity, IFeatureType featureType, IChestGeneratorType chestGeneratorType) {
+		RarityLevelWeightedChestGeneratorRegistry.registerGenerator(rarity, featureType, chestGeneratorType);		
 	}
 	
 	/*
@@ -370,7 +360,12 @@ public class TreasureApi {
 		return KeyLockRegistry.getLocks(rarity).stream().map(lock -> lock.get()).collect(Collectors.toList());
 	}
 
-	public static void registerFeatureGeneator(IFeatureType type, IFeatureGenerator featureGenerator, Number weight) {
-		FeatureGeneratorRegistry.registerGenerator(type, featureGenerator, weight);
+	public static void registerFeatureGeneator(IFeatureType type, IFeatureGenerator featureGenerator) {
+		FeatureGeneratorRegistry.registerGenerator(type, featureGenerator);
+	}
+
+	public static void registerFeatureGeneatorSelector(FeatureType type, IRarity rarity, IFeatureGeneratorSelector selector) {
+		FeatureGeneratorSelectorRegistry.registerSelector(type, rarity, selector);
+		
 	}
 }
