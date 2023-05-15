@@ -569,16 +569,12 @@ public final class TreasureLootTableRegistry {
 	 */
 	public static List<LootTableShell> getLootTableByRarity(ILootTableType key, IRarity rarity) {
 		Treasure.LOGGER.debug("table type -> {}", key);
-		
-		// TODO datapacks is not loading properly in test even when there is a datapack
+
 		// get all the tables from the datapacks
-		List<LootTableShell> datapackTables = DATAPACK_TABLE.get(key, rarity);
-		if (datapackTables == null) {
-			return new ArrayList<>();
-		}
+		final List<LootTableShell> datapackTables = getDatapackLootTablesByTypeRarity(key, rarity);
 		
 		// get all loot tables by column key
-		List<LootTableShell> tables = MASTER_TABLE.get(key, rarity);
+		final List<LootTableShell> tables = getLootTablesByTypeRarity(key, rarity);
 		
 		List<LootTableShell> result = new ArrayList<>();
 		// compare datapack tables to master tables. if datapack table name == master table name, use the datapack table.
@@ -589,6 +585,28 @@ public final class TreasureLootTableRegistry {
 		result.addAll(datapackTables);
 		
 		return result;
+	}
+	
+	/**
+	 * 
+	 * @param type
+	 * @param rarity
+	 * @return
+	 */
+	public static List<LootTableShell> getDatapackLootTablesByTypeRarity(ILootTableType type, IRarity rarity) {
+		List<LootTableShell> datapackTables = DATAPACK_TABLE.get(type, rarity);
+		if (datapackTables == null) {
+			datapackTables =  new ArrayList<>();
+		}
+		return datapackTables;
+	}
+	
+	public static List<LootTableShell> getLootTablesByTypeRarity(ILootTableType type, IRarity rarity) {
+		List<LootTableShell> datapackTables = MASTER_TABLE.get(type, rarity);
+		if (datapackTables == null) {
+			datapackTables =  new ArrayList<>();
+		}
+		return datapackTables;
 	}
 	
 	/**
