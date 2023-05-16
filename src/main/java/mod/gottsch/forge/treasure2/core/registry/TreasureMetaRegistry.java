@@ -50,6 +50,8 @@ import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
+// TODO remove totally - too much work and complexity for un/barely used feature
+@Deprecated
 public class TreasureMetaRegistry {
 	private static final String META_FOLDER = "meta";	
 	private static final Set<String> REGISTERED_MODS;

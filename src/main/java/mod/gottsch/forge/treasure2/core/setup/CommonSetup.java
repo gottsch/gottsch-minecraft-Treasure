@@ -35,6 +35,8 @@ import mod.gottsch.forge.treasure2.core.generator.pit.*;
 import mod.gottsch.forge.treasure2.core.item.KeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
+import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
+import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureFeatureGenerators;
@@ -159,6 +161,16 @@ public class CommonSetup {
 
 		// TODO aquatic feature generators
 		
+		// register structure categories
+		TreasureApi.registerStructureCategory(StructureCategory.SUBAQUEOUS);
+		TreasureApi.registerStructureCategory(StructureCategory.SUBTERRANEAN);
+		TreasureApi.registerStructureCategory(StructureCategory.TERRANEAN);
+		
+		TreasureApi.registerStructureType(StructureType.MARKER);
+		TreasureApi.registerStructureType(StructureType.ROOM);
+		TreasureApi.registerStructureType(StructureType.RUIN);
+		
+		// register structure types
 		// register the region placements
 		TreasureApi.registerRegionPlacement(RegionPlacement.SURFACE);
 		TreasureApi.registerRegionPlacement(RegionPlacement.SUBMERGED);
@@ -292,6 +304,9 @@ public class CommonSetup {
 
 		// register loot tables
 		TreasureApi.registerLootTables(Treasure.MODID);
+		
+		// regiser templates
+		TreasureApi.registerTemplates(Treasure.MODID);
 
 		// TODO replace ChestGeneratorType with IRarity
 		// TODO this is probably moot - mergable with TypeChestGenerator

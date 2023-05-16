@@ -16,6 +16,7 @@ import com.someguyssoftware.gottschcore.meta.IMetaType;
  * @author Mark Gottschling on Jul 29, 2019
  *
  */
+@Deprecated
 public enum StructureTheme implements IMetaTheme {
 	NONE(0, "none"),
 	DUNGEON(1, "dungeon"),

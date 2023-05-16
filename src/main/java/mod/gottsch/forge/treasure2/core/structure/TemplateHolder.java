@@ -30,8 +30,12 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 public class TemplateHolder {
 	private StructureTemplate template;
 	private ResourceLocation location;
+	@Deprecated
 	private ResourceLocation metaLocation;
+	@Deprecated
 	private List<ResourceLocation> decayRuleSetLocation;
+	
+	private List<String> tags;
 	
 	public TemplateHolder() {}
 
@@ -98,5 +102,16 @@ public class TemplateHolder {
 	public String toString() {
 		return "TemplateHolder [location=" + location.toString() + ", metaLocation=" + metaLocation.toString()
 				+ ", decayRuleSetLocation=" + decayRuleSetLocation.toString() + "]";
+	}
+
+	public List<String> getTags() {
+		if (tags == null) {
+			tags = new ArrayList<>();
+		}
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
 	}
 }

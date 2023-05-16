@@ -1,6 +1,6 @@
 /*
  * This file is part of  Treasure2.
- * Copyright (c) 2019 Mark Gottschling (gottsch)
+ * Copyright (c) 2023 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -26,15 +26,13 @@ import java.util.stream.Collectors;
 import mod.gottsch.forge.gottschcore.enums.IEnum;
 
 /**
- * @author Mark Gottschling on Jul 29, 2019
+ * 
+ * @author Mark Gottschling on May 15, 2023
  *
  */
-public enum StructureType implements IStructureType {
-	RUIN(0, "ruin"),
-	MARKER(1, "marker"),
-	ROOM(2, "room"),
-	DUNGEON(3, "dungeon"),
-	VILLAGE(4, "village");
+public enum SubaqueousType implements ISubaqueousType {
+	NONE(-1, "none"),
+	SHALLOW(0, "shallow");
 
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();
@@ -43,7 +41,7 @@ public enum StructureType implements IStructureType {
 	
 	// setup reverse lookup
 	static {
-		for (IStructureType type : EnumSet.allOf(StructureType.class)) {
+		for (ISubaqueousType type : EnumSet.allOf(SubaqueousType.class)) {
 			codes.put(type.getCode(), type);
 			values.put(type.getValue(), type);
 		}
@@ -54,7 +52,7 @@ public enum StructureType implements IStructureType {
 	 * @param code
 	 * @param value
 	 */
-	StructureType(Integer code, String value) {
+	SubaqueousType(Integer code, String value) {
 		this.code = code;
 		this.value = value;
 	}
@@ -89,16 +87,16 @@ public enum StructureType implements IStructureType {
 	 * @param code
 	 * @return
 	 */
-	public static IStructureType getByCode(Integer code) {
-		return (StructureType) codes.get(code);
+	public static SubaqueousType getByCode(Integer code) {
+		return (SubaqueousType) codes.get(code);
 	}
 	/**
 	 * 
 	 * @param value
 	 * @return
 	 */
-	public static IStructureType getByValue(String value) {
-		return (StructureType) values.get(value);
+	public static SubaqueousType getByValue(String value) {
+		return (SubaqueousType) values.get(value);
 	}
 
 	@Override
@@ -111,7 +109,7 @@ public enum StructureType implements IStructureType {
 	}
 	
 	public static List<String> getNames() {
-		List<String> names = EnumSet.allOf(StructureType.class).stream().map(x -> x.name()).collect(Collectors.toList());
+		List<String> names = EnumSet.allOf(SubaqueousType.class).stream().map(x -> x.name()).collect(Collectors.toList());
 		return names;
 	}
 }

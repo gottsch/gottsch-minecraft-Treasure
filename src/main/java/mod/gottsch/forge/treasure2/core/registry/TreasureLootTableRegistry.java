@@ -80,12 +80,7 @@ public final class TreasureLootTableRegistry {
 
 	public static final String JAR_LOOT_TABLES_ROOT = "data/treasure2/loot_tables/";
 	public static final String DATAPACKS_LOOT_TABLES_ROOT = "data/treasure2/loot_tables/";
-	
-	// TODO make into ienum and register
-//	public static final String CHESTS = "chests";
-//	public static final String WISHABLES = "wishables";
-//	public static final String INJECTS = "injects";
-//
+
 	public static final List<ILootTableType> LOOT_TABLES_GROUPS = Arrays.asList(LootTableType.CHESTS, LootTableType.WISHABLES, LootTableType.INJECTS);
 
 //	@Deprecated
@@ -258,7 +253,7 @@ public final class TreasureLootTableRegistry {
 			List<Path> lootTablePaths;
 			try {
 				// get all the paths in folder
-				lootTablePaths = ModUtil.getPathsFromResourceJAR(jarPath, JAR_LOOT_TABLES_ROOT + category);
+				lootTablePaths = ModUtil.getPathsFromResourceJAR(jarPath, JAR_LOOT_TABLES_ROOT + category.getValue());
 
 				for (Path path : lootTablePaths) {
 					Treasure.LOGGER.debug("loot table path -> {}", path);
@@ -268,8 +263,8 @@ public final class TreasureLootTableRegistry {
 					registerLootTable(category, path, shell);
 				}
 			} catch (Exception e) {
-				Treasure.LOGGER.error("error: " , e);
-				e.printStackTrace();
+				Treasure.LOGGER.warn("unable to locate file in jar -> {}", JAR_LOOT_TABLES_ROOT + category.getValue());
+//				e.printStackTrace();
 			}
 		});		
 	}
@@ -435,10 +430,10 @@ public final class TreasureLootTableRegistry {
 	// these should be check first when accessing and default to the jar versions.
 
 	/**
-	 * 
+	 * Only load once - not per  registered mod.
 	 * @param modID
 	 */
-	public static void loadDataPacks(String modID) {
+	public static void loadDataPacks(String modID_xxx) {
 		String worldSaveFolderPathName = getWorldSaveFolder().toString();
 
 		// load/register exploded datapacks from world save folder
@@ -535,11 +530,13 @@ public final class TreasureLootTableRegistry {
 			Treasure.LOGGER.debug("loot table registry world load");
 			TreasureLootTableRegistry.create((ServerLevel) event.getWorld());
 
-			REGISTERED_MODS.forEach(mod -> {
-				Treasure.LOGGER.debug("registering mod -> {}", mod);
-				loadDataPacks(mod);
+//			REGISTERED_MODS.forEach(mod -> {
+//				Treasure.LOGGER.debug("registering mod -> {}", mod);
+				// TODO this call no longer needs to happen per registered mod. the jar resources are already loaded for each mod
+				// and the filesystem and datapacks only need to be loaded once because everything falls under /treasure2 folder
+				loadDataPacks(Treasure.MODID); //mod);
 //				load(mod);
-			});
+//			});
 		}
 	}
 	

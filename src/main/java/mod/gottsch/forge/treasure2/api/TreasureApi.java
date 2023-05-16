@@ -39,6 +39,9 @@ import mod.gottsch.forge.treasure2.core.item.KeyItem;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.loot.ISpecialLootTables;
 import mod.gottsch.forge.treasure2.core.registry.*;
+import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
+import mod.gottsch.forge.treasure2.core.structure.IStructureType;
+import mod.gottsch.forge.treasure2.core.structure.ISubaqueousType;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
@@ -65,6 +68,9 @@ public class TreasureApi {
 	
 	public static final String LOOT_TABLE_TYPE = "lootTableType";
 	public static final String FEATURE_TYPE = "featureType";
+	public static final String STRUCTURE_CATEGORY = "structureCategory";
+	public static final String STRUCTURE_TYPE = "structureType";
+	
 	
 	/**
 	 * 
@@ -199,6 +205,34 @@ public class TreasureApi {
 		}
 	}
 	
+	public static void registerStructureCategory(IStructureCategory category) {
+		EnumRegistry.register(STRUCTURE_CATEGORY, category);
+	}
+	
+	public static Optional<IStructureCategory> getStructureCategory(String key) {
+		IEnum ienum = EnumRegistry.get(STRUCTURE_CATEGORY, key);
+		if (ienum == null) {
+			return Optional.empty();
+		}
+		else {
+			return Optional.of((IStructureCategory) ienum);
+		}
+	}
+	
+	public static void registerStructureType(IStructureType type) {
+		EnumRegistry.register(STRUCTURE_TYPE, type);
+	}
+	
+	public static Optional<IStructureType> getStructureType(String key) {
+		IEnum ienum = EnumRegistry.get(STRUCTURE_TYPE, key);
+		if (ienum == null) {
+			return Optional.empty();
+		}
+		else {
+			return Optional.of((IStructureType) ienum);
+		}
+	}
+	
 	@Deprecated
 	public static void registerSpecialLootTable(ISpecialLootTables table) {
 		EnumRegistry.register(SPECIAL_LOOT_TABLE, table);
@@ -312,8 +346,13 @@ public class TreasureApi {
 		TreasureLootTableRegistry.register(modID);
 	}
 	
+	@Deprecated
 	public static void registerMeta(String modID) {
 		TreasureMetaRegistry.register(modID);
+	}
+	
+	public static void registerTemplates(String modID) {
+		TreasureTemplateRegistry.register(modID);
 	}
 
 	/*
@@ -366,6 +405,5 @@ public class TreasureApi {
 
 	public static void registerFeatureGeneatorSelector(FeatureType type, IRarity rarity, IFeatureGeneratorSelector selector) {
 		FeatureGeneratorSelectorRegistry.registerSelector(type, rarity, selector);
-		
 	}
 }
