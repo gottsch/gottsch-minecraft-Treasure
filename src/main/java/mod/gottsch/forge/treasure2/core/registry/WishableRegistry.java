@@ -49,17 +49,15 @@ public class WishableRegistry {
 		RARITY_BY_NAME = Maps.newHashMap();
 	}
 	
-	public static void register(RegistryObject<Item> chest) {		
-		if (!BY_NAME.containsKey(chest.get().getRegistryName())) {
-			BY_NAME.put(chest.getId(), chest);
+	public static void register(RegistryObject<Item> item) {		
+		if (!BY_NAME.containsKey(item.get().getRegistryName())) {
+			BY_NAME.put(item.getId(), item);
 		}
 	}
 	
-	public static void registerByRarity(IRarity rarity, RegistryObject<Item> chest) {
-		if (!BY_RARITY.containsKey(rarity)) {
-			BY_RARITY.put(rarity, chest);
-			RARITY_BY_NAME.put(chest.getId(), rarity);
-		}
+	public static void registerByRarity(IRarity rarity, RegistryObject<Item> item) {
+		BY_RARITY.put(rarity, item);
+		RARITY_BY_NAME.put(item.getId(), rarity);
 	}
 	
 	public static List<RegistryObject<Item>> getAll() {
@@ -80,5 +78,13 @@ public class WishableRegistry {
 	
 	public static IRarity getRarity(Item wishable) {
 		return getRarity(wishable.getRegistryName());
+	}
+
+	public static boolean isRegistered(Item item) {
+		return isRegistered(item.getRegistryName());	
+	}
+	
+	public static boolean isRegistered(ResourceLocation name) {
+		return BY_NAME.containsKey(name);	
 	}
 }

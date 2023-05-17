@@ -28,10 +28,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
-import mod.gottsch.forge.treasure2.core.item.IKeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.KeyItem;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -112,6 +110,10 @@ public class KeyLockRegistry {
 		
 	public static List<RegistryObject<KeyItem>> getKeys() {
 		return new ArrayList<>(KEYS_BY_NAME.values());
+	}
+	
+	public static List<RegistryObject<KeyItem>> getKeys(IRarity rarity) {
+		return new ArrayList<>(KEYS_BY_RARITY.get(rarity));
 	}
 	
 	public static List<RegistryObject<LockItem>> getLocks() {

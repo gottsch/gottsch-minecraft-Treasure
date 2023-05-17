@@ -18,12 +18,19 @@
 package mod.gottsch.forge.treasure2.core.registry;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.zip.ZipFile;
 
 import org.apache.commons.io.IOUtils;
 
@@ -35,11 +42,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 
+import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.gottschcore.world.gen.structure.GottschTemplate;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
-import mod.gottsch.forge.treasure2.core.structure.*;
+import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
+import mod.gottsch.forge.treasure2.core.structure.IStructureType;
+import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
+import mod.gottsch.forge.treasure2.core.structure.StructureType;
+import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.SharedConstants;
 import net.minecraft.nbt.CompoundTag;
@@ -62,7 +74,7 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
  */
 public class TreasureTemplateRegistry {
 	public static final String JAR_TEMPLATES_ROOT = "data/treasure2/structures/";
-	public static final String DATAPACKS_LOOT_TABLES_ROOT = "data/treasure2/structures/";
+	public static final String DATAPACKS_TEMPLATES_ROOT = "data/treasure2/structures/";
 	
 	@Deprecated
 	private static final String TEMPLATES_FOLDER = "structures";
@@ -74,7 +86,8 @@ public class TreasureTemplateRegistry {
 		
 	private final static Table<IStructureCategory, IStructureType, List<TemplateHolder>> TABLE = HashBasedTable.create();
 //	private final static Table<String, ResourceLocation, List<TemplateHolder>> templatesByArchetypeTypeBiome = HashBasedTable.create();
-	
+	private final static Table<IStructureCategory, IStructureType, List<TemplateHolder>> DATAPACK_TABLE = HashBasedTable.create();
+
 	/*
 	 * standard list of marker blocks to scan for 
 	 */
@@ -111,6 +124,13 @@ public class TreasureTemplateRegistry {
 		
 		GSON_INSTANCE = new GsonBuilder().create();
 		
+		// initialize table
+		for (IStructureCategory category : StructureCategory.values()) {
+			for (IStructureType type : StructureType.values()) {
+				TABLE.put(category, type, new ArrayList<>(5));
+			}
+		}
+		
         // setup standard list of markers
         markerMap = Maps.newHashMapWithExpectedSize(10);
         markerMap.put(StructureMarkers.CHEST, Blocks.CHEST);
@@ -130,14 +150,18 @@ public class TreasureTemplateRegistry {
     			markerMap.get(StructureMarkers.OFFSET),
     			markerMap.get(StructureMarkers.PROXIMITY_SPAWNER)
     			});
+        
+		// init water marker map
+        // setup standard list of markers
+        waterMarkerMap = Maps.newHashMap(getMarkerMap());
+        waterMarkerMap.put(StructureMarkers.NULL, Blocks.AIR);// <-- this is the difference between default
+
 	}
 	
 	/**
 	 * 
 	 */
-	private TreasureTemplateRegistry() {
-		
-	}
+	private TreasureTemplateRegistry() {	}
 	
 	/**
 	 * 
@@ -153,19 +177,8 @@ public class TreasureTemplateRegistry {
 		}
 		else {
 			// TODO throw error
-		}
-		
-		// init water marker map
-        // setup standard list of markers
-        waterMarkerMap = Maps.newHashMap(getMarkerMap());
-        waterMarkerMap.put(StructureMarkers.NULL, Blocks.AIR);// <-- this is the difference between default
+		}	
 
-		// initialize table
-		for (IStructureCategory category : StructureCategory.values()) {
-			for (IStructureType type : StructureType.values()) {
-				TABLE.put(category, type, new ArrayList<>(5));
-			}
-		}
 	}
 	
 	/**
@@ -282,7 +295,7 @@ public class TreasureTemplateRegistry {
 		if (name.startsWith("/")) {
 			name = name.substring(1, name.length());
 		}
-		name = name.substring(name.indexOf("structures/") + 12).replace(".nbt", "");
+		name = name.substring(name.indexOf("structures/") + 11).replace(".nbt", "");
 		return new ResourceLocation(namespace, name);
 	}
 	
@@ -325,6 +338,133 @@ public class TreasureTemplateRegistry {
 		return Optional.ofNullable(template);
 	}
 	
+	/**
+	 * 
+	 * @param event
+	 */
+	public static void onWorldLoad(WorldEvent.Load event) {
+		if (!event.getWorld().isClientSide() && WorldInfo.isSurfaceWorld((ServerLevel) event.getWorld())) {
+			Treasure.LOGGER.debug("template registry world load");
+			TreasureTemplateRegistry.create((ServerLevel) event.getWorld());
+			
+//			REGISTERED_MODS.forEach(mod -> {
+//				Treasure.LOGGER.debug("registering mod -> {}", mod);
+//				load(mod);
+				loadDataPacks(Treasure.MODID, getMarkerScanList(), getReplacementMap());
+//			});
+		}
+	}
+	
+	public static Optional<LootTableShell> loadFromZip(Path zipPath, Path resourceFilePath) {
+		Optional<LootTableShell> resourceLootTable = Optional.empty();
+
+		return resourceLootTable;
+	}
+	
+	public static Optional<LootTableShell> loadFromZip(ZipFile zipFile, Path resourceFilePath) {
+		Optional<LootTableShell> resourceLootTable = Optional.empty();
+
+		return resourceLootTable;
+	}
+	
+	/**
+	 * 
+	 * @param modID_xxx
+	 * @param markerBlocks
+	 * @param replacementBlocks
+	 */
+	public static void loadDataPacks(String modID_xxx, List<Block> markerBlocks, Map<BlockState, BlockState> replacementBlocks) {
+		String worldSaveFolderPathName = getWorldSaveFolder().toString();
+
+		StructureCategory.getNames().forEach(category -> {
+			List<Path> templatePaths;
+			// build the path
+			Path folderPath = Paths.get(worldSaveFolderPathName, DATAPACKS_TEMPLATES_ROOT, category.toLowerCase());
+
+			try {
+				templatePaths = ModUtil.getPathsFromFlatDatapacks(folderPath);
+
+				for (Path path : templatePaths) {
+					Treasure.LOGGER.debug("template path -> {}", path);
+					// load the shell from the jar
+					Optional<GottschTemplate> shell = loadFromFileSystem(path, markerBlocks, replacementBlocks);
+					// extra step - strip the beginning path from the path, so it is just data/treasure2/...
+					String p = path.toString().replace(worldSaveFolderPathName, "");
+					// register
+					registerDatapacksTemplate(Paths.get(p), shell.get());
+				}
+			} catch(NoSuchFileException e) {
+				// silently sallow exception
+			} catch (Exception e) {
+				Treasure.LOGGER.error("An error occurred attempting to register a loot table from the world save datapacks folder: ", e);
+			}			
+		});
+	}
+	
+	/**
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public static Optional<GottschTemplate> loadFromFileSystem(Path path, List<Block> markerBlocks, Map<BlockState, BlockState> replacementBlocks) {
+		try {
+			File file = path.toFile();
+			if (file.exists()) {
+				InputStream inputStream = new FileInputStream(file);
+				Optional<GottschTemplate> template = readTemplateFromStream(inputStream, markerBlocks, replacementBlocks);
+			}
+		}
+		catch(Exception e) {
+			Treasure.LOGGER.warn("Unable to loot table manifest");
+		}	
+		return Optional.empty();
+	}
+	
+	/**
+	 * 
+	 * @param path
+	 * @param template
+	 */
+	private static void registerDatapacksTemplate(Path path, GottschTemplate template) {
+		// extract the category
+		String categoryToken = path.getName(3).toString();
+		Optional<IStructureCategory> category = TreasureApi.getStructureCategory(categoryToken);
+		if (category.isEmpty()) { 
+			return;
+		}
+		
+		String typeToken = null;
+		Optional<IStructureType> type = Optional.empty();
+		if (path.getNameCount() > 4) {
+			typeToken = path.getName(4).toString();
+			type = TreasureApi.getStructureType(typeToken);
+			if (type.isEmpty()) {
+				return;
+			}
+		}
+		
+		// convert to resource location
+		ResourceLocation resourceLocation = asResourceLocation(path);
+		Treasure.LOGGER.debug("resource location -> {}", resourceLocation);
+		
+		// setup the template holder
+		TemplateHolder holder = new TemplateHolder()
+				.setLocation(resourceLocation)
+				.setTemplate(template);				
+		
+		if (path.getNameCount() > 5) {
+			for (int i = 5; i < path.getNameCount(); i++) {
+				holder.getTags().add(path.getName(i).toString());
+			}
+		}
+		
+		// add to table
+		if (!DATAPACK_TABLE.contains(category, type)) {
+			DATAPACK_TABLE.put(category.get(), type.get(),new ArrayList<>());
+		}
+		DATAPACK_TABLE.get(category.get(), type.get()).add(holder);
+	}
+	
 	////////////////////////  ////////////////////////  /////////////////////////////
 	/**
 	 * 
@@ -345,21 +485,7 @@ public class TreasureTemplateRegistry {
 //	}
 	
 	
-	/**
-	 * 
-	 * @param event
-	 */
-	public static void onWorldLoad(WorldEvent.Load event) {
-		if (!event.getWorld().isClientSide() && WorldInfo.isSurfaceWorld((ServerLevel) event.getWorld())) {
-			Treasure.LOGGER.debug("template registry world load");
-			TreasureTemplateRegistry.create((ServerLevel) event.getWorld());
-			
-			REGISTERED_MODS.forEach(mod -> {
-				Treasure.LOGGER.debug("registering mod -> {}", mod);
-//				load(mod);
-			});
-		}
-	}
+
 	
 	/**
 	 * TODO only called once from onWorldLoad event
@@ -492,29 +618,30 @@ public class TreasureTemplateRegistry {
 	 * 
 	 * @param modID
 	 */
-	private static void createTemplateFolder(String modID) {
-		List<Path> folders = Arrays.asList(
-				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "submerged"),
-				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "subterranean"),
-				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "surface"),
-				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "wells")
-				);
-		/*
-		 *  build a path to the specified location
-		 *  ie ../[WORLD SAVE]/datapacks/[MODID]/templates
-		 */
-		folders.forEach(folder -> {
-			if (Files.notExists(folder)) {
-				Treasure.LOGGER.debug("template folder \"{}\" will be created.", folder.toString());
-				try {
-					Files.createDirectories(folder);
-
-				} catch (IOException e) {
-					Treasure.LOGGER.warn("Unable to create template folder \"{}\"", folder.toString());
-				}
-			}
-		});
-	}
+//	@Deprecated
+//	private static void createTemplateFolder(String modID) {
+//		List<Path> folders = Arrays.asList(
+//				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "submerged"),
+//				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "subterranean"),
+//				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "surface"),
+//				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "wells")
+//				);
+//		/*
+//		 *  build a path to the specified location
+//		 *  ie ../[WORLD SAVE]/datapacks/[MODID]/templates
+//		 */
+//		folders.forEach(folder -> {
+//			if (Files.notExists(folder)) {
+//				Treasure.LOGGER.debug("template folder \"{}\" will be created.", folder.toString());
+//				try {
+//					Files.createDirectories(folder);
+//
+//				} catch (IOException e) {
+//					Treasure.LOGGER.warn("Unable to create template folder \"{}\"", folder.toString());
+//				}
+//			}
+//		});
+//	}
 	
 	/**
 	 * Convenience method.

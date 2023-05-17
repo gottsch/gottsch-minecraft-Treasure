@@ -20,12 +20,14 @@
 package mod.gottsch.forge.treasure2.core.item;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 import mod.gottsch.forge.gottschcore.block.BlockContext;
+import mod.gottsch.forge.gottschcore.enums.IRarity;
+import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
@@ -33,19 +35,24 @@ import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.IWishingWellBlock;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.enums.LootTableType;
+import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
+import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
+import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.registries.RegistryObject;
 
 
 /**
@@ -53,6 +60,8 @@ import net.minecraft.world.level.block.Blocks;
  *
  */
 public class WealthItem extends Item { //implements IWishable {
+	public static final String DROPPED_BY = "droppedBy";
+	
 	/**
 	 * 
 	 * @param properties
@@ -79,48 +88,54 @@ public class WealthItem extends Item { //implements IWishable {
 		// get the item stack or number of items.
 		ItemStack entityItemStack = entityItem.getItem();
 		
-		Level world = entityItem.level;
-		if (WorldInfo.isClientSide(world)) {
+		Level level = entityItem.level;
+		if (WorldInfo.isClientSide(level)) {
 			return super.onEntityItemUpdate(stack, entityItem);
 		}
 		
-		// TODO check if member/registered or wishing tag
+		// check if registered
+//		if (!WishableRegistry.isRegistered(stack.getItem())) {
+		if (stack.is(TreasureTags.Items.WISHABLES)) {
+			return super.onEntityItemUpdate(stack, entityItem);
+		}
 		
-		// get the position
 		ICoords coords = new Coords(entityItem.blockPosition());
-		BlockContext blockContext = new BlockContext(world, coords);
-		int numWishingWellBlocks = 0;
+//		BlockContext blockContext = new BlockContext(level, coords);
+		int count = 0;
 		// check if in water
-		if (blockContext.equalsBlock(Blocks.WATER)) {
+		if (level.getBlockState(entityItem.blockPosition()).is(Blocks.WATER)) {
+			// get the position
+
+//		if (blockContext.equalsBlock(Blocks.WATER)) {
 			// check if the water block is adjacent to 2 wishing well blocks
 			ICoords checkCoords = coords.add(-1, 0, -1);
 			for (int z = 0; z < 3; z++) {
 				for (int x = 0; x < 3; x++) {
-					BlockContext checkCube = new BlockContext(world, checkCoords);
-					if (checkCube.toBlock() instanceof IWishingWellBlock) {
-						numWishingWellBlocks++;
+					BlockContext checkBlock = new BlockContext(level, checkCoords);
+					if (checkBlock.toBlock() instanceof IWishingWellBlock) {
+						count++;
 					}					
-					if (numWishingWellBlocks >= 2) {
+					if (count >= 2) {
 						break;
 					}
 				}
 			}
 			
 			// TODO reenable
-//			if (numWishingWellBlocks >=2) {
-//				Random random = new Random();
-//				for (int itemIndex = 0; itemIndex < entityItemStack.getCount(); itemIndex++) {
-//					// generate an item for each item in the stack
-//					Optional<ItemStack> lootStack = generateLoot(world, random, entityItem.getItem(), coords);
+			if (count >=2) {
+				Random random = new Random();
+				for (int itemIndex = 0; itemIndex < entityItemStack.getCount(); itemIndex++) {
+					// generate an item for each item in the stack
+					Optional<ItemStack> lootStack = generateLoot(level, random, entityItem.getItem(), coords);
 //					if (lootStack.isPresent()) {
 //						// spawn the item 
 //						InventoryHelper.dropItemStack(world, (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), lootStack.get());
 //					}
-//				}
+				}
 //				// remove the item entity
 //				entityItem.remove(RemovalReason.DISCARDED);
 //				return true;
-//			}
+			}
 		}
 		return super.onEntityItemUpdate(stack, entityItem);
 	}
@@ -133,44 +148,47 @@ public class WealthItem extends Item { //implements IWishable {
 	 * @param coords
 	 */
 //	@Override
-//	public Optional<ItemStack> generateLoot(Level world, Random random, ItemStack itemStack, ICoords coords) {
-//		List<LootTableShell> lootTables = getLootTables();
+	public Optional<ItemStack> generateLoot(Level world, Random random, ItemStack itemStack, ICoords coords) {
+		IRarity rarity = WishableRegistry.getRarity(this);	
+		
+		List<LootTableShell> lootTables = getLootTables(rarity);
 //		
 //		// TODO most of this seems repeated from IChestGenerator.  Make a common class/methods
 //		
-//		ItemStack outputStack = null;
+		ItemStack outputStack = null;
 //		// handle if loot tables is null or size = 0. return an item (apple) to ensure continuing functionality
-//		if (lootTables == null || lootTables.size() == 0) {
-//			outputStack = getDefaultLootKey(random);
-//		}
-//		else {
-//			// attempt to get the player who dropped the coin
-//			ItemStack wealthItem = itemStack;
-//			CompoundNBT nbt = wealthItem.getTag();
-//			Treasure.LOGGER.debug("item as a tag");
-//			PlayerEntity player = null;
-//			if (nbt != null && nbt.contains(DROPPED_BY_KEY)) {
-//				// TODO change to check by UUID
-//				for (PlayerEntity p : world.players()) {
-//					if (p.getName().getString().equalsIgnoreCase(nbt.getString(DROPPED_BY_KEY))) {
+		if (lootTables.isEmpty()) {
+			outputStack = getDefaultLootKey(random, rarity);
+		}
+		else {
+			// attempt to get the player who dropped the coin
+			ItemStack wealthItem = itemStack;
+			CompoundTag tag = wealthItem.getTag();
+			Treasure.LOGGER.debug("item as a tag");
+			Player player = null;
+			if (tag != null && tag.contains(DROPPED_BY)) {
+				UUID playerUuid = tag.getUUID(DROPPED_BY);
+				player = world.getPlayerByUUID(playerUuid);
+//				for (Player p : world.players()) {
+//					if (p.getName().getString().equalsIgnoreCase(tag.getString(DROPPED_BY))) {
 //						player = p;
 //					}
 //				}
-//				if (player != null && Treasure.LOGGER.isDebugEnabled()) {
-//					Treasure.LOGGER.debug("coin dropped by player -> {}", player.getName());
-//				}
-//				else {
-//					Treasure.LOGGER.debug("can't find player!");
-//				}
-//			}
-////			Treasure.LOGGER.debug("player -> {}", player.getName().getString());
-//
-//			// select a table shell
-//			LootTableShell tableShell = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
-//			if (tableShell.getResourceLocation() == null) {
-//				return Optional.empty();
-//			}
-//			
+				if (player != null && Treasure.LOGGER.isDebugEnabled()) {
+					Treasure.LOGGER.debug("coin dropped by player -> {}", player.getName());
+				}
+				else {
+					Treasure.LOGGER.debug("can't find player!");
+				}
+			}
+//			Treasure.LOGGER.debug("player -> {}", player.getName().getString());
+
+			// select a table shell
+			LootTableShell tableShell = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
+			if (tableShell.getResourceLocation() == null) {
+				return Optional.empty();
+			}
+//			TODO FINISH
 //			// get the vanilla table from shell
 //			LootTable table = world.getServer().getLootTables().get(tableShell.getResourceLocation());
 //			// get a list of loot pools
@@ -203,7 +221,43 @@ public class WealthItem extends Item { //implements IWishable {
 //			// select one item randomly
 //			outputStack = itemStacks.get(RandomHelper.randomInt(0, itemStacks.size()-1));
 //			Treasure.LOGGER.debug("loot item output stack -> {}", outputStack.getItem().getRegistryName().toString());
-//		}				
-//		return Optional.of(outputStack);
-//	}
+		}				
+		return Optional.of(outputStack);
+	}
+	
+	// ///////////////////////////  ///
+		
+	/**
+	 * 
+	 * @return
+	 */
+	public List<LootTableShell> getLootTables() {
+		// determine the rarity tag the item belongs to
+		
+		// TODO should getRarity return a list? that would change the entire registry.
+		IRarity rarity = WishableRegistry.getRarity(this);		
+		
+		return getLootTables(rarity);
+	}
+	
+	public List<LootTableShell> getLootTables(IRarity rarity) {
+		return TreasureLootTableRegistry.getLootTableByRarity(LootTableType.WISHABLES, rarity);
+	}
+	
+	public ItemStack getDefaultLootKey (Random random) {
+//
+//		List<KeyItem> keys = new ArrayList<>(TreasureItems.keys.get(Rarity.COMMON));
+//		return new ItemStack(keys.get(random.nextInt(keys.size())));
+		IRarity rarity = WishableRegistry.getRarity(this);
+		return getDefaultLootKey(random, rarity);
+	}
+
+	// TODO should this be static or create an object for vanilla items that are
+	// in Wishables tag ?
+	public ItemStack getDefaultLootKey(Random random, IRarity rarity) {
+		List<RegistryObject<KeyItem>> keys = KeyLockRegistry.getKeys(rarity);
+		List<KeyItem> keyItems = keys.stream().map(k -> k.get()).toList();
+//		List<KeyItem> keys = new ArrayList<>(TreasureItems.keys.get(rarity));
+		return new ItemStack(keyItems.get(random.nextInt(keyItems.size())));
+	}
 }

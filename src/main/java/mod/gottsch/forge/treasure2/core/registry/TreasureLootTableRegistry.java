@@ -118,8 +118,8 @@ public final class TreasureLootTableRegistry {
 	/*
 	 * Guava Table of LootTableShell for Chests based on LootTableManager-key and Rarity
 	 */
-	@Deprecated
-	private final static Table<String, IRarity, List<LootTableShell>> CHEST_LOOT_TABLES_TABLE = HashBasedTable.create();
+//	@Deprecated
+//	private final static Table<String, IRarity, List<LootTableShell>> CHEST_LOOT_TABLES_TABLE = HashBasedTable.create();
 
 	/*
 	 * Master Guava Table of LootTables by Top-Level(Type) ex chests | wishables | injects, IRarity, List<LootTableShell>

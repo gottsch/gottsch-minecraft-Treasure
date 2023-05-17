@@ -89,8 +89,18 @@ public class TreasureItemTagsProvider extends ItemTagsProvider {
 		tag(TreasureTags.Items.SCARCE_WISHABLE).add(TreasureItems.TOPAZ.get());
 		tag(TreasureTags.Items.RARE_WISHABLE).add(TreasureItems.ONYX.get());
 		tag(TreasureTags.Items.RARE_WISHABLE).add(TreasureItems.RUBY.get());
+		tag(TreasureTags.Items.RARE_WISHABLE).add(TreasureItems.WHITE_PEARL.get());
 		tag(TreasureTags.Items.EPIC_WISHABLE).add(TreasureItems.SAPPHIRE.get());
-		// NOTE white_pearl and black_pearl are not mapped via tags because they use
+		tag(TreasureTags.Items.EPIC_WISHABLE).add(TreasureItems.BLACK_PEARL.get());
+		
+		tag(TreasureTags.Items.WISHABLES).addTag(TreasureTags.Items.COMMON_WISHABLE);
+		tag(TreasureTags.Items.WISHABLES).addTag(TreasureTags.Items.UNCOMMON_WISHABLE);
+		tag(TreasureTags.Items.WISHABLES).addTag(TreasureTags.Items.SCARCE_WISHABLE);
+		tag(TreasureTags.Items.WISHABLES).addTag(TreasureTags.Items.RARE_WISHABLE);
+		tag(TreasureTags.Items.WISHABLES).addTag(TreasureTags.Items.EPIC_WISHABLE);
+		tag(TreasureTags.Items.WISHABLES).addTag(TreasureTags.Items.LEGENDARY_WISHABLE);
+		tag(TreasureTags.Items.WISHABLES).addTag(TreasureTags.Items.MYTHICAL_WISHABLE);
+		// @Deprecated NOTE white_pearl and black_pearl are not mapped via tags because they use
 		// custom, non-rarity based loot tables
 		
 		// pouchables

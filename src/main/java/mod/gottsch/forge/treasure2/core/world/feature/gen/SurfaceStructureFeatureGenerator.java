@@ -36,6 +36,7 @@ public class SurfaceStructureFeatureGenerator implements IFeatureGenerator {
 	@Override
 	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext worldGenContext, ICoords spawnCoords,
 			IRarity rarity, ChestRarity rarityConfig) {
+		
 		// TODO Auto-generated method stub
 		return Optional.empty();
 	}
