@@ -286,10 +286,12 @@ public interface IChestGenerator {
 		}		
 		Treasure.LOGGER.debug("selected loot table -> {} from resource -> {}", lootTable, lootTableResourceLocation);
 
+		// TODO remove effectiveRarity
 		// update rarity from lootTableShell		
-		IRarity effectiveRarity = TreasureLootTableRegistry.getEffectiveRarity(lootTableShell.get(), rarity);		
-		Treasure.LOGGER.debug("generating loot from loot table for effective rarity {}", effectiveRarity);
-
+//		IRarity effectiveRarity = TreasureLootTableRegistry.getEffectiveRarity(lootTableShell.get(), rarity);		
+//		Treasure.LOGGER.debug("generating loot from loot table for effective rarity {}", effectiveRarity);
+		IRarity effectiveRarity = rarity;
+		
 		// setup lists of items
 		List<ItemStack> treasureStacks = new ArrayList<>();
 		List<ItemStack> itemStacks = new ArrayList<>();
@@ -345,7 +347,7 @@ public interface IChestGenerator {
 		// TODO move to separate method
 		// fetch all injected loot tables by rarity
 		// NOTE removed the category. trying to keep it as straight forward as possible
-		Treasure.LOGGER.debug("searching for injectable tables for category ->{}, rarity -> {}", lootTableShell.get().getCategory(), effectiveRarity);
+		Treasure.LOGGER.debug("searching for injectable tables for category ->{}, rarity -> {}", LootTableType.INJECTS, effectiveRarity);
 		List<LootTableShell> injectLootTableShells = buildLootTableList(LootTableType.INJECTS, effectiveRarity);
 		// NOTE injects are special case because they have 2 top-levels ex inject/chests, inject/wishables, so the list has to be filtered
 		injectLootTableShells = injectLootTableShells
