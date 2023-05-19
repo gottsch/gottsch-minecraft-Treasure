@@ -23,11 +23,13 @@ import mod.gottsch.forge.gottschcore.spatial.Heading;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
+import mod.gottsch.forge.gottschcore.world.gen.structure.StructureMarkers;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.SkeletonBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -47,16 +49,15 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 public class GeneratorUtil {
 	public static final EnumProperty<Direction> FACING = EnumProperty.create("facing", Direction.class);
 
-	// enable after TemplateRegistry is working
-	//	/**
-	//	 * convenience method
-	//	 * 
-	//	 * @param offset
-	//	 * @return
-	//	 */
-	//	public static Block getMarkerBlock(StructureMarkers marker) {
-	//		return TreasureTemplateRegistry.getManager().getMarkerMap().get(marker);
-	//	}
+		/**
+		 * convenience method
+		 * 
+		 * @param offset
+		 * @return
+		 */
+		public static Block getMarkerBlock(StructureMarkers marker) {
+			return TreasureTemplateRegistry.getMarkerMap().get(marker);
+		}
 
 	/**
 	 * 

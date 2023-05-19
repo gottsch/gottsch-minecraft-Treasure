@@ -17,14 +17,23 @@
  */
 package mod.gottsch.forge.treasure2.core.world.feature.gen;
 
+import java.util.List;
 import java.util.Optional;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
+import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
+import mod.gottsch.forge.gottschcore.world.WorldInfo;
+import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
+import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.ruin.IRuinGenerator;
+import mod.gottsch.forge.treasure2.core.generator.ruin.SurfaceRuinGenerator;
+import mod.gottsch.forge.treasure2.core.registry.RuinGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 
 /**
  * 
@@ -34,11 +43,51 @@ import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 public class SurfaceStructureFeatureGenerator implements IFeatureGenerator {
 
 	@Override
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext worldGenContext, ICoords spawnCoords,
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords spawnCoords,
 			IRarity rarity, ChestRarity rarityConfig) {
 		
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		Treasure.LOGGER.debug("surface coords -> {}", spawnCoords.toShortString());
+		if (!WorldInfo.isHeightValid(spawnCoords)) {
+			Treasure.LOGGER.debug("surface coords are invalid -> {}", spawnCoords.toShortString());
+			return Optional.empty();
+		}
+
+		// check if it has 50% land
+		if (!WorldInfo.isSolidBase(context.level(), spawnCoords, 2, 2, 50)) {
+			Treasure.LOGGER.debug("coords -> {} does not meet solid base requires for {} x {}", spawnCoords.toShortString(), 2, 2);
+			return Optional.empty();
+		}
+		
+		// select a ruins generator
+		IRuinGenerator<GeneratorResult<ChestGeneratorData>> ruinGenerator = selectGenerator(context, spawnCoords, rarity);
+		
+		// select a template
+		// generate structure
+		Optional<GeneratorResult<ChestGeneratorData>> ruinResult = ruinGenerator.generate(context, spawnCoords, null);
+		if (!ruinResult.isPresent()) {
+			return Optional.empty();
+		}
+		Treasure.LOGGER.debug("surface result -> {}", ruinResult.toString());
+//		
+//		ICoords chestCoords = new Coords(spawnCoords);
+//		Treasure.LOGGER.debug("surface chest coords -> {}", chestCoords);
+				
+		ruinResult.get().getData().setSpawnCoords(spawnCoords);
+		
+		return ruinResult;
+	}
+
+	/**
+	 * 
+	 * @param context
+	 * @param coords
+	 * @param rarity
+	 * @return
+	 */
+	public IRuinGenerator<GeneratorResult<ChestGeneratorData>> selectGenerator(IWorldGenContext context, ICoords coords, IRarity rarity) {
+		List<IRuinGenerator<GeneratorResult<ChestGeneratorData>>> generators = RuinGeneratorRegistry.get(StructureCategory.TERRANEAN);
+		IRuinGenerator<GeneratorResult<ChestGeneratorData>> generator = generators.get(context.random().nextInt(generators.size()));
+		return generator;
 	}
 
 }

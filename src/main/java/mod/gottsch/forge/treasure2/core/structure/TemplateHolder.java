@@ -100,8 +100,7 @@ public class TemplateHolder {
 
 	@Override
 	public String toString() {
-		return "TemplateHolder [location=" + location.toString() + ", metaLocation=" + metaLocation.toString()
-				+ ", decayRuleSetLocation=" + decayRuleSetLocation.toString() + "]";
+		return "TemplateHolder [location=" + location.toString() + "]";
 	}
 
 	public List<String> getTags() {

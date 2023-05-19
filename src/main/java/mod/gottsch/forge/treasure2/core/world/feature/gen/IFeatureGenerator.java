@@ -27,6 +27,7 @@ import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorResult;
+import mod.gottsch.forge.treasure2.core.generator.ruin.IRuinGenerator;
 
 /**
  * 

@@ -34,7 +34,8 @@ public enum StructureType implements IStructureType {
 	MARKER(1, "marker"),
 	ROOM(2, "room"),
 	DUNGEON(3, "dungeon"),
-	VILLAGE(4, "village");
+	VILLAGE(4, "village"),
+	WELL(5, "well");
 
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();

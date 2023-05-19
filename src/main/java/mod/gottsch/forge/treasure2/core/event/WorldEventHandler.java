@@ -1,13 +1,10 @@
 package mod.gottsch.forge.treasure2.core.event;
 
-import java.nio.file.Path;
-
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
-import mod.gottsch.forge.treasure2.core.registry.TreasureMetaRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.world.feature.TreasureConfiguredFeatures;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureOreGeneration;
@@ -15,8 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome.BiomeCategory;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraftforge.common.BiomeManager.BiomeType;
-import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -46,9 +41,7 @@ public class WorldEventHandler {
 			if (!isLoaded && Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString())) {
 				// register mod's loot tables
 				TreasureLootTableRegistry.onWorldLoad(event);
-				TreasureMetaRegistry.onWorldLoad(event);
-//				TreasureTemplateRegistry.onWorldLoad(event);
-				
+				TreasureTemplateRegistry.onWorldLoad(event);				
 				TreasureSavedData.get((Level)event.getWorld());
 			}
 			
@@ -67,9 +60,11 @@ public class WorldEventHandler {
 		if (event.getCategory() != BiomeCategory.OCEAN) {
 			// generate surface/terrestrial chests
 			event.getGeneration().addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TreasureConfiguredFeatures.TERRESTRIAL_CHEST_PLACED.getHolder().get());
+			event.getGeneration().addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TreasureConfiguredFeatures.WELL_PLACED.getHolder().get());
+
 		}
 		else {
-			// TOOD generate submerged/aquatic chests
+			event.getGeneration().addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TreasureConfiguredFeatures.SUBAQUEOUS_CHEST_PLACED.getHolder().get());
 		}
 	}
 }

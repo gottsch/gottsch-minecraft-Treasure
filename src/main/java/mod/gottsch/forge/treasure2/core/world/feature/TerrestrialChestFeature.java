@@ -126,9 +126,8 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		if (spawnCoords == Coords.EMPTY) {
 			return false;
 		}
-
+		
 		// determine what type to generate
-//		IRarity rarity = (IRarity) WeightedChestGeneratorRegistry.getNextRarity(dimension, GeneratorType.TERRESTRIAL);
 		IRarity rarity = (IRarity) RarityLevelWeightedChestGeneratorRegistry.getNextRarity(dimension, FeatureType.TERRESTRIAL);
 //		Treasure.LOGGER.debug("rarity -> {}", rarity);
 		if (rarity == Rarity.NONE) {
@@ -233,6 +232,10 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 	 * @return
 	 */
 	private boolean meetsProbabilityCriteria(Random random, Generator generatorConfig) {
+		if (generatorConfig.getProbability() == null) {
+			Treasure.LOGGER.warn("chest generator config -> '{}' is missing 'probability' value", generatorConfig.getKey());
+			return false;
+		}
 		if (!RandomHelper.checkProbability(random, generatorConfig.getProbability())) {
 			Treasure.LOGGER.debug("chest gen does not meet generate probability.");
 			return false;

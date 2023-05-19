@@ -15,23 +15,54 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package mod.gottsch.forge.treasure2.core.command;
+package mod.gottsch.forge.treasure2.core.cache;
 
-import mod.gottsch.forge.treasure2.Treasure;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import java.util.List;
+
+import mod.gottsch.forge.gottschcore.spatial.ICoords;
 
 /**
  * 
- * @author Mark Gottschling on Apr 30, 2023
+ * @author Mark Gottschling on May 19, 2023
  *
+ * @param <T>
  */
-@Mod.EventBusSubscriber(modid = Treasure.MODID)
-public class TreasureCommands {
-	@SubscribeEvent
-	public static void onServerStarting(RegisterCommandsEvent event) {
-		SpawnChestCommand.register(event.getDispatcher());
-//		SpawnRuinsCommand.register(event.getDispatcher());
-	}
+public interface ISimpleDistanceCache<T> {
+
+	/**
+	 * 
+	 * @param key
+	 * @return
+	 */
+	boolean isCached(T object);
+
+	/**
+	 * 
+	 */
+	void cache(ICoords key, T object);
+
+	/**
+	 * 
+	 * @param object
+	 */
+	void uncache(ICoords key);
+
+	/**
+	 * 
+	 */
+	void clear();
+
+	/**
+	 * 
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public boolean withinArea(ICoords start, ICoords end);
+	
+	/**
+	 * This will not update parent collection.
+	 * @return
+	 */
+	List<T> getValues();
 }

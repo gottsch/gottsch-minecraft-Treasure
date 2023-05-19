@@ -17,9 +17,6 @@
  */
 package mod.gottsch.forge.treasure2.core.world.feature.gen;
 
-import mod.gottsch.forge.treasure2.api.TreasureApi;
-import mod.gottsch.forge.treasure2.core.config.Config;
-import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.selector.IFeatureGeneratorSelector;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.selector.WeightedChestFeatureGeneratorSelector;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.selector.WitherFeatureGeneratorSelector;
@@ -49,6 +46,6 @@ public class TreasureFeatureGenerators {
 		WeightedChestFeatureGeneratorSelector selector = (WeightedChestFeatureGeneratorSelector)STANDARD_CHEST_FEATURE_GENERATOR_SELECTOR;
 		selector.add(10, TreasureFeatureGenerators.SIMPLE_SURFACE_FEATURE_GENERATOR);
 		selector.add(65, TreasureFeatureGenerators.PIT_FEATURE_GENERATOR);
-//		selector.add(25, SURFACE_STRUCTURE_FEATURE_GENERATOR);
+		selector.add(25, SURFACE_STRUCTURE_FEATURE_GENERATOR);
 	}
 }

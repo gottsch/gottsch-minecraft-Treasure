@@ -90,6 +90,12 @@ public class TreasureConfiguredFeatures {
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> TERRESTRIAL_CHEST = FEATURES.register("terrestrial_chest",
 			() -> new TerrestrialChestFeature(NoneFeatureConfiguration.CODEC));
 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> SUBAQUEOUS_CHEST = FEATURES.register("subaqueous_chest",
+			() -> new SubaqueousChestFeature(NoneFeatureConfiguration.CODEC));
+
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WELL = FEATURES.register("well",
+			() -> new WellFeature(NoneFeatureConfiguration.CODEC));
+	
 	// Configured features
 	public static final RegistryObject<ConfiguredFeature<?, ?>> TOPAZ_ORE_CONFIGURED = CONFIGURED_FEATURES.register("topaz_ore",
 			() -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(OVERWORLD_TOPAZ_ORES.get(), 3)));
@@ -106,6 +112,12 @@ public class TreasureConfiguredFeatures {
 	public static final RegistryObject<ConfiguredFeature<?, ?>> TERRESTRIAL_CHEST_CONFIGURED = CONFIGURED_FEATURES.register("terrestrial_chest",
 			() -> new ConfiguredFeature<>(TERRESTRIAL_CHEST.get(), NoneFeatureConfiguration.INSTANCE));
 
+	public static final RegistryObject<ConfiguredFeature<?, ?>> SUBAQUEOUS_CHEST_CONFIGURED = CONFIGURED_FEATURES.register("subaqueous_chest",
+			() -> new ConfiguredFeature<>(SUBAQUEOUS_CHEST.get(), NoneFeatureConfiguration.INSTANCE));
+
+	public static final RegistryObject<ConfiguredFeature<?, ?>> WELL_CONFIGURED = CONFIGURED_FEATURES.register("well",
+			() -> new ConfiguredFeature<>(WELL.get(), NoneFeatureConfiguration.INSTANCE));
+	
 	/*
 	 * placement
 	 * NOTE: the aboveBottom values are OFFSETS, ex -64 + x = placement depth
@@ -130,7 +142,11 @@ public class TreasureConfiguredFeatures {
 	public static final RegistryObject<PlacedFeature> TERRESTRIAL_CHEST_PLACED = PLACED_FEATURES.register("terrestrial_chest",
 			() -> new PlacedFeature(TERRESTRIAL_CHEST_CONFIGURED.getHolder().get(), List.of(BiomeFilter.biome())));
 
-
+	public static final RegistryObject<PlacedFeature> SUBAQUEOUS_CHEST_PLACED = PLACED_FEATURES.register("subaqueous_chest",
+			() -> new PlacedFeature(SUBAQUEOUS_CHEST_CONFIGURED.getHolder().get(), List.of(BiomeFilter.biome())));
+	
+	public static final RegistryObject<PlacedFeature> WELL_PLACED = PLACED_FEATURES.register("well",
+			() -> new PlacedFeature(WELL_CONFIGURED.getHolder().get(), List.of(BiomeFilter.biome())));
 	/**
 	 * 
 	 */

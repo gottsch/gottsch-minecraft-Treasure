@@ -96,12 +96,11 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 			ICoords spawnCoords = new Coords(xSpawn, 0, zSpawn);
 
 			// get a valid surface location
-			// TODO re-enable
-//			spawnCoords = WorldInfo.getDryLandSurfaceCoordsWG(context, spawnCoords);
-//			if (spawnCoords == null || spawnCoords == Coords.EMPTY) {
-//				Treasure.LOGGER.debug("not a valid surface -> {}", coords);
-//				continue;
-//			}
+			spawnCoords = WorldInfo.getDryLandSurfaceCoordsWG(context, spawnCoords);
+			if (spawnCoords == null || spawnCoords == Coords.EMPTY) {
+				Treasure.LOGGER.debug("not a valid surface -> {}", coords);
+				continue;
+			}
 
 			// don't place if the spawnCoords isn't AIR or REPLACEABLE
 			BlockContext cube = new BlockContext(context.level(), spawnCoords);

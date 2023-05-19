@@ -29,19 +29,22 @@ import mod.gottsch.forge.treasure2.core.enums.IPitType;
 import mod.gottsch.forge.treasure2.core.enums.IRegionPlacement;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
+import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.ruin.IRuinGenerator;
+import mod.gottsch.forge.treasure2.core.generator.well.IWellGenerator;
 import mod.gottsch.forge.treasure2.core.item.IKeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.KeyItem;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.loot.ISpecialLootTables;
 import mod.gottsch.forge.treasure2.core.registry.*;
+import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
 import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.IStructureType;
-import mod.gottsch.forge.treasure2.core.structure.ISubaqueousType;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
@@ -382,6 +385,14 @@ public class TreasureApi {
 	
 	public static void registerPitGenerator(IPitType type, IPitGenerator<GeneratorResult<ChestGeneratorData>> generator) {
 		PitGeneratorRegistry.register(type, generator);
+	}
+	
+	public static void registerRuinGenerator(IStructureCategory category, IRuinGenerator<GeneratorResult<ChestGeneratorData>> generator) {
+		RuinGeneratorRegistry.register(category, generator);
+	}
+	
+	public static void registerWellGenerator(IStructureCategory category, IWellGenerator<GeneratorResult<GeneratorData>> generator) {
+		WellGeneratorRegistry.register(category, generator);		
 	}
 	
 	/*

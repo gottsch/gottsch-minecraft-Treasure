@@ -564,7 +564,9 @@ public final class TreasureLootTableRegistry {
 		if (!tables.isEmpty() && !datapackTables.isEmpty()) {
 			result = tables.stream().filter(t -> !datapackTables.stream().anyMatch(t2 -> t.getResourceLocation().equals(t2.getResourceLocation())))
             .collect(Collectors.toList());
-		}
+		} else if (datapackTables.isEmpty()) {
+			result.addAll(tables);
+		}		
 		result.addAll(datapackTables);
 		
 		return result;

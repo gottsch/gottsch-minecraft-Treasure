@@ -17,19 +17,10 @@
  */
 package mod.gottsch.forge.treasure2.core.registry;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.apache.commons.io.IOUtils;
@@ -40,11 +31,13 @@ import com.google.common.collect.Sets;
 import com.google.common.collect.Table;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
+
 
 import mod.gottsch.forge.gottschcore.loot.LootTableShell;
+import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.gottschcore.world.gen.structure.GottschTemplate;
+import mod.gottsch.forge.gottschcore.world.gen.structure.StructureMarkers;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
@@ -62,6 +55,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.ModList;
@@ -117,8 +111,6 @@ public class TreasureTemplateRegistry {
 	private static File worldSaveFolder;
 	
 	static {
-//		TEMPLATE_MANAGER = new TreasureTemplateManager(Treasure.instance, "/structures",
-//				DataFixesManager.getDataFixer());
 		REGISTERED_MODS = Sets.newHashSet();
 		LOADED_MODS = Maps.newHashMap();
 		
@@ -128,6 +120,7 @@ public class TreasureTemplateRegistry {
 		for (IStructureCategory category : StructureCategory.values()) {
 			for (IStructureType type : StructureType.values()) {
 				TABLE.put(category, type, new ArrayList<>(5));
+				DATAPACK_TABLE.put(category, type, new ArrayList<>(3));
 			}
 		}
 		
@@ -185,8 +178,8 @@ public class TreasureTemplateRegistry {
 	 * 
 	 */
 	public void clear() {
-//		templatesByArchetypeTypeBiome.clear();
 		TABLE.clear();
+		DATAPACK_TABLE.clear();
 	}
 	
 	/**
@@ -268,11 +261,13 @@ public class TreasureTemplateRegistry {
 				.setTemplate(template);				
 		
 		if (path.getNameCount() > 5) {
-			for (int i = 5; i < path.getNameCount(); i++) {
+			// don't include the last element as that is the file name
+			for (int i = 5; i < path.getNameCount()-1; i++) {
 				holder.getTags().add(path.getName(i).toString());
 			}
 		}
 		
+		Treasure.LOGGER.debug("adding template to table with category, type -> {}", category.get(), type.get());
 		// add to table
 		if (!TABLE.contains(category, type)) {
 			TABLE.put(category.get(), type.get(),new ArrayList<>());
@@ -306,9 +301,9 @@ public class TreasureTemplateRegistry {
 		InputStream inputStream = null;
 
 		try {
-			Treasure.LOGGER.debug("Attempting to load template from jar -> {}", resourceFilePath);
+			Treasure.LOGGER.debug("attempting to load template from jar -> {}", resourceFilePath);
 			inputStream = Treasure.instance.getClass().getClassLoader().getResourceAsStream(resourceFilePath.toString());
-			return readTemplateFromStream(inputStream, markerBlocks, replacementBlocks);
+			return loadTemplateFromStream(inputStream, markerBlocks, replacementBlocks);
 
 			// TODO change from Throwable
 		} catch (Throwable e) {
@@ -322,7 +317,7 @@ public class TreasureTemplateRegistry {
 	/**
 	 * reads a template from an input stream
 	 */
-	private static Optional<GottschTemplate> readTemplateFromStream(InputStream stream, List<Block> markerBlocks, 
+	private static Optional<GottschTemplate> loadTemplateFromStream(InputStream stream, List<Block> markerBlocks, 
 			Map<BlockState, BlockState> replacementBlocks) throws IOException {
 		
 		CompoundTag nbt = NbtIo.readCompressed(stream);
@@ -344,24 +339,24 @@ public class TreasureTemplateRegistry {
 	 */
 	public static void onWorldLoad(WorldEvent.Load event) {
 		if (!event.getWorld().isClientSide() && WorldInfo.isSurfaceWorld((ServerLevel) event.getWorld())) {
-			Treasure.LOGGER.debug("template registry world load");
+			Treasure.LOGGER.debug("template registry world load event...");
 			TreasureTemplateRegistry.create((ServerLevel) event.getWorld());
 			
 //			REGISTERED_MODS.forEach(mod -> {
 //				Treasure.LOGGER.debug("registering mod -> {}", mod);
 //				load(mod);
-				loadDataPacks(Treasure.MODID, getMarkerScanList(), getReplacementMap());
+				loadDataPacks(getMarkerScanList(), getReplacementMap());
 //			});
 		}
 	}
 	
+	/**
+	 * 
+	 * @param zipPath
+	 * @param resourceFilePath
+	 * @return
+	 */
 	public static Optional<LootTableShell> loadFromZip(Path zipPath, Path resourceFilePath) {
-		Optional<LootTableShell> resourceLootTable = Optional.empty();
-
-		return resourceLootTable;
-	}
-	
-	public static Optional<LootTableShell> loadFromZip(ZipFile zipFile, Path resourceFilePath) {
 		Optional<LootTableShell> resourceLootTable = Optional.empty();
 
 		return resourceLootTable;
@@ -369,11 +364,22 @@ public class TreasureTemplateRegistry {
 	
 	/**
 	 * 
-	 * @param modID_xxx
+	 * @param zipFile
+	 * @param resourceFilePath
+	 * @return
+	 */
+	public static Optional<LootTableShell> loadFromZip(ZipFile zipFile, Path resourceFilePath) {
+		Optional<LootTableShell> resourceLootTable = Optional.empty();
+
+		return resourceLootTable;
+	}
+	
+	/**
+	 * Only load once - not per  registered mod.
 	 * @param markerBlocks
 	 * @param replacementBlocks
 	 */
-	public static void loadDataPacks(String modID_xxx, List<Block> markerBlocks, Map<BlockState, BlockState> replacementBlocks) {
+	public static void loadDataPacks(List<Block> markerBlocks, Map<BlockState, BlockState> replacementBlocks) {
 		String worldSaveFolderPathName = getWorldSaveFolder().toString();
 
 		StructureCategory.getNames().forEach(category -> {
@@ -399,6 +405,46 @@ public class TreasureTemplateRegistry {
 				Treasure.LOGGER.error("An error occurred attempting to register a loot table from the world save datapacks folder: ", e);
 			}			
 		});
+		
+		/*
+		 *  load/register datapacks .zip files from world save folder
+		 */
+		Treasure.LOGGER.debug("loading datapack template files ...");
+		// get all .zip files in the folder (non-recursive)
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(worldSaveFolderPathName))) {
+			for (Path jarPath : stream) {
+				Treasure.LOGGER.debug("datapack path -> {}", jarPath);
+				if (Files.isRegularFile(jarPath, new LinkOption[] {})) {
+					if (jarPath.getFileName().toString().endsWith(".zip")) {
+						// process this zip file
+						Treasure.LOGGER.debug("datapack file -> {}", jarPath.toString());
+						try (ZipFile zipFile = new ZipFile(jarPath.toFile())) {
+							StructureCategory.getNames().forEach(category -> {
+								List<Path> templatePaths;
+								// build the path
+								Path folderPath = Paths.get(worldSaveFolderPathName, DATAPACKS_TEMPLATES_ROOT, category.toLowerCase());
+								try {
+									templatePaths = ModUtil.getPathsFromFlatDatapacks(folderPath);
+
+									for (Path path : templatePaths) {
+										Treasure.LOGGER.debug("datapack template path -> {}", path);
+										// load the shell from the jar
+										Optional<GottschTemplate> shell = loadFromZip(zipFile, path, markerBlocks, replacementBlocks);
+										// register
+										registerDatapacksTemplate(path, shell.get());
+									}
+								} catch (Exception e) {
+									// minimal message
+									Treasure.LOGGER.warn("warning: unable to load datapack -> {}", folderPath);
+								}
+							});
+						}
+					}
+				}
+			}
+		} catch(Exception e) {
+			Treasure.LOGGER.error("error: unable to load datapack:", e);
+		}
 	}
 	
 	/**
@@ -411,13 +457,41 @@ public class TreasureTemplateRegistry {
 			File file = path.toFile();
 			if (file.exists()) {
 				InputStream inputStream = new FileInputStream(file);
-				Optional<GottschTemplate> template = readTemplateFromStream(inputStream, markerBlocks, replacementBlocks);
+				Optional<GottschTemplate> template = loadTemplateFromStream(inputStream, markerBlocks, replacementBlocks);
+				return template;
 			}
 		}
 		catch(Exception e) {
 			Treasure.LOGGER.warn("Unable to loot table manifest");
 		}	
 		return Optional.empty();
+	}
+	
+	/**
+	 * 
+	 * @param zipFile
+	 * @param resourceFilePath
+	 * @param markerBlocks
+	 * @param replacementBlocks
+	 * @return
+	 */
+	public static Optional<GottschTemplate> loadFromZip(ZipFile zipFile, Path resourceFilePath, List<Block> markerBlocks, Map<BlockState, BlockState> replacementBlocks) {
+		Optional<GottschTemplate> resourceTemplate = Optional.empty();
+
+		try {
+			ZipEntry zipEntry = zipFile.getEntry(resourceFilePath.toString());
+			InputStream stream = zipFile.getInputStream(zipEntry);
+//			Reader reader = new InputStreamReader(stream);
+			// load the loot table
+//			resourceTemplate =  Optional.of(loadLootTable(reader));
+			resourceTemplate = loadTemplateFromStream(stream, markerBlocks, replacementBlocks);
+			// close resources
+			stream.close();
+
+		} catch(Exception e) {
+			Treasure.LOGGER.error(String.format("Couldn't load resource loot table from zip file ->  {}", resourceFilePath), e);
+		}
+		return resourceTemplate;
 	}
 	
 	/**
@@ -464,193 +538,28 @@ public class TreasureTemplateRegistry {
 		}
 		DATAPACK_TABLE.get(category.get(), type.get()).add(holder);
 	}
-	
-	////////////////////////  ////////////////////////  /////////////////////////////
-	/**
-	 * 
-	 * @param resourceFilePath
-	 * @return
-	 */
-//	@Deprecated
-//	public static Optional<LootTableShell> loadFromJar(Path resourceFilePath) {
-//		Optional<LootTableShell> resourceLootTable = Optional.empty();
-//		try (InputStream resourceStream = Treasure.class.getClassLoader().getResourceAsStream(resourceFilePath.toString());
-//				Reader reader = new InputStreamReader(resourceStream, StandardCharsets.UTF_8)) {
-//			resourceLootTable =  Optional.of(loadLootTable(reader));
-//		}
-//		catch(Exception e) {
-//			Treasure.LOGGER.error(String.format("Couldn't load resource loot table %s ", resourceFilePath), e);
-//		}	
-//		return resourceLootTable;
-//	}
-	
-	
 
-	
-	/**
-	 * TODO only called once from onWorldLoad event
-	 * @param modID
-	 */
-//	@Deprecated
-//	public static void load(String modID) {
-//		// don't reload for session
-//		if (LOADED_MODS.containsKey(modID)) {
-//			return;
-//		}
-//		
-//		ResourceManifest manifest = null;
-//		boolean worldSaveMetaLoaded = false;
-//		// read from file location
-//		File manifestFile = Paths.get(getWorldSaveFolder().getPath(), "datapacks", "data", Treasure.MODID, "structures", "manifest.json").toFile();
-//		if (manifestFile.exists()) {
-//			if (manifestFile.isFile()) {
-//				String json;
-//				try {
-//					json = com.google.common.io.Files.toString(manifestFile, StandardCharsets.UTF_8);
-//					manifest = new GsonBuilder().create().fromJson(json, ResourceManifest.class);
-//					worldSaveMetaLoaded = true;
-//					Treasure.LOGGER.debug("loaded template manifest from file system");
-//				}
-//				catch (Exception e) {
-//					Treasure.LOGGER.warn("Couldn't load template manifest from {}", manifestFile, e);
-//				}
-//			}
-//		}
-//
-//		// TODO check datapack (.zip) files
-//		////////
-//		
-//		if (!worldSaveMetaLoaded) {
-//			try {
-//				// load default built-in meta manifest
-////				Path manifestPath = Paths.get("data", modID, TEMPLATES_FOLDER, "manifest.json");
-//				manifest = ITreasureResourceRegistry.<ResourceManifest>readResourcesFromStream(
-//						Objects.requireNonNull(Treasure.instance.getClass().getClassLoader().getResourceAsStream("data/" + modID + "/" + TEMPLATES_FOLDER + "/manifest.json")), ResourceManifest.class);
-//				Treasure.LOGGER.debug("loaded template manifest from jar");
-//			}
-//			catch(Exception e) {
-//				Treasure.LOGGER.warn("Unable to load template resources");
-//			}
-//		}
-//		
-//		// load template files
-//		if (manifest != null) {
-//			LOADED_MODS.put(modID, true);
-//			register(modID, manifest.getResources());
-//		}
-//	}
-	
 	/**
 	 * 
-	 * @param modID
-	 * @param resourcePaths
-	 */
-//	@Deprecated
-//	public static void register(String modID, List<String> resourcePaths) {
-//		Treasure.LOGGER.debug("registering template resources");
-//		// create folders if not exist
-//		createTemplateFolder(modID);
-//		Treasure.LOGGER.debug("created templates folder");
-//		
-//		List<ResourceLocation> resourceLocations = getResourceLocations(modID, resourcePaths);
-//		Treasure.LOGGER.debug("acquired template resource locations -> {}", resourceLocations);
-//		// load each ResourceLocation as LootTable and map it.
-//		resourceLocations.forEach(loc -> {
-//			// need to test for world save version first
-//			Treasure.LOGGER.debug("loading template resource loc -> {}", loc.toString());
-//						
-//			tableTemplate(modID, loc, loadTemplate(loc, getMarkerScanList(), getReplacementMap()));
-//		});
-//	}
-	
-	/**
-	 * Load template file from classpath or file system
-	 * @param server
-	 * @param templatePath
+	 * @param random
+	 * @param category
+	 * @param type
 	 * @return
 	 */
-//	@Deprecated
-//	public static StructureTemplate loadTemplate(ResourceLocation templatePath, List<Block> markerBlocks, Map<BlockState, BlockState> replacementBlocks) {
-//		String key = templatePath.toString();
-//		
-//		if (this.getTemplates().containsKey(key)) {
-//			GottschCore.LOGGER.debug("read template from master map using key -> {}", key);
-//			return this.templates.get(key);
-//		}
-//
-//		this.readTemplate(templatePath, markerBlocks, replacementBlocks);
-//		if (this.templates.get(key) != null) {
-//			GottschCore.LOGGER.debug("Loaded template from -> {}", key);
-//		}
-//		else {
-//			GottschCore.LOGGER.debug("Unable to read template from -> {}", key);
-//		}
-//		return this.templates.containsKey(key) ? (StructureTemplate) this.templates.get(key) : null;
-//	}
-	
-	/**
-	 * 
-	 * @param resource
-	 * @return
-	 */	
-//	protected static Optional<LootTableShell> loadLootTable(ResourceLocation resource) {
-//		// attempt to load from file system
-//		Optional<LootTableShell> shell = loadLootTableFromWorldSave(getWorldSaveFolder(), resource);
-//		if (!shell.isPresent()) {
-//			return loadLootTableFromJar(resource);
-//		}
-//		return shell;
-//	}
-	
-	/**
-	 * 
-	 * @param modID
-	 * @param resources
-	 * @return
-	 */
-	public static List<ResourceLocation> getResourceLocations(String modID, List<String> resources) {
-		List<ResourceLocation> resourceLocations = new ArrayList<>();
-		resources.forEach(resource -> resourceLocations.add(new ResourceLocation(modID, resource)));
-		return resourceLocations;
+	public static List<TemplateHolder> getTemplate(IStructureCategory category, IStructureType type) {
+		
+		List<TemplateHolder> templateHolders = TABLE.get(category, type);
+		
+		if (templateHolders == null || templateHolders.isEmpty()) {
+			Treasure.LOGGER.debug("could not find template holders for category -> {}, type -> {}", category, type);
+		}
+		Treasure.LOGGER.debug("selected template holders -> {} ", templateHolders);
+
+		if (templateHolders == null) {
+			templateHolders = new ArrayList<>();
+		}
+		return templateHolders;
 	}
-	
-	/**
-	 * 
-	 * @param modID
-	 */
-//	@Deprecated
-//	private static void createTemplateFolder(String modID) {
-//		List<Path> folders = Arrays.asList(
-//				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "submerged"),
-//				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "subterranean"),
-//				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "surface"),
-//				Paths.get(getWorldSaveFolder().getPath(), "datapacks", Treasure.MODID, "data", Treasure.MODID, "structures", "wells")
-//				);
-//		/*
-//		 *  build a path to the specified location
-//		 *  ie ../[WORLD SAVE]/datapacks/[MODID]/templates
-//		 */
-//		folders.forEach(folder -> {
-//			if (Files.notExists(folder)) {
-//				Treasure.LOGGER.debug("template folder \"{}\" will be created.", folder.toString());
-//				try {
-//					Files.createDirectories(folder);
-//
-//				} catch (IOException e) {
-//					Treasure.LOGGER.warn("Unable to create template folder \"{}\"", folder.toString());
-//				}
-//			}
-//		});
-//	}
-	
-	/**
-	 * Convenience method.
-	 * @param key
-	 * @return
-	 */
-//	public static TemplateHolder get(Level world, Random random, IRegionPlacement archetype, IStructureType type, Biome biome) {
-//		return getTemplate(random, archetype, type, biome);
-//	}
 	
 	public static File getWorldSaveFolder() {
 		return TreasureTemplateRegistry.worldSaveFolder;
@@ -665,7 +574,7 @@ public class TreasureTemplateRegistry {
 	}
 
 	public void setMarkerScanList(List<Block> scanList) {
-		this.markerScanList = scanList;
+		TreasureTemplateRegistry.markerScanList = scanList;
 	}
 
 	public static Map<StructureMarkers, Block> getMarkerMap() {
@@ -673,7 +582,7 @@ public class TreasureTemplateRegistry {
 	}
 
 	public void setMarkerMap(Map<StructureMarkers, Block> markerMap) {
-		this.markerMap = markerMap;
+		TreasureTemplateRegistry.markerMap = markerMap;
 	}
 	
 	public static Map<BlockState, BlockState> getReplacementMap() {
@@ -681,6 +590,16 @@ public class TreasureTemplateRegistry {
 	}
 
 	public void setReplacementMap(Map<BlockState, BlockState> replacementMap) {
-		this.replacementMap = replacementMap;
+		TreasureTemplateRegistry.replacementMap = replacementMap;
+	}
+
+	public static ICoords getOffset(Random random, GottschTemplate template) {
+		ICoords offsetCoords = template.findCoords(random, getMarkerMap().get(StructureMarkers.OFFSET));
+		return offsetCoords;
+	}
+	
+	public static ICoords getOffsetFrom(Random random, GottschTemplate template, StructureMarkers marker) {
+		ICoords offsetCoords = template.findCoords(random, getMarkerMap().get(marker));
+		return offsetCoords;
 	}
 }

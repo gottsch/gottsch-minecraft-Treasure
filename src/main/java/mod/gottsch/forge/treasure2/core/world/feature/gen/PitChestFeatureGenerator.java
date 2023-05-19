@@ -28,8 +28,8 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.PitType;
 import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
@@ -153,7 +153,7 @@ public class PitChestFeatureGenerator implements IFeatureGenerator {
 	 * @param random
 	 * @return
 	 */
-	public static IPitGenerator<GeneratorResult<ChestGeneratorData>> selectPitGenerator(Random random) {
+	public IPitGenerator<GeneratorResult<ChestGeneratorData>> selectPitGenerator(Random random) {
 		PitType pitType = RandomHelper.checkProbability(random, Config.SERVER.pits.structureProbability.get()) ? PitType.STRUCTURE : PitType.STANDARD;
 		List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerators = PitGeneratorRegistry.get(pitType);
 		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));

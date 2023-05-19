@@ -528,6 +528,9 @@ public class Config extends AbstractConfig {
 	 */
 	public static final ForgeConfigSpec CHESTS_CONFIG_SPEC;
 		
+	// TODO remove the mapping by dimensions. remove the list in ChestConfigsHolder
+	//	there should only be 1 chest config with a whitelist of dimensions to apply against,
+	// NOT a whole config for each dimension.
 	// TODO make this a map and part of the transform() method loads into a map
 	// TODO either this is a multimap based on dimension or a singular ChestConfiguration
 	// and the generators etc need to be mapped - not in a list.
@@ -560,7 +563,7 @@ public class Config extends AbstractConfig {
 	 */
 	public static void transform(CommentedConfig configData) {
 		// convert the data to an object
-		ChestConfigsHolder holder = new ObjectConverter().toObject(configData, ChestConfigsHolder::new);
+      		ChestConfigsHolder holder = new ObjectConverter().toObject(configData, ChestConfigsHolder::new);
 		// get the list from the holder and set the config property
 		chestConfigs = holder.chestConfigs;
 		

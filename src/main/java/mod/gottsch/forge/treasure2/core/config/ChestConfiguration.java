@@ -62,7 +62,7 @@ public class ChestConfiguration {
 		private Integer waitChunks;
 		private Double surfaceProbability;
 		private Double structureProbability;
-		private List<FeatureGenerator> featureGenerators;
+//		private List<FeatureGenerator> featureGenerators;
 		private List<ChestRarity> rarities;
 		
 		/**
@@ -70,15 +70,15 @@ public class ChestConfiguration {
 		 * @param key
 		 * @return
 		 */
-		public Optional<FeatureGenerator> getFeatureGenerator(String key) {
-			// cycle through all the generators (it's a small list)
-			for (FeatureGenerator generator : featureGenerators) {
-				if (generator.key.equalsIgnoreCase(key)) {
-					return Optional.of(generator);
-				}
-			}
-			return Optional.empty();
-		}
+//		public Optional<FeatureGenerator> getFeatureGenerator(String key) {
+//			// cycle through all the generators (it's a small list)
+//			for (FeatureGenerator generator : featureGenerators) {
+//				if (generator.key.equalsIgnoreCase(key)) {
+//					return Optional.of(generator);
+//				}
+//			}
+//			return Optional.empty();
+//		}
 		
 		public Optional<ChestRarity> getRarity(IRarity rarity) {
 			try {
@@ -137,23 +137,23 @@ public class ChestConfiguration {
 		public void setRarities(List<ChestRarity> rarities) {
 			this.rarities = rarities;
 		}
-
-		public List<FeatureGenerator> getFeatureGenerators() {
-			return featureGenerators;
-		}
-
-		public void setFeatureGenerators(List<FeatureGenerator> featureGenerators) {
-			this.featureGenerators = featureGenerators;
-		}
+//
+//		public List<FeatureGenerator> getFeatureGenerators() {
+//			return featureGenerators;
+//		}
+//
+//		public void setFeatureGenerators(List<FeatureGenerator> featureGenerators) {
+//			this.featureGenerators = featureGenerators;
+//		}
 	}
 	
 	/*
 	 * 
 	 */
 	public static class FeatureGenerator {
-		public static final String SIMPLE_SURFACE = "simpleSurface";
-		public static final String PIT = "pit";
-		public static final String SURFACE_STRUCTURE = "surfaceStructure";
+//		public static final String SIMPLE_SURFACE = "simpleSurface";
+//		public static final String PIT = "pit";
+//		public static final String SURFACE_STRUCTURE = "surfaceStructure";
 		
 		private String key;
 		private Integer weight;

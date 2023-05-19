@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 import mod.gottsch.forge.gottschcore.enums.IEnum;
 
 /**
- * 
+ * TODO this really only applies to Chest Features - rename and remove well.
  * @author Mark Gottschling May 12, 2023
  *
  */

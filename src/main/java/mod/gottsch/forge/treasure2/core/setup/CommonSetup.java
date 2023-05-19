@@ -25,6 +25,7 @@ import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorTyp
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
+import mod.gottsch.forge.treasure2.core.cache.DimensionalSimpleDistanceCache;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.entity.monster.BoundSoul;
@@ -32,9 +33,12 @@ import mod.gottsch.forge.treasure2.core.enums.*;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.*;
 import mod.gottsch.forge.treasure2.core.generator.pit.*;
+import mod.gottsch.forge.treasure2.core.generator.ruin.SurfaceRuinGenerator;
+import mod.gottsch.forge.treasure2.core.generator.well.WellGenerator;
 import mod.gottsch.forge.treasure2.core.item.KeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
+import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
@@ -328,7 +332,8 @@ public class CommonSetup {
 		TreasureApi.registerChestGenerator(new CauldronChestGenerator(CAULDRON));
 		TreasureApi.registerChestGenerator(new CrystalSkullChestGenerator(CRYSTAL_SKULL));
 		
-		// TODO this type of registration creates multiple instances of every generator used. refactor
+		// TODO this type of registration creates multiple instances of every generator used. refactor.
+		// ie. create TreasurePitGenerators and register, then reference here.
 		// register pit generators
 		TreasureApi.registerPitGenerator(PitType.STANDARD, new SimplePitGenerator());
 		TreasureApi.registerPitGenerator(PitType.STANDARD, new AirPitGenerator());
@@ -340,13 +345,17 @@ public class CommonSetup {
 		TreasureApi.registerPitGenerator(PitType.STANDARD, new TntTrapPitGenerator());
 		TreasureApi.registerPitGenerator(PitType.STANDARD, new VolcanoPitGenerator());
 		
-		// TEMP use normal generators for structures pits
-		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new SimplePitGenerator());
-		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new AirPitGenerator());
-		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new LavaSideTrapPitGenerator());
-		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new LavaTrapPitGenerator());
-		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new TntTrapPitGenerator());
+		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new StructurePitGenerator(new SimplePitGenerator()));
+		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new StructurePitGenerator(new AirPitGenerator()));
+		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new StructurePitGenerator(new LavaSideTrapPitGenerator()));
+		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new StructurePitGenerator(new TntTrapPitGenerator()));
+		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new StructurePitGenerator(new MobTrapPitGenerator()));
+		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new StructurePitGenerator(new MobTrapPitGenerator()));
 		
+		TreasureApi.registerRuinGenerator(StructureCategory.TERRANEAN, new SurfaceRuinGenerator());
+//		TreasureApi.registerRuinGenerator(StructureCategory.SUBAQUEOUS, new SubterraneanRuinGenerator());
+		
+		TreasureApi.registerWellGenerator(StructureCategory.TERRANEAN, new WellGenerator());
 		// TODO using a nonstandard map, removes the need for a weighted chest generator. just need Rarity+GenType -> Generator
 		// TreasureApi.registerNonStandardChestGenerator(TERRESTRIAL, TreasureBlocks.SKULL_CHEST, SKULL);
 		
@@ -412,8 +421,11 @@ public class CommonSetup {
 		TreasureApi.registerChestFeatureGenerator(Rarity.EPIC, FeatureType.AQUATIC, EPIC);
 		TreasureApi.registerChestFeatureGenerator(Rarity.LEGENDARY, FeatureType.AQUATIC, LEGENDARY);
 		TreasureApi.registerChestFeatureGenerator(Rarity.MYTHICAL, FeatureType.AQUATIC, MYTHICAL);
+		
 		// register network
 		TreasureNetworking.register();
+		
+		DimensionalSimpleDistanceCache.initialize();
 	}
 
 	@SubscribeEvent
