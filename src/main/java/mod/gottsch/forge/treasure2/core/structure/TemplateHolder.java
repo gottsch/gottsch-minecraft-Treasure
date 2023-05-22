@@ -31,8 +31,6 @@ public class TemplateHolder {
 	private StructureTemplate template;
 	private ResourceLocation location;
 	@Deprecated
-	private ResourceLocation metaLocation;
-	@Deprecated
 	private List<ResourceLocation> decayRuleSetLocation;
 	
 	private List<String> tags;
@@ -42,14 +40,12 @@ public class TemplateHolder {
 	public TemplateHolder(StructureTemplate template, ResourceLocation location, ResourceLocation metaLocation, List<ResourceLocation> ruleSetLocation) {
 		setTemplate(template);
 		setLocation(metaLocation);
-		setMetaLocation(metaLocation);
 		setDecayRuleSetLocation(ruleSetLocation);
 	}
 	
 	public TemplateHolder(StructureTemplate template, ResourceLocation location, ResourceLocation metaLocation) {
 		setTemplate(template);
 		setLocation(metaLocation);
-		setMetaLocation(metaLocation);
 	}
 	
 	public StructureTemplate getTemplate() {
@@ -68,21 +64,12 @@ public class TemplateHolder {
 		return this;
 	}
 
-	public ResourceLocation getMetaLocation() {
-		return metaLocation;
-	}
-
 	public ResourceLocation getLocation() {
 		return location;
 	}
 
 	public TemplateHolder setLocation(ResourceLocation location) {
 		this.location = location;
-		return this;
-	}
-
-	public TemplateHolder setMetaLocation(ResourceLocation metaLocation) {
-		this.metaLocation = metaLocation;
 		return this;
 	}
 

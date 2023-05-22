@@ -549,11 +549,9 @@ public class Config extends AbstractConfig {
 	 * Structure Configuration
 	 */
 	public static final ForgeConfigSpec STRUCTURE_CONFIG_SPEC;
-	/*
-	 * internal config class only. used for loading the defaultconfig file
-	 * and transformed into the exposed chestConfigs property
-	 */
 	public static StructureConfiguration structureConfiguration;
+	public static  Map<ResourceLocation, StructureConfiguration.StructMeta> structConfigMetaMap;
+	
 	
 	static {
 		final Pair<InternalStructureConfiguration, ForgeConfigSpec	> structSpecPair = new ForgeConfigSpec.Builder()
@@ -610,6 +608,10 @@ public class Config extends AbstractConfig {
 			return Optional.empty();
 		} else {
 			structureConfiguration = holder.structureConfigs.get(0);
+			structConfigMetaMap = new HashMap<>();
+			structureConfiguration.structMetas.forEach(meta -> {
+				structConfigMetaMap.put(ModUtil.asLocation(meta.getName()), meta);
+			});
 		}
 		return Optional.ofNullable(holder.structureConfigs.get(0));
 	}

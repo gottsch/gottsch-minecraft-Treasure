@@ -41,10 +41,14 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public interface ITemplateGenerator<RESULT extends IGeneratorResult<?>> {
 
-	public GeneratorResult<TemplateGeneratorData> generate(IWorldGenContext context, GottschTemplate template, PlacementSettings settings, ICoords spawnCoords);
+	public GeneratorResult<TemplateGeneratorData> generate(IWorldGenContext context, GottschTemplate template, 
+			PlacementSettings settings, ICoords spawnCoords);
+	
+	public GeneratorResult<TemplateGeneratorData> generate(IWorldGenContext context, GottschTemplate template, 
+			PlacementSettings settings, ICoords spawnCoords, ICoords offset);
 
 	public GeneratorResult<TemplateGeneratorData> generate(IWorldGenContext context, GottschTemplate template,
-			PlacementSettings placement, ICoords coords, Supplier<Map<BlockState, BlockState>> consumerReplacmentMap);
+			PlacementSettings placement, ICoords coords, Supplier<Map<BlockState, BlockState>> consumerReplacmentMap, ICoords offset);
 	
 	/**
 	 * NOTE not 100% sure that this  belongs here

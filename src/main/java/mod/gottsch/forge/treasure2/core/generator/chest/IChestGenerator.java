@@ -657,6 +657,7 @@ public interface IChestGenerator {
 	 * @param random
 	 * @param coods
 	 */
+	@Deprecated
 	default public void addMarkers(IWorldGenContext context, ICoords coords, final boolean isSurfaceChest) {
 		if (!isSurfaceChest && Config.SERVER.markers.enableMarkerStructures.get() 
 				&& RandomHelper.checkProbability(context.random(), Config.SERVER.markers.structureProbability.get())) {

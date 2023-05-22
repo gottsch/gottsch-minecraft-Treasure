@@ -20,6 +20,8 @@ package mod.gottsch.forge.treasure2.core.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import mod.gottsch.forge.gottschcore.spatial.ICoords;
+
 /**
  * 
  * @author Mark Gottschling on May 20, 2023
@@ -28,50 +30,6 @@ import java.util.List;
 public class StructureConfiguration {
 	List<StructMeta> structMetas;
 	
-//	private StructType terranean;
-//	private StructType subterranean;
-//	private StructType subaqueous;
-	
-//	private List<StructMeta> well;
-//	private List<StructMeta> ruin;
-//	private List<StructMeta> room;
-//	private List<StructMeta> marker;
-	
-	/*
-	 * 
-	 */
-//	public static class StructType {
-//		private List<StructMeta> well;
-//		private List<StructMeta> ruin;		
-//		private List<StructMeta> room;
-//		private List<StructMeta> marker;
-//		
-//		public List<StructMeta> getWell() {
-//			return well;
-//		}
-//		public void setWell(List<StructMeta> well) {
-//			this.well = well;
-//		}
-//		public List<StructMeta> getRuin() {
-//			return ruin;
-//		}
-//		public void setRuin(List<StructMeta> ruin) {
-//			this.ruin = ruin;
-//		}
-//		public List<StructMeta> getRoom() {
-//			return room;
-//		}
-//		public void setRoom(List<StructMeta> room) {
-//			this.room = room;
-//		}
-//		public List<StructMeta> getMarker() {
-//			return marker;
-//		}
-//		public void setMarker(List<StructMeta> marker) {
-//			this.marker = marker;
-//		}
-//	}
-//	
 	/*
 	 * 
 	 */
@@ -79,6 +37,7 @@ public class StructureConfiguration {
 		private String name;
 		private List<String> biomeWhitelist;
 		private List<String> biomeBlacklist;
+		private ICoords offset;
 		
 		public String getName() {
 			return name;
@@ -104,31 +63,13 @@ public class StructureConfiguration {
 		public void setBiomeBlacklist(List<String> biomeBlacklist) {
 			this.biomeBlacklist = biomeBlacklist;
 		}
+		public ICoords getOffset() {
+			return offset;
+		}
+		public void setOffset(ICoords offset) {
+			this.offset = offset;
+		}
 	}
-//
-//	public StructType getTerranean() {
-//		return terranean;
-//	}
-//
-//	public void setTerranean(StructType terranean) {
-//		this.terranean = terranean;
-//	}
-//
-//	public StructType getSubterranean() {
-//		return subterranean;
-//	}
-//
-//	public void setSubterranean(StructType subterranean) {
-//		this.subterranean = subterranean;
-//	}
-//
-//	public StructType getSubaqueous() {
-//		return subaqueous;
-//	}
-//
-//	public void setSubaqueous(StructType subaqueous) {
-//		this.subaqueous = subaqueous;
-//	}
 
 	public List<StructMeta> getStructMetas() {
 		return structMetas;
@@ -137,39 +78,4 @@ public class StructureConfiguration {
 	public void setStructMetas(List<StructMeta> structMetas) {
 		this.structMetas = structMetas;
 	}
-
-//	public List<StructMeta> getWell() {
-//		return well;
-//	}
-//
-//	public void setWell(List<StructMeta> well) {
-//		this.well = well;
-//	}
-//
-//	public List<StructMeta> getRuin() {
-//		return ruin;
-//	}
-//
-//	public void setRuin(List<StructMeta> ruin) {
-//		this.ruin = ruin;
-//	}
-//
-//	public List<StructMeta> getRoom() {
-//		return room;
-//	}
-//
-//	public void setRoom(List<StructMeta> room) {
-//		this.room = room;
-//	}
-//
-//	public List<StructMeta> getMarker() {
-//		return marker;
-//	}
-//
-//	public void setMarker(List<StructMeta> marker) {
-//		this.marker = marker;
-//	}
-
-
-
 }

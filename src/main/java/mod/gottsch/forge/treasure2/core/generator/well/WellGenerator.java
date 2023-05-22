@@ -19,9 +19,7 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.well;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import mod.gottsch.forge.gottschcore.block.BlockContext;
@@ -87,7 +85,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		}
 
 		GottschTemplate template = (GottschTemplate) holder.getTemplate();
-		Treasure.LOGGER.debug("selected template holder -> {} : {}", holder.getLocation(), holder.getMetaLocation());
+		Treasure.LOGGER.debug("selected template holder -> {}", holder.getLocation());
 		if (template == null) {
 			Treasure.LOGGER.debug("could not find random template");
 			return Optional.empty();

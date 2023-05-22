@@ -1,6 +1,6 @@
 
 # #####
-# ### NOTE only strcutures that have a white/blacklist need to be added to this config
+# ### NOTE only strcutures that have a white/blacklist, or offset need to be added to this config
 # #####
 [[structureConfigs]]
 
@@ -10,32 +10,47 @@
 		name = "treasure2:terranean/well/canopy_wishing_well1"
 		biomeWhitelist = []
 		biomeBlacklist = ["minecraft:desert"]
-
+		[structureConfigs.structMetas.offset]
+		x = 0
+		y = -6
+		z = 0
+		
 	[[structureConfigs.structMetas]]
 		name = "treasure2:terranean/well/simple_well1"
 		biomeWhitelist = []
 		biomeBlacklist = ["minecraft:desert"]
-		offset: {
-		"x": 0,
-		"y": -6,
-		"z": 0
-		}
+		[structureConfigs.structMetas.offset]
+		x = 0
+		y = -6
+		z = 0
 
 	[[structureConfigs.structMetas]]
 		name = "treasure2:terranean/well/wood_draw_wishing_well1"
 		biomeWhitelist = []
 		biomeBlacklist = ["minecraft:desert"]
-
+		[structureConfigs.structMetas.offset]
+		x = 0
+		y = -6
+		z = 0
+		
 	[[structureConfigs.structMetas]]
 		name = "treasure2:terranean/well/desert/desert_wishing_well1"
 		biomeWhitelist = ["minecraft:desert"]
 		biomeBlacklist = []
-
+		[structureConfigs.structMetas.offset]
+		x = 0
+		y = -6
+		z = 0
+		
 	[[structureConfigs.structMetas]]
 		name = "treasure2:terranean/well/desert/desert_wishing_well2"
 		biomeWhitelist = ["minecraft:desert"]
 		biomeBlacklist = []
-
+		[structureConfigs.structMetas.offset]
+		x = 0
+		y = -6
+		z = 0
+		
 	### MARKER ###
 	[[structureConfigs.structMetas]]
 		name = "treasure2:terranean/marker/crypt2"
@@ -49,10 +64,23 @@
 
 	### RUINS ###
 	[[structureConfigs.structMetas]]
-		name = "treasure2:terranean/ruin/blacksmith"
+		name = "treasure2:terranean/ruin/blacksmith1"
 		biomeWhitelist = []
 		biomeBlackList = ["minecraft:desert", "minecraft:snowy_taiga", "minecraft:badlands"]
 
+	[[structureConfigs.structMetas]]
+		name = "treasure2:terranean/ruin/castle1"
+		biomeWhitelist = []
+		biomeBlackList = ["minecraft:desert"]
+		
+	[[structureConfigs.structMetas]]
+		name = "treasure2:terranean/ruin/church1"
+		biomeWhitelist = []
+		biomeBlackList = ["minecraft:desert", "minecraft:snowy_taiga", "minecraft:badlands"]
+		[structureConfigs.structMetas.offset]
+		x = 0
+		y = -1
+		z = 0
 	[[structureConfigs.structMetas]]
 		name = "treasure2:terranean/ruin/house1"
 		biomeWhitelist = []
@@ -62,7 +90,34 @@
 		name = "treasure2:terranean/ruin/desert/desert_tower2"
 		biomeWhitelist = ["minecraft:desert"]
 		biomeBlackList = []
-
+		
+	[[structureConfigs.structMetas]]
+		name = "treasure2:terranean/ruin/tower3"
+		biomeWhitelist = ["minecraft:desert"]
+		biomeBlackList = []
+		[structureConfigs.structMetas.offset]
+		x = 0
+		y = -1
+		z = 0
+		
+	[[structureConfigs.structMetas]]
+		name = "treasure2:terranean/ruin/tower4"
+		biomeWhitelist = ["minecraft:desert"]
+		biomeBlackList = []
+		[structureConfigs.structMetas.offset]
+		x = 0
+		y = -1
+		z = 0
+		
+	[[structureConfigs.structMetas]]
+		name = "treasure2:terranean/ruin/tower5"
+		biomeWhitelist = ["minecraft:desert"]
+		biomeBlackList = []
+		[structureConfigs.structMetas.offset]
+		x = 0
+		y = -1
+		z = 0
+		
 	##### SUBAQUEOUS #####
 	### RUIN ###
 	[[structureConfigs.structMetas]]
@@ -70,18 +125,30 @@
 		biomeWhitelist = ["minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"]
 		biomeBlackList = []
+		[structureConfigs.structMetas.offset]
+		x = 0
+		y = -2
+		z = 0
 
 	[[structureConfigs.structMetas]]
 		name = "treasure2:subaqueous/ruin/sunken_ship2"
 		biomeWhitelist = ["minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"]
 		biomeBlackList = []
+		[structureConfigs.structMetas.offset]
+		x = 0
+		y = -2
+		z = 0
 
 	[[structureConfigs.structMetas]]
 		name = "treasure2:subaqueous/ruin/sunken_ship3"
 		biomeWhitelist = ["minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"]
 		biomeBlackList = []
+		[structureConfigs.structMetas.offset]
+		x = 0
+		y = -4
+		z = 0
 
 	[[structureConfigs.structMetas]]
 		name = "treasure2:subaqueous/ruin/underwater_ruins1"

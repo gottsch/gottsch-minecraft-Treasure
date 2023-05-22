@@ -47,7 +47,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 // TODO getMarkerBlock should be in TemplateGenerator as well (passed in)
 // TODO move TemplateGenerator to world.gen.structure (in gottschcore)
-// TODO structure gen should probably pass in the replacement map
 
 /**
  * 
@@ -62,7 +61,9 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	private Block nullBlock;
 
 	// TODO constructor should probably take in null block or list of null blocks,
-	// markersblocks, and replacement blocks
+	// markersblocks, and replacement blocks.
+	//		--> then you would have specific TemplateGenerators created for the specific templates.
+	//		--> better to pass everything into the generate() method ??
 	public TemplateGenerator() {
 		// TODO need a list of null blocks
 		// use the default null block
@@ -72,34 +73,39 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 	@Override
 	public GeneratorResult<TemplateGeneratorData> generate(IWorldGenContext context,  GottschTemplate template,
 			PlacementSettings placement, ICoords coords) {
-		return generate(context, template, placement, coords, () -> new HashMap<BlockState, BlockState>());
+		return generate(context, template, placement, coords, () -> new HashMap<BlockState, BlockState>(), Coords.EMPTY);
 	}
 	
 	@Override
 	public GeneratorResult<TemplateGeneratorData> generate(IWorldGenContext context,  GottschTemplate template,
-			PlacementSettings placement, ICoords coords, Supplier<Map<BlockState, BlockState>> consumerReplacmentMap) {
+			PlacementSettings placement, ICoords coords, ICoords offset) {
+		return generate(context, template, placement, coords, () -> new HashMap<BlockState, BlockState>(), offset);
+	}
+	
+	@Override
+	public GeneratorResult<TemplateGeneratorData> generate(IWorldGenContext context,  GottschTemplate template,
+			PlacementSettings placement, ICoords coords, Supplier<Map<BlockState, BlockState>> consumerReplacmentMap,
+			ICoords offsetCoords) {
 
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
 		Treasure.LOGGER.debug("template size -> {}", template.getSize());
 
 		// find the offset block
-		int offset = 0;
-		ICoords offsetCoords = null;
-//		if (meta.getOffset() != null) {
-//			offsetCoords = new Coords(0, meta.getOffset().getY(), 0);
-//			Treasure.LOGGER.debug("Using meta offset coords -> {}", offsetCoords);
-//		}
-//		else {
+//		int offset = 0;
+		// TODO how to get the offset at this point? don't have the resourcelocation, the holder, or value
+		if (offsetCoords == null || offsetCoords == Coords.EMPTY) {
 			offsetCoords = template.findCoords(context.random(), GeneratorUtil.getMarkerBlock(StructureMarkers.OFFSET));
-			if (offsetCoords != null) {
-				offset = -offsetCoords.getY();
+//			if (offsetCoords != null) {
+//				offset = -offsetCoords.getY();
+//			}
+			// if offset is still null/empty
+			if (offsetCoords == null || offsetCoords == Coords.EMPTY) {
+				offsetCoords = new Coords(0, 0, 0);
 			}
-//		}
+		}
 		
-
-
 		// update the spawn coords with the offset
-		ICoords spawnCoords = coords.add(0, offset, 0);
+		ICoords spawnCoords = coords.add(offsetCoords);
 //		Treasure.LOGGER.debug("spawn coords with offset -> {}", spawnCoords);
 		
 		// build the replacement map
@@ -125,7 +131,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 
 		// calculate the new spawn coords - that includes the rotation, and negates the
 		// Y offset
-		spawnCoords = getTransformedSpawnCoords(spawnCoords, new Coords(transformedSize), placement).add(0, -offset, 0);
+		spawnCoords = getTransformedSpawnCoords(spawnCoords, new Coords(transformedSize), placement).add(offsetCoords.negate()); //.add(0, -offset, 0);
 
 //		Treasure.LOGGER.debug("spawn coords after rotation -> " + spawnCoords);
 		// update result data

@@ -30,12 +30,19 @@ import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.enums.IMarkerType;
+import mod.gottsch.forge.treasure2.core.enums.MarkerType;
 import mod.gottsch.forge.treasure2.core.enums.PitType;
 import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
+import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.marker.GravestoneMarkerGenerator;
+import mod.gottsch.forge.treasure2.core.generator.marker.IMarkerGenerator;
+import mod.gottsch.forge.treasure2.core.generator.marker.StructureMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
+import mod.gottsch.forge.treasure2.core.registry.MarkerGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
@@ -97,9 +104,15 @@ public class PitChestFeatureGenerator implements IFeatureGenerator {
 		
 		// TODO markers really shouldn't be part of IChestGenerator, should be separate and selectable like a Chest Gen or Pit Gen.
 		// add markers
-		chestGenerator.addMarkers(context, spawnCoords, false);
+//		chestGenerator.addMarkers(context, spawnCoords, false);
+		
+		// select a marker generator
+		IMarkerGenerator<GeneratorResult<GeneratorData>> markerGenerator = selectMarkerGenerator(context.random());
+		// generate marker
+		markerGenerator.generate(context, spawnCoords);
 		
 		GeneratorResult<ChestGeneratorData> generationResult = new GeneratorResult<>(ChestGeneratorData.class);
+		// TODO review the use/need of RegionPlacement
 		generationResult.getData().setPlacement(RegionPlacement.SUBTERRANEAN);
 		generationResult.getData().setPit(true);
 		generationResult.getData().setCoords(chestCoords);
@@ -161,6 +174,27 @@ public class PitChestFeatureGenerator implements IFeatureGenerator {
 		Treasure.LOGGER.debug("using PitType: {}, Gen: {}", pitType, pitGenerator.getClass().getSimpleName());
 
 		return pitGenerator;
+	}
+	
+	/**
+	 * 
+	 * @param random
+	 * @return
+	 */
+	public IMarkerGenerator<GeneratorResult<GeneratorData>> selectMarkerGenerator(Random random) {
+		IMarkerType markerType;
+		if (Config.SERVER.markers.enableMarkerStructures.get() 
+				&& RandomHelper.checkProbability(random, Config.SERVER.markers.structureProbability.get())) {
+						markerType = MarkerType.STRUCTURE;
+		} else {
+			markerType = MarkerType.STANDARD;
+		}
+		
+		List<IMarkerGenerator<GeneratorResult<GeneratorData>>> markerGenerators = MarkerGeneratorRegistry.get(markerType);
+		IMarkerGenerator<GeneratorResult<GeneratorData>> markerGenerator = markerGenerators.get(random.nextInt(markerGenerators.size()));
+		Treasure.LOGGER.debug("using MarkerType -> {}, gen -> {}", markerType, markerGenerator.getClass().getSimpleName());
+
+		return markerGenerator;
 	}
 	
 	/**

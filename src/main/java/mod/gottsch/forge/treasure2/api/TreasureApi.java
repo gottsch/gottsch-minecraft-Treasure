@@ -27,6 +27,7 @@ import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.enums.ILootTableType;
 import mod.gottsch.forge.treasure2.core.enums.IPitType;
 import mod.gottsch.forge.treasure2.core.enums.IRegionPlacement;
+import mod.gottsch.forge.treasure2.core.enums.MarkerType;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
@@ -34,6 +35,8 @@ import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
+import mod.gottsch.forge.treasure2.core.generator.marker.GravestoneMarkerGenerator;
+import mod.gottsch.forge.treasure2.core.generator.marker.IMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
 import mod.gottsch.forge.treasure2.core.generator.ruin.IRuinGenerator;
 import mod.gottsch.forge.treasure2.core.generator.well.IWellGenerator;
@@ -45,6 +48,7 @@ import mod.gottsch.forge.treasure2.core.registry.*;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
 import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.IStructureType;
+import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
@@ -382,6 +386,10 @@ public class TreasureApi {
 		PitGeneratorRegistry.register(type, generator);
 	}
 	
+	public static void registerMarkerGenerator(MarkerType type, IMarkerGenerator<GeneratorResult<GeneratorData>> generator) {
+		MarkerGeneratorRegistry.register(type, generator);
+	}
+	
 	public static void registerRuinGenerator(IStructureCategory category, IRuinGenerator<GeneratorResult<ChestGeneratorData>> generator) {
 		RuinGeneratorRegistry.register(category, generator);
 	}
@@ -412,4 +420,6 @@ public class TreasureApi {
 	public static void registerFeatureGeneatorSelector(FeatureType type, IRarity rarity, IFeatureGeneratorSelector selector) {
 		FeatureGeneratorSelectorRegistry.registerSelector(type, rarity, selector);
 	}
+
+
 }

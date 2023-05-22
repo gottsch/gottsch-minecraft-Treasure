@@ -416,6 +416,9 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 		this.lockLayout = layout;
 	}
 
+	/**
+	 * Wrapper for call to the ChestRegistry and handles null values.
+	 */
 	@Override
 	public IRarity getRarity() {
 		IRarity rarity = ChestRegistry.getRarity(this);

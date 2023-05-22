@@ -20,7 +20,18 @@ package mod.gottsch.forge.treasure2.core.setup;
 import static mod.gottsch.forge.treasure2.core.generator.GeneratorType.AQUATIC;
 import static mod.gottsch.forge.treasure2.core.generator.GeneratorType.TERRESTRIAL;
 import static mod.gottsch.forge.treasure2.core.generator.GeneratorType.WELL;
-import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType.*;
+import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType.CAULDRON;
+import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType.COMMON;
+import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType.CRYSTAL_SKULL;
+import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType.EPIC;
+import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType.GOLD_SKULL;
+import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType.LEGENDARY;
+import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType.MYTHICAL;
+import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType.RARE;
+import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType.SCARCE;
+import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType.SKULL;
+import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType.UNCOMMON;
+import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType.WITHER;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
@@ -29,10 +40,39 @@ import mod.gottsch.forge.treasure2.core.cache.FeatureCaches;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.entity.monster.BoundSoul;
-import mod.gottsch.forge.treasure2.core.enums.*;
+import mod.gottsch.forge.treasure2.core.enums.LootTableType;
+import mod.gottsch.forge.treasure2.core.enums.MarkerType;
+import mod.gottsch.forge.treasure2.core.enums.PitType;
+import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
+import mod.gottsch.forge.treasure2.core.enums.SpecialRarity;
+import mod.gottsch.forge.treasure2.core.enums.WishableExtraRarity;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
-import mod.gottsch.forge.treasure2.core.generator.chest.*;
-import mod.gottsch.forge.treasure2.core.generator.pit.*;
+import mod.gottsch.forge.treasure2.core.generator.chest.CauldronChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType;
+import mod.gottsch.forge.treasure2.core.generator.chest.CommonChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.CrystalSkullChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.EpicChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.GoldSkullChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.LegendaryChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.MythicalChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.RareChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.ScarceChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.SkullChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.UncommonChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.WitherChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.marker.GravestoneMarkerGenerator;
+import mod.gottsch.forge.treasure2.core.generator.marker.StructureMarkerGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.AirPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.BigBottomMobTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.CollapsingTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.LavaSideTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.LavaTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.MobTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.SimplePitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.StructurePitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.TntTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.VolcanoPitGenerator;
 import mod.gottsch.forge.treasure2.core.generator.ruin.SurfaceRuinGenerator;
 import mod.gottsch.forge.treasure2.core.generator.well.WellGenerator;
 import mod.gottsch.forge.treasure2.core.item.KeyLockCategory;
@@ -174,7 +214,12 @@ public class CommonSetup {
 		TreasureApi.registerStructureType(StructureType.RUIN);
 		TreasureApi.registerStructureType(StructureType.WELL);
 		
-		// register structure types
+		
+		// TODO register pit types
+		
+		// TODO register marker types
+		
+		
 		// register the region placements
 		TreasureApi.registerRegionPlacement(RegionPlacement.SURFACE);
 		TreasureApi.registerRegionPlacement(RegionPlacement.SUBMERGED);
@@ -356,8 +401,10 @@ public class CommonSetup {
 //		TreasureApi.registerRuinGenerator(StructureCategory.SUBAQUEOUS, new SubterraneanRuinGenerator());
 		
 		TreasureApi.registerWellGenerator(StructureCategory.TERRANEAN, new WellGenerator());
-		// TODO using a nonstandard map, removes the need for a weighted chest generator. just need Rarity+GenType -> Generator
-		// TreasureApi.registerNonStandardChestGenerator(TERRESTRIAL, TreasureBlocks.SKULL_CHEST, SKULL);
+		
+		// TODO may need to add a placement enum, unless MarkerType can handle all situations. ie on Water or in Sky.
+		TreasureApi.registerMarkerGenerator(MarkerType.STANDARD, new GravestoneMarkerGenerator());
+		TreasureApi.registerMarkerGenerator(MarkerType.STRUCTURE, new StructureMarkerGenerator());
 		
 		// TODO/NOTE can we make this customizable via tags?
 		// register/map chest generators by rarity and type

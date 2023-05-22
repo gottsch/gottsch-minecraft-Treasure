@@ -88,7 +88,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		}
 
 		GottschTemplate template = (GottschTemplate) holder.getTemplate();
-		Treasure.LOGGER.debug("selected template holder -> {} : {}", holder.getLocation(), holder.getMetaLocation());
+		Treasure.LOGGER.debug("selected template holder -> {}", holder.getLocation());
 		if (template == null) {
 			Treasure.LOGGER.debug("could not find random template");
 			return Optional.empty();
