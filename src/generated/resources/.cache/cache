@@ -1,4 +1,4 @@
-6bf06166549f43e1c6dd59d6bdbdd45fec5456cd assets/treasure2/lang/en_us.json
+c4434771a7719d3aaf8498fbbcec8c83a5258a49 assets/treasure2/lang/en_us.json
 ec0affa9af25bb3155f1ffb36624aaf0fa4ef025 assets/treasure2/models/item/adornments_tab.json
 8be0b1ec5bf90f3dcb3da00251632ae969418191 assets/treasure2/models/item/black_pearl.json
 b95ce33388c818d6fb37ac91aba9803a85147763 assets/treasure2/models/item/black_sword.json
@@ -143,7 +143,10 @@ ffbf6360f31f498121c70a0765ec542a06c0a9e5 data/treasure2/tags/items/lock/scarce.j
 fc2a9f6f91d2301bc92c7db3347e6d2ef2071a4d data/treasure2/tags/items/lock/uncommon.json
 e2b17c36ef8964196eec210d22f7d95da1675c5d data/treasure2/tags/items/pouch.json
 4ac30a8dbf489811ad5013c6d5a60b1626b40e6a data/treasure2/tags/items/wishable/common.json
-66dc4cee82c2cfc5176e658f99e1795c8b2deb48 data/treasure2/tags/items/wishable/epic.json
-c709f6dba8384123d8cd686377e5de48d18cc56c data/treasure2/tags/items/wishable/rare.json
+347d61228a3e662ce006e9aecd1eefbed04b4175 data/treasure2/tags/items/wishable/epic.json
+707e97e0b5d58b4b052ab4c7394cbb6b013797b6 data/treasure2/tags/items/wishable/rare.json
 bbe22f55fd4a3b4aaef202a7d8f2ba14acc5a890 data/treasure2/tags/items/wishable/scarce.json
 348c6a9941b32acf754dff3d213537172729490a data/treasure2/tags/items/wishable/uncommon.json
+6f069965baaf66e2e7ac9bf004b47c84a04cca7f data/treasure2/tags/items/wishable/wishables.json
+2d7bb792b86a5ab3c8d226bd3cbb7e515e7f515d data/treasure2/tags/worldgen/biome/structures/whitelist/desert-wishing-well1.json
+2d7bb792b86a5ab3c8d226bd3cbb7e515e7f515d data/treasure2/tags/worldgen/biome/structures/whitelist/desert-wishing-well2.json

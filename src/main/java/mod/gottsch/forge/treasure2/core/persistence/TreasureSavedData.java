@@ -20,7 +20,7 @@
 package mod.gottsch.forge.treasure2.core.persistence;
 
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.cache.DimensionalSimpleDistanceCache;
+import mod.gottsch.forge.treasure2.core.cache.FeatureCaches;
 import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
@@ -42,7 +42,7 @@ public class TreasureSavedData extends SavedData {
 	
 	private static final String CHEST_GEN_REGISTRY_NAME = "weightedChestGeneratorRegistry";
 	private static final String DIM_GEN_REGISTRY_NAME = "dimensionalGeneratedRegistry";
-	private static final String DIM_WELL_CACHE_NAME = "dimensionalWellCache";
+	private static final String FEATURE_CACHES_NAME = "featureCaches";
 	
 //	public static final String GEN_DATA_KEY = Treasure.MODID + ":generationData";
 	private static final String TREASURE = Treasure.MODID;
@@ -93,8 +93,8 @@ public class TreasureSavedData extends SavedData {
 		/*
 		 * well cache
 		 */
-		if (tag.contains(DIM_WELL_CACHE_NAME)) {
-			DimensionalSimpleDistanceCache.load((CompoundTag)tag.get(DIM_WELL_CACHE_NAME));
+		if (tag.contains(FEATURE_CACHES_NAME)) {
+			FeatureCaches.load((CompoundTag)tag.get(FEATURE_CACHES_NAME));
 		}
 		
         return create();
@@ -113,8 +113,8 @@ public class TreasureSavedData extends SavedData {
 			// update tag
 			updateCompound(tag, DIM_GEN_REGISTRY_NAME, DimensionalGeneratedRegistry.save());
 
-			// update well
-			updateCompound(tag, DIM_WELL_CACHE_NAME, DimensionalSimpleDistanceCache.save());
+			// update feature dimensional simple caches
+			updateCompound(tag, FEATURE_CACHES_NAME, FeatureCaches.save());
 		}
 		catch(Exception e) {
 			e.printStackTrace();

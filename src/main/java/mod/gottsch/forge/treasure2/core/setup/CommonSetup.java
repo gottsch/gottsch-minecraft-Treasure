@@ -25,7 +25,7 @@ import static mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorTyp
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.cache.DimensionalSimpleDistanceCache;
+import mod.gottsch.forge.treasure2.core.cache.FeatureCaches;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.entity.monster.BoundSoul;
@@ -38,7 +38,6 @@ import mod.gottsch.forge.treasure2.core.generator.well.WellGenerator;
 import mod.gottsch.forge.treasure2.core.item.KeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
-import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
@@ -173,6 +172,7 @@ public class CommonSetup {
 		TreasureApi.registerStructureType(StructureType.MARKER);
 		TreasureApi.registerStructureType(StructureType.ROOM);
 		TreasureApi.registerStructureType(StructureType.RUIN);
+		TreasureApi.registerStructureType(StructureType.WELL);
 		
 		// register structure types
 		// register the region placements
@@ -425,7 +425,7 @@ public class CommonSetup {
 		// register network
 		TreasureNetworking.register();
 		
-		DimensionalSimpleDistanceCache.initialize();
+		FeatureCaches.initialize();
 	}
 
 	@SubscribeEvent

@@ -1,5 +1,19 @@
-/**
- * 
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2020 Mark Gottschling (gottsch)
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package mod.gottsch.forge.treasure2.core.command;
 
@@ -40,39 +54,6 @@ import net.minecraftforge.registries.RegistryObject;
 public class SpawnChestCommand {
 	
 	private static final String NAME = "name";
-	
-//	private enum Chests {
-//		WOOD(TreasureBlocks.WOOD_CHEST.get()),
-//		CRATE(TreasureBlocks.CRATE_CHEST.get()),
-//		MOLDY_CRATE(TreasureBlocks.MOLDY_CRATE_CHEST.get()),
-//		IRON_BOUND(TreasureBlocks.IRONBOUND_CHEST.get()),
-//		PIRATE(TreasureBlocks.PIRATE_CHEST.get()),
-//		IRON_STRONGBOX(TreasureBlocks.IRON_STRONGBOX.get()),
-//		GOLD_STRONGBOX(TreasureBlocks.GOLD_STRONGBOX.get()),
-//		SAFE(TreasureBlocks.SAFE.get()),
-//		DREAD_PIRATE(TreasureBlocks.DREAD_PIRATE_CHEST.get()),
-//		COMPRESSOR(TreasureBlocks.COMPRESSOR_CHEST.get()),
-//		SPIDER(TreasureBlocks.SPIDER_CHEST.get()), 
-//		VIKING(TreasureBlocks.VIKING_CHEST.get()),
-//		CARDBOARD_BOX(TreasureBlocks.CARDBOARD_BOX.get()),
-//		MILK_CRATE(TreasureBlocks.MILK_CRATE.get()),
-//		WITHER(TreasureBlocks.WITHER_CHEST.get()),
-//		SKULL(TreasureBlocks.SKULL_CHEST.get()),
-//		GOLD_SKULL(TreasureBlocks.GOLD_SKULL_CHEST.get()),
-//		CRYSTAL_SKULL_CHEST(TreasureBlocks.CRYSTAL_SKULL_CHEST.get()),
-//		CAULDRON(TreasureBlocks.CAULDRON_CHEST.get());
-//
-//		Block chest;
-//
-//		Chests(Block chestBlock) {
-//			this.chest = chestBlock;
-//		}
-//
-//		public static List<String> getNames() {
-//			List<String> names = EnumSet.allOf(Chests.class).stream().map(x -> x.name()).collect(Collectors.toList());
-//			return names;
-//		}
-//	}
 
 	private static final SuggestionProvider<CommandSourceStack> SUGGEST_RARITY = (source, builder) -> {
 		return SharedSuggestionProvider.suggest(Rarity.getNames().stream(), builder);

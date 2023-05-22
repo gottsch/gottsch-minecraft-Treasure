@@ -30,7 +30,7 @@ import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.cache.DimensionalSimpleDistanceCache;
+import mod.gottsch.forge.treasure2.core.cache.FeatureCaches;
 import mod.gottsch.forge.treasure2.core.cache.SimpleDistanceCache;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
@@ -77,13 +77,15 @@ public class WellFeature extends Feature<NoneFeatureConfiguration> implements IT
 		}
 		
 		// get the well registry
-		SimpleDistanceCache<GeneratedContext> cache = DimensionalSimpleDistanceCache.WELL_CACHE	.get(dimension);
+		SimpleDistanceCache<GeneratedContext> cache = FeatureCaches.WELL_CACHE.getDimensionDistanceCache().get(dimension);
 		if (cache == null) {
 			Treasure.LOGGER.debug("GeneratedRegistry is null for dimension & WELL_CACHE. This shouldn't be. Should be initialized.");
 			return false;
 		}
 		
 		if (!meetsWorldAgeCriteria(context.level(), cache)) {
+			this.waitChunksCount++;
+			FeatureCaches.WELL_CACHE.setDelayCount(waitChunksCount);
 			return false;
 		}
 		
@@ -148,7 +150,6 @@ public class WellFeature extends Feature<NoneFeatureConfiguration> implements IT
 		// in this case the waitChunksCount would be reset when the world restarts. this value needs to be saved.
 		if (cache.getValues().isEmpty() && waitChunksCount < Config.SERVER.wells.waitChunks.get()) {
 			Treasure.LOGGER.debug("world is too young");
-			this.waitChunksCount++;
 			return false;
 		}
 		return true;

@@ -19,7 +19,10 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.template;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
@@ -65,32 +68,50 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 		// use the default null block
 		setNullBlock(GeneratorUtil.getMarkerBlock(StructureMarkers.NULL));
 	}
-
+	
 	@Override
 	public GeneratorResult<TemplateGeneratorData> generate(IWorldGenContext context,  GottschTemplate template,
 			PlacementSettings placement, ICoords coords) {
+		return generate(context, template, placement, coords, () -> new HashMap<BlockState, BlockState>());
+	}
+	
+	@Override
+	public GeneratorResult<TemplateGeneratorData> generate(IWorldGenContext context,  GottschTemplate template,
+			PlacementSettings placement, ICoords coords, Supplier<Map<BlockState, BlockState>> consumerReplacmentMap) {
 
 		GeneratorResult<TemplateGeneratorData> result = new GeneratorResult<>(TemplateGeneratorData.class);
 		Treasure.LOGGER.debug("template size -> {}", template.getSize());
 
 		// find the offset block
 		int offset = 0;
-		ICoords offsetCoords = template.findCoords(context.random(), GeneratorUtil.getMarkerBlock(StructureMarkers.OFFSET));
+		ICoords offsetCoords = null;
+//		if (meta.getOffset() != null) {
+//			offsetCoords = new Coords(0, meta.getOffset().getY(), 0);
+//			Treasure.LOGGER.debug("Using meta offset coords -> {}", offsetCoords);
+//		}
+//		else {
+			offsetCoords = template.findCoords(context.random(), GeneratorUtil.getMarkerBlock(StructureMarkers.OFFSET));
+			if (offsetCoords != null) {
+				offset = -offsetCoords.getY();
+			}
+//		}
+		
 
-		if (offsetCoords != null) {
-			offset = -offsetCoords.getY();
-		}
 
 		// update the spawn coords with the offset
 		ICoords spawnCoords = coords.add(0, offset, 0);
 //		Treasure.LOGGER.debug("spawn coords with offset -> {}", spawnCoords);
 		
+		// build the replacement map
+		Map<BlockState, BlockState> m = consumerReplacmentMap.get();
+		m.putAll(TreasureTemplateRegistry.getReplacementMap());
+		
 		// generate the structure
 		template.placeInWorld(context.level(), spawnCoords.toPos(), spawnCoords.toPos(), placement, 
-					getNullBlock(), TreasureTemplateRegistry.getReplacementMap(), context.random(), 3);
+					getNullBlock(), m, context.random(), 3);
 
 
-		// process all strcture markers, positioning absolutely
+		// process all structure markers, positioning absolutely
 		for (Entry<Block, BlockInfoContext> entry : template.getTagBlockMap().entries()) {
 			BlockInfoContext blockContext = getAbsoluteTransformedContext(entry.getValue(), spawnCoords, placement);
 			result.getData().getMap().put(entry.getKey(), blockContext);

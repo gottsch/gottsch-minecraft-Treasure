@@ -25,6 +25,7 @@ import java.util.List;
  * @author Mark Gottschling on Aug 30, 2020
  *
  */
+@Deprecated
 public class LootResourceManifest {
     // lists
     private List<String> supportingResources;

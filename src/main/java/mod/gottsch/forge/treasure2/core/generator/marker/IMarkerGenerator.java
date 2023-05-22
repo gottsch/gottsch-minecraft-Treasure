@@ -17,6 +17,8 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.marker;
 
+import java.util.Optional;
+
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorResult;
@@ -35,6 +37,6 @@ public interface IMarkerGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param config
 	 * @return
 	 */
-	public abstract RESULT generate(IWorldGenContext context, ICoords spawnCoords);
+	public abstract Optional<RESULT> generate(IWorldGenContext context, ICoords spawnCoords);
 
 }

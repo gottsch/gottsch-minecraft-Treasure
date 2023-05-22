@@ -19,6 +19,9 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.template;
 
+import java.util.Map;
+import java.util.function.Supplier;
+
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.gen.structure.GottschTemplate;
@@ -28,6 +31,7 @@ import mod.gottsch.forge.treasure2.core.generator.IGeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.TemplateGeneratorData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 
 /**
@@ -39,6 +43,9 @@ public interface ITemplateGenerator<RESULT extends IGeneratorResult<?>> {
 
 	public GeneratorResult<TemplateGeneratorData> generate(IWorldGenContext context, GottschTemplate template, PlacementSettings settings, ICoords spawnCoords);
 
+	public GeneratorResult<TemplateGeneratorData> generate(IWorldGenContext context, GottschTemplate template,
+			PlacementSettings placement, ICoords coords, Supplier<Map<BlockState, BlockState>> consumerReplacmentMap);
+	
 	/**
 	 * NOTE not 100% sure that this  belongs here
 	 * @param coords

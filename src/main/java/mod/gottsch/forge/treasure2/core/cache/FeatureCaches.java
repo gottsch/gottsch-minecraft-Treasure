@@ -17,7 +17,6 @@
  */
 package mod.gottsch.forge.treasure2.core.cache;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -35,21 +34,32 @@ import net.minecraft.resources.ResourceLocation;
  * @author Mark Gottschling on May 19, 2023
  *
  */
-public class DimensionalSimpleDistanceCache {
+public class FeatureCaches {
 	private static final String DIMENSION_NAME = "dimension";
-	private static final String WELL_CACHES_NAME = "wellCaches";
+	private static final String WELL_CACHE_NAME = "wellCache";
+	private static final String WITHER_CACHE_NAME = "witherCache";
 	
-	public static final Map<ResourceLocation, SimpleDistanceCache<GeneratedContext>> WELL_CACHE = new HashMap<>();
+//	@Deprecated
+//	public static final Map<ResourceLocation, SimpleDistanceCache<GeneratedContext>> WELL_CACHE = new HashMap<>();
 
-	private DimensionalSimpleDistanceCache() {}
+	public static final DelayedFeatureSimpleDistanceCache WELL_CACHE = new DelayedFeatureSimpleDistanceCache();
 	
+	/**
+	 * 
+	 */
+	private FeatureCaches() {}
+	
+	/**
+	 * 
+	 */
 	public static void initialize() {
 		// for each allowable dimension for the mod
 		for (String dimensionName : Config.SERVER.integration.dimensionsWhiteList.get()) {
 			Treasure.LOGGER.debug("white list dimension -> {}", dimensionName);
 			ResourceLocation dimension = ModUtil.asLocation(dimensionName);
 			
-			WELL_CACHE.put(dimension, new SimpleDistanceCache<>(Config.SERVER.wells.registrySize.get()));
+//			WELL_CACHE.put(dimension, new SimpleDistanceCache<>(Config.SERVER.wells.registrySize.get()));
+			WELL_CACHE.getDimensionDistanceCache().put(dimension, new SimpleDistanceCache<>(Config.SERVER.wells.registrySize.get()));
 		}		
 	}
 	
@@ -61,8 +71,11 @@ public class DimensionalSimpleDistanceCache {
 		CompoundTag tag = new CompoundTag();
 		
 		// wells
-		Tag wellTag = saveWellRegistry(WELL_CACHE);
-		tag.put(WELL_CACHES_NAME, wellTag);
+		Tag wellTag = saveFeatureCache(WELL_CACHE);
+		tag.put(WELL_CACHE_NAME, wellTag);
+		
+		// wither
+		
 		
 		return tag;
 	}
@@ -72,9 +85,44 @@ public class DimensionalSimpleDistanceCache {
 	 * @param tag
 	 */
 	public static void load(CompoundTag tag) {
-		if (tag.contains(WELL_CACHES_NAME)) {
-			loadWellRegistry(tag.getList(WELL_CACHES_NAME, Tag.TAG_COMPOUND), WELL_CACHE, GeneratedContext::new);
+		if (tag.contains(WELL_CACHE_NAME)) {
+			WELL_CACHE.clear();
+			loadCache((CompoundTag)tag.get(WELL_CACHE_NAME), WELL_CACHE);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param delayedFeatureCache
+	 * @return
+	 */
+	private static Tag saveFeatureCache(DelayedFeatureSimpleDistanceCache delayedFeatureCache) {
+		
+		CompoundTag featureTag = new CompoundTag();
+		featureTag.putInt("delay", delayedFeatureCache.getDelayCount());
+		
+		featureTag.put("caches", saveCache(delayedFeatureCache.getDimensionDistanceCache()));
+		
+		return featureTag;
+	}
+	
+	/**
+	 * 
+	 * @param featureTag
+	 * @param delayedFeatureCache
+	 * @return
+	 */
+	private static Tag loadCache(CompoundTag featureTag, DelayedFeatureSimpleDistanceCache delayedFeatureCache) {		
+		int delay = 0;
+		if (featureTag.contains("delay")) {
+			delay = featureTag.getInt("delay");
+		}
+		delayedFeatureCache.setDelayCount(delay);
+		
+		if (featureTag.contains("caches")) {
+			loadCache(featureTag.getList("caches", Tag.TAG_COMPOUND), delayedFeatureCache.getDimensionDistanceCache(), GeneratedContext::new);
+		}		
+		return featureTag;
 	}
 	
 	/**
@@ -82,7 +130,7 @@ public class DimensionalSimpleDistanceCache {
 	 * @param cacheMap
 	 * @return
 	 */
-	public static Tag saveWellRegistry(Map<ResourceLocation, SimpleDistanceCache<GeneratedContext>> cacheMap) {
+	public static ListTag saveCache(Map<ResourceLocation, SimpleDistanceCache<GeneratedContext>> cacheMap) {
 		ListTag dimensionalCachesTag = new ListTag();
 		cacheMap.forEach((dimension, cache) -> {
 			CompoundTag dimensionCacheTag = new CompoundTag();
@@ -102,16 +150,16 @@ public class DimensionalSimpleDistanceCache {
 	/**
 	 * 
 	 * @param <T>
-	 * @param dimensinoalCachesTag
+	 * @param dimensionalCachesTag
 	 * @param cacheMap
 	 * @param supplier
 	 */
-	public static <T> void loadWellRegistry(ListTag dimensinoalCachesTag, 
+	public static <T> void loadCache(ListTag dimensionalCachesTag, 
 			Map<ResourceLocation, SimpleDistanceCache<GeneratedContext>> cacheMap, Supplier<GeneratedContext> supplier) {
 
-		if (dimensinoalCachesTag != null) {
+		if (dimensionalCachesTag != null) {
 			Treasure.LOGGER.debug("loading well caches...");  	
-			dimensinoalCachesTag.forEach(dimensionalCacheTag -> {
+			dimensionalCachesTag.forEach(dimensionalCacheTag -> {
 				CompoundTag dimensionalCacheCompound = (CompoundTag)dimensionalCacheTag;
 				if (dimensionalCacheCompound.contains(DIMENSION_NAME)) {
 					String dimensionName = dimensionalCacheCompound.getString(DIMENSION_NAME);
@@ -119,11 +167,10 @@ public class DimensionalSimpleDistanceCache {
 					// load the data
 					if (dimensionalCacheCompound.contains("data")) {
 						ResourceLocation dimension = ModUtil.asLocation(dimensionName);					
-						// clear the registry first
-						if (!WELL_CACHE.containsKey(dimension)) {
-							WELL_CACHE.put(dimension, new SimpleDistanceCache<GeneratedContext>(Config.SERVER.wells.registrySize.get()));
+						// add the dimension if it doesn't exist
+						if (!cacheMap.containsKey(dimension)) {
+							cacheMap.put(dimension, new SimpleDistanceCache<GeneratedContext>(Config.SERVER.wells.registrySize.get()));
 						}
-						WELL_CACHE.get(dimension).clear();
 						
 						ListTag dataTag = dimensionalCacheCompound.getList("data", Tag.TAG_COMPOUND);
 						dataTag.forEach(datum -> {
@@ -132,7 +179,7 @@ public class DimensionalSimpleDistanceCache {
 							context.load((CompoundTag)datum);
 							Treasure.LOGGER.debug("context -> {}", context);
 							if (context.getRarity() != null && context.getCoords() != null) {									
-								WELL_CACHE.get(dimension).cache(context.getCoords(), context);
+								cacheMap.get(dimension).cache(context.getCoords(), context);
 							}
 						});
 					}

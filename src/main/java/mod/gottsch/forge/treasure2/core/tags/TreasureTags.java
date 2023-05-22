@@ -28,14 +28,18 @@ import mod.gottsch.forge.treasure2.core.registry.TagRegistry;
 import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -111,6 +115,15 @@ public class TreasureTags {
 			return BlockTags.create(new ResourceLocation(domain, path));
 		}
 	}
+	
+//	public static class Biomes {
+//		public static final TagKey<Biome> DESERT_WELL1 = mod(Treasure.MODID, "structures/whitelist/desert-wishing-well1");
+//		public static final TagKey<Biome> DESERT_WELL2 = mod(Treasure.MODID, "structures/whitelist/desert-wishing-well2");
+//		
+//		public static TagKey<Biome> mod(String domain, String path) {
+//			return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(domain, path));
+//		}
+//	}
 	
 	@SubscribeEvent
 	public static void registerTags(TagsUpdatedEvent event) {

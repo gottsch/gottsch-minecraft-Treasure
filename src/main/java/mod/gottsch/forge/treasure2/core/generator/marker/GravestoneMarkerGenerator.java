@@ -17,6 +17,8 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.marker;
 
+import java.util.Optional;
+
 import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
@@ -59,11 +61,11 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 	 * 
 	 */
 	@Override
-	public GeneratorResult<GeneratorData> generate(IWorldGenContext context, ICoords coords) {
+	public Optional<GeneratorResult<GeneratorData>> generate(IWorldGenContext context, ICoords coords) {
 		GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 		// check if markers are enabled
 		if (!Config.SERVER.markers.enableMarkers.get()) {
-			return result.fail();
+			return Optional.empty();
 		}
 
 		int x = coords.getX();
@@ -154,6 +156,6 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 		} // end of for
 
 		result.getData().setSpawnCoords(markerCoords);
-		return result.success();
+		return Optional.of(result);
 	}
 }

@@ -24,6 +24,7 @@ import java.util.List;
  * @author Mark Gottschling on Nov 27, 2022
  *
  */
+@Deprecated
 public class ResourceManifest {
     // lists
     private List<String> resources;

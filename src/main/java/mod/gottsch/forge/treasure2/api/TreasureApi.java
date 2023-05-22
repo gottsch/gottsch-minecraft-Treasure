@@ -349,11 +349,6 @@ public class TreasureApi {
 		TreasureLootTableRegistry.register(modID);
 	}
 	
-	@Deprecated
-	public static void registerMeta(String modID) {
-		TreasureMetaRegistry.register(modID);
-	}
-	
 	public static void registerTemplates(String modID) {
 		TreasureTemplateRegistry.register(modID);
 	}

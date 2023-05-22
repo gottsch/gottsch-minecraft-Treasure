@@ -95,6 +95,7 @@ public class PitChestFeatureGenerator implements IFeatureGenerator {
 			return Optional.empty();
 		}
 		
+		// TODO markers really shouldn't be part of IChestGenerator, should be separate and selectable like a Chest Gen or Pit Gen.
 		// add markers
 		chestGenerator.addMarkers(context, spawnCoords, false);
 		

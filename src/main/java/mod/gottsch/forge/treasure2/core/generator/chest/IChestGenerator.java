@@ -47,6 +47,7 @@ import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
 import mod.gottsch.forge.treasure2.core.generator.marker.GravestoneMarkerGenerator;
+import mod.gottsch.forge.treasure2.core.generator.marker.StructureMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
@@ -649,6 +650,7 @@ public interface IChestGenerator {
 	}
 
 	/**
+	 * TODO refactor out into it's own selectable generators
 	 * Wrapper method so that is can be overridden (as used in the Template Pattern)
 	 * 
 	 * @param world
@@ -659,8 +661,7 @@ public interface IChestGenerator {
 		if (!isSurfaceChest && Config.SERVER.markers.enableMarkerStructures.get() 
 				&& RandomHelper.checkProbability(context.random(), Config.SERVER.markers.structureProbability.get())) {
 			Treasure.LOGGER.debug("generating a random structure marker -> {}", coords.toShortString());
-			//			new StructureMarkerGenerator().generate(world, random, coords);
-			new GravestoneMarkerGenerator().generate(context, coords);
+						new StructureMarkerGenerator().generate(context, coords);
 		} else {
 			new GravestoneMarkerGenerator().generate(context, coords);
 		}

@@ -17,15 +17,14 @@
  */
 package mod.gottsch.forge.treasure2.core.config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.util.*;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.electronwill.nightconfig.core.CommentedConfig;
 import com.electronwill.nightconfig.core.conversion.ObjectConverter;
+import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.google.common.collect.Maps;
 
 import mod.gottsch.forge.gottschcore.config.AbstractConfig;
@@ -465,7 +464,7 @@ public class Config extends AbstractConfig {
 				this.probability = builder
 						.comment(" The probability that a well will generate at selected spawn location.",
 								" Including a non-100 value increases the randomization of well placement.")
-						.defineInRange("probability", 50.0, 0.0, 100.0);
+						.defineInRange("probability", 85.0, 0.0, 100.0);
 				
 				this.minBlockDistance = builder
 						.comment(" The minimum distance, measured in blocks, that two wells can be in proximity (ie radius).",
@@ -547,9 +546,21 @@ public class Config extends AbstractConfig {
 	}
 	
 	/*
+	 * Structure Configuration
+	 */
+	public static final ForgeConfigSpec STRUCTURE_CONFIG_SPEC;
+	/*
 	 * internal config class only. used for loading the defaultconfig file
 	 * and transformed into the exposed chestConfigs property
 	 */
+	public static StructureConfiguration structureConfiguration;
+	
+	static {
+		final Pair<InternalStructureConfiguration, ForgeConfigSpec	> structSpecPair = new ForgeConfigSpec.Builder()
+				.configure(InternalStructureConfiguration::new);
+		STRUCTURE_CONFIG_SPEC = structSpecPair.getRight();
+	}
+	
 	private static class ChestConfig {
 		public ChestConfig(ForgeConfigSpec.Builder builder) {
 			builder.comment("####", " rarities = common, uncommon, scarce, rare, epic, legendary, mythical", "####").define("chestConfigs", new ArrayList<>());
@@ -576,12 +587,43 @@ public class Config extends AbstractConfig {
 		});
 	}
 	
+	/*
+	 * 
+	 */
+	private static class InternalStructureConfiguration {
+		public InternalStructureConfiguration(ForgeConfigSpec.Builder builder) {
+			// NOTE having an ArrayList<>() here is a real bugger. Not sure how to create a Config()
+			// NOTE this define() name must match the wrapper property in the toml file.
+			builder.define("structureConfigs", new ArrayList<>());
+			builder.build();
+		}
+	}
+	
 	/**
-	 * A temporary holder class.
+	 * 
+	 * @param configData
+	 * @return
+	 */
+	public static Optional<StructureConfiguration> transformStructureConfiguration(CommentedConfig configData) {
+		StructureConfigurationHolder holder = new ObjectConverter().toObject(configData, StructureConfigurationHolder::new);
+		if (holder == null || holder.structureConfigs == null || holder.structureConfigs.isEmpty()) {
+			return Optional.empty();
+		} else {
+			structureConfiguration = holder.structureConfigs.get(0);
+		}
+		return Optional.ofNullable(holder.structureConfigs.get(0));
+	}
+	
+	/**
+	 * A temporary holder classes.
 	 *
 	 */
 	private static class ChestConfigsHolder {
 		public List<ChestConfiguration> chestConfigs;
+	}
+	
+	private static class StructureConfigurationHolder {
+		public List<StructureConfiguration> structureConfigs;
 	}
 }
 

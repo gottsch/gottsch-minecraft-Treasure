@@ -98,8 +98,9 @@ public class TreasureItemTagsProvider extends ItemTagsProvider {
 		tag(TreasureTags.Items.WISHABLES).addTag(TreasureTags.Items.SCARCE_WISHABLE);
 		tag(TreasureTags.Items.WISHABLES).addTag(TreasureTags.Items.RARE_WISHABLE);
 		tag(TreasureTags.Items.WISHABLES).addTag(TreasureTags.Items.EPIC_WISHABLE);
-		tag(TreasureTags.Items.WISHABLES).addTag(TreasureTags.Items.LEGENDARY_WISHABLE);
-		tag(TreasureTags.Items.WISHABLES).addTag(TreasureTags.Items.MYTHICAL_WISHABLE);
+		// NOTE can't add until they have items assigned to them.
+//		tag(TreasureTags.Items.WISHABLES).addTag(TreasureTags.Items.LEGENDARY_WISHABLE);
+//		tag(TreasureTags.Items.WISHABLES).addTag(TreasureTags.Items.MYTHICAL_WISHABLE);
 		// @Deprecated NOTE white_pearl and black_pearl are not mapped via tags because they use
 		// custom, non-rarity based loot tables
 		

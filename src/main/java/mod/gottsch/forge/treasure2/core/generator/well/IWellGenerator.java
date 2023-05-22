@@ -34,6 +34,8 @@ import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.IStructureType;
 import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -81,7 +83,11 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	default public Optional<TemplateHolder> selectTemplate(IWorldGenContext context, ICoords coords, IStructureCategory category, IStructureType type) {
 		Optional<TemplateHolder> holder = Optional.empty();
 		
-		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type);
+		// get the biome ID
+		Holder<Biome> biome = context.level().getBiome(coords.toPos());
+		
+//		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type);
+		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type, biome.unwrap().right().get().getRegistryName());
 		if (!holders.isEmpty()) {
 			holder = Optional.ofNullable(holders.get(context.random().nextInt(holders.size())));
 		}
