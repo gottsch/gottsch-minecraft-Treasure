@@ -392,6 +392,10 @@ public class Config extends AbstractConfig {
 			public ConfigValue<Integer>	waitChunks;
 			public BiomesConfig biomes;
 			
+			public ConfigValue<Integer> maxTrunkSize;
+			public ConfigValue<Integer> minSupportingTrees;
+			public ConfigValue<Integer> maxSupportingTrees;
+			
 			public WitherTree(final ForgeConfigSpec.Builder builder)	 {
 				builder.comment(CATEGORY_DIV, " Wither Tree properties", CATEGORY_DIV)
 				.push("witherTrees");
@@ -423,6 +427,21 @@ public class Config extends AbstractConfig {
 				this.waitChunks = builder
 						.comment(" The number of chunks that are generated in a new world before wither trees start to spawn.")
 						.defineInRange("waitChunks", 500, 10, 32000);
+				
+				maxTrunkSize = builder
+						.comment(" The maximum height a wither tree can reach.",
+								" This is the high end of a calculated range. ex. size is randomized between minTrunkSize and maxTrunkSize.",
+								" (The minimum is predefined.)")
+						.defineInRange("Maximum trunk height (in blocks):", 13, 7, 20);
+				
+				minSupportingTrees = builder
+						.comment(" The minimum number of supporting wither trees that surround the main tree in the grove.")
+						.defineInRange("Minimum number of supporting trees:", 5, 0, 30);
+				
+				maxSupportingTrees = builder
+						.comment(" The maximum number of supporting wither trees that surround the main tree in the grove.")
+						.defineInRange("Maximum number of supporting trees:", 15, 0, 30);
+				
 				
 				BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean", "minecraft:deep_frozen_ocean", "minecraft:cold_ocean",
 						"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },

@@ -91,7 +91,7 @@ public class TreasureConfiguredFeatures {
 			() -> new TerrestrialChestFeature(NoneFeatureConfiguration.CODEC));
 
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> SUBAQUEOUS_CHEST = FEATURES.register("subaqueous_chest",
-			() -> new SubaqueousChestFeature(NoneFeatureConfiguration.CODEC));
+			() -> new AqueousChestFeature(NoneFeatureConfiguration.CODEC));
 
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WELL = FEATURES.register("well",
 			() -> new WellFeature(NoneFeatureConfiguration.CODEC));

@@ -226,6 +226,11 @@ public class TreasureApi {
 		}
 	}
 	
+	public static List<IStructureCategory> getStructureCategories() {
+		List<IEnum> enums = EnumRegistry.getValues(STRUCTURE_CATEGORY);
+		return enums.stream().map(e -> (IStructureCategory)e).collect(Collectors.toList());		
+	}
+	
 	public static void registerStructureType(IStructureType type) {
 		EnumRegistry.register(STRUCTURE_TYPE, type);
 	}
@@ -420,6 +425,4 @@ public class TreasureApi {
 	public static void registerFeatureGeneatorSelector(FeatureType type, IRarity rarity, IFeatureGeneratorSelector selector) {
 		FeatureGeneratorSelectorRegistry.registerSelector(type, rarity, selector);
 	}
-
-
 }

@@ -89,12 +89,12 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
 		WorldGenLevel genLevel = context.level();
 		ResourceLocation dimension = WorldInfo.getDimension(genLevel.getLevel());
-//		Treasure.LOGGER.debug("dimension -> {}", dimension.toString());
+		//		Treasure.LOGGER.debug("dimension -> {}", dimension.toString());
 		// test the dimension
 		if (!meetsDimensionCriteria(dimension)) { 
 			return false;
 		}
-		
+
 		// get the chest registry
 		GeneratedRegistry<ChestGenContext> registry = DimensionalGeneratedRegistry.getChestGeneratedRegistry(dimension, FeatureType.TERRESTRIAL);
 		if (registry == null) {
@@ -118,18 +118,18 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		if (!meetsWorldAgeCriteria(genLevel, registry, generatorConfig)) {
 			return false;
 		}
-		
+
 		// TODO add a check against a tag that lists all the build on materials (dirt, stone, cobblestone etc), or a blacklist (bricks, planks, wool, etc)
-		
+
 		// the get first surface y (could be leaves, trunk, water, etc)
 		ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(genLevel, context.chunkGenerator(), new Coords(context.origin().offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
 		if (spawnCoords == Coords.EMPTY) {
 			return false;
 		}
-		
+
 		// determine what type to generate
 		IRarity rarity = (IRarity) RarityLevelWeightedChestGeneratorRegistry.getNextRarity(dimension, FeatureType.TERRESTRIAL);
-//		Treasure.LOGGER.debug("rarity -> {}", rarity);
+		//		Treasure.LOGGER.debug("rarity -> {}", rarity);
 		if (rarity == Rarity.NONE) {
 			Treasure.LOGGER.warn("unable to obtain the next rarity for generator - >{}", FeatureType.TERRESTRIAL);
 			return false;
@@ -140,7 +140,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 			return false;
 		}
 		// test if the override (global) biome is allowed
-		
+
 		// TODO might have feature generator specific biome and proximity criteria checks. ie Wither
 		if (!meetsBiomeCriteria(genLevel.getLevel(), spawnCoords, rarityConfig.get().getBiomeWhitelist(), rarityConfig.get().getBiomeBlacklist())) {
 			return false;
@@ -156,28 +156,33 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 			// place a placeholder chest in the registry
 			return failAndPlaceholdChest(genLevel, registry, rarity, spawnCoords);
 		}
-		
+
 		// select the feature generator
 		Optional<IFeatureGeneratorSelector> generatorSelector = FeatureGeneratorSelectorRegistry.getSelector(FeatureType.TERRESTRIAL, rarity);
 		if (!generatorSelector.isPresent()) {
 			Treasure.LOGGER.warn("unable to obtain a generator selector for rarity - >{}", rarity);
 			return failAndPlaceholdChest(genLevel, registry, rarity, spawnCoords);
 		}
-		
+
 		// select the generator
 		IFeatureGenerator featureGenerator = generatorSelector.get().select();
-		
+		Treasure.LOGGER.debug("feature generator -> {}", featureGenerator.getClass().getSimpleName());
 		// call generate
-		 Optional<GeneratorResult<ChestGeneratorData>> result = featureGenerator.generate(new WorldGenContext(context), spawnCoords, rarity, rarityConfig.get());
+		Optional<GeneratorResult<ChestGeneratorData>> result = featureGenerator.generate(new WorldGenContext(context), spawnCoords, rarity, rarityConfig.get());
 
 		if (result.isPresent()) {
 			Treasure.LOGGER.debug("chest gen result -> {}", result.get());
 			// add to registry
 			ChestGenContext chestGenContext = new ChestGenContext(
-					result.get().getData().getRarity(),
-					result.get().getData().getSpawnCoords());	
+					// TODO I think this has to be the exact chest location for TreasureMap to work.
+					result.get().getData().getRarity(), result.get().getData().getSpawnCoords());	
+			
 			chestGenContext.setName(result.get().getData().getRegistryName());
-			chestGenContext.setPlacement(RegionPlacement.SURFACE);
+			if (result.get().getData().getPlacement() != null) {
+				chestGenContext.setPlacement(result.get().getData().getPlacement());
+			} else {
+				chestGenContext.setPlacement(RegionPlacement.SURFACE);
+			}
 			Treasure.LOGGER.debug("chestGenContext -> {}", chestGenContext);
 			registry.register(rarity, spawnCoords, chestGenContext);
 
@@ -210,7 +215,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @param world
 	 * @param registry
@@ -245,7 +250,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 
 
 	/////////////////////////////////	/////////////////////////////////	/////////////////////////////////	/////////////////////////////////
-	
+
 	/**
 	 * 
 	 * @param world
@@ -260,8 +265,8 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 	private Optional<GeneratorResult<ChestGeneratorData>> generateChest(
 			IWorldGenContext context, ICoords coords, IRarity rarity, IChestGenerator chestGenerator,
 			ChestConfiguration.Generator generatorConfig, ChestConfiguration.ChestRarity config) {
-//	private GeneratorResult<ChestGeneratorData> generateChest(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords, Rarity rarity,
-//			IChestGenerator chestGenerator, IChestConfig config) {
+		//	private GeneratorResult<ChestGeneratorData> generateChest(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords, Rarity rarity,
+		//			IChestGenerator chestGenerator, IChestConfig config) {
 
 		// TODO don't like this - creating results - should use Optional<>
 		// result to return to the caller
@@ -288,21 +293,21 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 			if (RandomHelper.checkProbability(context.random(), generatorConfig.getStructureProbability())) {
 				isStructure = true;
 
-//				environmentGenerationResult = generateSurfaceRuins(world, generator, random, surfaceCoords, config);
-//				Treasure.LOGGER.debug("surface result -> {}", environmentGenerationResult.toString());
-//				if (!environmentGenerationResult.isSuccess()) {
-//					return environmentGenerationResult.fail();
-//				}
-//				// update generation meta data
-//				generationResult.getData().setStructure(true);
-//
-//				// set the chest coords to the surface pos
-//				chestCoords = environmentGenerationResult.getData().getChestContext().getCoords();
+				//				environmentGenerationResult = generateSurfaceRuins(world, generator, random, surfaceCoords, config);
+				//				Treasure.LOGGER.debug("surface result -> {}", environmentGenerationResult.toString());
+				//				if (!environmentGenerationResult.isSuccess()) {
+				//					return environmentGenerationResult.fail();
+				//				}
+				//				// update generation meta data
+				//				generationResult.getData().setStructure(true);
+				//
+				//				// set the chest coords to the surface pos
+				//				chestCoords = environmentGenerationResult.getData().getChestContext().getCoords();
 			}
 			else {
 				// update the environment state with a random direction
 				// TODO I don't like this
-				
+
 				// set the chest coords to the same as the surface pos
 				chestCoords = new Coords(surfaceCoords);
 				Treasure.LOGGER.debug("surface chest coords -> {}", chestCoords);
@@ -326,7 +331,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 			Treasure.LOGGER.debug("chest coords were not provided in result -> {}", environmentGenerationResult.toString());
 			return Optional.empty();
 		}
-		
+
 		BlockState chestState = null;
 		if (environmentGenerationResult.isPresent()) {
 			chestState = environmentGenerationResult.get().getData().getState();
@@ -347,7 +352,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		}
 
 		Treasure.LOGGER.info("CHEATER! {} chest at coords: {}", rarity, surfaceCoords.toShortString());
-//		generationResult.getData().setChestContext(chestResult.getData().getChestContext());
+		//		generationResult.getData().setChestContext(chestResult.getData().getChestContext());
 		generationResult.getData().setCoords(chestCoords);
 		generationResult.getData().setSpawnCoords(surfaceCoords);
 		generationResult.getData().setRegistryName(chestResult.getData().getRegistryName());
@@ -396,48 +401,48 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 
 		// override the spawn coords to that of the marker
 		pitResult.get().getData().setSpawnCoords(markerCoords);
-		
+
 		return pitResult;
 	}
 
-//	/**
-//	 * 
-//	 * @param world
-//	 * @param random
-//	 * @param spawnCoords
-//	 * @param config
-//	 * @return
-//	 */
-//	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, ChunkGenerator generator, Random random, ICoords spawnCoords,
-//			IChestConfig config) {
-//		return generateSurfaceRuins(world, generator, random, spawnCoords, null, null, config);
-//	}
-//
-//	/**
-//	 * 
-//	 * @param world
-//	 * @param random
-//	 * @param spawnCoords
-//	 * @param decayProcessor
-//	 * @param config
-//	 * @return
-//	 */
-//	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, ChunkGenerator chunkGenerator, Random random, ICoords spawnCoords,
-//			TemplateHolder holder, IDecayRuleSet decayRuleSet, IChestConfig config) {
-//
-//		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
-//		result.getData().setSpawnCoords(spawnCoords);
-//
-//		SurfaceRuinGenerator generator = new SurfaceRuinGenerator();
-//
-//		// build the structure
-//		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, chunkGenerator, random, spawnCoords, holder, decayRuleSet);
-//		Treasure.LOGGER.debug("surface struct result -> {}", genResult);
-//		if (!genResult.isSuccess()) return result.fail();
-//
-//		result.setData(genResult.getData());
-//		return result.success();
-//	}
+	//	/**
+	//	 * 
+	//	 * @param world
+	//	 * @param random
+	//	 * @param spawnCoords
+	//	 * @param config
+	//	 * @return
+	//	 */
+	//	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, ChunkGenerator generator, Random random, ICoords spawnCoords,
+	//			IChestConfig config) {
+	//		return generateSurfaceRuins(world, generator, random, spawnCoords, null, null, config);
+	//	}
+	//
+	//	/**
+	//	 * 
+	//	 * @param world
+	//	 * @param random
+	//	 * @param spawnCoords
+	//	 * @param decayProcessor
+	//	 * @param config
+	//	 * @return
+	//	 */
+	//	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, ChunkGenerator chunkGenerator, Random random, ICoords spawnCoords,
+	//			TemplateHolder holder, IDecayRuleSet decayRuleSet, IChestConfig config) {
+	//
+	//		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
+	//		result.getData().setSpawnCoords(spawnCoords);
+	//
+	//		SurfaceRuinGenerator generator = new SurfaceRuinGenerator();
+	//
+	//		// build the structure
+	//		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, chunkGenerator, random, spawnCoords, holder, decayRuleSet);
+	//		Treasure.LOGGER.debug("surface struct result -> {}", genResult);
+	//		if (!genResult.isSuccess()) return result.fail();
+	//
+	//		result.setData(genResult.getData());
+	//		return result.success();
+	//	}
 
 	/**
 	 * 

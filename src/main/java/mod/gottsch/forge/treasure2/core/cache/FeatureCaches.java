@@ -37,10 +37,7 @@ import net.minecraft.resources.ResourceLocation;
 public class FeatureCaches {
 	private static final String DIMENSION_NAME = "dimension";
 	private static final String WELL_CACHE_NAME = "wellCache";
-	private static final String WITHER_CACHE_NAME = "witherCache";
-	
-//	@Deprecated
-//	public static final Map<ResourceLocation, SimpleDistanceCache<GeneratedContext>> WELL_CACHE = new HashMap<>();
+
 
 	public static final DelayedFeatureSimpleDistanceCache WELL_CACHE = new DelayedFeatureSimpleDistanceCache();
 	
@@ -57,8 +54,7 @@ public class FeatureCaches {
 		for (String dimensionName : Config.SERVER.integration.dimensionsWhiteList.get()) {
 			Treasure.LOGGER.debug("white list dimension -> {}", dimensionName);
 			ResourceLocation dimension = ModUtil.asLocation(dimensionName);
-			
-//			WELL_CACHE.put(dimension, new SimpleDistanceCache<>(Config.SERVER.wells.registrySize.get()));
+
 			WELL_CACHE.getDimensionDistanceCache().put(dimension, new SimpleDistanceCache<>(Config.SERVER.wells.registrySize.get()));
 		}		
 	}
@@ -73,10 +69,7 @@ public class FeatureCaches {
 		// wells
 		Tag wellTag = saveFeatureCache(WELL_CACHE);
 		tag.put(WELL_CACHE_NAME, wellTag);
-		
-		// wither
-		
-		
+
 		return tag;
 	}
 	

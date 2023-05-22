@@ -17,14 +17,23 @@
  */
 package mod.gottsch.forge.treasure2.core.world.feature;
 
+import java.util.Optional;
+
 import com.mojang.serialization.Codec;
 
+import mod.gottsch.forge.gottschcore.enums.IRarity;
+import mod.gottsch.forge.gottschcore.spatial.Coords;
+import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.Generator;
+import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
 import mod.gottsch.forge.treasure2.core.registry.GeneratedRegistry;
+import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.WorldGenLevel;
@@ -33,19 +42,19 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 /**
- * TODO rename AqueousChestFeature - it is for generating in water biomes - could be on surface
  * @author Mark Gottschling on Jan 27, 2021
  *
  */
-public class SubaqueousChestFeature extends Feature<NoneFeatureConfiguration> implements IChestFeature {
+public class AqueousChestFeature extends Feature<NoneFeatureConfiguration> implements IChestFeature {
 
-	private int waitChunksCount = 0;
+	// NOTE aqueous chest feature does not use waitChunkCount, since even if you spawn on an island in an ocean
+	// the closest chest will still probably not be immediately visible/accessible.
 
 	/**
 	 * 
 	 * @param configuration
 	 */
-	public SubaqueousChestFeature(Codec<NoneFeatureConfiguration> configuration) {
+	public AqueousChestFeature(Codec<NoneFeatureConfiguration> configuration) {
 		super(configuration);
 	}
 
@@ -73,6 +82,32 @@ public class SubaqueousChestFeature extends Feature<NoneFeatureConfiguration> im
 			return false;
 		}
 		
+		Generator generatorConfig = config.getGenerator(FeatureType.AQUATIC.getName());
+		if (generatorConfig == null) {
+			Treasure.LOGGER.warn("unable to locate a config for feature type -> {}.", FeatureType.AQUATIC.getName());
+			return false;
+		}
+		
+		ICoords spawnCoords = WorldInfo.getOceanFloorSurfaceCoords(genLevel, context.chunkGenerator(),
+				new Coords(context.origin().offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
+		if (spawnCoords == Coords.EMPTY) {
+			return false;
+		}
+		
+		// determine what type to generate
+		IRarity rarity = (IRarity) RarityLevelWeightedChestGeneratorRegistry.getNextRarity(dimension, FeatureType.TERRESTRIAL);
+		//		Treasure.LOGGER.debug("rarity -> {}", rarity);
+		if (rarity == Rarity.NONE) {
+			Treasure.LOGGER.warn("unable to obtain the next rarity for generator - >{}", FeatureType.TERRESTRIAL);
+			return false;
+		}
+		Optional<ChestRarity> rarityConfig = generatorConfig.getRarity(rarity);
+		if (!rarityConfig.isPresent()) {
+			Treasure.LOGGER.warn("unable to locate rarity config for rarity - >{}", rarity);
+			return false;
+		}
+		
+		// TODO complete
 		
 		return false;
 	}

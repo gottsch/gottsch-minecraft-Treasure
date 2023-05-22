@@ -50,6 +50,13 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	/**
 	 * 
 	 */
+	public WitherChestGenerator() {
+		this(ChestGeneratorType.WITHER);
+	}
+	
+	/**
+	 * 
+	 */
 	public WitherChestGenerator(IChestGeneratorType type) {
 		super(type);
 	}
