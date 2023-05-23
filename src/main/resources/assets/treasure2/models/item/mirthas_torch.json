@@ -1,6 +1,0 @@
-{
-    "parent": "treasure2:item/adornment",
-    "textures": {
-        "layer0": "treasure2:item/adornments/mirthas_torch"
-    }
-}

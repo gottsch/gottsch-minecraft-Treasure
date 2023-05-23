@@ -1,6 +1,6 @@
 {
-  "version" : "3.0",
-  "since" : "mc1.16.5-v2.1.0",
+  "version" : "4.0.0",
+  "since" : "mc1.18.2-v2.5.0",
   "pools" : [ {
     "name" : "common_keys",
     "rolls" : 1,
@@ -57,7 +57,7 @@
     "entries" : [ {
       "entryName" : "copper_coin",
       "type" : "item",
-      "name" : "treasure2:silver_coin",
+      "name" : "treasure2:copper_coin",
       "weight" : 35,
       "functions" : [ {
         "function" : "set_count",
