@@ -31,6 +31,7 @@ import mod.gottsch.forge.gottschcore.world.gen.structure.GottschTemplate;
 import mod.gottsch.forge.gottschcore.world.gen.structure.PlacementSettings;
 import mod.gottsch.forge.gottschcore.world.gen.structure.StructureMarkers;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
@@ -168,6 +169,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		/**
 		 * Build
 		 */
+		ICoords offsetCoords = Config.structConfigMetaMap.get(holder.getLocation()).getOffset().asCoords();
 		
 		// update original spawn coords' y-value to be that of aligned spawn coords.
 		// this is the coords that need to be supplied to the template generator to allow
@@ -175,7 +177,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		originalSpawnCoords = new Coords(originalSpawnCoords.getX(), alignedSpawnCoords.getY(), originalSpawnCoords.getZ());
 		Treasure.LOGGER.debug("using spawn coords to generate -> {}", originalSpawnCoords);
 		
-		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(context, template, placement, originalSpawnCoords);
+		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(context, template, placement, originalSpawnCoords, offsetCoords);
 		 if (!genResult.isSuccess()) {
 			 return Optional.empty();
 		 }

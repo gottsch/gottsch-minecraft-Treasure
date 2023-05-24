@@ -102,6 +102,8 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 			if (offsetCoords == null || offsetCoords == Coords.EMPTY) {
 				offsetCoords = new Coords(0, 0, 0);
 			}
+			// have to negate located offset coords as it will always be positive
+			offsetCoords = offsetCoords.negate();
 		}
 		
 		// update the spawn coords with the offset

@@ -33,6 +33,7 @@ import mod.gottsch.forge.gottschcore.world.gen.structure.StructureMarkers;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureProximitySpawnerBlockEntity;
+import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
@@ -40,9 +41,7 @@ import mod.gottsch.forge.treasure2.core.generator.TemplateGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.template.ITemplateGenerator;
 import mod.gottsch.forge.treasure2.core.generator.template.TemplateGenerator;
 import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
-import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
-import mod.gottsch.forge.treasure2.core.structure.StructureType;
-import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
+import mod.gottsch.forge.treasure2.core.structure.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
@@ -71,25 +70,38 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 //		if (holder == null) {
 //			return result.fail();
 //		}
-		Optional<GottschTemplate> template = getRandomTemplate(context.random());
-		if (!template.isPresent()) {
-			Treasure.LOGGER.debug("could not find random template holder.");
-			return Optional.empty();
-		}	
-		
+//		Optional<GottschTemplate> template = getRandomTemplate(context.random());
+//		if (!template.isPresent()) {
+//			Treasure.LOGGER.debug("could not find random template holder.");
+//			return Optional.empty();
+//		}	
+		// get the template
+		Optional<TemplateHolder> optionalHolder = selectTemplate(context, coords, StructureCategory.TERRANEAN, StructureType.MARKER);
+		if (optionalHolder.isEmpty()) {
+			return Optional.empty();	
+		}
+		TemplateHolder holder = optionalHolder.get();
 
+		GottschTemplate template = (GottschTemplate) holder.getTemplate();
+		Treasure.LOGGER.debug("selected template holder -> {}", holder.getLocation());
+		if (template == null) {
+			Treasure.LOGGER.debug("could not find random template");
+			return Optional.empty();
+		}
+		
 		// TODO could move offset to TemplateGenerator : getOffset() which checks both the offsetblock and the meta
 		// get the offset
 		int offset = 0;
 //		ICoords offsetCoords = ((GottschTemplate2)holder.getTemplate()).findCoords(random, TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.OFFSET));
-		ICoords offsetCoords = TreasureTemplateRegistry.getOffsetFrom(context.random(), template.get(), StructureMarkers.OFFSET);
-		if (offsetCoords != null) {
-			offset = -offsetCoords.getY();
-		}
+//		ICoords offsetCoords = TreasureTemplateRegistry.getOffsetFrom(context.random(), template.get(), StructureMarkers.OFFSET);
+//		if (offsetCoords != null) {
+//			offset = -offsetCoords.getY();
+//		}
+		ICoords offsetCoords = Config.structConfigMetaMap.get(holder.getLocation()).getOffset().asCoords();
 		
 		// find entrance
 //		ICoords entranceCoords =((GottschTemplate2)holder. getTemplate()).findCoords(random, TreasureTemplateRegistry.getMarkerBlock(StructureMarkers.ENTRANCE));
-		ICoords entranceCoords =TreasureTemplateRegistry.getOffsetFrom(context.random(), template.get(), StructureMarkers.ENTRANCE);
+		ICoords entranceCoords =TreasureTemplateRegistry.getOffsetFrom(context.random(), template, StructureMarkers.ENTRANCE);
 		if (entranceCoords == null) {
 			Treasure.LOGGER.debug("Unable to locate entrance position.");
 			return Optional.empty();
@@ -110,7 +122,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		/*
 		 *  adjust spawn coords to line up room entrance with pit
 		 */
-		BlockPos transformedSize = template.get().getSize(rotation);
+		BlockPos transformedSize = template.getSize(rotation);
 		ICoords spawnCoords = ITemplateGenerator.alignEntranceToCoords(/*spawnCoords*/coords, newEntrance, transformedSize, placement);
 				
 		// if offset is 2 or less, then determine if the solid ground percentage is valid
@@ -123,7 +135,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		}
 
 		// generate the structure
-		GeneratorResult<TemplateGeneratorData> genResult = new TemplateGenerator().generate(context, template.get(), placement, spawnCoords);
+		GeneratorResult<TemplateGeneratorData> genResult = new TemplateGenerator().generate(context, template, placement, spawnCoords, offsetCoords);
 		if (!genResult.isSuccess()) {
 			return Optional.empty();
 		}
@@ -165,6 +177,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 	 * @param random
 	 * @return
 	 */
+	@Deprecated
 	private Optional<GottschTemplate> getRandomTemplate(Random random) {
 		Optional<GottschTemplate> result = Optional.empty();
 		

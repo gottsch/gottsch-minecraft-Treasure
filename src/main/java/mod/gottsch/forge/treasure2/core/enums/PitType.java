@@ -60,7 +60,7 @@ public enum PitType implements IPitType {
 
 	public static PitType get(String name) {
 		try {
-			return valueOf(name);
+			return valueOf(name.toUpperCase());
 		}
 		catch(Exception e) {
 			return PitType.UNKNOWN;

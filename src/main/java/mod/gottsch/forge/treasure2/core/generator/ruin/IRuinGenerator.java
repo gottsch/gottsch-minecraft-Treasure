@@ -58,6 +58,7 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param type
 	 * @return
 	 */
+	// TODO should be common to all ITemplateGenerators
 	default public Optional<TemplateHolder> selectTemplate(IWorldGenContext context, ICoords coords, IStructureCategory category, IStructureType type) {
 		Optional<TemplateHolder> holder = Optional.empty();
 		

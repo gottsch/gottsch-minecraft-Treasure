@@ -20,6 +20,7 @@ package mod.gottsch.forge.treasure2.core.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 
 /**
@@ -37,7 +38,7 @@ public class StructureConfiguration {
 		private String name;
 		private List<String> biomeWhitelist;
 		private List<String> biomeBlacklist;
-		private ICoords offset;
+		private Position offset;
 		
 		public String getName() {
 			return name;
@@ -63,14 +64,58 @@ public class StructureConfiguration {
 		public void setBiomeBlacklist(List<String> biomeBlacklist) {
 			this.biomeBlacklist = biomeBlacklist;
 		}
-		public ICoords getOffset() {
+		public Position getOffset() {
+			if (offset == null) {
+				offset = new Position();
+			}
 			return offset;
 		}
-		public void setOffset(ICoords offset) {
+		public void setOffset(Position offset) {
 			this.offset = offset;
 		}
 	}
 
+	public static class Position {
+		private Integer x;
+		private Integer y;
+		private Integer z;
+		
+		public ICoords asCoords() {
+			if (x == null && y == null && z == null) {
+				return Coords.EMPTY;
+			}
+			if (x == null) {
+				x = 0;
+			}
+			if (y == null) {
+				y = 0;
+			}
+			if (z == null) {
+				z = 0;
+			}
+			return new Coords(x, y, z);
+		}
+		
+		public Integer getX() {
+			return x;
+		}
+		public void setX(int x) {
+			this.x = x;
+		}
+		public Integer getY() {
+			return y;
+		}
+		public void setY(int y) {
+			this.y = y;
+		}
+		public Integer getZ() {
+			return z;
+		}
+		public void setZ(int z) {
+			this.z = z;
+		}
+	}
+	
 	public List<StructMeta> getStructMetas() {
 		return structMetas;
 	}

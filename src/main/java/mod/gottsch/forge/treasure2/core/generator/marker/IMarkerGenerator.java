@@ -17,11 +17,16 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.marker;
 
+import java.util.List;
 import java.util.Optional;
 
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorResult;
+import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
+import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
+import mod.gottsch.forge.treasure2.core.structure.IStructureType;
+import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
 
 /**
  * @author Mark Gottschling on Jan 27, 2019
@@ -39,4 +44,13 @@ public interface IMarkerGenerator<RESULT extends IGeneratorResult<?>> {
 	 */
 	public abstract Optional<RESULT> generate(IWorldGenContext context, ICoords spawnCoords);
 
+	default public Optional<TemplateHolder> selectTemplate(IWorldGenContext context, ICoords coords, IStructureCategory category, IStructureType type) {
+		Optional<TemplateHolder> holder = Optional.empty();
+		
+		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type);
+		if (!holders.isEmpty()) {
+			holder = Optional.ofNullable(holders.get(context.random().nextInt(holders.size())));
+		}
+		return holder;
+	}
 }

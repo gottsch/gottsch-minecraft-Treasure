@@ -32,6 +32,8 @@ public class TreasureCommands {
 	@SubscribeEvent
 	public static void onServerStarting(RegisterCommandsEvent event) {
 		SpawnChestCommand.register(event.getDispatcher());
+		SpawnPitCommand.register(event.getDispatcher());
+		SpawnRuinsCommand.register(event.getDispatcher());
 		SpawnWellCommand.register(event.getDispatcher());
 	}
 }

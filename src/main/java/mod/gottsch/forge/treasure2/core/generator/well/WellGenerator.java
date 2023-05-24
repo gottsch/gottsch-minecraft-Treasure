@@ -34,6 +34,7 @@ import mod.gottsch.forge.gottschcore.world.gen.structure.PlacementSettings;
 import mod.gottsch.forge.gottschcore.world.gen.structure.StructureMarkers;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
+import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
@@ -128,8 +129,11 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		// the structure to generator in the correct place
 		originalSpawnCoords = new Coords(originalSpawnCoords.getX(), actualSpawnCoords.getY(), originalSpawnCoords.getZ());
 		Treasure.LOGGER.debug("Well original spawn coords -> {}", originalSpawnCoords.toShortString());
+		
+		ICoords offsetCoords = Config.structConfigMetaMap.get(holder.getLocation()).getOffset().asCoords();
+		
 		// build well
-		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(context, template,  placement, originalSpawnCoords);
+		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(context, template,  placement, originalSpawnCoords, offsetCoords);
 		//		 , () -> {
 		//			 Map<BlockState, BlockState> m = new HashMap<>();
 		//		        m.put(Blocks.REDSTONE_BLOCK.defaultBlockState(), TreasureBlocks.WISHING_WELL.get().defaultBlockState());
@@ -141,14 +145,6 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 			Treasure.LOGGER.debug("failing well gen.");
 			return Optional.empty();
 		}
-
-		// TODO this isn't good either as we don't know what block to fill in with ex. it could be a desert well.
-		// fill any holes left by offset blocks
-		List<BlockInfoContext> offsetContexts =
-				(List<BlockInfoContext>) genResult.getData().getMap().get(GeneratorUtil.getMarkerBlock(StructureMarkers.OFFSET));
-		offsetContexts.forEach(ctx -> {
-			context.level().setBlock(ctx.getCoords().toPos(), TreasureBlocks.WISHING_WELL.get().defaultBlockState(), 3);
-		});
 
 		// get the rotated/transformed size
 		//BlockPos transformedSize = holder.getTemplate().transformedSize(rotation);
