@@ -209,16 +209,19 @@ public class CommonSetup {
 		TreasureApi.registerStructureCategory(StructureCategory.SUBTERRANEAN);
 		TreasureApi.registerStructureCategory(StructureCategory.TERRANEAN);
 		
+		// register structure types
 		TreasureApi.registerStructureType(StructureType.MARKER);
 		TreasureApi.registerStructureType(StructureType.ROOM);
 		TreasureApi.registerStructureType(StructureType.RUIN);
 		TreasureApi.registerStructureType(StructureType.WELL);
-		
-		
-		// TODO register pit types
+				
+		// register pit types
+		TreasureApi.registerPitType(PitType.STANDARD);
+		TreasureApi.registerPitType(PitType.STRUCTURE);
 		
 		// TODO register marker types
-		
+		TreasureApi.registerMarkerType(MarkerType.STANDARD);
+		TreasureApi.registerMarkerType(MarkerType.STRUCTURE);
 		
 		// register the region placements
 		TreasureApi.registerRegionPlacement(RegionPlacement.SURFACE);

@@ -58,7 +58,7 @@ import net.minecraftforge.common.DungeonHooks;
  * @author Mark Gottschling on Dec 9, 2018
  *
  */
-public class StructurePitGenerator extends AbstractPitGenerator {
+public class StructurePitGenerator extends AbstractPitGenerator implements IStructurePitGenerator {
 	
 	private IPitGenerator<GeneratorResult<ChestGeneratorData>> generator;
 	
@@ -350,6 +350,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	/**
 	 * @return the generator
 	 */
+	@Override
 	public IPitGenerator<GeneratorResult<ChestGeneratorData>> getGenerator() {
 		return generator;
 	}

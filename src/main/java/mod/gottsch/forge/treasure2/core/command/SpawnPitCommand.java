@@ -22,6 +22,7 @@ import mod.gottsch.forge.treasure2.core.enums.PitType;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.IStructurePitGenerator;
 import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -92,8 +93,12 @@ public class SpawnPitCommand {
 				pitType = PitType.STANDARD;
 			}
 		}
-		// TODO if structure get the class of the inner generator
+
 		List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pits = PitGeneratorRegistry.get(pitType);
+		// if structure get the class of the inner generator
+		if (pitType == PitType.STRUCTURE) {
+			return SharedSuggestionProvider.suggest(pits.stream().map(p -> ((IStructurePitGenerator)p).getGenerator().getClass().getSimpleName()).collect(Collectors.toList()), builder);
+		}
 		return SharedSuggestionProvider.suggest(pits.stream().map(p -> p.getClass().getSimpleName()).collect(Collectors.toList()), builder);
 	};
 
@@ -128,8 +133,13 @@ public class SpawnPitCommand {
 			
 			List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pits = PitGeneratorRegistry.get(pitType);
 			
-			Optional<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerator = 
-					pits.stream().filter(p -> p.getClass().getSimpleName().equalsIgnoreCase(pitName)).findFirst();
+			Optional<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerator;
+			if (pitType == PitType.STRUCTURE) { 
+				pitGenerator = pits.stream().filter(p -> ((IStructurePitGenerator)p).getGenerator().getClass().getSimpleName().equalsIgnoreCase(pitName)).findFirst();
+
+			} else {
+				pitGenerator = pits.stream().filter(p -> p.getClass().getSimpleName().equalsIgnoreCase(pitName)).findFirst();
+			}
 			
 			if (pitGenerator.isPresent()) {
 				// get surface coords

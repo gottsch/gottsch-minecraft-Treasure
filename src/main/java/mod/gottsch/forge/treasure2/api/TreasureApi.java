@@ -24,11 +24,7 @@ import java.util.stream.Collectors;
 import mod.gottsch.forge.gottschcore.enums.IEnum;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.enums.ILootTableType;
-import mod.gottsch.forge.treasure2.core.enums.IPitType;
-import mod.gottsch.forge.treasure2.core.enums.IRegionPlacement;
-import mod.gottsch.forge.treasure2.core.enums.MarkerType;
-import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import mod.gottsch.forge.treasure2.core.enums.*;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
@@ -77,6 +73,8 @@ public class TreasureApi {
 	public static final String FEATURE_TYPE = "featureType";
 	public static final String STRUCTURE_CATEGORY = "structureCategory";
 	public static final String STRUCTURE_TYPE = "structureType";
+	public static final String PIT_TYPE = "pitType";
+	public static final String MARKER_TYPE = "markerType";
 	
 	
 	/**
@@ -242,6 +240,34 @@ public class TreasureApi {
 		}
 		else {
 			return Optional.of((IStructureType) ienum);
+		}
+	}
+	
+	public static void registerPitType(IPitType type) {
+		EnumRegistry.register(PIT_TYPE, type);
+	}
+	
+	public static Optional<IPitType> getPitType(String key) {
+		IEnum ienum = EnumRegistry.get(PIT_TYPE, key);
+		if (ienum == null) {
+			return Optional.empty();
+		}
+		else {
+			return Optional.of((IPitType) ienum);
+		}
+	}
+	
+	public static void registerMarkerType(IMarkerType type) {
+		EnumRegistry.register(MARKER_TYPE, type);
+	}
+	
+	public static Optional<IMarkerType> getMarkerType(String key) {
+		IEnum ienum = EnumRegistry.get(MARKER_TYPE, key);
+		if (ienum == null) {
+			return Optional.empty();
+		}
+		else {
+			return Optional.of((IMarkerType) ienum);
 		}
 	}
 	
