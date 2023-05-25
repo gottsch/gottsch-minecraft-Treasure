@@ -29,6 +29,7 @@ import net.minecraft.world.level.material.Material;
  * @author Mark Gottschling May 6, 2023
  *
  */
+@Deprecated
 public class _Sword extends AbstractWeapon {
 	   private final float attackDamage;
 	   private final Multimap<Attribute, AttributeModifier> defaultModifiers;

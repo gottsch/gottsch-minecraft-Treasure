@@ -2,13 +2,13 @@
   "parent": "minecraft:item/generated",
   "display": {
         "thirdperson_righthand": {
-            "rotation": [ 0, -90, 40 ],
-            "translation": [ 0, 14.0, 0.5 ],
+            "rotation": [ 0, -90, 45 ],
+            "translation": [ 0, 14.0, 2.0 ],
             "scale": [ 1.7 , 1.7, 0.85 ]
         },
         "thirdperson_lefthand": {
-            "rotation": [ 0, 90, -40 ],
-            "translation": [ 0, 14.0, 0.5 ],
+            "rotation": [ 0, 90, -45 ],
+            "translation": [ 0, 14.0, 2.0 ],
             "scale": [ 1.7, 1.7, 0.85 ]
         },
         "firstperson_righthand": {

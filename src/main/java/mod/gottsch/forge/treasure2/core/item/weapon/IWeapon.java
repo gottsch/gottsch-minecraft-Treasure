@@ -1,8 +1,6 @@
 /*
  * This file is part of  Treasure2.
  * Copyright (c) 2023 Mark Gottschling (gottsch)
- * 
- * All rights reserved.
  *
  * Treasure2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -20,51 +18,32 @@
 package mod.gottsch.forge.treasure2.core.item.weapon;
 
 import java.util.List;
+import java.util.UUID;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.Vanishable;
 import net.minecraft.world.level.Level;
 
 /**
  * 
- * @author Mark Gottschling May 7, 2023
+ * @author Mark Gottschling May 24, 2023
  *
  */
-@Deprecated
-public abstract class AbstractWeapon extends TieredItem implements Vanishable {
-
-	public AbstractWeapon(Tier tier, Properties properties) {
-		super(tier, properties);
-	}
-
-	@Override
-	public Component getName(ItemStack itemStack) {
-		if (isUnique()) {
-			return new TranslatableComponent(this.getDescriptionId(itemStack)).withStyle(ChatFormatting.YELLOW);
-		} else {
-			return new TranslatableComponent(this.getDescriptionId(itemStack));
-		}
-	}
-
+public interface IWeapon {
+	
+//	public static final UUID CRITICAL_CHANCE_DAMAGE_UUID = UUID.nameUUIDFromBytes("treasure2:critical_attack_chance".getBytes());
+//	public static final UUID CRITICAL_ATTACK_DAMAGE_UUID = UUID.nameUUIDFromBytes("treasure2:critical_attack_damage".getBytes());
+	
+	
 	/**
 	 * Determines whether the weapon is "unique" or named. ex. The Black Sword, The
 	 * Sword of Omens.
 	 * 
 	 * @return
 	 */
-	public boolean isUnique() {
+	default public boolean isUnique() {
 		return false;
-	}
-	
-	@Override
-	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
-		appendHoverExtras(stack, worldIn, tooltip, flag);
 	}
 	
 	/**
@@ -74,7 +53,7 @@ public abstract class AbstractWeapon extends TieredItem implements Vanishable {
 	 * @param tooltip
 	 * @param flag
 	 */
-	public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-		
+	default public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+		// TODO add tooltip info for critical percentage and damage
 	}
 }

@@ -39,6 +39,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * @author Mark Gottschling on Feb 18, 2018
@@ -85,9 +86,9 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 		
 		// get the biome ID
 		Holder<Biome> biome = context.level().getBiome(coords.toPos());
-		
+
 //		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type);
-		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type, biome.unwrap().right().get().getRegistryName());
+		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type, biome.value().getRegistryName());
 		if (!holders.isEmpty()) {
 			holder = Optional.ofNullable(holders.get(context.random().nextInt(holders.size())));
 		}

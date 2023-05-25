@@ -1,8 +1,6 @@
 /*
  * This file is part of  Treasure2.
  * Copyright (c) 2023 Mark Gottschling (gottsch)
- * 
- * All rights reserved.
  *
  * Treasure2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -24,23 +22,28 @@ import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.Vanishable;
 import net.minecraft.world.level.Level;
 
 /**
- * 
- * @author Mark Gottschling May 7, 2023
+ * Extends AxeItem so it behaves like a vanilla axe elsewhere in the codebase. ex. breaks shields etc.
+ * @author Mark Gottschling May 24, 2023
  *
  */
-@Deprecated
-public abstract class AbstractWeapon extends TieredItem implements Vanishable {
-
-	public AbstractWeapon(Tier tier, Properties properties) {
-		super(tier, properties);
+public class Axe extends AxeItem implements IWeapon {
+	
+	/**
+	 * 
+	 * @param tier
+	 * @param damage
+	 * @param speed
+	 * @param properties
+	 */
+	public Axe(Tier tier, float damage, float speed, Properties properties) {
+		super(tier, damage, speed, properties);
 	}
 
 	@Override
@@ -51,30 +54,9 @@ public abstract class AbstractWeapon extends TieredItem implements Vanishable {
 			return new TranslatableComponent(this.getDescriptionId(itemStack));
 		}
 	}
-
-	/**
-	 * Determines whether the weapon is "unique" or named. ex. The Black Sword, The
-	 * Sword of Omens.
-	 * 
-	 * @return
-	 */
-	public boolean isUnique() {
-		return false;
-	}
 	
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
 		appendHoverExtras(stack, worldIn, tooltip, flag);
-	}
-	
-	/**
-	 * 
-	 * @param stack
-	 * @param level
-	 * @param tooltip
-	 * @param flag
-	 */
-	public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-		
 	}
 }

@@ -56,6 +56,7 @@ import mod.gottsch.forge.treasure2.client.screen.PouchScreen;
 import mod.gottsch.forge.treasure2.client.screen.SkullChestScreen;
 import mod.gottsch.forge.treasure2.client.screen.StandardChestScreen;
 import mod.gottsch.forge.treasure2.client.screen.StrongboxScreen;
+import mod.gottsch.forge.treasure2.client.screen.VikingChestScreen;
 import mod.gottsch.forge.treasure2.client.screen.WitherChestScreen;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureBlockEntities;
@@ -101,6 +102,7 @@ public class ClientSetup {
             MenuScreens.register(TreasureContainers.STRONGBOX_CONTAINER.get(), StrongboxScreen::new);
             MenuScreens.register(TreasureContainers.SKULL_CHEST_CONTAINER.get(), SkullChestScreen::new);
             MenuScreens.register(TreasureContainers.COMPRESSOR_CHEST_CONTAINER.get(), CompressorChestScreen::new);
+            MenuScreens.register(TreasureContainers.VIKING_CHEST_CONTAINER.get(), VikingChestScreen::new);
             MenuScreens.register(TreasureContainers.WITHER_CHEST_CONTAINER.get(), WitherChestScreen::new); 
             MenuScreens.register(TreasureContainers.KEY_RING_CONTAINER.get(), KeyRingScreen::new);           
             MenuScreens.register(TreasureContainers.POUCH_CONTAINER.get(), PouchScreen::new);           

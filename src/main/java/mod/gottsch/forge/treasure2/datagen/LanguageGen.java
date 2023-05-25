@@ -108,15 +108,33 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get(), "Chipped Copper Short Sword");
         add(TreasureItems.IRON_SHORT_SWORD.get(), "Iron Short Sword");
         add(TreasureItems.CHIPPED_IRON_SHORT_SWORD.get(), "Chipped Iron Short Sword");
+        add(TreasureItems.STEEL_SHORT_SWORD.get(), "Steel Short Sword");
+        add(TreasureItems.CHIPPED_STEEL_SHORT_SWORD.get(), "Chipped Steel Short Sword");
+        add(TreasureItems.STEEL_SWORD.get(), "Steel Sword");
+        add(TreasureItems.IRON_BROADSWORD.get(), "Iron Broadsword");
+        add(TreasureItems.STEEL_BROADSWORD.get(), "Steel Broadsword");
+        add(TreasureItems.COPPER_RAPIER.get(), "Copper Rapier");
         
         add(TreasureItems.SKULL_SWORD.get(), "Skull Sword");
         add(TreasureItems.BLACK_SWORD.get(), "The Black Sword");
         add(TreasureItems.SWORD_OMENS.get(), "The Sword of Omens");
+        add(TreasureItems.SWORD_POWER.get(), "The Sword of Power");
         add(TreasureItems.ORCUS.get(), "Orcus");
+        add(TreasureItems.SNAKE_EYES_KATANA.get(), "Snake Eye's Katana");
+        add(TreasureItems.STORM_SHADOWS_KATANA.get(), "Storm Shadow's Daisho");
+        add(TreasureItems.OATHBRINGER.get(), "Oathbringer");
+        add(TreasureItems.MJOLNIR.get(), "Mjolnir");
+        add(TreasureItems.AXE_DURIN.get(), "Axe of Durin");
+        add(TreasureItems.HEADSMANS_AXE.get(), "The Headsman's Axe");
         
         add(TreasureItems.SHADOW_MACHETE.get(), "Shadow Machete");
         
+        add(TreasureItems.IRON_FALCHION.get(), "Iron Falchion");
         add(TreasureItems.STEEL_FALCHION.get(), "Steel Falchion");
+        add(TreasureItems.SHADOW_FALCHION.get(), "Shadow Falchion");
+        
+        add(TreasureItems.IRON_MACE.get(), "Iron Mace");
+        add(TreasureItems.STEEL_MACE.get(), "Steel Mace");
         
         // chests
         add(TreasureBlocks.WOOD_CHEST.get(), "Wood Chest");
@@ -232,12 +250,29 @@ public class LanguageGen extends LanguageProvider {
         // weapons
         add(LangUtil.tooltip("weapons.black_sword.lore"), "Sword of the Avatar. Host of the daemon Arcadion.");
         add(LangUtil.tooltip("weapons.sword_of_omens.lore"), "'Thunder... Thunder... Thunder... ThunderCats HO!'");
+        add(LangUtil.tooltip("weapons.sword_of_power.lore"), "'By the power of Grayskull.... I have the power!'");
+        
         add(LangUtil.tooltip("weapons.orcus.lore"), "'Fair lady, throw those costly robes aside,~"
         		+ "No longer may you glory in your pride.~"
         		+ "Take leave of all sour vain delight~"
         		+ "I'm come to summon you away this night'.~"
         		+ "    -The Grim Reaper");
+        add(LangUtil.tooltip("weapons.snake_eyes_katana.lore"), "Move with the wind, and you will never be heard.~" 
+        		+ "    -Snake Eyes");
+        add(LangUtil.tooltip("weapons.storm_shadows_katana.lore"), "Most people will tell you that ninjas don’t exist.~"
+        		+ "That’s what the ninjas want you to believe …~"
+        		+ "    -Storm Shadow");
+        add(LangUtil.tooltip("weapons.oathbringer.lore"), "Life before death,~"
+        		+ "strength before weakness,~"
+        		+ "journey before destination.");
         
+        add(LangUtil.tooltip("weapons.mjolnir.lore"), "'Whosoever holds this hammer,~"
+        		+ "if they be worthy, shall possess the power of Thor.'");
+        
+        add(LangUtil.tooltip("weapons.axe_of_durin.lore"), "'... And my axe!'");
+        
+        add(LangUtil.tooltip("weapons.headsmans_axe.lore"), "'Know that for all who betray justice, I am their fate.'");
+
         /*
          * screens
          */

@@ -5,6 +5,14 @@
   "rarity" : "common",
   "type" : "minecraft:chest",
   "pools" : [ {
+    "name" : "treasure",
+    "rolls" : 2,
+    "entries" : [ {
+      "type" : "minecraft:loot_table",
+      "name" : "treasure2:pools/treasure/common_treasure",
+      "weight" : 1
+    } ]
+  }, {
     "name" : "items",
     "rolls" : {
       "min" : 1,

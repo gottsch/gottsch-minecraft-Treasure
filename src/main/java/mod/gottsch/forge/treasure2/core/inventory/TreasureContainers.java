@@ -21,6 +21,7 @@ import mod.gottsch.forge.treasure2.core.capability.KeyRingCapability;
 import mod.gottsch.forge.treasure2.core.capability.PouchCapability;
 import mod.gottsch.forge.treasure2.core.chest.SkullChestType;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.items.ItemStackHandler;
@@ -37,6 +38,7 @@ public class TreasureContainers {
 	public static final RegistryObject<MenuType<SkullChestContainerMenu>> SKULL_CHEST_CONTAINER;
 	public static final RegistryObject<MenuType<StrongboxContainerMenu>> STRONGBOX_CONTAINER;
 	public static final RegistryObject<MenuType<CompressorChestContainerMenu>> COMPRESSOR_CHEST_CONTAINER;
+	public static final RegistryObject<MenuType<VikingChestContainerMenu>> VIKING_CHEST_CONTAINER;
 	public static final RegistryObject<MenuType<WitherChestContainerMenu>> WITHER_CHEST_CONTAINER;
 		
 	public static final RegistryObject<MenuType<KeyRingContainerMenu>> KEY_RING_CONTAINER;
@@ -51,6 +53,8 @@ public class TreasureContainers {
 	            () -> IForgeMenuType.create((windowId, inventory, data) -> new StrongboxContainerMenu(windowId, data.readBlockPos(), inventory, inventory.player)));			
 		COMPRESSOR_CHEST_CONTAINER = Registration.CONTAINERS.register("compressor_chest_container",
 	            () -> IForgeMenuType.create((windowId, inventory, data) -> new CompressorChestContainerMenu(windowId, data.readBlockPos(), inventory, inventory.player)));			
+		VIKING_CHEST_CONTAINER = Registration.CONTAINERS.register("viking_chest_container",
+	            () -> IForgeMenuType.create((windowId, inventory, data) -> new VikingChestContainerMenu(windowId, data.readBlockPos(), inventory, inventory.player)));			
 		WITHER_CHEST_CONTAINER = Registration.CONTAINERS.register("wither_chest_container",
 	            () -> IForgeMenuType.create((windowId, inventory, data) -> new WitherChestContainerMenu(windowId, data.readBlockPos(), inventory, inventory.player)));			
 
