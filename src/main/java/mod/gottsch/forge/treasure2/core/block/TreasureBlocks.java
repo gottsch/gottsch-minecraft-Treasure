@@ -197,7 +197,7 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> WITHER_BRANCH = Registration.BLOCKS.register("wither_branch", () -> new WitherBranchBlock(Properties.of(Material.WOOD, MaterialColor.WOOD)));
 	public static final RegistryObject<Block> WITHER_ROOT = Registration.BLOCKS.register("wither_root", () -> new WitherRootBlock(Properties.of(Material.WOOD, MaterialColor.WOOD)));
 	public static final RegistryObject<Block> WITHER_LOG = Registration.BLOCKS.register("wither_log", () -> log(MaterialColor.WOOD, MaterialColor.PODZOL));
-	public static final RegistryObject<Block> WITHER_BROKEN_LOG = Registration.BLOCKS.register("wither_broken_log", () -> log(MaterialColor.WOOD, MaterialColor.PODZOL));
+	public static final RegistryObject<Block> WITHER_BROKEN_LOG = Registration.BLOCKS.register("wither_broken_log", () -> new WitherBrokenLogBlock(Properties.of(Material.WOOD, MaterialColor.PODZOL)));
 	public static final RegistryObject<Block> WITHER_SOUL_LOG = Registration.BLOCKS.register("wither_soul_log", () -> new WitherSoulLog(Properties.of(Material.WOOD, MaterialColor.WOOD)));
 	
 	public static final RegistryObject<Block> SPANISH_MOSS = Registration.BLOCKS.register("spanish_moss", () -> new SpanishMossBlock(Properties.of(Material.WOOD, MaterialColor.WOOD)));

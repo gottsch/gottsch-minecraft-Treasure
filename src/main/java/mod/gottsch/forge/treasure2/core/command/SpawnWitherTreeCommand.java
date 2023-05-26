@@ -25,10 +25,18 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 
+import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.world.WorldGenContext;
+import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
+import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.Generator;
 import mod.gottsch.forge.treasure2.core.config.Config.ServerConfig.Wells;
+import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.well.IWellGenerator;
@@ -38,6 +46,9 @@ import mod.gottsch.forge.treasure2.core.registry.WellGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
+import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
+import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureFeatureGenerators;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -79,8 +90,7 @@ public class SpawnWitherTreeCommand {
 								.executes(source -> {
 									return spawn(source.getSource(), 
 											BlockPosArgument.getLoadedBlockPos(source, "pos"));
-								})
-	
+								})	
 						)
 				);
 	}
@@ -98,20 +108,34 @@ public class SpawnWitherTreeCommand {
 		try {
 			ServerLevel world = source.getLevel();
 			Random random = new Random();
+			IRarity rarity = Rarity.COMMON;
+			
+			ResourceLocation dimension = WorldInfo.getDimension(world);
+			// get the generator config
+			ChestConfiguration config = Config.chestConfigMap.get(dimension);
+			if (config == null) {
+				Treasure.LOGGER.debug("ChestConfiguration is null. This shouldn't be.");
+				return -1;
+			}
 
-			// get the template
-			Optional<TemplateHolder> template = TreasureTemplateRegistry.getTemplate(name);
-			if (template.isPresent()) {
-				List<IWellGenerator<GeneratorResult<GeneratorData>>> generators =  WellGeneratorRegistry.get(StructureCategory.TERRANEAN);
-				IWellGenerator<GeneratorResult<GeneratorData>> generator = generators.get(random.nextInt(generators.size()));
-				Optional<GeneratorResult<GeneratorData>> result = generator.generate(new WorldGenContext(world, world.getChunkSource().getGenerator(), random), new Coords(pos), template.get());
+			Generator generatorConfig = config.getGenerator(FeatureType.TERRESTRIAL.getName());
+			if (generatorConfig == null) {
+				Treasure.LOGGER.warn("unable to locate a config for feature type -> {}.", FeatureType.TERRESTRIAL.getName());
+				return -1;
 			}
-			else {
-				Treasure.LOGGER.debug("unable to locate well template -> {}", name);
+			
+			Optional<ChestRarity> rarityConfig = generatorConfig.getRarity(rarity);
+			if (!rarityConfig.isPresent()) {
+				Treasure.LOGGER.warn("unable to locate rarity config for rarity - >{}", rarity);
+				return -1;
 			}
+			
+			IFeatureGenerator generator = TreasureFeatureGenerators.WITHER_FEATURE_GENERATOR_SELECTOR.select();
+			Optional<GeneratorResult<ChestGeneratorData>> result = generator.generate(new WorldGenContext(world, world.getChunkSource().getGenerator(), random), new Coords(pos), rarity, rarityConfig.get());
+
 		}
 		catch(Exception e) {
-			Treasure.LOGGER.error("error generating Treasure2 well:", e);
+			Treasure.LOGGER.error("error generating Treasure2 Wither Tree:", e);
 		}
 		return 1;
 	}

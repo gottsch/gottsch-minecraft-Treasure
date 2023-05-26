@@ -612,7 +612,7 @@ public class TreasureItems {
 			() -> new Sword(STEEL, TreasureWeapons.HAMMER_BASE_DAMAGE, TreasureWeapons.HAMMER_BASE_SPEED, TREASURE_ITEM_PROPERTIES));
 	
 	public static final RegistryObject<Item> MJOLNIR = Registration.ITEMS.register("mjolnir", 
-			() -> new Sword(MYTHICAL, TreasureWeapons.HAMMER_BASE_DAMAGE, TreasureWeapons.HAMMER_BASE_SPEED + 0.5f, TREASURE_ITEM_PROPERTIES) {
+			() -> new Sword(MYTHICAL, TreasureWeapons.HAMMER_BASE_DAMAGE, TreasureWeapons.HAMMER_BASE_SPEED + 0.7f, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));

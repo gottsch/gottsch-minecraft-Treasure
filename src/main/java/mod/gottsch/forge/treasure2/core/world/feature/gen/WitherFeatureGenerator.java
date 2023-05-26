@@ -49,6 +49,7 @@ import mod.gottsch.forge.treasure2.core.generator.chest.WitherChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
 import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -76,6 +77,8 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	private static final int MIN_ROCKS = 0;
 	private static final int MIN_SCRUB = 5;
 	private static final int MAX_SCRUB = 20;
+	
+	protected static int UNDERGROUND_OFFSET = 2;
 	
 	/*
 	 * During generation a 3x3 (x-z axis) chunk area is available to alter ( = 48 blocks).
@@ -119,7 +122,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	
 	@Override
 	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords spawnCoords,
-			IRarity rarity, ChestRarity rarityConfig) {
+			IRarity rarity, ChestRarity config) {
 
 		Treasure.LOGGER.debug("surface coords -> {}", spawnCoords.toShortString());
 		if (!WorldInfo.isHeightValid(spawnCoords)) {
@@ -127,13 +130,24 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 			return Optional.empty();
 		}
 		
+		// TODO determine underground coords
+		// determine spawn coords below ground
+		Optional<ICoords> undergroundCoords = getUndergroundSpawnPos(context.level(), context.random(), spawnCoords, config.getMinDepth(), config.getMaxDepth());
+
+		if (undergroundCoords.isEmpty()) {
+			Treasure.LOGGER.debug("unable to spawn underground @ {}", spawnCoords);
+			return Optional.empty();
+		}
+		Treasure.LOGGER.debug("below ground -> {}", spawnCoords.toShortString());
+		
+		
 		// setup a AABB around the spawn coords
 		AABB witherGroveBounds = new AABB(spawnCoords.toPos());
 		// add pit
 		Treasure.LOGGER.debug("generate pit");
 		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = selectPitGenerator(context.random());
 		Treasure.LOGGER.debug("Using pit generator -> {}", pitGenerator.getClass().getSimpleName());
-		Optional<GeneratorResult<ChestGeneratorData>> pitResult = pitGenerator.generate(context, spawnCoords, spawnCoords);
+		Optional<GeneratorResult<ChestGeneratorData>> pitResult = pitGenerator.generate(context, spawnCoords, undergroundCoords.get());
 
 		if (pitResult.isEmpty()) {
 			return Optional.empty();
@@ -461,8 +475,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	
 	private void addTop(IWorldGenContext context, ICoords coords, ICoords originalSpawnCoords, int y, Direction direction) {
 		if (direction != null) {
-			BlockState state = TreasureBlocks.WITHER_BROKEN_LOG.get().defaultBlockState().setValue(WitherRootBlock.FACING,
-					direction);
+			BlockState state = TreasureBlocks.WITHER_BROKEN_LOG.get().defaultBlockState().setValue(WitherRootBlock.FACING, direction);
 			// add the top log to the world
 			//			world.setBlockState(coords.add(0, y, 0).toPos(), state, 3);
 			ICoords topCoords = coords.add(0, y, 0);
@@ -572,5 +585,25 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * TODO Duplicate to PitChestFeature
+	 * @param world
+	 * @param random
+	 * @param startingCoords
+	 * @param minDepth
+	 * @param maxDepth
+	 * @return
+	 */
+	public static Optional<ICoords> getUndergroundSpawnPos(ServerLevelAccessor world, Random random, ICoords startingCoords, int minDepth, int maxDepth) {
+		int depth = RandomHelper.randomInt(minDepth, maxDepth);
+		int ySpawn = Math.max(UNDERGROUND_OFFSET, startingCoords.getY() - depth);
+		Treasure.LOGGER.debug("ySpawn -> {}", ySpawn);
+		ICoords coords = new Coords(startingCoords.getX(), ySpawn, startingCoords.getZ());
+		// get floor pos (if in a cavern or tunnel etc)
+		coords = WorldInfo.getSubterraneanSurfaceCoords(world, coords);
+
+		return (coords == null || coords == Coords.EMPTY) ? Optional.empty() : Optional.of(coords);
 	}
 }
