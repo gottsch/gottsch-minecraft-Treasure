@@ -20,12 +20,14 @@ package mod.gottsch.forge.treasure2.core.registry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
+import mod.gottsch.forge.treasure2.core.wishable.IWishableHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
@@ -43,10 +45,24 @@ public class WishableRegistry {
 	private static final Map<ResourceLocation, RegistryObject<Item>> BY_NAME;
 	private static final Map<ResourceLocation, IRarity> RARITY_BY_NAME;
 
+	private static final Map<Item, IWishableHandler> HANDLER_MAP;
+	
 	static {
 		BY_RARITY = ArrayListMultimap.create();
 		BY_NAME = Maps.newHashMap();
 		RARITY_BY_NAME = Maps.newHashMap();
+		HANDLER_MAP = Maps.newHashMap();
+	}
+	
+	public static void registerHandler(Item item, IWishableHandler handler) {
+		HANDLER_MAP.put(item, handler);
+	}
+	
+	public static Optional<IWishableHandler> getHandler(Item item) {
+		if (HANDLER_MAP.containsKey(item)) {
+			return Optional.of(HANDLER_MAP.get(item));
+		}
+		return Optional.empty();
 	}
 	
 	public static void register(RegistryObject<Item> item) {		
@@ -69,14 +85,14 @@ public class WishableRegistry {
 		RARITY_BY_NAME.clear();
 	}
 	
-	public static IRarity getRarity(ResourceLocation name) {
+	public static Optional<IRarity> getRarity(ResourceLocation name) {
 		if (RARITY_BY_NAME.containsKey(name)) {
-			return RARITY_BY_NAME.get(name);
+			return Optional.of(RARITY_BY_NAME.get(name));
 		}
-		return null;
+		return Optional.empty();
 	}
 	
-	public static IRarity getRarity(Item wishable) {
+	public static Optional<IRarity> getRarity(Item wishable) {
 		return getRarity(wishable.getRegistryName());
 	}
 

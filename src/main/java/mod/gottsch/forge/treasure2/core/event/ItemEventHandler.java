@@ -37,7 +37,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
  *
  */
 @Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.FORGE)
-public class PlayerEventHandler {
+public class ItemEventHandler {
 	// caching mechanism
 	public static Item lastTossed;
 	public static boolean isWishable;

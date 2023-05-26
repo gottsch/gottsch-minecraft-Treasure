@@ -19,7 +19,6 @@ package mod.gottsch.forge.treasure2.core.event;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.item.WealthItem;
@@ -27,7 +26,6 @@ import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import mod.gottsch.forge.treasure2.core.wishable.IWishableHandler;
 import mod.gottsch.forge.treasure2.core.wishable.TreasureWishableHandlers;
-import mod.gottsch.forge.treasure2.core.wishable.WishableHandler;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -41,7 +39,7 @@ import net.minecraftforge.fml.common.Mod;
  *
  */
 @Mod.EventBusSubscriber(modid = Treasure.MODID)
-public class PlayerEventHandler2 {
+public class PlayerEventHandler {
 
 	@SubscribeEvent
 	public static void playerTick(TickEvent.PlayerTickEvent event) {

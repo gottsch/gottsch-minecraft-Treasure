@@ -38,7 +38,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
  *
  */
 @Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.FORGE)
-public class ItemEventHandler {
+public class LivingEventHandler {
 	
 	@SubscribeEvent
     public static void onItemAttributeModify(final ItemAttributeModifierEvent event){
