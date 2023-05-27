@@ -76,6 +76,10 @@ public class TreasureSavedData extends SavedData {
 	public static TreasureSavedData load(CompoundTag tag) {
 		Treasure.LOGGER.debug("loading treasure2 saved gen data...");
 
+		RarityLevelWeightedChestGeneratorRegistry.clear();
+		DimensionalGeneratedRegistry.clear();
+		FeatureCaches.clear();
+		
 		/*
 		 * chest generator registry
 		 */

@@ -49,13 +49,20 @@ public class FeatureCaches {
 	/**
 	 * 
 	 */
+	public static void clear() {
+		WELL_CACHE.clear();
+	}
+	
+	/**
+	 * 
+	 */
 	public static void initialize() {
 		// for each allowable dimension for the mod
 		for (String dimensionName : Config.SERVER.integration.dimensionsWhiteList.get()) {
 			Treasure.LOGGER.debug("white list dimension -> {}", dimensionName);
 			ResourceLocation dimension = ModUtil.asLocation(dimensionName);
 
-			WELL_CACHE.getDimensionDistanceCache().put(dimension, new SimpleDistanceCache<>(Config.SERVER.wells.registrySize.get()));
+			WELL_CACHE.getDimensionDistanceCache().put(dimension, new SimpleDistanceCache<>(Config.SERVER.wells.cacheSize.get()));
 		}		
 	}
 	
@@ -162,7 +169,7 @@ public class FeatureCaches {
 						ResourceLocation dimension = ModUtil.asLocation(dimensionName);					
 						// add the dimension if it doesn't exist
 						if (!cacheMap.containsKey(dimension)) {
-							cacheMap.put(dimension, new SimpleDistanceCache<GeneratedContext>(Config.SERVER.wells.registrySize.get()));
+							cacheMap.put(dimension, new SimpleDistanceCache<GeneratedContext>(Config.SERVER.wells.cacheSize.get()));
 						}
 						
 						ListTag dataTag = dimensionalCacheCompound.getList("data", Tag.TAG_COMPOUND);

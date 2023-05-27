@@ -34,7 +34,7 @@ import net.minecraftforge.common.ForgeConfigSpec.Builder;
  *
  */
 @Deprecated
-public class ChestConfigOLD implements IChestConfig {
+public class ChestConfigOLD { //implements IChestConfig {
 	/**
 	 * 
 	 * @author Mark Gottschling on Jan 7, 2021
@@ -174,80 +174,80 @@ public class ChestConfigOLD implements IChestConfig {
 		this.biomes.init();
 	}
 	
-	@Override
-	public boolean isEnableChest() {
-		return enableChest.get();
-	}
-
-	@Override
-	public int getChunksPerChest() {
-		return chunksPerChest.get();
-	}
-
-	@Override
-	public int getAvgChunksPerChestVariance() {
-		return avgChunksPerChestVariance.get();
-	}
-
-	
-	@Override
-	public double getGenProbability() {
-		return genProbability.get();
-	}
-
-	@Override
-	@Deprecated
-	public int getMinYSpawn() {
-//		return minYSpawn.get();
-		return 5;
-	}
-
-	@Override
-	public int getMinDepth() {
-		return minDepth.get();
-	}
-	
-	@Override
-	public int getMaxDepth() {
-		return maxDepth.get();
-	}
-	
-	@Override
-	public boolean isSurfaceAllowed() {
-		return surfaceAllowed.get();
-	}
-
-	@Override
-	public boolean isSubterraneanAllowed() {
-		return subterraneanAllowed.get();
-	}
-
-	@Override
-	public List<BiomeTypeHolder> getBiomeTypeWhiteList() {
-//		return biomes.getTypeWhiteList();
-		return null;
-	}
-
-	@Override
-	public List<BiomeTypeHolder> getBiomeTypeBlackList() {
-//		return biomes.getTypeBlackList();
-		return null;
-	}
-
-	@Override
-	public double getMimicProbability() {
-		return mimicProbability.get();
-	}
-
-	@Override
-	public List<String> getBiomeWhiteList() {
-		return (List<String>) biomes.whiteList.get();
-	}
-
-	@Override
-	public List<String> getBiomeBlackList() {
-		return (List<String>) biomes.blackList.get();
-	}
+//	@Override
+//	public boolean isEnableChest() {
+//		return enableChest.get();
+//	}
+//
+//	@Override
+//	public int getChunksPerChest() {
+//		return chunksPerChest.get();
+//	}
+//
+//	@Override
+//	public int getAvgChunksPerChestVariance() {
+//		return avgChunksPerChestVariance.get();
+//	}
+//
+//	
+//	@Override
+//	public double getGenProbability() {
+//		return genProbability.get();
+//	}
+//
+//	@Override
+//	@Deprecated
+//	public int getMinYSpawn() {
+////		return minYSpawn.get();
+//		return 5;
+//	}
+//
+//	@Override
+//	public int getMinDepth() {
+//		return minDepth.get();
+//	}
+//	
+//	@Override
+//	public int getMaxDepth() {
+//		return maxDepth.get();
+//	}
+//	
+//	@Override
+//	public boolean isSurfaceAllowed() {
+//		return surfaceAllowed.get();
+//	}
+//
+//	@Override
+//	public boolean isSubterraneanAllowed() {
+//		return subterraneanAllowed.get();
+//	}
+//
+//	@Override
+//	public List<BiomeTypeHolder> getBiomeTypeWhiteList() {
+////		return biomes.getTypeWhiteList();
+//		return null;
+//	}
+//
+//	@Override
+//	public List<BiomeTypeHolder> getBiomeTypeBlackList() {
+////		return biomes.getTypeBlackList();
+//		return null;
+//	}
+//
+//	@Override
+//	public double getMimicProbability() {
+//		return mimicProbability.get();
+//	}
+//
+//	@Override
+//	public List<String> getBiomeWhiteList() {
+//		return (List<String>) biomes.whiteList.get();
+//	}
+//
+//	@Override
+//	public List<String> getBiomeBlackList() {
+//		return (List<String>) biomes.blackList.get();
+//	}
 
 	@Override
 	public String toString() {

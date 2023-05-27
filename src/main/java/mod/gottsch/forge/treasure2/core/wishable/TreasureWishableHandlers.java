@@ -25,5 +25,8 @@ package mod.gottsch.forge.treasure2.core.wishable;
 public class TreasureWishableHandlers {
 	public static final IWishableHandler DEFAULT_WISHABLE_HANDLER = new WishableHandler();
 	
+	/**
+	 * 
+	 */
 	private TreasureWishableHandlers() {}
 }

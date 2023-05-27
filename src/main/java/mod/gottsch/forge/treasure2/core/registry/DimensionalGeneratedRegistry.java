@@ -58,18 +58,19 @@ public class DimensionalGeneratedRegistry {
 
 	public static final Map<ResourceLocation, Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>>> CHEST_REGISTRY = new HashMap<>();
 
-	// TODO rework these - dont' need to be map of maps - actually all three of these could be rolled into 1 map of map
-	// TODO don't need a GeneratedRegistry at all for Wells because there isn't a related rarity.
-//	public static final Map<ResourceLocation, GeneratedRegistry<GeneratedContext>> WELL_REGISTRY = new HashMap<>();
-	// TODO don't need wither at all - rolled into Chest Registry
-	@Deprecated
-	public static final Map<ResourceLocation, Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>>> WITHER_REGISTRY = new HashMap<>();
 
 	/**
 	 * 
 	 */
 	private DimensionalGeneratedRegistry() {}
 
+	/**
+	 * 
+	 */
+	public static void clear() {
+		CHEST_REGISTRY.clear();
+	}
+	
 	/**
 	 * Initialize from Config file.
 	 */

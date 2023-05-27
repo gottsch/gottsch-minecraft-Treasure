@@ -17,34 +17,48 @@
  */
 package mod.gottsch.forge.treasure2.core.event;
 
+import java.nio.file.Path;
+import java.util.Optional;
+
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import mod.gottsch.forge.treasure2.core.world.feature.TreasureConfiguredFeatures;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureOreGeneration;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome.BiomeCategory;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
+/**
+ * 
+ * @author Mark Gottschling
+ *
+ */
 @Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.FORGE)
 public class WorldEventHandler {
 
+	private static Path worldSavePath;
 	private static boolean isLoaded = false;
-	
+
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onWorldLoad(WorldEvent.Load event) {
 		Treasure.LOGGER.info("In world load event");
-		
+
 		if (WorldInfo.isServerSide((Level)event.getWorld())) {
 			/* 
 			 * NOTE:
@@ -54,24 +68,33 @@ public class WorldEventHandler {
 
 			ResourceLocation dimension = WorldInfo.getDimension((Level) event.getWorld());			
 			Treasure.LOGGER.info("In world load event for dimension {}", dimension.toString());
+			
 			/*
-			 *  TODO
 			 *  cache the world save folder and pass into each registry.
-			 *  perform the test is (!isLoad && [meets dim]) || cachedSaveFolder != currentSaveFolder.
-			 *  ensure all Registries and saved data are cleared first.
 			 */
-			
-			if (!isLoaded && Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString())) {
-				// register mod's loot tables
-				TreasureLootTableRegistry.onWorldLoad(event);
-				TreasureTemplateRegistry.onWorldLoad(event);				
-				TreasureSavedData.get((Level)event.getWorld());
+			Optional<Path> worldSavePath = ModUtil.getWorldSaveFolder((ServerLevel)event.getWorld());
+			if (worldSavePath.isPresent()) {
+				if ((!isLoaded && Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString())) ||
+						worldSavePath.get().equals(WorldEventHandler.worldSavePath)) {
+					
+					// cache the folder
+					WorldEventHandler.worldSavePath = worldSavePath.get();
+					
+					// register mod's loot tables
+					TreasureLootTableRegistry.onWorldLoad(event, WorldEventHandler.worldSavePath);
+					TreasureTemplateRegistry.onWorldLoad(event, WorldEventHandler.worldSavePath);				
+					TreasureSavedData.get((Level)event.getWorld());
+					isLoaded = true;
+				}
+
+			} else {
+				Treasure.LOGGER.warn("unable to locate the world save folder.");
 			}
-			
-			isLoaded = true;
 		}
 	}
-	
+
+
+
 	@SubscribeEvent
 	public static void onBiomeLoading(final BiomeLoadingEvent event) {
 		/* 

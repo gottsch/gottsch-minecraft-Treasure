@@ -223,8 +223,8 @@ public class ItemModelsProvider extends ItemModelProvider {
 				modLoc("item/large_sword"), "layer0", modLoc("item/weapon/oathbringer_x32"));
 		
 		// machetes
-		// NOTE only gen once - has to be updated with the correct rotation
-		// TODO change the mcLoc to a different parent based on handheld
+		singleTexture(TreasureItems.STEEL_MACHETE.get().getRegistryName().getPath(),
+				modLoc("item/machete"), "layer0", modLoc("item/weapon/steel_machete"));	
 		singleTexture(TreasureItems.SHADOW_MACHETE.get().getRegistryName().getPath(),
 				modLoc("item/machete"), "layer0", modLoc("item/weapon/shadow_machete"));	
 		

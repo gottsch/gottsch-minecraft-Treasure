@@ -12,9 +12,9 @@ import mod.gottsch.forge.treasure2.core.capability.IDurabilityHandler;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import mod.gottsch.forge.treasure2.core.item.weapon.Axe;
 import mod.gottsch.forge.treasure2.core.item.weapon.Sword;
 import mod.gottsch.forge.treasure2.core.item.weapon.TreasureWeapons;
-import mod.gottsch.forge.treasure2.core.item.weapon._Sword;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
@@ -23,15 +23,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tiers;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -59,12 +51,12 @@ public class TreasureItems {
 		}
 	};
 
-	public static final CreativeModeTab ADORNMENTS_ITEM_GROUP = new CreativeModeTab(Treasure.MODID + ".adornments_tab") {
-		@Override
-		public ItemStack makeIcon() {
-			return new ItemStack(TreasureItems.ADORNMENTS_TAB.get());
-		}
-	};	
+//	public static final CreativeModeTab ADORNMENTS_ITEM_GROUP = new CreativeModeTab(Treasure.MODID + ".adornments_tab") {
+//		@Override
+//		public ItemStack makeIcon() {
+//			return new ItemStack(TreasureItems.ADORNMENTS_TAB.get());
+//		}
+//	};	
 
 	// item properties
 	public static final Item.Properties TREASURE_ITEM_PROPERTIES = new Item.Properties().tab(TREASURE_ITEM_GROUP);
@@ -594,6 +586,8 @@ public class TreasureItems {
 			});
 
 	// machetes (steel, shadow)
+	public static final RegistryObject<Item> STEEL_MACHETE = Registration.ITEMS.register("steel_machete", 
+			() -> new Sword(STEEL, 2.7F, -2.6F, TREASURE_ITEM_PROPERTIES));
 	public static final RegistryObject<Item> SHADOW_MACHETE = Registration.ITEMS.register("shadow_machete", 
 			() -> new Sword(SHADOW, 2.7F, -2.6F, TREASURE_ITEM_PROPERTIES));
 
@@ -636,7 +630,7 @@ public class TreasureItems {
 
 	// axes
 	public static final RegistryObject<Item> AXE_DURIN = Registration.ITEMS.register("axe_of_durin", 
-			() -> new Sword(LEGENDARY, TreasureWeapons.AXE_BASE_DAMAGE, TreasureWeapons.AXE_BASE_SPEED + 0.5f, TREASURE_ITEM_PROPERTIES) {
+			() -> new Axe(LEGENDARY, TreasureWeapons.AXE_BASE_DAMAGE, TreasureWeapons.AXE_BASE_SPEED + 0.5f, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
@@ -659,7 +653,7 @@ public class TreasureItems {
 			});
 	
 	public static final RegistryObject<Item> HEADSMANS_AXE = Registration.ITEMS.register("headsmans_axe", 
-			() -> new Sword(EPIC, TreasureWeapons.AXE_BASE_DAMAGE, TreasureWeapons.AXE_BASE_SPEED + 0.3f, TREASURE_ITEM_PROPERTIES) {
+			() -> new Axe(EPIC, TreasureWeapons.AXE_BASE_DAMAGE, TreasureWeapons.AXE_BASE_SPEED + 0.3f, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));

@@ -1,4 +1,4 @@
-f2706dd7f321dbe2bb428a554e12f315fd3af28b assets/treasure2/lang/en_us.json
+a8da9ee9704e4d23691f2c01e6e630233cfbb44e assets/treasure2/lang/en_us.json
 ec0affa9af25bb3155f1ffb36624aaf0fa4ef025 assets/treasure2/models/item/adornments_tab.json
 541a27aa27dcd17106e9723532d6032ad0f82782 assets/treasure2/models/item/axe_of_durin.json
 8be0b1ec5bf90f3dcb3da00251632ae969418191 assets/treasure2/models/item/black_pearl.json
@@ -104,6 +104,7 @@ a37838fd3668f3c2466ab0217ee2b84e12bdb029 assets/treasure2/models/item/spider_loc
 a7b04634c72ad10c1535854d74854286dd5942d2 assets/treasure2/models/item/steel_broadsword.json
 5ee0db8fb625c4d164a0d31a058989aa65df93b9 assets/treasure2/models/item/steel_falchion.json
 5614549610b788faf24907e6ca27b1a5867a08c6 assets/treasure2/models/item/steel_mace.json
+e73b5ad6d7c3e94d0a4fbb3a35b2a3aaa65c6c08 assets/treasure2/models/item/steel_machete.json
 1ddbdab81c9fe05dd175d182b0b33d35a869b8c3 assets/treasure2/models/item/steel_short_sword.json
 9743cfdba2313ec469cf7bd42903353308fcf24e assets/treasure2/models/item/steel_sword.json
 2f87ead379e04cd839be634e3dc37f90b0dda797 assets/treasure2/models/item/stone_key.json
@@ -161,7 +162,7 @@ fc2a9f6f91d2301bc92c7db3347e6d2ef2071a4d data/treasure2/tags/items/lock/uncommon
 e2b17c36ef8964196eec210d22f7d95da1675c5d data/treasure2/tags/items/pouch.json
 4ac30a8dbf489811ad5013c6d5a60b1626b40e6a data/treasure2/tags/items/wishable/common.json
 347d61228a3e662ce006e9aecd1eefbed04b4175 data/treasure2/tags/items/wishable/epic.json
-707e97e0b5d58b4b052ab4c7394cbb6b013797b6 data/treasure2/tags/items/wishable/rare.json
-bbe22f55fd4a3b4aaef202a7d8f2ba14acc5a890 data/treasure2/tags/items/wishable/scarce.json
+48ad0231b57a27c0a45dc9442af2528f4c07d42c data/treasure2/tags/items/wishable/rare.json
+a18f069ca522f7ef914f4c6d471212596f680e2c data/treasure2/tags/items/wishable/scarce.json
 348c6a9941b32acf754dff3d213537172729490a data/treasure2/tags/items/wishable/uncommon.json
 6f069965baaf66e2e7ac9bf004b47c84a04cca7f data/treasure2/tags/items/wishable/wishables.json

@@ -17,10 +17,8 @@
  */
 package mod.gottsch.forge.treasure2.core.util;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -28,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -36,23 +35,36 @@ import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.NaturalSpawner;
+import net.minecraft.world.level.storage.LevelStorageSource;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 /**
  * @author Mark Gottschling on Jul 22, 2021
  *
  */
 public class ModUtil {
+	/*
+	MC 1.18.2: net/minecraft/server/MinecraftServer.storageSource
+	Name: l => f_129744_ => storageSource
+	Side: BOTH
+	AT: public net.minecraft.server.MinecraftServer f_129744_ # storageSource
+	Type: net/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess
+	 */
+	private static final String SAVE_FORMAT_LEVEL_SAVE_SRG_NAME = "f_129744_";
+	
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public static ResourceLocation asLocation(String name) {
 		return hasDomain(name) ? new ResourceLocation(name) : new ResourceLocation(Treasure.MODID, name);
 	}
@@ -61,7 +73,28 @@ public class ModUtil {
 		return name.indexOf(":") >= 0;
 	}
 
-	// Get all paths from a folder that inside the JAR file
+	/**
+	 * 
+	 * @param level
+	 * @return
+	 */
+	public static Optional<Path> getWorldSaveFolder(ServerLevel level) {
+		Object save = ObfuscationReflectionHelper.getPrivateValue(MinecraftServer.class, level.getServer(), SAVE_FORMAT_LEVEL_SAVE_SRG_NAME);
+		if (save instanceof LevelStorageSource.LevelStorageAccess) {
+			Path path = ((LevelStorageSource.LevelStorageAccess) save).getWorldDir().resolve("datapacks");
+			return Optional.of(path);
+		}
+		return Optional.empty();
+	}
+	
+	/**
+	 *  Get all paths from a folder that inside the JAR file
+	 * @param jarPath
+	 * @param folder
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
 	public static  List<Path> getPathsFromResourceJAR(Path jarPath, String folder)
 			throws URISyntaxException, IOException {
 

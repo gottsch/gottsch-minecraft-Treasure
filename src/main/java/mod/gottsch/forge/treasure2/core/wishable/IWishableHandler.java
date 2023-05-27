@@ -23,6 +23,7 @@ import java.util.Random;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.treasure2.core.block.IWishingWellBlock;
+import mod.gottsch.forge.treasure2.core.config.Config;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.Entity.RemovalReason;
@@ -49,15 +50,15 @@ public interface IWishableHandler {
 		// check if in water
 		if (itemEntity.level.getBlockState(itemEntity.blockPosition()).is(Blocks.WATER)) {
 			// NOTE use vanilla classes as this scan will be performed frequentlly and don't need the overhead.
-			int scanRange = 3; // TODO config ScanRange
-			BlockPos pos = itemEntity.blockPosition().offset((-scanRange / 2), 0, (-scanRange / 2));
-			for (int z = 0; z < scanRange; z++) {
-				for (int x = 0; x < scanRange; x++) {
+			int scanRadius = Config.SERVER.wells.scanForWellRadius.get();
+			BlockPos pos = itemEntity.blockPosition().offset(-scanRadius, 0, -scanRadius);
+			for (int z = 0; z < (scanRadius * 2) + 1; z++) {
+				for (int x = 0; x < (scanRadius * 2) + 1; x++) {
 					Block block = itemEntity.level.getBlockState(pos).getBlock();
 					if (block instanceof IWishingWellBlock) {
 						count++;
 					}					
-					if (count >= 2) { // TODO config minValidBlockCount ??
+					if (count >= Config.SERVER.wells.scanMinBlockCount.get()) {
 						return true;
 					}
 				}

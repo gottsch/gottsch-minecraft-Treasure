@@ -17,6 +17,10 @@
  */
 package mod.gottsch.forge.treasure2.client.screen;
 
+import java.awt.Color;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.inventory.StandardChestContainerMenu;
@@ -34,7 +38,9 @@ public class VikingChestScreen extends AbstractChestScreen<VikingChestContainerM
 
 	// this is the resource location for the background image for the GUI
 	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(Treasure.MODID, "textures/gui/screen/viking_chest.png");
-
+	private static final Color CHEST_LIGHT_BROWN = new Color(188, 168, 142);//161, 142, 116);
+	private static final Color CHEST_DARK_BROWN = new Color(38, 30, 14);
+	
 	/**
 	 * 
 	 * @param screenContainer
@@ -43,8 +49,34 @@ public class VikingChestScreen extends AbstractChestScreen<VikingChestContainerM
 	 */
 	public VikingChestScreen(VikingChestContainerMenu screenContainer, Inventory playerInventory, Component title) {
 		super(screenContainer, playerInventory, title);
-//		if (Config.CLIENT.gui.enableCustomChestInventoryGui.get()) {
+		if (Config.CLIENT.gui.enableCustomChestInventoryGui.get()) {			
+			this.imageWidth = 176;
+			this.imageHeight = 176;
+			this.titleLabelY =+8;
+			this.inventoryLabelY = this.imageHeight - 102;
+			// TODO lookup a registry based on name to get the BG
 			setBgTexture(BG_TEXTURE);
-//		}
+		}
+	}
+	
+    @Override
+    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
+    	if (Config.CLIENT.gui.enableCustomChestInventoryGui.get()) {
+    		renderCustomLabels(matrixStack, mouseX, mouseY);
+    	}
+    	else {
+    		// vanilla
+    		super.renderLabels(matrixStack, mouseX, mouseY);
+    	}
+    }
+    
+	@Override
+	public int getCustomColor() {
+		return CHEST_LIGHT_BROWN.getRGB();
+	}
+	
+	@Override
+	public int getCustomShadowColor() {
+		return CHEST_DARK_BROWN.getRGB();
 	}
 }

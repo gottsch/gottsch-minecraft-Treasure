@@ -46,34 +46,34 @@ public class ItemEventHandler {
 	 * 
 	 * @param event
 	 */
-	@SubscribeEvent
-	public static void onTossWishableEvent(ItemTossEvent event) {
-		if (WorldInfo.isClientSide(event.getPlayer().level)) {
-			return;
-		}
-		
-		// TODO do we want to re-enable IWishable ? or just check tags ?
-		// then DROPPED_BY would have to go somewhere else
-		
-		//		Treasure.LOGGER.debug("is remote? -> {}", !event.getPlayer().level.isClientSide);
-		Treasure.LOGGER.debug("{} tossing item -> {}", event.getPlayer().getName().getString(), event.getEntityItem().getItem().getDisplayName().getString());
-		ItemStack stack = event.getEntityItem().getItem();
-		Item item = stack.getItem();
-
-		// short circuit using cache if the item is the same as the last non-wishable
-		if (item == lastTossed && !isWishable) {
-			return;
-		}
-		
-		if (item instanceof WealthItem || stack.is(TreasureTags.Items.WISHABLES)) {
-			CompoundTag nbt = new CompoundTag();
-			nbt.putUUID(WealthItem.DROPPED_BY, event.getPlayer().getUUID());
-			Treasure.LOGGER.debug("adding nbt tag to wishable stack...");
-			stack.setTag(nbt);
-			isWishable = true;
-		} else {
-			isWishable = false;
-		}
-		lastTossed = item;
-	}
+//	@SubscribeEvent
+//	public static void onTossWishableEvent(ItemTossEvent event) {
+//		if (WorldInfo.isClientSide(event.getPlayer().level)) {
+//			return;
+//		}
+//		
+//		// TODO do we want to re-enable IWishable ? or just check tags ?
+//		// then DROPPED_BY would have to go somewhere else
+//		
+//		//		Treasure.LOGGER.debug("is remote? -> {}", !event.getPlayer().level.isClientSide);
+//		Treasure.LOGGER.debug("{} tossing item -> {}", event.getPlayer().getName().getString(), event.getEntityItem().getItem().getDisplayName().getString());
+//		ItemStack stack = event.getEntityItem().getItem();
+//		Item item = stack.getItem();
+//
+//		// short circuit using cache if the item is the same as the last non-wishable
+//		if (item == lastTossed && !isWishable) {
+//			return;
+//		}
+//		
+//		if (item instanceof WealthItem || stack.is(TreasureTags.Items.WISHABLES)) {
+//			CompoundTag nbt = new CompoundTag();
+//			nbt.putUUID(WealthItem.DROPPED_BY, event.getPlayer().getUUID());
+//			Treasure.LOGGER.debug("adding nbt tag to wishable stack...");
+//			stack.setTag(nbt);
+//			isWishable = true;
+//		} else {
+//			isWishable = false;
+//		}
+//		lastTossed = item;
+//	}
 }

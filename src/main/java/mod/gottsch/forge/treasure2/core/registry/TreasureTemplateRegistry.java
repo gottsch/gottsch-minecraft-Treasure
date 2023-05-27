@@ -72,9 +72,6 @@ public class TreasureTemplateRegistry {
 	public static final String JAR_TEMPLATES_ROOT = "data/treasure2/structures/";
 	public static final String DATAPACKS_TEMPLATES_ROOT = "data/treasure2/structures/";
 
-	@Deprecated
-	private static final String TEMPLATES_FOLDER = "structures";
-
 	private static final Set<String> REGISTERED_MODS;
 	private static final Map<String, Boolean> LOADED_MODS;
 	protected static final Gson GSON_INSTANCE;
@@ -134,7 +131,7 @@ public class TreasureTemplateRegistry {
 	/*
 	 * the path to the world save folder
 	 */
-	private static File worldSaveFolder;
+	private static Path worldSaveFolder;
 
 	static {
 		REGISTERED_MODS = Sets.newHashSet();
@@ -187,32 +184,31 @@ public class TreasureTemplateRegistry {
 
 	/**
 	 * 
-	 * @param world
-	 */
-	public static void create(ServerLevel world) {
-		// get path to world save folder
-		TreasureTemplateRegistry.world = world;
-		Object save = ObfuscationReflectionHelper.getPrivateValue(MinecraftServer.class, world.getServer(), SAVE_FORMAT_LEVEL_SAVE_SRG_NAME);
-		if (save instanceof LevelStorageSource.LevelStorageAccess) {
-			Path path = ((LevelStorageSource.LevelStorageAccess) save).getWorldDir().resolve("datapacks");
-			setWorldSaveFolder(path.toFile());
-		}
-		else {
-			// TODO throw error
-		}	
-
-	}
-
-	/**
-	 * 
 	 */
 	public void clear() {
 		TABLE.clear();
 		DATAPACK_TABLE.clear();
 		MAP.clear();
 		DATAPACK_MAP.clear();
+		
 	}
 
+	/**
+	 * 
+	 */
+	public static void clearDatapacks() {
+		DATAPACK_MAP.clear();
+		DATAPACK_TABLE.clear();
+	}
+	
+	/**
+	 * 
+	 */
+	public static void clearAccesslists() {
+		WHITELIST_TABLE.clear();
+		BLACKLIST_TABLE.clear();
+	}
+	
 	/**
 	 * 
 	 * @param modID
@@ -371,18 +367,14 @@ public class TreasureTemplateRegistry {
 	 * 
 	 * @param event
 	 */
-	public static void onWorldLoad(WorldEvent.Load event) {
-		if (!event.getWorld().isClientSide() && WorldInfo.isSurfaceWorld((ServerLevel) event.getWorld())) {
+	public static void onWorldLoad(WorldEvent.Load event, Path worldSavePath) {
+		setWorldSaveFolder(worldSavePath);
+		clearDatapacks();
+		clearAccesslists();
+		if (!event.getWorld().isClientSide()) {
 			Treasure.LOGGER.debug("template registry world load event...");
-			create((ServerLevel) event.getWorld());
-
-			//			REGISTERED_MODS.forEach(mod -> {
-			//				Treasure.LOGGER.debug("registering mod -> {}", mod);
-			//				load(mod);
 			loadDataPacks(getMarkerScanList(), getReplacementMap());
 			registerAccesslists(Config.structureConfiguration.getStructMetas());
-
-			//			});
 		}
 	}
 
@@ -739,11 +731,11 @@ public class TreasureTemplateRegistry {
 		return Optional.ofNullable(holder);
 	}
 
-	public static File getWorldSaveFolder() {
+	public static Path getWorldSaveFolder() {
 		return TreasureTemplateRegistry.worldSaveFolder;
 	}
 
-	public static void setWorldSaveFolder(File worldSaveFolder) {
+	public static void setWorldSaveFolder(Path worldSaveFolder) {
 		TreasureTemplateRegistry.worldSaveFolder = worldSaveFolder;
 	}
 

@@ -31,7 +31,6 @@ import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
-import mod.gottsch.forge.treasure2.core.generator.marker.GravestoneMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.generator.marker.IMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
 import mod.gottsch.forge.treasure2.core.generator.ruin.IRuinGenerator;
@@ -41,11 +40,10 @@ import mod.gottsch.forge.treasure2.core.item.KeyItem;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.loot.ISpecialLootTables;
 import mod.gottsch.forge.treasure2.core.registry.*;
-import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
 import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.IStructureType;
-import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
+import mod.gottsch.forge.treasure2.core.wishable.IWishableHandler;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
@@ -378,6 +376,10 @@ public class TreasureApi {
 	
 	public static void registerWishable(RegistryObject<Item> wishable) {
 		WishableRegistry.register(wishable);
+	}
+	
+	public static void registerWishableHandler(Item item, IWishableHandler handler) {
+		WishableRegistry.registerHandler(item, handler);
 	}
 	
 	public static void registerLootTables(String modID) {

@@ -457,11 +457,15 @@ public class Config extends AbstractConfig {
 		 */
 		public static class Wells {
 			public BooleanValue enableWells;
-			public ConfigValue<Integer> registrySize;
+			public ConfigValue<Integer> cacheSize;
 			public ConfigValue<Double> probability;
 			public ConfigValue<Integer> minBlockDistance;
 			public ConfigValue<Integer>	waitChunks;
 			public BiomesConfig biomes;
+			
+			public ConfigValue<Integer> scanForItemRadius;
+			public ConfigValue<Integer> scanForWellRadius;
+			public ConfigValue<Integer> scanMinBlockCount;
 			
 			public Wells(final ForgeConfigSpec.Builder builder)	 {
 				builder.comment(CATEGORY_DIV, " Wells properties", CATEGORY_DIV)
@@ -471,14 +475,14 @@ public class Config extends AbstractConfig {
 						.comment(" Enable/disable whether wells will spawn.")
 						.define("enableWells", true);
 				
-				registrySize = builder
+				cacheSize = builder
 						.comment(" The number of wells spawns that are monitored.",
-								" Most recent additions replace least recent when the registry is full.",
+								" Most recent additions replace least recent when the cache is full.",
 								" This is the set of wells used to measure distance between newly generated wells.",
 								" In general, a high number is better than a low number, especially in a multiplayer world.",
 								" However, wells have a default low probability/great distance, so the number can be",
 								" a lower than that of chests, which spawn much more frequently.")
-						.defineInRange("registrySize", 50, 25, 1000);
+						.defineInRange("cacheSize", 50, 25, 1000);
 				
 				this.probability = builder
 						.comment(" The probability that a well will generate at selected spawn location.",
@@ -499,6 +503,21 @@ public class Config extends AbstractConfig {
 						"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },
 				new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean" });
 				biomes = new BiomesConfig(builder, biomesData);
+				
+				this.scanForItemRadius = builder
+						.comment(" The number of blocks in radius around player to scan for tossed/dropped wishables items.",
+								"  Ex. if player is at (0, 0, 0), then scan range would be (-1, 0, -1) -> (1, 0, 1).")
+						.defineInRange("scanForItemRadius", 4, 1, 10);
+				
+				this.scanForWellRadius = builder
+						.comment(" The number of blocks in radius around wishable item to scan for a well.",
+								"  Ex. if item is at (0, 0, 0), then scan range would be (-1, 0, -1) -> (1, 0, 1).")
+						.defineInRange("scanForWellRadius", 1, 1, 10);
+				
+				this.scanMinBlockCount = builder
+						.comment(" The number of blocks in radius around a wishable item (hortizontally) that are scanned to discover a well.",
+								"  Ex. if item is at (0, 0, 0), then scan range would be (-1, 0, -1) -> (1, 0, 1).")
+						.defineInRange("scanMinBlockCount", 2, 1, 8);
 				
 				builder.pop();
 			}

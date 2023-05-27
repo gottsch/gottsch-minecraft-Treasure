@@ -19,24 +19,10 @@
  */
 package mod.gottsch.forge.treasure2.core.registry;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.nio.file.*;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -52,20 +38,15 @@ import com.google.gson.JsonParseException;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.loot.LootTableShell;
-import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.enums.ILootTableType;
 import mod.gottsch.forge.treasure2.core.enums.LootTableType;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.loot.Deserializers;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 /**
  * Use this registry to register all your mod's custom loot table for Treasure2.
@@ -93,31 +74,6 @@ public final class TreasureLootTableRegistry {
 	// the gson serializer for loot tables
 	private static final Gson GSON_INSTANCE = Deserializers.createLootTableSerializer().create();
 
-//	@Deprecated
-//	public static final String CUSTOM_LOOT_TABLE_KEY = "CUSTOM";
-
-	/*
-		MC 1.18.2: net/minecraft/server/MinecraftServer.storageSource
-		Name: l => f_129744_ => storageSource
-		Side: BOTH
-		AT: public net.minecraft.server.MinecraftServer f_129744_ # storageSource
-		Type: net/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess
-	 */
-	private static final String SAVE_FORMAT_LEVEL_SAVE_SRG_NAME = "f_129744_";
-
-	//@Deprecated
-	//private static LootResourceManifest lootResources;
-	//	private static TreasureLootTableMaster2 lootTableMaster;
-
-	//@Deprecated
-	//private static ServerLevel world;
-
-	/*
-	 * Guava Table of LootTableShell for Chests based on LootTableManager-key and Rarity
-	 */
-//	@Deprecated
-//	private final static Table<String, IRarity, List<LootTableShell>> CHEST_LOOT_TABLES_TABLE = HashBasedTable.create();
-
 	/*
 	 * Master Guava Table of LootTables by Top-Level(Type) ex chests | wishables | injects, IRarity, List<LootTableShell>
 	 */
@@ -142,27 +98,9 @@ public final class TreasureLootTableRegistry {
 	private final static Map<ResourceLocation, LootTableShell> DATAPACK_MAP = new HashMap<>();
 
 	/*
-	 * Map of LootTableShell for Chests base on ResourceLocation
-	 */
-//	@Deprecated
-//	private final static Map<ResourceLocation, LootTableShell> CHEST_LOOT_TABLES_MAP = new HashMap<>();
-
-	/*
-	 * 
-	 */
-//	@Deprecated
-//	private final static Map<ISpecialLootTables, LootTableShell> SPECIAL_LOOT_TABLES_MAP = new HashMap<>();
-
-	/*
-	 * 
-	 */
-//	@Deprecated
-//	private final static Table<String, IRarity, List<LootTableShell>> INJECT_LOOT_TABLES_TABLE = HashBasedTable.create();
-
-	/*
 	 * the path to the world save folder
 	 */
-	private static File worldSaveFolder;
+	private static Path worldSaveFolder;
 
 	static {
 		REGISTERED_MODS = new ArrayList<>();
@@ -174,45 +112,24 @@ public final class TreasureLootTableRegistry {
 	 */
 	private TreasureLootTableRegistry() {}
 
-	/**
-	 * Don't need to initialize, add as go along.
-	 */
-	//	public static void init() {
-	//		// initialize chests
-	//		// TODO get initial list from chest generator registry.
-	//		// as well, by interrogating the loot tables we might add some to these maps
-	//		for (IRarity r : Arrays.asList(Rarity.COMMON, Rarity.UNCOMMON, Rarity.SCARCE, Rarity.RARE, Rarity.EPIC, Rarity.LEGENDARY, Rarity.MYTHICAL,
-	//				SpecialRarity.CAULDRON, SpecialRarity.CRYSTAL_SKULL, SpecialRarity.GOLD_SKULL, SpecialRarity.SKULL, SpecialRarity.WITHER)) {
-	//			MASTER_TABLE.put(CHESTS, r, new ArrayList<LootTableShell>());
-	//		}
-	//		
-	//		// initialize wishables
-	//		for (IRarity r :TagRegistry.getWishableKeys()) {
-	//			MASTER_TABLE.put(WISHABLES, r, new ArrayList<LootTableShell>());
-	//		}
-	//		
-	//		// TODO figure out Injects. Not going to be the same as before.
-	//		
-	//	}
 
 	/**
-	 * Called on World load before registered mods are loaded.
-	 * TODO this could be called in the Tag load event or anything that loads prior to the world.
-	 * The Tag Load event is a good option because it should only load once (not for every dimension)
-	 * @param world
+	 * 
 	 */
-	public static void create(ServerLevel world) {
-		// get path to world save folder
-		Object save = ObfuscationReflectionHelper.getPrivateValue(MinecraftServer.class, world.getServer(), SAVE_FORMAT_LEVEL_SAVE_SRG_NAME);
-		if (save instanceof LevelStorageSource.LevelStorageAccess) {
-			Path path = ((LevelStorageSource.LevelStorageAccess) save).getWorldDir().resolve("datapacks");
-			setWorldSaveFolder(path.toFile());
-		}
-		else {
-			// TODO throw error
-		}
+	public static void clearDatapacks() {
+		DATAPACK_MAP.clear();
+		DATAPACK_TABLE.clear();
 	}
 
+	/**
+	 * 
+	 */
+	public static void clearAll() {
+		MASTER_MAP.clear();
+		MASTER_TABLE.clear();
+		clearDatapacks();
+	}
+	
 	/**
 	 * 
 	 * @param modID
@@ -511,18 +428,11 @@ public final class TreasureLootTableRegistry {
 	 * 
 	 * @param event
 	 */
-	public static void onWorldLoad(WorldEvent.Load event) {
-		if (!event.getWorld().isClientSide() && WorldInfo.isSurfaceWorld((ServerLevel) event.getWorld())) {
-			Treasure.LOGGER.debug("loot table registry world load");
-			TreasureLootTableRegistry.create((ServerLevel) event.getWorld());
-
-//			REGISTERED_MODS.forEach(mod -> {
-//				Treasure.LOGGER.debug("registering mod -> {}", mod);
-				// TODO this call no longer needs to happen per registered mod. the jar resources are already loaded for each mod
-				// and the filesystem and datapacks only need to be loaded once because everything falls under /treasure2 folder
-				loadDataPacks(Treasure.MODID); //mod);
-//				load(mod);
-//			});
+	public static void onWorldLoad(WorldEvent.Load event, Path worldSavePath) {
+		setWorldSaveFolder(worldSavePath);
+		clearDatapacks();
+		if (!event.getWorld().isClientSide()) {
+			loadDataPacks(Treasure.MODID);	
 		}
 	}
 	
@@ -616,11 +526,11 @@ public final class TreasureLootTableRegistry {
 		return REGISTERED_MODS;
 	}
 
-	public static File getWorldSaveFolder() {
+	public static Path getWorldSaveFolder() {
 		return TreasureLootTableRegistry.worldSaveFolder;
 	}
 
-	public static void setWorldSaveFolder(File worldSaveFolder) {
+	public static void setWorldSaveFolder(Path worldSaveFolder) {
 		TreasureLootTableRegistry.worldSaveFolder = worldSaveFolder;
 	}
 	

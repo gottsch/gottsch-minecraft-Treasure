@@ -23,6 +23,7 @@ import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class TreasureItemTagsProvider extends ItemTagsProvider {
@@ -83,10 +84,12 @@ public class TreasureItemTagsProvider extends ItemTagsProvider {
 		// wishables rarity
 		tag(TreasureTags.Items.COMMON_WISHABLE).add(TreasureItems.COPPER_COIN.get());
 		tag(TreasureTags.Items.UNCOMMON_WISHABLE).add(TreasureItems.SILVER_COIN.get());
-		tag(TreasureTags.Items.SCARCE_WISHABLE).add(TreasureItems.SILVER_COIN.get());
+//		tag(TreasureTags.Items.SCARCE_WISHABLE).add(TreasureItems.SILVER_COIN.get());
 		tag(TreasureTags.Items.SCARCE_WISHABLE).add(TreasureItems.GOLD_COIN.get());
-		tag(TreasureTags.Items.RARE_WISHABLE).add(TreasureItems.GOLD_COIN.get());
+//		tag(TreasureTags.Items.RARE_WISHABLE).add(TreasureItems.GOLD_COIN.get());
 		tag(TreasureTags.Items.SCARCE_WISHABLE).add(TreasureItems.TOPAZ.get());
+		tag(TreasureTags.Items.SCARCE_WISHABLE).add(Items.DIAMOND);
+		tag(TreasureTags.Items.SCARCE_WISHABLE).add(Items.EMERALD);
 		tag(TreasureTags.Items.RARE_WISHABLE).add(TreasureItems.ONYX.get());
 		tag(TreasureTags.Items.RARE_WISHABLE).add(TreasureItems.RUBY.get());
 		tag(TreasureTags.Items.RARE_WISHABLE).add(TreasureItems.WHITE_PEARL.get());

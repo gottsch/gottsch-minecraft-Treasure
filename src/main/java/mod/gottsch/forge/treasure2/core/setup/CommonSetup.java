@@ -81,11 +81,13 @@ import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
+import mod.gottsch.forge.treasure2.core.wishable.TreasureWishableHandlers;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureFeatureGenerators;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -219,7 +221,7 @@ public class CommonSetup {
 		TreasureApi.registerPitType(PitType.STANDARD);
 		TreasureApi.registerPitType(PitType.STRUCTURE);
 		
-		// TODO register marker types
+		// register marker types
 		TreasureApi.registerMarkerType(MarkerType.STANDARD);
 		TreasureApi.registerMarkerType(MarkerType.STRUCTURE);
 		
@@ -343,6 +345,7 @@ public class CommonSetup {
 		TreasureApi.registerChest(TreasureBlocks.MILK_CRATE);
 		TreasureApi.registerChest(TreasureBlocks.WITHER_CHEST);
 
+		// TODO are these still valid since using Tags
 		// register all the wishable items
 		TreasureApi.registerWishable(TreasureItems.COPPER_COIN);
 		TreasureApi.registerWishable(TreasureItems.SILVER_COIN);
@@ -354,6 +357,10 @@ public class CommonSetup {
 		TreasureApi.registerWishable(TreasureItems.WHITE_PEARL);
 		TreasureApi.registerWishable(TreasureItems.BLACK_PEARL);
 
+		// register wishable handlers
+		// TEMP test
+		TreasureApi.registerWishableHandler(Items.DIAMOND, TreasureWishableHandlers.DEFAULT_WISHABLE_HANDLER);
+		
 		// register loot tables
 		TreasureApi.registerLootTables(Treasure.MODID);
 		

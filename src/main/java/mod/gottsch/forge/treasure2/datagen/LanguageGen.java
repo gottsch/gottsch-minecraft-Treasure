@@ -127,6 +127,7 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.AXE_DURIN.get(), "Axe of Durin");
         add(TreasureItems.HEADSMANS_AXE.get(), "The Headsman's Axe");
         
+        add(TreasureItems.STEEL_MACHETE.get(), "Steel Machete");
         add(TreasureItems.SHADOW_MACHETE.get(), "Shadow Machete");
         
         add(TreasureItems.IRON_FALCHION.get(), "Iron Falchion");

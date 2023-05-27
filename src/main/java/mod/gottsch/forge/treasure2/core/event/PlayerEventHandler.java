@@ -21,15 +21,21 @@ import java.util.List;
 import java.util.Objects;
 
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.item.WealthItem;
 import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
+import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import mod.gottsch.forge.treasure2.core.wishable.IWishableHandler;
 import mod.gottsch.forge.treasure2.core.wishable.TreasureWishableHandlers;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -44,11 +50,11 @@ public class PlayerEventHandler {
 	@SubscribeEvent
 	public static void playerTick(TickEvent.PlayerTickEvent event) {
 		Player player = event.player;
-		
+
 		if (!(player instanceof ServerPlayer)) {
 			return;
 		}
-		
+
 		if (event.phase == TickEvent.Phase.END && player.tickCount % 5 == 0) {
 			checkForWishables(player);
 		}
@@ -60,7 +66,7 @@ public class PlayerEventHandler {
 	 */
 	private static void checkForWishables(Player player) {
 		// gather items within x radius
-		List<ItemEntity> items = player.level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(4));
+		List<ItemEntity> items = player.level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(Config.SERVER.wells.scanForItemRadius.get()));
 		for (ItemEntity item : items) {
 			// if non-wealth, wishables-tag item
 			if (!(item.getItem().getItem() instanceof WealthItem) && item.getItem().is(TreasureTags.Items.WISHABLES)) {
@@ -77,5 +83,11 @@ public class PlayerEventHandler {
 			}
 		}
 	}
-	
+
+	@SubscribeEvent
+	public static void onItemInfo(ItemTooltipEvent event) {
+		if (!(event.getItemStack().getItem() instanceof WealthItem) && event.getItemStack().is(TreasureTags.Items.WISHABLES)) {
+			event.getToolTip().add(new TranslatableComponent(LangUtil.tooltip("wishable")).withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC));
+		}
+	}
 }

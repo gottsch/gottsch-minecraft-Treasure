@@ -90,7 +90,7 @@ public class TreasureConfig extends AbstractConfig {
 		COMMON_CONFIG = COMMON_BUILDER.build();
 
 		// load raw arrays into lists
-		TreasureConfig.CHESTS.init();
+//		TreasureConfig.CHESTS.init();
 	}
 
 	private static IMod mod;
@@ -367,44 +367,44 @@ public class TreasureConfig extends AbstractConfig {
 			surfaceConfigs.put(Rarity.RARE, new ChestConfigOLD.Data(true, 500, 10, 25, 30, 45, 0.0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
 			surfaceConfigs.put(Rarity.EPIC, new ChestConfigOLD.Data(true, 800, 10, 15, 40, 55, 0.0, new String[] {}, new String[] {"minecraft:plains", "minecraft:sunflower_plains"}, new String[] {}, new String[] {"minecraft:plains"}));
 			
-			// TODO needs all the builder stuff
-			surfaceChests = new ChestCollection(builder,
-					"surface chests", 
-					new String[] {
-							CATEGORY_DIV,
-							" Chests that generate on land.", 
-							UNDERLINE_DIV,
-							" Note: There is a build-in check against ocean biomes for surface chests. Adding ocean biomes to the white lists will not change this functionality.",
-							CATEGORY_DIV},
-					surfaceConfigs);
-
-			// setup submerged properties
-			// NOTE: submerged feature is registered for oceans only and there no special white list needs to be setup for oceans-only by default.
-			submergedConfigs.put(Rarity.COMMON, new ChestConfigOLD.Data(false, 150, 10, 85, 5, 5, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-			submergedConfigs.put(Rarity.UNCOMMON, new ChestConfigOLD.Data(false, 300, 10, 75, 5, 5, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
-			submergedConfigs.put(Rarity.SCARCE, new ChestConfigOLD.Data(true, 400, 10, 50, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
-					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
-			submergedConfigs.put(Rarity.RARE, new ChestConfigOLD.Data(true, 600, 10, 25, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
-					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
-			submergedConfigs.put(Rarity.EPIC, new ChestConfigOLD.Data(true, 1000, 10, 15, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
-					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
-			
-			submergedChests = new ChestCollection(builder, 
-					"submerged chests", 
-					new String[] {
-							CATEGORY_DIV,
-							" Chests that generate underwater (in ocean biomes).", 
-							UNDERLINE_DIV,
-							" Note: There is a build-in check to only allow ocean biomes for submerged chests. Adding other biomes to the white lists will not change this functionality.",
-							CATEGORY_DIV,}, 
-					submergedConfigs);
+//			// TODO needs all the builder stuff
+//			surfaceChests = new ChestCollection(builder,
+//					"surface chests", 
+//					new String[] {
+//							CATEGORY_DIV,
+//							" Chests that generate on land.", 
+//							UNDERLINE_DIV,
+//							" Note: There is a build-in check against ocean biomes for surface chests. Adding ocean biomes to the white lists will not change this functionality.",
+//							CATEGORY_DIV},
+//					surfaceConfigs);
+//
+//			// setup submerged properties
+//			// NOTE: submerged feature is registered for oceans only and there no special white list needs to be setup for oceans-only by default.
+//			submergedConfigs.put(Rarity.COMMON, new ChestConfigOLD.Data(false, 150, 10, 85, 5, 5, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+//			submergedConfigs.put(Rarity.UNCOMMON, new ChestConfigOLD.Data(false, 300, 10, 75, 5, 5, 0.0, new String[] {}, new String[] {}, new String[] {}, new String[] {}));
+//			submergedConfigs.put(Rarity.SCARCE, new ChestConfigOLD.Data(true, 400, 10, 50, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+//					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
+//			submergedConfigs.put(Rarity.RARE, new ChestConfigOLD.Data(true, 600, 10, 25, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+//					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
+//			submergedConfigs.put(Rarity.EPIC, new ChestConfigOLD.Data(true, 1000, 10, 15, 5, 5, 0.0, new String[] {"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+//					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"}, new String[] {}, new String[] {}, new String[] {}));
+//			
+//			submergedChests = new ChestCollection(builder, 
+//					"submerged chests", 
+//					new String[] {
+//							CATEGORY_DIV,
+//							" Chests that generate underwater (in ocean biomes).", 
+//							UNDERLINE_DIV,
+//							" Note: There is a build-in check to only allow ocean biomes for submerged chests. Adding other biomes to the white lists will not change this functionality.",
+//							CATEGORY_DIV,}, 
+//					submergedConfigs);
 			
 			builder.pop();
 		}
 
-		public void init() {
-			this.surfaceChests.init();
-		}
+//		public void init() {
+//			this.surfaceChests.init();
+//		}
 		
 		/*
 		 * 
@@ -413,52 +413,52 @@ public class TreasureConfig extends AbstractConfig {
 			/*
 			 * Map of chest configs by rarity.
 			 */
-			public Map<Rarity, IChestConfig> configMap = new HashMap<>();
-
-			public ForgeConfigSpec.ConfigValue<Integer> minChunksPerChest;
-			public ForgeConfigSpec.ConfigValue<Integer> minDistancePerChest;
-			public ForgeConfigSpec.ConfigValue<Integer> surfaceChestProbability;			
-
-			/**
-			 * 
-			 * @param configs
-			 */
-			public ChestCollection(final ForgeConfigSpec.Builder builder, String category, String[] comments, Map<Rarity, ChestConfigOLD.Data> configs) {
-				
-				builder.comment(comments).push(category);
-				minChunksPerChest = builder
-						.comment(" The minimum number of chunks generated before another attempt to spawn a chest is made.")
-						.defineInRange("Minimum chunks per chest spawn:", 75, 25, 32000);
-				
-				minDistancePerChest = builder
-						.comment(" The minimum distance, measured in chunks (16x16), that two chests can be in proximity.",
-								" Note: Only chests in the chest registry are checked against this property.",
-								" Used in conjunction with the chunks per chest and spawn probability.", " Ex. ")
-						.defineInRange("Minimum distance per chest spawn:", 150, 0, 32000);
-				
-				surfaceChestProbability = builder
-						.comment(" The probability chest will appear on the surface, instead of in a pit.")
-						.defineInRange("Probability of chest spawn on the surface:", 15, 0, 100);
-
-				// update the map
-				configMap.put(Rarity.COMMON, new ChestConfigOLD(builder, Rarity.COMMON.getValue(), configs.get(Rarity.COMMON)));
-				configMap.put(Rarity.UNCOMMON, new ChestConfigOLD(builder, Rarity.UNCOMMON.getValue(), configs.get(Rarity.UNCOMMON)));
-				configMap.put(Rarity.SCARCE, new ChestConfigOLD(builder, Rarity.SCARCE.getValue(), configs.get(Rarity.SCARCE)));
-				configMap.put(Rarity.RARE, new ChestConfigOLD(builder, Rarity.RARE.getValue(), configs.get(Rarity.RARE)));
-				configMap.put(Rarity.EPIC, new ChestConfigOLD(builder, Rarity.EPIC.getValue(), configs.get(Rarity.EPIC)));
-
-				builder.pop();
-			}
-			
-			/*
-			 * 
-			 */
-			public void init() {
-//				this.commonChestProperties.init();
-				for (IChestConfig config : configMap.values()) {
-					config.init();
-				}
-			}
+//			public Map<Rarity, IChestConfig> configMap = new HashMap<>();
+//
+//			public ForgeConfigSpec.ConfigValue<Integer> minChunksPerChest;
+//			public ForgeConfigSpec.ConfigValue<Integer> minDistancePerChest;
+//			public ForgeConfigSpec.ConfigValue<Integer> surfaceChestProbability;			
+//
+//			/**
+//			 * 
+//			 * @param configs
+//			 */
+//			public ChestCollection(final ForgeConfigSpec.Builder builder, String category, String[] comments, Map<Rarity, ChestConfigOLD.Data> configs) {
+//				
+//				builder.comment(comments).push(category);
+//				minChunksPerChest = builder
+//						.comment(" The minimum number of chunks generated before another attempt to spawn a chest is made.")
+//						.defineInRange("Minimum chunks per chest spawn:", 75, 25, 32000);
+//				
+//				minDistancePerChest = builder
+//						.comment(" The minimum distance, measured in chunks (16x16), that two chests can be in proximity.",
+//								" Note: Only chests in the chest registry are checked against this property.",
+//								" Used in conjunction with the chunks per chest and spawn probability.", " Ex. ")
+//						.defineInRange("Minimum distance per chest spawn:", 150, 0, 32000);
+//				
+//				surfaceChestProbability = builder
+//						.comment(" The probability chest will appear on the surface, instead of in a pit.")
+//						.defineInRange("Probability of chest spawn on the surface:", 15, 0, 100);
+//
+//				// update the map
+//				configMap.put(Rarity.COMMON, new ChestConfigOLD(builder, Rarity.COMMON.getValue(), configs.get(Rarity.COMMON)));
+//				configMap.put(Rarity.UNCOMMON, new ChestConfigOLD(builder, Rarity.UNCOMMON.getValue(), configs.get(Rarity.UNCOMMON)));
+//				configMap.put(Rarity.SCARCE, new ChestConfigOLD(builder, Rarity.SCARCE.getValue(), configs.get(Rarity.SCARCE)));
+//				configMap.put(Rarity.RARE, new ChestConfigOLD(builder, Rarity.RARE.getValue(), configs.get(Rarity.RARE)));
+//				configMap.put(Rarity.EPIC, new ChestConfigOLD(builder, Rarity.EPIC.getValue(), configs.get(Rarity.EPIC)));
+//
+//				builder.pop();
+//			}
+//			
+//			/*
+//			 * 
+//			 */
+//			public void init() {
+////				this.commonChestProperties.init();
+//				for (IChestConfig config : configMap.values()) {
+//					config.init();
+//				}
+//			}
 		}
 	}
 
@@ -528,7 +528,7 @@ public class TreasureConfig extends AbstractConfig {
     /*
      *
      */
-    public static class Wells implements IWellsConfig {
+    public static class Wells { //implements IWellsConfig {
     	public ForgeConfigSpec.BooleanValue enableWells;
     	public ForgeConfigSpec.ConfigValue<Double> genProbability;
         public ForgeConfigSpec.ConfigValue<Integer> chunksPerWell;
@@ -571,35 +571,35 @@ public class TreasureConfig extends AbstractConfig {
 			builder.pop();
 		}
 
-		@Override
-		public void init() {
-			this.biomes.init();
-		}
-
-		@Override
-		public boolean isEnabled() {
-			return enableWells.get();
-		}
-
-		@Override
-		public int getChunksPerWell() {
-			return chunksPerWell.get();
-		}
-
-		@Override
-		public double getGenProbability() {
-			return genProbability.get();
-		}
-
-		@Override
-		public List<String> getBiomeWhiteList() {
-			return (List<String>) biomes.whiteList.get();
-		}
-
-		@Override
-		public List<String> getBiomeBlackList() {
-			return (List<String>) biomes.blackList.get();
-		}
+//		@Override
+//		public void init() {
+//			this.biomes.init();
+//		}
+//
+//		@Override
+//		public boolean isEnabled() {
+//			return enableWells.get();
+//		}
+//
+//		@Override
+//		public int getChunksPerWell() {
+//			return chunksPerWell.get();
+//		}
+//
+//		@Override
+//		public double getGenProbability() {
+//			return genProbability.get();
+//		}
+//
+//		@Override
+//		public List<String> getBiomeWhiteList() {
+//			return (List<String>) biomes.whiteList.get();
+//		}
+//
+//		@Override
+//		public List<String> getBiomeBlackList() {
+//			return (List<String>) biomes.blackList.get();
+//		}
     }
 
 	/*

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.someguyssoftware.gottschcore.biome.BiomeHelper;
 import com.someguyssoftware.gottschcore.biome.BiomeTypeHolder;
 
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
@@ -18,7 +17,7 @@ import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
  *
  */
 // TODO move to GottschCore 1.9/1.8
-public class BiomesConfig implements IBiomesConfig {
+public class BiomesConfig {
 
 	public static class Data {
 		public String[] biomeWhiteList;

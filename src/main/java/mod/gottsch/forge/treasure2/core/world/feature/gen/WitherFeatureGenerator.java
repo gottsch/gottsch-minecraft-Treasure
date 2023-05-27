@@ -78,7 +78,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	private static final int MIN_SCRUB = 5;
 	private static final int MAX_SCRUB = 20;
 	
-	protected static int UNDERGROUND_OFFSET = 2;
+	protected static int UNDERGROUND_OFFSET = 3;
 	
 	/*
 	 * During generation a 3x3 (x-z axis) chunk area is available to alter ( = 48 blocks).
