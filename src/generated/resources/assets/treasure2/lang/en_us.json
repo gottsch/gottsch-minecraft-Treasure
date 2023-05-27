@@ -200,6 +200,8 @@
   "tooltip.treasure2.weapons.mjolnir.lore": "'Whosoever holds this hammer,~if they be worthy, shall possess the power of Thor.'",
   "tooltip.treasure2.weapons.oathbringer.lore": "Life before death,~strength before weakness,~journey before destination.",
   "tooltip.treasure2.weapons.orcus.lore": "'Fair lady, throw those costly robes aside,~No longer may you glory in your pride.~Take leave of all sour vain delight~I'm come to summon you away this night'.~    -The Grim Reaper",
+  "tooltip.treasure2.weapons.power_attack.chance": "Power Strike Chance: %s%%",
+  "tooltip.treasure2.weapons.power_attack.damage": "Power Strike Damage: +%s%%",
   "tooltip.treasure2.weapons.snake_eyes_katana.lore": "Move with the wind, and you will never be heard.~    -Snake Eyes",
   "tooltip.treasure2.weapons.storm_shadows_katana.lore": "Most people will tell you that ninjas don\u00E2\u20AC\u2122t exist.~That\u00E2\u20AC\u2122s what the ninjas want you to believe \u00E2\u20AC\u00A6~    -Storm Shadow",
   "tooltip.treasure2.weapons.sword_of_omens.lore": "'Thunder... Thunder... Thunder... ThunderCats HO!'",
