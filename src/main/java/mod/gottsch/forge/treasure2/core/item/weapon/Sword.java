@@ -87,6 +87,7 @@ public class Sword extends SwordItem implements IWeapon {
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
+		appendStats(stack, worldIn, tooltip, flag);
 		appendHoverExtras(stack, worldIn, tooltip, flag);
 	}
 

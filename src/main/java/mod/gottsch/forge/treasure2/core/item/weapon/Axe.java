@@ -23,6 +23,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
@@ -34,6 +35,8 @@ import net.minecraft.world.level.Level;
  *
  */
 public class Axe extends AxeItem implements IWeapon {
+	private float criticalChance;
+	private float criticalDamage;
 	
 	/**
 	 * 
@@ -42,10 +45,25 @@ public class Axe extends AxeItem implements IWeapon {
 	 * @param speed
 	 * @param properties
 	 */
-	public Axe(Tier tier, float damage, float speed, Properties properties) {
-		super(tier, damage, speed, properties);
+	public Axe(Tier tier, float damageModifier, float speedModifier, Item.Properties properties) {
+		this(tier, damageModifier, speedModifier, 0f, 0f, properties);
 	}
 
+	/**
+	 * 
+	 * @param tier
+	 * @param damageModifier
+	 * @param speedModifier
+	 * @param criticalChance
+	 * @param criticalDamage
+	 * @param properties
+	 */
+	public Axe(Tier tier, float damageModifier, float speedModifier, float criticalChance, float criticalDamage, Item.Properties properties) {
+		super(tier, damageModifier, speedModifier, properties);
+		this.criticalChance = criticalChance;
+		this.criticalDamage = criticalDamage;
+	}
+	
 	@Override
 	public Component getName(ItemStack itemStack) {
 		if (isUnique()) {
@@ -57,6 +75,23 @@ public class Axe extends AxeItem implements IWeapon {
 	
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
+		appendStats(stack, worldIn, tooltip, flag);
 		appendHoverExtras(stack, worldIn, tooltip, flag);
+	}
+
+	public float getCriticalChance() {
+		return criticalChance;
+	}
+
+	public void setCriticalChance(float criticalChance) {
+		this.criticalChance = criticalChance;
+	}
+
+	public float getCriticalDamage() {
+		return criticalDamage;
+	}
+
+	public void setCriticalDamage(float criticalDamage) {
+		this.criticalDamage = criticalDamage;
 	}
 }
