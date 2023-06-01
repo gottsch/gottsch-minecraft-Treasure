@@ -34,7 +34,9 @@ import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
+import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlockProxy;
+import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.capability.DurabilityCapability;
 import mod.gottsch.forge.treasure2.core.capability.IDurabilityHandler;
@@ -59,8 +61,10 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
@@ -257,8 +261,9 @@ public class KeyItem extends Item implements IKeyEffects {
 			return InteractionResult.FAIL;
 		}
 		
-		BlockPos chestPos = context.getClickedPos();		
-		Block block = context.getLevel().getBlockState(chestPos).getBlock();
+		BlockPos chestPos = context.getClickedPos();
+		BlockState state = context.getLevel().getBlockState(chestPos);
+		Block block = state.getBlock();
 
 		// test if the block is a chest proxy (ex. multiple block chests like Wither Chest)
 		if (block instanceof ITreasureChestBlockProxy) {
@@ -298,6 +303,10 @@ public class KeyItem extends Item implements IKeyEffects {
 						// unlock the lock
 						doUnlock(context, chestBlockEntity, lockState);
 
+						if (!state.getValue(AbstractTreasureChestBlock.DISCOVERED)) {
+							chestBlockEntity = ((AbstractTreasureChestBlock) block).discovered((AbstractTreasureChestBlockEntity) chestBlockEntity, state, context.getLevel(), chestPos, context.getPlayer());
+						}
+						
 						// update the client
 						chestBlockEntity.sendUpdates();
 
@@ -365,7 +374,7 @@ public class KeyItem extends Item implements IKeyEffects {
 		if (!breaksLock(lock)) {
 			// spawn the lock
 			lock.dropLock(context.getLevel(), context.getClickedPos());
-		}		
+		}
 	}
 
 	/**

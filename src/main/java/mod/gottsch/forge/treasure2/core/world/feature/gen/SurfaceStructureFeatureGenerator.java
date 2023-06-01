@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
-import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
@@ -29,11 +28,12 @@ import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
-import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.ruin.IRuinGenerator;
-import mod.gottsch.forge.treasure2.core.generator.ruin.SurfaceRuinGenerator;
+import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.RuinGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 
 /**
  * 
@@ -67,14 +67,23 @@ public class SurfaceStructureFeatureGenerator implements IFeatureGenerator {
 		if (!ruinResult.isPresent()) {
 			return Optional.empty();
 		}
-		Treasure.LOGGER.debug("surface result -> {}", ruinResult.toString());
-//		
-//		ICoords chestCoords = new Coords(spawnCoords);
-//		Treasure.LOGGER.debug("surface chest coords -> {}", chestCoords);
-				
-		ruinResult.get().getData().setSpawnCoords(spawnCoords);
+		Treasure.LOGGER.debug("ruin surface result -> {}", ruinResult.toString());
+
+		IChestGenerator chestGenerator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity, FeatureType.TERRESTRIAL);
+		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(context, ruinResult.get().getData().getCoords(), rarity, null);
+		if (!chestResult.isSuccess()) {
+			return Optional.empty();
+		}
+
+		GeneratorResult<ChestGeneratorData> generationResult = new GeneratorResult<>(ChestGeneratorData.class);
+//		generationResult.getData().setPlacement(RegionPlacement.SURFACE);
+		generationResult.getData().setCoords(chestResult.getData().getCoords());
+		generationResult.getData().setSpawnCoords(spawnCoords);
+		generationResult.getData().setRegistryName(chestResult.getData().getRegistryName());
+		generationResult.getData().setRarity(rarity);
 		
-		return ruinResult;
+		Treasure.LOGGER.info("CHEATER! {} chest at coords: {}", rarity, spawnCoords.toShortString());
+		return Optional.ofNullable(generationResult);
 	}
 
 	/**

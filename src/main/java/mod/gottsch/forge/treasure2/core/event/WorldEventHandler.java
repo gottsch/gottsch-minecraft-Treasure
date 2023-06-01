@@ -75,7 +75,7 @@ public class WorldEventHandler {
 			Optional<Path> worldSavePath = ModUtil.getWorldSaveFolder((ServerLevel)event.getWorld());
 			if (worldSavePath.isPresent()) {
 				if ((!isLoaded && Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString())) ||
-						worldSavePath.get().equals(WorldEventHandler.worldSavePath)) {
+						!worldSavePath.get().equals(WorldEventHandler.worldSavePath)) {
 					
 					// cache the folder
 					WorldEventHandler.worldSavePath = worldSavePath.get();

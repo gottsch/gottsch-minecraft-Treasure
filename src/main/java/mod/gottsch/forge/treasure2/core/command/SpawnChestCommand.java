@@ -30,7 +30,9 @@ import mod.gottsch.forge.gottschcore.spatial.Heading;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
@@ -44,6 +46,7 @@ import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -181,22 +184,26 @@ public class SpawnChestCommand {
 
 			AbstractTreasureChestBlock chestBlock = chest;
 			if (chestBlock != null) {
-				world.setBlockAndUpdate(pos, chestBlock.defaultBlockState().setValue(AbstractTreasureChestBlock.FACING, heading.getDirection()));
+				world.setBlockAndUpdate(pos, chestBlock
+						.defaultBlockState()
+						.setValue(AbstractTreasureChestBlock.FACING, heading.getDirection())
+						.setValue(AbstractTreasureChestBlock.DISCOVERED, false)	// TODO add command argument	
+						);
 			}
 
-			AbstractTreasureChestBlockEntity tileEntity = (AbstractTreasureChestBlockEntity) world.getBlockEntity(pos);
-			if (tileEntity != null) {
+			AbstractTreasureChestBlockEntity blockEntity = (AbstractTreasureChestBlockEntity) world.getBlockEntity(pos);
+			if (blockEntity != null) {				
 				if (locked || sealed) {
-					generator.addLootTable(tileEntity, lootTableResourceLocation);
-					generator.addSeal(tileEntity);
+					generator.addLootTable(blockEntity, lootTableResourceLocation);
+					generator.addSeal(blockEntity);
 				}
-
-				generator.addGenerationContext(tileEntity, rarity);
+				generator.addGenerationContext(blockEntity, rarity);
+				blockEntity.getGenerationContext().setFeatureType(FeatureType.TERRESTRIAL);
 
 				if (locked) {
-					generator.addLocks(random, chestBlock, (AbstractTreasureChestBlockEntity) tileEntity, rarity);
+					generator.addLocks(random, chestBlock, (AbstractTreasureChestBlockEntity) blockEntity, rarity);
 					(chestBlock).rotateLockStates(world, new Coords(pos), Heading.NORTH.getRotation(heading));
-					(tileEntity).sendUpdates();
+					(blockEntity).sendUpdates();
 				}
 			}
 		}

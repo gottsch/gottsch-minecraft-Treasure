@@ -157,6 +157,9 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 
 		// add the structure data to the result
 		result.setData(genResult.getData());
+		if (genResult.getData().getSpawnCoords() == null || genResult.getData().getSpawnCoords() == Coords.EMPTY) {
+			result.getData().setSpawnCoords(originalSpawnCoords);
+		}
 
 		Treasure.LOGGER.info("CHEATER! Wishing Well at coords: {}", result.getData().getSpawnCoords().toShortString());
 

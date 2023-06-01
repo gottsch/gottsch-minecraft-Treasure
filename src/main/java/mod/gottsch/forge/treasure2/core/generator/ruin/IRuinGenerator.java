@@ -36,7 +36,9 @@ import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.IStructureType;
 import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraftforge.common.DungeonHooks;
@@ -62,7 +64,10 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 	default public Optional<TemplateHolder> selectTemplate(IWorldGenContext context, ICoords coords, IStructureCategory category, IStructureType type) {
 		Optional<TemplateHolder> holder = Optional.empty();
 		
-		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type);
+		// get the biome ID
+		Holder<Biome> biome = context.level().getBiome(coords.toPos());
+		
+		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type, biome.value().getRegistryName());
 		if (!holders.isEmpty()) {
 			holder = Optional.ofNullable(holders.get(context.random().nextInt(holders.size())));
 		}

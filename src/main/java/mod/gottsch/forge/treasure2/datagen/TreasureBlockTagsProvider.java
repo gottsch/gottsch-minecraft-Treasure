@@ -62,5 +62,8 @@ public class TreasureBlockTagsProvider extends BlockTagsProvider {
 //    	tag(TreasureTags.Blocks.EPIC_CHESTS).add(TreasureBlocks.CAULDRON_CHEST.get());    	
     	
     	tag(TreasureTags.Blocks.SKULL_CHESTS).add(TreasureBlocks.SKULL_CHEST.get());
+    	tag(TreasureTags.Blocks.GOLD_SKULL_CHESTS).add(TreasureBlocks.GOLD_SKULL_CHEST.get());
+    	tag(TreasureTags.Blocks.CRYSTAL_SKULL_CHESTS).add(TreasureBlocks.CRYSTAL_SKULL_CHEST.get());
+    	tag(TreasureTags.Blocks.WITHER_CHESTS).add(TreasureBlocks.WITHER_CHEST.get());
     }
 }

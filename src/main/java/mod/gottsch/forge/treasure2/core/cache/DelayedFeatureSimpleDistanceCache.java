@@ -17,7 +17,9 @@
  */
 package mod.gottsch.forge.treasure2.core.cache;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
@@ -58,5 +60,29 @@ public class DelayedFeatureSimpleDistanceCache {
 
 	public void clear() {
 		dimensionDistanceCache.clear();
+	}
+	
+	public Dump dump() {
+		List<String> list = new ArrayList<>();
+		this.dimensionDistanceCache.forEach((key, value) -> {
+			list.add(String.format("%s = %s", key, value));
+		});
+		
+		return new Dump(this.delayCount, list);
+	}
+	
+	public static class Dump {
+		public int delayCount = 0;
+		public List<String> cache = new ArrayList<>();
+		
+		public Dump(int count, List<String> cache) {
+			this.delayCount = count;
+			this.cache = cache;
+		}
+
+		@Override
+		public String toString() {
+			return "Dump [delayCount=" + delayCount + ", cache=" + cache + "]";
+		}
 	}
 }

@@ -17,7 +17,10 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.chest;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
@@ -25,6 +28,9 @@ import mod.gottsch.forge.treasure2.core.block.StandardChestBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
+import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import mod.gottsch.forge.treasure2.core.item.LockItem;
+import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 
 /**
@@ -73,5 +79,20 @@ public class CauldronChestGenerator extends EpicChestGenerator {
 	public AbstractTreasureChestBlock selectChest(final Random random, final IRarity rarity) {
 		StandardChestBlock chest = (StandardChestBlock) TreasureBlocks.CAULDRON_CHEST.get();
 		return chest;
+	}
+	
+	/**
+	 * Select Locks
+	 * @param chest
+	 */
+	@Override
+	public void addLocks(Random random, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity chestBlockEntity, IRarity rarity) {
+		// select a rarity locks
+		List<LockItem> locks = new ArrayList<>();
+		locks.addAll(KeyLockRegistry.getLocks(Rarity.RARE).stream().map(l -> l.get()).collect(Collectors.toList()));
+		locks.addAll(KeyLockRegistry.getLocks(Rarity.EPIC).stream().map(l -> l.get()).collect(Collectors.toList()));
+
+		addLocks(random, chest, chestBlockEntity, locks);
+		locks.clear();
 	}
 }

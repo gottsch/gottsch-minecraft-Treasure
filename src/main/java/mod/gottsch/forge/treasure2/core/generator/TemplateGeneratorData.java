@@ -56,4 +56,9 @@ public class TemplateGeneratorData extends GeneratorData {
 	public void setMap(Multimap<Block, BlockInfoContext> map) {
 		this.map = map;
 	}
+
+	@Override
+	public String toString() {
+		return "TemplateGeneratorData [size=" + size + ", map=" + map + "]";
+	}
 }

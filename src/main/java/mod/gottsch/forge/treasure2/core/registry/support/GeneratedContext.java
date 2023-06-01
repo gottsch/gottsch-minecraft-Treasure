@@ -44,7 +44,9 @@ public class GeneratedContext {
 		if (coords != null && coords != Coords.EMPTY) {
 			tag.put("coords", coords.save(new CompoundTag()));
 		}
-		tag.putString("rarity", rarity.getValue());		
+		if (rarity != null) {
+			tag.putString("rarity", rarity.getValue());
+		}
 		return tag;
 	}
 	

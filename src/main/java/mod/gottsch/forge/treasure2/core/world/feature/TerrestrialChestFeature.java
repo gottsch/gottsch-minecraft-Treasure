@@ -38,7 +38,6 @@ import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.Generator;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.PitType;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
-import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
@@ -46,8 +45,8 @@ import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
 import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
 import mod.gottsch.forge.treasure2.core.random.RarityLevelWeightedCollection;
 import mod.gottsch.forge.treasure2.core.registry.*;
-import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext;
-import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext.GenType;
+import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext;
+import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext.GeneratedType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.selector.IFeatureGeneratorSelector;
 import net.minecraft.resources.ResourceLocation;
@@ -95,9 +94,11 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 			return false;
 		}
 
+		// feature type
+		IFeatureType featureType = FeatureType.TERRESTRIAL;
 		// get the chest registry
-		GeneratedRegistry<ChestGenContext> registry = DimensionalGeneratedRegistry.getChestGeneratedRegistry(dimension, FeatureType.TERRESTRIAL);
-		if (registry == null) {
+		GeneratedCache<ChestGeneratedContext> chestCache = DimensionalGeneratedRegistry.getChestGeneratedCache(dimension, featureType);
+		if (chestCache == null) {
 			Treasure.LOGGER.debug("GeneratedRegistry is null for dimension & TERRESTRIAL. This shouldn't be. Should be initialized.");
 			return false;
 		}
@@ -108,14 +109,14 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 			return false;
 		}
 
-		Generator generatorConfig = config.getGenerator(FeatureType.TERRESTRIAL.getName());
+		Generator generatorConfig = config.getGenerator(featureType.getName());
 		if (generatorConfig == null) {
-			Treasure.LOGGER.warn("unable to locate a config for feature type -> {}.", FeatureType.TERRESTRIAL.getName());
+			Treasure.LOGGER.warn("unable to locate a config for feature type -> {}.", featureType.getName());
 			return false;
 		}
 
 		// test the world age
-		if (!meetsWorldAgeCriteria(genLevel, registry, generatorConfig)) {
+		if (!meetsWorldAgeCriteria(genLevel, chestCache, generatorConfig)) {
 			return false;
 		}
 
@@ -128,10 +129,10 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		}
 
 		// determine what type to generate
-		IRarity rarity = (IRarity) RarityLevelWeightedChestGeneratorRegistry.getNextRarity(dimension, FeatureType.TERRESTRIAL);
-		//		Treasure.LOGGER.debug("rarity -> {}", rarity);
+		IRarity rarity = (IRarity) RarityLevelWeightedChestGeneratorRegistry.getNextRarity(dimension, featureType);
+//		Treasure.LOGGER.debug("rarity -> {}", rarity);
 		if (rarity == Rarity.NONE) {
-			Treasure.LOGGER.warn("unable to obtain the next rarity for generator - >{}", FeatureType.TERRESTRIAL);
+			Treasure.LOGGER.warn("unable to obtain the next rarity for generator - >{}", featureType);
 			return false;
 		}
 		Optional<ChestRarity> rarityConfig = generatorConfig.getRarity(rarity);
@@ -147,21 +148,21 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		}
 
 		// check against all registered chests
-		if (!meetsProximityCriteria(genLevel, dimension, FeatureType.TERRESTRIAL, spawnCoords, generatorConfig.getMinBlockDistance())) {
+		if (!meetsProximityCriteria(genLevel, dimension, featureType, spawnCoords, generatorConfig.getMinBlockDistance())) {
 			return false;
 		}			
 
 		// check if meets the probability criteria. this is used as a randomizer so that chests aren't predictably placed.
 		if (!meetsProbabilityCriteria(context.random(), generatorConfig)) {
 			// place a placeholder chest in the registry
-			return failAndPlaceholdChest(genLevel, registry, rarity, spawnCoords);
+			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords);
 		}
 
 		// select the feature generator
-		Optional<IFeatureGeneratorSelector> generatorSelector = FeatureGeneratorSelectorRegistry.getSelector(FeatureType.TERRESTRIAL, rarity);
+		Optional<IFeatureGeneratorSelector> generatorSelector = FeatureGeneratorSelectorRegistry.getSelector(featureType, rarity);
 		if (!generatorSelector.isPresent()) {
 			Treasure.LOGGER.warn("unable to obtain a generator selector for rarity - >{}", rarity);
-			return failAndPlaceholdChest(genLevel, registry, rarity, spawnCoords);
+			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords);
 		}
 
 		// select the generator
@@ -171,29 +172,26 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		Optional<GeneratorResult<ChestGeneratorData>> result = featureGenerator.generate(new WorldGenContext(context), spawnCoords, rarity, rarityConfig.get());
 
 		if (result.isPresent()) {
-			Treasure.LOGGER.debug("chest gen result -> {}", result.get());
-			// add to registry
-			ChestGenContext chestGenContext = new ChestGenContext(
-					// TODO I think this has to be the exact chest location for TreasureMap to work.
-					result.get().getData().getRarity(), result.get().getData().getSpawnCoords());	
+			Treasure.LOGGER.debug("feature gen result -> {}", result.get());
+			// create a chest context
+			ChestGeneratedContext chestGeneratedContext = new ChestGeneratedContext(
+					result.get().getData().getRarity(), result.get().getData().getCoords())
+					.withSurfaceCoords(result.get().getData().getSpawnCoords())
+					.withFeatureType(featureType)
+					.withName(result.get().getData().getRegistryName());
 			
-			chestGenContext.setName(result.get().getData().getRegistryName());
-			if (result.get().getData().getPlacement() != null) {
-				chestGenContext.setPlacement(result.get().getData().getPlacement());
-			} else {
-				chestGenContext.setPlacement(RegionPlacement.SURFACE);
-			}
-			Treasure.LOGGER.debug("chestGenContext -> {}", chestGenContext);
-			registry.register(rarity, spawnCoords, chestGenContext);
+			Treasure.LOGGER.debug("chestGenContext -> {}", chestGeneratedContext);
+			// cache the chest at its exact location
+			chestCache.cache(rarity, chestGeneratedContext.getCoords(), chestGeneratedContext);
 
 			// update the adjusted weight collection			
-			RarityLevelWeightedChestGeneratorRegistry.adjustAllWeightsExcept(dimension, FeatureType.TERRESTRIAL, 1, rarity);
+			RarityLevelWeightedChestGeneratorRegistry.adjustAllWeightsExcept(dimension, featureType, 1, rarity);
 			Map<IFeatureType, RarityLevelWeightedCollection> map = RarityLevelWeightedChestGeneratorRegistry.RARITY_SELECTOR.get(dimension);
-			RarityLevelWeightedCollection dumpCol = map.get(FeatureType.TERRESTRIAL);
+			RarityLevelWeightedCollection dumpCol = map.get(featureType);
 			List<String> dump = dumpCol.dump();
 			Treasure.LOGGER.debug("weighted collection dump -> {}", dump);
 		} else {
-			return failAndPlaceholdChest(genLevel, registry, rarity, spawnCoords);
+			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords);
 		}
 
 		// save world data
@@ -204,10 +202,10 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 		return true;
 	}
 
-	private boolean failAndPlaceholdChest(WorldGenLevel genLevel, GeneratedRegistry<ChestGenContext> registry, IRarity rarity, ICoords spawnCoords) {
+	private boolean failAndPlaceholdChest(WorldGenLevel genLevel, GeneratedCache<ChestGeneratedContext> registry, IRarity rarity, ICoords coords) {
 		// add placeholder
-		ChestGenContext chestGenContext = new ChestGenContext(rarity, spawnCoords, GenType.NONE);
-		registry.register(rarity, spawnCoords, chestGenContext);
+		ChestGeneratedContext chestGeneratedContext = new ChestGeneratedContext(rarity, coords, GeneratedType.NONE);
+		registry.cache(rarity, coords, chestGeneratedContext);
 		// need to save on fail
 		TreasureSavedData savedData = TreasureSavedData.get(genLevel.getLevel());
 		if (savedData != null) {
@@ -221,7 +219,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 	 * @param registry
 	 * @return
 	 */
-	private boolean meetsWorldAgeCriteria(ServerLevelAccessor world, GeneratedRegistry<ChestGenContext> registry, Generator generatorConfig) {
+	private boolean meetsWorldAgeCriteria(ServerLevelAccessor world, GeneratedCache<ChestGeneratedContext> registry, Generator generatorConfig) {
 		// wait count check		
 		if (registry.getValues().isEmpty() && waitChunksCount < generatorConfig.getWaitChunks()) {
 			Treasure.LOGGER.debug("world is too young");
@@ -312,7 +310,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 				chestCoords = new Coords(surfaceCoords);
 				Treasure.LOGGER.debug("surface chest coords -> {}", chestCoords);
 			}
-			generationResult.getData().setPlacement(RegionPlacement.SURFACE);
+//			generationResult.getData().setPlacement(RegionPlacement.SURFACE);
 		}
 		else {
 			Treasure.LOGGER.debug("else generate pit");
@@ -322,7 +320,7 @@ public class TerrestrialChestFeature extends Feature<NoneFeatureConfiguration> i
 			}
 			Treasure.LOGGER.debug("result -> {}",environmentGenerationResult.get().toString());
 			chestCoords = environmentGenerationResult.get().getData().getCoords();
-			generationResult.getData().setPlacement(RegionPlacement.SUBTERRANEAN);
+//			generationResult.getData().setPlacement(RegionPlacement.SUBTERRANEAN);
 			generationResult.getData().setPit(true);
 		}
 

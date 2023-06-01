@@ -54,6 +54,8 @@ public class LanguageGen extends LanguageProvider {
         
         add(TreasureItems.DIAMOND_KEY.get(), "Diamond Key");
         add(TreasureItems.EMERALD_KEY.get(), "Emerald Key");
+        add(TreasureItems.TOPAZ_KEY.get(), "Topaz Key");
+        add(TreasureItems.ONYX_KEY.get(), "Onyx Key");
         add(TreasureItems.RUBY_KEY.get(), "Ruby Key");
         add(TreasureItems.SAPPHIRE_KEY.get(), "Sapphire Key");
         add(TreasureItems.JEWELLED_KEY.get(), "Jewelled Key");
@@ -75,6 +77,8 @@ public class LanguageGen extends LanguageProvider {
         
         add(TreasureItems.DIAMOND_LOCK.get(), "Diamond Lock");
         add(TreasureItems.EMERALD_LOCK.get(), "Emerald Lock");
+        add(TreasureItems.TOPAZ_LOCK.get(), "Topaz Lock");
+        add(TreasureItems.ONYX_LOCK.get(), "Onyx Lock");
         add(TreasureItems.RUBY_LOCK.get(), "Ruby Lock");
         add(TreasureItems.SAPPHIRE_LOCK.get(), "Sapphire Lock");
         
@@ -162,6 +166,7 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.WITHER_LOG.get(), "Wither Log");
         add(TreasureBlocks.WITHER_BROKEN_LOG.get(), "Wither Broken Log");
         add(TreasureBlocks.WITHER_SOUL_LOG.get(), "Wither Soul Log");
+        add(TreasureBlocks.WITHER_PLANKS.get(), "Wither Planks");
         
         // ore
         add(TreasureBlocks.TOPAZ_ORE.get(), "Topaz Ore");
@@ -298,6 +303,13 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.screen("milk_crate.name"), "Milk Crate");
         add(LangUtil.screen("wither_chest.name"), "Wither Chest");
 
+        add(LangUtil.screen("treasure_map.uncommon"), "Uncommon Treasure Map");
+        add(LangUtil.screen("treasure_map.scarce"), "Scarce Treasure Map");
+        add(LangUtil.screen("treasure_map.rare"), "Rare Treasure Map");
+        add(LangUtil.screen("treasure_map.epic"), "Epic Treasure Map");
+        add(LangUtil.screen("treasure_map.legendary"), "Legendary Treasure Map");
+        add(LangUtil.screen("treasure_map.mythical"), "Mythical Treasure Map");
+        
         /*
          *  chat
          */
@@ -305,6 +317,7 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.chat("key.key_break"), "Your key broke whilst attempting to unlock the lock!");
         add(LangUtil.chat("key.key_not_fit"), "Your key doesn't fit the lock!");
         add(LangUtil.chat("key.key_unable_unlock"), "Your key failed to unlock the lock!");
+
 
     }
 }

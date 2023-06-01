@@ -80,7 +80,7 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 	/**
 	 * load/register chest generators from config
 	 */
-	public static void intialize() {
+	public static void initialize() {
 		// clear just the rarity selector. the registry is initialized during setup.
 		RARITY_SELECTOR.clear();
 		Map<IFeatureType, RarityLevelWeightedCollection> map = null;
@@ -104,9 +104,11 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 				
 				// for each generator
 				for (Generator generator : chestConfig.getGenerators()) {
+					Treasure.LOGGER.debug("processing generator -> {}", generator.getClass().getSimpleName());
 					// match the generator to the enum
 					Optional<IFeatureType> type = TreasureApi.getFeatureType(generator.getKey().toUpperCase());
 					if (type.isPresent()) {
+						Treasure.LOGGER.debug("processing feature type -> {}", type.get());
 						// get the weighted collection from the map
 						if (map.containsKey(type.get())) {
 							collection = map.get(type.get());
@@ -117,9 +119,11 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 						
 						// setup chest collection generator maps
 						for (ChestRarity chestRarity : generator.getRarities()) {
+							Treasure.LOGGER.debug("processing generator rarity -> {}", chestRarity.getRarity());
 							// determine the rarity
 							Optional<IRarity> rarity = TreasureApi.getRarity(chestRarity.getRarity());
 							if (rarity.isPresent()) {
+								Treasure.LOGGER.debug("rarity is present -> {}", rarity.get());
 								// add the weight to the collection
 								collection.add(chestRarity.getWeight(), rarity.get());
 							}
@@ -145,7 +149,6 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 			value.forEach((generatorType, levelWeightedCollection) -> {
 				CompoundTag generatorTag = new CompoundTag();
 				generatorTag.putString("type", generatorType.getValue());
-				// TODO levelWeightedCollection is null here
 				generatorTag.put("collection", levelWeightedCollection.save());
 				generators.add(generatorTag);
 			});
@@ -172,10 +175,11 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 							Optional<IFeatureType> type = TreasureApi.getFeatureType(generatorCompound.getString("type"));
 							if (type.isPresent()) {
 								if (generatorCompound.contains("collection")) {
-									RarityLevelWeightedCollection collection = new RarityLevelWeightedCollection();
-									collection.load((CompoundTag)generatorCompound.get("collection"));
+									// TODO ensure dimension exists in rarity selector
+									RarityLevelWeightedCollection baseCollection = RARITY_SELECTOR.get(dimension).get(type.get());
+									baseCollection.load((CompoundTag)generatorCompound.get("collection"));
 									// add or replace
-									RARITY_SELECTOR.get(dimension).put(type.get(), collection);						
+									RARITY_SELECTOR.get(dimension).put(type.get(), baseCollection);						
 								}
 							}
 						}
@@ -229,7 +233,5 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 				map.put(type, new RarityLevelWeightedCollection(map.get(type).adjustExcept(weight, rarity)));
 			}
 		}
-	}
-	
-	
+	}	
 }

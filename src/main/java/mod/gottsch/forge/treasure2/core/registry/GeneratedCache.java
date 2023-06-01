@@ -42,8 +42,7 @@ import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
  * @author Mark Gottschling on Jan 22, 2018
  *
  */
-// TODO rename to GeneratedCache
-public class GeneratedRegistry<T extends GeneratedContext> {
+public class GeneratedCache<T extends GeneratedContext> {
 	
 	/*
 	 * a Interval BST registry to determine the proximity of chests.
@@ -63,7 +62,7 @@ public class GeneratedRegistry<T extends GeneratedContext> {
 	/**
 	 * 
 	 */
-	public GeneratedRegistry() {
+	public GeneratedCache() {
 		distanceRegistry = new CoordsIntervalTree<>();
 		ageRegistry = new LinkedList<>();
 		tableRegistry = Tables.newCustomTable(new LinkedHashMap<>(), LinkedHashMap::new);
@@ -73,7 +72,7 @@ public class GeneratedRegistry<T extends GeneratedContext> {
 	 * 
 	 * @param size
 	 */
-	public GeneratedRegistry(int size) {
+	public GeneratedCache(int size) {
 		this();
 		this.registrySize = size;
 	}
@@ -92,7 +91,7 @@ public class GeneratedRegistry<T extends GeneratedContext> {
 	 * @param rarity
 	 * @param info
 	 */
-	public synchronized void register(final IRarity rarity, final ICoords key, final T info) {
+	public synchronized void cache(final IRarity rarity, final ICoords key, final T info) {
 		// if bigger than max size of registry, remove the first (oldest) element
 		if (ageRegistry.size() > getRegistrySize()) {
 			unregisterFirst();

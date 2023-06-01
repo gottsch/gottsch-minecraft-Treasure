@@ -73,6 +73,12 @@ public class StructureConfiguration {
 		public void setOffset(Position offset) {
 			this.offset = offset;
 		}
+		
+		@Override
+		public String toString() {
+			return "StructMeta [name=" + name + ", biomeWhitelist=" + biomeWhitelist + ", biomeBlacklist="
+					+ biomeBlacklist + ", offset=" + offset + "]";
+		}
 	}
 
 	public static class Position {
@@ -113,6 +119,11 @@ public class StructureConfiguration {
 		}
 		public void setZ(int z) {
 			this.z = z;
+		}
+
+		@Override
+		public String toString() {
+			return "Position [x=" + x + ", y=" + y + ", z=" + z + "]";
 		}
 	}
 	

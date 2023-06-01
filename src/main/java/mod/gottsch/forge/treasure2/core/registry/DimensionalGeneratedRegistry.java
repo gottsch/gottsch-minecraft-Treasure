@@ -26,10 +26,9 @@ import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
 import mod.gottsch.forge.treasure2.core.config.Config;
-import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext;
+import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
-import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -56,7 +55,7 @@ public class DimensionalGeneratedRegistry {
 	// legacy
 	//	private static final String DIMENSION_ID_TAG_NAME = "dimensionID";
 
-	public static final Map<ResourceLocation, Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>>> CHEST_REGISTRY = new HashMap<>();
+	public static final Map<ResourceLocation, Map<IFeatureType, GeneratedCache<? extends GeneratedContext>>> CHEST_REGISTRY = new HashMap<>();
 
 
 	/**
@@ -89,7 +88,7 @@ public class DimensionalGeneratedRegistry {
 			if (chestConfig != null) {
 				if (chestConfig.getDimensions().contains(dimension.toString())) {
 					// create a new map for generatorType->generatedChestRegistry
-					Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>> chestRegistryMap = new HashMap<>();
+					Map<IFeatureType, GeneratedCache<? extends GeneratedContext>> chestRegistryMap = new HashMap<>();
 					// add generator map to byDimension map
 					CHEST_REGISTRY.put(dimension, chestRegistryMap);
 
@@ -99,42 +98,23 @@ public class DimensionalGeneratedRegistry {
 						Optional<IFeatureType> type = TreasureApi.getFeatureType(generator.getKey().toUpperCase());
 						if (type.isPresent()) {
 							// create a new generated chest registry with size set from config
-							chestRegistryMap.put(type.get(), new GeneratedRegistry<>(generator.getRegistrySize()));
+							chestRegistryMap.put(type.get(), new GeneratedCache<>(generator.getRegistrySize()));
 						}
 					});
 				}
 			}
-
-			/*
-			 * setup wither tree registry
-			 */
-			//			if (Config.SERVER.witherTree.enableWitherTree.get()) {
-			//				Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>> witherRegistryMap = new HashMap<>();
-			//				witherRegistryMap.put(FeatureType.WITHER, new GeneratedRegistry<>(Config.SERVER.witherTree.registrySize.get()));
-			//				WITHER_REGISTRY.put(dimension, witherRegistryMap);
-			//			}
-
-			/*
-			 * setup well registry
-			 */
-//			if (Config.SERVER.wells.enableWells.get()) {
-//				GeneratedRegistry<GeneratedContext> wellsRegistry = new GeneratedRegistry<>(Config.SERVER.wells.registrySize.get());
-//				WELL_REGISTRY.put(dimension, wellsRegistry);
-//			}
 		}
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public static Tag save() {
 		CompoundTag tag = new CompoundTag();
 
 		Tag chestTag = saveRegistry(CHEST_REGISTRY);
 		tag.put(CHEST_REGISTRY_NAME, chestTag);		
-		// wells
-//		Tag wellTag = saveWellRegistry(WELL_REGISTRY);
-//		tag.put(WELL_REGISTRIES_NAME, wellTag);
-		// wither		
-		//		Tag witherTag = saveRegistry(WITHER_REGISTRY);
-		//		tag.put(WITHER_TREE_REGISTRIES_NAME, witherTag);
 
 		return tag;
 	}
@@ -144,7 +124,7 @@ public class DimensionalGeneratedRegistry {
 	 * @param registry
 	 * @return
 	 */
-	public static Tag saveRegistry(Map<ResourceLocation, Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>>> registry) {
+	public static Tag saveRegistry(Map<ResourceLocation, Map<IFeatureType, GeneratedCache<? extends GeneratedContext>>> registry) {
 		ListTag dimensionalRegistriesTag = new ListTag();
 		registry.forEach((dimension, map) -> {
 			CompoundTag dimensionRegistryTag = new CompoundTag();
@@ -170,41 +150,12 @@ public class DimensionalGeneratedRegistry {
 
 	/**
 	 * 
-	 * @param registry
-	 * @return
-	 */
-//	@Deprecated
-//	public static Tag saveWellRegistry(Map<ResourceLocation, GeneratedRegistry<GeneratedContext>> registry) {
-//		ListTag dimensionalRegistriesTag = new ListTag();
-//		registry.forEach((dimension, genRegistry) -> {
-//			CompoundTag dimensionRegistryTag = new CompoundTag();
-//			dimensionRegistryTag.putString(DIMENSION_NAME, dimension.toString());
-//			ListTag dataTag = new ListTag();
-//			genRegistry.getValues().forEach(datum -> {
-//				CompoundTag datumTag = datum.save();
-//				// add entry to list
-//				dataTag.add(datumTag);	
-//			});			
-//			dimensionRegistryTag.put("data", dataTag);
-//			dimensionalRegistriesTag.add(dimensionRegistryTag);
-//		});
-//		return dimensionalRegistriesTag;
-//	}
-
-	/**
-	 * 
 	 * @param tag
 	 */
 	public static void load(CompoundTag tag) {
 		if (tag.contains(CHEST_REGISTRY_NAME)) {
-			loadRegistry(tag.getList(CHEST_REGISTRY_NAME, Tag.TAG_COMPOUND), CHEST_REGISTRY, ChestGenContext::new);
+			loadRegistry(tag.getList(CHEST_REGISTRY_NAME, Tag.TAG_COMPOUND), CHEST_REGISTRY, ChestGeneratedContext::new);
 		}
-//		if (tag.contains(WELL_REGISTRIES_NAME)) {
-//			loadWellRegistry(tag.getList(WELL_REGISTRIES_NAME,  Tag.TAG_COMPOUND), WELL_REGISTRY, GeneratedContext::new);
-//		}
-		//		if (tag.contains(WITHER_TREE_REGISTRIES_NAME)) {
-		//			loadRegistry(tag.getList(WITHER_TREE_REGISTRIES_NAME,  Tag.TAG_COMPOUND), WITHER_REGISTRY, GeneratedContext::new);
-		//		}
 	}
 
 	/**
@@ -216,7 +167,7 @@ public class DimensionalGeneratedRegistry {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> void loadRegistry(ListTag dimensinoalRegistriesTag, 
-			Map<ResourceLocation, Map<IFeatureType, GeneratedRegistry<?>>> registry, Supplier<? extends GeneratedContext> supplier) {
+			Map<ResourceLocation, Map<IFeatureType, GeneratedCache<?>>> registry, Supplier<? extends GeneratedContext> supplier) {
 		
 		if (dimensinoalRegistriesTag != null) {
 			Treasure.LOGGER.debug("loading chest registries...");  	
@@ -239,7 +190,7 @@ public class DimensionalGeneratedRegistry {
 								if (registryCompound.contains("data")) {
 									ResourceLocation dimension = ModUtil.asLocation(dimensionName);										
 									// clear the registry
-									GeneratedRegistry<GeneratedContext> generatedRegistry = (GeneratedRegistry<GeneratedContext>) getGeneratedRegistry(registry, dimension, generatorType.get());
+									GeneratedCache<GeneratedContext> generatedRegistry = (GeneratedCache<GeneratedContext>) getGeneratedCache(registry, dimension, generatorType.get());
 									generatedRegistry.clear();
 									
 									// get the data list
@@ -252,7 +203,7 @@ public class DimensionalGeneratedRegistry {
 										Treasure.LOGGER.debug("context -> {}", context);
 										if (context.getRarity() != null && context.getCoords() != null) {										
 											if (generatedRegistry != null) {
-												generatedRegistry.register(context.getRarity(), context.getCoords(), context);
+												generatedRegistry.cache(context.getRarity(), context.getCoords(), context);
 											}
 										}										
 										//////
@@ -266,41 +217,6 @@ public class DimensionalGeneratedRegistry {
 		}
 	}
 
-//	@Deprecated
-//	@SuppressWarnings("unchecked")
-//	public static <T> void loadWellRegistry(ListTag dimensinoalRegistriesTag, 
-//			Map<ResourceLocation, GeneratedRegistry<GeneratedContext>> registry, Supplier<GeneratedContext> supplier) {
-//
-//		if (dimensinoalRegistriesTag != null) {
-//			Treasure.LOGGER.debug("loading well registries...");  	
-//			dimensinoalRegistriesTag.forEach(dimensionalRegistryTag -> {
-//				CompoundTag dimensionalRegistryCompound = (CompoundTag)dimensionalRegistryTag;
-//				if (dimensionalRegistryCompound.contains(DIMENSION_NAME)) {
-//					String dimensionName = dimensionalRegistryCompound.getString(DIMENSION_NAME);
-//					Treasure.LOGGER.debug("loading dimension -> {}", dimensionName);
-//					// load the data
-//					if (dimensionalRegistryCompound.contains("data")) {
-//						ResourceLocation dimension = ModUtil.asLocation(dimensionName);					
-//						// clear the registry first
-//						WELL_REGISTRY.get(dimension).clear();
-//						
-//						ListTag dataTag = dimensionalRegistryCompound.getList("data", Tag.TAG_COMPOUND);
-//						dataTag.forEach(datum -> {
-//							GeneratedContext context = supplier.get();
-//							// extract the data
-//							context.load((CompoundTag)datum);
-//							Treasure.LOGGER.debug("context -> {}", context);
-//							if (context.getRarity() != null && context.getCoords() != null) {									
-//								WELL_REGISTRY.get(dimension).register(context.getRarity(), context.getCoords(), context);
-//							}
-//						});
-//					}
-//				}
-//			});
-//		}            		
-//	}
-
-
 	/**
 	 * 
 	 * @param dimension
@@ -308,8 +224,8 @@ public class DimensionalGeneratedRegistry {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static GeneratedRegistry<ChestGenContext> getChestGeneratedRegistry(ResourceLocation dimension, IFeatureType genType) {
-		return (GeneratedRegistry<ChestGenContext>) getGeneratedRegistry(CHEST_REGISTRY, dimension, genType);
+	public static GeneratedCache<ChestGeneratedContext> getChestGeneratedCache(ResourceLocation dimension, IFeatureType genType) {
+		return (GeneratedCache<ChestGeneratedContext>) getGeneratedCache(CHEST_REGISTRY, dimension, genType);
 	}
 
 	/**
@@ -319,11 +235,11 @@ public class DimensionalGeneratedRegistry {
 	 * @param genType
 	 * @return
 	 */
-	public static GeneratedRegistry<? extends GeneratedContext> getGeneratedRegistry(Map<ResourceLocation, Map<IFeatureType, GeneratedRegistry<?>>> registry, ResourceLocation dimension, IFeatureType genType) {
-		Map<IFeatureType, GeneratedRegistry<? extends GeneratedContext>> registryMap = registry.get(dimension);
-		GeneratedRegistry<? extends GeneratedContext> genRegistry = null;
+	public static GeneratedCache<? extends GeneratedContext> getGeneratedCache(Map<ResourceLocation, Map<IFeatureType, GeneratedCache<?>>> registry, ResourceLocation dimension, IFeatureType genType) {
+		Map<IFeatureType, GeneratedCache<? extends GeneratedContext>> registryMap = registry.get(dimension);
+		GeneratedCache<? extends GeneratedContext> genRegistry = null;
 		if (registryMap != null) {
-			genRegistry =  (GeneratedRegistry<? extends GeneratedContext>) registryMap.get(genType);
+			genRegistry =  (GeneratedCache<? extends GeneratedContext>) registryMap.get(genType);
 		}
 		return genRegistry;
 	}

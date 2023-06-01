@@ -32,16 +32,10 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.ITreasureBlock;
-import mod.gottsch.forge.treasure2.core.block.SpanishMossBlock;
-import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.block.WitherBranchBlock;
-import mod.gottsch.forge.treasure2.core.block.WitherRootBlock;
-import mod.gottsch.forge.treasure2.core.block.WitherSoulLog;
+import mod.gottsch.forge.treasure2.core.block.*;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.PitType;
-import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
 import mod.gottsch.forge.treasure2.core.enums.SpecialRarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
@@ -205,9 +199,9 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 			return Optional.empty();
 		}
 		
-		Treasure.LOGGER.info("CHEATER! wither chest at coords: {}", spawnCoords.toShortString());
+		Treasure.LOGGER.info("CHEATER! WITHER chest at coords: {}", spawnCoords.toShortString());
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
-		result.getData().setPlacement(RegionPlacement.WITHER);
+//		result.getData().setPlacement(RegionPlacement.WITHER);
 		result.getData().setCoords(chestCoords);
 		result.getData().setRegistryName(chestResult.getData().getRegistryName());
 		result.getData().setRarity(SpecialRarity.WITHER);

@@ -28,6 +28,7 @@ import mod.gottsch.forge.treasure2.core.lock.LockLayouts;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -44,10 +45,12 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class TreasureBlocks {
 
+	// TODO all light levels for chests can be removed
 	// functional interfaces
 	static ToIntFunction<BlockState> light = (state) -> {
-		if (Config.SERVER.effects.enableUndiscoveredEffects.get()
-				&& ITreasureChestBlock.getUndiscovered(state)) {
+		if (Config.SERVER.effects.enableUndiscoveredEffects.get() 
+				&& !state.getValue(AbstractTreasureChestBlock.DISCOVERED)
+				) {
 			return 14;
 		}
 		return 0;
@@ -199,7 +202,8 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> WITHER_LOG = Registration.BLOCKS.register("wither_log", () -> log(MaterialColor.WOOD, MaterialColor.PODZOL));
 	public static final RegistryObject<Block> WITHER_BROKEN_LOG = Registration.BLOCKS.register("wither_broken_log", () -> new WitherBrokenLogBlock(Properties.of(Material.WOOD, MaterialColor.PODZOL)));
 	public static final RegistryObject<Block> WITHER_SOUL_LOG = Registration.BLOCKS.register("wither_soul_log", () -> new WitherSoulLog(Properties.of(Material.WOOD, MaterialColor.WOOD)));
-	
+	public static final RegistryObject<Block> WITHER_PLANKS = Registration.BLOCKS.register("wither_planks", () -> new WitherPlanksBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
+
 	public static final RegistryObject<Block> SPANISH_MOSS = Registration.BLOCKS.register("spanish_moss", () -> new SpanishMossBlock(Properties.of(Material.WOOD, MaterialColor.WOOD)));
 	public static final RegistryObject<Block> WISHING_WELL = Registration.BLOCKS.register("wishing_well_block", () -> new WishingWellBlock(
 			Properties.of(Material.STONE, MaterialColor.STONE).strength(2.0F).sound(SoundType.STONE)));

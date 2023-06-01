@@ -52,8 +52,9 @@ import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
 import mod.gottsch.forge.treasure2.core.registry.*;
-import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext;
-import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext.GenType;
+import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext;
+import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext.GeneratedType;
+import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -90,6 +91,15 @@ public interface IChestGenerator {
 	
 	public IChestGeneratorType getChestGeneratorType();
 	
+//	/*
+//	MC 1.18.2: net/minecraft/world/level/block/state/BlockBehaviour$BlockStateBase.lightEmission
+//	Name: b => f_60594_ => lightEmission
+//	Side: BOTH
+//	AT: public net.minecraft.world.level.block.state.BlockBehaviour$BlockStateBase f_60594_ # lightEmission
+//	Type: int
+//	*/
+//	static final String LIGHT_EMISSION_SRG = "f_60594_";
+	
 	/**
 	 * TODO should pass RandomSource and not use a new Random
 	 * @param context
@@ -124,19 +134,30 @@ public interface IChestGenerator {
 		}
 		result.getData().setRegistryName(chest.getRegistryName());
 
+		// update the state
+		if (state == null) {
+			state = chest.defaultBlockState();
+		}
+		
+		// set undiscovered
+		if (Config.SERVER.effects.enableUndiscoveredEffects.get()) {
+			state.setValue(AbstractTreasureChestBlock.DISCOVERED, false);
+		}
+		
+		// TODO need to get the FACING property from somewhere
+
+		
 		// place the chest in the world
 		BlockEntity blockEntity = null;
 		if (state != null) {
 			blockEntity = placeInWorld(context, coords, chest, state);
-		} else {
-			blockEntity = placeInWorld(context, chest, coords);
 		}
 
 		if (blockEntity == null) {
 			Treasure.LOGGER.debug("Unable to locate block entity for chest -> {}", coords);
 			return result.fail();
 		}
-
+		
 		// add the loot table
 		addLootTable((ITreasureChestBlockEntity) blockEntity, lootTableResourceLocation);
 
@@ -441,20 +462,20 @@ public interface IChestGenerator {
 			IRarity mapRarity = getBoostedRarity(rarity, getRarityBoostAmount());
 			Treasure.LOGGER.debug("get rarity chests for dimension -> {}", dimension.toString());
 			// TODO how to merge surface and submerged
-			GeneratedRegistry<ChestGenContext> generatedRegistry = DimensionalGeneratedRegistry.getChestGeneratedRegistry(dimension, FeatureType.TERRESTRIAL);
-			Optional<List<ChestGenContext>> chestGenContexts = Optional.empty();
+			GeneratedCache<ChestGeneratedContext> generatedRegistry = DimensionalGeneratedRegistry.getChestGeneratedCache(dimension, FeatureType.TERRESTRIAL);
+			Optional<List<ChestGeneratedContext>> chestGeneratedContexts = Optional.empty();
 			if (generatedRegistry != null) {
-				chestGenContexts = generatedRegistry.getByIRarity(mapRarity);
+				chestGeneratedContexts = generatedRegistry.getByIRarity(mapRarity);
 			}
 
-			if (chestGenContexts.isPresent()) {
+			if (chestGeneratedContexts.isPresent()) {
 				Treasure.LOGGER.debug("got chestInfos by rarity -> {}", mapRarity);
-				List<ChestGenContext> validChestInfos = chestGenContexts.get().stream()
-						.filter(c -> c.getGenType() != GenType.NONE && !c.isDiscovered() && !c.isCharted())
+				List<ChestGeneratedContext> validChestInfos = chestGeneratedContexts.get().stream()
+						.filter(c -> c.getGeneratedType() != GeneratedType.NONE && !c.isDiscovered() && !c.isCharted())
 						.collect(Collectors.toList());
 				if (!validChestInfos.isEmpty()) {
 					Treasure.LOGGER.debug("got valid chestInfos; size -> {}", validChestInfos.size());
-					ChestGenContext chestInfo = validChestInfos.get(random.nextInt(validChestInfos.size()));
+					ChestGeneratedContext chestInfo = validChestInfos.get(random.nextInt(validChestInfos.size()));
 					Treasure.LOGGER.debug("using chestInfo -> {}", chestInfo);
 					// build a map
 					ItemStack mapStack = createMap(world, chestInfo.getCoords(), mapRarity, (byte)2);
@@ -465,7 +486,7 @@ public interface IChestGenerator {
 					chestInfo.setChartedFrom(chestCoords);
 
 					// update the current chest gen context
-					Optional<ChestGenContext> thisChestInfo = generatedRegistry.get(rarity, chestCoords.toShortString());
+					Optional<ChestGeneratedContext> thisChestInfo = generatedRegistry.get(rarity, chestCoords.toShortString());
 					if (thisChestInfo.isPresent()) {
 						thisChestInfo.get().setDiscovered(true);
 					}
@@ -486,7 +507,7 @@ public interface IChestGenerator {
 		ItemStack itemStack = MapItem.create(world, coords.getX(), coords.getZ(), zoom, true, true);
 		MapItem.renderBiomePreviewMap((ServerLevel) world, itemStack);
 		MapItemSavedData.addTargetDecoration(itemStack, coords.toPos(), "+", MapDecoration.Type.RED_X);
-		itemStack.setHoverName(new TranslatableComponent("display.treasure_map." + rarity.getValue()));
+		itemStack.setHoverName(new TranslatableComponent(LangUtil.screen("treasure_map." + rarity.getValue())));
 		return itemStack;
 	}
 
@@ -580,8 +601,10 @@ public interface IChestGenerator {
 	default public void addLocks(Random random, AbstractTreasureChestBlock chest, 
 			ITreasureChestBlockEntity blockEntity, IRarity rarity) {
 
+		Treasure.LOGGER.debug("finding locks for rarity -> {}", rarity);
 		List<LockItem> locks = new ArrayList<>();
 		locks.addAll(KeyLockRegistry.getLocks(rarity).stream().map(lock -> lock.get()).collect(Collectors.toList()));
+		Treasure.LOGGER.debug("locks for rarity -> {}", locks);
 		addLocks(random, chest, blockEntity, locks);
 		locks.clear();
 	}
@@ -594,13 +617,14 @@ public interface IChestGenerator {
 	 * @param locks
 	 */
 	default public void addLocks(Random random, AbstractTreasureChestBlock chest, 
-			ITreasureChestBlockEntity blockEntity, 	List<LockItem> locks) {
-
+			ITreasureChestBlockEntity blockEntity, List<LockItem> locks) {
+		Treasure.LOGGER.debug("locks to select from -> {}", locks);
 		int numLocks = randomizedNumberOfLocksByChestType(random, chest.getLockLayout());
 
 		// get the lock states
 		List<LockState> lockStates = blockEntity.getLockStates();
 
+		// TODO add error handling if locks.size == 0
 		for (int i = 0; i < numLocks; i++) {
 			LockItem lock = locks.get(RandomHelper.randomInt(random, 0, locks.size() - 1));
 			Treasure.LOGGER.debug("adding lock: {}", lock);

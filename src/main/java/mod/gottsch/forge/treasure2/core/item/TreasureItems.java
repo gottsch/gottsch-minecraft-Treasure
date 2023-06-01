@@ -131,7 +131,7 @@ public class TreasureItems {
 			.setCategory(KeyLockCategory.METALS)
 			.setBreakable(false)
 			.setCraftable(false));
-
+	
 	public static RegistryObject<KeyItem> DIAMOND_KEY = Registration.ITEMS.register("diamond_key", () -> new KeyItem(new Item.Properties()
 			.durability(Config.SERVER.keysAndLocks.diamondKeyMaxUses.get())
 			.tab(TREASURE_ITEM_GROUP))
@@ -146,6 +146,20 @@ public class TreasureItems {
 			.setBreakable(false)
 			.setCraftable(false));
 
+	public static RegistryObject<KeyItem> TOPAZ_KEY = Registration.ITEMS.register("topaz_key", () -> new KeyItem(new Item.Properties()
+			.durability(Config.SERVER.keysAndLocks.topazKeyMaxUses.get())
+			.tab(TREASURE_ITEM_GROUP))
+			.setCategory(KeyLockCategory.GEMS)
+			.setBreakable(false)
+			.setCraftable(true));
+	
+	public static RegistryObject<KeyItem> ONYX_KEY = Registration.ITEMS.register("onyx_key", () -> new KeyItem(new Item.Properties()
+			.durability(Config.SERVER.keysAndLocks.onyxKeyMaxUses.get())
+			.tab(TREASURE_ITEM_GROUP))
+			.setCategory(KeyLockCategory.GEMS)
+			.setBreakable(false)
+			.setCraftable(true));
+	
 	public static RegistryObject<KeyItem> RUBY_KEY = Registration.ITEMS.register("ruby_key", () -> new KeyItem(new Item.Properties()
 			.durability(Config.SERVER.keysAndLocks.rubyKeyMaxUses.get())
 			.tab(TREASURE_ITEM_GROUP))
@@ -296,6 +310,12 @@ public class TreasureItems {
 			.setCategory(KeyLockCategory.GEMS));
 	public static RegistryObject<LockItem> EMERALD_LOCK = Registration.ITEMS.register("emerald_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {EMERALD_KEY.get(), JEWELLED_KEY.get()})
 			.setCategory(KeyLockCategory.GEMS));
+	
+	public static RegistryObject<LockItem> TOPAZ_LOCK = Registration.ITEMS.register("topaz_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {TOPAZ_KEY.get(), JEWELLED_KEY.get()})
+			.setCategory(KeyLockCategory.GEMS));
+	public static RegistryObject<LockItem> ONYX_LOCK = Registration.ITEMS.register("onyx_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {ONYX_KEY.get(), JEWELLED_KEY.get()})
+			.setCategory(KeyLockCategory.GEMS));	
+	
 	public static RegistryObject<LockItem> RUBY_LOCK = Registration.ITEMS.register("ruby_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {RUBY_KEY.get(), JEWELLED_KEY.get()})
 			.setCategory(KeyLockCategory.GEMS));
 	public static RegistryObject<LockItem> SAPPHIRE_LOCK = Registration.ITEMS.register("sapphire_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {SAPPHIRE_KEY.get(), JEWELLED_KEY.get()})
@@ -334,7 +354,8 @@ public class TreasureItems {
 	public static RegistryObject<Item> WITHER_LOG_ITEM = fromBlock(TreasureBlocks.WITHER_LOG, TREASURE_PROPS_SUPPLIER);
 	public static RegistryObject<Item> WITHER_BROKEN_LOG_ITEM = fromBlock(TreasureBlocks.WITHER_BROKEN_LOG, TREASURE_PROPS_SUPPLIER);
 	public static RegistryObject<Item> WITHER_SOUL_LOG_ITEM = fromBlock(TreasureBlocks.WITHER_SOUL_LOG, TREASURE_PROPS_SUPPLIER);
-
+	public static RegistryObject<Item> WISHING_PLANKS_ITEM = fromBlock(TreasureBlocks.WITHER_PLANKS, TREASURE_PROPS_SUPPLIER);
+	
 	public static final RegistryObject<Item> SPANISH_MOSS_ITEM = fromBlock(TreasureBlocks.SPANISH_MOSS, TREASURE_PROPS_SUPPLIER);
 
 	public static final RegistryObject<Item> TOPAZ_ORE_ITEM = fromBlock(TreasureBlocks.TOPAZ_ORE, TREASURE_PROPS_SUPPLIER);

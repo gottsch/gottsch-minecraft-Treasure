@@ -128,6 +128,7 @@ public class WellFeature extends Feature<NoneFeatureConfiguration> implements IT
 		// update cache and mark dirty
 		GeneratedContext genContext = new GeneratedContext();
 		genContext.setCoords(wellResult.get().getData().getSpawnCoords());
+		genContext.setRarity(Rarity.NONE);
 		cache.cache(spawnCoords, genContext);
 
 		// save world data

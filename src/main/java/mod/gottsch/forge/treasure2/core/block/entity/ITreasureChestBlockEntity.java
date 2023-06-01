@@ -21,9 +21,13 @@ import java.util.List;
 
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 
 
 /**
@@ -59,9 +63,13 @@ public interface ITreasureChestBlockEntity { //extends Inventory {
 	void sendUpdates();
 	
 	public void tickClient();
+	public void tickParticle();
 	public void tickServer();
 	
 	boolean isLocked();
 	Component getDefaultName();
+	
+	// wrap vanilla 
+	public void saveAdditional(CompoundTag tag);
 
 }

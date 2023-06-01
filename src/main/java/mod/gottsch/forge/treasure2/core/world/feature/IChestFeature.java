@@ -22,8 +22,8 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
 import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
-import mod.gottsch.forge.treasure2.core.registry.GeneratedRegistry;
-import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext;
+import mod.gottsch.forge.treasure2.core.registry.GeneratedCache;
+import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -62,7 +62,7 @@ public interface IChestFeature extends ITreasureFeature {
 	 * @return
 	 */
 	public static boolean isRegisteredChestWithinDistance(ServerLevelAccessor world, ResourceLocation dimension, IFeatureType key, ICoords coords, int minDistance) {
-		GeneratedRegistry<? extends GeneratedContext> registry = DimensionalGeneratedRegistry.getChestGeneratedRegistry(dimension, key);
+		GeneratedCache<? extends GeneratedContext> registry = DimensionalGeneratedRegistry.getChestGeneratedCache(dimension, key);
 		if (registry == null || registry.getValues().isEmpty()) {
 			Treasure.LOGGER.debug("unable to locate the GeneratedRegistry or the registry doesn't contain any values");
 			return false;

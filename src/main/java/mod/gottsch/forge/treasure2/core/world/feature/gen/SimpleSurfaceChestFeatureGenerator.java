@@ -17,7 +17,9 @@
  */
 package mod.gottsch.forge.treasure2.core.world.feature.gen;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
@@ -26,10 +28,14 @@ import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
-import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
+import mod.gottsch.forge.treasure2.core.enums.IMarkerType;
+import mod.gottsch.forge.treasure2.core.enums.MarkerType;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
+import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.marker.IMarkerGenerator;
+import mod.gottsch.forge.treasure2.core.registry.MarkerGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 
@@ -58,8 +64,14 @@ public class SimpleSurfaceChestFeatureGenerator implements IFeatureGenerator {
 			return Optional.empty();
 		}
 
+		// add markers 
+		// select a marker generator
+		IMarkerGenerator<GeneratorResult<GeneratorData>> markerGenerator = selectMarkerGenerator(context.random());
+		// generate marker
+		markerGenerator.generate(context, spawnCoords);
+		
 		GeneratorResult<ChestGeneratorData> generationResult = new GeneratorResult<>(ChestGeneratorData.class);
-		generationResult.getData().setPlacement(RegionPlacement.SURFACE);
+//		generationResult.getData().setPlacement(RegionPlacement.SURFACE);
 		generationResult.getData().setCoords(chestCoords);
 		generationResult.getData().setSpawnCoords(spawnCoords);
 		generationResult.getData().setRegistryName(chestResult.getData().getRegistryName());
@@ -69,4 +81,18 @@ public class SimpleSurfaceChestFeatureGenerator implements IFeatureGenerator {
 		return Optional.ofNullable(generationResult);
 	}
 
+	/**
+	 * TODO probably should make this method abstract out for all FeatureGenerators
+	 * @param random
+	 * @return
+	 */
+	public IMarkerGenerator<GeneratorResult<GeneratorData>> selectMarkerGenerator(Random random) {
+		IMarkerType markerType = MarkerType.STANDARD;
+		
+		List<IMarkerGenerator<GeneratorResult<GeneratorData>>> markerGenerators = MarkerGeneratorRegistry.get(markerType);
+		IMarkerGenerator<GeneratorResult<GeneratorData>> markerGenerator = markerGenerators.get(random.nextInt(markerGenerators.size()));
+		Treasure.LOGGER.debug("using MarkerType -> {}, gen -> {}", markerType, markerGenerator.getClass().getSimpleName());
+
+		return markerGenerator;
+	}
 }

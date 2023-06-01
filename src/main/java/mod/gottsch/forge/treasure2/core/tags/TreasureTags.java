@@ -62,6 +62,7 @@ public class TreasureTags {
 		public static final TagKey<Item> EPIC_KEY = mod(Treasure.MODID, "key/epic");
 		public static final TagKey<Item> LEGENDARY_KEYS = mod(Treasure.MODID, "key/legendary");
 		public static final TagKey<Item> MYTHICAL_KEY = mod(Treasure.MODID, "key/mythical");
+		public static final TagKey<Item> KEYS = mod(Treasure.MODID, "key/keys");
 		
 		// locks
 		public static final TagKey<Item> COMMON_LOCKS = mod(Treasure.MODID, "lock/common");
@@ -71,6 +72,7 @@ public class TreasureTags {
 		public static final TagKey<Item> EPIC_LOCKS = mod(Treasure.MODID, "lock/epic");
 		public static final TagKey<Item> LEGENDARY_LOCKS = mod(Treasure.MODID, "lock/legendary");
 		public static final TagKey<Item> MYTHICAL_LOCKS = mod(Treasure.MODID, "lock/mythical");
+		public static final TagKey<Item> LOCKS = mod(Treasure.MODID, "lock/locks");
 
 		// wishables
 		// future: items belonging to _custom do not implement IWishable and can be any item from any mod
@@ -109,6 +111,7 @@ public class TreasureTags {
 		// speciality chests
 		public static final TagKey<Block> SKULL_CHESTS = mod(Treasure.MODID, "chests/rarity/special/skull");
 		public static final TagKey<Block> GOLD_SKULL_CHESTS = mod(Treasure.MODID, "chests/rarity/special/gold_skull");
+		public static final TagKey<Block> CRYSTAL_SKULL_CHESTS = mod(Treasure.MODID, "chests/rarity/special/crystal_skull");
 		public static final TagKey<Block> WITHER_CHESTS = mod(Treasure.MODID, "chests/rarity/special/wither");
 		
 		public static TagKey<Block> mod(String domain, String path) {

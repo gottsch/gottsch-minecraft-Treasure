@@ -41,7 +41,7 @@ public class SimpleDistanceCache<T> implements ISimpleDistanceCache<T> {
 	private int maxSize;
 	
 	/*
-	 * a Interval BST registry to determine the proximity of chests.
+	 * a Interval BST registry to determine the proximity of pois.
 	 */
 	private final CoordsIntervalTree<T> distanceCache;
 	
@@ -128,6 +128,12 @@ public class SimpleDistanceCache<T> implements ISimpleDistanceCache<T> {
 	public void clear() {
 		cache.clear();
 		distanceCache.clear();
+	}
+
+	@Override
+	public String toString() {
+		return "SimpleDistanceCache [cache=" + cache + ", maxSize=" + maxSize + ", distanceCache=" + distanceCache
+				+ "]";
 	}
 	
 	// TEMP

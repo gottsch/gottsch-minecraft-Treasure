@@ -132,6 +132,7 @@ public class TreasureApi {
 	 * 
 	 * @param type
 	 */
+	@Deprecated
 	public static void registerGeneratorType(IGeneratorType type) {
 		EnumRegistry.register(GENERATOR_TYPE, type);
 	}
@@ -141,15 +142,16 @@ public class TreasureApi {
 	 * @param key
 	 * @return
 	 */
-	public static Optional<IGeneratorType> getGeneratorType(String key) {
-		IEnum ienum = EnumRegistry.get(GENERATOR_TYPE, key);
-		if (ienum == null) {
-			return Optional.empty();
-		}
-		else {
-			return Optional.of((IGeneratorType) ienum);
-		}
-	}
+//	@Deprecated
+//	public static Optional<IGeneratorType> getGeneratorType(String key) {
+//		IEnum ienum = EnumRegistry.get(GENERATOR_TYPE, key);
+//		if (ienum == null) {
+//			return Optional.empty();
+//		}
+//		else {
+//			return Optional.of((IGeneratorType) ienum);
+//		}
+//	}
 	
 	public static void registerChestGeneratorType(IChestGeneratorType type) {
 		EnumRegistry.register(CHEST_GENERATOR_TYPE, type);
@@ -165,19 +167,19 @@ public class TreasureApi {
 		}
 	}	
 
-	public static void registerRegionPlacement(IRegionPlacement placement) {
-		EnumRegistry.register(REGION_PLACEMENT, placement);
-	}
-	
-	public static Optional<IRegionPlacement> getRegionPlacement(String key) {
-		IEnum ienum = EnumRegistry.get(REGION_PLACEMENT, key);
-		if (ienum == null) {
-			return Optional.empty();
-		}
-		else {
-			return Optional.of((IRegionPlacement) ienum);
-		}
-	}
+//	public static void registerRegionPlacement(IRegionPlacement placement) {
+//		EnumRegistry.register(REGION_PLACEMENT, placement);
+//	}
+//	
+//	public static Optional<IRegionPlacement> getRegionPlacement(String key) {
+//		IEnum ienum = EnumRegistry.get(REGION_PLACEMENT, key);
+//		if (ienum == null) {
+//			return Optional.empty();
+//		}
+//		else {
+//			return Optional.of((IRegionPlacement) ienum);
+//		}
+//	}
 	
 	public static void registerLootTableType(ILootTableType type) {
 		EnumRegistry.register(LOOT_TABLE_TYPE, type);		
@@ -341,7 +343,7 @@ public class TreasureApi {
 	}
 	
 
-	public static void registerRarityTags(Rarity rarity, TagKey<Block>chestTag) {
+	public static void registerRarityTags(IRarity rarity, TagKey<Block>chestTag) {
 		// check if the rarity is registered
 		if (!EnumRegistry.isRegistered(RARITY, rarity)) {
 			Treasure.LOGGER.warn("rarity {} is not registered. unable to complete tag registration.", rarity);
@@ -434,13 +436,13 @@ public class TreasureApi {
 	/*
 	 * Maps the chest generator object by rarity and type.
 	 */
-	@Deprecated
-	public static void registerWeightedChestGenerator(IRarity rarity, IGeneratorType type, IChestGenerator generator, Number weight) {
-		WeightedChestGeneratorRegistry.registerGenerator(rarity, type, generator, weight);
-	}
-	public static void registerWeightedChestGenerator(IRarity rarity, IGeneratorType type, IChestGeneratorType chestGenType, Number weight) {
-		WeightedChestGeneratorRegistry.registerGenerator(rarity, type, chestGenType, weight);
-	}
+//	@Deprecated
+//	public static void registerWeightedChestGenerator(IRarity rarity, IGeneratorType type, IChestGenerator generator, Number weight) {
+//		WeightedChestGeneratorRegistry.registerGenerator(rarity, type, generator, weight);
+//	}
+//	public static void registerWeightedChestGenerator(IRarity rarity, IGeneratorType type, IChestGeneratorType chestGenType, Number weight) {
+//		WeightedChestGeneratorRegistry.registerGenerator(rarity, type, chestGenType, weight);
+//	}
 	
 	public List<LockItem> getLocks(IRarity rarity) {
 		return KeyLockRegistry.getLocks(rarity).stream().map(lock -> lock.get()).collect(Collectors.toList());

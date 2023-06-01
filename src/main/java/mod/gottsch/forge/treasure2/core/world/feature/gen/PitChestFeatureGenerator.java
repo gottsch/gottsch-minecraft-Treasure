@@ -33,14 +33,11 @@ import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.IMarkerType;
 import mod.gottsch.forge.treasure2.core.enums.MarkerType;
 import mod.gottsch.forge.treasure2.core.enums.PitType;
-import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.marker.GravestoneMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.generator.marker.IMarkerGenerator;
-import mod.gottsch.forge.treasure2.core.generator.marker.StructureMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
 import mod.gottsch.forge.treasure2.core.registry.MarkerGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
@@ -113,7 +110,7 @@ public class PitChestFeatureGenerator implements IFeatureGenerator {
 		
 		GeneratorResult<ChestGeneratorData> generationResult = new GeneratorResult<>(ChestGeneratorData.class);
 		// TODO review the use/need of RegionPlacement
-		generationResult.getData().setPlacement(RegionPlacement.SUBTERRANEAN);
+//		generationResult.getData().setPlacement(RegionPlacement.SUBTERRANEAN);
 		generationResult.getData().setPit(true);
 		generationResult.getData().setCoords(chestCoords);
 		generationResult.getData().setSpawnCoords(spawnCoords);

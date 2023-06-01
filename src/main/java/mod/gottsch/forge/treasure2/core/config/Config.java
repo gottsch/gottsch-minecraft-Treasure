@@ -29,6 +29,7 @@ import com.google.common.collect.Maps;
 
 import mod.gottsch.forge.gottschcore.config.AbstractConfig;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.config.StructureConfiguration.StructMeta;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -227,6 +228,8 @@ public class Config extends AbstractConfig {
 			public ConfigValue<Integer> jewelledKeyMaxUses;
 			public ConfigValue<Integer> spiderKeyMaxUses;
 			public ConfigValue<Integer> witherKeyMaxUses;
+			public ConfigValue<Integer> topazKeyMaxUses;
+			public ConfigValue<Integer> onyxKeyMaxUses;
 			
 			KeysAndLocks(final ForgeConfigSpec.Builder builder) {
 				builder.comment(CATEGORY_DIV, " Keys and Locks properties", CATEGORY_DIV)
@@ -284,10 +287,18 @@ public class Config extends AbstractConfig {
 						.comment(" The maximum uses for a given emerald key.")
 						.defineInRange("emeraldKeyMaxUses", 10, 1, 32000);
 
+				topazKeyMaxUses = builder
+						.comment(" The maximum uses for a given topaz key.")
+						.defineInRange("topazKeyMaxUses", 7, 1, 32000);
+				
+				onyxKeyMaxUses = builder
+						.comment(" The maximum uses for a given onyx key.")
+						.defineInRange("onyxKeyMaxUses", 7, 1, 32000);
+
 				rubyKeyMaxUses = builder
 						.comment(" The maximum uses for a given ruby key.")
 						.defineInRange("rubyKeyMaxUses", 5, 1, 32000);
-
+				
 				sapphireKeyMaxUses = builder
 						.comment(" The maximum uses for a given sapphire key.")
 						.defineInRange("sapphireKeyMaxUses", 5, 1, 32000);
@@ -359,11 +370,11 @@ public class Config extends AbstractConfig {
 				
 				minMarkersPerChest = builder
 						.comment(" The minimum number of markers (gravestones, bones) per chest.")
-						.defineInRange("minMarkersPerChest", 2, 1, 5);
+						.defineInRange("minMarkersPerChest", 3, 1, 5);
 				
 				maxMarkersPerChest = builder
 						.comment(" The maximum number of markers (gravestones, bones) per chest.")
-						.defineInRange("maxMarkersPerChest", 5, 1, 10);
+						.defineInRange("maxMarkersPerChest", 6, 1, 10);
 				
 				structureProbability = builder
 						.comment(" The probability that a marker will be a structure.")
@@ -386,11 +397,11 @@ public class Config extends AbstractConfig {
 		 */
 		public static class WitherTree {
 			public BooleanValue enableWitherTree;
-			public ConfigValue<Integer> registrySize;
-			public ConfigValue<Double> probability;
-			public ConfigValue<Integer> minBlockDistance;
-			public ConfigValue<Integer>	waitChunks;
-			public BiomesConfig biomes;
+//			public ConfigValue<Integer> registrySize;
+//			public ConfigValue<Double> probability;
+//			public ConfigValue<Integer> minBlockDistance;
+//			public ConfigValue<Integer>	waitChunks;
+//			public BiomesConfig biomes;
 			
 			public ConfigValue<Integer> maxTrunkSize;
 			public ConfigValue<Integer> minSupportingTrees;
@@ -404,29 +415,29 @@ public class Config extends AbstractConfig {
 						.comment(" Enable/disable whether wither trees will spawn.")
 						.define("enableWitherTree", true);
 				
-				registrySize = builder
-						.comment(" The number of wither tree spawns that are monitored.",
-								" Most recent additions replace least recent when the registry is full.",
-								" This is the set of wither tree spawns used to measure distance between newly generated spawns.",
-								" In general, a high number is better than a low number, especially in a multiplayer world.",
-								" However, wither tree spawns have a default low probability/great distance, so the number can be",
-								" a lower than that of chests, which spawn much more frequently.")
-						.defineInRange("registrySize", 50, 25, 1000);
-				
-				this.probability = builder
-						.comment(" The probability that a wither tree will generate at selected spawn location.",
-								" Including a non-100 value increases the randomization of wither tree spawn placement.")
-						.defineInRange("probability", 70.0, 0.0, 100.0);
-				
-				this.minBlockDistance = builder
-						.comment(" The minimum distance, measured in blocks, that two wither tree spawns can be in proximity (ie radius).",
-								" Note: Only wither trees in the registry are checked against this property.",
-								" Default = 1000 blocks.")
-						.defineInRange("minBlockDistance", 1000, 100, 32000);
-				
-				this.waitChunks = builder
-						.comment(" The number of chunks that are generated in a new world before wither trees start to spawn.")
-						.defineInRange("waitChunks", 500, 10, 32000);
+//				registrySize = builder
+//						.comment(" The number of wither tree spawns that are monitored.",
+//								" Most recent additions replace least recent when the registry is full.",
+//								" This is the set of wither tree spawns used to measure distance between newly generated spawns.",
+//								" In general, a high number is better than a low number, especially in a multiplayer world.",
+//								" However, wither tree spawns have a default low probability/great distance, so the number can be",
+//								" a lower than that of chests, which spawn much more frequently.")
+//						.defineInRange("registrySize", 50, 25, 1000);
+//				
+//				this.probability = builder
+//						.comment(" The probability that a wither tree will generate at selected spawn location.",
+//								" Including a non-100 value increases the randomization of wither tree spawn placement.")
+//						.defineInRange("probability", 70.0, 0.0, 100.0);
+//				
+//				this.minBlockDistance = builder
+//						.comment(" The minimum distance, measured in blocks, that two wither tree spawns can be in proximity (ie radius).",
+//								" Note: Only wither trees in the registry are checked against this property.",
+//								" Default = 1000 blocks.")
+//						.defineInRange("minBlockDistance", 1000, 100, 32000);
+//				
+//				this.waitChunks = builder
+//						.comment(" The number of chunks that are generated in a new world before wither trees start to spawn.")
+//						.defineInRange("waitChunks", 500, 10, 32000);
 				
 				maxTrunkSize = builder
 						.comment(" The maximum height a wither tree can reach.",
@@ -443,10 +454,10 @@ public class Config extends AbstractConfig {
 						.defineInRange("Maximum number of supporting trees:", 15, 0, 30);
 				
 				
-				BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean", "minecraft:deep_frozen_ocean", "minecraft:cold_ocean",
-						"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },
-				new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean" });
-				biomes = new BiomesConfig(builder, biomesData);
+//				BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean", "minecraft:deep_frozen_ocean", "minecraft:cold_ocean",
+//						"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },
+//				new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean" });
+//				biomes = new BiomesConfig(builder, biomesData);
 				
 				builder.pop();
 			}
@@ -590,7 +601,6 @@ public class Config extends AbstractConfig {
 	public static StructureConfiguration structureConfiguration;
 	public static  Map<ResourceLocation, StructureConfiguration.StructMeta> structConfigMetaMap;
 	
-	
 	static {
 		final Pair<InternalStructureConfiguration, ForgeConfigSpec	> structSpecPair = new ForgeConfigSpec.Builder()
 				.configure(InternalStructureConfiguration::new);
@@ -628,7 +638,6 @@ public class Config extends AbstractConfig {
 	 */
 	private static class InternalStructureConfiguration {
 		public InternalStructureConfiguration(ForgeConfigSpec.Builder builder) {
-			// NOTE having an ArrayList<>() here is a real bugger. Not sure how to create a Config()
 			// NOTE this define() name must match the wrapper property in the toml file.
 			builder.define("structureConfigs", new ArrayList<>());
 			builder.build();
@@ -652,6 +661,10 @@ public class Config extends AbstractConfig {
 			});
 		}
 		return Optional.ofNullable(holder.structureConfigs.get(0));
+	}
+	
+	public static Optional<StructMeta> getStructMeta(ResourceLocation location) {
+		return Optional.ofNullable(structConfigMetaMap.get(location));
 	}
 	
 	/**

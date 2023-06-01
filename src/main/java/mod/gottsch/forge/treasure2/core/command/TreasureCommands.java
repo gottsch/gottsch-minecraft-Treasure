@@ -34,6 +34,7 @@ public class TreasureCommands {
 		SpawnChestCommand.register(event.getDispatcher());
 		SpawnPitCommand.register(event.getDispatcher());
 		SpawnRuinsCommand.register(event.getDispatcher());
+		SpawnMarkerCommand.register(event.getDispatcher());
 		SpawnWellCommand.register(event.getDispatcher());
 		SpawnWitherTreeCommand.register(event.getDispatcher());
 	}

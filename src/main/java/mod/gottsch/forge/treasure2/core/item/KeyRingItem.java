@@ -61,6 +61,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -105,7 +106,8 @@ public class KeyRingItem extends Item implements MenuProvider {
 			return InteractionResult.FAIL;
 		}
 
-		BlockPos chestPos = context.getClickedPos();		
+		BlockPos chestPos = context.getClickedPos();
+		BlockState state = context.getLevel().getBlockState(chestPos);
 		Block block = context.getLevel().getBlockState(chestPos).getBlock();
 
 		// test if the block is a chest proxy (ex. multiple block chests like Wither Chest)
@@ -155,6 +157,10 @@ public class KeyRingItem extends Item implements MenuProvider {
 								// unlock the lock
 								doUnlock(context, (AbstractTreasureChestBlockEntity)chestBlockEntity, key, lockState);
 
+								if (!state.getValue(AbstractTreasureChestBlock.DISCOVERED)) {
+									chestBlockEntity = ((AbstractTreasureChestBlock) block).discovered((AbstractTreasureChestBlockEntity) chestBlockEntity, state, context.getLevel(), chestPos, context.getPlayer());
+								}
+								
 								// update the client
 								chestBlockEntity.sendUpdates();
 

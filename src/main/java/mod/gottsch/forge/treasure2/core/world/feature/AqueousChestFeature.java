@@ -32,9 +32,9 @@ import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.Generator;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
-import mod.gottsch.forge.treasure2.core.registry.GeneratedRegistry;
+import mod.gottsch.forge.treasure2.core.registry.GeneratedCache;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.support.ChestGenContext;
+import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -69,7 +69,7 @@ public class AqueousChestFeature extends Feature<NoneFeatureConfiguration> imple
 		}
 		
 		// get the chest registry
-		GeneratedRegistry<ChestGenContext> registry = DimensionalGeneratedRegistry.getChestGeneratedRegistry(dimension, FeatureType.AQUATIC);
+		GeneratedCache<ChestGeneratedContext> registry = DimensionalGeneratedRegistry.getChestGeneratedCache(dimension, FeatureType.AQUATIC);
 		if (registry == null) {
 			Treasure.LOGGER.debug("GeneratedRegistry is null for dimension & AQUATIC. This shouldn't be. Should be initialized.");
 			return false;

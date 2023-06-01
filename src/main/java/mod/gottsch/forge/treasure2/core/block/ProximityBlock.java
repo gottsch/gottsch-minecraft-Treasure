@@ -17,8 +17,8 @@
  */
 package mod.gottsch.forge.treasure2.core.block;
 
-import com.someguyssoftware.gottschcore.block.AbstractProximityBlock;
 
+import mod.gottsch.forge.gottschcore.block.AbstractProximityBlock;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureProximitySpawnerBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -49,6 +49,7 @@ public class ProximityBlock extends AbstractProximityBlock implements ITreasureB
 		TreasureProximitySpawnerBlockEntity blockEntity = null;
 		try {
 			blockEntity = new TreasureProximitySpawnerBlockEntity(pos, state);
+			blockEntity.setProximity(5.0);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

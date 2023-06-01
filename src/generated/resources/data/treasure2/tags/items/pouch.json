@@ -9,6 +9,10 @@
     "treasure2:ruby",
     "treasure2:sapphire",
     "treasure2:white_pearl",
-    "treasure2:black_pearl"
+    "treasure2:black_pearl",
+    "minecraft:diamond",
+    "minecraft:emerald",
+    "#treasure2:key/keys",
+    "#treasure2:lock/locks"
   ]
 }

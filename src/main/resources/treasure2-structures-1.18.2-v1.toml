@@ -93,7 +93,7 @@
 		
 	[[structureConfigs.structMetas]]
 		name = "treasure2:terranean/ruin/tower3"
-		biomeWhitelist = ["minecraft:desert"]
+		biomeWhitelist = []
 		biomeBlackList = []
 		[structureConfigs.structMetas.offset]
 		x = 0
@@ -102,7 +102,7 @@
 		
 	[[structureConfigs.structMetas]]
 		name = "treasure2:terranean/ruin/tower4"
-		biomeWhitelist = ["minecraft:desert"]
+		biomeWhitelist = []
 		biomeBlackList = []
 		[structureConfigs.structMetas.offset]
 		x = 0
@@ -111,7 +111,7 @@
 		
 	[[structureConfigs.structMetas]]
 		name = "treasure2:terranean/ruin/tower5"
-		biomeWhitelist = ["minecraft:desert"]
+		biomeWhitelist = []
 		biomeBlackList = []
 		[structureConfigs.structMetas.offset]
 		x = 0

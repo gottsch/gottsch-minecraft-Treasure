@@ -32,6 +32,7 @@ import mod.gottsch.forge.gottschcore.world.gen.structure.PlacementSettings;
 import mod.gottsch.forge.gottschcore.world.gen.structure.StructureMarkers;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.config.StructureConfiguration.StructMeta;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
@@ -169,15 +170,25 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		/**
 		 * Build
 		 */
-		ICoords offsetCoords = Config.structConfigMetaMap.get(holder.getLocation()).getOffset().asCoords();
+		Optional<StructMeta> meta = Config.getStructMeta(holder.getLocation());
+		ICoords offsetCoords = Coords.EMPTY;
+		if (meta.isPresent()) {
+			offsetCoords = meta.get().getOffset().asCoords();
+		}
+		else {
+			// TEMP dump map
+			Treasure.LOGGER.debug("dump struct meta map -> {}", Config.structConfigMetaMap);
+			Treasure.LOGGER.debug("... was looking for -> {}", holder.getLocation());
+		}
 		
 		// update original spawn coords' y-value to be that of aligned spawn coords.
 		// this is the coords that need to be supplied to the template generator to allow
 		// the structure to generator in the correct place
-		originalSpawnCoords = new Coords(originalSpawnCoords.getX(), alignedSpawnCoords.getY(), originalSpawnCoords.getZ());
-		Treasure.LOGGER.debug("using spawn coords to generate -> {}", originalSpawnCoords);
+//		originalSpawnCoords = new Coords(originalSpawnCoords.getX(), alignedSpawnCoords.getY(), originalSpawnCoords.getZ());
+		// NOTE this doesn't make sense to use the original spawn coords + aligned-Y --> that doesn't move the structure at all.
+		Treasure.LOGGER.debug("using spawn coords to generate -> {}", alignedSpawnCoords); //originalSpawnCoords
 		
-		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(context, template, placement, originalSpawnCoords, offsetCoords);
+		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(context, template, placement, /*originalSpawnCoords*/alignedSpawnCoords, offsetCoords);
 		 if (!genResult.isSuccess()) {
 			 return Optional.empty();
 		 }
@@ -223,8 +234,13 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 
 		ICoords chestCoords = null;
 		if (chestContext != null) {
+			Treasure.LOGGER.debug("chest context coords -> {}", chestContext.getCoords());
 			// move the chest coords to the first solid block beneath it.
-			chestCoords = WorldInfo.getDryLandSurfaceCoords(context.level(), context.chunkGenerator(), chestContext.getCoords());
+			// NOTE can't use this method as it will disregard the entire structure as the chunkGenerator only looks at the land mass.
+			// TODO need to use the old non-chunk generator version of doing this. ie stepping down a block and check.
+			// NOTE however, since there isn't a decay processor, there is no need to perform this operation.
+//			chestCoords = WorldInfo.getDryLandSurfaceCoords(context.level(), context.chunkGenerator(), chestContext.getCoords());
+			chestCoords = chestContext.getCoords();
 			if (chestCoords == Coords.EMPTY) {
 				chestCoords = null;
 			}

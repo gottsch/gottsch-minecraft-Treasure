@@ -137,7 +137,7 @@ public class Treasure {
 					// init generated chest registry
 					LOGGER.debug("reading in chests config...");
 					DimensionalGeneratedRegistry.initialize();
-					RarityLevelWeightedChestGeneratorRegistry.intialize();
+					RarityLevelWeightedChestGeneratorRegistry.initialize();
 				} 
 				else if (spec == Config.STRUCTURE_CONFIG_SPEC) {
 					Optional<StructureConfiguration> structConfig = Config.transformStructureConfiguration(commentedConfig);

@@ -19,11 +19,14 @@
  */
 package mod.gottsch.forge.treasure2.core.persistence;
 
+import java.util.List;
+
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.cache.FeatureCaches;
+import mod.gottsch.forge.treasure2.core.random.RarityLevelWeightedCollection;
 import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
@@ -75,22 +78,31 @@ public class TreasureSavedData extends SavedData {
 	 */
 	public static TreasureSavedData load(CompoundTag tag) {
 		Treasure.LOGGER.debug("loading treasure2 saved gen data...");
-
-		RarityLevelWeightedChestGeneratorRegistry.clear();
-		DimensionalGeneratedRegistry.clear();
-		FeatureCaches.clear();
 		
 		/*
 		 * chest generator registry
 		 */
 		if (tag.contains(CHEST_GEN_REGISTRY_NAME)) {
+			RarityLevelWeightedChestGeneratorRegistry.initialize();
 			RarityLevelWeightedChestGeneratorRegistry.load(tag.getList(CHEST_GEN_REGISTRY_NAME, Tag.TAG_COMPOUND));
+			
+			RarityLevelWeightedChestGeneratorRegistry.RARITY_SELECTOR.forEach((dim, map) -> {
+				RarityLevelWeightedCollection dumpCol = map.get(FeatureType.TERRESTRIAL);
+				List<String> dump = dumpCol.dump();
+				Treasure.LOGGER.debug("load terrestrial weighted collection dump -> {}", dump);
+				dumpCol = map.get(FeatureType.AQUATIC);
+				dump = dumpCol.dump();
+				Treasure.LOGGER.debug("load aquatic weighted collection dump -> {}", dump);
+			});
+
 		}
 		
         /*
          * chest registry
          */
 		if (tag.contains(DIM_GEN_REGISTRY_NAME)) {
+			DimensionalGeneratedRegistry.clear();
+			DimensionalGeneratedRegistry.initialize();
 			DimensionalGeneratedRegistry.load((CompoundTag)tag.get(DIM_GEN_REGISTRY_NAME));
 		}
 		

@@ -17,15 +17,14 @@
  */
 package mod.gottsch.forge.treasure2.core.registry.support;
 
-import java.util.Optional;
-
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
-import mod.gottsch.forge.treasure2.core.enums.IRegionPlacement;
-import mod.gottsch.forge.treasure2.core.enums.RegionPlacement;
+import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
+import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 
@@ -34,32 +33,57 @@ import net.minecraft.resources.ResourceLocation;
  * @author Mark Gottschling on Dec 2, 2022
  *
  */
-public class ChestGenContext extends GeneratedContext {
+public class ChestGeneratedContext extends GeneratedContext {
 	private static final String LEGACY_NAME = "registryName";
 	
-	public enum GenType {
+	private static final String NAME = "name";
+	private static final String DISCOVERED = "discovered";
+	private static final String FEATURE_TYPE = "featureType";
+	private static final String SURFACE_COORDS = "surfaceCoords";
+	private static final String GENERATED_TYPE = "generatedType";
+	private static final String CHARTED_FROM = "chartedFrom";
+	
+	// generation type indicates the whether a chest was generated or nothing
+	public interface IGeneratedType {
+		public String name();
+	}
+	public enum GeneratedType implements IGeneratedType {
 		CHEST,
 		NONE;
 	}
 	
+	// resource name of the chest
 	private ResourceLocation name;
-	private IRegionPlacement placement;
-	private GenType genType;
+	// the feature type that generated this chest
+	private IFeatureType featureType;
+	// type of generation
+	private IGeneratedType generatedType;
+	// has the chest been discovered
 	private boolean discovered;
+	// coords of chest that contains a treasure map to this chest
 	private ICoords chartedFrom;
+	// coords of the surface spawn
+	private ICoords surfaceCoords;
 	
-	public ChestGenContext() {
+	/**
+	 * 
+	 */
+	public ChestGeneratedContext() {
 		super();
-		this.genType = GenType.CHEST;
+		this.generatedType = GeneratedType.CHEST;
+		this.featureType = FeatureType.UNKNOWN;
+		this.setRarity(Rarity.NONE);
 	}
 	
-	public ChestGenContext(IRarity rarity, ICoords coords) {
-		this(rarity, coords, GenType.CHEST);
+	public ChestGeneratedContext(IRarity rarity, ICoords coords) {
+		this(rarity, coords, GeneratedType.CHEST);
 	}
 	
-	public ChestGenContext(IRarity rarity, ICoords coords, GenType genType) {
+	public ChestGeneratedContext(IRarity rarity, ICoords coords, IGeneratedType generatedType) {
 		super(rarity, coords);
-		this.genType = genType;
+		this.generatedType = generatedType;
+		this.featureType = FeatureType.UNKNOWN;
+		this.surfaceCoords = coords;
 	}
 
 	/**
@@ -68,23 +92,27 @@ public class ChestGenContext extends GeneratedContext {
 	public CompoundTag save() {		
 		CompoundTag tag = super.save();
 		if (getName() != null) {
-			tag.putString("name", getName().toString());
+			tag.putString(NAME, getName().toString());
 		}
-		tag.putBoolean("discovered",isDiscovered());
-
-		if (getPlacement() != null) {
-			tag.putString("placement", getPlacement().getValue());
-		}
+		tag.putBoolean(DISCOVERED, isDiscovered());
+		
 		if (isCharted()) {
 			CompoundTag chartedFromTag = getChartedFrom().save(new CompoundTag());
-			tag.put("chartedFrom", chartedFromTag);
+			tag.put(CHARTED_FROM, chartedFromTag);
 		}
-		if (getGenType() != null) {
-			tag.putString("genType", getGenType().name());
+		if (getGeneratedType() != null) {
+			tag.putString(GENERATED_TYPE, getGeneratedType().name());
 		}
 		else {
-			tag.putString("genType", GenType.CHEST.name());
+			tag.putString(GENERATED_TYPE, GeneratedType.CHEST.name());
 		}
+		
+		if (getSurfaceCoords() != null) {
+			tag.put(SURFACE_COORDS, getSurfaceCoords().save(new CompoundTag()));
+		}
+		
+		tag.putString(FEATURE_TYPE, getFeatureType().getName());
+		
 		return tag;
 	}
 	
@@ -93,29 +121,29 @@ public class ChestGenContext extends GeneratedContext {
 	 */
 	public void load(CompoundTag tag) {
 		super.load(tag);
-		if (tag.contains("name")) {
-			this.name = ModUtil.asLocation(tag.getString("name"));
+		if (tag.contains(NAME)) {
+			this.name = ModUtil.asLocation(tag.getString(NAME));
 		}
 		else if (tag.contains(LEGACY_NAME)) {
 			this.name = ModUtil.asLocation(tag.getString(LEGACY_NAME));
 		}
-		if (tag.contains("discovered")) {
-			this.discovered = tag.getBoolean("discovered");
+		if (tag.contains(DISCOVERED)) {
+			this.discovered = tag.getBoolean(DISCOVERED);
 		}
-		if (tag.contains("placement")) {
-			Optional<IRegionPlacement> placement = TreasureApi.getRegionPlacement(tag.getString("placement"));
-			if (placement.isPresent()) {
-				this.placement = placement.get();
-			}
-			else {
-				this.placement = RegionPlacement.SURFACE; // TODO change to NONE
-			}
+
+		if (tag.contains(CHARTED_FROM)) {
+			this.chartedFrom = Coords.EMPTY.load(tag.getCompound(CHARTED_FROM));
 		}
-		if (tag.contains("chartedFrom")) {
-			this.chartedFrom = Coords.EMPTY.load(tag.getCompound("chartedFrom"));
+		if (tag.contains(GENERATED_TYPE)) {
+			// TODO may have to have a registry at some point
+			this.generatedType = GeneratedType.valueOf(tag.getString(GENERATED_TYPE).toUpperCase());
 		}
-		if (tag.contains("genType")) {
-			this.genType = GenType.valueOf(tag.getString("genType").toUpperCase());
+		
+		if (tag.contains(SURFACE_COORDS)) {
+			this.surfaceCoords = Coords.EMPTY.load(tag.getCompound(SURFACE_COORDS));
+		}
+		if (tag.contains(FEATURE_TYPE)) {
+			this.featureType = TreasureApi.getFeatureType(tag.getString(FEATURE_TYPE).toUpperCase()).orElse(FeatureType.UNKNOWN);		
 		}
 	}
 	
@@ -126,21 +154,23 @@ public class ChestGenContext extends GeneratedContext {
 	public void setName(ResourceLocation name) {
 		this.name = name;
 	}
-
-	public IRegionPlacement getPlacement() {
-		return placement;
+	
+	public ChestGeneratedContext withName(ResourceLocation name) {
+		setName(name);
+		return this;
 	}
 
-	public void setPlacement(IRegionPlacement placement) {
-		this.placement = placement;
+	public IGeneratedType getGeneratedType() {
+		return generatedType;
 	}
 
-	public GenType getGenType() {
-		return genType;
+	public void setGeneratedType(IGeneratedType generatedType) {
+		this.generatedType = generatedType;
 	}
-
-	public void setGenType(GenType genType) {
-		this.genType = genType;
+	
+	public ChestGeneratedContext withGeneratedType(IGeneratedType type) {
+		setGeneratedType(type);
+		return this;
 	}
 
 	public boolean isDiscovered() {
@@ -151,6 +181,11 @@ public class ChestGenContext extends GeneratedContext {
 		this.discovered = discovered;
 	}
 
+	public ChestGeneratedContext withDiscovered(boolean discovered) {
+		setDiscovered(discovered);
+		return this;		
+	}
+	
 	public ICoords getChartedFrom() {
 		return chartedFrom;
 	}
@@ -165,8 +200,34 @@ public class ChestGenContext extends GeneratedContext {
 
 	@Override
 	public String toString() {
-		return "ChestGenContext [name=" + name + ", placement=" + placement + ", genType=" + genType + ", discovered="
-				+ discovered + ", chartedFrom=" + chartedFrom + ", getCoords()=" + getCoords() + ", getRarity()="
-				+ getRarity() + "]";
+		return "ChestGeneratedContext [name=" + name + ", featureType=" + featureType + ", generatedType="
+				+ generatedType + ", discovered=" + discovered + ", chartedFrom=" + chartedFrom + ", surfaceCoords="
+				+ surfaceCoords + "]";
+	}
+
+	public IFeatureType getFeatureType() {
+		return featureType;
+	}
+
+	public void setFeatureType(IFeatureType featureType) {
+		this.featureType = featureType;
+	}
+
+	public ChestGeneratedContext withFeatureType(IFeatureType featureType) {
+		setFeatureType(featureType);
+		return this;
+	}
+	
+	public ICoords getSurfaceCoords() {
+		return surfaceCoords;
+	}
+
+	public void setSurfaceCoords(ICoords surfaceCoords) {
+		this.surfaceCoords = surfaceCoords;
+	}
+	
+	public ChestGeneratedContext withSurfaceCoords(ICoords surfaceCoords) {
+		setSurfaceCoords(surfaceCoords);
+		return this;
 	}
 }

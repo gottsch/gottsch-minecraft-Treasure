@@ -17,6 +17,7 @@
  */
 package mod.gottsch.forge.treasure2.core.cache;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -76,7 +77,7 @@ public class FeatureCaches {
 		// wells
 		Tag wellTag = saveFeatureCache(WELL_CACHE);
 		tag.put(WELL_CACHE_NAME, wellTag);
-
+		Treasure.LOGGER.debug("save well cache dump -> {}", WELL_CACHE.dump());
 		return tag;
 	}
 	
@@ -87,7 +88,9 @@ public class FeatureCaches {
 	public static void load(CompoundTag tag) {
 		if (tag.contains(WELL_CACHE_NAME)) {
 			WELL_CACHE.clear();
+			initialize();
 			loadCache((CompoundTag)tag.get(WELL_CACHE_NAME), WELL_CACHE);
+			Treasure.LOGGER.debug("load well cache dump -> {}", WELL_CACHE.dump());
 		}
 	}
 	

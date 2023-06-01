@@ -75,6 +75,12 @@ public class ItemModelsProvider extends ItemModelProvider {
 		singleTexture(TreasureItems.EMERALD_KEY.get().getRegistryName().getPath(),
 				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/emerald_key"));
 		
+		singleTexture(TreasureItems.TOPAZ_KEY.get().getRegistryName().getPath(),
+				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/topaz_key"));
+		
+		singleTexture(TreasureItems.ONYX_KEY.get().getRegistryName().getPath(),
+				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/onyx_key"));
+		
 		singleTexture(TreasureItems.RUBY_KEY.get().getRegistryName().getPath(),
 				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/ruby_key"));
 		
@@ -126,6 +132,13 @@ public class ItemModelsProvider extends ItemModelProvider {
 		
 		singleTexture(TreasureItems.EMERALD_LOCK.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/lock/emerald_lock"));
+		
+		singleTexture(TreasureItems.TOPAZ_LOCK.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/lock/topaz_lock"));
+		
+		singleTexture(TreasureItems.ONYX_LOCK.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/lock/onyx_lock"));
+		
 		
 		singleTexture(TreasureItems.RUBY_LOCK.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/lock/ruby_lock"));

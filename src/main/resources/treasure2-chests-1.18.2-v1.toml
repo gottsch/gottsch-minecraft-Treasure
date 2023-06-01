@@ -86,21 +86,21 @@
 			# 'skull' rarity is a special rarity for Skull related resources ex. Skull Chest, skull_loot_table, etc.
 			# it is configured the same as 'scarce' rarity except that is occurs less frequently.
 			rarity="gold_skull"
-			weight=6
-			minDepth=20
-			maxDepth=35
+			weight=5
+			minDepth=25
+			maxDepth=40
 		[[chestConfigs.generators.rarities]]
 			# 'skull' rarity is a special rarity for Skull related resources ex. Skull Chest, skull_loot_table, etc.
 			# it is configured the same as 'scarce' rarity except that is occurs less frequently.
 			rarity="crystal_skull"
-			weight=6
-			minDepth=20
-			maxDepth=35
+			weight=4
+			minDepth=30
+			maxDepth=45
 		[[chestConfigs.generators.rarities]]
 			rarity="cauldron"
-			weight=6
-			minDepth=20
-			maxDepth=35
+			weight=4
+			minDepth=30
+			maxDepth=45
 		[[chestConfigs.generators.rarities]]
 			rarity="wither"
 			weight=6

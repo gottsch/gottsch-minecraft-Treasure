@@ -21,6 +21,7 @@ package mod.gottsch.forge.treasure2.core.block;
 import java.lang.reflect.Constructor;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -38,9 +39,13 @@ import mod.gottsch.forge.treasure2.core.lock.ILockSlot;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
 import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
+import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
+import mod.gottsch.forge.treasure2.core.registry.GeneratedCache;
+import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -52,6 +57,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.CommonLevelAccessor;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -61,6 +67,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -72,6 +79,7 @@ import net.minecraftforge.network.NetworkHooks;
  */
 public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITreasureChestBlock {
 
+	
 	private static final VoxelShape CHEST = Block.box(1, 0, 1, 15, 14, 15);
 
 
@@ -117,7 +125,7 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 		registerDefaultState(
 				this.stateDefinition.any()
 				.setValue(FACING, Direction.NORTH)
-				.setValue(UNDISCOVERED, false)
+				.setValue(DISCOVERED, true)
 				);
 	}
 
@@ -172,7 +180,7 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 			return null;
 		}
 	}
-
+	
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
@@ -180,15 +188,17 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 			return (lvl, pos, blockState, t) -> {
 				if (t instanceof ITreasureChestBlockEntity entity) { // test and cast
 					entity.tickClient();
+					entity.tickParticle();
 				}
 			};
 		}
 		else {
-			return (lvl, pos, blockState, t) -> {
-				if (t instanceof ITreasureChestBlockEntity entity) { // test and cast
-					entity.tickServer();
-				}
-			};
+//			return (lvl, pos, blockState, t) -> {
+//				if (t instanceof ITreasureChestBlockEntity entity) { // test and cast
+//					entity.tickServer();
+//				}
+//			};
+			return null;
 		}
 	}
 
@@ -199,7 +209,7 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder
 			.add(FACING)
-			.add(UNDISCOVERED);
+			.add(DISCOVERED);
 	}
 
 	/**
@@ -267,17 +277,23 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 	 * 
 	 */
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player,
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
 			InteractionHand hand, BlockHitResult result) {
 
-		Treasure.LOGGER.debug("using treasure chest...");
-
-		if (WorldInfo.isClientSide(world)) {
+		if (WorldInfo.isClientSide(level)) {
 			return InteractionResult.SUCCESS;
 		}
-
-		AbstractTreasureChestBlockEntity blockEntity = (AbstractTreasureChestBlockEntity) world.getBlockEntity(pos);
+		
+		Treasure.LOGGER.debug("using treasure chest...");
+		
+		AbstractTreasureChestBlockEntity blockEntity = (AbstractTreasureChestBlockEntity) level.getBlockEntity(pos);
 		if (blockEntity != null && !blockEntity.isLocked()) {
+			
+			// if not discovered then set as discovered
+			if (!state.getValue(DISCOVERED)) {
+				// mark as discovered
+				blockEntity = discovered(blockEntity, state, level, pos, player);
+			}			
 			NetworkHooks.openGui((ServerPlayer) player, blockEntity, pos);
 		}		
 		return InteractionResult.SUCCESS;
@@ -285,11 +301,95 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 
 	/**
 	 * 
+	 * @param blockEntity
+	 * @param state
+	 * @param level
+	 * @param pos
+	 * @param player
+	 * @return
+	 */
+	public AbstractTreasureChestBlockEntity discovered(AbstractTreasureChestBlockEntity blockEntity, BlockState state, Level level, BlockPos pos, Player player) {
+		if (level.isClientSide()) {
+			return blockEntity;
+		}
+		
+		// save chest BE to tag
+		CompoundTag tag = new CompoundTag();
+		blockEntity.saveAdditional(tag);
+		
+		// save chest state
+		BlockState oldState = state;
+
+		// place new chest with old state, but different light
+		level.setBlockAndUpdate(pos, oldState.getBlock()
+				.defaultBlockState()
+				.setValue(AbstractTreasureChestBlock.FACING, oldState.getValue(AbstractTreasureChestBlock.FACING))
+				.setValue(AbstractTreasureChestBlock.DISCOVERED, true));
+		
+		// load be from item
+		AbstractTreasureChestBlockEntity newBlockEntity = (AbstractTreasureChestBlockEntity) level.getBlockEntity(pos);
+		newBlockEntity.loadProperties(tag);
+		newBlockEntity.sendUpdates();
+		
+		// update chest context discovered in the chest cache
+		ResourceLocation dimension = (level.dimensionType().effectsLocation());
+		if (newBlockEntity.getGenerationContext() != null) {
+			Treasure.LOGGER.debug("attempting to get chest cache for dimension -> {}, featureType -> {}", dimension, newBlockEntity.getGenerationContext().getFeatureType());
+			GeneratedCache<ChestGeneratedContext> cache = DimensionalGeneratedRegistry.getChestGeneratedCache(dimension, newBlockEntity.getGenerationContext().getFeatureType());
+			if (cache != null) {
+				Optional<ChestGeneratedContext> context = cache.get(newBlockEntity.getGenerationContext().getLootRarity(), new Coords(pos).toShortString());
+				if (context.isPresent()) {
+					context.get().setDiscovered(true);
+					Treasure.LOGGER.debug("updating chest in cache to discovered -> {}", pos.toShortString());
+				}
+			}
+		}
+		
+		return newBlockEntity;
+	}
+	
+	/**
+	 * 
 	 */
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		Treasure.LOGGER.debug("removing chest....!");
-
+	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest,
+			FluidState fluid) {
+		
+		if (WorldInfo.isClientSide(level)) {
+			return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+		}	
+		Treasure.LOGGER.debug("chest destroyed by player....!");
+		breakChest(state, level, pos, player);
+		
+		return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
+		if (WorldInfo.isClientSide(level)) {
+			super.onBlockExploded(state, level, pos, explosion);
+			return;
+		}
+		Treasure.LOGGER.debug("chest exploded....!");
+		breakChest(state, level ,pos, null);
+		
+		super.onBlockExploded(state, level, pos, explosion);
+	}
+	
+	/**
+	 * NOTE breakChest() needs to be called from onDestroyedByPlayer() and onBlockExploded() instead of
+	 * onRemove() because of the why the light emission is handled. When the chest is replaced to recalculate the light
+	 * emission we don't want the chest to drop itself.
+	 * @param state
+	 * @param level
+	 * @param pos
+	 * @param player
+	 * @return
+	 */
+	public boolean breakChest(BlockState state, Level level, BlockPos pos, Player player) {		
 		BlockEntity blockEntity = level.getBlockEntity(pos);
 		if (blockEntity != null) {
 
@@ -324,13 +424,29 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 					}
 				}
 			}
-			// remove the tile entity
-			level.removeBlockEntity(pos);
-		}
-		else {
-			super.onRemove(state, level, pos, newState, isMoving);
-		}
+		}		
+		return true;
 	}
+		
+	/**
+	 * 
+	 */
+//	@Override
+//	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+//		if (WorldInfo.isClientSide(level)) {
+//			return;
+//		}		
+//		Treasure.LOGGER.debug("removing chest....!");
+//		
+//		
+//
+//			// remove the tile entity
+//			level.removeBlockEntity(pos);
+//		}
+//		else {
+//			super.onRemove(state, level, pos, newState, isMoving);
+//		}
+//	}
 
 	/**
 	 * 

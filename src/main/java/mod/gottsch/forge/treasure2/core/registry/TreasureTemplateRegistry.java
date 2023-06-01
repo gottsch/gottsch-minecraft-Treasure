@@ -75,7 +75,6 @@ public class TreasureTemplateRegistry {
 	private static final Set<String> REGISTERED_MODS;
 	private static final Map<String, Boolean> LOADED_MODS;
 	protected static final Gson GSON_INSTANCE;
-	private static final String SAVE_FORMAT_LEVEL_SAVE_SRG_NAME = "f_129744_";
 
 	/*
 	 * All structure templates by resource location.
@@ -633,8 +632,7 @@ public class TreasureTemplateRegistry {
 
 		AccessKey key = new AccessKey(category, type);
 		
-		// TODO get from white list
-		List<TemplateHolder> whitelistHolders = WHITELIST_TABLE.get(key, biome);
+//		List<TemplateHolder> whitelistHolders = WHITELIST_TABLE.get(key, biome);
 		List<TemplateHolder> blacklistHolders = BLACKLIST_TABLE.get(key, biome);
 		
 		// grab all templates by category + type
@@ -644,8 +642,37 @@ public class TreasureTemplateRegistry {
 		}
 
 		// filter out any in the black list
-		templateHolders = templateHolders.stream().filter(h -> blacklistHolders.stream().noneMatch(b -> b.getLocation().equals(h.getLocation()))).collect(Collectors.toList());
-
+		if (templateHolders != null && !templateHolders.isEmpty() && blacklistHolders != null && !blacklistHolders.isEmpty()) {
+			Treasure.LOGGER.debug("template holders -> {}", templateHolders);
+			Treasure.LOGGER.debug("current biome -> {}", biome.toString());
+			templateHolders = templateHolders.stream()
+					.filter(h -> blacklistHolders.stream().noneMatch(b -> b.getLocation().equals(h.getLocation())))
+					.collect(Collectors.toList());			
+		}
+		
+		// filter if the template has a whitelist and this biome is not included
+		if (templateHolders != null && !templateHolders.isEmpty()) {
+			Treasure.LOGGER.debug("template holders -> {}", templateHolders);
+			Treasure.LOGGER.debug("current biome -> {}", biome.toString());
+			templateHolders = templateHolders.stream()
+				.filter(h -> {
+				StructMeta meta = Config.structConfigMetaMap.get(h.getLocation());
+				Treasure.LOGGER.debug("template meta -> {}", meta);
+				if (meta != null) {
+					Treasure.LOGGER.debug("template meta whitelist -> {}", meta.getBiomeWhitelist());
+					if ((meta.getBiomeWhitelist() != null && !meta.getBiomeWhitelist().isEmpty())) {
+						Treasure.LOGGER.debug("comparing template whitelist biome...");
+						if (!meta.getBiomeWhitelist().contains(biome.toString())) {
+							Treasure.LOGGER.debug("biome not found in whitelist");
+							return false;
+						}
+					}
+				}
+				return true;
+			})
+			.collect(Collectors.toList());	
+		}
+		
 		if (templateHolders == null || templateHolders.isEmpty()) {
 			Treasure.LOGGER.debug("could not find template holders for category -> {}, type -> {}", category, type);
 		}
