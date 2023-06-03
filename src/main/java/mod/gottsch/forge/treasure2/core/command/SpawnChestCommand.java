@@ -158,7 +158,7 @@ public class SpawnChestCommand {
 			
 			// TODO provide Genertor by name in command (no weighted option)
 			// TODO provide GeneratorType option in command
-			IChestGenerator generator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity, FeatureType.TERRESTRIAL);
+			IChestGenerator generator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity, FeatureType.TERRANEAN);
 			if (optionalChest.isEmpty()) {
 				chest = generator.selectChest(random, rarity);
 			} else {
@@ -198,7 +198,7 @@ public class SpawnChestCommand {
 					generator.addSeal(blockEntity);
 				}
 				generator.addGenerationContext(blockEntity, rarity);
-				blockEntity.getGenerationContext().setFeatureType(FeatureType.TERRESTRIAL);
+				blockEntity.getGenerationContext().setFeatureType(FeatureType.TERRANEAN);
 
 				if (locked) {
 					generator.addLocks(random, chestBlock, (AbstractTreasureChestBlockEntity) blockEntity, rarity);

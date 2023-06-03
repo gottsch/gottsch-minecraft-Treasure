@@ -142,9 +142,10 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	 * @return
 	 */
 	@Override
+	@Deprecated
 	public BlockEntity placeInWorld(IWorldGenContext context, AbstractTreasureChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
-		GeneratorUtil.replaceBlockWithChest(context, chest, chestCoords);
+		GeneratorUtil.replaceBlockWithChest(context, chest, chestCoords, false);
 		// ensure that chest is of type WITHER_CHEST
 		if (context.level().getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST.get()) {
 			// add top placeholder
@@ -164,9 +165,9 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	}
 	
 	@Override
-	public BlockEntity placeInWorld(IWorldGenContext context, ICoords chestCoords, AbstractTreasureChestBlock chest, BlockState state) {
+	public BlockEntity placeInWorld(IWorldGenContext context, ICoords chestCoords, AbstractTreasureChestBlock chest, BlockState state, boolean discovered) {
 		// replace block @ coords
-		GeneratorUtil.replaceBlockWithChest(context, chestCoords, chest, state);
+		GeneratorUtil.replaceBlockWithChest(context, chestCoords, chest, state, discovered);
 		
 		// ensure that chest is of type WITHER_CHEST
 		if (context.level().getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST.get()) {

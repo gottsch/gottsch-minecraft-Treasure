@@ -37,33 +37,37 @@ import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 
 /**
  * 
- * @author Mark Gottschling May 12, 2023
+ * @author Mark Gottschling on Jun 1, 2023
  *
  */
-public class SurfaceStructureFeatureGenerator implements IFeatureGenerator {
+public class SubaquaticStructureFeatureGenerator implements IFeatureGenerator {
 
 	@Override
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords spawnCoords,
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords coords,
 			IRarity rarity, ChestRarity rarityConfig) {
-		
-		Treasure.LOGGER.debug("surface coords -> {}", spawnCoords.toShortString());
-		if (!WorldInfo.isHeightValid(spawnCoords)) {
-			Treasure.LOGGER.debug("surface coords are invalid -> {}", spawnCoords.toShortString());
+				
+		Treasure.LOGGER.debug("ocean floor coords -> {}", coords.toShortString());
+		if (!WorldInfo.isHeightValid(coords)) {
+			Treasure.LOGGER.debug("ocean floor coords are invalid -> {}", coords.toShortString());
 			return Optional.empty();
 		}
 
 		// check if it has 50% land
-		if (!WorldInfo.isSolidBase(context.level(), spawnCoords, 2, 2, 50)) {
-			Treasure.LOGGER.debug("coords -> {} does not meet solid base requires for {} x {}", spawnCoords.toShortString(), 2, 2);
+		if (!WorldInfo.isSolidBase(context.level(), coords, 2, 2, 50)) {
+			Treasure.LOGGER.debug("coords -> {} does not meet solid base requires for {} x {}", coords.toShortString(), 2, 2);
 			return Optional.empty();
 		}
 		
+		// TEMP - if building a structure, markerCoords could be different than original surface coords because for rotation etc.
+		ICoords floorCoords = coords;
+		ICoords markerCoords = floorCoords;
+		
 		// select a ruins generator
-		IRuinGenerator<GeneratorResult<ChestGeneratorData>> ruinGenerator = selectGenerator(context, spawnCoords, rarity);
+		IRuinGenerator<GeneratorResult<ChestGeneratorData>> ruinGenerator = selectGenerator(context, coords, rarity);
 		
 		// select a template
 		// generate structure
-		Optional<GeneratorResult<ChestGeneratorData>> ruinResult = ruinGenerator.generate(context, spawnCoords, null);
+		Optional<GeneratorResult<ChestGeneratorData>> ruinResult = ruinGenerator.generate(context, coords, null);
 		if (!ruinResult.isPresent()) {
 			return Optional.empty();
 		}
@@ -78,11 +82,12 @@ public class SurfaceStructureFeatureGenerator implements IFeatureGenerator {
 		GeneratorResult<ChestGeneratorData> generationResult = new GeneratorResult<>(ChestGeneratorData.class);
 //		generationResult.getData().setPlacement(RegionPlacement.SURFACE);
 		generationResult.getData().setCoords(chestResult.getData().getCoords());
-		generationResult.getData().setSpawnCoords(spawnCoords);
+		generationResult.getData().setSpawnCoords(coords);
 		generationResult.getData().setRegistryName(chestResult.getData().getRegistryName());
 		generationResult.getData().setRarity(rarity);
+		generationResult.getData().setStructure(true);
 		
-		Treasure.LOGGER.info("CHEATER! {} chest at coords: {}", rarity, spawnCoords.toShortString());
+		Treasure.LOGGER.info("CHEATER! {} chest at coords: {}", rarity, coords.toShortString());
 		return Optional.ofNullable(generationResult);
 	}
 
@@ -94,7 +99,7 @@ public class SurfaceStructureFeatureGenerator implements IFeatureGenerator {
 	 * @return
 	 */
 	public IRuinGenerator<GeneratorResult<ChestGeneratorData>> selectGenerator(IWorldGenContext context, ICoords coords, IRarity rarity) {
-		List<IRuinGenerator<GeneratorResult<ChestGeneratorData>>> generators = RuinGeneratorRegistry.get(StructureCategory.TERRANEAN);
+		List<IRuinGenerator<GeneratorResult<ChestGeneratorData>>> generators = RuinGeneratorRegistry.get(StructureCategory.SUBAQUATIC);
 		IRuinGenerator<GeneratorResult<ChestGeneratorData>> generator = generators.get(context.random().nextInt(generators.size()));
 		return generator;
 	}

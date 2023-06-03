@@ -49,6 +49,7 @@ public class ChestGeneratedContext extends GeneratedContext {
 	}
 	public enum GeneratedType implements IGeneratedType {
 		CHEST,
+		PLACEHOLDER,
 		NONE;
 	}
 	
@@ -202,7 +203,7 @@ public class ChestGeneratedContext extends GeneratedContext {
 	public String toString() {
 		return "ChestGeneratedContext [name=" + name + ", featureType=" + featureType + ", generatedType="
 				+ generatedType + ", discovered=" + discovered + ", chartedFrom=" + chartedFrom + ", surfaceCoords="
-				+ surfaceCoords + "]";
+				+ surfaceCoords + ", getCoords()=" + getCoords() + ", getRarity()=" + getRarity() + "]";
 	}
 
 	public IFeatureType getFeatureType() {

@@ -15,15 +15,21 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
-package mod.gottsch.forge.treasure2.core.structure;
+package mod.gottsch.forge.treasure2.core.world.feature.gen.selector;
 
-import mod.gottsch.forge.gottschcore.enums.IEnum;
+import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
+import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureFeatureGenerators;
 
 /**
  * 
- * @author Mark Gottschling on May 15, 2023
+ * @author Mark Gottschling on Jun 1, 2023
  *
  */
-public interface ISubaqueousType extends IEnum {
+public class AquaticChestFeatureGeneratorSelector implements IFeatureGeneratorSelector {
+
+	@Override
+	public IFeatureGenerator select() {
+		return TreasureFeatureGenerators.SUBAQUATIC_FEATURE_GENERATOR;
+	}
 
 }

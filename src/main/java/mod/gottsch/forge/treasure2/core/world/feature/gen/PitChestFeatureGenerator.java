@@ -93,7 +93,7 @@ public class PitChestFeatureGenerator implements IFeatureGenerator {
 		}
 		
 		// get the chest generator
-		IChestGenerator chestGenerator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity, FeatureType.TERRESTRIAL);
+		IChestGenerator chestGenerator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity, FeatureType.TERRANEAN);
 		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(context, chestCoords, rarity, chestState);
 		if (!chestResult.isSuccess()) {
 			return Optional.empty();

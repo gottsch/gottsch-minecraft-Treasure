@@ -35,6 +35,7 @@ import mod.gottsch.forge.gottschcore.world.gen.structure.StructureMarkers;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.config.StructureConfiguration.StructMeta;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
@@ -130,7 +131,17 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		originalSpawnCoords = new Coords(originalSpawnCoords.getX(), actualSpawnCoords.getY(), originalSpawnCoords.getZ());
 		Treasure.LOGGER.debug("Well original spawn coords -> {}", originalSpawnCoords.toShortString());
 		
-		ICoords offsetCoords = Config.structConfigMetaMap.get(holder.getLocation()).getOffset().asCoords();
+//		ICoords offsetCoords = Config.structConfigMetaMap.get(holder.getLocation()).getOffset().asCoords();
+		Optional<StructMeta> meta = Config.getStructMeta(holder.getLocation());
+		ICoords offsetCoords = Coords.EMPTY;
+		if (meta.isPresent()) {
+			offsetCoords = meta.get().getOffset().asCoords();
+		}
+		else {
+			// TEMP dump map
+			Treasure.LOGGER.debug("dump struct meta map -> {}", Config.structConfigMetaMap);
+			Treasure.LOGGER.debug("... was looking for -> {}", holder.getLocation());
+		}
 		
 		// build well
 		GeneratorResult<TemplateGeneratorData> genResult = generator.generate(context, template,  placement, originalSpawnCoords, offsetCoords);

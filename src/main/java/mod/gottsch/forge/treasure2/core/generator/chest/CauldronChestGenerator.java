@@ -56,21 +56,6 @@ public class CauldronChestGenerator extends EpicChestGenerator {
 				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.CAULDRON);
 		blockEntity.setGenerationContext(generationContext);
 	}
-
-	/*
-	 * @param random
-	 * @param chestRarity
-	 * @return
-	 */
-//	@Override
-//	public Optional<LootTableShell> selectLootTable(Random random, final IRarity chestRarity) {
-//		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.CAULDRON_CHEST);
-//	}
-//
-//	@Override
-//	public Optional<LootTableShell> selectLootTable(Supplier<Random> factory, final IRarity rarity) {
-//		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.CAULDRON_CHEST);
-//	}
 	
 	/**
 	 * Always select a epic chest.

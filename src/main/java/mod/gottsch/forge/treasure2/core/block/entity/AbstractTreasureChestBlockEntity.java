@@ -628,7 +628,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	}
 
 	/*
-	 * 
+	 * TODO think of something better here. There already is ChestGeneratedContext
 	 */
 	public class GenerationContext {
 		/*

@@ -102,16 +102,16 @@ public class GeneratorUtil {
 	 * @param coords
 	 * @return
 	 */
-	public static boolean replaceBlockWithChest(IWorldGenContext context, Block chest, ICoords coords) {
+	public static boolean replaceBlockWithChest(IWorldGenContext context, Block chest, ICoords coords, boolean discovered) {
 		// get the old state
 		BlockState oldState = context.level().getBlockState(coords.toPos());
 
 		if (oldState.getProperties().contains(FACING)) {
 			// set the new state
-			return placeChest(context.level(), chest, coords, (Direction) oldState.getValue(FACING));
+			return placeChest(context.level(), chest, coords, (Direction) oldState.getValue(FACING), discovered);
 
 		} else {
-			return placeChest(context.level(), chest, coords, Direction.from2DDataValue(context.random().nextInt(4)));
+			return placeChest(context.level(), chest, coords, Direction.from2DDataValue(context.random().nextInt(4)), discovered);
 		}
 	}
 
@@ -125,18 +125,18 @@ public class GeneratorUtil {
 	 * @return
 	 */
 	public static boolean replaceBlockWithChest(IWorldGenContext context, ICoords coords, 
-			Block chest,	BlockState state) {
+			Block chest,	BlockState state, boolean discovered) {
 		if (state.getProperties().contains(FACING)) {
-			return placeChest(context.level(), chest, coords, (Direction) state.getValue(FACING));
+			return placeChest(context.level(), chest, coords, (Direction) state.getValue(FACING), discovered);
 		}
 
 		if (state.getBlock() == Blocks.CHEST) {
 			Direction direction = (Direction) state.getValue(ChestBlock.FACING);
-			return placeChest(context.level(), chest, coords, direction);
+			return placeChest(context.level(), chest, coords, direction, discovered);
 		}
 
 		// else do generic
-		return replaceBlockWithChest(context, chest, coords);
+		return replaceBlockWithChest(context, chest, coords, discovered);
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class GeneratorUtil {
 	 * @param pos
 	 * @return
 	 */
-	public static boolean placeChest(ServerLevelAccessor world, Block chest, ICoords coords, Direction direction) {
+	public static boolean placeChest(ServerLevelAccessor world, Block chest, ICoords coords, Direction direction, boolean discovered) {
 		// check if spawn pos is valid
 		if (!WorldInfo.isHeightValid(coords)) {
 			Treasure.LOGGER.debug("cannot place chest due to invalid height -> {}", coords.toShortString());
@@ -156,7 +156,10 @@ public class GeneratorUtil {
 		try {
 			BlockPos pos = coords.toPos();
 			// create and place the chest
-			WorldInfo.setBlock(world, coords, chest.defaultBlockState().setValue(FACING, direction));
+			WorldInfo.setBlock(world, coords, chest
+					.defaultBlockState()
+					.setValue(FACING, direction)
+					.setValue(AbstractTreasureChestBlock.DISCOVERED, discovered));
 			Treasure.LOGGER.debug("placed chest -> {} into world at coords -> {} with prop -> {}",
 					chest.getClass().getSimpleName(), coords.toShortString(), direction);
 

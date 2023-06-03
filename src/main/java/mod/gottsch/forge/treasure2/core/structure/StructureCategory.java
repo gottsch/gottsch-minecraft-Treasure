@@ -34,8 +34,8 @@ public enum StructureCategory implements IStructureCategory {
 	NONE(-1, "none"),
 	TERRANEAN(0, "terranean"),
 	SUBTERRANEAN(1, "subterranean"),
-	AQUEOUS(2, "aqueous"),
-	SUBAQUEOUS(3, "subaqueous"),
+	AQUATIC(2, "aquatic"),
+	SUBAQUATIC(3, "subaquatic"),
 	AERIAL(4, "arial");
 
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();

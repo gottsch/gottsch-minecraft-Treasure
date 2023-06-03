@@ -30,7 +30,7 @@ import mod.gottsch.forge.gottschcore.enums.IEnum;
  * @author Mark Gottschling on May 15, 2023
  *
  */
-public enum SubaqueousType implements ISubaqueousType {
+public enum SubaquaticType implements ISubaquaticType {
 	NONE(-1, "none"),
 	SHALLOW(0, "shallow");
 
@@ -41,7 +41,7 @@ public enum SubaqueousType implements ISubaqueousType {
 	
 	// setup reverse lookup
 	static {
-		for (ISubaqueousType type : EnumSet.allOf(SubaqueousType.class)) {
+		for (ISubaquaticType type : EnumSet.allOf(SubaquaticType.class)) {
 			codes.put(type.getCode(), type);
 			values.put(type.getValue(), type);
 		}
@@ -52,7 +52,7 @@ public enum SubaqueousType implements ISubaqueousType {
 	 * @param code
 	 * @param value
 	 */
-	SubaqueousType(Integer code, String value) {
+	SubaquaticType(Integer code, String value) {
 		this.code = code;
 		this.value = value;
 	}
@@ -87,16 +87,16 @@ public enum SubaqueousType implements ISubaqueousType {
 	 * @param code
 	 * @return
 	 */
-	public static SubaqueousType getByCode(Integer code) {
-		return (SubaqueousType) codes.get(code);
+	public static SubaquaticType getByCode(Integer code) {
+		return (SubaquaticType) codes.get(code);
 	}
 	/**
 	 * 
 	 * @param value
 	 * @return
 	 */
-	public static SubaqueousType getByValue(String value) {
-		return (SubaqueousType) values.get(value);
+	public static SubaquaticType getByValue(String value) {
+		return (SubaquaticType) values.get(value);
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public enum SubaqueousType implements ISubaqueousType {
 	}
 	
 	public static List<String> getNames() {
-		List<String> names = EnumSet.allOf(SubaqueousType.class).stream().map(x -> x.name()).collect(Collectors.toList());
+		List<String> names = EnumSet.allOf(SubaquaticType.class).stream().map(x -> x.name()).collect(Collectors.toList());
 		return names;
 	}
 }

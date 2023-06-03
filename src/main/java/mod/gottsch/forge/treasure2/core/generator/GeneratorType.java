@@ -29,7 +29,7 @@ import mod.gottsch.forge.gottschcore.enums.IEnum;
 @Deprecated
 public enum GeneratorType implements IGeneratorType {
 	NONE,
-	TERRESTRIAL,
+	TERRANEAN,
 	AQUATIC,
 	WITHER,
 	WELL;

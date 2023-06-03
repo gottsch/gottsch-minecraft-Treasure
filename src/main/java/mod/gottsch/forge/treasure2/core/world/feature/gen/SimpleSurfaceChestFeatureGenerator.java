@@ -58,7 +58,7 @@ public class SimpleSurfaceChestFeatureGenerator implements IFeatureGenerator {
 		ICoords chestCoords = new Coords(spawnCoords);
 		Treasure.LOGGER.debug("surface chest coords -> {}", chestCoords);
 
-		IChestGenerator chestGenerator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity, FeatureType.TERRESTRIAL);
+		IChestGenerator chestGenerator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity, FeatureType.TERRANEAN);
 		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(context, chestCoords, rarity, null);
 		if (!chestResult.isSuccess()) {
 			return Optional.empty();

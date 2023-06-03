@@ -25,6 +25,8 @@ import mod.gottsch.forge.gottschcore.enums.IEnum;
  * @author Mark Gottschling on Sep 4, 2020
  *
  */
+@Deprecated
+// Rarity can now replace this in its entirety.
 public enum ChestGeneratorType implements IChestGeneratorType {
 	COMMON,
 	UNCOMMON,

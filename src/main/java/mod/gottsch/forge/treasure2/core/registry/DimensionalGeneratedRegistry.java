@@ -135,6 +135,7 @@ public class DimensionalGeneratedRegistry {
 				generatedRegistryTag.putString("name", generatorType.getName());
 				ListTag dataTag = new ListTag();
 				genRegistry.getValues().forEach(datum -> {
+					Treasure.LOGGER.debug("saving generated context datum -> {}", datum);
 					CompoundTag datumTag = datum.save();
 					// add entry to list
 					dataTag.add(datumTag);	
@@ -200,7 +201,7 @@ public class DimensionalGeneratedRegistry {
 										GeneratedContext context = supplier.get();
 										// extract the data
 										context.load((CompoundTag)datum);
-										Treasure.LOGGER.debug("context -> {}", context);
+										Treasure.LOGGER.debug("loading datum context -> {}", context);
 										if (context.getRarity() != null && context.getCoords() != null) {										
 											if (generatedRegistry != null) {
 												generatedRegistry.cache(context.getRarity(), context.getCoords(), context);

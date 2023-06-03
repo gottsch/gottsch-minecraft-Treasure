@@ -91,15 +91,6 @@ public interface IChestGenerator {
 	
 	public IChestGeneratorType getChestGeneratorType();
 	
-//	/*
-//	MC 1.18.2: net/minecraft/world/level/block/state/BlockBehaviour$BlockStateBase.lightEmission
-//	Name: b => f_60594_ => lightEmission
-//	Side: BOTH
-//	AT: public net.minecraft.world.level.block.state.BlockBehaviour$BlockStateBase f_60594_ # lightEmission
-//	Type: int
-//	*/
-//	static final String LIGHT_EMISSION_SRG = "f_60594_";
-	
 	/**
 	 * TODO should pass RandomSource and not use a new Random
 	 * @param context
@@ -138,19 +129,14 @@ public interface IChestGenerator {
 		if (state == null) {
 			state = chest.defaultBlockState();
 		}
-		
-		// set undiscovered
-		if (Config.SERVER.effects.enableUndiscoveredEffects.get()) {
-			state.setValue(AbstractTreasureChestBlock.DISCOVERED, false);
-		}
-		
-		// TODO need to get the FACING property from somewhere
+
+		// TODO need to get the FACING property from somewhere - should be covered in the placeInWorld - it inspects the replaced block
 
 		
 		// place the chest in the world
 		BlockEntity blockEntity = null;
 		if (state != null) {
-			blockEntity = placeInWorld(context, coords, chest, state);
+			blockEntity = placeInWorld(context, coords, chest, state, false);
 		}
 
 		if (blockEntity == null) {
@@ -165,6 +151,7 @@ public interface IChestGenerator {
 		addSeal((ITreasureChestBlockEntity) blockEntity);
 
 		// update the backing block entity's generation contxt
+		// NOTE only updates generation context with Rarity and ChestGeneratorType. The featureType at this point is unknown.
 		addGenerationContext((ITreasureChestBlockEntity) blockEntity, rarity);
 
 		// add locks
@@ -462,7 +449,7 @@ public interface IChestGenerator {
 			IRarity mapRarity = getBoostedRarity(rarity, getRarityBoostAmount());
 			Treasure.LOGGER.debug("get rarity chests for dimension -> {}", dimension.toString());
 			// TODO how to merge surface and submerged
-			GeneratedCache<ChestGeneratedContext> generatedRegistry = DimensionalGeneratedRegistry.getChestGeneratedCache(dimension, FeatureType.TERRESTRIAL);
+			GeneratedCache<ChestGeneratedContext> generatedRegistry = DimensionalGeneratedRegistry.getChestGeneratedCache(dimension, FeatureType.TERRANEAN);
 			Optional<List<ChestGeneratedContext>> chestGeneratedContexts = Optional.empty();
 			if (generatedRegistry != null) {
 				chestGeneratedContexts = generatedRegistry.getByIRarity(mapRarity);
@@ -700,9 +687,10 @@ public interface IChestGenerator {
 	 * @param chestCoords
 	 * @return
 	 */
+	@Deprecated
 	default public BlockEntity placeInWorld(IWorldGenContext context, AbstractTreasureChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
-		boolean isPlaced = GeneratorUtil.replaceBlockWithChest(context, chest, chestCoords);
+		boolean isPlaced = GeneratorUtil.replaceBlockWithChest(context, chest, chestCoords, false);
 
 		// get the backing block entity of the chest
 		BlockEntity blockEntity = (BlockEntity) context.level().getBlockEntity(chestCoords.toPos());
@@ -739,10 +727,10 @@ public interface IChestGenerator {
 	 * @return
 	 */
 	default public BlockEntity placeInWorld(IWorldGenContext context, ICoords chestCoords,
-			AbstractTreasureChestBlock chest, BlockState state) {
+			AbstractTreasureChestBlock chest, BlockState state, boolean discovered) {
 		
 		// replace block @ coords
-		boolean isPlaced = GeneratorUtil.replaceBlockWithChest(context, chestCoords, chest, state);
+		boolean isPlaced = GeneratorUtil.replaceBlockWithChest(context, chestCoords, chest, state, discovered);
 		Treasure.LOGGER.debug("isPlaced -> {}", isPlaced);
 		// get the backing block entity of the chest
 		BlockEntity blockEntity = (BlockEntity) context.level().getBlockEntity(chestCoords.toPos());

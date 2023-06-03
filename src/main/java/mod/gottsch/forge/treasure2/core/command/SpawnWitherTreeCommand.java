@@ -118,9 +118,9 @@ public class SpawnWitherTreeCommand {
 				return -1;
 			}
 
-			Generator generatorConfig = config.getGenerator(FeatureType.TERRESTRIAL.getName());
+			Generator generatorConfig = config.getGenerator(FeatureType.TERRANEAN.getName());
 			if (generatorConfig == null) {
-				Treasure.LOGGER.warn("unable to locate a config for feature type -> {}.", FeatureType.TERRESTRIAL.getName());
+				Treasure.LOGGER.warn("unable to locate a config for feature type -> {}.", FeatureType.TERRANEAN.getName());
 				return -1;
 			}
 			

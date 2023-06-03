@@ -121,7 +121,7 @@
 	##### SUBAQUEOUS #####
 	### RUIN ###
 	[[structureConfigs.structMetas]]
-		name = "treasure2:subaqueous/ruin/sunken_ship1"
+		name = "treasure2:subaquatic/ruin/sunken_ship1"
 		biomeWhitelist = ["minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"]
 		biomeBlackList = []
@@ -131,7 +131,7 @@
 		z = 0
 
 	[[structureConfigs.structMetas]]
-		name = "treasure2:subaqueous/ruin/sunken_ship2"
+		name = "treasure2:subaquatic/ruin/sunken_ship2"
 		biomeWhitelist = ["minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"]
 		biomeBlackList = []
@@ -141,7 +141,7 @@
 		z = 0
 
 	[[structureConfigs.structMetas]]
-		name = "treasure2:subaqueous/ruin/sunken_ship3"
+		name = "treasure2:subaquatic/ruin/sunken_ship3"
 		biomeWhitelist = ["minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 					"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"]
 		biomeBlackList = []
@@ -151,22 +151,22 @@
 		z = 0
 
 	[[structureConfigs.structMetas]]
-		name = "treasure2:subaqueous/ruin/underwater_ruins1"
+		name = "treasure2:subaquatic/ruin/underwater_ruins1"
 		biomeWhiteList = ["minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", "minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"]
 		biomeBlackList = []
 
 	[[structureConfigs.structMetas]]
-		name = "treasure2:subaqueous/ruin/underwater_ruins2"
+		name = "treasure2:subaquatic/ruin/underwater_ruins2"
 		biomeWhiteList = ["minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", "minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"]
 		biomeBlackList = []
 
 	[[structureConfigs.structMetas]]
-		name = "treasure2:subaqueous/ruin/underwater_ruins3"
+		name = "treasure2:subaquatic/ruin/underwater_ruins3"
 		biomeWhiteList = ["minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", "minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"]
 		biomeBlackList = []
 
 	[[structureConfigs.structMetas]]
-		name = "treasure2:subaqueous/ruin/shallow/dingy1"
+		name = "treasure2:subaquatic/ruin/shallow/dingy1"
 		biomeWhiteList = ["minecraft:ocean", "minecraft:cold_ocean", "minecraft:frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean"]
 		biomeBlackList = []
 

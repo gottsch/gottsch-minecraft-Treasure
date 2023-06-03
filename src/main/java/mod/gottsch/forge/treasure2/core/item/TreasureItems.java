@@ -51,13 +51,6 @@ public class TreasureItems {
 		}
 	};
 
-//	public static final CreativeModeTab ADORNMENTS_ITEM_GROUP = new CreativeModeTab(Treasure.MODID + ".adornments_tab") {
-//		@Override
-//		public ItemStack makeIcon() {
-//			return new ItemStack(TreasureItems.ADORNMENTS_TAB.get());
-//		}
-//	};	
-
 	// item properties
 	public static final Item.Properties TREASURE_ITEM_PROPERTIES = new Item.Properties().tab(TREASURE_ITEM_GROUP);
 	public static final Supplier<Item.Properties> TREASURE_PROPS_SUPPLIER = () -> new Item.Properties().tab(TREASURE_ITEM_GROUP);

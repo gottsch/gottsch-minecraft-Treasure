@@ -82,7 +82,7 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param quantity
 	 * @param d
 	 */
-	default public void buildOneTimeSpawners(IWorldGenContext context, List<BlockInfoContext> proximityContexts, Quantity quantity, double d) {
+	default public void buildOneTimeSpawners(IWorldGenContext context, List<BlockInfoContext> proximityContexts, Quantity quantity, double proximity) {
 		for (BlockInfoContext c : proximityContexts) {
 			Treasure.LOGGER.debug("placing proximity spawner at -> {}", c.getCoords().toShortString());
 	    	context.level().setBlock(c.getCoords().toPos(), TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState(), 3);
@@ -92,7 +92,7 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 		    	Treasure.LOGGER.debug("using mob -> {} for poximity spawner.", r.getRegistryName().toString());
 		    	te.setMobName(r.getRegistryName());
 		    	te.setMobNum(new Quantity(1, 2));
-		    	te.setProximity(5D);
+		    	te.setProximity(proximity);
 	    	}
 	    	else {
 	    		Treasure.LOGGER.debug("unable to generate proximity spawner at -> {}", c.getCoords().toShortString());

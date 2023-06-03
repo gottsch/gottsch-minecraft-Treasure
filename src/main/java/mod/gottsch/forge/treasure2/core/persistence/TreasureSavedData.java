@@ -87,9 +87,9 @@ public class TreasureSavedData extends SavedData {
 			RarityLevelWeightedChestGeneratorRegistry.load(tag.getList(CHEST_GEN_REGISTRY_NAME, Tag.TAG_COMPOUND));
 			
 			RarityLevelWeightedChestGeneratorRegistry.RARITY_SELECTOR.forEach((dim, map) -> {
-				RarityLevelWeightedCollection dumpCol = map.get(FeatureType.TERRESTRIAL);
+				RarityLevelWeightedCollection dumpCol = map.get(FeatureType.TERRANEAN);
 				List<String> dump = dumpCol.dump();
-				Treasure.LOGGER.debug("load terrestrial weighted collection dump -> {}", dump);
+				Treasure.LOGGER.debug("load terranean weighted collection dump -> {}", dump);
 				dumpCol = map.get(FeatureType.AQUATIC);
 				dump = dumpCol.dump();
 				Treasure.LOGGER.debug("load aquatic weighted collection dump -> {}", dump);
