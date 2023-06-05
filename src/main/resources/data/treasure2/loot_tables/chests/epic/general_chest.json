@@ -34,7 +34,7 @@
     },
     "entries" : [ {
       "type" : "minecraft:loot_table",
-      "name" : "treasure2:pools/armor/epic",
+      "name" : "treasure2:pools/combat/epic",
       "weight" : 1
     } ]
   }, {
@@ -46,14 +46,6 @@
     "entries" : [ {
       "type" : "minecraft:loot_table",
       "name" : "treasure2:pools/food/epic",
-      "weight" : 1
-    } ]
-  }, {
-    "name" : "tools",
-    "rolls" : 1,
-    "entries" : [ {
-      "type" : "minecraft:loot_table",
-      "name" : "treasure2:pools/tools/epic",
       "weight" : 1
     } ]
   }, {

@@ -25,8 +25,11 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 
 /**
  * 
@@ -156,5 +159,33 @@ public class Recipes extends RecipeProvider {
 	        .define('s', TreasureItems.SAPPHIRE.get())
 	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
 	        .save(recipe);
+
+	         ShapelessRecipeBuilder.shapeless(Items.COPPER_INGOT)
+	         .requires(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get())
+	         .save(recipe);
+	         
+	         ShapelessRecipeBuilder.shapeless(Items.COPPER_INGOT)
+	         .requires(TreasureItems.COPPER_SHORT_SWORD.get())
+	         .save(recipe);
+	         
+	         ShapelessRecipeBuilder.shapeless(Items.COPPER_INGOT)
+	         .requires(TreasureItems.COPPER_RAPIER.get())
+	         .save(recipe);
+	         
+	         ShapelessRecipeBuilder.shapeless(Items.IRON_INGOT)
+	         .requires(TreasureItems.CHIPPED_IRON_SHORT_SWORD.get())
+	         .save(recipe);
+	         
+	         ShapelessRecipeBuilder.shapeless(Items.IRON_INGOT)
+	         .requires(TreasureItems.IRON_SHORT_SWORD.get())
+	         .save(recipe);
+	         
+	         ShapelessRecipeBuilder.shapeless(Items.IRON_INGOT)
+	         .requires(TreasureItems.CHIPPED_STEEL_SHORT_SWORD.get())
+	         .save(recipe);
+	         
+	         ShapelessRecipeBuilder.shapeless(Items.IRON_INGOT)
+	         .requires(TreasureItems.STEEL_SHORT_SWORD.get())
+	         .save(recipe);   
 		}
 }

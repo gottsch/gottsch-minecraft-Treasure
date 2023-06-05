@@ -1,63 +1,43 @@
 {
-	"version": "1.0",
-	"type": "minecraft:chest",
-	"pools": [
-		{
-			"name": "uncommon_tools",
-			"rolls": 1,
-			"entries": [
-				{
-					"entryName": "iron_sword",
-					"type": "minecraft:item",
-					"name": "minecraft:iron_sword",
-					"weight": 35
-				},
-				{
-					"entryName": "iron_pickaxe",
-					"type": "minecraft:item",
-					"name": "minecraft:iron_pickaxe",
-					"weight": 25
-				},
-				{
-					"entryName": "iron_axe",
-					"type": "minecraft:item",
-					"name": "minecraft:iron_axe",
-					"weight": 25
-				},
-				{
-					"entryName": "golden_sword",
-					"type": "minecraft:item",
-					"name": "minecraft:golden_sword",
-					"weight": 25,
-					"functions": [
-						{
-							"function": "minecraft:enchant_randomly"
-						}
-					]
-				},
-				{
-					"entryName": "golden_pickaxe",
-					"type": "minecraft:item",
-					"name": "minecraft:golden_pickaxe",
-					"weight": 15,
-					"functions": [
-						{
-							"function": "minecraft:enchant_randomly"
-						}
-					]
-				},
-				{
-					"entryName": "golden_axe",
-					"type": "minecraft:item",
-					"name": "minecraft:golden_axe",
-					"weight": 15,
-					"functions": [
-						{
-							"function": "minecraft:enchant_randomly"
-						}
-					]
-				}
-			]
-		}
-	]
+  "version" : "2.0.0",
+  "type" : "minecraft:chest",
+  "pools" : [ {
+    "name" : "uncommon_tools",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "iron_pickaxe",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_pickaxe",
+      "weight" : 25
+    }, {
+      "entryName" : "iron_axe",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_axe",
+      "weight" : 25
+    }, {
+      "entryName" : "golden_sword",
+      "type" : "minecraft:item",
+      "name" : "minecraft:golden_sword",
+      "weight" : 25,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "golden_pickaxe",
+      "type" : "minecraft:item",
+      "name" : "minecraft:golden_pickaxe",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "golden_axe",
+      "type" : "minecraft:item",
+      "name" : "minecraft:golden_axe",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    } ]
+  } ]
 }
