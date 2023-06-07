@@ -136,6 +136,31 @@ public class Recipes extends RecipeProvider {
 	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
 	        .save(recipe);	        
 	        
+	        // topaz key
+	        ShapedRecipeBuilder.shaped(TreasureItems.TOPAZ_KEY.get())
+	        .pattern("kt ")
+	        .pattern(" d ")
+	        .pattern(" r ")
+	        .define('t', TreasureItems.TREASURE_TOOL.get())
+	        .define('k', TreasureItems.GOLD_KEY.get())
+	        .define('d', Items.GLOWSTONE_DUST)
+	        .define('r', TreasureItems.TOPAZ.get())
+	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+	        .save(recipe);
+	        
+	        // onyx key
+	        ShapedRecipeBuilder.shaped(TreasureItems.ONYX_KEY.get())
+	        .pattern("kt ")
+	        .pattern(" d ")
+	        .pattern(" r ")
+	        .define('t', TreasureItems.TREASURE_TOOL.get())
+	        .define('k', TreasureItems.GOLD_KEY.get())
+	        .define('d', Items.GLOWSTONE_DUST)
+	        .define('r', TreasureItems.ONYX.get())
+	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+	        .save(recipe);
+	        
+	        
 	        // ruby key
 	        ShapedRecipeBuilder.shaped(TreasureItems.RUBY_KEY.get())
 	        .pattern("kt ")

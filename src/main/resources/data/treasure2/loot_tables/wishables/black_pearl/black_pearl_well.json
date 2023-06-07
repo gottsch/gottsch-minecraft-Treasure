@@ -53,7 +53,7 @@
 			"entries": [
 	                {
                     "type": "minecraft:loot_table",
-                    "name": "treasure2:pools/armor/epic",
+                    "name": "treasure2:pools/combat/epic",
                     "weight": 1
                 }
 			]

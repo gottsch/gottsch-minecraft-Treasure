@@ -42,7 +42,7 @@
     },
     "entries" : [ {
       "type" : "minecraft:loot_table",
-      "name" : "treasure2:pools/armor/rare",
+      "name" : "treasure2:pools/combat/rare",
       "weight" : 1
     } ]
   }, {

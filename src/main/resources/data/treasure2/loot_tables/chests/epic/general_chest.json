@@ -1,5 +1,5 @@
 {
-  "version" : "4.0",
+  "version" : "4.0.0",
   "since" : "mc1.18.2-v.2.5.0",
   "category" : "general",
   "rarity" : "epic",
@@ -78,7 +78,7 @@
     },
     "entries" : [ {
       "type" : "minecraft:loot_table",
-      "name" : "treasure2:pools/armor/rare",
+      "name" : "treasure2:pools/combat/rare",
       "weight" : 1
     } ]
   }, {

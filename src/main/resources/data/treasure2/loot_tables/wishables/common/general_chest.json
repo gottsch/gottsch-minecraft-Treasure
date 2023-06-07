@@ -31,7 +31,7 @@
     },
     "entries" : [ {
       "type" : "minecraft:loot_table",
-      "name" : "treasure2:pools/armor/common",
+      "name" : "treasure2:pools/combat/common",
       "weight" : 1
     } ]
   }, {

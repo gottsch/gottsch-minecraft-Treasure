@@ -34,7 +34,7 @@
     },
     "entries" : [ {
       "type" : "minecraft:loot_table",
-      "name" : "treasure2:pools/armor/scarce",
+      "name" : "treasure2:pools/combat/scarce",
       "weight" : 1
     } ]
   }, {
@@ -89,7 +89,7 @@
     },
     "entries" : [ {
       "type" : "minecraft:loot_table",
-      "name" : "treasure2:pools/armor/uncommon",
+      "name" : "treasure2:pools/combat/uncommon",
       "weight" : 1
     } ]
   }, {
