@@ -17,16 +17,14 @@
  */
 package mod.gottsch.forge.treasure2.core.registry;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Supplier;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
 import mod.gottsch.forge.treasure2.core.config.Config;
-import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext;
+import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
@@ -45,29 +43,22 @@ import net.minecraft.resources.ResourceLocation;
  * @author Mark Gottschling on Nov 30, 2022
  *
  */
-public class DimensionalGeneratedRegistry {	
+public class DimensionalGeneratedCache {	
 	private static final String DIMENSION_NAME = "dimension";
-	private static final String CHEST_REGISTRY_NAME = "chestRegistry";
-//	private static final String WELL_REGISTRIES_NAME = "wellRegistries";
-	//	@Deprecated
-	//	private static final String WITHER_TREE_REGISTRIES_NAME = "witherTreeRegistries";
+	private static final String CHEST_CACHE_NAME = "chestCache";
 
-	// legacy
-	//	private static final String DIMENSION_ID_TAG_NAME = "dimensionID";
-
-	public static final Map<ResourceLocation, Map<IFeatureType, GeneratedCache<? extends GeneratedContext>>> CHEST_REGISTRY = new HashMap<>();
-
+	public static final Map<ResourceLocation, Map<IFeatureType, GeneratedCache<? extends GeneratedContext>>> CHEST_CACHE = new HashMap<>();
 
 	/**
 	 * 
 	 */
-	private DimensionalGeneratedRegistry() {}
+	private DimensionalGeneratedCache() {}
 
 	/**
 	 * 
 	 */
 	public static void clear() {
-		CHEST_REGISTRY.clear();
+		CHEST_CACHE.clear();
 	}
 	
 	/**
@@ -90,7 +81,7 @@ public class DimensionalGeneratedRegistry {
 					// create a new map for generatorType->generatedChestRegistry
 					Map<IFeatureType, GeneratedCache<? extends GeneratedContext>> chestRegistryMap = new HashMap<>();
 					// add generator map to byDimension map
-					CHEST_REGISTRY.put(dimension, chestRegistryMap);
+					CHEST_CACHE.put(dimension, chestRegistryMap);
 
 					// for each generator
 					chestConfig.getGenerators().forEach(generator -> {
@@ -113,8 +104,8 @@ public class DimensionalGeneratedRegistry {
 	public static Tag save() {
 		CompoundTag tag = new CompoundTag();
 
-		Tag chestTag = saveRegistry(CHEST_REGISTRY);
-		tag.put(CHEST_REGISTRY_NAME, chestTag);		
+		Tag chestTag = saveRegistry(CHEST_CACHE);
+		tag.put(CHEST_CACHE_NAME, chestTag);		
 
 		return tag;
 	}
@@ -135,7 +126,7 @@ public class DimensionalGeneratedRegistry {
 				generatedRegistryTag.putString("name", generatorType.getName());
 				ListTag dataTag = new ListTag();
 				genRegistry.getValues().forEach(datum -> {
-					Treasure.LOGGER.debug("saving generated context datum -> {}", datum);
+//					Treasure.LOGGER.debug("saving generated context datum -> {}", datum);
 					CompoundTag datumTag = datum.save();
 					// add entry to list
 					dataTag.add(datumTag);	
@@ -154,8 +145,8 @@ public class DimensionalGeneratedRegistry {
 	 * @param tag
 	 */
 	public static void load(CompoundTag tag) {
-		if (tag.contains(CHEST_REGISTRY_NAME)) {
-			loadRegistry(tag.getList(CHEST_REGISTRY_NAME, Tag.TAG_COMPOUND), CHEST_REGISTRY, ChestGeneratedContext::new);
+		if (tag.contains(CHEST_CACHE_NAME)) {
+			loadRegistry(tag.getList(CHEST_CACHE_NAME, Tag.TAG_COMPOUND), CHEST_CACHE, GeneratedChestContext::new);
 		}
 	}
 
@@ -201,7 +192,7 @@ public class DimensionalGeneratedRegistry {
 										GeneratedContext context = supplier.get();
 										// extract the data
 										context.load((CompoundTag)datum);
-										Treasure.LOGGER.debug("loading datum context -> {}", context);
+//										Treasure.LOGGER.debug("loading datum context -> {}", context);
 										if (context.getRarity() != null && context.getCoords() != null) {										
 											if (generatedRegistry != null) {
 												generatedRegistry.cache(context.getRarity(), context.getCoords(), context);
@@ -225,10 +216,22 @@ public class DimensionalGeneratedRegistry {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static GeneratedCache<ChestGeneratedContext> getChestGeneratedCache(ResourceLocation dimension, IFeatureType genType) {
-		return (GeneratedCache<ChestGeneratedContext>) getGeneratedCache(CHEST_REGISTRY, dimension, genType);
+	public static GeneratedCache<GeneratedChestContext> getChestGeneratedCache(ResourceLocation dimension, IFeatureType genType) {
+		return (GeneratedCache<GeneratedChestContext>) getGeneratedCache(CHEST_CACHE, dimension, genType);
 	}
 
+	@SuppressWarnings("unchecked")
+	public static List<GeneratedCache<GeneratedChestContext>> getChestGeneratedCaches(ResourceLocation dimension) {
+		Map<IFeatureType, GeneratedCache<? extends GeneratedContext>> registryMap = CHEST_CACHE.get(dimension);
+		List<GeneratedCache<GeneratedChestContext>> caches = new ArrayList<GeneratedCache<GeneratedChestContext>>();
+		if (registryMap != null) {
+				registryMap.values().forEach(c -> {
+				caches.add((GeneratedCache<GeneratedChestContext>) c);
+			});
+		}
+		return caches;
+	}
+	
 	/**
 	 * 
 	 * @param registry
@@ -244,4 +247,6 @@ public class DimensionalGeneratedRegistry {
 		}
 		return genRegistry;
 	}
+
+
 }

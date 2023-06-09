@@ -369,7 +369,10 @@ public class TreasureItems {
 	public static final RegistryObject<Item> SKELETON_ITEM = Registration.ITEMS.register("skeleton", () -> new SkeletonItem(TreasureBlocks.SKELETON.get(), TREASURE_PROPS_SUPPLIER.get()));
 
 	// eggs
-	public static final RegistryObject<Item> BOUND_SOUL_EGG = Registration.ITEMS.register("bound_soul", () -> new ForgeSpawnEggItem(TreasureEntities.BOUND_SOUL_ENTITY_TYPE, 0x000000, 0x2b2b2b, TREASURE_PROPS_SUPPLIER.get()));
+	public static final RegistryObject<Item> BOUND_SOUL_EGG = Registration.ITEMS.register("bound_soul_egg", () -> new ForgeSpawnEggItem(TreasureEntities.BOUND_SOUL_ENTITY_TYPE, 0x000000, 0x2b2b2b, TREASURE_PROPS_SUPPLIER.get()));
+	public static final RegistryObject<Item> WOOD_CHEST_MIMIC_EGG = Registration.ITEMS.register("wood_chest_mimic_egg", () -> new ForgeSpawnEggItem(TreasureEntities.WOOD_CHEST_MIMIC_ENTITY_TYPE, 0x9f844d, 0x54442c, TREASURE_PROPS_SUPPLIER.get()));
+	public static final RegistryObject<Item> PIRATE_CHEST_MIMIC_EGG = Registration.ITEMS.register("pirate_chest_mimic_egg", () -> new ForgeSpawnEggItem(TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE, 0x010101, 0x3b3b3b, TREASURE_PROPS_SUPPLIER.get()));
+	public static final RegistryObject<Item> VIKING_CHEST_MIMIC_EGG = Registration.ITEMS.register("viking_chest_mimic_egg", () -> new ForgeSpawnEggItem(TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE, 0x642e1e, 0x753c27, TREASURE_PROPS_SUPPLIER.get()));
 
 	// tiers
 	public static final ForgeTier COPPER = new ForgeTier(1, 200, 5.0F, 1.0F, 10, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.of(Items.COPPER_INGOT));

@@ -18,46 +18,17 @@
 package mod.gottsch.forge.treasure2.core.setup;
 
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.client.model.blockentity.BandedChestModel;
-import mod.gottsch.forge.treasure2.client.model.blockentity.CardboardBoxModel;
-import mod.gottsch.forge.treasure2.client.model.blockentity.CauldronChestModel;
-import mod.gottsch.forge.treasure2.client.model.blockentity.CompressorChestModel;
-import mod.gottsch.forge.treasure2.client.model.blockentity.CrateChestModel;
-import mod.gottsch.forge.treasure2.client.model.blockentity.DreadPirateChestModel;
-import mod.gottsch.forge.treasure2.client.model.blockentity.MilkCrateModel;
-import mod.gottsch.forge.treasure2.client.model.blockentity.SafeModel;
-import mod.gottsch.forge.treasure2.client.model.blockentity.SkullChestModel;
-import mod.gottsch.forge.treasure2.client.model.blockentity.SpiderChestModel;
-import mod.gottsch.forge.treasure2.client.model.blockentity.StandardChestModel;
-import mod.gottsch.forge.treasure2.client.model.blockentity.StrongboxModel;
-import mod.gottsch.forge.treasure2.client.model.blockentity.VikingChestModel;
-import mod.gottsch.forge.treasure2.client.model.blockentity.WitherChestModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.*;
 import mod.gottsch.forge.treasure2.client.model.entity.BoundSoulModel;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.CardboardBoxRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.CauldronChestRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.CompressorChestRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.CrateChestRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.DreadPirateChestRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.IronboundChestRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.MilkCrateRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.MoldyCrateChestRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.PirateChestRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.SafeRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.SkullChestRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.SpiderChestRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.StrongboxRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.VikingChestRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.WitherChestRenderer;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.WoodChestRenderer;
+import mod.gottsch.forge.treasure2.client.model.entity.PirateChestMimicModel;
+import mod.gottsch.forge.treasure2.client.model.entity.VikingChestMimicModel;
+import mod.gottsch.forge.treasure2.client.model.entity.WoodChestMimicModel;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.*;
 import mod.gottsch.forge.treasure2.client.renderer.entity.BoundSoulRenderer;
-import mod.gottsch.forge.treasure2.client.screen.CompressorChestScreen;
-import mod.gottsch.forge.treasure2.client.screen.KeyRingScreen;
-import mod.gottsch.forge.treasure2.client.screen.PouchScreen;
-import mod.gottsch.forge.treasure2.client.screen.SkullChestScreen;
-import mod.gottsch.forge.treasure2.client.screen.StandardChestScreen;
-import mod.gottsch.forge.treasure2.client.screen.StrongboxScreen;
-import mod.gottsch.forge.treasure2.client.screen.VikingChestScreen;
-import mod.gottsch.forge.treasure2.client.screen.WitherChestScreen;
+import mod.gottsch.forge.treasure2.client.renderer.entity.PirateChestMimicRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.entity.VikingChestMimicRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.entity.WoodChestMimicRenderer;
+import mod.gottsch.forge.treasure2.client.screen.*;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureBlockEntities;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
@@ -101,14 +72,11 @@ public class ClientSetup {
             MenuScreens.register(TreasureContainers.WITHER_CHEST_CONTAINER.get(), WitherChestScreen::new); 
             MenuScreens.register(TreasureContainers.KEY_RING_CONTAINER.get(), KeyRingScreen::new);           
             MenuScreens.register(TreasureContainers.POUCH_CONTAINER.get(), PouchScreen::new);           
-
-//            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.WOOD_CHEST.get(), RenderType.cutoutMipped());
             
             TreasureBlocks.CHESTS.forEach(chest -> {
             	ItemBlockRenderTypes.setRenderLayer(chest.get(), RenderType.cutoutMipped());
             });
-//            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.VIKING_CHEST.get(), RenderType.cutoutMipped());
-            
+
             ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SPANISH_MOSS.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SKELETON.get(), RenderType.cutout());
         });
@@ -171,6 +139,9 @@ public class ClientSetup {
 		event.registerBlockEntityRenderer(TreasureBlockEntities.WITHER_CHEST_BLOCK_ENTITY_TYPE.get(), WitherChestRenderer::new);
 		
 		event.registerEntityRenderer(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), BoundSoulRenderer::new);
+		event.registerEntityRenderer(TreasureEntities.WOOD_CHEST_MIMIC_ENTITY_TYPE.get(), WoodChestMimicRenderer::new);
+		event.registerEntityRenderer(TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE.get(), PirateChestMimicRenderer::new);
+		event.registerEntityRenderer(TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE.get(), VikingChestMimicRenderer::new);
 	}
 	
 	/**
@@ -195,6 +166,9 @@ public class ClientSetup {
 		event.registerLayerDefinition(WitherChestModel.LAYER_LOCATION, WitherChestModel::createBodyLayer);
 		
 		event.registerLayerDefinition(BoundSoulModel.LAYER_LOCATION, BoundSoulModel::createBodyLayer);
+		event.registerLayerDefinition(WoodChestMimicModel.LAYER_LOCATION, WoodChestMimicModel::createBodyLayer);
+		event.registerLayerDefinition(PirateChestMimicModel.LAYER_LOCATION, PirateChestMimicModel::createBodyLayer);
+		event.registerLayerDefinition(VikingChestMimicModel.LAYER_LOCATION, VikingChestMimicModel::createBodyLayer);
 	}
 	
 	

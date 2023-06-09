@@ -53,6 +53,9 @@ public interface ITreasureChestBlockEntity { //extends Inventory {
 	GenerationContext getGenerationContext();
 	void setGenerationContext(GenerationContext generationContext);
 	
+	ResourceLocation getMimic();
+	void setMimic(ResourceLocation mimic);
+	
     // TODO these are part of AbstractTreasureChestBlockEntity - circular dependence - BAD
 //    public GenerationContext getGenerationContext();
 //    public void setGenerationContext(GenerationContext context);

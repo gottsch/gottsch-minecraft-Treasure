@@ -124,14 +124,4 @@ public class ChestGeneratorData extends GeneratorData {
 	public void setCoords(ICoords coords) {
 		this.coords = coords;
 	}
-
-	@Deprecated
-	public IRegionPlacement getPlacement() {
-		return placement;
-	}
-
-	@Deprecated
-	public void setPlacement(IRegionPlacement placement) {
-		this.placement = placement;
-	}
 }

@@ -132,10 +132,12 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		Treasure.LOGGER.debug("Well original spawn coords -> {}", originalSpawnCoords.toShortString());
 		
 //		ICoords offsetCoords = Config.structConfigMetaMap.get(holder.getLocation()).getOffset().asCoords();
+		Treasure.LOGGER.debug("looking for offset meta for -> {}", holder.getLocation());
 		Optional<StructMeta> meta = Config.getStructMeta(holder.getLocation());
 		ICoords offsetCoords = Coords.EMPTY;
 		if (meta.isPresent()) {
 			offsetCoords = meta.get().getOffset().asCoords();
+			Treasure.LOGGER.debug("found offset coords -> {}", offsetCoords);
 		}
 		else {
 			// TEMP dump map

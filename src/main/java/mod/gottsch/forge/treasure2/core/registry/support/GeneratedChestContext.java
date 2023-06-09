@@ -33,7 +33,7 @@ import net.minecraft.resources.ResourceLocation;
  * @author Mark Gottschling on Dec 2, 2022
  *
  */
-public class ChestGeneratedContext extends GeneratedContext {
+public class GeneratedChestContext extends GeneratedContext {
 	private static final String LEGACY_NAME = "registryName";
 	
 	private static final String NAME = "name";
@@ -69,18 +69,18 @@ public class ChestGeneratedContext extends GeneratedContext {
 	/**
 	 * 
 	 */
-	public ChestGeneratedContext() {
+	public GeneratedChestContext() {
 		super();
 		this.generatedType = GeneratedType.CHEST;
 		this.featureType = FeatureType.UNKNOWN;
 		this.setRarity(Rarity.NONE);
 	}
 	
-	public ChestGeneratedContext(IRarity rarity, ICoords coords) {
+	public GeneratedChestContext(IRarity rarity, ICoords coords) {
 		this(rarity, coords, GeneratedType.CHEST);
 	}
 	
-	public ChestGeneratedContext(IRarity rarity, ICoords coords, IGeneratedType generatedType) {
+	public GeneratedChestContext(IRarity rarity, ICoords coords, IGeneratedType generatedType) {
 		super(rarity, coords);
 		this.generatedType = generatedType;
 		this.featureType = FeatureType.UNKNOWN;
@@ -156,7 +156,7 @@ public class ChestGeneratedContext extends GeneratedContext {
 		this.name = name;
 	}
 	
-	public ChestGeneratedContext withName(ResourceLocation name) {
+	public GeneratedChestContext withName(ResourceLocation name) {
 		setName(name);
 		return this;
 	}
@@ -169,7 +169,7 @@ public class ChestGeneratedContext extends GeneratedContext {
 		this.generatedType = generatedType;
 	}
 	
-	public ChestGeneratedContext withGeneratedType(IGeneratedType type) {
+	public GeneratedChestContext withGeneratedType(IGeneratedType type) {
 		setGeneratedType(type);
 		return this;
 	}
@@ -182,7 +182,7 @@ public class ChestGeneratedContext extends GeneratedContext {
 		this.discovered = discovered;
 	}
 
-	public ChestGeneratedContext withDiscovered(boolean discovered) {
+	public GeneratedChestContext withDiscovered(boolean discovered) {
 		setDiscovered(discovered);
 		return this;		
 	}
@@ -214,7 +214,7 @@ public class ChestGeneratedContext extends GeneratedContext {
 		this.featureType = featureType;
 	}
 
-	public ChestGeneratedContext withFeatureType(IFeatureType featureType) {
+	public GeneratedChestContext withFeatureType(IFeatureType featureType) {
 		setFeatureType(featureType);
 		return this;
 	}
@@ -227,7 +227,7 @@ public class ChestGeneratedContext extends GeneratedContext {
 		this.surfaceCoords = surfaceCoords;
 	}
 	
-	public ChestGeneratedContext withSurfaceCoords(ICoords surfaceCoords) {
+	public GeneratedChestContext withMarkerCoords(ICoords surfaceCoords) {
 		setSurfaceCoords(surfaceCoords);
 		return this;
 	}

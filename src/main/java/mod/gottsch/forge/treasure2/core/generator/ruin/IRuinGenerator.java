@@ -22,6 +22,7 @@ package mod.gottsch.forge.treasure2.core.generator.ruin;
 import java.util.List;
 import java.util.Optional;
 
+import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.size.Quantity;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
@@ -87,8 +88,11 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 			Treasure.LOGGER.debug("placing proximity spawner at -> {}", c.getCoords().toShortString());
 	    	context.level().setBlock(c.getCoords().toPos(), TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState(), 3);
 	    	TreasureProximitySpawnerBlockEntity te = (TreasureProximitySpawnerBlockEntity) context.level().getBlockEntity(c.getCoords().toPos());
-	    	if (te != null) {
+	    	if (te != null) {	    		
 	 	    	EntityType<?> r = DungeonHooks.getRandomDungeonMob(context.random());
+	 	    	if (RandomHelper.checkProbability(context.random(), 20)) {
+	 	    		r = EntityType.VINDICATOR;
+	 	    	}
 		    	Treasure.LOGGER.debug("using mob -> {} for poximity spawner.", r.getRegistryName().toString());
 		    	te.setMobName(r.getRegistryName());
 		    	te.setMobNum(new Quantity(1, 2));

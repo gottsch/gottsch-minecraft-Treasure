@@ -19,6 +19,9 @@ package mod.gottsch.forge.treasure2.core.entity;
 
 
 import mod.gottsch.forge.treasure2.core.entity.monster.BoundSoul;
+import mod.gottsch.forge.treasure2.core.entity.monster.PirateChestMimic;
+import mod.gottsch.forge.treasure2.core.entity.monster.VikingChestMimic;
+import mod.gottsch.forge.treasure2.core.entity.monster.WoodChestMimic;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -30,6 +33,9 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class TreasureEntities {
 	public static final String BOUND_SOUL = "bound_soul";
+	public static final String WOOD_CHEST_MIMIC = "wood_chest_mimic";
+	public static final String PIRATE_CHEST_MIMIC = "pirate_chest_mimic";
+	public static final String VIKING_CHEST_MIMIC = "viking_chest_mimic";
 	
 	public static final RegistryObject<EntityType<BoundSoul>> BOUND_SOUL_ENTITY_TYPE = Registration.ENTITIES.register(BOUND_SOUL, () -> EntityType.Builder.of(BoundSoul::new, MobCategory.MONSTER)
 			.sized(0.6F, 1.95F)
@@ -37,6 +43,27 @@ public class TreasureEntities {
 			.setTrackingRange(80)
 			.setShouldReceiveVelocityUpdates(true)
 			.build(BOUND_SOUL));
+	
+	public static final RegistryObject<EntityType<WoodChestMimic>> WOOD_CHEST_MIMIC_ENTITY_TYPE = Registration.ENTITIES.register(WOOD_CHEST_MIMIC, () -> EntityType.Builder.of(WoodChestMimic::new, MobCategory.MONSTER)
+			.sized(0.875F, 0.875F)
+			.clientTrackingRange(12)
+			.setTrackingRange(80)
+			.setShouldReceiveVelocityUpdates(true)
+			.build(WOOD_CHEST_MIMIC));
+	
+	public static final RegistryObject<EntityType<PirateChestMimic>> PIRATE_CHEST_MIMIC_ENTITY_TYPE = Registration.ENTITIES.register(PIRATE_CHEST_MIMIC, () -> EntityType.Builder.of(PirateChestMimic::new, MobCategory.MONSTER)
+			.sized(0.875F, 0.875F)
+			.clientTrackingRange(12)
+			.setTrackingRange(80)
+			.setShouldReceiveVelocityUpdates(true)
+			.build(PIRATE_CHEST_MIMIC));
+	
+	public static final RegistryObject<EntityType<VikingChestMimic>> VIKING_CHEST_MIMIC_ENTITY_TYPE = Registration.ENTITIES.register(VIKING_CHEST_MIMIC, () -> EntityType.Builder.of(VikingChestMimic::new, MobCategory.MONSTER)
+			.sized(0.875F, 0.875F)
+			.clientTrackingRange(12)
+			.setTrackingRange(80)
+			.setShouldReceiveVelocityUpdates(true)
+			.build(VIKING_CHEST_MIMIC));
 	
 	public static void register() {
 		// cycle through all block and create items

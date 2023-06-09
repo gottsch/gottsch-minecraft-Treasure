@@ -17,40 +17,32 @@
  */
 package mod.gottsch.forge.treasure2.core.world.feature;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 
 import com.mojang.serialization.Codec;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
-import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
-import mod.gottsch.forge.gottschcore.world.WorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
-import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.Generator;
+import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
-import mod.gottsch.forge.treasure2.core.random.RarityLevelWeightedCollection;
-import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
+import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedCache;
 import mod.gottsch.forge.treasure2.core.registry.FeatureGeneratorSelectorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.GeneratedCache;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext;
-import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext.GeneratedType;
+import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.selector.IFeatureGeneratorSelector;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
@@ -60,7 +52,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
  * @author Mark Gottschling on Jan 27, 2021
  *
  */
-public class AquaticChestFeature extends Feature<NoneFeatureConfiguration> implements IChestFeature {
+public class AquaticChestFeature extends ChestFeature {
 
 	// feature type
 	private static IFeatureType FEATURE_TYPE= FeatureType.AQUATIC;
@@ -87,7 +79,7 @@ public class AquaticChestFeature extends Feature<NoneFeatureConfiguration> imple
 		}
 		
 		// get the chest registry
-		GeneratedCache<ChestGeneratedContext> chestCache = DimensionalGeneratedRegistry.getChestGeneratedCache(dimension, FEATURE_TYPE);
+		GeneratedCache<GeneratedChestContext> chestCache = DimensionalGeneratedCache.getChestGeneratedCache(dimension, FEATURE_TYPE);
 		if (chestCache == null) {
 			Treasure.LOGGER.debug("GeneratedRegistry is null for dimension & AQUATIC. This shouldn't be. Should be initialized.");
 			return false;
@@ -125,7 +117,6 @@ public class AquaticChestFeature extends Feature<NoneFeatureConfiguration> imple
 			return false;
 		}
 		
-		// TODO might have feature generator specific biome and proximity criteria checks. ie Wither
 		if (!meetsBiomeCriteria(genLevel.getLevel(), spawnCoords, rarityConfig.get().getBiomeWhitelist(), rarityConfig.get().getBiomeBlacklist())) {
 			return false;
 		}
@@ -138,43 +129,27 @@ public class AquaticChestFeature extends Feature<NoneFeatureConfiguration> imple
 		// check if meets the probability criteria. this is used as a randomizer so that chests aren't predictably placed.
 		if (!meetsProbabilityCriteria(context.random(), generatorConfig)) {
 			// place a placeholder chest in the registry
-			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords);
+			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords, FEATURE_TYPE);
 		}
 		
 		// select the feature generator
 		Optional<IFeatureGeneratorSelector> generatorSelector = FeatureGeneratorSelectorRegistry.getSelector(FEATURE_TYPE, rarity);
 		if (!generatorSelector.isPresent()) {
 			Treasure.LOGGER.warn("unable to obtain a generator selector for rarity - >{}", rarity);
-			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords);
+			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords, FEATURE_TYPE);
 		}
 		
 		// select the generator
 		IFeatureGenerator featureGenerator = generatorSelector.get().select();
 		Treasure.LOGGER.debug("feature generator -> {}", featureGenerator.getClass().getSimpleName());
 		// call generate
-		Optional<GeneratorResult<ChestGeneratorData>> result = featureGenerator.generate(new WorldGenContext(context), spawnCoords, rarity, rarityConfig.get());
+		Optional<GeneratorResult<ChestGeneratorData>> result = featureGenerator.generate(new FeatureGenContext(context, FEATURE_TYPE), spawnCoords, rarity, rarityConfig.get());
 
 		if (result.isPresent()) {
-			Treasure.LOGGER.debug("feature gen result -> {}", result.get());
-			// create a chest context
-			ChestGeneratedContext chestGeneratedContext = new ChestGeneratedContext(
-					result.get().getData().getRarity(), result.get().getData().getCoords())
-					.withSurfaceCoords(result.get().getData().getSpawnCoords())
-					.withFeatureType(FEATURE_TYPE)
-					.withName(result.get().getData().getRegistryName());
-			
-			Treasure.LOGGER.debug("chestGenContext -> {}", chestGeneratedContext);
-			// cache the chest at its exact location
-			chestCache.cache(rarity, chestGeneratedContext.getCoords(), chestGeneratedContext);
-
-			// update the adjusted weight collection			
-			RarityLevelWeightedChestGeneratorRegistry.adjustAllWeightsExcept(dimension, FEATURE_TYPE, 1, rarity);
-			Map<IFeatureType, RarityLevelWeightedCollection> map = RarityLevelWeightedChestGeneratorRegistry.RARITY_SELECTOR.get(dimension);
-			RarityLevelWeightedCollection dumpCol = map.get(FEATURE_TYPE);
-			List<String> dump = dumpCol.dump();
-			Treasure.LOGGER.debug("weighted collection dump -> {}", dump);
+			cacheGeneratedChest(context.level(), rarity, FEATURE_TYPE, chestCache, result.get());
+			updateChestGeneratorRegistry(dimension, rarity, FEATURE_TYPE);
 		} else {
-			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords);
+			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords, FEATURE_TYPE);
 		}
 		
 		// save world data
@@ -183,42 +158,5 @@ public class AquaticChestFeature extends Feature<NoneFeatureConfiguration> imple
 			savedData.setDirty();
 		}
 		return true;
-	}
-	
-	/**
-	 * TODO move to  interface IChestFeature
-	 * @param random
-	 * @return
-	 */
-	private boolean meetsProbabilityCriteria(Random random, Generator generatorConfig) {
-		if (generatorConfig.getProbability() == null) {
-			Treasure.LOGGER.warn("chest generator config -> '{}' is missing 'probability' value", generatorConfig.getKey());
-			return false;
-		}
-		if (!RandomHelper.checkProbability(random, generatorConfig.getProbability())) {
-			Treasure.LOGGER.debug("chest gen does not meet generate probability.");
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * TODO move to  interface IChestFeature
-	 * @param genLevel
-	 * @param registry
-	 * @param rarity
-	 * @param coords
-	 * @return
-	 */
-	private boolean failAndPlaceholdChest(WorldGenLevel genLevel, GeneratedCache<ChestGeneratedContext> registry, IRarity rarity, ICoords coords) {
-		// add placeholder
-		ChestGeneratedContext chestGeneratedContext = new ChestGeneratedContext(rarity, coords, GeneratedType.PLACEHOLDER).withFeatureType(FEATURE_TYPE);
-		registry.cache(rarity, coords, chestGeneratedContext);
-		// need to save on fail
-		TreasureSavedData savedData = TreasureSavedData.get(genLevel.getLevel());
-		if (savedData != null) {
-			savedData.setDirty();
-		}
-		return false;
 	}
 }

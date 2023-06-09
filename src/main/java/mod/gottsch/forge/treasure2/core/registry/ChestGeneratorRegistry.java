@@ -24,9 +24,9 @@ import java.util.Optional;
 
 import com.google.common.collect.Maps;
 
+import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 
 /**
  * Allows the replacement of generator mappings.
@@ -34,7 +34,8 @@ import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
  *
  */
 public class ChestGeneratorRegistry {
-	private static final Map<IChestGeneratorType, IChestGenerator> REGISTRY = Maps.newHashMap();
+//	private static final Map<IChestGeneratorType, IChestGenerator> REGISTRY = Maps.newHashMap();
+	private static final Map<IRarity, IChestGenerator> MAP = Maps.newHashMap();
 	
 	private ChestGeneratorRegistry() {}
 	
@@ -45,23 +46,43 @@ public class ChestGeneratorRegistry {
 //		}
 //	}
 	
-	public static void registerGeneator(IChestGenerator generator) {
-		if (generator.getChestGeneratorType() != null /*&& !REGISTRY.containsKey(generator.getChestGeneratorType())*/) {
-			IChestGenerator originalGenerator = REGISTRY.put(generator.getChestGeneratorType(), generator);
+//	public static void registerGeneator(IChestGenerator generator) {
+//		if (generator.getChestGeneratorType() != null /*&& !REGISTRY.containsKey(generator.getChestGeneratorType())*/) {
+//			IChestGenerator originalGenerator = REGISTRY.put(generator.getChestGeneratorType(), generator);
+//			if (originalGenerator != null) {
+//				Treasure.LOGGER.debug("Replaced generator -> {} with -> {} for type -> {}", originalGenerator.getClass().getSimpleName(), generator.getClass().getSimpleName(), generator.getChestGeneratorType().getName());
+//			}
+//		}
+//	}
+	
+	public static void registerGeneator(IRarity rarity, IChestGenerator generator) {
+//		if (generator.getChestGeneratorType() != null) {
+			IChestGenerator originalGenerator = MAP.put(rarity, generator);
 			if (originalGenerator != null) {
-				Treasure.LOGGER.debug("Replaced generator -> {} with -> {} for type -> {}", originalGenerator.getClass().getSimpleName(), generator.getClass().getSimpleName(), generator.getChestGeneratorType().getName());
+				Treasure.LOGGER.debug("Replaced generator -> {} with -> {} for rarity -> {}", originalGenerator.getClass().getSimpleName(), generator.getClass().getSimpleName(), rarity);
 			}
-		}
+//		}
 	}
 	
-	public static Optional<IChestGenerator> get(IChestGeneratorType type) {
-		if (REGISTRY.containsKey(type)) {
-			return Optional.of(REGISTRY.get(type));
+//	public static Optional<IChestGenerator> get(IChestGeneratorType type) {
+//		if (REGISTRY.containsKey(type)) {
+//			return Optional.of(REGISTRY.get(type));
+//		}
+//		return Optional.empty();
+//	}
+	
+	public static Optional<IChestGenerator> get(IRarity rarity) {
+		if (MAP.containsKey(rarity)) {
+			return Optional.of(MAP.get(rarity));
 		}
 		return Optional.empty();
 	}
 	
+//	public static List<IChestGenerator> getValues() {
+//		return new ArrayList<>(REGISTRY.values());
+//	}
+	
 	public static List<IChestGenerator> getValues() {
-		return new ArrayList<>(REGISTRY.values());
+		return new ArrayList<>(MAP.values());
 	}
 }

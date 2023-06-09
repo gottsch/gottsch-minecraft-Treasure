@@ -82,10 +82,11 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	private static final String FACING_TAG = "facing";
 	private static final String SEALED_TAG = "sealed";
 	private static final String LOOT_TABLE_TAG = "lootTable";
+	private static final String MIMIC_TAG = "mimic";
 
 	private static final String GENERATION_CONTEXT_TAG = "generationContext";
 	private static final String LOOT_RARITY_TAG = "lootRarity";
-	private static final String CHEST_GENERATOR_TYPE_TAG = "chestGeneratorType";
+//	private static final String CHEST_GENERATOR_TYPE_TAG = "chestGeneratorType";
 
 
 	/*
@@ -120,6 +121,11 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	 */
 	private ResourceLocation lootTable;
 
+	/*
+	 * The mimic assigned to this block entity
+	 */
+	private ResourceLocation mimic;
+	
 	/*
 	 * The custom name of this block entity
 	 */
@@ -160,9 +166,10 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 		Treasure.LOGGER.debug("is chest sealed -> {}", this.isSealed());
 		if (this.isSealed()) {
 			this.setSealed(false);
-			Treasure.LOGGER.debug("chest gen type -> {}", this.getGenerationContext().getChestGeneratorType()); 
-			IChestGeneratorType chestGeneratorType = this.getGenerationContext().getChestGeneratorType();
-			Optional<IChestGenerator> chestGenerator = ChestGeneratorRegistry.get(chestGeneratorType);
+//			Treasure.LOGGER.debug("chest gen type -> {}", this.getGenerationContext().getChestGeneratorType()); 
+//			IChestGeneratorType chestGeneratorType = this.getGenerationContext().getChestGeneratorType();
+			IRarity rarity = this.getGenerationContext().getLootRarity();
+			Optional<IChestGenerator> chestGenerator = ChestGeneratorRegistry.get(rarity);
 			if (chestGenerator.isPresent()) {
 				Treasure.LOGGER.debug("chest gen  -> {}", chestGenerator.get().getClass().getSimpleName());
 				// fill the chest with loot
@@ -379,10 +386,13 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 				tag.putString(LOOT_TABLE_TAG, getLootTable().toString());
 			}
 
+			if (getMimic() != null) {
+				tag.putString(MIMIC_TAG, getMimic().toString());
+			}
 			if (getGenerationContext() != null) {
 				CompoundTag contextTag = new CompoundTag();
 				contextTag.putString(LOOT_RARITY_TAG, getGenerationContext().getLootRarity().getValue());
-				contextTag.putString(CHEST_GENERATOR_TYPE_TAG, getGenerationContext().getChestGeneratorType().getName());
+//				contextTag.putString(CHEST_GENERATOR_TYPE_TAG, getGenerationContext().getChestGeneratorType().getName());
 				tag.put(GENERATION_CONTEXT_TAG, contextTag);
 			}
 		} catch (Exception e) {
@@ -452,22 +462,27 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 		}
 	}
 
-	public void loadProperties(CompoundTag nbt) {
+	public void loadProperties(CompoundTag tag) {
 		try {
 			// read the facing
-			if (nbt.contains(FACING_TAG)) {
-				this.setFacing(nbt.getInt(FACING_TAG));
+			if (tag.contains(FACING_TAG)) {
+				this.setFacing(tag.getInt(FACING_TAG));
 			}
-			if (nbt.contains(SEALED_TAG)) {
-				this.setSealed(nbt.getBoolean(SEALED_TAG));
+			if (tag.contains(SEALED_TAG)) {
+				this.setSealed(tag.getBoolean(SEALED_TAG));
 			}
-			if (nbt.contains(LOOT_TABLE_TAG)) {
-				if (!nbt.getString(LOOT_TABLE_TAG).isEmpty()) {
-					this.setLootTable(new ResourceLocation(nbt.getString(LOOT_TABLE_TAG)));
+			if (tag.contains(LOOT_TABLE_TAG)) {
+				if (!tag.getString(LOOT_TABLE_TAG).isEmpty()) {
+					this.setLootTable(new ResourceLocation(tag.getString(LOOT_TABLE_TAG)));
 				}
 			}
-			if (nbt.contains(GENERATION_CONTEXT_TAG)) {
-				CompoundTag contextTag = nbt.getCompound(GENERATION_CONTEXT_TAG);
+			if (tag.contains(MIMIC_TAG)) {
+				if (!tag.getString(MIMIC_TAG).isEmpty()) {
+					this.setLootTable(new ResourceLocation(tag.getString(MIMIC_TAG)));
+				}
+			}
+			if (tag.contains(GENERATION_CONTEXT_TAG)) {
+				CompoundTag contextTag = tag.getCompound(GENERATION_CONTEXT_TAG);
 				Optional<IRarity> rarity = null;
 				IChestGeneratorType genType = null;
 				if (contextTag.contains(LOOT_RARITY_TAG)) {
@@ -475,9 +490,9 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 					//					rarity = Rarity.getByValue(contextTag.getString(LOOT_RARITY_TAG));
 					rarity = TreasureApi.getRarity(contextTag.getString(LOOT_RARITY_TAG));
 				}
-				if (contextTag.contains(CHEST_GENERATOR_TYPE_TAG)) {
-					genType = ChestGeneratorType.valueOf(contextTag.getString(CHEST_GENERATOR_TYPE_TAG).toUpperCase());
-				}
+//				if (contextTag.contains(CHEST_GENERATOR_TYPE_TAG)) {
+//					genType = ChestGeneratorType.valueOf(contextTag.getString(CHEST_GENERATOR_TYPE_TAG).toUpperCase());
+//				}
 
 				AbstractTreasureChestBlockEntity.GenerationContext generationContext = this.new GenerationContext(rarity.orElse(Rarity.NONE), genType);
 				this.setGenerationContext(generationContext);
@@ -652,6 +667,11 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			this.chestGeneratorType = chestGeneratorType;
 		}
 
+		public GenerationContext(IRarity rarity, IFeatureType featureType) {
+			this.lootRarity = rarity;
+			this.featureType = featureType;
+		}
+		
 		public GenerationContext(ResourceLocation lootTable, IRarity rarity, IFeatureType featureType) {
 			AbstractTreasureChestBlockEntity.this.lootTable = lootTable;
 			this.lootRarity = rarity;
@@ -662,10 +682,10 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			return lootRarity;
 		}
 
-		@Deprecated
-		public IChestGeneratorType getChestGeneratorType() {
-			return chestGeneratorType;
-		}
+//		@Deprecated
+//		public IChestGeneratorType getChestGeneratorType() {
+//			return chestGeneratorType;
+//		}
 
 		public ResourceLocation getLootTable() {
 			return AbstractTreasureChestBlockEntity.this.lootTable;
@@ -678,5 +698,13 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 		public void setFeatureType(IFeatureType type) {
 			this.featureType = type;
 		}
+	}
+
+	public ResourceLocation getMimic() {
+		return mimic;
+	}
+
+	public void setMimic(ResourceLocation mimic) {
+		this.mimic = mimic;
 	}
 }

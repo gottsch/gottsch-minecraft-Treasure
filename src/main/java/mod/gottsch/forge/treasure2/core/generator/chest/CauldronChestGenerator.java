@@ -26,12 +26,10 @@ import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.StandardChestBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
+import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
-import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 
 /**
  * 
@@ -43,19 +41,19 @@ public class CauldronChestGenerator extends EpicChestGenerator {
 	/**
 	 * 
 	 */
-	public CauldronChestGenerator(IChestGeneratorType type) {
-		super(type);
+	public CauldronChestGenerator() {
+		super();
 	}
 
 	/**
 	 * 
 	 */
-	@Override
-	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
-		GenerationContext generationContext = 
-				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.CAULDRON);
-		blockEntity.setGenerationContext(generationContext);
-	}
+//	@Override
+//	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
+//		GenerationContext generationContext = 
+//				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.CAULDRON);
+//		blockEntity.setGenerationContext(generationContext);
+//	}
 	
 	/**
 	 * Always select a epic chest.

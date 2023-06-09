@@ -19,11 +19,12 @@ import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
-import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
+import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedCache;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.setup.ClientSetup;
 import mod.gottsch.forge.treasure2.core.setup.CommonSetup;
+import mod.gottsch.forge.treasure2.core.sound.TreasureSounds;
 import mod.gottsch.forge.treasure2.core.world.feature.TreasureConfiguredFeatures;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -76,6 +77,7 @@ public class Treasure {
 		TreasureParticles.register();
 		TreasureEntities.register();
 		TreasureConfiguredFeatures.register();
+		TreasureSounds.register();
 		
 		// register the setup method for mod loading
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -136,7 +138,7 @@ public class Treasure {
 	
 					// init generated chest registry
 					LOGGER.debug("reading in chests config...");
-					DimensionalGeneratedRegistry.initialize();
+					DimensionalGeneratedCache.initialize();
 					RarityLevelWeightedChestGeneratorRegistry.initialize();
 				} 
 				else if (spec == Config.STRUCTURE_CONFIG_SPEC) {

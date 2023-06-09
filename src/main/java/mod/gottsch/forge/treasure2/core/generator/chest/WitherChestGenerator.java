@@ -29,7 +29,6 @@ import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.StandardChestBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
@@ -51,25 +50,18 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	 * 
 	 */
 	public WitherChestGenerator() {
-		this(ChestGeneratorType.WITHER);
-	}
-	
-	/**
-	 * 
-	 */
-	public WitherChestGenerator(IChestGeneratorType type) {
-		super(type);
+		super();
 	}
 
 	/**
 	 * 
 	 */
-	@Override
-	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
-		GenerationContext generationContext = 
-				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.WITHER);
-		blockEntity.setGenerationContext(generationContext);
-	}
+//	@Override
+//	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
+//		GenerationContext generationContext = 
+//				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.WITHER);
+//		blockEntity.setGenerationContext(generationContext);
+//	}
 	
 	/*
 	 * @param random

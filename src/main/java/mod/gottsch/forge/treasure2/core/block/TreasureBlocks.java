@@ -31,8 +31,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -196,6 +196,12 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> FALLING_RED_SAND = Registration.BLOCKS.register("falling_red_sand", () -> new FallingRedSandBlock(Properties.of(Material.SAND, MaterialColor.WOOD)
 			.strength(0.6F).sound(SoundType.SAND)));
 
+	// mimic blocks
+//	public static final RegistryObject<Block> WOOD_CHEST_MIMIC = Registration.BLOCKS.register("wood_chest_mimic", () -> new MimicChestBlock(WoodChestBlockEntity.class,
+//			TreasureEntities.WOOD_CHEST_MIMIC_ENTITY_TYPE.getId(), 
+//			LockLayouts.STANDARD, 
+//			Properties.of(Material.WOOD, MaterialColor.WOOD)));
+	
 	// other
 	public static final RegistryObject<Block> WITHER_BRANCH = Registration.BLOCKS.register("wither_branch", () -> new WitherBranchBlock(Properties.of(Material.WOOD, MaterialColor.WOOD)));
 	public static final RegistryObject<Block> WITHER_ROOT = Registration.BLOCKS.register("wither_root", () -> new WitherRootBlock(Properties.of(Material.WOOD, MaterialColor.WOOD)));
@@ -235,7 +241,7 @@ public class TreasureBlocks {
 		CHESTS.add(VIKING_CHEST);
 		CHESTS.add(CARDBOARD_BOX);
 		CHESTS.add(MILK_CRATE);
-		CHESTS.add(WITHER_CHEST);		
+		CHESTS.add(WITHER_CHEST);
 
 		GRAVESTONES.add(GRAVESTONE1_STONE);
 		GRAVESTONES.add(GRAVESTONE1_COBBLESTONE);

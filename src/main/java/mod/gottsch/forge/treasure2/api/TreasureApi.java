@@ -24,7 +24,10 @@ import java.util.stream.Collectors;
 import mod.gottsch.forge.gottschcore.enums.IEnum;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.enums.*;
+import mod.gottsch.forge.treasure2.core.enums.ILootTableType;
+import mod.gottsch.forge.treasure2.core.enums.IMarkerType;
+import mod.gottsch.forge.treasure2.core.enums.IPitType;
+import mod.gottsch.forge.treasure2.core.enums.MarkerType;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
@@ -48,6 +51,7 @@ import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.selector.IFeatureGeneratorSelector;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -406,15 +410,15 @@ public class TreasureApi {
 	 * @param featureType
 	 * @param chestGeneratorType
 	 */
-	public static void registerChestFeatureGenerator(IRarity rarity, IFeatureType featureType, IChestGeneratorType chestGeneratorType) {
-		RarityLevelWeightedChestGeneratorRegistry.registerGenerator(rarity, featureType, chestGeneratorType);		
+	public static void registerChestFeatureGenerator(IRarity rarity, IFeatureType featureType) {
+		RarityLevelWeightedChestGeneratorRegistry.registerGenerator(rarity, featureType);		
 	}
 	
 	/*
 	 * Registers the chest generator object.
 	 */
-	public static void registerChestGenerator(IChestGenerator generator) {
-		ChestGeneratorRegistry.registerGeneator(generator);
+	public static void registerChestGenerator(IRarity rarity, IChestGenerator generator) {
+		ChestGeneratorRegistry.registerGeneator(rarity, generator);
 	}
 	
 	public static void registerPitGenerator(IPitType type, IPitGenerator<GeneratorResult<ChestGeneratorData>> generator) {
@@ -454,5 +458,9 @@ public class TreasureApi {
 
 	public static void registerFeatureGeneatorSelector(FeatureType type, IRarity rarity, IFeatureGeneratorSelector selector) {
 		FeatureGeneratorSelectorRegistry.registerSelector(type, rarity, selector);
+	}
+	
+	public static void registerMimic(ResourceLocation chestName, ResourceLocation mimicName) {
+		MimicRegistry.register(chestName, mimicName);
 	}
 }

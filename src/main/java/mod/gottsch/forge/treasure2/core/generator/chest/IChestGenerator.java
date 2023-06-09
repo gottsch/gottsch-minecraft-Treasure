@@ -37,6 +37,7 @@ import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
 import mod.gottsch.forge.treasure2.core.config.Config;
@@ -52,10 +53,10 @@ import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
 import mod.gottsch.forge.treasure2.core.registry.*;
-import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext;
-import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext.GeneratedType;
+import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext;
+import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext.GeneratedType;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
-import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
+import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -89,7 +90,7 @@ public interface IChestGenerator {
 	public static final String TREASURE_POOL = "treasure";
 	public static final String CHARMS_POOL = "charms";
 	
-	public IChestGeneratorType getChestGeneratorType();
+//	public IChestGeneratorType getChestGeneratorType();
 	
 	/**
 	 * TODO should pass RandomSource and not use a new Random
@@ -99,7 +100,7 @@ public interface IChestGenerator {
 	 * @param state
 	 * @return
 	 */
-	default public GeneratorResult<ChestGeneratorData> generate(IWorldGenContext context, ICoords coords,
+	default public GeneratorResult<ChestGeneratorData> generate(IFeatureGenContext context, ICoords coords,
 			final IRarity rarity, BlockState state) {
 
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
@@ -150,19 +151,43 @@ public interface IChestGenerator {
 		// seal the chest
 		addSeal((ITreasureChestBlockEntity) blockEntity);
 
+		// TODO remove and update from Feature when all is complete.
 		// update the backing block entity's generation contxt
 		// NOTE only updates generation context with Rarity and ChestGeneratorType. The featureType at this point is unknown.
-		addGenerationContext((ITreasureChestBlockEntity) blockEntity, rarity);
+		addGenerationContext(context, (ITreasureChestBlockEntity) blockEntity, rarity);
 
 		// add locks
 		addLocks(context.random(), chest, (ITreasureChestBlockEntity) blockEntity, rarity);
 
+		// add mimic if any
+		addMimic(context, chest, (ITreasureChestBlockEntity) blockEntity, rarity);
+		
 		// update result
 		result.getData().setSpawnCoords(coords);
 		result.getData().setState(state);
 
 		return result.success();
 	}
+
+	/**
+	 * 
+	 * @param context
+	 * @param chest
+	 * @param blockEntity
+	 * @param rarity
+	 */
+	default public void addMimic(IFeatureGenContext context, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity blockEntity,
+			IRarity rarity) {
+		// check against config if mimic should be used
+		if (Config.SERVER.mobs.enableMimics.get() && RandomHelper.checkProbability(context.random(), Config.SERVER.mobs.mimicProbability.get())) {
+			Optional<ResourceLocation> mimicName = MimicRegistry.getMimic(chest.getRegistryName());
+			if (mimicName.isPresent()) {
+				// set the mimic name in the block entity
+				blockEntity.setMimic(mimicName.get());
+			}
+		}
+	}
+	
 
 	/**
 	 * 
@@ -448,34 +473,46 @@ public interface IChestGenerator {
 			// determine what level of rarity map to generate
 			IRarity mapRarity = getBoostedRarity(rarity, getRarityBoostAmount());
 			Treasure.LOGGER.debug("get rarity chests for dimension -> {}", dimension.toString());
-			// TODO how to merge surface and submerged
-			GeneratedCache<ChestGeneratedContext> generatedRegistry = DimensionalGeneratedRegistry.getChestGeneratedCache(dimension, FeatureType.TERRANEAN);
-			Optional<List<ChestGeneratedContext>> chestGeneratedContexts = Optional.empty();
-			if (generatedRegistry != null) {
-				chestGeneratedContexts = generatedRegistry.getByIRarity(mapRarity);
-			}
 
-			if (chestGeneratedContexts.isPresent()) {
-				Treasure.LOGGER.debug("got chestInfos by rarity -> {}", mapRarity);
-				List<ChestGeneratedContext> validChestInfos = chestGeneratedContexts.get().stream()
-						.filter(c -> c.getGeneratedType() != GeneratedType.NONE && !c.isDiscovered() && !c.isCharted())
-						.collect(Collectors.toList());
-				if (!validChestInfos.isEmpty()) {
-					Treasure.LOGGER.debug("got valid chestInfos; size -> {}", validChestInfos.size());
-					ChestGeneratedContext chestInfo = validChestInfos.get(random.nextInt(validChestInfos.size()));
-					Treasure.LOGGER.debug("using chestInfo -> {}", chestInfo);
+//			GeneratedCache<GeneratedChestContext> generatedRegistry = DimensionalGeneratedCache.getChestGeneratedCache(dimension, FeatureType.TERRANEAN);
+			List<GeneratedCache<GeneratedChestContext>> caches = DimensionalGeneratedCache.getChestGeneratedCaches(dimension);
+//			Optional<List<GeneratedChestContext>> generatedChestContexts = Optional.empty();
+			List<GeneratedChestContext> chestContexts = new ArrayList<>();
+			if (caches != null && !caches.isEmpty()) {
+				caches.forEach(cache -> {
+					Optional<List<GeneratedChestContext>> generatedChestContexts = cache.getByIRarity(mapRarity);
+					if (generatedChestContexts.isPresent()) {
+						chestContexts.addAll(generatedChestContexts.get());
+					}
+				});
+			}
+//			if (generatedRegistry != null) {
+//				generatedChestContexts = generatedRegistry.getByIRarity(mapRarity);
+//			}
+
+//			if (generatedChestContexts.isPresent()) {
+			if (!chestContexts.isEmpty()) {
+				Treasure.LOGGER.debug("got chestContexts by rarity -> {}", mapRarity);
+				List<GeneratedChestContext> validChestContexts = chestContexts.stream()
+						.filter(c -> c.getGeneratedType() == GeneratedType.CHEST && !c.isDiscovered() && !c.isCharted()).toList();
+				
+				if (!validChestContexts.isEmpty()) {
+					Treasure.LOGGER.debug("got valid chestInfos; size -> {}", validChestContexts.size());
+					GeneratedChestContext chestContext = validChestContexts.get(random.nextInt(validChestContexts.size()));
+					Treasure.LOGGER.debug("using chestInfo -> {}", chestContext);
 					// build a map
-					ItemStack mapStack = createMap(world, chestInfo.getCoords(), mapRarity, (byte)2);
+					ItemStack mapStack = createMap(world, chestContext.getCoords(), mapRarity, (byte)2);
 
 					// add map to chest
 					inventory.setStackInSlot(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), mapStack);
 					// update the chest info in the registry that the map is referring to with this chest's coords
-					chestInfo.setChartedFrom(chestCoords);
+					chestContext.setChartedFrom(chestCoords);
 
 					// update the current chest gen context
-					Optional<ChestGeneratedContext> thisChestInfo = generatedRegistry.get(rarity, chestCoords.toShortString());
-					if (thisChestInfo.isPresent()) {
-						thisChestInfo.get().setDiscovered(true);
+					GeneratedCache<GeneratedChestContext> generatedRegistry = DimensionalGeneratedCache.getChestGeneratedCache(dimension, chestContext.getFeatureType());
+					Optional<GeneratedChestContext> currentChestContext = generatedRegistry.get(rarity, chestCoords.toShortString());
+					if (currentChestContext.isPresent()) {
+						currentChestContext.get().setDiscovered(true);
 					}
 				}
 			}			
@@ -561,7 +598,11 @@ public interface IChestGenerator {
 	 * @param blockEntity
 	 * @param rarity
 	 */
-	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity);
+	default public void addGenerationContext(IFeatureGenContext context, ITreasureChestBlockEntity blockEntity, IRarity rarity) {
+		GenerationContext generationContext = 
+				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, context.getFeatureType());
+		blockEntity.setGenerationContext(generationContext);
+	}
 
 	/**
 	 * 

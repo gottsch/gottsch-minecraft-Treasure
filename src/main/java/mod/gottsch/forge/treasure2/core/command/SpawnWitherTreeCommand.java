@@ -46,6 +46,7 @@ import mod.gottsch.forge.treasure2.core.registry.WellGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureGenContext;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureFeatureGenerators;
@@ -131,7 +132,7 @@ public class SpawnWitherTreeCommand {
 			}
 			
 			IFeatureGenerator generator = TreasureFeatureGenerators.WITHER_FEATURE_GENERATOR_SELECTOR.select();
-			Optional<GeneratorResult<ChestGeneratorData>> result = generator.generate(new WorldGenContext(world, world.getChunkSource().getGenerator(), random), new Coords(pos), rarity, rarityConfig.get());
+			Optional<GeneratorResult<ChestGeneratorData>> result = generator.generate(new FeatureGenContext(world, world.getChunkSource().getGenerator(), random, FeatureType.TERRANEAN), new Coords(pos), rarity, rarityConfig.get());
 
 		}
 		catch(Exception e) {

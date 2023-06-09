@@ -24,6 +24,7 @@ import mod.gottsch.forge.gottschcore.enums.IEnum;
  * @author Mark Gottschling on Dec 2, 2022
  *
  */
+@Deprecated
 public interface IChestGeneratorType extends IEnum {
 
 }

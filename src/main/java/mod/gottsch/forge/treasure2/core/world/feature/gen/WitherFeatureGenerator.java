@@ -42,6 +42,7 @@ import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.chest.WitherChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
 import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -115,7 +116,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	}
 	
 	@Override
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords spawnCoords,
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IFeatureGenContext context, ICoords spawnCoords,
 			IRarity rarity, ChestRarity config) {
 
 		Treasure.LOGGER.debug("surface coords -> {}", spawnCoords.toShortString());
@@ -201,7 +202,6 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 		
 		Treasure.LOGGER.info("CHEATER! WITHER chest at coords: {}", spawnCoords.toShortString());
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
-//		result.getData().setPlacement(RegionPlacement.WITHER);
 		result.getData().setCoords(chestCoords);
 		result.getData().setRegistryName(chestResult.getData().getRegistryName());
 		result.getData().setRarity(SpecialRarity.WITHER);
@@ -238,24 +238,17 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 					}
 
 					// find the first surface
-					// TODO use vanilla method of getting land height/coords .. maybe... don't want a ITreasureBlock as surface - can't unless pass in the chunkGenerator
-					//					int yHeight = WorldInfo.getHeight(world, coords.add(xOffset, 255, zOffset));
-					//					buildCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(coords.getX() + xOffset, yHeight, coords.getZ() + zOffset));
-					//					Instant start1 = Instant.now();
+					//	Instant start1 = Instant.now();
 					buildCoords = coords.add(xOffset, 0, zOffset);
 					buildCoords = WorldInfo.getDryLandSurfaceCoordsWG(context, buildCoords);
-//					int landHeight = generator.getFirstOccupiedHeight(buildCoords.getX(), buildCoords.getZ(), Heightmap.Type.WORLD_SURFACE_WG) + 1;
-		
-//					buildCoords = buildCoords.withY(landHeight);					
-					//					Treasure.LOGGER.debug("clearing surface coords -> {}", buildCoords.toShortString());
-					//					Instant finish1 = Instant.now();
-					//					Treasure.LOGGER.debug( time -> {}ms", Duration.between(start1, finish1).toMillis());
+					//	Instant finish1 = Instant.now();
+					//	Treasure.LOGGER.debug( time -> {}ms", Duration.between(start1, finish1).toMillis());
 
 					if (buildCoords == Coords.EMPTY) {
 						continue;
 					}
 
-					//					Instant start2 = Instant.now();
+					//	Instant start2 = Instant.now();
 					// additional check that it's not a tree and within 2 y-blocks of original
 					if (Math.abs(buildCoords.getY() - coords.getY()) < VERTICAL_MAX_DIFF) {
 						BlockContext cube = new BlockContext(context.level(), buildCoords.down(1));
@@ -270,10 +263,10 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 							}
 						}
 					}
-					//					Instant finish2 = Instant.now();
-					//					Treasure.LOGGER.debug("dirt replacement time -> {}ms", Duration.between(start2, finish2).toMillis());
+					//	Instant finish2 = Instant.now();
+					//	Treasure.LOGGER.debug("dirt replacement time -> {}ms", Duration.between(start2, finish2).toMillis());
 
-					//					Instant start3 = Instant.now();
+					//	Instant start3 = Instant.now();
 					// remove existing tree
 					BlockContext blockContext = new BlockContext(context.level(), buildCoords);
 					ICoords climbCoords = new Coords(buildCoords);
@@ -284,8 +277,8 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 						climbCoords = climbCoords.add(0, 1, 0);
 						blockContext = new BlockContext(context.level(), climbCoords);
 					}
-					//					Instant finish3 = Instant.now();
-					//					Treasure.LOGGER.debug("removing existing tree time -> {}ms", Duration.between(start3, finish3).toMillis());
+					//	Instant finish3 = Instant.now();
+					//	Treasure.LOGGER.debug("removing existing tree time -> {}ms", Duration.between(start3, finish3).toMillis());
 				}
 			}
 		}
@@ -293,6 +286,12 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 		Treasure.LOGGER.debug("buildClearing() time -> {}ms", Duration.between(start, finish).toMillis());
 	}
 	
+	/**
+	 * 
+	 * @param context
+	 * @param coords
+	 * @param originalSpawnCoords
+	 */
 	public void buildMainTree(IWorldGenContext context, ICoords coords, ICoords originalSpawnCoords) {
 		Instant start = Instant.now();
 

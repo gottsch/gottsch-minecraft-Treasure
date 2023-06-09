@@ -43,6 +43,7 @@ import mod.gottsch.forge.treasure2.core.registry.MarkerGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
+import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -58,7 +59,7 @@ public class PitChestFeatureGenerator implements IFeatureGenerator {
 	protected static int UNDERGROUND_OFFSET = 5;
 	
 	@Override
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords spawnCoords,
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IFeatureGenContext context, ICoords spawnCoords,
 			IRarity rarity, ChestRarity rarityConfig) {
 
 		Treasure.LOGGER.debug("surface coords -> {}", spawnCoords.toShortString());

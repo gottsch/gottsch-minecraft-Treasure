@@ -28,6 +28,7 @@ import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.ruin.IRuinGenerator;
+import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
 
 /**
  * 
@@ -37,6 +38,6 @@ import mod.gottsch.forge.treasure2.core.generator.ruin.IRuinGenerator;
 public interface IFeatureGenerator {
 
 	// TODO make generic return result
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext worldGenContext, ICoords spawnCoords, IRarity rarity, ChestRarity chestRarity);
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IFeatureGenContext featureGenContext, ICoords spawnCoords, IRarity rarity, ChestRarity chestRarity);
 
 }

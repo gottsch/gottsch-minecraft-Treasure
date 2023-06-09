@@ -210,6 +210,9 @@ public class LanguageGen extends LanguageProvider {
         
         // eggs
         add(TreasureItems.BOUND_SOUL_EGG.get(), "Bound Soul Spawn Egg");
+        add(TreasureItems.WOOD_CHEST_MIMIC_EGG.get(), "Wood Chest Mimic Spawn Egg");
+        add(TreasureItems.PIRATE_CHEST_MIMIC_EGG.get(), "Pirate Chest Mimic Spawn Egg");
+        add(TreasureItems.VIKING_CHEST_MIMIC_EGG.get(), "Viking Chest Mimic Spawn Egg");
         
         /*
          *  Util.tooltips

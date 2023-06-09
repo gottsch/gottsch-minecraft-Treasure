@@ -32,7 +32,7 @@ import mod.gottsch.forge.gottschcore.enums.IEnum;
  */
 public enum FeatureType implements IFeatureType {
 	UNKNOWN(-1, "unknown"),
-	TERRANEAN(0, "terrestrial"),
+	TERRANEAN(0, "terranean"),
 	AQUATIC(1, "aquatic"), 
 	WELL(2, "well");
 	

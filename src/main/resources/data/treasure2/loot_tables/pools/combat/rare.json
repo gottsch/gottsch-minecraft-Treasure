@@ -96,7 +96,7 @@
     }, {
       "entryName" : "shadow_machete",
       "type" : "minecraft:item",
-      "name" : "treasure2:skull_machete",
+      "name" : "treasure2:shadow_machete",
       "weight" : 10
     }, {
       "entryName" : "shadow_falchion",

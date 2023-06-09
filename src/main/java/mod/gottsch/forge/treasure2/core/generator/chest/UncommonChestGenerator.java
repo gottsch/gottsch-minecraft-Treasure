@@ -25,8 +25,6 @@ import java.util.stream.Collectors;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.enums.ILootTableType;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
@@ -44,19 +42,19 @@ public class UncommonChestGenerator extends AbstractChestGenerator {
 	/**
 	 * 
 	 */
-	public UncommonChestGenerator(IChestGeneratorType type) {
-		super(type);
+	public UncommonChestGenerator() {
+		super();
 	}
 
 	/**
 	 * 
 	 */
-	@Override
-	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
-		GenerationContext generationContext = 
-				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.UNCOMMON);
-		blockEntity.setGenerationContext(generationContext);
-	}
+//	@Override
+//	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
+//		GenerationContext generationContext = 
+//				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.UNCOMMON);
+//		blockEntity.setGenerationContext(generationContext);
+//	}
 	
 	/**
 	 * 

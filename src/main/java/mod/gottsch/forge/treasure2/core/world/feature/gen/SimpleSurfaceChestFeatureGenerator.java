@@ -38,6 +38,7 @@ import mod.gottsch.forge.treasure2.core.generator.marker.IMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.registry.MarkerGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
+import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
 
 /**
  * 
@@ -47,7 +48,7 @@ import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 public class SimpleSurfaceChestFeatureGenerator implements IFeatureGenerator {
 
 	@Override
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords spawnCoords, IRarity rarity, ChestRarity rarityConfig) {
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IFeatureGenContext context, ICoords spawnCoords, IRarity rarity, ChestRarity rarityConfig) {
 
 		Treasure.LOGGER.debug("surface coords -> {}", spawnCoords.toShortString());
 		if (!WorldInfo.isHeightValid(spawnCoords)) {

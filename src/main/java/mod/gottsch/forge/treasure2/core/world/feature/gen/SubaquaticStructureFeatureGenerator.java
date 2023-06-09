@@ -34,6 +34,7 @@ import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGenerat
 import mod.gottsch.forge.treasure2.core.registry.RuinGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
+import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
 
 /**
  * 
@@ -43,7 +44,7 @@ import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 public class SubaquaticStructureFeatureGenerator implements IFeatureGenerator {
 
 	@Override
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords coords,
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IFeatureGenContext context, ICoords coords,
 			IRarity rarity, ChestRarity rarityConfig) {
 				
 		Treasure.LOGGER.debug("ocean floor coords -> {}", coords.toShortString());

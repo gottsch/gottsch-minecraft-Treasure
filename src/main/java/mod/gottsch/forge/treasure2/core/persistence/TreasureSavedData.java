@@ -24,7 +24,7 @@ import java.util.List;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.cache.FeatureCaches;
 import mod.gottsch.forge.treasure2.core.random.RarityLevelWeightedCollection;
-import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
+import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedCache;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import net.minecraft.nbt.CompoundTag;
@@ -101,9 +101,9 @@ public class TreasureSavedData extends SavedData {
          * chest registry
          */
 		if (tag.contains(DIM_GEN_REGISTRY_NAME)) {
-			DimensionalGeneratedRegistry.clear();
-			DimensionalGeneratedRegistry.initialize();
-			DimensionalGeneratedRegistry.load((CompoundTag)tag.get(DIM_GEN_REGISTRY_NAME));
+			DimensionalGeneratedCache.clear();
+			DimensionalGeneratedCache.initialize();
+			DimensionalGeneratedCache.load((CompoundTag)tag.get(DIM_GEN_REGISTRY_NAME));
 		}
 		
 		/*
@@ -127,7 +127,7 @@ public class TreasureSavedData extends SavedData {
 			updateCompound(tag, CHEST_GEN_REGISTRY_NAME, RarityLevelWeightedChestGeneratorRegistry.save());
 
 			// update tag
-			updateCompound(tag, DIM_GEN_REGISTRY_NAME, DimensionalGeneratedRegistry.save());
+			updateCompound(tag, DIM_GEN_REGISTRY_NAME, DimensionalGeneratedCache.save());
 
 			// update feature dimensional simple caches
 			updateCompound(tag, FEATURE_CACHES_NAME, FeatureCaches.save());

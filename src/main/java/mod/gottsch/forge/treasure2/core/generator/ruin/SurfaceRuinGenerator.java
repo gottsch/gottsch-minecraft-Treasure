@@ -20,6 +20,8 @@ package mod.gottsch.forge.treasure2.core.generator.ruin;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.Level;
+
 import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.size.Quantity;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
@@ -44,6 +46,7 @@ import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.material.Material;
 
@@ -120,6 +123,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		ICoords templateSize = new Coords(holder.getTemplate().getSize(placement.getRotation()));
 
 		Treasure.LOGGER.debug("original coords -> {}",originalSpawnCoords.toShortString());
+
 		
 		/*
 		 * we want to align the new entrance (rotated structure) to the center of the chunk ie. original spawn
@@ -141,16 +145,27 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 			return Optional.empty();
 		}
 		
-		// check if it has % land base
+		// TODO move to method
+		// calculate the 'end' block of the template ie coords + size
+		ICoords endCoords = switch(rotation) {
+		case CLOCKWISE_180 -> alignedSpawnCoords.add(-transformedSize.getX(), 0, -transformedSize.getZ());
+		case CLOCKWISE_90 -> alignedSpawnCoords.add(-transformedSize.getX(), 0, 0);
+		case COUNTERCLOCKWISE_90 -> alignedSpawnCoords.add(0, 0, -transformedSize.getZ());
+		default -> alignedSpawnCoords;			
+		};
+		Treasure.LOGGER.debug("end coords -> {}", alignedSpawnCoords.toShortString());
+				
+		// check if it has % land base using the endCoords
 		for (int i = 0; i < 3; i++) {
-			Treasure.LOGGER.debug("finding solid base index -> {} at coords -> {}", i, alignedSpawnCoords.toShortString());
-			if (!WorldInfo.isSolidBase(context.level(), alignedSpawnCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
+			Treasure.LOGGER.debug("finding solid base index -> {} at coords -> {}", i, endCoords.toShortString());
+			if (!WorldInfo.isSolidBase(context.level(), endCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
 				if (i == 2) {
-					Treasure.LOGGER.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", alignedSpawnCoords.toShortString(), REQUIRED_BASE_SIZE, templateSize.getX(), templateSize.getZ());
+					Treasure.LOGGER.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}",endCoords.toShortString(), REQUIRED_BASE_SIZE, templateSize.getX(), templateSize.getZ());
 					return Optional.empty();
 				}
 				else {
-					alignedSpawnCoords = alignedSpawnCoords.add(0, -1, 0);
+					endCoords = endCoords.add(0, -1, 0);
+					alignedSpawnCoords.add(0, -1, 0);
 					Treasure.LOGGER.debug("move aligned spawn coords down for solid base check -> {}", alignedSpawnCoords.toShortString());
 				}
 			}
@@ -158,12 +173,13 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 				break;
 			}
 		}
+		
 		Treasure.LOGGER.debug("using solid base coords -> {}", alignedSpawnCoords.toShortString());
 		
 		// check if the plane above the actual spawn coords is % air
 		Treasure.LOGGER.debug("checking for {} % air at coords -> {} for dimensions -> {} x {}", REQUIRED_AIR_SIZE, alignedSpawnCoords.add(0, 1, 0), templateSize.getX(), templateSize.getZ());
 		if (!WorldInfo.isAirBase(context.level(), alignedSpawnCoords.add(0, 1, 0), templateSize.getX(), templateSize.getZ(), REQUIRED_AIR_SIZE)) {
-			Treasure.LOGGER.debug("Coords -> [{}] does not meet {} % air base requirements for size -> {} x {}", alignedSpawnCoords.toShortString(), REQUIRED_AIR_SIZE, templateSize.getX(), templateSize.getZ());
+			Treasure.LOGGER.debug("Coords -> [{}] does not meet {} % air base requirements for size -> {} x {}", REQUIRED_AIR_SIZE, alignedSpawnCoords.toShortString(), templateSize.getX(), templateSize.getZ());
 			return Optional.empty();
 		}
 		
@@ -192,8 +208,18 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		 if (!genResult.isSuccess()) {
 			 return Optional.empty();
 		 }
-
 		Treasure.LOGGER.debug("surface gen result -> {}", genResult);
+		
+		///////////// TESTING ////////////////////////
+		// use the endCoords and fill in empty spaces below with dirt
+		for (int x = 0; x < transformedSize.getX(); x++) {
+			for (int z = 0; z < transformedSize.getZ(); z++) {
+				ICoords c = endCoords.add(x, -1, z);
+				if (context.level().getBlockState(c.toPos()).isAir()) {
+					context.level().setBlock(c.toPos(), Blocks.AIR.defaultBlockState(), 3);
+				}
+			}
+		}
 
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 		List<BlockInfoContext> bossChestContexts =

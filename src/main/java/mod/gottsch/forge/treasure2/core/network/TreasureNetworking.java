@@ -33,7 +33,8 @@ public class TreasureNetworking {
 	public static final String PROTOCOL_VERSION = "1.0";
 	public static final int POISON_MIST_TO_SERVER_ID = 14;
 	public static final int WITHER_MIST_TO_SERVER_ID = 15;
-	public static final int CHARM_MESSAGE_ID = 16;
+//	public static final int CHARM_MESSAGE_ID = 16;
+	public static final int MIMIC_SPAWN_TO_CLIENT = 17;
 
 	public static SimpleChannel channel;
 	
@@ -58,6 +59,9 @@ public class TreasureNetworking {
 	    		WitherMistMessageToServer::encode, WitherMistMessageToServer::decode,
 	    		WitherMistMessageToServer::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 
+	    channel.registerMessage(MIMIC_SPAWN_TO_CLIENT, MimicSpawnS2C.class, 
+	    		MimicSpawnS2C::encode,MimicSpawnS2C::decode, 
+	    		MimicSpawnS2C::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 //		
 //		channel.registerMessage(CHARM_MESSAGE_ID, CharmMessageToClient.class,
 //		           CharmMessageToClient::encode, CharmMessageToClient::decode,

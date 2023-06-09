@@ -17,43 +17,33 @@
  */
 package mod.gottsch.forge.treasure2.core.world.feature;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 
 import com.mojang.serialization.Codec;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
-import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
-import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
-import mod.gottsch.forge.gottschcore.world.WorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.Generator;
 import mod.gottsch.forge.treasure2.core.config.Config;
-import mod.gottsch.forge.treasure2.core.enums.PitType;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
-import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
 import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
-import mod.gottsch.forge.treasure2.core.random.RarityLevelWeightedCollection;
-import mod.gottsch.forge.treasure2.core.registry.*;
-import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext;
-import mod.gottsch.forge.treasure2.core.registry.support.ChestGeneratedContext.GeneratedType;
+import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedCache;
+import mod.gottsch.forge.treasure2.core.registry.FeatureGeneratorSelectorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.GeneratedCache;
+import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.selector.IFeatureGeneratorSelector;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
@@ -62,9 +52,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
  * @author Mark Gottschling on Jan 4, 2021
  *
  */
-public class TerraneanChestFeature extends Feature<NoneFeatureConfiguration> implements IChestFeature {
+public class TerraneanChestFeature extends ChestFeature {
 	private static final IFeatureType FEATURE_TYPE = FeatureType.TERRANEAN;
-
+	
 	/**
 	 * 
 	 * @param configuration
@@ -79,7 +69,7 @@ public class TerraneanChestFeature extends Feature<NoneFeatureConfiguration> imp
 	protected static int UNDERGROUND_OFFSET = 5;
 
 	private int waitChunksCount = 0;
-
+	
 	/**
 	 * NOTE equivalent to 1.12 generate()
 	 * NOTE only use seedReader.setblockState() and that only allows you to access the 3x3 chunk area.
@@ -96,9 +86,9 @@ public class TerraneanChestFeature extends Feature<NoneFeatureConfiguration> imp
 		}
 
 		// get the chest registry
-		GeneratedCache<ChestGeneratedContext> chestCache = DimensionalGeneratedRegistry.getChestGeneratedCache(dimension, FEATURE_TYPE);
+		GeneratedCache<GeneratedChestContext> chestCache = DimensionalGeneratedCache.getChestGeneratedCache(dimension, FEATURE_TYPE);
 		if (chestCache == null) {
-			Treasure.LOGGER.debug("GeneratedRegistry is null for dimension & TERRESTRIAL. This shouldn't be. Should be initialized.");
+			Treasure.LOGGER.debug("GeneratedRegistry is null for dimension & TERRANEAN. This shouldn't be. Should be initialized.");
 			return false;
 		}
 		// get the generator config
@@ -154,51 +144,27 @@ public class TerraneanChestFeature extends Feature<NoneFeatureConfiguration> imp
 		// check if meets the probability criteria. this is used as a randomizer so that chests aren't predictably placed.
 		if (!meetsProbabilityCriteria(context.random(), generatorConfig)) {
 			// place a placeholder chest in the registry
-			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords);
+			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords, FEATURE_TYPE);
 		}
 
 		// select the feature generator
 		Optional<IFeatureGeneratorSelector> generatorSelector = FeatureGeneratorSelectorRegistry.getSelector(FEATURE_TYPE, rarity);
 		if (!generatorSelector.isPresent()) {
 			Treasure.LOGGER.warn("unable to obtain a generator selector for rarity - >{}", rarity);
-			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords);
+			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords, FEATURE_TYPE);
 		}
 
 		// select the generator
 		IFeatureGenerator featureGenerator = generatorSelector.get().select();
 		Treasure.LOGGER.debug("feature generator -> {}", featureGenerator.getClass().getSimpleName());
 		// call generate
-		Optional<GeneratorResult<ChestGeneratorData>> result = featureGenerator.generate(new WorldGenContext(context), spawnCoords, rarity, rarityConfig.get());
+		Optional<GeneratorResult<ChestGeneratorData>> result = featureGenerator.generate(new FeatureGenContext(context, FEATURE_TYPE), spawnCoords, rarity, rarityConfig.get());
 
 		if (result.isPresent()) {
-			Treasure.LOGGER.debug("feature gen result -> {}", result.get());
-			// NOTE this is used to cache data about the chest in the Dimension Generated Chest cache.
-			// create a chest context
-			ChestGeneratedContext chestGeneratedContext = new ChestGeneratedContext(
-					result.get().getData().getRarity(), result.get().getData().getCoords());
-			chestGeneratedContext
-			.withSurfaceCoords(result.get().getData().getSpawnCoords())
-			.withFeatureType(FEATURE_TYPE)
-			.withName(result.get().getData().getRegistryName());
-
-			// TODO need to update the BlockEntity with the FeatureType
-			// TODO move out all this chest geneated code to own method and abstract out
-			// TODO remove GenerationContext from AbstractTreasureChestBlockEntity and remove the call to IChestGenerator.addGenerationContext 
-			// and update the BE with this context
-			// TODO don't save the context after the chest is discovered
-			Treasure.LOGGER.debug("chestGenContext -> {}", chestGeneratedContext);
-			// cache the chest at its exact location
-			chestCache.cache(rarity, chestGeneratedContext.getCoords(), chestGeneratedContext);
-
-			// TODO move to method and abstract out
-			// update the adjusted weight collection			
-			RarityLevelWeightedChestGeneratorRegistry.adjustAllWeightsExcept(dimension, FEATURE_TYPE, 1, rarity);
-			Map<IFeatureType, RarityLevelWeightedCollection> map = RarityLevelWeightedChestGeneratorRegistry.RARITY_SELECTOR.get(dimension);
-			RarityLevelWeightedCollection dumpCol = map.get(FEATURE_TYPE);
-			List<String> dump = dumpCol.dump();
-			Treasure.LOGGER.debug("weighted collection dump -> {}", dump);
+			cacheGeneratedChest(context.level(), rarity, FEATURE_TYPE, chestCache, result.get());
+			updateChestGeneratorRegistry(dimension, rarity, FEATURE_TYPE);
 		} else {
-			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords);
+			return failAndPlaceholdChest(genLevel, chestCache, rarity, spawnCoords, FEATURE_TYPE);
 		}
 
 		// save world data
@@ -208,25 +174,13 @@ public class TerraneanChestFeature extends Feature<NoneFeatureConfiguration> imp
 		}
 		return true;
 	}
-
-	private boolean failAndPlaceholdChest(WorldGenLevel genLevel, GeneratedCache<ChestGeneratedContext> registry, IRarity rarity, ICoords coords) {
-		// add placeholder
-		ChestGeneratedContext chestGeneratedContext = new ChestGeneratedContext(rarity, coords, GeneratedType.PLACEHOLDER).withFeatureType(FEATURE_TYPE);
-		registry.cache(rarity, coords, chestGeneratedContext);
-		// need to save on fail
-		TreasureSavedData savedData = TreasureSavedData.get(genLevel.getLevel());
-		if (savedData != null) {
-			savedData.setDirty();
-		}
-		return false;
-	}
-
+	
 	/**
 	 * @param world
 	 * @param registry
 	 * @return
 	 */
-	private boolean meetsWorldAgeCriteria(ServerLevelAccessor world, GeneratedCache<ChestGeneratedContext> registry, Generator generatorConfig) {
+	protected boolean meetsWorldAgeCriteria(ServerLevelAccessor world, GeneratedCache<GeneratedChestContext> registry, Generator generatorConfig) {
 		// wait count check		
 		if (registry.getValues().isEmpty() && waitChunksCount < generatorConfig.getWaitChunks()) {
 			Treasure.LOGGER.debug("world is too young");
@@ -234,254 +188,5 @@ public class TerraneanChestFeature extends Feature<NoneFeatureConfiguration> imp
 			return false;
 		}
 		return true;
-	}
-
-	/**
-	 * 
-	 * @param random
-	 * @return
-	 */
-	private boolean meetsProbabilityCriteria(Random random, Generator generatorConfig) {
-		if (generatorConfig.getProbability() == null) {
-			Treasure.LOGGER.warn("chest generator config -> '{}' is missing 'probability' value", generatorConfig.getKey());
-			return false;
-		}
-		if (!RandomHelper.checkProbability(random, generatorConfig.getProbability())) {
-			Treasure.LOGGER.debug("chest gen does not meet generate probability.");
-			return false;
-		}
-		return true;
-	}
-
-
-	/////////////////////////////////	/////////////////////////////////	/////////////////////////////////	/////////////////////////////////
-
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param coords
-	 * @param rarity
-	 * @param next
-	 * @param iChestConfig
-	 * @return
-	 */
-	@Deprecated
-	private Optional<GeneratorResult<ChestGeneratorData>> generateChest(
-			IWorldGenContext context, ICoords coords, IRarity rarity, IChestGenerator chestGenerator,
-			ChestConfiguration.Generator generatorConfig, ChestConfiguration.ChestRarity config) {
-		//	private GeneratorResult<ChestGeneratorData> generateChest(IServerWorld world, ChunkGenerator generator, Random random, ICoords coords, Rarity rarity,
-		//			IChestGenerator chestGenerator, IChestConfig config) {
-
-		// TODO don't like this - creating results - should use Optional<>
-		// result to return to the caller
-		GeneratorResult<ChestGeneratorData> generationResult = new GeneratorResult<>(ChestGeneratorData.class);
-		// result from environment (pit | ruins) generation
-		Optional<GeneratorResult<ChestGeneratorData>> environmentGenerationResult = Optional.empty(); //new GeneratorResult<>(ChestGeneratorData.class);
-
-		ICoords chestCoords = null;
-		boolean isSurfaceChest = false;
-		boolean isStructure = false;
-
-		// 1. collect location data points
-		ICoords surfaceCoords = coords;
-		Treasure.LOGGER.debug("surface coords -> {}", surfaceCoords.toShortString());
-		if (!WorldInfo.isHeightValid(surfaceCoords)) {
-			Treasure.LOGGER.debug("surface coords are invalid -> {}", surfaceCoords.toShortString());
-			return Optional.empty();
-		}
-
-		// 2. determine if above ground or below ground
-		if (RandomHelper.checkProbability(context.random(), generatorConfig.getSurfaceProbability())) { // TreasureConfig.CHESTS.surfaceChests.surfaceChestProbability.get()) {) {
-			isSurfaceChest = true;
-
-			if (RandomHelper.checkProbability(context.random(), generatorConfig.getStructureProbability())) {
-				isStructure = true;
-
-				//				environmentGenerationResult = generateSurfaceRuins(world, generator, random, surfaceCoords, config);
-				//				Treasure.LOGGER.debug("surface result -> {}", environmentGenerationResult.toString());
-				//				if (!environmentGenerationResult.isSuccess()) {
-				//					return environmentGenerationResult.fail();
-				//				}
-				//				// update generation meta data
-				//				generationResult.getData().setStructure(true);
-				//
-				//				// set the chest coords to the surface pos
-				//				chestCoords = environmentGenerationResult.getData().getChestContext().getCoords();
-			}
-			else {
-				// update the environment state with a random direction
-				// TODO I don't like this
-
-				// set the chest coords to the same as the surface pos
-				chestCoords = new Coords(surfaceCoords);
-				Treasure.LOGGER.debug("surface chest coords -> {}", chestCoords);
-			}
-			//			generationResult.getData().setPlacement(RegionPlacement.SURFACE);
-		}
-		else {
-			Treasure.LOGGER.debug("else generate pit");
-			environmentGenerationResult = generatePit(context, rarity, surfaceCoords, config);
-			if (environmentGenerationResult.isEmpty()) {
-				return Optional.empty();
-			}
-			Treasure.LOGGER.debug("result -> {}",environmentGenerationResult.get().toString());
-			chestCoords = environmentGenerationResult.get().getData().getCoords();
-			//			generationResult.getData().setPlacement(RegionPlacement.SUBTERRANEAN);
-			generationResult.getData().setPit(true);
-		}
-
-		// if chest isn't generated, then fail
-		if (chestCoords == null) {
-			Treasure.LOGGER.debug("chest coords were not provided in result -> {}", environmentGenerationResult.toString());
-			return Optional.empty();
-		}
-
-		BlockState chestState = null;
-		if (environmentGenerationResult.isPresent()) {
-			chestState = environmentGenerationResult.get().getData().getState();
-		}
-
-		// TODO update world
-		// TODO at this point if surface check, there isn't any environment gen result except default
-		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(context, chestCoords, rarity, chestState);
-		if (!chestResult.isSuccess()) {
-			return Optional.empty();
-		}
-
-		// add markers (above chest or shaft)
-		if (!isStructure) {
-			// TODO update world
-			chestGenerator.addMarkers(context, surfaceCoords, isSurfaceChest);
-			generationResult.getData().setMarkers(true);
-		}
-
-		Treasure.LOGGER.info("CHEATER! {} chest at coords: {}", rarity, surfaceCoords.toShortString());
-		//		generationResult.getData().setChestContext(chestResult.getData().getChestContext());
-		generationResult.getData().setCoords(chestCoords);
-		generationResult.getData().setSpawnCoords(surfaceCoords);
-		generationResult.getData().setRegistryName(chestResult.getData().getRegistryName());
-		generationResult.getData().setRarity(rarity);
-		return Optional.ofNullable(generationResult);
-	}
-
-	/**
-	 * Land Only
-	 * @param world
-	 * @param random
-	 * @param chestRarity
-	 * @param markerCoords
-	 * @param config
-	 * @return
-	 */
-	@Deprecated
-	public Optional<GeneratorResult<ChestGeneratorData>> generatePit(IWorldGenContext context, IRarity chestRarity, ICoords markerCoords, ChestConfiguration.ChestRarity config) {
-
-		// check if it has 50% land
-		if (!WorldInfo.isSolidBase(context.level(), markerCoords, 2, 2, 50)) {
-			Treasure.LOGGER.debug("coords -> {} does not meet solid base requires for {} x {}", markerCoords.toShortString(), 2, 2);
-			return Optional.empty();
-		}
-
-		// determine spawn coords below ground
-		Optional<ICoords> spawnCoords = getUndergroundSpawnPos(context.level(), context.random(), markerCoords, config.getMinDepth(), config.getMaxDepth());
-
-		if (spawnCoords.isEmpty()) {
-			Treasure.LOGGER.debug("unable to spawn underground @ {}", markerCoords);
-			return Optional.empty();
-		}
-		Treasure.LOGGER.debug("below ground -> {}", spawnCoords.get().toShortString());
-
-
-		// select a pit generator
-		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = selectPitGenerator(context.random());
-		Treasure.LOGGER.debug("Using pit generator -> {}", pitGenerator.getClass().getSimpleName());
-
-		// 3. build the pit
-		Optional<GeneratorResult<ChestGeneratorData>> pitResult = pitGenerator.generate(context, markerCoords, spawnCoords.get());
-
-		if (pitResult.isEmpty()) {
-			return Optional.empty();
-		}
-
-		// override the spawn coords to that of the marker
-		pitResult.get().getData().setSpawnCoords(markerCoords);
-
-		return pitResult;
-	}
-
-	//	/**
-	//	 * 
-	//	 * @param world
-	//	 * @param random
-	//	 * @param spawnCoords
-	//	 * @param config
-	//	 * @return
-	//	 */
-	//	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, ChunkGenerator generator, Random random, ICoords spawnCoords,
-	//			IChestConfig config) {
-	//		return generateSurfaceRuins(world, generator, random, spawnCoords, null, null, config);
-	//	}
-	//
-	//	/**
-	//	 * 
-	//	 * @param world
-	//	 * @param random
-	//	 * @param spawnCoords
-	//	 * @param decayProcessor
-	//	 * @param config
-	//	 * @return
-	//	 */
-	//	public GeneratorResult<ChestGeneratorData> generateSurfaceRuins(IServerWorld world, ChunkGenerator chunkGenerator, Random random, ICoords spawnCoords,
-	//			TemplateHolder holder, IDecayRuleSet decayRuleSet, IChestConfig config) {
-	//
-	//		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);		
-	//		result.getData().setSpawnCoords(spawnCoords);
-	//
-	//		SurfaceRuinGenerator generator = new SurfaceRuinGenerator();
-	//
-	//		// build the structure
-	//		GeneratorResult<ChestGeneratorData> genResult = generator.generate(world, chunkGenerator, random, spawnCoords, holder, decayRuleSet);
-	//		Treasure.LOGGER.debug("surface struct result -> {}", genResult);
-	//		if (!genResult.isSuccess()) return result.fail();
-	//
-	//		result.setData(genResult.getData());
-	//		return result.success();
-	//	}
-
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param startingCoords
-	 * @param minDepth
-	 * @param maxDepth
-	 * @return
-	 */
-	@Deprecated
-	public static Optional<ICoords> getUndergroundSpawnPos(ServerLevelAccessor world, Random random, ICoords startingCoords, int minDepth, int maxDepth) {
-		int depth = RandomHelper.randomInt(minDepth, maxDepth);
-		int ySpawn = Math.max(UNDERGROUND_OFFSET, startingCoords.getY() - depth);
-		Treasure.LOGGER.debug("ySpawn -> {}", ySpawn);
-		ICoords coords = new Coords(startingCoords.getX(), ySpawn, startingCoords.getZ());
-		// get floor pos (if in a cavern or tunnel etc)
-		coords = WorldInfo.getSubterraneanSurfaceCoords(world, coords);
-
-		return (coords == null || coords == Coords.EMPTY) ? Optional.empty() : Optional.of(coords);
-	}
-
-	/**
-	 * Land Only
-	 * @param random
-	 * @return
-	 */
-	@Deprecated
-	public static IPitGenerator<GeneratorResult<ChestGeneratorData>> selectPitGenerator(Random random) {
-		PitType pitType = RandomHelper.checkProbability(random, Config.SERVER.pits.structureProbability.get()) ? PitType.STRUCTURE : PitType.STANDARD;
-		List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerators = PitGeneratorRegistry.get(pitType);
-		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));
-		Treasure.LOGGER.debug("Using PitType: {}, Gen: {}", pitType, pitGenerator.getClass().getSimpleName());
-
-		return pitGenerator;
 	}
 }

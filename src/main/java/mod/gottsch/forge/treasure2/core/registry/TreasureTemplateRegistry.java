@@ -643,8 +643,8 @@ public class TreasureTemplateRegistry {
 
 		// filter out any in the black list
 		if (templateHolders != null && !templateHolders.isEmpty() && blacklistHolders != null && !blacklistHolders.isEmpty()) {
-			Treasure.LOGGER.debug("template holders -> {}", templateHolders);
-			Treasure.LOGGER.debug("current biome -> {}", biome.toString());
+			Treasure.LOGGER.debug("blacklist check template holders -> {}", templateHolders);
+			Treasure.LOGGER.debug("blacklist check current biome -> {}", biome.toString());
 			templateHolders = templateHolders.stream()
 					.filter(h -> blacklistHolders.stream().noneMatch(b -> b.getLocation().equals(h.getLocation())))
 					.collect(Collectors.toList());			
@@ -652,8 +652,8 @@ public class TreasureTemplateRegistry {
 		
 		// filter if the template has a whitelist and this biome is not included
 		if (templateHolders != null && !templateHolders.isEmpty()) {
-			Treasure.LOGGER.debug("template holders -> {}", templateHolders);
-			Treasure.LOGGER.debug("current biome -> {}", biome.toString());
+			Treasure.LOGGER.debug("whitelist check template holders -> {}", templateHolders);
+			Treasure.LOGGER.debug("whtielist check current biome -> {}", biome.toString());
 			templateHolders = templateHolders.stream()
 				.filter(h -> {
 				StructMeta meta = Config.structConfigMetaMap.get(h.getLocation());

@@ -34,7 +34,6 @@ import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.Generator;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.random.RarityLevelWeightedCollection;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
@@ -63,9 +62,9 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 	private RarityLevelWeightedChestGeneratorRegistry() {	}
 
 	
-	public static void registerGenerator(IRarity rarity, IFeatureType type, IChestGeneratorType chestGenType) {
+	public static void registerGenerator(IRarity rarity, IFeatureType type) {
 		// first check if chestGenType is registered
-		Optional<IChestGenerator> generator = ChestGeneratorRegistry.get(chestGenType);
+		Optional<IChestGenerator> generator = ChestGeneratorRegistry.get(rarity);
 		if (!generator.isPresent()) {
 			return;
 		}

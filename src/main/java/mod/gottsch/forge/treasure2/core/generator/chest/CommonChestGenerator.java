@@ -44,19 +44,19 @@ public class CommonChestGenerator extends AbstractChestGenerator {
 	/**
 	 * 
 	 */
-	public CommonChestGenerator(IChestGeneratorType type) {
-		super(type);
+	public CommonChestGenerator() {
+		super();
 	}
 
 	/**
 	 * 
 	 */
-	@Override
-	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
-		GenerationContext generationContext = 
-				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, getChestGeneratorType());
-		blockEntity.setGenerationContext(generationContext);
-	}
+//	@Override
+//	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
+//		GenerationContext generationContext = 
+//				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, getChestGeneratorType());
+//		blockEntity.setGenerationContext(generationContext);
+//	}
 	
 	/**
 	 * 

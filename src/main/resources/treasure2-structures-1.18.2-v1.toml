@@ -34,7 +34,7 @@
 		z = 0
 		
 	[[structureConfigs.structMetas]]
-		name = "treasure2:terranean/well/desert/desert_wishing_well1"
+		name = "treasure2:terranean/well/desert_wishing_well1"
 		biomeWhitelist = ["minecraft:desert"]
 		biomeBlacklist = []
 		[structureConfigs.structMetas.offset]
@@ -43,7 +43,7 @@
 		z = 0
 		
 	[[structureConfigs.structMetas]]
-		name = "treasure2:terranean/well/desert/desert_wishing_well2"
+		name = "treasure2:terranean/well/desert_wishing_well2"
 		biomeWhitelist = ["minecraft:desert"]
 		biomeBlacklist = []
 		[structureConfigs.structMetas.offset]
@@ -81,6 +81,16 @@
 		x = 0
 		y = -1
 		z = 0
+
+	[[structureConfigs.structMetas]]
+		name = "treasure2:terranean/ruin/fortress1"
+		biomeWhitelist = []
+		biomeBlackList = []
+		[structureConfigs.structMetas.offset]
+		x = 0
+		y = -6
+		z = 0
+
 	[[structureConfigs.structMetas]]
 		name = "treasure2:terranean/ruin/house1"
 		biomeWhitelist = []

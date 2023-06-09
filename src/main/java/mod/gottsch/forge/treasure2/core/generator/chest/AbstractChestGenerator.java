@@ -23,13 +23,17 @@ package mod.gottsch.forge.treasure2.core.generator.chest;
  *
  */
 public abstract class AbstractChestGenerator implements IChestGenerator {
-	private IChestGeneratorType chestGeneratorType;
+//	private IChestGeneratorType chestGeneratorType;
 	
-	public AbstractChestGenerator(IChestGeneratorType type) {
-		this.chestGeneratorType = type;
+	// TODO we could pass in the rarity here and save it
+	public AbstractChestGenerator() {
 	}	
+	
+//	public AbstractChestGenerator(IChestGeneratorType type) {
+//		this.chestGeneratorType = type;
+//	}	
 
-	public IChestGeneratorType getChestGeneratorType() {
-		return chestGeneratorType;
-	}
+//	public IChestGeneratorType getChestGeneratorType() {
+//		return chestGeneratorType;
+//	}
 }
