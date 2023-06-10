@@ -1,4 +1,4 @@
-ce1b78105b5c4b861dcf8071b689e574e7097968 assets/treasure2/lang/en_us.json
+d3280653b346b879f355aa804bfd7a640fdf0066 assets/treasure2/lang/en_us.json
 ec0affa9af25bb3155f1ffb36624aaf0fa4ef025 assets/treasure2/models/item/adornments_tab.json
 541a27aa27dcd17106e9723532d6032ad0f82782 assets/treasure2/models/item/axe_of_durin.json
 8be0b1ec5bf90f3dcb3da00251632ae969418191 assets/treasure2/models/item/black_pearl.json
@@ -6,6 +6,7 @@ b95ce33388c818d6fb37ac91aba9803a85147763 assets/treasure2/models/item/black_swor
 98167609bf3898587f7565736a6fc24a7966cacd assets/treasure2/models/item/bound_soul_egg.json
 48f176867f0525d13dc1451bdbfcf7663c63c42b assets/treasure2/models/item/cardboard_box.json
 777bdbb3dff6aa569b70ee5a57badc0c839b3509 assets/treasure2/models/item/cauldron_chest.json
+98167609bf3898587f7565736a6fc24a7966cacd assets/treasure2/models/item/cauldron_chest_mimic_egg.json
 efbd6d0dc41e95ce38d430834e68cccc5d4d4b03 assets/treasure2/models/item/chipped_copper_short_sword.json
 d3f7b2911aedd8eb04c71d279f581f59e9dc6aef assets/treasure2/models/item/chipped_iron_short_sword.json
 d3f7b2911aedd8eb04c71d279f581f59e9dc6aef assets/treasure2/models/item/chipped_steel_short_sword.json

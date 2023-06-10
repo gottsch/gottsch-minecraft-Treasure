@@ -347,6 +347,7 @@ public class CommonSetup {
 		TreasureApi.registerMimic(TreasureBlocks.WOOD_CHEST.getId(), TreasureEntities.WOOD_CHEST_MIMIC_ENTITY_TYPE.getId());
 		TreasureApi.registerMimic(TreasureBlocks.PIRATE_CHEST.getId(), TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE.getId());
 		TreasureApi.registerMimic(TreasureBlocks.VIKING_CHEST.getId(), TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE.getId());
+		TreasureApi.registerMimic(TreasureBlocks.CAULDRON_CHEST.getId(), TreasureEntities.CAULDRON_CHEST_MIMIC_ENTITY_TYPE.getId());
 		
 		// TODO are these still valid since using Tags
 		// register all the wishable items

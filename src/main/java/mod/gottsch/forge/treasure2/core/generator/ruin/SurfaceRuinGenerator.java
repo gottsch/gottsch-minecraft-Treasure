@@ -216,7 +216,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 			for (int z = 0; z < transformedSize.getZ(); z++) {
 				ICoords c = endCoords.add(x, -1, z);
 				if (context.level().getBlockState(c.toPos()).isAir()) {
-					context.level().setBlock(c.toPos(), Blocks.AIR.defaultBlockState(), 3);
+					context.level().setBlock(c.toPos(), Blocks.DIRT.defaultBlockState(), 3);
 				}
 			}
 		}

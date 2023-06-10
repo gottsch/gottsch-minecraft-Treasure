@@ -43,7 +43,7 @@ import net.minecraft.world.entity.Entity;
  */
 public class CauldronChestMimicModel<T extends Entity> extends EntityModel<T> {
 
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Treasure.MODID, "pirate_chest_mimic"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Treasure.MODID, "cauldron_chest_mimic"), "main");
 	
 	private final ModelPart body;
 	private final ModelPart lid;
@@ -67,8 +67,6 @@ public class CauldronChestMimicModel<T extends Entity> extends EntityModel<T> {
 	private final ModelPart spike1;
 	private final ModelPart spike2;
 	private final ModelPart spike3;
-
-	private float bodyY;
 	
 	/**
 	 * 
@@ -78,7 +76,7 @@ public class CauldronChestMimicModel<T extends Entity> extends EntityModel<T> {
 		this.body = root.getChild("body");
 		this.lid = body.getChild("lid");
 		this.base = body.getChild("base");
-		this.legs = body.getChild("legs");
+		this.legs = root.getChild("legs");
 		
 		this.tongue = base.getChild("tongue");
 		
@@ -92,16 +90,14 @@ public class CauldronChestMimicModel<T extends Entity> extends EntityModel<T> {
 		this.spike3 = lid.getChild("spike3");
 		
 		this.frontLeg1 = legs.getChild("frontLeg1");
-		this.frontLeg2 = legs.getChild("backLeg2");
-		this.backLeg1 = legs.getChild("frontLeg1");
+		this.frontLeg2 = legs.getChild("frontLeg2");
+		this.backLeg1 = legs.getChild("backLeg1");
 		this.backLeg2 = legs.getChild("backLeg2");
 		
-		this.frontSwing1 = legs.getChild("frontSwing1");
-		this.frontSwing2 = legs.getChild("backSwing2");
-		this.backSwing1 = legs.getChild("frontSwing1");
-		this.backSwing2 = legs.getChild("backSwing2");
-		
-		bodyY = body.y;
+		this.frontSwing1 = frontLeg1.getChild("frontSwing1");
+		this.frontSwing2 = frontLeg2.getChild("frontSwing2");
+		this.backSwing1 = backLeg1.getChild("backSwing1");
+		this.backSwing2 = backLeg2.getChild("backSwing2");
 	}
 
 	/**
@@ -155,7 +151,7 @@ public class CauldronChestMimicModel<T extends Entity> extends EntityModel<T> {
 		PartDefinition spike3 = lid.addOrReplaceChild("spike3", CubeListBuilder.create().texOffs(21, 42).addBox(-1.0F, -0.1F, 0.0F, 2.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -7.5F, -6.0F));
 		PartDefinition legs = partdefinition.addOrReplaceChild("legs", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, -8.0F));
 		PartDefinition frontLeg1 = legs.addOrReplaceChild("frontLeg1", CubeListBuilder.create(), PartPose.offset(6.0F, 0.0F, 0.0F));
-		PartDefinition frongSwing1 = frontLeg1.addOrReplaceChild("frongSwing1", CubeListBuilder.create().texOffs(37, 20).addBox(0.0F, 0.0F, 0.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F))
+		PartDefinition frontSwing1 = frontLeg1.addOrReplaceChild("frontSwing1", CubeListBuilder.create().texOffs(37, 20).addBox(0.0F, 0.0F, 0.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F))
 		.texOffs(54, 28).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -3.0F, 2.0F));
 		PartDefinition frontLeg2 = legs.addOrReplaceChild("frontLeg2", CubeListBuilder.create(), PartPose.offset(-6.0F, 0.0F, 0.0F));
 		PartDefinition frontSwing2 = frontLeg2.addOrReplaceChild("frontSwing2", CubeListBuilder.create().texOffs(7, 36).addBox(-2.0F, 0.0F, 0.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F))
@@ -190,7 +186,7 @@ public class CauldronChestMimicModel<T extends Entity> extends EntityModel<T> {
 			else {
 				lid.xRot = -degToRad(22.5f);
 			}
-			rightLid.zRot = 2.26893F; //130
+			rightLid.zRot = -2.26893F; //130
 			leftLid.zRot = -rightLid.zRot;
 			spike1.xRot =  1.13446F; // 65
 			spike2.xRot =  0.959931F; //
@@ -201,10 +197,17 @@ public class CauldronChestMimicModel<T extends Entity> extends EntityModel<T> {
 			eye3.xRot = eye1.xRot;
 			tongue.xRot = -0.174533F; // 10
 			
-			// TODO swing legs
+			// swing legs
+			frontSwing1.xRot = Mth.cos(limbSwing * 0.349066f * 0.8f) * 1.4F * limbSwingAmount;
+			backSwing1.xRot = Mth.cos(limbSwing * 0.349066f  * 0.8f + (float)Math.PI) * 1.4F * limbSwingAmount;
 			
-			// TODO bob spikes
-//			bob(body, bodyY, ageInTicks);
+			frontSwing2.xRot = backSwing1.xRot;
+			backSwing2.xRot = frontSwing1.xRot;
+			
+			// bob spikes
+			bob(spike1, ageInTicks, 0.26f, -1);
+			bob(spike2, ageInTicks, 0.26f, -1);
+			bob(spike3, ageInTicks, 0.26f, -1);
 			
 		} else {
 			if (mimic.getAmount() < 1F) {
@@ -215,7 +218,7 @@ public class CauldronChestMimicModel<T extends Entity> extends EntityModel<T> {
 				backLeg2.xRot = body.xRot;				
 				
 				lid.xRot = mimic.getAmount() * -0.7854F;
-				rightLid.zRot = mimic.getAmount() * 2.26893F; //130
+				rightLid.zRot = mimic.getAmount() * -2.26893F; //130
 				leftLid.zRot = -rightLid.zRot;
 				spike1.xRot =  mimic.getAmount() * 1.13446F; // 65
 				spike2.xRot =  mimic.getAmount() * 0.959931F; //
@@ -229,13 +232,14 @@ public class CauldronChestMimicModel<T extends Entity> extends EntityModel<T> {
 		}
 	}
 
-	public static void bob(ModelPart part, float originY, float age) {
-		part.y = originY + (Mth.cos(age * 0.25F) * 0.5F + 0.05F);
+	public static void bob(ModelPart part, float age, float radians, int direction) {
+		part.xRot += direction * (Mth.sin(age * 0.05F) * radians + 0.05F);
 	}
 	
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		legs.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
 	protected float degToRad(float degrees) {
