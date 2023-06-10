@@ -17,11 +17,19 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.effects;
 
+import mod.gottsch.forge.gottschcore.enums.IRarity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+
 /**
  * 
  * @author Mark Gottschling on Jun 9, 2023
  *
  */
-public interface IChestEffects {
+public interface IChestGeneratorEffects {
 
+	default public void addGenEffects(ServerLevelAccessor level, BlockState state, BlockPos pos, IRarity rarity) {
+		
+	}
 }

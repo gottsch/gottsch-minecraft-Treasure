@@ -36,6 +36,7 @@ import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
+import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
@@ -47,6 +48,7 @@ import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
+import mod.gottsch.forge.treasure2.core.generator.effects.IChestGeneratorEffects;
 import mod.gottsch.forge.treasure2.core.generator.marker.GravestoneMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.generator.marker.StructureMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
@@ -57,6 +59,7 @@ import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext.GeneratedType;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -64,6 +67,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -86,7 +90,7 @@ import net.minecraftforge.registries.RegistryObject;
  * @author Mark Gottschling on Dec 4, 2019
  *
  */
-public interface IChestGenerator {
+public interface IChestGenerator extends IChestGeneratorEffects {
 	public static final String TREASURE_POOL = "treasure";
 	public static final String CHARMS_POOL = "charms";
 	
@@ -145,22 +149,27 @@ public interface IChestGenerator {
 			return result.fail();
 		}
 		
+		ITreasureChestBlockEntity chestEntity = (ITreasureChestBlockEntity)blockEntity;
+		
 		// add the loot table
-		addLootTable((ITreasureChestBlockEntity) blockEntity, lootTableResourceLocation);
+		addLootTable(chestEntity, lootTableResourceLocation);
 
 		// seal the chest
-		addSeal((ITreasureChestBlockEntity) blockEntity);
+		addSeal(chestEntity);
 
 		// TODO remove and update from Feature when all is complete.
 		// update the backing block entity's generation contxt
 		// NOTE only updates generation context with Rarity and ChestGeneratorType. The featureType at this point is unknown.
-		addGenerationContext(context, (ITreasureChestBlockEntity) blockEntity, rarity);
+		addGenerationContext(context, chestEntity, rarity);
 
 		// add locks
-		addLocks(context.random(), chest, (ITreasureChestBlockEntity) blockEntity, rarity);
+		addLocks(context.random(), chest, chestEntity, rarity);
 
 		// add mimic if any
-		addMimic(context, chest, (ITreasureChestBlockEntity) blockEntity, rarity);
+		addMimic(context, chest, chestEntity, rarity);
+		
+		// add effects
+		addGenEffects(context.level(), state, coords.toPos(), rarity);
 		
 		// update result
 		result.getData().setSpawnCoords(coords);
@@ -169,6 +178,31 @@ public interface IChestGenerator {
 		return result.success();
 	}
 
+	@Override
+	default void addGenEffects(ServerLevelAccessor level, BlockState state, BlockPos pos,
+			IRarity rarity) {
+		if (level.getBlockState(pos).getBlock() == TreasureBlocks.SPIDER_CHEST.get()) {
+			if (level.getBlockState(pos.above()).isAir()) {
+				level.setBlock(pos.above(), Blocks.COBWEB.defaultBlockState(), 3);
+			}
+			if (level.getBlockState(pos.north()).isAir()) {
+				level.setBlock(pos.north(), Blocks.COBWEB.defaultBlockState(), 3);
+			}
+			if (level.getBlockState(pos.south()).isAir()) {
+				level.setBlock(pos.south(), Blocks.COBWEB.defaultBlockState(), 3);
+			}
+			if (level.getBlockState(pos.east()).isAir()) {
+				level.setBlock(pos.east(), Blocks.COBWEB.defaultBlockState(), 3);
+			}
+			if (level.getBlockState(pos.west()).isAir()) {
+				level.setBlock(pos.west(), Blocks.COBWEB.defaultBlockState(), 3);
+			}
+		}
+		else {
+			IChestGeneratorEffects.super.addGenEffects(level, state, pos, rarity);
+		}
+	}
+	
 	/**
 	 * 
 	 * @param context

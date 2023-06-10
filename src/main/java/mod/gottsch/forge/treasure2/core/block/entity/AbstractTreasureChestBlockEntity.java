@@ -29,6 +29,7 @@ import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
+import mod.gottsch.forge.treasure2.core.block.effects.IChestEffects;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType;
@@ -76,7 +77,7 @@ import net.minecraftforge.items.ItemStackHandler;
  * @author Mark Gottschling on Nov 10, 2022
  *
  */
-public abstract class AbstractTreasureChestBlockEntity extends BlockEntity implements ITreasureChestBlockEntity, MenuProvider, Nameable {
+public abstract class AbstractTreasureChestBlockEntity extends BlockEntity implements ITreasureChestBlockEntity, IChestEffects, MenuProvider, Nameable {
 
 	private static final String LOCK_STATES_TAG = "lockStates";
 	private static final String FACING_TAG = "facing";
@@ -258,7 +259,8 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	public void tickClient() {
 		this.prevLidAngle = this.lidAngle;
 		if (this.openCount > 0 && this.lidAngle == 0.0F) {
-			this.playSound(SoundEvents.CHEST_OPEN);
+			doChestOpenEffects(level, null, getBlockPos());
+//			this.playSound(SoundEvents.CHEST_OPEN);
 		}
 
 		if (this.openCount == 0 && this.lidAngle > 0.0F || this.openCount > 0 && this.lidAngle < 1.0F) {
@@ -276,7 +278,8 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 
 			//float f3 = 0.5F;
 			if (this.lidAngle < 0.5F && f2 >= 0.5F) {
-				this.playSound(SoundEvents.CHEST_CLOSE);
+				doChestCloseEffects(level, null, getBlockPos());
+//				this.playSound(SoundEvents.CHEST_CLOSE);
 			}
 
 			if (this.lidAngle < 0.0F) {

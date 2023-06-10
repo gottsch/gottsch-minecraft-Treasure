@@ -371,11 +371,16 @@ public class CommonSetup {
 		// regiser templates
 		TreasureApi.registerTemplates(Treasure.MODID);
 
-		// TODO this is probably moot - mergable with TypeChestGenerator
 		/*
 		 *  in order for chest context to know what generator to use, we need a registry (map)
 		 *  of generator type to generator object.
 		 */
+		// TODO map Rarity to ChestGeneratorSelector (like FeatureGeneratorSelector and FeatureGenerator)
+		// the ChestGeneratorSelector in turn selects a ChestGenerator. Using this method we can have specific chest generators (ex Spider chest gen)
+		// without having to create a specific rarity for Spider
+		// ex. scarce -> ScaraceChestGeneratorSelector -> [ScarceChestGenerator, SpiderChestGenerator] could be weighted or unweighted
+		// this would make the special rarities moot
+		
 		// register chest generators that can be used within the mod
 		TreasureApi.registerChestGenerator(Rarity.COMMON, new CommonChestGenerator());
 		TreasureApi.registerChestGenerator(Rarity.UNCOMMON, new UncommonChestGenerator());
