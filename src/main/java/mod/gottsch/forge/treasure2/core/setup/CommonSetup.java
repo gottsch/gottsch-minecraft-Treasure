@@ -274,7 +274,6 @@ public class CommonSetup {
 		TreasureApi.registerWishableTag(Rarity.EPIC, TreasureTags.Items.EPIC_WISHABLE);
 		TreasureApi.registerWishableTag(Rarity.LEGENDARY, TreasureTags.Items.LEGENDARY_WISHABLE);
 		TreasureApi.registerWishableTag(Rarity.MYTHICAL, TreasureTags.Items.MYTHICAL_WISHABLE);
-		// TODO add WHITE, BLACK_PEARL
 
 		// register all the keys
 		TreasureApi.registerKey(TreasureItems.WOOD_KEY);
@@ -361,8 +360,12 @@ public class CommonSetup {
 		TreasureApi.registerWishable(TreasureItems.WHITE_PEARL);
 		TreasureApi.registerWishable(TreasureItems.BLACK_PEARL);
 
-		// register wishable handlers
-		// TEMP test
+		/*
+		 *  register wishable handlers
+		 *  NOTE assigning an item to DEFAULT_WISHABLE_HANDLER is redundant an unnecassary
+		 *   since the default will be assigned if a handler cannot be found. The item, however, must be
+		 *   added to one of the wishable tags.
+		 */
 		TreasureApi.registerWishableHandler(Items.DIAMOND, TreasureWishableHandlers.DEFAULT_WISHABLE_HANDLER);
 		
 		// register loot tables

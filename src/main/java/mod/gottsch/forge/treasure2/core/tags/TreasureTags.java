@@ -87,7 +87,6 @@ public class TreasureTags {
 		public static final TagKey<Item> LEGENDARY_WISHABLE = mod(Treasure.MODID, "wishable/legendary");
 		public static final TagKey<Item> MYTHICAL_WISHABLE = mod(Treasure.MODID, "wishable/mythical");
 		public static final TagKey<Item> WISHABLES = mod(Treasure.MODID, "wishable/wishables");
-//		public static final TagKey<Item> SPECIAL_WISHABLE = mod(Treasure.MODID, "wishable/_special");
 
 		
 		// other

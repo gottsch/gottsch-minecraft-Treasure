@@ -26,6 +26,8 @@ import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
+import mod.gottsch.forge.treasure2.core.wishable.IWishable;
+import mod.gottsch.forge.treasure2.core.wishable.IWishableHandler;
 import mod.gottsch.forge.treasure2.core.wishable.TreasureWishableHandlers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -41,7 +43,7 @@ import net.minecraft.world.level.Level;
  * @author Mark Gottschling on Aug 17, 2021
  *
  */
-public class WealthItem extends Item {
+public class WealthItem extends Item implements IWishable {
 
 	/**
 	 * 
@@ -76,10 +78,17 @@ public class WealthItem extends Item {
 			return super.onEntityItemUpdate(stack, entityItem);
 		}
 
-		if (TreasureWishableHandlers.DEFAULT_WISHABLE_HANDLER.isValidLocation(entityItem)) {
-			TreasureWishableHandlers.DEFAULT_WISHABLE_HANDLER.doWishable(entityItem);
+		// get the wishable handler
+		IWishableHandler handler = getHandler();
+		if (handler.isValidLocation(entityItem)) {
+			handler.doWishable(entityItem);
 			return true;
 		}
 		return super.onEntityItemUpdate(stack, entityItem);
+	}
+
+	@Override
+	public IWishableHandler getHandler() {
+		return TreasureWishableHandlers.DEFAULT_WISHABLE_HANDLER;
 	}
 }

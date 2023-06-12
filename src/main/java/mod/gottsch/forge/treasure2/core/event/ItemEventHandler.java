@@ -42,6 +42,7 @@ public class ItemEventHandler {
 	public static Item lastTossed;
 	public static boolean isWishable;
 	
+	// NOTE this has been superceded by PlayerEventHandler.playerTick()
 	/**
 	 * 
 	 * @param event
