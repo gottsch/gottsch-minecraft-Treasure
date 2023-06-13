@@ -50,6 +50,8 @@ public class WealthItem extends Item implements IWishable {
 	 * @param properties
 	 */
 	public WealthItem(Properties properties) {
+		// TODO can't do this here as the config values won't be read in yet. ie items are init before config
+		// could apply some config settings after config is init with reflection
 		super(properties.stacksTo(Config.SERVER.wealth.wealthMaxStackSize.get()));
 	}
 

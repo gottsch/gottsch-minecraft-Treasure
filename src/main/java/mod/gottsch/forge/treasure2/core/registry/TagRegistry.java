@@ -20,15 +20,12 @@ package mod.gottsch.forge.treasure2.core.registry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.google.common.collect.Maps;
 
-import mod.gottsch.forge.gottschcore.enums.IEnum;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;

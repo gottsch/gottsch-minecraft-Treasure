@@ -92,7 +92,6 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public interface IChestGenerator extends IChestGeneratorEffects {
 	public static final String TREASURE_POOL = "treasure";
-	public static final String CHARMS_POOL = "charms";
 	
 //	public IChestGeneratorType getChestGeneratorType();
 	
@@ -332,9 +331,6 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		if (lootTableResourceLocation == null) {
 			lootTableShell = selectLootTable(random, rarity);
 		}
-		else {
-			lootTableShell = TreasureLootTableRegistry.getLootTableByResourceLocation(LootTableType.CHESTS, lootTableResourceLocation);
-		}
 		
 		// is valid loot table shell
 		if (lootTableShell.isPresent()) {
@@ -353,12 +349,6 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 			return;
 		}		
 		Treasure.LOGGER.debug("selected loot table -> {} from resource -> {}", lootTable, lootTableResourceLocation);
-
-		// TODO remove effectiveRarity
-		// update rarity from lootTableShell		
-//		IRarity effectiveRarity = TreasureLootTableRegistry.getEffectiveRarity(lootTableShell.get(), rarity);		
-//		Treasure.LOGGER.debug("generating loot from loot table for effective rarity {}", effectiveRarity);
-		IRarity effectiveRarity = rarity;
 		
 		// setup lists of items
 		List<ItemStack> treasureStacks = new ArrayList<>();
@@ -394,8 +384,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 
 			if (lootPool != null) {
 				// geneate loot from pools
-				if (pool.getName().equalsIgnoreCase(TREASURE_POOL) ||
-						pool.getName().equalsIgnoreCase(CHARMS_POOL)) {
+				if (pool.getName().equalsIgnoreCase(TREASURE_POOL)) {
 					Treasure.LOGGER.debug("generating loot from treasure/charm pool -> {}", pool.getName());
 					lootPool.addRandomItems(treasureStacks::add, lootContext);
 				}
@@ -415,8 +404,8 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		// TODO move to separate method
 		// fetch all injected loot tables by rarity
 		// NOTE removed the category. trying to keep it as straight forward as possible
-		Treasure.LOGGER.debug("searching for injectable tables for category ->{}, rarity -> {}", LootTableType.INJECTS, effectiveRarity);
-		List<LootTableShell> injectLootTableShells = buildLootTableList(LootTableType.INJECTS, effectiveRarity);
+		Treasure.LOGGER.debug("searching for injectable tables for category ->{}, rarity -> {}", LootTableType.INJECTS, rarity);
+		List<LootTableShell> injectLootTableShells = buildLootTableList(LootTableType.INJECTS, rarity);
 		// NOTE injects are special case because they have 2 top-levels ex inject/chests, inject/wishables, so the list has to be filtered
 		injectLootTableShells = injectLootTableShells
 				.stream()
@@ -424,15 +413,15 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 				.toList();
 		
 		if (!injectLootTableShells.isEmpty()) {
-			Treasure.LOGGER.debug("found injectable tables for category ->{}, rarity -> {}", lootTableShell.get().getCategory(), effectiveRarity);
+			Treasure.LOGGER.debug("found injectable tables for category ->{}, rarity -> {}", lootTableShell.get().getCategory(), rarity);
 			Treasure.LOGGER.debug("size of injectable tables -> {}", injectLootTableShells.size());
 
 			// add predicate
 			treasureStacks.addAll(getInjectedLootItems(level, random, injectLootTableShells, lootContext, p -> {
-				return p.getName().equalsIgnoreCase(TREASURE_POOL) || p.getName().equalsIgnoreCase(CHARMS_POOL);
+				return p.getName().equalsIgnoreCase(TREASURE_POOL);
 			}));
 			itemStacks.addAll(getInjectedLootItems(level, random, injectLootTableShells, lootContext, p -> {
-				return !p.getName().equalsIgnoreCase(TREASURE_POOL) && !p.getName().equalsIgnoreCase(CHARMS_POOL);
+				return !p.getName().equalsIgnoreCase(TREASURE_POOL) ;
 			}));
 			//			itemStacks.addAll(TreasureLootTableRegistry.getLootTableMaster().getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext));
 		}

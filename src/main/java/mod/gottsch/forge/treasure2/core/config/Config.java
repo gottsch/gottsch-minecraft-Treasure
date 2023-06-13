@@ -331,8 +331,11 @@ public class Config extends AbstractConfig {
 		 * 
 		 */
 		public static class Wealth {
+			// deprecated until a method to update maxStackSize using reflection is implemented
+			@Deprecated
 			public ForgeConfigSpec.ConfigValue<Integer> wealthMaxStackSize;
 
+			public ForgeConfigSpec.ConfigValue<Boolean> enableVanillaLootModifiers;
 			public Wealth(final ForgeConfigSpec.Builder builder)	 {
 				builder.comment(CATEGORY_DIV, " Treasure Loot and Valuables properties", CATEGORY_DIV)
 				.push("wealth");
@@ -340,6 +343,11 @@ public class Config extends AbstractConfig {
 				wealthMaxStackSize = builder
 						.comment(" The maximum size of a wealth item stacks. ex. Coins, Gems, Pearls")
 						.defineInRange("wealthMaxStackSize", 8, 1, 64);
+				
+				enableVanillaLootModifiers = builder
+						.comment(" Enable/Disable global loot modifiers that injects Treasure2 loot into vanilla loot tables.")
+						.define("enableVanillaLootModifiers", true);
+				
 				builder.pop();
 			}
 		}

@@ -41,8 +41,22 @@ import mod.gottsch.forge.treasure2.core.generator.well.IWellGenerator;
 import mod.gottsch.forge.treasure2.core.item.IKeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.KeyItem;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
-import mod.gottsch.forge.treasure2.core.loot.ISpecialLootTables;
-import mod.gottsch.forge.treasure2.core.registry.*;
+import mod.gottsch.forge.treasure2.core.registry.ChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
+import mod.gottsch.forge.treasure2.core.registry.EnumRegistry;
+import mod.gottsch.forge.treasure2.core.registry.FeatureGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.FeatureGeneratorSelectorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
+import mod.gottsch.forge.treasure2.core.registry.MarkerGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.MimicRegistry;
+import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.RuinGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TagRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
+import mod.gottsch.forge.treasure2.core.registry.WellGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
 import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.IStructureType;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
@@ -275,22 +289,6 @@ public class TreasureApi {
 		}
 	}
 	
-	@Deprecated
-	public static void registerSpecialLootTable(ISpecialLootTables table) {
-		EnumRegistry.register(SPECIAL_LOOT_TABLE, table);
-	}
-	
-	@Deprecated
-	public static Optional<ISpecialLootTables> getSpecialLootTable(String key) {
-		IEnum ienum = EnumRegistry.get(SPECIAL_LOOT_TABLE, key);
-		if (ienum == null) {
-			return Optional.empty();
-		}
-		else {
-			return Optional.of((ISpecialLootTables) ienum);
-		}
-	}
-	
 	/**
 	 * 
 	 * @param rarity
@@ -325,10 +323,6 @@ public class TreasureApi {
 		
 		TagRegistry.registerKeyLocks(rarity, keyTag, lockTag);
 	}
-	
-//	public static void registerRarity(IRarity rarity, TagKey<Block> tag) {
-//		RarityRegistry.register(rarity, tag);
-//	}
 	
 	/**
 	 * 

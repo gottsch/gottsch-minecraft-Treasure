@@ -86,5 +86,13 @@ public interface IWishableHandler {
 			itemEntity.remove(RemovalReason.DISCARDED);
 	}
 
+	/**
+	 * 
+	 * @param level
+	 * @param random
+	 * @param itemEntity
+	 * @param coords
+	 * @return
+	 */
 	public Optional<ItemStack> generateLoot(Level level, Random random, ItemEntity itemEntity, ICoords coords);
 }

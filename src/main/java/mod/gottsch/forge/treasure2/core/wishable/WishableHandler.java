@@ -29,29 +29,22 @@ import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.loot.LootPoolShell;
 import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
-import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.IWishingWellBlock;
 import mod.gottsch.forge.treasure2.core.enums.ILootTableType;
 import mod.gottsch.forge.treasure2.core.enums.LootTableType;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
-import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.item.KeyItem;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
+import mod.gottsch.forge.treasure2.core.loot.TreasureLootGenerators;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
 import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Containers;
-import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -90,7 +83,7 @@ public class WishableHandler implements IWishableHandler {
 		}
 		else {
 			// attempt to get the player who dropped the coin
-			ItemStack wealthItem = itemStack;
+//			ItemStack wealthItem = itemStack;
 //			CompoundTag tag = wealthItem.getTag();
 //			Treasure.LOGGER.debug("item as a tag");
 			Player player = null;
@@ -195,7 +188,7 @@ public class WishableHandler implements IWishableHandler {
 	}
 	
 	/**
-	 * 
+	 *
 	 * @param world
 	 * @param random
 	 * @param itemStacks
@@ -209,7 +202,7 @@ public class WishableHandler implements IWishableHandler {
 		if (!injectLootTableShells.isEmpty()) {
 			Treasure.LOGGER.debug("size of injectable tables -> {}", injectLootTableShells.size());
 			itemStacks.addAll(getInjectedLootItems(world, random, injectLootTableShells, lootContext, p -> {
-				return !p.getName().equalsIgnoreCase(IChestGenerator.TREASURE_POOL) && !p.getName().equalsIgnoreCase(IChestGenerator.CHARMS_POOL);
+				return !p.getName().equalsIgnoreCase(TreasureLootGenerators.TREASURE_POOL);
 			}));
 		}
 	}

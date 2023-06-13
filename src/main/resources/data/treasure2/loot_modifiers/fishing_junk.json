@@ -1,0 +1,10 @@
+{
+  "conditions" : [ {
+    "condition" : "forge:loot_table_id",
+    "loot_table_id" : "minecraft:gameplay/fishing/junk"
+  } ],
+  "count" : 1,
+  "rarity": "common",
+  "chance": 0.10,
+  "type" : "treasure2:default"
+}

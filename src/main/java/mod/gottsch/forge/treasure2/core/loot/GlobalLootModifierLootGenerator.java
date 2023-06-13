@@ -1,6 +1,6 @@
 /*
  * This file is part of  Treasure2.
- * Copyright (c) 2022 Mark Gottschling (gottsch)
+ * Copyright (c) 2023 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,16 +14,13 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
- */
-package mod.gottsch.forge.treasure2.core.loot;
+ */package mod.gottsch.forge.treasure2.core.loot;
 
-import mod.gottsch.forge.gottschcore.enums.IEnum;
-
-/**
- * 
- * @author Mark Gottschling on Dec 3, 2022
- *
- */
-public interface ISpecialLootTables extends IEnum {
+ /**
+  * 
+  * @author Mark Gottschling Jun 12, 2023
+  *
+  */
+public class GlobalLootModifierLootGenerator extends LootGenerator {
 
 }
