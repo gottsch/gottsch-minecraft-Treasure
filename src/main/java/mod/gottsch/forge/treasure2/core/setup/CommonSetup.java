@@ -17,23 +17,14 @@
  */
 package mod.gottsch.forge.treasure2.core.setup;
 
-import static mod.gottsch.forge.treasure2.core.generator.GeneratorType.AQUATIC;
-import static mod.gottsch.forge.treasure2.core.generator.GeneratorType.TERRANEAN;
-import static mod.gottsch.forge.treasure2.core.generator.GeneratorType.WELL;
-
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.cache.FeatureCaches;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
-import mod.gottsch.forge.treasure2.core.entity.monster.BoundSoul;
-import mod.gottsch.forge.treasure2.core.entity.monster.CauldronChestMimic;
-import mod.gottsch.forge.treasure2.core.entity.monster.PirateChestMimic;
-import mod.gottsch.forge.treasure2.core.entity.monster.VikingChestMimic;
-import mod.gottsch.forge.treasure2.core.entity.monster.WoodChestMimic;
+import mod.gottsch.forge.treasure2.core.entity.monster.*;
 import mod.gottsch.forge.treasure2.core.enums.*;
-import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.*;
 import mod.gottsch.forge.treasure2.core.generator.marker.GravestoneMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.generator.marker.StructureMarkerGenerator;
@@ -105,36 +96,11 @@ public class CommonSetup {
 		TreasureApi.registerKeyLockCategory(KeyLockCategory.GEMS);
 		TreasureApi.registerKeyLockCategory(KeyLockCategory.MOB);
 		TreasureApi.registerKeyLockCategory(KeyLockCategory.WITHER);
-
-
-
-		// DEPRECATED - can use IRarity instead
-		// register the chest generator types
-//		TreasureApi.registerChestGeneratorType(COMMON);
-//		TreasureApi.registerChestGeneratorType(UNCOMMON);
-//		TreasureApi.registerChestGeneratorType(SCARCE);
-//		TreasureApi.registerChestGeneratorType(RARE);
-//		TreasureApi.registerChestGeneratorType(EPIC);
-//		TreasureApi.registerChestGeneratorType(LEGENDARY);
-//		TreasureApi.registerChestGeneratorType(MYTHICAL);
-//		TreasureApi.registerChestGeneratorType(ChestGeneratorType.WITHER);
-//		TreasureApi.registerChestGeneratorType(SKULL);
-//		TreasureApi.registerChestGeneratorType(GOLD_SKULL);
-//		TreasureApi.registerChestGeneratorType(CRYSTAL_SKULL);
-//		TreasureApi.registerChestGeneratorType(CAULDRON);
 		
 		// register the loot table types
 		TreasureApi.registerLootTableType(LootTableType.CHESTS);
 		TreasureApi.registerLootTableType(LootTableType.WISHABLES);
 		TreasureApi.registerLootTableType(LootTableType.INJECTS);
-		
-		// TODO rename to FeatureGeneratorType - figure out if/how these play together with FeatureType
-		// register the generator types
-		TreasureApi.registerGeneratorType(TERRANEAN);
-		TreasureApi.registerGeneratorType(AQUATIC);
-		TreasureApi.registerGeneratorType(WELL);
-		// deprecated
-		TreasureApi.registerGeneratorType(GeneratorType.WITHER);
 		
 		/* 
 		 * register the feature types.
@@ -178,8 +144,6 @@ public class CommonSetup {
 		TreasureApi.registerFeatureGeneatorSelector(FeatureType.TERRANEAN, SpecialRarity.CAULDRON, TreasureFeatureGenerators.STANDARD_CHEST_FEATURE_GENERATOR_SELECTOR);
 		TreasureApi.registerFeatureGeneatorSelector(FeatureType.TERRANEAN, SpecialRarity.WITHER, TreasureFeatureGenerators.WITHER_FEATURE_GENERATOR_SELECTOR);
 
-		// TODO Aquatic is the right term - replace others
-		// TODO terranean is the right term - replace others
 		TreasureApi.registerFeatureGeneatorSelector(FeatureType.AQUATIC, Rarity.COMMON, TreasureFeatureGenerators.AQUATIC_CHEST_FEATURE_GENERATOR_SELECTOR);
 		TreasureApi.registerFeatureGeneatorSelector(FeatureType.AQUATIC, Rarity.UNCOMMON, TreasureFeatureGenerators.AQUATIC_CHEST_FEATURE_GENERATOR_SELECTOR);
 		TreasureApi.registerFeatureGeneatorSelector(FeatureType.AQUATIC, Rarity.SCARCE, TreasureFeatureGenerators.AQUATIC_CHEST_FEATURE_GENERATOR_SELECTOR);
@@ -212,21 +176,6 @@ public class CommonSetup {
 		// register marker types
 		TreasureApi.registerMarkerType(MarkerType.STANDARD);
 		TreasureApi.registerMarkerType(MarkerType.STRUCTURE);
-		
-		// register the region placements
-//		TreasureApi.registerRegionPlacement(RegionPlacement.SURFACE);
-//		TreasureApi.registerRegionPlacement(RegionPlacement.SUBMERGED);
-
-		// TODO these can be removed when LootTableManager is refactored
-//		TreasureApi.registerSpecialLootTable(SpecialLootTables.BLACK_PEARL_WELL);
-//		TreasureApi.registerSpecialLootTable(SpecialLootTables.CAULDRON_CHEST);
-//		TreasureApi.registerSpecialLootTable(SpecialLootTables.CRYSTAL_SKULL_CHEST);
-//		TreasureApi.registerSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST);
-//		TreasureApi.registerSpecialLootTable(SpecialLootTables.GOLD_WELL);
-//		TreasureApi.registerSpecialLootTable(SpecialLootTables.SILVER_WELL);
-//		TreasureApi.registerSpecialLootTable(SpecialLootTables.SKULL_CHEST);
-//		TreasureApi.registerSpecialLootTable(SpecialLootTables.WHITE_PEARL_WELL);
-//		TreasureApi.registerSpecialLootTable(SpecialLootTables.WITHER_CHEST);
 
 		/*
 		 * 
@@ -266,7 +215,11 @@ public class CommonSetup {
 		TreasureApi.registerRarityTags(SpecialRarity.CRYSTAL_SKULL, TreasureTags.Blocks.CRYSTAL_SKULL_CHESTS);
 		TreasureApi.registerRarityTags(SpecialRarity.WITHER, TreasureTags.Blocks.WITHER_CHESTS);
 		
-		// regsiter wishable tags
+		/*
+		 *  regsiter and map wishable tags to their rarity.
+		 *  these are the allowable rarity grouping of wishable items.
+		 *  modders can add/remove items to these tags.
+		 */
 		TreasureApi.registerWishableTag(Rarity.COMMON, TreasureTags.Items.COMMON_WISHABLE);
 		TreasureApi.registerWishableTag(Rarity.UNCOMMON, TreasureTags.Items.UNCOMMON_WISHABLE);
 		TreasureApi.registerWishableTag(Rarity.SCARCE, TreasureTags.Items.SCARCE_WISHABLE);
@@ -347,24 +300,13 @@ public class CommonSetup {
 		TreasureApi.registerMimic(TreasureBlocks.PIRATE_CHEST.getId(), TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE.getId());
 		TreasureApi.registerMimic(TreasureBlocks.VIKING_CHEST.getId(), TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE.getId());
 		TreasureApi.registerMimic(TreasureBlocks.CAULDRON_CHEST.getId(), TreasureEntities.CAULDRON_CHEST_MIMIC_ENTITY_TYPE.getId());
-		
-		// TODO are these still valid since using Tags
-		// register all the wishable items
-		TreasureApi.registerWishable(TreasureItems.COPPER_COIN);
-		TreasureApi.registerWishable(TreasureItems.SILVER_COIN);
-		TreasureApi.registerWishable(TreasureItems.GOLD_COIN);
-		TreasureApi.registerWishable(TreasureItems.TOPAZ);
-		TreasureApi.registerWishable(TreasureItems.ONYX);
-		TreasureApi.registerWishable(TreasureItems.RUBY);
-		TreasureApi.registerWishable(TreasureItems.SAPPHIRE);
-		TreasureApi.registerWishable(TreasureItems.WHITE_PEARL);
-		TreasureApi.registerWishable(TreasureItems.BLACK_PEARL);
 
 		/*
 		 *  register wishable handlers
 		 *  NOTE assigning an item to DEFAULT_WISHABLE_HANDLER is redundant an unnecassary
 		 *   since the default will be assigned if a handler cannot be found. The item, however, must be
 		 *   added to one of the wishable tags.
+		 *   The below assignment/registration is an example.
 		 */
 		TreasureApi.registerWishableHandler(Items.DIAMOND, TreasureWishableHandlers.DEFAULT_WISHABLE_HANDLER);
 		
@@ -426,13 +368,7 @@ public class CommonSetup {
 		// TODO may need to add a placement enum, unless MarkerType can handle all situations. ie on Water or in Sky.
 		TreasureApi.registerMarkerGenerator(MarkerType.STANDARD, new GravestoneMarkerGenerator());
 		TreasureApi.registerMarkerGenerator(MarkerType.STRUCTURE, new StructureMarkerGenerator());
-		
-	
-		// chest context probably should take in the GeneratorType (TERRANEAN / Aquatic) as well and use this registry
-		// TOOD can this and ChestGenerator be merged into one registry ???
-		// a 1-1 registry of rarity+type -> chest generator
-		// TODO merge with ChestGeneratorRegistry
-		// TODO in the registry make a new class Key<IGeneratorType, IRarity> that is used as the key
+
 		TreasureApi.registerChestFeatureGenerator(Rarity.COMMON, FeatureType.TERRANEAN);
 		TreasureApi.registerChestFeatureGenerator(Rarity.UNCOMMON, FeatureType.TERRANEAN);
 		TreasureApi.registerChestFeatureGenerator(Rarity.SCARCE, FeatureType.TERRANEAN);

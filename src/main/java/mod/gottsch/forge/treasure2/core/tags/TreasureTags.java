@@ -17,33 +17,27 @@
  */
 package mod.gottsch.forge.treasure2.core.tags;
 
+import java.util.Iterator;
+
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
-import mod.gottsch.forge.treasure2.core.enums.Rarity;
-import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TagRegistry;
 import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Holder.Reference;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.ITag;
 
 /**
  * 
@@ -52,7 +46,7 @@ import net.minecraftforge.fml.common.Mod;
  */
 @Mod.EventBusSubscriber(modid = Treasure.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TreasureTags {
-	
+
 	public static class Items {
 		// keys
 		public static final TagKey<Item> COMMON_KEY = mod(Treasure.MODID, "key/common");
@@ -63,7 +57,7 @@ public class TreasureTags {
 		public static final TagKey<Item> LEGENDARY_KEYS = mod(Treasure.MODID, "key/legendary");
 		public static final TagKey<Item> MYTHICAL_KEY = mod(Treasure.MODID, "key/mythical");
 		public static final TagKey<Item> KEYS = mod(Treasure.MODID, "key/keys");
-		
+
 		// locks
 		public static final TagKey<Item> COMMON_LOCKS = mod(Treasure.MODID, "lock/common");
 		public static final TagKey<Item> UNCOMMON_LOCKS = mod(Treasure.MODID, "lock/uncommon");
@@ -75,10 +69,6 @@ public class TreasureTags {
 		public static final TagKey<Item> LOCKS = mod(Treasure.MODID, "lock/locks");
 
 		// wishables
-		// future: items belonging to _custom do not implement IWishable and can be any item from any mod
-		// they require checks in WorldEntityEvent
-//		public static final TagKey<Item> CUSTOM_WISHABLE = mod(Treasure.MODID, "wishable/_custom");
-		
 		public static final TagKey<Item> COMMON_WISHABLE = mod(Treasure.MODID, "wishable/common");
 		public static final TagKey<Item> UNCOMMON_WISHABLE = mod(Treasure.MODID, "wishable/uncommon");
 		public static final TagKey<Item> SCARCE_WISHABLE = mod(Treasure.MODID, "wishable/scarce");
@@ -88,15 +78,14 @@ public class TreasureTags {
 		public static final TagKey<Item> MYTHICAL_WISHABLE = mod(Treasure.MODID, "wishable/mythical");
 		public static final TagKey<Item> WISHABLES = mod(Treasure.MODID, "wishable/wishables");
 
-		
 		// other
 		public static final TagKey<Item> POUCH = mod(Treasure.MODID, "pouch");
-				
+
 		public static TagKey<Item> mod(String domain, String path) {
 			return ItemTags.create(new ResourceLocation(domain, path));
 		}
 	}
-	
+
 	public static class Blocks {
 		// chests
 		public static final TagKey<Block> COMMON_CHESTS = mod(Treasure.MODID, "chests/rarity/core/common");
@@ -106,40 +95,31 @@ public class TreasureTags {
 		public static final TagKey<Block> EPIC_CHESTS = mod(Treasure.MODID, "chests/rarity/core/epic");
 		public static final TagKey<Block> LEGENDARY_CHESTS = mod(Treasure.MODID, "chests/rarity/core/legendary");
 		public static final TagKey<Block> MYTHICAL_CHESTS = mod(Treasure.MODID, "chests/rarity/core/mythical");
-		
+
 		// speciality chests
 		public static final TagKey<Block> SKULL_CHESTS = mod(Treasure.MODID, "chests/rarity/special/skull");
 		public static final TagKey<Block> GOLD_SKULL_CHESTS = mod(Treasure.MODID, "chests/rarity/special/gold_skull");
 		public static final TagKey<Block> CRYSTAL_SKULL_CHESTS = mod(Treasure.MODID, "chests/rarity/special/crystal_skull");
 		public static final TagKey<Block> WITHER_CHESTS = mod(Treasure.MODID, "chests/rarity/special/wither");
-		
+
 		public static TagKey<Block> mod(String domain, String path) {
 			return BlockTags.create(new ResourceLocation(domain, path));
 		}
 	}
-	
-//	public static class Biomes {
-//		public static final TagKey<Biome> DESERT_WELL1 = mod(Treasure.MODID, "structures/whitelist/desert-wishing-well1");
-//		public static final TagKey<Biome> DESERT_WELL2 = mod(Treasure.MODID, "structures/whitelist/desert-wishing-well2");
-//		
-//		public static TagKey<Biome> mod(String domain, String path) {
-//			return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(domain, path));
-//		}
-//	}
-	
+
 	@SubscribeEvent
 	public static void registerTags(TagsUpdatedEvent event) {
 		Treasure.LOGGER.info("in tags updated event");
 		// clear key/locks registries
 		KeyLockRegistry.clearKeysByRarity();
 		KeyLockRegistry.clearLocksByRarity();
-		
+
 		// add all key/locks to registries
 		KeyLockRegistry.getKeys().forEach(key -> {
 			// NOTE ItemStack.is() is just a wrapper for Item.Holder.Reference.is()
 			// so, it is being accessed directly here instead of creating a new ItemStack first.
 			Holder.Reference<Item> holder = key.get().builtInRegistryHolder();
-			
+
 			for (IRarity rarity : TreasureApi.getRarities()) {	
 				TagKey<Item> tag = TreasureApi.getKeyTag(rarity);// RarityRegistry.getKeyTag(rarity);
 				if (tag != null && holder.is(tag)) {
@@ -150,12 +130,12 @@ public class TreasureTags {
 				}
 			}			
 		});
-		
+
 		KeyLockRegistry.getLocks().forEach(lock -> {
 			Holder.Reference<Item> holder = lock.get().builtInRegistryHolder();
-			
+
 			for (IRarity rarity : TreasureApi.getRarities()) {			
-//			for (IRarity rarity : RarityRegistry.getValues()) {
+				//			for (IRarity rarity : RarityRegistry.getValues()) {
 				TagKey<Item> tag = TagRegistry.getLockTag(rarity);
 				if (tag != null && holder.is(tag)) {
 					// register the lock in the key-lock registry by rarity
@@ -165,15 +145,15 @@ public class TreasureTags {
 				}
 			}			
 		});
-		
+
 		/*
 		 * process tags to and register chest according to rarity
 		 */
 		ChestRegistry.getAll().forEach(chest -> {
 			Holder.Reference<Block> holder = chest.get().builtInRegistryHolder();
-			
+
 			for (IRarity rarity : TreasureApi.getRarities()) {	
-//			for (IRarity rarity : RarityRegistry.getValues()) {
+				//			for (IRarity rarity : RarityRegistry.getValues()) {
 				TagKey<Block> tag = TagRegistry.getChestTag(rarity);
 				if (tag != null && holder.is(tag)) {
 					ChestRegistry.registerByRarity(rarity, chest);
@@ -182,25 +162,21 @@ public class TreasureTags {
 				}
 			}			
 		});
-		
-		WishableRegistry.getAll().forEach(wishable -> {
-			Holder.Reference<Item> holder = wishable.get().builtInRegistryHolder();
-			
-			for (IRarity rarity : TreasureApi.getRarities()) {	
-//			for (IRarity rarity : RarityRegistry.getValues()) {
-				TagKey<Item> tag = TagRegistry.getWishableTag(rarity);
-				if (tag != null && holder.is(tag)) {
+
+		/*
+		 * process tags to and register wishables according to rarity
+		 */
+		for (IRarity rarity : TreasureApi.getRarities()) {	
+			TagKey<Item> tagKey = TagRegistry.getWishableTag(rarity);
+			if (tagKey != null) {
+				ITag<Item> tag = ForgeRegistries.ITEMS.tags().getTag(tagKey);
+				for (Iterator<Item> iterator = tag.iterator(); iterator.hasNext();) {
+					Item wishable = iterator.next();
 					// register the wishable in the wishable registry by rarity
 					WishableRegistry.registerByRarity(rarity, wishable);
-					Treasure.LOGGER.info("registering wishable -> {} by rarity -> {}", wishable.get().getRegistryName(), rarity);
-					break;
+					Treasure.LOGGER.info("registering wishable -> {} by rarity -> {}", wishable.getRegistryName(), rarity);
 				}
 			}
-			// special tag
-//			TagKey<Item> specialTag = TreasureTags.Items.SPECIAL_WISHABLE;
-//			if (specialTag != null && holder.is(specialTag)) {
-//				// ???
-//			}
-		});
+		}
 	}
 }

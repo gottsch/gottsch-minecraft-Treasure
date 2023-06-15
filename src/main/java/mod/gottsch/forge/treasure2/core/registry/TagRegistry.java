@@ -161,6 +161,7 @@ public class TagRegistry {
 		return null;
 	}
 
+	// TODO this should return optional
 	public static TagKey<Item> getWishableTag(IRarity rarity) {
 		if (WISHABLE_TAGS_REGISTRY.containsKey(rarity)) {
 			return WISHABLE_TAGS_REGISTRY.get(rarity);

@@ -31,7 +31,6 @@ import mod.gottsch.forge.treasure2.core.enums.MarkerType;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
-import mod.gottsch.forge.treasure2.core.generator.IGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.marker.IMarkerGenerator;
@@ -41,22 +40,7 @@ import mod.gottsch.forge.treasure2.core.generator.well.IWellGenerator;
 import mod.gottsch.forge.treasure2.core.item.IKeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.KeyItem;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
-import mod.gottsch.forge.treasure2.core.registry.ChestGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
-import mod.gottsch.forge.treasure2.core.registry.EnumRegistry;
-import mod.gottsch.forge.treasure2.core.registry.FeatureGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.FeatureGeneratorSelectorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
-import mod.gottsch.forge.treasure2.core.registry.MarkerGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.MimicRegistry;
-import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.RuinGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.TagRegistry;
-import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
-import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
-import mod.gottsch.forge.treasure2.core.registry.WellGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
+import mod.gottsch.forge.treasure2.core.registry.*;
 import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.IStructureType;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
@@ -145,31 +129,7 @@ public class TreasureApi {
 			return Optional.of((IKeyLockCategory) ienum);
 		}
 	}
-	
-	/**
-	 * 
-	 * @param type
-	 */
-	@Deprecated
-	public static void registerGeneratorType(IGeneratorType type) {
-		EnumRegistry.register(GENERATOR_TYPE, type);
-	}
-	
-	/**
-	 * 
-	 * @param key
-	 * @return
-	 */
-//	@Deprecated
-//	public static Optional<IGeneratorType> getGeneratorType(String key) {
-//		IEnum ienum = EnumRegistry.get(GENERATOR_TYPE, key);
-//		if (ienum == null) {
-//			return Optional.empty();
-//		}
-//		else {
-//			return Optional.of((IGeneratorType) ienum);
-//		}
-//	}
+
 	
 	public static void registerChestGeneratorType(IChestGeneratorType type) {
 		EnumRegistry.register(CHEST_GENERATOR_TYPE, type);
@@ -184,20 +144,6 @@ public class TreasureApi {
 			return Optional.of((IChestGeneratorType) ienum);
 		}
 	}	
-
-//	public static void registerRegionPlacement(IRegionPlacement placement) {
-//		EnumRegistry.register(REGION_PLACEMENT, placement);
-//	}
-//	
-//	public static Optional<IRegionPlacement> getRegionPlacement(String key) {
-//		IEnum ienum = EnumRegistry.get(REGION_PLACEMENT, key);
-//		if (ienum == null) {
-//			return Optional.empty();
-//		}
-//		else {
-//			return Optional.of((IRegionPlacement) ienum);
-//		}
-//	}
 	
 	public static void registerLootTableType(ILootTableType type) {
 		EnumRegistry.register(LOOT_TABLE_TYPE, type);		
@@ -372,10 +318,6 @@ public class TreasureApi {
 
 	public static void registerChest(RegistryObject<Block> chest) {
 		ChestRegistry.register(chest);
-	}
-	
-	public static void registerWishable(RegistryObject<Item> wishable) {
-		WishableRegistry.register(wishable);
 	}
 	
 	public static void registerWishableHandler(Item item, IWishableHandler handler) {

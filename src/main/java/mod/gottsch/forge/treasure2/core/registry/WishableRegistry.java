@@ -30,7 +30,6 @@ import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.core.wishable.IWishableHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.RegistryObject;
 
 /**
  * 
@@ -39,10 +38,11 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class WishableRegistry {
 	/*
-	 * a Table registry for rarity/key lookups for keys
+	 * a Table registry for rarity/key lookups for wishable items.
+	 * NOTE registering Items - not RegistryObject<Item>, and therefor needs to happen after register items event.
 	 */
-	private static final Multimap<IRarity, RegistryObject<Item>> BY_RARITY;
-	private static final Map<ResourceLocation, RegistryObject<Item>> BY_NAME;
+	private static final Multimap<IRarity, Item> BY_RARITY;
+	private static final Map<ResourceLocation, Item> BY_NAME;
 	private static final Map<ResourceLocation, IRarity> RARITY_BY_NAME;
 
 	private static final Map<Item, IWishableHandler> HANDLER_MAP;
@@ -65,18 +65,18 @@ public class WishableRegistry {
 		return Optional.empty();
 	}
 	
-	public static void register(RegistryObject<Item> item) {		
-		if (!BY_NAME.containsKey(item.get().getRegistryName())) {
-			BY_NAME.put(item.getId(), item);
+	public static void register(Item item) {		
+		if (!BY_NAME.containsKey(item.getRegistryName())) {
+			BY_NAME.put(item.getRegistryName(), item);
 		}
 	}
 	
-	public static void registerByRarity(IRarity rarity, RegistryObject<Item> item) {
+	public static void registerByRarity(IRarity rarity, Item item) {
 		BY_RARITY.put(rarity, item);
-		RARITY_BY_NAME.put(item.getId(), rarity);
+		RARITY_BY_NAME.put(item.getRegistryName(), rarity);
 	}
 	
-	public static List<RegistryObject<Item>> getAll() {
+	public static List<Item> getAll() {
 		return new ArrayList<>(BY_NAME.values());
 	}
 	

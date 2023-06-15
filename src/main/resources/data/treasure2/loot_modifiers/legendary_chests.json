@@ -1,0 +1,19 @@
+{
+  "conditions" : [ {
+    "condition" : "minecraft:alternative",
+    "terms" : [ {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:bastion_treasure"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:stronghold_library"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:stronghold_crossing"
+    } ]
+  } ],
+  "count" : 2,
+  "rarity" : "legendary",
+  "chance" : 0.2,
+  "type" : "treasure2:default"
+}

@@ -164,6 +164,12 @@ public class WishableHandler implements IWishableHandler {
 		return getDefaultLootKey(random, rarity);
 	}
 
+	/**
+	 * 
+	 * @param random
+	 * @param rarity
+	 * @return
+	 */
 	public ItemStack getDefaultLootKey(Random random, IRarity rarity) {
 		List<RegistryObject<KeyItem>> keys = KeyLockRegistry.getKeys(rarity);
 		List<KeyItem> keyItems = keys.stream().map(k -> k.get()).toList();

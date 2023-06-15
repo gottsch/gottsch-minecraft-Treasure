@@ -1,0 +1,13 @@
+{
+  "conditions" : [ {
+    "condition" : "minecraft:alternative",
+    "terms" : [ {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:abandoned_mineshaft"
+    } ]
+  } ],
+  "count" : 2,
+  "rarity" : "scarce",
+  "chance" : 0.2,
+  "type" : "treasure2:default"
+}
