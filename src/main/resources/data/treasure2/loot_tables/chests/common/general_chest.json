@@ -13,7 +13,7 @@
   }, {
     "name" : "items",
     "rolls" : {
-      "min" : 1,
+      "min" : 3,
       "max" : 5
     },
     "entries" : [ {

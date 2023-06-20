@@ -1,10 +1,31 @@
 {
-  "version" : "1.0",
+  "version" : "2.0.0",
+  "since" : "mc1.18.2-v2.5.0",
   "type" : "minecraft:chest",
   "pools" : [ {
     "name" : "uncommon_armor",
     "rolls" : 1,
     "entries" : [ {
+      "entryName" : "chainmailchestplate",
+      "type" : "minecraft:item",
+      "name" : "minecraft:chainmailchestplate",
+      "weight" : 10
+    }, {
+      "entryName" : "chainmailleggings",
+      "type" : "minecraft:item",
+      "name" : "minecraft:chainmailleggings",
+      "weight" : 10
+    }, {
+      "entryName" : "chainmailhelmet",
+      "type" : "minecraft:item",
+      "name" : "minecraft:chainmailhelmet",
+      "weight" : 10
+    }, {
+      "entryName" : "chainmailboots",
+      "type" : "minecraft:item",
+      "name" : "minecraft:chainmailboots",
+      "weight" : 10
+    },{
       "entryName" : "iron_chestplate",
       "type" : "minecraft:item",
       "name" : "minecraft:iron_chestplate",

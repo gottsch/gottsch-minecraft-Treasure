@@ -1,5 +1,6 @@
 {
-  "version" : "1.0",
+  "version" : "2.0.0",
+  "since" : "mc1.18.2-v2.5.0",
   "pools" : [ {
     "name" : "rare_items",
     "rolls" : 1,
@@ -243,6 +244,32 @@
       "entryName" : "respawn_anchor",
       "type" : "item",
       "name" : "minecraft:respawn_anchor",
+      "weight" : 15
+    }, {
+      "entryName" : "tinted_glass",
+      "type" : "item",
+      "name" : "minecraft:tined_glass",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "set_count",
+        "count" : {
+          "min" : 2,
+          "max" : 5
+        }
+      } ]
+    }, {
+      "entryName" : "basalt",
+      "type" : "item",
+      "name" : "minecraft:basalt",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "set_count",
+        "count" : 5
+      } ]
+    }, {
+      "entryName" : "spyglass",
+      "type" : "item",
+      "name" : "minecraft:spyglass",
       "weight" : 15
     } ]
   } ]
