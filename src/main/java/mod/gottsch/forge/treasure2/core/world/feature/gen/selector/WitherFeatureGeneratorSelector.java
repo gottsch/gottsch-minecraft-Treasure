@@ -31,5 +31,4 @@ public class WitherFeatureGeneratorSelector implements IFeatureGeneratorSelector
 	public IFeatureGenerator select() {
 		return TreasureFeatureGenerators.WITHER_FEATURE_GENERATOR;
 	}
-
 }

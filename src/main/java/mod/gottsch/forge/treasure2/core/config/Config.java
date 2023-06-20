@@ -23,7 +23,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.electronwill.nightconfig.core.CommentedConfig;
 import com.electronwill.nightconfig.core.conversion.ObjectConverter;
-import com.google.common.collect.Maps;
 
 import mod.gottsch.forge.gottschcore.config.AbstractConfig;
 import mod.gottsch.forge.treasure2.Treasure;
@@ -167,6 +166,7 @@ public class Config extends AbstractConfig {
 		public Wells wells;
 		public Pits pits;
 		public Mobs mobs;
+		public Maps maps;
 
 		/**
 		 * 
@@ -182,6 +182,7 @@ public class Config extends AbstractConfig {
 			wells = new Wells(builder);
 			pits = new Pits(builder);
 			mobs = new Mobs(builder);
+			maps = new Maps(builder);
 		}
 
 		/*
@@ -199,7 +200,7 @@ public class Config extends AbstractConfig {
 								" Treasure2 was designed for 'normal' overworld-type dimensions.", 
 								" This setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed.", 
 								" ex. minecraft:overworld")
-						.defineList("Dimension White List:", Arrays.asList(new String []{"minecraft:overworld"}), s -> s instanceof String);
+						.defineList("dimensionsWhiteList", Arrays.asList(new String []{"minecraft:overworld"}), s -> s instanceof String);
 				builder.pop();
 			}
 		}
@@ -331,8 +332,6 @@ public class Config extends AbstractConfig {
 		 * 
 		 */
 		public static class Wealth {
-			// deprecated until a method to update maxStackSize using reflection is implemented
-			@Deprecated
 			public ForgeConfigSpec.ConfigValue<Integer> wealthMaxStackSize;
 
 			public ForgeConfigSpec.ConfigValue<Boolean> enableVanillaLootModifiers;
@@ -342,7 +341,7 @@ public class Config extends AbstractConfig {
 
 				wealthMaxStackSize = builder
 						.comment(" The maximum size of a wealth item stacks. ex. Coins, Gems, Pearls")
-						.defineInRange("wealthMaxStackSize", 8, 1, 64);
+						.defineInRange("wealthMaxStackSize", 16, 1, 64);
 				
 				enableVanillaLootModifiers = builder
 						.comment(" Enable/Disable global loot modifiers that injects Treasure2 loot into vanilla loot tables.")
@@ -418,18 +417,18 @@ public class Config extends AbstractConfig {
 						.define("enableWitherTree", true);
 
 				maxTrunkSize = builder
-						.comment(" The maximum height a wither tree can reach.",
+						.comment(" The maximum height a wither tree can reach (in blocks).",
 								" This is the high end of a calculated range. ex. size is randomized between minTrunkSize and maxTrunkSize.",
 								" (The minimum is predefined.)")
-						.defineInRange("Maximum trunk height (in blocks):", 13, 7, 20);
+						.defineInRange("maxTrunkSize", 13, 7, 20);
 
 				minSupportingTrees = builder
 						.comment(" The minimum number of supporting wither trees that surround the main tree in the grove.")
-						.defineInRange("Minimum number of supporting trees:", 5, 0, 30);
+						.defineInRange("minSupportingTrees", 5, 0, 30);
 
 				maxSupportingTrees = builder
 						.comment(" The maximum number of supporting wither trees that surround the main tree in the grove.")
-						.defineInRange("Maximum number of supporting trees:", 15, 0, 30);
+						.defineInRange("maxSupportingTrees", 15, 0, 30);
 
 				builder.pop();
 			}
@@ -542,6 +541,26 @@ public class Config extends AbstractConfig {
 				builder.pop();
 			}
 		}
+		
+		public static class Maps {
+			public ConfigValue<Boolean> enableMaps;
+			public ConfigValue<Double> mapProbability;
+
+			public Maps(final ForgeConfigSpec.Builder builder)	 {
+				builder.comment(CATEGORY_DIV, " Map properties", CATEGORY_DIV)
+				.push("maps");
+
+				enableMaps = builder
+						.comment(" Enable/disable whether a chest can contain a treasure map to another chest.")
+						.define("enableMaps", true);
+
+				mapProbability = builder
+						.comment(" The probability that a chest will contain a treasure map to another chest.")
+						.defineInRange("probability", 20D, 0D, 100D);
+
+				builder.pop();
+			}
+		}
 
 		/*
 		 * 
@@ -577,8 +596,8 @@ public class Config extends AbstractConfig {
 	/*
 	 * exposed chest configurations
 	 */
-	public static List<ChestConfiguration> chestConfigs;
-	public static Map<ResourceLocation, ChestConfiguration> chestConfigMap;
+	public static ChestFeaturesConfiguration chestConfig;
+//	public static Map<ResourceLocation, ChestConfiguration> chestConfigMap;
 
 	static {
 		final Pair<ChestConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder()
@@ -614,15 +633,15 @@ public class Config extends AbstractConfig {
 		// convert the data to an object
 		ChestConfigsHolder holder = new ObjectConverter().toObject(configData, ChestConfigsHolder::new);
 		// get the list from the holder and set the config property
-		chestConfigs = holder.chestConfigs;
+		chestConfig = (holder.chestConfigs != null && !holder.chestConfigs.isEmpty()) ? holder.chestConfigs.get(0) : null;
 
 		// create the chest config map
-		chestConfigMap = Maps.newHashMap();
-		chestConfigs.forEach(config -> {
-			config.getDimensions().forEach(dimension -> {
-				chestConfigMap.put(ModUtil.asLocation(dimension), config);
-			});
-		});
+//		chestConfigMap = Maps.newHashMap();
+//		chestConfigs.forEach(config -> {
+//			config.getDimensions().forEach(dimension -> {
+//				chestConfigMap.put(ModUtil.asLocation(dimension), config);
+//			});
+//		});
 	}
 
 	/*
@@ -664,7 +683,7 @@ public class Config extends AbstractConfig {
 	 *
 	 */
 	private static class ChestConfigsHolder {
-		public List<ChestConfiguration> chestConfigs;
+		public List<ChestFeaturesConfiguration> chestConfigs;
 	}
 
 	private static class StructureConfigurationHolder {

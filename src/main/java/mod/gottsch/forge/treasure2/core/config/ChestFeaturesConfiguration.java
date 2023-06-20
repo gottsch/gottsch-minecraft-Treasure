@@ -30,9 +30,7 @@ import mod.gottsch.forge.treasure2.Treasure;
  * @author Mark Gottschling on Nov 8, 2022
  *
  */
-public class ChestConfiguration {	
-	private List<String > dimensions;
-	private Double treasureMapProbability;
+public class ChestFeaturesConfiguration {	
 	private List<Generator> generators;
 	private List<Chest> chests;
 	
@@ -62,7 +60,7 @@ public class ChestConfiguration {
 		private Integer waitChunks;
 		private Double surfaceProbability;
 		private Double structureProbability;
-//		private List<FeatureGenerator> featureGenerators;
+		private List<FeatureGenerator> featureGenerators;
 		private List<ChestRarity> rarities;
 		
 		/**
@@ -70,15 +68,15 @@ public class ChestConfiguration {
 		 * @param key
 		 * @return
 		 */
-//		public Optional<FeatureGenerator> getFeatureGenerator(String key) {
-//			// cycle through all the generators (it's a small list)
-//			for (FeatureGenerator generator : featureGenerators) {
-//				if (generator.key.equalsIgnoreCase(key)) {
-//					return Optional.of(generator);
-//				}
-//			}
-//			return Optional.empty();
-//		}
+		public Optional<FeatureGenerator> getFeatureGenerator(String name) {
+			// cycle through all the generators (it's a small list)
+			for (FeatureGenerator generator : featureGenerators) {
+				if (generator.name.equalsIgnoreCase(name)) {
+					return Optional.of(generator);
+				}
+			}
+			return Optional.empty();
+		}
 		
 		public Optional<ChestRarity> getRarity(IRarity rarity) {
 			try {
@@ -137,32 +135,29 @@ public class ChestConfiguration {
 		public void setRarities(List<ChestRarity> rarities) {
 			this.rarities = rarities;
 		}
-//
-//		public List<FeatureGenerator> getFeatureGenerators() {
-//			return featureGenerators;
-//		}
-//
-//		public void setFeatureGenerators(List<FeatureGenerator> featureGenerators) {
-//			this.featureGenerators = featureGenerators;
-//		}
+
+		public List<FeatureGenerator> getFeatureGenerators() {
+			return featureGenerators;
+		}
+
+		public void setFeatureGenerators(List<FeatureGenerator> featureGenerators) {
+			this.featureGenerators = featureGenerators;
+		}
 	}
 	
 	/*
 	 * 
 	 */
 	public static class FeatureGenerator {
-//		public static final String SIMPLE_SURFACE = "simpleSurface";
-//		public static final String PIT = "pit";
-//		public static final String SURFACE_STRUCTURE = "surfaceStructure";
-		
-		private String key;
+	
+		private String name;
 		private Integer weight;
 		
-		public String getKey() {
-			return key;
+		public String getName() {
+			return name;
 		}
-		public void setKey(String key) {
-			this.key = key;
+		public void setName(String name) {
+			this.name = name;
 		}
 		public Integer getWeight() {
 			return weight;
@@ -265,21 +260,21 @@ public class ChestConfiguration {
 		
 	}
 
-	public List<String> getDimensions() {
-		return dimensions;
-	}
-
-	public void setDimensions(List<String> dimensions) {
-		this.dimensions = dimensions;
-	}
-
-	public Double getTreasureMapProbability() {
-		return treasureMapProbability;
-	}
-
-	public void setTreasureMapProbability(Double treasureMapProbability) {
-		this.treasureMapProbability = treasureMapProbability;
-	}
+//	public List<String> getDimensions() {
+//		return dimensions;
+//	}
+//
+//	public void setDimensions(List<String> dimensions) {
+//		this.dimensions = dimensions;
+//	}
+//
+//	public Double getTreasureMapProbability() {
+//		return treasureMapProbability;
+//	}
+//
+//	public void setTreasureMapProbability(Double treasureMapProbability) {
+//		this.treasureMapProbability = treasureMapProbability;
+//	}
 
 	public List<Generator> getGenerators() {
 		return generators;

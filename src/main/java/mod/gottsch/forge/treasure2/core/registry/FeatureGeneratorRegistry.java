@@ -19,10 +19,12 @@ package mod.gottsch.forge.treasure2.core.registry;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * 
@@ -32,7 +34,8 @@ import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
 public class FeatureGeneratorRegistry {
 
 	private static final Map<IFeatureType, IFeatureGenerator> MAP = new HashMap<>();
-
+	private static final Map<ResourceLocation, IFeatureGenerator> MAP_BY_NAME = new HashMap<>();
+	
 	/**
 	 * 
 	 */
@@ -46,10 +49,15 @@ public class FeatureGeneratorRegistry {
 			return;
 		}
 		MAP.put(type, featureGenerator);
+		MAP_BY_NAME.put(featureGenerator.getName(), featureGenerator);
 	}	
 
-	public IFeatureGenerator get(IFeatureType type) {
+	public static IFeatureGenerator get(IFeatureType type) {
 		// TODO make more robust
 		return MAP.get(type);
+	}
+	
+	public static Optional<IFeatureGenerator> get(ResourceLocation name) {
+		return Optional.ofNullable(MAP_BY_NAME.get(name));
 	}
 }

@@ -24,13 +24,16 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 
+import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.Heading;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import mod.gottsch.forge.treasure2.core.enums.WishableExtraRarity;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
 import mod.gottsch.forge.treasure2.core.registry.MimicRegistry;
@@ -58,7 +61,10 @@ public class SpawnChestCommand {
 	private static final String NAME = "name";
 
 	private static final SuggestionProvider<CommandSourceStack> SUGGEST_RARITY = (source, builder) -> {
-		return SharedSuggestionProvider.suggest(Rarity.getNames().stream(), builder);
+		return SharedSuggestionProvider.suggest(TreasureApi.getRarities()
+				.stream()
+				.filter(r -> !(r instanceof WishableExtraRarity))
+				.map(r -> r.getName()), builder);
 	};
 
 	private static final SuggestionProvider<CommandSourceStack> SUGGEST_CHEST = (source, builder) -> {
@@ -207,12 +213,15 @@ public class SpawnChestCommand {
 	private static int spawn(CommandSourceStack source, BlockPos pos, String chestName, String rarityName, String directionName, 
 			boolean locked, boolean sealed, boolean mimic) {
 
+		// TODO I goofed something up with the mimics code depending on the options order
 		Treasure.LOGGER.debug("executing spawn chest, pos -> {}, name -> {}, rarity -> {}", pos, chestName, rarityName);
 		try {
 			ServerLevel world = source.getLevel();
 			Random random = new Random();
-			// TODO fetch from the registry
-			Rarity rarity = rarityName.isEmpty() ? Rarity.COMMON : Rarity.valueOf(rarityName.toUpperCase());
+			Optional<IRarity> rarity = TreasureApi.getRarity(rarityName);
+			if (rarity.isEmpty()) {
+				return 1;
+			}
 			Heading heading = directionName.isEmpty() ? Heading.SOUTH : Heading.valueOf(directionName);
 			ResourceLocation chestLocation = ModUtil.asLocation(chestName);
 			Optional<RegistryObject<Block>> optionalChest = ChestRegistry.getChest(chestLocation);
@@ -220,9 +229,9 @@ public class SpawnChestCommand {
 
 			// TODO provide Genertor by name in command (no weighted option)
 			// TODO provide GeneratorType option in command
-			IChestGenerator generator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity, FeatureType.TERRANEAN);
+			IChestGenerator generator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity.get(), FeatureType.TERRANEAN);
 			if (optionalChest.isEmpty()) {
-				chest = generator.selectChest(random, rarity);
+				chest = generator.selectChest(random, rarity.get());
 			} else {
 				chest = (AbstractTreasureChestBlock) optionalChest.get().get();
 			}
@@ -232,7 +241,7 @@ public class SpawnChestCommand {
 			Treasure.LOGGER.debug("generator -> {}", generator);
 
 			// select loot table
-			Optional<LootTableShell> lootTableShell = generator.selectLootTable(random, rarity);
+			Optional<LootTableShell> lootTableShell = generator.selectLootTable(random, rarity.get());
 			Treasure.LOGGER.debug("loot table shell -> {}", lootTableShell);
 
 			ResourceLocation lootTableResourceLocation = null;
@@ -240,7 +249,7 @@ public class SpawnChestCommand {
 				lootTableResourceLocation = lootTableShell.get().getResourceLocation();
 			}
 			if (lootTableResourceLocation == null) {
-				Treasure.LOGGER.debug("Unable to select a LootTable for rarity -> {}", rarity);
+				Treasure.LOGGER.debug("Unable to select a LootTable for rarity -> {}", rarity.getClass());
 				return 0;
 			}
 
@@ -267,11 +276,11 @@ public class SpawnChestCommand {
 					generator.addLootTable(blockEntity, lootTableResourceLocation);
 					generator.addSeal(blockEntity);
 				}
-				generator.addGenerationContext(new FeatureGenContext(world, world.getChunkSource().getGenerator(), random, FeatureType.TERRANEAN), blockEntity, rarity);
+				generator.addGenerationContext(new FeatureGenContext(world, world.getChunkSource().getGenerator(), random, FeatureType.TERRANEAN), blockEntity, rarity.get());
 				blockEntity.getGenerationContext().setFeatureType(FeatureType.TERRANEAN);
 
 				if (locked) {
-					generator.addLocks(random, chestBlock, (AbstractTreasureChestBlockEntity) blockEntity, rarity);
+					generator.addLocks(random, chestBlock, (AbstractTreasureChestBlockEntity) blockEntity, rarity.get());
 					(chestBlock).rotateLockStates(world, new Coords(pos), Heading.NORTH.getRotation(heading));
 					(blockEntity).sendUpdates();
 				}

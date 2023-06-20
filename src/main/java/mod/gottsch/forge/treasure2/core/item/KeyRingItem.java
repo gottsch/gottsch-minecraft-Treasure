@@ -113,6 +113,7 @@ public class KeyRingItem extends Item implements MenuProvider {
 		// test if the block is a chest proxy (ex. multiple block chests like Wither Chest)
 		if (block instanceof ITreasureChestBlockProxy) {
 			chestPos = ((ITreasureChestBlockProxy)block).getChestPos(chestPos);
+			state = context.getLevel().getBlockState(chestPos);
 			block = context.getLevel().getBlockState(chestPos).getBlock();
 		}
 

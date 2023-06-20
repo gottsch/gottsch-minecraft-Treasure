@@ -265,6 +265,7 @@ public class TreasureItems {
 	.setCategory(KeyLockCategory.MAGIC)
 	.setBreakable(false)
 	.setCraftable(false)
+	// opens any lock
 	.addFitsLock(lock -> {
 		return true;
 	}));
@@ -400,11 +401,7 @@ public class TreasureItems {
 	//	IRON_SWORD = new SwordItem(Tiers.IRON, 3, -2.4F, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT)));
 	//	DIAMOND = SwordItem(Tiers.DIAMOND, 3, -2.4F
 
-	//	WOODEN_AXE = new AxeItem(Tiers.WOOD, 6.0F, -3.2F
-	//	STONE_AXE = new AxeItem(Tiers.STONE, 7.0F, -3.2F
-	//	IRON_AXE = new AxeItem(Tiers.IRON, 6.0F, -3.1F  // USE AS DEFAULT STATS FOR AXES
-	//	DIAMOND_AXE = new AxeItem(Tiers.DIAMOND, 5.0F, -3.0F
-	//	NETHERITE_AXE = new AxeItem(Tiers.NETHERITE, 5.0F, -3.0F
+
 
 	// HAMMER/MACE = new Sword(Tier, 8.0F, -4.0 // most damage, slowest, + 2x durability damage to target
 	
@@ -647,6 +644,14 @@ public class TreasureItems {
 			});
 
 	// axes
+	//	WOODEN_AXE = new AxeItem(Tiers.WOOD, 6.0F, -3.2F
+	//	STONE_AXE = new AxeItem(Tiers.STONE, 7.0F, -3.2F
+	//	IRON_AXE = new AxeItem(Tiers.IRON, 6.0F, -3.1F  // USE AS DEFAULT STATS FOR AXES
+	//	DIAMOND_AXE = new AxeItem(Tiers.DIAMOND, 5.0F, -3.0F
+	//	NETHERITE_AXE = new AxeItem(Tiers.NETHERITE, 5.0F, -3.0F
+	public static final RegistryObject<Item> COPPER_BROAD_AXE = Registration.ITEMS.register("copper_broad_axe", 
+			() -> new Axe(COPPER, TreasureWeapons.AXE_BASE_DAMAGE - 1.0F, TreasureWeapons.AXE_BASE_SPEED + 0.2f, TREASURE_ITEM_PROPERTIES));
+	
 	public static final RegistryObject<Item> AXE_DURIN = Registration.ITEMS.register("axe_of_durin", 
 			() -> new Axe(LEGENDARY, TreasureWeapons.AXE_BASE_DAMAGE, TreasureWeapons.AXE_BASE_SPEED + 0.5f, TREASURE_ITEM_PROPERTIES) {
 				@Override

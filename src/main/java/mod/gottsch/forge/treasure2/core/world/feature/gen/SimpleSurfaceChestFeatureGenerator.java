@@ -24,10 +24,9 @@ import java.util.Random;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
-import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.enums.IMarkerType;
 import mod.gottsch.forge.treasure2.core.enums.MarkerType;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
@@ -39,6 +38,7 @@ import mod.gottsch.forge.treasure2.core.registry.MarkerGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * 
@@ -46,7 +46,13 @@ import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
  *
  */
 public class SimpleSurfaceChestFeatureGenerator implements IFeatureGenerator {
-
+	private ResourceLocation name = new ResourceLocation(Treasure.MODID, "simple_surface");
+	
+	@Override
+	public ResourceLocation getName() {
+		return name;
+	}
+	
 	@Override
 	public Optional<GeneratorResult<ChestGeneratorData>> generate(IFeatureGenContext context, ICoords spawnCoords, IRarity rarity, ChestRarity rarityConfig) {
 

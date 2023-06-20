@@ -1,9 +1,9 @@
 #####
 # TODO rename
-# rarities = common, uncommon, scarce, rare, epic, legendary, mythical
 #####
 [[chestConfigs]]
-	# List of allowed namespaced dimension IDs for generation. ie. dimension whitelist. 
+	# List of dimension ID to apply this chest config against. ie. dimension whitelist. 
+	# Any dimension listed here, must appear in the treasure2-server.toml > integration > dimensionsWhiteList property.
 	# Treasure2 was designed for 'normal' overworld-type dimensions. 
 	# This setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed. 
 	# ex. minecraft:overworld
@@ -20,15 +20,17 @@
 		waitChunks=25	
 		surfaceProbability=15.0
 		structureProbability=25.0
+		# the default featureGeneratorSelector for 'terranean' feature is a WeightedGeneratorSelector.
 		[[chestConfigs.generators.featureGenerators]]
-			key="simpleSurface"
+			name="treasure2:simple_surface"
 			weight=10
 		[[chestConfigs.generators.featureGenerators]]
-			key="pit"
+			name="treasure2:pit"
 			weight=65
 		[[chestConfigs.generators.featureGenerators]]
-			key="surfaceStructure"
+			name="treasure2:surface_structure"
 			weight=25
+
 		[[chestConfigs.generators.rarities]]
 			rarity="common"
 			weight=100
@@ -173,105 +175,3 @@
 			]
 			biomeTypeWhitelist = ["ocean", "deep_ocean"]
 		
-	# deprecated
-	[[chestConfigs.chests]]
-		name="treasure2:wood_chest"
-		enabled=true
-		rarity="common"
-		biomeWhitelist = []
-		biomeBlacklist = []
-		biomeTypeWhitelist = []
-		biomeTypeBlacklist = []
-	
-	[[chestConfigs.chests]]
-		name="treasure2:crate_chest"
-		enabled=true
-		rarity="uncommon"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:moldy_crate_chest"
-		enabled=true
-		rarity="uncommon"
-		
-	[[chestConfigs.chests]]
-		name="treasure2:ironbound_chest"
-		enabled=true
-		rarity="scarce"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:pirate_chest"
-		enabled=true
-		rarity="scarce"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:safe"
-		enabled=true
-		rarity="rare"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:iron_strongbox"
-		enabled=true
-		rarity="scarce"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:gold_strongbox"
-		enabled=true
-		rarity="rare"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:dread_pirate_chest"
-		enabled=true
-		rarity="epic"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:compressor_chest"
-		enabled=true
-		rarity="epic"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:skull_chest"
-		enabled=true
-		rarity="scarce"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:gold_skull_chest"
-		enabled=true
-		rarity="rare"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:crystal_skull_chest"
-		enabled=true
-		rarity="rare"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:cauldron_chest"
-		enabled=true
-		rarity="epic"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:spider_chest"
-		enabled=true
-		rarity="rare"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:viking_chest"
-		enabled=true
-		rarity="uncommon"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:cardboard_box"
-		enabled=true
-		rarity="common"
-	
-	[[chestConfigs.chests]]
-		name="treasure2:milk_crate"
-		enabled=true
-		rarity="common"
-	
-	# Wither chest is a special chest and depends whether the Wither Tree is enabled.
-	# These chests only generate with Wither Trees.
-	# The rarity property for the Wither Chest only determines its loot table.
-	[[chestConfigs.chests]]
-		name="treasure2:wither_chest"
-		enabled=true
-		rarity="scarce"

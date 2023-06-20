@@ -41,33 +41,11 @@ import net.minecraft.world.level.storage.DimensionDataStorage;
  *
  */
 public class TreasureSavedData extends SavedData {	
-//	private static final String TREASURE_GEN_TAG_NAME = "treasureGenerator";
-	
 	private static final String CHEST_GEN_REGISTRY_NAME = "weightedChestGeneratorRegistry";
 	private static final String DIM_GEN_REGISTRY_NAME = "dimensionalGeneratedRegistry";
 	private static final String FEATURE_CACHES_NAME = "featureCaches";
-	
-//	public static final String GEN_DATA_KEY = Treasure.MODID + ":generationData";
+
 	private static final String TREASURE = Treasure.MODID;
-
-//	private static final String KEY_TAG_NAME = "key";
-//	private static final String CHEST_REGISTRY_TAG_NAME = "chestRegistry";
-//	private static final String REGISTRY_TAG_NAME = "registry";
-//	private static final String WELL_REGISTRIES_TAG_NAME = "wellRegistries";
-//	private static final String WITHER_TREE_REGISTRIES_TAG_NAME = "witherTreeRegistries";
-//	private static final String COORDS_TAG_NAME = "coords";
-
-//	private static final String RARITY_TAG_NAME = "rarity";
-//	private static final String RARITIES_TAG_NAME = "rarities";
-//	private static final String DIMENSION_ID_TAG_NAME = "dimensionID";
-//	private static final String DIMENSIONS_TAG_NAME = "dimensions";
-//	private static final String BIOME_ID_TAG_NAME = "biomeID";
-//	private static final String BIOMES_TAG_NAME = "biomes";
-
-	// legacy
-//	private static final String CHEST_REGISTRIES_TAG_NAME = "chestRegistries";
-
-	
 	
 	public static TreasureSavedData create() {
 		return new TreasureSavedData();
@@ -89,10 +67,10 @@ public class TreasureSavedData extends SavedData {
 			RarityLevelWeightedChestGeneratorRegistry.RARITY_SELECTOR.forEach((dim, map) -> {
 				RarityLevelWeightedCollection dumpCol = map.get(FeatureType.TERRANEAN);
 				List<String> dump = dumpCol.dump();
-				Treasure.LOGGER.debug("load terranean weighted collection dump -> {}", dump);
+//				Treasure.LOGGER.debug("load terranean weighted collection dump -> {}", dump);
 				dumpCol = map.get(FeatureType.AQUATIC);
 				dump = dumpCol.dump();
-				Treasure.LOGGER.debug("load aquatic weighted collection dump -> {}", dump);
+//				Treasure.LOGGER.debug("load aquatic weighted collection dump -> {}", dump);
 			});
 
 		}
@@ -152,28 +130,6 @@ public class TreasureSavedData extends SavedData {
 		// add new values
 		compound.put(name, nbt);		
 	}
-
-	/**
-	 * 
-	 * @param registryList
-	 * @param dimension
-	 * @param registry
-	 */
-//	private void saveRegistry(ListTag registryList, String dimension, SimpleListRegistry<ICoords> registry) {
-//		CompoundTag dimensionCompound = new CompoundTag();
-//		dimensionCompound.putString(DIMENSION_ID_TAG_NAME, dimension);
-//		ListTag coordsList = new ListTag();
-//		registry.getValues().forEach(coords -> {
-//			CompoundTag coordsCompound = new CompoundTag();
-//			coordsCompound.putInt("x", coords.getX());
-//			coordsCompound.putInt("y", coords.getY());
-//			coordsCompound.putInt("z", coords.getZ());
-//			// add entry to list
-//			coordsList.add(coordsCompound);
-//		});
-//		dimensionCompound.put(REGISTRY_TAG_NAME, coordsList);
-//		registryList.add(dimensionCompound);
-//	}
 
 	/**
 	 * @param world

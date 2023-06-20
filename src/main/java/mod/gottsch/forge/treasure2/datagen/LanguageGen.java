@@ -269,8 +269,8 @@ public class LanguageGen extends LanguageProvider {
         		+ "    -The Grim Reaper");
         add(LangUtil.tooltip("weapons.snake_eyes_katana.lore"), "Move with the wind, and you will never be heard.~" 
         		+ "    -Snake Eyes");
-        add(LangUtil.tooltip("weapons.storm_shadows_katana.lore"), "Most people will tell you that ninjas don’t exist.~"
-        		+ "That’s what the ninjas want you to believe …~"
+        add(LangUtil.tooltip("weapons.storm_shadows_katana.lore"), "Most people will tell you that ninjas dont exist.~"
+        		+ "Thats what the ninjas want you to believe ..."
         		+ "    -Storm Shadow");
         add(LangUtil.tooltip("weapons.oathbringer.lore"), "Life before death,~"
         		+ "strength before weakness,~"

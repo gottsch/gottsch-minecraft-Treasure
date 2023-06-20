@@ -42,6 +42,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
@@ -60,6 +61,15 @@ public class ModUtil {
 	 */
 	private static final String SAVE_FORMAT_LEVEL_SAVE_SRG_NAME = "f_129744_";
 	
+	/*
+	MC 1.18.2: net/minecraft/world/item/Item.maxStackSize
+	Name: d => f_41370_ => maxStackSize
+	Side: BOTH
+	AT: public net.minecraft.world.item.Item f_41370_ # maxStackSize
+	Type: int
+	*/
+	public static final String MAX_STACK_SIZSE_SRG_NAME = "f_41370_";
+	
 	/**
 	 * 
 	 * @param name
@@ -73,6 +83,10 @@ public class ModUtil {
 		return name.indexOf(":") >= 0;
 	}
 
+	public static void setItemMaxStackSize(Item item, int size) {
+		ObfuscationReflectionHelper.setPrivateValue(Item.class, item, size, MAX_STACK_SIZSE_SRG_NAME);
+	}
+	
 	/**
 	 * 
 	 * @param level

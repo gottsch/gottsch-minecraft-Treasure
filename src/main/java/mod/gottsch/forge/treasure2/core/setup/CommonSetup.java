@@ -38,6 +38,7 @@ import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import mod.gottsch.forge.treasure2.core.wishable.TreasureWishableHandlers;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureFeatureGenerators;
@@ -65,8 +66,26 @@ public class CommonSetup {
 	 * @param event
 	 */
 	public static void init(final FMLCommonSetupEvent event) {
+		// create a treasure2 specific log file
 		Config.instance.addRollingFileAppender(Treasure.MODID);
 		Treasure.LOGGER.debug("file appender created");
+		
+		/*
+		 *  update registered block/item properties using reflection now that
+		 *  the config is loaded.
+		 *  ex. WealthItem.maxStackSize
+		 *  NOTE this may be moot. Testing seems to indicate that the config values ARE being used on item registration.
+		 */
+		ModUtil.setItemMaxStackSize(TreasureItems.COPPER_COIN.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+		ModUtil.setItemMaxStackSize(TreasureItems.SILVER_COIN.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+		ModUtil.setItemMaxStackSize(TreasureItems.GOLD_COIN.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+		ModUtil.setItemMaxStackSize(TreasureItems.TOPAZ.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+		ModUtil.setItemMaxStackSize(TreasureItems.ONYX.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+		ModUtil.setItemMaxStackSize(TreasureItems.SAPPHIRE.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+		ModUtil.setItemMaxStackSize(TreasureItems.RUBY.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+		ModUtil.setItemMaxStackSize(TreasureItems.WHITE_PEARL.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+		ModUtil.setItemMaxStackSize(TreasureItems.BLACK_PEARL.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+		
 		/**
 		 * Most resources in Treasure2 are associated with a Rarity. Register rarities
 		 * to enable them in other features. The registry in conjunction with
@@ -87,6 +106,7 @@ public class CommonSetup {
 		TreasureApi.registerRarity(SpecialRarity.CRYSTAL_SKULL);
 		TreasureApi.registerRarity(SpecialRarity.CAULDRON);
 		TreasureApi.registerRarity(SpecialRarity.WITHER);
+		// special rarities for wishables
 		TreasureApi.registerRarity(WishableExtraRarity.WHITE_PEARL);
 		TreasureApi.registerRarity(WishableExtraRarity.BLACK_PEARL);
 		
@@ -392,6 +412,8 @@ public class CommonSetup {
 		TreasureApi.registerChestFeatureGenerator(Rarity.EPIC, FeatureType.AQUATIC);
 		TreasureApi.registerChestFeatureGenerator(Rarity.LEGENDARY, FeatureType.AQUATIC);
 		TreasureApi.registerChestFeatureGenerator(Rarity.MYTHICAL, FeatureType.AQUATIC);
+		
+		TreasureFeatureGenerators.initialize();
 		
 		// register network
 		TreasureNetworking.register();

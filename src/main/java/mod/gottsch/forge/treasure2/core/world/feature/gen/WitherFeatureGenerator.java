@@ -33,7 +33,7 @@ import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.*;
-import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.PitType;
 import mod.gottsch.forge.treasure2.core.enums.SpecialRarity;
@@ -44,6 +44,7 @@ import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
 import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -74,6 +75,13 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	private static final int MAX_SCRUB = 20;
 	
 	protected static int UNDERGROUND_OFFSET = 3;
+	
+	private ResourceLocation name = new ResourceLocation(Treasure.MODID, "wither");
+	
+	@Override
+	public ResourceLocation getName() {
+		return name;
+	}
 	
 	/*
 	 * During generation a 3x3 (x-z axis) chunk area is available to alter ( = 48 blocks).

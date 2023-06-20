@@ -17,35 +17,24 @@
  */
 package mod.gottsch.forge.treasure2.core.command;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
-import mod.gottsch.forge.gottschcore.world.WorldGenContext;
-import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
+import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration;
+import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.Generator;
 import mod.gottsch.forge.treasure2.core.config.Config;
-import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
-import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.Generator;
-import mod.gottsch.forge.treasure2.core.config.Config.ServerConfig.Wells;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
-import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
-import mod.gottsch.forge.treasure2.core.generator.well.IWellGenerator;
-import mod.gottsch.forge.treasure2.core.generator.well.WellGenerator;
 import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
-import mod.gottsch.forge.treasure2.core.registry.WellGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
-import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureGenContext;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
@@ -53,10 +42,8 @@ import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureFeatureGenerat
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 
 
@@ -111,9 +98,9 @@ public class SpawnWitherTreeCommand {
 			Random random = new Random();
 			IRarity rarity = Rarity.COMMON;
 			
-			ResourceLocation dimension = WorldInfo.getDimension(world);
+//			ResourceLocation dimension = WorldInfo.getDimension(world);
 			// get the generator config
-			ChestConfiguration config = Config.chestConfigMap.get(dimension);
+			ChestFeaturesConfiguration config = Config.chestConfig; // Config.chestConfigMap.get(dimension);
 			if (config == null) {
 				Treasure.LOGGER.debug("ChestConfiguration is null. This shouldn't be.");
 				return -1;

@@ -268,7 +268,8 @@ public class KeyItem extends Item implements IKeyEffects {
 		// test if the block is a chest proxy (ex. multiple block chests like Wither Chest)
 		if (block instanceof ITreasureChestBlockProxy) {
 			chestPos = ((ITreasureChestBlockProxy)block).getChestPos(chestPos);
-			block = context.getLevel().getBlockState(chestPos).getBlock();
+			state = context.getLevel().getBlockState(chestPos);
+			block = state.getBlock();
 		}
 
 		// determine if block at pos is a treasure chest

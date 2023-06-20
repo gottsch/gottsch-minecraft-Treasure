@@ -28,9 +28,9 @@ import com.google.common.collect.Table;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
-import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
-import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
-import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.Generator;
+import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration;
+import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.Generator;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
@@ -50,18 +50,18 @@ import net.minecraft.resources.ResourceLocation;
 public class RarityLevelWeightedChestGeneratorRegistry {
 
 	private static final String GENERATORS_TAG = "generators";
-	
+
 	// collection of chest generators by rarity and type
 	public static final Table<IRarity, IFeatureType, IChestGenerator> REGISTRY = HashBasedTable.create();
 	public static final Map<ResourceLocation, Map<IFeatureType, RarityLevelWeightedCollection>> RARITY_SELECTOR = new HashMap<>();
 
-	
+
 	/**
 	 * 
 	 */
 	private RarityLevelWeightedChestGeneratorRegistry() {	}
 
-	
+
 	public static void registerGenerator(IRarity rarity, IFeatureType type) {
 		// first check if chestGenType is registered
 		Optional<IChestGenerator> generator = ChestGeneratorRegistry.get(rarity);
@@ -71,11 +71,11 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 
 		REGISTRY.put(rarity, type, generator.get());
 	}
-	
+
 	public static void clear() {
 		RARITY_SELECTOR.clear();
 	}
-	
+
 	/**
 	 * load/register chest generators from config
 	 */
@@ -84,15 +84,16 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 		RARITY_SELECTOR.clear();
 		Map<IFeatureType, RarityLevelWeightedCollection> map = null;
 		RarityLevelWeightedCollection collection = null;
-		
-		// for each allowable dimension for the mod
-		for (String dimensionName : Config.SERVER.integration.dimensionsWhiteList.get()) {
-			Treasure.LOGGER.debug("white list dimension -> {}", dimensionName);
-			ResourceLocation dimension = ModUtil.asLocation(dimensionName);
-			
-			// find the ChestConfiguration that contains the same dimension
-			ChestConfiguration chestConfig = Config.chestConfigMap.get(ModUtil.asLocation(dimensionName));
-			if (chestConfig != null && chestConfig.getDimensions().contains(dimension.toString())) {
+
+		// find the ChestConfiguration that contains the same dimension
+		ChestFeaturesConfiguration chestConfig = Config.chestConfig; //Config.chestConfigMap.get(ModUtil.asLocation(dimensionName));
+		if (chestConfig != null) { //&& chestConfig.getDimensions().contains(dimension.toString())) {
+
+			// for each allowable dimension for the mod
+			for (String dimensionName : Config.SERVER.integration.dimensionsWhiteList.get()) {
+				Treasure.LOGGER.debug("white list dimension -> {}", dimensionName);
+				ResourceLocation dimension = ModUtil.asLocation(dimensionName);
+
 				// get the collection map by dimension
 				if (RARITY_SELECTOR.containsKey(dimension)) {
 					map = RARITY_SELECTOR.get(dimension);
@@ -100,7 +101,7 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 					map = Maps.newHashMap();
 					RARITY_SELECTOR.put(dimension, map);
 				}
-				
+
 				// for each generator
 				for (Generator generator : chestConfig.getGenerators()) {
 					Treasure.LOGGER.debug("processing generator -> {}", generator.getClass().getSimpleName());
@@ -115,7 +116,7 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 							collection = new RarityLevelWeightedCollection();
 							map.put(type.get(), collection);
 						}
-						
+
 						// setup chest collection generator maps
 						for (ChestRarity chestRarity : generator.getRarities()) {
 							Treasure.LOGGER.debug("processing generator rarity -> {}", chestRarity.getRarity());
@@ -138,12 +139,12 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 	 * @return
 	 */
 	public static ListTag save() {
-	
+
 		ListTag dimensionsTag = new ListTag();
 		RARITY_SELECTOR.forEach((key, value) -> {
 			CompoundTag dimensionTag = new CompoundTag();
 			dimensionTag.putString("dimension", key.toString());
-			
+
 			ListTag generators = new ListTag();
 			value.forEach((generatorType, levelWeightedCollection) -> {
 				CompoundTag generatorTag = new CompoundTag();
@@ -156,7 +157,7 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 		});
 		return dimensionsTag;
 	}
-	
+
 	/**
 	 * 
 	 * @param dimensionsTag
@@ -187,7 +188,7 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 			}
 		});
 	}
-	
+
 	/**
 	 * 
 	 * @param location
@@ -203,7 +204,7 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 		}
 		return Rarity.NONE;
 	}
-	
+
 	/**
 	 * 
 	 * @param rarity
@@ -217,7 +218,7 @@ public class RarityLevelWeightedChestGeneratorRegistry {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 
 	 * @param location

@@ -31,5 +31,4 @@ public class AquaticChestFeatureGeneratorSelector implements IFeatureGeneratorSe
 	public IFeatureGenerator select() {
 		return TreasureFeatureGenerators.SUBAQUATIC_FEATURE_GENERATOR;
 	}
-
 }

@@ -47,6 +47,7 @@ public interface ITreasureChestBlock {
 
 	LockLayout getLockLayout();
 
+	@Deprecated
 	IRarity getRarity();
 
 	// TODO review - shouldn't need these in general

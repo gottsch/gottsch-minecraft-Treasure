@@ -23,6 +23,10 @@ import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
 public class WeightedChestFeatureGeneratorSelector implements IFeatureGeneratorSelector {
 	private static final WeightedCollection<Number, IFeatureGenerator> COL = new WeightedCollection<>();
 	
+	public void clear() {
+		COL.clear();
+	}
+	
 	@Override
 	public IFeatureGenerator select() {
 		return COL.next();

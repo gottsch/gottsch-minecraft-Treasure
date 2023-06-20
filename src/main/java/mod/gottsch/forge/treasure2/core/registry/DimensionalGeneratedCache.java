@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
-import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
+import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
@@ -33,8 +33,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 
-
-// TODO this is actually a Cache - rename.
 /**
  * This is a singleton Registry that contains the instance registries
  * for the generated chests in all the dimension/region combinations.
@@ -60,39 +58,41 @@ public class DimensionalGeneratedCache {
 	public static void clear() {
 		CHEST_CACHE.clear();
 	}
-	
+
 	/**
 	 * Initialize from Config file.
 	 */
 	public static void initialize() {
-		// for each allowable dimension for the mod
-		for (String dimensionName : Config.SERVER.integration.dimensionsWhiteList.get()) {
-			Treasure.LOGGER.debug("white list dimension -> {}", dimensionName);
-			ResourceLocation dimension = ModUtil.asLocation(dimensionName);
+		// find the ChestConfiguration that contains the same dimension
+		ChestFeaturesConfiguration chestConfig = Config.chestConfig;//Config.chestConfigMap.get(ModUtil.asLocation(dimensionName));
+		//			for (ChestConfiguration chestConfig : Config.chestConfigs) {
+		if (chestConfig != null) {
 
-			/*
-			 * setup chest registry
-			 */
-			// find the ChestConfiguration that contains the same dimension
-			ChestConfiguration chestConfig = Config.chestConfigMap.get(ModUtil.asLocation(dimensionName));
-			//			for (ChestConfiguration chestConfig : Config.chestConfigs) {
-			if (chestConfig != null) {
-				if (chestConfig.getDimensions().contains(dimension.toString())) {
-					// create a new map for generatorType->generatedChestRegistry
-					Map<IFeatureType, GeneratedCache<? extends GeneratedContext>> chestRegistryMap = new HashMap<>();
-					// add generator map to byDimension map
-					CHEST_CACHE.put(dimension, chestRegistryMap);
+			// for each allowable dimension for the mod
+			for (String dimensionName : Config.SERVER.integration.dimensionsWhiteList.get()) {
+				Treasure.LOGGER.debug("white list dimension -> {}", dimensionName);
+				ResourceLocation dimension = ModUtil.asLocation(dimensionName);
 
-					// for each generator
-					chestConfig.getGenerators().forEach(generator -> {
-						// match the generator to the enum
-						Optional<IFeatureType> type = TreasureApi.getFeatureType(generator.getKey().toUpperCase());
-						if (type.isPresent()) {
-							// create a new generated chest registry with size set from config
-							chestRegistryMap.put(type.get(), new GeneratedCache<>(generator.getRegistrySize()));
-						}
-					});
-				}
+				/*
+				 * setup chest registry
+				 */
+
+				//				if (Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString())) {
+				// create a new map for generatorType->generatedChestRegistry
+				Map<IFeatureType, GeneratedCache<? extends GeneratedContext>> chestRegistryMap = new HashMap<>();
+				// add generator map to byDimension map
+				CHEST_CACHE.put(dimension, chestRegistryMap);
+
+				// for each generator
+				chestConfig.getGenerators().forEach(generator -> {
+					// match the generator to the enum
+					Optional<IFeatureType> type = TreasureApi.getFeatureType(generator.getKey().toUpperCase());
+					if (type.isPresent()) {
+						// create a new generated chest registry with size set from config
+						chestRegistryMap.put(type.get(), new GeneratedCache<>(generator.getRegistrySize()));
+					}
+				});
+				//				}
 			}
 		}
 	}
@@ -126,7 +126,7 @@ public class DimensionalGeneratedCache {
 				generatedRegistryTag.putString("name", generatorType.getName());
 				ListTag dataTag = new ListTag();
 				genRegistry.getValues().forEach(datum -> {
-//					Treasure.LOGGER.debug("saving generated context datum -> {}", datum);
+					//					Treasure.LOGGER.debug("saving generated context datum -> {}", datum);
 					CompoundTag datumTag = datum.save();
 					// add entry to list
 					dataTag.add(datumTag);	
@@ -160,7 +160,7 @@ public class DimensionalGeneratedCache {
 	@SuppressWarnings("unchecked")
 	public static <T> void loadRegistry(ListTag dimensinoalRegistriesTag, 
 			Map<ResourceLocation, Map<IFeatureType, GeneratedCache<?>>> registry, Supplier<? extends GeneratedContext> supplier) {
-		
+
 		if (dimensinoalRegistriesTag != null) {
 			Treasure.LOGGER.debug("loading chest registries...");  	
 			dimensinoalRegistriesTag.forEach(dimensionalRegistryTag -> {
@@ -184,21 +184,19 @@ public class DimensionalGeneratedCache {
 									// clear the registry
 									GeneratedCache<GeneratedContext> generatedRegistry = (GeneratedCache<GeneratedContext>) getGeneratedCache(registry, dimension, generatorType.get());
 									generatedRegistry.clear();
-									
+
 									// get the data list
 									ListTag dataTag = registryCompound.getList("data", Tag.TAG_COMPOUND);
 									dataTag.forEach(datum -> {
-										/////
 										GeneratedContext context = supplier.get();
 										// extract the data
 										context.load((CompoundTag)datum);
-//										Treasure.LOGGER.debug("loading datum context -> {}", context);
+										//										Treasure.LOGGER.debug("loading datum context -> {}", context);
 										if (context.getRarity() != null && context.getCoords() != null) {										
 											if (generatedRegistry != null) {
 												generatedRegistry.cache(context.getRarity(), context.getCoords(), context);
 											}
 										}										
-										//////
 									});
 								}
 							}
@@ -225,13 +223,13 @@ public class DimensionalGeneratedCache {
 		Map<IFeatureType, GeneratedCache<? extends GeneratedContext>> registryMap = CHEST_CACHE.get(dimension);
 		List<GeneratedCache<GeneratedChestContext>> caches = new ArrayList<GeneratedCache<GeneratedChestContext>>();
 		if (registryMap != null) {
-				registryMap.values().forEach(c -> {
+			registryMap.values().forEach(c -> {
 				caches.add((GeneratedCache<GeneratedChestContext>) c);
 			});
 		}
 		return caches;
 	}
-	
+
 	/**
 	 * 
 	 * @param registry

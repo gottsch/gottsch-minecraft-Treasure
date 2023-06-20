@@ -28,7 +28,7 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.IMarkerType;
 import mod.gottsch.forge.treasure2.core.enums.MarkerType;
@@ -44,6 +44,7 @@ import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -53,10 +54,17 @@ import net.minecraft.world.level.block.state.BlockState;
  *
  */
 public class PitChestFeatureGenerator implements IFeatureGenerator {
+	private ResourceLocation name = new ResourceLocation(Treasure.MODID, "pit");
+
 	/*
 	 * The minimum depth from surface for a chest spawn
 	 */
 	protected static int UNDERGROUND_OFFSET = 5;
+
+	@Override
+	public ResourceLocation getName() {
+		return name;
+	}
 	
 	@Override
 	public Optional<GeneratorResult<ChestGeneratorData>> generate(IFeatureGenContext context, ICoords spawnCoords,

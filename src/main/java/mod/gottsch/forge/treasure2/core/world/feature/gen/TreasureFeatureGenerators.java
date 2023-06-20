@@ -17,6 +17,13 @@
  */
 package mod.gottsch.forge.treasure2.core.world.feature.gen;
 
+import java.util.Optional;
+
+import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.Generator;
+import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.registry.FeatureGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.selector.AquaticChestFeatureGeneratorSelector;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.selector.IFeatureGeneratorSelector;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.selector.WeightedChestFeatureGeneratorSelector;
@@ -43,12 +50,38 @@ public class TreasureFeatureGenerators {
 	
 	static {
 		/*
-		 * NOTE currently only 1 setup for a feature. The ChestConfiguration file/class is setup by dimension. This would require a map here of feature generators.
+		 * Default feature generators setup statically. 
+		 * NOTE currently only 1 setup for a feature, ie non-dimensional.
 		 */
 		// setup pre-made feature generators
 		WeightedChestFeatureGeneratorSelector selector = (WeightedChestFeatureGeneratorSelector)STANDARD_CHEST_FEATURE_GENERATOR_SELECTOR;
 		selector.add(10, TreasureFeatureGenerators.SIMPLE_SURFACE_FEATURE_GENERATOR);
 		selector.add(65, TreasureFeatureGenerators.PIT_FEATURE_GENERATOR);
 		selector.add(25, SURFACE_STRUCTURE_FEATURE_GENERATOR);
+	}
+	
+	/**
+	 * 
+	 */
+	public static void initialize() {
+		if (Config.chestConfig != null) {
+			if (!Config.chestConfig.getGenerators().isEmpty()) {
+				// clear the default values
+				((WeightedChestFeatureGeneratorSelector)STANDARD_CHEST_FEATURE_GENERATOR_SELECTOR).clear();
+				// add generators from config
+				Generator generator = Config.chestConfig.getGenerator(FeatureType.TERRANEAN.getValue());
+				if (generator != null) {
+					if (generator.getFeatureGenerators() != null && ! generator.getFeatureGenerators().isEmpty()) {
+						generator.getFeatureGenerators().forEach(fg -> {
+							// get the feature generator from the register
+							Optional<IFeatureGenerator> featureGenerator = FeatureGeneratorRegistry.get(ModUtil.asLocation(fg.getName()));
+							if (featureGenerator.isPresent()) {
+								((WeightedChestFeatureGeneratorSelector)STANDARD_CHEST_FEATURE_GENERATOR_SELECTOR).add(fg.getWeight(), featureGenerator.get());
+							}
+						});
+					}
+				}
+			}
+		}
 	}
 }

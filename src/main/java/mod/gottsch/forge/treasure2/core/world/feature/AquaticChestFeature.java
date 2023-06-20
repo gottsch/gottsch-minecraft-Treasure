@@ -26,9 +26,9 @@ import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.config.ChestConfiguration;
-import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.ChestRarity;
-import mod.gottsch.forge.treasure2.core.config.ChestConfiguration.Generator;
+import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration;
+import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.Generator;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
@@ -86,7 +86,7 @@ public class AquaticChestFeature extends ChestFeature {
 		}
 		
 		// get the generator config
-		ChestConfiguration config = Config.chestConfigMap.get(dimension);
+		ChestFeaturesConfiguration config = Config.chestConfig; //Config.chestConfigMap.get(dimension);
 		if (config == null) {
 			Treasure.LOGGER.debug("ChestConfiguration is null. This shouldn't be.");
 			return false;

@@ -286,7 +286,7 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
 			InteractionHand hand, BlockHitResult result) {
-
+		
 		if (WorldInfo.isClientSide(level)) {
 			return InteractionResult.SUCCESS;
 		}
@@ -394,6 +394,8 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 		// save chest state
 		BlockState oldState = state;
 
+		// TODO need to check for ITreasureChestProxy or need a multiple block flag.
+		
 		// place new chest with old state, but different light
 		level.setBlockAndUpdate(pos, oldState.getBlock()
 				.defaultBlockState()
