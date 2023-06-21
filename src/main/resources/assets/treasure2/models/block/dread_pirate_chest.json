@@ -3,7 +3,7 @@
 	"texture_size": [128, 128],
 	"textures": {
 		"1": "treasure2:block/chest/dread_pirate_chest",
-		"particle": "treasure2:block/chest/dread_pirate_chest"
+		"particle": "treasure2:block/chest/particle/dread_pirate_chest_particle"
 	},
 	"elements": [
 		{
