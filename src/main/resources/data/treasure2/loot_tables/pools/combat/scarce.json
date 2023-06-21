@@ -157,6 +157,11 @@
       "type" : "minecraft:item",
       "name" : "treasure2:iron_mace",
       "weight" : 10
+    }, {
+      "entryName" : "steel_broad_axe",
+      "type" : "minecraft:item",
+      "name" : "treasure2:steel_broad_axe",
+      "weight" : 10
     } ]
   } ]
 }

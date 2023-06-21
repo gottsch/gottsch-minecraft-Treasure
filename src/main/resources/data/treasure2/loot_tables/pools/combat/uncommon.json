@@ -25,7 +25,7 @@
       "type" : "minecraft:item",
       "name" : "minecraft:chainmailboots",
       "weight" : 10
-    },{
+    }, {
       "entryName" : "iron_chestplate",
       "type" : "minecraft:item",
       "name" : "minecraft:iron_chestplate",
@@ -117,6 +117,11 @@
       "name" : "treasure2:iron_short_sword",
       "weight" : 5
     }, {
+      "entryName" : "copper_broad_axe",
+      "type" : "minecraft:item",
+      "name" : "treasure2:copper_broad_axe",
+      "weight" : 5
+    }, {
       "entryName" : "chipped_steel_short_sword",
       "type" : "minecraft:item",
       "name" : "treasure2:chipped_steel_short_sword",
@@ -130,6 +135,16 @@
       "entryName" : "copper_rapier",
       "type" : "minecraft:item",
       "name" : "treasure2:copper_rapier",
+      "weight" : 10
+    }, {
+      "entryName" : "iron_broad_axe",
+      "type" : "minecraft:item",
+      "name" : "treasure2:iron_broad_axe",
+      "weight" : 10
+    }, {
+      "entryName" : "iron_dwarven_axe",
+      "type" : "minecraft:item",
+      "name" : "treasure2:iron_dwarven_axe",
       "weight" : 10
     } ]
   } ]

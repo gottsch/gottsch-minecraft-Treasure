@@ -159,37 +159,41 @@ public class Recipes extends RecipeProvider {
 	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
 	        .save(recipe);
 
+	        // copper weapons smelting
 			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get()),
 	                Items.COPPER_INGOT, 1.0f, 200)
 	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get()).build()))
 	        .save(recipe, "copper_ingot_from_chipped_short_sword");
 			
-//	         ShapelessRecipeBuilder.shapeless(Items.COPPER_INGOT)
-//	         .requires(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get())
-//	         .save(recipe);
-//	         
-//	         ShapelessRecipeBuilder.shapeless(Items.COPPER_INGOT)
-//	         .requires(TreasureItems.COPPER_SHORT_SWORD.get())
-//	         .save(recipe);
-//	         
-//	         ShapelessRecipeBuilder.shapeless(Items.COPPER_INGOT)
-//	         .requires(TreasureItems.COPPER_RAPIER.get())
-//	         .save(recipe);
-//	         
-//	         ShapelessRecipeBuilder.shapeless(Items.IRON_INGOT)
-//	         .requires(TreasureItems.CHIPPED_IRON_SHORT_SWORD.get())
-//	         .save(recipe);
-//	         
-//	         ShapelessRecipeBuilder.shapeless(Items.IRON_INGOT)
-//	         .requires(TreasureItems.IRON_SHORT_SWORD.get())
-//	         .save(recipe);
-//	         
-//	         ShapelessRecipeBuilder.shapeless(Items.IRON_INGOT)
-//	         .requires(TreasureItems.CHIPPED_STEEL_SHORT_SWORD.get())
-//	         .save(recipe);
-//	         
-//	         ShapelessRecipeBuilder.shapeless(Items.IRON_INGOT)
-//	         .requires(TreasureItems.STEEL_SHORT_SWORD.get())
-//	         .save(recipe);   
+			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.COPPER_SHORT_SWORD.get()),
+	                Items.COPPER_INGOT, 1.0f, 200)
+	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.COPPER_SHORT_SWORD.get()).build()))
+	        .save(recipe, "copper_ingot_from_short_sword");
+			
+			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.COPPER_BROAD_AXE.get()),
+	                Items.COPPER_INGOT, 1.0f, 200)
+	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.COPPER_BROAD_AXE.get()).build()))
+	        .save(recipe, "copper_ingot_from_broad_axe");
+			
+			// iron weapons smelting
+			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.CHIPPED_IRON_SHORT_SWORD.get()),
+	                Items.IRON_INGOT, 1.0f, 200)
+	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.CHIPPED_IRON_SHORT_SWORD.get()).build()))
+	        .save(recipe, "iron_ingot_from_chipped_short_sword");
+			
+			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.IRON_SHORT_SWORD.get()),
+	                Items.IRON_INGOT, 1.0f, 200)
+	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.IRON_SHORT_SWORD.get()).build()))
+	        .save(recipe, "iron_ingot_from_short_sword");
+			
+			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.IRON_BROAD_AXE.get()),
+	                Items.IRON_INGOT, 1.0f, 200)
+	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.IRON_BROAD_AXE.get()).build()))
+	        .save(recipe, "iron_ingot_from_broad_axe");
+			
+			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.IRON_DWARVEN_AXE.get()),
+	                Items.IRON_INGOT, 1.0f, 200)
+	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.IRON_DWARVEN_AXE.get()).build()))
+	        .save(recipe, "iron_ingot_from_dwarven_axe");
 		}
 }

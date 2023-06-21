@@ -273,6 +273,16 @@ public class ItemModelsProvider extends ItemModelProvider {
 				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/mjolnir"));
 		
 		// axes
+		singleTexture(TreasureItems.COPPER_BROAD_AXE.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/copper_broad_axe"));
+		singleTexture(TreasureItems.IRON_BROAD_AXE.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/iron_broad_axe"));
+		singleTexture(TreasureItems.STEEL_BROAD_AXE.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/steel_broad_axe"));
+		
+		singleTexture(TreasureItems.IRON_DWARVEN_AXE.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/iron_dwarven_axe"));
+		
 		singleTexture(TreasureItems.AXE_DURIN.get().getRegistryName().getPath(),
 				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/axe_of_durin"));
 		

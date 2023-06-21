@@ -119,6 +119,7 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.STEEL_BROADSWORD.get(), "Steel Broadsword");
         add(TreasureItems.COPPER_RAPIER.get(), "Copper Rapier");
         
+        // specials
         add(TreasureItems.SKULL_SWORD.get(), "Skull Sword");
         add(TreasureItems.BLACK_SWORD.get(), "The Black Sword");
         add(TreasureItems.SWORD_OMENS.get(), "The Sword of Omens");
@@ -138,8 +139,15 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.STEEL_FALCHION.get(), "Steel Falchion");
         add(TreasureItems.SHADOW_FALCHION.get(), "Shadow Falchion");
         
+        // maces/hammers
         add(TreasureItems.IRON_MACE.get(), "Iron Mace");
         add(TreasureItems.STEEL_MACE.get(), "Steel Mace");
+        
+        // axes
+        add(TreasureItems.COPPER_BROAD_AXE.get(), "Copper Broad Axe");
+        add(TreasureItems.IRON_BROAD_AXE.get(), "Iron Broad Axe");
+        add(TreasureItems.STEEL_BROAD_AXE.get(), "Steel Broad Axe");
+        add(TreasureItems.IRON_DWARVEN_AXE.get(), "Iron Dwarven Axe");
         
         // chests
         add(TreasureBlocks.WOOD_CHEST.get(), "Wood Chest");

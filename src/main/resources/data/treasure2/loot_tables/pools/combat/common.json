@@ -73,6 +73,11 @@
       "type" : "minecraft:item",
       "name" : "treasure2:iron_short_sword",
       "weight" : 10
+    }, {
+      "entryName" : "copper_broad_axe",
+      "type" : "minecraft:item",
+      "name" : "treasure2:copper_broad_axe",
+      "weight" : 10
     } ]
   } ]
 }
