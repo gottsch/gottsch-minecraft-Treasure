@@ -15,6 +15,7 @@ import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.weapon.Axe;
 import mod.gottsch.forge.treasure2.core.item.weapon.Sword;
 import mod.gottsch.forge.treasure2.core.item.weapon.TreasureWeapons;
+import mod.gottsch.forge.treasure2.core.material.TreasureArmorMaterial;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
@@ -23,6 +24,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -369,6 +371,10 @@ public class TreasureItems {
 
 	public static final RegistryObject<Item> SKELETON_ITEM = Registration.ITEMS.register("skeleton", () -> new SkeletonItem(TreasureBlocks.SKELETON.get(), TREASURE_PROPS_SUPPLIER.get()));
 
+	// vanity items
+	public static final RegistryObject<Item> EYE_PATCH = Registration.ITEMS.register("eye_patch", 
+			() ->  new DyeableArmorItem(TreasureArmorMaterial.PATCH, EquipmentSlot.HEAD, TREASURE_PROPS_SUPPLIER.get()));
+
 	// eggs
 	public static final RegistryObject<Item> BOUND_SOUL_EGG = Registration.ITEMS.register("bound_soul_egg", () -> new ForgeSpawnEggItem(TreasureEntities.BOUND_SOUL_ENTITY_TYPE, 0x000000, 0x2b2b2b, TREASURE_PROPS_SUPPLIER.get()));
 	public static final RegistryObject<Item> WOOD_CHEST_MIMIC_EGG = Registration.ITEMS.register("wood_chest_mimic_egg", () -> new ForgeSpawnEggItem(TreasureEntities.WOOD_CHEST_MIMIC_ENTITY_TYPE, 0x9f844d, 0x54442c, TREASURE_PROPS_SUPPLIER.get()));
@@ -480,7 +486,7 @@ public class TreasureItems {
 			});
 
 	public static final RegistryObject<Item> OATHBRINGER = Registration.ITEMS.register("oathbringer", 
-			() -> new Sword(MYTHICAL, 3, -2.0F, TREASURE_ITEM_PROPERTIES) {
+			() -> new Sword(MYTHICAL, 3, -2.0F, 50F, 7F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
@@ -503,7 +509,7 @@ public class TreasureItems {
 			});
 
 	public static final RegistryObject<Item> SWORD_OMENS = Registration.ITEMS.register("sword_of_omens", 
-			() -> new Sword(EPIC, 3, -2.4F, TREASURE_ITEM_PROPERTIES) {
+			() -> new Sword(EPIC, 3, -2.4F, 35F, 5F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
@@ -531,7 +537,7 @@ public class TreasureItems {
 	
 	// scythes
 	public static final RegistryObject<Item> ORCUS = Registration.ITEMS.register("orcus", 
-			() -> new Sword(LEGENDARY, 3, -2.4F, TREASURE_ITEM_PROPERTIES) {
+			() -> new Sword(LEGENDARY, 3, -2.4F, 40F, 5F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
@@ -621,7 +627,9 @@ public class TreasureItems {
 			() -> new Sword(STEEL, TreasureWeapons.HAMMER_BASE_DAMAGE, TreasureWeapons.HAMMER_BASE_SPEED, TREASURE_ITEM_PROPERTIES));
 	
 	public static final RegistryObject<Item> MJOLNIR = Registration.ITEMS.register("mjolnir", 
-			() -> new Sword(MYTHICAL, TreasureWeapons.HAMMER_BASE_DAMAGE, TreasureWeapons.HAMMER_BASE_SPEED + 0.7f, TREASURE_ITEM_PROPERTIES) {
+			() -> new Sword(MYTHICAL, 
+					TreasureWeapons.HAMMER_BASE_DAMAGE, TreasureWeapons.HAMMER_BASE_SPEED + 0.7f, 
+					75F, 9F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
@@ -661,7 +669,8 @@ public class TreasureItems {
 	
 	
 	public static final RegistryObject<Item> AXE_DURIN = Registration.ITEMS.register("axe_of_durin", 
-			() -> new Axe(LEGENDARY, TreasureWeapons.AXE_BASE_DAMAGE, TreasureWeapons.AXE_BASE_SPEED + 0.5f, TREASURE_ITEM_PROPERTIES) {
+			() -> new Axe(LEGENDARY, TreasureWeapons.AXE_BASE_DAMAGE, TreasureWeapons.AXE_BASE_SPEED + 0.5f, 
+					65F, 7F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
@@ -684,7 +693,8 @@ public class TreasureItems {
 			});
 	
 	public static final RegistryObject<Item> HEADSMANS_AXE = Registration.ITEMS.register("headsmans_axe", 
-			() -> new Axe(EPIC, TreasureWeapons.AXE_BASE_DAMAGE, TreasureWeapons.AXE_BASE_SPEED + 0.3f, TREASURE_ITEM_PROPERTIES) {
+			() -> new Axe(EPIC, TreasureWeapons.AXE_BASE_DAMAGE, TreasureWeapons.AXE_BASE_SPEED + 0.3f, 
+					55F, 6F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));

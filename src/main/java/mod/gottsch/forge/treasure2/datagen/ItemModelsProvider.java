@@ -184,6 +184,8 @@ public class ItemModelsProvider extends ItemModelProvider {
 				mcLoc("item/generated"), "layer0", modLoc("item/treasure_tool"));
 		singleTexture(TreasureItems.SKELETON_ITEM.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/skeleton_item"));
+		singleTexture(TreasureItems.EYE_PATCH.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/eye_patch"));
 		
 		// short swords
 		singleTexture(TreasureItems.COPPER_SHORT_SWORD.get().getRegistryName().getPath(),
@@ -199,10 +201,10 @@ public class ItemModelsProvider extends ItemModelProvider {
 				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/chipped_iron_short_sword"));	
 		
 		singleTexture(TreasureItems.STEEL_SHORT_SWORD.get().getRegistryName().getPath(),
-				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/iron_short_sword"));
+				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/steel_short_sword"));
 		
 		singleTexture(TreasureItems.CHIPPED_STEEL_SHORT_SWORD.get().getRegistryName().getPath(),
-				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/chipped_iron_short_sword"));	
+				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/chipped_steel_short_sword"));	
 		
 		// rapier
 		singleTexture(TreasureItems.COPPER_RAPIER.get().getRegistryName().getPath(),

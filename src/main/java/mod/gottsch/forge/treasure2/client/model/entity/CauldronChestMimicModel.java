@@ -184,7 +184,8 @@ public class CauldronChestMimicModel<T extends Entity> extends EntityModel<T> {
 				lid.xRot = mimic.getAmount() * -0.7854F; // TODO could use sin or cos method like legs
 			}
 			else {
-				lid.xRot = -degToRad(22.5f);
+//				lid.xRot = -degToRad(22.5f);
+				bobMouth(lid, 22.5f, 25f, ageInTicks);
 			}
 			rightLid.zRot = -2.26893F; //130
 			leftLid.zRot = -rightLid.zRot;
@@ -198,8 +199,8 @@ public class CauldronChestMimicModel<T extends Entity> extends EntityModel<T> {
 			tongue.xRot = -0.174533F; // 10
 			
 			// swing legs
-			frontSwing1.xRot = Mth.cos(limbSwing * 0.349066f * 0.8f) * 1.4F * limbSwingAmount;
-			backSwing1.xRot = Mth.cos(limbSwing * 0.349066f  * 0.8f + (float)Math.PI) * 1.4F * limbSwingAmount;
+			frontSwing1.xRot = Mth.cos(limbSwing * 0.349066f * 1f) * 1.4F * limbSwingAmount;
+			backSwing1.xRot = Mth.cos(limbSwing * 0.349066f  * 1f + (float)Math.PI) * 1.4F * limbSwingAmount;
 			
 			frontSwing2.xRot = backSwing1.xRot;
 			backSwing2.xRot = frontSwing1.xRot;
@@ -236,13 +237,17 @@ public class CauldronChestMimicModel<T extends Entity> extends EntityModel<T> {
 		part.xRot += direction * (Mth.sin(age * 0.05F) * radians + 0.05F);
 	}
 	
+	public static void bobMouth(ModelPart mouth, float originRot, float maxRot, float age) {
+		mouth.xRot = -(degToRad(originRot + Mth.cos(age * 0.25f) * 3f));
+	}
+	
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 		legs.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
-	protected float degToRad(float degrees) {
+	protected static float degToRad(float degrees) {
 		return degrees * (float)Math.PI / 180 ;
 	}
 }

@@ -1,4 +1,4 @@
-ece555f096d5a4189e37127b6c1c1628b76364d4 assets/treasure2/lang/en_us.json
+3ba12cc868e57e6bb6f9229c7b4c459d778c450b assets/treasure2/lang/en_us.json
 ec0affa9af25bb3155f1ffb36624aaf0fa4ef025 assets/treasure2/models/item/adornments_tab.json
 541a27aa27dcd17106e9723532d6032ad0f82782 assets/treasure2/models/item/axe_of_durin.json
 8be0b1ec5bf90f3dcb3da00251632ae969418191 assets/treasure2/models/item/black_pearl.json
@@ -9,7 +9,7 @@ b95ce33388c818d6fb37ac91aba9803a85147763 assets/treasure2/models/item/black_swor
 98167609bf3898587f7565736a6fc24a7966cacd assets/treasure2/models/item/cauldron_chest_mimic_egg.json
 efbd6d0dc41e95ce38d430834e68cccc5d4d4b03 assets/treasure2/models/item/chipped_copper_short_sword.json
 d3f7b2911aedd8eb04c71d279f581f59e9dc6aef assets/treasure2/models/item/chipped_iron_short_sword.json
-d3f7b2911aedd8eb04c71d279f581f59e9dc6aef assets/treasure2/models/item/chipped_steel_short_sword.json
+54409e2988a15c10a32ba1da988ca635e88e27e7 assets/treasure2/models/item/chipped_steel_short_sword.json
 2fec2a6b3b6366ee9f6e3aaf10c15a5716aed49b assets/treasure2/models/item/compressor_chest.json
 b5eddd12d977946efa78d26d5bbb303c1e573890 assets/treasure2/models/item/copper_broad_axe.json
 f90471654a10ae7918b0ebcb26f54b3eb4132682 assets/treasure2/models/item/copper_coin.json
@@ -30,6 +30,7 @@ e902b14e26467c36334c4924c61a76d053b160a0 assets/treasure2/models/item/diamond_lo
 97b47eef102457d7927f400cdc585fc052b5ec11 assets/treasure2/models/item/ember_lock.json
 69c7707a8bcde51d6dde15353b11973fcf50681e assets/treasure2/models/item/emerald_key.json
 d128600f2fee0565e06448b024f7afc1d717bedc assets/treasure2/models/item/emerald_lock.json
+8484780c538478afe661ae3cb196d0d7268f5e8f assets/treasure2/models/item/eye_patch.json
 29e08052f5f4f1c9c7b902540feb17df6444ca83 assets/treasure2/models/item/gold_coin.json
 020bef26353086bdfe3810c4252f4bf5a53265ad assets/treasure2/models/item/gold_key.json
 99b7279e31f7f2d37d24164b6b222079c4419201 assets/treasure2/models/item/gold_lock.json
@@ -113,7 +114,7 @@ a7b04634c72ad10c1535854d74854286dd5942d2 assets/treasure2/models/item/steel_broa
 5ee0db8fb625c4d164a0d31a058989aa65df93b9 assets/treasure2/models/item/steel_falchion.json
 5614549610b788faf24907e6ca27b1a5867a08c6 assets/treasure2/models/item/steel_mace.json
 e73b5ad6d7c3e94d0a4fbb3a35b2a3aaa65c6c08 assets/treasure2/models/item/steel_machete.json
-1ddbdab81c9fe05dd175d182b0b33d35a869b8c3 assets/treasure2/models/item/steel_short_sword.json
+0c9f5812307673dba79b669f743da53a148e4537 assets/treasure2/models/item/steel_short_sword.json
 9743cfdba2313ec469cf7bd42903353308fcf24e assets/treasure2/models/item/steel_sword.json
 2f87ead379e04cd839be634e3dc37f90b0dda797 assets/treasure2/models/item/stone_key.json
 545a35301571103f146a3a41739ca0a78d6d9442 assets/treasure2/models/item/stone_lock.json

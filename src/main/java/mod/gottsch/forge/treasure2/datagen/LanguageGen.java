@@ -106,6 +106,7 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.SPANISH_MOSS.get(), "Spanish Moss");
         add(TreasureBlocks.WISHING_WELL.get(), "Wishing Well Stone");
         add(TreasureBlocks.DESERT_WISHING_WELL.get(), "Desert Wishing Well Stone");
+        add(TreasureItems.EYE_PATCH.get(), "Eye Patch");
         
         // swords
         add(TreasureItems.COPPER_SHORT_SWORD.get(), "Copper Short Sword");
@@ -287,10 +288,13 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.tooltip("weapons.mjolnir.lore"), "'Whosoever holds this hammer,~"
         		+ "if they be worthy, shall possess the power of Thor.'");
         
+        add(LangUtil.tooltip("weapons.headsmans_axe.lore"), "Let the good times roll.");
+        
         add(LangUtil.tooltip("weapons.axe_of_durin.lore"), "'... And my axe!'");
         
-        add(LangUtil.tooltip("weapons.headsmans_axe.lore"), "'Know that for all who betray justice, I am their fate.'");
-
+        add(LangUtil.tooltip("weapons.power_attack_chance"), "Power Attack Chance: %s%%");
+        add(LangUtil.tooltip("weapons.power_attack_damage"), "Power Attack Damage: +%s");
+        
         /*
          * screens
          */

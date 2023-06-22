@@ -58,9 +58,9 @@ public interface IWeapon {
 	default public void appendStats(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
 		if (getCriticalChance() > 0f) {
 			tooltip.add(new TextComponent(LangUtil.NEWLINE));
-			tooltip.add(new TranslatableComponent(LangUtil.tooltip("weapons.power_attack_chance", df.format(getCriticalChance() * 100)))
+			tooltip.add(new TranslatableComponent(LangUtil.tooltip("weapons.power_attack_chance"), df.format(getCriticalChance()))
 					.withStyle(ChatFormatting.AQUA));
-			tooltip.add(new TranslatableComponent(LangUtil.tooltip("weapons.power_attack_damage", df.format(getCriticalDamage() * 100)))
+			tooltip.add(new TranslatableComponent(LangUtil.tooltip("weapons.power_attack_damage"), df.format(getCriticalDamage()))
 					.withStyle(ChatFormatting.AQUA));
 			tooltip.add(new TextComponent(LangUtil.NEWLINE));
 		}

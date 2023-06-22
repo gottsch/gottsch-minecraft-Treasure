@@ -145,7 +145,8 @@ public class WoodChestMimicModel<T extends Entity> extends EntityModel<T> {
 			if (mimic.hasTarget()) {
 				lid.xRot = -degToRad(mimic.getAmount() * 45);
 			} else {
-				lid.xRot = -degToRad(22.5f);
+//				lid.xRot = -degToRad(22.5f);
+				bobMouth(lid, 22.5f, 25f, ageInTicks);
 			}
 			latch.xRot = 2.4870942F;
 			eye1.xRot = -1.003564F;
@@ -171,12 +172,16 @@ public class WoodChestMimicModel<T extends Entity> extends EntityModel<T> {
 		part.y = originY + (Mth.cos(age * 0.25F) * 0.5F + 0.05F);
 	}
 	
+	public static void bobMouth(ModelPart mouth, float originRot, float maxRot, float age) {
+		mouth.xRot = -(degToRad(originRot + Mth.cos(age * 0.25f) * 3f));
+	}
+	
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 	
-	protected float degToRad(float degrees) {
+	protected static float degToRad(float degrees) {
 		return degrees * (float)Math.PI / 180 ;
 	}
 }
